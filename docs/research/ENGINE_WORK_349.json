@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "4baab6e958246834a37d5a06989637ef366a6b7f",
+  "targetIds": [
+    "RND-06",
+    "RND-03",
+    "DBG-01"
+  ],
+  "sourceHashes": {
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "0f93ceadf262cf5776bd31304e905f3f48787a362d6375786bd160acaff09eea",
+    "native/include/HBEngine/Bloom.hpp": "ed92ccd724b4dde0c3a4601dbf5f8b0e2f16607a4e55e82db9f79c6528bf7e85",
+    "native/include/HBEngine/HierarchicalDepth.hpp": "4108b99c0516a0d6edef963a928266a5422cf4dbf7f8d7c8ddd05f312db2510e",
+    "native/include/HBEngine/Render.hpp": "288a6a5c2cd23fb2aad1c16604ab7fa8d16752bb502668d146a1ceed9488e1ff",
+    "native/include/HBEngine/SceneLightTiles.hpp": "f5156cec329fce8786d76575e34a03a05c399bc0a05dc1bd045c73ea3a691588",
+    "native/include/HBEngine/SceneProbes.hpp": "3f2d686cc4121a81cd524a812689eba9ab0e590279874b3dc137285d5ed5ea6e",
+    "native/include/HBEngine/SceneRender.hpp": "494a1118876b0d4a3c839a5cf37e039851ce7ccaadc0f89b8f0acc365d9624d5",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/include/HBEngine/ShaderBytecodeCompiler.hpp": "19ac9a2a98a0895769efa34f20d3e4b2b8d290800355e33effb3f1147caeeb47",
+    "native/include/HBEngine/ShaderBytecodeDiskCache.hpp": "4c98288cc0d2dc39b88eba2b8fff63d818ae3a871f8fb0f3dc66060eb2c9a6aa",
+    "package.json": "1b6036d58722e2647363e766174ece1b65a4b8d1801290cf3bbee6ee8065ca49",
+    "prototype/game-renderer.js": "a28930da86aaf6291437233e311ed74565ec2cbcf6c9d1138cf35fb54cc58522",
+    "prototype/native-scene-renderer.js": "9fcd3f8786c0d092bb27703bc09faf6957c0a09b809d4460eb5a76f49f44334a",
+    "prototype/profiler.js": "16a3a02c97950973f4c12fd0fbd2955ee3792b9252b510153edca771eb03f064",
+    "prototype/reflection-probes.js": "eb06d16d6f8a37e48b9ab536c9ab47fa1eaf235de32643b0a73880800944b6a9",
+    "prototype/shader-cache-contract.js": "5cdfc6c49bde5169011bb5f85340f2314f6b76e85a51648b89c45c9bb02101fa",
+    "tools/check-native-scene-351.mjs": "0ca7c074466a8f80dc1a4d88dff27deaf5b1334a182e33872f4dec47196b808d",
+    "tools/check-probe-capture-key-352.mjs": "edaa4f29fa8d96624efeafee04fb4045ade9597d8b0ccbbe3db365e042ef4987",
+    "tools/check-reflection-probes.mjs": "fbe914486257d4eee8ace822424c95f5f3b7ea0a682f2b12bdb733eeeac23095",
+    "tools/check-rendering-296-window.mjs": "8e6a8196be3fac067fbf4c9dd54242f403837c06ac685018ccc6eb76e2216508",
+    "tools/check-shader-cache-diagnostics-348.mjs": "f6907a16599835b6a38efb0f2086911d0ac70e49e69d257614c752a3de31ed4e",
+    "tools/check-shader-cache-runtime-347.mjs": "202e0b6d779b5a147972649c9b19e34224b55aa256755f679fe593cf6e458e6e",
+    "tools/check-shader-cache-window-350.mjs": "61d3020660bbb280a5049fae55eea19843e0a4b5f18d0809e3e865452d2ebbcb",
+    "tools/check-shader-disk-cache-346.mjs": "8f2c63aefceba50d16f086f1c95fb4b73f8636804f362ba371c1f0b1852857de",
+    "tools/editor-automation.mjs": "794160fd8d56108faadfe8a58d7fb8cb4250c80b1fff3fc07deed5fe9460ae93"
+  },
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/shader-disk-cache-346-Ulpya3/acceptance.json",
+      "sha256": "8e3a380ddad213e1e048c289406d766304e6cbb6092433175a9797a82e42cbd5"
+    },
+    {
+      "path": "native/build/shader-cache-runtime-347-OtNMQG/acceptance.json",
+      "sha256": "31ce79c64f39b58afebadaf1ec90facf1cfe8b6d34af25c114e01394600694ff"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-ppVCAw/acceptance.json",
+      "sha256": "b77d666648a8cec7ee65cdcd0ec337a55cc4d907781d3349ba2df07b47f7a3c3"
+    },
+    {
+      "path": "native/build/native-scene-351-8cYod3/acceptance.json",
+      "sha256": "6ce97f079fee58e2dd4b814eedede3839770c8b96db804d0e51b32eed7b3e65a"
+    },
+    {
+      "path": "native/build/gpu-render-JYI2Ac/acceptance.json",
+      "sha256": "3ee81eef03766d8614e83c31cfbc32b7a11af78770c9f525100aa1742f035b8f"
+    },
+    {
+      "path": "native/build/rendering-296-window-dzP7Kv/acceptance.json",
+      "sha256": "b0b9944db41693717a9f30dffd6fb4c568486e16461557b27350fc5641ae64c3"
+    }
+  ],
+  "lightChecks": [
+    "check-shader-cache-diagnostics-348.mjs",
+    "check-probe-capture-key-352.mjs",
+    "check-reflection-probes.mjs",
+    "check-rendering-145.mjs",
+    "check-rendering-151.mjs",
+    "check-native-frame-307.mjs",
+    "generate-api.mjs --check"
+  ],
+  "implemented": [
+    "선택 DX11 렌더 패스의 프로세스/프로젝트/버전 공용 8MiB 디스크 캐시·최종 소스/entry/target/flags/compiler stamp·전체 키/손상 검사",
+    "비대기 게시 잠금·한도 내 임시 기록·원자 교체·LRU·강제 종료 복구·장치 거부 후 원본 컴파일",
+    "원래9개 shaderCompilation ABI 보존·별도10개 디스크 진단·한 번의 native 조회·사람용 표와 AI schema 공유",
+    "프로브의 캡처와 강도/혼합 바인딩 분리·GL/GPU/native 공용 키·모든 속성 분류",
+    "기존 296 UV/guide 검사에 관측값/즉시 GL오류·현재 API와 맞는 동결 pass 기준·실제 trilinear mip 조건"
+  ],
+  "measurements": {
+    "actualD3D": {
+      "separateProcesses": true,
+      "coldWrites": 21,
+      "warmHits": 21,
+      "warmWrites": 0,
+      "warmScreenFXCCompiles": 0,
+      "maxRGBAByteError": 0,
+      "stableFrames": 6,
+      "stableCacheIO": 0,
+      "orderedFirstRenderMS": [
+        3321.0304,
+        27.897
+      ]
+    },
+    "packagedGame": {
+      "separateProcesses": true,
+      "coldWrites": 6,
+      "warmHits": 6,
+      "warmWrites": 0,
+      "normalExit": true
+    },
+    "scope": "Single ordered preparation/render observations; compiler skip and pixels verified, not controlled speedup or FPS."
+  },
+  "nativePlayerSHA256": "446de998f1027b1ef4f7fd09d18dc02e5eefcb5f022dfb7b0db1cee47acee52f",
+  "newGPUResources": 0,
+  "newAutomaticReadbacks": 0,
+  "newGPUUniformFields": 0,
+  "diskBudgetBytes": 8388608,
+  "newRuntimeDependencies": 0,
+  "experiments": {
+    "mixedFrameGL": {
+      "adopted": false,
+      "checks": [
+        "native/build/mixed-normal-338-b8BhcG/acceptance.json",
+        "native/build/mixed-guide-343-8mdnAZ/acceptance.json",
+        "native/build/mixed-guide-344-STGoBx/acceptance.json"
+      ],
+      "scope": "17 normal contexts and guide/lens output comparison; full preparation/steady-frame cost still needed"
+    }
+  },
+  "limits": [
+    "처음 보는 소스의 최초 FXC 및 GL/WebGPU 준비 비용은 계속 절감해야 함",
+    "Device::compile 사용자 컴퓨트 커널은 디스크 캐시 대상 아님",
+    "RND07 투명 이전 분기·다른 표면 필드·추가 산란 footprint 잔여 유지",
+    "353의 NRD/HDRP 선택 읽기는 구현·전체 분석 완료로 계산하지 않음",
+    "0VeswA 보고서 없는 실행과 351 이전 실패는 검증 성과에 포함하지 않음"
+  ]
+}

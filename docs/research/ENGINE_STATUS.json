@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-18",
-  "basisRevision": "839d0f1cd6171454fa6c8f7abcc08f7ccbf3b12c",
+  "basisRevision": "4baab6e958246834a37d5a06989637ef366a6b7f",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -669,15 +669,18 @@
       "area": "rendering",
       "title": "광원·HDRI·환경 액터",
       "status": "verified",
-      "implemented": "래스터 HDRI/다중 광원·MegaLights/SkyLight 제작·분산 캡처",
+      "implemented": "래스터 HDRI/다중 광원·MegaLights/SkyLight 제작·분산 캡처 ·351–352: 프로브 캡처와 강도/혼합/영역 바인딩 분리·위치/해상도/clip/bounce/명시갱신 보존·C++/BP 실제 게임 및 browser 모의 타깃 수명 대조",
       "remaining": [],
       "sources": [
         "prototype/scene-environment.js",
-        "prototype/mega-lights.js"
+        "prototype/mega-lights.js",
+        "prototype/reflection-probes.js",
+        "prototype/native-scene-renderer.js"
       ],
       "evidence": [
         "docs/RASTER_LIGHTING_131.md",
-        "docs/RENDERING_138.md"
+        "docs/RENDERING_138.md",
+        "docs/research/ENGINE_WORK_349.json"
       ]
     },
     {
@@ -723,7 +726,7 @@
       "area": "rendering",
       "title": "초기 셰이더 준비 비용",
       "status": "partial",
-      "implemented": "GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화 ·189: 비시간 이전 노멀의 Time 호출 미생성·기존 opcode 특화·단일 GL 전체 링크 두 순서 대조/동일3백엔드 픽셀·네이티브 실제 게임 ·194: 표면 필드별 광선 프로그램 특화·동일 키 필드 합치기·legacy 호환·GL 두 순서와 실제3백엔드/네이티브 게임; 혼합 정의 노멀 WGSL45117→29725B ·253/259/260: pure SSA공유와 레지스터fallback·시간리터럴만 immutable갱신·CPU-only 매질 시간/geometry/filter/plan 캐시 동기화 ·274/275: 알파 전용 출력 절삭34→7·GLSL/WGSL 축소·고정 필드 호출·실제 GL/GPU/HLSL 픽셀 일치·중복 노멀 GL 한 순서2853→2761.5ms(Complex141/FPS와 별개) ·284/285/286/290: base-normal Time 특화·CPU 매질 선행 의존성/부분 평가·렌더 소유 불변 키; 실제3백엔드 픽셀·원본/시간/수명 보존;288/291 실험은 미채택 ·296–297: UV 좌표/삼각형 Frame 읽기·GL guide 노멀 호출 위치 공유, 공유·비공유/렌즈/mip float32 오차0·실제 GL/D3D/C++·생성자 수정 검증 ·298–305: 삼선형 단일 호출·정수LOD 읽기 생략,48필터 미분 절삭/GL·TSL·생성HLSL·레지스터 보존, 확정 불투명 GL/legacy key 분리·실제 camera 픽셀0, 인스턴스 노멀/pose key·실제3백엔드 게임 ·307: DirectX 불투과 metadata/variant key·기존 요청 기본값·버퍼 ABI 보존·실제 solid/alpha0·8MiB 캐시/소스 공유·실제 C++/BP와 AI 활성 진단 ·308–318: 이전 normal field 전용 프로그램 공유·기존 자원/IR/버퍼 유지·실제3백엔드 CPP/BP 게임 ·330–334: WebGPU current/prior의 동일 atlas/uniform 텍스처 Map/Fn 공유·17포즈/48필터조합384표본 오차0·WGSL 함수4→2·실제 CPP/BP",
+      "implemented": "GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화 ·189: 비시간 이전 노멀의 Time 호출 미생성·기존 opcode 특화·단일 GL 전체 링크 두 순서 대조/동일3백엔드 픽셀·네이티브 실제 게임 ·194: 표면 필드별 광선 프로그램 특화·동일 키 필드 합치기·legacy 호환·GL 두 순서와 실제3백엔드/네이티브 게임; 혼합 정의 노멀 WGSL45117→29725B ·253/259/260: pure SSA공유와 레지스터fallback·시간리터럴만 immutable갱신·CPU-only 매질 시간/geometry/filter/plan 캐시 동기화 ·274/275: 알파 전용 출력 절삭34→7·GLSL/WGSL 축소·고정 필드 호출·실제 GL/GPU/HLSL 픽셀 일치·중복 노멀 GL 한 순서2853→2761.5ms(Complex141/FPS와 별개) ·284/285/286/290: base-normal Time 특화·CPU 매질 선행 의존성/부분 평가·렌더 소유 불변 키; 실제3백엔드 픽셀·원본/시간/수명 보존;288/291 실험은 미채택 ·296–297: UV 좌표/삼각형 Frame 읽기·GL guide 노멀 호출 위치 공유, 공유·비공유/렌즈/mip float32 오차0·실제 GL/D3D/C++·생성자 수정 검증 ·298–305: 삼선형 단일 호출·정수LOD 읽기 생략,48필터 미분 절삭/GL·TSL·생성HLSL·레지스터 보존, 확정 불투명 GL/legacy key 분리·실제 camera 픽셀0, 인스턴스 노멀/pose key·실제3백엔드 게임 ·307: DirectX 불투과 metadata/variant key·기존 요청 기본값·버퍼 ABI 보존·실제 solid/alpha0·8MiB 캐시/소스 공유·실제 C++/BP와 AI 활성 진단 ·308–318: 이전 normal field 전용 프로그램 공유·기존 자원/IR/버퍼 유지·실제3백엔드 CPP/BP 게임 ·330–334: WebGPU current/prior의 동일 atlas/uniform 텍스처 Map/Fn 공유·17포즈/48필터조합384표본 오차0·WGSL 함수4→2·실제 CPP/BP ·346–350: DX11 래스터/노드/화면/파티클/Bloom/Hi-Z/광원/프로브 공용 8MiB 디스크 bytecode·비대기/손상/장치거부/종료복구·다른프로세스21hit/0compile·출력0·6안정프레임IO0·실제패키지6save→6hit/0save",
       "remaining": [
         "Complex141 GL 첫 path 6.17초/시간 가이드3.99초 추가 절감",
         "WebGPU 실제 Complex141 첫 path3.65초/시간 가이드2.45초 추가 절감; 단일 부하 미통제 표본이라 이전 수치와 개선율 비교하지 않음",
@@ -751,7 +754,9 @@
         "native/include/HBEngine/ScreenEffectsPass.hpp",
         "native/desktop/SceneRenderBridge.hpp",
         "prototype/native-scene-renderer.js",
-        "prototype/ray-previous-gpu.js"
+        "prototype/ray-previous-gpu.js",
+        "native/include/HBEngine/ShaderBytecodeCompiler.hpp",
+        "native/include/HBEngine/ShaderBytecodeDiskCache.hpp"
       ],
       "evidence": [
         "docs/RENDERING_145.md",
@@ -774,7 +779,8 @@
         "docs/research/ENGINE_WORK_305.json",
         "docs/research/ENGINE_WORK_307.json",
         "docs/research/ENGINE_WORK_318.json",
-        "docs/research/ENGINE_WORK_334.json"
+        "docs/research/ENGINE_WORK_334.json",
+        "docs/research/ENGINE_WORK_349.json"
       ]
     },
     {
@@ -1635,15 +1641,17 @@
       "area": "debugging",
       "title": "프레임/컴파일 프로파일러",
       "status": "verified",
-      "implemented": "실측 구간/호출·300프레임·셰이더 준비·AI/JSON ·289: 준비 단계 submitMS/afterSubmitMS·선택 private GLSL/번역 trace·기존 AI 진단 공유",
+      "implemented": "실측 구간/호출·300프레임·셰이더 준비·AI/JSON ·289: 준비 단계 submitMS/afterSubmitMS·선택 private GLSL/번역 trace·기존 AI 진단 공유 ·348–350: 기존9필드 ABI와 별도 디스크10진단·기록 없는 표/immutable snapshot/escaping·한 native조회·AI스키마·실제게임 적중/쓰기/예산 조회",
       "remaining": [],
       "sources": [
         "prototype/profiler.js",
-        "prototype/game-renderer.js"
+        "prototype/game-renderer.js",
+        "prototype/shader-cache-contract.js"
       ],
       "evidence": [
         "docs/RENDERING_151.md",
-        "docs/research/ENGINE_WORK_289.json"
+        "docs/research/ENGINE_WORK_289.json",
+        "docs/research/ENGINE_WORK_349.json"
       ]
     },
     {
@@ -1922,7 +1930,7 @@
       ]
     }
   ],
-  "latestBatch": "308–334",
+  "latestBatch": "335–352",
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_334.json",
     "sourceCommit": "e9613ad91dcd8e3eac8c639db51248f3986832d3",
