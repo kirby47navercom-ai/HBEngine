@@ -4177,5 +4177,30 @@
     ],
     "analysis": "docs/research/NATIVE_SHADER_PREPARATION_496.md",
     "fullBodyAPIGatePromoted": false
+  },
+  "supplemental510": {
+    "date": "2026-10-19",
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/texture-expressions?application_version=4.27",
+        "readScope": "4.27판의TextureSample선택구역65–86행: UV, MipValueMode와DDX/DDY설명. 최신판URL의본문열기는실패했으며해당최신본문/다른노드/링크/매체는이번에읽지않았어요.",
+        "snapshot": "native/build/reference-corpus/supplemental510/unreal.html",
+        "sha256": "c1a6e5f1f0f1cff1fe25863e5e71f007ad6f21c7b7efdf6faadca871b994268e",
+        "bytes": 103892
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Sample-Texture-2D-Node.html",
+        "readScope": "ShaderGraph17.0의선택입력/설정145–241행및UV이음새예시285–299행.나머지본문·링크API·다른패키지버전은이번에읽지않았어요.",
+        "snapshot": "native/build/reference-corpus/supplemental510/unity.html",
+        "sha256": "7220a4644d44e539b6fbf73a9a250d5e57aa34f3ddc9a8ebbff96b361a4e44b4",
+        "bytes": 22260
+      }
+    ],
+    "currentUEAttempt": {
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/texture-expressions-in-unreal-engine",
+      "result": "웹열기InternalError;본문미독"
+    },
+    "analysis": "docs/research/SAMPLED_COORDINATES_510.md",
+    "fullBodyAPIGatePromoted": false
   }
 }

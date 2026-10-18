@@ -13,3 +13,5 @@
 -496설치9937154a06b6e79d·3353/17owner/User10385읽기SHA/Versions1·DUEZpf설치CPP/SDK/packager22frame/C++5.87ms/disable93.77ms/샘플0/workeridle0·EYFCfI 6save→6hit. 첫idle검사는nullpipeline대신rawshaderPreparation.queue가맞고beforeSHA는profile.sha256;두회복은재설치없이원래beforeSHA를유지. 다음497에서는captureAsync가루프정지시준비완료다음실제frame없이oldraster반환가능성검토/수정;screenProbe는callback재render라별개.
 
 -497캡처전환가능성을재독했어요. player.captureAsync의callback인capture() 자체가매번현재장면을재렌더하므로가정했던추가수정은필요없어요. screenProbe도재렌더해요. low-level hbCapture는현재frame읽기이며프레임생성API가아님. 불필요한추가draw를만들지않고실제잔여texture-driven UV차분을시작해요.
+
+-510 source4cd4f0d·4계열텍스처UVfinite전파/현재이전밉·s1기본normalSampler충돌은HB_NODE_SURFACE기본6맵분리/createSurfaceProgram으로수정. 실제507ecNs0o 188/0↔0/188, sourceVsRtt0 새두텍스처게임, 5AJdMC 전체2D3D실행기 통과. 499kQNLBO/500vlZrYh 오차0/감도1, oldinstalled77ArfC 감도0. sourceplayer17eb6030..510설치/검증뒤계속.

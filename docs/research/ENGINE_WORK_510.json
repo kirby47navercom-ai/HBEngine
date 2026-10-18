@@ -1,0 +1,370 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "4cd4f0deb1a04f796a252dba9bb98f2725f31890",
+  "targetIds": [
+    "MAT-03",
+    "RND-05",
+    "RND-06",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "native/include/HBEngine/SceneRender.hpp": "0125164ff6e281b64668dddeb397e94eb9c37529cb89a98ffb1c33d68f71f8d9",
+    "prototype/native-materials.js": "a102c38b9d010e5a467b6301b6cd58aa97636175a81cad040d40a47ee74c205b",
+    "prototype/ray-material-gpu.js": "bf2e1bcf763764cc2e8278480e4a17b3741a6db6b34efa3882520c79037f316a",
+    "prototype/ray-material-shader.js": "13906bc2e19b39ea6757cee70a3b433ac34e6283c563163465a9357b15939225",
+    "prototype/ray-mip.js": "3e6a1a9ff9bec450a8cbe184d7a67bd9ba24bc3ab18e0a819d17c5d67bdaec68",
+    "prototype/ray-program-differentials.js": "645417a920207042e6b5d462159e8dcc9b9cebeabfb5a5a8e445931a86f1bfac",
+    "prototype/ray-uv-footprint.js": "f8660a3dcf7e1122b541d13d2045b6647130564fd28f71096afc15bba3435125",
+    "tools/check-native-preparation-window-496.mjs": "33792d69e111fef53e1f55203624012618ed0288c70ee72d0a697b9ce3c9b0cd",
+    "tools/check-sampled-coordinate-499-window.mjs": "8a2936c098510ff4e0ac5c9d7b418678ac9e559e6fc626f59a76399dc4bd5944",
+    "tools/check-sampled-coordinate-500-native.mjs": "ceddf9848afe72a59698dcffe3a352f08da4edcaa1ce84107c7eeeca8d2744d3",
+    "tools/check-sampled-coordinate-501.mjs": "c9acedc65acf2e4ae20e73cdb51d7f3f1f7bc604d989f37eadc7136c25ce5ade",
+    "tools/check-surface-samplers-507.mjs": "639cbb833ea8e5da5572c5c31c34975316394525cae4f737beb9d1ebcd6a8b05",
+    "tools/editor-automation.mjs": "2d3cfb4371a9a33509c9440d8b7f00fbccdc47e8431b739766cf55a4f04c2c02",
+    "tools/generate-ray-programs.mjs": "569671b5342cb109152d8660ab5e4e20bd8a840c91bda6c9b910aa49dee5601c",
+    "tools/rendering-141-fixture.mjs": "fdb48ea450b4166669f1fa8cdc04c009d3b567b2c26ff55321adb2f446b54ee4",
+    "tools/sampled-coordinate-history-fixture-498.mjs": "3b2a6bce9bac56286194f045deca7ed7cc04df1feadf08d10ad2492fb469683c",
+    "tools/sampled-coordinate-material-503.mjs": "d8b356bc90874f1baf9503c7edf98cb762864ab43292b9ce15ad4aa022908743",
+    "native/include/HBEngine/RayPrograms.hpp": "81a15ce548f6e4b9fdb0e206eb6dc57e868425271e151651ae2098e4cd71a4e4",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "e8aac906701175c3e2a9520a0a1b5a292352e9cf8c56b8a39e11cee6613652dd"
+  },
+  "testSourceHashes": {
+    "native/tests/surface-samplers-507.cpp": "d7f6973a202f93e86374b8f163ede034e6aed15b564f4e0e7e5b51cf427a2cde"
+  },
+  "nativePlayerSHA256": "17eb6030db3dbdd2abfdd71d1ba9dfbdf58beb8efd3edae3cbc0ad4f1f8e610a",
+  "nativeEditorSHA256": "4b4c4d6ebf775979e78c759223c23e2df6f6ebb824c14f85abd7ce33441ac550",
+  "checks": [
+    {
+      "path": "native/build/sampled-coordinate-499-77ArfC/acceptance.json",
+      "sha256": "5b52af2d7229760c8a4e674a625015bab05f18a03c508ae06e82cde5faf15946"
+    },
+    {
+      "path": "native/build/sampled-coordinate-499-kQNLBO/acceptance.json",
+      "sha256": "16b3bad2d86d6668445cf42943665a178d2124367029f63021cfb0d578f18b91"
+    },
+    {
+      "path": "native/build/sampled-coordinate-500-native-vlZrYh/acceptance.json",
+      "sha256": "bace5a7c78fda703b0417b39bdd8816e6e2c37e298bc40c44e7faf2191800959"
+    },
+    {
+      "path": "native/build/sampled-coordinate-501.json",
+      "sha256": "dd600959e5f082d88d93116c3d61609192ff44274f6000be9d2ceb90977fbd4a"
+    },
+    {
+      "path": "native/build/surface-samplers-507-ecNs0o/acceptance.json",
+      "sha256": "dc00b22bddad23049d003ff149295c1540c0ca79ab97f5d861a1dade4efdda26"
+    },
+    {
+      "path": "native/build/light505-result.json",
+      "sha256": "192c610f063bdeb2d42c45270f9e19e00c79e70f7fb5aeb63c56f59896e2b8e8"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/native-scene-window-VsRtt0/acceptance.json",
+      "sha256": "18daf8986468ec3a24018e48371b5087a99fa2c3b89788eab96054310f1d0bc0",
+      "scope": "노드로 저장한 두 텍스처 UV 왜곡·복잡 노멀 머테리얼·새 C++/BP 경로 실행·변형/이력/해제",
+      "rendering141": {
+        "passed": true,
+        "nativePreparation492": null,
+        "backend": "D3D11",
+        "complexNormalTexture": true,
+        "UVParameterGraph": true,
+        "changedChannels": 664,
+        "timings": [
+          {
+            "property": "pathTracingEnabled",
+            "value": true,
+            "elapsedMS": 5145.654399999999
+          },
+          {
+            "property": "pathTracingDenoise",
+            "value": true,
+            "elapsedMS": 1283.1545000000042
+          },
+          {
+            "property": "pathTracingCurvedFilter",
+            "value": true,
+            "elapsedMS": 144.09270000000834
+          },
+          {
+            "property": "pathTracingDenoiseTemporal",
+            "value": 0.8,
+            "elapsedMS": 4951.0459999999875
+          },
+          {
+            "property": "pathTracingCurvedFilter",
+            "value": false,
+            "elapsedMS": 262.49010000001
+          },
+          {
+            "property": "pathTracingEnabled",
+            "value": false,
+            "elapsedMS": 114.72850000001199
+          }
+        ],
+        "preparation": {
+          "pending": false,
+          "currentStage": "ready",
+          "elapsedMS": 5164.70000000298,
+          "stages": [
+            {
+              "stage": "path",
+              "state": "ready"
+            },
+            {
+              "stage": "guide",
+              "state": "ready"
+            },
+            {
+              "stage": "filter",
+              "state": "ready"
+            },
+            {
+              "stage": "temporal",
+              "state": "ready"
+            },
+            {
+              "stage": "auxiliary",
+              "state": "ready"
+            }
+          ],
+          "completed": 5,
+          "total": 5,
+          "cancelled": false,
+          "error": null,
+          "submitted": 5,
+          "queue": {
+            "active": false,
+            "budgetBytes": 8388608,
+            "bytes": 0,
+            "cancelled": 0,
+            "completed": 5,
+            "deduplicated": 0,
+            "failed": 0,
+            "queued": 0,
+            "submitted": 5,
+            "worker": true,
+            "workersStarted": 1
+          }
+        },
+        "compilation": {
+          "compilations": 5,
+          "cacheHits": 0,
+          "cacheMisses": 10,
+          "cacheEvictions": 0,
+          "cacheBytes": 672428,
+          "cacheBudgetBytes": 8388608,
+          "lastCompileMS": 47,
+          "totalCompileMS": 9780,
+          "sourceBuilds": 1
+        },
+        "typedCPP": true,
+        "disabledRelease": true,
+        "pathNoTransmission": true
+      },
+      "checks": [
+        {
+          "key": "passed",
+          "value": true
+        },
+        {
+          "key": "serverClosed",
+          "value": true
+        },
+        {
+          "key": "installedUserAppUntouched",
+          "value": true
+        }
+      ]
+    },
+    {
+      "path": "native/build/native-scene-window-5AJdMC/acceptance.json",
+      "sha256": "2cf3b1b23209a4a16630f923680e41387ca0a8783b53c95d3917defd91a9950d",
+      "scope": "전체 기본 실행기: 실제2D/3D·SVG·한국어HUD·BP/C++입력/이동/머테리얼·세광원그림자·네텍스처형식교체·파티클/변형·2D마스크/광원/쿠키/볼륨·해제",
+      "checks": [
+        {
+          "key": "projectileCount2049",
+          "value": true
+        },
+        {
+          "key": "projectileCirclePixel",
+          "value": true
+        },
+        {
+          "key": "projectileSingleDraw",
+          "value": true
+        },
+        {
+          "key": "projectileResourceRelease",
+          "value": true
+        },
+        {
+          "key": "projectileFrameReuse",
+          "value": true
+        },
+        {
+          "key": "bloomCppBlueprint",
+          "value": true
+        },
+        {
+          "key": "bloomHdrReuseRelease",
+          "value": true
+        },
+        {
+          "key": "bloomResize",
+          "value": true
+        },
+        {
+          "key": "bloomPixelLetterbox",
+          "value": true
+        },
+        {
+          "key": "shadowLightTransform",
+          "value": true
+        },
+        {
+          "key": "shadowMovementReuse",
+          "value": true
+        },
+        {
+          "key": "shadowBytes",
+          "value": true
+        },
+        {
+          "key": "shadowCacheReused",
+          "value": true
+        },
+        {
+          "key": "shadowCppBlueprint",
+          "value": true
+        },
+        {
+          "key": "shadowOpacityPixel",
+          "value": true
+        },
+        {
+          "key": "passed",
+          "value": true
+        },
+        {
+          "key": "windowsBuild",
+          "value": true
+        },
+        {
+          "key": "svgOrientation",
+          "value": true
+        },
+        {
+          "key": "blueprintInput",
+          "value": true
+        },
+        {
+          "key": "cppMovement",
+          "value": true
+        },
+        {
+          "key": "hlslNodeMaterial",
+          "value": true
+        },
+        {
+          "key": "hlslTexturePixel",
+          "value": true
+        },
+        {
+          "key": "pixelPerfectLetterbox",
+          "value": true
+        },
+        {
+          "key": "cppBlueprintMaterialParameters",
+          "value": true
+        },
+        {
+          "key": "shaderParameterReuse",
+          "value": true
+        },
+        {
+          "key": "textureReplacementReleased",
+          "value": true
+        },
+        {
+          "key": "asynchronousGpuTiming",
+          "value": true
+        },
+        {
+          "key": "koreanHud",
+          "value": true
+        },
+        {
+          "key": "transparentOverlay",
+          "value": true
+        },
+        {
+          "key": "resize",
+          "value": true
+        },
+        {
+          "key": "sceneResourcesReleased",
+          "value": true
+        },
+        {
+          "key": "serverClosed",
+          "value": true
+        },
+        {
+          "key": "installedUserAppUntouched",
+          "value": true
+        },
+        {
+          "key": "fpsClaim",
+          "value": false
+        }
+      ]
+    }
+  ],
+  "installationPending": true,
+  "precision": {
+    "previousFrameMaxError": 0,
+    "crossGLWebGPUError": 0,
+    "nativeCurrentPreviousError": 0,
+    "toleranceUnchanged": 0.00004,
+    "baselineWidthSensitivity": 0,
+    "currentWidthSensitivity": 1,
+    "stableAnalyticOperations": 45,
+    "sampledOperations": "네 텍스처 계열의 유한 재샘플링; 안정적 sub-ULP 해석 차분으로 세지 않아요."
+  },
+  "resources": {
+    "newGPUResources": 0,
+    "newUniforms": 0,
+    "newProductionReadbacks": 0,
+    "additionalSampling": "다른 샘플의 UV/레이어 조상으로 필요한 텍스처만두방향추가재샘플링. 일반표면텍스처/고정필터직접출력/알파전용그래프는기존경로."
+  },
+  "failures": [
+    {
+      "path": "native/build/sampled-coordinate-499-vIrlRE/failure.json",
+      "reason": "처음 검사 정답에서 기존0길이노멀의+Z기본값을누락했어요. 기존허용오차를유지하고정답벡터만기존계약에맞췄어요."
+    },
+    {
+      "path": "native/build/native-scene-window-HFSEmZ",
+      "reason": "첫 실제제작용 검사 그래프가RGB(vec3)를UV(vec2)에직접연결해저장이거부됐어요. R/G→vec2조합으로수정했고런타임결함으로세지않아요."
+    },
+    {
+      "path": "native/build/native-scene-window-BKeeua/failure.json",
+      "reason": "실제 두 텍스처 그래프에서s1이기본노멀맵샘플러와겹쳤어요. 전체노드표면의기본맵읽기를분리하고507하드웨어픽셀/508게임에서수정검증했어요."
+    },
+    {
+      "path": "native/build/surface-samplers-507-MTzlD3/failure.json",
+      "reason": "새C++원문의같은행들여쓰기경고를-Werror가잡았어요. 줄을분리한ecNs0o만성공으로계산해요."
+    }
+  ],
+  "remaining": [
+    "샘플 결과 빼기는 매우 작은 텍스처 값 변화나 큰 절대UV의 sub-ULP를 잃을 수 있어요. 원뿔 안의 모든 불연속을 적분하는 필터가 아니며 들어오는 footprint는고정해요.",
+    "명시적LOD/Gradient/샘플러bias의통합제작설정·HDR/압축/배열·볼륨사용자밉·스트리밍·노멀분산거칠기는계속남아있어요.",
+    "새두텍스처141의path5146/시간guide4951ms는서로다른그래프의단일관찰이며초기전체FXC속도개선으로계산하지않아요.496비동기래스터진행은유지해요.",
+    "기존누적곡면/매질/GI와2D/애니/월드/game/editor/deploy목표를계속이어가요."
+  ],
+  "scope": "497–510 텍스처가 UV를 만드는 경로의 유한 변화량과 현재/이전 밉 전달, 완성 노드표면의샘플러충돌수정·C++편의함수/AI계약. 전체엔진/모든샘플포맷/모든공식본문API완료를뜻하지않아요."
+}

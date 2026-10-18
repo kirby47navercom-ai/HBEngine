@@ -472,3 +472,7 @@ Direct3D11.3의3.2.3.7/8에서sRGB쪽ULP측정과역변환의반올림구분을�
 ### 2026-10-19 · 496 선택 본문/API 대조
 
 Microsoft D3D11의 장치·컨텍스트·Present 소유 규칙과 D3DCompile 한 API의 서명/매개변수/요구 DLL·D3DCompile2 비교를 읽었어요. 원문 지문과 읽지 않은 연결 범위를 supplemental496에 등록해요. 기존 동기 SDK·실제 네이티브 게임을 대조했으며 전체 본문/API gate는 승격하지 않아요.
+
+### 2026-10-19 · 510 선택본문 대조
+
+Unreal4.27TextureSample의UV/미분과UnityShaderGraph17.0의선택설정/이음새예시를읽었어요. 최신UE본문열기실패와미독API/매체를supplemental510에남겨요. 문서관계와HB의원뿔유한차분구현선택을구분하고독립밉정답/세GPU/실제제작실행으로대조했어요. 전체gate는미승격이에요.
