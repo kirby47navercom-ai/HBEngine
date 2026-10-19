@@ -1,0 +1,28 @@
+import {validateLayeredTextureMips} from './texture-authored-mips.js';
+import {textureUploadBytes} from './native-texture-mips.js';
+const installed=new WeakSet(),glUploads=new WeakMap(),glMaps=new WeakMap();
+// Three uploads only level zero for DataArrayTexture/Data3DTexture. Keep the
+// correction at texture creation/update, never in the draw or steady-frame path.
+export function prepareGPUAuthoredMips(renderer,texture){
+ if(!texture.userData.hbAuthoredMips)return texture;validateLayeredTextureMips(texture);
+ const backend=renderer?.backend;
+ if(backend?.isWebGPUBackend&&!installed.has(backend)){
+  installed.add(backend);const create=backend.createTexture,update=backend.updateTexture;
+  backend.createTexture=function(map,options){return create.call(this,map,map.userData?.hbAuthoredMips?{...options,levels:map.mipmaps.length}:options);};
+  backend.updateTexture=function(map,options){
+   if(!map.userData?.hbAuthoredMips)return update.call(this,map,options);
+   const levels=validateLayeredTextureMips(map),resource=this.get(map);if(!resource.textureDescriptorGPU)return update.call(this,map,options);
+   for(const[level,mip]of levels.entries())this.device.queue.writeTexture({texture:resource.texture,mipLevel:level},textureUploadBytes(mip.data,mip.height,mip.width*4,map.flipY),{bytesPerRow:mip.width*4,rowsPerImage:mip.height},{width:mip.width,height:mip.height,depthOrArrayLayers:mip.depth});resource.version=map.version;
+  };
+ }else if(renderer?.isWebGLRenderer){
+  let maps=glMaps.get(renderer);if(!maps){maps=new WeakSet();glMaps.set(renderer,maps);}
+  if(!maps.has(texture)){maps.add(texture);const updated=texture.onUpdate;texture.onUpdate=function(...args){updated?.apply(this,args);uploadGL(renderer,this);};}
+ }
+ if(renderer?.isWebGLRenderer)renderer.initTexture(texture);
+ return texture;
+}
+function uploadGL(renderer,map){
+ let versions=glUploads.get(renderer);if(!versions){versions=new WeakMap();glUploads.set(renderer,versions);}if(versions.get(map)===map.version)return;const resource=renderer.properties.get(map).__webglTexture;if(!resource)return;const levels=validateLayeredTextureMips(map),gl=renderer.getContext(),target=map.isData3DTexture?gl.TEXTURE_3D:gl.TEXTURE_2D_ARRAY,binding=map.isData3DTexture?gl.TEXTURE_BINDING_3D:gl.TEXTURE_BINDING_2D_ARRAY,previous=gl.getParameter(binding),alignment=gl.getParameter(gl.UNPACK_ALIGNMENT),flip=gl.getParameter(gl.UNPACK_FLIP_Y_WEBGL);
+ try{gl.bindTexture(target,resource);gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false);for(let level=1;level<levels.length;level++){const mip=levels[level];gl.texSubImage3D(target,level,0,0,0,mip.width,mip.height,mip.depth,gl.RGBA,gl.UNSIGNED_BYTE,textureUploadBytes(mip.data,mip.height,mip.width*4,map.flipY));}versions.set(map,map.version);}
+ finally{gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,flip);gl.pixelStorei(gl.UNPACK_ALIGNMENT,alignment);gl.bindTexture(target,previous);}
+}
