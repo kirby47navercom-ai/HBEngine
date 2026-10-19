@@ -2189,11 +2189,11 @@
   ],
   "latestBatch": "631–636",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_628.json",
-    "sourceCommit": "c24ee0f2a5e4aed479489ad4de46667a8e4dbb86",
-    "bundleHash": "bcd8acedc03e95d8d4ac23b73339dda5186e274046c50bfab764167acfd79592",
+    "receipt": "docs/research/USER_INSTALL_640.json",
+    "sourceCommit": "6d9a2641c0601269deb5fb438a2e86fd33f76685",
+    "bundleHash": "cb8b8bdd2a13d7baa26ab6620fbc8eb006f3e7406f69aa03c430007d5c304c05",
     "verified": true,
     "versions": 1,
-    "scope": "628 전체3454파일/소유117SHA/검사소스5/User전후읽기SHA/연결/Versions1·설치SDK 파티클5단계/복구/취소/count·설치GL/WebGPU 비등방성/회전 이력·HDRI96광원/프로브/2D/CPP/BP"
+    "scope": "640 전체3460파일/소유121SHA/검사소스6/User전후읽기SHA/연결/Versions1·설치SDK 시뮬레이션4/첫방출IO0/렌더5/캐시복구·새2D파티클 표시/정렬/재열기/해제·프로브/CPP/BP"
   }
 }

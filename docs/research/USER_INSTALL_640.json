@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "6d9a2641c0601269deb5fb438a2e86fd33f76685",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\cb8b8bdd2a13d7ba",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\cb8b8bdd2a13d7ba\\HBEngine.exe",
+  "bundleHash": "cb8b8bdd2a13d7baa26ab6620fbc8eb006f3e7406f69aa03c430007d5c304c05",
+  "files": 3460,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "6d9a2641c0601269deb5fb438a2e86fd33f76685",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\cb8b8bdd2a13d7ba",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\cb8b8bdd2a13d7ba\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\cb8b8bdd2a13d7ba\\HBEngine.exe",
+    "bundleHash": "cb8b8bdd2a13d7baa26ab6620fbc8eb006f3e7406f69aa03c430007d5c304c05",
+    "files": 3460,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3455,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\bcd8acedc03e95d8",
+          "bytes": 180303824,
+          "manifestSHA256": "4dc3a7a6dc0ebd66d7b11187f4886311b3087bcf5592de83460f4f901c1788f9"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-19T01:12:21.4499814Z",
+      "bytes": 180303824,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "cb8b8bdd2a13d7ba"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "runtimeOwnersVerified": 121,
+    "repositoryOnlyTestSourcesVerified": 6,
+    "nativePlayerSHA256": "2dea5998ed8184070d94f1b0c27d48b4ccb828aa5a7d0509e139c6929522347d",
+    "installedGates": [
+      {
+        "path": "native/build/particle-simulation-preparation-631-DQ8YXG/acceptance.json",
+        "sha256": "ce3f850c0008cd7d4555ed1be8dbafe817e3cd9e25347dec2c82bd73c2540ddc",
+        "scope": "Actual D3D11 Particles::prepare/4 kernels, held shared queue and owner adoption, move/cancel/foreign owner, independent constant rings and clear/emit/step without compiler I/O, synchronous numeric parity and prepared shader lifetime, native bridge asset preparation once and first birth no compiler I/O. Actual packaged asset and scene cancellation are separate gates."
+      },
+      {
+        "path": "native/build/particle-preparation-619-OUCZIo/acceptance.json",
+        "sha256": "e262df1b3b475cc70f242580a0851a6ce8e3226b7e5c7b665c9acc1ab0e4a526",
+        "scope": "Actual D3D11 lazy particle raster/compaction/sort shaders on the existing worker, zero unused compile I/O, real driver rejection of all five poisoned stage keys and fresh retry, ordinary raster and unrelated Compute continue while held, synchronous sorted pixels equal, queued destruction/release cancellation, explicit bridge count waits without replaying births, zero stable polling I/O and idle queue. Simulation preparation is a separate gate; timings are uncontrolled and not a full cold-start/FPS claim."
+      },
+      {
+        "path": "native/build/probe-readiness-559-F2t2l3/acceptance.json",
+        "sha256": "1728c055f2dc7e861aec120397c350f96fd620d6a3f8af06d8cc380ab2f28687",
+        "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass."
+      }
+    ],
+    "manifestVerifiedFiles": 3460,
+    "versions": [
+      "cb8b8bdd2a13d7ba"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-640-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "report": "native/build/particle-simulation-preparation-631-MUlRS4/acceptance.json",
+        "passed": true,
+        "scope": "Actual D3D11 Particles::prepare/4 kernels, held shared queue and owner adoption, move/cancel/foreign owner, independent constant rings and clear/emit/step without compiler I/O, synchronous numeric parity and prepared shader lifetime, native bridge asset preparation once and first birth no compiler I/O. Actual packaged asset and scene cancellation are separate gates."
+      },
+      {
+        "report": "native/build/particle-asset-preparation-631.json",
+        "passed": true
+      },
+      {
+        "report": "native/build/compute-cache-577-GxvNuz/acceptance.json",
+        "passed": true
+      },
+      {
+        "report": "native/build/compute-portable-633.json",
+        "passed": true
+      },
+      {
+        "report": "native/build/particle-preparation-619-Ri7zrN/acceptance.json",
+        "passed": true,
+        "scope": "Actual D3D11 lazy particle raster/compaction/sort shaders on the existing worker, zero unused compile I/O, real driver rejection of all five poisoned stage keys and fresh retry, ordinary raster and unrelated Compute continue while held, synchronous sorted pixels equal, queued destruction/release cancellation, explicit bridge count waits without replaying births, zero stable polling I/O and idle queue. Simulation kernels remain synchronous; timings are uncontrolled and not a full cold-start/FPS claim."
+      },
+      {
+        "report": "native/build/probe-readiness-559-86wWO4/acceptance.json",
+        "passed": true,
+        "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass."
+      },
+      {
+        "report": "native/build/player634-result.json",
+        "passed": true
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "report": "native/build/probe-readiness-559-86wWO4/acceptance.json",
+        "passed": true,
+        "scope": "실제 소유 패키지의 2D 파티클 첫 표시/마스크/정렬/재열기/해제·프로브/C++/블루프린트; 준비상태4+3/선택2, 최종 풀0/자동readback0. 캡처 확인."
+      }
+    ],
+    "scope": "640 전체명세/소유SHA·설치SDK 시뮬레이션4커널/독립상수링/첫방출 컴파일IO0/취소·렌더5단계/캐시복구/정렬/count·실제2D첫표시/정렬/재열기/해제·프로브/CPP/BP·User읽기SHA/연결/Versions1. 전체엔진/FPS 완료 주장이 아니에요."
+  },
+  "nativeCache": {
+    "bytes": 291018700,
+    "files": 627,
+    "leases": 0
+  },
+  "dependencyPlans": {
+    "bytes": 1211109,
+    "files": 1
+  },
+  "removedTestExecutables": [
+    {
+      "path": "native/build/compute-cache-577-GxvNuz/hardware.exe",
+      "bytes": 499446,
+      "sha256": "5612a47bef166460bc8ccf425226fb1916a1626c42777a11b3c156e66111a670"
+    },
+    {
+      "path": "native/build/compute-cache-577-GxvNuz/unavailable.exe",
+      "bytes": 143011,
+      "sha256": "f8a43c51a6480fa72cff06a587aab8f7a2defc0e53a513b3a1316c49d07ee619"
+    },
+    {
+      "path": "native/build/particle-preparation-619-OUCZIo/probe.exe",
+      "bytes": 2313958,
+      "sha256": "f39f75c7650d1bc441ece0ca3b0b87f29938ce4f83bd525db2305b2e276f3236"
+    },
+    {
+      "path": "native/build/particle-preparation-619-Ri7zrN/probe.exe",
+      "bytes": 2313958,
+      "sha256": "910a3be10f274ea9b3d327c2fd2dfa1f7823a843350a1ace14d64017ae4f69e5"
+    },
+    {
+      "path": "native/build/particle-simulation-preparation-631-DQ8YXG/probe.exe",
+      "bytes": 2139678,
+      "sha256": "68f8e3f5fb3b790e6b88b3dc6322bed3fc5a5c192bf9b069b0acfc4228dc3228"
+    },
+    {
+      "path": "native/build/particle-simulation-preparation-631-MUlRS4/probe.exe",
+      "bytes": 2139678,
+      "sha256": "d37b4a4f1d3d15bd38ee751b03c9d7b81a2a62a85cb40f46e982dd5d02741c03"
+    },
+    {
+      "path": "native/build/particle-simulation-preparation-631-XjlnDw/probe.exe",
+      "bytes": 2139678,
+      "sha256": "eaf198856c1e5ac1a051dabf38bc63da02a63df0640078a2eda747a69678b356"
+    }
+  ],
+  "scope": "640 전체명세/소유SHA·설치SDK 시뮬레이션4커널/독립상수링/첫방출 컴파일IO0/취소·렌더5단계/캐시복구/정렬/count·실제2D첫표시/정렬/재열기/해제·프로브/CPP/BP·User읽기SHA/연결/Versions1. 전체엔진/FPS 완료 주장이 아니에요."
+}

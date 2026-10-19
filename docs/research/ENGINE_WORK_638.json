@@ -181,6 +181,21 @@
     {
       "report": "native/build/player634-result.json",
       "passed": true
+    },
+    {
+      "path": "native/build/particle-simulation-preparation-631-DQ8YXG/acceptance.json",
+      "sha256": "ce3f850c0008cd7d4555ed1be8dbafe817e3cd9e25347dec2c82bd73c2540ddc",
+      "scope": "Actual D3D11 Particles::prepare/4 kernels, held shared queue and owner adoption, move/cancel/foreign owner, independent constant rings and clear/emit/step without compiler I/O, synchronous numeric parity and prepared shader lifetime, native bridge asset preparation once and first birth no compiler I/O. Actual packaged asset and scene cancellation are separate gates."
+    },
+    {
+      "path": "native/build/particle-preparation-619-OUCZIo/acceptance.json",
+      "sha256": "e262df1b3b475cc70f242580a0851a6ce8e3226b7e5c7b665c9acc1ab0e4a526",
+      "scope": "Actual D3D11 lazy particle raster/compaction/sort shaders on the existing worker, zero unused compile I/O, real driver rejection of all five poisoned stage keys and fresh retry, ordinary raster and unrelated Compute continue while held, synchronous sorted pixels equal, queued destruction/release cancellation, explicit bridge count waits without replaying births, zero stable polling I/O and idle queue. Simulation preparation is a separate gate; timings are uncontrolled and not a full cold-start/FPS claim."
+    },
+    {
+      "path": "native/build/probe-readiness-559-F2t2l3/acceptance.json",
+      "sha256": "1728c055f2dc7e861aec120397c350f96fd620d6a3f8af06d8cc380ab2f28687",
+      "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass."
     }
   ],
   "sourceGameGates": [
@@ -199,7 +214,7 @@
   "nativePlayerSHA256": "2dea5998ed8184070d94f1b0c27d48b4ccb828aa5a7d0509e139c6929522347d",
   "hostSHA256": "efe7339b889643b2614173ed30a21055acb885c7d70ae703295b5bea976f2106",
   "hostReuse": "HBEngine.cpp의 SceneRenderBridge 포함은 HB_GAME_PLAYER에서만 활성화돼요. 호스트 소스와 바이너리는 설치614와 같고 변경된 플레이어만626에서 다시 빌드했어요.",
-  "installationPending": true,
+  "installationPending": false,
   "currentInstallation": "docs/research/USER_INSTALL_628.json",
   "remaining": [
     "복잡한 GL/FXC 그래프 생성·초기 컴파일 비용",
@@ -207,5 +222,6 @@
     "이전 프레임 전역 투명 경로·곡면 역해·거친 복합 로브/참여 매질 footprint",
     "기타 누적 엔진 원장의 남은 목표"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_640.json"
 }
