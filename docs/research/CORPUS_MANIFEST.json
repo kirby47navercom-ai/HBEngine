@@ -4391,5 +4391,31 @@
       "full UE/Unity corpus"
     ],
     "implementation": "HB dual pixel projection derived independently; specular/rough/global/medium remaining kept explicit"
+  },
+  "supplemental699": {
+    "date": "2026-10-19",
+    "gatePromoted": false,
+    "record": "docs/research/TEXTURE_AUTHORED_MIPS_699.md",
+    "newReading": [
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Texture3D.SetPixelData.html",
+        "sha256": "b6b0cd3b5fe7f8c976cf98cb668fb6171dcf97ba5766bbf1b66b5ca0a85ab320",
+        "scope": "Returned API declaration/parameters/description/example and footer; no linked corpus completion"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Texture2DArray.SetPixelData.html",
+        "sha256": "d2143a72ece968d387888c6377fbd4cfc45077de5ea988f5a8659bba29b6ccda",
+        "scope": "Returned API declaration/parameters/description/example and footer; no linked corpus completion"
+      }
+    ],
+    "localPrimarySource": [
+      "node_modules/three/src/renderers/webgpu/utils/WebGPUTextureUtils.js updateTexture/createTexture/_copyBufferToTexture",
+      "node_modules/three/src/renderers/webgl/WebGLTextures.js layered upload branches",
+      "node_modules/three/src/renderers/common/Textures.js mip allocation selection"
+    ],
+    "unread": [
+      "linked Unity API corpus and remaining full UE/Unity corpus",
+      "W3C writeTexture method page: retrieval failed"
+    ]
   }
 }
