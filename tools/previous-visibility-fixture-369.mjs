@@ -9,6 +9,6 @@ export function previousVisibilityFixture369(blocked){
 
 export function visibilityProbe369(source,orthographic){
  source=source.replace('true,false,false),worldAt','true,false,true),worldAt').replace('true,true,false);guide.setSize','true,true,true);guide.setSize');
- if(orthographic)source=source.replace('new C.PerspectiveCamera(60,1,.1,30)','new C.OrthographicCamera(-2,2,2,-2,.1,30)').replaceAll('...camera.position.toArray(),0','...camera.position.toArray(),1');
+ if(orthographic){const camera='new C.PerspectiveCamera(60,1,.1*worldScale,30*worldScale)';assert.equal(source.split(camera).length-1,1,'scaled camera fixture anchor');source=source.replace(camera,'new C.OrthographicCamera(-2*worldScale,2*worldScale,2*worldScale,-2*worldScale,.1*worldScale,30*worldScale)').replaceAll('...camera.position.toArray(),0','...camera.position.toArray(),1');}
  return source;
 }

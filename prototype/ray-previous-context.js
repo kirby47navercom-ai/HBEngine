@@ -1,4 +1,7 @@
 import {rayBarycentricOffsetGLSL} from './ray-barycentric-offset.js';
+// Preserve early rejection and the original ordered weighted sum. Fixed
+// components avoid ANGLE's emulated dynamic vec3 index in this small loop.
+const previousWeightedNormalsGLSL=['x','y','z'].map((axis,index)=>`{vec3 now=hbGeometryLoad(at+2.0+${index}.0).xyz,local=x*now.x+y*now.y+z*now.z,prior=a*local.x+b*local.y+c*local.z;if(dot(prior,prior)<1e-12)return vec3(0,0,0);normal+=normalize(prior)*weights.${axis};}`).join('');
 // Previous evaluation reads the committed geometry. UV interpolation must use
 // that geometry too: moving only the worldPosition input changes texture LOD.
 export const previousRayGeometryGLSL=`
@@ -12,7 +15,7 @@ vec3 hbRayPreviousSmoothNormalOffset(float id,vec3 point,vec3 offset){
  float at=hbRayAttributes(id);vec3 face=hbRayPreviousGeometric(id);if(at<=0.0)return face;float current=hbRayPreviousFramePointer(hbGeometryLoad(at+3.0).w),old=hbGeometryLoad(at+4.0).w;if(current== -2.0||old<=0.0)return vec3(0,0,0);
  vec3 weights=hbRayPreviousBaryOffset(id,point,offset),normal;
  if(current<-.5)normal=hbGeometryLoad(old).xyz*weights.x+hbGeometryLoad(old+1.0).xyz*weights.y+hbGeometryLoad(old+2.0).xyz*weights.z;
- else if(current>0.0){vec3 x=hbGeometryLoad(current).xyz,y=hbGeometryLoad(current+1.0).xyz,z=hbGeometryLoad(current+2.0).xyz,a=hbGeometryLoad(old).xyz,b=hbGeometryLoad(old+1.0).xyz,c=hbGeometryLoad(old+2.0).xyz;if(abs(dot(x,cross(y,z))*dot(a,cross(b,c)))<1e-20)return vec3(0,0,0);normal=vec3(0,0,0);for(int vertexIndex=0;vertexIndex<3;vertexIndex++){vec3 now=hbGeometryLoad(at+2.0+float(vertexIndex)).xyz,local=x*now.x+y*now.y+z*now.z,prior=a*local.x+b*local.y+c*local.z;if(dot(prior,prior)<1e-12)return vec3(0,0,0);normal+=normalize(prior)*weights[vertexIndex];}}
+ else if(current>0.0){vec3 x=hbGeometryLoad(current).xyz,y=hbGeometryLoad(current+1.0).xyz,z=hbGeometryLoad(current+2.0).xyz,a=hbGeometryLoad(old).xyz,b=hbGeometryLoad(old+1.0).xyz,c=hbGeometryLoad(old+2.0).xyz;if(abs(dot(x,cross(y,z))*dot(a,cross(b,c)))<1e-20)return vec3(0,0,0);normal=vec3(0,0,0);${previousWeightedNormalsGLSL}}
  else return face;
  if(dot(normal,normal)<1e-12)return face;normal=normalize(normal);return dot(normal,face)<0.0?-normal:normal;
 }
