@@ -782,3 +782,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 1028 설치 C:\Users\kirby\HBEngine\Versions\e2af582843d454f2/3719파일/388소유SHA/13CPP·User10849읽기전후SHA/연결/Versions1 검증. 설치9898Ajkvt GL/GPU540·992NfyWqI 물리4종기준0·설치994 실제SDK CPP/BP 원점밖메쉬5단계/캡처1. 이전182791975B 정리. 1029뒤이전노멀/머테리얼/밉이력의범위·안정정규화후속구현계속.
 
 1030–1046 c39195998344d4cc9fa57123351fd07a14b25252: 변경전GL/GPU49중14실패각→최대성분 스케일 뒤 모두통과·독립CPU56/실제3GPU49·현재/이전 Float노멀밉·음수크기/움직임 대조. 실제세SDK CPP/BP 래스터/path30상태 동일기준픽셀·새Player1040/Host1041/10소유. Complex141 decoder만 ABBA path7575→7403/guide5479→5771ms(guide+5.3%가능성),성능최적화성공아님·전역초기지연잔여. 설치1048후누적계속.
+
+1048 설치 C:\Users\kirby\HBEngine\Versions\3c8ee6dda5dbbcad/3728파일/399소유SHA/14CPP·User10849읽기전후SHA/연결/Versions1 검증. 설치1030Z0hRCb GL/GPU49·403pjGcX9 이전노멀/Float밉·1036kgr7OH 실제SDK CPP/BP 래스터/path10단계. 이전183008944B 정리. 1049뒤누적렌더링계속.

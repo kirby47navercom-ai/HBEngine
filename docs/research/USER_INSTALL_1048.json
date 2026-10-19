@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "date": "2026-10-20",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "d5f4412df44c4d4d602e1ceb0370e7e622eb242c",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3c8ee6dda5dbbcad",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\3c8ee6dda5dbbcad\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\3c8ee6dda5dbbcad\\HBEngine.exe",
+  "bundleHash": "3c8ee6dda5dbbcadfb5d2827228d72d22039970a089d34beba1bd087bcbf0295",
+  "files": 3728,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3720,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e2af582843d454f2",
+        "bytes": 183008944,
+        "manifestSHA256": "bebc2b4405f31b737209b8d425c8fe778105c7c473acd550ce13043be269d00e"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-19T16:56:30.1740411Z",
+    "bytes": 183008944,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "3c8ee6dda5dbbcad"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 399,
+  "repositoryOnlyTestSourcesVerified": 14,
+  "nativePlayerSHA256": "a5235c863e3886fd8b1a0c238c43d344d7f5fb5f3e0d9c3c3fec48b00c3f3a31",
+  "installedGates": [
+    {
+      "path": "native/build/normal-range-1030-Z0hRCb/acceptance.json",
+      "sha256": "23e8c2e1aa1356ec6589a0b22fa0f6b8f90879c351c488d8de81a83c64fb2b6a",
+      "scope": "Actual GL/TSL normal-map decoder signed Float32 pixels versus independent double-hypot oracle from exact Float32 inputs. ValidRGB and finite strength0/±1/±1e30/±1e-30. Baseline flag records observed failures without accepting implementation. Full current/prior material/mip/game checks separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3c8ee6dda5dbbcad\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/normal-history-403-native-pjGcX9/acceptance.json",
+      "sha256": "fbf04550b93d4e4b0142c954852bc9957835cc16d8c68ab0026058bb7ab4ee3d",
+      "scope": "Actual D3D11 hardware shared generated HLSL and current/committed graph execution. Opposing Float normal mip neutral and distinct previous fine mip; no FPS or whole-engine completion claim.",
+      "args": [
+        "--strength",
+        "1e-30",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3c8ee6dda5dbbcad\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/normal-range-1036-kgr7OH/acceptance.json",
+      "sha256": "ea4f3a8da6689d6589a1c49249baa64544cd18015b147b2eb52771b31ae74966",
+      "scope": "Actual fresh SDK game: legal authored Power10^Exponent drives normal-map strength1/1e30/1e-30, decoded normal also emits direction color. Public C++ Materials::SetFloat and keyboard Blueprint materialFloat change the same parameter; five states in actual raster and five path states preserve the unit reference, with stable raster program. Native sample counter must be positive; browser proves enabled PostProcessVolume, ready path pipeline and nonempty ray geometry, with absent sample counter recorded as null. No user data, arbitrary floating-point or whole temporal/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3c8ee6dda5dbbcad\\HBEngine.exe"
+      ]
+    }
+  ],
+  "manifestVerifiedFiles": 3728,
+  "versions": [
+    "3c8ee6dda5dbbcad"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1048-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/normal-map-402-cpu.json",
+      "sha256": "91e76c8c8764216f3b707cb4941289250da96148d0b1775e85b7ca3cd262d8d9",
+      "scope": "Shared CPU graph and shader contract; actual raster/ray/committed fields are separate driver gates."
+    },
+    {
+      "path": "native/build/normal-range-1030-Jya8Ic/acceptance.json",
+      "sha256": "0ba149462eb562f52d5c34efdfbf4a0a669c3f9904d1888a0e7f1f54b89a4545",
+      "scope": "Actual GL/TSL normal-map decoder signed Float32 pixels versus independent double-hypot oracle from exact Float32 inputs. ValidRGB and finite strength0/±1/±1e30/±1e-30. Baseline flag records observed failures without accepting implementation. Full current/prior material/mip/game checks separate."
+    },
+    {
+      "path": "native/build/normal-range-1032-q5QF0f/acceptance.json",
+      "sha256": "fdabba87f0c65980ecbbf2dc9cf1818acdf629ca65963fc1d43c73d3dd9eea7d",
+      "scope": "Actual optimized hardware D3D11 generated normal-map decoder49 Float32 cases against independent double-hypot oracle. Exact header helper/macros, finite0/±1/±1e30/±1e-30 strengths and validRGB; current/prior/mip material paths checked separately."
+    },
+    {
+      "path": "native/build/normal-history-403-ok8vey/acceptance.json",
+      "sha256": "097a5694fe7fa0fe4def8b0573bf97ef10d32be2c034e9ae533661fca30052e7",
+      "scope": "Actual GL/WebGPU signed-float current versus committed normal-map field, moved/mirrored geometry and distinct mip widths; zero averaged tangent normal -> neutral. Ordinary material graph raster emits the same neutral value. No new production readback, FPS or device-loss claim."
+    },
+    {
+      "path": "native/build/normal-history-403-pGKpNB/acceptance.json",
+      "sha256": "86f176a2a61837e97ef32649a4d8bcd8f852e0c3760fd0c1a551739b4dc1cfd0",
+      "scope": "Actual GL/WebGPU signed-float current versus committed normal-map field, moved/mirrored geometry and distinct mip widths; zero averaged tangent normal -> neutral. Ordinary material graph raster emits the same neutral value. No new production readback, FPS or device-loss claim."
+    },
+    {
+      "path": "native/build/normal-history-403-native-mqobh1/acceptance.json",
+      "sha256": "f8e88e9b85f960f55dc36b79ecfc91dafc53cf606cfb2429a962dcfce5a9081d",
+      "scope": "Actual D3D11 hardware shared generated HLSL and current/committed graph execution. Opposing Float normal mip neutral and distinct previous fine mip; no FPS or whole-engine completion claim."
+    },
+    {
+      "path": "native/build/normal-history-403-native-dpRZKU/acceptance.json",
+      "sha256": "0e04ae013bf997f22ae1cf1c90bc4db9584104774b77ef2fd532dd1bb7e6b571",
+      "scope": "Actual D3D11 hardware shared generated HLSL and current/committed graph execution. Opposing Float normal mip neutral and distinct previous fine mip; no FPS or whole-engine completion claim."
+    },
+    {
+      "path": "native/build/normal-range-1036-9qS7EC/acceptance.json",
+      "sha256": "5f657a4c2f7f93bf44b52501e92f17d0079f9285b40ce33c108806c3d9cd2a86",
+      "scope": "Actual fresh SDK game: legal authored Power10^Exponent drives normal-map strength1/1e30/1e-30, decoded normal also emits direction color. Public C++ Materials::SetFloat and keyboard Blueprint materialFloat change the same parameter; five states in actual raster and five path states preserve the unit reference, with stable raster program. No user data, arbitrary floating-point or whole temporal/FPS claim."
+    },
+    {
+      "path": "native/build/normal-range-1036-LZREpB/acceptance.json",
+      "sha256": "913fe80d0537e6cbf76f9d1d6a9788955a492d7bdfd7e57158be6dff53e7a395",
+      "scope": "Actual fresh SDK game: legal authored Power10^Exponent drives normal-map strength1/1e30/1e-30, decoded normal also emits direction color. Public C++ Materials::SetFloat and keyboard Blueprint materialFloat change the same parameter; five states in actual raster and five path states preserve the unit reference, with stable raster program. Native sample counter must be positive; browser proves enabled PostProcessVolume, ready path pipeline and nonempty ray geometry, with absent sample counter recorded as null. No user data, arbitrary floating-point or whole temporal/FPS claim."
+    },
+    {
+      "path": "native/build/normal-range-1036-dmnBF2/acceptance.json",
+      "sha256": "0df7e498768c30c97845337c6caa886f0eeeedd0fee95c61b0ac2005c72f1640",
+      "scope": "Actual fresh SDK game: legal authored Power10^Exponent drives normal-map strength1/1e30/1e-30, decoded normal also emits direction color. Public C++ Materials::SetFloat and keyboard Blueprint materialFloat change the same parameter; five states in actual raster and five path states preserve the unit reference, with stable raster program. Native sample counter must be positive; browser proves enabled PostProcessVolume, ready path pipeline and nonempty ray geometry, with absent sample counter recorded as null. No user data, arbitrary floating-point or whole temporal/FPS claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/normal-range-1036-9qS7EC/acceptance.json",
+      "sha256": "5f657a4c2f7f93bf44b52501e92f17d0079f9285b40ce33c108806c3d9cd2a86",
+      "scope": "Actual fresh SDK game: legal authored Power10^Exponent drives normal-map strength1/1e30/1e-30, decoded normal also emits direction color. Public C++ Materials::SetFloat and keyboard Blueprint materialFloat change the same parameter; five states in actual raster and five path states preserve the unit reference, with stable raster program. No user data, arbitrary floating-point or whole temporal/FPS claim."
+    },
+    {
+      "path": "native/build/normal-range-1036-LZREpB/acceptance.json",
+      "sha256": "913fe80d0537e6cbf76f9d1d6a9788955a492d7bdfd7e57158be6dff53e7a395",
+      "scope": "Actual fresh SDK game: legal authored Power10^Exponent drives normal-map strength1/1e30/1e-30, decoded normal also emits direction color. Public C++ Materials::SetFloat and keyboard Blueprint materialFloat change the same parameter; five states in actual raster and five path states preserve the unit reference, with stable raster program. Native sample counter must be positive; browser proves enabled PostProcessVolume, ready path pipeline and nonempty ray geometry, with absent sample counter recorded as null. No user data, arbitrary floating-point or whole temporal/FPS claim."
+    },
+    {
+      "path": "native/build/normal-range-1036-dmnBF2/acceptance.json",
+      "sha256": "0df7e498768c30c97845337c6caa886f0eeeedd0fee95c61b0ac2005c72f1640",
+      "scope": "Actual fresh SDK game: legal authored Power10^Exponent drives normal-map strength1/1e30/1e-30, decoded normal also emits direction color. Public C++ Materials::SetFloat and keyboard Blueprint materialFloat change the same parameter; five states in actual raster and five path states preserve the unit reference, with stable raster program. Native sample counter must be positive; browser proves enabled PostProcessVolume, ready path pipeline and nonempty ray geometry, with absent sample counter recorded as null. No user data, arbitrary floating-point or whole temporal/FPS claim."
+    }
+  ],
+  "scope": "1048 전체3728파일/399소유SHA/CPP14·새Player1040/Host1041·설치GL/GPU49·설치네이티브 이전노멀/Float밉·실제SDK CPP/BP 래스터/path10상태·User읽기전후SHA/연결/Versions1;누적계속",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

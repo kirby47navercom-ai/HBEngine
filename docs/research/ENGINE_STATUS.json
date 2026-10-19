@@ -2642,11 +2642,11 @@
     "scope": "현재/이전 노멀·Float밉의 수치범위 복원·세GPU·세SDK실게임·컴파일비용 별도"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1028.json",
-    "sourceCommit": "78418e29b9119cb98619011eb8c5c3c3d172c584",
-    "bundleHash": "e2af582843d454f2af3d8fba84de630548ca8f9ac5e6b36dbc86f282fe53ba33",
+    "receipt": "docs/research/USER_INSTALL_1048.json",
+    "sourceCommit": "d5f4412df44c4d4d602e1ceb0370e7e622eb242c",
+    "bundleHash": "3c8ee6dda5dbbcadfb5d2827228d72d22039970a089d34beba1bd087bcbf0295",
     "verified": true,
     "versions": 1,
-    "scope": "1028 전체3719파일/388소유SHA/13CPP·affine540/코팅·이방성 픽셀0·실제SDK CPP/BP 원점밖메쉬·새네이티브·User/연결/Versions1"
+    "scope": "1048 전체3728파일/399소유SHA/CPP14·새Player1040/Host1041·설치GL/GPU49·설치네이티브 이전노멀/Float밉·실제SDK CPP/BP 래스터/path10상태·User읽기전후SHA/연결/Versions1;누적계속"
   }
 }

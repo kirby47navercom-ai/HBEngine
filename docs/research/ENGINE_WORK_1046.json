@@ -491,6 +491,35 @@
       "path": "native/build/normal-range-1036-dmnBF2/acceptance.json",
       "sha256": "0df7e498768c30c97845337c6caa886f0eeeedd0fee95c61b0ac2005c72f1640",
       "scope": "Actual fresh SDK game: legal authored Power10^Exponent drives normal-map strength1/1e30/1e-30, decoded normal also emits direction color. Public C++ Materials::SetFloat and keyboard Blueprint materialFloat change the same parameter; five states in actual raster and five path states preserve the unit reference, with stable raster program. Native sample counter must be positive; browser proves enabled PostProcessVolume, ready path pipeline and nonempty ray geometry, with absent sample counter recorded as null. No user data, arbitrary floating-point or whole temporal/FPS claim."
+    },
+    {
+      "path": "native/build/normal-range-1030-Z0hRCb/acceptance.json",
+      "sha256": "23e8c2e1aa1356ec6589a0b22fa0f6b8f90879c351c488d8de81a83c64fb2b6a",
+      "scope": "Actual GL/TSL normal-map decoder signed Float32 pixels versus independent double-hypot oracle from exact Float32 inputs. ValidRGB and finite strength0/±1/±1e30/±1e-30. Baseline flag records observed failures without accepting implementation. Full current/prior material/mip/game checks separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3c8ee6dda5dbbcad\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/normal-history-403-native-pjGcX9/acceptance.json",
+      "sha256": "fbf04550b93d4e4b0142c954852bc9957835cc16d8c68ab0026058bb7ab4ee3d",
+      "scope": "Actual D3D11 hardware shared generated HLSL and current/committed graph execution. Opposing Float normal mip neutral and distinct previous fine mip; no FPS or whole-engine completion claim.",
+      "args": [
+        "--strength",
+        "1e-30",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3c8ee6dda5dbbcad\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/normal-range-1036-kgr7OH/acceptance.json",
+      "sha256": "ea4f3a8da6689d6589a1c49249baa64544cd18015b147b2eb52771b31ae74966",
+      "scope": "Actual fresh SDK game: legal authored Power10^Exponent drives normal-map strength1/1e30/1e-30, decoded normal also emits direction color. Public C++ Materials::SetFloat and keyboard Blueprint materialFloat change the same parameter; five states in actual raster and five path states preserve the unit reference, with stable raster program. Native sample counter must be positive; browser proves enabled PostProcessVolume, ready path pipeline and nonempty ray geometry, with absent sample counter recorded as null. No user data, arbitrary floating-point or whole temporal/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3c8ee6dda5dbbcad\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -508,6 +537,15 @@
       "path": "native/build/normal-range-1036-dmnBF2/acceptance.json",
       "sha256": "0df7e498768c30c97845337c6caa886f0eeeedd0fee95c61b0ac2005c72f1640",
       "scope": "Actual fresh SDK game: legal authored Power10^Exponent drives normal-map strength1/1e30/1e-30, decoded normal also emits direction color. Public C++ Materials::SetFloat and keyboard Blueprint materialFloat change the same parameter; five states in actual raster and five path states preserve the unit reference, with stable raster program. Native sample counter must be positive; browser proves enabled PostProcessVolume, ready path pipeline and nonempty ray geometry, with absent sample counter recorded as null. No user data, arbitrary floating-point or whole temporal/FPS claim."
+    },
+    {
+      "path": "native/build/normal-range-1036-kgr7OH/acceptance.json",
+      "sha256": "ea4f3a8da6689d6589a1c49249baa64544cd18015b147b2eb52771b31ae74966",
+      "scope": "Actual fresh SDK game: legal authored Power10^Exponent drives normal-map strength1/1e30/1e-30, decoded normal also emits direction color. Public C++ Materials::SetFloat and keyboard Blueprint materialFloat change the same parameter; five states in actual raster and five path states preserve the unit reference, with stable raster program. Native sample counter must be positive; browser proves enabled PostProcessVolume, ready path pipeline and nonempty ray geometry, with absent sample counter recorded as null. No user data, arbitrary floating-point or whole temporal/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3c8ee6dda5dbbcad\\HBEngine.exe"
+      ]
     }
   ],
   "nativePlayerSHA256": "a5235c863e3886fd8b1a0c238c43d344d7f5fb5f3e0d9c3c3fec48b00c3f3a31",
@@ -558,8 +596,8 @@
     "wholeColdStartClaim": false,
     "wholeComplex141ImprovementClaim": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1028.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1048.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json at record basis revision",
   "remaining": [
     "PRJ-03: 특수 내부 폴더·바이너리 스트림 가져오기·이름 변경/redirect/index의 공동 복구",
@@ -650,5 +688,6 @@
     "RES-01: 전체 discovery 분모·추가 버전/API/미디어 대조",
     "RES-01: 전체 독립 분석 gate"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1048.json"
 }
