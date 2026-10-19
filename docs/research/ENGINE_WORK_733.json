@@ -311,6 +311,35 @@
       "path": "native/build/native-preparation-window-496-8IfeAV/acceptance.json",
       "sha256": "2f880af44bfa30236fa0a278f9aa796fc3cf8a78d38bae38be7d384227187d8f",
       "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+    },
+    {
+      "path": "native/build/texture-regions-728-wQnUmA/acceptance.json",
+      "sha256": "14c2b3f5fa3fc90c34a512cb85fd83360535c2af4e92ab5234f9bc95f54db49e",
+      "scope": "Actual GL2/WebGPU partial boxes in all four explicit RGBA8 families; changed texels, unaffected mip/layers, odd array/volume and cube-face coordinates. Two WebGPU boxes or matching GL2 boxes only, resource identity preserved during writes; same-version explicit disposal/recreation retains every lower mip, independent RGBA8/linear per-texel oracle. Optional flip-sRGB variant uses strict4e-5 partial/full-upload agreement because fixed-function hardware EOTF is approximate; separate mathematical EOTF error is recorded, not called exact. No FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\da025ba0a8981a32\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-regions-728-Hg2PlJ/acceptance.json",
+      "sha256": "8cd4814e29ab110c9ee2a5123457179eb5ddaeb1a7b6e18ffbfd0a7108635f1b",
+      "scope": "Actual GL2/WebGPU partial boxes in all four explicit RGBA8 families; changed texels, unaffected mip/layers, odd array/volume and cube-face coordinates. Two WebGPU boxes or matching GL2 boxes only, resource identity preserved during writes; same-version explicit disposal/recreation retains every lower mip, independent RGBA8/linear per-texel oracle. Optional flip-sRGB variant uses strict4e-5 partial/full-upload agreement because fixed-function hardware EOTF is approximate; separate mathematical EOTF error is recorded, not called exact. No FPS claim.",
+      "args": [
+        "--flip-srgb",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\da025ba0a8981a32\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/authored-mips-696-player-Wy4zkC/acceptance.json",
+      "sha256": "73ab7824947c0fd5f6425002862a6f1e658526c6572c6514ac245d7e1642ea00",
+      "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim.",
+      "args": [
+        "--regions",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\da025ba0a8981a32\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -378,8 +407,8 @@
     "Pre-authored mip fixture rejected duplicate --mip-controls; rerun with existing configured graph unchanged",
     "New flip+sRGB mathematical4e-5 assumption failed fixed-function hardware decoding; separate mathematical error and strict partial/full4e-5 are recorded, not reclassified as exact EOTF"
   ],
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_720.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_734.json",
   "remaining": [
     "actual context-loss recovery of authored cube/layered mips",
     "texture streaming/residency budgets and compressed/HDR/platform formats",
@@ -388,5 +417,6 @@
     "complex GL/FXC first preparation, device/filter costs",
     "other cumulative engine goals and physical mobile/Mac-dependent validation"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_734.json"
 }

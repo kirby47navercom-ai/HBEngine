@@ -1,0 +1,208 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "13ce8ee0b3db6f1d3456bf6d7359524f08f7f32d",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\da025ba0a8981a32",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\da025ba0a8981a32\\HBEngine.exe",
+  "bundleHash": "da025ba0a8981a324213127cefa998016472ba3fd2af8a5ad8d90c747f91ca5a",
+  "files": 3528,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "13ce8ee0b3db6f1d3456bf6d7359524f08f7f32d",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\da025ba0a8981a32",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\da025ba0a8981a32\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\da025ba0a8981a32\\HBEngine.exe",
+    "bundleHash": "da025ba0a8981a324213127cefa998016472ba3fd2af8a5ad8d90c747f91ca5a",
+    "files": 3528,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3516,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45",
+          "bytes": 180853653,
+          "manifestSHA256": "bccb2643a148eab57df21713b74f4aeb982d09a198df222acd29560f611c40e8"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-19T04:56:03.8357539Z",
+      "bytes": 180853653,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "da025ba0a8981a32"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "runtimeOwnersVerified": 205,
+    "repositoryOnlyTestSourcesVerified": 8,
+    "nativePlayerSHA256": "129defedc0bdbfdbe1ab5a865d05898218b141a2a119771af77c0c7b90afdccf",
+    "installedGates": [
+      {
+        "path": "native/build/texture-regions-728-wQnUmA/acceptance.json",
+        "sha256": "14c2b3f5fa3fc90c34a512cb85fd83360535c2af4e92ab5234f9bc95f54db49e",
+        "scope": "Actual GL2/WebGPU partial boxes in all four explicit RGBA8 families; changed texels, unaffected mip/layers, odd array/volume and cube-face coordinates. Two WebGPU boxes or matching GL2 boxes only, resource identity preserved during writes; same-version explicit disposal/recreation retains every lower mip, independent RGBA8/linear per-texel oracle. Optional flip-sRGB variant uses strict4e-5 partial/full-upload agreement because fixed-function hardware EOTF is approximate; separate mathematical EOTF error is recorded, not called exact. No FPS claim.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\da025ba0a8981a32\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/texture-regions-728-Hg2PlJ/acceptance.json",
+        "sha256": "8cd4814e29ab110c9ee2a5123457179eb5ddaeb1a7b6e18ffbfd0a7108635f1b",
+        "scope": "Actual GL2/WebGPU partial boxes in all four explicit RGBA8 families; changed texels, unaffected mip/layers, odd array/volume and cube-face coordinates. Two WebGPU boxes or matching GL2 boxes only, resource identity preserved during writes; same-version explicit disposal/recreation retains every lower mip, independent RGBA8/linear per-texel oracle. Optional flip-sRGB variant uses strict4e-5 partial/full-upload agreement because fixed-function hardware EOTF is approximate; separate mathematical EOTF error is recorded, not called exact. No FPS claim.",
+        "args": [
+          "--flip-srgb",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\da025ba0a8981a32\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/authored-mips-696-player-Wy4zkC/acceptance.json",
+        "sha256": "73ab7824947c0fd5f6425002862a6f1e658526c6572c6514ac245d7e1642ea00",
+        "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim.",
+        "args": [
+          "--regions",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\da025ba0a8981a32\\HBEngine.exe"
+        ]
+      }
+    ],
+    "manifestVerifiedFiles": 3528,
+    "versions": [
+      "da025ba0a8981a32"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-734-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "path": "native/build/cube-pixels-722.json",
+        "sha256": "0b3914e213a96e6f169e541decb0db502028266dc2f3769a57fe57136143bb38",
+        "scope": "Ordinary cube packing preserves independent face-index numeric/Float64 bit hashes including -0 and prior float flag across byte/float32/float64/raw-half/plain input; cache version/source snapshot behavior retained, packed atlases before/after byte-identical at2poses×4modes. Raw-half values are preserved, not newly decoded or claimed supported. Typed byte counts only, no V8 heap/FPS claim."
+      },
+      {
+        "path": "native/build/ray-invariant-724.json",
+        "sha256": "4f216fe3c7aaa31eaf472ac3dd15c2dc26a5518f99b946fdaed1b76f902207d1",
+        "scope": "Version-aware spatial invariance only; committed Time/base evaluation and material IR remain unchanged. Register overwrites and nested sampled coordinates retain dependencies. Actual GPU pixels, shader preparation and packaged C++ execution are separate gates."
+      },
+      {
+        "path": "native/build/ray-mip-sharing-726.json",
+        "sha256": "befa8199c8018b56404b65175d0c85248af024a2bb2694259e5dd34a4b7702cb",
+        "scope": "One generated float base per texture version/color interpretation/volume layout; mip toggles share immutable level data but preserve caller level-list length, version mutation and explicit release. Area-average independent oracle, no heap/FPS claim."
+      },
+      {
+        "path": "native/build/texture-regions-727.json",
+        "sha256": "4aa903475662810e0f5f4f475acff6e528e1f940c98680c7291b83cd9adfc5de",
+        "scope": "Independent texel oracles, whole-batch validation before mutation, owned patch copies, stale staged commit rejection, bounded latest batch, current/committed float mip snapshot separation, flip coordinate mapping and normalized C++/BP colors."
+      },
+      {
+        "path": "native/build/texture-sampling-520-gUt4gR/acceptance.json",
+        "sha256": "72c8c375e3dfe88df31563bb840eb7c1536d5934215abfcf33017659edeb2310",
+        "scope": "Actual GL/TSL current/committed previous material controls in all four families and all four modes; independent normal mip oracle, existing4e-5."
+      },
+      {
+        "path": "native/build/texture-sampling-521-native-AjYATc/acceptance.json",
+        "sha256": "283e38f0f10ebc30309e0687ca417bc5ab94e0d43af702890810a152257e5952",
+        "scope": "Actual optimized D3D11 all four families/four modes, current time1 versus committed previous time0 controls, independent +/-X mip normal oracle, existing4e-5."
+      },
+      {
+        "path": "native/build/texture-sampling-520-Utgj28/acceptance.json",
+        "sha256": "f8ce5f88267a8b2f20124b83e61d6984f1c7f059d718500c04ea6837d65745a2",
+        "scope": "Actual GL/TSL current/committed previous material controls in all four families and all four modes; independent normal mip oracle, existing4e-5."
+      },
+      {
+        "path": "native/build/texture-sampling-521-native-YFpj3s/acceptance.json",
+        "sha256": "9879b106ea9294a7db6083d7fcf2921c95e036cce5fc116910ae4bde98007913",
+        "scope": "Actual optimized D3D11 all four families/four modes, current time1 versus committed previous time0 controls, independent +/-X mip normal oracle, existing4e-5."
+      },
+      {
+        "path": "native/build/invariant-preparation-725-TaNK61/acceptance.json",
+        "sha256": "98e54f98725008f52f32931ae5b73c192b1f17edd926dafb74635c34a5c2c3bd",
+        "scope": "Single ABBA pre-change/current actual GL full path/normal/aux/filter preparation, same retained mip graph/private contexts. Driver cache and CPU load uncontrolled: observed times only, not cold-start/FPS or whole RND06 completion; independent pixels and packaged C++ gates separate."
+      },
+      {
+        "path": "native/build/texture-regions-728-XYVy6m/acceptance.json",
+        "sha256": "fe991e0e5ced847c47db143d280e833ceabcea9db4583ef61060cbc48d5bb207",
+        "scope": "Actual GL2/WebGPU partial boxes in all four explicit RGBA8 families; changed texels, unaffected mip/layers, odd array/volume and cube-face coordinates. Two WebGPU boxes or matching GL2 boxes only, resource identity preserved during writes; same-version explicit disposal/recreation retains every lower mip, independent per-texel oracle; no FPS claim."
+      },
+      {
+        "path": "native/build/texture-regions-728-UzPSnL/acceptance.json",
+        "sha256": "c6a849194114cc9bb7e4477b8e11408cb8cff6eabce29b42e89df46f840388cc",
+        "scope": "Actual GL2/WebGPU partial boxes in all four explicit RGBA8 families; changed texels, unaffected mip/layers, odd array/volume and cube-face coordinates. Two WebGPU boxes or matching GL2 boxes only, resource identity preserved during writes; same-version explicit disposal/recreation retains every lower mip, independent RGBA8/linear per-texel oracle. Optional flip-sRGB variant uses strict4e-5 partial/full-upload agreement because fixed-function hardware EOTF is approximate; separate mathematical EOTF error is recorded, not called exact. No FPS claim."
+      },
+      {
+        "path": "native/build/texture-regions-729-native-bfSH1e/acceptance.json",
+        "sha256": "5ef722a9d2b952fa6960fb0a58fe5ab774043b6fd966c5d5f136590b0d5e6b89",
+        "scope": "Actual SDK D3D11 all4 explicit RGBA8 texture families, selected-mip texel boxes and array/cube/volume depth handling; independent linear-byte→display oracle, unaffected samples, six rejected whole batches per family leave the first region unapplied; allocation/storage preserved. Packaged C++/BP execution separate."
+      },
+      {
+        "path": "native/build/authored-mips-696-player-GxDzNY/acceptance.json",
+        "sha256": "b641bdcafd3ded952dc98fdd518add732a0dc9717a1f072c8ca8fad3d2fb7789",
+        "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim."
+      },
+      {
+        "path": "native/build/native-preparation-window-496-8IfeAV/acceptance.json",
+        "sha256": "2f880af44bfa30236fa0a278f9aa796fc3cf8a78d38bae38be7d384227187d8f",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/authored-mips-696-player-GxDzNY/acceptance.json",
+        "sha256": "b641bdcafd3ded952dc98fdd518add732a0dc9717a1f072c8ca8fad3d2fb7789",
+        "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim."
+      },
+      {
+        "path": "native/build/native-preparation-window-496-8IfeAV/acceptance.json",
+        "sha256": "2f880af44bfa30236fa0a278f9aa796fc3cf8a78d38bae38be7d384227187d8f",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+      }
+    ],
+    "scope": "734 전체명세/소유162SHA·설치 GL/WebGPU 네 자료형 부분 갱신·자원 재생성·flip/sRGB·설치 SDK/C++/BP 98에셋·소스 Complex141 준비·해제·User읽기SHA/연결/Versions1. 누적 작업 계속."
+  },
+  "removedTestExecutables": [
+    {
+      "path": "native/build/texture-regions-729-native-ysAZGU/probe.exe",
+      "bytes": 1640679,
+      "sha256": "de57c54ca4d848c74b4d9fec75c40b49a60191fd58152a30b8d6c642f59c11d1"
+    },
+    {
+      "path": "native/build/texture-regions-729-native-Ivco1q/probe.exe",
+      "bytes": 1640679,
+      "sha256": "bd542df7c7f6c5778088c6e3c5bcffd89c76e36226b118467955609c69fc330b"
+    },
+    {
+      "path": "native/build/texture-regions-729-native-19T8si/probe.exe",
+      "bytes": 1640420,
+      "sha256": "09ad15f39af7e8b9368441a7c5eb86aa68cc1dcd24f90e09939b11d295b232fa"
+    }
+  ],
+  "nativeCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "205소유 SHA/8검사 C++·전체3528파일·설치 GL/GPU 네 자료형 부분/재생성·flip/sRGB·실제 설치 SDK/C++/BP98에셋 영역/LOD/교체/복원·User읽기전후SHA·연결·Versions1. 누적 구현 계속."
+}
