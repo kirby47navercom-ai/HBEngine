@@ -734,3 +734,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 787 설치 716790b7110b14dc/3585파일/266소유SHA/9C++·User10385읽기전후SHA/연결/Versions1 확정. 설치785C4DcTk 실제GPU전체Float32·행전송·실제장치복구·다중renderer,781xR2sHW 설치SDK C++/BP6상태와가시경로/원시표면/atlasCPU-GPU일치 통과. 이전설치181433986B퇴역. 디스크mipIO와누적잔여계속.
 
 789–798 839aa7fd4d85f85e12d995bac6c36ea378ab2cdb: 사용자 지정2D 디스크꼬리 읽기·공유/취소·현재/후보pin과폐기·기존상주풀/C++/블프·미리보기기반버튼/CAS/Undo/Redo·불변AI계약 연결. queued/active worker·가져오기이미지취소와완료후보/해제view직접픽셀 정리. 12회귀+453기존worker/759네자료형,790실제HTTP/worker,792GL/GPU초기1이미지 decoded4→20→84→4→84B,793D3D8상태실제SDK/C++/BP/경로와14의존성,794실제UI/저장,795공유읽기/2abort·stage/source0,797NPOT세로바이트동일/크기실패원자성 통과. payload≠전체RAM/heap, 2D처리없는명시체인에한정. 설치799 뒤 다른디스크쿠킹/전역광학/복잡GL/누적목표 계속.
+
+799 설치 ddbb6d5f0518e98b/3597파일/276소유SHA/9C++·User10385읽기전후SHA/연결/Versions1 확정. 설치794YE2BWa 실제UI·CAS/Undo/Redo/저장,795aO25FE 실제HTTP공유·2abort·미완료/완료후보와source0,793aI3iGv 설치SDK C++/BP·D3D래스터/경로8상태 통과. 이전설치181552763B퇴역. 다음 실제그래프/보조뷰수요·누적광학/엔진목표 계속.

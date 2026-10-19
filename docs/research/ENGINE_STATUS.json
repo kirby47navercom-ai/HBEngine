@@ -2451,11 +2451,11 @@
     "scope": "2D 디스크 밉/요청·worker·미적용 후보 소유권·실제 세GPU/SDK/C++/블프/편집기/AI"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_787.json",
-    "sourceCommit": "f3ba1fe42b921ce21c3a18e5709a11ac66576d83",
-    "bundleHash": "716790b7110b14dc5b592a9e405f92b970a28491ad614afd870043039ca5a418",
+    "receipt": "docs/research/USER_INSTALL_799.json",
+    "sourceCommit": "f765352e750d7c45fd30cbd915ac2120991eefb6",
+    "bundleHash": "ddbb6d5f0518e98bcd2deabb429965d8242faa234358c0654aad6e1bb88a1235",
     "verified": true,
     "versions": 1,
-    "scope": "787 전체3585파일/266소유SHA/9C++·설치GLatlas/실제C++·블프게임·User읽기SHA/연결/Versions1"
+    "scope": "799 전체3597파일/276소유SHA/9C++·설치UI/AI·실제공유IO/취소·C++블프 D3D8상태·User읽기SHA/연결/Versions1"
   }
 }

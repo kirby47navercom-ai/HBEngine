@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "f765352e750d7c45fd30cbd915ac2120991eefb6",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ddbb6d5f0518e98b",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\ddbb6d5f0518e98b\\HBEngine.exe",
+  "bundleHash": "ddbb6d5f0518e98bcd2deabb429965d8242faa234358c0654aad6e1bb88a1235",
+  "files": 3597,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "f765352e750d7c45fd30cbd915ac2120991eefb6",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ddbb6d5f0518e98b",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\ddbb6d5f0518e98b\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\ddbb6d5f0518e98b\\HBEngine.exe",
+    "bundleHash": "ddbb6d5f0518e98bcd2deabb429965d8242faa234358c0654aad6e1bb88a1235",
+    "files": 3597,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3586,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\716790b7110b14dc",
+          "bytes": 181552763,
+          "manifestSHA256": "1a1fdd6deea281447cafdae82a68fdbd68acd3ba693213c20822dbe96e9be2d2"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-19T08:37:04.7197382Z",
+      "bytes": 181552763,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "ddbb6d5f0518e98b"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "runtimeOwnersVerified": 276,
+    "repositoryOnlyTestSourcesVerified": 9,
+    "nativePlayerSHA256": "ea75010f1b6de7d655cdbb4e99c778fb915b180ff960dab96693563f6327173b",
+    "installedGates": [
+      {
+        "path": "native/build/disk-mips-794-editor-YE2BWa/acceptance.json",
+        "sha256": "46833afa7c870e0a7c5574b97fc7a5981faa64f0850332f685db52d9b1610ca1",
+        "scope": "Actual texture authoring button reads decoded source dimensions; same document Undo/Redo, AI expectedRevision patch/save, persisted descriptor and discoverable schema. Hidden owned project, no user files.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\ddbb6d5f0518e98b\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/disk-mips-795-aO25FE/acceptance.json",
+        "sha256": "b0aae7c11ae604e2024222433a0490e93489c130ff7a00531d08fbed65fa2abb",
+        "scope": "Actual delayed HTTP disk mip reads: one shared request survives one consumer abort, second consumer obtains bytes; superseded in-flight and completed staged candidates cannot publish and release decoded fine levels; dispose aborts pending IO and releases all owned tails/stages0. No timers, GPU objects or user fixtures added.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\ddbb6d5f0518e98b\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/disk-mips-793-player-aI3iGv/acceptance.json",
+        "sha256": "48ee4259e316d89d3db5054a60231d84b1b254cf03e7da64734579c2c014ec56",
+        "scope": "Fresh owned packaged game, actual shared SDK C++/keyboard Blueprint disk mip changes and D3D raster/path colors, decoded4/20/84B tails, complete dependency manifest. No user fixtures/profile, no generic disk formats or whole RAM/FPS claim.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\ddbb6d5f0518e98b\\HBEngine.exe"
+        ]
+      }
+    ],
+    "manifestVerifiedFiles": 3597,
+    "versions": [
+      "ddbb6d5f0518e98b"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-799-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "path": "native/build/disk-mips-791.json",
+        "sha256": "ca59961765c00e62e7379c83dedbff2d5ee413610dba0a2218f361ab2bcf2046",
+        "scope": "Settings/authoring identity and sparse-tail ownership algebra with injected pixel reads; actual HTTP/decode/GPU/C++ execution has separate790/792/793/794/795 gates."
+      },
+      {
+        "path": "native/build/texture-disk-regressions-796.json",
+        "sha256": "8d3d88f5f178651a416d58e0d73a66ecbd69dfece071948643e4d5755a1a6a6e",
+        "scope": "Existing material transactions, import/composite math, decoded residency and regions/pool/authored2D, new sparse-tail leases/settings and native/API generator identity. Actual IO/workers/GPU/game/editor are separate gates."
+      },
+      {
+        "path": "native/build/texture-cancel-790-qdqUsa/acceptance.json",
+        "sha256": "efd5c68f3bd842e706d74b454f03c489767909c28886d94a1c4ec9c2f680c57e",
+        "scope": "Real hidden module workers: queued transfer remains owned, active transferred cook terminates, later worker matches CPU bytes, local/pre/settled abort and idle cleanup. Owned delayed HTTP image requests actually disconnect on supersession/disposal; stale transaction stays invalid, newest red pixels and no error/texture ownership leak. Original raw TextureLoader path retains late-result disposal; not claimed to preempt raw network or synchronous CPU instructions."
+      },
+      {
+        "path": "native/build/disk-mips-792-QwFx8k/acceptance.json",
+        "sha256": "b4292ec4416599690cd2f5ec1229614cbe738f384ef68cb7582cedc4f00e8ed0",
+        "scope": "Actual project image files, GL/WebGPU pixels original4e-5, coarse-only4B/one-image first load, manual4→20→84→4→84B and reread, automatic pool4B/disabled restore84B, stable material program, readonly disk edits, owned decoded source release0. 2D authored-image disk mode only; no whole-process RAM or compressed/platform cook claim."
+      },
+      {
+        "path": "native/build/disk-mips-793-player-UEMPXC/acceptance.json",
+        "sha256": "f4177ad2b9c774bf917f477708f7f59cbe097aa6340eee7306d8abef3180c5a9",
+        "scope": "Fresh owned packaged game, actual shared SDK C++/keyboard Blueprint disk mip changes and D3D raster/path colors, decoded4/20/84B tails, complete dependency manifest. No user fixtures/profile, no generic disk formats or whole RAM/FPS claim."
+      },
+      {
+        "path": "native/build/disk-mips-794-editor-PRlyGY/acceptance.json",
+        "sha256": "46833afa7c870e0a7c5574b97fc7a5981faa64f0850332f685db52d9b1610ca1",
+        "scope": "Actual texture authoring button reads decoded source dimensions; same document Undo/Redo, AI expectedRevision patch/save, persisted descriptor and discoverable schema. Hidden owned project, no user files."
+      },
+      {
+        "path": "native/build/disk-mips-795-ke06vm/acceptance.json",
+        "sha256": "b0aae7c11ae604e2024222433a0490e93489c130ff7a00531d08fbed65fa2abb",
+        "scope": "Actual delayed HTTP disk mip reads: one shared request survives one consumer abort, second consumer obtains bytes; superseded in-flight and completed staged candidates cannot publish and release decoded fine levels; dispose aborts pending IO and releases all owned tails/stages0. No timers, GPU objects or user fixtures added."
+      },
+      {
+        "path": "native/build/disk-image-797-IBbgm2/acceptance.json",
+        "sha256": "ef3aed0859d7bef16f1fd11f29f957a3a213a5077a987eb0f28c014f8b77eed7",
+        "scope": "Actual DOM/canvas5x3 row-colored authored chain: every byte matches existing import+row-flip cook, bottom-up blue first pixel and NPOT2x1/1x1. Wrong file dimensions reject before publishing and release pending fine data; disposed sparse view direct image/mipmap references cleared. No tolerance or synthetic decoder."
+      },
+      {
+        "path": "native/build/texture-mip-worker-453-BrGKRn/acceptance.json",
+        "sha256": "32079a01c482588f812650e750c1dd1c78b624551dfab7288e67d7c3d8d77de2",
+        "scope": "Actual hidden WebView module worker: three queued257x257 cooks, clone/transfer ownership, byte hashes versus CPU, one worker, idle termination. Cook core math is a separate gate; no GPU/asset integration claim."
+      },
+      {
+        "path": "native/build/resident-material-759-aGf5q2/acceptance.json",
+        "sha256": "c03c24ed62a1f744efc4eec7718d31118327cc3e57f6818ee24138e74c49cda7",
+        "scope": "Actual authored GL/WebGPU material graphs, dynamic logicalLOD uniform, same compiled program through0→1→2→0 GPU views; all4 dimensions, source-root restoration, stale transaction/invalid level. Public C++/node, ray/native logical offsets and region mapping remain separate work."
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/disk-mips-793-player-UEMPXC/acceptance.json",
+        "sha256": "f4177ad2b9c774bf917f477708f7f59cbe097aa6340eee7306d8abef3180c5a9",
+        "scope": "Fresh owned packaged game, actual shared SDK C++/keyboard Blueprint disk mip changes and D3D raster/path colors, decoded4/20/84B tails, complete dependency manifest. No user fixtures/profile, no generic disk formats or whole RAM/FPS claim."
+      }
+    ],
+    "scope": "799 전체 명세/276소유SHA·실제디스크밉 UI/CAS/Undo/Redo·HTTP공유/취소/후보해제·설치SDK C++/BP D3D8상태/경로·User읽기SHA/연결/Versions1. 누적 작업 계속."
+  },
+  "nativeCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "3597전체명세/276소유SHA/9저장소전용C++·설치실제UI/AI/CAS/Undo/Redo/저장·HTTP공유/취소/후보/source0·설치SDK/Player C++/블프 D3D래스터/경로8상태·User읽기전후SHA/연결/Versions1. 누적 구현 계속."
+}

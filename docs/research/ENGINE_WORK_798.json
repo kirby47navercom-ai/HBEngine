@@ -359,6 +359,33 @@
       "path": "native/build/resident-material-759-aGf5q2/acceptance.json",
       "sha256": "c03c24ed62a1f744efc4eec7718d31118327cc3e57f6818ee24138e74c49cda7",
       "scope": "Actual authored GL/WebGPU material graphs, dynamic logicalLOD uniform, same compiled program through0→1→2→0 GPU views; all4 dimensions, source-root restoration, stale transaction/invalid level. Public C++/node, ray/native logical offsets and region mapping remain separate work."
+    },
+    {
+      "path": "native/build/disk-mips-794-editor-YE2BWa/acceptance.json",
+      "sha256": "46833afa7c870e0a7c5574b97fc7a5981faa64f0850332f685db52d9b1610ca1",
+      "scope": "Actual texture authoring button reads decoded source dimensions; same document Undo/Redo, AI expectedRevision patch/save, persisted descriptor and discoverable schema. Hidden owned project, no user files.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\ddbb6d5f0518e98b\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/disk-mips-795-aO25FE/acceptance.json",
+      "sha256": "b0aae7c11ae604e2024222433a0490e93489c130ff7a00531d08fbed65fa2abb",
+      "scope": "Actual delayed HTTP disk mip reads: one shared request survives one consumer abort, second consumer obtains bytes; superseded in-flight and completed staged candidates cannot publish and release decoded fine levels; dispose aborts pending IO and releases all owned tails/stages0. No timers, GPU objects or user fixtures added.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\ddbb6d5f0518e98b\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/disk-mips-793-player-aI3iGv/acceptance.json",
+      "sha256": "48ee4259e316d89d3db5054a60231d84b1b254cf03e7da64734579c2c014ec56",
+      "scope": "Fresh owned packaged game, actual shared SDK C++/keyboard Blueprint disk mip changes and D3D raster/path colors, decoded4/20/84B tails, complete dependency manifest. No user fixtures/profile, no generic disk formats or whole RAM/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\ddbb6d5f0518e98b\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -415,8 +442,8 @@
     "CPUWholeRAMClaim": false,
     "GPUWholeHeapClaim": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_787.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_799.json",
   "remaining": [
     "전역 곡면 역해",
     "거친 복합 로브/참여 매질 산란의 정밀 확장",
@@ -432,5 +459,6 @@
     "방향성 노멀 필터·화면 공간 기하 Specular AA·UV 경계 품질",
     "other cumulative engine goals and physical mobile/Mac-dependent validation"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_799.json"
 }
