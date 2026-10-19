@@ -3,9 +3,9 @@ import {rayBarycentricOffsetGLSL} from './ray-barycentric-offset.js';
 // that geometry too: moving only the worldPosition input changes texture LOD.
 export const previousRayGeometryGLSL=`
 void hbRayPreviousFrame(float id,out vec3 origin,out vec3 e1,out vec3 e2){float at=hbPathFilter.w+id*3.0;origin=hbGeometryLoad(at).xyz;e1=hbGeometryLoad(at+1.0).xyz;e2=hbGeometryLoad(at+2.0).xyz;}
-vec3 hbRayPreviousGeometric(float id){vec3 a,b,c;hbRayPreviousFrame(id,a,b,c);return normalize(cross(b,c));}
+vec3 hbRayPreviousGeometric(float id){vec3 a,b,c;hbRayPreviousFrame(id,a,b,c);return hbRayFrameNormal(b,c);}
 ${rayBarycentricOffsetGLSL.replaceAll('hbRayBaryOffset','hbRayPreviousBaryOffset').replaceAll('hbGeometryFrame','hbRayPreviousFrame')}
-vec3 hbRayPreviousBary(float id,vec3 point){vec3 origin,e1,e2;hbRayPreviousFrame(id,origin,e1,e2);vec3 delta=point-origin;float a=dot(e1,e1),b=dot(e1,e2),c=dot(e2,e2),d=dot(delta,e1),e=dot(delta,e2),den=max(a*c-b*b,1e-18),u=(c*d-b*e)/den,v=(a*e-b*d)/den;return vec3(1.0-u-v,u,v);}
+vec3 hbRayPreviousBary(float id,vec3 point){vec3 origin,e1,e2;hbRayPreviousFrame(id,origin,e1,e2);vec3 delta=point-origin;vec2 weights=hbRayCoordinates(e1,e2,delta);return vec3(1.0-weights.x-weights.y,weights);}
 vec2 hbRayPreviousUV(float id,vec3 point){float at=hbRayAttributes(id);if(at<=0.0)return vec2(0,0);vec3 b=hbRayPreviousBary(id,point);vec4 first=hbGeometryLoad(at);return first.xy*b.x+first.zw*b.y+hbGeometryLoad(at+1.0).xy*b.z;}
 float hbRayPreviousFramePointer(float encoded){return encoded<-3.5?-encoded:encoded== -3.0?-1.0:encoded;}
 vec3 hbRayPreviousSmoothNormalOffset(float id,vec3 point,vec3 offset){

@@ -1,5 +1,6 @@
 import {previousGeometryContract} from './previous-geometry.js';
 import {normalMapContract} from './normal-map.js';
+import {rayNormalPoseContract} from './path-guide-frames.js';
 import {rayUVFootprintContract} from './ray-uv-footprint.js';
 import {previousMediumContract} from './path-previous-media.js';
 import {opticalSpreadContract} from './path-ray-cone.js';
@@ -12,7 +13,7 @@ vec3 hbPathSurfaceNormal(float id,vec3 p,vec3 view,float width,bool coat){
 if(coat)return hbRayCoatNormalLod(id,p,view,width);
 #endif
 return hbRayNormalLod(id,p,view,width);}
-vec3 hbPathCommittedCoatNormal(float id,vec3 p,vec3 view,float width){if(hbPathFilter.w<=0.0||hbGeometryLoad(hbPathFilter.w+id*3.0).w<.5)return vec3(0,0,0);vec3 a=hbGeometryLoad(hbPathFilter.w+id*3.0+1.0).xyz,b=hbGeometryLoad(hbPathFilter.w+id*3.0+2.0).xyz;if(dot(cross(a,b),cross(a,b))<1e-20)return vec3(0,0,0);float at=hbRayAttributes(id);if(at>0.0){float encoded=hbGeometryLoad(at+3.0).w,old=hbGeometryLoad(at+4.0).w;if(encoded== -2.0||((encoded<-.5||encoded>0.0)&&old<=0.0))return vec3(0,0,0);}return hbRayPreviousCoatNormalContextLod(id,p,view,width,vec2(hbForward.w,1));}
+vec3 hbPathCommittedCoatNormal(float id,vec3 p,vec3 view,float width){if(hbPathFilter.w<=0.0||hbGeometryLoad(hbPathFilter.w+id*3.0).w<.5)return vec3(0,0,0);vec3 a=hbGeometryLoad(hbPathFilter.w+id*3.0+1.0).xyz,b=hbGeometryLoad(hbPathFilter.w+id*3.0+2.0).xyz;if(!hbRayFrameValid(a,b))return vec3(0,0,0);float at=hbRayAttributes(id);if(at>0.0){float encoded=hbGeometryLoad(at+3.0).w,old=hbGeometryLoad(at+4.0).w;if(encoded== -2.0||((encoded<-.5||encoded>0.0)&&old<=0.0))return vec3(0,0,0);}return hbRayPreviousCoatNormalContextLod(id,p,view,width,vec2(hbForward.w,1));}
 bool hbPathSameValue(vec4 now,vec4 old){vec4 d=abs(now-old)/max(vec4(1,1,1,1),max(abs(now),abs(old)));return d.x<=.001&&d.y<=.001&&d.z<=.001&&d.w<=.001;}
 bool hbPathSameSurface(vec4 now,vec4 old){vec3 d=abs(now.xyz-old.xyz);bool glass=now.z>.5,oldGlass=old.z>.5,mirror=now.x>.5&&now.y<.4,oldMirror=old.x>.5&&old.y<.4;return now.w==old.w&&d.x<=.001&&d.y<=.001&&d.z<=.001&&glass==oldGlass&&(glass||mirror==oldMirror);}
 bool hbPathSameCoat(vec4 now,vec4 old){return abs(now.x-old.x)<=.001&&abs(now.y-old.y)<=.001&&(now.x>.5&&now.y<.05)==(old.x>.5&&old.y<.05);}
@@ -34,6 +35,7 @@ export const raySurfaceHistoryContract=Object.freeze({
  guideLobes:'opaque coat mirror uses the coat normal when the base is not a mirror; base mirror and glass retain the base normal; reject differential neighbours on a different lobe',
  previousGeometry:previousGeometryContract,
  normalDecode:normalMapContract,
+ normalPose:rayNormalPoseContract,
  uvFootprint:rayUVFootprintContract,
  previousMedium:previousMediumContract,opticalSpread:opticalSpreadContract,
  selection:'version-aware live output dependency; static program bodies reused; guide evaluates only needed fields; coat-anisotropy input history compares all four channels while coat mirror classification uses xy',

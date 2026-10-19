@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';import * as G from 'three';import {GeometryGIWorld} from '../prototype/geometry-gi.js';import {rayMaterialFixture} from './ray-material-fixture.mjs';
 
-export function previousGeometryFixtures368(){
+export function previousGeometryFixtures368({worldScale=1,currentTrace=false}={}){
+ assert(Number.isFinite(worldScale)&&worldScale>0);
  const cases=[];
  for(const mode of ['shared-instances','masked']){
   const scene=new G.Scene(),world=new GeometryGIWorld(),geometry=mode==='masked'?new G.PlaneGeometry(4,4):new G.BoxGeometry(1,1,1),materials=[],meshes=[];let texture;
@@ -11,16 +12,16 @@ export function previousGeometryFixtures368(){
    }else{
     const material=new G.MeshPhysicalMaterial({transmission:1,roughness:.02});materials.push(material);for(let i=0;i<12;i++){const mesh=new G.Mesh(geometry,material);mesh.position.set((i%4)*2-3,Math.floor(i/4)*2-2,0);scene.add(mesh);meshes.push(mesh);}
    }
-   world.prepare(scene,true,null,true,true,false,true);world.commit();for(let i=0;i<meshes.length;i++){meshes[i].position.x+=20+i*.1;meshes[i].rotation.set(.2,.4,.1);meshes[i].scale.set(i%2?-1.2:1.3,.7,1.1);}
+   scene.scale.setScalar(worldScale);world.prepare(scene,true,null,true,true,false,true);world.commit();if(!currentTrace)for(let i=0;i<meshes.length;i++){meshes[i].position.x+=20+i*.1;meshes[i].rotation.set(.2,.4,.1);meshes[i].scale.set(i%2?-1.2:1.3,.7,1.1);}
    const packed=world.prepare(scene,true,null,true,true,false,true);assert.ok(packed.previousGeometry.nodeCount>0);assert.equal(!!packed.geometryRecords[0],mode==='shared-instances');
    const old=packed.frameTriangles.map((t,id)=>({id,points:world.motion.get(t.sourceID),mask:mode==='masked'&&t.instanceID===meshes[1].uuid+':0'})),rays=[];
    const origins=mode==='masked'?[[-1,.13,4],[1,.13,4],[5,.13,4]]:meshes.map((mesh,i)=>[(i%4)*2-3+.17,Math.floor(i/4)*2-2+.13,5]);
-   for(const origin of origins)for(const [direction,maxDistance] of [[[0,0,-1],30],[[1e-9,0,-1],30],[[0,0,1],30],[[0,0,-1],.1]]){
+   for(const origin0 of origins)for(const [direction,range] of [[[0,0,-1],30],[[1e-9,0,-1],30],[[0,0,1],30],[[0,0,-1],.1]]){const origin=origin0.map(v=>v*worldScale),maxDistance=range*worldScale;
     const ray=new G.Ray(new G.Vector3(...origin),new G.Vector3(...direction).normalize());let closest=maxDistance,id=-1;
-    for(const t of old){const p=ray.intersectTriangle(...t.points.map(p=>new G.Vector3(...p)),false,new G.Vector3());if(!p||t.mask&&p.x<0)continue;const distance=p.distanceTo(ray.origin);if(distance>1e-5&&distance<closest){closest=distance;id=t.id;}}
+    for(const t of old){const p=ray.intersectTriangle(...t.points.map(p=>new G.Vector3(...p)),false,new G.Vector3());if(!p||t.mask&&p.x<0)continue;const distance=p.distanceTo(ray.origin);if(distance>1e-5*worldScale&&distance<closest){closest=distance;id=t.id;}}
     rays.push({origin,direction:ray.direction.toArray(),maxDistance,expected:[closest,id,id<0?0:1,1]});
    }
-   cases.push({mode,packet:{data:[...packed.data],width:packed.width,height:packed.height,rayInfo:packed.rayInfo,geometryInfo:[packed.width,packed.height,packed.nodeCount,packed.triangleOffset],geometryRecords:packed.geometryRecords,transport:[packed.materialsOffset,packed.transportVersion,0,32],pathFilter:[.8,0,1,packed.motionOffset],forward:[0,0,-1,0],geometryLimits:[4096,1e-5,packed.lightsOffset,packed.lightCount]},rays,storage:packed.previousGeometry});
+   cases.push({mode:worldScale===1?mode:mode+'-scale'+worldScale,worldScale,packet:{data:[...packed.data],width:packed.width,height:packed.height,rayInfo:packed.rayInfo,geometryInfo:[packed.width,packed.height,packed.nodeCount,packed.triangleOffset],geometryRecords:packed.geometryRecords,transport:[packed.materialsOffset,packed.transportVersion,0,32],pathFilter:[.8,0,1,packed.motionOffset],forward:[0,0,-1,0],geometryLimits:[4096,1e-5*worldScale,packed.lightsOffset,packed.lightCount]},rays,storage:packed.previousGeometry});
   }finally{world.dispose();geometry.dispose();for(const material of materials)material.dispose();texture?.dispose();}
  }
  return cases;

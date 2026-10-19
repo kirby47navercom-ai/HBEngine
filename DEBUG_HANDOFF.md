@@ -21,3 +21,6 @@
 -511–513 설치 C++ 캐시는 Versions 내부 41,414,504B를 만들던 경로에서 공용 Cache로 분리했어요. 512 첫 검사 실패는 Windows PowerShell 5의 `@(ConvertFrom-Json array)`가 후보 배열을 한 겹 더 감싸 실행 프로세스를 놓친 원인이에요. 직접 할당으로 고친 PhW61S는 최근32/참조/실행/퇴역/4프로세스80회 잠금 통과. 중간 pruner 문법 오류는 JS replace의 `$'` 치환 토큰이었고 callback 치환으로 원래 파일에 새 분기만 적용했어요. 실패 자료는 남기고 성공으로 계산하지 않아요. 513 5RrPeN 실제 GCC 실행113/첫miss→hit, 설치SHA 동일, 실패/취소 소스 정리, 컴파일 트리 취소, close 뒤 재사용, lease0 검증. 설치 업데이트는 아직 하지 않았고 명시적 밉 제작 연결을 이어가요.
 
 -515–524 작업 중: 밉4모드/4계열 GL·TSL·native 광선 연결. 최초520IeJr9r/52178enWC는 bias를 양의LOD에 더하던 잠정 규칙이었으며 최종 표준 동작 근거로 쓰지 않아요. 조사 SampleBias에 맞춰 clamp 이전 raw cone LOD에 bias를 적용하도록 바꿨어요. 상수 UV의 footprint0은 bias1에도 level0이어야 해요. 새 독립 검사에서 1m 평면을 2m로 가정한 span2600을1300으로 고쳤고, cube는 가장자리(-.875,.875,1)에 Y차분+.26을 더해 Y=1.135가 되어 +Z→+Y면을 넘어 coarse mip이 맞았어요. “밉0 유지” 정답이 틀린 검사였고 면 내부(.125,-.125,1)로 옮겨 재검증해요. GL/native 같은 실패 자료는 보존하며 런타임을 잘못된 정답에 맞추지 않아요.
+
+## 650 경계 상자 검사 진단
+현재 공유 메시 scale1e6 GL miss: 0 방향을1e-7로치환한 local slab이 실제 local direction1e-6의10% 옆으로이동. 정확0축분기후 GL수정. WebGPU초기후보는0픽셀/후속debug.compileAsync검사시간초과; 실제렌더링성과아님. 오프라인생성 native/build/box650.wgsl에서 vec2 hbRayBoxInterval 내부 assignment-arrow가 `return nodeVar1` scalar를생성한것을직접확인. 중괄호부수효과콜백으로고치고 실제GPU로반증예정. 같은debug.getShaderAsync 재컴파일루트반복금지; 기존실패JSON보존.

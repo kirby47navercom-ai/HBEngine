@@ -1,3 +1,4 @@
+import {rayTriangleGPU} from './ray-coordinate-basis-gpu.js';
 import * as T from 'three/tsl';import {gpuFn} from './gpu-function-scope.js';
 
 export function previousGeometryGPU(transport,u,ray){
@@ -9,8 +10,8 @@ export function previousGeometryGPU(transport,u,ray){
    for(const axis of ['x','y','z'])T.If(direction[axis].abs().lessThan(1e-30),()=>{T.If(origin[axis].lessThan(lower[axis]).or(origin[axis].greaterThan(upper[axis])),()=>{far.assign(-1);});}).Else(()=>{const a=lower[axis].sub(origin[axis]).div(direction[axis]),b=upper[axis].sub(origin[axis]).div(direction[axis]);near.assign(T.max(near,T.min(a,b)));far.assign(T.min(far,T.max(a,b)));});
    T.If(near.greaterThan(far),()=>{node.assign(lower.w);T.Continue();});
    T.Loop({start:0,end:T.int(upper.w).min(4),type:'int',name:'priorLeaf'},({priorLeaf:j})=>{
-    const candidate=ids.element(j),at=u.pathFilter.w.add(candidate.mul(3)),a=load(at).xyz,e1=load(at.add(1)).xyz,e2=load(at.add(2)).xyz,p=direction.cross(e2),det=e1.dot(p);
-    T.If(det.abs().greaterThan(1e-7),()=>{const s=origin.sub(a),q=s.cross(e1),x=s.dot(p).div(det),y=direction.dot(q).div(det),t=e2.dot(q).div(det);T.If(x.greaterThanEqual(0).and(y.greaterThanEqual(0)).and(x.add(y).lessThanEqual(1)).and(t.greaterThan(u.geometryLimits.y)).and(t.lessThan(closest)),()=>{const cutoff=ray.cutoff(candidate);T.If(cutoff.lessThanEqual(0).or(ray.field(candidate,origin.add(direction.mul(t)),direction.negate(),1,T.float(0),false,T.vec2(u.forward.w,1)).w.greaterThanEqual(cutoff)),()=>{closest.assign(t);id.assign(candidate);});});});
+    const candidate=ids.element(j),at=u.pathFilter.w.add(candidate.mul(3)),a=load(at).xyz,e1=load(at.add(1)).xyz,e2=load(at.add(2)).xyz,coordinates=rayTriangleGPU(e1,e2,origin.sub(a),direction).toVar();
+    T.If(coordinates.z.greaterThan(0),()=>{const x=coordinates.x,y=coordinates.y,t=coordinates.z;T.If(x.greaterThanEqual(0).and(y.greaterThanEqual(0)).and(x.add(y).lessThanEqual(1)).and(t.greaterThan(u.geometryLimits.y)).and(t.lessThan(closest)),()=>{const cutoff=ray.cutoff(candidate);T.If(cutoff.lessThanEqual(0).or(ray.field(candidate,origin.add(direction.mul(t)),direction.negate(),1,T.float(0),false,T.vec2(u.forward.w,1)).w.greaterThanEqual(cutoff)),()=>{closest.assign(t);id.assign(candidate);});});});
    });node.addAssign(1);
   });result.assign(T.vec4(closest,id,id.greaterThanEqual(0).select(1,0),node.greaterThanEqual(count).select(1,0)));});return result;
  }).setLayout({name:'hbPreviousGeometryTrace',type:'vec4',inputs:[{name:'origin',type:'vec3'},{name:'direction',type:'vec3'},{name:'distance',type:'float'}]});

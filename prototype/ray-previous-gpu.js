@@ -1,3 +1,4 @@
+import {rayFrameNormalGPU,rayCoordinatesGPU} from './ray-coordinate-basis-gpu.js';
 import {rayBarycentricOffsetNode} from './ray-barycentric-offset.js';
 import * as T from 'three/tsl';
 import {gpuFn} from './gpu-function-scope.js';
@@ -8,11 +9,11 @@ export function previousRayGPU(transport,u,{reuseTextures=true,fields=[3]}={}){
  const {load,ray}=transport,record=(id,slot)=>{
   const at=u.pathFilter.w.add(id.mul(3));
   if(slot<3)return T.vec4(load(at.add(slot)).xyz,0);
-  if(slot===3)return T.vec4(load(at.add(1)).xyz.cross(load(at.add(2)).xyz).normalize(),0);
+  if(slot===3)return T.vec4(rayFrameNormalGPU(load(at.add(1)).xyz,load(at.add(2)).xyz),0);
   return ray.record(id,slot);
  };
  const geometric=id=>record(id,3).xyz;
- const bary=gpuFn(([id,point])=>{const origin=record(id,0).xyz,e1=record(id,1).xyz,e2=record(id,2).xyz,delta=point.sub(origin),a=e1.dot(e1),b=e1.dot(e2),c=e2.dot(e2),d=delta.dot(e1),e=delta.dot(e2),den=a.mul(c).sub(b.mul(b)).max(1e-18),x=c.mul(d).sub(b.mul(e)).div(den),y=a.mul(e).sub(b.mul(d)).div(den);return T.vec3(T.float(1).sub(x).sub(y),x,y);}).setLayout({name:'hbPreviousBary',type:'vec3',inputs:[{name:'id',type:'float'},{name:'point',type:'vec3'}]});
+ const bary=gpuFn(([id,point])=>{const origin=record(id,0).xyz,e1=record(id,1).xyz,e2=record(id,2).xyz,delta=point.sub(origin),coordinates=rayCoordinatesGPU(e1,e2,delta);return T.vec3(T.float(1).sub(coordinates.x).sub(coordinates.y),coordinates);}).setLayout({name:'hbPreviousBary',type:'vec3',inputs:[{name:'id',type:'float'},{name:'point',type:'vec3'}]});
  const smoothOffset=gpuFn(([id,point,offset])=>{
   const face=geometric(id).toVar(),result=face.toVar(),at=ray.attributes(id).toVar();
   T.If(at.greaterThan(0),()=>{
