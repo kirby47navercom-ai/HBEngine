@@ -2184,11 +2184,11 @@
   ],
   "latestBatch": "605–613",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_602.json",
-    "sourceCommit": "22971e9a70ae66159097d56992d23ae93ed234fc",
-    "bundleHash": "e8daf676482871933f8a765a39d040c0071ba7caaeb9292333080c154176d971",
+    "receipt": "docs/research/USER_INSTALL_614.json",
+    "sourceCommit": "08f77526c9e4140a51a33ffafa2a9e0417e90bbc",
+    "bundleHash": "ecd3b4750e4e6711128e0d708e5169262b84bed77f2631c59fbf59d127a72da1",
     "verified": true,
     "versions": 1,
-    "scope": "602 전체3442파일/소유SHA/User전후읽기SHA/연결/Versions1·설치CPP602/관리캐시·실제2D/C++/BP/복잡준비/캡처/유휴"
+    "scope": "614 전체3448파일/소유SHA/User전후읽기SHA/연결/Versions1·설치BP/CPP/비동기Compute/프레임결과9/해제·HDRI96광원/캡처복구/프로브/2D"
   }
 }

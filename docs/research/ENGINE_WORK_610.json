@@ -105,9 +105,6 @@
     "tools/check-installed-retained-native-602.mjs": "b8de95ba4fb5d5aa0ca47be70d5446fb2dfca15ed5a70f5b6514d33b2dfac904",
     "native/include/HBEngine/SceneProbes.hpp": "29c49c6cdb0e64e6e3218a064032b7d706355062cee9cfb5bb3b8dfdcc2f0de7",
     "prototype/player.js": "57e24322b3ce77d184a73200bc60eb42ae1fb40e8ba7dfa00bffbfbe06322eb5",
-    "native/tests/compute-async-607.cpp": "df3d452255692a444af20556525c35dcb182f975caf4ca0d77923588774091f6",
-    "native/tests/compute-portable.cpp": "b84676c84a6400c0902bce86fe20e57b120431462336cc3eb44c2a35a841458f",
-    "native/tests/scene-probe-preparation-605.cpp": "0ebb68d5de1c4f51c0cf6c4d4e1cfeadb2b8a7aef02f0b30d4b29bc0f2954cc0",
     "tools/check-compute-async-607.mjs": "7264bcf551a4e20cfa5cccfe2d7357989f7da1c2a1f42a9e187656c3bb7203d7",
     "tools/check-compute-async-runtime-609.mjs": "ad4cfc7452278f84c372344818640cbe25b2b30aefc5ca125719533fede1f0ba",
     "tools/check-scene-probe-preparation-605.mjs": "0f7c23b322e2f3aa130523c0e2fd0a7c987cb942a2f97b97efbc8ffa609bcd07",
@@ -155,6 +152,21 @@
     {
       "path": "native/build/player612-result.json",
       "sha256": "5bcda71a6f6b88f83e8602d1899a34591359c63bd1eab7b59ee512ccf14bc514"
+    },
+    {
+      "path": "native/build/compute-async-runtime-609-GzdxpE/acceptance.json",
+      "sha256": "b06ae9e6ce8e810e8d50d93e8b340aa8e33b73623d1171a44739d26f90e6fe54",
+      "scope": "Owned BP BeginPlay/Tick/EndPlay calls reflected C++ wrappers around compileAsync/poll/take and3-frame GPU readback. No private draw loop or user project/profile;100ms worker gate only in fixture to observe pending. No FPS claim."
+    },
+    {
+      "path": "native/build/light-runtime-573-K4LN0q/acceptance.json",
+      "sha256": "f73607317eaa1c5e694a3bb2034b700e9876f69746c617fb7e42859276794161",
+      "scope": "Actual hidden packaged native player; ordinary HDRI and 96 lights, runtime C++ culling/sky/material/transform edits, tiled/all-light pixel parity and shadow invalidation. No user source/profile or sustained FPS test."
+    },
+    {
+      "path": "native/build/probe-readiness-559-Ok26uU/acceptance.json",
+      "sha256": "7436a32e46897992e3bbbea4b5b60f60b82f2ebdb2e4fe9a10428ad1e6d4ad8a",
+      "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass."
     }
   ],
   "changes": [
@@ -190,6 +202,12 @@
     "Large HDRI/probe GPU filtering/capture budgets and other device resources",
     "Global GL/FXC preparation cost, previous curved/rough/participating-medium footprints and cumulative engine goals"
   ],
-  "installationPending": true,
-  "scope": "605-613 actual D3D SDK/two devices/process modes, BP to CPP to GPU, HDRI96lights/probe/2D games. No full engine/analysis/FPS/phone claim."
+  "installationPending": false,
+  "scope": "605-613 actual D3D SDK/two devices/process modes, BP to CPP to GPU, HDRI96lights/probe/2D games. No full engine/analysis/FPS/phone claim.",
+  "testSourceHashes": {
+    "native/tests/compute-async-607.cpp": "df3d452255692a444af20556525c35dcb182f975caf4ca0d77923588774091f6",
+    "native/tests/compute-portable.cpp": "b84676c84a6400c0902bce86fe20e57b120431462336cc3eb44c2a35a841458f",
+    "native/tests/scene-probe-preparation-605.cpp": "0ebb68d5de1c4f51c0cf6c4d4e1cfeadb2b8a7aef02f0b30d4b29bc0f2954cc0"
+  },
+  "installationReceipt": "docs/research/USER_INSTALL_614.json"
 }

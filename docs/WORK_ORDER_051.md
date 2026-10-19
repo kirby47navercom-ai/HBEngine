@@ -674,3 +674,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 
 ### 605–613 · 프로브·C++ 비동기 Compute·캡처
 프로브4단계 준비/소유채택/보류 이력, compileAsync/poll/take/cancel과 단일큐 종료순서·키 경계를 연결했어요.607 최종 cold3write→warm3hit0write·캐시거부/3프레임/IO0/exit-active/비지원,605 IBL동일·4거부복구,609 BP→CPP→GPU 결과9/배치/EndPlay,Android두타깃구문·기존577/489 통과.559 실제프로브/2D 통과.573 HDRI복구의 임시 캡처 회귀를 기본capture 준비대기/재그림으로 고쳐 최종nDtB97 초기/복구131/168/203·96광원·그림자/CPP 통과. 중간 문법 오류/잘못된fixture는 ENGINE_WORK610에 분리했어요.611/612 빌드완료, 설치614 검증을 이어가요.
+
+614 설치 ecd3b4750e4e6711/3448전체명세·소유SHA·User10385전후읽기SHA·연결/Versions1 통과. 설치SDK BP→CPP→비동기Compute/세프레임결과9/배치/EndPlay와 설치packager/player HDRI96광원·캡처복구131/168/203·프로브/2D/C++/BP·해제를 확인했어요. 이전설치180150792B·소유검사exe8075543B 정리, nativeCache291018700B/lease0·계획650705B. 이전 머테리얼/노멀/밉 문맥과 남은 렌더링·엔진 누적 목표를 계속해요.

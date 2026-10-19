@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "08f77526c9e4140a51a33ffafa2a9e0417e90bbc",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ecd3b4750e4e6711",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\ecd3b4750e4e6711\\HBEngine.exe",
+  "bundleHash": "ecd3b4750e4e6711128e0d708e5169262b84bed77f2631c59fbf59d127a72da1",
+  "files": 3448,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "08f77526c9e4140a51a33ffafa2a9e0417e90bbc",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ecd3b4750e4e6711",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\ecd3b4750e4e6711\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\ecd3b4750e4e6711\\HBEngine.exe",
+    "bundleHash": "ecd3b4750e4e6711128e0d708e5169262b84bed77f2631c59fbf59d127a72da1",
+    "files": 3448,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3443,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e8daf67648287193",
+          "bytes": 180150792,
+          "manifestSHA256": "8689ecf6abfbba5f265e86b45b2c07f266acc30cea88cc2ad03c9a17b05db7f1"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-19T00:14:47.1693054Z",
+      "bytes": 180150792,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "ecd3b4750e4e6711"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "nativePlayerSHA256": "619b38c5e61c7093ac85101f869c409bb3ed182f9b7212c59bb46b9ef28e9fda",
+    "installedGates": [
+      {
+        "path": "native/build/compute-async-runtime-609-GzdxpE/acceptance.json",
+        "sha256": "b06ae9e6ce8e810e8d50d93e8b340aa8e33b73623d1171a44739d26f90e6fe54",
+        "scope": "Owned BP BeginPlay/Tick/EndPlay calls reflected C++ wrappers around compileAsync/poll/take and3-frame GPU readback. No private draw loop or user project/profile;100ms worker gate only in fixture to observe pending. No FPS claim."
+      },
+      {
+        "path": "native/build/light-runtime-573-K4LN0q/acceptance.json",
+        "sha256": "f73607317eaa1c5e694a3bb2034b700e9876f69746c617fb7e42859276794161",
+        "scope": "Actual hidden packaged native player; ordinary HDRI and 96 lights, runtime C++ culling/sky/material/transform edits, tiled/all-light pixel parity and shadow invalidation. No user source/profile or sustained FPS test."
+      },
+      {
+        "path": "native/build/probe-readiness-559-Ok26uU/acceptance.json",
+        "sha256": "7436a32e46897992e3bbbea4b5b60f60b82f2ebdb2e4fe9a10428ad1e6d4ad8a",
+        "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass."
+      }
+    ],
+    "manifestVerifiedFiles": 3448,
+    "runtimeOwnersVerified": 99,
+    "repositoryOnlyTestSourcesVerified": 3,
+    "versions": [
+      "ecd3b4750e4e6711"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-614-before.json",
+      "scope": "Read-only SHA inventories; never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "path": "native/build/scene-probe-preparation-605-mClpWq/acceptance.json",
+        "sha256": "b554db3daf689684c0a922678c8b43114887a15d6074feb62468c9a239a1a638"
+      },
+      {
+        "path": "native/build/compute-async-607-hhNe2J/acceptance.json",
+        "sha256": "9a5fe86a9d35352737a326b2fe7a2df1fbb0313d84b1e93bbea2a65959b2a3b2"
+      },
+      {
+        "path": "native/build/compute-async-runtime-609-sAX2N9/acceptance.json",
+        "sha256": "97d9094520a682d79005fb9e88ad2224a636414675e399092fd17c7aa7edc0ee"
+      },
+      {
+        "path": "native/build/compute-portable-609.json",
+        "sha256": "050bf1d2b07cb6021cd39582ad3f50245a3551efbda9d758c1a201414c05e3ed"
+      },
+      {
+        "path": "native/build/compute-cache-577-JM75bd/acceptance.json",
+        "sha256": "6035c46df6a2f9c74acb6e7537fc270f8ed5da63940d55e075e855f3dec0b51c"
+      },
+      {
+        "path": "native/build/shader-preparation-489-XKOe8v/acceptance.json",
+        "sha256": "0f3131221d5d59d860146217d8e7d94b74d88a23315556f7708259f4ac865f17"
+      },
+      {
+        "path": "native/build/probe-readiness-559-wNSEMy/acceptance.json",
+        "sha256": "5fe6569b700fa6562cee64dedddcd2269e7c6cd4f9d06936ca826f65cb499a34"
+      },
+      {
+        "path": "native/build/light-runtime-573-nDtB97/acceptance.json",
+        "sha256": "664aa4f1ea9b41db2685b6e9377f4d67838a3df3444b0558da813c2eee74b2bc"
+      },
+      {
+        "path": "native/build/build611-result.json",
+        "sha256": "502e2f40d5bdceb4f67309325de02a8cf455456b3a8d67483413d8a1c8b6b769"
+      },
+      {
+        "path": "native/build/player612-result.json",
+        "sha256": "5bcda71a6f6b88f83e8602d1899a34591359c63bd1eab7b59ee512ccf14bc514"
+      }
+    ],
+    "sourceGameGates": [
+      "native/build/probe-readiness-559-wNSEMy/acceptance.json",
+      "native/build/light-runtime-573-nDtB97/acceptance.json"
+    ],
+    "verificationRecovery": {
+      "initialFailure": "native/build/user-install-614-initial-verifier-failure.json",
+      "sameInstallation": true,
+      "runtimeGatesReused": true,
+      "sourceOnlyTestClassification": true
+    },
+    "scope": "614 전체명세/런타임소유SHA·설치 BP/CPP/비동기Compute/프레임결과/해제·HDRI96광원/캡처복구/프로브/2D·User읽기SHA/연결/Versions1. 전체엔진/FPS 완료 주장이 아니에요."
+  },
+  "nativeCache": {
+    "bytes": 291018700,
+    "files": 627,
+    "leases": 0
+  },
+  "dependencyPlans": {
+    "bytes": 650705,
+    "files": 1
+  },
+  "removedTestExecutables": [
+    {
+      "path": "native/build/scene-probe-preparation-605-uxjPLs/probe.exe",
+      "bytes": 2243241,
+      "sha256": "889e2005aad618b066128b44b70832f317aa726c185890597d5f4c7162deb7ac"
+    },
+    {
+      "path": "native/build/scene-probe-preparation-605-mClpWq/probe.exe",
+      "bytes": 2243271,
+      "sha256": "b50521e7d59d0268378ae410722919f00e2aac1a40c3b596612737510fa15bd8"
+    },
+    {
+      "path": "native/build/compute-async-607-U4imU4/hardware.exe",
+      "bytes": 583601,
+      "sha256": "46d99a548535d4b2488c098a51dfce4fcd9d5aedc4d5be6fcfbd66498ba5c5e4"
+    },
+    {
+      "path": "native/build/compute-async-607-U4imU4/unavailable.exe",
+      "bytes": 348598,
+      "sha256": "595f89a7b3403bb7b0f167b3de21316f65788024e82e6dcbbe5f1c028e5e8f01"
+    },
+    {
+      "path": "native/build/compute-async-607-hhNe2J/hardware.exe",
+      "bytes": 585951,
+      "sha256": "0f493c81f1fefb37f66f7274140a0ce823a1dd1812e2863c3c83d3839a72f01b"
+    },
+    {
+      "path": "native/build/compute-async-607-hhNe2J/unavailable.exe",
+      "bytes": 348598,
+      "sha256": "168cd745dd0ffaaa182d57995d42c2bf9f65faec3e2d25d6411d821811075f10"
+    },
+    {
+      "path": "native/build/compute-cache-577-JM75bd/hardware.exe",
+      "bytes": 499334,
+      "sha256": "a96de98d6e06683138e2456733e3abf0319350880bc2cec65dbfbf4ecf9e3a31"
+    },
+    {
+      "path": "native/build/compute-cache-577-JM75bd/unavailable.exe",
+      "bytes": 143011,
+      "sha256": "c61196b75e2c1bf3430a04418ea4d64b036f4a92fda4890ffaa2c002f30cfe25"
+    },
+    {
+      "path": "native/build/shader-preparation-489-XKOe8v/baseline.exe",
+      "bytes": 504927,
+      "sha256": "a730c1767ddb65bb43c6efcd2a9dfa481716b6ab4b41b88c4598c9abe3da3d97"
+    },
+    {
+      "path": "native/build/shader-preparation-489-XKOe8v/probe.exe",
+      "bytes": 575011,
+      "sha256": "5a9e5ef1fc09277aa211c61b779c1b7dd11905979d60d801399a2e9e5211f237"
+    }
+  ],
+  "scope": "614 전체명세/런타임소유SHA·설치 BP/CPP/비동기Compute/프레임결과/해제·HDRI96광원/캡처복구/프로브/2D·User읽기SHA/연결/Versions1. 전체엔진/FPS 완료 주장이 아니에요."
+}
