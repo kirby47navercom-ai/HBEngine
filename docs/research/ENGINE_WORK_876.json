@@ -413,6 +413,44 @@
       "path": "native/build/texture-demand-804-player-OAHTYl/acceptance.json",
       "sha256": "104c81c9a9855ae1094cfd5be6b748ca9effd6cc039f3f63299e0741d725ddb0",
       "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+    },
+    {
+      "path": "native/build/channel-layout-864-VZEKsm/acceptance.json",
+      "sha256": "0dbfdbbf577d85d17a13dc5299d9f1d391d4554f1f17ed07fdbfeda9ed07261f",
+      "scope": "Actual GL/WebGPU four fixed channels versus legacy dynamic layouts, changed atlas selector literals and mutable vector values, authored selector/key change; original4e-5, GL program identity only. Normal/UV differential and native execution are separate gates.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/channel-normal-866-oxGaJv/acceptance.json",
+      "sha256": "efab0e3b1237c36e4198c034dc9cb12d4f5bed7fb2365b2c10aad76f63db1262",
+      "scope": "Actual GL/WebGPU authored xyzw split/combine identity inside moving Time/world normal and independent coat graph: legacy dynamic metadata versus fixed channels, three footprint modes/current/committed/mip widths, original analytical4e-5. No whole optical-history or FPS completion claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/guide-game-781-q43Lub/acceptance.json",
+      "sha256": "ca79e53b24441ed89cbbb316f74f57058c7c468f70a1b7bdd0f521241514fb43",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-ivHDSn/acceptance.json",
+      "sha256": "c7d7a002d9370c356d1b0187c90c3c773193544ddca093164b26f47dad965c36",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -425,6 +463,26 @@
       "path": "native/build/texture-demand-804-player-OAHTYl/acceptance.json",
       "sha256": "104c81c9a9855ae1094cfd5be6b748ca9effd6cc039f3f63299e0741d725ddb0",
       "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+    },
+    {
+      "path": "native/build/guide-game-781-q43Lub/acceptance.json",
+      "sha256": "ca79e53b24441ed89cbbb316f74f57058c7c468f70a1b7bdd0f521241514fb43",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-ivHDSn/acceptance.json",
+      "sha256": "c7d7a002d9370c356d1b0187c90c3c773193544ddca093164b26f47dad965c36",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0\\HBEngine.exe"
+      ]
     }
   ],
   "nativePlayerSHA256": "fb47ad7fafdc6bd5d0115c18245116803c6f61357697843d77b77efdc1421fc1",
@@ -468,8 +526,8 @@
     "wholeComplex141Claim": false,
     "syntheticReverseOrderFXCResolved": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_861.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_878.json",
   "remaining": [
     "전역 곡면 역해",
     "거친 복합 로브/참여 매질 산란의 정밀 확장",
@@ -492,5 +550,6 @@
     "거리장 AO의 전역 클립맵·타일 후보/다중 해상도·시간 신뢰도·방향별 하늘/bent normal·지형/변형체·마스크/투명·쿠킹 캐시와 큰/얇은 일반 모델의 정밀도",
     "합성 HLSL에서 이전 IOR→현재 RGB seed 역순 호출의 FXC 최적화 불일치 원인·일반 해법: 실제 guide 순서/독립/Od 대조와 구분"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_878.json"
 }

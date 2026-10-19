@@ -2528,11 +2528,11 @@
     "scope": "고정 채널·현재이전 차분·제작 UV 밉 수요·실제 게임"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_861.json",
-    "sourceCommit": "831053952899ac9f0b3b359a1cceafeb5dea719c",
-    "bundleHash": "813ffe31de9045543c580c36b7803f464215d4461316e9586318bfe31bbbb63b",
+    "receipt": "docs/research/USER_INSTALL_878.json",
+    "sourceCommit": "f10af28f911297a0ff7d222833893952b96d7afd",
+    "bundleHash": "4f2e4bd66cd7c5b0ddb74fb8c7882b14636733db3706514cf67da0fd2d807799",
     "verified": true,
     "versions": 1,
-    "scope": "861 전체3642파일/321소유SHA/9CPP·현재이전노멀/경계/가림·SDK CPP/BP GL/D3D게임·User읽기SHA/연결/Versions1"
+    "scope": "878 전체3654파일/332소유SHA/9CPP·고정/기존채널/현재이전노멀·SDK CPP/BP Split UV GL/D3D게임·User읽기SHA/연결/Versions1"
   }
 }

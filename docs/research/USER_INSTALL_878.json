@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "f10af28f911297a0ff7d222833893952b96d7afd",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0\\HBEngine.exe",
+  "bundleHash": "4f2e4bd66cd7c5b0ddb74fb8c7882b14636733db3706514cf67da0fd2d807799",
+  "files": 3654,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3643,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554",
+        "bytes": 182144675,
+        "manifestSHA256": "13cd10b6bb57e97cde8de8faa29156913650bafa39702b8143518e53f350626f"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-19T11:49:25.2264025Z",
+    "bytes": 182144675,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "4f2e4bd66cd7c5b0"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 332,
+  "repositoryOnlyTestSourcesVerified": 9,
+  "nativePlayerSHA256": "fb47ad7fafdc6bd5d0115c18245116803c6f61357697843d77b77efdc1421fc1",
+  "installedGates": [
+    {
+      "path": "native/build/channel-layout-864-VZEKsm/acceptance.json",
+      "sha256": "0dbfdbbf577d85d17a13dc5299d9f1d391d4554f1f17ed07fdbfeda9ed07261f",
+      "scope": "Actual GL/WebGPU four fixed channels versus legacy dynamic layouts, changed atlas selector literals and mutable vector values, authored selector/key change; original4e-5, GL program identity only. Normal/UV differential and native execution are separate gates.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/channel-normal-866-oxGaJv/acceptance.json",
+      "sha256": "efab0e3b1237c36e4198c034dc9cb12d4f5bed7fb2365b2c10aad76f63db1262",
+      "scope": "Actual GL/WebGPU authored xyzw split/combine identity inside moving Time/world normal and independent coat graph: legacy dynamic metadata versus fixed channels, three footprint modes/current/committed/mip widths, original analytical4e-5. No whole optical-history or FPS completion claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/guide-game-781-q43Lub/acceptance.json",
+      "sha256": "ca79e53b24441ed89cbbb316f74f57058c7c468f70a1b7bdd0f521241514fb43",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-ivHDSn/acceptance.json",
+      "sha256": "c7d7a002d9370c356d1b0187c90c3c773193544ddca093164b26f47dad965c36",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0\\HBEngine.exe"
+      ]
+    }
+  ],
+  "manifestVerifiedFiles": 3654,
+  "versions": [
+    "4f2e4bd66cd7c5b0"
+  ],
+  "profile": {
+    "filesBefore": 10385,
+    "filesAfter": 10385,
+    "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-878-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/channel-regressions-870.json",
+      "sha256": "4bcdeaf2e7ce5f130b7129ca07d54f59e7a475f559022de1541c825c0b3e3ceb"
+    },
+    {
+      "path": "native/build/channel-layout-864-QUO4eO/acceptance.json",
+      "sha256": "e8a3ecd6f2dd4173349a72b013f6be340e666b617ce75b997b6e90c20fd0ad17",
+      "scope": "Actual GL/WebGPU four fixed channels versus legacy dynamic layouts, changed atlas selector literals and mutable vector values, authored selector/key change; original4e-5, GL program identity only. Normal/UV differential and native execution are separate gates."
+    },
+    {
+      "path": "native/build/channel-layout-865-native-NZ0VO4/acceptance.json",
+      "sha256": "f3f4e25201fcbe4780df49cc40ad3aa929486c4c7cbea9f93eaa140dc17cb7d1",
+      "scope": "Actual generated D3D/HLSL current parser and compute output for four fixed channels/legacy dynamic selectors, mutable literals, selector key changes and strict invalid-metadata rejection. Original4e-5; standalone field proof, not a packaged game or full normal differential proof."
+    },
+    {
+      "path": "native/build/channel-normal-866-vf2aZy/acceptance.json",
+      "sha256": "efab0e3b1237c36e4198c034dc9cb12d4f5bed7fb2365b2c10aad76f63db1262",
+      "scope": "Actual GL/WebGPU authored xyzw split/combine identity inside moving Time/world normal and independent coat graph: legacy dynamic metadata versus fixed channels, three footprint modes/current/committed/mip widths, original analytical4e-5. No whole optical-history or FPS completion claim."
+    },
+    {
+      "path": "native/build/normal-footprint-739-native-ye9P4i/acceptance.json",
+      "sha256": "ea5b49a47ceaaba9598e2c474f0cf9c84f732f732ab7eb3b366b8631c6d8f942",
+      "scope": "Actual D3D11 generated finite normal cone: off/geometry/material, base/coat normals, scaled geometry and distinct committed/current clocks, views, widths; independent analytic reflection/Snell/equal-IOR answers, unchanged4e-5."
+    },
+    {
+      "path": "native/build/channel-preparation-867-ZlyEdK/acceptance.json",
+      "sha256": "55a294766e003f2c07235fd90f8ff836dd21d746d7424f1413b632cec1ef04e9",
+      "scope": "Actual GL ABBA legacy dynamic channel metadata versus fixed authored xyzw pins, newly-authored moving world/Time/normal split-combine graph. Driver dynamic vec4 selectors compared; cache/load uncontrolled. Observed preparation only, not cold/FPS/Complex141 or all compilation completion."
+    },
+    {
+      "path": "native/build/channel-demand-868-ujBoCO/acceptance.json",
+      "sha256": "5e79e416fda25f9c37e6a6bfbaa37b3cc8f86ee16a801e4d69e98aab0196ccd9",
+      "scope": "CPU authored xyzw split/combine UV identity versus direct graph and independent signed tiling matrices/LOD answers, in-place scalar/vector edits and unchanged hint reuse; actual rendering/streaming is a separate packaged-game gate."
+    },
+    {
+      "path": "native/build/guide-game-781-A5L7V3/acceptance.json",
+      "sha256": "16b26b0a5a3234fc21632e340ef10e16f41c3599ce774459b904382705fcb6ad",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim."
+    },
+    {
+      "path": "native/build/texture-demand-804-player-OAHTYl/acceptance.json",
+      "sha256": "104c81c9a9855ae1094cfd5be6b748ca9effd6cc039f3f63299e0741d725ddb0",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/guide-game-781-A5L7V3/acceptance.json",
+      "sha256": "16b26b0a5a3234fc21632e340ef10e16f41c3599ce774459b904382705fcb6ad",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim."
+    },
+    {
+      "path": "native/build/texture-demand-804-player-OAHTYl/acceptance.json",
+      "sha256": "104c81c9a9855ae1094cfd5be6b748ca9effd6cc039f3f63299e0741d725ddb0",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+    }
+  ],
+  "scope": "878 manifest3654/runtime332/CPP9; installed18channel states/legacy and6normal differential conditions,real SDK CPP/BP UV Split/Combine GL/D3D games,read-onlyUser inventory,links,Versions1; cumulative work continues",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}
