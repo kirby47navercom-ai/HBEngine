@@ -2438,11 +2438,11 @@
     "scope": "GL 가이드 준비·이전 표면 이력 보존·첫 atlas 전송/장치 복구·실제 패키징 게임"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_773.json",
-    "sourceCommit": "e1e27b4a82d108038728896fdfcc397a2c79d2e4",
-    "bundleHash": "5f363c3a4bd985da20bb3022f807509e137b234d890d7806f6594bc73295b33b",
+    "receipt": "docs/research/USER_INSTALL_787.json",
+    "sourceCommit": "f3ba1fe42b921ce21c3a18e5709a11ac66576d83",
+    "bundleHash": "716790b7110b14dc5b592a9e405f92b970a28491ad614afd870043039ca5a418",
     "verified": true,
     "versions": 1,
-    "scope": "773 전체3571파일/251소유SHA/9C++·설치실제풀 UI/AI/Undo/Redo·SDK/C++/BP 네자료형 상주/부분갱신/래스터·경로/자동복귀·User읽기SHA/연결/Versions1"
+    "scope": "787 전체3585파일/266소유SHA/9C++·설치GLatlas/실제C++·블프게임·User읽기SHA/연결/Versions1"
   }
 }

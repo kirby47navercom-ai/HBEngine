@@ -346,6 +346,24 @@
       "path": "native/build/ray-atlas-785-8wUp5p/acceptance.json",
       "sha256": "a5f2aef103cb6f5747e181e4dfbca0ceb87bfdd673818d05074eb72b01128ad2",
       "scope": "Owned real GeometryGIWorld atlas with Time-only later-row CPU updates before initial GPU allocation. Unfixed control reproduces missing BVH row; actual Float32 GPU bytes equal CPU after full initialization, normal partial writes, dispose, sampler change, real lose/restore events and second renderer. Readback/FBO exist only in this test. No driver heap or FPS claim."
+    },
+    {
+      "path": "native/build/ray-atlas-785-C4DcTk/acceptance.json",
+      "sha256": "a5f2aef103cb6f5747e181e4dfbca0ceb87bfdd673818d05074eb72b01128ad2",
+      "scope": "Owned real GeometryGIWorld atlas with Time-only later-row CPU updates before initial GPU allocation. Unfixed control reproduces missing BVH row; actual Float32 GPU bytes equal CPU after full initialization, normal partial writes, dispose, sampler change, real lose/restore events and second renderer. Readback/FBO exist only in this test. No driver heap or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\716790b7110b14dc\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/guide-game-781-xR2sHW/acceptance.json",
+      "sha256": "ea8b0197f3215a785bbe2b6f80de9c406a20655779c1c13f263533f418d8ab50",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\716790b7110b14dc\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -392,8 +410,8 @@
     "newProductionGPUResources": 0,
     "wholeFPSClaim": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_773.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_787.json",
   "remaining": [
     "전역 곡면 역해",
     "거친 복합 로브/참여 매질 산란의 정밀 확장",
@@ -409,5 +427,6 @@
     "방향성 노멀 필터·화면 공간 기하 Specular AA·UV 경계 품질",
     "other cumulative engine goals and physical mobile/Mac-dependent validation"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_787.json"
 }

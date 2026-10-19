@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "f3ba1fe42b921ce21c3a18e5709a11ac66576d83",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\716790b7110b14dc",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\716790b7110b14dc\\HBEngine.exe",
+  "bundleHash": "716790b7110b14dc5b592a9e405f92b970a28491ad614afd870043039ca5a418",
+  "files": 3585,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "f3ba1fe42b921ce21c3a18e5709a11ac66576d83",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\716790b7110b14dc",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\716790b7110b14dc\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\716790b7110b14dc\\HBEngine.exe",
+    "bundleHash": "716790b7110b14dc5b592a9e405f92b970a28491ad614afd870043039ca5a418",
+    "files": 3585,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3572,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5f363c3a4bd985da",
+          "bytes": 181433986,
+          "manifestSHA256": "b98aa293b30f517681e7af0a8b46f216824fdfd3d938f5fbe990a93bf4d60201"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-19T08:05:52.4758375Z",
+      "bytes": 181433986,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "716790b7110b14dc"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "runtimeOwnersVerified": 266,
+    "repositoryOnlyTestSourcesVerified": 9,
+    "nativePlayerSHA256": "ea75010f1b6de7d655cdbb4e99c778fb915b180ff960dab96693563f6327173b",
+    "installedGates": [
+      {
+        "path": "native/build/ray-atlas-785-C4DcTk/acceptance.json",
+        "sha256": "a5f2aef103cb6f5747e181e4dfbca0ceb87bfdd673818d05074eb72b01128ad2",
+        "scope": "Owned real GeometryGIWorld atlas with Time-only later-row CPU updates before initial GPU allocation. Unfixed control reproduces missing BVH row; actual Float32 GPU bytes equal CPU after full initialization, normal partial writes, dispose, sampler change, real lose/restore events and second renderer. Readback/FBO exist only in this test. No driver heap or FPS claim.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\716790b7110b14dc\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/guide-game-781-xR2sHW/acceptance.json",
+        "sha256": "ea8b0197f3215a785bbe2b6f80de9c406a20655779c1c13f263533f418d8ab50",
+        "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\716790b7110b14dc\\HBEngine.exe"
+        ]
+      }
+    ],
+    "manifestVerifiedFiles": 3585,
+    "versions": [
+      "716790b7110b14dc"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-787-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "path": "native/build/ray-operands-776.json",
+        "sha256": "23f402a6bbb8a813ab4842eb31cc9142d3e715272a5bf7a5babe925fcb8392fa",
+        "scope": "Generated instruction locals only: preserve first load anchor, retain referenced value/meta/operands and outer locals used by derivatives; delete unreferenced main/axis aliases without arithmetic/register/mask changes. All existing operation emitters remain syntactically defined; actual GLSL pixels and shader preparation are separate gates."
+      },
+      {
+        "path": "native/build/guide-specular-778.json",
+        "sha256": "b594530b4e3cd28d0c474a5b6a923905b5c6962d4b05c14c167a15c4a593b6c6",
+        "scope": "Conservative current material constants and dynamic stored channel eligibility at exact base/coat guide thresholds; dynamic irrelevant channels do not force mirror paths. Scene prewarm+packed metadata update after material edits. Missing metadata uses general GLSL; refraction and arithmetic remain unchanged. Actual guide pixels/preparation separate."
+      },
+      {
+        "path": "native/build/guide-regressions-786.json",
+        "sha256": "0f306442d3849eb57232491e1708afe5a46307e2e2c7a60a26dcc0b9e3a190d3",
+        "scope": "Existing generated operands, guide eligibility, ray mip history and rendering/schema/generators; new GL helper lifecycle has separate actual GPU gate785 and packaged781."
+      },
+      {
+        "path": "native/build/invariant-preparation-725-CwM4iS/acceptance.json",
+        "sha256": "64ef5309fb8230ac1fd7499e4e0160fe32ad25a16a45cc75e5248fc89adaeb23",
+        "scope": "Single ABBA pre-change/current actual GL full path/normal/aux/filter preparation, same retained mip graph/private contexts. Driver cache and CPU load uncontrolled: observed times only, not cold-start/FPS or whole RND06 completion; independent pixels and packaged C++ gates separate."
+      },
+      {
+        "path": "native/build/matte-preparation-779-2ucwEU/acceptance.json",
+        "sha256": "1b66e8051ac9f702ff6131283ced465e31ece8245824669c12c1455e258c70d1",
+        "scope": "Actual GL ABBA general/conservatively no-mirror guide on the same freshly authored large normal/UV graph with proven matte material metadata. Driver cache/load uncontrolled; observed preparation only, not mirror-heavy Complex141, cold-start/FPS or all RND06 completion. Pixel equivalence separate."
+      },
+      {
+        "path": "native/build/matte-guide-780-AITpsV/acceptance.json",
+        "sha256": "ec15ff1c1337843a195ecb9d592c1bff601108ee38ed1e9867b4e9e02fa1c614",
+        "scope": "Actual full GL auxiliary guide general versus conservative no-mirror/opaque-tail specialization, with independent unchanged WebGPU controls. Matte, rough metal, Time-driven coat normal, refraction; lens off/on; three previous-clock A/B/A reads; all pixels/committed normal and surface rejection retained, original4e-5. No global optical inverse or cold-FPS claim."
+      },
+      {
+        "path": "native/build/guide-mode-782-FpHaVZ/acceptance.json",
+        "sha256": "c40040cfd468ff3c04df8a23685aede87adde9df38c6f2f6cd21c821927a18fd",
+        "scope": "Actual GL compiled path program identity/source/version retained across general→diffuse→general→diffuse guide-only invalidation; zero main material disposals, per-mode ready diagnostics. Existing guide targets recreated/reset conservatively; no new GPU buffers or FPS claim."
+      },
+      {
+        "path": "native/build/guide-game-781-l1k2U9/acceptance.json",
+        "sha256": "594f613b9b4eb7d8ebe7d9331e23433b0d8ce235fc12fc2ec5e92450e6f417a4",
+        "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim."
+      },
+      {
+        "path": "native/build/ray-atlas-785-8wUp5p/acceptance.json",
+        "sha256": "a5f2aef103cb6f5747e181e4dfbca0ceb87bfdd673818d05074eb72b01128ad2",
+        "scope": "Owned real GeometryGIWorld atlas with Time-only later-row CPU updates before initial GPU allocation. Unfixed control reproduces missing BVH row; actual Float32 GPU bytes equal CPU after full initialization, normal partial writes, dispose, sampler change, real lose/restore events and second renderer. Readback/FBO exist only in this test. No driver heap or FPS claim."
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/guide-game-781-l1k2U9/acceptance.json",
+        "sha256": "594f613b9b4eb7d8ebe7d9331e23433b0d8ce235fc12fc2ec5e92450e6f417a4",
+        "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim."
+      }
+    ],
+    "scope": "787 전체 명세/266소유SHA·실제 GLatlas 전체Float32/장치복구/후속행전송·설치SDK C++/BP 6상태/원시경로/CPU-GPU일치/화면·User읽기SHA/연결/Versions1. 누적 작업 계속."
+  },
+  "nativeCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "3585전체명세/266소유SHA/9저장소전용C++·실제 GLatlas 전체Float32/컨텍스트복구/후속행전송·설치SDK C++/블프6상태/원시경로/CPU-GPU일치/가시화면·User읽기전후SHA/연결/Versions1. 누적 구현 계속."
+}
