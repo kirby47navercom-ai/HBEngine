@@ -2481,11 +2481,11 @@
     "scope": "공유 메시 거리장 AO의 세 렌더러·제작·SDK 실행 연결"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_808.json",
-    "sourceCommit": "87ff6c6f07cafa4ef5ab1d4b2b6092707976c854",
-    "bundleHash": "dba5a88a0535ea832df0a408408a9413f727b27d33fb1b37c53de4884c28f3d3",
+    "receipt": "docs/research/USER_INSTALL_827.json",
+    "sourceCommit": "48e203234f4a1fb8dcb3b0373d09b7432c5ea25f",
+    "bundleHash": "4c2f71c37d2e13f91612553f7c85661ba96edbfe7266811ad2bfab6a31bf03d0",
     "verified": true,
     "versions": 1,
-    "scope": "808 전체3606파일/283소유SHA/9C++·설치GL/GPU그래프·HTTP풀취소·C++블프 D3DUV/경로·User읽기SHA/연결/Versions1"
+    "scope": "827 전체3623파일/304소유SHA/9C++·거리장GL/GPU/제작/SDK게임·이전UV래스터/경로·User읽기SHA/연결/Versions1"
   }
 }

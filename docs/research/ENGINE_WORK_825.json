@@ -382,6 +382,42 @@
       "path": "native/build/normal-footprint-738-ngF0fZ/acceptance.json",
       "sha256": "b64b0820f626b1a8cae844e2a367cb944a39a7995568a4304014a87df1925fd5",
       "scope": "Actual GL/TSL finite normal envelope, three modes, independent analytic reflection/Snell/equal-IOR answers, smooth-geometry scale change and base/coat procedural normal world-position/time changes; committed old frame/time/width independent from current. Existing4e-5 unchanged; native and full renderer integration are separate gates."
+    },
+    {
+      "path": "native/build/distance-field-render-817-jMkoka/acceptance.json",
+      "sha256": "bcf8478a4f5bc72631b3896ac07d2e5f54131f0726914a12bc58e09cc73b45b7",
+      "scope": "Actual production GL/WebGPU screen effects/MRT/lighting/post volumes: offscreen mesh AO darkens ambient only, direct-light pixels unchanged, no duplicate post AO, rigid volume CPU reuse, disabled resource release.32x32 correctness fixture, no production FPS or deforming-mesh claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c2f71c37d2e13f9\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-editor-822-DJktR2/acceptance.json",
+      "sha256": "3fe2233fe7e54378a5be62af235f0079bec930525c46fa9167fb3da0c89c763f",
+      "scope": "Actual hidden owned editor: human AO mode select reveals compact distance-field options, resolution edit/Undo/Redo, same document CAS budget patch, stale revision rejected, saved file and discoverable immutable API contract. No user profiles/projects used.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c2f71c37d2e13f9\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-818-player-Wu5jwp/acceptance.json",
+      "sha256": "da90508d051acec036b7e8b50ca58fdd63320870c53a4e461798c98d0de0da06",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c2f71c37d2e13f9\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-PWJpof/acceptance.json",
+      "sha256": "5988e474b4bf3ce844024438e5897aa43de68cfa984fc144899357b4c74ddabf",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c2f71c37d2e13f9\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -440,8 +476,8 @@
     "wholeGPUMemoryClaim": false,
     "clipmapOrTemporalConfidenceImplemented": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_808.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_827.json",
   "remaining": [
     "전역 곡면 역해",
     "거친 복합 로브/참여 매질 산란의 정밀 확장",
@@ -462,5 +498,6 @@
     "큰 베이크의 분할 바이너리 저장/종속 캐시·실제 cloud 기하 베이크 캡처·HDRI 저표본 분산 추가 절감(탐색4배목표미달)·머테리얼/카메라/이방성 베이크 footprint",
     "all other canonical ENGINE_STATUS items remain authoritative"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_827.json"
 }

@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "48e203234f4a1fb8dcb3b0373d09b7432c5ea25f",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4c2f71c37d2e13f9",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\4c2f71c37d2e13f9\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\4c2f71c37d2e13f9\\HBEngine.exe",
+  "bundleHash": "4c2f71c37d2e13f91612553f7c85661ba96edbfe7266811ad2bfab6a31bf03d0",
+  "files": 3623,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3607,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\dba5a88a0535ea83",
+        "bytes": 181785374,
+        "manifestSHA256": "7f1d3084955866abdba7ef5b2d67bda6b606eff6d98263fde220bd3ed34f2dca"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-19T10:07:39.5986960Z",
+    "bytes": 181785374,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "4c2f71c37d2e13f9"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 304,
+  "repositoryOnlyTestSourcesVerified": 9,
+  "nativePlayerSHA256": "180b28d1258e6dc6dfe88055a4d5438e058483d8139ab26c93e8445f6e8fa3d6",
+  "installedGates": [
+    {
+      "path": "native/build/distance-field-render-817-jMkoka/acceptance.json",
+      "sha256": "bcf8478a4f5bc72631b3896ac07d2e5f54131f0726914a12bc58e09cc73b45b7",
+      "scope": "Actual production GL/WebGPU screen effects/MRT/lighting/post volumes: offscreen mesh AO darkens ambient only, direct-light pixels unchanged, no duplicate post AO, rigid volume CPU reuse, disabled resource release.32x32 correctness fixture, no production FPS or deforming-mesh claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c2f71c37d2e13f9\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-editor-822-DJktR2/acceptance.json",
+      "sha256": "3fe2233fe7e54378a5be62af235f0079bec930525c46fa9167fb3da0c89c763f",
+      "scope": "Actual hidden owned editor: human AO mode select reveals compact distance-field options, resolution edit/Undo/Redo, same document CAS budget patch, stale revision rejected, saved file and discoverable immutable API contract. No user profiles/projects used.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c2f71c37d2e13f9\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-818-player-Wu5jwp/acceptance.json",
+      "sha256": "da90508d051acec036b7e8b50ca58fdd63320870c53a4e461798c98d0de0da06",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c2f71c37d2e13f9\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-PWJpof/acceptance.json",
+      "sha256": "5988e474b4bf3ce844024438e5897aa43de68cfa984fc144899357b4c74ddabf",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c2f71c37d2e13f9\\HBEngine.exe"
+      ]
+    }
+  ],
+  "manifestVerifiedFiles": 3623,
+  "versions": [
+    "4c2f71c37d2e13f9"
+  ],
+  "profile": {
+    "filesBefore": 10385,
+    "filesAfter": 10385,
+    "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-827-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/mesh-distance-field-810.json",
+      "sha256": "2d81707589612a7669074e545c3b11f4aeab07cc750ba5530cc44c957cec90ec",
+      "scope": "CPU distance-field foundation: exact mesh distance versus analytical box and cavity/orientation/open fixtures; trilinear volume error at200interior points and allocation/abort guards. No renderer/AO/worker/UI integration yet, not an implemented DFAO feature."
+    },
+    {
+      "path": "native/build/mesh-distance-field-atlas-813.json",
+      "sha256": "7c98a7c01ec2a6d5be4a83cf2299cfe177a073b08a12c4ea49acb8e659d50b94",
+      "scope": "CPU packed mesh distance-field atlas versus independent per-object inverse-transform/volume evaluator. Shared scalar volume, rotated/mirrored/nonuniform rigid transforms, static reuse, moving-prefix-only CPU writes, resource-budget rejection, empty/dispose. GPU/rendering/AO not yet covered."
+    },
+    {
+      "path": "native/build/distance-field-regressions-824.json",
+      "sha256": "415095dca1120cfeca15326074ea432f1a9f65b8179ca3be03018806abd32f43",
+      "scope": "Targeted CPU/TSL-build/post volume/rigid history/material and prior mip regressions; separate actual GL/GPU/D3D/UI gates carry execution claims."
+    },
+    {
+      "path": "native/build/distance-field-worker-812-791iOh/acceptance.json",
+      "sha256": "b06876e950ae88a42d7bc135206f371b2038a3a77f3f61ae3503037fb385ce82",
+      "scope": "Actual hidden worker: queued source preserved, active transferred geometry cancelled, following closed-mesh volume byte-identical to CPU oracle, callback failure isolated, invalid partial transfer/settings rejected, idle worker/input0. Distance-field generation foundation only; no GPU/AO/UI integration claim."
+    },
+    {
+      "path": "native/build/distance-field-gpu-814-Jb6Qhz/acceptance.json",
+      "sha256": "4f0a345b1a8f66ff3a62515fece4e714cdb4a2400336420ddf34d262a92db49a",
+      "scope": "Actual GL/WebGPU packed scalar field/BVH queries vs CPU per-point4e-5; hemisphere cone visibility offscreen occluder and empty-space controls; real worker/shared geometry/rigid move/removal/dispose. This does not prove integrated renderer/UI/packaged D3D yet."
+    },
+    {
+      "path": "native/build/distance-field-render-817-6nCJIa/acceptance.json",
+      "sha256": "bcf8478a4f5bc72631b3896ac07d2e5f54131f0726914a12bc58e09cc73b45b7",
+      "scope": "Actual production GL/WebGPU screen effects/MRT/lighting/post volumes: offscreen mesh AO darkens ambient only, direct-light pixels unchanged, no duplicate post AO, rigid volume CPU reuse, disabled resource release.32x32 correctness fixture, no production FPS or deforming-mesh claim."
+    },
+    {
+      "path": "native/build/distance-field-818-player-xdRINL/acceptance.json",
+      "sha256": "b3c775e905af1dc3d559e4cd475be875d9f5af3c70ec4351b83aba1ad7cb730f",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim."
+    },
+    {
+      "path": "native/build/distance-field-editor-822-rgiOmE/acceptance.json",
+      "sha256": "11423212e1c16ee8695be67e4de674796404fa2a6e057dc118d7ef414b256191",
+      "scope": "Actual hidden owned editor: human AO mode select reveals compact distance-field options, resolution edit/Undo/Redo, same document CAS budget patch, stale revision rejected, saved file and discoverable immutable API contract. No user profiles/projects used."
+    },
+    {
+      "path": "native/build/normal-footprint-738-ngF0fZ/acceptance.json",
+      "sha256": "b64b0820f626b1a8cae844e2a367cb944a39a7995568a4304014a87df1925fd5",
+      "scope": "Actual GL/TSL finite normal envelope, three modes, independent analytic reflection/Snell/equal-IOR answers, smooth-geometry scale change and base/coat procedural normal world-position/time changes; committed old frame/time/width independent from current. Existing4e-5 unchanged; native and full renderer integration are separate gates."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/distance-field-818-player-xdRINL/acceptance.json",
+      "sha256": "b3c775e905af1dc3d559e4cd475be875d9f5af3c70ec4351b83aba1ad7cb730f",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim."
+    }
+  ],
+  "scope": "827 source/installed all manifest hashes,304 runtime owners/9C++ tests, actualGL/WebGPU SDF ambient-only/disable, humanUI+CAS+Undo/save, installedSDK C++/Blueprint D3D SDF plus prior UV streaming raster/path oracle, read-only User inventory,links/Versions1",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}
