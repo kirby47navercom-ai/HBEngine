@@ -382,6 +382,60 @@
       "path": "native/build/distance-field-lifecycle-837-rHbkWh/acceptance.json",
       "sha256": "1f52c586a010867106a0294aa19e65aa6248be5c559d0ca19fcb0795f5101fe5",
       "scope": "Actual worker/scene lifecycle at64 resolution: insufficient1MB budget reports general-field failure while exact box remains available; raising2MB rebakes complete general1MiB volume+box; lowering clears prior decoded field; removal/idle worker and input0. No rendering/FPS claim in this gate."
+    },
+    {
+      "path": "native/build/distance-field-render-831-cyXre8/acceptance.json",
+      "sha256": "6f54002fb5a1b2d59830362ed0c8d5247e55500738e5ae736efc7476c425c68d",
+      "scope": "Actual production GL/WebGPU 2000x2000 rectangle and box exact distance/MRT/lighting/post volumes: offscreen mesh AO darkens ambient only, direct-light pixels unchanged, no duplicate post AO, rigid volume CPU reuse, disabled resource release.352B atlas/0 scalar volume and32x32 correctness fixture, no production FPS or deforming-mesh claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-gpu-814-XQpbqL/acceptance.json",
+      "sha256": "e1e2c78aad725d61e3921955515f3c3aa23adc4bf2d87de8e9e7b9fc4a8222d4",
+      "scope": "Actual GL/WebGPU mixed exact box and general sphere-volume/BVH queries vs CPU per-point4e-5; hemisphere cone visibility offscreen occluder and empty-space controls; real worker/shared geometry/rigid move/removal/dispose. This does not prove integrated renderer/UI/packaged D3D yet.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-lifecycle-837-DaNa1S/acceptance.json",
+      "sha256": "ac98e4ff8d64474da4290bde1f530f4c8e3421d7e0aae63eae81e732f24b7da5",
+      "scope": "Actual worker/scene lifecycle at64 resolution: insufficient1MB budget reports general-field failure while exact box remains available; raising2MB rebakes complete general1MiB volume+box; lowering clears prior decoded field; removal/idle worker and input0. No rendering/FPS claim in this gate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-editor-822-m1duvB/acceptance.json",
+      "sha256": "bfc60df5dbdc21962f794a07b35da15b57b16ca9914d5d5d81e6f9052de0ea84",
+      "scope": "Actual hidden owned editor: human AO mode select reveals compact distance-field options, resolution edit/Undo/Redo, same document CAS budget patch, stale revision rejected, saved file and discoverable immutable API contract. No user profiles/projects used.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-818-player-FGXKWN/acceptance.json",
+      "sha256": "23cd3f37911bb22f1d53b82f8e49506a91eb6fba48eaf11252806ae97e6517fa",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-LH4RTt/acceptance.json",
+      "sha256": "3349c47b06e060beb2c4916cf44a9310d4579428341d3235f8fb2741ab640c09",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -446,10 +500,11 @@
       0
     ],
     "wholeFPSClaim": false,
-    "wholeGPUMemoryClaim": false
+    "wholeGPUMemoryClaim": false,
+    "installedMixedMaxQueryError": 5.110754193182743e-7
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_827.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_841.json",
   "remaining": [
     "전역 곡면 역해",
     "거친 복합 로브/참여 매질 산란의 정밀 확장",
@@ -475,5 +530,6 @@
     "큰 베이크의 분할 바이너리 저장/종속 캐시·실제 cloud 기하 베이크 캡처·HDRI 저표본 분산 추가 절감(탐색4배목표미달)·머테리얼/카메라/이방성 베이크 footprint",
     "all other canonical ENGINE_STATUS items remain authoritative"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_841.json"
 }

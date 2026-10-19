@@ -2490,11 +2490,11 @@
     "scope": "기본 도형 정확한 거리·큰 평면·혼합 볼륨·예산 증감·세 렌더러"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_827.json",
-    "sourceCommit": "48e203234f4a1fb8dcb3b0373d09b7432c5ea25f",
-    "bundleHash": "4c2f71c37d2e13f91612553f7c85661ba96edbfe7266811ad2bfab6a31bf03d0",
+    "receipt": "docs/research/USER_INSTALL_841.json",
+    "sourceCommit": "bda23c1ea5e202a05d637993bf23c99310d303d0",
+    "bundleHash": "7c51d901e64e2b0146bd014d9041057b9f030c183334ac1900965da59edca5b2",
     "verified": true,
     "versions": 1,
-    "scope": "827 전체3623파일/304소유SHA/9C++·거리장GL/GPU/제작/SDK게임·이전UV래스터/경로·User읽기SHA/연결/Versions1"
+    "scope": "841 전체3630파일/309소유SHA/9CPP·큰평면/혼합볼륨·예산증감·제작·SDK게임/이전경로·User읽기SHA/연결/Versions1"
   }
 }

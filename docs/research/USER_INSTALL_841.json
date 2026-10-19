@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "bda23c1ea5e202a05d637993bf23c99310d303d0",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe",
+  "bundleHash": "7c51d901e64e2b0146bd014d9041057b9f030c183334ac1900965da59edca5b2",
+  "files": 3630,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3624,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4c2f71c37d2e13f9",
+        "bytes": 181947170,
+        "manifestSHA256": "19a0bc5d7c1fc272cfafb368f3b23bf9f76b0bd952b98630961733c7a970a5ce"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-19T10:27:01.0239480Z",
+    "bytes": 181947170,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "7c51d901e64e2b01"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 309,
+  "repositoryOnlyTestSourcesVerified": 9,
+  "nativePlayerSHA256": "7ff62f3bff496064fe7ae054ba0b5792db3532085fce952b315b569b9c4e1b81",
+  "installedGates": [
+    {
+      "path": "native/build/distance-field-render-831-cyXre8/acceptance.json",
+      "sha256": "6f54002fb5a1b2d59830362ed0c8d5247e55500738e5ae736efc7476c425c68d",
+      "scope": "Actual production GL/WebGPU 2000x2000 rectangle and box exact distance/MRT/lighting/post volumes: offscreen mesh AO darkens ambient only, direct-light pixels unchanged, no duplicate post AO, rigid volume CPU reuse, disabled resource release.352B atlas/0 scalar volume and32x32 correctness fixture, no production FPS or deforming-mesh claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-gpu-814-XQpbqL/acceptance.json",
+      "sha256": "e1e2c78aad725d61e3921955515f3c3aa23adc4bf2d87de8e9e7b9fc4a8222d4",
+      "scope": "Actual GL/WebGPU mixed exact box and general sphere-volume/BVH queries vs CPU per-point4e-5; hemisphere cone visibility offscreen occluder and empty-space controls; real worker/shared geometry/rigid move/removal/dispose. This does not prove integrated renderer/UI/packaged D3D yet.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-lifecycle-837-DaNa1S/acceptance.json",
+      "sha256": "ac98e4ff8d64474da4290bde1f530f4c8e3421d7e0aae63eae81e732f24b7da5",
+      "scope": "Actual worker/scene lifecycle at64 resolution: insufficient1MB budget reports general-field failure while exact box remains available; raising2MB rebakes complete general1MiB volume+box; lowering clears prior decoded field; removal/idle worker and input0. No rendering/FPS claim in this gate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-editor-822-m1duvB/acceptance.json",
+      "sha256": "bfc60df5dbdc21962f794a07b35da15b57b16ca9914d5d5d81e6f9052de0ea84",
+      "scope": "Actual hidden owned editor: human AO mode select reveals compact distance-field options, resolution edit/Undo/Redo, same document CAS budget patch, stale revision rejected, saved file and discoverable immutable API contract. No user profiles/projects used.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-818-player-FGXKWN/acceptance.json",
+      "sha256": "23cd3f37911bb22f1d53b82f8e49506a91eb6fba48eaf11252806ae97e6517fa",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-LH4RTt/acceptance.json",
+      "sha256": "3349c47b06e060beb2c4916cf44a9310d4579428341d3235f8fb2741ab640c09",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01\\HBEngine.exe"
+      ]
+    }
+  ],
+  "manifestVerifiedFiles": 3630,
+  "versions": [
+    "7c51d901e64e2b01"
+  ],
+  "profile": {
+    "filesBefore": 10385,
+    "filesAfter": 10385,
+    "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-841-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/distance-primitives-830.json",
+      "sha256": "b513fe503e04e0949880c0293702ec0e9bfb4e21e44a4c8a7c21c7d49256c575",
+      "scope": "Exact primitive topology recognition only: analytical shape queries against independent original triangle BVH/winding3000points, scalar payload0/208B atlas, malformed/overlap/concave/diamond/nonprimitive rejection and general volume fallback. No GPU/rendering proof in this CPU gate."
+    },
+    {
+      "path": "native/build/mesh-distance-field-atlas-813.json",
+      "sha256": "c1b739b54a266e292ad9946b263e46c486e951aae0ad4aa204c9fb722c5e3dc2",
+      "scope": "CPU packed mesh distance-field atlas versus independent per-object inverse-transform/volume evaluator. Shared scalar volume, rotated/mirrored/nonuniform rigid transforms, static reuse, moving-prefix-only CPU writes, resource-budget rejection, empty/dispose. GPU/rendering/AO not yet covered."
+    },
+    {
+      "path": "native/build/distance-field-regressions-838.json",
+      "sha256": "de280ceffc39565472ac6fb8a50b517312936462a2b1b83f7384ab9c265ae1a2",
+      "scope": "Targeted CPU/TSL-build/post volume/rigid history/material and prior mip regressions; separate actual GL/GPU/D3D/UI gates carry execution claims."
+    },
+    {
+      "path": "native/build/distance-field-worker-812-JhWRbs/acceptance.json",
+      "sha256": "b06876e950ae88a42d7bc135206f371b2038a3a77f3f61ae3503037fb385ce82",
+      "scope": "Actual hidden worker: queued source preserved, active transferred geometry cancelled, following closed-mesh volume byte-identical to CPU oracle, callback failure isolated, invalid partial transfer/settings rejected, idle worker/input0. Distance-field generation foundation only; no GPU/AO/UI integration claim."
+    },
+    {
+      "path": "native/build/distance-field-gpu-814-1Su5Ql/acceptance.json",
+      "sha256": "211bd4e456dc27a346a5c63daf2cc31caa1bae56c3b0b6beef95300519ac76b7",
+      "scope": "Actual GL/WebGPU mixed exact box and general sphere-volume/BVH queries vs CPU per-point4e-5; hemisphere cone visibility offscreen occluder and empty-space controls; real worker/shared geometry/rigid move/removal/dispose. This does not prove integrated renderer/UI/packaged D3D yet."
+    },
+    {
+      "path": "native/build/distance-field-render-831-bHCwre/acceptance.json",
+      "sha256": "c8ecb4fc5ad27355bf8fc54c09713ecc751163bf6f8843d768ebb7e3ecc818dc",
+      "scope": "Actual production GL/WebGPU 2000x2000 rectangle and box exact distance/MRT/lighting/post volumes: offscreen mesh AO darkens ambient only, direct-light pixels unchanged, no duplicate post AO, rigid volume CPU reuse, disabled resource release.352B atlas/0 scalar volume and32x32 correctness fixture, no production FPS or deforming-mesh claim."
+    },
+    {
+      "path": "native/build/distance-field-818-player-VSbbsw/acceptance.json",
+      "sha256": "2f48794ad4f3d9772656fe3c154eb665c68c05687256d716dd12a3d1302885e8",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim."
+    },
+    {
+      "path": "native/build/distance-field-lifecycle-837-rHbkWh/acceptance.json",
+      "sha256": "1f52c586a010867106a0294aa19e65aa6248be5c559d0ca19fcb0795f5101fe5",
+      "scope": "Actual worker/scene lifecycle at64 resolution: insufficient1MB budget reports general-field failure while exact box remains available; raising2MB rebakes complete general1MiB volume+box; lowering clears prior decoded field; removal/idle worker and input0. No rendering/FPS claim in this gate."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/distance-field-818-player-VSbbsw/acceptance.json",
+      "sha256": "2f48794ad4f3d9772656fe3c154eb665c68c05687256d716dd12a3d1302885e8",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim."
+    }
+  ],
+  "scope": "841 all manifest hashes/309runtime owners/9CPP, installedGL/GPU huge rectangle352B and mixed volume72queries, budget1/2/1MB worker lifecycle, humanUI/CAS/Undo/save, installedSDK CPP/BP D3D exact shapes and prior UV raster/path oracle; read-onlyUser inventory,links/Versions1",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}
