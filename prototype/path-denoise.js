@@ -1,3 +1,4 @@
+import {pathPixelFootprintGLSL} from './path-pixel-footprint.js';
 import {transmittedSpreadGLSL} from './path-ray-cone.js';
 import {previousMediaGLSL} from './path-previous-media.js';
 import {previousGeometryGLSL} from './previous-geometry-shader.js';
@@ -13,7 +14,7 @@ ${previousGeometryGLSL}
 ${previousMediaGLSL}
 ${curvedGuideGLSL}
 ${virtualGuideGLSL}
-vec2 hbPathOffset(vec3 x,vec3 y,vec3 delta){float a=dot(x,x),b=dot(x,y),c=dot(y,y),d=a*c-b*b;if(d<=max(1e-20,a*c*1e-6))return vec2(0,0);return vec2(c*dot(x,delta)-b*dot(y,delta),a*dot(y,delta)-b*dot(x,delta))/d;}
+${pathPixelFootprintGLSL}
 vec3 hbPathPreviousPoint(float id,vec3 p){vec3 b=hbRayBary(id,p);float at=hbPathFilter.w+id*3.0;return hbGeometryLoad(at).xyz+hbGeometryLoad(at+1.0).xyz*b.y+hbGeometryLoad(at+2.0).xyz*b.z;}
 vec4 hbPathGuideTrace(vec2 uv,bool auxiliary){
 vec3 nearPoint=hbWorldAt(uv,0.0),farPoint=hbWorldAt(uv,.9999),origin=hbEye.w>.5?nearPoint:hbEye.xyz,direction=normalize(farPoint-origin),cameraDirection=direction,forward=normalize(hbForward.xyz),right=normalize(hbWorldAt(uv+vec2(.01,0),0.0)-nearPoint),up=normalize(cross(right,forward));vec2 cone=hbRayCameraCone(uv);float width=cone.x,secondaryDistance=0.0,oldSecondary=0.0;vec4 priorCamera=hbPathPriorCamera();vec3 oldView=vec3(0,0,1);float oldWidth=0.0,oldSpread=0.0;vec3 oldFirst=origin,oldPoint=priorCamera.xyz;bool previousValid=priorCamera.w>.5,lensDifferentials=hbPathLens.x>0.0&&hbEye.w<.5&&hbPathFilter.y>0.0,curved=auxiliary&&hbGeometryRecords.w>.5&&(lensDifferentials||hbPathFilter.x>0.0),differentials=lensDifferentials||curved;int differentialCount=lensDifferentials?4:2;

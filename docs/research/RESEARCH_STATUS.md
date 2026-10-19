@@ -495,3 +495,6 @@ UE4.27 Composite Texture의 반환된 짧은 텍스트 본문45행과 HDRP17 기
 
 ### 2026-10-19 ·572 GCC 선택 본문
 GCC Preprocessor Options의-M/MM/MF/MT/MQ/MD/MMD 본문56–128행을 읽고 실제 전처리 결과·다중TU·옵션/캐시를 대조했어요. 원문SHA/새읽기/미독연결범위를 CORPUS_MANIFEST.supplemental572에 등록해요. 전체 본문/API gate는 승격하지 않아요.
+
+# 2026-10-19 — 642/664 광선 지정 구역
+새 읽기: PBRT4 10.1.2/10.1.3 본문·수식. 앞선 NVIDIA 초록·정오표와 PBRT 지정 읽기를 구분해요. 읽은 범위·독립 dual 투영·미독은 LENS_PIXEL_FOOTPRINT_664.md와 CORPUS_MANIFEST supplemental664에 등록했어요. 전역 본문/API gate 승격은 없으며 거친 로브·전역 역해·매질은 후속 구현으로 유지해요.

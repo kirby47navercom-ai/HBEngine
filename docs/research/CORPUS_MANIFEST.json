@@ -2766,6 +2766,19 @@
       "wholeCorpus": false,
       "state": "selected_texture_import_mip_policy_body_and_one_api_compared_with_existing_engine_and_local_three_r180",
       "readScope": "UE mip/coverage/lower normal normalization/composite/platform-resolved fields; Unity normal import selected technical fields and own mipMapsPreserveCoverage bool declaration/description. Linked implementation/media/other APIs unread."
+    },
+    {
+      "id": "optical-differential-supplement-664",
+      "engine": "HBEngine rendering references",
+      "roots": [
+        "https://www.pbr-book.org/4ed/Textures_and_Materials/Texture_Sampling_and_Antialiasing",
+        "https://research.nvidia.com/publication/2021-08_refraction-ray-cones-texture-level-detail",
+        "https://research.nvidia.com/publication/2021-04_improved-shader-and-texture-level-detail-using-ray-cones"
+      ],
+      "record": "docs/research/LENS_PIXEL_FOOTPRINT_664.md",
+      "wholeCorpus": false,
+      "state": "selected_sections_read_and_local_coordinate_model_independently_derived",
+      "readScope": "PBRT4 10.1.2/10.1.3 body/formulas and earlier selected sampling/normal-derivative text; NVIDIA two abstracts/errata only. Full PDFs/books/linked APIs unread; no global gate promotion."
     }
   ],
   "supplementalBaselines": [
@@ -4365,5 +4378,18 @@
       "native/build/dwarf-compat-587-3Patdh/observation.json",
       "native/build/native-debug-info-588-cxbNsj/acceptance.json"
     ]
+  },
+  "supplemental664": {
+    "date": "2026-10-19",
+    "gatePromoted": false,
+    "record": "docs/research/LENS_PIXEL_FOOTPRINT_664.md",
+    "earlier": "docs/research/OPTICAL_FOOTPRINT_642.md",
+    "newReading": "PBRT4 section10.1.2–10.1.3 returned body and formulas for medium-interface/specular ray differentials",
+    "unread": [
+      "full NVIDIA PDFs",
+      "remaining PBRT book and linked source/API corpus",
+      "full UE/Unity corpus"
+    ],
+    "implementation": "HB dual pixel projection derived independently; specular/rough/global/medium remaining kept explicit"
   }
 }
