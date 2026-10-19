@@ -505,3 +505,6 @@ GCC Preprocessor Options의-M/MM/MF/MT/MQ/MD/MMD 본문56–128행을 읽고 실
 
 ### 2026-10-20 · 986 반사 영역과 물리 로브의 지정 구역
 UE Reflection Captures의 Box shape/Glossy Indirect Specular/제한 구역과 UBoxReflectionCaptureComponent의 자체 선언·전이 거리·가상 함수 목록을 읽었어요. Unity6000.0 프로브 자체 Runtime Settings의 월드 크기·오프셋/Box Projection을 대조했고 Lagarde2012의 local influence/AABB·OBB 투영 구역 및 설치된Three r180 EnvironmentNode.setup/createRadianceContext를 읽었어요. 원문5개 SHA·범위는 supplemental986/read-scope에 보존해요. HB의 affine/전단·월드 면 거리·캡처 재사용 선택을 UE 캡처 정책이나 Unity 내부 구현과 같다고 계산하지 않아요. 연결API·본문나머지·미디어·전역 gate는 미승격이에요.
+
+### 2026-10-20 · 1030 노멀 정규화 범위
+Microsoft XMVector3Normalize의 자체 서명/반환 주의와 Robust 예시에서 최대 절대 성분으로 먼저 나누는 구역을 읽었어요. HB는 기존 중립 tangent normal[0,0,1]을 유지하므로 Microsoft의 0벡터 반환과 구분해요. 원문 SHA·선택 범위를 supplemental1030에 등록하며 연결 API/구현·전체 본문 gate는 승격하지 않아요. Float32 유한 중간값49종과 실제 이전 노멀/밉 문맥으로 대조하며 모든 denormal·정수/절차/normalize 연산의 완성으로 세지 않아요.

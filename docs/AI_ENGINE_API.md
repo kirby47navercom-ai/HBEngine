@@ -544,3 +544,6 @@ binding의 `residency.disk.decodedBytes/logicalBytes/pendingReads/reads`와 머�
 
 ## 회전 반사 영역 · 986–995
 ReflectionProbe의 기존 크기/offset/captureOffset/blendDistance/boxProjection과 오브젝트 Transform을 편집해요. 영역 회전은 일반 Transform/C++ Scene::SetRotation/같은 블루프린트 노드로 지정하며 새 네이티브 코드를 작성하지 않아도 돼요. 부모 전단·음수/비균일 크기의 전체 affine 역변환을 GL/WebGPU/DirectX가 공유해요. localX/localY/localZ/faceScale은 파생 바인딩 행이며 저장 에셋에 작성하지 않아요. 캡처점이 고정된 영역 변형은 기존 캡처를 재사용해요. 직접GPU SDK에서는 hb::gpu::setProbeWorldToLocal(ProbeSettings&,const Matrix&)가 검증/예외와 실패 시 원래 값 보존을 제공해요. 새128바이트 ProbeSettings와 실행기를 함께 사용해요. 수치·실제 C++/BP 게임·미구현 범위는 [995 기록](research/AFFINE_REFLECTION_PROBES_995.md)을 확인해요.
+
+## 현재·이전 노멀 디코딩 · 1030–1037
+자동화 raySurfaceHistory.normalDecode 계약2는 RGB를 signed tangent normal로 푼 뒤 최대 절대 성분으로 먼저 크기를 조절하는 GPU 정규화를 명시해요. CPU는 기존 double hypot예요. 기존 Normal Map 노드·파라미터·C++ Materials::SetFloat/블루프린트 materialFloat를 그대로 사용하며 새 에셋 키나 수동 쉐이더 패치가 필요하지 않아요. 중립[0,0,1]은 유지하고, 유한하고 GPU에서 표현 가능한 중간 성분을 대상으로 해요. 이전/현재 필드·Float 노멀 밉·실제 SDK 게임 증거와 미지원 수치 범위는 [1037 기록](research/NORMAL_RANGE_1037.md)에 있어요.

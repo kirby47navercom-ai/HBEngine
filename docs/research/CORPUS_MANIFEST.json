@@ -4741,5 +4741,26 @@
     "wholeApi": false,
     "unread": "Linked APIs, source implementations, all engine tutorials/media, full article and all papers. OBB plane/world fade independent implementation, not UE capture policy or Unity parity.",
     "comparison": "HB full affine inverse/plane world-distance fade and unchanged capture policy are own choices; not UE sphere/Lightmass or Unity world-space probe zone implementation parity. Browser still binds one selected probe, native two."
+  },
+  "supplemental1030": {
+    "date": "2026-10-20",
+    "rows": [
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/api/directxmath/nf-directxmath-xmvector3normalize",
+        "file": "native/build/reference-corpus/supplemental1030/microsoft-normalize.html",
+        "sha256": "52b87608aec669d8f32578bcfb3da35ab81bd2302c066d0dcc80d3a3c81f9196",
+        "bytes": 51599,
+        "readScope": "Own signature/return remarks and robust maximum-component normalization example only; not library implementations, linked estimate/4D APIs or full DirectXMath"
+      }
+    ],
+    "comparison": "Max-component scaling principle compared. HB zero tangent normal remains[0,0,1] instead of DirectXMath zero result; finite representable intermediate inputs and Float32 normal range only, no all floating-point/denormal guarantee.",
+    "wholeCorpus": false,
+    "wholeApi": false,
+    "targets": [
+      "RND-07",
+      "MAT-03"
+    ],
+    "record": "docs/research/NORMAL_RANGE_1037.md",
+    "proof": "native/build/reference-corpus/supplemental1030/read-scope.json"
   }
 }
