@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "date": "2026-10-20",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "78418e29b9119cb98619011eb8c5c3c3d172c584",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e2af582843d454f2",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e2af582843d454f2\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\e2af582843d454f2\\HBEngine.exe",
+  "bundleHash": "e2af582843d454f2af3d8fba84de630548ca8f9ac5e6b36dbc86f282fe53ba33",
+  "files": 3719,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3695,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b06eb627c57e8e78",
+        "bytes": 182791975,
+        "manifestSHA256": "f9491cbfaf5801901a5bccf887afc1b57e53c7c49ff9d033f467de149053ac4f"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-19T16:34:49.7283140Z",
+    "bytes": 182791975,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "e2af582843d454f2"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 388,
+  "repositoryOnlyTestSourcesVerified": 13,
+  "nativePlayerSHA256": "89af6e535813046459ac56b4e53119f80acb36af801a50a553e519f345a24b65",
+  "installedGates": [
+    {
+      "path": "native/build/probe-volume-989-8Ajkvt/acceptance.json",
+      "sha256": "0ac3a47fbd36fac275bffe8c2df67ff3ed7a533a99eec6946f9e10c4751115b5",
+      "scope": "Actual GL/WebGPU production affine-volume helper Float32 pixelsfixture cases each against independent world-face plane oracle. Rotated/reflected/nonuniform/sheared volumes, world-distance fade, inside/outside and axis/near-axis/zero rays. Pure math pixels; full PMREM/material/probe binding is separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e2af582843d454f2\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-material-992-NfyWqI/acceptance.json",
+      "sha256": "abd6fec96bf3d9bb9f1b068f30e4204dd8288dca4fed55209497c6adb25547a6",
+      "scope": "Actual GL/WebGPU physical material PMREM pixels. GL manager binds prepared cubemap, affine uniforms/per-fragment influence and rotation without recapture; GPU same live node. GPU base/independent coat normal+roughness/anisotropy versus installed Three EnvironmentNode via normal material path; legacy coat-only control differs. Prepared synthetic6-face PMREM, not actual browser room capture or entire optical/FPS validation.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e2af582843d454f2\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-room-994-3cIibh/acceptance.json",
+      "sha256": "4820d2667b98cea18305a6301111a1474bc7351fea18538a79ae353b981283aa",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--outside-origin",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e2af582843d454f2\\HBEngine.exe"
+      ]
+    }
+  ],
+  "manifestVerifiedFiles": 3719,
+  "versions": [
+    "e2af582843d454f2"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1028-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/probe-volume-986.json",
+      "sha256": "499af93f869568108c1cd557b39454e8d819369093c3ce88d7bde389bc6fa1de",
+      "scope": "Independent world-space face-plane cross products, distances and ray exits versus affine local-volume implementation. Rotations, reflected/nonuniform scale and parent-like shear; inside/outside, axis/near-axis/zero rays, hard and world-distance blend."
+    },
+    {
+      "path": "native/build/probe-selection-1010.json",
+      "sha256": "0e0d37159e467abc595f81cb7084b177831e85dd76b4ea7c6983e6412455c726",
+      "scope": "Independent world face/edge clipping versus affine-box/AABB SAT and original point-only selection. Static position/version bound caching, matrix-only reuse, active morph/skin/instance fallback. CPU selection only; renderer and actual SDK game checks separate."
+    },
+    {
+      "path": "native/build/probe-volume-988-yorJsE/acceptance.json",
+      "sha256": "dfa65afc6cb616e6df75880599ad9bf6a41ed321d6394d764f866840dbafea00",
+      "scope": "Actual optimized hardware D3D11 production probe local/weight/project functions against independent world-face oracle432conditions. C++ affine helper, singular/perspective/NaN rejection without mutation, legacy identity defaults and128-byte layout. Compute value proof; full probe captures/scene bindings checked separately."
+    },
+    {
+      "path": "native/build/probe-volume-989-fn0Xon/acceptance.json",
+      "sha256": "0652d0a59aa6438adc010fc2da4e9f860e0083434c84d9349fb2f78bfdc99b2d",
+      "scope": "Actual GL/WebGPU production affine-volume helper Float32 pixelsfixture cases each against independent world-face plane oracle. Rotated/reflected/nonuniform/sheared volumes, world-distance fade, inside/outside and axis/near-axis/zero rays. Pure math pixels; full PMREM/material/probe binding is separate."
+    },
+    {
+      "path": "native/build/probe-room-991-GdHMY5/acceptance.json",
+      "sha256": "3c12e6e56948af148ac2f479d949e2f12b5caac04c96316948bc9b7852f3c970",
+      "scope": "Actual hardware D3D11 six-face probe capture/filter/SH/GGX/clearcoat/IOR/two-probe blend legacy proof plus rotated thin-room per-fragment influence rejection and live C++ volume transform restore without recapture. Singular/zero-face-scale rejection and shared resource release. No whole FPS claim."
+    },
+    {
+      "path": "native/build/probe-material-992-yNK6kh/acceptance.json",
+      "sha256": "11fa90a6971d08201773cc6cd44db401a2efcd7879a4d4c71f3e5d60b187aee2",
+      "scope": "Actual GL/WebGPU physical material PMREM pixels. GL manager binds prepared cubemap, affine uniforms/per-fragment influence and rotation without recapture; GPU same live node. GPU base/independent coat normal+roughness/anisotropy versus installed Three EnvironmentNode via normal material path; legacy coat-only control differs. Prepared synthetic6-face PMREM, not actual browser room capture or entire optical/FPS validation."
+    },
+    {
+      "path": "native/build/probe-room-994-8z3Zoy/acceptance.json",
+      "sha256": "8969dad6f744295ee4ef1297eea126d2ce0b5d8f3f86a61d8abf4e4e7a903b88",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim."
+    },
+    {
+      "path": "native/build/probe-room-994-sMG5j9/acceptance.json",
+      "sha256": "d1b560947b27e9afe093b2733843fac6b678d90993949729dfb9bc4182e0e5b4",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim."
+    },
+    {
+      "path": "native/build/probe-room-994-l0HrQ8/acceptance.json",
+      "sha256": "b1cf2045445bbbdc5f76499bb193d9fd1adc4ebe508246af79705c37e38da122",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/probe-room-994-8z3Zoy/acceptance.json",
+      "sha256": "8969dad6f744295ee4ef1297eea126d2ce0b5d8f3f86a61d8abf4e4e7a903b88",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim."
+    },
+    {
+      "path": "native/build/probe-room-994-sMG5j9/acceptance.json",
+      "sha256": "d1b560947b27e9afe093b2733843fac6b678d90993949729dfb9bc4182e0e5b4",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim."
+    },
+    {
+      "path": "native/build/probe-room-994-l0HrQ8/acceptance.json",
+      "sha256": "b1cf2045445bbbdc5f76499bb193d9fd1adc4ebe508246af79705c37e38da122",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim."
+    }
+  ],
+  "scope": "1028 전체3719파일/388소유SHA/CPP13·새Player1001/Host1002·설치 GL/GPU540/물리4종 기준차이0·설치SDK CPP/BP D3D 원점밖메쉬5단계/캡처1·User읽기전후SHA/연결/Versions1. 누적 계속",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

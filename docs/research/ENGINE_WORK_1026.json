@@ -474,6 +474,34 @@
       "path": "native/build/probe-room-994-l0HrQ8/acceptance.json",
       "sha256": "b1cf2045445bbbdc5f76499bb193d9fd1adc4ebe508246af79705c37e38da122",
       "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim."
+    },
+    {
+      "path": "native/build/probe-volume-989-8Ajkvt/acceptance.json",
+      "sha256": "0ac3a47fbd36fac275bffe8c2df67ff3ed7a533a99eec6946f9e10c4751115b5",
+      "scope": "Actual GL/WebGPU production affine-volume helper Float32 pixelsfixture cases each against independent world-face plane oracle. Rotated/reflected/nonuniform/sheared volumes, world-distance fade, inside/outside and axis/near-axis/zero rays. Pure math pixels; full PMREM/material/probe binding is separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e2af582843d454f2\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-material-992-NfyWqI/acceptance.json",
+      "sha256": "abd6fec96bf3d9bb9f1b068f30e4204dd8288dca4fed55209497c6adb25547a6",
+      "scope": "Actual GL/WebGPU physical material PMREM pixels. GL manager binds prepared cubemap, affine uniforms/per-fragment influence and rotation without recapture; GPU same live node. GPU base/independent coat normal+roughness/anisotropy versus installed Three EnvironmentNode via normal material path; legacy coat-only control differs. Prepared synthetic6-face PMREM, not actual browser room capture or entire optical/FPS validation.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e2af582843d454f2\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-room-994-3cIibh/acceptance.json",
+      "sha256": "4820d2667b98cea18305a6301111a1474bc7351fea18538a79ae353b981283aa",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--outside-origin",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e2af582843d454f2\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -491,6 +519,16 @@
       "path": "native/build/probe-room-994-l0HrQ8/acceptance.json",
       "sha256": "b1cf2045445bbbdc5f76499bb193d9fd1adc4ebe508246af79705c37e38da122",
       "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim."
+    },
+    {
+      "path": "native/build/probe-room-994-3cIibh/acceptance.json",
+      "sha256": "4820d2667b98cea18305a6301111a1474bc7351fea18538a79ae353b981283aa",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--outside-origin",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e2af582843d454f2\\HBEngine.exe"
+      ]
     }
   ],
   "nativePlayerSHA256": "89af6e535813046459ac56b4e53119f80acb36af801a50a553e519f345a24b65",
@@ -533,8 +571,8 @@
     "wholeColdStartClaim": false,
     "wholeComplex141ImprovementClaim": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_978.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1028.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json at record basis revision",
   "remaining": [
     "PRJ-03: 특수 내부 폴더·바이너리 스트림 가져오기·이름 변경/redirect/index의 공동 복구",
@@ -625,5 +663,6 @@
     "RES-01: 전체 discovery 분모·추가 버전/API/미디어 대조",
     "RES-01: 전체 독립 분석 gate"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1028.json"
 }

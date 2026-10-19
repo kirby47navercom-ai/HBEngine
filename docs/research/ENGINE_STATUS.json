@@ -2629,11 +2629,11 @@
     "scope": "affine 반사/큰 정적 메쉬 후보/코팅·이방성·실제세SDK게임·초기컴파일 진단 별도"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_978.json",
-    "sourceCommit": "e60b2fcf9738bada7532c676370562b9d1396cea",
-    "bundleHash": "b06eb627c57e8e782afde71521b89f9bd692ee7c6af5edbe26ae226c071b1480",
+    "receipt": "docs/research/USER_INSTALL_1028.json",
+    "sourceCommit": "78418e29b9119cb98619011eb8c5c3c3d172c584",
+    "bundleHash": "e2af582843d454f2af3d8fba84de630548ca8f9ac5e6b36dbc86f282fe53ba33",
     "verified": true,
     "versions": 1,
-    "scope": "978 전체3694파일/364소유SHA/10CPP·기하AA실제D3D/픽셀·새네이티브·CPP/BP D3D밉/path·User읽기SHA/연결/Versions1"
+    "scope": "1028 전체3719파일/388소유SHA/13CPP·affine540/코팅·이방성 픽셀0·실제SDK CPP/BP 원점밖메쉬·새네이티브·User/연결/Versions1"
   }
 }

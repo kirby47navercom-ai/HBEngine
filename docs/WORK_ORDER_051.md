@@ -778,3 +778,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 978 설치 C:\Users\kirby\HBEngine\Versions\b06eb627c57e8e78/3694파일/364소유SHA/10CPP·User10385읽기전후SHA/연결/Versions1 확정. 설치970hdJbkW 실제설치헤더/최적화래스터/수치및기본이미지소스동일·이전참조재사용으로중복컴파일절반생략,804i8NxDm 실제설치SDK CPP/BP D3D밉5상태+path. 이전182701518B정리. 누적작업계속.
 
 980–1026 9e359245d31f57bf7561a51066e88c35e4d162f6: 실제Complex141 지연 구간과 미승격 후보4종 별도 기록. affine 반사 영향/투영·월드페이드·미세영역·코팅/이방성·큰정적메쉬경계 후보 구현. CPU/D3D/GL/GPU540·독립교차2240·100정적프레임경계캐시·물리4종기준픽셀차이0·세실제SDK CPP/BP5단계 캡처1회. 새Player1001/Host1002/10소유SHA·mtime. 사용자설치1028검증후누적진행;전체완료아님.
+
+1028 설치 C:\Users\kirby\HBEngine\Versions\e2af582843d454f2/3719파일/388소유SHA/13CPP·User10849읽기전후SHA/연결/Versions1 검증. 설치9898Ajkvt GL/GPU540·992NfyWqI 물리4종기준0·설치994 실제SDK CPP/BP 원점밖메쉬5단계/캡처1. 이전182791975B 정리. 1029뒤이전노멀/머테리얼/밉이력의범위·안정정규화후속구현계속.
