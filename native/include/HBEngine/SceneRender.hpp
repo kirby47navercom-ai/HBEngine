@@ -227,7 +227,7 @@ float4 PS(Output i,bool front:SV_IsFrontFace):SV_TARGET{
  if(flags.w>1.5){float3 d=safeNormal(i.at-eye.xyz);float3 sky=lerp(skyHorizon.rgb,skyTop.rgb,smoothstep(-.12,.85,d.y));sky+=sunColor.rgb*pow(max(dot(d,safeNormal(sunDirection.xyz)),0),sunDirection.w)*.55;sky+=moonColor.rgb*pow(max(dot(d,safeNormal(moonDirection.xyz)),0),sunDirection.w)*.55;return float4(((uint)flags.x&(128|2048))?sky:srgb(max(sky,0)),1);}
  clipMask2d(i.position.xy);uint maps=(uint)flags.x;float4 base=tint*(pass2d.x>0?1:i.color);if(maps&1)base*=baseMap.Sample(baseSampler,mapUv(i.uv,0));
  if(pass2d.x>0)return offscreen2d(base,i.color);
- float3 n=safeNormal(i.normal);if(!front)n=-n;float3 cn=n;
+ float3 n=safeNormal(i.normal);if(!front)n=-n;float3 cn=n;float3 geometricNormal=n;
  if(maps&2){float2 uv=mapUv(i.uv,1);float3 q1=ddx(i.at),q2=ddy(i.at);float2 st1=ddx(uv),st2=ddy(uv);float3 a=cross(q2,n),b=cross(n,q1),t=a*st1.x+b*st2.x,bt=a*st1.y+b*st2.y;float scale=rsqrt(max(max(dot(t,t),dot(bt,bt)),1e-12));float3 nm=normalMap.Sample(normalSampler,uv).xyz*2-1;nm.xy*=normalScale.xy;n=safeNormal(t*scale*nm.x+bt*scale*nm.y+n*nm.z);}
  float rough=clamp(surface.x*((maps&4)?roughMap.Sample(roughSampler,mapUv(i.uv,2)).g:1),.04,1),metal=saturate(surface.y*((maps&8)?metalMap.Sample(metalSampler,mapUv(i.uv,3)).b:1));
  float3 emit=emissive.rgb*emissive.a*((maps&16)?emissiveMap.Sample(emissiveSampler,mapUv(i.uv,4)).rgb:1);
@@ -235,6 +235,10 @@ float4 PS(Output i,bool front:SV_IsFrontFace):SV_TARGET{
  float coat=saturate(physical.x),coatRough=clamp(physical.y,.04,1),ior=clamp(physical.z,1,2.5),transmission=saturate(volume.x),thickness=max(volume.y,0),attenuationDistance=max(absorption.w,0),dispersion=clamp(physical.w,0,10);float3 attenuationColor=saturate(absorption.rgb);float sheen=saturate(lobes.x),sheenRough=clamp(sheenColor.w,.07,1),anisotropy=saturate(lobes.y),anisotropyRotation=lobes.z,filmWeight=saturate(lobes.w),filmIOR=film.x,filmThickness=film.y,specularIntensity=film.z;float3 sheenTint=saturate(sheenColor.rgb),specularTint=saturate(specular.rgb);
  float skin=saturate(scatter.x),foliage=saturate(scatter.y),hair=saturate(scatter.z),scatterThickness=max(scatter.w,0),hairShift=clamp(hairTangent.w,-1,1);float3 scatterTint=saturate(scatterColor.rgb),hairAxis=hairTangent.xyz;
  // HB_MATERIAL_EVAL
+ // Match the existing raster backends: geometry normals widen base and coat lobes.
+ float3 normalChange=max(abs(ddx(geometricNormal)),abs(ddy(geometricNormal)));
+ float geometryRoughness=max(normalChange.x,max(normalChange.y,normalChange.z));
+ rough=min(rough+geometryRoughness,1);coatRough=min(coatRough+geometryRoughness,1);
  if(!(maps&4096))transmission=0;
  base*=i.instanceColor;
  clip(base.a-surface.z);float3 outColor=base.rgb,ambientColor=0;

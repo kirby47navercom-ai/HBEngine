@@ -2779,6 +2779,20 @@
       "wholeCorpus": false,
       "state": "selected_sections_read_and_local_coordinate_model_independently_derived",
       "readScope": "PBRT4 10.1.2/10.1.3 body/formulas and earlier selected sampling/normal-derivative text; NVIDIA two abstracts/errata only. Full PDFs/books/linked APIs unread; no global gate promotion."
+    },
+    {
+      "id": "geometric-specular-supplement-970",
+      "engine": "Unity HDRP / installed Three.js / native raster parity",
+      "roots": [
+        "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.1/manual/Geometric-Specular-Anti-Aliasing.html",
+        "https://raw.githubusercontent.com/Unity-Technologies/Graphics/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl",
+        "https://raw.githubusercontent.com/mrdoob/three.js/dev/src/renderers/shaders/ShaderChunk/lights_physical_fragment.glsl.js",
+        "https://raw.githubusercontent.com/mrdoob/three.js/dev/src/nodes/functions/material/getRoughness.js"
+      ],
+      "record": "docs/research/GEOMETRIC_SPECULAR_970.md",
+      "wholeCorpus": false,
+      "state": "own_HDRP17_1_property_body_and_selected_Unity_common_material_functions_compared_with_existing_installed_Three_r180_and_native_raster",
+      "readScope": "Unity curve-dependent smoothness/variance/threshold own body, selected functions only; Three geometry derivatives/base+coat roughness blocks and getRoughness own function. Remote dev minimum differs and is not adopted."
     }
   ],
   "supplementalBaselines": [
@@ -2833,7 +2847,8 @@
     "376: Reconcile PBRT4 remaining Dielectric BSDF rough/dispersion/radiance sections, SurfaceInteraction/Camera linked APIs and full texture filtering/EWA references. Selected old-medium/footprint checks do not close global curved correspondence or participating-medium scattering.",
     "380: Reconcile linked UE Lightmass/DFAO/BentNormal/capture/volumetric APIs and Unity Skybox/HDRP/URP environment APIs, lower-hemisphere/static/stationary/shadowing details and full implementation. HB analytic dome bake excludes realtime cloud geometry capture and narrow-disk importance sampling.",
     "385: Reconcile remaining NIST inverse-trig/addition/roundoff references and linked UE final-gather/cubemap filtering APIs. Local diffuse angular LOD does not implement complete camera/material/anisotropic derivatives, cloud bake capture, or the full engine corpus.",
-    "752: UE5.8 streaming overview/metrics and selected6000.7Beta manual bodies read; linked APIs, format/build and all remaining version corpus stay scoped and unread."
+    "752: UE5.8 streaming overview/metrics and selected6000.7Beta manual bodies read; linked APIs, format/build and all remaining version corpus stay scoped and unread.",
+    "970: HDRP geometric specular AA linked APIs/media/full shader library and all version corpus remain unread. Native parity uses existing Three r180 maximum-component derivative roughness, not Unity variance/threshold implementation; directional normal filtering/path optical AA remain separate."
   ],
   "supplemental165": {
     "date": "2026-10-16",
@@ -4657,5 +4672,21 @@
     ],
     "exhaustive": false,
     "comparison": "HB per-geometry lazy worker volume/object BVH and scalar atlas differs from UE offline field/global clipmap/temporal confidence; actual CPU/GL/GPU/D3D evidence required"
+  },
+  "supplemental970": {
+    "date": "2026-10-20",
+    "record": "docs/research/GEOMETRIC_SPECULAR_970.md",
+    "proof": "native/build/reference-corpus/supplemental970/read-scope.json",
+    "roots": [
+      "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.1/manual/Geometric-Specular-Anti-Aliasing.html",
+      "https://raw.githubusercontent.com/Unity-Technologies/Graphics/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl",
+      "https://raw.githubusercontent.com/mrdoob/three.js/dev/src/renderers/shaders/ShaderChunk/lights_physical_fragment.glsl.js",
+      "https://raw.githubusercontent.com/mrdoob/three.js/dev/src/nodes/functions/material/getRoughness.js"
+    ],
+    "state": "own_HDRP17_1_property_body_and_selected_Unity_common_material_functions_compared_with_existing_installed_Three_r180_and_native_raster",
+    "readScope": "Unity curve-dependent smoothness/variance/threshold own body, selected functions only; Three geometry derivatives/base+coat roughness blocks and getRoughness own function. Remote dev minimum differs and is not adopted.",
+    "wholeCorpus": false,
+    "wholeApi": false,
+    "unread": "HDRP connected APIs/media and whole libraries/versions. Unity variance filter and installed Three max-derivative approximation are distinct; only existing Three geometry-roughness policy matched in native."
   }
 }

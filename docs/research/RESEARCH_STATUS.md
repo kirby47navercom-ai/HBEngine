@@ -1,3 +1,7 @@
+# 2026-10-20 — 970 기하 반사 AA 지정 본문 대조
+
+새 읽기: HDRP17.1 자체 본문·속성 표, Unity CommonMaterial의 지정 분산/필터 함수, Three dev 지정 거칠기 구역. 설치 r180 기본/코팅·TSL 계산과 다시 대조했어요. dev의 최소 거칠기는 설치본과 달라 대체하지 않았고, Unity 분산 방식과 기존 Three 최대 성분 차분 방식도 구분했어요. 연결 API·미디어·전체 라이브러리/버전은 미독이며 supplemental970으로 등록했어요. [구현·검사](GEOMETRIC_SPECULAR_970.md)는 전체 본문/API gate를 승격하지 않아요.
+
 # 2026-10-16 — 168 프리팹·타일 지정 본문 대조
 
 새 읽기/대조: Unity6000.0 Prefab instance override의 우선순위/루트 배치 예외, variant 상속/override, 새 공식 포털 TilemapRenderer 모드·컬링 경계·정렬 속성 본문. 구 class-TilemapRenderer 주소 접근 실패는 읽음으로 계산하지 않는다. 연결 API·그림/미디어·7000.0 API·전체 corpus/독립 분석은 미완이며 supplemental168/확장 대기열에 등록했다. HB의3방향 병합·대각 띠 청크를 Unity 내부 구현과 동일하다고 계산하지 않는다. [구현/검사](../ENGINE_WORK_168.md). 전역 gate 승격 없음.
