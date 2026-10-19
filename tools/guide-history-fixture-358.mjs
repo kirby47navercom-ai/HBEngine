@@ -6,13 +6,13 @@ import assert from 'node:assert/strict';
 
 // A closed room gives the mirror a diffuse second hit. Only the surface input
 // changes with time; the camera, triangle and normal map stay committed.
-export function guideHistoryFixture358(field=0,{primaryNormal=null,primaryMirror=false,spatialInput=null,lobeInput=null,worldScale=1}={}){
+export function guideHistoryFixture358(field=0,{primaryNormal=null,primaryMirror=false,spatialInput=null,lobeInput=null,worldScale=1,historyRate=.01,historyBias=undefined}={}){
  if(lobeInput&&!['anisotropy','anisotropyRotation'].includes(lobeInput))throw Error('Unsupported lobe history input');
  assert(Number.isFinite(worldScale)&&worldScale>0);const f=timedNormalFixture('static'),extras=[],geometry=new G.BoxGeometry(1,1,1);
  try{
   if(primaryNormal){const pixel=primaryNormal==='flat'?[128,128,255,255]:[180,128,240,255];f.texture.image.data.set([...pixel,...pixel]);f.texture.needsUpdate=true;}f.mesh.scale.set(4,4,1);f.mesh.rotation.y=.12;
   Object.assign(f.data.surface,{metalness:field===0||primaryMirror?1:0,roughness:field===0||primaryMirror?.02:1,clearcoat:field>=5?1:0,clearcoatRoughness:.02});
-  const root=f.data.graph.nodes.find(n=>n.key==='surface'),time=makeMaterialNode('time'),amount=makeMaterialNode('multiply'),bias=makeMaterialNode('add');amount.inputValues={b:.01};bias.inputValues={b:field===7?.2:.02};f.data.graph.nodes.push(time,amount,bias);
+  const root=f.data.graph.nodes.find(n=>n.key==='surface'),time=makeMaterialNode('time'),amount=makeMaterialNode('multiply'),bias=makeMaterialNode('add');amount.inputValues={b:historyRate};bias.inputValues={b:historyBias??(field===7?.2:.02)};f.data.graph.nodes.push(time,amount,bias);
   const wire=(a,p,b,q)=>f.data.graph.edges.push({from:{node:a.id,pin:p},to:{node:b.id,pin:q}});if(spatialInput){assert.ok(['worldPosition','worldNormal','viewDirection'].includes(spatialInput));const spatial=makeMaterialNode(spatialInput),component=makeMaterialNode('dot'),add=makeMaterialNode('add');component.inputValues={b:[1,0,0]};f.data.graph.nodes.push(spatial,component,add);wire(time,'value',add,'a');wire(spatial,'value',component,'a');wire(component,'value',add,'b');wire(add,'value',amount,'a');}else wire(time,'value',amount,'a');wire(amount,'value',bias,'a');wire(bias,'value',root,lobeInput||({0:'roughness',1:'baseColor',5:'clearcoatRoughness',6:'specularIntensity',7:'sheenRoughness',8:'iridescence'})[field]);
   for(const[x,y,z,sx,sy,sz]of[[0,0,-3,12,12,.1],[-5,0,2,.1,12,12],[5,0,2,.1,12,12],[0,-5,2,12,.1,12],[0,5,2,12,.1,12],[0,0,7,12,12,.1]]){const mesh=new G.Mesh(geometry,new G.MeshPhysicalMaterial({roughness:1}));mesh.position.set(x,y,z);mesh.scale.set(sx,sy,sz);f.scene.add(mesh);extras.push(mesh);}
   if(primaryNormal==='geometry')f.data.graph.edges=f.data.graph.edges.filter(e=>e.to.pin!=='normal');f.scene.scale.setScalar(worldScale);f.prepare(0);f.world.commit();const p=f.prepare(.5),historyFields=rayGuidePreviousFields(p.rayInfo.programs);assert.ok(historyFields.includes(field),JSON.stringify({field,historyFields}));assert.ok(p.motionOffset>0,'committed normal and positions must be present');

@@ -1,0 +1,5 @@
+import * as G from 'three';
+export function expectedRoughFootprint665(backend,uv,oldRoughness,currentRoughness,scale=1){
+ const camera=new G.PerspectiveCamera(60,1,.1*scale,30*scale);camera.coordinateSystem=backend==='webgl'?2000:2001;camera.position.set(.05*scale,.03*scale,4*scale);camera.lookAt(0,0,0);camera.updateProjectionMatrix();camera.updateMatrixWorld();const inverse=new G.Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse).invert(),ray=at=>new G.Vector3(at[0]*2-1,backend==='webgl'?at[1]*2-1:1-at[1]*2,backend==='webgl'?.9999*2-1:.9999).applyMatrix4(inverse).sub(camera.position).normalize(),d=ray(uv),spread=Math.max(ray([uv[0]+1/16,uv[1]]).distanceTo(d),ray([uv[0],uv[1]+1/16]).distanceTo(d)),normal=new G.Vector3(Math.sin(.12),0,Math.cos(.12)),first=-normal.dot(camera.position)/normal.dot(d),point=camera.position.clone().addScaledVector(d,first),out=d.clone().reflect(normal),second=(6.95*scale-point.z)/out.z;
+ const grow=r=>Math.min(1.57,spread+Math.max(.02,r)**2*.5),now=grow(currentRoughness),old=grow(oldRoughness);return [spread*first+now*(second-2e-5*scale),spread*first+old*second,now,old];
+}

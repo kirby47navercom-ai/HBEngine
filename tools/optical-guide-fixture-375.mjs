@@ -13,9 +13,11 @@ export function expectedOpticalWidth375(backend,uv){
 
 export function opticalGuideGL375(source,mode){
  const marker='return vec4(oldUV.xy,expected,coc);';if(!source.includes(marker))throw Error('optical guide GL return marker');
- if(mode==='width')return source.replace(marker,'return vec4(width,oldWidth,cone.y,oldSpread);');
- source=source.replace('vec3 nearPoint=hbWorldAt(uv,0.0)','float probeOriginalSpread=0.0;vec3 nearPoint=hbWorldAt(uv,0.0)').replace('oldSpread=oldCone.y;','oldSpread=oldCone.y;probeOriginalSpread=oldSpread;');
- return source.replace(marker,'return vec4(hbRayField3Lod(hit.y,p,-direction,width).x,hbRayPreviousField3TimeLod(hit.y,oldP,oldView,oldWidth,vec2(hbForward.w,1)).x,hbRayPreviousField3TimeLod(hit.y,oldP,oldView,oldWidth+(probeOriginalSpread-oldSpread)*oldSecondary,vec2(hbForward.w,1)).x,1);');
+ // Native source also contains inactive specialized variants before the generic
+ // body. Instrument every matching return, whichever branch is compiled.
+ if(mode==='width')return source.replaceAll(marker,'return vec4(width,oldWidth,cone.y,oldSpread);');
+ source=source.replaceAll('vec3 nearPoint=hbWorldAt(uv,0.0)','float probeOriginalSpread=0.0;vec3 nearPoint=hbWorldAt(uv,0.0)').replaceAll('oldSpread=oldCone.y;','oldSpread=oldCone.y;probeOriginalSpread=oldSpread;');
+ return source.replaceAll(marker,'return vec4(hbRayField3Lod(hit.y,p,-direction,width).x,hbRayPreviousField3TimeLod(hit.y,oldP,oldView,oldWidth,vec2(hbForward.w,1)).x,hbRayPreviousField3TimeLod(hit.y,oldP,oldView,oldWidth+(probeOriginalSpread-oldSpread)*oldSecondary,vec2(hbForward.w,1)).x,1);');
 }
 
 export function opticalGuideGPU375(source,mode){
