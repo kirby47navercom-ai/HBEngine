@@ -71,7 +71,7 @@ export function rayDifferentialNode(T,operation,base,delta,context,fallback){
   case'uv':return T.vec4(context[0],0,0);
   case'worldPosition':return T.vec4(context[1],0);
   case'worldNormal':return T.vec4(context[2],0);
-  case'channel':return T.vec4(da.element(T.int(context[3].x)));
+  case'channel':return T.vec4(Number.isInteger(context[5])?da['xyzw'[context[5]]]:da.element(T.int(context[3].x)));
   case'combine':return T.vec4(da.x,db.x,dc.x,dd.x);
   case'cast':return da;
   case'add':return da.add(db);
