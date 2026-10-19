@@ -708,3 +708,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 691–699 source 73793ecc02f69b274d7d2e152bf3b504990c35a3: 배열/볼륨 사용자 지정 밉을 제작 UI/Undo/보기·공용 로더·3API 업로드·광선/베이크·버전 캐시/참조/패키징으로 연결했다. 693 CPU,694Cfp4NO28표본/사람·AI,695wbYaT014표본/10거부,696Qe0jxQ 실제 C++/BP/LOD/typed swap/idle,697OJJwrD+U8y6js 이전기하/시간/노멀(차이0),699한글redirect와460/461/531 회귀 통과. Unity 두API 본문/예제 범위를 기록하고 전체분석 gate는 승격하지 않았다. Player698 새빌드. ENGINE_WORK700 정본으로 설치 후 다음 엔진 작업을 이어간다.
 
 702 설치 d6a3093567e86132/3506전체명세/180소유SHA/7C++·User10385읽기전후SHA/연결/Versions1. 설치694VvqUJH 실제GL/TSL28표본/밉UI/Undo와설치SDK/C++/BP696dFFpcB LOD3·타입교체·키복원·idle통과. 이전설치180670450B와소유검사exe6896842B정리. 다음 사용자지정 큐브/2D 밉·스트리밍과 누적 렌더링/엔진 목표를 계속한다.
+
+704–717 source 7134dfd1a0a1d2cefcc1cc641396aaf6dcb2125a: 큐브/2D 작성 밉을 제작·세API·광선/베이크·원래가져오기정책·워커·C++/BP/패키징까지 연결했다. Cube705/6946HPzdY36표본/695xvWz7B18표본/696SZ96GZ49에셋/697FAMb1i+gLuKxY,2D712/694uOzOH4/695UYKp98/696fEJ13p19에셋/697IjHSRD+yrwyFq와714ZX7omd512제곱3작업/전달후실패복구 통과. 실제이전재현/GL-GPU차이0·기존4e-5/3byte 유지. 453자동worker와CPU회귀 보존. Player698 소유헤더/셰이더가동일해재빌드생략. ENGINE_WORK718 정본으로 설치후누적구현계속.

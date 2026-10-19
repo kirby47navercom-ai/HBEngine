@@ -4417,5 +4417,27 @@
       "linked Unity API corpus and remaining full UE/Unity corpus",
       "W3C writeTexture method page: retrieval failed"
     ]
+  },
+  "supplemental716": {
+    "date": "2026-10-19",
+    "gatePromoted": false,
+    "records": [
+      "docs/research/CUBE_AUTHORED_MIPS_709.md",
+      "docs/research/TEXTURE_AUTHORED_2D_716.md"
+    ],
+    "newReading": [
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Texture2D.SetPixelData.html",
+        "sha256": "06b433e55156739a829c831d2da86c37cf0f033f9cb21938f240be4ce428c28a",
+        "scope": "Returned API declaration/parameters/description/example and footer; no linked corpus completion"
+      }
+    ],
+    "localPrimarySource": [
+      "Three WebGLTextures cube branch levels j+1 and allocator",
+      "Three WebGPUTextureUtils._copyCubeMapToTexture and common Textures.getMipLevels"
+    ],
+    "unread": [
+      "linked API corpus and remaining complete UE/Unity corpus"
+    ]
   }
 }
