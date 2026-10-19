@@ -79,7 +79,7 @@ class Device {
     void owns(const Buffer& b) const{if(!b.resource.p||b.owner!=device.p)throw std::runtime_error("Compute buffer belongs to another device or was moved");}
     static void queueKernel(KernelPreparation& request){
         if(request.job)return;
-        const auto source=request.source;const std::string entry=request.entry,key="HBCompute:"+entry+(request.retried?":refresh:":":cached:")+*source;const bool refresh=request.retried;
+        const auto source=request.source;const std::string entry=request.entry,key="HBCompute:"+std::to_string(entry.size())+":"+entry+(request.retried?":refresh:":":cached:")+*source;const bool refresh=request.retried;
         request.job=detail::sharedShaderPreparationQueue().submit(key,256+key.size()*2+source->size(),[source,entry,refresh]{return detail::ShaderBytecodeCompiler::create(*source,"HBCompute",entry.c_str(),"cs_5_0",[](const void*,std::size_t){return S_OK;},refresh).code;});
     }
 public:
