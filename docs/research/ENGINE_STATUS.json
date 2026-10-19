@@ -2254,11 +2254,11 @@
   ],
   "latestBatch": "642–654",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_640.json",
-    "sourceCommit": "6d9a2641c0601269deb5fb438a2e86fd33f76685",
-    "bundleHash": "cb8b8bdd2a13d7baa26ab6620fbc8eb006f3e7406f69aa03c430007d5c304c05",
+    "receipt": "docs/research/USER_INSTALL_657.json",
+    "sourceCommit": "bd8165d3558837ca4c05ecccac1108286826b9c7",
+    "bundleHash": "d39948668c05956a326ef2ed2d40e76fef96f12d188783587f0a147dcd48b57a",
     "verified": true,
     "versions": 1,
-    "scope": "640 전체3460파일/소유121SHA/검사소스6/User전후읽기SHA/연결/Versions1·설치SDK 시뮬레이션4/첫방출IO0/렌더5/캐시복구·새2D파티클 표시/정렬/재열기/해제·프로브/CPP/BP"
+    "scope": "657 3472전체명세/소유147SHA/검사소스6·설치17포즈/노멀배율·실제2D/파티클/프로브/C++/BP·User전후읽기SHA/연결/Versions1"
   }
 }

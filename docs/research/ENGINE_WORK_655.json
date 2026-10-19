@@ -267,6 +267,35 @@
       "path": "native/build/path-history-ownership-120.json",
       "sha256": "ff999eedc8b13959b020dbb5e7888c67f72759fc42debe13b2829e3211703b97",
       "scope": "범위와 수치는 해당 원본 보고서 참조"
+    },
+    {
+      "path": "native/build/previous-context-308-tSu8YT/acceptance.json",
+      "sha256": "8a5101466c217eba2b1404c422ae8cfa994f1c05018ab0aec2819b5a41d8a191",
+      "scope": "설치본 실제 GL/WebGPU 이전17포즈·UV/노멀/밉 대조",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\d39948668c05956a\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/normal-scale-645-YoeOdD/acceptance.json",
+      "sha256": "f191f43b331ca754def0e191f25bb9a187afe0918cbddb79032a621dc76685fc",
+      "scope": "Actual GL/WebGPU committed geometric/smooth/base/coat normals and both temporal-guide validity gates at scales1e-6/1/1e6; existing4e-5 tolerance.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\d39948668c05956a\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-readiness-559-xfLxqs/acceptance.json",
+      "sha256": "1c88cd8cb3ee57c20df94440c50201f5b20646f6fcb746c9785c30badd3012d1",
+      "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass.",
+      "args": [
+        "native/build/native-scene-window-neQy1U/DirectX 장면 검사",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\d39948668c05956a\\HBEngine.exe",
+        "--prepared-particles"
+      ]
     }
   ],
   "observations": [
@@ -304,7 +333,7 @@
   "nativePlayerSHA256": "688c5669774d3aafc52a459c5c3b1d71d700d432542716df4e590a46c84428f3",
   "hostSHA256": "efe7339b889643b2614173ed30a21055acb885c7d70ae703295b5bea976f2106",
   "hostReuse": "SceneRenderBridge는 HB_GAME_PLAYER에서만 포함. Player653 재빌드, 호스트 동일 지문 유지.",
-  "installationPending": true,
+  "installationPending": false,
   "currentInstallation": "docs/research/USER_INSTALL_640.json",
   "remaining": [
     "전역 변경 투명 경로/곡면 대응과 역해",
@@ -312,5 +341,6 @@
     "복잡한 GL/FXC 그래프 초기 준비 비용과 큰 GPU 필터/장치 생성 비용",
     "누적 원장 다른 엔진 목표"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_657.json"
 }
