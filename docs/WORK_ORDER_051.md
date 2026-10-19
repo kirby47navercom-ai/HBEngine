@@ -738,3 +738,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 799 설치 ddbb6d5f0518e98b/3597파일/276소유SHA/9C++·User10385읽기전후SHA/연결/Versions1 확정. 설치794YE2BWa 실제UI·CAS/Undo/Redo/저장,795aO25FE 실제HTTP공유·2abort·미완료/완료후보와source0,793aI3iGv 설치SDK C++/BP·D3D래스터/경로8상태 통과. 이전설치181552763B퇴역. 다음 실제그래프/보조뷰수요·누적광학/엔진목표 계속.
 
 801–807 9d2fdf4d37b2e28a93dffa188a70f68f343753c9: 같은 실제sampler/sourceNode·그래프 UV 선형계수/현재 파라미터/Time·LOD/gradient/bias 수요를GL/GPU/native연결. 비선형보수/예산·관련의존캐시유지. 실제GL/GPU22샘플 full원본차이0(4e-5), D3D SDK C++/블프0→3→1→0→3과래스터/경로동일, CPU독립계수12조건/13회귀/기존8풀조건. 예산/장면의owned IO취소·미제출0·새수동요청보존·3실제HTTP중단/source0. GL/native주프로그램유지만승격, WebGPU pipelineidentity 미계측표기정정. 화면bounds추정/비선형·삼각형·보조광학·쿠킹·복잡GL·누적잔여유지. 설치808뒤계속.
+
+808 설치 dba5a88a0535ea83/3606파일/283소유SHA/9C++·User10385읽기전후SHA/연결/Versions1 확정. 설치803K7o6Fa 실제GL/GPU22픽셀수요오차0/GL프로그램,805jjLTGk 실제HTTP풀취소3·새수동보존·source/stage0,804KoI1m7 설치SDK C++/BP D3D0→3→1→0→3과래스터/경로동일. 이전설치181676627B퇴역. 거리장AO 구조 검토와원장렌더링/엔진목표 계속.

@@ -2460,11 +2460,11 @@
     "scope": "UV 그래프 밉 수요·세GPU/SDK/C++/블프·풀 owned IO 취소"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_799.json",
-    "sourceCommit": "f765352e750d7c45fd30cbd915ac2120991eefb6",
-    "bundleHash": "ddbb6d5f0518e98bcd2deabb429965d8242faa234358c0654aad6e1bb88a1235",
+    "receipt": "docs/research/USER_INSTALL_808.json",
+    "sourceCommit": "87ff6c6f07cafa4ef5ab1d4b2b6092707976c854",
+    "bundleHash": "dba5a88a0535ea832df0a408408a9413f727b27d33fb1b37c53de4884c28f3d3",
     "verified": true,
     "versions": 1,
-    "scope": "799 전체3597파일/276소유SHA/9C++·설치UI/AI·실제공유IO/취소·C++블프 D3D8상태·User읽기SHA/연결/Versions1"
+    "scope": "808 전체3606파일/283소유SHA/9C++·설치GL/GPU그래프·HTTP풀취소·C++블프 D3DUV/경로·User읽기SHA/연결/Versions1"
   }
 }

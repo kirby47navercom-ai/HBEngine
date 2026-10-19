@@ -347,6 +347,33 @@
       "path": "native/build/texture-pool-768-oEAV0E/acceptance.json",
       "sha256": "397698b610bac0f98e0c19a6ff15d7a2172b99575fbff054979a9d6e71cff405",
       "scope": "Actual GL/WebGPU two-material mip pool for all4 texture families: budget split, priority, offscreen demand, temporary0 blocks allocation, lowest-level/disabled full restoration, pixels and stable program. Production SceneTextureStreaming adapter and physical resident views. Payload budget, not whole driver heap or disk IO."
+    },
+    {
+      "path": "native/build/texture-demand-803-K7o6Fa/acceptance.json",
+      "sha256": "a0d627f990def0e3bdcd6bc34f479675c78a539c74ac984f8f198330dce396c3",
+      "scope": "Actual GL/WebGPU graph parameter/time changes, affine UV shrink/repeat, bias, explicitLOD/gradients and conservative nonlinear requests through production SceneTextureStreaming. Resident pixels match independent full-source draws original4e-5, exact desired-base diagnostics and stable GL program IDs; WebGPU pipeline identity not instrumented. Projection is a mesh bounds estimate, not local triangle/secondary derivative proof.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dba5a88a0535ea83\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/pool-cancel-805-jjLTGk/acceptance.json",
+      "sha256": "e3daa5cd8529d45facc76103630383deec6b436ce34c84da58c7cbd56d3f9502",
+      "scope": "Real delayed HTTP plus production SceneTextureStreaming collection/planner: budget change aborts old fine request, cancel before prepare starts no IO, stale pool cancel cannot kill newer manual stage, dispose aborts and releases pending/source/stages0. Synthetic4x4 viewport for CPU demand only; no GPU or frame-time claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dba5a88a0535ea83\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-KoI1m7/acceptance.json",
+      "sha256": "af2b11975f78b0e06a90413ec0ee126574baec1ccc69bc40a7cd62591827d25b",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dba5a88a0535ea83\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -403,8 +430,8 @@
     "wholeFPSClaim": false,
     "exactLocalOrSecondaryDerivatives": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_799.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_808.json",
   "remaining": [
     "전역 곡면 역해",
     "거친 복합 로브/참여 매질 산란의 정밀 확장",
@@ -420,5 +447,6 @@
     "방향성 노멀 필터·화면 공간 기하 Specular AA·UV 경계 품질",
     "other cumulative engine goals and physical mobile/Mac-dependent validation"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_808.json"
 }

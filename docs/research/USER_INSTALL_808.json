@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "87ff6c6f07cafa4ef5ab1d4b2b6092707976c854",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\dba5a88a0535ea83",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\dba5a88a0535ea83\\HBEngine.exe",
+  "bundleHash": "dba5a88a0535ea832df0a408408a9413f727b27d33fb1b37c53de4884c28f3d3",
+  "files": 3606,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "87ff6c6f07cafa4ef5ab1d4b2b6092707976c854",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\dba5a88a0535ea83",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\dba5a88a0535ea83\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\dba5a88a0535ea83\\HBEngine.exe",
+    "bundleHash": "dba5a88a0535ea832df0a408408a9413f727b27d33fb1b37c53de4884c28f3d3",
+    "files": 3606,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3598,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ddbb6d5f0518e98b",
+          "bytes": 181676627,
+          "manifestSHA256": "b93ca33428a2161337e1627bcd24f443ce1180d76a30881e837f9cc05a5ee81f"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-19T09:11:19.6125363Z",
+      "bytes": 181676627,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "dba5a88a0535ea83"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "runtimeOwnersVerified": 283,
+    "repositoryOnlyTestSourcesVerified": 9,
+    "nativePlayerSHA256": "ea75010f1b6de7d655cdbb4e99c778fb915b180ff960dab96693563f6327173b",
+    "installedGates": [
+      {
+        "path": "native/build/texture-demand-803-K7o6Fa/acceptance.json",
+        "sha256": "a0d627f990def0e3bdcd6bc34f479675c78a539c74ac984f8f198330dce396c3",
+        "scope": "Actual GL/WebGPU graph parameter/time changes, affine UV shrink/repeat, bias, explicitLOD/gradients and conservative nonlinear requests through production SceneTextureStreaming. Resident pixels match independent full-source draws original4e-5, exact desired-base diagnostics and stable GL program IDs; WebGPU pipeline identity not instrumented. Projection is a mesh bounds estimate, not local triangle/secondary derivative proof.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\dba5a88a0535ea83\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/pool-cancel-805-jjLTGk/acceptance.json",
+        "sha256": "e3daa5cd8529d45facc76103630383deec6b436ce34c84da58c7cbd56d3f9502",
+        "scope": "Real delayed HTTP plus production SceneTextureStreaming collection/planner: budget change aborts old fine request, cancel before prepare starts no IO, stale pool cancel cannot kill newer manual stage, dispose aborts and releases pending/source/stages0. Synthetic4x4 viewport for CPU demand only; no GPU or frame-time claim.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\dba5a88a0535ea83\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/texture-demand-804-player-KoI1m7/acceptance.json",
+        "sha256": "af2b11975f78b0e06a90413ec0ee126574baec1ccc69bc40a7cd62591827d25b",
+        "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\dba5a88a0535ea83\\HBEngine.exe"
+        ]
+      }
+    ],
+    "manifestVerifiedFiles": 3606,
+    "versions": [
+      "dba5a88a0535ea83"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-808-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "path": "native/build/texture-demand-801.json",
+        "sha256": "e18bda0eeb77322190f420d76206c1bd17ccee613616629d1ec5586cd84ce46b",
+        "scope": "Affine coefficients versus independent existing CPU material evaluator at two times/two points, parameter cache invalidation, nonlinearity fallback and projected mip arithmetic. Projection remains a bounds heuristic; actual GPU/pool/runtime are separate gates."
+      },
+      {
+        "path": "native/build/texture-demand-regressions-806.json",
+        "sha256": "ebae609627132db66f7985c672e8fb0bf7abd847f169eee4fde130283452b2cd",
+        "scope": "Existing transactions/import/residency/regions/pool, independent affine-demand oracle and native/API generator identity; actual GPU/CPP/pool IO gates separate."
+      },
+      {
+        "path": "native/build/texture-demand-803-02LwCr/acceptance.json",
+        "sha256": "113f3d4a33ba15936856062bfef52914904def24b1272d0757304ce8b34e394b",
+        "scope": "Actual GL/WebGPU graph parameter/time changes, affine UV shrink/repeat, bias, explicitLOD/gradients and conservative nonlinear requests through production SceneTextureStreaming. Resident pixels match independent full-source draws original4e-5, exact desired-base diagnostics and stable program. Projection is a mesh bounds estimate, not local triangle/secondary derivative proof.",
+        "acceptedScope": "GL/WebGPU actual pixels and desired/resident levels; program identity proven only for GL, older WebGPU programStable flag excluded"
+      },
+      {
+        "path": "native/build/texture-demand-804-player-VzqpIk/acceptance.json",
+        "sha256": "3600ba34040a3322ef90f333350314e480c99375eb57116313bfc9813447e5d1",
+        "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+      },
+      {
+        "path": "native/build/pool-cancel-805-7jKdz9/acceptance.json",
+        "sha256": "4929f3c012eb78a5b7b5d3d3fa587dfe2dfcb68500fc773353dca05c9597c720",
+        "scope": "Real delayed HTTP plus production SceneTextureStreaming collection/planner: budget change aborts old fine request, cancel before prepare starts no IO, stale pool cancel cannot kill newer manual stage, dispose aborts and releases pending/source/stages0. Synthetic4x4 viewport for CPU demand only; no GPU or frame-time claim."
+      },
+      {
+        "path": "native/build/texture-pool-768-oEAV0E/acceptance.json",
+        "sha256": "397698b610bac0f98e0c19a6ff15d7a2172b99575fbff054979a9d6e71cff405",
+        "scope": "Actual GL/WebGPU two-material mip pool for all4 texture families: budget split, priority, offscreen demand, temporary0 blocks allocation, lowest-level/disabled full restoration, pixels and stable program. Production SceneTextureStreaming adapter and physical resident views. Payload budget, not whole driver heap or disk IO."
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/texture-demand-804-player-VzqpIk/acceptance.json",
+        "sha256": "3600ba34040a3322ef90f333350314e480c99375eb57116313bfc9813447e5d1",
+        "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+      }
+    ],
+    "scope": "808 전체 명세/283소유SHA·실제GL/GPU그래프수요/픽셀·HTTP풀취소/새수동보존·설치SDK C++/BP D3D그래프/경로·User읽기SHA/연결/Versions1. 누적 작업 계속."
+  },
+  "nativeCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "3606전체명세/283소유SHA/9저장소전용C++·설치 GL/GPU22픽셀/수요·풀HTTP취소3/새수동보존/source0·설치SDK C++/블프 D3D UV수요/래스터·경로/주프로그램·User읽기전후SHA/연결/Versions1. 누적 구현 계속."
+}
