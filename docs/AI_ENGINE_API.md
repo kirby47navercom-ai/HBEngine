@@ -539,3 +539,5 @@ binding의 `residency.disk.decodedBytes/logicalBytes/pendingReads/reads`와 머�
 `schema.meshDistanceFields`에서 속성과 진단·제약을 읽으세요. `PostProcessVolume`의 `aoEnabled=true`, `aoMode="distanceField"`로 선택하고 `aoRadius/aoBias/aoIntensity/aoDistanceFieldResolution/aoDistanceFieldBudgetMB`를 같은 문서 CAS·Undo/Redo·저장으로 편집해요. 사람용 속성 UI와 같은 설정이에요. 기존 `hb::Components::SetBool/SetString/SetFloat`와 `componentSetBool/componentSetString/componentSetFloat` 블루프린트 노드를 사용해 게임에서도 변경할 수 있어요.
 
 `profiler.read`의 rendering 항목과 실행기 `renderer.distanceFields`에서 준비·대기·제외 원인·로컬 볼륨/atlas/대기 입력 페이로드·정적/강체 부분 쓰기를 확인하세요. 비활성·장면 해제는 소유한 작업과 자료를 정리해요. CPU 볼륨 복사 0은 전체 GPU 전송 0이나 전체 메모리 0을 뜻하지 않아요. [구현·실제 GL/WebGPU/DirectX·제작 검증과 남은 정밀도/시간 필터](research/MESH_DISTANCE_FIELD_AO_821.md).
+
+`distanceFields.analyticFields/voxelFields`는 검증된 기본 도형의 거리식과 일반 모델의 볼륨 수를 구분해요. `ready`만으로 전체 준비를 판정하지 말고 `pending===0`과 실패·제외 진단도 읽으세요. [도형 판별·일반 볼륨 보존·352B 큰 평면 장면의 실제 검증](research/MESH_DISTANCE_PRIMITIVES_835.md).
