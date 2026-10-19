@@ -770,3 +770,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 948 설치 C:\Users\kirby\HBEngine\Versions\c006b922fb1c171a/3677파일/349소유SHA/9CPP·User10385읽기전후SHA/연결/Versions1 확정. 설치940TgsELo실제설치모듈6시계/패킷,941qg0flW설치SDK·셰이더/매질12조건,866D9bTpI설치GL/GPU노멀6조건차이0,818TuVShg실제SDK CPP/BP게임. 최초940검사정리함수의경로오류는안전규칙을유지한repo소유I/O복사로resume950에서동일설치본에이어검증/재설치없음. 이전182469721B정리. 누적원장계속.
 
 951–966 c551b2798643715145aee4cf1064ad5b5088c732: CPU수집별선택그래프/문맥독립표면/머테리얼전용기하재사용·이전프레임보존.953전체패킷4조건,956문맥독립12조건,958시계분류/이동,960변형·슬롯·포즈·인스턴스등28상태,962회귀8종/128GC수거,941실제D3D매질12조건,781GL실제CPP/BP6상태,804D3D실제CPP/BP밉0/3/1/0/3+path.961최종전체CPUprepare ABBA864개5001.92→48.61ms/균일384개2225.07→13.91ms;게임FPS/초기GL/FXC개선주장없음. Native901/902동일9owner/binarySHA재사용.설치968뒤누적계속.
+
+968 설치 C:\Users\kirby\HBEngine\Versions\7f0929f5ba72d5cd/3690파일/361소유SHA/9CPP·User10385읽기전후SHA/연결/Versions1 확정. 설치953UhzFUq 실제설치모듈패킷4조건/타이밍생략,941erS3gH설치SDK·셰이더매질12조건,781XECeT3실제SDK CPP/BP GL6상태,804tDWtmb D3D밉5상태+path. 이전182563796B정리. 누적작업계속.

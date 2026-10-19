@@ -2588,11 +2588,11 @@
     "scope": "CPU 머테리얼 평가·기하 준비/이력 재사용·실제 C++/블루프린트 게임"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_948.json",
-    "sourceCommit": "9aed97250773080690f67d3529fcd81950340a1e",
-    "bundleHash": "c006b922fb1c171a34d7eb3dd245a2a5f55e1d7e61875e5c21962bc2f5c82aca",
+    "receipt": "docs/research/USER_INSTALL_968.json",
+    "sourceCommit": "60a10cae67c7a837ab9f13e57a4c2d744dd8fe5f",
+    "bundleHash": "7f0929f5ba72d5cd1a7a0ae8ac58d98b1aa866cad7d26453f7c32b24768f55a6",
     "verified": true,
     "versions": 1,
-    "scope": "948 전체3677파일/349소유SHA/9CPP·기본Panner시간/CPU매질/기존노멀/실행·실제SDK CPP/BP 게임·User읽기SHA/연결/Versions1"
+    "scope": "968 전체3690파일/361소유SHA/9CPP·CPU준비기하패킷·D3D매질·CPP/BP GL/D3D밉/path·User읽기SHA/연결/Versions1"
   }
 }

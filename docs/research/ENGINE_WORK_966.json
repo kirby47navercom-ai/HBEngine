@@ -453,6 +453,45 @@
       "path": "native/build/texture-demand-804-player-dDSwsZ/acceptance.json",
       "sha256": "10bb3800102e4456d69790d040835bb5b71f80c80a4337f0c1a718c22b3b3082",
       "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+    },
+    {
+      "path": "native/build/geometry-evaluation-953-UhzFUq/acceptance.json",
+      "sha256": "8baa7f1099bba74601f6084c46cb66c165e7d24c8d14c5366ad1a38e1652be7c",
+      "scope": "Frozen previous/current CPU collection: full triangle/context/surface/signature/packed Float32 bytes equality across attributes/nonattributes, transport/nontransport, time0/2/0, mirrored transforms, shared source and parameter mutations; reused meshes evaluate0. Warm ABBA1536triangle CPU collection observation only, no whole FPS/GPU/VRAM claim.",
+      "args": [
+        "--no-timing",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/material-clock-941-native-erS3gH/acceptance.json",
+      "sha256": "956cdeb9156c33f65fc3a7a612d9eeb732a6ed6934f6918e922eaa69c4707782",
+      "scope": "Actual generated optimized hardware D3D11 current RGB medium seed, automatic Panner Time→CPU closedVolume clock0/2/0. Both directions, real plan macro and forced real-walker control: twelve stack/IOR/extinction answers. CPU geometry packets reused normal material cache. Value-compute proof, not game pixel/FPS or synthetic reverse-order FXC resolution.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/guide-game-781-XECeT3/acceptance.json",
+      "sha256": "b292ab853de0c22ce11a48b3712a51d75af59e4877dd3c35ee3d0b1d4031c59e",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-tDWtmb/acceptance.json",
+      "sha256": "a225748d1d67eda9aca5363b8b0b36d3f984b6a0467edd1bafe5b6db4297ff1f",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -465,6 +504,26 @@
       "path": "native/build/texture-demand-804-player-dDSwsZ/acceptance.json",
       "sha256": "10bb3800102e4456d69790d040835bb5b71f80c80a4337f0c1a718c22b3b3082",
       "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+    },
+    {
+      "path": "native/build/guide-game-781-XECeT3/acceptance.json",
+      "sha256": "b292ab853de0c22ce11a48b3712a51d75af59e4877dd3c35ee3d0b1d4031c59e",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-tDWtmb/acceptance.json",
+      "sha256": "a225748d1d67eda9aca5363b8b0b36d3f984b6a0467edd1bafe5b6db4297ff1f",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd\\HBEngine.exe"
+      ]
     }
   ],
   "nativePlayerSHA256": "b8833656c68cdec3620243b080459a4d9575d93303b0602da23a6c1e01fcb6cd",
@@ -504,8 +563,8 @@
     "wholeColdStartClaim": false,
     "wholeComplex141Claim": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_948.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_968.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json at record basis revision",
   "remaining": [
     "PRJ-03: 특수 내부 폴더·바이너리 스트림 가져오기·이름 변경/redirect/index의 공동 복구",
@@ -595,5 +654,6 @@
     "RES-01: 전체 discovery 분모·추가 버전/API/미디어 대조",
     "RES-01: 전체 독립 분석 gate"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_968.json"
 }

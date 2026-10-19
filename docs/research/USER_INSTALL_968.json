@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "date": "2026-10-20",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "60a10cae67c7a837ab9f13e57a4c2d744dd8fe5f",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd\\HBEngine.exe",
+  "bundleHash": "7f0929f5ba72d5cd1a7a0ae8ac58d98b1aa866cad7d26453f7c32b24768f55a6",
+  "files": 3690,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3678,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\c006b922fb1c171a",
+        "bytes": 182563796,
+        "manifestSHA256": "6b387c43ed3ed4c63f72bd22871446834852c6cbfab49c300b3b7cc5bfc002b0"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-19T15:05:13.6005419Z",
+    "bytes": 182563796,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "7f0929f5ba72d5cd"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 361,
+  "repositoryOnlyTestSourcesVerified": 9,
+  "nativePlayerSHA256": "b8833656c68cdec3620243b080459a4d9575d93303b0602da23a6c1e01fcb6cd",
+  "installedGates": [
+    {
+      "path": "native/build/geometry-evaluation-953-UhzFUq/acceptance.json",
+      "sha256": "8baa7f1099bba74601f6084c46cb66c165e7d24c8d14c5366ad1a38e1652be7c",
+      "scope": "Frozen previous/current CPU collection: full triangle/context/surface/signature/packed Float32 bytes equality across attributes/nonattributes, transport/nontransport, time0/2/0, mirrored transforms, shared source and parameter mutations; reused meshes evaluate0. Warm ABBA1536triangle CPU collection observation only, no whole FPS/GPU/VRAM claim.",
+      "args": [
+        "--no-timing",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/material-clock-941-native-erS3gH/acceptance.json",
+      "sha256": "956cdeb9156c33f65fc3a7a612d9eeb732a6ed6934f6918e922eaa69c4707782",
+      "scope": "Actual generated optimized hardware D3D11 current RGB medium seed, automatic Panner Time→CPU closedVolume clock0/2/0. Both directions, real plan macro and forced real-walker control: twelve stack/IOR/extinction answers. CPU geometry packets reused normal material cache. Value-compute proof, not game pixel/FPS or synthetic reverse-order FXC resolution.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/guide-game-781-XECeT3/acceptance.json",
+      "sha256": "b292ab853de0c22ce11a48b3712a51d75af59e4877dd3c35ee3d0b1d4031c59e",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-tDWtmb/acceptance.json",
+      "sha256": "a225748d1d67eda9aca5363b8b0b36d3f984b6a0467edd1bafe5b6db4297ff1f",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd\\HBEngine.exe"
+      ]
+    }
+  ],
+  "manifestVerifiedFiles": 3690,
+  "versions": [
+    "7f0929f5ba72d5cd"
+  ],
+  "profile": {
+    "filesBefore": 10385,
+    "filesAfter": 10385,
+    "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-968-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/material-preparation-regressions-962.json",
+      "sha256": "fbb3bc2f1fbc9a631793a1e32003cfc7675d28f5f18b9d95f084cd76de5ed53a",
+      "scope": "Final selected evaluator/live graph/sampler contexts/typed functions/layers/uniforms/texture families/volume and128owned snapshot GC regression gates."
+    },
+    {
+      "path": "native/build/material-evaluator-954.json",
+      "sha256": "5637c3d0b9d1313a55ebd6233de1dafa607f6c8648f3566b3c4ff8d1b7ae4cd8",
+      "scope": "Prepared owned-snapshot lookup plan versus direct evaluation, preserving default live plain graph and per-call time/world/normal/texture callback behavior. No GPU/FPS/whole heap claim."
+    },
+    {
+      "path": "native/build/prepared-ownership-959.json",
+      "sha256": "e58789ca820795b892617031f74f81b87ecb1e0c39cfc45a9baaba939b928cf1",
+      "scope": "Own Node process only: exact owned snapshot roots observed during prepare,128closures released across full/empty selected plans; four GC turns prove weak-key release. Heap delta observational, not engine/RAM/VRAM/long-running-game validation."
+    },
+    {
+      "path": "native/build/geometry-evaluation-953-2qgZxE/acceptance.json",
+      "sha256": "52bc07f7c3a726f9f49252c34ab6e85e182b66b467ab6f4b227e0bb5cbf1db38",
+      "scope": "Frozen previous/current CPU collection: full triangle/context/surface/signature/packed Float32 bytes equality across attributes/nonattributes, transport/nontransport, time0/2/0, mirrored transforms, shared source and parameter mutations; reused meshes evaluate0. Warm ABBA1536triangle CPU collection observation only, no whole FPS/GPU/VRAM claim."
+    },
+    {
+      "path": "native/build/geometry-uniform-956-TE2pZm/acceptance.json",
+      "sha256": "dc3e64172ee3fd4783907442bdfa4e2c3608ed7285a4b7eb7696034a2b43f58d",
+      "scope": "Actual CPU collection versus frozen previous on uniform and attribute material graphs, both transport modes and three clocks: one surface evaluation per source, remaining triangle hits reused. Spatial Fresnel/UV defaults conservatively disable reuse; no persistent cache or GPU/FPS claim."
+    },
+    {
+      "path": "native/build/geometry-clock-958-ytjjUK/acceptance.json",
+      "sha256": "c83ab02d8ae92c2935570ae7bd2f5679d848ad567fb26cc085b0641d6b5af296",
+      "scope": "Actual previous/current GeometryGIWorld packed Float32 and ray metadata equality on0/1/2clock: unusedTime and constant Panner with spatial shader inputs keep one build instead of3; actual GPUTime and CPUvolume Time keep3updates. Geometry transforms/poses still use existing independent signatures; no whole FPS or cold shader claim."
+    },
+    {
+      "path": "native/build/geometry-reuse-960-l8q06p/acceptance.json",
+      "sha256": "5989477f78dfd2fc0133266558f53fbd0d7de9f534b9b62520dc2f08edb0129b",
+      "scope": "Actual current/frozen previous GeometryGIWorld Float32/ray-info equality through material/time/parameter/shadow/identity changes, visibility/group transitions, attribute/index/transform/order dirty guards, instanced resize/pose, morph and skin pose. Unchanged geometry arrays shared with new material records; standard attribute/instance version flags required as before. No GPU/FPS claim."
+    },
+    {
+      "path": "native/build/geometry-world-cost-961-inYeWQ/acceptance.json",
+      "sha256": "4359e4b04077f7d9950c1a705722a9c1b7979ae626bb826e16a3aa432385dcf6",
+      "scope": "Warm paired ABBA full CPU GeometryGIWorld.prepare including graph resolution, collection, ray program/material packing, temporal commit and BVH reuse; spatial864 and uniform384 triangles with64-node normal chain. Same data/rayInfo/mediumCount each timed pair, actual material-only geometry reuse. User load and GC uncontrolled; no cold shader compilation, GPU timings or whole-game FPS claim."
+    },
+    {
+      "path": "native/build/material-clock-941-native-1tvfE1/acceptance.json",
+      "sha256": "dc45094b05c25ed860fe18f4eb6de13e5369dcabcdcbb669df8fcb4305e4b574",
+      "scope": "Actual generated optimized hardware D3D11 current RGB medium seed, automatic Panner Time→CPU closedVolume clock0/2/0. Both directions, real plan macro and forced real-walker control: twelve stack/IOR/extinction answers. CPU geometry packets reused normal material cache. Value-compute proof, not game pixel/FPS or synthetic reverse-order FXC resolution."
+    },
+    {
+      "path": "native/build/guide-game-781-zrSqgM/acceptance.json",
+      "sha256": "eeb0574ea66252679703d681b1555f006d7dc650911f36715ddc389c53e3a41e",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim."
+    },
+    {
+      "path": "native/build/texture-demand-804-player-dDSwsZ/acceptance.json",
+      "sha256": "10bb3800102e4456d69790d040835bb5b71f80c80a4337f0c1a718c22b3b3082",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/guide-game-781-zrSqgM/acceptance.json",
+      "sha256": "eeb0574ea66252679703d681b1555f006d7dc650911f36715ddc389c53e3a41e",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim."
+    },
+    {
+      "path": "native/build/texture-demand-804-player-dDSwsZ/acceptance.json",
+      "sha256": "10bb3800102e4456d69790d040835bb5b71f80c80a4337f0c1a718c22b3b3082",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+    }
+  ],
+  "scope": "968 전체3690파일/361소유SHA/CPP9·CPU평가/기하패킷·실제D3D매질·실제SDK CPP/BP GL6상태/D3D밉5상태+path·읽기전후User SHA·연결·Versions1;누적작업계속",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}
