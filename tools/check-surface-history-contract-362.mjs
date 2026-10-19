@@ -4,4 +4,6 @@ const schema=engineSchema();assert.equal(schema.raySurfaceHistory,raySurfaceHist
 assert.ok(Object.isFrozen(raySurfaceHistoryContract.previousGeometry));assert.equal(raySurfaceHistoryContract.previousGeometry.version,1);assert.ok(raySurfaceHistoryContract.previousGeometry.remaining.includes('medium'));assert.ok(raySurfaceHistoryContract.resources.includes('CPU refit cache'));
 for(const key of ['previousMedium','opticalSpread']){assert.ok(Object.isFrozen(raySurfaceHistoryContract[key]));assert.equal(raySurfaceHistoryContract[key].version,1);assert.ok(raySurfaceHistoryContract[key].remaining);}
 assert.ok(raySurfaceHistoryContract.previousMedium.state.includes('16 scalar IORs'));assert.ok(raySurfaceHistoryContract.previousMedium.path.includes('TIR'));assert.ok(raySurfaceHistoryContract.opticalSpread.model.includes('radiance integrator'));
+const dielectric=raySurfaceHistoryContract.opticalSpread.dielectric;
+assert.ok(Object.isFrozen(dielectric));assert.throws(()=>{dielectric.roughThreshold=1;});assert.equal(engineSchema().raySurfaceHistory.opticalSpread.dielectric,dielectric);
 console.log(JSON.stringify({passed:true,fields:10,immutableMachineContract:true,relativeAndAbsoluteTolerance:true,nonFiniteRejected:true,diskPolicyConsistent:true,transparentReplayStillExplicit:true,optionalPreviousBVHContract:true}));
