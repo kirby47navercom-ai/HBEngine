@@ -313,6 +313,18 @@
       "path": "native/build/native-preparation-window-496-Ac1rzS/acceptance.json",
       "sha256": "e6dfa1ce9bf0f8b5e0b090bd180d58897ec750c936cd1fa3fce1d14f0af7abb4",
       "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+    },
+    {
+      "path": "native/build/native-preparation-window-496-ywn5AX/acceptance.json",
+      "sha256": "2f572c5d1ccd13423e970722fcba0a0f67066652ff8479fb563cd338e93ef517",
+      "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim.",
+      "args": [
+        "--fixture",
+        "native/build/native-preparation-window-496-EJDC4B/Project",
+        "--normal-footprint",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\395c41816742fe01\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -356,8 +368,8 @@
     "New fixture C++ Text method also needs its project header written; fixed clone only",
     "TSL probe insertion originally matched the opacity skip; anchored only after the completed lobe"
   ],
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_734.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_747.json",
   "remaining": [
     "texture streaming/residency budgets and compressed/HDR/platform formats",
     "global curved/transparent inverse correspondence",
@@ -366,5 +378,6 @@
     "complex GL/FXC first preparation, device/filter costs",
     "other cumulative engine goals and physical mobile/Mac-dependent validation"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_747.json"
 }

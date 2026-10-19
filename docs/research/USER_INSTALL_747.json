@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "a93c0274a9ad413c66a7575af1825909c24714fe",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\395c41816742fe01",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\395c41816742fe01\\HBEngine.exe",
+  "bundleHash": "395c41816742fe0192e24f25ebdda1201e89a5fd29ef43ec9958af95cd34e787",
+  "files": 3544,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "a93c0274a9ad413c66a7575af1825909c24714fe",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\395c41816742fe01",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\395c41816742fe01\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\395c41816742fe01\\HBEngine.exe",
+    "bundleHash": "395c41816742fe0192e24f25ebdda1201e89a5fd29ef43ec9958af95cd34e787",
+    "files": 3544,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3529,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\da025ba0a8981a32",
+          "bytes": 180984602,
+          "manifestSHA256": "5eca339812cc0108c5cc680826580846cd79d23cdd193431513ce1d15fb784f7"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-19T05:42:30.9637138Z",
+      "bytes": 180984602,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "395c41816742fe01"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "runtimeOwnersVerified": 227,
+    "repositoryOnlyTestSourcesVerified": 8,
+    "nativePlayerSHA256": "413cddca6eb89a7e0ab3dc70533230a4b5586459f12682ec562fa47fb32aa570",
+    "installedGates": [
+      {
+        "path": "native/build/native-preparation-window-496-ywn5AX/acceptance.json",
+        "sha256": "2f572c5d1ccd13423e970722fcba0a0f67066652ff8479fb563cd338e93ef517",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim.",
+        "args": [
+          "--fixture",
+          "native/build/native-preparation-window-496-EJDC4B/Project",
+          "--normal-footprint",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\395c41816742fe01\\HBEngine.exe"
+        ]
+      }
+    ],
+    "manifestVerifiedFiles": 3544,
+    "versions": [
+      "395c41816742fe01"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-747-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "path": "native/build/normal-angle-737.json",
+        "sha256": "ef2527ad51dd1dcd75bee9a8c4f4c376e5fa30eb7da5b34b538a95107b987b9c",
+        "scope": "Independent reflection2atan(slope), equal-IOR identity and Snell transmission angle oracles; foundation only until actual shader and renderer integration gates pass."
+      },
+      {
+        "path": "native/build/normal-contract-745.json",
+        "sha256": "ea15431e94cbf18ef41711c895b60880ba2e9321a7733c88aaaaeb452d377ddf",
+        "scope": "Live API enum, invalid values, post-volume resolution, exact packed native flags preserving old low bits and distinct history keys; immutable AI normal-variation contract. Runtime C++/Blueprint/capture gate742 separate."
+      },
+      {
+        "path": "native/build/normal-regressions-746.json",
+        "sha256": "28f6bb7beeff881a3626a2c898ae236487cd99649c0769656892093df65c9c6e",
+        "scope": "Existing material/mip/current-prior normal contracts and generated native/API consistency; no new runtime performance claim."
+      },
+      {
+        "path": "native/build/authored-context-736-AsXRN0/acceptance.json",
+        "sha256": "5b3130688299eed35968c6c3a5f701bb459e00556923d6046ecec6793e08aaaf",
+        "scope": "Real WebGL lose/restore events, all4 authored RGBA8 mip families at unchanged texture versions; lower-mip independent texel oracle and new resource identity. No explicit prepare call after restore, no simulated properties reset or per-frame scan."
+      },
+      {
+        "path": "native/build/normal-footprint-738-UPQ829/acceptance.json",
+        "sha256": "b64b0820f626b1a8cae844e2a367cb944a39a7995568a4304014a87df1925fd5",
+        "scope": "Actual GL/TSL finite normal envelope, three modes, independent analytic reflection/Snell/equal-IOR answers, smooth-geometry scale change and base/coat procedural normal world-position/time changes; committed old frame/time/width independent from current. Existing4e-5 unchanged; native and full renderer integration are separate gates."
+      },
+      {
+        "path": "native/build/normal-footprint-739-native-geYtTj/acceptance.json",
+        "sha256": "5395ddd49897d333bcc169d4c71f542c907710c8dd759f2faab6041e1bbadd66",
+        "scope": "Actual D3D11 generated finite normal cone: off/geometry/material, base/coat normals, scaled geometry and distinct committed/current clocks, views, widths; independent analytic reflection/Snell/equal-IOR answers, unchanged4e-5."
+      },
+      {
+        "path": "native/build/normal-guide-740-qECd5l/acceptance.json",
+        "sha256": "54b109c378f2fbd63494da021f012af529dcfa1d652905239d612e9b2e0d10c8",
+        "scope": "Full GL/WebGPU auxiliary guide, only test return and center-pixel sampling replaced. Independent perspective/normal-angle/roughness/receiver distance oracle; committed old and current widths differ in geometry/base/coat modes; original4e-5."
+      },
+      {
+        "path": "native/build/normal-guide-741-native-GxhLXk/acceptance.json",
+        "sha256": "5869b73c542e21a9981e34c9127ab8efa09af9e1aa7bbcbc5e567e7039f3e20c",
+        "scope": "Actual D3D11 full auxiliary guide; independent analytic full secondary current/committed cone widths for geometry, mapped base and mapped coat. Original4e-5."
+      },
+      {
+        "path": "native/build/normal-radiance-743-hA7eGZ/acceptance.json",
+        "sha256": "6d5b201c2916742af0c0373bdbcb3fa5e0b558710bfe6d31029d441ed745e694",
+        "scope": "Actual complete GL/WebGPU radiance bounce: source instrumented only after chosen lobe to return cone/u/sentinel. 32 deterministic seeds per mode and base/coat/smooth geometry; independent2atan(slope*firstWidth) delta versus off, same random/lobe branch and diffuse zero control. Original4e-5."
+      },
+      {
+        "path": "native/build/native-preparation-window-496-Ac1rzS/acceptance.json",
+        "sha256": "e6dfa1ce9bf0f8b5e0b090bd180d58897ec750c936cd1fa3fce1d14f0af7abb4",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/native-preparation-window-496-Ac1rzS/acceptance.json",
+        "sha256": "e6dfa1ce9bf0f8b5e0b090bd180d58897ec750c936cd1fa3fce1d14f0af7abb4",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+      }
+    ],
+    "scope": "747 전체 명세/227소유SHA·설치 SDK/C++/BP 노멀 모드 전환/원복·실제 복잡한 광선 준비/샘플/캡처·작업자 유휴0·User읽기SHA/연결/Versions1. 누적 작업 계속."
+  },
+  "nativeCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "전체3544파일/227소유SHA/8검사 C++·설치 SDK/새Player744 C++/BP 노멀 모드·원복/실제 경로 샘플/캡처/작업자0·User읽기전후SHA·연결·Versions1. 누적 구현 계속."
+}
