@@ -10,7 +10,7 @@ vec3 hbRayBaryOffset(float id,vec3 point,vec3 offset){
 }
 `;
 export function rayBarycentricOffsetNode(T,record,id,point,offset){
- const e1=record(id,1).xyz,e2=record(id,2).xyz,delta=point.sub(record(id,0).xyz);
- const base=rayCoordinatesGPU(e1,e2,delta),shift=rayCoordinatesGPU(e1,e2,offset);
+ const e1=record(id,1).xyz.toVar(),e2=record(id,2).xyz.toVar(),delta=point.sub(record(id,0).xyz).toVar();
+ const base=rayCoordinatesGPU(e1,e2,delta).toVar(),shift=rayCoordinatesGPU(e1,e2,offset).toVar();
  return T.vec3(T.float(1).sub(base.x).sub(base.y).sub(shift.x).sub(shift.y),base.add(shift));
 }

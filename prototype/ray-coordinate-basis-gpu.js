@@ -1,14 +1,14 @@
 import * as T from 'three/tsl';
 import {gpuFn} from './gpu-function-scope.js';
 export const rayUnitGPU=gpuFn(([v])=>{const a=v.abs(),scale=T.max(T.max(a.x,a.y),a.z),result=T.vec3(0).toVar();T.If(scale.greaterThan(0),()=>result.assign(v.div(scale).normalize()));return result;}).setLayout({name:'hbRayUnit',type:'vec3',inputs:[{name:'v',type:'vec3'}]});
-export const rayFrameNormalGPU=(a,b)=>rayUnitGPU(rayUnitGPU(a).cross(rayUnitGPU(b)));
-export const rayFrameValidGPU=(a,b)=>{const n=rayUnitGPU(a).cross(rayUnitGPU(b));return n.dot(n).greaterThan(1e-24);};
+export const rayFrameNormalGPU=gpuFn(([a,b])=>rayUnitGPU(rayUnitGPU(a).cross(rayUnitGPU(b)))).setLayout({name:'hbRayFrameNormal',type:'vec3',inputs:[{name:'a',type:'vec3'},{name:'b',type:'vec3'}]});
+export const rayFrameValidGPU=gpuFn(([a,b])=>{const n=rayUnitGPU(a).cross(rayUnitGPU(b)).toVar();return n.dot(n).greaterThan(1e-24);}).setLayout({name:'hbRayFrameValid',type:'bool',inputs:[{name:'a',type:'vec3'},{name:'b',type:'vec3'}]});
 export const rayDualCoordinatesGPU=gpuFn(([e1,e2,delta])=>{
- const s1=e1.abs().toVar(),s2=e2.abs().toVar(),u=T.max(T.max(s1.x,s1.y),s1.z),v=T.max(T.max(s2.x,s2.y),s2.z),result=T.vec2(0).toVar();
- T.If(u.greaterThan(0).and(v.greaterThan(0)),()=>{const x=e1.div(u),y=e2.div(v),n=x.cross(y),det=n.dot(n);T.If(det.greaterThan(1e-30),()=>{result.assign(T.vec2(delta.div(u).dot(y.cross(n)),delta.div(v).dot(n.cross(x))).div(det));});});return result;
+ const s1=e1.abs().toVar(),s2=e2.abs().toVar(),u=T.max(T.max(s1.x,s1.y),s1.z).toVar(),v=T.max(T.max(s2.x,s2.y),s2.z).toVar(),result=T.vec2(0).toVar();
+ T.If(u.greaterThan(0).and(v.greaterThan(0)),()=>{const x=e1.div(u).toVar(),y=e2.div(v).toVar(),n=x.cross(y).toVar(),det=n.dot(n).toVar();T.If(det.greaterThan(1e-30),()=>{result.assign(T.vec2(delta.div(u).dot(y.cross(n)),delta.div(v).dot(n.cross(x))).div(det));});});return result;
 }).setLayout({name:'hbRayDualCoordinates',type:'vec2',inputs:[{name:'e1',type:'vec3'},{name:'e2',type:'vec3'},{name:'delta',type:'vec3'}]});
 export const rayCoordinatesGPU=gpuFn(([e1,e2,delta])=>{
- const a=e1.dot(e1),b=e1.dot(e2),c=e2.dot(e2),den=a.mul(c).sub(b.mul(b)),result=T.vec2(0).toVar();
+ const a=e1.dot(e1).toVar(),b=e1.dot(e2).toVar(),c=e2.dot(e2).toVar(),den=a.mul(c).sub(b.mul(b)).toVar(),result=T.vec2(0).toVar();
  T.If(den.greaterThan(1e-18).and(den.greaterThan(a.mul(c).mul(1e-5))),()=>{
   const d=delta.dot(e1),e=delta.dot(e2);result.assign(T.vec2(c.mul(d).sub(b.mul(e)),a.mul(e).sub(b.mul(d))).div(den));
  }).Else(()=>{

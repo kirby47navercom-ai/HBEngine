@@ -21,7 +21,7 @@ export function rayUVDifferentialsNode(T,fn,load,attributes,record,offset){
   const at=attributes(id).toVar(),result=T.vec4(0).toVar();
   T.If(at.greaterThan(0),()=>{
    const e1=record(id,1).xyz.toVar(),e2=record(id,2).xyz.toVar(),first=load(at).toVar(),du=first.zw.sub(first.xy),dv=load(at.add(1)).xy.sub(first.xy);
-   for(const axis of [0,1]){const delta=offset(id,view,width,T.float(axis)),coordinates=rayCoordinatesGPU(e1,e2,delta);result[axis?'zw':'xy'].assign(du.mul(coordinates.x).add(dv.mul(coordinates.y)));}
+   for(const axis of [0,1]){const delta=offset(id,view,width,T.float(axis)),coordinates=rayCoordinatesGPU(e1,e2,delta).toVar();result[axis?'zw':'xy'].assign(du.mul(coordinates.x).add(dv.mul(coordinates.y)));}
   });return result;
  });
 }

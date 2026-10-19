@@ -13,7 +13,7 @@ export function previousRayGPU(transport,u,{reuseTextures=true,fields=[3]}={}){
   return ray.record(id,slot);
  };
  const geometric=id=>record(id,3).xyz;
- const bary=gpuFn(([id,point])=>{const origin=record(id,0).xyz,e1=record(id,1).xyz,e2=record(id,2).xyz,delta=point.sub(origin),coordinates=rayCoordinatesGPU(e1,e2,delta);return T.vec3(T.float(1).sub(coordinates.x).sub(coordinates.y),coordinates);}).setLayout({name:'hbPreviousBary',type:'vec3',inputs:[{name:'id',type:'float'},{name:'point',type:'vec3'}]});
+ const bary=gpuFn(([id,point])=>{const origin=record(id,0).xyz,e1=record(id,1).xyz,e2=record(id,2).xyz,delta=point.sub(origin),coordinates=rayCoordinatesGPU(e1,e2,delta).toVar();return T.vec3(T.float(1).sub(coordinates.x).sub(coordinates.y),coordinates);}).setLayout({name:'hbPreviousBary',type:'vec3',inputs:[{name:'id',type:'float'},{name:'point',type:'vec3'}]});
  const smoothOffset=gpuFn(([id,point,offset])=>{
   const face=geometric(id).toVar(),result=face.toVar(),at=ray.attributes(id).toVar();
   T.If(at.greaterThan(0),()=>{
