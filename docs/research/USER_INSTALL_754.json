@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "a8eb261a13f4e4fd93a6ee4e246c7d6e82197617",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\42bd7f485e2671ad",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\42bd7f485e2671ad\\HBEngine.exe",
+  "bundleHash": "42bd7f485e2671ad15a9214e0b9e451e9f0453435459457dfe0d5461280f19ea",
+  "files": 3551,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "a8eb261a13f4e4fd93a6ee4e246c7d6e82197617",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\42bd7f485e2671ad",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\42bd7f485e2671ad\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\42bd7f485e2671ad\\HBEngine.exe",
+    "bundleHash": "42bd7f485e2671ad15a9214e0b9e451e9f0453435459457dfe0d5461280f19ea",
+    "files": 3551,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3545,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\395c41816742fe01",
+          "bytes": 181143217,
+          "manifestSHA256": "9c44d7c444273927d2c96010f5345c0516317b1ddb1a8aab654a009439769847"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-19T06:00:09.5595834Z",
+      "bytes": 181143217,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "42bd7f485e2671ad"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "runtimeOwnersVerified": 233,
+    "repositoryOnlyTestSourcesVerified": 8,
+    "nativePlayerSHA256": "413cddca6eb89a7e0ab3dc70533230a4b5586459f12682ec562fa47fb32aa570",
+    "installedGates": [
+      {
+        "path": "native/build/ray-mip-cache-750-CiIsAn/acceptance.json",
+        "sha256": "fabb680051235817df86e732243634cfbf3f9833179df9e08d17b80c8fa2a8e3",
+        "scope": "Actual isolated editor API/schema, live profiler snapshot and real docked profiler controls use the same CPU conversion pool. Lower budget evicts8of10; invalid combined budget/clear is atomic; clear leaves old returned mip snapshots valid. Capture retained; no GPU-residency or whole-heap claim.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\42bd7f485e2671ad\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/native-preparation-window-496-vQhTBV/acceptance.json",
+        "sha256": "7a654903f7444269dc951b7f2ca42c2a0d27c1642fe173d0c7b4e86dd4add246",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim.",
+        "args": [
+          "--fixture",
+          "native/build/native-preparation-window-496-EJDC4B/Project",
+          "--normal-footprint",
+          "--mip-cache",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\42bd7f485e2671ad\\HBEngine.exe"
+        ]
+      }
+    ],
+    "manifestVerifiedFiles": 3551,
+    "versions": [
+      "42bd7f485e2671ad"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-754-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "path": "native/build/ray-mip-cache-749.json",
+        "sha256": "57582b8a004e97b037a70ef67c79feb06783c052a20d6b83dcdf439814631655",
+        "scope": "Actual rayMipChain pool: exact unique converted Float32 buffers across color/filter variants, byte bound, LRU, release/clear/zero and stale-source snapshots. Explicit Node GC proves tokens do not retain map/image owners. CPU retained cache only; GPU and active snapshots not capped."
+      },
+      {
+        "path": "native/build/ray-mip-cache-atlas-751.json",
+        "sha256": "6db2ae72840ae53ec62795db4bfbfa851ec93ceb5122e20f2e7ca0d872dca1eb",
+        "scope": "All4 texture families x4 sampling modes; current and committed prior packed Float32 atlas bytes identical with256MiB retained conversion cache versus disabled/evicted cache. Previous/current points, clocks and widths remain fixture519 inputs. Not a GPU budget/FPS claim."
+      },
+      {
+        "path": "native/build/ray-mip-sharing-726.json",
+        "sha256": "befa8199c8018b56404b65175d0c85248af024a2bb2694259e5dd34a4b7702cb",
+        "scope": "One generated float base per texture version/color interpretation/volume layout; mip toggles share immutable level data but preserve caller level-list length, version mutation and explicit release. Area-average independent oracle, no heap/FPS claim."
+      },
+      {
+        "path": "native/build/ray-invariant-724.json",
+        "sha256": "4f216fe3c7aaa31eaf472ac3dd15c2dc26a5518f99b946fdaed1b76f902207d1",
+        "scope": "Version-aware spatial invariance only; committed Time/base evaluation and material IR remain unchanged. Register overwrites and nested sampled coordinates retain dependencies. Actual GPU pixels, shader preparation and packaged C++ execution are separate gates."
+      },
+      {
+        "path": "native/build/mip-cache-regressions-753.json",
+        "sha256": "78d6757b2ebe0b306cd0864072ee8df5276a59af5edffc998c592d1d061cb840",
+        "scope": "Existing texture/material/mip/history behavior and generated API/native byte consistency after cache/UI integration."
+      },
+      {
+        "path": "native/build/ray-mip-cache-750-Nz82qa/acceptance.json",
+        "sha256": "ac55a8755a91e450b7f0bfbbd24df9eacd9a6368796361251917e462182ec245",
+        "scope": "Actual isolated editor API/schema, live profiler snapshot and real docked profiler controls use the same CPU conversion pool. Lower budget evicts8of10; invalid combined budget/clear is atomic; clear leaves old returned mip snapshots valid. Capture retained; no GPU-residency or whole-heap claim."
+      },
+      {
+        "path": "native/build/native-preparation-window-496-j7u7La/acceptance.json",
+        "sha256": "f5385a5a1420c8f6de66ab1bfe517c58109a6619536064cd306f31c8bb6c692c",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/native-preparation-window-496-j7u7La/acceptance.json",
+        "sha256": "f5385a5a1420c8f6de66ab1bfe517c58109a6619536064cd306f31c8bb6c692c",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+      }
+    ],
+    "scope": "754 전체 명세/233소유SHA·설치 UI/API CPU 밉 캐시 예산·비우기와 SDK/C++/BP 노멀 모드 전환/원복·활성 캐시 보관 끄기·실제 복잡한 광선 준비/샘플/캡처·작업자 유휴0·User읽기SHA/연결/Versions1. 누적 작업 계속."
+  },
+  "nativeCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "전체3551파일/233소유SHA/8검사 C++·설치 프로파일러 UI/API 캐시3360→672→0과 SDK/Player744 C++/BP 노멀 모드·원복/실제 경로 샘플/캡처/작업자0·User읽기전후SHA·연결·Versions1. 누적 구현 계속."
+}

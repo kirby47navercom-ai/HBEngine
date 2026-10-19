@@ -2400,11 +2400,11 @@
     "scope": "CPU 광선 밉 변환 예산·약한 소유권/최근 사용 퇴역·이전 스냅샷 보존·프로파일러/AI·보관 끄기 실제 실행; GPU 상주 작업과 구분"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_747.json",
-    "sourceCommit": "a93c0274a9ad413c66a7575af1825909c24714fe",
-    "bundleHash": "395c41816742fe0192e24f25ebdda1201e89a5fd29ef43ec9958af95cd34e787",
+    "receipt": "docs/research/USER_INSTALL_754.json",
+    "sourceCommit": "a8eb261a13f4e4fd93a6ee4e246c7d6e82197617",
+    "bundleHash": "42bd7f485e2671ad15a9214e0b9e451e9f0453435459457dfe0d5461280f19ea",
     "verified": true,
     "versions": 1,
-    "scope": "747 전체3544파일/227소유SHA/8C++검사·설치 C++/BP 노멀 모드 전환/원복·실제 경로 샘플/캡처/작업자0·User읽기전후SHA/연결/Versions1"
+    "scope": "754 전체3551파일/233소유SHA/8C++검사·설치 C++/BP 노멀 모드 전환/원복·실제 경로 샘플/캡처/작업자0·User읽기전후SHA/연결/Versions1"
   }
 }

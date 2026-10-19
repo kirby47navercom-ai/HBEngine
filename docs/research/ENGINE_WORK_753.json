@@ -298,6 +298,28 @@
       "path": "native/build/native-preparation-window-496-j7u7La/acceptance.json",
       "sha256": "f5385a5a1420c8f6de66ab1bfe517c58109a6619536064cd306f31c8bb6c692c",
       "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+    },
+    {
+      "path": "native/build/ray-mip-cache-750-CiIsAn/acceptance.json",
+      "sha256": "fabb680051235817df86e732243634cfbf3f9833179df9e08d17b80c8fa2a8e3",
+      "scope": "Actual isolated editor API/schema, live profiler snapshot and real docked profiler controls use the same CPU conversion pool. Lower budget evicts8of10; invalid combined budget/clear is atomic; clear leaves old returned mip snapshots valid. Capture retained; no GPU-residency or whole-heap claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\42bd7f485e2671ad\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/native-preparation-window-496-vQhTBV/acceptance.json",
+      "sha256": "7a654903f7444269dc951b7f2ca42c2a0d27c1642fe173d0c7b4e86dd4add246",
+      "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim.",
+      "args": [
+        "--fixture",
+        "native/build/native-preparation-window-496-EJDC4B/Project",
+        "--normal-footprint",
+        "--mip-cache",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\42bd7f485e2671ad\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -350,8 +372,8 @@
     "GPUResidencyImplemented": false,
     "wholeFPSClaim": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_747.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_754.json",
   "remaining": [
     "actual GPU mip residency, logical LOD offsets and owned region mapping",
     "GPU desired/budgeted/resident/temporary pools and async disk mip IO",
@@ -360,5 +382,6 @@
     "complex GL/FXC preparation and resource/filter costs",
     "other cumulative engine goals and physical mobile/Mac-dependent validation"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_754.json"
 }
