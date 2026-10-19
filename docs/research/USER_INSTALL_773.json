@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "e1e27b4a82d108038728896fdfcc397a2c79d2e4",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5f363c3a4bd985da",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\5f363c3a4bd985da\\HBEngine.exe",
+  "bundleHash": "5f363c3a4bd985da20bb3022f807509e137b234d890d7806f6594bc73295b33b",
+  "files": 3571,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "e1e27b4a82d108038728896fdfcc397a2c79d2e4",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5f363c3a4bd985da",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\5f363c3a4bd985da\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\5f363c3a4bd985da\\HBEngine.exe",
+    "bundleHash": "5f363c3a4bd985da20bb3022f807509e137b234d890d7806f6594bc73295b33b",
+    "files": 3571,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3552,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\42bd7f485e2671ad",
+          "bytes": 181219075,
+          "manifestSHA256": "766c3cf73ed9beb475aed2835919d6b3c3c035c368200ce10873f5544f914222"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-19T07:09:59.2714463Z",
+      "bytes": 181219075,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "5f363c3a4bd985da"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "runtimeOwnersVerified": 251,
+    "repositoryOnlyTestSourcesVerified": 9,
+    "nativePlayerSHA256": "ea75010f1b6de7d655cdbb4e99c778fb915b180ff960dab96693563f6327173b",
+    "installedGates": [
+      {
+        "path": "native/build/texture-pool-771-i8o7lc/acceptance.json",
+        "sha256": "51e9485a3379220fe49325ec955312be46b782551c0a1dac2adc6cc3032307a3",
+        "scope": "Actual isolated editor/schema/AI paged pool read and invalid page rejection; real rendered authored texture, docked profiler payload table, authoring document CAS edit/Undo/Redo changes physical resident views; same pool without extra control path.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\5f363c3a4bd985da\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/authored-mips-696-player-bfs0I7/acceptance.json",
+        "sha256": "95a5da67512ca73e710d8fa7f1747cb5dac79a350487f9ee31727d86934b7c93",
+        "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim.",
+        "args": [
+          "--regions",
+          "--residency",
+          "--pool",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\5f363c3a4bd985da\\HBEngine.exe"
+        ]
+      }
+    ],
+    "manifestVerifiedFiles": 3571,
+    "versions": [
+      "5f363c3a4bd985da"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-773-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "path": "native/build/resident-mip-view-756.json",
+        "sha256": "85076085e2a686829b5d1699bbb737e07f24c8e6d964999c09e5366821d0cbd0",
+        "scope": "CPU-only owned RGBA8 all4 families x3 bases: physical view shape/mip payload, sampler/color/UV copy, source+Source-version/data preservation, zero pixel-buffer copies, logicalLOD offset and restore from coarsest root. No GPU allocation/public-runtime or automatic streaming completion claim."
+      },
+      {
+        "path": "native/build/resident-regions-761.json",
+        "sha256": "40a1131ab6a6a44c8120ac77bad3004dbc6d168310f0b0c26c7bd2b744f08544",
+        "scope": "Source logical region vs resident physical offset, nonresident no-op batch, source/view versions and whole-batch/stale atomicity; base0 restore and old converted mip snapshots. Accepted separate owned cube-face buffers also preserved. GPU upload counters separate."
+      },
+      {
+        "path": "native/build/texture-pool-767.json",
+        "sha256": "152c25d02c972fe519f83c49780a54270390180a1dab071c822b152c61aface1",
+        "scope": "Exact mip-payload planner; priority/fixed/minimum overage; transition reservation, frame retirement, zero-temp blocking, stale settings/manual ownership and whole-batch failure cancellation. Perspective/orthographic/frustum and UV-range demand math. CPU planning time, not frame/FPS/whole-VRAM or asynchronous disk IO proof."
+      },
+      {
+        "path": "native/build/resident-regressions-766.json",
+        "sha256": "e0340b399367392f4a703f1e15a342c54bf8e405dc13b63859160318b3e5e689"
+      },
+      {
+        "path": "native/build/resident-mip-757-LGVEoN/acceptance.json",
+        "sha256": "f2e91b84ae33f4d2e0aa3d961d00442615ff54fcdca796d98812fde0a4a56053",
+        "scope": "Actual GL immutable allocation and WebGPU texture descriptor for all4 RGBA8 families x3 resident bases, physical smaller dimensions/counts/bytes. Independent original logical0/1/2 colors for all cube faces and array layers; caller explicitly applies helper logicalLOD offset. Public material/runtime and region integration are still separate work."
+      },
+      {
+        "path": "native/build/resident-mip-758-native-cll7rI/acceptance.json",
+        "sha256": "6a301e6f3aff37144f38e2e0c9e21e9016c083fcf7e36c84f467d4444e12e873",
+        "scope": "Actual SDK D3D11 RGBA8 all4 families x3 resident views: storageBytes decreases to physical mip payload and independent logical-level colors for all cube faces/array slices, with pre-adjusted probe LOD and unchanged<3 display-byte tolerance. Public material/runtime/region mapping integration remains separate."
+      },
+      {
+        "path": "native/build/resident-material-759-DvMdVv/acceptance.json",
+        "sha256": "b6ea59a1fa8f8ac25aa44704cbc10886d57bee654bfff2248490a06ebe08621b",
+        "scope": "Actual authored GL/WebGPU material graphs, dynamic logicalLOD uniform, same compiled program through0→1→2→0 GPU views; all4 dimensions, source-root restoration, stale transaction/invalid level. Public C++/node, ray/native logical offsets and region mapping remain separate work."
+      },
+      {
+        "path": "native/build/resident-ray-760-rZaBvq/acceptance.json",
+        "sha256": "3d6e497d220a9471449ec445335b5dd29703df6c8726649c1b3880b7500806b3",
+        "scope": "Actual shared GL/WebGPU ray-material IR and packed physical mip views: all4 families x3 bases x3 original explicitLOD values. Independent storage-color oracle; source header high-byte base / low-byte count and source-clamped logical LOD. Native ray and public game integration separate."
+      },
+      {
+        "path": "native/build/resident-ray-760-native-aORFAI/acceptance.json",
+        "sha256": "f4ad3afaaeb3c6e21d44e0d9a9f7a73dc1b4e94386fa0bdb722991cc92cdd6e0",
+        "scope": "Actual D3D11 shared generated ray-material IR / packed resident-level metadata, all4 families x3 bases x3 original explicitLOD values. Independent color oracle at unchanged4e-5. Native public game execution separate."
+      },
+      {
+        "path": "native/build/resident-regions-762-FD6S7v/acceptance.json",
+        "sha256": "e654c29fab56746b15fc46f5586f6edee639ae961804ca7949e9ad1475c13da9",
+        "scope": "Actual GL/WebGPU base1 source-logical patches: source level0 nonresident writes0, source level1 maps to physical0 writes4B, GPU identity retained; restore full base0 reveals earlier fine edit. All4 RGBA8 families, unchanged4e-5. Native resource no-op bridge/public game separate."
+      },
+      {
+        "path": "native/build/texture-pool-768-MdvkbQ/acceptance.json",
+        "sha256": "af93bf6c2646fec8fa21f4a6b17df8aa591be9dce6aeae4bedc56ad5254c674f",
+        "scope": "Actual GL/WebGPU two-material mip pool for all4 texture families: budget split, priority, offscreen demand, temporary0 blocks allocation, lowest-level/disabled full restoration, pixels and stable program. Production SceneTextureStreaming adapter and physical resident views. Payload budget, not whole driver heap or disk IO."
+      },
+      {
+        "path": "native/build/authored-mips-696-player-EXzJIx/acceptance.json",
+        "sha256": "5caecc1c5e1915cd41bf9a0a7cbf3f66c1a93c41557d07d47c7a620f9fff75da",
+        "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim."
+      },
+      {
+        "path": "native/build/texture-pool-771-11z8HA/acceptance.json",
+        "sha256": "be535c1746a6688d5a06f9cd52833740a180db47af7c8d8307e4afcf664c7f2c",
+        "scope": "Actual isolated editor/schema/AI paged pool read and invalid page rejection; real rendered authored texture, docked profiler payload table, authoring document CAS edit/Undo/Redo changes physical resident views; same pool without extra control path."
+      },
+      {
+        "path": "native/build/texture-sampling-520-CgkRWS/acceptance.json",
+        "sha256": "f8ce5f88267a8b2f20124b83e61d6984f1c7f059d718500c04ea6837d65745a2",
+        "scope": "Actual GL/TSL current/committed previous material controls in all four families and all four modes; independent normal mip oracle, existing4e-5."
+      },
+      {
+        "path": "native/build/texture-sampling-521-native-GTbaXs/acceptance.json",
+        "sha256": "757943d40593453e2d68918bf3774384ea5a0f7f4520313138c61eede4b73c90",
+        "scope": "Actual optimized D3D11 all four families/four modes, current time1 versus committed previous time0 controls, independent +/-X mip normal oracle, existing4e-5."
+      },
+      {
+        "path": "native/build/authored-ray-history-697-2UwSnd/acceptance.json",
+        "sha256": "dc6743085d39a259fc8a059d70660830e7a75417f016e1357a2f079425474a19",
+        "scope": "Actual authored RGBA8 array/volume/cube packed mip current and committed moved/mirrored geometry and clocks, independent byte-decoded normal oracle; existing4e-5."
+      },
+      {
+        "path": "native/build/authored-ray-history-697-native-bqbh7t/acceptance.json",
+        "sha256": "26e93e8cd0b536b6fb552d017eb352fcba62fc243b430cdfcf3f4e1a34600c33",
+        "scope": "Actual D3D11 authored RGBA8 array/volume/cube packed mip current and committed moved/mirrored geometry and clocks, independent byte-decoded normal oracle; existing4e-5."
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/authored-mips-696-player-EXzJIx/acceptance.json",
+        "sha256": "5caecc1c5e1915cd41bf9a0a7cbf3f66c1a93c41557d07d47c7a620f9fff75da",
+        "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim."
+      }
+    ],
+    "scope": "773 전체 명세/251소유SHA·설치 프로파일러/AI/Undo/Redo 밉 풀과 SDK/C++/BP 수동 고정·자동 복귀·실제 네 자료형 해상도/색/경로/부분 갱신/복원·User읽기SHA/연결/Versions1. 누적 작업 계속."
+  },
+  "nativeCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "전체3571파일/251소유SHA/9저장소전용C++·설치 프로파일러/AI/문서Undo/Redo20→4→20→4와 설치SDK/Player769 C++/블루프린트 네자료형 상주/자동복귀·원본부분갱신·실제래스터/경로색·User읽기전후SHA/연결/Versions1. 누적 구현 계속."
+}

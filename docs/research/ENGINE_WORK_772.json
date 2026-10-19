@@ -370,6 +370,27 @@
       "path": "native/build/authored-ray-history-697-native-bqbh7t/acceptance.json",
       "sha256": "26e93e8cd0b536b6fb552d017eb352fcba62fc243b430cdfcf3f4e1a34600c33",
       "scope": "Actual D3D11 authored RGBA8 array/volume/cube packed mip current and committed moved/mirrored geometry and clocks, independent byte-decoded normal oracle; existing4e-5."
+    },
+    {
+      "path": "native/build/texture-pool-771-i8o7lc/acceptance.json",
+      "sha256": "51e9485a3379220fe49325ec955312be46b782551c0a1dac2adc6cc3032307a3",
+      "scope": "Actual isolated editor/schema/AI paged pool read and invalid page rejection; real rendered authored texture, docked profiler payload table, authoring document CAS edit/Undo/Redo changes physical resident views; same pool without extra control path.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\5f363c3a4bd985da\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/authored-mips-696-player-bfs0I7/acceptance.json",
+      "sha256": "95a5da67512ca73e710d8fa7f1747cb5dac79a350487f9ee31727d86934b7c93",
+      "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim.",
+      "args": [
+        "--regions",
+        "--residency",
+        "--pool",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\5f363c3a4bd985da\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -537,8 +558,8 @@
     "temporaryDriverFence": false,
     "wholeFPSClaim": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_754.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_773.json",
   "remaining": [
     "디스크 비동기 mip 읽기/취소·정확한 그래프/보조 뷰 수요·전체 GPU/전환 heap 예산·raw/HDR/압축 포맷 상주/부분 갱신",
     "압축 컨테이너·플랫폼 쿠킹·HDR 선형·추가 도메인",
@@ -551,5 +572,6 @@
     "complex GL/FXC cold preparation and resource/filter cost",
     "other cumulative engine goals and physical mobile/Mac-dependent validation"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_773.json"
 }

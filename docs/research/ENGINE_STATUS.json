@@ -2420,11 +2420,11 @@
     "scope": "실제 GPU 상주 밉·논리/원본 좌표·자동 머테리얼 페이로드 풀·이전 상주 노멀/시각·C++/BP/편집기/AI 연결"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_754.json",
-    "sourceCommit": "a8eb261a13f4e4fd93a6ee4e246c7d6e82197617",
-    "bundleHash": "42bd7f485e2671ad15a9214e0b9e451e9f0453435459457dfe0d5461280f19ea",
+    "receipt": "docs/research/USER_INSTALL_773.json",
+    "sourceCommit": "e1e27b4a82d108038728896fdfcc397a2c79d2e4",
+    "bundleHash": "5f363c3a4bd985da20bb3022f807509e137b234d890d7806f6594bc73295b33b",
     "verified": true,
     "versions": 1,
-    "scope": "754 전체3551파일/233소유SHA/8C++검사·설치 C++/BP 노멀 모드 전환/원복·실제 경로 샘플/캡처/작업자0·User읽기전후SHA/연결/Versions1"
+    "scope": "773 전체3571파일/251소유SHA/9C++·설치실제풀 UI/AI/Undo/Redo·SDK/C++/BP 네자료형 상주/부분갱신/래스터·경로/자동복귀·User읽기SHA/연결/Versions1"
   }
 }
