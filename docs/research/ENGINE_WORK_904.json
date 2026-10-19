@@ -437,6 +437,43 @@
       "path": "native/build/distance-field-818-player-VFwhoO/acceptance.json",
       "sha256": "8d4dc336f8b6c6e131aab4051c3430dd582929df789613e47caa0ae77438d128",
       "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim."
+    },
+    {
+      "path": "native/build/distance-resolution-881-4TJCWi/acceptance.json",
+      "sha256": "b29ad3d84046bb9ad99c23ba97ab5bf9dedf64bc7ecf244f7fa2f8e90f62bdcc",
+      "scope": "Actual worker/scene per-bake resolution fitting: three distinct general fields55/15/8 plus exact zero-volume box inside1MB, static reuse, typed budget metadata, zero remaining local reserve still admits exact primitive, deferred generic field retries after another owner geometry leaves, unload/idle0. No camera LOD/clipmap or whole RAM/VRAM claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3cc1a911d4cc8463\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-query-884-Q5A0sx/acceptance.json",
+      "sha256": "bf8221543bbc6e9d65862ddd337fda55182bdbd40b00be752578708bf7d1a660",
+      "scope": "Actual GL old/current counted atlas reads, current WebGPU and frozen CPU old/current distance/error/first-object equality on2048overlapping boxes,257separated boxes,257overlapping finite-error volumes. Zero lower bound and equal bbox pruning; original4e-5. Read/visit reduction only, no whole FPS or GPU-time claim; WebGPU reads not measured.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3cc1a911d4cc8463\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-address-886-vWIUt7/acceptance.json",
+      "sha256": "db7cbef66c42fff2c6e8a8053e0264cf6deadf068353948d12db987281cba82e",
+      "scope": "Actual GL/WebGPU integer scalar-address lane proof at2^24/2^25/2^26 boundaries. Synthetic negative base remaps the integer group into a128B texture; old float rounding reproduced. Not a full giant-volume bake, cooking or memory-capacity test.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3cc1a911d4cc8463\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-818-player-xw8A0U/acceptance.json",
+      "sha256": "c692a5198edff5f4834d2fd5dd754f2ada470a182dc3fe8da711e5f98ad053c5",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim.",
+      "args": [
+        "--adaptive",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3cc1a911d4cc8463\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -444,6 +481,16 @@
       "path": "native/build/distance-field-818-player-VFwhoO/acceptance.json",
       "sha256": "8d4dc336f8b6c6e131aab4051c3430dd582929df789613e47caa0ae77438d128",
       "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim."
+    },
+    {
+      "path": "native/build/distance-field-818-player-xw8A0U/acceptance.json",
+      "sha256": "c692a5198edff5f4834d2fd5dd754f2ada470a182dc3fe8da711e5f98ad053c5",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim.",
+      "args": [
+        "--adaptive",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3cc1a911d4cc8463\\HBEngine.exe"
+      ]
     }
   ],
   "nativePlayerSHA256": "b8833656c68cdec3620243b080459a4d9575d93303b0602da23a6c1e01fcb6cd",
@@ -495,8 +542,8 @@
     "automaticCachedQualityUpgrade": false,
     "syntheticReverseOrderFXCResolved": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_878.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_906.json",
   "remaining": [
     "전역 곡면 역해",
     "거친 복합 로브/참여 매질 산란의 정밀 확장",
@@ -520,5 +567,6 @@
     "합성 HLSL에서 이전 IOR→현재 RGB seed 역순 호출의 FXC 최적화 불일치 원인·일반 해법: 실제 guide 순서/독립/Od 대조와 구분",
     "camera-driven clipmap/multires and cached field quality promotion/hysteresis; all canonical ENGINE_STATUS items remain authoritative"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_906.json"
 }

@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "4ea35295702e12cc09a1ad884f1e6640bceb3aa5",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3cc1a911d4cc8463",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\3cc1a911d4cc8463\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\3cc1a911d4cc8463\\HBEngine.exe",
+  "bundleHash": "3cc1a911d4cc84636971fd03f1e22c27b51dd3265929d16a237b27925e8ae960",
+  "files": 3665,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3655,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4f2e4bd66cd7c5b0",
+        "bytes": 182255184,
+        "manifestSHA256": "7549d4f52146db094e5183d40d29c2fc971d84ec803bd26d40e4e5c1f5d4fd07"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-19T13:06:05.8080622Z",
+    "bytes": 182255184,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "3cc1a911d4cc8463"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 341,
+  "repositoryOnlyTestSourcesVerified": 9,
+  "nativePlayerSHA256": "b8833656c68cdec3620243b080459a4d9575d93303b0602da23a6c1e01fcb6cd",
+  "installedGates": [
+    {
+      "path": "native/build/distance-resolution-881-4TJCWi/acceptance.json",
+      "sha256": "b29ad3d84046bb9ad99c23ba97ab5bf9dedf64bc7ecf244f7fa2f8e90f62bdcc",
+      "scope": "Actual worker/scene per-bake resolution fitting: three distinct general fields55/15/8 plus exact zero-volume box inside1MB, static reuse, typed budget metadata, zero remaining local reserve still admits exact primitive, deferred generic field retries after another owner geometry leaves, unload/idle0. No camera LOD/clipmap or whole RAM/VRAM claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3cc1a911d4cc8463\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-query-884-Q5A0sx/acceptance.json",
+      "sha256": "bf8221543bbc6e9d65862ddd337fda55182bdbd40b00be752578708bf7d1a660",
+      "scope": "Actual GL old/current counted atlas reads, current WebGPU and frozen CPU old/current distance/error/first-object equality on2048overlapping boxes,257separated boxes,257overlapping finite-error volumes. Zero lower bound and equal bbox pruning; original4e-5. Read/visit reduction only, no whole FPS or GPU-time claim; WebGPU reads not measured.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3cc1a911d4cc8463\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-address-886-vWIUt7/acceptance.json",
+      "sha256": "db7cbef66c42fff2c6e8a8053e0264cf6deadf068353948d12db987281cba82e",
+      "scope": "Actual GL/WebGPU integer scalar-address lane proof at2^24/2^25/2^26 boundaries. Synthetic negative base remaps the integer group into a128B texture; old float rounding reproduced. Not a full giant-volume bake, cooking or memory-capacity test.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3cc1a911d4cc8463\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-818-player-xw8A0U/acceptance.json",
+      "sha256": "c692a5198edff5f4834d2fd5dd754f2ada470a182dc3fe8da711e5f98ad053c5",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim.",
+      "args": [
+        "--adaptive",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3cc1a911d4cc8463\\HBEngine.exe"
+      ]
+    }
+  ],
+  "manifestVerifiedFiles": 3665,
+  "versions": [
+    "3cc1a911d4cc8463"
+  ],
+  "profile": {
+    "filesBefore": 10385,
+    "filesAfter": 10385,
+    "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-906-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/distance-resolution-880.json",
+      "sha256": "88cb4d79cab627dc3ce3ae90f90cbc296e1461ca63b955a5155d48e5d979c020",
+      "scope": "CPU exact cubic byte/resolution answers and original-triangle signed-distance oracle inside the selected field domain; strict API default and analytical primitive preserved. Worker/scene/native/GPU coverage is separate."
+    },
+    {
+      "path": "native/build/distance-budget-regressions-888.json",
+      "sha256": "a757ceaaf0fb7a35aa42e03b87ce1b0674a5c7cd441e77fe432ba115c313935f"
+    },
+    {
+      "path": "native/build/distance-resolution-881-1oFwk5/acceptance.json",
+      "sha256": "bb21c7464ad8c2fadd1ef9bead817527e2b63000a45f89698f1637180b2f05bb",
+      "scope": "Actual worker/scene per-bake resolution fitting: three distinct general fields55/15/8 plus exact zero-volume box inside1MB, static reuse, typed budget metadata, zero remaining local reserve still admits exact primitive, deferred generic field retries after another owner geometry leaves, unload/idle0. No camera LOD/clipmap or whole RAM/VRAM claim."
+    },
+    {
+      "path": "native/build/distance-field-lifecycle-837-Bf60yU/acceptance.json",
+      "sha256": "bf0b9b35040f62a902020d087acc83ab6ca2fbcbad7593d8ca66192faa408c77",
+      "scope": "Actual worker/scene budget1→2→1MB with requested64: effective55→64→55, previous full-grid payload released, exact primitive0-volume preserved, real lifecycle/owner removal/worker idle0. Per-bake fitting, not camera-driven LOD or whole heap."
+    },
+    {
+      "path": "native/build/distance-field-gpu-814-c6vfJU/acceptance.json",
+      "sha256": "5f4f968ac43f7de35114e27f2972da6937a33a4ea05179ed9c061f8754918eed",
+      "scope": "Actual GL/WebGPU mixed exact box and general sphere-volume/BVH queries vs CPU per-point4e-5; hemisphere cone visibility offscreen occluder and empty-space controls; real worker/shared geometry/rigid move/removal/dispose. This does not prove integrated renderer/UI/packaged D3D yet."
+    },
+    {
+      "path": "native/build/distance-query-884-6CoeSj/acceptance.json",
+      "sha256": "bf8221543bbc6e9d65862ddd337fda55182bdbd40b00be752578708bf7d1a660",
+      "scope": "Actual GL old/current counted atlas reads, current WebGPU and frozen CPU old/current distance/error/first-object equality on2048overlapping boxes,257separated boxes,257overlapping finite-error volumes. Zero lower bound and equal bbox pruning; original4e-5. Read/visit reduction only, no whole FPS or GPU-time claim; WebGPU reads not measured."
+    },
+    {
+      "path": "native/build/distance-query-885-native-DaeHAB/acceptance.json",
+      "sha256": "845d049c05c31e6d0609724a379c651d1d1b1401f8939693ddb5521339007619",
+      "scope": "Actual hardware D3D11 generated distance query math, explicit integer numerical-atlas Load, frozen old/current pruning and counted logical loads, three overlap/sparse/finite-error datasets; unchanged4e-5. Integer scalar-address lanes above2^24 proven by synthetic negative-base remapping into128B. Instrumented compute proof, not whole FPS, hardware texture-transaction count, giant-volume bake or integrated game timing."
+    },
+    {
+      "path": "native/build/distance-address-886-FMAKxV/acceptance.json",
+      "sha256": "db7cbef66c42fff2c6e8a8053e0264cf6deadf068353948d12db987281cba82e",
+      "scope": "Actual GL/WebGPU integer scalar-address lane proof at2^24/2^25/2^26 boundaries. Synthetic negative base remaps the integer group into a128B texture; old float rounding reproduced. Not a full giant-volume bake, cooking or memory-capacity test."
+    },
+    {
+      "path": "native/build/distance-field-worker-812-jufyES/acceptance.json",
+      "sha256": "b06876e950ae88a42d7bc135206f371b2038a3a77f3f61ae3503037fb385ce82",
+      "scope": "Actual hidden worker: queued source preserved, active transferred geometry cancelled, following closed-mesh volume byte-identical to CPU oracle, callback failure isolated, invalid partial transfer/settings rejected, idle worker/input0. Distance-field generation foundation only; no GPU/AO/UI integration claim."
+    },
+    {
+      "path": "native/build/distance-field-editor-822-EXuOQS/acceptance.json",
+      "sha256": "b4e70e1f1538434784f0e1bcaab7c61a3a9323feae0d7af6363101d6ad3a908e",
+      "scope": "Actual hidden owned editor: human AO mode select reveals compact distance-field options, resolution edit/Undo/Redo, same document CAS budget patch, stale revision rejected, saved file and discoverable immutable API contract. No user profiles/projects used."
+    },
+    {
+      "path": "native/build/normal-footprint-739-native-hPDuE5/acceptance.json",
+      "sha256": "c2ceb1499c2b31cc44a35b121ce2b6f5dbc27ec7a8a13949af15237ef4dae6ce",
+      "scope": "Actual D3D11 generated finite normal cone: off/geometry/material, base/coat normals, scaled geometry and distinct committed/current clocks, views, widths; independent analytic reflection/Snell/equal-IOR answers, unchanged4e-5."
+    },
+    {
+      "path": "native/build/distance-field-818-player-VFwhoO/acceptance.json",
+      "sha256": "8d4dc336f8b6c6e131aab4051c3430dd582929df789613e47caa0ae77438d128",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/distance-field-818-player-VFwhoO/acceptance.json",
+      "sha256": "8d4dc336f8b6c6e131aab4051c3430dd582929df789613e47caa0ae77438d128",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim."
+    }
+  ],
+  "scope": "906 전체3665파일/341소유SHA/CPP9·기하별 예산품질/재시도/취소·GL/GPU/D3D값·정수주소·실제SDK CPP/BP adaptive게임·읽기전후User SHA·연결·Versions1;누적작업계속",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

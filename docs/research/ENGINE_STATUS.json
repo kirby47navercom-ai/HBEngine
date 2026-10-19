@@ -2551,11 +2551,11 @@
     "scope": "기하별 예산 적합 거리장·수명·안전한 조회 가지치기·큰 정수 주소·제작/실제 게임"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_878.json",
-    "sourceCommit": "f10af28f911297a0ff7d222833893952b96d7afd",
-    "bundleHash": "4f2e4bd66cd7c5b0ddb74fb8c7882b14636733db3706514cf67da0fd2d807799",
+    "receipt": "docs/research/USER_INSTALL_906.json",
+    "sourceCommit": "4ea35295702e12cc09a1ad884f1e6640bceb3aa5",
+    "bundleHash": "3cc1a911d4cc84636971fd03f1e22c27b51dd3265929d16a237b27925e8ae960",
     "verified": true,
     "versions": 1,
-    "scope": "878 전체3654파일/332소유SHA/9CPP·고정/기존채널/현재이전노멀·SDK CPP/BP Split UV GL/D3D게임·User읽기SHA/연결/Versions1"
+    "scope": "906 전체3665파일/341소유SHA/9CPP·거리장품질/보류/조회/주소·실제SDK CPP/BP 게임·User읽기SHA/연결/Versions1"
   }
 }
