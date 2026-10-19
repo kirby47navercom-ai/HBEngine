@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "a2ba9dca0d10000420e2dc1e916a5c9f7a605e1f",
+  "targetIds": [
+    "RND-07"
+  ],
+  "sourceHashes": {
+    "prototype/path-denoise.js": "a0af9cbaebf4abea741c118f90f605ff10f20dc93f9859ab22146b13e72fb9b4",
+    "prototype/path-guide-gpu.js": "6d3b3492a28f64e2493ce9575f4f8caec649eb2880ee738ef4a95656371edb2b",
+    "prototype/path-surface-history-gpu.js": "1c0ee92fbf8e3e1d6aa47e6c48dd5e9344ec790d3a3969fc64c36e7b262bac84",
+    "prototype/path-surface-history.js": "dad785dc7f1f1a790789cc925d623850c034b3b3895614c3fffd7947a0fb7ff3",
+    "prototype/ray-surface-history-context.js": "bb5934ef20c49361d820a548782a3ae89098f7e098929cc4949953253703e553",
+    "tools/check-guide-history-358-window.mjs": "6d6a94eaecb3684b6b7e1eb08aeb05d7a697de52cab169241970a256b564d036",
+    "tools/check-guide-history-360-native.mjs": "eaf23f4c492ce4422d5649e07bbe009f6afd5c820d65e5ecac7c9f3279c37b5c",
+    "tools/check-history-nonfinite-406-native.mjs": "d12d7673b293631c6dcddc5187c89b253a6503b84a0e6741469580c659353f02",
+    "tools/check-history-nonfinite-406-window.mjs": "f0cf6266a90ffc9298a0c4266ca4b02dcf0505d63978eebcc2b130b2f10e73e0",
+    "tools/check-ray-surface-context-357.mjs": "1d00c262aa5e573d1473eb0dca439537f844e61794b4ac565b8d67f659b937a8",
+    "tools/check-surface-history-354.mjs": "84774ccb012d4ec3a46b59f19a10b8a24b0aac3684fb37ced450d3ab3e639bdf",
+    "tools/check-surface-time-history-359.mjs": "909c2973d74f821103ddc142bcd7fe25c9b72f0aeedf9131ac5756cd32e22cf3",
+    "tools/check-texture-history-467-window.mjs": "27cdd9c329f84a60170c2b08879cb5a685021f622bf7f9b5b94aaf6cb7b8ce97",
+    "tools/check-texture-history-468-native.mjs": "583838b25ee1d27242bb782dd0705b2854a32b0c21ff57957ec298a8b6f7547c",
+    "tools/generate-ray-programs.mjs": "b5e082ade6e6b816229d241ad31afd0bd75ecc09fae37b0a110283b216bcfd09",
+    "tools/guide-history-fixture-358.mjs": "6ead883a7fa6a7923d02ea624c67bf14158925298fc4f200ee8edcecca685217",
+    "tools/history-nonfinite-fixture-406.mjs": "661306cc49df5c9232ca110f7e7adcb82f46c343874688c44c9176620f207b97",
+    "tools/texture-history-fixture-467.mjs": "c730cbeedca03478afa3f1fc343cd1760d03812f77894bcfd5352258dfb77762",
+    "native/include/HBEngine/RayPrograms.hpp": "4df1ae6aafc66858cb439ca21e71a3c41e9be65b857e97910b6514de7149a776",
+    "native/include/HBEngine/ScreenEffects.hpp": "9e25e11e0f7fb79e910da1d97a87f7c16831bfe3d82ad15ddc46946a5ba652d6"
+  },
+  "testSourceHashes": {
+    "native/tests/ray-surface-context-357.cpp": "edca8c77290b1549e8d6534c80a68d8818e11702ae65e16129898c561db92345"
+  },
+  "implemented": [
+    "공유 머테리얼 field5의 코팅·비등방성 네 채널 모두에 이전 입력 의존성 선택 적용",
+    "기존 xy 코팅 미러 분류와 절대 오차 경계를 유지하면서 zw 비등방성·회전의 상대 오차 및 비정상 값 거부를 GL·HLSL·TSL에서 일치",
+    "불필요한 이전 정적 프로그램 복사·GPU 타깃·프레임 readback·worker 추가 없음",
+    "기존 실제 가이드 및 이동·반전 기하와 독립 밉 검사 도구를 비등방성·회전·코팅 노멀까지 확장"
+  ],
+  "checks": [
+    {
+      "report": "native/build/ray-surface-context-357-Uz3Qnq/acceptance.json",
+      "passed": true,
+      "cases": 10,
+      "scope": "Version-aware output liveness and guide-only channel dependency in JS/GLSL and generated C++; full previous coating/anisotropy values retain all-channel context; guide history selects every observed channel while legacy coat mirror classification remains xy-only. GPU values/game rendering are separate gates."
+    },
+    {
+      "report": "native/build/surface-time-history-359-5fxzl7/acceptance.json",
+      "passed": true,
+      "scope": "Committed motion/time survives only opaque supported physical/normal/coat graph animation. Transport rebuild, unsupported field, transmission, disabled history and authored material invalidation remain separate."
+    },
+    {
+      "report": "native/build/history-nonfinite-406-native-TMiBRo/acceptance.json",
+      "passed": true,
+      "cases": 33,
+      "scope": "Actual D3D11 optimized shader using exact generated shared history gates. NaN/infinities are created from texture-driven operand/channel/kind metadata, not folded shader constants; full dynamic output equals CPU. No game FPS claim."
+    },
+    {
+      "report": "native/build/history-nonfinite-406-WKtlml/acceptance.json",
+      "passed": true,
+      "cases": 33,
+      "scope": "Actual two-API signed-float NaN/+Infinity/-Infinity texture inputs in every channel and operand; value/surface/coat compared to CPU. Legacy coat branch ignores zw; complete lobe history rejects changed or nonfinite anisotropy/rotation. No production readback or extra targets."
+    },
+    {
+      "report": "native/build/guide-history-358-3xn9pE/acceptance.json",
+      "passed": true,
+      "scope": "Actual full GL and WebGPU auxiliary guide shaders; real time-driven physical roughness/coat roughness changes, committed geometry/normal/mip context, history rejection and restoration. No fault-injected production helper or forced feature define."
+    },
+    {
+      "report": "native/build/native-guide-448-BXRJ39/acceptance.json",
+      "passed": true,
+      "scope": "Actual generated full auxiliary guide HLSL, current/committed time-driven physical and coat inputs, valid center rays rejected on change and restored. Compute harness invokes the production guide; full packaged game is separate."
+    },
+    {
+      "report": "native/build/texture-history-467-72f2nF/acceptance.json",
+      "passed": true,
+      "scope": "Actual normal variance→roughness cooked mip chain: current and committed moved/mirrored geometry/time, roughness/color/normal fields, independent mip width; existing4e-5 tolerance."
+    },
+    {
+      "report": "native/build/texture-history-468-native-ly4Ehv/acceptance.json",
+      "passed": true,
+      "scope": "Actual normal variance→roughness cooked mip chain (optional full coating/anisotropy and coat normal): current and committed moved/mirrored geometry/time, roughness/color/normal fields, independent mip width; existing4e-5 tolerance."
+    }
+  ],
+  "baseline": "native/build/lobe-history-616-baseline.json",
+  "recoveredFailures": [
+    {
+      "report": "native/build/lobe-history-616-batch.json",
+      "reason": "확장 검사 내부 input 변수의 TDZ 충돌; caseInput으로 변경. 엔진 실행 실패가 아니며 재검사 통과."
+    },
+    {
+      "report": "native/build/lobe-history-616-recovery.json",
+      "reason": "기존 기본 필드 검사에 고급 필드를 추가하면서 HB_PATH_ADVANCED 매크로가 빠짐. field>=5에서 명시한 실제 HLSL 재검사 통과."
+    }
+  ],
+  "results": {
+    "nonfiniteCasesPerAPI": 33,
+    "guide": {
+      "backends": [
+        "webgl2",
+        "webgpu",
+        "d3d11"
+      ],
+      "inputs": [
+        "anisotropy",
+        "anisotropyRotation"
+      ],
+      "windowEligible": 173,
+      "windowRejected": 141,
+      "restoreError": 0,
+      "nativeLens": true,
+      "nativeSpecialized": true
+    },
+    "texture": {
+      "fields": [
+        0,
+        1,
+        3,
+        5,
+        9
+      ],
+      "nativeContexts": 10,
+      "nativePriorError": 0,
+      "minimumNativeMipSensitivity": 0.3647058606147766
+    }
+  },
+  "installationPending": true,
+  "currentInstallation": "docs/research/USER_INSTALL_614.json",
+  "remaining": [
+    "전역 변경 투명 경로/곡면 대응 및 역해",
+    "거친 복합 로브·참여 매질 extinction/scattering footprint 운반",
+    "기타 누적 엔진 원장의 미완료 작업"
+  ],
+  "exhaustiveUEUnity": false
+}

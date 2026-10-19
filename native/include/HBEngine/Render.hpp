@@ -1,6 +1,7 @@
 #pragma once
 #include <HBEngine/Compute.hpp>
 #include "ShaderBytecodeCompiler.hpp"
+#include "ParticlePreparation.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 #include <dxgi1_2.h>
 #endif
@@ -38,6 +39,7 @@ inline Matrix perspective(float fovDegrees,float aspect,float nearPlane=.1f,floa
 class ParticleRenderer {
     friend class SceneRenderer;
     Device& gpu;
+    std::unique_ptr<ParticlePreparation> preparation;
     detail::Com<ID3D11Texture2D> color,depth,staging;
     detail::Com<ID3D11RenderTargetView> target;
     detail::Com<ID3D11DepthStencilView> depthTarget;
@@ -113,10 +115,11 @@ float4 PS(Vertex v):SV_Target{if(masking.x>0){float value=spriteMask.Load(int3((
     }
 public:
     // hwnd is optional and borrowed. This renderer never opens or closes windows.
-    ParticleRenderer(Device& device,std::uint32_t width,std::uint32_t height,void* hwnd=nullptr):gpu(device){
+    ParticleRenderer(Device& device,std::uint32_t width,std::uint32_t height,void* hwnd=nullptr,bool asynchronous=false):gpu(device){
+        if(asynchronous)preparation=std::make_unique<ParticlePreparation>(shader);
         dimensions(width,height);std::lock_guard<std::mutex> lock(gpu.mutex);
 
-        for(const auto* entry:{"VS","PS","Compact"})detail::ShaderBytecodeCompiler::create(shader,"HBParticleRender",entry,entry[0]=='V'?"vs_5_0":entry[0]=='P'?"ps_5_0":"cs_5_0",[&](const void* bytes,std::size_t size){if(entry[0]=='V')return gpu.device->CreateVertexShader(bytes,size,nullptr,&vertex.p);if(entry[0]=='P')return gpu.device->CreatePixelShader(bytes,size,nullptr,&pixel.p);return gpu.device->CreateComputeShader(bytes,size,nullptr,&compact.p);});
+        if(!preparation)for(const auto* entry:{"VS","PS","Compact"})detail::ShaderBytecodeCompiler::create(shader,"HBParticleRender",entry,entry[0]=='V'?"vs_5_0":entry[0]=='P'?"ps_5_0":"cs_5_0",[&](const void* bytes,std::size_t size){if(entry[0]=='V')return gpu.device->CreateVertexShader(bytes,size,nullptr,&vertex.p);if(entry[0]=='P')return gpu.device->CreatePixelShader(bytes,size,nullptr,&pixel.p);return gpu.device->CreateComputeShader(bytes,size,nullptr,&compact.p);});
         const UINT args[4]={6,0,0,0};D3D11_BUFFER_DESC indirect{};indirect.ByteWidth=sizeof(args);indirect.Usage=D3D11_USAGE_DEFAULT;indirect.MiscFlags=D3D11_RESOURCE_MISC_DRAWINDIRECT_ARGS;D3D11_SUBRESOURCE_DATA initial{};initial.pSysMem=args;detail::check(gpu.device->CreateBuffer(&indirect,&initial,&arguments.p),"GPU indirect draw arguments");
         D3D11_BUFFER_DESC cb{};cb.ByteWidth=sizeof(Constants);cb.Usage=D3D11_USAGE_DYNAMIC;cb.BindFlags=D3D11_BIND_CONSTANT_BUFFER;cb.CPUAccessFlags=D3D11_CPU_ACCESS_WRITE;for(auto& buffer:constants)detail::check(gpu.device->CreateBuffer(&cb,nullptr,&buffer.p),"GPU render frame constants");
         D3D11_RASTERIZER_DESC rs{};rs.FillMode=D3D11_FILL_SOLID;rs.CullMode=D3D11_CULL_NONE;rs.DepthClipEnable=TRUE;rs.ScissorEnable=TRUE;detail::check(gpu.device->CreateRasterizerState(&rs,&raster.p),"GPU raster state");
@@ -149,19 +152,33 @@ private:
         for(std::size_t stage=2;stage<=sortCapacity;stage*=2)for(std::size_t stride=stage/2;stride;stride/=2){data.sorting[2]=static_cast<UINT>(stage);data.sorting[3]=static_cast<UINT>(stride);dispatch(sortStep.p);}
         input=nullptr;outputs[0]=outputs[1]=nullptr;ID3D11Buffer* cb=nullptr;gpu.context->CSSetShaderResources(0,1,&input);gpu.context->CSSetUnorderedAccessViews(0,2,outputs,nullptr);gpu.context->CSSetConstantBuffers(0,1,&cb);gpu.context->CSSetShader(nullptr,nullptr,0);sorted_=true;sortMode=data.sorting[1];sortWorld=data.world;sortView=data.view;sortEye=data.eye;
     }
-    void drawInto(const Particles& particles,const ParticleStyle& style,ID3D11RenderTargetView* target,ID3D11DepthStencilView* depth,const D3D11_VIEWPORT& viewport,const D3D11_RECT& scissor,ID3D11ShaderResourceView* tex,ID3D11SamplerState* sampler,ID3D11ShaderResourceView* mask=nullptr){
+    HRESULT adoptParticleShader(std::size_t stage,const void* bytes,std::size_t size){
+        std::lock_guard<std::mutex> lock(gpu.mutex);
+        if(stage==0){detail::Com<ID3D11VertexShader> next;const auto result=gpu.device->CreateVertexShader(bytes,size,nullptr,&next.p);if(SUCCEEDED(result))vertex=std::move(next);return result;}
+        if(stage==1){detail::Com<ID3D11PixelShader> next;const auto result=gpu.device->CreatePixelShader(bytes,size,nullptr,&next.p);if(SUCCEEDED(result))pixel=std::move(next);return result;}
+        detail::Com<ID3D11ComputeShader> next;const auto result=gpu.device->CreateComputeShader(bytes,size,nullptr,&next.p);if(SUCCEEDED(result)){if(stage==2)compact=std::move(next);else if(stage==3)sortInitial=std::move(next);else sortStep=std::move(next);}return result;
+    }
+    bool drawInto(const Particles& particles,const ParticleStyle& style,ID3D11RenderTargetView* target,ID3D11DepthStencilView* depth,const D3D11_VIEWPORT& viewport,const D3D11_RECT& scissor,ID3D11ShaderResourceView* tex,ID3D11SamplerState* sampler,ID3D11ShaderResourceView* mask=nullptr){
         const auto blend=static_cast<std::size_t>(style.blend);if(!finite(style.sheet)||style.sheet[0]<1||style.sheet[0]>256||style.sheet[1]<1||style.sheet[1]>256||style.sheet[2]<0||style.sheet[2]>100||style.sheet[3]<0||!finite(style.viewProjection)||!finite(style.world)||!finite(style.view)||!finite(style.eye)||!finite(style.right)||!finite(style.up)||!finite(style.color)||!finite(style.endColor)||!std::isfinite(style.size)||style.size<0||!std::isfinite(style.endScale)||style.endScale<0||!std::isfinite(style.projectionY)||style.projectionY<=0||!std::isfinite(style.minSize)||style.minSize<0||!std::isfinite(style.maxSize)||style.maxSize<style.minSize||!std::isfinite(style.exposure)||style.exposure<0||blend>=blends.size()||static_cast<unsigned>(style.sort)>6||style.maskMode>2||(style.maskMode&&!mask)||!target)throw std::runtime_error("GPU particle render style invalid");
+        gpu.owns(particles.buffer);if(!pollPreparation(true,style.sort!=ParticleSort::None))return false;
         std::lock_guard<std::mutex> lock(gpu.mutex);gpu.owns(particles.buffer);compactAlive(particles);
         Constants data{style.viewProjection,style.world,style.view,{style.right[0],style.right[1],style.right[2],style.size},{style.up[0],style.up[1],style.up[2],style.endScale},style.color,style.endColor,{tex?1.f:0.f,style.hdr?1.f:0.f,style.toneMapped?1.f:0.f,style.exposure},{style.projectionY,style.minSize,style.maxSize,style.perspective?1.f:0.f},{style.eye[0],style.eye[1],style.eye[2],style.textureFlipY?1.f:0.f},{0,static_cast<UINT>(style.sort),0,0},{float(style.maskMode),0,0,0},style.sheet};
         sortAlive(particles,data);auto* cb=uploadConstants(data);
         gpu.context->OMSetRenderTargets(1,&target,depth);gpu.context->OMSetBlendState(blends[blend].p,nullptr,0xffffffff);gpu.context->OMSetDepthStencilState(depths[(style.depthTest?1:0)|(style.depthWrite?2:0)].p,0);gpu.context->RSSetState(raster.p);gpu.context->RSSetViewports(1,&viewport);gpu.context->RSSetScissorRects(1,&scissor);gpu.context->IASetInputLayout(nullptr);gpu.context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);gpu.context->VSSetShader(vertex.p,nullptr,0);gpu.context->PSSetShader(pixel.p,nullptr,0);gpu.context->VSSetConstantBuffers(0,1,&cb);gpu.context->PSSetConstantBuffers(0,1,&cb);gpu.context->PSSetShaderResources(0,1,&tex);gpu.context->PSSetShaderResources(2,1,&mask);gpu.context->PSSetSamplers(0,1,&sampler);ID3D11ShaderResourceView* srvs[]={particles.buffer.srv.p,aliveView.p};gpu.context->VSSetShaderResources(0,2,srvs);gpu.context->DrawInstancedIndirect(arguments.p,0);
         // Clear SRVs before the next compute UAV binding of the same buffers.
-        srvs[0]=srvs[1]=nullptr;cb=nullptr;tex=nullptr;mask=nullptr;sampler=nullptr;gpu.context->VSSetShaderResources(0,2,srvs);gpu.context->PSSetShaderResources(0,1,&tex);gpu.context->PSSetShaderResources(2,1,&mask);gpu.context->VSSetConstantBuffers(0,1,&cb);gpu.context->PSSetConstantBuffers(0,1,&cb);gpu.context->PSSetSamplers(0,1,&sampler);gpu.context->VSSetShader(nullptr,nullptr,0);gpu.context->PSSetShader(nullptr,nullptr,0);gpu.context->OMSetRenderTargets(0,nullptr,nullptr);detail::check(gpu.device->GetDeviceRemovedReason(),"GPU render device lost");++draws_;
+        srvs[0]=srvs[1]=nullptr;cb=nullptr;tex=nullptr;mask=nullptr;sampler=nullptr;gpu.context->VSSetShaderResources(0,2,srvs);gpu.context->PSSetShaderResources(0,1,&tex);gpu.context->PSSetShaderResources(2,1,&mask);gpu.context->VSSetConstantBuffers(0,1,&cb);gpu.context->PSSetConstantBuffers(0,1,&cb);gpu.context->PSSetSamplers(0,1,&sampler);gpu.context->VSSetShader(nullptr,nullptr,0);gpu.context->PSSetShader(nullptr,nullptr,0);gpu.context->OMSetRenderTargets(0,nullptr,nullptr);detail::check(gpu.device->GetDeviceRemovedReason(),"GPU render device lost");++draws_;return true;
     }
 public:
+    bool pollPreparation(bool request=false,bool sorting=false){
+        if(!preparation)return true;
+        if(request)preparation->request(sorting);
+        preparation->poll();for(std::size_t stage=0;stage<5;stage++)if(const auto* code=preparation->bytecode(stage)){const auto result=adoptParticleShader(stage,code->data(),code->size());if(SUCCEEDED(result))preparation->accept(stage);else preparation->reject(stage,result);}
+        const auto info=preparation->info();if(!info.error.empty())throw std::runtime_error(info.error);return info.ready;
+    }
+    ParticlePreparationInfo preparationInfo()const{return preparation?preparation->info():ParticlePreparationInfo{{3,3,3,sortInitial.p?3u:0u,sortStep.p?3u:0u},false,false,false,false,true,{}};}
     void draw(const Particles& particles,const ParticleStyle& style={}){valid();drawInto(particles,style,target.p,depthTarget.p,{0,0,float(width_),float(height_),0,1},{0,0,LONG(width_),LONG(height_)},texture.p,samplers[nearest_?1:0].p);}
-    std::uint32_t livingCount(const Particles& particles){std::lock_guard<std::mutex> lock(gpu.mutex);gpu.owns(particles.buffer);compactAlive(particles);if(!countStaging.p){D3D11_BUFFER_DESC desc{};desc.ByteWidth=16;desc.Usage=D3D11_USAGE_STAGING;desc.CPUAccessFlags=D3D11_CPU_ACCESS_READ;detail::check(gpu.device->CreateBuffer(&desc,nullptr,&countStaging.p),"GPU explicit count staging");}gpu.context->CopyResource(countStaging.p,arguments.p);D3D11_MAPPED_SUBRESOURCE data{};detail::check(gpu.context->Map(countStaging.p,0,D3D11_MAP_READ,0,&data),"GPU explicit count read");const auto count=static_cast<const UINT*>(data.pData)[1];gpu.context->Unmap(countStaging.p,0);++countReadbacks_;return count;}
-    void releaseParticles(){std::lock_guard<std::mutex> lock(gpu.mutex);alive={};aliveView={};aliveAppend={};aliveWrite={};sortKeys={};sortKeysWrite={};countStaging={};aliveCapacity=0;aliveIdentity=0;sorted_=false;}
+    std::uint32_t livingCount(const Particles& particles){gpu.owns(particles.buffer);if(!pollPreparation(true))throw std::runtime_error("Particle shaders are still preparing");std::lock_guard<std::mutex> lock(gpu.mutex);gpu.owns(particles.buffer);compactAlive(particles);if(!countStaging.p){D3D11_BUFFER_DESC desc{};desc.ByteWidth=16;desc.Usage=D3D11_USAGE_STAGING;desc.CPUAccessFlags=D3D11_CPU_ACCESS_READ;detail::check(gpu.device->CreateBuffer(&desc,nullptr,&countStaging.p),"GPU explicit count staging");}gpu.context->CopyResource(countStaging.p,arguments.p);D3D11_MAPPED_SUBRESOURCE data{};detail::check(gpu.context->Map(countStaging.p,0,D3D11_MAP_READ,0,&data),"GPU explicit count read");const auto count=static_cast<const UINT*>(data.pData)[1];gpu.context->Unmap(countStaging.p,0);++countReadbacks_;return count;}
+    void releaseParticles(){if(preparation)preparation->cancelPending();std::lock_guard<std::mutex> lock(gpu.mutex);alive={};aliveView={};aliveAppend={};aliveWrite={};sortKeys={};sortKeysWrite={};countStaging={};aliveCapacity=0;aliveIdentity=0;sorted_=false;}
     std::uint64_t particleStorageBytes() const{return aliveCapacity*4*(sortKeys.p?2:1)+(countStaging.p?16:0);}
     std::uint64_t particleIndexAllocations() const{return indexAllocations_;}std::uint64_t particleSortPasses() const{return sortPasses_;}std::uint64_t particleCountReadbacks() const{return countReadbacks_;}
     // Explicit capture is the only CPU texture transfer; keep it out of frame loops.
@@ -173,7 +190,7 @@ public:
 #else
 class ParticleRenderer {
 public:
-    ParticleRenderer(Device&,std::uint32_t,std::uint32_t,void* =nullptr){throw std::runtime_error("GPU render requires Windows hardware");}
+    ParticleRenderer(Device&,std::uint32_t,std::uint32_t,void* =nullptr,bool=false){throw std::runtime_error("GPU render requires Windows hardware");}
     std::uint32_t width() const{return 0;}std::uint32_t height() const{return 0;}
     std::uint64_t draws() const{return 0;}std::uint64_t presents() const{return 0;}std::uint64_t captures() const{return 0;}
     static constexpr std::size_t constantBufferAllocations(){return 3;}
@@ -181,6 +198,8 @@ public:
     void setTexture(std::uint32_t,std::uint32_t,const std::vector<std::uint8_t>&,bool=false){throw std::runtime_error("GPU render unavailable");}
     void clearTexture(){throw std::runtime_error("GPU render unavailable");}
     void clear(const std::array<float,4>& ={0,0,0,1}){throw std::runtime_error("GPU render unavailable");}
+    bool pollPreparation(bool=false,bool=false){throw std::runtime_error("GPU render unavailable");}
+    ParticlePreparationInfo preparationInfo()const{return {};}
     void draw(const Particles&,const ParticleStyle& ={}){throw std::runtime_error("GPU render unavailable");}
     std::vector<std::uint8_t> readPixels(){throw std::runtime_error("GPU render unavailable");}
     bool present(std::uint32_t=0){throw std::runtime_error("GPU render unavailable");}

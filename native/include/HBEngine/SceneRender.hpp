@@ -273,7 +273,7 @@ void ShadowPS(Output i,bool front:SV_IsFrontFace){PS(i,front);}
         detail::Com<ID3D11PixelShader> next;const auto result=gpu.device->CreatePixelShader(bytes,size,nullptr,&next.p);if(SUCCEEDED(result)){if(stage==1)pixel=std::move(next);else shadowPixel=std::move(next);}return result;
     }
 public:
-    SceneRenderer(Device& device,std::uint32_t width,std::uint32_t height,void* hwnd=nullptr,bool asyncRaster=false):gpu(device),surface(device,width,height,hwnd),bloom(device),probes(device),lightTiles(device){
+    SceneRenderer(Device& device,std::uint32_t width,std::uint32_t height,void* hwnd=nullptr,bool asyncRaster=false):gpu(device),surface(device,width,height,hwnd,asyncRaster),bloom(device),probes(device),lightTiles(device){
         const auto source=surfaceShader(shaderSource());
         if(asyncRaster){rasterPreparation=std::make_unique<SceneRasterPreparation>(source);rasterPreparation->poll();}
         else{std::size_t stage=0;for(const auto* entry:{"VS","PS","ShadowPS"}){detail::ShaderBytecodeCompiler::create(source,"HBSceneRender",entry,stage?"ps_5_0":"vs_5_0",[&](const void* bytes,std::size_t size){return adoptRasterShader(stage,bytes,size);});++stage;}}
@@ -553,9 +553,11 @@ public:
         if(activeShadow>=0||sampling>=samplers.size()||(texture&&texture->owner!=gpu.device.p))throw std::runtime_error("Particle scene pass or texture invalid");
         if(active2D)throw std::runtime_error("Particle offscreen pass invalid");
         style.maskMode=twoD?static_cast<std::uint32_t>(twoD->settings.pass[1]):0;const auto* mask=twoD?twoD->maps[0]:nullptr;if(mask&&mask->owner!=gpu.device.p)throw std::runtime_error("Particle mask owner invalid");style.viewProjection=frame.viewProjection;style.exposure=frame.exposure;style.hdr=bloom.active();const auto& r=frame.viewport;const bool custom=r[2]>0&&r[3]>0;D3D11_VIEWPORT viewport{custom?r[0]:0,custom?r[1]:0,custom?r[2]:float(surface.width()),custom?r[3]:float(surface.height()),0,1};const auto crop=frame.scissor.value_or(std::array<float,4>{viewport.TopLeftX,viewport.TopLeftY,viewport.Width,viewport.Height});D3D11_RECT scissor{LONG(std::floor(crop[0])),LONG(std::floor(crop[1])),LONG(std::ceil(crop[0]+crop[2])),LONG(std::ceil(crop[1]+crop[3]))};
-        surface.drawInto(particles,style,bloom.active()?bloom.target():surface.target.p,surface.depthTarget.p,viewport,scissor,texture?texture->view.p:nullptr,samplers[sampling].p,mask?mask->view.p:nullptr);if(bloom.active())bloom.markDirty();++draws_;
+        if(!surface.drawInto(particles,style,bloom.active()?bloom.target():surface.target.p,surface.depthTarget.p,viewport,scissor,texture?texture->view.p:nullptr,samplers[sampling].p,mask?mask->view.p:nullptr))return;if(bloom.active())bloom.markDirty();++draws_;
     }
     std::uint32_t particleCount(const Particles& particles){return surface.livingCount(particles);}
+    bool pollParticlePreparation(bool request=false,bool sorting=false){return surface.pollPreparation(request,sorting);}
+    ParticlePreparationInfo particlePreparationInfo()const{return surface.preparationInfo();}
     void releaseParticles(){surface.releaseParticles();}
     std::uint64_t particleStorageBytes() const{return surface.particleStorageBytes();}
     std::uint64_t particleIndexAllocations() const{return surface.particleIndexAllocations();}std::uint64_t particleSortPasses() const{return surface.particleSortPasses();}std::uint64_t particleCountReadbacks() const{return surface.particleCountReadbacks();}
@@ -583,7 +585,7 @@ public:
     std::array<std::uint64_t,9> shaderCompilationInfo()const{return bloom.compilationInfo();}
     void setAsyncShaderPreparation(bool value){bloom.setAsyncShaderPreparation(value);lightTiles.setAsyncPreparation(value);probes.setAsyncPreparation(value);}
     auto shaderPreparationInfo()const{return bloom.shaderPreparationInfo();}
-    void pollShaderPreparation(){pollRasterPreparation();probes.pollPreparation();bloom.pollShaderPreparation();}
+    void pollShaderPreparation(){pollRasterPreparation();surface.pollPreparation();probes.pollPreparation();bloom.pollShaderPreparation();}
     static void configureShaderCache(const std::filesystem::path& directory){detail::ShaderBytecodeCompiler::configure(directory);}
     std::array<std::uint64_t,10> shaderDiskCacheInfo()const{return detail::ShaderBytecodeCompiler::info();}
     std::uint64_t bloomTextureBytes() const{return bloom.textureBytes();}
