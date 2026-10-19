@@ -511,3 +511,9 @@ scene.select는 실행 중에도 오브젝트를 선택/검사할 수 있다. �
 ### CPU 광선 밉 변환 캐시
 
 `schema.rayMipCache`, `profiler.read.rayMipCache`와 `profiler.rayMipCache`를 사용해요. 후자는 선택 `budgetBytes`(안전한 정수>=0), `clear`(Boolean)를 받아요. 기본256MiB이고0은 보관을 꺼요. 같은 풀을 프로파일러 UI에서 조작해요. 현재·이전 활성 스냅샷은 퇴역/비우기 뒤에도 유지돼요. 이 수치는 변환 Float32 캐시만 세며 전체 RAM/VRAM·GPU 상주 예산은 아니에요. [실행·비용·다음 GPU 단계](research/RAY_MIP_CACHE_752.md).
+
+### 머테리얼 GPU 상주 밉
+
+`schema.textureResidency`와 `schema.textureResidencyPool`을 따르세요. 장면의 `TextureStreaming` 컴포넌트는 상주/전환 예산 MiB·갱신 초·한 번의 전환 수·해상도 배율·밉 보정·설정 우선순위를 제공해요. `MeshRenderer.textureStreamingPriority`로 품질 배분을 바꾸고 `textureStreaming=false`로 전체 밉을 고정해요. 제작에는 기존 document CAS/Undo/Redo, 실행에는 기존 Components C++/노드를 사용해요.
+
+`Materials::SetResidentMip(actor,"Paint",1)`/`materialResidentMip`는 수동 지정, -1은 자동 복귀예요. 원본 밉 번호로 샘플링/부분 수정하며 전체 복원은 CPU 원본을 사용해요. `profiler.textureResidency({offset:0,limit:64})`는 소유자/파라미터별 요청·예산·상주 밉과 페이로드 바이트, 임시 예약, 필수 초과와 차단/오류를 읽어요. limit 최대256은 페이지예요. 같은 수치를 실제 프로파일러에서 보여줘요. 이 풀은 노드 머테리얼의 명시적 RGBA8 밉 페이로드이며 전체 VRAM/드라이버 heap/디스크 스트리밍이 아니에요. [지원·수명·실행·남은 범위](research/TEXTURE_RESIDENCY_772.md).

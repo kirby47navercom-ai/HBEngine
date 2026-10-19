@@ -10,9 +10,9 @@ export function textureSamplingPins(key,inputs){
  return [...inputs,...(inputs.some(p=>p.id==='lod')?[]:[pin('lod','LOD','float',0)]),pin('bias','Mip Bias · 밉 바이어스','float',0),pin('gradientX','DDX',type,Array(size).fill(0)),pin('gradientY','DDY',type,Array(size).fill(0))];
 }
 export function activeTextureSamplingInputs(node,inputs){if(!textureSamplingNode(node))return inputs;const mode=materialMipMode(node);return inputs.filter(p=>!controls.has(p.id)||p.id===mode||mode==='gradient'&&p.id.startsWith('gradient'));}
-export function textureSamplingGLSL(node,type,uniform,args){
+export function textureSamplingGLSL(node,type,uniform,args,residentBase=null){
  const mode=materialMipMode(node),coordinate=type==='texturecube'?args.direction:type==='texturearray'?'vec3('+args.uv+',floor('+args.index+'+0.5))':args.uv;
- if(mode==='lod')return 'textureLod('+uniform+','+coordinate+',max(0.0,'+args.lod+'))';
+ if(mode==='lod')return 'textureLod('+uniform+','+coordinate+',max(0.0,'+(residentBase?'('+args.lod+')-('+residentBase+')':args.lod)+'))';
  if(mode==='gradient')return 'textureGrad('+uniform+','+coordinate+','+args.gradientX+','+args.gradientY+')';
  const fn=type==='texture2d'?'texture2D':'texture';return fn+'('+uniform+','+coordinate+(mode==='bias'?',clamp('+args.bias+',-16.0,15.99)':'')+')';
 }

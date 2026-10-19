@@ -508,6 +508,7 @@ inline std::string Materials::LayerParameterKey(const std::string& id,const std:
 }
 
 inline void Materials::SetTexture(Actor* target,const std::string& parameter,const std::string& texture){engineCommand("materialTexture",{{"target",bridgeId(target)},{"parameter",parameter},{"texture",texture}});}
+inline void Materials::SetResidentMip(Actor* target,const std::string& parameter,int level){if(level< -1)throw std::runtime_error("invalid resident mip");engineCommand("materialResidentMip",{{"target",bridgeId(target)},{"parameter",parameter},{"level",level}});}
 inline void Materials::SetTextureRegion(Actor* target,const std::string& parameter,int level,const Vec3& origin,const Vec3& size,const std::vector<Color>& pixels){
     if(level<0)throw std::runtime_error("invalid texture mip");for(float v:{origin.x,origin.y,origin.z})if(!std::isfinite(v)||v<0||std::floor(v)!=v)throw std::runtime_error("invalid texture region origin");for(float v:{size.x,size.y,size.z})if(!std::isfinite(v)||v<=0||std::floor(v)!=v)throw std::runtime_error("invalid texture region size");if(static_cast<long double>(size.x)*size.y*size.z!=pixels.size())throw std::runtime_error("invalid texture region pixel count");for(const auto& pixel:pixels)for(float v:{pixel.r,pixel.g,pixel.b,pixel.a})if(!std::isfinite(v)||v<0||v>1)throw std::runtime_error("invalid texture region color");engineCommand("materialTextureRegion",{{"target",bridgeId(target)},{"parameter",parameter},{"level",level},{"origin",origin},{"size",size},{"pixels",pixels}});
 }

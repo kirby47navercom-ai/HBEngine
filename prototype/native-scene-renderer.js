@@ -146,7 +146,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{}){
     if(!texture)return '';if(texture.userData.hbNativeTarget)return targetResource(texture.userData.hbNativeTarget,resources);
     const key=texture.uuid;if(textures.get(key)!==texture.version){
       track(texture,'textures',key,textures);
-      resources.push({id:key,...(textures.has(key)&&packedTextureRegionUpdates(texture,textures.get(key),rgbaBase64)|| (textures.has(key)&&texture.userData.hbRayScene&&texture.updateRanges.length?packedRaySceneUpdates(texture):packedTexture(texture,allowUV1)))});textures.set(key,texture.version);if(texture.userData.hbRayScene)texture.clearUpdateRanges();
+      const regions=textures.has(key)?packedTextureRegionUpdates(texture,textures.get(key),rgbaBase64):null;if(!regions||regions.patches.length)resources.push({id:key,...(regions|| (textures.has(key)&&texture.userData.hbRayScene&&texture.updateRanges.length?packedRaySceneUpdates(texture):packedTexture(texture,allowUV1)))});textures.set(key,texture.version);if(texture.userData.hbRayScene)texture.clearUpdateRanges();
     }return key;
   }
   function targetResource(target,resources){const id=target.texture.uuid,stamp='target:'+target.width+':'+target.height+':'+target.stencilBuffer;track(target,'textures',id,textures);if(textures.get(id)!==stamp){resources.push({kind:'target2d',id,width:target.width,height:target.height,stencil:target.stencilBuffer});textures.set(id,stamp);maskPassCache.delete(id);}return id;}

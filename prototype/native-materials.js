@@ -1,3 +1,4 @@
+import {residentMipBase} from './texture-resident-view.js';
 import {compileMaterial,materialDefaults,materialParameters,materialFloatProperty,materialVectorProperty,materialVectorValue} from './material-runtime.js';
 import {materialTextureBindings} from './material-texture-bindings.js';
 import {captureMaterialGraph} from './material-source-key.js';
@@ -42,7 +43,7 @@ export function createNativeMaterial(THREE,input,{fileUrl,onError=()=>{},rendere
   const material=new THREE.MeshStandardMaterial({color:'#ffffff',roughness:surface.roughness,metalness:surface.metalness,emissive:'#ffffff',emissiveIntensity:surface.emissiveIntensity,transparent:surface.blendMode==='translucent',alphaTest:surface.blendMode==='masked'?surface.alphaTest:0,side:surface.doubleSided?THREE.DoubleSide:THREE.FrontSide});
   const program={id:crypto.randomUUID(),declarations:plan.declarations,evaluation:plan.evaluation,uniforms:values,maps,transmissive:plan.transmissionConnected||surface.transmission>0,animated:/\bhbTime\b/.test(plan.lines+Object.values(plan.values).join(' '))};
   material.userData.hbMaterial=true;material.userData.hbNativeProgram=program;material.userData.materialSource=data;
-  material.userData.ready=Promise.all(plan.textures.map((texture,i)=>bindings.add(texture,map=>{maps[i]=map;})));
+  material.userData.ready=Promise.all(plan.textures.map((texture,i)=>bindings.add(texture,map=>{maps[i]=map;const mip=plan.floatBindings.findIndex(b=>b.kind==='residentMip'&&b.key===texture.uniform);if(mip>=0)values[mip]=residentMipBase(map);})));
   material.userData.updateTime=value=>{time=value;renderer.hbTime=value;};
   material.userData.updateFloat=(key,value)=>{
     if(disposed)return false;if(!Number.isFinite(value))throw Error('Float 파라미터 값을 확인하세요.');const property=materialFloatProperty(key);
@@ -51,11 +52,11 @@ export function createNativeMaterial(THREE,input,{fileUrl,onError=()=>{},rendere
     if(materialParameters(data).some(p=>p.name===key&&p.type!=='float'))throw Error('Float 파라미터가 아니에요.');
     if(property==='emissiveIntensity'){material.emissiveIntensity=value;data.surface={...data.surface,[property]:value};return true;}return false;
   };
-  material.userData.floatKeys=[...plan.floatBindings.map(b=>b.kind+':'+b.key),'surface:emissiveIntensity'];
+  material.userData.floatKeys=[...plan.floatBindings.filter(b=>b.kind!=='residentMip').map(b=>b.kind+':'+b.key),'surface:emissiveIntensity'];
   material.userData.vectorKeys=plan.vectorBindings.map(b=>b.kind+":"+b.key);
   material.userData.updateVector=(key,value)=>{if(disposed)return false;value=materialVectorValue(value);if(materialParameters(data).some(p=>p.name===key&&p.type!=='vec3'))throw Error('Vector3 파라미터가 아니에요.');const property=materialVectorProperty(key),parameter=plan.vectorBindings.find(b=>b.kind==='parameter'&&b.key===key),binding=parameter||plan.vectorBindings.find(b=>b.kind==='surface'&&b.key===property);if(!binding){if(materialParameters(data).some(p=>p.name===key))throw Error('Vector3 파라미터가 아니에요.');return false;}values.splice(binding.offset,3,...value);if(parameter)data.parameters={...data.parameters,[key]:value};else data.surface={...data.surface,[property]:value};return true;};
   material.userData.textureState=bindings.state;material.userData.rayTextures=bindings.textures;
   material.userData.materialState=()=>({backend:'D3D11',time,uniforms:values.slice(),program:program.id});
-  material.userData.prepareTexture=async(key,path,resources)=>{const transaction=await bindings.prepare(key,path,resources),commit=transaction.commit;transaction.commit=()=>{if(!commit())return false;data.parameters={...data.parameters,[key]:path};data.textureAssets=bindings.resources();return true;};return transaction;};
+  material.userData.prepareTextureResidency=bindings.prepareResidency;material.userData.prepareTexture=async(key,path,resources)=>{const transaction=await bindings.prepare(key,path,resources),commit=transaction.commit;transaction.commit=()=>{if(!commit())return false;data.parameters={...data.parameters,[key]:path};data.textureAssets=bindings.resources();return true;};return transaction;};
   const dispose=material.dispose.bind(material);material.dispose=()=>{if(disposed)return;disposed=true;bindings.dispose();dispose();};material.clone=()=>createNativeMaterial(THREE,data,{fileUrl,onError,renderer});return material;
 }

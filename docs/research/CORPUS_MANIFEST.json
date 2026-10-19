@@ -4518,5 +4518,32 @@
       "linked UE streaming data build, format/settings and configuration APIs",
       "other accumulated UE/Unity sources"
     ]
+  },
+  "supplemental772": {
+    "date": "2026-10-19",
+    "gatePromoted": false,
+    "record": "docs/research/TEXTURE_RESIDENCY_772.md",
+    "newReading": [
+      {
+        "url": "https://docs.unity3d.com/6000.6/Documentation/ScriptReference/Texture2D-requestedMipmapLevel.html",
+        "scope": "Unity6.6 canonical URL from returned unversioned API; description/example239-268, API subject to memory budget"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.6/Documentation/ScriptReference/Texture2D-streamingMipmapsPriority.html",
+        "scope": "Unity6.6 canonical URL, description239-242, relative mip priority"
+      }
+    ],
+    "failedReading": [
+      {
+        "url": "https://threejs.org/docs/#api/en/math/Frustum",
+        "scope": "Index returned only; linked body failed and docs/Frustum.html404; not counted as body analysis"
+      }
+    ],
+    "unread": [
+      "ClearRequestedMipmapLevel/loaded/minimum/StreamingController API bodies",
+      "UE linked build/settings/format APIs",
+      "other accumulated engine sources"
+    ],
+    "notInferred": "HB decoded-source GPU material mip residency and soft temporary payload reservation are implemented; full device heap budget, async disk IO, exact procedural/secondary-view demand and exhaustive UE/Unity parity are not implied"
   }
 }
