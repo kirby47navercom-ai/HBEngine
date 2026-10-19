@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "831053952899ac9f0b3b359a1cceafeb5dea719c",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe",
+  "bundleHash": "813ffe31de9045543c580c36b7803f464215d4461316e9586318bfe31bbbb63b",
+  "files": 3642,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3631,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7c51d901e64e2b01",
+        "bytes": 182034964,
+        "manifestSHA256": "e9491aef9a35709907d1aa4b5efeda3a04155aed65368ae9f131bbf26d4aa1ca"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-19T11:22:35.3169370Z",
+    "bytes": 182034964,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "813ffe31de904554"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 321,
+  "repositoryOnlyTestSourcesVerified": 9,
+  "nativePlayerSHA256": "8e5bca2ae1400270385a6afb04908cacfa2a203b5cdbbac03d371dabea4d57a2",
+  "installedGates": [
+    {
+      "path": "native/build/fixed-vector-normals-847-JBZqgH/acceptance.json",
+      "sha256": "d9d2acf1ef4e411231b9aab82fa32d0ec253328809b1ae4cbb31541e6ac0c93c",
+      "scope": "Actual fixed-vector production GL versus restored pre-change loop GL and unchanged WebGPU/independent analytical expectations: geometry/material/coat normals, footprint0/1/2, current/committed/mip-width three states. Original4e-5 unchanged; no FPS or whole optical correspondence completion.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/fixed-bounds-849-ZKvdQO/acceptance.json",
+      "sha256": "b9259a6ddc2324d86b43a0fafacab0161f1cad7b78b1f0cab85dd1a61932a350",
+      "scope": "Actual original-loop GL versus fixed-component GL and existing static-axis TSL: parallel/negative-zero/threshold-small directions, box faces/inside/outside, zero-size/zero-negative distance and200deterministic rays. Exact hit classification/old-new GL values; independent Float32 scalar reference relative1e-6 for interval distance, separate normal/pixel4e-5 unchanged.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/previous-visibility-369-z3yuEL/acceptance.json",
+      "sha256": "c81b4e4fce2fe6757431b443f0e5e2205888c5765c7b593e992cd6afb07350e3",
+      "scope": "Full GL/WebGPU transparent auxiliary guide: current occluder moved away, old visibility must reject history; clear and missing-BVH compatibility controls. Perspective/orthographic camera near-plane origin. This does not prove complete old medium/path replay.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/guide-game-781-nmmeIl/acceptance.json",
+      "sha256": "23533720356bb38da6f84af8455b111f32aa7945a9f2cb368ec2ed5139f09b43",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-eIbRVN/acceptance.json",
+      "sha256": "6f9e4d5359fe0bfd3318cd90d8bc0eba07bd783e0fa68b57a11f266164efbb79",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe"
+      ]
+    }
+  ],
+  "manifestVerifiedFiles": 3642,
+  "versions": [
+    "813ffe31de904554"
+  ],
+  "profile": {
+    "filesBefore": 10385,
+    "filesAfter": 10385,
+    "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-861-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/fixed-vector-regressions-856.json",
+      "sha256": "4524fb58376d54995b4734a12a93db950b59b158a8b57ae3e4c3005fb33ee9a0"
+    },
+    {
+      "path": "native/build/fixed-vector-normals-847-q2bjXX/acceptance.json",
+      "sha256": "d9d2acf1ef4e411231b9aab82fa32d0ec253328809b1ae4cbb31541e6ac0c93c",
+      "scope": "Actual fixed-vector production GL versus restored pre-change loop GL and unchanged WebGPU/independent analytical expectations: geometry/material/coat normals, footprint0/1/2, current/committed/mip-width three states. Original4e-5 unchanged; no FPS or whole optical correspondence completion."
+    },
+    {
+      "path": "native/build/fixed-bounds-849-SL1tSm/acceptance.json",
+      "sha256": "b9259a6ddc2324d86b43a0fafacab0161f1cad7b78b1f0cab85dd1a61932a350",
+      "scope": "Actual original-loop GL versus fixed-component GL and existing static-axis TSL: parallel/negative-zero/threshold-small directions, box faces/inside/outside, zero-size/zero-negative distance and200deterministic rays. Exact hit classification/old-new GL values; independent Float32 scalar reference relative1e-6 for interval distance, separate normal/pixel4e-5 unchanged."
+    },
+    {
+      "path": "native/build/fixed-vector-preparation-848-fm3nkb/acceptance.json",
+      "sha256": "a6cce9a7a60a94537542beb33cde12782b9883ff86e5992f88dfb8277ebe03b0",
+      "scope": "Production fixed-vector actualGL ABBA against restored pre-change exports on newly-authored mirror/Time/largeUV normal graph. Driver dynamic-index emulation logs/translations compared; cache/load uncontrolled, observed preparation wall only, not cold/FPS/Complex141 whole start or all RND06 completion."
+    },
+    {
+      "path": "native/build/previous-geometry-368-mAqFce/acceptance.json",
+      "sha256": "7b48b5d59c9cd1623abc5ca034b58b263992c03929e7143f93fb3ce561115521",
+      "scope": "Actual GL/WebGPU previous-BVH trace against independent Three.Ray committed triangles. Current objects moved beyond old bounds, shared instance records, masked alpha, near-parallel/miss/range rays. Guide and full medium replay are separate gates."
+    },
+    {
+      "path": "native/build/previous-geometry-368-native-nmJ58D/acceptance.json",
+      "sha256": "b8b22449457dbb5ad42d13e1de20618c3b992cf80c547ad020b723cc0e9f92f8",
+      "scope": "Actual generated HLSL old-BVH compute traversal against independent committed triangle raycasts, including shared/masked/miss/near-parallel/range cases. Native game/guide integration is separate."
+    },
+    {
+      "path": "native/build/previous-media-371-Tq2vOU/acceptance.json",
+      "sha256": "76d4bdbd9cb6a586cad0b064a0badd8970d00ae533b1189c5a7ca4485a0f1fec",
+      "scope": "Actual GL/WebGPU independent old IOR stack seed for three nested committed boxes, while all current boxes moved away; five origin regions and both ray directions, including current full RGB extinction after the common state refactor. Guide/path replay is not yet wired by this proof."
+    },
+    {
+      "path": "native/build/previous-media-371-native-N8a2iP/acceptance.json",
+      "sha256": "de889a2894233fd9588604a3bd4305752b745552e8069e2f225bc4a2e7ee4400",
+      "scope": "Actual generated D3D old IOR stack seed for three committed nested boxes, current boxes moved away; five origin regions and both directions; current full RGB extinction retained. Full guide replay remains a separate gate."
+    },
+    {
+      "path": "native/build/previous-visibility-369-asblwi/acceptance.json",
+      "sha256": "c81b4e4fce2fe6757431b443f0e5e2205888c5765c7b593e992cd6afb07350e3",
+      "scope": "Full GL/WebGPU transparent auxiliary guide: current occluder moved away, old visibility must reject history; clear and missing-BVH compatibility controls. Perspective/orthographic camera near-plane origin. This does not prove complete old medium/path replay."
+    },
+    {
+      "path": "native/build/previous-visibility-369-native-koaKfA/acceptance.json",
+      "sha256": "829bc027ede16718663510893dcb493ca532a3e3c330647516a0867ed5ffab25",
+      "scope": "Full generated D3D auxiliary guide: moving-away old occluder rejects previous visibility, perspective and orthographic; clear and missing-BVH controls. Complete old medium replay remains separate."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "861 manifest3642/runtime321/CPP9 and installed current/prior normals,353bounds,12visibility,real SDK CPP/BP GL/D3D games, read-onlyUser inventory,links,Versions1; cumulative work continues",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

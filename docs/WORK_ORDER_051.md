@@ -750,3 +750,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 841 설치 C:\Users\kirby\HBEngine\Versions\7c51d901e64e2b01/3630파일/309소유SHA/9CPP·User10385읽기전후SHA/연결/Versions1 확정. 설치831cyXre8큰평면352B/간접132→109/직접67,814XQpbqL혼합72표본최대5.12e-7,837DaNa1S예산1→2→1MB·볼륨0→1048576→0·유휴0,822m1duvB사람/CAS/Undo/저장,818FGXKWN CPP/BP/direct동일,804LH4RTt이전UV래스터/경로. 이전181947170B퇴역. 복잡GL준비와누적원장다음작업계속.
 
 843–859 e74ffd1635f23e527cd0e18be798f2a2ad3e79d5: ANGLE 고정성분·이전BVH 공용경계, mirror/Time/큰UV ABBA4727.95→3825.05ms 한정관측/노멀변경0·353경계·3크기기하·직교가림·실제순서D3D매질1.63e-7. 843 IR공유후보 개선미입증/미적용. 합성FXC 역순/전체초기지연 등 누적잔여보존. 새Player854/Host855. 설치861후계속.
+
+861 설치 C:\Users\kirby\HBEngine\Versions\813ffe31de904554/3642파일/321소유SHA/9CPP·User10385읽기전후SHA/연결/Versions1 확정. 설치847JBZqgH9노멀/수정전후0,849ZKvdQO353경계,369z3yuEL12가림,781nmmeIl실제CPP/BP GL6전환/화면,804eIbRVN실제D3D5밉수요/래스터·경로. 이전182034964B정리. 누적원장계속.

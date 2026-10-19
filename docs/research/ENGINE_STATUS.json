@@ -2505,11 +2505,11 @@
     "scope": "광선 준비·현재/이전 문맥 보존·대조 검사와 실패 근거"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_841.json",
-    "sourceCommit": "bda23c1ea5e202a05d637993bf23c99310d303d0",
-    "bundleHash": "7c51d901e64e2b0146bd014d9041057b9f030c183334ac1900965da59edca5b2",
+    "receipt": "docs/research/USER_INSTALL_861.json",
+    "sourceCommit": "831053952899ac9f0b3b359a1cceafeb5dea719c",
+    "bundleHash": "813ffe31de9045543c580c36b7803f464215d4461316e9586318bfe31bbbb63b",
     "verified": true,
     "versions": 1,
-    "scope": "841 전체3630파일/309소유SHA/9CPP·큰평면/혼합볼륨·예산증감·제작·SDK게임/이전경로·User읽기SHA/연결/Versions1"
+    "scope": "861 전체3642파일/321소유SHA/9CPP·현재이전노멀/경계/가림·SDK CPP/BP GL/D3D게임·User읽기SHA/연결/Versions1"
   }
 }

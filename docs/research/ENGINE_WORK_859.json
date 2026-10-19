@@ -403,9 +403,73 @@
       "path": "native/build/previous-visibility-369-native-koaKfA/acceptance.json",
       "sha256": "829bc027ede16718663510893dcb493ca532a3e3c330647516a0867ed5ffab25",
       "scope": "Full generated D3D auxiliary guide: moving-away old occluder rejects previous visibility, perspective and orthographic; clear and missing-BVH controls. Complete old medium replay remains separate."
+    },
+    {
+      "path": "native/build/fixed-vector-normals-847-JBZqgH/acceptance.json",
+      "sha256": "d9d2acf1ef4e411231b9aab82fa32d0ec253328809b1ae4cbb31541e6ac0c93c",
+      "scope": "Actual fixed-vector production GL versus restored pre-change loop GL and unchanged WebGPU/independent analytical expectations: geometry/material/coat normals, footprint0/1/2, current/committed/mip-width three states. Original4e-5 unchanged; no FPS or whole optical correspondence completion.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/fixed-bounds-849-ZKvdQO/acceptance.json",
+      "sha256": "b9259a6ddc2324d86b43a0fafacab0161f1cad7b78b1f0cab85dd1a61932a350",
+      "scope": "Actual original-loop GL versus fixed-component GL and existing static-axis TSL: parallel/negative-zero/threshold-small directions, box faces/inside/outside, zero-size/zero-negative distance and200deterministic rays. Exact hit classification/old-new GL values; independent Float32 scalar reference relative1e-6 for interval distance, separate normal/pixel4e-5 unchanged.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/previous-visibility-369-z3yuEL/acceptance.json",
+      "sha256": "c81b4e4fce2fe6757431b443f0e5e2205888c5765c7b593e992cd6afb07350e3",
+      "scope": "Full GL/WebGPU transparent auxiliary guide: current occluder moved away, old visibility must reject history; clear and missing-BVH compatibility controls. Perspective/orthographic camera near-plane origin. This does not prove complete old medium/path replay.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/guide-game-781-nmmeIl/acceptance.json",
+      "sha256": "23533720356bb38da6f84af8455b111f32aa7945a9f2cb368ec2ed5139f09b43",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-eIbRVN/acceptance.json",
+      "sha256": "6f9e4d5359fe0bfd3318cd90d8bc0eba07bd783e0fa68b57a11f266164efbb79",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe"
+      ]
     }
   ],
-  "sourceGameGates": [],
+  "sourceGameGates": [
+    {
+      "path": "native/build/guide-game-781-nmmeIl/acceptance.json",
+      "sha256": "23533720356bb38da6f84af8455b111f32aa7945a9f2cb368ec2ed5139f09b43",
+      "scope": "Fresh owned packaged GL game, same installed/repository SDK and actual C++/keyboard Blueprint material mutations. Denoise+temporal+curved preparation selects diffuse→general→diffuse from live values, disable/re-enable restores correct variant and real captures. No user fixtures/profile or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-eIbRVN/acceptance.json",
+      "sha256": "6f9e4d5359fe0bfd3318cd90d8bc0eba07bd783e0fa68b57a11f266164efbb79",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\813ffe31de904554\\HBEngine.exe"
+      ]
+    }
+  ],
   "nativePlayerSHA256": "8e5bca2ae1400270385a6afb04908cacfa2a203b5cdbbac03d371dabea4d57a2",
   "hostSHA256": "45e138fbabba7e159cb3572d0a2f2eda3f77ec13e6ea052afef9d083cec3e00f",
   "nativePlayerBuild": {
@@ -438,8 +502,8 @@
     "wholeComplex141Claim": false,
     "syntheticReverseOrderFXCResolved": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_841.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_861.json",
   "remaining": [
     "전역 곡면 역해",
     "거친 복합 로브/참여 매질 산란의 정밀 확장",
@@ -469,5 +533,6 @@
     "합성 HLSL에서 이전 IOR→현재 RGB seed 역순 호출의 FXC 최적화 불일치 원인·일반 해법: 실제 guide 순서/독립/Od 대조와 구분",
     "all other canonical ENGINE_STATUS items remain authoritative"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_861.json"
 }
