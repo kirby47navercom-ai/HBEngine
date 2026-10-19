@@ -299,6 +299,55 @@
       "path": "native/build/authored-mips-693.json",
       "sha256": "89f432ca7120b54426c2de57e5e54848809a6fe49f93b0dc529dabd982b142cb",
       "scope": "CPU descriptor, complete odd-size authored layers/depth, packed bytes, exact independent colors, source-version invalidation, ray/bake selection, references and slice edits. Actual GPU/editor/package checks separate."
+    },
+    {
+      "path": "native/build/authored-mips-694-v0zeX4/acceptance.json",
+      "sha256": "36824b49a620b5963bceb21d9598b53a18b6ed41a775dac16a49859aee3eb52e",
+      "scope": "Actual production graph loaders/GLSL/TSL material renderers, all authored mip levels and array/volume layers or cube faces, independent SVG colors, no automatic volume generation. Human mip selector/slice count plus public AI view, non-destructive revision, undo and save; native/player packaging separate.",
+      "args": [
+        "--cube",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/authored-mips-694-OUTNTp/acceptance.json",
+      "sha256": "89dec95f5291a92c64330061b137def7cf613bba45c56a027681d5a734bc03b1",
+      "scope": "Actual production graph loaders/GLSL/TSL material renderers, all authored mip levels and array/volume layers or cube faces, independent SVG colors, no automatic volume generation. Human mip selector/slice count plus public AI view, non-destructive revision, undo and save; native/player packaging separate.",
+      "args": [
+        "--2d",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/authored-mips-696-player-WhytFJ/acceptance.json",
+      "sha256": "6f20ebad2a8fd11404d8c0ad477123a34576ebfc005fb97d7ffae4c588e974d1",
+      "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim.",
+      "args": [
+        "--cube",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/authored-mips-696-player-72TQ3M/acceptance.json",
+      "sha256": "5c77c0ab43455ebc72328cf611609ec3cd5648489b7f1c04249c73918daf4d45",
+      "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim.",
+      "args": [
+        "--2d",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/authored-worker-714-3lp8cA/acceptance.json",
+      "sha256": "dbdb98c937c8ad1ee43c3c4c3b7d0f2cd6cc3cbc79aef01b9a235a02c3b54cb9",
+      "scope": "Actual isolated module Worker: queued 512² authored data/normal/variance jobs share one worker, all input levels/normal buffers transfer once or remain borrowed, idle termination; injected worker loss after transfer requests full decode, fresh-source local recovery preserves authored lower colors. No user profile or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45\\HBEngine.exe"
+      ]
     }
   ],
   "observations": [
@@ -334,7 +383,7 @@
     "bodyFoundInPlayer": true,
     "scope": "Player698 runtime owners and generated shader remain exact; later authored cube/2D changes are JS/texture data. Fresh actual native C++/Blueprint games use this same player. Avoid repeating unchanged C++ compilation."
   },
-  "installationPending": true,
+  "installationPending": false,
   "currentInstallation": "docs/research/USER_INSTALL_702.json",
   "remaining": [
     "전역 변경 투명 경로/곡면 역대응과 노멀 미분",
@@ -343,5 +392,6 @@
     "누적 엔진 원장 다른 분야·실기기/Mac 필요 검증",
     "텍스처 스트리밍·예산·개별 레벨 부분 갱신·압축 컨테이너/플랫폼 쿠킹과 MAT03 나머지"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_720.json"
 }

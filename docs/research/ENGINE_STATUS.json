@@ -2370,11 +2370,11 @@
   ],
   "latestBatch": "704–717",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_702.json",
-    "sourceCommit": "7a32a31af32c332bdb6535928760cbed514e980a",
-    "bundleHash": "d6a3093567e86132f50855aca45039c57e26c73e163d4c8b1624417389d4d2a6",
+    "receipt": "docs/research/USER_INSTALL_720.json",
+    "sourceCommit": "c8e21b69b7c2fd77d54b0117bcff4cf746918b77",
+    "bundleHash": "67f3912fd6fcdb45ae8744f874f5305c45f4482a808ffd0f7a7234d1d527dd0a",
     "verified": true,
     "versions": 1,
-    "scope": "702 전체3506파일/180소유SHA/7C++검사·설치 제작/GL/TSL·실제 C++/BP 작성밉 게임·User읽기전후SHA/연결/Versions1"
+    "scope": "720 전체3515파일/187소유SHA/7C++검사·설치큐브/2D제작/GL/TSL/실제C++·BP게임/워커·User읽기전후SHA/연결/Versions1"
   }
 }

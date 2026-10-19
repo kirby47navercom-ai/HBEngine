@@ -1,0 +1,216 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "c8e21b69b7c2fd77d54b0117bcff4cf746918b77",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45\\HBEngine.exe",
+  "bundleHash": "67f3912fd6fcdb45ae8744f874f5305c45f4482a808ffd0f7a7234d1d527dd0a",
+  "files": 3515,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "c8e21b69b7c2fd77d54b0117bcff4cf746918b77",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45\\HBEngine.exe",
+    "bundleHash": "67f3912fd6fcdb45ae8744f874f5305c45f4482a808ffd0f7a7234d1d527dd0a",
+    "files": 3515,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3507,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\d6a3093567e86132",
+          "bytes": 180769323,
+          "manifestSHA256": "07d52bbdf27910fab8bbbf1cef4804669abc77a86e02b69f76135544d1f8cae0"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-19T04:17:39.0822919Z",
+      "bytes": 180769323,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "67f3912fd6fcdb45"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "runtimeOwnersVerified": 187,
+    "repositoryOnlyTestSourcesVerified": 7,
+    "nativePlayerSHA256": "9eddc6fc62671795a8e2bbf82990c1d47bd0e721fd9f107d3ef83dac364b5b0f",
+    "installedGates": [
+      {
+        "path": "native/build/authored-mips-694-v0zeX4/acceptance.json",
+        "sha256": "36824b49a620b5963bceb21d9598b53a18b6ed41a775dac16a49859aee3eb52e",
+        "scope": "Actual production graph loaders/GLSL/TSL material renderers, all authored mip levels and array/volume layers or cube faces, independent SVG colors, no automatic volume generation. Human mip selector/slice count plus public AI view, non-destructive revision, undo and save; native/player packaging separate.",
+        "args": [
+          "--cube",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/authored-mips-694-OUTNTp/acceptance.json",
+        "sha256": "89dec95f5291a92c64330061b137def7cf613bba45c56a027681d5a734bc03b1",
+        "scope": "Actual production graph loaders/GLSL/TSL material renderers, all authored mip levels and array/volume layers or cube faces, independent SVG colors, no automatic volume generation. Human mip selector/slice count plus public AI view, non-destructive revision, undo and save; native/player packaging separate.",
+        "args": [
+          "--2d",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/authored-mips-696-player-WhytFJ/acceptance.json",
+        "sha256": "6f20ebad2a8fd11404d8c0ad477123a34576ebfc005fb97d7ffae4c588e974d1",
+        "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim.",
+        "args": [
+          "--cube",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/authored-mips-696-player-72TQ3M/acceptance.json",
+        "sha256": "5c77c0ab43455ebc72328cf611609ec3cd5648489b7f1c04249c73918daf4d45",
+        "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim.",
+        "args": [
+          "--2d",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/authored-worker-714-3lp8cA/acceptance.json",
+        "sha256": "dbdb98c937c8ad1ee43c3c4c3b7d0f2cd6cc3cbc79aef01b9a235a02c3b54cb9",
+        "scope": "Actual isolated module Worker: queued 512² authored data/normal/variance jobs share one worker, all input levels/normal buffers transfer once or remain borrowed, idle termination; injected worker loss after transfer requests full decode, fresh-source local recovery preserves authored lower colors. No user profile or FPS claim.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\67f3912fd6fcdb45\\HBEngine.exe"
+        ]
+      }
+    ],
+    "manifestVerifiedFiles": 3515,
+    "versions": [
+      "67f3912fd6fcdb45"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-720-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "path": "native/build/cube-authored-705.json",
+        "sha256": "a021024002c3c530b3764a5c711635a13937566daeb70ac678ed72d83a017a07",
+        "scope": "CPU authored cube six-face/level bytes, conventional clone, shared contiguous buffers, native payload, ray version change and CPU bake; actual GPU/editor/game checks separate."
+      },
+      {
+        "path": "native/build/authored-mips-694-6HPzdY/acceptance.json",
+        "sha256": "e61b82392ef4ba57f53519e0980051a862cd009acad6756c581884fd936f9e0c",
+        "scope": "Actual production graph loaders/GLSL/TSL material renderers, all authored mip levels and array/volume layers or cube faces, independent SVG colors, no automatic volume generation. Human mip selector/slice count plus public AI view, non-destructive revision, undo and save; native/player packaging separate."
+      },
+      {
+        "path": "native/build/authored-mips-695-native-xvWz7B/acceptance.json",
+        "sha256": "2aaa5b84c0fbc29fce728da8fcde2d1421d55043864fb635c7e66c8fa5455f55",
+        "scope": "Actual D3D11 SceneRenderer consumes shared-loader authored array/volume/cube packet; every mip/layer rendered against independent SVG colors, exact storage bytes and invalid layer/dimension/size/count/autogeneration rejected. Full packaged game is separate."
+      },
+      {
+        "path": "native/build/authored-mips-696-player-SZ96GZ/acceptance.json",
+        "sha256": "892cd0b3324ee2f70dce76adb8d27c1a9e40d2ade511215a83c15d79cc802302",
+        "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim."
+      },
+      {
+        "path": "native/build/authored-ray-history-697-FAMb1i/acceptance.json",
+        "sha256": "49c1cfa9ae91b89680b2b7eb75de4f868d29b687df256dce740a539b29b55e88",
+        "scope": "Actual authored RGBA8 array/volume/cube packed mip current and committed moved/mirrored geometry and clocks, independent byte-decoded normal oracle; existing4e-5."
+      },
+      {
+        "path": "native/build/authored-ray-history-697-native-gLuKxY/acceptance.json",
+        "sha256": "6766f7275762dd152921be8a55fa037cc7e470dc0824e558e3f12f8b52feec33",
+        "scope": "Actual D3D11 authored RGBA8 array/volume/cube packed mip current and committed moved/mirrored geometry and clocks, independent byte-decoded normal oracle; existing4e-5."
+      },
+      {
+        "path": "native/build/authored-2d-712.json",
+        "sha256": "d0a8548f22cf62e8fc95bf0af749f3cdca26dc2e670f24b8c31ffe98cbb03d9d",
+        "scope": "CPU authored 2D cook policy: provided colors, selected top/size, normal/coverage/variance composite and source ownership. Worker/GPU/editor/native-game proofs separate."
+      },
+      {
+        "path": "native/build/authored-mips-694-uOzOH4/acceptance.json",
+        "sha256": "3d1ac1ba2b55b4f9e97feb415aa2ca76fc7f833e61784b9c3f76926f1bae26a2",
+        "scope": "Actual production graph loaders/GLSL/TSL material renderers, all authored mip levels and array/volume layers or cube faces, independent SVG colors, no automatic volume generation. Human mip selector/slice count plus public AI view, non-destructive revision, undo and save; native/player packaging separate."
+      },
+      {
+        "path": "native/build/authored-mips-695-native-UYKp98/acceptance.json",
+        "sha256": "16a5a4cb5eea937e24e4f7aaf19e010be5a0070bc5c1f20ddcf3dd055192800d",
+        "scope": "Actual D3D11 SceneRenderer consumes shared-loader authored array/volume/cube packet; every mip/layer rendered against independent SVG colors, exact storage bytes and invalid layer/dimension/size/count/autogeneration rejected. Full packaged game is separate."
+      },
+      {
+        "path": "native/build/authored-mips-696-player-fEJ13p/acceptance.json",
+        "sha256": "f520b4635789398a8bd8016bd11b49208372b74b69577d70c918ed9ccc644052",
+        "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim."
+      },
+      {
+        "path": "native/build/authored-worker-714-ZX7omd/acceptance.json",
+        "sha256": "c23a0c71d12ba5ab57052cfb3f1b32c15162ad89ade5e5e207903d609622782f",
+        "scope": "Actual isolated module Worker: queued 512² authored data/normal/variance jobs share one worker, all input levels/normal buffers transfer once or remain borrowed, idle termination; injected worker loss after transfer requests full decode, fresh-source local recovery preserves authored lower colors. No user profile or FPS claim."
+      },
+      {
+        "path": "native/build/authored-ray-history-697-IjHSRD/acceptance.json",
+        "sha256": "0779cfe92a47db65b1512fdb33224d739339261bbda6171c7611328dc933f98c",
+        "scope": "Actual authored RGBA8 array/volume/cube packed mip current and committed moved/mirrored geometry and clocks, independent byte-decoded normal oracle; existing4e-5."
+      },
+      {
+        "path": "native/build/authored-ray-history-697-native-yrwyFq/acceptance.json",
+        "sha256": "f22743c50fb747e0b62a6cae64cf7f9b13474d0d2b7f88389528fc0f1a02baa4",
+        "scope": "Actual D3D11 authored RGBA8 array/volume/cube packed mip current and committed moved/mirrored geometry and clocks, independent byte-decoded normal oracle; existing4e-5."
+      },
+      {
+        "path": "native/build/texture-mip-worker-453-WAl2AB/acceptance.json",
+        "sha256": "824a9c6e02a813e293d806447e35fbe3b098ea005b8be5ff2494b92c906cfb0c",
+        "scope": "Actual hidden WebView module worker: three queued257x257 cooks, clone/transfer ownership, byte hashes versus CPU, one worker, idle termination. Cook core math is a separate gate; no GPU/asset integration claim."
+      },
+      {
+        "path": "native/build/authored-mips-693.json",
+        "sha256": "89f432ca7120b54426c2de57e5e54848809a6fe49f93b0dc529dabd982b142cb",
+        "scope": "CPU descriptor, complete odd-size authored layers/depth, packed bytes, exact independent colors, source-version invalidation, ray/bake selection, references and slice edits. Actual GPU/editor/package checks separate."
+      }
+    ],
+    "scope": "720 전체명세/소유162SHA·설치GL/WebGPU 독립 렌즈/현재이전 거친 반사·새 실제Complex141 C++/BP·mip 파라미터/비동기 준비·해제·User읽기SHA/연결/Versions1. 누적 작업 계속."
+  },
+  "removedTestExecutables": [
+    {
+      "path": "native/build/authored-mips-695-native-xvWz7B/probe.exe",
+      "bytes": 1725472,
+      "sha256": "7b5b7fe316ea93c9f9570d4dbbbbc3933d17b8cddb82e2f408dc5544a7784104"
+    },
+    {
+      "path": "native/build/authored-mips-695-native-UYKp98/probe.exe",
+      "bytes": 1728300,
+      "sha256": "d347be5ada030a96427db0b2cedd0a3d7876ec5a2c69e3138ee6f3d940849464"
+    }
+  ],
+  "nativeCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "187소유SHA/7C++검사·전체3515파일·설치큐브/2D GL/TSL36+6·UI정책/Undo·설치SDK/C++/BP49+19에셋·워커전달/실패복구·User읽기전후SHA/연결/Versions1. 누적 구현 계속."
+}

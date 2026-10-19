@@ -710,3 +710,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 702 설치 d6a3093567e86132/3506전체명세/180소유SHA/7C++·User10385읽기전후SHA/연결/Versions1. 설치694VvqUJH 실제GL/TSL28표본/밉UI/Undo와설치SDK/C++/BP696dFFpcB LOD3·타입교체·키복원·idle통과. 이전설치180670450B와소유검사exe6896842B정리. 다음 사용자지정 큐브/2D 밉·스트리밍과 누적 렌더링/엔진 목표를 계속한다.
 
 704–717 source 7134dfd1a0a1d2cefcc1cc641396aaf6dcb2125a: 큐브/2D 작성 밉을 제작·세API·광선/베이크·원래가져오기정책·워커·C++/BP/패키징까지 연결했다. Cube705/6946HPzdY36표본/695xvWz7B18표본/696SZ96GZ49에셋/697FAMb1i+gLuKxY,2D712/694uOzOH4/695UYKp98/696fEJ13p19에셋/697IjHSRD+yrwyFq와714ZX7omd512제곱3작업/전달후실패복구 통과. 실제이전재현/GL-GPU차이0·기존4e-5/3byte 유지. 453자동worker와CPU회귀 보존. Player698 소유헤더/셰이더가동일해재빌드생략. ENGINE_WORK718 정본으로 설치후누적구현계속.
+
+720 설치 67f3912fd6fcdb45/3515전체명세/187소유SHA/7C++·User10385읽기전후SHA/연결/Versions1. 설치694v0zeX4/OUTNTp36+6표본과정책UI/Undo,696WhytFJ/72TQ3M 설치SDK/C++/BP49+19에셋게임,7143lp8cA 워커3작업/전달뒤실패복구/idle0 통과. 같은도구도각gate마다새모듈실행으로실제검사했다. 이전설치180769323B/소유검사exe3453772B정리. 다음 큐브 픽셀 재포장 비용·남은 렌더링과 누적 목표를 계속한다.
