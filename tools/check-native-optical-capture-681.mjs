@@ -12,6 +12,7 @@ assert(process.argv.includes('--fixture'));
 const fixture=await fs.realpath(arg('--fixture')),root=await fs.realpath('native/build'),relative=path.relative(root,fixture);
 assert(relative&&!relative.startsWith('..')&&!path.isAbsolute(relative),'Owned retained fixture only');
 const install=JSON.parse(await fs.readFile('docs/research/USER_INSTALL_679.json','utf8'));
+if(process.argv.includes('--executable')){install.executable=path.resolve(arg('--executable'));install.directory=path.dirname(install.executable);}
 const tools=await import(pathToFileURL(path.join(install.directory,'tools/build-game.mjs')).href);
 const work=await fs.mkdtemp(path.resolve('native/build/native-optical-capture-681-'));retainTestEvidence(work);let probe;
 try{
