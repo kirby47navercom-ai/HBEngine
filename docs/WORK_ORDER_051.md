@@ -772,3 +772,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 951–966 c551b2798643715145aee4cf1064ad5b5088c732: CPU수집별선택그래프/문맥독립표면/머테리얼전용기하재사용·이전프레임보존.953전체패킷4조건,956문맥독립12조건,958시계분류/이동,960변형·슬롯·포즈·인스턴스등28상태,962회귀8종/128GC수거,941실제D3D매질12조건,781GL실제CPP/BP6상태,804D3D실제CPP/BP밉0/3/1/0/3+path.961최종전체CPUprepare ABBA864개5001.92→48.61ms/균일384개2225.07→13.91ms;게임FPS/초기GL/FXC개선주장없음. Native901/902동일9owner/binarySHA재사용.설치968뒤누적계속.
 
 968 설치 C:\Users\kirby\HBEngine\Versions\7f0929f5ba72d5cd/3690파일/361소유SHA/9CPP·User10385읽기전후SHA/연결/Versions1 확정. 설치953UhzFUq 실제설치모듈패킷4조건/타이밍생략,941erS3gH설치SDK·셰이더매질12조건,781XECeT3실제SDK CPP/BP GL6상태,804tDWtmb D3D밉5상태+path. 이전182563796B정리. 누적작업계속.
+
+970–976 2d41fdeb08a587b4ae8896007b3044a83bc4c684: DirectX일반래스터기하노멀차분→기본/코팅거칠기정책누락수정.970PWBD3G 실제최적화하드웨어래스터8종/독립픽셀쿼드오차0.001894/평면·unlit·발광차이0/곡면최대77.804WY4QYo새Player973 실제SDK CPP/BP밉0/3/1/0/3+path. 새Player973/Host974/9소유SHA/mtime뒤컴파일. UnityHDRP지정본문/함수와기존Three정책구분·미독등록;분산/방향성normal/pathAA전체완료아님.설치978뒤누적계속.
