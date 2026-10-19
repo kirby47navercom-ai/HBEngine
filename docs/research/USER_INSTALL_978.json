@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "date": "2026-10-20",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "e60b2fcf9738bada7532c676370562b9d1396cea",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b06eb627c57e8e78",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\b06eb627c57e8e78\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\b06eb627c57e8e78\\HBEngine.exe",
+  "bundleHash": "b06eb627c57e8e782afde71521b89f9bd692ee7c6af5edbe26ae226c071b1480",
+  "files": 3694,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3691,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7f0929f5ba72d5cd",
+        "bytes": 182701518,
+        "manifestSHA256": "e3899cc0aae18c7dae2a2b5abb09f8f2f8cbdc69280d91b5bfc5972d6f3cc32a"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-19T15:15:44.6506310Z",
+    "bytes": 182701518,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "b06eb627c57e8e78"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 364,
+  "repositoryOnlyTestSourcesVerified": 10,
+  "nativePlayerSHA256": "23fa75897eb18d1334e2a7074ce11d6b5215ff0cb6646a694fda5f2b281a887e",
+  "installedGates": [
+    {
+      "path": "native/build/geometric-specular-970-hdJbkW/acceptance.json",
+      "sha256": "ba997904340cbed10e068095c1e5aa0187d626d1f5aa66283974fa8ac5e4f1f0",
+      "scope": "Actual hardware D3D11 optimized production and diagnostic raster PS. Existing material/program path8cases; only diagnostic final-output instrumentation. Raw rough/coat against independent pixel-quad normalized interpolated normal oracle, graph rough/normal override, clamp; production flat/unlit/emission bit equality and curved highlight changes. Baseline removes only new AA statements from exact runtime header. No normal-map filtering/path-traced AA/whole alias reduction or FPS claim.",
+      "args": [
+        "--reference",
+        "native/build/geometric-specular-970-PWBD3G/acceptance.json",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\b06eb627c57e8e78\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-i8NxDm/acceptance.json",
+      "sha256": "2f2c791172eb7e1a5ae54f05251f05b8fc47a18b1bd6c9de43f5224c6bdb4dd8",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\b06eb627c57e8e78\\HBEngine.exe"
+      ]
+    }
+  ],
+  "manifestVerifiedFiles": 3694,
+  "versions": [
+    "b06eb627c57e8e78"
+  ],
+  "profile": {
+    "filesBefore": 10385,
+    "filesAfter": 10385,
+    "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-978-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/geometric-specular-970-PWBD3G/acceptance.json",
+      "sha256": "cf75ccf6269d41a12d3a47029654f25f0348c8d10f43920a3a23570c87409f82",
+      "scope": "Actual hardware D3D11 optimized production and diagnostic raster PS. Existing material/program path8cases; only diagnostic final-output instrumentation. Raw rough/coat against independent pixel-quad normalized interpolated normal oracle, graph rough/normal override, clamp; production flat/unlit/emission bit equality and curved highlight changes. Baseline removes only new AA statements from exact runtime header. No normal-map filtering/path-traced AA/whole alias reduction or FPS claim."
+    },
+    {
+      "path": "native/build/texture-demand-804-player-WY4QYo/acceptance.json",
+      "sha256": "36f6e38b390031b4aae212bec98e5a77384a07afbae6bc21182726e52a9c378b",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/texture-demand-804-player-WY4QYo/acceptance.json",
+      "sha256": "36f6e38b390031b4aae212bec98e5a77384a07afbae6bc21182726e52a9c378b",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+    }
+  ],
+  "scope": "978 전체3694파일/364소유SHA/CPP10·새Player973/Host974·기하AA실제D3D래스터/독립픽셀수치/소스픽셀동일·실제SDK CPP/BP D3D밉5상태+path·읽기전후User SHA·연결·Versions1;누적작업계속",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

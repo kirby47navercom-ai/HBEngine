@@ -410,6 +410,27 @@
       "path": "native/build/texture-demand-804-player-WY4QYo/acceptance.json",
       "sha256": "36f6e38b390031b4aae212bec98e5a77384a07afbae6bc21182726e52a9c378b",
       "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+    },
+    {
+      "path": "native/build/geometric-specular-970-hdJbkW/acceptance.json",
+      "sha256": "ba997904340cbed10e068095c1e5aa0187d626d1f5aa66283974fa8ac5e4f1f0",
+      "scope": "Actual hardware D3D11 optimized production and diagnostic raster PS. Existing material/program path8cases; only diagnostic final-output instrumentation. Raw rough/coat against independent pixel-quad normalized interpolated normal oracle, graph rough/normal override, clamp; production flat/unlit/emission bit equality and curved highlight changes. Baseline removes only new AA statements from exact runtime header. No normal-map filtering/path-traced AA/whole alias reduction or FPS claim.",
+      "args": [
+        "--reference",
+        "native/build/geometric-specular-970-PWBD3G/acceptance.json",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\b06eb627c57e8e78\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/texture-demand-804-player-i8NxDm/acceptance.json",
+      "sha256": "2f2c791172eb7e1a5ae54f05251f05b8fc47a18b1bd6c9de43f5224c6bdb4dd8",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\b06eb627c57e8e78\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -417,6 +438,16 @@
       "path": "native/build/texture-demand-804-player-WY4QYo/acceptance.json",
       "sha256": "36f6e38b390031b4aae212bec98e5a77384a07afbae6bc21182726e52a9c378b",
       "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim."
+    },
+    {
+      "path": "native/build/texture-demand-804-player-i8NxDm/acceptance.json",
+      "sha256": "2f2c791172eb7e1a5ae54f05251f05b8fc47a18b1bd6c9de43f5224c6bdb4dd8",
+      "scope": "Fresh owned actual D3D packaged SDK C++/keyboard Blueprint Tile changes and pool disable/full-source oracle; affine desired0/3/1/0/3 and paginated diagnostics, raster/path pixels and stable material program. Source64x64 authored image chain, no user profile or frame-rate/whole derivative claim.",
+      "args": [
+        "--channels",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\b06eb627c57e8e78\\HBEngine.exe"
+      ]
     }
   ],
   "nativePlayerSHA256": "23fa75897eb18d1334e2a7074ce11d6b5215ff0cb6646a694fda5f2b281a887e",
@@ -452,8 +483,8 @@
     "wholeColdStartClaim": false,
     "wholeComplex141Claim": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_968.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_978.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json at record basis revision",
   "remaining": [
     "PRJ-03: 특수 내부 폴더·바이너리 스트림 가져오기·이름 변경/redirect/index의 공동 복구",
@@ -543,5 +574,6 @@
     "RES-01: 전체 discovery 분모·추가 버전/API/미디어 대조",
     "RES-01: 전체 독립 분석 gate"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_978.json"
 }

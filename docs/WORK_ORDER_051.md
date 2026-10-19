@@ -774,3 +774,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 968 설치 C:\Users\kirby\HBEngine\Versions\7f0929f5ba72d5cd/3690파일/361소유SHA/9CPP·User10385읽기전후SHA/연결/Versions1 확정. 설치953UhzFUq 실제설치모듈패킷4조건/타이밍생략,941erS3gH설치SDK·셰이더매질12조건,781XECeT3실제SDK CPP/BP GL6상태,804tDWtmb D3D밉5상태+path. 이전182563796B정리. 누적작업계속.
 
 970–976 2d41fdeb08a587b4ae8896007b3044a83bc4c684: DirectX일반래스터기하노멀차분→기본/코팅거칠기정책누락수정.970PWBD3G 실제최적화하드웨어래스터8종/독립픽셀쿼드오차0.001894/평면·unlit·발광차이0/곡면최대77.804WY4QYo새Player973 실제SDK CPP/BP밉0/3/1/0/3+path. 새Player973/Host974/9소유SHA/mtime뒤컴파일. UnityHDRP지정본문/함수와기존Three정책구분·미독등록;분산/방향성normal/pathAA전체완료아님.설치978뒤누적계속.
+
+978 설치 C:\Users\kirby\HBEngine\Versions\b06eb627c57e8e78/3694파일/364소유SHA/10CPP·User10385읽기전후SHA/연결/Versions1 확정. 설치970hdJbkW 실제설치헤더/최적화래스터/수치및기본이미지소스동일·이전참조재사용으로중복컴파일절반생략,804i8NxDm 실제설치SDK CPP/BP D3D밉5상태+path. 이전182701518B정리. 누적작업계속.
