@@ -15,3 +15,7 @@ TSL의 조건문에서 부수효과만 필요한 콜백은 `()=>{ result.assign(
 일반 큐브 픽셀은 바이트 입력끼리는 Uint8, Float32끼리는 Float32를 이어 붙이고 나머지는 Float64로 수치를 보존해요. raw-half 저장값을 디코딩 지원으로 해석하지 않아요. 자동 광선 밉의 필터 전환은 같은 버전의 변환된 기본 레벨을 공유하되 반환한 레벨 목록의 길이를 나중에 바꾸지 않아요.
 
 명시적 RGBA8 밉의 부분 변경은 `texture-region-updates.js`를 사용해요. 런타임에서는 사람·AI 모두 `Materials::SetTextureRegion`에서 생성한 같은 노드를 써요. 직접 JS로 쓰면 GL에서는 `prepareGPUAuthoredMips(renderer,map)`도 호출해요. 저장 원본, 다른 밉, 배열 면과 이전 광선 float 스냅샷을 덮지 않아요. 마지막 한 배치만 보관하며 누락된 버전이나 재생성된 GPU 자원은 전체 업로드로 복구해요. 세 API의 부분/전체 업로드, 명시적 해제 후 같은 버전 재생성을 대조해요. 실제 컨텍스트 손실 복구는 별도 검증 대상이에요.
+
+### 선택적 노멀 필터 폭 (736–745)
+
+`PostProcessVolume.pathTracingNormalFootprint`: `off`(기본)/`geometry`/`material`. 현재·이전 기하/시각/뷰/밉 폭을 각각 평가하며 기본·코팅 반사/굴절 cone에 로컬 각도 외피를 더해요. 끄기는 추가 노멀 평가를 생성하지 않아요. GPU 타깃·uniform·읽기 추가 없이 기존 `pathQuality.w` 비트21–22를 써요. 자세한 비용·실행 근거·전역 해법의 남은 범위는 [NORMAL_FOOTPRINT_746](research/NORMAL_FOOTPRINT_746.md)에 있어요.

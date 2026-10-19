@@ -4458,5 +4458,27 @@
       "W3C writeTexture: retrieval failed because body exceeds tool limit",
       "remaining UE/Unity and linked APIs"
     ]
+  },
+  "supplemental746": {
+    "date": "2026-10-19",
+    "gatePromoted": false,
+    "record": "docs/research/NORMAL_FOOTPRINT_746.md",
+    "newReading": [
+      {
+        "url": "https://registry.khronos.org/webgl/extensions/WEBGL_lose_context/",
+        "scope": "Returned full revision15 body121lines only; linked corpus not included"
+      }
+    ],
+    "rereading": [
+      {
+        "url": "https://pbr-book.org/4ed/Textures_and_Materials/Texture_Sampling_and_Antialiasing",
+        "scope": "Returned10.1.3 normal derivative / reflected-transmitted ray differential discussion, approximately lines200-290 only"
+      }
+    ],
+    "model": "HB finite local angular envelope; not a claim to implement the full PBRT differential solution",
+    "unread": [
+      "remaining linked UE/Unity and API bodies",
+      "entire W3C writeTexture body remains unfetched"
+    ]
   }
 }

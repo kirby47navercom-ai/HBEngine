@@ -1,4 +1,5 @@
 import {pathCausticsGLSL,pathCausticBoundaryGLSL} from './path-caustics-shader.js';
+import {normalFootprintGLSL} from './path-normal-footprint.js';
 import {pathMicrofacetGLSL} from './path-microfacet-shader.js';
 import {pathSurfaceGLSL} from './path-surface-shader.js';
 import {pathMediaGLSL} from './path-media-shader.js';
@@ -7,6 +8,7 @@ import {pathEnvironmentGLSL} from './path-environment-shader.js';
 export const pathCameraConeGLSL=`vec2 hbRayCameraCone(vec2 at){vec3 near=hbWorldAt(at,0.0),far=hbWorldAt(at,.9999),nx=hbWorldAt(at+vec2(1.0/hbScreenSize.x,0),0.0),ny=hbWorldAt(at+vec2(0,1.0/hbScreenSize.y),0.0);if(hbEye.w>.5)return vec2(max(length(nx-near),length(ny-near)),0);vec3 d=normalize(far-hbEye.xyz),dx=normalize(hbWorldAt(at+vec2(1.0/hbScreenSize.x,0),.9999)-hbEye.xyz),dy=normalize(hbWorldAt(at+vec2(0,1.0/hbScreenSize.y),.9999)-hbEye.xyz);return vec2(0,max(length(dx-d),length(dy-d)));}`;
 export const pathTracingGLSL=`
 ${pathCausticBoundaryGLSL}
+${normalFootprintGLSL}
 float hbPathRandom(float seed){return fract(sin(seed*12.9898+78.233)*43758.5453);}
 ${pathMediaGLSL}
 vec3 hbPathAbsorption(float triangle,vec3 point,vec3 direction,float width){float base=hbTransport.x+triangle*2.0,at=hbGeometryInfo.w+triangle*6.0;vec4 absorption=hbRayField4Lod(triangle,point,-direction,width);float thickness=hbRayField2Lod(triangle,point,-direction,width).w,cosine=max(.05,abs(dot(hbGeometryVertexLoad(at+3.0).xyz,direction)));return absorption.w>0.0?pow(max(absorption.rgb,vec3(.000001,.000001,.000001)),vec3(1,1,1)*(thickness/(absorption.w*cosine))):vec3(1,1,1);}
@@ -78,7 +80,13 @@ photonWeight=hbCausticBoundary(physical)&&(diffuseSeen||causticChain)&&hbPathCau
 #endif
 radiance+=throughput*(hbRayField2Lod(hit.y,point,-direction,width).rgb*emissionWeight+hbPathDirect(point,n,-direction,hit.y,width,ratio,randomBase)+hbPathEmissiveDirect(point,n,-direction,hit.y,randomBase,width,ratio)+hbEnvironmentDirect(point,n,-direction,hit.y,randomBase,width,spread,ratio)+hbPathCaustic(point,n,hit.y,randomBase,width))*photonWeight;previousPoint=point;if(hbCausticBoundary(physical)){if(diffuseSeen)causticChain=true;}else{diffuseSeen=metal<=.5&&transmission<=.5;causticChain=false;}
   float choose=hbPathRandom(randomBase+2.0),u=hbPathRandom(randomBase+3.0),angle=hbPathRandom(randomBase+4.0)*6.283185307;
+#if defined(HB_PATH_NORMAL_FOOTPRINT) && HB_PATH_NORMAL_FOOTPRINT > 0
+vec3 footprintView=-direction;bool footprintActive=false,footprintCoat=false;
+#endif
   if(choose<transmission){
+#if defined(HB_PATH_NORMAL_FOOTPRINT) && HB_PATH_NORMAL_FOOTPRINT > 0
+footprintActive=true;
+#endif
 #ifdef HB_PATH_ROUGH_DIELECTRIC
 if(roughness>=.05&&abs(ratio-1.0)>.0001){vec3 view=-direction,h=hbPathVisibleNormal(n,view,hbPathFrame(n),vec2(roughness*roughness,roughness*roughness),angle,hbPathRandom(randomBase+5.0));float f=hbDielectricFresnel(max(0.0,dot(view,h)),ratio);vec3 refracted=refract(direction,h,ratio),outgoingDirection=u<f||dot(refracted,refracted)<.000001?reflect(direction,h):normalize(refracted);bool transmitted=!(u<f||dot(refracted,refracted)<.000001);if(transmitted?dot(n,outgoingDirection)>=0.0:dot(n,outgoingDirection)<=0.0)break;vec4 value=hbPathBSDF(n,view,outgoingDirection,color.rgb,metal,roughness,hit.y,point,width,ratio);float cosine=abs(dot(n,outgoingDirection));if(value.a<=.000000001||dot(hbRayGeometric(hit.y),outgoingDirection)*(front?1.0:-1.0)*(transmitted?-1.0:1.0)<=0.0)break;throughput*=value.rgb*(cosine/value.a);previousPDF=value.a;deltaBounce=false;direction=normalize(outgoingDirection);spread=min(1.57,spread+roughness*roughness*.5);if(transmitted){if(volume>0.0){hbMediumChange(volume,hbMediumValueLod(hit.y,point,-direction,width),front,ids,media,count);if(count<0)break;etaSurvival/=ratio*ratio;}else throughput*=hbPathAbsorption(hit.y,point,direction,width);}}
 else
@@ -88,10 +96,24 @@ else
   else{deltaBounce=false;
 #ifdef HB_PATH_ADVANCED
 vec4 lobe=hbPathDirection(hit.y,point,n,direction,metal,roughness,u,angle,hbPathRandom(randomBase+5.0),hbPathRandom(randomBase+6.0),width);vec3 outgoing=lobe.xyz;if(lobe.w<0.0)spread=max(spread,.5);else spread=min(1.57,spread+lobe.w);
+#if defined(HB_PATH_NORMAL_FOOTPRINT) && HB_PATH_NORMAL_FOOTPRINT > 0
+footprintActive=lobe.w>=0.0;float footprintAt=hbRayAttributes(hit.y);if(footprintActive&&footprintAt>0.0&&hbGeometryLoad(footprintAt+1.0).w>9.5)footprintCoat=u<.25*hbRayField5Lod(hit.y,point,footprintView,width).x;
+#endif
 #else
-vec3 outgoing;if(u<.25+.5*metal){float radius=hbPathRandom(randomBase+5.0),alpha=roughness*roughness;vec3 halfVector=hbPathVisibleNormal(n,-direction,hbPathFrame(n),vec2(alpha,alpha),angle,radius);outgoing=reflect(direction,halfVector);spread=min(1.57,spread+roughness*roughness*.5);}else{outgoing=hbGeometryHemisphere(n,angle,hbPathRandom(randomBase+6.0));spread=max(spread,.5);}
+vec3 outgoing;if(u<.25+.5*metal){float radius=hbPathRandom(randomBase+5.0),alpha=roughness*roughness;vec3 halfVector=hbPathVisibleNormal(n,-direction,hbPathFrame(n),vec2(alpha,alpha),angle,radius);outgoing=reflect(direction,halfVector);spread=min(1.57,spread+roughness*roughness*.5);
+#if defined(HB_PATH_NORMAL_FOOTPRINT) && HB_PATH_NORMAL_FOOTPRINT > 0
+footprintActive=true;
+#endif
+}else{outgoing=hbGeometryHemisphere(n,angle,hbPathRandom(randomBase+6.0));spread=max(spread,.5);}
 #endif
 float cosine=dot(n,outgoing);if(cosine<=0.0)break;if(dot(hbRayGeometric(hit.y),outgoing)*(front?1.0:-1.0)<=0.0)break;vec4 brdf=hbPathBSDF(n,-direction,outgoing,color.rgb,metal,roughness,hit.y,point,width,ratio);previousPDF=brdf.a;throughput*=brdf.rgb*(cosine/max(.000001,brdf.a));direction=normalize(outgoing);}
+#if defined(HB_PATH_NORMAL_FOOTPRINT) && HB_PATH_NORMAL_FOOTPRINT > 0
+if(footprintActive){vec3 center=normal;
+#ifdef HB_PATH_ADVANCED
+if(footprintCoat)center=hbRayCoatNormalLod(hit.y,point,footprintView,width);
+#endif
+spread=min(1.57,spread+hbRayNormalFootprint(hit.y,point,footprintView,width,center,ratio,choose>=transmission||dot(n,direction)>=0.0,footprintCoat,false));}
+#endif
   origin=point+direction*hbGeometryLimits.y*2.0;if(bounce>=2){float survival=clamp(max(max(throughput.x,throughput.y),throughput.z)*etaSurvival,.05,.95);if(hbPathRandom(randomBase+7.0)>survival)break;throughput/=survival;}
  }return clamp(radiance,vec3(0,0,0),vec3(hbPathEnvironment.w,hbPathEnvironment.w,hbPathEnvironment.w));
 }

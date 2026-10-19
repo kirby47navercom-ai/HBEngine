@@ -1,4 +1,5 @@
 import {pathPixelFootprintGLSL} from './path-pixel-footprint.js';
+import {normalFootprintGLSL} from './path-normal-footprint.js';
 import {transmittedSpreadGLSL,reflectedSpreadGLSL,dielectricSpreadGLSL} from './path-ray-cone.js';
 import {previousMediaGLSL} from './path-previous-media.js';
 import {previousGeometryGLSL} from './previous-geometry-shader.js';
@@ -8,6 +9,7 @@ import {surfaceHistoryGLSL} from './path-surface-history.js';
 // Display filtering never feeds the Monte Carlo history.
 // shortcut: differential footprints are local; reject grazing/TIR branch changes and cap the radius at32 pixels.
 export const pathDenoiseGLSL=`
+${normalFootprintGLSL}
 ${surfaceHistoryGLSL}
 ${transmittedSpreadGLSL}
 ${reflectedSpreadGLSL}
@@ -76,8 +78,16 @@ if(lensDifferentials){vec3 x=dp[0]-p,y=dp[1]-p;coc=min(32.0,max(length(hbPathOff
 if(!auxiliary)return vec4(normal,depth);
 vec3 virtualPoint=hbPathVirtualPoint(priorFrame,oldP),virtualCurrent=hbPathVirtualPoint(currentFrame,p);
 vec3 oldUV=hbProject(virtualPoint,hbPreviousVP);oldUV.xy+=uv-hbProject(virtualCurrent,hbCurrentVP).xy;float expected=bounce==0?max(.00001,hbLinearDepth(oldUV.z)):-max(.00001,oldSecondary);if(!previousValid||!hbInside(oldUV))oldUV.xy=vec2(-1,-1);return vec4(oldUV.xy,expected,coc);}
-float eta=1.0;bool reflection=true;if(glass){float volume=hbMediumID(hit.y),incoming=count>0?media[clamp(count-1,0,15)].w:1.0,outgoing=front?physical.w:1.0;if(volume>0.0&&!front){int found=-1;for(int j=0;j<count;j++)if(ids[j]==volume)found=j;if(found<0)break;if(found!=count-1)outgoing=incoming;else if(count>1)outgoing=media[clamp(count-2,0,15)].w;}if(volume<.5){incoming=front?1.0:physical.w;outgoing=front?physical.w:1.0;}eta=incoming/max(.000001,outgoing);float inCosine=abs(dot(n,direction));vec3 next=refract(direction,n,eta);reflection=dot(next,next)<.000001;if(reflection)direction=reflect(direction,n);else{direction=normalize(next);if(volume>0.0)hbMediumChange(volume,hbMediumValueLod(hit.y,p,-direction,width),front,ids,media,count);}cone.y=hbRayDielectricSpread(cone.y,surfaceRoughness,eta,inCosine,abs(dot(n,direction)),reflection);}
-else{direction=reflect(direction,n);cone.y=hbRayReflectSpread(cone.y,surfaceRoughness);}if(reflection){if(mirrorCount<8){if(!auxiliary)hbPathVirtualAppend(mirrorFrame,vec3(0,0,0),n,1.0,true);mirrorCount++;}else break;}
+float eta=1.0;bool reflection=true;
+#if defined(HB_PATH_NORMAL_FOOTPRINT) && HB_PATH_NORMAL_FOOTPRINT > 0
+vec3 footprintView=-direction;
+#endif
+if(glass){float volume=hbMediumID(hit.y),incoming=count>0?media[clamp(count-1,0,15)].w:1.0,outgoing=front?physical.w:1.0;if(volume>0.0&&!front){int found=-1;for(int j=0;j<count;j++)if(ids[j]==volume)found=j;if(found<0)break;if(found!=count-1)outgoing=incoming;else if(count>1)outgoing=media[clamp(count-2,0,15)].w;}if(volume<.5){incoming=front?1.0:physical.w;outgoing=front?physical.w:1.0;}eta=incoming/max(.000001,outgoing);float inCosine=abs(dot(n,direction));vec3 next=refract(direction,n,eta);reflection=dot(next,next)<.000001;if(reflection)direction=reflect(direction,n);else{direction=normalize(next);if(volume>0.0)hbMediumChange(volume,hbMediumValueLod(hit.y,p,-direction,width),front,ids,media,count);}cone.y=hbRayDielectricSpread(cone.y,surfaceRoughness,eta,inCosine,abs(dot(n,direction)),reflection);}
+else{direction=reflect(direction,n);cone.y=hbRayReflectSpread(cone.y,surfaceRoughness);}
+#if defined(HB_PATH_NORMAL_FOOTPRINT) && HB_PATH_NORMAL_FOOTPRINT > 0
+cone.y=min(1.57,cone.y+hbRayNormalFootprint(hit.y,p,footprintView,width,normal,eta,reflection,coatOnly,false));
+#endif
+if(reflection){if(mirrorCount<8){if(!auxiliary)hbPathVirtualAppend(mirrorFrame,vec3(0,0,0),n,1.0,true);mirrorCount++;}else break;}
 float oldEta=eta;
 if(auxiliary&&curved&&glass&&previousValid&&hbPathFilter.w>0.0){
 #ifndef HB_GUIDE_OPAQUE
@@ -89,6 +99,10 @@ if(auxiliary&&curved&&!glass&&previousValid&&hbPreviousGeometryAvailable()){prio
 #endif
 if(auxiliary&&curved&&!glass&&previousValid)oldSpread=hbRayReflectSpread(oldSpread,oldRoughness);
 if(auxiliary&&curved&&glass&&previousValid){previousValid=hbRayRoughDielectric(surfaceRoughness,eta)==hbRayRoughDielectric(oldRoughness,oldEta);vec3 oldNext=priorDirectionValid?priorDirection:(reflection?reflect(-oldView,oldN):normalize(refract(-oldView,front?oldN:-oldN,oldEta)));oldSpread=hbRayDielectricSpread(oldSpread,oldRoughness,oldEta,abs(dot(oldN,oldView)),abs(dot(oldN,oldNext)),reflection);}
+
+#if defined(HB_PATH_NORMAL_FOOTPRINT) && HB_PATH_NORMAL_FOOTPRINT > 0
+if(auxiliary&&curved&&previousValid)oldSpread=min(1.57,oldSpread+hbRayNormalFootprint(hit.y,oldP,oldView,oldWidth,oldN,oldEta,reflection,coatOnly,true));
+#endif
 if(auxiliary){hbPathVirtualAppend(priorFrame,oldP,oldN,oldEta,reflection);hbPathVirtualAppend(currentFrame,p,curved?normal:geometric,eta,reflection);}
 if(differentials)for(int j=0;j<differentialCount;j++){vec3 dn=hbPathSurfaceNormal(differentialIDs[j],dp[j],-rd[j],width,coatOnly);if(!front)dn=-dn;vec3 next=reflection?reflect(rd[j],dn):refract(rd[j],dn,eta);if(dot(next,next)<.000001||(glass&&reflection&&dot(refract(rd[j],dn,eta),refract(rd[j],dn,eta))>.000001))return vec4(0,0,0,0);rd[j]=normalize(next);ro[j]=dp[j]+rd[j]*hbGeometryLimits.y*2.0;}
 origin=p+direction*hbGeometryLimits.y*2.0;

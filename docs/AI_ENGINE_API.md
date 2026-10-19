@@ -503,3 +503,7 @@ runtime.take.start의 includeVariables:true는 공개 C++ 쓰기 속성/배열�
 runtime.values({target,offset:0,limit:64})는 녹화 가능한 변수의 metadata/value와 total/nextOffset을 읽는다. limit 최대256은 한 페이지다. development player에서는 hbPlayerDebug.values(target,options). timeline.preview.read.values는 실제 독립 미리보기의 바인딩 값이다. 미리보기는 BP/C++ 선언/기본값을 읽고 사용자 코드/물리/AI를 재실행하지 않는다.
 
 scene.select는 실행 중에도 오브젝트를 선택/검사할 수 있다. 제작값 변경 명령의 실행 중 차단은 유지한다. 선택 Inspector는4Hz로 현재 leaf만 갱신하고 등록 컴포넌트/선언 구조가 바뀌었을 때만 레이아웃을 갱신한다. 참조 component/widget 핸들은 아웃라이너 액터 수에서 제외되지만 런타임 조회용 ID는 보존한다.
+
+### 노멀 변화와 현재·이전 필터 폭
+
+`schema.raySurfaceHistory.opticalSpread.normalVariation`의 불변 계약을 따르세요. `PostProcessVolume.pathTracingNormalFootprint`에 `off`/`geometry`/`material`을 공유 컴포넌트 명령으로 설정해요. C++는 `hb::Components::SetString(actor,"PostProcessVolume","pathTracingNormalFootprint","material")`, 노드는 `componentSetString`이에요. 기본값 `off`를 유지하면 추가 노멀 평가가 없어요. DirectX 진단의 `pathNormalFootprint`는 0/1/2예요. 비용·미분 모델·남은 전역 한계와 실제 패키징 근거는 [NORMAL_FOOTPRINT_746](research/NORMAL_FOOTPRINT_746.md)에 있어요.
