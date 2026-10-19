@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import {timedNormalFixture} from './rendering-187-fixture.mjs';
 import {makeMaterialNode} from '../prototype/material-runtime.js';
-export function normalHistoryFixture403({largeWorld=false,largeGraph=false,worldCoordinates=false,normalCoordinates=false,coordinateOperation='',coordinateBuilder=null}={}){
+export function normalHistoryFixture403({largeWorld=false,largeGraph=false,worldCoordinates=false,normalCoordinates=false,coordinateOperation='',coordinateBuilder=null,surfaceOverrides=null}={}){
  if(coordinateOperation&&!['divide','distance','rotateUV','reflect','eyeUV'].includes(coordinateOperation))throw Error('Unknown coordinate operation');
  if(coordinateOperation==='eyeUV')worldCoordinates=true;
- const f=timedNormalFixture('normal');
+ const f=timedNormalFixture('normal');if(surfaceOverrides)Object.assign(f.data.surface,surfaceOverrides);
  try{
   f.texture.type=THREE.FloatType;f.texture.image={data:new Float32Array([1,.5,.5,1,0,.5,.5,1]),width:2,height:1};f.texture.generateMipmaps=true;f.texture.minFilter=THREE.LinearMipmapLinearFilter;f.texture.magFilter=THREE.LinearFilter;f.texture.wrapS=f.texture.wrapT=THREE.RepeatWrapping;f.texture.needsUpdate=true;
   if(largeWorld||largeGraph||worldCoordinates||normalCoordinates||!!coordinateOperation){f.mesh.geometry.dispose();f.mesh.geometry=new THREE.PlaneGeometry(4,4);f.mesh.position.x=largeWorld?10000000:0;f.texture.image={data:Float32Array.from({length:64*4},(_,i)=>i%4===0?(Math.floor(i/4)%2):i%4===3?1:.5),width:64,height:1};f.texture.magFilter=THREE.NearestFilter;f.texture.needsUpdate=true;}

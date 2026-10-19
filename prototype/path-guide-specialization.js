@@ -3,9 +3,10 @@ import {curvedGuideGLSL} from './path-curved-guide.js';
 
 // Keep the common/native algorithm as the source of truth. Only remove work
 // whose output and early rejection cannot be used by this fixed no-lens pass.
-export function pathGuideDenoiseGLSL(auxiliary,lens){
- if(lens)return shareGuideNormals(pathDenoiseGLSL,4);
- let source=pathDenoiseGLSL.slice(0,pathDenoiseGLSL.indexOf('vec4 hbPathGuideResolve('));
+export function pathGuideDenoiseGLSL(auxiliary,lens,specular=true,opaque=false){
+ const guide=specular?pathDenoiseGLSL:withoutMirrorGuide(pathDenoiseGLSL);
+ if(lens){const source=shareGuideNormals(guide,4);return !specular&&opaque?withoutSecondaryTail(source):source;}
+ let source=guide.slice(0,guide.indexOf('vec4 hbPathGuideResolve('));
  const replace=(before,after)=>{if(!source.includes(before))throw Error('경로 가이드 생성 계약이 달라졌어요.');source=source.replace(before,after);};
  const section=(first,last,value)=>{const a=source.indexOf(first),b=source.indexOf(last,a+first.length);if(a<0||b<0)throw Error('경로 가이드 구역을 확인하세요.');source=source.slice(0,a)+value+source.slice(b);};
  if(!auxiliary){
@@ -27,7 +28,8 @@ export function pathGuideDenoiseGLSL(auxiliary,lens){
  }
  replace('vec4 hbPathGuideTrace(vec2 uv,bool auxiliary)','vec4 hbPathGuideTrace(vec2 uv)');
  source=source.replace(/\bauxiliary\b/g,auxiliary?'true':'false');
- return (auxiliary?shareGuideNormals(source,2):source)+'\nvec4 '+(auxiliary?'hbPathAuxResolve':'hbPathGuideResolve')+'(vec2 uv){return hbPathGuideTrace(uv);}\n';
+ source=auxiliary?shareGuideNormals(source,2):source;if(!specular&&opaque)source=withoutSecondaryTail(source);
+ return source+'\nvec4 '+(auxiliary?'hbPathAuxResolve':'hbPathGuideResolve')+'(vec2 uv){return hbPathGuideTrace(uv);}\n';
 }
 
 // One call site prevents the driver from expanding the entire normal texture
@@ -42,4 +44,16 @@ function shareGuideNormals(source,size){
  replace(terminal,`vec3 differentialNormals[${size}];for(int sampleIndex=0;sampleIndex<1+((glass||mirror)&&differentials?differentialCount:0);sampleIndex++){bool primary=sampleIndex==0;int j=max(0,sampleIndex-1);vec3 value=hbPathSurfaceNormal(primary?hit.y:differentialIDs[j],primary?p:dp[j],primary?-direction:-rd[j],width,coatOnly);if(primary)normal=value;else differentialNormals[j]=value;}n=front?normal:-normal;${prior}\n${terminal}`);
  replace('vec3 dn=hbPathSurfaceNormal(differentialIDs[j],dp[j],-rd[j],width,coatOnly);','vec3 dn=differentialNormals[j];');
  return source;
+}
+
+// CPU metadata proves that neither base nor coating can enter the guide's
+// mirror branch. Unknown/dynamic material channels keep the general path.
+function withoutMirrorGuide(source){const pairs=[['bool baseMirror=physical.x>.5&&physical.y<.4,mirror=baseMirror,coatOnly=false;','bool baseMirror=false,mirror=false,coatOnly=false;'],['bool coatMirror=coat.x>.5&&coat.y<.05;coatOnly=!glass&&!baseMirror&&coatMirror;mirror=mirror||coatMirror;','bool coatMirror=false;']];for(const [a,b]of pairs){if(!source.includes(a))throw Error('거울 가이드 생성 계약이 달라졌어요.');source=source.replace(a,b);}return source;}
+
+// Retain all primary/committed normal, visibility and surface rejection work.
+// Only the tail after the unconditional diffuse return is unreachable here.
+function withoutSecondaryTail(source){
+ const close=start=>{if(source[start]!=='{')throw Error('가이드 구역의 시작을 확인하세요.');let depth=1;for(let i=start+1;i<source.length;i++){if(source[i]==='{')depth++;else if(source[i]==='}'&&!--depth)return i;}throw Error('가이드 구역의 끝을 확인하세요.');};
+ const first=source.indexOf('vec4 hbPathGuideTrace('),loop=source.indexOf('for(int bounce=0;',first),brace=source.indexOf('{',loop),loopEnd=close(brace),terminal=source.indexOf('if(!glass&&!mirror){',brace),body=source.indexOf('{',terminal),end=close(body);if(first<0||loop<0||terminal<0||end>=loopEnd)throw Error('확산 가이드 반환 구역을 확인하세요.');
+ return source.slice(0,terminal)+'{'+source.slice(body+1,end+1)+source.slice(loopEnd);
 }

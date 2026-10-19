@@ -40,7 +40,7 @@ export function startGPUPathPreparation(renderer,post,screen){
  return state;
 }
 
-export function gpuPathPreparationInfo(state){return state?{pending:state.pending,currentStage:state.currentStage,elapsedMS:state.pending?performance.now()-state.started:state.elapsedMS,stages:(state.stages||[]).map(s=>({...s})),completed:state.completed,total:state.total,cancelled:state.cancelled,error:state.error?.message||null,...state.parallelSupported===undefined?{}:{parallelSupported:state.parallelSupported},...state.concurrent?{concurrent:true}:{},...state.submitted===undefined?{}:{submitted:state.submitted}}:null;}
+export function gpuPathPreparationInfo(state){return state?{pending:state.pending,currentStage:state.currentStage,elapsedMS:state.pending?performance.now()-state.started:state.elapsedMS,stages:(state.stages||[]).map(s=>({...s})),completed:state.completed,total:state.total,cancelled:state.cancelled,error:state.error?.message||null,...state.guideMode?{guideMode:state.guideMode}:{},...state.parallelSupported===undefined?{}:{parallelSupported:state.parallelSupported},...state.concurrent?{concurrent:true}:{},...state.submitted===undefined?{}:{submitted:state.submitted}}:null;}
 
 export function cancelGPUPathPreparation(state){
  if(!state||state.cancelled)return;if(state.pending)state.freezeCancellation?.();state.freezeCancellation=null;state.cancelled=true;state.currentStage='cancelled';state.resolveCancellation?.();state.resolvePoll?.();

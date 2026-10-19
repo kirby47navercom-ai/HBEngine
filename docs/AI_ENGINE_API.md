@@ -517,3 +517,9 @@ scene.select는 실행 중에도 오브젝트를 선택/검사할 수 있다. �
 `schema.textureResidency`와 `schema.textureResidencyPool`을 따르세요. 장면의 `TextureStreaming` 컴포넌트는 상주/전환 예산 MiB·갱신 초·한 번의 전환 수·해상도 배율·밉 보정·설정 우선순위를 제공해요. `MeshRenderer.textureStreamingPriority`로 품질 배분을 바꾸고 `textureStreaming=false`로 전체 밉을 고정해요. 제작에는 기존 document CAS/Undo/Redo, 실행에는 기존 Components C++/노드를 사용해요.
 
 `Materials::SetResidentMip(actor,"Paint",1)`/`materialResidentMip`는 수동 지정, -1은 자동 복귀예요. 원본 밉 번호로 샘플링/부분 수정하며 전체 복원은 CPU 원본을 사용해요. `profiler.textureResidency({offset:0,limit:64})`는 소유자/파라미터별 요청·예산·상주 밉과 페이로드 바이트, 임시 예약, 필수 초과와 차단/오류를 읽어요. limit 최대256은 페이지예요. 같은 수치를 실제 프로파일러에서 보여줘요. 이 풀은 노드 머테리얼의 명시적 RGBA8 밉 페이로드이며 전체 VRAM/드라이버 heap/디스크 스트리밍이 아니에요. [지원·수명·실행·남은 범위](research/TEXTURE_RESIDENCY_772.md).
+
+### GL 가이드 준비 선택
+
+`schema.pipelinePreparation.glGuideSpecialization`과 `pipelinePreparation.guideMode`를 읽으세요. general/noMirror/diffuse는 실제 base/coat 값과 동적 채널에서 보수적으로 선택돼요. 사람·C++·블루프린트가 기존 머테리얼 파라미터를 바꾸면 같은 준비 경로가 갱신돼요. 가이드만 바뀔 때는 기존 path 머테리얼/프로그램을 유지해요. 이전 클록·노멀·밉과 표면/가시성 거부는 유지하며 강제 선택 명령은 없어요. [실제 픽셀/게임/준비 시간 범위](research/GL_GUIDE_PREPARATION_783.md).
+
+`schema.pipelinePreparation.glRayAtlas`와 `renderer.rayAtlasRecovery`는 GL 광선 atlas의 최초 전체 초기화·리소스 복구 횟수와 CPU 페이로드 바이트를 설명해요. 같은 리소스의 후속 변경은 기존 행 부분 전송을 유지해요. 이 값은 GPU heap 사용량이나 모든 프레임 전송량을 뜻하지 않아요.
