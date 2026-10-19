@@ -63,6 +63,7 @@ export function validateTextureMipPixels(pixels){
  return pixels;
 }
 export function cookTextureMips(pixels,value={},options={}){
+ if(options.authoredLevels!==undefined)return cookAuthoredTextureMips(pixels,value,options);
  const p=textureImportPolicy(value),srgb=textureImportColorSpace(p)==='srgb',{width,height,data:input}=validateTextureMipPixels(pixels);
  const config=validateTextureComposite(options.composite,p),composite=config.normalTexture?normalRoughnessComposite(config,validateTextureMipPixels(options.normalPixels),{width,height,alphaCutoff:p.alphaCutoff},srgb):null;
  let data=input;if(p.flipGreen){data=new Uint8Array(input);for(let i=1;i<data.length;i+=4)data[i]=255-data[i];}
@@ -74,4 +75,22 @@ export function cookTextureMips(pixels,value={},options={}){
   if(raw.width===1&&raw.height===1)break;raw=downsample(raw,srgb);mip++;
  }
  const storedBytes=levels.reduce((sum,l)=>sum+l.data.byteLength,0);return{levels,report:{policy:p,...(composite?{composite:composite.report}:{}),colorSpace:srgb?'srgb':'linear',source:{width,height,bytes:input.byteLength},topMip:top,dimensions:levels.map(l=>[l.width,l.height]),storedBytes,coverage,sourcePreserved:true}};
+}
+export function validateAuthoredTextureMipPixels(pixels,additional){
+ validateTextureMipPixels(pixels);if(!Array.isArray(additional)||additional.length!==Math.floor(Math.log2(Math.max(pixels.width,pixels.height))))throw Error('사용자 지정 2D 밉을 마지막 1 크기까지 지정하세요.');
+ let width=pixels.width,height=pixels.height;for(const level of additional){validateTextureMipPixels(level);width=Math.max(1,Math.floor(width/2));height=Math.max(1,Math.floor(height/2));if(level.width!==width||level.height!==height)throw Error('사용자 지정 2D 밉의 크기를 맞춰 주세요.');}return additional;
+}
+// Authored levels use the same import transforms/coverage/composite as generated
+// levels, but never obtain their color or alpha by downsampling the prior level.
+export function cookAuthoredTextureMips(pixels,value={},options={}){
+ const p=textureImportPolicy(value),srgb=textureImportColorSpace(p)==='srgb',additional=validateAuthoredTextureMipPixels(pixels,options.authoredLevels),{width,height,data:input}=pixels,config=validateTextureComposite(options.composite,p),composite=config.normalTexture?normalRoughnessComposite(config,validateTextureMipPixels(options.normalPixels),{width,height,alphaCutoff:p.alphaCutoff},srgb):null;
+ let visible=0,mean=0;for(let i=3;i<input.length;i+=4){if(input[i]/255>=p.alphaCutoff)visible++;mean+=input[i]/255;}const target=visible/(width*height),levels=[],coverage=[];let top=null;
+ for(const[mip,source]of [pixels,...additional].entries()){
+  composite?.advance(source.width,source.height);const selected=mip>=p.topMip&&(!p.maxSize||Math.max(source.width,source.height)<=p.maxSize)||source.width===1&&source.height===1;if(!selected)continue;top??=mip;
+  let data=source.data;if(p.flipGreen){data=new Uint8Array(data);for(let i=1;i<data.length;i+=4)data[i]=255-data[i];}
+  let level;if(mip===0)level={width,height,data,coverage:{scale:1,target,achieved:target,error:0,meanSourceAlpha:mean/(width*height),quantizationStep:1/(width*height)}};
+  else{const raw=new Float32Array(data.length);for(let i=0;i<data.length;i++)raw[i]=srgb&&i%4!==3?linear[data[i]]:data[i]/255;level=uploadLevel({width:source.width,height:source.height,data:raw},p,srgb,target);}
+  if(composite)level=composite.apply(level,mip);levels.push({width:level.width,height:level.height,data:level.data});coverage.push({sourceMip:mip,...level.coverage});if(!p.mipmaps)break;
+ }
+ return {levels,report:{policy:p,authored:true,...(composite?{composite:composite.report}:{}),colorSpace:srgb?'srgb':'linear',source:{width,height,bytes:input.byteLength,mipLevels:additional.length+1,authoredBytes:[pixels,...additional].reduce((sum,l)=>sum+l.data.byteLength,0)},topMip:top,dimensions:levels.map(l=>[l.width,l.height]),storedBytes:levels.reduce((sum,l)=>sum+l.data.byteLength,0),coverage,sourcePreserved:true}};
 }
