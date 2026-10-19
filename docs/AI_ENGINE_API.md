@@ -507,3 +507,7 @@ scene.select는 실행 중에도 오브젝트를 선택/검사할 수 있다. �
 ### 노멀 변화와 현재·이전 필터 폭
 
 `schema.raySurfaceHistory.opticalSpread.normalVariation`의 불변 계약을 따르세요. `PostProcessVolume.pathTracingNormalFootprint`에 `off`/`geometry`/`material`을 공유 컴포넌트 명령으로 설정해요. C++는 `hb::Components::SetString(actor,"PostProcessVolume","pathTracingNormalFootprint","material")`, 노드는 `componentSetString`이에요. 기본값 `off`를 유지하면 추가 노멀 평가가 없어요. DirectX 진단의 `pathNormalFootprint`는 0/1/2예요. 비용·미분 모델·남은 전역 한계와 실제 패키징 근거는 [NORMAL_FOOTPRINT_746](research/NORMAL_FOOTPRINT_746.md)에 있어요.
+
+### CPU 광선 밉 변환 캐시
+
+`schema.rayMipCache`, `profiler.read.rayMipCache`와 `profiler.rayMipCache`를 사용해요. 후자는 선택 `budgetBytes`(안전한 정수>=0), `clear`(Boolean)를 받아요. 기본256MiB이고0은 보관을 꺼요. 같은 풀을 프로파일러 UI에서 조작해요. 현재·이전 활성 스냅샷은 퇴역/비우기 뒤에도 유지돼요. 이 수치는 변환 Float32 캐시만 세며 전체 RAM/VRAM·GPU 상주 예산은 아니에요. [실행·비용·다음 GPU 단계](research/RAY_MIP_CACHE_752.md).

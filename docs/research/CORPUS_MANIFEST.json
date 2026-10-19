@@ -2832,7 +2832,8 @@
     "370: Reconcile remaining Three r180 renderer/device lifecycle and linked node/binding APIs, PBRT4 BVH construction/traversal and robustness references. Selected methods/sections and HB execution do not complete the full corpus or medium/curved inverse replay.",
     "376: Reconcile PBRT4 remaining Dielectric BSDF rough/dispersion/radiance sections, SurfaceInteraction/Camera linked APIs and full texture filtering/EWA references. Selected old-medium/footprint checks do not close global curved correspondence or participating-medium scattering.",
     "380: Reconcile linked UE Lightmass/DFAO/BentNormal/capture/volumetric APIs and Unity Skybox/HDRP/URP environment APIs, lower-hemisphere/static/stationary/shadowing details and full implementation. HB analytic dome bake excludes realtime cloud geometry capture and narrow-disk importance sampling.",
-    "385: Reconcile remaining NIST inverse-trig/addition/roundoff references and linked UE final-gather/cubemap filtering APIs. Local diffuse angular LOD does not implement complete camera/material/anisotropic derivatives, cloud bake capture, or the full engine corpus."
+    "385: Reconcile remaining NIST inverse-trig/addition/roundoff references and linked UE final-gather/cubemap filtering APIs. Local diffuse angular LOD does not implement complete camera/material/anisotropic derivatives, cloud bake capture, or the full engine corpus.",
+    "752: UE5.8 streaming overview/metrics and selected6000.7Beta manual bodies read; linked APIs, format/build and all remaining version corpus stay scoped and unread."
   ],
   "supplemental165": {
     "date": "2026-10-16",
@@ -4479,6 +4480,43 @@
     "unread": [
       "remaining linked UE/Unity and API bodies",
       "entire W3C writeTexture body remains unfetched"
+    ]
+  },
+  "supplemental752": {
+    "date": "2026-10-19",
+    "gatePromoted": false,
+    "record": "docs/research/RAY_MIP_CACHE_752.md",
+    "newReading": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/texture-streaming-overview-for-unreal-engine?lang=en-US",
+        "scope": "Returned full UE5.8 body44lines; linked format/build documents unread"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/texture-streaming-metrics-in-unreal-engine?lang=en-US",
+        "scope": "Returned full UE5.8 body109lines; metrics, temporary resizing memory and incremental scheduling"
+      },
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.7/manual/materials-and-shaders/textures/texture-loading/texture-streaming",
+        "scope": "6000.7Beta main body180-202; index is not detailed feature/API analysis"
+      },
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.7/manual/materials-and-shaders/textures/texture-loading/texture-streaming/introduction",
+        "scope": "Main body181-208; mesh/UV/camera demand, max demand over users, unsupported dimensions"
+      },
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.7/manual/materials-and-shaders/textures/texture-loading/texture-streaming/configure",
+        "scope": "Main body181-264; cameras/bias/non-streaming budget/max reduction/runtime controls"
+      },
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.7/manual/materials-and-shaders/textures/texture-loading/texture-streaming/override-mipmap-level",
+        "scope": "Main body181-226; priority, requested/loaded/clear and bounds; linked API bodies not read"
+      }
+    ],
+    "notInferred": "CPU converted-mip reuse budget is implemented; GPU streaming/residency and linkedAPI completeness are not implied",
+    "unread": [
+      "linked Unity requested/loaded/clear, StreamingController and QualitySettings API bodies",
+      "linked UE streaming data build, format/settings and configuration APIs",
+      "other accumulated UE/Unity sources"
     ]
   }
 }

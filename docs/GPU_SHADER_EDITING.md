@@ -19,3 +19,7 @@ TSL의 조건문에서 부수효과만 필요한 콜백은 `()=>{ result.assign(
 ### 선택적 노멀 필터 폭 (736–745)
 
 `PostProcessVolume.pathTracingNormalFootprint`: `off`(기본)/`geometry`/`material`. 현재·이전 기하/시각/뷰/밉 폭을 각각 평가하며 기본·코팅 반사/굴절 cone에 로컬 각도 외피를 더해요. 끄기는 추가 노멀 평가를 생성하지 않아요. GPU 타깃·uniform·읽기 추가 없이 기존 `pathQuality.w` 비트21–22를 써요. 자세한 비용·실행 근거·전역 해법의 남은 범위는 [NORMAL_FOOTPRINT_746](research/NORMAL_FOOTPRINT_746.md)에 있어요.
+
+### CPU 변환 캐시와 GPU 상주량 구분 (749–752)
+
+`ray-mip-cache.js`의256MiB 기본 풀은 변환 Float32 밉 재사용만 제한해요. 활성 현재/이전 스냅샷·source·GPU/ray atlas 메모리는 별도예요. `profiler.rayMipCache`와 프로파일러 UI가 같은 예산/비우기를 사용해요. 0/퇴역 뒤에도 네 자료형·네 모드의 현재/이전 atlas 바이트가 같고 실제 네이티브 실행도 검증했어요. [GPU 상주 전환의 다음 조건](research/RAY_MIP_CACHE_752.md).

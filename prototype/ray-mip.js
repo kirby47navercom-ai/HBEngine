@@ -2,7 +2,7 @@ import {NearestFilter,NearestMipmapNearestFilter,NearestMipmapLinearFilter,Linea
 import {authoredTextureLevels} from './texture-authored-mips.js';
 import {validRayTextureFlags,rayTextureSampling} from './texture-sampling-mode.js';
 
-const cache=new WeakMap();
+import {rayMipCache as cache} from './ray-mip-cache.js';
 export const rayMipFilter=map=>map.generateMipmaps===false&&!map.userData?.hbCookedMips&&!map.userData?.hbAuthoredMips?0:({[NearestMipmapNearestFilter]:1,[LinearMipmapNearestFilter]:2,[NearestMipmapLinearFilter]:3,[LinearMipmapLinearFilter]:4}[map.minFilter]||0);
 export const releaseRayMips=maps=>{for(const map of maps||[])cache.delete(map);};
 export function rayMipChain(map,pixels,srgb,volume=false){

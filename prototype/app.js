@@ -1,3 +1,4 @@
+import {rayMipCacheInfo,configureRayMipCache,clearRayMipCache} from './ray-mip-cache.js';
 import {withGPUFrameTiming,stopGPUFrameTiming,clearGPUFrameTiming} from './gpu-frame-timing.js';
 import {tilemapPage} from './tilemap-diagnostics.js';
 import {openEffectLiveEditor} from './effect-live-editor.js';
@@ -1673,6 +1674,7 @@ const editorCommandMethods={
   'editor.synchronize':async()=>{automationEditable();await flushPrefabRefresh();captureDocument();return {documents:await Promise.all([...assetDocs.items.values()].map(async d=>({path:d.path,revision:await documentRevision(d.data),dirty:d.dirty}))),pendingPrefabRefresh:!!(prefabRefreshTimer||prefabRefreshTask)};},
   'editor.state':()=>({...automationState(),logs:clone(logs.slice(-100)),work:runtime?.inspectWork()||null}),
   'profiler.read':()=>profiler.snapshot(),
+  'profiler.rayMipCache':({budgetBytes,clear=false})=>{if(typeof clear!=='boolean')throw Error('캐시 비우기는 Boolean이에요.');if(budgetBytes!==undefined)configureRayMipCache({budgetBytes});if(clear)clearRayMipCache();return rayMipCacheInfo();},
   'profiler.record':({recording})=>{if(typeof recording!=='boolean')throw Error('기록 여부는 Boolean이에요.');profiler.recording=recording;return {recording};},
   'profiler.clear':()=>{profiler.clear();return {cleared:true};},
   'sprite.slice':async params=>{const {doc}=await automationDocument(params,true);if(doc.kind!=='sprite'||doc.data.sheet)throw Error('원본 스프라이트 시트 문서가 필요해요.');const editor=assetPanes.get(doc.path)?.editor,image=await editor.image(doc.data.texture),settings=params.settings||{},pixels=settings.mode==='automatic'||settings.keepEmpty===false?spritePixels(image,editor.el.ownerDocument):image;return automationAuthoringEdit(params,'sprite',data=>{data.slices=mergeSpriteSlices(data.slices||[],sliceSprite(data,pixels,settings),params.method||'smart');return {slices:data.slices.map(s=>({id:s.id,name:s.name,rect:s.rect}))};});},
