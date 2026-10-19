@@ -4582,5 +4582,37 @@
       "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch."
     ],
     "exhaustive": false
+  },
+  "supplemental806": {
+    "date": "2026-10-19",
+    "targets": [
+      "MAT-03",
+      "PER-03",
+      "AI-03"
+    ],
+    "record": "docs/research/UV_GRAPH_DEMAND_806.md",
+    "selectedReturnedBody": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/building-texture-streaming-data-in-unreal-engine",
+        "version": "5.8",
+        "sections": "search-returned introduction/per-texture UV scale, bounds/UV density/material scale and failure fallback",
+        "status": "partial returned-body comparison; debug visualization images/whole article linked corpus not validated"
+      },
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.6/manual/materials-and-shaders/textures/textures-getting-started/texture-mipmaps-introduction",
+        "sections": "search-returned bias/sampling paragraph",
+        "status": "partial returned-body comparison, not full page/API"
+      }
+    ],
+    "indexedOnly": [
+      "https://docs.unity.com/en-us/engine/7000.0/manual/materials-and-shaders/textures/texture-loading/texture-streaming/configure",
+      "https://docs.unity.com/en-us/engine/7000.0/manual/materials-and-shaders/textures/texture-loading/texture-streaming/use",
+      "https://docs.unity.com/en-us/engine/7000.0/manual/materials-and-shaders/textures/texture-loading/texture-streaming/introduction",
+      "https://docs.unity.com/en-us/engine/6000.5/script-reference/unityengine/streamingcontroller/streamingmipmapbias",
+      "https://docs.unity.com/en-us/engine/7000.0/script-reference/unityengine/texture/mipmapbias",
+      "https://docs.unity.com/en-us/engine/6000.5/script-reference/unityengine/texture/mipmapbias"
+    ],
+    "exhaustive": false,
+    "comparison": "HB conservative level0 differs from UE UV0/scale1 fallback; shader evaluation unchanged, existing HB CPU/GPU/runtime evidence is acceptance basis"
   }
 }

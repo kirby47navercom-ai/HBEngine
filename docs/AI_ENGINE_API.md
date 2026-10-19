@@ -531,3 +531,5 @@ scene.select는 실행 중에도 오브젝트를 선택/검사할 수 있다. �
 binding의 `residency.disk.decodedBytes/logicalBytes/pendingReads/reads`와 머테리얼의 `pendingRequests/stagedRequests`로 상태를 확인하세요. `reads`는 브라우저 캐시를 포함한 이미지 로드 시도예요. 현재·후보 view가 사용하지 않는 decoded 꼬리와 진행 요청은 해제돼요. 선택을 바꾸거나 해제하면 오래된 transaction은 commit:false이고 완료된 미적용 후보도 정리돼요. 디스크 view의 dispose는 종료이며 재사용에는 새 view가 필요해요.
 
 현재 디스크 모드는 처리 없는 RGBA8 사용자 지정2D 체인이에요. 커버리지·합성·노멀 재처리·상위 밉 필터/다른 차원·압축/HDR/raw·런타임 영역 수정에는 일반 가져오기 경로를 사용하세요. 디스크 소스를 위한 영역 수정은 읽기 전용으로 거부돼요. [제작·취소·실제 세 GPU/게임/AI 검증과 범위](research/TEXTURE_DISK_MIPS_796.md).
+
+`schema.textureResidencyPool.graphDemand`는 같은 머테리얼 그래프의 UV·파라미터·시간과 LOD/기울기/bias 수요를 설명해요. `profiler.textureResidency.items[].demandBasis/desiredBase`와 머테리얼 `textures.bindings[].sourceNode`로 해당 그래프 노드를 찾으세요. 기존 C++·블루프린트 파라미터 setter와 문서 편집이 같은 계산을 갱신해요. 비선형/지원하지 않는 수요는 수준0을 요청하되 예산을 따라요. 화면 투영은 bounds 추정이며 보조 광학/삼각형 미분의 완료를 뜻하지 않아요. 설정·장면 취소는 이전 풀의 owned 읽기만 중단하고 새 수동 요청은 유지해요. [지원 범위와 실제 실행 근거](research/UV_GRAPH_DEMAND_806.md).

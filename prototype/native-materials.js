@@ -1,5 +1,6 @@
 import {residentMipBase} from './texture-resident-view.js';
-import {compileMaterial,materialDefaults,materialParameters,materialFloatProperty,materialVectorProperty,materialVectorValue} from './material-runtime.js';
+import {compileMaterial,materialDefaults,materialParameters,materialFloatProperty,materialVectorProperty,materialVectorValue,resolveMaterialAttributes,resolveMaterialInputs,normalizedMaterialEdges,materialNodeKey,materialPins,materialParameterKey} from './material-runtime.js';
+import {makeTextureGraphDemand} from './texture-graph-demand.js';
 import {materialTextureBindings} from './material-texture-bindings.js';
 import {captureMaterialGraph} from './material-source-key.js';
 import {normalMapGLSL} from './normal-map.js';
@@ -55,6 +56,7 @@ export function createNativeMaterial(THREE,input,{fileUrl,onError=()=>{},rendere
   material.userData.floatKeys=[...plan.floatBindings.filter(b=>b.kind!=='residentMip').map(b=>b.kind+':'+b.key),'surface:emissiveIntensity'];
   material.userData.vectorKeys=plan.vectorBindings.map(b=>b.kind+":"+b.key);
   material.userData.updateVector=(key,value)=>{if(disposed)return false;value=materialVectorValue(value);if(materialParameters(data).some(p=>p.name===key&&p.type!=='vec3'))throw Error('Vector3 파라미터가 아니에요.');const property=materialVectorProperty(key),parameter=plan.vectorBindings.find(b=>b.kind==='parameter'&&b.key===key),binding=parameter||plan.vectorBindings.find(b=>b.kind==='surface'&&b.key===property);if(!binding){if(materialParameters(data).some(p=>p.name===key))throw Error('Vector3 파라미터가 아니에요.');return false;}values.splice(binding.offset,3,...value);if(parameter)data.parameters={...data.parameters,[key]:value};else data.surface={...data.surface,[property]:value};return true;};
+  const normalized=resolveMaterialAttributes(resolveMaterialInputs(data)),demandData={graph:normalized.graph,get parameters(){return data.parameters;}},textureDemand=makeTextureGraphDemand(demandData,{keyOf:materialNodeKey,pinsOf:materialPins,parameterKey:materialParameterKey,edges:normalized.graph?normalizedMaterialEdges(normalized.graph):[]});material.userData.textureDemand=id=>textureDemand(id,time);
   material.userData.textureState=bindings.state;material.userData.rayTextures=bindings.textures;
   material.userData.materialState=()=>({backend:'D3D11',time,uniforms:values.slice(),program:program.id});
   material.userData.prepareTextureResidency=bindings.prepareResidency;material.userData.prepareTexture=async(key,path,resources)=>{const transaction=await bindings.prepare(key,path,resources),commit=transaction.commit;transaction.commit=()=>{if(!commit())return false;data.parameters={...data.parameters,[key]:path};data.textureAssets=bindings.resources();return true;};return transaction;};
