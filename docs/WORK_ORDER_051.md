@@ -702,3 +702,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 679 설치 166ecc1b126c5a58/3487전체명세·소유162SHA/검사소스6·User10385읽기전후SHA/연결/Versions1. 설치662PKl3Pi/665VsMBe1 독립전체가이드·496EJDC4B 새실제CPP/BP/mip/비동기중입력·복원·idle0 통과. 초기wrapper오타는재설치없이원래User SHA로검사재개. 이전설치180489539B/검사exe9806220B 정리. CDP PNG는native색증거에서제외하고정식캡처·명시가이드실행을후속으로확인하며다음렌더링을계속한다.
 
 681–686 source f3c31381a63f5507a4196ccfc136f6d521c7ea0d: 현재/이전 거친 유전체 폭을 실제 radiance 기능 분기에 맞추고 경계 변화의 이력을 거부. 682 GL/GPU30표본·683 특화/일반DX 각15표본 독립 정답/원래4e-5 통과. 기존375 노멀맵 밉·358 비등방성/회전 거부복원·365 decoder·652 수명 보존. 설치679 actual C++/BP10단계/fullguide hbCapture640×360 밝은90104픽셀;14509ms는 미통제 관찰. Player686 새빌드/현재shader본문 포함. ENGINE_WORK687 소유SHA·분리된 실패·잔여를 유지하고 설치와 다음 누적 렌더링 구현을 계속한다.
+
+689 설치 2e756415918c8f40/3494전체명세/168소유SHA/6C++·User10385읽기전후SHA/연결/Versions1. 설치682yGf0Nx GL/GPU30표본·681TvMSy8 SDK/C++/BP fullguide10ready/hbCapture90104밝은픽셀 통과. 이전설치180591789B와소유검사exe3268740B 정리. 다음 배열/볼륨 사용자지정 밉의 제작·실행 연결과 누적 렌더링/엔진 작업을 이어간다.

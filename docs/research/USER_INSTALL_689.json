@@ -1,0 +1,255 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "103a8fceb987b338fbbff0df91b210298491c0b9",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2e756415918c8f40",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\2e756415918c8f40\\HBEngine.exe",
+  "bundleHash": "2e756415918c8f40a350cc64c25ba68f2137e24b2c77a1e0906b35189b23a858",
+  "files": 3494,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "103a8fceb987b338fbbff0df91b210298491c0b9",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2e756415918c8f40",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\2e756415918c8f40\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\2e756415918c8f40\\HBEngine.exe",
+    "bundleHash": "2e756415918c8f40a350cc64c25ba68f2137e24b2c77a1e0906b35189b23a858",
+    "files": 3494,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3488,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\166ecc1b126c5a58",
+          "bytes": 180591789,
+          "manifestSHA256": "883ef66b25f8d40f3632251b2f658f82811cc538e313e00afed0d98edaf80e3e"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-19T03:22:30.0597620Z",
+      "bytes": 180591789,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "2e756415918c8f40"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "runtimeOwnersVerified": 168,
+    "repositoryOnlyTestSourcesVerified": 6,
+    "nativePlayerSHA256": "13fe1e0e0d99bcd0939d60b06f926af3ac5236d0f6f48fd132fd6a3c554df148",
+    "installedGates": [
+      {
+        "path": "native/build/rough-dielectric-682-yGf0Nx/acceptance.json",
+        "sha256": "a47dab08e4dd3f6dff8bdd715c824e0746bb2dc0e94f788eeabec619bb4b719e",
+        "scope": "Full GL/WebGPU guide; independent camera/Snell or radiance roughness-squared cone oracle, static spatial material with distinct committed/current inputs, disabled/low-roughness/equal-IOR compatibility and threshold-change rejection. Local scalar proxy only, no stochastic GGX correspondence or anisotropic/medium completion.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\2e756415918c8f40\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/native-optical-capture-681-TvMSy8/acceptance.json",
+        "sha256": "8d7f83c663bc9a1d4bd7ca772374abe4cd8797eeed507f09f676bff8cbf9032b",
+        "scope": "Installed C++/Blueprint native game; full denoise, curved proxy, temporal and physical lens enabled through public reflected C++ calls. PNG is captured by D3D renderer hbCapture, not CDP screenshot. Visible-pixel proof complements independent mathematical guide tests; no quality/FPS claim.",
+        "args": [
+          "--fixture",
+          "native/build/native-preparation-window-496-EJDC4B/Project",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\2e756415918c8f40\\HBEngine.exe"
+        ]
+      }
+    ],
+    "manifestVerifiedFiles": 3494,
+    "versions": [
+      "2e756415918c8f40"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-689-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "path": "native/build/native-optical-capture-681-WehcBL/acceptance.json",
+        "sha256": "f71414aa4c9a51e8f8e1abe9c1d4bce412429090e82dd2aff86af43cc42474d8",
+        "scope": "Installed C++/Blueprint native game; full denoise, curved proxy, temporal and physical lens enabled through public reflected C++ calls. PNG is captured by D3D renderer hbCapture, not CDP screenshot. Visible-pixel proof complements independent mathematical guide tests; no quality/FPS claim."
+      },
+      {
+        "path": "native/build/rough-dielectric-682-hf8FQE/acceptance.json",
+        "sha256": "dfa4d00fc8326b06c027cd492a2247993d1640a179f265c46defe2e522d457c7",
+        "scope": "Full GL/WebGPU guide; independent camera/Snell or radiance roughness-squared cone oracle, static spatial material with distinct committed/current inputs, disabled/low-roughness/equal-IOR compatibility and threshold-change rejection. Local scalar proxy only, no stochastic GGX correspondence or anisotropic/medium completion."
+      },
+      {
+        "path": "native/build/rough-dielectric-683-native-OPzugk/acceptance.json",
+        "sha256": "cc10852f0b82164732797bc4caf0cf4a6edbaa3e553b1d2b4cb05da18d6bdf13",
+        "scope": "Actual D3D11 full current/committed guide versus independent Snell/rough scalar footprint; specialized or generic mode, feature disabled, below threshold, equal IOR and proxy-lobe transition rejection. No full stochastic rough correspondence claim."
+      },
+      {
+        "path": "native/build/rough-dielectric-683-native-WFQfbv/acceptance.json",
+        "sha256": "4b145184829eff6c9f8d65577b7ae6d2f2bcacdbcc4629fcfc11dcfd2eb71ca5",
+        "scope": "Actual D3D11 full current/committed guide versus independent Snell/rough scalar footprint; specialized or generic mode, feature disabled, below threshold, equal IOR and proxy-lobe transition rejection. No full stochastic rough correspondence claim."
+      },
+      {
+        "path": "native/build/optical-guide-375-SF1Vr5/acceptance.json",
+        "sha256": "685fc9005ed64a4c5bf2ab09e7195430275f6f3d58eaa18c86e7fb285f9f6989",
+        "scope": "Actual full auxiliary guide, test-only output instrumentation. Independent camera/Snell width reference and committed/current normal-map mip equality; old unbent-cone sampling must differ. Local thin transmission; no global curved inverse claim."
+      },
+      {
+        "path": "native/build/optical-guide-375-native-Cj0JJE/acceptance.json",
+        "sha256": "a95ba3d0d1142db582675694313187561f265ef16b0273449101eb809b60bde2",
+        "scope": "Generated D3D full guide with test-only outputs; independent camera/Snell widths and actual current/previous normal-map mip equality versus unbent-cone control."
+      },
+      {
+        "path": "native/build/guide-history-358-km9DkF/acceptance.json",
+        "sha256": "0f075e3e13bcc89280a49b1cea3805f9f4623e585fe1c4357d256f472ab13d2d",
+        "scope": "Actual full GL and WebGPU auxiliary guide shaders; real time-driven physical/coat roughness or anisotropy/rotation changes, committed geometry/normal/mip context, history rejection and restoration. No fault-injected production helper or forced feature define."
+      },
+      {
+        "path": "native/build/ray-scale-652.json",
+        "sha256": "b6df22af54256412c12fc8c9e6800328856c5f2e2d20835cdfc1a6a77b17952b",
+        "scope": "CPU collection relative validity and selective normal snapshot lifecycle; actual GL/WebGPU/HLSL normal/trace gates are separate."
+      }
+    ],
+    "scope": "689 전체명세/소유162SHA·설치GL/WebGPU 독립 렌즈/현재이전 거친 반사·새 실제Complex141 C++/BP·mip 파라미터/비동기 준비·해제·User읽기SHA/연결/Versions1. 누적 작업 계속."
+  },
+  "nativeCapture": {
+    "width": 640,
+    "height": 360,
+    "lit": 90104,
+    "max": 225,
+    "mean": 76.10300347222223
+  },
+  "nativePreparation": {
+    "pending": false,
+    "currentStage": "ready",
+    "elapsedMS": 14423.60000000894,
+    "stages": [
+      {
+        "stage": "path",
+        "state": "ready"
+      },
+      {
+        "stage": "guide",
+        "state": "ready"
+      },
+      {
+        "stage": "filter",
+        "state": "ready"
+      },
+      {
+        "stage": "temporal",
+        "state": "ready"
+      },
+      {
+        "stage": "auxiliary",
+        "state": "ready"
+      },
+      {
+        "compiling": 0,
+        "failed": 0,
+        "queued": 0,
+        "ready": 1,
+        "stage": "material",
+        "total": 1,
+        "state": "ready"
+      },
+      {
+        "compiling": 0,
+        "failed": 0,
+        "queued": 0,
+        "ready": 1,
+        "stage": "material-shadow",
+        "total": 1,
+        "state": "ready"
+      },
+      {
+        "compiling": 0,
+        "failed": 0,
+        "queued": 0,
+        "ready": 1,
+        "stage": "raster-vertex",
+        "total": 1,
+        "state": "ready"
+      },
+      {
+        "compiling": 0,
+        "failed": 0,
+        "queued": 0,
+        "ready": 1,
+        "stage": "raster-surface",
+        "total": 1,
+        "state": "ready"
+      },
+      {
+        "compiling": 0,
+        "failed": 0,
+        "queued": 0,
+        "ready": 1,
+        "stage": "raster-shadow",
+        "total": 1,
+        "state": "ready"
+      }
+    ],
+    "completed": 10,
+    "total": 10,
+    "cancelled": false,
+    "error": null,
+    "submitted": 10,
+    "rasterPending": false,
+    "queue": {
+      "active": false,
+      "budgetBytes": 8388608,
+      "bytes": 0,
+      "cancelled": 0,
+      "completed": 10,
+      "deduplicated": 0,
+      "failed": 0,
+      "queued": 0,
+      "submitted": 10,
+      "worker": true,
+      "workersStarted": 1
+    }
+  },
+  "removedTestExecutables": [
+    {
+      "path": "native/build/rough-dielectric-683-native-OPzugk/probe.exe",
+      "bytes": 1089580,
+      "sha256": "60752803046cc125002c54b31743d91be8c5e0bd6989589af901017e38ef64df"
+    },
+    {
+      "path": "native/build/rough-dielectric-683-native-WFQfbv/probe.exe",
+      "bytes": 1089580,
+      "sha256": "7644e794170bd276a1b1214e0b95e21c8f2a26549cdfbd7407967e3aafa63d63"
+    },
+    {
+      "path": "native/build/optical-guide-375-native-Cj0JJE/probe.exe",
+      "bytes": 1089580,
+      "sha256": "9d3ba08140939b9341da431cda8080de253a9a205495be911790cfe06062043e"
+    }
+  ],
+  "nativeCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "168소유SHA/6C++검사·전체3494파일명세·설치682 독립GL/WebGPU 거친 투과 이력·설치 SDK/C++/BP 681 native fullguide10단계·hbCapture·User 읽기전후SHA/연결/Versions1. 전체 엔진 완료 주장 아님."
+}

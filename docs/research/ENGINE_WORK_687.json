@@ -243,6 +243,26 @@
       "path": "native/build/ray-scale-652.json",
       "sha256": "b6df22af54256412c12fc8c9e6800328856c5f2e2d20835cdfc1a6a77b17952b",
       "scope": "CPU collection relative validity and selective normal snapshot lifecycle; actual GL/WebGPU/HLSL normal/trace gates are separate."
+    },
+    {
+      "path": "native/build/rough-dielectric-682-yGf0Nx/acceptance.json",
+      "sha256": "a47dab08e4dd3f6dff8bdd715c824e0746bb2dc0e94f788eeabec619bb4b719e",
+      "scope": "Full GL/WebGPU guide; independent camera/Snell or radiance roughness-squared cone oracle, static spatial material with distinct committed/current inputs, disabled/low-roughness/equal-IOR compatibility and threshold-change rejection. Local scalar proxy only, no stochastic GGX correspondence or anisotropic/medium completion.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2e756415918c8f40\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/native-optical-capture-681-TvMSy8/acceptance.json",
+      "sha256": "8d7f83c663bc9a1d4bd7ca772374abe4cd8797eeed507f09f676bff8cbf9032b",
+      "scope": "Installed C++/Blueprint native game; full denoise, curved proxy, temporal and physical lens enabled through public reflected C++ calls. PNG is captured by D3D renderer hbCapture, not CDP screenshot. Visible-pixel proof complements independent mathematical guide tests; no quality/FPS claim.",
+      "args": [
+        "--fixture",
+        "native/build/native-preparation-window-496-EJDC4B/Project",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2e756415918c8f40\\HBEngine.exe"
+      ]
     }
   ],
   "observations": [
@@ -275,7 +295,7 @@
     "currentShaderBodySHA256": "bc119ba13eabb67036ab4122495e13abf259b7c2a8b575d8804abfe55e69546b",
     "bodyFoundInPlayer": true
   },
-  "installationPending": true,
+  "installationPending": false,
   "currentInstallation": "docs/research/USER_INSTALL_679.json",
   "remaining": [
     "전역 변경 투명 경로/곡면 역대응과 노멀 미분",
@@ -283,5 +303,6 @@
     "실제 복잡한 GL/FXC 초기 지연·GPU 필터/장치 생성 비용; WGSL 정적 크기 감소를 시간/FPS 개선으로 계산하지 않음",
     "누적 엔진 원장 다른 분야·실기기/Mac 필요 검증"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_689.json"
 }
