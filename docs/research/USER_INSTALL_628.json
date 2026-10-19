@@ -1,0 +1,243 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "c24ee0f2a5e4aed479489ad4de46667a8e4dbb86",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\bcd8acedc03e95d8",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\bcd8acedc03e95d8\\HBEngine.exe",
+  "bundleHash": "bcd8acedc03e95d8d4ac23b73339dda5186e274046c50bfab764167acfd79592",
+  "files": 3454,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "c24ee0f2a5e4aed479489ad4de46667a8e4dbb86",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\bcd8acedc03e95d8",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\bcd8acedc03e95d8\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\bcd8acedc03e95d8\\HBEngine.exe",
+    "bundleHash": "bcd8acedc03e95d8d4ac23b73339dda5186e274046c50bfab764167acfd79592",
+    "files": 3454,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3449,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ecd3b4750e4e6711",
+          "bytes": 180223635,
+          "manifestSHA256": "0fdeaf7afa568e554a951ad3a1b3c3ef8b9f99491baf741043f3a93c2b79c9f8"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-19T00:48:21.9636011Z",
+      "bytes": 180223635,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "bcd8acedc03e95d8"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "runtimeOwnersVerified": 117,
+    "repositoryOnlyTestSourcesVerified": 5,
+    "nativePlayerSHA256": "3ab642fb56586f4267340c7f0fac4016666b7da906c177cb75abb7ec41ce51f5",
+    "installedGates": [
+      {
+        "path": "native/build/particle-preparation-619-ljAPPk/acceptance.json",
+        "sha256": "cfae1929c73f00419f20168e6db9a3b22aa265d2cc25fd518399f062c6a2eb63",
+        "scope": "Actual D3D11 lazy particle raster/compaction/sort shaders on the existing worker, zero unused compile I/O, real driver rejection of all five poisoned stage keys and fresh retry, ordinary raster and unrelated Compute continue while held, synchronous sorted pixels equal, queued destruction/release cancellation, explicit bridge count waits without replaying births, zero stable polling I/O and idle queue. Simulation kernels remain synchronous; timings are uncontrolled and not a full cold-start/FPS claim."
+      },
+      {
+        "path": "native/build/guide-history-358-YCNrFG/acceptance.json",
+        "sha256": "2cece266747bf4e1484a547ab3669fca0f22ce47a29c3fe9f1e89e30873838df",
+        "scope": "Actual full GL and WebGPU auxiliary guide shaders; real time-driven physical/coat roughness or anisotropy/rotation changes, committed geometry/normal/mip context, history rejection and restoration. No fault-injected production helper or forced feature define."
+      },
+      {
+        "path": "native/build/light-runtime-573-8BUzXG/acceptance.json",
+        "sha256": "c48c46ca964384a60d77e29a37df60cab4bb2b9d2f197a8183c4e983eae7f91c",
+        "scope": "Actual hidden packaged native player; ordinary HDRI and 96 lights, runtime C++ culling/sky/material/transform edits, tiled/all-light pixel parity and shadow invalidation. No user source/profile or sustained FPS test."
+      },
+      {
+        "path": "native/build/probe-readiness-559-PkwXH5/acceptance.json",
+        "sha256": "335584a41fbc23fbc82b88a59afc8db7751ebadeb496aa98f1d026297d56d639",
+        "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass."
+      }
+    ],
+    "manifestVerifiedFiles": 3454,
+    "versions": [
+      "bcd8acedc03e95d8"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-628-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "report": "native/build/ray-surface-context-357-Uz3Qnq/acceptance.json",
+        "passed": true,
+        "cases": 10,
+        "scope": "Version-aware output liveness and guide-only channel dependency in JS/GLSL and generated C++; full previous coating/anisotropy values retain all-channel context; guide history selects every observed channel while legacy coat mirror classification remains xy-only. GPU values/game rendering are separate gates."
+      },
+      {
+        "report": "native/build/surface-time-history-359-5fxzl7/acceptance.json",
+        "passed": true,
+        "scope": "Committed motion/time survives only opaque supported physical/normal/coat graph animation. Transport rebuild, unsupported field, transmission, disabled history and authored material invalidation remain separate."
+      },
+      {
+        "report": "native/build/history-nonfinite-406-native-TMiBRo/acceptance.json",
+        "passed": true,
+        "cases": 33,
+        "scope": "Actual D3D11 optimized shader using exact generated shared history gates. NaN/infinities are created from texture-driven operand/channel/kind metadata, not folded shader constants; full dynamic output equals CPU. No game FPS claim."
+      },
+      {
+        "report": "native/build/history-nonfinite-406-WKtlml/acceptance.json",
+        "passed": true,
+        "cases": 33,
+        "scope": "Actual two-API signed-float NaN/+Infinity/-Infinity texture inputs in every channel and operand; value/surface/coat compared to CPU. Legacy coat branch ignores zw; complete lobe history rejects changed or nonfinite anisotropy/rotation. No production readback or extra targets."
+      },
+      {
+        "report": "native/build/guide-history-358-3xn9pE/acceptance.json",
+        "passed": true,
+        "scope": "Actual full GL and WebGPU auxiliary guide shaders; real time-driven physical roughness/coat roughness changes, committed geometry/normal/mip context, history rejection and restoration. No fault-injected production helper or forced feature define."
+      },
+      {
+        "report": "native/build/native-guide-448-BXRJ39/acceptance.json",
+        "passed": true,
+        "scope": "Actual generated full auxiliary guide HLSL, current/committed time-driven physical and coat inputs, valid center rays rejected on change and restored. Compute harness invokes the production guide; full packaged game is separate."
+      },
+      {
+        "report": "native/build/texture-history-467-72f2nF/acceptance.json",
+        "passed": true,
+        "scope": "Actual normal variance→roughness cooked mip chain: current and committed moved/mirrored geometry/time, roughness/color/normal fields, independent mip width; existing4e-5 tolerance."
+      },
+      {
+        "report": "native/build/texture-history-468-native-ly4Ehv/acceptance.json",
+        "passed": true,
+        "scope": "Actual normal variance→roughness cooked mip chain (optional full coating/anisotropy and coat normal): current and committed moved/mirrored geometry/time, roughness/color/normal fields, independent mip width; existing4e-5 tolerance."
+      },
+      {
+        "report": "native/build/particle-preparation-619-iw7IuL/acceptance.json",
+        "passed": true,
+        "scope": "Actual D3D11 lazy particle raster/compaction/sort shaders on the existing worker, zero unused compile I/O, real driver rejection of all five poisoned stage keys and fresh retry, ordinary raster and unrelated Compute continue while held, synchronous sorted pixels equal, queued destruction/release cancellation, explicit bridge count waits without replaying births, zero stable polling I/O and idle queue. Simulation kernels remain synchronous; timings are uncontrolled and not a full cold-start/FPS claim."
+      },
+      {
+        "report": "native/build/scene-raster-preparation-596-9AcaLP/acceptance.json",
+        "passed": true,
+        "scope": "Actual D3D11 SDK and production hidden bridge. Optional constructor queues base VS/PS/ShadowPS in the one existing worker, default synchronous SDK pixels match, cancellation/failure/retry and idle verified. Particle renderer initialization, probe filtering and all uncached shaders are not included."
+      },
+      {
+        "report": "native/build/scene-probe-preparation-605-47poPo/acceptance.json",
+        "passed": true,
+        "scope": "Actual D3D11 SDK and production hidden bridge: four lazy probe shader jobs, wrong-stage disk cache forces real owner-device rejection/fresh retry, IBL pixels match synchronous SDK, pending base raster continues and probe/filter/history publication waits, cancellation/removal, stable polling I/O0 and one existing worker idle. HDRI filtering dispatch cost and global cold startup are separate."
+      },
+      {
+        "report": "native/build/probe-readiness-559-BpsKTx/acceptance.json",
+        "passed": true,
+        "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass."
+      },
+      {
+        "report": "native/build/compute-portable-619.json",
+        "passed": true
+      },
+      {
+        "report": "native/build/native-raster-preparation-555.json",
+        "passed": true
+      },
+      {
+        "report": "native/build/player626-result.json",
+        "passed": true
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "report": "native/build/probe-readiness-559-BpsKTx/acceptance.json",
+        "passed": true,
+        "scope": "소유 임시 패키지의 실제 probe/2D/CPP/BP. 이후 소유권 검사 및 private draw 반환 수정은 SDK619-iw7IuL로 검증; 최종 설치 패키지는 설치 gate에서 검증."
+      }
+    ],
+    "scope": "628 전체명세/소유SHA·설치SDK 파티클5단계 비동기 준비/캐시복구/취소/명시count·설치GL/WebGPU 비등방성·회전 이력 복원·실제 HDRI96광원/프로브/2D/CPP/BP·User읽기SHA/연결/Versions1. 전체엔진/FPS 완료 주장이 아니에요."
+  },
+  "nativeCache": {
+    "bytes": 291018700,
+    "files": 627,
+    "leases": 0
+  },
+  "dependencyPlans": {
+    "bytes": 952461,
+    "files": 1
+  },
+  "removedTestExecutables": [
+    {
+      "path": "native/build/history-nonfinite-406-native-TMiBRo/probe.exe",
+      "bytes": 1083436,
+      "sha256": "533ba627a42b67366dd6a19b47ef9456c23676416f8e0058ec0a87cd3f27d84d"
+    },
+    {
+      "path": "native/build/native-guide-448-BXRJ39/probe.exe",
+      "bytes": 1083436,
+      "sha256": "6cd4d44a16952d161d5dde979e8ea293ed403cccfd4f0295b90e9966c51ff331"
+    },
+    {
+      "path": "native/build/native-guide-448-HRJ1ak/probe.exe",
+      "bytes": 1083436,
+      "sha256": "68d2407ca71b8e70161397e13259d48c7571c5d4d7161adc1f7cd8bc280f5c73"
+    },
+    {
+      "path": "native/build/particle-preparation-619-EMckjg/probe.exe",
+      "bytes": 2273925,
+      "sha256": "653590c2be1a979abf5d331e65a122b98680e5f795c85850be8c3f68cc90df84"
+    },
+    {
+      "path": "native/build/particle-preparation-619-iw7IuL/probe.exe",
+      "bytes": 2276855,
+      "sha256": "10ecc1f4c1c8b06da3c7e91ab1d46e897b2559f97bb91d46401b98193a21c02a"
+    },
+    {
+      "path": "native/build/particle-preparation-619-ljAPPk/probe.exe",
+      "bytes": 2276855,
+      "sha256": "8426bd6f96ecf5b834c0c3a9443c12d86eaad83715bcfbac08b5eb9b90a29aca"
+    },
+    {
+      "path": "native/build/ray-surface-context-357-Uz3Qnq/probe.exe",
+      "bytes": 1041479,
+      "sha256": "a26438cd4474232b31ab2cf61c558cc547a1e5edf0d8df2c58220b62fb31f39e"
+    },
+    {
+      "path": "native/build/scene-probe-preparation-605-47poPo/probe.exe",
+      "bytes": 2263723,
+      "sha256": "9b02a712cd62c101b7893be99baefae4c27b6419dccd365f336b1ea599fc4912"
+    },
+    {
+      "path": "native/build/scene-raster-preparation-596-9AcaLP/probe.exe",
+      "bytes": 2070271,
+      "sha256": "db21397ef17cc2bc04f19e53a4b40d7a5d362311188278b0293986e973835a08"
+    },
+    {
+      "path": "native/build/texture-history-468-native-ly4Ehv/probe.exe",
+      "bytes": 1083436,
+      "sha256": "887ddf7b04551d0af3719eabe47d7671d61c6941182e872fcea55d4c8605e37a"
+    },
+    {
+      "path": "native/build/texture-history-468-native-Me1nYX/probe.exe",
+      "bytes": 1083436,
+      "sha256": "a63733bbcef4b966f29abd25e2759c7f24496b6ac28dd3a5a9a23040c4d5598a"
+    }
+  ],
+  "scope": "628 전체명세/소유SHA·설치SDK 파티클5단계 비동기 준비/캐시복구/취소/명시count·설치GL/WebGPU 비등방성·회전 이력 복원·실제 HDRI96광원/프로브/2D/CPP/BP·User읽기SHA/연결/Versions1. 전체엔진/FPS 완료 주장이 아니에요."
+}

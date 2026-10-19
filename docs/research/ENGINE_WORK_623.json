@@ -219,6 +219,26 @@
     {
       "report": "native/build/player626-result.json",
       "passed": true
+    },
+    {
+      "path": "native/build/particle-preparation-619-ljAPPk/acceptance.json",
+      "sha256": "cfae1929c73f00419f20168e6db9a3b22aa265d2cc25fd518399f062c6a2eb63",
+      "scope": "Actual D3D11 lazy particle raster/compaction/sort shaders on the existing worker, zero unused compile I/O, real driver rejection of all five poisoned stage keys and fresh retry, ordinary raster and unrelated Compute continue while held, synchronous sorted pixels equal, queued destruction/release cancellation, explicit bridge count waits without replaying births, zero stable polling I/O and idle queue. Simulation kernels remain synchronous; timings are uncontrolled and not a full cold-start/FPS claim."
+    },
+    {
+      "path": "native/build/guide-history-358-YCNrFG/acceptance.json",
+      "sha256": "2cece266747bf4e1484a547ab3669fca0f22ce47a29c3fe9f1e89e30873838df",
+      "scope": "Actual full GL and WebGPU auxiliary guide shaders; real time-driven physical/coat roughness or anisotropy/rotation changes, committed geometry/normal/mip context, history rejection and restoration. No fault-injected production helper or forced feature define."
+    },
+    {
+      "path": "native/build/light-runtime-573-8BUzXG/acceptance.json",
+      "sha256": "c48c46ca964384a60d77e29a37df60cab4bb2b9d2f197a8183c4e983eae7f91c",
+      "scope": "Actual hidden packaged native player; ordinary HDRI and 96 lights, runtime C++ culling/sky/material/transform edits, tiled/all-light pixel parity and shadow invalidation. No user source/profile or sustained FPS test."
+    },
+    {
+      "path": "native/build/probe-readiness-559-PkwXH5/acceptance.json",
+      "sha256": "335584a41fbc23fbc82b88a59afc8db7751ebadeb496aa98f1d026297d56d639",
+      "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass."
     }
   ],
   "sourceGameGates": [
@@ -231,7 +251,7 @@
   "nativePlayerSHA256": "3ab642fb56586f4267340c7f0fac4016666b7da906c177cb75abb7ec41ce51f5",
   "hostSHA256": "efe7339b889643b2614173ed30a21055acb885c7d70ae703295b5bea976f2106",
   "hostReuse": "HBEngine.cpp의 SceneRenderBridge 포함은 HB_GAME_PLAYER에서만 활성화돼요. 호스트 소스와 바이너리는 설치614와 같고 변경된 플레이어만626에서 다시 빌드했어요.",
-  "installationPending": true,
+  "installationPending": false,
   "currentInstallation": "docs/research/USER_INSTALL_614.json",
   "remaining": [
     "파티클 시뮬레이션·탄생·Clear 커널의 동기 초기 준비",
@@ -239,5 +259,6 @@
     "전역 투명 경로·곡면 역해·거친 복합 로브/참여 매질 footprint",
     "누적 엔진 원장의 다른 미완료 목표"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_628.json"
 }

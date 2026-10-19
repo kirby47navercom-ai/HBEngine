@@ -124,12 +124,14 @@
       "minimumNativeMipSensitivity": 0.3647058606147766
     }
   },
-  "installationPending": true,
+  "installationPending": false,
   "currentInstallation": "docs/research/USER_INSTALL_614.json",
   "remaining": [
     "전역 변경 투명 경로/곡면 대응 및 역해",
     "거친 복합 로브·참여 매질 extinction/scattering footprint 운반",
     "기타 누적 엔진 원장의 미완료 작업"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_628.json",
+  "currentOwnerVerification": "docs/research/ENGINE_WORK_623.json"
 }
