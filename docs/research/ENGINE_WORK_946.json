@@ -403,9 +403,54 @@
       "path": "native/build/channel-normal-866-ry6NBo/acceptance.json",
       "sha256": "efab0e3b1237c36e4198c034dc9cb12d4f5bed7fb2365b2c10aad76f63db1262",
       "scope": "Actual GL/WebGPU authored xyzw split/combine identity inside moving Time/world normal and independent coat graph: legacy dynamic metadata versus fixed channels, three footprint modes/current/committed/mip widths, original analytical4e-5. No whole optical-history or FPS completion claim."
+    },
+    {
+      "path": "native/build/material-clock-940-TgsELo/acceptance.json",
+      "sha256": "9ab0a31722bfa7b5347ddd137f643802f4e7317046085b0ab7cfe0eda3a66a9b",
+      "scope": "CPU cached/direct/evaluator clock oracle, same-clock identity, static shader-array reuse, explicit/default/literal/wired/unrelated/shading-only clock cases, global history guard and actual GeometryGIWorld/scene shader-plan packets0→2→0. No GPU pixel, device heap or FPS claim.",
+      "args": []
+    },
+    {
+      "path": "native/build/material-clock-941-native-qg0flW/acceptance.json",
+      "sha256": "9a173792be73ea1844047fd5f624599636f0b516b8b41faa1e37a1dc204e1aed",
+      "scope": "Actual generated optimized hardware D3D11 current RGB medium seed, automatic Panner Time→CPU closedVolume clock0/2/0. Both directions, real plan macro and forced real-walker control: twelve stack/IOR/extinction answers. CPU geometry packets reused normal material cache. Value-compute proof, not game pixel/FPS or synthetic reverse-order FXC resolution.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\c006b922fb1c171a\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/channel-normal-866-D9bTpI/acceptance.json",
+      "sha256": "efab0e3b1237c36e4198c034dc9cb12d4f5bed7fb2365b2c10aad76f63db1262",
+      "scope": "Actual GL/WebGPU authored xyzw split/combine identity inside moving Time/world normal and independent coat graph: legacy dynamic metadata versus fixed channels, three footprint modes/current/committed/mip widths, original analytical4e-5. No whole optical-history or FPS completion claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\c006b922fb1c171a\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-818-player-TuVShg/acceptance.json",
+      "sha256": "0a94dc6fd4c4d17790c966faf0c430783a54550bb31f1db679e02eaf54e168f2",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, optional cached quality promotion via SDK visibility change, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim.",
+      "args": [
+        "--quality-upgrades",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\c006b922fb1c171a\\HBEngine.exe"
+      ]
     }
   ],
-  "sourceGameGates": [],
+  "sourceGameGates": [
+    {
+      "path": "native/build/distance-field-818-player-TuVShg/acceptance.json",
+      "sha256": "0a94dc6fd4c4d17790c966faf0c430783a54550bb31f1db679e02eaf54e168f2",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, optional cached quality promotion via SDK visibility change, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim.",
+      "args": [
+        "--quality-upgrades",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\c006b922fb1c171a\\HBEngine.exe"
+      ]
+    }
+  ],
   "nativePlayerSHA256": "b8833656c68cdec3620243b080459a4d9575d93303b0602da23a6c1e01fcb6cd",
   "hostSHA256": "26bd5447242908b91aab48df580ad368ada7d19d26d2d16a42f6bcb4bb5cfad6",
   "nativePlayerBuild": {
@@ -644,8 +689,8 @@
     "wholeComplex141Claim": false,
     "syntheticReverseOrderFXCResolved": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_918.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_948.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json at record basis revision",
   "remaining": [
     "PRJ-03: 특수 내부 폴더·바이너리 스트림 가져오기·이름 변경/redirect/index의 공동 복구",
@@ -735,5 +780,6 @@
     "RES-01: 전체 discovery 분모·추가 버전/API/미디어 대조",
     "RES-01: 전체 독립 분석 gate"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_948.json"
 }

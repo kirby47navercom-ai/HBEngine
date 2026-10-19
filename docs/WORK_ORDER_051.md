@@ -766,3 +766,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 918 설치 C:\Users\kirby\HBEngine\Versions\3fd112869f7d1713/3671파일/345소유SHA/9CPP·User10385읽기전후SHA/연결/Versions1 확정. 설치9125v5X0D원자교체/55·15/새기하우선/idle0,881iTolQL예산/재시도,822sJTUOK사람/AI/Undo,818SvPIZF실제SDK CPP 표시변경→D3D25→53승격/동일CPP·BP픽셀. 이전182376650B정리. 누적원장계속.
 
 940–946 1a00e6abb6dedc79bb0391d2ca5a25c78715d341: Panner 기본Time의CPU closedVolume의존누락수정.직접평가false/true와캐시false/false불일치해결.940s3Fe5z6종/기하패킷/동일clock객체/정적프로그램재사용,941bjB5B9실제D3D스택/IOR/RGB12조건최대1.624e-7,866ry6NBo실제GL/GPU노멀6조건차이0,942회귀4종.930–937FXC역순추가조사후보전부미승격/오류잔여유지. Native9/binarySHA동일901/902재사용.설치948뒤계속.
+
+948 설치 C:\Users\kirby\HBEngine\Versions\c006b922fb1c171a/3677파일/349소유SHA/9CPP·User10385읽기전후SHA/연결/Versions1 확정. 설치940TgsELo실제설치모듈6시계/패킷,941qg0flW설치SDK·셰이더/매질12조건,866D9bTpI설치GL/GPU노멀6조건차이0,818TuVShg실제SDK CPP/BP게임. 최초940검사정리함수의경로오류는안전규칙을유지한repo소유I/O복사로resume950에서동일설치본에이어검증/재설치없음. 이전182469721B정리. 누적원장계속.

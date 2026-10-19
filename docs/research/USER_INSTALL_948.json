@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "9aed97250773080690f67d3529fcd81950340a1e",
+  "resumedAfterHarnessFailure": {
+    "firstFailure": "Error: 검사 디렉터리 범위를 확인하세요.\n    at pruneTestArtifacts (file:///C:/Users/kirby/HBEngine/Versions/c006b922fb1c171a/tools/test-artifacts.mjs:32:114)\n    at async file:///C:/Users/kirby/HBEngine/Versions/c006b922fb1c171a/tools/check-material-clock-940.mjs?installedGate948=0:14:584",
+    "noReinstall": true,
+    "fixtureIOOwnedByRepository": true
+  },
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\c006b922fb1c171a",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\c006b922fb1c171a\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\c006b922fb1c171a\\HBEngine.exe",
+  "bundleHash": "c006b922fb1c171a34d7eb3dd245a2a5f55e1d7e61875e5c21962bc2f5c82aca",
+  "files": 3677,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3672,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3fd112869f7d1713",
+        "bytes": 182469721,
+        "manifestSHA256": "a9052ecf5439a5d88bda61525c8fc0603a1e1e31bc0be3e0e20c1f8f5d5720e5"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-19T13:48:30.4347308Z",
+    "bytes": 182469721,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "c006b922fb1c171a"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 349,
+  "repositoryOnlyTestSourcesVerified": 9,
+  "nativePlayerSHA256": "b8833656c68cdec3620243b080459a4d9575d93303b0602da23a6c1e01fcb6cd",
+  "installedGates": [
+    {
+      "path": "native/build/material-clock-940-TgsELo/acceptance.json",
+      "sha256": "9ab0a31722bfa7b5347ddd137f643802f4e7317046085b0ab7cfe0eda3a66a9b",
+      "scope": "CPU cached/direct/evaluator clock oracle, same-clock identity, static shader-array reuse, explicit/default/literal/wired/unrelated/shading-only clock cases, global history guard and actual GeometryGIWorld/scene shader-plan packets0→2→0. No GPU pixel, device heap or FPS claim.",
+      "args": []
+    },
+    {
+      "path": "native/build/material-clock-941-native-qg0flW/acceptance.json",
+      "sha256": "9a173792be73ea1844047fd5f624599636f0b516b8b41faa1e37a1dc204e1aed",
+      "scope": "Actual generated optimized hardware D3D11 current RGB medium seed, automatic Panner Time→CPU closedVolume clock0/2/0. Both directions, real plan macro and forced real-walker control: twelve stack/IOR/extinction answers. CPU geometry packets reused normal material cache. Value-compute proof, not game pixel/FPS or synthetic reverse-order FXC resolution.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\c006b922fb1c171a\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/channel-normal-866-D9bTpI/acceptance.json",
+      "sha256": "efab0e3b1237c36e4198c034dc9cb12d4f5bed7fb2365b2c10aad76f63db1262",
+      "scope": "Actual GL/WebGPU authored xyzw split/combine identity inside moving Time/world normal and independent coat graph: legacy dynamic metadata versus fixed channels, three footprint modes/current/committed/mip widths, original analytical4e-5. No whole optical-history or FPS completion claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\c006b922fb1c171a\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-818-player-TuVShg/acceptance.json",
+      "sha256": "0a94dc6fd4c4d17790c966faf0c430783a54550bb31f1db679e02eaf54e168f2",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, optional cached quality promotion via SDK visibility change, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim.",
+      "args": [
+        "--quality-upgrades",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\c006b922fb1c171a\\HBEngine.exe"
+      ]
+    }
+  ],
+  "manifestVerifiedFiles": 3677,
+  "versions": [
+    "c006b922fb1c171a"
+  ],
+  "profile": {
+    "filesBefore": 10385,
+    "filesAfter": 10385,
+    "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-948-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/material-clock-regressions-942.json",
+      "sha256": "67b8c9afc0e3e8f79f63997ee8573527103f6ee09eed2c383830387ec57a1f94"
+    },
+    {
+      "path": "native/build/material-clock-940-s3Fe5z/acceptance.json",
+      "sha256": "6c0d0c33080b5047b76ba26a88f8fbba81f2d2a8179633b59845e86f74548f51",
+      "scope": "CPU cached/direct/evaluator clock oracle, same-clock identity, static shader-array reuse, explicit/default/literal/wired/unrelated/shading-only clock cases, global history guard and actual GeometryGIWorld/scene shader-plan packets0→2→0. No GPU pixel, device heap or FPS claim."
+    },
+    {
+      "path": "native/build/material-clock-941-native-bjB5B9/acceptance.json",
+      "sha256": "fe23ee922699934f1c112c0fdb7c70f797288268a729273c444073c03adee99d",
+      "scope": "Actual generated optimized hardware D3D11 current RGB medium seed, automatic Panner Time→CPU closedVolume clock0/2/0. Both directions, real plan macro and forced real-walker control: twelve stack/IOR/extinction answers. CPU geometry packets reused normal material cache. Value-compute proof, not game pixel/FPS or synthetic reverse-order FXC resolution."
+    },
+    {
+      "path": "native/build/channel-normal-866-ry6NBo/acceptance.json",
+      "sha256": "efab0e3b1237c36e4198c034dc9cb12d4f5bed7fb2365b2c10aad76f63db1262",
+      "scope": "Actual GL/WebGPU authored xyzw split/combine identity inside moving Time/world normal and independent coat graph: legacy dynamic metadata versus fixed channels, three footprint modes/current/committed/mip widths, original analytical4e-5. No whole optical-history or FPS completion claim."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "948 전체3677파일/349소유SHA/CPP9·기본머테리얼시간/CPU매질캐시·실제D3D매질/GL·GPU노멀/CPP·BP게임·실제SDK CPP/BP adaptive게임·읽기전후User SHA·연결·Versions1;누적작업계속",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}
