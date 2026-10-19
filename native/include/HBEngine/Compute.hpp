@@ -21,6 +21,7 @@ public:
 };
 class Kernel {
     friend class Device;
+    friend class Particles;
     detail::Com<ID3D11ComputeShader> shader;
     std::array<detail::Com<ID3D11Buffer>,3> constants;
     ID3D11Device* owner=nullptr;UINT constantBytes=0;
@@ -226,14 +227,51 @@ cbuffer Emit:register(b0){uint requestCount;float3 padding;};
     static void validStep(float delta,const std::array<float,3>& force,float gravity,float drag){if(!std::isfinite(delta)||delta<0||delta>120||!std::isfinite(gravity)||!std::isfinite(drag)||drag<0||!std::all_of(force.begin(),force.end(),[](float v){return std::isfinite(v);}))throw std::runtime_error("GPU particle step invalid");}
     static const std::vector<float>& valid(const std::vector<float>& values){if(values.empty()||values.size()%8)throw std::runtime_error("GPU particles require position/age/velocity/lifetime records");for(std::size_t i=0;i<values.size();i++)if(!std::isfinite(values[i])||(i%8==3&&values[i]<0)||(i%8==7&&values[i]<=0))throw std::runtime_error("GPU particle value invalid");return values;}
 public:
+    class Preparation {
+        friend class Particles;
+        struct State {
+            Device& device;std::array<KernelPreparation,4> requests;std::array<std::optional<Kernel>,4> kernels;std::string error;
+            explicit State(Device& owner):device(owner){requests[0]=device.compileAsync(source);requests[1]=device.compileAsync(freeSource);requests[2]=device.compileAsync(emitSource);requests[3]=device.compileAsync(source,"Clear");}
+        };
+        std::unique_ptr<State> state;
+        Kernel clone(Device& owner,std::size_t index)const{
+            if(!state||&state->device!=&owner)throw std::runtime_error("Particle preparation belongs to another device, was cancelled or moved");
+            if(!info().ready)throw std::runtime_error("Particle simulation kernels are still preparing");
+#if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
+            const auto& original=*state->kernels[index];Kernel result;result.owner=original.owner;result.shader.p=original.shader.p;result.shader->AddRef();return result;
+#else
+            (void)index;throw std::runtime_error("Compute unavailable");
+#endif
+        }
+    public:
+        struct Info {std::array<KernelPreparation::Info,4> stages{};bool pending=false,ready=false,cancelled=false;std::string error;};
+        explicit Preparation(Device& owner):state(std::make_unique<State>(owner)){}
+        Preparation(const Preparation&)=delete;Preparation& operator=(const Preparation&)=delete;Preparation(Preparation&&)=default;Preparation& operator=(Preparation&&)=default;
+        Info info()const{
+            Info out;if(!state){out.cancelled=true;for(auto& stage:out.stages)stage={"cancelled",false,false,{}};return out;}
+            out.error=state->error;out.ready=true;for(std::size_t i=0;i<4;i++){if(state->kernels[i])out.stages[i]={"ready",false,true,{}};else{out.ready=false;out.stages[i]=state->error.empty()?state->requests[i].info():KernelPreparation::Info{"failed",false,false,state->error};}if(out.error.empty()&&!out.stages[i].error.empty())out.error=out.stages[i].error;}out.pending=out.error.empty()&&!out.ready;return out;
+        }
+        bool poll(){
+            if(!state)throw std::runtime_error("Particle preparation was cancelled or moved");
+            if(!state->error.empty())throw std::runtime_error(state->error);
+            try{for(std::size_t i=0;i<4;i++)if(!state->kernels[i]&&state->device.pollKernel(state->requests[i]))state->kernels[i].emplace(state->requests[i].take());}
+            catch(const std::exception& e){state->error=e.what();for(auto& request:state->requests)request.cancel();throw;}
+            return info().ready;
+        }
+        void cancel(){state.reset();}
+    };
+    static Preparation prepare(Device& device){return Preparation(device);}
     Particles(Device& device,const std::vector<float>& values):device(device),kernel(device.compile(source)),buffer(device.create(valid(values),8*sizeof(float))){}
     Particles(Device& device,std::size_t capacity):Particles(device,empty(capacity)){}
+    Particles(Device& device,const std::vector<float>& values,Preparation& prepared):device(device),kernel(prepared.clone(device,0)),buffer(device.create(valid(values),8*sizeof(float))){freeKernel.emplace(prepared.clone(device,1));emitKernel.emplace(prepared.clone(device,2));clearKernel.emplace(prepared.clone(device,3));}
+    Particles(Device& device,std::size_t capacity,Preparation& prepared):Particles(device,empty(capacity),prepared){}
     void step(float delta,const std::array<float,3>& force={0,0,0},float gravity=0,float drag=0){validStep(delta,force,gravity,drag);if(delta){const auto groups=static_cast<std::uint32_t>((count()+63)/64);device.dispatch(kernel,{&buffer},std::min(groups,65535u),(groups+65534)/65535,1,{}, {delta,force[0],force[1],force[2],gravity,drag,0,0});++revision_;}}
     // Upload births only. Free-slot selection/overflow and existing state stay on GPU.
     void emit(const std::vector<float>& values){
         if(values.empty())return;
         valid(values);for(std::size_t i=0;i<values.size();i+=8)if(values[i+3]>=values[i+7])throw std::runtime_error("GPU emitted particle is already expired");
-        if(!freeKernel){auto scan=device.compile(freeSource),spawn=device.compile(emitSource);auto indices=device.create(std::vector<float>(count()),4,true),total=device.createCountBuffer();freeKernel.emplace(std::move(scan));emitKernel.emplace(std::move(spawn));freeIndices.emplace(std::move(indices));freeCount.emplace(std::move(total));}
+        if(!freeKernel){auto scan=device.compile(freeSource),spawn=device.compile(emitSource);freeKernel.emplace(std::move(scan));emitKernel.emplace(std::move(spawn));}
+        if(!freeIndices){auto indices=device.create(std::vector<float>(count()),4,true),total=device.createCountBuffer();freeIndices.emplace(std::move(indices));freeCount.emplace(std::move(total));}
         const auto births=std::min(values.size()/8,count());
         if(requestCapacity<births){std::size_t capacity=std::max(std::size_t(1),requestCapacity);while(capacity<births)capacity=std::min(count(),capacity*2);auto next=device.create(std::vector<float>(capacity*8),32);requests.emplace(std::move(next));requestCapacity=capacity;++requestAllocations;}
         const auto groups=static_cast<std::uint32_t>((count()+63)/64);if(values.size()/8>count())device.uploadRange(*requests,0,std::vector<float>(values.begin(),values.begin()+births*8));else device.uploadRange(*requests,0,values);
