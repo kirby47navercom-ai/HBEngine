@@ -1,3 +1,4 @@
+import {authoredTextureLevels} from './texture-authored-mips.js';
 import {createNativeParticlePreparation} from './native-particle-preparation.js';
 import {updateNativePathPreparation,nativePathPreparationInfo,pollNativePathPreparation} from './native-path-preparation.js';
 import {cancelGPUPathPreparation} from './gpu-path-preparation.js';
@@ -37,6 +38,7 @@ export function packedTexture(texture,allowUV1=false){
   const channels=texture.format===THREE.RGBAFormat?4:texture.format===THREE.RGFormat?2:0,half=texture.type===THREE.HalfFloatType,floating=texture.type===THREE.FloatType||half;
   if(w*h*layers*channels*(half?2:floating?4:1)>2147483647)throw Error('텍스처 데이터 크기를 확인하세요.');
   if(!channels||channels!==4&&!floating||!floating&&texture.type!==THREE.UnsignedByteType||floating&&texture.colorSpace===THREE.SRGBColorSpace)throw Error('DirectX 텍스처 형식을 확인하세요.');
+  if(cube&&texture.userData?.hbAuthoredMips){const base=authoredTextureLevels(texture)[0];return {kind:'dataTexture',width:w,height:h,layers:6,array:false,dimension:'cube',channels:4,floating:false,srgb:texture.colorSpace===THREE.SRGBColorSpace,mipmaps:false,mipLevels:packedTextureMips(texture,w,h,rgbaBase64),rgbaBase64:rgbaBase64(textureUploadBytes(base.data,h,w*4,texture.flipY))};}
   const data=first.data;if(!cube&&data){
     if(data.length!==w*h*layers*channels||!(half?data instanceof Uint16Array:floating?data instanceof Float32Array:data instanceof Uint8Array||data instanceof Uint8ClampedArray)||floating&&data.some(v=>half?(v&0x7c00)===0x7c00:!Number.isFinite(v)))throw Error('DirectX 텍스처 자료 크기와 값을 확인하세요.');
     const mipLevels=packedTextureMips(texture,w,h,rgbaBase64),bytes=textureUploadBytes(data,h,w*channels*(half?2:floating?4:1),texture.flipY);

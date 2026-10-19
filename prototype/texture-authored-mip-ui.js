@@ -1,6 +1,6 @@
 export function authoredMipFields(data,{assetField,files,icon}){
- if(!['texturearray','volumetexture'].includes(data.dimension))return '';
- return '<section><div class="form-section-heading"><h3>사용자 지정 밉</h3><button data-texture-mip-add>'+icon('plus')+' 밉 추가</button></div>'+(data.mips||[]).map((mip,i)=>'<div class="form-section-heading"><h4>밉 '+(i+1)+'</h4><button data-texture-mip-remove="'+i+'" aria-label="이하 밉 삭제">'+icon('close')+'</button></div>'+mip.images.map((source,z)=>assetField('슬라이스 '+z,'mips.'+i+'.images.'+z,source,files,['texture'])).join('')).join('')+'</section>';
+ if(!['texturearray','volumetexture','cubemap'].includes(data.dimension))return '';
+ return '<section><div class="form-section-heading"><h3>사용자 지정 밉</h3><button data-texture-mip-add>'+icon('plus')+' 밉 추가</button></div>'+(data.mips||[]).map((mip,i)=>'<div class="form-section-heading"><h4>밉 '+(i+1)+'</h4><button data-texture-mip-remove="'+i+'" aria-label="이하 밉 삭제">'+icon('close')+'</button></div>'+mip.images.map((source,z)=>assetField(data.dimension==='cubemap'?['+X','−X','+Y','−Y','+Z','−Z'][z]:'슬라이스 '+z,'mips.'+i+'.images.'+z,source,files,['texture'])).join('')).join('')+'</section>';
 }
 export function editAuthoredMip(data,button){
  if(button.hasAttribute('data-texture-mip-add')){data.mips??=[];const depth=data.dimension==='volumetexture'?Math.max(1,Math.floor(data.images.length/2**(data.mips.length+1))):data.images.length;data.mips.push({images:Array(depth).fill('')});}

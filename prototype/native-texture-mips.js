@@ -1,4 +1,4 @@
-import {validateLayeredTextureMips} from './texture-authored-mips.js';
+import {authoredTextureLevels,validateLayeredTextureMips} from './texture-authored-mips.js';
 // Explicit upload levels exclude level zero. Packing never mutates the caller.
 export function textureUploadBytes(data,height,stride,flipY){
  if(!ArrayBuffer.isView(data)||!Number.isSafeInteger(height)||height<1||!Number.isSafeInteger(stride)||stride<1||!data.byteLength||data.byteLength%(height*stride))throw Error('텍스처 업로드 행을 확인하세요.');
@@ -6,6 +6,7 @@ export function textureUploadBytes(data,height,stride,flipY){
  const copy=bytes.slice(),row=new Uint8Array(stride);for(let layer=0;layer<bytes.length/(height*stride);layer++)for(let y=0;y<Math.floor(height/2);y++){const a=(layer*height+y)*stride,b=(layer*height+height-y-1)*stride;row.set(copy.subarray(a,a+stride));copy.copyWithin(a,b,b+stride);copy.set(row,b);}return copy;
 }
 export function packedTextureMips(texture,width,height,encode){
+ if(texture.isCubeTexture&&texture.userData?.hbAuthoredMips)return authoredTextureLevels(texture).slice(1).map(level=>({width:level.width,height:level.height,layers:6,rgbaBase64:encode(textureUploadBytes(level.data,level.height,level.width*4,texture.flipY))}));
  const levels=texture.mipmaps;if(!levels?.length)return undefined;
  if(texture.isDataArrayTexture||texture.isData3DTexture)return validateLayeredTextureMips(texture).slice(1).map(level=>({width:level.width,height:level.height,layers:level.depth,rgbaBase64:encode(textureUploadBytes(level.data,level.height,level.width*4,texture.flipY))}));
  if(!texture.isDataTexture||texture.isDataArrayTexture||texture.isData3DTexture||texture.generateMipmaps||!(texture.image.data instanceof Uint8Array||texture.image.data instanceof Uint8ClampedArray))throw Error('명시적 밉은 자동 생성 없는 RGBA8 2D 자료만 지원해요.');

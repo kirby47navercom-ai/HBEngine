@@ -1,3 +1,4 @@
+import {authoredTextureLevels} from './texture-authored-mips.js';
 import {activeTextureSamplingInputs,materialMipMode,rayTextureSamplingFlags} from './texture-sampling-mode.js';
 import {rayMipChain,rayMipFilter,releaseRayMips,rayMinNearest,rayTextureFlags} from './ray-mip.js';
 import {rayMaterialSourceKey} from './material-source-key.js';
@@ -26,6 +27,7 @@ export const rayOperationMask=operations=>[0,0,0].map((_,word)=>operations.reduc
 export const releaseRayTexturePixels=maps=>{for(const map of maps||[])pixels.delete(map);releaseRayMips(maps);};
 export function rayTexturePixels(texture){
  const image=texture.image,previous=pixels.get(texture);if(previous?.image===image&&previous.version===texture.version)return previous;
+ if(texture.isCubeTexture&&texture.userData?.hbAuthoredMips){const base=authoredTextureLevels(texture)[0],result={image,version:texture.version,width:base.width,height:base.height,depth:6,data:base.data,float:false};pixels.set(texture,result);return result;}
  const decode=source=>{const image=source?.isTexture?source.image:source,width=image?.width,height=image?.height,depth=image?.depth||1;if(![width,height,depth].every(v=>Number.isInteger(v)&&v>0))throw Error('광선 텍스처 이미지 크기를 확인하세요.');if(image?.data){const channels=image.data.length/(width*height*depth);if(channels!==4)throw Error('광선 텍스처는 RGBA 이미지가 필요해요.');return {width,height,data:image.data,float:(source?.isTexture?source.type:texture.type)===FloatType};}const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;try{const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(image,0,0);return {width,height,data:ctx.getImageData(0,0,width,height).data,float:false};}finally{canvas.width=canvas.height=0;}};
  const layers=Array.isArray(image)?image.map(decode):[decode(image)],first=layers[0],depth=Array.isArray(image)?6:image.depth||1;if(layers.some(i=>i.width!==first.width||i.height!==first.height))throw Error('광선 텍스처 슬라이스 크기를 맞춰 주세요.');
  const result={image,version:texture.version,width:first.width,height:first.height,depth,data:layers.length===1?first.data:layers.flatMap(l=>Array.from(l.data)),float:first.float};if(result.data.length!==result.width*result.height*depth*4)throw Error('광선 텍스처 데이터 크기를 확인하세요.');pixels.set(texture,result);return result;

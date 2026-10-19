@@ -1,5 +1,5 @@
 import {NearestFilter,NearestMipmapNearestFilter,NearestMipmapLinearFilter,LinearMipmapNearestFilter,LinearMipmapLinearFilter} from 'three';
-import {validateLayeredTextureMips} from './texture-authored-mips.js';
+import {authoredTextureLevels} from './texture-authored-mips.js';
 import {validRayTextureFlags,rayTextureSampling} from './texture-sampling-mode.js';
 
 const cache=new WeakMap();
@@ -10,7 +10,7 @@ export function rayMipChain(map,pixels,srgb,volume=false){
  if(prior?.pixels===pixels&&prior.version===pixels.version&&prior.chains.has(key))return prior.chains.get(key);
  const chains=prior?.pixels===pixels&&prior.version===pixels.version?prior.chains:new Map();
  if(map.userData?.hbAuthoredMips){
-  const source=validateLayeredTextureMips(map),convertedKey='authored:'+srgb,converted=chains.get(convertedKey)||[],count=rayMipFilter(map)?source.length:1;
+  const source=authoredTextureLevels(map),convertedKey='authored:'+srgb,converted=chains.get(convertedKey)||[],count=rayMipFilter(map)?source.length:1;
   for(let level=converted.length;level<count;level++){const s=source[level],data=new Float32Array(s.data.length);for(let i=0;i<data.length;i++){let v=s.data[i]/255;if(srgb&&i%4!==3)v=v<=.04045?v/12.92:((v+.055)/1.055)**2.4;data[i]=v;}converted.push({width:s.width,height:s.height,depth:s.depth,data});}
   const levels=converted.slice(0,count);chains.set(convertedKey,converted);chains.set(key,levels);cache.set(map,{pixels,version:pixels.version,chains});return levels;
  }

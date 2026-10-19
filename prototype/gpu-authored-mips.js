@@ -1,24 +1,33 @@
-import {validateLayeredTextureMips} from './texture-authored-mips.js';
+import {authoredTextureLevels,validateLayeredTextureMips} from './texture-authored-mips.js';
 import {textureUploadBytes} from './native-texture-mips.js';
 const installed=new WeakSet(),glUploads=new WeakMap(),glMaps=new WeakMap();
 // Three uploads only level zero for DataArrayTexture/Data3DTexture. Keep the
 // correction at texture creation/update, never in the draw or steady-frame path.
 export function prepareGPUAuthoredMips(renderer,texture){
- if(!texture.userData.hbAuthoredMips)return texture;validateLayeredTextureMips(texture);
+ if(!texture.userData.hbAuthoredMips)return texture;const levels=authoredTextureLevels(texture);
  const backend=renderer?.backend;
  if(backend?.isWebGPUBackend&&!installed.has(backend)){
   installed.add(backend);const create=backend.createTexture,update=backend.updateTexture;
-  backend.createTexture=function(map,options){return create.call(this,map,map.userData?.hbAuthoredMips?{...options,levels:map.mipmaps.length}:options);};
+  backend.createTexture=function(map,options){return create.call(this,map,map.userData?.hbAuthoredMips?{...options,levels:authoredTextureLevels(map).length}:options);};
   backend.updateTexture=function(map,options){
    if(!map.userData?.hbAuthoredMips)return update.call(this,map,options);
-   const levels=validateLayeredTextureMips(map),resource=this.get(map);if(!resource.textureDescriptorGPU)return update.call(this,map,options);
+   const levels=authoredTextureLevels(map),resource=this.get(map);if(!resource.textureDescriptorGPU)return update.call(this,map,options);
    for(const[level,mip]of levels.entries())this.device.queue.writeTexture({texture:resource.texture,mipLevel:level},textureUploadBytes(mip.data,mip.height,mip.width*4,map.flipY),{bytesPerRow:mip.width*4,rowsPerImage:mip.height},{width:mip.width,height:mip.height,depthOrArrayLayers:mip.depth});resource.version=map.version;
   };
- }else if(renderer?.isWebGLRenderer){
+ }else if(renderer?.isWebGLRenderer&&!texture.isCubeTexture){
   let maps=glMaps.get(renderer);if(!maps){maps=new WeakSet();glMaps.set(renderer,maps);}
   if(!maps.has(texture)){maps.add(texture);const updated=texture.onUpdate;texture.onUpdate=function(...args){updated?.apply(this,args);uploadGL(renderer,this);};}
  }
- if(renderer?.isWebGLRenderer)renderer.initTexture(texture);
+ if(renderer?.isWebGLRenderer){
+  if(texture.isCubeTexture){
+   // Pinned Three uploads cube.mipmaps[j] at j+1, while its allocator counts
+   // only that array. Correct this one synchronous owned allocation, then
+   // restore the context method; no auto-generation or steady-frame wrapper.
+   const gl=renderer.getContext(),storage=gl.texStorage2D,width=levels[0].width;
+   gl.texStorage2D=function(target,count,format,w,h,...rest){return storage.call(this,target,target===gl.TEXTURE_CUBE_MAP&&w===width&&h===width?levels.length:count,format,w,h,...rest);};
+   try{renderer.initTexture(texture);}finally{gl.texStorage2D=storage;}
+  }else renderer.initTexture(texture);
+ }
  return texture;
 }
 function uploadGL(renderer,map){
