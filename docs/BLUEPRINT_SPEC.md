@@ -561,3 +561,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 736–745: 기존 `componentSetString` 노드와 `hb::Components::SetString`으로 PostProcessVolume의 `pathTracingNormalFootprint`를 off/geometry/material로 바꿀 수 있어요. 실제 패키징 게임에서 C++와 Y/U 입력 노드의 모드 전환·원복·샘플·캡처 준비를 검증했어요. 새 제작용 전용 명령은 추가하지 않았어요. [실행 근거와 비용](research/NORMAL_FOOTPRINT_746.md).
 
 756–772: `Materials::SetResidentMip`에서 `materialResidentMip` 노드를 생성해요. 대상/텍스처 파라미터/원본 시작 밉을 받고 -1은 자동 복귀예요. 기존 Components 노드/C++로 `TextureStreaming`과 MeshRenderer의 상주 예산·전환 예산·우선순위를 설정해요. 네 텍스처 자료형에서 실제 CPP 지정→블루프린트 전체 복원/자동 복귀, 원본 밉 부분 수정0/4바이트, 래스터·경로 색과 같은 프로그램을 확인했어요. 풀/원본 수명/AI/이전 노멀 이력의 검증 범위와 잔여는 [TEXTURE_RESIDENCY_772](research/TEXTURE_RESIDENCY_772.md)에 있어요.
+<!-- 810–824: 기존 컴포넌트 노드로 제어하는 메시 거리장 차폐 -->
+
+`PostProcessVolume.aoMode="distanceField"`와 AO 활성·거리·편향·세기·거리장 해상도/atlas 예산은 기존 `componentSetBool/componentSetString/componentSetFloat`와 C++ `hb::Components` 함수에 연결돼요. 별도 화면 상태만 바꾸는 가짜 노드를 만들지 않아요. 실제 패키지 DirectX에서 C++·키보드 블루프린트의 활성 결과 일치와 직접광 보존을 확인했어요. [근거와 범위](research/MESH_DISTANCE_FIELD_AO_821.md).

@@ -533,3 +533,9 @@ binding의 `residency.disk.decodedBytes/logicalBytes/pendingReads/reads`와 머�
 현재 디스크 모드는 처리 없는 RGBA8 사용자 지정2D 체인이에요. 커버리지·합성·노멀 재처리·상위 밉 필터/다른 차원·압축/HDR/raw·런타임 영역 수정에는 일반 가져오기 경로를 사용하세요. 디스크 소스를 위한 영역 수정은 읽기 전용으로 거부돼요. [제작·취소·실제 세 GPU/게임/AI 검증과 범위](research/TEXTURE_DISK_MIPS_796.md).
 
 `schema.textureResidencyPool.graphDemand`는 같은 머테리얼 그래프의 UV·파라미터·시간과 LOD/기울기/bias 수요를 설명해요. `profiler.textureResidency.items[].demandBasis/desiredBase`와 머테리얼 `textures.bindings[].sourceNode`로 해당 그래프 노드를 찾으세요. 기존 C++·블루프린트 파라미터 setter와 문서 편집이 같은 계산을 갱신해요. 비선형/지원하지 않는 수요는 수준0을 요청하되 예산을 따라요. 화면 투영은 bounds 추정이며 보조 광학/삼각형 미분의 완료를 뜻하지 않아요. 설정·장면 취소는 이전 풀의 owned 읽기만 중단하고 새 수동 요청은 유지해요. [지원 범위와 실제 실행 근거](research/UV_GRAPH_DEMAND_806.md).
+
+### 메시 거리장 차폐
+
+`schema.meshDistanceFields`에서 속성과 진단·제약을 읽으세요. `PostProcessVolume`의 `aoEnabled=true`, `aoMode="distanceField"`로 선택하고 `aoRadius/aoBias/aoIntensity/aoDistanceFieldResolution/aoDistanceFieldBudgetMB`를 같은 문서 CAS·Undo/Redo·저장으로 편집해요. 사람용 속성 UI와 같은 설정이에요. 기존 `hb::Components::SetBool/SetString/SetFloat`와 `componentSetBool/componentSetString/componentSetFloat` 블루프린트 노드를 사용해 게임에서도 변경할 수 있어요.
+
+`profiler.read`의 rendering 항목과 실행기 `renderer.distanceFields`에서 준비·대기·제외 원인·로컬 볼륨/atlas/대기 입력 페이로드·정적/강체 부분 쓰기를 확인하세요. 비활성·장면 해제는 소유한 작업과 자료를 정리해요. CPU 볼륨 복사 0은 전체 GPU 전송 0이나 전체 메모리 0을 뜻하지 않아요. [구현·실제 GL/WebGPU/DirectX·제작 검증과 남은 정밀도/시간 필터](research/MESH_DISTANCE_FIELD_AO_821.md).

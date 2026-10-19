@@ -4614,5 +4614,48 @@
     ],
     "exhaustive": false,
     "comparison": "HB conservative level0 differs from UE UV0/scale1 fallback; shader evaluation unchanged, existing HB CPU/GPU/runtime evidence is acceptance basis"
+  },
+  "supplemental821": {
+    "date": "2026-10-19",
+    "targets": [
+      "RND-08",
+      "PER-03",
+      "AI-03"
+    ],
+    "record": "docs/research/MESH_DISTANCE_FIELD_AO_821.md",
+    "selectedReturnedBody": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/distance-field-ambient-occlusion-in-unreal-engine",
+        "version": "5.8",
+        "sections": "search-returned world-space/offscreen/rigid/memory/large-mesh, temporal confidence and global distance fields",
+        "status": "selected returned-body re-read, not full linked corpus/API or all images"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/mesh-distance-fields-in-unreal-engine?lang=en-US",
+        "version": "5.8",
+        "sections": "search-returned principles/sphere and cone tracing, quality/representation/limitations",
+        "status": "selected returned-body re-read"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/mesh-distance-fields-properties-in-unreal-engine?lang=en-US",
+        "version": "5.8",
+        "sections": "search-returned generation/voxel density/resolution/offset/occlusion-distance properties",
+        "status": "selected returned-body re-read"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-distance-field-ambient-occlusion-in-unreal-engine",
+        "version": "5.8",
+        "sections": "search-returned setup and SkyLight behavior",
+        "status": "selected returned-body read"
+      }
+    ],
+    "indexedOnly": [
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/mesh-distance-fields-settings?application_version=4.27",
+      "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-console-variables-reference",
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/lumen-technical-details-in-unreal-engine",
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/class/MeshBuildSettings?application_version=5.1"
+    ],
+    "exhaustive": false,
+    "comparison": "HB per-geometry lazy worker volume/object BVH and scalar atlas differs from UE offline field/global clipmap/temporal confidence; actual CPU/GL/GPU/D3D evidence required"
   }
 }
