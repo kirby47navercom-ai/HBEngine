@@ -553,3 +553,7 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 ### 319–327 · 시퀀스 공통 실행
 
 부모·whole component/property·Transform 별칭·골격·클립 소유권을 기존 LevelSequence CPP/BP와 AI operation에 연결했어요. 트랙 완료 정책은 부모/componentState/skeletal까지 확장하고 클립 구간의 부분 해제는 다른 필드를 유지해요. 외부 재생/그래프 복원·나머지 별칭·가중 혼합은 잔여예요. ENGINE_IMPLEMENTATION_327/ENGINE_WORK_327을 참조해요.
+
+### 727–732 · 텍스처 밉 영역 픽셀
+
+`Materials::SetTextureRegion`에서 `materialTextureRegion` 노드를 생성해요. 대상·텍스처 파라미터·밉·시작 XYZ·크기 XYZ·Color 배열을 받아요. Color는 저장 자료의 0~1 RGBA이며 픽셀 순서는 X→Y→Z예요. 배열/큐브에서는 Z가 면이고 볼륨에서는 깊이예요. 정수 경계·픽셀 수·색상 범위를 검증하고 현재 실행 중인 명시적 RGBA8 텍스처만 바꿔요. 원본 파일은 유지해요. 실제 98에셋 게임에서 네 자료형의 C++ 변경→키보드 블루프린트 변경→원래 값 복원을 확인했어요. 각 자료형 3회/12바이트 갱신과 추가 텍스처 할당 0을 확인했어요.

@@ -343,6 +343,8 @@ node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
 
 SDK Materials::SetTexture에서 생성된 materialTexture 노드는 target(object)/parameter(string)/texture(string)를 받는다. 기존 BP/C++ 문서 편집·함수 연결·실행 경로를 공유한다. Texture2D/Cube/Array/3D는 sampler의 파라미터 원점과 자료형을 유지한다. LayerParameterKey로 레이어 범위를 지정한다. 파라미터 staging은 실행 중 원본 파일을 쓰지 않으며 실패/경합에 이전 텍스처를 유지한다. [사람 API·실제 C++/BP 배포/자원 검증](MATERIAL_TEXTURE_PARAMETERS_082.md).
 
+`/api/schema.textureRegionUpdates`는 같은 텍스처의 명시적 RGBA8 밉 영역을 바꾸는 공통 계약이에요. `materialTextureRegion`은 C++ `Materials::SetTextureRegion(target,parameter,level,origin,size,pixels)`에서 생성돼요. XYZ 정수 원점/크기와 X→Y→Z 순서의 0~1 RGBA Color 배열을 사용해요. 저장 색 공간의 수치를 그대로 지정하며 파일 원본은 쓰지 않아요. 2D·배열·큐브·볼륨을 같은 제작·실행 경로에서 다루고, 실패한 배치는 부분 적용하지 않아요. [부분 갱신·실행·자원 근거](research/TEXTURE_REGIONS_732.md).
+
 
 ## 웹 빌드(083)
 

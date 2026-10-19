@@ -38,7 +38,7 @@ export const raySurfaceHistoryContract=Object.freeze({
  normalPose:rayNormalPoseContract,
  uvFootprint:rayUVFootprintContract,
  previousMedium:previousMediumContract,opticalSpread:opticalSpreadContract,
- selection:'version-aware live output dependency; static program bodies reused; guide evaluates only needed fields; coat-anisotropy input history compares all four channels while coat mirror classification uses xy',
+ selection:'version-aware live output dependency; static program bodies reused; guide evaluates only needed fields; spatially uniform constants/Time/view retain current and committed base evaluation but omit zero footprint deltas; coat-anisotropy input history compares all four channels while coat mirror classification uses xy',
  gates:'physical IOR exact; physical/coat branch boundaries plus 0.001 absolute tolerance; other surface channels 0.001 relative-to-max(1,abs(values)); previous facing/TIR branch must match',
  globalReset:Object.freeze(['CPU-only animated material','any animated transmissive material','animated opacity/visibility','animated emissive RGB','authored material/texture edits','failed/uncommitted pose or clock rewind']),
  resources:'existing packed geometry/normal/motion atlas and reserved prior-time scalar; optional old-world BVH suffix and CPU refit cache for transmissive temporal guides; no additional GPU targets, uniform fields or steady-frame readbacks',

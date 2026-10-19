@@ -21,9 +21,14 @@ export function rayMipChain(map,pixels,srgb,volume=false){
   for(let level=converted.length;level<count;level++){const s=source[level],data=new Float32Array(s.data.length);for(let i=0;i<data.length;i++){let v=s.data[i]/255;if(srgb&&i%4!==3)v=v<=.04045?v/12.92:((v+.055)/1.055)**2.4;data[i]=v;}converted.push({width:s.width,height:s.height,depth:1,data});}
   const levels=converted.slice(0,count);chains.set(convertedKey,converted);chains.set(key,levels);cache.set(map,{pixels,version:pixels.version,chains});return levels;
  }
- const data=new Float32Array(pixels.data.length);
- for(let i=0;i<data.length;i++){let v=pixels.data[i]/(pixels.float?1:255);if(!Number.isFinite(v)||Math.abs(v)>65000)throw Error('광선 텍스처 픽셀 값을 확인하세요.');if(srgb&&i%4!==3)v=v<=.04045?v/12.92:((v+.055)/1.055)**2.4;if(!Number.isFinite(v)||Math.abs(v)>65000)throw Error('광선 텍스처 선형 색 값을 확인하세요.');data[i]=v;}
- const levels=[{width:pixels.width,height:pixels.height,depth:pixels.depth,data}];
+ // Switching minification on/off must not retain two copies of level zero.
+ // Grow one version-owned chain, but return separate level lists so a caller's
+ // no-mip snapshot cannot silently gain levels during a later request.
+ const convertedKey='generated:'+srgb+':'+volume,levels=chains.get(convertedKey)||[];
+ if(!levels.length){const data=new Float32Array(pixels.data.length);
+  for(let i=0;i<data.length;i++){let v=pixels.data[i]/(pixels.float?1:255);if(!Number.isFinite(v)||Math.abs(v)>65000)throw Error('광선 텍스처 픽셀 값을 확인하세요.');if(srgb&&i%4!==3)v=v<=.04045?v/12.92:((v+.055)/1.055)**2.4;if(!Number.isFinite(v)||Math.abs(v)>65000)throw Error('광선 텍스처 선형 색 값을 확인하세요.');data[i]=v;}
+  levels.push({width:pixels.width,height:pixels.height,depth:pixels.depth,data});
+ }
  if(rayMipFilter(map))while(levels.at(-1).width>1||levels.at(-1).height>1||volume&&levels.at(-1).depth>1){
   const source=levels.at(-1),width=Math.max(1,Math.floor(source.width/2)),height=Math.max(1,Math.floor(source.height/2)),depth=volume?Math.max(1,Math.floor(source.depth/2)):source.depth,out=new Float32Array(width*height*depth*4);
   // Area weights retain odd edge texels; array/cube layers remain independent.
@@ -35,7 +40,7 @@ export function rayMipChain(map,pixels,srgb,volume=false){
    }
   }levels.push({width,height,depth,data:out});
  }
- chains.set(key,levels);cache.set(map,{pixels,version:pixels.version,chains});return levels;
+ const result=rayMipFilter(map)?levels.slice():levels.slice(0,1);chains.set(convertedKey,levels);chains.set(key,result);cache.set(map,{pixels,version:pixels.version,chains});return result;
 }
 
 // Cube LOD is explicit. Fixed level/spatial filters cannot observe derivatives.
@@ -54,8 +59,16 @@ export function rayCoordinateInstructions(instructions,live=null){
  for(let n=instructions.length-1;n>=0;n--)if(needed.has(n))for(const p of parents[n])needed.add(p);
  return needed;
 }
+// A uniform value can change with the committed material clock while staying
+// constant across this footprint. Track instruction versions, never register
+// numbers: a later constant overwrite must not inherit an earlier UV delta.
+export function rayVaryingCoordinateInstructions(instructions,live=null){
+ const needed=rayCoordinateInstructions(instructions,live),definitions=new Map(),varying=[];
+ for(let n=0;n<instructions.length;n++){const i=instructions[n],op=i[0];varying[n]=op===1||op===3||op===4||![0,2,5,8].includes(op)&&i.slice(4,8).some(r=>r>=0&&varying[definitions.get(r)]);if(op!==8)definitions.set(i[1],n);}
+ return new Set([...needed].filter(n=>varying[n]));
+}
 // Reuse the register-version-aware coordinate dependency walk. This is shader
 // preparation metadata, never a per-frame material or texture scan.
-export const rayDifferentialOperations=programs=>[...new Set(programs.flatMap(p=>[...rayCoordinateInstructions(p.instructions)].map(n=>p.instructions[n][0])))].sort((a,b)=>a-b);
+export const rayDifferentialOperations=programs=>[...new Set(programs.flatMap(p=>[...rayVaryingCoordinateInstructions(p.instructions)].map(n=>p.instructions[n][0])))].sort((a,b)=>a-b);
 export const rayTextureFlags=map=>(map.magFilter===NearestFilter?1:0)+2*(rayMipFilter(map)||(rayMinNearest(map)?5:0));
 export const rayMinNearest=map=>[NearestFilter,NearestMipmapNearestFilter,NearestMipmapLinearFilter].includes(map.minFilter);

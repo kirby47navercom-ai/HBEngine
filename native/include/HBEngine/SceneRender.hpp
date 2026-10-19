@@ -154,7 +154,7 @@ private:
     detail::Com<ID3D11Texture2D> transmissionImage,transmissionDepth;detail::Com<ID3D11ShaderResourceView> transmissionView,transmissionDepthView;
     std::uint32_t transmissionWidth=0,transmissionHeight=0,transmissionMips=0;bool transmissionReady=false;std::uint64_t transmissionCopies_=0,transmissionAllocations_=0;
     std::size_t slot=0;
-    std::uint64_t meshUpdates_=0,meshUpdateBytes_=0;std::uint64_t draws_=0,uploads_=0,raySceneUpdates_=0,raySceneUpdateBytes_=0;
+    std::uint64_t meshUpdates_=0,meshUpdateBytes_=0;std::uint64_t draws_=0,uploads_=0,raySceneUpdates_=0,raySceneUpdateBytes_=0,textureRegionUpdates_=0,textureRegionUpdateBytes_=0;
     struct Timing {detail::Com<ID3D11Query> begin,end,frequency;bool pending=false;std::uint64_t sequence=0;};
     std::array<Timing,3> timings;
     int activeTiming=-1;std::size_t timingSlot=0;std::uint64_t frameSequence=0,timingSequence=0;
@@ -375,6 +375,21 @@ public:
     Texture createTexture(std::uint32_t width,std::uint32_t height,const std::vector<std::uint8_t>& rgba,bool srgb,const std::vector<TextureMipLevel>& mipLevels){
         return createDataTexture(width,height,rgba,4,false,1,srgb,false,"2d",false,false,mipLevels);
     }
+    struct TextureRegion {std::uint32_t level,x,y,z,width,height,depth;std::vector<std::uint8_t> rgba;};
+    void updateTextureRegions(Texture& value,const std::vector<TextureRegion>& patches){
+        if(value.owner!=gpu.device.p||!value.view.p||value.target.p||patches.empty())throw std::runtime_error("Texture region ownership or batch invalid");
+        std::lock_guard<std::mutex> lock(gpu.mutex);D3D11_SHADER_RESOURCE_VIEW_DESC view{};value.view->GetDesc(&view);
+        if(view.Format!=DXGI_FORMAT_R8G8B8A8_UNORM&&view.Format!=DXGI_FORMAT_R8G8B8A8_UNORM_SRGB)throw std::runtime_error("Texture region requires RGBA8");
+        detail::Com<ID3D11Resource> resource;value.view->GetResource(&resource.p);const bool volume=view.ViewDimension==D3D11_SRV_DIMENSION_TEXTURE3D;UINT width=0,height=0,depth=0,mips=0,flags=0;D3D11_USAGE usage;
+        if(volume){detail::Com<ID3D11Texture3D> image;detail::check(resource->QueryInterface(IID_PPV_ARGS(&image.p)),"Texture region volume");D3D11_TEXTURE3D_DESC d{};image->GetDesc(&d);width=d.Width;height=d.Height;depth=d.Depth;mips=d.MipLevels;flags=d.MiscFlags;usage=d.Usage;}
+        else{if(view.ViewDimension!=D3D11_SRV_DIMENSION_TEXTURE2D&&view.ViewDimension!=D3D11_SRV_DIMENSION_TEXTURE2DARRAY&&view.ViewDimension!=D3D11_SRV_DIMENSION_TEXTURECUBE)throw std::runtime_error("Texture region dimension invalid");detail::Com<ID3D11Texture2D> image;detail::check(resource->QueryInterface(IID_PPV_ARGS(&image.p)),"Texture region image");D3D11_TEXTURE2D_DESC d{};image->GetDesc(&d);width=d.Width;height=d.Height;depth=d.ArraySize;mips=d.MipLevels;flags=d.MiscFlags;usage=d.Usage;if(d.SampleDesc.Count!=1)throw std::runtime_error("Texture region multisampling invalid");}
+        if(usage!=D3D11_USAGE_DEFAULT||(flags&D3D11_RESOURCE_MISC_GENERATE_MIPS))throw std::runtime_error("Texture region requires explicit default-resource levels");
+        // Validate every box before issuing any update; a bad later patch must
+        // not leave the first region applied. Arrays use subresources; volume
+        // Z coordinates stay inside the selected mip's single subresource.
+        for(const auto& p:patches){if(p.level>=mips)throw std::runtime_error("Texture region mip invalid");const auto w=std::max(1u,width>>p.level),h=std::max(1u,height>>p.level),d=volume?std::max(1u,depth>>p.level):depth;if(!p.width||!p.height||!p.depth||p.x>=w||p.width>w-p.x||p.y>=h||p.height>h-p.y||p.z>=d||p.depth>d-p.z||p.rgba.size()!=std::uint64_t(p.width)*p.height*p.depth*4)throw std::runtime_error("Texture region bounds or bytes invalid");}
+        for(const auto& p:patches){const UINT row=p.width*4,slice=row*p.height;if(volume){const D3D11_BOX box{p.x,p.y,p.z,p.x+p.width,p.y+p.height,p.z+p.depth};gpu.context->UpdateSubresource(resource.p,p.level,&box,p.rgba.data(),row,slice);}else for(UINT z=0;z<p.depth;++z){const D3D11_BOX box{p.x,p.y,0,p.x+p.width,p.y+p.height,1};gpu.context->UpdateSubresource(resource.p,p.level+(p.z+z)*mips,&box,p.rgba.data()+std::size_t(z)*slice,row,0);}++textureRegionUpdates_;textureRegionUpdateBytes_+=p.rgba.size();}
+    }
     struct RayScenePatch{std::uint32_t row,rows;std::vector<std::uint8_t> bytes;};
     void updateRayScenes(Texture& value,std::uint32_t width,std::uint32_t height,const std::vector<RayScenePatch>& patches){
         const auto pitch=std::uint64_t(width)*16;if(value.owner!=gpu.device.p||!value.view.p||value.width!=width||value.height!=height||value.layers!=1||!width||!height||patches.empty()||patches.size()>height)throw std::runtime_error("Ray scene update dimensions invalid");
@@ -566,7 +581,7 @@ public:
     bool present(std::uint32_t interval=0){finish();return surface.present(interval);}
     std::vector<std::uint8_t> readPixels(){finish();return surface.readPixels();}
     std::uint32_t width() const{return surface.width();}std::uint32_t height() const{return surface.height();}
-    std::uint64_t draws() const{return draws_;}std::uint64_t uploads() const{return uploads_;}std::uint64_t meshUpdates() const{return meshUpdates_;}std::uint64_t meshUpdateBytes() const{return meshUpdateBytes_;}std::uint64_t raySceneUpdates() const{return raySceneUpdates_;}std::uint64_t raySceneUpdateBytes() const{return raySceneUpdateBytes_;}std::uint64_t presents() const{return surface.presents();}std::uint64_t captures() const{return surface.captures();}
+    std::uint64_t draws() const{return draws_;}std::uint64_t uploads() const{return uploads_;}std::uint64_t meshUpdates() const{return meshUpdates_;}std::uint64_t meshUpdateBytes() const{return meshUpdateBytes_;}std::uint64_t textureRegionUpdates() const{return textureRegionUpdates_;}std::uint64_t textureRegionUpdateBytes() const{return textureRegionUpdateBytes_;}std::uint64_t raySceneUpdates() const{return raySceneUpdates_;}std::uint64_t raySceneUpdateBytes() const{return raySceneUpdateBytes_;}std::uint64_t presents() const{return surface.presents();}std::uint64_t captures() const{return surface.captures();}
     std::optional<double> gpuTimeMs() const{return gpuMilliseconds;}
     std::uint64_t gpuTimingFrame() const{return timingSequence;}
     void releaseTransmission(){std::lock_guard<std::mutex> lock(gpu.mutex);std::array<ID3D11ShaderResourceView*,2> emptyViews{};gpu.context->PSSetShaderResources(44,2,emptyViews.data());transmissionView={};transmissionDepthView={};transmissionImage={};transmissionDepth={};transmissionWidth=transmissionHeight=transmissionMips=0;transmissionReady=false;}

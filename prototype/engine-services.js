@@ -1,4 +1,5 @@
 import {actorTickOperation} from './runtime-tick.js';
+import {textureRegionColors} from './texture-region-updates.js';
 import {deformablePhysicsQueryKey,validateDeformableQuery,emptyDeformableResult} from './deformable-query.js';
 import {defaultJointDOFs,validJointDOFs} from './joint-dofs.js';
 import {recordableRuntimeValues} from './sequence-values.js';
@@ -399,9 +400,10 @@ export function engineOperations(hooks){
       const change=changes[key];if(!change||!validComponentProperties('Light2D',{...p,...change}))throw Error('2D 광원 속성을 확인하세요.');Object.assign(component.properties??={},structuredClone(change));await hooks.update?.(o);return {};
     }
     if(key==='materialLayerParameter'){if(!/^[A-Za-z0-9_]{1,32}$/.test(a.id)||!validMaterialParameters({[a.name]:0}))throw Error('레이어 ID나 파라미터 이름을 확인하세요.');return {return:materialLayerParameterKey(a.id,a.name,a.blend)};}
-    if(['setMaterial','materialFloat','materialVector','materialColor','materialTexture','lightIntensity'].includes(key)){
+    if(['setMaterial','materialFloat','materialVector','materialColor','materialTexture','materialTextureRegion','lightIntensity'].includes(key)){
       const o=target(a,b,vm);if(key==='lightIntensity'&&objectComponents(o).some(c=>c.type==='Light2D'))return operation('light2dSetIntensity',{target:o.id,value:a.value},b,vm);const group=hooks.mesh(o.id);if(!group)throw Error('렌더 대상이 없어요.');
       if(key==='lightIntensity'){let light;group.traverse(child=>{if(child.isLight)light=child;});if(!light)throw Error('광원 대상이 아니에요.');light.intensity=Math.max(0,a.value);return {};}
+      if(key==='materialTextureRegion'){if(!hooks.materialTextureRegion)throw Error('텍스처 영역 실행 연결이 필요해요.');await hooks.materialTextureRegion(o,a.parameter,textureRegionColors(a.level,a.origin,a.size,a.pixels));return {};}
       if(key==='materialTexture'){if(!hooks.materialTexture)throw Error('텍스처 파라미터 실행 연결이 필요해요.');let path;for(const kind of ['texture','texture2d','cubemap','texturearray','volumetexture']){path=await hooks.asset(a.texture,kind);if(path)break;}if(!path)throw Error('텍스처 에셋이 없어요: '+a.texture);await hooks.materialTexture(o,a.parameter,path);return {};}
       if(key==='materialVector'||key==='materialColor'){if(!hooks.materialVector)throw Error('벡터 파라미터 실행 연결이 필요해요.');const v=key==='materialColor'?a.value?.slice(0,3):a.value;if(key==='materialColor'&&(!Array.isArray(a.value)||a.value.length!==4||!a.value.every(n=>Number.isFinite(n)&&n>=0&&n<=10000)))throw Error('머테리얼 색상 값을 확인하세요.');await hooks.materialVector(o,a.parameter,materialVectorValue(v));return {};}
       if(key==='materialFloat'&&hooks.materialFloat){await hooks.materialFloat(o,a.parameter,a.value);return {};}
