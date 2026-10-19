@@ -752,3 +752,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 843–859 e74ffd1635f23e527cd0e18be798f2a2ad3e79d5: ANGLE 고정성분·이전BVH 공용경계, mirror/Time/큰UV ABBA4727.95→3825.05ms 한정관측/노멀변경0·353경계·3크기기하·직교가림·실제순서D3D매질1.63e-7. 843 IR공유후보 개선미입증/미적용. 합성FXC 역순/전체초기지연 등 누적잔여보존. 새Player854/Host855. 설치861후계속.
 
 861 설치 C:\Users\kirby\HBEngine\Versions\813ffe31de904554/3642파일/321소유SHA/9CPP·User10385읽기전후SHA/연결/Versions1 확정. 설치847JBZqgH9노멀/수정전후0,849ZKvdQO353경계,369z3yuEL12가림,781nmmeIl실제CPP/BP GL6전환/화면,804eIbRVN실제D3D5밉수요/래스터·경로. 이전182034964B정리. 누적원장계속.
+
+863–876 80f71529d5039a2d6ebb65776b9f6f17bb5a4898: 값/차분 고정채널·기존 동적형식/일반값수정/key호환, 실제GL/GPU18·D3D9/오차0/잘못된메타4거부. 현재이전normal/coat GL/GPU6·D3D12/해석4.79e-8. Split xyzw·in-place scalar/vector 밉수요 수정, 실제CPP/BP GL6전환과D3D밉0/3/1/0/3·래스터/경로.13회귀·Player871/Host872. GL3060.85→2475.95ms해당그래프관측;최초겹친측정제외. 설치878뒤계속.
