@@ -1,6 +1,11 @@
 import {textureImportPolicy,textureImportDefaults} from './texture-mip-policy.js';
 import {cookTextureMipsAsync} from './texture-mip-cook.js';
 import {textureCompositePolicy,validateTextureComposite,compositeDescriptor,compositeNormalSource} from './texture-composite.js';
+import {diskMipEligible,validDiskMipSettings} from './texture-disk-mips.js';
+
+export function textureDiskMipFields(data,{field}){if(!data.mips?.length)return '';const s=data.streaming;return '<section><h3>디스크 스트리밍</h3>'+(s?.enabled?'<button data-texture-disk-disable>사용 안 함</button>'+field('시작 밉','streaming.initialMip',s.initialMip,{min:0,max:data.mips.length,step:'1'}):'<button data-texture-disk-enable '+(diskMipEligible(data)?'':'disabled')+'>디스크 밉 사용</button>')+'</section>';}
+export const textureDiskPreviewKey=data=>JSON.stringify([data.images,data.mips,textureImportPolicy(data.import),data.composite]);
+export function editDiskMipSettings(data,button,dimensions){if(button.hasAttribute('data-texture-disk-disable')){data.streaming={...data.streaming,enabled:false};return;}if(!dimensions||dimensions.key!==textureDiskPreviewKey(data))throw Error('현재 텍스처 미리보기를 먼저 읽어 주세요.');const streaming={enabled:true,width:dimensions.width,height:dimensions.height,initialMip:Math.min(2,data.mips?.length||0)};if(!validDiskMipSettings({...data,streaming}))throw Error('디스크 스트리밍에는 마지막 1 크기까지의 사용자 지정 밉이 필요해요.');data.streaming=streaming;}
 
 export function textureImportFields(data,{field,options,assetField,files}){
  const p=textureImportPolicy(data.import),select=(label,key,rows)=>`<label>${label}<select data-editor-field="import.${key}">${options(rows,p[key])}</select></label>`;
@@ -13,6 +18,7 @@ export function normalizeTextureImportEdit(data,path){
   else if(data.import.colorSpace==='srgb')data.import.colorSpace='auto';
  }
  validateTextureComposite(data.composite,data.import);
+ if(data.streaming?.enabled&&(/^(images|mips)\./.test(path)||!validDiskMipSettings(data)))data.streaming.enabled=false;
 }
 // Editor-only, top-down display. Runtime owns and flips its separate upload data.
 async function previewImage(source,fileUrl,win,signal){
@@ -22,7 +28,7 @@ async function previewImage(source,fileUrl,win,signal){
 function previewPixels(image,document){const canvas=document.createElement('canvas');canvas.width=image.naturalWidth;canvas.height=image.naturalHeight;try{const context=canvas.getContext('2d',{willReadFrequently:true});context.drawImage(image,0,0);return{width:canvas.width,height:canvas.height,data:context.getImageData(0,0,canvas.width,canvas.height).data};}finally{canvas.width=canvas.height=0;}}
 export async function textureImportPreview(source,fileUrl,policy,win,signal,{composite,readAsset,authoredSources=[]}={}){
  const c=validateTextureComposite(composite,policy),resources={};if(compositeDescriptor(c.normalTexture)){if(!readAsset)throw Error('합성 노멀 에셋을 읽지 못했어요.');resources[c.normalTexture]=await readAsset(c.normalTexture);}if(signal.aborted)throw Error('cancelled');const normalSource=compositeNormalSource({composite:c,import:policy},resources),imagePromise=previewImage(source,fileUrl,win,signal),[image,normal]=await Promise.all([imagePromise,normalSource===source?imagePromise:normalSource?previewImage(normalSource,fileUrl,win,signal):null]),document=win.document,authoredImages=[];for(const path of authoredSources)authoredImages.push(await previewImage(path,fileUrl,win,signal));let cooked;
- for(let attempt=0;attempt<2;attempt++){try{const pixels=previewPixels(image,document);cooked=await cookTextureMipsAsync(pixels,policy,{transfer:true,composite:c,normalPixels:normal===image?pixels:normal?previewPixels(normal,document):undefined,authoredLevels:authoredImages.length?authoredImages.map(image=>previewPixels(image,document)):undefined});break;}catch(error){if(!error.retryTextureDecode||attempt)throw error;}}
+ for(let attempt=0;attempt<2;attempt++){try{const pixels=previewPixels(image,document);cooked=await cookTextureMipsAsync(pixels,policy,{signal,transfer:true,composite:c,normalPixels:normal===image?pixels:normal?previewPixels(normal,document):undefined,authoredLevels:authoredImages.length?authoredImages.map(image=>previewPixels(image,document)):undefined});break;}catch(error){if(!error.retryTextureDecode||attempt)throw error;}}
  if(signal.aborted)throw Error('cancelled');if(cooked.report.authored)cooked.report.authoredSources=[source,...authoredSources];
  return {report:cooked.report,images:cooked.levels.map(level=>{const view=document.createElement('canvas');view.width=view.naturalWidth=level.width;view.height=view.naturalHeight=level.height;view.getContext('2d').putImageData(new win.ImageData(new Uint8ClampedArray(level.data.buffer,level.data.byteOffset,level.data.length),level.width,level.height),0,0);return view;})};
 }

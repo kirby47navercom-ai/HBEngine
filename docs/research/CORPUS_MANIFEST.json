@@ -4545,5 +4545,42 @@
       "other accumulated engine sources"
     ],
     "notInferred": "HB decoded-source GPU material mip residency and soft temporary payload reservation are implemented; full device heap budget, async disk IO, exact procedural/secondary-view demand and exhaustive UE/Unity parity are not implied"
+  },
+  "supplemental796": {
+    "date": "2026-10-19",
+    "targets": [
+      "MAT-03",
+      "PER-03",
+      "AI-03"
+    ],
+    "record": "docs/research/TEXTURE_DISK_MIPS_796.md",
+    "reviewed": [
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.7/script-reference/unityengine/texture2d/requestedmipmaplevel",
+        "version": "6000.7 Beta",
+        "sections": "Definition/Remarks/example lines911-938",
+        "status": "selected body re-read; linked minimum/loaded/priority pages unread in this version"
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/throwIfAborted",
+        "sections": "body/syntax/example185-239",
+        "status": "selected body read; linked DOM specification not reviewed"
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Response/arrayBuffer",
+        "sections": "body/return/exceptions185-225",
+        "status": "selected body read; not the decoder used by this image path"
+      }
+    ],
+    "indexedOnly": [
+      "https://docs.unity.com/en-us/engine/7000.0/script-reference/unityengine/qualitysettings/streamingmipmapsmemorybudget",
+      "https://docs.unity.com/en-us/engine/7000.0/manual/materials-and-shaders/textures/texture-loading/texture-streaming",
+      "https://docs.unity.com/en-us/engine/6000.5/script-reference/unityengine/texture2d/streamingmipmapspriority",
+      "https://docs.unity3d.com/cn/2021.2/ScriptReference/Texture2D-requestedMipmapLevel.html",
+      "https://docs.unity.cn/ScriptReference/Texture2D.html",
+      "https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Graphics/Texture.bindings.cs",
+      "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch."
+    ],
+    "exhaustive": false
   }
 }

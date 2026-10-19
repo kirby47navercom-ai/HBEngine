@@ -523,3 +523,11 @@ scene.select는 실행 중에도 오브젝트를 선택/검사할 수 있다. �
 `schema.pipelinePreparation.glGuideSpecialization`과 `pipelinePreparation.guideMode`를 읽으세요. general/noMirror/diffuse는 실제 base/coat 값과 동적 채널에서 보수적으로 선택돼요. 사람·C++·블루프린트가 기존 머테리얼 파라미터를 바꾸면 같은 준비 경로가 갱신돼요. 가이드만 바뀔 때는 기존 path 머테리얼/프로그램을 유지해요. 이전 클록·노멀·밉과 표면/가시성 거부는 유지하며 강제 선택 명령은 없어요. [실제 픽셀/게임/준비 시간 범위](research/GL_GUIDE_PREPARATION_783.md).
 
 `schema.pipelinePreparation.glRayAtlas`와 `renderer.rayAtlasRecovery`는 GL 광선 atlas의 최초 전체 초기화·리소스 복구 횟수와 CPU 페이로드 바이트를 설명해요. 같은 리소스의 후속 변경은 기존 행 부분 전송을 유지해요. 이 값은 GPU heap 사용량이나 모든 프레임 전송량을 뜻하지 않아요.
+
+### 사용자 지정2D 디스크 밉
+
+`schema.textureDiskMips`를 읽으세요. 텍스처2D의 전체 사용자 지정 이미지 체인에 `streaming:{enabled:true,width:4,height:4,initialMip:2}`를 설정하면 최하위 이미지부터 필요한 꼬리만 읽어요. 사람은 미리보기 뒤 속성의 **디스크 밉 사용**, AI는 같은 문서의 CAS 패치·저장·Undo를 사용해요. C++의 `hb::Materials::SetResidentMip(actor,"Bands",0)`과 블루프린트 `materialResidentMip`, TextureStreaming 풀은 같은 비동기 준비/적용을 사용해요. 풀이 없으면 초기 밉이 다음 요청까지 유지돼요.
+
+binding의 `residency.disk.decodedBytes/logicalBytes/pendingReads/reads`와 머테리얼의 `pendingRequests/stagedRequests`로 상태를 확인하세요. `reads`는 브라우저 캐시를 포함한 이미지 로드 시도예요. 현재·후보 view가 사용하지 않는 decoded 꼬리와 진행 요청은 해제돼요. 선택을 바꾸거나 해제하면 오래된 transaction은 commit:false이고 완료된 미적용 후보도 정리돼요. 디스크 view의 dispose는 종료이며 재사용에는 새 view가 필요해요.
+
+현재 디스크 모드는 처리 없는 RGBA8 사용자 지정2D 체인이에요. 커버리지·합성·노멀 재처리·상위 밉 필터/다른 차원·압축/HDR/raw·런타임 영역 수정에는 일반 가져오기 경로를 사용하세요. 디스크 소스를 위한 영역 수정은 읽기 전용으로 거부돼요. [제작·취소·실제 세 GPU/게임/AI 검증과 범위](research/TEXTURE_DISK_MIPS_796.md).

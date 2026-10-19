@@ -12,6 +12,7 @@ export const textureImportContract=Object.freeze({
  view:'texture.view settings.mip; source, size, mipLevels and importReport; view changes are not asset edits',
  edit:'document.patch with expectedRevision, document.save, editor.undo',
  worker:'one lazy queued worker for large decodes; idle termination; explicit ownership transfer',
+ cancellation:'AbortSignal removes queued cooks, terminates only the active owned module worker and rejects AbortError; local synchronous math cannot be preempted; settled listeners removed',
  support:Object.freeze(['WebGL2','WebGPU','DirectX11','packed-ray-mips']),
 });
 export function textureImportPolicy(value={}){

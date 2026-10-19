@@ -1,9 +1,11 @@
 import {residentMipSource,residentMipBase} from './texture-resident-view.js';
 import {authoredTextureLevels} from './texture-authored-mips.js';
 import {textureUploadBytes} from './native-texture-mips.js';
+import {diskMipSource} from './texture-disk-mips.js';
 
 const updates=new WeakMap();
 const levelsOf=texture=>{
+ if(diskMipSource(residentMipSource(texture)))throw Error('디스크 밉은 읽기 전용이에요. 런타임 픽셀 수정에는 일반 가져오기 텍스처를 사용하세요.');
  if(texture.userData?.hbAuthoredMips)return authoredTextureLevels(texture);
  if(!texture.userData?.hbCookedMips)return null;const levels=texture.mipmaps,base=texture.image;if(!texture.isDataTexture||!Array.isArray(levels)||!levels.length||levels.length>1+Math.floor(Math.log2(Math.max(base.width,base.height))))throw Error('2D 밉 자료를 확인하세요.');let w=base.width,h=base.height;
  for(const[index,l]of levels.entries()){if(!Number.isSafeInteger(w)||!Number.isSafeInteger(h)||w<1||h<1||l.width!==w||l.height!==h||!(l.data instanceof Uint8Array||l.data instanceof Uint8ClampedArray)||l.data.length!==w*h*4||index===0&&l.data!==base.data)throw Error('2D 밉 소유권과 크기를 확인하세요.');w=Math.max(1,Math.floor(w/2));h=Math.max(1,Math.floor(h/2));}return levels.map(l=>({...l,depth:1}));
