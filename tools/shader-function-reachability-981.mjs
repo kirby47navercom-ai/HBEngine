@@ -1,0 +1,14 @@
+// Diagnostic candidate only; not wired into the engine. Keep overloads and every reference in
+// global declarations/macros; uncertain syntax preserves the original source.
+export function pruneShaderFunctions(source,entries=['main']){
+ if(typeof source!=='string'||!Array.isArray(entries)||!entries.length||entries.some(n=>!/^[_a-zA-Z]\w*$/.test(n)))throw Error('셰이더 진입 함수를 확인하세요.');
+ const unchanged=()=>({source,removed:[],functions:0,removedBytes:0,fallback:true});
+ const blank=s=>s.replace(/[^\r\n]/g,' '),clean=source.replace(/\/\*[\s\S]*?\*\/|\/\/[^\r\n]*|"(?:\\.|[^"\\])*"/g,blank),pattern=/\b(?:(?:const|highp|mediump|lowp|precise|invariant)\s+)*([_a-zA-Z]\w*)\s+([_a-zA-Z]\w*)\s*\([^;{}]*\)\s*\{/g,definitions=[],byName=new Map();let cursor=0,depth=0,match;
+ while((match=pattern.exec(clean))){for(;cursor<match.index;cursor++){if(clean[cursor]==='{')depth++;else if(clean[cursor]==='}'&&--depth<0)return unchanged();}if(depth!==0)continue;const open=pattern.lastIndex-1;let end=open+1,level=1;for(;end<clean.length&&level;end++){if(clean[end]==='{')level++;else if(clean[end]==='}')level--;}if(level)return unchanged();const body=clean.slice(open+1,end-1),lineStart=clean.lastIndexOf('\n',match.index-1)+1,macro=clean.slice(lineStart,match.index).trim().startsWith('#');let local=0,unsafe=macro;for(const d of body.matchAll(/^\s*#\s*(if|ifdef|ifndef|endif|define|undef)\b/gm)){if(d[1]==='endif'){if(--local<0)unsafe=true;}else if(d[1]==='define'||d[1]==='undef')unsafe=true;else local++;}if(local!==0)unsafe=true;
+  const item={name:match[2],start:match.index,end,body,unsafe};definitions.push(item);if(!byName.has(item.name))byName.set(item.name,[]);byName.get(item.name).push(item);cursor=end;pattern.lastIndex=end;
+ }
+ for(;cursor<clean.length;cursor++){if(clean[cursor]==='{')depth++;else if(clean[cursor]==='}'&&--depth<0)return unchanged();}if(depth||entries.some(n=>!byName.has(n)))return unchanged();
+ let outside='',at=0;for(const d of definitions){outside+=clean.slice(at,d.start);at=d.end;}outside+=clean.slice(at);outside=outside.replace(/\b(?:(?:const|highp|mediump|lowp|precise|invariant)\s+)*[_a-zA-Z]\w*\s+[_a-zA-Z]\w*\s*\([^;{}]*\)\s*;/g,blank);
+ const names=s=>s.match(/\b[_a-zA-Z]\w*\b/g)||[],pending=[...entries,...names(outside),...definitions.filter(d=>d.unsafe).map(d=>d.name)],live=new Set();while(pending.length){const name=pending.pop();if(live.has(name)||!byName.has(name))continue;live.add(name);for(const d of byName.get(name))pending.push(...names(d.body));}
+ const removed=definitions.filter(d=>!live.has(d.name));let output='',last=0;for(const d of removed){output+=source.slice(last,d.start)+blank(source.slice(d.start,d.end));last=d.end;}output+=source.slice(last);return {source:output,removed:[...new Set(removed.map(d=>d.name))],functions:definitions.length,removedBytes:removed.reduce((n,d)=>n+d.end-d.start,0),fallback:false};
+}

@@ -4688,5 +4688,58 @@
     "wholeCorpus": false,
     "wholeApi": false,
     "unread": "HDRP connected APIs/media and whole libraries/versions. Unity variance filter and installed Three max-derivative approximation are distinct; only existing Three geometry-roughness policy matched in native."
+  },
+  "supplemental986": {
+    "date": "2026-10-20",
+    "targets": [
+      "RND-01",
+      "RND-03",
+      "MAT-03",
+      "AI-03"
+    ],
+    "record": "docs/research/AFFINE_REFLECTION_PROBES_995.md",
+    "proof": "native/build/reference-corpus/supplemental986/read-scope.json",
+    "roots": [
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/reflections-captures-in-unreal-engine",
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UBoxReflectionCaptureComponent",
+      "https://seblagarde.wordpress.com/2012/09/29/image-based-lighting-approaches-and-parallax-corrected-cubemap/",
+      "https://docs.unity3d.com/6000.0/Documentation/Manual/class-ReflectionProbe.html"
+    ],
+    "state": "selected_body_and_public_API_declaration_compared_with_independent_world_plane_oracle_and_installed_Three_r180_functions",
+    "readScope": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/reflections-captures-in-unreal-engine",
+        "file": "native/build/reference-corpus/supplemental986/epic-reflection-captures.html",
+        "sha256": "af765b9bfc77f45b69c7506a882620714bff7c0497bcb166ae70cd89320c3a45",
+        "readScope": "Own box shape, glossiness, blend and limitations sections; not linked Lightmass/source or all engine documentation"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UBoxReflectionCaptureComponent",
+        "file": "native/build/reference-corpus/supplemental986/epic-box-api.html",
+        "sha256": "382260e03e760365e2933bd83263a6b8e973904f4ae8e2365f16c81f622686d2",
+        "readScope": "Own declaration, BoxTransitionDistance, preview fields and listed virtual functions; not API implementation or inherited functions"
+      },
+      {
+        "url": "https://seblagarde.wordpress.com/2012/09/29/image-based-lighting-approaches-and-parallax-corrected-cubemap/",
+        "file": "native/build/reference-corpus/supplemental986/lagarde-ibl.html",
+        "sha256": "f40e557347eb543e8d91cd9b29ba27987d969ef40c818562fd26bb9b07b0e313",
+        "readScope": "Own local influence and AABB/OBB parallax correction sections only; not full article, linked papers/videos or all references"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-ReflectionProbe.html",
+        "file": "native/build/reference-corpus/supplemental986/unity-probe.html",
+        "sha256": "fb4b3a30880f1e9e5ff366f37546532e44295abac7d9917af3f1d0759eb274d8",
+        "readScope": "Own Runtime Settings/Box Projection and editing sections; linked API and other pipelines unread"
+      },
+      {
+        "file": "node_modules/three/src/nodes/lighting/EnvironmentNode.js",
+        "sha256": "43c66570ab61d3d3bbcc04391fece990816b91a33602f2d74fcddbd7d89bd286",
+        "readScope": "Installed r180 setup/createRadianceContext selected functions: bent normal base and independent coating radiance; not whole Three/linked helpers"
+      }
+    ],
+    "wholeCorpus": false,
+    "wholeApi": false,
+    "unread": "Linked APIs, source implementations, all engine tutorials/media, full article and all papers. OBB plane/world fade independent implementation, not UE capture policy or Unity parity.",
+    "comparison": "HB full affine inverse/plane world-distance fade and unchanged capture policy are own choices; not UE sphere/Lightmass or Unity world-space probe zone implementation parity. Browser still binds one selected probe, native two."
   }
 }

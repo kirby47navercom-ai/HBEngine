@@ -502,3 +502,6 @@ GCC Preprocessor Options의-M/MM/MF/MT/MQ/MD/MMD 본문56–128행을 읽고 실
 
 # 2026-10-19 — 642/664 광선 지정 구역
 새 읽기: PBRT4 10.1.2/10.1.3 본문·수식. 앞선 NVIDIA 초록·정오표와 PBRT 지정 읽기를 구분해요. 읽은 범위·독립 dual 투영·미독은 LENS_PIXEL_FOOTPRINT_664.md와 CORPUS_MANIFEST supplemental664에 등록했어요. 전역 본문/API gate 승격은 없으며 거친 로브·전역 역해·매질은 후속 구현으로 유지해요.
+
+### 2026-10-20 · 986 반사 영역과 물리 로브의 지정 구역
+UE Reflection Captures의 Box shape/Glossy Indirect Specular/제한 구역과 UBoxReflectionCaptureComponent의 자체 선언·전이 거리·가상 함수 목록을 읽었어요. Unity6000.0 프로브 자체 Runtime Settings의 월드 크기·오프셋/Box Projection을 대조했고 Lagarde2012의 local influence/AABB·OBB 투영 구역 및 설치된Three r180 EnvironmentNode.setup/createRadianceContext를 읽었어요. 원문5개 SHA·범위는 supplemental986/read-scope에 보존해요. HB의 affine/전단·월드 면 거리·캡처 재사용 선택을 UE 캡처 정책이나 Unity 내부 구현과 같다고 계산하지 않아요. 연결API·본문나머지·미디어·전역 gate는 미승격이에요.

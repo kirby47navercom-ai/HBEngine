@@ -5,8 +5,22 @@
 namespace hb::gpu {
 struct ProbeSettings {
     std::array<float,4> center{0,0,0,1},minimum{-5,-5,-5,1},maximum{5,5,5,0},options{1,0,1,1};
+    std::array<float,4> localX{1,0,0,0},localY{0,1,0,0},localZ{0,0,1,0},faceScale{1,1,1,0};
 };
-static_assert(sizeof(ProbeSettings)==64,"HLSL probe settings layout");
+static_assert(sizeof(ProbeSettings)==128,"HLSL probe settings layout");
+inline bool probeVolumeBasisUsable(const ProbeSettings& p){
+    const double a=p.localX[0],b=p.localX[1],c=p.localX[2],d=p.localY[0],e=p.localY[1],f=p.localY[2],g=p.localZ[0],h=p.localZ[1],i=p.localZ[2],determinant=a*(e*i-f*h)-b*(d*i-f*g)+c*(d*h-e*g);
+    return std::isfinite(determinant)&&determinant!=0;
+}
+inline void setProbeWorldToLocal(ProbeSettings& settings,const Matrix& matrix){
+    if(!std::all_of(matrix.begin(),matrix.end(),[](float v){return std::isfinite(v);})||matrix[3]!=0||matrix[7]!=0||matrix[11]!=0||matrix[15]!=1)throw std::runtime_error("Probe affine transform invalid");
+    const double a=matrix[0],b=matrix[4],c=matrix[8],d=matrix[1],e=matrix[5],f=matrix[9],g=matrix[2],h=matrix[6],i=matrix[10],determinant=a*(e*i-f*h)-b*(d*i-f*g)+c*(d*h-e*g);
+    if(!std::isfinite(determinant)||determinant==0)throw std::runtime_error("Probe singular transform");
+    auto next=settings;next.localX={matrix[0],matrix[4],matrix[8],matrix[12]};next.localY={matrix[1],matrix[5],matrix[9],matrix[13]};next.localZ={matrix[2],matrix[6],matrix[10],matrix[14]};
+    next.faceScale={float(1/std::hypot(a,b,c)),float(1/std::hypot(d,e,f)),float(1/std::hypot(g,h,i)),0};
+    if(!std::all_of(next.faceScale.begin(),next.faceScale.end(),[](float v){return std::isfinite(v);})||next.faceScale[0]<=0||next.faceScale[1]<=0||next.faceScale[2]<=0)throw std::runtime_error("Probe face scale invalid");
+    settings=next;
+}
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 class SceneProbes {
 public:
@@ -121,13 +135,16 @@ public:
 };
 
 inline constexpr const char* sceneProbeDeclarations=R"HLSL(
-struct ProbeSettings{float4 center,minimum,maximum,options;};cbuffer ProbeBindings:register(b2){ProbeSettings probeSettings[3];};
+struct ProbeSettings{float4 center,minimum,maximum,options,localX,localY,localZ,faceScale;};cbuffer ProbeBindings:register(b2){ProbeSettings probeSettings[3];};
 TextureCube<float4> probe0:register(t39),probe1:register(t40);StructuredBuffer<float4> probeSH0:register(t41),probeSH1:register(t42);Texture2D<float2> probeBrdf:register(t43);TextureCube<float4> skyProbe:register(t46);StructuredBuffer<float4> skySH:register(t47);
 )HLSL";
 inline constexpr const char* sceneProbeFunctions=R"HLSL(
 float probeBasis(uint i,float3 d){return i==0?.282094792:i==1?.488602512*d.y:i==2?.488602512*d.z:i==3?.488602512*d.x:i==4?1.092548431*d.x*d.y:i==5?1.092548431*d.y*d.z:i==6?.315391565*(3*d.z*d.z-1):i==7?1.092548431*d.x*d.z:.546274215*(d.x*d.x-d.y*d.y);}
-float probeWeight(ProbeSettings p,float3 at){if(p.options.x<.5||any(at<p.minimum.xyz)||any(at>p.maximum.xyz))return 0;float3 edge=min(at-p.minimum.xyz,p.maximum.xyz-at);return p.options.z*(p.minimum.w>0?saturate(min(edge.x,min(edge.y,edge.z))/p.minimum.w):1);}
-float3 probeDirection(ProbeSettings p,float3 at,float3 r){if(p.options.w<.5)return r;float3 safe=float3(abs(r.x)<1e-6?(r.x<0?-1e-6:1e-6):r.x,abs(r.y)<1e-6?(r.y<0?-1e-6:1e-6):r.y,abs(r.z)<1e-6?(r.z<0?-1e-6:1e-6):r.z);float3 t=max((p.minimum.xyz-at)/safe,(p.maximum.xyz-at)/safe);return at+r*min(t.x,min(t.y,t.z))-p.center.xyz;}
+float3 probeLocal(ProbeSettings p,float3 at){float4 v=float4(at,1);return float3(dot(p.localX,v),dot(p.localY,v),dot(p.localZ,v));}
+float3 probeLocalRay(ProbeSettings p,float3 r){return float3(dot(p.localX.xyz,r),dot(p.localY.xyz,r),dot(p.localZ.xyz,r));}
+float probeWeight(ProbeSettings p,float3 at){if(p.options.x<.5)return 0;float3 local=probeLocal(p,at),edge=min(local-p.minimum.xyz,p.maximum.xyz-local)*p.faceScale.xyz;float distance=min(edge.x,min(edge.y,edge.z));return distance<0?0:p.options.z*(p.minimum.w>0?saturate(distance/p.minimum.w):1);}
+float probeAxisExit(float p,float r,float lo,float hi){return r==0?3.402823466e38:((r>0?hi:lo)-p)/r;}
+float3 probeDirection(ProbeSettings p,float3 at,float3 r){if(p.options.w<.5||all(r==0))return r;float3 local=probeLocal(p,at),ray=probeLocalRay(p,r);if(any(local<p.minimum.xyz)||any(local>p.maximum.xyz))return r;float distance=min(probeAxisExit(local.x,ray.x,p.minimum.x,p.maximum.x),min(probeAxisExit(local.y,ray.y,p.minimum.y,p.maximum.y),probeAxisExit(local.z,ray.z,p.minimum.z,p.maximum.z)));float3 result=at+r*distance-p.center.xyz;return dot(result,result)>1e-20?result:r;}
 float3 probeLight(TextureCube<float4> cube,StructuredBuffer<float4> sh,ProbeSettings p,float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao,float3 dielectricF0,float diffuseWeight){
  float nv=saturate(dot(n,v));float3 f0=lerp(dielectricF0,base,metal),f=f0+(max(1-rough,f0)-f0)*pow(1-nv,5),irradiance=0;[unroll]for(uint i=0;i<9;i++)irradiance+=sh[i].rgb*probeBasis(i,n);
  float2 brdf=probeBrdf.SampleLevel(linear2d,float2(nv,rough),0);float3 reflected=cube.SampleLevel(linear2d,probeDirection(p,at,reflect(-v,n)),rough*p.maximum.w).rgb;

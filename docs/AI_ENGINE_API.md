@@ -541,3 +541,6 @@ binding의 `residency.disk.decodedBytes/logicalBytes/pendingReads/reads`와 머�
 `profiler.read`의 rendering 항목과 실행기 `renderer.distanceFields`에서 준비·대기·제외 원인·로컬 볼륨/atlas/대기 입력 페이로드·정적/강체 부분 쓰기를 확인하세요. 비활성·장면 해제는 소유한 작업과 자료를 정리해요. CPU 볼륨 복사 0은 전체 GPU 전송 0이나 전체 메모리 0을 뜻하지 않아요. [구현·실제 GL/WebGPU/DirectX·제작 검증과 남은 정밀도/시간 필터](research/MESH_DISTANCE_FIELD_AO_821.md).
 
 `distanceFields.analyticFields/voxelFields`는 검증된 기본 도형의 거리식과 일반 모델의 볼륨 수를 구분해요. `ready`만으로 전체 준비를 판정하지 말고 `pending===0`과 실패·제외 진단도 읽으세요. [도형 판별·일반 볼륨 보존·352B 큰 평면 장면의 실제 검증](research/MESH_DISTANCE_PRIMITIVES_835.md).
+
+## 회전 반사 영역 · 986–995
+ReflectionProbe의 기존 크기/offset/captureOffset/blendDistance/boxProjection과 오브젝트 Transform을 편집해요. 영역 회전은 일반 Transform/C++ Scene::SetRotation/같은 블루프린트 노드로 지정하며 새 네이티브 코드를 작성하지 않아도 돼요. 부모 전단·음수/비균일 크기의 전체 affine 역변환을 GL/WebGPU/DirectX가 공유해요. localX/localY/localZ/faceScale은 파생 바인딩 행이며 저장 에셋에 작성하지 않아요. 캡처점이 고정된 영역 변형은 기존 캡처를 재사용해요. 직접GPU SDK에서는 hb::gpu::setProbeWorldToLocal(ProbeSettings&,const Matrix&)가 검증/예외와 실패 시 원래 값 보존을 제공해요. 새128바이트 ProbeSettings와 실행기를 함께 사용해요. 수치·실제 C++/BP 게임·미구현 범위는 [995 기록](research/AFFINE_REFLECTION_PROBES_995.md)을 확인해요.

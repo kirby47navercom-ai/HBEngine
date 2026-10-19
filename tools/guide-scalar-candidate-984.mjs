@@ -1,0 +1,9 @@
+// Candidate for the generated guide's five small fixed local arrays only.
+// Keep the sampling loop and expression evaluation order; never unroll graphs.
+export function guideScalarCandidate984(source){
+ const start=source.indexOf('vec4 hbPathGuideTrace(');if(start<0)throw Error('Guide scalar candidate entry');const prefix=source.slice(0,start);let body=source.slice(start);const m=body.match(/float differentialIDs\[([24])\];vec3 ro\[\1\],rd\[\1\];/);if(!m)throw Error('Guide scalar candidate array contract');const count=Number(m[1]),names={differentialIDs:'float',ro:'vec3',rd:'vec3',dp:'vec3',differentialNormals:'vec3'},declarations=(name,type)=>type+' '+Array.from({length:count},(_,i)=>name+i).join(',')+';';body=body.replace(m[0],declarations('differentialIDs','float')+declarations('ro','vec3')+declarations('rd','vec3'));
+ for(const name of ['dp','differentialNormals']){const declaration='vec3 '+name+'['+count+'];';if(!body.includes(declaration))throw Error('Guide scalar declaration '+name);body=body.replace(declaration,declarations(name,'vec3'));}
+ let writes=0;for(const[name,type]of Object.entries(names)){body=body.replace(new RegExp('\\b'+name+'\\[j\\]\\s*=\\s*([^;]+);','g'),(_,value)=>'{'+type+' hbGuideArrayValue'+(++writes)+'='+value+';'+Array.from({length:count},(_,i)=>(i?'else ':'')+(i<count-1?'if(j=='+i+')':'')+name+i+'=hbGuideArrayValue'+writes+';').join('')+'}');for(let i=0;i<count;i++)body=body.replaceAll(name+'['+i+']',name+i);}
+ for(const name of Object.keys(names)){const value=Array.from({length:count-1},(_,i)=>'j=='+i+'?'+name+i+':').join('')+name+(count-1);body=body.replaceAll(name+'[j]','('+value+')');if(new RegExp('\\b'+name+'\\[').test(body))throw Error('Guide scalar unresolved access '+name);}
+ return {source:prefix+body,functions:1,removed:Object.keys(names),removedBytes:source.length-prefix.length-body.length,fallback:false,count,writes,candidateOnly:true};
+}

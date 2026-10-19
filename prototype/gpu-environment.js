@@ -1,23 +1,23 @@
+import {gpuProbeVolumeNodes} from './reflection-probe-volume-gpu.js';
 import {normalFootprintMode} from './path-normal-footprint.js';
 import {startGPUPathPreparation,cancelGPUPathPreparation} from './gpu-path-preparation.js';
 import {rayShaderPlanForScene} from './ray-materials.js';
 import {MeshBasicNodeMaterial,Color,Vector3,Vector4,BackSide,PostProcessing,LightingNode,NodeUpdateType} from 'three/webgpu';
-import {uniform,positionLocal,positionWorld,cameraPosition,vec3,vec4,float,fog,rangeFogFactor,mix,pmremTexture,normalWorld,normalView,positionViewDirection,roughness,cameraViewMatrix,cache} from 'three/tsl';
+import {uniform,positionLocal,positionWorld,cameraPosition,vec3,vec4,float,fog,rangeFogFactor,mix,pmremTexture,normalWorld,normalView,clearcoatNormalView,bentNormalView,positionViewDirection,roughness,clearcoatRoughness,cameraViewMatrix,cache} from 'three/tsl';
 import {bloom} from 'three/addons/tsl/display/BloomNode.js';
 import {pass} from 'three/tsl';
 
 export function createGPUProbeEnvironment(probe,map){
-  const center=uniform(new Vector3()),minimum=uniform(new Vector3()),maximum=uniform(new Vector3()),options=uniform(new Vector4()),environment=pmremTexture(map);
+  const center=uniform(new Vector3()),minimum=uniform(new Vector3()),maximum=uniform(new Vector3()),options=uniform(new Vector4()),localX=uniform(new Vector4(1,0,0,0)),localY=uniform(new Vector4(0,1,0,0)),localZ=uniform(new Vector4(0,0,1,0)),faceScale=uniform(new Vector3(1,1,1)),volume={minimum,maximum,localX,localY,localZ,faceScale,blend:options.z},environment=pmremTexture(map);
   class ProbeEnvironment extends LightingNode{
     setup(builder){
-      const r=mix(positionViewDirection.negate().reflect(normalView),normalView,roughness.mul(roughness)).normalize().transformDirection(cameraViewMatrix),safe=r.abs().max(.000001).mul(vec3(...[r.x,r.y,r.z].map(v=>v.greaterThanEqual(0).select(1,-1)))),t=maximum.sub(positionWorld).div(safe).max(minimum.sub(positionWorld).div(safe)),box=positionWorld.add(r.mul(t.x.min(t.y).min(t.z))).sub(center),direction=options.y.greaterThan(.5).select(box,r);
-      const edge=positionWorld.sub(minimum).min(maximum.sub(positionWorld)),distance=edge.x.min(edge.y).min(edge.z),fade=distance.lessThan(0).select(float(0),options.z.greaterThan(0).select(distance.div(options.z.max(.000001)).clamp(0,1),float(1))),intensity=options.w.mul(fade);
-      const radiance=environment.context({getUV:()=>direction,getTextureLevel:()=>roughness}).mul(intensity),irradiance=environment.context({getUV:()=>normalWorld,getTextureLevel:()=>float(1)}).mul(Math.PI).mul(intensity).mul(options.x);
+      const radianceFor=(normal,level)=>{const r=mix(positionViewDirection.negate().reflect(normal),normal,level.mul(level)).normalize().transformDirection(cameraViewMatrix),box=gpuProbeVolumeNodes(volume,positionWorld,r,center),direction=options.y.greaterThan(.5).select(box.projected,r);return environment.context({getUV:()=>direction,getTextureLevel:()=>level}).mul(options.w.mul(box.fade));};
+      const baseNormal=builder.material.useAnisotropy===true||builder.material.anisotropy>0?bentNormalView:normalView,radiance=radianceFor(baseNormal,roughness),baseBox=gpuProbeVolumeNodes(volume,positionWorld,normalWorld,center),irradiance=environment.context({getUV:()=>normalWorld,getTextureLevel:()=>float(1)}).mul(Math.PI).mul(options.w.mul(baseBox.fade)).mul(options.x);
       builder.context.radiance.addAssign(cache(radiance));builder.context.iblIrradiance.addAssign(cache(irradiance));
-      if(builder.context.lightingModel.clearcoatRadiance)builder.context.lightingModel.clearcoatRadiance.addAssign(radiance);
+      if(builder.context.lightingModel.clearcoatRadiance)builder.context.lightingModel.clearcoatRadiance.addAssign(cache(radianceFor(clearcoatNormalView,clearcoatRoughness)));
     }
   }
-  const state={node:new ProbeEnvironment(),refraction(r,at,rough){const safe=r.abs().max(.000001).mul(vec3(...[r.x,r.y,r.z].map(v=>v.greaterThanEqual(0).select(1,-1)))),t=maximum.sub(at).div(safe).max(minimum.sub(at).div(safe)),box=at.add(r.mul(t.x.min(t.y).min(t.z))).sub(center),direction=options.y.greaterThan(.5).select(box,r),edge=at.sub(minimum).min(maximum.sub(at)),distance=edge.x.min(edge.y).min(edge.z),fade=distance.lessThan(0).select(float(0),options.z.greaterThan(0).select(distance.div(options.z.max(.000001)).clamp(0,1),float(1)));return cache(environment.context({getUV:()=>direction,getTextureLevel:()=>rough})).mul(options.w.mul(fade));},update(p,texture){environment.value=texture;if(p){center.value.fromArray(p.center);minimum.value.fromArray(p.minimum);maximum.value.fromArray(p.maximum);options.value.set(p.p.diffuseIntensity,p.p.boxProjection?1:0,p.p.blendDistance,p.p.intensity);}else options.value.w=0;}};state.update(probe,map);return state;
+  const state={node:new ProbeEnvironment(),refraction(r,at,rough){const box=gpuProbeVolumeNodes(volume,at,r,center),direction=options.y.greaterThan(.5).select(box.projected,r);return cache(environment.context({getUV:()=>direction,getTextureLevel:()=>rough})).mul(options.w.mul(box.fade));},update(p,texture){environment.value=texture;if(p){center.value.fromArray(p.center);minimum.value.fromArray(p.localBox?.minimum||p.minimum);maximum.value.fromArray(p.localBox?.maximum||p.maximum);if(p.localBox){localX.value.fromArray(p.localBox.localX);localY.value.fromArray(p.localBox.localY);localZ.value.fromArray(p.localBox.localZ);faceScale.value.fromArray(p.localBox.faceScale);}else{localX.value.set(1,0,0,0);localY.value.set(0,1,0,0);localZ.value.set(0,0,1,0);faceScale.value.set(1,1,1);}options.value.set(p.p.diffuseIntensity,p.p.boxProjection?1:0,p.p.blendDistance,p.p.intensity);}else options.value.w=0;}};state.update(probe,map);return state;
 }
 import {postProcessSettings} from './post-processing.js';
 import {screenEffectsEnabled,surfaceEffectsEnabled,ambientOcclusionEnabled} from './screen-effects.js';
