@@ -1,5 +1,7 @@
 # HBEngine
 
+AI로 처음 작업할 때는 [빠른 시작](docs/AI_START.md)과 짧은 [현재 인계](CODEX_HANDOFF.md)를 먼저 읽고 `node tools/hb.mjs context "작업명"`으로 관련 소스·현재 원장·검사 후보를 찾아요. 전체 연구/과거 인계를 먼저 읽을 필요 없어요. Codex는 AGENTS.md, Claude는 CLAUDE.md에서 같은 시작 경로를 사용해요.
+
 사용자의 후속 구현 지시에 따라 [누적 작업·검증·설치 순서](docs/WORK_ORDER_051.md)로 진행한다. Unity·Unreal 전체 공식 본문·API 분석 gate는 false이며 일부 구현이나 문서 읽기로 승격하지 않는다. 실제 읽은 범위·미독·전체 분모는 [현재 연구 상태](docs/research/RESEARCH_STATUS.md)에 기록한다. 최신 [머테리얼 함수](docs/MATERIAL_FUNCTIONS_075.md)·[Attributes/Layer/Blend와 인스턴스](docs/MATERIAL_LAYERS_076.md)는 공용 CPU/GLSL/TSL·C++/BP·AI/패키징의 실제 창 검증을 포함한다. [WebGL Float 재사용·인스턴스 레이어 배치](docs/MATERIAL_UNIFORMS_077.md)도 이어서 검증했다.
 
 078은 [머테리얼 함수 추출·Texture2D/StaticBool](docs/MATERIAL_TYPED_FUNCTIONS_078.md)을 기존 편집기/AI/파일 묶음/CPU·GLSL·TSL·C++ 적용에 연결했다. 실제 분리 Editor/GL·GPU release 검증과 원본/SHA·sampler 수·반복 자원 보존이 통과했다. 설치 갱신은 051 선행 작업 순서를 유지한다.

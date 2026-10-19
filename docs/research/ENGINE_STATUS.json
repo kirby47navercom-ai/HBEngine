@@ -1947,20 +1947,24 @@
       "area": "automation",
       "title": "코드/기능 상태 최신 조회",
       "status": "verified",
-      "implemented": "안정 ID 원장·로컬 CLI·HTTP 조회/필터·등록 분모 구분 ·289/293: submit/후속 준비 시간과 C++ sdk fingerprint/files/bytes 실제 빌드 응답 ·295: 종료 후 단일 대기 설치·배포본 SHA 고정·읽기 전용 상태·활성/변경/중복/만료/취소/CLI 검사",
+      "implemented": "안정 ID 원장·로컬 CLI·HTTP 조회/필터·등록 분모 구분 ·289/293: submit/후속 준비 시간과 C++ sdk fingerprint/files/bytes 실제 빌드 응답 ·295: 종료 후 단일 대기 설치·배포본 SHA 고정·읽기 전용 상태·활성/변경/중복/만료/취소/CLI 검사 ·1058: 짧은 Codex/Claude 시작 안내·현재 인계 분리, 오프라인 분야/소스/심볼/최근 근거 탐색, 스키마 부분 출력과 기존 전체 응답 보존",
       "remaining": [],
       "sources": [
         "tools/engine-status.mjs",
         "tools/hb.mjs",
         "tools/serve.mjs",
-        "tools/queued-editor-install.mjs"
+        "tools/queued-editor-install.mjs",
+        "tools/ai-context.mjs",
+        "docs/ai-routes.json",
+        "docs/AI_START.md"
       ],
       "evidence": [
         "docs/ENGINE_STATUS.md",
         "docs/ENGINE_WORK_156.md",
         "docs/research/ENGINE_WORK_289.json",
         "docs/research/ENGINE_WORK_293.json",
-        "docs/research/ENGINE_WORK_295.json"
+        "docs/research/ENGINE_WORK_295.json",
+        "docs/research/AI_BOOTSTRAP_1058.md"
       ]
     },
     {

@@ -7,6 +7,8 @@
     "prepare": "node tools/generate-api.mjs",
     "dev": "node tools/serve.mjs",
     "test": "node tools/check.mjs",
+    "ai:context": "node tools/ai-context.mjs",
+    "test:ai-context": "node tools/check-ai-context.mjs",
     "api:generate": "node tools/generate-api.mjs",
     "api:check": "node tools/generate-api.mjs --check",
     "test:native": "node tools/check-native.mjs",

@@ -53,7 +53,7 @@ await fs.copyFile(path.join(root,'node_modules/three/LICENSE'),path.join(output,
 await fs.copyFile(path.join(root,'node_modules/ws/LICENSE'),path.join(output,'licenses/ws.txt'));
 for(const name of ['rapier2d-compat','rapier3d-compat'])await fs.copyFile(path.join(root,'node_modules/@dimforge',name,'LICENSE'),path.join(output,'licenses',name+'.txt'));
 for(const name of ['prototype','tools','docs','native/include','native/desktop','native/mobile','node_modules/ws','node_modules/three','node_modules/xatlas-wasm','node_modules/@dimforge/rapier2d-compat','node_modules/@dimforge/rapier3d-compat'])await fs.cp(path.join(root,name),path.join(output,name),{recursive:true,filter:file=>!file.includes(path.sep+'screenshots'+path.sep)});
-await fs.copyFile(path.join(root,'package.json'),path.join(output,'package.json'));
+for(const name of ['package.json','AGENTS.md','CLAUDE.md','CODEX_HANDOFF.md'])await fs.copyFile(path.join(root,name),path.join(output,name));
 const {ProjectService}=await import('./project-service.mjs');const sample=path.join(output,'Projects/QuietGarden');await new ProjectService(sample).init(true);
 const {ensureProjectManifest}=await import('./project-manifest.mjs');await ensureProjectManifest(sample,'QuietGarden');
 await fs.copyFile(executable,path.join(root,'HBEngine.exe'));

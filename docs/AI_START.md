@@ -1,0 +1,52 @@
+# HBEngine AI 빠른 시작
+
+Codex·Claude·다른 코딩 AI는 이 문서와 루트 `AGENTS.md`, 현재 `CODEX_HANDOFF.md`부터 읽어요. 처음부터 전체 연구·API 문서를 읽는 절차는 필요 없어요.
+
+## 작업 위치를 먼저 찾아요
+
+저장소 루트에서 실행해요. 편집기·서버·브라우저·패키지 빌드 없이 현재 소스와 확정 원장을 조회해요. 설치된 Node 외에 추가 의존성을 설치하지 않아요.
+
+```powershell
+node tools/hb.mjs context
+node tools/hb.mjs context "블루프린트 변수 드래그"
+node tools/hb.mjs context "머테리얼" --symbol "decodeNormalMap" --limit 6
+node tools/ai-context.mjs "2D 스프라이트 입력"
+```
+
+`context`만 실행하면 짧은 구조·Git 변경·확정 설치·26개 분야 목록을 줘요. 작업명을 넣으면 관련 파일·원장 ID·최근 근거·검사 후보만 추가해요. 정확한 ID(`RND-06`)나 파일명도 검색할 수 있어요. `--symbol`은 대소문자를 구분하는 문자열 검색이며 경로·줄·열·짧은 발췌를 반환해요. 명령은 어느 CWD에서 실행해도 자신의 엔진 루트를 기준으로 조회해요.
+
+Git 정보는 실행할 때 읽고 원장은 `docs/research/ENGINE_STATUS.json`에서 읽어요. 거대한 영구 색인·벡터 DB·감시 프로세스·네트워크 서비스는 만들지 않아요. 캐시·빌드·스크린샷·사용자 프로젝트는 탐색에서 제외해요. 심볼 검색은 생성 헤더와 검사/예제를 제외하고 파일당 2MiB를 넘으면 건너뛴 경로를 보고해요. 최대 12개 결과까지만 반환하며 잘린 결과는 명시해요. 탐색 결과는 원문을 읽는 출발점이에요.
+
+## 코드의 연결
+
+| 바꾸려는 것 | 먼저 볼 소유자 |
+|---|---|
+| 편집·문서·Undo/저장 | `prototype/app.js`, `asset-documents.js`, 에셋별 편집기 |
+| 플레이 월드·BP·서비스 | `prototype/player.js`, `play-world.js`, `blueprint-runtime.js`, `engine-services.js` |
+| C++와 공용 노드 | `native/include/HBEngine/Game.hpp`, `Library.hpp` → `tools/generate-api.mjs` → `prototype/core-api.js`(생성 파일) |
+| C++ 호출 전송·컴파일 | `prototype/native-channel.js`, `native-transport.js`, `tools/native-host.mjs` |
+| 렌더러 선택 | `prototype/game-renderer.js` → WebGL/WebGPU 또는 `native-scene-renderer.js` → `native/desktop/SceneRenderBridge.hpp` → DX11 SDK |
+| 제작 데이터·AI 편집 | JSON 에셋·공용 검증, `tools/editor-automation.mjs`, `prototype/automation.js` |
+| 배포·설치 | `tools/build-game.mjs`, `build-web.mjs`, `build-mobile.mjs`, `install-editor.mjs` |
+
+렌더링을 바꿀 때 `docs/GPU_SHADER_EDITING.md`를 추가로 읽어요. 생성된 `core-api.js`, `RayPrograms.hpp`, `ScreenEffects.hpp`는 직접 수정하지 않아요. 경로의 변경은 `docs/ai-routes.json`과 함께 갱신해요. `npm run test:ai-context`가 경로·CLI·출력 크기·오류 처리를 확인해요.
+
+## 실행 중인 엔진을 다룰 때만
+
+```powershell
+node tools/hb.mjs clients --url http://127.0.0.1:포트
+node tools/hb.mjs schema --section blueprint --url http://127.0.0.1:포트
+node tools/hb.mjs schema --section commands --url http://127.0.0.1:포트
+```
+
+포트는 사용자가 쓰는 엔진 연결 정보로 정해요. 기본 5173을 실행 중인 엔진이라고 가정하지 않아요. `--section`은 점 경로로 필요한 응답만 출력해요. 전체 스키마는 요청하되 AI에게 전달하는 JSON을 줄이며, 서버의 스키마 생성 비용을 줄였다는 뜻은 아니에요. 없는 경로는 오류로 알려요.
+
+문서 수정은 `document.get` → `expectedRevision`/`dryRun` → `document.patch` 또는 여러 문서 transaction → 명시적 저장을 사용해요. 여러 편집기가 있으면 `--client ID`를 지정해요. API의 세부 필드가 필요할 때만 `docs/AI_ENGINE_API.md`의 관련 절을 읽어요.
+
+## 작업과 검증
+
+최신 사용자 지시 → 현재 인계 → 관련 원장 행/소스 순서로 범위를 정해요. `verified`는 그 행의 적힌 범위만 검증했다는 뜻이에요. 전체 Unreal/Unity 구현 완료나 전체 문서 분석 완료라는 뜻이 아니에요. 원장과 미커밋 소스, 사용자 설치본의 상태를 구분해요.
+
+기존 검사 증거는 재사용하고 여러 변경을 구현한 뒤 영향을 받는 검사만 묶어서 실행해요. `checkCandidates`는 파일명 기준 후보이며 실행 인자·비용·격리 여부는 해당 도구에서 확인해요. 성능 수치는 장치·경로·측정 범위 없이 FPS 개선으로 해석하지 않아요.
+
+사용자 게임·`%LOCALAPPDATA%/HBEngine/User`·실행 중인 창/서버는 검사에 사용하거나 종료하지 않아요. 업데이트 요청 없이 설치본을 바꾸지 않아요. Versions는 한 개 유지하되 실행 중인 버전은 보호해요. 작업 종료 시 현재 인계만 짧게 갱신하고 긴 실행 이력은 증거 문서로 연결해요.

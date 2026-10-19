@@ -1,3 +1,7 @@
+# 처음 연결하는 AI
+
+[빠른 시작](AI_START.md)을 먼저 읽고 `node tools/hb.mjs context "작업명"`으로 필요한 소스·근거·검사 후보를 찾아요. 이 문서 전체를 시작 전 필수로 읽지 않아요. 실행 중인 엔진의 스키마도 `node tools/hb.mjs schema --section blueprint --url URL`처럼 필요한 부분만 출력할 수 있어요.
+
 # 165 — 새 제작 분야
 
 2026-10-19: `/api/schema`의 `raySurfaceHistory.normalPose`, `uvFootprint.triangleCoordinates`, `opticalSpread.pixelProjection/reflection`은 상대 기하·조건별 노멀 이력·렌즈 픽셀 기저·현재/이전 로브 footprint의 선택과 비용을 제공해요. 씬/그래프 설정과 C++/BP ABI는 유지해요. [렌더링 수식 편집 규칙](GPU_SHADER_EDITING.md), [기하 이력](research/RAY_HISTORY_SCALE_654.md), [렌즈](research/LENS_PIXEL_FOOTPRINT_664.md), [거친 반사](research/ROUGH_REFLECTION_FOOTPRINT_669.md)를 함께 참고해요.

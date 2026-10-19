@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "passed": true,
+  "date": "2026-10-19T17:22:27.658Z",
+  "topics": 26,
+  "measurements": [
+    {
+      "label": "offline bootstrap from unrelated CWD",
+      "processMs": 269.08,
+      "outputBytes": 6578
+    },
+    {
+      "label": "Korean blueprint task",
+      "processMs": 224.82,
+      "outputBytes": 8628
+    },
+    {
+      "label": "2D task",
+      "processMs": 219.34,
+      "outputBytes": 8959
+    },
+    {
+      "label": "exact ledger ID",
+      "processMs": 208.66,
+      "outputBytes": 8166
+    },
+    {
+      "label": "literal source lookup",
+      "processMs": 321.36,
+      "outputBytes": 10118
+    },
+    {
+      "label": "unknown task bounded output",
+      "processMs": 209.53,
+      "outputBytes": 6761
+    },
+    {
+      "label": "absent literal",
+      "processMs": 432.84,
+      "outputBytes": 7072
+    },
+    {
+      "label": "selected live schema via isolated HTTP stub",
+      "processMs": 83.27,
+      "outputBytes": 106
+    },
+    {
+      "label": "legacy full schema unchanged",
+      "processMs": 81.1,
+      "outputBytes": 237
+    }
+  ],
+  "documentBytes": {
+    "AGENTS.md": 5942,
+    "docs/AI_START.md": 5009,
+    "CODEX_HANDOFF.md": 2912,
+    "docs/archive/CODEX_HANDOFF_THROUGH_1049.md": 77515,
+    "docs/AI_ENGINE_API.md": 91313,
+    "docs/ENGINE_STATUS.md": 133193
+  },
+  "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요.",
+  "limits": [
+    "처리 시간은 이 PC의 관찰이며 모델의 이해 시간·정답률을 측정하지 않아요.",
+    "사용자 설치본/렌더링/모바일/실제 AI 클라이언트 세션은 실행하지 않아요."
+  ],
+  "archive": {
+    "original": "7fb9d99:CODEX_HANDOFF.md",
+    "preserved": "docs/archive/CODEX_HANDOFF_THROUGH_1049.md",
+    "sha256": "933802cdb2c4428a96ef9f9543f69c3637cf234205db0b30f159c6fd001cf83b",
+    "byteIdentical": true
+  },
+  "testHarnessNotes": [
+    "추가 오류 처리 확인 중 OS가 fetch 금지 포트 6679를 할당해 격리 HTTP stub 검사가 한 번 실패했어요. 검사용 서버만 다른 자동 포트로 재연결하도록 고친 뒤 최종 통과했어요."
+  ]
+}
