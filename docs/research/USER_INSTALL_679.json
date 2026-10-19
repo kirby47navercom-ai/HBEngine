@@ -1,0 +1,229 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "604547ee00251bae66942211b868959aca6903e5",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\166ecc1b126c5a58",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\166ecc1b126c5a58\\HBEngine.exe",
+  "bundleHash": "166ecc1b126c5a58b705a8b88a1927f6911f335de06addc4eec674599812f2b3",
+  "files": 3487,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "604547ee00251bae66942211b868959aca6903e5",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\166ecc1b126c5a58",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\166ecc1b126c5a58\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\166ecc1b126c5a58\\HBEngine.exe",
+    "bundleHash": "166ecc1b126c5a58b705a8b88a1927f6911f335de06addc4eec674599812f2b3",
+    "files": 3487,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3473,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\d39948668c05956a",
+          "bytes": 180489539,
+          "manifestSHA256": "8a14718911caab0a3bd66fefad3df60c2263825953be65426d9af6ca03c4c5b1"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-19T02:58:33.1624681Z",
+      "bytes": 180489539,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "166ecc1b126c5a58"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "runtimeOwnersVerified": 162,
+    "repositoryOnlyTestSourcesVerified": 6,
+    "nativePlayerSHA256": "e9b0c3d177498ad497e17634e7a71ac7c4333cc97e601a275b6414dd00aa0997",
+    "installedGates": [
+      {
+        "path": "native/build/lens-scale-662-PKl3Pi/acceptance.json",
+        "sha256": "316580087411b49bf561c6b68eb0689d31bc5ca09393fa054d344364bb9206c9",
+        "scope": "Actual complete GL/WebGPU curved+temporal+lens auxiliary guide; independently intersected mirror plane/front-wall and camera/lens rays predict9 pixel radii at three physical scales. Original4e-5; scalar helper alone is not the acceptance. No global curved inverse or participating-medium claim.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\166ecc1b126c5a58\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/rough-footprint-665-VsMBe1/acceptance.json",
+        "sha256": "69f1673bb9444b06c35016b66dd77742d3db1ac46e8e9d947c601f87a64aa7b5",
+        "scope": "Actual full GL/WebGPU guide instrumented only at return, base metal and clearcoat-only reflection. Independent camera/mirror/wall widths use the existing radiance roughness²/2 heuristic with distinct committed/current roughness inside existing history tolerance. Original4e-5. This is local scalar rough transport, not full anisotropic or participating-medium transport.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\166ecc1b126c5a58\\HBEngine.exe"
+        ]
+      },
+      {
+        "path": "native/build/native-preparation-window-496-EJDC4B/acceptance.json",
+        "sha256": "87b6233ef0fee028536106d527d3e7b2de22dfc0fcf90fbacb13a6d7aed904f1",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim.",
+        "args": [
+          "--fixture",
+          "native/build/native-scene-window-VsRtt0/DirectX 장면 검사",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\166ecc1b126c5a58\\HBEngine.exe",
+          "--mip-controls"
+        ]
+      }
+    ],
+    "manifestVerifiedFiles": 3487,
+    "versions": [
+      "166ecc1b126c5a58"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-679-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "path": "native/build/pixel-footprint-659-ibTogO/acceptance.json",
+        "sha256": "dff62da6713d04ad36cab3f3a630b01ff5f62aba00d3e7b7582da1688940cca8",
+        "scope": "Actual GL/WebGPU/D3D11 production lens pixel-coordinate solve, dynamic float input table and independently authored projected displacement; 30 rotated/mirrored/sheared/zero/near-parallel frames across1e-10..1e10. Original4e-5 and relative collinearity rejection retained. Full lens guide and games are separate gates."
+      },
+      {
+        "path": "native/build/lens-scale-662-7ARCWF/acceptance.json",
+        "sha256": "2617f406c1ab323677074a64e56310a639d2c99d621722649e20c1fe3147d6eb",
+        "scope": "Actual complete GL/WebGPU curved+temporal+lens auxiliary guide; independently intersected mirror plane/front-wall and camera/lens rays predict9 pixel radii at three physical scales. Original4e-5; scalar helper alone is not the acceptance. No global curved inverse or participating-medium claim."
+      },
+      {
+        "path": "native/build/lens-scale-663-native-am3WkV/acceptance.json",
+        "sha256": "33863e4f24f1e852aa67f9726eed30e03c07ae19610d14eccc850d39bd7ac92e",
+        "scope": "Actual specialized D3D11 full curved/temporal/lens auxiliary guide with nine independently predicted mirror/front-wall pixel radii at each scale1e-6/1/1e6. Original4e-5 and existing32pixel cap. No global inverse/rough-medium completion claim."
+      },
+      {
+        "path": "native/build/rough-footprint-665-j7DIOl/acceptance.json",
+        "sha256": "31ca8d56bc66a27125677886864b25bfebca48c85d00dad0fcc1347dff806b61",
+        "scope": "Actual full GL/WebGPU guide instrumented only at return, base metal and clearcoat-only reflection. Independent camera/mirror/wall widths use the existing radiance roughness²/2 heuristic with distinct committed/current roughness inside existing history tolerance. Original4e-5. This is local scalar rough transport, not full anisotropic or participating-medium transport."
+      },
+      {
+        "path": "native/build/rough-footprint-667-native-3rncBL/acceptance.json",
+        "sha256": "7e143acd614d16b61ed7ee5934385054df9bffe3e062a30ac4be0884ca68d112",
+        "scope": "Actual full D3D11 current/committed base/coat scalar rough footprint versus independent mirror/camera/wall widths with separate old roughness; specialized or generic mode indicated, original4e-5. No full rough-compound/medium claim."
+      },
+      {
+        "path": "native/build/rough-footprint-667-native-17vmFI/acceptance.json",
+        "sha256": "4c9086730f76fa55652d9f07c4646e91b21c3dd6430689ac01940b9be0f04d7f",
+        "scope": "Actual full D3D11 current/committed base/coat scalar rough footprint versus independent mirror/camera/wall widths with separate old roughness; specialized or generic mode indicated, original4e-5. No full rough-compound/medium claim."
+      },
+      {
+        "path": "native/build/optical-guide-375-mlsVZf/acceptance.json",
+        "sha256": "685fc9005ed64a4c5bf2ab09e7195430275f6f3d58eaa18c86e7fb285f9f6989",
+        "scope": "Actual full auxiliary guide, test-only output instrumentation. Independent camera/Snell width reference and committed/current normal-map mip equality; old unbent-cone sampling must differ. Local thin transmission; no global curved inverse claim."
+      },
+      {
+        "path": "native/build/optical-guide-375-native-fGQWCx/acceptance.json",
+        "sha256": "a95ba3d0d1142db582675694313187561f265ef16b0273449101eb809b60bde2",
+        "scope": "Generated D3D full guide with test-only outputs; independent camera/Snell widths and actual current/previous normal-map mip equality versus unbent-cone control."
+      },
+      {
+        "path": "native/build/guide-history-358-kRc8iy/acceptance.json",
+        "sha256": "0f075e3e13bcc89280a49b1cea3805f9f4623e585fe1c4357d256f472ab13d2d",
+        "scope": "Actual full GL and WebGPU auxiliary guide shaders; real time-driven physical/coat roughness or anisotropy/rotation changes, committed geometry/normal/mip context, history rejection and restoration. No fault-injected production helper or forced feature define."
+      },
+      {
+        "path": "native/build/normal-scale-645-hgM5Qy/acceptance.json",
+        "sha256": "bbf5fa405cb1ecb6211284e8b7f0c95c8ed2f5c9dcb67b76a7231abfd04698ae",
+        "scope": "Actual GL/WebGPU committed geometric/smooth/base/coat normals and both temporal-guide validity gates at scales1e-6/1/1e6; existing4e-5 tolerance."
+      },
+      {
+        "path": "native/build/triangle-coordinates-643-6AP3KS/acceptance.json",
+        "sha256": "eac7e9c0c9113d8446908b9cc8aa837f07f1cd1778b57e253cf002674fbe3674",
+        "scope": "Actual GL/WebGPU barycentric/base+offset and UV gradients, current/committed geometry. Independent authored oracle: weights(.1,.2,.7) and analytic inverse shear mapping, not backend self-comparison. No triangle visibility claim."
+      },
+      {
+        "path": "native/build/ray-basis675-comparison.json",
+        "sha256": "2d7eb3e0e2394d7b24089fe41f5e7a85b9d064f1cbe61ef13479968849c7c18f",
+        "scope": "Same IR program keys; fewer generated WGSL source call sites and bytes in a representative committed base+coat normal graph. This is not a measured compile-time/FPS gain. Subsequent changes are TSL-only; exact current generated native shader body is present in Player668, avoiding an unchanged C++ rebuild. Actual GPU numerical gates are recorded separately."
+      }
+    ],
+    "scope": "679 전체명세/소유162SHA·설치GL/WebGPU 독립 렌즈/현재이전 거친 반사·새 실제Complex141 C++/BP·mip 파라미터/비동기 준비·해제·User읽기SHA/연결/Versions1. 누적 작업 계속."
+  },
+  "wrapperRecovery": {
+    "initialError": "ReferenceError: ssert is not defined at install679.mjs:12:5",
+    "generatorMetadataError": "prior is not defined after writing resume script",
+    "source": "observed tool-output summary; not a preserved raw exception file",
+    "action": "corrected wrapper and resumed gates against the already switched installation using the original persisted pre-install profile SHA; no second install",
+    "completed": true
+  },
+  "visualScope": "Full guide numerical and CPP/BP lifecycle gates passed. CDP prepared.png was black and is not native image proof; follow up with hbPlayerDebug.capture/hbCapture and explicitly enabled temporal/lens guides.",
+  "nativeCache": {
+    "bytes": 291018700,
+    "files": 627,
+    "leases": 0
+  },
+  "dependencyPlans": {
+    "bytes": 1426649,
+    "files": 1
+  },
+  "removedTestExecutables": [
+    {
+      "path": "native/build/lens-scale-663-native-am3WkV/probe.exe",
+      "bytes": 1089580,
+      "sha256": "03d803efdf8a09b7d9fa2f37a6f463865017cc3ba3c70ce9c261a4659113c544"
+    },
+    {
+      "path": "native/build/lens-scale-663-native-lj6Xt5/probe.exe",
+      "bytes": 1089580,
+      "sha256": "e2f47934329f7d5d2fbe0062b0aac83aaed743e01d29b5ca8987ce16f98a96c1"
+    },
+    {
+      "path": "native/build/optical-guide-375-native-fGQWCx/probe.exe",
+      "bytes": 1089580,
+      "sha256": "70464812495f032d882e2f72dcd622f6cc7558c6722b2a37d324c549d1f4f7d7"
+    },
+    {
+      "path": "native/build/optical-guide-375-native-HZda63/probe.exe",
+      "bytes": 1089580,
+      "sha256": "b1959314e3a664e7c48e212b99400cac873ccb8cdd46f4b86f0dab19b0943b33"
+    },
+    {
+      "path": "native/build/pixel-footprint-659-2I3kQN/probe.exe",
+      "bytes": 1089580,
+      "sha256": "4e151f40d11b60414cfedec002fb4a17abb267d5fc3a8358c541ea4203b1a58f"
+    },
+    {
+      "path": "native/build/pixel-footprint-659-ibTogO/probe.exe",
+      "bytes": 1089580,
+      "sha256": "1ca639b659da077312846800a0d2857d377267cbfd1d2f22a69af4b1e1f408de"
+    },
+    {
+      "path": "native/build/pixel-footprint-659-X1HYlK/probe.exe",
+      "bytes": 1089580,
+      "sha256": "263d5c307d770c38f05bf64c86af900bbb3ec6d22ef58423b62fbdd637bcfc23"
+    },
+    {
+      "path": "native/build/rough-footprint-667-native-17vmFI/probe.exe",
+      "bytes": 1089580,
+      "sha256": "60e36b7472452c8e0814cd232d9a9d035ce9e8c085ce024d2698d817dda4567e"
+    },
+    {
+      "path": "native/build/rough-footprint-667-native-3rncBL/probe.exe",
+      "bytes": 1089580,
+      "sha256": "968c1ff516ede846350ce791d20211a228d1f6e5887c787873d4327d401a09ba"
+    }
+  ],
+  "scope": "679 전체명세/소유162SHA·설치GL/WebGPU 독립 렌즈/현재이전 거친 반사·새 실제Complex141 C++/BP·mip 파라미터/비동기 준비·해제·User읽기SHA/연결/Versions1. 누적 작업 계속."
+}

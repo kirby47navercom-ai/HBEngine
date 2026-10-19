@@ -257,6 +257,36 @@
       "path": "native/build/ray-basis675-comparison.json",
       "sha256": "2d7eb3e0e2394d7b24089fe41f5e7a85b9d064f1cbe61ef13479968849c7c18f",
       "scope": "Same IR program keys; fewer generated WGSL source call sites and bytes in a representative committed base+coat normal graph. This is not a measured compile-time/FPS gain. Subsequent changes are TSL-only; exact current generated native shader body is present in Player668, avoiding an unchanged C++ rebuild. Actual GPU numerical gates are recorded separately."
+    },
+    {
+      "path": "native/build/lens-scale-662-PKl3Pi/acceptance.json",
+      "sha256": "316580087411b49bf561c6b68eb0689d31bc5ca09393fa054d344364bb9206c9",
+      "scope": "Actual complete GL/WebGPU curved+temporal+lens auxiliary guide; independently intersected mirror plane/front-wall and camera/lens rays predict9 pixel radii at three physical scales. Original4e-5; scalar helper alone is not the acceptance. No global curved inverse or participating-medium claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\166ecc1b126c5a58\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/rough-footprint-665-VsMBe1/acceptance.json",
+      "sha256": "69f1673bb9444b06c35016b66dd77742d3db1ac46e8e9d947c601f87a64aa7b5",
+      "scope": "Actual full GL/WebGPU guide instrumented only at return, base metal and clearcoat-only reflection. Independent camera/mirror/wall widths use the existing radiance roughness²/2 heuristic with distinct committed/current roughness inside existing history tolerance. Original4e-5. This is local scalar rough transport, not full anisotropic or participating-medium transport.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\166ecc1b126c5a58\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/native-preparation-window-496-EJDC4B/acceptance.json",
+      "sha256": "87b6233ef0fee028536106d527d3e7b2de22dfc0fcf90fbacb13a6d7aed904f1",
+      "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim.",
+      "args": [
+        "--fixture",
+        "native/build/native-scene-window-VsRtt0/DirectX 장면 검사",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\166ecc1b126c5a58\\HBEngine.exe",
+        "--mip-controls"
+      ]
     }
   ],
   "observations": [
@@ -327,7 +357,7 @@
     "scope": "Same IR program keys; fewer generated WGSL source call sites and bytes in a representative committed base+coat normal graph. This is not a measured compile-time/FPS gain. Subsequent changes are TSL-only; exact current generated native shader body is present in Player668, avoiding an unchanged C++ rebuild. Actual GPU numerical gates are recorded separately."
   },
   "nativeBuild": "Player668은 렌즈/거친 반사 HLSL 이후 빌드. 뒤의 TSL만 수정했고 현재 생성 네이티브 본문이 바이너리에 정확히 있어 불필요한 C++ 재빌드 생략.",
-  "installationPending": true,
+  "installationPending": false,
   "currentInstallation": "docs/research/USER_INSTALL_657.json",
   "remaining": [
     "전역 변경 투명 경로/곡면 역대응과 노멀 미분",
@@ -335,5 +365,6 @@
     "실제 복잡한 GL/FXC 초기 지연·GPU 필터/장치 생성 비용; WGSL 정적 크기 감소를 시간/FPS 개선으로 계산하지 않음",
     "누적 엔진 원장 다른 분야·실기기/Mac 필요 검증"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_679.json"
 }

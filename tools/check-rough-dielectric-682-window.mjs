@@ -1,0 +1,21 @@
+import fs from 'node:fs/promises';import path from 'node:path';import assert from 'node:assert/strict';
+import {roughDielectricFixture682,roughDielectricProbe682,roughDielectricPixels682,expectedRoughDielectric682} from './rough-dielectric-fixture-682.mjs';
+import {opticalGuideGL375,opticalGuideGPU375} from './optical-guide-fixture-375.mjs';import {guideHistoryProbe358} from './guide-history-probe-358.mjs';import {visibilityProbe369} from './previous-visibility-fixture-369.mjs';import {createProject} from './project-manifest.mjs';import {editorWindowProbe} from './editor-window-probe.mjs';import {activeInstalledVersions} from './install-editor.mjs';import {retainTestEvidence,pruneTestArtifacts} from './test-artifacts.mjs';
+assert.deepEqual(await activeInstalledVersions('C:/Users/kirby/HBEngine'),[]);const work=await fs.mkdtemp(path.resolve('native/build/rough-dielectric-682-'));retainTestEvidence(work);let probe;
+try{
+ const project=await createProject('RoughDielectric682',work,'2d');probe=await editorWindowProbe({work,project:project.file});
+ const gpu=opticalGuideGPU375(await fs.readFile('prototype/path-guide-gpu.js','utf8'),'width').replace('width,oldWidth,cone.y,oldSpread','width,oldWidth,cone.y,previousValid.select(oldSpread,-1)');
+ const absoluteGPU=gpu.replaceAll("from './","from '"+probe.base+'/prototype/');
+ await probe.evaluate('(async()=>{window.roughDielectric682=await import("data:text/javascript;charset=utf-8,"+encodeURIComponent('+JSON.stringify(absoluteGPU)+'));return true;})()');
+ const rows=[];
+ for(const config of [{roughOn:true},{roughOn:false},{roughOn:true,bias:.04},{roughOn:true,ior:1},{roughOn:true,bias:.0498,rate:.001,shift:.4}]){
+  const packet=roughDielectricFixture682(config);await fs.writeFile(path.join(work,'packet'+rows.length+'.json'),JSON.stringify(packet));
+  const instrument=source=>opticalGuideGL375(source,'width').replaceAll('width,oldWidth,cone.y,oldSpread','width,oldWidth,cone.y,previousValid?oldSpread:-1.0');
+  const source=roughDielectricProbe682(visibilityProbe369(guideHistoryProbe358(packet,true),false),packet).replace("await import('/prototype/path-guide-gpu.js')",'window.roughDielectric682').replace('quad=new FullScreenQuad(pass.denoiser.materials[2]);','pass.denoiser.materials[2].fragmentShader=('+instrument.toString().replace('opticalGuideGL375', '('+opticalGuideGL375.toString()+')')+')(pass.denoiser.materials[2].fragmentShader);quad=new FullScreenQuad(pass.denoiser.materials[2]);');
+  for(const result of await probe.evaluate(source)){
+   if(result.shader){await fs.writeFile(path.join(work,'case'+rows.length+'.wgsl'),result.shader);delete result.shader;}
+   const samples=roughDielectricPixels682.map(pixel=>{const value=result.rows[0].slice((pixel.y*16+pixel.x)*4,(pixel.y*16+pixel.x)*4+4),expected=expectedRoughDielectric682(result.backend,pixel.uv,packet);return {...pixel,value,expected,error:Math.max(...value.map((v,i)=>Math.abs(v-expected.value[i])))};});rows.push({config,backend:result.backend,samples});await fs.writeFile(path.join(work,'observed.json'),JSON.stringify(rows,null,2));
+  }
+ }
+ const exit=await probe.finish();probe=null;const proof={passed:rows.every(r=>r.samples.every(s=>s.value.every(Number.isFinite)&&s.error<4e-5)),rows,exit,scope:'Full GL/WebGPU guide; independent camera/Snell or radiance roughness-squared cone oracle, static spatial material with distinct committed/current inputs, disabled/low-roughness/equal-IOR compatibility and threshold-change rejection. Local scalar proxy only, no stochastic GGX correspondence or anisotropic/medium completion.'};await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify(proof,null,2));assert(proof.passed,JSON.stringify(rows));console.log(JSON.stringify({passed:true,work,samples:rows.length*3,maxError:Math.max(...rows.flatMap(r=>r.samples.map(s=>s.error)))}));
+}catch(error){await fs.writeFile(path.join(work,'failure.json'),JSON.stringify({error:error.stack,diagnostics:await probe?.diagnostics()},null,2));throw error;}finally{await probe?.stop();await pruneTestArtifacts(work);}
