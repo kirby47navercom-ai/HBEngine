@@ -267,6 +267,24 @@
       "path": "native/build/volume-mips-531-Tsf3xC/acceptance.json",
       "sha256": "83202989bd9ad3f4797cc873c1c80ec5a538fdc4271fbe5d89cfcfde37c93299",
       "scope": "Actual WebGPU RGBA8/sRGB volume compute mips, odd dimensions, depth-only17 chain, independent linear global mean, no validation errors, idle no regeneration, temporary handles destroyed; existing quantized .02 tolerance."
+    },
+    {
+      "path": "native/build/authored-mips-694-VvqUJH/acceptance.json",
+      "sha256": "faef8ee3ef28c8fe1cd84fefd483850994d78e2d132833bb734c52c10aa21d96",
+      "scope": "Actual production graph loaders/GLSL/TSL material renderers, all authored mip levels and array/volume layers, independent SVG colors, no automatic volume generation. Human mip selector/slice count plus public AI view, non-destructive revision, undo and save; native/player packaging separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\d6a3093567e86132\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/authored-mips-696-player-dFFpcB/acceptance.json",
+      "sha256": "975cd28b3bf3342773c92d2f58ab70dd2237a7f15ab5dc7854209bf95e02946a",
+      "scope": "Fresh owned packaged native C++/Blueprint game, shared descriptor dependency collection, actual D3D image for all3 authored mip levels, public C++ LOD/typed texture swap, keyboard Blueprint restoration and idle upload stability. No user assets/profile or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\d6a3093567e86132\\HBEngine.exe"
+      ]
     }
   ],
   "observations": [
@@ -295,7 +313,7 @@
     "bodyFoundInPlayer": true,
     "layeredMipGuardFoundInPlayer": true
   },
-  "installationPending": true,
+  "installationPending": false,
   "currentInstallation": "docs/research/USER_INSTALL_689.json",
   "remaining": [
     "전역 변경 투명 경로/곡면 역대응과 노멀 미분",
@@ -304,5 +322,6 @@
     "누적 엔진 원장 다른 분야·실기기/Mac 필요 검증",
     "배열/볼륨 스트리밍·개별 레벨 부분 갱신·사용자 지정 큐브/2D 밉·압축 컨테이너/플랫폼 쿠킹과 MAT03 나머지"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_702.json"
 }

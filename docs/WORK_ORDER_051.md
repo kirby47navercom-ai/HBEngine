@@ -706,3 +706,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 689 설치 2e756415918c8f40/3494전체명세/168소유SHA/6C++·User10385읽기전후SHA/연결/Versions1. 설치682yGf0Nx GL/GPU30표본·681TvMSy8 SDK/C++/BP fullguide10ready/hbCapture90104밝은픽셀 통과. 이전설치180591789B와소유검사exe3268740B 정리. 다음 배열/볼륨 사용자지정 밉의 제작·실행 연결과 누적 렌더링/엔진 작업을 이어간다.
 
 691–699 source 73793ecc02f69b274d7d2e152bf3b504990c35a3: 배열/볼륨 사용자 지정 밉을 제작 UI/Undo/보기·공용 로더·3API 업로드·광선/베이크·버전 캐시/참조/패키징으로 연결했다. 693 CPU,694Cfp4NO28표본/사람·AI,695wbYaT014표본/10거부,696Qe0jxQ 실제 C++/BP/LOD/typed swap/idle,697OJJwrD+U8y6js 이전기하/시간/노멀(차이0),699한글redirect와460/461/531 회귀 통과. Unity 두API 본문/예제 범위를 기록하고 전체분석 gate는 승격하지 않았다. Player698 새빌드. ENGINE_WORK700 정본으로 설치 후 다음 엔진 작업을 이어간다.
+
+702 설치 d6a3093567e86132/3506전체명세/180소유SHA/7C++·User10385읽기전후SHA/연결/Versions1. 설치694VvqUJH 실제GL/TSL28표본/밉UI/Undo와설치SDK/C++/BP696dFFpcB LOD3·타입교체·키복원·idle통과. 이전설치180670450B와소유검사exe6896842B정리. 다음 사용자지정 큐브/2D 밉·스트리밍과 누적 렌더링/엔진 목표를 계속한다.
