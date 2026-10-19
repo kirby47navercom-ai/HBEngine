@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "89e7903c73379e7529249fe021298e4b72294ab5",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3fd112869f7d1713",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\3fd112869f7d1713\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\3fd112869f7d1713\\HBEngine.exe",
+  "bundleHash": "3fd112869f7d171315adacf7880e6419ecb7bc2fdca4feb04273e8bac4d7d506",
+  "files": 3671,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3666,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3cc1a911d4cc8463",
+        "bytes": 182376650,
+        "manifestSHA256": "e0f896252c670f967d7c4e124893c32e1d96989a979e005dc816c6ca5a40f8ea"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-19T13:24:15.3774876Z",
+    "bytes": 182376650,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "3fd112869f7d1713"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 345,
+  "repositoryOnlyTestSourcesVerified": 9,
+  "nativePlayerSHA256": "b8833656c68cdec3620243b080459a4d9575d93303b0602da23a6c1e01fcb6cd",
+  "installedGates": [
+    {
+      "path": "native/build/distance-upgrades-912-5v5X0D/acceptance.json",
+      "sha256": "535c86409e179122b8ba1811c97363750d5f11d041b4e67b3c02ac2fa515cb4e",
+      "scope": "Actual worker/scene cached quality promotion after neighbor removal, old field retained during build, rigid pose reuse without volume writes, both payloads+reservation within budget, one upgrade at a time, two atomic replacements55/15, static40frames no new jobs, missing geometry priority over optional upgrades, capacity hysteresis and dispose cancellation/idle0. No camera-driven clipmap, whole process heap or new renderer math claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3fd112869f7d1713\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-resolution-881-iTolQL/acceptance.json",
+      "sha256": "cdfc5f336c166c6c88c30bf2db1dab3d0b481774b60c978503f11dc7b358af1c",
+      "scope": "Actual worker/scene per-bake resolution fitting: three distinct general fields55/15/8 plus exact zero-volume box inside1MB, static reuse, typed budget metadata, zero remaining local reserve still admits exact primitive, deferred generic field retries after another owner geometry leaves, unload/idle0. No camera LOD/clipmap or whole RAM/VRAM claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3fd112869f7d1713\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-editor-822-sJTUOK/acceptance.json",
+      "sha256": "3ce7c1da58c0083cd896f904f4cf3b58b32e0879a1cd1e4f97567edd44eac4f6",
+      "scope": "Actual hidden owned editor: human AO mode select reveals compact distance-field options, resolution edit/Undo/Redo, same document CAS budget patch, stale revision rejected, saved file and discoverable immutable API contract. No user profiles/projects used.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3fd112869f7d1713\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-818-player-SvPIZF/acceptance.json",
+      "sha256": "71321878488a0dd07757ee6655bb1c3795ac75dd46e4981be3a73a53789c0a16",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, optional cached quality promotion via SDK visibility change, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim.",
+      "args": [
+        "--quality-upgrades",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3fd112869f7d1713\\HBEngine.exe"
+      ]
+    }
+  ],
+  "manifestVerifiedFiles": 3671,
+  "versions": [
+    "3fd112869f7d1713"
+  ],
+  "profile": {
+    "filesBefore": 10385,
+    "filesAfter": 10385,
+    "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-918-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/cached-quality-regressions-913.json",
+      "sha256": "27665c1b2d6e416b758bf09eaad04d4fcaf526841eaf9d6f2f4c68da7be98fa6"
+    },
+    {
+      "path": "native/build/distance-upgrades-912-ALuwAg/acceptance.json",
+      "sha256": "535c86409e179122b8ba1811c97363750d5f11d041b4e67b3c02ac2fa515cb4e",
+      "scope": "Actual worker/scene cached quality promotion after neighbor removal, old field retained during build, rigid pose reuse without volume writes, both payloads+reservation within budget, one upgrade at a time, two atomic replacements55/15, static40frames no new jobs, missing geometry priority over optional upgrades, capacity hysteresis and dispose cancellation/idle0. No camera-driven clipmap, whole process heap or new renderer math claim."
+    },
+    {
+      "path": "native/build/distance-resolution-881-OaQXDW/acceptance.json",
+      "sha256": "2374a731b84ed95a26b51cc35e21f1ca0dce4aecb250008a16249eeaa94d3988",
+      "scope": "Actual worker/scene per-bake resolution fitting: three distinct general fields55/15/8 plus exact zero-volume box inside1MB, static reuse, typed budget metadata, zero remaining local reserve still admits exact primitive, deferred generic field retries after another owner geometry leaves, unload/idle0. No camera LOD/clipmap or whole RAM/VRAM claim."
+    },
+    {
+      "path": "native/build/distance-field-editor-822-n2jUML/acceptance.json",
+      "sha256": "3384f56983bdc3c85e8f3ededd9f07deca0b4b6d95e40b1ca6199ae237ad8bc7",
+      "scope": "Actual hidden owned editor: human AO mode select reveals compact distance-field options, resolution edit/Undo/Redo, same document CAS budget patch, stale revision rejected, saved file and discoverable immutable API contract. No user profiles/projects used."
+    },
+    {
+      "path": "native/build/distance-field-818-player-d8JGTA/acceptance.json",
+      "sha256": "184ba4a119dd4f482ad0973bc47f8a285e86120acde0f8ba87e14cdebbe43b32",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, optional cached quality promotion via SDK visibility change, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/distance-field-818-player-d8JGTA/acceptance.json",
+      "sha256": "184ba4a119dd4f482ad0973bc47f8a285e86120acde0f8ba87e14cdebbe43b32",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, optional cached quality promotion via SDK visibility change, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim."
+    }
+  ],
+  "scope": "918 전체3671파일/345소유SHA/CPP9·기존캐시품질/이중예산/재시도/취소·제작/실제D3D화면·실제SDK CPP/BP adaptive게임·읽기전후User SHA·연결·Versions1;누적작업계속",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

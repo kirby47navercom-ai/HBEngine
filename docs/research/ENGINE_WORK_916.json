@@ -402,6 +402,43 @@
       "path": "native/build/distance-field-818-player-d8JGTA/acceptance.json",
       "sha256": "184ba4a119dd4f482ad0973bc47f8a285e86120acde0f8ba87e14cdebbe43b32",
       "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, optional cached quality promotion via SDK visibility change, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim."
+    },
+    {
+      "path": "native/build/distance-upgrades-912-5v5X0D/acceptance.json",
+      "sha256": "535c86409e179122b8ba1811c97363750d5f11d041b4e67b3c02ac2fa515cb4e",
+      "scope": "Actual worker/scene cached quality promotion after neighbor removal, old field retained during build, rigid pose reuse without volume writes, both payloads+reservation within budget, one upgrade at a time, two atomic replacements55/15, static40frames no new jobs, missing geometry priority over optional upgrades, capacity hysteresis and dispose cancellation/idle0. No camera-driven clipmap, whole process heap or new renderer math claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3fd112869f7d1713\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-resolution-881-iTolQL/acceptance.json",
+      "sha256": "cdfc5f336c166c6c88c30bf2db1dab3d0b481774b60c978503f11dc7b358af1c",
+      "scope": "Actual worker/scene per-bake resolution fitting: three distinct general fields55/15/8 plus exact zero-volume box inside1MB, static reuse, typed budget metadata, zero remaining local reserve still admits exact primitive, deferred generic field retries after another owner geometry leaves, unload/idle0. No camera LOD/clipmap or whole RAM/VRAM claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3fd112869f7d1713\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-editor-822-sJTUOK/acceptance.json",
+      "sha256": "3ce7c1da58c0083cd896f904f4cf3b58b32e0879a1cd1e4f97567edd44eac4f6",
+      "scope": "Actual hidden owned editor: human AO mode select reveals compact distance-field options, resolution edit/Undo/Redo, same document CAS budget patch, stale revision rejected, saved file and discoverable immutable API contract. No user profiles/projects used.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3fd112869f7d1713\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-field-818-player-SvPIZF/acceptance.json",
+      "sha256": "71321878488a0dd07757ee6655bb1c3795ac75dd46e4981be3a73a53789c0a16",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, optional cached quality promotion via SDK visibility change, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim.",
+      "args": [
+        "--quality-upgrades",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3fd112869f7d1713\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -409,6 +446,16 @@
       "path": "native/build/distance-field-818-player-d8JGTA/acceptance.json",
       "sha256": "184ba4a119dd4f482ad0973bc47f8a285e86120acde0f8ba87e14cdebbe43b32",
       "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, optional cached quality promotion via SDK visibility change, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim."
+    },
+    {
+      "path": "native/build/distance-field-818-player-SvPIZF/acceptance.json",
+      "sha256": "71321878488a0dd07757ee6655bb1c3795ac75dd46e4981be3a73a53789c0a16",
+      "scope": "Actual fresh owned packaged D3D11 game using SDK C++ and keyboard Blueprint component setters: offscreen rigid mesh AO affects ambient, optional cached quality promotion via SDK visibility change, direct-only same pixels, moving volume CPU reuse, release on disabled.320x240 correctness fixture, no FPS/whole UE parity/skinned/clipmap claim.",
+      "args": [
+        "--quality-upgrades",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3fd112869f7d1713\\HBEngine.exe"
+      ]
     }
   ],
   "nativePlayerSHA256": "b8833656c68cdec3620243b080459a4d9575d93303b0602da23a6c1e01fcb6cd",
@@ -458,8 +505,8 @@
     "wholeComplex141Claim": false,
     "syntheticReverseOrderFXCResolved": false
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_906.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_918.json",
   "remaining": [
     "PRJ-03: 특수 내부 폴더·바이너리 스트림 가져오기·이름 변경/redirect/index의 공동 복구",
     "PRJ-03: 복구 충돌 해결 UI·다양한 구버전 전환·실제 전원 차단과 파일시스템 내구성",
@@ -549,5 +596,6 @@
     "RES-01: 전체 독립 분석 gate"
   ],
   "exhaustiveUEUnity": false,
-  "remainingSource": "docs/research/ENGINE_STATUS.json at this record basis revision; historical remainder strings are not carried forward"
+  "remainingSource": "docs/research/ENGINE_STATUS.json at this record basis revision; historical remainder strings are not carried forward",
+  "installationReceipt": "docs/research/USER_INSTALL_918.json"
 }

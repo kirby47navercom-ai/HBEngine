@@ -2560,11 +2560,11 @@
     "scope": "기존 거리장 자동 품질 교체·동시 예산·재시도 히스테리시스·실제 게임"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_906.json",
-    "sourceCommit": "4ea35295702e12cc09a1ad884f1e6640bceb3aa5",
-    "bundleHash": "3cc1a911d4cc84636971fd03f1e22c27b51dd3265929d16a237b27925e8ae960",
+    "receipt": "docs/research/USER_INSTALL_918.json",
+    "sourceCommit": "89e7903c73379e7529249fe021298e4b72294ab5",
+    "bundleHash": "3fd112869f7d171315adacf7880e6419ecb7bc2fdca4feb04273e8bac4d7d506",
     "verified": true,
     "versions": 1,
-    "scope": "906 전체3665파일/341소유SHA/9CPP·거리장품질/보류/조회/주소·실제SDK CPP/BP 게임·User읽기SHA/연결/Versions1"
+    "scope": "918 전체3671파일/345소유SHA/9CPP·거리장자동품질교체/보류/제작·실제SDK CPP/BP 게임·User읽기SHA/연결/Versions1"
   }
 }
