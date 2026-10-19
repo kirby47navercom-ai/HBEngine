@@ -756,3 +756,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 863–876 80f71529d5039a2d6ebb65776b9f6f17bb5a4898: 값/차분 고정채널·기존 동적형식/일반값수정/key호환, 실제GL/GPU18·D3D9/오차0/잘못된메타4거부. 현재이전normal/coat GL/GPU6·D3D12/해석4.79e-8. Split xyzw·in-place scalar/vector 밉수요 수정, 실제CPP/BP GL6전환과D3D밉0/3/1/0/3·래스터/경로.13회귀·Player871/Host872. GL3060.85→2475.95ms해당그래프관측;최초겹친측정제외. 설치878뒤계속.
 
 878 설치 C:\Users\kirby\HBEngine\Versions\4f2e4bd66cd7c5b0/3654파일/332소유SHA/9CPP·User10385읽기전후SHA/연결/Versions1 확정. 설치864VZEKsm18채널/기존형식,866oxGaJv6노멀/수정전후0,781q43Lub --channels실제CPP/BP GL6전환/화면,804ivHDSn --channels실제D3D5밉수요/래스터·경로. 이전182144675B정리. 누적원장계속.
+
+880–904 582c1c419d4995dba5e96c8a95ccbcb61377a71c: 기하별8..최대해상도 예산적합·보류재시도·0볼륨정확도형·55/15/8동시필드·예약/품질진단. CPU/GL/GPU/D3D 동률가지치기/0하한종료,논리읽기21502→40/4757→39값유지.2^24초과scalar정수주소6조건(128B단위증거).9CPU회귀·실제worker취소/재시도/idle0·편집/CAS/Undo·최종Player901/Host902·실제CPP/BP D3D adaptive818VFwhoO. 초기GL/FXC와전역클립맵등잔여유지. 설치906뒤계속.
