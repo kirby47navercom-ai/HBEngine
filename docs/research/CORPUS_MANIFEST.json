@@ -4439,5 +4439,24 @@
     "unread": [
       "linked API corpus and remaining complete UE/Unity corpus"
     ]
+  },
+  "supplemental732": {
+    "date": "2026-10-19",
+    "gatePromoted": false,
+    "record": "docs/research/TEXTURE_REGIONS_732.md",
+    "newReading": [
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-updatesubresource",
+        "scope": "Returned declaration/parameters/remarks/stride and region examples/deferred-context caveat/requirements; linked pages not analyzed"
+      }
+    ],
+    "localPrimarySource": [
+      "Pinned Three WebGLTextures init/upload version and resource bookkeeping",
+      "Pinned Three WebGPUTextureUtils/common Textures explicit mip uploads"
+    ],
+    "unread": [
+      "W3C writeTexture: retrieval failed because body exceeds tool limit",
+      "remaining UE/Unity and linked APIs"
+    ]
   }
 }
