@@ -30,11 +30,14 @@ if(process.argv[1]&&import.meta.url===new URL('file:///'+process.argv[1].replace
   }
   const legacy={version:1,surface:createAsset('material','M_Legacy').surface};assert.deepEqual(await resolveMaterialAsset(legacy,async()=>{throw Error('no dependencies expected');}),legacy);
   const config=createAsset('cubemap','T_Load');config.images=Array(6).fill('Assets/ok.png');let mismatched=false;
-  class Images{async loadAsync(path){return {width:mismatched&&path==='Assets/bad.png'?8:4,height:4};}}
-  const injected={...THREE,ImageLoader:Images},cube=await loadMaterialTexture(injected,{path:'Assets/T.json',type:'texturecube',wrap:'clamp'},{'Assets/T.json':config},p=>p);assert.equal(cube.images.length,6);assert.equal(cube.wrapS,THREE.ClampToEdgeWrapping);cube.dispose();
+  const originalImage=globalThis.Image;
+  class Images{constructor(){this.width=4;this.height=4;}set src(value){this.url=value;if(!value)return;this.width=mismatched&&value==='Assets/bad.png'?8:4;queueMicrotask(()=>this.onload?.());}get src(){return this.url;}}
+  try{globalThis.Image=Images;
+  const injected=THREE,cube=await loadMaterialTexture(injected,{path:'Assets/T.json',type:'texturecube',wrap:'clamp'},{'Assets/T.json':config},p=>p);assert.equal(cube.images.length,6);assert.equal(cube.wrapS,THREE.ClampToEdgeWrapping);cube.dispose();
   mismatched=true;config.images[3]='Assets/bad.png';await assert.rejects(()=>loadMaterialTexture(injected,{path:'Assets/T.json',type:'texturecube'},{'Assets/T.json':config},p=>p),/크기/);
   config.images[3]='Assets/ok.png';await assert.rejects(()=>loadMaterialTexture(injected,{path:'Assets/T.json',type:'texturecube'},{'Assets/T.json':config},p=>p,{backend:{device:{limits:{maxTextureDimension2D:2}}}}),/장치/);
   const array=createAsset('texturearray','T_Array');array.images=Array(2).fill('Assets/ok.png');await assert.rejects(()=>loadMaterialTexture(injected,{path:'Assets/T.json',type:'texturearray'},{'Assets/T.json':array},p=>p,{backend:{device:{limits:{maxTextureDimension2D:4,maxTextureArrayLayers:1}}}}),/장치/);
+  }finally{if(originalImage===undefined)delete globalThis.Image;else globalThis.Image=originalImage;}
   for(const type of Object.keys(materialTextureTypes)){const placeholder=texturePlaceholder(THREE,type);assert.equal(placeholder.version,1);assert.equal(type==='texturecube'?placeholder.isCubeTexture:type==='texturearray'?placeholder.isDataArrayTexture:type==='texture3d'?placeholder.isData3DTexture:placeholder.isDataTexture,true);placeholder.dispose();}
   console.log('Material texture families PASS: cube/array/volume assets, strict resource types, function/extraction/static branch, MI/preview, CPU/GLSL, dependency and rename preservation');
 }
