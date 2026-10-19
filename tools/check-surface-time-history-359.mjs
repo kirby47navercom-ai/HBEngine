@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';import fs from 'node:fs/promises';import path from 'node:path';
 import {timedNormalFixture} from './rendering-187-fixture.mjs';import {makeMaterialNode} from '../prototype/material-runtime.js';import {collectGeometryGI} from '../prototype/geometry-gi.js';import {retainTestEvidence} from './test-artifacts.mjs';
 const work=await fs.mkdtemp(path.resolve('native/build/surface-time-history-359-'));retainTestEvidence(work);const rows=[];
-for(const pin of ['roughness','metallic','ior','clearcoat','clearcoatRoughness','emissive','baseColor','opacity','thickness','specularIntensity']){
+for(const pin of ['roughness','metallic','ior','clearcoat','clearcoatRoughness','anisotropy','anisotropyRotation','emissive','baseColor','opacity','thickness','specularIntensity']){
  const f=timedNormalFixture('static');try{
   const time=makeMaterialNode('time'),root=f.data.graph.nodes.find(n=>n.key==='surface');f.data.graph.nodes.push(time);f.data.graph.edges.push({from:{node:time.id,pin:'value'},to:{node:root.id,pin}});
   const first=f.prepare(.2),before=f.world.filterVersion,builds=f.world.builds;f.world.commit();const now=f.prepare(.3),retained=f.world.filterVersion===before,expected=pin!=='opacity'&&pin!=='emissive';assert.equal(retained,expected,pin);assert.ok(f.world.builds>builds,'Monte Carlo transport must still see the time change');assert.equal(now.previousMaterialTime,expected?.2:0,pin);const count=now.geometryRecords[0],raw=i=>i>=now.triangleOffset+count*6?i-count:i,flag=now.data[raw(now.motionOffset)*4+3];assert.equal(flag,expected?1:0,pin);

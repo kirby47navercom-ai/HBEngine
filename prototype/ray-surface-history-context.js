@@ -9,7 +9,7 @@ export function rayFieldUsesFrame(program,field,channels=[0,1,2,3]){
  return program.instructions.some((i,n)=>live.has(n)&&i[0]>=1&&i[0]<=5);
 }
 export const rayHistoryValueFields=Object.freeze([0,1,2,4,5,6,7,8,9]);
-export const rayGuidePreviousFields=programs=>rayHistoryValueFields.filter(field=>programs.some(p=>rayFieldUsesFrame(p,field,field===5?[0,1]:[0,1,2,3])));
+export const rayGuidePreviousFields=programs=>rayHistoryValueFields.filter(field=>programs.some(p=>rayFieldUsesFrame(p,field)));
 export const rayPreviousProgramRequired=p=>!!(rayProgramFieldMask(p)&8)||rayHistoryValueFields.some(field=>rayFieldUsesFrame(p,field));
 
 // Animated visibility/emission changes affect paths that never hit that surface.

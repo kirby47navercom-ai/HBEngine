@@ -5,3 +5,4 @@ export function sameHistoryRefractionGPU(view,normal,geometric,eta,front,reflect
 
 // A max reduction may discard a NaN lane. Every observed channel must pass.
 export function sameHistoryValueGPU(now,old){const delta=now.sub(old).abs().div(now.abs().max(old.abs()).max(1));return delta.x.lessThanEqual(surfaceHistoryEpsilon).and(delta.y.lessThanEqual(surfaceHistoryEpsilon)).and(delta.z.lessThanEqual(surfaceHistoryEpsilon)).and(delta.w.lessThanEqual(surfaceHistoryEpsilon));}
+export function sameHistoryLobesGPU(now,old){return sameHistoryCoatGPU(now,old).and(sameHistoryValueGPU(now,old));}

@@ -53,7 +53,7 @@ if(curved&&previousValid&&hbPathFilter.w>0.0){
 previousValid=hbPathSameSurface(physical,oldPhysical);
 #endif
 #if defined(HB_PATH_ADVANCED) && defined(HB_RAY_SURFACE_HISTORY_5)
-vec4 oldCoat=hbRayPreviousField5TimeLod(hit.y,oldP,oldView,oldWidth,vec2(hbForward.w,1));previousValid=previousValid&&hbPathSameCoat(coat,oldCoat);
+vec4 oldCoat=hbRayPreviousField5TimeLod(hit.y,oldP,oldView,oldWidth,vec2(hbForward.w,1));previousValid=previousValid&&hbPathSameLobes(coat,oldCoat);
 #endif
 ${[1,2,4,6,7,8,9].map(field=>`#if ${field>=5?'defined(HB_PATH_ADVANCED) && ':''}defined(HB_RAY_SURFACE_HISTORY_${field})
 previousValid=previousValid&&hbPathSameValue(hbRayField${field}Lod(hit.y,p,-direction,width),hbRayPreviousField${field}TimeLod(hit.y,oldP,oldView,oldWidth,vec2(hbForward.w,1)));
