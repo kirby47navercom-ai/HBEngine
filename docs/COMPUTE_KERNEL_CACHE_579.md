@@ -13,3 +13,5 @@ SDK에서는 `Device::configureShaderCache(directory)` 또는 기존 `SceneRende
 기존 GPU 검사에서는 BP→사용자 C++→실제 DirectCompute, 배치된 위치 보존,65,537레코드/20step의 모든 값·부분 workgroup·방출/프레임 자원과 두 Android 대상의 헤더 구문을 확인했어요. Android에서 이 Windows `Device` 백엔드를 실행했다는 뜻이 아니에요. 모바일의 다른 그래픽 백엔드와 실기기 성능은 별도 목표예요. 검사 원본과 지문은 `ENGINE_WORK_579.json`에 연결해요.
 
 AI는 기존 C++/BP 제작·호출 경로를 그대로 사용하고 `engine.schema.nativeShaderCache.compute`에서 캐시/잠금/dispatch 계약을 읽을 수 있어요. 전체 초기 래스터·GL/FXC 지연과 나머지 누적 엔진 작업은 별도로 계속 진행해요.
+
+610: 명시적 비동기 준비 API를 추가했어요. compileAsync/pollKernel/take는 기존 동기 compile과 같은 캐시·dispatch·프레임 자원을 사용해요. 화면 효과와 같은 한 워커를 사용하며 기본 SDK의 파일 접근 정책은 유지해요. [사용법과 실행 근거](COMPUTE_ASYNC_610.md)를 참고해요.
