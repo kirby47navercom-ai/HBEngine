@@ -1,25 +1,27 @@
-# 현재 인계 — 목록 제작·실행 묶음과 누적 목표 계속
+# 현재 인계 — 거리장 카메라 LOD·렌더링/누적 목표 계속
 
-갱신: 2026-10-20. 장기 목표 active(사용자 재개 확인). 전체 누적 목표를 완료/정지로 바꾸지 않아요. 여러 변경을 모아 비용·반복 검사를 줄이며 계속 진행해요.
+2026-10-21. 장기 목표 active. 전체 누적 목표를 완료/정지로 바꾸지 않아요. 여러 변경을 모으고 관련 검사만 묶어요.
 
 ## 시작
 
-AGENTS.md → docs/AI_START.md → node tools/hb.mjs context "작업명". 정본 docs/research/ENGINE_STATUS.json. 거대한 과거 연구/API를 선행 독서하지 않아요. 실제 설치는 context state.installation/로컬 HBEngine.install.json을 읽고 이전 영수증과 구분해요.
+AGENTS.md → docs/AI_START.md → node tools/hb.mjs context "작업명". 정본 docs/research/ENGINE_STATUS.json. 긴 과거 연구/API 전체를 선행 독서하지 않아요. 실제 설치는 context state.installation/로컬 HBEngine.install.json을 읽고 패키지의 이전 원장 영수증과 구분해요.
 
-## 새 구현과 검사
+## 새 구현/검사
 
-소스94296c1, ENGINE_WORK_1082.json·research/LIST_EDITING_1081.md. 목록 선택모드/다중/범위/초점·입력키 격리/접힌트리ID·평면 묶음 재정렬/중복값 대응/교체 중 오래된 드래그취소·형식 보존 행 자료 쓰기/에셋 불변·고정행 부분 refresh·사람 상세/AI JSON/Undo·공용 VM 이벤트 인자와 큰 배열 명시 제한. WIDGET_CLASSES_AND_LISTS.md가 계약이에요. 신규 네이티브 함수는 없어요.
+2538277·ENGINE_WORK_1094.json·research/DISTANCE_CAMERA_LOD_1093.md·DISTANCE_FIELD_LOD.md. 기하별 화면 footprint 거리장 해상도/공유 최대 요구/화면 밖 유지·낮춤250ms/기존필드/오래된목표취소/이중예약/낮춤자료해제·WeakMap 정지/TAA 투영/0인스턴스해제. PostProcessVolume mode/pixel 속성·사람 조건부 상세/Undo·AI CAS·기존 CPP/BP Components 함수·같은 GL/TSL/native atlas. 고정 기본값 유지·전역clipmap/정밀도보장/전체FPS가 아니에요.
 
-1079-1qusG0 CPU5그룹. 실제1080-RIUFur: 100000선택/풀8·키·키보드/합성DOM드래그·텍스트/체크/슬라이더·행재활용/현재이벤트·스크립트자료교체/기존서비스·단일행offset재구성0·편집Undo/정상종료. 기존174-A0A8Dz9/181-ZSfMp8 6/256-t6RdHo4 및 실제1067-bF77ML 상속/슬롯/생명주기·긴논리스크롤/측정행/폰트/전역예산 회귀. 검사도구 인용/선택/이동기대값/저장CAS 실수는 통과로 세지 않아요.
+1087-Olpdhf 독립 투영/계획/설정/FP·TAA. 1088-61t0cP 실제worker 취소/기존필드/예산/공유/인스턴스0/버전/정지40/종료.1089-90AoO2 실제GL/GPU128KiB→2KiB→128KiB·복원픽셀/직접광·GL프로그램유지/TAA투영0.1090-fkxIfi 실제CPP mode/zoom/pixels64·BP·D3D AO/복원/해제.1092-09eVy5 상세/조건부필드/Undo/CAS/저장/schema.기존912-c2j3xS 55,15/이전필드·예약·정지/취소,913/API/문법도 통과.최종 설치 게이트는 새 소스에 대조해요.
 
-## 설치와 이전 근거
+1090 초기16 기대는 근거 없는 sphere 가정이었고 실제12·실패0.엔진을 바꾸지 않았어요.1089 TAA 두렌더러의 CDP20초 제한은 소유작업을 시작하고 같은 핸들을 관찰하는 방식으로 수정. 실패를 통과로 세지 않아요.
 
-현재 확정 USER_INSTALL_1084.json: C:/Users/kirby/HBEngine/Versions/67a9e17734d12595/HBEngine.exe. 3777파일/454소유SHA/CPP14·User10849 읽기전후SHA·연결·Versions1 검증. 설치 실제1080-BSEufI도100000선택/풀8·행쓰기/재활용/이벤트·offset재구성0·Undo/정상종료 통과. native10지문 동일·Player1040/Host1041 재사용·재컴파일0. 이전183579323B 정리·공유캐시삭제0/빈영수증없음. sync1083/install1084/finish1085 및 이전one-shot은 완료했으니 재실행하지 않아요.
+## 설치
 
-이전1075 월드 소유초안·전체복사2→1·원본/Undo/평활화 보존·설치1060yl9khC의 지형408B/폴리지64B 부분GPU/새할당0은 보존해요. 1070/1072 위젯 상속/슬롯노출/초기표시/생명주기/복합행·풀·FontFace와 AI 실제설치마커도 유지해요.
+현재 확정 USER_INSTALL_1084.json: C:/Users/kirby/HBEngine/Versions/67a9e17734d12595/HBEngine.exe. 새1096 갱신 준비 중. native10지문/Player1040/Host1041 그대로라 엔진 재컴파일0. 사용자CPP 실행fixture는 별도 실제 컴파일이에요. sync1095/install1096/finish1097은 wx one-shot으로 만들며 완료 후 재실행하지 않아요. 이전one-shot도 완료했어요.
 
-## 다음 작업과 경계
+## 이어갈 잔여
 
-GL 약8/7초 초기지연은 이번 소스 변경으로 개선했다고 주장하지 않아요. 일괄 제출/노멀 공유와 기존실험을 다시 대조했으나 새 렌더링 구현은 없어요. 이전 프레임 광학 대응/복합매질, 지형 텍스처/GPU브러시·첫복사/Undo/검증·큰스캔, UI 트리/다중목록 재부모화·실기기터치·복합중첩측정/전체접근성·BP/C++ 디자이너샌드박스/별도native위젯객체·3D깊이/조명 및 다른 누적목표를 원장에서 이어가요. 전체 JSON직렬화/검증과 모든FPS를 해결했다고 하지 않아요.
+RND06 약8/7초 GL 초기지연 유지.1086-ueGYSG SSA/0초기화 제거는 raw ABBA 약1%/74B라 미채택·관측성없는픽셀비교통과계산금지.같은 작은 SSA/초기화 실험을 반복하지 않아요.DEBUG_HANDOFF.md에 현재 진단만 두고 옛 긴 진단은Git3d83a96에서 읽어요.
 
-관련 검사만 마지막에 묶고 변하지 않은 바이너리·근거를 재사용해요. 고정이름 보고서를 덮기 전 SHA 증거를 보존해요. 백그라운드만·사용자창/서버/프로필을 검사/종료하지 않아요. 활성설치 보호·User읽기전용SHA·Versions하나·공유캐시 누적방지를 지켜요. 사용자Android폰/Mac없음을 다시 묻지 않아요.
+전역거리장clipmap/타일·방향성하늘/bentnormal/시간신뢰도·변형체/지형/마스크/쿠킹·HWRT/방향성베이크, 이전프레임복합광학, 지형GPU브러시·Undo/검증/큰스캔, UI트리/다중목록재부모화/터치·복합측정/접근성·디자이너BP/C++샌드박스/별도native위젯객체·3D깊이/조명 및 다른 누적목표는 원장에서 이어가요. 이전1082 목록/1075 월드·위젯/AI 근거는 보존해요.
+
+백그라운드만·사용자창/서버/프로필 검사·종료금지. 무거운 검사/설치 전 활성설치 보호. User읽기SHA/Versions1/캐시·임시런타임정리. 고정 보고서 재작성 전 SHA 증거 보존. 한글 동일author/committer 커밋·푸시. Android폰/Mac없음을 다시 묻지 않아요.
