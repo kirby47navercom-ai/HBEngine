@@ -814,3 +814,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1104 설치 C:\Users\kirby\HBEngine\Versions\54c85d6c7b3cb9b8 /3802파일/476소유SHA/CPP14·User10849읽기전후SHA·연결·Versions1 검증. 설치 GL/GPU hit2→3·복원/직접광/프로그램/TAA·실제CPP/BP/native 최초workerStarts0/축소·복원·마커. 엔진native재컴파일0·이전183812964B 정리. 1105 확정. 전역거리장·초기GL지연 및 누적목표계속.
 
 1106–1112: 5ce6990638ff9404f0a108edc23d228ff0ae5f01 반사 두후보/환경잔여·회전/해상도·자원수명·CPU현재포즈/캡처전컬링·UV없는기본/코팅노멀 보호. 실제GL/GPU독립혼합오차<1e-6,각24노멀조건·포즈/수명·SDK/AI탐색 관련묶음 통과. 최종설치1114에서세백엔드CPP/BP재확인예정. scope본문만읽고전체gate유지. 원장RND03잔여를전역후보/우선점유/임의변형으로정리;장기목표active유지.
+
+1114 설치 C:\Users\kirby\HBEngine\Versions\a24629862c1045b8 /3817파일/489소유SHA/CPP14·User10849읽기전후SHA·연결·Versions1 검증. 설치GL/GPU 혼합/0→2후보/환경회전·해상도/프로그램/자원·각24노멀조건,실제CPP/BP모프/원점밖후보를D3D/GL/GPU red→ambient→red→ambient→red/캡처1로통과. 엔진native재컴파일0·이전183940914B 정리.1115확정;전역후보/GL초기지연및누적목표active계속.

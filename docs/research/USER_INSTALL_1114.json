@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "3f834c2c606bc15dcfabcb7c619fa0c4adcec7f4",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe",
+  "bundleHash": "a24629862c1045b8865e903c2b2f73cd7804c9cbde0a5d4b79b7cf67f219e471",
+  "files": 3817,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3803,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\54c85d6c7b3cb9b8",
+        "bytes": 183940914,
+        "manifestSHA256": "2b2d263ea5e5fe2aa2b70f1d780dfed783f32252a3d19596999815de9a9ca6d7"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-20T17:19:34.2044186Z",
+    "bytes": 183940914,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "a24629862c1045b8"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 489,
+  "repositoryOnlyTestSourcesVerified": 14,
+  "nativePlayerSHA256": "a5235c863e3886fd8b1a0c238c43d344d7f5fb5f3e0d9c3c3fec48b00c3f3a31",
+  "installedGates": [
+    {
+      "path": "native/build/probe-blend-1107-5WRUch/acceptance.json",
+      "sha256": "97f42b2e26c3e7ae214edcc0822c25e640a742b993f275c993853b57f5fb6fd5",
+      "scope": "Production GL/WebGPU physical shading with known constant CubeUV maps, independent per-pixel affine face weights and white physical reference, two resolutions/change without GL programs, sky remainder/normalization, metal/coating and actual instanced draw outside parent origin. Controlled captures; actual scene capture/package is separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/normal-frame-1109-WQxKl3/acceptance.json",
+      "sha256": "e8557535d9180bcd3ba782d51fe9a8a356fa7ac1b29a82d13e12e816a19a9873",
+      "scope": "Actual GL/WebGPU normal frame vectors versus analytic plane normals: valid/degenerate/missing UV, neutral/zero/negative Z and huge finite tangent normals. Production paired helpers; material graph/C++ morph package separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-room-994-FKMNWm/acceptance.json",
+      "sha256": "5f171909aae2c18bedb97c499f2a822d0dc1fc138df9110c785410b42e24a932",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. --morph loads a relative morph whose rendered mesh lies inside while actor origin is10 units away. --instances loads actual glTF EXT_mesh_gpu_instancing; --foliage uses editable HB mesh/foliage JSON. Both2instances/external batch origin/native batch assertion. Actual zero-influence-height reference preserves the original environment and identifies the ambient-only pixel (intensity zero still covers, per native weighting); real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--morph",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-room-994-kHqjNS/acceptance.json",
+      "sha256": "6865e1a14ae9a360a841fb7ba9ccb7fc1d5775d62cf90cf890abe78209798af9",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. --morph loads a relative morph whose rendered mesh lies inside while actor origin is10 units away. --instances loads actual glTF EXT_mesh_gpu_instancing; --foliage uses editable HB mesh/foliage JSON. Both2instances/external batch origin/native batch assertion. Actual zero-influence-height reference preserves the original environment and identifies the ambient-only pixel (intensity zero still covers, per native weighting); real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--morph",
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-room-994-NlSWAR/acceptance.json",
+      "sha256": "57a5c9ce797092329f66910e0ea65f6ddb092d9de6268313e22edcd1ccd095af",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. --morph loads a relative morph whose rendered mesh lies inside while actor origin is10 units away. --instances loads actual glTF EXT_mesh_gpu_instancing; --foliage uses editable HB mesh/foliage JSON. Both2instances/external batch origin/native batch assertion. Actual zero-influence-height reference preserves the original environment and identifies the ambient-only pixel (intensity zero still covers, per native weighting); real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--morph",
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\",
+    "elapsedMs": 93.88,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "a24629862c1045b8865e903c2b2f73cd7804c9cbde0a5d4b79b7cf67f219e471",
+      "installedAt": "2026-10-20T17:19:30.920Z",
+      "manifestFiles": 3817,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3817,
+  "versions": [
+    "a24629862c1045b8"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1114-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/probe-deformation-1106-rsIzi5/acceptance.json",
+      "sha256": "5850ee243d8e64ff3bb4ae03a89948785507dceb0533b9a0f0603fe2e4bb9c37",
+      "scope": "CPU current pose bounds versus analytic translated triangles; cached unchanged bones/weights and invalidation. Actual raster/native package is separate."
+    },
+    {
+      "path": "native/build/probe-lifecycle-1108-mxacl3/acceptance.json",
+      "sha256": "70dba69c33b0d4eba872bdf3621c3127dee6fdacd065c07d8ab9fbe536d779a5",
+      "scope": "CPU renderer-owned probe/base PMREM cache invalidation and release, stable172032B anchor, GL/GPU rotation/intensity packing, shared-material clone external replacement and refraction hook restoration. Raster light is separate."
+    },
+    {
+      "path": "native/build/probe-blend-1107-PIVBqz/acceptance.json",
+      "sha256": "8a16018077e96d63b5e56c171a43d45b53b90f59f7d8875a676eecf00407e700",
+      "scope": "Production GL/WebGPU physical shading with known constant CubeUV maps, independent per-pixel affine face weights and white physical reference, two resolutions/change without GL programs, sky remainder/normalization, metal/coating and actual instanced draw outside parent origin. Controlled captures; actual scene capture/package is separate."
+    },
+    {
+      "path": "native/build/normal-frame-1109-rog0AT/acceptance.json",
+      "sha256": "ee5bea516f07755f28a765996c08d5c9daa2bc0100e6b9ed1c0922ee06ad278f",
+      "scope": "Actual GL/WebGPU normal frame vectors versus analytic plane normals: valid/degenerate/missing UV, neutral/zero/negative Z and huge finite tangent normals. Production paired helpers; material graph/C++ morph package separate."
+    },
+    {
+      "path": "native/build/probe-blend-static-1112.json",
+      "sha256": "2508c5f165404cfbf3aa36d9990fb83c8fc0322157b507f67ed0ab77eba9f786",
+      "scope": "현재 포즈·수명·해석 정답·문법/API/AI 탐색 관련 검사"
+    },
+    {
+      "path": "native/build/probe-blend-ai-context-1112.json",
+      "sha256": "274b7f3d8ede143a8e02207d77ffdbca7f02ec937eab7b98a4cd08c81c497a53",
+      "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/probe-blend-1107-PIVBqz/acceptance.json",
+      "sha256": "8a16018077e96d63b5e56c171a43d45b53b90f59f7d8875a676eecf00407e700",
+      "scope": "Production GL/WebGPU physical shading with known constant CubeUV maps, independent per-pixel affine face weights and white physical reference, two resolutions/change without GL programs, sky remainder/normalization, metal/coating and actual instanced draw outside parent origin. Controlled captures; actual scene capture/package is separate."
+    },
+    {
+      "path": "native/build/normal-frame-1109-rog0AT/acceptance.json",
+      "sha256": "ee5bea516f07755f28a765996c08d5c9daa2bc0100e6b9ed1c0922ee06ad278f",
+      "scope": "Actual GL/WebGPU normal frame vectors versus analytic plane normals: valid/degenerate/missing UV, neutral/zero/negative Z and huge finite tangent normals. Production paired helpers; material graph/C++ morph package separate."
+    }
+  ],
+  "scope": "1114 전체3817파일/489소유SHA/CPP14·native10/Player1040/Host1041재사용·두프로브/환경혼합·회전/해상도/수명/인스턴스·모프현재경계·기본/코팅노멀24조건씩·실제CPP/BP세렌더러·AI실제마커·User읽기SHA/연결/Versions1",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

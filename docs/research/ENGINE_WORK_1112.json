@@ -556,6 +556,56 @@
       "path": "native/build/probe-blend-ai-context-1112.json",
       "sha256": "274b7f3d8ede143a8e02207d77ffdbca7f02ec937eab7b98a4cd08c81c497a53",
       "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    },
+    {
+      "path": "native/build/probe-blend-1107-5WRUch/acceptance.json",
+      "sha256": "97f42b2e26c3e7ae214edcc0822c25e640a742b993f275c993853b57f5fb6fd5",
+      "scope": "Production GL/WebGPU physical shading with known constant CubeUV maps, independent per-pixel affine face weights and white physical reference, two resolutions/change without GL programs, sky remainder/normalization, metal/coating and actual instanced draw outside parent origin. Controlled captures; actual scene capture/package is separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/normal-frame-1109-WQxKl3/acceptance.json",
+      "sha256": "e8557535d9180bcd3ba782d51fe9a8a356fa7ac1b29a82d13e12e816a19a9873",
+      "scope": "Actual GL/WebGPU normal frame vectors versus analytic plane normals: valid/degenerate/missing UV, neutral/zero/negative Z and huge finite tangent normals. Production paired helpers; material graph/C++ morph package separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-room-994-FKMNWm/acceptance.json",
+      "sha256": "5f171909aae2c18bedb97c499f2a822d0dc1fc138df9110c785410b42e24a932",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. --morph loads a relative morph whose rendered mesh lies inside while actor origin is10 units away. --instances loads actual glTF EXT_mesh_gpu_instancing; --foliage uses editable HB mesh/foliage JSON. Both2instances/external batch origin/native batch assertion. Actual zero-influence-height reference preserves the original environment and identifies the ambient-only pixel (intensity zero still covers, per native weighting); real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--morph",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-room-994-kHqjNS/acceptance.json",
+      "sha256": "6865e1a14ae9a360a841fb7ba9ccb7fc1d5775d62cf90cf890abe78209798af9",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. --morph loads a relative morph whose rendered mesh lies inside while actor origin is10 units away. --instances loads actual glTF EXT_mesh_gpu_instancing; --foliage uses editable HB mesh/foliage JSON. Both2instances/external batch origin/native batch assertion. Actual zero-influence-height reference preserves the original environment and identifies the ambient-only pixel (intensity zero still covers, per native weighting); real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--morph",
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-room-994-NlSWAR/acceptance.json",
+      "sha256": "57a5c9ce797092329f66910e0ea65f6ddb092d9de6268313e22edcd1ccd095af",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. --morph loads a relative morph whose rendered mesh lies inside while actor origin is10 units away. --instances loads actual glTF EXT_mesh_gpu_instancing; --foliage uses editable HB mesh/foliage JSON. Both2instances/external batch origin/native batch assertion. Actual zero-influence-height reference preserves the original environment and identifies the ambient-only pixel (intensity zero still covers, per native weighting); real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--morph",
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -568,6 +618,56 @@
       "path": "native/build/normal-frame-1109-rog0AT/acceptance.json",
       "sha256": "ee5bea516f07755f28a765996c08d5c9daa2bc0100e6b9ed1c0922ee06ad278f",
       "scope": "Actual GL/WebGPU normal frame vectors versus analytic plane normals: valid/degenerate/missing UV, neutral/zero/negative Z and huge finite tangent normals. Production paired helpers; material graph/C++ morph package separate."
+    },
+    {
+      "path": "native/build/probe-blend-1107-5WRUch/acceptance.json",
+      "sha256": "97f42b2e26c3e7ae214edcc0822c25e640a742b993f275c993853b57f5fb6fd5",
+      "scope": "Production GL/WebGPU physical shading with known constant CubeUV maps, independent per-pixel affine face weights and white physical reference, two resolutions/change without GL programs, sky remainder/normalization, metal/coating and actual instanced draw outside parent origin. Controlled captures; actual scene capture/package is separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/normal-frame-1109-WQxKl3/acceptance.json",
+      "sha256": "e8557535d9180bcd3ba782d51fe9a8a356fa7ac1b29a82d13e12e816a19a9873",
+      "scope": "Actual GL/WebGPU normal frame vectors versus analytic plane normals: valid/degenerate/missing UV, neutral/zero/negative Z and huge finite tangent normals. Production paired helpers; material graph/C++ morph package separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-room-994-FKMNWm/acceptance.json",
+      "sha256": "5f171909aae2c18bedb97c499f2a822d0dc1fc138df9110c785410b42e24a932",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. --morph loads a relative morph whose rendered mesh lies inside while actor origin is10 units away. --instances loads actual glTF EXT_mesh_gpu_instancing; --foliage uses editable HB mesh/foliage JSON. Both2instances/external batch origin/native batch assertion. Actual zero-influence-height reference preserves the original environment and identifies the ambient-only pixel (intensity zero still covers, per native weighting); real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--morph",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-room-994-kHqjNS/acceptance.json",
+      "sha256": "6865e1a14ae9a360a841fb7ba9ccb7fc1d5775d62cf90cf890abe78209798af9",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. --morph loads a relative morph whose rendered mesh lies inside while actor origin is10 units away. --instances loads actual glTF EXT_mesh_gpu_instancing; --foliage uses editable HB mesh/foliage JSON. Both2instances/external batch origin/native batch assertion. Actual zero-influence-height reference preserves the original environment and identifies the ambient-only pixel (intensity zero still covers, per native weighting); real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--morph",
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-room-994-NlSWAR/acceptance.json",
+      "sha256": "57a5c9ce797092329f66910e0ea65f6ddb092d9de6268313e22edcd1ccd095af",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. --morph loads a relative morph whose rendered mesh lies inside while actor origin is10 units away. --instances loads actual glTF EXT_mesh_gpu_instancing; --foliage uses editable HB mesh/foliage JSON. Both2instances/external batch origin/native batch assertion. Actual zero-influence-height reference preserves the original environment and identifies the ambient-only pixel (intensity zero still covers, per native weighting); real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--morph",
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a24629862c1045b8\\HBEngine.exe"
+      ]
     }
   ],
   "nativePlayerSHA256": "a5235c863e3886fd8b1a0c238c43d344d7f5fb5f3e0d9c3c3fec48b00c3f3a31",
@@ -597,8 +697,8 @@
     "cpuPoseCost": "changed supported CPU pose scans its vertices; unchanged poses compare bone/weight/attribute stamps; not GPU-only bounds or whole FPS proof"
   },
   "researchScope": "docs/research/supplemental1111/read-scope.json",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1104.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1114.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "큰 메시/배치의 전역 픽셀별 후보와 임의 인스턴스별 후보 쌍; 현재 경계로 선택한 두 후보 안에서만 혼합",
@@ -606,5 +706,6 @@
     "임의 shader displacement·인스턴스별 morph texture의 소유 경계 및 지원 확대"
   ],
   "scope": "브라우저 두 프로브/원래 환경 혼합·실제 인스턴스·환경 회전/해상도/수명·CPU 스킨/모프 현재 경계·UV 없는 기본/코팅 노멀·C++/BP/AI 공유. 전역 후보/FPS/전체 엔진·전체 문서 분석 완료 미주장.",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1114.json"
 }

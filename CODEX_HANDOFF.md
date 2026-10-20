@@ -10,11 +10,11 @@ AGENTS.md → docs/AI_START.md → node tools/hb.mjs context "작업명". 정본
 
 ENGINE_WORK_1112.json·REFLECTION_PROBE_BLEND.md·research/PROBE_BLEND_1111.md. browser2후보 affine fade/원래환경 잔여·맵별CubeUV·GPU고정샘플ID·GL약한uniform bank/172032B CPU앵커·base intensity/rotation/필터수명·공유clone/굴절소유복원.0후보/두후보/후보추가/해상도변경/실제인스턴스. CPU skin/morph현재경계/음수가중치/본·바인드·속성stamp/정지정점읽기0/캡처전갱신, native JS패킷후보/컬링. native ABI불변·Player1040/Host1041재사용.
 
-UV없는 glTF의검정반사는hbNormal normalize(0). GL/GPU기본·코팅frame의중립/음수Z/0/퇴화/일직선/누락UV·큰유한값을보호해요.1109-rog0AT각24해석조건·1106-rsIzi5·1108-mxacl3·1107-PIVBqz metal/coat오차<1e-6·환경/프로그램/복원통과. 실제morph CPP/BP NativeFtfibr/GLQn5es9/GPU IWdwOu;후속최종설치1114에서현재소스재확인. 실패/조명위치시험/스키마교체충돌은성과로세지않아요. 임시드로진단훅제거, DEBUG_HANDOFF참고.
+UV없는 glTF의검정반사는hbNormal normalize(0). GL/GPU기본·코팅frame의중립/음수Z/0/퇴화/일직선/누락UV·큰유한값을보호해요.1109-rog0AT각24해석조건·1106-rsIzi5·1108-mxacl3·1107-PIVBqz metal/coat오차<1e-6·환경/프로그램/복원통과. 실제morph CPP/BP NativeFtfibr/GLQn5es9/GPU IWdwOu;최종설치1114에서현재소스세렌더러재확인통과. 실패/조명위치시험/스키마교체충돌은성과로세지않아요. 임시드로진단훅제거, DEBUG_HANDOFF참고.
 
 ## 설치
 
-이 묶음은 설치 전환 준비 중이에요. 현재 확정 USER_INSTALL_1104.json: C:/Users/kirby/HBEngine/Versions/54c85d6c7b3cb9b8/HBEngine.exe.3802파일/476소유SHA/CPP14·native10/User10849읽기전후SHA·연결·Versions1. sync1103/install1104/finish1105 및 옛one-shot은 완료했으니 재실행하지 않아요. 새sync1113/install1114/finish1115를고유marker로사용하고성공영수증후갱신해요.
+현재 확정 USER_INSTALL_1114.json: C:\Users\kirby\HBEngine\Versions\a24629862c1045b8/HBEngine.exe. 3817파일/489소유SHA/CPP14·native10/Player1040/Host1041재사용·User10849읽기전후SHA·연결·Versions1. 설치GL/GPU혼합/0→2후보/환경회전·해상도/프로그램/자원·각24노멀조건·실제CPP/BP모프를세렌더러5상태/캡처1로통과. 실제설치마커/AI context대조. 이전183940914B정리·공유캐시{"deleted":0,"bytes":0,"receipt":null}. sync1113/install1114/finish1115 및 옛one-shot은 완료했으니재실행하지않아요.
 
 ## 이어갈 잔여
 

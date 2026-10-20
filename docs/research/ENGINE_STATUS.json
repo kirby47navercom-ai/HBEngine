@@ -2762,11 +2762,11 @@
     "scope": "브라우저 두 프로브/원래 환경 혼합·실제 인스턴스·환경 회전/해상도/수명·CPU 스킨/모프 현재 경계·UV 없는 기본/코팅 노멀·C++/BP/AI 공유. 전역 후보/FPS/전체 엔진·전체 문서 분석 완료 미주장."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1104.json",
-    "sourceCommit": "5af944f8f1182cdfff9196ad81bd5f0a7c45b49d",
-    "bundleHash": "54c85d6c7b3cb9b80617978da3c8ae0888506dc59a802a52755a391c39205da4",
+    "receipt": "docs/research/USER_INSTALL_1114.json",
+    "sourceCommit": "3f834c2c606bc15dcfabcb7c619fa0c4adcec7f4",
+    "bundleHash": "a24629862c1045b8865e903c2b2f73cd7804c9cbde0a5d4b79b7cf67f219e471",
     "verified": true,
     "versions": 1,
-    "scope": "1104 전체3802파일/476소유SHA/CPP14·native10/Player1040/Host1041재사용·거리장 사전쿠킹/검증·복구/캐시·정밀도/복원·세렌더러/실제CPP·BP/최초workerStarts0·AI실제마커·User읽기SHA/연결/Versions1"
+    "scope": "1114 전체3817파일/489소유SHA/CPP14·native10/Player1040/Host1041재사용·두프로브/환경혼합·회전/해상도/수명/인스턴스·모프현재경계·기본/코팅노멀24조건씩·실제CPP/BP세렌더러·AI실제마커·User읽기SHA/연결/Versions1"
   }
 }
