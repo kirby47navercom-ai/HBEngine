@@ -4762,5 +4762,42 @@
     ],
     "record": "docs/research/NORMAL_RANGE_1037.md",
     "proof": "native/build/reference-corpus/supplemental1030/read-scope.json"
+  },
+  "supplemental1062": {
+    "date": "2026-10-20",
+    "targets": [
+      "RND-03",
+      "WLD-03",
+      "EDT-05",
+      "AI-03",
+      "PER-03"
+    ],
+    "record": "docs/research/WORLD_EDIT_BATCH_1062.md",
+    "rows": [
+      {
+        "url": "https://threejs.org/docs/pages/BufferAttribute.html",
+        "file": "native/build/reference-corpus/supplemental1062/buffer-attribute.html",
+        "sha256": "9679275d4b6295c67bd8abf848e26771efaab86c1a2a4eb9c4df1eaa5d07d867",
+        "bytes": 37140,
+        "readScope": "Own usage/version/needsUpdate/updateRanges/addUpdateRange documentation only; not all linked methods or renderer internals"
+      },
+      {
+        "url": "https://threejs.org/docs/pages/InstancedMesh.html",
+        "file": "native/build/reference-corpus/supplemental1062/instanced-mesh.html",
+        "sha256": "cdb07d158d78307687b83c3a5fea64490a14224eb1227f72b364e572f98f4474",
+        "bytes": 15467,
+        "readScope": "Own overview and constructor; local matrix/version/bounds behavior covered by source and actual fixtures, not every linked API"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/KhronosGroup/glTF/main/extensions/2.0/Vendor/EXT_mesh_gpu_instancing/README.md",
+        "file": "native/build/reference-corpus/supplemental1062/ext-mesh-gpu-instancing.md",
+        "sha256": "a729f85e250d6b49bb74c9803cb18c643268a2223f198f3b3612747cab5c80fd",
+        "bytes": 7495,
+        "readScope": "Selected node/accessor/count/TRS transform order from earlier1052 read; not linked glTF core or all vendor extensions"
+      }
+    ],
+    "wholeCorpus": false,
+    "wholeApi": false,
+    "unread": "Linked renderer/engine APIs, platform GPU behavior beyond the measured paths, full Unreal/Unity bodies/media. DDA/normal patch implementation is HB-owned and independently tested."
   }
 }

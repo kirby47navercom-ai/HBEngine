@@ -59,6 +59,8 @@ export class ReflectionProbesRendering{
     }
     for(const [m,state] of view.materials)if(!seen.has(m)){this.restore(m,state);view.materials.delete(m);}
 };
+    // Refresh versioned instance culling bounds before any cubemap capture.
+    for(const mesh of meshes)if(mesh.isInstancedMesh)reflectionProbeMeshBounds(mesh,probeBounds);
     const keys=new Map(probes.map(probe=>[probe.id,probeCaptureKey(probe,changed)]));
     const dirty=probes.filter(p=>view.probes.get(p.id)?.key!==keys.get(p.id));
     if(dirty.length){const iterations=Math.max(...dirty.map(p=>p.p.bounces));

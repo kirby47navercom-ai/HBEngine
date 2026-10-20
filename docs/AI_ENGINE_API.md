@@ -1,5 +1,7 @@
 # 처음 연결하는 AI
 
+월드 제작 상태는 `world.preview.read {path,offset?,limit?}`로 읽어요. 실제 기하 ID·인스턴스 용량·직전 부분 갱신 수·선택 ID 페이지를 반환하고 원본/revision/Undo는 바꾸지 않아요. 지형·폴리지 편집 명령과 사람 UI는 같은 부분 갱신 경로를 사용해요. [제작 비용 묶음과 측정 범위](research/WORLD_EDIT_BATCH_1062.md).
+
 [빠른 시작](AI_START.md)을 먼저 읽고 `node tools/hb.mjs context "작업명"`으로 필요한 소스·근거·검사 후보를 찾아요. 이 문서 전체를 시작 전 필수로 읽지 않아요. 실행 중인 엔진의 스키마도 `node tools/hb.mjs schema --section blueprint --url URL`처럼 필요한 부분만 출력할 수 있어요.
 
 # 165 — 새 제작 분야

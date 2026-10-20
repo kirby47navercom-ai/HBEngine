@@ -1,11 +1,24 @@
 import {meshEdges} from './mesh-topology.js';
 import {assetShortcutKinds} from './asset-shortcut-commands.js';
 export function assetShortcutScope(pane,kind,focused,target){if(kind==='animgraph'&&target?.closest?.('.anim-blend-space,.anim-sync-timeline'))return 'other';return pane?.id===focused?kind==='widget'?'widget':kind==='mesh'?'modeling':kind==='prefab'?'viewport':assetShortcutKinds[kind]||'other':'other';}
-export function assetShortcutContexts(editor,event){const id=event?.target?.closest?.('[data-select-item]')?.dataset.selectItem;return [editor?.doc?.kind,...(editor?.doc?.kind==='montage'&&editor.doc.data.notifyStates?.some(n=>n.id===id)?['notify']:[])].filter(Boolean);}
+export function assetShortcutContexts(editor,event){const id=event?.target?.closest?.('[data-select-item]')?.dataset.selectItem;return [editor?.doc?.kind,...(['terrain','foliage'].includes(editor?.doc?.kind)&&(editor.doc.kind!=='foliage'||editor.foliageMode==='brush')?['worldBrush']:[]),...(editor?.doc?.kind==='montage'&&editor.doc.data.notifyStates?.some(n=>n.id===id)?['notify']:[])].filter(Boolean);}
 export function dispatchAssetShortcut(id,editor,event){
  if(!editor||editor.disposed)return false;
  if(editor.hooks?.running?.()||editor.testing)return false;
  const kind=editor.doc?.kind;
+ if(id.startsWith('world')&&['terrain','foliage','lod'].includes(kind)){
+  if(editor.stroke)return false;
+  if(id==='worldFocus'){editor.fit();return true;}
+  if(['worldRadiusDown','worldRadiusUp'].includes(id)&&['terrain','foliage'].includes(kind)){
+   editor.settings.radius=Math.max(.001,Math.min(1000000,editor.settings.radius*(id==='worldRadiusUp'?1.25:.8)));
+   const field=editor.element?.querySelector('[data-world-setting="radius"]');if(field)field.value=editor.settings.radius;return true;
+  }
+  if(kind==='foliage'){
+   if(id==='worldBrush'||id==='worldSelect'){editor.foliageMode=id==='worldBrush'?'brush':'select';editor.render();return true;}
+   const action={worldDuplicate:'duplicate',worldDelete:'delete'}[id];if(action){editor.action(editor.element?.querySelector('[data-world-instance="'+action+'"]'));return true;}
+  }
+  if(kind==='terrain'&&id.startsWith('worldTerrain')){const mode=id.slice('worldTerrain'.length);editor.settings.mode=mode[0].toLowerCase()+mode.slice(1);const field=editor.element?.querySelector('[data-world-setting="mode"]');if(field)field.value=editor.settings.mode;return true;}
+ }
  const click=selector=>{const button=editor.element?.querySelector(selector);if(button&&!button.disabled)button.click();};
  if(id.startsWith('retarget')&&['retargetrig','retarget'].includes(kind)){const action={retargetPreview:kind==='retargetrig'?'rig-preview':'play',retargetFirst:'rewind',retargetMapExact:'map-exact',retargetMapEmpty:'map-empty',retargetMapFuzzy:'map-fuzzy',retargetDuplicatePose:'duplicate-pose',retargetCapturePose:'capture-pose',retargetNewChain:'chain'}[id];if(action){click('[data-rt-act="'+action+'"]');return true;}}
  if(id.startsWith('audio')&&kind==='audiomixer'){if(id==='audioStop'){editor.stopPreview();editor.render();return true;}const selector={audioPreview:'[data-mixer-preview]',audioAddBus:'[data-mixer-add]',audioSnapshot:'[data-mixer-snapshot]'}[id];if(selector){click(selector);return true;}}
