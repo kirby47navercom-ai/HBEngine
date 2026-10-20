@@ -1,0 +1,20 @@
+import {ShaderChunk} from 'three';
+import {probeBlendGLSL} from './reflection-probe-blend.js';
+
+const source=ShaderChunk.cube_uv_reflection_fragment,start=source.indexOf('vec3 bilinearCubeUV'),end=source.indexOf('#define cubeUV_r0');
+if(start<0||end<=start)throw Error('Three CubeUV 아틀라스 샘플러를 확인하세요.');
+const sampler=source.slice(start,end).replace('bilinearCubeUV( sampler2D envMap, vec3 direction, float mipInt )','hbAtlasBilinear( sampler2D envMap, vec3 direction, float mipInt, vec3 cubeLayout, vec4 rect )').replaceAll('CUBEUV_MAX_MIP','cubeLayout.z').replaceAll('CUBEUV_TEXEL_WIDTH','cubeLayout.x').replaceAll('CUBEUV_TEXEL_HEIGHT','cubeLayout.y').replace('uv.y *= cubeLayout.y;','uv.y *= cubeLayout.y;\nuv=rect.xy+uv*rect.zw;');
+const globals=String.raw`
+#ifdef ENVMAP_TYPE_CUBE_UV
+uniform sampler2D hbProbeAtlas,hbProbeTable;uniform int hbProbeAtlasCount,hbProbeTableWidth;
+struct HBAtlasProbe{vec4 center,minimum,maximum,localX,localY,localZ,faceScale,cubeLayout,rect;};
+vec4 hbAtlasLoad(int index,int field){int at=index*9+field;return texelFetch(hbProbeTable,ivec2(at%hbProbeTableWidth,at/hbProbeTableWidth),0);}
+HBAtlasProbe hbAtlasProbe(int i){return HBAtlasProbe(hbAtlasLoad(i,0),hbAtlasLoad(i,1),hbAtlasLoad(i,2),hbAtlasLoad(i,3),hbAtlasLoad(i,4),hbAtlasLoad(i,5),hbAtlasLoad(i,6),hbAtlasLoad(i,7),hbAtlasLoad(i,8));}
+int hbAtlasFirst=-1,hbAtlasSecond=-1;vec2 hbAtlasWeights=vec2(0);
+void hbAtlasChoose(){for(int i=0;i<hbProbeAtlasCount;i++){vec4 lo=hbAtlasLoad(i,1),hi=hbAtlasLoad(i,2),x=hbAtlasLoad(i,3),y=hbAtlasLoad(i,4),z=hbAtlasLoad(i,5),scale=hbAtlasLoad(i,6);float weight=hbProbeVolumeFade(hbProbeLocalPoint(hbProbePosition,x,y,z),lo.xyz,hi.xyz,scale.xyz,lo.w);if(weight>0.0){if(hbAtlasFirst<0){hbAtlasFirst=i;hbAtlasWeights.x=weight;}else{hbAtlasSecond=i;hbAtlasWeights.y=weight;break;}}}}
+`+sampler+String.raw`
+vec3 hbAtlasSample(HBAtlasProbe p,vec3 ray,float roughness){float mip=clamp(roughnessToMip(roughness),cubeUV_m0,p.cubeLayout.z),whole=floor(mip),part=fract(mip);vec3 first=hbAtlasBilinear(hbProbeAtlas,ray,whole,p.cubeLayout.xyz,p.rect);return part==0.0?first:mix(first,hbAtlasBilinear(hbProbeAtlas,ray,whole+1.0,p.cubeLayout.xyz,p.rect),part);}
+vec3 hbAtlasLight(vec3 ray,float roughness,bool diffuse){float total=hbAtlasWeights.x+hbAtlasWeights.y;vec3 light=vec3(0);for(int slot=0;slot<2;slot++){int index=slot==0?hbAtlasFirst:hbAtlasSecond;if(index<0)continue;HBAtlasProbe p=hbAtlasProbe(index);vec3 direction=ray;if(!diffuse&&p.faceScale.w>.5)direction=hbProbeProject(hbProbePosition,ray,p.center.xyz,hbProbeLocalPoint(hbProbePosition,p.localX,p.localY,p.localZ),hbProbeLocalRay(ray,p.localX,p.localY,p.localZ),p.minimum.xyz,p.maximum.xyz);light+=hbAtlasSample(p,direction,roughness)*p.center.w*(diffuse?p.maximum.w:1.0)*(slot==0?hbAtlasWeights.x:hbAtlasWeights.y);}light/=max(1.0,total);if(hbProbeBaseOptions.x>.5&&total<1.0)light+=hbProbeSample(hbProbeBaseMap,hbProbeBaseRotation*ray,roughness,hbProbeBaseLayout)*hbProbeBaseOptions.y*(1.0-total);return light;}
+#endif
+`;
+export function probeAtlasPhysicalGLSL(){return probeBlendGLSL+'\n'+globals+'\n'+ShaderChunk.envmap_physical_pars_fragment.replace(/vec4 envMapColor = textureCubeUV\([^;]+;/g,'').replace('return PI * envMapColor.rgb * envMapIntensity;','return PI * hbAtlasLight(worldNormal,1.0,true);').replace('return envMapColor.rgb * envMapIntensity;','return hbAtlasLight(reflectVec,roughness,false);');}

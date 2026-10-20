@@ -2,12 +2,14 @@ import {Vector3,Vector4,Matrix3,LightingNode,TextureNode} from 'three/webgpu';
 import {Fn,If,uniform,nodeObject,textureCubeUV,positionWorld,normalWorld,normalView,clearcoatNormalView,bentNormalView,positionViewDirection,roughness,clearcoatRoughness,cameraViewMatrix,mix,vec3,float,cache} from 'three/tsl';
 import {gpuProbeVolumeNodes} from './reflection-probe-volume-gpu.js';
 import {probeMapLayout} from './reflection-probe-blend.js';
+import {createGPUProbeAtlasEnvironment} from './gpu-probe-atlas-environment.js';
 
 // Sampling clones must keep independent slots even when initially referencing
 // the same placeholder map. Texture UUID dedup would merge future candidates.
 class ProbeTextureNode extends TextureNode{getUniformHash(){return this.getBase().uuid;}}
 const identity=new Matrix3();
-export function createGPUProbeEnvironment(probe,map){
+export function createGPUProbeEnvironment(probe,map,atlas=null){
+ if(atlas)return createGPUProbeAtlasEnvironment(atlas);
  const binding=map=>nodeObject(new ProbeTextureNode(map));
  const slots=Array.from({length:2},()=>{const center=uniform(new Vector3()),minimum=uniform(new Vector3()),maximum=uniform(new Vector3()),localX=uniform(new Vector4(1,0,0,0)),localY=uniform(new Vector4(0,1,0,0)),localZ=uniform(new Vector4(0,0,1,0)),faceScale=uniform(new Vector3(1,1,1)),options=uniform(new Vector4()),intensity=uniform(0),layout=uniform(new Vector3()),environment=binding(map);return {center,options,intensity,layout,environment,volume:{minimum,maximum,localX,localY,localZ,faceScale,blend:options.z}};}),base=binding(map),baseLayout=uniform(new Vector3()),baseOptions=uniform(new Vector3()),baseRotation=uniform(new Matrix3());
  // Match PMREMNode's GPU texture orientation without rotating captured probes

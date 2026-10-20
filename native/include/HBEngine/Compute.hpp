@@ -73,6 +73,7 @@ class Device {
     friend class ScreenEffectsPass;
     friend class HierarchicalDepth;
     friend class SceneProbes;
+    friend class SceneProbeAtlas;
     friend class SceneLightTiles;
     detail::Com<ID3D11Device> device;
     detail::Com<ID3D11DeviceContext> context;

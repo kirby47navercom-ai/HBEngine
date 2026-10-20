@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "wholeCorpusGateAdvanced": false,
+  "reads": [
+    {
+      "url": "https://docs.unity.com/en-us/engine/6000.6/manual/lighting-overview/lighting/reflection-probes/introduction",
+      "kind": "reread scoped body",
+      "lineRanges": [
+        [
+          235,
+          278
+        ]
+      ],
+      "scope": "CPU object candidates, per-pixel volumes/remaining sky, indirect-draw Forward+/Deferred+ distinction"
+    },
+    {
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/reflections-captures-in-unreal-engine",
+      "kind": "reread scoped body",
+      "lineRanges": [
+        [
+          6,
+          23
+        ]
+      ],
+      "scope": "sphere/box influence and smaller capture override; sphere/priority remain in HB ledger"
+    },
+    {
+      "url": "https://registry.khronos.org/OpenGL/specs/gl/glspec43.core.pdf",
+      "kind": "new scoped specification body",
+      "pdfIndexPages": [
+        235,
+        236
+      ],
+      "lineRanges": [
+        [
+          7337,
+          7394
+        ]
+      ],
+      "sections": [
+        "8.13",
+        "8.13.1"
+      ],
+      "scope": "face axes/UV and neighboring texel/corner filtering; recommended3sample average with implementation freedom, actual native comparison required"
+    }
+  ],
+  "localDependency": {
+    "name": "three",
+    "version": "0.180.0",
+    "paths": [
+      "src/nodes/pmrem/PMREMUtils.js",
+      "src/nodes/pmrem/PMREMNode.js",
+      "src/nodes/accessors/TextureNode.js",
+      "src/renderers/common/Renderer.js",
+      "src/renderers/webgpu/WebGPUBackend.js",
+      "src/renderers/webgl-fallback/utils/WebGLTextureUtils.js",
+      "src/renderers/webgl-fallback/nodes/GLSLNodeBuilder.js",
+      "src/renderers/webgpu/nodes/WGSLNodeBuilder.js"
+    ]
+  },
+  "unread": "Other documentation/API corpus and remaining PDF body were not read/promoted."
+}

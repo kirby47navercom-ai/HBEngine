@@ -25,7 +25,7 @@ inline void setProbeWorldToLocal(ProbeSettings& settings,const Matrix& matrix){
 class SceneProbes {
 public:
     struct Probe {
-        friend class SceneProbes;friend class SceneRenderer;
+        friend class SceneProbes;friend class SceneRenderer;friend class SceneProbeAtlas;
     private:
         detail::Com<ID3D11Texture2D> capture,filtered;
         detail::Com<ID3D11ShaderResourceView> source,view,irradiance;
@@ -34,7 +34,7 @@ public:
         std::array<detail::Com<ID3D11RenderTargetView>,6> faces;
         detail::Com<ID3D11DepthStencilView> depth;
         std::vector<detail::Com<ID3D11UnorderedAccessView>> levels;
-        ID3D11Device* owner=nullptr;UINT size=0,mips=0;bool ready=false;
+        ID3D11Device* owner=nullptr;UINT size=0,mips=0;bool ready=false;std::uint64_t identity=0,revision=0;
     public:
         Probe()=default;Probe(Probe&&)=default;Probe& operator=(Probe&&)=default;
         std::uint64_t storageBytes() const{std::uint64_t pixels=0;for(UINT s=size;s;s/=2)pixels+=std::uint64_t(s)*s;return std::uint64_t(size)*size*52+pixels*48+9*16;}
@@ -48,7 +48,7 @@ private:
     detail::Com<ID3D11SamplerState> sampler;
     std::array<detail::Com<ID3D11Buffer>,3> constants;std::size_t slot=0;
     detail::Com<ID3D11ShaderResourceView> brdf;
-    std::uint64_t dispatches_=0,captures_=0;
+    std::uint64_t dispatches_=0,captures_=0;inline static std::atomic<std::uint64_t> identities_{0};
     static constexpr const char* shader=R"HLSL(
 cbuffer FilterSettings:register(b0){float4 settings;};
 TextureCube<float4> source:register(t0);Texture2D<float4> panorama:register(t1);SamplerState linearClamp:register(s0);SamplerState panoramaSampler:register(s1);
@@ -100,7 +100,7 @@ public:
     Probe create(UINT size){
         if(size<16||size>2048||(size&(size-1)))throw std::runtime_error("Probe resolution must be a power of two (16..2048)");
         prepare();
-        std::lock_guard<std::mutex> lock(gpu.mutex);Probe out;out.owner=gpu.device.p;out.size=size;for(UINT n=size;n;n/=2)++out.mips;
+        std::lock_guard<std::mutex> lock(gpu.mutex);Probe out;out.owner=gpu.device.p;out.size=size;out.identity=++identities_;for(UINT n=size;n;n/=2)++out.mips;
         D3D11_TEXTURE2D_DESC d{};d.Width=d.Height=size;d.MipLevels=1;d.ArraySize=6;d.SampleDesc.Count=1;d.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;d.BindFlags=D3D11_BIND_RENDER_TARGET|D3D11_BIND_SHADER_RESOURCE|D3D11_BIND_UNORDERED_ACCESS;d.MiscFlags=D3D11_RESOURCE_MISC_TEXTURECUBE;
         detail::check(gpu.device->CreateTexture2D(&d,nullptr,&out.capture.p),"Probe HDR capture");detail::check(gpu.device->CreateShaderResourceView(out.capture.p,nullptr,&out.source.p),"Probe capture view");for(UINT f=0;f<6;f++){D3D11_RENDER_TARGET_VIEW_DESC v{};v.Format=d.Format;v.ViewDimension=D3D11_RTV_DIMENSION_TEXTURE2DARRAY;v.Texture2DArray.FirstArraySlice=f;v.Texture2DArray.ArraySize=1;detail::check(gpu.device->CreateRenderTargetView(out.capture.p,&v,&out.faces[f].p),"Probe face target");}
         d.MipLevels=out.mips;d.BindFlags=D3D11_BIND_SHADER_RESOURCE|D3D11_BIND_UNORDERED_ACCESS;detail::check(gpu.device->CreateTexture2D(&d,nullptr,&out.filtered.p),"Probe filtered cube");detail::check(gpu.device->CreateShaderResourceView(out.filtered.p,nullptr,&out.view.p),"Probe filtered view");out.levels.resize(out.mips);for(UINT m=1;m<out.mips;m++){D3D11_UNORDERED_ACCESS_VIEW_DESC u{};u.Format=d.Format;u.ViewDimension=D3D11_UAV_DIMENSION_TEXTURE2DARRAY;u.Texture2DArray.MipSlice=m;u.Texture2DArray.ArraySize=6;detail::check(gpu.device->CreateUnorderedAccessView(out.filtered.p,&u,&out.levels[m].p),"Probe mip output");}
@@ -124,7 +124,7 @@ public:
         if(stage==0){target.ready=false;for(UINT f=0;f<6;f++)gpu.context->CopySubresourceRegion(target.filtered.p,D3D11CalcSubresource(0,f,target.mips),0,0,0,target.capture.p,f,nullptr);return false;}
         auto* source=target.source.p;auto* sample=sampler.p;gpu.context->CSSetShaderResources(0,1,&source);gpu.context->CSSetSamplers(0,1,&sample);
         if(stage<target.mips){auto* b=constants[slot].p;slot=(slot+1)%constants.size();D3D11_MAPPED_SUBRESOURCE map{};detail::check(gpu.context->Map(b,0,D3D11_MAP_WRITE_DISCARD,0,&map),"Probe filter map");const std::array<float,4> values{float(target.size>>stage),float(stage)/float(target.mips-1),0,0};std::memcpy(map.pData,values.data(),16);gpu.context->Unmap(b,0);gpu.context->CSSetConstantBuffers(0,1,&b);gpu.context->CSSetShader(prefilter.p,nullptr,0);auto* u=target.levels[stage].p;gpu.context->CSSetUnorderedAccessViews(0,1,&u,nullptr);gpu.context->Dispatch((UINT(values[0])+7)/8,(UINT(values[0])+7)/8,6);++dispatches_;u=nullptr;gpu.context->CSSetUnorderedAccessViews(0,1,&u,nullptr);}
-        else{gpu.context->CSSetShader(diffuse.p,nullptr,0);auto* u=target.coefficientOutput.p;gpu.context->CSSetUnorderedAccessViews(1,1,&u,nullptr);gpu.context->CSSetShader(diffuse.p,nullptr,0);gpu.context->Dispatch(1,1,1);++dispatches_;u=nullptr;gpu.context->CSSetUnorderedAccessViews(1,1,&u,nullptr);target.ready=true;++captures_;}
+        else{gpu.context->CSSetShader(diffuse.p,nullptr,0);auto* u=target.coefficientOutput.p;gpu.context->CSSetUnorderedAccessViews(1,1,&u,nullptr);gpu.context->CSSetShader(diffuse.p,nullptr,0);gpu.context->Dispatch(1,1,1);++dispatches_;u=nullptr;gpu.context->CSSetUnorderedAccessViews(1,1,&u,nullptr);target.ready=true;++target.revision;++captures_;}
         source=nullptr;gpu.context->CSSetShaderResources(0,1,&source);gpu.context->CSSetShader(nullptr,nullptr,0);return target.ready;
     }
     void filter(Probe& target){for(std::uint32_t stage=0;stage<=target.mips;stage++)filterStep(target,stage);}
@@ -134,6 +134,7 @@ public:
     void release(){preparing={};retried={};requested=false;preparationError.clear();brdf={};prefilter={};integrate={};diffuse={};equirect={};sampler={};for(auto& c:constants)c={};}
 };
 
+struct SceneProbeBinding {const SceneProbes::Probe* resource=nullptr;ProbeSettings settings;};
 inline constexpr const char* sceneProbeDeclarations=R"HLSL(
 struct ProbeSettings{float4 center,minimum,maximum,options,localX,localY,localZ,faceScale;};cbuffer ProbeBindings:register(b2){ProbeSettings probeSettings[3];};
 TextureCube<float4> probe0:register(t39),probe1:register(t40);StructuredBuffer<float4> probeSH0:register(t41),probeSH1:register(t42);Texture2D<float2> probeBrdf:register(t43);TextureCube<float4> skyProbe:register(t46);StructuredBuffer<float4> skySH:register(t47);
@@ -152,8 +153,8 @@ float3 probeLight(TextureCube<float4> cube,StructuredBuffer<float4> sh,ProbeSett
 }
 float3 skyDirection(float3 d){ProbeSettings p=probeSettings[2];return float3(p.minimum.y*d.x-p.minimum.x*d.z,d.y,p.minimum.x*d.x+p.minimum.y*d.z);}
 float3 skyLight(float3 n,float3 v,float3 base,float rough,float metal,float ao,float3 dielectric,float diffuseWeight){return probeLight(skyProbe,skySH,probeSettings[2],float3(0,0,0),skyDirection(n),skyDirection(v),base,rough,metal,ao,dielectric,diffuseWeight);}
-float3 refractedProbes(float3 at,float3 direction,float rough,out float coverage){float a=probeWeight(probeSettings[0],at),b=probeWeight(probeSettings[1],at);coverage=saturate(a+b);float3 c=0;if(a>0)c+=probe0.SampleLevel(linear2d,probeDirection(probeSettings[0],at,direction),rough*probeSettings[0].maximum.w).rgb*probeSettings[0].center.w*a;if(b>0)c+=probe1.SampleLevel(linear2d,probeDirection(probeSettings[1],at,direction),rough*probeSettings[1].maximum.w).rgb*probeSettings[1].center.w*b;float sky=probeSettings[2].options.x*(1-coverage);c=c/max(a+b,1e-6)*coverage;if(sky>0)c+=skyProbe.SampleLevel(linear2d,skyDirection(direction),rough*probeSettings[2].maximum.w).rgb*probeSettings[2].center.w*sky;coverage=saturate(coverage+sky);return c/max(coverage,1e-6);}
-float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao,float3 dielectricF0,float diffuseWeight){float a=probeWeight(probeSettings[0],at),b=probeWeight(probeSettings[1],at),total=a+b;float3 c=0;if(a>0)c+=probeLight(probe0,probeSH0,probeSettings[0],at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*a;if(b>0)c+=probeLight(probe1,probeSH1,probeSettings[1],at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*b;c=c/max(1,total);float sky=probeSettings[2].options.x*(1-saturate(total));if(sky>0)c+=skyLight(n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*sky;return c;}
+float3 refractedProbes(float3 at,float3 direction,float rough,out float coverage){if(probeSettings[0].faceScale.w>0)return refractedAtlasProbes(at,direction,rough,coverage);float a=probeWeight(probeSettings[0],at),b=probeWeight(probeSettings[1],at);coverage=saturate(a+b);float3 c=0;if(a>0)c+=probe0.SampleLevel(linear2d,probeDirection(probeSettings[0],at,direction),rough*probeSettings[0].maximum.w).rgb*probeSettings[0].center.w*a;if(b>0)c+=probe1.SampleLevel(linear2d,probeDirection(probeSettings[1],at,direction),rough*probeSettings[1].maximum.w).rgb*probeSettings[1].center.w*b;float sky=probeSettings[2].options.x*(1-coverage);c=c/max(a+b,1e-6)*coverage;if(sky>0)c+=skyProbe.SampleLevel(linear2d,skyDirection(direction),rough*probeSettings[2].maximum.w).rgb*probeSettings[2].center.w*sky;coverage=saturate(coverage+sky);return c/max(coverage,1e-6);}
+float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao,float3 dielectricF0,float diffuseWeight){if(probeSettings[0].faceScale.w>0)return indirectAtlasProbes(at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight);float a=probeWeight(probeSettings[0],at),b=probeWeight(probeSettings[1],at),total=a+b;float3 c=0;if(a>0)c+=probeLight(probe0,probeSH0,probeSettings[0],at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*a;if(b>0)c+=probeLight(probe1,probeSH1,probeSettings[1],at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*b;c=c/max(1,total);float sky=probeSettings[2].options.x*(1-saturate(total));if(sky>0)c+=skyLight(n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*sky;return c;}
 float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao,float dielectricF0){return indirectProbes(at,n,v,base,rough,metal,ao,dielectricF0,1);}
 float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao){return indirectProbes(at,n,v,base,rough,metal,ao,.04);}
 )HLSL";

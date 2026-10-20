@@ -1,23 +1,19 @@
-# 현재 인계 — 반사 혼합·변형 경계·노멀/누적 목표 계속
+# 현재 인계 — 전역 반사 후보·GPU 아틀라스/누적 목표 계속
 
-2026-10-21. 장기 목표 active. 전체 누적 목표를 완료/정지로 바꾸지 않아요. 여러 변경을 구현한 뒤 관련 검사를 묶어요.
+2026-10-21. 장기 목표 active. 전체 누적 목표를 완료/정지로 바꾸지 않아요. 여러 변경 뒤 관련 검사를 묶어요. AGENTS.md → docs/AI_START.md → node tools/hb.mjs context "작업명". 정본 docs/research/ENGINE_STATUS.json. 실제 설치는 HBEngine.install.json/context state.installation으로 구분해요.
 
-## 시작
+## 현재 구현
 
-AGENTS.md → docs/AI_START.md → node tools/hb.mjs context "작업명". 정본 docs/research/ENGINE_STATUS.json. 과거 연구/API 전체를 선행 독서하지 않아요. 실제 설치는 HBEngine.install.json/context state.installation으로 확인하고 패키지의 이전 영수증과 구분해요.
+ENGINE_WORK_1131.json·REFLECTION_PROBE_ATLAS.md·research/PROBE_ATLAS_1130.md. 큰 메시/인스턴스의 세 후보 이상 경계는 전체 순위 HDR atlas에서 픽셀별 두 후보 선택. GL/GPU/강제GL폴백/네이티브D3D·혼합해상도·affine fade/base잔여·기본/코팅/굴절. 작은 드로 직접두맵 유지. 정지복사/전송0·밝기는metadata만·캡처변경만copy/padding. D3D 컴퓨트 이웃면/세면corner패딩으로 화면hardware filtering. 기존 C++/BP 함수·JSON/CAS/Undo·AI스키마/심볼 유지. 임의개수상한없음, 장치차원오류명시, 추가atlas메모리/선형순위탐색비용공개.
 
-## 이번 구현과 근거
-
-ENGINE_WORK_1112.json·REFLECTION_PROBE_BLEND.md·research/PROBE_BLEND_1111.md. browser2후보 affine fade/원래환경 잔여·맵별CubeUV·GPU고정샘플ID·GL약한uniform bank/172032B CPU앵커·base intensity/rotation/필터수명·공유clone/굴절소유복원.0후보/두후보/후보추가/해상도변경/실제인스턴스. CPU skin/morph현재경계/음수가중치/본·바인드·속성stamp/정지정점읽기0/캡처전갱신, native JS패킷후보/컬링. native ABI불변·Player1040/Host1041재사용.
-
-UV없는 glTF의검정반사는hbNormal normalize(0). GL/GPU기본·코팅frame의중립/음수Z/0/퇴화/일직선/누락UV·큰유한값을보호해요.1109-rog0AT각24해석조건·1106-rsIzi5·1108-mxacl3·1107-PIVBqz metal/coat오차<1e-6·환경/프로그램/복원통과. 실제morph CPP/BP NativeFtfibr/GLQn5es9/GPU IWdwOu;최종설치1114에서현재소스세렌더러재확인통과. 실패/조명위치시험/스키마교체충돌은성과로세지않아요. 임시드로진단훅제거, DEBUG_HANDOFF참고.
+CPU1116-euj3ss·변형1106-4VVmyv·수명1108-eWSxE6·100003인스턴스경계·API/AI/문법통과. 실제GL/GPU/강제폴백1117-9n0axL 4영역/4인스턴스/밝기·해상도·해제/복원 및 각54그라데이션금속/코팅. native1119-RMzcPS 21방향×4픽셀TextureCube오차1/허용2·정지패딩재사용·실제표면graph컴파일4371ms(관측값,전체FPS/ABBA미주장). 실제CPP/BP 1120-tShlaw GL/JuyK49 GPU/PpduDz D3D 네영역→밝기변경→복원·capture/copy/padding유지. toneMapping HDR4의주황은ACES gamut변환: 영역판별fixture발광.4로수정,선형HDR검사는유지. 폴백RT목적지끝좌표를소유FBO어댑터에서수정,의존패키지미수정. 실패/타임아웃/옛증거를통과로세지않아요.
 
 ## 설치
 
-현재 확정 USER_INSTALL_1114.json: C:\Users\kirby\HBEngine\Versions\a24629862c1045b8/HBEngine.exe. 3817파일/489소유SHA/CPP14·native10/Player1040/Host1041재사용·User10849읽기전후SHA·연결·Versions1. 설치GL/GPU혼합/0→2후보/환경회전·해상도/프로그램/자원·각24노멀조건·실제CPP/BP모프를세렌더러5상태/캡처1로통과. 실제설치마커/AI context대조. 이전183940914B정리·공유캐시{"deleted":0,"bytes":0,"receipt":null}. sync1113/install1114/finish1115 및 옛one-shot은 완료했으니재실행하지않아요.
+이 묶음은 설치 전환 준비 중이에요. 확정 설치는 아직 USER_INSTALL_1114.json의 a24629862c1045b8이에요. Player1123 새 컴파일, Host1041은 HB_GAME_PLAYER guard/소스·binarySHA 대조 후 재사용해요. sync1132/install1133/finish1134 새 one-shot만 사용하고 과거 완료script재실행금지. 최종 설치에서 전체명세/소유SHA/CPP15/native13·실제세렌더러/폴백·AI실제마커·User읽기SHA/연결/Versions1확인해요.
 
 ## 이어갈 잔여
 
-RND03 큰메시/배치의전역픽셀후보·임의인스턴스별쌍·픽셀중요도/작은캡처우선점유·임의shader변형/instance morph texture·lightmap혼합. RND06 GL초기약8/7초유지;1086 SSA/0초기화미채택반복금지. RND08 전역거리장clipmap/타일·방향하늘/bentnormal/시간신뢰도·지형/변형/마스크·FBX/월드/다중LOD·편집기쿠킹/HWRT/방향베이크. 이전1102사전쿠킹,1094카메라LOD,1082목록,1075월드근거보존. 다른애니메이션/물리/네트워크/UI/월드·모바일누적목표는원장에남아요. 외부읽기는supplemental1111지정본문만;전체gate미승격.
+RND03 공간타일/클러스터가속·큰장면성능/메모리·픽셀중요도우선점유/작은캡처덮기·sphere·lightmap혼합·임의shader변위/instance morph texture경계. native직교off-axis 시선·ambient금속처리/물리단위대조 별도(이번실제게임은중앙/ambient0). RND06 GLComplex141약8/7초유지;1086 SSA/0초기화미채택실험반복금지. RND08 전역거리장clipmap/타일·방향하늘/bentnormal/시간신뢰도·지형/변형/마스크·FBX/월드/다중LOD·편집기쿠킹/HWRT/방향베이크. 다른78행누적목표유지·전체완료율미확정. supplemental1130지정본문읽기만,전체gate미승격.
 
-백그라운드·소유임시프로젝트/프로필/포트만. User/게임원본을검사·종료하지않아요. 무거운검사/설치전activeInstalledVersions·사용중이면미뤄요. native소유SHA재사용,Versions1·User읽기SHA·최종관련검사·임시runtime/공유캐시정리. 고정보고서이전SHA를과거완료새근거로쓰지않아요. 한글같은author/committer커밋·푸시. Android폰/Mac없음재질문금지.
+백그라운드·소유임시프로젝트/프로필/포트만. User/게임원본검사·종료금지. 무거운검사/설치전activeInstalledVersions·사용중이면미뤄요. Versions1·이전설치전체백업없음·검사runtime/공유캐시정리. 한글동일author/committer커밋·푸시. Android폰/Mac없음재질문금지.

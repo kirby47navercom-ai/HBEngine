@@ -156,7 +156,13 @@
         "prototype/native-scene-renderer.js",
         "native/desktop/SceneRenderBridge.hpp",
         "native/include/HBEngine/SceneRender.hpp",
-        "prototype/gpu-materials.js"
+        "prototype/gpu-materials.js",
+        "prototype/reflection-probe-atlas.js",
+        "prototype/reflection-probe-atlas-layout.js",
+        "prototype/reflection-probe-atlas-shader.js",
+        "prototype/gpu-probe-atlas-environment.js",
+        "native/include/HBEngine/SceneProbeAtlas.hpp",
+        "native/include/HBEngine/ProbeAtlasPadding.hpp"
       ]
     },
     {
@@ -239,7 +245,13 @@
         "prototype/mesh-distance-field-lod.js",
         "prototype/reflection-probe-blend.js",
         "prototype/gpu-probe-environment.js",
-        "prototype/reflection-probe-deformed-bounds.js"
+        "prototype/reflection-probe-deformed-bounds.js",
+        "prototype/reflection-probe-atlas.js",
+        "prototype/reflection-probe-atlas-layout.js",
+        "prototype/reflection-probe-atlas-shader.js",
+        "prototype/gpu-probe-atlas-environment.js",
+        "native/include/HBEngine/SceneProbeAtlas.hpp",
+        "native/include/HBEngine/ProbeAtlasPadding.hpp"
       ]
     },
     {
@@ -667,7 +679,13 @@
         "tools/distance-field-cook.mjs",
         "prototype/reflection-probe-blend.js",
         "prototype/gpu-probe-environment.js",
-        "prototype/reflection-probe-deformed-bounds.js"
+        "prototype/reflection-probe-deformed-bounds.js",
+        "prototype/reflection-probe-atlas.js",
+        "prototype/reflection-probe-atlas-layout.js",
+        "prototype/reflection-probe-atlas-shader.js",
+        "prototype/gpu-probe-atlas-environment.js",
+        "native/include/HBEngine/SceneProbeAtlas.hpp",
+        "native/include/HBEngine/ProbeAtlasPadding.hpp"
       ]
     },
     {
