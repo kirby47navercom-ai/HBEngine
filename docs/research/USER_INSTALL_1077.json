@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "date": "2026-10-20",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "3cb04ef7ac22c0cc6fd25ff6da2a011e7fb968ca",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\884e599a4157ab0e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\884e599a4157ab0e\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\884e599a4157ab0e\\HBEngine.exe",
+  "bundleHash": "884e599a4157ab0e51c6805b19d5dde433ce6567d69862349322c71f074b07af",
+  "files": 3769,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3765,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\412358fb4a17500d",
+        "bytes": 183490860,
+        "manifestSHA256": "bade21ada7d6a08783ee96f12a45cf0fdd976ca4e58e4e8233689bf5bd0bab79"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-20T14:12:29.7509043Z",
+    "bytes": 183490860,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "884e599a4157ab0e"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 449,
+  "repositoryOnlyTestSourcesVerified": 14,
+  "nativePlayerSHA256": "a5235c863e3886fd8b1a0c238c43d344d7f5fb5f3e0d9c3c3fec48b00c3f3a31",
+  "installedGates": [
+    {
+      "path": "native/build/world-edit-1060-yl9khC/acceptance.json",
+      "sha256": "38889da66e79a7a6580585f1d935b1da85595b96a798802af57a204bf64058a1",
+      "scope": "실제 설치본 월드 AI 편집/사람 공용/Undo/단축키·입력 격리·읽기revision불변·지형408B/폴리지64B 부분전송·기하재사용/새GPU할당0·정상종료",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\884e599a4157ab0e\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\884e599a4157ab0e\\",
+    "elapsedMs": 195.39,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\884e599a4157ab0e",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "884e599a4157ab0e51c6805b19d5dde433ce6567d69862349322c71f074b07af",
+      "installedAt": "2026-10-20T14:12:26.110Z",
+      "manifestFiles": 3769,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3769,
+  "versions": [
+    "884e599a4157ab0e"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1077-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/world-draft-1074.json",
+      "sha256": "5a028cccdf665a19487b365c731935c3c770ea46911b4e6f7d994f8e3a14c290"
+    },
+    {
+      "path": "native/build/world-draft-1074-regression1059.json",
+      "sha256": "c3cbf1e76e7192e7433dc7a7c66738bfdb7dc00fa0dd4f18bbc2f99c10a1efad"
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "1077 전체3769파일/449소유SHA/CPP14·native10지문/Player1040/Host1041재사용·월드편집/AI/Undo/부분GPU/마커·UI1072동일소유증거재사용·User읽기SHA/연결/Versions1",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

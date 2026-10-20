@@ -492,9 +492,28 @@
     {
       "path": "native/build/world-draft-1074-regression1059.json",
       "sha256": "c3cbf1e76e7192e7433dc7a7c66738bfdb7dc00fa0dd4f18bbc2f99c10a1efad"
+    },
+    {
+      "path": "native/build/world-edit-1060-yl9khC/acceptance.json",
+      "sha256": "38889da66e79a7a6580585f1d935b1da85595b96a798802af57a204bf64058a1",
+      "scope": "실제 설치본 월드 AI 편집/사람 공용/Undo/단축키·입력 격리·읽기revision불변·지형408B/폴리지64B 부분전송·기하재사용/새GPU할당0·정상종료",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\884e599a4157ab0e\\HBEngine.exe"
+      ]
     }
   ],
-  "sourceGameGates": [],
+  "sourceGameGates": [
+    {
+      "path": "native/build/world-edit-1060-yl9khC/acceptance.json",
+      "sha256": "38889da66e79a7a6580585f1d935b1da85595b96a798802af57a204bf64058a1",
+      "scope": "실제 설치본 월드 AI 편집/사람 공용/Undo/단축키·입력 격리·읽기revision불변·지형408B/폴리지64B 부분전송·기하재사용/새GPU할당0·정상종료",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\884e599a4157ab0e\\HBEngine.exe"
+      ]
+    }
+  ],
   "reusedUIEvidence": {
     "receipt": "docs/research/USER_INSTALL_1072.json",
     "reason": "widget, virtual-list, fonts and context owner SHA unchanged; app change isolated to terrain/foliage authoring"
@@ -518,8 +537,8 @@
       "native/include/HBEngine/SceneProbes.hpp": "e566db9d8ae7992f736e25442d673d7af4623075237885b95ebd0feee377eb25"
     }
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1072.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1077.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     {
@@ -851,5 +870,6 @@
       ]
     }
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1077.json"
 }

@@ -2741,11 +2741,11 @@
     "scope": "사람/AI 월드 소유초안·중복 복사/원본보존/Undo 비용 절감"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1072.json",
-    "sourceCommit": "df6406ed8354da0b9f3940a4110bbfd0fd95936a",
-    "bundleHash": "412358fb4a17500d82eaf65f148b766fa85705614d62461aab0ff479d493a686",
+    "receipt": "docs/research/USER_INSTALL_1077.json",
+    "sourceCommit": "3cb04ef7ac22c0cc6fd25ff6da2a011e7fb968ca",
+    "bundleHash": "884e599a4157ab0e51c6805b19d5dde433ce6567d69862349322c71f074b07af",
     "verified": true,
     "versions": 1,
-    "scope": "1072 전체3764파일/446소유SHA/CPP14·네이티브10지문동일/Player1040/Host1041재사용·설치위젯/복합목록/예산/스크롤/공유글꼴/Undo/AI·실제설치마커·User읽기전후SHA/연결/Versions1"
+    "scope": "1077 전체3769파일/449소유SHA/CPP14·native10지문/Player1040/Host1041재사용·월드편집/AI/Undo/부분GPU/마커·UI1072동일소유증거재사용·User읽기SHA/연결/Versions1"
   }
 }
