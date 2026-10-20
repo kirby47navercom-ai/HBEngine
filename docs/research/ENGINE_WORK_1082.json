@@ -519,6 +519,15 @@
       "path": "native/build/widget-batch-1067-bF77ML/acceptance.json",
       "sha256": "f40c147b77ec8cb5eeb8b64ce7bb3469caeffc074d90f2cdf7148628a3a17478",
       "scope": "UI 공용 회귀"
+    },
+    {
+      "path": "native/build/list-editing-1080-BSEufI/acceptance.json",
+      "sha256": "48beec9a42ca22dc4b37cf9951fda154dcdfd9e62f034725a4ef9c75a3ae3c02",
+      "scope": "실제 설치본 Windows 격리 창·목록 상세/Undo·100000선택/풀8·키 격리·키보드/합성 드래그 재정렬·행 텍스트/체크/슬라이더 자료 쓰기·재사용 마지막 행/이벤트·고정행 offset 재생성0·스크립트 교체/기존서비스·정상종료",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\67a9e17734d12595\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -531,6 +540,15 @@
       "path": "native/build/widget-batch-1067-bF77ML/acceptance.json",
       "sha256": "f40c147b77ec8cb5eeb8b64ce7bb3469caeffc074d90f2cdf7148628a3a17478",
       "scope": "UI 공용 회귀"
+    },
+    {
+      "path": "native/build/list-editing-1080-BSEufI/acceptance.json",
+      "sha256": "48beec9a42ca22dc4b37cf9951fda154dcdfd9e62f034725a4ef9c75a3ae3c02",
+      "scope": "실제 설치본 Windows 격리 창·목록 상세/Undo·100000선택/풀8·키 격리·키보드/합성 드래그 재정렬·행 텍스트/체크/슬라이더 자료 쓰기·재사용 마지막 행/이벤트·고정행 offset 재생성0·스크립트 교체/기존서비스·정상종료",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\67a9e17734d12595\\HBEngine.exe"
+      ]
     }
   ],
   "reusedNativeEvidence": [
@@ -555,13 +573,14 @@
       "native/include/HBEngine/SceneProbes.hpp": "e566db9d8ae7992f736e25442d673d7af4623075237885b95ebd0feee377eb25"
     }
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1077.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1084.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "트리 재부모화/여러 목록 간 이동·실기기 터치 재정렬·복합 중첩 측정/전체 접근성·장시간 기기별 성능",
     "새 네이티브 list 전용 함수·실제 컴파일 C++ 새 동작 증거는 별도; 기존 SetListItems/SetValue 서비스·custom event 구조 공유",
     "초기 GL 약8/7초와 이전 프레임 광학 이력 등 누적 렌더링/엔진 목표 유지"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1084.json"
 }

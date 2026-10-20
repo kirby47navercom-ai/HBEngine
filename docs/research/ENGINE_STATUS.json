@@ -2745,11 +2745,11 @@
     "scope": "목록 다중선택/순서변경·행 자료 편집/부분 refresh·사람/AI/이벤트/풀"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1077.json",
-    "sourceCommit": "3cb04ef7ac22c0cc6fd25ff6da2a011e7fb968ca",
-    "bundleHash": "884e599a4157ab0e51c6805b19d5dde433ce6567d69862349322c71f074b07af",
+    "receipt": "docs/research/USER_INSTALL_1084.json",
+    "sourceCommit": "63883fc173fb02d23831e541393d9594fdc78d30",
+    "bundleHash": "67a9e17734d12595b81ad5f60208325fcf6edc071e38d15df5083c1ab25fef56",
     "verified": true,
     "versions": 1,
-    "scope": "1077 전체3769파일/449소유SHA/CPP14·native10지문/Player1040/Host1041재사용·월드편집/AI/Undo/부분GPU/마커·UI1072동일소유증거재사용·User읽기SHA/연결/Versions1"
+    "scope": "1084 전체3777파일/454소유SHA/CPP14·native10지문/Player1040/Host1041재사용·목록 다중선택/재정렬/행쓰기/입력/재활용/이벤트/풀/Undo·실제마커·User읽기SHA/연결/Versions1"
   }
 }

@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "date": "2026-10-20",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "63883fc173fb02d23831e541393d9594fdc78d30",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\67a9e17734d12595",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\67a9e17734d12595\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\67a9e17734d12595\\HBEngine.exe",
+  "bundleHash": "67a9e17734d12595b81ad5f60208325fcf6edc071e38d15df5083c1ab25fef56",
+  "files": 3777,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3770,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\884e599a4157ab0e",
+        "bytes": 183579323,
+        "manifestSHA256": "a134504bbcab84892c01ccdfc5f01d3573d575eac4879d312e81eabf0e6758bc"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-20T14:50:49.6093152Z",
+    "bytes": 183579323,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "67a9e17734d12595"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 454,
+  "repositoryOnlyTestSourcesVerified": 14,
+  "nativePlayerSHA256": "a5235c863e3886fd8b1a0c238c43d344d7f5fb5f3e0d9c3c3fec48b00c3f3a31",
+  "installedGates": [
+    {
+      "path": "native/build/list-editing-1080-BSEufI/acceptance.json",
+      "sha256": "48beec9a42ca22dc4b37cf9951fda154dcdfd9e62f034725a4ef9c75a3ae3c02",
+      "scope": "실제 설치본 Windows 격리 창·목록 상세/Undo·100000선택/풀8·키 격리·키보드/합성 드래그 재정렬·행 텍스트/체크/슬라이더 자료 쓰기·재사용 마지막 행/이벤트·고정행 offset 재생성0·스크립트 교체/기존서비스·정상종료",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\67a9e17734d12595\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\67a9e17734d12595\\",
+    "elapsedMs": 173.45,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\67a9e17734d12595",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "67a9e17734d12595b81ad5f60208325fcf6edc071e38d15df5083c1ab25fef56",
+      "installedAt": "2026-10-20T14:50:45.326Z",
+      "manifestFiles": 3777,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3777,
+  "versions": [
+    "67a9e17734d12595"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1084-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/list-editing-1079-1qusG0/acceptance.json",
+      "sha256": "8495008bea3a3f1d7a693b75f342332af7ee40626c52cc16f65fa62dff7934a8",
+      "scope": "Pure selection/ranges/modes, stable duplicate-value reorder remap, typed own-path writeback and source sharing, blocked prototype paths, authored widget validation. Browser focus/pooling/editor/runtime separate."
+    },
+    {
+      "path": "native/build/list-editing-1080-RIUFur/acceptance.json",
+      "sha256": "5566567d05c9ec848d9f614bffb5ec2c8fd9906eaa5bd960ee7af718d8a6d770",
+      "scope": "Hidden isolated actual Windows editor/DOM: selection/range/keyboard/input isolation/pooling, synthetic internal drag/drop, typed composite row writeback/recycle/script replacement/source preservation and existing service calls. Physical touch, native C++ compiled gameplay and whole engine separate."
+    },
+    {
+      "path": "native/build/engine-174-A0A8Dz/acceptance.json",
+      "sha256": "e2b799852f88be85f463560b4db00454cba318f3eb622ad21debd0108e69e9d4",
+      "scope": "UI 공용 회귀"
+    },
+    {
+      "path": "native/build/engine-181-ZSfMp8/acceptance.json",
+      "sha256": "e5d68d507d3f725ca78f2662e3f4de39184fbc23b7a9db3abed33dc16d51a02d",
+      "scope": "UI 공용 회귀"
+    },
+    {
+      "path": "native/build/widget-slot-256-t6RdHo/acceptance.json",
+      "sha256": "ae7567b9262cb6652d29a2071d1658cc1cc99b1a1862163e5c2662be983be6c7",
+      "scope": "CPU composition/lifetime; real DOM, input, fonts and CPP/BP standalone checks separate."
+    },
+    {
+      "path": "native/build/widget-batch-1067-bF77ML/acceptance.json",
+      "sha256": "f40c147b77ec8cb5eeb8b64ce7bb3469caeffc074d90f2cdf7148628a3a17478",
+      "scope": "UI 공용 회귀"
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/list-editing-1080-RIUFur/acceptance.json",
+      "sha256": "5566567d05c9ec848d9f614bffb5ec2c8fd9906eaa5bd960ee7af718d8a6d770",
+      "scope": "Hidden isolated actual Windows editor/DOM: selection/range/keyboard/input isolation/pooling, synthetic internal drag/drop, typed composite row writeback/recycle/script replacement/source preservation and existing service calls. Physical touch, native C++ compiled gameplay and whole engine separate."
+    },
+    {
+      "path": "native/build/widget-batch-1067-bF77ML/acceptance.json",
+      "sha256": "f40c147b77ec8cb5eeb8b64ce7bb3469caeffc074d90f2cdf7148628a3a17478",
+      "scope": "UI 공용 회귀"
+    }
+  ],
+  "scope": "1084 전체3777파일/454소유SHA/CPP14·native10지문/Player1040/Host1041재사용·목록 다중선택/재정렬/행쓰기/입력/재활용/이벤트/풀/Undo·실제마커·User읽기SHA/연결/Versions1",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

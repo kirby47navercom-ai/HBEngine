@@ -14,7 +14,7 @@ AGENTS.md → docs/AI_START.md → node tools/hb.mjs context "작업명". 정본
 
 ## 설치와 이전 근거
 
-현재 확정 USER_INSTALL_1077.json: C:/Users/kirby/HBEngine/Versions/884e599a4157ab0e/HBEngine.exe. 새 묶음은 갱신 준비 중. native10지문 그대로면 Player1040/Host1041 재사용·재컴파일0. 새 설치 후1084 영수증으로 갱신해요. sync1076/install1077/finish1078은 완료 one-shot으로 재실행하지 않아요.
+현재 확정 USER_INSTALL_1084.json: C:/Users/kirby/HBEngine/Versions/67a9e17734d12595/HBEngine.exe. 3777파일/454소유SHA/CPP14·User10849 읽기전후SHA·연결·Versions1 검증. 설치 실제1080-BSEufI도100000선택/풀8·행쓰기/재활용/이벤트·offset재구성0·Undo/정상종료 통과. native10지문 동일·Player1040/Host1041 재사용·재컴파일0. 이전183579323B 정리·공유캐시삭제0/빈영수증없음. sync1083/install1084/finish1085 및 이전one-shot은 완료했으니 재실행하지 않아요.
 
 이전1075 월드 소유초안·전체복사2→1·원본/Undo/평활화 보존·설치1060yl9khC의 지형408B/폴리지64B 부분GPU/새할당0은 보존해요. 1070/1072 위젯 상속/슬롯노출/초기표시/생명주기/복합행·풀·FontFace와 AI 실제설치마커도 유지해요.
 
