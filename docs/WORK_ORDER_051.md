@@ -822,3 +822,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1133 설치 C:\Users\kirby\HBEngine\Versions\c63f7ab57518b40d /3834파일/504소유SHA/CPP15·native13·User10849읽기전후SHA·연결·Versions1확인. 설치GL/GPU/강제GL폴백4영역/4인스턴스·각54gradient금속/코팅·직접쌍회귀와실제CPP/BP세실행기4영역/밝기복원·정지캡처/복사/패딩통과. Player1123재컴파일/Host불변재사용. 이전184080356B정리.1134확정;공간가속/우선정책·native직교/ambient·GLComplex141초기지연과누적목표계속.
 
 1135–1141 카메라/주변광/공용그래프·native노멀을묶어구현. native54조건,GL/GPU/폴백각38조건·atlas기존회귀·실제CPP/BP넓은직교카메라4상태를독립기대값으로대조. ENGINE_WORK_1141.json에소유SHA/CPP16/native13·새Player1139·48B기존CBpayload기록.1133설치확정과후속1143전환예정구분.내장GPU전체Physical시선/추가로브·공간가속·GL초기지연및누적목표유지.
+
+1143 설치 C:\Users\kirby\HBEngine\Versions\4940d1afed664464 /3843파일/511소유SHA/CPP16/native13·User10849읽기전후SHA·연결·Versions1확인. native54조건·GL/GPU/폴백각38조건·전역atlas각54gradient회귀·실제CPP/BP세실행기직교카메라4상태×3픽셀통과. Player1139새빌드/Host재사용.이전184296040B정리·1144확정.내장GPU전체Physical/추가로브·공간가속·GL초기지연/누적78행계속.

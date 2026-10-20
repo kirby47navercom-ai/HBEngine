@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "8bff3517767c9effa4b433b3bd98cef4ae7674e7",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe",
+  "bundleHash": "4940d1afed66446481ab1278f58c2715f72e60bf31901fe499bbc2c4fc2950d4",
+  "files": 3843,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3835,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\c63f7ab57518b40d",
+        "bytes": 184296040,
+        "manifestSHA256": "8685f3a67db65438cf1472dab76c17d81ebd28597d40ca8b80ae759cd5cd8ff0"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-20T19:12:19.0860490Z",
+    "bytes": 184296040,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "4940d1afed664464"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 511,
+  "repositoryOnlyTestSourcesVerified": 16,
+  "nativePlayerSHA256": "cb1b786f6f8f709100d38e8be8f8363da902babb5d9df2cdcd0314fcb38c6217",
+  "installedGates": [
+    {
+      "path": "native/build/camera-surface-1137-9ySju5/acceptance.json",
+      "sha256": "1c7b4fc4b16f88e695aa76ce197ced073abf38c86540efd0993c15b41e94d311",
+      "scope": "Actual authored material ViewDirection/Fresnel input path under orthographic/perspective cameras, including tilted world camera and off-axis pixels; independent analytic view and Lambert ambient/hemisphere metal0/.5/1. GL/GPU/forced fallback; no native package claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/camera-surface-1136-k49TiJ/acceptance.json",
+      "sha256": "d282e76c569ec539e8ca2416c4656217dff3172097e693a94c49ddc5e35c91b4",
+      "scope": "Actual D3D11 production graph plans: perspective and constant rotated orthographic view; independent Lambert ambient/hemisphere metal0/.5/1; normal24 UV/value cases versus analytic geometry; invalid frame rejection",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/camera-surface-1138-YKELeI/acceptance.json",
+      "sha256": "3822f371790760bc7caa7fa370b082d66f4a8e926db978d8f4ed7d6f26b44724",
+      "scope": "Actual packaged production ViewDirection graph over wide orthographic viewport:3 off-axis samples at4 states, Blueprint camera rotation/reset and compiled C++ position. Independent world direction plus the selected backend tone curve, tolerance2bytes; no user project.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/camera-surface-1138-kWFdrn/acceptance.json",
+      "sha256": "91b34eb315935b264cb8eb3558153c06cd6be72296cf28e27819782318a5d3a5",
+      "scope": "Actual packaged production ViewDirection graph over wide orthographic viewport:3 off-axis samples at4 states, Blueprint camera rotation/reset and compiled C++ position. Independent world direction plus the selected backend tone curve, tolerance2bytes; no user project.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/camera-surface-1138-rIE66V/acceptance.json",
+      "sha256": "75ed5819e4b82e8a5d293887ec7fe720b510ce3069398b1c1ab69eb25b125fcd",
+      "scope": "Actual packaged production ViewDirection graph over wide orthographic viewport:3 off-axis samples at4 states, Blueprint camera rotation/reset and compiled C++ position. Independent world direction plus the selected backend tone curve, tolerance2bytes; no user project.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-atlas-1117-oAfvGe/acceptance.json",
+      "sha256": "ce770083bb0850634aa3cbc7af57351254c959a9a179158e03e38b9e826222b7",
+      "scope": "Actual GL/GPU production atlas copy and per-pixel candidates across4probes versus independent physical white reference/weights. Mixed map resolutions, static transfer reuse, intensity-only metadata update, resize/program retention,4instances outside parent origin, release/reactivate. Controlled known captures; actual capture/native package separately.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\",
+    "elapsedMs": 252.98,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "4940d1afed66446481ab1278f58c2715f72e60bf31901fe499bbc2c4fc2950d4",
+      "installedAt": "2026-10-20T19:12:15.926Z",
+      "manifestFiles": 3843,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3843,
+  "versions": [
+    "4940d1afed664464"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1143-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/camera-surface-1136-V6hk8s/acceptance.json",
+      "sha256": "d47a6059df79a06f2434c6b4cab67cc6f10f4f3ab696a628bb396865644e0cad",
+      "scope": "Actual D3D11 production graph plans: perspective and constant rotated orthographic view; independent Lambert ambient/hemisphere metal0/.5/1; normal24 UV/value cases versus analytic geometry; invalid frame rejection"
+    },
+    {
+      "path": "native/build/camera-surface-1137-PwHAnF/acceptance.json",
+      "sha256": "40b54aaa0895e6bf5ae5cbf9324d5728114f1dd38f0f6a5c9ca456ac0dc06c9e",
+      "scope": "Actual authored material ViewDirection/Fresnel input path under orthographic/perspective cameras, including tilted world camera and off-axis pixels; independent analytic view and Lambert ambient/hemisphere metal0/.5/1. GL/GPU/forced fallback; no native package claim."
+    },
+    {
+      "path": "native/build/probe-atlas-1119-3bJumh/acceptance.json",
+      "sha256": "e3305a7d338cf40b7d402910bc44a09f193669b6ab186eae7af2d1fbdaea69c3",
+      "scope": "Actual hardware D3D11 global4probes versus legacy per-probe room references, one4instance draw, image/SH copy ownership and static/metadata/revision/resize/release. Six-face directional cubemap at21view/roughness states and4pixels each versus native TextureCube; original capture/SH/GGX/coat/IOR/affine legacy proof retained."
+    },
+    {
+      "path": "native/build/camera-surface-1138-r61zgv/acceptance.json",
+      "sha256": "89f8a54b4c3b6e9cae081630891f37e8b3282a63fad2ab1227fb28839a85a88e",
+      "scope": "Actual packaged production ViewDirection graph over wide orthographic viewport:3 off-axis samples at4 states, Blueprint camera rotation/reset and compiled C++ position. Independent world direction plus the selected backend tone curve, tolerance2bytes; no user project."
+    },
+    {
+      "path": "native/build/camera-surface-static-1141.json",
+      "sha256": "2b06f82bb7951ba34c31c6ca5ab9f2f8269178f25d45da9a9e007b80e58b82a9",
+      "scope": "Static/API/schema checks. GPU/native/math/package evidence is separate."
+    },
+    {
+      "path": "native/build/camera-surface-ai-context-1141.json",
+      "sha256": "3ed88d69eec8849484608da55d14361f322fc81a7dc7516771d1e824a549915b",
+      "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/camera-surface-1138-r61zgv/acceptance.json",
+      "sha256": "89f8a54b4c3b6e9cae081630891f37e8b3282a63fad2ab1227fb28839a85a88e",
+      "scope": "Actual packaged production ViewDirection graph over wide orthographic viewport:3 off-axis samples at4 states, Blueprint camera rotation/reset and compiled C++ position. Independent world direction plus the selected backend tone curve, tolerance2bytes; no user project."
+    }
+  ],
+  "scope": "1143 전체3843파일/511소유SHA/CPP16·native13/Player1139·Host1041재사용·native54조건·GL/GPU/폴백각38조건·atlas각54gradient회귀·실제CPP/BP세렌더러직교카메라4상태×3픽셀·AI실제마커·User읽기SHA/연결/Versions1",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

@@ -2786,11 +2786,11 @@
     "scope": "native 직교/원근 raster 시선·ambient/hemi Lambert/금속도·GL/GPU/폴백 ViewDirection와기본Fresnel·native 공용normal frame·기존atlas회귀·실제CPP/BP카메라. WebGPU내장Physical전체/추가로브·전체FPS/GL초기지연/전체엔진완료와구분."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1133.json",
-    "sourceCommit": "d35a4a3be562f99bf5823dd9da977275cf802258",
-    "bundleHash": "c63f7ab57518b40d573b3e25820cf55388667286f41942e4ba5751c4ec051990",
+    "receipt": "docs/research/USER_INSTALL_1143.json",
+    "sourceCommit": "8bff3517767c9effa4b433b3bd98cef4ae7674e7",
+    "bundleHash": "4940d1afed66446481ab1278f58c2715f72e60bf31901fe499bbc2c4fc2950d4",
     "verified": true,
     "versions": 1,
-    "scope": "1133 전체3834파일/504소유SHA/CPP15·native13/Player1123·Host1041재사용·전역후보/혼합해상도HDR atlas·컴퓨트padding/정지전송·GL/GPU/강제GL폴백각54그라데이션·직접쌍회귀·실제CPP/BP세렌더러4영역/밝기복원·AI실제마커·User읽기SHA/연결/Versions1"
+    "scope": "1143 전체3843파일/511소유SHA/CPP16·native13/Player1139·Host1041재사용·native54조건·GL/GPU/폴백각38조건·atlas각54gradient회귀·실제CPP/BP세렌더러직교카메라4상태×3픽셀·AI실제마커·User읽기SHA/연결/Versions1"
   }
 }

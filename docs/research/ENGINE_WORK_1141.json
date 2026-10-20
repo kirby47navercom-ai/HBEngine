@@ -579,6 +579,62 @@
       "path": "native/build/camera-surface-ai-context-1141.json",
       "sha256": "3ed88d69eec8849484608da55d14361f322fc81a7dc7516771d1e824a549915b",
       "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    },
+    {
+      "path": "native/build/camera-surface-1137-9ySju5/acceptance.json",
+      "sha256": "1c7b4fc4b16f88e695aa76ce197ced073abf38c86540efd0993c15b41e94d311",
+      "scope": "Actual authored material ViewDirection/Fresnel input path under orthographic/perspective cameras, including tilted world camera and off-axis pixels; independent analytic view and Lambert ambient/hemisphere metal0/.5/1. GL/GPU/forced fallback; no native package claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/camera-surface-1136-k49TiJ/acceptance.json",
+      "sha256": "d282e76c569ec539e8ca2416c4656217dff3172097e693a94c49ddc5e35c91b4",
+      "scope": "Actual D3D11 production graph plans: perspective and constant rotated orthographic view; independent Lambert ambient/hemisphere metal0/.5/1; normal24 UV/value cases versus analytic geometry; invalid frame rejection",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/camera-surface-1138-YKELeI/acceptance.json",
+      "sha256": "3822f371790760bc7caa7fa370b082d66f4a8e926db978d8f4ed7d6f26b44724",
+      "scope": "Actual packaged production ViewDirection graph over wide orthographic viewport:3 off-axis samples at4 states, Blueprint camera rotation/reset and compiled C++ position. Independent world direction plus the selected backend tone curve, tolerance2bytes; no user project.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/camera-surface-1138-kWFdrn/acceptance.json",
+      "sha256": "91b34eb315935b264cb8eb3558153c06cd6be72296cf28e27819782318a5d3a5",
+      "scope": "Actual packaged production ViewDirection graph over wide orthographic viewport:3 off-axis samples at4 states, Blueprint camera rotation/reset and compiled C++ position. Independent world direction plus the selected backend tone curve, tolerance2bytes; no user project.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/camera-surface-1138-rIE66V/acceptance.json",
+      "sha256": "75ed5819e4b82e8a5d293887ec7fe720b510ce3069398b1c1ab69eb25b125fcd",
+      "scope": "Actual packaged production ViewDirection graph over wide orthographic viewport:3 off-axis samples at4 states, Blueprint camera rotation/reset and compiled C++ position. Independent world direction plus the selected backend tone curve, tolerance2bytes; no user project.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-atlas-1117-oAfvGe/acceptance.json",
+      "sha256": "ce770083bb0850634aa3cbc7af57351254c959a9a179158e03e38b9e826222b7",
+      "scope": "Actual GL/GPU production atlas copy and per-pixel candidates across4probes versus independent physical white reference/weights. Mixed map resolutions, static transfer reuse, intensity-only metadata update, resize/program retention,4instances outside parent origin, release/reactivate. Controlled known captures; actual capture/native package separately.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -586,6 +642,35 @@
       "path": "native/build/camera-surface-1138-r61zgv/acceptance.json",
       "sha256": "89f8a54b4c3b6e9cae081630891f37e8b3282a63fad2ab1227fb28839a85a88e",
       "scope": "Actual packaged production ViewDirection graph over wide orthographic viewport:3 off-axis samples at4 states, Blueprint camera rotation/reset and compiled C++ position. Independent world direction plus the selected backend tone curve, tolerance2bytes; no user project."
+    },
+    {
+      "path": "native/build/camera-surface-1138-YKELeI/acceptance.json",
+      "sha256": "3822f371790760bc7caa7fa370b082d66f4a8e926db978d8f4ed7d6f26b44724",
+      "scope": "Actual packaged production ViewDirection graph over wide orthographic viewport:3 off-axis samples at4 states, Blueprint camera rotation/reset and compiled C++ position. Independent world direction plus the selected backend tone curve, tolerance2bytes; no user project.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/camera-surface-1138-kWFdrn/acceptance.json",
+      "sha256": "91b34eb315935b264cb8eb3558153c06cd6be72296cf28e27819782318a5d3a5",
+      "scope": "Actual packaged production ViewDirection graph over wide orthographic viewport:3 off-axis samples at4 states, Blueprint camera rotation/reset and compiled C++ position. Independent world direction plus the selected backend tone curve, tolerance2bytes; no user project.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/camera-surface-1138-rIE66V/acceptance.json",
+      "sha256": "75ed5819e4b82e8a5d293887ec7fe720b510ce3069398b1c1ab69eb25b125fcd",
+      "scope": "Actual packaged production ViewDirection graph over wide orthographic viewport:3 off-axis samples at4 states, Blueprint camera rotation/reset and compiled C++ position. Independent world direction plus the selected backend tone curve, tolerance2bytes; no user project.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464\\HBEngine.exe"
+      ]
     }
   ],
   "nativePlayerSHA256": "cb1b786f6f8f709100d38e8be8f8363da902babb5d9df2cdcd0314fcb38c6217",
@@ -620,8 +705,8 @@
     "scope": "추가 draw payload만; 전체 CPU/GPU 메모리·FPS 측정이 아님"
   },
   "researchScope": "docs/research/CAMERA_SURFACE_1140.md",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1133.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1143.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "WebGPU 내장 Physical 조명과 프로브 방사광의 직교 off-axis 시선·추가로브 전체 일치",
@@ -629,5 +714,6 @@
     "전역 반사 공간 가속/우선 점유·sphere/lightmap 및 다른 누적 원장 항목"
   ],
   "scope": "native 직교/원근 raster 시선·ambient/hemi Lambert/금속도·GL/GPU/폴백 ViewDirection와기본Fresnel·native 공용normal frame·기존atlas회귀·실제CPP/BP카메라. WebGPU내장Physical전체/추가로브·전체FPS/GL초기지연/전체엔진완료와구분.",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1143.json"
 }
