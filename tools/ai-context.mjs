@@ -6,6 +6,15 @@ import {performance} from 'node:perf_hooks';
 import {readEngineStatus} from './engine-status.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
+export async function contextInstallation(directory=root){
+  const file=path.join(directory,'HBEngine.install.json');
+  try{
+    const stat=await fs.lstat(file);if(!stat.isFile()||stat.isSymbolicLink()||stat.size>16*1024*1024)return {observed:false,error:'설치 마커 형식·크기 오류'};
+    const marker=JSON.parse(await fs.readFile(file,'utf8'));
+    if(marker.version!==1||!/^\w{64}$/.test(marker.bundleHash)||!/^[a-f0-9]+$/i.test(marker.bundleHash)||!Array.isArray(marker.files)||typeof marker.installedAt!=='string')return {observed:false,error:'설치 마커 필드 오류'};
+    return {observed:true,root:path.resolve(directory),marker:'HBEngine.install.json',bundleHash:marker.bundleHash,installedAt:marker.installedAt,manifestFiles:marker.files.length,integrityChecked:false};
+  }catch(error){return error.code==='ENOENT'?null:{observed:false,error:'설치 마커 읽기 오류'};}
+}
 const codeRoots = ['prototype', 'tools', 'native/include/HBEngine', 'native/desktop', 'native/mobile'];
 const excluded = new Set(['build', 'dist', 'node_modules', 'screenshots', '.git', 'examples']);
 const generated = new Set(['native/include/HBEngine/RayPrograms.hpp', 'native/include/HBEngine/ScreenEffects.hpp', 'prototype/core-api.js']);
@@ -84,9 +93,9 @@ async function findSymbol(files, symbol, limit) {
 
 export async function engineContext(input = {}) {
   const start = performance.now(), {task, symbol, limit} = optionsFor(input);
-  const [routes, status] = await Promise.all([
+  const [routes, status, installation] = await Promise.all([
     fs.readFile(new URL('../docs/ai-routes.json', import.meta.url), 'utf8').then(JSON.parse),
-    readEngineStatus()
+    readEngineStatus(),contextInstallation()
   ]);
   const base = {
     version: 1, readOnly: true, root, task, symbol,
@@ -100,7 +109,7 @@ export async function engineContext(input = {}) {
     },
     git: gitState(),
     state: {file: 'docs/research/ENGINE_STATUS.json', updatedAt: status.updatedAt, basisRevision: status.basisRevision,
-      latestBatch: status.latestBatch, latestInstallation: status.latestInstallation, installation: status.installation,
+      latestBatch: status.latestBatch, latestInstallation: status.latestInstallation, installation,
       warning: '원장은 확정 기록이에요. 미커밋 변경은 Git/인계와 따로 대조해요. 전체 UE/Unity 완료율이 아니에요.'},
     boundaries: ['처음부터 README/AI_ENGINE_API/과거 연구·인계 전체를 읽지 말고 작업 관련 원문만 확장해요.',
       '오프라인 조회는 창·서버·네트워크·컴파일·패키징·사용자 프로젝트를 열지 않아요.',
