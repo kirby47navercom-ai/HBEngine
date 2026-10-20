@@ -16,7 +16,7 @@ AGENTS.md → docs/AI_START.md → node tools/hb.mjs context "작업명". 정본
 
 ## 설치
 
-현재 확정 USER_INSTALL_1084.json: C:/Users/kirby/HBEngine/Versions/67a9e17734d12595/HBEngine.exe. 새1096 갱신 준비 중. native10지문/Player1040/Host1041 그대로라 엔진 재컴파일0. 사용자CPP 실행fixture는 별도 실제 컴파일이에요. sync1095/install1096/finish1097은 wx one-shot으로 만들며 완료 후 재실행하지 않아요. 이전one-shot도 완료했어요.
+현재 확정 USER_INSTALL_1096.json: C:/Users/kirby/HBEngine/Versions/f2302f2ab6c1a864/HBEngine.exe.3792파일/464소유SHA/CPP원본14·User10849읽기전후SHA·연결·Versions1 검증.설치1088-HbFYGQ worker/취소/0인스턴스/정지,1089-yPc8gL GL/GPU·복원/직접광/프로그램/TAA,1090-7qjbNv 실제CPP/BP/D3D,1092-XtPq45 상세/Undo/CAS/저장 모두통과.실제설치마커도대조. native10지문/Player1040/Host1041 그대로라 엔진 재컴파일0. 사용자CPP fixture는 실제컴파일. 이전183682748B정리·공유캐시삭제0/빈영수증없음. sync1095/install1096/finish1097 및 이전one-shot은 완료했으니 재실행하지 않아요.
 
 ## 이어갈 잔여
 

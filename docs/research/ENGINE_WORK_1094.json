@@ -536,6 +536,42 @@
       "path": "native/build/distance-upgrades-912-c2j3xS/acceptance.json",
       "sha256": "803134082c401a14e8734339c789e135229b8edfaa0429b269eb2c1a2620cde6",
       "scope": "Actual worker/scene cached quality promotion after neighbor removal, old field retained during build, rigid pose reuse without volume writes, both payloads+reservation within budget, one upgrade at a time, two atomic replacements55/15, static40frames no new jobs, missing geometry priority over optional upgrades, capacity hysteresis and dispose cancellation/idle0. No camera-driven clipmap, whole process heap or new renderer math claim."
+    },
+    {
+      "path": "native/build/distance-camera-lod-1088-HbFYGQ/acceptance.json",
+      "sha256": "270aadd6613b34ddb174f128b37438ee57ca73d1d11fd6b64132ffdfcfc93f9d",
+      "scope": "Actual owned browser worker and production MeshDistanceFieldScene projection/near-far targets, ready-field retention, superseded target cancellation, delayed downgrade payload release, shared and instanced geometry, fixed fallback, static reuse, input/volume budgets and owner idle cleanup. Raster pixels and compiled C++/BP are separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f2302f2ab6c1a864\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-camera-lod-1089-yPc8gL/acceptance.json",
+      "sha256": "8b7caf7b3511717f5b7e3ad6a359e927fea3ee468e347fb7d6b61ada9221725b",
+      "scope": "Actual production WebGL2/WebGPU MRT, screen effects and worker camera LOD: coarse/restore payload changes, ambient AO observable, restored high-quality pixel matches, direct-light isolation, GL programs retained.32x32 correctness only; no cold/FPS/whole-driver-heap claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f2302f2ab6c1a864\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-camera-lod-1090-7qjbNv/acceptance.json",
+      "sha256": "6f06f7f27f241670f30d1d48f247880ace2243f65d2ad153852dc933f0d9eb59",
+      "scope": "Actual fresh owned packaged D3D11 game: compiled SDK C++ sets camera/fixed mode, camera zoom and screen pixels; keyboard Blueprint changes same new enum; worker far/near/coarse payload adoption feeds native raster AO; high-quality pixel restoration and observable AO, disable releases owner.320x240 correctness, not FPS/whole heap or global clipmap.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f2302f2ab6c1a864\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-camera-lod-1092-XtPq45/acceptance.json",
+      "sha256": "8f504c819fb5d05f2dc3838d8e1a13546704ad1034f9818713619f65de62c075",
+      "scope": "Actual hidden editor human LOD mode/pixel control visibility, source edit/Undo, same atomic document.patch/CAS and stale rejection, saved values and machine-readable contract. No user windows or profiles.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f2302f2ab6c1a864\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -558,6 +594,42 @@
       "path": "native/build/distance-camera-lod-1092-09eVy5/acceptance.json",
       "sha256": "568e70aa54b0c4c6da080bd04942caadeac00a8037b35b6661c901dd6ba1e8ff",
       "scope": "Actual hidden editor human LOD mode/pixel control visibility, source edit/Undo, same atomic document.patch/CAS and stale rejection, saved values and machine-readable contract. No user windows or profiles."
+    },
+    {
+      "path": "native/build/distance-camera-lod-1088-HbFYGQ/acceptance.json",
+      "sha256": "270aadd6613b34ddb174f128b37438ee57ca73d1d11fd6b64132ffdfcfc93f9d",
+      "scope": "Actual owned browser worker and production MeshDistanceFieldScene projection/near-far targets, ready-field retention, superseded target cancellation, delayed downgrade payload release, shared and instanced geometry, fixed fallback, static reuse, input/volume budgets and owner idle cleanup. Raster pixels and compiled C++/BP are separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f2302f2ab6c1a864\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-camera-lod-1089-yPc8gL/acceptance.json",
+      "sha256": "8b7caf7b3511717f5b7e3ad6a359e927fea3ee468e347fb7d6b61ada9221725b",
+      "scope": "Actual production WebGL2/WebGPU MRT, screen effects and worker camera LOD: coarse/restore payload changes, ambient AO observable, restored high-quality pixel matches, direct-light isolation, GL programs retained.32x32 correctness only; no cold/FPS/whole-driver-heap claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f2302f2ab6c1a864\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-camera-lod-1090-7qjbNv/acceptance.json",
+      "sha256": "6f06f7f27f241670f30d1d48f247880ace2243f65d2ad153852dc933f0d9eb59",
+      "scope": "Actual fresh owned packaged D3D11 game: compiled SDK C++ sets camera/fixed mode, camera zoom and screen pixels; keyboard Blueprint changes same new enum; worker far/near/coarse payload adoption feeds native raster AO; high-quality pixel restoration and observable AO, disable releases owner.320x240 correctness, not FPS/whole heap or global clipmap.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f2302f2ab6c1a864\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-camera-lod-1092-XtPq45/acceptance.json",
+      "sha256": "8f504c819fb5d05f2dc3838d8e1a13546704ad1034f9818713619f65de62c075",
+      "scope": "Actual hidden editor human LOD mode/pixel control visibility, source edit/Undo, same atomic document.patch/CAS and stale rejection, saved values and machine-readable contract. No user windows or profiles.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f2302f2ab6c1a864\\HBEngine.exe"
+      ]
     }
   ],
   "diagnosticEvidence": [
@@ -588,13 +660,14 @@
       "native/include/HBEngine/SceneProbes.hpp": "e566db9d8ae7992f736e25442d673d7af4623075237885b95ebd0feee377eb25"
     }
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1084.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1096.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "전역 거리장 clipmap·타일 후보/글로벌 다중 해상도·시간 신뢰도·bent normal/방향성 하늘·지형/변형체/마스크/투명·쿠킹/정밀도",
     "초기 GL/FXC·장치/필터 비용과 복합 광학 이력·HWRT/방향성 베이크 및 다른 누적 엔진 목표"
   ],
   "scope": "per-geometry camera footprint resolution heuristic, not global clipmap or pixel-error/FPS/whole-memory guarantee; source CPP/render evidence plus final installation gates",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1096.json"
 }

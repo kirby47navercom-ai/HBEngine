@@ -2751,11 +2751,11 @@
     "scope": "거리장 카메라 LOD/낮춤/취소/예산/정지·TAA 메모/0인스턴스·제작/CPP/BP/세렌더러"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1084.json",
-    "sourceCommit": "63883fc173fb02d23831e541393d9594fdc78d30",
-    "bundleHash": "67a9e17734d12595b81ad5f60208325fcf6edc071e38d15df5083c1ab25fef56",
+    "receipt": "docs/research/USER_INSTALL_1096.json",
+    "sourceCommit": "82a8118358c4bf71e989c977ea1766e9e6ee9a8e",
+    "bundleHash": "f2302f2ab6c1a86494681d093e0d31325088cd3f3006fb6dd545c3c7766b7162",
     "verified": true,
     "versions": 1,
-    "scope": "1084 전체3777파일/454소유SHA/CPP14·native10지문/Player1040/Host1041재사용·목록 다중선택/재정렬/행쓰기/입력/재활용/이벤트/풀/Undo·실제마커·User읽기SHA/연결/Versions1"
+    "scope": "1096 전체3792파일/464소유SHA/CPP14·native10지문/Player1040/Host1041재사용·거리장LOD/교체/취소/예산/정지·TAA/실제CPP·BP/세렌더러/상세·CAS·실제마커·User읽기SHA/연결/Versions1"
   }
 }
