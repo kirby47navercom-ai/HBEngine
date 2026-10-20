@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "wholeCorpusGateAdvanced": false,
+  "reads": [
+    {
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/mesh-distance-fields-in-unreal-engine",
+      "kind": "reread",
+      "sections": [
+        "Scene Representation",
+        "Quality",
+        "Limitations"
+      ],
+      "lineRange": [
+        18,
+        50,
+        107,
+        123
+      ],
+      "implementation": "offline local volumes, geometry quality/budget identity; HB runtime generation remains fallback"
+    },
+    {
+      "url": "https://docs.unity.com/en-us/engine/6000.5/manual/building-and-publishing/build-cache-location-reference",
+      "kind": "new scoped body read",
+      "sections": [
+        "Cache location reference body and file location/description table"
+      ],
+      "lineRange": [
+        199,
+        276
+      ],
+      "implementation": "existing project-local generated cache, bounded reuse and regeneration; do not assert Unity directory ownership or whole manual/API completion"
+    }
+  ],
+  "unread": "Linked documentation/API corpus and tutorials outside these named sections remain under prior research protocol."
+}

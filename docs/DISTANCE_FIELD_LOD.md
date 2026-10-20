@@ -27,3 +27,5 @@ hb::Components::SetFloat(post, "PostProcessVolume", "aoDistanceFieldScreenPixels
 같은 블루프린트 componentSetString/componentSetFloat와 컴포넌트 상세 패널에서 바꿔요. AI는 document.get의 revision으로 document.patch/CAS를 사용해요. schema의 meshDistanceFields.cameraLOD에는 투영·단계·안정화·예산·메모리 경계를 적었어요. 실행 진단 distanceFields.cameraLOD에서 목표 범위, projectionAvailable, projectedObjects, projectionCacheHits, 취소 수를 확인해요. qualityDowngrades와 기존 qualityUpgrades도 별도로 제공해요.
 
 같은 종류의 GPU 텍스처와 기존 셰이더를 사용하며 별도 GPU 패스·읽기·상시 작업자·디스크 캐시는 만들지 않아요. 해상도 변경 때 기존 atlas 텍스처가 교체되거나 자료가 전송될 수 있어요. fieldBytes와 atlasBytes는 소유한 자료의 페이로드이며 전체 프로세스·GPU 드라이버 메모리는 아니에요. 전역 clipmap, 방향성 하늘·bent normal·시간 신뢰도, 변형체/지형 거리장과 전체 기기 성능은 별도 기능이에요.
+
+패키징의 상한 거리장 재사용·캐시와 비용은 [거리장 쿠킹](DISTANCE_FIELD_COOKING.md)에 있어요. 다른 LOD가 없으면 기존 생성으로 돌아가요.

@@ -40,7 +40,7 @@ export function mobileBackend(manifest,{read,request,rendererQuery,mobile=true,b
     const body=()=>{const raw=options.body||'{}';if(typeof raw!=='string'||raw.length>8388608)throw Error('모바일 요청 크기 오류');return JSON.parse(raw);};
     try{
       if(url.pathname==='/api/session'&&method==='GET')return json(session);
-      if(url.pathname==='/api/player'&&method==='GET')return json({name:manifest.name,...frameSettings({...manifest,mobile}),kiosk:kioskSettings(manifest),configuration:manifest.configuration,redirects:manifest.redirects,width:manifest.width,height:manifest.height,scene:manifest.startupScene,mobile});
+      if(url.pathname==='/api/player'&&method==='GET')return json({name:manifest.name,...frameSettings({...manifest,mobile}),kiosk:kioskSettings(manifest),configuration:manifest.configuration,redirects:manifest.redirects,width:manifest.width,height:manifest.height,distanceFields:manifest.distanceFields||'',scene:manifest.startupScene,mobile});
       if(url.pathname==='/api/project'&&method==='GET')return json({entries:manifest.entries});
       if(url.pathname==='/api/file'&&method==='GET'){const resolved=resolve(url.searchParams.get('path'));if(!resolved)return json({error:'게임 파일이 없어요.'},404);return read('Content/'+resolved);}
       if(url.pathname==='/api/game-data'&&method==='POST'){const data=body();return json({value:await persistentQueries(data.key,data.args)});}

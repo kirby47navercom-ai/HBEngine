@@ -296,7 +296,10 @@
         "prototype/mesh-distance-field-scene.js",
         "prototype/mesh-distance-field-shader.js",
         "prototype/shared-ray-geometry.js",
-        "prototype/mesh-distance-field-lod.js"
+        "prototype/mesh-distance-field-lod.js",
+        "prototype/mesh-distance-field-codec.js",
+        "prototype/mesh-distance-field-cooked.js",
+        "tools/distance-field-cook.mjs"
       ]
     },
     {
@@ -613,7 +616,10 @@
         "tools/build-web.mjs",
         "tools/build-mobile.mjs",
         "tools/mobile-android.mjs",
-        "prototype/build-panel.js"
+        "prototype/build-panel.js",
+        "prototype/mesh-distance-field-codec.js",
+        "prototype/mesh-distance-field-cooked.js",
+        "tools/distance-field-cook.mjs"
       ]
     },
     {
@@ -649,7 +655,10 @@
         "prototype/native-path-preparation.js",
         "tools/native-retained-build.mjs",
         "native/include/HBEngine/ShaderPreparationQueue.hpp",
-        "prototype/mesh-distance-field-lod.js"
+        "prototype/mesh-distance-field-lod.js",
+        "prototype/mesh-distance-field-codec.js",
+        "prototype/mesh-distance-field-cooked.js",
+        "tools/distance-field-cook.mjs"
       ]
     },
     {

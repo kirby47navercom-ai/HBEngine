@@ -1,3 +1,5 @@
+import {createDistanceFieldCookedSource,setDistanceFieldCookedSource,readDistanceFieldCookedResponse} from './mesh-distance-field-cooked.js';
+import {distanceFieldCookManifest} from './mesh-distance-field-codec.js';
 import {nativeLiveQueryKeys} from './native-live-query.js';
 import {createGameRenderer,checkGPUScene,gameRendererInfo,finishGameRendererFrame} from './game-renderer.js';
 import {capturePreparedFrame} from './gpu-path-preparation.js';
@@ -27,6 +29,7 @@ import {scenePrimitives} from './scene-primitives.js';
 import {createSky,applySceneEnvironment,syncSkyToCamera,disposeSceneEnvironment} from './scene-environment.js';
 const $=s=>document.querySelector(s),canvas=$('#game-canvas'),overlay=$('#game-ui'),menu=$('#pause-menu');
 const config=await(await editorRequest('/api/player')).json();document.title=config.name;
+setDistanceFieldCookedSource(config.distanceFields===distanceFieldCookManifest?createDistanceFieldCookedSource(async(name,options)=>readDistanceFieldCookedResponse(await editorRequest(fileUrl(name),options),options)):null);
 globalThis.hbNativeAudio=config.nativeAudio===true;globalThis.hbNativeAudioAcceptance=config.acceptance===true;
 function disableGameBreakpoints(bindings,catalog){const clear=value=>{if(Array.isArray(value))value.forEach(clear);else if(value&&typeof value==='object'){delete value.breakpoint;Object.values(value).forEach(clear);}};for(const b of bindings)clear(b.root);for(const rows of catalog?.bindings.values()||[])for(const b of rows)clear(b.root);}
 const readAsset=async path=>(await editorRequest(fileUrl(path))).json(),readText=async path=>(await editorRequest(fileUrl(path))).text();
