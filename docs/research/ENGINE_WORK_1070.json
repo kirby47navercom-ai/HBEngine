@@ -517,12 +517,30 @@
     {
       "path": "native/build/context-install-1071.json",
       "sha256": "f61145a4b782d17a3f9d35bdb01e7e107617bb3be81393c5b23566d5cd0fab6e"
+    },
+    {
+      "path": "native/build/widget-batch-1067-RFw5l3/acceptance.json",
+      "sha256": "00cf71af308b410085355bbe09797763d3a580939eea4f43d09a1d541b2fc187",
+      "scope": "실제 설치본 위젯 상속/속성/Undo/AI·첫프레임전 lifecycle HUD·100000행/논리409600000/측정너비변경 앵커·휠/합성터치/입력키·2000복합항목/풀7/FontFace1/행1999 이벤트·전역행예산/인스턴스 거절/해제·정상종료",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\412358fb4a17500d\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
     {
       "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\widget-batch-1067-p4qnEb/acceptance.json",
       "sha256": "94b04371b6ae6dd7d0e002a1b2efe9602f8e97a5098da7fdc092793d98eb06e1"
+    },
+    {
+      "path": "native/build/widget-batch-1067-RFw5l3/acceptance.json",
+      "sha256": "00cf71af308b410085355bbe09797763d3a580939eea4f43d09a1d541b2fc187",
+      "scope": "실제 설치본 위젯 상속/속성/Undo/AI·첫프레임전 lifecycle HUD·100000행/논리409600000/측정너비변경 앵커·휠/합성터치/입력키·2000복합항목/풀7/FontFace1/행1999 이벤트·전역행예산/인스턴스 거절/해제·정상종료",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\412358fb4a17500d\\HBEngine.exe"
+      ]
     }
   ],
   "nativePlayerSHA256": "a5235c863e3886fd8b1a0c238c43d344d7f5fb5f3e0d9c3c3fec48b00c3f3a31",
@@ -545,8 +563,8 @@
     }
   },
   "sourceReadProof": "native/build/reference-corpus/supplemental1069/read-scope.json",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1064.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1072.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     {
@@ -878,5 +896,6 @@
       ]
     }
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1072.json"
 }

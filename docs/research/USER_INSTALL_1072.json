@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "date": "2026-10-20",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "df6406ed8354da0b9f3940a4110bbfd0fd95936a",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\412358fb4a17500d",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\412358fb4a17500d\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\412358fb4a17500d\\HBEngine.exe",
+  "bundleHash": "412358fb4a17500d82eaf65f148b766fa85705614d62461aab0ff479d493a686",
+  "files": 3764,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3749,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\8d6bbf025175ea5d",
+        "bytes": 183337859,
+        "manifestSHA256": "b2500dc41c60633430982a04a5494b437d6f9e2fbeae0ac041349e24ec34ad74"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-20T14:01:17.5808390Z",
+    "bytes": 183337859,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "412358fb4a17500d"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 446,
+  "repositoryOnlyTestSourcesVerified": 14,
+  "nativePlayerSHA256": "a5235c863e3886fd8b1a0c238c43d344d7f5fb5f3e0d9c3c3fec48b00c3f3a31",
+  "installedGates": [
+    {
+      "path": "native/build/widget-batch-1067-RFw5l3/acceptance.json",
+      "sha256": "00cf71af308b410085355bbe09797763d3a580939eea4f43d09a1d541b2fc187",
+      "scope": "실제 설치본 위젯 상속/속성/Undo/AI·첫프레임전 lifecycle HUD·100000행/논리409600000/측정너비변경 앵커·휠/합성터치/입력키·2000복합항목/풀7/FontFace1/행1999 이벤트·전역행예산/인스턴스 거절/해제·정상종료",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\412358fb4a17500d\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\412358fb4a17500d\\",
+    "elapsedMs": 191.21,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\412358fb4a17500d",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "412358fb4a17500d82eaf65f148b766fa85705614d62461aab0ff479d493a686",
+      "installedAt": "2026-10-20T14:01:12.780Z",
+      "manifestFiles": 3764,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3764,
+  "versions": [
+    "412358fb4a17500d"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1072-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/widget-batch-1066.json",
+      "sha256": "ce48812e4eb635958a174928c7e51d82de66ad3842ea5b393f08d60ec817daa8"
+    },
+    {
+      "path": "native/build/widget-gates-1069.json",
+      "sha256": "a3c67e8404d8bc264024ed0aae8eff7100061a3b10d2dad2f12c6f6161aa6d7d"
+    },
+    {
+      "path": "native/build/ai-context-1058.json",
+      "sha256": "b98f772bd36afa2227f1a102462ff6c5710e1e8f96c04974d8e6031a2f0b21d3"
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\widget-content-1068-RWCZ73/acceptance.json",
+      "sha256": "5f7463c6a738f5c0a3b176b80de1998cf9513547be9d60ab36855362bf4f1b4f"
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\engine-174-Gy5p3S/acceptance.json",
+      "sha256": "e2b799852f88be85f463560b4db00454cba318f3eb622ad21debd0108e69e9d4"
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\engine-181-awKinO/acceptance.json",
+      "sha256": "e5d68d507d3f725ca78f2662e3f4de39184fbc23b7a9db3abed33dc16d51a02d"
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\widget-slot-256-upRNGr/acceptance.json",
+      "sha256": "ae7567b9262cb6652d29a2071d1658cc1cc99b1a1862163e5c2662be983be6c7"
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\widget-batch-1067-p4qnEb/acceptance.json",
+      "sha256": "94b04371b6ae6dd7d0e002a1b2efe9602f8e97a5098da7fdc092793d98eb06e1"
+    },
+    {
+      "path": "native/build/context-install-1071.json",
+      "sha256": "f61145a4b782d17a3f9d35bdb01e7e107617bb3be81393c5b23566d5cd0fab6e"
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\widget-batch-1067-p4qnEb/acceptance.json",
+      "sha256": "94b04371b6ae6dd7d0e002a1b2efe9602f8e97a5098da7fdc092793d98eb06e1"
+    }
+  ],
+  "scope": "1072 전체3764파일/446소유SHA/CPP14·네이티브10지문동일/Player1040/Host1041재사용·설치위젯/복합목록/예산/스크롤/공유글꼴/Undo/AI·실제설치마커·User읽기전후SHA/연결/Versions1",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

@@ -2730,11 +2730,11 @@
     "scope": "위젯클래스·복합행·생명주기·논리스크롤·공유글꼴·사람/AI/콘텐츠수집 비용 묶음·AI 실제설치관찰"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1064.json",
-    "sourceCommit": "632d9c5ed31d838d0aa0689ffecfaefbcbd66513",
-    "bundleHash": "8d6bbf025175ea5d12f95e2c5686b7bc8985e48838cc9d1d48d48b9b524f0af9",
+    "receipt": "docs/research/USER_INSTALL_1072.json",
+    "sourceCommit": "df6406ed8354da0b9f3940a4110bbfd0fd95936a",
+    "bundleHash": "412358fb4a17500d82eaf65f148b766fa85705614d62461aab0ff479d493a686",
     "verified": true,
     "versions": 1,
-    "scope": "1064 전체3748파일/423소유SHA/CPP14·기존Player1040/Host1041재사용·제작부분GPU/Undo/AI/단축키·실제foliage SDK CPP/BP5상태·User읽기SHA/연결/Versions1"
+    "scope": "1072 전체3764파일/446소유SHA/CPP14·네이티브10지문동일/Player1040/Host1041재사용·설치위젯/복합목록/예산/스크롤/공유글꼴/Undo/AI·실제설치마커·User읽기전후SHA/연결/Versions1"
   }
 }
