@@ -818,3 +818,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1114 설치 C:\Users\kirby\HBEngine\Versions\a24629862c1045b8 /3817파일/489소유SHA/CPP14·User10849읽기전후SHA·연결·Versions1 검증. 설치GL/GPU 혼합/0→2후보/환경회전·해상도/프로그램/자원·각24노멀조건,실제CPP/BP모프/원점밖후보를D3D/GL/GPU red→ambient→red→ambient→red/캡처1로통과. 엔진native재컴파일0·이전183940914B 정리.1115확정;전역후보/GL초기지연및누적목표active계속.
 
 1116–1131 전역 반사 후보/혼합해상도 HDR atlas·D3D 컴퓨트 이웃면/세면패딩·정지전송/밝기metadata·GL/GPU/강제GL폴백·실제CPP/BP4영역을 연결. ENGINE_WORK_1131.json에 소유SHA/CPP15/native13·API/AI·표본필터/실제세실행기 근거를 확정. 설치1114유지/1133전환예정. 공간가속/큰장면성능·우선점유/sphere/lightmap·native직교/ambient 및 누적78행 잔여유지,전체gate미승격.
+
+1133 설치 C:\Users\kirby\HBEngine\Versions\c63f7ab57518b40d /3834파일/504소유SHA/CPP15·native13·User10849읽기전후SHA·연결·Versions1확인. 설치GL/GPU/강제GL폴백4영역/4인스턴스·각54gradient금속/코팅·직접쌍회귀와실제CPP/BP세실행기4영역/밝기복원·정지캡처/복사/패딩통과. Player1123재컴파일/Host불변재사용. 이전184080356B정리.1134확정;공간가속/우선정책·native직교/ambient·GLComplex141초기지연과누적목표계속.

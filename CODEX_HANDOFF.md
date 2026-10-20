@@ -10,7 +10,7 @@ CPU1116-euj3ss·변형1106-4VVmyv·수명1108-eWSxE6·100003인스턴스경계·
 
 ## 설치
 
-이 묶음은 설치 전환 준비 중이에요. 확정 설치는 아직 USER_INSTALL_1114.json의 a24629862c1045b8이에요. Player1123 새 컴파일, Host1041은 HB_GAME_PLAYER guard/소스·binarySHA 대조 후 재사용해요. sync1132/install1133/finish1134 새 one-shot만 사용하고 과거 완료script재실행금지. 최종 설치에서 전체명세/소유SHA/CPP15/native13·실제세렌더러/폴백·AI실제마커·User읽기SHA/연결/Versions1확인해요.
+현재 확정 USER_INSTALL_1133.json: C:\Users\kirby\HBEngine\Versions\c63f7ab57518b40d/HBEngine.exe. 3834파일/504소유SHA/CPP15·native13·Player1123/Host1041재사용·User10849읽기전후SHA·연결·Versions1. 설치GL/GPU/강제GL폴백각54gradient/4영역/4인스턴스·직접두후보회귀·실제CPP/BP세렌더러4영역→밝기→복원/정지캡처·copy·padding통과. 실제설치마커/AIcontext대조. 이전184080356B정리·공유캐시{"deleted":0,"bytes":0,"receipt":null}. sync1132/install1133/finish1134와이전one-shot완료재실행금지.
 
 ## 이어갈 잔여
 

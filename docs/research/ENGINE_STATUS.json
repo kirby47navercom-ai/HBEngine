@@ -2776,11 +2776,11 @@
     "scope": "큰 메시/인스턴스의 전역 픽셀 후보·혼합해상도 HDR atlas·native GPU 경계 패딩·정지복사/밝기metadata·GL/GPU/강제GL폴백·기존 C++/BP/AI 공용 실행. 공간가속/전체FPS/GL초기지연/전체엔진·전체문서완료 미주장."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1114.json",
-    "sourceCommit": "3f834c2c606bc15dcfabcb7c619fa0c4adcec7f4",
-    "bundleHash": "a24629862c1045b8865e903c2b2f73cd7804c9cbde0a5d4b79b7cf67f219e471",
+    "receipt": "docs/research/USER_INSTALL_1133.json",
+    "sourceCommit": "d35a4a3be562f99bf5823dd9da977275cf802258",
+    "bundleHash": "c63f7ab57518b40d573b3e25820cf55388667286f41942e4ba5751c4ec051990",
     "verified": true,
     "versions": 1,
-    "scope": "1114 전체3817파일/489소유SHA/CPP14·native10/Player1040/Host1041재사용·두프로브/환경혼합·회전/해상도/수명/인스턴스·모프현재경계·기본/코팅노멀24조건씩·실제CPP/BP세렌더러·AI실제마커·User읽기SHA/연결/Versions1"
+    "scope": "1133 전체3834파일/504소유SHA/CPP15·native13/Player1123·Host1041재사용·전역후보/혼합해상도HDR atlas·컴퓨트padding/정지전송·GL/GPU/강제GL폴백각54그라데이션·직접쌍회귀·실제CPP/BP세렌더러4영역/밝기복원·AI실제마커·User읽기SHA/연결/Versions1"
   }
 }
