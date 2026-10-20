@@ -488,7 +488,11 @@
         "safe area",
         "해상도",
         "글꼴",
-        "폰트"
+        "폰트",
+        "목록",
+        "listview",
+        "treeview",
+        "다중선택"
       ],
       "paths": [
         "prototype/ui-assets.js",
@@ -503,7 +507,8 @@
         "prototype/widget-row-editor.js",
         "prototype/widget-fonts.js",
         "prototype/virtual-list.js",
-        "prototype/virtual-scroll.js"
+        "prototype/virtual-scroll.js",
+        "prototype/list-selection.js"
       ]
     },
     {

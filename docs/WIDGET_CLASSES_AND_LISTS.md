@@ -49,3 +49,14 @@ ListView/TreeView 요소의 properties에 지정해요.
 같은 문서의 같은 글꼴 URL은 FontFace 하나를 참조 계수로 공유해요. 마지막 뷰가 사라지면 해제하고 늦게 끝난 글꼴 로드가 해제된 글꼴을 다시 등록하지 않아요.
 
 AI는 `hb context ui`, `schema --section ui`, 기존 `document.get/patch`의 revision/dryRun과 저장을 사용해요. `parent`, `parentSlots`, `rowWidget`은 콘텐츠 수집과 에셋 이름 변경에도 연결돼요.
+# 목록 선택과 자료 편집
+
+ListView·TreeView의 `selectionMode`는 `none`·`single`(기본)·`multiple`이에요. 편집기에서 선택하며 같은 JSON 속성을 AI의 `document.patch`로 바꿀 수 있어요. Ctrl/Cmd 클릭·Space는 토글, Shift는 범위, Ctrl/Cmd+A는 보이는 계층 전체 선택, Ctrl/Cmd+방향키는 선택을 유지한 초점 이동이에요. 입력 상자의 편집 키는 목록에서 가로채지 않아요. 선택 없음은 강조·선택 이벤트를 만들지 않아요.
+
+`selectedIndices`는 보이는 행 인덱스의 JSON 문자열이에요. 트리는 `selectedItemIds`에 안정적인 ID를 함께 보존하므로 접은 자식의 선택이 사라지지 않아요. 기존 `selectedIndex`·`selectedItemId`·`value`도 유지해요. C++ `UI::SetValue`와 같은 블루프린트 노드는 선택을 하나로 지정하며, `UI::SetListItems`는 자료를 교체해요. 새 SDK 함수나 네이티브 opcode는 만들지 않았어요.
+
+ListView의 `reorderable=true`는 내부 드래그와 Alt+위/아래로 선택 묶음을 이동해요. 중복된 문자열도 기존 인덱스의 대응표로 선택을 유지해요. 드래그 중 자료가 교체되면 이전 드래그는 취소해요. 외부 창·다른 목록 간 이동, 트리 재부모화와 실기기 터치 재정렬은 별도 범위예요.
+
+`rowWriteback=true`일 때 `rowBindings`에 연결된 TextInput의 text, Slider의 value, CheckBox의 checked 변경을 원본 항목 자료에 반영해요. 기존 own 필드와 같은 자료형만 바꾸며 `$item`은 원시 값, `$index`는 읽기 전용이에요. 프로토타입 경로·없는 경로·자료형 변경과 트리 ID 변경은 쓰지 않아요. 에셋 원본은 바꾸지 않고 실행 인스턴스의 `listItems`를 갱신해요. 고정 높이의 평면 목록은 한 행 수정 때 전체 offset을 다시 만들지 않아요. JSON 직렬화·전체 자료 검증 비용까지 없어진 것은 아니에요.
+
+목록 changed 이벤트에는 `selectedIndices`, `selectedItemIds`, `selectedCount`, `selectionTruncated`, `listChange`, `reorderFrom`, `reorderTo`가 추가돼요. 배열 문자열 하나라도 10,000자를 넘으면 이벤트에는 유효한 빈 JSON 배열과 `selectionTruncated=true`를 주고 실제 선택은 런타임 속성에 유지해요. C++·블루프린트의 기존 소유자 custom event 전달 경로를 공유해요. 행 제어 이벤트의 `rowIndex`·`rowElement`·`item`도 재활용된 행의 현재 항목을 가리켜요.

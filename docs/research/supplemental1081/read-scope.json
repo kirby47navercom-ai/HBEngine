@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "date": "2026-10-20",
+  "kind": "scoped-primary-document-comparison",
+  "sources": [
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/UIE-uxml-element-ListView.html",
+      "read": "ListView versus ScrollView; Refresh the collection view; Set item height; Make a list reorderable; keyboard/focus and selection-type sections",
+      "notRead": "all inherited members, linked APIs, InputSystem implementation, every USS property, cross-window drag example",
+      "promotion": "scoped comparison only"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UIElements.ListView-bindItem.html",
+      "read": "signature and Description including row index and unbindItem caution",
+      "notRead": "linked unbindItem/makeItem implementation and complete BaseVerticalCollectionView API",
+      "promotion": "scoped comparison only"
+    },
+    {
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/UMG/Components/UListView",
+      "read": "endpoint response only; usable body unavailable",
+      "promotion": "not analyzed"
+    }
+  ],
+  "exhaustiveUEUnity": false,
+  "wholeCorpusGateAdvanced": false
+}

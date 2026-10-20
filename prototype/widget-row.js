@@ -23,3 +23,16 @@ export function widgetRowEvent(node){
  if(node.rowIndex===undefined)return {};const json=JSON.stringify(node.rowItem)??'null',itemTruncated=json.length>10000;
  return{rowIndex:node.rowIndex,rowElement:node.rowElement,item:itemTruncated?'null':json,itemTruncated};
 }
+
+// Only existing own fields can be written. Read-only/generated bindings and
+// type changes cannot create object paths or replace an item's schema.
+export function writeWidgetRowItem(item,bindings,child,type){
+ const key={TextInput:'text',Slider:'value',CheckBox:'checked'}[child.type];if(type!=='changed'||!key)return item;
+ const path=bindings[child.name]?.[key];if(!path||path==='$index')return item;
+ const value=child.properties[key],compatible=old=>old!==null&&typeof old===typeof value&&['string','number','boolean'].includes(typeof old)&&(typeof value!=='number'||Number.isFinite(value));
+ if(path==='$item')return compatible(item)?value:item;
+ const parts=path.split('.');if(parts.some(k=>blocked.has(k)))return item;let at=item;const chain=[];
+ for(const key of parts){if(!at||typeof at!=='object'||Array.isArray(at)||!Object.hasOwn(at,key))return item;chain.push([at,key]);at=at[key];}
+ if(!compatible(at)||Object.is(at,value))return item;
+ let next=value;for(let i=chain.length-1;i>=0;i--){const [source,key]=chain[i];next={...source,[key]:next};}return next;
+}

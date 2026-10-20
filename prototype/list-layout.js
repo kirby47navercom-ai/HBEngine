@@ -16,5 +16,5 @@ export function listLayout(items,{rowHeight=40,variable=false,tree=false,expande
  }
  visit(items);const offsets=new Float64Array(rows.length+1);for(let i=0;i<rows.length;i++)offsets[i+1]=offsets[i]+rows[i].height;
  const at=y=>{if(!rows.length)return 0;let lo=0,hi=rows.length;while(lo<hi){const m=(lo+hi)>>>1;if(offsets[m+1]<=y)lo=m+1;else hi=m;}return Math.min(rows.length-1,lo);};
- return {rows,offsets,total:offsets[rows.length],parents,at,range(y,height){if(!rows.length)return {start:0,end:0};const start=Math.max(0,at(y)-2),end=Math.min(rows.length,at(y+height)+3);return {start,end};}};
+ return {rows,offsets,keys:ids,total:offsets[rows.length],parents,at,range(y,height){if(!rows.length)return {start:0,end:0};const start=Math.max(0,at(y)-2),end=Math.min(rows.length,at(y+height)+3);return {start,end};}};
 }
