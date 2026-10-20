@@ -1,4 +1,6 @@
 import {listLayout} from './list-layout.js';
+import {validWidgetClass} from './widget-class.js';
+import {widgetRowBindings} from './widget-row.js';
 import {virtualDefaults} from './virtual-controls.js';
 import {validAssetPath} from './material-runtime.js';
 
@@ -21,6 +23,7 @@ const finite=(v,min,max)=>Number.isFinite(v)&&v>=min&&v<=max;
 const vector=(v,size,min,max)=>Array.isArray(v)&&v.length===size&&v.every(n=>finite(n,min,max));
 const color=v=>typeof v==='string'&&/^#[\da-f]{6}([\da-f]{2})?$/i.test(v);
 export function validWidgetAsset(data,{expanded=false}={}){
+  if(!data||!validWidgetClass(data))return false;
   if(data?.version!==1||!text(data.name)||!data.name||!vector(data.referenceSize,2,64,16384)||!['constant','scale'].includes(data.scaleMode)||(data.safeArea!==undefined&&typeof data.safeArea!=='boolean')||(data.adaptiveOrientation!==undefined&&typeof data.adaptiveOrientation!=='boolean')||!Array.isArray(data.nodes)||data.nodes.length<1||data.nodes.length>(expanded?10000:256))return false;
   if(data.scaleRule!==undefined&&!Object.hasOwn(widgetScaleRules,data.scaleRule)||data.scaleMatch!==undefined&&!finite(data.scaleMatch,0,1)||data.safeAreaPadding!==undefined&&!vector(data.safeAreaPadding,4,0,4096))return false;
   const nodes=new Map(data.nodes.map(n=>[n?.id,n]));if(nodes.size!==data.nodes.length||new Set(data.nodes.map(n=>n?.name)).size!==nodes.size)return false;
@@ -35,6 +38,9 @@ export function validWidgetAsset(data,{expanded=false}={}){
 }
 export function validWidgetProperties(n){
     const s=n.slot,p=n.properties;
+    if(p?.rowWidget!==undefined&&(!['ListView','TreeView'].includes(n.type)||!validAssetPath(p.rowWidget)||p.rowWidget&&!p.rowWidget.endsWith('.hbwidget.json')))return false;
+    if(p?.rowBindings!==undefined){try{if(!['ListView','TreeView'].includes(n.type)||typeof p.rowBindings!=='string')return false;widgetRowBindings(p.rowBindings);}catch{return false;}}
+    if(p?.exposeOnInstanceOnly!==undefined&&(n.type!=='NamedSlot'||typeof p.exposeOnInstanceOnly!=='boolean'))return false;
     if(p?.widgetAsset!==undefined&&!validAssetPath(p.widgetAsset)||p?.widgetReferenceSize!==undefined&&!vector(p.widgetReferenceSize,2,64,16384))return false;
     for(const key of ['widgetOverrides','widgetEvents','widgetBindings'])if(p?.[key]!==undefined){try{if(typeof p[key]!=='string'||p[key].length>262144)return false;const map=JSON.parse(p[key]);if(!map||typeof map!=='object'||Array.isArray(map)||Object.keys(map).some(k=>['__proto__','constructor','prototype'].includes(k))||key!=='widgetOverrides'&&Object.values(map).some(v=>!text(v,80)))return false;}catch{return false;}}
     if(p?.widgetSlots!==undefined){try{if(n.type!=='Widget'||typeof p.widgetSlots!=='string'||p.widgetSlots.length>262144)return false;const slots=JSON.parse(p.widgetSlots);if(!slots||typeof slots!=='object'||Array.isArray(slots)||Object.entries(slots).some(([name,asset])=>!text(name,2048)||!name||['__proto__','constructor','prototype'].includes(name)||asset!==null&&(!validAssetPath(asset)||!asset||!asset.endsWith('.hbwidget.json'))))return false;}catch{return false;}}

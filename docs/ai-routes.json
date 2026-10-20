@@ -494,7 +494,15 @@
         "prototype/ui-runtime.js",
         "prototype/ui-editor.js",
         "prototype/widget-composition.js",
-        "prototype/world-widget.js"
+        "prototype/world-widget.js",
+        "prototype/widget-class.js",
+        "prototype/widget-class-editor.js",
+        "prototype/widget-row.js",
+        "prototype/widget-row-view.js",
+        "prototype/widget-row-editor.js",
+        "prototype/widget-fonts.js",
+        "prototype/virtual-list.js",
+        "prototype/virtual-scroll.js"
       ]
     },
     {

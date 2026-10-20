@@ -4799,5 +4799,73 @@
     "wholeCorpus": false,
     "wholeApi": false,
     "unread": "Linked renderer/engine APIs, platform GPU behavior beyond the measured paths, full Unreal/Unity bodies/media. DDA/normal patch implementation is HB-owned and independently tested."
+  },
+  "supplemental1069": {
+    "date": "2026-10-20",
+    "targets": [
+      "UI-03",
+      "AI-03",
+      "PER-03"
+    ],
+    "record": "docs/research/WIDGET_BATCH_1069.md",
+    "rows": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/UMG/UUserWidget/PreConstruct",
+        "file": "native/build/reference-corpus/supplemental1069/preconstruct.html",
+        "status": 200,
+        "bytes": 53912,
+        "sha256": "8d5fe5e227dc2da7524c7a74e0dd2f8b36d70ea8ac66ad65135677a3cdb57401",
+        "readScope": "Own event description, IsDesignTime and local cosmetic/world-access boundary; prior selected web body read",
+        "rawArchiveOnly": true
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/UMG/UUserWidget/OnInitialized",
+        "file": "native/build/reference-corpus/supplemental1069/initialized.html",
+        "status": 200,
+        "bytes": 53297,
+        "sha256": "4e79d359486cfd49c256dab4d209b16801bf5b47a4bbea7f1e07343a79fc04f5",
+        "readScope": "Own once-per-game-instance description and Construct/Destruct distinction; prior selected web body read",
+        "rawArchiveOnly": true
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/using-named-slot-widgets-for-ui-templates-in-unreal-engine",
+        "file": "native/build/reference-corpus/supplemental1069/named-slot.html",
+        "status": 200,
+        "bytes": 93943,
+        "sha256": "9f42fb54658889bc9c9d6656513c1f31e4ed15c061a10df5c9453eb990be7867",
+        "readScope": "Own single-child, inherited designer and Expose on Instance Only paragraphs; existing content and code access preserved",
+        "rawArchiveOnly": true
+      },
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.3/manual/uitoolkits/uielements/uie-structure-ui/uie-uxml/uie-reuse-uxml-files",
+        "file": "native/build/reference-corpus/supplemental1069/uxml-reuse.html",
+        "status": 200,
+        "bytes": 588084,
+        "sha256": "753da0c9f035742b74811c6b015645853ae05a87c06d513752e22e2c51c72d84",
+        "readScope": "Own template/instance, attribute override precedence and content-container paragraphs; not linked APIs",
+        "rawArchiveOnly": true
+      },
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.3/script-reference/unityengine/uielements/listview",
+        "file": "native/build/reference-corpus/supplemental1069/list-view.html",
+        "status": 200,
+        "bytes": 1091618,
+        "sha256": "29677cfc94b2a57c219f2b52330cb1f25a6820c270db31d8980538518d27f71f",
+        "readScope": "Selected own description and makeItem/bindItem/unbindItem/destroyItem/itemTemplate rows, not inherited API list",
+        "rawArchiveOnly": true
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/UIE-create-list-view-complex.html",
+        "file": "native/build/reference-corpus/supplemental1069/complex-list.html",
+        "status": 200,
+        "bytes": 21133,
+        "sha256": "06402ab901465d2c64b93ea52807c756d21509d4e2d93bf65f7efd74202f2c58",
+        "readScope": "Selected example make/bind current item, slider userData and callback ownership paragraphs/code; not all UI Toolkit APIs",
+        "rawArchiveOnly": true
+      }
+    ],
+    "wholeCorpus": false,
+    "wholeApi": false,
+    "unread": "Linked engine/UMG/UI Toolkit API members, other engine features, desktop/mobile/assistive-device behaviors beyond the isolated checks. Designer arbitrary BP/C++ execution and native widget object classes are not implemented by this batch."
   }
 }

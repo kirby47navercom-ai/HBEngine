@@ -1,4 +1,6 @@
 import {validWidgetAsset,validWidgetProperties,widgetDefaults,widgetDescendants} from './ui-assets.js';
+import {widgetParentMount,applyWidgetDefaults} from './widget-class.js';
+import {widgetRowBindings} from './widget-row.js';
 const plain=v=>v&&typeof v==='object'&&!Array.isArray(v)&&Object.getPrototypeOf(v)===Object.prototype;
 export function widgetOverrideMap(text='{}'){const value=JSON.parse(text);if(!plain(value)||JSON.stringify(value).length>262144||Object.entries(value).some(([name,properties])=>!name||name.length>1024||!plain(properties)||Object.keys(properties).some(k=>!Object.hasOwn(widgetDefaults,k)||['widgetAsset','widgetOverrides','widgetEvents','widgetBindings'].includes(k))))throw Error('재사용 위젯의 요소별 속성을 확인하세요.');return value;}
 const fillSlot={anchors:[0,0,1,1],offset:[0,0,0,0],alignment:[0,0],zIndex:0,fill:1};
@@ -27,10 +29,13 @@ export async function resolveWidgetComposition(data,read,{maxNodes=10000,maxDept
   return expand(await cache.get(asset),[...stack,asset]);
  }
  async function expand(source,stack){
-  if(stack.length>maxDepth)throw Error('재사용 위젯 깊이 제한을 넘었어요.');const next=structuredClone(source),output=[];
+  if(stack.length>maxDepth)throw Error('재사용 위젯 깊이 제한을 넘었어요.');const next=structuredClone(source),output=[],parentMount=widgetParentMount(next);if(parentMount)next.nodes.splice(1,0,parentMount);
   for(const node of next.nodes){
-   if(++count>maxNodes)throw Error('펼친 위젯 요소 예산을 넘었어요.');output.push(node);if(node.type!=='Widget'||!node.properties.widgetAsset)continue;
+   if(++count>maxNodes)throw Error('펼친 위젯 요소 예산을 넘었어요.');output.push(node);
+   delete node.rowTemplate;if(['ListView','TreeView'].includes(node.type)&&node.properties.rowWidget){node.rowTemplate=await referenced(node.properties.rowWidget,stack);widgetRowBindings(node.properties.rowBindings||'{}',node.rowTemplate);}
+   if(node.type!=='Widget'||!node.properties.widgetAsset)continue;
    const child=await referenced(node.properties.widgetAsset,stack),slots=JSON.parse(node.properties.widgetSlots||'{}');
+   if(node===parentMount){next.lifecycle={...child.lifecycle,...next.lifecycle};next.inheritedWidget=node.id;}
    const targets=new Map(child.nodes.filter(n=>n.type==='NamedSlot').map(n=>[n.name,n]));
    for(const name of Object.keys(slots))if(!targets.has(name))throw Error('참조 위젯에 없는 명명 슬롯이에요: '+name);
    const replaced=new Set();for(const name of Object.keys(slots)){const slot=targets.get(name);for(const id of widgetDescendants(child,slot.id))if(id!==slot.id)replaced.add(id);}
@@ -45,7 +50,7 @@ export async function resolveWidgetComposition(data,read,{maxNodes=10000,maxDept
    for(const key of Object.keys(overrides))if(!used.has(key))throw Error('참조 위젯에 없는 요소예요: '+key);
    output.push(...graft(child,node.id,node.id,node.name,node.id));
   }
-  next.nodes=output;return next;
+  next.nodes=output;return applyWidgetDefaults(next,next.preConstruct||{});
  }
  const result=await expand(data,[]);if(!validWidgetAsset(result,{expanded:true}))throw Error('펼친 위젯 이름·계층·속성 검증 실패');return result;
 }
