@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-20",
-  "basisRevision": "2d47b2ef90c0728f84d6bfbc94f62a33a0b6ff2c",
+  "basisRevision": "94296c1420ae169439bc703c2b7bb6ffdde89cc0",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -1784,10 +1784,10 @@
       "area": "ui",
       "title": "복합/월드 UI·가상화·지역화",
       "status": "partial",
-      "implemented": "기본 위젯 트리·데이터 바인딩 · 165: 재사용 스타일 자산·지역화·행 재활용 ListView·키보드 선택/접근성 이름·공용 SDK · 166: 위젯 디자이너/실행기의 스타일/override/지역화 공용 해석과 비동기 오래된 미리보기 폐기 · 171: TreeView 펼침/키보드·안정 ID 선택·명시 가변 높이·누적 높이/이진 검색·보이는 행 재사용·디자이너/게임 공용 ·174: 재사용 위젯/중첩 오버라이드·사람 속성·namespace SDK/이벤트/변수·스타일/지역화·화면 투영 오브젝트 UI·공유 예산/비동기 수명 ·177: 목록/트리 실제 내용 높이·Fenwick 부분갱신·표시행재사용·너비/글꼴/배율·키보드/비활성/선택/종료수명·같은C++UI/AI ·181: NamedSlot 단일 자식·기본/교체/비움·중첩 이름공간·원본 불변/순환·예산 검사·Designer 선택/Undo·기존 C++/BP 이벤트·외부 Source 에셋 수집/이름 변경·AI schema sourceOnly 복구 ·256: 런타임 중첩 명명 슬롯 교체/지우기·현재 형제 HUD/애니메이션·포커스/커서/스크롤/입력release·늦은 에셋/소유자 수명 ·1066–1069: 위젯 부모/타입검사 기본값/상속 슬롯·노출·지역 초기표시·런타임 lifecycle/첫프레임전HUD·재진입/동시예산·복합행/자료/문맥이벤트·전역행예산·큰논리스크롤/휠/터치/측정앵커/입력키·공유FontFace/늦은로드해제",
+      "implemented": "기본 위젯 트리·데이터 바인딩 · 165: 재사용 스타일 자산·지역화·행 재활용 ListView·키보드 선택/접근성 이름·공용 SDK · 166: 위젯 디자이너/실행기의 스타일/override/지역화 공용 해석과 비동기 오래된 미리보기 폐기 · 171: TreeView 펼침/키보드·안정 ID 선택·명시 가변 높이·누적 높이/이진 검색·보이는 행 재사용·디자이너/게임 공용 ·174: 재사용 위젯/중첩 오버라이드·사람 속성·namespace SDK/이벤트/변수·스타일/지역화·화면 투영 오브젝트 UI·공유 예산/비동기 수명 ·177: 목록/트리 실제 내용 높이·Fenwick 부분갱신·표시행재사용·너비/글꼴/배율·키보드/비활성/선택/종료수명·같은C++UI/AI ·181: NamedSlot 단일 자식·기본/교체/비움·중첩 이름공간·원본 불변/순환·예산 검사·Designer 선택/Undo·기존 C++/BP 이벤트·외부 Source 에셋 수집/이름 변경·AI schema sourceOnly 복구 ·256: 런타임 중첩 명명 슬롯 교체/지우기·현재 형제 HUD/애니메이션·포커스/커서/스크롤/입력release·늦은 에셋/소유자 수명 ·1066–1069: 위젯 부모/타입검사 기본값/상속 슬롯·노출·지역 초기표시·런타임 lifecycle/첫프레임전HUD·재진입/동시예산·복합행/자료/문맥이벤트·전역행예산·큰논리스크롤/휠/터치/측정앵커/입력키·공유FontFace/늦은로드해제 ·1079–1082: 선택모드/다중/범위·입력격리/접힌트리ID·평면묶음재정렬/오래된드래그거부·형식보존행자료편집/원본불변·행부분refresh·사람/AI/Undo/공용VM이벤트; 실제100000선택/풀8·재활용행·기존1067/174/181/256 회귀",
       "remaining": [
         "디자이너 BP/C++ PreConstruct 실행 샌드박스·중첩 시각 위젯의 별도 네이티브 클래스 객체/생명주기·조명/깊이 차폐를 받는3D UI 메시",
-        "목록행의 양방향 원본 자료 편집·다중선택/드래그 재정렬·복합 중첩 측정 레이아웃/전체 스크린리더·실기기 검증",
+        "트리 재부모화/여러 목록 간 이동·실기기 터치 재정렬·복합 중첩 측정 레이아웃/전체 스크린리더·실기기 검증",
         "대규모 UI의 장시간 풀/배치·전체 입력·기기별 성능 검증"
       ],
       "sources": [
@@ -1810,7 +1810,9 @@
         "prototype/widget-row-view.js",
         "prototype/widget-row.js",
         "tools/editor-automation.mjs",
-        "tools/project-service.mjs"
+        "tools/project-service.mjs",
+        "prototype/list-selection.js",
+        "prototype/list-layout.js"
       ],
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
@@ -1823,7 +1825,9 @@
         "docs/research/ENGINE_WORK_256.json",
         "docs/research/ENGINE_WORK_1070.json",
         "docs/research/WIDGET_BATCH_1069.md",
-        "docs/WIDGET_CLASSES_AND_LISTS.md"
+        "docs/WIDGET_CLASSES_AND_LISTS.md",
+        "docs/research/ENGINE_WORK_1082.json",
+        "docs/research/LIST_EDITING_1081.md"
       ]
     },
     {
@@ -2734,11 +2738,11 @@
     }
   ],
   "latestBatch": {
-    "first": 1074,
-    "last": 1075,
-    "record": "docs/research/ENGINE_WORK_1075.json",
-    "implementationRevision": "2d47b2ef90c0728f84d6bfbc94f62a33a0b6ff2c",
-    "scope": "사람/AI 월드 소유초안·중복 복사/원본보존/Undo 비용 절감"
+    "first": 1079,
+    "last": 1082,
+    "record": "docs/research/ENGINE_WORK_1082.json",
+    "implementationRevision": "94296c1420ae169439bc703c2b7bb6ffdde89cc0",
+    "scope": "목록 다중선택/순서변경·행 자료 편집/부분 refresh·사람/AI/이벤트/풀"
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_1077.json",

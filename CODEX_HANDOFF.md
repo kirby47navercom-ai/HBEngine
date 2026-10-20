@@ -1,24 +1,25 @@
-# 현재 인계 — 위젯·AI·월드 비용 묶음 설치 확정
+# 현재 인계 — 목록 제작·실행 묶음과 누적 목표 계속
 
-갱신: 2026-10-20. 최신 요청은 여러 구현을 모아 비용·반복 검사를 줄이며 계속 진행하는 것이에요.
+갱신: 2026-10-20. 장기 목표 active(사용자 재개 확인). 전체 누적 목표를 완료/정지로 바꾸지 않아요. 여러 변경을 모아 비용·반복 검사를 줄이며 계속 진행해요.
 
 ## 시작
 
-AGENTS.md → docs/AI_START.md → node tools/hb.mjs context "작업명". 정본 docs/research/ENGINE_STATUS.json. 큰 과거 인계/연구/API 전체를 선행 독서하지 않아요. 설치본은 context state.installation/로컬 HBEngine.install.json으로 실제 번들을 읽고 원장의 이전 영수증과 구분해요. context는 전체 파일을 재해시하지 않아요.
+AGENTS.md → docs/AI_START.md → node tools/hb.mjs context "작업명". 정본 docs/research/ENGINE_STATUS.json. 거대한 과거 연구/API를 선행 독서하지 않아요. 실제 설치는 context state.installation/로컬 HBEngine.install.json을 읽고 이전 영수증과 구분해요.
 
-## 확정 설치
+## 새 구현과 검사
 
-USER_INSTALL_1077.json: C:/Users/kirby/HBEngine/Versions/884e599a4157ab0e/HBEngine.exe. 3769파일/449소유SHA/CPP검사원본14·User10849읽기전후SHA/연결/Versions1 검증. native10 SHA 같아 Player1040/Host1041 재사용, 재컴파일0. 이전183490860B 정리·공유캐시삭제0/빈영수증없음. sync1076/install1077/finish1078은 완료 one-shot으로 재실행하지 않아요.
+소스94296c1, ENGINE_WORK_1082.json·research/LIST_EDITING_1081.md. 목록 선택모드/다중/범위/초점·입력키 격리/접힌트리ID·평면 묶음 재정렬/중복값 대응/교체 중 오래된 드래그취소·형식 보존 행 자료 쓰기/에셋 불변·고정행 부분 refresh·사람 상세/AI JSON/Undo·공용 VM 이벤트 인자와 큰 배열 명시 제한. WIDGET_CLASSES_AND_LISTS.md가 계약이에요. 신규 네이티브 함수는 없어요.
 
-## 구현과 근거
+1079-1qusG0 CPU5그룹. 실제1080-RIUFur: 100000선택/풀8·키·키보드/합성DOM드래그·텍스트/체크/슬라이더·행재활용/현재이벤트·스크립트자료교체/기존서비스·단일행offset재구성0·편집Undo/정상종료. 기존174-A0A8Dz9/181-ZSfMp8 6/256-t6RdHo4 및 실제1067-bF77ML 상속/슬롯/생명주기·긴논리스크롤/측정행/폰트/전역예산 회귀. 검사도구 인용/선택/이동기대값/저장CAS 실수는 통과로 세지 않아요.
 
-- UI d9cc629/AI84a0e48, ENGINE_WORK_1070.json·USER_INSTALL_1072.json. 위젯 상속/기본값/슬롯노출·지역초기표시/소유자 lifecycle·복합행/바인딩/항목이벤트/전역예산·논리스크롤/입력키/공유FontFace·사람/AI/Undo/참조수집. WIDGET_CLASSES_AND_LISTS.md, research/WIDGET_BATCH_1069.md.
-- UI 실제1067RFw5l3: 100000행/논리409600000px/물리4000000px/풀6·측정행 너비변경 끝앵커·2000복합항목 행7/노드28/FontFace1·행1999 이벤트·전역예산/해제·첫프레임전HUD. 동일 UI 소유자는1077에서 증거 재사용.
-- 월드2d47b2e, ENGINE_WORK_1075.json·research/WORLD_DRAFT_1075.md. withWorldDraft 동기 소유초안으로 사람/AI 편집 전체복사2→1. 지형8/폴리지5연산·평활화 원래이웃/순수불변성/소유범위해제·실제edit 메서드/격리훅의 스트로크Undo·실패복원. 20003인스턴스 단일CPU 약64–79→23–34ms. 전체FPS/모든Undo비용으로 확대하지 않아요.
-- 설치 실제1060yl9khC: 사람/AI/Undo/키/지형408B·폴리지64B 부분GPU·새버퍼0·읽기revision불변·정상종료. context 실제설치마커 대조.
+## 설치와 이전 근거
 
-## 이어갈 잔여와 규칙
+현재 확정 USER_INSTALL_1077.json: C:/Users/kirby/HBEngine/Versions/884e599a4157ab0e/HBEngine.exe. 새 묶음은 갱신 준비 중. native10지문 그대로면 Player1040/Host1041 재사용·재컴파일0. 새 설치 후1084 영수증으로 갱신해요. sync1076/install1077/finish1078은 완료 one-shot으로 재실행하지 않아요.
 
-첫 문서복사·Undo스냅샷·전체검증/변경비교·큰선택/브러시스캔·텍스처지형/GPU직접브러시, 디자이너 임의BP/C++샌드박스/별도native위젯객체·3D UI조명/깊이·양방향행자료/다중선택·실기기와 다른 누적목표는 원장에 남아 있어요. 복잡GL 초기지연·이전프레임 광학이력도 유지해요. 전체분석/엔진 완료율은 계산하지 않아요.
+이전1075 월드 소유초안·전체복사2→1·원본/Undo/평활화 보존·설치1060yl9khC의 지형408B/폴리지64B 부분GPU/새할당0은 보존해요. 1070/1072 위젯 상속/슬롯노출/초기표시/생명주기/복합행·풀·FontFace와 AI 실제설치마커도 유지해요.
 
-구현을 묶고 관련 검사만 마지막에, 같은 소유 코드의 실행파일·증거를 재사용해요. 고정이름 보고서를 다시 쓰기 전 과거 원장에 연결한 SHA 증거를 보존하고 새 실행을 별도 기록해요. 최신1059 회귀는 world-draft-1074-regression1059.json에 분리했어요. 백그라운드만·사용자창/서버/프로필 검사·종료금지·활성설치보호·Versions하나·캐시누적방지를 지켜요.
+## 다음 작업과 경계
+
+GL 약8/7초 초기지연은 이번 소스 변경으로 개선했다고 주장하지 않아요. 일괄 제출/노멀 공유와 기존실험을 다시 대조했으나 새 렌더링 구현은 없어요. 이전 프레임 광학 대응/복합매질, 지형 텍스처/GPU브러시·첫복사/Undo/검증·큰스캔, UI 트리/다중목록 재부모화·실기기터치·복합중첩측정/전체접근성·BP/C++ 디자이너샌드박스/별도native위젯객체·3D깊이/조명 및 다른 누적목표를 원장에서 이어가요. 전체 JSON직렬화/검증과 모든FPS를 해결했다고 하지 않아요.
+
+관련 검사만 마지막에 묶고 변하지 않은 바이너리·근거를 재사용해요. 고정이름 보고서를 덮기 전 SHA 증거를 보존해요. 백그라운드만·사용자창/서버/프로필을 검사/종료하지 않아요. 활성설치 보호·User읽기전용SHA·Versions하나·공유캐시 누적방지를 지켜요. 사용자Android폰/Mac없음을 다시 묻지 않아요.
