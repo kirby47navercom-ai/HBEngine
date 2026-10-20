@@ -2753,11 +2753,11 @@
     "scope": "거리장 사전쿠킹·공유 캐시/예산·패키지·검증/복구·실제 세렌더러/C++/BP·AI"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1096.json",
-    "sourceCommit": "82a8118358c4bf71e989c977ea1766e9e6ee9a8e",
-    "bundleHash": "f2302f2ab6c1a86494681d093e0d31325088cd3f3006fb6dd545c3c7766b7162",
+    "receipt": "docs/research/USER_INSTALL_1104.json",
+    "sourceCommit": "5af944f8f1182cdfff9196ad81bd5f0a7c45b49d",
+    "bundleHash": "54c85d6c7b3cb9b80617978da3c8ae0888506dc59a802a52755a391c39205da4",
     "verified": true,
     "versions": 1,
-    "scope": "1096 전체3792파일/464소유SHA/CPP14·native10지문/Player1040/Host1041재사용·거리장LOD/교체/취소/예산/정지·TAA/실제CPP·BP/세렌더러/상세·CAS·실제마커·User읽기SHA/연결/Versions1"
+    "scope": "1104 전체3802파일/476소유SHA/CPP14·native10/Player1040/Host1041재사용·거리장 사전쿠킹/검증·복구/캐시·정밀도/복원·세렌더러/실제CPP·BP/최초workerStarts0·AI실제마커·User읽기SHA/연결/Versions1"
   }
 }

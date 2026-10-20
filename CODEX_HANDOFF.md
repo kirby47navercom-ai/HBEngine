@@ -14,7 +14,7 @@ d003320·ENGINE_WORK_1102.json·DISTANCE_FIELD_COOKING.md·research/DISTANCE_COO
 
 ## 설치
 
-이 묶음은 설치 전환 준비 중이에요. 직전 확정 USER_INSTALL_1096.json: Versions/f2302f2ab6c1a864/HBEngine.exe,3792파일/464소유SHA·User10849읽기SHA·Versions1·세렌더러/CPP/BP/상세CAS. 새1104 영수증 확정 전 현재 설치로 보고해요. native10소유SHA/Player1040/Host1041는 그대로라 엔진 재컴파일 없이 데이터/도구를 동기화해요. sync1103/install1104/finish1105는 새 one-shot이며 완료 marker를 확인하고 재실행하지 않아요. 이전1095/1096/1097 및 과거 one-shot은 완료예요.
+현재 확정 USER_INSTALL_1104.json: C:\Users\kirby\HBEngine\Versions\54c85d6c7b3cb9b8/HBEngine.exe. 3802파일/476소유SHA/CPP14·native10지문/Player1040/Host1041재사용·User10849읽기전후SHA·연결·Versions1. 설치1100-JJ296i 실제GL/GPU hit2→3/복원/직접광/프로그램/TAA,1090-8XSxab 실제CPP/BP/D3D 최초workerStarts0·정밀도/복원 통과. 실제설치마커/AI context도대조. 이전183812964B 정리·공유캐시 {"deleted":0,"bytes":0,"receipt":null}. sync1103/install1104/finish1105와 과거one-shot은 완료했으니 재실행하지 않아요.
 
 ## 이어갈 잔여
 

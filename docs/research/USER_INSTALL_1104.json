@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "5af944f8f1182cdfff9196ad81bd5f0a7c45b49d",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\54c85d6c7b3cb9b8",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\54c85d6c7b3cb9b8\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\54c85d6c7b3cb9b8\\HBEngine.exe",
+  "bundleHash": "54c85d6c7b3cb9b80617978da3c8ae0888506dc59a802a52755a391c39205da4",
+  "files": 3802,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3793,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f2302f2ab6c1a864",
+        "bytes": 183812964,
+        "manifestSHA256": "9295146a97ca9973b07fe06e651d1880cf111e7f525bf49b22bf56b39a71836f"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-20T16:00:56.8301334Z",
+    "bytes": 183812964,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "54c85d6c7b3cb9b8"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 476,
+  "repositoryOnlyTestSourcesVerified": 14,
+  "nativePlayerSHA256": "a5235c863e3886fd8b1a0c238c43d344d7f5fb5f3e0d9c3c3fec48b00c3f3a31",
+  "installedGates": [
+    {
+      "path": "native/build/distance-cook-1100-JJ296i/acceptance.json",
+      "sha256": "2367b4ae65fbef768f69ff44eb4c5caa2015753d1f72d0d82fc00cc70711bc2e",
+      "scope": "Actual private GL/WebGPU production AO reads checked cooked rectangle+voxel binaries, runtime coarse fallback, cached high restoration, observable AO/direct light isolation, fixed GL programs and TAA static memo. Same independent baked input; full automatic package+C++/BP native is separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\54c85d6c7b3cb9b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-camera-lod-1090-8XSxab/acceptance.json",
+      "sha256": "0e02c2fcd4c529e067d6f338214e248207127a3f9dd71137e342fcc4a6e7c2b4",
+      "scope": "Actual fresh owned packaged D3D11 game: compiled SDK C++ sets camera/fixed mode, camera zoom and screen pixels; keyboard Blueprint changes same new enum; checked cooked initial high fields with workerStarts0; coarse worker fallback and cooked high restoration feeds native raster AO; high-quality pixel restoration and observable AO, disable releases owner.320x240 correctness, not FPS/whole heap or global clipmap.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\54c85d6c7b3cb9b8\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\54c85d6c7b3cb9b8\\",
+    "elapsedMs": 129.44,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\54c85d6c7b3cb9b8",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "54c85d6c7b3cb9b80617978da3c8ae0888506dc59a802a52755a391c39205da4",
+      "installedAt": "2026-10-20T16:00:53.380Z",
+      "manifestFiles": 3802,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3802,
+  "versions": [
+    "54c85d6c7b3cb9b8"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1104-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/distance-cook-1098-9BBG3v/acceptance.json",
+      "sha256": "d6bfc77d706ccd3b33f4784dc08f21a4d975d9ba6765c3a9e0552b91c08fa0a2",
+      "scope": "Owned temporary projects only. Actual Node geometry bake/GLTF dependencies/OBJ dedup/canonical binary and shared cache lifecycle. GPU/native pixels are separate."
+    },
+    {
+      "path": "native/build/distance-cook-1100-6Ymv0a/acceptance.json",
+      "sha256": "e18d9d247a497d502567167315c802b83f5c3c7486e1619dab79ba4addcbbd11",
+      "scope": "Actual private GL/WebGPU production AO reads checked cooked rectangle+voxel binaries, runtime coarse fallback, cached high restoration, observable AO/direct light isolation, fixed GL programs and TAA static memo. Same independent baked input; full automatic package+C++/BP native is separate."
+    },
+    {
+      "path": "native/build/distance-camera-lod-1090-vN91ge/acceptance.json",
+      "sha256": "dea02934b56e97cfb591dbf11e9e010cce2cc1c4285ab2abdc8f882482236710",
+      "scope": "Actual fresh owned packaged D3D11 game: compiled SDK C++ sets camera/fixed mode, camera zoom and screen pixels; keyboard Blueprint changes same new enum; checked cooked initial high fields with workerStarts0; coarse worker fallback and cooked high restoration feeds native raster AO; high-quality pixel restoration and observable AO, disable releases owner.320x240 correctness, not FPS/whole heap or global clipmap."
+    },
+    {
+      "path": "native/build/distance-camera-lod-1088-2gmKD3/acceptance.json",
+      "sha256": "3808b22371fea1aea709c403d8fff8096f25ca72a4081b4ca36eece0f71a8bd4",
+      "scope": "Actual owned browser worker and production MeshDistanceFieldScene projection/near-far targets, ready-field retention, superseded target cancellation, delayed downgrade payload release, shared and instanced geometry, fixed fallback, static reuse, input/volume budgets and owner idle cleanup. Raster pixels and compiled C++/BP are separate."
+    },
+    {
+      "path": "native/build/headless-model-jiOIv7/acceptance.json",
+      "sha256": "2e0c18d1173a012cbb906dfcabc4514e16b9e882e386f54ff9a88322d07dce91",
+      "scope": "실제 포즈/쿠킹/공용 입력 회귀"
+    },
+    {
+      "path": "native/build/distance-camera-lod-1087-Mh6LBN/acceptance.json",
+      "sha256": "47a0d1c69548fb7f2110408d7a84013032130477d764c12a90524a79b75b2709",
+      "scope": "Pure projected-AABB heuristic versus independent analytic box sizes, target hysteresis, exact replacement payload planning and existing component/post-volume contracts. Worker/GPU and actual game separate."
+    },
+    {
+      "path": "native/build/distance-cook-static-1102.json",
+      "sha256": "6da69d554c967c14f22ad521e56a258acfa4041250abf15aae7c28c187252b98",
+      "scope": "Changed JS/MJS syntax and whitespace. API/headless/context commands completed separately."
+    },
+    {
+      "path": "native/build/distance-cook-ai-context-1102.json",
+      "sha256": "a056f3dab0b72c255d2d866b9a8662a6ba02d166f2e448a8a7a95efc3bfd31c6",
+      "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/distance-cook-1100-6Ymv0a/acceptance.json",
+      "sha256": "e18d9d247a497d502567167315c802b83f5c3c7486e1619dab79ba4addcbbd11",
+      "scope": "Actual private GL/WebGPU production AO reads checked cooked rectangle+voxel binaries, runtime coarse fallback, cached high restoration, observable AO/direct light isolation, fixed GL programs and TAA static memo. Same independent baked input; full automatic package+C++/BP native is separate."
+    },
+    {
+      "path": "native/build/distance-camera-lod-1090-vN91ge/acceptance.json",
+      "sha256": "dea02934b56e97cfb591dbf11e9e010cce2cc1c4285ab2abdc8f882482236710",
+      "scope": "Actual fresh owned packaged D3D11 game: compiled SDK C++ sets camera/fixed mode, camera zoom and screen pixels; keyboard Blueprint changes same new enum; checked cooked initial high fields with workerStarts0; coarse worker fallback and cooked high restoration feeds native raster AO; high-quality pixel restoration and observable AO, disable releases owner.320x240 correctness, not FPS/whole heap or global clipmap."
+    },
+    {
+      "path": "native/build/distance-camera-lod-1088-2gmKD3/acceptance.json",
+      "sha256": "3808b22371fea1aea709c403d8fff8096f25ca72a4081b4ca36eece0f71a8bd4",
+      "scope": "Actual owned browser worker and production MeshDistanceFieldScene projection/near-far targets, ready-field retention, superseded target cancellation, delayed downgrade payload release, shared and instanced geometry, fixed fallback, static reuse, input/volume budgets and owner idle cleanup. Raster pixels and compiled C++/BP are separate."
+    }
+  ],
+  "scope": "1104 전체3802파일/476소유SHA/CPP14·native10/Player1040/Host1041재사용·거리장 사전쿠킹/검증·복구/캐시·정밀도/복원·세렌더러/실제CPP·BP/최초workerStarts0·AI실제마커·User읽기SHA/연결/Versions1",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

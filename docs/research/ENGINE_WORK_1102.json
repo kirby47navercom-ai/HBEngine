@@ -551,6 +551,24 @@
       "path": "native/build/distance-cook-ai-context-1102.json",
       "sha256": "a056f3dab0b72c255d2d866b9a8662a6ba02d166f2e448a8a7a95efc3bfd31c6",
       "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    },
+    {
+      "path": "native/build/distance-cook-1100-JJ296i/acceptance.json",
+      "sha256": "2367b4ae65fbef768f69ff44eb4c5caa2015753d1f72d0d82fc00cc70711bc2e",
+      "scope": "Actual private GL/WebGPU production AO reads checked cooked rectangle+voxel binaries, runtime coarse fallback, cached high restoration, observable AO/direct light isolation, fixed GL programs and TAA static memo. Same independent baked input; full automatic package+C++/BP native is separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\54c85d6c7b3cb9b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-camera-lod-1090-8XSxab/acceptance.json",
+      "sha256": "0e02c2fcd4c529e067d6f338214e248207127a3f9dd71137e342fcc4a6e7c2b4",
+      "scope": "Actual fresh owned packaged D3D11 game: compiled SDK C++ sets camera/fixed mode, camera zoom and screen pixels; keyboard Blueprint changes same new enum; checked cooked initial high fields with workerStarts0; coarse worker fallback and cooked high restoration feeds native raster AO; high-quality pixel restoration and observable AO, disable releases owner.320x240 correctness, not FPS/whole heap or global clipmap.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\54c85d6c7b3cb9b8\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -568,6 +586,24 @@
       "path": "native/build/distance-camera-lod-1088-2gmKD3/acceptance.json",
       "sha256": "3808b22371fea1aea709c403d8fff8096f25ca72a4081b4ca36eece0f71a8bd4",
       "scope": "Actual owned browser worker and production MeshDistanceFieldScene projection/near-far targets, ready-field retention, superseded target cancellation, delayed downgrade payload release, shared and instanced geometry, fixed fallback, static reuse, input/volume budgets and owner idle cleanup. Raster pixels and compiled C++/BP are separate."
+    },
+    {
+      "path": "native/build/distance-cook-1100-JJ296i/acceptance.json",
+      "sha256": "2367b4ae65fbef768f69ff44eb4c5caa2015753d1f72d0d82fc00cc70711bc2e",
+      "scope": "Actual private GL/WebGPU production AO reads checked cooked rectangle+voxel binaries, runtime coarse fallback, cached high restoration, observable AO/direct light isolation, fixed GL programs and TAA static memo. Same independent baked input; full automatic package+C++/BP native is separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\54c85d6c7b3cb9b8\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/distance-camera-lod-1090-8XSxab/acceptance.json",
+      "sha256": "0e02c2fcd4c529e067d6f338214e248207127a3f9dd71137e342fcc4a6e7c2b4",
+      "scope": "Actual fresh owned packaged D3D11 game: compiled SDK C++ sets camera/fixed mode, camera zoom and screen pixels; keyboard Blueprint changes same new enum; checked cooked initial high fields with workerStarts0; coarse worker fallback and cooked high restoration feeds native raster AO; high-quality pixel restoration and observable AO, disable releases owner.320x240 correctness, not FPS/whole heap or global clipmap.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\54c85d6c7b3cb9b8\\HBEngine.exe"
+      ]
     }
   ],
   "nativePlayerSHA256": "a5235c863e3886fd8b1a0c238c43d344d7f5fb5f3e0d9c3c3fec48b00c3f3a31",
@@ -589,8 +625,8 @@
       "native/include/HBEngine/SceneProbes.hpp": "e566db9d8ae7992f736e25442d673d7af4623075237885b95ebd0feee377eb25"
     }
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1096.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1104.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "거리장 AO의 전역 클립맵·타일 후보/전역장의 카메라 다중 해상도·시간 신뢰도·방향별 하늘/bent normal·지형/변형체·마스크/투명·FBX/월드·편집기/다중LOD 쿠킹과 큰/얇은 일반 모델의 정밀도(기하별 예산880–904/기존캐시910–916, 기하별 카메라LOD1087–1094 구현; 글로벌 clipmap과 구분)",
@@ -599,5 +635,6 @@
     "큰 베이크의 분할 바이너리 저장/종속 캐시·실제 cloud 기하 베이크 캡처·HDRI 저표본 분산 추가 절감(탐색4배목표미달)·머테리얼/카메라/이방성 베이크 footprint"
   ],
   "scope": "공용 Node 쿠킹/캐시·패키지/runtime·실제세렌더러/CPP/BP. 디바이스/FPS/전체엔진/GL초기지연 완료 주장 없음.",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1104.json"
 }

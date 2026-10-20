@@ -810,3 +810,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 ## 2026-10-21 거리장 사전쿠킹1098–1102
 
 d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKING_1101.md. 도형/OBJ/glTF/GLB·외부버퍼/삼각형SHA·중복/결정 바이너리·공유128MiB 보관·패키지/목록32MiB·정상/취소/손상복구·세타깃 설정·runtime 검증/소유fallback·C++/BP/AI. 1098-9BBG3v 9그룹,1100-6Ymv0a GL/GPU hit2→3·복원/직접광/프로그램/TAA,1090-vN91ge 실제CPP/BP/D3D 초기workerStarts0,1088-2gmKD3 취소/예산/정지·포즈/API/탐색/문법 통과. 설치 전환과 최종 근거는 후속영수증. 글로벌/FBX·월드·다중LOD·편집기쿠킹 및 누적목표계속.
+
+1104 설치 C:\Users\kirby\HBEngine\Versions\54c85d6c7b3cb9b8 /3802파일/476소유SHA/CPP14·User10849읽기전후SHA·연결·Versions1 검증. 설치 GL/GPU hit2→3·복원/직접광/프로그램/TAA·실제CPP/BP/native 최초workerStarts0/축소·복원·마커. 엔진native재컴파일0·이전183812964B 정리. 1105 확정. 전역거리장·초기GL지연 및 누적목표계속.
