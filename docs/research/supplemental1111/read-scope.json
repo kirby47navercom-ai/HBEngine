@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "wholeCorpusGateAdvanced": false,
+  "reads": [
+    {
+      "url": "https://docs.unity.com/en-us/engine/6000.6/manual/lighting-overview/lighting/reflection-probes/introduction",
+      "kind": "scoped body read",
+      "sections": [
+        "Volume and Blend Distance",
+        "Two candidate selection",
+        "Importance and residual sky"
+      ],
+      "lineRanges": [
+        [
+          235,
+          278
+        ]
+      ],
+      "implementation": "two mesh-bound candidates and per-fragment face fades/base remainder; existing HB native normalization retained; Unity priority dominance/global Forward+ candidate list remains"
+    },
+    {
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/reflections-captures-in-unreal-engine",
+      "kind": "scoped body read",
+      "sections": [
+        "Capture shapes and transitions",
+        "Glossy Indirect Specular",
+        "Resolution and memory",
+        "Blending workflow"
+      ],
+      "lineRanges": [
+        [
+          6,
+          23
+        ],
+        [
+          47,
+          58
+        ],
+        [
+          92,
+          126
+        ],
+        [
+          148,
+          152
+        ]
+      ],
+      "implementation": "capture volume/projection/pixel mixture/resolution layout; small-capture per-pixel override and lightmap mixing remain"
+    },
+    {
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/reflections-environment-in-unreal-engine",
+      "kind": "redirected overview read",
+      "sections": [
+        "Reflection methods overview"
+      ],
+      "lineRanges": [
+        [
+          20,
+          38
+        ]
+      ],
+      "implementation": "not counted as Reflection Captures body"
+    }
+  ],
+  "localDependencies": [
+    "Installed Three cube_uv_reflection_fragment sampler markers and CubeUV layout",
+    "PMREMNode GPU orientation; TextureNode uniform identity and sampling clones",
+    "GL environment negative-Euler rotation and WebGL material uniform refresh",
+    "Material hbNormal derivative frame; model morph normals/UV absence"
+  ],
+  "unread": "All manual/API content beyond these named sections remains under the existing research gate. No full-corpus advancement."
+}

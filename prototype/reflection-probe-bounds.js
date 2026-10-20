@@ -1,4 +1,5 @@
 import {Box3,Sphere} from 'three';
+import {reflectionProbeDeformedBounds} from './reflection-probe-deformed-bounds.js';
 
 const geometryBounds=new WeakMap(),instanceBounds=new WeakMap();
 function localGeometryBounds(geometry){
@@ -11,9 +12,10 @@ function localGeometryBounds(geometry){
  return cached.box&&!cached.box.isEmpty()?cached:null;
 }
 // No GPU readback: unchanged geometry and instance buffers reuse local bounds.
-// Custom shader instances/morphs/skins require their own deformed bounds.
+// Custom shader instances and per-instance morph textures need their own bounds.
 export function reflectionProbeMeshBounds(mesh,target=new Box3()){
- if(mesh.isSkinnedMesh||mesh.morphTexture||mesh.morphTargetInfluences?.some(v=>v!==0)||mesh.geometry?.isInstancedBufferGeometry&&!mesh.isInstancedMesh)return null;
+ if(mesh.morphTexture||mesh.geometry?.isInstancedBufferGeometry&&!mesh.isInstancedMesh)return null;
+ if(mesh.isSkinnedMesh||mesh.geometry?.morphAttributes.position?.length){const box=reflectionProbeDeformedBounds(mesh);return box?target.copy(box).applyMatrix4(mesh.matrixWorld):null;}
  const geometry=localGeometryBounds(mesh.geometry);if(!geometry)return null;let box=geometry.box;
  if(mesh.isInstancedMesh){
   const attribute=mesh.instanceMatrix,count=mesh.count;if(!attribute||attribute.isInterleavedBufferAttribute||attribute.itemSize!==16||!Number.isSafeInteger(count)||count<0||count>attribute.count)return null;if(count===0){instanceBounds.delete(mesh);(mesh.boundingBox??=new Box3()).makeEmpty();(mesh.boundingSphere??=new Sphere()).makeEmpty();return target.makeEmpty();}

@@ -2,7 +2,7 @@ import {makeTextureGraphDemand} from './texture-graph-demand.js';
 import {residentMipBase} from './texture-resident-view.js';
 import {textureSamplingPins,activeTextureSamplingInputs,validMaterialMipMode,materialMipMode,textureSamplingGLSL} from './texture-sampling-mode.js';
 import {checkerValue,checkerGLSL} from './procedural-material.js';
-import {decodeNormalMap,normalMapGLSL} from './normal-map.js';
+import {decodeNormalMap,normalMapGLSL,normalFrameGLSL} from './normal-map.js';
 import {validSamplerState} from './sampler-state.js';
 import {advancedShadingGLSL,advancedDirectChunk} from './advanced-shading.js';
 import {textureImportColorSpace} from './texture-mip-policy.js';
@@ -392,7 +392,8 @@ ${['float','vec2','vec3','vec4'].map(t=>`${t} hbSmooth(${t} a,${t} b,${t} v){${t
 vec3 hbSRGB(vec3 c){return mix(c/12.92,pow((c+0.055)/1.055,vec3(2.4)),step(vec3(0.04045),c));}
 ${normalMapGLSL}
 vec2 hbRotate(vec2 uv,float a,vec2 center){float s=sin(a),c=cos(a);vec2 p=uv-center;return vec2(c*p.x-s*p.y,s*p.x+c*p.y)+center;}
-vec3 hbNormal(vec3 eye,vec3 n,vec3 mapN){vec3 q0=dFdx(eye),q1=dFdy(eye);vec2 st0=dFdx(hbUv),st1=dFdy(hbUv);vec3 s=normalize(q0*st1.t-q1*st0.t),t=normalize(-q0*st1.s+q1*st0.s);return normalize(mat3(s,t,n)*mapN);}`;
+${normalFrameGLSL}
+vec3 hbNormal(vec3 eye,vec3 n,vec3 mapN){return hbMaterialNormalFrame(eye,n,mapN,hbUv);}`;
 export function createThreeMaterial(THREE,data,{fileUrl=path=>'/api/file?path='+encodeURIComponent(path),onError=()=>{},renderer}={}){
   if(renderer?.hbMaterial)return renderer.hbMaterial(data,{fileUrl,onError,renderer});
   data=captureMaterialGraph(copy(data));const plan=compileMaterial(data,{uniformParameters:true}),surface={...materialDefaults,...data.surface},textureBindings=materialTextureBindings(THREE,{resources:data.textureAssets,fileUrl,renderer,onError}),loading=[],uniforms={hbTime:{value:0},hbEmissionIntensity:{value:surface.emissiveIntensity}};let disposed=false;const floatParameters=new Map(),floatSurfaces=new Map([['emissiveIntensity',uniforms.hbEmissionIntensity]]);for(const binding of plan.floatBindings){const u=uniforms[binding.uniform]={value:binding.value};if(binding.kind==='parameter')floatParameters.set(binding.key,u);else if(binding.kind==='surface')floatSurfaces.set(binding.key,u);}

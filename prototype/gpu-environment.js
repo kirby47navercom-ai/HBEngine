@@ -1,4 +1,3 @@
-import {gpuProbeVolumeNodes} from './reflection-probe-volume-gpu.js';
 import {normalFootprintMode} from './path-normal-footprint.js';
 import {startGPUPathPreparation,cancelGPUPathPreparation} from './gpu-path-preparation.js';
 import {rayShaderPlanForScene} from './ray-materials.js';
@@ -7,18 +6,7 @@ import {uniform,positionLocal,positionWorld,cameraPosition,vec3,vec4,float,fog,r
 import {bloom} from 'three/addons/tsl/display/BloomNode.js';
 import {pass} from 'three/tsl';
 
-export function createGPUProbeEnvironment(probe,map){
-  const center=uniform(new Vector3()),minimum=uniform(new Vector3()),maximum=uniform(new Vector3()),options=uniform(new Vector4()),localX=uniform(new Vector4(1,0,0,0)),localY=uniform(new Vector4(0,1,0,0)),localZ=uniform(new Vector4(0,0,1,0)),faceScale=uniform(new Vector3(1,1,1)),volume={minimum,maximum,localX,localY,localZ,faceScale,blend:options.z},environment=pmremTexture(map);
-  class ProbeEnvironment extends LightingNode{
-    setup(builder){
-      const radianceFor=(normal,level)=>{const r=mix(positionViewDirection.negate().reflect(normal),normal,level.mul(level)).normalize().transformDirection(cameraViewMatrix),box=gpuProbeVolumeNodes(volume,positionWorld,r,center),direction=options.y.greaterThan(.5).select(box.projected,r);return environment.context({getUV:()=>direction,getTextureLevel:()=>level}).mul(options.w.mul(box.fade));};
-      const baseNormal=builder.material.useAnisotropy===true||builder.material.anisotropy>0?bentNormalView:normalView,radiance=radianceFor(baseNormal,roughness),baseBox=gpuProbeVolumeNodes(volume,positionWorld,normalWorld,center),irradiance=environment.context({getUV:()=>normalWorld,getTextureLevel:()=>float(1)}).mul(Math.PI).mul(options.w.mul(baseBox.fade)).mul(options.x);
-      builder.context.radiance.addAssign(cache(radiance));builder.context.iblIrradiance.addAssign(cache(irradiance));
-      if(builder.context.lightingModel.clearcoatRadiance)builder.context.lightingModel.clearcoatRadiance.addAssign(cache(radianceFor(clearcoatNormalView,clearcoatRoughness)));
-    }
-  }
-  const state={node:new ProbeEnvironment(),refraction(r,at,rough){const box=gpuProbeVolumeNodes(volume,at,r,center),direction=options.y.greaterThan(.5).select(box.projected,r);return cache(environment.context({getUV:()=>direction,getTextureLevel:()=>rough})).mul(options.w.mul(box.fade));},update(p,texture){environment.value=texture;if(p){center.value.fromArray(p.center);minimum.value.fromArray(p.localBox?.minimum||p.minimum);maximum.value.fromArray(p.localBox?.maximum||p.maximum);if(p.localBox){localX.value.fromArray(p.localBox.localX);localY.value.fromArray(p.localBox.localY);localZ.value.fromArray(p.localBox.localZ);faceScale.value.fromArray(p.localBox.faceScale);}else{localX.value.set(1,0,0,0);localY.value.set(0,1,0,0);localZ.value.set(0,0,1,0);faceScale.value.set(1,1,1);}options.value.set(p.p.diffuseIntensity,p.p.boxProjection?1:0,p.p.blendDistance,p.p.intensity);}else options.value.w=0;}};state.update(probe,map);return state;
-}
+export {createGPUProbeEnvironment} from './gpu-probe-environment.js';
 import {postProcessSettings} from './post-processing.js';
 import {screenEffectsEnabled,surfaceEffectsEnabled,ambientOcclusionEnabled} from './screen-effects.js';
 import {gpuScreenEffects,gpuSurfaceOutputs,installGpuSurfaceKeys} from './screen-effects-gpu.js';

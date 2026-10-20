@@ -236,7 +236,10 @@
         "prototype/reflection-probe-bounds.js",
         "prototype/mega-lights.js",
         "native/include/HBEngine/SceneProbes.hpp",
-        "prototype/mesh-distance-field-lod.js"
+        "prototype/mesh-distance-field-lod.js",
+        "prototype/reflection-probe-blend.js",
+        "prototype/gpu-probe-environment.js",
+        "prototype/reflection-probe-deformed-bounds.js"
       ]
     },
     {
@@ -357,7 +360,10 @@
         "prototype/world-rendering.js",
         "prototype/world-asset-editor.js",
         "prototype/runtime-lod.js",
-        "prototype/world-draft.js"
+        "prototype/world-draft.js",
+        "prototype/reflection-probe-blend.js",
+        "prototype/gpu-probe-environment.js",
+        "prototype/reflection-probe-deformed-bounds.js"
       ]
     },
     {
@@ -658,7 +664,10 @@
         "prototype/mesh-distance-field-lod.js",
         "prototype/mesh-distance-field-codec.js",
         "prototype/mesh-distance-field-cooked.js",
-        "tools/distance-field-cook.mjs"
+        "tools/distance-field-cook.mjs",
+        "prototype/reflection-probe-blend.js",
+        "prototype/gpu-probe-environment.js",
+        "prototype/reflection-probe-deformed-bounds.js"
       ]
     },
     {
