@@ -816,3 +816,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1106–1112: 5ce6990638ff9404f0a108edc23d228ff0ae5f01 반사 두후보/환경잔여·회전/해상도·자원수명·CPU현재포즈/캡처전컬링·UV없는기본/코팅노멀 보호. 실제GL/GPU독립혼합오차<1e-6,각24노멀조건·포즈/수명·SDK/AI탐색 관련묶음 통과. 최종설치1114에서세백엔드CPP/BP재확인예정. scope본문만읽고전체gate유지. 원장RND03잔여를전역후보/우선점유/임의변형으로정리;장기목표active유지.
 
 1114 설치 C:\Users\kirby\HBEngine\Versions\a24629862c1045b8 /3817파일/489소유SHA/CPP14·User10849읽기전후SHA·연결·Versions1 검증. 설치GL/GPU 혼합/0→2후보/환경회전·해상도/프로그램/자원·각24노멀조건,실제CPP/BP모프/원점밖후보를D3D/GL/GPU red→ambient→red→ambient→red/캡처1로통과. 엔진native재컴파일0·이전183940914B 정리.1115확정;전역후보/GL초기지연및누적목표active계속.
+
+1116–1131 전역 반사 후보/혼합해상도 HDR atlas·D3D 컴퓨트 이웃면/세면패딩·정지전송/밝기metadata·GL/GPU/강제GL폴백·실제CPP/BP4영역을 연결. ENGINE_WORK_1131.json에 소유SHA/CPP15/native13·API/AI·표본필터/실제세실행기 근거를 확정. 설치1114유지/1133전환예정. 공간가속/큰장면성능·우선점유/sphere/lightmap·native직교/ambient 및 누적78행 잔여유지,전체gate미승격.

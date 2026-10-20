@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-21",
-  "basisRevision": "5ce6990638ff9404f0a108edc23d228ff0ae5f01",
+  "basisRevision": "af4d13d226710d459e7ab0a4267a1949b4a05491",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -730,11 +730,12 @@
       "area": "rendering",
       "title": "광원·HDRI·환경 액터",
       "status": "partial",
-      "implemented": "래스터 HDRI/다중 광원·MegaLights/SkyLight 제작·분산 캡처 ·351–352: 프로브 캡처와 강도/혼합/영역 바인딩 분리·위치/해상도/clip/bounce/명시갱신 보존·C++/BP 실제 게임 및 browser 모의 타깃 수명 대조 ·986–1026: 회전/비균일/음수 크기·부모 전단 영향/투영·월드 면 거리 페이드·미세 영역 거리 보존·영역만 변형할 때 캡처 재사용·큰 정적 메쉬 경계15축 후보 판정 ·1050–1062: glTF/폴리지 인스턴스 실제 현재 경계·원점 밖 프로브 후보·컬링·행렬/개수/정점버전 캐시·1057 실제세백엔드 C++/BP 대조 ·1106–1112: browser 두후보 affine픽셀혼합/원래환경밝기·회전·해상도배치/0·1·2후보/실제인스턴스·clone/필터/굴절수명·CPU skin/morph현재경계/정지정점읽기0/캡처전갱신/native후보·컬링",
+      "implemented": "래스터 HDRI/다중 광원·MegaLights/SkyLight 제작·분산 캡처 ·351–352: 프로브 캡처와 강도/혼합/영역 바인딩 분리·위치/해상도/clip/bounce/명시갱신 보존·C++/BP 실제 게임 및 browser 모의 타깃 수명 대조 ·986–1026: 회전/비균일/음수 크기·부모 전단 영향/투영·월드 면 거리 페이드·미세 영역 거리 보존·영역만 변형할 때 캡처 재사용·큰 정적 메쉬 경계15축 후보 판정 ·1050–1062: glTF/폴리지 인스턴스 실제 현재 경계·원점 밖 프로브 후보·컬링·행렬/개수/정점버전 캐시·1057 실제세백엔드 C++/BP 대조 ·1106–1112: browser 두후보 affine픽셀혼합/원래환경밝기·회전·해상도배치/0·1·2후보/실제인스턴스·clone/필터/굴절수명·CPU skin/morph현재경계/정지정점읽기0/캡처전갱신/native후보·컬링 ·1116–1131: GL/GPU/강제GL폴백/native 전역픽셀두후보·혼합해상도HDR atlas·컴퓨트border/corner패딩·정지copy/전송재사용·밝기metadata·실제CPP/BP4영역",
       "remaining": [
-        "큰 메시/배치의 전역 픽셀별 후보와 임의 인스턴스별 후보 쌍; 현재 경계로 선택한 두 후보 안에서만 혼합",
-        "픽셀 중요도 우선 점유·작은 캡처의 덮어쓰기와 lightmap 혼합; 현재 HB native와 같은 정규화 정책",
-        "임의 shader displacement·인스턴스별 morph texture의 소유 경계 및 지원 확대"
+        "전역 순위 탐색의 공간 타일/클러스터 가속·큰 장면 프로브 수/메모리/FPS 검증",
+        "픽셀 중요도 우선 점유·작은 캡처 덮어쓰기·구형 캡처·lightmap 혼합",
+        "임의 shader displacement·인스턴스별 morph texture의 소유 경계 및 지원 확대",
+        "native 직교 off-axis 시선과 ambient의 금속 diffuse/물리 단위 대조; 현재 중앙/ambient0 게임 검사와 구분"
       ],
       "sources": [
         "prototype/scene-environment.js",
@@ -747,7 +748,16 @@
         "native/include/HBEngine/SceneProbes.hpp",
         "prototype/reflection-probe-blend.js",
         "prototype/gpu-probe-environment.js",
-        "prototype/reflection-probe-deformed-bounds.js"
+        "prototype/reflection-probe-deformed-bounds.js",
+        "native/desktop/SceneRenderBridge.hpp",
+        "native/include/HBEngine/Compute.hpp",
+        "native/include/HBEngine/ProbeAtlasPadding.hpp",
+        "native/include/HBEngine/SceneProbeAtlas.hpp",
+        "native/include/HBEngine/SceneRender.hpp",
+        "prototype/gpu-probe-atlas-environment.js",
+        "prototype/reflection-probe-atlas-layout.js",
+        "prototype/reflection-probe-atlas-shader.js",
+        "prototype/reflection-probe-atlas.js"
       ],
       "evidence": [
         "docs/RASTER_LIGHTING_131.md",
@@ -758,7 +768,9 @@
         "docs/research/ENGINE_WORK_1062.json",
         "docs/research/WORLD_EDIT_BATCH_1062.md",
         "docs/research/ENGINE_WORK_1112.json",
-        "docs/research/PROBE_BLEND_1111.md"
+        "docs/research/PROBE_BLEND_1111.md",
+        "docs/research/ENGINE_WORK_1131.json",
+        "docs/research/PROBE_ATLAS_1130.md"
       ]
     },
     {
@@ -880,7 +892,7 @@
       "area": "rendering",
       "title": "초기 셰이더 준비 비용",
       "status": "partial",
-      "implemented": "GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화 ·189: 비시간 이전 노멀의 Time 호출 미생성·기존 opcode 특화·단일 GL 전체 링크 두 순서 대조/동일3백엔드 픽셀·네이티브 실제 게임 ·194: 표면 필드별 광선 프로그램 특화·동일 키 필드 합치기·legacy 호환·GL 두 순서와 실제3백엔드/네이티브 게임; 혼합 정의 노멀 WGSL45117→29725B ·253/259/260: pure SSA공유와 레지스터fallback·시간리터럴만 immutable갱신·CPU-only 매질 시간/geometry/filter/plan 캐시 동기화 ·274/275: 알파 전용 출력 절삭34→7·GLSL/WGSL 축소·고정 필드 호출·실제 GL/GPU/HLSL 픽셀 일치·중복 노멀 GL 한 순서2853→2761.5ms(Complex141/FPS와 별개) ·284/285/286/290: base-normal Time 특화·CPU 매질 선행 의존성/부분 평가·렌더 소유 불변 키; 실제3백엔드 픽셀·원본/시간/수명 보존;288/291 실험은 미채택 ·296–297: UV 좌표/삼각형 Frame 읽기·GL guide 노멀 호출 위치 공유, 공유·비공유/렌즈/mip float32 오차0·실제 GL/D3D/C++·생성자 수정 검증 ·298–305: 삼선형 단일 호출·정수LOD 읽기 생략,48필터 미분 절삭/GL·TSL·생성HLSL·레지스터 보존, 확정 불투명 GL/legacy key 분리·실제 camera 픽셀0, 인스턴스 노멀/pose key·실제3백엔드 게임 ·307: DirectX 불투과 metadata/variant key·기존 요청 기본값·버퍼 ABI 보존·실제 solid/alpha0·8MiB 캐시/소스 공유·실제 C++/BP와 AI 활성 진단 ·308–318: 이전 normal field 전용 프로그램 공유·기존 자원/IR/버퍼 유지·실제3백엔드 CPP/BP 게임 ·330–334: WebGPU current/prior의 동일 atlas/uniform 텍스처 Map/Fn 공유·17포즈/48필터조합384표본 오차0·WGSL 함수4→2·실제 CPP/BP ·346–350: DX11 래스터/노드/화면/파티클/Bloom/Hi-Z/광원/프로브 공용 8MiB 디스크 bytecode·비대기/손상/장치거부/종료복구·다른프로세스21hit/0compile·출력0·6안정프레임IO0·실제패키지6save→6hit/0save ·357/365: 출력의존성/static프로그램 재사용·미사용GPU노멀/코팅디코더 제외·빈채널 할당제외·실제3경로Complex141/캐시 재방문과정상준비검사 ·366–367: 준비전용음수epoch/초기화·첫WGPU0→173 direct오차0·래스터진행보존; prior normal의currentrecord함수4→0·sharedWGSL22835→17373B·legacy/publicrecord/Nodecallback호환;실제CPP/BP D3D/GPU145 ·371–376: priorphysical0 단일평가·old IOR scalar화·thin/불투명불필요배열제외·실제CPP/BP D3D/GPU145 ·386: GL 준비 fallback과 실패를 분리·정적raw64표본보존·원본픽셀완전동일/광원reset·CPU40pending/CPP BP photon117/118/120 ·410: GL alpha 미사용필드/width0미분제거·TSL alpha지연생성. 실제paired296B감소이나2004.9→2011.6ms로속도개선미입증 ·415: native UV helper 필요시생성·1회program검증·실제Complex141 재검사. 초기지연은여전히초단위 ·420: 상대 변화량 공유 수식·세API 새실행 파일 대조. 초기 지연은 계속 절감 필요 ·425: 안정 비선형 차분/노멀 helper·새실행 파일 대조, 초기 준비 절감 계속 ·430: WebGPU독립descriptor동시제출·실제첫완료전1→4·epoch/실패/취소/래스터보존 ·435: TSL복합눈UV중간보존·FXC4성분만unroll·실제다섯그래프/새게임검증,전체지연절감계속 ·440: opcode 전이 함수 전처리·실제12조건·세API5graph/새게임 통과, 전체시간 개선 미확립 ·445: 실제20함수선택·혼합프레임노멀별도실험GL17pose×3·전체지연개선미확립 ·450: coordinate ancestry helper선택·native GL공통primary/aux/lens guide·실제8영상오차0·lens전환2compile/restore2hit/sourceBuild1 ·485: 절차 보조 함수도 좌표 조상으로 선별·26함수/24전처리 조건·전체 초기 지연은 계속 절감 필요 ·496: 네이티브 화면6단계 단일 비동기 워커·8MiB큐/유휴종료·캐시 잠금/세대 분리·래스터/C++ 진행·샘플/이력 승인 차단·취소/캡처/오류·AI/프로파일러 진단 ·510: 네텍스처계열UV조상의유한재샘플링·현재/이전밉전달·완성노드표면의기본맵샘플러충돌분리·C++createSurfaceProgram/AI계약·세GPU/실제2D3D실행근거 ·538: 네형식4밉모드의 조건부핀/보존/Undo/AI·세일반표면·현재이전광선·WebGPU볼륨compute/독립3D홀수·sRGB·깊이17·CPU베이크/기본입력·실제C++패키지 연결 ·560: 일반 표면 PS/ShadowPS를 기존 단일 워커로 준비·장치 소유 스레드 채택·동기 SDK 유지·파라미터/취소/실패/재시도·pending shadow/probe/history/capture 보호·집계UI/AI·실제 SDK/브리지/2D3D/C++게임 ·572: SDK 전체 지문 API 보존·실제 include+전처리 결정/옵션별 캐시·동일mtime 변경/존재조건/미사용렌더헤더 재사용·32계획/2MiB/취소정리·광원타일 bytecode 기존단일워커/소유채택·준비중 전체광원 동일픽셀/카메라광원편집/취소/유휴종료 ·579: Device.compile/파티클 시뮬레이션·방출·Clear를 기존공용8MiB bytecode캐시에 연결·GPU생성만장치잠금·소유/입력/미설정SDK보존·플랫폼선언분리/헤더호환·분리프로세스15hit/0write·장치거부복구·65,537레코드/프레임자원/BP→CPP→실GPU/최소15파일2D게임 ·595: 설치 간 C++ 의미지문/실행파일 경로 분리·SDK 전체 보존·실제 툴체인/링크 확인·옛 격리 설치 제거 뒤 실행파일 재사용·사용헤더17→31·두세션 독립/LLDB 소스·취소/복원/기존캐시32·lease 검증 ·596–599: 선택형 기본 VS/PS/ShadowPS를 같은 워커로 준비·입력레이아웃 소유채택·보류 프레임 clear/Present·그림자/프로브/시간이력/2D마스크 캐시 승인 방지·준비후 재그림·단계/AI/프로파일러·동기 SDK 픽셀 동일 ·610–613: 프로브4셰이더 지연준비/장치채택/캡처·이력 보류·4캐시거부복구/IBL동일; Compute compileAsync/poll/take/cancel·단일큐/종료순서/3프레임/IO0·BP→CPP→GPU; 기본캡처 준비대기·HDRI복구131/168/203 ·619–626: 미사용 파티클 렌더/압축 셰이더 컴파일0·필요할 때3단계/정렬2단계 단일 작업자·GPU소유채택/캐시복구/취소·countAsync명령한번/AI진단·실제패키지2D/CPP/BP/프로브 ·636: 시뮬레이션/검색/탄생/Clear4커널 prepare·풀별상수링/셰이더공유·에셋이 렌더/선택정렬까지 기다린 뒤 방출·씬세대취소/정렬추가·실제2D패키지/재열기 ·659–675: 스케일 독립 렌즈 픽셀 투영·현재/이전 기본/코팅 로브 스칼라 폭·실제3GPU 전체가이드/독립 거울 기하, TSL 정적 수식 재사용(시간/FPS 주장 아님), AI 계약/편집 문서 ·681–686: 거친 유전체의 기능 선택/현재·이전 거칠기/매질 비 cone과 분기 변경 거부·3API 독립 대조·실제 설치 C++/BP 전체 광학 가이드와 D3D 캡처 ·722–732: 공간 상수의 차분 생성 제외·현재/이전 시각 평가와 레지스터 버전 보존·GL 전체 준비 ABBA 소스 감소, 유의미한 시간 개선 미입증 ·775–786: GL 생성 명령의 미사용 선언 제외·보수적 무광/비거울 가이드·주 경로 프로그램 재사용; 무광 ABBA 평균 약29% 준비 감소, 복잡 거울 전체 완료 아님 ·843–859: 경계3축/이전노멀3정점 고정 성분·이전BVH 공용경계/명시leaf·실제ANGLE 동적vec3 호출 제거, 새mirror/Time/큰UV ABBA4727.95→3825.05ms 한정 관측 ·863–876: 저작한 채널 성분을 값·차분에 고정·기존 동적메타데이터보존·핀변경key/일반값재사용·새GL 그래프ABBA3060.85→2475.95ms 한정관측 ·880–904: CPU/GL/TSL/HLSL 하한0종료·bbox동률건너뜀/첫동률유지·native 수치atlas정수Load·논리읽기21502→40/4757→39 동일값;초기GL/FXC종결주장없음 ·951–966: CPU전체기하준비의삼각형별전체그래프해석을수집별선택스냅샷으로축소·문맥독립표면재사용·최종ABBA전체CPUprepare864삼각형5001.92→48.61ms/균일384개2225.07→13.91ms;최초GL/FXC·게임전체FPS주장없음",
+      "implemented": "GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화 ·189: 비시간 이전 노멀의 Time 호출 미생성·기존 opcode 특화·단일 GL 전체 링크 두 순서 대조/동일3백엔드 픽셀·네이티브 실제 게임 ·194: 표면 필드별 광선 프로그램 특화·동일 키 필드 합치기·legacy 호환·GL 두 순서와 실제3백엔드/네이티브 게임; 혼합 정의 노멀 WGSL45117→29725B ·253/259/260: pure SSA공유와 레지스터fallback·시간리터럴만 immutable갱신·CPU-only 매질 시간/geometry/filter/plan 캐시 동기화 ·274/275: 알파 전용 출력 절삭34→7·GLSL/WGSL 축소·고정 필드 호출·실제 GL/GPU/HLSL 픽셀 일치·중복 노멀 GL 한 순서2853→2761.5ms(Complex141/FPS와 별개) ·284/285/286/290: base-normal Time 특화·CPU 매질 선행 의존성/부분 평가·렌더 소유 불변 키; 실제3백엔드 픽셀·원본/시간/수명 보존;288/291 실험은 미채택 ·296–297: UV 좌표/삼각형 Frame 읽기·GL guide 노멀 호출 위치 공유, 공유·비공유/렌즈/mip float32 오차0·실제 GL/D3D/C++·생성자 수정 검증 ·298–305: 삼선형 단일 호출·정수LOD 읽기 생략,48필터 미분 절삭/GL·TSL·생성HLSL·레지스터 보존, 확정 불투명 GL/legacy key 분리·실제 camera 픽셀0, 인스턴스 노멀/pose key·실제3백엔드 게임 ·307: DirectX 불투과 metadata/variant key·기존 요청 기본값·버퍼 ABI 보존·실제 solid/alpha0·8MiB 캐시/소스 공유·실제 C++/BP와 AI 활성 진단 ·308–318: 이전 normal field 전용 프로그램 공유·기존 자원/IR/버퍼 유지·실제3백엔드 CPP/BP 게임 ·330–334: WebGPU current/prior의 동일 atlas/uniform 텍스처 Map/Fn 공유·17포즈/48필터조합384표본 오차0·WGSL 함수4→2·실제 CPP/BP ·346–350: DX11 래스터/노드/화면/파티클/Bloom/Hi-Z/광원/프로브 공용 8MiB 디스크 bytecode·비대기/손상/장치거부/종료복구·다른프로세스21hit/0compile·출력0·6안정프레임IO0·실제패키지6save→6hit/0save ·357/365: 출력의존성/static프로그램 재사용·미사용GPU노멀/코팅디코더 제외·빈채널 할당제외·실제3경로Complex141/캐시 재방문과정상준비검사 ·366–367: 준비전용음수epoch/초기화·첫WGPU0→173 direct오차0·래스터진행보존; prior normal의currentrecord함수4→0·sharedWGSL22835→17373B·legacy/publicrecord/Nodecallback호환;실제CPP/BP D3D/GPU145 ·371–376: priorphysical0 단일평가·old IOR scalar화·thin/불투명불필요배열제외·실제CPP/BP D3D/GPU145 ·386: GL 준비 fallback과 실패를 분리·정적raw64표본보존·원본픽셀완전동일/광원reset·CPU40pending/CPP BP photon117/118/120 ·410: GL alpha 미사용필드/width0미분제거·TSL alpha지연생성. 실제paired296B감소이나2004.9→2011.6ms로속도개선미입증 ·415: native UV helper 필요시생성·1회program검증·실제Complex141 재검사. 초기지연은여전히초단위 ·420: 상대 변화량 공유 수식·세API 새실행 파일 대조. 초기 지연은 계속 절감 필요 ·425: 안정 비선형 차분/노멀 helper·새실행 파일 대조, 초기 준비 절감 계속 ·430: WebGPU독립descriptor동시제출·실제첫완료전1→4·epoch/실패/취소/래스터보존 ·435: TSL복합눈UV중간보존·FXC4성분만unroll·실제다섯그래프/새게임검증,전체지연절감계속 ·440: opcode 전이 함수 전처리·실제12조건·세API5graph/새게임 통과, 전체시간 개선 미확립 ·445: 실제20함수선택·혼합프레임노멀별도실험GL17pose×3·전체지연개선미확립 ·450: coordinate ancestry helper선택·native GL공통primary/aux/lens guide·실제8영상오차0·lens전환2compile/restore2hit/sourceBuild1 ·485: 절차 보조 함수도 좌표 조상으로 선별·26함수/24전처리 조건·전체 초기 지연은 계속 절감 필요 ·496: 네이티브 화면6단계 단일 비동기 워커·8MiB큐/유휴종료·캐시 잠금/세대 분리·래스터/C++ 진행·샘플/이력 승인 차단·취소/캡처/오류·AI/프로파일러 진단 ·510: 네텍스처계열UV조상의유한재샘플링·현재/이전밉전달·완성노드표면의기본맵샘플러충돌분리·C++createSurfaceProgram/AI계약·세GPU/실제2D3D실행근거 ·538: 네형식4밉모드의 조건부핀/보존/Undo/AI·세일반표면·현재이전광선·WebGPU볼륨compute/독립3D홀수·sRGB·깊이17·CPU베이크/기본입력·실제C++패키지 연결 ·560: 일반 표면 PS/ShadowPS를 기존 단일 워커로 준비·장치 소유 스레드 채택·동기 SDK 유지·파라미터/취소/실패/재시도·pending shadow/probe/history/capture 보호·집계UI/AI·실제 SDK/브리지/2D3D/C++게임 ·572: SDK 전체 지문 API 보존·실제 include+전처리 결정/옵션별 캐시·동일mtime 변경/존재조건/미사용렌더헤더 재사용·32계획/2MiB/취소정리·광원타일 bytecode 기존단일워커/소유채택·준비중 전체광원 동일픽셀/카메라광원편집/취소/유휴종료 ·579: Device.compile/파티클 시뮬레이션·방출·Clear를 기존공용8MiB bytecode캐시에 연결·GPU생성만장치잠금·소유/입력/미설정SDK보존·플랫폼선언분리/헤더호환·분리프로세스15hit/0write·장치거부복구·65,537레코드/프레임자원/BP→CPP→실GPU/최소15파일2D게임 ·595: 설치 간 C++ 의미지문/실행파일 경로 분리·SDK 전체 보존·실제 툴체인/링크 확인·옛 격리 설치 제거 뒤 실행파일 재사용·사용헤더17→31·두세션 독립/LLDB 소스·취소/복원/기존캐시32·lease 검증 ·596–599: 선택형 기본 VS/PS/ShadowPS를 같은 워커로 준비·입력레이아웃 소유채택·보류 프레임 clear/Present·그림자/프로브/시간이력/2D마스크 캐시 승인 방지·준비후 재그림·단계/AI/프로파일러·동기 SDK 픽셀 동일 ·610–613: 프로브4셰이더 지연준비/장치채택/캡처·이력 보류·4캐시거부복구/IBL동일; Compute compileAsync/poll/take/cancel·단일큐/종료순서/3프레임/IO0·BP→CPP→GPU; 기본캡처 준비대기·HDRI복구131/168/203 ·619–626: 미사용 파티클 렌더/압축 셰이더 컴파일0·필요할 때3단계/정렬2단계 단일 작업자·GPU소유채택/캐시복구/취소·countAsync명령한번/AI진단·실제패키지2D/CPP/BP/프로브 ·636: 시뮬레이션/검색/탄생/Clear4커널 prepare·풀별상수링/셰이더공유·에셋이 렌더/선택정렬까지 기다린 뒤 방출·씬세대취소/정렬추가·실제2D패키지/재열기 ·659–675: 스케일 독립 렌즈 픽셀 투영·현재/이전 기본/코팅 로브 스칼라 폭·실제3GPU 전체가이드/독립 거울 기하, TSL 정적 수식 재사용(시간/FPS 주장 아님), AI 계약/편집 문서 ·681–686: 거친 유전체의 기능 선택/현재·이전 거칠기/매질 비 cone과 분기 변경 거부·3API 독립 대조·실제 설치 C++/BP 전체 광학 가이드와 D3D 캡처 ·722–732: 공간 상수의 차분 생성 제외·현재/이전 시각 평가와 레지스터 버전 보존·GL 전체 준비 ABBA 소스 감소, 유의미한 시간 개선 미입증 ·775–786: GL 생성 명령의 미사용 선언 제외·보수적 무광/비거울 가이드·주 경로 프로그램 재사용; 무광 ABBA 평균 약29% 준비 감소, 복잡 거울 전체 완료 아님 ·843–859: 경계3축/이전노멀3정점 고정 성분·이전BVH 공용경계/명시leaf·실제ANGLE 동적vec3 호출 제거, 새mirror/Time/큰UV ABBA4727.95→3825.05ms 한정 관측 ·863–876: 저작한 채널 성분을 값·차분에 고정·기존 동적메타데이터보존·핀변경key/일반값재사용·새GL 그래프ABBA3060.85→2475.95ms 한정관측 ·880–904: CPU/GL/TSL/HLSL 하한0종료·bbox동률건너뜀/첫동률유지·native 수치atlas정수Load·논리읽기21502→40/4757→39 동일값;초기GL/FXC종결주장없음 ·951–966: CPU전체기하준비의삼각형별전체그래프해석을수집별선택스냅샷으로축소·문맥독립표면재사용·최종ABBA전체CPUprepare864삼각형5001.92→48.61ms/균일384개2225.07→13.91ms;최초GL/FXC·게임전체FPS주장없음 ·1131: native atlas 수동 경계 샘플 전개를 GPU 패딩/표면선택공유로 대체; 표본FXC 9.69초→4.24–4.45초 관측(통제ABBA/전체로딩개선미주장)",
       "remaining": [
         "래스터·광원 타일·프로브·파티클 렌더링과 시뮬레이션의 선택적 비동기 준비를 연결했어요. 전체 GL/FXC 시간·생성 코드·큰 HDRI/프로브 GPU 필터와 장치/리소스 생성 비용은 계속 줄여야 해요.",
         "새 C++ 최초 컴파일 비용·커스텀/외부 툴체인의 선택 의존성 설정 확대(현재는 확인하지 못한 의존성을 추측 재사용하지 않고 새 버전별 빌드), 네이티브 실행 중 디버거 연결",
@@ -1043,7 +1055,9 @@
         "docs/research/MATERIAL_DEFAULT_CLOCK_943.md",
         "docs/research/ENGINE_WORK_966.json",
         "docs/research/CPU_MATERIAL_PREPARATION_963.md",
-        "docs/research/DISTANCE_CAMERA_LOD_1093.md"
+        "docs/research/DISTANCE_CAMERA_LOD_1093.md",
+        "docs/research/ENGINE_WORK_1131.json",
+        "docs/research/PROBE_ATLAS_1130.md"
       ]
     },
     {
@@ -2755,11 +2769,11 @@
     }
   ],
   "latestBatch": {
-    "first": 1106,
-    "last": 1112,
-    "record": "docs/research/ENGINE_WORK_1112.json",
-    "implementationRevision": "5ce6990638ff9404f0a108edc23d228ff0ae5f01",
-    "scope": "브라우저 두 프로브/원래 환경 혼합·실제 인스턴스·환경 회전/해상도/수명·CPU 스킨/모프 현재 경계·UV 없는 기본/코팅 노멀·C++/BP/AI 공유. 전역 후보/FPS/전체 엔진·전체 문서 분석 완료 미주장."
+    "first": 1116,
+    "last": 1131,
+    "record": "docs/research/ENGINE_WORK_1131.json",
+    "implementationRevision": "af4d13d226710d459e7ab0a4267a1949b4a05491",
+    "scope": "큰 메시/인스턴스의 전역 픽셀 후보·혼합해상도 HDR atlas·native GPU 경계 패딩·정지복사/밝기metadata·GL/GPU/강제GL폴백·기존 C++/BP/AI 공용 실행. 공간가속/전체FPS/GL초기지연/전체엔진·전체문서완료 미주장."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_1114.json",
