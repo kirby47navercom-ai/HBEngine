@@ -1,0 +1,12 @@
+import fs from 'node:fs/promises';import path from 'node:path';import assert from 'node:assert/strict';import {execFile} from 'node:child_process';import {promisify} from 'node:util';
+import {compileNativeMaterial} from '../prototype/native-materials.js';import {cameraMaterial1135,fresnelMaterial1135,normalMaterial1135} from './camera-material-fixture-1135.mjs';
+import {prepareNative,jsonInclude} from './prepare-native.mjs';import {activeInstalledVersions} from './install-editor.mjs';import {retainTestEvidence,pruneTestArtifacts} from './test-artifacts.mjs';
+assert.deepEqual(await activeInstalledVersions('C:/Users/kirby/HBEngine'),[]);const work=await fs.mkdtemp(path.resolve('native/build/camera-surface-1136-'));retainTestEvidence(work);
+try{
+ const vectors=[[0,0,1],[0,0,-1],[0,0,0],[.6,.2,Math.sqrt(.6)],[.6,.2,-Math.sqrt(.6)],[6e30,2e30,Math.sqrt(.6)*1e31]],pack=m=>{const p=compileNativeMaterial(m);return{declarations:p.declarations,evaluation:p.evaluation,uniformValues:p.uniformValues};};
+ const plans={view:pack(cameraMaterial1135()),fresnel:pack(fresnelMaterial1135()),normals:vectors.map(input=>({...pack(normalMaterial1135(input)),input}))},file=path.join(work,'plans.json');await fs.writeFile(file,JSON.stringify(plans));await prepareNative();
+ const run=promisify(execFile),compiler='C:/msys64/ucrt64/bin/g++.exe',env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH},at=process.argv.indexOf('--executable'),root=at<0?process.cwd():path.dirname(path.resolve(process.argv[at+1])),binary=path.join(work,'probe.exe');
+ await run(compiler,['-std=c++17','-O2','-Wall','-Wextra','-Werror','-I',path.join(root,'native/include'),'-I',path.relative(process.cwd(),jsonInclude),'native/tests/camera-surface-1136.cpp','-o',path.relative(process.cwd(),binary)],{env,windowsHide:true,timeout:90000,maxBuffer:2097152});
+ const result=JSON.parse((await run(binary,[file],{env,windowsHide:true,timeout:120000,maxBuffer:1048576})).stdout);assert(result.passed&&result.viewCases===12&&result.fresnelCases===12&&result.ambientCases===6&&result.normalCases===24);
+ await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({passed:true,result,scope:result.scope,installedDirectory:at<0?null:root},null,2));console.log(JSON.stringify({passed:true,work,result}));
+}catch(error){await fs.writeFile(path.join(work,'failure.json'),JSON.stringify({error:error.stack,stderr:error.stderr},null,2));throw Error('camera/surface native '+work+': '+String(error.stderr||error.message).slice(-1200));}finally{await pruneTestArtifacts(work);}

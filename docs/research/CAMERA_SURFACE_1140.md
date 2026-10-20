@@ -1,0 +1,15 @@
+# 직교 시선·주변광·노멀 제작과 실행
+
+2026-10-21. ENGINE_WORK_1141.json과 후속 설치 영수증을 정본으로 사용해요.
+
+이번에는 설치된 Three0.180.0의 lights_pars_begin·lights_physical_fragment·lights_physical_pars_fragment, Position.js·EnvironmentNode·PhysicalLightingModel 본문과 HB의 공용 그래프/네이티브 셰이더를 대조했어요. Ambient/Hemisphere 입력은 조사도이며 diffuseColor의 (1−금속도)와 Lambert1/π가 필요해요. 새 외부 문서 전체 분석이나 연구 gate 승격을 뜻하지 않아요.
+
+네이티브는 원근의 eye−surface 방향을 직교 화면에도 사용했고, 주변광/반구광에는 금속 확산 차단과 Lambert 계수가 빠져 있었어요. 카메라 위치를 보존하면서 별도의 world viewer direction을 기존 상수 버퍼에 전달해요. 선택 필드의 기본값은 원근이고 캡처는 원근으로 전환/복원해요. 금속도0/.5/1을 독립 Lambert 기대값과 대조해요. 기존 주변광으로 맞춘 DirectX 장면의 밝기가 바뀔 수 있음을 도움말에 남겨요.
+
+공용 ViewDirection과 기본 Fresnel 시선도 GL/TSL/native에서 직교 방향을 사용해요. 회전 카메라·화면 중앙 밖 픽셀·원근/직교 전환을 같은 저장 그래프로 검사해요. 네이티브 그래프 노멀은 공용 보호 수식의 중립/0/음수Z/퇴화UV/큰 유한 값 처리와 화면Y 변환을 사용해요. 새로운 GPU 이미지·샘플러·운영 readback 없이 기존 세 상수 버퍼의 페이로드가 합계48B 늘어요.
+
+1136-V6hk8s는 실제D3D view12/Fresnel12/ambient6/normal24의 총54조건과 잘못된 시선 거부를 통과했어요. 독립 기하/조사도 기대값이며 오차2byte를 유지해요. 1137-PwHAnF는 GL/GPU/강제GL폴백에서 각각 view16/Fresnel16/ambient6을 통과했고 최대오차8e-8 미만, 최초2e-5 기준을 유지해요. 1119-3bJumh는 새 상수 배치에서도 기존 캡처/SH/투영/코팅/IOR/전역atlas21방향·거칠기 조건과 정지 패딩을 통과했어요.
+
+초기 검사 오류를 구분해요. 큰 노멀 리터럴은 기존±10000 작성 제한으로 거부돼 유효한 리터럴 곱셈으로 큰 유한 중간값을 만들었어요. 기본 노드 좌표는 원인이 아니었어요. C++ draw 인자/경고·cbuffer 쓰기, HLSL st.s/t 변환, data URL의 상대 검사 모듈 로딩, BP SetRotation의 value 핀을 수정했어요. 너무 큰 잘린 검사 평면의 보간 차이는 카메라에 맞춘 화면 쿼드로 제거했으며 오차를 늘리지 않았어요. 실패한 실행을 통과 성과로 계산하지 않아요.
+
+WebGPU 내장 물리조명 모델과 프로브 환경 방사광의 직교 시선 전체, 임의 로브/매질/역사 입력과의 완전한 동등성은 별도 잔여예요. 이번 검증은 공용 그래프 시선과 native raster, 지정 주변광/노멀 범위예요. GL Complex141의 약8/7초 초기 지연도 해결했다고 주장하지 않아요. 실제 패키지의 C++/BP 카메라 편집과 설치본은1141 및 후속 영수증에서 별도로 대조해요.

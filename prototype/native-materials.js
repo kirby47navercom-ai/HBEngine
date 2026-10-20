@@ -3,28 +3,33 @@ import {compileMaterial,materialDefaults,materialParameters,materialFloatPropert
 import {makeTextureGraphDemand} from './texture-graph-demand.js';
 import {materialTextureBindings} from './material-texture-bindings.js';
 import {captureMaterialGraph} from './material-source-key.js';
-import {normalMapGLSL} from './normal-map.js';
-export const nativeSurfaceProgramContract=Object.freeze({version:1,
+import {normalMapGLSL,normalFrameGLSL} from './normal-map.js';
+export const nativeSurfaceProgramContract=Object.freeze({version:2,
+ cameraView:"orthographic uses constant world viewer direction; perspective uses eye minus surface; ViewDirection and implicit Fresnel agree with raster; reflection captures force perspective",
+ normalFrame:"shared neutral/zero/negativeZ/degenerate-UV/large-finite guard; native graph converts screen-Y derivatives to the GL convention",
  marker:'#define HB_NODE_SURFACE 1\n',cpp:'SceneRenderer::createSurfaceProgram',
  inputs:'complete node surface owns base/normal/roughness/metallic/emission/AO texture inputs; default-map reads are removed before compilation',
  legacy:'createProgram remains a partial low-level shader extension with its existing bindings',
  samplerSlots:16,reserved:Object.freeze({effects2D:Object.freeze([13,14,15]),transmissionAndProbes:Object.freeze([14])}),
  binding:'independent existing programSampling entries; hardware/system reservations remain enforced',
- resources:'no additional GPU buffers, textures, sampler objects or per-frame work'});
+ resources:'one extra float4 in existing native draw buffers (48B across3slots); no new textures/targets/samplers/readbacks; camera direction reads existing world matrix'});
 function hlsl(code){
   code=code.replace(/\bvec([234])\b/g,'float$1').replace(/\bmix\b/g,'lerp').replace(/\bfract\b/g,'frac').replace(/\bmod\b/g,'hbMod');
   for(const match of [...code.matchAll(/\bfloat([234])\(/g)].reverse()){let depth=1,comma=false;for(let i=match.index+match[0].length;i<code.length&&depth;i++){if(code[i]==='(')depth++;else if(code[i]===')')depth--;else if(code[i]===','&&depth===1)comma=true;}if(!comma)code=code.slice(0,match.index)+'hbSplat'+match[1]+code.slice(match.index+6);}
   return code;
 }
+const nativeNormalFrame=hlsl(normalFrameGLSL.replaceAll('dFdx','ddx').replaceAll('dFdy','-ddy').replaceAll('st1.t','st1.y').replaceAll('st0.t','st0.y').replaceAll('st1.s','st1.x').replaceAll('st0.s','st0.x').replace('all(equal(mapN.xy,vec2(0)))','all(mapN.xy==vec2(0,0))').replace('return hbFrameUnit(mat3(s,t,n)*hbFrameUnit(mapN,vec3(0,0,1)),n);','mapN=hbFrameUnit(mapN,vec3(0,0,1));return hbFrameUnit(s*mapN.x+t*mapN.y+n*mapN.z,n);'));
 const helpers=`StructuredBuffer<float> hbParameters:register(t7);
 ${[2,3,4].map(n=>`float${n} hbSplat${n}(float v){return float${n}(${Array(n).fill('v').join(',')});}float${n} hbSplat${n}(float${n} v){return v;}`).join('\n')}
 ${hlsl(normalMapGLSL)}
+${nativeNormalFrame}
+float3 hbMaterialViewDirection(float3 at){return hbRasterView(at);}
 float3 hbSRGB(float3 c){return lerp(c/12.92,pow((c+.055)/1.055,2.4),step(.04045,c));}
 float hbHash(float2 p){return frac(sin(dot(p,float2(127.1,311.7)))*43758.5453);}
 float hbNoise(float2 p){float2 i=floor(p),f=frac(p);f=f*f*(3-2*f);return lerp(lerp(hbHash(i),hbHash(i+float2(1,0)),f.x),lerp(hbHash(i+float2(0,1)),hbHash(i+float2(1,1)),f.x),f.y);}
 float2 hbRotate(float2 uv,float a,float2 center){float s=sin(a),c=cos(a);float2 p=uv-center;return float2(c*p.x-s*p.y,s*p.x+c*p.y)+center;}
 ${['float','float2','float3','float4'].map(t=>`${t} hbMod(${t} a,${t} b){return a-b*floor(a/b);} ${t} hbSmooth(${t} a,${t} b,${t} v){${t} x=saturate((v-a)/max(b-a,0.000001));return x*x*(3-2*x);}`).join('\n')}
-float3 hbNormal(float3 eyePosition,float3 n,float3 mapN,float2 uv){float3 q0=ddx(eyePosition),q1=ddy(eyePosition);float2 st0=ddx(uv),st1=ddy(uv);float3 s=safeNormal(q0*st1.y-q1*st0.y),t=safeNormal(-q0*st1.x+q1*st0.x);return safeNormal(s*mapN.x+t*mapN.y+n*mapN.z);}`;
+float3 hbNormal(float3 eyePosition,float3 n,float3 mapN,float2 uv){return hbMaterialNormalFrame(eyePosition,n,mapN,uv);}`;
 export function compileNativeMaterial(data){
   const plan=compileMaterial(data,{uniformParameters:true});
   if(plan.textures.length>16)throw Error('DirectX 11 셰이더의 샘플러 16개 한도를 넘었어요.');

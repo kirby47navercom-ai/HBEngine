@@ -31,3 +31,7 @@ Complex141의 약8/7초 지연은 남아요. 일괄 프로그램 제출·비렌�
 ## 전역 반사 atlas1116–1131
 
 PROBE_ATLAS_1130.md에 실패/수정/통과를 구분했어요. 1117 상수DataTexture만으로 놓친 WebGPU WebGL폴백 RT blit destination endpoint 오류를 소유FBO 어댑터로 고쳤어요. 실제gradient PMREM 각54조건/세모드 통과. Native 수동 corner per-lobe 전개가 FXC9.69초 관측: GPUborder padding4.45초/once-selection4.24초/최종4.37초. 통제ABBA/전체로딩/FPS미주장,GLComplex1418/7초와별개. 1120의잘못된BP핀/바닥피벗/legacyambient/invalidSkyLight16/HDRACES색역fixture수정과실제통과구분. 최종GLtShlaw/GPUJuyK49/D3DPpduDz 및 SDKRMzcPS(오차1/허용2·paddingStaticReuse). nativeorthographic off-axis view와ambientmetal/물리단위는별도잔여,현재중앙ambient0검사로증명하지않아요. 최종1133 설치에서GL/GPU/폴백각54gradient·직접쌍회귀·실제CPP/BP세실행기4영역/밝기복원통과. USER_INSTALL_1133.json확정. 이전one-shot재실행금지.
+
+## 카메라·주변광1135 이후 작업 중
+
+후속 변경은 확정1133 설치와 구분해요.1136의 큰 노멀 직값은 기존±10000 작성 제한으로 거부돼, 유효한 리터럴의 곱셈 그래프로 큰 유한 중간값을 생성했어요. 좌표 기본값 변경은 원인이 아니었어요. 검사 draw 인자/경고/잘못된 cbuffer 쓰기를 바로잡았어요. 공용normal GLSL→HLSL 변환의 st.s/t를 x/y로, 화면Y를 -ddy로 변환했어요. 실패를 통과 근거로 세지 않아요. native viewDirection float4/ambient Lambert·금속, GL/GPU graph ViewDirection/Fresnel은 검증 중이에요. 기존GL8/7초와 구분해요.

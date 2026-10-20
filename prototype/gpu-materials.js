@@ -14,6 +14,7 @@ import {attachAdvancedShading} from './advanced-shading-gpu.js';
 import {attachGPURefraction} from './gpu-refraction.js';
 import {materialParameterKey,materialTextureParameter,resolveMaterialInputs,resolveMaterialAttributes,materialDefaults,materialGraph,materialCatalog,materialNodeKey,materialPins,normalizedMaterialEdges,validMaterialGraph,surfaceInputs,materialFloatProperty,materialVectorProperty,materialVectorValue} from './material-runtime.js';
 
+const materialView=T.cameraProjectionMatrix.element(3).w.equal(1).select(T.vec3(0,0,1),T.positionViewDirection).transformDirection(T.cameraViewMatrix);
 const specs=new Map(materialCatalog.map(s=>[s.key,s]));
 const vector=(value,size)=>Array.from({length:size},(_,i)=>Array.isArray(value)?value[i]??value[0]:value);
 const valueNode=(value,type)=>typeof value==='string'?T.vec3(...new Color(value).toArray()):type==='float'?T.float(Array.isArray(value)?value[0]:value):T[type](...vector(value,Number(type.slice(3))));
@@ -34,10 +35,10 @@ export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeUR
     else if(key==='legacyRough'){code=surfaceUniforms.get('roughness')||uniformValue(surface.roughness,'float');surfaceUniforms.set('roughness',code);}
     else if(['scalar','vector2','vector3','vector4','color','scalarParameter','vectorParameter'].includes(key)){
       const value=data.parameters?.[materialParameterKey(node)]??node.value??.5;if(key.endsWith('Parameter')){let list=parameters.get(materialParameterKey(node));if(!list){list=[];parameters.set(materialParameterKey(node),list);}code=uniformValue(value,type);list.push(code);}else code=valueNode(value,type);
-    }else if(key==='uv')code=T.uv();else if(key==='time')code=clock;else if(key==='worldPosition')code=T.positionWorld;else if(key==='worldNormal')code=T.normalWorld.normalize();else if(key==='viewDirection')code=T.cameraPosition.sub(T.positionWorld).normalize();
+    }else if(key==='uv')code=T.uv();else if(key==='time')code=clock;else if(key==='worldPosition')code=T.positionWorld;else if(key==='worldNormal')code=T.normalWorld.normalize();else if(key==='viewDirection')code=materialView;
     else{
       const args={};for(const input of activeTextureSamplingInputs(node,specs.get(key).inputs).filter(p=>p.id!=='textureObject')){const edge=edges.find(e=>e.to.node===id&&e.to.pin===input.id),target=input.type==='numeric'?(key==='length'?materialPins({...node,key:'normalize'},graph).outputs[0].type:type):input.type;
-        if(edge){const linked=expression(edge.from.node,edge.from.pin);args[input.id]=cast(linked.code,linked.type,target);}else if(key==='fresnel'&&input.id==='normal'&&node.inputValues?.normal===undefined)args.normal=T.normalWorld.normalize();else if(key==='fresnel'&&input.id==='view'&&node.inputValues?.view===undefined)args.view=T.cameraPosition.sub(T.positionWorld).normalize();else if(input.id==='direction'&&key==='sampleCube'&&node.inputValues?.direction===undefined)args.direction=T.normalWorld.normalize();else if(input.id==='uv'&&input.type==='vec2'&&node.inputValues?.uv===undefined)args.uv=T.uv();else if(input.id==='time'&&node.inputValues?.time===undefined)args.time=clock;else args[input.id]=valueNode(node.inputValues?.[input.id]??input.value??0,target);
+        if(edge){const linked=expression(edge.from.node,edge.from.pin);args[input.id]=cast(linked.code,linked.type,target);}else if(key==='fresnel'&&input.id==='normal'&&node.inputValues?.normal===undefined)args.normal=T.normalWorld.normalize();else if(key==='fresnel'&&input.id==='view'&&node.inputValues?.view===undefined)args.view=materialView;else if(input.id==='direction'&&key==='sampleCube'&&node.inputValues?.direction===undefined)args.direction=T.normalWorld.normalize();else if(input.id==='uv'&&input.type==='vec2'&&node.inputValues?.uv===undefined)args.uv=T.uv();else if(input.id==='time'&&node.inputValues?.time===undefined)args.time=clock;else args[input.id]=valueNode(node.inputValues?.[input.id]??input.value??0,target);
       }
       const {a,b,value:v}=args;
       if(materialTextureTypes[textureNodeType(key)]?.sample===key){

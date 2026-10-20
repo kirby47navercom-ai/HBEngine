@@ -17,3 +17,7 @@ CPU1116-euj3ss·변형1106-4VVmyv·수명1108-eWSxE6·100003인스턴스경계·
 RND03 공간타일/클러스터가속·큰장면성능/메모리·픽셀중요도우선점유/작은캡처덮기·sphere·lightmap혼합·임의shader변위/instance morph texture경계. native직교off-axis 시선·ambient금속처리/물리단위대조 별도(이번실제게임은중앙/ambient0). RND06 GLComplex141약8/7초유지;1086 SSA/0초기화미채택실험반복금지. RND08 전역거리장clipmap/타일·방향하늘/bentnormal/시간신뢰도·지형/변형/마스크·FBX/월드/다중LOD·편집기쿠킹/HWRT/방향베이크. 다른78행누적목표유지·전체완료율미확정. supplemental1130지정본문읽기만,전체gate미승격.
 
 백그라운드·소유임시프로젝트/프로필/포트만. User/게임원본검사·종료금지. 무거운검사/설치전activeInstalledVersions·사용중이면미뤄요. Versions1·이전설치전체백업없음·검사runtime/공유캐시정리. 한글동일author/committer커밋·푸시. Android폰/Mac없음재질문금지.
+
+## 후속 소스1135–1141 작업 중
+
+1133 설치확정 후 native SceneFrame.viewDirection/CB float4·직교/원근 raster시선·capture원근강제·ambient/hemi Lambert와금속·GL/GPU ViewDirection/defaultFresnel·native공용normal frame/UV/화면Y를함께수정. 미커밋이며설치1133과구분. Player1139재컴파일완료.1136-V6hk8s 실제D3D view12/Fresnel12/ambient6/normal24·오차2byte통과.1137-PwHAnF GL/GPU/강제폴백각view16/Fresnel16/ambient6 오차<8e-8·기존2e-5유지. 소유source-gates-1140.mjs가native atlas회귀→넓은직교실제CPP/BP game순서로진행중. 파일/세션은현재도구결과확인,실행중job중복금지. 이후ENGINE_WORK_1141·새sync/install/finish등록,소유CPP16/native13·Versions1로설치후최종실제검사/커밋push. WebGPU내장Physical모델/프로브의직교방향전체는별도잔여. 검사large literal/sourceURL오류·과도큰clippedquad보간오차는도구수정,수식오차완화없음.

@@ -69,13 +69,19 @@
         "스냅",
         "viewport",
         "camera",
-        "orbit"
+        "orbit",
+        "직교",
+        "원근",
+        "fresnel"
       ],
       "paths": [
         "prototype/viewport-controls.js",
         "prototype/viewport-presentation.js",
         "prototype/scene-editor.js",
-        "prototype/game-camera.js"
+        "prototype/game-camera.js",
+        "prototype/native-materials.js",
+        "native/include/HBEngine/SceneRender.hpp",
+        "docs/CAMERA_SURFACE.md"
       ]
     },
     {
@@ -149,7 +155,10 @@
         "webgl",
         "webgpu",
         "hlsl",
-        "wgsl"
+        "wgsl",
+        "직교",
+        "원근",
+        "fresnel"
       ],
       "paths": [
         "prototype/game-renderer.js",
@@ -162,7 +171,9 @@
         "prototype/reflection-probe-atlas-shader.js",
         "prototype/gpu-probe-atlas-environment.js",
         "native/include/HBEngine/SceneProbeAtlas.hpp",
-        "native/include/HBEngine/ProbeAtlasPadding.hpp"
+        "native/include/HBEngine/ProbeAtlasPadding.hpp",
+        "prototype/native-materials.js",
+        "docs/CAMERA_SURFACE.md"
       ]
     },
     {
@@ -183,7 +194,10 @@
         "shader",
         "normal",
         "setfloat",
-        "setcolor"
+        "setcolor",
+        "직교",
+        "원근",
+        "fresnel"
       ],
       "paths": [
         "prototype/material-runtime.js",
@@ -191,7 +205,10 @@
         "prototype/ray-material-program.js",
         "prototype/ray-material-shader.js",
         "prototype/gpu-materials.js",
-        "prototype/normal-map.js"
+        "prototype/normal-map.js",
+        "prototype/native-materials.js",
+        "native/include/HBEngine/SceneRender.hpp",
+        "docs/CAMERA_SURFACE.md"
       ]
     },
     {
