@@ -351,7 +351,8 @@
         "prototype/world-assets.js",
         "prototype/world-rendering.js",
         "prototype/world-asset-editor.js",
-        "prototype/runtime-lod.js"
+        "prototype/runtime-lod.js",
+        "prototype/world-draft.js"
       ]
     },
     {

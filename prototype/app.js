@@ -1,3 +1,4 @@
+import {withWorldDraft} from './world-draft.js';
 import {rayMipCacheInfo,configureRayMipCache,clearRayMipCache} from './ray-mip-cache.js';
 import {withGPUFrameTiming,stopGPUFrameTiming,clearGPUFrameTiming} from './gpu-frame-timing.js';
 import {tilemapPage} from './tilemap-diagnostics.js';
@@ -1510,7 +1511,7 @@ async function automationBakeLightmaps(params,{signal,onProgress=()=>{},ownerDia
 }
 function openLightmapBake(ownerDocument=document,ids=[...sceneSelection]){if(running||startingPlay||stoppingPlay)throw Error('실행을 종료한 뒤 베이크하세요.');const doc=assetDocs.current;if(doc?.kind!=='scene')throw Error('레벨을 여세요.');const targets=ids.filter(id=>objects.some(o=>o.id===id&&objectComponents(o).some(c=>c.type==='MeshRenderer')));if(!targets.length)throw Error('메시 오브젝트를 선택하세요.');return lightmapBakeDialog(ownerDocument,{path:'Assets/Lighting/LM_'+assetTitle(doc.path)+'.hblightmap.json',objects:targets,error:notify,run:async options=>{const current=await automationDocument({path:doc.path});return automationBakeLightmaps({path:doc.path,expectedRevision:current.revision,targetPath:options.targetPath,objects:options.objects,settings:options.settings},{signal:options.signal,onProgress:options.onProgress,ownerDialog:options.ownerDialog});}});}
 async function automationAuthoringEdit(params,kind,edit){
-  const {doc}=await automationDocument(params,true);if(doc.kind!==kind)throw Error('문서 종류를 확인하세요.');if(params.requireActive&&assetDocs.active!==doc.path)throw Object.assign(Error('작업 문서가 바뀌었어요.'),{code:'REVISION_CONFLICT'});const draft=kind==='blueprint'?blueprintWorkspace.view(doc.path,doc.data):clone(doc.data),result=edit(draft),next=kind==='blueprint'?serializeBlueprint(draft):draft;if(!validAsset(kind,next))throw Error('편집 결과 검증 실패');
+  const {doc}=await automationDocument(params,true);if(doc.kind!==kind)throw Error('문서 종류를 확인하세요.');if(params.requireActive&&assetDocs.active!==doc.path)throw Object.assign(Error('작업 문서가 바뀌었어요.'),{code:'REVISION_CONFLICT'});const owned=['terrain','foliage'].includes(kind)?withWorldDraft(doc.data,edit):null,draft=owned?owned.draft:kind==='blueprint'?blueprintWorkspace.view(doc.path,doc.data):clone(doc.data),result=owned?owned.result:edit(draft),next=kind==='blueprint'?serializeBlueprint(draft):draft;if(!validAsset(kind,next))throw Error('편집 결과 검증 실패');
   if(kind==='blueprint'){await blueprintWorkspace.prepare(doc.path,next);await automationDocument(params,true);}
   if(params.dryRun)return {valid:true,data:next,result,revision:await documentRevision(next)};
   if(JSON.stringify(next)===JSON.stringify(doc.data))return {path:doc.path,revision:await documentRevision(doc.data),dirty:doc.dirty,noChange:true,result};
