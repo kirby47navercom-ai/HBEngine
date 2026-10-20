@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "sources": [
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-LODGroup.html",
+      "read": "LOD Group selection bar screen-height ratio and component controls, visible body roughly123–160",
+      "notRead": "all linked API, transition implementation, cross-fade and billboard details",
+      "promotion": "scoped comparison; rendered-mesh LOD differs from HB volume-resolution selection"
+    },
+    {
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/mesh-distance-fields-in-unreal-engine",
+      "read": "How does it work, scene representation, Quality and Global Distance Field; inspected foliage/limitations context",
+      "notRead": "all linked lighting/AO, mesh build, heightfield, GPU collision and material references",
+      "promotion": "scoped comparison; camera-centered global clipmaps remain separate from implemented per-geometry resolution"
+    }
+  ],
+  "exhaustiveUEUnity": false,
+  "wholeCorpusGateAdvanced": false
+}

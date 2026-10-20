@@ -235,7 +235,8 @@
         "prototype/reflection-probes.js",
         "prototype/reflection-probe-bounds.js",
         "prototype/mega-lights.js",
-        "native/include/HBEngine/SceneProbes.hpp"
+        "native/include/HBEngine/SceneProbes.hpp",
+        "prototype/mesh-distance-field-lod.js"
       ]
     },
     {
@@ -294,7 +295,8 @@
         "prototype/geometry-gi-gpu.js",
         "prototype/mesh-distance-field-scene.js",
         "prototype/mesh-distance-field-shader.js",
-        "prototype/shared-ray-geometry.js"
+        "prototype/shared-ray-geometry.js",
+        "prototype/mesh-distance-field-lod.js"
       ]
     },
     {
@@ -646,7 +648,8 @@
         "prototype/gpu-path-preparation.js",
         "prototype/native-path-preparation.js",
         "tools/native-retained-build.mjs",
-        "native/include/HBEngine/ShaderPreparationQueue.hpp"
+        "native/include/HBEngine/ShaderPreparationQueue.hpp",
+        "prototype/mesh-distance-field-lod.js"
       ]
     },
     {
