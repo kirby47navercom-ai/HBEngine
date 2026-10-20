@@ -786,3 +786,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 1048 설치 C:\Users\kirby\HBEngine\Versions\3c8ee6dda5dbbcad/3728파일/399소유SHA/14CPP·User10849읽기전후SHA/연결/Versions1 검증. 설치1030Z0hRCb GL/GPU49·403pjGcX9 이전노멀/Float밉·1036kgr7OH 실제SDK CPP/BP 래스터/path10단계. 이전183008944B 정리. 1049뒤누적렌더링계속.
 
 1050–1062 9aa5a345bd5b780bf6f8f42b35204dc66dc52c81: 인스턴스 경계/반사·지형408B/폴리지64B 실제부분업로드·GPU새할당0·격자500광선/최신요청/장면소유/공용15단축키/AI조회. 여러구현뒤한묶음검사, 기존1057 증거재사용, native10 SHA일치로 Player1040/Host1041 재사용. 설치1064전이며 전체FPS/모바일/엔진완료 주장없음.
+
+1064 설치 C:\Users\kirby\HBEngine\Versions\8d6bbf025175ea5d 전체3748파일/423소유SHA/CPP14·User10849읽기전후SHA/연결/Versions1. 설치1060Gd7dHJ 실제GPU408B/64B·새버퍼0/Undo/AI/재지정,994hAXLVn 실제SDK CPP/BP5상태. native10 SHA일치로재컴파일0, 이전183129246B정리. 1065묶음완료;누적잔여는정본원장유지.

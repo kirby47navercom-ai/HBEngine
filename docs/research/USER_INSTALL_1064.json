@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "date": "2026-10-20",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "632d9c5ed31d838d0aa0689ffecfaefbcbd66513",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\8d6bbf025175ea5d",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\8d6bbf025175ea5d\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\8d6bbf025175ea5d\\HBEngine.exe",
+  "bundleHash": "8d6bbf025175ea5d12f95e2c5686b7bc8985e48838cc9d1d48d48b9b524f0af9",
+  "files": 3748,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3729,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3c8ee6dda5dbbcad",
+        "bytes": 183129246,
+        "manifestSHA256": "dad0bdd8bc6c6827d80d3ff0e329e7894d0c96fc8734688a57e64958a5c05067"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-20T07:45:52.6795025Z",
+    "bytes": 183129246,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "8d6bbf025175ea5d"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 423,
+  "repositoryOnlyTestSourcesVerified": 14,
+  "nativePlayerSHA256": "a5235c863e3886fd8b1a0c238c43d344d7f5fb5f3e0d9c3c3fec48b00c3f3a31",
+  "installedGates": [
+    {
+      "path": "native/build/world-edit-1060-Gd7dHJ/acceptance.json",
+      "sha256": "90c4860a4f9562bd1e2ccef11c74bffa95d98bc7ceba35dbf4b82556047c2115",
+      "scope": "실제 설치본 지형/폴리지 부분 GPU업로드408B/64B·새버퍼할당0·사람/AI공용·Undo·재지정/기존키/입력격리·읽기revision불변·정상종료",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\8d6bbf025175ea5d\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-room-994-hAXLVn/acceptance.json",
+      "sha256": "4937d3a30ccb7582472bab6a91bade6e4203669095a7db22e15fc563dab0a0c1",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. --instances loads actual glTF EXT_mesh_gpu_instancing; --foliage uses editable HB mesh/foliage JSON. Both2instances/external batch origin/native batch assertion. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--foliage",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\8d6bbf025175ea5d\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\8d6bbf025175ea5d\\",
+    "elapsedMs": 179.75,
+    "matches": 3
+  },
+  "manifestVerifiedFiles": 3748,
+  "versions": [
+    "8d6bbf025175ea5d"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1064-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/probe-instances-1050.json",
+      "sha256": "3e6bf70bb8159738cadaf16bf5f60747343cd83bea118914f44e5f8e1afb65d6",
+      "reused": true
+    },
+    {
+      "path": "native/build/instance-gates1057.json",
+      "sha256": "864b77d890646643ea8360750246d09454661b665e81519ce43917ed93426326",
+      "reused": true
+    },
+    {
+      "path": "native/build/world-edit-batch-1059.json",
+      "sha256": "fb5997853931c7343bb3390d11d0d440348fa964f48752c0475c532c10fd2cd3",
+      "reused": false
+    },
+    {
+      "path": "native/build/world-scene-1061.json",
+      "sha256": "15ed9b1880a2fa98029deecb32aeb4ca45ad59a85a58f1606705b0ac23c61e49",
+      "reused": false
+    },
+    {
+      "path": "native/build/world-edit-1060-YoWqAN/acceptance.json",
+      "sha256": "4b2795c32e85cdbec42f1f9aac57656ad6e3b7a83c17d196bc704fb59a3585fd",
+      "reused": false
+    },
+    {
+      "path": "native/build/ai-context-1058.json",
+      "sha256": "19191f8bb3fd579cb6ece392f776bcb20b1c102c60e5a90180b9a8dbc83baab1",
+      "reused": false
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/instance-gates1057.json",
+      "sha256": "864b77d890646643ea8360750246d09454661b665e81519ce43917ed93426326",
+      "reused": true
+    },
+    {
+      "path": "native/build/world-edit-1060-YoWqAN/acceptance.json",
+      "sha256": "4b2795c32e85cdbec42f1f9aac57656ad6e3b7a83c17d196bc704fb59a3585fd",
+      "reused": false
+    }
+  ],
+  "scope": "1064 전체3748파일/423소유SHA/CPP14·기존Player1040/Host1041재사용·제작부분GPU/Undo/AI/단축키·실제foliage SDK CPP/BP5상태·User읽기SHA/연결/Versions1",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

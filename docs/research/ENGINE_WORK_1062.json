@@ -494,6 +494,25 @@
       "path": "native/build/ai-context-1058.json",
       "sha256": "19191f8bb3fd579cb6ece392f776bcb20b1c102c60e5a90180b9a8dbc83baab1",
       "reused": false
+    },
+    {
+      "path": "native/build/world-edit-1060-Gd7dHJ/acceptance.json",
+      "sha256": "90c4860a4f9562bd1e2ccef11c74bffa95d98bc7ceba35dbf4b82556047c2115",
+      "scope": "실제 설치본 지형/폴리지 부분 GPU업로드408B/64B·새버퍼할당0·사람/AI공용·Undo·재지정/기존키/입력격리·읽기revision불변·정상종료",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\8d6bbf025175ea5d\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-room-994-hAXLVn/acceptance.json",
+      "sha256": "4937d3a30ccb7582472bab6a91bade6e4203669095a7db22e15fc563dab0a0c1",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. --instances loads actual glTF EXT_mesh_gpu_instancing; --foliage uses editable HB mesh/foliage JSON. Both2instances/external batch origin/native batch assertion. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--foliage",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\8d6bbf025175ea5d\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -506,6 +525,16 @@
       "path": "native/build/world-edit-1060-YoWqAN/acceptance.json",
       "sha256": "4b2795c32e85cdbec42f1f9aac57656ad6e3b7a83c17d196bc704fb59a3585fd",
       "reused": false
+    },
+    {
+      "path": "native/build/probe-room-994-hAXLVn/acceptance.json",
+      "sha256": "4937d3a30ccb7582472bab6a91bade6e4203669095a7db22e15fc563dab0a0c1",
+      "scope": "Fresh actual packaged SDK C++ Scene::SetRotation and keyboard Blueprint setRotation. Default mesh origin remains inside rotated volume; --outside-origin places actual mesh center outside with visible overlapping fragments, testing bounds candidates plus full local-row bridge/shader binding. --instances loads actual glTF EXT_mesh_gpu_instancing; --foliage uses editable HB mesh/foliage JSON. Both2instances/external batch origin/native batch assertion. Actual probe-off reference identifies the ambient-only pixel; real capture stays1 across red→ambient→red→ambient→red, with default shared authored material/actor APIs. No user project or whole FPS claim.",
+      "args": [
+        "--foliage",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\8d6bbf025175ea5d\\HBEngine.exe"
+      ]
     }
   ],
   "nativePlayerSHA256": "a5235c863e3886fd8b1a0c238c43d344d7f5fb5f3e0d9c3c3fec48b00c3f3a31",
@@ -547,8 +576,8 @@
     }
   },
   "sourceReadProof": "native/build/reference-corpus/supplemental1062/read-scope.json",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1048.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1064.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     {
@@ -879,5 +908,6 @@
       ]
     }
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1064.json"
 }

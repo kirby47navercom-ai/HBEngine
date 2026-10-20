@@ -2675,11 +2675,11 @@
     "scope": "인스턴스반사·지형/폴리지부분갱신·격자탐색·최신요청/장면소유·제작단축키·AI조회 묶음"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1048.json",
-    "sourceCommit": "d5f4412df44c4d4d602e1ceb0370e7e622eb242c",
-    "bundleHash": "3c8ee6dda5dbbcadfb5d2827228d72d22039970a089d34beba1bd087bcbf0295",
+    "receipt": "docs/research/USER_INSTALL_1064.json",
+    "sourceCommit": "632d9c5ed31d838d0aa0689ffecfaefbcbd66513",
+    "bundleHash": "8d6bbf025175ea5d12f95e2c5686b7bc8985e48838cc9d1d48d48b9b524f0af9",
     "verified": true,
     "versions": 1,
-    "scope": "1048 전체3728파일/399소유SHA/CPP14·새Player1040/Host1041·설치GL/GPU49·설치네이티브 이전노멀/Float밉·실제SDK CPP/BP 래스터/path10상태·User읽기전후SHA/연결/Versions1;누적계속"
+    "scope": "1064 전체3748파일/423소유SHA/CPP14·기존Player1040/Host1041재사용·제작부분GPU/Undo/AI/단축키·실제foliage SDK CPP/BP5상태·User읽기SHA/연결/Versions1"
   }
 }
