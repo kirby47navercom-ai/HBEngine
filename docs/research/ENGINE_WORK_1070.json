@@ -2,7 +2,7 @@
   "version": 1,
   "date": "2026-10-20",
   "kind": "widget-authoring-runtime-cost-batch",
-  "implementationRevision": "d9cc629b64b193ed0d1d0f5f834b4729fac7b35d",
+  "implementationRevision": "84a0e48cce39825f7dfb1cd8c256e13fb95fcb71",
   "targetIds": [
     "UI-03",
     "AI-03",
@@ -421,14 +421,14 @@
     "tools/check-world-scene-1061.mjs": "f12f4abeb23a5754d1cb669d30a4eef3bb58c4a9d88214b3cbedbc6b6e94558f",
     "tools/check-world-edit-1060-window.mjs": "8ed05ce507a6104ccc317f112ea14e0e97f47dcf5bae23e2b04954145103bb7f",
     "tools/world-edit-window-probe-1060.mjs": "e480bcb64ab7f576f2dddb59a3864a9af689d4e20b40a2175800ba0b8b2999e2",
-    "tools/ai-context.mjs": "af209967094bb094854c13b76721c6bc7483ef31878dd01c740b54ce3d47aeb1",
+    "tools/ai-context.mjs": "7d2c495f07a732c44a9ed2335e8f929e8aabccbaac839fc75777d3b155eb4140",
     "tools/check-ai-context.mjs": "dcef8970051e952ccb6acf227c38596f3d662e91f5bf91048614717c0f595141",
     "tools/hb.mjs": "466901dc56f7b22208dd7d8083eacb2b1c5727fa76bdbaf4ac8b34b80d41d24c",
     "tools/build-desktop.mjs": "844eb134bc6f9d1b7bdf9b3440c1dd0e29c70205a779caa04fde0c3533fb94f5",
     "package.json": "ca75613f2e111e4c36cbaa83a613b03db0c1ab9df1f6bd936a6dc70c74aa66af",
     "AGENTS.md": "addf6a9d6327bab892c704514f97b462e48c12bd6de092aaf81a6194c06e31ed",
     "CLAUDE.md": "ea1f44aab69f315a2d04cd22dd84a7c4e07560f3268fadd42395221a197241ab",
-    "docs/AI_START.md": "fc0e88d965920802d7964a5ea2276c84df16a54fc2eec956c42d492fb2f085c6",
+    "docs/AI_START.md": "694c3732792cbf3aac82d72b50c4fc3fb9ba6acb07d85fab032bd2859ec7bdf8",
     "docs/ai-routes.json": "82bb35cbaaa12dd46b94047512c90357a57dc1ed6116a2e3a55a963a5fd51e03",
     "docs/research/AI_BOOTSTRAP_1058.md": "f6f62a2e79cebadb6647f522cafe405bb1a4389660c75837e16202ed4b6195b5",
     "docs/research/WORLD_EDIT_BATCH_1062.md": "c55236df13accc93c4363e64317709f9bf7b776716a395e4c22d655acfe4fc36",
@@ -453,7 +453,8 @@
     "tools/check-widget-batch-1067-window.mjs": "c86e0925da4879fa683c1b474fb44693922690543327b538f6dba8dee246b42f",
     "tools/check-widget-content-1068.mjs": "7cae435fcc94f984d0805314a2c7f00322d01e72d22d4f906b713298cb6cca8e",
     "tools/project-service.mjs": "aba0ae8c28f68a2239b5a9a34fbd505496bec420684a1dbaa605417e1b4b7d08",
-    "tools/widget-window-probe-1067.mjs": "daaffffe74c98b84ca0f0a23e063cf84c8a261b3fa63862c35307e01e1e8933f"
+    "tools/widget-window-probe-1067.mjs": "daaffffe74c98b84ca0f0a23e063cf84c8a261b3fa63862c35307e01e1e8933f",
+    "tools/check-context-install-1071.mjs": "6766ea37d09480b49d5e3d74033a66c97b302b1bc8dd016c004fb9dd601bb006"
   },
   "testSourceHashes": {
     "native/tests/compute-async-607.cpp": "df3d452255692a444af20556525c35dcb182f975caf4ca0d77923588774091f6",
@@ -477,7 +478,8 @@
   "implemented": [
     "1066–1069: 위젯 부모/타입검사 기본값/상속 슬롯·노출·지역 초기표시·런타임 lifecycle/첫프레임전HUD·재진입/동시예산·복합행/자료/문맥이벤트·전역행예산·큰논리스크롤/휠/터치/측정앵커/입력키·공유FontFace/늦은로드해제",
     "1066–1069: 기존document CAS/dryRun/Undo/저장에 위젯클래스·슬롯·행·초기표시 연결·UI스키마 실제예산동기화·빠른helper경로·부모/행참조 이름변경과 실제패키지콘텐츠수집",
-    "1066–1069: 100000행 논리409600000px/물리4000000px·풀6, 2000복합항목 행7/노드28/FontFace1·제거/늦은로드해제·네이티브10소유지문동일로실행파일재사용"
+    "1066–1069: 100000행 논리409600000px/물리4000000px·풀6, 2000복합항목 행7/노드28/FontFace1·제거/늦은로드해제·네이티브10소유지문동일로실행파일재사용",
+    "1071: AI context 로컬 설치 마커 관찰을 원장 영수증과 구분·파일 재해시/사용자 자료 접근 없이 실제 번들 표시"
   ],
   "checks": [
     {
@@ -490,7 +492,7 @@
     },
     {
       "path": "native/build/ai-context-1058.json",
-      "sha256": "a41c58d5a21517ca7f8d92f9479645cb0e1c34d42e04005392825863f0d9ee79"
+      "sha256": "b98f772bd36afa2227f1a102462ff6c5710e1e8f96c04974d8e6031a2f0b21d3"
     },
     {
       "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\widget-content-1068-RWCZ73/acceptance.json",
@@ -511,6 +513,10 @@
     {
       "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\widget-batch-1067-p4qnEb/acceptance.json",
       "sha256": "94b04371b6ae6dd7d0e002a1b2efe9602f8e97a5098da7fdc092793d98eb06e1"
+    },
+    {
+      "path": "native/build/context-install-1071.json",
+      "sha256": "f61145a4b782d17a3f9d35bdb01e7e107617bb3be81393c5b23566d5cd0fab6e"
     }
   ],
   "sourceGameGates": [
