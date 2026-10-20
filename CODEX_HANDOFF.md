@@ -1,27 +1,25 @@
-# 현재 인계 — 거리장 카메라 LOD·렌더링/누적 목표 계속
+# 현재 인계 — 거리장 사전쿠킹·렌더링/누적 목표 계속
 
-2026-10-21. 장기 목표 active. 전체 누적 목표를 완료/정지로 바꾸지 않아요. 여러 변경을 모으고 관련 검사만 묶어요.
+2026-10-21. 장기 목표 active. 전체 누적 목표를 완료/정지로 바꾸지 않아요. 여러 변경을 구현한 뒤 관련 검사를 묶어요.
 
 ## 시작
 
-AGENTS.md → docs/AI_START.md → node tools/hb.mjs context "작업명". 정본 docs/research/ENGINE_STATUS.json. 긴 과거 연구/API 전체를 선행 독서하지 않아요. 실제 설치는 context state.installation/로컬 HBEngine.install.json을 읽고 패키지의 이전 원장 영수증과 구분해요.
+AGENTS.md → docs/AI_START.md → node tools/hb.mjs context "작업명". 정본 docs/research/ENGINE_STATUS.json. 과거 연구/API 전체를 선행 독서하지 않아요. 실제 설치는 로컬 HBEngine.install.json/context state.installation으로 확인하고 패키지의 이전 영수증과 구분해요.
 
-## 새 구현/검사
+## 이번 구현과 근거
 
-2538277·ENGINE_WORK_1094.json·research/DISTANCE_CAMERA_LOD_1093.md·DISTANCE_FIELD_LOD.md. 기하별 화면 footprint 거리장 해상도/공유 최대 요구/화면 밖 유지·낮춤250ms/기존필드/오래된목표취소/이중예약/낮춤자료해제·WeakMap 정지/TAA 투영/0인스턴스해제. PostProcessVolume mode/pixel 속성·사람 조건부 상세/Undo·AI CAS·기존 CPP/BP Components 함수·같은 GL/TSL/native atlas. 고정 기본값 유지·전역clipmap/정밀도보장/전체FPS가 아니에요.
+d003320·ENGINE_WORK_1102.json·DISTANCE_FIELD_COOKING.md·research/DISTANCE_COOKING_1101.md. 자동 Node 도형/OBJ/glTF/GLB·외부버퍼/범위·삼각형/생성소유SHA·중복·결정 LE 바이너리·shared CookCache128MiB/손상재생성/취소정리·패키지+목록32MiB·세타깃 설정·runtime 크기/SHA/격자/정밀도/예산·소유fallback. 초기/교체 때만 읽고 별도runtime디스크/새GPU패스없음. C++/BP Components·AI 계약/진단/탐색 공유.
 
-1087-Olpdhf 독립 투영/계획/설정/FP·TAA. 1088-61t0cP 실제worker 취소/기존필드/예산/공유/인스턴스0/버전/정지40/종료.1089-90AoO2 실제GL/GPU128KiB→2KiB→128KiB·복원픽셀/직접광·GL프로그램유지/TAA투영0.1090-fkxIfi 실제CPP mode/zoom/pixels64·BP·D3D AO/복원/해제.1092-09eVy5 상세/조건부필드/Undo/CAS/저장/schema.기존912-c2j3xS 55,15/이전필드·예약·정지/취소,913/API/문법도 통과.최종 설치 게이트는 새 소스에 대조해요.
-
-1090 초기16 기대는 근거 없는 sphere 가정이었고 실제12·실패0.엔진을 바꾸지 않았어요.1089 TAA 두렌더러의 CDP20초 제한은 소유작업을 시작하고 같은 핸들을 관찰하는 방식으로 수정. 실패를 통과로 세지 않아요.
+1098-9BBG3v 9그룹: 자동빌드/외부glTF변경/OBJ중복/결정출력/손상복구/예산/정규화/취소/독립팔면체·웹/모바일backend설정·크기상한.1100-6Ymv0a 실제 GL/GPU hit2→3·128KiB→2KiB→128KiB/복원/직접광/GL프로그램/TAA.1090-vN91ge 실제 패키지 CPP/BP/D3D 최초hit2/workerStarts0·모드/정밀도/복원.1088-2gmKD3 소유/목표취소/예산/0인스턴스/정지40.포즈전용 headless-jiOIv7·1087-Mh6LBN·API/탐색/15문법 통과. 검사 초기 텍스트API binary쓰기/기본 포함 모델 누락·직사각형까지 재읽는 가정은 도구 오류. 실패는 성과로 세지 않아요.
 
 ## 설치
 
-현재 확정 USER_INSTALL_1096.json: C:/Users/kirby/HBEngine/Versions/f2302f2ab6c1a864/HBEngine.exe.3792파일/464소유SHA/CPP원본14·User10849읽기전후SHA·연결·Versions1 검증.설치1088-HbFYGQ worker/취소/0인스턴스/정지,1089-yPc8gL GL/GPU·복원/직접광/프로그램/TAA,1090-7qjbNv 실제CPP/BP/D3D,1092-XtPq45 상세/Undo/CAS/저장 모두통과.실제설치마커도대조. native10지문/Player1040/Host1041 그대로라 엔진 재컴파일0. 사용자CPP fixture는 실제컴파일. 이전183682748B정리·공유캐시삭제0/빈영수증없음. sync1095/install1096/finish1097 및 이전one-shot은 완료했으니 재실행하지 않아요.
+이 묶음은 설치 전환 준비 중이에요. 직전 확정 USER_INSTALL_1096.json: Versions/f2302f2ab6c1a864/HBEngine.exe,3792파일/464소유SHA·User10849읽기SHA·Versions1·세렌더러/CPP/BP/상세CAS. 새1104 영수증 확정 전 현재 설치로 보고해요. native10소유SHA/Player1040/Host1041는 그대로라 엔진 재컴파일 없이 데이터/도구를 동기화해요. sync1103/install1104/finish1105는 새 one-shot이며 완료 marker를 확인하고 재실행하지 않아요. 이전1095/1096/1097 및 과거 one-shot은 완료예요.
 
 ## 이어갈 잔여
 
-RND06 약8/7초 GL 초기지연 유지.1086-ueGYSG SSA/0초기화 제거는 raw ABBA 약1%/74B라 미채택·관측성없는픽셀비교통과계산금지.같은 작은 SSA/초기화 실험을 반복하지 않아요.DEBUG_HANDOFF.md에 현재 진단만 두고 옛 긴 진단은Git3d83a96에서 읽어요.
+RND06 GL 초기 약8/7초 유지.1086 SSA/0초기화 후보는 약1%/74B·미채택·픽셀관측성없음. 같은 미세실험 반복금지. DEBUG_HANDOFF.md 현재 진단, 옛 긴 진단은Git3d83a96 보존.
 
-전역거리장clipmap/타일·방향성하늘/bentnormal/시간신뢰도·변형체/지형/마스크/쿠킹·HWRT/방향성베이크, 이전프레임복합광학, 지형GPU브러시·Undo/검증/큰스캔, UI트리/다중목록재부모화/터치·복합측정/접근성·디자이너BP/C++샌드박스/별도native위젯객체·3D깊이/조명 및 다른 누적목표는 원장에서 이어가요. 이전1082 목록/1075 월드·위젯/AI 근거는 보존해요.
+전역거리장clipmap/타일·방향성하늘/bentnormal/시간신뢰도·지형/변형/마스크·FBX/월드/다중LOD·편집기쿠킹·HWRT/방향성베이크·이전프레임복합광학, 지형GPU브러시/Undo/검증/대량스캔, UI트리/목록재부모화/터치·복합측정/접근성·디자이너BP/C++샌드박스/native위젯/3D깊이 및 다른 누적목표는 원장에 남아요. 이전1094 카메라LOD/1082 목록·1075 월드 근거를 보존해요.
 
-백그라운드만·사용자창/서버/프로필 검사·종료금지. 무거운 검사/설치 전 활성설치 보호. User읽기SHA/Versions1/캐시·임시런타임정리. 고정 보고서 재작성 전 SHA 증거 보존. 한글 동일author/committer 커밋·푸시. Android폰/Mac없음을 다시 묻지 않아요.
+백그라운드·소유 임시 프로젝트/프로필/포트만. User/게임원본을 검사·종료하지 않아요. 무거운 검사/설치 전 activeInstalledVersions·실행 중이면 미뤄요. source별 native재사용, Versions1·User읽기SHA·최종관련검사·임시runtime/공유캐시정리. 고정 보고서의 이전SHA를 과거 완료 새근거로 쓰지 않아요. 한글 같은author/committer 커밋·푸시. Android폰/Mac없음을 재질문하지 않아요.

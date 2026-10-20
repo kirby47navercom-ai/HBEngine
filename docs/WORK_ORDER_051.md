@@ -806,3 +806,7 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 1086–1094 거리장 렌더링 묶음 25382772fa28c88f51c0b2e97a1eecaad159b4b7 · 기하별 카메라 footprint LOD/보수적 공유·낮춤250ms/기존필드/취소/입력·교체예산·정지/TAA 투영메모/0인스턴스해제·사람/AI CAS/실제 CPP/BP/세렌더러. 표본128KiB→2KiB→128KiB·복원픽셀/직접광 보존. 초기 GL SSA 후보 약1%/74B는미채택·관측성없는픽셀비교통과계산금지. 전역clipmap·정밀도보장/전체FPS·나머지누적목표유지. ENGINE_WORK_1094.json/설치갱신대기.
 
 1096 설치 C:\Users\kirby\HBEngine\Versions\f2302f2ab6c1a864 /3792파일/464소유SHA/CPP14·User10849읽기전후SHA·연결·Versions1 검증. 실제 설치 worker 취소/기존필드/예산/0인스턴스·GL/GPU128KiB→2KiB→128KiB/복원/직접광/프로그램유지/TAA투영0·실제CPP/BP/native AO·상세/Undo/CAS/저장·마커. 엔진native재컴파일0(사용자CPP fixture는실제컴파일)·이전183682748B 정리. 1097 확정. GL초기지연·전역clipmap 및 누적목표계속.
+
+## 2026-10-21 거리장 사전쿠킹1098–1102
+
+d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKING_1101.md. 도형/OBJ/glTF/GLB·외부버퍼/삼각형SHA·중복/결정 바이너리·공유128MiB 보관·패키지/목록32MiB·정상/취소/손상복구·세타깃 설정·runtime 검증/소유fallback·C++/BP/AI. 1098-9BBG3v 9그룹,1100-6Ymv0a GL/GPU hit2→3·복원/직접광/프로그램/TAA,1090-vN91ge 실제CPP/BP/D3D 초기workerStarts0,1088-2gmKD3 취소/예산/정지·포즈/API/탐색/문법 통과. 설치 전환과 최종 근거는 후속영수증. 글로벌/FBX·월드·다중LOD·편집기쿠킹 및 누적목표계속.

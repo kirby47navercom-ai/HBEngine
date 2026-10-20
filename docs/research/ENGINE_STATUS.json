@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-21",
-  "basisRevision": "25382772fa28c88f51c0b2e97a1eecaad159b4b7",
+  "basisRevision": "d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -1184,9 +1184,9 @@
       "area": "rendering",
       "title": "DFAO·베이크·HWRT",
       "status": "partial",
-      "implemented": "225–228: UV1 간접광 라이트맵의 BVH/재료/HDRI 베이크·공유 Half/gzip 페이지·미리보기·원자 Undo·AI·GL/WebGPU/DX 독립 게임 수신·이동 무효화/복원 ·377–380: 현재돔 선형parameter 공용·태양/달/해질녘/tint의worker 간접베이크·HDRI우선·실제제작/Undo/미리보기/세GPU게임·frozen20대조 ·381–390: worker공유구면mip/lazyHDRI2800B·극점/삼선형·공용정밀각도392조건×3GPU·선택HDRI와작은sun/moon 혼합PDF의실제인간베이크/Undo/세게임·기존광선예산/코사인수열유지 ·391–395: filteredHDRI 휘도/구면면적·조건부2D CDF·cosine혼합/PDF·lazy16,648B상한/추가ray0·실제독립적분/차폐/원본·인간worker/Undo/AI/세게임 ·810–825: 실제 삼각형 signed/unsigned 거리장·취소 worker·기하별 공유 볼륨/인스턴스 BVH·GL/GPU/D3D 원뿔 AO·간접광만 차폐, 제작 속성/저장/C++/블프 실행 ·830–839: 원래 삼각형 topology/면/대각선으로 확인한 상자·직사각형만 정확한 거리식·복셀0·보간편향0, 일반 구면은 볼륨으로 유지하고 같은GL/GPU/D3D atlas 분기; Float32 BVH경계 바깥반올림 ·880–904: 요청최대해상도 안에서 기하별 예산적합8..요청 격자·원본삼각형오차 유지·로컬0예약 정확도형허용·최소격자 보류/공간확보 재시도·55/15/8동시필드·rigid정적재사용 ·910–916: 기존 저해상도 캐시 자동승격·현재필드보존/이중페이로드예약/원자교체·소유자당1작업·새기하우선·12.5%/2격자향상/최종작은단계·용량10%히스테리시스·실제55/15교체 및 D3D25→53화면 ·1087–1094: 기하별 화면 footprint 해상도/공유 요구·낮춤250ms/기존 필드/오래된 목표 취소/이중 예약/낮춤 해제·WeakMap 정지/TAA 투영/0인스턴스·사람/AI CAS/실제 CPP·BP/세렌더러; 표본128KiB→2KiB→128KiB, 전체FPS/전역clipmap 아님",
+      "implemented": "225–228: UV1 간접광 라이트맵의 BVH/재료/HDRI 베이크·공유 Half/gzip 페이지·미리보기·원자 Undo·AI·GL/WebGPU/DX 독립 게임 수신·이동 무효화/복원 ·377–380: 현재돔 선형parameter 공용·태양/달/해질녘/tint의worker 간접베이크·HDRI우선·실제제작/Undo/미리보기/세GPU게임·frozen20대조 ·381–390: worker공유구면mip/lazyHDRI2800B·극점/삼선형·공용정밀각도392조건×3GPU·선택HDRI와작은sun/moon 혼합PDF의실제인간베이크/Undo/세게임·기존광선예산/코사인수열유지 ·391–395: filteredHDRI 휘도/구면면적·조건부2D CDF·cosine혼합/PDF·lazy16,648B상한/추가ray0·실제독립적분/차폐/원본·인간worker/Undo/AI/세게임 ·810–825: 실제 삼각형 signed/unsigned 거리장·취소 worker·기하별 공유 볼륨/인스턴스 BVH·GL/GPU/D3D 원뿔 AO·간접광만 차폐, 제작 속성/저장/C++/블프 실행 ·830–839: 원래 삼각형 topology/면/대각선으로 확인한 상자·직사각형만 정확한 거리식·복셀0·보간편향0, 일반 구면은 볼륨으로 유지하고 같은GL/GPU/D3D atlas 분기; Float32 BVH경계 바깥반올림 ·880–904: 요청최대해상도 안에서 기하별 예산적합8..요청 격자·원본삼각형오차 유지·로컬0예약 정확도형허용·최소격자 보류/공간확보 재시도·55/15/8동시필드·rigid정적재사용 ·910–916: 기존 저해상도 캐시 자동승격·현재필드보존/이중페이로드예약/원자교체·소유자당1작업·새기하우선·12.5%/2격자향상/최종작은단계·용량10%히스테리시스·실제55/15교체 및 D3D25→53화면 ·1087–1094: 기하별 화면 footprint 해상도/공유 요구·낮춤250ms/기존 필드/오래된 목표 취소/이중 예약/낮춤 해제·WeakMap 정지/TAA 투영/0인스턴스·사람/AI CAS/실제 CPP·BP/세렌더러; 표본128KiB→2KiB→128KiB, 전체FPS/전역clipmap 아님 ·1098–1102: 정적도형/OBJ/glTF/GLB 삼각형·생성소유 지문 사전쿠킹·외부버퍼 변경/중복제거·결정 LE 바이너리·공유128MiB 캐시/손상재생성/취소정리·패키지32MiB/목록포함·Windows/웹/모바일 설정 전달·소유 런타임 크기/SHA/격자/정밀도/예산 검증과 worker fallback·초기hit2/workerStarts0·실제GL/GPU/D3D CPP/BP/복원/직접광·AI 계약/진단·탐색",
       "remaining": [
-        "거리장 AO의 전역 클립맵·타일 후보/전역장의 카메라 다중 해상도·시간 신뢰도·방향별 하늘/bent normal·지형/변형체·마스크/투명·쿠킹 캐시와 큰/얇은 일반 모델의 정밀도(기하별 예산880–904/기존캐시910–916, 기하별 카메라LOD1087–1094 구현; 글로벌 clipmap과 구분)",
+        "거리장 AO의 전역 클립맵·타일 후보/전역장의 카메라 다중 해상도·시간 신뢰도·방향별 하늘/bent normal·지형/변형체·마스크/투명·FBX/월드·편집기/다중LOD 쿠킹과 큰/얇은 일반 모델의 정밀도(기하별 예산880–904/기존캐시910–916, 기하별 카메라LOD1087–1094 구현; 글로벌 clipmap과 구분)",
         "하드웨어 레이 트레이싱 가속",
         "방향성 lightmap·shadow mask·볼륨/동적 오브젝트 probe·차트별 mip/고급 투명 매질 베이크",
         "큰 베이크의 분할 바이너리 저장/종속 캐시·실제 cloud 기하 베이크 캡처·HDRI 저표본 분산 추가 절감(탐색4배목표미달)·머테리얼/카메라/이방성 베이크 footprint"
@@ -1235,7 +1235,9 @@
         "docs/research/ENGINE_WORK_916.json",
         "docs/research/CACHED_DISTANCE_QUALITY_915.md",
         "docs/research/ENGINE_WORK_1094.json",
-        "docs/research/DISTANCE_CAMERA_LOD_1093.md"
+        "docs/research/DISTANCE_CAMERA_LOD_1093.md",
+        "docs/research/ENGINE_WORK_1102.json",
+        "docs/research/DISTANCE_COOKING_1101.md"
       ]
     },
     {
@@ -2744,11 +2746,11 @@
     }
   ],
   "latestBatch": {
-    "first": 1086,
-    "last": 1094,
-    "record": "docs/research/ENGINE_WORK_1094.json",
-    "implementationRevision": "25382772fa28c88f51c0b2e97a1eecaad159b4b7",
-    "scope": "거리장 카메라 LOD/낮춤/취소/예산/정지·TAA 메모/0인스턴스·제작/CPP/BP/세렌더러"
+    "first": 1098,
+    "last": 1102,
+    "record": "docs/research/ENGINE_WORK_1102.json",
+    "implementationRevision": "d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b",
+    "scope": "거리장 사전쿠킹·공유 캐시/예산·패키지·검증/복구·실제 세렌더러/C++/BP·AI"
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_1096.json",
