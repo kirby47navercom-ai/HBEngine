@@ -768,7 +768,6 @@
     }
   ],
   "sourceGameGates": [],
-  "pendingInstalledGameGate": "tools/check-curve-range-1337-window.mjs --player --executable <installation>/HBEngine.exe",
   "nativePlayerSHA256": "916edd63a0a5ee9104dbf40246f938e8ae44909f72c56933ff15bc6429d19c1a",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -810,8 +809,8 @@
   },
   "research": "docs/research/CORPUS_MANIFEST.json#followup1338",
   "diagnostic": "native/build/curve-focus-diagnosis-1337-KXclZh/acceptance.json (read-only cause proof, not implementation/performance result)",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1333.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1340.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "미등록 C++ 사용자 struct/중첩 컨테이너·시퀀스 대형 키 편집·기존1024키 예산 확장·기존 대상 생성/삭제 재현·socket/constraint/고급 Attachment·복잡 DCC 리그·녹화 필터 프리셋",
@@ -821,5 +820,17 @@
     "다중 곡선 동시 편집·임의 시간 경계의 가중 Bézier 분할 베이크·FFT/고급 리그 Euler 필터·고급 단축키 확대",
     "쿼터니언/이산 범위 확장"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/curve-range-1337-6MHiIv/acceptance.json",
+      "sha256": "832be30ab739355457d27abf7dac337376a5fe48669a39400395a564956a0506",
+      "scope": "Owned hidden real editor or installed-helper authored packaged D3D11 game. Selected boundary bake/Undo/atomic AI and semantic XYZ Euler filter feed real BP Play/Pause/Seek at1.5; independent position[.5,1,0] and rotation[0,91.5,0]. Outside dense-curve proof separate; no FFT/full mocap-rig/intentional-spin preservation claim.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\84b0673742812b68\\HBEngine.exe"
+      ]
+    }
+  ]
 }

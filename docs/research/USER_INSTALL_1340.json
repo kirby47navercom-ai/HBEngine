@@ -1,0 +1,124 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "0b528f07d5314e8fe1883e3872b98173a8614644",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\84b0673742812b68",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\84b0673742812b68\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\84b0673742812b68\\HBEngine.exe",
+  "bundleHash": "84b0673742812b6862e931568ac85ff6b0018f45fbfdb0f4db813e4bcca7ada6",
+  "files": 4012,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4008,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2722c0ef1812c5fd",
+        "bytes": 187062310,
+        "manifestSHA256": "cf09da393806b40f82b3febc1e5785f98ca8d95c45b160867fc5a345d273010b"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T18:32:12.1220397Z",
+    "bytes": 187062310,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "84b0673742812b68"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 683,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "916edd63a0a5ee9104dbf40246f938e8ae44909f72c56933ff15bc6429d19c1a",
+  "installedGates": [
+    {
+      "path": "native/build/curve-range-1337-6MHiIv/acceptance.json",
+      "sha256": "832be30ab739355457d27abf7dac337376a5fe48669a39400395a564956a0506",
+      "scope": "Owned hidden real editor or installed-helper authored packaged D3D11 game. Selected boundary bake/Undo/atomic AI and semantic XYZ Euler filter feed real BP Play/Pause/Seek at1.5; independent position[.5,1,0] and rotation[0,91.5,0]. Outside dense-curve proof separate; no FFT/full mocap-rig/intentional-spin preservation claim.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\84b0673742812b68\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\84b0673742812b68\\",
+    "elapsedMs": 88.68,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\84b0673742812b68",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "84b0673742812b6862e931568ac85ff6b0018f45fbfdb0f4db813e4bcca7ada6",
+      "installedAt": "2026-10-21T18:32:08.913Z",
+      "manifestFiles": 4012,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4012,
+  "versions": [
+    "84b0673742812b68"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1340-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/curve-range-bake-1336-RaVu2N/acceptance.json",
+      "sha256": "5e4b2e6134ae3f200f4b301edf88b9fd8bf60260c9ae55ff202385a48bc03996",
+      "scope": "9 groups: partial weighted/clamped/inherited/linear infinity dense808 outside observations, total allocation/sorted/boundary guards, fractional FPS grid uniqueness,1000 original quaternion poses plus exact coupled-near-gimbal tuple/midpoint, scalar skeletal partial bake and null range restoration."
+    },
+    {
+      "path": "native/build/curve-tools-1319-3JSlrw/acceptance.json",
+      "sha256": "5f766b79b1b4d7751c4de9a9131e4be27d65467c47ed908785fcc232887f2501",
+      "scope": "Affected common curve10/15600 monotonic vectors/affine/selected channels and actual skeletal AnimationGraph."
+    },
+    {
+      "path": "native/build/weighted-curves-1294-suJIH1/acceptance.json",
+      "sha256": "933a79d2370d0d8e3ef69ce3d2ba61785e8e7cb9d3d44cf9a45a3c98e33de061",
+      "scope": "Existing weighted9/240 regression."
+    },
+    {
+      "path": "native/build/curve-infinity-1310-EOZ3eV/acceptance.json",
+      "sha256": "d5536573d958b0f20b572d2e6b7018aac37b0bae8246e9d4dfe5bc3d1468626f",
+      "scope": "Existing common three-sampler/range/real AnimationGraph9 regression."
+    },
+    {
+      "path": "native/build/curve-range-1337-YJbmUq/acceptance.json",
+      "sha256": "b7a21c057939f9c9a833b9305f43f3b64843ace744426ced68c0c04923357aa8",
+      "scope": "Actual editor selected-range bake19keys/Undo/atomic invalid boundary and nonrotation guards, visible track picker/Euler UI and AI, BP Play/Pause/Seek position[.5,1,0]/rotation[0,91.5,0]. Layout graph130.56px/footer fully inside, manual screenshot inspected."
+    },
+    {
+      "path": "native/build/curve-range-ai-context-1338.json",
+      "sha256": "a8f7996d48e8d65dda898a8c45ccaff7352359f06dbca6d7bdfd042e31f6afca",
+      "scope": "Final offline routes/schema/CLI context; no full research or model interpretation-speed claim."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed existing-key partial bake/Euler authoring helpers and visible curve-track UI. Installed helper generates baked position and continuous XYZ rotation keys; actual packaged D3D11 BP Play/Pause/Seek yields position[.5,1,0]/rotation[0,91.5,0]. Source model9/808 outside samples/1000 quaternion poses, source UI/Undo/AI/layout proved. Native16/Struct.hpp/CPP21/Player1321/Host1041 reused by SHA. Manifest/source/User/links/Versions1 verified; full engine/research completion unclaimed.",
+  "version": 1,
+  "date": "2026-10-21T18:36:20.967Z",
+  "work": "docs/research/ENGINE_WORK_1338.json",
+  "distributionSync": "native/build/distribution-1339-sync.json",
+  "nativeCachePrune": "No new C++ compiler module; native owners/binaries unchanged and prior cache proof reused."
+}

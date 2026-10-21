@@ -910,3 +910,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1333 설치확인: 2722c0ef1812c5fd·4007명세/680소유SHA·설치서버9연결/129상태 생성3·재사용24/혼합view·순서/공유936502B 상한 통과. native16/CPP21/Player1321/Host불변·1327의실제D3D11CPP/UI근거재사용. User10849읽기SHA/연결/Versions1·이전186956860B 회수. 새컴파일/프로필/캐시누적없음.
 
 1335–1338: 선택기존키경계 베이크/외부보간·범위밖·가중/Clamped끝기울기 보존, XYZ등가Euler/360연속화·회전semantic·키총예산/정렬/FP끝점·골격scalar/null복원. 모델9/외부808/방향1000·기존10/15600·가중9/240·Infinity9·GUI YJbmUq 실제UI/Undo/AI/BP 위치[.5,1,0]/회전[0,91.5,0] 통과. 곡선트랙선택기/축행/재생줄가림·Clamped라벨수정. 원인진단KXclZh로숨은timeline버튼0rect확인·잘못된수정가설/검사quoting은성과제외. native불변·설치게임1회대기.
+
+1340 설치확인: 84b0673742812b68·4012명세/683SHA·설치helper의 부분베이크/Euler키생성과 실제D3D11 BP Play/Pause/Seek 위치[.5,1,0]/회전[0,91.5,0]통과. native16/CPP21/Player1321/Host불변. User10849읽기SHA/연결/Versions1·이전187062310B회수. 전체연구·누적완료선언없음.
