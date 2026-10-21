@@ -872,3 +872,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1247 설치확인: Versions/67bedf32e5d1c172·3937명세/615소유SHA·기존native16/Player1223/Host1041재사용. 설치GUI Tz5WE0 필드/우클릭/Undo/AI/선택scroll초기화/Play, 실제D3D11패키지im5Hub 위치[10,20,30]통과. User10849파일SHA보존·바로가기/연결·Versions1·이전185757267B정리·빈캐시receipt없음. 전체엔진완료아님/누적원장잔여유지.
 
 1250–1255: 구조체/C++/분기1247설치후멈추지않고Shot/SubSequence추가. 구간localtime/offset/rate/loop·Shot상위row·누적priority·자식채널복원/seek/stop·이벤트cut/loop경계·취소/순환/원본보존·drag/trim/context복제삭제/원본열기·실제preview대상fit/follow·AI2명령·공용패키징검증. 모델15/기존load4/priority4/completion3·AIcontext·실제최종GUI V94xOn 통과. native16/Struct.hpp/Player/Host불변재사용. 원점/timewarp/가중blend/부모문맥/Take/썸네일등잔여유지.
+
+1257 설치확인: fbe3037f251ced44 · 3944명세/623소유SHA. 이전구조체/C++기능보존·최종sourceGUI재사용·실제설치D3D11패키지부모1.25초/소스offset으로위치[7.5,0,0]통과. native16/Player/Host재사용·User10849파일읽기SHA보존·연결/Versions1·이전185902069B정리. 전체누적잔여유지,원점/timewarp/부모문맥/혼합/Take/썸네일을완료로계산하지않음.

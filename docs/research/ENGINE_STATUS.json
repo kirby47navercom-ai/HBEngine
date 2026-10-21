@@ -2915,11 +2915,11 @@
     "scope": "Nested sequence authoring/runtime/preview/export and on-demand AI; builtin struct/flow installation1247 preserved; native renderer/runtime reused."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1247.json",
-    "sourceCommit": "3c39efcce0146ceeb87f99f86b2d17e6d69e1231",
-    "bundleHash": "67bedf32e5d1c172cdee560f5e04a7ef16d82948771d535bed58a5ff04d53b25",
+    "receipt": "docs/research/USER_INSTALL_1257.json",
+    "sourceCommit": "c4a8f9a26b3c02ca384c4365075bba87b711d740",
+    "bundleHash": "fbe3037f251ced44e6e4be7a9bf22896bc2f97b61cd6576b56396bc639cd5736",
     "verified": true,
     "versions": 1,
-    "scope": "Builtin structured value authoring/runtime, references, Select/Switch and C++ SDK installed. 615 owner SHA, CPP21 and unchanged native16/Player1223/Host1041 reused. Current installed editor UI/scroll/AI/save/Play and D3D11 package execute. Full manifest/read-only User inventory/shortcuts/association/Versions1; no renderer matrix or FPS claim."
+    "scope": "Shot/SubSequence authoring/runtime/preview/export and AI installed, prior struct/flow SDK preserved. All native16/Struct.hpp/Player1223/Host1041 unchanged; final source GUI reused by verified owner SHA, actual installed D3D11 package Play/Pause/Seek. Full manifest/read-only User inventory/shortcuts/association/Versions1; no native rebuild, repeated UI or renderer/FPS matrix."
   }
 }

@@ -702,7 +702,6 @@
       "scope": "Final actual source editor: drag, source-preserving trim, context duplicate/delete, double-click child, AI dryRun/revision, runtime tree, nested preview framed in viewport, actual Play."
     }
   ],
-  "pendingPackageGate": "tools/check-sequence-sections-1251-window.mjs --executable <installed HBEngine.exe> --player",
   "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -739,8 +738,8 @@
     "onDemandInspection": true,
     "scope": "Existing sequence tick only, staged referenced assets and child channel owners. No whole-scene snapshot added; no FPS claim."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1247.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1257.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "미등록 C++ 사용자 struct/중첩 컨테이너·대형 키 편집·기존 대상 생성/삭제 재현·socket/constraint/고급 Attachment·복잡 DCC 리그·녹화 필터 프리셋",
@@ -748,5 +747,29 @@
     "중첩 시퀀스의 변환 원점·타임워프·가중 혼합, 부모 문맥에서 하위 편집/탐색·썸네일·Take 메타데이터·소스 범위/반복 편집 고급 옵션",
     "마이크·멀티채널 stem·Take 게임시각/PCM 표본 정렬·영상 결합·외부 동기화/전문 시네마틱/베이크"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/sequence-sections-1251-pRkgDZ/acceptance.json",
+      "sha256": "e5bee8e0da8669744a2aea39bb7742f503827f707312e3bc63f773dc0ae2509e",
+      "scope": "Actual packaged D3D11 game: Blueprint common LevelSequence Play/Pause/Seek loads referenced child asset, maps source offset at parent 1.25 seconds to target position 7.5. Native Player/Host reused; no renderer matrix/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fbe3037f251ced44\\HBEngine.exe",
+        "--player"
+      ]
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/sequence-sections-1251-pRkgDZ/acceptance.json",
+      "sha256": "e5bee8e0da8669744a2aea39bb7742f503827f707312e3bc63f773dc0ae2509e",
+      "scope": "Actual packaged D3D11 game: Blueprint common LevelSequence Play/Pause/Seek loads referenced child asset, maps source offset at parent 1.25 seconds to target position 7.5. Native Player/Host reused; no renderer matrix/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fbe3037f251ced44\\HBEngine.exe",
+        "--player"
+      ]
+    }
+  ]
 }
