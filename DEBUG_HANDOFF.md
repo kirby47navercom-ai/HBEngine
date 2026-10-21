@@ -75,3 +75,6 @@ fallback readback뒤copyTexSubImage2D가GL1282. Float32blend가설은HalfFloat�
 1219–1226: 기본월드C++형식이항상Actor여서2D/기존Character typed pin이null→Builtin class factory/한번생성/원래pose유지. User factory가GameInstance같은builtin에도unknown class→한스키마actor목록으로배제. Pawn2D CPU초기fixture는TopDown컴포넌트로Character2D를추론해잘못선언,명시클래스메타데이터로fixture수정. 실제preview toolbar canvas아래가림→flex별도행,직교회전잠금/동일방향수정시camera보존. 최종CPU50/실제GUI2x2Sprite·OBJ3정점/idle0·Spawn회귀·설치D3D11CPP2D게임통과. Player1223한번빌드,Host재사용. Versions1/User읽기SHA.
 
 1228–1239: collapsed 소유flag로기존macro VM재사용, 순수macro가__deferred로빠지는조건수정·openpinliteral/default/단위scale보존·typedreroute Expand/새ID복제/주석watch. 선행exec합류collapse에서두번째선중복제거로누락→도착entry공유+양끝중복만제거, CPU/GUI E입력실행확인. 펼친helpers기존노드와겹침→기존placeHelperNode+선택focus. 상속authored proxy가필터배열반환→viewHint·부모scope보존/childserialize/readonlyguard, 실제설치child+parent동작확인. 모델42/배열6종·UI·기존flow1699/CPP·상속JS17·설치D3D11package+상속editor통과. Player1223/Host재사용, renderer matrix없음. 당시core VM후반변경없는성공재사용scope는batch1231에명시.
+
+## 1266 GL 준비 지연: 읽기 전용 생성 구조 대조
+보존된 complex141-980-sLKAfd의 path/lens GLSL에서 material 함수4441145는각1313B·texture호출1·정의포함참조3. path전체120707B/lens117593B이며 원본M_Complex141그래프는6노드예요. 함수복제/레지스터정리가 주원인이라는 근거는 없어요. 1086 SSA/zero-init실패재측정·GPU컴파일·셰이더제품편집은 하지 않았어요. 이 수치는 보존된 역사적소스의 구조진단이고 현재시간/FPS개선근거가 아니에요. RND-06의8/7초잔여를완료처리하지않아요. 다음실험은 실제분기/인라인fanout·드라이버단계비용을분리할설계가필요하며동일74B실험반복금지예요.

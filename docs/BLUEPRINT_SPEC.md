@@ -578,3 +578,5 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 `PostProcessVolume.aoMode="distanceField"`와 AO 활성·거리·편향·세기·거리장 해상도/atlas 예산은 기존 `componentSetBool/componentSetString/componentSetFloat`와 C++ `hb::Components` 함수에 연결돼요. 별도 화면 상태만 바꾸는 가짜 노드를 만들지 않아요. 실제 패키지 DirectX에서 C++·키보드 블루프린트의 활성 결과 일치와 직접광 보존을 확인했어요. [근거와 범위](research/MESH_DISTANCE_FIELD_AO_821.md).
 
 1210–1212 제작: Sequence/MultiGate/Switch 동적 출력·Switch 기본 출력·Gate Start Closed·실행 입력 합류/Setter 삽입·변수로 만들기의Get/Set/자동연결·typed 단위 크기·중첩Split/Recombine·미리보기/VM 공통값·C++ aggregate/배열/문자열 기본값. [계약과 공식 읽기 범위](BLUEPRINT_FLOW_PINS.md). 현재 검증 영수증은 후속 ENGINE_WORK/USER_INSTALL을 확인한다. Custom struct/enum 및 Set Members·Collapsed Graph Expand는 이 변경으로 구현되었다고 주장하지 않는다.
+
+1266: 타임라인과 시퀀스가 공용 Hermite 표본 계산을 사용해요. 공용 커브 편집기의 선택 키에 실제 진입/진출 핸들을 표시하며 드래그는 연결 기울기, Alt/Break는 한쪽만 변경해요. 선택하지 않은 축의 자동 기울기를 보존해요. 시퀀스의 기존 LevelSequence 노드·C++ 재생 경로가 에셋의 기준점·커브를 읽어요. 사용자 정의 구조체/반환 참조 등의 CPP 잔여는 유지해요.

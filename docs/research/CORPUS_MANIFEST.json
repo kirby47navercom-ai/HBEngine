@@ -2837,6 +2837,19 @@
       "record": "docs/NETWORK_INTEREST_INDEX.md",
       "wholeCorpus": false,
       "readScope": "Own Structure and High-Level Example persistent shared replication lists, location groups, attached actor groups and global/per-connection lists. Linked node API classes not read in full."
+    },
+    {
+      "id": "sequence-origin-curve-supplement-1266",
+      "engine": "Unreal 5.8 own manuals and Unity 6.6 / Timeline1.7.7 selected own article sections",
+      "roots": [
+        "https://dev.epicgames.com/documentation/en-us/unreal-engine/creating-level-sequences-with-dynamic-transforms-in-unreal-engine",
+        "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-curve-editor-in-unreal-engine",
+        "https://docs.unity3d.com/Packages/com.unity.timeline@1.7/manual/insp_trk_anim.html",
+        "https://docs.unity3d.com/Manual/EditingCurves.html"
+      ],
+      "record": "docs/SEQUENCE_ORIGINS_CURVES.md",
+      "wholeCorpus": false,
+      "readScope": "Dynamic Origin own setup/results/animated origin body; Curve Editor own overview/toolbar/interpolation/tangent/interaction sections; Timeline track offset own article; Unity curve key/tangent sections. Linked manuals/APIs/high-level advanced filters not analyzed or counted."
     }
   ],
   "supplementalBaselines": [
@@ -5043,5 +5056,10 @@
     "record": "docs/NETWORK_INTEREST_INDEX.md",
     "wholeBodyGatePromoted": false,
     "remaining": "Full RepGraph/Iris APIs, authority game simulation, prediction/resimulation, latency/loss and lifecycle remain separate."
+  },
+  "supplemental1266": {
+    "record": "docs/SEQUENCE_ORIGINS_CURVES.md",
+    "fullCorpusAnalysis": false,
+    "implementation": "Sequence root/actor origins and common Hermite authoring/runtime; explicit unimplemented weighted/timewarp/skeletal/parent-context scope retained."
   }
 }

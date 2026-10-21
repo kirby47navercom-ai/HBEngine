@@ -377,3 +377,12 @@ input,textarea,[contenteditable=true],#console-logs,.help-items,.dialog-descript
 .effect-live-body label{display:grid;grid-template-columns:minmax(130px,1fr) 160px;align-items:center;gap:12px;margin:8px 0}
 .effect-live-body footer{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
 [data-effect-details]{margin-left:8px;padding:0 6px;min-height:22px}
+
+/* Reuse the shared curve editor inside a selected sequence binding. */
+.sequence-curves-open>.gameplay-timeline{display:none}.sequence-curves-open>[data-sequence-curve]{flex:1 0 300px;min-height:300px;position:relative}.timeline-editor[data-sequence-curve]>.curve-toolbar>label,.timeline-editor[data-sequence-curve] [data-add-track],.timeline-editor[data-sequence-curve] [data-track-name],.timeline-editor[data-sequence-curve] .curve-track-actions{display:none}.timeline-editor[data-sequence-curve] .curve-toolbar{justify-content:flex-end}.timeline-editor[data-sequence-curve] .curve-keybar{flex-wrap:wrap}.timeline-editor[data-sequence-curve] .curve-tracks{width:100px}
+
+.gameplay-main.sequence-curves-open{display:flex;flex-direction:column;overflow:hidden}.gameplay-main.sequence-curves-open>.gameplay-transport{flex:0 0 46px}.gameplay-main.sequence-curves-open>[data-sequence-curve]{height:auto;min-height:0;flex:1}.timeline-editor[data-sequence-curve]>.curve-toolbar,.timeline-editor[data-sequence-curve]>.curve-keybar,.timeline-editor[data-sequence-curve]>.curve-footer{flex-shrink:0}
+
+.sequence-curves-open>.gameplay-preview{display:none}.timeline-editor[data-sequence-curve]>.curve-toolbar{display:none}.timeline-editor[data-sequence-curve]>.curve-keybar>label:has([data-track-name]){display:none}.timeline-editor[data-sequence-curve] .curve-body{min-height:140px}
+
+.timeline-editor[data-sequence-curve]>.curve-keybar{align-items:center;gap:7px}.timeline-editor[data-sequence-curve]>.curve-keybar>label{display:flex;align-items:center;gap:4px;margin:0;flex:0 0 auto}.timeline-editor[data-sequence-curve]>.curve-keybar>label:has([data-track-name]){display:none}.timeline-editor[data-sequence-curve]>.curve-keybar>select{width:110px;flex:0 0 110px;margin:0}.timeline-editor[data-sequence-curve]>.curve-keybar input[type=number]{width:72px;margin:0}

@@ -1,3 +1,5 @@
+import {configureSequenceOrigin} from './sequence-origin.js';
+import {configureSequenceCurve} from './sequence-curves.js';
 import {expandBlueprintNode,pruneCollapsedDefinitions} from './blueprint-folding.js';
 import {ComponentPreview} from './component-preview.js';
 import {blueprintClassKind} from './blueprint-class-defaults.js';
@@ -1809,6 +1811,8 @@ const editorCommandMethods={
   'blueprint.default.set':params=>automationAuthoringEdit(params,'blueprint',data=>{setBlueprintDefault(data,params.kind,params.id,params.value,params.key);return {kind:params.kind,id:params.id};}),
   'blueprint.default.reset':params=>automationAuthoringEdit(params,'blueprint',data=>{resetInheritedDefault(data,params.kind,params.id,params.key);return {kind:params.kind,id:params.id};}),
   'scene.blueprint.override':async params=>{const {doc}=await automationDocument(params,true),object=doc.data.objects?.find(o=>o.id===params.object);if(!object?.blueprintAsset)throw Error('블루프린트 인스턴스가 필요해요.');const root=await blueprintWorkspace.prepare(object.blueprintAsset);return automationAuthoringEdit(params,'scene',data=>{editBlueprintInstance(root,data.objects.find(o=>o.id===params.object),params.kind,params.id,params.value,{reset:params.reset});return {object:params.object};});},
+  'sequence.origin.edit':params=>automationAuthoringEdit(params,'sequenceasset',data=>({origin:configureSequenceOrigin(data,params.origin)})),
+  'sequence.curve.edit':params=>automationAuthoringEdit(params,'sequenceasset',data=>({key:configureSequenceCurve(data,params)})),
   'sequence.section.edit':params=>automationAuthoringEdit(params,'sequenceasset',data=>({section:editSequenceSection(data,{operation:params.operation,id:params.id,section:params.section})})),
   'blueprint.switch.configure':params=>automationAuthoringEdit(params,'blueprint',data=>{const node=configureSwitchNode(data,automationGraph(data,params.view),params.node,{cases:params.cases,hasDefault:params.hasDefault,caseSensitive:params.caseSensitive},params.view||'event');return {node:node.id,outputs:flowOutputIds(node),cases:node.caseValues};}),
   'blueprint.struct.configure':params=>automationAuthoringEdit(params,'blueprint',data=>{const g=automationGraph(data,params.view),node=configureStructNode(data,g,params.node,{type:params.type,members:params.members,hideUnconnected:params.hideUnconnected},params.view||'event');return {node:node.id,type:structNodeType(node),members:visibleStructFields(node)};}),

@@ -1,25 +1,19 @@
 # 현재 인계 — 누적 엔진 구현 계속
 
-2026-10-21. 주인님: 멈추지말고 여러변경 구현후 영향검사1회·실패만수정. 반복컴파일/장시간렌더검사금지. AGENTS/docs/AI_START→hb context. 백그라운드만/한글동일author/committer commit/push.
+2026-10-22. 주인님: 멈추지말고 여러변경 구현후 영향검사1회·실패만수정. 반복컴파일/장시간렌더검사금지. AGENTS/docs/AI_START→hb context. 백그라운드만/한글동일author/committer commit/push.
 
-## 현재 설치
-USER_INSTALL_1264: C:\Users\kirby\HBEngine\Versions\91fb64b56b370689\HBEngine.exe. 3949명세/627SHA/CPP21/native16·Player1223/Host1041/Struct.hpp재사용. User10849읽기SHA/연결/Versions1·이전186035699B정리. 실제설치서버socket5검사성공, 소스100k/oracle재실행없음. 기존struct/sequence/UI/D3D11/CPP소유불변으로1257게임/GUI근거재사용.
+## 현재 설치와 진행
+USER_INSTALL_1264: C:/Users/kirby/HBEngine/Versions/91fb64b56b370689/HBEngine.exe.3949명세/627SHA/CPP21/native16·Player1223/Host1041/Struct.hpp재사용.User10849읽기SHA/연결/Versions1·이전186035699B정리.설치서버socket5확인.
+1266–1270 구현검사완료·설치대기: 공용Hermite/시퀀스연속곡선·실제탄젠트drag/연결·Alt분리/타축auto기울기보존·기준점static/actor/상속·same-sample기준액터선평가·root/component별칭/부착로컬중복방지·수명/피드백/실패교체/복원·AI2명령. 모델17 GECNor/기존section15·rotation3·priority4·completion3·hierarchy5 통과. 최종sourceGUI1267-MjRTWI 실제handle/타축/Undo/AI/Play·배치확인. 첫GUI임의기울기기준실패→관찰축명시수정, 타축0덮기제품수정과CSS상속클리핑수정은마지막GUI로검사.1269.started재실행금지.설치D3D11패키지1회만예정;native16/CPP불변재사용. docs/SEQUENCE_ORIGINS_CURVES.md.
 
-## 앞선 구조체 구현/검사
-WORK1245 /57db212: 기본5struct Make/Break/필드SetMembers·변수/중첩/배열/reroute/함수macro입력 원본반영·무작위index고정/동일함수후속읽기·10종/배열Select·Switch고정비교값/순서/Name/구형동적입력호환·C++Struct.hpp보조함수·AI2명령/schema/context. syntax+generatedAPI/CPP실행/모델53/flow1708/접기42/상속/AIcontext/실제sourceGUI1242-sYIwDc통과. 최종선택변경시속성scroll0도설치GUI에서확인. 묶음receipt native/build/blueprint-struct-batch-1244.json. native16불변·Player1223/Host1041재사용·전체렌더/모바일/FPS반복없음. record1245/sync1246/install1247/finish1249완료·재실행금지. finish1248은inline설치경로를자기프로세스로검출해시작guard에서중단·설치/사용자데이터변경없음. 사용자구조체/enum·일반native속성/함수반환참조미포함.
-
-## 앞선 구현
-WORK1224 2D4클래스 생성/CPP/Spawn/GameMode/실제SpriteOBJ충돌preview·idle0/닫기해제. WORK1232/1237 독립접힌그래프copy/expand·typeddefault/split/arrays/latent·부모authored scope보존/thinchild. 실제설치D3D11CPP2D와folded/expanded게임기록유지.
-WORK1175/1181/1188 노멀/접선/공유HDR144B부분전송·동일sourceCPU재포장회피/65536에768KiB절약.1199/1206 sphereprobe/signedscale전경로·D3D/GL/GPU9상태/4HDR/CPP/BP·native48.1214 flow/typeddefaults/Promote/합류/split/CPP리터럴.
+## 앞선 완료 근거
+WORK1245: 기본5struct Make/Break/SetMembers·중첩/배열/reroute/함수입력원본반영·index고정·typedSelect/Switchstatic·Struct.hpp·AI.모델53/flow1708/접기42/상속/실제CPP·설치GUI·D3D11성공. 사용자struct/enum·일반native반환참조는미포함.
+WORK1255: Shot/SubSequence offset/rate/loop/row/bias·lease복원/seek/stop·cut이벤트·로드취소/순환·drag/trim/source열기·previewframing·AI/tree/export.모델15/GUI V94xOn/설치D3D11 pRkgDZ 성공.
+WORK1262: 가변반경grid/global/owner/exact/knownhide·rootchild재색인/구링크정리·동일셀/빈메타. source11/기존network6·설치socket5성공.10만희소32질의후보1은index증거/FPS아님. socketOnly도구보고scope분기는1266에서정정.
+WORK1224 C++/BP2D4클래스.1232/1237접힌그래프copy/expand.1175/1181/1188노멀/접선/공유HDR부분전송.1199/1206sphereprobe/부호scale전경로.1214flow/typeddefaults/Promote.세부는해당기록.
 
 ## 다음/잔여
-ENGINE_STATUS78행 전체분모/완료율null. CPP01 사용자struct/enum에셋·일반reflection·Switchenum/고유Name·사용자구조체MakeBreakSetMembers·임의native참조·Timeline/wildcard/문서간참조. RND03 독립proxy/작은capture/perface/normalfade/lightmap·대형HDR/FPS/tilecluster·임의변형/instancemorph. RND06 GLComplex141 8/7초·실패1086반복금지. RND08 글로벌거리장/지형/월드·HWRT/방향베이크. 다른분야누적잔여삭제/완료로포장금지.
+ENGINE_STATUS78행 전체분모/완료율null. CPP01 사용자struct/enum·reflection·Switchenum/고유Name·임의native참조·Timeline/wildcard/문서간참조. ANM06 가중/시간왜곡/부모문맥/기즈모/골격origin/전문Take. RND03 proxy/작은capture/perface/normalfade/lightmap·대형HDR/FPS/tilecluster·임의변형/morph. RND06 GLComplex1418/7초·1086실패반복금지:1266읽기대조는보존980 GLSL의material함수1313B/전체약120k·6노드.새컴파일/제품shader수정/시간개선없음.DEBUG_HANDOFF참조. RND08 글로벌거리장/지형/월드·HWRT/방향베이크. 다른분야잔여삭제/완료포장금지.
 
 ## 보호/운영
-heavy/EXE/install전activeInstalledVersions. inline설치EXE경로는자기검출→스크립트저장후별도실행. 사용자창/탭/프로젝트/User테스트금지. User는설치전후읽기SHA만. ownhiddenfixture/고유profile/port·retain/prune. Versions1/백업금지. *.started재실행금지. cache0B면빈receipt없음. Mac/Android기기없음재질문금지. 장기goal조회blocked·도구재개불가/임의newgoal·pause·complete금지;현재턴구현은계속.
-
-## 현재 Shot/SubSequence 구현·설치 확인
-WORK1255 /2a409b8: 기존sequenceasset.sections 재사용·offset/rate/loop/Shotrow/누적bias·자식lease복원/seek/stop·cut/loop이벤트·로딩취소/순환/범위검증·drag/trim/sourceoffset/context/원본열기·실제대상previewfit/follow·AI편집/요청트리·공용export. 모델15 64Wllx/기존load·priority4·completion3·현재GUI V94xOn 성공. group1254/초기fixture와zero-cut보완기록유지. native16/Struct.hpp/Player/Host불변재사용·렌더행렬반복없음. record1255/sync1256/install1257/finish1258완료. 실제패키지와manifest/사용자보호/Versions1확인·네이티브재빌드나렌더matrix반복없음. 모든*.started재실행금지. 남은원점/timewarp/부모문맥/혼합/썸네일/Take는ANM06원장에유지.
-
-## 현재 네트워크 관심 인덱스·설치 확인
-WORK1262 /b78d735: 가변반경centergrid·global/owner·exact판정/knownhide·rootchild재색인/구root링크정리·동일셀재사용·빈메타회수/요청stats. network1260-Ur2mQd11/기존173-zzP1b96 통과(group1261 약2초); 10만희소32질의후보1은index증거/FPS아님. app/BP/VM/sequence/preview/client/native16/Struct.hpp/Player/Host불변해이전GUI/게임/CPP증거재사용. record1262/sync1263/install1264 서버sockets-only/finish1265완료,*.started재실행금지. 초기숨김/전역/밀집/삭제후보·연결별전송/권위게임/예측등NET01잔여유지.
+heavy/EXE/install전activeInstalledVersions. inline설치EXE경로는자기검출하므로스크립트저장후별도실행. 사용자창/탭/프로젝트/User테스트금지. User는설치전후읽기SHA만. ownhiddenfixture/고유profile/port·retain/prune. Versions1/전체백업금지. *.started재실행금지.cache0B면빈receipt없음.Mac/Android기기없음재질문금지. 장기goal조회blocked·도구재개불가/임의newgoal·pause·complete금지;현재턴구현계속.

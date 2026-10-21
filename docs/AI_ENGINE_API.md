@@ -569,3 +569,7 @@ GPU 물리 시선 계약은 schema.cameraView와 WebGPU renderer.cameraView에�
 ## 1259 — 네트워크 관심 후보
 
 `schema.replicationInterestIndex`와 서버의 `inspect().interestIndex`는 가변 반경 후보/셀/소유자/동일 셀 갱신 통계를 요청할 때 읽어요. 기존 컴포넌트·메시지·권한 규칙은 [네트워크 관심 영역 계약](NETWORK_INTEREST_INDEX.md)을 따라요.
+
+### 시퀀스 기준점·커브 (1266)
+
+`sequence.origin.edit`: `path`, `expectedRevision`, `origin:{mode:inherit|transform|actor,actor,position:[x,y,z],rotation:[x,y,z]}`, `dryRun`. origin 생략은 설정 제거예요. `sequence.curve.edit`: 같은 문서 인자와 `track` ID, `key` 배열 인덱스, `interpolation`, `arriveTangent`, `leaveTangent`를 받아요. 탄젠트는 키 값과 같은 형식의 초당 기울기이며 null은 제거예요. 두 명령은 공용 검증·Undo·revision을 사용해요. `runtime.sequenceTree`의 origin은 요청한 설정이며 전체 월드를 표본화하지 않아요. 세부 규칙은 [SEQUENCE_ORIGINS_CURVES](SEQUENCE_ORIGINS_CURVES.md)에 있어요.

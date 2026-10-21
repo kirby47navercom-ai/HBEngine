@@ -1,3 +1,4 @@
+import {sampleCurveSegment} from './curve-sampling.js';
 import {defaultsFor,validValue} from './pin-values.js';
 import {fieldsFor,structPins,validStructNode,isStructNode,structTypes,structNodeType} from './struct-operations.js';
 export {fieldsFor};
@@ -209,12 +210,7 @@ export function validTimeline(t){
 export function timelineLength(t){return t.lastKeyframe?Math.max(.001,...t.tracks.flatMap(track=>track.keys.map(k=>k.time))):t.length;}
 export function sampleTimeline(track,time){
   if(track.type==='event')return undefined;if(!track.keys.length)return defaultsFor(track.type);
-  let i=track.keys.findLastIndex(k=>k.time<=time);if(i<0)return structuredClone(track.keys[0].value);const a=track.keys[i],b=track.keys[i+1],mode=a.interpolation||track.interpolation;
-  if(!b||mode==='step'||mode==='constant')return structuredClone(a.value);const duration=b.time-a.time,u=Math.max(0,Math.min(1,(time-a.time)/duration));
-  const value=(v,c)=>Array.isArray(v)?v[c]:v;
-  const slope=(index,c)=>{const lo=track.keys[Math.max(0,index-1)],hi=track.keys[Math.min(track.keys.length-1,index+1)];return hi===lo?0:(value(hi.value,c)-value(lo.value,c))/(hi.time-lo.time);};
-  const interpolate=(v,c)=>{const end=value(b.value,c);if(mode==='linear')return v+(end-v)*u;const m0=value(a.leaveTangent,c)??slope(i,c),m1=value(b.arriveTangent,c)??slope(i+1,c);return (2*u**3-3*u*u+1)*v+(u**3-2*u*u+u)*duration*m0+(-2*u**3+3*u*u)*end+(u**3-u*u)*duration*m1;};
-  return Array.isArray(a.value)?a.value.map(interpolate):interpolate(a.value,0);
+  const i=track.keys.findLastIndex(k=>k.time<=time);if(i<0)return structuredClone(track.keys[0].value);return sampleCurveSegment(track.keys,i,time,track.interpolation||'auto');
 }
 export function makeNode(key,x=40,y=40,variableId){return {id:'node_'+crypto.randomUUID().replaceAll('-',''),key,position:{x,y},splitPins:[],...(isFlowNode({key})?{flowOutputs:key==='sequence'?['first','second']:isSwitchNode({key})?[]:['out0','out1','out2'],...(isSwitchNode({key})?{caseValues:{}}:{})}:{}),...(variableId?{variableId}:{}),...(isStructNode({key})?{valueType:'transform',...(key==='setMembers'?{memberPins:[]}:{})}:{}),...(key==='timeline'?{timeline:JSON.parse(JSON.stringify(defaultTimeline))}:{})};}
 export function nodeTitle(n,graph){const v=graph.variables.find(v=>v.id===n.variableId),d=[...(graph.functions||[]),...(graph.macros||[])].find(d=>d.id===n.definitionId),native=n.key.startsWith('native')?nativeMember(graph,n):null,s=[...(graph.dispatchers||[]),...(graph.interfaces||[])].find(d=>d.id===n.symbolId);return n.title||(isStructNode(n)?(n.key==='makeStruct'?'Make ':n.key==='breakStruct'?'Break ':'Set Members in ')+structTypes[structNodeType(n)]:n.key==='selectValue'?'Select '+variableTypes[n.valueType||'float'].split(' · ')[0]+(n.array?'[]':''):native?(n.key==='nativeGet'?'Get ':n.key==='nativeSet'?'Set ':n.key==='nativeEvent'?'Event ':'')+(n.key==='nativeMembers'?'Members · '+native.c?.name:native.f?.label||native.p?.name||'C++'):s?({dispatcherCall:'Call ',dispatcherBind:'Bind ',dispatcherUnbind:'Unbind ',dispatcherEvent:'Event ',interfaceCall:'Message '}[n.key])+s.name:n.key.endsWith('Input')?'Entry · 입력':n.key.endsWith('Output')?'Return · 출력':d?.name||((n.key==='getVariable'?'Get ':n.key==='setVariable'?'Set ':'')+(v?.name||catalog.find(s=>s.key===n.key)?.title||'Node')));}

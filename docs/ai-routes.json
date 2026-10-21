@@ -529,7 +529,12 @@
         "Shot",
         "시퀀스 구간",
         "하위 시퀀스",
-        "계층 우선순위"
+        "계층 우선순위",
+        "시퀀스 기준점",
+        "Transform Origin",
+        "탄젠트",
+        "Hermite",
+        "커브 편집"
       ],
       "paths": [
         "prototype/animation-graph-runtime.js",
@@ -540,7 +545,12 @@
         "prototype/gameplay-runtime.js",
         "prototype/sequence-sections.js",
         "prototype/gameplay-assets.js",
-        "prototype/gameplay-editor.js"
+        "prototype/gameplay-editor.js",
+        "prototype/sequence-origin.js",
+        "prototype/sequence-curves.js",
+        "prototype/sequence-curve-editor.js",
+        "prototype/curve-sampling.js",
+        "prototype/timeline-editor.js"
       ]
     },
     {

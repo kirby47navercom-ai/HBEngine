@@ -1,0 +1,2 @@
+import {sectionFixture} from './sequence-section-fixture-1250.mjs';
+export function originCurveFixture(){const fx=sectionFixture();fx.parent.origin={mode:'transform',actor:'',position:[10,0,0],rotation:[0,0,90]};fx.child.origin={mode:'transform',actor:'',position:[1,0,0],rotation:[0,0,0]};fx.child.tracks[0].keys[0].interpolation='user';fx.child.tracks[0].keys[0].leaveTangent=[0,0,0];fx.child.tracks[0].keys[1].arriveTangent=[0,0,0];return fx;}

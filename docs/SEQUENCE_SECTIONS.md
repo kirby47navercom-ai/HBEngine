@@ -41,3 +41,5 @@ Sub-Sequence는 동시에 평가할 수 있어요. Shot은 겹치는 구간 중 
 [Epic UE 5.1 Master Sequences, Shots, and Takes](https://dev.epicgames.com/documentation/en-us/unreal-engine/master-sequences-shots-and-takes-in-unreal-engine?application_version=5.1)의 Shot 구간·상위 행 우선·소스 오프셋·반복·배율·계층 bias 구역을 대조했어요. 역사 버전의 제작 동작 참고이며 UE 5.8 전체 기능 확인으로 계산하지 않아요.
 
 [Unity Timeline 1.7.7 Nesting Timeline instances](https://docs.unity3d.com/Packages/com.unity.timeline@1.7/manual/wf_nested.html)의 자체 본문에서 부모/자식 조합·Control 구간 활성 범위·더블클릭 원본 편집을 확인했어요. 연결 API·이미지 원본·전체 Timeline 패키지 분석은 포함하지 않아요.
+
+1266: 하위 시퀀스의 변환 기준점과 연속 키의 Hermite 커브 제작·공용 재생은 [별도 계약](SEQUENCE_ORIGINS_CURVES.md)을 사용해요. actor 모드는 월드 기준을 대체하며 부착 로컬 키에 중복 적용하지 않아요. 타임워프·가중 혼합·부모 문맥 편집은 계속 잔여 항목이에요.
