@@ -826,3 +826,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1143 설치 C:\Users\kirby\HBEngine\Versions\4940d1afed664464 /3843파일/511소유SHA/CPP16/native13·User10849읽기전후SHA·연결·Versions1확인. native54조건·GL/GPU/폴백각38조건·전역atlas각54gradient회귀·실제CPP/BP세실행기직교카메라4상태×3픽셀통과. Player1139새빌드/Host재사용.이전184296040B정리·1144확정.내장GPU전체Physical/추가로브·공간가속·GL초기지연/누적78행계속.
 
 1145–1149 GPU물리시선/원본·작성굴절·막간섭XYZ/산란·명시읽기수명 구현.24시선/16물리·독립분광31×2·읽기29/잔류0·atlas세모드각54·CPP/BP실제GPU게임6상태×3픽셀·API/AI통과.원오차기준유지.현재설치1143,새설치1151준비.전체원장78행/연구gate미승격.
+
+1151 설치 C:\Users\kirby\HBEngine\Versions\fe2c6e136bd7e741 /3857파일/525소유SHA/CPP16/native13·User10849읽기전후SHA·연결·Versions1확정. GPU/폴백각시선24·물리16·독립분광31·굴절·읽기29잔류0·atlas각54·실제CPP/BP세실행기6상태×3픽셀통과. Player/Host재빌드생략.기존184414405B정리·공유캐시{"deleted":0,"bytes":0,"receipt":null}. 설치손상220파일은명세SHA복원후전체명세/실제빌드검사.손상원인미확정.누적원장78행/전체연구gate계속.

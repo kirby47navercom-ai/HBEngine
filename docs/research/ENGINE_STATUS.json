@@ -2795,11 +2795,11 @@
     "scope": "GPU 물리 시선·thinfilm·원본/작성굴절·폴백읽기·실제CPP/BP. 지정독립조건만,전체에너지/성능/누적목표완료아님."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1143.json",
-    "sourceCommit": "8bff3517767c9effa4b433b3bd98cef4ae7674e7",
-    "bundleHash": "4940d1afed66446481ab1278f58c2715f72e60bf31901fe499bbc2c4fc2950d4",
+    "receipt": "docs/research/USER_INSTALL_1151.json",
+    "sourceCommit": "b27d3de097b79cf6c5752b05f5a005b353d75346",
+    "bundleHash": "fe2c6e136bd7e74110e19671b28d842da5905a094bdeb3616683a0ef06866f19",
     "verified": true,
     "versions": 1,
-    "scope": "1143 전체3843파일/511소유SHA/CPP16·native13/Player1139·Host1041재사용·native54조건·GL/GPU/폴백각38조건·atlas각54gradient회귀·실제CPP/BP세렌더러직교카메라4상태×3픽셀·AI실제마커·User읽기SHA/연결/Versions1"
+    "scope": "1151 전체3857파일/525소유SHA/CPP16·native13·Player1139/Host1041불변재사용·GPU/폴백각시선24·물리16·독립분광31·원본/작성굴절·읽기29잔류0·atlas세모드각54·실제CPP/BP세렌더러재질/카메라6상태×3픽셀·AI실제마커·User읽기SHA/연결/Versions1"
   }
 }

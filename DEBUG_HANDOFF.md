@@ -53,3 +53,7 @@ rawvolume 시선도owned call의slot1을교체. call은VarNode로감싸질수있
 fallback readback뒤copyTexSubImage2D가GL1282. Float32blend가설은HalfFloat에서도실패해기각. gl개별call계측과실제copyTextureToBuffer본문으로READ FBO를직접bind/삭제후미복원, PBO미해제를확인. 현재새adapter는tracked READ복원/packalignment·PBO상태복원·fence전복원·PBOfinally삭제.1146재검증중. 임시계측은검사코드만,운영픽셀읽기추가없음. GPUPhysical/volume/보관source검사와최종설치완료전전체완료주장금지.
 
 1147 첫 실제게임fixture는 기울어진 view에서 Roughness .35→.85의 차이가2byte라 가시변화>=4byte 조건에 실패했어요. C++ 호출 뒤 실제 픽셀변화와 상태보존은 관측됐으며 생산오류로 판정하지 않아요. 임계값은 유지하고 specular를 관측할 수 있는 초기 카메라에서 재질편집/복원을 먼저 검사하도록 순서만 바꿔요. off-axis 불변성은 모든 상태에서 유지해요.
+
+1151 설치 검증 확정. 원래 install1151 job handle이없고해당실행프로세스도없어중단확인;이미통과한3gate를재사용하고새resume으로미완료게임만이어갔어요. 첫복구시빌드import구문오류는installed220파일의동크기all-zero손상;repo/dist정상/명세불일치,hardlink아님.원인미확정. repair1153이명세SHA바이트만원자복구·3857전체/독립Nodeimport불변·이후CPP/BP실제3렌더러/최종전체SHA/User보존통과. READ/PBO손상과파일손상의원인을혼동하지않아요. install/repair/resume/finish one-shot 재실행금지. USER_INSTALL_1151 최신.
+
+1151 후속6gate는각각acceptance/정상exit로보존됐어요. 마지막프로젝트연결이이전4940경로라원래통과6검사재실행없이새resume1156에서격리프로필--register만실행·전체명세/소유SHA/User읽기SHA/링크/연결재확인통과. 새설치/버전추가없이복구,Versions1유지. 파일손상원인과등록되돌림원인은확정하지않았어요.

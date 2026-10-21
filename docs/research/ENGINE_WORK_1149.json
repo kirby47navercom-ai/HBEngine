@@ -593,6 +593,67 @@
       "path": "native/build/physical-camera-ai-context-1149.json",
       "sha256": "9c9ae1ad9bc9816e48c2e025014cc417db649a4e18dcdb9d5daa487f1bed4c8c",
       "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    },
+    {
+      "path": "native/build/physical-camera-1145-PJ7eqo/acceptance.json",
+      "sha256": "643c19dd1d462e57a6b985f7e147bc45e77cadaffa3035d67819736505e73546",
+      "scope": "Actual WebGPU and forced WebGL fallback physical view variable versus analytic orthographic/perspective rays, baseline reproducer, orthographic BRDF translation invariance and GL physical multi-lobe reference with a shared synthetic gradient CubeUV source.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/physical-volume-1146-gRy6Ef/acceptance.json",
+      "sha256": "4c9564bcee92596921e443aa8c024c256c2efb6501fe2a94101013060303e9d5",
+      "scope": "Actual WebGPU/fallback spectral film versus independent double-precision sum and orthographic raw/authored volume transmission versus known background times normal-incidence Fresnel. Includes original raw off-axis baseline; private owned context only.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-atlas-1117-BzPI5c/acceptance.json",
+      "sha256": "1e1b1aeaa023b64bffcd52acfe652b85b35e31d89e0cac2c5a44309d52f3fada",
+      "scope": "Actual GL/GPU production atlas copy and per-pixel candidates across4probes versus independent physical white reference/weights. Mixed map resolutions, static transfer reuse, intensity-only metadata update, resize/program retention,4instances outside parent origin, release/reactivate. Controlled known captures; actual capture/native package separately.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/physical-material-1147-iWkhLx/acceptance.json",
+      "sha256": "f11cc7a3a1beec1160ac902858fd075c6579caaa99b21e4909983147ce531974",
+      "scope": "Actual packaged physical metal/clearcoat/thin-film surface: independent off-axis plane invariance (2byte), visible camera/material changes (4byte), compiled C++ Scene::SetPosition/Materials::SetFloat and generated Blueprint rotation/material nodes restore the original pixels. Six states, three samples each; backend energy/tone policies are not required to be identical.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/physical-material-1147-OXMsKB/acceptance.json",
+      "sha256": "50cf8263d79f09fd105190ca41ef32b5ae0f5e06f120e1a8edba51ce5498157f",
+      "scope": "Actual packaged physical metal/clearcoat/thin-film surface: independent off-axis plane invariance (2byte), visible camera/material changes (4byte), compiled C++ Scene::SetPosition/Materials::SetFloat and generated Blueprint rotation/material nodes restore the original pixels. Six states, three samples each; backend energy/tone policies are not required to be identical.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/physical-material-1147-v2ESlc/acceptance.json",
+      "sha256": "65350e9a677f68042c20ff4ceb630196966311767770014046d692ec5843c1de",
+      "scope": "Actual packaged physical metal/clearcoat/thin-film surface: independent off-axis plane invariance (2byte), visible camera/material changes (4byte), compiled C++ Scene::SetPosition/Materials::SetFloat and generated Blueprint rotation/material nodes restore the original pixels. Six states, three samples each; backend energy/tone policies are not required to be identical.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/install-1151-byte-repair.json",
+      "sha256": "46b38547b7df0b01a3a3937c3b1d16565c5a156293915e9f05140fc8f8d8fb7a",
+      "scope": "검사 중 발견한 설치 파일의 동일 크기 all-zero 손상을 명세 SHA로 복원. 비0수정은 거부. 원인 미확정."
     }
   ],
   "sourceGameGates": [
@@ -600,6 +661,35 @@
       "path": "native/build/physical-material-1147-WEhBN8/acceptance.json",
       "sha256": "4f794716bb86656bd3f89be3dcf3d0025284706af5c5d9befb7d04cf5255406f",
       "scope": "Actual packaged physical metal/clearcoat/thin-film surface: independent off-axis plane invariance (2byte), visible camera/material changes (4byte), compiled C++ Scene::SetPosition/Materials::SetFloat and generated Blueprint rotation/material nodes restore the original pixels. Six states, three samples each; backend energy/tone policies are not required to be identical."
+    },
+    {
+      "path": "native/build/physical-material-1147-iWkhLx/acceptance.json",
+      "sha256": "f11cc7a3a1beec1160ac902858fd075c6579caaa99b21e4909983147ce531974",
+      "scope": "Actual packaged physical metal/clearcoat/thin-film surface: independent off-axis plane invariance (2byte), visible camera/material changes (4byte), compiled C++ Scene::SetPosition/Materials::SetFloat and generated Blueprint rotation/material nodes restore the original pixels. Six states, three samples each; backend energy/tone policies are not required to be identical.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/physical-material-1147-OXMsKB/acceptance.json",
+      "sha256": "50cf8263d79f09fd105190ca41ef32b5ae0f5e06f120e1a8edba51ce5498157f",
+      "scope": "Actual packaged physical metal/clearcoat/thin-film surface: independent off-axis plane invariance (2byte), visible camera/material changes (4byte), compiled C++ Scene::SetPosition/Materials::SetFloat and generated Blueprint rotation/material nodes restore the original pixels. Six states, three samples each; backend energy/tone policies are not required to be identical.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/physical-material-1147-v2ESlc/acceptance.json",
+      "sha256": "65350e9a677f68042c20ff4ceb630196966311767770014046d692ec5843c1de",
+      "scope": "Actual packaged physical metal/clearcoat/thin-film surface: independent off-axis plane invariance (2byte), visible camera/material changes (4byte), compiled C++ Scene::SetPosition/Materials::SetFloat and generated Blueprint rotation/material nodes restore the original pixels. Six states, three samples each; backend energy/tone policies are not required to be identical.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
     }
   ],
   "nativePlayerSHA256": "cb1b786f6f8f709100d38e8be8f8363da902babb5d9df2cdcd0314fcb38c6217",
@@ -635,8 +725,8 @@
     "scope": "자원소유카운트이며전체FPS/컴파일/메모리개선측정아님"
   },
   "researchScope": "1148에적힌로컬Three0.180본문의새읽기/재읽기와독립대조만.전체UE/Unitygate미승격.",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1143.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1151.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "전역 순위 탐색의 공간 타일/클러스터 가속·큰 장면 프로브 수/메모리/FPS 검증",
@@ -645,5 +735,6 @@
     "WebGPU 물리 재질의 임의 복합 로브·매질/기하/이력 조합 확장과 전체 백엔드 에너지 동등성 검증"
   ],
   "scope": "물리시선24·지정로브16·분광31·읽기29·전역atlas54와실제CPP/BP게임.임의전조합/초기컴파일/전체FPS/전체엔진완료는미주장.",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1151.json"
 }

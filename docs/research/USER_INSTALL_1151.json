@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "b27d3de097b79cf6c5752b05f5a005b353d75346",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe",
+  "bundleHash": "fe2c6e136bd7e74110e19671b28d842da5905a094bdeb3616683a0ef06866f19",
+  "files": 3857,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3844,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4940d1afed664464",
+        "bytes": 184414405,
+        "manifestSHA256": "b0e602b441d6d763dc3fbd6b6eaa9acd76fa857ad86eee91beff6361110ddd3e"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T05:45:00.6753440Z",
+    "bytes": 184414405,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "fe2c6e136bd7e741"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 525,
+  "repositoryOnlyTestSourcesVerified": 16,
+  "nativePlayerSHA256": "cb1b786f6f8f709100d38e8be8f8363da902babb5d9df2cdcd0314fcb38c6217",
+  "installedGates": [
+    {
+      "path": "native/build/physical-camera-1145-PJ7eqo/acceptance.json",
+      "sha256": "643c19dd1d462e57a6b985f7e147bc45e77cadaffa3035d67819736505e73546",
+      "scope": "Actual WebGPU and forced WebGL fallback physical view variable versus analytic orthographic/perspective rays, baseline reproducer, orthographic BRDF translation invariance and GL physical multi-lobe reference with a shared synthetic gradient CubeUV source.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/physical-volume-1146-gRy6Ef/acceptance.json",
+      "sha256": "4c9564bcee92596921e443aa8c024c256c2efb6501fe2a94101013060303e9d5",
+      "scope": "Actual WebGPU/fallback spectral film versus independent double-precision sum and orthographic raw/authored volume transmission versus known background times normal-incidence Fresnel. Includes original raw off-axis baseline; private owned context only.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-atlas-1117-BzPI5c/acceptance.json",
+      "sha256": "1e1b1aeaa023b64bffcd52acfe652b85b35e31d89e0cac2c5a44309d52f3fada",
+      "scope": "Actual GL/GPU production atlas copy and per-pixel candidates across4probes versus independent physical white reference/weights. Mixed map resolutions, static transfer reuse, intensity-only metadata update, resize/program retention,4instances outside parent origin, release/reactivate. Controlled known captures; actual capture/native package separately.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/physical-material-1147-iWkhLx/acceptance.json",
+      "sha256": "f11cc7a3a1beec1160ac902858fd075c6579caaa99b21e4909983147ce531974",
+      "scope": "Actual packaged physical metal/clearcoat/thin-film surface: independent off-axis plane invariance (2byte), visible camera/material changes (4byte), compiled C++ Scene::SetPosition/Materials::SetFloat and generated Blueprint rotation/material nodes restore the original pixels. Six states, three samples each; backend energy/tone policies are not required to be identical.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/physical-material-1147-OXMsKB/acceptance.json",
+      "sha256": "50cf8263d79f09fd105190ca41ef32b5ae0f5e06f120e1a8edba51ce5498157f",
+      "scope": "Actual packaged physical metal/clearcoat/thin-film surface: independent off-axis plane invariance (2byte), visible camera/material changes (4byte), compiled C++ Scene::SetPosition/Materials::SetFloat and generated Blueprint rotation/material nodes restore the original pixels. Six states, three samples each; backend energy/tone policies are not required to be identical.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/physical-material-1147-v2ESlc/acceptance.json",
+      "sha256": "65350e9a677f68042c20ff4ceb630196966311767770014046d692ec5843c1de",
+      "scope": "Actual packaged physical metal/clearcoat/thin-film surface: independent off-axis plane invariance (2byte), visible camera/material changes (4byte), compiled C++ Scene::SetPosition/Materials::SetFloat and generated Blueprint rotation/material nodes restore the original pixels. Six states, three samples each; backend energy/tone policies are not required to be identical.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741\\",
+    "elapsedMs": 95.51,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "fe2c6e136bd7e74110e19671b28d842da5905a094bdeb3616683a0ef06866f19",
+      "installedAt": "2026-10-21T05:44:56.311Z",
+      "manifestFiles": 3857,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3857,
+  "versions": [
+    "fe2c6e136bd7e741"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1151-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/physical-camera-1145-SQ1mnK/acceptance.json",
+      "sha256": "ad892b4f1a7fd0dd2d2eac22768032701df2b1f0f4227c201d07b1f659bccbd1",
+      "scope": "Actual WebGPU and forced WebGL fallback physical view variable versus analytic orthographic/perspective rays, baseline reproducer, orthographic BRDF translation invariance and GL physical multi-lobe reference with a shared synthetic gradient CubeUV source."
+    },
+    {
+      "path": "native/build/physical-volume-1146-VdoCCE/acceptance.json",
+      "sha256": "6f4aa05a91f6d440ff54492b5a1faeb41eccf84540b3c3eb2225be001e3c49b7",
+      "scope": "Actual WebGPU/fallback spectral film versus independent double-precision sum and orthographic raw/authored volume transmission versus known background times normal-incidence Fresnel. Includes original raw off-axis baseline; private owned context only."
+    },
+    {
+      "path": "native/build/probe-atlas-1117-kWTz3x/acceptance.json",
+      "sha256": "bb4d139fa2ba9ac8ecbdf3400549e5a6d8ad3dcd494fb9bc4104b4ac35cc668c",
+      "scope": "Actual GL/GPU production atlas copy and per-pixel candidates across4probes versus independent physical white reference/weights. Mixed map resolutions, static transfer reuse, intensity-only metadata update, resize/program retention,4instances outside parent origin, release/reactivate. Controlled known captures; actual capture/native package separately."
+    },
+    {
+      "path": "native/build/physical-material-1147-WEhBN8/acceptance.json",
+      "sha256": "4f794716bb86656bd3f89be3dcf3d0025284706af5c5d9befb7d04cf5255406f",
+      "scope": "Actual packaged physical metal/clearcoat/thin-film surface: independent off-axis plane invariance (2byte), visible camera/material changes (4byte), compiled C++ Scene::SetPosition/Materials::SetFloat and generated Blueprint rotation/material nodes restore the original pixels. Six states, three samples each; backend energy/tone policies are not required to be identical."
+    },
+    {
+      "path": "native/build/physical-camera-static-1149.json",
+      "sha256": "6854f97680f504902cd887c716e501be3f0e9696f9c3ff9ec73d7b3a7a7e5987",
+      "scope": "Changed source syntax, generated public API unchanged, cameraView schema, offline AI CLI. Runtime/math/package proofs are separate."
+    },
+    {
+      "path": "native/build/physical-camera-ai-context-1149.json",
+      "sha256": "9c9ae1ad9bc9816e48c2e025014cc417db649a4e18dcdb9d5daa487f1bed4c8c",
+      "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/physical-material-1147-WEhBN8/acceptance.json",
+      "sha256": "4f794716bb86656bd3f89be3dcf3d0025284706af5c5d9befb7d04cf5255406f",
+      "scope": "Actual packaged physical metal/clearcoat/thin-film surface: independent off-axis plane invariance (2byte), visible camera/material changes (4byte), compiled C++ Scene::SetPosition/Materials::SetFloat and generated Blueprint rotation/material nodes restore the original pixels. Six states, three samples each; backend energy/tone policies are not required to be identical."
+    }
+  ],
+  "scope": "1151 전체3857파일/525소유SHA/CPP16·native13·Player1139/Host1041불변재사용·GPU/폴백각시선24·물리16·독립분광31·원본/작성굴절·읽기29잔류0·atlas세모드각54·실제CPP/BP세렌더러재질/카메라6상태×3픽셀·AI실제마커·User읽기SHA/연결/Versions1",
+  "byteRepair": {
+    "path": "native/build/install-1151-byte-repair.json",
+    "sha256": "46b38547b7df0b01a3a3937c3b1d16565c5a156293915e9f05140fc8f8d8fb7a",
+    "files": 220,
+    "bytes": 4333846,
+    "cause": "undetermined; exact manifest byte restoration, not a confirmed code-root-cause fix",
+    "integrityAfterImport": "native/build/install-1151-import-integrity.json"
+  },
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}
