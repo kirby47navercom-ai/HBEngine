@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "date": "2026-10-22",
+  "kind": "diagnostic-only-not-implementation",
+  "basisRevision": "f0310b7b5ae72192a40100a0f417df7939fcdc0e",
+  "sourceHashes": {
+    "tools/primary-preparation-candidates-1300.mjs": "f54f5ed06b12343e20009f2ee13b284f2c038ab487d37988a68870435565da3a",
+    "docs/research/PRIMARY_PREPARATION_1308.md": "8777ab4edb485555d219aab5ff66b8125299dc9753be42cb311c7667e49e49f9",
+    "DEBUG_HANDOFF.md": "2a0bf79966bdcc76d30217e7fcab561fda423f36c608200e838402e8367ad5b8"
+  },
+  "targetIds": [
+    "RND-06"
+  ],
+  "checks": [
+    {
+      "path": "native/build/opaque-integrator-1302-5rxn35/acceptance.json",
+      "sha256": "a3bb32904270bfbadb78661052556a0136e79b627e2609fd467bd2c377a5910c",
+      "milliseconds": 6757.79999999702,
+      "production": false
+    },
+    {
+      "path": "native/build/opaque-integrator-1303-CZ4Rlv/acceptance.json",
+      "sha256": "cb905954de106bd4d1bea7e31abf23a5164cbaec5114617b2d2ff343ec8165ef",
+      "milliseconds": 7030.69999999553,
+      "production": false
+    },
+    {
+      "path": "native/build/opaque-integrator-1304-tvyCxZ/acceptance.json",
+      "sha256": "4b9282a3232cb53b7eb11592f43706b99aa9c4b508bcda5eb795df09d7343f42",
+      "milliseconds": 6786.80000000447,
+      "production": false
+    },
+    {
+      "path": "native/build/opaque-integrator-1305-Ykorpg/acceptance.json",
+      "sha256": "6c81dac208fadd6dd2d21ff02f87550f9f5d9507b231938a776a4f912dc4ae61",
+      "milliseconds": 6942.5,
+      "production": false
+    },
+    {
+      "path": "native/build/opaque-integrator-1306-vaSAxn/acceptance.json",
+      "sha256": "12e06a55ff1b058338103a3dab174a325bbe1c32f799a551673ec0ab5e5da113",
+      "milliseconds": 6877.10000000149,
+      "production": false
+    },
+    {
+      "path": "native/build/opaque-integrator-1307-57T3rV/acceptance.json",
+      "sha256": "3af0104fe172ef2d5bc1c5e65303297307a5f236efa0e0d678584a244c48de22",
+      "milliseconds": 6832.0999999940395,
+      "production": false
+    }
+  ],
+  "baseline": {
+    "path": "native/build/opaque-integrator-1301-DVS0y3/baseline/capture.json",
+    "sha256": "2d5971874d0507938b9a90c7d7b3d32f985b3f707d5c84a72938b8b72544c24e",
+    "milliseconds": 7066.5
+  },
+  "translated": {
+    "path": "native/build/opaque-integrator-1306-vaSAxn/primary-translated.hlsl",
+    "sha256": "897f17d6373f69325141c6fba8eeee504169bb3025e555a29c9c0a550f537642",
+    "initialSectionBytes": 73893,
+    "scope": "Fresh program before first draw; GL error0, full reference parity. Includes second compiler-input copy; no stage-cost attribution inferred."
+  },
+  "promoted": false,
+  "implementationCount": 0,
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1298.json",
+  "productionRendererChanged": false,
+  "remainingSource": "docs/research/ENGINE_STATUS.json"
+}

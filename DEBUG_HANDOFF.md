@@ -8,6 +8,8 @@ Complex141 주 경로의 약7–8초 지연은 남아요. 1287–1289에서 꺼�
 
 1086-ueGYSG: 현재 robust normal decoder로 맞춘 정확한 보유 GLSL에 레지스터 SSA/0초기화 제거 후보를 raw GL ABBA 대조. path7197.35→7125.40ms/guide5295.55→5233.40ms,74B만 감소. 캐시/부하 미통제의 약1%로 개선 입증 안 됨. 기본 렌더러 미채택. 보조 픽셀의 관측성 검증이 없어 promoted=false/pixelObservabilityVerified=false. 후보의 같은 값/실험 파일을 구현 성과로 세지 않아요. 다음에는 작은 SSA/초기화 실험을 반복하지 말고 실제 컴파일 비용 구조·새 가설을 세워요.
 
+1300–1308: 불투과 분기2050B제외/고정4tap/적응2·4tap/HDRI명시LOD0/빈매질카메라배열제외는 전체307200raw-half차이0이나 기준7066.5 대비6757.8/7030.7/6786.8/6942.5/6832.1ms로 확실한 개선을 입증하지 못했어요. 제품 미채택·후보는tools의사설모음만. 1306 fresh primary HLSL 첫구역73893B/PathSample9144·TraceCone2882·실제Program2741B; 정상원시출력/GL오류0. 다음작업에서이5후보/1086반복금지. 자세한원인후보·실패·다음비용경계는 docs/research/PRIMARY_PREPARATION_1308.md.
+
 ## 거리장 LOD
 
 1087–1093은 화면 footprint 기반 per-geometry 정밀도·낮춤250ms/기존 필드/예산/취소·WeakMap 정지 투영/TAA·0인스턴스 해제를 실제 제작/실행에 연결해요. 전역 clipmap·bent normal·방향성 하늘·시간 신뢰도는 별도 잔여예요.

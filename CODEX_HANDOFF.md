@@ -15,7 +15,7 @@ WORK1290: 꺼진곡면WebGL보조특화·켜짐/기본/공용수식보존·준�
 WORK1296: 공용Bezier가중·축별0..1/없음1/3/비가중연산동일·시간역산최대48·BP/애니/Sequence·핸들길이/기울기/타축·반대길이/Undo/AI·낮은창글자비율수정. pure9/독립240·기존17·GUI lKaCSM/설치LUYlOd 성공. 초기정확비교연산결합/변경없는쓰기revision가정은도구수정·실패보존. docs/WEIGHTED_CURVES.md. record1296/sync1297/install1298/finish1299.started재실행금지.
 
 ## 다음/잔여
-ENGINE_STATUS78행 전체분모/완료율null. CPP01 사용자struct/enum/reflection·임의native반환참조·문서간참조/Timeline/wildcard. ANM06 시간왜곡/가중혼합·클램프auto/Infinity·부모문맥/골격origin/Take. UI03 실터치/외부창/교차종류/공유source·전용CPP/BP이동API. NET01 권한/예측/밀집·global/tombstone/전송비용. RND03 proxy/작은capture/perface/normalfade/lightmap·대형HDR/FPS/tilecluster·임의변형. RND06 주GL7–8초잔여·1086실패반복금지(74B SSA/약1%는미채택). RND08 전역거리장/지형/월드·HWRT/방향베이크. 다른분야잔여삭제/완료포장금지. 자세한원장/DEBUG_HANDOFF참조.
+ENGINE_STATUS78행 전체분모/완료율null. CPP01 사용자struct/enum/reflection·임의native반환참조·문서간참조/Timeline/wildcard. ANM06 시간왜곡/가중혼합·클램프auto/Infinity·부모문맥/골격origin/Take. UI03 실터치/외부창/교차종류/공유source·전용CPP/BP이동API. NET01 권한/예측/밀집·global/tombstone/전송비용. RND03 proxy/작은capture/perface/normalfade/lightmap·대형HDR/FPS/tilecluster·임의변형. RND06 주GL7초잔여·1308진단5후보/1086반복금지(모두미채택). fresh HLSL첫구역73893B·DEBUG_HANDOFF/PRIMARY_PREPARATION_1308참조. 설치1298불변. RND08 전역거리장/지형/월드·HWRT/방향베이크. 다른분야잔여삭제/완료포장금지. 자세한원장/DEBUG_HANDOFF참조.
 
 ## 보호/운영
 heavy/EXE/install전activeInstalledVersions. inline설치EXE경로자기검출주의·스크립트저장후별도실행. 사용자창/탭/프로젝트/User테스트금지·User설치전후읽기SHA만. ownhiddenfixture/고유profile/port·retain/prune·동일native/SHA증거재사용. Versions1/전체백업금지. *.started재실행금지·cache0B빈receipt금지. Mac/Android기기없음재질문금지. 장기goal조회blocked·도구재개불가/임의newgoal·pause·complete금지;현재턴구현계속.
