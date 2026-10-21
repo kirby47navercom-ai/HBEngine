@@ -1,0 +1,152 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "c57183fd7da0b6aa06dda79ad2476851c1b0bba8",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e36b3207c2c1b246",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e36b3207c2c1b246\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\e36b3207c2c1b246\\HBEngine.exe",
+  "bundleHash": "e36b3207c2c1b24677acfad8763ab60d7162d8ab8e55927d72d81baa70374067",
+  "files": 4069,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4062,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\060a04debb81a375",
+        "bytes": 187927859,
+        "manifestSHA256": "bb98d6135c8855d0571bb5dc7d96329772c62e49fe8c7ee3c3c196521570df6a"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T22:03:04.8104001Z",
+    "bytes": 187927859,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "e36b3207c2c1b246"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 733,
+  "repositoryOnlyTestSourcesVerified": 25,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "da86f16dc48681473001c757e1f3ecdce38b266cc13cd417c7502937de9aa5d7",
+  "installedGates": [
+    {
+      "path": "native/build/document-history-1400-window-ilmjKx/acceptance.json",
+      "sha256": "c9c909df54a3fe928f5a3afaf1dc220861a0b90ed181827a66cfe2597f795175",
+      "scope": "Owned hidden actual editor: visible fixed-height256track rows/density keys/search/focus/scroll/AI exact index,8 dense-key edits with shared history Undo/Redo/branch, bounded history/read diagnostics/revisions, save and actual Play. Optional actual installed D3D11 package. No user profile/project or gameFPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e36b3207c2c1b246\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/document-history-1400-window-UOZsig/acceptance.json",
+      "sha256": "ee552c485e495ea6991cecd06220a797c867e4321739fd4c994781e7e1bfc64d",
+      "scope": "Owned hidden actual editor: visible fixed-height256track rows/density keys/search/focus/scroll/AI exact index,8 dense-key edits with shared history Undo/Redo/branch, bounded history/read diagnostics/revisions, save and actual Play. Optional actual installed D3D11 package. No user profile/project or gameFPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e36b3207c2c1b246\\HBEngine.exe",
+        "--player"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\e36b3207c2c1b246\\",
+    "elapsedMs": 61.21,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\e36b3207c2c1b246",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "e36b3207c2c1b24677acfad8763ab60d7162d8ab8e55927d72d81baa70374067",
+      "installedAt": "2026-10-21T22:03:01.542Z",
+      "manifestFiles": 4069,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4069,
+  "versions": [
+    "e36b3207c2c1b246"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1405-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/history-sharing-1398.json",
+      "sha256": "e416a89f7cbf48def1ea207ce02ed3579770f673fed293be1065b071c4dae89d",
+      "scope": "16x16384keys baseline/shared sequential measured retained V8 heap49018776→7344992B,CPU289.06→162.09ms;8x65536shared131110unique objects/346.34ms;live isolation/order/ownProto/sparse/special values/cycle/alias/nonplain fallback and AssetDocuments rename history/future. Not gameFPS/whole app heap."
+    },
+    {
+      "path": "native/build/sequence-track-window-1399.json",
+      "sha256": "82412f53e0e4cfad8672b8d842ef737f125e8fd2249ca96fa58925917702d4b2",
+      "scope": "245 row-window/full-scroll/bounded geometry cases, filtered metadata/source index/shape isolation/limits."
+    },
+    {
+      "path": "native/build/document-history-1400-window-Soyawj/acceptance.json",
+      "sha256": "006c0c465e31ca7afb5b5fca6322af453572ec5d4fcc15213e765246500792eb",
+      "scope": "Actual hidden256track/65536key editor,10top/6bottom rows/11814pxscroll/348topmarkers/open764.16ms;search/focus/exactlastkey/index metadata and8UndoRedo/branch/readonly revision/save/actualPlay2.5. Screenshot inspected. Later row highlight and full new-key rebind are verified installed."
+    },
+    {
+      "path": "native/build/curve-filters-1380-window-Z13QF1/acceptance.json",
+      "sha256": "6a448383cf6827dcafbe15b3a811f25d6be6846af05d5eb5b4cd12341b9314ea",
+      "scope": "Existing actual Sequence/skeletal/BP Timeline/FFT/interiorBake/Undo/revision/dryRun/save/actualPlay regression under shared document history."
+    },
+    {
+      "path": "native/build/history-context-1402.json",
+      "sha256": "647ee8d9c1ef6ed6975f7017aa39efb76e8f30026c824e2b37ce795005f98897",
+      "scope": "Exact history/virtual row ownership via2files each; tiny schema/history/tracks/navigate contracts without full body output."
+    },
+    {
+      "path": "native/build/history-fixture-compaction-1402.json",
+      "sha256": "2ace031fc56b12ef0cd854e60ca9069f8b6f451ef934f0e42ad80e0090634af6",
+      "scope": "Two failed owned fixtures lossless checked ZIP/perentrysizeSHA;35548457B reclaimed with report/manifest/repro preserved; no user files."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed shared document history/isolated restores/8UndoRedo/branch, virtual256Sequence rows/fullscroll/search/focus/selected row, exact AI key navigation/track metadata/bounded history stats/revision, new central rebind and input isolation, save/recovery and actualPlay; installed builder D3D11 at2.5. All17native/25test/Player1369/Host/vendor unchanged; no compilation. Full manifest/733sourceOwners/User/links/Versions1; no gameFPS/whole-engine claim.",
+  "version": 1,
+  "date": "2026-10-21T22:05:54.314Z",
+  "work": "docs/research/ENGINE_WORK_1403.json",
+  "distributionSync": "native/build/distribution-1404-sync.json",
+  "nativeCachePrune": {
+    "path": "native/build/cache-prune-1792611199342-7fc95717-c662-48dc-a514-1441315ffee6/result.json",
+    "sha256": "f9b363933406b04808223046d04710e7a0804f4e61cf6a33edf3071c3d80fa2a",
+    "bytes": 145415411,
+    "deleted": 2,
+    "scope": "Existing managed cleanup receipt; no extra manual source/cache copy or empty prune record."
+  },
+  "sourceNativeProof": "native/build/scene-constant-cache-1368-lC4Plh/acceptance.json",
+  "vendorPatch": "tools/patch-three-uniforms.mjs"
+}

@@ -934,3 +934,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1394 설치확인: 060a04debb81a375·4061명세/727소유SHA/25native검사/2vendor. 설치실제65k Sequence204마커/속성32·마지막키가시수정/Undo·AI부분조회/revision/dryRun/복사/저장/복구flush/Play·설치helper D3D11패키지위치2.5통과. Native17·Player1369/Host SHA불변/재빌드0. User10849읽기SHA/연결보존·Versions1·이전187754799B회수. 전체잔여/분모null유지.
 
 1396–1403: 문서40Undo 불변JSON하위공유/복원격리/특수그래프clone폴백·rename history/future 보존·16x16384키heap49018776→7344992B/289.06→162.09ms·65k8frames346.34ms. Sequence>32행46px가상화/overscan3/전체scroll/visible행만키표시·검색/포커스/드래그/선택색·중앙재지정↑↓/CtrlF·AI bounded이력진단/트랙metadata/정확키이동. 실제256트랙10/6행/348마커/11814px·마지막키8UndoRedo/분기/revision/저장/Play·Sequence/skeletal/BPTimeline곡선회귀·153shortcut. 실패fixture2개ZIP35548457B회수. source4b411d6·Native17/Player/Host/vendor재사용/빌드0·설치대기·전체잔여분모null유지.
+
+1405 설치확인: e36b3207c2c1b246·4069명세/733소유SHA/25native검사/2vendor. 설치실제256트랙46px가상화/348마커/검색·정확키가시이동·8UndoRedo분기·중앙재지정/입력격리·AI이력/metadata/revision·저장/복구flush/Play·설치helper D3D11패키지위치2.5통과. Native17·Player1369/Host SHA불변/재빌드0. User10849읽기SHA/연결보존·Versions1·이전187927859B회수. 전체잔여/분모null유지.

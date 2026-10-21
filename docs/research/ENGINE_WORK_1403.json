@@ -842,10 +842,6 @@
     }
   ],
   "sourceGameGates": [],
-  "pendingInstalledGates": [
-    "tools/check-document-history-1400-window.mjs",
-    "tools/check-document-history-1400-window.mjs --player"
-  ],
   "nativePlayerSHA256": "da86f16dc48681473001c757e1f3ecdce38b266cc13cd417c7502937de9aa5d7",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -916,8 +912,8 @@
   },
   "research": "Implementation/local structuredClone and existing document/Sequence behavior measured; no new UE/Unity whole-corpus claim.",
   "diagnostic": "DEBUG_HANDOFF.md#1396–1402; fixture expectedRevision omission/missingGhostTargets fixed in tests, engine guards retained; missing guessed shortcut test path excluded.",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1394.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1405.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": {
     "animation": [
@@ -940,5 +936,26 @@
       "남은 제작 분야의 전용 명령/검증 확대"
     ]
   },
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/document-history-1400-window-ilmjKx/acceptance.json",
+      "sha256": "c9c909df54a3fe928f5a3afaf1dc220861a0b90ed181827a66cfe2597f795175",
+      "scope": "Owned hidden actual editor: visible fixed-height256track rows/density keys/search/focus/scroll/AI exact index,8 dense-key edits with shared history Undo/Redo/branch, bounded history/read diagnostics/revisions, save and actual Play. Optional actual installed D3D11 package. No user profile/project or gameFPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e36b3207c2c1b246\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/document-history-1400-window-UOZsig/acceptance.json",
+      "sha256": "ee552c485e495ea6991cecd06220a797c867e4321739fd4c994781e7e1bfc64d",
+      "scope": "Owned hidden actual editor: visible fixed-height256track rows/density keys/search/focus/scroll/AI exact index,8 dense-key edits with shared history Undo/Redo/branch, bounded history/read diagnostics/revisions, save and actual Play. Optional actual installed D3D11 package. No user profile/project or gameFPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e36b3207c2c1b246\\HBEngine.exe",
+        "--player"
+      ]
+    }
+  ]
 }

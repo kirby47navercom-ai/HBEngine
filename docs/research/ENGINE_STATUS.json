@@ -3034,11 +3034,11 @@
     "scope": "Shared isolated document history, virtual Sequence rows/search/focus/reassignable navigation and AI bounded diagnostics/metadata/exact navigation; actual edit/UndoRedo/save/play, no native rebuild. Cumulative residuals retained."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1394.json",
-    "sourceCommit": "055bb1c49aeec6cf6b077d65485b46e99f07bbc9",
-    "bundleHash": "060a04debb81a3759373966d845cf8199e353d8701760c4e30aadbf5c14abd05",
+    "receipt": "docs/research/USER_INSTALL_1405.json",
+    "sourceCommit": "c57183fd7da0b6aa06dda79ad2476851c1b0bba8",
+    "bundleHash": "e36b3207c2c1b24677acfad8763ab60d7162d8ab8e55927d72d81baa70374067",
     "verified": true,
     "versions": 1,
-    "scope": "Installed dense65536-key Sequence authoring/204 density markers/32 property keys/exact visible index jump, event-only binary range index, generic own-Pointer document shape/value paging and readonly revision, sequence page/clipboard and recovery flush, bounded FIFO automation result transport and primary disk recovery/no-op-save backup reduction. Actual installed editor changes/Undo/saves/flushes/plays65536keys; installed builder packages and runs D3D11 at2.5. All17 native owner/25 native test/Player1369/Host/vendor SHA reused with zero compilation. Manifest/source/User/links/Versions1 verified; no gameFPS/mobile-device/full-engine claim."
+    "scope": "Installed shared document history/isolated restores/8UndoRedo/branch, virtual256Sequence rows/fullscroll/search/focus/selected row, exact AI key navigation/track metadata/bounded history stats/revision, new central rebind and input isolation, save/recovery and actualPlay; installed builder D3D11 at2.5. All17native/25test/Player1369/Host/vendor unchanged; no compilation. Full manifest/733sourceOwners/User/links/Versions1; no gameFPS/whole-engine claim."
   }
 }
