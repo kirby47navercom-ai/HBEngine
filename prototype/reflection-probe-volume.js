@@ -1,4 +1,5 @@
 import {Matrix4} from 'three';
+export const reflectionProbeFlags=p=>(p.boxProjection?1:0)+(p.volumeShape==='sphere'?2:0)+(p.priorityBlend?4:0);
 
 // Three affine rows keep native/GL/TSL packing independent of matrix conventions.
 // Face distances stay in world units under nonuniform scale, reflection or shear.

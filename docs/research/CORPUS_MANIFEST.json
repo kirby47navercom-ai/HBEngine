@@ -5190,5 +5190,36 @@
       }
     ],
     "implementation": "Typed single-curve relative-time copy/cut/paste, first key at playhead, full values/handles preserved; common reassignable shortcuts and owner/revision guards."
+  },
+  "supplemental1354": {
+    "record": "docs/PROBE_PRIORITY_BLEND.md",
+    "fullCorpusAnalysis": false,
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/reflections-captures-in-unreal-engine",
+        "sections": [
+          "Reflection capture reprojection/pixel blend, smaller override and lightmap overview, displayed lines56–74"
+        ],
+        "remaining": "Full lightmap implementation and linked API not promoted."
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Probe.html",
+        "version": "17.0.4",
+        "sections": [
+          "Influence Volume171–214",
+          "RenderSettings Importance/Weight285–315"
+        ],
+        "remaining": "Per-face/normal fade and entire other properties/API implementation not promoted."
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Proxy-Volume.html",
+        "version": "17.0.4",
+        "sections": [
+          "Proxy use/assignment/shape constraints and gizmo115–138"
+        ],
+        "remaining": "Independent proxy API/render integration remains, body read is not implementation."
+      }
+    ],
+    "implementation": "HB opt-in first-of-two priority alpha coverage through all probe sample backends, unchanged default/records/captures and shared node/C++ service. Separate local installed Three0.180.0 source/bundle dirty-field bug proved and patched reproducibly; not a change to vendor version or full UE/Unity parity."
   }
 }

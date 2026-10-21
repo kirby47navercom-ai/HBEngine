@@ -1,3 +1,5 @@
+import {ensureThreeUniformPatch} from './patch-three-uniforms.mjs';
+await ensureThreeUniformPatch();
 import './generate-screen-effects.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';

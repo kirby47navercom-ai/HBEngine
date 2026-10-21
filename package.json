@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "prepare": "node tools/generate-api.mjs",
+    "prepare": "node tools/patch-three-uniforms.mjs && node tools/generate-api.mjs",
     "dev": "node tools/serve.mjs",
     "test": "node tools/check.mjs",
     "ai:context": "node tools/ai-context.mjs",

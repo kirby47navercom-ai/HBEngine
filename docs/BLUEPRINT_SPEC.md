@@ -584,3 +584,5 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 1316–1322: 공용 Timeline/Curve/Sequence/골격 메타데이터에 Clamped Auto·선택 곡선 도구·단축키와 원자적 AI 편집을 연결해요. UI::GetListItems/MoveListItems/ReparentTreeItems/TransferListItems/TransferTreeItems는 같은 C++/노드 서비스로 호출해요. C++ 쓰기는 기존 명령 큐, 읽기는 마지막 완료 스냅샷이에요. [곡선 계약](CURVE_TOOLS.md)·[목록 코드 API](LIST_CODE_API.md)의 범위를 따라요. 전체 기능/네이티브 플랫폼 완료를 뜻하지 않아요.
 
 1342–1347: Timeline/Curve/Sequence/골격 공통 키 클립보드·상대 시간/전체 채널/핸들 보존, 입력칸 분리·프로필/단축키 재지정, 비동기 소유권 가드·AI copy/cut/paste/revision/dryRun/Undo. Sequence 바깥/내부 곡선 재생 헤드 양방향 동기화. [계약](CURVE_TOOLS.md)을 따른다.
+
+1354–1362: ReflectionProbes::SetPriorityBlend(target,bool,component)와 반사 우선 캡처 덮어쓰기 노드는 같은 priorityBlend 컴포넌트 서비스예요. 기존 꺼짐/정규화·같은캡처·9행/144B 유지, 첫 후보가 뒤 가중치를 b*(1-a)로 가려요. [계약·정확한 검증 범위](PROBE_PRIORITY_BLEND.md)를 확인해요.

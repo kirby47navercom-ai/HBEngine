@@ -1016,6 +1016,36 @@
         "tools/network-state-packets.mjs",
         "docs/NETWORK_DELETIONS.md"
       ]
+    },
+    {
+      "keywords": [
+        "priorityBlend",
+        "SetPriorityBlend",
+        "reflectionProbePriorityBlend",
+        "probeBlendPriority",
+        "우선 캡처"
+      ],
+      "paths": [
+        "prototype/reflection-probe-blend.js",
+        "prototype/reflection-probe-atlas-shader.js",
+        "prototype/gpu-probe-environment.js",
+        "native/include/HBEngine/SceneProbes.hpp",
+        "native/include/HBEngine/Game.hpp",
+        "docs/PROBE_PRIORITY_BLEND.md"
+      ]
+    },
+    {
+      "keywords": [
+        "three-uniform",
+        "UniformsGroup",
+        "Vector4 갱신",
+        "네 번째 값"
+      ],
+      "paths": [
+        "tools/patch-three-uniforms.mjs",
+        "tools/check-three-uniform-patch-1358.mjs",
+        "docs/PROBE_PRIORITY_BLEND.md"
+      ]
     }
   ]
 }

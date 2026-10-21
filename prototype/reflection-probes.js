@@ -3,7 +3,7 @@ import {probeBlendUniforms,updateProbeBlendUniforms,probeBlendPhysicalGLSL} from
 import {ReflectionProbeAtlas} from './reflection-probe-atlas.js';
 import {probeAtlasPhysicalGLSL} from './reflection-probe-atlas-shader.js';
 import {reflectionProbeIntersectsBox,reflectionProbeMeshBounds} from './reflection-probe-bounds.js';
-import {reflectionProbeVolume,reflectionProbeSphereVolume,probeLocalPoint} from './reflection-probe-volume.js';
+import {reflectionProbeVolume,reflectionProbeSphereVolume,probeLocalPoint,reflectionProbeFlags} from './reflection-probe-volume.js';
 import {attachGPURefraction} from './gpu-refraction.js';
 import * as THREE from 'three';
 import {componentDefaults,validComponentProperties} from './scene-components.js';
@@ -33,7 +33,7 @@ export function reflectionProbeCandidates(probes,position,bounds=null,index=null
  const result=(index?index.candidates(position,bounds):probes).filter(p=>position===null&&!bounds|| (bounds?reflectionProbeIntersectsBox(p,bounds):(p.localBox?(p.localBox.shape==='sphere'?Math.hypot(...probeLocalPoint(p.localBox,position))<=p.localBox.maximum[0]:probeLocalPoint(p.localBox,position).every((v,i)=>v>=p.localBox.minimum[i]&&v<=p.localBox.maximum[i])):position.every((v,i)=>v>=p.minimum[i]&&v<=p.maximum[i]))));
  return index?result:result.sort((a,b)=>b.p.importance-a.p.importance||a.volume-b.volume||a.id.localeCompare(b.id));
 }
-export function reflectionProbeBinding(p){return {id:p.id,settings:{center:[...p.center,p.p.intensity],minimum:[...(p.localBox?.minimum||p.minimum),p.p.blendDistance],maximum:[...(p.localBox?.maximum||p.maximum),0],...(p.localBox?{localX:p.localBox.localX,localY:p.localBox.localY,localZ:p.localBox.localZ,faceScale:p.localBox.faceScale}:{}),options:[1,p.p.diffuseIntensity,1,(p.p.boxProjection?1:0)+(p.p.volumeShape==='sphere'?2:0)]}};}
+export function reflectionProbeBinding(p){return {id:p.id,settings:{center:[...p.center,p.p.intensity],minimum:[...(p.localBox?.minimum||p.minimum),p.p.blendDistance],maximum:[...(p.localBox?.maximum||p.maximum),0],...(p.localBox?{localX:p.localBox.localX,localY:p.localBox.localY,localZ:p.localBox.localZ,faceScale:p.localBox.faceScale}:{}),options:[1,p.p.diffuseIntensity,1,reflectionProbeFlags(p.p)]}};}
 export function selectReflectionProbes(probes,position,bounds=null,limit=2,index=null){return reflectionProbeCandidates(probes,position,bounds,index).slice(0,limit).map(reflectionProbeBinding);}
 export function reflectionProbeDrawBindings(probes,position,bounds=null,index=null){const list=reflectionProbeCandidates(probes,position,bounds,index);return {probes:list.slice(0,2).map(reflectionProbeBinding),globalProbes:list.length>2};}
 export function probeCaptureViews(probe){
