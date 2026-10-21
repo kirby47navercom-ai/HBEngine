@@ -2803,6 +2803,19 @@
       "wholeCorpus": false,
       "state": "own_HDRP17_1_property_body_and_selected_Unity_common_material_functions_compared_with_existing_installed_Three_r180_and_native_raster",
       "readScope": "Unity curve-dependent smoothness/variance/threshold own body, selected functions only; Three geometry derivatives/base+coat roughness blocks and getRoughness own function. Remote dev minimum differs and is not adopted."
+    },
+    {
+      "id": "blueprint-struct-flow-1241",
+      "engine": "Unreal Blueprint / HB own implementation",
+      "roots": [
+        "https://dev.epicgames.com/documentation/en-us/unreal-engine/blueprint-struct-variables-in-unreal-engine",
+        "https://dev.epicgames.com/documentation/en-us/unreal-engine/flow-control-in-unreal-engine",
+        "https://dev.epicgames.com/documentation/en-us/unreal-engine/BlueprintAPI/Utilities/FlowControl/Switch/SwitchonName"
+      ],
+      "record": "docs/BLUEPRINT_STRUCT_OPERATIONS.md",
+      "wholeCorpus": false,
+      "state": "own_selected_sections_read_and_existing_HB_model_runtime_CPP_contract_compared",
+      "readScope": "Struct split/recombine/make/break/selected Set Members/hidden outputs paragraphs; Flow Control Switch editing/default/comparison and stable pin authoring paragraphs; own Switch on Name input/output table. Custom type paragraphs read as remaining scope, not implementation proof."
     }
   ],
   "supplementalBaselines": [
@@ -4985,5 +4998,12 @@
     ],
     "wholeCorpus": false,
     "wholeApi": false
+  },
+  "supplemental1241": {
+    "date": "2026-10-21",
+    "record": "docs/BLUEPRINT_STRUCT_OPERATIONS.md",
+    "wholeBodyGatePromoted": false,
+    "linkedAPIsMediaRead": false,
+    "remaining": "Custom struct/enum assets and general C++ reflection remain pending; no whole-engine analysis claim."
   }
 }

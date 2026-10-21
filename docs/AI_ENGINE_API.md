@@ -557,3 +557,7 @@ ReflectionProbe의 기존 크기/offset/captureOffset/blendDistance/boxProjectio
 GPU 물리 시선 계약은 schema.cameraView와 WebGPU renderer.cameraView에서 읽어요. 시선/막 간섭/명시 읽기의 소유·비용·범위는 docs/GPU_PHYSICAL_VIEW.md를 확인해요. C++ Materials::SetFloat와 생성 BP 노드는 기존 공용 서비스를 사용해요.
 
 반사 후보 공간 인덱스는 reflectionProbeBlending version3/atlasContract에서 읽어요. 기존 C++/BP 명령과 JSON은 같아요. renderer.probes.atlas.spatial/candidates 및 native probeAtlasSpatial* 진단을 사용하며 낮은 수준의 native table SRV는 stride16 float4 행이에요. docs/PROBE_SPATIAL_INDEX.md를 확인해요.
+
+## 1241 — 구조체·분기 편집
+
+`blueprint.struct.configure`와 `blueprint.switch.configure`는 문서 revision/dryRun/Undo/상속 소유 검증을 공유해요. 타입·선택 필드·고정 Case ID·정렬은 [구조체/분기 계약](BLUEPRINT_STRUCT_OPERATIONS.md)과 `schema.blueprintStructs`에서 확인해요. 노드는 기존 document.patch로 생성하고, 원본 변수·배열·함수 입력 참조 수정과 임시 값의 결과 사본을 구분해요.

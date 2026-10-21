@@ -1,4 +1,6 @@
 import {defaultsFor,validValue} from './pin-values.js';
+import {fieldsFor,structPins,validStructNode,isStructNode,structTypes,structNodeType} from './struct-operations.js';
+export {fieldsFor};
 export {defaultsFor,validValue};
 import {dynamicFlowPins,validFlowNode,isFlowNode,isSwitchNode,flowOutputIds} from './flow-pins.js';
 import {blueprintClasses} from './class-types.js';
@@ -134,10 +136,19 @@ catalog.push(
   spec('makeColor','Make Color','색상 만들기','수학',[pin('r','R','float'),pin('g','G','float'),pin('b','B','float'),pin('a','A','float')],[pin('return','Color','color')])
 );
 for(const entry of [...coreApi,...serviceApi]){const existing=catalog.find(n=>n.key===entry.key);if(existing)Object.assign(existing,entry,{keywords:(existing.keywords||'')+' '+entry.keywords});else catalog.push(entry);}
+catalog.push(
+ spec('makeStruct','Make Struct','구조체 만들기','구조체',[],[],'make vector transform color hit result 구조체 생성'),
+ spec('breakStruct','Break Struct','구조체 풀기','구조체',[],[],'break vector transform color hit result 구조체 분해'),
+ spec('setMembers','Set Members in Struct','구조체 멤버 설정','구조체',[],[],'set members struct field reference 구조체 필드 선택 수정'),
+ spec('selectValue','Select Value','자료형별 값 선택','논리',[],[],'select bool int vector color transform array 값 선택'),
+ spec('switchName','Switch on Name','이름 분기','흐름 제어',[],[],'switch name 이름 대소문자 분기')
+);
+for(const s of catalog){if(isStructNode(s)){s.inputs=structPins({key:s.key},'in');s.outputs=structPins({key:s.key},'out');s.pure=s.key!=='setMembers';}else if(s.key==='selectValue'){s.inputs=[pin('condition','Condition','bool'),pin('a','True value','float'),pin('b','False value','float')];s.outputs=[pin('return','Value','float')];s.pure=true;}else if(s.key==='switchName'){s.inputs=[pin('exec','Enter'),pin('selection','Selection','string')];s.outputs=[pin('default','Default')];}}
 const catalogByKey=new Map(catalog.map(node=>[node.key,node]));
-export const fieldsFor = type => ({vec2:[pin('x','X','float'),pin('y','Y','float')],vec3:[pin('x','X','float'),pin('y','Y','float'),pin('z','Z','float')],color:[pin('r','R','float'),pin('g','G','float'),pin('b','B','float'),pin('a','A','float')],transform:[pin('position','Position','vec3'),pin('rotation','Rotation','vec3'),pin('scale','Scale','vec3')],hit:[pin('hit','Blocking hit','bool'),pin('position','Impact point','vec3'),pin('normal','Normal','vec3'),pin('actor','Actor','object')]}[type]||[]);
 export function defaultInputValue(n,p){return n.inputValues?.[p.id]??catalogByKey.get(n.key)?.defaults?.[p.id]??p.default??(p.array?[]:defaultsFor(p.type));}
 export function basePins(node,direction,graph){
+  const structure=structPins(node,direction);if(structure)return structure;
+  if(node.key==='selectValue'){const type=node.valueType||'float',array=node.array||false;return direction==='in'?[pin('condition','Condition','bool'),pin('a','True value',type,array),pin('b','False value',type,array)]:[pin('return','Value',type,array)];}
   const flow=dynamicFlowPins(node,direction);if(flow)return flow;
   if(node.key==='parentEntry')return basePins({...node,key:node.parentKey},direction,graph);
   if(node.key==='callParent'){
@@ -205,8 +216,8 @@ export function sampleTimeline(track,time){
   const interpolate=(v,c)=>{const end=value(b.value,c);if(mode==='linear')return v+(end-v)*u;const m0=value(a.leaveTangent,c)??slope(i,c),m1=value(b.arriveTangent,c)??slope(i+1,c);return (2*u**3-3*u*u+1)*v+(u**3-2*u*u+u)*duration*m0+(-2*u**3+3*u*u)*end+(u**3-u*u)*duration*m1;};
   return Array.isArray(a.value)?a.value.map(interpolate):interpolate(a.value,0);
 }
-export function makeNode(key,x=40,y=40,variableId){return {id:'node_'+crypto.randomUUID().replaceAll('-',''),key,position:{x,y},splitPins:[],...(isFlowNode({key})?{flowOutputs:key==='sequence'?['first','second']:['out0','out1','out2'],...(['switchInt','switchString'].includes(key)?{inputValues:Object.fromEntries([0,1,2].map(i=>['case'+i,key==='switchInt'?i:'Case '+i]))}:{})}:{}),...(variableId?{variableId}:{}),...(key==='timeline'?{timeline:JSON.parse(JSON.stringify(defaultTimeline))}:{})};}
-export function nodeTitle(n,graph){const v=graph.variables.find(v=>v.id===n.variableId),d=[...(graph.functions||[]),...(graph.macros||[])].find(d=>d.id===n.definitionId),native=n.key.startsWith('native')?nativeMember(graph,n):null,s=[...(graph.dispatchers||[]),...(graph.interfaces||[])].find(d=>d.id===n.symbolId);return n.title||(native?(n.key==='nativeGet'?'Get ':n.key==='nativeSet'?'Set ':n.key==='nativeEvent'?'Event ':'')+(n.key==='nativeMembers'?'Members · '+native.c?.name:native.f?.label||native.p?.name||'C++'):s?({dispatcherCall:'Call ',dispatcherBind:'Bind ',dispatcherUnbind:'Unbind ',dispatcherEvent:'Event ',interfaceCall:'Message '}[n.key])+s.name:n.key.endsWith('Input')?'Entry · 입력':n.key.endsWith('Output')?'Return · 출력':d?.name||((n.key==='getVariable'?'Get ':n.key==='setVariable'?'Set ':'')+(v?.name||catalog.find(s=>s.key===n.key)?.title||'Node')));}
+export function makeNode(key,x=40,y=40,variableId){return {id:'node_'+crypto.randomUUID().replaceAll('-',''),key,position:{x,y},splitPins:[],...(isFlowNode({key})?{flowOutputs:key==='sequence'?['first','second']:isSwitchNode({key})?[]:['out0','out1','out2'],...(isSwitchNode({key})?{caseValues:{}}:{})}:{}),...(variableId?{variableId}:{}),...(isStructNode({key})?{valueType:'transform',...(key==='setMembers'?{memberPins:[]}:{})}:{}),...(key==='timeline'?{timeline:JSON.parse(JSON.stringify(defaultTimeline))}:{})};}
+export function nodeTitle(n,graph){const v=graph.variables.find(v=>v.id===n.variableId),d=[...(graph.functions||[]),...(graph.macros||[])].find(d=>d.id===n.definitionId),native=n.key.startsWith('native')?nativeMember(graph,n):null,s=[...(graph.dispatchers||[]),...(graph.interfaces||[])].find(d=>d.id===n.symbolId);return n.title||(isStructNode(n)?(n.key==='makeStruct'?'Make ':n.key==='breakStruct'?'Break ':'Set Members in ')+structTypes[structNodeType(n)]:n.key==='selectValue'?'Select '+variableTypes[n.valueType||'float'].split(' · ')[0]+(n.array?'[]':''):native?(n.key==='nativeGet'?'Get ':n.key==='nativeSet'?'Set ':n.key==='nativeEvent'?'Event ':'')+(n.key==='nativeMembers'?'Members · '+native.c?.name:native.f?.label||native.p?.name||'C++'):s?({dispatcherCall:'Call ',dispatcherBind:'Bind ',dispatcherUnbind:'Unbind ',dispatcherEvent:'Event ',interfaceCall:'Message '}[n.key])+s.name:n.key.endsWith('Input')?'Entry · 입력':n.key.endsWith('Output')?'Return · 출력':d?.name||((n.key==='getVariable'?'Get ':n.key==='setVariable'?'Set ':'')+(v?.name||catalog.find(s=>s.key===n.key)?.title||'Node')));}
 export const defaultBlueprint={version:1,name:'BP_Garden',components:[{id:'transform',name:'Transform',type:'Transform'},{id:'mesh',name:'Mesh renderer',type:'MeshRenderer'},{id:'collider',name:'Box collider',type:'BoxCollider'}],variables:[
   {id:'hasKey',name:'hasKey',type:'bool',container:'single',value:false},{id:'doorName',name:'doorName',type:'string',container:'single',value:'GardenDoor'},
   {id:'targetPosition',name:'targetPosition',type:'vec3',container:'single',value:[0,0,0]},{id:'speed',name:'speed',type:'float',container:'single',value:3},{id:'waypoints',name:'waypoints',type:'vec3',container:'array',value:[[0,0,0],[1,0,1]]}],
@@ -321,13 +332,14 @@ export function validBlueprint(g,{resolved=false}={}){
   for(const context of allGraphContexts(g)){
     if(!Array.isArray(context.nodes)||context.nodes.length>1000||!Array.isArray(context.edges)||context.edges.length>5000||new Set(context.nodes.map(n=>n?.id)).size!==context.nodes.length)return false;
     if(context.comments!==undefined&&(!Array.isArray(context.comments)||context.comments.length>100||new Set(context.comments.map(c=>c?.id)).size!==context.comments.length||!context.comments.every(c=>c&&safeId(c.id)&&typeof c.text==='string'&&c.text.length<=2000&&c.position&&['x','y'].every(k=>Number.isFinite(c.position[k])&&Math.abs(c.position[k])<=10000)&&c.size&&Number.isFinite(c.size.width)&&c.size.width>=120&&c.size.width<=10000&&Number.isFinite(c.size.height)&&c.size.height>=80&&c.size.height<=10000&&/^#[0-9a-f]{6}$/i.test(c.color)&&Number.isFinite(c.fontSize)&&c.fontSize>=10&&c.fontSize<=32&&typeof c.moveNodes==='boolean'&&Array.isArray(c.nodeIds)&&c.nodeIds.length<=1000&&c.nodeIds.every(safeId))))return false;
-    if(!context.nodes.every(validFlowNode))return false;
+    if(!context.nodes.every(n=>validFlowNode(n)&&validStructNode(n)))return false;
     if(!context.nodes.every(n=>n&&safeId(n.id)&&typeof n.key==='string'&&(catalog.some(s=>s.key===n.key)||validNativeNode(n)||validSymbolNode(n)||(['getVariable','setVariable'].includes(n.key)&&(g.variables.some(v=>v.id===n.variableId)||deferred&&safeId(n.variableId)))||(['callFunction','callMacro','functionInput','functionOutput','macroInput','macroOutput'].includes(n.key)&&(definitions.some(d=>d.id===n.definitionId)||deferred&&safeId(n.definitionId)))||unresolvedNode(n)&&(!n.key.startsWith('native')||typeof n.nativeId==='string'&&/^[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)?$/.test(n.nativeId)&&n.nativeId.length<=200))&&n.position&&['x','y'].every(k=>Number.isFinite(n.position[k])&&Math.abs(n.position[k])<=10000)&&Array.isArray(n.splitPins)&&n.splitPins.length<=30&&n.splitPins.every(k=>typeof k==='string'&&/^(in|out):[a-zA-Z0-9_.-]+$/.test(k))&&(n.title===undefined||(typeof n.title==='string'&&n.title.length<=80))))return false;
     for(const n of context.nodes){if(n.key==='parentEntry'&&(!resolved||!catalog.some(s=>s.key===n.parentKey&&s.kind==='event')&&n.parentKey!=='nativeEvent'&&n.parentKey!=='dispatcherEvent'))return false;if(n.key==='callParent'&&(!deferred&&!resolved||resolved&&!safeId(n.parentEntryId)&&!safeId(n.parentDefinitionId)))return false;if(n.key==='callFunction'&&!(g.functions||[]).some(d=>d.id===n.definitionId)&&!deferred)return false;if(n.key==='callMacro'&&!(g.macros||[]).some(d=>d.id===n.definitionId)&&!deferred)return false;}
     for(const n of context.nodes){
       if(n.key==='inputAction'&&(!['bool','float','vec2','vec3'].includes(n.valueType||'bool')||(n.options?.action!==undefined&&(typeof n.options.action!=='string'||n.options.action.length>1000))))return false;
       if(n.key==='timeline'&&(context!==g||!validTimeline(n.timeline)))return false;
       if(n.array!==undefined&&typeof n.array!=='boolean')return false;
+      if(n.key==='selectValue'&&!Object.hasOwn(variableTypes,n.valueType||'float'))return false;
       if(n.valueType!==undefined&&!Object.hasOwn(variableTypes,n.valueType))return false;
       if(n.comment!==undefined&&(typeof n.comment!=='string'||n.comment.length>2000))return false;
       if(['enabled','breakpoint'].some(k=>n[k]!==undefined&&typeof n[k]!=='boolean'))return false;

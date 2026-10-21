@@ -508,3 +508,7 @@ UE Reflection Captures의 Box shape/Glossy Indirect Specular/제한 구역과 UB
 
 ### 2026-10-20 · 1030 노멀 정규화 범위
 Microsoft XMVector3Normalize의 자체 서명/반환 주의와 Robust 예시에서 최대 절대 성분으로 먼저 나누는 구역을 읽었어요. HB는 기존 중립 tangent normal[0,0,1]을 유지하므로 Microsoft의 0벡터 반환과 구분해요. 원문 SHA·선택 범위를 supplemental1030에 등록하며 연결 API/구현·전체 본문 gate는 승격하지 않아요. Float32 유한 중간값49종과 실제 이전 노멀/밉 문맥으로 대조하며 모든 denormal·정수/절차/normalize 연산의 완성으로 세지 않아요.
+
+# 2026-10-21 — 1241 구조체·분기 지정 절
+
+Struct Variables의 Split/Make/Break/Set Members/비노출 보존과 미연결 출력 숨김, Flow Control의 Switch 편집·Default·비교값·순서, Switch on Name의 자체 핀 표를 읽고 기존 HB 모델/VM/C++ 계약에 대조했어요. supplemental1241로 등록했으며 연결 API·미디어·전체 엔진 gate는 승격하지 않아요. 사용자 정의 구조체·enum과 일반 native 원본 참조는 잔여예요. [제작 계약](../BLUEPRINT_STRUCT_OPERATIONS.md).

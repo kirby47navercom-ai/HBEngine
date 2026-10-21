@@ -1,3 +1,4 @@
+import {isStructNode,evaluateStruct} from './struct-operations.js';
 import {validActorScale} from './transform-scale.js';
 // Browser preview of the shared API. C++ implementation lives in Game.hpp.
 import {catalog,basePins,structFieldPins,fieldsFor,defaultInputValue,validValue,graphContext} from './blueprint-model.js';
@@ -73,7 +74,7 @@ export function evaluateCoreNode(graph,id,context,{tunnels,depth=0}={}){
     else if(['callFunction','callMacro'].includes(n.key)){const d=[...(graph.functions||[]),...(graph.macros||[])].find(d=>d.id===n.definitionId);if(!d?.pure)throw Error('실행이 필요한 함수는 게임에서 호출하세요.');const args=Object.fromEntries(basePins(n,'in',graph).filter(p=>p.type!=='exec').map(p=>[p.id,readInput(n,p)])),g=graphContext(graph,d.id),exit=g.nodes.find(n=>['functionOutput','macroOutput'].includes(n.key));output=evaluateCoreNode(g,exit.id,context,{tunnels:args,depth:depth+1});}
     else if(n.key==='getVariable')output={value:structuredClone(graph.variables.find(v=>v.id===n.variableId)?.value)};
     else if(n.key==='reroute')output={value:readInput(n,basePins(n,'in',graph)[0])};
-    else{const args=Object.fromEntries(basePins(n,'in',graph).filter(p=>p.type!=='exec').map(p=>[p.id,readInput(n,p)]));output=blueprintPure[n.key]?blueprintPure[n.key](args):evaluateCore(n.key,args,context);}
+    else{const args=Object.fromEntries(basePins(n,'in',graph).filter(p=>p.type!=='exec').map(p=>[p.id,readInput(n,p)]));if(n.key==='setMembers')throw Error('구조체 참조 수정은 게임에서 실행하세요.');output=isStructNode(n)?evaluateStruct(n,args):n.key==='selectValue'?{return:structuredClone(args.condition?args.a:args.b)}:blueprintPure[n.key]?blueprintPure[n.key](args):evaluateCore(n.key,args,context);}
     memo.set(n.id,output);context.values.set(n.id,output);visiting.delete(n.id);return output;
   }
   const node=graph.nodes.find(n=>n.id===id);if(!node)throw Error('노드가 없어요.');return run(node);

@@ -213,3 +213,7 @@
 
 .bp-flow-add { display:block; margin:0 8px 7px auto; padding:3px 6px; border:1px solid var(--line); border-radius:3px; background:transparent; color:var(--muted); font-size:11px; }
 .bp-flow-add:hover { color:var(--text); }
+
+.bp-node .pin.reference:not(.exec):not(.array){border-radius:0;transform:rotate(45deg);width:9px;height:9px;margin-inline:2px;}
+
+.bp-flow-case-row{display:flex;align-items:center;gap:3px;min-width:0}.bp-flow-case-row input{min-width:0;flex:1}.bp-flow-case-row button{flex:0 0 24px;padding:2px;}

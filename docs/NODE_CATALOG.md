@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **824개**, 실제 공통 C++ API **739개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **829개**, 실제 공통 C++ API **739개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -12,7 +12,7 @@
 | --- | ---: | ---: |
 | 이벤트 | 16 | 0 |
 | 클래스 | 2 | 0 |
-| 흐름 제어 | 16 | 0 |
+| 흐름 제어 | 17 | 0 |
 | 디버그 | 1 | 0 |
 | 변환 | 28 | 27 |
 | 벡터 | 34 | 34 |
@@ -25,7 +25,7 @@
 | 사용자 정의 | 2 | 0 |
 | 시간 | 16 | 15 |
 | 비교 | 8 | 4 |
-| 논리 | 7 | 3 |
+| 논리 | 8 | 3 |
 | 컴포넌트 | 15 | 12 |
 | 문자열 | 23 | 19 |
 | 애니메이션 | 2 | 0 |
@@ -82,6 +82,7 @@
 | 게임플레이 태그 | 7 | 7 |
 | 월드 스트리밍 | 6 | 6 |
 | 오브젝트|Tick | 4 | 4 |
+| 구조체 | 3 | 0 |
 
 ## 범위와 사용 규칙
 
@@ -140,6 +141,7 @@
 | retriggerDelay | Retriggerable Delay / 다시 시작하는 지연 | exec: exec, duration: float | then: exec | — | VM / 브라우저 서비스 |
 | switchInt | Switch Integer / 정수 분기 | exec: exec, selection: int, case0: int, case1: int, case2: int | out0: exec, out1: exec, out2: exec, default: exec | — | VM / 브라우저 서비스 |
 | switchString | Switch String / 문자열 분기 | exec: exec, selection: string, case0: string, case1: string, case2: string | out0: exec, out1: exec, out2: exec, default: exec | — | VM / 브라우저 서비스 |
+| switchName | Switch on Name / 이름 분기 | exec: exec, selection: string | default: exec | — | VM / 브라우저 서비스 |
 
 ## 디버그
 
@@ -503,6 +505,7 @@
 | boolXor | Bool Xor / 불리언 배타적 OR | a: bool, b: bool | return: bool | hb::Extended::BoolXor | 공통 C++ + VM |
 | boolNand | Bool Nand / 불리언 NAND | a: bool, b: bool | return: bool | hb::Extended::BoolNand | 공통 C++ + VM |
 | boolNor | Bool Nor / 불리언 NOR | a: bool, b: bool | return: bool | hb::Extended::BoolNor | 공통 C++ + VM |
+| selectValue | Select Value / 자료형별 값 선택 | condition: bool, a: float, b: float | return: float | — | VM / 브라우저 서비스 |
 
 ## 컴포넌트
 
@@ -1275,3 +1278,11 @@
 | sceneTickEnabled | Is Tick Enabled / 액터 Tick 활성화 | target: object | return: bool | hb::Scene::IsTickEnabled | 공통 C++ + VM |
 | sceneSetTickInterval | Set Tick Interval / 액터 Tick 간격 설정 | exec: exec, target: object, seconds: float | then: exec | hb::Scene::SetTickInterval | 공통 C++ + VM |
 | sceneTickInterval | Get Tick Interval / 액터 Tick 간격 | target: object | return: float | hb::Scene::GetTickInterval | 공통 C++ + VM |
+
+## 구조체
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| makeStruct | Make Struct / 구조체 만들기 | position: vec3, rotation: vec3, scale: vec3 | return: transform | — | VM / 브라우저 서비스 |
+| breakStruct | Break Struct / 구조체 풀기 | value: transform | position: vec3, rotation: vec3, scale: vec3 | — | VM / 브라우저 서비스 |
+| setMembers | Set Members in Struct / 구조체 멤버 설정 | exec: exec, value: transform | then: exec, value: transform | — | VM / 브라우저 서비스 |

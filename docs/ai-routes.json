@@ -137,7 +137,12 @@
         "펼치기",
         "터널",
         "Collapsed Graph",
-        "Expand Node"
+        "Expand Node",
+        "Set Members",
+        "Make Struct",
+        "Break Struct",
+        "Switch Name",
+        "참조 쓰기"
       ],
       "paths": [
         "prototype/blueprint-model.js",
@@ -154,7 +159,10 @@
         "prototype/component-preview.js",
         "docs/BLUEPRINT_2D_CLASSES.md",
         "prototype/blueprint-folding.js",
-        "docs/BLUEPRINT_FOLDING.md"
+        "docs/BLUEPRINT_FOLDING.md",
+        "prototype/struct-operations.js",
+        "prototype/blueprint-references.js",
+        "native/include/HBEngine/Struct.hpp"
       ]
     },
     {
