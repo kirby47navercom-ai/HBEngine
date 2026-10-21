@@ -1,24 +1,17 @@
 # 현재 인계 — 누적 엔진 구현 계속
 
-2026-10-21. 주인님: 여러 분야를 구현 후 영향검사 묶음1회, 성공SHA 재사용, 반복빌드/3시간검사 금지. AGENTS/docs/AI_START→hb context. 백그라운드만. 한글동일author/committer commit/push.
+2026-10-21. 주인님: 여러 분야 구현 후 영향검사 묶음1회·실패만수정, 성공SHA재사용. 반복빌드/3시간검사금지. AGENTS/docs/AI_START→hb context. 백그라운드만. 한글동일author/committer commit/push.
 
 ## 현재 설치
-USER_INSTALL_1217: C:/Users/kirby/HBEngine/Versions/771aa0ffcc7421e4/HBEngine.exe.3907명세/586소유SHA/CPP21/native16·Player1204 d86d57ac…/Host1041 재사용·User10849읽기SHA/연결/Versions1·이전185246846B정리. 설치builder Windows/D3D11 5/8/8동적분기·Promote/auto변환/중첩Transform/새모듈2개포함통과. 과거1208의Sphere3backend9상태성공도유지.
+USER_INSTALL_1217: Versions/771aa0ffcc7421e4/HBEngine.exe.3907명세/586소유SHA/CPP21/native16·Player1204/Host1041·User10849읽기SHA/연결/Versions1. 실제설치builder Windows/D3D11 5/8/8동적분기·Promote/변환/중첩Transform통과. 이전185246846B정리.
 
+## 현재 구현·검사 완료, 설치 대기
+ENGINE_WORK_1224 / c220caa: SpriteActor/Pawn2D/Character2D/TopDownCharacter2D·새Actor/Pawn빈구성·create/place/basic/asset/nativeSpawn/GameMode/클래스조회/CPP형식배열·원래위치유지. Game/Bridge기본객체형식과userfactory builtin배제. ComponentPreview공용sceneRendering/Controls/Presentation실제Sprite/OBJ/충돌·2D/3D/보기/카메라·AI3명령·idle draw/build0·닫기GPU해제/재열기view. UItoolbar가canvas아래숨던CSS수정·직교회전잠금·동일방향edit시camera유지.
+CPU blueprint-2d-1219-wpAXQs 50확인/실제Rapier점프·XY/CPP4파생·typed배열/기존Character·GameInstance·9Spawn. GUI blueprint-2d-1220-mBPNa0 실제Sprite2x2/OBJ3정점·flip edit/toolbar·invalid atomic·idle0·재열기. runtime-spawn-OwWX6w·sharednativeworld·AI26경로(약188ms bootstrap,모델이해시간아님)·batch1222 변경17JS/API. Player1223 SDK후1회빌드, Host1041재사용. sync1225/install1226/finish1227 다음. installed gate check-blueprint-2d-1221-player: 실제2DGameMode/C++typedSprite/초기pose/XY입력. 사용자profile금지.
 
-## 렌더·변환 완료와 잔여
-WORK1163 BVH/minRank/보수Float32·16bit주소/정수선택. 1175 normal/UV/cotangent/SH·HDR공유.1181 부분행전송.1188 CPU설정fast/layout불변/4Bsourceindex·65536공유영역768KiB절감. 숫자65536은1HDR공유영역,4096은선택기/FPS아님.
-1199 Sphere world반경·offset/capture분리·조건속성/helper·CPU/GL/TSL/native·SetSphere원자/Shape/Radius·rank slot재사용. metadata9float4/144B v6: browseratlas faceScale.w/nativeoptions.w bit0projection bit1sphere, directoptions.w bit0enabled bit1sphere; nativefaceScale.w는count예약.
-1206 signedScale 씬/기즈모/복제/노드/CPP/spawn/pool/save/물리/network/sequence·D3D world/mixed instance면/법선. native48/Rapier2D3D/CPU520/nativeSphere1040통과. 구browser수식SHA재사용. shear/브라우저negativeInstancedMesh 완전지원은미주장.
+## 앞선 렌더·블루프린트
+WORK1163 BVH minRank/Float32/16bit 4096selector(FPS아님).1175 노멀UV/cotangent/앞뒤·HDR/SH공유144B변경·65536공유HDR.1181 브라우저GL/GPU/fallback부분row288B/full1008B/static0.1188 native동일source/affine재포장방지·4Bindex·65536에768KiB절약.1199/1206 Sphere프로브와signed scale전경로; D3D/GL/GPU9상태·4HDR/CPP/BP, native48. Player1204로실제패키지음수scale거절해결.1214/1217 flow동적출력·exec합류·Promote Get/Set연결·중첩split/defaults/CPP aggregate문자열리터럴. CPU1699/GUI/설치게임. CPP01 customstruct/enum·SetMembers·CollapsedExpand 미구현3군으로partial정정. ENGINE_STATUS78행·전체분모/완료율null.
 
-## 현재1210–1214 구현·설치 확인
-Feature727c36d. WORK1214: 동적Sequence/MultiGate/Switch·Default/Gate startClosed·exec입력합류/다중선행Setter·Promote Get/Set/연결·단위scale·recursiveSplit/Recombine/preview/VM·공유pin-values·C++ literalaggregate/array/escapedstring·AIroute.
-최종batch1212 CPU flow-authoring-1210-csOmAS 1668핀/1699확인·실제C++/8출력/65case; UI1211-rSc3vk 우클릭/추가삭제/default/UndoRedo/AIpatch/Promote/Play; 기존runtime성공SHA재사용. static1213 문법14/API/AI26경로191.73ms(process,모델이해아님). 첫CPU실패는exec입력다중거절실제결함수정,첫UI실패는dirty문서종료대화상자→owned문서save후정상종료.
-sync1216/install1217/finish1218완료재실행금지. native16/Player1204/Host1041동일로재빌드금지. 설치gate는새 check-flow-authoring-1215-player(flow-player-1215-2XMBwP통과): 동적5/8/8출력·Promote/convert/중첩Transform·moduleClosure·설치builder Windows package. sourceGUI통과SHA와설치명세대조로GUI/렌더매트릭스재반복없음. scope에남은과거Sphere설명은reportCorrections원문보존후정정.
-CPP01 기존verified를partial로정정: customstruct/enum+Switchenum/name,SetMembers,CollapsedGraph/Expand 잔여. ENGINE_STATUS78행/전체분모·완료율null.
-
-## 운영
-heavy/EXE/install전activeInstalledVersions; inline셸문자열에설치EXE버전경로넣으면자기검출하므로스크립트저장후별도실행. 사용자창/탭/프로젝트/User테스트금지. User는설치전후읽기SHA만. ownhidden fixture/고유포트·프로필,각retain/prune·끝공유cache정리(0삭제빈receipt금지). Versions1/전체백업금지. *.started one-shot은모두재실행금지(특히1197/1197b/1200/01/04/07/08/09).
-RND03 독립proxy/작은capture우선·perface/normalfade/lightmap·큰장면실제HDR/FPS/tilecluster·임의변형/instance morph. RND06 GLComplex141 8/7초,실패1086실험반복금지. RND08 글로벌거리장/지형/월드·HWRT/방향베이크. 나머지원장유지. Mac/Android기기없음재질문금지.
-
-다음우선조사: 2D최상위Blueprint클래스/template·Actor/Pawn의강제MeshRenderer분리. class-types에는2D종류없고kind character2d를Character로매핑. SDKGame에는Actor/Pawn/Character뿐, tools/native-source builtin목록3곳고정. 아직변경하지않음;기존저장component보존하며create/spawn/place/CPP/player조회까지연결할것.
+## 다음·운영
+기존원장잔여유지: RND03 독립proxy/작은capture우선·perface/normalfade/lightmap·큰실제HDR/FPS/tilecluster·임의변형/instance morph. RND06 GLComplex141 8/7초, 실패1086반복금지. RND08 글로벌거리장/지형/월드·HWRT/방향베이크. CPP01 구조체/SetMembers/CollapsedGraph. 다른분야잔여삭제금지.
+heavy/EXE/install전activeInstalledVersions. inline실행문자열에설치EXE버전경로넣으면자기검출→스크립트저장후별도실행. 사용자창/탭/프로젝트/User테스트금지. User는설치전후읽기SHA만. ownhidden fixture/고유profile/port·retain/prune. Versions1/백업금지. *.started one-shot모두재실행금지. cache정리0B면빈receipt쓰지않음. Mac/Android기기없음재질문금지. 장기goal blocked조회되어도 임의pause/complete/범위축소금지;현재턴작업은계속.
