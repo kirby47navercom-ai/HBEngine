@@ -22,4 +22,8 @@ node tools/hb.mjs context lighting --symbol ReflectionProbeAtlas --limit 3
 node tools/hb.mjs context rendering --symbol setGlobalProbes --limit 3
 ```
 
-아틀라스 경로는 순위 자료를 탐색하므로 많은 프로브가 있는 큰 장면의 최악 비용은 선형이에요. 공간 타일·클러스터 가속과 대규모 성능 검증은 남아 있어요. 임의 셰이더 변위·인스턴스별 모프 텍스처의 경계, 모든 광학 그래프·기기와의 동등성을 뜻하지 않아요. 실제 검증 범위와 설치본은 ENGINE_WORK_1131.json 및 후속 설치 영수증을 따라요.
+공간 BVH는 원래 순위를 보존하면서 겹치지 않는 영역을 건너뛰어요. 모든 영역이 겹치는 최악 비용은 선형이에요. 공간 타일·클러스터와의 비교 및 다수의 실제 HDR 캡처를 포함한 전체 게임 성능 검증은 별도예요. 임의 셰이더 변위·인스턴스별 모프 텍스처의 경계, 모든 광학 그래프·기기와의 동등성을 뜻하지 않아요. 실제 검증 범위와 설치본은 ENGINE_WORK 및 USER_INSTALL의 최신 영수증을 따라요.
+
+같은 캡처 자원을 여러 영역에 바인딩하면 HDR 이미지는 한 번만 배치해요. DirectX의 SH 계수도 자원마다 한 번 저장해요. 영역별 순위·경계·밝기·페이드는 각각 유지해요. 이 최적화는 SDK에서 같은 캡처를 참조할 때 적용하며, 서로 다른 위치에서 독립적으로 만든 캡처를 임의로 합치지 않아요. 브라우저 atlas.mapCount와 native probeAtlasMapCount는 고유 캡처 수이고 count는 영역 수예요.
+
+DirectX 메타데이터는 공간 구조가 같으면 바뀐 144바이트 레코드 구간만 전송해요. 인접 구간은 합치며 분리된 구간이 여덟 개를 넘으면 호출 비용을 줄이기 위해 첫 변경부터 마지막 변경까지 합쳐요. 이 기준은 영역 개수 제한이 아니에요. 공간 경계나 테이블 크기가 바뀌면 공간 자료를 함께 갱신해요. probeAtlasMetadataBytes·probeAtlasMetadataCalls는 실제 자료 전송의 누적 수치이고 probeAtlasCPUBytes는 아틀라스 소유 벡터의 보유 용량이에요. 브라우저의 메타데이터 부분 전송과 전체 프로세스 메모리 수치로 해석하지 않아요.

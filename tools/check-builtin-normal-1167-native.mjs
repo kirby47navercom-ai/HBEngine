@@ -1,0 +1,9 @@
+import fs from 'node:fs/promises';import path from 'node:path';import assert from 'node:assert/strict';import {execFile} from 'node:child_process';import {promisify} from 'node:util';
+import {prepareNative,jsonInclude} from './prepare-native.mjs';import {activeInstalledVersions} from './install-editor.mjs';import {retainTestEvidence,pruneTestArtifacts} from './test-artifacts.mjs';
+assert.deepEqual(await activeInstalledVersions('C:/Users/kirby/HBEngine'),[]);const work=await fs.mkdtemp(path.resolve('native/build/builtin-normal-1167-'));retainTestEvidence(work);
+try{
+ await prepareNative();const compiler='C:/msys64/ucrt64/bin/g++.exe',env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH},run=promisify(execFile),binary=path.join(work,'normal.exe'),at=process.argv.indexOf('--executable'),root=at<0?process.cwd():path.dirname(path.resolve(process.argv[at+1]));
+ await run(compiler,['-std=c++17','-O2','-Wall','-Wextra','-Werror','-I',path.join(root,'native/include'),'-I',path.relative(process.cwd(),jsonInclude),'native/tests/builtin-normal-1167.cpp','-o',path.relative(process.cwd(),binary)],{env,windowsHide:true,timeout:120000,maxBuffer:512*1024});
+ const result=JSON.parse((await run(binary,[],{env,windowsHide:true,timeout:120000,maxBuffer:512*1024})).stdout);assert(result.passed&&result.cases===1344&&result.geometryCases===8&&result.toleranceBytes===2);
+ await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({passed:true,installedDirectory:at<0?null:root,result,scope:result.scope},null,2));console.log(JSON.stringify({passed:true,work,result}));
+}catch(error){await fs.writeFile(path.join(work,'failure.json'),JSON.stringify({error:error.stack,stderr:error.stderr,stdout:error.stdout},null,2));throw Error('builtin normal failed; '+work+'; '+String(error.stderr||error.message).slice(-1200));}finally{await pruneTestArtifacts(work);}

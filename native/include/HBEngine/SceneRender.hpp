@@ -211,6 +211,20 @@ Output VS(Input i,uint id:SV_InstanceID,uint vertexId:SV_VertexID){Output o;floa
 float2 mapUv(float2 uv,uint slot){return float2(dot(uvX[slot].xyz,float3(uv,1)),dot(uvY[slot].xyz,float3(uv,1)));}
 float3 sampleBakedLightmap(float2 uv){uint w,h;bakedLightmap.GetDimensions(w,h);float2 at=saturate(uv)*float2(w,h)-.5;int2 a=(int2)floor(at),last=int2(w,h)-1;float2 f=frac(at);return lerp(lerp(bakedLightmap.Load(int3(clamp(a,0,last),0)).rgb,bakedLightmap.Load(int3(clamp(a+int2(1,0),0,last),0)).rgb,f.x),lerp(bakedLightmap.Load(int3(clamp(a+int2(0,1),0,last),0)).rgb,bakedLightmap.Load(int3(clamp(a+1,0,last),0)).rgb,f.x),f.y);}
 float3 safeNormal(float3 v){return v*rsqrt(max(dot(v,v),1e-12));}
+float3 hbBuiltinNormalUnit(float3 value,float3 fallback){float scale=max(abs(value.x),max(abs(value.y),abs(value.z)));if(!(scale>0)||any(isnan(value))||any(isinf(value)))return fallback;value/=scale;return value/length(value);}
+float3 hbBuiltinMappedNormal(float3 position,float3 normal,float2 uv,float3 encoded,float2 strength,float faceDirection){
+ // Derivatives precede sample-dependent returns so mixed normal texels keep quad gradients.
+ float3 q0=ddx(position),q1=-ddy(position);float2 a=ddx(uv),b=-ddy(uv);
+ float3 mapped=encoded*2-1;mapped.xy*=strength;if(any(isnan(mapped))||any(isinf(mapped)))return normal;
+ if(all(mapped.xy==0))return mapped.z<0?-normal:normal;
+ float qs=max(max(abs(q0.x),max(abs(q0.y),abs(q0.z))),max(abs(q1.x),max(abs(q1.y),abs(q1.z)))),us=max(max(abs(a.x),abs(a.y)),max(abs(b.x),abs(b.y)));
+ if(!(qs>0)||!(us>0)||isinf(qs)||isinf(us))return normal;q0/=qs;q1/=qs;a/=us;b/=us;
+ float determinant=a.x*b.y-a.y*b.x;if(determinant==0||isnan(determinant)||isinf(determinant))return normal;
+ float3 x=cross(q1,normal),y=cross(normal,q0),t=x*a.x+y*b.x,bt=x*a.y+y*b.y;
+ float common=max(max(abs(t.x),max(abs(t.y),abs(t.z))),max(abs(bt.x),max(abs(bt.y),abs(bt.z))));if(!(common>0)||isinf(common))return normal;
+ t/=common;bt/=common;float scale=faceDirection*rsqrt(max(dot(t,t),dot(bt,bt)));mapped=hbBuiltinNormalUnit(mapped,float3(0,0,1));
+ return hbBuiltinNormalUnit(t*scale*mapped.x+bt*scale*mapped.y+normal*mapped.z,normal);
+}
 float3 hbRasterView(float3 at){return safeNormal(viewDirection.w>.5?viewDirection.xyz:eye.xyz-at);}
 float shadowFactor(Light light,float3 position,float3 normal){
  if(light.cone.w<=0)return 1;uint index=(uint)light.cone.w-1;
@@ -231,9 +245,9 @@ float4 PS(Output i,bool front:SV_IsFrontFace):SV_TARGET{
  if(flags.w>1.5){float3 d=safeNormal(i.at-eye.xyz);float3 sky=lerp(skyHorizon.rgb,skyTop.rgb,smoothstep(-.12,.85,d.y));sky+=sunColor.rgb*pow(max(dot(d,safeNormal(sunDirection.xyz)),0),sunDirection.w)*.55;sky+=moonColor.rgb*pow(max(dot(d,safeNormal(moonDirection.xyz)),0),sunDirection.w)*.55;return float4(((uint)flags.x&(128|2048))?sky:srgb(max(sky,0)),1);}
  clipMask2d(i.position.xy);uint maps=(uint)flags.x;float4 base=tint*(pass2d.x>0?1:i.color);if(maps&1)base*=baseMap.Sample(baseSampler,mapUv(i.uv,0));
  if(pass2d.x>0)return offscreen2d(base,i.color);
- if(probeSettings[0].faceScale.w>0)hbAtlasChoose(i.at);
- float3 n=safeNormal(i.normal);if(!front)n=-n;float3 cn=n;float3 geometricNormal=n;
- if(maps&2){float2 uv=mapUv(i.uv,1);float3 q1=ddx(i.at),q2=ddy(i.at);float2 st1=ddx(uv),st2=ddy(uv);float3 a=cross(q2,n),b=cross(n,q1),t=a*st1.x+b*st2.x,bt=a*st1.y+b*st2.y;float scale=rsqrt(max(max(dot(t,t),dot(bt,bt)),1e-12));float3 nm=normalMap.Sample(normalSampler,uv).xyz*2-1;nm.xy*=normalScale.xy;n=safeNormal(t*scale*nm.x+bt*scale*nm.y+n*nm.z);}
+ if(probeSettings[0].faceScale.w>0||probeSettings[1].faceScale.w>0)hbAtlasChoose(i.at);
+ float3 n=hbBuiltinNormalUnit(i.normal,float3(0,0,1));if(!front)n=-n;float3 cn=n;float3 geometricNormal=n;
+ if(maps&2){float2 uv=mapUv(i.uv,1);n=hbBuiltinMappedNormal(i.at,n,uv,normalMap.Sample(normalSampler,uv).xyz,normalScale.xy,front?1:-1);}
  float rough=clamp(surface.x*((maps&4)?roughMap.Sample(roughSampler,mapUv(i.uv,2)).g:1),.04,1),metal=saturate(surface.y*((maps&8)?metalMap.Sample(metalSampler,mapUv(i.uv,3)).b:1));
  float3 emit=emissive.rgb*emissive.a*((maps&16)?emissiveMap.Sample(emissiveSampler,mapUv(i.uv,4)).rgb:1);
  float ao=(maps&32)?aoMap.Sample(aoSampler,mapUv(i.uv,5)).r:1;
@@ -450,7 +464,7 @@ public:
     void setGlobalProbes(const std::vector<ProbeBinding>& values){probeAtlas.update(values);}
     void releaseProbes(){endProbe();probeAtlas.release();{std::lock_guard<std::mutex> lock(gpu.mutex);std::array<ID3D11ShaderResourceView*,9> empty{};gpu.context->PSSetShaderResources(39,9,empty.data());}setSkyEnvironment(nullptr);probes.release();}
     std::uint64_t probeDispatches() const{return probes.dispatches()+probeAtlas.dispatches();}std::uint64_t probeCaptures() const{return probes.captures();}std::uint64_t probeSharedBytes() const{return probes.storageBytes()+probeAtlas.bytes();}
-    std::uint64_t probeAtlasPaddingDispatches()const{return probeAtlas.dispatches();}std::size_t probeAtlasSpatialNodes()const{return probeAtlas.spatialNodes();}std::uint64_t probeAtlasSpatialBuilds()const{return probeAtlas.spatialBuilds();}std::size_t probeAtlasSpatialCPUBytes()const{return probeAtlas.spatialCPUBytes();}UINT probeAtlasCount()const{return probeAtlas.count();}std::uint64_t probeAtlasBytes()const{return probeAtlas.bytes();}std::uint64_t probeAtlasCopies()const{return probeAtlas.copies();}std::uint64_t probeAtlasUploads()const{return probeAtlas.uploads();}
+    std::size_t probeAtlasMapCount()const{return probeAtlas.mapCount();}std::size_t probeAtlasCPUBytes()const{return probeAtlas.cpuBytes();}std::uint64_t probeAtlasMetadataBytes()const{return probeAtlas.metadataBytes();}std::uint64_t probeAtlasMetadataCalls()const{return probeAtlas.metadataCalls();}std::uint64_t probeAtlasPaddingDispatches()const{return probeAtlas.dispatches();}std::size_t probeAtlasSpatialNodes()const{return probeAtlas.spatialNodes();}std::uint64_t probeAtlasSpatialBuilds()const{return probeAtlas.spatialBuilds();}std::size_t probeAtlasSpatialCPUBytes()const{return probeAtlas.spatialCPUBytes();}UINT probeAtlasCount()const{return probeAtlas.count();}std::uint64_t probeAtlasBytes()const{return probeAtlas.bytes();}std::uint64_t probeAtlasCopies()const{return probeAtlas.copies();}std::uint64_t probeAtlasUploads()const{return probeAtlas.uploads();}
     std::uint64_t passes2D() const{return passes2D_;}std::uint64_t draws2D() const{return draws2D_;}
 
     static std::string materialProgramSource(const std::string& declarations,const std::string& evaluation){

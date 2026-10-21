@@ -19,3 +19,7 @@ batch1160 CPU1157-Ip0jVb·selector1158-QAWPmx·atlas1117-EUpJpG·native1119-e7hL
 RND03 다수실제HDR캡처장면의CPU/GPU메모리/통제FPS·타일/클러스터와BVH혼합/비교·픽셀중요도/작은캡처덮기·sphere/lightmap·임의shader변위/instance morph texture경계·임의로브/매질/기하/이력. native기본texture normal/다른tangent관례확대. RND06 GLComplex141약8/7초/1086미채택실험반복금지. RND08 전역거리장clipmap/타일·방향하늘/bentnormal/시간신뢰도·지형/변형/마스크·FBX/월드/다중LOD·편집기쿠킹/HWRT/방향베이크. 다른78행요구유지,완료율미확정.
 
 1151 설치중220파일 all-zero와오래된association은명세바이트/격리--register복구했으나원인미확정. 최종1151증거유지,새설치에서전후명세대조. 사용자창/게임/User 검사금지. 백그라운드고유fixture만. heavy/EXE/install전activeInstalledVersions(셸명령문에버전절대경로를넣으면자기검출주의)·사용중이면보류. Versions1·전체백업금지·각fixture/공유캐시정리. 한글동일author/committer commit/push. Mac/Android기기없음재질문금지.
+
+## 후속1167–1175 검사 통과·설치 준비
+
+native 기본normalMap 실제UV 접선/화면Y/양면·큰/작은/0/퇴화 보호, 공유HDR/native SH중복제거·144B레코드부분전송·count높은단어를 묶어 구현했어요. batch1172 native1344+8/공유65536/기존atlas·GL유효72/세브라우저공유2맵4영역 통과. 실패fixture API·Windowsnear/far매크로만 수정했고 기존성공3gate는SHA재사용. Player1173한번빌드/Host1041재사용. 실제glTF PNG노멀·C++/BP광원5상태 D3D source1173통과(1169-amAUMQ). static1174 API/AI통과. 다음record1175→sync1176→install1177: 동일Player와소유SHA·GL/GPU제작경로만추가확인해D3D중복실행피함. 아직1177미설치;USER_INSTALL_1165가현재확정. native테스트19개.65536은1개HDR캡처공유영역이며전체HDR/FPS검증아님. 명시tangent/임의그래프 normal관례는잔여. one-shot1161/64/65/66/1173재실행금지.

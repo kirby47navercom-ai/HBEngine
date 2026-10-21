@@ -170,7 +170,8 @@
         "thin film",
         "iridescence",
         "얇은 막",
-        "물리 시선"
+        "물리 시선",
+        "기본 노멀맵"
       ],
       "paths": [
         "prototype/game-renderer.js",
@@ -194,7 +195,8 @@
         "prototype/reflection-probe-spatial.js",
         "prototype/gpu-probe-spatial.js",
         "native/include/HBEngine/ProbeSpatialIndex.hpp",
-        "docs/PROBE_SPATIAL_INDEX.md"
+        "docs/PROBE_SPATIAL_INDEX.md",
+        "docs/BUILTIN_NORMAL_MAP.md"
       ]
     },
     {
@@ -222,7 +224,8 @@
         "thin film",
         "iridescence",
         "얇은 막",
-        "물리 시선"
+        "물리 시선",
+        "기본 노멀맵"
       ],
       "paths": [
         "prototype/material-runtime.js",
@@ -237,7 +240,8 @@
         "prototype/camera-view-contract.js",
         "prototype/gpu-camera-view.js",
         "prototype/gpu-iridescence.js",
-        "docs/GPU_PHYSICAL_VIEW.md"
+        "docs/GPU_PHYSICAL_VIEW.md",
+        "docs/BUILTIN_NORMAL_MAP.md"
       ]
     },
     {
@@ -284,7 +288,8 @@
         "thin film",
         "iridescence",
         "얇은 막",
-        "물리 시선"
+        "물리 시선",
+        "기본 노멀맵"
       ],
       "paths": [
         "prototype/scene-environment.js",
@@ -309,7 +314,8 @@
         "prototype/reflection-probe-spatial.js",
         "prototype/gpu-probe-spatial.js",
         "native/include/HBEngine/ProbeSpatialIndex.hpp",
-        "docs/PROBE_SPATIAL_INDEX.md"
+        "docs/PROBE_SPATIAL_INDEX.md",
+        "docs/BUILTIN_NORMAL_MAP.md"
       ]
     },
     {
