@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-21",
-  "basisRevision": "1d826069a2b2b4b51139bf505e6db070eb9a79ba",
+  "basisRevision": "6ed66602340d1c5f18dcbc009c0b9f64ff9eee74",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -730,12 +730,12 @@
       "area": "rendering",
       "title": "광원·HDRI·환경 액터",
       "status": "partial",
-      "implemented": "래스터 HDRI/다중 광원·MegaLights/SkyLight 제작·분산 캡처 ·351–352: 프로브 캡처와 강도/혼합/영역 바인딩 분리·위치/해상도/clip/bounce/명시갱신 보존·C++/BP 실제 게임 및 browser 모의 타깃 수명 대조 ·986–1026: 회전/비균일/음수 크기·부모 전단 영향/투영·월드 면 거리 페이드·미세 영역 거리 보존·영역만 변형할 때 캡처 재사용·큰 정적 메쉬 경계15축 후보 판정 ·1050–1062: glTF/폴리지 인스턴스 실제 현재 경계·원점 밖 프로브 후보·컬링·행렬/개수/정점버전 캐시·1057 실제세백엔드 C++/BP 대조 ·1106–1112: browser 두후보 affine픽셀혼합/원래환경밝기·회전·해상도배치/0·1·2후보/실제인스턴스·clone/필터/굴절수명·CPU skin/morph현재경계/정지정점읽기0/캡처전갱신/native후보·컬링 ·1116–1131: GL/GPU/강제GL폴백/native 전역픽셀두후보·혼합해상도HDR atlas·컴퓨트border/corner패딩·정지copy/전송재사용·밝기metadata·실제CPP/BP4영역 ·1135–1141: native직교raster시선·ambient/hemi Lambert/금속·공용GL/GPU/폴백/native ViewDirection/Fresnel·회전·실제CPP/BP카메라",
+      "implemented": "래스터 HDRI/다중 광원·MegaLights/SkyLight 제작·분산 캡처 ·351–352: 프로브 캡처와 강도/혼합/영역 바인딩 분리·위치/해상도/clip/bounce/명시갱신 보존·C++/BP 실제 게임 및 browser 모의 타깃 수명 대조 ·986–1026: 회전/비균일/음수 크기·부모 전단 영향/투영·월드 면 거리 페이드·미세 영역 거리 보존·영역만 변형할 때 캡처 재사용·큰 정적 메쉬 경계15축 후보 판정 ·1050–1062: glTF/폴리지 인스턴스 실제 현재 경계·원점 밖 프로브 후보·컬링·행렬/개수/정점버전 캐시·1057 실제세백엔드 C++/BP 대조 ·1106–1112: browser 두후보 affine픽셀혼합/원래환경밝기·회전·해상도배치/0·1·2후보/실제인스턴스·clone/필터/굴절수명·CPU skin/morph현재경계/정지정점읽기0/캡처전갱신/native후보·컬링 ·1116–1131: GL/GPU/강제GL폴백/native 전역픽셀두후보·혼합해상도HDR atlas·컴퓨트border/corner패딩·정지copy/전송재사용·밝기metadata·실제CPP/BP4영역 ·1135–1141: native직교raster시선·ambient/hemi Lambert/금속·공용GL/GPU/폴백/native ViewDirection/Fresnel·회전·실제CPP/BP카메라 ·1149: GPU내장Physical의직교/원근시선·추가로브와원본/작성굴절·thinfilm XYZ/GL산란입력·0두께/가중치·폴백명시읽기상태/수명·독립분광31/읽기29·실제CPP/BP재질/카메라",
       "remaining": [
         "전역 순위 탐색의 공간 타일/클러스터 가속·큰 장면 프로브 수/메모리/FPS 검증",
         "픽셀 중요도 우선 점유·작은 캡처 덮어쓰기·구형 캡처·lightmap 혼합",
         "임의 shader displacement·인스턴스별 morph texture의 소유 경계 및 지원 확대",
-        "WebGPU 내장 Physical 모델/프로브 방사광의 직교 off-axis 시선과 추가로브 전체 일치"
+        "WebGPU 물리 재질의 임의 복합 로브·매질/기하/이력 조합 확장과 전체 백엔드 에너지 동등성 검증"
       ],
       "sources": [
         "prototype/scene-environment.js",
@@ -760,7 +760,14 @@
         "prototype/reflection-probe-atlas.js",
         "prototype/native-materials.js",
         "prototype/material-runtime.js",
-        "prototype/gpu-materials.js"
+        "prototype/gpu-materials.js",
+        "prototype/camera-view-contract.js",
+        "prototype/game-renderer.js",
+        "prototype/gpu-camera-view.js",
+        "prototype/gpu-fallback-readback.js",
+        "prototype/gpu-iridescence.js",
+        "prototype/gpu-particles.js",
+        "prototype/gpu-refraction.js"
       ],
       "evidence": [
         "docs/RASTER_LIGHTING_131.md",
@@ -775,7 +782,9 @@
         "docs/research/ENGINE_WORK_1131.json",
         "docs/research/PROBE_ATLAS_1130.md",
         "docs/research/ENGINE_WORK_1141.json",
-        "docs/research/CAMERA_SURFACE_1140.md"
+        "docs/research/CAMERA_SURFACE_1140.md",
+        "docs/research/ENGINE_WORK_1149.json",
+        "docs/research/GPU_PHYSICAL_VIEW_1148.md"
       ]
     },
     {
@@ -2779,11 +2788,11 @@
     }
   ],
   "latestBatch": {
-    "first": 1135,
-    "last": 1141,
-    "record": "docs/research/ENGINE_WORK_1141.json",
-    "implementationRevision": "1d826069a2b2b4b51139bf505e6db070eb9a79ba",
-    "scope": "native 직교/원근 raster 시선·ambient/hemi Lambert/금속도·GL/GPU/폴백 ViewDirection와기본Fresnel·native 공용normal frame·기존atlas회귀·실제CPP/BP카메라. WebGPU내장Physical전체/추가로브·전체FPS/GL초기지연/전체엔진완료와구분."
+    "first": 1145,
+    "last": 1149,
+    "record": "docs/research/ENGINE_WORK_1149.json",
+    "implementationRevision": "6ed66602340d1c5f18dcbc009c0b9f64ff9eee74",
+    "scope": "GPU 물리 시선·thinfilm·원본/작성굴절·폴백읽기·실제CPP/BP. 지정독립조건만,전체에너지/성능/누적목표완료아님."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_1143.json",
