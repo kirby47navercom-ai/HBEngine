@@ -721,7 +721,6 @@
     "native/include/HBEngine/Struct.hpp": "10acd0fab9a4ca03c1e0d1aed984e5ba5e0e412453e6425c4336aee1cdc3e11d"
   },
   "reuseReason": "Prior actual source UI and installed D3D11 game/C++ SDK proof retained for byte-identical game/UI/renderer/runtime owners; this change affects server candidate preparation only.",
-  "pendingInstalledServerGate": "tools/check-network-interest-1260.mjs --implementation-root <installation> --sockets-only",
   "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -758,12 +757,24 @@
     "jsonStateCopies": 0,
     "index": "One center bucket and owner membership per state; metadata only. No process RAM/FPS claim."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1257.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1264.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "전용 권위 서버 규칙·장면 세대·부착/참조·클라이언트 원격 풀 수명, 초기 숨김/전역·삭제 후보 비용과 연결별 변경 전송의 추가 가속",
     "예측 입력/재시뮬레이션·지연/손실 보정·호스트 이전/플랫폼 서비스·접속 비밀 배포"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/network-interest-1260-8lrQvH/acceptance.json",
+      "sha256": "c4aeae8cd1bc28510dccc5daf3ec2209f8c5c50a8a1f2a896aecc255014b156d",
+      "scope": "Selected installed implementation: actual isolated WebSocket snapshots, interest exit/reentry, root-child reassignment and owner-only/own relevance, movement/deletion and index cleanup; 5 checks. Source randomized/oracle/100k sparse index proof is reused by owner SHA and was not repeated in this installed socket-only mode.",
+      "args": [
+        "--implementation-root",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\91fb64b56b370689",
+        "--sockets-only"
+      ]
+    }
+  ]
 }

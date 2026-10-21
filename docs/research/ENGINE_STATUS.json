@@ -2917,11 +2917,11 @@
     "scope": "Network interest spatial candidates and root membership; prior struct/sequence/UI/native game owners unchanged, only installed server socket route needed."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1257.json",
-    "sourceCommit": "c4a8f9a26b3c02ca384c4365075bba87b711d740",
-    "bundleHash": "fbe3037f251ced44e6e4be7a9bf22896bc2f97b61cd6576b56396bc639cd5736",
+    "receipt": "docs/research/USER_INSTALL_1264.json",
+    "sourceCommit": "41375f8fd3b17ce2efd82401d0bf2799bddfa9bf",
+    "bundleHash": "91fb64b56b3706890690eb76c4130a2e919faa1942b5a87e061a9ef0a92076d1",
     "verified": true,
     "versions": 1,
-    "scope": "Shot/SubSequence authoring/runtime/preview/export and AI installed, prior struct/flow SDK preserved. All native16/Struct.hpp/Player1223/Host1041 unchanged; final source GUI reused by verified owner SHA, actual installed D3D11 package Play/Pause/Seek. Full manifest/read-only User inventory/shortcuts/association/Versions1; no native rebuild, repeated UI or renderer/FPS matrix."
+    "scope": "Network spatial interest candidates and root membership installed. Prior struct/sequence/UI/game/C++ and all native16/Struct.hpp/Player1223/Host1041 owners unchanged. Source oracle/100k sparse index/real socket and existing6 regressions passed; installed server actual socket-only route checked. Manifest/read-only User/shortcuts/association/Versions1; no GUI/renderer/native repeat or game FPS claim."
   }
 }

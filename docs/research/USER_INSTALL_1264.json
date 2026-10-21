@@ -1,0 +1,125 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "41375f8fd3b17ce2efd82401d0bf2799bddfa9bf",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\91fb64b56b370689",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\91fb64b56b370689\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\91fb64b56b370689\\HBEngine.exe",
+  "bundleHash": "91fb64b56b3706890690eb76c4130a2e919faa1942b5a87e061a9ef0a92076d1",
+  "files": 3949,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3945,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\fbe3037f251ced44",
+        "bytes": 186035699,
+        "manifestSHA256": "93f9f7f76210bc3795d514156e5d4257022ec5246a910bf9a2559ebc3006e99e"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T14:43:26.6127340Z",
+    "bytes": 186035699,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "91fb64b56b370689"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 627,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
+  "installedGates": [
+    {
+      "path": "native/build/network-interest-1260-8lrQvH/acceptance.json",
+      "sha256": "c4aeae8cd1bc28510dccc5daf3ec2209f8c5c50a8a1f2a896aecc255014b156d",
+      "scope": "Selected installed implementation: actual isolated WebSocket snapshots, interest exit/reentry, root-child reassignment and owner-only/own relevance, movement/deletion and index cleanup; 5 checks. Source randomized/oracle/100k sparse index proof is reused by owner SHA and was not repeated in this installed socket-only mode.",
+      "args": [
+        "--implementation-root",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\91fb64b56b370689",
+        "--sockets-only"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\91fb64b56b370689\\",
+    "elapsedMs": 120.82,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\91fb64b56b370689",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "91fb64b56b3706890690eb76c4130a2e919faa1942b5a87e061a9ef0a92076d1",
+      "installedAt": "2026-10-21T14:43:23.180Z",
+      "manifestFiles": 3949,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3949,
+  "versions": [
+    "91fb64b56b370689"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1264-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/network-interest-batch-1261.json",
+      "sha256": "ee09f3008b9024764e973deece21853713982a47ef98a569e6a4988cb0c629fb",
+      "scope": "Single grouped syntax, new variable-radius exactness/large sparse query/real-socket11 checks, existing network6 regression checks."
+    },
+    {
+      "path": "native/build/network-interest-1260-Ur2mQd/acceptance.json",
+      "sha256": "d0c7f904078f99ae9f40583384343b60f17b6e6cd01c1d85f81c50694f0a2112",
+      "scope": "100 heterogeneous oracle comparisons; negative boundaries/same-cell update/cleanup; 100000 sparse index32 queries one candidate each; actual WebSocket root-child reassignment/interest/owner/deletion."
+    },
+    {
+      "path": "native/build/engine-173-zzP1b9/acceptance.json",
+      "sha256": "62d846236f4c65ef7dcd193e1447f1591a0050fbe686aa9cf5a76cc612bc05be",
+      "scope": "Existing real socket dynamic prefab/children, distance reentry, pool reuse/deletion, static hides/tombstones, late join/resume, invalid client authority6/6."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/sequence-sections-1251-pRkgDZ/acceptance.json",
+      "sha256": "e5bee8e0da8669744a2aea39bb7742f503827f707312e3bc63f773dc0ae2509e",
+      "scope": "Actual packaged D3D11 game: Blueprint common LevelSequence Play/Pause/Seek loads referenced child asset, maps source offset at parent 1.25 seconds to target position 7.5. Native Player/Host reused; no renderer matrix/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fbe3037f251ced44\\HBEngine.exe",
+        "--player"
+      ]
+    }
+  ],
+  "scope": "Network spatial interest candidates and root membership installed. Prior struct/sequence/UI/game/C++ and all native16/Struct.hpp/Player1223/Host1041 owners unchanged. Source oracle/100k sparse index/real socket and existing6 regressions passed; installed server actual socket-only route checked. Manifest/read-only User/shortcuts/association/Versions1; no GUI/renderer/native repeat or game FPS claim.",
+  "evidenceAnnotation": "Installed test exposes a broad tool scope string across modes; corrected receipt annotation to its explicit socketOnly=true/largeScene=null/5-check actual run. No source/binary changed.",
+  "version": 1,
+  "date": "2026-10-21T14:46:10.691Z",
+  "work": "docs/research/ENGINE_WORK_1262.json",
+  "distributionSync": "native/build/distribution-1263-sync.json",
+  "cachePrune": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}
