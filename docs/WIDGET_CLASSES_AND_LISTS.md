@@ -55,7 +55,7 @@ ListView·TreeView의 `selectionMode`는 `none`·`single`(기본)·`multiple`이
 
 `selectedIndices`는 보이는 행 인덱스의 JSON 문자열이에요. 트리는 `selectedItemIds`에 안정적인 ID를 함께 보존하므로 접은 자식의 선택이 사라지지 않아요. 기존 `selectedIndex`·`selectedItemId`·`value`도 유지해요. C++ `UI::SetValue`와 같은 블루프린트 노드는 선택을 하나로 지정하며, `UI::SetListItems`는 자료를 교체해요. 새 SDK 함수나 네이티브 opcode는 만들지 않았어요.
 
-ListView의 `reorderable=true`는 내부 드래그와 Alt+위/아래로 선택 묶음을 이동해요. 중복된 문자열도 기존 인덱스의 대응표로 선택을 유지해요. 드래그 중 자료가 교체되면 이전 드래그는 취소해요. 외부 창·다른 목록 간 이동, 트리 재부모화와 실기기 터치 재정렬은 별도 범위예요.
+ListView의 `reorderable=true`는 내부 드래그와 Alt+위/아래로 선택 묶음을 이동해요. 중복된 문자열도 기존 인덱스의 대응표로 선택을 유지해요. 드래그 중 자료가 교체되면 이전 드래그는 취소해요. 1274부터 TreeView의 재부모화·Alt 들여쓰기/내어쓰기와 같은 그룹의 목록 간 이동도 지원해요. 규칙은 [LIST_TRANSFER](LIST_TRANSFER.md)에 있어요. 외부 창·실기기 터치와 전용 C++/BP 이동 API는 별도 범위예요.
 
 `rowWriteback=true`일 때 `rowBindings`에 연결된 TextInput의 text, Slider의 value, CheckBox의 checked 변경을 원본 항목 자료에 반영해요. 기존 own 필드와 같은 자료형만 바꾸며 `$item`은 원시 값, `$index`는 읽기 전용이에요. 프로토타입 경로·없는 경로·자료형 변경과 트리 ID 변경은 쓰지 않아요. 에셋 원본은 바꾸지 않고 실행 인스턴스의 `listItems`를 갱신해요. 고정 높이의 평면 목록은 한 행 수정 때 전체 offset을 다시 만들지 않아요. JSON 직렬화·전체 자료 검증 비용까지 없어진 것은 아니에요.
 

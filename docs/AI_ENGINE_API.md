@@ -573,3 +573,7 @@ GPU 물리 시선 계약은 schema.cameraView와 WebGPU renderer.cameraView에�
 ### 시퀀스 기준점·커브 (1266)
 
 `sequence.origin.edit`: `path`, `expectedRevision`, `origin:{mode:inherit|transform|actor,actor,position:[x,y,z],rotation:[x,y,z]}`, `dryRun`. origin 생략은 설정 제거예요. `sequence.curve.edit`: 같은 문서 인자와 `track` ID, `key` 배열 인덱스, `interpolation`, `arriveTangent`, `leaveTangent`를 받아요. 탄젠트는 키 값과 같은 형식의 초당 기울기이며 null은 제거예요. 두 명령은 공용 검증·Undo·revision을 사용해요. `runtime.sequenceTree`의 origin은 요청한 설정이며 전체 월드를 표본화하지 않아요. 세부 규칙은 [SEQUENCE_ORIGINS_CURVES](SEQUENCE_ORIGINS_CURVES.md)에 있어요.
+
+### 가상 목록·트리 이동 (1274)
+
+ListView/TreeView의 `properties.reorderable:boolean`, `transferGroup:string`(최대80자)을 기존 document.patch/transaction·CAS·dryRun·Undo로 편집해요. 그룹이 비어 있으면 내부 이동만 가능해요. 공용 모델/런타임 계약과 소스는 [LIST_TRANSFER](LIST_TRANSFER.md)에 있어요. 실행 Changed 이벤트는 `listChange:reparented|transferIn|transferOut`, `listPeer`, `reorderParent`와 기존 선택 정보를 전달해요. 새 전용 게임 C++/BP 이동 함수는 추가하지 않았어요.

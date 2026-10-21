@@ -17,3 +17,6 @@ ENGINE_STATUS78행 전체분모/완료율null. CPP01 사용자struct/enum·refle
 
 ## 보호/운영
 heavy/EXE/install전activeInstalledVersions. inline설치EXE경로는자기검출하므로스크립트저장후별도실행. 사용자창/탭/프로젝트/User테스트금지. User는설치전후읽기SHA만. ownhiddenfixture/고유profile/port·retain/prune. Versions1/전체백업금지. *.started재실행금지.cache0B면빈receipt없음.Mac/Android기기없음재질문금지. 장기goal조회blocked·도구재개불가/임의newgoal·pause·complete금지;현재턴구현계속.
+
+## 현재 목록 제작 확장·설치 대기
+1274–1278: TreeView재부모/가지1회·같은group의Tree/Flat교차이동·두자료검증후commit/apply뒤VM이벤트·중복ID/순환/깊이/자료교체/group/비활성/거부원자성·Alt들여쓰기/내어쓰기·기존window탐색capture와충돌수정·초점text/선택동기화/기존getter·상세설정/Undo/schema. 모델11 QBivvV·기존1079/1749/1816 통과. 최종sourceGUI1275-M5yWOV과동일창1080(10만선택/pool8/행입력/기존이동)성공.1277.started재실행금지.실제설치D3D11UI1회대기·native16/Struct.hpp/CPP21불변. docs/LIST_TRANSFER.md.실기기터치/외부창/다른종류/공유source·전용CPP/BP이동API는잔여.

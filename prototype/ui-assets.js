@@ -13,7 +13,7 @@ export function createWidgetNode(type='Text',id=crypto.randomUUID(),parent='root
   if(!Object.hasOwn(widgetTypes,type))throw Error('위젯 종류를 확인하세요.');
   const properties={...widgetDefaults,text:{Text:'텍스트',Button:'버튼',TouchButton:'공격',CheckBox:'선택'}[type]||''};
   if(type==='Widget')properties.widgetSlots='{}';
-  if(['ListView','TreeView'].includes(type))Object.assign(properties,{selectionMode:'single',selectedIndices:'[]',selectedItemIds:'[]',rowWriteback:false,...type==='ListView'?{reorderable:false}:{}});
+  if(['ListView','TreeView'].includes(type))Object.assign(properties,{selectionMode:'single',selectedIndices:'[]',selectedItemIds:'[]',rowWriteback:false,reorderable:false,transferGroup:''});
   if(type==='TouchPad'){properties.axisX='LookX';properties.axisY='LookY';}if(['Joystick','DPad','TouchPad'].includes(type))properties.background='#1c253b99';if(type==='TouchButton'){properties.background='#263443bb';properties.align='center';properties.radius=100;}
   if(['Text','Image','Spacer','Widget','NamedSlot','Canvas','HorizontalBox','VerticalBox','Grid'].includes(type))properties.background='#00000000';
   return {id,name:type,parent,type,slot:{anchors:[0,0,0,0],offset:[32,32,['Joystick','DPad','TouchPad'].includes(type)?220:type==='TouchButton'?112:type==='ProgressBar'?280:200,['Joystick','DPad','TouchPad'].includes(type)?220:type==='TouchButton'?112:type==='Text'?40:48],alignment:[0,0],zIndex:0,fill:0},properties,events:{},bindings:{}};
@@ -39,8 +39,9 @@ export function validWidgetAsset(data,{expanded=false}={}){
 }
 export function validWidgetProperties(n){
     const s=n.slot,p=n.properties;
+    if(p?.transferGroup!==undefined&&(!['ListView','TreeView'].includes(n.type)||typeof p.transferGroup!=='string'||p.transferGroup.length>80))return false;
     if(p?.selectionMode!==undefined&&(!['ListView','TreeView'].includes(n.type)||!['none','single','multiple'].includes(p.selectionMode)))return false;
-    if(p?.reorderable!==undefined&&(n.type!=='ListView'||typeof p.reorderable!=='boolean')||p?.rowWriteback!==undefined&&(!['ListView','TreeView'].includes(n.type)||typeof p.rowWriteback!=='boolean'))return false;
+    if(p?.reorderable!==undefined&&(!['ListView','TreeView'].includes(n.type)||typeof p.reorderable!=='boolean')||p?.rowWriteback!==undefined&&(!['ListView','TreeView'].includes(n.type)||typeof p.rowWriteback!=='boolean'))return false;
     for(const key of ['selectedIndices','selectedItemIds'])if(p?.[key]!==undefined){try{const values=JSON.parse(p[key]);if(!['ListView','TreeView'].includes(n.type)||typeof p[key]!=='string'||p[key].length>20000000||!Array.isArray(values)||values.length>100000||new Set(values).size!==values.length||values.some(v=>key==='selectedIndices'? !Number.isInteger(v)||v<0||v>=100000:typeof v!=='string'||!v||v.length>160))return false;}catch{return false;}}
     if(p?.rowWidget!==undefined&&(!['ListView','TreeView'].includes(n.type)||!validAssetPath(p.rowWidget)||p.rowWidget&&!p.rowWidget.endsWith('.hbwidget.json')))return false;
     if(p?.rowBindings!==undefined){try{if(!['ListView','TreeView'].includes(n.type)||typeof p.rowBindings!=='string')return false;widgetRowBindings(p.rowBindings);}catch{return false;}}

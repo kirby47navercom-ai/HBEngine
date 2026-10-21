@@ -2850,6 +2850,17 @@
       "record": "docs/SEQUENCE_ORIGINS_CURVES.md",
       "wholeCorpus": false,
       "readScope": "Dynamic Origin own setup/results/animated origin body; Curve Editor own overview/toolbar/interpolation/tangent/interaction sections; Timeline track offset own article; Unity curve key/tangent sections. Linked manuals/APIs/high-level advanced filters not analyzed or counted."
+    },
+    {
+      "id": "list-transfer-supplement-1274",
+      "engine": "Unity6.0 TreeView own selected manual and Unreal5.8 Drag and Drop UI own selected guide",
+      "roots": [
+        "https://docs.unity3d.com/6000.0/Documentation/Manual/UIE-uxml-element-TreeView.html",
+        "https://dev.epicgames.com/documentation/en-us/unreal-engine/creating-drag-and-drop-ui-in-unreal-engine"
+      ],
+      "record": "docs/LIST_TRANSFER.md",
+      "wholeCorpus": false,
+      "readScope": "Unity own create/refresh/bind/drag/tree identity/recycling/selection sections and reorderable attribute; Unreal own payload reference/drag detect/drop handler/acceptance role. Linked API implementations and cross-window example not analyzed or implemented."
     }
   ],
   "supplementalBaselines": [
@@ -5061,5 +5072,15 @@
     "record": "docs/SEQUENCE_ORIGINS_CURVES.md",
     "fullCorpusAnalysis": false,
     "implementation": "Sequence root/actor origins and common Hermite authoring/runtime; explicit unimplemented weighted/timewarp/skeletal/parent-context scope retained."
+  },
+  "supplemental1274": {
+    "record": "docs/LIST_TRANSFER.md",
+    "fullCorpusAnalysis": false,
+    "implementation": "Grouped ListView/TreeView transfer, stable subtree reparent and keyboard, two-side validation, original source preservation and no per-frame new service.",
+    "remaining": [
+      "physical touch reorder",
+      "cross-window/cross-kind/shared-source transfer",
+      "dedicated native CPP/BP move API and arbitrary async callback rollback"
+    ]
   }
 }

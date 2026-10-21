@@ -25,5 +25,5 @@ export function reorderListItems(items,indices,destination){
 export function listSelectionEvent(node){
  if(!['ListView','TreeView'].includes(node.type))return {};
  const indices=node.properties.selectedIndices||'[]',ids=node.properties.selectedItemIds||'[]',from=node.reorderFrom||'[]',selectionTruncated=[indices,ids,from].some(text=>text.length>10000);
- return{selectedIndices:selectionTruncated?'[]':indices,selectedItemIds:selectionTruncated?'[]':ids,selectedCount:Math.max(JSON.parse(indices).length,JSON.parse(ids).length),selectionTruncated,listChange:node.listChange||'selection',reorderFrom:selectionTruncated?'[]':from,reorderTo:node.reorderTo??-1};
+ return{selectedIndices:selectionTruncated?'[]':indices,selectedItemIds:selectionTruncated?'[]':ids,selectedCount:Math.max(JSON.parse(indices).length,JSON.parse(ids).length),selectionTruncated,listChange:node.listChange||'selection',reorderFrom:selectionTruncated?'[]':from,reorderTo:node.reorderTo??-1,listPeer:typeof node.listPeer==='string'?node.listPeer.slice(0,160):'',reorderParent:typeof node.reorderParent==='string'?node.reorderParent.slice(0,160):''};
 }

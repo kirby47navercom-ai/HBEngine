@@ -661,7 +661,12 @@
         "목록",
         "listview",
         "treeview",
-        "다중선택"
+        "다중선택",
+        "트리 재부모화",
+        "목록 이동",
+        "transferGroup",
+        "list transfer",
+        "tree reparent"
       ],
       "paths": [
         "prototype/ui-assets.js",
@@ -677,7 +682,11 @@
         "prototype/widget-fonts.js",
         "prototype/virtual-list.js",
         "prototype/virtual-scroll.js",
-        "prototype/list-selection.js"
+        "prototype/list-selection.js",
+        "prototype/list-transfer.js",
+        "prototype/list-drag.js",
+        "prototype/virtual-list.js",
+        "prototype/widget-row-editor.js"
       ]
     },
     {
