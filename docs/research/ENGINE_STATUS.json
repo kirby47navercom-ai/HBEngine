@@ -2845,11 +2845,11 @@
     "scope": "노드 배치에서 실행·자료형·합류·가변 핀·리터럴까지 연결. CPP01은 확인된 미구현3군을 반영해 partial로 정정."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1208.json",
-    "sourceCommit": "5ee112febc65400b93d77289cb5b9c6fa7f51ba4",
-    "bundleHash": "dbe05b234ccf2a7148e3e681133791fb47e6028fb457de12ba57d31f05dd4640",
+    "receipt": "docs/research/USER_INSTALL_1217.json",
+    "sourceCommit": "a37981248595d551f2dec537bf70f4813182c3a6",
+    "bundleHash": "771aa0ffcc7421e45762a24d6fcf4f351a45affdf5aa0c2445c3b29e299dfa7e",
     "verified": true,
     "versions": 1,
-    "scope": "Sphere 제작/SetSphere·Shape·Radius와 signed actor scale 수정. 설치본으로3backend×9상태 CPP/BP/4실제HDR/음수비균일scale보존·새capture/copy없음. 3899명세/571소유SHA/CPP21/native16·Player1204/Host1041·User읽기SHA·연결/Versions1. 동일GPU수식재검사·native재빌드반복없음."
+    "scope": "블루프린트 동적출력/합류/Promote/중첩구조체/C++기본값/AI경로. sourceGUI·CPU/실제Cpp·기존VM성공SHA재사용 + 설치builder로Windows게임패키징/D3D11실제5·8·8분기·단위scale/위치보존/Setter연결/정수변환/중첩음수Transform·두새모듈포함.3907명세/586소유SHA/CPP21/native16·Player1204/Host1041재사용·User읽기SHA/연결/Versions1.렌더매트릭스/전체엔진/FPS검사아님."
   }
 }

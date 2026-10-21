@@ -648,6 +648,15 @@
       "path": "native/build/flow-static-1213.json",
       "sha256": "bc22f8758b16588de15bd8efa3bb24e9f14839fd5e7fa0177b85cbd2d81a3d99",
       "scope": "변경14JS/MJS·API생성정합·26AI경로/약192ms CLI시작. 모델이해시간측정은 아님."
+    },
+    {
+      "path": "native/build/flow-player-1215-2XMBwP/acceptance.json",
+      "sha256": "ca6ac94b69577a67eb170f1afd731a2e3776c8273a8f31cd6a007f1067248473",
+      "scope": "Actual Windows package built by the selected installation: dynamic Sequence/MultiGate/Switch branches, typed unit-scale Getter, output Promote Setter inserted in existing execution chain, automatic int/float conversion and nested split Transform. D3D11 running, packaged closure includes both new runtime modules. No renderer matrix or FPS benchmark.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\771aa0ffcc7421e4\\HBEngine.exe"
+      ]
     }
   ],
   "sourceEditorGates": [
@@ -712,13 +721,25 @@
     "to": "partial",
     "reason": "Source/read comparison confirms user struct/enum, Set Members and collapsed graph expansion remain. They were not part of prior executed checks; explicitly restored to remaining work."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1208.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1217.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "사용자 정의 구조체·enum 에셋과 변수/핀·C++ 리플렉션의 일반화, Switch enum/name",
     "Set Members 필드 선택·사용자 구조체 Make/Break의 제작/실행 연결",
     "Collapsed Graph의 독립 서브그래프/터널과 Expand 복원"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1217.json",
+  "sourceGameGates": [
+    {
+      "path": "native/build/flow-player-1215-2XMBwP/acceptance.json",
+      "sha256": "ca6ac94b69577a67eb170f1afd731a2e3776c8273a8f31cd6a007f1067248473",
+      "scope": "Actual Windows package built by the selected installation: dynamic Sequence/MultiGate/Switch branches, typed unit-scale Getter, output Promote Setter inserted in existing execution chain, automatic int/float conversion and nested split Transform. D3D11 running, packaged closure includes both new runtime modules. No renderer matrix or FPS benchmark.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\771aa0ffcc7421e4\\HBEngine.exe"
+      ]
+    }
+  ]
 }

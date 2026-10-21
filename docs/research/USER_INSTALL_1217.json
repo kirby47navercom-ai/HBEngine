@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "a37981248595d551f2dec537bf70f4813182c3a6",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\771aa0ffcc7421e4",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\771aa0ffcc7421e4\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\771aa0ffcc7421e4\\HBEngine.exe",
+  "bundleHash": "771aa0ffcc7421e45762a24d6fcf4f351a45affdf5aa0c2445c3b29e299dfa7e",
+  "files": 3907,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3900,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71",
+        "bytes": 185246846,
+        "manifestSHA256": "62276d1d4a74f48edeeeacf5a61762fcd5a0d897600b7705bf359d42232381ba"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T11:26:58.7782693Z",
+    "bytes": 185246846,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "771aa0ffcc7421e4"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 586,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "d86d57acb4e4f833520eb539dd866d47efbd019c894ac51959799ef80ddf601a",
+  "installedGates": [
+    {
+      "path": "native/build/flow-player-1215-2XMBwP/acceptance.json",
+      "sha256": "ca6ac94b69577a67eb170f1afd731a2e3776c8273a8f31cd6a007f1067248473",
+      "scope": "Actual Windows package built by the selected installation: dynamic Sequence/MultiGate/Switch branches, typed unit-scale Getter, output Promote Setter inserted in existing execution chain, automatic int/float conversion and nested split Transform. D3D11 running, packaged closure includes both new runtime modules. No renderer matrix or FPS benchmark.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\771aa0ffcc7421e4\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\771aa0ffcc7421e4\\",
+    "elapsedMs": 75.1,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\771aa0ffcc7421e4",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "771aa0ffcc7421e45762a24d6fcf4f351a45affdf5aa0c2445c3b29e299dfa7e",
+      "installedAt": "2026-10-21T11:26:55.464Z",
+      "manifestFiles": 3907,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3907,
+  "versions": [
+    "771aa0ffcc7421e4"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1217-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/flow-authoring-1210-csOmAS/acceptance.json",
+      "sha256": "76bfc4493cc4b111a05f8dadc2601ca5cc0f01aa70324f197802b6dd9e078fe7",
+      "scope": "1668개 입력 자료형·1699개 확인·동적8출력/65case·실제C++·중첩핀/변수승격/합류Setter"
+    },
+    {
+      "path": "native/build/flow-authoring-1211-rSc3vk/acceptance.json",
+      "sha256": "ab021b136f346e176c59d99b9e384a47499f8259dfc095feb801089493fbcbe8",
+      "scope": "실제 숨김 편집기 추가·우클릭 삭제·기본출력·Undo/Redo·AI패치·변수승격·실행"
+    },
+    {
+      "path": "native/build/flow-runtime-1212.txt",
+      "sha256": "812167efac40bb73ab38cef7181e0a89c4c0234e4543d03c587a1f3e6b9ecdc3",
+      "scope": "기존VM회귀. 연결 helper만 바뀐 마지막 실행에서는 같은 소유SHA의 성공을 재사용."
+    },
+    {
+      "path": "native/build/flow-static-1213.json",
+      "sha256": "bc22f8758b16588de15bd8efa3bb24e9f14839fd5e7fa0177b85cbd2d81a3d99",
+      "scope": "변경14JS/MJS·API생성정합·26AI경로/약192ms CLI시작. 모델이해시간측정은 아님."
+    }
+  ],
+  "scope": "블루프린트 동적출력/합류/Promote/중첩구조체/C++기본값/AI경로. sourceGUI·CPU/실제Cpp·기존VM성공SHA재사용 + 설치builder로Windows게임패키징/D3D11실제5·8·8분기·단위scale/위치보존/Setter연결/정수변환/중첩음수Transform·두새모듈포함.3907명세/586소유SHA/CPP21/native16·Player1204/Host1041재사용·User읽기SHA/연결/Versions1.렌더매트릭스/전체엔진/FPS검사아님.",
+  "reportCorrections": [
+    {
+      "field": "scope",
+      "previous": "1217 전체명세/555소유SHA/CPP20·native15·Player1197b/Host1041·Player1197b한번빌드/Host1041재사용·설치CPP/BP Sphere9상태/음수비균일owner변환보존/영향반경/부분fade·capture/copy유지·AI실제마커·User읽기SHA/연결/Versions1.Sphere CPU/GPU/native/direct/기존box 6gate재사용.새Sphere커널/제작범위만검증,전체HDR/FPS/누적목표완료미주장.",
+      "reason": "복제한 one-shot의 과거Sphere 설명 문자열이 남아 있어 실제 verified 숫자·바이너리·gate에 맞게 문구만 정정. 검증 결과·해시·파일 숫자는 변경하지 않음."
+    }
+  ],
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

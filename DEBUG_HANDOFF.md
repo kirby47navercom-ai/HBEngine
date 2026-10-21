@@ -69,3 +69,5 @@ fallback readback뒤copyTexSubImage2D가GL1282. Float32blend가설은HalfFloat�
 1190설치확정: native CPU설정전용/4B공유index·65536영역768KiB절감·불량혼합원자거절/9구간정책. 영향native2gate+동일HLSL/raster증명으로노멀/브라우저반복검사생략. 설치CPP/BP4영역/밝기/복원 layout1불변/fast0→1→2·캡처/copy/공간재구성없음. Player1186한번빌드/Host재사용·3884명세/544SHA/CPP19/User/연결/Versions1. AI인계길이실패는축약후정적검사만재실행.
 
 1201설치의Sphere패키징실패는scene에양수scale만허용한기존계약이원인. fixture음수비균일scale유지하고저장/편집/노드/CPP/생성/풀/저장/물리/복제/시퀀스및native면판정함께수정.1208설치3backend9상태통과·capture/copy불변. native48조건/Rapier2D·3D/구1040실행·동일브라우저수식재사용,Player1204한번.새기능이구1190설치에검증된것처럼표현하지말것.
+
+1210–1217: Gate 실제 다중exec입력 제작에서usedInputs/connect가단일선만허용하는결함확인→data만단일·exec입력합류·모든선행Setter삽입수정. Promote가변수만추가하던것을Get/Set/체인연결수정. UI최초종료실패는dirty-own문서종료대화상자,문서save후정상. 최종sourceCPU1699/GUI/NativeCpp/기존VM과설치Windows5/8/8분기통과. binaries변경없어Player재빌드/GPU매트릭스없음. 복제installer의scope과거Sphere문구는원문보존후실제필드로정정.
