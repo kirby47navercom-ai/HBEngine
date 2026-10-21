@@ -5112,5 +5112,28 @@
       "reason": "web tool content length limit, search excerpt only; not full read"
     },
     "implementation": "Optional same-shape normalized per-axis arrive/leave weights, shared monotone Bezier inverse sampling, actual editor handle lengths, atomic authoring and Blueprint game execution; absent thirds legacy compatible."
+  },
+  "supplemental1310": {
+    "record": "docs/CURVE_INFINITY.md",
+    "fullCorpusAnalysis": false,
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/animation-curve-editor-in-unreal-engine",
+        "version": "5.8",
+        "sections": [
+          "Pre and Post Infinity"
+        ],
+        "remaining": "other tools/API/linked sources not promoted"
+      },
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.7/script-reference/unityengine/wrapmode",
+        "version": "6000.7",
+        "sections": [
+          "API definition and Fields search excerpt"
+        ],
+        "remaining": "full page fetch/linked API/version-to-installed comparison not performed"
+      }
+    ],
+    "implementation": "Optional numeric pre/post hold/linear/cycle/cycleOffset/oscillate, shared samplers and authoring, atomic key-optional sequence command, skeletal metadata validation/runtime, no key duplication."
   }
 }

@@ -164,7 +164,8 @@
         "prototype/blueprint-references.js",
         "native/include/HBEngine/Struct.hpp",
         "prototype/curve-sampling.js",
-        "docs/WEIGHTED_CURVES.md"
+        "docs/WEIGHTED_CURVES.md",
+        "docs/CURVE_INFINITY.md"
       ]
     },
     {
@@ -555,7 +556,8 @@
         "prototype/sequence-curve-editor.js",
         "prototype/curve-sampling.js",
         "prototype/timeline-editor.js",
-        "docs/WEIGHTED_CURVES.md"
+        "docs/WEIGHTED_CURVES.md",
+        "docs/CURVE_INFINITY.md"
       ]
     },
     {
