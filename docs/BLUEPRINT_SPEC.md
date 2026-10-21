@@ -582,3 +582,5 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 1266: 타임라인과 시퀀스가 공용 Hermite 표본 계산을 사용해요. 공용 커브 편집기의 선택 키에 실제 진입/진출 핸들을 표시하며 드래그는 연결 기울기, Alt/Break는 한쪽만 변경해요. 선택하지 않은 축의 자동 기울기를 보존해요. 시퀀스의 기존 LevelSequence 노드·C++ 재생 경로가 에셋의 기준점·커브를 읽어요. 사용자 정의 구조체/반환 참조 등의 CPP 잔여는 유지해요.
 
 1316–1322: 공용 Timeline/Curve/Sequence/골격 메타데이터에 Clamped Auto·선택 곡선 도구·단축키와 원자적 AI 편집을 연결해요. UI::GetListItems/MoveListItems/ReparentTreeItems/TransferListItems/TransferTreeItems는 같은 C++/노드 서비스로 호출해요. C++ 쓰기는 기존 명령 큐, 읽기는 마지막 완료 스냅샷이에요. [곡선 계약](CURVE_TOOLS.md)·[목록 코드 API](LIST_CODE_API.md)의 범위를 따라요. 전체 기능/네이티브 플랫폼 완료를 뜻하지 않아요.
+
+1342–1347: Timeline/Curve/Sequence/골격 공통 키 클립보드·상대 시간/전체 채널/핸들 보존, 입력칸 분리·프로필/단축키 재지정, 비동기 소유권 가드·AI copy/cut/paste/revision/dryRun/Undo. Sequence 바깥/내부 곡선 재생 헤드 양방향 동기화. [계약](CURVE_TOOLS.md)을 따른다.

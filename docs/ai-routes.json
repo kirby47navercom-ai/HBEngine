@@ -45,13 +45,22 @@
         "브라우저",
         "editor",
         "dock",
-        "shortcut"
+        "shortcut",
+        "curveClipboard",
+        "pasteCurveKeys",
+        "곡선 복사",
+        "키 붙여넣기",
+        "재생 헤드"
       ],
       "paths": [
         "prototype/app.js",
         "prototype/dock-layout.js",
         "prototype/editor-shortcuts.js",
-        "prototype/asset-editor-ui.js"
+        "prototype/asset-editor-ui.js",
+        "prototype/curve-clipboard.js",
+        "prototype/curve-clipboard-authoring.js",
+        "prototype/timeline-editor.js",
+        "docs/CURVE_TOOLS.md"
       ]
     },
     {
@@ -547,7 +556,12 @@
         "키 축약",
         "Euler",
         "부분 베이크",
-        "rangeOnly"
+        "rangeOnly",
+        "curveClipboard",
+        "pasteCurveKeys",
+        "곡선 복사",
+        "키 붙여넣기",
+        "재생 헤드"
       ],
       "paths": [
         "prototype/animation-graph-runtime.js",
@@ -569,7 +583,9 @@
         "prototype/curve-tools.js",
         "prototype/skeletal-curve-editor.js",
         "prototype/animation-retarget-editor.js",
-        "docs/CURVE_TOOLS.md"
+        "docs/CURVE_TOOLS.md",
+        "prototype/curve-clipboard.js",
+        "prototype/curve-clipboard-authoring.js"
       ]
     },
     {
@@ -923,14 +939,23 @@
         "automation",
         "transaction",
         "revision",
-        "document.patch"
+        "document.patch",
+        "curveClipboard",
+        "pasteCurveKeys",
+        "곡선 복사",
+        "키 붙여넣기",
+        "재생 헤드"
       ],
       "paths": [
         "tools/hb.mjs",
         "tools/editor-automation.mjs",
         "prototype/automation.js",
         "tools/asset-transaction.mjs",
-        "tools/engine-status.mjs"
+        "tools/engine-status.mjs",
+        "prototype/curve-clipboard.js",
+        "prototype/curve-clipboard-authoring.js",
+        "prototype/timeline-editor.js",
+        "docs/CURVE_TOOLS.md"
       ]
     },
     {
@@ -957,6 +982,39 @@
         "docs/research/ENGINE_STATUS.json",
         "docs/research/RESEARCH_STATUS.md",
         "docs/research/ANALYSIS_PROTOCOL.md"
+      ]
+    }
+  ],
+  "focusRoutes": [
+    {
+      "keywords": [
+        "curveClipboard",
+        "pasteCurveKeys",
+        "editAssetCurveKeys",
+        "sequence.curve.keys",
+        "skeletal.curve.keys",
+        "곡선 복사",
+        "키 붙여넣기"
+      ],
+      "paths": [
+        "prototype/curve-clipboard.js",
+        "prototype/curve-clipboard-authoring.js",
+        "prototype/timeline-editor.js",
+        "tools/editor-automation.mjs",
+        "docs/CURVE_TOOLS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "stateSerialization",
+        "SharedStatePackets",
+        "interestRows",
+        "initiallyHiddenRows"
+      ],
+      "paths": [
+        "tools/multiplayer-server.mjs",
+        "tools/network-state-packets.mjs",
+        "docs/NETWORK_DELETIONS.md"
       ]
     }
   ]

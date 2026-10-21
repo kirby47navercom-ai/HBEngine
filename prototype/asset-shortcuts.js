@@ -27,7 +27,7 @@ export function dispatchAssetShortcut(id,editor,event){
   if(actions[id]){actions[id]();return true;}
  }
  if(id.startsWith('curve')&&typeof editor.getNode==='function'){
-  const actions={curveDelete:()=>editor.removeKeys(),curveAdd:()=>editor.addKey(editor.time),curveFit:()=>{editor.fit();editor.draw();},curveFocus:()=>{editor.fit(true);editor.draw();},curvePlay:()=>{editor.playing=editor.playing?0:1;}};
+  const mode={curveModeAuto:'auto',curveModeUser:'user',curveModeBreak:'break',curveModeLinear:'linear',curveModeConstant:'constant',curveModeClampedAuto:'clampedAuto'}[id];if(mode){editor.editKeys({dataset:{interpolation:''},value:mode});return true;}const actions={curveCopy:()=>editor.copyKeys(),curveCut:()=>editor.copyKeys(true),curvePaste:()=>editor.pasteKeys(),curveSelectAll:()=>editor.selectAll(),curveFocusPlayhead:()=>editor.focusPlayhead(),curveDelete:()=>editor.removeKeys(),curveAdd:()=>editor.addKey(editor.time),curveFit:()=>{editor.fit();editor.draw();},curveFocus:()=>{editor.fit(true);editor.draw();},curvePlay:()=>{editor.playing=editor.playing?0:1;}};
   if(actions[id]){actions[id]();return true;}
  }
  if(id.startsWith('animation')&&kind==='animgraph'){

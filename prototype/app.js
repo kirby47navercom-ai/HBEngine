@@ -1,3 +1,4 @@
+import {editAssetCurveKeys} from './curve-clipboard-authoring.js';
 import {editCurveKeys} from './curve-tools.js';
 import {configureSkeletalCurve} from './skeletal-curve-editor.js';
 import {configureSequenceOrigin} from './sequence-origin.js';
@@ -113,7 +114,7 @@ import { detailsMarkup, componentDefaults } from './blueprint-details.js';
 import {parseNativeHeader,nativeExample,nativeEntries,nativeMember,nativeRequestWorld,nativeTargetPin} from './native-model.js';
 import {createCorePreview,evaluateCoreNode} from './core-preview.js';
 import {DockLayout,restoreLayout,validLayout,defaultDockRatio} from './dock-layout.js';
-import {TimelineEditor} from './timeline-editor.js';
+import {TimelineEditor,timelineEditorAt} from './timeline-editor.js';
 import {bindRuntimePointer} from './runtime-input.js';
 import {BlueprintRuntime} from './blueprint-runtime.js';
 import {ProjectBrowser,projectBrowserOwnsKey,savedBrowserIds,editorRequest,fileUrl,droppedFiles} from './project-browser.js';
@@ -685,7 +686,7 @@ async function traceBlueprint(){if(running&&runtime.pending){runtime.continue(tr
 function preset(name){remember();const surface=editingSurface(),values={moss:['#889878',.72,.08],copper:['#bb7959',.23,.93],ceramic:['#ded8c6',.24,.02],glass:['#91bfc6',.08,.30]}[name];[surface.color,surface.roughness,surface.metalness]=values;$$('[data-preset]').forEach(b=>b.classList.toggle('active',b.dataset.preset===name));updateSurface();changed();}
 
 function renderBlueprintGraph(){
-  for(const [id] of timelineWindows)if(!graphs.blueprint.nodes.some(n=>'timeline:'+n.id===id)){dock?.remove(id);timelineWindows.delete(id);}
+  for(const [id,editor] of timelineWindows){const split=id.lastIndexOf(':'),owner=assetDocs.items.get(id.slice(9,split)),nodes=owner?.path===assetDocs.active?graphs.blueprint.nodes:owner?.data.nodes;const node=nodes?.find(n=>n.id===id.slice(split+1)&&n.key==='timeline');if(!node){editor.dispose();dock?.remove(id);timelineWindows.delete(id);}else if(owner.path===assetDocs.active&&editor.renderedTimeline!==node.timeline){editor.selection.clear();editor.render();}}
   const graph=currentGraph(),container=$('#blueprint-graph');
   selectedNodes=new Set([...selectedNodes].filter(id=>graph.nodes.some(n=>n.id===id)));updateGraphHeading();
   const inlineValue=(p,n,direction)=>{if(direction!=='in'||p.array||!['float','int','bool','string'].includes(p.type)||graph.edges.some(e=>e.to.node===n.id&&e.to.pin===p.id))return '';const value=defaultInputValue(n,p);return `<input class="bp-inline-value" data-inline-node="${n.id}" data-inline-pin="${p.id}" type="${p.type==='bool'?'checkbox':p.type==='string'?'text':'number'}" ${p.type==='bool'?(value?'checked':''):`value="${escapeHtml(value)}"`} ${p.type==='float'?'step=".1"':p.type==='int'?'step="1"':'maxlength="1000"'} aria-label="${escapeHtml(nodeTitle(n,graph)+' '+p.label+' 값')}">`;};
@@ -706,8 +707,8 @@ function renderBlueprintGraph(){
 function openTimeline(id=selectedNode){
   const root=graphs.blueprint,node=root.nodes.find(n=>n.id===id);if(!node||node.key!=='timeline')return;
   const doc=assetDocs.current;const windowId='timeline:'+doc.path+':'+id,existing=timelineWindows.get(windowId);if(existing){existing.render();dock.open(windowId);return;}
-  const element=document.createElement('div');const editor=new TimelineEditor(element,()=>doc.data.nodes.find(n=>n.id===id),{before:remember,error:notify,change:()=>{changed();renderBlueprintGraph();if(workspace==='blueprint')renderBlueprintInspector();},removePin:pin=>{root.edges=root.edges.filter(e=>!(e.from.node===id&&(e.from.pin===pin||e.from.pin.startsWith(pin+'.'))));renderBlueprintGraph();}});
-  timelineWindows.set(windowId,editor);dock.add({id:windowId,title:node.title||'Timeline',element},dock.leaves().find(l=>l.tabs.includes('blueprint'))||dock.leaves()[0]);
+  if(!doc.data.nodes.some(n=>n.id===id&&n.key==='timeline'))return notify('상속 타임라인은 원본 블루프린트에서 편집하세요.');const element=document.createElement('div');const editor=new TimelineEditor(element,()=>assetDocs.active===doc.path?graphs.blueprint.nodes.find(n=>n.id===id):doc.data.nodes.find(n=>n.id===id),{enabled:()=>!running&&assetDocs.active===doc.path,before:remember,error:notify,change:()=>{changed();renderBlueprintGraph();if(workspace==='blueprint')renderBlueprintInspector();},removePin:pin=>{root.edges=root.edges.filter(e=>!(e.from.node===id&&(e.from.pin===pin||e.from.pin.startsWith(pin+'.'))));renderBlueprintGraph();}});
+  timelineWindows.set(windowId,editor);dock.add({id:windowId,title:node.title||'Timeline',element,dispose:()=>{editor.dispose();timelineWindows.delete(windowId);}},dock.leaves().find(l=>l.tabs.includes('blueprint'))||dock.leaves()[0]);
 }
 function createViewportWindow(target){
   const id='viewport:'+crypto.randomUUID(),element=document.createElement('div');element.className='workspace-view';const content=document.createElement('div');content.className='extra-viewport';element.append(content);const canvas=document.createElement('canvas');canvas.ariaLabel='추가 장면 뷰포트';content.append(canvas);
@@ -1168,7 +1169,7 @@ function openShortcutSettings(){
   const element=document.createElement('div'),editor=shortcutEditor(element,editorShortcuts,{error:notify});dock.add({id:'shortcuts',kind:'settings',title:'단축키',element,shortcutEditor:editor,dispose:()=>editor.dispose()});
 }
 function dispatchEditorShortcut(command,event){
-  const id=command.id;if(componentPreviews.get(focusedWindow)?.shortcut(id))return;if(workspace==='prefab'&&focusedWindow===assetPanes.get(assetDocs.active)?.id&&assetPanes.get(assetDocs.active).editor.shortcut(id))return; if(dispatchAssetShortcut(id,focusedWindow==='material'?materialEditor:assetPanes.get(assetDocs.active)?.editor,event))return;
+  const id=command.id,curveShortcutEditor=timelineEditorAt(event?.target)||timelineWindows.get(focusedWindow);if(id.startsWith('curve')&&curveShortcutEditor&&dispatchAssetShortcut(id,curveShortcutEditor,event))return;if(componentPreviews.get(focusedWindow)?.shortcut(id))return;if(workspace==='prefab'&&focusedWindow===assetPanes.get(assetDocs.active)?.id&&assetPanes.get(assetDocs.active).editor.shortcut(id))return; if(dispatchAssetShortcut(id,focusedWindow==='material'?materialEditor:assetPanes.get(assetDocs.active)?.editor,event))return;
   if(id==='close')return ['shortcuts','build-profiles'].includes(focusedWindow)?dock.close(focusedWindow):closeDocument(assetDocs.active);
   if(id==='save'){const panel=dock.entries.get(focusedWindow)?.buildPanel;return panel?panel.save().catch(error=>notify(error.message)):save();}
   if(id==='build')return openBuildProfiles();
@@ -1189,7 +1190,7 @@ function ownerEditorCommand(id){if(running||!['save','undo','redo'].includes(id)
 document.addEventListener('keydown',e=>{
   if(e.defaultPrevented||e.isComposing||dock?.entries.get('shortcuts')?.shortcutEditor?.recording())return;
   if(e.target.closest?.('[data-project-browser]')&&projectBrowserOwnsKey(e))return;
-  const scope=focusedWindow==='blueprint'?'blueprint':focusedWindow==='material'?'material':focusedWindow==='scene'||focusedWindow.startsWith('viewport:')?'viewport':assetShortcutScope(assetPanes.get(assetDocs.active),assetDocs.current?.kind,focusedWindow,e.target),editing=!!e.target.closest?.('input,textarea,select,[contenteditable]'),dialog=[...new Set([document,e.target.ownerDocument||document])].some(doc=>[...doc.querySelectorAll('dialog')].some(d=>d.open)),navigating=workspace==='prefab'?!!assetPanes.get(assetDocs.active)?.editor?.preview?.controls.isFlying:scope==='viewport'&&!!(extraViewports.find(v=>v.id===focusedWindow)?.controls||orbit)?.isFlying||['modeling','world'].includes(scope)&&!!assetPanes.get(assetDocs.active)?.editor?.controls?.isFlying;
+  const curveShortcutEditor=timelineEditorAt(e.target),scope=curveShortcutEditor?'curve':focusedWindow==='blueprint'?'blueprint':focusedWindow==='material'?'material':focusedWindow==='scene'||focusedWindow.startsWith('viewport:')?'viewport':assetShortcutScope(assetPanes.get(assetDocs.active),assetDocs.current?.kind,focusedWindow,e.target),editing=!!e.target.closest?.('input,textarea,select,[contenteditable]'),dialog=[...new Set([document,e.target.ownerDocument||document])].some(doc=>[...doc.querySelectorAll('dialog')].some(d=>d.open)),navigating=workspace==='prefab'?!!assetPanes.get(assetDocs.active)?.editor?.preview?.controls.isFlying:scope==='viewport'&&!!(extraViewports.find(v=>v.id===focusedWindow)?.controls||orbit)?.isFlying||['modeling','world'].includes(scope)&&!!assetPanes.get(assetDocs.active)?.editor?.controls?.isFlying;
   const resolved=editorShortcuts.resolve(e,{scope,editing,dialog,navigating,running,contexts:assetShortcutContexts(assetPanes.get(assetDocs.active)?.editor,e)});if(!resolved.consume)return;e.preventDefault();e.stopImmediatePropagation();if(e.repeat&&!resolved.command?.repeat)return;if(resolved.command)try{dispatchEditorShortcut(resolved.command,e);}catch(error){notify(error.message);}
 },true);
 document.addEventListener('keydown',e=>{
@@ -1361,7 +1362,7 @@ function ensureAssetPane(doc){
   else if(['animation','curve'].includes(doc.kind)){
     element.className='workspace-view asset-curve-workspace';
     const curve=document.createElement('div');element.append(curve);
-    pane.editor=new TimelineEditor(curve,()=>doc.data,{managedShortcuts:true,before:remember,change:()=>{changed();renderAssetInspector();},error:notify});
+    pane.editor=new TimelineEditor(curve,()=>doc.data,{managedShortcuts:true,enabled:()=>!running,before:remember,change:()=>{changed();renderAssetInspector();},error:notify});
     if(doc.kind==='animation'){
       const preview=document.createElement('div');preview.className='asset-animation-preview';element.prepend(preview);const canvas=document.createElement('canvas');canvas.ariaLabel='애니메이션 미리보기';preview.append(canvas);
       const renderer=new THREE.WebGLRenderer({canvas,antialias:true}),world=new THREE.Scene(),camera=new THREE.PerspectiveCamera(40,1,.1,100);world.background=new THREE.Color('#20242b');camera.position.set(4,3,5);world.add(new THREE.HemisphereLight(0xe8f1ff,0x293546,2));const light=new THREE.DirectionalLight(0xffffff,3);light.position.set(3,6,4);world.add(light);world.add(new THREE.GridHelper(12,12,0x65738b,0x343e4e));
@@ -1815,6 +1816,8 @@ const editorCommandMethods={
   'scene.blueprint.override':async params=>{const {doc}=await automationDocument(params,true),object=doc.data.objects?.find(o=>o.id===params.object);if(!object?.blueprintAsset)throw Error('블루프린트 인스턴스가 필요해요.');const root=await blueprintWorkspace.prepare(object.blueprintAsset);return automationAuthoringEdit(params,'scene',data=>{editBlueprintInstance(root,data.objects.find(o=>o.id===params.object),params.kind,params.id,params.value,{reset:params.reset});return {object:params.object};});},
   'sequence.origin.edit':params=>automationAuthoringEdit(params,'sequenceasset',data=>({origin:configureSequenceOrigin(data,params.origin)})),
   'sequence.curve.edit':params=>automationAuthoringEdit(params,'sequenceasset',data=>({key:configureSequenceCurve(data,params)})),
+  'sequence.curve.keys':params=>automationAuthoringEdit(params,'sequenceasset',data=>editAssetCurveKeys('sequenceasset',data,params)),
+  'skeletal.curve.keys':params=>automationAuthoringEdit(params,'skeletalclip',data=>editAssetCurveKeys('skeletalclip',data,params)),
   'sequence.curve.tool':params=>automationAuthoringEdit(params,'sequenceasset',data=>{const track=data.tracks.find(t=>t.id===params.track);if(!track||track.quaternionInterpolation||!sequenceCurveType(track))throw Error('연속 값 트랙을 선택하세요.');if(params.operation==='eulerFilter'&&track.type!=='rotation')throw Error('Euler 필터는 회전 트랙에 적용하세요.');const next=editCurveKeys(track,params);Object.assign(track,next);return {keys:track.keys.length};}),
   'skeletal.curve.edit':params=>automationAuthoringEdit(params,'skeletalclip',data=>({curve:configureSkeletalCurve(data,params).name})),
   'sequence.section.edit':params=>automationAuthoringEdit(params,'sequenceasset',data=>({section:editSequenceSection(data,{operation:params.operation,id:params.id,section:params.section})})),

@@ -24,3 +24,16 @@ AI는 `sequence.curve.tool`, `skeletal.curve.edit`를 사용해요. `path`, `exp
 참고한 지정 본문은 [Unity 6000.0 곡선의 tangent mode](https://docs.unity3d.com/6000.0/Documentation/Manual/EditingCurves.html)의 Clamped Auto/수동 전환과 [Epic 5.8 Curve Editor](https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-curve-editor-in-unreal-engine)의 도구·선택·베이크·축약이에요. [Unity TangentMode API](https://docs.unity.com/en-us/engine/6000.7/script-reference/unityeditor/animationutility/tangentmode)는 enum 정의·필드만 대조했어요. 지정 절을 읽은 범위이며 전체 문서/API 분석 완료는 아니에요. 구현 수식과 필터는 HB 자체 코드이고 UE/Unity의 비공개 내부 수식 복제라고 주장하지 않아요.
 
 쿼터니언·이산 곡선, 임의 시간 경계의 가중 Bézier 분할 베이크, 다중 곡선 동시 편집, FFT와 고급 리그 Euler 필터 등은 별도 잔여예요. 새 증거는 ENGINE_WORK 후속 기록을 확인해요.
+
+
+## 키 클립보드와 공통 조작
+
+선택 키는 Ctrl+C/X/V와 곡선 우클릭 메뉴로 복사·잘라내기·붙여넣기해요. 첫 복사 키를 현재 재생 헤드에 놓고 상대 시간 간격, 전체 채널 값, 보간·탄젠트·가중치를 보존해요. 같은 자료형의 다른 곡선에도 붙일 수 있어요. 같은 시간의 키는 교체하고 숫자 오차만 있는 동일 시간도 중복 키로 만들지 않아요. 범위 밖·자료형 불일치·키 예산 초과는 붙여넣기 전체를 거절해요. 단일 채널만 복사하는 명령은 아니에요.
+
+일반 곡선·시퀀스/골격 내부 곡선·BP 타임라인은 공통 단축키 프로필을 사용해요. A/Home,1..6,복사 명령도 재지정할 수 있고, 기존 명시적 사용자 배정이 새 기본키와 충돌하면 사용자 배정을 유지해요. 입력칸의 텍스트 복사는 그대로예요. 시퀀스의 위쪽 시간 제어와 아래 곡선 재생 헤드는 양방향으로 동기화해요. 비동기 클립보드 처리가 끝나기 전에 문서·트랙·타임라인이 바뀌거나 창이 닫히면 변경을 적용하지 않아요.
+
+페이로드는 hb.curve.keys version1의 자료형·상대 시간 키 JSON이에요. 텍스트8MiB, 개수는 소유자 예산을 따르며 절대 상한65,536키예요. OS 클립보드 권한이 없으면 현재 편집기 세션의 마지막 키 복사본을 사용해요. AI는 OS 클립보드 없이 sequence.curve.keys / skeletal.curve.keys의 copy/cut/paste와 typed payload를 사용해요. copy는 revision·dirty·Undo를 만들지 않고, 쓰기는 기존 revision·dryRun·Undo 계약을 공유해요. 단일 곡선 선택용이며 다중 곡선 동시 라우팅은 별도 잔여예요.
+
+[Epic Curve Editor Copy and Paste](https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-curve-editor-in-unreal-engine)의 지정 본문에서 첫 키를 재생 헤드에 놓는 상대 시간과 복사/잘라내기 조작을 추가로 대조했어요. 다른 절과 전체 API 완료를 뜻하지 않아요.
+
+BP 타임라인 창은 문서 경로와 노드 ID로 소유권을 확인하고 현재 그래프를 직접 편집해요. 키 수정 때 창을 닫거나 이전 그래프 값으로 덮어쓰지 않아요. Undo/Redo는 열린 창의 키 표시를 갱신하고, 노드 삭제는 창·리스너·ResizeObserver·키보드 검색 등록을 해제해요. 상속받은 타임라인의 원본 편집은 부모 블루프린트에서 해요.

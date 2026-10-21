@@ -13,7 +13,10 @@ export const assetShortcutCommands=[
 
  ...['Copy','Cut','Paste','Duplicate','Delete','SelectAll'].map((action,i)=>command('material'+action,'머테리얼 '+['복사','잘라내기','붙여넣기','복제','삭제','모두 선택'][i],'material',i===4?['Delete','Backspace']:['Primary+Key'+['C','X','V','D','','A'][i]])),
  command('materialFocus','머테리얼 선택 프레이밍','material',['KeyF']),command('materialFit','머테리얼 전체 프레이밍','material',['Home']),command('materialPreview','머테리얼 선택 노드 미리보기','material',['Primary+KeyT']),
- command('curveDelete','커브 선택 키 삭제','curve',['Delete']),command('curveAdd','커브 현재 시간 키 추가','curve',['Enter']),command('curveFit','커브 전체 프레이밍','curve',['Home','KeyA']),command('curveFocus','커브 선택 키 프레이밍','curve',['KeyF']),command('curvePlay','커브 미리보기 재생·정지','curve',['Space']),
+ command('curveDelete','커브 선택 키 삭제','curve',['Delete']),command('curveAdd','커브 현재 시간 키 추가','curve',['Enter']),command('curveFit','커브 전체 프레이밍','curve',['Home']),command('curveFocus','커브 선택 키 프레이밍','curve',['KeyF']),command('curvePlay','커브 미리보기 재생·정지','curve',['Space']),
+ ...['Copy','Cut','Paste','SelectAll'].map((action,i)=>command('curve'+action,'커브 키 '+['복사','잘라내기','붙여넣기','모두 선택'][i],'curve',['Primary+Key'+['C','X','V','A'][i]])),
+ command('curveFocusPlayhead','커브 재생 헤드 중심','curve',['KeyA']),
+ ...['Auto','User','Break','Linear','Constant','ClampedAuto'].map((mode,i)=>command('curveMode'+mode,'커브 키 '+mode,'curve',['Digit'+(i+1)])),
  command('animationDelete','애니메이션 그래프 선택 삭제','animation',['Delete']),command('animationFocus','애니메이션 그래프 프레이밍','animation',['KeyF']),command('animationPreview','애니메이션 그래프 미리보기','animation',[]),
  command('gameplayDelete','행동 그래프 선택 삭제','gameplay',['Delete']),command('gameplayFocus','행동 그래프 프레이밍','gameplay',[]),
  command('sequencePlay','시퀀스 미리보기 재생·정지','sequencer',['Space']),command('sequenceFirst','시퀀스 시작으로','sequencer',['Home']),command('sequenceLast','시퀀스 끝으로','sequencer',['End']),

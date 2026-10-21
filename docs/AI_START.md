@@ -52,3 +52,5 @@ node tools/hb.mjs schema --section commands --url http://127.0.0.1:포트
 기존 검사 증거는 재사용하고 여러 변경을 구현한 뒤 영향을 받는 검사만 묶어서 실행해요. `checkCandidates`는 파일명 기준 후보이며 실행 인자·비용·격리 여부는 해당 도구에서 확인해요. 성능 수치는 장치·경로·측정 범위 없이 FPS 개선으로 해석하지 않아요.
 
 사용자 게임·`%LOCALAPPDATA%/HBEngine/User`·실행 중인 창/서버는 검사에 사용하거나 종료하지 않아요. 업데이트 요청 없이 설치본을 바꾸지 않아요. Versions는 한 개 유지하되 실행 중인 버전은 보호해요. 작업 종료 시 현재 인계만 짧게 갱신하고 긴 실행 이력은 증거 문서로 연결해요.
+
+정확한 작업·명령·심볼에 연결한 docs/ai-routes.json의 focusRoutes는 넓은 분야 기본 파일보다 앞서 관련 구현을 보여줘요. 예: sequence.curve.keys/editAssetCurveKeys와 stateSerialization/SharedStatePackets. 전체 문서 선행 독서나 실행 검사는 추가하지 않아요.

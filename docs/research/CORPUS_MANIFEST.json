@@ -5175,5 +5175,20 @@
     "fullCorpusAnalysis": false,
     "scope": "Existing-key bounded partial bake with effective boundary/outside-endpoint tangent preservation; coupled XYZ-equivalent/360-wrap filter and visible curve track selection. HB own math verified against quaternion orientation, not a claim of UE internal algorithm parity.",
     "remaining": "FFT, arbitrary-time weighted Bezier splitting, global winding/rig-specific Euler choices, other documented APIs and full corpus analysis remain."
+  },
+  "supplemental1343": {
+    "record": "docs/CURVE_TOOLS.md",
+    "fullCorpusAnalysis": false,
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-curve-editor-in-unreal-engine",
+        "version": "5.8",
+        "sections": [
+          "Copy and Paste, displayed lines158–169"
+        ],
+        "remaining": "Multi-curve routing and other page/API operations not promoted."
+      }
+    ],
+    "implementation": "Typed single-curve relative-time copy/cut/paste, first key at playhead, full values/handles preserved; common reassignable shortcuts and owner/revision guards."
   }
 }
