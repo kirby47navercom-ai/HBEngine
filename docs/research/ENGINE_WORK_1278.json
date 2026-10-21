@@ -748,7 +748,6 @@
     }
   ],
   "sourceGameGates": [],
-  "pendingInstalledGameGate": "tools/check-list-transfer-1275-window.mjs --player --executable <installation>/HBEngine.exe",
   "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -799,8 +798,8 @@
     "drag": "One same-document WeakMap token only while dragging. Source changes/disable/dispose cancel; recycled row pool retained.",
     "legacyObserved": "1080 same-window 100000 selection retains pool8; not game FPS/RAM/device benchmark."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1272.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1280.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "디자이너 BP/C++ PreConstruct 실행 샌드박스·중첩 시각 위젯의 별도 네이티브 클래스 객체/생명주기·조명/깊이 차폐를 받는3D UI 메시",
@@ -808,5 +807,17 @@
     "대규모 UI의 장시간 풀/배치·전체 입력·기기별 성능 검증",
     "외부 창/다른 종류/같은 source를 공유하는 별도 목록의 이동·전용 C++/BP 이동 API·임의 외부 비동기 hook rollback"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/list-transfer-1275-V9hTcI/acceptance.json",
+      "sha256": "567848deded8379aad4040a6c579e6a85a8aa07b2b11359294ae47c46dd5a50f",
+      "scope": "Actual isolated packaged D3D11 game: BP UI::Show creates authored lists, synthetic HTML drag/drop reparents a/b under q then transfers the subtree under r; flat duplicate values transfer, real gameplay UI snapshots retain both changed sources and targets. No native rebuild/physical touch/FPS claim.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\0905a17245e24ec7\\HBEngine.exe"
+      ]
+    }
+  ]
 }

@@ -1,0 +1,145 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "461ff7aa4228377396c8f69443b34c64d0e42a6d",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0905a17245e24ec7",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\0905a17245e24ec7\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\0905a17245e24ec7\\HBEngine.exe",
+  "bundleHash": "0905a17245e24ec74c4a97763af9c8b14afaecc80c4d57d4f5da9a2ba8e6e0c0",
+  "files": 3969,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3961,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0247274dedde87b2",
+        "bytes": 186285111,
+        "manifestSHA256": "92c62cae6289ee157f928f568baab0d81fb6233fa8bed8aac268b6670f733d86"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T15:50:40.3839654Z",
+    "bytes": 186285111,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "0905a17245e24ec7"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 648,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
+  "installedGates": [
+    {
+      "path": "native/build/list-transfer-1275-V9hTcI/acceptance.json",
+      "sha256": "567848deded8379aad4040a6c579e6a85a8aa07b2b11359294ae47c46dd5a50f",
+      "scope": "Actual isolated packaged D3D11 game: BP UI::Show creates authored lists, synthetic HTML drag/drop reparents a/b under q then transfers the subtree under r; flat duplicate values transfer, real gameplay UI snapshots retain both changed sources and targets. No native rebuild/physical touch/FPS claim.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\0905a17245e24ec7\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\0905a17245e24ec7\\",
+    "elapsedMs": 196.89,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\0905a17245e24ec7",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "0905a17245e24ec74c4a97763af9c8b14afaecc80c4d57d4f5da9a2ba8e6e0c0",
+      "installedAt": "2026-10-21T15:50:37.108Z",
+      "manifestFiles": 3969,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3969,
+  "versions": [
+    "0905a17245e24ec7"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1280-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/list-transfer-1274-QBivvV/acceptance.json",
+      "sha256": "6b69cbdebbe496c266913825f3cc4ac224826829dce27d1aa2e5a453aaab3912",
+      "scope": "11 pure groups: immutable ancestor paths/stable subtree, no-op/sibling boundaries, cycles/duplicate/depth guards, keyboard destinations, duplicate primitive/reference/index preservation, typed authored flags/groups."
+    },
+    {
+      "path": "native/build/list-transfer-1275-M5yWOV/acceptance.json",
+      "sha256": "17e728b89fc34b7032c094a5fb2ed600bd0b6ed5256c2abc88b9b4a4fb460e60",
+      "scope": "Final actual owned hidden editor: inspector/Undo, WidgetSystem/virtual DOM synthetic tree reparent/cross-tree/flat duplicate moves, target refusal/group/source replacement/disable, selected IDs/focus/text existing getter, paired VM metadata and release. Same-window legacy1080 100k selection/pool8/composite inputs and existing reorder."
+    },
+    {
+      "path": "native/build/ai-context-1278.json",
+      "sha256": "fb9743f7bb20e00e91751fa23ba5c31baab4c0ed36979e1f630eecaf8a5ed10e",
+      "scope": "Updated route CLI and scoped schema/compact handoff; no actual AI client or hardware claim."
+    },
+    {
+      "batch": "native/build/list-transfer-batch-1277.json",
+      "args": [
+        "tools/check-list-editing-1079.mjs"
+      ],
+      "stdoutSHA256": "2ab82b0784cf35ec0e2f58366b127ece7550387da30ea2225314f131ddf04a67",
+      "scope": "Initial grouped passed legacy/widget/context result retained; only failed keyboard and affected UI refinements repeated."
+    },
+    {
+      "batch": "native/build/list-transfer-batch-1277.json",
+      "args": [
+        "tools/check-engine-174.mjs"
+      ],
+      "stdoutSHA256": "27d17d9bd29f94241d0c2e017b6f261cae222e2e69d5d1534d43954e10c946f8",
+      "scope": "Initial grouped passed legacy/widget/context result retained; only failed keyboard and affected UI refinements repeated."
+    },
+    {
+      "batch": "native/build/list-transfer-batch-1277.json",
+      "args": [
+        "tools/check-engine-181.mjs"
+      ],
+      "stdoutSHA256": "16ab4a7c19d3ff08231bb769f1a3d5d9f05849626103ccd8b0fc5999947fde3f",
+      "scope": "Initial grouped passed legacy/widget/context result retained; only failed keyboard and affected UI refinements repeated."
+    },
+    {
+      "batch": "native/build/list-transfer-batch-1277.json",
+      "args": [
+        "tools/check-ai-context.mjs"
+      ],
+      "stdoutSHA256": "cb32b592ff49559f421bc33ea3214fc9438cd9e9af607ffd9c5da2c77a064926",
+      "scope": "Initial grouped passed legacy/widget/context result retained; only failed keyboard and affected UI refinements repeated."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Virtual tree reparent and grouped list transfers installed. Pure11 and existing widget regressions, source real editor settings/Undo/common WidgetSystem and same-window1080 pool8 passed. One installed actual D3D11 game uses Blueprint UI::Show and transfers subtrees/duplicate flat values. All native16/Struct.hpp/CPP21/Player1223/Host1041 unchanged. Manifest/read-only User/links/Versions1; no native build/renderer matrix/FPS/physical touch claim.",
+  "version": 1,
+  "date": "2026-10-21T15:52:36.100Z",
+  "work": "docs/research/ENGINE_WORK_1278.json",
+  "distributionSync": "native/build/distribution-1279-sync.json",
+  "cachePrune": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

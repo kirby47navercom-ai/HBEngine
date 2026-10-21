@@ -2933,11 +2933,11 @@
     "scope": "Virtual tree reparent and grouped list transfers with staged two-side validation, focus/selection and editor/AI authoring; native/renderer formulas unchanged."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1272.json",
-    "sourceCommit": "412e9ed941055153791835049e299b0d913a1641",
-    "bundleHash": "0247274dedde87b241a98f90cce17fedaf28e10649d3ae11cafe4f70edfcce47",
+    "receipt": "docs/research/USER_INSTALL_1280.json",
+    "sourceCommit": "461ff7aa4228377396c8f69443b34c64d0e42a6d",
+    "bundleHash": "0905a17245e24ec74c4a97763af9c8b14afaecc80c4d57d4f5da9a2ba8e6e0c0",
     "verified": true,
     "versions": 1,
-    "scope": "Sequence inherited/actor origins and Hermite/tangent authoring installed. New source17 and legacy30 groups, actual source editor drag/layout/AI/Undo/Play passed. One actual installed D3D11 game checks curved local-time child plus nested rotated origins. All native16/Struct.hpp/CPP21/Player1223/Host1041 unchanged; no renderer matrix, GL compile timing, FPS or mobile device claim. Manifest/read-only User/links/Versions1."
+    "scope": "Virtual tree reparent and grouped list transfers installed. Pure11 and existing widget regressions, source real editor settings/Undo/common WidgetSystem and same-window1080 pool8 passed. One installed actual D3D11 game uses Blueprint UI::Show and transfers subtrees/duplicate flat values. All native16/Struct.hpp/CPP21/Player1223/Host1041 unchanged. Manifest/read-only User/links/Versions1; no native build/renderer matrix/FPS/physical touch claim."
   }
 }
