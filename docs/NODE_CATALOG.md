@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **829개**, 실제 공통 C++ API **739개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **834개**, 실제 공통 C++ API **744개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -45,7 +45,7 @@
 | 투사체 | 4 | 4 |
 | 카메라 | 4 | 4 |
 | UI|위젯 | 1 | 1 |
-| UI|목록 | 1 | 1 |
+| UI|목록 | 6 | 6 |
 | UI|지역화 | 3 | 3 |
 | 게임플레이 | 9 | 9 |
 | 오브젝트 풀 | 3 | 3 |
@@ -768,6 +768,11 @@
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
+| uiGetListItems | Get List Items / 목록 데이터 가져오기 | target: object, instance: string, element: string | return: string | hb::UI::GetListItems | 공통 C++ + VM |
+| uiMoveListItems | Move List Items / 목록 항목 이동 | exec: exec, target: object, instance: string, element: string, indices: int[], destination: int | then: exec | hb::UI::MoveListItems | 공통 C++ + VM |
+| uiReparentTreeItems | Reparent Tree Items / 트리 항목 부모 변경 | exec: exec, target: object, instance: string, element: string, ids: string[], parent: string, destination: int | then: exec | hb::UI::ReparentTreeItems | 공통 C++ + VM |
+| uiTransferListItems | Transfer List Items / 다른 목록으로 항목 이동 | exec: exec, target: object, instance: string, element: string, indices: int[], destinationInstance: string, destinationElement: string, destination: int | then: exec | hb::UI::TransferListItems | 공통 C++ + VM |
+| uiTransferTreeItems | Transfer Tree Items / 다른 트리로 항목 이동 | exec: exec, target: object, instance: string, element: string, ids: string[], destinationInstance: string, destinationElement: string, parent: string, destination: int | then: exec | hb::UI::TransferTreeItems | 공통 C++ + VM |
 | uiSetListItems | Set List Items / 가상 목록 데이터 지정 | exec: exec, target: object, instance: string, element: string, json: string | then: exec | hb::UI::SetListItems | 공통 C++ + VM |
 
 ## UI|지역화

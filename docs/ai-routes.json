@@ -539,7 +539,12 @@
         "Transform Origin",
         "탄젠트",
         "Hermite",
-        "커브 편집"
+        "커브 편집",
+        "clampedAuto",
+        "클램프 자동",
+        "골격 곡선",
+        "곡선 베이크",
+        "키 축약"
       ],
       "paths": [
         "prototype/animation-graph-runtime.js",
@@ -557,7 +562,11 @@
         "prototype/curve-sampling.js",
         "prototype/timeline-editor.js",
         "docs/WEIGHTED_CURVES.md",
-        "docs/CURVE_INFINITY.md"
+        "docs/CURVE_INFINITY.md",
+        "prototype/curve-tools.js",
+        "prototype/skeletal-curve-editor.js",
+        "prototype/animation-retarget-editor.js",
+        "docs/CURVE_TOOLS.md"
       ]
     },
     {
@@ -673,7 +682,10 @@
         "목록 이동",
         "transferGroup",
         "list transfer",
-        "tree reparent"
+        "tree reparent",
+        "MoveListItems",
+        "ReparentTreeItems",
+        "TransferTreeItems"
       ],
       "paths": [
         "prototype/ui-assets.js",
@@ -692,8 +704,7 @@
         "prototype/list-selection.js",
         "prototype/list-transfer.js",
         "prototype/list-drag.js",
-        "prototype/virtual-list.js",
-        "prototype/widget-row-editor.js"
+        "docs/LIST_CODE_API.md"
       ]
     },
     {

@@ -7,6 +7,7 @@ export function sequenceCurveEditor(element,controller,track){
  const data=controller.doc.data,type=sequenceCurveType(track),node={id:'sequence_'+track.id,timeline:{length:data.length,playRate:data.rate,loop:data.loop,autoplay:false,lastKeyframe:false,ignoreTimeDilation:false,tracks:[{id:track.id,name:track.name,type,interpolation:'linear',preInfinity:track.preInfinity,postInfinity:track.postInfinity,keys:structuredClone(track.keys)}]}};
  element.dataset.sequenceCurve='true';
  const editor=new TimelineEditor(element,()=>node,{
+  maxKeys:1024,
   rangeEditable:!track.quaternionInterpolation,
   rendered:editor=>{const fit=editor.el.querySelector("[data-fit]");editor.el.querySelector(".curve-keybar").append(fit);},
   before:()=>controller.hooks.before(),error:message=>controller.hooks.error(message),

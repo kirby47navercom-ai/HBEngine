@@ -105,6 +105,14 @@ export class WidgetSystem {
     }
     const state=this.state(owner,a.instance),node=this.node(state,a.element),p=node.properties;
     if(key==='uiGetText')return {return:p.stringTable&&p.textKey&&this.hooks.localization?this.hooks.localization.format(p.stringTable,p.textKey,JSON.parse(p.textArguments||'{}'),p.text):p.text};if(key==='uiGetValue')return {return:node.type==='CheckBox'?Number(p.checked):p.value};
+    if(key==='uiGetListItems'){if(!['ListView','TreeView'].includes(node.type))throw Error('목록 요소를 선택하세요.');return {return:p.listItems||'[]'};}
+    if(['uiMoveListItems','uiReparentTreeItems','uiTransferListItems','uiTransferTreeItems'].includes(key)){
+      const tree=key.includes('Tree'),list=state.view?.lists.get(node.id);if(node.type!==(tree?'TreeView':'ListView')||!list)throw Error('표시된 목록·트리 요소를 선택하세요.');let changed;
+      if(key==='uiMoveListItems')changed=list.moveItems(a.indices,a.destination);
+      else if(key==='uiReparentTreeItems')changed=list.reparentItems(a.ids,a.parent,a.destination);
+      else{const target=this.state(owner,a.destinationInstance),peer=this.node(target,a.destinationElement),to=target.view?.lists.get(peer.id);if(peer.type!==node.type||!to)throw Error('같은 종류의 표시된 대상 목록을 선택하세요.');changed=list.transferItems(to,tree?a.ids:a.indices,tree?a.parent:'',a.destination);if(changed)this.sync(target,vm);}
+      if(changed)this.sync(state,vm);return {};
+    }
     if(key==='uiSetListItems'){const list=JSON.parse(a.json);if(!['ListView','TreeView'].includes(node.type)||!Array.isArray(list)||list.length>100000||!validWidgetProperties({...node,properties:{...p,listItems:a.json}}))throw Error('가상 목록 데이터 오류');if(node.type==='ListView'&&p.selectedIndex>=list.length){p.selectedIndex=-1;p.selectedItemId='';p.value=-1;p.text='';}if(node.type==='ListView')p.selectedIndices=JSON.stringify(JSON.parse(p.selectedIndices||'[]').filter(i=>i<list.length));else{const ids=new Set(),visit=items=>{for(const item of items){ids.add(item.id);if(item.children)visit(item.children);}};visit(list);p.selectedItemIds=JSON.stringify(JSON.parse(p.selectedItemIds||'[]').filter(id=>ids.has(id)));if(p.selectedItemId&&!ids.has(p.selectedItemId)){p.selectedItemId='';p.selectedIndex=-1;p.value=-1;p.text='';}}p.listItems=a.json;this.refresh(state,vm);return {};}
     if(key==='uiSetLocalizedText'){await this.hooks.localization?.load(a.table);p.stringTable=a.table;p.textKey=a.key;p.textArguments=a.json||'{}';JSON.parse(p.textArguments);this.refresh(state,vm);return {};}
     if(key==='uiSetText'){if(typeof a.text!=='string'||a.text.length>10000)throw Error('위젯 텍스트 길이 초과');if(p.text===a.text&&!p.textKey)return {};p.text=a.text;p.textKey='';}

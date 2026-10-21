@@ -5135,5 +5135,37 @@
       }
     ],
     "implementation": "Optional numeric pre/post hold/linear/cycle/cycleOffset/oscillate, shared samplers and authoring, atomic key-optional sequence command, skeletal metadata validation/runtime, no key duplication."
+  },
+  "supplemental1322": {
+    "record": "docs/CURVE_TOOLS.md",
+    "fullCorpusAnalysis": false,
+    "read": [
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/EditingCurves.html",
+        "version": "6000.0",
+        "sections": [
+          "Tangent modes: Clamped Auto, Auto, Free Smooth, Flat, Broken"
+        ],
+        "remaining": "Other operations/links and source algorithm equality not promoted"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-curve-editor-in-unreal-engine",
+        "version": "5.8",
+        "sections": [
+          "Toolbar selected framing/focus/hotkeys and tangent actions",
+          "Filter Tool Bake/Euler/FFT/Simplify"
+        ],
+        "remaining": "Only selected body sections read; FFT/Euler/partial baking and other tool/API parity remain unimplemented"
+      },
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.7/script-reference/unityeditor/animationutility/tangentmode",
+        "version": "6000.7",
+        "sections": [
+          "Definition, Remarks, Fields"
+        ],
+        "remaining": "Linked tangent setters and engine internal algorithm not read"
+      }
+    ],
+    "implementation": "HB own PCHIP/no-overshoot mode, average-angle tangent straighten distinct from neighbour-facing tangents, selected value smoothing, whole-curve bake and linear-source sample-error reduction. Shared existing editor/runtime, no claim of entire UE/Unity parity."
   }
 }
