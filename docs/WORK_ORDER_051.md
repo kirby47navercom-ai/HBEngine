@@ -840,3 +840,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1179–1181 세브라우저 프로브변경행/여러prepare대기변경/full우선/GL상태복원/진단을묶음구현. 두밝기288B 대조전체1008B·정지0·실제세렌더러픽셀/복원/인스턴스/해제통과. Player1173/Host1041·native14/CPP19동일SHA재사용으로빌드/native게임검사반복없음. static1180 API/AI통과,설치1183준비.
 
 1183설치 C:\Users\kirby\HBEngine\Versions\da1acaad81e62420 /3882명세·544소유SHA·native14/CPP19·Player/Host재사용. 설치전용한검사에서GL/GPU/폴백변경288B/전체1008B·대기변경·경계전체갱신·정지0·픽셀/인스턴스/해제통과. User10849읽기SHA·연결·Versions1·이전184838887B정리. CPP/native게임재실행없이기존증거재사용. cache{"deleted":0,"bytes":0,"receipt":null}.
+
+1185–1188 native설정CPU재포장생략·자료4B인덱스/786432B감소·불량원자검증·분리구간정책/진단 묶음구현. 영향native2gate만실행·HLSL/raster동일증명으로노멀/브라우저재검사없음·Player1186한번빌드/Host재사용. static1187 AI인계5KB실패는인계3535B축약후해당정적검사만재실행통과. 설치1190예정.
