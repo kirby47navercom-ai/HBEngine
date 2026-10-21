@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "c1ea46edf646c729e394f754410846db752f96b3",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\cd3ef798dbdc6e3f",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\cd3ef798dbdc6e3f\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\cd3ef798dbdc6e3f\\HBEngine.exe",
+  "bundleHash": "cd3ef798dbdc6e3f042784ada51ae5387923d19883cc2f5d1c51ddf405f1001e",
+  "files": 3928,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3926,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b86864f151e2861e",
+        "bytes": 185661498,
+        "manifestSHA256": "a4af3ee98b1ba99905e0e4182202267f46206aceaf3aa6f7563e4176b1fa66bc"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T13:01:02.8752987Z",
+    "bytes": 185661498,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "cd3ef798dbdc6e3f"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 608,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
+  "installedGates": [
+    {
+      "path": "native/build/blueprint-folding-1236-wXlVt3/acceptance.json",
+      "sha256": "289337fb2f44851fc406ee5e7fcef388bc22d957efaad580dfbcdbf40057560e",
+      "scope": "Selected actual hidden editor: child-only authored proxy UI fold/save, inherited parent folded graph and child E flow execute, revisioned expand saves thin child and parent document remains byte-equivalent. No user project/profile or renderer matrix.",
+      "args": [
+        "--window",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\cd3ef798dbdc6e3f\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\cd3ef798dbdc6e3f\\",
+    "elapsedMs": 72.97,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\cd3ef798dbdc6e3f",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "cd3ef798dbdc6e3f042784ada51ae5387923d19883cc2f5d1c51ddf405f1001e",
+      "installedAt": "2026-10-21T13:00:59.714Z",
+      "manifestFiles": 3928,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3928,
+  "versions": [
+    "cd3ef798dbdc6e3f"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1239-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/blueprint-folding-1236-UrHGWe/acceptance.json",
+      "sha256": "1ef342b363b224ba78d4d5703a7107c1ff5794b2258dfcf878c8ff68a5664002",
+      "scope": "Inherited authored-proxy collapse/expand, preserved parent nodes/links/comments, read-only parent rejection, thin-child save/load and parent+child VM execution."
+    },
+    {
+      "path": "native/build/blueprint-folding-1228-XicC16/acceptance.json",
+      "sha256": "324088f1e5c70486aacea57dd63fce6fef41befb3fab430949279ee379cd9f92",
+      "scope": "Current model 42 checks/6 typed arrays/nested/split/defaults/joins/preview/VM after ownership correction."
+    }
+  ],
+  "scope": "Inherited blueprint authored-scope correction, parent ownership preserved. 608 runtime owners / 21 repository C++ tests / Player1223/Host1041 reused, all native16 owners unchanged. Targeted current ownership/ordinary model plus installed child editor UI/save/parent-child execution/expand. Previous Windows package and VM/native receipts retained with unchanged execution owners; no repeated package or renderer matrix. Full manifest/profile read-only/shortcuts/association/Versions1; no renderer matrix or FPS claim.",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

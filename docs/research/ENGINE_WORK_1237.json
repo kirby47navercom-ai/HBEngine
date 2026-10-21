@@ -659,6 +659,16 @@
       "path": "native/build/blueprint-folding-1228-XicC16/acceptance.json",
       "sha256": "324088f1e5c70486aacea57dd63fce6fef41befb3fab430949279ee379cd9f92",
       "scope": "Current model 42 checks/6 typed arrays/nested/split/defaults/joins/preview/VM after ownership correction."
+    },
+    {
+      "path": "native/build/blueprint-folding-1236-wXlVt3/acceptance.json",
+      "sha256": "289337fb2f44851fc406ee5e7fcef388bc22d957efaad580dfbcdbf40057560e",
+      "scope": "Selected actual hidden editor: child-only authored proxy UI fold/save, inherited parent folded graph and child E flow execute, revisioned expand saves thin child and parent document remains byte-equivalent. No user project/profile or renderer matrix.",
+      "args": [
+        "--window",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\cd3ef798dbdc6e3f\\HBEngine.exe"
+      ]
     }
   ],
   "reusedChecks": [
@@ -698,7 +708,18 @@
     }
   ],
   "reuseReason": "Existing ordinary UI/flow/runtime/native/installed Windows proof retained for unchanged paths. Modified child authored-proxy branch tested by new model/current42 gate and pending installed child editor; no claim that prior whole-file UI hash equals changed app/model.",
-  "sourceEditorGates": [],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/blueprint-folding-1236-wXlVt3/acceptance.json",
+      "sha256": "289337fb2f44851fc406ee5e7fcef388bc22d957efaad580dfbcdbf40057560e",
+      "scope": "Selected actual hidden editor: child-only authored proxy UI fold/save, inherited parent folded graph and child E flow execute, revisioned expand saves thin child and parent document remains byte-equivalent. No user project/profile or renderer matrix.",
+      "args": [
+        "--window",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\cd3ef798dbdc6e3f\\HBEngine.exe"
+      ]
+    }
+  ],
   "pendingPackageGate": "tools/check-blueprint-folding-1236-inherited.mjs --window",
   "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
@@ -730,13 +751,14 @@
     "backgroundProcesses": 0,
     "scope": "Requested authoring transaction only; no FPS claim."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1234.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1239.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "사용자 정의 구조체·enum 에셋과 변수/핀·C++ 리플렉션의 일반화, Switch enum/name",
     "Set Members 필드 선택·사용자 구조체 Make/Break의 제작/실행 연결",
     "접힌 그래프의 Timeline·일부 Event 전용 노드 및 wildcard/외부 함수·변수 참조의 문서간 일반화"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1239.json"
 }

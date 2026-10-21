@@ -864,3 +864,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1234설치 C:\Users\kirby\HBEngine\Versions\b86864f151e2861e /3925명세·607소유SHA·CPP21/native16·Player1223/Host1041재사용. 설치builder Windows D3D11 실제접힌/독립복제/펼친/순수/Delay흐름 Actor[5,6,7]/Witness[9,8,7]통과. User10849전후읽기SHA·연결·Versions1·이전185523991B정리. cache{"deleted":0,"bytes":0,"receipt":null}. 재빌드/전체렌더반복없음.
 
 1236–1237: 최종경계검토에서상속authoredGraphContext가매번필터배열을반환해view추론불가/부모scope중복가능확인. 명시view·부모노드/edge/comment보존·자식thin저장/parentfold편집거절·부모내부graph숨김보완. 모델UrHGWe및현재42/배열6종XicC16통과. VM/preview/pin값/native16/Player/Host불변으로이전실제패키지성공재사용. 설치1239의상속자식실제GUI/Play만추가확인,렌더전체나네이티브재빌드없음.
+
+1239설치 C:\Users\kirby\HBEngine\Versions\cd3ef798dbdc6e3f /3928명세·608소유SHA·CPP21/native16·Player1223/Host재사용. 실제설치에디터에서자식우클릭접기/얇은저장·부모접힌BeginPlay와자식E모두실행·AI펼치기/부모문서보존통과. 이전D3D11게임패키지성공은불변VM/native근거로재사용. User10849전후읽기SHA·연결·Versions1·이전185661498B정리. cache{"deleted":0,"bytes":0,"receipt":null}. 해당경계만확인, 재빌드/렌더전체반복없음.
