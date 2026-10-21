@@ -5082,5 +5082,35 @@
       "cross-window/cross-kind/shared-source transfer",
       "dedicated native CPP/BP move API and arbitrary async callback rollback"
     ]
+  },
+  "supplemental1294": {
+    "record": "docs/WEIGHTED_CURVES.md",
+    "fullCorpusAnalysis": false,
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/animation-curve-editor-in-unreal-engine",
+        "version": "5.8",
+        "sections": [
+          "Editing Tangents",
+          "Weighted Tangents"
+        ],
+        "remaining": "other advanced tools/API/linked sources not promoted"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Keyframe-outWeight.html",
+        "version": "6000.0",
+        "sections": [
+          "API definition",
+          "Description",
+          "Example"
+        ],
+        "remaining": "weightedMode/inWeight linked APIs not read in full"
+      }
+    ],
+    "failedOpen": {
+      "url": "https://docs.unity.com/en-us/engine/6000.5/script-reference/unityengine/keyframe/inweight",
+      "reason": "web tool content length limit, search excerpt only; not full read"
+    },
+    "implementation": "Optional same-shape normalized per-axis arrive/leave weights, shared monotone Bezier inverse sampling, actual editor handle lengths, atomic authoring and Blueprint game execution; absent thirds legacy compatible."
   }
 }

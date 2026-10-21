@@ -162,7 +162,9 @@
         "docs/BLUEPRINT_FOLDING.md",
         "prototype/struct-operations.js",
         "prototype/blueprint-references.js",
-        "native/include/HBEngine/Struct.hpp"
+        "native/include/HBEngine/Struct.hpp",
+        "prototype/curve-sampling.js",
+        "docs/WEIGHTED_CURVES.md"
       ]
     },
     {
@@ -552,7 +554,8 @@
         "prototype/sequence-curves.js",
         "prototype/sequence-curve-editor.js",
         "prototype/curve-sampling.js",
-        "prototype/timeline-editor.js"
+        "prototype/timeline-editor.js",
+        "docs/WEIGHTED_CURVES.md"
       ]
     },
     {
