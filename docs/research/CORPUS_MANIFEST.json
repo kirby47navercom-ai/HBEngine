@@ -5221,5 +5221,21 @@
       }
     ],
     "implementation": "HB opt-in first-of-two priority alpha coverage through all probe sample backends, unchanged default/records/captures and shared node/C++ service. Separate local installed Three0.180.0 source/bundle dirty-field bug proved and patched reproducibly; not a change to vendor version or full UE/Unity parity."
+  },
+  "supplemental1378": {
+    "record": "docs/CURVE_TOOLS.md",
+    "fullCorpusAnalysis": false,
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/animation-curve-editor-in-unreal-engine",
+        "version": "5.8",
+        "sections": [
+          "Filter Tool/Bake/FFT displayed lines308–349"
+        ],
+        "kind": "scoped reread",
+        "remaining": "Other body/API not newly reviewed; Chebyshev and high-level rig filters not implemented."
+      }
+    ],
+    "implementation": "HB independent de Casteljau partial bake with representable0..1 handles and zero-phase spectral Butterworth low/high pass; explicit limitations, shared human/AI Undo/authoring/runtime. Not an entire corpus promotion."
   }
 }

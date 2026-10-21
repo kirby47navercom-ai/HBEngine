@@ -23,7 +23,7 @@ AI는 `sequence.curve.tool`, `skeletal.curve.edit`를 사용해요. `path`, `exp
 
 참고한 지정 본문은 [Unity 6000.0 곡선의 tangent mode](https://docs.unity3d.com/6000.0/Documentation/Manual/EditingCurves.html)의 Clamped Auto/수동 전환과 [Epic 5.8 Curve Editor](https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-curve-editor-in-unreal-engine)의 도구·선택·베이크·축약이에요. [Unity TangentMode API](https://docs.unity.com/en-us/engine/6000.7/script-reference/unityeditor/animationutility/tangentmode)는 enum 정의·필드만 대조했어요. 지정 절을 읽은 범위이며 전체 문서/API 분석 완료는 아니에요. 구현 수식과 필터는 HB 자체 코드이고 UE/Unity의 비공개 내부 수식 복제라고 주장하지 않아요.
 
-쿼터니언·이산 곡선, 임의 시간 경계의 가중 Bézier 분할 베이크, 다중 곡선 동시 편집, FFT와 고급 리그 Euler 필터 등은 별도 잔여예요. 새 증거는 ENGINE_WORK 후속 기록을 확인해요.
+쿼터니언·이산 곡선, 다중 곡선 동시 편집, 고급 리그 Euler 필터는 별도 잔여예요. 1378 이후의 키 사이 경계 베이크와 Butterworth 주파수 필터는 아래 범위를 지원해요. 새 증거는 ENGINE_WORK 후속 기록을 확인해요.
 
 
 ## 키 클립보드와 공통 조작
@@ -37,3 +37,15 @@ AI는 `sequence.curve.tool`, `skeletal.curve.edit`를 사용해요. `path`, `exp
 [Epic Curve Editor Copy and Paste](https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-curve-editor-in-unreal-engine)의 지정 본문에서 첫 키를 재생 헤드에 놓는 상대 시간과 복사/잘라내기 조작을 추가로 대조했어요. 다른 절과 전체 API 완료를 뜻하지 않아요.
 
 BP 타임라인 창은 문서 경로와 노드 ID로 소유권을 확인하고 현재 그래프를 직접 편집해요. 키 수정 때 창을 닫거나 이전 그래프 값으로 덮어쓰지 않아요. Undo/Redo는 열린 창의 키 표시를 갱신하고, 노드 삭제는 창·리스너·ResizeObserver·키보드 검색 등록을 해제해요. 상속받은 타임라인의 원본 편집은 부모 블루프린트에서 해요.
+
+## 키 사이 범위와 주파수 필터
+
+도구 설정의 시작·끝을 모두 입력하면 기존 키 사이에서도 부분 베이크해요. 선택 범위보다 이 입력을 우선하고 모든 채널을 함께 처리해요. 시간/값 공간의 de Casteljau 분할로 외부 Bézier 핸들을 다시 계산하고, Auto/PCHIP의 이웃 기울기를 고정해 구간 밖 모양을 보존해요. 현재 가중치는 0..1 형식이라 분할 뒤 수직 또는 범위 밖 시간 핸들이 필요한 경계는 근사하지 않고 전체 편집을 거절해요. 첫 키 밖·마지막 키 밖의 부분 베이크도 별도예요. 소유자 키/탄젠트 예산은 유지해요.
+
+**주파수 필터**는 연속한 등간격 키 4개 이상에 적용해요. 선택이 없으면 곡선 전체·모든 채널, 선택이 있으면 선택한 키와 현재 채널을 처리해요. 저역 통과/고역 통과, 차단 Hz, 차수1~16, 강도0~1을 설정해요. 기본값은 저역 통과·5Hz·4차·강도1이며 Nyquist(표본률의 절반)를 넘는 설정은 거절해요. 불균일 키는 먼저 베이크해요. 키 수·시간·선택 밖 값·다른 채널·기존 보간과 탄젠트는 유지해요.
+
+HB 구현은 반사 확장한 2×기간을 radix-2 그리드로 선형 재표본하고, FFT 주파수 계수에 Butterworth 진폭 응답을 곱한 뒤 역변환/재표본하는 위상 이동 없는 편집 필터예요. 기존 1:2:1 값 부드럽게와 별도예요. Chebyshev·실시간 인과 필터·불규칙 표본 직접 처리는 지원 범위에 포함하지 않아요. 작업 배열은 편집 중에만 생성하며 FFT 배열은 16×nextPow2(2×(키수-1))바이트예요. 문서 복사·키 객체 메모리는 이 수치와 별도예요. 65,536키 CPU 측정은 약122ms였으며 재생 프레임 속도 측정이 아니에요.
+
+사람의 도구와 sequence.curve.tool, skeletal.curve.edit는 operation=fft 및 cutoff/filterType/order/strength를 공유해요. 키 사이 베이크는 operation=bake,rangeOnly=true,start,end를 써요. revision·dryRun·Undo·저장과 실제 Sequence 재생 연결을 유지해요. 도구 설정은 창의 다음 렌더에서도 남아요.
+
+추가 대조: [Epic Curve Editor의 Filter Tool/Bake/FFT](https://dev.epicgames.com/documentation/unreal-engine/animation-curve-editor-in-unreal-engine) 본문308–349줄을 지정 재독했어요. 선택 구간만 선형 표본으로 만들고 밖은 보존하는 흐름, FFT 저/고역·차수·차단 주파수를 대조했어요. HB의 임의 시간 분할·반사 확장·기본 주파수는 자체 결정이며 UE 내부 수식이나 Chebyshev까지 동일하게 구현했다고 주장하지 않아요.

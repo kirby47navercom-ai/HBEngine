@@ -18,10 +18,13 @@ export function curveKeyWeight(key,channel,field){const value=key[field];return 
 // Weighted handles store horizontal fractions of the adjacent time interval.
 // Invert monotone Bezier time; no tables, allocations or per-frame preparation.
 function bezier(a,b,c,d,t){const s=1-t;return s*s*s*a+3*s*s*t*b+3*s*t*t*c+t*t*t*d;}
-function weightedValue(u,start,end,m0,m1,duration,w0,w1){
+export function curveBezierParameter(u,w0,w1){
  let low=0,high=1,t=u;
  for(let i=0;i<48;i++){const x=bezier(0,w0,1-w1,1,t);if(x===u)break;if(x<u)low=t;else high=t;const d=3*((1-t)**2*w0+2*(1-t)*t*(1-w1-w0)+t*t*w1),next=t-(x-u)/d;t=i<8&&Number.isFinite(next)&&next>low&&next<high?next:(low+high)/2;}
- return bezier(start,start+duration*m0*w0,end-duration*m1*w1,end,t);
+ return t;
+}
+function weightedValue(u,start,end,m0,m1,duration,w0,w1){
+ return bezier(start,start+duration*m0*w0,end-duration*m1*w1,end,curveBezierParameter(u,w0,w1));
 }
 // PCHIP slopes preserve each monotone interval, including uneven key spacing.
 // No precomputed tangent cache: neighbour edits cannot leave stale derivatives.

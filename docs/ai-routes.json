@@ -1062,6 +1062,24 @@
         "native/desktop/SceneRenderBridge.hpp",
         "docs/NATIVE_CONSTANT_BUFFERS.md"
       ]
+    },
+    {
+      "keywords": [
+        "editCurveKeys",
+        "subdivideCurve",
+        "curveBezierParameter",
+        "filterCurveFrequency",
+        "주파수 필터",
+        "부분 베이크"
+      ],
+      "paths": [
+        "prototype/curve-tools.js",
+        "prototype/curve-subdivision.js",
+        "prototype/curve-frequency-filter.js",
+        "prototype/curve-sampling.js",
+        "prototype/timeline-editor.js",
+        "docs/CURVE_TOOLS.md"
+      ]
     }
   ]
 }
