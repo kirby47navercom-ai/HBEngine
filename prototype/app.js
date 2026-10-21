@@ -1,3 +1,5 @@
+import {readSequenceTracks} from './sequence-track-window.js';
+import {shareDocumentSnapshot,documentHistoryStorage} from './document-snapshot.js';
 import {readDocumentPage} from './document-query.js';
 import {readSequenceKeys} from './sequence-key-storage.js';
 import {editAssetCurveKeys} from './curve-clipboard-authoring.js';
@@ -185,7 +187,7 @@ let materialEditor,previewMaterialSignature='',previewMaterialRequest=0,renderGa
 const corePreview=createCorePreview();
 corePreview.object=id=>objects.find(o=>o.id===(id==='self'?selected:id));
 corePreview.updateObject=o=>{applyObject(o);changed();};
-const undoLimit = 40; // ponytail: 40 snapshots; switch to command deltas if large-scene editing becomes necessary.
+const undoLimit = 40; // History frames share unchanged data; restores remain isolated clones.
 let cachedScene=false,startupDiskData;
 try {
   const stored = JSON.parse(storage.getItem(STORAGE_KEY) || 'null');
@@ -193,8 +195,8 @@ try {
 } catch { /* Invalid local data never replaces the default scene. */ }
 try{const data=await(await editorRequest(fileUrl(activeScenePath))).json();startupDiskData=clone(data);if(!cachedScene){if(!validScene(data))throw Error('시작 레벨 데이터 검증 실패');runtimeSettings=clone(data.runtime||defaultRuntimeSettings);objects=data.objects;surface=data.surface;environment=data.environment||clone(defaultEnvironment);sceneName=data.sceneName||assetTitle(activeScenePath);}}catch(error){location.replace('/prototype/project-hub.html?error='+encodeURIComponent(error.message));throw error;}
 const sceneSnapshot=()=>({version:1,sceneName,objects:clone(objects),surface:clone(surface),environment:clone(environment),runtime:clone(runtimeSettings)});
-const snapshot=()=>({kind:assetDocs.current?.kind||'scene',data:clone(captureDocumentData())});
-const remember = () => { future=[]; history.push(snapshot()); if (history.length > undoLimit) history.shift(); };
+const snapshot=(basis)=>{const kind=assetDocs.current?.kind||'scene',previous=basis||history.at(-1)||future.at(-1);return {kind,data:shareDocumentSnapshot(captureDocumentData(),previous?.kind===kind?previous.data:undefined)};};
+const remember = () => { const frame=snapshot();future=[];history.push(frame);if(history.length>undoLimit)history.shift(); };
 function refreshWorldAssets(doc=assetDocs.current){visuals?.invalidateAssets(false);for(const o of objects){const path=objectComponents(o).find(c=>c.type==='MeshRenderer')?.properties.mesh||o.asset;if(!worldAssetKind(path))continue;const group=meshMap.get(o.id);if(group&&doc){let affected=path===doc.path;group.traverse(node=>{if(node.userData.worldAsset?.dependencies?.includes(doc.path))affected=true;});if(!affected)continue;if(visuals.updateWorldAsset(o,doc.path,doc.data))continue;}if(group)group.userData.componentSignature='asset revision';applyObject(o)?.catch?.(e=>log(e.message,'ERROR'));}}
 function changed() {for(const preview of componentPreviews.values())preview.invalidate({assets:assetDocs.current?.kind!=='blueprint'});mainPresentation.needsRender=true;for(const view of extraViewports)view.presentation.needsRender=true; if(assetDocs.current&&!switchingDocument){assetDocs.current.data=captureDocumentData();assetDocs.current.dirty=true;renderDocumentTabs();queueRecovery();if(assetDocs.current.kind==='prefab')schedulePrefabRefresh(assetDocs.current.path);if(assetDocs.current.kind==='navmesh')visuals.invalidateNavigationDebug(assetDocs.current.path);if(assetDocs.current.kind in worldAssetTypes)refreshWorldAssets();if(assetDocs.current.kind in textureAssetTypes){visuals.invalidateAssets(false);previewMaterialSignature='';}}dirty = true; $('#dirty-mark').hidden = false; $('#status-text').textContent = '변경 사항 있음'; }
 function notify(message) { const toast = $('#toast'); toast.textContent = message; toast.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.hidden = true, 3500); log(message); }
@@ -211,7 +213,7 @@ function refreshMaterialAssets(paths){
   for(const o of objects){const source=meshMap.get(o.id)?.userData.materialData,path=o.materialAsset||objectComponents(o).find(c=>c.type==='MeshRenderer')?.properties.material;if(path&&(paths.includes(path)||[...source?.functionDependencies||[],...source?.layerDependencies||[],...source?.materialDependencies||[]].some(p=>paths.includes(p))))visuals.material(o,path).catch(e=>log(e.message,'ERROR'));}
   updateSurface();
 }
-function propagateMaterialFunctions(docs){const definitions=new Map(docs.filter(d=>['materialfunction','materiallayer','materialblend'].includes(d?.kind)).map(d=>[d.path,d.data]));for(const dependent of assetDocs.items.values()){if(!['material','materialfunction','materiallayer','materialblend'].includes(dependent.kind))continue;const next=clone(dependent.data);for(const n of next.graph?.nodes||[])if(n.key==='functionCall'&&definitions.has(n.asset))refreshMaterialFunctionCall(next.graph,n.id,definitions.get(n.asset));if(JSON.stringify(next)===JSON.stringify(dependent.data))continue;dependent.history.push({kind:dependent.kind,data:clone(dependent.data)});if(dependent.history.length>undoLimit)dependent.history.shift();dependent.future=[];dependent.data=next;dependent.dirty=true;if(dependent===assetDocs.current){history=dependent.history;future=dependent.future;installDocumentData(dependent);}}refreshMaterialAssets(docs.filter(d=>materialAssetKinds.includes(d.kind)||d.kind in textureAssetTypes||projectAssetFiles.some(f=>f.path===d.path&&f.kind==='texture')).map(d=>d.path));}
+function propagateMaterialFunctions(docs){const definitions=new Map(docs.filter(d=>['materialfunction','materiallayer','materialblend'].includes(d?.kind)).map(d=>[d.path,d.data]));for(const dependent of assetDocs.items.values()){if(!['material','materialfunction','materiallayer','materialblend'].includes(dependent.kind))continue;const next=clone(dependent.data);for(const n of next.graph?.nodes||[])if(n.key==='functionCall'&&definitions.has(n.asset))refreshMaterialFunctionCall(next.graph,n.id,definitions.get(n.asset));if(JSON.stringify(next)===JSON.stringify(dependent.data))continue;dependent.history.push({kind:dependent.kind,data:shareDocumentSnapshot(dependent.data,dependent.history.at(-1)?.data)});if(dependent.history.length>undoLimit)dependent.history.shift();dependent.future=[];dependent.data=next;dependent.dirty=true;if(dependent===assetDocs.current){history=dependent.history;future=dependent.future;installDocumentData(dependent);}}refreshMaterialAssets(docs.filter(d=>materialAssetKinds.includes(d.kind)||d.kind in textureAssetTypes||projectAssetFiles.some(f=>f.path===d.path&&f.kind==='texture')).map(d=>d.path));}
 async function save(all=false) {
   if(authoringBatchBusy)return notify('파일 묶음 저장을 마친 뒤 저장하세요.');
   if(running)return notify('실행을 종료한 뒤 저장하세요.');try{await flushPrefabRefresh();}catch(error){notify('프리팹 동기화 실패: '+error.message);return false;}assetPanes.get(assetDocs.active)?.editor?.flush?.();captureDocument();
@@ -225,8 +227,8 @@ function restoreEdit(data){
   const doc=assetDocs.current;if(!doc)return;doc.data=clone(data.data);installDocumentData(doc);changed();
   doc.dirty=JSON.stringify(doc.data)!==doc.saved;renderDocumentTabs();$('#status-text').textContent=dirty?'변경 사항 있음':'준비됨';
 }
-function undo(){assetPanes.get(assetDocs.active)?.editor?.flush?.();if(running)return notify('실행을 종료한 뒤 편집하세요.');const data=history.at(-1);if(!data)return notify('되돌릴 변경 사항이 없어요.');if(data.batch)return replayFileBatch(data.batch,false,true).catch(error=>{notify(error.message);return false;});history.pop();future.push(snapshot());restoreEdit(data);}
-function redo(){if(running)return;const data=future.at(-1);if(!data)return;if(data.batch)return replayFileBatch(data.batch,true,true).catch(error=>{notify(error.message);return false;});future.pop();history.push(snapshot());restoreEdit(data);}
+function undo(){assetPanes.get(assetDocs.active)?.editor?.flush?.();if(running)return notify('실행을 종료한 뒤 편집하세요.');const data=history.at(-1);if(!data)return notify('되돌릴 변경 사항이 없어요.');if(data.batch)return replayFileBatch(data.batch,false,true).catch(error=>{notify(error.message);return false;});history.pop();future.push(snapshot(data));restoreEdit(data);}
+function redo(){if(running)return;const data=future.at(-1);if(!data)return;if(data.batch)return replayFileBatch(data.batch,true,true).catch(error=>{notify(error.message);return false;});future.pop();history.push(snapshot(data));restoreEdit(data);}
 
 const primitiveRendering=scenePrimitives(surface),surfaceMaterial=primitiveRendering.surfaceMaterial,mesh=primitiveRendering.mesh;
 function buildObject(object){
@@ -1809,6 +1811,7 @@ const editorCommandMethods={
   'files.apply':applyFileBatch,
   'files.undo':({transaction})=>replayFileBatch(transaction),
   'files.redo':({transaction})=>replayFileBatch(transaction,true),
+  'editor.history.inspect':async params=>{const {doc,revision}=await automationDocument(params);if(params.expectedRevision!==undefined&&params.expectedRevision!==revision)throw batchConflict('문서 revision이 달라요.');return {path:doc.path,revision,dirty:doc.dirty,...documentHistoryStorage(doc.history,doc.future,params)};},
   'editor.undo':async params=>{const {doc}=await automationDocument(params,true);activateDocument(doc.path);if(await undo()===false)throw Error('묶음 되돌리기 실패');return {path:doc.path,revision:await documentRevision(doc.data),dirty:doc.dirty};},
   'editor.redo':async params=>{const {doc}=await automationDocument(params,true);activateDocument(doc.path);if(await redo()===false)throw Error('묶음 다시 적용 실패');return {path:doc.path,revision:await documentRevision(doc.data),dirty:doc.dirty};},
   'blueprint.inheritance.get':async params=>{const {doc,revision}=await automationDocument(params);if(doc.kind!=='blueprint')throw Error('블루프린트 문서가 필요해요.');const root=await blueprintWorkspace.prepare(doc.path,doc.data);return {path:doc.path,revision,authored:serializeBlueprint(root),resolved:root};},
@@ -1822,6 +1825,8 @@ const editorCommandMethods={
   'sequence.curve.keys':params=>automationAuthoringEdit(params,'sequenceasset',data=>editAssetCurveKeys('sequenceasset',data,params)),
   'skeletal.curve.keys':params=>automationAuthoringEdit(params,'skeletalclip',data=>editAssetCurveKeys('skeletalclip',data,params)),
   'editor.storage.flush':async()=>{clearTimeout(recoveryTimer);if(!persistRecovery())throw Error('복구 상태를 만들 수 없어요.');await flushStorage();return {flushed:true,...storage.diagnostics?.()};},
+  'sequence.tracks.read':async params=>{const {doc,revision}=await automationDocument(params);if(doc.kind!=='sequenceasset')throw Error('시퀀스 문서가 필요해요.');if(params.expectedRevision!==undefined&&params.expectedRevision!==revision)throw batchConflict('문서 revision이 달라요.');return {path:doc.path,revision,dirty:doc.dirty,...readSequenceTracks(doc.data,params)};},
+  'sequence.editor.navigate':async params=>{const {doc,revision}=await automationDocument(params);if(doc.kind!=='sequenceasset')throw Error('시퀀스 문서가 필요해요.');if(params.expectedRevision!==undefined&&params.expectedRevision!==revision)throw batchConflict('문서 revision이 달라요.');activateDocument(doc.path);const result=assetPanes.get(doc.path)?.editor?.navigateSequence(params);if(!result)throw Error('시퀀스 편집기를 확인하세요.');return {path:doc.path,revision,dirty:doc.dirty,...result};},
   'sequence.keys.read':async params=>{const {doc,revision}=await automationDocument(params);if(doc.kind!=='sequenceasset')throw Error('시퀀스 문서를 선택하세요.');if(params.expectedRevision!==undefined&&params.expectedRevision!==revision)throw batchConflict('시퀀스 revision이 달라요.');const track=doc.data.tracks.find(t=>t.id===params.track);if(!track)throw Error('트랙 ID를 확인하세요.');return {path:doc.path,revision,dirty:doc.dirty,...readSequenceKeys(track,params)};},
   'sequence.curve.tool':params=>automationAuthoringEdit(params,'sequenceasset',data=>{const track=data.tracks.find(t=>t.id===params.track);if(!track||track.quaternionInterpolation||!sequenceCurveType(track))throw Error('연속 값 트랙을 선택하세요.');if(params.operation==='eulerFilter'&&track.type!=='rotation')throw Error('Euler 필터는 회전 트랙에 적용하세요.');const next=editCurveKeys(track,params);Object.assign(track,next);return {keys:track.keys.length};}),
   'skeletal.curve.edit':params=>automationAuthoringEdit(params,'skeletalclip',data=>({curve:configureSkeletalCurve(data,params).name})),

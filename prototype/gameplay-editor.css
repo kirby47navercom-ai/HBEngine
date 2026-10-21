@@ -64,3 +64,6 @@
 .sequence-key-navigation{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0}.sequence-key-navigation>span{font-variant-numeric:tabular-nums}.sequence-key-navigation label{display:flex;align-items:center;gap:6px}.sequence-key-navigation input{width:100px}
 
 .sequence-key-navigation{position:sticky;top:0;background:var(--panel,#282d33);z-index:2;padding:6px 0}.gameplay-properties .sequence-key-selected{outline:1px solid var(--accent,#5e9cd2);outline-offset:2px}.gameplay-properties [data-sequence-key-section]>small{display:block;color:var(--muted,#a8b1bc);margin-bottom:4px}
+.sequence-track-window .gameplay-track{height:46px;min-height:46px;box-sizing:border-box;overflow:hidden}.sequence-track-window .gameplay-track>button{white-space:nowrap}.sequence-track-window>[data-sequence-rows]{overflow-anchor:none}.gameplay-library [data-sequence-track-search]{margin:0 0 10px}
+
+.sequence-track-window .gameplay-track.selected>button{background:var(--selection,#354e64);color:var(--text)}

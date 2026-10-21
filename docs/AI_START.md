@@ -23,7 +23,7 @@ Git 정보는 실행할 때 읽고 원장은 `docs/research/ENGINE_STATUS.json`�
 
 | 바꾸려는 것 | 먼저 볼 소유자 |
 |---|---|
-| 편집·문서·Undo/저장 | `prototype/app.js`, `asset-documents.js`, 에셋별 편집기 |
+| 편집·문서·Undo/저장 | `prototype/app.js`, `asset-documents.js`, `document-snapshot.js`, 에셋별 편집기 |
 | 플레이 월드·BP·서비스 | `prototype/player.js`, `play-world.js`, `blueprint-runtime.js`, `engine-services.js` |
 | C++와 공용 노드 | `native/include/HBEngine/Game.hpp`, `Library.hpp` → `tools/generate-api.mjs` → `prototype/core-api.js`(생성 파일) |
 | C++ 호출 전송·컴파일 | `prototype/native-channel.js`, `native-transport.js`, `tools/native-host.mjs` |

@@ -1177,6 +1177,41 @@
         "tools/serve.mjs",
         "docs/LARGE_AUTHORING_STORAGE.md"
       ]
+    },
+    {
+      "keywords": [
+        "shareDocumentSnapshot",
+        "documentHistoryStorage",
+        "editor.history.inspect",
+        "실행 취소 이력",
+        "Undo 메모리"
+      ],
+      "paths": [
+        "prototype/document-snapshot.js",
+        "prototype/app.js",
+        "prototype/asset-documents.js",
+        "tools/editor-automation.mjs",
+        "docs/DOCUMENT_HISTORY.md"
+      ]
+    },
+    {
+      "keywords": [
+        "sequenceTrackWindow",
+        "sequenceTrackMatches",
+        "readSequenceTracks",
+        "sequence.tracks.read",
+        "sequence.editor.navigate",
+        "다중 트랙",
+        "트랙 검색"
+      ],
+      "paths": [
+        "prototype/sequence-track-window.js",
+        "prototype/gameplay-editor.js",
+        "prototype/asset-shortcut-commands.js",
+        "prototype/asset-shortcuts.js",
+        "prototype/app.js",
+        "docs/DENSE_SEQUENCE.md"
+      ]
     }
   ]
 }
