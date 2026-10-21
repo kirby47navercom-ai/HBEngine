@@ -930,3 +930,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1384 설치확인: e2d58e23b010e60a·4047명세/710소유SHA/25native검사/2vendor. 설치실제우클릭FFT/임의경계/Undo/revision/dryRun/stale/Sequence·skeletal·BPTimeline/저장·실제Play, 설치helper로패키징한D3D11 위치1.1477749147734875통과. Native17·Player1369/Host SHA불변/재빌드0. User10849읽기SHA/연결보존·Versions1·이전187619526B회수. 전체잔여/분모null유지.
 
 1386–1392: 대형Sequence65536/트랙·기본총262144/기존최대보존/총<=1M·개요8px/속성32/번호가시성/원인덱스/stream경계/공유clipboard. 실제65k204마커/1095DOM/열기797.69ms·수정Undo·AI높은인덱스/부분문서·저장/복구flush/Play, 숫자10k샘플오차0. event-only4B/key이진구간/원배열순서/중복/initial/endExclusive/seek유지·140case·실제headless dispatch·구간15/계층5회귀. 범용document.read·seq키페이지·storage.flush·poll16/결과14M/FIFO/한번인코딩/8ms양보/stop정리·주복구32M/보조256K·noChange저장백업0·9M재로드/충돌보호. 실패fixture3개losslessZIP으로14759587B회수. Native17/CPP검사25/Player/Host/vendor불변재사용·재빌드0. sourcece0b675·설치대기/전체분모null·잔여유지.
+
+1394 설치확인: 060a04debb81a375·4061명세/727소유SHA/25native검사/2vendor. 설치실제65k Sequence204마커/속성32·마지막키가시수정/Undo·AI부분조회/revision/dryRun/복사/저장/복구flush/Play·설치helper D3D11패키지위치2.5통과. Native17·Player1369/Host SHA불변/재빌드0. User10849읽기SHA/연결보존·Versions1·이전187754799B회수. 전체잔여/분모null유지.

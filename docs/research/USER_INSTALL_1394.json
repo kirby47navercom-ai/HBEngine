@@ -1,0 +1,177 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "055bb1c49aeec6cf6b077d65485b46e99f07bbc9",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\060a04debb81a375",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\060a04debb81a375\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\060a04debb81a375\\HBEngine.exe",
+  "bundleHash": "060a04debb81a3759373966d845cf8199e353d8701760c4e30aadbf5c14abd05",
+  "files": 4061,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4048,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e2d58e23b010e60a",
+        "bytes": 187754799,
+        "manifestSHA256": "257c3abc1772f3b8e2b116908e09c5ddd979558265690c57f9ad3f40645e1d1e"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T21:40:20.7460402Z",
+    "bytes": 187754799,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "060a04debb81a375"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 727,
+  "repositoryOnlyTestSourcesVerified": 25,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "da86f16dc48681473001c757e1f3ecdce38b266cc13cd417c7502937de9aa5d7",
+  "installedGates": [
+    {
+      "path": "native/build/dense-sequence-1387-window-I3ImUJ/acceptance.json",
+      "sha256": "82b6a69b8e0cbf908c57971105f35ff2b2eae42ea3aaa5d47e443447a0929953",
+      "scope": "Owned hidden real editor loads65536-key Sequence; density markers bounded and32 property key inputs, exact65535 index human edit/Undo, previous page and AI high-index dryRun/copy/save; actual Play/Pause/Seek2.5. --player builds and runs selected installation actual D3D11 package. No user profile/project, object cap or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\060a04debb81a375\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/dense-sequence-1387-window-BdsTry/acceptance.json",
+      "sha256": "618893cf9cf06ceadcaeffcb7b0b714deac8dcb0214be63ae3803985b0f6712d",
+      "scope": "Owned hidden real editor loads65536-key Sequence; density markers bounded and32 property key inputs, exact65535 index human edit/Undo, previous page and AI high-index dryRun/copy/save; actual Play/Pause/Seek2.5. --player builds and runs selected installation actual D3D11 package. No user profile/project, object cap or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\060a04debb81a375\\HBEngine.exe",
+        "--player"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\060a04debb81a375\\",
+    "elapsedMs": 67.58,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\060a04debb81a375",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "060a04debb81a3759373966d845cf8199e353d8701760c4e30aadbf5c14abd05",
+      "installedAt": "2026-10-21T21:40:17.546Z",
+      "manifestFiles": 4061,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4061,
+  "versions": [
+    "060a04debb81a375"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1394-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/dense-sequence-1386.json",
+      "sha256": "d0b06f8815bbaca437a0907235ec178b4e9289c26d5fbf244506deb44e49cdec",
+      "scope": "65536-key validation/prepared binary sampling10001/error0, bounded overview161 at640px,32-key page/source index/unsorted overview/stream navigation, old256x1024 total capacity and configured total validation, partial range authoring and isolated read pages."
+    },
+    {
+      "path": "native/build/automation-poll-1388.json",
+      "sha256": "4d1a57f376135d51e5a44d58cacf5f0ed9ff932599c3bc491aee9797fa3da42a",
+      "scope": "Actual server command state5MiB completes; shared UTF8 byte boundaries, FIFO split/max50/oversize fail-fast/state identity, real client12-command drain and late-stop cleanup. No native/global body cap mutation."
+    },
+    {
+      "path": "native/build/large-authoring-storage-1389-LPIfnB/acceptance.json",
+      "sha256": "a3d0f7c855c571437b906549d4befa47ca978766f91862960fe43a45687627da",
+      "scope": "9MiB primary project disk reload, quota-failed backup nonfatal but primary errors retained, stale backup removal, canonical no-op65536-key save does not write/backup, changed save retains exact source once and stale/invalid writes reject."
+    },
+    {
+      "path": "native/build/sequence-event-index-1390.json",
+      "sha256": "be83d513c545f8db2069a867505d5743799129acfb546c33369a5b1f65b865dc",
+      "scope": "140 legacy range predicates, unsorted/equal/initial/exclusive/source identity/reentrant iterators, actual headless gameplay dispatch/seek;65536-event track sparse10000ranges320002time reads/6.44ms CPU, event-only262144B index."
+    },
+    {
+      "path": "native/build/document-query-1391.json",
+      "sha256": "78794a6172e10c9864dc031b60924ed1d7afcd64bc40726ef4141952e1d3bbc8",
+      "scope": "All JSON subtree own Pointer/escapes/default shape/identity/value isolation/array/object pages/primitive/empty/limits and prototype traversal rejection."
+    },
+    {
+      "path": "native/build/dense-sequence-1387-window-Vl1Mi6/acceptance.json",
+      "sha256": "e5ea9fc8ae897238b71341cc2c296c4e245b8545e2817ebaac51c91b98dfb4a3",
+      "scope": "Actual hidden65536-key editor:204markers/32key fields/1095elements/open797.69ms, exactlastkey edit/Undo, jumped input actually visible/sticky navigation, previous page, AI high index/dryRun/copy/generic Pointer/page/revision, source+recovery flush+actualPlay. Screenshot inspected."
+    },
+    {
+      "path": "native/build/curve-filters-1380-window-iC1dLG/acceptance.json",
+      "sha256": "6a448383cf6827dcafbe15b3a811f25d6be6846af05d5eb5b4cd12341b9314ea",
+      "scope": "Existing real FFT/interior bake/Undo/revision/dryRun/skeletal/BP/save and runtime filter regression under new polling/storage."
+    },
+    {
+      "path": "native/build/sequence-hierarchy-245-t3u7VN/acceptance.json",
+      "sha256": "9d1fe22b7bf43bda628b7a2270cbe8315f485474d5b5f969a3e1c93f61d55fc1",
+      "scope": "Existing5 hierarchy/restoration/sampling checks, unsorted/duplicate keys and128x1024 prepared seek."
+    },
+    {
+      "path": "native/build/sequence-sections-1250-YNrWDK/acceptance.json",
+      "sha256": "233db272554e0e4cd74a24e73595be3a84ff62c40b9e13d42c8f1c9116996709",
+      "scope": "Existing15 nested/loop/shot/event/exclusive/ownership section checks under indexed event dispatch."
+    },
+    {
+      "path": "native/build/dense-authoring-context-1391.json",
+      "sha256": "7843fb123807f545960e5bc00f803b8d71b1cafe11b48ab67a16ee77ff2a5619",
+      "scope": "Exact generic reader owner via3files548601bytes; readonly/Paging/Sequence/Storage contracts surfaced through tiny schema sections."
+    },
+    {
+      "path": "native/build/dense-fixture-compaction-1390.json",
+      "sha256": "b64e7d956561611d03f7660494e6fd0cf90fca8d087b4f129d15b60921f3e5ea",
+      "scope": "Three failed owned replay projects archived with every file size/SHA read back before original-directory removal; reports/tool/success/user files preserved;14759587B reclaimed."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed dense65536-key Sequence authoring/204 density markers/32 property keys/exact visible index jump, event-only binary range index, generic own-Pointer document shape/value paging and readonly revision, sequence page/clipboard and recovery flush, bounded FIFO automation result transport and primary disk recovery/no-op-save backup reduction. Actual installed editor changes/Undo/saves/flushes/plays65536keys; installed builder packages and runs D3D11 at2.5. All17 native owner/25 native test/Player1369/Host/vendor SHA reused with zero compilation. Manifest/source/User/links/Versions1 verified; no gameFPS/mobile-device/full-engine claim.",
+  "version": 1,
+  "date": "2026-10-21T21:46:53.131Z",
+  "work": "docs/research/ENGINE_WORK_1392.json",
+  "distributionSync": "native/build/distribution-1393-sync.json",
+  "nativeCachePrune": {
+    "path": "native/build/cache-prune-1792611199342-7fc95717-c662-48dc-a514-1441315ffee6/result.json",
+    "sha256": "f9b363933406b04808223046d04710e7a0804f4e61cf6a33edf3071c3d80fa2a",
+    "bytes": 145415411,
+    "deleted": 2,
+    "scope": "Existing managed cleanup receipt; no extra manual source/cache copy or empty prune record."
+  },
+  "sourceNativeProof": "native/build/scene-constant-cache-1368-lC4Plh/acceptance.json",
+  "vendorPatch": "tools/patch-three-uniforms.mjs"
+}

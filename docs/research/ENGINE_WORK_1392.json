@@ -870,10 +870,6 @@
     }
   ],
   "sourceGameGates": [],
-  "pendingInstalledGates": [
-    "tools/check-dense-sequence-1387-window.mjs",
-    "tools/check-dense-sequence-1387-window.mjs --player"
-  ],
   "nativePlayerSHA256": "da86f16dc48681473001c757e1f3ecdce38b266cc13cd417c7502937de9aa5d7",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -943,8 +939,8 @@
   },
   "research": "docs/research/CORPUS_MANIFEST.json#supplemental1391; RFC6901 specified Syntax/Evaluation read, no full-corpus promotion.",
   "diagnostic": "DEBUG_HANDOFF.md#1386–1391; root-cause poll4MiB and assetwrite8MiB/recovery quota failures fixed; fixture/expectation/preparation failures excluded.",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1384.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1394.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": {
     "animation": [
@@ -969,5 +965,26 @@
       "other platform/storage real-device parity"
     ]
   },
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/dense-sequence-1387-window-I3ImUJ/acceptance.json",
+      "sha256": "82b6a69b8e0cbf908c57971105f35ff2b2eae42ea3aaa5d47e443447a0929953",
+      "scope": "Owned hidden real editor loads65536-key Sequence; density markers bounded and32 property key inputs, exact65535 index human edit/Undo, previous page and AI high-index dryRun/copy/save; actual Play/Pause/Seek2.5. --player builds and runs selected installation actual D3D11 package. No user profile/project, object cap or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\060a04debb81a375\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/dense-sequence-1387-window-BdsTry/acceptance.json",
+      "sha256": "618893cf9cf06ceadcaeffcb7b0b714deac8dcb0214be63ae3803985b0f6712d",
+      "scope": "Owned hidden real editor loads65536-key Sequence; density markers bounded and32 property key inputs, exact65535 index human edit/Undo, previous page and AI high-index dryRun/copy/save; actual Play/Pause/Seek2.5. --player builds and runs selected installation actual D3D11 package. No user profile/project, object cap or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\060a04debb81a375\\HBEngine.exe",
+        "--player"
+      ]
+    }
+  ]
 }
