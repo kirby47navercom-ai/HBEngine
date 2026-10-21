@@ -878,3 +878,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1259–1262: 시퀀스1257설치후네트워크관심위치전수순회축소. 가변반경3D버킷·전역/소유자·known이탈숨김·루트자식재색인/부모변경구링크정리·같은셀재사용/빈목록회수·요청통계/AI. 모델oracle100질의/10만희소자료32질의후보1/실제socket11+기존6검사약2초통과. 게임FPS/밀집RAM측정아님. 기존게임/UI/네이티브소유불변이므로재검사없이설치서버socket만확인.
 
 1264 설치확인: 91fb64b56b370689·3949명세/627소유SHA. 설치서버sockets-only 5검사: 원본모듈은설치경로에서로드하고초기/interest/root재지정/owner/delete/빈메타확인. 10만oracle는이전소스검사SHA근거로재사용·설치에서재실행하지않음. 기존게임/UI/CPP/native16소유불변·User10849읽기SHA·연결/Versions1·이전186035699B정리·빈캐시receipt없음.
+
+1266–1270: 시퀀스 변환기준점·이동액터/상속·부착local·수명/복원·공용Hermite/커브/탄젠트drag·타축auto보존·AI2명령을실제제작/Play로연결. 모델17·기존시퀀스30·sourceGUI MjRTWI/배치입력검사·AI context성공. 초기GUI관찰축/기울기기준과CSS클리핑실패는보존하고수정경로만재검사. native16/Struct.hpp/CPP21불변으로기존빌드/CPP근거재사용;설치D3D11게임1회대기. GL1313B/6노드읽기는시간개선성과아님/RND06잔여유지.
