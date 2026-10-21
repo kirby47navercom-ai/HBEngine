@@ -63,6 +63,11 @@ public:
         if(bytes>UINT_MAX)throw std::runtime_error("Probe atlas metadata exceeds hardware buffer size");
         std::unordered_map<std::uint64_t,std::size_t> identities;std::vector<SceneProbeBinding> unique;std::vector<UINT> indices;indices.reserve(bindings.size());
         for(const auto& b:bindings){const auto found=identities.find(b.resource->identity);if(found!=identities.end())indices.push_back(UINT(found->second));else{const auto index=unique.size();identities.emplace(b.resource->identity,index);unique.push_back(b);indices.push_back(UINT(index));}}
+        // Keep active source slots stable when influence volume ranks change.
+        std::vector<SceneProbeBinding> ordered;ordered.reserve(unique.size());std::unordered_map<std::uint64_t,UINT> slots;
+        for(const auto& stamp:captureStamps){const auto found=identities.find(stamp.identity);if(found!=identities.end()){slots.emplace(stamp.identity,UINT(ordered.size()));ordered.push_back(unique[found->second]);}}
+        for(const auto& b:unique)if(!slots.count(b.resource->identity)){slots.emplace(b.resource->identity,UINT(ordered.size()));ordered.push_back(b);}
+        unique.swap(ordered);for(std::size_t i=0;i<bindings.size();i++)indices[i]=slots.at(bindings[i].resource->identity);
         const auto shBytes=unique.size()*9*16;if(shBytes>UINT_MAX)throw std::runtime_error("Probe atlas irradiance exceeds hardware buffer size");
         std::vector<ProbeSpatialShape> shapes;shapes.reserve(bindings.size());for(const auto& b:bindings){const auto& p=b.settings;shapes.push_back({p.minimum[0],p.minimum[1],p.minimum[2],p.maximum[0],p.maximum[1],p.maximum[2],p.localX[0],p.localX[1],p.localX[2],p.localX[3],p.localY[0],p.localY[1],p.localY[2],p.localY[3],p.localZ[0],p.localZ[1],p.localZ[2],p.localZ[3]});}
         const bool spatialChanged=spatial.update(shapes);UINT w=0,h=0;++layoutBuilds_;auto packed=layout(unique,w,h);

@@ -3,7 +3,7 @@ import {probeBlendUniforms,updateProbeBlendUniforms,probeBlendPhysicalGLSL} from
 import {ReflectionProbeAtlas} from './reflection-probe-atlas.js';
 import {probeAtlasPhysicalGLSL} from './reflection-probe-atlas-shader.js';
 import {reflectionProbeIntersectsBox,reflectionProbeMeshBounds} from './reflection-probe-bounds.js';
-import {reflectionProbeVolume,probeLocalPoint} from './reflection-probe-volume.js';
+import {reflectionProbeVolume,reflectionProbeSphereVolume,probeLocalPoint} from './reflection-probe-volume.js';
 import {attachGPURefraction} from './gpu-refraction.js';
 import * as THREE from 'three';
 import {componentDefaults,validComponentProperties} from './scene-components.js';
@@ -23,17 +23,17 @@ export function collectReflectionProbes(scene){
     if(!group.userData.reflectionProbes)return;for(let parent=group;parent;parent=parent.parent)if(!parent.visible)return;
     for(const entry of group.userData.reflectionProbes){
       const p={...componentDefaults('ReflectionProbe'),...entry.properties};if(!validComponentProperties('ReflectionProbe',p))throw Error('반사 프로브 범위·해상도·캡처 설정을 확인하세요.');if(!p.enabled)continue;
-      const extent=new THREE.Vector3(...p.size).multiplyScalar(.5),box=new THREE.Box3(extent.clone().negate().add(new THREE.Vector3(...p.offset)),extent.clone().add(new THREE.Vector3(...p.offset))).applyMatrix4(group.matrixWorld),center=new THREE.Vector3(...p.captureOffset).applyMatrix4(group.matrixWorld).toArray();
-      const localBox=reflectionProbeVolume(group.matrixWorld,p.offset.map((v,i)=>v-p.size[i]*.5),p.offset.map((v,i)=>v+p.size[i]*.5));if(!localBox)continue;
+      const sphere=p.volumeShape==='sphere',extent=sphere?new THREE.Vector3(p.volumeRadius,p.volumeRadius,p.volumeRadius):new THREE.Vector3(...p.size).multiplyScalar(.5),sphereCenter=new THREE.Vector3(...p.offset).applyMatrix4(group.matrixWorld),box=new THREE.Box3(extent.clone().negate().add(new THREE.Vector3(...p.offset)),extent.clone().add(new THREE.Vector3(...p.offset))).applyMatrix4(group.matrixWorld),center=new THREE.Vector3(...p.captureOffset).applyMatrix4(group.matrixWorld).toArray();
+      const localBox=sphere?reflectionProbeSphereVolume(sphereCenter.toArray(),p.volumeRadius):reflectionProbeVolume(group.matrixWorld,p.offset.map((v,i)=>v-p.size[i]*.5),p.offset.map((v,i)=>v+p.size[i]*.5));if(!localBox)continue;if(sphere)box.setFromCenterAndSize(sphereCenter,new THREE.Vector3().copy(extent).multiplyScalar(2));
       result.push({id:group.userData.objectId+':'+entry.id,owner:group.userData.objectId,p,center,minimum:box.min.toArray(),maximum:box.max.toArray(),volume:localBox.volume,localBox,group});
     }
   });return result;
 }
 export function reflectionProbeCandidates(probes,position,bounds=null,index=null){
- const result=(index?index.candidates(position,bounds):probes).filter(p=>position===null&&!bounds|| (bounds?reflectionProbeIntersectsBox(p,bounds):(p.localBox?probeLocalPoint(p.localBox,position).every((v,i)=>v>=p.localBox.minimum[i]&&v<=p.localBox.maximum[i]):position.every((v,i)=>v>=p.minimum[i]&&v<=p.maximum[i]))));
+ const result=(index?index.candidates(position,bounds):probes).filter(p=>position===null&&!bounds|| (bounds?reflectionProbeIntersectsBox(p,bounds):(p.localBox?(p.localBox.shape==='sphere'?Math.hypot(...probeLocalPoint(p.localBox,position))<=p.localBox.maximum[0]:probeLocalPoint(p.localBox,position).every((v,i)=>v>=p.localBox.minimum[i]&&v<=p.localBox.maximum[i])):position.every((v,i)=>v>=p.minimum[i]&&v<=p.maximum[i]))));
  return index?result:result.sort((a,b)=>b.p.importance-a.p.importance||a.volume-b.volume||a.id.localeCompare(b.id));
 }
-export function reflectionProbeBinding(p){return {id:p.id,settings:{center:[...p.center,p.p.intensity],minimum:[...(p.localBox?.minimum||p.minimum),p.p.blendDistance],maximum:[...(p.localBox?.maximum||p.maximum),0],...(p.localBox?{localX:p.localBox.localX,localY:p.localBox.localY,localZ:p.localBox.localZ,faceScale:p.localBox.faceScale}:{}),options:[1,p.p.diffuseIntensity,1,p.p.boxProjection?1:0]}};}
+export function reflectionProbeBinding(p){return {id:p.id,settings:{center:[...p.center,p.p.intensity],minimum:[...(p.localBox?.minimum||p.minimum),p.p.blendDistance],maximum:[...(p.localBox?.maximum||p.maximum),0],...(p.localBox?{localX:p.localBox.localX,localY:p.localBox.localY,localZ:p.localBox.localZ,faceScale:p.localBox.faceScale}:{}),options:[1,p.p.diffuseIntensity,1,(p.p.boxProjection?1:0)+(p.p.volumeShape==='sphere'?2:0)]}};}
 export function selectReflectionProbes(probes,position,bounds=null,limit=2,index=null){return reflectionProbeCandidates(probes,position,bounds,index).slice(0,limit).map(reflectionProbeBinding);}
 export function reflectionProbeDrawBindings(probes,position,bounds=null,index=null){const list=reflectionProbeCandidates(probes,position,bounds,index);return {probes:list.slice(0,2).map(reflectionProbeBinding),globalProbes:list.length>2};}
 export function probeCaptureViews(probe){

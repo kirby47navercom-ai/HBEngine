@@ -115,6 +115,9 @@ public:
 HB_CLASS()
 class ReflectionProbes : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeSphere", KoreanName="반사 구형 영역 지정", Category="렌더링") static void SetSphere(Actor* target,float value=5,const std::string& component="ReflectionProbe");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeShape", KoreanName="반사 영역 모양 지정", Category="렌더링") static void SetShape(Actor* target,const std::string& value="box",const std::string& component="ReflectionProbe");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeRadius", KoreanName="반사 영역 반경 지정", Category="렌더링") static void SetRadius(Actor* target,float value=5,const std::string& component="ReflectionProbe");
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeRefresh", KoreanName="반사 프로브 갱신", Category="렌더링") static void Refresh(Actor* target,const std::string& component="ReflectionProbe");
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeIntensity", KoreanName="반사 강도 지정", Category="렌더링") static void SetIntensity(Actor* target,float value,const std::string& component="ReflectionProbe");
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeDiffuse", KoreanName="간접광 강도 지정", Category="렌더링") static void SetDiffuseIntensity(Actor* target,float value,const std::string& component="ReflectionProbe");

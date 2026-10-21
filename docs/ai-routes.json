@@ -171,7 +171,9 @@
         "iridescence",
         "얇은 막",
         "물리 시선",
-        "기본 노멀맵"
+        "기본 노멀맵",
+        "구형 반사",
+        "sphere probe"
       ],
       "paths": [
         "prototype/game-renderer.js",
@@ -196,7 +198,8 @@
         "prototype/gpu-probe-spatial.js",
         "native/include/HBEngine/ProbeSpatialIndex.hpp",
         "docs/PROBE_SPATIAL_INDEX.md",
-        "docs/BUILTIN_NORMAL_MAP.md"
+        "docs/BUILTIN_NORMAL_MAP.md",
+        "docs/SPHERE_REFLECTION_PROBES.md"
       ]
     },
     {
@@ -225,7 +228,9 @@
         "iridescence",
         "얇은 막",
         "물리 시선",
-        "기본 노멀맵"
+        "기본 노멀맵",
+        "구형 반사",
+        "sphere probe"
       ],
       "paths": [
         "prototype/material-runtime.js",
@@ -241,7 +246,8 @@
         "prototype/gpu-camera-view.js",
         "prototype/gpu-iridescence.js",
         "docs/GPU_PHYSICAL_VIEW.md",
-        "docs/BUILTIN_NORMAL_MAP.md"
+        "docs/BUILTIN_NORMAL_MAP.md",
+        "docs/SPHERE_REFLECTION_PROBES.md"
       ]
     },
     {
@@ -289,7 +295,9 @@
         "iridescence",
         "얇은 막",
         "물리 시선",
-        "기본 노멀맵"
+        "기본 노멀맵",
+        "구형 반사",
+        "sphere probe"
       ],
       "paths": [
         "prototype/scene-environment.js",
@@ -315,7 +323,8 @@
         "prototype/gpu-probe-spatial.js",
         "native/include/HBEngine/ProbeSpatialIndex.hpp",
         "docs/PROBE_SPATIAL_INDEX.md",
-        "docs/BUILTIN_NORMAL_MAP.md"
+        "docs/BUILTIN_NORMAL_MAP.md",
+        "docs/SPHERE_REFLECTION_PROBES.md"
       ]
     },
     {

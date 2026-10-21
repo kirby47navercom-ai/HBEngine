@@ -1,3 +1,4 @@
+import {reflectionProbeHelper} from './reflection-probe-helper.js';
 import {SceneTextureStreaming} from './texture-streaming.js';
 import {spriteToneMapped,applySpriteColorPolicy} from './sprite-color-policy.js';
 import {prepareTextureRegionWrite} from './texture-region-updates.js';
@@ -254,7 +255,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
       if(component.type==='SkyLight'&&p.source==='hdri'&&p.cubemap){const map=await loadPathEnvironment(p.cubemap,fileUrl);map.mapping=THREE.EquirectangularReflectionMapping;own(group,map);group.userData.skyEnvironment={path:p.cubemap,texture:map};}
       if(component.type==='PostProcessVolume'&&p.pathTracingHDRI){const map=await loadPathEnvironment(p.pathTracingHDRI,fileUrl);own(group,map);group.userData.pathEnvironment={path:p.pathTracingHDRI,texture:map};}
       if(component.type==='PostProcessVolume'&&p.colorLookup){const map=await texture(p.colorLookup,true);if(!lookupSize(map)){map.dispose();throw Error('LUT 이미지는 N² × N 크기여야 해요. N: 2~64');}map.flipY=false;map.generateMipmaps=false;map.minFilter=map.magFilter=THREE.LinearFilter;map.needsUpdate=true;own(group,map);group.userData.postLookup={path:p.colorLookup,texture:map};}
-      if(component.type==='ReflectionProbe'){(group.userData.reflectionProbes??=[]).push({id:component.id,properties:p});if(editor){const box=new THREE.Box3(new THREE.Vector3(...p.size).multiplyScalar(-.5).add(new THREE.Vector3(...p.offset)),new THREE.Vector3(...p.size).multiplyScalar(.5).add(new THREE.Vector3(...p.offset))),helper=new THREE.Box3Helper(box,0x8aaccf);helper.userData.editorHelper=true;own(group,helper.geometry);own(group,helper.material);group.add(helper);}}
+      if(component.type==='ReflectionProbe'){(group.userData.reflectionProbes??=[]).push({id:component.id,properties:p});if(editor)reflectionProbeHelper(group,p,own);}
       if(component.type==='RaycastVehicle')buildVehicleWheels(group,p,own);
       if(component.type==='Cloth')buildCloth(group,p,own);
       if(component.type==='Rope2D')buildRope2D(group,p,own);

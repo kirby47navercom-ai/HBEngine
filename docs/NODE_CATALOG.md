@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **821개**, 실제 공통 C++ API **736개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **824개**, 실제 공통 C++ API **739개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -30,7 +30,7 @@
 | 문자열 | 23 | 19 |
 | 애니메이션 | 2 | 0 |
 | 머테리얼 | 8 | 8 |
-| 렌더링 | 4 | 3 |
+| 렌더링 | 7 | 6 |
 | 장면 | 2 | 2 |
 | UI | 23 | 20 |
 | 저장 | 5 | 3 |
@@ -577,6 +577,9 @@
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
 | lightIntensity | Set Light Intensity / 광원 밝기 설정 | exec: exec, target: object, value: float | then: exec | — | VM / 브라우저 서비스 |
+| reflectionProbeSphere | Set Sphere / 반사 구형 영역 지정 | exec: exec, target: object, value: float, component: string | then: exec | hb::ReflectionProbes::SetSphere | 공통 C++ + VM |
+| reflectionProbeShape | Set Shape / 반사 영역 모양 지정 | exec: exec, target: object, value: string, component: string | then: exec | hb::ReflectionProbes::SetShape | 공통 C++ + VM |
+| reflectionProbeRadius | Set Radius / 반사 영역 반경 지정 | exec: exec, target: object, value: float, component: string | then: exec | hb::ReflectionProbes::SetRadius | 공통 C++ + VM |
 | reflectionProbeRefresh | Refresh / 반사 프로브 갱신 | exec: exec, target: object, component: string | then: exec | hb::ReflectionProbes::Refresh | 공통 C++ + VM |
 | reflectionProbeIntensity | Set Intensity / 반사 강도 지정 | exec: exec, target: object, value: float, component: string | then: exec | hb::ReflectionProbes::SetIntensity | 공통 C++ + VM |
 | reflectionProbeDiffuse | Set Diffuse Intensity / 간접광 강도 지정 | exec: exec, target: object, value: float, component: string | then: exec | hb::ReflectionProbes::SetDiffuseIntensity | 공통 C++ + VM |

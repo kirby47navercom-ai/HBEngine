@@ -408,6 +408,16 @@
         {
           "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Surface-Type.html",
           "record": "docs/NATIVE_VOLUME_097.md"
+        },
+        {
+          "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Probe.html",
+          "record": "docs/SPHERE_REFLECTION_PROBES.md",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Proxy-Volume.html",
+          "record": "docs/SPHERE_REFLECTION_PROBES.md",
+          "wholeCorpus": false
         }
       ]
     },
@@ -4867,5 +4877,33 @@
     "wholeCorpus": false,
     "wholeApi": false,
     "unread": "Linked engine/UMG/UI Toolkit API members, other engine features, desktop/mobile/assistive-device behaviors beyond the isolated checks. Designer arbitrary BP/C++ execution and native widget object classes are not implemented by this batch."
+  },
+  "supplemental1192": {
+    "date": "2026-10-21",
+    "targets": [
+      "RND-03"
+    ],
+    "record": "docs/SPHERE_REFLECTION_PROBES.md",
+    "rows": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/reflections-captures-in-unreal-engine",
+        "readScope": "Own capture-shape section: sphere radius/influence/projection and box limitations, smaller capture precedence. Linked Lightmass/API and remaining manual not read; existing box read986 retained."
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Probe.html",
+        "readScope": "Own Projection Settings/Influence Volume tables: sphere/box/radius/inward blend, independent capture position, proxy compatibility; linked API and entire HDRP not read."
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Proxy-Volume.html",
+        "readScope": "Own proxy shape/reuse/influence-as-proxy/infinite paragraphs and property table. Linked reflection/refraction sources and API not read."
+      }
+    ],
+    "wholeCorpus": false,
+    "wholeApi": false,
+    "unread": [
+      "HDRP independent proxy implementation, per-face/normal fade, distance based roughness, linked API and whole package corpus",
+      "UE small-capture full override/lightmap interaction and linked API/Lightmass",
+      "Other registered source/version gates remain unchanged"
+    ]
   }
 }
