@@ -609,9 +609,28 @@
       "path": "native/build/normal-sharing-ai-context-1187.json",
       "sha256": "1e1bc4ba2b47b3913fffdcc12fd13f8296a1de80853618b71f1b983546d7ac1f",
       "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    },
+    {
+      "path": "native/build/probe-atlas-1120-e7ixW5/acceptance.json",
+      "sha256": "181257bf3c607c4d06ed035d005c49100b86825f4f446cd080535b7584bf42bf",
+      "scope": "Actual newly packaged C++/Blueprint4capture game: one large mirror spans four world probe volumes. Center camera samples each region by C++ move/Blueprint setPosition, then fourth (outside old CPU-selected pair) C++ intensity/Blueprint restore updates metadata without capture/copy. Emitters behind camera; actual PMREM/D3D capture. Camera-centered samples do not prove off-axis orthographic view-vector parity.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fc81d47f83b22276\\HBEngine.exe"
+      ]
     }
   ],
-  "sourceGameGates": [],
+  "sourceGameGates": [
+    {
+      "path": "native/build/probe-atlas-1120-e7ixW5/acceptance.json",
+      "sha256": "181257bf3c607c4d06ed035d005c49100b86825f4f446cd080535b7584bf42bf",
+      "scope": "Actual newly packaged C++/Blueprint4capture game: one large mirror spans four world probe volumes. Center camera samples each region by C++ move/Blueprint setPosition, then fourth (outside old CPU-selected pair) C++ intensity/Blueprint restore updates metadata without capture/copy. Emitters behind camera; actual PMREM/D3D capture. Camera-centered samples do not prove off-axis orthographic view-vector parity.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fc81d47f83b22276\\HBEngine.exe"
+      ]
+    }
+  ],
   "nativePlayerSHA256": "2a2ab7d4de535f068781f80296a95d570b4a7a754a43b3b84da1f95f9e762a53",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -651,8 +670,8 @@
     "scope": "자원하나를참조하는영역보유량과배치생성카운터대조,전체게임FPS/CPU시간대조아님;정지입력확인O(N)은남음"
   },
   "researchScope": "기존atlas/자원/브리지본문의CPU자료소유흐름대조,UE/Unity전체연구gate미승격",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1183.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1190.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "큰 장면 다수 HDR 캡처의 CPU/GPU 메모리·통제 FPS 검증 및 타일/클러스터와 BVH 비교·혼합 정책",
@@ -661,5 +680,6 @@
     "WebGPU 물리 재질의 임의 복합 로브·매질/기하/이력 조합 확장과 전체 백엔드 에너지 동등성 검증"
   ],
   "scope": "영향native2검사묶음,동일HLSL/raster함수증명으로노멀·브라우저검사재실행없음. AI인계길이실패는인계를축약한뒤해당정적검사만반복.",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1190.json"
 }

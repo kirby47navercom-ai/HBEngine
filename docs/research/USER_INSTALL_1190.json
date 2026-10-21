@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "ce0ed971a2db5f82663384d24b769c943f8581f8",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\fc81d47f83b22276",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\fc81d47f83b22276\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\fc81d47f83b22276\\HBEngine.exe",
+  "bundleHash": "fc81d47f83b2227626a8bc99679ccf6e1cefaf05af22b9d1e58140fcfc0e25bb",
+  "files": 3884,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3883,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\da1acaad81e62420",
+        "bytes": 184934509,
+        "manifestSHA256": "437015400ca406502e9f96670ca766d752611ae95b71593584bad4d6e83b631c"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T08:45:07.5178259Z",
+    "bytes": 184934509,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "fc81d47f83b22276"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 544,
+  "repositoryOnlyTestSourcesVerified": 19,
+  "nativePlayerSHA256": "2a2ab7d4de535f068781f80296a95d570b4a7a754a43b3b84da1f95f9e762a53",
+  "installedGates": [
+    {
+      "path": "native/build/probe-atlas-1120-e7ixW5/acceptance.json",
+      "sha256": "181257bf3c607c4d06ed035d005c49100b86825f4f446cd080535b7584bf42bf",
+      "scope": "Actual newly packaged C++/Blueprint4capture game: one large mirror spans four world probe volumes. Center camera samples each region by C++ move/Blueprint setPosition, then fourth (outside old CPU-selected pair) C++ intensity/Blueprint restore updates metadata without capture/copy. Emitters behind camera; actual PMREM/D3D capture. Camera-centered samples do not prove off-axis orthographic view-vector parity.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\fc81d47f83b22276\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\fc81d47f83b22276\\",
+    "elapsedMs": 262.44,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\fc81d47f83b22276",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "fc81d47f83b2227626a8bc99679ccf6e1cefaf05af22b9d1e58140fcfc0e25bb",
+      "installedAt": "2026-10-21T08:45:04.151Z",
+      "manifestFiles": 3884,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3884,
+  "versions": [
+    "fc81d47f83b22276"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1190-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/probe-sharing-1171-gNFeY6/acceptance.json",
+      "sha256": "1c1404dcbfb2d6d4ff1bf49ad7cca2f1c7df7f2b211be61441ddf17ee64a4389",
+      "scope": "실제D3D공유캡처/CPU설정전용/구간정책/불량원자거절/기존광학회귀"
+    },
+    {
+      "path": "native/build/probe-atlas-1119-X2I026/acceptance.json",
+      "sha256": "d4bc7f23e5a4d4742617f919d6b4ef2dbf3d5259b7a3c7935e44d80761daa7d1",
+      "scope": "실제D3D공유캡처/CPU설정전용/구간정책/불량원자거절/기존광학회귀"
+    },
+    {
+      "path": "native/build/metadata-reused-normal-1187.json",
+      "sha256": "c4e931eb4e5de11d79657984e5f67e1e575cd990279f35509f459fc62f26c3e2",
+      "scope": "All raw HLSL in raster/probe/atlas equal1177source; SceneRender C++ differs only diagnostic getters. Normal fixture1167 unchanged. Prior1344+8/GL72 and browser1179 proof retained; not rerun."
+    },
+    {
+      "path": "native/build/normal-sharing-static-1187.json",
+      "sha256": "02a1deb69217bbb42266b3db3b6528780fed5894baa4f568956c184095638a43",
+      "scope": "Normal texture and shared atlas, changed JS syntax, generated API unchanged, spatial schema and offline AI CLI. GPU, C++, real game and installation checks have separate evidence."
+    },
+    {
+      "path": "native/build/normal-sharing-ai-context-1187.json",
+      "sha256": "1e1bc4ba2b47b3913fffdcc12fd13f8296a1de80853618b71f1b983546d7ac1f",
+      "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "native CPU설정전용·4B인덱스·원자검증/진단. 3884명세·544소유SHA·CPP19/native14·Player1186/Host1041·설치실제CPP/BP4영역·밝기/복원 layout1불변/fast0→1→2·User읽기SHA/연결/Versions1. 영향native2gate만·노멀/브라우저재실행없음.",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "priorBatch": [
+    {
+      "id": "shared-native",
+      "path": "native/build/probe-sharing-1171-gNFeY6/acceptance.json",
+      "sha256": "1c1404dcbfb2d6d4ff1bf49ad7cca2f1c7df7f2b211be61441ddf17ee64a4389"
+    },
+    {
+      "id": "atlas-native",
+      "path": "native/build/probe-atlas-1119-X2I026/acceptance.json",
+      "sha256": "d4bc7f23e5a4d4742617f919d6b4ef2dbf3d5259b7a3c7935e44d80761daa7d1"
+    }
+  ]
+}

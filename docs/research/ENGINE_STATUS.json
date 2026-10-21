@@ -2805,11 +2805,11 @@
     "scope": "native CPU재포장/보유용량/원자검증/진단;HLSL/raster실행구문동일·브라우저/노멀검사재사용."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1183.json",
-    "sourceCommit": "c18c53731e356826d8e648f77dd625b7f070f840",
-    "bundleHash": "da1acaad81e624205f43142079a82adbd1f3a4c804bf5160cdfdfffa71f2fbb6",
+    "receipt": "docs/research/USER_INSTALL_1190.json",
+    "sourceCommit": "ce0ed971a2db5f82663384d24b769c943f8581f8",
+    "bundleHash": "fc81d47f83b2227626a8bc99679ccf6e1cefaf05af22b9d1e58140fcfc0e25bb",
     "verified": true,
     "versions": 1,
-    "scope": "세브라우저 프로브 변경행/누적대기/full우선/GL상태/실제픽셀. 3882전체명세·544소유SHA·native14/CPP19·Player1173/Host1041동일SHA재사용·User읽기SHA/연결/Versions1. C++재빌드/native게임재검사없음."
+    "scope": "native CPU설정전용·4B인덱스·원자검증/진단. 3884명세·544소유SHA·CPP19/native14·Player1186/Host1041·설치실제CPP/BP4영역·밝기/복원 layout1불변/fast0→1→2·User읽기SHA/연결/Versions1. 영향native2gate만·노멀/브라우저재실행없음."
   }
 }

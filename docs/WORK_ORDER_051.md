@@ -842,3 +842,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1183설치 C:\Users\kirby\HBEngine\Versions\da1acaad81e62420 /3882명세·544소유SHA·native14/CPP19·Player/Host재사용. 설치전용한검사에서GL/GPU/폴백변경288B/전체1008B·대기변경·경계전체갱신·정지0·픽셀/인스턴스/해제통과. User10849읽기SHA·연결·Versions1·이전184838887B정리. CPP/native게임재실행없이기존증거재사용. cache{"deleted":0,"bytes":0,"receipt":null}.
 
 1185–1188 native설정CPU재포장생략·자료4B인덱스/786432B감소·불량원자검증·분리구간정책/진단 묶음구현. 영향native2gate만실행·HLSL/raster동일증명으로노멀/브라우저재검사없음·Player1186한번빌드/Host재사용. static1187 AI인계5KB실패는인계3535B축약후해당정적검사만재실행통과. 설치1190예정.
+
+1190설치 C:\Users\kirby\HBEngine\Versions\fc81d47f83b22276 /3884명세·544소유SHA·CPP19/native14·Player1186/Host1041·설치실제CPP/BP4영역/밝기복원 layout1고정/fast0→1→2 확인. User10849전후읽기SHA·연결·Versions1·이전184934509B정리·cache{"deleted":0,"bytes":0,"receipt":null}. 영향native2gate만묶어서검사했고동일노멀/브라우저검사는재실행하지않음.

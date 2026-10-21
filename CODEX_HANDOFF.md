@@ -4,7 +4,7 @@
 
 ## 확정 설치
 
-USER_INSTALL_1183.json: C:/Users/kirby/HBEngine/Versions/da1acaad81e62420/HBEngine.exe. 3882명세/544소유SHA/CPP19/native14·Player1173/Host1041·User10849읽기SHA·연결·Versions1. 이전184838887B정리. 최신마커는설치CLI가읽음. 원장뒤기록은저장소에서확인.
+USER_INSTALL_1190.json: C:\Users\kirby\HBEngine\Versions\fc81d47f83b22276/HBEngine.exe. 3884명세/544소유SHA/CPP19/native14·Player1186/Host1041·User10849읽기SHA·연결·Versions1. 이전184934509B정리. 최신마커는설치CLI가읽음. 원장뒤기록은저장소에서확인.
 
 ## 같은 턴에서 완료한 묶음
 
@@ -15,7 +15,7 @@ USER_INSTALL_1183.json: C:/Users/kirby/HBEngine/Versions/da1acaad81e62420/HBEngi
 ## 현재1185–1187 검사·빌드
 
 native atlas: 같은캡처/affine경계설정변경은배치/공간모양/전체packet생성건너뛰기,변경모두검증후적용·불량설정원자거절. 영역16Bstamp→4B고유sourceindex,65536영역786432B절감. metadataFastUpdates/layoutBuilds진단.
-1185 batch native2gate통과: shared1171-gNFeY6(보유CPU20709360B,이전21495792B)·atlas1119-X2I026. HLSL원문과raster설정(진단getter제외)7ce5b51동일증명 metadata-reused-normal-1187.json. 노멀/브라우저검사재실행없음. Player1186한번빌드성공(재실행금지). static1187은AI 인계5KB초과로실패해현재인계축약,그검사만다시진행. 다음record1188→sync1189→install1190→finish1191,설치실제CPP/BP D3D4영역/밝기에서layout재구성0/fast진단확인. 아직1183이최신확정.
+1185 batch native2gate통과: shared1171-gNFeY6(보유CPU20709360B,이전21495792B)·atlas1119-X2I026. HLSL원문과raster설정(진단getter제외)7ce5b51동일증명 metadata-reused-normal-1187.json. 노멀/브라우저검사재실행없음. Player1186한번빌드성공/Host1041재사용. static1187 AI인계5KB실패는인계3535B축약후해당정적검사만재실행통과. ENGINE_WORK_1188/USER_INSTALL_1190확정: 설치실제CPP/BP4영역·밝기/복원중layout1고정/metadataFast0→1→2,새캡처/copy/공간재구성0. 3884명세/544소유SHA/CPP19/native14·User읽기SHA/연결·Versions1. one-shot1186/89/90/91완료재실행금지.
 
 ## 유지할 잔여
 
