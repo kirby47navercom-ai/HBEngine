@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "da09e05be3e979123cfbddd66d3313e03f70a11e",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\832bf441d776a979",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\832bf441d776a979\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\832bf441d776a979\\HBEngine.exe",
+  "bundleHash": "832bf441d776a9790785a17b92840a4f2366590628f25224df4b3eb9eb6b3fb9",
+  "files": 3917,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3908,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\771aa0ffcc7421e4",
+        "bytes": 185382122,
+        "manifestSHA256": "cb43885a253521eec56d761a3619b534949afddabfe4f28f1c89a7b039c5c114"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T12:18:51.9607305Z",
+    "bytes": 185382122,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "832bf441d776a979"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 600,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
+  "installedGates": [
+    {
+      "path": "native/build/blueprint-2d-1221-2M669P/acceptance.json",
+      "sha256": "4a118deaf14d7ff6e81e8ad865d6e220eb6e1c2f81e52a48dee68ecc8879992b",
+      "scope": "Selected installation builder creates and runs actual Windows D3D11 game. GameMode defaultPawn is C++-derived TopDownCharacter2D, typed SpriteActor function receives authored Blueprint actor, preserves spawn position and queues witness pose; real W input moves in XY with Z fixed. No mobile-device/FPS/full-engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\832bf441d776a979\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\832bf441d776a979\\",
+    "elapsedMs": 84.38,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\832bf441d776a979",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "832bf441d776a9790785a17b92840a4f2366590628f25224df4b3eb9eb6b3fb9",
+      "installedAt": "2026-10-21T12:18:48.730Z",
+      "manifestFiles": 3917,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3917,
+  "versions": [
+    "832bf441d776a979"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1226-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/blueprint-2d-1219-wpAXQs/acceptance.json",
+      "sha256": "16915622b1b6bc8271398ab2739c47a959da0921d5bd9bac5f0698e8e536ec93",
+      "scope": "New 2D creation/defaultPawn/real Rapier movement and jump/class queries plus one compiled NativeHost module, typed built-in references/arrays and C++ classes deriving every new base; direct/asset/native spawn composition and signed transform. No renderer/FPS/full-engine claim."
+    },
+    {
+      "path": "native/build/blueprint-2d-1220-mBPNa0/acceptance.json",
+      "sha256": "447343193d3f6b7912a5461fb25914de27d6a5e508a6b670631931e4f0bc944f",
+      "scope": "Private hidden actual editor: shared renderer displays authored SVG sprite and imported OBJ triangle; edit/2D-3D/F focus/view flags, idle render/build demand, close/reopen saved camera and rejected invalid settings. User project/profile never used; no whole-renderer matrix."
+    },
+    {
+      "path": "native/build/runtime-spawn-OwWX6w/acceptance.json",
+      "sha256": "f4a9494578f0dd9da5433be353f0fca9cdcc47a744e5a7fcdc16565aa42d0478",
+      "scope": [
+        "spawn an unplaced inherited BP with class overrides, components, transform and ordered lifecycle",
+        "automatic pool retains actor identity, resets exposed defaults, removes work and initializes exactly once per reuse",
+        "pool grows on demand, respects inactive capacity and accepts null/already removed targets",
+        "prefab hierarchy clones independently, keeps local child transform, attaches render groups and destroys descendants",
+        "invalid assets and transforms leave the world unchanged",
+        "failed pool acquisition restores the inactive actor without losing its identity or reuse capacity",
+        "BeginPlay self-destruction returns null and leaves no stale binding or render group",
+        "Stop while an asset is loading cannot remove another actor after the pending actor has already been removed"
+      ]
+    },
+    {
+      "path": "native/build/ai-context-1058.json",
+      "sha256": "879afd6107df1c41ce2d95276499015e442f5757b350825c943d01d2ddba5e75",
+      "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    },
+    {
+      "path": "native/build/blueprint-2d-batch-1222.json",
+      "sha256": "44013d880890c20507356b2ed4703bde6b067d1b746a0f86f982811c907a9dcd",
+      "scope": "Changed17 JS/MJS syntax, generated API, shared native-world regression; existing passed CPU/UI/spawn/AI receipts reused without another renderer matrix."
+    }
+  ],
+  "scope": "2D classes/templates/framework/spawn/typed C++ and real component preview. 600 runtime owners / 21 repository C++ tests / Player1223 one build, Host1041 reused. Source CPU/UI/Rapier/CPP/AI receipts reused; installed builder Windows D3D11 2D package and typed C++/pose/XY-input proof. Full manifest/profile read-only/shortcuts/association/Versions1; no renderer matrix or FPS claim.",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

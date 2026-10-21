@@ -2906,11 +2906,11 @@
     "scope": "2D creation, composition, framework/runtime/native typed identity and actual component viewport with shared rendering, controls and AI view commands. Existing remaining items retained."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1217.json",
-    "sourceCommit": "a37981248595d551f2dec537bf70f4813182c3a6",
-    "bundleHash": "771aa0ffcc7421e45762a24d6fcf4f351a45affdf5aa0c2445c3b29e299dfa7e",
+    "receipt": "docs/research/USER_INSTALL_1226.json",
+    "sourceCommit": "da09e05be3e979123cfbddd66d3313e03f70a11e",
+    "bundleHash": "832bf441d776a9790785a17b92840a4f2366590628f25224df4b3eb9eb6b3fb9",
     "verified": true,
     "versions": 1,
-    "scope": "블루프린트 동적출력/합류/Promote/중첩구조체/C++기본값/AI경로. sourceGUI·CPU/실제Cpp·기존VM성공SHA재사용 + 설치builder로Windows게임패키징/D3D11실제5·8·8분기·단위scale/위치보존/Setter연결/정수변환/중첩음수Transform·두새모듈포함.3907명세/586소유SHA/CPP21/native16·Player1204/Host1041재사용·User읽기SHA/연결/Versions1.렌더매트릭스/전체엔진/FPS검사아님."
+    "scope": "2D classes/templates/framework/spawn/typed C++ and real component preview. 600 runtime owners / 21 repository C++ tests / Player1223 one build, Host1041 reused. Source CPU/UI/Rapier/CPP/AI receipts reused; installed builder Windows D3D11 2D package and typed C++/pose/XY-input proof. Full manifest/profile read-only/shortcuts/association/Versions1; no renderer matrix or FPS claim."
   }
 }

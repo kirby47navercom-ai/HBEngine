@@ -681,6 +681,15 @@
       "path": "native/build/blueprint-2d-batch-1222.json",
       "sha256": "44013d880890c20507356b2ed4703bde6b067d1b746a0f86f982811c907a9dcd",
       "scope": "Changed17 JS/MJS syntax, generated API, shared native-world regression; existing passed CPU/UI/spawn/AI receipts reused without another renderer matrix."
+    },
+    {
+      "path": "native/build/blueprint-2d-1221-2M669P/acceptance.json",
+      "sha256": "4a118deaf14d7ff6e81e8ad865d6e220eb6e1c2f81e52a48dee68ecc8879992b",
+      "scope": "Selected installation builder creates and runs actual Windows D3D11 game. GameMode defaultPawn is C++-derived TopDownCharacter2D, typed SpriteActor function receives authored Blueprint actor, preserves spawn position and queues witness pose; real W input moves in XY with Z fixed. No mobile-device/FPS/full-engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\832bf441d776a979\\HBEngine.exe"
+      ]
     }
   ],
   "sourceEditorGates": [
@@ -740,8 +749,20 @@
     "fpsClaim": false
   },
   "researchScope": "CORPUS_MANIFEST supplemental1219: specified own PaperCharacter/Paper2D and Unity SpriteRenderer bodies; linked whole API/corpus not complete.",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1217.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1226.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1226.json",
+  "sourceGameGates": [
+    {
+      "path": "native/build/blueprint-2d-1221-2M669P/acceptance.json",
+      "sha256": "4a118deaf14d7ff6e81e8ad865d6e220eb6e1c2f81e52a48dee68ecc8879992b",
+      "scope": "Selected installation builder creates and runs actual Windows D3D11 game. GameMode defaultPawn is C++-derived TopDownCharacter2D, typed SpriteActor function receives authored Blueprint actor, preserves spawn position and queues witness pose; real W input moves in XY with Z fixed. No mobile-device/FPS/full-engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\832bf441d776a979\\HBEngine.exe"
+      ]
+    }
+  ]
 }

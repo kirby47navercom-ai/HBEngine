@@ -856,3 +856,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1217설치 C:\Users\kirby\HBEngine\Versions\771aa0ffcc7421e4 /3907명세·586소유SHA·CPP21/native16·Player1204/Host재사용. 실제설치builder Windows패키지D3D11에서5/8/8동적분기·승격Get/Set·기존실행선유지·자동int변환·중첩Transform·새모듈2개포함통과. User10849전후읽기SHA·연결·Versions1·이전185246846B정리. cache{"deleted":0,"bytes":0,"receipt":null}. 과거Sphere설명복제문자열만scope정정(원문보존),실제검증필드변경없음.
 
 1219–1224: 2D 네 부모 클래스·Actor/Pawn 강제메시 해제·생성/배치/Spawn/GameMode·C++ 형식/배열/원래 위치·실제 에셋 컴포넌트 뷰포트/공용 조작/AI/닫기 해제 함께 구현. 실제 Rapier 점프·탑다운XY·CPP/Spawn50확인, 실제 GUI Sprite2x2/OBJ3정점·수정·투영·설정원자성·닫기재열기·idle추가 draw/build0, 기존Spawn/공유nativeworld·AI26경로·변경17JS/API통과. SDK변경후Player1223한번빌드·Host1041재사용. 설치패키지는1226예정, 반복렌더매트릭스없음. 기존누적잔여/CPP01구조체·SetMembers·CollapsedGraph유지.
+
+1226설치 C:\Users\kirby\HBEngine\Versions\832bf441d776a979 /3917명세·600소유SHA·CPP21/native16·Player1223단1빌드/Host재사용. 설치builder 실제WindowsD3D11 게임에서2D GameMode·C++typedSprite/원래Pawn[3,4,0]/witness[3,42,0]·키보드XY이동·모듈포함통과. User10849전후읽기SHA·연결·Versions1·이전185382122B정리. cache{"deleted":0,"bytes":0,"receipt":null}. sourceGUI/CPU/회귀/API/AI 성공SHA재사용, 전체렌더매트릭스없음.
