@@ -1,0 +1,208 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "ac7a25a912bed2d458380d4414b5c5d9a5f99942",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0e7a9689f8d08f2c",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\0e7a9689f8d08f2c\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\0e7a9689f8d08f2c\\HBEngine.exe",
+  "bundleHash": "0e7a9689f8d08f2c7644200037f8f628f442ae14cede974c09e0803a7487272d",
+  "files": 4087,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4070,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e36b3207c2c1b246",
+        "bytes": 188082262,
+        "manifestSHA256": "c054c38cf5cf340a2e70460401838bd1bde3875e8a2ba292cbd677e09809c5f3"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T23:20:28.5780233Z",
+    "bytes": 188082262,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "0e7a9689f8d08f2c"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 750,
+  "repositoryOnlyTestSourcesVerified": 27,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [
+    "native/desktop/SceneRenderBridge.hpp",
+    "native/include/HBEngine/SceneRender.hpp",
+    "native/include/HBEngine/Game.hpp",
+    "native/include/HBEngine/SceneProbes.hpp",
+    "native/include/HBEngine/SceneProbeAtlas.hpp",
+    "native/include/HBEngine/Session.hpp"
+  ],
+  "nativePlayerSHA256": "ae9676694efba4fa38be7f5c8ef006146086337ab3e50fa2f52bde667a249d67",
+  "installedGates": [
+    {
+      "path": "native/build/probe-projection-1412-editor-TiPNEX/acceptance.json",
+      "sha256": "72f9608d1e53efd41ab1897df12039eea9ac3e7a893fb1677be22979081edb74",
+      "scope": "Owned hidden actual scene editor, separate proxy placement, influence toggle, filtered actor/component choices, sphere/box inspector visibility, Undo, stale revision and save/transform preservation. Synthetic select changes use actual handlers; numeric/physical rendering and game separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\0e7a9689f8d08f2c\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-projection-1411-player-OGfkBs/acceptance.json",
+      "sha256": "b7736a40ed3c3d3bdfdbcb4dd4be210ab56bc7656127709a8bbb8313e39093d2",
+      "scope": "Actual packaged D3D11 game freshly compiles user C++ SetProxyVolume/SetUseInfluenceVolume and generated BP nodes, nullable infinite and restore, immediate C++ component read cache and preserved actor position. Four captured images/layouts retained while native atlas metadata changes. Numeric and pixel physical proofs separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\0e7a9689f8d08f2c\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\0e7a9689f8d08f2c\\",
+    "elapsedMs": 62.44,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\0e7a9689f8d08f2c",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "0e7a9689f8d08f2c7644200037f8f628f442ae14cede974c09e0803a7487272d",
+      "installedAt": "2026-10-21T23:20:25.335Z",
+      "manifestFiles": 4087,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4087,
+  "versions": [
+    "0e7a9689f8d08f2c"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1422-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/probe-projection-1408.json",
+      "sha256": "1001a97064936288b1895704b37f67258f244d4f1f849830adfe2a6f792f2c9c",
+      "scope": "CPU2211 independent geometry cases/208hits/max1.78e-14; refs/remap/visibility/singular/mismatch fallback; metadata no spatial rebuild/legacy payload retained."
+    },
+    {
+      "path": "native/build/probe-projection-1409-window-9Dbsl0/acceptance.json",
+      "sha256": "3719a700aa6f3d6a73c5ec96991d82285224f42ca973ed89a56a4e9853e0bb2b",
+      "scope": "Current vector GLSL and TSL actual GL/WebGPU/forcedGL2211 each vs independent geometry."
+    },
+    {
+      "path": "native/build/probe-projection-1414-window-f1IsWQ/acceptance.json",
+      "sha256": "00b5d05f6300fbe17795436e10a4d9989241f1bfc5102261755644046d828bd3",
+      "scope": "Actual physical/clearcoat direct+atlas controlled CubeUV probes,7680numeric observations/backend; metadata/capture/BVH/dirtyw reuse."
+    },
+    {
+      "path": "native/build/probe-projection-1410-native-eTDJtU/acceptance.json",
+      "sha256": "62cbe1a0756d1f4310840c058039fc1cd2e1f255021397a98b2a0c80d72ad623",
+      "scope": "Current hardware optimized native HLSL2211 geometry cases/SDK validation/layout208/224. Compute not physical scene."
+    },
+    {
+      "path": "native/build/probe-projection-1415-native-R6sL8j/acceptance.json",
+      "sha256": "90329381565f9c94e69f0707e0a64e970f79d18f3b45869a5748d02d5a0fb10c",
+      "scope": "Current D3D11 direct/atlas raster142samples/error<=1byte/realHDRcapture/metadata224B/no layout/images/tree; invalid atomic/release."
+    },
+    {
+      "path": "native/build/proxy-regression-1416.json",
+      "sha256": "8fa842f9a027776563a37418814b3fcf0a871cd84a9f4f956d09db4c77913a69",
+      "scope": "Current17owner/test/runnerSHA chained4native proofs: priority blend,3000draw3upload2997skip/CPU2304B and2D mask/light/SRV, shared atlas,legacy volume."
+    },
+    {
+      "path": "native/build/probe-projection-1411-player-ezzcMY/acceptance.json",
+      "sha256": "04b0b100bb614f2fd55f75b1a6b49bd395b70c4f284037b1594bbffc80bbaada",
+      "scope": "Actual cold packagedD3D11/C++freshcompile/generatedBP/immediateGet/position6,0,2/sixGPUmetadata updates+224B;captures4/copy150/layout1;4roompixels194 red/green/blue/yellow;readiness30341.71ms/queue9unique8dedup."
+    },
+    {
+      "path": "native/build/probe-projection-1412-editor-55KrdS/acceptance.json",
+      "sha256": "6968c461c7d60705682f334991879a4a03c4174fae7f3031a69583e6bf1d1d54",
+      "scope": "Actual editor placement/realcheckbox/actor-componentchoice/shapeUI/Undo/staleAI/save/transform; screenshot inspected. This UI proof predates later shader vectorization/literal optimization; those use current kernel/game proofs."
+    },
+    {
+      "path": "native/build/material-surface-literals-1418.json",
+      "sha256": "44416c81e98b228621e0cc7c3e2fdb71cec4bc40da3d9aab2926f208a0527cc6",
+      "scope": "Native-only5literal cases/linearcolor/scalarcast/normal/sourceimmutable/hashstable/explicitoverride/arithmetic/fanout/parameter/read-onlysetter/editableunlinked/portablefixture5sources→1."
+    },
+    {
+      "path": "native/build/projection-context-1419.json",
+      "sha256": "b0e4a090c67b4a234c97b1ef96a472bd44b578c855e9ae956340d9743a1b038a",
+      "scope": "AI exact focus2/3/2files, tiny contract, offline131–151ms; not model comprehension/whole analysis."
+    },
+    {
+      "path": "native/build/projection-syntax-1419.json",
+      "sha256": "2068b50764ccf18e55ecdb4aa82424ade6031f34300ea48ac2b40126355f4dcf",
+      "scope": "31changed JS/MJS syntax and observed gitdiff whitespace."
+    },
+    {
+      "path": "native/build/ai-context-1058.json",
+      "sha256": "ef07c586ce348c0eef800dcb3e598853fcdf70f10bcb56bda19699ef6734b935",
+      "scope": "Existing bounded AI CLI/context/error/schema/index contract; handoff3949B."
+    },
+    {
+      "path": "native/build/projection-fixture-compaction-1419.json",
+      "sha256": "37b7646fff18c2045264ecad6c91f4cb0b9ee5eeca12a1c0a4af598cbfd6e0b5",
+      "scope": "One failed owned project SHA-verified lossless ZIP reclaimed30480B; failure report and repro retained."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/probe-projection-1411-player-ezzcMY/acceptance.json",
+      "sha256": "04b0b100bb614f2fd55f75b1a6b49bd395b70c4f284037b1594bbffc80bbaada",
+      "scope": "Actual cold packagedD3D11/C++freshcompile/generatedBP/immediateGet/position6,0,2/sixGPUmetadata updates+224B;captures4/copy150/layout1;4roompixels194 red/green/blue/yellow;readiness30341.71ms/queue9unique8dedup."
+    }
+  ],
+  "scope": "Installed independent reflection proxy authoring/real checkbox/component refs/shape UI/Undo/staleAI/save, installed builder D3D11 fresh user C++/generatedBP/immediatecache/position6,0,2 and six metadata-only GPU changes; real4room color pixels, current Player1417/6changednativeowners/27repositorytests/Host1041/vendor2. Full manifest/750sourceOwners/User read-only SHA/links/Versions1; no gameFPS/whole-engine claim.",
+  "version": 1,
+  "date": "2026-10-21T23:22:10.463Z",
+  "work": "docs/research/ENGINE_WORK_1420.json",
+  "distributionSync": "native/build/distribution-1421-sync.json",
+  "sourceNativeProofs": [
+    {
+      "path": "native/build/probe-projection-1410-native-eTDJtU/acceptance.json",
+      "sha256": "62cbe1a0756d1f4310840c058039fc1cd2e1f255021397a98b2a0c80d72ad623",
+      "scope": "Current hardware optimized native HLSL2211 geometry cases/SDK validation/layout208/224. Compute not physical scene."
+    },
+    {
+      "path": "native/build/probe-projection-1415-native-R6sL8j/acceptance.json",
+      "sha256": "90329381565f9c94e69f0707e0a64e970f79d18f3b45869a5748d02d5a0fb10c",
+      "scope": "Current D3D11 direct/atlas raster142samples/error<=1byte/realHDRcapture/metadata224B/no layout/images/tree; invalid atomic/release."
+    },
+    {
+      "path": "native/build/proxy-regression-1416.json",
+      "sha256": "8fa842f9a027776563a37418814b3fcf0a871cd84a9f4f956d09db4c77913a69",
+      "scope": "Current17owner/test/runnerSHA chained4native proofs: priority blend,3000draw3upload2997skip/CPU2304B and2D mask/light/SRV, shared atlas,legacy volume."
+    }
+  ],
+  "vendorPatch": "tools/patch-three-uniforms.mjs"
+}

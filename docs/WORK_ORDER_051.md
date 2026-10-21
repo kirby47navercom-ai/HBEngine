@@ -938,3 +938,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1405 설치확인: e36b3207c2c1b246·4069명세/733소유SHA/25native검사/2vendor. 설치실제256트랙46px가상화/348마커/검색·정확키가시이동·8UndoRedo분기·중앙재지정/입력격리·AI이력/metadata/revision·저장/복구flush/Play·설치helper D3D11패키지위치2.5통과. Native17·Player1369/Host SHA불변/재빌드0. User10849읽기SHA/연결보존·Versions1·이전187927859B회수. 전체잔여/분모null유지.
 
 1407–1420: 독립반사proxy 상자/구/무한·공유actor/component·영향/캡처분리·배치/Inspector/Undo·C++/BP/즉시읽기/위치보존·CPU/GL/GPU/atlas/DirectX208/224B·metadata전송/캡처/BVH재사용. Native 직접표면상수 공유5→1/queue9unique8dedup·읽기전용/parameter/색공간보존·cold장면81.68→29.40/30.34초관찰(FPS아님). 2211기하/3browserphysical/142nativepixel/기존4native회귀/실제4색패키지·AI2/3/2owner·실패ZIP30480B회수. source8fc5330·Player1417재빌드24.34초·Host동일·설치대기·누적78행/분모null/다른잔여유지.
+
+1422 설치확인: 0e7a9689f8d08f2c·4087명세/750소유SHA/27native검사/2vendor·새Player1417/Host1041·설치실제proxy배치/Inspector/Undo/staleAI/save·설치builder D3D11새C++/BP/6GPUmetadata/캡처유지/위치6,0,2/4색pixel·AI정확소유·User10849읽기SHA·연결/Versions1·이전188082262B회수. 전체누적목표계속/분모null.

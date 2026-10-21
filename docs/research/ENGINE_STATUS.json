@@ -3051,11 +3051,11 @@
     "scope": "Independent reflection proxy through authoring/C++/BP/all raster backends, metadata-only changes, native surface-literal source sharing, AI exact context; cumulative residuals retained."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1405.json",
-    "sourceCommit": "c57183fd7da0b6aa06dda79ad2476851c1b0bba8",
-    "bundleHash": "e36b3207c2c1b24677acfad8763ab60d7162d8ab8e55927d72d81baa70374067",
+    "receipt": "docs/research/USER_INSTALL_1422.json",
+    "sourceCommit": "ac7a25a912bed2d458380d4414b5c5d9a5f99942",
+    "bundleHash": "0e7a9689f8d08f2c7644200037f8f628f442ae14cede974c09e0803a7487272d",
     "verified": true,
     "versions": 1,
-    "scope": "Installed shared document history/isolated restores/8UndoRedo/branch, virtual256Sequence rows/fullscroll/search/focus/selected row, exact AI key navigation/track metadata/bounded history stats/revision, new central rebind and input isolation, save/recovery and actualPlay; installed builder D3D11 at2.5. All17native/25test/Player1369/Host/vendor unchanged; no compilation. Full manifest/733sourceOwners/User/links/Versions1; no gameFPS/whole-engine claim."
+    "scope": "Installed independent reflection proxy authoring/real checkbox/component refs/shape UI/Undo/staleAI/save, installed builder D3D11 fresh user C++/generatedBP/immediatecache/position6,0,2 and six metadata-only GPU changes; real4room color pixels, current Player1417/6changednativeowners/27repositorytests/Host1041/vendor2. Full manifest/750sourceOwners/User read-only SHA/links/Versions1; no gameFPS/whole-engine claim."
   }
 }

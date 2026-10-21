@@ -891,10 +891,6 @@
       "scope": "Actual cold packagedD3D11/C++freshcompile/generatedBP/immediateGet/position6,0,2/sixGPUmetadata updates+224B;captures4/copy150/layout1;4roompixels194 red/green/blue/yellow;readiness30341.71ms/queue9unique8dedup."
     }
   ],
-  "pendingInstalledGates": [
-    "tools/check-probe-projection-1412-editor.mjs",
-    "tools/check-probe-projection-1411-player.mjs"
-  ],
   "nativePlayerSHA256": "ae9676694efba4fa38be7f5c8ef006146086337ab3e50fa2f52bde667a249d67",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -983,8 +979,8 @@
     },
     "scope": "Observations on this PC with new private profiles/projects, not controlled CPU-load trials or whole-engine compile/FPS guarantee."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1405.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1422.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": {
     "reflection": [
@@ -1004,5 +1000,25 @@
       "접힌 그래프의 Timeline·일부 Event 전용 노드 및 wildcard/외부 함수·변수 참조의 문서간 일반화"
     ]
   },
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/probe-projection-1412-editor-TiPNEX/acceptance.json",
+      "sha256": "72f9608d1e53efd41ab1897df12039eea9ac3e7a893fb1677be22979081edb74",
+      "scope": "Owned hidden actual scene editor, separate proxy placement, influence toggle, filtered actor/component choices, sphere/box inspector visibility, Undo, stale revision and save/transform preservation. Synthetic select changes use actual handlers; numeric/physical rendering and game separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\0e7a9689f8d08f2c\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-projection-1411-player-OGfkBs/acceptance.json",
+      "sha256": "b7736a40ed3c3d3bdfdbcb4dd4be210ab56bc7656127709a8bbb8313e39093d2",
+      "scope": "Actual packaged D3D11 game freshly compiles user C++ SetProxyVolume/SetUseInfluenceVolume and generated BP nodes, nullable infinite and restore, immediate C++ component read cache and preserved actor position. Four captured images/layouts retained while native atlas metadata changes. Numeric and pixel physical proofs separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\0e7a9689f8d08f2c\\HBEngine.exe"
+      ]
+    }
+  ]
 }
