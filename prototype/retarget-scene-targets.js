@@ -1,6 +1,7 @@
+import {validActorScale} from './transform-scale.js';
 import {Object3D,MathUtils} from 'three';
 import {validValue,sampleTimeline,validTimeline} from './blueprint-model.js';
-const transformOK=t=>validValue('transform',t)&&t.scale.every(v=>v>=.01)&&['position','rotation','scale'].every(k=>t[k].every(v=>Math.abs(v)<=10000));
+const transformOK=t=>validValue('transform',t)&&validActorScale(t.scale)&&['position','rotation','scale'].every(k=>t[k].every(v=>Math.abs(v)<=10000));
 export function retargetSceneTargets({actors=[],sourceTargets=[],targetTargets=[],sourceTransform,targetTransform}={},source,target){
  if(!Array.isArray(actors)||actors.length>128||new Set(actors.map(a=>a?.id)).size!==actors.length)throw Error('리타게팅 외부 목표 목록 오류');
  const groups=new Map();for(const actor of actors){if(typeof actor.id!=='string'||!actor.id||actor.id.length>160||!transformOK(actor.transform)||actor.timeline!==undefined&&(!validTimeline(actor.timeline)||actor.timeline.tracks.some(t=>!['position','rotation','scale'].includes(t.id)||t.type!=='vec3')))throw Error('외부 목표의 변환·키를 확인하세요.');groups.set(actor.id,new Object3D());}

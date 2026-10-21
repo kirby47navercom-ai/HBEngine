@@ -1,3 +1,4 @@
+import {validActorScale} from './transform-scale.js';
 // Browser preview of the shared API. C++ implementation lives in Game.hpp.
 import {catalog,basePins,fieldsFor,defaultInputValue,validValue} from './blueprint-model.js';
 import {libraryByKey} from './library-spec.js';
@@ -36,7 +37,7 @@ function evaluateRaw(key,a,c){
   const o=c.object?.(a.target);if(!o)throw Error('Target 오브젝트가 없어요.');
   switch(key){
     case 'location':return {return:[...o.position]};case 'getRotation':return {return:[...o.rotation]};case 'getScale':return {return:[...o.scale]};case 'getTransform':return {return:{position:[...o.position],rotation:[...o.rotation],scale:[...o.scale]}};
-    case 'setPosition':o.position=[...a.position];break;case 'setRotation':o.rotation=[...a.value];break;case 'setScale':o.scale=[...a.value];break;case 'setTransform':Object.assign(o,JSON.parse(JSON.stringify(a.value)));break;case 'translate':o.position=add(o.position,a.value);break;case 'rotate':o.rotation=add(o.rotation,a.value);break;
+    case 'setPosition':o.position=[...a.position];break;case 'setRotation':o.rotation=[...a.value];break;case 'setScale':if(!validActorScale(a.value))throw Error('크기의 절댓값은 0.01~10000이어야 해요.');o.scale=[...a.value];break;case 'setTransform':if(!validActorScale(a.value.scale))throw Error('크기의 절댓값은 0.01~10000이어야 해요.');Object.assign(o,JSON.parse(JSON.stringify(a.value)));break;case 'translate':o.position=add(o.position,a.value);break;case 'rotate':o.rotation=add(o.rotation,a.value);break;
     case 'moveActorTowards':o.position=move(o.position,a.destination,Math.max(0,a.speed)*Math.max(0,a.delta));c.updateObject?.(o);return {return:dot(sub(o.position,a.destination),sub(o.position,a.destination))<1e-12};
     default:throw Error('이 API의 미리보기 호출은 없어요.');
   }c.updateObject?.(o);return {};

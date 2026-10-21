@@ -1,3 +1,4 @@
+import {validActorScale} from './transform-scale.js';
 import {actorTickOperation} from './runtime-tick.js';
 import {textureRegionColors} from './texture-region-updates.js';
 import {deformablePhysicsQueryKey,validateDeformableQuery,emptyDeformableResult} from './deformable-query.js';
@@ -57,7 +58,7 @@ import {ParticleSimulation,perceptionSystems,hasGameplayTag,matchTagQuery,validG
 export function validRuntimeSave(data,vm){
   return data?.version===1&&Array.isArray(data.objects)
     && new Set(data.objects.map(o=>o?.id)).size===data.objects.length
-    && data.objects.every(o=>o&&typeof o.id==='string'&&typeof o.visible==='boolean'&&validValue('transform',o)&&['position','rotation','scale'].every(k=>o[k].every(v=>Math.abs(v)<=10000))&&o.scale.every(v=>v>=.01)&&vm.object(o.id)?.kind===o.kind&&['poolActive','poolVisible','poolCollision'].every(k=>o[k]===undefined||typeof o[k]==='boolean'))
+    && data.objects.every(o=>o&&typeof o.id==='string'&&typeof o.visible==='boolean'&&validValue('transform',o)&&['position','rotation','scale'].every(k=>o[k].every(v=>Math.abs(v)<=10000))&&validActorScale(o.scale)&&vm.object(o.id)?.kind===o.kind&&['poolActive','poolVisible','poolCollision'].every(k=>o[k]===undefined||typeof o[k]==='boolean'))
     && Array.isArray(data.variables)&&data.variables.every(state=>{
       const binding=vm.bindings.find(b=>b.self===state?.self);return binding&&state.values&&typeof state.values==='object'&&!Array.isArray(state.values)&&Object.entries(state.values).every(([id,value])=>{const variable=binding.root.variables.find(v=>v.id===id);return variable&&(variable.container==='array'?Array.isArray(value)&&value.length<=128&&value.every(v=>validValue(variable.type,v)):validValue(variable.type,value));});
     });
@@ -290,7 +291,7 @@ export function engineOperations(hooks){
     const foundActors=findRuntimeActors(vm.objects,key,a);if(foundActors!==undefined)return foundActors;
     if(key==='poolActive')return {return:target(a,b,vm).poolActive!==false};
     if(key==='poolAcquire'){
-      if(!Array.isArray(a.pool)||a.pool.some(id=>!validValue('object',id))||!validValue('transform',a.transform)||!a.transform.scale.every(v=>v>=.01))throw Error('오브젝트 풀과 변환을 확인하세요.');const o=a.pool.map(id=>vm.object(id)).find(o=>o&&o.poolActive===false);if(a.selected!==undefined&&(o?.id||null)!==a.selected)throw Error('C++ 오브젝트 풀 선택 상태가 변경됐어요.');if(!o)return {return:null};
+      if(!Array.isArray(a.pool)||a.pool.some(id=>!validValue('object',id))||!validValue('transform',a.transform)||!validActorScale(a.transform.scale))throw Error('오브젝트 풀과 변환을 확인하세요.');const o=a.pool.map(id=>vm.object(id)).find(o=>o&&o.poolActive===false);if(a.selected!==undefined&&(o?.id||null)!==a.selected)throw Error('C++ 오브젝트 풀 선택 상태가 변경됐어요.');if(!o)return {return:null};
       o.poolActive=true;o.visible=o.poolVisible!==false;o.collisionEnabled=o.poolCollision!==false;Object.assign(o,structuredClone(a.transform));o.velocity=[0,0,0];o.angularVelocity=[0,0,0];hooks.update(o);for(const binding of vm.bindings.filter(b=>b.self===o.id)){binding.input.clear();binding.input.previous.clear();for(const [key,value] of vm.inputState.keys)binding.input.set(key,value);binding.input.sample(false);binding.input.endFrame();}if(objectComponents(o).some(c=>['UIWidget','AudioSource','Animator','AnimationGraph','BehaviorTree','StateMachine','MontagePlayer','SequencePlayer'].includes(c.type)&&c.properties?.enabled!==false)){await startActor(o,vm);await systems.start(vm,o.id);}for(const binding of vm.bindings.filter(b=>b.self===o.id))await vm.custom(binding,'OnPoolAcquire');return {return:o.id};
     }
     if(key==='poolRelease'){

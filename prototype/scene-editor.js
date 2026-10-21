@@ -1,3 +1,4 @@
+import {clampScaleAxis} from './transform-scale.js';
 import {icon} from './icons.js';
 import {Vector3,Quaternion,Euler} from 'three';
 import {sceneWorldMatrix} from './scene-runtime.js';
@@ -12,7 +13,7 @@ export function validParent(objects,id,parent){
   if(!parent)return true;if(!objects.some(o=>o.id===parent))return false;
   const seen=new Set([id]);for(let next=parent;next;next=objects.find(o=>o.id===next)?.parent){if(seen.has(next))return false;seen.add(next);}return true;
 }
-export function setObjectMatrix(object,matrix){const position=new Vector3(),rotation=new Quaternion(),scale=new Vector3();matrix.decompose(position,rotation,scale);const angles=new Euler().setFromQuaternion(rotation);object.position=position.toArray();object.rotation=[angles.x,angles.y,angles.z].map(n=>n*180/Math.PI);object.scale=scale.toArray().map(n=>Math.max(.01,Math.min(10000,n)));}
+export function setObjectMatrix(object,matrix){const position=new Vector3(),rotation=new Quaternion(),scale=new Vector3();matrix.decompose(position,rotation,scale);const angles=new Euler().setFromQuaternion(rotation);object.position=position.toArray();object.rotation=[angles.x,angles.y,angles.z].map(n=>n*180/Math.PI);object.scale=scale.toArray().map(clampScaleAxis);}
 export function copySceneObjects(objects,ids){const result=copy(sceneDescendants(objects,ids)),included=new Set(result.map(o=>o.id));for(const object of result)if(object.parent&&!included.has(object.parent)){setObjectMatrix(object,sceneWorldMatrix(object,objects));delete object.parent;}return result;}
 export function selectionMatrices(objects,ids){const selected=new Set(ids);return objects.filter(object=>selected.has(object.id)&&!object.locked).filter(object=>{let parent=objects.find(o=>o.id===object.parent);while(parent){if(selected.has(parent.id)&&!parent.locked)return false;parent=objects.find(o=>o.id===parent.parent);}return true;}).map(object=>({id:object.id,matrix:sceneWorldMatrix(object,objects)}));}
 export function transformSceneSelection(objects,selection,delta){for(const item of selection){const object=objects.find(o=>o.id===item.id);if(!object)continue;const world=item.matrix.clone().premultiply(delta),parent=objects.find(o=>o.id===object.parent);if(parent)world.premultiply(sceneWorldMatrix(parent,objects).invert());setObjectMatrix(object,world);}}

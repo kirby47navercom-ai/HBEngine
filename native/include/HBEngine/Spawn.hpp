@@ -14,7 +14,7 @@ inline void bridgeCaptureSpawnStates(const std::unordered_set<std::string>* sele
         if(selected)it=bridgePendingSpawns.erase(it);else ++it;
     }
 }
-inline bool bridgeValidSpawnTransform(const Transform& t){for(const auto& pair:std::vector<std::pair<Vec3,float>>{{t.position,1000000},{t.rotation,10000},{t.scale,10000}})for(const float v:{pair.first.x,pair.first.y,pair.first.z})if(!std::isfinite(v)||std::abs(v)>pair.second)return false;return t.scale.x>=.01f&&t.scale.y>=.01f&&t.scale.z>=.01f;}
+inline bool bridgeValidSpawnTransform(const Transform& t){for(const auto& pair:std::vector<std::pair<Vec3,float>>{{t.position,1000000},{t.rotation,10000},{t.scale,10000}})for(const float v:{pair.first.x,pair.first.y,pair.first.z})if(!std::isfinite(v)||std::abs(v)>pair.second)return false;return validActorScale(t.scale);}
 inline Actor* Scene::Spawn(const std::string& blueprintOrPrefab,const Transform& transform,const std::string& actorId){
     if(actorId.size()>160)throw std::runtime_error("spawn actor id limit");
     if(!bridgeValidSpawnTransform(transform))throw std::runtime_error("invalid spawn transform");

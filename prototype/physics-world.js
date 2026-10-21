@@ -1,3 +1,4 @@
+import {validActorScale} from './transform-scale.js';
 import {DeformableWorld} from './deformable-physics.js';
 import {jointLockedAxes,configureJointDOFs} from './joint-dofs.js';
 import {RaycastVehicles} from './vehicle-physics.js';
@@ -292,7 +293,7 @@ export function validPhysicsSnapshot(objects){
   if(!Array.isArray(objects)||new Set(objects.map(o=>o?.id)).size!==objects.length)return false;
   const byId=new Map(objects.map(o=>[o?.id,o]));
   for(const o of objects){
-    if(!o||o.runtimeTilemap!==undefined&&!valid2DAsset('tilemap',o.runtimeTilemap)||o.tilemapDirty!==undefined&&typeof o.tilemapDirty!=='boolean'||typeof o.id!=='string'||!o.id.length||o.id.length>160||!['position','rotation','scale'].every(k=>vector(o[k])&&o[k].every(v=>Math.abs(v)<=10000))||!o.scale.every(v=>v>=.01)||o.components!==undefined&&(!Array.isArray(o.components)||o.components.length>100)||o.tileColliders!==undefined&&!Array.isArray(o.tileColliders))return false;
+    if(!o||o.runtimeTilemap!==undefined&&!valid2DAsset('tilemap',o.runtimeTilemap)||o.tilemapDirty!==undefined&&typeof o.tilemapDirty!=='boolean'||typeof o.id!=='string'||!o.id.length||o.id.length>160||!['position','rotation','scale'].every(k=>vector(o[k])&&o[k].every(v=>Math.abs(v)<=10000))||!validActorScale(o.scale)||o.components!==undefined&&(!Array.isArray(o.components)||o.components.length>100)||o.tileColliders!==undefined&&!Array.isArray(o.tileColliders))return false;
     const generatedTiles=o.runtimeTilemap&&o.tileColliders?.length?new Set(o.tileColliders):null;const components=[...(o.components||[]),...(o.tileColliders||[])];if(new Set(components.map(c=>c?.id)).size!==components.length)return false;
     for(const c of components){if(!c||typeof c.type!=='string'||typeof c.id!=='string'||!c.id.length||c.id.length>160)return false;if((colliderTypes.has(c.type)||['Rigidbody','Rigidbody2D','CharacterMovement','CharacterMovement2D','PhysicsConstraint','PhysicsConstraint2D','RaycastVehicle','Cloth','Rope2D'].includes(c.type))&&!validComponentProperties(c.type,generatedTiles?.has(c)&&/^tile_/.test(c.id)&&['BoxCollider2D','PolygonCollider2D'].includes(c.type)&&vector(c.properties?.center)&&c.properties.center[2]===0&&c.properties.center.every(v=>Math.abs(v)<=1000000)?{...c.properties,center:[0,0,0]}:c.properties||{}))return false;}
     const seen=new Set([o.id]);let parent=o.parentId||o.parent,depth=0;while(parent){if(typeof parent!=='string'||seen.has(parent)||!byId.has(parent)||++depth>64)return false;seen.add(parent);parent=byId.get(parent).parentId||byId.get(parent).parent;}

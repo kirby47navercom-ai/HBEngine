@@ -862,9 +862,10 @@ inline void Scene::SetPosition(Actor* target,const Vec3& position){checked(targe
 inline Vec3 Scene::GetRotation(Actor* target){return checked(target).transform.rotation;}
 inline void Scene::SetRotation(Actor* target,const Vec3& value){checked(target).transform.rotation=value;}
 inline Vec3 Scene::GetScale(Actor* target){return checked(target).transform.scale;}
-inline void Scene::SetScale(Actor* target,const Vec3& value){checked(target).transform.scale=value;}
+inline bool validActorScale(const Vec3& value){for(float v:{value.x,value.y,value.z})if(!std::isfinite(v)||std::abs(v)<.01f||std::abs(v)>10000.f)return false;return true;}
+inline void Scene::SetScale(Actor* target,const Vec3& value){if(!validActorScale(value))throw std::invalid_argument("actor scale magnitude must be 0.01..10000");checked(target).transform.scale=value;}
 inline Transform Scene::GetTransform(Actor* target){return checked(target).transform;}
-inline void Scene::SetTransform(Actor* target,const Transform& value){checked(target).transform=value;}
+inline void Scene::SetTransform(Actor* target,const Transform& value){if(!validActorScale(value.scale))throw std::invalid_argument("actor scale magnitude must be 0.01..10000");checked(target).transform=value;}
 inline void Scene::AddOffset(Actor* target,const Vec3& value){SetPosition(target,GetPosition(target)+value);}
 inline void Scene::AddRotation(Actor* target,const Vec3& value){SetRotation(target,GetRotation(target)+value);}
 inline bool Scene::MoveActorTowards(Actor* target,const Vec3& destination,float speed,float delta){SetPosition(target,VectorMath::MoveTowards(GetPosition(target),destination,std::max(0.f,speed)*std::max(0.f,delta)));return VectorMath::DistanceSquared(GetPosition(target),destination)<1e-12f;}

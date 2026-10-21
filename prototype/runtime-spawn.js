@@ -1,3 +1,4 @@
+import {validActorScale} from './transform-scale.js';
 import {resolvePrefab} from './prefab-variants.js';
 import {validValue,defaultsFor,graphContext} from './blueprint-model.js';
 import {assetTitle,validAsset} from './asset-documents.js';
@@ -8,7 +9,7 @@ import {componentDefinitions} from './scene-components.js';
 
 const copy=v=>structuredClone(v);
 const basicKinds={Actor:'empty',Pawn:'character',Character:'character',Cube:'cube',Sphere:'sphere',Cylinder:'cylinder',Plane:'plane'};
-export const spawnTransformValid=t=>validValue('transform',t)&&t.scale.every(n=>n>=.01)&&['position','rotation','scale'].every(k=>t[k].every(n=>Math.abs(n)<=(k==='position'?1000000:10000)));
+export const spawnTransformValid=t=>validValue('transform',t)&&validActorScale(t.scale)&&['position','rotation','scale'].every(k=>t[k].every(n=>Math.abs(n)<=(k==='position'?1000000:10000)));
 const actor=(name,kind='empty')=>({id:'root',name,kind,group:'WORLD',visible:true,position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],components:[]});
 export function spawnRequested(bindings,objects=[]){return objects.some(o=>o.components?.some(c=>c.type==='NetworkSession'&&c.properties?.enabled!==false))||bindings.some(b=>/\bNetwork\s*::\s*Connect\s*\(/.test(b.root.native?.source||'')||JSON.stringify(b.root).includes('"key":"netConnect"'))||objects.some(o=>o.components?.some(c=>c.type==='ParticleSystem'&&c.properties?.enabled!==false&&c.properties?.subEmitter))||bindings.some(b=>/\bScene\s*::\s*Spawn\s*\(/.test(b.root.native?.source||'')||JSON.stringify(b.root).match(/"key":"(?:sceneSpawn|spawn)"/));}
 export async function prepareSpawnCatalog(files,hooks){

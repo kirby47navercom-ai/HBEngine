@@ -74,7 +74,7 @@ export function packedInstances(node){
   const values=[],matrix=new THREE.Matrix4(),normal=new THREE.Matrix4(),color=new THREE.Color();
   for(let i=0;i<count;i++){
     node.getMatrixAt(i,matrix);
-    if(!(matrix.determinant()>0))throw Error('DirectX 인스턴스에 양수 크기가 필요해요.');normal.copy(matrix).invert().transpose();if(node.instanceColor)node.getColorAt(i,color);else color.setRGB(1,1,1);values.push(...matrix.toArray(),...normal.toArray(),...color.toArray(),1);
+    if(!Number.isFinite(matrix.determinant())||matrix.determinant()===0)throw Error('DirectX 인스턴스의 변환은 역행렬이 있어야 해요.');normal.copy(matrix).invert().transpose();if(node.instanceColor)node.getColorAt(i,color);else color.setRGB(1,1,1);values.push(...matrix.toArray(),...normal.toArray(),...color.toArray(),1);
   }
   if(values.some(v=>!Number.isFinite(v)))throw Error('DirectX 인스턴스 값이 유한해야 해요.');return {capacity,values};
 }
