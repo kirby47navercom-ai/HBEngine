@@ -4966,5 +4966,24 @@
     "unread": [
       "All existing corpus/version gates unchanged."
     ]
+  },
+  "supplemental1228": {
+    "date": "2026-10-21",
+    "subject": "Collapsed graph ownership, tunnels, copy and expand; function/macro folding",
+    "sources": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/nodes-in-unreal-engine?lang=en-US",
+        "readScope": "Search-retrieved own Collapsed Graphs/Tunnels/Collapse/Expand body, independent copy vs shared macro, My Blueprint and double-click edit. Linked APIs not read."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/collapsing-graphs?application_version=4.27",
+        "readScope": "Search-retrieved own collapsing graph/function/macro and Expand steps. Historical4.27; not an entire API read."
+      }
+    ],
+    "failedRetrieval": [
+      "Initial guessed current Collapsing Graphs URL timed out; not counted as read."
+    ],
+    "wholeCorpus": false,
+    "wholeApi": false
   }
 }

@@ -192,6 +192,8 @@ export const editorMethods={
   'files.redo':{description:'되돌린 파일 묶음 전체를 다시 적용',params:{transaction:'원래 files.apply의 transaction'}},
   'editor.undo':{params:{path:'열린 문서 경로',expectedRevision:'되돌릴 revision'}},
   'editor.redo':{params:{path:'열린 문서 경로',expectedRevision:'다시 실행할 revision'}},
+  'blueprint.collapse':{params:{path:'블루프린트 문서',expectedRevision:'현재 revision',view:'event/construction/정의 ID',nodes:'선택 노드 ID 배열',kind:'graph/function/macro (기본 graph)',name:'이름',dryRun:'변경 없이 검증'}},
+  'blueprint.expand':{params:{path:'블루프린트 문서',expectedRevision:'현재 revision',view:'event/construction/정의 ID',node:'펼칠 호출 노드 ID',dryRun:'변경 없이 검증'}},
   'blueprint.connect':{params:{path:'블루프린트 문서',expectedRevision:'현재 revision',view:'event / construction / 함수 ID',from:'{node,pin}',to:'{node,pin}',dryRun:'검증만'}},
   'blueprint.inheritance.get':{params:{path:'블루프린트 문서; 원본과 해석된 부모/컴포넌트/변수/그래프/C++ 및 출처 반환'}},
   'blueprint.override.event':{params:{path:'블루프린트 문서',expectedRevision:'현재 revision',node:'해석된 상속 이벤트 노드 ID',position:'{x,y}; 선택',dryRun:'검증만'}},

@@ -1,3 +1,7 @@
+# 1228 — 독립 접힌 그래프·복제·펼치기
+
+기본값·주석·관찰·중첩 분할 핀·순수 계산·지연 흐름을 보존하는 접기/복제/펼치기와 사람/AI 공용 경로는 [제작 계약](BLUEPRINT_FOLDING.md)을 참고해요. 기존 함수·매크로 저장 형식을 확장하고 VM과 네이티브 바이너리는 재사용해요.
+
 # 1219 — 2D 클래스·실제 컴포넌트 뷰포트
 
 SpriteActor/Pawn2D/Character2D/TopDownCharacter2D의 생성·배치·상속 조회·C++ 형식·Spawn·GameMode defaultPawn을 연결해요. 실제 에셋 미리보기와 AI 명령·카메라/창 수명·요청 시 그리기는 [공용 계약](BLUEPRINT_2D_CLASSES.md)을 참고해요. 기존 작성 파일의 컴포넌트는 보존해요.

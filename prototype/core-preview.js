@@ -1,6 +1,6 @@
 import {validActorScale} from './transform-scale.js';
 // Browser preview of the shared API. C++ implementation lives in Game.hpp.
-import {catalog,basePins,structFieldPins,fieldsFor,defaultInputValue,validValue} from './blueprint-model.js';
+import {catalog,basePins,structFieldPins,fieldsFor,defaultInputValue,validValue,graphContext} from './blueprint-model.js';
 import {libraryByKey} from './library-spec.js';
 const eq=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 export const blueprintPure={random:a=>({return:a.min+Math.random()*(a.max-a.min)}),greater:a=>({return:a.a>a.b}),less:a=>({return:a.a<a.b}),equal:a=>({return:eq(a.a,a.b)}),notEqual:a=>({return:!eq(a.a,a.b)}),and:a=>({return:a.a&&a.b}),or:a=>({return:a.a||a.b}),not:a=>({return:!a.value}),select:a=>({return:a.condition?a.a:a.b}),concat:a=>({return:a.a+a.b}),stringLength:a=>({return:a.value.length}),contains:a=>({return:a.value.includes(a.search)}),toString:a=>({return:String(a.value)}),arrayLength:a=>({return:a.array.length}),arrayFind:a=>({return:a.array.findIndex(v=>eq(v,a.item))}),arrayContains:a=>({return:a.array.some(v=>eq(v,a.item))}),makeTransform:a=>({return:{position:a.position,rotation:a.rotation,scale:a.scale}}),makeColor:a=>({return:[a.r,a.g,a.b,a.a]}),reroute:a=>({value:a.value})};
@@ -44,7 +44,8 @@ function evaluateRaw(key,a,c){
 }
 
 // Resolve only data dependencies. Execution pins are deliberately not a game VM.
-export function evaluateCoreNode(graph,id,context){
+export function evaluateCoreNode(graph,id,context,{tunnels,depth=0}={}){
+  if(depth>=64)throw Error('미리보기 호출 깊이 64 초과');
   const memo=new Map(),visiting=new Set();
   function readInput(n,p){
     const edge=graph.edges.find(e=>e.to.node===n.id&&e.to.pin===p.id);
@@ -67,7 +68,10 @@ export function evaluateCoreNode(graph,id,context){
   function run(n){
     if(memo.has(n.id))return memo.get(n.id);if(visiting.has(n.id))throw Error('순환 데이터 연결이에요.');if(n.enabled===false)throw Error('비활성 노드예요.');visiting.add(n.id);
     let output;
-    if(n.key==='getVariable')output={value:structuredClone(graph.variables.find(v=>v.id===n.variableId)?.value)};
+    if(['functionInput','macroInput'].includes(n.key)){if(!tunnels)throw Error('호출 입력이 없어요.');output=structuredClone(tunnels);}
+    else if(['functionOutput','macroOutput'].includes(n.key))output=Object.fromEntries(basePins(n,'in',graph).filter(p=>p.type!=='exec').map(p=>[p.id,readInput(n,p)]));
+    else if(['callFunction','callMacro'].includes(n.key)){const d=[...(graph.functions||[]),...(graph.macros||[])].find(d=>d.id===n.definitionId);if(!d?.pure)throw Error('실행이 필요한 함수는 게임에서 호출하세요.');const args=Object.fromEntries(basePins(n,'in',graph).filter(p=>p.type!=='exec').map(p=>[p.id,readInput(n,p)])),g=graphContext(graph,d.id),exit=g.nodes.find(n=>['functionOutput','macroOutput'].includes(n.key));output=evaluateCoreNode(g,exit.id,context,{tunnels:args,depth:depth+1});}
+    else if(n.key==='getVariable')output={value:structuredClone(graph.variables.find(v=>v.id===n.variableId)?.value)};
     else if(n.key==='reroute')output={value:readInput(n,basePins(n,'in',graph)[0])};
     else{const args=Object.fromEntries(basePins(n,'in',graph).filter(p=>p.type!=='exec').map(p=>[p.id,readInput(n,p)]));output=blueprintPure[n.key]?blueprintPure[n.key](args):evaluateCore(n.key,args,context);}
     memo.set(n.id,output);context.values.set(n.id,output);visiting.delete(n.id);return output;

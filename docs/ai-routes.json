@@ -131,7 +131,13 @@
         "SpriteActor",
         "Pawn2D",
         "Character2D",
-        "TopDownCharacter2D"
+        "TopDownCharacter2D",
+        "접힌 그래프",
+        "접기",
+        "펼치기",
+        "터널",
+        "Collapsed Graph",
+        "Expand Node"
       ],
       "paths": [
         "prototype/blueprint-model.js",
@@ -146,7 +152,9 @@
         "prototype/class-types.js",
         "prototype/blueprint-class-defaults.js",
         "prototype/component-preview.js",
-        "docs/BLUEPRINT_2D_CLASSES.md"
+        "docs/BLUEPRINT_2D_CLASSES.md",
+        "prototype/blueprint-folding.js",
+        "docs/BLUEPRINT_FOLDING.md"
       ]
     },
     {
