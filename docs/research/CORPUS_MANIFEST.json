@@ -2827,6 +2827,16 @@
       "record": "docs/SEQUENCE_SECTIONS.md",
       "wholeCorpus": false,
       "readScope": "Epic own Master/Shot interaction, upper-row evaluation, source offset/rate/loop and hierarchical cumulative bias paragraphs; Unity own nesting article lines115-142. Linked APIs and image sources not read."
+    },
+    {
+      "id": "network-interest-supplement-1259",
+      "engine": "Unreal Replication Graph own documentation / HB shared WebSocket state",
+      "roots": [
+        "https://dev.epicgames.com/documentation/en-us/unreal-engine/replication-graph-in-unreal-engine"
+      ],
+      "record": "docs/NETWORK_INTEREST_INDEX.md",
+      "wholeCorpus": false,
+      "readScope": "Own Structure and High-Level Example persistent shared replication lists, location groups, attached actor groups and global/per-connection lists. Linked node API classes not read in full."
     }
   ],
   "supplementalBaselines": [
@@ -5027,5 +5037,11 @@
       "Unity cn1.7 timed out"
     ],
     "remaining": "Full current-version API, media, in-context nested editing, transform origin/time warp, blending/thumbnails/Take metadata."
+  },
+  "supplemental1259": {
+    "date": "2026-10-21",
+    "record": "docs/NETWORK_INTEREST_INDEX.md",
+    "wholeBodyGatePromoted": false,
+    "remaining": "Full RepGraph/Iris APIs, authority game simulation, prediction/resimulation, latency/loss and lifecycle remain separate."
   }
 }

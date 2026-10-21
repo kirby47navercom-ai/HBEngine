@@ -565,3 +565,7 @@ GPU 물리 시선 계약은 schema.cameraView와 WebGPU renderer.cameraView에�
 ## 1250 — Shot/Sub-Sequence
 
 `sequence.section.edit`는 기존 문서 revision/dryRun/Undo를 공유해요. `runtime.sequenceTree`는 활성 트리의 로컬 시간/누적 우선순위를 페이지로 조회해요. [구간 제작·실행 계약](SEQUENCE_SECTIONS.md)에 저장 형식과 지원 범위를 적었어요.
+
+## 1259 — 네트워크 관심 후보
+
+`schema.replicationInterestIndex`와 서버의 `inspect().interestIndex`는 가변 반경 후보/셀/소유자/동일 셀 갱신 통계를 요청할 때 읽어요. 기존 컴포넌트·메시지·권한 규칙은 [네트워크 관심 영역 계약](NETWORK_INTEREST_INDEX.md)을 따라요.

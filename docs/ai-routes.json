@@ -734,12 +734,17 @@
         "network",
         "multiplayer",
         "rpc",
-        "replication"
+        "replication",
+        "관심 영역",
+        "공간 인덱스",
+        "interest",
+        "spatial"
       ],
       "paths": [
         "prototype/network-runtime.js",
         "prototype/network-state.js",
-        "tools/multiplayer-server.mjs"
+        "tools/multiplayer-server.mjs",
+        "prototype/network-interest.js"
       ]
     },
     {

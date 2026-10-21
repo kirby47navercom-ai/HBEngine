@@ -516,3 +516,7 @@ Struct Variables의 Split/Make/Break/Set Members/비노출 보존과 미연결 �
 # 2026-10-21 — 1250 하위 시퀀스/Shot 지정 절
 
 Epic5.1 역사 문서의 Shot 구간·행 우선·오프셋/배율/반복·계층 bias와 Unity Timeline1.7.7 nesting 자체 본문을 대조했어요. 현재 Epic 주소의 제목만 반환과 Unity1.8 오주소/cn timeout은 읽음으로 계산하지 않아요. supplemental1250, 전체 gate/연결 API/미디어 승격 없음. [계약](../SEQUENCE_SECTIONS.md).
+
+# 2026-10-21 — 1259 복제 관심 영역 지정 본문
+
+Epic Replication Graph 자체 Structure/High-Level Example에서 지속 공유 목록·공간 그룹·전역/연결별/부착 대상을 읽고 기존 HB 거리/소유권 판정과 대조했어요. 가변 반경 후보 인덱스는 HB 구현이며 전체 RepGraph/Iris API나 권위 서버 게임 규칙 완료가 아니에요. supplemental1259, 전체 gate 승격 없음. [검증 계약](../NETWORK_INTEREST_INDEX.md).
