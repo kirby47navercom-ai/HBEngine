@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-21",
-  "basisRevision": "add2047b224b63b423d04e14d5a7975d97645ec1",
+  "basisRevision": "727c36d8bdbeb0525dc750c8b458a0029289cb7c",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -1982,16 +1982,30 @@
       "id": "CPP-01",
       "area": "cpp-blueprint",
       "title": "블루프린트 제작/실행·공용 SDK",
-      "status": "verified",
-      "implemented": "변수/함수/매크로·이벤트·타임라인·핀 변환/분할·C++ 공개 ·185: 인스턴스 안정 로컬 ID 조회/목록/ID 공용 C++·BP3함수·비활성/삭제/가족 격리·즉시 Spawn/후속 스냅샷·모바일 AOT·서비스 분류/핀 라벨·종료 뒤 늦은 C++ 응답 폐기 ·255–256: 공용 SDK728/노드813·EffectArguments/ApplyEffectSpec/SetEffectParameter/UI::SetSlotContent ·263/265/266: 명시 Lifecycle10종·생성 Start/선택Tick·공용732/노드817·액터 Tick4함수·float32 경계·실제 에디터/D3D/GL ·269/272: 실제 배열 핀·공개 값/컴포넌트 getter와 시퀀스 인계·공용 SDK734/노드819·SetPriority/GetPriority ·610: 명시적 Compute 비동기 준비/소유/취소·기존 프레임 자원·액터별 C++ 상태를 BP BeginPlay/Tick/EndPlay로 실행, 결과9/배치/해제 검증",
-      "remaining": [],
+      "status": "partial",
+      "implemented": "변수/함수/매크로·이벤트·타임라인·핀 변환/분할·C++ 공개 ·185: 인스턴스 안정 로컬 ID 조회/목록/ID 공용 C++·BP3함수·비활성/삭제/가족 격리·즉시 Spawn/후속 스냅샷·모바일 AOT·서비스 분류/핀 라벨·종료 뒤 늦은 C++ 응답 폐기 ·255–256: 공용 SDK728/노드813·EffectArguments/ApplyEffectSpec/SetEffectParameter/UI::SetSlotContent ·263/265/266: 명시 Lifecycle10종·생성 Start/선택Tick·공용732/노드817·액터 Tick4함수·float32 경계·실제 에디터/D3D/GL ·269/272: 실제 배열 핀·공개 값/컴포넌트 getter와 시퀀스 인계·공용 SDK734/노드819·SetPriority/GetPriority ·610: 명시적 Compute 비동기 준비/소유/취소·기존 프레임 자원·액터별 C++ 상태를 BP BeginPlay/Tick/EndPlay로 실행, 결과9/배치/해제 검증 ·1210–1214: 동적 Sequence/MultiGate/Switch·Default·Gate Start Closed·exec입력합류/Setter삽입·Promote Get/Set/연결·단위scale·중첩Split/Recombine/preview/VM·C++ aggregate/배열/escaped문자열default·공유값검증/AI경로",
+      "remaining": [
+        "사용자 정의 구조체·enum 에셋과 변수/핀·C++ 리플렉션의 일반화, Switch enum/name",
+        "Set Members 필드 선택·사용자 구조체 Make/Break의 제작/실행 연결",
+        "Collapsed Graph의 독립 서브그래프/터널과 Expand 복원"
+      ],
       "sources": [
         "prototype/blueprint-model.js",
         "prototype/blueprint-runtime.js",
         "native/include/HBEngine/Game.hpp",
         "prototype/runtime-actors.js",
         "prototype/mobile-player.js",
-        "native/include/HBEngine/Bridge.hpp"
+        "native/include/HBEngine/Bridge.hpp",
+        "docs/BLUEPRINT_FLOW_PINS.md",
+        "prototype/app.js",
+        "prototype/blueprint-connections.js",
+        "prototype/blueprint-details.js",
+        "prototype/blueprint.css",
+        "prototype/core-preview.js",
+        "prototype/flow-pins.js",
+        "prototype/native-initializer.js",
+        "prototype/native-model.js",
+        "prototype/pin-values.js"
       ],
       "evidence": [
         "docs/BLUEPRINT_SPEC.md",
@@ -2003,7 +2017,8 @@
         "docs/research/ENGINE_WORK_266.json",
         "docs/research/ENGINE_WORK_269.json",
         "docs/research/ENGINE_WORK_272.json",
-        "docs/research/ENGINE_WORK_610.json"
+        "docs/research/ENGINE_WORK_610.json",
+        "docs/research/ENGINE_WORK_1214.json"
       ]
     },
     {
@@ -2823,11 +2838,11 @@
     }
   ],
   "latestBatch": {
-    "first": 1203,
-    "last": 1206,
-    "record": "docs/research/ENGINE_WORK_1206.json",
-    "implementationRevision": "add2047b224b63b423d04e14d5a7975d97645ec1",
-    "scope": "Sphere 최종 제작/패키징의 음수scale 차단을 엔진 전반에서 수정; 영향 검사만 묶고 동일 브라우저 수식 재사용."
+    "first": 1210,
+    "last": 1214,
+    "record": "docs/research/ENGINE_WORK_1214.json",
+    "implementationRevision": "727c36d8bdbeb0525dc750c8b458a0029289cb7c",
+    "scope": "노드 배치에서 실행·자료형·합류·가변 핀·리터럴까지 연결. CPP01은 확인된 미구현3군을 반영해 partial로 정정."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_1208.json",
