@@ -832,3 +832,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1157–1163 CPU후보/세GPU·native공간BVH·rank/Float32/정수표현·재사용/소유진단 묶음구현. CPU/CPP2242점·CPU800조건·GPU세경로2242점씩 선택/가중치차0·기존atlas54/21방향통과. Player1161 한번빌드/Host재사용. 성공gate소유SHA로재사용;새설치1165준비. 4096은선택기검사이며전체캡처FPS아님.
 
 1165 설치 C:\Users\kirby\HBEngine\Versions\4c985f883deb3b48 /3868파일/534소유SHA/CPP17/native14·User10849읽기전후SHA·연결·Versions1검증. 이미통과한CPU/GPU/atlas/native4gate재실행없이재사용. 설치본CPP/BP세실행기4공간이동·밝기/복원·노드7/공간재구성불변통과. Player1161한번빌드·이전184557150B정리·공유캐시{"deleted":0,"bytes":0,"receipt":null}.전체HDR/FPS·다른누적엔진목표유지.
+
+1167–1175 기본texture normal/공유HDR·SH/144B부분전송/65536높은count단어/해제진단을함께구현. native1344+8·GL유효72·세브라우저공유2/4영역·기존54/21방향·실제glTF C++/BP광원5상태통과. Player1173한번빌드. 실패는fixture전용API/Windows매크로수정,허용오차완화없음. 통과gateSHA재사용. 설치1177예정,Versions1/User보호유지.
