@@ -896,3 +896,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1298 설치확인: f35ec9cbe6b653b5·3979명세/654소유SHA·실제설치D3D11게임 LUYlOd에서BP Play/Pause/Seek·축별가중곡선/중첩기준점/소스오프셋→독립위치[10,4.125,0]통과. User10849읽기SHA/연결/Versions1·이전186535112B정리. native16/CPP21/Struct.hpp/Player/Host불변재사용·렌더행렬/실기기/FPS반복없음.
 
 1300–1308 주경로진단: 기준7066.5ms·5후보6757.8/7030.7/6786.8/6942.5/6832.1,전체307200raw-half차이0이나확실한속도개선미입증·제품미채택/구현성과0. fresh변환HLSL73893B첫구역/지정함수크기·GL오류0보존.1300동적사설모듈/1301해제패스대기도구실패보존·기준재사용후후보만검사.같은5후보/1086반복금지.설치1298유지·재설치/전체행렬없음.
+
+1309–1312: 곡선pre/post 유지/선형/반복/오프셋/왕복·음수/경계/가중매핑·키복제없음·세샘플러·골격clip범위UI/cubic·가중검증/실제AnimationGraph·key생략AI/Undo/맞춤. 모델9 eRDXlL·가중9/240·기존시퀀스17/retarget·GUI AblPc4 실제범위입력/핸들/Undo/AI/중첩BP [10,44.125,0]통과. 공식지정Infinity본문/Unity API발췌 supplemental1310·전체gate상승없음. native불변·설치D3D게임1회대기. 주GL진단1308은제품미채택유지.
