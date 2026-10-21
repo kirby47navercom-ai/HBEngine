@@ -830,3 +830,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1151 설치 C:\Users\kirby\HBEngine\Versions\fe2c6e136bd7e741 /3857파일/525소유SHA/CPP16/native13·User10849읽기전후SHA·연결·Versions1확정. GPU/폴백각시선24·물리16·독립분광31·굴절·읽기29잔류0·atlas각54·실제CPP/BP세실행기6상태×3픽셀통과. Player/Host재빌드생략.기존184414405B정리·공유캐시{"deleted":0,"bytes":0,"receipt":null}. 설치손상220파일은명세SHA복원후전체명세/실제빌드검사.손상원인미확정.누적원장78행/전체연구gate계속.
 
 1157–1163 CPU후보/세GPU·native공간BVH·rank/Float32/정수표현·재사용/소유진단 묶음구현. CPU/CPP2242점·CPU800조건·GPU세경로2242점씩 선택/가중치차0·기존atlas54/21방향통과. Player1161 한번빌드/Host재사용. 성공gate소유SHA로재사용;새설치1165준비. 4096은선택기검사이며전체캡처FPS아님.
+
+1165 설치 C:\Users\kirby\HBEngine\Versions\4c985f883deb3b48 /3868파일/534소유SHA/CPP17/native14·User10849읽기전후SHA·연결·Versions1검증. 이미통과한CPU/GPU/atlas/native4gate재실행없이재사용. 설치본CPP/BP세실행기4공간이동·밝기/복원·노드7/공간재구성불변통과. Player1161한번빌드·이전184557150B정리·공유캐시{"deleted":0,"bytes":0,"receipt":null}.전체HDR/FPS·다른누적엔진목표유지.

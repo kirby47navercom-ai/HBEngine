@@ -603,9 +603,68 @@
       "path": "native/build/probe-spatial-ai-context-1163.json",
       "sha256": "9bb05039d9797b46641e6c4baddcca44ac59c2b995162a0179467990811016b4",
       "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    },
+    {
+      "path": "native/build/probe-atlas-1120-jth8gF/acceptance.json",
+      "sha256": "9534d6aaaf4e35f96aecd5b3d06777c0da5d716df44fd8f5f6299a25d18b30d8",
+      "scope": "Actual newly packaged C++/Blueprint4capture game: one large mirror spans four world probe volumes. Center camera samples each region by C++ move/Blueprint setPosition, then fourth (outside old CPU-selected pair) C++ intensity/Blueprint restore updates metadata without capture/copy. Emitters behind camera; actual PMREM/D3D capture. Camera-centered samples do not prove off-axis orthographic view-vector parity.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-atlas-1120-Nigmbt/acceptance.json",
+      "sha256": "6af3a496e77669e2937702b88261bb2d2143da775a81bb1293a87ca38bae0c87",
+      "scope": "Actual newly packaged C++/Blueprint4capture game: one large mirror spans four world probe volumes. Center camera samples each region by C++ move/Blueprint setPosition, then fourth (outside old CPU-selected pair) C++ intensity/Blueprint restore updates metadata without capture/copy. Emitters behind camera; actual PMREM/D3D capture. Camera-centered samples do not prove off-axis orthographic view-vector parity.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-atlas-1120-ejf52b/acceptance.json",
+      "sha256": "20dc98f5106c489577804977327a573c06b5ed51f603c5b2d10a9fdb0e40c6f6",
+      "scope": "Actual newly packaged C++/Blueprint4capture game: one large mirror spans four world probe volumes. Center camera samples each region by C++ move/Blueprint setPosition, then fourth (outside old CPU-selected pair) C++ intensity/Blueprint restore updates metadata without capture/copy. Emitters behind camera; actual PMREM/D3D capture. Camera-centered samples do not prove off-axis orthographic view-vector parity.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48\\HBEngine.exe"
+      ]
     }
   ],
-  "sourceGameGates": [],
+  "sourceGameGates": [
+    {
+      "path": "native/build/probe-atlas-1120-jth8gF/acceptance.json",
+      "sha256": "9534d6aaaf4e35f96aecd5b3d06777c0da5d716df44fd8f5f6299a25d18b30d8",
+      "scope": "Actual newly packaged C++/Blueprint4capture game: one large mirror spans four world probe volumes. Center camera samples each region by C++ move/Blueprint setPosition, then fourth (outside old CPU-selected pair) C++ intensity/Blueprint restore updates metadata without capture/copy. Emitters behind camera; actual PMREM/D3D capture. Camera-centered samples do not prove off-axis orthographic view-vector parity.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-atlas-1120-Nigmbt/acceptance.json",
+      "sha256": "6af3a496e77669e2937702b88261bb2d2143da775a81bb1293a87ca38bae0c87",
+      "scope": "Actual newly packaged C++/Blueprint4capture game: one large mirror spans four world probe volumes. Center camera samples each region by C++ move/Blueprint setPosition, then fourth (outside old CPU-selected pair) C++ intensity/Blueprint restore updates metadata without capture/copy. Emitters behind camera; actual PMREM/D3D capture. Camera-centered samples do not prove off-axis orthographic view-vector parity.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-atlas-1120-ejf52b/acceptance.json",
+      "sha256": "20dc98f5106c489577804977327a573c06b5ed51f603c5b2d10a9fdb0e40c6f6",
+      "scope": "Actual newly packaged C++/Blueprint4capture game: one large mirror spans four world probe volumes. Center camera samples each region by C++ move/Blueprint setPosition, then fourth (outside old CPU-selected pair) C++ intensity/Blueprint restore updates metadata without capture/copy. Emitters behind camera; actual PMREM/D3D capture. Camera-centered samples do not prove off-axis orthographic view-vector parity.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48\\HBEngine.exe"
+      ]
+    }
+  ],
   "nativePlayerSHA256": "da1ff5e60d0f2d702c61a3cc1ddcfb59d3ae272ea4616070f5fa2833f11d299e",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -642,8 +701,8 @@
     "scope": "희소4096 선택기 리프530·노드방문14438 대조; 전체게임FPS아님"
   },
   "researchScope": "기존엔진 BVH/프로브/TSL/D3D 소유본문 읽기·연결. 전체UE/Unity연구gate미승격.",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1151.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1165.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "큰 장면 다수 HDR 캡처의 CPU/GPU 메모리·통제 FPS 검증 및 타일/클러스터와 BVH 비교·혼합 정책",
@@ -652,5 +711,6 @@
     "WebGPU 물리 재질의 임의 복합 로브·매질/기하/이력 조합 확장과 전체 백엔드 에너지 동등성 검증"
   ],
   "scope": "JS/C++2242점·CPU800조건·세GPU2242점씩 기존전체탐색과동일·기존프로브54/21방향·정지/밝기/해제. 실제CPP/BP설치게임은후속영수증. 전체HDR/FPS/누적78행완료미주장.",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1165.json"
 }

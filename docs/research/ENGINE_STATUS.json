@@ -2800,11 +2800,11 @@
     "scope": "CPU·세GPU/native 공간후보·순위/Float32/큰정수·재사용/비용. 4096선택기와 전체HDR/FPS검증 구분. 누적목표 유지."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1151.json",
-    "sourceCommit": "b27d3de097b79cf6c5752b05f5a005b353d75346",
-    "bundleHash": "fe2c6e136bd7e74110e19671b28d842da5905a094bdeb3616683a0ef06866f19",
+    "receipt": "docs/research/USER_INSTALL_1165.json",
+    "sourceCommit": "1a7b48c593a695ccaeea40b91b9d2aa6b7133bf0",
+    "bundleHash": "4c985f883deb3b486f65a644f77ab125e6403a863ad51dab29a1a5fbc606744d",
     "verified": true,
     "versions": 1,
-    "scope": "1151 전체3857파일/525소유SHA/CPP16·native13·Player1139/Host1041불변재사용·GPU/폴백각시선24·물리16·독립분광31·원본/작성굴절·읽기29잔류0·atlas세모드각54·실제CPP/BP세렌더러재질/카메라6상태×3픽셀·AI실제마커·User읽기SHA/연결/Versions1"
+    "scope": "1165 전체3868파일/534소유SHA/CPP17·native14·Player1161/Host1041·선행묶음검사재사용·실제CPP/BP세실행기4공간이동/밝기/복원·공간재구성재사용·AI실제마커·User읽기SHA/연결/Versions1"
   }
 }

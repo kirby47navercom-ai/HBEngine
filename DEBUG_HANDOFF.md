@@ -59,3 +59,5 @@ fallback readback뒤copyTexSubImage2D가GL1282. Float32blend가설은HalfFloat�
 1151 후속6gate는각각acceptance/정상exit로보존됐어요. 마지막프로젝트연결이이전4940경로라원래통과6검사재실행없이새resume1156에서격리프로필--register만실행·전체명세/소유SHA/User읽기SHA/링크/연결재확인통과. 새설치/버전추가없이복구,Versions1유지. 파일손상원인과등록되돌림원인은확정하지않았어요.
 
 1157–1162: 공간/CPU 후보/정수표현/재사용을 먼저 묶은 뒤 batch1160으로 검사. CPU1157-Ip0jVb, selector1158-QAWPmx, atlas1117-EUpJpG, native1119-e7hLIO 통과. 첫 실패는 검사 GCC PATH, 정상 EOF판정, GPU기본Camera fixture이며 알고리즘 임계값완화없음. native unsigned count0 방어 뒤 해당gate만 재검사, 이전성공은소유SHA재사용. Player1161 한번빌드. 다음은API/AI/소유원장·신규설치 및 CPP/BP3실행기 확인. 이전1151파일손상원인은미확정으로유지.
+
+1165 사용자설치 확정: 실제CPP/BP세렌더러4공간이동/밝기/복원과노드7/공간재구성불변·전체파일/소유SHA/User/연결/Versions1 통과. 선행묶음4gate는소유SHA로재사용,재실행없음. USER_INSTALL_1165 최신. 아직전체HDR/FPS/타엔진누적기능완료는아니에요.

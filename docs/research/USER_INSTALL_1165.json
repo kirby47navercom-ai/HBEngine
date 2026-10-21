@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "1a7b48c593a695ccaeea40b91b9d2aa6b7133bf0",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48\\HBEngine.exe",
+  "bundleHash": "4c985f883deb3b486f65a644f77ab125e6403a863ad51dab29a1a5fbc606744d",
+  "files": 3868,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3858,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\fe2c6e136bd7e741",
+        "bytes": 184557150,
+        "manifestSHA256": "ff5fcce63b8ad15c81a6ef857b52ea545e70ef551d45d340052e97bce9a121ed"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T07:24:03.1910943Z",
+    "bytes": 184557150,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "4c985f883deb3b48"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 534,
+  "repositoryOnlyTestSourcesVerified": 17,
+  "nativePlayerSHA256": "da1ff5e60d0f2d702c61a3cc1ddcfb59d3ae272ea4616070f5fa2833f11d299e",
+  "installedGates": [
+    {
+      "path": "native/build/probe-atlas-1120-jth8gF/acceptance.json",
+      "sha256": "9534d6aaaf4e35f96aecd5b3d06777c0da5d716df44fd8f5f6299a25d18b30d8",
+      "scope": "Actual newly packaged C++/Blueprint4capture game: one large mirror spans four world probe volumes. Center camera samples each region by C++ move/Blueprint setPosition, then fourth (outside old CPU-selected pair) C++ intensity/Blueprint restore updates metadata without capture/copy. Emitters behind camera; actual PMREM/D3D capture. Camera-centered samples do not prove off-axis orthographic view-vector parity.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-atlas-1120-Nigmbt/acceptance.json",
+      "sha256": "6af3a496e77669e2937702b88261bb2d2143da775a81bb1293a87ca38bae0c87",
+      "scope": "Actual newly packaged C++/Blueprint4capture game: one large mirror spans four world probe volumes. Center camera samples each region by C++ move/Blueprint setPosition, then fourth (outside old CPU-selected pair) C++ intensity/Blueprint restore updates metadata without capture/copy. Emitters behind camera; actual PMREM/D3D capture. Camera-centered samples do not prove off-axis orthographic view-vector parity.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-atlas-1120-ejf52b/acceptance.json",
+      "sha256": "20dc98f5106c489577804977327a573c06b5ed51f603c5b2d10a9fdb0e40c6f6",
+      "scope": "Actual newly packaged C++/Blueprint4capture game: one large mirror spans four world probe volumes. Center camera samples each region by C++ move/Blueprint setPosition, then fourth (outside old CPU-selected pair) C++ intensity/Blueprint restore updates metadata without capture/copy. Emitters behind camera; actual PMREM/D3D capture. Camera-centered samples do not prove off-axis orthographic view-vector parity.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48\\",
+    "elapsedMs": 153.63,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "4c985f883deb3b486f65a644f77ab125e6403a863ad51dab29a1a5fbc606744d",
+      "installedAt": "2026-10-21T07:23:59.752Z",
+      "manifestFiles": 3868,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3868,
+  "versions": [
+    "4c985f883deb3b48"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1165-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/probe-spatial-1157-Ip0jVb/acceptance.json",
+      "sha256": "82cab1c712366b91e2d41085be926f0d5258d3859c0bee8e5a2d46e60b6aa4e1",
+      "scope": "Rounded affine BVH versus independent full-list float arithmetic, mirrored/sheared/ill-conditioned boxes, CPU broad phase versus original exact SAT/point tests, static and light-only reuse, sparse4096-probe operation counts. Native portable selector over the same corpus. This is not a GPU/FPS claim."
+    },
+    {
+      "path": "native/build/probe-spatial-1158-QAWPmx/acceptance.json",
+      "sha256": "b70fddcb04b5b63d78f4b3642a30723790e83cb77dfe409cf9838ea59bfd4bcd",
+      "scope": "Actual GL/WebGPU/forced fallback production spatial selectors versus independent GPU full-list selection at513 affine and4096 sparse records. Exact ranks and2e-5 weight tolerance; includes finite split-word and integer choice IDs above2^24. Selector evidence, not4096 captured HDR maps or whole-game FPS."
+    },
+    {
+      "path": "native/build/probe-atlas-1117-EUpJpG/acceptance.json",
+      "sha256": "26a6dca4a113bdabf5065d7192a76a1a353274469f69079d6e2b5ca460a257b4",
+      "scope": "Actual GL/GPU production atlas copy and per-pixel candidates across4probes versus independent physical white reference/weights. Mixed map resolutions, static transfer reuse, intensity-only metadata update, resize/program retention,4instances outside parent origin, release/reactivate. Controlled known captures; actual capture/native package separately."
+    },
+    {
+      "path": "native/build/probe-atlas-1119-e7hLIO/acceptance.json",
+      "sha256": "c1dce58c1409b5e0df81983aada533266370945ff0ad6cdbb8a1a8bb2256fb41",
+      "scope": "Actual hardware D3D11 global4probes versus legacy per-probe room references, one4instance draw, image/SH copy ownership and static/metadata/revision/resize/release. Six-face directional cubemap at21view/roughness states and4pixels each versus native TextureCube; original capture/SH/GGX/coat/IOR/affine legacy proof retained."
+    },
+    {
+      "path": "native/build/probe-spatial-static-1163.json",
+      "sha256": "f6993304adf9b10bdde5dd20b90ac678c4ff7d3cf5b59d519f7d3fbd48e49d8b",
+      "scope": "Changed JS syntax, generated API unchanged, spatial schema and offline AI CLI. GPU, C++, real game and installation checks have separate evidence."
+    },
+    {
+      "path": "native/build/probe-spatial-ai-context-1163.json",
+      "sha256": "9bb05039d9797b46641e6c4baddcca44ac59c2b995162a0179467990811016b4",
+      "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "1165 전체3868파일/534소유SHA/CPP17·native14·Player1161/Host1041·선행묶음검사재사용·실제CPP/BP세실행기4공간이동/밝기/복원·공간재구성재사용·AI실제마커·User읽기SHA/연결/Versions1",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "priorBatch": [
+    {
+      "id": "cpu",
+      "path": "native/build/probe-spatial-1157-Ip0jVb/acceptance.json",
+      "sha256": "82cab1c712366b91e2d41085be926f0d5258d3859c0bee8e5a2d46e60b6aa4e1"
+    },
+    {
+      "id": "selector",
+      "path": "native/build/probe-spatial-1158-QAWPmx/acceptance.json",
+      "sha256": "b70fddcb04b5b63d78f4b3642a30723790e83cb77dfe409cf9838ea59bfd4bcd"
+    },
+    {
+      "id": "atlas",
+      "path": "native/build/probe-atlas-1117-EUpJpG/acceptance.json",
+      "sha256": "26a6dca4a113bdabf5065d7192a76a1a353274469f69079d6e2b5ca460a257b4"
+    },
+    {
+      "id": "native",
+      "path": "native/build/probe-atlas-1119-e7hLIO/acceptance.json",
+      "sha256": "c1dce58c1409b5e0df81983aada533266370945ff0ad6cdbb8a1a8bb2256fb41"
+    }
+  ]
+}
