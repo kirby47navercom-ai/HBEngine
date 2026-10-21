@@ -727,7 +727,6 @@
     }
   ],
   "sourceGameGates": [],
-  "pendingInstalledGameGate": "tools/check-weighted-curves-1295-window.mjs --player --executable <installation>/HBEngine.exe",
   "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -771,8 +770,8 @@
     "First EAvmh7 GUI expected stale revision after a no-op write; no-op correctly does not change revision. Changed a value before testing stale; product not altered to fit test."
   ],
   "research": "docs/research/CORPUS_MANIFEST.json#supplemental1294",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1292.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1298.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "미등록 C++ 사용자 struct/중첩 컨테이너·대형 키 편집·기존 대상 생성/삭제 재현·socket/constraint/고급 Attachment·복잡 DCC 리그·녹화 필터 프리셋",
@@ -781,5 +780,17 @@
     "마이크·멀티채널 stem·Take 게임시각/PCM 표본 정렬·영상 결합·외부 동기화/전문 시네마틱/베이크",
     "클램프 자동 곡선·사전/후 무한·다중 커브 도구/필터와 고급 단축키 확대"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/weighted-curves-1295-LUYlOd/acceptance.json",
+      "sha256": "db6199ad1b3c1f6bf2323e7e8e58862f2d4a4c00261e5aa68d1c2011501b21a7",
+      "scope": "Actual isolated packaged D3D11 game BP Play/Pause/Seek follows per-axis weighted Bezier with source offset and rotated/translated nested origins. Analytic parameter1/4 expected; native binaries reused, no rendering/FPS claim.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f35ec9cbe6b653b5\\HBEngine.exe"
+      ]
+    }
+  ]
 }

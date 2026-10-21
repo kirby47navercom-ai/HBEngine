@@ -892,3 +892,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1292 설치확인: 0fe30fb4d3910392·3974명세/651소유SHA·실제설치WebGL2 7POqXU 전체가이드기준동일/on·morph·off/노멀·타깃재사용/해제성공. 첫 DS7Nrz는격리WebView탐색실패(webError0)·CDP연결실패로보존후해당설치게임만재시도·재설치/광범위검사없음. User10849읽기SHA/연결/Versions1·이전186424054B정리. native불변/주경로지연잔여.
 
 1294–1296: 공용가중Bezier·축별0..1/기본1/3/비가중연산동일·시간역산·BP/애니/Sequence재생·실제핸들길이/기울기/다른축/반대길이/Undo·AI검증/낮은창축글자왜곡수정. pure9/240독립표본·기존1266 17·GUI lKaCSM 실제입력/드래그/중첩BP위치[10,4.125,0]통과. 초기부동소수테스트결합/변경없는쓰기revision가정실패보존후도구만수정. 공식지정본문등록supplemental1294·전체gate상승없음. native불변재사용·설치D3D11게임1회대기.
+
+1298 설치확인: f35ec9cbe6b653b5·3979명세/654소유SHA·실제설치D3D11게임 LUYlOd에서BP Play/Pause/Seek·축별가중곡선/중첩기준점/소스오프셋→독립위치[10,4.125,0]통과. User10849읽기SHA/연결/Versions1·이전186535112B정리. native16/CPP21/Struct.hpp/Player/Host불변재사용·렌더행렬/실기기/FPS반복없음.

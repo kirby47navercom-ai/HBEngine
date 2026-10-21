@@ -1,0 +1,118 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "fb19f2b6e8eb3696c4d042fcdfed7b7911a27119",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f35ec9cbe6b653b5",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\f35ec9cbe6b653b5\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\f35ec9cbe6b653b5\\HBEngine.exe",
+  "bundleHash": "f35ec9cbe6b653b59fe40fa0ad6cb419af8562211c825efad686cc61ae47d54a",
+  "files": 3979,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3975,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0fe30fb4d3910392",
+        "bytes": 186535112,
+        "manifestSHA256": "006484764b51bd47341efbc7864940453e1e18e6e9acbcb5d66638cc73df4e4a"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T16:47:39.4930304Z",
+    "bytes": 186535112,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "f35ec9cbe6b653b5"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 654,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
+  "installedGates": [
+    {
+      "path": "native/build/weighted-curves-1295-LUYlOd/acceptance.json",
+      "sha256": "db6199ad1b3c1f6bf2323e7e8e58862f2d4a4c00261e5aa68d1c2011501b21a7",
+      "scope": "Actual isolated packaged D3D11 game BP Play/Pause/Seek follows per-axis weighted Bezier with source offset and rotated/translated nested origins. Analytic parameter1/4 expected; native binaries reused, no rendering/FPS claim.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f35ec9cbe6b653b5\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\f35ec9cbe6b653b5\\",
+    "elapsedMs": 82.74,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\f35ec9cbe6b653b5",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "f35ec9cbe6b653b59fe40fa0ad6cb419af8562211c825efad686cc61ae47d54a",
+      "installedAt": "2026-10-21T16:47:36.191Z",
+      "manifestFiles": 3979,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3979,
+  "versions": [
+    "f35ec9cbe6b653b5"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1298-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/weighted-curves-1294-aD8Wxq/acceptance.json",
+      "sha256": "933a79d2370d0d8e3ef69ce3d2ba61785e8e7cb9d3d44cf9a45a3c98e33de061",
+      "scope": "9 pure groups, independent forward Bezier240 incl zero/full/crossed weights, exact legacy/thirds, sequence/BP/animation samplers, typed atomic edit, gameplay service seek/restoration."
+    },
+    {
+      "path": "native/build/sequence-origins-curves-1266-VGJcNG/acceptance.json",
+      "sha256": "8f0f4add53878c16ba829feb0029194f7c301e76b25312c03eff8fe8e7305a30",
+      "scope": "Existing17 root/actor origins, Hermite, scale/quaternion guards, nested playback and ownership/lifetime regressions retained."
+    },
+    {
+      "path": "native/build/weighted-curves-1295-lKaCSM/acceptance.json",
+      "sha256": "4c29d7a1bbad0f25945745b408ce0553dd78a72a87b37df25d396e284b9b0363",
+      "scope": "Actual hidden editor weights/Undo, real handle length/slope drag, coupled slopes/other-axis preservation, visible controls and corrected label proportions, AI dry-run/invalid/stale, actual nested BP Play/Pause/Seek expected[10,4.125,0]."
+    },
+    {
+      "path": "native/build/weighted-ai-context-1296.json",
+      "sha256": "bc0882a193b1c0654f9823d94814d9596b4bc369943f8ff10becde87136929c3",
+      "scope": "Offline routes/schema compatibility; actual live command edits covered by source GUI, not actual model-session speed."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed shared normalized weighted curves. Actual D3D11 game BP Play/Pause/Seek uses weighted child and nested origins, expected[10,4.125,0]. Pure9/oracle240, legacy17 and real source GUI numeric/handle/Undo/AI/layout passed. Native16/Struct.hpp/CPP21/Player1223/Host1041 unchanged, profile/manifest/links/Versions1 verified; no GPU matrix/FPS/physical touch claim.",
+  "version": 1,
+  "date": "2026-10-21T16:49:06.215Z",
+  "work": "docs/research/ENGINE_WORK_1296.json",
+  "distributionSync": "native/build/distribution-1297-sync.json",
+  "cachePrune": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

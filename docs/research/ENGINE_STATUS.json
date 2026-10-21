@@ -2938,11 +2938,11 @@
     "scope": "Shared per-axis normalized weighted Bezier, legacy exact compatibility, actual editor length/slope authoring, AI and nested sequence execution. Advanced curve tools remain separate."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1292.json",
-    "sourceCommit": "0206311214d3e2c4cd4e65341df2e944ee1a55d8",
-    "bundleHash": "0fe30fb4d39103926de270771640dfa067a60254d3a4e9ba4b7806000e442aef",
+    "receipt": "docs/research/USER_INSTALL_1298.json",
+    "sourceCommit": "fb19f2b6e8eb3696c4d042fcdfed7b7911a27119",
+    "bundleHash": "f35ec9cbe6b653b59fe40fa0ad6cb419af8562211c825efad686cc61ae47d54a",
     "verified": true,
     "versions": 1,
-    "scope": "Installed WebGL2 current production fixed curved guide profile with exact full unoptimized reference parity, on/morph/off/target reuse and disable release. Pure7/source GPU proofs retained. Native16/Struct.hpp/CPP21/Player1223/Host1041 unchanged; profile/manifest/links/Versions1 verified. Primary GL compile still seconds, no cold/FPS/mobile claim."
+    "scope": "Installed shared normalized weighted curves. Actual D3D11 game BP Play/Pause/Seek uses weighted child and nested origins, expected[10,4.125,0]. Pure9/oracle240, legacy17 and real source GUI numeric/handle/Undo/AI/layout passed. Native16/Struct.hpp/CPP21/Player1223/Host1041 unchanged, profile/manifest/links/Versions1 verified; no GPU matrix/FPS/physical touch claim."
   }
 }
