@@ -2804,11 +2804,11 @@
     "scope": "세브라우저 프로브변경행/대기변경/전체갱신/GL상태/진단. 같은native소유/Player/CPP검사재사용."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1177.json",
-    "sourceCommit": "033e35a1a71212048b8ba4e0343166bf1648ab8a",
-    "bundleHash": "7b49a6ca25d1389f290997155b5b22c6408ffaf43d888393cd1fd3a9c14ff3f8",
+    "receipt": "docs/research/USER_INSTALL_1183.json",
+    "sourceCommit": "c18c53731e356826d8e648f77dd625b7f070f840",
+    "bundleHash": "da1acaad81e624205f43142079a82adbd1f3a4c804bf5160cdfdfffa71f2fbb6",
     "verified": true,
     "versions": 1,
-    "scope": "기본노멀/공유HDR·SH/144B전송·고위count/수명. 3878전체파일·542소유SHA·CPP19/native14·Player1173동일SHA/Host1041·D3Dsource게임+설치GL/GPU게임5상태·User읽기SHA/연결/Versions1. 선행5gate재실행없음."
+    "scope": "세브라우저 프로브 변경행/누적대기/full우선/GL상태/실제픽셀. 3882전체명세·544소유SHA·native14/CPP19·Player1173/Host1041동일SHA재사용·User읽기SHA/연결/Versions1. C++재빌드/native게임재검사없음."
   }
 }

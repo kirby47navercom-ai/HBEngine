@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "c18c53731e356826d8e648f77dd625b7f070f840",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\da1acaad81e62420",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\da1acaad81e62420\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\da1acaad81e62420\\HBEngine.exe",
+  "bundleHash": "da1acaad81e624205f43142079a82adbd1f3a4c804bf5160cdfdfffa71f2fbb6",
+  "files": 3882,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3879,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7b49a6ca25d1389f",
+        "bytes": 184838887,
+        "manifestSHA256": "e5fb3e51861f6cc32779e98aef1ffe353e50f73d7bada3c477d53194531d6535"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T08:35:41.0910292Z",
+    "bytes": 184838887,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "da1acaad81e62420"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 544,
+  "repositoryOnlyTestSourcesVerified": 19,
+  "nativePlayerSHA256": "99900cc7cb83414e7112e5508e282e753274575977fe273fb1fe73a65a6dbe15",
+  "installedGates": [
+    {
+      "path": "native/build/probe-table-1179-tCOmnH/acceptance.json",
+      "sha256": "4a7aeb1b23488b398935c68d1f26ad697b89bbfa35f3267bce3e94505093dd89",
+      "scope": "Actual GL/GPU production atlas copy and per-pixel candidates across4probes versus independent physical white reference/weights. Mixed map resolutions, static transfer reuse, intensity-only metadata update, resize/program retention,4instances outside parent origin, release/reactivate. Controlled known captures; actual capture/native package separately.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\da1acaad81e62420\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\da1acaad81e62420\\",
+    "elapsedMs": 159.98,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\da1acaad81e62420",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "da1acaad81e624205f43142079a82adbd1f3a4c804bf5160cdfdfffa71f2fbb6",
+      "installedAt": "2026-10-21T08:35:37.712Z",
+      "manifestFiles": 3882,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3882,
+  "versions": [
+    "da1acaad81e62420"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1183-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/probe-atlas-1119-KWUrnz/acceptance.json",
+      "sha256": "18068c8c3fe2dd5665a37ea4b56fab1659a392d4782edceb72a24cb412f9e759",
+      "reused": true,
+      "scope": "동일한 native/C++ 소유파일; 재실행하지 않음"
+    },
+    {
+      "path": "native/build/builtin-normal-1167-IBjSSY/acceptance.json",
+      "sha256": "0bfc552b9f09e9310c7ddaadc4fa76862267d5ca6ed9aa2e1a6b213c86e21b59",
+      "reused": true,
+      "scope": "동일한 native/C++ 소유파일; 재실행하지 않음"
+    },
+    {
+      "path": "native/build/probe-sharing-1171-lOacOI/acceptance.json",
+      "sha256": "e1623eb513bca0786dd02af6ad45a788007af2779f301c332dfe5f652087b406",
+      "reused": true,
+      "scope": "동일한 native/C++ 소유파일; 재실행하지 않음"
+    },
+    {
+      "path": "native/build/probe-table-1179-NdeHSk/acceptance.json",
+      "sha256": "889ec9304d624421d2ad825ab61f1693636ffc873fa0c0fe2b90438a4fa1be53",
+      "scope": "Actual GL/GPU production atlas copy and per-pixel candidates across4probes versus independent physical white reference/weights. Mixed map resolutions, static transfer reuse, intensity-only metadata update, resize/program retention,4instances outside parent origin, release/reactivate. Controlled known captures; actual capture/native package separately."
+    },
+    {
+      "path": "native/build/normal-sharing-static-1180.json",
+      "sha256": "7d92f22881be65d1a94f5a1c5c2bb3cf5c34133e4d10d71a049656fc59eb7bbf",
+      "scope": "Normal texture and shared atlas, changed JS syntax, generated API unchanged, spatial schema and offline AI CLI. GPU, C++, real game and installation checks have separate evidence."
+    },
+    {
+      "path": "native/build/normal-sharing-ai-context-1180.json",
+      "sha256": "8b33cfcce104c1d939447575acc446eb96bc6303c80b25cde68f54510714411c",
+      "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "세브라우저 프로브 변경행/누적대기/full우선/GL상태/실제픽셀. 3882전체명세·544소유SHA·native14/CPP19·Player1173/Host1041동일SHA재사용·User읽기SHA/연결/Versions1. C++재빌드/native게임재검사없음.",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

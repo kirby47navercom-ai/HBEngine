@@ -617,6 +617,15 @@
       "path": "native/build/normal-sharing-ai-context-1180.json",
       "sha256": "8b33cfcce104c1d939447575acc446eb96bc6303c80b25cde68f54510714411c",
       "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    },
+    {
+      "path": "native/build/probe-table-1179-tCOmnH/acceptance.json",
+      "sha256": "4a7aeb1b23488b398935c68d1f26ad697b89bbfa35f3267bce3e94505093dd89",
+      "scope": "Actual GL/GPU production atlas copy and per-pixel candidates across4probes versus independent physical white reference/weights. Mixed map resolutions, static transfer reuse, intensity-only metadata update, resize/program retention,4instances outside parent origin, release/reactivate. Controlled known captures; actual capture/native package separately.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\da1acaad81e62420\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [],
@@ -657,8 +666,8 @@
     "scope": "GPU전송요청페이로드대조이며전체프레임/FPS/드라이버트래픽측정아님;테이블마다누적진단"
   },
   "researchScope": "기존고정Three r180 WebGLTextures/WebGLTextureUtils/WebGPU/commonTextures의업로드본문과로컬어댑터대조,전체UE/Unitygate미승격",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1177.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1183.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "큰 장면 다수 HDR 캡처의 CPU/GPU 메모리·통제 FPS 검증 및 타일/클러스터와 BVH 비교·혼합 정책",
@@ -667,5 +676,6 @@
     "WebGPU 물리 재질의 임의 복합 로브·매질/기하/이력 조합 확장과 전체 백엔드 에너지 동등성 검증"
   ],
   "scope": "렌더러셋의두밝기/대기변경/전체경계갱신/복원/정지/인스턴스/해제,허용오차기존유지. 설치에서는이경로만확인하며기존CPP게임/native무거운검사생략.",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1183.json"
 }

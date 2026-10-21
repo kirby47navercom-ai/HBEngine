@@ -63,3 +63,5 @@ fallback readback뒤copyTexSubImage2D가GL1282. Float32blend가설은HalfFloat�
 1165 사용자설치 확정: 실제CPP/BP세렌더러4공간이동/밝기/복원과노드7/공간재구성불변·전체파일/소유SHA/User/연결/Versions1 통과. 선행묶음4gate는소유SHA로재사용,재실행없음. USER_INSTALL_1165 최신. 아직전체HDR/FPS/타엔진누적기능완료는아니에요.
 
 1177 설치확정: 기본normal/D3Dsource·설치GL/GPU실제glTF C++/BP광원5상태·공유65536영역(1캡처)/144B부분전송·수명·소유진단. 5gate성공SHA재사용·Player1173한번빌드/Host재사용·3878명세/542소유SHA/CPP19/User/연결/Versions1. 처음fixture가surface전용API라normal을제거한것과Windows near/far매크로충돌은검사도구수정,허용오차완화없음. 전체캡처/FPS·명시tangent/임의그래프동등성은구분해요.
+
+1183 설치확정: 프로브table변경행·대기변경/full우선·GLunpack복원·세렌더러픽셀/인스턴스/해제. 두밝기288B 대조1008B·정지0. C++소유14/CPP19/Player1173/Host1041재사용으로컴파일·게임반복검사없음. 3882명세/544SHA/User읽기SHA/연결/Versions1. 실제FPS와구분.

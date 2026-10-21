@@ -26,4 +26,4 @@ native 기본normalMap 실제UV 접선/화면Y/양면·큰/작은/0/퇴화 보�
 
 ## 계속1179–1180 브라우저 테이블 전송 (설치 준비)
 
-WebGL/WebGPU/강제GL폴백의프로브table변경행전송을추가했어요. 정지전송0·여러prepare의대기행누적·공간변경full우선·GLunpack복원·약한자원소유·tableTransfers진단/schema v5. 1179-NdeHSk 실제3모드픽셀/누적변경/복원/인스턴스/해제통과. 두밝기변경288B 대조전체1008B(장면FPS아님). static1180 API/AI통과. C++14소유와CPP19변경0,Player1173/Host1041재사용·재빌드없음. record1181/sync1182/install1183/finish1184 준비중이며아직최신설치는1177이에요.
+WebGL/WebGPU/강제GL폴백의프로브table변경행전송을추가했어요. 정지전송0·여러prepare의대기행누적·공간변경full우선·GLunpack복원·약한자원소유·tableTransfers진단/schema v5. 1179-NdeHSk 실제3모드픽셀/누적변경/복원/인스턴스/해제통과. 두밝기변경288B 대조전체1008B(장면FPS아님). static1180 API/AI통과. C++14소유와CPP19변경0,Player1173/Host1041재사용·재빌드없음. USER_INSTALL_1183확정 C:\Users\kirby\HBEngine\Versions\da1acaad81e62420/HBEngine.exe. 3882명세/544소유SHA/CPP19/native14·설치단일1179검사로3렌더러반영·User10849읽기SHA·연결·Versions1·이전184838887B정리. Player1173/Host1041동일SHA재사용. one-shot1182/83/84재실행금지.

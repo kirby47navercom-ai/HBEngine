@@ -838,3 +838,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1177설치 C:\Users\kirby\HBEngine\Versions\7b49a6ca25d1389f /3878파일·542소유SHA·CPP19/native14·Player1173/Host1041·실제glTF노멀C++/BP5상태(D3Dsource동일Player/설치GL/GPU)·User10849전후읽기SHA·연결·Versions1확정. 선행5gate/D3D게임재실행없이재사용. 이전184711586B정리·cache{"deleted":0,"bytes":0,"receipt":null}.
 
 1179–1181 세브라우저 프로브변경행/여러prepare대기변경/full우선/GL상태복원/진단을묶음구현. 두밝기288B 대조전체1008B·정지0·실제세렌더러픽셀/복원/인스턴스/해제통과. Player1173/Host1041·native14/CPP19동일SHA재사용으로빌드/native게임검사반복없음. static1180 API/AI통과,설치1183준비.
+
+1183설치 C:\Users\kirby\HBEngine\Versions\da1acaad81e62420 /3882명세·544소유SHA·native14/CPP19·Player/Host재사용. 설치전용한검사에서GL/GPU/폴백변경288B/전체1008B·대기변경·경계전체갱신·정지0·픽셀/인스턴스/해제통과. User10849읽기SHA·연결·Versions1·이전184838887B정리. CPP/native게임재실행없이기존증거재사용. cache{"deleted":0,"bytes":0,"receipt":null}.
