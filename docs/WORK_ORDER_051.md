@@ -900,3 +900,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1309–1312: 곡선pre/post 유지/선형/반복/오프셋/왕복·음수/경계/가중매핑·키복제없음·세샘플러·골격clip범위UI/cubic·가중검증/실제AnimationGraph·key생략AI/Undo/맞춤. 모델9 eRDXlL·가중9/240·기존시퀀스17/retarget·GUI AblPc4 실제범위입력/핸들/Undo/AI/중첩BP [10,44.125,0]통과. 공식지정Infinity본문/Unity API발췌 supplemental1310·전체gate상승없음. native불변·설치D3D게임1회대기. 주GL진단1308은제품미채택유지.
 
 1314 설치확인: b0360f510260b375·3987명세/663소유SHA·실제설치D3D11게임 LUYlOd에서BP Play/Pause/Seek·축별가중곡선/2오프셋반복/중첩기준점/소스오프셋→독립위치[10,44.125,0]통과. User10849읽기SHA/연결/Versions1·이전186651678B정리. native16/CPP21/Struct.hpp/Player/Host불변재사용·렌더행렬/실기기/FPS반복없음.
+
+1316–1326: 곡선ClampedAuto/선택평탄·각도정렬·인접기울기·값필터·affine·베이크/축약·골격그래픽·AI/Undo/단축키와 대형키 이진조회/스트리밍맞춤/표시밀도를 연결. 실제65536키 전체선택/표시3101 유지·10모델/15600표본/가중9·240/Infinity9/실제AnimationGraph/GUI 14JfLO·ElP4hN 통과. 공용C++/BP목록API5·실제CPP실행/2단계검증·정적삭제전송2000개/관심32회0B·기존socket5+6 통과. 공개SDK Game/Bridge 변경에 따라Player1321 한번26.2초빌드·다른14native/CPP21/Host불변. 전체연구/엔진완료아님·주GL잔여유지·설치검사대기.

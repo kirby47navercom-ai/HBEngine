@@ -80,3 +80,5 @@ fallback readback뒤copyTexSubImage2D가GL1282. Float32blend가설은HalfFloat�
 
 ## 1266 GL 준비 지연: 읽기 전용 생성 구조 대조
 보존된 complex141-980-sLKAfd의 path/lens GLSL에서 material 함수4441145는각1313B·texture호출1·정의포함참조3. path전체120707B/lens117593B이며 원본M_Complex141그래프는6노드예요. 함수복제/레지스터정리가 주원인이라는 근거는 없어요. 1086 SSA/zero-init실패재측정·GPU컴파일·셰이더제품편집은 하지 않았어요. 이 수치는 보존된 역사적소스의 구조진단이고 현재시간/FPS개선근거가 아니에요. RND-06의8/7초잔여를완료처리하지않아요. 다음실험은 실제분기/인라인fanout·드라이버단계비용을분리할설계가필요하며동일74B실험반복금지예요.
+
+1320 검사준비 정정: vUvy0O는 임시프로젝트 BP parent와 기본 DoorController 원본 불일치,7YEBTS는 도구 인라인 quoting 실패로 새 Source 파일 누락. 명시적 ListController 원본/경로를 생성하여14JfLO에서 실제CPP실행 통과. pksver는 기능검사 뒤 수정한 클립 미저장으로 정상 종료 확인이 막힘; 저장 후 같은 영향gate만 재실행하여14JfLO 종료0.1323밀도 첫 fixture는 기존1024키 Sequence 예산을 잘못 가정했으며, 실제65536키를 지원하는 skeletalclip 소유자로 바로잡아ZdKkWn에서 데이터/선택/표시밀도/수명 확인. 실패를 성능·구현 성과로 계산하지 않음.
