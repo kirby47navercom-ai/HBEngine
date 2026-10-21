@@ -27,10 +27,10 @@ function hasTerm(text, term) {
   return normalize(text).includes(normalize(term));
 }
 function optionsFor(options) {
-  if (!options || typeof options !== 'object' || Array.isArray(options) || Object.keys(options).some(key => !['task', 'symbol', 'limit'].includes(key))) throw Error('context는 task, symbol, limit만 받아요.');
-  const {task = '', symbol = '', limit = 8} = options;
-  if (typeof task !== 'string' || task.length > 500 || typeof symbol !== 'string' || symbol.length > 160 || /[\r\n\0]/.test(task + symbol) || !Number.isSafeInteger(limit) || limit < 1 || limit > 12) throw Error('task 500자·symbol 160자 이하, limit 정수 1~12를 사용하세요.');
-  return {task: task.trim(), symbol: symbol.trim(), limit};
+  if (!options || typeof options !== 'object' || Array.isArray(options) || Object.keys(options).some(key => !['task', 'symbol', 'limit', 'all'].includes(key))) throw Error('context는 task, symbol, limit, all만 받아요.');
+  const {task = '', symbol = '', limit = 8, all = false} = options;
+  if (typeof all !== 'boolean' || typeof task !== 'string' || task.length > 500 || typeof symbol !== 'string' || symbol.length > 160 || /[\r\n\0]/.test(task + symbol) || !Number.isSafeInteger(limit) || limit < 1 || limit > 12) throw Error('task 500자·symbol 160자 이하, limit 정수 1~12를 사용하세요.');
+  return {task: task.trim(), symbol: symbol.trim(), limit, ...(all ? {all:true} : {})};
 }
 async function inventory(directory, prefix = directory) {
   let entries;
@@ -92,7 +92,7 @@ async function findSymbol(files, symbol, limit) {
 }
 
 export async function engineContext(input = {}) {
-  const start = performance.now(), {task, symbol, limit} = optionsFor(input);
+  const start = performance.now(), {task, symbol, limit, all = false} = optionsFor(input);
   const [routes, status, installation] = await Promise.all([
     fs.readFile(new URL('../docs/ai-routes.json', import.meta.url), 'utf8').then(JSON.parse),
     readEngineStatus(),contextInstallation()
@@ -141,7 +141,18 @@ export async function engineContext(input = {}) {
     base.lookup = selected.length || fileHits.length || exact.length ? 'matched' : 'no-match: 분야 ID 또는 정확한 파일명/symbol로 좁혀요.';
     if (symbol) {
       const searchFiles = [...new Set([...files.map(info => info.path).filter(file => sourceFiles.includes(file)), ...sourceFiles])];
-      base.symbolSearch = await findSymbol(searchFiles, symbol, limit);
+      const focused = [...new Set(focusedPaths)].filter(file => sourceFiles.includes(file));
+      const initial = !all && focused.length ? await findSymbol(focused, symbol, limit) : null;
+      if (initial?.matches.length) {
+        base.symbolSearch = {...initial, mode:'focused-routes', routeFiles:focused,
+          scope:initial.scope+'; 일치한 focusRoutes만 조회, 다른 호출처는 --all로 확장',
+          expand:{all:true, cli:'node tools/hb.mjs context '+JSON.stringify(task)+' --symbol '+JSON.stringify(symbol)+' --all'}};
+      } else {
+        const rest = await findSymbol(initial ? searchFiles.filter(file => !focused.includes(file)) : searchFiles, symbol, limit);
+        base.symbolSearch = {...rest, mode:all?'all':'fallback-all',
+          filesRead:rest.filesRead+(initial?.filesRead||0), bytesRead:rest.bytesRead+(initial?.bytesRead||0),
+          skippedOversize:[...(initial?.skippedOversize||[]),...rest.skippedOversize]};
+      }
     }
   }
   base.elapsedMs = Math.round((performance.now() - start) * 100) / 100;
@@ -156,7 +167,8 @@ export function contextArgs(args) {
       const value = args[++i];
       if (value === undefined || value.startsWith('--')) throw Error(arg + ' 값이 필요해요.');
       params[arg.slice(2)] = arg === '--limit' ? Number(value) : value;
-    } else if (arg.startsWith('--')) throw Error('알 수 없는 context 옵션: ' + arg);
+    } else if (arg === '--all') params.all = true;
+    else if (arg.startsWith('--')) throw Error('알 수 없는 context 옵션: ' + arg);
     else positional.push(arg);
   }
   if (positional.length && params.task !== undefined) throw Error('작업명과 --task 중 하나만 사용하세요.');

@@ -1046,6 +1046,22 @@
         "tools/check-three-uniform-patch-1358.mjs",
         "docs/PROBE_PRIORITY_BLEND.md"
       ]
+    },
+    {
+      "keywords": [
+        "constantBufferCache",
+        "ConstantBufferCache",
+        "constantBufferStats",
+        "probeUploads",
+        "twoDUploads",
+        "상수 버퍼 전송"
+      ],
+      "paths": [
+        "native/include/HBEngine/ConstantBufferCache.hpp",
+        "native/include/HBEngine/SceneRender.hpp",
+        "native/desktop/SceneRenderBridge.hpp",
+        "docs/NATIVE_CONSTANT_BUFFERS.md"
+      ]
     }
   ]
 }

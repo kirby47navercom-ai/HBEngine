@@ -586,3 +586,5 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 1342–1347: Timeline/Curve/Sequence/골격 공통 키 클립보드·상대 시간/전체 채널/핸들 보존, 입력칸 분리·프로필/단축키 재지정, 비동기 소유권 가드·AI copy/cut/paste/revision/dryRun/Undo. Sequence 바깥/내부 곡선 재생 헤드 양방향 동기화. [계약](CURVE_TOOLS.md)을 따른다.
 
 1354–1362: ReflectionProbes::SetPriorityBlend(target,bool,component)와 반사 우선 캡처 덮어쓰기 노드는 같은 priorityBlend 컴포넌트 서비스예요. 기존 꺼짐/정규화·같은캡처·9행/144B 유지, 첫 후보가 뒤 가중치를 b*(1-a)로 가려요. [계약·정확한 검증 범위](PROBE_PRIORITY_BLEND.md)를 확인해요.
+
+1370: Timeline 트랙 삭제는 현재 graph의 출력 배선을 changed 전에 함께 제거해 한 Undo/Redo·저장으로 유지해요. 문서 이름 변경 후 창 닫기는 editor 동일성으로 참조를 정리하고 리스너·observer·WeakMap을 해제해요. 다시 열면 새 editor가 생겨요. 실제 격리 편집기에서 Undo로 graph 교체→트랙/배선 삭제·복원→콘텐츠 브라우저 F2 rename→close/reopen을 확인했어요.
