@@ -1,0 +1,186 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "6477205314bb382a242310d38dcc4070d6ccfdc6",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\629220bbab426e05",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\629220bbab426e05\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\629220bbab426e05\\HBEngine.exe",
+  "bundleHash": "629220bbab426e056ce17967b70a2ec087d73f6ee84a745aa35ca8d55831aabd",
+  "files": 4031,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4021,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e89f44cf0549b010",
+        "bytes": 187330829,
+        "manifestSHA256": "4880809c405deb9823b807582f2e5ff5aeae9329ef1550c77c1413abfda7d48d"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T19:53:23.0900881Z",
+    "bytes": 187330829,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "629220bbab426e05"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 698,
+  "repositoryOnlyTestSourcesVerified": 22,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [
+    "native/include/HBEngine/Game.hpp",
+    "native/include/HBEngine/SceneProbeAtlas.hpp",
+    "native/include/HBEngine/SceneProbes.hpp",
+    "native/include/HBEngine/Session.hpp"
+  ],
+  "nativePlayerSHA256": "55bd14a992b37f6691a95f6865e2e3b3abfd71d8c554c2afeb6acd779100b22a",
+  "installedGates": [
+    {
+      "path": "native/build/probe-priority-1357-JRVwPx/acceptance.json",
+      "sha256": "6505425ef14852e1c49b62509f2b1114c3c00622bd1106906b145d1b1648f2e6",
+      "scope": "Production GL/WebGPU/forcedGL direct and atlas priority blending, independent full-pixel legacy/box/sphere/dark references and mode-only resource retention. Controlled maps; native actual capture and C++ game separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\629220bbab426e05\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-priority-1361-player-C46Jem/acceptance.json",
+      "sha256": "11bdd92cc5036c2c417d585e78c04080a6dc0b0934d8b6fd5a6625de02ef6939",
+      "scope": "Actual packaged D3D11 game compiles user C++ SetPriorityBlend and executes generated Blueprint node true/false on same component. Four captured images/layouts retained and actor transform preserved. Independent physical pixel math proved in1357/1359; this game asserts command propagation and resource lifetime.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\629220bbab426e05\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-priority-1362-editor-DUOVC7/acceptance.json",
+      "sha256": "d750f0f5524e586e6836cafc6db76a45cebe8cd88d92b3ade66aa48028d261de",
+      "scope": "Owned hidden real scene editor priority checkbox, Undo/checked refresh, stale AI revision rejection and shared JSON property save. Existing component inspector layout; source/native physical and C++ game separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\629220bbab426e05\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\629220bbab426e05\\",
+    "elapsedMs": 262.59,
+    "matches": 2,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\629220bbab426e05",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "629220bbab426e056ce17967b70a2ec087d73f6ee84a745aa35ca8d55831aabd",
+      "installedAt": "2026-10-21T19:53:19.900Z",
+      "manifestFiles": 4031,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4031,
+  "versions": [
+    "629220bbab426e05"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1364-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/probe-priority-1356-zJSEO3/acceptance.json",
+      "sha256": "086791f67130f0c88e7585b1c346aa22064c31e444f788e04f92c7a4a8844eac",
+      "scope": "CPU401 coordinate observations and both-partial base remainder,8 flags, direct/native packing, defaults/validation/atomic shared service/generated bool node/capture key separation."
+    },
+    {
+      "path": "native/build/sphere-probe-1192-2sDfjZ/acceptance.json",
+      "sha256": "68e4234b5b847954ee4794558f2522ef78a7ee09fd13eb112919efa39f854ec0",
+      "scope": "Existing520 sphere quadratic, scaled owner/world radius/helper/atomic shape regression."
+    },
+    {
+      "path": "native/build/probe-priority-1357-tovSgM/acceptance.json",
+      "sha256": "786d96dd3b13aaa1804b23c2e54361da94a52272b25c4afc65beca92fcae41ad",
+      "scope": "Actual GL/WebGPU/forcedGL each3200 physical pixels; direct/atlas legacy/priority/sphere/dark/both-partial sky remainder, metadata-only mode image/tree/capture/program retention. Maximum7.71e-7 F32 error."
+    },
+    {
+      "path": "native/build/three-uniform-patch-1358-sVqxta/acceptance.json",
+      "sha256": "021823c8a30ebf632ec9ce7866b676dcdf6e350bafcd735d46399eb88ebac1d2",
+      "scope": "Actual NodeUniform w-only1→7→1 beside scalar1, unchanged7/1 skips uploads; tiny dryRun/idempotence/unknown-version validation-before-write fixtures. Final realpath/shared-root guard and CLI check contract retained."
+    },
+    {
+      "path": "native/build/probe-priority-1359-native-3DbLTE/acceptance.json",
+      "sha256": "94384b88b31f4d493d7a99d6f8f414166df76b99cc7c383878dc73f566bfb69c",
+      "scope": "Actual D3D11 four HDR captures:8192 direct/global physical pixels, box/sphere/dark/legacy/priority reference max1byte;8 partial refraction color+coverage reference error0, flags/metadata/release."
+    },
+    {
+      "path": "native/build/probe-priority-1361-player-QCu2wJ/acceptance.json",
+      "sha256": "6c24d6f21704362887529422aff4a344f24f78872ab5c262802e20eee2512efa",
+      "scope": "Actual packaged D3D11 user C++ SetPriorityBlend and generated Blueprint true/false5states;4captures/150copies/1layout/actor position retained."
+    },
+    {
+      "path": "native/build/probe-priority-1362-editor-7DsNby/acceptance.json",
+      "sha256": "ba0ae746012479e9606ab62f2d1d51f169ca8f01de895d74854eab547bd28963",
+      "scope": "Actual editor checkbox click, Undo/UI refresh, stale AI rejection and shared JSON patch/save. Screenshot inspected."
+    },
+    {
+      "path": "native/build/probe-priority-ai-context-1362.json",
+      "sha256": "0fb37b76f8d5155d7e7e4a3e6494f3df6820e8efcece927ccd601ca83969f7a8",
+      "scope": "Exact probe/vendor diagnostic routes and symbols, scoped source owners."
+    },
+    {
+      "path": "native/build/probe-priority-schema-1362.json",
+      "sha256": "1953a4d97be13c417527bfc68d2de83d129258214c97b4d65aa466ea7eab94c0",
+      "scope": "Actual engineSchema priority version7 and already implemented five list code APIs; obsolete limit removed, true touch/owner/cross-view limits retained."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/probe-priority-1361-player-QCu2wJ/acceptance.json",
+      "sha256": "6c24d6f21704362887529422aff4a344f24f78872ab5c262802e20eee2512efa",
+      "scope": "Actual packaged D3D11 user C++ SetPriorityBlend and generated Blueprint true/false5states;4captures/150copies/1layout/actor position retained."
+    }
+  ],
+  "scope": "Installed opt-in probe priority coverage, same component/node/easy C++ service and low-level native flags, plus canonical Three0.180 Vector4 dirty comparison patch. Installed actual GL/WebGPU/forcedGL each3200 physical pixel references, packaged D3D11 user C++/BP five states and real inspector Undo/AI. Source D3D11 actual8192 physical+8 partial refraction reference retained by four native-owner/new Player1360 SHA; Host unchanged.9float4/144B/mode-only captures and images retained. Manifest698 source owners/22 repository test owners/2 vendor files/User/links/Versions1 verified; broader rendering/research residuals preserved.",
+  "version": 1,
+  "date": "2026-10-21T19:58:05.048Z",
+  "work": "docs/research/ENGINE_WORK_1362.json",
+  "distributionSync": "native/build/distribution-1363-sync.json",
+  "nativeCachePrune": {
+    "path": "native/build/cache-prune-1792611199342-7fc95717-c662-48dc-a514-1441315ffee6/result.json",
+    "sha256": "f9b363933406b04808223046d04710e7a0804f4e61cf6a33edf3071c3d80fa2a",
+    "bytes": 145415411,
+    "deleted": 2,
+    "scope": "Existing managed cleanup receipt; no extra manual source/cache copy or empty prune record."
+  },
+  "sourceNativeProof": "native/build/probe-priority-1359-native-3DbLTE/acceptance.json",
+  "vendorPatch": "tools/patch-three-uniforms.mjs"
+}

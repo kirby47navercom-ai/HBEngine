@@ -918,3 +918,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1352 설치확인: e89f44cf0549b010·4020명세/689소유SHA. 설치helper키붙여넣기→실제D3D11 BP[1,2,0], 설치BP창저장/UndoRedo/삭제해제, 설치relay10연결/430snapshot/136hide 통과. native16/CPP21/Player1321/Host불변. User10849읽기SHA/연결/Versions1·이전187182096B회수. 누적목표/연구전체완료로처리안함.
 
 1354–1362: opt-in 우선캡처/부분경계/환경나머지/구·상자/직접·atlas/반사·굴절공유, 기존9행144B·캡처/복사/layout보존, SetPriorityBlend·공용bool노드·Inspector/Undo/AI. Three0.180 Vector4 w비교를source/소비bundle 재현패치로수정(prepare/배포검증), 중복전송/복원누락해결·unused bundle비대상. CPU401·sphere520·실제3backend각3200/오차7.71e-7·D3D8192/오차1B·굴절8/오차0·실제CPP/BP5상태/4캡처150copy1layout·GUI/스키마/AI통과. Player1360 한번24.67초/새55bd14…·Host불변, 4native소유변경/old21검사재실행주장안함. cache145415411B기존정리확인. source커밋b94ed98/ffe0258·설치영향gate대기, 다른잔여/전체분모null유지.
+
+1364 설치확인: 629220bbab426e05·4031명세/698소유SHA/22repository검사/2vendor. 설치실제GL/GPU/fallback각3200오차7.71e-7, 설치패키지D3D11 CPP/BP5상태·캡처4/copy150/layout1, 설치Inspector/Undo/AI 통과. Player1360 55bd14…/Host재사용/4native변경. User10849읽기SHA/연결/Versions1·이전187330829B회수. SourceNative8192+굴절8/오차1B/0 및cache145415411B정리근거유지. 전체렌더러·엔진·연구완료처리안함.

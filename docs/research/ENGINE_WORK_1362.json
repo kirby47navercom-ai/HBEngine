@@ -813,11 +813,6 @@
       "scope": "Actual packaged D3D11 user C++ SetPriorityBlend and generated Blueprint true/false5states;4captures/150copies/1layout/actor position retained."
     }
   ],
-  "pendingInstalledGates": [
-    "tools/check-probe-priority-1357-window.mjs",
-    "tools/check-probe-priority-1361-player.mjs",
-    "tools/check-probe-priority-1362-editor.mjs"
-  ],
   "nativePlayerSHA256": "55bd14a992b37f6691a95f6865e2e3b3abfd71d8c554c2afeb6acd779100b22a",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -881,8 +876,8 @@
   },
   "research": "docs/research/CORPUS_MANIFEST.json#supplemental1354",
   "diagnostic": "DEBUG_HANDOFF.md#1357–1359 and native/build/probe-priority-1357-36QujD/shader.json; failing fixture/rank/names and patch test preparation excluded from implementation metrics.",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1352.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1364.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "큰 장면 다수 HDR 캡처의 CPU/GPU 메모리·통제 FPS 검증 및 타일/클러스터와 BVH 비교·혼합 정책",
@@ -890,5 +885,34 @@
     "임의 shader displacement·인스턴스별 morph texture의 소유 경계 및 지원 확대",
     "WebGPU 물리 재질의 임의 복합 로브·매질/기하/이력 조합 확장과 전체 백엔드 에너지 동등성 검증"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/probe-priority-1357-JRVwPx/acceptance.json",
+      "sha256": "6505425ef14852e1c49b62509f2b1114c3c00622bd1106906b145d1b1648f2e6",
+      "scope": "Production GL/WebGPU/forcedGL direct and atlas priority blending, independent full-pixel legacy/box/sphere/dark references and mode-only resource retention. Controlled maps; native actual capture and C++ game separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\629220bbab426e05\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-priority-1361-player-C46Jem/acceptance.json",
+      "sha256": "11bdd92cc5036c2c417d585e78c04080a6dc0b0934d8b6fd5a6625de02ef6939",
+      "scope": "Actual packaged D3D11 game compiles user C++ SetPriorityBlend and executes generated Blueprint node true/false on same component. Four captured images/layouts retained and actor transform preserved. Independent physical pixel math proved in1357/1359; this game asserts command propagation and resource lifetime.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\629220bbab426e05\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-priority-1362-editor-DUOVC7/acceptance.json",
+      "sha256": "d750f0f5524e586e6836cafc6db76a45cebe8cd88d92b3ade66aa48028d261de",
+      "scope": "Owned hidden real scene editor priority checkbox, Undo/checked refresh, stale AI revision rejection and shared JSON property save. Existing component inspector layout; source/native physical and C++ game separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\629220bbab426e05\\HBEngine.exe"
+      ]
+    }
+  ]
 }
