@@ -1,6 +1,6 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-22 · 대조 기준 커밋: `be07e3fb`
+갱신일: 2026-10-22 · 대조 기준 커밋: `78f706e7`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
@@ -112,7 +112,7 @@
 
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
-| NET-01 복제·RPC·권한·예측 | partial | 171: 설정 가능한 호스트/클라이언트 릴레이·키/소유권·안정 ID 필드 복제·변환 보간·허용 RPC·스냅샷 재접속·컴포넌트/C++BP6·실제 두 연결 실행 ·173: 로컬 카탈로그 복제 생성/삭제·자식/풀·late join/reconnect·거리/소유자 범위·정적 삭제 표식·동적 상태 회수·C++ 기존 Spawn/Destroy ·1259–1262: 가변반경3D중심버킷/전역·소유자 목록·기존정확판정·known이탈숨김·루트변경자식재색인/구링크정리·동일셀무재구성·빈메타회수/요청통계. 10만희소자료32질의후보1·실제socket/기존6회귀 ·1325: 정적삭제별도snapshot참조/공간색인제외·row버전/연결watermark·초기/재접속/재생성·재삭제·동적회수·실제2000삭제/32관심질의0B | 전용 권위 서버 규칙·장면 세대·부착/참조·클라이언트 원격 풀 수명, 초기 숨김/전역·밀집 후보 비용과 연결별 변경 전송의 추가 가속 · 예측 입력/재시뮬레이션·지연/손실 보정·호스트 이전/플랫폼 서비스·접속 비밀 배포 | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) · [ENGINE_WORK_171.json](research/ENGINE_WORK_171.json) · [ENGINE_WORK_173.json](research/ENGINE_WORK_173.json) · [ENGINE_WORK_1262.json](research/ENGINE_WORK_1262.json) · [NETWORK_DELETIONS.md](NETWORK_DELETIONS.md) · [ENGINE_WORK_1326.json](research/ENGINE_WORK_1326.json) |
+| NET-01 복제·RPC·권한·예측 | partial | 171: 설정 가능한 호스트/클라이언트 릴레이·키/소유권·안정 ID 필드 복제·변환 보간·허용 RPC·스냅샷 재접속·컴포넌트/C++BP6·실제 두 연결 실행 ·173: 로컬 카탈로그 복제 생성/삭제·자식/풀·late join/reconnect·거리/소유자 범위·정적 삭제 표식·동적 상태 회수·C++ 기존 Spawn/Destroy ·1259–1262: 가변반경3D중심버킷/전역·소유자 목록·기존정확판정·known이탈숨김·루트변경자식재색인/구링크정리·동일셀무재구성·빈메타회수/요청통계. 10만희소자료32질의후보1·실제socket/기존6회귀 ·1325: 정적삭제별도snapshot참조/공간색인제외·row버전/연결watermark·초기/재접속/재생성·재삭제·동적회수·실제2000삭제/32관심질의0B ·1329–1331: broadcast별공통state청크직렬화공유·연결번호floor/혼합view순서가드·UTF8<=1MiB일시예산·실제9연결129상태 생성3/재사용24·밀집전체전송1MiB초과/소유권/삭제회귀 | 전용 권위 서버 규칙·장면 세대·부착/참조·클라이언트 원격 풀 수명, 초기 숨김/전역·밀집 후보 비용과 서로 다른 관심 영역의 직렬화·실제 소켓 전송/인코딩 추가 가속 · 예측 입력/재시뮬레이션·지연/손실 보정·호스트 이전/플랫폼 서비스·접속 비밀 배포 | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) · [ENGINE_WORK_171.json](research/ENGINE_WORK_171.json) · [ENGINE_WORK_173.json](research/ENGINE_WORK_173.json) · [ENGINE_WORK_1262.json](research/ENGINE_WORK_1262.json) · [NETWORK_DELETIONS.md](NETWORK_DELETIONS.md) · [ENGINE_WORK_1326.json](research/ENGINE_WORK_1326.json) · [NETWORK_DELETIONS.md](NETWORK_DELETIONS.md) · [ENGINE_WORK_1331.json](research/ENGINE_WORK_1331.json) |
 
 ## 이펙트
 

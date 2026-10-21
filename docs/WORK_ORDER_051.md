@@ -904,3 +904,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1316–1326: 곡선ClampedAuto/선택평탄·각도정렬·인접기울기·값필터·affine·베이크/축약·골격그래픽·AI/Undo/단축키와 대형키 이진조회/스트리밍맞춤/표시밀도를 연결. 실제65536키 전체선택/표시3101 유지·10모델/15600표본/가중9·240/Infinity9/실제AnimationGraph/GUI 14JfLO·ElP4hN 통과. 공용C++/BP목록API5·실제CPP실행/2단계검증·정적삭제전송2000개/관심32회0B·기존socket5+6 통과. 공개SDK Game/Bridge 변경에 따라Player1321 한번26.2초빌드·다른14native/CPP21/Host불변. 전체연구/엔진완료아님·주GL잔여유지·설치검사대기.
 
 1327 설치확인: 295e05b305710815·4003명세/678SHA/CPP21. 설치패키지 실제D3D11 BP Show→새 SDK 사용자C++ 조회/평면이동/재부모/두종류전송, 설치서버 실제소켓 삭제2000/관심32회0B·late/resume/redelete 통과. Player1321/Host1041·User10849읽기SHA/연결/Versions1, 이전186775022B 회수. 바뀌지 않은 렌더행렬·실기기 반복 없음.
+
+1329–1331: 같은state청크의broadcast지역직렬화공유·연결별증가번호가드·UTF8최대1MiB·동일row참조비교/메타진단. 실제9연결129상태에서JSON생성3/재사용24·혼합owner/번호순서·1MiB초과전송/공유peak936502B, 삭제7·기존관심5·network6·AI경로통과. native16/CPP21/Player1321/Host불변·C++/GUI/렌더재빌드반복없음. 변경된설치서버소켓검사1회대기.
