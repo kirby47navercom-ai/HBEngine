@@ -5,7 +5,8 @@
   "implementationRevision": "57db2126ab9efae56b9c2688c848add860ed0138",
   "targetIds": [
     "CPP-01",
-    "EDT-03"
+    "EDT-03",
+    "AI-03"
   ],
   "sourceHashes": {
     "AGENTS.md": "addf6a9d6327bab892c704514f97b462e48c12bd6de092aaf81a6194c06e31ed",
@@ -657,7 +658,7 @@
     "10 pin types and arrays Select; Name and configurable String comparison; static Switch values and reorder/ID preservation; legacy dynamic case pins retained",
     "Shared C++ Struct.hpp Make/Break/SetMembers/WithMembers/Select/Switch utilities compiled and executed",
     "Actual inspector/context/hide/Undo/revision/dryRun/Play with two shared AI commands, schema and quick routes",
-    "Inspector resets scroll when document/node changes, keeps scroll for same selection; final installed GUI gate pending"
+    "Inspector resets scroll on document/node change; actual installed UI gate asserts both scroll owners reset and editing preserves own selection context"
   ],
   "checks": [
     {
@@ -678,7 +679,6 @@
       "scope": "Actual source editor before final selection-scroll correction; all struct/switch actions and Play passed."
     }
   ],
-  "pendingPackageGate": "tools/check-blueprint-struct-1242-window.mjs --executable <installed HBEngine.exe> [--player]",
   "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -714,13 +714,46 @@
     "newFrameLoops": 0,
     "referenceWork": "Reference metadata only for struct/array definition arguments and Set Members value input; no per-frame scan."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1239.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1247.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "사용자 정의 구조체·enum 에셋과 변수/핀·C++ 리플렉션의 일반화, Switch enum·고유 Name 자료형",
     "사용자 구조체 Make/Break/Set Members의 제작·실행 연결과 일반 C++ 속성·함수 반환 참조 쓰기",
     "접힌 그래프의 Timeline·일부 Event 전용 노드 및 wildcard/외부 함수·변수 참조의 문서간 일반화"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/blueprint-struct-1242-Tz5WE0/acceptance.json",
+      "sha256": "afdc08aa93994a80964f967d26c250d24ad5b8a39b6aa2a4d76fef32dd0d7975",
+      "scope": "Owned hidden editor: selected member inspector controls and reference diamond, undo, dryRun/revision/invalid edit preservation, actual pin context Break, hide unconnected, stable Switch case editing/reorder and name-switch reference graph executes. No user profile/project or renderer matrix.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\67bedf32e5d1c172\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/blueprint-struct-1242-im5Hub/acceptance.json",
+      "sha256": "f8f6fec846c945e754952c865c7615a4620c2194a6f1201e223b2c71acaad254",
+      "scope": "Actual packaged D3D11 game: selected members preserve live Transform through variable/nested scale/function input/array element; name switch drives resulting actor position. Existing native Player/Host reused; no renderer matrix/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\67bedf32e5d1c172\\HBEngine.exe",
+        "--player"
+      ]
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/blueprint-struct-1242-im5Hub/acceptance.json",
+      "sha256": "f8f6fec846c945e754952c865c7615a4620c2194a6f1201e223b2c71acaad254",
+      "scope": "Actual packaged D3D11 game: selected members preserve live Transform through variable/nested scale/function input/array element; name switch drives resulting actor position. Existing native Player/Host reused; no renderer matrix/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\67bedf32e5d1c172\\HBEngine.exe",
+        "--player"
+      ]
+    }
+  ]
 }

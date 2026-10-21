@@ -3,10 +3,10 @@
 2026-10-21. 주인님: 멈추지말고 여러변경 구현후 영향검사1회·실패만수정. 반복컴파일/장시간렌더검사금지. AGENTS/docs/AI_START→hb context. 백그라운드만/한글동일author/committer commit/push.
 
 ## 현재 설치
-USER_INSTALL_1239: Versions/cd3ef798dbdc6e3f/HBEngine.exe.3928명세/608SHA/CPP21/native16·Player1223 dfeebe94…/Host1041재사용·User10849읽기SHA/Versions1/이전185661498B정리. 실제상속자식fold/save/Eplay/AIexpand·부모보존.
+USER_INSTALL_1247: C:/Users/kirby/HBEngine/Versions/67bedf32e5d1c172/HBEngine.exe.3937명세/615SHA/CPP21/native16·Player1223/Host1041재사용. User10849읽기SHA/연결/Versions1·이전185757267B정리. 실제설치GUI Tz5WE0 필드/우클릭/Undo/AI/scroll/Play 및 D3D11패키지im5Hub 위치[10,20,30]통과.
 
 ## 현재 구현/검사
-WORK1245 /57db212: 기본5struct Make/Break/필드SetMembers·변수/중첩/배열/reroute/함수macro입력 원본반영·무작위index고정/동일함수후속읽기·10종/배열Select·Switch고정비교값/순서/Name/구형동적입력호환·C++Struct.hpp보조함수·AI2명령/schema/context. syntax+generatedAPI/CPP실행/모델53/flow1708/접기42/상속/AIcontext/실제sourceGUI1242-sYIwDc통과. 최종선택변경시속성scroll0보완, 현재gate1242-window에서추가확인. 묶음receipt native/build/blueprint-struct-batch-1244.json. native16불변·Player1223/Host1041재사용·전체렌더/모바일/FPS반복없음. record1245/sync1246/install1247/finish1248 one-shot 예정. 사용자구조체/enum·일반native속성/함수반환참조미포함.
+WORK1245 /57db212: 기본5struct Make/Break/필드SetMembers·변수/중첩/배열/reroute/함수macro입력 원본반영·무작위index고정/동일함수후속읽기·10종/배열Select·Switch고정비교값/순서/Name/구형동적입력호환·C++Struct.hpp보조함수·AI2명령/schema/context. syntax+generatedAPI/CPP실행/모델53/flow1708/접기42/상속/AIcontext/실제sourceGUI1242-sYIwDc통과. 최종선택변경시속성scroll0도설치GUI에서확인. 묶음receipt native/build/blueprint-struct-batch-1244.json. native16불변·Player1223/Host1041재사용·전체렌더/모바일/FPS반복없음. record1245/sync1246/install1247/finish1249완료·재실행금지. finish1248은inline설치경로를자기프로세스로검출해시작guard에서중단·설치/사용자데이터변경없음. 사용자구조체/enum·일반native속성/함수반환참조미포함.
 
 ## 앞선 구현
 WORK1224 2D4클래스 생성/CPP/Spawn/GameMode/실제SpriteOBJ충돌preview·idle0/닫기해제. WORK1232/1237 독립접힌그래프copy/expand·typeddefault/split/arrays/latent·부모authored scope보존/thinchild. 실제설치D3D11CPP2D와folded/expanded게임기록유지.

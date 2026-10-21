@@ -1,0 +1,116 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "3c39efcce0146ceeb87f99f86b2d17e6d69e1231",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\67bedf32e5d1c172",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\67bedf32e5d1c172\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\67bedf32e5d1c172\\HBEngine.exe",
+  "bundleHash": "67bedf32e5d1c172cdee560f5e04a7ef16d82948771d535bed58a5ff04d53b25",
+  "files": 3937,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3929,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\cd3ef798dbdc6e3f",
+        "bytes": 185757267,
+        "manifestSHA256": "b98ff59afeb55e92629bbc187e414270ca0855c0e3fbf088d427e38b2cdcf97e"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T13:52:36.2586826Z",
+    "bytes": 185757267,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "67bedf32e5d1c172"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 615,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
+  "installedGates": [
+    {
+      "path": "native/build/blueprint-struct-1242-Tz5WE0/acceptance.json",
+      "sha256": "afdc08aa93994a80964f967d26c250d24ad5b8a39b6aa2a4d76fef32dd0d7975",
+      "scope": "Owned hidden editor: selected member inspector controls and reference diamond, undo, dryRun/revision/invalid edit preservation, actual pin context Break, hide unconnected, stable Switch case editing/reorder and name-switch reference graph executes. No user profile/project or renderer matrix.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\67bedf32e5d1c172\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/blueprint-struct-1242-im5Hub/acceptance.json",
+      "sha256": "f8f6fec846c945e754952c865c7615a4620c2194a6f1201e223b2c71acaad254",
+      "scope": "Actual packaged D3D11 game: selected members preserve live Transform through variable/nested scale/function input/array element; name switch drives resulting actor position. Existing native Player/Host reused; no renderer matrix/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\67bedf32e5d1c172\\HBEngine.exe",
+        "--player"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\67bedf32e5d1c172\\",
+    "elapsedMs": 82.94,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\67bedf32e5d1c172",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "67bedf32e5d1c172cdee560f5e04a7ef16d82948771d535bed58a5ff04d53b25",
+      "installedAt": "2026-10-21T13:52:32.747Z",
+      "manifestFiles": 3937,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3937,
+  "versions": [
+    "67bedf32e5d1c172"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1247-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/blueprint-struct-batch-1244.json",
+      "sha256": "7ae5d1aca8891b03a62797730c28c744701ce076ab1be530e84da5ef15b77979",
+      "scope": "Grouped syntax/generated API, 51 struct checks plus actual C++ SDK, 42 folding, inherited model, 1708 flow checks, AI quick context, source editor actual play. Before final inspector scroll correction only."
+    },
+    {
+      "path": "native/build/blueprint-struct-1241-md08nq/acceptance.json",
+      "sha256": "d87b73297ddc49ad2aa92c7b76ddc3bc0267dc0a5833fefd709389e1368fae64",
+      "scope": "Current 53 model/reference checks, including live function input after write and random array index identity. C++ not repeated; unchanged fixture/header from first successful actual C++ retained."
+    }
+  ],
+  "scope": "Builtin structured value authoring/runtime, references, Select/Switch and C++ SDK installed. 615 owner SHA, CPP21 and unchanged native16/Player1223/Host1041 reused. Current installed editor UI/scroll/AI/save/Play and D3D11 package execute. Full manifest/read-only User inventory/shortcuts/association/Versions1; no renderer matrix or FPS claim.",
+  "version": 1,
+  "date": "2026-10-21T13:55:03.762Z",
+  "work": "docs/research/ENGINE_WORK_1245.json",
+  "distributionSync": "native/build/distribution-1246-sync.json",
+  "cachePrune": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}
