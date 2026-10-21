@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "033e35a1a71212048b8ba4e0343166bf1648ab8a",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7b49a6ca25d1389f",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\7b49a6ca25d1389f\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\7b49a6ca25d1389f\\HBEngine.exe",
+  "bundleHash": "7b49a6ca25d1389f290997155b5b22c6408ffaf43d888393cd1fd3a9c14ff3f8",
+  "files": 3878,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3869,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4c985f883deb3b48",
+        "bytes": 184711586,
+        "manifestSHA256": "a531653ed000c00937921d92c62e42d8b8ff5a60117827b6e20715f1f22e5c94"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T08:21:11.1010637Z",
+    "bytes": 184711586,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "7b49a6ca25d1389f"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 542,
+  "repositoryOnlyTestSourcesVerified": 19,
+  "nativePlayerSHA256": "99900cc7cb83414e7112e5508e282e753274575977fe273fb1fe73a65a6dbe15",
+  "installedGates": [
+    {
+      "path": "native/build/builtin-normal-1169-ZUhPD5/acceptance.json",
+      "sha256": "c696cff4e9fea0b105d573b1fbb1d2c9a649a587a23e558defe2a41fe6aa9d84",
+      "scope": "Actual packaged raw glTF material with PNG tangent normal (no graph/material override), constant plane under a directional actor, Blueprint/C++ Scene::SetRotation changes and restores its lighting. Five states/three samples; per-backend restoration and normal-facing bright/dark relationship, not complete BRDF equality.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7b49a6ca25d1389f\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/builtin-normal-1169-WGtN5X/acceptance.json",
+      "sha256": "b182db241c4b1db0ef0bb8ecbb0565e4f68cf06cb8ec2763058078792b7aa4c9",
+      "scope": "Actual packaged raw glTF material with PNG tangent normal (no graph/material override), constant plane under a directional actor, Blueprint/C++ Scene::SetRotation changes and restores its lighting. Five states/three samples; per-backend restoration and normal-facing bright/dark relationship, not complete BRDF equality.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7b49a6ca25d1389f\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\7b49a6ca25d1389f\\",
+    "elapsedMs": 249.02,
+    "matches": 2,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\7b49a6ca25d1389f",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "7b49a6ca25d1389f290997155b5b22c6408ffaf43d888393cd1fd3a9c14ff3f8",
+      "installedAt": "2026-10-21T08:21:07.868Z",
+      "manifestFiles": 3878,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3878,
+  "versions": [
+    "7b49a6ca25d1389f"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1177-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/probe-atlas-1119-KWUrnz/acceptance.json",
+      "sha256": "18068c8c3fe2dd5665a37ea4b56fab1659a392d4782edceb72a24cb412f9e759",
+      "scope": "Actual hardware D3D11 global4probes versus legacy per-probe room references, one4instance draw, image/SH copy ownership and static/metadata/revision/resize/release. Six-face directional cubemap at21view/roughness states and4pixels each versus native TextureCube; original capture/SH/GGX/coat/IOR/affine legacy proof retained."
+    },
+    {
+      "path": "native/build/builtin-normal-1168-PIqPZu/acceptance.json",
+      "sha256": "58fbe2e0bb4678b99155a09c7576a5329721d9b83fd6db89ab5e5cb82f809ebf",
+      "scope": "Actual Three0.180 standard texture-normal path (no authored tangents), canonical valid inputs and transformed/mirrored UV/front/back against analytic plane basis. Raw GL zero/degenerate/overflow behavior is not claimed."
+    },
+    {
+      "path": "native/build/probe-atlas-1170-4Elndm/acceptance.json",
+      "sha256": "4ad8e4c89b3769df29728b005cd684300b84712c83e8555c80a835a790ced561",
+      "scope": "Actual GL/GPU production atlas copy and per-pixel candidates across4probes versus independent physical white reference/weights. Mixed map resolutions, static transfer reuse, intensity-only metadata update, resize/program retention,4instances outside parent origin, release/reactivate. Controlled known captures; actual capture/native package separately."
+    },
+    {
+      "path": "native/build/builtin-normal-1167-IBjSSY/acceptance.json",
+      "sha256": "0bfc552b9f09e9310c7ddaadc4fa76862267d5ca6ed9aa2e1a6b213c86e21b59",
+      "scope": "Actual D3D11 built-in normal texture sampler, Float32 decode/anisotropic XY strength, common cotangent scaling, mirrored/degenerate/huge/tiny UV, front/back, zero/negative-Z/large/tiny inputs and geometry normals. Independent analytic plane basis; huge strength overflow uses the geometric fallback."
+    },
+    {
+      "path": "native/build/probe-sharing-1171-lOacOI/acceptance.json",
+      "sha256": "e1623eb513bca0786dd02af6ad45a788007af2779f301c332dfe5f652087b406",
+      "scope": "Actual D3D11 one16 HDR capture referenced by65536volumes (only last covers pixel), direct cube/SH reference, exact high-word count, per-volume lighting, static zero uploads, partial144byte metadata update, shared capture revision and CPU/GPU release. Not65536unique captures/FPS."
+    },
+    {
+      "path": "native/build/normal-sharing-static-1174.json",
+      "sha256": "1d56c08c16c070593290196e6e42239bee5f0e172a05dd2d98607c92fc02cca3",
+      "scope": "Normal texture and shared atlas, changed JS syntax, generated API unchanged, spatial schema and offline AI CLI. GPU, C++, real game and installation checks have separate evidence."
+    },
+    {
+      "path": "native/build/normal-sharing-ai-context-1174.json",
+      "sha256": "9d21e1cfd2753af42b6e6e80855445b0576056701ed4bd76b7b2b0baa6f56ccd",
+      "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+    },
+    {
+      "path": "native/build/builtin-normal-1169-amAUMQ/acceptance.json",
+      "sha256": "8c2326376ac1fe2812e9b03a9a87687e8ad738450ccc09b7eb5018642cd00358",
+      "scope": "Actual packaged raw glTF material with PNG tangent normal (no graph/material override), constant plane under a directional actor, Blueprint/C++ Scene::SetRotation changes and restores its lighting. Five states/three samples; per-backend restoration and normal-facing bright/dark relationship, not complete BRDF equality."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/builtin-normal-1169-amAUMQ/acceptance.json",
+      "sha256": "8c2326376ac1fe2812e9b03a9a87687e8ad738450ccc09b7eb5018642cd00358",
+      "scope": "Actual packaged raw glTF material with PNG tangent normal (no graph/material override), constant plane under a directional actor, Blueprint/C++ Scene::SetRotation changes and restores its lighting. Five states/three samples; per-backend restoration and normal-facing bright/dark relationship, not complete BRDF equality."
+    }
+  ],
+  "scope": "기본노멀/공유HDR·SH/144B전송·고위count/수명. 3878전체파일·542소유SHA·CPP19/native14·Player1173동일SHA/Host1041·D3Dsource게임+설치GL/GPU게임5상태·User읽기SHA/연결/Versions1. 선행5gate재실행없음.",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "sourceAndInstalledGames": [
+    {
+      "path": "native/build/builtin-normal-1169-amAUMQ/acceptance.json",
+      "backend": "D3D11",
+      "installed": null
+    },
+    {
+      "path": "native/build/builtin-normal-1169-ZUhPD5/acceptance.json",
+      "backend": "WebGL2",
+      "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\7b49a6ca25d1389f"
+    },
+    {
+      "path": "native/build/builtin-normal-1169-WGtN5X/acceptance.json",
+      "backend": "WebGPU",
+      "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\7b49a6ca25d1389f"
+    }
+  ],
+  "priorBatch": [
+    {
+      "id": "atlas-native",
+      "path": "native/build/probe-atlas-1119-KWUrnz/acceptance.json",
+      "sha256": "18068c8c3fe2dd5665a37ea4b56fab1659a392d4782edceb72a24cb412f9e759"
+    },
+    {
+      "id": "normal-reference",
+      "path": "native/build/builtin-normal-1168-PIqPZu/acceptance.json",
+      "sha256": "58fbe2e0bb4678b99155a09c7576a5329721d9b83fd6db89ab5e5cb82f809ebf"
+    },
+    {
+      "id": "shared-browser",
+      "path": "native/build/probe-atlas-1170-4Elndm/acceptance.json",
+      "sha256": "4ad8e4c89b3769df29728b005cd684300b84712c83e8555c80a835a790ced561"
+    },
+    {
+      "id": "builtin-native",
+      "path": "native/build/builtin-normal-1167-IBjSSY/acceptance.json",
+      "sha256": "0bfc552b9f09e9310c7ddaadc4fa76862267d5ca6ed9aa2e1a6b213c86e21b59"
+    },
+    {
+      "id": "shared-native",
+      "path": "native/build/probe-sharing-1171-lOacOI/acceptance.json",
+      "sha256": "e1623eb513bca0786dd02af6ad45a788007af2779f301c332dfe5f652087b406"
+    }
+  ]
+}

@@ -2802,11 +2802,11 @@
     "scope": "기본노멀·공유캡처·SH·부분metadata·큰count·수명·실제glTF C++/BP. 65536은공유영역이며전체HDR캡처/FPS와구분."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1165.json",
-    "sourceCommit": "1a7b48c593a695ccaeea40b91b9d2aa6b7133bf0",
-    "bundleHash": "4c985f883deb3b486f65a644f77ab125e6403a863ad51dab29a1a5fbc606744d",
+    "receipt": "docs/research/USER_INSTALL_1177.json",
+    "sourceCommit": "033e35a1a71212048b8ba4e0343166bf1648ab8a",
+    "bundleHash": "7b49a6ca25d1389f290997155b5b22c6408ffaf43d888393cd1fd3a9c14ff3f8",
     "verified": true,
     "versions": 1,
-    "scope": "1165 전체3868파일/534소유SHA/CPP17·native14·Player1161/Host1041·선행묶음검사재사용·실제CPP/BP세실행기4공간이동/밝기/복원·공간재구성재사용·AI실제마커·User읽기SHA/연결/Versions1"
+    "scope": "기본노멀/공유HDR·SH/144B전송·고위count/수명. 3878전체파일·542소유SHA·CPP19/native14·Player1173동일SHA/Host1041·D3Dsource게임+설치GL/GPU게임5상태·User읽기SHA/연결/Versions1. 선행5gate재실행없음."
   }
 }

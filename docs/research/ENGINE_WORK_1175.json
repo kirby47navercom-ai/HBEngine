@@ -623,6 +623,26 @@
       "path": "native/build/builtin-normal-1169-amAUMQ/acceptance.json",
       "sha256": "8c2326376ac1fe2812e9b03a9a87687e8ad738450ccc09b7eb5018642cd00358",
       "scope": "Actual packaged raw glTF material with PNG tangent normal (no graph/material override), constant plane under a directional actor, Blueprint/C++ Scene::SetRotation changes and restores its lighting. Five states/three samples; per-backend restoration and normal-facing bright/dark relationship, not complete BRDF equality."
+    },
+    {
+      "path": "native/build/builtin-normal-1169-ZUhPD5/acceptance.json",
+      "sha256": "c696cff4e9fea0b105d573b1fbb1d2c9a649a587a23e558defe2a41fe6aa9d84",
+      "scope": "Actual packaged raw glTF material with PNG tangent normal (no graph/material override), constant plane under a directional actor, Blueprint/C++ Scene::SetRotation changes and restores its lighting. Five states/three samples; per-backend restoration and normal-facing bright/dark relationship, not complete BRDF equality.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7b49a6ca25d1389f\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/builtin-normal-1169-WGtN5X/acceptance.json",
+      "sha256": "b182db241c4b1db0ef0bb8ecbb0565e4f68cf06cb8ec2763058078792b7aa4c9",
+      "scope": "Actual packaged raw glTF material with PNG tangent normal (no graph/material override), constant plane under a directional actor, Blueprint/C++ Scene::SetRotation changes and restores its lighting. Five states/three samples; per-backend restoration and normal-facing bright/dark relationship, not complete BRDF equality.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7b49a6ca25d1389f\\HBEngine.exe"
+      ]
     }
   ],
   "sourceGameGates": [
@@ -673,8 +693,8 @@
     "scope": "자원하나를참조하는영역수검사,65536독립HDR캡처나전체게임FPS아님;browsermetadata전체갱신유지"
   },
   "researchScope": "로컬Three0.180 normalmap_pars_fragment/normal_fragment_begin/NormalMapNode 본문과기존엔진D3D제작경로대조. 전체UE/Unity연구gate미승격.",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1165.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1177.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "큰 장면 다수 HDR 캡처의 CPU/GPU 메모리·통제 FPS 검증 및 타일/클러스터와 BVH 비교·혼합 정책",
@@ -683,5 +703,6 @@
     "WebGPU 물리 재질의 임의 복합 로브·매질/기하/이력 조합 확장과 전체 백엔드 에너지 동등성 검증"
   ],
   "scope": "여러수정을먼저구현하고5gate+게임묶음검사;실패fixture만수정하고성공gate소유SHA재사용. 새설치에서는동일Player/소유SHA와GL/GPU제작경로만추가검사해D3D게임중복실행하지않음.",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1177.json"
 }
