@@ -14,33 +14,58 @@ class SceneProbeAtlas {
     Device& gpu;detail::Com<ID3D11ComputeShader> padding;detail::Com<ID3D11UnorderedAccessView> paddingOutput;detail::Com<ID3D11Buffer> paddingConstants;std::uint64_t paddingDispatches_=0;
     void preparePadding(){if(padding.p)return;detail::ShaderBytecodeCompiler::create(probeAtlasPaddingSource,"HBProbeAtlasPadding","Fill","cs_5_0",[&](const void* bytes,std::size_t size){std::lock_guard<std::mutex> lock(gpu.mutex);return gpu.device->CreateComputeShader(bytes,size,nullptr,&padding.p);});std::lock_guard<std::mutex> lock(gpu.mutex);D3D11_BUFFER_DESC d{};d.ByteWidth=32;d.Usage=D3D11_USAGE_DEFAULT;d.BindFlags=D3D11_BIND_CONSTANT_BUFFER;detail::check(gpu.device->CreateBuffer(&d,nullptr,&paddingConstants.p),"Probe atlas padding constants");}
     detail::Com<ID3D11Texture2D> image;detail::Com<ID3D11ShaderResourceView> view,metadata,irradiance;detail::Com<ID3D11Buffer> recordsBuffer,shBuffer;
-    std::vector<Rect> regions;std::vector<Stamp> sources,captureStamps;std::vector<Record> records;ProbeSpatialIndex spatial;std::size_t tableRecords=0,shCount=0;UINT width=0,height=0;std::uint64_t copies_=0,uploads_=0,metadataBytes_=0,metadataCalls_=0;
+    std::vector<Rect> regions;std::vector<UINT> sourceIndices;std::vector<Stamp> captureStamps;std::vector<Record> records;ProbeSpatialIndex spatial;std::size_t tableRecords=0,shCount=0;UINT width=0,height=0;std::uint64_t copies_=0,uploads_=0,metadataBytes_=0,metadataCalls_=0,metadataFastUpdates_=0,layoutBuilds_=0;
     static std::vector<Rect> layout(const std::vector<SceneProbeBinding>& bindings,UINT& width,UINT& height){
         constexpr UINT maximum=D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION;std::vector<std::size_t> order;UINT minimum=0;std::uint64_t sum=0;for(std::size_t i=0;i<bindings.size();i++){order.push_back(i);minimum=std::max(minimum,(bindings[i].resource->size+2)*6);sum+=(bindings[i].resource->size+2)*6;}
         std::stable_sort(order.begin(),order.end(),[&](auto a,auto b){return bindings[a].resource->size>bindings[b].resource->size;});std::vector<UINT> widths{minimum,maximum,UINT(std::min<std::uint64_t>(sum,maximum))};for(UINT n=1;n<maximum;n*=2)if(n>=minimum)widths.push_back(n);std::vector<Rect> best;
         for(const auto candidate:widths){UINT x=0,y=0,row=0;bool fits=true;std::vector<Rect> packed(bindings.size());for(auto i:order){const auto size=bindings[i].resource->size,w=(size+2)*6,h=size*2-1+2*bindings[i].resource->mips;if(w>candidate){fits=false;break;}if(x+w>candidate){x=0;y+=row;row=0;}if(y+h>maximum){fits=false;break;}packed[i]={x,y,w,h};x+=w;row=std::max(row,h);}const auto used=y+row;if(!fits||used>maximum)continue;if(best.empty()||std::uint64_t(candidate)*used<std::uint64_t(width)*height){best=std::move(packed);width=candidate;height=used;}}
         if(best.empty()){throw std::runtime_error("Reflection atlas exceeds hardware dimensions; lower capture resolution");}return best;
     }
+    void validateBinding(const SceneProbeBinding& b)const{
+        if(!b.resource||b.resource->owner!=gpu.device.p||!b.resource->ready||!b.resource->filtered.p||!b.resource->coefficients.p||!probeVolumeBasisUsable(b.settings))throw std::runtime_error("Probe atlas resource owner/pose invalid");
+        for(const auto* row:{&b.settings.center,&b.settings.minimum,&b.settings.maximum,&b.settings.options,&b.settings.localX,&b.settings.localY,&b.settings.localZ,&b.settings.faceScale})if(!std::all_of(row->begin(),row->end(),[](float v){return std::isfinite(v);}))throw std::runtime_error("Probe atlas settings nonfinite");
+        for(std::size_t j=0;j<3;j++)if(b.settings.minimum[j]>=b.settings.maximum[j]||b.settings.faceScale[j]<=0)throw std::runtime_error("Probe atlas bounds invalid");
+        if(b.settings.center[3]<0||b.settings.minimum[3]<0||b.settings.options[1]<0)throw std::runtime_error("Probe atlas light invalid");
+    }
+    static bool sameSpatialSettings(const ProbeSettings& a,const ProbeSettings& b){
+        return std::equal(a.minimum.begin(),a.minimum.begin()+3,b.minimum.begin())&&std::equal(a.maximum.begin(),a.maximum.begin()+3,b.maximum.begin())&&a.localX==b.localX&&a.localY==b.localY&&a.localZ==b.localZ;
+    }
 public:
     explicit SceneProbeAtlas(Device& device):gpu(device){}
     void release(){
-        const auto clearCPU=[&]{std::vector<Rect>().swap(regions);std::vector<Stamp>().swap(sources);std::vector<Stamp>().swap(captureStamps);std::vector<Record>().swap(records);spatial.clear();tableRecords=shCount=0;width=height=0;};
+        const auto clearCPU=[&]{std::vector<Rect>().swap(regions);std::vector<UINT>().swap(sourceIndices);std::vector<Stamp>().swap(captureStamps);std::vector<Record>().swap(records);spatial.clear();tableRecords=shCount=0;width=height=0;};
         if(!image.p&&!recordsBuffer.p&&!padding.p){clearCPU();return;}
         std::lock_guard<std::mutex> lock(gpu.mutex);std::array<ID3D11ShaderResourceView*,3> empty{};gpu.context->PSSetShaderResources(50,3,empty.data());paddingOutput={};padding={};paddingConstants={};image={};view={};metadata={};irradiance={};recordsBuffer={};shBuffer={};clearCPU();
     }
     void update(const std::vector<SceneProbeBinding>& bindings){
         if(bindings.empty()){release();return;}
-        bool unchanged=bindings.size()==records.size()&&bindings.size()==sources.size();
-        if(unchanged)for(std::size_t i=0;i<bindings.size();i++){const auto& b=bindings[i];if(!b.resource||b.resource->owner!=gpu.device.p||!b.resource->ready||!b.resource->filtered.p||!b.resource->coefficients.p||!(sources[i]==Stamp{b.resource->identity,b.resource->revision})){unchanged=false;break;}auto settings=b.settings;settings.maximum[3]=float(b.resource->mips-1);if(std::memcmp(&settings,&records[i].settings,sizeof(settings))){unchanged=false;break;}}
-        if(unchanged)return;
-        for(const auto& b:bindings){if(!b.resource||b.resource->owner!=gpu.device.p||!b.resource->ready||!b.resource->filtered.p||!b.resource->coefficients.p||!probeVolumeBasisUsable(b.settings))throw std::runtime_error("Probe atlas resource owner/pose invalid");for(const auto* row:{&b.settings.center,&b.settings.minimum,&b.settings.maximum,&b.settings.options,&b.settings.localX,&b.settings.localY,&b.settings.localZ,&b.settings.faceScale})if(!std::all_of(row->begin(),row->end(),[](float v){return std::isfinite(v);}))throw std::runtime_error("Probe atlas settings nonfinite");for(std::size_t j=0;j<3;j++)if(b.settings.minimum[j]>=b.settings.maximum[j]||b.settings.faceScale[j]<=0)throw std::runtime_error("Probe atlas bounds invalid");if(b.settings.center[3]<0||b.settings.minimum[3]<0||b.settings.options[1]<0)throw std::runtime_error("Probe atlas light invalid");}
+        bool compatible=bindings.size()==records.size()&&bindings.size()==sourceIndices.size(),sameGeometry=true;
+        std::vector<std::pair<std::size_t,ProbeSettings>> edits;
+        if(compatible)for(std::size_t i=0;i<bindings.size();i++){
+            const auto& b=bindings[i];const auto source=sourceIndices[i];
+            if(!b.resource||b.resource->owner!=gpu.device.p||!b.resource->ready||!b.resource->filtered.p||!b.resource->coefficients.p||source>=captureStamps.size()||!(captureStamps[source]==Stamp{b.resource->identity,b.resource->revision})||!std::isfinite(b.settings.maximum[3])){compatible=false;break;}
+            auto settings=b.settings;settings.maximum[3]=float(b.resource->mips-1);const auto& prior=records[i].settings;if(!std::memcmp(&settings,&prior,sizeof(settings)))continue;
+            validateBinding(b);sameGeometry=sameGeometry&&sameSpatialSettings(settings,prior);edits.emplace_back(i,settings);
+        }
+        if(compatible&&sameGeometry){
+            if(edits.empty())return;
+            // Validate all changed settings before changing CPU or GPU state.
+            std::vector<std::pair<std::size_t,std::size_t>> ranges;
+            for(const auto& edit:edits){if(!ranges.empty()&&ranges.back().second==edit.first)ranges.back().second=edit.first+1;else ranges.emplace_back(edit.first,edit.first+1);}
+            if(ranges.size()>8){const auto first=ranges.front().first,last=ranges.back().second;ranges={{first,last}};}
+            std::lock_guard<std::mutex> lock(gpu.mutex);std::array<ID3D11ShaderResourceView*,3> empty{};gpu.context->PSSetShaderResources(50,3,empty.data());
+            for(const auto& edit:edits)records[edit.first].settings=edit.second;
+            for(const auto& range:ranges){D3D11_BOX box{UINT(range.first*sizeof(Record)),0,0,UINT(range.second*sizeof(Record)),1,1};gpu.context->UpdateSubresource(recordsBuffer.p,0,&box,records.data()+range.first,0,0);metadataBytes_+=(range.second-range.first)*sizeof(Record);++metadataCalls_;}
+            ++metadataFastUpdates_;++uploads_;return;
+        }
+        for(const auto& b:bindings)validateBinding(b);
         const auto tableCount=bindings.size()+(bindings.size()*2+1)/3,recordBytes=bindings.size()*sizeof(Record),bytes=tableCount*sizeof(Record);
         if(bytes>UINT_MAX)throw std::runtime_error("Probe atlas metadata exceeds hardware buffer size");
-        std::unordered_map<std::uint64_t,std::size_t> identities;std::vector<SceneProbeBinding> unique;std::vector<std::size_t> indices;indices.reserve(bindings.size());
-        for(const auto& b:bindings){const auto found=identities.find(b.resource->identity);if(found!=identities.end())indices.push_back(found->second);else{const auto index=unique.size();identities.emplace(b.resource->identity,index);unique.push_back(b);indices.push_back(index);}}
+        std::unordered_map<std::uint64_t,std::size_t> identities;std::vector<SceneProbeBinding> unique;std::vector<UINT> indices;indices.reserve(bindings.size());
+        for(const auto& b:bindings){const auto found=identities.find(b.resource->identity);if(found!=identities.end())indices.push_back(UINT(found->second));else{const auto index=unique.size();identities.emplace(b.resource->identity,index);unique.push_back(b);indices.push_back(UINT(index));}}
         const auto shBytes=unique.size()*9*16;if(shBytes>UINT_MAX)throw std::runtime_error("Probe atlas irradiance exceeds hardware buffer size");
         std::vector<ProbeSpatialShape> shapes;shapes.reserve(bindings.size());for(const auto& b:bindings){const auto& p=b.settings;shapes.push_back({p.minimum[0],p.minimum[1],p.minimum[2],p.maximum[0],p.maximum[1],p.maximum[2],p.localX[0],p.localX[1],p.localX[2],p.localX[3],p.localY[0],p.localY[1],p.localY[2],p.localY[3],p.localZ[0],p.localZ[1],p.localZ[2],p.localZ[3]});}
-        const bool spatialChanged=spatial.update(shapes);UINT w=0,h=0;auto packed=layout(unique,w,h);
+        const bool spatialChanged=spatial.update(shapes);UINT w=0,h=0;++layoutBuilds_;auto packed=layout(unique,w,h);
         const bool resized=!image.p||w!=width||h!=height||packed.size()!=regions.size()||!std::equal(packed.begin(),packed.end(),regions.begin(),[](auto a,auto b){return a.x==b.x&&a.y==b.y&&a.width==b.width&&a.height==b.height;});
         preparePadding();std::lock_guard<std::mutex> lock(gpu.mutex);std::array<ID3D11ShaderResourceView*,3> empty{};gpu.context->PSSetShaderResources(50,3,empty.data());
         if(resized){D3D11_TEXTURE2D_DESC d{};d.Width=w;d.Height=h;d.MipLevels=d.ArraySize=d.SampleDesc.Count=1;d.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;d.Usage=D3D11_USAGE_DEFAULT;d.BindFlags=D3D11_BIND_SHADER_RESOURCE|D3D11_BIND_UNORDERED_ACCESS;detail::Com<ID3D11Texture2D> next;detail::Com<ID3D11ShaderResourceView> nextView;detail::check(gpu.device->CreateTexture2D(&d,nullptr,&next.p),"Probe atlas image");detail::check(gpu.device->CreateShaderResourceView(next.p,nullptr,&nextView.p),"Probe atlas view");detail::Com<ID3D11UnorderedAccessView> nextOutput;detail::check(gpu.device->CreateUnorderedAccessView(next.p,nullptr,&nextOutput.p),"Probe atlas padding output");image=std::move(next);view=std::move(nextView);paddingOutput=std::move(nextOutput);width=w;height=h;regions=std::move(packed);captureStamps.clear();}
@@ -55,8 +80,8 @@ public:
             if(i>=captureStamps.size())captureStamps.resize(i+1);
             captureStamps[i]=stamp;
         }
-        captureStamps.resize(unique.size());sources.resize(bindings.size());std::vector<Record> next;next.reserve(bindings.size());
-        for(std::size_t i=0;i<bindings.size();i++){const auto& b=bindings[i];const auto& p=*b.resource;auto settings=b.settings;settings.maximum[3]=float(p.mips-1);const auto& rect=regions[indices[i]];next.push_back({settings,{float(rect.x),float(rect.y),float(p.size),float(indices[i])}});sources[i]={p.identity,p.revision};}
+        captureStamps.resize(unique.size());std::vector<Record> next;next.reserve(bindings.size());
+        for(std::size_t i=0;i<bindings.size();i++){const auto& b=bindings[i];const auto& p=*b.resource;auto settings=b.settings;settings.maximum[3]=float(p.mips-1);const auto& rect=regions[indices[i]];next.push_back({settings,{float(rect.x),float(rect.y),float(p.size),float(indices[i])}});}
         bool uploaded=false;
         if(tableRecreated||spatialChanged){auto packet=next;packet.resize(tableCount);std::memcpy(reinterpret_cast<char*>(packet.data())+recordBytes,spatial.data().data(),spatial.data().size()*16);gpu.context->UpdateSubresource(recordsBuffer.p,0,nullptr,packet.data(),0,0);metadataBytes_+=bytes;++metadataCalls_;uploaded=true;}
         else{
@@ -65,10 +90,10 @@ public:
             if(ranges.size()>8){const auto first=ranges.front().first,last=ranges.back().second;ranges={{first,last}};}
             for(const auto& range:ranges){D3D11_BOX box{UINT(range.first*sizeof(Record)),0,0,UINT(range.second*sizeof(Record)),1,1};gpu.context->UpdateSubresource(recordsBuffer.p,0,&box,next.data()+range.first,0,0);metadataBytes_+=(range.second-range.first)*sizeof(Record);++metadataCalls_;uploaded=true;}
         }
-        records=std::move(next);tableRecords=tableCount;shCount=unique.size();if(uploaded)++uploads_;
+        sourceIndices=std::move(indices);records=std::move(next);tableRecords=tableCount;shCount=unique.size();if(uploaded)++uploads_;
     }
     UINT count()const{return UINT(records.size());}ID3D11ShaderResourceView* texture()const{return view.p;}ID3D11ShaderResourceView* table()const{return metadata.p;}ID3D11ShaderResourceView* sh()const{return irradiance.p;}
-    std::uint64_t bytes()const{return std::uint64_t(width)*height*8+tableRecords*sizeof(Record)+shCount*9*16+(paddingConstants.p?32:0);}std::size_t mapCount()const{return captureStamps.size();}std::uint64_t metadataBytes()const{return metadataBytes_;}std::uint64_t metadataCalls()const{return metadataCalls_;}std::size_t cpuBytes()const{return spatial.cpuBytes()+records.capacity()*sizeof(Record)+sources.capacity()*sizeof(Stamp)+captureStamps.capacity()*sizeof(Stamp)+regions.capacity()*sizeof(Rect);}std::size_t spatialNodes()const{return spatial.nodes();}std::uint64_t spatialBuilds()const{return spatial.builds();}std::size_t spatialCPUBytes()const{return spatial.cpuBytes();}std::uint64_t copies()const{return copies_;}std::uint64_t uploads()const{return uploads_;}std::uint64_t dispatches()const{return paddingDispatches_;}
+    std::uint64_t bytes()const{return std::uint64_t(width)*height*8+tableRecords*sizeof(Record)+shCount*9*16+(paddingConstants.p?32:0);}std::size_t mapCount()const{return captureStamps.size();}std::uint64_t metadataFastUpdates()const{return metadataFastUpdates_;}std::uint64_t layoutBuilds()const{return layoutBuilds_;}std::uint64_t metadataBytes()const{return metadataBytes_;}std::uint64_t metadataCalls()const{return metadataCalls_;}std::size_t cpuBytes()const{return spatial.cpuBytes()+records.capacity()*sizeof(Record)+sourceIndices.capacity()*sizeof(UINT)+captureStamps.capacity()*sizeof(Stamp)+regions.capacity()*sizeof(Rect);}std::size_t spatialNodes()const{return spatial.nodes();}std::uint64_t spatialBuilds()const{return spatial.builds();}std::size_t spatialCPUBytes()const{return spatial.cpuBytes();}std::uint64_t copies()const{return copies_;}std::uint64_t uploads()const{return uploads_;}std::uint64_t dispatches()const{return paddingDispatches_;}
 };
 inline constexpr const char* sceneProbeAtlasDeclarations=R"HLSL(
 struct AtlasProbe{ProbeSettings settings;float4 region;};Texture2D<float4> probeAtlas:register(t50);StructuredBuffer<float4> probeTableRows:register(t51);StructuredBuffer<float4> probeAtlasSH:register(t52);
