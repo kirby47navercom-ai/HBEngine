@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "5ee112febc65400b93d77289cb5b9c6fa7f51ba4",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71\\HBEngine.exe",
+  "bundleHash": "dbe05b234ccf2a7148e3e681133791fb47e6028fb457de12ba57d31f05dd4640",
+  "files": 3899,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3896,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b9ebd4af551e13a1",
+        "bytes": 185156718,
+        "manifestSHA256": "02450624c32da3465c29443276729db8f3e54e1986c9c588352413b32f34a959"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T10:47:45.7638800Z",
+    "bytes": 185156718,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "dbe05b234ccf2a71"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 571,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "d86d57acb4e4f833520eb539dd866d47efbd019c894ac51959799ef80ddf601a",
+  "installedGates": [
+    {
+      "path": "native/build/sphere-probe-1195-3WS84j/acceptance.json",
+      "sha256": "d77c38e25c8b95c5494c44b208f0824ff2c451d5bf5679c5fe48eee5fde9cd55",
+      "scope": "Actual packaged C++ SetShape/SetRadius and generated Blueprint shape/radius nodes, nine states on a large mirror spanning four captures. World-sphere radius stays unscaled under negative/nonuniform owner scale and affects a fixed off-center fragment; actor transform preserved; box restores; captured textures/copies retained across rank/shape/radius changes. Projection math is covered by kernels/native tests; this game disables projection.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/sphere-probe-1195-nnLZpD/acceptance.json",
+      "sha256": "19dc0eb473f425517197b359ab1fcdb850242b937c900efbcb485af93cc0bd36",
+      "scope": "Actual packaged C++ SetShape/SetRadius and generated Blueprint shape/radius nodes, nine states on a large mirror spanning four captures. World-sphere radius stays unscaled under negative/nonuniform owner scale and affects a fixed off-center fragment; actor transform preserved; box restores; captured textures/copies retained across rank/shape/radius changes. Projection math is covered by kernels/native tests; this game disables projection.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/sphere-probe-1195-kAunoD/acceptance.json",
+      "sha256": "12b6d41f7a403e79be53af892e3c6972f3e798f509f2d100e2ba34c58f3d8b20",
+      "scope": "Actual packaged C++ SetShape/SetRadius and generated Blueprint shape/radius nodes, nine states on a large mirror spanning four captures. World-sphere radius stays unscaled under negative/nonuniform owner scale and affects a fixed off-center fragment; actor transform preserved; box restores; captured textures/copies retained across rank/shape/radius changes. Projection math is covered by kernels/native tests; this game disables projection.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71\\",
+    "elapsedMs": 259.7,
+    "matches": 2,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "dbe05b234ccf2a7148e3e681133791fb47e6028fb457de12ba57d31f05dd4640",
+      "installedAt": "2026-10-21T10:47:42.531Z",
+      "manifestFiles": 3899,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3899,
+  "versions": [
+    "dbe05b234ccf2a71"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1208-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/signed-scale-1203-dmdHkG/acceptance.json",
+      "sha256": "132e902e4907e0de1bcec2620b8f44b02aa0a89f1b6449294b85a5e6c8f4044e",
+      "scope": "원래 네이티브48면/CPP/물리/제작 검사. 이 뒤 CPP와 렌더 소스는 변경되지 않았음."
+    },
+    {
+      "path": "native/build/signed-scale-1203-3XtqWy/acceptance.json",
+      "sha256": "132e902e4907e0de1bcec2620b8f44b02aa0a89f1b6449294b85a5e6c8f4044e",
+      "scope": "JS 0.01 float경계 추가 후 CPU 재검사. 이 도구 실행의 native 결과는 바로 앞 성공을 재사용했으므로 새로운 native 실행으로 계산하지 않음."
+    },
+    {
+      "path": "native/build/sphere-probe-1192-qhiadq/acceptance.json",
+      "sha256": "68e4234b5b847954ee4794558f2522ef78a7ee09fd13eb112919efa39f854ec0",
+      "scope": "변경된 컴포넌트/서비스의 CPU520·원자갱신·helper/배치"
+    },
+    {
+      "path": "native/build/sphere-probe-1194-TwtOsg/acceptance.json",
+      "sha256": "3068e0f3a114e5ede5ced931b88546e0521b4c42a835257d92c3a5194854fe61",
+      "scope": "변경된 실제 D3D shader native1040·4HDR 구·순위/밝기/해제"
+    },
+    {
+      "path": "native/build/signed-scale-static-1205.json",
+      "sha256": "880b965491a7fdf7b6c59a2c2f8a7abaae21563a07de74220706375693ff2926",
+      "scope": "변경JS/MJS18 문법·기존 API/AI 체크 재사용"
+    }
+  ],
+  "scope": "Sphere 제작/SetSphere·Shape·Radius와 signed actor scale 수정. 설치본으로3backend×9상태 CPP/BP/4실제HDR/음수비균일scale보존·새capture/copy없음. 3899명세/571소유SHA/CPP21/native16·Player1204/Host1041·User읽기SHA·연결/Versions1. 동일GPU수식재검사·native재빌드반복없음.",
+  "previousFailedInstallation": "native/build/user-install-1201-audit.json"
+}

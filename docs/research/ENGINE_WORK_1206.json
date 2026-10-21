@@ -636,6 +636,35 @@
       "path": "native/build/signed-scale-static-1205.json",
       "sha256": "880b965491a7fdf7b6c59a2c2f8a7abaae21563a07de74220706375693ff2926",
       "scope": "변경JS/MJS18 문법·기존 API/AI 체크 재사용"
+    },
+    {
+      "path": "native/build/sphere-probe-1195-3WS84j/acceptance.json",
+      "sha256": "d77c38e25c8b95c5494c44b208f0824ff2c451d5bf5679c5fe48eee5fde9cd55",
+      "scope": "Actual packaged C++ SetShape/SetRadius and generated Blueprint shape/radius nodes, nine states on a large mirror spanning four captures. World-sphere radius stays unscaled under negative/nonuniform owner scale and affects a fixed off-center fragment; actor transform preserved; box restores; captured textures/copies retained across rank/shape/radius changes. Projection math is covered by kernels/native tests; this game disables projection.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/sphere-probe-1195-nnLZpD/acceptance.json",
+      "sha256": "19dc0eb473f425517197b359ab1fcdb850242b937c900efbcb485af93cc0bd36",
+      "scope": "Actual packaged C++ SetShape/SetRadius and generated Blueprint shape/radius nodes, nine states on a large mirror spanning four captures. World-sphere radius stays unscaled under negative/nonuniform owner scale and affects a fixed off-center fragment; actor transform preserved; box restores; captured textures/copies retained across rank/shape/radius changes. Projection math is covered by kernels/native tests; this game disables projection.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/sphere-probe-1195-kAunoD/acceptance.json",
+      "sha256": "12b6d41f7a403e79be53af892e3c6972f3e798f509f2d100e2ba34c58f3d8b20",
+      "scope": "Actual packaged C++ SetShape/SetRadius and generated Blueprint shape/radius nodes, nine states on a large mirror spanning four captures. World-sphere radius stays unscaled under negative/nonuniform owner scale and affects a fixed off-center fragment; actor transform preserved; box restores; captured textures/copies retained across rank/shape/radius changes. Projection math is covered by kernels/native tests; this game disables projection.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71\\HBEngine.exe"
+      ]
     }
   ],
   "reusedEvidence": {
@@ -689,8 +718,8 @@
     "nativeShaderOrientationVarying": 1,
     "scope": "Mirrored instanced batches use pixel sidedness; ordinary positive instances retain hardware culling. Not a frame-time benchmark."
   },
-  "installationPending": true,
-  "currentInstallation": "native/build/user-install-1201-audit.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1208.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "큰 장면 다수 HDR 캡처의 CPU/GPU 메모리·통제 FPS 검증 및 타일/클러스터와 BVH 비교·혼합 정책",
@@ -703,5 +732,37 @@
     "Browser negative InstancedMesh support not claimed",
     "No mobile hardware/Mac validation"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1208.json",
+  "sourceGameGates": [
+    {
+      "path": "native/build/sphere-probe-1195-3WS84j/acceptance.json",
+      "sha256": "d77c38e25c8b95c5494c44b208f0824ff2c451d5bf5679c5fe48eee5fde9cd55",
+      "scope": "Actual packaged C++ SetShape/SetRadius and generated Blueprint shape/radius nodes, nine states on a large mirror spanning four captures. World-sphere radius stays unscaled under negative/nonuniform owner scale and affects a fixed off-center fragment; actor transform preserved; box restores; captured textures/copies retained across rank/shape/radius changes. Projection math is covered by kernels/native tests; this game disables projection.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/sphere-probe-1195-nnLZpD/acceptance.json",
+      "sha256": "19dc0eb473f425517197b359ab1fcdb850242b937c900efbcb485af93cc0bd36",
+      "scope": "Actual packaged C++ SetShape/SetRadius and generated Blueprint shape/radius nodes, nine states on a large mirror spanning four captures. World-sphere radius stays unscaled under negative/nonuniform owner scale and affects a fixed off-center fragment; actor transform preserved; box restores; captured textures/copies retained across rank/shape/radius changes. Projection math is covered by kernels/native tests; this game disables projection.",
+      "args": [
+        "--webgl",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/sphere-probe-1195-kAunoD/acceptance.json",
+      "sha256": "12b6d41f7a403e79be53af892e3c6972f3e798f509f2d100e2ba34c58f3d8b20",
+      "scope": "Actual packaged C++ SetShape/SetRadius and generated Blueprint shape/radius nodes, nine states on a large mirror spanning four captures. World-sphere radius stays unscaled under negative/nonuniform owner scale and affects a fixed off-center fragment; actor transform preserved; box restores; captured textures/copies retained across rank/shape/radius changes. Projection math is covered by kernels/native tests; this game disables projection.",
+      "args": [
+        "--webgpu",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dbe05b234ccf2a71\\HBEngine.exe"
+      ]
+    }
+  ]
 }

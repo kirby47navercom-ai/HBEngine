@@ -4,7 +4,7 @@
 
 ## 확정 설치
 
-USER_INSTALL_1190.json: C:/Users/kirby/HBEngine/Versions/fc81d47f83b22276/HBEngine.exe. 3884명세/544소유SHA/CPP19/native14·Player1186/Host1041·User10849읽기SHA/연결·Versions1. 역사적성공. 실제1201전환 b9ebd4af551e13a1은Sphere패키징음수scale거절로검증실패;새수정설치대기.
+USER_INSTALL_1208.json: C:/Users/kirby/HBEngine/Versions/dbe05b234ccf2a71/HBEngine.exe. 3899명세/571소유SHA/CPP21/native16·Player1204/Host1041·User10849전후읽기SHA/연결/Versions1. 이전185156718B정리. 3backend각9상태 CPP/BP·4HDR/음수scale보존·capture/copy불변.1201실패는역사기록.
 
 ## 완료한 앞선 구현
 
@@ -17,7 +17,7 @@ WORK1188/INSTALL1190: 같은source/affine 설정전용CPU경로·원자검증·1
 
 공식UE reflection-captures shape/Unity HDRP17 probe/proxy의영향영역·투영구역읽기, CORPUS_MANIFEST supplemental1192/Unity seeds등록(전체gate아님). SPHERE_REFLECTION_PROBES.md.
 world volumeRadius/volumeShape·조건UI/배치sphereReflectionProbe/3원helper·CPU/GL/TSL/native fade/project. 반경은owner스케일불변,offset/capture는owner변환. C++/노드 SetSphere(원자1update)/SetShape/SetRadius·SDK setProbeSphereVolume. 활성source slot을순위변경에도유지. schema v6/9float4·144B불변. atlas faceScale.w/native options.w: bit0projection bit1sphere; 직접browser options.w: bit0enabled bit1sphere. nativefaceScale.w는count예약이므로shape넣지말것.
-최종1196 CPU520/GPU3×520/native1040/box54·21/direct3×160통과. 최종1197b뒤1201전환은scene음수scale거절로실패,영수증보존. WORK1206: signedScale씬/편집/기즈모/복제/BP/C++/spawn/pool/save/physics/network/sequence·D3D월드/혼합instance면법선. native48/2D3D Rapier/CPU520/nativeSphere1040통과·API/AI/문법18. native시험dmdHkG,JS float경계3XtqWy(native재사용),sphereCPU qhiadq/native TwtOsg. 브라우저수식/패딩/테이블SHA동일재사용,광범위재검사금지. Player1204성공/Host1041재사용,CPP21/native16. 원래1195게임fixture의scale[2,.5,-1]유지·9상태×3backend최종설치예정. 다음sync1207/install1208/finish1209. one-shot1204완료재실행금지. 도구reuse-native는소유SHA일치때만.
+최종1196 CPU520/GPU3×520/native1040/box54·21/direct3×160통과. 최종1197b뒤1201전환은scene음수scale거절로실패,영수증보존. WORK1206: signedScale씬/편집/기즈모/복제/BP/C++/spawn/pool/save/physics/network/sequence·D3D월드/혼합instance면법선. native48/2D3D Rapier/CPU520/nativeSphere1040통과·API/AI/문법18. native시험dmdHkG,JS float경계3XtqWy(native재사용),sphereCPU qhiadq/native TwtOsg. 브라우저수식/패딩/테이블SHA동일재사용,광범위재검사금지. Player1204성공/Host1041재사용,CPP21/native16. 원래1195게임fixture의scale[2,.5,-1]유지·9상태×3backend최종설치통과. sync1207/install1208/finish1209완료재실행금지. one-shot1204완료재실행금지. 도구reuse-native는소유SHA일치때만.
 
 
 ## 잔여와 운영

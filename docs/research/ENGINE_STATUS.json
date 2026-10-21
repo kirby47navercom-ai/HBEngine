@@ -2830,11 +2830,11 @@
     "scope": "Sphere 최종 제작/패키징의 음수scale 차단을 엔진 전반에서 수정; 영향 검사만 묶고 동일 브라우저 수식 재사용."
   },
   "latestInstallation": {
-    "receipt": "native/build/user-install-1201-audit.json",
-    "sourceCommit": "d7061a42c7b722881fe987db48337674c57b24a9",
-    "bundleHash": "b9ebd4af551e13a1e32040ba093054db5816c0fcffe6ae3e406acaebda4cef95",
-    "verified": false,
+    "receipt": "docs/research/USER_INSTALL_1208.json",
+    "sourceCommit": "5ee112febc65400b93d77289cb5b9c6fa7f51ba4",
+    "bundleHash": "dbe05b234ccf2a7148e3e681133791fb47e6028fb457de12ba57d31f05dd4640",
+    "verified": true,
     "versions": 1,
-    "scope": "1201 설치 전환 뒤 첫 패키징에서 기존 scene 음수scale 제한이 발견되어 검증 실패. 1190은 과거 성공 기록이며 현재 설치 검증으로 오인하지 말 것."
+    "scope": "Sphere 제작/SetSphere·Shape·Radius와 signed actor scale 수정. 설치본으로3backend×9상태 CPP/BP/4실제HDR/음수비균일scale보존·새capture/copy없음. 3899명세/571소유SHA/CPP21/native16·Player1204/Host1041·User읽기SHA·연결/Versions1. 동일GPU수식재검사·native재빌드반복없음."
   }
 }
