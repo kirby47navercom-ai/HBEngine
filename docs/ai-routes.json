@@ -72,7 +72,11 @@
         "orbit",
         "직교",
         "원근",
-        "fresnel"
+        "fresnel",
+        "thin film",
+        "iridescence",
+        "얇은 막",
+        "물리 시선"
       ],
       "paths": [
         "prototype/viewport-controls.js",
@@ -81,7 +85,11 @@
         "prototype/game-camera.js",
         "prototype/native-materials.js",
         "native/include/HBEngine/SceneRender.hpp",
-        "docs/CAMERA_SURFACE.md"
+        "docs/CAMERA_SURFACE.md",
+        "prototype/camera-view-contract.js",
+        "prototype/gpu-camera-view.js",
+        "prototype/gpu-iridescence.js",
+        "docs/GPU_PHYSICAL_VIEW.md"
       ]
     },
     {
@@ -158,7 +166,11 @@
         "wgsl",
         "직교",
         "원근",
-        "fresnel"
+        "fresnel",
+        "thin film",
+        "iridescence",
+        "얇은 막",
+        "물리 시선"
       ],
       "paths": [
         "prototype/game-renderer.js",
@@ -173,7 +185,12 @@
         "native/include/HBEngine/SceneProbeAtlas.hpp",
         "native/include/HBEngine/ProbeAtlasPadding.hpp",
         "prototype/native-materials.js",
-        "docs/CAMERA_SURFACE.md"
+        "docs/CAMERA_SURFACE.md",
+        "prototype/camera-view-contract.js",
+        "prototype/gpu-camera-view.js",
+        "prototype/gpu-iridescence.js",
+        "docs/GPU_PHYSICAL_VIEW.md",
+        "prototype/gpu-fallback-readback.js"
       ]
     },
     {
@@ -197,7 +214,11 @@
         "setcolor",
         "직교",
         "원근",
-        "fresnel"
+        "fresnel",
+        "thin film",
+        "iridescence",
+        "얇은 막",
+        "물리 시선"
       ],
       "paths": [
         "prototype/material-runtime.js",
@@ -208,7 +229,11 @@
         "prototype/normal-map.js",
         "prototype/native-materials.js",
         "native/include/HBEngine/SceneRender.hpp",
-        "docs/CAMERA_SURFACE.md"
+        "docs/CAMERA_SURFACE.md",
+        "prototype/camera-view-contract.js",
+        "prototype/gpu-camera-view.js",
+        "prototype/gpu-iridescence.js",
+        "docs/GPU_PHYSICAL_VIEW.md"
       ]
     },
     {
@@ -251,7 +276,11 @@
         "light",
         "probe",
         "reflection",
-        "sky"
+        "sky",
+        "thin film",
+        "iridescence",
+        "얇은 막",
+        "물리 시선"
       ],
       "paths": [
         "prototype/scene-environment.js",
@@ -268,7 +297,11 @@
         "prototype/reflection-probe-atlas-shader.js",
         "prototype/gpu-probe-atlas-environment.js",
         "native/include/HBEngine/SceneProbeAtlas.hpp",
-        "native/include/HBEngine/ProbeAtlasPadding.hpp"
+        "native/include/HBEngine/ProbeAtlasPadding.hpp",
+        "prototype/camera-view-contract.js",
+        "prototype/gpu-camera-view.js",
+        "prototype/gpu-iridescence.js",
+        "docs/GPU_PHYSICAL_VIEW.md"
       ]
     },
     {
@@ -702,7 +735,8 @@
         "prototype/reflection-probe-atlas-shader.js",
         "prototype/gpu-probe-atlas-environment.js",
         "native/include/HBEngine/SceneProbeAtlas.hpp",
-        "native/include/HBEngine/ProbeAtlasPadding.hpp"
+        "native/include/HBEngine/ProbeAtlasPadding.hpp",
+        "prototype/gpu-fallback-readback.js"
       ]
     },
     {

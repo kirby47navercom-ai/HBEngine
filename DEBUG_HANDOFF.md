@@ -41,3 +41,15 @@ PROBE_ATLAS_1130.md에 실패/수정/통과를 구분했어요. 1117 상수DataT
 1138 ZB5FJR는회전후첫두픽셀이독립기대217/206/231과같았고세번째는배경39/47/52였어요. 가까운평면/넓은직교카메라를회전하면영상면의가장자리광선시작점이평면뒤로넘어가가림조건이달라져요. 실제평면을관측하는화면40/50/60%세지점으로fixture만수정하고기대방향/색곡선/2byte기준은유지해요. 실패정지시inspect도저장해다음추측반복을줄여요.
 
 1143 최종설치 검증확정: native54조건·GL/GPU/폴백각38조건·atlas각54gradient·실제CPP/BP세실행기카메라4상태×3픽셀·전체소유SHA/명세/User보존/Versions1통과. USER_INSTALL_1143.json이최신. 작업중/미커밋으로기록한위단락은이후확정근거로해소됐어요. GPU내장Physical/probe전체시선·native기본맵경로는별도잔여예요.
+
+## GPU physical view1145 이후 작업 중
+
+현재설치1143과미커밋변경구분. builder-local PV변수에projection uniform으로직교상수를variant/lighting전에대입. rawlibrary/factory/clone를WeakSet으로장식하고dependency/globalTSL불변.1145-zCp4L5 실제GPU/강제GL폴백 각vector24/physical12·기존오차유지·정지평면불변0·이전오차.3재현. 초기vector검사광원의spec오프셋/시선공간기대오류는fixture수정.
+
+Iridescence: Three TSL mat3는JS Matrix3 행우선,GLSL mat3는열우선인데동일배열이사용됨. 명시XYZ dot행의thinfilm으로교정. GL multis호출은이름F0인인자에film Fresnel을전달하며평균반사에도Fr사용,TSL은역Schlick F0/기본색평균이었다. Favg단독후보는불충분. model.start가super.start에서빛을소비하므로start후교체는효과없었고첫consumer전에owned필드를준비. 이변경후직접광이GL과일치했고간접광입력까지맞춰1145통과. 실패를성과로계산금지.
+
+rawvolume 시선도owned call의slot1을교체. call은VarNode로감싸질수있어최대4단계unwrap/15입력검사. 직접source바꾸지않고원래texture owner보존.1146은CPU독립spectral sum/기존rawDFG·authoredSchlick 투과정책을각각대조. 처음0광원은lighting model이생략되어0세기Ambient를명시,잘못된순수Schlick raw기대는실제DFG와대조해수정. 오차기준유지.
+
+fallback readback뒤copyTexSubImage2D가GL1282. Float32blend가설은HalfFloat에서도실패해기각. gl개별call계측과실제copyTextureToBuffer본문으로READ FBO를직접bind/삭제후미복원, PBO미해제를확인. 현재새adapter는tracked READ복원/packalignment·PBO상태복원·fence전복원·PBOfinally삭제.1146재검증중. 임시계측은검사코드만,운영픽셀읽기추가없음. GPUPhysical/volume/보관source검사와최종설치완료전전체완료주장금지.
+
+1147 첫 실제게임fixture는 기울어진 view에서 Roughness .35→.85의 차이가2byte라 가시변화>=4byte 조건에 실패했어요. C++ 호출 뒤 실제 픽셀변화와 상태보존은 관측됐으며 생산오류로 판정하지 않아요. 임계값은 유지하고 specular를 관측할 수 있는 초기 카메라에서 재질편집/복원을 먼저 검사하도록 순서만 바꿔요. off-axis 불변성은 모든 상태에서 유지해요.

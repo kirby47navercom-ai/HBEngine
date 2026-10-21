@@ -19,3 +19,7 @@ RND03 공간타일/클러스터가속·큰장면성능/메모리·픽셀중요�
 실패/검사fixture수정은DEBUG_HANDOFF와연구문서에구분.1138초기잘못된핀/도단위/가려진가장자리픽셀·큰clippedquad보간은도구수정이며오차완화없음. 새원인가설전반복실패기록확인.
 
 백그라운드·소유임시프로젝트/프로필/포트만. User/게임원본검사·종료금지. 무거운검사/설치전activeInstalledVersions·사용중이면미뤄요. Versions1/전체백업쌓기금지·검사runtime/공유캐시정리. 한글동일author/committer커밋push. Android폰/Mac없음재질문금지.
+
+## 후속1145~1149 — 설치 갱신 준비
+
+GPU 내장 물리시선·원본/작성굴절·thinfilm XYZ/multis/0두께·폴백읽기READ/pack/PBO소유를 구현했어요. 1145-SQ1mnK 각vector24/physical16, 1146-VdoCCE 독립film31×2·raw/ownedvolume·읽기29/잔류0, 1117-kWTz3x 세모드각54gradient, 실제1147-WEhBN8 WebGPU CPP재질/BP복원·회전/CPP이동6상태×3픽셀 통과. static1149 API/스키마/AI통과. 원래허용오차유지. GPU_PHYSICAL_VIEW.md·research/GPU_PHYSICAL_VIEW_1148.md. 현재설치1143 유지; 다음1149원장/소유SHA확정·새sync1150/install1151/finish1152·설치게임3렌더러검사·Versions1·push. native13불변 Player1139/Host1041재사용. 기존원장잔여/전체연구gate미승격.

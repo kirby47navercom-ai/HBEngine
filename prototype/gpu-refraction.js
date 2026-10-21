@@ -1,5 +1,6 @@
 import {FramebufferTexture,DepthTexture,HalfFloatType,LinearMipmapLinearFilter} from 'three/webgpu';
 import * as T from 'three/tsl';
+import {gpuWorldViewDirection} from './gpu-camera-view.js';
 
 // Each surface copies the preceding HDR/depth layer, including surfaces sharing a material.
 export function attachGPURefraction(material){
@@ -13,7 +14,7 @@ export function attachGPURefraction(material){
     const model=original.call(this,builder),start=model.start,owner=this;
     model.start=function(b){const enabled=this.transmission;this.transmission=false;try{start.call(this,b);}finally{this.transmission=enabled;}if(!enabled)return;
       owner.userData.hbRefractionProbeBound=!!owner.hbProbeRefraction;
-      const n=T.normalWorld,v=T.cameraPosition.sub(T.positionWorld).normalize(),scale=T.vec3(T.modelWorldMatrix[0].xyz.length(),T.modelWorldMatrix[1].xyz.length(),T.modelWorldMatrix[2].xyz.length()),entry=T.cameraProjectionMatrix.mul(T.cameraViewMatrix.mul(T.vec4(T.positionWorld,1)));
+      const n=T.normalWorld,v=gpuWorldViewDirection,scale=T.vec3(T.modelWorldMatrix[0].xyz.length(),T.modelWorldMatrix[1].xyz.length(),T.modelWorldMatrix[2].xyz.length()),entry=T.cameraProjectionMatrix.mul(T.cameraViewMatrix.mul(T.vec4(T.positionWorld,1)));
       const sample=ior=>{
         const direction=v.negate().refract(n,ior.reciprocal()).normalize(),ray=direction.mul(T.thickness.mul(scale)),exit=T.cameraProjectionMatrix.mul(T.cameraViewMatrix.mul(T.vec4(T.positionWorld.add(ray),1))),uv=T.vec2(exit.x.div(exit.w).mul(.5).add(.5),exit.y.div(exit.w).mul(-.5).add(.5)),edge=uv.min(T.vec2(1).sub(uv)).x.min(uv.min(T.vec2(1).sub(uv)).y).div(.02).clamp(0,1).mul(exit.w.greaterThan(1e-6).select(1,0)),front=depth.sample(uv.clamp(0,1)).r.greaterThanEqual(entry.z.div(entry.w).sub(.0001)).select(1,0),rough=T.roughness.mul(ior.mul(2).sub(2).clamp(0,1));
         const fallback=owner.hbProbeRefraction?owner.hbProbeRefraction.refraction(direction,T.positionWorld,rough):color.sample(T.screenUV).rgb;

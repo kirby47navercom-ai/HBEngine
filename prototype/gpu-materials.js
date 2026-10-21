@@ -12,9 +12,10 @@ import {MeshPhysicalNodeMaterial,DataTexture,TextureLoader,Color,Vector2,Vector3
 import * as T from 'three/tsl';
 import {attachAdvancedShading} from './advanced-shading-gpu.js';
 import {attachGPURefraction} from './gpu-refraction.js';
+import {attachGPUCameraView,gpuWorldViewDirection as materialView} from './gpu-camera-view.js';
+import {attachGPUIridescence} from './gpu-iridescence.js';
 import {materialParameterKey,materialTextureParameter,resolveMaterialInputs,resolveMaterialAttributes,materialDefaults,materialGraph,materialCatalog,materialNodeKey,materialPins,normalizedMaterialEdges,validMaterialGraph,surfaceInputs,materialFloatProperty,materialVectorProperty,materialVectorValue} from './material-runtime.js';
 
-const materialView=T.cameraProjectionMatrix.element(3).w.equal(1).select(T.vec3(0,0,1),T.positionViewDirection).transformDirection(T.cameraViewMatrix);
 const specs=new Map(materialCatalog.map(s=>[s.key,s]));
 const vector=(value,size)=>Array.from({length:size},(_,i)=>Array.isArray(value)?value[i]??value[0]:value);
 const valueNode=(value,type)=>typeof value==='string'?T.vec3(...new Color(value).toArray()):type==='float'?T.float(Array.isArray(value)?value[0]:value):T[type](...vector(value,Number(type.slice(3))));
@@ -74,7 +75,7 @@ export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeUR
   const material=new MeshPhysicalNodeMaterial({color:'#ffffff',transparent:surface.blendMode==='translucent',alphaTest:surface.blendMode==='masked'?surface.alphaTest:0,side:surface.doubleSided?DoubleSide:FrontSide});
   const emission=T.uniform(surface.emissiveIntensity);surfaceUniforms.set('emissiveIntensity',emission);
   material.colorNode=values.baseColor;material.roughnessNode=values.roughness.clamp(0,1);material.metalnessNode=values.metallic.clamp(0,1);material.opacityNode=values.opacity;material.emissiveNode=values.emissive.mul(emission);material.aoNode=values.ao.clamp(0,1);material.iorNode=values.ior.clamp(1,2.5);
-  attachAdvancedShading(material,values);material.normalNode=materialNormalFrameNode(T,values.normal);
+  attachGPUCameraView(material);attachGPUIridescence(material);attachAdvancedShading(material,values);material.normalNode=materialNormalFrameNode(T,values.normal);
   const enableCoat=()=>{material.clearcoatNode=values.clearcoat.clamp(0,1);material.clearcoatRoughnessNode=values.clearcoatRoughness.clamp(0,1);material.clearcoatNormalNode=materialNormalFrameNode(T,values.clearcoatNormal);};
   if(connected.has('clearcoat')||surface.clearcoat>0||connected.has('clearcoatNormal'))enableCoat();
   const enableSheen=()=>{material.sheenNode=values.sheenColor.clamp(0,1).mul(values.sheen.clamp(0,1));material.sheenRoughnessNode=values.sheenRoughness.clamp(.07,1);};if(connected.has('sheen')||surface.sheen>0)enableSheen();

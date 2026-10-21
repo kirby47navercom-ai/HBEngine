@@ -1,6 +1,7 @@
 import {installGPURayAtlasUpload} from './gpu-ray-atlas-upload.js';
 import {installGPUDisplayColors} from './gpu-display-colors.js';
 import {installGPUUniformCompatibility} from './gpu-uniforms.js';
+import {installGPUCameraView} from './gpu-camera-view.js';
 import {WebGPURenderer,PMREMGenerator,BoxGeometry,MeshBasicMaterial,BackSide,StorageInstancedBufferAttribute,IndirectStorageBufferAttribute,InstancedBufferGeometry,PlaneGeometry,Mesh,SpriteNodeMaterial,Vector4,Vector3,Matrix4,AdditiveBlending,NormalBlending} from 'three/webgpu';
 import {Fn,If,storage,uniform,instanceIndex,uint,vec4,vec2,float,min,max,floor,mod,exp,atomicAdd,atomicStore,mix,texture,uv,smoothstep,modelViewMatrix,cameraProjectionMatrix} from 'three/tsl';
 import {ParticleSimulation} from './scene-systems.js';
@@ -65,7 +66,7 @@ export class GPUParticleSimulation extends ParticleSimulation {
 
 export async function createGPURenderer(canvas){
   const renderer=new WebGPURenderer({canvas,antialias:true});
-  try{await renderer.init();installGPUUniformCompatibility(renderer);if(!renderer.backend.isWebGPUBackend)throw Error('WebGPU 장치가 필요해요.');installGPURayAtlasUpload(renderer);installGPUDisplayColors(renderer);}catch(error){renderer.dispose();throw error;}
+  try{await renderer.init();installGPUCameraView(renderer);installGPUUniformCompatibility(renderer);if(!renderer.backend.isWebGPUBackend)throw Error('WebGPU 장치가 필요해요.');installGPURayAtlasUpload(renderer);installGPUDisplayColors(renderer);}catch(error){renderer.dispose();throw error;}
   renderer.hbBackend='webgpu';renderer.hbPMREM=()=>{
     const generator=new PMREMGenerator(renderer);
     // r180 creates an unowned background box in fromScene; assign its owner so dispose releases it.
