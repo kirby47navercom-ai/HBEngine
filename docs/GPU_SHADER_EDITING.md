@@ -23,3 +23,11 @@ TSL의 조건문에서 부수효과만 필요한 콜백은 `()=>{ result.assign(
 ### CPU 변환 캐시와 GPU 상주량 구분 (749–752)
 
 `ray-mip-cache.js`의256MiB 기본 풀은 변환 Float32 밉 재사용만 제한해요. 활성 현재/이전 스냅샷·source·GPU/ray atlas 메모리는 별도예요. `profiler.rayMipCache`와 프로파일러 UI가 같은 예산/비우기를 사용해요. 0/퇴역 뒤에도 네 자료형·네 모드의 현재/이전 atlas 바이트가 같고 실제 네이티브 실행도 검증했어요. [GPU 상주 전환의 다음 조건](research/RAY_MIP_CACHE_752.md).
+
+### WebGL 곡면 가이드 준비 특화 (1282–1290)
+
+`path-guide-specialization.js`는 `pathTracingCurvedFilter`가 꺼진 고정 패스에서만 `curved=false`를 생성해요. 기본 인자는 `true`여서 기존 호출의 소스는 그대로예요. 공용 추적·노멀·이전 프레임 수식과 네이티브 생성 헤더를 바꾸지 않아요. 필터 전환은 `screen-effects-gl.js`의 준비 키에 포함하고, 이전 준비 대기를 취소해요. 곡면 설정만 바뀌면 보조 머테리얼만 교체하고 노멀 가이드와 타깃은 재사용하며 시간 이력은 무효화해요. 새 GPU 타깃·상주 캐시·작업자는 없어요.
+
+`gpuPathPreparationInfo()`의 선택 필드 `guideCurved`·`guideLens`는 실제 준비 상태이며 `false`도 출력해요. 다른 백엔드에서 필드가 없으면 꺼짐으로 추측하지 않아요. 실제 보조 가이드 타깃은 `denoiser.images[3]`이고 `[2]`는 공간 필터 핑퐁이에요.
+
+실제 WebGL2 게임에서 기존 비특화 가이드와 전체 320×240 raw-half 성분 307200개가 정확히 같았어요. 켜기·모프 변형·다시 끄기와 자원 해제를 확인했어요. 한 쌍의 관측에서 보조 가이드 준비는 6276.9→1859.1ms, 제품 연결 후 1827.4ms였어요. 두 번째 실행의 주 경로는 캐시 적중이므로 전체 초기 준비/FPS 개선 수치로 쓰지 않아요. 주 경로는 제품 검사에서도 7169.2ms가 남았어요. 자세한 재현·실패 범위는 [GUIDE_PROFILE_1290](research/GUIDE_PROFILE_1290.md)에 있어요.

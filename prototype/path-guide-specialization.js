@@ -1,10 +1,12 @@
 import {pathDenoiseGLSL} from './path-denoise.js';
 import {curvedGuideGLSL} from './path-curved-guide.js';
 
-// Keep the common/native algorithm as the source of truth. Only remove work
-// whose output and early rejection cannot be used by this fixed no-lens pass.
-export function pathGuideDenoiseGLSL(auxiliary,lens,specular=true,opaque=false){
- const guide=specular?pathDenoiseGLSL:withoutMirrorGuide(pathDenoiseGLSL);
+// Keep the common/native algorithm as the source of truth. Specialize only
+// fixed pass settings; unknown callers retain the complete curved path.
+export function pathGuideDenoiseGLSL(auxiliary,lens,specular=true,opaque=false,curvedEnabled=true){
+ if(typeof curvedEnabled!=='boolean')throw Error('곡면 가이드 준비 모드를 확인하세요.');
+ let guide=specular?pathDenoiseGLSL:withoutMirrorGuide(pathDenoiseGLSL);
+ if(!curvedEnabled){const condition='curved=auxiliary&&hbGeometryRecords.w>.5&&(lensDifferentials||hbPathFilter.x>0.0)';if(!guide.includes(condition))throw Error('곡면 가이드 생성 계약이 달라졌어요.');guide=guide.replace(condition,'curved=false');}
  if(lens){const source=shareGuideNormals(guide,4);return !specular&&opaque?withoutSecondaryTail(source):source;}
  let source=guide.slice(0,guide.indexOf('vec4 hbPathGuideResolve('));
  const replace=(before,after)=>{if(!source.includes(before))throw Error('경로 가이드 생성 계약이 달라졌어요.');source=source.replace(before,after);};

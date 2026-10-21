@@ -401,7 +401,9 @@
         "prototype/path-surface-history.js",
         "prototype/path-denoise.js",
         "prototype/path-denoise-gpu.js",
-        "prototype/ray-previous-context.js"
+        "prototype/ray-previous-context.js",
+        "prototype/path-guide-specialization.js",
+        "docs/GPU_SHADER_EDITING.md"
       ]
     },
     {
@@ -850,7 +852,9 @@
         "prototype/reflection-probe-spatial.js",
         "prototype/gpu-probe-spatial.js",
         "native/include/HBEngine/ProbeSpatialIndex.hpp",
-        "docs/PROBE_SPATIAL_INDEX.md"
+        "docs/PROBE_SPATIAL_INDEX.md",
+        "prototype/path-guide-specialization.js",
+        "docs/GPU_SHADER_EDITING.md"
       ]
     },
     {
