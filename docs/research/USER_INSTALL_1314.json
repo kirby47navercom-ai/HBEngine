@@ -1,0 +1,128 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "6a4dbdf3d3bded2102709a5c8ccfecec759f1a95",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b0360f510260b375",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\b0360f510260b375\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\b0360f510260b375\\HBEngine.exe",
+  "bundleHash": "b0360f510260b37501013987a88bd0dafd81186d12958500cd09aee09ae0a990",
+  "files": 3987,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3980,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f35ec9cbe6b653b5",
+        "bytes": 186651678,
+        "manifestSHA256": "c5779c480d60bcc8782e4b8aa1d9d0957cc853156950b889589f591e24fe1aa1"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T17:20:14.3795830Z",
+    "bytes": 186651678,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "b0360f510260b375"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 663,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
+  "installedGates": [
+    {
+      "path": "native/build/curve-infinity-1311-PYVD8T/acceptance.json",
+      "sha256": "eec1e53ea29bf621c9f3b6bbf6887aae92d90fa02d3bb9056bbf5bfedf25bfc6",
+      "scope": "Actual isolated packaged D3D11 game BP Play/Pause/Seek follows per-axis weighted Bezier with source offset and rotated/translated nested origins. Analytic parameter1/4 expected; native binaries reused, no rendering/FPS claim.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\b0360f510260b375\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\b0360f510260b375\\",
+    "elapsedMs": 82.55,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\b0360f510260b375",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "b0360f510260b37501013987a88bd0dafd81186d12958500cd09aee09ae0a990",
+      "installedAt": "2026-10-21T17:20:11.114Z",
+      "manifestFiles": 3987,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3987,
+  "versions": [
+    "b0360f510260b375"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1314-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/curve-infinity-1310-eRDXlL/acceptance.json",
+      "sha256": "d5536573d958b0f20b572d2e6b7018aac37b0bae8246e9d4dfe5bc3d1468626f",
+      "scope": "9 groups: independent negative/boundary hold/linear/cycle/offset/oscillate tables, weighted vector+2cycles oracle, common three samplers and real external skeletal AnimationGraph, atomic typed range edit, quaternion/scale safety."
+    },
+    {
+      "path": "native/build/weighted-curves-1294-epICqk/acceptance.json",
+      "sha256": "933a79d2370d0d8e3ef69ce3d2ba61785e8e7cb9d3d44cf9a45a3c98e33de061",
+      "scope": "Existing weighted9 and independent240 exact legacy/thirds, typed shape and shared services regression."
+    },
+    {
+      "path": "native/build/sequence-origins-curves-1266-9tElc7/acceptance.json",
+      "sha256": "8f0f4add53878c16ba829feb0029194f7c301e76b25312c03eff8fe8e7305a30",
+      "scope": "Existing17 Hermite, origins/nesting/alias/restore/ownership/lifetime regression."
+    },
+    {
+      "path": "native/build/curve-infinity-1311-AblPc4/acceptance.json",
+      "sha256": "a2ed310d45a05a686d81524bb439ef915897643b3993b2ece0dac462f618c2ae",
+      "scope": "Actual isolated editor: weighted handle/numeric/Undo/untouched axes/layout, pre/post range UI, key-optional AI range edit/dry-run/invalid/stale; nested BP Play/Pause/Seek expected[10,44.125,0]."
+    },
+    {
+      "path": "native/build/curve-infinity-retarget-1312.json",
+      "sha256": "53a80ce168073a33b77cd3a92b904a6d9a49b5ecb4fd68111b0d0fadcf45484c",
+      "scope": "Existing actual retarget runtime invocation retained; no re-execution invented."
+    },
+    {
+      "path": "native/build/curve-infinity-ai-context-1312-final.json",
+      "sha256": "26901ee43c7a31f5bbb109edf7f6082f579ce641c8fef0841b14b759cc86cfc7",
+      "scope": "Final offline route/schema/CLI and compact context; no model-session speed claim."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed shared numeric curve pre/post hold/linear/cycle/cycleOffset/oscillate. Actual D3D11 BP game evaluates weighted child+2offset cycles+nested origins at independent expected[10,44.125,0]. New9 including skeletal AnimationGraph, weighted9/240, legacy17/retarget/source actual GUI passed. Native16/Struct.hpp/CPP21/Player1223/Host1041 unchanged; User/manifest/links/Versions1 verified. Primary compiler candidates remain diagnostic-only and unpromoted; no full rendering/FPS/mobile claim.",
+  "version": 1,
+  "date": "2026-10-21T17:21:09.054Z",
+  "work": "docs/research/ENGINE_WORK_1312.json",
+  "distributionSync": "native/build/distribution-1297-sync.json",
+  "cachePrune": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

@@ -747,7 +747,6 @@
     }
   ],
   "sourceGameGates": [],
-  "pendingInstalledGameGate": "tools/check-curve-infinity-1311-window.mjs --player --executable <installation>/HBEngine.exe",
   "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -787,8 +786,8 @@
     "model": "Default and inside return before outside allocations/extra search; explicit range maps time and reuses existing keys. Only editor Fit samples32 intervals for visible explicit ranges; no recurring preparation."
   },
   "research": "docs/research/CORPUS_MANIFEST.json#supplemental1310",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1298.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1314.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "미등록 C++ 사용자 struct/중첩 컨테이너·대형 키 편집·기존 대상 생성/삭제 재현·socket/constraint/고급 Attachment·복잡 DCC 리그·녹화 필터 프리셋",
@@ -798,5 +797,17 @@
     "클램프 자동 곡선·다중 커브 도구/필터와 고급 단축키 확대",
     "골격 클립 메타데이터 곡선의 전용 그래픽 가중 핸들 편집·쿼터니언/이산 범위 확장"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/curve-infinity-1311-PYVD8T/acceptance.json",
+      "sha256": "eec1e53ea29bf621c9f3b6bbf6887aae92d90fa02d3bb9056bbf5bfedf25bfc6",
+      "scope": "Actual isolated packaged D3D11 game BP Play/Pause/Seek follows per-axis weighted Bezier with source offset and rotated/translated nested origins. Analytic parameter1/4 expected; native binaries reused, no rendering/FPS claim.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\b0360f510260b375\\HBEngine.exe"
+      ]
+    }
+  ]
 }
