@@ -675,6 +675,15 @@
       "path": "native/build/blueprint-folding-batch-1231.json",
       "sha256": "ad9565e9b1b45d439e14497e8efb3cf3da185e170db76f61bc4332be0825378c",
       "scope": "Changed12 JS/MJS syntax/API generation, actual editor/model, existing runtime/flow/native C++ regressions reused by unchanged owners and bounded AI lookup."
+    },
+    {
+      "path": "native/build/blueprint-folding-1230-s29Khh/acceptance.json",
+      "sha256": "fb9d0bdd13fe51f7c7592746520b18849b16fb2929d7733e4b55cda3a77c4ad4",
+      "scope": "Selected installation builder creates actual Windows D3D11 game with owned folded graph and independently copied/expanded flow, latent delay and pure folded vector. Both typed/default/copy values reach real actor transforms. Player1223/Host1041 reused; no native rebuild/renderer matrix/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\b86864f151e2861e\\HBEngine.exe"
+      ]
     }
   ],
   "sourceEditorGates": [
@@ -727,13 +736,25 @@
     "fpsClaim": false
   },
   "researchScope": "CORPUS_MANIFEST supplemental1228: search-retrieved own official Nodes and historical Collapsing Graphs body; guessed URL timeout not counted; linked API/whole corpus not complete.",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1226.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1234.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "사용자 정의 구조체·enum 에셋과 변수/핀·C++ 리플렉션의 일반화, Switch enum/name",
     "Set Members 필드 선택·사용자 구조체 Make/Break의 제작/실행 연결",
     "접힌 그래프의 Timeline·일부 Event 전용 노드 및 wildcard/외부 함수·변수 참조의 문서간 일반화"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installationReceipt": "docs/research/USER_INSTALL_1234.json",
+  "sourceGameGates": [
+    {
+      "path": "native/build/blueprint-folding-1230-s29Khh/acceptance.json",
+      "sha256": "fb9d0bdd13fe51f7c7592746520b18849b16fb2929d7733e4b55cda3a77c4ad4",
+      "scope": "Selected installation builder creates actual Windows D3D11 game with owned folded graph and independently copied/expanded flow, latent delay and pure folded vector. Both typed/default/copy values reach real actor transforms. Player1223/Host1041 reused; no native rebuild/renderer matrix/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\b86864f151e2861e\\HBEngine.exe"
+      ]
+    }
+  ]
 }

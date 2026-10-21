@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "768738f0b1bcce65f9e0ccc6b6362a5a0957b425",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b86864f151e2861e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\b86864f151e2861e\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\b86864f151e2861e\\HBEngine.exe",
+  "bundleHash": "b86864f151e2861ed533fea142df5525147ba886a2eea4348fd25b3af36b6a3b",
+  "files": 3925,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3918,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\832bf441d776a979",
+        "bytes": 185523991,
+        "manifestSHA256": "71b61eb1d08a3ad061110c183052a2232877c0880513fdb590cd8d0bdd4ea397"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T12:52:42.2416988Z",
+    "bytes": 185523991,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "b86864f151e2861e"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 607,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
+  "installedGates": [
+    {
+      "path": "native/build/blueprint-folding-1230-s29Khh/acceptance.json",
+      "sha256": "fb9d0bdd13fe51f7c7592746520b18849b16fb2929d7733e4b55cda3a77c4ad4",
+      "scope": "Selected installation builder creates actual Windows D3D11 game with owned folded graph and independently copied/expanded flow, latent delay and pure folded vector. Both typed/default/copy values reach real actor transforms. Player1223/Host1041 reused; no native rebuild/renderer matrix/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\b86864f151e2861e\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\b86864f151e2861e\\",
+    "elapsedMs": 78.91,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\b86864f151e2861e",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "b86864f151e2861ed533fea142df5525147ba886a2eea4348fd25b3af36b6a3b",
+      "installedAt": "2026-10-21T12:52:39.080Z",
+      "manifestFiles": 3925,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3925,
+  "versions": [
+    "b86864f151e2861e"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1234-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/blueprint-folding-1228-2NefUr/acceptance.json",
+      "sha256": "324088f1e5c70486aacea57dd63fce6fef41befb3fab430949279ee379cd9f92",
+      "scope": "42 checks plus assertions: literal/struct/unit/6 typed arrays/independent and nested cross-asset copy/latent/pure preview and VM/joins/comments/watches/atomic invalid model"
+    },
+    {
+      "path": "native/build/blueprint-folding-1229-pXF02l/acceptance.json",
+      "sha256": "555bf633f4c83cf9e57ee85e589857d0ea5f7c19cc33e814e3ed25ebf2b33965",
+      "scope": "Real hidden editor context/double-click/tunnel Exec add-remove/UndoRedo/AI dry run and revision/duplicate-delete/second joined E-input execution; collision-free expanded helper layout"
+    },
+    {
+      "path": "native/build/blueprint-inheritance-K2t9va/acceptance.json",
+      "sha256": "3a38a09e50cda50e2851bc002e519c83fea0c3b7e4e4fce61b3ff4a90abcb36a",
+      "scope": "Existing inheritance and ProjectService source-reference regression, without --cpp; mock compile count is not a compiled C++ execution claim. Fixture now writes Source files before referenced asset, retains/prunes owned evidence."
+    },
+    {
+      "path": "native/build/flow-authoring-1210-GLKtbS/acceptance.json",
+      "sha256": "76bfc4493cc4b111a05f8dadc2601ca5cc0f01aa70324f197802b6dd9e078fe7",
+      "scope": "Earlier successful 1699/1668 typed-flow/preview/VM/actual C++ regression reused: listed owners unchanged. Later model edits only collapse input dedup/entry joins; current 42-check model and UI joined-input gate cover those. No claim that the entire later model file was run by the earlier flow check."
+    },
+    {
+      "path": "native/build/blueprint-folding-batch-1231.json",
+      "sha256": "ad9565e9b1b45d439e14497e8efb3cf3da185e170db76f61bc4332be0825378c",
+      "scope": "Changed12 JS/MJS syntax/API generation, actual editor/model, existing runtime/flow/native C++ regressions reused by unchanged owners and bounded AI lookup."
+    }
+  ],
+  "scope": "Owned collapsed graphs/copy/expand/defaults/typed tunnels/pure and latent VM/AI authoring. 607 runtime owners / 21 repository C++ tests / Player1223/Host1041 reused, all native16 owners unchanged. Source folding CPU/UI/inheritance/VM/flow/actual CPP and bounded AI receipts; installed builder Windows D3D11 folded/expanded/pure/latent package and default transform proof. Full manifest/profile read-only/shortcuts/association/Versions1; no renderer matrix or FPS claim.",
+  "cache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

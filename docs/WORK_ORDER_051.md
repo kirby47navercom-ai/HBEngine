@@ -860,3 +860,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1226설치 C:\Users\kirby\HBEngine\Versions\832bf441d776a979 /3917명세·600소유SHA·CPP21/native16·Player1223단1빌드/Host재사용. 설치builder 실제WindowsD3D11 게임에서2D GameMode·C++typedSprite/원래Pawn[3,4,0]/witness[3,42,0]·키보드XY이동·모듈포함통과. User10849전후읽기SHA·연결·Versions1·이전185382122B정리. cache{"deleted":0,"bytes":0,"receipt":null}. sourceGUI/CPU/회귀/API/AI 성공SHA재사용, 전체렌더매트릭스없음.
 
 1228–1232: 접힌 그래프 독립/중첩·문서간 복제·함수/매크로/그래프 펼치기·타입 reroute/기본값/단위scale/분할/배열·주석/관찰·순수preview/VM·지연·선행exec합류·Exec터널추가삭제/Undo/AI를함께구현. 42핵심확인+6형배열·실제GUI우클릭/더블클릭/Exec/Undo/dryRun/복제삭제/E합류실행·상속17회귀·기존1699핀/실제CPP·VM·변경12JS/API·AI조회통과. 후반합류수정은현재CPU/GUI확인,이전VM/flow는해당실행owner불변근거로재사용. Player1223/Host1041/native16불변으로네이티브재빌드·렌더매트릭스없음. 설치패키지1234예정. CPP01잔여는customstruct/enum·SetMembers·Timeline/wildcard/외부참조확장으로구체화,다른원장잔여유지.
+
+1234설치 C:\Users\kirby\HBEngine\Versions\b86864f151e2861e /3925명세·607소유SHA·CPP21/native16·Player1223/Host1041재사용. 설치builder Windows D3D11 실제접힌/독립복제/펼친/순수/Delay흐름 Actor[5,6,7]/Witness[9,8,7]통과. User10849전후읽기SHA·연결·Versions1·이전185523991B정리. cache{"deleted":0,"bytes":0,"receipt":null}. 재빌드/전체렌더반복없음.

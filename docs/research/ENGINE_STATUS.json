@@ -2910,11 +2910,11 @@
     "scope": "Independent owned graph copy and expand with defaults/typed tunnels/latent/pure/joins, actual authoring UI and AI. Remaining graph extensions stated explicitly; other ledger items retained."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1226.json",
-    "sourceCommit": "da09e05be3e979123cfbddd66d3313e03f70a11e",
-    "bundleHash": "832bf441d776a9790785a17b92840a4f2366590628f25224df4b3eb9eb6b3fb9",
+    "receipt": "docs/research/USER_INSTALL_1234.json",
+    "sourceCommit": "768738f0b1bcce65f9e0ccc6b6362a5a0957b425",
+    "bundleHash": "b86864f151e2861ed533fea142df5525147ba886a2eea4348fd25b3af36b6a3b",
     "verified": true,
     "versions": 1,
-    "scope": "2D classes/templates/framework/spawn/typed C++ and real component preview. 600 runtime owners / 21 repository C++ tests / Player1223 one build, Host1041 reused. Source CPU/UI/Rapier/CPP/AI receipts reused; installed builder Windows D3D11 2D package and typed C++/pose/XY-input proof. Full manifest/profile read-only/shortcuts/association/Versions1; no renderer matrix or FPS claim."
+    "scope": "Owned collapsed graphs/copy/expand/defaults/typed tunnels/pure and latent VM/AI authoring. 607 runtime owners / 21 repository C++ tests / Player1223/Host1041 reused, all native16 owners unchanged. Source folding CPU/UI/inheritance/VM/flow/actual CPP and bounded AI receipts; installed builder Windows D3D11 folded/expanded/pure/latent package and default transform proof. Full manifest/profile read-only/shortcuts/association/Versions1; no renderer matrix or FPS claim."
   }
 }
