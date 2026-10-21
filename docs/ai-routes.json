@@ -775,13 +775,18 @@
         "관심 영역",
         "공간 인덱스",
         "interest",
-        "spatial"
+        "spatial",
+        "삭제 전송",
+        "직렬화 공유",
+        "stateSerialization"
       ],
       "paths": [
         "prototype/network-runtime.js",
         "prototype/network-state.js",
         "tools/multiplayer-server.mjs",
-        "prototype/network-interest.js"
+        "prototype/network-interest.js",
+        "tools/network-state-packets.mjs",
+        "docs/NETWORK_DELETIONS.md"
       ]
     },
     {
