@@ -866,3 +866,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1236–1237: 최종경계검토에서상속authoredGraphContext가매번필터배열을반환해view추론불가/부모scope중복가능확인. 명시view·부모노드/edge/comment보존·자식thin저장/parentfold편집거절·부모내부graph숨김보완. 모델UrHGWe및현재42/배열6종XicC16통과. VM/preview/pin값/native16/Player/Host불변으로이전실제패키지성공재사용. 설치1239의상속자식실제GUI/Play만추가확인,렌더전체나네이티브재빌드없음.
 
 1239설치 C:\Users\kirby\HBEngine\Versions\cd3ef798dbdc6e3f /3928명세·608소유SHA·CPP21/native16·Player1223/Host재사용. 실제설치에디터에서자식우클릭접기/얇은저장·부모접힌BeginPlay와자식E모두실행·AI펼치기/부모문서보존통과. 이전D3D11게임패키지성공은불변VM/native근거로재사용. User10849전후읽기SHA·연결·Versions1·이전185661498B정리. cache{"deleted":0,"bytes":0,"receipt":null}. 해당경계만확인, 재빌드/렌더전체반복없음.
+
+1241–1245: 기본5구조체 Make/Break/선택 Set Members·비노출 보존·변수/중첩/배열/함수/접힌호출 참조·같은함수후속읽기/무작위인덱스고정·10종+배열Select·Switch고정값/순서/Name/구형호환·C++Struct.hpp/AI2명령/스키마연결. 묶음syntax/API/모델53/CPP/flow1708/접기42/상속/AI/실제에디터통과. 속성선택변경스크롤보완은설치GUI에서확인. native16/Player/Host불변재사용·전체렌더/FPS반복없음. 사용자구조체/enum·일반native참조와기존누적잔여유지.
