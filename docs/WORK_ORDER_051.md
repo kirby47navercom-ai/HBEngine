@@ -836,3 +836,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1167–1175 기본texture normal/공유HDR·SH/144B부분전송/65536높은count단어/해제진단을함께구현. native1344+8·GL유효72·세브라우저공유2/4영역·기존54/21방향·실제glTF C++/BP광원5상태통과. Player1173한번빌드. 실패는fixture전용API/Windows매크로수정,허용오차완화없음. 통과gateSHA재사용. 설치1177예정,Versions1/User보호유지.
 
 1177설치 C:\Users\kirby\HBEngine\Versions\7b49a6ca25d1389f /3878파일·542소유SHA·CPP19/native14·Player1173/Host1041·실제glTF노멀C++/BP5상태(D3Dsource동일Player/설치GL/GPU)·User10849전후읽기SHA·연결·Versions1확정. 선행5gate/D3D게임재실행없이재사용. 이전184711586B정리·cache{"deleted":0,"bytes":0,"receipt":null}.
+
+1179–1181 세브라우저 프로브변경행/여러prepare대기변경/full우선/GL상태복원/진단을묶음구현. 두밝기288B 대조전체1008B·정지0·실제세렌더러픽셀/복원/인스턴스/해제통과. Player1173/Host1041·native14/CPP19동일SHA재사용으로빌드/native게임검사반복없음. static1180 API/AI통과,설치1183준비.
