@@ -1,0 +1,180 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "88b24424a240b7cb130cbaa2764a65482522eed2",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\065f943a22f4e5fb",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\065f943a22f4e5fb\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\065f943a22f4e5fb\\HBEngine.exe",
+  "bundleHash": "065f943a22f4e5fbe880e8c8cbb519df74d26f18b75806b98812345887591ea4",
+  "files": 4040,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4032,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\629220bbab426e05",
+        "bytes": 187482137,
+        "manifestSHA256": "bff811e4648858a703263fff59dba6a5966cc60fc9ba15780e8480d727e92fa8"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T20:29:20.0167285Z",
+    "bytes": 187482137,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "065f943a22f4e5fb"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 705,
+  "repositoryOnlyTestSourcesVerified": 25,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [
+    "native/desktop/SceneRenderBridge.hpp",
+    "native/include/HBEngine/ConstantBufferCache.hpp",
+    "native/include/HBEngine/SceneRender.hpp"
+  ],
+  "nativePlayerSHA256": "da86f16dc48681473001c757e1f3ecdce38b266cc13cd417c7502937de9aa5d7",
+  "installedGates": [
+    {
+      "path": "native/build/probe-priority-1371-player-gyY3X7/acceptance.json",
+      "sha256": "5530eb7452d0864d99e450db824a3bc5b2456458b7a22cae23a14e9b8a9dd7b5",
+      "scope": "Actual packaged D3D11 game reports growing exact-byte probe/2D skip counters with1584B CPU cache and compiles user C++ SetPriorityBlend and executes generated Blueprint node true/false on same component. Four captured images/layouts retained and actor transform preserved. Independent physical pixel math proved in1357/1359; this game asserts command propagation and resource lifetime.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\065f943a22f4e5fb\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/bp-timeline-owner-1370-window-CHkNYE/acceptance.json",
+      "sha256": "a0b16f44bd62ac3591dd0d202252fd669c2e2fc5780700c5287b351e62ab026b",
+      "scope": "Owned hidden editor: track deletion after graph replacement removes live wire and saves one Undo; real content-browser rename followed by timeline close releases map/listener/observer/WeakMap; reopening creates a fresh usable editor. User windows/clipboard/profiles untouched.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\065f943a22f4e5fb\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/blueprint-2d-1221-UluYC6/acceptance.json",
+      "sha256": "925ebf494597f2b3444f4870cc0ab2f41524537ef8fd783006a8d7739bb34b20",
+      "scope": "Selected installation builder creates and runs actual Windows D3D11 game. GameMode defaultPawn is C++-derived TopDownCharacter2D, typed SpriteActor function receives authored Blueprint actor, preserves spawn position and queues witness pose; real W input moves in XY with Z fixed. No mobile-device/FPS/full-engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\065f943a22f4e5fb\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\065f943a22f4e5fb\\",
+    "elapsedMs": 60.69,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\065f943a22f4e5fb",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "065f943a22f4e5fbe880e8c8cbb519df74d26f18b75806b98812345887591ea4",
+      "installedAt": "2026-10-21T20:29:16.810Z",
+      "manifestFiles": 4040,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4040,
+  "versions": [
+    "065f943a22f4e5fb"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1376-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/constant-buffer-cache-1367-2x9Hze/acceptance.json",
+      "sha256": "850f8ccd4e8332fbd7fc1281dbcb20a942e1e0f74ef978e96e9395d614160ce5",
+      "scope": "Typed cache3000hits, slot isolation, success-only commit/repeated missed upload, invalidate/bounds, negative-zero/NaN bits."
+    },
+    {
+      "path": "native/build/scene-constant-cache-1368-lC4Plh/acceptance.json",
+      "sha256": "4608b2b7f43c71bd6de4509a63bfdf676a2c30c06b7abb6b6e79697b9f632570",
+      "scope": "Actual D3D11:3000 differing world draws,3 uploads/2997 skips per probe/2D group,1584B CPU; changed2D/probe reaches slots; SRV-only red/green no constant upload; dim/removal; existing2D mask/layer/blend/cookie/freeform/stencil pixels/validation."
+    },
+    {
+      "path": "native/build/probe-priority-1371-player-0q4faY/acceptance.json",
+      "sha256": "e78804175ac5829a34d76d5ded70191044ad0308b6e76c56470fb67d4551fbe4",
+      "scope": "Actual newPlayer1369 game; C++/BP five modes still4captures/150copies/1layout and authored pose; readonly cache counts1584B with growing skips."
+    },
+    {
+      "path": "native/build/bp-timeline-owner-1370-window-A1goeS/acceptance.json",
+      "sha256": "bc81cbc32ad82091a36c0167cb79e16de8396943677301a5062656e4333ab312",
+      "scope": "Actual hidden editor Undo swaps graph before track/wire removal; one Undo/Redo/save; real browser F2 rename, close releases resources and reopening creates fresh editor."
+    },
+    {
+      "path": "native/build/blueprint-2d-1221-C8BgGS/acceptance.json",
+      "sha256": "222714f81178684b2253aa427a64e2f0d71862ee801d64dd01373383e3c35a08",
+      "scope": "Actual newPlayer1369 2D C++ derived TopDownCharacter2D/defaultPawn typed SpriteActor call, authored pose preserved and W moves XY/Zfixed."
+    },
+    {
+      "path": "native/build/context-focus-1373.json",
+      "sha256": "97a2813ff1018c2303460560824d36f855f5d423ef48400d1c35ce384f03c9ec",
+      "scope": "Registered exact route hit3files169453B vs explicitall891files7309870B; same scoped matches, miss fallback, explicit expansion and validation. Timing151/348ms observed, not model understanding time."
+    },
+    {
+      "path": "native/build/native-constant-schema-1372.json",
+      "sha256": "b19717a23b914134b477ff5cef6b6049875baeaf883e9d50f15d790098243239",
+      "scope": "Readonly cumulative exact-byte upload/skip fields,1584B budget, no new GPU resources and unchanged main constants documented."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/probe-priority-1371-player-0q4faY/acceptance.json",
+      "sha256": "e78804175ac5829a34d76d5ded70191044ad0308b6e76c56470fb67d4551fbe4",
+      "scope": "Actual newPlayer1369 game; C++/BP five modes still4captures/150copies/1layout and authored pose; readonly cache counts1584B with growing skips."
+    },
+    {
+      "path": "native/build/blueprint-2d-1221-C8BgGS/acceptance.json",
+      "sha256": "222714f81178684b2253aa427a64e2f0d71862ee801d64dd01373383e3c35a08",
+      "scope": "Actual newPlayer1369 2D C++ derived TopDownCharacter2D/defaultPawn typed SpriteActor call, authored pose preserved and W moves XY/Zfixed."
+    }
+  ],
+  "scope": "Installed D3D11 successful-byte constant cache, readonly stats, Timeline current graph/one Undo and renamed close lifetime, AI scoped exact-route lookup with --all/fallback. Source actual3000 differing world draws need3 uploads/2997 skips per group,1584B CPU/no new GPU buffers and real2D mask/lights/stencil retained. Installed actual C++/BP5states with growing cache counters, real editor track/wire Undo and F2rename/close/reopen, actual2D typedPawn/pose/XYkeyboard. Native Player1369 changed and Host unchanged. Manifest/source/test/vendor/User/links/Versions1 verified; no whole-game FPS/full-engine claim.",
+  "version": 1,
+  "date": "2026-10-21T20:31:50.014Z",
+  "work": "docs/research/ENGINE_WORK_1374.json",
+  "distributionSync": "native/build/distribution-1375-sync.json",
+  "nativeCachePrune": {
+    "path": "native/build/cache-prune-1792611199342-7fc95717-c662-48dc-a514-1441315ffee6/result.json",
+    "sha256": "f9b363933406b04808223046d04710e7a0804f4e61cf6a33edf3071c3d80fa2a",
+    "bytes": 145415411,
+    "deleted": 2,
+    "scope": "Existing managed cleanup receipt; no extra manual source/cache copy or empty prune record."
+  },
+  "sourceNativeProof": "native/build/scene-constant-cache-1368-lC4Plh/acceptance.json",
+  "vendorPatch": "tools/patch-three-uniforms.mjs"
+}

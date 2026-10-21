@@ -817,11 +817,6 @@
       "scope": "Actual newPlayer1369 2D C++ derived TopDownCharacter2D/defaultPawn typed SpriteActor call, authored pose preserved and W moves XY/Zfixed."
     }
   ],
-  "pendingInstalledGates": [
-    "tools/check-native-constant-cache-1371-player.mjs",
-    "tools/check-bp-timeline-owner-1370-window.mjs",
-    "tools/check-blueprint-2d-1221-player.mjs"
-  ],
   "nativePlayerSHA256": "da86f16dc48681473001c757e1f3ecdce38b266cc13cd417c7502937de9aa5d7",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -882,8 +877,8 @@
   },
   "research": "No new external feature claim; existing native buffer/runtime ownership contracts implemented and measured. Official1354 reads remain scoped, not full corpus.",
   "diagnostic": "DEBUG_HANDOFF.md#1366–1373; test preparation failures excluded.",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1364.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1376.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     {
@@ -913,5 +908,34 @@
       ]
     }
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/probe-priority-1371-player-gyY3X7/acceptance.json",
+      "sha256": "5530eb7452d0864d99e450db824a3bc5b2456458b7a22cae23a14e9b8a9dd7b5",
+      "scope": "Actual packaged D3D11 game reports growing exact-byte probe/2D skip counters with1584B CPU cache and compiles user C++ SetPriorityBlend and executes generated Blueprint node true/false on same component. Four captured images/layouts retained and actor transform preserved. Independent physical pixel math proved in1357/1359; this game asserts command propagation and resource lifetime.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\065f943a22f4e5fb\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/bp-timeline-owner-1370-window-CHkNYE/acceptance.json",
+      "sha256": "a0b16f44bd62ac3591dd0d202252fd669c2e2fc5780700c5287b351e62ab026b",
+      "scope": "Owned hidden editor: track deletion after graph replacement removes live wire and saves one Undo; real content-browser rename followed by timeline close releases map/listener/observer/WeakMap; reopening creates a fresh usable editor. User windows/clipboard/profiles untouched.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\065f943a22f4e5fb\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/blueprint-2d-1221-UluYC6/acceptance.json",
+      "sha256": "925ebf494597f2b3444f4870cc0ab2f41524537ef8fd783006a8d7739bb34b20",
+      "scope": "Selected installation builder creates and runs actual Windows D3D11 game. GameMode defaultPawn is C++-derived TopDownCharacter2D, typed SpriteActor function receives authored Blueprint actor, preserves spawn position and queues witness pose; real W input moves in XY with Z fixed. No mobile-device/FPS/full-engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\065f943a22f4e5fb\\HBEngine.exe"
+      ]
+    }
+  ]
 }

@@ -922,3 +922,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1364 설치확인: 629220bbab426e05·4031명세/698소유SHA/22repository검사/2vendor. 설치실제GL/GPU/fallback각3200오차7.71e-7, 설치패키지D3D11 CPP/BP5상태·캡처4/copy150/layout1, 설치Inspector/Undo/AI 통과. Player1360 55bd14…/Host재사용/4native변경. User10849읽기SHA/연결/Versions1·이전187330829B회수. SourceNative8192+굴절8/오차1B/0 및cache145415411B정리근거유지. 전체렌더러·엔진·연구완료처리안함.
 
 1366–1374: DirectX probe/2D 상수3슬롯성공cache·실제3000draw각3upload/2997skip·CPU1584B/GPU추가0, SRV만이미지교체/강도/제거·2D mask/layer/blend/cookie/freeform/stencil통과. Player1369 한번24.65초/da86f16d…/Host불변·native2변경1신규; 실제C++/BP5상태와캐시진단·2D typedPawn/좌표/XY입력통과. Timeline Undo후현재track/wire동시삭제/한Undo·실제F2rename/close/reopen. AI focusRoute3파일169KB vs전체891파일7.31MB, missfallback/--all/범위·schema. 기존잔여유지/전체분모null. source6a7b6de·설치영향검사대기.
+
+1376 설치확인: 065f943a22f4e5fb·4040명세/705소유SHA/25repository검사/2vendor. 설치실제CPP/BP5상태/캐시skip증가·2D typedPawn/좌표/XY입력·Timeline graph교체/트랙배선한Undo/F2rename/close/reopen통과. 설치context3소유파일/마커일치. Player1369 da86f16d…·Host불변. User10849읽기SHA보존·연결확인·Versions1·이전187482137B회수. 전체분모/잔여null정책유지.
