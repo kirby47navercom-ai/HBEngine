@@ -908,3 +908,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1329–1331: 같은state청크의broadcast지역직렬화공유·연결별증가번호가드·UTF8최대1MiB·동일row참조비교/메타진단. 실제9연결129상태에서JSON생성3/재사용24·혼합owner/번호순서·1MiB초과전송/공유peak936502B, 삭제7·기존관심5·network6·AI경로통과. native16/CPP21/Player1321/Host불변·C++/GUI/렌더재빌드반복없음. 변경된설치서버소켓검사1회대기.
 
 1333 설치확인: 2722c0ef1812c5fd·4007명세/680소유SHA·설치서버9연결/129상태 생성3·재사용24/혼합view·순서/공유936502B 상한 통과. native16/CPP21/Player1321/Host불변·1327의실제D3D11CPP/UI근거재사용. User10849읽기SHA/연결/Versions1·이전186956860B 회수. 새컴파일/프로필/캐시누적없음.
+
+1335–1338: 선택기존키경계 베이크/외부보간·범위밖·가중/Clamped끝기울기 보존, XYZ등가Euler/360연속화·회전semantic·키총예산/정렬/FP끝점·골격scalar/null복원. 모델9/외부808/방향1000·기존10/15600·가중9/240·Infinity9·GUI YJbmUq 실제UI/Undo/AI/BP 위치[.5,1,0]/회전[0,91.5,0] 통과. 곡선트랙선택기/축행/재생줄가림·Clamped라벨수정. 원인진단KXclZh로숨은timeline버튼0rect확인·잘못된수정가설/검사quoting은성과제외. native불변·설치게임1회대기.
