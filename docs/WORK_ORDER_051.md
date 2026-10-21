@@ -874,3 +874,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1250–1255: 구조체/C++/분기1247설치후멈추지않고Shot/SubSequence추가. 구간localtime/offset/rate/loop·Shot상위row·누적priority·자식채널복원/seek/stop·이벤트cut/loop경계·취소/순환/원본보존·drag/trim/context복제삭제/원본열기·실제preview대상fit/follow·AI2명령·공용패키징검증. 모델15/기존load4/priority4/completion3·AIcontext·실제최종GUI V94xOn 통과. native16/Struct.hpp/Player/Host불변재사용. 원점/timewarp/가중blend/부모문맥/Take/썸네일등잔여유지.
 
 1257 설치확인: fbe3037f251ced44 · 3944명세/623소유SHA. 이전구조체/C++기능보존·최종sourceGUI재사용·실제설치D3D11패키지부모1.25초/소스offset으로위치[7.5,0,0]통과. native16/Player/Host재사용·User10849파일읽기SHA보존·연결/Versions1·이전185902069B정리. 전체누적잔여유지,원점/timewarp/부모문맥/혼합/Take/썸네일을완료로계산하지않음.
+
+1259–1262: 시퀀스1257설치후네트워크관심위치전수순회축소. 가변반경3D버킷·전역/소유자·known이탈숨김·루트자식재색인/부모변경구링크정리·같은셀재사용/빈목록회수·요청통계/AI. 모델oracle100질의/10만희소자료32질의후보1/실제socket11+기존6검사약2초통과. 게임FPS/밀집RAM측정아님. 기존게임/UI/네이티브소유불변이므로재검사없이설치서버socket만확인.
