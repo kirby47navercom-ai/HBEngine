@@ -7,7 +7,7 @@ export function configureSkeletalCurve(data,params){
  const track={...structuredClone(curve),type:'light',id:'curve'},holder={tracks:[track]};
  if(params.operation)Object.assign(track,editCurveKeys(track,params));else configureSequenceCurve(holder,{...params,track:'curve'});
  const next=structuredClone(data),destination=next.curves.find(c=>c.name===params.curve);destination.keys=track.keys;for(const p of ['preInfinity','postInfinity'])if(track[p]===undefined)delete destination[p];else destination[p]=track[p];
- if(!validRetargetAsset('skeletalclip',next))throw Error('골격 곡선의 시간·값·키 간격을 확인하세요.');Object.assign(curve,destination);return curve;
+ if(!validRetargetAsset('skeletalclip',next))throw Error('골격 곡선의 시간·값·키 간격을 확인하세요.');for(const p of ['preInfinity','postInfinity'])if(destination[p]===undefined)delete curve[p];Object.assign(curve,destination);return curve;
 }
 export function skeletalCurveEditor(element,controller,index){
  let source=controller.doc.data.curves[index];const node={id:'skeletal_curve',timeline:{length:controller.doc.data.duration,playRate:1,loop:true,autoplay:false,lastKeyframe:false,ignoreTimeDilation:false,tracks:[{...structuredClone(source),id:'curve',type:'float',interpolation:'linear'}]}};

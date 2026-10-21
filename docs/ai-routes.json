@@ -544,7 +544,10 @@
         "클램프 자동",
         "골격 곡선",
         "곡선 베이크",
-        "키 축약"
+        "키 축약",
+        "Euler",
+        "부분 베이크",
+        "rangeOnly"
       ],
       "paths": [
         "prototype/animation-graph-runtime.js",
