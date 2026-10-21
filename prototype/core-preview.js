@@ -1,6 +1,6 @@
 import {validActorScale} from './transform-scale.js';
 // Browser preview of the shared API. C++ implementation lives in Game.hpp.
-import {catalog,basePins,fieldsFor,defaultInputValue,validValue} from './blueprint-model.js';
+import {catalog,basePins,structFieldPins,fieldsFor,defaultInputValue,validValue} from './blueprint-model.js';
 import {libraryByKey} from './library-spec.js';
 const eq=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 export const blueprintPure={random:a=>({return:a.min+Math.random()*(a.max-a.min)}),greater:a=>({return:a.a>a.b}),less:a=>({return:a.a<a.b}),equal:a=>({return:eq(a.a,a.b)}),notEqual:a=>({return:!eq(a.a,a.b)}),and:a=>({return:a.a&&a.b}),or:a=>({return:a.a||a.b}),not:a=>({return:!a.value}),select:a=>({return:a.condition?a.a:a.b}),concat:a=>({return:a.a+a.b}),stringLength:a=>({return:a.value.length}),contains:a=>({return:a.value.includes(a.search)}),toString:a=>({return:String(a.value)}),arrayLength:a=>({return:a.array.length}),arrayFind:a=>({return:a.array.findIndex(v=>eq(v,a.item))}),arrayContains:a=>({return:a.array.some(v=>eq(v,a.item))}),makeTransform:a=>({return:{position:a.position,rotation:a.rotation,scale:a.scale}}),makeColor:a=>({return:[a.r,a.g,a.b,a.a]}),reroute:a=>({value:a.value})};
@@ -50,8 +50,8 @@ export function evaluateCoreNode(graph,id,context){
     const edge=graph.edges.find(e=>e.to.node===n.id&&e.to.pin===p.id);
     if(edge)return readOutput(edge.from);
     if(n.splitPins?.includes('in:'+p.id)){
-      const fields=fieldsFor(p.type),values=fields.map(f=>readInput(n,{...f,id:p.id+'.'+f.id}));
-      return ['vec2','vec3','color'].includes(p.type)?values:Object.fromEntries(fields.map((f,i)=>[f.id,values[i]]));
+      const fields=structFieldPins(n,p),values=fields.map(f=>readInput(n,f));
+      return ['vec2','vec3','color'].includes(p.type)?values:Object.fromEntries(fields.map((f,i)=>[f.id.slice(f.id.lastIndexOf('.')+1),values[i]]));
     }
     return structuredClone(defaultInputValue(n,p));
   }
@@ -69,7 +69,7 @@ export function evaluateCoreNode(graph,id,context){
     let output;
     if(n.key==='getVariable')output={value:structuredClone(graph.variables.find(v=>v.id===n.variableId)?.value)};
     else if(n.key==='reroute')output={value:readInput(n,basePins(n,'in',graph)[0])};
-    else output=evaluateCore(n.key,Object.fromEntries(basePins(n,'in',graph).filter(p=>p.type!=='exec').map(p=>[p.id,readInput(n,p)])),context);
+    else{const args=Object.fromEntries(basePins(n,'in',graph).filter(p=>p.type!=='exec').map(p=>[p.id,readInput(n,p)]));output=blueprintPure[n.key]?blueprintPure[n.key](args):evaluateCore(n.key,args,context);}
     memo.set(n.id,output);context.values.set(n.id,output);visiting.delete(n.id);return output;
   }
   const node=graph.nodes.find(n=>n.id===id);if(!node)throw Error('노드가 없어요.');return run(node);

@@ -88,7 +88,7 @@
 - C++ 칸이 있는 함수는 Game.hpp를 include해 같은 이름으로 직접 호출한다. VM 제어 노드는 C++ 함수와 다른 실행 구조이며, 브라우저 게임 서비스의 native API는 별도 구현 대상이다.
 - 자료형별 배열의 Reverse/Append/Slice/Unique는 사본 반환이다. Set/Add/Remove는 배열 변수를 수정하는 실행 노드다. 저장과 공통 배열 계산은 128원소다.
 - 32비트 int, 0~1 RGBA Color, XYZ Euler degree, +Z Forward/+Y Up을 사용한다. 새 Text 연산은 Unicode scalar 기준이고 대소문자 변환은 ASCII다.
-- Switch/MultiGate는 3출력, Sequence는 2출력이다. 동적 출력 핀은 미지원이다.
+- Sequence/MultiGate/Switch는 실행 출력 핀을 추가·삭제할 수 있다. Switch 기본 출력을 끌 수 있고 기존 핀 ID와 연결은 유지한다. 이벤트 실행량 10000 제한을 공유한다.
 - openScene은 실행 서비스를 아직 구현하지 않아 명시적으로 실패한다. Audio는 브라우저 코덱, Animation은 가져온 모델의 포함 클립을 사용한다. 충돌은 AABB 접촉, Trace는 Three mesh 검사, Impulse는 속도 적용이다.
 - Construction은 별도 그래프의 진입점이고 Timeline 트랙 핀은 편집한 트랙에 따라 추가된다. 사용자 이벤트·피해/위젯 이벤트에는 외부 emit 호출이 필요하다.
 
@@ -131,7 +131,7 @@
 | forEach | For Each Loop / 배열 반복 | exec: exec, array: float[] | body: exec, item: float, index: int, completed: exec | — | VM / 브라우저 서비스 |
 | doOnce | Do Once / 한 번 실행 | exec: exec, reset: exec | then: exec | — | VM / 브라우저 서비스 |
 | flipFlop | Flip Flop / 번갈아 실행 | exec: exec | a: exec, b: exec, isA: bool | — | VM / 브라우저 서비스 |
-| gate | Gate / 실행 게이트 | exec: exec, open: exec, close: exec, toggle: exec | then: exec | — | VM / 브라우저 서비스 |
+| gate | Gate / 실행 게이트 | exec: exec, open: exec, close: exec, toggle: exec, startClosed: bool | then: exec | — | VM / 브라우저 서비스 |
 | doN | Do N / 정해진 횟수 실행 | exec: exec, reset: exec, count: int | then: exec, counter: int | — | VM / 브라우저 서비스 |
 | multiGate | Multi Gate / 여러 경로 순차 실행 | exec: exec, reset: exec, loop: bool, random: bool, startIndex: int | out0: exec, out1: exec, out2: exec, index: int | — | VM / 브라우저 서비스 |
 | whileLoop | While Loop / 조건 반복 | exec: exec, condition: bool | body: exec, completed: exec | — | VM / 브라우저 서비스 |

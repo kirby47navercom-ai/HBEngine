@@ -108,7 +108,16 @@
         "blueprint",
         "node",
         "macro",
-        "timeline"
+        "timeline",
+        "실행 출력",
+        "핀 추가",
+        "핀 분할",
+        "구조체",
+        "기본값",
+        "Sequence",
+        "MultiGate",
+        "Switch",
+        "Promote"
       ],
       "paths": [
         "prototype/blueprint-model.js",
@@ -116,7 +125,10 @@
         "prototype/blueprint-connections.js",
         "prototype/blueprint-workspace.js",
         "prototype/blueprint-details.js",
-        "native/include/HBEngine/Game.hpp"
+        "native/include/HBEngine/Game.hpp",
+        "prototype/flow-pins.js",
+        "prototype/pin-values.js",
+        "docs/BLUEPRINT_FLOW_PINS.md"
       ]
     },
     {

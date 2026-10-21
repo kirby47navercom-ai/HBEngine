@@ -1,4 +1,5 @@
-import {catalog, effectivePins, canConnect, connect, makeNode} from './blueprint-model.js';
+import {isFlowNode} from './flow-pins.js';
+import {catalog, effectivePins, canConnect, connect, makeNode,defaultInputValue,defaultsFor,validValue,variableTypes} from './blueprint-model.js';
 
 // Explicit shared C++ operations only. Arrays, references and execution never coerce.
 const conversions=new Map([
@@ -10,7 +11,7 @@ const conversions=new Map([
 // New helper nodes use nearby free space; existing user-arranged nodes stay put.
 export function nodeBounds(node,graph){
   const inputs=effectivePins(node,'in',graph),outputs=effectivePins(node,'out',graph),event=catalog.find(s=>s.key===node.key)?.kind==='event';
-  return {...node.position,width:node.key==='getVariable'?180:Math.max(node.key==='timeline'?350:230,Math.max(0,...inputs.map(p=>p.label.length))*6+Math.max(0,...outputs.map(p=>p.label.length))*6+75),height:node.key==='getVariable'?45:72+Math.max(inputs.length,outputs.length-(event?1:0))*36};
+  return {...node.position,width:node.key==='getVariable'?180:Math.max(node.key==='timeline'?350:230,Math.max(0,...inputs.map(p=>p.label.length))*6+Math.max(0,...outputs.map(p=>p.label.length))*6+75),height:node.key==='getVariable'?45:72+Math.max(inputs.length,outputs.length-(event?1:0))*36+(isFlowNode(node)?29:0)};
 }
 export function placeHelperNode(graph,node){
   const shape=nodeBounds(node,graph),others=graph.nodes.map(n=>nodeBounds(n,graph)),gap=24;
@@ -64,11 +65,28 @@ export function dropVariable(graph,variableId,target,position,mode){
       result=connect(candidate,endpoint,{node:node.id,pin:'exec'});
       if(result.ok&&previous)result=connect(candidate,{node:node.id,pin:'then'},previous.to);
     }else{
-      const previous=candidate.edges.find(e=>e.to.node===target.node&&e.to.pin===target.pin);
+      const previous=candidate.edges.filter(e=>e.to.node===target.node&&e.to.pin===target.pin);
       result=connect(candidate,{node:node.id,pin:'then'},endpoint);
-      if(result.ok&&previous)result=connect(candidate,previous.from,{node:node.id,pin:'exec'});
+      for(const edge of previous){if(!result.ok)break;result=connect(candidate,edge.from,{node:node.id,pin:'exec'});}
     }
     if(!result.ok)return result;
   }
   graph.nodes=candidate.nodes;graph.edges=candidate.edges;return {ok:true,node};
+}
+
+export function promotePin(graph,target){
+  const owner=graph.nodes.find(n=>n.id===target?.node),pin=owner&&effectivePins(owner,target.direction,graph).find(p=>p.id===target.pin);
+  if(!pin||!['in','out'].includes(target.direction)||!Object.hasOwn(variableTypes,pin.type))return {ok:false,reason:'값 핀을 선택하세요.'};
+  const literal=target.direction==='in'?defaultInputValue(owner,pin):pin.array?[]:defaultsFor(pin.type),value=structuredClone(literal);
+  if(!(pin.array?Array.isArray(value)&&value.length<=128&&value.every(v=>validValue(pin.type,v)):validValue(pin.type,value)))return {ok:false,reason:'핀 기본값을 확인하세요.'};
+  const base=(pin.label.replace(/\s+/g,'')||'Value').slice(0,70);let name=base,index=1;while(graph.variables.some(v=>v.name===name))name=base+index++;
+  const variable={id:'var_'+crypto.randomUUID().replaceAll('-',''),name,type:pin.type,container:pin.array?'array':'single',value},candidate={...graph,variables:[...graph.variables,variable],nodes:[...graph.nodes],edges:structuredClone(graph.edges)},position={x:Math.max(-10000,Math.min(10000,owner.position.x+(target.direction==='in'?-270:270))),y:owner.position.y};
+  let result;
+  if(target.direction==='in')result=dropVariable(candidate,variable.id,target,position,'get');
+  else{
+    const execution=effectivePins(owner,'out',graph).filter(p=>p.type==='exec');
+    result=dropVariable(candidate,variable.id,execution.length===1?{node:owner.id,pin:execution[0].id,direction:'out'}:null,position,'set');
+    if(result.ok){const wire=connectAutomatic(candidate,{node:owner.id,pin:pin.id},{node:result.node.id,pin:'value'});if(!wire.ok)return wire;}
+  }
+  if(!result.ok)return result;graph.variables.push(variable);graph.nodes=candidate.nodes;graph.edges=candidate.edges;return {ok:true,node:result.node,variable};
 }

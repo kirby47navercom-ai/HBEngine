@@ -10,7 +10,8 @@ export function generatedCore(){
     if(!f.nodeKey)throw Error(c.name+'.'+f.name+' 노드 ID 누락');
     const instanceLabels=f.nodeKey.startsWith('sceneInstance')?{instance:'인스턴스',localId:'로컬 ID',includeInactive:'비활성 포함'}:f.nodeKey==='navigationAvoidance'?{target:'대상',mode:'회피 방식',horizon:'예측 시간',neighborDistance:'이웃 거리',maxNeighbors:'최대 이웃 · 0 전체',priority:'우선순위'}:{};
     const exec={id:'exec',label:'실행',type:'exec',array:false},then={id:'then',label:'다음',type:'exec',array:false};
-    const defaults=Object.fromEntries(f.inputs.filter(p=>p.default!==undefined||['duration','speed','scale','alpha','tolerance','delta','maxLength'].includes(p.id)).map(p=>[p.id,p.default!==undefined?p.default:(p.id==='delta'?1/60:p.id==='tolerance'?.001:1)]));
+    const defaults=Object.fromEntries(f.inputs.filter(p=>p.default!==undefined||['duration','speed','scale','alpha','tolerance','delta','maxLength'].includes(p.id)).map(p=>[p.id,p.default!==undefined?p.default:(p.array?[]:p.type==='vec2'?[1,1]:p.type==='vec3'?[1,1,1]:p.id==='delta'?1/60:p.id==='tolerance'?.001:1)]));
+    if(['setScale','skinSetScale'].includes(f.nodeKey))defaults.value=f.nodeKey==='setScale'?[1,1,1]:[1,1];
     if(f.nodeKey.startsWith('physics')){if(f.inputs.some(p=>p.id==='mode'))defaults.mode='force';if(f.inputs.some(p=>p.id==='radius'))defaults.radius=.5;if(f.inputs.some(p=>p.id==='extent'))defaults.extent=[.5,.5,.5];}
     (f.service?services:entries).push({key:f.nodeKey,title:f.label.replace(/([a-z0-9])([A-Z])/g,'$1 $2'),ko:f.ko,group:f.service?f.category:(group[c.name]||f.category),keywords:f.nodeKey+' '+f.label+' '+f.ko+' '+f.category+' c++ cpp',cppName:'hb::'+c.name+'::'+f.name,pure:f.pure,...(f.service?{service:true}:{}),inputs:[...(!f.pure?[exec]:[]),...f.inputs.map(p=>instanceLabels[p.id]?{...p,label:instanceLabels[p.id]}:p)],outputs:[...(!f.pure?[then]:[]),...f.outputs.map(p=>({...p,id:p.id==='result'?'return':p.id}))],defaults});
   }

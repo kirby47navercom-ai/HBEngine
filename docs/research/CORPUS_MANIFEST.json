@@ -4905,5 +4905,36 @@
       "UE small-capture full override/lightmap interaction and linked API/Lightmass",
       "Other registered source/version gates remain unchanged"
     ]
+  },
+  "supplemental1210": {
+    "date": "2026-10-21",
+    "targets": [
+      "CPP-01"
+    ],
+    "record": "docs/BLUEPRINT_FLOW_PINS.md",
+    "rows": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/flow-control-in-unreal-engine",
+        "readScope": "Own Switch editing, MultiGate, Sequence and Gate sections; compared added/removed outputs, default branch, order/random/loop/reset/start index and Start Closed. Other sections and linked API not a whole-body completion."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/struct-variables-in-blueprints?application_version=4.27",
+        "readScope": "Own nested structs, Split/Recombine, Make/Break and custom structure/Set Members descriptions. Implemented built-in nested literal preservation; user-defined structs/Set Members remain."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/nodes-in-unreal-engine",
+        "readScope": "Own Pins, Auto-Casting, Promote to Variable and Wires descriptions; fixed Promote get/set wiring. Collapsed graph expansion remains separate."
+      },
+      {
+        "url": "https://ue4wiki.imzlp.com/mediawikiv2-website-prod05.ol.epicgames.net/index6b14.html?title=Blueprint_Spotlight_On/Off_Switch_Tutorial",
+        "readScope": "Historical Epic Wiki mirror, own flow fan-in note and FlipFlop example. Used as historical primary material, not current UE API or complete official corpus."
+      }
+    ],
+    "wholeCorpus": false,
+    "wholeApi": false,
+    "unread": [
+      "All linked engine/API and remaining source/version gates unchanged",
+      "Custom struct/enum assets, Switch enum/name, Set Members and collapsed graph expansion parity remain; not silently excluded"
+    ]
   }
 }

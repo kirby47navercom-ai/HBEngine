@@ -1,3 +1,4 @@
+import {isFlowNode,isSwitchNode,flowOutputIds} from './flow-pins.js';
 import {clothPinControls} from './cloth-pin-editor.js';
 import {jointDOFControls} from './joint-dof-editor.js';
 import {vehiclePowertrainControls} from './vehicle-powertrain-editor.js';
@@ -47,6 +48,7 @@ export function detailsMarkup(root,graph,selection,objects,assets,sortingLayers)
   }else if(selection.kind==='node'){
     const n=graph.nodes.find(n=>n.id===selection.id);if(!n)return detailsMarkup(root,graph,{kind:'blueprint'},objects,assets,sortingLayers);title=nodeTitle(n,graph);const s=catalog.find(s=>s.key===n.key);
     content=group('노드',row('이름','title',title,'text','maxlength="80" aria-label="노드 표시 이름"')+row('활성화','enabled',n.enabled??true,'checkbox')+row('중단점','breakpoint',n.breakpoint??false,'checkbox')+(s?.arrayType?field('배열 원소 자료형',select('valueType',n.valueType||'float',types)):'')+field('주석',`<textarea data-detail-field="comment" maxlength="2000" aria-label="노드 주석">${esc(n.comment||'')}</textarea>`));
+    if(isFlowNode(n))content+=group('실행 출력',flowOutputIds(n).map((id,i)=>field((n.key==='sequence'?'Then ':'Out ')+i,`<button data-flow-remove="${id}" data-flow-node="${esc(n.id)}" aria-label="출력 ${i} 삭제" ${!isSwitchNode(n)&&flowOutputIds(n).length===1?'disabled':''}>×</button>`)).join('')+`<button class="bp-add-pin" data-flow-add="${esc(n.id)}">+ 핀 추가</button>`+(isSwitchNode(n)?field('기본 출력',`<input type="checkbox" data-flow-default="${esc(n.id)}" ${n.flowHasDefault===false?'':'checked'}>`):''));
     if(n.nativeId){const {c,f,p}=nativeMember(root,n);content+=group('C++',field('클래스',`<span class="bp-readonly">${esc(c.name)}</span>`)+field('멤버',`<span class="bp-readonly">${esc(f?.name||p?.name)}</span>`)+field('노출',`<span class="bp-readonly">${esc(f?(f.event!=='none'?f.event==='native'?'Native Event':'Implementable Event':f.pure?'Pure':'Callable'):p.readOnly?'Read Only':'Read / Write')}</span>`)+(f?.lifecycle?field('자동 실행',`<span class="bp-readonly">${esc(f.lifecycle)}</span>`):''));}
     if(s?.cppName)content+=group('공통 C++ API',`<code class="bp-api-name">${esc(s.cppName)}</code><button class="bp-add-pin" data-action="preview-api">${s.pure?'값 계산':'미리보기 호출'}</button><output id="node-api-result" aria-live="polite"></output>`);
     if(n.symbolId)content+=`<button class="bp-add-pin" data-inspect-symbol="${n.symbolId}">시그니처 편집</button>`;

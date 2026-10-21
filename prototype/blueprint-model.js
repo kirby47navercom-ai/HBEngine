@@ -1,3 +1,6 @@
+import {defaultsFor,validValue} from './pin-values.js';
+export {defaultsFor,validValue};
+import {dynamicFlowPins,validFlowNode,isFlowNode,isSwitchNode,flowOutputIds} from './flow-pins.js';
 import {blueprintClasses} from './class-types.js';
 import {componentDefaults,validComponents} from './scene-components.js';
 export {componentDefaults};
@@ -57,7 +60,7 @@ catalog.push(
   spec('distance','Distance','거리','벡터',[pin('a','A','vec3'),pin('b','B','vec3')],[pin('return','Distance','float')]),
   ...[['dot','Dot Product','내적','float'],['cross','Cross Product','외적','vec3']].map(([k,en,ko,t])=>spec(k,en,ko,'벡터',[pin('a','A','vec3'),pin('b','B','vec3')],[pin('return','Result',t)])),
   spec('vectorLerp','Lerp Vector','벡터 보간','벡터',[pin('a','A','vec3'),pin('b','B','vec3'),pin('alpha','Alpha','float')],[pin('return','Result','vec3')]),
-  spec('makeTransform','Make Transform','트랜스폼 만들기','변환',[pin('position','Position','vec3'),pin('rotation','Rotation','vec3'),pin('scale','Scale','vec3')],[pin('return','Transform','transform')]),
+  spec('makeTransform','Make Transform','트랜스폼 만들기','변환',[pin('position','Position','vec3'),pin('rotation','Rotation','vec3'),{...pin('scale','Scale','vec3'),default:[1,1,1]}],[pin('return','Transform','transform')]),
   spec('getTransform','Get Transform','트랜스폼 가져오기','변환',[pin('target','Target','object')],[pin('return','Transform','transform')]),
   flow('setTransform','Set Transform','트랜스폼 설정','변환',[pin('target','Target','object'),pin('value','Transform','transform')]),
   ...[['getRotation','Get Rotation','회전 가져오기'],['getScale','Get Scale','크기 가져오기']].map(([k,en,ko])=>spec(k,en,ko,'변환',[pin('target','Target','object')],[pin('return','Value','vec3')])),
@@ -84,7 +87,7 @@ catalog.push(
   spec('forEach','For Each Loop','배열 반복','흐름 제어',[pin('exec','실행'),pin('array','Array','float',true)],[pin('body','Loop body'),pin('item','Item','float'),pin('index','Index','int'),pin('completed','Completed')]),
   flow('doOnce','Do Once','한 번 실행','흐름 제어',[pin('reset','Reset')]),
   spec('flipFlop','Flip Flop','번갈아 실행','흐름 제어',[pin('exec','실행')],[pin('a','A'),pin('b','B'),pin('isA','Is A','bool')]),
-  spec('gate','Gate','실행 게이트','흐름 제어',[pin('exec','Enter'),pin('open','Open'),pin('close','Close'),pin('toggle','Toggle')],[pin('then','Exit')]),
+  spec('gate','Gate','실행 게이트','흐름 제어',[pin('exec','Enter'),pin('open','Open'),pin('close','Close'),pin('toggle','Toggle'),pin('startClosed','Start Closed','bool')],[pin('then','Exit')]),
   flow('timer','Set Timer','타이머 설정','시간',[pin('duration','Time','float'),pin('loop','Looping','bool'),pin('event','Event name','string')],[pin('handle','Handle','string')]),
   flow('clearTimer','Clear Timer','타이머 해제','시간',[pin('handle','Handle','string')]),
   spec('time','Get Game Time','게임 시간','시간',[],[pin('return','Seconds','float')]),
@@ -133,15 +136,9 @@ catalog.push(
 for(const entry of [...coreApi,...serviceApi]){const existing=catalog.find(n=>n.key===entry.key);if(existing)Object.assign(existing,entry,{keywords:(existing.keywords||'')+' '+entry.keywords});else catalog.push(entry);}
 const catalogByKey=new Map(catalog.map(node=>[node.key,node]));
 export const fieldsFor = type => ({vec2:[pin('x','X','float'),pin('y','Y','float')],vec3:[pin('x','X','float'),pin('y','Y','float'),pin('z','Z','float')],color:[pin('r','R','float'),pin('g','G','float'),pin('b','B','float'),pin('a','A','float')],transform:[pin('position','Position','vec3'),pin('rotation','Rotation','vec3'),pin('scale','Scale','vec3')],hit:[pin('hit','Blocking hit','bool'),pin('position','Impact point','vec3'),pin('normal','Normal','vec3'),pin('actor','Actor','object')]}[type]||[]);
-export function defaultsFor(type){ return {bool:false,int:0,float:0,string:'',vec2:[0,0],vec3:[0,0,0],color:[1,1,1,1],transform:{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]},object:null,hit:{hit:false,position:[0,0,0],normal:[0,1,0],actor:null}}[type]; }
-export function validValue(type,value){
-  const vector=(size)=>Array.isArray(value)&&value.length===size&&value.every(Number.isFinite);
-  if(type==='bool')return typeof value==='boolean';if(type==='int')return Number.isInteger(value)&&value>=-2147483648&&value<=2147483647;if(type==='float')return Number.isFinite(value);if(type==='string')return typeof value==='string'&&value.length<=4096;
-  if(type==='vec2')return vector(2);if(type==='vec3')return vector(3);if(type==='color')return vector(4)&&value.every(v=>v>=0&&v<=1);if(type==='object')return value===null||(typeof value==='string'&&value.length<=200);
-  if(type==='transform')return value&&['position','rotation','scale'].every(k=>validValue('vec3',value[k]));if(type==='hit')return value&&validValue('bool',value.hit)&&validValue('vec3',value.position)&&validValue('vec3',value.normal)&&validValue('object',value.actor);return false;
-}
 export function defaultInputValue(n,p){return n.inputValues?.[p.id]??catalogByKey.get(n.key)?.defaults?.[p.id]??p.default??(p.array?[]:defaultsFor(p.type));}
 export function basePins(node,direction,graph){
+  const flow=dynamicFlowPins(node,direction);if(flow)return flow;
   if(node.key==='parentEntry')return basePins({...node,key:node.parentKey},direction,graph);
   if(node.key==='callParent'){
     const d=(graph.functions||[]).find(d=>d.id===node.parentDefinitionId);if(d)return direction==='in'?d.inputs:d.outputs;
@@ -168,11 +165,12 @@ export function basePins(node,direction,graph){
   if(node.key==='getVariable'||node.key==='setVariable'){const v=graph.variables.find(v=>v.id===node.variableId);if(!v)return [];const value=pin('value',v.name,v.type,v.container==='array');return node.key==='getVariable'?(direction==='out'?[value]:[]):direction==='in'?[pin('exec','실행'),value]:[pin('then','다음')];}
   const s=catalog.find(s=>s.key===node.key);return [...(s?.[direction==='out'?'outputs':'inputs']||[]).map(p=>s.arrayType&&p.type==='float'?{...p,type:node.valueType||'float'}:p),...(direction==='out'?node.customOutputs:node.customInputs)||[]];
 }
+export function structFieldPins(node,p){const value=defaultInputValue(node,p);return fieldsFor(p.type).map((f,i)=>({...f,id:p.id+'.'+f.id,parent:p.id,default:Array.isArray(value)?value[i]:value?.[f.id]??defaultsFor(f.type)}));}
 export function effectivePins(node,direction,graph){
-  const expand=p=>!p.array&&(node.splitPins||[]).includes(direction+':'+p.id)&&fieldsFor(p.type).length?fieldsFor(p.type).flatMap(f=>expand({...f,id:p.id+'.'+f.id,parent:p.id})): [p];
+  const expand=p=>!p.array&&(node.splitPins||[]).includes(direction+':'+p.id)&&fieldsFor(p.type).length?structFieldPins(node,p).flatMap(expand): [p];
   return basePins(node,direction,graph).flatMap(expand);
 }
-function pinForId(node,direction,graph,id){const parts=id.split('.'),first=parts.shift();let p=basePins(node,direction,graph).find(p=>p.id===first);for(const field of parts)p=p&&fieldsFor(p.type).find(p=>p.id===field);return p;}
+function pinForId(node,direction,graph,id){const parts=id.split('.'),first=parts.shift();let p=basePins(node,direction,graph).find(p=>p.id===first);for(const field of parts)p=p&&structFieldPins(node,p).find(f=>f.id===p.id+'.'+field);return p;}
 export function canConnect(graph,from,to){
 
   const a=graph.nodes.find(n=>n.id===from.node),b=graph.nodes.find(n=>n.id===to.node);const out=a&&effectivePins(a,'out',graph).find(p=>p.id===from.pin),input=b&&effectivePins(b,'in',graph).find(p=>p.id===to.pin);
@@ -183,11 +181,13 @@ export function canConnect(graph,from,to){
   const reaches=(id,seen=new Set())=>{if(id===from.node)return true;if(seen.has(id))return false;seen.add(id);return graph.edges.filter(e=>e.from.node===id&&!['break','reset','open','close','toggle'].includes(e.to.pin)).some(e=>reaches(e.to.node,seen));};
   if(reaches(to.node))return {ok:false,reason:'이 프로토타입에서는 순환 연결을 지원하지 않아요.'};return {ok:true};
 }
-export function connect(graph,from,to){const result=canConnect(graph,from,to);if(!result.ok)return result;graph.edges=graph.edges.filter(e=>!(e.to.node===to.node&&e.to.pin===to.pin)&&!(e.from.node===from.node&&e.from.pin===from.pin&&effectivePins(graph.nodes.find(n=>n.id===from.node),'out',graph).find(p=>p.id===from.pin).type==='exec'));graph.edges.push({from:{...from},to:{...to}});return result;}
-export function splitPin(graph,nodeId,direction,pinId,recombine=false){const n=graph.nodes.find(n=>n.id===nodeId);if(!n)return false;const pins=effectivePins(n,direction,graph),p=pins.find(p=>p.id===pinId)||pinForId(n,direction,graph,pinId),key=direction+':'+pinId;
-  if(!recombine&&(!p||p.array||!fieldsFor(p.type).length))return false;n.splitPins=n.splitPins||[];if(recombine)n.splitPins=n.splitPins.filter(k=>k!==key&&!k.startsWith(key+'.'));else if(!n.splitPins.includes(key))n.splitPins.push(key);
-  if(direction==='in'&&p){const fields=fieldsFor(p.type),value=n.inputValues?.[pinId]??defaultsFor(p.type);n.inputValues??={};if(recombine){const values=fields.map((f,i)=>n.inputValues[pinId+'.'+f.id]??(Array.isArray(value)?value[i]:value?.[f.id])??defaultsFor(f.type));n.inputValues[pinId]=Array.isArray(value)?values:Object.fromEntries(fields.map((f,i)=>[f.id,values[i]]));for(const id of Object.keys(n.inputValues))if(id.startsWith(pinId+'.'))delete n.inputValues[id];}else fields.forEach((f,i)=>n.inputValues[pinId+'.'+f.id]=Array.isArray(value)?value[i]:value?.[f.id]??defaultsFor(f.type));}
-  graph.edges=graph.edges.filter(e=>{const end=direction==='out'?e.from:e.to;return !(end.node===nodeId&&(end.pin===pinId||end.pin.startsWith(pinId+'.')));});return true;
+export function connect(graph,from,to){const result=canConnect(graph,from,to);if(!result.ok)return result;const output=effectivePins(graph.nodes.find(n=>n.id===from.node),'out',graph).find(p=>p.id===from.pin),input=effectivePins(graph.nodes.find(n=>n.id===to.node),'in',graph).find(p=>p.id===to.pin);graph.edges=graph.edges.filter(e=>!(input.type!=='exec'&&e.to.node===to.node&&e.to.pin===to.pin)&&!(output.type==='exec'&&e.from.node===from.node&&e.from.pin===from.pin));graph.edges.push({from:{...from},to:{...to}});return result;}
+export function splitPin(graph,nodeId,direction,pinId,recombine=false){
+ const n=graph.nodes.find(n=>n.id===nodeId);if(!n)return false;const pins=effectivePins(n,direction,graph),p=pins.find(p=>p.id===pinId)||pinForId(n,direction,graph,pinId),key=direction+':'+pinId;
+ if(!p||p.array||!fieldsFor(p.type).length)return false;const previous=n.splitPins||[],read=pin=>{if(!previous.includes('in:'+pin.id))return structuredClone(defaultInputValue(n,pin));const fields=structFieldPins(n,pin),values=fields.map(read);return ['vec2','vec3','color'].includes(pin.type)?values:Object.fromEntries(fields.map((f,i)=>[f.id.slice(f.id.lastIndexOf('.')+1),values[i]]));},value=direction==='in'?read(p):undefined;
+ n.splitPins=recombine?previous.filter(k=>k!==key&&!k.startsWith(key+'.')):previous.includes(key)?previous:[...previous,key];
+ if(direction==='in'){n.inputValues??={};if(recombine){n.inputValues[pinId]=value;for(const id of Object.keys(n.inputValues))if(id.startsWith(pinId+'.'))delete n.inputValues[id];}else for(const field of structFieldPins(n,p))n.inputValues[field.id]=structuredClone(defaultInputValue(n,field));}
+ graph.edges=graph.edges.filter(e=>{const end=direction==='out'?e.from:e.to;return !(end.node===nodeId&&(end.pin===pinId||end.pin.startsWith(pinId+'.')));});return true;
 }
 
 export const defaultTimeline={length:1,loop:false,autoplay:false,playRate:1,lastKeyframe:false,ignoreTimeDilation:false,tracks:[{id:'Alpha',name:'Alpha',type:'float',interpolation:'linear',keys:[{time:0,value:0},{time:1,value:1}]}]};
@@ -205,7 +205,7 @@ export function sampleTimeline(track,time){
   const interpolate=(v,c)=>{const end=value(b.value,c);if(mode==='linear')return v+(end-v)*u;const m0=value(a.leaveTangent,c)??slope(i,c),m1=value(b.arriveTangent,c)??slope(i+1,c);return (2*u**3-3*u*u+1)*v+(u**3-2*u*u+u)*duration*m0+(-2*u**3+3*u*u)*end+(u**3-u*u)*duration*m1;};
   return Array.isArray(a.value)?a.value.map(interpolate):interpolate(a.value,0);
 }
-export function makeNode(key,x=40,y=40,variableId){return {id:'node_'+crypto.randomUUID().replaceAll('-',''),key,position:{x,y},splitPins:[],...(variableId?{variableId}:{}),...(key==='timeline'?{timeline:JSON.parse(JSON.stringify(defaultTimeline))}:{})};}
+export function makeNode(key,x=40,y=40,variableId){return {id:'node_'+crypto.randomUUID().replaceAll('-',''),key,position:{x,y},splitPins:[],...(isFlowNode({key})?{flowOutputs:key==='sequence'?['first','second']:['out0','out1','out2'],...(['switchInt','switchString'].includes(key)?{inputValues:Object.fromEntries([0,1,2].map(i=>['case'+i,key==='switchInt'?i:'Case '+i]))}:{})}:{}),...(variableId?{variableId}:{}),...(key==='timeline'?{timeline:JSON.parse(JSON.stringify(defaultTimeline))}:{})};}
 export function nodeTitle(n,graph){const v=graph.variables.find(v=>v.id===n.variableId),d=[...(graph.functions||[]),...(graph.macros||[])].find(d=>d.id===n.definitionId),native=n.key.startsWith('native')?nativeMember(graph,n):null,s=[...(graph.dispatchers||[]),...(graph.interfaces||[])].find(d=>d.id===n.symbolId);return n.title||(native?(n.key==='nativeGet'?'Get ':n.key==='nativeSet'?'Set ':n.key==='nativeEvent'?'Event ':'')+(n.key==='nativeMembers'?'Members · '+native.c?.name:native.f?.label||native.p?.name||'C++'):s?({dispatcherCall:'Call ',dispatcherBind:'Bind ',dispatcherUnbind:'Unbind ',dispatcherEvent:'Event ',interfaceCall:'Message '}[n.key])+s.name:n.key.endsWith('Input')?'Entry · 입력':n.key.endsWith('Output')?'Return · 출력':d?.name||((n.key==='getVariable'?'Get ':n.key==='setVariable'?'Set ':'')+(v?.name||catalog.find(s=>s.key===n.key)?.title||'Node')));}
 export const defaultBlueprint={version:1,name:'BP_Garden',components:[{id:'transform',name:'Transform',type:'Transform'},{id:'mesh',name:'Mesh renderer',type:'MeshRenderer'},{id:'collider',name:'Box collider',type:'BoxCollider'}],variables:[
   {id:'hasKey',name:'hasKey',type:'bool',container:'single',value:false},{id:'doorName',name:'doorName',type:'string',container:'single',value:'GardenDoor'},
@@ -311,6 +311,7 @@ export function validBlueprint(g,{resolved=false}={}){
   for(const context of allGraphContexts(g)){
     if(!Array.isArray(context.nodes)||context.nodes.length>1000||!Array.isArray(context.edges)||context.edges.length>5000||new Set(context.nodes.map(n=>n?.id)).size!==context.nodes.length)return false;
     if(context.comments!==undefined&&(!Array.isArray(context.comments)||context.comments.length>100||new Set(context.comments.map(c=>c?.id)).size!==context.comments.length||!context.comments.every(c=>c&&safeId(c.id)&&typeof c.text==='string'&&c.text.length<=2000&&c.position&&['x','y'].every(k=>Number.isFinite(c.position[k])&&Math.abs(c.position[k])<=10000)&&c.size&&Number.isFinite(c.size.width)&&c.size.width>=120&&c.size.width<=10000&&Number.isFinite(c.size.height)&&c.size.height>=80&&c.size.height<=10000&&/^#[0-9a-f]{6}$/i.test(c.color)&&Number.isFinite(c.fontSize)&&c.fontSize>=10&&c.fontSize<=32&&typeof c.moveNodes==='boolean'&&Array.isArray(c.nodeIds)&&c.nodeIds.length<=1000&&c.nodeIds.every(safeId))))return false;
+    if(!context.nodes.every(validFlowNode))return false;
     if(!context.nodes.every(n=>n&&safeId(n.id)&&typeof n.key==='string'&&(catalog.some(s=>s.key===n.key)||validNativeNode(n)||validSymbolNode(n)||(['getVariable','setVariable'].includes(n.key)&&(g.variables.some(v=>v.id===n.variableId)||deferred&&safeId(n.variableId)))||(['callFunction','callMacro','functionInput','functionOutput','macroInput','macroOutput'].includes(n.key)&&(definitions.some(d=>d.id===n.definitionId)||deferred&&safeId(n.definitionId)))||unresolvedNode(n)&&(!n.key.startsWith('native')||typeof n.nativeId==='string'&&/^[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)?$/.test(n.nativeId)&&n.nativeId.length<=200))&&n.position&&['x','y'].every(k=>Number.isFinite(n.position[k])&&Math.abs(n.position[k])<=10000)&&Array.isArray(n.splitPins)&&n.splitPins.length<=30&&n.splitPins.every(k=>typeof k==='string'&&/^(in|out):[a-zA-Z0-9_.-]+$/.test(k))&&(n.title===undefined||(typeof n.title==='string'&&n.title.length<=80))))return false;
     for(const n of context.nodes){if(n.key==='parentEntry'&&(!resolved||!catalog.some(s=>s.key===n.parentKey&&s.kind==='event')&&n.parentKey!=='nativeEvent'&&n.parentKey!=='dispatcherEvent'))return false;if(n.key==='callParent'&&(!deferred&&!resolved||resolved&&!safeId(n.parentEntryId)&&!safeId(n.parentDefinitionId)))return false;if(n.key==='callFunction'&&!(g.functions||[]).some(d=>d.id===n.definitionId)&&!deferred)return false;if(n.key==='callMacro'&&!(g.macros||[]).some(d=>d.id===n.definitionId)&&!deferred)return false;}
     for(const n of context.nodes){
@@ -321,12 +322,12 @@ export function validBlueprint(g,{resolved=false}={}){
       if(n.comment!==undefined&&(typeof n.comment!=='string'||n.comment.length>2000))return false;
       if(['enabled','breakpoint'].some(k=>n[k]!==undefined&&typeof n[k]!=='boolean'))return false;
       if(n.options!==undefined&&(!n.options||typeof n.options!=='object'||(n.options.tickInterval!==undefined&&(!Number.isFinite(n.options.tickInterval)||n.options.tickInterval<0||n.options.tickInterval>10000))||['componentId','key','eventName'].some(k=>n.options[k]!==undefined&&(typeof n.options[k]!=='string'||n.options[k].length>80))))return false;
-      if(n.inputValues!==undefined){if(!n.inputValues||typeof n.inputValues!=='object'||Array.isArray(n.inputValues)||Object.keys(n.inputValues).length>30)return false;for(const [id,value] of Object.entries(n.inputValues)){const p=pinForId(n,'in',context,id);if(!p?!(unresolvedNode(n)&&/^[A-Za-z0-9_.-]{1,100}$/.test(id)&&boundedBlueprintValue(value)):p.type==='exec'||(p.array?!(Array.isArray(value)&&value.length<=128&&value.every(v=>p.type==='any'||validValue(p.type,v))):!validValue(p.type,value)))return false;}}
+      if(n.inputValues!==undefined){if(!n.inputValues||typeof n.inputValues!=='object'||Array.isArray(n.inputValues)||Object.keys(n.inputValues).length>(isSwitchNode(n)?30+flowOutputIds(n).length:30))return false;for(const [id,value] of Object.entries(n.inputValues)){const p=pinForId(n,'in',context,id);if(!p?!(unresolvedNode(n)&&/^[A-Za-z0-9_.-]{1,100}$/.test(id)&&boundedBlueprintValue(value)):p.type==='exec'||(p.array?!(Array.isArray(value)&&value.length<=128&&value.every(v=>p.type==='any'||validValue(p.type,v))):!validValue(p.type,value)))return false;}}
     }
     for(const n of context.nodes)for(const key of ['customInputs','customOutputs'])if(n[key]!==undefined&&(!['customEvent','customFunction'].includes(n.key)||!Array.isArray(n[key])||n[key].length>20||!n[key].every(p=>p&&safeId(p.id)&&typeof p.label==='string'&&p.label.length<=80&&Object.hasOwn(variableTypes,p.type)&&typeof p.array==='boolean')))return false;
     for(const n of context.nodes)for(const direction of ['in','out']){const pins=basePins(n,direction,context);if(new Set(pins.map(p=>p.id)).size!==pins.length)return false;}
     const usedInputs=new Set(),usedExec=new Set();
-    for(const e of context.edges){if(!e?.from||!e?.to||!['from','to'].every(k=>safeId(e[k].node)&&typeof e[k].pin==='string'&&/^[A-Za-z0-9_.-]{1,100}$/.test(e[k].pin)))return false;const inputKey=e.to.node+':'+e.to.pin;if(usedInputs.has(inputKey))return false;usedInputs.add(inputKey);const a=context.nodes.find(n=>n.id===e.from.node),b=context.nodes.find(n=>n.id===e.to.node);if(!a||!b||a===b)return false;const result=canConnect({...context,edges:context.edges.filter(x=>x!==e)},e.from,e.to);if(!result.ok&&!(deferred&&result.reason==='연결할 핀을 찾을 수 없어요.'&&(unresolvedNode(a)||unresolvedNode(b))))return false;const p=effectivePins(a,'out',context).find(p=>p.id===e.from.pin);if(p?.type==='exec'){const k=e.from.node+':'+e.from.pin;if(usedExec.has(k))return false;usedExec.add(k);}}
+    for(const e of context.edges){if(!e?.from||!e?.to||!['from','to'].every(k=>safeId(e[k].node)&&typeof e[k].pin==='string'&&/^[A-Za-z0-9_.-]{1,100}$/.test(e[k].pin)))return false;const a=context.nodes.find(n=>n.id===e.from.node),b=context.nodes.find(n=>n.id===e.to.node);if(!a||!b||a===b)return false;const inputKey=e.to.node+':'+e.to.pin;if(pinForId(b,'in',context,e.to.pin)?.type!=='exec'){if(usedInputs.has(inputKey))return false;usedInputs.add(inputKey);}const result=canConnect({...context,edges:context.edges.filter(x=>x!==e)},e.from,e.to);if(!result.ok&&!(deferred&&result.reason==='연결할 핀을 찾을 수 없어요.'&&(unresolvedNode(a)||unresolvedNode(b))))return false;const p=effectivePins(a,'out',context).find(p=>p.id===e.from.pin);if(p?.type==='exec'){const k=e.from.node+':'+e.from.pin;if(usedExec.has(k))return false;usedExec.add(k);}}
   }
   for(const [collection,kind] of [['functions','function'],['macros','macro']])for(const d of g[collection]||[]){
     if(!['Input','Output'].every(s=>d.graph.nodes.filter(n=>n.key===kind+s&&n.definitionId===d.id).length===1))return false;
