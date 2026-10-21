@@ -810,7 +810,6 @@
     }
   ],
   "sourceGameGates": [],
-  "pendingInstalledGameGate": "tools/check-editor-batch-1320-window.mjs --player --executable <installation>/HBEngine.exe; check-network-deletions-1325 --implementation-root <installation>",
   "nativePlayerSHA256": "916edd63a0a5ee9104dbf40246f938e8ae44909f72c56933ff15bc6429d19c1a",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -851,8 +850,8 @@
     "network": "One shared Map of existing static-deletion row references, WeakMap row versions and one scalar watermark per peer; no per-peer deletion ID set."
   },
   "research": "docs/research/CORPUS_MANIFEST.json#supplemental1322",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1314.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1327.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "미등록 C++ 사용자 struct/중첩 컨테이너·시퀀스 대형 키 편집·기존1024키 예산 확장·기존 대상 생성/삭제 재현·socket/constraint/고급 Attachment·복잡 DCC 리그·녹화 필터 프리셋",
@@ -862,5 +861,26 @@
     "다중 곡선 동시 편집·부분 범위 베이크·FFT/Euler 필터·고급 단축키 확대",
     "쿼터니언/이산 범위 확장"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/editor-batch-1320-1OLRBz/acceptance.json",
+      "sha256": "e03afde2461555ccfd2efd3cda13d3d1359f281f926662eaacaf577b9facc26a",
+      "scope": "Owned hidden editor or actual packaged D3D11: skeletal graphical curve and shared tools/Undo/keyboard/typed AI; real C++ compiled module reads snapshot then queues flat move/tree reparent/cross-list and cross-tree operations after BP Show. Synthetic programmatic inputs, not physical mobile/FPS/general native renderer parity.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\295e05b305710815\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/network-deletions-1325-wUU4BI/acceptance.json",
+      "sha256": "b84ce2ae3ac210395eafa77316361f9610c559af7c80404338fe82e5e8085a84",
+      "scope": "Real isolated WebSockets: retained static tombstones delivered to new/resumed peers, no tombstone/index rows or wire bytes for32 repeated interest queries, resurrection/redelete/new deleted batch/dynamic cleanup. No game FPS/native renderer/authority-prediction claim.",
+      "args": [
+        "--implementation-root",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\295e05b305710815"
+      ]
+    }
+  ]
 }

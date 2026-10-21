@@ -1,0 +1,172 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "63a3bdb5793aa5377380c0808be6d48674ec25c0",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\295e05b305710815",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\295e05b305710815\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\295e05b305710815\\HBEngine.exe",
+  "bundleHash": "295e05b305710815c2fc82cac11acf92580bb7bfbfee4b46b9f7075840c2fc98",
+  "files": 4003,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3988,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b0360f510260b375",
+        "bytes": 186775022,
+        "manifestSHA256": "ff0e040b8ce315a6422bdb8c6e61486749c4871a61a879750ace53c5cc01f75b"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T17:56:02.7580124Z",
+    "bytes": 186775022,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "295e05b305710815"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 678,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "916edd63a0a5ee9104dbf40246f938e8ae44909f72c56933ff15bc6429d19c1a",
+  "installedGates": [
+    {
+      "path": "native/build/editor-batch-1320-1OLRBz/acceptance.json",
+      "sha256": "e03afde2461555ccfd2efd3cda13d3d1359f281f926662eaacaf577b9facc26a",
+      "scope": "Owned hidden editor or actual packaged D3D11: skeletal graphical curve and shared tools/Undo/keyboard/typed AI; real C++ compiled module reads snapshot then queues flat move/tree reparent/cross-list and cross-tree operations after BP Show. Synthetic programmatic inputs, not physical mobile/FPS/general native renderer parity.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\295e05b305710815\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/network-deletions-1325-wUU4BI/acceptance.json",
+      "sha256": "b84ce2ae3ac210395eafa77316361f9610c559af7c80404338fe82e5e8085a84",
+      "scope": "Real isolated WebSockets: retained static tombstones delivered to new/resumed peers, no tombstone/index rows or wire bytes for32 repeated interest queries, resurrection/redelete/new deleted batch/dynamic cleanup. No game FPS/native renderer/authority-prediction claim.",
+      "args": [
+        "--implementation-root",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\295e05b305710815"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\295e05b305710815\\",
+    "elapsedMs": 89.09,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\295e05b305710815",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "295e05b305710815c2fc82cac11acf92580bb7bfbfee4b46b9f7075840c2fc98",
+      "installedAt": "2026-10-21T17:55:59.518Z",
+      "manifestFiles": 4003,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4003,
+  "versions": [
+    "295e05b305710815"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1327-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/curve-tools-1319-ucUgZg/acceptance.json",
+      "sha256": "5f766b79b1b4d7751c4de9a9131e4be27d65467c47ed908785fcc232887f2501",
+      "scope": "10 independent curve groups/15600 monotone samples, affine weighted oracle/selected axes/bake/reduce/boundaries and actual skeletal AnimationGraph."
+    },
+    {
+      "path": "native/build/weighted-curves-1294-5OnYHO/acceptance.json",
+      "sha256": "933a79d2370d0d8e3ef69ce3d2ba61785e8e7cb9d3d44cf9a45a3c98e33de061",
+      "scope": "Affected final weighted9/240 regression after binary sampler change."
+    },
+    {
+      "path": "native/build/curve-infinity-1310-5dW0Po/acceptance.json",
+      "sha256": "d5536573d958b0f20b572d2e6b7018aac37b0bae8246e9d4dfe5bc3d1468626f",
+      "scope": "Affected final infinity9/common three samplers/external AnimationGraph regression."
+    },
+    {
+      "path": "native/build/list-transfer-1274-DwWu02/acceptance.json",
+      "sha256": "6b69cbdebbe496c266913825f3cc4ac224826829dce27d1aa2e5a453aaab3912",
+      "scope": "Existing immutable subtree/ID/cycle/boundary11 regressions."
+    },
+    {
+      "path": "native/build/editor-batch-1320-14JfLO/acceptance.json",
+      "sha256": "7ecfff35c5efa30017e045993706c492fa2591fce2d9b5fcf263a9fde7c7e4f0",
+      "scope": "Actual hidden editor: skeletal graph/numeric weight/Undo/key2/typed AI and programmatic lists, paired events/refusal/lifetime; actual BP Show -> compiled C++ SDK moves/reparents/transfers."
+    },
+    {
+      "path": "native/build/curve-authoring-1324-ElP4hN/acceptance.json",
+      "sha256": "d120b4593bc14ea6aed1ff25b42bd0ee52f670e0033e995e14cee2439df56649",
+      "scope": "Actual hidden Sequence editor Ctrl+A/6, AI transform/dry-run/invalid/stale/Undo, real weighted pointer handle after auto mode, untouched axes."
+    },
+    {
+      "path": "native/build/curve-density-1323-nhqe16/acceptance.json",
+      "sha256": "618e8fceb9a23d68af9e39cc3620968e08f04947f49683d529b523b01d6a5857",
+      "scope": "65536 vec3 keys/196608 components streamed Fit and exact logarithmic query20 numeric key reads."
+    },
+    {
+      "path": "native/build/curve-density-1323-window-ZdKkWn/acceptance.json",
+      "sha256": "01cc95e26b9cec97ed63d1fa94269a94c51572fd332ac93a85cdcba4db14f17e",
+      "scope": "Actual skeletal common editor65536 scalar keys/all selected,3101 visible markers, disposed shortcuts released.145.6ms observed editor operations; no FPS claim."
+    },
+    {
+      "path": "native/build/network-deletions-1325-XNQLlJ/acceptance.json",
+      "sha256": "295ae41d37aee0485a41d65da4ab072a91de4845052f1d52b4a0b37ee0cdcc94",
+      "scope": "Real sockets7:2000 retained static deletions,32 interest changes0 bytes, late join/resume/resurrection/redelete/new batch/dynamic deletion."
+    },
+    {
+      "path": "native/build/network-interest-1260-DYoRAK/acceptance.json",
+      "sha256": "67417a265638878875f8bc3380c362243dcdca027b3a0021c36ac136842e186f",
+      "scope": "Five existing real socket root/child/owner/reassignment scopes; sparse100k model proof reused from1262, not repeated."
+    },
+    {
+      "path": "native/build/engine-173-0XidOe/acceptance.json",
+      "sha256": "62d846236f4c65ef7dcd193e1447f1591a0050fbe686aa9cf5a76cc612bc05be",
+      "scope": "Existing real socket network6/6 incl prefabs/pool/static hides/reconnect/client authority refusal."
+    },
+    {
+      "path": "native/build/curve-tools-ai-context-1324-final.json",
+      "sha256": "14b75c8d1c2dc675970f7aa76e976080de3413840dd43bfa477945a21dc5f1c3",
+      "scope": "Final offline routes/schema/compact CLI context; no AI model speed claim."
+    },
+    {
+      "path": "native/build/player1321-build.json",
+      "sha256": "7b8c8231174e7e7d44ed557e04dd1b9216d2c9762cba1e31ea1a9b4e223612fe",
+      "scope": "Actual Player rebuilt once26.2s using unchanged renderer owners and new Game/Bridge SDK. Host1041 reused."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed curve authoring/PCHIP/tools/dense editor, five shared UI C++/BP APIs and network deletion delivery. Actual packaged D3D11 BP Show->compiled C++ queries/moves/reparents/transfers; real installed server static-deletion/late/resume/redelete checks. New Player1321, unchanged Host1041/other14 native/Struct.hpp/CPP21. Full manifest/source owners/User/links/Versions1 verified. GL primary delay and cumulative residuals remain; no full engine/FPS/mobile completion claim.",
+  "version": 1,
+  "date": "2026-10-21T17:59:05.955Z",
+  "work": "docs/research/ENGINE_WORK_1326.json",
+  "distributionSync": "native/build/distribution-1327-sync.json",
+  "cachePrune": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

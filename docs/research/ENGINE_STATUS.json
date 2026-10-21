@@ -2958,11 +2958,11 @@
     "scope": "Shared curve tools/skeletal authoring/dense editor costs, public C++/BP list APIs and network deletion delivery. Full engine/research completion remains unclaimed."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1314.json",
-    "sourceCommit": "6a4dbdf3d3bded2102709a5c8ccfecec759f1a95",
-    "bundleHash": "b0360f510260b37501013987a88bd0dafd81186d12958500cd09aee09ae0a990",
+    "receipt": "docs/research/USER_INSTALL_1327.json",
+    "sourceCommit": "63a3bdb5793aa5377380c0808be6d48674ec25c0",
+    "bundleHash": "295e05b305710815c2fc82cac11acf92580bb7bfbfee4b46b9f7075840c2fc98",
     "verified": true,
     "versions": 1,
-    "scope": "Installed shared numeric curve pre/post hold/linear/cycle/cycleOffset/oscillate. Actual D3D11 BP game evaluates weighted child+2offset cycles+nested origins at independent expected[10,44.125,0]. New9 including skeletal AnimationGraph, weighted9/240, legacy17/retarget/source actual GUI passed. Native16/Struct.hpp/CPP21/Player1223/Host1041 unchanged; User/manifest/links/Versions1 verified. Primary compiler candidates remain diagnostic-only and unpromoted; no full rendering/FPS/mobile claim."
+    "scope": "Installed curve authoring/PCHIP/tools/dense editor, five shared UI C++/BP APIs and network deletion delivery. Actual packaged D3D11 BP Show->compiled C++ queries/moves/reparents/transfers; real installed server static-deletion/late/resume/redelete checks. New Player1321, unchanged Host1041/other14 native/Struct.hpp/CPP21. Full manifest/source owners/User/links/Versions1 verified. GL primary delay and cumulative residuals remain; no full engine/FPS/mobile completion claim."
   }
 }
