@@ -1,0 +1,118 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "79a01d4bcfafbfff1ca368a437a4a7693f204917",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2722c0ef1812c5fd",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\2722c0ef1812c5fd\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\2722c0ef1812c5fd\\HBEngine.exe",
+  "bundleHash": "2722c0ef1812c5fdf74666fac09ceb5090318e5e9af6d056bb4b60ab18d69224",
+  "files": 4007,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4004,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\295e05b305710815",
+        "bytes": 186956860,
+        "manifestSHA256": "74a1013ea13b890481d691d3829cba96918517a62a472e6c79fcb0f167a85884"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T18:05:10.9144585Z",
+    "bytes": 186956860,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "2722c0ef1812c5fd"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 680,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "916edd63a0a5ee9104dbf40246f938e8ae44909f72c56933ff15bc6429d19c1a",
+  "installedGates": [
+    {
+      "path": "native/build/network-packets-1330-uRkZ6R/acceptance.json",
+      "sha256": "2f095a262fa39323a692f554a2935ac8f8cf0fc970b9afdc7d43fca83fd2c0f7",
+      "scope": "Pure packet byte/identity/budget/ordering and nine real WebSocket recipients.129 identical rows require3 serializations+24 reuse hits, mixed owner views keep monotonic sequence/visibility, >1MiB batch respects transient1MiB shared-wire budget. No game FPS/native rendering/whole-process heap claim; cache lives for one broadcast only.",
+      "args": [
+        "--implementation-root",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2722c0ef1812c5fd"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\2722c0ef1812c5fd\\",
+    "elapsedMs": 235.4,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\2722c0ef1812c5fd",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "2722c0ef1812c5fdf74666fac09ceb5090318e5e9af6d056bb4b60ab18d69224",
+      "installedAt": "2026-10-21T18:05:07.569Z",
+      "manifestFiles": 4007,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4007,
+  "versions": [
+    "2722c0ef1812c5fd"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1333-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/network-packets-1330-5rLg3L/acceptance.json",
+      "sha256": "16438e7d2c5aab793e5694301fef46b346bd504c90ad66e4344ce5c9888a7793",
+      "scope": "Six groups: pure wire/ref/UTF8/budget/mixed-sequence guard and nine actual sockets,129 shared rows3 serializations/24 reuse hits, per-owner views/monotonic order, >1MiB whole batch while peak shared936502B<=1MiB."
+    },
+    {
+      "path": "native/build/network-deletions-1325-SPiBbq/acceptance.json",
+      "sha256": "bc5d21e6aff4984c21cbbafca779292bb56b127b826a9dd4f4f03f2e06083f3e",
+      "scope": "Affected real deletion7:2000 static rows,32 interest0B, late/resume/resurrection/redelete/new batch/dynamic deletion."
+    },
+    {
+      "path": "native/build/network-interest-1260-OXdRqW/acceptance.json",
+      "sha256": "67417a265638878875f8bc3380c362243dcdca027b3a0021c36ac136842e186f",
+      "scope": "Five real root/child/owner/interest/reassignment/deletion regressions; unchanged index100k oracle proof reused1262."
+    },
+    {
+      "path": "native/build/engine-173-N2N1hH/acceptance.json",
+      "sha256": "62d846236f4c65ef7dcd193e1447f1591a0050fbe686aa9cf5a76cc612bc05be",
+      "scope": "Existing network6 real-socket prefab/pool/static hide/late/resume/unauthorized mutation checks."
+    },
+    {
+      "path": "native/build/network-packets-ai-context-1331.json",
+      "sha256": "ade8d594b50c5ec44a4a6698cd35f9ac19eaccffd444ed7613bdfe0f7c1d7a2c",
+      "scope": "Compact offline route/schema/CLI; no AI interpretation-time claim."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed broadcast-local state packet sharing: nine real sockets,129 shared rows3 serializations/24 reuse hits, mixed owner views and strict sequence order, >1MiB batch with transient cache<=1MiB. All native16/Struct.hpp/CPP21/Player1321/Host1041 unchanged; actual D3D11 C++ UI game proof from1327 reused by exact owners. Manifest/source/User/links/Versions1 verified. Other engine goals and primary GL delay remain.",
+  "version": 1,
+  "date": "2026-10-21T18:07:53.595Z",
+  "work": "docs/research/ENGINE_WORK_1331.json",
+  "distributionSync": "native/build/distribution-1332-sync.json",
+  "nativeCachePrune": "Not rerun: relay-only change; no new compiler module or build cache produced."
+}

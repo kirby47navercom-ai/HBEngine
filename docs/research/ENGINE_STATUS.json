@@ -2961,11 +2961,11 @@
     "scope": "Broadcast-local state packet sharing with strict per-recipient ordering and1MiB transient budget. Other engine goals preserved."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1327.json",
-    "sourceCommit": "63a3bdb5793aa5377380c0808be6d48674ec25c0",
-    "bundleHash": "295e05b305710815c2fc82cac11acf92580bb7bfbfee4b46b9f7075840c2fc98",
+    "receipt": "docs/research/USER_INSTALL_1333.json",
+    "sourceCommit": "79a01d4bcfafbfff1ca368a437a4a7693f204917",
+    "bundleHash": "2722c0ef1812c5fdf74666fac09ceb5090318e5e9af6d056bb4b60ab18d69224",
     "verified": true,
     "versions": 1,
-    "scope": "Installed curve authoring/PCHIP/tools/dense editor, five shared UI C++/BP APIs and network deletion delivery. Actual packaged D3D11 BP Show->compiled C++ queries/moves/reparents/transfers; real installed server static-deletion/late/resume/redelete checks. New Player1321, unchanged Host1041/other14 native/Struct.hpp/CPP21. Full manifest/source owners/User/links/Versions1 verified. GL primary delay and cumulative residuals remain; no full engine/FPS/mobile completion claim."
+    "scope": "Installed broadcast-local state packet sharing: nine real sockets,129 shared rows3 serializations/24 reuse hits, mixed owner views and strict sequence order, >1MiB batch with transient cache<=1MiB. All native16/Struct.hpp/CPP21/Player1321/Host1041 unchanged; actual D3D11 C++ UI game proof from1327 reused by exact owners. Manifest/source/User/links/Versions1 verified. Other engine goals and primary GL delay remain."
   }
 }

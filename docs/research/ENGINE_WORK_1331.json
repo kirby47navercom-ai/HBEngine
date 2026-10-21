@@ -751,7 +751,6 @@
   ],
   "sourceEditorGates": [],
   "sourceGameGates": [],
-  "pendingInstalledGameGate": "tools/check-network-packets-1330.mjs --implementation-root <installation>",
   "nativePlayerSHA256": "916edd63a0a5ee9104dbf40246f938e8ae44909f72c56933ff15bc6429d19c1a",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -812,12 +811,23 @@
     "newPersistentCaches": 0,
     "transientSharedPackets": "One Map per broadcast, at most min(stateBudgetBytes,1MiB) encoded wire strings plus referenced rows; released from server roots after synchronous broadcast. WebSocket buffers/GC timing/whole heap/FPS not measured."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1327.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1333.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "전용 권위 서버 규칙·장면 세대·부착/참조·클라이언트 원격 풀 수명, 초기 숨김/전역·밀집 후보 비용과 서로 다른 관심 영역의 직렬화·실제 소켓 전송/인코딩 추가 가속",
     "예측 입력/재시뮬레이션·지연/손실 보정·호스트 이전/플랫폼 서비스·접속 비밀 배포"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/network-packets-1330-uRkZ6R/acceptance.json",
+      "sha256": "2f095a262fa39323a692f554a2935ac8f8cf0fc970b9afdc7d43fca83fd2c0f7",
+      "scope": "Pure packet byte/identity/budget/ordering and nine real WebSocket recipients.129 identical rows require3 serializations+24 reuse hits, mixed owner views keep monotonic sequence/visibility, >1MiB batch respects transient1MiB shared-wire budget. No game FPS/native rendering/whole-process heap claim; cache lives for one broadcast only.",
+      "args": [
+        "--implementation-root",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2722c0ef1812c5fd"
+      ]
+    }
+  ]
 }

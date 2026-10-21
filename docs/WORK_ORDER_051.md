@@ -906,3 +906,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1327 설치확인: 295e05b305710815·4003명세/678SHA/CPP21. 설치패키지 실제D3D11 BP Show→새 SDK 사용자C++ 조회/평면이동/재부모/두종류전송, 설치서버 실제소켓 삭제2000/관심32회0B·late/resume/redelete 통과. Player1321/Host1041·User10849읽기SHA/연결/Versions1, 이전186775022B 회수. 바뀌지 않은 렌더행렬·실기기 반복 없음.
 
 1329–1331: 같은state청크의broadcast지역직렬화공유·연결별증가번호가드·UTF8최대1MiB·동일row참조비교/메타진단. 실제9연결129상태에서JSON생성3/재사용24·혼합owner/번호순서·1MiB초과전송/공유peak936502B, 삭제7·기존관심5·network6·AI경로통과. native16/CPP21/Player1321/Host불변·C++/GUI/렌더재빌드반복없음. 변경된설치서버소켓검사1회대기.
+
+1333 설치확인: 2722c0ef1812c5fd·4007명세/680소유SHA·설치서버9연결/129상태 생성3·재사용24/혼합view·순서/공유936502B 상한 통과. native16/CPP21/Player1321/Host불변·1327의실제D3D11CPP/UI근거재사용. User10849읽기SHA/연결/Versions1·이전186956860B 회수. 새컴파일/프로필/캐시누적없음.
