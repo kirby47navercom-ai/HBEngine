@@ -23,3 +23,7 @@ RND03 다수실제HDR캡처장면의CPU/GPU메모리/통제FPS·타일/클러스
 ## 최신 확정1177 — 기본 노멀·공유 캡처·부분 전송
 
 native 기본normalMap 실제UV 접선/화면Y/양면·큰/작은/0/퇴화 보호, 공유HDR/native SH중복제거·144B레코드부분전송·count높은단어를 묶어 구현했어요. batch1172 native1344+8/공유65536/기존atlas·GL유효72/세브라우저공유2맵4영역 통과. 실패fixture API·Windowsnear/far매크로만 수정했고 기존성공3gate는SHA재사용. Player1173한번빌드/Host1041재사용. 실제glTF PNG노멀·C++/BP광원5상태 D3D source1173통과(1169-amAUMQ). static1174 API/AI통과. USER_INSTALL_1177 확정: C:\Users\kirby\HBEngine\Versions\7b49a6ca25d1389f/HBEngine.exe. 3878파일/542소유SHA/CPP19/native14·Player1173/Host1041. 설치GL/GPU실제5상태통과·D3Dsource동일PlayerSHA재사용·User10849읽기전후SHA·연결·Versions1. 이전184711586B정리·cache{"deleted":0,"bytes":0,"receipt":null}. one-shot1173/76/77/78완료재실행금지. native테스트19개.65536은1개HDR캡처공유영역이며전체HDR/FPS검증아님. 명시tangent/임의그래프 normal관례는잔여. one-shot1161/64/65/66/1173재실행금지.
+
+## 계속1179–1180 브라우저 테이블 전송 (설치 준비)
+
+WebGL/WebGPU/강제GL폴백의프로브table변경행전송을추가했어요. 정지전송0·여러prepare의대기행누적·공간변경full우선·GLunpack복원·약한자원소유·tableTransfers진단/schema v5. 1179-NdeHSk 실제3모드픽셀/누적변경/복원/인스턴스/해제통과. 두밝기변경288B 대조전체1008B(장면FPS아님). static1180 API/AI통과. C++14소유와CPP19변경0,Player1173/Host1041재사용·재빌드없음. record1181/sync1182/install1183/finish1184 준비중이며아직최신설치는1177이에요.
