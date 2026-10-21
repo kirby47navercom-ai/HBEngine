@@ -882,3 +882,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1266–1270: 시퀀스 변환기준점·이동액터/상속·부착local·수명/복원·공용Hermite/커브/탄젠트drag·타축auto보존·AI2명령을실제제작/Play로연결. 모델17·기존시퀀스30·sourceGUI MjRTWI/배치입력검사·AI context성공. 초기GUI관찰축/기울기기준과CSS클리핑실패는보존하고수정경로만재검사. native16/Struct.hpp/CPP21불변으로기존빌드/CPP근거재사용;설치D3D11게임1회대기. GL1313B/6노드읽기는시간개선성과아님/RND06잔여유지.
 
 1272 설치확인: 0247274dedde87b2·3960명세/640소유SHA·실제설치D3D11패키지 RyNmLm: curvedchild/sourceoffset/중첩회전기준점 [10,7.328125,0] 확인. User10849읽기SHA/연결/Versions1·이전186143448B정리. native16/CPP21/Struct.hpp/Player/Host불변재사용·전체렌더/GL컴파일/FPS/모바일재검사없음.
+
+1274–1278: 가상Tree재부모/같은group목록간가지·중복원시값이동·양쪽선검증/동시반영뒤VM이벤트·선택/초점text/자료교체·거부원자성·Alt들여쓰기/내어쓰기·창탐색capture충돌수정·상세/Undo/schema. pure11·기존1079/1749/1816·최종GUI M5yWOV/같은창1080(10만/pool8/복합입력)통과. 초기키보드실패는보존·영향경로만재검사. native16/Struct.hpp/CPP21/Player/Host불변재사용·설치D3D11UI1회대기. 터치/외부창/전용CPP이동API잔여유지.
