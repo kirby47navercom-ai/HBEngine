@@ -35,6 +35,10 @@ struct HitResult { bool hit=false; Vec3 position{},normal{}; Actor* actor=nullpt
 struct Component { Actor* actor=nullptr; virtual ~Component()=default; };
 struct Pawn : Actor {};
 struct Character : Pawn {};
+struct SpriteActor : Actor {};
+struct Pawn2D : Pawn {};
+struct Character2D : Character {};
+struct TopDownCharacter2D : Character2D {};
 struct Controller : Actor {};
 struct PlayerController : Controller {};
 struct GameMode : Actor {};

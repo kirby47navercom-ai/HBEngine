@@ -80,6 +80,7 @@ export class DockLayout {
     const clean=tree=>{if(tree.tabs)return tree.tabs.length?tree:null;const a=clean(tree.a),b=clean(tree.b);return a&&b?{...tree,a,b}:a||b;};
     this.tree=clean(this.tree);if(!this.leaves().includes(this.maximized))this.maximized=null;this.render();
     if(this.focused===id)this.focus(this.leaves()[0].active);
+    const entry=this.entries.get(id);if(entry?.disposeOnClose){entry.dispose?.();entry.element.remove();this.entries.delete(id);}
   }
   remove(id){
     const pane=this.paneFor(id);if(pane&&this.leaves().length===1&&pane.tabs.length===1&&id!=='scene'&&this.entries.has('scene'))pane.tabs.push('scene');

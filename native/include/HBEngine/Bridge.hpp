@@ -60,7 +60,26 @@ inline bool overridden(const std::string& id){return std::find(bridgeOverrides.b
 inline std::unordered_map<std::string,size_t> bridgeStateIndices;
 inline std::unordered_map<const Actor*,std::string> bridgeActorIds;
 inline std::unordered_map<const Actor*,Transform> bridgeSyncedTransforms;
-inline Actor* bridgeActor(const Json& id){if(id.is_null())return nullptr;const std::string name=id.get<std::string>();auto c=bridgeCells.find(name);if(c!=bridgeCells.end())return c->second->actor();auto& a=bridgeActors[name];if(!a){const auto state=bridgeStateIndices.find(name);if(state!=bridgeStateIndices.end()&&bridgeWorldData.at(state->second).value("frameworkRole",std::string{})=="gameInstance")a=std::make_unique<GameInstance>();else a=std::make_unique<Actor>();if(state!=bridgeStateIndices.end())a->transform=bridgeWorldData.at(state->second).get<Transform>();bridgeSyncedTransforms[a.get()]=a->transform;}bridgeActorIds[a.get()]=name;return a.get();}
+// Built-in class identity must agree with the JS world; creation happens once per actor.
+inline std::unique_ptr<Actor> bridgeBuiltinActor(const Json& state){
+ const auto has=[&](const char* type){if(state.value("nativeClass",std::string{})==type)return true;const auto it=state.find("actorClasses");if(it!=state.end()&&it->is_array())for(const auto& value:*it)if(value.is_string()&&value.get_ref<const std::string&>()==type)return true;return false;};
+ if(state.value("frameworkRole",std::string{})=="gameInstance"||has("GameInstance"))return std::make_unique<GameInstance>();
+ if(has("TopDownCharacter2D"))return std::make_unique<TopDownCharacter2D>();
+ if(has("Character2D"))return std::make_unique<Character2D>();
+ if(has("Pawn2D"))return std::make_unique<Pawn2D>();
+ if(has("SpriteActor"))return std::make_unique<SpriteActor>();
+ if(has("Character"))return std::make_unique<Character>();
+ if(has("Pawn"))return std::make_unique<Pawn>();
+ if(has("AIController"))return std::make_unique<AIController>();
+ if(has("PlayerController"))return std::make_unique<PlayerController>();
+ if(has("Controller"))return std::make_unique<Controller>();
+ if(has("GameMode"))return std::make_unique<GameMode>();
+ if(has("GameState"))return std::make_unique<GameState>();
+ if(has("PlayerState"))return std::make_unique<PlayerState>();
+ if(has("Actor"))return std::make_unique<Actor>();
+ const auto kind=state.value("kind",std::string{});if(kind=="character2d")return std::make_unique<Character2D>();if(kind=="character")return std::make_unique<Character>();if(kind=="sprite")return std::make_unique<SpriteActor>();if(kind=="controller")return std::make_unique<PlayerController>();if(kind=="gameMode")return std::make_unique<GameMode>();if(kind=="gameState")return std::make_unique<GameState>();if(kind=="playerState")return std::make_unique<PlayerState>();return std::make_unique<Actor>();
+}
+inline Actor* bridgeActor(const Json& id){if(id.is_null())return nullptr;const std::string name=id.get<std::string>();auto c=bridgeCells.find(name);if(c!=bridgeCells.end())return c->second->actor();auto& a=bridgeActors[name];if(!a){const auto state=bridgeStateIndices.find(name);a=state!=bridgeStateIndices.end()?bridgeBuiltinActor(bridgeWorldData.at(state->second)):std::make_unique<Actor>();if(state!=bridgeStateIndices.end())a->transform=bridgeWorldData.at(state->second).get<Transform>();bridgeSyncedTransforms[a.get()]=a->transform;}bridgeActorIds[a.get()]=name;return a.get();}
 inline Json bridgeId(const Actor* a){if(!a)return nullptr;const auto known=bridgeActorIds.find(a);if(known!=bridgeActorIds.end())return known->second;for(const auto& c:bridgeCells)if(c.second->actor()==a)return c.first;for(const auto& c:bridgeActors)if(c.second.get()==a)return c.first;throw std::runtime_error("unregistered C++ object pointer");}
 inline void to_json(Json& j,const Actor* actor){j=bridgeId(actor);}
 inline void to_json(Json& j,const HitResult& v){j={{"hit",v.hit},{"position",v.position},{"normal",v.normal},{"actor",bridgeId(v.actor)}};}

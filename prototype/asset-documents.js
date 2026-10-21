@@ -1,3 +1,4 @@
+import {blueprintClassComponents} from './blueprint-class-defaults.js';
 import {lightmapSuffix,createLightmapAsset,validLightmapAsset} from './lightmap-assets.js';
 import {normalizeModelImport,validModelImport} from './model-import.js';
 import {validPrefabExtension,prefabDocumentRows} from './prefab-variants.js';
@@ -74,7 +75,7 @@ export function createAsset(kind,name,parent='Actor'){
     if(isBlueprintParent(parent))return {version:1,name,settings:{parentClass:parent},nodes:[],edges:[],variables:[],components:[],functions:[],macros:[],comments:[],dispatchers:[],interfaces:[]};
     const type=blueprintClasses[parent];if(!type)throw Error('지원하지 않는 부모 클래스예요.');
     const root=copy(defaultBlueprint);root.name=name;root.nodes=['beginPlay','tick','endPlay'].map((key,i)=>({...makeNode(key,70,55+i*165),id:key}));root.edges=[];root.variables=[];root.functions=[];root.macros=[];root.comments=[];root.dispatchers=[];root.interfaces=[];delete root.native;
-    root.components=type.components.map((type,i)=>({id:'component_'+i,name:type,type,properties:componentDefaults(type)}));root.settings={parentClass:parent,tickEnabled:true,tickInterval:0,overlapEnabled:true};return root;
+    root.components=blueprintClassComponents(parent);root.settings={parentClass:parent,tickEnabled:true,tickInterval:0,overlapEnabled:true};return root;
   }
   if(kind==='scene')return {version:1,sceneName:name,objects:[],surface:copy(defaultSurface),environment:copy(defaultEnvironment)};
   if(['materiallayer','materialblend'].includes(kind))return {version:1,name,domain:kind==='materialblend'?'blend':'layer',surface:copy(materialDefaults),description:'',category:'머테리얼 레이어',expose:false,graph:materialLayerGraph(kind==='materialblend')};

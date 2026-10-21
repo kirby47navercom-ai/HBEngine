@@ -4936,5 +4936,35 @@
       "All linked engine/API and remaining source/version gates unchanged",
       "Custom struct/enum assets, Switch enum/name, Set Members and collapsed graph expansion parity remain; not silently excluded"
     ]
+  },
+  "supplemental1219": {
+    "date": "2026-10-21",
+    "subject": "2D built-in hierarchy/templates, C++ typed identity, actual component preview",
+    "sources": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/Paper2D/APaperCharacter",
+        "readScope": "Own overview/inheritance/Sprite/GetSprite/PostInitialize sections. Character-derived flipbook component; linked API bodies not read."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/paper-2d-overview-in-unreal-engine",
+        "readScope": "Own introductory 2D/hybrid, Sprites and Flipbook descriptions; linked full API not read."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/paper-2d-components?application_version=4.27",
+        "readScope": "Own Sprite/Flipbook/subobject and 3D pose descriptions; historical version 4.27."
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/renderer/sprite-renderer-reference.html",
+        "readScope": "Own Sprite/Color/Flip/draw modes/mask/sort point/material/size/tiling/sorting layer/order body. Redirected SpriteRenderer reference; no full Unity API claim."
+      }
+    ],
+    "wholeCorpus": false,
+    "wholeApi": false,
+    "failedRetrieval": [
+      "Unity guessed Rigidbody2D manual URLs were inaccessible; not counted as read."
+    ],
+    "unread": [
+      "All existing corpus/version gates unchanged."
+    ]
   }
 }

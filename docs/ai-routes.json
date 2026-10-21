@@ -76,7 +76,12 @@
         "thin film",
         "iridescence",
         "얇은 막",
-        "물리 시선"
+        "물리 시선",
+        "컴포넌트 미리보기",
+        "SpriteActor",
+        "Pawn2D",
+        "Character2D",
+        "TopDownCharacter2D"
       ],
       "paths": [
         "prototype/viewport-controls.js",
@@ -89,7 +94,11 @@
         "prototype/camera-view-contract.js",
         "prototype/gpu-camera-view.js",
         "prototype/gpu-iridescence.js",
-        "docs/GPU_PHYSICAL_VIEW.md"
+        "docs/GPU_PHYSICAL_VIEW.md",
+        "prototype/class-types.js",
+        "prototype/blueprint-class-defaults.js",
+        "prototype/component-preview.js",
+        "docs/BLUEPRINT_2D_CLASSES.md"
       ]
     },
     {
@@ -117,7 +126,12 @@
         "Sequence",
         "MultiGate",
         "Switch",
-        "Promote"
+        "Promote",
+        "컴포넌트 미리보기",
+        "SpriteActor",
+        "Pawn2D",
+        "Character2D",
+        "TopDownCharacter2D"
       ],
       "paths": [
         "prototype/blueprint-model.js",
@@ -128,7 +142,11 @@
         "native/include/HBEngine/Game.hpp",
         "prototype/flow-pins.js",
         "prototype/pin-values.js",
-        "docs/BLUEPRINT_FLOW_PINS.md"
+        "docs/BLUEPRINT_FLOW_PINS.md",
+        "prototype/class-types.js",
+        "prototype/blueprint-class-defaults.js",
+        "prototype/component-preview.js",
+        "docs/BLUEPRINT_2D_CLASSES.md"
       ]
     },
     {
@@ -417,7 +435,12 @@
         "sprite",
         "tilemap",
         "pixel",
-        "2d ik"
+        "2d ik",
+        "컴포넌트 미리보기",
+        "SpriteActor",
+        "Pawn2D",
+        "Character2D",
+        "TopDownCharacter2D"
       ],
       "paths": [
         "prototype/two-d-rendering.js",
@@ -425,7 +448,11 @@
         "prototype/sprite-rig-runtime.js",
         "prototype/sprite-rig-ik.js",
         "prototype/tilemap-runtime.js",
-        "prototype/sprite-import.js"
+        "prototype/sprite-import.js",
+        "prototype/class-types.js",
+        "prototype/blueprint-class-defaults.js",
+        "prototype/component-preview.js",
+        "docs/BLUEPRINT_2D_CLASSES.md"
       ]
     },
     {

@@ -1,3 +1,7 @@
+# 1219 — 2D 클래스·실제 컴포넌트 뷰포트
+
+SpriteActor/Pawn2D/Character2D/TopDownCharacter2D의 생성·배치·상속 조회·C++ 형식·Spawn·GameMode defaultPawn을 연결해요. 실제 에셋 미리보기와 AI 명령·카메라/창 수명·요청 시 그리기는 [공용 계약](BLUEPRINT_2D_CLASSES.md)을 참고해요. 기존 작성 파일의 컴포넌트는 보존해요.
+
 # 165 — 제작·게임플레이 공용 확장
 
 능력/속성/효과12·EQS2·문화권2·UI2개 서비스 선언을 Game.hpp에서 생성한다. BP746개·공용 계산289개. C++ queued write/동기화 getter, BP·AI·사람 제작 공용 검증을 유지한다. [20항목 묶음 계약/검증](ENGINE_WORK_165.md).

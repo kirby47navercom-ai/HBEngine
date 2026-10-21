@@ -1,6 +1,6 @@
 import {blueprintClasses} from './class-types.js';
 
-const kindClass={character:'Character',character2d:'Character',controller:'PlayerController',gameMode:'GameMode',gameState:'GameState',playerState:'PlayerState'};
+const kindClass={character:'Character',character2d:'Character2D',sprite:'SpriteActor',controller:'PlayerController',gameMode:'GameMode',gameState:'GameState',playerState:'PlayerState'};
 const assetClass=path=>path.split('/').at(-1).replace(/\.hbblueprint\.json$/,'');
 const findable=(o,inactive)=>o&&!['widget','component'].includes(o.kind)&&!o.destroying&&(inactive||o.poolActive!==false);
 const stringField=(o,key)=>typeof o?.[key]==='string'?o[key]:'';
@@ -9,7 +9,7 @@ function instanceFamily(objects,id,inactive){const object=objects.find(o=>o.id==
 export function actorClassNames(object,root){
   const classes=new Set(root?[root.name,object.blueprintAsset,...root.inheritance?.ancestors||[]]:[]);
   for(const path of [...classes])if(typeof path==='string'&&path.endsWith('.hbblueprint.json'))classes.add(assetClass(path));
-  let type=root?.settings?.parentClass||object.nativeClass||kindClass[object.kind]||'Actor';
+  let type=root?.settings?.parentClass||object.nativeClass||(object.components?.some(c=>c.type==='TopDownMovement2D')?'TopDownCharacter2D':object.components?.some(c=>c.type==='CharacterMovement2D')?'Character2D':kindClass[object.kind])||'Actor';
   const native=root?.native?.classes?.find(c=>c.name===type);if(native){classes.add(type);type=native.base;}
   for(let depth=0;type&&depth<32;depth++){classes.add(type);type=blueprintClasses[type]?.base;}
   return [...classes].filter(v=>typeof v==='string'&&v);
