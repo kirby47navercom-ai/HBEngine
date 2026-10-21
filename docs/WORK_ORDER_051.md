@@ -914,3 +914,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1340 설치확인: 84b0673742812b68·4012명세/683SHA·설치helper의 부분베이크/Euler키생성과 실제D3D11 BP Play/Pause/Seek 위치[.5,1,0]/회전[0,91.5,0]통과. native16/CPP21/Player1321/Host불변. User10849읽기SHA/연결/Versions1·이전187062310B회수. 전체연구·누적완료선언없음.
 
 1342–1350: typed 단일곡선키copy/cut/paste/상대시간·전체shape/핸들·정밀동일시간교체·예산/원자성, 공통재지정/입력분리, Sequence상하playhead동기화, BP Timeline실제graph저장/문서소유id/창유지/UndoRedo갱신/삭제해제, typedAI revision/dryRun/Undo+focusRoutes, relay관심/숨김/pending중간배열제거. 모델11·기존10/15600·GUI Tv1Oj7 실제BP[1,2,0]·owner401KLs·socket7/7/5/6·late430/136·AI9관찰. native16/CPP21/Player1321/Host불변·설치영향gate대기. 전체누적목표/전체분석완료처리안함.
+
+1352 설치확인: e89f44cf0549b010·4020명세/689소유SHA. 설치helper키붙여넣기→실제D3D11 BP[1,2,0], 설치BP창저장/UndoRedo/삭제해제, 설치relay10연결/430snapshot/136hide 통과. native16/CPP21/Player1321/Host불변. User10849읽기SHA/연결/Versions1·이전187182096B회수. 누적목표/연구전체완료로처리안함.

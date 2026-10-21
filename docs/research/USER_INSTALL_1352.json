@@ -1,0 +1,168 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "f71c454ea5a8cb75f4955ddca215fee59ade362f",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e89f44cf0549b010",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e89f44cf0549b010\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\e89f44cf0549b010\\HBEngine.exe",
+  "bundleHash": "e89f44cf0549b0105d329a63eaa74f52d36be14791e1b59b0fe3f9c7e4ea0608",
+  "files": 4020,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4013,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\84b0673742812b68",
+        "bytes": 187182096,
+        "manifestSHA256": "2acd8f80dd02d7f9df97ddd7b1f2f1556d0cec2e14f52ed7a221557425217774"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T19:10:48.9930742Z",
+    "bytes": 187182096,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "e89f44cf0549b010"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 689,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "916edd63a0a5ee9104dbf40246f938e8ae44909f72c56933ff15bc6429d19c1a",
+  "installedGates": [
+    {
+      "path": "native/build/curve-clipboard-1345-window-z1D8wz/acceptance.json",
+      "sha256": "ea9f0a1a18c266868cc21e8d317048f4d87bb7ca1b0a50f40288d63058065f27",
+      "scope": "Owned hidden actual editor uses private clipboard stub and real shortcuts/typed AI across standalone, nested Sequence/skeletal and floating BP curve editors; saved keys feed real BP Play/Pause/Seek2.5. Installed helper authors independent packaged D3D11 expected position[1,2,0]. System clipboard and user project/profile untouched.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e89f44cf0549b010\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/bp-timeline-owner-1348-window-XzGixn/acceptance.json",
+      "sha256": "e5973730d5b3866506686347007bf033159181aa260c1de0a1a22aa000ed6904",
+      "scope": "Owned hidden real editor BP Timeline key clipboard mutates live graph, survives rerender, Undo/Redo refreshes existing window, node deletion disposes listeners/observer/WeakMap registry. No user project/profile or system clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e89f44cf0549b010\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/network-packets-1330-KgFbjs/acceptance.json",
+      "sha256": "27a0aff0c63fd434e0afdf164dd83f5557e2061f6346e39f130a4c2de83d9a7d",
+      "scope": "Pure packet byte/identity/budget/ordering and nine real WebSocket recipients.129 identical rows require3 serializations+24 reuse hits, mixed owner views keep monotonic sequence/visibility, >1MiB batch respects transient1MiB shared-wire budget. Late peer receives430 global snapshot rows and136 owner-only static hides without stale state. No game FPS/native rendering/whole-process heap claim; cache lives for one broadcast only.",
+      "args": [
+        "--implementation-root",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e89f44cf0549b010"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\e89f44cf0549b010\\",
+    "elapsedMs": 64.37,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\e89f44cf0549b010",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "e89f44cf0549b0105d329a63eaa74f52d36be14791e1b59b0fe3f9c7e4ea0608",
+      "installedAt": "2026-10-21T19:10:45.789Z",
+      "manifestFiles": 4020,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4020,
+  "versions": [
+    "e89f44cf0549b010"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1352-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/curve-clipboard-1344-N3Orz4/acceptance.json",
+      "sha256": "e2ff76afa03b1c72bd31d019b63b291fb2fb77f5a45ba926d72e9de8e0d9cd0e",
+      "scope": "11 groups: scalar/vec2/vec3/color/event relative-time/weights, alias isolation, precision merge, atomic bad type/value/range/keys/text/collapse/budget rejection, sequence/skeletal owners and explicit legacy shortcut preservation."
+    },
+    {
+      "path": "native/build/curve-tools-1319-6cIj5i/acceptance.json",
+      "sha256": "5f766b79b1b4d7751c4de9a9131e4be27d65467c47ed908785fcc232887f2501",
+      "scope": "Common curve tools10/15600 regression; numeric samplers unchanged."
+    },
+    {
+      "path": "native/build/curve-clipboard-1345-window-Tv1Oj7/acceptance.json",
+      "sha256": "fe18c16a98c11795a998330a94bdf699b69f825adf264a697688c1ebd12d09ac",
+      "scope": "Actual editor private clipboard: standalone/Sequence/skeletal/BP copy/cut/paste, Undo, live AI revision/dryRun/atomicity, async stale guard, rebind/input isolation, actual BP position[1,2,0]. Before final extra external Undo/delete view bookkeeping; that exact affected path separately verified below. Screenshots inspected."
+    },
+    {
+      "path": "native/build/bp-timeline-owner-1348-window-401KLs/acceptance.json",
+      "sha256": "894a6a3321d8eccda24cee6933c13904479e2dd0c9adeb18fe630fbd43e384b7",
+      "scope": "Final actual BP graph persistence, surviving window, Undo/Redo refreshed markers, deletion disposal/WeakMap release and Undo restored saved keys."
+    },
+    {
+      "path": "native/build/network-packets-1330-a4rrB6/acceptance.json",
+      "sha256": "ead9c21396309e43c8e27b6723008b4f29f2689aeea1f10ed6edbdfa372cf6a8",
+      "scope": "7 groups: transient shared packet serialization; late10th peer gets430 rows/136 static hides; iterator baseline capture and sequence/visibility contract."
+    },
+    {
+      "path": "native/build/network-deletions-1325-rW30Dy/acceptance.json",
+      "sha256": "bc5d21e6aff4984c21cbbafca779292bb56b127b826a9dd4f4f03f2e06083f3e",
+      "scope": "Static/dynamic deletions7 regression."
+    },
+    {
+      "path": "native/build/network-interest-1260-i9gxja/acceptance.json",
+      "sha256": "67417a265638878875f8bc3380c362243dcdca027b3a0021c36ac136842e186f",
+      "scope": "Existing socket interests5 regression."
+    },
+    {
+      "path": "native/build/engine-173-fYFH3H/acceptance.json",
+      "sha256": "62d846236f4c65ef7dcd193e1447f1591a0050fbe686aa9cf5a76cc612bc05be",
+      "scope": "Existing network6 regression."
+    },
+    {
+      "path": "native/build/curve-clipboard-ai-context-1349.json",
+      "sha256": "0f559c65e16f3a07def036a66824a6e0c76ebf39c4eede4ef8e4b4e05bdfd842",
+      "scope": "Two exact method/symbol routes prioritize clipboard owners; default150 command model; offline/no broad corpus claim."
+    },
+    {
+      "path": "native/build/ai-context-1058.json",
+      "sha256": "5154f52128dc3ee49387509ad4b8773b5a5730b1d1ad3404b470d7775bc710b2",
+      "scope": "Final focus-route-compatible bounded offline bootstrap/method/ID/symbol/schema regression9 observations."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/curve-clipboard-1345-window-Tv1Oj7/acceptance.json",
+      "sha256": "fe18c16a98c11795a998330a94bdf699b69f825adf264a697688c1ebd12d09ac",
+      "scope": "Actual editor private clipboard: standalone/Sequence/skeletal/BP copy/cut/paste, Undo, live AI revision/dryRun/atomicity, async stale guard, rebind/input isolation, actual BP position[1,2,0]. Before final extra external Undo/delete view bookkeeping; that exact affected path separately verified below. Screenshots inspected."
+    }
+  ],
+  "scope": "Installed typed single-curve clipboard/shared shortcuts, BP Timeline graph ownership/window lifecycle/Undo refresh and Sequence playhead sync, iterable relay paths and exact-method AI routing. Actual installed helper authored packaged D3D11 BP position[1,2,0], installed real BP window persistence/Undo/Redo/delete and installed ten-peer relay430 snapshot/136 hides. Native16/CPP21/Player1321/Host1041 reused by SHA. Manifest/source/User/links/Versions1 verified; cumulative residuals preserved.",
+  "version": 1,
+  "date": "2026-10-21T19:11:58.090Z",
+  "work": "docs/research/ENGINE_WORK_1350.json",
+  "distributionSync": "native/build/distribution-1351-sync.json",
+  "nativeCachePrune": "No new C++ compiler module; native owners/binaries unchanged and existing cache proof reused."
+}

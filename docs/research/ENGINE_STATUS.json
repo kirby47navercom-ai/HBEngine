@@ -2984,11 +2984,11 @@
     "scope": "Typed curve clipboard/shared reassignable controls, real BP Timeline graph/window lifecycle and Sequence playhead synchronization, iterable network sync and exact-method AI routing. Cumulative engine/research residuals preserved."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1340.json",
-    "sourceCommit": "0b528f07d5314e8fe1883e3872b98173a8614644",
-    "bundleHash": "84b0673742812b6862e931568ac85ff6b0018f45fbfdb0f4db813e4bcca7ada6",
+    "receipt": "docs/research/USER_INSTALL_1352.json",
+    "sourceCommit": "f71c454ea5a8cb75f4955ddca215fee59ade362f",
+    "bundleHash": "e89f44cf0549b0105d329a63eaa74f52d36be14791e1b59b0fe3f9c7e4ea0608",
     "verified": true,
     "versions": 1,
-    "scope": "Installed existing-key partial bake/Euler authoring helpers and visible curve-track UI. Installed helper generates baked position and continuous XYZ rotation keys; actual packaged D3D11 BP Play/Pause/Seek yields position[.5,1,0]/rotation[0,91.5,0]. Source model9/808 outside samples/1000 quaternion poses, source UI/Undo/AI/layout proved. Native16/Struct.hpp/CPP21/Player1321/Host1041 reused by SHA. Manifest/source/User/links/Versions1 verified; full engine/research completion unclaimed."
+    "scope": "Installed typed single-curve clipboard/shared shortcuts, BP Timeline graph ownership/window lifecycle/Undo refresh and Sequence playhead sync, iterable relay paths and exact-method AI routing. Actual installed helper authored packaged D3D11 BP position[1,2,0], installed real BP window persistence/Undo/Redo/delete and installed ten-peer relay430 snapshot/136 hides. Native16/CPP21/Player1321/Host1041 reused by SHA. Manifest/source/User/links/Versions1 verified; cumulative residuals preserved."
   }
 }

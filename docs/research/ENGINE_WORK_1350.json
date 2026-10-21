@@ -808,11 +808,6 @@
       "scope": "Actual editor private clipboard: standalone/Sequence/skeletal/BP copy/cut/paste, Undo, live AI revision/dryRun/atomicity, async stale guard, rebind/input isolation, actual BP position[1,2,0]. Before final extra external Undo/delete view bookkeeping; that exact affected path separately verified below. Screenshots inspected."
     }
   ],
-  "pendingInstalledGates": [
-    "tools/check-curve-clipboard-1345-window.mjs --player",
-    "tools/check-bp-timeline-owner-1348-window.mjs",
-    "tools/check-network-packets-1330.mjs --implementation-root"
-  ],
   "nativePlayerSHA256": "916edd63a0a5ee9104dbf40246f938e8ae44909f72c56933ff15bc6429d19c1a",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -860,8 +855,8 @@
     "native/build/clipboard-time-1346-cF0xca/acceptance.json",
     "DEBUG_HANDOFF.md#1348"
   ],
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1340.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1352.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     {
@@ -900,5 +895,35 @@
       ]
     }
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/curve-clipboard-1345-window-z1D8wz/acceptance.json",
+      "sha256": "ea9f0a1a18c266868cc21e8d317048f4d87bb7ca1b0a50f40288d63058065f27",
+      "scope": "Owned hidden actual editor uses private clipboard stub and real shortcuts/typed AI across standalone, nested Sequence/skeletal and floating BP curve editors; saved keys feed real BP Play/Pause/Seek2.5. Installed helper authors independent packaged D3D11 expected position[1,2,0]. System clipboard and user project/profile untouched.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e89f44cf0549b010\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/bp-timeline-owner-1348-window-XzGixn/acceptance.json",
+      "sha256": "e5973730d5b3866506686347007bf033159181aa260c1de0a1a22aa000ed6904",
+      "scope": "Owned hidden real editor BP Timeline key clipboard mutates live graph, survives rerender, Undo/Redo refreshes existing window, node deletion disposes listeners/observer/WeakMap registry. No user project/profile or system clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e89f44cf0549b010\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/network-packets-1330-KgFbjs/acceptance.json",
+      "sha256": "27a0aff0c63fd434e0afdf164dd83f5557e2061f6346e39f130a4c2de83d9a7d",
+      "scope": "Pure packet byte/identity/budget/ordering and nine real WebSocket recipients.129 identical rows require3 serializations+24 reuse hits, mixed owner views keep monotonic sequence/visibility, >1MiB batch respects transient1MiB shared-wire budget. Late peer receives430 global snapshot rows and136 owner-only static hides without stale state. No game FPS/native rendering/whole-process heap claim; cache lives for one broadcast only.",
+      "args": [
+        "--implementation-root",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e89f44cf0549b010"
+      ]
+    }
+  ]
 }
