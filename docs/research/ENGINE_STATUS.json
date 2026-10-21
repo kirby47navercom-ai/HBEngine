@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-21",
-  "basisRevision": "4ddb039b437f3495439d0bfd92cc276bc81a00f1",
+  "basisRevision": "efa50add0d0f359d99a0108b908a914597bc74d3",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -730,10 +730,10 @@
       "area": "rendering",
       "title": "광원·HDRI·환경 액터",
       "status": "partial",
-      "implemented": "래스터 HDRI/다중 광원·MegaLights/SkyLight 제작·분산 캡처 ·351–352: 프로브 캡처와 강도/혼합/영역 바인딩 분리·위치/해상도/clip/bounce/명시갱신 보존·C++/BP 실제 게임 및 browser 모의 타깃 수명 대조 ·986–1026: 회전/비균일/음수 크기·부모 전단 영향/투영·월드 면 거리 페이드·미세 영역 거리 보존·영역만 변형할 때 캡처 재사용·큰 정적 메쉬 경계15축 후보 판정 ·1050–1062: glTF/폴리지 인스턴스 실제 현재 경계·원점 밖 프로브 후보·컬링·행렬/개수/정점버전 캐시·1057 실제세백엔드 C++/BP 대조 ·1106–1112: browser 두후보 affine픽셀혼합/원래환경밝기·회전·해상도배치/0·1·2후보/실제인스턴스·clone/필터/굴절수명·CPU skin/morph현재경계/정지정점읽기0/캡처전갱신/native후보·컬링 ·1116–1131: GL/GPU/강제GL폴백/native 전역픽셀두후보·혼합해상도HDR atlas·컴퓨트border/corner패딩·정지copy/전송재사용·밝기metadata·실제CPP/BP4영역 ·1135–1141: native직교raster시선·ambient/hemi Lambert/금속·공용GL/GPU/폴백/native ViewDirection/Fresnel·회전·실제CPP/BP카메라 ·1149: GPU내장Physical의직교/원근시선·추가로브와원본/작성굴절·thinfilm XYZ/GL산란입력·0두께/가중치·폴백명시읽기상태/수명·독립분광31/읽기29·실제CPP/BP재질/카메라 ·1163: CPU broadphase/프레임공유순위·세GPU stackless BVH/minRank·보수적Float32 affine경계·16bit주소/정수선택·정지/밝기재사용·소유/메모리진단·513/4096선택기/기존캡처대조 ·1167–1175: native 기본 texture normal의 실제UV 접선/화면Y/양면·max성분정규화/퇴화보호·glTF PNG/C++/BP광원회전; browser/native 동일캡처 이미지중복제거/native SH공유·144B 부분전송·65536공유영역 높은count단어·해제/소유진단 ·1179–1181: WebGL/GPU/강제GL폴백의프로브table변경행전송·여러prepare대기행보존/전체갱신우선·GLunpack복원/실제전송진단·C++동일소유재사용 ·1185–1188: native동일캡처/affine설정전용경로로layout/공간임시/전체packet생성생략·모든변경검증뒤원자적적용·4B고유인덱스로65536영역768KiB감소·fast/layout진단·9분리구간전송정책회귀",
+      "implemented": "래스터 HDRI/다중 광원·MegaLights/SkyLight 제작·분산 캡처 ·351–352: 프로브 캡처와 강도/혼합/영역 바인딩 분리·위치/해상도/clip/bounce/명시갱신 보존·C++/BP 실제 게임 및 browser 모의 타깃 수명 대조 ·986–1026: 회전/비균일/음수 크기·부모 전단 영향/투영·월드 면 거리 페이드·미세 영역 거리 보존·영역만 변형할 때 캡처 재사용·큰 정적 메쉬 경계15축 후보 판정 ·1050–1062: glTF/폴리지 인스턴스 실제 현재 경계·원점 밖 프로브 후보·컬링·행렬/개수/정점버전 캐시·1057 실제세백엔드 C++/BP 대조 ·1106–1112: browser 두후보 affine픽셀혼합/원래환경밝기·회전·해상도배치/0·1·2후보/실제인스턴스·clone/필터/굴절수명·CPU skin/morph현재경계/정지정점읽기0/캡처전갱신/native후보·컬링 ·1116–1131: GL/GPU/강제GL폴백/native 전역픽셀두후보·혼합해상도HDR atlas·컴퓨트border/corner패딩·정지copy/전송재사용·밝기metadata·실제CPP/BP4영역 ·1135–1141: native직교raster시선·ambient/hemi Lambert/금속·공용GL/GPU/폴백/native ViewDirection/Fresnel·회전·실제CPP/BP카메라 ·1149: GPU내장Physical의직교/원근시선·추가로브와원본/작성굴절·thinfilm XYZ/GL산란입력·0두께/가중치·폴백명시읽기상태/수명·독립분광31/읽기29·실제CPP/BP재질/카메라 ·1163: CPU broadphase/프레임공유순위·세GPU stackless BVH/minRank·보수적Float32 affine경계·16bit주소/정수선택·정지/밝기재사용·소유/메모리진단·513/4096선택기/기존캡처대조 ·1167–1175: native 기본 texture normal의 실제UV 접선/화면Y/양면·max성분정규화/퇴화보호·glTF PNG/C++/BP광원회전; browser/native 동일캡처 이미지중복제거/native SH공유·144B 부분전송·65536공유영역 높은count단어·해제/소유진단 ·1179–1181: WebGL/GPU/강제GL폴백의프로브table변경행전송·여러prepare대기행보존/전체갱신우선·GLunpack복원/실제전송진단·C++동일소유재사용 ·1185–1188: native동일캡처/affine설정전용경로로layout/공간임시/전체packet생성생략·모든변경검증뒤원자적적용·4B고유인덱스로65536영역768KiB감소·fast/layout진단·9분리구간전송정책회귀 ·1192–1199: world구형영향/투영·offset/capture분리·CPU/GL/TSL/native·조건속성/배치/3원helper·C++/BP SetSphere원자·SetShape/Radius·활성source순위변경copy재사용·상대좌표/단위구/inside C보호·직접구+상자/전역Sphere/HDR회귀",
       "remaining": [
         "큰 장면 다수 HDR 캡처의 CPU/GPU 메모리·통제 FPS 검증 및 타일/클러스터와 BVH 비교·혼합 정책",
-        "픽셀 중요도 우선 점유·작은 캡처 덮어쓰기·구형 캡처·lightmap 혼합",
+        "픽셀 중요도 우선 점유·작은 캡처 덮어쓰기·독립 투영 프록시·방향별/노멀 페이드·lightmap 혼합",
         "임의 shader displacement·인스턴스별 morph texture의 소유 경계 및 지원 확대",
         "WebGPU 물리 재질의 임의 복합 로브·매질/기하/이력 조합 확장과 전체 백엔드 에너지 동등성 검증"
       ],
@@ -771,7 +771,14 @@
         "native/include/HBEngine/ProbeSpatialIndex.hpp",
         "prototype/gpu-probe-spatial.js",
         "prototype/reflection-probe-spatial.js",
-        "prototype/probe-table-upload.js"
+        "prototype/probe-table-upload.js",
+        "native/include/HBEngine/Game.hpp",
+        "native/include/HBEngine/Session.hpp",
+        "prototype/engine-services.js",
+        "prototype/placement-catalog.js",
+        "prototype/reflection-probe-helper.js",
+        "prototype/scene-components.js",
+        "prototype/scene-rendering.js"
       ],
       "evidence": [
         "docs/RASTER_LIGHTING_131.md",
@@ -794,7 +801,9 @@
         "docs/research/ENGINE_WORK_1175.json",
         "docs/BUILTIN_NORMAL_MAP.md",
         "docs/research/ENGINE_WORK_1181.json",
-        "docs/research/ENGINE_WORK_1188.json"
+        "docs/research/ENGINE_WORK_1188.json",
+        "docs/research/ENGINE_WORK_1199.json",
+        "docs/SPHERE_REFLECTION_PROBES.md"
       ]
     },
     {
@@ -2798,11 +2807,11 @@
     }
   ],
   "latestBatch": {
-    "first": 1185,
-    "last": 1188,
-    "record": "docs/research/ENGINE_WORK_1188.json",
-    "implementationRevision": "4ddb039b437f3495439d0bfd92cc276bc81a00f1",
-    "scope": "native CPU재포장/보유용량/원자검증/진단;HLSL/raster실행구문동일·브라우저/노멀검사재사용."
+    "first": 1192,
+    "last": 1199,
+    "record": "docs/research/ENGINE_WORK_1199.json",
+    "implementationRevision": "efa50add0d0f359d99a0108b908a914597bc74d3",
+    "scope": "Sphere영향/투영/제작/Cpp/BP·직접/전역·안정성/이미지수명. 공식특정구역만읽고전체분모미승격."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_1190.json",
