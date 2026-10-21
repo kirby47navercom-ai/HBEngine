@@ -846,3 +846,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1190설치 C:\Users\kirby\HBEngine\Versions\fc81d47f83b22276 /3884명세·544소유SHA·CPP19/native14·Player1186/Host1041·설치실제CPP/BP4영역/밝기복원 layout1고정/fast0→1→2 확인. User10849전후읽기SHA·연결·Versions1·이전184934509B정리·cache{"deleted":0,"bytes":0,"receipt":null}. 영향native2gate만묶어서검사했고동일노멀/브라우저검사는재실행하지않음.
 
 1192–1199 Sphere영향/투영·배치/조건속성/helper·C++/BP3함수·source순위slot유지·수치안정성을묶어구현. CPU520/GPU3×520/native1040/4HDR구/직접3×160·기존box54/21방향통과. source1197선행게임9상태는preliminary로분리,최종1197b/음수비균일Actor의설치3backend검사예정. 상대좌표·단위구·inside C보호로정밀도수정,오차유지. 공식읽기는특정구역/등록이고전체gate미승격.
+
+1201설치 전환 후 Sphere 패키징에서 scene 음수scale 거절 실패를 보존. 1203–1206은 씬·편집·복제·BP/C++·생성/풀/저장/물리/네트워크/시퀀스와 D3D 월드·혼합instance 반전 면/법선을 함께 수정. native48/Rapier2D·3D/CPU520/nativeSphere1040·4HDR/문법18·API/AI 통과; 마지막JS float경계는CPU만재검사/native성공재사용. 동일브라우저수식반복없음/Player1204한번빌드. 후속설치3backend9상태예정.
