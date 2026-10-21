@@ -561,3 +561,7 @@ GPU 물리 시선 계약은 schema.cameraView와 WebGPU renderer.cameraView에�
 ## 1241 — 구조체·분기 편집
 
 `blueprint.struct.configure`와 `blueprint.switch.configure`는 문서 revision/dryRun/Undo/상속 소유 검증을 공유해요. 타입·선택 필드·고정 Case ID·정렬은 [구조체/분기 계약](BLUEPRINT_STRUCT_OPERATIONS.md)과 `schema.blueprintStructs`에서 확인해요. 노드는 기존 document.patch로 생성하고, 원본 변수·배열·함수 입력 참조 수정과 임시 값의 결과 사본을 구분해요.
+
+## 1250 — Shot/Sub-Sequence
+
+`sequence.section.edit`는 기존 문서 revision/dryRun/Undo를 공유해요. `runtime.sequenceTree`는 활성 트리의 로컬 시간/누적 우선순위를 페이지로 조회해요. [구간 제작·실행 계약](SEQUENCE_SECTIONS.md)에 저장 형식과 지원 범위를 적었어요.

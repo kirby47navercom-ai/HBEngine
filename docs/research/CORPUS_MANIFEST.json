@@ -2816,6 +2816,17 @@
       "wholeCorpus": false,
       "state": "own_selected_sections_read_and_existing_HB_model_runtime_CPP_contract_compared",
       "readScope": "Struct split/recombine/make/break/selected Set Members/hidden outputs paragraphs; Flow Control Switch editing/default/comparison and stable pin authoring paragraphs; own Switch on Name input/output table. Custom type paragraphs read as remaining scope, not implementation proof."
+    },
+    {
+      "id": "sequence-sections-supplement-1250",
+      "engine": "Epic UE5.1 historical / Unity Timeline1.7.7",
+      "roots": [
+        "https://dev.epicgames.com/documentation/en-us/unreal-engine/master-sequences-shots-and-takes-in-unreal-engine?application_version=5.1",
+        "https://docs.unity3d.com/Packages/com.unity.timeline@1.7/manual/wf_nested.html"
+      ],
+      "record": "docs/SEQUENCE_SECTIONS.md",
+      "wholeCorpus": false,
+      "readScope": "Epic own Master/Shot interaction, upper-row evaluation, source offset/rate/loop and hierarchical cumulative bias paragraphs; Unity own nesting article lines115-142. Linked APIs and image sources not read."
     }
   ],
   "supplementalBaselines": [
@@ -5005,5 +5016,16 @@
     "wholeBodyGatePromoted": false,
     "linkedAPIsMediaRead": false,
     "remaining": "Custom struct/enum assets and general C++ reflection remain pending; no whole-engine analysis claim."
+  },
+  "supplemental1250": {
+    "date": "2026-10-21",
+    "record": "docs/SEQUENCE_SECTIONS.md",
+    "wholeBodyGatePromoted": false,
+    "failedRetrieval": [
+      "current Epic subsequence own body returned heading only",
+      "Unity 1.8 hyphenated guessed URL unavailable",
+      "Unity cn1.7 timed out"
+    ],
+    "remaining": "Full current-version API, media, in-context nested editing, transform origin/time warp, blending/thumbnails/Take metadata."
   }
 }

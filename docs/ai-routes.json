@@ -524,7 +524,12 @@
         "sequence",
         "retarget",
         "ik",
-        "root motion"
+        "root motion",
+        "Sub-Sequence",
+        "Shot",
+        "시퀀스 구간",
+        "하위 시퀀스",
+        "계층 우선순위"
       ],
       "paths": [
         "prototype/animation-graph-runtime.js",
@@ -532,7 +537,10 @@
         "prototype/animation-montage-runtime.js",
         "prototype/animation-full-body.js",
         "prototype/sequence-state.js",
-        "prototype/gameplay-runtime.js"
+        "prototype/gameplay-runtime.js",
+        "prototype/sequence-sections.js",
+        "prototype/gameplay-assets.js",
+        "prototype/gameplay-editor.js"
       ]
     },
     {

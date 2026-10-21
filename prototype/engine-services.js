@@ -425,6 +425,7 @@ export function engineOperations(hooks){
     valuesState:(id,{offset=0,limit=64}={})=>{const object=currentVM?.object(id);if(!object||!Number.isInteger(offset)||offset<0||!Number.isInteger(limit)||limit<1||limit>256)throw Error('변수 대상과 페이지를 확인하세요.');const rows=recordableRuntimeValues(object,currentVM.bindings);return {actor:id,total:rows.length,offset,values:structuredClone(rows.slice(offset,offset+limit)),nextOffset:offset+limit<rows.length?offset+limit:null};},
     animationState:()=>[...graphs.values()].map(player=>player.snapshot()),
     sequenceOwnership:()=>systems.sequenceOwnership(),
+    sequenceTreeState:(target,options)=>systems.sequenceTreeState(target,options),
     tilemapState:(options={})=>tilemaps.inspect(currentVM?.object(options.target),options),
     sequencePoseState:(id,{offset=0,limit=64}={})=>{if(typeof id!=='string'||!currentVM?.object(id)||!Number.isInteger(offset)||offset<0||!Number.isInteger(limit)||limit<1||limit>512)throw Error('시퀀스 포즈 대상과 페이지를 확인하세요.');const rows=captureSkeletalPose(hooks.mesh(id)),entry=sequencePoses.get(id);return {actor:id,controlled:!!entry,time:entry?.time??null,total:rows.length,offset,bones:rows.slice(offset,offset+limit),nextOffset:offset+limit<rows.length?offset+limit:null};},
     spriteSkinState:({vertices=false}={})=>(currentVM?.objects||[]).flatMap(o=>{const skin=hooks.mesh(o.id)?.userData.spriteSkin;return skin?[{actor:o.id,...skin.snapshot({vertices})}]:[];}),

@@ -512,3 +512,7 @@ Microsoft XMVector3Normalize의 자체 서명/반환 주의와 Robust 예시에�
 # 2026-10-21 — 1241 구조체·분기 지정 절
 
 Struct Variables의 Split/Make/Break/Set Members/비노출 보존과 미연결 출력 숨김, Flow Control의 Switch 편집·Default·비교값·순서, Switch on Name의 자체 핀 표를 읽고 기존 HB 모델/VM/C++ 계약에 대조했어요. supplemental1241로 등록했으며 연결 API·미디어·전체 엔진 gate는 승격하지 않아요. 사용자 정의 구조체·enum과 일반 native 원본 참조는 잔여예요. [제작 계약](../BLUEPRINT_STRUCT_OPERATIONS.md).
+
+# 2026-10-21 — 1250 하위 시퀀스/Shot 지정 절
+
+Epic5.1 역사 문서의 Shot 구간·행 우선·오프셋/배율/반복·계층 bias와 Unity Timeline1.7.7 nesting 자체 본문을 대조했어요. 현재 Epic 주소의 제목만 반환과 Unity1.8 오주소/cn timeout은 읽음으로 계산하지 않아요. supplemental1250, 전체 gate/연결 API/미디어 승격 없음. [계약](../SEQUENCE_SECTIONS.md).

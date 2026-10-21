@@ -58,3 +58,5 @@
 .effect-scaling-editor{display:grid;grid-column:1/-1;gap:6px;min-width:0;padding:8px 0}.effect-scaling-editor>label{display:grid;grid-template-columns:100px minmax(0,1fr);align-items:center;gap:8px}.effect-scaling-editor select{width:100%;min-width:0}.effect-scaling-preview{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.effect-scaling-preview label{display:flex;align-items:center;gap:8px}.effect-scaling-preview input{width:82px}.effect-scaling-preview output{font-variant-numeric:tabular-nums;color:var(--text);padding:4px}
 
 .ability-readout [data-effect-level]{width:58px;max-width:100%;min-width:0;padding:3px;font-variant-numeric:tabular-nums}
+
+.gameplay-segment.sequence-section{background:#3e566f;border-color:#7195b4;min-width:3px}.gameplay-segment.sequence-section.shot{background:#68583e;border-color:#ad9369}.gameplay-segment.sequence-section [data-notify-resize]{cursor:ew-resize}

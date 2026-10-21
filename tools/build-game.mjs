@@ -5,6 +5,7 @@ import {packagedRuntimeBytes,packagedRuntimeContent} from './packaged-runtime.mj
 import {cookContent} from './cook-cache.mjs';
 import {cookDistanceFields} from './distance-field-cook.mjs';
 import {gameInstanceBlueprint} from '../prototype/runtime-game.js';
+import {loadSequenceTree} from '../prototype/sequence-sections.js';
 import {parseNativeHeader,canonicalNativeText} from '../prototype/native-model.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -68,6 +69,7 @@ export async function inspectBuild(record,profile,{signal}={}){
     }
     for(const value of assetReferences(data,name))await include(value);
   }
+  for(const [name]of content)if(assetKind(name)==='sequenceasset')await loadSequenceTree(name,async dependency=>JSON.parse(content.get(await include(dependency))));
   const effectCurves=Object.create(null);for(const [name,bytes]of content)if(assetKind(name)==='effect')try{await resolveEffectDefinition(JSON.parse(bytes),async dependency=>{signal?.throwIfAborted();return JSON.parse(content.get(await include(dependency)));},{capture:false,curves:effectCurves});}catch(error){throw Error(name+': '+error.message);}
   // Validate reusable shader dependencies before exporting, retaining authored function files.
   for(const [name,bytes] of content)if(['material','materialinstance'].includes(assetKind(name)))try{await resolveMaterialAsset(JSON.parse(bytes),async dependency=>JSON.parse(content.get(await include(dependency))));}catch(error){throw Error(name+': '+error.message);}

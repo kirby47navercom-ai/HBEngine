@@ -1,6 +1,7 @@
 import {expandBlueprintNode,pruneCollapsedDefinitions} from './blueprint-folding.js';
 import {ComponentPreview} from './component-preview.js';
 import {blueprintClassKind} from './blueprint-class-defaults.js';
+import {editSequenceSection} from './sequence-sections.js';
 import {structTypes,isStructNode,structNodeType,visibleStructFields,configureStructNode} from './struct-operations.js';
 import {isFlowNode,isSwitchNode,flowOutputIds,configureSwitchNode,moveFlowOutput,addFlowOutput,removeFlowOutput,setFlowDefault} from './flow-pins.js';
 import {validActorScale,validScaleAxis,clampScaleAxis} from './transform-scale.js';
@@ -1808,6 +1809,7 @@ const editorCommandMethods={
   'blueprint.default.set':params=>automationAuthoringEdit(params,'blueprint',data=>{setBlueprintDefault(data,params.kind,params.id,params.value,params.key);return {kind:params.kind,id:params.id};}),
   'blueprint.default.reset':params=>automationAuthoringEdit(params,'blueprint',data=>{resetInheritedDefault(data,params.kind,params.id,params.key);return {kind:params.kind,id:params.id};}),
   'scene.blueprint.override':async params=>{const {doc}=await automationDocument(params,true),object=doc.data.objects?.find(o=>o.id===params.object);if(!object?.blueprintAsset)throw Error('블루프린트 인스턴스가 필요해요.');const root=await blueprintWorkspace.prepare(object.blueprintAsset);return automationAuthoringEdit(params,'scene',data=>{editBlueprintInstance(root,data.objects.find(o=>o.id===params.object),params.kind,params.id,params.value,{reset:params.reset});return {object:params.object};});},
+  'sequence.section.edit':params=>automationAuthoringEdit(params,'sequenceasset',data=>({section:editSequenceSection(data,{operation:params.operation,id:params.id,section:params.section})})),
   'blueprint.switch.configure':params=>automationAuthoringEdit(params,'blueprint',data=>{const node=configureSwitchNode(data,automationGraph(data,params.view),params.node,{cases:params.cases,hasDefault:params.hasDefault,caseSensitive:params.caseSensitive},params.view||'event');return {node:node.id,outputs:flowOutputIds(node),cases:node.caseValues};}),
   'blueprint.struct.configure':params=>automationAuthoringEdit(params,'blueprint',data=>{const g=automationGraph(data,params.view),node=configureStructNode(data,g,params.node,{type:params.type,members:params.members,hideUnconnected:params.hideUnconnected},params.view||'event');return {node:node.id,type:structNodeType(node),members:visibleStructFields(node)};}),
   'blueprint.collapse':params=>automationAuthoringEdit(params,'blueprint',data=>{const g=automationGraph(data,params.view),result=collapseNodes(data,g,params.nodes,params.kind||'graph',params.name,params.view||'event');if(!result.ok)throw Error(result.reason);return {node:result.call.id,definition:result.definition.id};}),
@@ -1831,6 +1833,7 @@ const editorCommandMethods={
   'runtime.audio.capture.finish':params=>runtimeAudioCapture('finish',params),
   'runtime.take.start':params=>runtimeTakeOperation('start',params),
   'runtime.take.finish':()=>runtimeTakeOperation('finish'),
+  'runtime.sequenceTree':params=>{if(!running||!runtimeServices)throw Error('게임 실행 중에 조회하세요.');return runtimeServices.sequenceTreeState(params.target,params);},
   'runtime.sequenceOwnership':()=>{if(!running||!runtimeServices)throw Error('게임 실행 중에 조회하세요.');return runtimeServices.sequenceOwnership();},
   'runtime.sequencePose':({target,offset,limit})=>{if(!running||!runtimeServices)throw Error('게임 실행 중에 조회하세요.');return runtimeServices.sequencePoseState(target,{offset,limit});},
   'runtime.network':()=>runtimeServices?.networkState()||{status:'offline'},
