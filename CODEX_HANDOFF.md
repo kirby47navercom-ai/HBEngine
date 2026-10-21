@@ -19,3 +19,7 @@ ENGINE_WORK_1149.json·GPU_PHYSICAL_VIEW.md·research/GPU_PHYSICAL_VIEW_1148.md.
 RND03 전역probe순위의공간타일/클러스터가속·큰장면비용·중요도우선/작은캡처덮기·sphere/lightmap·임의shader변위/instance morph texture경계·임의복합로브/매질·기하/이력전조합. native기본texture normal/다른tangent관례확대. RND06 GLComplex141약8/7초유지;1086 SSA/0초기화미채택반복금지. RND08 전역거리장clipmap/타일·방향하늘/bentnormal/시간신뢰도·지형/변형/마스크·FBX/월드/다중LOD·편집기쿠킹/HWRT/방향베이크. 다른78행누적유지·전체완료율미확정/연구gate미승격.
 
 백그라운드·고유소유프로젝트/프로필/포트만. 무거운검사/EXE/설치전activeInstalledVersions·사용중이면미루기. 호출셸commandline에설치경로를넣으면검사자신을active로검출할수있어스크립트준비/실행분리. Versions1·전체백업금지·각검사runtime/마지막공유캐시정리.한글동일author/committer commit/push. Android폰/Mac없음재질문금지.
+
+## 후속1157–1163 설치 준비
+
+사용자지시:멈추지않고구현묶음후검사한번,이미성공한검사반복금지. CPU/GPU/GL/D3D rank보존 BVH·Float32오차경계·16bit주소·정수selection·CPU broadphase·정지/밝기재사용/진단 구현. batch1160 CPU1157-Ip0jVb/selector1158-QAWPmx/atlas1117-EUpJpG/native1119-e7hLIO 통과·Player1161 한번빌드/Host재사용. static1163 API/AI통과. 현재설치1151 유지. 다음ENGINE_WORK_1163·sync1164/install1165/finish1166 새one-shot·설치전체SHA+실제CPP/BP3게임만,이미통과한GPU/native행렬재실행금지. Versions1·User보호. docs/PROBE_SPATIAL_INDEX.md·research/PROBE_SPATIAL_1162.md. 누적전체목표미완료,목표도구상태와별개로최신사용자계속지시따라진행.

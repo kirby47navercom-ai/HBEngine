@@ -555,3 +555,5 @@ ReflectionProbe의 기존 크기/offset/captureOffset/blendDistance/boxProjectio
 자동화 raySurfaceHistory.normalDecode 계약2는 RGB를 signed tangent normal로 푼 뒤 최대 절대 성분으로 먼저 크기를 조절하는 GPU 정규화를 명시해요. CPU는 기존 double hypot예요. 기존 Normal Map 노드·파라미터·C++ Materials::SetFloat/블루프린트 materialFloat를 그대로 사용하며 새 에셋 키나 수동 쉐이더 패치가 필요하지 않아요. 중립[0,0,1]은 유지하고, 유한하고 GPU에서 표현 가능한 중간 성분을 대상으로 해요. 이전/현재 필드·Float 노멀 밉·실제 SDK 게임 증거와 미지원 수치 범위는 [1037 기록](research/NORMAL_RANGE_1037.md)에 있어요.
 
 GPU 물리 시선 계약은 schema.cameraView와 WebGPU renderer.cameraView에서 읽어요. 시선/막 간섭/명시 읽기의 소유·비용·범위는 docs/GPU_PHYSICAL_VIEW.md를 확인해요. C++ Materials::SetFloat와 생성 BP 노드는 기존 공용 서비스를 사용해요.
+
+반사 후보 공간 인덱스는 reflectionProbeBlending version3/atlasContract에서 읽어요. 기존 C++/BP 명령과 JSON은 같아요. renderer.probes.atlas.spatial/candidates 및 native probeAtlasSpatial* 진단을 사용하며 낮은 수준의 native table SRV는 stride16 float4 행이에요. docs/PROBE_SPATIAL_INDEX.md를 확인해요.

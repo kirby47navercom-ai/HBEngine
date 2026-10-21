@@ -190,7 +190,11 @@
         "prototype/gpu-camera-view.js",
         "prototype/gpu-iridescence.js",
         "docs/GPU_PHYSICAL_VIEW.md",
-        "prototype/gpu-fallback-readback.js"
+        "prototype/gpu-fallback-readback.js",
+        "prototype/reflection-probe-spatial.js",
+        "prototype/gpu-probe-spatial.js",
+        "native/include/HBEngine/ProbeSpatialIndex.hpp",
+        "docs/PROBE_SPATIAL_INDEX.md"
       ]
     },
     {
@@ -301,7 +305,11 @@
         "prototype/camera-view-contract.js",
         "prototype/gpu-camera-view.js",
         "prototype/gpu-iridescence.js",
-        "docs/GPU_PHYSICAL_VIEW.md"
+        "docs/GPU_PHYSICAL_VIEW.md",
+        "prototype/reflection-probe-spatial.js",
+        "prototype/gpu-probe-spatial.js",
+        "native/include/HBEngine/ProbeSpatialIndex.hpp",
+        "docs/PROBE_SPATIAL_INDEX.md"
       ]
     },
     {
@@ -736,7 +744,11 @@
         "prototype/gpu-probe-atlas-environment.js",
         "native/include/HBEngine/SceneProbeAtlas.hpp",
         "native/include/HBEngine/ProbeAtlasPadding.hpp",
-        "prototype/gpu-fallback-readback.js"
+        "prototype/gpu-fallback-readback.js",
+        "prototype/reflection-probe-spatial.js",
+        "prototype/gpu-probe-spatial.js",
+        "native/include/HBEngine/ProbeSpatialIndex.hpp",
+        "docs/PROBE_SPATIAL_INDEX.md"
       ]
     },
     {
