@@ -27,15 +27,16 @@ export function probeSpatialBounds(lo,hi,x,y,z){
 
 export class ProbeSpatialIndex{
  constructor(){this.stamp=new Float32Array();this.data=new Float32Array();this.builds=0;this.count=0;}
- update(records,count){
-  if(!Number.isSafeInteger(count)||count<0||records.length<count*36)throw Error('반사 공간 자료의 길이를 확인하세요.');
+ update(records,count,{recordTexels=9}={}){
+  if(!Number.isSafeInteger(recordTexels)||recordTexels<6)throw Error('반사 레코드 크기를 확인하세요.');const stride=recordTexels*4;
+  if(!Number.isSafeInteger(count)||count<0||records.length<count*stride)throw Error('반사 공간 자료의 길이를 확인하세요.');
   let changed=this.count!==count||this.stamp.length!==count*fields.length;
-  if(!changed)for(let i=0;i<count&&!changed;i++)for(let k=0;k<fields.length;k++)if(!Object.is(this.stamp[i*fields.length+k],records[i*36+fields[k]])){changed=true;break;}
+  if(!changed)for(let i=0;i<count&&!changed;i++)for(let k=0;k<fields.length;k++)if(!Object.is(this.stamp[i*fields.length+k],records[i*stride+fields[k]])){changed=true;break;}
   if(!changed)return false;
   const stamp=new Float32Array(count*fields.length),items=[];
   for(let index=0;index<count;index++){
-   for(let k=0;k<fields.length;k++)stamp[index*fields.length+k]=records[index*36+fields[k]];
-   const at=index*36,part=n=>Array.from(records.subarray(at+n*4,at+n*4+4)),bounds=probeSpatialBounds(part(1).slice(0,3),part(2).slice(0,3),part(3),part(4),part(5));
+   for(let k=0;k<fields.length;k++)stamp[index*fields.length+k]=records[index*stride+fields[k]];
+   const at=index*stride,part=n=>Array.from(records.subarray(at+n*4,at+n*4+4)),bounds=probeSpatialBounds(part(1).slice(0,3),part(2).slice(0,3),part(3),part(4),part(5));
    items.push({index,points:[bounds.min,bounds.max],center:bounds.min.map((v,k)=>v*.5+bounds.max[k]*.5)});
   }
   const tree=buildGeometryBVH(items,1),ranks=new Uint32Array(tree.nodes.length),data=new Float32Array(tree.nodes.length*12);

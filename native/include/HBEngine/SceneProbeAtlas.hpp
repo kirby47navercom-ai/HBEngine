@@ -9,7 +9,7 @@ namespace hb::gpu {
 class SceneProbeAtlas {
     struct Rect {UINT x=0,y=0,width=0,height=0;};
     struct Record {ProbeSettings settings;std::array<float,4> region;};
-    static_assert(sizeof(Record)==144,"Probe atlas record layout");
+    static_assert(sizeof(Record)==224,"Probe atlas record layout");
     struct Stamp {std::uint64_t identity=0,revision=0;bool operator==(const Stamp& b)const{return identity==b.identity&&revision==b.revision;}};
     Device& gpu;detail::Com<ID3D11ComputeShader> padding;detail::Com<ID3D11UnorderedAccessView> paddingOutput;detail::Com<ID3D11Buffer> paddingConstants;std::uint64_t paddingDispatches_=0;
     void preparePadding(){if(padding.p)return;detail::ShaderBytecodeCompiler::create(probeAtlasPaddingSource,"HBProbeAtlasPadding","Fill","cs_5_0",[&](const void* bytes,std::size_t size){std::lock_guard<std::mutex> lock(gpu.mutex);return gpu.device->CreateComputeShader(bytes,size,nullptr,&padding.p);});std::lock_guard<std::mutex> lock(gpu.mutex);D3D11_BUFFER_DESC d{};d.ByteWidth=32;d.Usage=D3D11_USAGE_DEFAULT;d.BindFlags=D3D11_BIND_CONSTANT_BUFFER;detail::check(gpu.device->CreateBuffer(&d,nullptr,&paddingConstants.p),"Probe atlas padding constants");}
@@ -22,7 +22,7 @@ class SceneProbeAtlas {
         if(best.empty()){throw std::runtime_error("Reflection atlas exceeds hardware dimensions; lower capture resolution");}return best;
     }
     void validateBinding(const SceneProbeBinding& b)const{
-        if(!b.resource||b.resource->owner!=gpu.device.p||!b.resource->ready||!b.resource->filtered.p||!b.resource->coefficients.p||!probeVolumeBasisUsable(b.settings))throw std::runtime_error("Probe atlas resource owner/pose invalid");
+        if(!b.resource||b.resource->owner!=gpu.device.p||!b.resource->ready||!b.resource->filtered.p||!b.resource->coefficients.p||!probeVolumeBasisUsable(b.settings)||!probeProjectionUsable(b.settings))throw std::runtime_error("Probe atlas resource owner/pose invalid");
         for(const auto* row:{&b.settings.center,&b.settings.minimum,&b.settings.maximum,&b.settings.options,&b.settings.localX,&b.settings.localY,&b.settings.localZ,&b.settings.faceScale})if(!std::all_of(row->begin(),row->end(),[](float v){return std::isfinite(v);}))throw std::runtime_error("Probe atlas settings nonfinite");
         for(std::size_t j=0;j<3;j++)if(b.settings.minimum[j]>=b.settings.maximum[j]||b.settings.faceScale[j]<=0)throw std::runtime_error("Probe atlas bounds invalid");
         if(b.settings.center[3]<0||b.settings.minimum[3]<0||b.settings.options[1]<0)throw std::runtime_error("Probe atlas light invalid");
@@ -59,7 +59,7 @@ public:
             ++metadataFastUpdates_;++uploads_;return;
         }
         for(const auto& b:bindings)validateBinding(b);
-        const auto tableCount=bindings.size()+(bindings.size()*2+1)/3,recordBytes=bindings.size()*sizeof(Record),bytes=tableCount*sizeof(Record);
+        const auto tableCount=bindings.size()+((bindings.size()*2-1)*3+13)/14,recordBytes=bindings.size()*sizeof(Record),bytes=tableCount*sizeof(Record);
         if(bytes>UINT_MAX)throw std::runtime_error("Probe atlas metadata exceeds hardware buffer size");
         std::unordered_map<std::uint64_t,std::size_t> identities;std::vector<SceneProbeBinding> unique;std::vector<UINT> indices;indices.reserve(bindings.size());
         for(const auto& b:bindings){const auto found=identities.find(b.resource->identity);if(found!=identities.end())indices.push_back(UINT(found->second));else{const auto index=unique.size();identities.emplace(b.resource->identity,index);unique.push_back(b);indices.push_back(UINT(index));}}
@@ -106,10 +106,10 @@ float3 indirectAtlasProbes(float3 at,float3 n,float3 v,float3 base,float rough,f
 float3 refractedAtlasProbes(float3 at,float3 direction,float rough,out float coverage);
 )HLSL";
 inline const std::string sceneProbeAtlasFunctions=std::string(probeAtlasCubeDirections)+R"HLSL(
-AtlasProbe hbAtlasProbe(uint index){uint at=index*9;AtlasProbe p;p.settings.center=probeTableRows[at];p.settings.minimum=probeTableRows[at+1];p.settings.maximum=probeTableRows[at+2];p.settings.options=probeTableRows[at+3];p.settings.localX=probeTableRows[at+4];p.settings.localY=probeTableRows[at+5];p.settings.localZ=probeTableRows[at+6];p.settings.faceScale=probeTableRows[at+7];p.region=probeTableRows[at+8];return p;}
+AtlasProbe hbAtlasProbe(uint index){uint at=index*14;AtlasProbe p;p.settings.center=probeTableRows[at];p.settings.minimum=probeTableRows[at+1];p.settings.maximum=probeTableRows[at+2];p.settings.options=probeTableRows[at+3];p.settings.localX=probeTableRows[at+4];p.settings.localY=probeTableRows[at+5];p.settings.localZ=probeTableRows[at+6];p.settings.faceScale=probeTableRows[at+7];p.settings.projectionMinimum=probeTableRows[at+8];p.settings.projectionMaximum=probeTableRows[at+9];p.settings.projectionX=probeTableRows[at+10];p.settings.projectionY=probeTableRows[at+11];p.settings.projectionZ=probeTableRows[at+12];p.region=probeTableRows[at+13];return p;}
 static int2 hbAtlasIndices=int2(-1,-1);static float2 hbAtlasWeights=0;static float3 hbAtlasAt=0;
 uint hbAtlasWord(float lo,float hi){return (uint)lo+(uint)hi*65536u;}
-void hbAtlasPick(float3 at,out int2 indices,out float2 weights){indices=int2(-1,-1);weights=0;float firstFlags=0;uint count=(uint)probeSettings[0].faceScale.w+(uint)probeSettings[1].faceScale.w*65536u,cursor=0,total=count*2-1;if(count==0)return;[loop]while(cursor<total){uint offset=count*9+cursor*3;float4 lower=probeTableRows[offset],upper=probeTableRows[offset+1],meta=probeTableRows[offset+2];uint rank=hbAtlasWord(meta.z,meta.w);if(any(at<lower.xyz)||any(at>upper.xyz)||(indices.y>=0&&rank>=(uint)indices.y)){cursor=hbAtlasWord(lower.w,upper.w);continue;}uint leaf=hbAtlasWord(meta.x,meta.y);if(leaf){int i=(int)leaf-1;AtlasProbe p=hbAtlasProbe((uint)i);float weight=probeWeight(p.settings,at);if(weight>0){if(indices.x<0||i<indices.x){indices.y=indices.x;weights.y=weights.x;indices.x=i;weights.x=weight;firstFlags=p.settings.options.w;}else if(indices.y<0||i<indices.y){indices.y=i;weights.y=weight;}}}++cursor;}probeBlendPriority(weights.x,weights.y,firstFlags);}
+void hbAtlasPick(float3 at,out int2 indices,out float2 weights){indices=int2(-1,-1);weights=0;float firstFlags=0;uint count=(uint)probeSettings[0].faceScale.w+(uint)probeSettings[1].faceScale.w*65536u,cursor=0,total=count*2-1;if(count==0)return;[loop]while(cursor<total){uint offset=count*14+cursor*3;float4 lower=probeTableRows[offset],upper=probeTableRows[offset+1],meta=probeTableRows[offset+2];uint rank=hbAtlasWord(meta.z,meta.w);if(any(at<lower.xyz)||any(at>upper.xyz)||(indices.y>=0&&rank>=(uint)indices.y)){cursor=hbAtlasWord(lower.w,upper.w);continue;}uint leaf=hbAtlasWord(meta.x,meta.y);if(leaf){int i=(int)leaf-1;AtlasProbe p=hbAtlasProbe((uint)i);float weight=probeWeight(p.settings,at);if(weight>0){if(indices.x<0||i<indices.x){indices.y=indices.x;weights.y=weights.x;indices.x=i;weights.x=weight;firstFlags=p.settings.options.w;}else if(indices.y<0||i<indices.y){indices.y=i;weights.y=weight;}}}++cursor;}probeBlendPriority(weights.x,weights.y,firstFlags);}
 void hbAtlasChoose(float3 at){hbAtlasAt=at;hbAtlasPick(at,hbAtlasIndices,hbAtlasWeights);}
 void hbAtlasChoice(float3 at,out int2 indices,out float2 weights){indices=hbAtlasIndices;weights=hbAtlasWeights;if(any(at!=hbAtlasAt))hbAtlasPick(at,indices,weights);}
 float3 hbAtlasLevel(AtlasProbe p,float3 direction,uint level){uint face;float2 uv;hbAtlasFaceUV(direction,face,uv);uint size=max(1u,(uint)p.region.z>>level),width,height;probeAtlas.GetDimensions(width,height);float2 origin=p.region.xy+float2(face*(size+2)+1,2*(uint)p.region.z-2*size+2*level+1);return probeAtlas.SampleLevel(linear2d,(origin+uv*size)/float2(width,height),0).rgb;}

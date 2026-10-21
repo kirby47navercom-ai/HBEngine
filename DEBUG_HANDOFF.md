@@ -107,3 +107,14 @@ fallback readback뒤copyTexSubImage2D가GL1282. Float32blend가설은HalfFloat�
 - 최종 source Soyawj:256트랙/첫행10·348마커/맨아래6·96마커/전체높이11814/검색1행,65k마지막키 가시이동/8 UndoRedo/분기·읽기revision·저장·실제Play2.5. curve-filters Z13QF1은 실제Sequence/골격/BP Timeline·FFT/경계Bake/Undo/저장/Play 회귀를 통과했어요. source 이후 추가된 선택행 색/기본키 재지정과 입력 격리는 설치gate에서 확인해요.
 - 잘못 추정한 도구명check-asset-shortcuts.mjs는 실행 파일이 없어 준비 단계에서 실패했어요. 실제 check-editor-shortcuts.mjs의153명령 회귀를 통과했어요. 성과나 제품 실패로 혼동하지 않아요.
 - snapshot 전체 순회/복원·scene/BP 사전직렬화·변경대형배열, 큰클립/섹션/비고정행과 고급다중곡선은 남아 있어요. 임시후보를 채택했다는 주장이나 전체엔진완료 승격은 없어요.
+
+## 1407–1419 독립 반사 투영과 네이티브 상수 공유
+
+- 독립 프록시 외부 광선은 기존 내부 출구 수식과 달리 가장 가까운 앞 교차점이 필요했어요. CPU/GL/GPU/FXC를 같이 수정했고 독립 THREE Ray/Box/Sphere 2,211개 조건과 대조했어요. 회전·전단된 수치 경계는 부동소수점 분류가 불연속이므로 정확한 경계 표본은 identity/이진 구 조건으로 분리했어요.
+- HLSL `point`는 예약어여서 컴파일이 실패했어요. 네이티브는 `worldPoint`로 수정했어요. 테스트의 잘못된 offset 기대값·혼합 auto 선언·braces·허용되지 않는 vec2/vec4 직접 surface 연결은 재현 코드 오류로 고쳤고 구현 성과로 세지 않아요. 그래프 자료형 검증을 완화하지 않았어요.
+- 공유 프록시 모양을 바꾸면 참조 중인 프로브 일부가 달라질 수 있어요. 렌더 수집은 무한 투영으로 안전하게 돌아가고 서비스의 새 불일치 할당은 거절해요.
+- player-iFEXpj 준비 timeout을 보고 scalar box loop를 의심했지만 vectorized slab/[branch]만 적용한 3eUccE도 81,683.60ms였어요. 이것을 근본 원인 해결로 주장하지 않아요. 원래 failure.json과 프로젝트는 SHA 확인한 repro.zip에 보존했어요.
+- 머테리얼 5개의 HLSL을 비교해 발광색 literal만 달라도 전체 pixel/shadow 소스가 달라지는 것을 확인했어요. Native-only 직접 표면 상수의 uniform 승격과 레거시 같은 속성 wrapper 제거로 5→1 소스를 공유해요. 산술/명시parameter/정적 분기/원본/읽기전용 표면 setter 의미는 유지해요. 발광 문서당 값 +12B와 별도 CPU/GPU 비용을 기록해요.
+- 새 고유 프로젝트/profile의 N0h1ta 29,401.78ms, ezzcMY 30,341.71ms 준비, shader queue9실제/8중복제거, 디스크0hit/10miss 관찰. ezzcMY 내부 shader preparation809.40ms와 전체 준비 시간을 구분해요. 통제된 CPU 부하 반복 실험·FPS·복잡한 GL 초기지연 해결 증거가 아니에요. 원래82초의 모든 시간 원인을 특정했다고 표현하지 않아요.
+- ezzcMY 실제 DirectX 게임: 4방 중앙 픽셀 (194,0,0)/(0,194,0)/(0,0,194)/(194,194,0), C++/BP 6번전환 metadata만224B씩 증가·이미지4/copy150/layout1 유지·위치(6,0,2)·즉시C++값 캐시. 수치/브라우저 physical/raster/UI/기존2D·혼합은 projection-final-1419와 개별 receipt로 구분해요.
+- 초기1418 검사는 private 실패 프로젝트에 의존했어요. 공용1120 fixture를 메모리에서 생성해 portable로 바꾸고 다시 통과했어요. AI context 검사는 임시 인계가5KB를 넘어서 실패했고 인계를3,949B로 줄여 기존 한계 그대로 통과했어요.

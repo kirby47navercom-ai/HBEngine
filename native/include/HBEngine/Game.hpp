@@ -119,6 +119,8 @@ public:
 HB_CLASS()
 class ReflectionProbes : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeProxy", KoreanName="반사 투영 프록시 지정", Category="렌더링") static void SetProxyVolume(Actor* target,Actor* proxy=nullptr,const std::string& component="ReflectionProbe",const std::string& proxyComponent="ReflectionProxyVolume");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeInfluenceProxy", KoreanName="반사 영향 영역 투영 사용", Category="렌더링") static void SetUseInfluenceVolume(Actor* target,bool value=true,const std::string& component="ReflectionProbe");
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbePriorityBlend", KoreanName="반사 우선 캡처 덮어쓰기", Category="렌더링") static void SetPriorityBlend(Actor* target,bool value=true,const std::string& component="ReflectionProbe");
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeSphere", KoreanName="반사 구형 영역 지정", Category="렌더링") static void SetSphere(Actor* target,float value=5,const std::string& component="ReflectionProbe");
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeShape", KoreanName="반사 영역 모양 지정", Category="렌더링") static void SetShape(Actor* target,const std::string& value="box",const std::string& component="ReflectionProbe");

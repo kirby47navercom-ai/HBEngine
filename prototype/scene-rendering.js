@@ -246,7 +246,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     }
   }
   async function build(object,group){
-    group.userData.reflectionProbes=[];group.userData.spriteActor=object;textureStreaming.track(group,object);const components=objectComponents(object),meshComponent=components.find(c=>c.type==='MeshRenderer'),renderer=meshComponent?{...componentDefaults('MeshRenderer'),...meshComponent.properties}:null;
+    group.userData.reflectionProbes=[];group.userData.reflectionProxyVolumes=[];group.userData.spriteActor=object;textureStreaming.track(group,object);const components=objectComponents(object),meshComponent=components.find(c=>c.type==='MeshRenderer'),renderer=meshComponent?{...componentDefaults('MeshRenderer'),...meshComponent.properties}:null;
     group.userData.componentSignature=visualComponentSignature(object);const meshPath=renderer?.mesh||object.asset;
     if(meshPath){const loaded=worldAssetKind(meshPath)?{object:await loadWorldVisual(meshPath,read),animations:[]}:await loadModel(meshPath);if(group.userData.disposed){const temporary=new THREE.Group();adopt(temporary,loaded.object);dispose(temporary);return;}adopt(group,loaded.object);group.userData.animations=loaded.animations;}
     const skin=components.find(c=>c.type==='SpriteSkin'&&c.properties?.enabled!==false)?.properties,rig=skin?.rig?await read(skin.rig):null;
@@ -255,6 +255,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
       if(component.type==='SkyLight'&&p.source==='hdri'&&p.cubemap){const map=await loadPathEnvironment(p.cubemap,fileUrl);map.mapping=THREE.EquirectangularReflectionMapping;own(group,map);group.userData.skyEnvironment={path:p.cubemap,texture:map};}
       if(component.type==='PostProcessVolume'&&p.pathTracingHDRI){const map=await loadPathEnvironment(p.pathTracingHDRI,fileUrl);own(group,map);group.userData.pathEnvironment={path:p.pathTracingHDRI,texture:map};}
       if(component.type==='PostProcessVolume'&&p.colorLookup){const map=await texture(p.colorLookup,true);if(!lookupSize(map)){map.dispose();throw Error('LUT 이미지는 N² × N 크기여야 해요. N: 2~64');}map.flipY=false;map.generateMipmaps=false;map.minFilter=map.magFilter=THREE.LinearFilter;map.needsUpdate=true;own(group,map);group.userData.postLookup={path:p.colorLookup,texture:map};}
+      if(component.type==='ReflectionProxyVolume'){group.userData.reflectionProxyVolumes.push({id:component.id,name:component.name,properties:p});if(editor&&p.volumeShape!=='infinite')reflectionProbeHelper(group,p,own).material.color.setHex(0xc89a66);}
       if(component.type==='ReflectionProbe'){(group.userData.reflectionProbes??=[]).push({id:component.id,properties:p});if(editor)reflectionProbeHelper(group,p,own);}
       if(component.type==='RaycastVehicle')buildVehicleWheels(group,p,own);
       if(component.type==='Cloth')buildCloth(group,p,own);

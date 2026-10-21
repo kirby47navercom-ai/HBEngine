@@ -588,3 +588,5 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 1354–1362: ReflectionProbes::SetPriorityBlend(target,bool,component)와 반사 우선 캡처 덮어쓰기 노드는 같은 priorityBlend 컴포넌트 서비스예요. 기존 꺼짐/정규화·같은캡처·9행/144B 유지, 첫 후보가 뒤 가중치를 b*(1-a)로 가려요. [계약·정확한 검증 범위](PROBE_PRIORITY_BLEND.md)를 확인해요.
 
 1370: Timeline 트랙 삭제는 현재 graph의 출력 배선을 changed 전에 함께 제거해 한 Undo/Redo·저장으로 유지해요. 문서 이름 변경 후 창 닫기는 editor 동일성으로 참조를 정리하고 리스너·observer·WeakMap을 해제해요. 다시 열면 새 editor가 생겨요. 실제 격리 편집기에서 Undo로 graph 교체→트랙/배선 삭제·복원→콘텐츠 브라우저 F2 rename→close/reopen을 확인했어요.
+
+1407 이후: ReflectionProbes::SetProxyVolume(target,proxy=nullptr,component,proxyComponent)와 SetUseInfluenceVolume(target,bool,component)을 공용 서비스/생성 노드로 제공해요. 프록시 오브젝트+컴포넌트 참조/무한/영향영역 복원·즉시 C++ 읽기·위치 보존을 지원해요. 현재 아틀라스는 14행/224B이며, 위1354의 9행/144B는 당시 기록이에요. [투영 계약](PROBE_PROJECTION.md)을 확인해요.

@@ -4,7 +4,8 @@ import {makeTextureGraphDemand} from './texture-graph-demand.js';
 import {materialTextureBindings} from './material-texture-bindings.js';
 import {captureMaterialGraph} from './material-source-key.js';
 import {normalMapGLSL,normalFrameGLSL} from './normal-map.js';
-export const nativeSurfaceProgramContract=Object.freeze({version:2,
+export const nativeSurfaceProgramContract=Object.freeze({version:3,
+ surfaceConstants:'native-only direct scalar/vector3/color surface literals use read-only uniforms; same-property legacy color/roughness wrappers removed; authored graph, casts and linear color preserved; arithmetic/static/explicit parameter paths retained; setter key lists exclude literals',
  cameraView:"orthographic uses constant world viewer direction; perspective uses eye minus surface; ViewDirection and implicit Fresnel agree with raster; reflection captures force perspective",
  normalFrame:"shared neutral/zero/negativeZ/degenerate-UV/large-finite guard; native graph converts screen-Y derivatives to the GL convention",
  marker:'#define HB_NODE_SURFACE 1\n',cpp:'SceneRenderer::createSurfaceProgram',
@@ -31,7 +32,7 @@ float2 hbRotate(float2 uv,float a,float2 center){float s=sin(a),c=cos(a);float2 
 ${['float','float2','float3','float4'].map(t=>`${t} hbMod(${t} a,${t} b){return a-b*floor(a/b);} ${t} hbSmooth(${t} a,${t} b,${t} v){${t} x=saturate((v-a)/max(b-a,0.000001));return x*x*(3-2*x);}`).join('\n')}
 float3 hbNormal(float3 eyePosition,float3 n,float3 mapN,float2 uv){return hbMaterialNormalFrame(eyePosition,n,mapN,uv);}`;
 export function compileNativeMaterial(data){
-  const plan=compileMaterial(data,{uniformParameters:true});
+  const plan=compileMaterial(data,{uniformParameters:true,uniformSurfaceConstants:true});
   if(plan.textures.length>16)throw Error('DirectX 11 셰이더의 샘플러 16개 한도를 넘었어요.');
   const declarations=nativeSurfaceProgramContract.marker+helpers+'\n'+plan.textures.map((t,i)=>{
     const type={texture2d:'Texture2D',texturecube:'TextureCube',texturearray:'Texture2DArray',texture3d:'Texture3D'}[t.type];if(!type)throw Error('DirectX 텍스처 자료형을 확인하세요.');
@@ -58,8 +59,8 @@ export function createNativeMaterial(THREE,input,{fileUrl,onError=()=>{},rendere
     if(materialParameters(data).some(p=>p.name===key&&p.type!=='float'))throw Error('Float 파라미터가 아니에요.');
     if(property==='emissiveIntensity'){material.emissiveIntensity=value;data.surface={...data.surface,[property]:value};return true;}return false;
   };
-  material.userData.floatKeys=[...plan.floatBindings.filter(b=>b.kind!=='residentMip').map(b=>b.kind+':'+b.key),'surface:emissiveIntensity'];
-  material.userData.vectorKeys=plan.vectorBindings.map(b=>b.kind+":"+b.key);
+  material.userData.floatKeys=[...plan.floatBindings.filter(b=>['parameter','surface'].includes(b.kind)).map(b=>b.kind+':'+b.key),'surface:emissiveIntensity'];
+  material.userData.vectorKeys=plan.vectorBindings.filter(b=>['parameter','surface'].includes(b.kind)).map(b=>b.kind+":"+b.key);
   material.userData.updateVector=(key,value)=>{if(disposed)return false;value=materialVectorValue(value);if(materialParameters(data).some(p=>p.name===key&&p.type!=='vec3'))throw Error('Vector3 파라미터가 아니에요.');const property=materialVectorProperty(key),parameter=plan.vectorBindings.find(b=>b.kind==='parameter'&&b.key===key),binding=parameter||plan.vectorBindings.find(b=>b.kind==='surface'&&b.key===property);if(!binding){if(materialParameters(data).some(p=>p.name===key))throw Error('Vector3 파라미터가 아니에요.');return false;}values.splice(binding.offset,3,...value);if(parameter)data.parameters={...data.parameters,[key]:value};else data.surface={...data.surface,[property]:value};return true;};
   const normalized=resolveMaterialAttributes(resolveMaterialInputs(data)),demandData={graph:normalized.graph,get parameters(){return data.parameters;}},textureDemand=makeTextureGraphDemand(demandData,{keyOf:materialNodeKey,pinsOf:materialPins,parameterKey:materialParameterKey,edges:normalized.graph?normalizedMaterialEdges(normalized.graph):[]});material.userData.textureDemand=id=>textureDemand(id,time);
   material.userData.textureState=bindings.state;material.userData.rayTextures=bindings.textures;

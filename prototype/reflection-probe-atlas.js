@@ -1,10 +1,12 @@
+import {probeProjectionFields,probeProjectionSettings} from './reflection-probe-projection.js';
+import {probeAtlasRecordTexels} from './reflection-probe-record.js';
 import {queueProbeTableUpload} from './probe-table-upload.js';
 import {RenderTarget,WebGLRenderTarget,DataTexture,Vector2,RGBAFormat,FloatType,HalfFloatType,LinearFilter,NearestFilter} from 'three';
 import {reflectionProbeAtlasLayout} from './reflection-probe-atlas-layout.js';
 import {probeMapLayout} from './reflection-probe-blend.js';
 import {ProbeSpatialIndex,probeSpatialRecordTexels} from './reflection-probe-spatial.js';
 
-export const probeAtlasRecordTexels=9;
+export {probeAtlasRecordTexels};
 function copyAtlasRegion(renderer,source,target,rect){
  const backend=renderer.backend;
  if(backend?.isWebGLBackend&&source.isRenderTargetTexture){
@@ -29,8 +31,8 @@ export class ReflectionProbeAtlas{
   this.maps.length=unique.length;const texels=probes.length*probeAtlasRecordTexels+(probes.length*2-1)*probeSpatialRecordTexels,width=Math.min(maximum,Math.max(probeAtlasRecordTexels,Math.ceil(Math.sqrt(texels)))),height=Math.ceil(texels/width);if(height>maximum)throw Error('반사 후보 자료가 장치 한도를 넘어요.');
   if(this.table?.image.width!==width||this.table?.image.height!==height){this.table?.dispose();this.table=new DataTexture(new Float32Array(width*height*4),width,height,RGBAFormat,FloatType);this.table.minFilter=this.table.magFilter=NearestFilter;this.table.generateMipmaps=false;this.table.needsUpdate=true;this.uploads++;}
   const data=this.table.image.data,dirtyRows=new Set();let changed=false;const store=(at,values,w=values[3]??0)=>{for(let k=0;k<4;k++){const value=Math.fround(k===3?w:values[k]);if(!Number.isFinite(value))throw Error('반사 후보 좌표가 GPU 유한 범위를 넘어요.');if(!Object.is(data[at*4+k],value)){data[at*4+k]=value;changed=true;dirtyRows.add(Math.floor(at/width));}}};
-  for(let i=0;i<probes.length;i++){const p=probes[i],b=p.localBox,at=i*probeAtlasRecordTexels,rect=layout.regions[this.sourceIndices[i]];store(at,p.center,p.p.intensity);store(at+1,b.minimum,p.p.blendDistance);store(at+2,b.maximum,p.p.diffuseIntensity);store(at+3,b.localX);store(at+4,b.localY);store(at+5,b.localZ);store(at+6,b.faceScale,(p.p.boxProjection?1:0)+(p.p.volumeShape==='sphere'?2:0)+(p.p.priorityBlend?4:0));store(at+7,probeMapLayout(sources[i]),sources[i].isRenderTargetTexture?1:0);store(at+8,[rect.x/layout.width,rect.y/layout.height,rect.width/layout.width,rect.height/layout.height]);}
-  const spatialChanged=this.spatial.update(data,probes.length);if(spatialChanged){data.set(this.spatial.data,probes.length*probeAtlasRecordTexels*4);changed=true;}
+  for(let i=0;i<probes.length;i++){const p=probes[i],b=p.localBox,at=i*probeAtlasRecordTexels,rect=layout.regions[this.sourceIndices[i]];store(at,p.center,p.p.intensity);store(at+1,b.minimum,p.p.blendDistance);store(at+2,b.maximum,p.p.diffuseIntensity);store(at+3,b.localX);store(at+4,b.localY);store(at+5,b.localZ);store(at+6,b.faceScale,(p.p.boxProjection?1:0)+(p.p.volumeShape==='sphere'?2:0)+(p.p.priorityBlend?4:0));store(at+7,probeMapLayout(sources[i]),sources[i].isRenderTargetTexture?1:0);store(at+8,[rect.x/layout.width,rect.y/layout.height,rect.width/layout.width,rect.height/layout.height]);const projection=probeProjectionSettings(p.projection);for(let field=0;field<probeProjectionFields.length;field++)store(at+9+field,projection[probeProjectionFields[field]]);}
+  const spatialChanged=this.spatial.update(data,probes.length,{recordTexels:probeAtlasRecordTexels});if(spatialChanged){data.set(this.spatial.data,probes.length*probeAtlasRecordTexels*4);changed=true;}
   if(changed){queueProbeTableUpload(renderer,this.table,dirtyRows,spatialChanged);this.uploads++;}this.count=probes.length;this.width=width;return this;
  }
  info(){return {count:this.count,mapCount:this.uniqueSources.length,sourceIndexBytes:this.sourceIndices.byteLength,tableTransfers:this.table?.userData.hbProbeTableUpload?{...this.table.userData.hbProbeTableUpload}:null,copies:this.copies,uploads:this.uploads,spatial:this.spatial.info(),bytes:(this.target?this.target.width*this.target.height*4*(this.target.texture.type===HalfFloatType?2:4):0)+(this.table?.image.data.byteLength||0)};}

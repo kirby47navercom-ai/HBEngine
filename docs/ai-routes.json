@@ -1212,6 +1212,47 @@
         "prototype/app.js",
         "docs/DENSE_SEQUENCE.md"
       ]
+    },
+    {
+      "keywords": [
+        "probeProjectionDirection",
+        "resolveProbeProjection",
+        "reflectionProxyVolume",
+        "probeProjectionSettings",
+        "독립 반사 투영",
+        "투영 프록시"
+      ],
+      "paths": [
+        "prototype/reflection-probe-projection.js",
+        "prototype/reflection-probes.js",
+        "docs/PROBE_PROJECTION.md"
+      ]
+    },
+    {
+      "keywords": [
+        "SetProxyVolume",
+        "SetUseInfluenceVolume",
+        "reflectionProbeProxy",
+        "reflectionProbeInfluenceProxy"
+      ],
+      "paths": [
+        "native/include/HBEngine/Game.hpp",
+        "native/include/HBEngine/Session.hpp",
+        "prototype/engine-services.js",
+        "docs/PROBE_PROJECTION.md"
+      ]
+    },
+    {
+      "keywords": [
+        "nativeSurfaceProgramContract",
+        "uniformSurfaceConstants",
+        "머테리얼 상수 공유"
+      ],
+      "paths": [
+        "prototype/native-materials.js",
+        "prototype/material-runtime.js",
+        "docs/NATIVE_MATERIAL_LITERALS.md"
+      ]
     }
   ]
 }

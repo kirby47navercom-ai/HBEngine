@@ -1,7 +1,8 @@
+import {probeAtlasRecordTexels} from './reflection-probe-record.js';
 import {Fn,If,Loop,Break,cache,vec2,vec3,int,uint,uvec4,float,floatBitsToUint,ivec2} from 'three/tsl';
 import {gpuProbeVolumeNodes} from './reflection-probe-volume-gpu.js';
 export function gpuProbeSpatialChoice(table,width,count,point){
- const load=(index,field)=>{const at=int(index).mul(9).add(field);return table.load(ivec2(at.mod(width),at.div(width)));};
+ const load=(index,field)=>{const at=int(index).mul(probeAtlasRecordTexels).add(field);return table.load(ivec2(at.mod(width),at.div(width)));};
  const unpack=(a,b)=>int(a).add(int(b).mul(65536)),tree=(i,field)=>load(count,int(i).mul(3).add(field));
  return cache(Fn(()=>{const first=int(-1).toVar(),second=int(-1).toVar(),weights=vec2(0).toVar(),firstFlags=float(0).toVar(),at=point.toVar(),cursor=int(0).toVar(),total=count.mul(2).sub(1);
  Loop({start:int(0),end:total,type:'int',condition:'<'},()=>{If(cursor.greaterThanEqual(total),()=>{Break();});const lower=tree(cursor,0).toVar(),upper=tree(cursor,1).toVar(),meta=tree(cursor,2).toVar(),skip=unpack(lower.w,upper.w),rank=unpack(meta.z,meta.w);
