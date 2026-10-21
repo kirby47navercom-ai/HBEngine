@@ -888,3 +888,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1280 설치확인: 0905a17245e24ec7·3969명세/648소유SHA·실제설치D3D11UI V9hTcI: BP UI::Show 생성목록에서가지a/b→q→r와평면중복값이동·양쪽게임스냅샷확인. User10849읽기SHA/연결/Versions1·이전186285111B정리. native16/CPP21/Struct.hpp/Player/Host불변재사용·렌더행렬/초기GL/FPS/실기기터치반복없음.
 
 1282–1290: 꺼진곡면WebGL가이드정적특화·켜짐/기본·공용수식보존·준비키/취소/이력/AI진단·기존노멀/타깃재사용. pure7/16조합·실제QLNCoo전체307200raw-half차이0·제품IKzoLx on/morph/off119451변화/해제통과. 보조관측6276.9→1859.1ms/제품1827.4;주경로7169.2ms잔여·전체cold/FPS주장없음. 실패도구/관측0기준거부보존. native16/CPP21/Struct.hpp/바이너리불변·설치WebGL1회대기.
+
+1292 설치확인: 0fe30fb4d3910392·3974명세/651소유SHA·실제설치WebGL2 7POqXU 전체가이드기준동일/on·morph·off/노멀·타깃재사용/해제성공. 첫 DS7Nrz는격리WebView탐색실패(webError0)·CDP연결실패로보존후해당설치게임만재시도·재설치/광범위검사없음. User10849읽기SHA/연결/Versions1·이전186424054B정리. native불변/주경로지연잔여.

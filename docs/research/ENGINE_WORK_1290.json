@@ -721,7 +721,6 @@
       "scope": "Current production source packaged WebGL2 and normal C++ setting calls. Full reference parity; on/morph/off119451 changed components, same normal/targets, disabled snapshot release. Primary7169.2ms remains."
     }
   ],
-  "pendingInstalledGameGate": "tools/check-guide-profile-1289-window.mjs --executable <installation>/HBEngine.exe",
   "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -772,13 +771,24 @@
     "scope": "Single device observations; second candidate primary cached. Not total initial compile or native/mobile/FPS improvement."
   },
   "failures": "docs/research/GUIDE_PROFILE_1290.md",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1280.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1292.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "래스터·광원 타일·프로브·파티클 렌더링과 시뮬레이션의 선택적 비동기 준비를 연결했어요. 전체 GL/FXC 시간·생성 코드·큰 HDRI/프로브 GPU 필터와 장치/리소스 생성 비용은 계속 줄여야 해요.",
     "새 C++ 최초 컴파일 비용·커스텀/외부 툴체인의 선택 의존성 설정 확대(현재는 확인하지 못한 의존성을 추측 재사용하지 않고 새 버전별 빌드), 네이티브 실행 중 디버거 연결",
     "합성 HLSL에서 이전 IOR→현재 RGB seed 역순 호출의 FXC 최적화 불일치 원인·일반 해법: 실제 guide 순서/독립/Od 대조와 구분"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/guide-profile-1289-7POqXU/acceptance.json",
+      "sha256": "c7e452ca5d28667f36847c93f7362e311aeef54f60b82491f447569b2c769514",
+      "scope": "Actual current packaged WebGL2 and normal CPP setting calls: production profile off matches retained unoptimized diffuse-room guide exactly, on/morph/off generation and actual pixels observed, same targets/normal guide retained, disable releases. No private source override, debug-shader query, renderer matrix/cold/FPS/mobile claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\0fe30fb4d3910392\\HBEngine.exe"
+      ]
+    }
+  ]
 }

@@ -1,0 +1,124 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "0206311214d3e2c4cd4e65341df2e944ee1a55d8",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0fe30fb4d3910392",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\0fe30fb4d3910392\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\0fe30fb4d3910392\\HBEngine.exe",
+  "bundleHash": "0fe30fb4d39103926de270771640dfa067a60254d3a4e9ba4b7806000e442aef",
+  "files": 3974,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3970,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0905a17245e24ec7",
+        "bytes": 186424054,
+        "manifestSHA256": "49bd15c49f477e597cab80db9f34e934c723a904e112cca59fd4d729097c19c5"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T16:34:58.9428077Z",
+    "bytes": 186424054,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "0fe30fb4d3910392"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 651,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
+  "installedGates": [
+    {
+      "path": "native/build/guide-profile-1289-7POqXU/acceptance.json",
+      "sha256": "c7e452ca5d28667f36847c93f7362e311aeef54f60b82491f447569b2c769514",
+      "scope": "Actual current packaged WebGL2 and normal CPP setting calls: production profile off matches retained unoptimized diffuse-room guide exactly, on/morph/off generation and actual pixels observed, same targets/normal guide retained, disable releases. No private source override, debug-shader query, renderer matrix/cold/FPS/mobile claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\0fe30fb4d3910392\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\0fe30fb4d3910392\\",
+    "elapsedMs": 134.63,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\0fe30fb4d3910392",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "0fe30fb4d39103926de270771640dfa067a60254d3a4e9ba4b7806000e442aef",
+      "installedAt": "2026-10-21T16:34:55.634Z",
+      "manifestFiles": 3974,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3974,
+  "versions": [
+    "0fe30fb4d3910392"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1292-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/guide-profile-1288-ty5hao/acceptance.json",
+      "sha256": "8d4cc9faf8a0b405fac01561b295a6ea9132ad400bc15c564657c3ae723aef97",
+      "scope": "Pure 7 groups,16 combinations default compatibility, typed flag, material/target reuse, history/preparation key/cancel and optional diagnostics."
+    },
+    {
+      "path": "native/build/guide-profile-1287-QLNCoo/acceptance.json",
+      "sha256": "aa975a4c9bf8a47b368abcf84efaef2f38509381afc93a85348ddb443ba5993a",
+      "scope": "Private candidate before promotion, actual auxiliary images[3], observable diffuse room. Full raw half307200 identical to unoptimized reference. Observed guide6276.9→1859.1ms; second primary cached, no overall cold/FPS claim."
+    },
+    {
+      "path": "native/build/guide-profile-1289-IKzoLx/acceptance.json",
+      "sha256": "78ae52b4c064e475a405b167ed31ab30bdf30e3eae9a2cc8948d75020a3bf5f0",
+      "scope": "Current production source packaged WebGL2 and normal C++ setting calls. Full reference parity; on/morph/off119451 changed components, same normal/targets, disabled snapshot release. Primary7169.2ms remains."
+    },
+    {
+      "path": "native/build/guide-profile-ai-context-1290.json",
+      "sha256": "89d057a19b209a84ec391af7257461ddc6dd3728ab3cf6c45b5726bcf33af84d",
+      "scope": "Updated offline route/schema and compatibility; no actual AI-client performance claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/guide-profile-1289-IKzoLx/acceptance.json",
+      "sha256": "78ae52b4c064e475a405b167ed31ab30bdf30e3eae9a2cc8948d75020a3bf5f0",
+      "scope": "Current production source packaged WebGL2 and normal C++ setting calls. Full reference parity; on/morph/off119451 changed components, same normal/targets, disabled snapshot release. Primary7169.2ms remains."
+    }
+  ],
+  "initialProbeFailure": "native/build/user-install-1292-initial-failure.json",
+  "scope": "Installed WebGL2 current production fixed curved guide profile with exact full unoptimized reference parity, on/morph/off/target reuse and disable release. Pure7/source GPU proofs retained. Native16/Struct.hpp/CPP21/Player1223/Host1041 unchanged; profile/manifest/links/Versions1 verified. Primary GL compile still seconds, no cold/FPS/mobile claim.",
+  "version": 1,
+  "date": "2026-10-21T16:38:17.818Z",
+  "work": "docs/research/ENGINE_WORK_1290.json",
+  "distributionSync": "native/build/distribution-1291-sync.json",
+  "cachePrune": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

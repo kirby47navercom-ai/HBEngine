@@ -3,7 +3,7 @@
 2026-10-22. 주인님: 멈추지말고 여러변경 구현후 영향검사1회·실패만수정. 반복컴파일/장시간렌더검사금지. AGENTS/docs/AI_START→hb context. 백그라운드만/한글동일author/committer commit/push.
 
 ## 현재 설치와 진행
-USER_INSTALL_1280: C:\Users\kirby\HBEngine\Versions\0905a17245e24ec7\HBEngine.exe. 3969명세/648SHA/CPP21/native16·Player1223/Host1041/Struct.hpp재사용. User10849읽기SHA/연결/Versions1·이전186285111B정리.실제설치D3D11UI V9hTcI 가지/중복값이동성공.이전1272 시퀀스게임 RyNmLm근거도유지.
+USER_INSTALL_1292: C:\Users\kirby\HBEngine\Versions\0fe30fb4d3910392\HBEngine.exe. 3974명세/651SHA/CPP21/native16·Player1223/Host1041/Struct.hpp재사용. User10849읽기SHA/연결/Versions1·이전186424054B정리. 실제설치WebGL2 7POqXU 전체가이드동일/on·morph·off/타깃재사용/해제. 이전1280 UI V9hTcI/1272시퀀스 RyNmLm근거유지.
 1266–1270 구현/설치검사완료: 공용Hermite/시퀀스연속곡선·실제탄젠트drag/연결·Alt분리/타축auto기울기보존·기준점static/actor/상속·same-sample기준액터선평가·root/component별칭/부착로컬중복방지·수명/피드백/실패교체/복원·AI2명령. 모델17 GECNor/기존section15·rotation3·priority4·completion3·hierarchy5 통과. 최종sourceGUI1267-MjRTWI 실제handle/타축/Undo/AI/Play·배치확인. 첫GUI임의기울기기준실패→관찰축명시수정, 타축0덮기제품수정과CSS상속클리핑수정은마지막GUI로검사.1269.started재실행금지.record1270/sync1271/install1272/finish1273완료·재실행금지;native16/CPP불변재사용. docs/SEQUENCE_ORIGINS_CURVES.md.
 
 ## 앞선 완료 근거
@@ -13,7 +13,7 @@ WORK1262: 가변반경grid/global/owner/exact/knownhide·rootchild재색인/구�
 WORK1224 C++/BP2D4클래스.1232/1237접힌그래프copy/expand.1175/1181/1188노멀/접선/공유HDR부분전송.1199/1206sphereprobe/부호scale전경로.1214flow/typeddefaults/Promote.세부는해당기록.
 
 ## 다음/잔여
-ENGINE_STATUS78행 전체분모/완료율null. CPP01 사용자struct/enum·reflection·Switchenum/고유Name·임의native참조·Timeline/wildcard/문서간참조. ANM06 가중/시간왜곡/부모문맥/기즈모/골격origin/전문Take. RND03 proxy/작은capture/perface/normalfade/lightmap·대형HDR/FPS/tilecluster·임의변형/morph. RND06 GLComplex1418/7초·1086실패반복금지:1266읽기대조는보존980 GLSL의material함수1313B/전체약120k·6노드.새컴파일/제품shader수정/시간개선없음.DEBUG_HANDOFF참조. RND08 글로벌거리장/지형/월드·HWRT/방향베이크. 다른분야잔여삭제/완료포장금지.
+ENGINE_STATUS78행 전체분모/완료율null. CPP01 사용자struct/enum·reflection·Switchenum/고유Name·임의native참조·Timeline/wildcard/문서간참조. ANM06 가중/시간왜곡/부모문맥/기즈모/골격origin/전문Take. RND03 proxy/작은capture/perface/normalfade/lightmap·대형HDR/FPS/tilecluster·임의변형/morph. RND06 주GLComplex1417–8초잔여·1086반복금지. WORK1290: false곡면보조특화·기본/켜짐·공용수식보존/준비키·취소/시간이력·AI진단. pure7·16조합/소스IKzoLx/설치7POqXU 전체307200raw-half차이0·on/morph/off·해제. 보조観測6276.9→1859.1ms/제품1827.4·설치2023.3;주経路7169.2/7680.9ms잔여・cold/FPS아님. DS7Nrz격리탐색/CDP실패후해당게임만재시도. record1290/sync1291/install1292/resume1292/finish1293.started재실행금지. DEBUG_HANDOFF/GUIDE_PROFILE_1290참조. RND08 글로벌거리장/지형/월드·HWRT/방향베이크. 다른분야잔여삭제/완료포장금지.
 
 ## 보호/운영
 heavy/EXE/install전activeInstalledVersions. inline설치EXE경로는자기검출하므로스크립트저장후별도실행. 사용자창/탭/프로젝트/User테스트금지. User는설치전후읽기SHA만. ownhiddenfixture/고유profile/port·retain/prune. Versions1/전체백업금지. *.started재실행금지.cache0B면빈receipt없음.Mac/Android기기없음재질문금지. 장기goal조회blocked·도구재개불가/임의newgoal·pause·complete금지;현재턴구현계속.
