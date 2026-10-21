@@ -1,20 +1,22 @@
 # 현재 인계 — 누적 엔진 구현 계속
 
-2026-10-22. 전체누적목표까지 계속·여러변경후 영향검사묶음/실패만수정·부분완료로전체지시종료금지. AGENTS/AI_START→hb context. 백그라운드·한글동일author/committer commit/push.
+2026-10-22. 주인님 요청은 전체누적목표까지 계속·변경묶음후 영향검사/설치갱신·부분완료로 종료금지. 백그라운드 전용. AGENTS/AI_START→hb context. goal blocked/사용자재개질문대기; 현재턴 계속, 임의new/complete 금지.
 
 ## 최신 설치
-USER_INSTALL_1405: C:/Users/kirby/HBEngine/Versions/e36b3207c2c1b246/HBEngine.exe. 4069명세/733소유SHA/25repository검사/2vendor·User10849읽기SHA/연결/Versions1·이전187927859B회수. Player1369 da86f16d…/Host1041·17nativeSHA불변/재빌드0. 설치실제256트랙가상화/65k8UndoRedo분기/검색·가시이동·중앙재지정/입력격리/저장Play·D3D11위치2.5/context2파일.
+USER_INSTALL_1405: C:/Users/kirby/HBEngine/Versions/e36b3207c2c1b246/HBEngine.exe. 4069명세/733소유/25native검사/2vendor·User10849읽기SHA·Versions1. WORK1403 문서40Undo하위공유·실제256Sequence행가상화/65k/8UndoRedo분기/AI진단·위치2.5실행. source4b411d6→c57183f→HEAD66cc071. Host1041/Player1369 재사용. 세부증거는 각WORK/USER_INSTALL.
 
-## 이번 턴 누적
-WORK1403(4b411d6):40Undo JSON하위공유/복원clone·비JSON폴백/ownProto/-0/NaN/희소/순서/alias·rename history/future.16x16384키실측heap49.0→7.3MB/289→162ms·65k8frames131110객체346ms. Sequence>32행46px/overscan3/전체scroll/visible행만밀도·검색/선택색/포커스·drag중교체보류·↑↓/CtrlF재지정. editor.history.inspect 예산/추정payload·sequence.tracks.read 필터/원인덱스·editor.navigate 정확키. 실제256트랙10/6행348마커/11814px·8UndoRedo/branch/저장Play·커브3종회귀. 실패2fixture ZIP35548457B회수. record1403/sync1404/install1405/finish1406.started재실행금지. docs/DOCUMENT_HISTORY·DENSE_SEQUENCE.
-WORK1392:Sequence65536/트랙·기본총262144·총1M선택/기존최대보존·개요204/속성32/가시점프;event4B/key이진구간/원순서·140case·65k10k구간6.44ms. document.read ownPointer/형태·값페이지/revision·storage.flush·poll16/결과14MiB/FIFO/1회인코딩/8ms양보/stop정리·복구disk32M/보조256K/noWrite같은내용/9M재로드. 실패3ZIP14759587B회수. WORK/DEBUG/LARGE_AUTHORING_STORAGE.
-WORK1382:Bezier임의키사이분할/외부보존/수직·0..1밖거절·80case292400관찰8.88e-15. Butterworth FFT저고역/Hz/차수/강도/균일·반사radix2·키·시간·채널유지/774해석7.11e-15/65k121ms편집CPU. 실제공용Sequence/골격/BP/Undo·저장Play. CURVE_TOOLS.
-WORK1374:probe/2D CB3슬롯cache·3000draw각3upload2997skip/CPU1584B/SRV교체·2D마스크·Player1369. Timeline트랙/배선Undo·rename dispose·context exactfocus3파일169KB.
-WORK1362:probe우선덮기/공유C++·bool노드/Inspector·Three0.180 Vector4 wdirty source/canonical patch(벤더2파일sync필수). WORK1350/1338/1331/1326/1245–1312의 곡선·network·Sequence·struct·UI API와증거는 WORK_ORDER/각기록.
+## 현재 미커밋1407–1419
+독립ReflectionProxyVolume 상자/구/무한·영향/캡처분리·공유actor+component참조·Inspector조건부입력·배치·복제ref재매핑·공용C++/생성BP SetProxyVolume/SetUseInfluenceVolume·즉시Components캐시. CPU/GL/GPU/atlas/DirectX 모두연결. 기본JSON추가배열생략; 캡처/레이아웃/BVH재사용 metadata만. 208B settings/224B atlas14행·기존CB3개 CPU/GPU각+720B,CPU캐시2304B. 네이티브17owner중6변경,Player1417 ae967669…24.34초 재빌드완료(dist). Host1041동일. build1413/1417.started 재실행금지.
 
-## 잔여와 다음
-ENGINE_STATUS78행 전체분모/완료율null·전체UEUnity분석/구현완료아님. CPP01 사용자struct/enum/reflection·임의native참조·문서간/Timeline/wildcard. ANM06 전체snapshot순회/복원·변경배열·고급다중커브/리그Euler·미표현가중경계/Chebyshev·시간왜곡/가중혼합·부모골격origin/Take·큰클립/섹션/비고정행. UI03 실터치/외부창/교차종류/공유source·headless/타owner코드이동·async rollback. NET01 권한/예측/초기정적순회/밀집global·상이view/socket인코딩. RND03 독립proxy·면별/normalfade/lightmap·2후보밖계층·대형HDR/클러스터·임의변형. RND06 주GL약7초·1308의5미채택/1086반복금지·fresh HLSL/PRIMARY_PREPARATION_1308/DEBUG. RND08 전역DF/지형/월드/HWRT/방향베이크. 다른잔여유지.
-다음: RND03 독립 투영proxy/영향영역 분리 검토 중. Unity HDRP17.0.4 Reflection-Proxy-Volume 115–138은1354재독·140–152속성추가읽기(2026-10-22web), 아직구현0. 문서형식·API·CPU/GL/GPU/atlas/native·재캡처/공간트리재사용/사용자조작을함께연결할계획. 새파일/조사승격아직없음.
+Native-only 직접표면상수/레거시중간노드를 uniform으로분리: 실제5머테리얼 소스1개;색상/normal/수정권한/명시parameter/산술/원본보존. 1418 unit5case통과. cold 준비81.68→29.40초(실행/셰이더/캡처포함,컴파일단독/FPS아님). vector box/[branch]만으로81초미해결;상수공유후개선. docs/PROBE_PROJECTION,NATIVE_MATERIAL_LITERALS,ai-routes/공식proxy범위/CORPUS 갱신. sharedproxy모양편집 불일치시render무한폴백/서비스할당은거절.
+
+## 검증 진행
+native/build/batch1419.mjs 세션81398: uniform·GPU1409·manager1414·nativecompute1410·raster1415통과,1416기존4회귀→1411player(새4색pixel)진행. 결과 projection-final-1419.json. 같은검사중복금지. native/build/regression1416.mjs는소스/헤더hash일치시재사용. native/test새2+기존4수정=27SHA 갱신해야함. 1408CPU2211/1.78e-14통과. 예전loop수학증거는현재vector와구분. sourceUI1412-editor-55KrdS실제조작/Undo/save/staleAI통과/캡처검토완료. 마지막ai-context실패는이handoff5KB초과라축약,재실행필요.
+
+다음: batch실패수정/현재proof확정→AIcontext작은소유검사/DEBUG→feature commit한글→record1420/sync1421/install1422/finish1423(미생성;1403/1404/1405/1406템플릿)→설치소유/명세/27test/vendor2/새PlayerSHA/User읽기SHA/연결/Versions1·설치UI1412+player1411→metadata commit/push. record는남은RND03독립proxy만정확갱신;다른잔여유지/분모null.
+
+## 후속누적
+ENGINE_STATUS78행. CPP01 reflection/customstruct/enum/임의native참조·문서간Timeline. ANM06 snapshot전체순회/복원·변경배열·큰clip/section·리그/시간왜곡/가중혼합/부모골격origin/Take/고급필터. UI03 실터치/교차창/공유source/headless/비동기rollback. NET01 권한/예측/밀집view/socket. RND03 면별/normalfade/lightmap/2후보밖계층/대형HDR·임의변형. RND06 주GL7초,1086/1308실패반복금지. RND08 월드DF/지형/HWRT/방향bake. 다른행잔여도유지.
 
 ## 운영
-heavy/EXE/install전activeInstalledVersions. inline설치EXE자기검출주의·파일스크립트. 사용자창/탭/프로젝트/User테스트금지·User전후읽기SHA만. ownhidden/고유profile/port·retain/prune·동일nativeSHA재사용. Versions1/전체백업금지·cache0B빈receipt금지. Mac/Android기기없음재질문금지. goal조회blocked/사용자resume async질문중·현재턴계속·임의new/pause/complete금지.
+heavy/install전 activeInstalledVersions·사용자창/탭/프로젝트/User 테스트금지·ownhidden/profile/port. 설치EXE literal inline shell은자기검출하므로파일실행. retain/prune·소스보고서보존·실패fixture는확인ZIP후회수. Versions1/전체백업금지·cache빈receipt금지. per-command 동일author/committer kirby47navercom-ai / 228715038+kirby47navercom-ai@users.noreply.github.com·한글commit/push. node_modules커밋금지·Three UniformsGroup.js/three.webgpu.js2벤더패치sync필수. Mac/Android기기없음재질문금지.
