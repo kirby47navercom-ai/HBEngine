@@ -926,3 +926,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1376 설치확인: 065f943a22f4e5fb·4040명세/705소유SHA/25repository검사/2vendor. 설치실제CPP/BP5상태/캐시skip증가·2D typedPawn/좌표/XY입력·Timeline graph교체/트랙배선한Undo/F2rename/close/reopen통과. 설치context3소유파일/마커일치. Player1369 da86f16d…·Host불변. User10849읽기SHA보존·연결확인·Versions1·이전187482137B회수. 전체분모/잔여null정책유지.
 
 1378–1382: 키 사이 Bézier부분베이크·외부기울기/가중보존·범위밖/수직형식원자거절,80case292400관찰/8.88e-15; Butterworth FFT 저고역/Hz/차수/강도·등간격/키수시간/채널유지·774해석값/7.11e-15·65k121.56ms편집CPU. 실제우클릭/옵션유지/Undo/AI dryRun/stale/Sequence·skeletal·BPTimeline저장·Play2.5→1.1477749통과, 기존9/808/1000Euler+10/15600회귀통과. 정확owner5파일54KB·schema. Native17/CPP검사25/Player/Host/vendor불변재사용·무재빌드. Epic지정재독/전체분모null·다중curve/Chebyshev/rig잔여유지. sourcef9fae1f·설치대기.
+
+1384 설치확인: e2d58e23b010e60a·4047명세/710소유SHA/25native검사/2vendor. 설치실제우클릭FFT/임의경계/Undo/revision/dryRun/stale/Sequence·skeletal·BPTimeline/저장·실제Play, 설치helper로패키징한D3D11 위치1.1477749147734875통과. Native17·Player1369/Host SHA불변/재빌드0. User10849읽기SHA/연결보존·Versions1·이전187619526B회수. 전체잔여/분모null유지.

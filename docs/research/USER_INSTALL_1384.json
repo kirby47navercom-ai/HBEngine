@@ -1,0 +1,153 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "87f26a22e65ef88ac2179a81e8d56a236e61d533",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e2d58e23b010e60a",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e2d58e23b010e60a\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\e2d58e23b010e60a\\HBEngine.exe",
+  "bundleHash": "e2d58e23b010e60ad8a736ddd100088cb1c0cdbd5d3b7e957f30c2006b0627f3",
+  "files": 4047,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4041,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\065f943a22f4e5fb",
+        "bytes": 187619526,
+        "manifestSHA256": "3aa5bd8742e79fc81da4145dacabde1c7f3b68fdb9eced5f3c58adf2cec67c84"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T20:44:26.0196976Z",
+    "bytes": 187619526,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "e2d58e23b010e60a"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 710,
+  "repositoryOnlyTestSourcesVerified": 25,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "da86f16dc48681473001c757e1f3ecdce38b266cc13cd417c7502937de9aa5d7",
+  "installedGates": [
+    {
+      "path": "native/build/curve-filters-1380-window-5DjoNw/acceptance.json",
+      "sha256": "69e0389c5f1aeda3e3718add7f35fd6212e34b1a1665d0301e5a7fafe6ef9722",
+      "scope": "Owned hidden real UI FFT/explicit interior range controls, option retention/Undo; shared revision/dryRun/stale AI Sequence and skeletal; floating BP Timeline and saves. Filtered Sequence Play/Pause/Seek2.5 feeds actual runtime position. --player uses selected installed authoring helper and actual packaged D3D11. No user profile/project or OS clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e2d58e23b010e60a\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/curve-filters-1380-window-6gMQZ1/acceptance.json",
+      "sha256": "8f0d91c6f2cffbb204cdfa351233a4c5f2605e088c47d01d299a950614169d50",
+      "scope": "Owned hidden real UI FFT/explicit interior range controls, option retention/Undo; shared revision/dryRun/stale AI Sequence and skeletal; floating BP Timeline and saves. Filtered Sequence Play/Pause/Seek2.5 feeds actual runtime position. --player uses selected installed authoring helper and actual packaged D3D11. No user profile/project or OS clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e2d58e23b010e60a\\HBEngine.exe",
+        "--player"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\e2d58e23b010e60a\\",
+    "elapsedMs": 61.51,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\e2d58e23b010e60a",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "e2d58e23b010e60ad8a736ddd100088cb1c0cdbd5d3b7e957f30c2006b0627f3",
+      "installedAt": "2026-10-21T20:44:22.843Z",
+      "manifestFiles": 4047,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4047,
+  "versions": [
+    "e2d58e23b010e60a"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1384-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/curve-subdivision-1378.json",
+      "sha256": "fb97dc1d99b7fda4d35c5ea14d8db1986a77a3cb7ab18f1a90bb3a619d927026",
+      "scope": "80cases/292400 scalar observations/max8.88e-15; inherited scalar/vec2/vec3/color linear/constant/auto/PCHIP/weighted subdivision and outside/infinity preservation; both same/different segment edges; unsupported handle/domain/budget atomic rejection."
+    },
+    {
+      "path": "native/build/curve-frequency-1379.json",
+      "sha256": "854935b8e3f4b6926d40f44ea7fcc89da44a55a2c9cbd9cfd18c6b47b8af151f",
+      "scope": "774 analytic cosine/DC low/high/strength observations/max7.11e-15, uniform-time/range/type validation, channel/outside-key/value/time/count retention;65536keys121.56ms authoring CPU only."
+    },
+    {
+      "path": "native/build/curve-range-bake-1336-23baDk/acceptance.json",
+      "sha256": "f3be36f48c1e04479c13a1a93b224df32ef106860dbf952464e8766aad3737b5",
+      "scope": "Existing9checks/808outside observations/1000Euler quaternion poses; only obsolete interior-boundary rejection updated to true out-of-domain rejection."
+    },
+    {
+      "path": "native/build/curve-tools-1319-wkQ0nW/acceptance.json",
+      "sha256": "5f766b79b1b4d7751c4de9a9131e4be27d65467c47ed908785fcc232887f2501",
+      "scope": "Existing10checks/15600 sample observations unchanged curve transformation/flatten/smooth/bake/reduce/atomic behavior."
+    },
+    {
+      "path": "native/build/curve-filters-1380-window-VSSEIF/acceptance.json",
+      "sha256": "6a448383cf6827dcafbe15b3a811f25d6be6846af05d5eb5b4cd12341b9314ea",
+      "scope": "Actual hidden editor rightclick FFT/options retained/interior range bake/outside/Undo, Sequence dryRun/stale AI, skeletal Undo, floating BP Timeline and saves feed actualPlay/Pause/Seek2.5 position1.1477749147734875. Screenshot inspected."
+    },
+    {
+      "path": "native/build/curve-filter-context-1381.json",
+      "sha256": "c1948401e24580328346c6e859bcf47ae491c81ca7fdb0c3dea988b7ea8255cc",
+      "scope": "Exact filter definition owner found via5files54623bytes plus low/high/parameter/resource/limit schema."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed interior Bézier range bake and spectral Butterworth low/high authoring filter, human rightclick/options/Undo, shared Sequence/skeletal AI dryRun/stale revision and floating BP Timeline, saved actual Sequence playback. Installed actual packaged D3D11 uses installed helper to author and play position1.1477749147734875. All17 native owner SHA,25 native test sources, exact Player1369/Host/vendor reused without compilation. Manifest/source/User/links/Versions1 verified. Representable0..1 handles only; Chebyshev/multicurve/rig and cumulative/research residuals remain.",
+  "version": 1,
+  "date": "2026-10-21T20:46:05.351Z",
+  "work": "docs/research/ENGINE_WORK_1382.json",
+  "distributionSync": "native/build/distribution-1383-sync.json",
+  "nativeCachePrune": {
+    "path": "native/build/cache-prune-1792611199342-7fc95717-c662-48dc-a514-1441315ffee6/result.json",
+    "sha256": "f9b363933406b04808223046d04710e7a0804f4e61cf6a33edf3071c3d80fa2a",
+    "bytes": 145415411,
+    "deleted": 2,
+    "scope": "Existing managed cleanup receipt; no extra manual source/cache copy or empty prune record."
+  },
+  "sourceNativeProof": "native/build/scene-constant-cache-1368-lC4Plh/acceptance.json",
+  "sourceAnimationProof": "native/build/curve-filters-1380-window-VSSEIF/acceptance.json",
+  "vendorPatch": "tools/patch-three-uniforms.mjs"
+}

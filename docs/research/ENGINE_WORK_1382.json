@@ -803,10 +803,6 @@
     }
   ],
   "sourceGameGates": [],
-  "pendingInstalledGates": [
-    "tools/check-curve-filters-1380-window.mjs",
-    "tools/check-curve-filters-1380-window.mjs --player"
-  ],
   "nativePlayerSHA256": "da86f16dc48681473001c757e1f3ecdce38b266cc13cd417c7502937de9aa5d7",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -868,8 +864,8 @@
   },
   "research": "docs/research/CORPUS_MANIFEST.json#supplemental1378; Epic5.8 Filter/Bake/FFT lines308–349 scoped reread, no full-corpus promotion.",
   "diagnostic": "DEBUG_HANDOFF.md#1378–1381",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1376.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1384.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "미등록 C++ 사용자 struct/중첩 컨테이너·시퀀스 대형 키 편집·기존1024키 예산 확장·기존 대상 생성/삭제 재현·socket/constraint/고급 Attachment·복잡 DCC 리그·녹화 필터 프리셋",
@@ -879,5 +875,26 @@
     "다중 곡선 동시 편집·수직/0..1 밖 핸들이 필요한 임의 경계 분할·키 도메인 밖 부분 베이크·Chebyshev/비등간격 직접 주파수 필터·고급 리그 Euler 필터·고급 단축키 확대",
     "쿼터니언/이산 범위 확장"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/curve-filters-1380-window-5DjoNw/acceptance.json",
+      "sha256": "69e0389c5f1aeda3e3718add7f35fd6212e34b1a1665d0301e5a7fafe6ef9722",
+      "scope": "Owned hidden real UI FFT/explicit interior range controls, option retention/Undo; shared revision/dryRun/stale AI Sequence and skeletal; floating BP Timeline and saves. Filtered Sequence Play/Pause/Seek2.5 feeds actual runtime position. --player uses selected installed authoring helper and actual packaged D3D11. No user profile/project or OS clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e2d58e23b010e60a\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/curve-filters-1380-window-6gMQZ1/acceptance.json",
+      "sha256": "8f0d91c6f2cffbb204cdfa351233a4c5f2605e088c47d01d299a950614169d50",
+      "scope": "Owned hidden real UI FFT/explicit interior range controls, option retention/Undo; shared revision/dryRun/stale AI Sequence and skeletal; floating BP Timeline and saves. Filtered Sequence Play/Pause/Seek2.5 feeds actual runtime position. --player uses selected installed authoring helper and actual packaged D3D11. No user profile/project or OS clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e2d58e23b010e60a\\HBEngine.exe",
+        "--player"
+      ]
+    }
+  ]
 }
