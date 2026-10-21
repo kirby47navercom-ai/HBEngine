@@ -870,3 +870,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1241–1245: 기본5구조체 Make/Break/선택 Set Members·비노출 보존·변수/중첩/배열/함수/접힌호출 참조·같은함수후속읽기/무작위인덱스고정·10종+배열Select·Switch고정값/순서/Name/구형호환·C++Struct.hpp/AI2명령/스키마연결. 묶음syntax/API/모델53/CPP/flow1708/접기42/상속/AI/실제에디터통과. 속성선택변경스크롤보완은설치GUI에서확인. native16/Player/Host불변재사용·전체렌더/FPS반복없음. 사용자구조체/enum·일반native참조와기존누적잔여유지.
 
 1247 설치확인: Versions/67bedf32e5d1c172·3937명세/615소유SHA·기존native16/Player1223/Host1041재사용. 설치GUI Tz5WE0 필드/우클릭/Undo/AI/선택scroll초기화/Play, 실제D3D11패키지im5Hub 위치[10,20,30]통과. User10849파일SHA보존·바로가기/연결·Versions1·이전185757267B정리·빈캐시receipt없음. 전체엔진완료아님/누적원장잔여유지.
+
+1250–1255: 구조체/C++/분기1247설치후멈추지않고Shot/SubSequence추가. 구간localtime/offset/rate/loop·Shot상위row·누적priority·자식채널복원/seek/stop·이벤트cut/loop경계·취소/순환/원본보존·drag/trim/context복제삭제/원본열기·실제preview대상fit/follow·AI2명령·공용패키징검증. 모델15/기존load4/priority4/completion3·AIcontext·실제최종GUI V94xOn 통과. native16/Struct.hpp/Player/Host불변재사용. 원점/timewarp/가중blend/부모문맥/Take/썸네일등잔여유지.
