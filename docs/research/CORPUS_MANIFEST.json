@@ -5237,5 +5237,21 @@
       }
     ],
     "implementation": "HB independent de Casteljau partial bake with representable0..1 handles and zero-phase spectral Butterworth low/high pass; explicit limitations, shared human/AI Undo/authoring/runtime. Not an entire corpus promotion."
+  },
+  "supplemental1391": {
+    "record": "docs/LARGE_AUTHORING_STORAGE.md",
+    "fullCorpusAnalysis": false,
+    "read": [
+      {
+        "url": "https://www.rfc-editor.org/info/rfc6901/",
+        "sections": [
+          "Syntax displayed153–180",
+          "Evaluation182–252"
+        ],
+        "kind": "scoped protocol read",
+        "remaining": "URI fragment handling, raw duplicate-member detection and full specification conformance not promoted."
+      }
+    ],
+    "implementation": "Parsed own-member JSON Pointer traversal and paginated document shape/value queries; HB budgets and readonly/revision semantics are engine choices. Not additional UE/Unity corpus completion."
   }
 }

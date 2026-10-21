@@ -1,3 +1,4 @@
+import {encodeAutomationResult,automationPollBody} from './automation-poll.js';
 import {validAsset,assetValidationError} from './asset-documents.js';
 
 export async function documentRevision(data){const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(data)));return [...new Uint8Array(digest)].map(byte=>byte.toString(16).padStart(2,'0')).join('');}
@@ -22,7 +23,24 @@ export function patchAsset(kind,data,operations){
 
 // Commands call the same editor functions as human actions; DOM simulation is unnecessary.
 export function connectAutomation({request,state,methods}){
-  const clientId=crypto.randomUUID();let results=[],stopped=false,timer;
-  async function poll(){try{const sent=results;const response=await(await request('/api/automation/poll',{method:'POST',body:JSON.stringify({clientId,state:state(),results:sent})})).json();results=results.filter(result=>!sent.includes(result));for(const command of response.commands){try{const method=methods[command.method];if(!method)throw Error('지원하지 않는 편집기 명령');results.push({id:command.id,result:await method(command.params||{})});}catch(error){results.push({id:command.id,error:{message:error.message,code:error.code||'COMMAND_FAILED'}});}}}catch{}finally{if(!stopped)timer=setTimeout(poll,500);}}
-  poll();return ()=>{stopped=true;clearTimeout(timer);};
+  const clientId=crypto.randomUUID();let results=[],commands=[],stopped=false,timer;
+  async function poll(){
+    let received=false;
+    try{
+      const batch=automationPollBody(clientId,state(),results),sent=batch.sent;
+      const response=await(await request('/api/automation/poll',{method:'POST',body:batch.body})).json();received=true;
+      if(stopped)return;
+      results=results.filter(result=>!sent.includes(result));commands.push(...response.commands);
+      let queuedBytes=results.reduce((n,r)=>n+r.bytes,0);const started=performance.now();
+      while(commands.length&&!stopped&&queuedBytes<8*1024*1024){
+        const command=commands.shift();let encoded;
+        try{const method=methods[command.method];if(!method)throw Error('지원하지 않는 편집기 명령');encoded=encodeAutomationResult({id:command.id,result:await method(command.params||{})});}
+        catch(error){encoded=encodeAutomationResult({id:command.id,error:{message:error.message,code:error.code||'COMMAND_FAILED'}});}
+        if(stopped)break;
+        results.push(encoded);queuedBytes+=encoded.bytes;
+        if(performance.now()-started>=8)break;
+      }
+    }catch{}finally{if(!stopped)timer=setTimeout(poll,received&&(commands.length||results.length)?0:500);}
+  }
+  poll();return ()=>{stopped=true;clearTimeout(timer);results.length=0;commands.length=0;};
 }

@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
-export const storageLimit=8*1024*1024;
+export const storageLimit=32*1024*1024;
 const bases=new Set(['hbengine-ui-scene-v1','hbengine.documents.v2','hbengine.docks.v2','hbengine.detached.windows','hbengine.viewport.presentation','hbengine.viewport.camera','hbengine.project.folder','hbengine.project.view','hbengine.project.browsers','hbengine.editor.preferences','hbengine.editor.shortcuts','hbengine.storage-migrated.v1']);
 const plain=value=>value!==null&&typeof value==='object'&&!Array.isArray(value)&&(Object.getPrototypeOf(value)===Object.prototype||Object.getPrototypeOf(value)===null);
 export class ProjectStorage {

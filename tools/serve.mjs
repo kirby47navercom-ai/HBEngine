@@ -1,3 +1,4 @@
+import {automationPollLimits} from '../prototype/automation-poll.js';
 import {streamHttpFile} from './http-file.mjs';
 import {sourceControlStatus,sourceControlDiff,sourceControlStage,sourceControlCommit,sourceControlInit,sourceControlConfigure,sourceControlBase} from './source-control.mjs';
 import {configureNativePersistence} from './game-storage.mjs';
@@ -79,7 +80,7 @@ const server=http.createServer(async(req,res)=>{try{
     if(url.pathname==='/api/automation'&&req.method==='GET')return json(res,automation.state());
     if(url.pathname==='/api/automation/command'&&req.method==='GET')return json(res,automation.get(q.get('id')));
     if(url.pathname==='/api/automation/command'&&req.method==='POST')return json(res,automation.submit(JSON.parse(await readBody())),202);
-    if(url.pathname==='/api/automation/poll'&&req.method==='POST'){const data=JSON.parse(await readBody(4194304));if(data.state?.projectId!==projectId)throw changedProject();return json(res,automation.poll(data));}
+    if(url.pathname==='/api/automation/poll'&&req.method==='POST'){const data=JSON.parse(await readBody(automationPollLimits.bodyBytes));if(data.state?.projectId!==projectId)throw changedProject();return json(res,automation.poll(data));}
     if(url.pathname==='/api/storage'&&req.method==='GET'){if(q.get('project')!==projectId)throw changedProject();return json(res,await store.read(()=>checkOwner(owner)));}
     if(url.pathname==='/api/storage'&&req.method==='PUT'){const data=JSON.parse(await readBody(storageLimit));if(data?.id!==projectId)throw changedProject();return json(res,await store.patch(data.items,()=>checkOwner(owner)));}
     if(url.pathname==='/api/editor'&&req.method==='GET'){const editor=await findEditor();checkOwner(owner);return json(res,{name:editor?.name||null});}
@@ -94,7 +95,7 @@ const server=http.createServer(async(req,res)=>{try{
     if(url.pathname==='/api/asset/reimport'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.reimport(data.paths);checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/batch'&&req.method==='POST'){const data=JSON.parse(await readBody(16777216)),result=await owner.checkedBatch(data.entries,()=>checkOwner(owner),{dryRun:data.dryRun??false,guards:data.guards??[]});checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/batch/undo'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.undoBatch(data.transaction,()=>checkOwner(owner));checkOwner(owner);return json(res,result);}
-    if(url.pathname==='/api/asset/write'&&req.method==='POST'){const data=JSON.parse(await readBody(8388608)),result=await owner.checkedWrite(data.path,data.text,data.expected,()=>checkOwner(owner));checkOwner(owner);return json(res,result);}
+    if(url.pathname==='/api/asset/write'&&req.method==='POST'){const data=JSON.parse(await readBody(33554432)),result=await owner.checkedWrite(data.path,data.text,data.expected,()=>checkOwner(owner));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/project'&&req.method==='GET'){const result=await owner.list({folder:q.get('folder')||'',query:q.get('q')||'',type:q.get('type')||'all',contents:q.get('contents')==='1',recursive:q.get('recursive')==='1'});checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/file'&&['GET','HEAD'].includes(req.method)){const info=await owner.read(q.get('path'));checkOwner(owner);return stream(req,res,info.file,info.size,true);}
     if(url.pathname==='/api/file'&&req.method==='PUT'){await owner.write(q.get('path'),(await readBody()).toString('utf8'),()=>checkOwner(owner));checkOwner(owner);return json(res,{ok:true});}

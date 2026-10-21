@@ -19,7 +19,7 @@
 
 AI는 `sequence.curve.tool`, `skeletal.curve.edit`를 사용해요. `path`, `expectedRevision`, `dryRun`과 기존 문서 Undo/저장을 공유해요. 잘못된 시간·shape·예산은 문서를 바꾸기 전에 거절해요. BP 타임라인은 기존 `document.patch`로도 편집할 수 있어요. 키 예산은 기존 소유자 검증을 따르며 새 상주 캐시·작업자·렌더 타깃은 만들지 않아요.
 
-키 조회는 정렬된 배열에서 이진 검색하고, 범위 맞춤은 값을 임시 평탄 배열로 만들지 않고 순회해요. 화면에 겹친 키 마커는 채널별 화면 열당 최대 4개로 표시하며, 데이터와 전체 선택은 유지해요. 64개를 넘는 다중 선택은 주 선택 키의 핸들을 표시하고 가까이 확대해서 개별 키를 편집할 수 있어요. 골격 메타데이터 65,536키의 실제 창 검사와 65,536 벡터 키의 범위 맞춤·조회 검사는 서로 다른 증거이며, 시퀀스 에셋의 기존 1,024키 예산을 올렸다는 뜻은 아니에요.
+키 조회는 정렬된 배열에서 이진 검색하고, 범위 맞춤은 값을 임시 평탄 배열로 만들지 않고 순회해요. 화면에 겹친 키 마커는 채널별 화면 열당 최대 4개로 표시하며, 데이터와 전체 선택은 유지해요. 64개를 넘는 다중 선택은 주 선택 키의 핸들을 표시하고 가까이 확대해서 개별 키를 편집할 수 있어요. 골격 메타데이터 65,536키의 실제 창 검사와 65,536 벡터 키의 범위 맞춤·조회 검사는 서로 다른 증거이며, 1326 당시 시퀀스의 1,024키 예산 확대 증거는 아니었어요. 현재의 트랙당65,536키·전체 예산과 개요/속성 페이지는 docs/DENSE_SEQUENCE.md의1386 이후 증거를 봐요.
 
 참고한 지정 본문은 [Unity 6000.0 곡선의 tangent mode](https://docs.unity3d.com/6000.0/Documentation/Manual/EditingCurves.html)의 Clamped Auto/수동 전환과 [Epic 5.8 Curve Editor](https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-curve-editor-in-unreal-engine)의 도구·선택·베이크·축약이에요. [Unity TangentMode API](https://docs.unity.com/en-us/engine/6000.7/script-reference/unityeditor/animationutility/tangentmode)는 enum 정의·필드만 대조했어요. 지정 절을 읽은 범위이며 전체 문서/API 분석 완료는 아니에요. 구현 수식과 필터는 HB 자체 코드이고 UE/Unity의 비공개 내부 수식 복제라고 주장하지 않아요.
 

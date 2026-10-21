@@ -1,3 +1,4 @@
+import {sequenceKeyLimits} from './sequence-key-storage.js';
 import {TimelineEditor} from './timeline-editor.js';
 import {sequenceCurveType} from './sequence-curves.js';
 import {validGameplayAsset} from './gameplay-assets.js';
@@ -7,7 +8,7 @@ export function sequenceCurveEditor(element,controller,track){
  const data=controller.doc.data,type=sequenceCurveType(track),node={id:'sequence_'+track.id,timeline:{length:data.length,playRate:data.rate,loop:data.loop,autoplay:false,lastKeyframe:false,ignoreTimeDilation:false,tracks:[{id:track.id,name:track.name,type,interpolation:'linear',preInfinity:track.preInfinity,postInfinity:track.postInfinity,keys:structuredClone(track.keys)}]}};
  element.dataset.sequenceCurve='true';
  const editor=new TimelineEditor(element,()=>node,{
-  maxKeys:1024,enabled:()=>!controller.hooks.running?.(),toolsEditable:!track.quaternionInterpolation,eulerAngles:track.type==='rotation'&&!track.quaternionInterpolation,
+  maxKeys:sequenceKeyLimits.perTrack,enabled:()=>!controller.hooks.running?.(),toolsEditable:!track.quaternionInterpolation,eulerAngles:track.type==='rotation'&&!track.quaternionInterpolation,
   rangeEditable:!track.quaternionInterpolation,
   rendered:editor=>{const bar=editor.el.querySelector('.curve-keybar'),label=editor.document.createElement('label'),select=editor.document.createElement('select');label.append('곡선');select.dataset.sequenceCurveTrack='';select.setAttribute('aria-label','곡선 트랙');select.style.width='140px';for(const row of controller.doc.data.tracks.filter(t=>sequenceCurveType(t)&&!t.quaternionInterpolation)){const option=editor.document.createElement('option');option.value=row.id;option.textContent=row.name;select.append(option);}select.value=track.id;select.onchange=()=>{const chosen=controller.doc.data.tracks.find(t=>t.id===select.value);if(!chosen||!sequenceCurveType(chosen)||chosen.quaternionInterpolation)return;controller.selection=controller.curveTrack=chosen.id;controller.render();controller.element.querySelector('[data-sequence-curve-track]')?.focus();};label.append(select);bar.prepend(label);const channels=editor.el.querySelector('.curve-channels');if(channels)label.after(channels);bar.append(editor.el.querySelector('[data-fit]'));editor.readableLabels();},
   before:()=>controller.hooks.before(),error:message=>controller.hooks.error(message),

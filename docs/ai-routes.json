@@ -1080,6 +1080,103 @@
         "prototype/timeline-editor.js",
         "docs/CURVE_TOOLS.md"
       ]
+    },
+    {
+      "keywords": [
+        "sequenceKeyLimits",
+        "sequenceOverviewKeyIndices",
+        "sequenceKeyPage",
+        "readSequenceKeys",
+        "nextSequenceKeyTime",
+        "sequence.keys.read",
+        "대형 시퀀스",
+        "키 번호"
+      ],
+      "paths": [
+        "prototype/sequence-key-storage.js",
+        "prototype/gameplay-editor.js",
+        "prototype/gameplay-assets.js",
+        "prototype/curve-clipboard-authoring.js",
+        "prototype/app.js",
+        "docs/DENSE_SEQUENCE.md"
+      ]
+    },
+    {
+      "keywords": [
+        "automationPollBody",
+        "encodeAutomationResult",
+        "RESULT_TOO_LARGE",
+        "createProjectStorage",
+        "editor.storage.flush",
+        "큰 문서",
+        "복구 용량"
+      ],
+      "paths": [
+        "prototype/automation-poll.js",
+        "prototype/automation.js",
+        "prototype/project-session.js",
+        "tools/project-storage.mjs",
+        "tools/project-service.mjs",
+        "tools/serve.mjs",
+        "docs/LARGE_AUTHORING_STORAGE.md"
+      ]
+    },
+    {
+      "keywords": [
+        "sequenceKeyLimits",
+        "sequenceOverviewKeyIndices",
+        "sequenceKeyPage",
+        "readSequenceKeys",
+        "nextSequenceKeyTime",
+        "SequenceEventIndex",
+        "eventRange",
+        "sequence.keys.read",
+        "대형 시퀀스",
+        "키 번호"
+      ],
+      "paths": [
+        "prototype/sequence-key-storage.js",
+        "prototype/sequence-event-index.js",
+        "prototype/sequence-sampling.js",
+        "prototype/gameplay-editor.js",
+        "prototype/gameplay-assets.js",
+        "prototype/curve-clipboard-authoring.js",
+        "docs/DENSE_SEQUENCE.md"
+      ]
+    },
+    {
+      "keywords": [
+        "readDocumentPage",
+        "document.read",
+        "documentQuery",
+        "부분 문서"
+      ],
+      "paths": [
+        "prototype/document-query.js",
+        "prototype/app.js",
+        "tools/editor-automation.mjs",
+        "docs/LARGE_AUTHORING_STORAGE.md"
+      ]
+    },
+    {
+      "keywords": [
+        "automationPollBody",
+        "encodeAutomationResult",
+        "RESULT_TOO_LARGE",
+        "createProjectStorage",
+        "editor.storage.flush",
+        "큰 문서",
+        "복구 용량"
+      ],
+      "paths": [
+        "prototype/automation-poll.js",
+        "prototype/automation.js",
+        "prototype/project-session.js",
+        "tools/project-storage.mjs",
+        "tools/project-service.mjs",
+        "tools/serve.mjs",
+        "docs/LARGE_AUTHORING_STORAGE.md"
+      ]
     }
   ]
 }

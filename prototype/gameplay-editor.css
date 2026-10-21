@@ -60,3 +60,7 @@
 .ability-readout [data-effect-level]{width:58px;max-width:100%;min-width:0;padding:3px;font-variant-numeric:tabular-nums}
 
 .gameplay-segment.sequence-section{background:#3e566f;border-color:#7195b4;min-width:3px}.gameplay-segment.sequence-section.shot{background:#68583e;border-color:#ad9369}.gameplay-segment.sequence-section [data-notify-resize]{cursor:ew-resize}
+
+.sequence-key-navigation{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0}.sequence-key-navigation>span{font-variant-numeric:tabular-nums}.sequence-key-navigation label{display:flex;align-items:center;gap:6px}.sequence-key-navigation input{width:100px}
+
+.sequence-key-navigation{position:sticky;top:0;background:var(--panel,#282d33);z-index:2;padding:6px 0}.gameplay-properties .sequence-key-selected{outline:1px solid var(--accent,#5e9cd2);outline-offset:2px}.gameplay-properties [data-sequence-key-section]>small{display:block;color:var(--muted,#a8b1bc);margin-bottom:4px}

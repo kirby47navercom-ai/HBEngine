@@ -54,3 +54,5 @@ node tools/hb.mjs schema --section commands --url http://127.0.0.1:포트
 사용자 게임·`%LOCALAPPDATA%/HBEngine/User`·실행 중인 창/서버는 검사에 사용하거나 종료하지 않아요. 업데이트 요청 없이 설치본을 바꾸지 않아요. Versions는 한 개 유지하되 실행 중인 버전은 보호해요. 작업 종료 시 현재 인계만 짧게 갱신하고 긴 실행 이력은 증거 문서로 연결해요.
 
 정확한 작업·명령·심볼에 연결한 docs/ai-routes.json의 focusRoutes는 넓은 분야 기본 파일보다 앞서 관련 구현을 보여줘요. 예: sequence.curve.keys/editAssetCurveKeys와 stateSerialization/SharedStatePackets. 전체 문서 선행 독서나 실행 검사는 추가하지 않아요.
+
+큰 문서는 `document.get` 전체 응답보다 `document.read`의 pointer/offset/limit을 먼저 사용해요. 기본값은 형태와 짧은 ID/name만 돌려주고, 필요한 하위 항목에 values=true를 써요. 시퀀스 키는 sequence.keys.read도 지원해요. `schema --section documentQuery`, `--section sequenceKeyStorage`, `--section authoringStorage`로 해당 계약만 볼 수 있어요. 에셋 저장과 복구 상태 flush는 별도이고 editor.storage.flush로 후자를 확정해요. 상세 범위는 docs/LARGE_AUTHORING_STORAGE.md와 docs/DENSE_SEQUENCE.md에 있어요.
