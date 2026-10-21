@@ -3,8 +3,8 @@
 2026-10-22. 주인님: 멈추지말고 여러변경 구현후 영향검사1회·실패만수정. 반복컴파일/장시간렌더검사금지. AGENTS/docs/AI_START→hb context. 백그라운드만/한글동일author/committer commit/push.
 
 ## 현재 설치와 진행
-USER_INSTALL_1264: C:/Users/kirby/HBEngine/Versions/91fb64b56b370689/HBEngine.exe.3949명세/627SHA/CPP21/native16·Player1223/Host1041/Struct.hpp재사용.User10849읽기SHA/연결/Versions1·이전186035699B정리.설치서버socket5확인.
-1266–1270 구현검사완료·설치대기: 공용Hermite/시퀀스연속곡선·실제탄젠트drag/연결·Alt분리/타축auto기울기보존·기준점static/actor/상속·same-sample기준액터선평가·root/component별칭/부착로컬중복방지·수명/피드백/실패교체/복원·AI2명령. 모델17 GECNor/기존section15·rotation3·priority4·completion3·hierarchy5 통과. 최종sourceGUI1267-MjRTWI 실제handle/타축/Undo/AI/Play·배치확인. 첫GUI임의기울기기준실패→관찰축명시수정, 타축0덮기제품수정과CSS상속클리핑수정은마지막GUI로검사.1269.started재실행금지.설치D3D11패키지1회만예정;native16/CPP불변재사용. docs/SEQUENCE_ORIGINS_CURVES.md.
+USER_INSTALL_1272: C:\Users\kirby\HBEngine\Versions\0247274dedde87b2\HBEngine.exe. 3960명세/640SHA/CPP21/native16·Player1223/Host1041/Struct.hpp재사용. User10849읽기SHA/연결/Versions1·이전186143448B정리.실제설치D3D11 RyNmLm [10,7.328125,0] 성공.
+1266–1270 구현/설치검사완료: 공용Hermite/시퀀스연속곡선·실제탄젠트drag/연결·Alt분리/타축auto기울기보존·기준점static/actor/상속·same-sample기준액터선평가·root/component별칭/부착로컬중복방지·수명/피드백/실패교체/복원·AI2명령. 모델17 GECNor/기존section15·rotation3·priority4·completion3·hierarchy5 통과. 최종sourceGUI1267-MjRTWI 실제handle/타축/Undo/AI/Play·배치확인. 첫GUI임의기울기기준실패→관찰축명시수정, 타축0덮기제품수정과CSS상속클리핑수정은마지막GUI로검사.1269.started재실행금지.record1270/sync1271/install1272/finish1273완료·재실행금지;native16/CPP불변재사용. docs/SEQUENCE_ORIGINS_CURVES.md.
 
 ## 앞선 완료 근거
 WORK1245: 기본5struct Make/Break/SetMembers·중첩/배열/reroute/함수입력원본반영·index고정·typedSelect/Switchstatic·Struct.hpp·AI.모델53/flow1708/접기42/상속/실제CPP·설치GUI·D3D11성공. 사용자struct/enum·일반native반환참조는미포함.

@@ -1,0 +1,138 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "412e9ed941055153791835049e299b0d913a1641",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0247274dedde87b2",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\0247274dedde87b2\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\0247274dedde87b2\\HBEngine.exe",
+  "bundleHash": "0247274dedde87b241a98f90cce17fedaf28e10649d3ae11cafe4f70edfcce47",
+  "files": 3960,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3950,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\91fb64b56b370689",
+        "bytes": 186143448,
+        "manifestSHA256": "48365c13805abf6045aca971dd6d1365426ff1accfffbc7cfab416cf0fd5bf99"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-21T15:21:13.9835795Z",
+    "bytes": 186143448,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "0247274dedde87b2"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 640,
+  "repositoryOnlyTestSourcesVerified": 21,
+  "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-origins-curves-1267-RyNmLm/acceptance.json",
+      "sha256": "210e5ffd6a47c0923e2c155389c7a4c29f74582edd12c58e47401859af6e6f65",
+      "scope": "Actual isolated packaged D3D11 game uses common Blueprint Play/Pause/Seek with non-linear child curve, source offset and inherited translated/rotated origins. Native binaries reused; no rendering formula/FPS/mobile claim.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\0247274dedde87b2\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\0247274dedde87b2\\",
+    "elapsedMs": 94.35,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\0247274dedde87b2",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "0247274dedde87b241a98f90cce17fedaf28e10649d3ae11cafe4f70edfcce47",
+      "installedAt": "2026-10-21T15:21:10.702Z",
+      "manifestFiles": 3960,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 3960,
+  "versions": [
+    "0247274dedde87b2"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1272-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/sequence-origins-curves-1266-GECNor/acceptance.json",
+      "sha256": "8f0f4add53878c16ba829feb0029194f7c301e76b25312c03eff8fe8e7305a30",
+      "scope": "17 groups: Hermite independent values, constant/auto/signed scale; strict edits; actual gameplay static/dynamic/nested origins, quaternion composition, actor identity/order/attached local/Transform alias/restore/atomic invalid replacement."
+    },
+    {
+      "path": "native/build/sequence-origins-curves-1267-MjRTWI/acceptance.json",
+      "sha256": "156e6923d867393bca396b41fed236ec6e852bdbc3ee6481169879b100da2824",
+      "scope": "Final owned hidden source editor: actual Z handle drag, X auto slope10 preserved, coupled handle/Undo, keybar/graph bounds, typed revisioned AI and actual nested Blueprint game."
+    },
+    {
+      "path": "native/build/sequence-sections-1250-8X6paU/acceptance.json",
+      "sha256": "233db272554e0e4cd74a24e73595be3a84ff62c40b9e13d42c8f1c9116996709",
+      "scope": "Existing nested sections model15."
+    },
+    {
+      "path": "native/build/sequence-rotation-249-O840LZ/acceptance.json",
+      "sha256": "65163ccb78982040acde00f76786ab075e750870b76ac5154a1b92a8ada67800",
+      "scope": "Existing rotation3."
+    },
+    {
+      "path": "native/build/sequence-priority-272-tfCkTG/acceptance.json",
+      "sha256": "09df8cd16bfc1d0966d17756de24970ff2e8dc5a765d4ccbd025ae442a1a69a3",
+      "scope": "Existing priority4."
+    },
+    {
+      "path": "native/build/sequence-completion-271-ozYkLs/acceptance.json",
+      "sha256": "316f0e70e705f0f2bc7429eedcc30f78a9bd31f521704f83f14690e0555478d1",
+      "scope": "Existing completion3."
+    },
+    {
+      "path": "native/build/sequence-hierarchy-245-6oPOpq/acceptance.json",
+      "sha256": "61280e42495edde6068ef40ddd65cde43ec6c5c5ad837ceed72944f68ee58516",
+      "scope": "Existing hierarchy5."
+    },
+    {
+      "path": "native/build/ai-context-1270.json",
+      "sha256": "c53a2615b94a0dc5008efb5bcce5d93e35e1d53196889b80e710c32e3f132f42",
+      "scope": "Updated AI routes and compact handoff; CLI/schema selection, not native GUI."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Sequence inherited/actor origins and Hermite/tangent authoring installed. New source17 and legacy30 groups, actual source editor drag/layout/AI/Undo/Play passed. One actual installed D3D11 game checks curved local-time child plus nested rotated origins. All native16/Struct.hpp/CPP21/Player1223/Host1041 unchanged; no renderer matrix, GL compile timing, FPS or mobile device claim. Manifest/read-only User/links/Versions1.",
+  "version": 1,
+  "date": "2026-10-21T15:22:18.579Z",
+  "work": "docs/research/ENGINE_WORK_1270.json",
+  "distributionSync": "native/build/distribution-1271-sync.json",
+  "cachePrune": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

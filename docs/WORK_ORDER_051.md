@@ -880,3 +880,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1264 설치확인: 91fb64b56b370689·3949명세/627소유SHA. 설치서버sockets-only 5검사: 원본모듈은설치경로에서로드하고초기/interest/root재지정/owner/delete/빈메타확인. 10만oracle는이전소스검사SHA근거로재사용·설치에서재실행하지않음. 기존게임/UI/CPP/native16소유불변·User10849읽기SHA·연결/Versions1·이전186035699B정리·빈캐시receipt없음.
 
 1266–1270: 시퀀스 변환기준점·이동액터/상속·부착local·수명/복원·공용Hermite/커브/탄젠트drag·타축auto보존·AI2명령을실제제작/Play로연결. 모델17·기존시퀀스30·sourceGUI MjRTWI/배치입력검사·AI context성공. 초기GUI관찰축/기울기기준과CSS클리핑실패는보존하고수정경로만재검사. native16/Struct.hpp/CPP21불변으로기존빌드/CPP근거재사용;설치D3D11게임1회대기. GL1313B/6노드읽기는시간개선성과아님/RND06잔여유지.
+
+1272 설치확인: 0247274dedde87b2·3960명세/640소유SHA·실제설치D3D11패키지 RyNmLm: curvedchild/sourceoffset/중첩회전기준점 [10,7.328125,0] 확인. User10849읽기SHA/연결/Versions1·이전186143448B정리. native16/CPP21/Struct.hpp/Player/Host불변재사용·전체렌더/GL컴파일/FPS/모바일재검사없음.

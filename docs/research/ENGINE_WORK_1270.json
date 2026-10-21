@@ -733,7 +733,6 @@
     }
   ],
   "sourceGameGates": [],
-  "pendingInstalledGameGate": "tools/check-sequence-origins-curves-1267-window.mjs --player --executable <installation>/HBEngine.exe",
   "nativePlayerSHA256": "dfeebe941f801ddbc9f7a57b1065108aef40a68ed38b67c0f192ad14000a8a62",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -775,8 +774,8 @@
   "diagnostic": {
     "GL": "Read-only historical980 shaders: one1313B material function/one texture call, six authored nodes. No GPU experiment/formula change or measured compile/FPS improvement; RND06 remaining unchanged."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1264.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1272.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": [
     "미등록 C++ 사용자 struct/중첩 컨테이너·대형 키 편집·기존 대상 생성/삭제 재현·socket/constraint/고급 Attachment·복잡 DCC 리그·녹화 필터 프리셋",
@@ -785,5 +784,17 @@
     "마이크·멀티채널 stem·Take 게임시각/PCM 표본 정렬·영상 결합·외부 동기화/전문 시네마틱/베이크",
     "가중 Bézier·클램프 자동 곡선·사전/후 무한·다중 커브 도구/필터와 고급 단축키 확대"
   ],
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/sequence-origins-curves-1267-RyNmLm/acceptance.json",
+      "sha256": "210e5ffd6a47c0923e2c155389c7a4c29f74582edd12c58e47401859af6e6f65",
+      "scope": "Actual isolated packaged D3D11 game uses common Blueprint Play/Pause/Seek with non-linear child curve, source offset and inherited translated/rotated origins. Native binaries reused; no rendering formula/FPS/mobile claim.",
+      "args": [
+        "--player",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\0247274dedde87b2\\HBEngine.exe"
+      ]
+    }
+  ]
 }
