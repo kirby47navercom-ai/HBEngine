@@ -9,7 +9,7 @@ export function sequenceCurveType(track){
 }
 export const sequenceCurveModes=curveModes.filter(m=>m!=='step');
 const repeatedModes=Object.freeze(['constant','cycle','oscillate']),heldModes=Object.freeze(['constant']);
-export function sequenceRangeModes(track){return sequenceCurveType(track)?track.quaternionInterpolation?repeatedModes:curveInfinityModes:['visible','variable','nativeProperty','component'].includes(track.type)?repeatedModes:heldModes;}
+export function sequenceRangeModes(track){return sequenceCurveType(track)?curveInfinityModes:['visible','variable','nativeProperty','component'].includes(track.type)?repeatedModes:heldModes;}
 export function validSequenceCurveTrack(track){
  const type=sequenceCurveType(track),shape=type==='float'?0:type==='vec2'?2:type==='vec3'?3:type==='color'?4:-1;
  const tangent=v=>shape===0?Number.isFinite(v)&&Math.abs(v)<=100000:Array.isArray(v)&&v.length===shape&&v.every(x=>Number.isFinite(x)&&Math.abs(x)<=100000);

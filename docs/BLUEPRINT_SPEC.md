@@ -618,3 +618,5 @@ HB_PROPERTY/HB_FUNCTION/HB_NODE는 protected/private 구역에서도 기존 노�
 1618: 공용 Component SetBool/Float/String의 lightmapReflectionMix/lightmapIntensity/castShadow/receiveShadow/motionVectors를 시각 그룹 유지 경로로 연결해요. C++ Components와 동일 서비스이며 범위/열거형/다른 변경의 재구축을 유지해요. docs/MESH_RENDERER_LIVE_PROPERTIES.md와 후속 설치 영수증을 따라요.
 
 2026-10-23: [비등간격 곡선 필터](CURVE_RESAMPLE_FILTER.md). BP Timeline과 Curve·Sequence·골격 곡선은 원본 보간을 재표본화해 시간·개수·핸들을 유지하며 저/고역·대역 통과/제거를 편집해요. 저장된 키를 기존 BP와 C++ LevelSequence Play/Pause/Seek가 함께 실행해요. 별도 런타임 필터나 새 ABI는 없어요.
+
+2026-10-23: [쿼터니언 범위 밖 회전](QUATERNION_INFINITY.md)의 각속도·누적 모드를 기존 BP와 C++ LevelSequence가 공통으로 실행해요. Sequence 속성/AI revision·Undo 계약을 그대로 사용하고 이산/참조/이벤트 시계는 유지해요.
