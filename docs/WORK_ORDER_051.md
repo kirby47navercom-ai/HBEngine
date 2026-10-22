@@ -1018,3 +1018,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1637 fixture수리:1635 actualwindow는다중slot AnimationGraph연결누락으로준비거부·실패를성공으로세지않음. 엔진필수검증유지·16reachable slot graph/컴포넌트명시·실제연결graph tick/Owner[10,3,0]보존headless통과. production/native/shader소스불변·고친fixture만새설치마지막실행으로확인.
 
 1639 최종설치: 9a42fa3f6ade2e62·4245명세/914소유/native21/30tests/vendor2 SHA·Player1604/Host1041/렌더11소유재사용. 실제연결16-slot AnimationGraph/512clip저장→BP Play/Pause/Seek62.5→같은저장D3D게임/16slots/Owner[10,3,0]보존34초. 최초fixture그래프누락실패는성공에서제외. User10849읽기SHA불변·연결/Versions1·이전191391927B회수. 네트워크등누적작업계속.
+
+1641–1648: loaded network runtime prefab asset/local교체·사전검증/4ms예산/dirty Set·stale child state/owner/publication/delete보호·async C변경/delete/disconnect/sameID CAS·preflight실패유지/정정local복구. 실제socket/공용서비스/A EndB Begin각1·metadata페이지확장·기존11수명/1025공정/한글4MiB3검사묶음최장0.52秒. Native21/Player1604/렌더·애니메이션소유불변재사용·실제2D GUI최종설치예정·누적계속.
