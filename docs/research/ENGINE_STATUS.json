@@ -3168,11 +3168,11 @@
     "scope": "Reflected C++ value records across authoring/runtime/sequence/Take/AI, shared metadata and bounded values, safe layout reload and portable generated-state isolation; cumulative remaining ledger retained."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1467.json",
-    "sourceCommit": "158f75517db5c3ce8509a821501e8ac059f23716",
-    "bundleHash": "7908780238a87645953863a71f0e7c11308a8bc41bcf3f615573dba8439ebbc6",
+    "receipt": "docs/research/USER_INSTALL_1488.json",
+    "sourceCommit": "53ba7cb22a4899daa1271a808491f9d0df8661fe",
+    "bundleHash": "899cf08824d38ebddc3e5f1b713ead9de07c6656aed79f410c5ced4d000b416c",
     "verified": true,
     "versions": 1,
-    "scope": "Installed enum production: native named inline pin, typed variable UndoRedo, enum Switch named cases, hidden current values, array add/edit/remove, bit31 ordinal mask, instance scalar/array UndoRedo/save, sourceReference without duplicated enum tables, actual CPP and BP Play; same saved project actual D3D11 [4,3,2]. Legacy typed C++ 2D player keyboard XY and unchanged original spawn/witness position; dense history8UndoRedo/branch/save/Play. Full manifest/792owners/28native test SHA/2vendor, fresh Player1464 final SDK, unchanged Host1041, User read-only inventory/links/Versions1. No all-engine/FPS/real-device claim."
+    "scope": "Installed record authoring: nested fields/enum, arrays add/move/edit/remove, variable type UndoRedo, Make input/type, class and instance values/save, sourceReference without derived struct tables, actual CPP to BP Play and same saved D3D11 [99,3,2]. Legacy typed CPP 2D keyboard XY/original spawn/witness, sequence269 CPP and BP ownership/priority/lower takeover/baseline restoration in editor and D3D11/scene packages, leases0. Full manifest/814 owners/29 native test/20 native-owner/2 vendor SHA, Player1484 and Host1041, read-only User inventory/shortcuts/association/Versions1. No entire-engine, FPS or real-device completion claim."
   }
 }

@@ -947,11 +947,6 @@
       "scope": "Eight nested levels in typed and sourceReference graph/defaults/instance overrides. Actual gameplaySystems sequence variable+native record playback/ActorSelf/stop baseline restore, ownership leases0."
     }
   ],
-  "pendingInstalledGates": [
-    "tools/check-native-records-1474-window.mjs --package",
-    "tools/check-blueprint-2d-1221-player.mjs",
-    "tools/check-sequence-values-269-window.mjs"
-  ],
   "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -1005,8 +1000,8 @@
   },
   "research": "CORPUS_MANIFEST.supplemental1469: scoped UE Structs, UE4.27 Struct Variables page body, Unity6000 SerializeReference body. No all-manual/API completion claim.",
   "diagnostic": "DEBUG_HANDOFF1469–1483: invalid SDK include/test fixtures separate from real UI old-value, old Make memberPins, key-order, runtime array/depth and portable wrapper ODR defects fixed.",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1467.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1488.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": {
     "cpp": [
@@ -1023,5 +1018,57 @@
       "쿼터니언/이산 범위 확장"
     ]
   },
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/native-records-1474-window-b9z9Ya/acceptance.json",
+      "sha256": "db0d1593d8232d8a54cecae5cecc59f8e1363ddceab6d81cf06c3c9579a88baa",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\899cf08824d38ebd\\HBEngine.exe",
+        "--package"
+      ]
+    },
+    {
+      "path": "native/build/blueprint-2d-1221-U7zu7N/acceptance.json",
+      "sha256": "9f8c3d6900a2db606d9e48d34cab93623387f5a95f0d7e516503ec9e562e2e6a",
+      "scope": "Selected installation builder creates and runs actual Windows D3D11 game. GameMode defaultPawn is C++-derived TopDownCharacter2D, typed SpriteActor function receives authored Blueprint actor, preserves spawn position and queues witness pose; real W input moves in XY with Z fixed. No mobile-device/FPS/full-engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\899cf08824d38ebd\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/sequence-values-269-window-9uKzXc/acceptance.json",
+      "sha256": "d85b76fe5229f6d94932e0aae40da6c800e5e71981d45ccb62420e90b88b8544",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\899cf08824d38ebd\\HBEngine.exe"
+      ]
+    }
+  ],
+  "portableArtifactCleanup": {
+    "passed": true,
+    "bytes": 18971036,
+    "removed": [
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-Ob5UXV\\Native\\include",
+        "bytes": 2372321
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-Ob5UXV\\probe.exe",
+        "bytes": 7117420
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-7NdsbT\\Native\\include",
+        "bytes": 2372321
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-7NdsbT\\probe.exe",
+        "bytes": 7108974
+      }
+    ],
+    "retained": "Generated/authored source, metadata, diagnostics and hash reproduction receipt",
+    "receiptRepair": "PowerShell removed all verified owned targets; Windows PowerShell5 Measure-Object on hashtable rows failed during final reporting. Observed target absence and persisted pre-deletion plan used to recover this receipt; no deletion repeated."
+  }
 }

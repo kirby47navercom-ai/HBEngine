@@ -1,0 +1,212 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "53ba7cb22a4899daa1271a808491f9d0df8661fe",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\899cf08824d38ebd",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\899cf08824d38ebd\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\899cf08824d38ebd\\HBEngine.exe",
+  "bundleHash": "899cf08824d38ebddc3e5f1b713ead9de07c6656aed79f410c5ced4d000b416c",
+  "files": 4146,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4130,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7908780238a87645",
+        "bytes": 189041504,
+        "manifestSHA256": "5bbb340dfe43f30d67b31f52f96878d1e703501783241e044956c0cc255c50f5"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T04:43:02.8541758Z",
+    "bytes": 189041504,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "899cf08824d38ebd"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 814,
+  "repositoryOnlyTestSourcesVerified": 29,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [
+    "native/include/HBEngine/Game.hpp",
+    "native/include/HBEngine/NativeRouting.hpp",
+    "native/include/HBEngine/Struct.hpp"
+  ],
+  "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
+  "installedGates": [
+    {
+      "path": "native/build/native-records-1474-window-b9z9Ya/acceptance.json",
+      "sha256": "db0d1593d8232d8a54cecae5cecc59f8e1363ddceab6d81cf06c3c9579a88baa",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\899cf08824d38ebd\\HBEngine.exe",
+        "--package"
+      ]
+    },
+    {
+      "path": "native/build/blueprint-2d-1221-U7zu7N/acceptance.json",
+      "sha256": "9f8c3d6900a2db606d9e48d34cab93623387f5a95f0d7e516503ec9e562e2e6a",
+      "scope": "Selected installation builder creates and runs actual Windows D3D11 game. GameMode defaultPawn is C++-derived TopDownCharacter2D, typed SpriteActor function receives authored Blueprint actor, preserves spawn position and queues witness pose; real W input moves in XY with Z fixed. No mobile-device/FPS/full-engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\899cf08824d38ebd\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/sequence-values-269-window-9uKzXc/acceptance.json",
+      "sha256": "d85b76fe5229f6d94932e0aae40da6c800e5e71981d45ccb62420e90b88b8544",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\899cf08824d38ebd\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\899cf08824d38ebd\\",
+    "elapsedMs": 61.34,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\899cf08824d38ebd",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "899cf08824d38ebddc3e5f1b713ead9de07c6656aed79f410c5ced4d000b416c",
+      "installedAt": "2026-10-22T04:42:59.622Z",
+      "manifestFiles": 4146,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4146,
+  "versions": [
+    "899cf08824d38ebd"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1488-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/records1481-group.json",
+      "sha256": "55ddeb770f1b2e4116d97f9d0a49e1c026f885f25475f0bc58c682a89e9703fd",
+      "scope": "56 grouped jobs:39syntax, warning-clean SDK record/enum, actual record CPP and two portable modules after wrapper isolation, enum CPP, builtin struct/function/macro refs, sequence212/269/bindings216, inheritance, VM, native core, generated API and private editor. Initial failed SDK include/fixtures and AOT wrapper failure are diagnostic, not successes."
+    },
+    {
+      "path": "native/build/records1485-final.json",
+      "sha256": "da1e925951762108673a84966291a3e527f8e143e9e4430e9c8d92830935c132",
+      "scope": "Final changed syntax, shared metadata/function/macro/sequence+Take and eight-level sourceReference overrides, focused AI routing and fresh Player1484."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-records-1479-cpp-Wr6XLQ/acceptance.json",
+      "sha256": "9b00ee2a74a37e2c82bfd2be2c0e26b68304d995a8321f34da729c83bbf2225f",
+      "scope": "Actual CPP typed fields, return/ref output/arrays/events, nested enum/actor/string,131 items and atomic invalid range/shape/float conversion rejection; original transform retained."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-records-1480-aot-7NdsbT/acceptance.json",
+      "sha256": "06c75edd7a0f545865719b87038058b969ce591179b01ac03f6e678052da7069",
+      "scope": "Two exact portable mobileSources modules with identical class/struct names but42/55 defaults; four alternating host calls isolated after generated internal types acquired translation-unit ownership. Not Android/iOS device execution."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-records-1474-window-Mhznwv/acceptance.json",
+      "sha256": "30bdfb38aee97e2d82975c6cf2ae11fc3cd65cd8e6b0b65a70459d9d62ee9602",
+      "scope": "Actual hidden source editor nested fields/enum, array add/move/edit/remove, type change UndoRedo, Make type/input, class and instance edits/save, sourceReference without struct tables, CPP→BP actual Play. Final installed gate rechecks small disclosure styling/deep persisted-value updates."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-records-1478-QhvubU/acceptance.json",
+      "sha256": "e5a752759b4568553d487309d5448e83c62cbd8893e5d58b09f1b22bc31ec3d2",
+      "scope": "Shared frozen declaration and field plans; per-actor detached values, function/collapsed-macro/expanded references,131 runtime versus128 authoring, semantic equality, sequence bindings/sampler/Take, wire guards, destruction refresh, layout-safe reload, bounded defaults and AI reads."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-records-1483-C5RP92/acceptance.json",
+      "sha256": "d979e0592f25ba2899d0c4050b1cd836642ca925222a8671007c67af9e602c9b",
+      "scope": "Eight nested levels in typed and sourceReference graph/defaults/instance overrides. Actual gameplaySystems sequence variable+native record playback/ActorSelf/stop baseline restore, ownership leases0."
+    },
+    {
+      "path": "native/build/player1484-build.json",
+      "sha256": "6d0519af3f914c4ad3c0d44a994d75c3f882a4f6deeab4f5025a4653d085e60f",
+      "scope": "Fresh player SDK build24.13sec. Unchanged native desktop/raster host1041 reused; three SDK owner changes among20."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-records-1479-cpp-Wr6XLQ/acceptance.json",
+      "sha256": "9b00ee2a74a37e2c82bfd2be2c0e26b68304d995a8321f34da729c83bbf2225f",
+      "scope": "Actual CPP typed fields, return/ref output/arrays/events, nested enum/actor/string,131 items and atomic invalid range/shape/float conversion rejection; original transform retained."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-records-1480-aot-7NdsbT/acceptance.json",
+      "sha256": "06c75edd7a0f545865719b87038058b969ce591179b01ac03f6e678052da7069",
+      "scope": "Two exact portable mobileSources modules with identical class/struct names but42/55 defaults; four alternating host calls isolated after generated internal types acquired translation-unit ownership. Not Android/iOS device execution."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-records-1474-window-Mhznwv/acceptance.json",
+      "sha256": "30bdfb38aee97e2d82975c6cf2ae11fc3cd65cd8e6b0b65a70459d9d62ee9602",
+      "scope": "Actual hidden source editor nested fields/enum, array add/move/edit/remove, type change UndoRedo, Make type/input, class and instance edits/save, sourceReference without struct tables, CPP→BP actual Play. Final installed gate rechecks small disclosure styling/deep persisted-value updates."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-records-1483-C5RP92/acceptance.json",
+      "sha256": "d979e0592f25ba2899d0c4050b1cd836642ca925222a8671007c67af9e602c9b",
+      "scope": "Eight nested levels in typed and sourceReference graph/defaults/instance overrides. Actual gameplaySystems sequence variable+native record playback/ActorSelf/stop baseline restore, ownership leases0."
+    }
+  ],
+  "scope": "Installed record authoring: nested fields/enum, arrays add/move/edit/remove, variable type UndoRedo, Make input/type, class and instance values/save, sourceReference without derived struct tables, actual CPP to BP Play and same saved D3D11 [99,3,2]. Legacy typed CPP 2D keyboard XY/original spawn/witness, sequence269 CPP and BP ownership/priority/lower takeover/baseline restoration in editor and D3D11/scene packages, leases0. Full manifest/814 owners/29 native test/20 native-owner/2 vendor SHA, Player1484 and Host1041, read-only User inventory/shortcuts/association/Versions1. No entire-engine, FPS or real-device completion claim.",
+  "version": 1,
+  "date": "2026-10-22T04:47:38.455Z",
+  "work": "docs/research/ENGINE_WORK_1486.json",
+  "distributionSync": "native/build/distribution-1487-sync.json",
+  "nativePlayerReceipt": "native/build/player1484-build.json",
+  "hostReuseFrom": "docs/research/USER_INSTALL_1467.json",
+  "vendorPatch": "tools/patch-three-uniforms.mjs",
+  "portableArtifactCleanup": {
+    "passed": true,
+    "bytes": 18971036,
+    "removed": [
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-Ob5UXV\\Native\\include",
+        "bytes": 2372321
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-Ob5UXV\\probe.exe",
+        "bytes": 7117420
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-7NdsbT\\Native\\include",
+        "bytes": 2372321
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-7NdsbT\\probe.exe",
+        "bytes": 7108974
+      }
+    ],
+    "retained": "Generated/authored source, metadata, diagnostics and hash reproduction receipt",
+    "receiptRepair": "PowerShell removed all verified owned targets; Windows PowerShell5 Measure-Object on hashtable rows failed during final reporting. Observed target absence and persisted pre-deletion plan used to recover this receipt; no deletion repeated."
+  }
+}

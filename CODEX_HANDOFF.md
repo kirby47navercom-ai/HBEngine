@@ -4,8 +4,8 @@
 
 ## 현재 설치와 구현
 
-현재확정설치1467: C:/Users/kirby/HBEngine/Versions/7908780238a87645/HBEngine.exe·4129명세/792소유/28native검사/18nativeowner/2vendor·User10849읽기SHA/Versions1. commitdc58b27.
-신규feature f2c326f, WORK1486: C++ HB_STRUCT 값reflect/nested/enum/Actor/array/default/typedwire/SDK MakeBreakSet·분할핀/함수/매크로/원소참조·변수/속성/instance 편집Undo/save·metadata/default/fieldplan읽기공유·AI boundedread·시퀀스/Take 실제재생복원lease0·8중첩 sourceReference/override. portable2동명class/struct42/55교대4회에서wrapper/checkpoint ODR충돌발견·worker익명namespace격리수정. 그룹56+최종10/실제CPP/숨김UI/기존VM상속시퀀스회귀통과. freshPlayer1484 24.13초·SHA01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba, Host1041동일. Game.hpp/NativeRouting.hpp/Struct.hpp3소유변경,20소유전체기록. docs/NATIVE_RECORDS.md와CORPUS1469는3본문scope. 다음1487sync→1488install actualrecordUI+동일저장D3D/2DCPP/시퀀스269 편집기+D3D/scene player→1489finish/push. record1486/build-player1484 started끝난것재실행금지.
+현재확정설치1488: C:/Users/kirby/HBEngine/Versions/899cf08824d38ebd/HBEngine.exe·4146명세/814소유/29native검사/20nativeowner/2vendor·User10849읽기SHA/Versions1·이전189041504B퇴역·portable복사SDK/실행파일18971036B회수. codef2c326f/metadata53ba7cb. 실제 recordUI/save/CPP→BP/같은저장D3D[99,3,2]/exit0·2DtypedCPP/XY/원spawn·sequence269 편집기+D3D/scene2패키지우선순위/하위재개/복원/lease0통과.
+신규feature f2c326f, WORK1486: C++ HB_STRUCT 값reflect/nested/enum/Actor/array/default/typedwire/SDK MakeBreakSet·분할핀/함수/매크로/원소참조·변수/속성/instance 편집Undo/save·metadata/default/fieldplan읽기공유·AI boundedread·시퀀스/Take 실제재생복원lease0·8중첩 sourceReference/override. portable2동명class/struct42/55교대4회에서wrapper/checkpoint ODR충돌발견·worker익명namespace격리수정. 그룹56+최종10/실제CPP/숨김UI/기존VM상속시퀀스회귀통과. freshPlayer1484 24.13초·SHA01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba, Host1041동일. Game.hpp/NativeRouting.hpp/Struct.hpp3소유변경,20소유전체기록. docs/NATIVE_RECORDS.md와CORPUS1469는3본문scope. 1487sync/1488install/1489finish완료·새원장과설치영수증갱신. record1486/build-player1484/sync1487/install1488/finish1489 started끝난것재실행금지. 다음 record checkpoint복사비용/누적엔진목표계속.
 
 ## 다음과 잔여
 
