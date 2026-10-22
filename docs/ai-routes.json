@@ -1294,6 +1294,25 @@
         "prototype/profiler.js",
         "docs/PREPARATION_TIMING.md"
       ]
+    },
+    {
+      "keywords": [
+        "timelineRows",
+        "timelineRowSelection",
+        "readTimelineRows",
+        "timeline.rows.read",
+        "timeline.editor.navigate",
+        "몽타주 행",
+        "타임라인 행"
+      ],
+      "paths": [
+        "prototype/timeline-rows.js",
+        "prototype/gameplay-editor.js",
+        "prototype/asset-shortcut-commands.js",
+        "prototype/asset-shortcuts.js",
+        "prototype/app.js",
+        "docs/DENSE_SEQUENCE.md"
+      ]
     }
   ]
 }

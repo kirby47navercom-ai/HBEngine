@@ -5306,5 +5306,28 @@
       "LightEvaluation.hlsl initial content"
     ],
     "implementation": "HB per-face world plane distances/angular face mask/normal shell, common C++/BP/JSON, basic path retained. Independent formulas/storage/candidate policies; not full source/API/corpus analysis."
+  },
+  "supplemental1440": {
+    "record": "docs/DENSE_SEQUENCE.md",
+    "fullCorpusAnalysis": false,
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/sequencer-hotkeys-in-unreal-engine",
+        "sections": [
+          "Timeline and Track Navigation"
+        ],
+        "kind": "official current manual scoped navigation table",
+        "date": "2026-10-22"
+      },
+      {
+        "url": "https://docs.unity.cn/Packages/com.unity.timeline%401.8/manual/clip-pan-zoom.html",
+        "sections": [
+          "Pan and zoom the Content view"
+        ],
+        "kind": "official Timeline1.8.4 navigation body",
+        "date": "2026-10-22"
+      }
+    ],
+    "implementation": "Shared searchable/virtualized montage+sequence rows and central profile-preserving row navigation; horizontal zoom/pan reference read but not claimed implemented. No exhaustive source/API/corpus claim."
   }
 }

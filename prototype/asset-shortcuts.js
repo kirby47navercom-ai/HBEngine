@@ -35,7 +35,7 @@ export function dispatchAssetShortcut(id,editor,event){
  }
  if(id.startsWith('gameplay')&&['behaviortree','statemachine'].includes(kind)){if(id==='gameplayDelete'){editor.removeNode();return true;}if(id==='gameplayFocus'){click('[data-act="fit"]');return true;}}
  if(id.startsWith('sequence')&&['montage','sequenceasset'].includes(kind)){
-  if(kind==='sequenceasset'){if(id==='sequencePreviousTrack'||id==='sequenceNextTrack'){editor.moveSequenceTrack(id==='sequenceNextTrack'?1:-1);return true;}if(id==='sequenceFindTrack'){editor.element.querySelector('[data-sequence-track-search]')?.focus();return true;}}
+  if(id==='sequencePreviousTrack'||id==='sequenceNextTrack'){editor.moveSequenceTrack(id==='sequenceNextTrack'?1:-1);return true;}if(id==='sequenceFindTrack'){editor.element.querySelector('[data-sequence-track-search]')?.focus();return true;}
   const actions={sequencePlay:()=>click('[data-act="preview"]'),sequenceFirst:()=>editor.scrub(0),sequenceLast:()=>editor.scrub(editor.doc.data.length),sequencePreviousFrame:()=>editor.timelineMove(-1),sequenceNextFrame:()=>editor.timelineMove(1),sequencePreviousKey:()=>editor.timelineMove(-1,true),sequenceNextKey:()=>editor.timelineMove(1,true)};if(actions[id]){actions[id]();return true;}
  }
  if(id.startsWith('notify')&&assetShortcutContexts(editor,event).includes('notify')){

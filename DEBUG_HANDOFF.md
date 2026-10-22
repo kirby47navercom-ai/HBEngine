@@ -132,3 +132,5 @@ fallback readback뒤copyTexSubImage2D가GL1282. Float32blend가설은HalfFloat�
 - 정확한 SetFaceFade 조회가 작업명과 맞는 수학 경로까지 합쳐5파일을 읽었어요. 등록된 exact symbol 경로를 먼저 읽도록 공용 context를 수정해3파일, 수학2파일/시간진단1파일로 제한해요. --all과 없을 때 전체 fallback은 유지해요. 모델 이해 속도나 전체 문서 분석 완료를 측정한 것은 아니에요.
 
 1433 추가: 면별 setter의 벡터 배열을 호출자와 공유하지 않도록 복사해요. 실제 서비스 입력을 나중에 바꿔도 속성이 유지되고, 잘못된 두 번째 벡터는 첫 값도 반영하지 않는 것을 확인했어요. 생성 vec3핀/bool/float 검증·업데이트5회와 기존 우선 혼합401관찰을 통과했어요. 오래된1356의 ABI/계약 버전 단언은 현재320B/20행/v9로 갱신하고 수학 검사는 유지했어요.
+
+1438–1443: Undo의 미변경 트리 결과 컨테이너를 지연 생성(ownedPrevious 내부 data-property 기록만); 기본 외부 getter 읽기·fallback/복원 격리는 보존. 몽타주 공용 행 탐색에서 row ID를 알림 ID로 고르지 않아 우측 속성이 비던 실제 실패 rkLB6c→defaultSelection 및 행 클릭 경로 수정. 3eFG6M은 테스트가 revision 없이 redo를 요청한 계약 오류→최신 revision 전달; production CAS 완화 없음. 최종4KZrbs 통과. 기존 montage-notify 단위 fixture는 runtime root-motion 인터페이스 extractRange가 없는 낡은 stub→루트 추출 없는 fixture용 noop 추가, runtime 수정 없음. 그룹1443 native17/test27/vendor2 SHA 동일로 재빌드/렌더러 재검사 생략. AI timelineRows2파일/143.87ms 관찰; 전체 엔진 해석/성능 보장 아님.

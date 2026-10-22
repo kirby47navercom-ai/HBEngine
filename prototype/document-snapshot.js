@@ -3,8 +3,20 @@
 const fallback = Symbol('structured-clone');
 const plain = value => value && (Object.getPrototypeOf(value) === Object.prototype || Object.getPrototypeOf(value) === null);
 
-export function shareDocumentSnapshot(value, previous) {
+export function shareDocumentSnapshot(value, previous, {ownedPrevious = false, metrics} = {}) {
+  // Optional counters cover this attempted tree walk, not structuredClone's
+  // fallback allocations, Object.keys arrays, heap bytes or restoration copies.
+  if (metrics) Object.assign(metrics, {visitedObjects: 0, containers: 0, reusedObjects: 0, fallback: false});
   const visited = new WeakSet();
+  const make = source => {
+    if (metrics) metrics.containers++;
+    return Array.isArray(source) ? new Array(source.length) : {};
+  };
+  const put = (target, key, value) => {
+    // Keep an authored own __proto__ member as data, never a setter call.
+    if (key === '__proto__') Object.defineProperty(target, key, {value, writable: true, enumerable: true, configurable: true});
+    else target[key] = value;
+  };
   const copy = (source, before) => {
     if (source === null || typeof source !== 'object') {
       if (typeof source === 'function' || typeof source === 'symbol') throw fallback;
@@ -12,23 +24,32 @@ export function shareDocumentSnapshot(value, previous) {
     }
     if (visited.has(source) || !Array.isArray(source) && !plain(source)) throw fallback;
     visited.add(source);
+    if (metrics) metrics.visitedObjects++;
     const array = Array.isArray(source), keys = Object.keys(source);
     const compatible = before !== source && before && typeof before === 'object' && (array ? Array.isArray(before) && source.length === before.length : !Array.isArray(before) && plain(before));
     const oldKeys = compatible ? Object.keys(before) : [];
     let same = !!compatible && keys.length === oldKeys.length;
-    const result = array ? new Array(source.length) : {};
+    // Engine-owned history frames contain data properties. Delay the result
+    // container until a difference; unchanged branches need no throwaway copy.
+    // The public two-argument path retains its previous getter/read behavior.
+    let result = same && ownedPrevious ? null : make(source);
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i], owned = compatible && Object.hasOwn(before, key), old = owned ? before[key] : undefined;
       const next = copy(source[key], old);
-      if (!owned || oldKeys[i] !== key || !Object.is(next, old)) same = false;
-      // An authored own __proto__ member must remain data, never a setter call.
-      if (key === '__proto__') Object.defineProperty(result, key, {value: next, writable: true, enumerable: true, configurable: true});
-      else result[key] = next;
+      if (!owned || oldKeys[i] !== key || !Object.is(next, old)) {
+        same = false;
+        if (!result) {
+          result = make(source);
+          for (let j = 0; j < i; j++) put(result, keys[j], before[keys[j]]);
+        }
+      }
+      if (result) put(result, key, next);
     }
+    if (same && metrics) metrics.reusedObjects++;
     return same ? before : result;
   };
   try { return copy(value, previous); }
-  catch (error) { if (error !== fallback) throw error; return structuredClone(value); }
+  catch (error) { if (error !== fallback) throw error; if (metrics) metrics.fallback = true; return structuredClone(value); }
 }
 
 export function documentHistoryStorage(history, future, {objectBudget = 250000} = {}) {
