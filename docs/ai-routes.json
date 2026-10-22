@@ -2326,7 +2326,6 @@
         "resolveTakeSources",
         "validTakeSources",
         "makeTakeSource",
-        "runtime.take.sources",
         "recordingSources",
         "takeSourceAction"
       ],
@@ -2343,6 +2342,16 @@
       "paths": [
         "prototype/take-sources-editor.js",
         "prototype/take-sources.js"
+      ]
+    },
+    {
+      "id": "runtime-take-source-api",
+      "keywords": [
+        "runtime.take.sources",
+        "runtimeTakeOperation"
+      ],
+      "paths": [
+        "prototype/app.js"
       ]
     }
   ]
