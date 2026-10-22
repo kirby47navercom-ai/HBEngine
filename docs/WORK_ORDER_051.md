@@ -1078,3 +1078,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1765–1767: 쿼터니언 각속도 유지·월드 델타 회전 누적/음수 반복·비가환 경계 연속·step/참조 시계 보존·지연 scratch 한 개. 독립 Rodrigues/행렬33관찰 max3.83e-15·8회귀. 실제 속성/UndoRedo/AI revision/dryRun/이산 원자 거절·BP/C++ Seek4.5→25도 및0→340도. SequenceSampler 과거 실행 재사용 제외·설치 예정. QUATERNION_INFINITY/WORK1767.
 
 1769–1770: 설치본 쿼터니언 각속도/누적 UI 29.98초·별도 D3D11 42.59초. 실제 BP/C++ Seek4.5→25도 및 editor Seek0→340도·Calls1/이산 시계 보존. 명세4349/source1022/native21/30tests/vendor2/Player1604/Host1041 SHA·User10849 읽기 불변·링크/association/Versions1·이전193623067B 퇴역/lease0. 8회귀·변경 sampler는 과거 runtime 재사용 제외. USER_INSTALL1769·누적 계속.
+
+1771–1774: 월드 메시·높이/구멍 삼각형 지형·폴리지 원본·모든 월드 LOD 거리장 자동 쿠킹. Float32 동일 지문·0 렌더러/인스턴스 버퍼·기존 예산/캐시·높이/구멍/의존 메시 변경·누락/순환/취소. 7회귀+Node 재확인·GL/GPU hits3/miss0/추가worker0·AO116→132/직접67동일·LOD와변경fallback. 실제 월드 문서 AI/Undo·C++/BP stage5. 최초 두 창 검사 실패는 편집기 runtime.state에 없는 renderer를 조회한 검사 오류, 디버그 renderer로 수정·통제 LOD50/far300 후 통과. 실패를 성과로 계산하지 않음. SDK/셰이더불변·설치 D3D 검증 예정. WORK1774.
