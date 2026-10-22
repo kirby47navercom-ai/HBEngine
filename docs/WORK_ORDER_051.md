@@ -986,3 +986,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1554 설치확인: 6cd8c17d2ed3a661·4191명세/858소유/29native검사/20nativeowner/2vendor SHA·Player1484/Host1041재사용. 최종실제64클립/root montage저장·BP Play/Pause/Seek126.5·ready후속실행·원위치[10,3,0]/exit0 6.25초·focus1owner63.63ms. User10849읽기SHA/연결/Versions1·이전190053708B회수. 같은saved D3D소스검사재반복없음·다음montage section/notify frame비용및누적목표계속.
 
 1556–1559: MontageTimeline 섹션순서/이름/end/Seek를Play사전준비해매frame복사/정렬/검색제거·32+notify기존eventindex범위/작음원순회·1024빈범위20time읽기/section0. 유효64notify16section callbackPause/resume중복없음/seek무event/jump/Stop/reentrant·기존root2D3D30/60/120/몽타주/replace/notify/event140 묶음8검사통과. 실제64clip저장BP/paused126.5/원위치[10,3,0]/같은D3D도통과(64notifyGUI주장아님)·907e211·focus1owner1407B·native20/Player/Host재사용·설치다음.
+
+1561 설치확인: 801b67e62cc2ab8f·4196명세/863소유/29native검사/20nativeowner/2vendor SHA·Player1484/Host1041재사용. 섹션/notify준비최종코드의실제64clip저장/BP pause126.5/ready/원위치[10,3,0]/exit0 6.18초·focus1owner61.67ms. User10849읽기SHA/연결/Versions1·이전190194645B회수. 유효64notify16section callback검증은source별도receipt·같은saved D3D/이전CPP검사반복없음·누적작업계속.

@@ -985,9 +985,6 @@
     "prototype/sequence-sections.js": "2d7b485616aa744a57ca48eafb965410b7f4044509b7da7ef67887686cd162e2",
     "prototype/sequence-sampling.js": "0f37f60c427840e26d3de101bb8e6420712cc9020b2474d7b4ca3e468f9fb16d"
   },
-  "pendingInstalledGates": [
-    "tools/check-montage-index-1551-window.mjs"
-  ],
   "focusedAI": {
     "symbol": "MontageTimeline",
     "elapsedMS": 153.52,
@@ -1005,8 +1002,20 @@
     "metrics": "1024 empty notify range20 time reads; cached section lookup0 source-time reads; counts only, not FPS.",
     "validation": "Grouped pure/valid64-notify16-section runtime and legacy root2D3D/notify/replace/event140; GUI+same D3D is64 clips and does not claim64 notify callbacks. No native rebuild/renderer matrix/old unrelated GUI repeat."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1554.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1561.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/montage-index-1551-window-DgtllG/acceptance.json",
+      "sha256": "e43a9f3bbee71a1ce4e4e357484020e94b7de09795d644bc375e4d4faf7d8394",
+      "scope": "Owned hidden actual editor saves 64-clip/root-motion montage and Blueprint Play/Pause/Seek to sparse last clip; Actor original placement preserved and ready continuation reached. Optional same saved Windows D3D11 game. No user project/profile, renderer matrix, actual mobile or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\801b67e62cc2ab8f\\HBEngine.exe"
+      ],
+      "ms": 6178.3724
+    }
+  ]
 }

@@ -4,7 +4,7 @@
 
 ## 설치와 근거
 
-확정1554: C:/Users/kirby/HBEngine/Versions/6cd8c17d2ed3a661/HBEngine.exe. 4191명세/858소유/29native검사/20nativeowner/2vendor·User10849읽기SHA·Versions1·이전190053708B퇴역. source2cb695b/record107ba91·Player1484/Host1041정확SHA재사용. 최종64clip root montage저장/BP pause126.5/원위치[10,3,0]/ready/exit0 6.25초·focus1owner63.63ms. USER_INSTALL_1554.json; source같은저장D3D통과. 1538BP/privateCPP·1545시퀀스는원장근거유지.
+확정1561: C:/Users/kirby/HBEngine/Versions/801b67e62cc2ab8f/HBEngine.exe. 4196명세/863소유/29native검사/20nativeowner/2vendor·User10849읽기SHA·Versions1·이전190194645B퇴역. source907e211/recorde41dd34·Player1484/Host1041정확SHA재사용. 최종64clip저장/BP pause126.5/원위치[10,3,0]/ready/exit0 6.18초·focus1owner61.67ms. USER_INSTALL_1561.json; source같은저장D3D통과. 1538BP/privateCPP·1545시퀀스·1554루트수치/색인근거유지.
 
 이전확정: WORK1486 HB_STRUCT/typedwire/MakeBreakSet/분할/Take/sequence( NATIVE_RECORDS.md); WORK1497 actualtype Get0snapshot/Set수신cell/전체예외복구/5counter( NATIVE_CHECKPOINTS.md); WORK1516 compilecopyfriend private/protected/namespace/class/enum·traits/stdinputmove·native.classes.read·NDK ARM64syntax4/UI/CPP/D3D/2D( NATIVE_CPP_ACCESS.md). 예전started재실행금지.
 
@@ -16,11 +16,11 @@ IntervalSelectionIndex: Play snapshot 승자구간sweep/heap, half-open·원배�
 
 1547–1555 완료: MontageClipIndex(평균slot32+/8slot이하)·희소point/range·원순서/끝프레임·작음/다슬롯/겹침/dense/reentrant기존경로. appendMotion stackmath로Q3/V1/slice1명시생성제거·1200수치/alias+1000연쇄동치. real64clip2slot/원위치/pose재사용·start읽기132→2·root/2D3D30/60/120/notify/replace/cost 그룹8통과. 오래된montage검사Actor자동Mesh가정은fixture에명시수정. 실제64clip저장BP/paused126.5/원위치[10,3,0]/같은D3D통과. 2cb695b/WORK1552/record107ba91·sync1553/install1554/finish1555완료·started재실행금지. 다음montage섹션/notify frame비용과누적목표.
 
-1556–1559 WIP: MontageTimeline 섹션정렬/이름/end/seek 사전준비·notify32+기존SequenceEventIndex범위/작음기존순회. 1024빈범위20time읽기/section후속0·64notify16section callbackPause/resume/seek/jump/Stop/reentrant통과. group1558 8검사(실제64clip저장BP/paused126.5/원위치[10,3,0]/같은D3D)통과; GUI는64notify검사아님. 다음AI→WORK1559/commit→sync1560/install1561/finish1562.
+1556–1562 완료: MontageTimeline 섹션정렬/이름/end/seek 사전준비·notify32+기존SequenceEventIndex범위/작음기존순회. 1024빈범위20time읽기/section후속0·64notify16section callbackPause/resume/seek/jump/Stop/reentrant통과. group1558 8검사(실제64clip저장BP/paused126.5/원위치[10,3,0]/같은D3D)통과; GUI는64notify검사아님. 907e211/WORK1559/recorde41dd34·sync1560/install1561/finish1562완료·started재실행금지. 다음루트정규화scratch와누적목표.
 
 ## 누적 잔여
 
-ENGINE_STATUS.json 78행·전체분모null. CPP01 전용enum/structasset/globalregistry/identity/다형성/schema migration/일반alias·전처리·signature/wildcard·문서간직접참조/Timeline·일반반환CPP참조수명·owning-object-only. ANM06 전체snapshot순회/restore/큰변경array·가시overlap밀도/실터치/가변행/리그/warp/혼합/부모골격Take/몽타주clip·root조회. RND03lightmap혼합/2후보밖계층/대형HDR/변형로브; RND06主GL7초/FXC/capture(1086/1308반복금지); UI03교차창/실터치/asyncrollback; NET01권한/예측/socket; RND08worldDF/HWRT/bake와원장타분야.
+ENGINE_STATUS.json 78행·전체분모null. CPP01 전용enum/structasset/globalregistry/identity/다형성/schema migration/일반alias·전처리·signature/wildcard·문서간직접참조/Timeline·일반반환CPP참조수명·owning-object-only. ANM06 전체snapshot순회/restore/큰변경array·가시overlap밀도/실터치/가변행/리그/warp/혼합/부모골격Take/고급혼합/리그. RND03lightmap혼합/2후보밖계층/대형HDR/변형로브; RND06主GL7초/FXC/capture(1086/1308반복금지); UI03교차창/실터치/asyncrollback; NET01권한/예측/socket; RND08worldDF/HWRT/bake와원장타분야.
 
 ## 운영
 
