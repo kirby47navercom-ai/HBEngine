@@ -628,3 +628,5 @@ HB_PROPERTY/HB_FUNCTION/HB_NODE는 protected/private 구역에서도 기존 노�
 Take 녹화는 프리셋·Transform 채널·뼈 필터와 시퀀스별 recordingSettings를 지원해요. runtime.take.start/state/finish 및 사람의 녹화 UI가 같은 TakeRecorder를 사용하며, 결과는 기존 BP/CPP LevelSequence 제어로 재생해요. 자세한 저장·복사·검증 범위는 [TAKE_PRESETS_AND_CAPTURE.md](TAKE_PRESETS_AND_CAPTURE.md)에 있어요.
 
 시퀀스 애니메이션 트랙은 종료 시 기본/복원/유지 정책을 쓰며, 스프라이트·Transform 타임라인·가져온 단일 클립의 기존 재생 시간·반복·포즈를 복원해요. BP/C++ LevelSequence와 UI/AI가 같은 서비스이며 `runtime.animationPlayback`에서 읽기 전용으로 확인해요. Graph/몽타주 내부 이력 등 잔여 범위는 [ANIMATION_PLAYBACK_RESTORE.md](ANIMATION_PLAYBACK_RESTORE.md)에 적혀 있어요.
+
+골격 시퀀스의 키 준비·모델 바인딩 재사용과 범위별 포즈 조회도 같은 BP/C++ 실행 서비스를 사용해요. `runtime.sequencePose`의 `sampling`은 준비·복원·조회 작업 횟수를 명시적 요청에서만 보여 줘요. [SEQUENCE_POSE_PREPARATION.md](SEQUENCE_POSE_PREPARATION.md)에 재검증·수명·독립 포즈 대조 범위를 적었어요.

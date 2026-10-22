@@ -2220,6 +2220,26 @@
       "paths": [
         "prototype/app.js"
       ]
+    },
+    {
+      "id": "sequence-pose-preparation",
+      "keywords": [
+        "SequencePosePlayback"
+      ],
+      "paths": [
+        "prototype/sequence-pose-playback.js"
+      ]
+    },
+    {
+      "id": "skeletal-pose-program",
+      "keywords": [
+        "SkeletalPoseProgram",
+        "SkeletalPoseTrack",
+        "captureSkeletalPosePage"
+      ],
+      "paths": [
+        "prototype/sequence-state.js"
+      ]
     }
   ]
 }
