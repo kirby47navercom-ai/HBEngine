@@ -2162,6 +2162,35 @@
       "paths": [
         "prototype/app.js"
       ]
+    },
+    {
+      "id": "take-settings",
+      "keywords": [
+        "resolveTakeSettings",
+        "validTakeSettings"
+      ],
+      "paths": [
+        "prototype/take-settings.js"
+      ]
+    },
+    {
+      "id": "skeletal-capture-scratch",
+      "keywords": [
+        "SkeletalPoseCapture"
+      ],
+      "paths": [
+        "prototype/skeletal-pose-capture.js"
+      ]
+    },
+    {
+      "id": "take-settings-ui",
+      "keywords": [
+        "takeSettingsMarkup",
+        "takeSettingsInput"
+      ],
+      "paths": [
+        "prototype/take-settings-editor.js"
+      ]
     }
   ]
 }

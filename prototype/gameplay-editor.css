@@ -71,3 +71,8 @@
 .sequence-track-window .gameplay-track-band .gameplay-segment{touch-action:none}
 .sequence-track-window .gameplay-segment.selected{z-index:2}
 .timeline-rangebar{flex:none;height:24px;min-height:24px;padding:3px 18px 3px 130px;background:var(--raised);border-top:1px solid var(--line)}.timeline-rangebar>[data-timeline-rangebar]{position:relative;height:17px;background:#1b2025;border:1px solid #414b54;border-radius:3px;touch-action:none;outline:none}.timeline-rangebar button[data-range-part]{position:absolute;top:1px;height:13px;min-width:0;margin:0;padding:0;border-radius:2px;background:#506375;border:1px solid #71879a;outline-offset:2px}.timeline-rangebar [data-range-part=body]{min-width:3px;cursor:grab}.timeline-rangebar button[data-range-part=start],.timeline-rangebar button[data-range-part=end]{width:9px;transform:translateX(-50%);cursor:ew-resize;z-index:1;background:#8ca4ba}.timeline-rangebar button:focus-visible,.timeline-rangebar>[data-timeline-rangebar]:focus-visible{outline:2px solid #83b6e5}.timeline-rangebar [data-range-playhead]{position:absolute;top:0;bottom:0;width:1px;background:#f0d287;pointer-events:none;z-index:2}.gameplay-timeline{touch-action:none}.timeline-zoom-region{position:absolute;top:0;bottom:0;background:#639bd84d;border:1px solid #8dc0ed;pointer-events:none;z-index:3}
+
+.take-settings>div{min-width:260px;max-width:min(360px,calc(100vw - 32px));max-height:min(70vh,var(--take-settings-height,560px));overflow:auto}
+.take-settings .take-channel-filter{display:grid;grid-template-columns:1fr 1fr;gap:4px;border:0;border-top:1px solid var(--line);margin:8px 0;padding:8px 0 0}
+.take-settings label[hidden]{display:none}
+.take-settings select{max-width:160px}.take-settings [data-take-bones]{width:160px}
