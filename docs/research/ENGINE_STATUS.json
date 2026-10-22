@@ -1848,7 +1848,8 @@
         "docs/research/ENGINE_WORK_1790.json",
         "docs/research/USER_INSTALL_1792.json",
         "docs/ANIMATION_PLAYBACK_RESTORE.md",
-        "docs/research/ENGINE_WORK_1798.json"
+        "docs/research/ENGINE_WORK_1798.json",
+        "docs/research/USER_INSTALL_1803.json"
       ]
     },
     {
@@ -3044,7 +3045,8 @@
         "docs/research/ENGINE_WORK_1790.json",
         "docs/research/USER_INSTALL_1792.json",
         "docs/ANIMATION_PLAYBACK_RESTORE.md",
-        "docs/research/ENGINE_WORK_1798.json"
+        "docs/research/ENGINE_WORK_1798.json",
+        "docs/research/USER_INSTALL_1803.json"
       ]
     },
     {
@@ -3363,7 +3365,8 @@
         "docs/research/ENGINE_WORK_1790.json",
         "docs/research/USER_INSTALL_1792.json",
         "docs/ANIMATION_PLAYBACK_RESTORE.md",
-        "docs/research/ENGINE_WORK_1798.json"
+        "docs/research/ENGINE_WORK_1798.json",
+        "docs/research/USER_INSTALL_1803.json"
       ]
     },
     {
@@ -3577,14 +3580,14 @@
     "first": 1794,
     "last": 1798,
     "receipt": "docs/research/ENGINE_WORK_1798.json",
-    "scope": "Simple pre-sequence sprite/timeline/raw imported clip playback restoration, track completion policies, controlled tick, request/identity/overlap/error guards and readonly AI query. Four final fast service regressions passed. Source GUI/CPP/D3D checkpoint passed before final failed-load guard/token import; final installed current-source GUI/CPP/D3D gate pending."
+    "scope": "Installed simple pre-sequence sprite/Transform/raw-clip playback restoration and animation completion policy. Final affected service regressions plus current installed 2D editor sprite+3D Transform, BP external playback, actual CPP LevelSequence Play/Seek/Stop and independent packaged D3D11 passed. Inspector UndoRedo/save and restored clocks/loop/frame, held pose without idle advancement. Exact source1054/native21/30tests/vendor2/Player1604/Host1041 hashes, User read-only unchanged, links/association, Versions1. Source checkpoint was not reused as final code gate. Graph/montage state, private crossfade/finite-loop history, alias blending and arbitrary async setter rollback remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1792.json",
-    "sourceCommit": "e4c6fa152d476dc3abe87aa60498bc8f667e5bb9",
-    "bundleHash": "98e815394e21d4d7eed383c48aac07160ba2923f1746fcb7eb78c3e708ebc96e",
+    "receipt": "docs/research/USER_INSTALL_1803.json",
+    "sourceCommit": "e90c76f065f1505b158c7a462f3cc24021413564",
+    "bundleHash": "f14524824186c8362225d41a1ee9437947301f48f532d33249c0fb5502d0a243",
     "verified": true,
     "versions": 1,
-    "scope": "Installed Take presets, per-sequence persistent settings, transform-channel and bone-name filters, UI Undo/Redo/save/bounded scrolling popup, AI start/state/finish and shared runtime capture. Actual human model replacement recording uses scratch row1/vector3 and independent key snapshots; native user CPP Play/Seek/Stop replays selected-bone output in editor and independent packaged D3D11. Actual2D BP typed128-record array+transform recording/apply/Undo/Redo/save, second D3D11 replay1000/restoration0 with nativeModules0. Seven fast regressions plus full source CPP/D3D and final popup check; exact128bone*120 sample key agreement and scratch vector reuse. Source1046/native21/30tests/vendor2/Player1604/Host1041 hashes. Changed app/services/recorder/assets are not reused from old runtime evidence. User preserved/Versions1. No whole heap/FPS/mobile-device/independent preset asset library or external animation-state restoration claim."
+    "scope": "Installed simple pre-sequence sprite/Transform/raw-clip playback restoration and animation completion policy. Final affected service regressions plus current installed 2D editor sprite+3D Transform, BP external playback, actual CPP LevelSequence Play/Seek/Stop and independent packaged D3D11 passed. Inspector UndoRedo/save and restored clocks/loop/frame, held pose without idle advancement. Exact source1054/native21/30tests/vendor2/Player1604/Host1041 hashes, User read-only unchanged, links/association, Versions1. Source checkpoint was not reused as final code gate. Graph/montage state, private crossfade/finite-loop history, alias blending and arbitrary async setter rollback remain."
   }
 }

@@ -1323,7 +1323,7 @@
       "read": "Focused Timeline1.8.4 clip timing/extrapolation properties; no whole-engine claim"
     }
   ],
-  "installationPending": true,
+  "installationPending": false,
   "scope": "Simple pre-sequence sprite/timeline/raw imported clip playback restoration, track completion policies, controlled tick, request/identity/overlap/error guards and readonly AI query. Four final fast service regressions passed. Source GUI/CPP/D3D checkpoint passed before final failed-load guard/token import; final installed current-source GUI/CPP/D3D gate pending.",
   "verificationCorrection": {
     "revision": "4b2c89f83c760a622e18dfff7ac23f95f8be0bf0",
@@ -1331,5 +1331,19 @@
     "failedAudit": "native/build/user-install-1800-audit.json",
     "reason": "The original looping sprite was in frame1 after5s, while test assumed frame0. Engine restoration checks passed up to that fixed-frame assertion. Test now derives expected frame from actual restored clock; failed check not counted as installation pass.",
     "engineCodeChanged": false
-  }
+  },
+  "currentInstallation": "docs/research/USER_INSTALL_1803.json",
+  "installedGates": [
+    {
+      "path": "native/build/animation-playback-1796-window-uzXJU0/acceptance.json",
+      "sha256": "79d70c9eda34d3a3691c64c05054a2af502eee6cbcc03b3c8db7c2434f0efb87",
+      "scope": "Owned 2D editor + 3D transform/sprite tracks, actual BP external animation and C++ LevelSequence service, animation track completion inspector Undo/Redo/save; optional independent native D3D11 packaged runtime. Raw imported mixer poses covered by production-service Node test, not this visual fixture. Graph/montage restoration and arbitrary async setter rollback remain.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f14524824186c836\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 46664.696
+    }
+  ]
 }

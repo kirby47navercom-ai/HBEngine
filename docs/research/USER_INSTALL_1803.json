@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-sequence-playback-restoration",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "e90c76f065f1505b158c7a462f3cc24021413564",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f14524824186c836",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\f14524824186c836\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\f14524824186c836\\HBEngine.exe",
+  "bundleHash": "f14524824186c8362225d41a1ee9437947301f48f532d33249c0fb5502d0a243",
+  "files": 4379,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4380,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\88d0f5c52212621d",
+        "bytes": 194519914,
+        "manifestSHA256": "c7e9e9c506e4810e9494a6ff2688e5ef9f11b5482b8a037b46225534cded8998"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T21:43:37.6714581Z",
+    "bytes": 194519914,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "f14524824186c836"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1054,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/animation-playback-1796-window-uzXJU0/acceptance.json",
+      "sha256": "79d70c9eda34d3a3691c64c05054a2af502eee6cbcc03b3c8db7c2434f0efb87",
+      "scope": "Owned 2D editor + 3D transform/sprite tracks, actual BP external animation and C++ LevelSequence service, animation track completion inspector Undo/Redo/save; optional independent native D3D11 packaged runtime. Raw imported mixer poses covered by production-service Node test, not this visual fixture. Graph/montage restoration and arbitrary async setter rollback remain.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f14524824186c836\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 46664.696
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\f14524824186c836\\",
+    "elapsedMs": 62.16,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\f14524824186c836",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "f14524824186c8362225d41a1ee9437947301f48f532d33249c0fb5502d0a243",
+      "installedAt": "2026-10-22T21:43:34.268Z",
+      "manifestFiles": 4379,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Exact unchanged SDK21/Player1604/Host1041/30 repository test owners and shader math hashes verified. Changed app/player/services/gameplay-runtime/sequence-channels are covered by final actual installed editor and packaged D3D11 gates; old runtime evidence is not reused for them.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4379,
+  "versions": [
+    "f14524824186c836"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1803-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/animation-playback1795-group.json",
+      "sha256": "d6c34e85a07b40602754e814e79b4b2e56ce8fff1849e05e0c04671c437e1f05",
+      "scope": "Final-source affected service regressions; new10 playback cases, existing ownership7, completion3, dynamic skeletal model binding/restore."
+    },
+    {
+      "path": "native/build/animation-playback-1795-QpjedE/acceptance.json",
+      "sha256": "0e985de5fac5c0c5a6297197d3cb3f7de3d1cb5a443726c1e0664bfd927f435f",
+      "scope": "Final-source affected service regressions; new10 playback cases, existing ownership7, completion3, dynamic skeletal model binding/restore."
+    },
+    {
+      "path": "native/build/sequence-ownership-268-xfXXBv/acceptance.json",
+      "sha256": "63893a1a939f943c5b94d938acefe7e2b85947330a37d4623f6614cb2647d5d5",
+      "scope": "Final-source affected service regressions; new10 playback cases, existing ownership7, completion3, dynamic skeletal model binding/restore."
+    },
+    {
+      "path": "native/build/sequence-completion-271-OjkkDy/acceptance.json",
+      "sha256": "316f0e70e705f0f2bc7429eedcc30f78a9bd31f521704f83f14690e0555478d1",
+      "scope": "Final-source affected service regressions; new10 playback cases, existing ownership7, completion3, dynamic skeletal model binding/restore."
+    },
+    {
+      "path": "native/build/skeletal-take-209-nzkRxi/acceptance.json",
+      "sha256": "83158b00bac704058110de50dae05a72bfaab96edf4371e5573518cc184166c3",
+      "scope": "Final-source affected service regressions; new10 playback cases, existing ownership7, completion3, dynamic skeletal model binding/restore."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed simple pre-sequence sprite/Transform/raw-clip playback restoration and animation completion policy. Final affected service regressions plus current installed 2D editor sprite+3D Transform, BP external playback, actual CPP LevelSequence Play/Seek/Stop and independent packaged D3D11 passed. Inspector UndoRedo/save and restored clocks/loop/frame, held pose without idle advancement. Exact source1054/native21/30tests/vendor2/Player1604/Host1041 hashes, User read-only unchanged, links/association, Versions1. Source checkpoint was not reused as final code gate. Graph/montage state, private crossfade/finite-loop history, alias blending and arbitrary async setter rollback remain."
+}
