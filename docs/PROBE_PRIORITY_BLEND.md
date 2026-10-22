@@ -15,7 +15,7 @@ hb::ReflectionProbes::SetPriorityBlend(probe, false);
 
 1354–1362 당시 아틀라스는 9 float4/144바이트였어요. 독립 투영 추가 후 현재는 [14 float4/224바이트](PROBE_PROJECTION.md)예요. 브라우저 atlas faceScale.w와 native options.w에서 bit0은 투영, bit1은 구, bit2는 우선 덮어쓰기예요. 브라우저 직접 바인딩 options.w는 bit0이 활성 표시이며, 나머지 두 비트는 같아요. 구 여부는 하위2비트를 확인해 덮어쓰기 플래그를 구 모양으로 잘못 해석하지 않아요.
 
-[Unreal Reflection Captures](https://dev.epicgames.com/documentation/en-us/unreal-engine/reflections-captures-in-unreal-engine)의 작은 캡처 우선 적용과 [Unity HDRP 17.0.4 Reflection Probe](https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Probe.html)의 영향 영역·경계 혼합·Importance 지정 본문을 대조했어요. 수식은 HB의 명시적 선택이고 두 엔진 내부 알고리즘과 완전히 같다는 주장은 아니에요. [Unity Proxy Volume](https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Proxy-Volume.html)의 영향 영역과 투영 영역 구분도 추가로 읽었으나, 독립 프록시는 후속 [투영 구현](PROBE_PROJECTION.md)에 연결했고 면별/노멀 페이드·라이트맵 혼합은 별도 잔여예요.
+[Unreal Reflection Captures](https://dev.epicgames.com/documentation/en-us/unreal-engine/reflections-captures-in-unreal-engine)의 작은 캡처 우선 적용과 [Unity HDRP 17.0.4 Reflection Probe](https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Probe.html)의 영향 영역·경계 혼합·Importance 지정 본문을 대조했어요. 수식은 HB의 명시적 선택이고 두 엔진 내부 알고리즘과 완전히 같다는 주장은 아니에요. [Unity Proxy Volume](https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Proxy-Volume.html)의 영향 영역과 투영 영역 구분도 추가로 읽었으나, 독립 프록시는 후속 [투영 구현](PROBE_PROJECTION.md)에 연결했고 면별/노멀 페이드는 후속 근거를 따르고, 라이트맵 혼합은 [선택 혼합](PROBE_LIGHTMAP_MIX.md)으로 연결했어요.
 
 ## Vector4 갱신 의존성 수정
 

@@ -1,3 +1,4 @@
+import {ReflectionCaptureRevision} from './reflection-capture-revision.js';
 import {probeInfluenceSettings} from './reflection-probe-influence.js';
 import {reflectionProxyVolume,resolveProbeProjection,probeProjectionSettings} from './reflection-probe-projection.js';
 import {ProbeCandidateIndex} from './reflection-probe-spatial.js';
@@ -10,7 +11,6 @@ import {attachGPURefraction} from './gpu-refraction.js';
 import * as THREE from 'three';
 import {componentDefaults,validComponentProperties} from './scene-components.js';
 import {ShaderChunk} from 'three';
-import {materialNodeKey} from './material-runtime.js';
 
 const uniformBanks=new WeakMap();
 function materialProbeUniforms(material){let uniforms=uniformBanks.get(material);if(!uniforms){uniforms={...probeBlendUniforms(),hbProbeAtlas:{value:null},hbProbeTable:{value:null},hbProbeAtlasCount:{value:0},hbProbeAtlasInfluence:{value:false},hbProbeTableWidth:{value:1}};uniformBanks.set(material,uniforms);}return uniforms;}
@@ -51,12 +51,12 @@ export class ReflectionProbesRendering{
     scene.updateMatrixWorld();const probes=collectReflectionProbes(scene);let view=this.views.get(renderer);
     if(!probes.length){if(view)this.disposeRenderer(renderer);return;}
     if(!view){view={generator:renderer.hbPMREM?.()||new THREE.PMREMGenerator(renderer),probes:new Map(),materials:new Map(),clones:new Map(),baseMaps:new Map(),baseUsed:new Set(),anchor:null,rotation:new THREE.Matrix4(),rotationEuler:new THREE.Euler(),baseFilters:0,captures:0};this.views.set(renderer,view);}
-    const meshes=[],lights=[];scene.traverseVisible(n=>{if(n.isLight)lights.push([n.uuid,n.matrixWorld.elements,n.color?.toArray(),n.groundColor?.toArray(),n.intensity,n.distance,n.decay,n.angle,n.penumbra,n.target?.matrixWorld.elements]);if(n.isMesh&&!n.userData.editorHelper&&!n.userData.draw2d)meshes.push(n);});
+    const needsRevision=probes.some(p=>p.p.refreshMode==='onChange'),meshes=[],lights=[];scene.traverseVisible(n=>{if(needsRevision&&n.isLight)lights.push(n);if(n.isMesh&&!n.userData.editorHelper&&!n.userData.draw2d)meshes.push(n);});
     const used=new Set(probes.map(p=>p.id));for(const [id,entry] of view.probes)if(!used.has(id)){entry.target.dispose();view.probes.delete(id);}
     const live=new Set(meshes);for(const [mesh,entry]of view.clones){const owned=usesOwnedClone(mesh,entry);if(live.has(mesh)&&owned)continue;if(owned)mesh.material=entry.original;for(const m of entry.owned){const state=view.materials.get(m);if(state){this.restore(m,state);view.materials.delete(m);}m.dispose();}view.clones.delete(mesh);}
     // Share authored uniform nodes and hooks; independent probe state must not freeze game material edits.
     const claimed=new Set();for(const mesh of meshes){const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];if(source.some(m=>claimed.has(m))){const owned=source.map(m=>{const copy=new m.constructor().copy(m),state=view.materials.get(m);copy.userData=m.userData;copy.onBeforeCompile=state?.compile||m.onBeforeCompile;copy.customProgramCacheKey=state?.key||m.customProgramCacheKey;copy.setupEnvironment=state?.environment||m.setupEnvironment;copy.setupSpecular=m.setupSpecular;if(m.hbLayeredRefraction)attachGPURefraction(copy);if(state){copy.envMap=state.map;copy.envMapIntensity=state.intensity;copy.envNode=state.node;}return copy;});view.clones.set(mesh,{original:mesh.material,owned});mesh.material=Array.isArray(mesh.material)?owned:owned[0];}for(const m of Array.isArray(mesh.material)?mesh.material:[mesh.material])claimed.add(m);}
-    const changed=probes.some(p=>p.p.refreshMode==='onChange')?JSON.stringify([lights,scene.background?.isColor?scene.background.toArray():null,scene.userData.resolvedEnvironment,meshes.map(n=>{n.skeleton?.update();return [n.uuid,n.matrixWorld.elements,n.instanceMatrix?.version,n.morphTargetInfluences,n.skeleton?Array.from(n.skeleton.boneMatrices):null,...(Array.isArray(n.material)?n.material:[n.material]).map(m=>{const source=m.userData?.materialSource;return [m.uuid,m.color?.toArray(),m.emissive?.toArray(),m.roughness,m.metalness,m.emissiveIntensity,source?.parameters,source?.surface,m.userData?.textureState?.(),source?.graph?.nodes.some(n=>['time','panner'].includes(materialNodeKey(n)))?scene.userData.hbMaterialTime||0:0,...['map','normalMap','roughnessMap','metalnessMap','emissiveMap','aoMap'].map(k=>m[k]?[m[k].uuid,m[k].version]:null)];})];})]):'';
+    if(!needsRevision)view.captureRevision=null;const changed=needsRevision?(view.captureRevision??=new ReflectionCaptureRevision()).update(scene,meshes,lights):null;
 
     const probeBounds=new THREE.Box3(),probeAt=new THREE.Vector3();view.baseUsed.clear();let pairs=0;
     const baseMap=texture=>{
@@ -117,7 +117,7 @@ export class ReflectionProbesRendering{
     }
     bind();
     for(const [texture,entry]of view.baseMaps)if(!view.baseUsed.has(texture)){entry.target.dispose();view.baseMaps.delete(texture);}
-    renderer.hbProbeResources={count:view.probes.size,captures:view.captures,blendedMeshes:pairs,globalMeshes:view.globalMeshes||0,atlas:view.atlas?.info()||null,candidates:view.candidateIndex?.info()||null,baseFilters:view.baseFilters,baseMaps:view.baseMaps.size,anchorBytes:view.anchor?.image.data.byteLength||0,browserSelection:'two direct maps when bounds intersect at most two; otherwise pixel-select first two covering probes from sorted atlas; affine fade/base remainder/instanced world positions'};
+    renderer.hbProbeResources={captureRevision:view.captureRevision?.info()||null,count:view.probes.size,captures:view.captures,blendedMeshes:pairs,globalMeshes:view.globalMeshes||0,atlas:view.atlas?.info()||null,candidates:view.candidateIndex?.info()||null,baseFilters:view.baseFilters,baseMaps:view.baseMaps.size,anchorBytes:view.anchor?.image.data.byteLength||0,browserSelection:'two direct maps when bounds intersect at most two; otherwise pixel-select first two covering probes from sorted atlas; affine fade/base remainder/instanced world positions'};
   }
   restore(material,state){for(const key of ['hbProbeBaseMap','hbProbeMap0','hbProbeMap1','hbProbeAtlas','hbProbeTable'])state.uniforms[key].value=null;state.gpu?.dispose?.();state.gpuGlobal?.dispose();material.envMap=state.map;material.envMapIntensity=state.intensity;material.envNode=state.node;material.setupEnvironment=state.environment;material.onBeforeCompile=state.compile;material.customProgramCacheKey=state.key;if(state.refraction===undefined)delete material.hbProbeRefraction;else material.hbProbeRefraction=state.refraction;material.needsUpdate=true;}
   disposeRenderer(renderer){const view=this.views.get(renderer);if(!view)return;for(const [m,state] of view.materials)this.restore(m,state);for(const [mesh,entry] of view.clones){if(usesOwnedClone(mesh,entry))mesh.material=entry.original;for(const m of entry.owned)m.dispose();}for(const p of view.probes.values())p.target.dispose();for(const e of view.baseMaps.values())e.target.dispose();view.baseMaps.clear();view.atlas?.dispose();view.anchor?.dispose();view.generator.dispose();this.views.delete(renderer);renderer.hbProbeResources={count:0};}

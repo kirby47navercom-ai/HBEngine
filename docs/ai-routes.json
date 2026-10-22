@@ -1789,6 +1789,16 @@
       "paths": [
         "prototype/probe-lightmap-mix-gpu.js"
       ]
+    },
+    {
+      "id": "reflection-capture-revision-owner",
+      "keywords": [
+        "CaptureRevision",
+        "ReflectionCaptureRevision"
+      ],
+      "paths": [
+        "prototype/reflection-capture-revision.js"
+      ]
     }
   ]
 }
