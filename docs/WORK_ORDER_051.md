@@ -1106,3 +1106,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1818–1820: 최종설치 actual2D editor 직접헤더·CPP 파일묶음 구조체추가 이관·미리보기무쓰기/migration/planhash·잘못된계획거절·열린뷰갱신·그룹UndoRedo·실제 C++ 중첩scalar2/array2/위치99,4,2/ActorID·독립 D3D11 74.97초 통과. 4회귀/70파일 원자이관·sourcecheckpoint와 최종AI guard 구분. 명세4391/source1067/native21/30tests/vendor2 SHA·User10849읽기불변·링크/association/Versions1·이전194693088B정리/lease0. USER_INSTALL1819. 외부IDE후저장/일반destructive/global registry/ABI재적용 잔여유지. 누적계속.
 
 1821–1824: 개별enum/struct 에셋/대표·보조타입 편집/BP가져오기/공용C++헤더·enum변수/Set sourceReference 저장·enum-only 이관수정·additive소비자/그룹UndoRedo·이동identity·AI계약 연결. 최종6영향회귀 통과. 실제2D 생성UI/필드저장/UndoRedo/C++ enum37+중첩2+2→99,4,37/독립D3D checkpoint 통과; finalguard 포함 설치gate 예정. 다른에셋필드의존/전역발견/ABIhotreload 남김. WORK1824.
+
+1825–1827: 최종설치 개별enum/struct 실제생성/대표·보조편집/BP가져오기/enum변수·Set compact저장/전체그룹UndoRedo/C++ enum37+중첩2+2/99,4,37·ActorID/독립D3D11 79.05초 통과. manifest4398/source1074/native21/30tests/vendor2·User10849읽기불변·링크/association/Versions1·이전194864798B정리/lease0. USER_INSTALL1826. 에셋간필드의존/global자동발견/ABI재적용 잔여유지·누적계속.

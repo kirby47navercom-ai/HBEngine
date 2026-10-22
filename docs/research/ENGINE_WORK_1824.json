@@ -1379,6 +1379,20 @@
     ],
     "fixtureCorrection": "Appended nested default fixture must use the existing reconcileNativeTypeDefaults, same as the editor; initial invalid fixture rejection is not an implementation success."
   },
-  "installationPending": true,
-  "scope": "Individual enum/struct asset creation, primary/helper editor, BP imports and compact enum variable/Set save, paired generated C++ header, additive consumer migration/group UndoRedo and move identity. Six final focused regressions passed. Actual source2D editor/compiled CPP enum37+nested2+2 and independent D3D11 passed; checkpoint predates a final deferred enum malformed structName guard. Final current-source installed gate pending."
+  "installationPending": false,
+  "scope": "Individual enum/struct asset creation, primary/helper editor, BP imports and compact enum variable/Set save, paired generated C++ header, additive consumer migration/group UndoRedo and move identity. Six final focused regressions passed. Actual source2D editor/compiled CPP enum37+nested2+2 and independent D3D11 passed; checkpoint predates a final deferred enum malformed structName guard. Final current-source installed gate pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1826.json",
+  "installedGates": [
+    {
+      "path": "native/build/native-type-declarations-1822-window-xmULkE/acceptance.json",
+      "sha256": "2270315ed266586eb5b385c9f0d04d6698580065e22c50c247ffde458d9141b2",
+      "scope": "Owned actual2D editor individual enum/struct create dialogs, primary/helper field controls and paired header save, explicit pure-BP imports/enum variable Set save and record flow; additive helper field migrates both pure/native BP with group UI UndoRedo. Rebuilt user C++ reads generated standalone enum37 and appended nested fields2+2; optional independent D3D11 same saved game and content. No cross-asset field dependency/global type registry/live ABI reload claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\470afc05cf15c90e\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 79046.1358
+    }
+  ]
 }

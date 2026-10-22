@@ -256,7 +256,8 @@
         "docs/research/ENGINE_WORK_1817.json",
         "docs/research/USER_INSTALL_1819.json",
         "docs/NATIVE_TYPE_DECLARATIONS.md",
-        "docs/research/ENGINE_WORK_1824.json"
+        "docs/research/ENGINE_WORK_1824.json",
+        "docs/research/USER_INSTALL_1826.json"
       ]
     },
     {
@@ -2401,7 +2402,8 @@
         "docs/research/ENGINE_WORK_1817.json",
         "docs/research/USER_INSTALL_1819.json",
         "docs/NATIVE_TYPE_DECLARATIONS.md",
-        "docs/research/ENGINE_WORK_1824.json"
+        "docs/research/ENGINE_WORK_1824.json",
+        "docs/research/USER_INSTALL_1826.json"
       ]
     },
     {
@@ -3074,7 +3076,8 @@
         "docs/research/ENGINE_WORK_1817.json",
         "docs/research/USER_INSTALL_1819.json",
         "docs/NATIVE_TYPE_DECLARATIONS.md",
-        "docs/research/ENGINE_WORK_1824.json"
+        "docs/research/ENGINE_WORK_1824.json",
+        "docs/research/USER_INSTALL_1826.json"
       ]
     },
     {
@@ -3612,14 +3615,14 @@
     "first": 1821,
     "last": 1824,
     "receipt": "docs/research/ENGINE_WORK_1824.json",
-    "scope": "Individual enum/struct asset creation, primary/helper editor, BP imports and compact enum variable/Set save, paired generated C++ header, additive consumer migration/group UndoRedo and move identity. Six final focused regressions passed. Actual source2D editor/compiled CPP enum37+nested2+2 and independent D3D11 passed; checkpoint predates a final deferred enum malformed structName guard. Final current-source installed gate pending."
+    "scope": "Installed individual enum/struct asset create dialogs, primary/helper field editor, BP explicit import and compact enum variable/Set save, atomic generated C++ headers, additive consumer migration/group UI UndoRedo and stable move identity. Six focused regressions plus final installed actual2D editor, rebuilt CPP enum37/nested2+2/position99,4,37/Actor reference and independent D3D11 same saved game passed. Exact source1074/native21/30tests/vendor2/Player1604/Host1041 and renderer hashes; User preserved/Versions1. Cross-asset field dependencies/global discovery/destructive schema/ABI hotreload remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1819.json",
-    "sourceCommit": "743d0d9ef166995563b626b9fcc1ac0316597a1c",
-    "bundleHash": "70d8e93df37beecade9306d048ae0e8280a091c5f6d42430d407f5633546cb1e",
+    "receipt": "docs/research/USER_INSTALL_1826.json",
+    "sourceCommit": "1b39a490f566cbc3e042d71e0efcf9f19ee40828",
+    "bundleHash": "470afc05cf15c90eb83edf05c48df798d91999019fe9ed6bdf02e72623beca27",
     "verified": true,
     "versions": 1,
-    "scope": "Installed direct handwritten included C++ struct additive migration through checked header/batch saves. Four focused regressions including70 derived files, source editor/CPP/D3D checkpoint, and final current installed actual2D editor open-view updates/group UndoRedo, AI dryRun migration/planRevision and stale-plan rejection, compiled CPP nested2+2/position99,4,2/Actor reference plus independent D3D11 passed. Exact source1067/native21/30tests/vendor2/Player1604/Host1041 and unchanged renderer hashes. User preserved/Versions1. No external IDE post-save recovery, general destructive conversion/global type discovery or live ABI reload claim."
+    "scope": "Installed individual enum/struct asset create dialogs, primary/helper field editor, BP explicit import and compact enum variable/Set save, atomic generated C++ headers, additive consumer migration/group UI UndoRedo and stable move identity. Six focused regressions plus final installed actual2D editor, rebuilt CPP enum37/nested2+2/position99,4,37/Actor reference and independent D3D11 same saved game passed. Exact source1074/native21/30tests/vendor2/Player1604/Host1041 and renderer hashes; User preserved/Versions1. Cross-asset field dependencies/global discovery/destructive schema/ABI hotreload remain."
   }
 }

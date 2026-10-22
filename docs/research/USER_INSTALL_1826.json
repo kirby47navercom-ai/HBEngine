@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-individual-native-type-assets",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "1b39a490f566cbc3e042d71e0efcf9f19ee40828",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\470afc05cf15c90e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\470afc05cf15c90e\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\470afc05cf15c90e\\HBEngine.exe",
+  "bundleHash": "470afc05cf15c90eb83edf05c48df798d91999019fe9ed6bdf02e72623beca27",
+  "files": 4398,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4392,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\70d8e93df37beeca",
+        "bytes": 194864798,
+        "manifestSHA256": "85cccf2a6e8dd9f2d4f25e9c03fd0ecbb462b818e66d416c989c73e3f88c703c"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T22:36:02.8425950Z",
+    "bytes": 194864798,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "470afc05cf15c90e"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1074,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/native-type-declarations-1822-window-xmULkE/acceptance.json",
+      "sha256": "2270315ed266586eb5b385c9f0d04d6698580065e22c50c247ffde458d9141b2",
+      "scope": "Owned actual2D editor individual enum/struct create dialogs, primary/helper field controls and paired header save, explicit pure-BP imports/enum variable Set save and record flow; additive helper field migrates both pure/native BP with group UI UndoRedo. Rebuilt user C++ reads generated standalone enum37 and appended nested fields2+2; optional independent D3D11 same saved game and content. No cross-asset field dependency/global type registry/live ABI reload claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\470afc05cf15c90e\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 79046.1358
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\470afc05cf15c90e\\",
+    "elapsedMs": 65.7,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\470afc05cf15c90e",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "470afc05cf15c90eb83edf05c48df798d91999019fe9ed6bdf02e72623beca27",
+      "installedAt": "2026-10-22T22:35:59.315Z",
+      "manifestFiles": 4398,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Exact unchanged SDK21/Player1604/Host1041/30 repository test owners and shader math hashes verified. Changed JS authoring/type validators and compact enum reference save are covered by six final focused regressions and the final installed create/editor/CPP/D3D gate; old runtime evidence is not reused for them.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4398,
+  "versions": [
+    "470afc05cf15c90e"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1826-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/decl1821-group.json",
+      "sha256": "470c53e913e49b69a8b509382a2ea773a8cc8434033bb4fa299ac46664199c05",
+      "scope": "Six final affected type model/project/migration/editor regressions; unchanged renderer/SDK gates not rerun."
+    },
+    {
+      "path": "native/build/native-type-declarations-1821-YBJz4x/acceptance.json",
+      "sha256": "65bb8f5dcdc7d6256f96833ff8c57a36dc4e909277cd93c77071baf0c86e4915",
+      "scope": "First-class individual enum/struct assets with durable primary declaration and same-file helper types; actual2D project creation/paired C++ headers, explicit BP import and classless runtime, additive record value migration, dryRun plan CAS/group UndoRedo, path rename/redirect/header identity. Cross-asset field dependencies/global discovery/ABI hotreload are separate."
+    },
+    {
+      "path": "native/build/native-type-assets-1662-BTdmfS/acceptance.json",
+      "sha256": "fd32e7ad7cc204980365c59607e0cd93e0a11fb7461ba9ca4b07fb7c213e85e1",
+      "scope": "Type library model and generated native metadata, actual 2D project CRUD/atomic header pair/checked-batch, identity and failure preservation. Compiled CPP, actual editor and packaged game are separate gates; dedicated independent type assets/global pure-BP registry/schema migration not claimed."
+    },
+    {
+      "path": "native/build/native-type-imports-1675-O45kD9/acceptance.json",
+      "sha256": "4142624083ef30af9af5d19db02eadd22b4aeef462f7e6c40e9ee11be4ceeaca",
+      "scope": "Headless pure BP type-library source references/resolver scope/classless metadata, parent/child/UndoRedo cache views, actual 2D ProjectService validation and compact save, actual shared BlueprintRuntime SetMembers/Actor self refs with zero native builds/calls. UI/exported actual game separate; mixed CPP imports/per-type assets/arbitrary schema migration not claimed."
+    },
+    {
+      "path": "native/build/native-type-migration-1700-kv5IUU/acceptance.json",
+      "sha256": "bf509c6daaeaf39fde3538e96b577fe36c270d5f451880770c14920e6d6e093d",
+      "scope": "Actual source project publication and rollback. Open-document UI/Undo, compiled C++ and packaged game require their separate runtime gate."
+    },
+    {
+      "path": "native/build/native-type-migration-1701-editor-MGvntA/acceptance.json",
+      "sha256": "35c399bbf01f1b5a8cd91188d9e5a674eee8cfc5e767365ac1ca0a7932c81a5c",
+      "scope": "Production save/batch/Undo functions with real ProjectService, real resolver and isolated files. Native actual-window and game gate separate."
+    },
+    {
+      "path": "native/build/native-source-migration-1814-hhVGHQ/acceptance.json",
+      "sha256": "be47752f6c9b9838cfbd0a3fe6f1dbf4949f013868cb2d06d150a0e0205db6b7",
+      "scope": "Owned source-header additive migration through checkedBatch/checkedWrite, includes, full authored value sites, CAS/inventory/rollback/restart and legacy metadata reference normalization. No arbitrary destructive/rename/type coercion, external IDE post-save recovery or live ABI reload."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed individual enum/struct asset create dialogs, primary/helper field editor, BP explicit import and compact enum variable/Set save, atomic generated C++ headers, additive consumer migration/group UI UndoRedo and stable move identity. Six focused regressions plus final installed actual2D editor, rebuilt CPP enum37/nested2+2/position99,4,37/Actor reference and independent D3D11 same saved game passed. Exact source1074/native21/30tests/vendor2/Player1604/Host1041 and renderer hashes; User preserved/Versions1. Cross-asset field dependencies/global discovery/destructive schema/ABI hotreload remain."
+}
