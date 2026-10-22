@@ -972,3 +972,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1520–1527: rangebar/pan/resize/keyboard/jump·Ctrl영역확대/반대reset·pointertouch pan/pinch/cancel·확대scrub시간수정·가시행interval색인/선택memo·큰owned이력array이전keys열거절감. group12/실제65536키203구간 편집Undo/저장/nestedPlay/D3D[7.5,0,0]통과. 작은array후보느려미채택·64+slots1720380→1605692/방문262176/컨테이너32814동일·wholeFPS주장없음. fullUI179초설치재반복대신sameownerSHA+512키compactdelta(source통과). e605267·native20/공용runtime7/Player/Host동일재사용·설치다음.
 
 1529 설치확인: 2774fd6e1bb3b958·4172명세/836소유/29native검사/20nativeowner/2vendor SHA·Player1484/Host1041재사용. rangebar/영역확대/확대scrub/터치pan-pinch-cancel/구간수정Undo·저장nestedPlay[7.5,0,0]/exit0 compact25.2초통과. 소스65536키/203구간·기존제스처/trim/save/같은저장D3D[7.5,0,0]179초검사는정확8제품소유SHA재사용. User10849읽기SHA/연결/Versions1·이전189601725B회수. 다음CPP01 별도BP함수호출범위와누적엔진목표계속.
+
+1531–1536: BP함수/매크로/변수접근을선언owner/원caller로공유·3세대부모private내부유지/자식거부·protected재정의/parent호출·private재정의/접근변경/상속ID위장차단·mutable ref/nativewrapper/interface공개typed계약. sidebar/palette/상세readonly·접근UI수정/Undo/자식rebind·AI members페이지/focus1owner2015B. 상속/folding/nativebatch50→1/실제UI저장Play/같은D3D[7,25,9]/2D50조건+CPP/AI통과. bd1640c·native20/Player/Host재사용·다음설치.
