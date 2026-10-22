@@ -44,7 +44,7 @@ function commaParts(s){let group=0,angle=0,quoted=false,escaped=false,defaulted=
 
 const cppType=(source,enums=[],owner='',structs=[],classes=[])=>nativeCppType(source,{enums,owner,structs,classes});
 const metadata=(flags,key,fallback)=>flags.match(new RegExp(key+'\\s*=\\s*"([^"]*)"'))?.[1]||fallback;
-export function parseNativeHeader(source,{maxLength=100000,sourcePath='',files=[]}={}){
+export function parseNativeHeader(source,{maxLength=100000,sourcePath='',files=[],typesOnly=false}={}){
   if(!Number.isInteger(maxLength)||maxLength<1||maxLength>1000000||typeof source!=='string'||source.length>maxLength)throw Error(maxLength===100000?'헤더는 100 KB 이하로 입력하세요.':'헤더 크기 제한: '+maxLength+'자');
   const closure=nativeHeaderClosure(source,{sourcePath,files}),enums=closure.flatMap(file=>parseNativeEnums(file.content,{sourcePath:file.path}));if(new Set(enums.map(value=>value.name)).size!==enums.length)throw Error('C++ enum 이름이 중복돼요. namespace로 구분하세요.');const structs=[];for(const file of closure)structs.push(...parseNativeStructs(file.content,{sourcePath:file.path,enums,knownStructs:structs}));const defaultBudget={left:200000,bytes:8388608},reflected=initializeNativeRecordDefaults({enums,structs},{budget:defaultBudget});
   const enumDefault=(literal,parsed)=>{if(parsed.type==='record'){const value=nativeRecordInitializer(literal,reflected,parsed);if(!validNativeRecordValue(reflected,parsed,value,defaultBudget))throw Error('공개 C++ 기본값의 전체 크기를 확인하세요.');return value;}return parsed.enumName?nativeEnumInitializer(literal,enums.find(value=>value.name===parsed.enumName),parsed.array):nativeInitializer(literal,parsed.type,parsed.array);};
@@ -69,7 +69,7 @@ export function parseNativeHeader(source,{maxLength=100000,sourcePath='',files=[
     if(scope.members.filter(m=>m.kind!=='HB_PROPERTY').length!==c.functions.length||scope.members.filter(m=>m.kind==='HB_PROPERTY').length!==c.properties.length)throw Error('공개 멤버는 함수 본문 없이 헤더 선언으로 입력하세요.');
     classes.push(c);
   }
-  const manifest={version:1,classes,...enums.length?{enums}:{},...structs.length?{structs}:{}};if(!classes.length||!validNative(manifest))throw Error('HB_CLASS·HB_FUNCTION·HB_PROPERTY 선언을 확인하세요.');return manifest;
+  const manifest={version:1,classes,...enums.length?{enums}:{},...structs.length?{structs}:{}};if(!classes.length&&!typesOnly||!validNative(manifest))throw Error('HB_CLASS·HB_FUNCTION·HB_PROPERTY 선언을 확인하세요.');return manifest;
 }
 export function nativeMember(root,n){const [className,name]=(typeof n.nativeId==='string'?n.nativeId:'').split('.'),c=root.native?.classes?.find(c=>c.name===className);return {c,f:c?.functions.find(f=>f.name===name),p:c?.properties.find(p=>p.name===name)};}
 export async function readNativeHeader(source,{sourcePath='',readText,maxLength}={}){const files=await readNativeHeaderFiles(source,{sourcePath,readText});return parseNativeHeader(source,{sourcePath,files,...maxLength?{maxLength}:{}});}

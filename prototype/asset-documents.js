@@ -1,4 +1,5 @@
 import {blueprintClassComponents} from './blueprint-class-defaults.js';
+import {createNativeTypeAsset,validNativeTypeAsset} from './native-type-assets.js';
 import {lightmapSuffix,createLightmapAsset,validLightmapAsset} from './lightmap-assets.js';
 import {normalizeModelImport,validModelImport} from './model-import.js';
 import {validPrefabExtension,prefabDocumentRows} from './prefab-variants.js';
@@ -30,6 +31,7 @@ const copy=v=>structuredClone(v);
 export const assetSuffix={blueprint:'.hbblueprint.json',material:'.hbmaterial.json',materialfunction:'.hbmaterialfunction.json',materiallayer:'.hbmateriallayer.json',materialblend:'.hbmaterialblend.json',materialinstance:'.hbmaterialinstance.json',physicalmaterial:'.hbphysicalmaterial.json',prefab:'.hbprefab.json',gameconfig:'.hbgameconfig.json',audioasset:'.hbaudioasset.json',animation:'.hbanimation.json',scene:'.hbscene.json',inputaction:'.hbinputaction.json',inputmapping:'.hbinputmapping.json',curve:'.hbcurve.json',data:'.hbdata.json'};
 export const assetTypes={materiallayer:{label:'머테리얼 레이어',prefix:'ML_',group:'머테리얼'},materialblend:{label:'머테리얼 레이어 블렌드',prefix:'MLB_',group:'머테리얼'},materialfunction:{label:'머테리얼 함수',prefix:'MF_',group:'머테리얼'},blueprint:{label:'블루프린트 클래스',prefix:'BP_',group:'게임플레이'},code:{label:'C++ 클래스',prefix:'',group:'게임플레이'},inputaction:{label:'Input Action',prefix:'IA_',group:'입력'},inputmapping:{label:'Input Mapping Context',prefix:'IMC_',group:'입력'},material:{label:'머테리얼',prefix:'M_',group:'렌더링'},materialinstance:{label:'머테리얼 인스턴스',prefix:'MI_',group:'렌더링'},physicalmaterial:{label:'물리 머테리얼',prefix:'PM_',group:'물리'},prefab:{label:'프리팹',prefix:'PF_',group:'게임플레이'},gameconfig:{label:'게임 설정',prefix:'GS_',group:'프로젝트'},audioasset:{label:'오디오 에셋',prefix:'S_',group:'오디오'},animation:{label:'트랜스폼 애니메이션',prefix:'AN_',group:'애니메이션'},curve:{label:'커브',prefix:'Curve_',group:'애니메이션'},data:{label:'데이터 에셋',prefix:'DA_',group:'데이터'},scene:{label:'레벨',prefix:'L_',group:'월드'}};
 Object.assign(assetSuffix,textureAssetSuffix);Object.assign(assetTypes,textureAssetTypes);
+Object.assign(assetSuffix,{typelibrary:'.hbtypes.json'});Object.assign(assetTypes,{typelibrary:{label:'구조체·열거형 라이브러리',prefix:'Types_',group:'데이터'}});
 Object.assign(assetSuffix,retargetAssetSuffix);Object.assign(assetTypes,retargetAssetTypes);
 Object.assign(assetSuffix,twoDSuffix);Object.assign(assetTypes,twoDTypes);
 Object.assign(assetSuffix,gameplaySuffix);Object.assign(assetTypes,gameplayTypes);
@@ -55,6 +57,7 @@ export async function loadSceneBindings(objects,read,readText){
 }
 export const defaultGameConfig={dimension:'3d',startupScene:'',startupBlueprint:'',defaultInputMapping:'',gameMode:'',gameState:'',gameInstance:'',defaultController:'',playerState:'',defaultPawn:'',spawnPosition:[0,1,0],autoSpawnPlayer:true,gravity:[0,-9.81,0],fixedDeltaTime:1/60,maxSubsteps:8,window:{width:1280,height:720,fullscreen:false,vsync:true}};
 export function createAsset(kind,name,parent='Actor'){
+  if(kind==='typelibrary')return createNativeTypeAsset(name);
   if(kind==='modelimport')throw Error('원본 모델의 가져오기 설정을 여세요.');
   if(!name||name.length>80||/[<>:"/\\|?*\x00-\x1f]/.test(name))throw Error('에셋 이름을 확인하세요.');
   if(kind==='lightmap')return createLightmapAsset(name);
@@ -95,6 +98,7 @@ export function createAsset(kind,name,parent='Actor'){
 }
 export function assetValidationError(kind,data){return kind in gameplayTypes?gameplayValidationError(kind,data):kind+" 에셋 검증 실패";}
 export function validAsset(kind,data){
+  if(kind==='typelibrary')return validNativeTypeAsset(data);
   if(kind==='lightmap')return validLightmapAsset(data);
   if(kind==='modelimport')return validModelImport(data);
   if(kind in abilityAssetTypes)return validAbilityAsset(kind,data);
