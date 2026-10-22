@@ -5329,5 +5329,11 @@
       }
     ],
     "implementation": "Shared searchable/virtualized montage+sequence rows and central profile-preserving row navigation; horizontal zoom/pan reference read but not claimed implemented. No exhaustive source/API/corpus claim."
+  },
+  "supplemental1450": {
+    "record": "docs/DENSE_SEQUENCE.md",
+    "fullCorpusAnalysis": false,
+    "reusesScopedReading": "supplemental1440",
+    "implementation": "HB independent per-document time-view projection, cursor-pivot Ctrl wheel/Shift wheel/RMB-MMB pan/AltShiftRMB zoom, central F/AltHome/=/- with existing Home retained; visible source-item presentation filtering, correct zoom-space edit/trim/playhead coordinates, read-only view APIs and drag interlock. No new entire manual/API reading claim. Range slider/region zoom/touch pinch/indexed dense discovery remain."
   }
 }

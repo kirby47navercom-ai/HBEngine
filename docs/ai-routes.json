@@ -1313,6 +1313,27 @@
         "prototype/app.js",
         "docs/DENSE_SEQUENCE.md"
       ]
+    },
+    {
+      "keywords": [
+        "timelineViewRange",
+        "zoomTimelineRange",
+        "timelineSegmentGeometry",
+        "installTimelineNavigation",
+        "timeline.view.read",
+        "timeline.view.set",
+        "타임라인 확대",
+        "타임라인 가로 이동"
+      ],
+      "paths": [
+        "prototype/timeline-view.js",
+        "prototype/timeline-navigation.js",
+        "prototype/gameplay-editor.js",
+        "prototype/app.js",
+        "prototype/asset-shortcut-commands.js",
+        "prototype/asset-shortcuts.js",
+        "docs/DENSE_SEQUENCE.md"
+      ]
     }
   ]
 }

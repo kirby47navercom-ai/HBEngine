@@ -67,3 +67,6 @@
 .sequence-track-window .gameplay-track{height:46px;min-height:46px;box-sizing:border-box;overflow:hidden}.sequence-track-window .gameplay-track>button{white-space:nowrap}.sequence-track-window>[data-sequence-rows]{overflow-anchor:none}.gameplay-library [data-sequence-track-search]{margin:0 0 10px}
 
 .sequence-track-window .gameplay-track.selected>button{background:var(--selection,#354e64);color:var(--text)}
+
+.sequence-track-window .gameplay-track-band .gameplay-segment{touch-action:none}
+.sequence-track-window .gameplay-segment.selected{z-index:2}

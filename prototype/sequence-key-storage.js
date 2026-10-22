@@ -5,12 +5,13 @@ export function validSequenceKeyBudget(data){
   let total=0;for(const track of data.tracks){if(!Array.isArray(track?.keys)||track.keys.length>sequenceKeyLimits.perTrack)return false;total+=track.keys.length;if(total>budget)return false;}return true;
 }
 // Overview markers are presentation only. All authored indices remain stable.
-export function sequenceOverviewKeyIndices(keys,duration,width=800,selected=-1){
+export function sequenceOverviewKeyIndices(keys,duration,width=800,selected=-1,range){
   if(!keys.length)return [];
   const bins=Math.min(keys.length,Math.max(1,Math.ceil(Math.min(16384,Math.max(1,Number.isFinite(width)?width:800))/8))),first=new Int32Array(bins).fill(-1),last=new Int32Array(bins).fill(-1);
-  for(let i=0;i<keys.length;i++){const bin=Math.max(0,Math.min(bins-1,Math.floor(keys[i].time/Math.max(.001,duration)*bins))),a=first[bin],b=last[bin];if(a<0||keys[i].time<keys[a].time)first[bin]=i;if(b<0||keys[i].time>=keys[b].time)last[bin]=i;}
-  const keep=new Set([0,keys.length-1]);for(let i=0;i<bins;i++)if(first[i]>=0){keep.add(first[i]);keep.add(last[i]);}
-  if(Number.isInteger(selected)&&selected>=0&&selected<keys.length)keep.add(selected);
+  const start=range?.start??0,end=range?.end??duration;if(!Number.isFinite(start)||!Number.isFinite(end)||end<=start)throw Error('키 개요의 시간 범위를 확인하세요.');
+  for(let i=0;i<keys.length;i++){if(keys[i].time<start||keys[i].time>end)continue;const bin=Math.max(0,Math.min(bins-1,Math.floor((keys[i].time-start)/Math.max(Number.MIN_VALUE,end-start)*bins))),a=first[bin],b=last[bin];if(a<0||keys[i].time<keys[a].time)first[bin]=i;if(b<0||keys[i].time>=keys[b].time)last[bin]=i;}
+  const keep=new Set();for(const index of [0,keys.length-1])if(keys[index].time>=start&&keys[index].time<=end)keep.add(index);for(let i=0;i<bins;i++)if(first[i]>=0){keep.add(first[i]);keep.add(last[i]);}
+  if(Number.isInteger(selected)&&selected>=0&&selected<keys.length&&keys[selected].time>=start&&keys[selected].time<=end)keep.add(selected);
   return [...keep].sort((a,b)=>keys[a].time-keys[b].time||a-b);
 }
 export function sequenceKeyPage(track,selection,offset=0){
