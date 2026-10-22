@@ -966,3 +966,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1499 설치확인: 9e357f24a9791a8c·4152명세/819소유/29native검사/20nativeowner/2vendor SHA·SDK20/Player1484/Host1041변화없어재사용. 실제record편집/Undo/save/CPP→BP/동일저장D3D[99,3,2]/exit0·기존2DCPP/W키XY/원spawn/참조배치통과. 설치profiler계수/구패킷/invalid/clone/상한과HB_checkpointMode focusAI65.33ms확인. User10849읽기SHA/연결/Versions1·이전189274614B·portableSDK/실행파일19027846B회수. 렌더러matrix반복없음·누적잔여계속.
 
 1501–1516: 명시private/protected C++반사·private중첩class/enum·namespace·정확한const/ref/doublearray·event기본/재정의·componentowner·원본접근유지·lexical문장경계/가짜선언제외·native.classes.read128page/focus1owner4340B. std값인자1024int버퍼할당2→1/constref1/outref유지·group12/NDK ARM64syntax4통과·원장CPP01의1486완료Make/Break/Set잔여오표기제거·일반반환참조/BP호출권한잔여유지. e52ac2a·native20/Player/Host/vendor변화없어재사용·설치gate다음.
+
+1518 설치확인: f9de3a58a55eb81b·4163명세/828소유/29native검사/20nativeowner/2vendor SHA·동일Player1484/Host1041재사용. private기본값UI/CPP→BP/같은저장D3D[14,3,2]/Score14/exit0·기존2DCPP/W키XY/원spawn/참조배치통과. 설치metadata페이지/가드·nativeAccess focus1owner63.74ms·User10849읽기SHA/연결/Versions1·이전189428904B/ownedportableSDK4744642B회수. 다음ANM06 snapshot/clip조회·누적엔진목표계속.

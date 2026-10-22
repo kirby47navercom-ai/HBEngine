@@ -941,10 +941,6 @@
       "scope": "tools/check-native-access-1505-aot.mjs"
     }
   ],
-  "pendingInstalledGates": [
-    "tools/check-native-access-1506-window.mjs --package",
-    "tools/check-blueprint-2d-1221-player.mjs"
-  ],
   "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -995,8 +991,44 @@
     "removedStaleRemaining": "HB_STRUCT Make/Break/Set Members production/runtime path already verified by1486; retained general returned C++ reference lifetime/write/alias task.",
     "BPAccess": "C++ public/protected/private reflection does not implement BP caller visibility or BlueprintProtected self-only."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1499.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1518.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/native-access-1506-window-oKE6Uz/acceptance.json",
+      "sha256": "b5a9650d431bb46e054157d96a7db39bb00eedc82910629f21dec144a0a7e728",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f9de3a58a55eb81b\\HBEngine.exe",
+        "--package"
+      ]
+    },
+    {
+      "path": "native/build/blueprint-2d-1221-pvgPeI/acceptance.json",
+      "sha256": "0ce738c11ef98d924b92defb0b94db237ae96265c328015a7fccce2d0cfa8f39",
+      "scope": "Selected installation builder creates and runs actual Windows D3D11 game. GameMode defaultPawn is C++-derived TopDownCharacter2D, typed SpriteActor function receives authored Blueprint actor, preserves spawn position and queues witness pose; real W input moves in XY with Z fixed. No mobile-device/FPS/full-engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f9de3a58a55eb81b\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedMetadataCheck": "{\"passed\":true,\"scope\":\"scoped declarations, private metadata, class pointers, fake macro/string delimiters, friend idempotence, source preservation, reload identity\"}",
+  "portableArtifactCleanup": {
+    "passed": true,
+    "bytes": 4744642,
+    "removed": [
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-access-1505-aot-gNgp32\\Native\\include",
+        "bytes": 2372321
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-access-1505-aot-JEd8kf\\Native\\include",
+        "bytes": 2372321
+      }
+    ],
+    "retained": "Exact generated sources, compiler args, diagnostics and SHA reproduction receipt"
+  }
 }

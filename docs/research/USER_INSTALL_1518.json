@@ -1,0 +1,177 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "ad0b0273cee875006a880ee6757b9f493e5946c5",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f9de3a58a55eb81b",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\f9de3a58a55eb81b\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\f9de3a58a55eb81b\\HBEngine.exe",
+  "bundleHash": "f9de3a58a55eb81b3b7afa8ee81e39f9ba36e926348f74efddd9a3a493412f26",
+  "files": 4163,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4153,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9e357f24a9791a8c",
+        "bytes": 189428904,
+        "manifestSHA256": "e754b35e5258c1f47ec6736d32be7a67d3e2e5d80b30779aa29536e82e463651"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T06:35:05.9295148Z",
+    "bytes": 189428904,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "f9de3a58a55eb81b"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 828,
+  "repositoryOnlyTestSourcesVerified": 29,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
+  "installedGates": [
+    {
+      "path": "native/build/native-access-1506-window-oKE6Uz/acceptance.json",
+      "sha256": "b5a9650d431bb46e054157d96a7db39bb00eedc82910629f21dec144a0a7e728",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f9de3a58a55eb81b\\HBEngine.exe",
+        "--package"
+      ]
+    },
+    {
+      "path": "native/build/blueprint-2d-1221-pvgPeI/acceptance.json",
+      "sha256": "0ce738c11ef98d924b92defb0b94db237ae96265c328015a7fccce2d0cfa8f39",
+      "scope": "Selected installation builder creates and runs actual Windows D3D11 game. GameMode defaultPawn is C++-derived TopDownCharacter2D, typed SpriteActor function receives authored Blueprint actor, preserves spawn position and queues witness pose; real W input moves in XY with Z fixed. No mobile-device/FPS/full-engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\f9de3a58a55eb81b\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\f9de3a58a55eb81b\\",
+    "elapsedMs": 63.74,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\f9de3a58a55eb81b",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "f9de3a58a55eb81b3b7afa8ee81e39f9ba36e926348f74efddd9a3a493412f26",
+      "installedAt": "2026-10-22T06:35:02.685Z",
+      "manifestFiles": 4163,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"scope\":\"scoped declarations, private metadata, class pointers, fake macro/string delimiters, friend idempotence, source preservation, reload identity\"}",
+  "manifestVerifiedFiles": 4163,
+  "versions": [
+    "f9de3a58a55eb81b"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1518-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/access1512-group.json",
+      "sha256": "a4322808f6279185a3c003ad0a63bb74a716e07b7c179376e8a7c4943d2cfd09",
+      "scope": "12 grouped jobs: scoped private metadata/CPP, private2-module AOT/negative access, actual argument allocation comparison, snapshot/alias rollback, record typedCPP,50Actor batch, multi-source/source authoring, enum and focusedAI."
+    },
+    {
+      "path": "native/build/android1514.json",
+      "sha256": "8542a4ae46705a76553188d46e21e46b595bd36ad2e9b45d7e565d18e157f8a7",
+      "scope": "Actual installed NDK28.2 clang++ arm64-android26 syntax of4 exact generated units; not linked APK or device run."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-access-1504-trTjAz/acceptance.json",
+      "sha256": "371ae9eeb8bac38aa663afa3c27f67859cf8d46a28b8c07a7446ce82f4d8ae02",
+      "scope": "tools/check-native-access-1504.mjs"
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-access-1505-aot-JEd8kf/acceptance.json",
+      "sha256": "8d0de74100231aeb88447ba4d1e0d13ec37c31c47c7a7777745e18cd15f3aeb3",
+      "scope": "tools/check-native-access-1505-aot.mjs"
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-input-move-1510-89qawR/acceptance.json",
+      "sha256": "0f34d2ab21154b0f486c4a72c1823e65122151619deb250e442978dfac42d69b",
+      "scope": "tools/check-native-input-move-1510.mjs"
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-record-checkpoint-1490-88XhzO/acceptance.json",
+      "sha256": "f5241f3488d379715de912809493276604c1b0ba2ba920f31d4dd7ec2218fe57",
+      "scope": "tools/check-native-record-checkpoint-1490.mjs"
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-checkpoint-alias-1494-Ii8epB/acceptance.json",
+      "sha256": "77c47ffca2fce2f9c61f575e38fc5e78f9c72d3f80321dfa011ec6f4daecdcda",
+      "scope": "tools/check-native-checkpoint-alias-1494.mjs"
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-access-1504-trTjAz/acceptance.json",
+      "sha256": "371ae9eeb8bac38aa663afa3c27f67859cf8d46a28b8c07a7446ce82f4d8ae02",
+      "scope": "tools/check-native-access-1504.mjs"
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-access-1505-aot-JEd8kf/acceptance.json",
+      "sha256": "8d0de74100231aeb88447ba4d1e0d13ec37c31c47c7a7777745e18cd15f3aeb3",
+      "scope": "tools/check-native-access-1505-aot.mjs"
+    }
+  ],
+  "scope": "Installed scoped nonpublic reflection and detached argument generator: private default authored in details/sourceReference save with original source unchanged; actual C++ private nodes in BP and same saved D3D11[14,3,2]/Score14/exit0. Legacy CPP2D keyboard XY, original spawn and witness preserved. Installed private metadata/page/guard pure test and one-owner nativeAccess AI. Full manifest/828 owners/29 native tests/20 unchanged native owners/2 vendor SHA, reused Player1484/Host1041, User read-only inventory/links/Versions1. Actual generated CPP rollback/precision/allocation2-to-1/portable namespace and NDK4-unit arm64 syntax verified at source. Unchanged renderer matrix not repeated; not a phone/iOS run or whole-engine/FPS claim.",
+  "version": 1,
+  "date": "2026-10-22T06:38:12.204Z",
+  "work": "docs/research/ENGINE_WORK_1516.json",
+  "distributionSync": "native/build/distribution-1517-sync.json",
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1499.json",
+  "nativePlayerBuildReused": true,
+  "hostReuseFrom": "docs/research/USER_INSTALL_1499.json",
+  "portableArtifactCleanup": {
+    "passed": true,
+    "bytes": 4744642,
+    "removed": [
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-access-1505-aot-gNgp32\\Native\\include",
+        "bytes": 2372321
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-access-1505-aot-JEd8kf\\Native\\include",
+        "bytes": 2372321
+      }
+    ],
+    "retained": "Exact generated sources, compiler args, diagnostics and SHA reproduction receipt"
+  }
+}

@@ -3211,11 +3211,11 @@
     "scope": "Explicit nonpublic native reflection, scoped source declaration parsing, exact typed arguments/portable namespaces and paged AI access; detached standard by-value input move. Removed stale HB_STRUCT Make/Break/Set residual using1486 evidence; general CPP returned-reference and separate BP caller access remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1499.json",
-    "sourceCommit": "f878b06e7e19e79150deccb6e6c028a62c8532f5",
-    "bundleHash": "9e357f24a9791a8c55c7f46dfdbab229c184b1b24b7e039ff91fe4781484051a",
+    "receipt": "docs/research/USER_INSTALL_1518.json",
+    "sourceCommit": "ad0b0273cee875006a880ee6757b9f493e5946c5",
+    "bundleHash": "f9de3a58a55eb81b3b7afa8ee81e39f9ba36e926348f74efddd9a3a493412f26",
     "verified": true,
     "versions": 1,
-    "scope": "Installed final checkpoint generator and profiler counters: record fields/enum/arrays/type UndoRedo/class/instance/save/sourceReference/actual CPP to BP Play and same saved D3D11[99,3,2]; legacy CPP2D keyboard XY and original spawn/witness. Installed profiler counter aggregation/legacy packets/invalid values/clone/bound and focused HB_checkpointMode lookup. Full manifest/819 owners/29 native tests/20 unchanged native-owner/2 vendor SHA, reused Player1484 and Host1041, User read-only inventory/links/Versions1. Final generated CPP native batch/side-effecting converter rollback/copy and portable isolation proofs recorded at source; unchanged renderer matrix not repeated. No full-engine or FPS claim."
+    "scope": "Installed scoped nonpublic reflection and detached argument generator: private default authored in details/sourceReference save with original source unchanged; actual C++ private nodes in BP and same saved D3D11[14,3,2]/Score14/exit0. Legacy CPP2D keyboard XY, original spawn and witness preserved. Installed private metadata/page/guard pure test and one-owner nativeAccess AI. Full manifest/828 owners/29 native tests/20 unchanged native owners/2 vendor SHA, reused Player1484/Host1041, User read-only inventory/links/Versions1. Actual generated CPP rollback/precision/allocation2-to-1/portable namespace and NDK4-unit arm64 syntax verified at source. Unchanged renderer matrix not repeated; not a phone/iOS run or whole-engine/FPS claim."
   }
 }
