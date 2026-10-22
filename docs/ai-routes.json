@@ -2065,6 +2065,24 @@
       "paths": [
         "prototype/sequence-curves.js"
       ]
+    },
+    {
+      "id": "sequence-clip-id-lookup",
+      "keywords": [
+        "clipById"
+      ],
+      "paths": [
+        "prototype/sequence-sampling.js"
+      ]
+    },
+    {
+      "id": "gameplay-preview-source-key",
+      "keywords": [
+        "GameplayPreviewSource"
+      ],
+      "paths": [
+        "prototype/gameplay-preview-source.js"
+      ]
     }
   ]
 }
