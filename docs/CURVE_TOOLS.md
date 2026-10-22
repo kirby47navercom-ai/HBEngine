@@ -44,8 +44,12 @@ BP 타임라인 창은 문서 경로와 노드 ID로 소유권을 확인하고 �
 
 **주파수 필터**는 연속한 등간격 키 4개 이상에 적용해요. 선택이 없으면 곡선 전체·모든 채널, 선택이 있으면 선택한 키와 현재 채널을 처리해요. 저역 통과/고역 통과, 차단 Hz, 차수1~16, 강도0~1을 설정해요. 기본값은 저역 통과·5Hz·4차·강도1이며 Nyquist(표본률의 절반)를 넘는 설정은 거절해요. 불균일 키는 먼저 베이크해요. 키 수·시간·선택 밖 값·다른 채널·기존 보간과 탄젠트는 유지해요.
 
-HB 구현은 반사 확장한 2×기간을 radix-2 그리드로 선형 재표본하고, FFT 주파수 계수에 Butterworth 진폭 응답을 곱한 뒤 역변환/재표본하는 위상 이동 없는 편집 필터예요. 기존 1:2:1 값 부드럽게와 별도예요. Chebyshev·실시간 인과 필터·불규칙 표본 직접 처리는 지원 범위에 포함하지 않아요. 작업 배열은 편집 중에만 생성하며 FFT 배열은 16×nextPow2(2×(키수-1))바이트예요. 문서 복사·키 객체 메모리는 이 수치와 별도예요. 65,536키 CPU 측정은 약122ms였으며 재생 프레임 속도 측정이 아니에요.
+HB 구현은 반사 확장한 2×기간을 radix-2 그리드로 선형 재표본하고, FFT 주파수 계수에 선택한 진폭 응답을 곱한 뒤 역변환/재표본하는 위상 이동 없는 편집 필터예요. 기본 Butterworth와 Chebyshev I 응답을 선택해요. 기존 1:2:1 값 부드럽게와 별도예요. 실시간 인과 필터·불규칙 표본 직접 처리는 지원 범위에 포함하지 않아요. 작업 배열은 편집 중에만 생성하며 FFT 배열은 16×nextPow2(2×(키수-1))바이트예요. 문서 복사·키 객체 메모리는 이 수치와 별도예요. 65,536키 CPU 측정은 약122ms였으며 재생 프레임 속도 측정이 아니에요.
 
-사람의 도구와 sequence.curve.tool, skeletal.curve.edit는 operation=fft 및 cutoff/filterType/order/strength를 공유해요. 키 사이 베이크는 operation=bake,rangeOnly=true,start,end를 써요. revision·dryRun·Undo·저장과 실제 Sequence 재생 연결을 유지해요. 도구 설정은 창의 다음 렌더에서도 남아요.
+사람의 도구와 sequence.curve.tool, skeletal.curve.edit는 operation=fft 및 cutoff/filterType/order/strength/response/rippleDB를 공유해요. 키 사이 베이크는 operation=bake,rangeOnly=true,start,end를 써요. revision·dryRun·Undo·저장과 실제 Sequence 재생 연결을 유지해요. 도구 설정은 창의 다음 렌더에서도 남아요.
+
+Chebyshev I는 `response=chebyshev`, `rippleDB`는 0초과60이하(기본1)를 사용해요. 통과대역의 진폭 리플을 허용하며, 짝수 차수는 DC도 지정 리플만큼 감쇠해요. 차단점은 -rippleDB dB예요. 저역 응답은 `1/sqrt(1+epsilon²*T_order(f/cutoff)²)`, 고역은 주파수 비율을 역으로 바꾸며 DC를 0으로 처리해요. HB의 Hz 단위 아날로그 원형 진폭 응답을 명시적 FFT 격자에 적용해요. SciPy의 디지털 IIR 계수나 Unreal의 내부 수식을 복제한 것은 아니에요. 극단적인 차단 비율은 log-cosh로 계산해 NaN을 피하고, 기존 Butterworth 결과는 변경하지 않아요. 필터 경로의 결과용 전체 곡선 복사는 한 번만 수행해요.
+
+지정 API의 응답 선택은 [Epic CurveEditorFFTFilter](https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/class/CurveEditorFFTFilter), Type I의 리플·차단점 정의는 [SciPy cheby1](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.cheby1.html)의 해당 설명을 대조했어요. 전체 API 분석 완료를 뜻하지 않아요.
 
 추가 대조: [Epic Curve Editor의 Filter Tool/Bake/FFT](https://dev.epicgames.com/documentation/unreal-engine/animation-curve-editor-in-unreal-engine) 본문308–349줄을 지정 재독했어요. 선택 구간만 선형 표본으로 만들고 밖은 보존하는 흐름, FFT 저/고역·차수·차단 주파수를 대조했어요. HB의 임의 시간 분할·반사 확장·기본 주파수는 자체 결정이며 UE 내부 수식이나 Chebyshev까지 동일하게 구현했다고 주장하지 않아요.

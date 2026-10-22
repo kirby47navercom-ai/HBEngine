@@ -1101,7 +1101,6 @@
         "editCurveKeys",
         "subdivideCurve",
         "curveBezierParameter",
-        "filterCurveFrequency",
         "주파수 필터",
         "부분 베이크"
       ],
@@ -2019,6 +2018,34 @@
       ],
       "paths": [
         "prototype/take-recorder.js"
+      ]
+    },
+    {
+      "id": "gl-path-preparation-owner",
+      "keywords": [
+        "startGLPathPreparation"
+      ],
+      "paths": [
+        "prototype/gl-path-preparation.js"
+      ]
+    },
+    {
+      "id": "owned-angle-compile-trace",
+      "keywords": [
+        "compileTrace"
+      ],
+      "paths": [
+        "tools/cdp-compile-trace.mjs"
+      ]
+    },
+    {
+      "id": "curve-spectral-filter",
+      "keywords": [
+        "filterCurveFrequency",
+        "chebyshevGain"
+      ],
+      "paths": [
+        "prototype/curve-frequency-filter.js"
       ]
     }
   ]
