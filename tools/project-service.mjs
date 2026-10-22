@@ -1,3 +1,4 @@
+import {nativeHeaderPath} from './native-source-schema.mjs';
 import {recoverAssetWrites,publishAssetText} from './asset-write-intent.mjs';
 import {appendNativeTypeRows,publishNativeTypeAsset} from './native-type-asset-write.mjs';
 import {planNativeTypeMigration} from './native-type-migration.mjs';
@@ -109,6 +110,7 @@ export class ProjectService {
   async read(relative){const file=await this.resolve(relative),stat=await fs.stat(file);if(!stat.isFile())throw Error('파일이 아니에요.');return {file,size:stat.size};}
   checkedWrite(relative,text,expected,guard=()=>{}){
     if(typeof text!=='string'||typeof expected!=='string')throw Error('저장 내용과 이전 저장 기준이 필요해요.');
+    if(nativeHeaderPath(relative))return this.checkedBatch([{path:relative,text,expected}],guard);
     const task=this.writeQueue.then(async()=>{guard();let source;try{source=await fs.readFile(await this.resolve(relative),'utf8');}catch(error){if(error.code==='ENOENT')throw Object.assign(Error('외부에서 삭제된 파일이에요. 다른 이름으로 저장하세요.'),{status:409});throw error;}
       const kind=assetKind(relative);let actual;try{actual=JSON.stringify(assetSuffix[kind]?JSON.parse(source):source);}catch{actual=null;}
       if(actual!==expected)throw Object.assign(Error('외부에서 변경된 에셋이에요. 다시 읽거나 변경 내용을 비교하세요.'),{status:409});
@@ -133,7 +135,7 @@ export class ProjectService {
         if(entry.text!==null&&assetSuffix[kind]){const data=JSON.parse(entry.text);if(!validAsset(kind,data))throw Error(assetValidationError(kind,data)+': '+canonical);if(kind==='modelimport')await this.validateModelImportSource(canonical,data);}
         rows.push({path:canonical,before,after:entry.text,...(restoreIndex.has(key)?{restoreIndex:restoreIndex.get(key)}:{})});drafts.set(key,entry.text);
       }
-      const typeReadGuards=await appendNativeTypeRows(this,rows,drafts,{restore}),migration=await planNativeTypeMigration(this,rows,drafts,{restoring:!!restore&&rows.some(r=>r.path.endsWith('.hbtypes.json'))});typeReadGuards.push(...migration?.guards||[]);
+      const typeReadGuards=await appendNativeTypeRows(this,rows,drafts,{restore}),migration=await planNativeTypeMigration(this,rows,drafts,{restoring:!!restore&&rows.some(r=>r.path.endsWith('.hbtypes.json')||nativeHeaderPath(r.path))});typeReadGuards.push(...migration?.guards||[]);
       if(!migration&&rows.some(r=>/\.(hbblueprint\.json|h|hpp|cpp|c)$/i.test(r.path))){
         const paths=new Set((await this.files()).filter(f=>f.kind==='blueprint').map(f=>f.path));for(const row of rows)if(row.path.endsWith('.hbblueprint.json'))paths.add(row.path);
         for(const name of paths){const raw=drafts.has(name.toLowerCase())?drafts.get(name.toLowerCase()):await fs.readFile(await this.resolve(name),'utf8');if(raw!==null)await this.validateBlueprint(name,JSON.parse(raw),drafts);}
@@ -142,7 +144,7 @@ export class ProjectService {
       if(rows.some(r=>['effect','curve'].includes(assetKind(r.path)))){const roots=new Set(rows.some(r=>assetKind(r.path)==='curve')?(await this.files()).filter(f=>f.kind==='effect').map(f=>f.path):[]);for(const row of rows.filter(r=>r.path.endsWith('.hbeffect.json')))if(row.after===null)roots.delete(row.path);else roots.add(row.path);const checked=await this.validateEffects([...roots],drafts);abilityReadGuards.push(...checked.guards);}
       const readGuards=[],guardPaths=new Set();for(const entry of guards){const binary=entry&&Object.hasOwn(entry,'expectedFingerprint');if(!entry||typeof entry.path!=='string'||(binary?entry.expectedFingerprint!==null&&(typeof entry.expectedFingerprint!=='string'||!/^[a-f0-9]{64}$/.test(entry.expectedFingerprint))||Object.hasOwn(entry,'expected'):entry.expected!==null&&typeof entry.expected!=='string'))throw Error('읽기 기준 파일을 확인하세요.');const file=await(binary?this.inspectFingerprint(entry.path):this.inspectDocument(entry.path)),key=file.path.toLowerCase();if(seen.has(key)||guardPaths.has(key))throw Error('읽기 기준과 저장 파일 경로가 중복돼요.');guardPaths.add(key);bytes+=binary?64:Buffer.byteLength(entry.expected||'');if(bytes>8388608)throw Error('저장 묶음과 읽기 기준은 합계8MB까지 지원해요.');if((binary?file.revision:file.expected)!==(binary?entry.expectedFingerprint:entry.expected))throw Object.assign(Error('참조 원본이 변경됐어요: '+file.path),{status:409,code:'REVISION_CONFLICT'});readGuards.push(binary?{path:file.path,expectedFingerprint:entry.expectedFingerprint}:{path:file.path,expected:entry.expected});}
       readGuards.push(...abilityReadGuards,...typeReadGuards);const checkReads=async phase=>{guard();await migration?.checkInventory(phase);for(const entry of readGuards){const binary=Object.hasOwn(entry,'expectedFingerprint'),file=await(binary?this.inspectFingerprint(entry.path):this.inspectDocument(entry.path));if((binary?file.revision:file.expected)!==(binary?entry.expectedFingerprint:entry.expected))throw Object.assign(Error('저장 중 참조 원본이 변경됐어요: '+entry.path),{status:409,code:'REVISION_CONFLICT'});}};
-      const expanded=rows.some(r=>r.path.endsWith('.hbtypes.json'))?rows.map(r=>({path:r.path,kind:assetKind(r.path),before:r.before,after:r.after})):undefined;
+      const expanded=migration||rows.some(r=>r.path.endsWith('.hbtypes.json'))?rows.map(r=>({path:r.path,kind:assetKind(r.path),before:r.before,after:r.after})):undefined;
       const planRevision=createHash('sha256').update(JSON.stringify(rows.map(r=>[r.path,r.before,r.after]))).digest('hex');if(expectedPlanRevision!==undefined&&expectedPlanRevision!==planRevision)throw Object.assign(Error('미리 확인한 저장 계획이 변경됐어요. 다시 저장하세요.'),{status:409,code:'REVISION_CONFLICT'});
       await checkReads();if(dryRun)return {valid:true,paths:rows.map(r=>r.path),changes:rows.filter(r=>r.before!==r.after).map(r=>r.path),guards:readGuards.map(r=>r.path),...(expanded?{expanded,planRevision}:{}),...(migration?{migration:{values:migration.values,paths:migration.paths}}:{})};
       const result=await commitAssetBatch(this,rows,guard,checkReads);return {...result,...migration?{migration:{values:migration.values,paths:migration.paths}}:{}};

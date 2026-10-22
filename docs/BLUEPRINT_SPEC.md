@@ -630,3 +630,5 @@ Take 녹화는 프리셋·Transform 채널·뼈 필터와 시퀀스별 recording
 시퀀스 애니메이션 트랙은 종료 시 기본/복원/유지 정책을 쓰며, 스프라이트·Transform 타임라인·가져온 단일 클립의 기존 재생 시간·반복·포즈를 복원해요. BP/C++ LevelSequence와 UI/AI가 같은 서비스이며 `runtime.animationPlayback`에서 읽기 전용으로 확인해요. Graph/몽타주 내부 이력 등 잔여 범위는 [ANIMATION_PLAYBACK_RESTORE.md](ANIMATION_PLAYBACK_RESTORE.md)에 적혀 있어요.
 
 골격 시퀀스의 키 준비·모델 바인딩 재사용과 범위별 포즈 조회도 같은 BP/C++ 실행 서비스를 사용해요. `runtime.sequencePose`의 `sampling`은 준비·복원·조회 작업 횟수를 명시적 요청에서만 보여 줘요. [SEQUENCE_POSE_PREPARATION.md](SEQUENCE_POSE_PREPARATION.md)에 재검증·수명·독립 포즈 대조 범위를 적었어요.
+
+직접 작성한 C++ 포함 헤더의 구조체 필드 추가도 기존 BP 변수·함수 입력·상속·장면·프리팹·시퀀스 값과 함께 이관해요. `files.apply` 미리보기 계획 검사와 열린 문서·전체 묶음 Undo/Redo를 공유하고, 컴파일된 사용자 C++는 같은 새 필드 자료를 읽어요. 자동 이관과 외부 IDE·ABI의 경계는 [NATIVE_TYPE_MIGRATION.md](NATIVE_TYPE_MIGRATION.md)에 적었어요.

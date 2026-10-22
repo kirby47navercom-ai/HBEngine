@@ -2240,6 +2240,17 @@
       "paths": [
         "prototype/sequence-state.js"
       ]
+    },
+    {
+      "id": "native-source-schema-change",
+      "keywords": [
+        "nativeSchemaCandidates",
+        "changedNativeSourceRecords",
+        "nativeHeaderPath"
+      ],
+      "paths": [
+        "tools/native-source-schema.mjs"
+      ]
     }
   ]
 }

@@ -1,9 +1,10 @@
+import {nativeSchemaCandidates,changedNativeSourceRecords} from './native-source-schema.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {createBlueprintResolver} from '../prototype/blueprint-inheritance.js';
 import {createNativeTypeImportResolver} from '../prototype/native-type-imports.js';
-import {nativeTypeReference,readNativeHeader} from '../prototype/native-model.js';
+import {nativeTypeReference,readNativeHeader,nativeSourceReference} from '../prototype/native-model.js';
 import {compileNativeTypeAsset} from '../prototype/native-type-assets.js';
 import {createNativeRecordMigration} from '../prototype/native-record-migration.js';
 import {migrateBlueprintRecordValues,migrateBlueprintInstanceRecords,migrateSequenceRecordValues} from '../prototype/record-value-sites.js';
@@ -27,13 +28,13 @@ export async function planNativeTypeMigration(project,rows,drafts,{restoring=fal
   const before=compileNativeTypeAsset(JSON.parse(row.before)).metadata,after=compileNativeTypeAsset(JSON.parse(row.after)).metadata;
   for(const old of before.structs){const next=after.structs.find(d=>d.name===old.name);if(next&&JSON.stringify(old.fields.map(f=>[f.name,f.type,f.array,f.structName]))!==JSON.stringify(next.fields.map(f=>[f.name,f.type,f.array,f.structName])))changed.add(old.name);}
  }
- if(!changed.size&&!restoring)return null;
+ const sourceRows=nativeSchemaCandidates(rows);if(!changed.size&&!sourceRows.length&&!restoring)return null;
  const initial=await project.files(),names=new Map(initial.filter(f=>kinds.has(f.kind)).map(f=>[f.path,f.kind]));
  for(const row of rows){const kind=initial.find(f=>f.path===row.path)?.kind||Object.entries({blueprint:'.hbblueprint.json',scene:'.hbscene.json',prefab:'.hbprefab.json',sequenceasset:'.hbsequence.json'}).find(([,s])=>row.path.endsWith(s))?.[0];if(kinds.has(kind)){if(row.after===null)names.delete(row.path);else names.set(row.path,kind);}}
  const originals=new Map(),observed=new Map(),contexts=new Map(),oldMetadata=new Map();let values=0;
  const read=async(name,previous=false)=>{
   const file=await project.canonicalFile(name),canonical=path.relative(project.root,file).split(path.sep).join('/'),key=canonical.toLowerCase(),row=rows.find(r=>r.path.toLowerCase()===key);
-  if(previous&&row&&row.before!==null)return row.before;
+  if(previous&&row){if(row.before===null)throw Object.assign(Error('이전 원본이 없어요: '+canonical),{code:'ENOENT'});return row.before;}
   if(drafts.has(key)){const text=drafts.get(key);if(text===null)throw Error('삭제된 자료형 참조: '+canonical);return text;}
   if(originals.has(key))return originals.get(key);
   const stat=await fs.stat(file).catch(e=>{if(e.code==='ENOENT')return null;throw e;});if(stat&&(!stat.isFile()||stat.size>8388608))throw Error('이관할 제작 원본의8MB 텍스트 범위를 확인하세요: '+canonical);
@@ -43,6 +44,7 @@ export async function planNativeTypeMigration(project,rows,drafts,{restoring=fal
   // prefab and sequence beside the resolver's declarations and changed rows.
   if(!/\.hb(?:blueprint|scene|prefab|sequence)\.json$/.test(canonical))originals.set(key,text);return text;
  };
+ for(const name of await changedNativeSourceRecords(sourceRows,read))changed.add(name);if(!changed.size&&!restoring)return null;
  const readJson=async name=>JSON.parse(await read(name)),oldRead=name=>read(name,true),oldImports=createNativeTypeImportResolver(oldRead);
  const oldNative=async(reference,current)=>{
   if(restoring)return current;
@@ -58,9 +60,9 @@ export async function planNativeTypeMigration(project,rows,drafts,{restoring=fal
  };
  const resolve=createBlueprintResolver(readJson,name=>read(name),{prepare:async(child,{path:name,parent})=>{
   const raw=await readJson(name),metadata=child.native||parent?.native;if(!metadata)return child;
-  const before=raw.native?await oldNative(raw.native,metadata):contexts.get(raw.settings.parentClass)?.before||metadata;
+  const created=rows.some(r=>r.path===name&&r.before===null);const before=created?metadata:raw.native?await oldNative(raw.native,metadata):contexts.get(raw.settings.parentClass)?.before||metadata;
   const schema={...child,native:metadata,settings:{...parent?.settings,...child.settings,parentClass:parent?.settings.parentClass||child.settings?.parentClass},variables:merge(parent?.variables,child.variables),functions:merge(parent?.functions,child.functions),macros:merge(parent?.macros,child.macros),dispatchers:merge(parent?.dispatchers,child.dispatchers),interfaces:merge(parent?.interfaces,child.interfaces)};
-  const migrate=createNativeRecordMigration(before,metadata),result=migrateBlueprintRecordValues(raw,schema,migrate);await stage(name,result.data,result.values);contexts.set(name,{before,migrate,schema});
+  const migrate=createNativeRecordMigration(before,metadata),result=migrateBlueprintRecordValues(raw,schema,migrate);if(result.values&&!restoring&&raw.native&&!nativeTypeReference(raw.native))result.data.native=nativeSourceReference({...metadata,headerPath:raw.native.headerPath||'Source/DoorController.h',sourcePath:raw.native.sourcePath||'Source/DoorController.cpp'});await stage(name,result.data,result.values);contexts.set(name,{before,migrate,schema});
   return result.values?{...result.data,...child.native?{native:child.native}:{}}:child;
  }});
  for(const [name,kind]of names)if(kind==='blueprint'){const root=await resolve(name);if(contexts.has(name))contexts.get(name).schema=root;}

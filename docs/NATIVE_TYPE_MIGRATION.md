@@ -29,3 +29,15 @@
 새 Worker·폴링·런타임/GPU 자원·전역 타입 DB를 추가하지 않아요. 타입 배치 저장 때만 프로젝트의 관련 제작 파일과 필요한 헤더를 읽어요. 이름·설명·값만 바꾸고 필드 배치가 같으면 프로젝트 값 이관을 시작하지 않아요. 실행 중인 네이티브 메모리의 구조체 배치를 바꾸는 hot reload 허용 범위는 넓히지 않아요.
 
 소유자: `native-record-migration.js`는 값 보완, `record-value-sites.js`는 선언 기반 위치, `record-override-values.js`는 프리팹 패치, `tools/native-type-migration.mjs`는 프로젝트 읽기·연관 파일 준비를 맡아요. 실제 쓰기는 기존 `asset-transaction.mjs`와 `ProjectService`가 맡아요. 빠른 탐색은 `hb context 타입이관 --symbol planNativeTypeMigration`을 사용해요.
+
+## 직접 작성한 C++ 헤더
+
+`Source/*.h`·`*.hpp`의 직접 작성한 `HB_STRUCT`에 멤버를 추가하는 저장도 같은 값 이관을 사용해요. 인용한 포함 헤더 안의 구조체와 중첩 구조체 배열을 지원해요. 변경 전·후 헤더를 각각 기존 반사 파서로 읽어 선언을 대조하며, 파서가 지원하는 C++ 문법 범위는 유지해요. 생성된 `Source/HBGenerated` 헤더는 타입 라이브러리 저장으로 관리해요.
+
+`files.apply`에서 헤더·구현 파일을 함께 저장하거나 단일 헤더를 `checkedWrite`로 저장하면, 선언이 확인되는 BP·상속 기본값·함수 입력·장면·프리팹·시퀀스 값에 새 멤버의 기본값을 채워요. 오래된 내장 C++ 메타데이터를 가진 BP는 같은 소스 파일 참조로 정규화해요. 코드와 제작 값의 변경·깨끗한 열린 문서·Undo/Redo는 한 트랜잭션이에요. 연관 문서가 dirty이면 먼저 저장하거나 모두 저장에 포함해야 해요. 편집기의 텍스트 헤더 저장도 같은 파일 묶음 경로를 사용해요.
+
+AI의 `files.apply({entries,dryRun:true})`는 이관의 `migration.values/paths`와 `planRevision`을 반환해요. 실제 요청에 `expectedPlanRevision`을 넣으면 파생된 소비자 값까지 같은 계획인지 확인해요. 문서 revision·읽기 fingerprint·파일 목록 검사와 서버의 저장 직전 계획 검사도 유지해요. 미리보기·충돌·취소는 일부 소비자만 쓰지 않아요.
+
+주석·함수 본문·기본값만 바뀌고 구조체 배치가 같으면 값 이관을 시작하지 않아요. 삭제·이름/자료형 변경의 일반적인 값 변환, 개별 struct/enum 에셋·전역 자동 발견, 외부 IDE가 이미 덮어쓴 이전 헤더의 복구, 실행 중 ABI 재적용은 이 경로의 완료 범위가 아니에요. 원본과 후보 헤더를 함께 가진 검사된 저장 경로에서 처리하며, 사용자의 원래 C++ 파일이나 게임 저장 데이터를 추측해서 다시 쓰지 않아요.
+
+추가 소유자는 `tools/native-source-schema.mjs`의 `nativeSchemaCandidates`·`changedNativeSourceRecords`예요. 새 런타임 캐시·Worker·폴링·GPU 자원은 없으며, 기존 저장 묶음의 8MiB 예산과 복구 journal을 사용해요.
