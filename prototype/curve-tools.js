@@ -4,12 +4,12 @@ import {sampleCurveSegment,sampleCurveOutside,curveKeyTangent} from './curve-sam
 const handles=['arriveTangent','leaveTangent','arriveWeight','leaveWeight'];
 export const curveTools=['transform','flatten','straighten','linearTangents','smooth','bake','reduce','eulerFilter','fft'];
 // Detached candidate only. Document/Timeline owners validate and commit once.
-export function editCurveKeys(track,{operation,indices,channel,timeScale=1,timeOffset=0,timePivot=0,valueScale=1,valueOffset=0,valuePivot=0,fps=30,tolerance=.001,start,end,maxKeys=65536,rangeOnly=false,cutoff=5,filterType='lowpass',order=4,strength=1,response='butterworth',rippleDB=1}={}){
+export function editCurveKeys(track,{operation,indices,channel,timeScale=1,timeOffset=0,timePivot=0,valueScale=1,valueOffset=0,valuePivot=0,fps=30,tolerance=.001,start,end,maxKeys=65536,rangeOnly=false,cutoff=5,upperCutoff=10,sampleRate,filterType='lowpass',order=4,strength=1,response='butterworth',rippleDB=1}={}){
  if(!curveTools.includes(operation)||!Array.isArray(track.keys)||track.keys.some(k=>typeof k.value!=='number'&&!Array.isArray(k.value)))throw Error('연속 값 곡선과 도구를 확인하세요.');
  if(!Number.isSafeInteger(maxKeys)||maxKeys<1||maxKeys>65536||typeof rangeOnly!=='boolean'||track.keys.some((k,i)=>!Number.isFinite(k.time)||i>0&&k.time<=track.keys[i-1].time))throw Error('곡선 키 예산·오름차순 시간·범위 옵션을 확인하세요.');
  const before=track.keys,chosen=indices===undefined?before.map((_,i)=>i):indices;if(!Array.isArray(chosen)||!chosen.length||new Set(chosen).size!==chosen.length||chosen.some(i=>!Number.isInteger(i)||i<0||i>=before.length))throw Error('편집할 키를 선택하세요.');
  const shape=Array.isArray(before[0].value)?before[0].value.length:1;if(channel!==undefined&&(!Number.isInteger(channel)||channel<0||channel>=shape))throw Error('곡선 채널을 확인하세요.');
- if(operation==='fft')return filterCurveFrequency(track,chosen,{channel,cutoff,filterType,order,strength,response,rippleDB});
+ if(operation==='fft')return filterCurveFrequency(track,chosen,{channel,cutoff,upperCutoff,sampleRate,filterType,order,strength,response,rippleDB});
  const result=structuredClone(track),keys=result.keys,part=(v,c)=>Array.isArray(v)?v[c]:v,shaped=(v,fn)=>Array.isArray(v)?v.map(fn):fn(v,0),map=(v,fn)=>shaped(v,(x,c)=>channel===undefined||channel===c?fn(x,c):x);
  if(operation==='eulerFilter'){
   if(shape!==3||chosen.length!==keys.length||channel!==undefined)throw Error('Euler 필터는 XYZ 회전 곡선 전체에 적용하세요.');

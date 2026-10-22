@@ -8,8 +8,8 @@ for(const filterType of ['lowpass','highpass'])for(const strength of [1,.4,0]){
 }
 assert.equal(JSON.stringify(track),before);
 const zero=editCurveKeys(track,{operation:'fft',strength:0,cutoff:5});assert.deepEqual(zero,track);
-const irregular=structuredClone(track);irregular.keys[4].time+=.001;assert.throws(()=>editCurveKeys(irregular,{operation:'fft'}),/베이크/);
-const tiny={keys:[0,1,3,4].map(t=>({time:t*1e-10,value:1}))};assert.throws(()=>editCurveKeys(tiny,{operation:'fft',cutoff:1}),/베이크/);
+const irregular=structuredClone(track);irregular.keys[4].time+=.001;const irregularResult=editCurveKeys(irregular,{operation:'fft'});assert.deepEqual(irregularResult.keys.map(k=>k.time),irregular.keys.map(k=>k.time));
+const tiny={keys:[0,1,3,4].map(t=>({time:t*1e-10,value:1}))};assert(editCurveKeys(tiny,{operation:'fft',cutoff:1}).keys.every(k=>Math.abs(k.value-1)<1e-12));
 for(const options of [{indices:[0,1,3,4]},{indices:[0,1,2]},{cutoff:0},{cutoff:100},{order:0},{order:1.5},{order:17},{filterType:'fake'},{strength:1.1}])assert.throws(()=>editCurveKeys(track,{operation:'fft',...options}));
 const dense={keys:Array.from({length:65536},(_,i)=>({time:i/240,value:1+Math.sin(i*.13),interpolation:'linear'}))},start=performance.now(),filtered=editCurveKeys(dense,{operation:'fft',cutoff:10});assert.equal(filtered.keys.length,dense.keys.length);assert(filtered.keys.every(k=>Number.isFinite(k.value)));const denseMS=performance.now()-start;
 const subset=editCurveKeys(track,{operation:'fft',indices:Array.from({length:65},(_,i)=>i+32),cutoff:5,channel:0});assert.deepEqual(subset.keys.slice(0,32),track.keys.slice(0,32));assert.deepEqual(subset.keys.slice(97),track.keys.slice(97));

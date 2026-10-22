@@ -2042,7 +2042,9 @@
       "id": "curve-spectral-filter",
       "keywords": [
         "filterCurveFrequency",
-        "chebyshevGain"
+        "chebyshevGain",
+        "비등간격 주파수 필터",
+        "bandstop"
       ],
       "paths": [
         "prototype/curve-frequency-filter.js"

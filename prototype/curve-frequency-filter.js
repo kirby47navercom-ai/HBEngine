@@ -1,4 +1,5 @@
 // Radix-2 complex FFT. Work arrays live only during an explicit authoring edit.
+import {sampleCurveSegment} from './curve-sampling.js';
 function fft(real,imag,inverse=false){
   const n=real.length;
   for(let i=1,j=0;i<n;i++){let bit=n>>1;for(;j&bit;bit>>=1)j^=bit;j^=bit;if(i<j){const r=real[i],im=imag[i];real[i]=real[j];real[j]=r;imag[i]=imag[j];imag[j]=im;}}
@@ -12,28 +13,38 @@ function chebyshevGain(ratio,order,logEpsilon){
  const z=order*Math.acosh(ratio),logProduct=logEpsilon+(z>20?z-Math.LN2:Math.log(Math.cosh(z)));
  return logProduct>350?Math.exp(-logProduct):1/Math.hypot(1,Math.exp(logProduct));
 }
-export function filterCurveFrequency(track,indices,{channel,cutoff=5,filterType='lowpass',order=4,strength=1,response='butterworth',rippleDB=1}={}){
+export function filterCurveFrequency(track,indices,{channel,cutoff=5,upperCutoff=10,sampleRate,filterType='lowpass',order=4,strength=1,response='butterworth',rippleDB=1}={}){
   const chosen=[...indices].sort((a,b)=>a-b),count=chosen.length;
   if(count<4||chosen.some((i,j)=>j&&i!==chosen[j-1]+1))throw Error('주파수 필터에는 연속한 키를 4개 이상 선택하세요.');
   const keys=track.keys,first=chosen[0],duration=keys[chosen.at(-1)].time-keys[first].time,dt=duration/(count-1);
-  if(!Number.isFinite(dt)||dt<=0||chosen.some((i,j)=>Math.abs(keys[i].time-(keys[first].time+j*dt))>Math.max(dt*1e-7,Number.EPSILON*Math.max(1,Math.abs(keys[first].time),Math.abs(keys[chosen.at(-1)].time))*8)))throw Error('주파수 필터 전에 일정한 시간 간격으로 베이크하세요.');
-  if(!['lowpass','highpass'].includes(filterType)||!Number.isFinite(cutoff)||cutoff<=0||cutoff>.5/dt||!Number.isInteger(order)||order<1||order>16||!Number.isFinite(strength)||strength<0||strength>1)throw Error('필터 종류·차단 주파수(0~Nyquist Hz)·차수(1~16)·강도(0~1)를 확인하세요.');
+  if(!Number.isFinite(dt)||dt<=0)throw Error('주파수 필터의 키 시간 범위를 확인하세요.');
+  const uniform=chosen.every((i,j)=>Math.abs(keys[i].time-(keys[first].time+j*dt))<=Math.max(dt*1e-7,Number.EPSILON*Math.max(1,Math.abs(keys[first].time),Math.abs(keys[chosen.at(-1)].time))*8));
+  // Irregular curves sample their authored interpolation on a bounded uniform
+  // work grid, then write back at the original times. No baked keys are added.
+  const resample=sampleRate!==undefined||!uniform,intervals=sampleRate===undefined?count-1:Math.ceil(duration*sampleRate);
+  if(sampleRate!==undefined&&(!Number.isFinite(sampleRate)||sampleRate<=0||sampleRate>1000)||!Number.isSafeInteger(intervals)||intervals<3||intervals>65535)throw Error('필터 샘플률은 0 초과 1000 Hz 이하, 작업 격자는 4~65536개 표본이어야 해요.');
+  const nyquist=resample?intervals/(2*duration):.5/dt,band=filterType==='bandpass'||filterType==='bandstop';
+  if(!['lowpass','highpass','bandpass','bandstop'].includes(filterType)||!Number.isFinite(cutoff)||cutoff<=0||cutoff>nyquist||band&&(!Number.isFinite(upperCutoff)||upperCutoff<=cutoff||upperCutoff>nyquist)||!Number.isInteger(order)||order<1||order>16||!Number.isFinite(strength)||strength<0||strength>1)throw Error('필터 종류·차단 주파수(0~Nyquist Hz)·대역 상한·차수(1~16)·강도(0~1)를 확인하세요.');
   if(!['butterworth','chebyshev'].includes(response)||response==='chebyshev'&&(!Number.isFinite(rippleDB)||rippleDB<=0||rippleDB>60))throw Error('필터 응답·통과대역 리플(0~60 dB)을 확인하세요.');
   const result=structuredClone(track);if(strength===0)return result;
   const rippleExponent=rippleDB*Math.LN10/10,logEpsilon=response==='chebyshev'?.5*(rippleExponent?Math.log(Math.expm1(rippleExponent)):Math.log(rippleDB)+Math.log(Math.LN10/10)):0;
-  let n=1;while(n<2*(count-1))n*=2;
+  let n=1;while(n<2*intervals)n*=2;
   const real=new Float64Array(n),imag=new Float64Array(n),parts=Array.isArray(keys[first].value)?keys[first].value.length:1;
   const part=(v,c)=>Array.isArray(v)?v[c]:v;
+  const edge=(hz,frequency,high)=>high&&hz===0?0:response==='butterworth'?1/Math.sqrt(1+(high?frequency/hz:hz/frequency)**(2*order)):chebyshevGain(high?frequency/hz:hz/frequency,order,logEpsilon);
   for(let c=0;c<parts;c++){
     if(channel!==undefined&&channel!==c)continue;
-    for(let i=0;i<n;i++){const phase=i*2*(count-1)/n,p=phase<=count-1?phase:2*(count-1)-phase,lo=Math.min(count-2,Math.floor(p)),a=part(keys[first+lo].value,c),b=part(keys[first+lo+1].value,c);real[i]=a+(b-a)*(p-lo);}imag.fill(0);fft(real,imag);
+    if(resample){
+      let cursor=first;for(let i=0;i<=n/2;i++){const time=i===n/2?keys[chosen.at(-1)].time:keys[first].time+duration*(2*i/n);while(cursor<chosen.at(-1)&&keys[cursor+1].time<=time)cursor++;real[i]=part(sampleCurveSegment(keys,cursor,time,track.interpolation||'linear'),c);}
+      for(let i=n/2+1;i<n;i++)real[i]=real[n-i];
+    }else for(let i=0;i<n;i++){const phase=i*2*(count-1)/n,p=phase<=count-1?phase:2*(count-1)-phase,lo=Math.min(count-2,Math.floor(p)),a=part(keys[first+lo].value,c),b=part(keys[first+lo+1].value,c);real[i]=a+(b-a)*(p-lo);}
+    imag.fill(0);fft(real,imag);
     for(let i=0;i<n;i++){const hz=Math.min(i,n-i)/(2*duration);let gain;
-      if(response==='butterworth')gain=filterType==='lowpass'?1/Math.sqrt(1+(hz/cutoff)**(2*order)):hz===0?0:1/Math.sqrt(1+(cutoff/hz)**(2*order));
-      else if(filterType==='highpass'&&hz===0)gain=0;
-      else gain=chebyshevGain(filterType==='lowpass'?hz/cutoff:cutoff/hz,order,logEpsilon);
+      if(band){const pass=edge(hz,cutoff,true)*edge(hz,upperCutoff,false);gain=filterType==='bandstop'?1-pass:pass;}
+      else gain=edge(hz,cutoff,filterType==='highpass');
       real[i]*=gain;imag[i]*=gain;
     }fft(real,imag,true);
-    for(let j=0;j<count;j++){const p=j*n/(2*(count-1)),lo=Math.floor(p),filtered=real[lo]+(real[(lo+1)%n]-real[lo])*(p-lo),old=part(keys[first+j].value,c),value=old+(filtered-old)*strength;if(!Number.isFinite(value))throw Error('주파수 필터 결과가 유한한 범위를 벗어났어요.');if(parts===1&&!Array.isArray(keys[first+j].value))result.keys[first+j].value=value;else result.keys[first+j].value[c]=value;}
+    for(let j=0;j<count;j++){const p=resample?(keys[first+j].time-keys[first].time)/duration*(n/2):j*n/(2*(count-1)),lo=Math.floor(p),filtered=real[lo]+(real[(lo+1)%n]-real[lo])*(p-lo),old=part(keys[first+j].value,c),value=old+(filtered-old)*strength;if(!Number.isFinite(value))throw Error('주파수 필터 결과가 유한한 범위를 벗어났어요.');if(parts===1&&!Array.isArray(keys[first+j].value))result.keys[first+j].value=value;else result.keys[first+j].value[c]=value;}
   }
   return result;
 }
