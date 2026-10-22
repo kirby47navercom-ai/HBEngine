@@ -1816,7 +1816,8 @@
         "docs/GL_COMPILER_TRACE.md",
         "docs/research/ENGINE_WORK_1734.json",
         "docs/research/USER_INSTALL_1736.json",
-        "docs/research/ENGINE_WORK_1741.json"
+        "docs/research/ENGINE_WORK_1741.json",
+        "docs/research/USER_INSTALL_1743.json"
       ]
     },
     {
@@ -2982,7 +2983,8 @@
         "docs/research/ENGINE_WORK_1734.json",
         "docs/research/USER_INSTALL_1736.json",
         "docs/CURVE_INFINITY.md",
-        "docs/research/ENGINE_WORK_1741.json"
+        "docs/research/ENGINE_WORK_1741.json",
+        "docs/research/USER_INSTALL_1743.json"
       ]
     },
     {
@@ -3491,14 +3493,14 @@
     "first": 1738,
     "last": 1741,
     "receipt": "docs/research/ENGINE_WORK_1741.json",
-    "scope": "Typed quaternion/discrete value cycle and pingpong clock, inspector/AI/UndoSave and source actual BP playback5deg/false; independent value/reference/lifetime table,8 grouped regressions. Final installed gates pending."
+    "scope": "Typed quaternion/discrete value cycles and pingpong, inspector/AI/UndoSave, independent value and reference-clock oracle; actual installed UI and cooked D3D BP Play/Pause/Seek4.5 gives5deg/false. User preserved/Versions1; events/clips/structural lifetimes unchanged."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1736.json",
-    "sourceCommit": "e4256b511e5ac7c6061952bf22c286dbd3201577",
-    "bundleHash": "38fbd302627986e88e0cc058d99a71a5b97cd4edac32c9a218491f89fec56915",
+    "receipt": "docs/research/USER_INSTALL_1743.json",
+    "sourceCommit": "4b5f4bf28012255db6acdb256744b43050420b8e",
+    "bundleHash": "4dbe5dd3721fa1eb1356c6634bfd2d5b3b45719a72b3481e897e96b72818ab7e",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actual Chebyshev I curve UI/right-click/options/Undo/Save, Sequence revision/dryRun/stale, skeletal AI, floating BP Timeline and runtime Play; separately cooked D3D11 game executes saved filtered position. Source8 grouped checks, analytic T3/T4/cosine/DC oracle and old Git Butterworth parity. Strict source996/native21/test30/vendor2/Player1604/Host1041 manifest verification; no shader formula change. User preserved/Versions1; private compiler trace does not claim latency solved or FPS."
+    "scope": "Installed quaternion/discrete value inspector pre/post cycles and pingpong with typed modes, UndoRedo/Save/AI revision/dryRun/invalid atomic and actual BP Play/Pause/Seek4.5. Separately cooked D3D11 game observes5deg and visiblefalse.8 source checks include independent quaternion/boolean oracle, reference lifetime, prior origin/variable/Take/timeline and Chebyshev regression. Exact source1001/native21/30tests/vendor2/Player1604/Host1041 manifest verification. User preserved/Versions1; no event/clip/structural clock remapping or new quaternion linear/offset extrapolation claim."
   }
 }

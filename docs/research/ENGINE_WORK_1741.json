@@ -1133,7 +1133,9 @@
     "prototype/network-state.js": "48513968e36f61a5c305995bc9151a8b150ca0c8a9e6bf2207fcfb000eb330bd",
     "prototype/network-inspection.js": "62f2e61f595dd4ac939eb86bee2cf810f4f538f7573fae71cf82bbf403b06e55"
   },
-  "changedRuntimeOwners": [],
+  "changedRuntimeOwners": [
+    "prototype/sequence-sampling.js"
+  ],
   "focusedAI": [
     {
       "symbol": "repeatedSequenceTime",
@@ -1156,6 +1158,30 @@
     "perCycleCaches": 0,
     "sortedKeyAndQuaternionPreparation": "Existing once per SequenceSampler construction; remap only explicit outside repeated values."
   },
-  "installationPending": true,
-  "scope": "Typed quaternion/discrete value cycle and pingpong clock, inspector/AI/UndoSave and source actual BP playback5deg/false; independent value/reference/lifetime table,8 grouped regressions. Final installed gates pending."
+  "installationPending": false,
+  "scope": "Typed quaternion/discrete value cycle and pingpong clock, inspector/AI/UndoSave and source actual BP playback5deg/false; independent value/reference/lifetime table,8 grouped regressions. Final installed gates pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1743.json",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-repeated-1739-window-7WTtG1/acceptance.json",
+      "sha256": "797204634dd8adef066a15b0037891d38c1caf771cf3aa880313636d508be9ae",
+      "scope": "Owned hidden inspector pre/post controls for quaternion rotation and discrete visibility; Undo/Redo/save/revision/dryRun/invalid atomic. Saved sequence Play/Pause/Seek4.5 evaluates5deg/visiblefalse; --player builds and executes actual D3D11 game. No user project/profile or structural/event clock remapping.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4dbe5dd3721fa1eb\\HBEngine.exe"
+      ],
+      "ms": 11791.525800000001
+    },
+    {
+      "path": "native/build/sequence-repeated-1739-window-NWS5dx/acceptance.json",
+      "sha256": "8c56fb04b05c2cfb772e21603f61d7a00761c98cc7992a0131161ff576c6c134",
+      "scope": "Owned hidden inspector pre/post controls for quaternion rotation and discrete visibility; Undo/Redo/save/revision/dryRun/invalid atomic. Saved sequence Play/Pause/Seek4.5 evaluates5deg/visiblefalse; --player builds and executes actual D3D11 game. No user project/profile or structural/event clock remapping.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4dbe5dd3721fa1eb\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 28443.821399999997
+    }
+  ]
 }

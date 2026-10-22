@@ -1060,3 +1060,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1736–1737: 설치본 Chebyshev실제UI17.5초+동일패키지D3D28.65초 통과·position.9623534. 4323명세/996source/native21/30native/vendor2/Player1604/Host1041SHA·User10849읽기불변·링크/association/Versions1·이전192827446B퇴역/cachelease0. 컴파일지연은원인추적근거만추가·제품해결로계산하지않음. 누적원장계속.
 
 1738–1741: 시퀀스quaternion·이산값pre/post반복·왕복/typed속성창/AI key생략·dryRun·revision/UndoRedo·Save·실제BP PlayPauseSeek4.5→5deg·visiblefalse. 독립회전/bool표25관측각도오차0/배열사본·음수/끝·빈/한키/reference시계·금지mode원자성. parent/spawn/skeletal참조·event/clip시계보존·주기별키복사/cache/새GPU0. 8source묶음최장2.17초·AI2owner각621/3912B·CURVE_INFINITY/WORK1741. 설치검사예정·각속도/누적외삽별도.
+
+1743–1744: 설치본 quaternion·이산값 UI11.79초+동일D3D28.44초 확인/5deg·visiblefalse. 4328명세/1001source/native21/30native/vendor2/Player1604/Host1041 SHA·User10849읽기불변·링크/association/Versions1·이전193002529B퇴역/cachelease0. source8회귀/독립표·참조시계保존. 누적원장계속.

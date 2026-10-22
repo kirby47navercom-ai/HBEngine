@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-repeated-quaternion-and-discrete-sequence-values",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "4b5f4bf28012255db6acdb256744b43050420b8e",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4dbe5dd3721fa1eb",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\4dbe5dd3721fa1eb\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\4dbe5dd3721fa1eb\\HBEngine.exe",
+  "bundleHash": "4dbe5dd3721fa1eb1356c6634bfd2d5b3b45719a72b3481e897e96b72818ab7e",
+  "files": 4328,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4324,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\38fbd302627986e8",
+        "bytes": 193002529,
+        "manifestSHA256": "737e720062757f2b883762ac3c2029b71193119cbdfb8eed0c5e9f5235a1fb7f"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T18:52:06.3419098Z",
+    "bytes": 193002529,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "4dbe5dd3721fa1eb"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1001,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-repeated-1739-window-7WTtG1/acceptance.json",
+      "sha256": "797204634dd8adef066a15b0037891d38c1caf771cf3aa880313636d508be9ae",
+      "scope": "Owned hidden inspector pre/post controls for quaternion rotation and discrete visibility; Undo/Redo/save/revision/dryRun/invalid atomic. Saved sequence Play/Pause/Seek4.5 evaluates5deg/visiblefalse; --player builds and executes actual D3D11 game. No user project/profile or structural/event clock remapping.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4dbe5dd3721fa1eb\\HBEngine.exe"
+      ],
+      "ms": 11791.525800000001
+    },
+    {
+      "path": "native/build/sequence-repeated-1739-window-NWS5dx/acceptance.json",
+      "sha256": "8c56fb04b05c2cfb772e21603f61d7a00761c98cc7992a0131161ff576c6c134",
+      "scope": "Owned hidden inspector pre/post controls for quaternion rotation and discrete visibility; Undo/Redo/save/revision/dryRun/invalid atomic. Saved sequence Play/Pause/Seek4.5 evaluates5deg/visiblefalse; --player builds and executes actual D3D11 game. No user project/profile or structural/event clock remapping.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4dbe5dd3721fa1eb\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 28443.821399999997
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\4dbe5dd3721fa1eb\\",
+    "elapsedMs": 70.03,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\4dbe5dd3721fa1eb",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "4dbe5dd3721fa1eb1356c6634bfd2d5b3b45719a72b3481e897e96b72818ab7e",
+      "installedAt": "2026-10-22T18:52:02.910Z",
+      "manifestFiles": 4328,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged native SDK21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4328,
+  "versions": [
+    "4dbe5dd3721fa1eb"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1743-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/sequence-range1740-group.json",
+      "sha256": "5113148579b30bae8ccb37bc4e602acc090220a041012e03166d6312bc8cbd3e",
+      "scope": "Eight grouped value/curve/origin/runtime/AI checks and focused owners."
+    },
+    {
+      "path": "native/build/sequence-repeated-1739-window-CyLM3P/acceptance.json",
+      "sha256": "55bc725b8194577a89345e5466ae27cf0cd929f74c68f79916f799e75efa085e",
+      "scope": "Owned hidden inspector pre/post controls for quaternion rotation and discrete visibility; Undo/Redo/save/revision/dryRun/invalid atomic. Saved sequence Play/Pause/Seek4.5 evaluates5deg/visiblefalse; --player builds and executes actual D3D11 game. No user project/profile or structural/event clock remapping."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/sequence-repeated-1739-window-CyLM3P/acceptance.json",
+      "sha256": "55bc725b8194577a89345e5466ae27cf0cd929f74c68f79916f799e75efa085e",
+      "scope": "Owned hidden inspector pre/post controls for quaternion rotation and discrete visibility; Undo/Redo/save/revision/dryRun/invalid atomic. Saved sequence Play/Pause/Seek4.5 evaluates5deg/visiblefalse; --player builds and executes actual D3D11 game. No user project/profile or structural/event clock remapping."
+    }
+  ],
+  "scope": "Installed quaternion/discrete value inspector pre/post cycles and pingpong with typed modes, UndoRedo/Save/AI revision/dryRun/invalid atomic and actual BP Play/Pause/Seek4.5. Separately cooked D3D11 game observes5deg and visiblefalse.8 source checks include independent quaternion/boolean oracle, reference lifetime, prior origin/variable/Take/timeline and Chebyshev regression. Exact source1001/native21/30tests/vendor2/Player1604/Host1041 manifest verification. User preserved/Versions1; no event/clip/structural clock remapping or new quaternion linear/offset extrapolation claim."
+}
