@@ -969,9 +969,6 @@
     "prototype/blueprint-runtime.js": "73c645bd59967a6f103283c76ef0f41725e53f077ba9e960ddf620d4c72a2fce",
     "prototype/engine-services.js": "c1b8b92137ffc1ef3b0bdd20b58036de06b3cf6d25f8a5f7ae38f3f4f34f5cac"
   },
-  "pendingInstalledGates": [
-    "tools/check-sequence-sections-1251-window.mjs"
-  ],
   "focusedAI": {
     "symbol": "IntervalSelectionIndex",
     "elapsedMS": 147.17,
@@ -988,8 +985,20 @@
     "metrics": "65536 sparse16 comparisons/0 source item scan; full-overlap1 interval. Pure algorithm stress differs from valid64-clip gameplay; no global FPS claim.",
     "validation": "Affected runtime tests grouped; no old full179s timeline UI, renderer matrix, native SDK rebuild or old privateCPP GUI repeated."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1538.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1545.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/sequence-sections-1251-9O3ltE/acceptance.json",
+      "sha256": "d58bcc04d586cf51ff8304a3f6060684e821909befcf614cf9645d8795399a52",
+      "scope": "Owned hidden editor: Shot creation and nested row, actual drag/trim/source offset, atomic revisioned AI, double-click referenced sequence, same-runtime local-time preview and actual Blueprint Play/Pause/Seek. No user project/profile or renderer matrix.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\ef6a036b659c85b3\\HBEngine.exe"
+      ],
+      "ms": 14414.207900000001
+    }
+  ]
 }

@@ -1,0 +1,136 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "ee4b0d08b9af2344e3b637f84f25b056ab609776",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ef6a036b659c85b3",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\ef6a036b659c85b3\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\ef6a036b659c85b3\\HBEngine.exe",
+  "bundleHash": "ef6a036b659c85b3e8ca99ea7d0034fbb9120c60bb6df6adce8c297c6c7779dd",
+  "files": 4185,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4181,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\11872c2e5a2b99fd",
+        "bytes": 189923142,
+        "manifestSHA256": "a2536d5ae5e173cd9a31a2cd6db968248b96db1fe1c65322e3991ee3ffba66f7"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T07:47:32.9735007Z",
+    "bytes": 189923142,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "ef6a036b659c85b3"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 849,
+  "repositoryOnlyTestSourcesVerified": 29,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-sections-1251-9O3ltE/acceptance.json",
+      "sha256": "d58bcc04d586cf51ff8304a3f6060684e821909befcf614cf9645d8795399a52",
+      "scope": "Owned hidden editor: Shot creation and nested row, actual drag/trim/source offset, atomic revisioned AI, double-click referenced sequence, same-runtime local-time preview and actual Blueprint Play/Pause/Seek. No user project/profile or renderer matrix.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\ef6a036b659c85b3\\HBEngine.exe"
+      ],
+      "ms": 14414.207900000001
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\ef6a036b659c85b3\\",
+    "elapsedMs": 62.48,
+    "matches": 2,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\ef6a036b659c85b3",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "ef6a036b659c85b3e8ca99ea7d0034fbb9120c60bb6df6adce8c297c6c7779dd",
+      "installedAt": "2026-10-22T07:47:29.597Z",
+      "manifestFiles": 4185,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1538.json\",\"scope\":\"Unchanged native access metadata owner hashes verified with full source and installed manifest; previous pure metadata check not repeated.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4185,
+  "versions": [
+    "ef6a036b659c85b3"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1545-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/interval1542-group.json",
+      "sha256": "8c2d3ce9bfd491344388af89b385087f670f566f9dff0cecae1395691b441109",
+      "scope": "Grouped interval/shot/random/boundary parity, valid64 clip playback and old nested/animation ownership/event regressions."
+    },
+    {
+      "path": "native/build/sequence-interval-selection-1541.json",
+      "sha256": "baa389000ffd0ea2a5a4c25c3cc3c350610a190d4814754185218beab029ee72",
+      "scope": "Grouped interval/shot/random/boundary parity, valid64 clip playback and old nested/animation ownership/event regressions."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-sections-1251-mGGiM3/acceptance.json",
+      "sha256": "268efcc4f672e303ce7950ea49ca55db2732bd391ff8f9cd4c533db354e0a5c3",
+      "scope": "Same saved nested sequence Blueprint in actual Windows D3D11[7.5,0,0]/exit0; final interval sampler owners."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-sections-1251-mGGiM3/acceptance.json",
+      "sha256": "268efcc4f672e303ce7950ea49ca55db2732bd391ff8f9cd4c533db354e0a5c3",
+      "scope": "Same saved nested sequence Blueprint in actual Windows D3D11[7.5,0,0]/exit0; final interval sampler owners."
+    }
+  ],
+  "scope": "Installed captured interval clip/shot runtime: final existing editor section creation/drag/trim/AI-CAS/double-click/local preview and actual nested Blueprint Play/Pause/Seek, thin save and exit0. Same saved source actual Windows D3D11[7.5,0,0]/exit0; source grouped valid64-clip forward/backward/source/gap stop, 65k sparse16 comparisons/0 scans, shot/event range parity and old animation ownership/event checks. Full manifest/849 source owners/29native tests/20native owners/2vendor, exact unchanged shared runtime owners and Player1484/Host1041, User read-only SHA, links and Versions1. Existing native metadata proof reused by exact owner hashes; no old privateCPP GUI, long179s timeline, renderer matrix, actual phone or game FPS claim.",
+  "version": 1,
+  "date": "2026-10-22T07:49:37.795Z",
+  "work": "docs/research/ENGINE_WORK_1543.json",
+  "distributionSync": "native/build/distribution-1544-sync.json",
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1538.json",
+  "nativePlayerBuildReused": true,
+  "hostReuseFrom": "docs/research/USER_INSTALL_1538.json"
+}

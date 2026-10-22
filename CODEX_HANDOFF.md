@@ -4,7 +4,7 @@
 
 ## 설치와 근거
 
-확정1538: C:/Users/kirby/HBEngine/Versions/11872c2e5a2b99fd/HBEngine.exe. 4180명세/844소유/29native검사/20nativeowner/2vendor·User10849읽기SHA·Versions1·이전189765821B퇴역. sourcebd1640c/record2324989/install0634713. Player1484/Host1041 정확SHA재사용. BP접근UI/Undo/rebind/원자거부/save/Play[7,25,9]14.9초·privateCPP기본값/원본/save/CPP→BP[14,3,2]/Score14 9초. 종료PID34276의deadlease는기존pruner정리; GUI반복없음. 설치receipt USER_INSTALL_1538.json.
+확정1545: C:/Users/kirby/HBEngine/Versions/ef6a036b659c85b3/HBEngine.exe. 4185명세/849소유/29native검사/20nativeowner/2vendor·User10849읽기SHA·Versions1·이전189923142B퇴역. sourcea49430d/recordee4b0d0. Player1484/Host1041 정확SHA재사용. 최종Shot/drag/trim/AI-CAS/자식preview/저장Play/Seek14.4초·focus1owner62.48ms. USER_INSTALL_1545.json; sourceD3D[7.5,0,0]/exit0. 1538BP/privateCPP는같은BP/native owner 근거유지.
 
 1486 HB_STRUCT nested/enum/Actor/array/default/typedwire/MakeBreakSet/분할/변수함수/Take/sequence·portable동명wrapper 익명namespace격리: docs/NATIVE_RECORDS.md.
 1497 실제type검증 Get0snapshot/Set수신cell/user함수·변환전체복구/optionalrecord·5counter: docs/NATIVE_CHECKPOINTS.md. 32Get Items64→0/Set64→32·default할당4/546→2/273B; 느린후보미채택.
@@ -12,9 +12,9 @@
 1527 rangebar/keyboard/jump·Ctrl영역확대·touchpan/pinch/cancel·확대scrub·UI행소유intervalindex·history64+이전keys열거절감: docs/TIMELINE_RANGE_CONTROLS.md. full65536키203구간UI/D3D179초 통과·설치는compact25초+exactSHA. 전체순회/복원잔여·timingmixed/FPS주장없음.
 1536 함수/매크로/변수접근: memberOrigins/원caller/선언owner·부모private내부유지/자식차단·protected virtual/parent·privateoverride/상속ID위장거부·mutable ref/nativewrapper/interface공개typed계약·UI/Undo/rebind·bounded blueprint.members.read. docs/BLUEPRINT_ACCESS.md. 실제UI/D3D[7,25,9]/2D50+CPP·focus1owner2015B. 1536record/1537sync/1538install/recover/1539finish started재실행금지.
 
-## 현재1540–1543
+## 1540–1546 완료와 다음
 
-IntervalSelectionIndex: Play snapshot 승자구간sweep/heap, half-open·원배열우선·32미만단순경로·point이진조회무할당. SequenceSampler audio/animation clip조회·SequenceSectionSampler shot row/start/id우선/경계사전정렬·부모당현재shot1회. 자료형/포맷/제작한도변경없음. group1542 7검사통과: random/65536 sparse16비교0방문/전체overlap1구간·35*32rangeparity·유효64clip실행·기존15nested/3애니소유/140event·같은저장D3D. docs/SEQUENCE_INTERVAL_SELECTION.md·focus1owner3659B. 다음최종AI/check→WORK1543/commit→sync1544/install1545(최종editor1251)/finish1546. 아직미커밋. 제품변경뒤해시전제재사용주의.
+IntervalSelectionIndex: Play snapshot 승자구간sweep/heap, half-open·원배열우선·32미만단순경로·point이진조회무할당. SequenceSampler audio/animation clip조회·SequenceSectionSampler shot row/start/id우선/경계사전정렬·부모당현재shot1회. 자료형/포맷/제작한도변경없음. group1542 7검사통과: random/65536 sparse16비교0방문/전체overlap1구간·35*32rangeparity·유효64clip실행·기존15nested/3애니소유/140event·같은저장D3D. docs/SEQUENCE_INTERVAL_SELECTION.md·focus1owner3659B. a49430d/WORK1543/recordee4b0d0·sync1544/install1545/finish1546 완료·started재실행금지. 다음몽타주clip/root모션조회최적화와누적목표. 제품변경뒤해시전제재사용주의.
 
 ## 누적 잔여
 
