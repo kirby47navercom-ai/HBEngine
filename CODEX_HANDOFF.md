@@ -1,19 +1,21 @@
 # 현재 인계 — 누적 엔진 구현 계속
 
-2026-10-23. 주인님·짚짱·자연존댓말. 여러 구현 후 영향검사/설치·백그라운드·Versions1·가벼움/AI 친화성. 실제 사용자 창/프로필/게임 변경 금지. goal 재개 답변 뒤에도 도구 blocked라 현재 턴 계속, 임의 goal 생성/완료/같은 질문 금지. ENGINE_STATUS78행/전체분모null.
+2026-10-23. 주인님/짚짱/자연존댓말. 누적끝까지·여러구현후영향검사·설치/백그라운드/Versions1/가벼움·AI친화. goal재개답변에도tool blocked지만현재턴계속·임의goal생성/완료/반복질문금지. ENGINE_STATUS78행/전체분모null. 전체UE/Unity분석·상용완료주장금지.
 
-## 현재 소스
+## 확정1717
 
-ff53f77/WORK1704(기록630dba7).1696–1704 additive 저장record 이관: shared library→BP 변수/함수·매크로/dispatch/interface defaults·분리핀·construction/inherited/native defaults,scene native/variables,prefab variant patch/baseline/conflict,sequence/Take typed키. 타입추측JSON스캔없음. 원본+header+연관71파일 기존 journal/CAS/preview planRevision/취소/재시작복원/whole UndoRedo. dirty연결문서 단일Save 거절·SaveAll합류/동시human편집 디스크복원+초안보존. native runtime layout hotreload 확대없음. raw큰typedJSON중복cache없음/변경합계8MiB·journal32MiB/새timer·worker·GPU·globalDB0.
+source dfcb11d/record395cc91/WORK1714, USER_INSTALL_1716. 설치 실제마커HBEngine.install.json/context.state.installation을우선. 4305명세/977source/native21/30native검사/vendor2 SHA·User10849읽기SHA불변·shortcuts/association/Versions1·이전192473979B퇴역. Player1604/Host1041불변재사용. sync1715/install1716/finish1717, record1714/sourcecommit후group파일명오류→resume1714 tail완료, 모든*.started/applied재실행금지.
 
-실제 source2D UI field add/save→CPP/pureBP/상속/씬/prefab/sequence 열린문서 갱신/UndoRedo·CPP field scalar7,array9,ActorKeep·동일 D3D게임99,3,2/exit0. sourceWindow native-type-migration-1702-window-1roPEk. Source10회귀 묶음 최장4.96초·symbol4개 각1owner. 최종 installed1706도 동일 실제창/CPP/새field7·9/D3D 통과. sourceRevision 자동갱신만 Save뒤scene dirty/Undo막던 실제창결함→같은 journal에 포함(restore는정확old원문).
+1708–1714: nativeProjectLayout원Git ac611f6가같은H/S의B대신A 선택실재현. native-entry.js 경로검증/모듈key(Windows casealias정규화), nativeEntryFiles 명시적H/S선택·원문CAS·ambiguouslegacy거절. nativeSources metadata sourcePath부터correct entry/컴파일unit/Host/API/editor/Play/run/cook/PC/mobile modules·lookup연결. 구H/S-onlykey는무경로때유지;새PCmanifestlegacySignature→유일할때구요청호환·모호/잘못된명시ctx다른모듈대체금지. mobileproductionhandler동일정책. 실제PC HTTP/inert未실행fixture1712와별도로 실제owned2D editor CPP두worker·동일D3D2module A[1,3,2]/B[2,3,2],양쪽종료0. 최종설치gate native-entry-1711-window-BhWjSE 95.99초 통과.
 
-설치 위치는 이 문서의 이전 경로를 추측하지 말고 HBEngine.install.json/context.state.installation 실제마커를 읽기. USER_INSTALL_1706 확정·4296명세/967소유/User10849 SHA불변/Versions1/이전192253991B퇴역. 설치 C:/Users/kirby/HBEngine/Versions/e69a507e9a16243e/HBEngine.exe. WORK1704 참조. sync1705/install1706/finish1707 등 *.started/applied 있으면 재실행금지. native21/Player1604/Host1041/30native/vendor2 불변·SDK/renderer전체재검사재빌드안함. 이전1694에대해953source/4283명세/User10849불변/Versions1확정(새manifest는1706).
+native-source-watch/readNativeSourceDependencies는header+CPP quoteinclude와누락선행후보까지기존poll관찰. plainCPP전용include변경 build무효화/nearer생성삭제metadata1→9→1/동시사람수정보존 실제poll함수+BlueprintWorkspace1710. 파일읽기coalesce/경로만view보관/새timer·worker·GPU·globalDB0/Source512file·500KB/file·8MiB·4096후보 guard/fatal오류를missing으로삼키지않음. Source11회귀최장4.99초·3symbol각1owner775/8777/1869B. 임의preprocessor/system/generated compiler의존성은잔여.
 
-## 이어갈 작업
+이전WORK1704/USER1706: additive record필드이관 BP변수·핀·함수/매크로·상속/native defaults·scene·prefab variant/baseline/conflict·sequence/Take,원본/header/연관71파일journal/CAS/preview planRevision/전체UndoRedo·dirtydoc SaveAll/동시human보존. 실제2D UI/CPP새scalar7,array9,ActorKeep/같은D3D99,3,2. prefab sourceRevision 자동dirty/Undo방해결함은같은journal에묶어수리. 깊은default/aggregate C++17 일치는WORK1692·이전render/network/montage등각WORK유지.
 
-일반 비reflection include 의존성/같은 H-S의 상대include build identity를 먼저 연결. CPP01 직접 C++ layout 변경·파괴적 schema/개별typeasset/global discovery/Name/alias/ref수명/wildcard, RND03>2계층/HDR/memoryFPS·RND06 GL7초/FXC·RND08 direction/volume/worldDF/HWRT, ANM06snapshot/overlap/rig/warp/Take/source64, UI03실기기/async rollback 등 ENGINE_STATUS.remaining 계속. 전체 공식문서 분석/상용완료 주장금지.
+## 다음
+
+누적ENGINE_STATUS.remaining 계속. ANM06 snapshot전체순회/변경배열비용·Take필터/warp/rig/복원, RND06 GL7초/FXC·RND08direction/volume/worldDF/HWRT, CPP01 direct/destructive schema·개별typeasset/global discovery/Name/alias/ref수명/wildcard, UI03실기기/async rollback 등이남음. 최근구현을전체완성으로부풀리지않기.
 
 ## 운영
 
-heavy/GUI/install 전 activeInstalledVersions, owned hidden editorWindowProbe/고유 프로젝트·프로필·자동포트만. CXX -o relative/jsonInclude·PS 외부실패 자동중단아님→Node순차. rg --files 실제경로 먼저(추정파일명 오류반복금지)/minified 출력금지. retainTestEvidence/pruneTestArtifacts·native cache32·Versions1. Git 한국어 Conventional author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com/global·AI trailer없음. 새agent금지(WebGPU분석만과거승인). Mac/Xcode/Android폰없음.
+heavy/GUI/install전activeInstalledVersions·owned hidden editorWindowProbe/고유프로젝트·프로필·자동port만. 사용자창/프로필/게임절대조작금지. CXX-o relative/jsonInclude·PS외부실패자동중단아님→Node순차. rg --files실제경로먼저/추정파일명오류반복금지/minified출력금지. retainTestEvidence/pruneTestArtifacts·nativecache32·Versions1. Git한글Conventional author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com/global/AItrailer없음. 새agent금지(과거WebGPU분석만승인). Mac/Xcode/Android폰없음.

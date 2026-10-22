@@ -2335,7 +2335,8 @@
         "docs/research/ENGINE_WORK_1704.json",
         "docs/research/USER_INSTALL_1706.json",
         "docs/NATIVE_ENTRY_IDENTITY.md",
-        "docs/research/ENGINE_WORK_1714.json"
+        "docs/research/ENGINE_WORK_1714.json",
+        "docs/research/USER_INSTALL_1716.json"
       ]
     },
     {
@@ -2953,7 +2954,8 @@
         "docs/research/ENGINE_WORK_1704.json",
         "docs/research/USER_INSTALL_1706.json",
         "docs/NATIVE_ENTRY_IDENTITY.md",
-        "docs/research/ENGINE_WORK_1714.json"
+        "docs/research/ENGINE_WORK_1714.json",
+        "docs/research/USER_INSTALL_1716.json"
       ]
     },
     {
@@ -3237,7 +3239,8 @@
         "docs/research/ENGINE_WORK_1704.json",
         "docs/research/USER_INSTALL_1706.json",
         "docs/NATIVE_ENTRY_IDENTITY.md",
-        "docs/research/ENGINE_WORK_1714.json"
+        "docs/research/ENGINE_WORK_1714.json",
+        "docs/research/USER_INSTALL_1716.json"
       ]
     },
     {
@@ -3451,14 +3454,14 @@
     "first": 1708,
     "last": 1714,
     "receipt": "docs/research/ENGINE_WORK_1714.json",
-    "scope": "Contextual native entry paths from metadata to compiler/runtime/cook/PC/mobile lookup, compatible unique legacy requests, header/CPP quote include watch including missing prior candidates and human edit guards. Source actual2D CPP/D3D2 modules1/2 passed; final installed gate pending."
+    "scope": "Explicit native entry paths/relative include identity across metadata/compiler/runtime/cook/PC/mobile and unique legacy compatibility, quote include/negative candidate watch. Final installed2D editor actual CPP workers and same D3D package keep A1/B2 separately; User unchanged/Versions1."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1706.json",
-    "sourceCommit": "630dba77f260f81837dc404a0f03a42c606ccab2",
-    "bundleHash": "e69a507e9a16243e45165313d287fd5dac8cf51ab974c93c2a9d15064bca3c9e",
+    "receipt": "docs/research/USER_INSTALL_1716.json",
+    "sourceCommit": "395cc914d4ae5d462fbb50640b2ac6f2066da9eb",
+    "bundleHash": "79dbe11e5ff7b4f37184c7c44034b0c69394765636f83b32a800c3f68be9265c",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actual2D type UI adds a member to existing persisted CPP/pure-BP/inherited/scene/prefab variant/baseline/conflict/sequence records; clean open docs update, actual UI whole-group Undo/Redo and new nested scalar7/array9/ActorKeep cross compiled CPP and same saved D3D11 game. Source71-file migration/CAS/preview hash/inventory/cancellation/restart and dirty-draft preservation pass. All manifest/source/native21/30 native tests/vendor2/Player1604/Host1041 verified, User inventory unchanged and Versions1. Earlier renderer/type-index/CPP metadata gates reused only where owner hashes match. No arbitrary destructive schema/unbranded JSON/global discovery/whole-engine/FPS/phone claim."
+    "scope": "Installed actual2D editor explicitly builds byte-identical H/S in two folders with different relative included defaults, metadata1/2, actual CPP workers and same saved D3D game retain two independent modules and positions1/2. Source header/CPP-only plain include/negative-priority candidate watch, real production poll create/delete metadata1-9-1/build invalidation/human edit guards; actual private PC HTTP and mobile production handler contextual/legacy/case/ambiguity contracts and11 grouped source checks. All source/native21/30tests/vendor2/Player1604/Host1041 and full manifest verified, User unchanged/Versions1. No arbitrary preprocessor/system/generated dependency, destructive schema, whole-engine/FPS/phone claim."
   }
 }

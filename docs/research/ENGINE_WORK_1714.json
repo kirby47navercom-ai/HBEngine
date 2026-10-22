@@ -1257,8 +1257,23 @@
     "fixture": "Initial test guessed collectContent export instead of actual inspectBuild; corrected fixture only. Quote-include candidate-count fixture updated to2100(two Source candidates each) to actually exceed4096. HTTP fixture initially omitted required x-hb-editor header, then preserved guard and authenticated correctly.",
     "actualDefect": "Original nativeProjectLayout chooses A compilation unit for B when H/S bytes match; old H/S-only runtime and cook key also collapses them. New explicit paths and relative include metadata select A1/B2 and preserve two actual CPP/D3D modules. Original watcher misses CPP-only plain includes and missing earlier candidates; production poll regression now proves edit/create/delete invalidation and human edit protection."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1706.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1716.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/native-entry-1711-window-BhWjSE/acceptance.json",
+      "sha256": "a69a68d11ecb1452dc75d2b50d2ce56d0a3aee6346e6197b5ddbcd6c76b9b78f",
+      "scope": "Owned2D editor builds byte-identical primary header/CPP pairs in separate folders with different relative included struct defaults. Real C++ actors move1/2 independently; same saved D3D game retains two contextual modules when package requested. Phone/AOT execution separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\79dbe11e5ff7b4f3\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 95985.67989999999
+    }
+  ]
 }

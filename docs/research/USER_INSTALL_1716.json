@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-native-entry-identity-include-watch",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "395cc914d4ae5d462fbb50640b2ac6f2066da9eb",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\79dbe11e5ff7b4f3",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\79dbe11e5ff7b4f3\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\79dbe11e5ff7b4f3\\HBEngine.exe",
+  "bundleHash": "79dbe11e5ff7b4f37184c7c44034b0c69394765636f83b32a800c3f68be9265c",
+  "files": 4305,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4297,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e69a507e9a16243e",
+        "bytes": 192473979,
+        "manifestSHA256": "7742ca2e9893ac06383ff029278760d419b0125b9d908104b125bf9bd2bfa598"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T17:14:24.9202288Z",
+    "bytes": 192473979,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "79dbe11e5ff7b4f3"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 977,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/native-entry-1711-window-BhWjSE/acceptance.json",
+      "sha256": "a69a68d11ecb1452dc75d2b50d2ce56d0a3aee6346e6197b5ddbcd6c76b9b78f",
+      "scope": "Owned2D editor builds byte-identical primary header/CPP pairs in separate folders with different relative included struct defaults. Real C++ actors move1/2 independently; same saved D3D game retains two contextual modules when package requested. Phone/AOT execution separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\79dbe11e5ff7b4f3\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 95985.67989999999
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\79dbe11e5ff7b4f3\\",
+    "elapsedMs": 61.74,
+    "matches": 2,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\79dbe11e5ff7b4f3",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "79dbe11e5ff7b4f37184c7c44034b0c69394765636f83b32a800c3f68be9265c",
+      "installedAt": "2026-10-22T17:14:21.543Z",
+      "manifestFiles": 4305,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged native SDK21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4305,
+  "versions": [
+    "79dbe11e5ff7b4f3"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1716-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/native-entry1713-group.json",
+      "sha256": "9b9eb4fca0bc61591162811d8f296aade3ca45d62e386b40c2d7bfbff91a31a6",
+      "scope": "Entry context/relative include/watch/PC HTTP/mobile handler/legacy compatibility and existing BP/type/transaction/bridge source regressions. Source actual CPP2-module/D3D gate separate; final installed gate required."
+    },
+    {
+      "path": "native/build/native-source-watch-1710-mlUbqi/acceptance.json",
+      "sha256": "dfef162352fb99c4c5cb322e7bf7eadd475871f6d376768c8386a911543fa391",
+      "scope": "Dependency walker and production poll function with actual BlueprintWorkspace and isolated source reader. No new timer/daemon. C++ preprocessor/system headers/generated includes and actual device execution remain separate."
+    },
+    {
+      "path": "native/build/native-entry-routing-1712-TmBmGj/acceptance.json",
+      "sha256": "f1e5255b2bda6f4592ec873533a7cb16cc3c4d4fb4bed3e9e09abcccc81b627d",
+      "scope": "Real private packaged-player HTTP routing with inert never-executed fixture binary files, plus actual mobile request-handler source. Execution proof is the real CPP/D3D1711 gate; no phone/AOT runtime claim."
+    },
+    {
+      "path": "native/build/native-entry-1708-46JU9O/acceptance.json",
+      "sha256": "6ba81c04bb6dc464af9f81cb9eabecea678a393c725b633096999a8929b854e8",
+      "scope": "Source entry selection/metadata/generated compilation units/runtime preparation/cook. Original ac611f6 helper chooses A for requested B; actual compiled worker/editor/packaged game and Android/iOS device execution are separate gates."
+    },
+    {
+      "path": "native/build/native-type-imports-1675-90xs6t/acceptance.json",
+      "sha256": "4142624083ef30af9af5d19db02eadd22b4aeef462f7e6c40e9ee11be4ceeaca",
+      "scope": "Headless pure BP type-library source references/resolver scope/classless metadata, parent/child/UndoRedo cache views, actual 2D ProjectService validation and compact save, actual shared BlueprintRuntime SetMembers/Actor self refs with zero native builds/calls. UI/exported actual game separate; mixed CPP imports/per-type assets/arbitrary schema migration not claimed."
+    },
+    {
+      "path": "native/build/native-type-migration-1701-editor-j0oTFf/acceptance.json",
+      "sha256": "35c399bbf01f1b5a8cd91188d9e5a674eee8cfc5e767365ac1ca0a7932c81a5c",
+      "scope": "Production save/batch/Undo functions with real ProjectService, real resolver and isolated files. Native actual-window and game gate separate."
+    },
+    {
+      "path": "native/build/native-type-migration-1700-pIgeDd/acceptance.json",
+      "sha256": "bf509c6daaeaf39fde3538e96b577fe36c270d5f451880770c14920e6d6e093d",
+      "scope": "Actual source project publication and rollback. Open-document UI/Undo, compiled C++ and packaged game require their separate runtime gate."
+    },
+    {
+      "path": "native/build/blueprint-inheritance-DrRXux/acceptance.json",
+      "sha256": "3a38a09e50cda50e2851bc002e519c83fea0c3b7e4e4fce61b3ff4a90abcb36a",
+      "scope": "Existing source BP/inheritance/file transaction contract."
+    },
+    {
+      "path": "native/build/native-type-assets-1662-TtQylf/acceptance.json",
+      "sha256": "fd32e7ad7cc204980365c59607e0cd93e0a11fb7461ba9ca4b07fb7c213e85e1",
+      "scope": "Type library model and generated native metadata, actual 2D project CRUD/atomic header pair/checked-batch, identity and failure preservation. Compiled CPP, actual editor and packaged game are separate gates; dedicated independent type assets/global pure-BP registry/schema migration not claimed."
+    },
+    {
+      "path": "native/build/asset-transaction-znYX3O/acceptance.json",
+      "sha256": "09520a02fcd6bd9fb029ab08c8a57fa1efccbac23c136a23cf89ed5768d09353",
+      "scope": "Existing source BP/inheritance/file transaction contract."
+    },
+    {
+      "path": "native/build/native-entry-1711-window-F0jwJU/acceptance.json",
+      "sha256": "be58bea59b49c69337f22e6ed76ef10d427e5c952f3ab658c2b0356850cc5a16",
+      "scope": "Owned2D editor builds byte-identical primary header/CPP pairs in separate folders with different relative included struct defaults. Real C++ actors move1/2 independently; same saved D3D game retains two contextual modules when package requested. Phone/AOT execution separate."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/native-entry-1711-window-F0jwJU/acceptance.json",
+      "sha256": "be58bea59b49c69337f22e6ed76ef10d427e5c952f3ab658c2b0356850cc5a16",
+      "scope": "Owned2D editor builds byte-identical primary header/CPP pairs in separate folders with different relative included struct defaults. Real C++ actors move1/2 independently; same saved D3D game retains two contextual modules when package requested. Phone/AOT execution separate."
+    }
+  ],
+  "scope": "Installed actual2D editor explicitly builds byte-identical H/S in two folders with different relative included defaults, metadata1/2, actual CPP workers and same saved D3D game retain two independent modules and positions1/2. Source header/CPP-only plain include/negative-priority candidate watch, real production poll create/delete metadata1-9-1/build invalidation/human edit guards; actual private PC HTTP and mobile production handler contextual/legacy/case/ambiguity contracts and11 grouped source checks. All source/native21/30tests/vendor2/Player1604/Host1041 and full manifest verified, User unchanged/Versions1. No arbitrary preprocessor/system/generated dependency, destructive schema, whole-engine/FPS/phone claim."
+}
