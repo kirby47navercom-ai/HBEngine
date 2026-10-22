@@ -9,7 +9,7 @@
 
 ## 다음과 잔여
 
-설치뒤에도누적잔여계속. CPP01 전용enum/structasset·globaltyperegistry·관리identity/다형성·schema migration·일반alias/전처리/signature/wildcard/문서간Timeline. record checkpoint copy비용미측정·개선후보. ANM06 전체snapshot순회/restore/큰변경배열·겹친clip공간색인/slider/region/pinch/가변행·리그/warp/혼합/부모골격Take. RND03lightmap혼합/2후보밖계층/대형HDR/변형/로브, RND06主GL7초/FXC/capture(1086/1308반복금지), UI03교차창/실터치/asyncrollback, NET01권한/예측/socket, RND08worldDF/HWRT/bake 등 ENGINE_STATUS78행·전체분모null.
+설치뒤에도누적잔여계속. CPP01 전용enum/structasset·globaltyperegistry·관리identity/다형성·schema migration·일반alias/전처리/signature/wildcard/문서간Timeline. 신규e46436a/WORK1497 checkpoint구현·검사완료/설치전: actualtype/recursivefield/receiver검증된Get0 snapshot·Set수신cell만·user함수/생성/변환전체복구·optional record snapshot·raw5counter/profiler합. 32Getter Items64→0/32Setter64→32·default할당4/546→2/273B/inline+16B; 다른Actor변경후throw하는converterGet/Set과함수2Actor좌표/값복구·앞선성공Set보존. 그룹11/최종9·NativeBatch50/Actions/recordCpp/portable2모듈통과. equality루프후보느려미채택·DLLnew측정은static링크보정. SDK20/29native검사/Player1484/Host1041/2vendor SHA동일재사용. 다음1498sync→1499install recordUI+D3D/2DCPP·설치profiler/AI→1500finish/push. record1497 started재실행금지. 기존work1486핵심자료/누적잔여유지. ANM06 전체snapshot순회/restore/큰변경배열·겹친clip공간색인/slider/region/pinch/가변행·리그/warp/혼합/부모골격Take. RND03lightmap혼합/2후보밖계층/대형HDR/변형/로브, RND06主GL7초/FXC/capture(1086/1308반복금지), UI03교차창/실터치/asyncrollback, NET01권한/예측/socket, RND08worldDF/HWRT/bake 등 ENGINE_STATUS78행·전체분모null.
 
 ## 운영
 
