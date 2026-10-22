@@ -10,7 +10,7 @@ export function nativeReloadPlan(before,after,objects){
  for(const old of before.structs||[]){const next=after.structs?.find(definition=>definition.name===old.name),layout=definition=>JSON.stringify(definition?.fields.map(field=>[field.name,shape(field),field.readOnly]));if(!next||layout(old)!==layout(next))throw Error('실행 중 구조체 레이아웃 변경은 다시 실행해야 해요: '+old.name);}
  for(const old of before.enums||[]){const next=after.enums?.find(definition=>definition.name===old.name);if(!next||old.underlying.bits!==next.underlying.bits||old.underlying.unsigned!==next.underlying.unsigned)throw Error('실행 중 enum 기반형 변경은 다시 실행해야 해요: '+old.name);}
  const classes=new Map(after.classes.map(c=>[c.name,c]));
- for(const old of before.classes){const next=classes.get(old.name);if(!next||next.base!==old.base)throw Error('실행 중 클래스·상속 변경은 다시 실행해야 해요: '+old.name);
+ for(const old of before.classes){const next=classes.get(old.name);if(!next||next.base!==old.base||(next.cppName||next.name)!==(old.cppName||old.name)||JSON.stringify(next.cppNamespace||[])!==JSON.stringify(old.cppNamespace||[]))throw Error('실행 중 클래스·상속 변경은 다시 실행해야 해요: '+old.name);
   for(const property of old.properties){const p=next.properties.find(p=>p.name===property.name);if(!p||shape(p)!==shape(property)||p.readOnly!==property.readOnly)throw Error('공개 속성 타입 변경은 다시 실행해야 해요: '+old.name+'.'+property.name);}
   for(const method of old.functions){const f=next.functions.find(f=>f.name===method.name);if(!f||signature(f)!==signature(method))throw Error('공개 함수 시그니처 변경은 다시 실행해야 해요: '+old.name+'.'+method.name);}
   if(next.functions.some(f=>f.lifecycle!==undefined&&!old.functions.some(previous=>previous.name===f.name)))throw Error('C++ Lifecycle 추가는 다시 실행해야 해요: '+old.name);

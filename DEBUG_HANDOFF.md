@@ -146,3 +146,7 @@ C++ 공개 값 구조체/필드 타입·기본값·enum/Actor/배열 codec와 Ma
 
 ## 1490–1495 checkpoint 비용·복구
 첫 unchanged-record equality 후보는 직접루프6.3ms→11ms로 느려 미채택; 복사0을 전체성능향상으로 계산하지 않음. 최종은 optional record checkpoint·기존 표준/엔진 타입 propertyGet snapshot생략·propertySet수신cell만·함수/생성/사용자변환전체복구. 실제Cpp타입/클래스와nestedrecord를컴파일대조해 같은이름Vec3/Array/String이userconversion을실행하는경우전체복구; converter가다른Actor값/좌표를바꾸고throw하는Get/Set검사통과. 2Actor*128record*64nested/32Get Items대입64→0/32Set64→32·임의함수2Actor복구·앞선성공Set보존. fixture정적링크할당4/546→2/273B(wrapper+16B). 초기동적링크new계수는DLL내부stdstring누락으로heap총량을판단못하므로static비교로보정·관측자료기록. profilerfixture새counts프레임을패널앞에놓던순서/aliasJson괄호는검사수정. rawtransport5counter를ms와분리해프레임합·invalid수치제외/구worker호환/clone/상한확인. 생성worker가sourceKey에포함되어캐시재생성. 기존NativeBatch50actor/실패/operations/events/clock/reset·actionbatch·recordCpp·portable2모듈검사와최종typefallback검사를나눠필요한영향만재실행. 전체FPS/heap개선·임의Cpp상태의트랜잭션전체지원주장없음. SDK20owner/Player1484/Host1041/vendor2SHA변화없어재사용.
+
+## C++ 접근 연결1501–1516
+
+명시 반사 private/protected 멤버·중첩 클래스/enum·정확한 참조/배열 인자를 컴파일 사본의 friend로 연결했어요. 원본의 일반 C++ private 접근은 계속 컴파일 오류예요. 문자열 내부 세미콜론 때문에 regex가 속성을 자르는 실제 판독 문제도 lexer의 문장 경계로 고쳤어요. 두 AOT 모듈 state/enum/event 분리·CPP rollback·2D 포함 기존 50Actor batching·typed records·다중소스·클래스생성·AI 그룹12와 Android ARM64 NDK syntax4units 통과. source hidden editor/같은저장 D3D[14,3,2]/Score14/exit0 통과·최종 설치 gate는 USER_INSTALL 후속영수증을 따르세요. enum int32의 미등록 숫자13은 기존 합법값이어서 초기 검사 기대를 고쳤고 wire범위 초과4294967296은 거부해요. 큰 기본값의 AI조회는 페이지 필드만 읽어요. std detached1024-int 값인자 할당2→1/constref1/outref유지 직접계수·전체FPS주장없음. grouped 실패 원인·중간자료는 native/build 원래 폴더에 유지해요.

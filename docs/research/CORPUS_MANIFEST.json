@@ -5403,5 +5403,45 @@
       }
     ],
     "implementation": "Independent HB_STRUCT metadata and typed native worker codecs; nested value/default/enum/actor/array authoring, Make/Break/selected Set, split pins and reference tunnels, shared runtime metadata, bounded AI queries, sequence/Take value tracks, layout-safe reload. Portable generated internal wrapper/state types use translation-unit ownership to prevent cross-module default-state aliasing."
+  },
+  "supplemental1501": {
+    "record": "docs/NATIVE_CPP_ACCESS.md",
+    "date": "2026-10-22",
+    "fullCorpusAnalysis": false,
+    "readings": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/functions-in-unreal-engine?application_version=5.7",
+        "engine": "Unreal5.7",
+        "sections": [
+          "rendered body0–164, functions access17–19, pure/impure20–30, creating/editing/arguments/reference/default/pin order and calls"
+        ],
+        "note": "C++ access and BP caller permissions remain different contracts."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/metadata-specifiers-in-unreal-engine?application_version=5.7",
+        "engine": "Unreal5.7",
+        "sections": [
+          "returned/read lines32–156, particularly structs80–89, functions90–127 and properties128–156"
+        ],
+        "note": "Additional scoped reading. BlueprintProtected owning-object-only metadata is distinct from class inheritance access. Not whole manual/API analysis."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/API/Editor/BlueprintGraph/FBlueprintMetadata?lang=en-US",
+        "engine": "Unreal5.8 (actual returned API version)",
+        "sections": [
+          "rendered body0–108, AllowPrivateAccess32, Private93, PropertyGet95/Set96 and Protected97"
+        ],
+        "note": "5.7 API request failed; that failed body is not counted. Actual5.8 fallback is explicitly versioned."
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SerializeField.html",
+        "engine": "Unity6000.0",
+        "sections": [
+          "HTML description/example240–265"
+        ],
+        "note": "Explicit private-field serialization reference; no whole Unity serializer parity claim."
+      }
+    ],
+    "implementation": "Explicit reflected protected/private C++ members via generated compilation-copy friend accessors; lexical class/member scope, private nested class/enum aliases and exact function-argument traits, standard detached input move, paged native.classes.read and sourceReference preservation. Separate Blueprint caller-access permissions remain residual."
   }
 }

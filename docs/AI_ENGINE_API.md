@@ -577,3 +577,5 @@ GPU 물리 시선 계약은 schema.cameraView와 WebGPU renderer.cameraView에�
 ### 가상 목록·트리 이동 (1274)
 
 ListView/TreeView의 `properties.reorderable:boolean`, `transferGroup:string`(최대80자)을 기존 document.patch/transaction·CAS·dryRun·Undo로 편집해요. 그룹이 비어 있으면 내부 이동만 가능해요. 공용 모델/런타임 계약과 소스는 [LIST_TRANSFER](LIST_TRANSFER.md)에 있어요. 실행 Changed 이벤트는 `listChange:reparented|transferIn|transferOut`, `listPeer`, `reorderParent`와 기존 선택 정보를 전달해요. 새 전용 게임 C++/BP 이동 함수는 추가하지 않았어요.
+
+C++ 클래스·명시 반사 멤버는 `native.classes.read`로 페이지 조회해요. C++ 접근 범위·namespace·정규 클래스명과 핀 자료형을 기본값/소스 전체 복제 없이 읽어요. 자세한 인자·원본 접근 제어와의 구분은 [NATIVE_CPP_ACCESS.md](NATIVE_CPP_ACCESS.md)를 참고해요.

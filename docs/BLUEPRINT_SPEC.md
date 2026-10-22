@@ -600,3 +600,7 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 1407 이후: ReflectionProbes::SetProxyVolume(target,proxy=nullptr,component,proxyComponent)와 SetUseInfluenceVolume(target,bool,component)을 공용 서비스/생성 노드로 제공해요. 프록시 오브젝트+컴포넌트 참조/무한/영향영역 복원·즉시 C++ 읽기·위치 보존을 지원해요. 현재 아틀라스는 14행/224B이며, 위1354의 9행/144B는 당시 기록이에요. [투영 계약](PROBE_PROJECTION.md)을 확인해요.
 
 1424 이후 ReflectionProbes::SetAdvancedBlend/SetBlendFaces/SetFaceFade/SetNormalBlendDistance/SetNormalBlendFaces 다섯 공용 C++·생성 노드는 같은 ReflectionProbe 속성으로 실행해요. 면별 함수가 모드를 자동으로 켜지는 않으며 Inspector의숨은 값·Undo/저장·AI편집과 공유해요. [계약](PROBE_INFLUENCE.md)과 실제 C++/노드 게임 증거를 후속 원장에서 확인해요.
+
+### C++ 비공개 멤버의 명시 반사 — 1501–1508
+
+HB_PROPERTY/HB_FUNCTION/HB_NODE는 protected/private 구역에서도 기존 노드·기본값·인스턴스·이벤트 연결을 사용해요. 컴파일 사본에만 friend 접근자를 만들고 C++ 일반 접근은 계속 제한해요. namespace/private 중첩 클래스/비공개 enum·배열·정확한 const/ref 인자/모바일 모듈 분리와 bounded `native.classes.read`를 함께 제공해요. 블루프린트 함수의 별도 호출 권한과는 구분해요. [계약](NATIVE_CPP_ACCESS.md).

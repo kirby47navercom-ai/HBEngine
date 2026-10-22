@@ -14,7 +14,7 @@ const root=path.resolve(import.meta.dirname,'..'),json=value=>JSON.stringify(val
 export async function mobileSources(natives,out){
   await prepareNative();const sources=[],modules=[],declarations=[],cases=[],includeDirectories=[];
   for(const [signature,code] of natives){
-    const name='HB_module_'+signature.slice(0,20),dir=path.join(out,'Native',name),generated=nativeSources(code.header,code.source,{portableName:name,files:code.files});await fs.mkdir(dir,{recursive:true});
+    const name='HB_module_'+signature.slice(0,20),dir=path.join(out,'Native',name),generated=nativeSources(code.header,code.source,{portableName:name,userNamespace:'HB_user_'+signature.slice(0,20),files:code.files});await fs.mkdir(dir,{recursive:true});
     // Each module keeps its original worker's independent world/static state.
     // Rename hb and user class symbols before compiling all AOT modules together.
     const prefix='#define hb HB_hb_'+signature.slice(0,20)+'\n'+generated.metadata.classes.map(c=>'#define '+c.name+' HB_'+signature.slice(0,20)+'_'+c.name).join('\n')+'\n';

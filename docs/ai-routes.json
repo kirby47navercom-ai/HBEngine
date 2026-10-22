@@ -1551,6 +1551,56 @@
         "tools/native-checkpoint.mjs",
         "docs/NATIVE_CHECKPOINTS.md"
       ]
+    },
+    {
+      "keywords": [
+        "nativeAccess",
+        "HB_ReflectionAccess"
+      ],
+      "paths": [
+        "tools/native-access.mjs",
+        "docs/NATIVE_CPP_ACCESS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "nativeFriendHeader",
+        "nativeClassScopes"
+      ],
+      "paths": [
+        "prototype/native-class-scopes.js",
+        "docs/NATIVE_CPP_ACCESS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "cppAccess"
+      ],
+      "paths": [
+        "prototype/native-model.js",
+        "prototype/native-class-inspection.js",
+        "docs/NATIVE_CPP_ACCESS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "native.classes.read"
+      ],
+      "paths": [
+        "prototype/native-class-inspection.js",
+        "prototype/app.js",
+        "tools/editor-automation.mjs",
+        "docs/NATIVE_CPP_ACCESS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "inspectNativeClasses"
+      ],
+      "paths": [
+        "prototype/native-class-inspection.js",
+        "docs/NATIVE_CPP_ACCESS.md"
+      ]
     }
   ]
 }
