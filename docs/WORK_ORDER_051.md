@@ -1034,3 +1034,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1670: 첫설치type실제UI생성/표시명편집뒤검사fixture가document.save expectedRevision누락→기존REVISION_CONFLICT정상거절. 최신document.get revision전달수리·엔진보호규칙완화없음·CPP빌드전실패라중복CPP검사없음. 첫설치1669는성공승격하지않고최종1671로교체예정.
 
 1671 최종설치: 5f4c3dc59030d6a0·4267명세/937소유/native21/30tests/vendor2 SHA. 실제type UI열거형추가/표시명→원본+공유header저장→nested record/enum/array/UndoRedo/Make/default/instance/sourceReference→CPP/BP Actor참조→동일저장D3D게임위치99,3,2/종료0 74.9초. 설치context model1파일·User10849읽기SHA불변/연결/Versions1·직전검사실패설치191902200B퇴역. 초기fixture revision누락은실패로보존·final1671성공으로대조. 순수BP type import등누적작업계속.
+
+1673–1680: C++없는BP type import UI/경로-only sourceReference/공유resolver·읽기단위compile/동결metadata·부모상속/childcompactsave·multiimport UndoRedo조합재생성·native0 Play/JS cook분기·CPP기존owner route1build보존·poll type변경fresh/CAS. 새행propertySearch누락actualstack추적수리→실제source2DUIimport/UndoRedo/SetMembers→Break→Actor99,3,2/Stop7,3,2통과. source7검사최장0.62초/새symbol5개각1파일·native21/Player1604/Host1041재사용·설치D3D/nativeModules0예정·누적계속.
