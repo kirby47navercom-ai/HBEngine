@@ -61,20 +61,27 @@ export function shareDocumentSnapshot(value, previous, {ownedPrevious = false, m
   catch (error) { if (error !== fallback) throw error; if (metrics) metrics.fallback = true; return structuredClone(value); }
 }
 
-export function documentHistoryStorage(history, future, {objectBudget = 250000} = {}) {
+export function documentHistoryStorage(history, future, {objectBudget = 250000,slotBudget = 2000000} = {}) {
   if (!Number.isInteger(objectBudget) || objectBudget < 1 || objectBudget > 1000000) throw Error('이력 조회 예산은 1~1000000이에요.');
-  const seen = new WeakSet(), stack = [...history, ...future];
-  let uniqueObjects = 0, sharedReferences = 0, slots = 0, estimatedPayloadBytes = 0, truncated = false;
+  if (!Number.isInteger(slotBudget) || slotBudget < 1 || slotBudget > 8000000) throw Error('이력 슬롯 조회 예산은 1~8000000이에요.');
+  const seen = new WeakSet(), roots = [...history, ...future],stack = [{value:roots,index:roots.length-1,keys:null,root:true}];
+  let uniqueObjects = 0, sharedReferences = 0, slots = 0, estimatedPayloadBytes = 0, truncated = false,truncatedBy=null;
   while (stack.length) {
-    const value = stack.pop();
+    const frame=stack.at(-1);if(frame.index<0){stack.pop();continue;}
+    if(!frame.root&&slots===slotBudget){truncated=true;truncatedBy='slots';break;}
+    const key=frame.keys?frame.keys[frame.index--]:frame.index--,value=frame.value[key];
+    if(!frame.root){slots++;estimatedPayloadBytes+=8+(Array.isArray(frame.value)?0:String(key).length*2);}
     if (value && typeof value === 'object') {
       if (seen.has(value)) { sharedReferences++; continue; }
-      if (uniqueObjects === objectBudget) { truncated = true; break; }
+      if (uniqueObjects === objectBudget) { truncated = true;truncatedBy='objects'; break; }
       seen.add(value); uniqueObjects++;
-      for (const key of Object.keys(value)) { slots++; estimatedPayloadBytes += 8 + (Array.isArray(value) ? 0 : key.length * 2); stack.push(value[key]); }
+      // Owned dense history arrays have only canonical data indices. Walk them
+      // lazily instead of materializing every key/value before checking budgets.
+      const dense=Array.isArray(value)&&ownedDenseArrays.has(value),keys=dense?null:Object.keys(value);
+      stack.push({value,keys,index:(dense?value.length:keys.length)-1,root:false});
     } else if (typeof value === 'string') estimatedPayloadBytes += value.length * 2;
     else if (typeof value === 'number' || typeof value === 'bigint') estimatedPayloadBytes += 8;
     else if (typeof value === 'boolean') estimatedPayloadBytes++;
   }
-  return {undo: history.length, redo: future.length, uniqueObjects, sharedReferences, slots, estimatedPayloadBytes, truncated, objectBudget, readOnly: true, scope: 'Retained history graph payload estimate; excludes JS engine/object headers, allocator, file-batch backups and live document. Not measured heap.'};
+  return {undo: history.length, redo: future.length, uniqueObjects, sharedReferences, slots, estimatedPayloadBytes, truncated,truncatedBy, objectBudget,slotBudget, readOnly: true, scope: 'Retained history graph payload estimate; lazy container walk bounded by objects and slots. Excludes JS engine/object headers, allocator, file-batch backups and live document. Not measured heap.'};
 }

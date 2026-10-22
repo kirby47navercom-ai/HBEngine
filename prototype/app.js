@@ -235,7 +235,7 @@ async function save(all=false) {
   }catch(error){notify('저장 실패: '+error.message);return false;}
 }
 function restoreEdit(data){
-  const doc=assetDocs.current;if(!doc)return;doc.data=clone(data.data);installDocumentData(doc);changed();
+  const doc=assetDocs.current;if(!doc)return;doc.data=clone(data.data);installDocumentData(doc,{ownedScene:true});changed();
   doc.dirty=JSON.stringify(doc.data)!==doc.saved;renderDocumentTabs();$('#status-text').textContent=dirty?'변경 사항 있음':'준비됨';
 }
 function undo(){assetPanes.get(assetDocs.active)?.editor?.flush?.();if(running)return notify('실행을 종료한 뒤 편집하세요.');const data=history.at(-1);if(!data)return notify('되돌릴 변경 사항이 없어요.');if(data.batch)return replayFileBatch(data.batch,false,true).catch(error=>{notify(error.message);return false;});history.pop();future.push(snapshot(data));restoreEdit(data);}
@@ -1349,9 +1349,9 @@ function renderDocumentTabs(){
   dirty=[...assetDocs.items.values()].some(d=>d.dirty);$('#dirty-mark').hidden=!dirty;
   $('#document-tabs').innerHTML=[...assetDocs.items.values()].map(d=>`<div class="asset-tab ${d.path===assetDocs.active?'active':''}" data-kind="${d.kind}"><button role="tab" aria-selected="${d.path===assetDocs.active}" draggable="true" data-document="${escapeHtml(d.path)}" title="${escapeHtml(d.path)}">${icon(assetIcon(d.kind,d.data?.settings?.parentClass))}<span>${escapeHtml(assetTitle(d.path))}</span>${d.dirty?'<i class="modified" aria-label="저장하지 않은 변경"></i>':''}</button><button class="tab-close" data-close-document="${escapeHtml(d.path)}" aria-label="${escapeHtml(assetTitle(d.path))} 닫기">${icon('close')}</button></div>`).join('');
 }
-function installDocumentData(doc){
+function installDocumentData(doc,{ownedScene=false}={}){
   previewMaterialSignature='';if(['materialfunction','materiallayer','materialblend'].includes(doc.kind))$('.material-preview-caption h3').textContent=doc.data.name;
-  if(doc.kind==='scene'){schedulePrefabRefresh();sceneNavigation.items=clone(doc.view.sceneNavigation?.items||[]);sceneNavigation.index=doc.view.sceneNavigation?.index??-1;runtimeSettings=clone(doc.data.runtime||defaultRuntimeSettings);objects=clone(doc.data.objects);surface=clone(doc.data.surface);environment=clone(doc.data.environment||defaultEnvironment);sceneName=doc.data.sceneName||assetTitle(doc.path);activeScenePath=doc.path;setView(runtimeSettings.dimension==='2d'?'2d':'3d');rebuildWorld();applyEnvironment();renderHierarchy();}
+  if(doc.kind==='scene'){schedulePrefabRefresh();sceneNavigation.items=clone(doc.view.sceneNavigation?.items||[]);sceneNavigation.index=doc.view.sceneNavigation?.index??-1;runtimeSettings=clone(doc.data.runtime||defaultRuntimeSettings);objects=ownedScene?doc.data.objects:clone(doc.data.objects);surface=clone(doc.data.surface);environment=clone(doc.data.environment||defaultEnvironment);sceneName=doc.data.sceneName||assetTitle(doc.path);activeScenePath=doc.path;setView(runtimeSettings.dimension==='2d'?'2d':'3d');rebuildWorld();applyEnvironment();renderHierarchy();}
   if(doc.kind==='blueprint'){
     graphs.blueprint=blueprintWorkspace.view(doc.path,doc.data);if(doc.view.nativeMetadata)graphs.blueprint={...graphs.blueprint,native:doc.view.nativeMetadata};for(const key of ['functions','macros','comments','dispatchers','interfaces'])graphs.blueprint[key]??=[];if(!graphs.blueprint.inheritance)graphs.blueprint.construction??=clone(defaultBlueprint.construction);activeBlueprintPath=doc.path;
     const v=doc.view;blueprintView=v.blueprintView||'event';if(!['event','construction',...graphs.blueprint.functions.map(d=>d.id),...graphs.blueprint.macros.map(d=>d.id)].includes(blueprintView))blueprintView='event';
@@ -1847,7 +1847,7 @@ const editorCommandMethods={
   'files.apply':applyFileBatch,
   'files.undo':({transaction})=>replayFileBatch(transaction),
   'files.redo':({transaction})=>replayFileBatch(transaction,true),
-  'editor.history.inspect':async params=>{const {doc,revision}=await automationDocument(params);if(params.expectedRevision!==undefined&&params.expectedRevision!==revision)throw batchConflict('문서 revision이 달라요.');return {path:doc.path,revision,dirty:doc.dirty,...documentHistoryStorage(doc.history,doc.future,params)};},
+  'editor.history.inspect':async params=>{if(params.includeRevision!==undefined&&typeof params.includeRevision!=='boolean')throw Error('이력 revision 조회 옵션을 확인하세요.');if(params.includeRevision===false){if(params.expectedRevision!==undefined)throw Error('revision 검사에는 includeRevision을 사용하세요.');const doc=assetDocs.items.get(params.path||assetDocs.active);if(!doc)throw Error('문서를 먼저 여세요.');const active=doc===assetDocs.current;return {path:doc.path,revision:null,dirty:doc.dirty,unflushed:true,...documentHistoryStorage(active?history:doc.history,active?future:doc.future,params)};}const {doc,revision}=await automationDocument(params);if(params.expectedRevision!==undefined&&params.expectedRevision!==revision)throw batchConflict('문서 revision이 달라요.');return {path:doc.path,revision,dirty:doc.dirty,...documentHistoryStorage(doc.history,doc.future,params)};},
   'editor.undo':async params=>{const {doc}=await automationDocument(params,true);activateDocument(doc.path);if(await undo()===false)throw Error('묶음 되돌리기 실패');return {path:doc.path,revision:await documentRevision(doc.data),dirty:doc.dirty};},
   'editor.redo':async params=>{const {doc}=await automationDocument(params,true);activateDocument(doc.path);if(await redo()===false)throw Error('묶음 다시 적용 실패');return {path:doc.path,revision:await documentRevision(doc.data),dirty:doc.dirty};},
   'blueprint.inheritance.get':async params=>{const {doc,revision}=await automationDocument(params);if(doc.kind!=='blueprint')throw Error('블루프린트 문서가 필요해요.');const root=await blueprintWorkspace.prepare(doc.path,doc.data);return {path:doc.path,revision,authored:serializeBlueprint(root),resolved:root};},

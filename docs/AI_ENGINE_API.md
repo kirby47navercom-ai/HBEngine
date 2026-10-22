@@ -585,3 +585,5 @@ C++ 클래스·명시 반사 멤버는 `native.classes.read`로 페이지 조회
 `blueprint.members.read({path,kind:"all",offset:0,limit:32,query:""})`: functions/macros/variables를 최대128개씩 조회해요. owner/access/inherited/callable/editable/overrideAllowed와 핀 자료형을 반환해요. 그래프·변수값·기본값은 복제하지 않아요. `readOnly:true`, `count`, `nextOffset`으로 페이지를 이어가고, 수정은 기존 expectedRevision 명령을 사용해요. Public/Protected/Private의 실제 상속·참조·네이티브 래퍼 검사와 Private 재정의 거부는 `docs/BLUEPRINT_ACCESS.md`를 확인해요. C++ cppAccess와 별개예요.
 
 1574–1576 네트워크 수명: `runtime.network`는 kind(replicas/remote/removals/failures), offset, limit(32/최대128), query(최대160자)로 메타데이터를 나눠 읽는다. kind 생략 시 기존 요약을 유지한다. 값·변환·그래프·접속 키는 반환하지 않으며 원격 생성의 접속 세대/루트 생존·같은 ID 교체·오프라인 풀 등록을 보호한다. [실행 계약과 경계](NETWORK_LIFETIME.md).
+
+1582 이후 `editor.history.inspect`는 slotBudget(기본2000000/최대8000000)과 truncatedBy를 제공한다. `includeRevision:false`는 현재 문서 캡처/해시 없이 확정된 이력만 읽고 revision:null/unflushed:true를 반환하며 expectedRevision 병용은 거부한다. [예산·격리 계약](DOCUMENT_HISTORY.md).

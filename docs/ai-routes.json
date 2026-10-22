@@ -1213,8 +1213,6 @@
     },
     {
       "keywords": [
-        "shareDocumentSnapshot",
-        "documentHistoryStorage",
         "editor.history.inspect",
         "실행 취소 이력",
         "Undo 메모리"
@@ -1749,6 +1747,26 @@
       ],
       "paths": [
         "prototype/network-inspection.js"
+      ]
+    },
+    {
+      "id": "document-history-owner",
+      "keywords": [
+        "shareDocumentSnapshot",
+        "documentHistoryStorage"
+      ],
+      "paths": [
+        "prototype/document-snapshot.js"
+      ]
+    },
+    {
+      "id": "document-restore-owner",
+      "keywords": [
+        "restoreEdit",
+        "installDocumentData"
+      ],
+      "paths": [
+        "prototype/app.js"
       ]
     }
   ]
