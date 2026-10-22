@@ -1088,3 +1088,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1783–1785: 설치본 실제 거리장 UI/AI 생성·캐시 재사용·새 편집기 Worker0 34.20초, 별도 D3D11 28.13초 통과. GL/GPU pixels116/132·direct67동일·CPP/BP Stage5·package 초기/재활성 Worker0. 명세4364/source1038/native21/30tests/vendor2 SHA·User10849 읽기 불변·링크/association/Versions1·이전193968409B 정리/lease0. 7회귀+최종 영향 GUI 확인·변경app/cooked/scene은 과거runtime 재사용 제외. USER_INSTALL1784. 미로드/무화면FBX·전용높이장/변형체/clipmap·실기기/FPS 주장 없음. 누적 계속.
 
 1786–1790: Take 프리셋·채널·뼈 필터/시퀀스별 저장·UI/AI·골격 scratch 재사용·진단을 공용 녹화기에 구현. 7빠른 회귀, 실제 모델교체 녹화/Undo/Redo/저장·C++ Play/Seek/Stop·별도 D3D11 및 popup bounds 확인. 첫 inspector total/플레이어 진단 인자 형식의 검사 오류는 수정했으며 성과에 포함하지 않음. WORK1790, 설치 후 2D/설치 게임 추가 확인 예정. 누적 계속.
+
+1791–1793: 설치본 Take 프리셋/채널/뼈 UI·설정 UndoRedo/저장·모델교체 녹화·CPP/D3D 재생 77.83초, 실제2D BP128 record배열+Transform 녹화·적용·UndoRedo·D3D 값1000/위치1000 및 원본0 복원 38.56초 통과. 명세4372/source1046/native21/30tests/vendor2 SHA·User10849 읽기불변·링크/association/Versions1·이전194154625B 정리/lease0. 7빠른회귀+source CPP/D3D/최종popup 확인, 변경runtime과거재사용 제외. USER_INSTALL1792. scratch관찰을 전체heap/FPS/실기기·외부애니상태복원 완료로 계산하지 않음. 누적계속.

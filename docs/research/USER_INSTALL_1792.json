@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-take-presets-filtered-skeletal-capture",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "e4c6fa152d476dc3abe87aa60498bc8f667e5bb9",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\98e815394e21d4d7",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\98e815394e21d4d7\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\98e815394e21d4d7\\HBEngine.exe",
+  "bundleHash": "98e815394e21d4d7eed383c48aac07160ba2923f1746fcb7eb78c3e708ebc96e",
+  "files": 4372,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4365,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\34313cb630bcc5a3",
+        "bytes": 194154625,
+        "manifestSHA256": "7151d75cb9cbdd89a6a5264bef037fb67d47f3eab55803b1f087a7f3eb0d37b7"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T21:17:52.0683454Z",
+    "bytes": 194154625,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "98e815394e21d4d7"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1046,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/take-settings-1788-n1lmeM/acceptance.json",
+      "sha256": "79bb3e3e44ed8a13f9721d5a5f9ee8fbcaf089880dc2e335266d02e6a02f6f02",
+      "scope": "Actual preset/channel/bone UI with persistent settings Undo/Redo/save, human recording through model replacement/absence of matching bone, scratch row1/vector3, Take apply and actual C++ Play/Seek/Stop of selected-bone output. --package independently runs same native C++ source in D3D11. No total FPS/heap/mobile-device or broad animation-state restore claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\98e815394e21d4d7\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 77831.0126
+    },
+    {
+      "path": "native/build/take-runtime-1721-window-sUmjBX/acceptance.json",
+      "sha256": "3e2c3a48c952707ad82dd2c9b062c756113f6c6b8b0c97a098838985a51faedd",
+      "scope": "Owned 2D editor records128-element pure-BP typed struct array plus transform, applies/Undo/Redo/saves Take; same D3D game replays array1000/position1000 and restores authored array0 with zero native modules when packaged. Snapshot/ID work-count reductions proved by1718/1719/1720, not FPS/mobile claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\98e815394e21d4d7\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 38562.72750000001
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\98e815394e21d4d7\\",
+    "elapsedMs": 61.4,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\98e815394e21d4d7",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "98e815394e21d4d7eed383c48aac07160ba2923f1746fcb7eb78c3e708ebc96e",
+      "installedAt": "2026-10-22T21:17:48.654Z",
+      "manifestFiles": 4372,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Exact unchanged SDK21/Player1604/Host1041/30 repository test owners and shader math hashes verified. Changed app/cooked reader/scene are covered by new actual installed editor and packaged D3D11 gates; old runtime evidence is not reused for them.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4372,
+  "versions": [
+    "98e815394e21d4d7"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1792-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/take-settings1789-group.json",
+      "sha256": "0437d2da58bfda2cbbd684ebda42961d23107f8afa3b46044063d1e0935de00c",
+      "scope": "Seven fast checks; corrected source full editor/CPP/D3D test and final popup-bound check. Failed test API/count assumptions are retained and not implementation outcomes."
+    },
+    {
+      "path": "native/build/take-settings-1788-uLiUUr/acceptance.json",
+      "sha256": "764f10fc6ec17f9c5670c72c949f65cc5a1f42e9939050072d9874f8ace1bcc6",
+      "scope": "Actual preset/channel/bone UI with persistent settings Undo/Redo/save, human recording through model replacement/absence of matching bone, scratch row1/vector3, Take apply and actual C++ Play/Seek/Stop of selected-bone output. --package independently runs same native C++ source in D3D11. No total FPS/heap/mobile-device or broad animation-state restore claim."
+    },
+    {
+      "path": "native/build/take-settings-1788-t2crGZ/acceptance.json",
+      "sha256": "bf650bcdb09dabaf56bafb3ebb0ac93d910d10b673fbd3f3c66448f917886bf8",
+      "scope": "Actual preset/channel/bone UI with persistent settings Undo/Redo/save, human recording through model replacement/absence of matching bone, scratch row1/vector3, Take apply and actual C++ Play/Seek/Stop of selected-bone output. --package independently runs same native C++ source in D3D11. No total FPS/heap/mobile-device or broad animation-state restore claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/take-settings-1788-uLiUUr/acceptance.json",
+      "sha256": "764f10fc6ec17f9c5670c72c949f65cc5a1f42e9939050072d9874f8ace1bcc6",
+      "scope": "Actual preset/channel/bone UI with persistent settings Undo/Redo/save, human recording through model replacement/absence of matching bone, scratch row1/vector3, Take apply and actual C++ Play/Seek/Stop of selected-bone output. --package independently runs same native C++ source in D3D11. No total FPS/heap/mobile-device or broad animation-state restore claim."
+    },
+    {
+      "path": "native/build/take-settings-1788-t2crGZ/acceptance.json",
+      "sha256": "bf650bcdb09dabaf56bafb3ebb0ac93d910d10b673fbd3f3c66448f917886bf8",
+      "scope": "Actual preset/channel/bone UI with persistent settings Undo/Redo/save, human recording through model replacement/absence of matching bone, scratch row1/vector3, Take apply and actual C++ Play/Seek/Stop of selected-bone output. --package independently runs same native C++ source in D3D11. No total FPS/heap/mobile-device or broad animation-state restore claim."
+    }
+  ],
+  "scope": "Installed Take presets, per-sequence persistent settings, transform-channel and bone-name filters, UI Undo/Redo/save/bounded scrolling popup, AI start/state/finish and shared runtime capture. Actual human model replacement recording uses scratch row1/vector3 and independent key snapshots; native user CPP Play/Seek/Stop replays selected-bone output in editor and independent packaged D3D11. Actual2D BP typed128-record array+transform recording/apply/Undo/Redo/save, second D3D11 replay1000/restoration0 with nativeModules0. Seven fast regressions plus full source CPP/D3D and final popup check; exact128bone*120 sample key agreement and scratch vector reuse. Source1046/native21/30tests/vendor2/Player1604/Host1041 hashes. Changed app/services/recorder/assets are not reused from old runtime evidence. User preserved/Versions1. No whole heap/FPS/mobile-device/independent preset asset library or external animation-state restoration claim."
+}

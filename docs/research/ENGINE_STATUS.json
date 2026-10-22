@@ -1844,7 +1844,8 @@
         "docs/research/ENGINE_WORK_1767.json",
         "docs/research/USER_INSTALL_1769.json",
         "docs/TAKE_PRESETS_AND_CAPTURE.md",
-        "docs/research/ENGINE_WORK_1790.json"
+        "docs/research/ENGINE_WORK_1790.json",
+        "docs/research/USER_INSTALL_1792.json"
       ]
     },
     {
@@ -3036,7 +3037,8 @@
         "docs/research/ENGINE_WORK_1782.json",
         "docs/research/USER_INSTALL_1784.json",
         "docs/TAKE_PRESETS_AND_CAPTURE.md",
-        "docs/research/ENGINE_WORK_1790.json"
+        "docs/research/ENGINE_WORK_1790.json",
+        "docs/research/USER_INSTALL_1792.json"
       ]
     },
     {
@@ -3351,7 +3353,8 @@
         "docs/research/ENGINE_WORK_1782.json",
         "docs/research/USER_INSTALL_1784.json",
         "docs/TAKE_PRESETS_AND_CAPTURE.md",
-        "docs/research/ENGINE_WORK_1790.json"
+        "docs/research/ENGINE_WORK_1790.json",
+        "docs/research/USER_INSTALL_1792.json"
       ]
     },
     {
@@ -3565,14 +3568,14 @@
     "first": 1786,
     "last": 1790,
     "receipt": "docs/research/ENGINE_WORK_1790.json",
-    "scope": "Take presets/per-sequence persistent settings, transform channels and bone filters, reusable owned skeletal capture scratch and diagnostics. Seven fast regressions plus actual source UI Undo/Redo/save/model-swap capture/CPP replay and independent packaged D3D11 passed; final bounded popup check passed. Installed editor/2D regression gates pending."
+    "scope": "Installed Take presets, per-sequence persistent settings, transform-channel and bone-name filters, UI Undo/Redo/save/bounded scrolling popup, AI start/state/finish and shared runtime capture. Actual human model replacement recording uses scratch row1/vector3 and independent key snapshots; native user CPP Play/Seek/Stop replays selected-bone output in editor and independent packaged D3D11. Actual2D BP typed128-record array+transform recording/apply/Undo/Redo/save, second D3D11 replay1000/restoration0 with nativeModules0. Seven fast regressions plus full source CPP/D3D and final popup check; exact128bone*120 sample key agreement and scratch vector reuse. Source1046/native21/30tests/vendor2/Player1604/Host1041 hashes. Changed app/services/recorder/assets are not reused from old runtime evidence. User preserved/Versions1. No whole heap/FPS/mobile-device/independent preset asset library or external animation-state restoration claim."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1784.json",
-    "sourceCommit": "8dc1575c71bd51dcabd746c2f2dd463f075ffac0",
-    "bundleHash": "34313cb630bcc5a331e3e55c3db57554ac85794555478b0e590d47758b252448",
+    "receipt": "docs/research/USER_INSTALL_1792.json",
+    "sourceCommit": "e4c6fa152d476dc3abe87aa60498bc8f667e5bb9",
+    "bundleHash": "98e815394e21d4d7eed383c48aac07160ba2923f1746fcb7eb78c3e708ebc96e",
     "verified": true,
     "versions": 1,
-    "scope": "Installed editor static geometry distance-field pre-generation UI/AI, bounded shared project CookCache and analytic package reuse. Actual menu/modal generation3/reuse1, AI dryRun/stale/invalid/reuse4 and cancellation/revision-conflict-before-store0 with original revision unchanged. No reader injection: GL/GPU cooked hits3/miss0/newworker0, ambient116/132/direct67 unchanged, near/far LOD/fallback; CPP/BP Stage5 and fresh editor session workerStarts0. Independent packaged D3D11 initial/re-enabled workerStarts0. Seven regressions plus final dialog/boundary recheck. Source1038/native21/30tests/vendor2/Player1604/Host1041 hashes. User preserved/Versions1. No unloaded asset/headless FBX auto-cook/dedicated heightfield/clipmap/deformed/mobile-device/FPS claim."
+    "scope": "Installed Take presets, per-sequence persistent settings, transform-channel and bone-name filters, UI Undo/Redo/save/bounded scrolling popup, AI start/state/finish and shared runtime capture. Actual human model replacement recording uses scratch row1/vector3 and independent key snapshots; native user CPP Play/Seek/Stop replays selected-bone output in editor and independent packaged D3D11. Actual2D BP typed128-record array+transform recording/apply/Undo/Redo/save, second D3D11 replay1000/restoration0 with nativeModules0. Seven fast regressions plus full source CPP/D3D and final popup check; exact128bone*120 sample key agreement and scratch vector reuse. Source1046/native21/30tests/vendor2/Player1604/Host1041 hashes. Changed app/services/recorder/assets are not reused from old runtime evidence. User preserved/Versions1. No whole heap/FPS/mobile-device/independent preset asset library or external animation-state restoration claim."
   }
 }

@@ -1299,6 +1299,31 @@
     "newResizeObservers": 0,
     "capture": "One per-Take lazy pool; 2048 row maximum/3 vectors each. Included keys remain independent snapshots. Existing sequence timeline ResizeObserver also sizes the recording popup. Exact observed work in checks, not total heap/FPS."
   },
-  "installationPending": true,
-  "scope": "Take presets/per-sequence persistent settings, transform channels and bone filters, reusable owned skeletal capture scratch and diagnostics. Seven fast regressions plus actual source UI Undo/Redo/save/model-swap capture/CPP replay and independent packaged D3D11 passed; final bounded popup check passed. Installed editor/2D regression gates pending."
+  "installationPending": false,
+  "scope": "Take presets/per-sequence persistent settings, transform channels and bone filters, reusable owned skeletal capture scratch and diagnostics. Seven fast regressions plus actual source UI Undo/Redo/save/model-swap capture/CPP replay and independent packaged D3D11 passed; final bounded popup check passed. Installed editor/2D regression gates pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1792.json",
+  "installedGates": [
+    {
+      "path": "native/build/take-settings-1788-n1lmeM/acceptance.json",
+      "sha256": "79bb3e3e44ed8a13f9721d5a5f9ee8fbcaf089880dc2e335266d02e6a02f6f02",
+      "scope": "Actual preset/channel/bone UI with persistent settings Undo/Redo/save, human recording through model replacement/absence of matching bone, scratch row1/vector3, Take apply and actual C++ Play/Seek/Stop of selected-bone output. --package independently runs same native C++ source in D3D11. No total FPS/heap/mobile-device or broad animation-state restore claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\98e815394e21d4d7\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 77831.0126
+    },
+    {
+      "path": "native/build/take-runtime-1721-window-sUmjBX/acceptance.json",
+      "sha256": "3e2c3a48c952707ad82dd2c9b062c756113f6c6b8b0c97a098838985a51faedd",
+      "scope": "Owned 2D editor records128-element pure-BP typed struct array plus transform, applies/Undo/Redo/saves Take; same D3D game replays array1000/position1000 and restores authored array0 with zero native modules when packaged. Snapshot/ID work-count reductions proved by1718/1719/1720, not FPS/mobile claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\98e815394e21d4d7\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 38562.72750000001
+    }
+  ]
 }
