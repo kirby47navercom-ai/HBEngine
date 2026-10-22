@@ -1728,6 +1728,28 @@
       "paths": [
         "prototype/network-publication.js"
       ]
+    },
+    {
+      "id": "network-session-lifetime",
+      "keywords": [
+        "spawnCurrent",
+        "NetworkWorld",
+        "unregister",
+        "network-generation"
+      ],
+      "paths": [
+        "prototype/network-runtime.js"
+      ]
+    },
+    {
+      "id": "network-inspection",
+      "keywords": [
+        "inspectNetworkWorld",
+        "network-inspection"
+      ],
+      "paths": [
+        "prototype/network-inspection.js"
+      ]
     }
   ]
 }
