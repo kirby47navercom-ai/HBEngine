@@ -1068,3 +1068,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1751–1752: 설치본컷신UI16.15초+동일D3D26.73초·Target7.5/ClipTarget.5·preview clean9중7hit/dragtrim하위열기·source변경2runtime과거reuse제외. 4335명세/1008source/native21/30native/vendor2/Player1604/Host1041 SHA·User10849읽기불변·링크/association/Versions1·이전193154506B퇴역/cachelease0. 10source회귀·작업량대조/FPS아님·dirty/역scrub비용남음·누적계속.
 
 1754–1756: 비등간격 주파수 필터·원본 보간 재표본화/기존 키 시간·수·핸들 보존·자동/명시 샘플 Hz·대역 통과/제거·상한/Nyquist/격자 원자 검사. Curve/Sequence/골격/BP Timeline·AI revision/dryRun/stale·실제 C++ Play/Pause/Seek와 BP 위치1.1306563294967336. 독립 DFT/Bernstein1536관찰 최대8.44e-15·8회귀/등간격 값 보존·65k77.9ms 단발/FPS 아님. 신규 상주 리소스 없음·설치 검증 예정. CURVE_RESAMPLE_FILTER/WORK1756.
+
+1758–1759: 설치본 비등간격 필터 UI 34.35초·실제 C++/BP 시퀀스 및 별도 D3D11 41.70초 Calls1/Target1.1306563294967336. 명세4340/source1013/native21/30tests/vendor2/Player1604/Host1041 SHA·User10849 읽기 불변·링크/association/Versions1·이전193316305B 퇴역/lease0. 8회귀와 독립 수치 대조·NUFFT/FPS/누적 전체 완료 아님. USER_INSTALL1758.

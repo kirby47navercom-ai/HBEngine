@@ -1,24 +1,20 @@
 # 현재 인계 — 누적 엔진 구현 계속
 
-2026-10-23. 주인님/짚짱/자연존댓말. 여러구현후묶음검사·설치/백그라운드/Versions1/가벼움·AI친화/누적끝까지. goal재개답변에도tool blocked(조회반복불변)라현재턴계속·임의goal생성/완료/반복질문금지. ENGINE_STATUS78행/전체분모null. 전체UE/Unity분석·상용완료주장금지.
+2026-10-23. 주인님/짚짱/자연 존댓말. 여러 구현 후 묶음 검사·설치, 백그라운드, 가벼움·AI 친화성과 Versions 한 개 유지. ENGINE_STATUS 78행·전체 분모/완료율 null. 전체 UE/Unity 분석·상용 완성 주장 금지. goal 재개 답변에도 blocked였으므로 현재 승인 작업을 계속하고 임의 목표 생성·완료·반복 재개 질문 금지.
 
-## 확정1752
+## 확정 1759
 
-source4c088c9/record950d754/WORK1749, USER_INSTALL1751. 실제설치marker/context.state.installation우선. Versions/719a27d426a8375f. 4335명세/1008source/native21/30native/vendor2/Player1604/Host1041 SHA·User10849읽기불변·링크/association/Versions1/cachelease0·이전193154506B퇴역. sync1750/install1751/finish1752전체started재실행금지. 실제UI16.15초+D3D26.73초: Shot제작/drag/trim/source offset/자식doubleclick/중첩preview/clipA→B·연속transform·clean9호출7hit·AI revision/dryRun·BPPlay/Pause/Seek→Target7.5/ClipTarget.5. changedRuntimeOwners sequence-sampling.js/gameplay-preview.js는이전runtime영수증재사용제외. source10최장2.13초.
+source94bc273/record581ae4d/WORK1756, USER_INSTALL1758. 실제 설치 marker/context.state.installation 우선. Versions/cccdd925d31b9c71. 명세4340/source1013/native21/30 native tests/vendor2/Player1604/Host1041 SHA와 User10849 읽기 불변, 링크·association·Versions1·설치 cache lease0 확인. 이전 193316305B 퇴역. record1756/sync1757/install1758/finish1759는 started 이후 재실행 금지.
 
-1745–1749 clipById: 공용runtime-object-lookup 재사용/트랙별Weakowner·현재ID확인·실패기존findIndex/캐시현재배열길이이하·ID→index만·no negative/undefined준비0/firstclipindex없음. unique유효clip계약. 실제이전Git363a9d9 메서드와삭제/교체/reverse/rename/array교체·재생성동일. 256clip2048조회16ID idreads508928→6009·missing각1scan(첫확인1회추가), FPS아님.
-GameplayPreviewSource: AssetDocuments clean saved같은객체/표식에서만최초JSON재사용·WeakRef/서명1쌍·dirty/표식없음/데이터교체/Save는기존JSON비교·no-op무효화동일·dispose서명해제.16k키40clean스크럽40→1직렬화, dirty8→8. clean객체직접변경후dirty미갱신은계약밖. 역방향scrub재시뮬레이션/dirty직렬화남음. sourcekey962B/clipByIdowner3021B exact각1파일. SEQUENCE_PREVIEW_COST.md.
+1754–1756: 비등간격 곡선의 원본 보간 표본화·반사 FFT·원래 키 시간으로 값만 쓰기. 자동 평균 밀도/명시 sampleRate와 4..65536 작업 격자·초과 원자 거절. 저/고역 등간격 기본 경로 보존. Butterworth/Chebyshev I 대역 통과·제거, upperCutoff. Curve 우클릭·설정 유지·Sequence AI dryRun/stale/잘못된 대역 원자성·골격·BP Timeline·부분 베이크/Undo·저장 후 실제 C++ LevelSequence Play/Pause/Seek와 BP, 별도 D3D11 게임 Calls1/Target1.1306563294967336. 독립 DFT/Bernstein1536관찰 max8.44e-15·8회귀·65k77.9ms 단발(게임 FPS 아님). 새 상주 리소스 없음. CURVE_RESAMPLE_FILTER.md/정확 filterCurveFrequency 한 소유자. NUFFT/인과 IIR/다중 곡선 동시 편집 아님.
 
-WORK1741/USER1743: quaternion·visible/변수/nativeProperty/component의typed pre/post constant/cycle/oscillate·속성/AI키없는범위수정/null/dryRun/revision/UndoRedoSave·실제UI+D3D BPSeek4.5→5deg/false. parent/spawn/skeletal-state참조·event/clip시계보존. shortest slerp/이산키·사본·음수/끝/빈/한키·독립표25angle0. 각속도/누적외삽거절.
-WORK1734/USER1736: Chebyshev I low/high/ripple/logcoshfinite·짝수DC감쇠·Butterworth원Git동일/T3·T4 4644표 max8.9e-15·clone2→1·실제UI우클릭/Sequence·골격·BP/D3D.
-1728 ANGLEtrace nxXJ7S: path6878.6ms중D3DCompile6836.439ms/HLSL74151B/번역46.89ms·aux1692ms병렬. fixed후보emcanL6492ms단발/품질미검증→제품미채택. gpu.angle only/ownedport/16MiB/gzip·실패해제. GL_COMPILER_TRACE. shader/flag불변·해결/FPS/cold주장금지. 기존효과부족1302–1307/normalmerge783/SSA1086반복금지.
-WORK1724: Takecopy600→6/owner1scan1228800→13664/VM검증slot·프레임참조/실제Take128/D3D1000/restore0. WORK1714: CPPentry+relativeinclude/identity/allroutes·quoteinclude/missingpoll·실제CPP2worker/D3DA1B2. WORK1704: additive record71파일journal/CAS/UndoRedo/human보존/prefabrevision수리·CPP7/9/ActorKeep. WORK1692이전CPP17/render/network/montage.
+이전 확정: WORK1749/USER1751의 clipById 숫자 슬롯과 clean saved preview 서명 재사용(원 Git 동일/dirty 재직렬화/WeakRef 해제). WORK1741 쿼터니언·이산 값 범위 반복/왕복. WORK1734 Chebyshev I. WORK1724 Take 고정 대상 조회·일정 값 복사 절감. WORK1714 C++ 진입 H/S 상대 include identity. WORK1704 additive record 원자 이관. 해당 영수증 재독·검사 반복 불필요.
 
-## 다음
+## 다음 소유자
 
-RND08 globalDFclipmap/directional sky/bentnormal/방향lightmap/volume/HWRT; ANM06변경배열검증·골격/복원/warp/rig/비등간격필터; CPP01direct/destructive schema/개별typeasset/globaldiscovery/Name/alias/ref수명/wildcard; UI03실기기/asyncrollback. DF/lightmap소스읽기만새 구현없음. 후속은metadata반복수작업절감도고려.
-heavy/GUI/install전activeInstalledVersions. owned hidden probe/고유프로젝트·프로필·port만·사용자창금지. guard저장Node(inlinePS현재Versions절대경로는자기pwsh오인). CXX-o relative/jsonInclude·PS외부실패자동중단아님→Node순차. 실제경로먼저·추정이름/큰minified/nativebuild재귀inventory금지. retainTestEvidence/pruneTestArtifacts/nativecache32/Versions1. Git한글 author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com/AItrailer없음. 새agent금지. Mac/Xcode/Android폰없음.
+RND06 GL 초기 컴파일은 해결되지 않음: 1728 소유 ANGLE trace nxXJ7S의 path6878.6ms 중 D3DCompile6836.439ms/HLSL74151B, 번역46.89ms·aux1692ms 병렬. fixed 후보 emcanL6492ms 단발/품질 미검증으로 미채택. GL_COMPILER_TRACE.md. 1302–1307/normal merge783/SSA1086의 효과 부족 실험 반복 금지.
+RND08 전역 DF clipmap·bent normal/방향 하늘·방향 lightmap/volume/HWRT. ANM06 다중 곡선·골격 캡처/복원·이전 재생 상태·고급 rig/warp/attachment·Take presets·쿼터니언 각속도/누적 외삽. CPP01 direct/destructive schema·개별 type asset/global discovery·Name/alias/ref 수명/wildcard. UI03 실기기/async rollback. 상태 remaining과 최신 완료만 대조하고 context로 관련 소유자부터 찾기.
 
-## 대화 자동 이어가기
+heavy/GUI/install 전 activeInstalledVersions. 저장 Node로 guard(인라인 PS 현재 Versions 절대 경로는 자기 pwsh 오인). 사용자 창/탭/프로필/게임 원본 금지, owned hidden probe·고유 프로젝트/프로필/port만. retainTestEvidence/pruneTestArtifacts·native cache32·Versions1. CXX -o 상대 경로/jsonInclude·실패 전파는 Node 순차. 실제 경로 먼저 확인하고 native/build 전체 재귀 탐색 금지. Git 한글 author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com·AI trailer 없음. 새 agent 금지. Mac/Xcode/Android 실기기 없음.
 
-앱 heartbeat automationId=hbengine ACTIVE, 이 대화에서5분 간격 누적 구현 계속하도록 연결·view 확인. 별도 새 채팅/프로젝트/goal 생성 아님. 같은 자동 작업 중복 생성 금지. 사용자 중지/필수 외부 입력만 남을 때의 일시정지·검증/설치/용량/사용 중 보호 조건은 저장된 prompt 참조. goal 도구는 여전히blocked여서 재개 복구로 보고하지 않음.
+heartbeat hbengine ACTIVE·같은 대화 5분 간격. 중복 생성 금지. 사용자 중지 또는 실제 외부 입력만 남았을 때 일시정지 조건은 저장 prompt 참조. 같은 상태 보고 반복 없이 확정 구현·설치 결과만 알리기.

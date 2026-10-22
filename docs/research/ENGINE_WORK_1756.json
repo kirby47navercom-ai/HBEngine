@@ -1220,6 +1220,30 @@
     "workGrid": "4..65536 samples; radix2 reflected FFT at most131072, reused real/imag per channel; over-budget rejects before cloning; no silent downsampling",
     "dense": "65536 keys one run77.9ms, not FPS or total heap"
   },
-  "installationPending": true,
-  "scope": "Irregular authored-curve resampling and bandpass/bandstop in common UI/AI. Eight regressions and actual source authoring/C++ Play/Pause/Seek passed; installed gates pending."
+  "installationPending": false,
+  "scope": "Irregular authored-curve resampling and bandpass/bandstop in common UI/AI. Eight regressions and actual source authoring/C++ Play/Pause/Seek passed; installed gates pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1758.json",
+  "installedGates": [
+    {
+      "path": "native/build/curve-resample-1755-window-ULuEY7/acceptance.json",
+      "sha256": "b400d9d03709bfdf598dcbc2fac69285da8f28203bc8f3ee4e90d0e5be80dc01",
+      "scope": "Owned hidden real UI irregular curve bandstop/resampling with retained options and key times; range bake/Undo, AI invalid atomic/dryRun/stale, skeletal and floating BP Timeline. Actual C++ LevelSequence Play/Pause/Seek and BP use saved filtered keys; --player independently cooks/runs selected installed modules with D3D11 and native Calls1. No user profile/project or OS clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\cccdd925d31b9c71\\HBEngine.exe"
+      ],
+      "ms": 34346.693699999996
+    },
+    {
+      "path": "native/build/curve-resample-1755-window-743Dlm/acceptance.json",
+      "sha256": "550ef29549ee6aafdc36195122b44b8b754b48617e712aa60e4952c6db4f2412",
+      "scope": "Owned hidden real UI irregular curve bandstop/resampling with retained options and key times; range bake/Undo, AI invalid atomic/dryRun/stale, skeletal and floating BP Timeline. Actual C++ LevelSequence Play/Pause/Seek and BP use saved filtered keys; --player independently cooks/runs selected installed modules with D3D11 and native Calls1. No user profile/project or OS clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\cccdd925d31b9c71\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 41695.72529999999
+    }
+  ]
 }

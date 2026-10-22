@@ -1821,7 +1821,8 @@
         "docs/research/ENGINE_WORK_1749.json",
         "docs/research/USER_INSTALL_1751.json",
         "docs/CURVE_RESAMPLE_FILTER.md",
-        "docs/research/ENGINE_WORK_1756.json"
+        "docs/research/ENGINE_WORK_1756.json",
+        "docs/research/USER_INSTALL_1758.json"
       ]
     },
     {
@@ -2994,7 +2995,8 @@
         "docs/research/ENGINE_WORK_1749.json",
         "docs/research/USER_INSTALL_1751.json",
         "docs/CURVE_RESAMPLE_FILTER.md",
-        "docs/research/ENGINE_WORK_1756.json"
+        "docs/research/ENGINE_WORK_1756.json",
+        "docs/research/USER_INSTALL_1758.json"
       ]
     },
     {
@@ -3509,14 +3511,14 @@
     "first": 1754,
     "last": 1756,
     "receipt": "docs/research/ENGINE_WORK_1756.json",
-    "scope": "Irregular authored-curve resampling and bandpass/bandstop in common UI/AI. Eight regressions and actual source authoring/C++ Play/Pause/Seek passed; installed gates pending."
+    "scope": "Irregular authored-curve resampling, explicit sample rate and bandpass/bandstop connected across Curve/Sequence/skeletal/BP UI and AI. Eight regressions, independent DFT/Bernstein1536 observations, installed authoring and actual C++/BP LevelSequence controls plus independently cooked D3D11 Calls1/Target1.1306563294967336 passed. User preserved/Versions1."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1751.json",
-    "sourceCommit": "950d75424ce6b5246263d154d74c5c02393d84b3",
-    "bundleHash": "719a27d426a8375fff27f507265f9e229ed7e2cbf319f3a59e47c19d1401ce07",
+    "receipt": "docs/research/USER_INSTALL_1758.json",
+    "sourceCommit": "581ae4dbc35c55abbfa3609543b0639c322f8c9e",
+    "bundleHash": "cccdd925d31b9c714be068f7fd40f5981e846db41e9a9cbd5d62fc72ee2d8b50",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actual cutscene Shot creation/drag/trim/source offset/child double-click, clean saved forward preview signature reuse, animation A-to-B transition and continuous transform samples, revision/dryRun and actual BP Play. Separately cooked D3D11 game sees nested Target7.5 and ClipTarget0.5.10 source regressions, old Git clip identity and preview invalidation/work counts. Exact source1008/native21/30tests/vendor2/Player1604/Host1041 manifest verification. User preserved/Versions1. No FPS/total heap, dirty serialization or reverse simulation replay removal claim."
+    "scope": "Installed actual irregular Curve bandstop/resampling/retained settings, range bake and Undo, Sequence AI invalid-band atomic/dryRun/stale, skeletal and BP Timeline saves. Actual C++ LevelSequence Play/Pause/Seek and BP receive filtered Target1.1306563294967336; independently cooked D3D11 verifies native Calls1 and same position. Eight regressions, independent DFT/Bernstein1536 observations and old uniform parity. Exact source1013/native21/30tests/vendor2/Player1604/Host1041 manifest hashes. User preserved/Versions1. No NUFFT/causal IIR/FPS or total heap claim."
   }
 }

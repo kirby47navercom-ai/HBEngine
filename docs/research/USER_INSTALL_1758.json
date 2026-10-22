@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-irregular-and-band-curve-filters",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "581ae4dbc35c55abbfa3609543b0639c322f8c9e",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\cccdd925d31b9c71",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\cccdd925d31b9c71\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\cccdd925d31b9c71\\HBEngine.exe",
+  "bundleHash": "cccdd925d31b9c714be068f7fd40f5981e846db41e9a9cbd5d62fc72ee2d8b50",
+  "files": 4340,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4336,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\719a27d426a8375f",
+        "bytes": 193316305,
+        "manifestSHA256": "8f42ccfc1fe051501efd6ee14dfab3418d0ef0b965d3e376f32c90b3f93f9cc5"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T19:38:42.2438834Z",
+    "bytes": 193316305,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "cccdd925d31b9c71"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1013,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/curve-resample-1755-window-ULuEY7/acceptance.json",
+      "sha256": "b400d9d03709bfdf598dcbc2fac69285da8f28203bc8f3ee4e90d0e5be80dc01",
+      "scope": "Owned hidden real UI irregular curve bandstop/resampling with retained options and key times; range bake/Undo, AI invalid atomic/dryRun/stale, skeletal and floating BP Timeline. Actual C++ LevelSequence Play/Pause/Seek and BP use saved filtered keys; --player independently cooks/runs selected installed modules with D3D11 and native Calls1. No user profile/project or OS clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\cccdd925d31b9c71\\HBEngine.exe"
+      ],
+      "ms": 34346.693699999996
+    },
+    {
+      "path": "native/build/curve-resample-1755-window-743Dlm/acceptance.json",
+      "sha256": "550ef29549ee6aafdc36195122b44b8b754b48617e712aa60e4952c6db4f2412",
+      "scope": "Owned hidden real UI irregular curve bandstop/resampling with retained options and key times; range bake/Undo, AI invalid atomic/dryRun/stale, skeletal and floating BP Timeline. Actual C++ LevelSequence Play/Pause/Seek and BP use saved filtered keys; --player independently cooks/runs selected installed modules with D3D11 and native Calls1. No user profile/project or OS clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\cccdd925d31b9c71\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 41695.72529999999
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\cccdd925d31b9c71\\",
+    "elapsedMs": 63.03,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\cccdd925d31b9c71",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "cccdd925d31b9c714be068f7fd40f5981e846db41e9a9cbd5d62fc72ee2d8b50",
+      "installedAt": "2026-10-22T19:38:38.756Z",
+      "manifestFiles": 4340,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged native SDK21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4340,
+  "versions": [
+    "cccdd925d31b9c71"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1758-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/curve-resample1756-group.json",
+      "sha256": "9bf0fd0caf81f251d504072104d52400161ef4e8074883280264416c3a7f7c65",
+      "scope": "Eight grouped math/curve/runtime/AI checks and exact focused owner."
+    },
+    {
+      "path": "native/build/curve-resample-1755-window-X2Et3G/acceptance.json",
+      "sha256": "57ef0bc2136c2d200a8407ce17b8ecfcab01bce1056f16a14e77239074aa234f",
+      "scope": "Owned hidden real UI irregular curve bandstop/resampling with retained options and key times; range bake/Undo, AI invalid atomic/dryRun/stale, skeletal and floating BP Timeline. Actual C++ LevelSequence Play/Pause/Seek and BP use saved filtered keys; --player independently cooks/runs selected installed modules with D3D11 and native Calls1. No user profile/project or OS clipboard."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/curve-resample-1755-window-X2Et3G/acceptance.json",
+      "sha256": "57ef0bc2136c2d200a8407ce17b8ecfcab01bce1056f16a14e77239074aa234f",
+      "scope": "Owned hidden real UI irregular curve bandstop/resampling with retained options and key times; range bake/Undo, AI invalid atomic/dryRun/stale, skeletal and floating BP Timeline. Actual C++ LevelSequence Play/Pause/Seek and BP use saved filtered keys; --player independently cooks/runs selected installed modules with D3D11 and native Calls1. No user profile/project or OS clipboard."
+    }
+  ],
+  "scope": "Installed actual irregular Curve bandstop/resampling/retained settings, range bake and Undo, Sequence AI invalid-band atomic/dryRun/stale, skeletal and BP Timeline saves. Actual C++ LevelSequence Play/Pause/Seek and BP receive filtered Target1.1306563294967336; independently cooked D3D11 verifies native Calls1 and same position. Eight regressions, independent DFT/Bernstein1536 observations and old uniform parity. Exact source1013/native21/30tests/vendor2/Player1604/Host1041 manifest hashes. User preserved/Versions1. No NUFFT/causal IIR/FPS or total heap claim."
+}
