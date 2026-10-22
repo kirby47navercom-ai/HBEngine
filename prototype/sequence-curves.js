@@ -1,4 +1,4 @@
-import {curveModes,validCurveWeights,validCurveInfinity} from './curve-sampling.js';
+import {curveModes,curveInfinityModes,validCurveWeights,validCurveInfinity} from './curve-sampling.js';
 import {componentDefinitions} from './scene-components.js';
 export function sequenceCurveType(track){
  if(['position','rotation','scale'].includes(track.type))return 'vec3';
@@ -8,13 +8,15 @@ export function sequenceCurveType(track){
  return null;
 }
 export const sequenceCurveModes=curveModes.filter(m=>m!=='step');
+const repeatedModes=Object.freeze(['constant','cycle','oscillate']),heldModes=Object.freeze(['constant']);
+export function sequenceRangeModes(track){return sequenceCurveType(track)?track.quaternionInterpolation?repeatedModes:curveInfinityModes:['visible','variable','nativeProperty','component'].includes(track.type)?repeatedModes:heldModes;}
 export function validSequenceCurveTrack(track){
  const type=sequenceCurveType(track),shape=type==='float'?0:type==='vec2'?2:type==='vec3'?3:type==='color'?4:-1;
  const tangent=v=>shape===0?Number.isFinite(v)&&Math.abs(v)<=100000:Array.isArray(v)&&v.length===shape&&v.every(x=>Number.isFinite(x)&&Math.abs(x)<=100000);
- return validCurveInfinity(track,!!type&&!track.quaternionInterpolation)&&track.keys.every(k=>validCurveWeights(k,k.value)&&(k.interpolation===undefined||curveModes.includes(k.interpolation))&&(!type?['arriveTangent','leaveTangent','arriveWeight','leaveWeight'].every(p=>k[p]===undefined)&&(!k.interpolation||['linear','step','constant'].includes(k.interpolation)):['arriveTangent','leaveTangent'].every(p=>k[p]===undefined||tangent(k[p])))&&(!track.quaternionInterpolation||['arriveWeight','leaveWeight'].every(p=>k[p]===undefined)&&(!k.interpolation||['linear','constant','step'].includes(k.interpolation))));
+ return validCurveInfinity(track)&&['preInfinity','postInfinity'].every(p=>track[p]===undefined||sequenceRangeModes(track).includes(track[p]))&&track.keys.every(k=>validCurveWeights(k,k.value)&&(k.interpolation===undefined||curveModes.includes(k.interpolation))&&(!type?['arriveTangent','leaveTangent','arriveWeight','leaveWeight'].every(p=>k[p]===undefined)&&(!k.interpolation||['linear','step','constant'].includes(k.interpolation)):['arriveTangent','leaveTangent'].every(p=>k[p]===undefined||tangent(k[p])))&&(!track.quaternionInterpolation||['arriveWeight','leaveWeight'].every(p=>k[p]===undefined)&&(!k.interpolation||['linear','constant','step'].includes(k.interpolation))));
 }
 export function configureSequenceCurve(data,{track:key,key:at,interpolation,arriveTangent,leaveTangent,arriveWeight,leaveWeight,preInfinity,postInfinity}={}){
- const track=data.tracks.find(t=>t.id===key),keyEdit=[interpolation,arriveTangent,leaveTangent,arriveWeight,leaveWeight].some(v=>v!==undefined);if(!track||!sequenceCurveType(track)||(at!==undefined||keyEdit)&&(!Number.isInteger(at)||at<0||at>=track.keys.length)||at===undefined&&!keyEdit&&preInfinity===undefined&&postInfinity===undefined)throw Error('연속 값 트랙과 키를 선택하세요.');
+ const track=data.tracks.find(t=>t.id===key),keyEdit=[interpolation,arriveTangent,leaveTangent,arriveWeight,leaveWeight].some(v=>v!==undefined);if(!track||!sequenceCurveType(track)&&(at!==undefined||keyEdit||sequenceRangeModes(track).length===1)||(at!==undefined||keyEdit)&&(!Number.isInteger(at)||at<0||at>=track.keys.length)||at===undefined&&!keyEdit&&preInfinity===undefined&&postInfinity===undefined)throw Error('곡선 키 또는 범위를 설정할 값 트랙을 선택하세요.');
  const candidate={...track,keys:structuredClone(track.keys)},keys=candidate.keys,k=keys[at];if(interpolation!==undefined){k.interpolation=interpolation;if(['auto','clampedAuto','linear','constant','step'].includes(interpolation))for(const field of ['arriveTangent','leaveTangent','arriveWeight','leaveWeight'])delete k[field];}
  for(const [field,value]of Object.entries({arriveTangent,leaveTangent,arriveWeight,leaveWeight}))if(value!==undefined){if(value===null)delete k[field];else{k[field]=structuredClone(value);if(!['user','break'].includes(k.interpolation))k.interpolation='break';}}
  for(const[field,value]of Object.entries({preInfinity,postInfinity}))if(value!==undefined){if(value===null)delete candidate[field];else candidate[field]=value;}

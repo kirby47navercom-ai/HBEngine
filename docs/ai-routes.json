@@ -2047,6 +2047,24 @@
       "paths": [
         "prototype/curve-frequency-filter.js"
       ]
+    },
+    {
+      "id": "sequence-repeated-value-clock",
+      "keywords": [
+        "repeatedSequenceTime"
+      ],
+      "paths": [
+        "prototype/sequence-range-time.js"
+      ]
+    },
+    {
+      "id": "sequence-range-type-policy",
+      "keywords": [
+        "sequenceRangeModes"
+      ],
+      "paths": [
+        "prototype/sequence-curves.js"
+      ]
     }
   ]
 }
