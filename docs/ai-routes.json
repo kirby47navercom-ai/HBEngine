@@ -613,7 +613,9 @@
         "prototype/sequence-interval-selection.js",
         "docs/SEQUENCE_INTERVAL_SELECTION.md",
         "prototype/montage-clip-index.js",
-        "docs/MONTAGE_INTERVAL_COST.md"
+        "docs/MONTAGE_INTERVAL_COST.md",
+        "prototype/montage-timeline.js",
+        "docs/MONTAGE_TIMELINE_CACHE.md"
       ]
     },
     {
@@ -1701,6 +1703,15 @@
       ],
       "paths": [
         "prototype/animation-root-motion.js"
+      ]
+    },
+    {
+      "id": "montage-timeline",
+      "keywords": [
+        "MontageTimeline"
+      ],
+      "paths": [
+        "prototype/montage-timeline.js"
       ]
     }
   ]

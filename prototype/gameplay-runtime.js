@@ -1,4 +1,5 @@
 import {SequenceOrigin,sequenceTransformField} from './sequence-origin.js';
+import {MontageTimeline} from './montage-timeline.js';
 import {SequenceSectionSampler} from './sequence-interval-selection.js';
 import {loadSequenceTree,sequenceTreeNodes,sectionActive,sectionTime,sectionRanges} from './sequence-sections.js';
 import {SequenceComponentWriter} from './sequence-component-channels.js';
@@ -242,7 +243,7 @@ export function gameplaySystems(hooks){
       const current=()=>token===generation&&vm.active&&!vm.stopping&&vm.object(id)===object&&!object.destroying&&(montageEpochs.get(object)||0)===epoch&&(montageRequests.get(requestKey)||0)<=request;
       if(!current())return {};if(a.section&&!data.sections.some(s=>s.name===a.section))throw Error('몽타주 섹션이 없어요.');if(!data.clips.length||data.clips.some(c=>!c.clip))throw Error('몽타주에 클립을 지정하세요.');data.notifies.sort((a,b)=>a.time-b.time);montageRequests.set(requestKey,request);
       const player=await hooks.prepareMontage(id,data,vm);if(!current()){player.dispose();return {};}
-      try{hooks.attachMontage?.(id,player);const old=montages.get(id)?.get(group);player.prepareBlend(montageStates(id).filter(s=>s.group===group&&(s.retiring||s===old&&(s.data.blendOut||0)>0&&s.weight>0)).map(s=>s.player));if(old)await retireMontage(id,old,vm);if(!current()){player.dispose();return {};}hooks.attachMontage?.(id,player);const groups=montages.get(id)||new Map(),section=data.sections.find(s=>s.name===a.section)||[...data.sections].sort((a,b)=>a.time-b.time)[0],state={data,asset:a.asset,group,player,time:section.time,section:section.name,paused:false,next:new Map(),initial:true,age:0,weight:data.blendIn?0:1,finished:false,revision:0,instance:request};if(data.notifyStates?.length){
+      try{hooks.attachMontage?.(id,player);const old=montages.get(id)?.get(group);player.prepareBlend(montageStates(id).filter(s=>s.group===group&&(s.retiring||s===old&&(s.data.blendOut||0)>0&&s.weight>0)).map(s=>s.player));if(old)await retireMontage(id,old,vm);if(!current()){player.dispose();return {};}hooks.attachMontage?.(id,player);const groups=montages.get(id)||new Map(),timeline=new MontageTimeline(data),section=timeline.section(a.section)||timeline.sections[0],state={data,timeline,asset:a.asset,group,player,time:section.time,section:section.name,paused:false,next:new Map(),initial:true,age:0,weight:data.blendIn?0:1,finished:false,revision:0,instance:request};if(data.notifyStates?.length){
         const node={id:'montage',properties:{notifyStates:data.notifyStates}},owner={data:{nodes:[node]},nodes:new Map([[node.id,node]]),events:[]};
         state.notifyTrack=new AnimationNotifyTrack(owner,animationSyncLimits);state.notifyRecord={id:node.id,context:{key:JSON.stringify(['montage',id,group,request])},length:data.length,p:{loop:false},notifyStates:data.notifyStates,grouped:true,leader:true,group,epoch:0};
       }groups.delete(group);groups.set(group,state);montages.set(id,groups);player.sample(state.time,state.weight);debug(vm,id);return {};}catch(error){player.dispose();throw error;}
@@ -254,7 +255,7 @@ export function gameplaySystems(hooks){
       if(!state||state.retiring)throw Error('재생 중인 몽타주가 없어요.');
       if(command==='montagePause'){if(typeof a.paused!=='boolean')throw Error('몽타주 정지 자료형 오류');state.paused=a.paused;}
       else if(command==='montageSeek'){
-        if(!Number.isFinite(a.time)||a.time<0||a.time>state.data.length)throw Error('몽타주 시간 범위 오류');state.time=a.time;state.section=[...state.data.sections].filter(s=>s.time<=a.time).sort((a,b)=>b.time-a.time)[0].name;state.initial=false;state.finished=false;state.blendingOut=false;state.age=Math.max(state.age,state.data.blendIn||0);
+        if(!Number.isFinite(a.time)||a.time<0||a.time>state.data.length)throw Error('몽타주 시간 범위 오류');state.time=a.time;state.section=state.timeline.at(a.time).name;state.initial=false;state.finished=false;state.blendingOut=false;state.age=Math.max(state.age,state.data.blendIn||0);
       }else if(command==='montageNext'){if(!state.data.sections.some(s=>s.name===a.section)||a.next&&!state.data.sections.some(s=>s.name===a.next))throw Error('몽타주 섹션 이름 오류');state.next.set(a.section,a.next);}
       else{const section=state.data.sections.find(s=>s.name===a.section);if(!section)throw Error('몽타주 섹션이 없어요.');state.section=section.name;state.time=section.time;state.initial=true;state.finished=false;state.blendingOut=false;}
       if(command!=='montageNext')state.revision++;
@@ -272,14 +273,14 @@ export function gameplaySystems(hooks){
     const rows=[...machines];for(let index=0;index<rows.length;){const [id,runner]=rows[index];if(!vm.object(id)||machines.get(id)!==runner){index++;continue;}const plans=[];for(const [nextId,nextRunner] of rows.slice(index)){if(!vm.object(nextId)||machines.get(nextId)!==nextRunner)break;const plan=nextRunner.nativeTickRow(delta,vm,nextId);if(!plan)break;plans.push(plan);if(plan.barrier)break;}const used=plans.length>1?await vm.nativeCallbackGroup?.(plans):0;if(used){for(const [done] of rows.slice(index,index+used))debug(vm,done);index+=used;}else{await runner.tick(delta);debug(vm,id);index++;}}
   }
   function montageBlend(state,time,age,ordered){
-    const section=ordered.find(s=>s.name===state.section),end=ordered.find(s=>s.time>section.time)?.time??state.data.length,next=state.next.get(section.name)??section.next,auto=state.data.autoBlendOut!==false;
+    const section=state.timeline.section(state.section),end=state.timeline.end(section),next=state.next.get(section.name)??section.next,auto=state.data.autoBlendOut!==false;
     const blend=x=>{x=Math.max(0,Math.min(1,x));return state.data.blendCurve==='smooth'?x*x*(3-2*x):x;};let weight=blend(state.data.blendIn?age/state.data.blendIn:1);
     const fading=auto&&!next&&!state.data.loop&&state.data.blendOut&&(end-time)/state.data.rate<state.data.blendOut;if(fading)weight=Math.min(weight,blend((end-time)/state.data.rate/state.data.blendOut));return {weight,fading,auto};
   }
   async function montageNotifies(id,state,prev,destination,delta,weight,vm){
     if(!state.notifyTrack&&!state.data.notifies.length){state.initial=false;return true;}
     const pending=[],track=state.notifyTrack,record=state.notifyRecord,object=vm.object(id),revision=state.revision,epoch=record?.epoch;
-    for(const n of state.data.notifies)if(n.time>prev&&n.time<=destination||state.initial&&n.time===prev)pending.push({fraction:destination===prev?0:(n.time-prev)/(destination-prev),event:{name:n.event,time:n.time}});
+    for(const n of state.timeline.notifies(prev,destination,state.initial))if(n.time>prev&&n.time<=destination||state.initial&&n.time===prev)pending.push({fraction:destination===prev?0:(n.time-prev)/(destination-prev),event:{name:n.event,time:n.time}});
     if(track){Object.assign(record,{previous:prev,absolute:destination,weight,notifyWeight:weight});track.resolve(new Map([[record,weight]]),pending,delta);pending.sort((a,b)=>a.fraction-b.fraction);}
     state.initial=false;for(const item of pending){const args=item.event;state.time=Math.max(prev,Math.min(destination,args.time));
       try{if(item.window){track.acknowledge(args);await notifyEvents(id,state,vm,[args]);}else await event(vm,id,args.name,{asset:state.asset,group:state.group,time:args.time});}
@@ -294,10 +295,10 @@ export function gameplaySystems(hooks){
     montageMotions.clear();
     montageLoop:for(const [id,group,state] of [...new Set([...montages.keys(),...retiringMontages.keys()])].flatMap(id=>montageStates(id).map(state=>[id,state.group,state]))){
       const rootRanges=new Map(),object=vm.object(id),revision=state.revision;if(!object||!ownsMontage(id,state))continue;if(object.poolActive===false)continue;if(object.components?.some(c=>c.type==='MontagePlayer'&&c.properties?.enabled===false)){await finishMontage(id,state,vm,'disabled');continue;}if(state.stopBlend){const fade=state.stopBlend;fade.elapsed=Math.min(fade.duration,fade.elapsed+delta);const t=fade.elapsed/fade.duration,alpha=state.data.blendCurve==='smooth'?t*t*(3-2*t):t;state.weight=fade.weight*(1-alpha);if(fade.elapsed===fade.duration){await finishMontage(id,state,vm,fade.reason||'stopped');continue;}state.player.sample(state.time,state.weight);debug(vm,id);continue;}if(state.finished){state.player.sample(state.time,state.weight);continue;}
-      let remaining=state.paused?0:delta*state.data.rate,finished=false,budget=256;const ordered=[...state.data.sections].sort((a,b)=>a.time-b.time);
-      do{if(--budget<0)throw Error('몽타주 섹션 반복 한도 초과');const section=ordered.find(s=>s.name===state.section),end=ordered.find(s=>s.time>section.time)?.time??state.data.length,prev=state.time,step=Math.min(remaining,end-prev),destination=prev+step;remaining-=step;
+      let remaining=state.paused?0:delta*state.data.rate,finished=false,budget=256;const ordered=state.timeline.sections;
+      do{if(--budget<0)throw Error('몽타주 섹션 반복 한도 초과');const section=state.timeline.section(state.section),end=state.timeline.end(section),prev=state.time,step=Math.min(remaining,end-prev),destination=prev+step;remaining-=step;
         if(!await montageNotifies(id,state,prev,destination,step/state.data.rate,state.notifyTrack?montageBlend(state,destination,state.age+(state.paused?0:delta),ordered).weight:state.weight,vm))continue montageLoop;state.player.extractRange(prev,destination,montageBlend(state,(prev+destination)/2,state.age+(state.paused?0:delta)/2,ordered).weight,rootRanges);state.time=destination;state.initial=false;
-        if(state.time<end)break;const next=state.next.get(section.name)??section.next;if(next||state.data.loop){const destination=next?ordered.find(s=>s.name===next):ordered[0];state.section=destination.name;state.time=destination.time;state.initial=true;if(destination.time!==end){await cancelMontageNotifies(id,state,vm,'sectionChanged');if(!vm.active||montages.get(id)?.get(group)!==state||state.revision!==revision)continue montageLoop;}}else{finished=true;break;}
+        if(state.time<end)break;const next=state.next.get(section.name)??section.next;if(next||state.data.loop){const destination=next?state.timeline.section(next):ordered[0];state.section=destination.name;state.time=destination.time;state.initial=true;if(destination.time!==end){await cancelMontageNotifies(id,state,vm,'sectionChanged');if(!vm.active||montages.get(id)?.get(group)!==state||state.revision!==revision)continue montageLoop;}}else{finished=true;break;}
       }while(remaining>0);
       recordMontageMotion(id,state,rootRanges,delta);state.age+=state.paused?0:delta;const {weight,fading,auto}=montageBlend(state,state.time,state.age,ordered);state.weight=weight;
 
