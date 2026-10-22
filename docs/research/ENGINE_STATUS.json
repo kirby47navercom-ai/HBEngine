@@ -273,7 +273,8 @@
         "docs/research/USER_INSTALL_1839.json",
         "docs/research/ENGINE_WORK_1843.json",
         "docs/research/USER_INSTALL_1845.json",
-        "docs/research/ENGINE_WORK_1849.json"
+        "docs/research/ENGINE_WORK_1849.json",
+        "docs/research/USER_INSTALL_1851.json"
       ]
     },
     {
@@ -1893,7 +1894,8 @@
         "docs/research/USER_INSTALL_1839.json",
         "docs/research/ENGINE_WORK_1843.json",
         "docs/research/USER_INSTALL_1845.json",
-        "docs/research/ENGINE_WORK_1849.json"
+        "docs/research/ENGINE_WORK_1849.json",
+        "docs/research/USER_INSTALL_1851.json"
       ]
     },
     {
@@ -3123,7 +3125,8 @@
         "docs/research/USER_INSTALL_1839.json",
         "docs/research/ENGINE_WORK_1843.json",
         "docs/research/USER_INSTALL_1845.json",
-        "docs/research/ENGINE_WORK_1849.json"
+        "docs/research/ENGINE_WORK_1849.json",
+        "docs/research/USER_INSTALL_1851.json"
       ]
     },
     {
@@ -3661,14 +3664,14 @@
     "first": 1847,
     "last": 1849,
     "receipt": "docs/research/ENGINE_WORK_1849.json",
-    "scope": "Take game/unscaled/platform clocks, compensated tick sum and monotonic origin, safe existing-loop frozen-pose sampling during editor pause, integer non-drop frame origin/timecode, UI/preset clock-group inheritance/SaveAs/UndoRedo and AI partial overrides/state, optional portable recordingClock with relative keys and legacy omission. Nine final affected regressions and offline AI context passed. Source actual3D CPP SetTimeScale(0)/pause/recording/CPP replay checkpoint passed before own-recording input-lock preservation and visible readout harness correction. Final installed full current-source CPP/D3D11 gate pending."
+    "scope": "Installed game/unscaled/platform Take clocks and manual integer non-drop origin/timecode, compensated tick sum/monotonic platform time, safe existing-loop paused frozen-pose samples, UI/preset clock-group inheritance/UndoRedo/SaveAs and AI partial override/state. Actual CPP SetTimeScale(0) separates game/unscaled; paused unscaled freezes and platform advances sample count/time/visible readout. Relative sequence keys and optional recordingClock metadata preserve legacy and CPP playback; multilevel saved-parent Take presets, explicit FPS/tolerance/settings/sources group override, effective values/locked inherited inputs, value-preserving toggle/button-and-dropdown detach/UndoRedo and saved-parent refresh; complete-chain AI resolve/revision guard/shared apply and start; flat sequence/SaveAs/active recording snapshots surviving parent edit. Nine affected regressions plus exact installed actual3D UI/AI/human24fps/tolerance0/IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback with all four preset files excluded passed. Exact source1100/native21/30tests/vendor2/Player1604/Host1041/renderer hashes. User preserved/Versions1. Fractional/drop-frame/audio/external timecode/RTC/genlock/Custom/PlayEveryFrame capture, per-property inheritance and broader animation restore remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1845.json",
-    "sourceCommit": "b38448fafe29c9786e1c52c99db6c16fe060f3b6",
-    "bundleHash": "29e0bdfccd81785e3b18d9f9392813dc683943ce9b1787d60a639d4bb3b85519",
+    "receipt": "docs/research/USER_INSTALL_1851.json",
+    "sourceCommit": "e9fc2438a924012b29c3473216152f7b0bf13de2",
+    "bundleHash": "6d525e4373e9c1380accf6cb2d1e9e3499379b012757b9c8917b4c298ef4e5c6",
     "verified": true,
     "versions": 1,
-    "scope": "Installed multilevel saved-parent Take presets, explicit FPS/tolerance/settings/sources group override, effective values/locked inherited inputs, value-preserving toggle/button-and-dropdown detach/UndoRedo and saved-parent refresh; complete-chain AI resolve/revision guard/shared apply and start; flat sequence/SaveAs/active recording snapshots surviving parent edit. Eight affected regressions plus exact installed actual3D UI/AI/human24fps/tolerance0/IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback with all four preset files excluded passed. Exact source1094/native21/30tests/vendor2/Player1604/Host1041/renderer hashes. User preserved/Versions1. Per-property inheritance/clock/timecode/external capture and broader animation restore remain."
+    "scope": "Installed game/unscaled/platform Take clocks and manual integer non-drop origin/timecode, compensated tick sum/monotonic platform time, safe existing-loop paused frozen-pose samples, UI/preset clock-group inheritance/UndoRedo/SaveAs and AI partial override/state. Actual CPP SetTimeScale(0) separates game/unscaled; paused unscaled freezes and platform advances sample count/time/visible readout. Relative sequence keys and optional recordingClock metadata preserve legacy and CPP playback; multilevel saved-parent Take presets, explicit FPS/tolerance/settings/sources group override, effective values/locked inherited inputs, value-preserving toggle/button-and-dropdown detach/UndoRedo and saved-parent refresh; complete-chain AI resolve/revision guard/shared apply and start; flat sequence/SaveAs/active recording snapshots surviving parent edit. Nine affected regressions plus exact installed actual3D UI/AI/human24fps/tolerance0/IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback with all four preset files excluded passed. Exact source1100/native21/30tests/vendor2/Player1604/Host1041/renderer hashes. User preserved/Versions1. Fractional/drop-frame/audio/external timecode/RTC/genlock/Custom/PlayEveryFrame capture, per-property inheritance and broader animation restore remain."
   }
 }

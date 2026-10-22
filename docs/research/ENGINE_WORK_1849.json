@@ -1465,6 +1465,20 @@
   "testCorrections": [
     "Source screenshot showed a viewport although clock output DOM existed. Final installed harness explicitly selects the sequence dock, scrolls to output and checks actual hit visibility; no hidden DOM result is counted as visible UI proof."
   ],
-  "installationPending": true,
-  "scope": "Take game/unscaled/platform clocks, compensated tick sum and monotonic origin, safe existing-loop frozen-pose sampling during editor pause, integer non-drop frame origin/timecode, UI/preset clock-group inheritance/SaveAs/UndoRedo and AI partial overrides/state, optional portable recordingClock with relative keys and legacy omission. Nine final affected regressions and offline AI context passed. Source actual3D CPP SetTimeScale(0)/pause/recording/CPP replay checkpoint passed before own-recording input-lock preservation and visible readout harness correction. Final installed full current-source CPP/D3D11 gate pending."
+  "installationPending": false,
+  "scope": "Take game/unscaled/platform clocks, compensated tick sum and monotonic origin, safe existing-loop frozen-pose sampling during editor pause, integer non-drop frame origin/timecode, UI/preset clock-group inheritance/SaveAs/UndoRedo and AI partial overrides/state, optional portable recordingClock with relative keys and legacy omission. Nine final affected regressions and offline AI context passed. Source actual3D CPP SetTimeScale(0)/pause/recording/CPP replay checkpoint passed before own-recording input-lock preservation and visible readout harness correction. Final installed full current-source CPP/D3D11 gate pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1851.json",
+  "installedGates": [
+    {
+      "path": "native/build/take-clock-1848-window-zaUGRk/acceptance.json",
+      "sha256": "789a430ee4bd6fb11a0a98703764654e54a72e022eac9e7e5ff0de2b25dfc71f",
+      "scope": "Owned actual3D game/unscaled/platform clock and integer timecode authoring/inheritance/UndoRedo; actual CPP Clock SetTimeScale(0), paused unscaled freeze and platform frozen-pose sample/UI advancement; clock metadata and snapshots survive parent edit, relative keys and CPP/D3D playback; multilevel preset authoring/read, group override/disabled controls/UndoRedo, detach/Undo and explicit saved-parent refresh; complete-chain AI resolve/CAS apply and start, flattened UI load/SaveAs and recording snapshots surviving parent edit; compiled CPP Play/Seek/Stop and optional independent D3D11 output with all four editor-only preset files excluded. Fractional/drop-frame/audio/external timecode/genlock/per-channel inheritance/devices not claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\6d525e4373e9c138\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 107308.19820000001
+    }
+  ]
 }
