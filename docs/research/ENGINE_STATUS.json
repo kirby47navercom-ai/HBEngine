@@ -3378,11 +3378,11 @@
     "scope": "Snapshot-only weak native type lookup and context-correct record field/reference plans, old-code bug reproduced and fixed, source/ambiguity/mutable contracts and BP/sequence/take regressions. Selected external reading only; dedicated type assets/global registry pending. Actual installed CPP/UI/game planned."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1650.json",
-    "sourceCommit": "baf79e56245c92a27fd56649ea359fc8ece0fde4",
-    "bundleHash": "5cd702581441057a25b00cff1b54d93be3cc9a2c1cdd5b82a83ee8cc52235250",
+    "receipt": "docs/research/USER_INSTALL_1659.json",
+    "sourceCommit": "964c94c0c1199e933ab78c0334bffe129336f344",
+    "bundleHash": "e7e5824d1fb6851dc313ce75d8fa1165860548e12b01b1695dbef7ad5800cdb9",
     "verified": true,
     "versions": 1,
-    "scope": "Installed-root actual NetworkWorld/shared services/private sockets loaded A→B/preflight local correction/error recovery/async delete/disconnect/C/same-ID/old child state-owner-publication-delete/budget and authored protection. Installed actual2D editor Blueprint connection, A Begin/End once→B Begin once, B destroy/same-ID B Begin twice, new transform and bounded metadata source match. Prior11 lifetime/1025 fairness/Korean4MiB grouped proof reused. Native21/30tests/vendor2/Player1604/Host1041/rendering and montage owners unchanged; full manifest/User inventory/links/Versions1. No whole engine/FPS/phone/dedicated authority claim."
+    "scope": "Installed actual typed C++ editor metadata/default pages, nested record/enum/array fields, type picker UndoRedo, Make pin/default/instance editing, sourceReference save without copied type tables; compiled CPP value/Actor reference and same saved actual D3D11 game with exact source Player1604. Source snapshot512struct/514enum/2000lookups/1000record-array, valid shared frozen contexts/mutable plans and previous BP/sequence/take plus original-code failure proof reused. Native21/30tests/vendor2/Player1604/Host1041/render/network/montage/VM owners unchanged; full manifest/User inventory/links/Versions1. No dedicated type assets/global registry/whole engine/FPS/phone claim."
   }
 }

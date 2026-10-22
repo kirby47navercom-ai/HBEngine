@@ -1081,10 +1081,6 @@
     "prototype/network-state.js": "48513968e36f61a5c305995bc9151a8b150ca0c8a9e6bf2207fcfb000eb330bd",
     "prototype/network-inspection.js": "62f2e61f595dd4ac939eb86bee2cf810f4f538f7573fae71cf82bbf403b06e55"
   },
-  "pendingInstalledGates": [
-    "tools/check-native-type-index-1653.mjs --implementation-root installed",
-    "tools/check-native-type-1659-window.mjs --executable installed --package --expected-player-sha 07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
-  ],
   "focusedAI": {
     "indexedNativeStruct": {
       "elapsedMs": 157.34,
@@ -1109,8 +1105,28 @@
     "testOnlyChange": "Added explicit implementation-root import option and package SHA guard after source group; pure type-index gate rerun. Existing BP/sequence/take owners unchanged.",
     "remaining": "Dedicated enum/struct authoring assets, project-global registry, stable type IDs/schema migration and general class/alias/ref work remain; only selected official paragraphs registered."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1650.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1659.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/native-type-1659-window-w93RuW/acceptance.json",
+      "sha256": "a03f3b0846ed46b44c759bde5904ec5eea8d6d5c9c7790c391b56f9eecd11001",
+      "scope": "Actual owned editor shared C++ record metadata page/defaults, nested variables and enum/array edit, type picker UndoRedo, Make pin and defaults/instances, sourceReference save without tables, compiled CPP value/Actor reference and same saved actual D3D11 game. Snapshot cross-context/large lookup count is proved separately; native/renderer source unchanged.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e7e5824d1fb6851d\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 72525.3752
+    }
+  ],
+  "installedTypeIndex": {
+    "path": "native/build/native-type1653-installed-e7e5824d1fb6851d.json",
+    "sha256": "411de2839a4e0070d19149fae8a2bea262fca37d8a1b1ee19d07a4e78c421633",
+    "scope": "Snapshot-only lazy weak type lookup, previous linear identity/source ambiguity and1000 record-array validation; independently valid raw frozen registries share one parent but resolve distinct child field/ref schemas, mutable schema changes stay live, copy-on-write references and immutable field-plan reset. Table traversal counts, not FPS/heap/native compilation or dedicated type assets."
+  }
 }

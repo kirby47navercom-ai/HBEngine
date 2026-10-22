@@ -1,0 +1,159 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "964c94c0c1199e933ab78c0334bffe129336f344",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e7e5824d1fb6851d",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e7e5824d1fb6851d\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\e7e5824d1fb6851d\\HBEngine.exe",
+  "bundleHash": "e7e5824d1fb6851dc313ce75d8fa1165860548e12b01b1695dbef7ad5800cdb9",
+  "files": 4257,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4251,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5cd702581441057a",
+        "bytes": 191557244,
+        "manifestSHA256": "c1486a21e3f769f4a54222acdc63b723074b9773a1cc7058f394a8e4f46ffc89"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T13:26:49.3976683Z",
+    "bytes": 191557244,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "e7e5824d1fb6851d"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 926,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/native-type-1659-window-w93RuW/acceptance.json",
+      "sha256": "a03f3b0846ed46b44c759bde5904ec5eea8d6d5c9c7790c391b56f9eecd11001",
+      "scope": "Actual owned editor shared C++ record metadata page/defaults, nested variables and enum/array edit, type picker UndoRedo, Make pin and defaults/instances, sourceReference save without tables, compiled CPP value/Actor reference and same saved actual D3D11 game. Snapshot cross-context/large lookup count is proved separately; native/renderer source unchanged.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e7e5824d1fb6851d\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 72525.3752
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\e7e5824d1fb6851d\\",
+    "elapsedMs": 62.51,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\e7e5824d1fb6851d",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "e7e5824d1fb6851dc313ce75d8fa1165860548e12b01b1695dbef7ad5800cdb9",
+      "installedAt": "2026-10-22T13:26:46.036Z",
+      "manifestFiles": 4257,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged C++ metadata/native21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4257,
+  "versions": [
+    "e7e5824d1fb6851d"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1659-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/native-type1655-group.json",
+      "sha256": "2abc22bd34645027df1ae22cf455353d162df4b9485061dda8ea5ec7b30a51aa",
+      "scope": "Grouped new snapshot-index/context-cache proof and existing actual BP record functions/macros/array references/sequence/take/checkpoint/reload-layout/native-property semantics. Headless only; compiled CPP/GUI final gate separate."
+    },
+    {
+      "path": "native/build/native-type-index-1653.json",
+      "sha256": "ec2c05ed3e1cb454a64509bfe6e368a01d2bc1185efd4f9da692f07af90a7689",
+      "scope": "Snapshot-only lazy weak type lookup, previous linear identity/source ambiguity and1000 record-array validation; independently valid raw frozen registries share one parent but resolve distinct child field/ref schemas, mutable schema changes stay live, copy-on-write references and immutable field-plan reset. Table traversal counts, not FPS/heap/native compilation or dedicated type assets."
+    },
+    {
+      "path": "native/build/native-type1654-old-proof.json",
+      "sha256": "f44cb9f345803a6ab4a766d166aaaa7bb42521dd1421924e87f51faf0175280c",
+      "scope": "Actual prechange record module imported from Git source; independently valid shared frozen parent contexts show old child schema/reference-plan contamination. No native compile/FPS."
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1478-dsNhm2/acceptance.json",
+      "sha256": "e5a752759b4568553d487309d5448e83c62cbd8893e5d58b09f1b22bc31ec3d2",
+      "scope": "Existing record functions/macros/arrays/ref/sequence/take/owner storage/reload-layout checks; see individual result booleans."
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1483-vjAKV6/acceptance.json",
+      "sha256": "d979e0592f25ba2899d0c4050b1cd836642ca925222a8671007c67af9e602c9b",
+      "scope": "Existing record functions/macros/arrays/ref/sequence/take/owner storage/reload-layout checks; see individual result booleans."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1478-dsNhm2/acceptance.json",
+      "sha256": "e5a752759b4568553d487309d5448e83c62cbd8893e5d58b09f1b22bc31ec3d2",
+      "scope": "Existing record functions/macros/arrays/ref/sequence/take/owner storage/reload-layout checks; see individual result booleans."
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1483-vjAKV6/acceptance.json",
+      "sha256": "d979e0592f25ba2899d0c4050b1cd836642ca925222a8671007c67af9e602c9b",
+      "scope": "Existing record functions/macros/arrays/ref/sequence/take/owner storage/reload-layout checks; see individual result booleans."
+    }
+  ],
+  "scope": "Installed actual typed C++ editor metadata/default pages, nested record/enum/array fields, type picker UndoRedo, Make pin/default/instance editing, sourceReference save without copied type tables; compiled CPP value/Actor reference and same saved actual D3D11 game with exact source Player1604. Source snapshot512struct/514enum/2000lookups/1000record-array, valid shared frozen contexts/mutable plans and previous BP/sequence/take plus original-code failure proof reused. Native21/30tests/vendor2/Player1604/Host1041/render/network/montage/VM owners unchanged; full manifest/User inventory/links/Versions1. No dedicated type assets/global registry/whole engine/FPS/phone claim.",
+  "installedTypeIndex": {
+    "path": "native/build/native-type1653-installed-e7e5824d1fb6851d.json",
+    "sha256": "411de2839a4e0070d19149fae8a2bea262fca37d8a1b1ee19d07a4e78c421633",
+    "scope": "Snapshot-only lazy weak type lookup, previous linear identity/source ambiguity and1000 record-array validation; independently valid raw frozen registries share one parent but resolve distinct child field/ref schemas, mutable schema changes stay live, copy-on-write references and immutable field-plan reset. Table traversal counts, not FPS/heap/native compilation or dedicated type assets."
+  },
+  "version": 1,
+  "date": "2026-10-22T13:38:12.095Z",
+  "work": "docs/research/ENGINE_WORK_1657.json",
+  "distributionSync": "native/build/distribution-1658-sync.json",
+  "nativePlayerBuildReused": true,
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1650.json",
+  "hostReuseFrom": "docs/research/USER_INSTALL_1650.json"
+}
