@@ -1276,6 +1276,30 @@
     "maxVolumeBytes": 1048576,
     "work": "Actual editor first prepare3 generated/1 duplicate reused; repeated4 reused/no write; fresh editor session hits3/misses0/workerStarts0. Ordinary worker/volume/atlas allocations remain. No total heap/FPS/physical device claim."
   },
-  "installationPending": true,
-  "scope": "Editor static geometry distance-field pre-generation, shared bounded project cache, UI/AI revision/dryRun/cancel/conflict and actual GL/GPU/CPP flow plus fresh editor workerStarts0. Grouped regressions and final dialog/boundary recheck passed; installed editor and D3D game pending."
+  "installationPending": false,
+  "scope": "Editor static geometry distance-field pre-generation, shared bounded project cache, UI/AI revision/dryRun/cancel/conflict and actual GL/GPU/CPP flow plus fresh editor workerStarts0. Grouped regressions and final dialog/boundary recheck passed; installed editor and D3D game pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1784.json",
+  "installedGates": [
+    {
+      "path": "native/build/editor-distance-1780-M8PmSa/acceptance.json",
+      "sha256": "9785331bc77076fed92cf99a7b6879db147ec2e703296780a88a97c6da0959e8",
+      "scope": "Actual editor distance-field menu/dialog creates project CookCache from loaded static world geometry including hidden LOD levels; AI dryRun/stale/invalid/reuse with original document revision unchanged. No generated project files or reader injection. Production GL/GPU pixel/LOD/fallback checks, actual CPP/BP Stage5 and fresh editor session persistent cache workerStarts0. --player retains independent package D3D11 path. No headless FBX auto-cook/dedicated heightfield/clipmap/deformed/mobile-device/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\34313cb630bcc5a3\\HBEngine.exe"
+      ],
+      "ms": 34197.803
+    },
+    {
+      "path": "native/build/distance-world-1773-cJJ7tS/acceptance.json",
+      "sha256": "798d63b70242e2b104d15a0f1a6781ab14ce07358b0cfb3833163b61e73c72b6",
+      "scope": "Owned world mesh/terrain/foliage/all LOD automatic cook and authoring revision/dryRun/Undo/save. Editor custom production GL/GPU checks exact cooked adoption/no new worker, ambient-only pixels/direct unchanged, far/near LOD and edited-terrain fallback. Actual CPP/BP Configure/Far/Near/Disable/Enable; --player automatically packages and runs D3D11 with workerStarts0. Editor cooked reader injection is test-only, no general editor prebake/heightfield/FBX/clipmap/mobile device claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\34313cb630bcc5a3\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 28132.388199999994
+    }
+  ]
 }

@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-editor-distance-shared-cache",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "8dc1575c71bd51dcabd746c2f2dd463f075ffac0",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\34313cb630bcc5a3",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\34313cb630bcc5a3\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\34313cb630bcc5a3\\HBEngine.exe",
+  "bundleHash": "34313cb630bcc5a331e3e55c3db57554ac85794555478b0e590d47758b252448",
+  "files": 4364,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4358,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\273340d34a09fd4b",
+        "bytes": 193968409,
+        "manifestSHA256": "30e28d303ab7ec5732379a8d774b0bb7f6a0e1c4e0d8ed31fb488805787da714"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T20:55:05.4841115Z",
+    "bytes": 193968409,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "34313cb630bcc5a3"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1038,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/editor-distance-1780-M8PmSa/acceptance.json",
+      "sha256": "9785331bc77076fed92cf99a7b6879db147ec2e703296780a88a97c6da0959e8",
+      "scope": "Actual editor distance-field menu/dialog creates project CookCache from loaded static world geometry including hidden LOD levels; AI dryRun/stale/invalid/reuse with original document revision unchanged. No generated project files or reader injection. Production GL/GPU pixel/LOD/fallback checks, actual CPP/BP Stage5 and fresh editor session persistent cache workerStarts0. --player retains independent package D3D11 path. No headless FBX auto-cook/dedicated heightfield/clipmap/deformed/mobile-device/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\34313cb630bcc5a3\\HBEngine.exe"
+      ],
+      "ms": 34197.803
+    },
+    {
+      "path": "native/build/distance-world-1773-cJJ7tS/acceptance.json",
+      "sha256": "798d63b70242e2b104d15a0f1a6781ab14ce07358b0cfb3833163b61e73c72b6",
+      "scope": "Owned world mesh/terrain/foliage/all LOD automatic cook and authoring revision/dryRun/Undo/save. Editor custom production GL/GPU checks exact cooked adoption/no new worker, ambient-only pixels/direct unchanged, far/near LOD and edited-terrain fallback. Actual CPP/BP Configure/Far/Near/Disable/Enable; --player automatically packages and runs D3D11 with workerStarts0. Editor cooked reader injection is test-only, no general editor prebake/heightfield/FBX/clipmap/mobile device claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\34313cb630bcc5a3\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 28132.388199999994
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\34313cb630bcc5a3\\",
+    "elapsedMs": 65.94,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\34313cb630bcc5a3",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "34313cb630bcc5a331e3e55c3db57554ac85794555478b0e590d47758b252448",
+      "installedAt": "2026-10-22T20:55:02.035Z",
+      "manifestFiles": 4364,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Exact unchanged SDK21/Player1604/Host1041/30 repository test owners and shader math hashes verified. Changed app/cooked reader/scene are covered by new actual installed editor and packaged D3D11 gates; old runtime evidence is not reused for them.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4364,
+  "versions": [
+    "34313cb630bcc5a3"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1784-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/editor-distance1781-group.json",
+      "sha256": "a72599070a52547fa53adeda6db0b21b62e64ab3db9f803ca161dd57e0cf8719",
+      "scope": "Seven grouped cache/cook/world/LOD/primitives/AI checks and final dialog/cancellation boundary window recheck."
+    },
+    {
+      "path": "native/build/editor-distance-1780-oNvcwn/acceptance.json",
+      "sha256": "18af129a35597874ce67e04bd73ba27c975454a29d53d1d879e37c20896fb309",
+      "scope": "Actual editor distance-field menu/dialog creates project CookCache from loaded static world geometry including hidden LOD levels; AI dryRun/stale/invalid/reuse with original document revision unchanged. No generated project files or reader injection. Production GL/GPU pixel/LOD/fallback checks, actual CPP/BP Stage5 and fresh editor session persistent cache workerStarts0. --player retains independent package D3D11 path. No headless FBX auto-cook/dedicated heightfield/clipmap/deformed/mobile-device/FPS claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/editor-distance-1780-oNvcwn/acceptance.json",
+      "sha256": "18af129a35597874ce67e04bd73ba27c975454a29d53d1d879e37c20896fb309",
+      "scope": "Actual editor distance-field menu/dialog creates project CookCache from loaded static world geometry including hidden LOD levels; AI dryRun/stale/invalid/reuse with original document revision unchanged. No generated project files or reader injection. Production GL/GPU pixel/LOD/fallback checks, actual CPP/BP Stage5 and fresh editor session persistent cache workerStarts0. --player retains independent package D3D11 path. No headless FBX auto-cook/dedicated heightfield/clipmap/deformed/mobile-device/FPS claim."
+    }
+  ],
+  "scope": "Installed editor static geometry distance-field pre-generation UI/AI, bounded shared project CookCache and analytic package reuse. Actual menu/modal generation3/reuse1, AI dryRun/stale/invalid/reuse4 and cancellation/revision-conflict-before-store0 with original revision unchanged. No reader injection: GL/GPU cooked hits3/miss0/newworker0, ambient116/132/direct67 unchanged, near/far LOD/fallback; CPP/BP Stage5 and fresh editor session workerStarts0. Independent packaged D3D11 initial/re-enabled workerStarts0. Seven regressions plus final dialog/boundary recheck. Source1038/native21/30tests/vendor2/Player1604/Host1041 hashes. User preserved/Versions1. No unloaded asset/headless FBX auto-cook/dedicated heightfield/clipmap/deformed/mobile-device/FPS claim."
+}

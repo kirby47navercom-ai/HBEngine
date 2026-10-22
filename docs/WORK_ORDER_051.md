@@ -1084,3 +1084,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1775–1777: 설치본 월드 메쉬·삼각형 지형·폴리지 원본·월드LOD 모든 단계 자동 거리장 쿠킹. 실제 지형 문서 AI revision/dryRun/stale/Undo/저장과 GL/GPU 41.18초, 별도 D3D11 41.67초 통과. GL/GPU cooked hit3/miss0/newworker0·ambient116/132·direct67동일·LOD/fallback; CPP/BP Stage5, 패키지 초기/재활성 workerStarts0. 명세4357/source1031/native21/30tests/vendor2 SHA·User10849 읽기 불변·링크/association/Versions1·이전193785216B 정리/lease0. 7회귀+fixture 재확인, 셰이더/SDK 미변경. USER_INSTALL1776. 전용 높이장·FBX·clipmap·일반 editor prebake·실기기/FPS 검증으로 계산하지 않음. 누적 계속.
 
 1778–1782: 로드된 정적 기하 편집기 거리장 생성 UI/AI·프로젝트 공용 캐시·패키징 analytic 공유·취소/충돌/검증·새 편집기 세션 재사용 구현. 7회귀+최종 대화상자/경계 재검사·GL/GPU 실제 픽셀/CPP Stage5 통과. WORK1782, 설치 후 D3D 별도 확인 예정. 전체 누적 계속.
+
+1783–1785: 설치본 실제 거리장 UI/AI 생성·캐시 재사용·새 편집기 Worker0 34.20초, 별도 D3D11 28.13초 통과. GL/GPU pixels116/132·direct67동일·CPP/BP Stage5·package 초기/재활성 Worker0. 명세4364/source1038/native21/30tests/vendor2 SHA·User10849 읽기 불변·링크/association/Versions1·이전193968409B 정리/lease0. 7회귀+최종 영향 GUI 확인·변경app/cooked/scene은 과거runtime 재사용 제외. USER_INSTALL1784. 미로드/무화면FBX·전용높이장/변형체/clipmap·실기기/FPS 주장 없음. 누적 계속.

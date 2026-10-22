@@ -1441,7 +1441,8 @@
         "docs/research/ENGINE_WORK_1774.json",
         "docs/research/USER_INSTALL_1776.json",
         "docs/EDITOR_DISTANCE_CACHE.md",
-        "docs/research/ENGINE_WORK_1782.json"
+        "docs/research/ENGINE_WORK_1782.json",
+        "docs/research/USER_INSTALL_1784.json"
       ]
     },
     {
@@ -3026,7 +3027,8 @@
         "docs/research/ENGINE_WORK_1774.json",
         "docs/research/USER_INSTALL_1776.json",
         "docs/EDITOR_DISTANCE_CACHE.md",
-        "docs/research/ENGINE_WORK_1782.json"
+        "docs/research/ENGINE_WORK_1782.json",
+        "docs/research/USER_INSTALL_1784.json"
       ]
     },
     {
@@ -3336,7 +3338,8 @@
         "docs/research/ENGINE_WORK_1774.json",
         "docs/research/USER_INSTALL_1776.json",
         "docs/EDITOR_DISTANCE_CACHE.md",
-        "docs/research/ENGINE_WORK_1782.json"
+        "docs/research/ENGINE_WORK_1782.json",
+        "docs/research/USER_INSTALL_1784.json"
       ]
     },
     {
@@ -3550,14 +3553,14 @@
     "first": 1778,
     "last": 1782,
     "receipt": "docs/research/ENGINE_WORK_1782.json",
-    "scope": "Editor static geometry distance-field pre-generation, shared bounded project cache, UI/AI revision/dryRun/cancel/conflict and actual GL/GPU/CPP flow plus fresh editor workerStarts0. Grouped regressions and final dialog/boundary recheck passed; installed editor and D3D game pending."
+    "scope": "Installed editor static geometry distance-field pre-generation UI/AI, bounded shared project CookCache and analytic package reuse. Actual menu/modal generation3/reuse1, AI dryRun/stale/invalid/reuse4 and cancellation/revision-conflict-before-store0 with original revision unchanged. No reader injection: GL/GPU cooked hits3/miss0/newworker0, ambient116/132/direct67 unchanged, near/far LOD/fallback; CPP/BP Stage5 and fresh editor session workerStarts0. Independent packaged D3D11 initial/re-enabled workerStarts0. Seven regressions plus final dialog/boundary recheck. Source1038/native21/30tests/vendor2/Player1604/Host1041 hashes. User preserved/Versions1. No unloaded asset/headless FBX auto-cook/dedicated heightfield/clipmap/deformed/mobile-device/FPS claim."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1776.json",
-    "sourceCommit": "2ad16449f0479ec02ef41bbdb1b1d1ee3c0dc89a",
-    "bundleHash": "273340d34a09fd4b3a6e1a4ba0ed5f8f1825045b8b7659b265f1936835086c99",
+    "receipt": "docs/research/USER_INSTALL_1784.json",
+    "sourceCommit": "8dc1575c71bd51dcabd746c2f2dd463f075ffac0",
+    "bundleHash": "34313cb630bcc5a331e3e55c3db57554ac85794555478b0e590d47758b252448",
     "verified": true,
     "versions": 1,
-    "scope": "Installed world mesh/triangle terrain/foliage-source/all world LOD automatic distance-field cooking. Actual terrain document revision/dryRun/stale/Undo/save and production GL/GPU cooked hits/no initial new worker, ambient116/132/direct67 unchanged, LOD switch and edited terrain fallback. Actual CPP/BP Configure/Far/Near/Disable/Enable in editor and independently packaged D3D11; game verifies initial/re-enabled workerStarts0 and cooked field adoption. Seven regressions plus fixture recheck. Full source1031/native21/30tests/vendor2/Player1604/Host1041 manifest hashes; shaders/SDK unchanged. User preserved/Versions1. No dedicated heightfield/FBX/clipmap/editor prebake/mobile device/FPS claim."
+    "scope": "Installed editor static geometry distance-field pre-generation UI/AI, bounded shared project CookCache and analytic package reuse. Actual menu/modal generation3/reuse1, AI dryRun/stale/invalid/reuse4 and cancellation/revision-conflict-before-store0 with original revision unchanged. No reader injection: GL/GPU cooked hits3/miss0/newworker0, ambient116/132/direct67 unchanged, near/far LOD/fallback; CPP/BP Stage5 and fresh editor session workerStarts0. Independent packaged D3D11 initial/re-enabled workerStarts0. Seven regressions plus final dialog/boundary recheck. Source1038/native21/30tests/vendor2/Player1604/Host1041 hashes. User preserved/Versions1. No unloaded asset/headless FBX auto-cook/dedicated heightfield/clipmap/deformed/mobile-device/FPS claim."
   }
 }
