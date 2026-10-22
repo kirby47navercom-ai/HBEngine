@@ -10,7 +10,7 @@
 
 ## 다음 순서와 제약
 
-1458 feature커밋→WORK1465 원장→dist sync1466/최종설치1467: enum actualUI+package,2D legacyplayer,CPP상속창 회귀를묶어검사·User읽기SHA/명세/Versions1→receipt/한글커밋푸시. 그후누적잔여계속. native/build record1454/sync1455/install1456/finish1457·build-player1462/1464 started는끝난것재실행금지. 새스크립트/번호만.
+1458 feature커밋→WORK1465 원장→dist sync1466/최종설치1467: enum actualUI+package,2D legacyplayer,대규모 문서기록 회귀를묶어검사·User읽기SHA/명세/Versions1→receipt/한글커밋푸시. 그후누적잔여계속. native/build record1454/sync1455/install1456/finish1457·build-player1462/1464 started는끝난것재실행금지. 새스크립트/번호만.
 
 CPP01 남음: 전용enum에셋/일반struct reflection MakeBreakSetMembers·일반반환참조·signature/wildcard/문서간Timeline. 임의C++전처리/constexpr/alias·같은primary H/S의서로다른relativeinclude identity일반화도검토. ANM06전체snapshot순회/restore/큰변경배열·겹친clip공간색인/slider/region/pinch/가변행·리그/warp/혼합/부모골격Take. RND03lightmap혼합/2후보밖계층/대형HDR/변형/로브, RND06主GL7초/FXC/capture(1086/1308실험반복금지), UI03교차창/실터치/asyncrollback, NET01권한/예측/socket, RND08월드DF/HWRT/bake 등 ENGINE_STATUS78행·전체분모null.
 
