@@ -2191,6 +2191,35 @@
       "paths": [
         "prototype/take-settings-editor.js"
       ]
+    },
+    {
+      "id": "simple-animation-playback-state",
+      "keywords": [
+        "captureAnimationPlayback",
+        "restoreMixerPlayback",
+        "inspectAnimationPlayback"
+      ],
+      "paths": [
+        "prototype/animation-playback-state.js"
+      ]
+    },
+    {
+      "id": "sequence-animation-adapter",
+      "keywords": [
+        "animationAdapter"
+      ],
+      "paths": [
+        "prototype/gameplay-runtime.js"
+      ]
+    },
+    {
+      "id": "simple-animation-playback-query",
+      "keywords": [
+        "runtime.animationPlayback"
+      ],
+      "paths": [
+        "prototype/app.js"
+      ]
     }
   ]
 }

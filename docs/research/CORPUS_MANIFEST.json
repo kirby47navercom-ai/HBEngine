@@ -422,6 +422,11 @@
           "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Proxy-Volume.html",
           "record": "docs/SPHERE_REFLECTION_PROBES.md",
           "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity.cn/Packages/com.unity.timeline%401.8/manual/insp-clip-anim.html",
+          "record": "docs/ANIMATION_PLAYBACK_RESTORE.md",
+          "scope": "1794–1798 focused completion/playback reading; auxiliary4.27/Timeline1.8.4; full corpus discovery and strict independent analysis remain open"
         }
       ]
     },
@@ -629,6 +634,16 @@
           "record": "docs/RENDERING_100.md",
           "readScope": "Browser returned only heading; own body unread.",
           "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-track?application_version=4.27",
+          "record": "docs/ANIMATION_PLAYBACK_RESTORE.md",
+          "scope": "1794–1798 focused completion/playback reading; auxiliary4.27/Timeline1.8.4; full corpus discovery and strict independent analysis remain open"
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/unreal-engine/keeping-or-restoring-changes-made-by-sequencer?application_version=4.27",
+          "record": "docs/ANIMATION_PLAYBACK_RESTORE.md",
+          "scope": "1794–1798 focused completion/playback reading; auxiliary4.27/Timeline1.8.4; full corpus discovery and strict independent analysis remain open"
         }
       ]
     },

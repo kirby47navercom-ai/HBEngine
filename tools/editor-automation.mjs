@@ -146,6 +146,7 @@ export const editorMethods={
   'state.remove':{params:{path:'상태 머신 문서',expectedRevision:'현재 revision',state:'상태 ID (하위 트리·연결 함께 삭제)',dryRun:'검증만'}},
   'editor.shortcuts.get':{description:'단축키 명령·프로필·revision 조회. commands의 scope는 창 문맥, when=notify는 선택한 몽타주 구간/핸들, repeat는 누른 채 반복 가능한 이동 명령이에요.',params:{}},
   'editor.shortcuts.set':{params:{data:'version/active/profiles/bindings 전체 JSON',expectedRevision:'get의 revision',dryRun:'검증만'}},
+  'runtime.animationPlayback':{description:'단순 애니메이션 시계·소유/복원 상태의 읽기 전용 조회',params:{target:{type:'string',optional:true},limit:{type:'integer',optional:true,default:64,min:1,max:512}},result:'total, rows(actor/type/source/time/length/loop/controlled), restoration counters, unsupported graph/montage/fade history; no private snapshots'},
   'runtime.sequenceOwnership':{description:'활성 시퀀스 값 소유권의 요청 시 진단',params:{},result:'owners, channels, leases; sampled TRS/visible/camera/time/light/material only'},
   'runtime.sequencePose':{description:'현재 모델의 실제 골격 로컬 포즈를 요청 시 조회; 자동 프레임 샘플링/추가 GPU 읽기 없음',params:{target:'오브젝트 ID',offset:'선택: 시작 0',limit:'선택: 페이지 64, 최대512'},result:'actor, controlled, time, total, offset, bones[{bone,position,quaternion,scale}], nextOffset'},
   'editor.synchronize':{description:'대기·진행 중 프리팹 동기화를 마치고 문서 기준 조회. 자동 저장·Undo 생성 없음; 저장도 같은 장벽을 사용',params:{}},

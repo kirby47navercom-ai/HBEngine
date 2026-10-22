@@ -1928,6 +1928,7 @@ const editorCommandMethods={
   'runtime.take.state':()=>runtimeServices?.takeState()||{recording:false},
   'runtime.take.finish':()=>runtimeTakeOperation('finish'),
   'runtime.sequenceTree':params=>{if(!running||!runtimeServices)throw Error('게임 실행 중에 조회하세요.');return runtimeServices.sequenceTreeState(params.target,params);},
+  'runtime.animationPlayback':params=>{if(!running||!runtimeServices)throw Error('게임 실행 중에 조회하세요.');return runtimeServices.animationPlaybackState(params);},
   'runtime.sequenceOwnership':()=>{if(!running||!runtimeServices)throw Error('게임 실행 중에 조회하세요.');return runtimeServices.sequenceOwnership();},
   'runtime.sequencePose':({target,offset,limit})=>{if(!running||!runtimeServices)throw Error('게임 실행 중에 조회하세요.');return runtimeServices.sequencePoseState(target,{offset,limit});},
   'runtime.network':params=>runtimeServices?.networkState(params)||{status:'offline'},
