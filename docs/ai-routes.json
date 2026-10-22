@@ -611,7 +611,9 @@
         "prototype/curve-clipboard.js",
         "prototype/curve-clipboard-authoring.js",
         "prototype/sequence-interval-selection.js",
-        "docs/SEQUENCE_INTERVAL_SELECTION.md"
+        "docs/SEQUENCE_INTERVAL_SELECTION.md",
+        "prototype/montage-clip-index.js",
+        "docs/MONTAGE_INTERVAL_COST.md"
       ]
     },
     {
@@ -1681,6 +1683,24 @@
       ],
       "paths": [
         "prototype/sequence-interval-selection.js"
+      ]
+    },
+    {
+      "id": "montage-clip-index",
+      "keywords": [
+        "MontageClipIndex"
+      ],
+      "paths": [
+        "prototype/montage-clip-index.js"
+      ]
+    },
+    {
+      "id": "append-root-motion",
+      "keywords": [
+        "appendMotion"
+      ],
+      "paths": [
+        "prototype/animation-root-motion.js"
       ]
     }
   ]

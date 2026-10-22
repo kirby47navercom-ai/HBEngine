@@ -11,6 +11,7 @@ import {defaultBlueprint} from '../prototype/blueprint-model.js';
 import {defaultsForObject,installBlueprintComponents,makeSceneComponent} from '../prototype/scene-components.js';
 
 const instance={id:'Instance',kind:'empty',components:[makeSceneComponent('MeshRenderer',{mesh:'Custom.gltf'})]},template=createAsset('blueprint','BP_Template'),templates=[{self:instance.id,root:template}];
+template.components.push(makeSceneComponent('MeshRenderer'));
 installBlueprintComponents([instance],templates);assert.equal(instance.components.find(c=>c.type==='MeshRenderer').properties.mesh,'Custom.gltf','attaching gameplay C++/BP preserves authored model');
 const mesh=instance.components.find(c=>c.type==='MeshRenderer'),defaults=template.components.find(c=>c.type==='MeshRenderer');defaults.properties.material='ClassMaterial';installBlueprintComponents([instance],templates);assert.equal(mesh.properties.material,'ClassMaterial','unchanged inherited defaults follow class changes');mesh.properties.material='InstanceMaterial';defaults.properties.material='NewClassMaterial';installBlueprintComponents([instance],templates);assert.equal(mesh.properties.material,'InstanceMaterial','explicit instance override survives class updates');assert.equal(mesh.properties.mesh,'Custom.gltf');
 

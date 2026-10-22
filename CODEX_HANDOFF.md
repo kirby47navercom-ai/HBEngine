@@ -14,7 +14,9 @@
 
 ## 1540–1546 완료와 다음
 
-IntervalSelectionIndex: Play snapshot 승자구간sweep/heap, half-open·원배열우선·32미만단순경로·point이진조회무할당. SequenceSampler audio/animation clip조회·SequenceSectionSampler shot row/start/id우선/경계사전정렬·부모당현재shot1회. 자료형/포맷/제작한도변경없음. group1542 7검사통과: random/65536 sparse16비교0방문/전체overlap1구간·35*32rangeparity·유효64clip실행·기존15nested/3애니소유/140event·같은저장D3D. docs/SEQUENCE_INTERVAL_SELECTION.md·focus1owner3659B. a49430d/WORK1543/recordee4b0d0·sync1544/install1545/finish1546 완료·started재실행금지. 다음몽타주clip/root모션조회최적화와누적목표. 제품변경뒤해시전제재사용주의.
+IntervalSelectionIndex: Play snapshot 승자구간sweep/heap, half-open·원배열우선·32미만단순경로·point이진조회무할당. SequenceSampler audio/animation clip조회·SequenceSectionSampler shot row/start/id우선/경계사전정렬·부모당현재shot1회. 자료형/포맷/제작한도변경없음. group1542 7검사통과: random/65536 sparse16비교0방문/전체overlap1구간·35*32rangeparity·유효64clip실행·기존15nested/3애니소유/140event·같은저장D3D. docs/SEQUENCE_INTERVAL_SELECTION.md·focus1owner3659B. a49430d/WORK1543/recordee4b0d0·sync1544/install1545/finish1546 완료·started재실행금지. 다음1552 기록/설치와누적목표. 제품변경뒤해시전제재사용주의.
+
+1547–1551 WIP: MontageClipIndex(평균slot32+/8slot이하)·희소point/range·원순서/끝프레임·작음/다슬롯/겹침/dense/reentrant기존경로. appendMotion stackmath로Q3/V1/slice1명시생성제거·1200수치/alias+1000연쇄동치. real64clip2slot/원위치/pose재사용·start읽기132→2·root/2D3D30/60/120/notify/replace/cost 그룹8통과. 오래된montage검사Actor자동Mesh가정은fixture에명시수정. 실제64clip저장BP/paused126.5/원위치[10,3,0]/같은D3D통과. 다음AI→WORK1552/commit→sync1553/install1554/finish1555.
 
 ## 누적 잔여
 
