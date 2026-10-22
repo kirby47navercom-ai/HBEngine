@@ -1,0 +1,154 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "f5e3dbb9764137afbb42219803b6efc8bcd44215",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9a42fa3f6ade2e62",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\9a42fa3f6ade2e62\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\9a42fa3f6ade2e62\\HBEngine.exe",
+  "bundleHash": "9a42fa3f6ade2e6222e84df6c8a27dfe2ce1ab62ae7f18536d5e4707be1f9b69",
+  "files": 4245,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4245,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ac3d3b6e0614aa99",
+        "bytes": 191391927,
+        "manifestSHA256": "57d5f99f18ef6afcac9f4d56b20cc2f11f35f305c7a3e9855edf74831800e1c5"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T12:21:56.9917823Z",
+    "bytes": 191391927,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "9a42fa3f6ade2e62"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 914,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/montage-slots-1630-window-WRkpPU/acceptance.json",
+      "sha256": "452e2fe3bc90c7a1443a1e8ac555926562664323c2c8ca6b545daebcfecc38d1",
+      "scope": "Owned hidden actual editor saves 512-clip/16-slot/root-motion montage and Blueprint Play/Pause/Seek to sparse last clip; Actor original placement preserved and ready continuation reached. Optional same saved Windows D3D11 game. No user project/profile, renderer matrix, actual mobile or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\9a42fa3f6ade2e62\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 34003.6165
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\9a42fa3f6ade2e62\\",
+    "elapsedMs": 61.31,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\9a42fa3f6ade2e62",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "9a42fa3f6ade2e6222e84df6c8a27dfe2ce1ab62ae7f18536d5e4707be1f9b69",
+      "installedAt": "2026-10-22T12:21:53.565Z",
+      "manifestFiles": 4245,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged C++ metadata/native21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4245,
+  "versions": [
+    "9a42fa3f6ade2e62"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1639-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/montage1631-group.json",
+      "sha256": "867690c3f27cb962233991fb8956c1089be77cf95616aa4501fdf957502aa4f3",
+      "scope": "Grouped new many-slot/schedule/old root-index and real graph/montage/replacement/sprite/placed-owner regressions. CPU/headless only; actual editor/game is separate."
+    },
+    {
+      "path": "native/build/montage-slots-1628.json",
+      "sha256": "34d62ca6dbd149121faab33cd6422d92a31609f2c549c312c4e4fd455275376c",
+      "scope": "9/16/64/256-slot shuffled schedules up to8192 clips compared against direct original traversal for point/gap/final/range/noncommutative root composition/order and scratch/reentrant/dispose/low density/overlap policy. Real compiled16-slot animation program samples/root extraction with pose buffers and placed owner preserved. Full-range dense fallback skips all binary queries. Counts are source reads/comparisons, not FPS/heap/GPU/mobile."
+    },
+    {
+      "path": "native/build/montage-schedule-1629.json",
+      "sha256": "8950dbaf6b97ef7379214cc5fc14685a7ad29ecb93951ab5f0a088d5217cf743",
+      "scope": "Pure authored montage validation and deterministic old/new overlap predicate/counted slot access. No GUI/root/shader/FPS/heap claim."
+    },
+    {
+      "path": "native/build/montage-index-root-1549.json",
+      "sha256": "a0add394ae66eb724dbf81650f6405c14c133957dec994cd8fb1cb3803532b7a",
+      "scope": "Montage index and direct player parity with deterministic fake pose/root sampler; independent old Three math reference. Real graph/montage/root/notify regressions run in the group."
+    },
+    {
+      "path": "native/build/montage1637-graph.json",
+      "sha256": "e1c458c2e5644b3a3d7bdc4012c47a81601f45e5a2af1b59694c7b399d92f0af",
+      "scope": "Real compiled16-slot graph linked to512-clip montage overlay, graph validation/tick and placed owner preserved. Headless fixture correction before actual window re-run."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed actual editor connected16-slot AnimationGraph plus512-clip/16-slot montage document/save, Blueprint Play/Pause/Seek62.5, original Owner[10,3,0] retained, runtime snapshot16 slots and same saved actual Windows D3D11 game with exact source Player1604 SHA. Source direct/compiled9..256slots/8192clips, overlap256 seeds and slot/start/apply query counters, original root/index/graph/replacement/2D sprite suite reused. Native21/30tests/vendor2/Player1604/Host1041/rendering11owners unchanged; full manifest/User inventory/links/Versions1. No whole engine/FPS/phone claim.",
+  "version": 1,
+  "date": "2026-10-22T12:26:57.939Z",
+  "work": "docs/research/ENGINE_WORK_1633.json",
+  "distributionSync": "native/build/distribution-1638-sync.json",
+  "nativePlayerBuildReused": true,
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1625.json",
+  "hostReuseFrom": "docs/research/USER_INSTALL_1625.json",
+  "fixtureCorrection": {
+    "revision": "ce1d5aeebbb0edd653a5155ef7822f8116c2a4d7",
+    "failedInstalledGate": "native/build/montage-slots-1630-window-H8W0UJ/failure.json",
+    "failedInstallAudit": "native/build/user-install-1635-audit.json",
+    "reason": "Original64/default-slot fixture copied to multiple slots without required AnimationGraph. Production correctly rejected setup. Authored reachable16-slot graph/component now attached; real linked graph tick preserves placed owner. No production bypass or native/shader rebuild.",
+    "changedSources": [
+      "tools/check-montage-slots-1630-window.mjs",
+      "tools/check-montage-graph-1637.mjs",
+      "docs/MONTAGE_INTERVAL_COST.md"
+    ]
+  }
+}

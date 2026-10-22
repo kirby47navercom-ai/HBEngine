@@ -3359,11 +3359,11 @@
     "scope": "Many-slot montage index without8-slot cutoff, timeline clip authoring without fixed256 ceiling, sorted overlap validation, whole-range query bypass, first-active apply and cached slot metadata. Pure/direct/real compiled animation parity and existing2D/replacement suite; actual editor/game planned."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1625.json",
-    "sourceCommit": "794f251de86fef8f5fa92ab473edecc662a0b1ab",
-    "bundleHash": "96090f1476afa4b0aceea020128031916829fcb3fc89a3a86e640dd1eb8c4235",
+    "receipt": "docs/research/USER_INSTALL_1639.json",
+    "sourceCommit": "f5e3dbb9764137afbb42219803b6efc8bcd44215",
+    "bundleHash": "9a42fa3f6ade2e6222e84df6c8a27dfe2ce1ab62ae7f18536d5e4707be1f9b69",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actual editor UV→indirect bake/UndoRedo/save→BP→compiled CPP Bool/Float/String calls, intensity.5/0/2, shadow/motion and persistent in-place counters; authored Stop/placement preserved; same saved final D3D11 game uses intensity.5 and at least4 in-place changes. Also real GL PMREM12 captures/static no recapture/shadow/lightmap/normal/time changes/manual release/dispose. Source delayed scene build/GI0 source/range/enum/overrides/identity/fallback and legacy246+54 shared-data proofs reused. Native21/30tests/vendor2/Player1604/Host1041/7shader owner unchanged; full manifest/User inventory/links/Versions1. No whole engine/FPS/phone claim."
+    "scope": "Installed actual editor connected16-slot AnimationGraph plus512-clip/16-slot montage document/save, Blueprint Play/Pause/Seek62.5, original Owner[10,3,0] retained, runtime snapshot16 slots and same saved actual Windows D3D11 game with exact source Player1604 SHA. Source direct/compiled9..256slots/8192clips, overlap256 seeds and slot/start/apply query counters, original root/index/graph/replacement/2D sprite suite reused. Native21/30tests/vendor2/Player1604/Host1041/rendering11owners unchanged; full manifest/User inventory/links/Versions1. No whole engine/FPS/phone claim."
   }
 }

@@ -1047,9 +1047,6 @@
     "prototype/reflection-probes.js": "9d43d8e66f696a4c503345c70e75e6d3078d95a6dfc28b0ba29bbd87acb49892",
     "prototype/reflection-capture-revision.js": "92c2cbcc50598d9e069a2e63f9ab7ec4cbf94d326e8fe2936b95c6c2ed35d1c4"
   },
-  "pendingInstalledGates": [
-    "tools/check-montage-slots-1630-window.mjs --executable installed --package --expected-player-sha 07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
-  ],
   "focusedAI": {
     "MontageClipIndex": {
       "elapsedMs": 155.62,
@@ -1073,8 +1070,8 @@
     "fixtureRepair": "First real512-clip program fixture hit old authoring256 validation ceiling, exposing a production mismatch. Removed fixed timeline-count ceiling and O(N²) overlap validation together; did not change it to an arbitrary larger count. Source64 budget remains separate.",
     "scope": "New source pure/headless/real animation-program gates do not claim final actual GUI/D3D until installation gate."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1625.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1639.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "exhaustiveUEUnity": false,
   "fixtureCorrection": {
@@ -1087,5 +1084,20 @@
       "tools/check-montage-graph-1637.mjs",
       "docs/MONTAGE_INTERVAL_COST.md"
     ]
-  }
+  },
+  "installedGates": [
+    {
+      "path": "native/build/montage-slots-1630-window-WRkpPU/acceptance.json",
+      "sha256": "452e2fe3bc90c7a1443a1e8ac555926562664323c2c8ca6b545daebcfecc38d1",
+      "scope": "Owned hidden actual editor saves 512-clip/16-slot/root-motion montage and Blueprint Play/Pause/Seek to sparse last clip; Actor original placement preserved and ready continuation reached. Optional same saved Windows D3D11 game. No user project/profile, renderer matrix, actual mobile or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\9a42fa3f6ade2e62\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 34003.6165
+    }
+  ]
 }
