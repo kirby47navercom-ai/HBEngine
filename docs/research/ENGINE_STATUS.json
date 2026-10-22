@@ -1436,7 +1436,8 @@
         "docs/MESH_RENDERER_LIVE_PROPERTIES.md",
         "docs/research/ENGINE_WORK_1623.json",
         "docs/DISTANCE_WORLD_COOKING.md",
-        "docs/research/ENGINE_WORK_1774.json"
+        "docs/research/ENGINE_WORK_1774.json",
+        "docs/research/USER_INSTALL_1776.json"
       ]
     },
     {
@@ -3016,7 +3017,8 @@
         "docs/research/ENGINE_WORK_1767.json",
         "docs/research/USER_INSTALL_1769.json",
         "docs/DISTANCE_WORLD_COOKING.md",
-        "docs/research/ENGINE_WORK_1774.json"
+        "docs/research/ENGINE_WORK_1774.json",
+        "docs/research/USER_INSTALL_1776.json"
       ]
     },
     {
@@ -3321,7 +3323,8 @@
         "docs/research/ENGINE_WORK_1749.json",
         "docs/research/USER_INSTALL_1751.json",
         "docs/DISTANCE_WORLD_COOKING.md",
-        "docs/research/ENGINE_WORK_1774.json"
+        "docs/research/ENGINE_WORK_1774.json",
+        "docs/research/USER_INSTALL_1776.json"
       ]
     },
     {
@@ -3535,14 +3538,14 @@
     "first": 1771,
     "last": 1774,
     "receipt": "docs/research/ENGINE_WORK_1774.json",
-    "scope": "World mesh/triangle terrain/foliage-source/all world LOD distance-field cooking with bounded source/geometry. Seven grouped checks plus Node fixture recheck, actual source GL/GPU pixels/cooked hits/no initial worker/fallback and editor CPP/BP LOD/release flow passed; installed D3D game pending."
+    "scope": "Installed world mesh/triangle terrain/foliage-source/all world LOD automatic distance-field cooking. Actual terrain document revision/dryRun/stale/Undo/save and production GL/GPU cooked hits/no initial new worker, ambient116/132/direct67 unchanged, LOD switch and edited terrain fallback. Actual CPP/BP Configure/Far/Near/Disable/Enable in editor and independently packaged D3D11; game verifies initial/re-enabled workerStarts0 and cooked field adoption. Seven regressions plus fixture recheck. Full source1031/native21/30tests/vendor2/Player1604/Host1041 manifest hashes; shaders/SDK unchanged. User preserved/Versions1. No dedicated heightfield/FBX/clipmap/editor prebake/mobile device/FPS claim."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1769.json",
-    "sourceCommit": "503dd8ef1f56dfa907d5b67683ec3d601c3a85f6",
-    "bundleHash": "e8041902acb2b110db3a96f20255a05013626deef93d5f9f6902e3b06c5591e3",
+    "receipt": "docs/research/USER_INSTALL_1776.json",
+    "sourceCommit": "2ad16449f0479ec02ef41bbdb1b1d1ee3c0dc89a",
+    "bundleHash": "273340d34a09fd4b3a6e1a4ba0ed5f8f1825045b8b7659b265f1936835086c99",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actual quaternion angular/cycle-accumulation inspector labels, Undo/Redo/save and AI revision/dryRun/stale/discrete-invalid atomic; actual C++ and BP LevelSequence Seek4.5 sees25deg/false, editor also C++ Seek0 sees340deg/false. Independently cooked D3D11 verifies native Calls1 and25deg. Eight regressions and independent Rodrigues/matrix33 observations max3.83e-15. Full source1022/native21/30tests/vendor2/Player1604/Host1041 hashes; changed SequenceSampler excluded from old runtime evidence. User preserved/Versions1. No Euler winding recovery or extra GPU/renderer claim."
+    "scope": "Installed world mesh/triangle terrain/foliage-source/all world LOD automatic distance-field cooking. Actual terrain document revision/dryRun/stale/Undo/save and production GL/GPU cooked hits/no initial new worker, ambient116/132/direct67 unchanged, LOD switch and edited terrain fallback. Actual CPP/BP Configure/Far/Near/Disable/Enable in editor and independently packaged D3D11; game verifies initial/re-enabled workerStarts0 and cooked field adoption. Seven regressions plus fixture recheck. Full source1031/native21/30tests/vendor2/Player1604/Host1041 manifest hashes; shaders/SDK unchanged. User preserved/Versions1. No dedicated heightfield/FBX/clipmap/editor prebake/mobile device/FPS claim."
   }
 }

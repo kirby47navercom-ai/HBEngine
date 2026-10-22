@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-world-distance-cooking",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "2ad16449f0479ec02ef41bbdb1b1d1ee3c0dc89a",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\273340d34a09fd4b",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\273340d34a09fd4b\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\273340d34a09fd4b\\HBEngine.exe",
+  "bundleHash": "273340d34a09fd4b3a6e1a4ba0ed5f8f1825045b8b7659b265f1936835086c99",
+  "files": 4357,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4350,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e8041902acb2b110",
+        "bytes": 193785216,
+        "manifestSHA256": "5eeba145c24c694da3eeddf626de5e3d3d0d39ad4dbe522ece7c19c8c8c7b4dc"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T20:36:27.9158055Z",
+    "bytes": 193785216,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "273340d34a09fd4b"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1031,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/distance-world-1773-k5OJ1H/acceptance.json",
+      "sha256": "5fd8c8912fd16b032f2590b11d85b016c8718355695880efb7fb8a30cb430553",
+      "scope": "Owned world mesh/terrain/foliage/all LOD automatic cook and authoring revision/dryRun/Undo/save. Editor custom production GL/GPU checks exact cooked adoption/no new worker, ambient-only pixels/direct unchanged, far/near LOD and edited-terrain fallback. Actual CPP/BP Configure/Far/Near/Disable/Enable; --player automatically packages and runs D3D11 with workerStarts0. Editor cooked reader injection is test-only, no general editor prebake/heightfield/FBX/clipmap/mobile device claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\273340d34a09fd4b\\HBEngine.exe"
+      ],
+      "ms": 41183.005900000004
+    },
+    {
+      "path": "native/build/distance-world-1773-5SQW7a/acceptance.json",
+      "sha256": "b70802debe30d46f4300ad78c39f32db89ead478cfef9b8956c63651b6c9aa09",
+      "scope": "Owned world mesh/terrain/foliage/all LOD automatic cook and authoring revision/dryRun/Undo/save. Editor custom production GL/GPU checks exact cooked adoption/no new worker, ambient-only pixels/direct unchanged, far/near LOD and edited-terrain fallback. Actual CPP/BP Configure/Far/Near/Disable/Enable; --player automatically packages and runs D3D11 with workerStarts0. Editor cooked reader injection is test-only, no general editor prebake/heightfield/FBX/clipmap/mobile device claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\273340d34a09fd4b\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 41671.755399999995
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\273340d34a09fd4b\\",
+    "elapsedMs": 61.42,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\273340d34a09fd4b",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "273340d34a09fd4b3a6e1a4ba0ed5f8f1825045b8b7659b265f1936835086c99",
+      "installedAt": "2026-10-22T20:36:24.493Z",
+      "manifestFiles": 4357,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged native SDK21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4357,
+  "versions": [
+    "273340d34a09fd4b"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1776-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/distance-world1774-group.json",
+      "sha256": "974d2adc93a9f73530fc10b6382e1220dff677a8fdc13a923122154cb08b39ed",
+      "scope": "Seven grouped cook/cache/world/LOD/primitives/AI regressions plus fixture camera recheck."
+    },
+    {
+      "path": "native/build/distance-world-1773-UNaSh7/acceptance.json",
+      "sha256": "8b57046b23ffe8f79683b48fd9f41c4627d0fd75aef355f5b9b328a820f7336f",
+      "scope": "Owned world mesh/terrain/foliage/all LOD automatic cook and authoring revision/dryRun/Undo/save. Editor custom production GL/GPU checks exact cooked adoption/no new worker, ambient-only pixels/direct unchanged, far/near LOD and edited-terrain fallback. Actual CPP/BP Configure/Far/Near/Disable/Enable; --player automatically packages and runs D3D11 with workerStarts0. Editor cooked reader injection is test-only, no general editor prebake/heightfield/FBX/clipmap/mobile device claim."
+    },
+    {
+      "path": "native/build/distance-world-1772-M7OG1y/acceptance.json",
+      "sha256": "828a9bbcc11a5135967bfb0ff89d45c904882f90f633c37f2e814fda3f307a6c",
+      "scope": "Owned project automatic build inspection/world JSON sources and exact runtime world geometry hashes. Static triangle terrain, shared local foliage and all world LOD levels; no renderer/instance buffers in cook. Actual GPU/native game checks separate; no dedicated heightfield/FBX/clipmap claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/distance-world-1773-UNaSh7/acceptance.json",
+      "sha256": "8b57046b23ffe8f79683b48fd9f41c4627d0fd75aef355f5b9b328a820f7336f",
+      "scope": "Owned world mesh/terrain/foliage/all LOD automatic cook and authoring revision/dryRun/Undo/save. Editor custom production GL/GPU checks exact cooked adoption/no new worker, ambient-only pixels/direct unchanged, far/near LOD and edited-terrain fallback. Actual CPP/BP Configure/Far/Near/Disable/Enable; --player automatically packages and runs D3D11 with workerStarts0. Editor cooked reader injection is test-only, no general editor prebake/heightfield/FBX/clipmap/mobile device claim."
+    }
+  ],
+  "scope": "Installed world mesh/triangle terrain/foliage-source/all world LOD automatic distance-field cooking. Actual terrain document revision/dryRun/stale/Undo/save and production GL/GPU cooked hits/no initial new worker, ambient116/132/direct67 unchanged, LOD switch and edited terrain fallback. Actual CPP/BP Configure/Far/Near/Disable/Enable in editor and independently packaged D3D11; game verifies initial/re-enabled workerStarts0 and cooked field adoption. Seven regressions plus fixture recheck. Full source1031/native21/30tests/vendor2/Player1604/Host1041 manifest hashes; shaders/SDK unchanged. User preserved/Versions1. No dedicated heightfield/FBX/clipmap/editor prebake/mobile device/FPS claim."
+}

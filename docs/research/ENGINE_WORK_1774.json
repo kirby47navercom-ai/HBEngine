@@ -1298,6 +1298,30 @@
     "worldCookExpandedInstanceTransforms": 0,
     "work": "Source GL/GPU each hits3/misses0/initial worker starts delta0; edited terrain deliberately falls back. CPP editor after custom probe worker count2→2. Production runtime fields retain normal volume/atlas allocations; no total heap/FPS claim."
   },
-  "installationPending": true,
-  "scope": "World mesh/triangle terrain/foliage-source/all world LOD distance-field cooking with bounded source/geometry. Seven grouped checks plus Node fixture recheck, actual source GL/GPU pixels/cooked hits/no initial worker/fallback and editor CPP/BP LOD/release flow passed; installed D3D game pending."
+  "installationPending": false,
+  "scope": "World mesh/triangle terrain/foliage-source/all world LOD distance-field cooking with bounded source/geometry. Seven grouped checks plus Node fixture recheck, actual source GL/GPU pixels/cooked hits/no initial worker/fallback and editor CPP/BP LOD/release flow passed; installed D3D game pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1776.json",
+  "installedGates": [
+    {
+      "path": "native/build/distance-world-1773-k5OJ1H/acceptance.json",
+      "sha256": "5fd8c8912fd16b032f2590b11d85b016c8718355695880efb7fb8a30cb430553",
+      "scope": "Owned world mesh/terrain/foliage/all LOD automatic cook and authoring revision/dryRun/Undo/save. Editor custom production GL/GPU checks exact cooked adoption/no new worker, ambient-only pixels/direct unchanged, far/near LOD and edited-terrain fallback. Actual CPP/BP Configure/Far/Near/Disable/Enable; --player automatically packages and runs D3D11 with workerStarts0. Editor cooked reader injection is test-only, no general editor prebake/heightfield/FBX/clipmap/mobile device claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\273340d34a09fd4b\\HBEngine.exe"
+      ],
+      "ms": 41183.005900000004
+    },
+    {
+      "path": "native/build/distance-world-1773-5SQW7a/acceptance.json",
+      "sha256": "b70802debe30d46f4300ad78c39f32db89ead478cfef9b8956c63651b6c9aa09",
+      "scope": "Owned world mesh/terrain/foliage/all LOD automatic cook and authoring revision/dryRun/Undo/save. Editor custom production GL/GPU checks exact cooked adoption/no new worker, ambient-only pixels/direct unchanged, far/near LOD and edited-terrain fallback. Actual CPP/BP Configure/Far/Near/Disable/Enable; --player automatically packages and runs D3D11 with workerStarts0. Editor cooked reader injection is test-only, no general editor prebake/heightfield/FBX/clipmap/mobile device claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\273340d34a09fd4b\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 41671.755399999995
+    }
+  ]
 }
