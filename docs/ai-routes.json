@@ -1601,6 +1601,43 @@
         "prototype/native-class-inspection.js",
         "docs/NATIVE_CPP_ACCESS.md"
       ]
+    },
+    {
+      "keywords": [
+        "TimelineIntervalIndex"
+      ],
+      "paths": [
+        "prototype/timeline-interval-index.js",
+        "docs/TIMELINE_RANGE_CONTROLS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "installTimelineRangebar",
+        "changeTimelineRangebar"
+      ],
+      "paths": [
+        "prototype/timeline-rangebar.js",
+        "docs/TIMELINE_RANGE_CONTROLS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "installTimelineTouchNavigation"
+      ],
+      "paths": [
+        "prototype/timeline-touch-navigation.js",
+        "docs/TIMELINE_RANGE_CONTROLS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "ownedDenseArrays"
+      ],
+      "paths": [
+        "prototype/document-snapshot.js",
+        "docs/DOCUMENT_HISTORY.md"
+      ]
     }
   ]
 }

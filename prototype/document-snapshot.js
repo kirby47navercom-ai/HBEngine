@@ -2,11 +2,15 @@
 // Only ordinary JSON-like trees share storage; structuredClone handles other graphs.
 const fallback = Symbol('structured-clone');
 const plain = value => value && (Object.getPrototypeOf(value) === Object.prototype || Object.getPrototypeOf(value) === null);
+// Private history arrays created here retain their own dense index layout.
+// Weak ownership adds no lifetime to discarded frames and never skips values.
+const ownedDenseArrays = new WeakSet();
+const denseArrayThreshold=64;
 
 export function shareDocumentSnapshot(value, previous, {ownedPrevious = false, metrics} = {}) {
   // Optional counters cover this attempted tree walk, not structuredClone's
   // fallback allocations, Object.keys arrays, heap bytes or restoration copies.
-  if (metrics) Object.assign(metrics, {visitedObjects: 0, containers: 0, reusedObjects: 0, fallback: false});
+  if (metrics) Object.assign(metrics, {visitedObjects: 0, containers: 0, reusedObjects: 0, fallback: false,previousKeyArrays:0,reusedDenseArrayKeys:0});
   const visited = new WeakSet();
   const make = source => {
     if (metrics) metrics.containers++;
@@ -27,16 +31,20 @@ export function shareDocumentSnapshot(value, previous, {ownedPrevious = false, m
     if (metrics) metrics.visitedObjects++;
     const array = Array.isArray(source), keys = Object.keys(source);
     const compatible = before !== source && before && typeof before === 'object' && (array ? Array.isArray(before) && source.length === before.length : !Array.isArray(before) && plain(before));
-    const oldKeys = compatible ? Object.keys(before) : [];
-    let same = !!compatible && keys.length === oldKeys.length;
+    const denseBefore=compatible&&ownedPrevious&&array&&source.length>=denseArrayThreshold&&ownedDenseArrays.has(before),oldKeys = compatible ? denseBefore?null:Object.keys(before) : [];
+    if(metrics&&compatible){if(denseBefore)metrics.reusedDenseArrayKeys++;else metrics.previousKeyArrays++;}
+    let same = !!compatible && keys.length === (denseBefore?before.length:oldKeys.length),dense=ownedPrevious&&array&&source.length>=denseArrayThreshold&&keys.length===source.length;
     // Engine-owned history frames contain data properties. Delay the result
     // container until a difference; unchanged branches need no throwaway copy.
     // The public two-argument path retains its previous getter/read behavior.
     let result = same && ownedPrevious ? null : make(source);
     for (let i = 0; i < keys.length; i++) {
-      const key = keys[i], owned = compatible && Object.hasOwn(before, key), old = owned ? before[key] : undefined;
+      const key = keys[i],owned = compatible && Object.hasOwn(before, key), old = owned ? before[key] : undefined,keyMatches=denseBefore?owned&&Number(key)===i:oldKeys[i]===key;
+      // A cached frame has only canonical indices. An extra/noncanonical key
+      // cannot be its own member, including Proxy-provided key ordering.
+      if(dense&&!(denseBefore?keyMatches:key===String(i)))dense=false;
       const next = copy(source[key], old);
-      if (!owned || oldKeys[i] !== key || !Object.is(next, old)) {
+      if (!owned || !keyMatches || !Object.is(next, old)) {
         same = false;
         if (!result) {
           result = make(source);
@@ -46,6 +54,7 @@ export function shareDocumentSnapshot(value, previous, {ownedPrevious = false, m
       if (result) put(result, key, next);
     }
     if (same && metrics) metrics.reusedObjects++;
+    if(!same&&ownedPrevious&&dense)ownedDenseArrays.add(result);
     return same ? before : result;
   };
   try { return copy(value, previous); }

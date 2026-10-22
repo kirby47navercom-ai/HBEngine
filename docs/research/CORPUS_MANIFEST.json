@@ -5443,5 +5443,29 @@
       }
     ],
     "implementation": "Explicit reflected protected/private C++ members via generated compilation-copy friend accessors; lexical class/member scope, private nested class/enum aliases and exact function-argument traits, standard detached input move, paged native.classes.read and sourceReference preservation. Separate Blueprint caller-access permissions remain residual."
+  },
+  "supplemental1520": {
+    "record": "docs/TIMELINE_RANGE_CONTROLS.md",
+    "date": "2026-10-22",
+    "fullCorpusAnalysis": false,
+    "readings": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/sequencer-cinematic-editor-unreal-engine?lang=en-US",
+        "engine": "Unreal5.8 (actual rendered page)",
+        "sections": [
+          "rendered body0–200 read, navigation50–82: middle/edge range slider, RMB, shift wheel, ctrl wheel, alt-shift RMB, ctrl timebar region right/left reset; playhead/selection/media controls also read"
+        ],
+        "note": "Narrow navigation application. Read overview does not imply all linked Sequencer/toolbar/media APIs implemented or complete analysis."
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.timeline@1.8/manual/clip-pan-zoom.html",
+        "engine": "Unity Timeline1.8.13 (actual returned page metadata)",
+        "sections": [
+          "HTML article115–136: pan/frame/zoom, zoombar handles/thumb/playhead/empty-area jump"
+        ],
+        "note": "Search cache listed1.8.4; actual opened official article is1.8.13. Different default wheel shortcuts are not all mapped onto the same HB action."
+      }
+    ],
+    "implementation": "Per-document rangebar, Ctrl/Command timebar zoom region, background pointer touch pan/pinch/cancel, visible-range scrub correction and lazy row-owned interval query. Existing CAS/Undo/data persistence remains separate from view navigation."
   }
 }

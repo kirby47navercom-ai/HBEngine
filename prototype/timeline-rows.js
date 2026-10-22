@@ -1,25 +1,27 @@
 import {sequenceTrackMatches} from './sequence-track-window.js';
+import {TimelineIntervalIndex} from './timeline-interval-index.js';
 
 // Per-render row descriptions hold authored items by reference. Presentation
 // copies and key-density samples are built only for rows entering the viewport.
-export function timelineRows(kind, data, {query = '', keyItems = () => [], visible = () => true} = {}) {
+export function timelineRows(kind, data, {query = '', keyItems = () => [], visible = () => true,range} = {}) {
   if (!['sequenceasset', 'montage'].includes(kind)) throw Error('시퀀스·몽타주 문서가 필요해요.');
   if (typeof query !== 'string' || query.length > 1000) throw Error('행 검색어를 확인하세요.');
   const rows = [];
+  const indexes=new Map(),visibleItems=source=>{const view=range?.();if(!view||source.length<64||view.start<=0&&view.end>=data.length)return source.filter(visible);let index=indexes.get(source);if(!index){index=new TimelineIntervalIndex(source);indexes.set(source,index);}return index.query(view).filter(visible);};
   const row = (id, name, type, source, items, extra = {}) => ({id, name, type, count: source.length, items,
     contains: selection => selection === id || source.some(item => item.id === selection), ...extra});
   if (kind === 'montage') {
-    rows.push(row('sections', 'Sections', 'sections', data.sections, () => data.sections.filter(visible).map(s => ({...s, start: s.time, duration: 0}))));
+    rows.push(row('sections', 'Sections', 'sections', data.sections, () => visibleItems(data.sections).map(s => ({...s, start: s.time, duration: 0}))));
     const slots = new Map();
     for (const clip of data.clips) {
       if (!slots.has(clip.slot)) slots.set(clip.slot, []);
       slots.get(clip.slot).push(clip);
     }
-    for (const [slot, clips] of slots) rows.push(row('slot:' + slot, slot, 'slot', clips, () => clips.filter(visible), {slot, clips: clips.length}));
-    rows.push(row('notifies', 'Notifies', 'notifies', data.notifies, () => data.notifies.filter(visible).map(n => ({...n, name: n.event, start: n.time, duration: 0}))));
+    for (const [slot, clips] of slots) rows.push(row('slot:' + slot, slot, 'slot', clips, () => visibleItems(clips), {slot, clips: clips.length}));
+    rows.push(row('notifies', 'Notifies', 'notifies', data.notifies, () => visibleItems(data.notifies).map(n => ({...n, name: n.event, start: n.time, duration: 0}))));
     for (const notify of data.notifyStates || []) rows.push(row('notify-state:' + notify.id, notify.name, 'notify-state', [notify], () => visible(notify) ? [{...notify, start: notify.time, notifyState: true}] : [], {defaultSelection: notify.id}));
   } else {
-    for (const track of data.tracks) rows.push(row(track.id, track.name, track.type, track.clips, () => [...track.clips.filter(visible), ...keyItems(track)], {
+    for (const track of data.tracks) rows.push(row(track.id, track.name, track.type, track.clips, () => [...visibleItems(track.clips), ...keyItems(track)], {
       target: track.target, keys: track.keys.length, clips: track.clips.length, count: track.keys.length + track.clips.length,
       contains: selection => {
         const suffix = typeof selection === 'string' && selection.startsWith(track.id + ':') ? selection.slice(track.id.length + 1) : '', index = Number(suffix);
@@ -35,10 +37,10 @@ export function timelineRows(kind, data, {query = '', keyItems = () => [], visib
     for (const group of [...sections.keys()].sort()) {
       const source = sections.get(group);
       rows.push(row('section-row:' + group, (group.startsWith('shot:') ? 'Shots ' : 'Sub-Sequences ') + group.split(':')[1], group.split(':')[0], source,
-        () => source.filter(visible).map(section => ({...section, clip: section.asset, notifyState: true, section: true}))));
+        () => visibleItems(source).map(section => ({...section, clip: section.asset, notifyState: true, section: true}))));
     }
   }
-  return rows.map((value, index) => ({...value, index})).filter(item => sequenceTrackMatches(item, query));
+  return rows.map((value, index) => {let previous,found,read=false;return {...value,index,...range?{contains:selection=>{if(!read||selection!==previous){read=true;previous=selection;found=value.contains(selection);}return found;}}:{}};}).filter(item => sequenceTrackMatches(item, query));
 }
 
 export function timelineRowContains(row, selection) { return !!row.contains?.(selection); }

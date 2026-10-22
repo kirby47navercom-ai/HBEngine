@@ -46,3 +46,5 @@ Take에서 `골격`과 `구성`(또는 컴포넌트)을 켜면 MeshRenderer 모�
 
 
 249–252: 선택 rotation.quaternionInterpolation, 준비 quaternion/Slerp·기존 Euler/step 보존; Seek는 즉시 scene/value/clip 평가·sampleTime/sampleSerial·paused end hold. 트랙별 고유 음성/지연 decode 시각/정지, Play 요청/소유자 수명 무효화. 고급 Attach/동시 소유권/PCM 외부동기화는 별도 잔여.
+
+표시 범위 막대·시간 눈금 Ctrl 영역 확대·배경 터치 이동/핀치와 취소는 [표시 범위 조작](TIMELINE_RANGE_CONTROLS.md)에 있어요. 기존 문서별 view API를 사용하고 원본 키·길이·Undo를 바꾸지 않아요.
