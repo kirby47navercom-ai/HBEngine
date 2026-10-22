@@ -5467,5 +5467,18 @@
       }
     ],
     "implementation": "Per-document rangebar, Ctrl/Command timebar zoom region, background pointer touch pan/pinch/cancel, visible-range scrub correction and lazy row-owned interval query. Existing CAS/Undo/data persistence remains separate from view navigation."
+  },
+  "supplemental1531": {
+    "date": "2026-10-22",
+    "scope": "Blueprint member caller visibility and inherited declaration ownership, distinct from C++ access.",
+    "sources": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/functions-in-unreal-engine?lang=en-US",
+        "actualVersion": "5.8",
+        "read": "Rendered body0–164; access8–19, pure20–30, details65–98 and external133–157.",
+        "applied": "Public/current+derived/private-current access, details and typed function contract; HB derived ownership/access enforcement is an implementation inference.",
+        "exhaustiveLinkedAPIs": false
+      }
+    ]
   }
 }

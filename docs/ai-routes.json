@@ -151,7 +151,13 @@
         "Make Struct",
         "Break Struct",
         "Switch Name",
-        "참조 쓰기"
+        "참조 쓰기",
+        "접근",
+        "private",
+        "protected",
+        "members",
+        "멤버",
+        "소유"
       ],
       "paths": [
         "prototype/blueprint-model.js",
@@ -174,7 +180,10 @@
         "native/include/HBEngine/Struct.hpp",
         "prototype/curve-sampling.js",
         "docs/WEIGHTED_CURVES.md",
-        "docs/CURVE_INFINITY.md"
+        "docs/CURVE_INFINITY.md",
+        "prototype/blueprint-access.js",
+        "prototype/blueprint-member-inspection.js",
+        "docs/BLUEPRINT_ACCESS.md"
       ]
     },
     {
@@ -1637,6 +1646,29 @@
       "paths": [
         "prototype/document-snapshot.js",
         "docs/DOCUMENT_HISTORY.md"
+      ]
+    },
+    {
+      "id": "blueprint-access",
+      "keywords": [
+        "blueprintMemberVisible",
+        "blueprintAccessProblem",
+        "assertBlueprintMemberAccess",
+        "blueprintOverrideAllowed",
+        "blueprintOverrideAccessLocked"
+      ],
+      "paths": [
+        "prototype/blueprint-access.js"
+      ]
+    },
+    {
+      "id": "blueprint-member-inspection",
+      "keywords": [
+        "inspectBlueprintMembers",
+        "blueprint.members.read"
+      ],
+      "paths": [
+        "prototype/blueprint-member-inspection.js"
       ]
     }
   ]

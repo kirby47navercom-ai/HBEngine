@@ -1,0 +1,15 @@
+import {createAsset} from '../prototype/asset-documents.js';import {makeNode} from '../prototype/blueprint-model.js';
+export const parentPath='Assets/BP_AccessParent.hbblueprint.json',childPath='Assets/BP_AccessChild.hbblueprint.json',grandPath='Assets/BP_AccessGrandchild.hbblueprint.json';
+export const pin=(id,type='float')=>({id,label:id,type,array:false});
+export const put=(g,key,id,extra={})=>{const n={...makeNode(key,40+g.nodes.length*240,40),id,...extra};g.nodes.push(n);return n;};
+export const wire=(g,a,ap,b,bp)=>g.edges.push({from:{node:a,pin:ap},to:{node:b,pin:bp}});
+export function blank(name,parent){const g=createAsset('blueprint',name,parent);g.nodes=[];g.edges=[];g.functions=[];g.macros=[];g.variables=[];g.construction={nodes:[],edges:[],comments:[]};return g;}
+export function definition(id,name,access='public',value=5,type='float'){const d={id,name,access,pure:true,inputs:[],outputs:[pin('value',type)],graph:{nodes:[],edges:[],comments:[]}};put(d.graph,'functionInput',id+'_entry',{definitionId:id});put(d.graph,'functionOutput',id+'_exit',{definitionId:id,inputValues:{value}});return d;}
+export function accessFixture(){
+ const parent=blank('BP_AccessParent');parent.variables=[{id:'Secret',name:'Secret',type:'float',container:'single',private:true,value:7}];
+ const hidden=definition('Hidden','Hidden','private',9),protectedFn=definition('Protected','Protected','protected'),drive=definition('Drive','Drive','public',[0,0,0],'vec3');
+ put(drive.graph,'getVariable','ReadSecret',{variableId:'Secret'});put(drive.graph,'callFunction','CallProtected',{definitionId:'Protected'});put(drive.graph,'callFunction','CallHidden',{definitionId:'Hidden'});put(drive.graph,'vec3','MakeVector');wire(drive.graph,'ReadSecret','value','MakeVector','x');wire(drive.graph,'CallProtected','value','MakeVector','y');wire(drive.graph,'CallHidden','value','MakeVector','z');wire(drive.graph,'MakeVector','return','Drive_exit','value');parent.functions=[hidden,protectedFn,drive];
+ put(parent,'beginPlay','ParentBegin');put(parent,'callFunction','ParentDrive',{definitionId:'Drive'});put(parent,'setPosition','ParentPlace');wire(parent,'ParentBegin','then','ParentPlace','exec');wire(parent,'ParentDrive','value','ParentPlace','position');
+ const child=blank('BP_AccessChild',parentPath),override=definition('Protected','Protected','protected');put(override.graph,'callParent','ProtectedParent',{parentFunctionId:'Protected'});put(override.graph,'add','Plus20',{inputValues:{b:20}});wire(override.graph,'ProtectedParent','value','Plus20','a');wire(override.graph,'Plus20','return','Protected_exit','value');child.functions=[override,definition('ChildOnly','ChildOnly','private',11)];
+ const grand=blank('BP_AccessGrandchild',childPath),objects=[{id:'Owner',name:'Owner',kind:'empty',visible:true,position:[1,2,3],rotation:[0,0,0],scale:[1,1,1],components:[],blueprintAsset:grandPath}],files=new Map([[parentPath,parent],[childPath,child],[grandPath,grand]]);return {parent,child,grand,objects,files};
+}
