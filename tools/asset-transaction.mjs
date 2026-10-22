@@ -17,7 +17,7 @@ const store=(project,journal)=>put(journalFile(project,journal.id),JSON.stringif
 export async function readAssetTransaction(project,id){
   const file=await project.resolve('Saved/Transactions/'+path.basename(journalFile(project,id)),false,false),stat=await fs.stat(file);
   if(stat.size>32*1024*1024)throw Error('저장 기록 크기 초과');const journal=JSON.parse(await fs.readFile(file,'utf8'));
-  if(journal.version!==1||journal.id!==id||!['prepared','committed','rolledBack'].includes(journal.state)||!Array.isArray(journal.rows)||!journal.rows.length||journal.rows.length>64)throw Error('저장 기록 형식 오류');
+  if(journal.version!==1||journal.id!==id||!['prepared','committed','rolledBack'].includes(journal.state)||!Array.isArray(journal.rows)||!journal.rows.length)throw Error('저장 기록 형식 오류');
   const paths=new Set();for(const row of journal.rows){
     if(typeof row.path!=='string'||!/^(Assets|Source|Settings)\//.test(row.path)||paths.has(row.path.toLowerCase())||[row.before,row.after].some(t=>t!==null&&typeof t!=='string')||hash(row.before)!==row.beforeHash||hash(row.after)!==row.afterHash)throw Error('저장 기록 검증 실패');
     await project.resolve(row.path,true,false);paths.add(row.path.toLowerCase());
@@ -43,7 +43,7 @@ export async function recoverAssetTransactions(project){
 }
 
 export async function commitAssetBatch(project,rows,guard,checkReads=async()=>{},{retainJournal=true}={}){
-  await checkReads();rows=rows.filter(row=>row.before!==row.after);if(!rows.length)return {ok:true,noChange:true,paths:[]};
+  await checkReads({written:false});rows=rows.filter(row=>row.before!==row.after);if(!rows.length)return {ok:true,noChange:true,paths:[]};
   const journal={version:1,id:randomUUID(),state:'prepared',createdAt:new Date().toISOString(),rows:rows.map(row=>({...row,beforeHash:hash(row.before),afterHash:hash(row.after),indexBefore:project.index[row.path]?structuredClone(project.index[row.path]):null}))};
   const writingPaths=new Set();
   await project.resolve('Saved/Transactions',true,false);await store(project,journal);
@@ -53,7 +53,7 @@ export async function commitAssetBatch(project,rows,guard,checkReads=async()=>{}
       if(row.after===null)await fs.unlink(file);else await put(file,row.after,row.before===null);
       if(row.after===null)delete project.index[row.path];else if(row.restoreIndex)project.index[row.path]=structuredClone(row.restoreIndex);else project.index[row.path]??={id:randomUUID()};
     }
-    guard();await checkReads();await project.saveIndex();journal.state='committed';await store(project,journal);
+    guard();await checkReads({written:true});await project.saveIndex();journal.state='committed';await store(project,journal);
   }catch(error){journal.state='prepared';try{await rollback(project,journal,writingPaths);}catch(recovery){throw Object.assign(Error(error.message+'; 복구 기록을 보존했어요: '+journal.id+' ('+recovery.message+')'),{status:409,code:'TRANSACTION_RECOVERY_REQUIRED',transaction:journal.id,cause:error});}throw error;}
   if(!retainJournal){await fs.unlink(journalFile(project,journal.id));return {ok:true,paths:journal.rows.map(row=>row.path)};}
   return {ok:true,transaction:journal.id,paths:journal.rows.map(row=>row.path),backup:'Saved/Transactions/'+journal.id+'.json'};

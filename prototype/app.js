@@ -98,7 +98,7 @@ import {connectAutomation,documentRevision,patchAsset} from './automation.js';
 import {nativeWatchedSources} from './native-source-watch.js';
 import {appendNativeTypeImportUI} from './native-type-import-ui.js';
 import {nativeTypeReference} from './native-model.js';
-import {AssetDocuments,assetTypes,assetSuffix,assetTitle,materialGraph,createAsset,validAsset,evaluateMaterial} from './asset-documents.js';
+import {AssetDocuments,assetDocumentSource,assetTypes,assetSuffix,assetTitle,materialGraph,createAsset,validAsset,evaluateMaterial} from './asset-documents.js';
 import {blueprintClasses} from './class-types.js';
 import {renderDataEditor,closeChoice} from './asset-editor-ui.js';
 import {RuntimeProfiler,ProfilerPanel} from './profiler.js';
@@ -228,11 +228,19 @@ function refreshMaterialAssets(paths){
   updateSurface();
 }
 function propagateMaterialFunctions(docs){const definitions=new Map(docs.filter(d=>['materialfunction','materiallayer','materialblend'].includes(d?.kind)).map(d=>[d.path,d.data]));for(const dependent of assetDocs.items.values()){if(!['material','materialfunction','materiallayer','materialblend'].includes(dependent.kind))continue;const next=clone(dependent.data);for(const n of next.graph?.nodes||[])if(n.key==='functionCall'&&definitions.has(n.asset))refreshMaterialFunctionCall(next.graph,n.id,definitions.get(n.asset));if(JSON.stringify(next)===JSON.stringify(dependent.data))continue;dependent.history.push({kind:dependent.kind,data:shareDocumentSnapshot(dependent.data,dependent.history.at(-1)?.data,{ownedPrevious:true})});if(dependent.history.length>undoLimit)dependent.history.shift();dependent.future=[];dependent.data=next;dependent.dirty=true;if(dependent===assetDocs.current){history=dependent.history;future=dependent.future;installDocumentData(dependent);}}refreshMaterialAssets(docs.filter(d=>materialAssetKinds.includes(d.kind)||d.kind in textureAssetTypes||projectAssetFiles.some(f=>f.path===d.path&&f.kind==='texture')).map(d=>d.path));}
+async function saveAssetDocuments(docs){
+ docs=docs.filter(doc=>doc&&(assetSuffix[doc.kind]||doc.kind==='text'));
+ if(docs.some(doc=>doc.kind==='typelibrary')){
+  const entries=[];for(const doc of docs){const file=await automationFile(doc.path);if(doc.saved!==file.expected)throw batchConflict('외부에서 변경된 문서를 확인하세요: '+doc.path);entries.push({path:doc.path,expectedRevision:file.revision,expectedEditorRevision:file.editorRevision,data:assetDocumentSource(doc)});}
+  return applyFileBatch({entries});
+ }
+ for(const doc of docs)await assetDocs.save(doc,(path,text,expected)=>editorRequest('/api/asset/write',{method:'POST',body:JSON.stringify({path,text,expected})}));
+}
 async function save(all=false) {
   if(authoringBatchBusy)return notify('파일 묶음 저장을 마친 뒤 저장하세요.');
   if(running)return notify('실행을 종료한 뒤 저장하세요.');try{await flushPrefabRefresh();}catch(error){notify('프리팹 동기화 실패: '+error.message);return false;}assetPanes.get(assetDocs.active)?.editor?.flush?.();captureDocument();
   let docs=all?[...assetDocs.items.values()].filter(d=>d.dirty):[assetDocs.current];
-  try{const sets=all?docs.filter(d=>d?.kind==='abilityset'):[];if(sets.length>1){const observed=new Map(),order=await abilitySetSourceOrder(sets.map(d=>d.path),async path=>{const data=await readAsset(path);observed.set(path,JSON.stringify(data));return data;});for(const [path,before]of observed)if(JSON.stringify(await readAsset(path))!==before)throw Error('저장 준비 중 능력 세트가 변경됐어요. 다시 저장하세요.');const rank=new Map(order.map((p,i)=>[p,i])),sorted=[...sets].sort((a,b)=>rank.get(a.path)-rank.get(b.path));let index=0;docs=docs.map(d=>d?.kind==='abilityset'?sorted[index++]:d);}for(const doc of docs.filter(Boolean)){if(!assetSuffix[doc.kind]&&doc.kind!=='text')continue;await assetDocs.save(doc,(path,text,expected)=>editorRequest('/api/asset/write',{method:'POST',body:JSON.stringify({path,text,expected})}));}
+  try{const sets=all?docs.filter(d=>d?.kind==='abilityset'):[];if(sets.length>1){const observed=new Map(),order=await abilitySetSourceOrder(sets.map(d=>d.path),async path=>{const data=await readAsset(path);observed.set(path,JSON.stringify(data));return data;});for(const [path,before]of observed)if(JSON.stringify(await readAsset(path))!==before)throw Error('저장 준비 중 능력 세트가 변경됐어요. 다시 저장하세요.');const rank=new Map(order.map((p,i)=>[p,i])),sorted=[...sets].sort((a,b)=>rank.get(a.path)-rank.get(b.path));let index=0;docs=docs.map(d=>d?.kind==='abilityset'?sorted[index++]:d);}await saveAssetDocuments(docs);
     propagateMaterialFunctions(docs);refreshModelImports(docs);
     dirty=[...assetDocs.items.values()].some(d=>d.dirty);$('#dirty-mark').hidden=!dirty;$('#status-text').textContent=dirty?'저장하지 않은 에셋':'준비됨';$('#save-status').textContent='프로젝트 저장됨';renderDocumentTabs();clearTimeout(recoveryTimer);try{if(!persistRecovery())throw Error('복구 상태를 만들 수 없어요.');await flushStorage();}catch(error){log('에셋은 저장됐지만 복구 상태 저장에 실패했어요: '+error.message,'ERROR');}await Promise.all([...projectBrowsers.values()].map(browser=>browser.refresh()));notify(all?'모든 에셋 저장됨':'에셋 저장됨');return true;
   }catch(error){notify('저장 실패: '+error.message);return false;}
@@ -1450,7 +1458,7 @@ function removeDocumentViews(path){
 async function closeDocument(path){
   if(authoringBatchBusy)return notify('파일 묶음 저장을 마친 뒤 문서를 닫으세요.');
   if(running)return notify('실행을 종료한 뒤 문서를 닫으세요.');captureDocument();const doc=assetDocs.items.get(path);if(!doc)return;
-  if(doc.dirty){const choice=await closeChoice(assetTitle(path));if(choice==='cancel')return;if(choice==='save'){try{await assetDocs.save(doc,(p,text,expected)=>editorRequest('/api/asset/write',{method:'POST',body:JSON.stringify({path:p,text,expected})}));propagateMaterialFunctions([doc]);if(doc.dirty)return notify('저장 중 새 변경 사항이 생겼어요. 다시 저장한 뒤 닫으세요.');}catch(error){return notify('저장 실패: '+error.message);}}}
+  if(doc.dirty){const choice=await closeChoice(assetTitle(path));if(choice==='cancel')return;if(choice==='save'){try{await saveAssetDocuments([doc]);propagateMaterialFunctions([doc]);if(doc.dirty)return notify('저장 중 새 변경 사항이 생겼어요. 다시 저장한 뒤 닫으세요.');}catch(error){return notify('저장 실패: '+error.message);}}}
   const closingWorld=doc.kind==='scene'&&activeScenePath===path;let worldDoc=closingWorld?[...assetDocs.items.values()].filter(d=>d.kind==='scene'&&d!==doc).at(-1):null,worldSaved;
   if(closingWorld&&!worldDoc){try{worldSaved=JSON.parse(doc.saved);if(!validScene(worldSaved))throw Error('장면 저장 기준 검증 실패');}catch(error){return notify(error.message);}}
   const wasActive=assetDocs.active===path;removeDocumentViews(path);
@@ -1648,10 +1656,16 @@ async function applyFileBatch(params,{ownerDialog=null}={}){
     }
     if(anchor&&!rows.some(row=>row.path===anchor.path)){observed.set(anchor.path,{doc:anchor,data:JSON.stringify(anchor.data)});rows.push({path:anchor.path,kind:anchor.kind,before:clone(anchor.data),after:clone(anchor.data),editorBefore:clone(anchor.data),viewOnly:true});}
     const guards=[];for(const entry of params.guards||[]){if(entry.mode!==undefined&&entry.mode!=='binary')throw Error('읽기 기준 모드를 확인하세요.');const binary=entry.mode==='binary',file=await(binary?automationFingerprint(entry.path):automationFile(entry.path)),key=file.path.toLowerCase();if(seen.has(key))throw Error('읽기 기준 경로가 중복돼요.');seen.add(key);if(file.revision!==entry.expectedRevision||!binary&&file.editorRevision!==(entry.expectedEditorRevision??null))throw batchConflict('참조 문서 기준이 달라요: '+file.path);const doc=!binary&&assetDocs.items.get(file.path);if(doc){if(doc.view.diskConflict||doc.saved!==file.expected)throw batchConflict('참조 문서 외부 변경을 확인하세요: '+file.path);observed.set(file.path,{doc,data:JSON.stringify(doc.data)});}guards.push(binary?{path:file.path,expectedFingerprint:file.revision}:{path:file.path,expected:file.expected});}
-    const candidate=await prepareBatchViews(rows,'after'),entries=rows.filter(row=>!row.viewOnly).map(row=>({path:row.path,text:row.after===null?null:row.kind==='text'?row.after:JSON.stringify(row.after,null,2),expected:row.expected}));
-    await editorRequest('/api/asset/batch',{method:'POST',body:JSON.stringify({entries,guards,dryRun:true})});automationEditable(false,true,ownerDialog);captureDocument();for(const [path,before] of observed)if(assetDocs.items.get(path)!==before.doc||JSON.stringify(before.doc.data)!==before.data)throw batchConflict('검증 중 문서가 변경됐어요: '+path);
+    const entries=rows.filter(row=>!row.viewOnly).map(row=>({path:row.path,text:row.after===null?null:row.kind==='text'?row.after:JSON.stringify(row.after,null,2),expected:row.expected}));
+    const preview=await(await editorRequest('/api/asset/batch',{method:'POST',body:JSON.stringify({entries,guards,dryRun:true})})).json();
+    for(const expanded of preview.expanded||[]){const kind=assetSuffix[expanded.kind]?expanded.kind:'text',parse=value=>value===null?null:kind==='text'?value:JSON.parse(value),before=parse(expanded.before),after=parse(expanded.after),existing=rows.find(r=>r.path===expanded.path),doc=assetDocs.items.get(expanded.path);
+      if(existing&&!existing.viewOnly){existing.after=after;continue;}
+      if(doc&&(doc.dirty||doc.view.diskConflict||doc.saved!==JSON.stringify(before)))throw batchConflict('연결된 문서의 변경을 먼저 저장하거나 모두 저장하세요: '+expanded.path);
+      if(doc)observed.set(doc.path,{doc,data:JSON.stringify(doc.data)});const row={path:expanded.path,kind,before,after,expected:before===null?null:JSON.stringify(before),...(doc?{editorBefore:clone(doc.data)}:{})};if(existing)Object.assign(existing,row,{viewOnly:false});else rows.push(row);
+    }
+    const candidate=await prepareBatchViews(rows,'after');automationEditable(false,true,ownerDialog);captureDocument();for(const [path,before] of observed)if(assetDocs.items.get(path)!==before.doc||JSON.stringify(before.doc.data)!==before.data)throw batchConflict('검증 중 문서가 변경됐어요: '+path);
     if(params.dryRun)return {valid:true,paths:rows.filter(row=>!row.viewOnly).map(row=>row.path),documents:await Promise.all(rows.filter(row=>!row.viewOnly).map(async row=>({path:row.path,revision:row.after===null?null:await documentRevision(row.after)})))};
-    const result=await(await editorRequest('/api/asset/batch',{method:'POST',body:JSON.stringify({entries,guards})})).json();if(result.noChange)return result;await checkBatchCompletion(result,observed,ownerDialog);
+    const result=await(await editorRequest('/api/asset/batch',{method:'POST',body:JSON.stringify({entries,guards,expectedPlanRevision:preview.planRevision})})).json();if(result.noChange)return result;await checkBatchCompletion(result,observed,ownerDialog);
     const group={id:result.transaction,transaction:result.transaction,rows,undone:false};authoringBatches.set(group.id,group);if(authoringBatches.size>undoLimit)authoringBatches.delete(authoringBatches.keys().next().value);finishFileBatch(group,'after',candidate,observed);
     for(const row of rows){const doc=assetDocs.items.get(row.path);if(!observed.has(row.path)||doc?.data==null||JSON.stringify(doc.data)!==JSON.stringify(row.after))continue;doc.history.push({batch:group.id});if(doc.history.length>undoLimit)doc.history.shift();doc.future.splice(0);}
     if(assetDocs.current){history=assetDocs.current.history;future=assetDocs.current.future;}log('파일 묶음 저장: '+result.paths.join(', '));return {...result,documents:await Promise.all(rows.filter(row=>!row.viewOnly).map(async row=>({path:row.path,revision:row.after===null?null:await documentRevision(row.after)})))};

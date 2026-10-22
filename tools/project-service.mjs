@@ -1,5 +1,6 @@
 import {recoverAssetWrites,publishAssetText} from './asset-write-intent.mjs';
 import {appendNativeTypeRows,publishNativeTypeAsset} from './native-type-asset-write.mjs';
+import {planNativeTypeMigration} from './native-type-migration.mjs';
 import {resolveEffectDefinition} from '../prototype/effect-scaling.js';
 import {validateAbilitySetGraph} from '../prototype/ability-set-resolution.js';
 import {modelSubassetReport} from './model-subassets.mjs';
@@ -14,6 +15,7 @@ import {defaultBlueprint,validBlueprint} from '../prototype/blueprint-model.js';
 import {createBlueprintResolver} from '../prototype/blueprint-inheritance.js';
 import {commitAssetBatch,recoverAssetTransactions,readAssetTransaction} from './asset-transaction.mjs';
 const textExtensions=new Set(['.h','.hpp','.cpp','.c','.json','.txt','.md','.hlsl','.glsl','.obj','.gltf','.csv','.yaml','.yml','.svg']);
+const journalRestore=Symbol('verified asset journal restore');
 const referenceKeys=new Set(['widgetAsset','rowWidget','asset','blueprintAsset','materialAsset','spriteAsset','tilemapAsset','tilemap','gameConfig','mesh','material','texture','cookieSprite','cookieTexture','normalTexture','vectorTexture','sheet','chordAction','context','sprite','tileset','physicalMaterial','sourceMesh','model','rig','animation','clip','blackboard','mixer','widget','audio','source','headerPath','sourcePath','inputMapping','action','parent','parentClass','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','gameInstance','defaultController','playerState','defaultPawn']);
 export function assetReferences(data,filename){const result=new Set(),visit=(value,key)=>{if(key==='widgetSlots'&&typeof value==='string'){try{const slots=JSON.parse(value);if(slots&&!Array.isArray(slots)&&typeof slots==='object')for(const asset of Object.values(slots))if(typeof asset==='string')visit(asset,'widgetAsset');}catch{}return;}if(typeof value==='string'&&(referenceKeys.has(key)||/^(Assets|Source)\/[^#]*\.[A-Za-z0-9]+(?:#[A-Za-z_]\w*)?$/.test(value))&&value&&!value.startsWith('data:')&&!/^[a-z]+:/i.test(value)&&value.includes('.'))result.add(key==='gameInstance'&&value.startsWith('Source/')?value.split('#')[0]:value);else if(Array.isArray(value))value.forEach(item=>visit(item,key));else if(value&&typeof value==='object')Object.entries(value).forEach(([k,v])=>visit(v,k));};visit(data,'');if(filename.endsWith('.gltf'))for(const item of [...data.buffers||[],...data.images||[]])if(item.uri&&!/^(?:[a-z]+:|\/)/i.test(item.uri))result.add(path.posix.normalize(path.posix.join(path.posix.dirname(filename),item.uri)));return [...result].sort();}
 export function assetKind(name){if(/\.(gltf|glb|obj|fbx)\.import\.json$/i.test(name))return 'modelimport';return Object.entries(assetSuffix).filter(([kind])=>kind!=='modelimport').find(([,suffix])=>name.endsWith(suffix))?.[0]||(/\.(cpp|hpp|h|c|hlsl|glsl)$/i.test(name)?'code':fileKind(name)==='unsupported'?'file':fileKind(name));}
@@ -111,12 +113,14 @@ export class ProjectService {
       const kind=assetKind(relative);let actual;try{actual=JSON.stringify(assetSuffix[kind]?JSON.parse(source):source);}catch{actual=null;}
       if(actual!==expected)throw Object.assign(Error('외부에서 변경된 에셋이에요. 다시 읽거나 변경 내용을 비교하세요.'),{status:409});
       const next=assetSuffix[kind]?JSON.parse(text):text;if(assetSuffix[kind]&&!validAsset(kind,next))throw Error(assetValidationError(kind,next));if(JSON.stringify(next)===actual){guard();return {ok:true,noChange:true};}
+      if(kind==='typelibrary')return this.writeFile(relative,text,guard);
       const backup=await this.resolve('Saved/Backups/'+randomUUID()+path.extname(relative),true,false);await fs.mkdir(path.dirname(backup),{recursive:true});await fs.writeFile(backup,source,{flag:'wx'});guard();await this.writeFile(relative,text);return {ok:true,backup:path.relative(this.root,backup).split(path.sep).join('/')};
     });this.writeQueue=task.catch(()=>{});return task;
   }
   write(relative,data,guard=()=>{}){const task=this.writeQueue.then(()=>{guard();return this.writeFile(relative,data,guard);});this.writeQueue=task.catch(()=>{});return task;}
-  checkedBatch(entries,guard=()=>{},{dryRun=false,restoreIndex=new Map(),guards=[]}={}){
-    if(!Array.isArray(entries)||!entries.length||entries.length>64||typeof dryRun!=='boolean'||!Array.isArray(guards))throw Error('저장 묶음과 읽기 기준을 확인하세요.');
+  checkedBatch(entries,guard=()=>{},{dryRun=false,restoreIndex=new Map(),guards=[],expectedPlanRevision,[journalRestore]:restore}={}){
+    if(!Array.isArray(entries)||!entries.length||!restore&&entries.length>64||typeof dryRun!=='boolean'||!Array.isArray(guards))throw Error('저장 묶음과 읽기 기준을 확인하세요.');
+    if(expectedPlanRevision!==undefined&&(typeof expectedPlanRevision!=='string'||!/^[a-f\d]{64}$/.test(expectedPlanRevision)))throw Error('저장 계획 기준을 확인하세요.');
     const task=this.writeQueue.then(async()=>{
       guard();if(!dryRun)await recoverAssetWrites(this);const rows=[],drafts=new Map(),seen=new Set();let bytes=0;
       for(const entry of entries){
@@ -129,17 +133,19 @@ export class ProjectService {
         if(entry.text!==null&&assetSuffix[kind]){const data=JSON.parse(entry.text);if(!validAsset(kind,data))throw Error(assetValidationError(kind,data)+': '+canonical);if(kind==='modelimport')await this.validateModelImportSource(canonical,data);}
         rows.push({path:canonical,before,after:entry.text,...(restoreIndex.has(key)?{restoreIndex:restoreIndex.get(key)}:{})});drafts.set(key,entry.text);
       }
-      const typeReadGuards=await appendNativeTypeRows(this,rows,drafts);
-      if(rows.some(r=>/\.(hbblueprint\.json|h|hpp|cpp|c)$/i.test(r.path))){
+      const typeReadGuards=await appendNativeTypeRows(this,rows,drafts,{restore}),migration=await planNativeTypeMigration(this,rows,drafts,{restoring:!!restore&&rows.some(r=>r.path.endsWith('.hbtypes.json'))});typeReadGuards.push(...migration?.guards||[]);
+      if(!migration&&rows.some(r=>/\.(hbblueprint\.json|h|hpp|cpp|c)$/i.test(r.path))){
         const paths=new Set((await this.files()).filter(f=>f.kind==='blueprint').map(f=>f.path));for(const row of rows)if(row.path.endsWith('.hbblueprint.json'))paths.add(row.path);
         for(const name of paths){const raw=drafts.has(name.toLowerCase())?drafts.get(name.toLowerCase()):await fs.readFile(await this.resolve(name),'utf8');if(raw!==null)await this.validateBlueprint(name,JSON.parse(raw),drafts);}
       }
       const abilityReadGuards=[];if(rows.some(r=>/\.hb(?:abilityset|curve)\.json$/.test(r.path))){const changed=rows.filter(r=>r.path.endsWith('.hbabilityset.json')),roots=new Set((await this.files()).filter(f=>f.kind==='abilityset').map(f=>f.path));for(const row of changed)if(row.after===null)roots.delete(row.path);else roots.add(row.path);const checked=await this.validateAbilitySets([...roots],drafts);abilityReadGuards.push(...checked.guards);}
       if(rows.some(r=>['effect','curve'].includes(assetKind(r.path)))){const roots=new Set(rows.some(r=>assetKind(r.path)==='curve')?(await this.files()).filter(f=>f.kind==='effect').map(f=>f.path):[]);for(const row of rows.filter(r=>r.path.endsWith('.hbeffect.json')))if(row.after===null)roots.delete(row.path);else roots.add(row.path);const checked=await this.validateEffects([...roots],drafts);abilityReadGuards.push(...checked.guards);}
       const readGuards=[],guardPaths=new Set();for(const entry of guards){const binary=entry&&Object.hasOwn(entry,'expectedFingerprint');if(!entry||typeof entry.path!=='string'||(binary?entry.expectedFingerprint!==null&&(typeof entry.expectedFingerprint!=='string'||!/^[a-f0-9]{64}$/.test(entry.expectedFingerprint))||Object.hasOwn(entry,'expected'):entry.expected!==null&&typeof entry.expected!=='string'))throw Error('읽기 기준 파일을 확인하세요.');const file=await(binary?this.inspectFingerprint(entry.path):this.inspectDocument(entry.path)),key=file.path.toLowerCase();if(seen.has(key)||guardPaths.has(key))throw Error('읽기 기준과 저장 파일 경로가 중복돼요.');guardPaths.add(key);bytes+=binary?64:Buffer.byteLength(entry.expected||'');if(bytes>8388608)throw Error('저장 묶음과 읽기 기준은 합계8MB까지 지원해요.');if((binary?file.revision:file.expected)!==(binary?entry.expectedFingerprint:entry.expected))throw Object.assign(Error('참조 원본이 변경됐어요: '+file.path),{status:409,code:'REVISION_CONFLICT'});readGuards.push(binary?{path:file.path,expectedFingerprint:entry.expectedFingerprint}:{path:file.path,expected:entry.expected});}
-      readGuards.push(...abilityReadGuards,...typeReadGuards);const checkReads=async()=>{guard();for(const entry of readGuards){const binary=Object.hasOwn(entry,'expectedFingerprint'),file=await(binary?this.inspectFingerprint(entry.path):this.inspectDocument(entry.path));if((binary?file.revision:file.expected)!==(binary?entry.expectedFingerprint:entry.expected))throw Object.assign(Error('저장 중 참조 원본이 변경됐어요: '+entry.path),{status:409,code:'REVISION_CONFLICT'});}};
-      await checkReads();if(dryRun)return {valid:true,paths:rows.map(r=>r.path),changes:rows.filter(r=>r.before!==r.after).map(r=>r.path),guards:readGuards.map(r=>r.path)};
-      return commitAssetBatch(this,rows,guard,checkReads);
+      readGuards.push(...abilityReadGuards,...typeReadGuards);const checkReads=async phase=>{guard();await migration?.checkInventory(phase);for(const entry of readGuards){const binary=Object.hasOwn(entry,'expectedFingerprint'),file=await(binary?this.inspectFingerprint(entry.path):this.inspectDocument(entry.path));if((binary?file.revision:file.expected)!==(binary?entry.expectedFingerprint:entry.expected))throw Object.assign(Error('저장 중 참조 원본이 변경됐어요: '+entry.path),{status:409,code:'REVISION_CONFLICT'});}};
+      const expanded=rows.some(r=>r.path.endsWith('.hbtypes.json'))?rows.map(r=>({path:r.path,kind:assetKind(r.path),before:r.before,after:r.after})):undefined;
+      const planRevision=createHash('sha256').update(JSON.stringify(rows.map(r=>[r.path,r.before,r.after]))).digest('hex');if(expectedPlanRevision!==undefined&&expectedPlanRevision!==planRevision)throw Object.assign(Error('미리 확인한 저장 계획이 변경됐어요. 다시 저장하세요.'),{status:409,code:'REVISION_CONFLICT'});
+      await checkReads();if(dryRun)return {valid:true,paths:rows.map(r=>r.path),changes:rows.filter(r=>r.before!==r.after).map(r=>r.path),guards:readGuards.map(r=>r.path),...(expanded?{expanded,planRevision}:{}),...(migration?{migration:{values:migration.values,paths:migration.paths}}:{})};
+      const result=await commitAssetBatch(this,rows,guard,checkReads);return {...result,...migration?{migration:{values:migration.values,paths:migration.paths}}:{}};
     });this.writeQueue=task.catch(()=>{});return task;
   }
   async inspectFingerprint(relative){
@@ -155,7 +161,7 @@ export class ProjectService {
   }
   async undoBatch(id,guard=()=>{}){
     await this.writeQueue;guard();const journal=await readAssetTransaction(this,id);if(journal.state!=='committed')throw Error('완료된 저장 묶음만 되돌릴 수 있어요.');
-    return this.checkedBatch(journal.rows.map(row=>({path:row.path,text:row.before,expected:row.after===null?null:JSON.stringify(assetSuffix[assetKind(row.path)]?JSON.parse(row.after):row.after)})),guard,{restoreIndex:new Map(journal.rows.filter(r=>r.before!==null&&r.indexBefore).map(r=>[r.path.toLowerCase(),r.indexBefore]))});
+    return this.checkedBatch(journal.rows.map(row=>({path:row.path,text:row.before,expected:row.after===null?null:JSON.stringify(assetSuffix[assetKind(row.path)]?JSON.parse(row.after):row.after)})),guard,{[journalRestore]:journal,restoreIndex:new Map(journal.rows.filter(r=>r.before!==null&&r.indexBefore).map(r=>[r.path.toLowerCase(),r.indexBefore]))});
   }
   async validateEffects(roots,drafts=new Map()){
     const sources=new Map(),observed=new Map(),curves=Object.create(null),read=async requested=>{const file=await this.canonicalFile(requested),canonical=path.relative(this.root,file).split(path.sep).join('/'),key=canonical.toLowerCase();if(!sources.has(key))sources.set(key,(async()=>{const raw=drafts.has(key)?drafts.get(key):await fs.readFile(file,'utf8');if(raw===null)throw Error('삭제된 효과·커브 참조: '+requested);if(!drafts.has(key))observed.set(key,{path:canonical,expectedFingerprint:createHash('sha256').update(raw).digest('hex')});return JSON.parse(raw);})());return sources.get(key);};

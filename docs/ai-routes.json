@@ -1932,6 +1932,45 @@
       "paths": [
         "prototype/native-source-watch.js"
       ]
+    },
+    {
+      "id": "native-record-migration",
+      "keywords": [
+        "createNativeRecordMigration"
+      ],
+      "paths": [
+        "prototype/native-record-migration.js"
+      ]
+    },
+    {
+      "id": "native-record-value-sites",
+      "keywords": [
+        "migrateBlueprintRecordValues",
+        "blueprintInstanceRecordSites",
+        "migrateBlueprintInstanceRecords",
+        "migrateSequenceRecordValues"
+      ],
+      "paths": [
+        "prototype/record-value-sites.js"
+      ]
+    },
+    {
+      "id": "native-record-override-migration",
+      "keywords": [
+        "migrateRecordOverrideValue"
+      ],
+      "paths": [
+        "prototype/record-override-values.js"
+      ]
+    },
+    {
+      "id": "native-type-project-migration",
+      "keywords": [
+        "planNativeTypeMigration"
+      ],
+      "paths": [
+        "tools/native-type-migration.mjs"
+      ]
     }
   ]
 }

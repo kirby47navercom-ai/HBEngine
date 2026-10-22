@@ -1,0 +1,21 @@
+import {createProject} from './project-manifest.mjs';
+import {createAsset} from '../prototype/asset-documents.js';
+import {makeNode} from '../prototype/blueprint-model.js';
+import {library,built,header,source,headerPath,sourcePath,statsDefault} from './native-type-asset-1662-fixture.mjs';
+import {reconcileNativeTypeDefaults} from '../prototype/native-type-defaults.js';
+export async function typeMigration1700Fixture(work,{copies=0}={}){
+ const record=await createProject('Schema1700',work,'2d'),project=record.project,typePath='Assets/Shared.hbtypes.json',bpPath=record.manifest.startupBlueprint,cppPath='Assets/BP_Cpp.hbblueprint.json',childPath='Assets/BP_Child.hbblueprint.json',prefabPath='Assets/Root.hbprefab.json',variantPath='Assets/Variant.hbprefab.json',sequencePath='Assets/Take.hbsequence.json';
+ const value={...statsDefault(),Target:'Actor_Keep',Mode:12345};value.Hit.Amount=99;value.Hits[0].Amount=41;
+ await project.write(typePath,JSON.stringify(library));await project.write(headerPath,header);await project.write(sourcePath,source);
+ const bp=createAsset('blueprint','BP_Schema');bp.native={version:1,sourceReference:true,typeLibraries:[typePath]};bp.variables=[{id:'stats',name:'Stats',type:'record',structName:'Combat::Stats',container:'single',value:structuredClone(value)}];bp.nodes=[{...makeNode('setVariable'),variableId:'stats',inputValues:{value:structuredClone(value)}}];bp.edges=[];
+ await project.write(bpPath,JSON.stringify(bp));const cpp=structuredClone(bp);cpp.name='BP_Cpp';cpp.native={version:1,sourceReference:true,headerPath,sourcePath};cpp.settings.parentClass='RecordOwner';cpp.settings.nativeDefaults={'RecordOwner.Data':structuredClone(value)};await project.write(cppPath,JSON.stringify(cpp));
+ const child=createAsset('blueprint','BP_Child',bpPath);child.nodes=[];child.edges=[];child.variables=[];child.settings.variableDefaults={stats:structuredClone(value)};await project.write(childPath,JSON.stringify(child));
+ const actor=(id,path=bpPath)=>({id,name:id,kind:'empty',visible:true,position:[7,3,2],rotation:[0,0,0],scale:[1,1,1],blueprintAsset:path,overrides:{variables:{stats:structuredClone(value)}}});
+ const prefab=createAsset('prefab','Root');prefab.objects=[actor('root')];await project.write(prefabPath,JSON.stringify(prefab));
+ const variant=createAsset('prefab','Variant');variant.parent=prefabPath;variant.objects=[];variant.overrides=[{object:'root',path:['overrides','variables','stats','Hits',0],value:{Amount:23,Direction:[0,0,1]}}];await project.write(variantPath,JSON.stringify(variant));
+ const scene=createAsset('scene','Schema');scene.objects=[actor('A'),actor('C',cppPath),{...actor('Linked'),prefabRoot:'Linked',prefabLocalId:'root',prefabAsset:prefabPath,prefabLink:{version:1,asset:prefabPath,root:'root',ids:{root:'Linked'},baseline:[structuredClone(prefab.objects[0])],conflicts:[{object:'root',path:['overrides','variables','stats','Hit'],before:{Amount:1,Direction:[0,0,0]},value:{Amount:2,Direction:[1,0,0]},source:{Amount:3,Direction:[0,1,0]}}]}}];scene.objects[2].prefabLink.baseline[0].overrides.variables.stats.Hits[0].Amount=1;scene.objects[2].overrides.variables.stats.Hits[0].Amount=2;scene.objects[1].nativeProperties={Data:structuredClone(value),Items:[structuredClone(value)]};scene.objects[1].overrides.nativeProperties={'RecordOwner.Data':structuredClone(value)};await project.write(record.manifest.startupScene,JSON.stringify(scene));
+ const sequence=createAsset('sequenceasset','Take');sequence.tracks=[{id:'track_stats',name:'Stats',type:'variable',target:'A',variable:'stats',valueType:'record',structName:'Combat::Stats',array:false,clips:[],keys:[{time:0,value:structuredClone(value)}]}];await project.write(sequencePath,JSON.stringify(sequence));
+ for(let i=0;i<copies;i++)await project.write('Assets/BP_Copy'+i+'.hbblueprint.json',JSON.stringify({...bp,name:'BP_Copy'+i}));
+ const draft=structuredClone(library);draft.structs.find(d=>d.symbol==='Damage').fields.push({id:crypto.randomUUID(),symbol:'Weight',label:'무게',tooltip:'',type:'float',array:false,readOnly:false,value:2});const expanded=reconcileNativeTypeDefaults(library,draft);
+ return {...record,typePath,bpPath,cppPath,childPath,prefabPath,variantPath,sequencePath,scenePath:record.manifest.startupScene,library,expanded,built,value,actor};
+}
