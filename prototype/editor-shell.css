@@ -136,3 +136,10 @@
 
 .asset-tick-field { display:flex; align-items:center; gap:8px; margin-top:14px; font-size:13px; }
 .asset-tick-field input { width:15px; height:15px; margin:0; }
+
+.distance-field-dialog { position:fixed; inset:0; margin:auto; width:400px; max-width:calc(100vw - 32px); padding:20px; }
+.distance-field-dialog h2 { margin:0 0 16px; }
+.distance-field-dialog label { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.distance-field-dialog input { width:90px; }
+.distance-field-dialog output { display:block; margin-top:12px; color:var(--muted); }
+.distance-field-dialog footer { margin:20px -20px -20px; }

@@ -2133,6 +2133,35 @@
       "paths": [
         "prototype/mesh-distance-field-gpu.js"
       ]
+    },
+    {
+      "id": "editor-distance-cache",
+      "keywords": [
+        "prepareEditorDistanceFields",
+        "editorDistanceFieldDialog"
+      ],
+      "paths": [
+        "prototype/editor-distance-fields.js"
+      ]
+    },
+    {
+      "id": "distance-project-cache",
+      "keywords": [
+        "EditorDistanceFieldCache",
+        "readCachedDistanceField"
+      ],
+      "paths": [
+        "tools/distance-field-cache.mjs"
+      ]
+    },
+    {
+      "id": "editor-distance-command",
+      "keywords": [
+        "distanceFields.prepare"
+      ],
+      "paths": [
+        "prototype/app.js"
+      ]
     }
   ]
 }

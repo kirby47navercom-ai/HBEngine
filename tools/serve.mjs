@@ -11,6 +11,8 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
+import {EditorDistanceFieldCache} from './distance-field-cache.mjs';
+import {distanceFieldCookMaxBytes} from '../prototype/mesh-distance-field-codec.js';
 import {ProjectService} from './project-service.mjs';
 import {NativeHost} from './native-host.mjs';
 import {readNativeFiles} from './native-project.mjs';
@@ -20,6 +22,7 @@ import {EditorAutomation,engineSchema} from './editor-automation.mjs';
 const root=path.resolve(import.meta.dirname,'..'),desktop=process.env.HB_DESKTOP==='1',requestedPort=Number(process.env.PORT??5173),quietRoot=path.join(root,'Projects/QuietGarden');
 if(!Number.isInteger(requestedPort)||requestedPort<0||requestedPort>65535)throw Error('서버 포트 범위 오류');
 const buildJobs=new BuildJobs();
+const distanceCache=new EditorDistanceFieldCache();
 let port=requestedPort,project=null,session=null,storage=null,native=new NativeHost(),automation=new EditorAutomation(),defaultProject=null,ready=false,stopping=false;
 const quietCanonicalRoot=await fs.promises.realpath(quietRoot).catch(error=>{if(error.code!=='ENOENT')throw error;return quietRoot;});
 const sameRoot=(a,b)=>process.platform==='win32'?path.resolve(a).toLowerCase()===path.resolve(b).toLowerCase():path.resolve(a)===path.resolve(b);
@@ -62,6 +65,11 @@ const server=http.createServer(async(req,res)=>{try{
     // Each request retains its original project through body reads and native compilation.
     const owner=project,host=native,store=storage,projectId=session.id,readBody=async(limit)=>{const data=await body(req,limit);checkOwner(owner);return data;};
     if(req.method==='GET'&&['/api/file','/api/project','/api/asset/info','/api/asset/registry','/api/asset/document'].includes(url.pathname)){await owner.writeQueue;checkOwner(owner);}
+    if(url.pathname==='/api/distance-fields/cache'){
+      const geometry=q.get('geometry'),resolution=Number(q.get('resolution'));
+      if(req.method==='PUT')return json(res,await distanceCache.put(owner,geometry,resolution,await readBody(distanceFieldCookMaxBytes),()=>checkOwner(owner)));
+      if(req.method==='GET'){const cached=await distanceCache.get(owner,geometry,resolution,{preferAnalytic:q.get('analytic')==='1'});checkOwner(owner);if(!cached)return json(res,{error:'거리장 캐시 없음'},404);if(q.get('metadata')==='1')return json(res,cached.row);return res.writeHead(200,{'Content-Type':'application/octet-stream','Content-Length':cached.bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(cached.bytes);}
+    }
     if(url.pathname.startsWith('/api/build')){
       const record=await readProjectManifest(session.projectFile);checkOwner(owner);
       if(url.pathname==='/api/build/profiles'&&req.method==='GET')return json(res,await readBuildProfiles(record));

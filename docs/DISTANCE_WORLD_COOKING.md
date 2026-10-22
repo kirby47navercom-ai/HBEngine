@@ -9,3 +9,5 @@
 빌드 보고서 `distanceFields.world`는 종류별 고유 에셋 수, 기하 입력 수, 예산 보류/미지원과 최대3개 예시를 제공해요. `rendererBuffers`와 `expandedInstanceTransforms`는 이 쿠킹 과정에서0이에요. 게임의 `distanceFields.cooked`와 기존 `meshDistanceFieldBakeState()`로 실제 적중/거절/작업자 시작을 구분해요. 생성 바이너리는 기존 Windows·웹·모바일 콘텐츠 경로를 사용하고 게임은 디스크 캐시를 추가하지 않아요.
 
 [Epic Mesh Distance Fields의 Scene Representation·Quality·Foliage](https://dev.epicgames.com/documentation/en-us/unreal-engine/mesh-distance-fields-in-unreal-engine) 지정 본문을 대조했어요. HB는 지형의 삼각형 메시를 기존 볼륨 거리장으로 쿠킹해요. Epic 문서의 별도 Landscape heightfield·Global Distance Field clipmap이나 masked/two-sided foliage와 같은 구현이라고 주장하지 않아요. FBX의 사전 쿠킹·편집기 전용 사전 빌드·전용 높이장·변형/마스크/투명·전역 clipmap은 별도 잔여예요. Mac/Xcode·모바일 실기기 확인을 한 것으로 표시하지 않아요.
+
+편집기의 로드된 정적 기하 사전 생성과 프로젝트 캐시 공유는 [EDITOR_DISTANCE_CACHE.md](EDITOR_DISTANCE_CACHE.md)에 있어요. 화면 없는 FBX 자동 쿠킹과는 구분해요.

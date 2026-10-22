@@ -622,3 +622,5 @@ HB_PROPERTY/HB_FUNCTION/HB_NODE는 protected/private 구역에서도 기존 노�
 2026-10-23: [쿼터니언 범위 밖 회전](QUATERNION_INFINITY.md)의 각속도·누적 모드를 기존 BP와 C++ LevelSequence가 공통으로 실행해요. Sequence 속성/AI revision·Undo 계약을 그대로 사용하고 이산/참조/이벤트 시계는 유지해요.
 
 2026-10-23: [월드 거리장 쿠킹](DISTANCE_WORLD_COOKING.md)은 기존 MeshRenderer의 월드 메시·지형·폴리지·LOD와 같은 에셋을 사용해요. BP/C++ Components의 PostProcessVolume 설정과 Scene 이동이 같은 쿠킹 필드의 적중·LOD 전환·해제/재생성을 실행해요. 새 노드/ABI나 원본 복제는 없어요.
+
+편집기 거리장 사전 생성은 `distanceFields.prepare`와 같은 흐름으로 프로젝트 CookCache를 준비해요. 런타임에서 기존 PostProcessVolume·MeshRenderer를 제어하는 블루프린트와 C++ API는 유지하며, 편집기 재실행에서도 같은 정적 기하를 재사용해요. 편집기 전용 캐시 준비를 게임 중 C++ 호출로 노출하지 않아요. 자세한 계약은 [EDITOR_DISTANCE_CACHE.md](EDITOR_DISTANCE_CACHE.md)에 있어요.

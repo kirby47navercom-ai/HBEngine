@@ -4,6 +4,7 @@ import {createHash,randomUUID} from 'node:crypto';
 import {OBJLoader} from 'three/addons/loaders/OBJLoader.js';
 import {loadHeadlessModel,disposeHeadlessModel} from './headless-model.mjs';
 import {pruneCookCache} from './cook-cache.mjs';
+import {distanceFieldGeneratorHash,distanceFieldCacheKey,readCachedDistanceField} from './distance-field-cache.mjs';
 import {distanceFieldWorldInputs} from './distance-world-source.mjs';
 import {scenePrimitives} from '../prototype/scene-primitives.js';
 import {defaultSurface} from '../prototype/model.js';
@@ -12,7 +13,6 @@ import {distanceFieldVertices} from '../prototype/mesh-distance-field-upgrades.j
 import {prepareDistanceFieldMesh,bakeMeshDistanceField} from '../prototype/mesh-distance-field-core.js';
 import {distanceFieldGeometryHash,encodeDistanceField,decodeDistanceField,distanceFieldCookVersion,distanceFieldCookDirectory,distanceFieldCookManifest} from '../prototype/mesh-distance-field-codec.js';
 const hash=b=>createHash('sha256').update(b).digest('hex');
-const owners=['mesh-distance-field-core.js','mesh-distance-field-layout.js','mesh-distance-primitives.js','geometry-bvh-core.js','mesh-distance-field-codec.js'];
 const release=object=>{disposeHeadlessModel(object);const resources=new Set();object.traverse(o=>{if(o.geometry)resources.add(o.geometry);for(const m of o.material?(Array.isArray(o.material)?o.material:[o.material]):[])resources.add(m);});for(const r of resources)r.dispose();};
 
 // Shared CookCache retention is applied by cookContent after this stage. Nothing
@@ -22,14 +22,14 @@ export async function cookDistanceFields(project,content,{signal,packageBudget=3
  const scenes=[...content].filter(([name])=>name.endsWith('.hbscene.json')).map(([,b])=>JSON.parse(b)),resolutions=new Set();for(const scene of scenes)for(const o of scene.objects||[])for(const c of o.components||[]){const p=c.properties;if(c.type==='PostProcessVolume'&&p?.enabled!==false&&p?.aoEnabled&&p.aoMode==='distanceField'&&!p.pathTracingEnabled)resolutions.add(p.aoDistanceFieldResolution??24);}
  const report={version:distanceFieldCookVersion,manifest:'',fields:0,cacheHits:0,baked:0,packageBytes:0,packageBudget,geometryInputs:0,duplicateInputs:0,unsupported:0,deferred:0,examples:[],scope:'Static primitive/OBJ/glTF/GLB/world mesh/terrain triangles/foliage-source/all LOD-level local geometry; shared content hashes, exact requested resolution only; unsupported or absent quality uses owned runtime worker. No editor/driver cache.'};if(!resolutions.size)return report;
  if([...content.keys()].some(p=>p.startsWith(distanceFieldCookDirectory+'/')))throw Error('엔진 거리장 생성 경로와 프로젝트 에셋이 겹쳐요.');
- const generatorHash=hash(JSON.stringify(await Promise.all(owners.map(async p=>[p,hash(await fs.readFile(new URL('../prototype/'+p,import.meta.url)))]))));const folder=await project.resolve('Library/CookCache',true,false);await fs.mkdir(folder,{recursive:true});const fields=new Map(),seen=new Set();let payloadBytes=0,manifestBytes=Buffer.byteLength(JSON.stringify({version:distanceFieldCookVersion,fields:[]}));
+ const generatorHash=await distanceFieldGeneratorHash();const folder=await project.resolve('Library/CookCache',true,false);await fs.mkdir(folder,{recursive:true});const fields=new Map(),seen=new Set();let payloadBytes=0,manifestBytes=Buffer.byteLength(JSON.stringify({version:distanceFieldCookVersion,fields:[]}));
  const example=(name,error)=>{if(report.examples.length<3)report.examples.push({path:name,message:String(error.message||error).slice(0,240)});};
  async function geometry(g,name){
   signal?.throwIfAborted();const pos=g.attributes.position,idx=g.index,start=g.drawRange.start,count=Math.floor((Math.min(idx?.count??pos.count,start+g.drawRange.count)-start)/3)*3;if(!Number.isSafeInteger(start)||start<0||!Number.isSafeInteger(count)||count<3||count*24>8*1024*1024){report.deferred++;return;}
   const vertices=distanceFieldVertices(pos,idx,start,count),geometry=await distanceFieldGeometryHash(vertices);report.geometryInputs++;if(seen.has(geometry)){report.duplicateInputs++;return;}seen.add(geometry);let mesh;
   for(const resolution of [...resolutions].sort((a,b)=>a-b)){
-   signal?.throwIfAborted();const key=hash(JSON.stringify([distanceFieldCookVersion,generatorHash,geometry,resolution])),file=path.join(folder,key+'.bin');let bytes,field,hit=false;
-   try{const stored=await fs.readFile(file);if(stored.length<64||stored.subarray(0,64).toString('ascii')!==hash(stored.subarray(64)))throw Object.assign(Error('거리장 쿠킹 캐시 손상'),{code:'HB_CACHE_CORRUPT'});bytes=stored.subarray(64);try{field=decodeDistanceField(bytes,geometry);}catch(error){throw Object.assign(error,{code:'HB_CACHE_CORRUPT'});}if(!field.kind&&field.resolution!==resolution)throw Object.assign(Error('거리장 캐시 해상도 오류'),{code:'HB_CACHE_CORRUPT'});hit=true;await fs.utimes(file,new Date(),new Date());}
+   signal?.throwIfAborted();const key=distanceFieldCacheKey(generatorHash,geometry,resolution),file=path.join(folder,key+'.bin');let bytes,field,hit=false;
+   try{const analytic=await readCachedDistanceField(project,geometry,0,{signal,generatorHash});const stored=analytic?Buffer.concat([Buffer.from(hash(analytic.bytes),'ascii'),analytic.bytes]):await fs.readFile(file);if(stored.length<64||stored.subarray(0,64).toString('ascii')!==hash(stored.subarray(64)))throw Object.assign(Error('거리장 쿠킹 캐시 손상'),{code:'HB_CACHE_CORRUPT'});bytes=stored.subarray(64);try{field=decodeDistanceField(bytes,geometry);}catch(error){throw Object.assign(error,{code:'HB_CACHE_CORRUPT'});}if(!field.kind&&field.resolution!==resolution)throw Object.assign(Error('거리장 캐시 해상도 오류'),{code:'HB_CACHE_CORRUPT'});hit=true;if(!analytic)await fs.utimes(file,new Date(),new Date());}
    catch(error){if(!['ENOENT','HB_CACHE_CORRUPT'].includes(error.code))throw error;
     // A cache miss beyond the package budget never creates a throwaway bake.
     if(report.packageBytes+resolution**3*4+8192>packageBudget){report.deferred++;continue;}
