@@ -1022,3 +1022,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1641–1648: loaded network runtime prefab asset/local교체·사전검증/4ms예산/dirty Set·stale child state/owner/publication/delete보호·async C변경/delete/disconnect/sameID CAS·preflight실패유지/정정local복구. 실제socket/공용서비스/A EndB Begin각1·metadata페이지확장·기존11수명/1025공정/한글4MiB3검사묶음최장0.52秒. Native21/Player1604/렌더·애니메이션소유불변재사용·실제2D GUI최종설치예정·누적계속.
 
 1650 최종설치: 5cd702581441057a·4250명세/919소유/native21/30tests/vendor2 SHA·Player1604/Host1041/렌더·몽타주등불변재사용. installed-root소켓/공용서비스/비동기교체·오류복구0.42초·실제2D BP접속/A→B/AEnd1/Bbegin1→B삭제/동일ID Bbegin2·source일치페이지/위치10.3초. User10849읽기SHA불변·연결/Versions1·이전191397227B回收. CPP/제작타입등누적작업계속.
+
+1652–1657: native frozen snapshot weak type index/enum name+source모호성보존·field/ref계획metadata묶음소속분리·이전Git실제shared Parent/Child타입오인/Actor참조0 재현수리·mutable현재조회/계획유지. 512struct514enum×2000조회정의방문1024000/1028000→warm표순회0/0·1000record array/기존BP macro/sequence/take등3검사0.34초최장. UE/Unity선택본문부분읽기CORPUS1652·typeasset/globalregistry後續·최종설치CppUI/D3D예정·누적계속.
