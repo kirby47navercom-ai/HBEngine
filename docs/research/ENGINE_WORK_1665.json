@@ -1103,9 +1103,6 @@
     "prototype/network-state.js": "48513968e36f61a5c305995bc9151a8b150ca0c8a9e6bf2207fcfb000eb330bd",
     "prototype/network-inspection.js": "62f2e61f595dd4ac939eb86bee2cf810f4f538f7573fae71cf82bbf403b06e55"
   },
-  "pendingInstalledGates": [
-    "tools/check-native-type-assets-1663-window.mjs --executable installed --package --expected-player-sha 07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
-  ],
   "focusedAI": {
     "before": {
       "path": "native/build/native-type1665-focus.json",
@@ -1131,8 +1128,8 @@
     "policy": "Authoring only; original+generated header use the existing transaction/CAS/owner checks. Native input/output/reference/default contract reused; no runtime copy of library authoring IDs or new native ABI.",
     "remaining": "Independent enum/struct assets, pure-BP project type registry/import, arbitrary schema deletion/rename/type migration, class polymorphism and broad cumulative ledger remain."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1659.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1671.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "exhaustiveUEUnity": false,
   "fixtureRepair": {
@@ -1140,6 +1137,22 @@
     "sha256": "1cdd2a9e9a6bc7d12353f1f84a5306406aef401f727c89d56d6fa45bc2aba0e5",
     "initialInstall": "native/build/user-install-1669-audit.json",
     "reason": "Actual UI add+label edit succeeded; fixture omitted required expectedRevision on document.save and correctly hit REVISION_CONFLICT before native build. Query current document revision and pass it, no production guard relaxation.",
-    "finalInstallPending": true
-  }
+    "finalInstallPending": false,
+    "finalAcceptance": "native/build/native-type-assets-1663-window-LSx2p5/acceptance.json"
+  },
+  "installedGates": [
+    {
+      "path": "native/build/native-type-assets-1663-window-LSx2p5/acceptance.json",
+      "sha256": "27b57cef1b74d6b37897d80695ce1f3ce0ef2ddc2df949127f5b67172e19ae69",
+      "scope": "Actual owned type-library editor and label save atomically regenerate shared C++ header, then actual C++ record metadata page/defaults, nested variables and enum/array edit, type picker UndoRedo, Make pin and defaults/instances, sourceReference save without tables, compiled CPP value/Actor reference and same saved actual D3D11 game. Snapshot cross-context/large lookup count is proved separately; native/renderer source unchanged.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\5f4c3dc59030d6a0\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 74905.90729999999
+    }
+  ]
 }

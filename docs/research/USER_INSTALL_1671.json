@@ -1,0 +1,164 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "ec830b0192f9a693692541961e32a212b785f70a",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5f4c3dc59030d6a0",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\5f4c3dc59030d6a0\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\5f4c3dc59030d6a0\\HBEngine.exe",
+  "bundleHash": "5f4c3dc59030d6a023a805c0cf2567e22724f77a3440d2efc90b5f7af9b804a8",
+  "files": 4267,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4268,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\57d6ae7abc6aee6e",
+        "bytes": 191902200,
+        "manifestSHA256": "cbdc389a3b7ce5ba062e0ac6e88d908a2c360b252b2f7b6cf1d88f7c2e4b58a7"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T14:03:19.6100398Z",
+    "bytes": 191902200,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "5f4c3dc59030d6a0"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 937,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/native-type-assets-1663-window-LSx2p5/acceptance.json",
+      "sha256": "27b57cef1b74d6b37897d80695ce1f3ce0ef2ddc2df949127f5b67172e19ae69",
+      "scope": "Actual owned type-library editor and label save atomically regenerate shared C++ header, then actual C++ record metadata page/defaults, nested variables and enum/array edit, type picker UndoRedo, Make pin and defaults/instances, sourceReference save without tables, compiled CPP value/Actor reference and same saved actual D3D11 game. Snapshot cross-context/large lookup count is proved separately; native/renderer source unchanged.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\5f4c3dc59030d6a0\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 74905.90729999999
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\5f4c3dc59030d6a0\\",
+    "elapsedMs": 64.53,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\5f4c3dc59030d6a0",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "5f4c3dc59030d6a023a805c0cf2567e22724f77a3440d2efc90b5f7af9b804a8",
+      "installedAt": "2026-10-22T14:03:16.205Z",
+      "manifestFiles": 4267,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged native SDK21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4267,
+  "versions": [
+    "5f4c3dc59030d6a0"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1671-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/native-type1664-group.json",
+      "sha256": "bf8065a5d5e564c2937801ec34a057e142c25a9092de46637478c04f7bc352c0",
+      "scope": "Grouped actual 2D type-library paired save/create/batch/conflicts/identity/defaults, existing snapshot type index and BP records/sequence/take/atomic transaction regressions plus syntax. Final actual installed type editor/C++/D3D gate separate; no repeated full renderer/SDK build."
+    },
+    {
+      "path": "native/build/native-type1664-index.json",
+      "sha256": "ec2c05ed3e1cb454a64509bfe6e368a01d2bc1185efd4f9da692f07af90a7689",
+      "scope": "Snapshot-only lazy weak type lookup, previous linear identity/source ambiguity and1000 record-array validation; independently valid raw frozen registries share one parent but resolve distinct child field/ref schemas, mutable schema changes stay live, copy-on-write references and immutable field-plan reset. Table traversal counts, not FPS/heap/native compilation or dedicated type assets."
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-type-assets-1662-PA4CrZ/acceptance.json",
+      "sha256": "fd32e7ad7cc204980365c59607e0cd93e0a11fb7461ba9ca4b07fb7c213e85e1",
+      "scope": "Type library model and generated native metadata, actual 2D project CRUD/atomic header pair/checked-batch, identity and failure preservation. Compiled CPP, actual editor and packaged game are separate gates; dedicated independent type assets/global pure-BP registry/schema migration not claimed."
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1478-K7k9IF/acceptance.json",
+      "sha256": "e5a752759b4568553d487309d5448e83c62cbd8893e5d58b09f1b22bc31ec3d2",
+      "scope": "Existing BP/record/sequence/take regression; see individual result fields."
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1483-SLJOwE/acceptance.json",
+      "sha256": "d979e0592f25ba2899d0c4050b1cd836642ca925222a8671007c67af9e602c9b",
+      "scope": "Existing BP/record/sequence/take regression; see individual result fields."
+    },
+    {
+      "path": "native/build/native-type1666-context.json",
+      "sha256": "e9c85b026cac398ba36eb360b3995c3f7f3c19d8fa2413800fddfe8308eb8a60",
+      "scope": "Exact new type-model/write/editor symbol routing. Warm/cold timing not benchmarked; file/byte reads measured, no extra index/daemon and global caller completeness not claimed."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-type-assets-1662-PA4CrZ/acceptance.json",
+      "sha256": "fd32e7ad7cc204980365c59607e0cd93e0a11fb7461ba9ca4b07fb7c213e85e1",
+      "scope": "Type library model and generated native metadata, actual 2D project CRUD/atomic header pair/checked-batch, identity and failure preservation. Compiled CPP, actual editor and packaged game are separate gates; dedicated independent type assets/global pure-BP registry/schema migration not claimed."
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1478-K7k9IF/acceptance.json",
+      "sha256": "e5a752759b4568553d487309d5448e83c62cbd8893e5d58b09f1b22bc31ec3d2",
+      "scope": "Existing BP/record/sequence/take regression; see individual result fields."
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1483-SLJOwE/acceptance.json",
+      "sha256": "d979e0592f25ba2899d0c4050b1cd836642ca925222a8671007c67af9e602c9b",
+      "scope": "Existing BP/record/sequence/take regression; see individual result fields."
+    }
+  ],
+  "scope": "Installed actual type-library UI creation/label edit, atomic original/generated header save, then shared typed C++ editor metadata/default pages, nested record/enum/array fields, type picker UndoRedo, Make pin/default/instance editing, sourceReference save without copied type tables; compiled CPP value/Actor reference and same saved actual D3D11 game with exact source Player1604. Source actual2D library create/write/checkedBatch/dryrun/conflict/identity/defaults plus snapshot512struct/514enum/2000lookups/1000record-array, valid shared frozen contexts/mutable plans and previous BP/sequence/take plus original-code failure proof reused. Native21/30tests/vendor2/Player1604/Host1041/render/network/montage/VM owners unchanged; full manifest/User inventory/links/Versions1. No independent per-enum/struct assets/pure-BP global import/arbitrary migration/whole engine/FPS/phone claim.",
+  "version": 1,
+  "date": "2026-10-22T14:07:29.932Z",
+  "work": "docs/research/ENGINE_WORK_1665.json",
+  "distributionSync": "native/build/distribution-1670-sync.json",
+  "nativePlayerBuildReused": true,
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1659.json",
+  "hostReuseFrom": "docs/research/USER_INSTALL_1659.json"
+}
