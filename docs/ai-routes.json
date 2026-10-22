@@ -196,7 +196,11 @@
         "worker",
         "enum",
         "열거형",
-        "비트마스크"
+        "비트마스크",
+        "구조체",
+        "HB_STRUCT",
+        "record",
+        "struct"
       ],
       "paths": [
         "native/include/HBEngine/Game.hpp",
@@ -209,7 +213,11 @@
         "native/include/HBEngine/Enum.hpp",
         "prototype/native-enums.js",
         "prototype/native-header-files.js",
-        "docs/NATIVE_ENUMS.md"
+        "docs/NATIVE_ENUMS.md",
+        "docs/NATIVE_RECORDS.md",
+        "prototype/native-structs.js",
+        "prototype/native-records.js",
+        "prototype/native-types.js"
       ]
     },
     {
@@ -1419,6 +1427,96 @@
       "paths": [
         "prototype/native-model.js",
         "docs/NATIVE_ENUMS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "parseNativeStructs",
+        "HB_STRUCT"
+      ],
+      "paths": [
+        "prototype/native-structs.js",
+        "prototype/native-model.js",
+        "docs/NATIVE_RECORDS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "nativeCppType"
+      ],
+      "paths": [
+        "prototype/native-types.js",
+        "docs/NATIVE_RECORDS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "nativeRecordDefault",
+        "validNativeRecordPin",
+        "nativeRecordFields",
+        "mapNativeRecordObjects",
+        "validNativeWireValue"
+      ],
+      "paths": [
+        "prototype/native-records.js",
+        "prototype/native-protocol.js",
+        "docs/NATIVE_RECORDS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "nativeRecordInitializer",
+        "initializeNativeRecordDefaults"
+      ],
+      "paths": [
+        "prototype/native-record-initializer.js",
+        "docs/NATIVE_RECORDS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "nativeRecordControl",
+        "editNativeRecordControl",
+        "nativeRecordTypeChoices"
+      ],
+      "paths": [
+        "prototype/native-record-controls.js",
+        "prototype/blueprint-details.js",
+        "docs/NATIVE_RECORDS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "native.structs.read",
+        "native.structs.defaults.read",
+        "inspectNativeRecords",
+        "inspectNativeRecordDefault"
+      ],
+      "paths": [
+        "prototype/native-record-inspection.js",
+        "prototype/app.js",
+        "tools/editor-automation.mjs",
+        "docs/NATIVE_RECORDS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "nativeRecordWorkerTypes"
+      ],
+      "paths": [
+        "tools/native-record-code.mjs",
+        "tools/native-source.mjs",
+        "docs/NATIVE_RECORDS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "snapshotNativeMetadata"
+      ],
+      "paths": [
+        "prototype/native-model.js",
+        "prototype/blueprint-runtime.js",
+        "docs/NATIVE_RECORDS.md"
       ]
     }
   ]

@@ -1,3 +1,4 @@
+import {nativeRecordDefault} from './native-records.js';
 import {isFlowNode} from './flow-pins.js';
 import {catalog, effectivePins, canConnect, connect, makeNode,defaultInputValue,defaultsFor,validValue,variableTypes} from './blueprint-model.js';
 
@@ -77,10 +78,10 @@ export function dropVariable(graph,variableId,target,position,mode){
 export function promotePin(graph,target){
   const owner=graph.nodes.find(n=>n.id===target?.node),pin=owner&&effectivePins(owner,target.direction,graph).find(p=>p.id===target.pin);
   if(!pin||!['in','out'].includes(target.direction)||!Object.hasOwn(variableTypes,pin.type))return {ok:false,reason:'값 핀을 선택하세요.'};
-  const literal=target.direction==='in'?defaultInputValue(owner,pin):pin.array?[]:defaultsFor(pin.type),value=structuredClone(literal);
+  const literal=target.direction==='in'?defaultInputValue(owner,pin):pin.array?[]:pin.type==='record'?nativeRecordDefault(graph.native,pin):defaultsFor(pin.type),value=structuredClone(literal);
   if(!(pin.array?Array.isArray(value)&&value.length<=128&&value.every(v=>validValue(pin.type,v)):validValue(pin.type,value)))return {ok:false,reason:'핀 기본값을 확인하세요.'};
   const base=(pin.label.replace(/\s+/g,'')||'Value').slice(0,70);let name=base,index=1;while(graph.variables.some(v=>v.name===name))name=base+index++;
-  const variable={id:'var_'+crypto.randomUUID().replaceAll('-',''),name,type:pin.type,...(pin.enumName?{enumName:pin.enumName}:{}),container:pin.array?'array':'single',value},candidate={...graph,variables:[...graph.variables,variable],nodes:[...graph.nodes],edges:structuredClone(graph.edges)},position={x:Math.max(-10000,Math.min(10000,owner.position.x+(target.direction==='in'?-270:270))),y:owner.position.y};
+  const variable={id:'var_'+crypto.randomUUID().replaceAll('-',''),name,type:pin.type,...(pin.enumName?{enumName:pin.enumName}:{}),...(pin.structName?{structName:pin.structName}:{}),container:pin.array?'array':'single',value},candidate={...graph,variables:[...graph.variables,variable],nodes:[...graph.nodes],edges:structuredClone(graph.edges)},position={x:Math.max(-10000,Math.min(10000,owner.position.x+(target.direction==='in'?-270:270))),y:owner.position.y};
   let result;
   if(target.direction==='in')result=dropVariable(candidate,variable.id,target,position,'get');
   else{

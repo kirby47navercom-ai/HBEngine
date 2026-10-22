@@ -19,6 +19,7 @@
 #define HB_FUNCTION(...)
 #define HB_NODE(...)
 #define HB_PROPERTY(...)
+#define HB_STRUCT(...)
 namespace hb {
 using Json=nlohmann::json;
 struct Vec2 { float x=0,y=0; };

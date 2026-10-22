@@ -5371,5 +5371,37 @@
       }
     ],
     "implementation": "Independent HB reflected C++ enum metadata, named property/pin/variable controls, arrays, hidden values, ordinal/direct masks, typed Switch, signed32 wire for U32 bits, shared headers, C++ typed worker conversion and enum SDK, bounded AI query. Native compiler asserts parsed value and base-type assumptions; no arbitrary C++ expression/preprocessor/reflection/general custom-type completion claim."
+  },
+  "supplemental1469": {
+    "record": "docs/NATIVE_RECORDS.md",
+    "date": "2026-10-22",
+    "fullCorpusAnalysis": false,
+    "readings": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/structs-in-unreal-engine",
+        "engine": "Unreal",
+        "sections": [
+          "rendered body0–56: reflected value structs, fields, BlueprintType and Make/Break"
+        ],
+        "note": "Scoped page-body reading. No claim to every reflected field or UClass API; HB Actor fields were independently compiled."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/struct-variables-in-blueprints?application_version=4.27",
+        "engine": "Unreal4.27",
+        "sections": [
+          "rendered body0–94: dropdown, nested fields, split/recombine, Make/Break, selected Set Members, hide unused outputs, custom asset workflow"
+        ],
+        "note": "Historical editor workflow reference, not current-version UI parity. Dedicated HB struct asset remains separate work."
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SerializeReference.html",
+        "engine": "Unity6000.0",
+        "sections": [
+          "description/body240–317; polymorphism example319–375 partially read previously"
+        ],
+        "note": "Value serialization versus managed host reference identity, cycles, polymorphism and cost. HB record values do not implement managed reference graphs."
+      }
+    ],
+    "implementation": "Independent HB_STRUCT metadata and typed native worker codecs; nested value/default/enum/actor/array authoring, Make/Break/selected Set, split pins and reference tunnels, shared runtime metadata, bounded AI queries, sequence/Take value tracks, layout-safe reload. Portable generated internal wrapper/state types use translation-unit ownership to prevent cross-module default-state aliasing."
   }
 }

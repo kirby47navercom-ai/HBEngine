@@ -1,6 +1,6 @@
 // Parse literal C++ aggregate initialization; never evaluate user C++ as JavaScript.
 export function nativeInitializer(text,type,array=false){
-  text=text.replace(/\b(?:hb::)?(?:Vec2|Vec3|Color|Transform|HitResult|Vector2|Vector3)\s*(?=\{)/g,'');
+  text=text.replace(/"(?:\\.|[^"\\])*"|\b(?:hb::)?(?:Vec2|Vec3|Color|Transform|HitResult|Vector2|Vector3)\s*(?=\{)/g,match=>match.startsWith('"')?match:'');
   const tokens=text.match(/"(?:\\.|[^"\\])*"|nullptr|true|false|[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?[fFuUlL]*|[{}\[\],]/g)||[];
   if(tokens.join('').replace(/\s/g,'')!==text.replace(/\s/g,''))throw Error('C++ 기본값에는 리터럴 초기화를 사용하세요.');
   let at=0,count=0;

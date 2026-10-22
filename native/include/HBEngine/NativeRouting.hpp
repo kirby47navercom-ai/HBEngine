@@ -16,11 +16,23 @@ using Query=std::function<std::string(const std::string&)>;
 using Dispatch=std::function<std::string(int,const std::string&,const Query&)>;
 inline std::unordered_map<int,Json> SpawnContexts;
 inline size_t StringUnits(const std::string& value){size_t units=0;for(unsigned char c:value)if((c&0xc0)!=0x80)units+=c>=0xf0?2:1;return units;}
+inline bool ValidRecordData(const Json& value,size_t& budget,unsigned depth=0){
+    if(!budget||depth>16)return false;
+    --budget;
+    if(value.is_null()||value.is_boolean())return true;
+    if(value.is_number())return std::isfinite(value.get<double>());
+    if(value.is_string())return StringUnits(value.get_ref<const std::string&>())<=4096;
+    if(value.is_array()){if(value.size()>100000)return false;for(const auto& item:value)if(!ValidRecordData(item,budget,depth+1))return false;return true;}
+    if(!value.is_object()||value.size()>128)return false;
+    for(auto it=value.begin();it!=value.end();++it)if(StringUnits(it.key())>80||!ValidRecordData(it.value(),budget,depth+1))return false;
+    return true;
+}
 inline bool ValidValue(const std::string& type,const Json& value,const Json& world){
     const auto vector=[&](size_t size){return value.is_array()&&value.size()==size&&std::all_of(value.begin(),value.end(),[](const Json& v){return v.is_number()&&std::isfinite(v.get<double>());});};
     if(type=="bool")return value.is_boolean();if(type=="int")return value.is_number()&&std::isfinite(value.get<double>())&&value.get<double>()>=-2147483648.0&&value.get<double>()<=2147483647.0&&std::floor(value.get<double>())==value.get<double>();
     if(type=="float")return value.is_number()&&std::isfinite(value.get<double>());if(type=="string")return value.is_string()&&value.get<std::string>().size()<=16384&&StringUnits(value.get<std::string>())<=4096;
     if(type=="vec2")return vector(2);if(type=="vec3")return vector(3);if(type=="color")return vector(4)&&std::all_of(value.begin(),value.end(),[](const Json& v){return v.get<double>()>=0&&v.get<double>()<=1;});
+    if(type=="record"){size_t budget=2000000;return value.is_object()&&ValidRecordData(value,budget);}
     if(type=="object")return value.is_null()||value.is_string()&&std::any_of(world.begin(),world.end(),[&](const Json& o){return o.at("id")==value;});
     if(type=="transform")return value.is_object()&&value.contains("position")&&value.contains("rotation")&&value.contains("scale")&&ValidValue("vec3",value.at("position"),world)&&ValidValue("vec3",value.at("rotation"),world)&&ValidValue("vec3",value.at("scale"),world);
     if(type=="hit")return value.is_object()&&value.contains("hit")&&value.contains("position")&&value.contains("normal")&&value.contains("actor")&&ValidValue("bool",value.at("hit"),world)&&ValidValue("vec3",value.at("position"),world)&&ValidValue("vec3",value.at("normal"),world)&&ValidValue("object",value.at("actor"),world);return false;

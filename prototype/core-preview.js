@@ -1,9 +1,10 @@
 import {isStructNode,evaluateStruct} from './struct-operations.js';
+import {equalValues} from './pin-values.js';
 import {validActorScale} from './transform-scale.js';
 // Browser preview of the shared API. C++ implementation lives in Game.hpp.
 import {catalog,basePins,structFieldPins,fieldsFor,defaultInputValue,validValue,graphContext} from './blueprint-model.js';
 import {libraryByKey} from './library-spec.js';
-const eq=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+const eq=equalValues;
 export const blueprintPure={random:a=>({return:a.min+Math.random()*(a.max-a.min)}),greater:a=>({return:a.a>a.b}),less:a=>({return:a.a<a.b}),equal:a=>({return:eq(a.a,a.b)}),notEqual:a=>({return:!eq(a.a,a.b)}),and:a=>({return:a.a&&a.b}),or:a=>({return:a.a||a.b}),not:a=>({return:!a.value}),select:a=>({return:a.condition?a.a:a.b}),concat:a=>({return:a.a+a.b}),stringLength:a=>({return:a.value.length}),contains:a=>({return:a.value.includes(a.search)}),toString:a=>({return:String(a.value)}),arrayLength:a=>({return:a.array.length}),arrayFind:a=>({return:a.array.findIndex(v=>eq(v,a.item))}),arrayContains:a=>({return:a.array.some(v=>eq(v,a.item))}),makeTransform:a=>({return:{position:a.position,rotation:a.rotation,scale:a.scale}}),makeColor:a=>({return:[a.r,a.g,a.b,a.a]}),reroute:a=>({value:a.value})};
 const add=(a,b)=>a.map((v,i)=>v+b[i]),sub=(a,b)=>a.map((v,i)=>v-b[i]),scale=(a,s)=>a.map(v=>v*s),dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0),length=a=>Math.hypot(...a),clamp=(v,a,b)=>{if(a>b)throw Error('최소값이 최대값보다 커요.');return Math.max(a,Math.min(b,v));},lerp=(a,b,t)=>a+(b-a)*t;
 const normalize=a=>length(a)>1e-8?scale(a,1/length(a)):a.map(()=>0),move=(a,b,d)=>{const v=sub(b,a),s=length(v);return s<=Math.max(0,d)||s<1e-8?b:add(a,scale(v,Math.max(0,d)/s));};
@@ -52,7 +53,7 @@ export function evaluateCoreNode(graph,id,context,{tunnels,depth=0}={}){
     const edge=graph.edges.find(e=>e.to.node===n.id&&e.to.pin===p.id);
     if(edge)return readOutput(edge.from);
     if(n.splitPins?.includes('in:'+p.id)){
-      const fields=structFieldPins(n,p),values=fields.map(f=>readInput(n,f));
+      const fields=structFieldPins(n,p,graph),values=fields.map(f=>readInput(n,f));
       return ['vec2','vec3','color'].includes(p.type)?values:Object.fromEntries(fields.map((f,i)=>[f.id.slice(f.id.lastIndexOf('.')+1),values[i]]));
     }
     return structuredClone(defaultInputValue(n,p));
@@ -62,8 +63,8 @@ export function evaluateCoreNode(graph,id,context,{tunnels,depth=0}={}){
     const spec=catalog.find(s=>s.key===n.key);
     const output=spec?.cppName&&!spec.pure?context.values.get(n.id):run(n);
     if(!output)throw Error('먼저 연결된 호출 노드를 미리보기에서 실행하세요.');
-    const [base,...path]=from.pin.split('.');let value=output[base],type=basePins(n,'out',graph).find(p=>p.id===base)?.type;
-    for(const part of path){const fields=fieldsFor(type),index=fields.findIndex(f=>f.id===part);if(index<0)throw Error('출력 필드가 없어요.');value=Array.isArray(value)?value[index]:value?.[part];type=fields[index].type;}
+    const [base,...path]=from.pin.split('.');let value=output[base],info=basePins(n,'out',graph).find(p=>p.id===base);
+    for(const part of path){const fields=fieldsFor(info?.type,info?.structInfo,graph.native),index=fields.findIndex(f=>f.id===part);if(index<0)throw Error('출력 필드가 없어요.');value=Array.isArray(value)?value[index]:value?.[part];info=fields[index];}
     return structuredClone(value);
   }
   function run(n){
@@ -74,7 +75,7 @@ export function evaluateCoreNode(graph,id,context,{tunnels,depth=0}={}){
     else if(['callFunction','callMacro'].includes(n.key)){const d=[...(graph.functions||[]),...(graph.macros||[])].find(d=>d.id===n.definitionId);if(!d?.pure)throw Error('실행이 필요한 함수는 게임에서 호출하세요.');const args=Object.fromEntries(basePins(n,'in',graph).filter(p=>p.type!=='exec').map(p=>[p.id,readInput(n,p)])),g=graphContext(graph,d.id),exit=g.nodes.find(n=>['functionOutput','macroOutput'].includes(n.key));output=evaluateCoreNode(g,exit.id,context,{tunnels:args,depth:depth+1});}
     else if(n.key==='getVariable')output={value:structuredClone(graph.variables.find(v=>v.id===n.variableId)?.value)};
     else if(n.key==='reroute')output={value:readInput(n,basePins(n,'in',graph)[0])};
-    else{const args=Object.fromEntries(basePins(n,'in',graph).filter(p=>p.type!=='exec').map(p=>[p.id,readInput(n,p)]));if(n.key==='setMembers')throw Error('구조체 참조 수정은 게임에서 실행하세요.');output=isStructNode(n)?evaluateStruct(n,args):n.key==='selectValue'?{return:structuredClone(args.condition?args.a:args.b)}:blueprintPure[n.key]?blueprintPure[n.key](args):evaluateCore(n.key,args,context);}
+    else{const args=Object.fromEntries(basePins(n,'in',graph).filter(p=>p.type!=='exec').map(p=>[p.id,readInput(n,p)]));if(n.key==='setMembers')throw Error('구조체 참조 수정은 게임에서 실행하세요.');output=isStructNode(n)?evaluateStruct(n,args,graph.native):n.key==='selectValue'?{return:structuredClone(args.condition?args.a:args.b)}:blueprintPure[n.key]?blueprintPure[n.key](args):evaluateCore(n.key,args,context);}
     memo.set(n.id,output);context.values.set(n.id,output);visiting.delete(n.id);return output;
   }
   const node=graph.nodes.find(n=>n.id===id);if(!node)throw Error('노드가 없어요.');return run(node);

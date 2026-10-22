@@ -1,9 +1,17 @@
 #pragma once
 #include "Game.hpp"
+#include <tuple>
 
 namespace hb {
 // Bit positions follow the displayed member order. Unselected members stay intact.
 struct Struct {
+    template<class T,class... Args> static T Make(Args&&... args){static_assert(std::is_aggregate_v<T>,"Struct::Make needs a value aggregate");return T{std::forward<Args>(args)...};}
+    template<class T,class... Members,std::enable_if_t<(sizeof...(Members)>0)&&(std::is_member_object_pointer_v<Members>&&...),int> =0>
+    static auto Break(const T& value,Members... members){return std::make_tuple(value.*members...);}
+    template<class T,class... Members,std::enable_if_t<(sizeof...(Members)>0)&&(std::is_member_object_pointer_v<Members>&&...),int> =0>
+    static void SetMembers(T& value,const T& source,Members... members){((value.*members=source.*members),...);}
+    template<class T,class... Members,std::enable_if_t<(sizeof...(Members)>0)&&(std::is_member_object_pointer_v<Members>&&...),int> =0>
+    static T WithMembers(T value,const T& source,Members... members){SetMembers(value,source,members...);return value;}
     static Vec2 Make(float x,float y){return {x,y};}
     static Vec3 Make(float x,float y,float z){return {x,y,z};}
     static Color Make(float r,float g,float b,float a){return {r,g,b,a};}

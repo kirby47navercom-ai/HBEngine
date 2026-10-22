@@ -1,3 +1,4 @@
+import {validNativeRecordPin} from './native-records.js';
 import {validNativeEnumPin} from './native-enums.js';
 import {validBlueprint,isBlueprintParent,allGraphContexts,basePins,catalog,validValue,legacyTemplateConstruction,makeNode,graphContext} from './blueprint-model.js';
 import {nativeMember,nativeSourceReference,validNativeReference,readNativeHeader,canonicalNativeText} from './native-model.js';
@@ -19,7 +20,7 @@ function inheritedRoot(parent,parentPath){
   delete root.inheritance;return {root,origins};
 }
 function appendSymbols(root,child,key){const existing=root[key]||[],own=child[key]||[];for(const item of own)if(existing.some(p=>p.id===item.id||p.name===item.name))throw Error('상속된 '+key+' 이름/ID 중복: '+item.name);root[key]=[...existing,...copy(own)];}
-const signature=d=>JSON.stringify({pure:!!d.pure,inputs:d.inputs.map(p=>[p.id,p.type,p.array]),outputs:d.outputs.map(p=>[p.id,p.type,p.array])});
+const signature=d=>JSON.stringify({pure:!!d.pure,inputs:d.inputs.map(p=>[p.id,p.type,p.array,p.structName,p.enumName]),outputs:d.outputs.map(p=>[p.id,p.type,p.array,p.structName,p.enumName])});
 function classDefaults(root,child,parent){
   for(const [id,value] of Object.entries(child.settings?.variableDefaults||{})){const v=root.variables.find(v=>v.id===id);if(!parent.variables.some(v=>v.id===id)||!v||(v.container==='array'?!(Array.isArray(value)&&value.length<=128&&value.every(x=>validValue(v.type,x))):!validValue(v.type,value)))throw Error('상속 변수 기본값 자료형 오류: '+id);v.value=copy(value);}
   for(const [id,values] of Object.entries(child.settings?.componentOverrides||{})){const c=root.components.find(c=>c.id===id);if(!parent.components.some(c=>c.id===id)||!c||!values||Array.isArray(values)||typeof values!=='object')throw Error('상속 컴포넌트가 없어요: '+id);const next={...componentDefaults(c.type),...c.properties,...values};if(!validComponentProperties(c.type,next)||Object.keys(values).some(k=>!Object.hasOwn(componentDefaults(c.type),k)))throw Error('상속 컴포넌트 기본값 오류: '+id);c.properties=copy(next);}
@@ -94,9 +95,9 @@ export function editInheritedDefault(root,kind,id,value,key){
   else if(kind==='native'){settings.nativeDefaults??={};settings.nativeDefaults[id]=copy(value);}
 }
 export function setBlueprintDefault(root,kind,id,value,key){
-  if(kind==='variable'){const v=root.variables.find(v=>v.id===id);if(!v||!validNativeEnumPin(root.native,v,value)||(v.container==='array'?!(Array.isArray(value)&&value.length<=128&&value.every(x=>validValue(v.type,x))):!validValue(v.type,value)))throw Error('변수 기본값 자료형 오류');v.value=copy(value);}
+  if(kind==='variable'){const v=root.variables.find(v=>v.id===id);if(!v||!validNativeEnumPin(root.native,v,value)||!validNativeRecordPin(root.native,v,value)||(v.container==='array'?!(Array.isArray(value)&&value.length<=128&&value.every(x=>validValue(v.type,x))):!validValue(v.type,value)))throw Error('변수 기본값 자료형 오류');v.value=copy(value);}
   else if(kind==='component'){const c=root.components.find(c=>c.id===id),defaults=c&&componentDefaults(c.type),next={...defaults,...c?.properties,[key]:value};if(!c||!Object.hasOwn(defaults,key)||!validComponentProperties(c.type,next))throw Error('컴포넌트 기본값 오류');c.properties=copy(next);}
-  else if(kind==='native'){const {p}=nativeMember(root,{nativeId:id});if(!p||!validNativeEnumPin(root.native,p,value)||(p.array?!(Array.isArray(value)&&value.length<=128&&value.every(x=>validValue(p.type,x))):!validValue(p.type,value)))throw Error('C++ 속성 기본값 자료형 오류');root.settings??={};root.settings.nativeDefaults??={};root.settings.nativeDefaults[id]=copy(value);}
+  else if(kind==='native'){const {p}=nativeMember(root,{nativeId:id});if(!p||!validNativeEnumPin(root.native,p,value)||!validNativeRecordPin(root.native,p,value)||(p.array?!(Array.isArray(value)&&value.length<=128&&value.every(x=>validValue(p.type,x))):!validValue(p.type,value)))throw Error('C++ 속성 기본값 자료형 오류');root.settings??={};root.settings.nativeDefaults??={};root.settings.nativeDefaults[id]=copy(value);}
   else throw Error('기본값 종류 오류');editInheritedDefault(root,kind,id,value,key);
 }
 export function resetInheritedDefault(root,kind,id,key){

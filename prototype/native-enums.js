@@ -142,14 +142,14 @@ export function validNativeEnumValue(definition, value) {
   if (bits === 32) return true;
   return unsigned ? value >= 0 && value < 2 ** bits : value >= -(2 ** (bits - 1)) && value < 2 ** (bits - 1);
 }
-export function validNativeEnumPin(metadata,pin,value,{deferred=false}={}) {
+export function validNativeEnumPin(metadata,pin,value,{deferred=false,runtime=false}={}) {
   if(pin.maskEnumName!==undefined&&(pin.type!=='int'||!nativeEnumDefinition(metadata,{enumName:pin.maskEnumName})?.flags))return false;
   if(pin.enumName===undefined)return pin.enumSource===undefined;
   if(pin.type!=='int'||!qualified(pin.enumName))return false;
   const definition=nativeEnumDefinition(metadata,pin);
   if(!definition)return deferred;
   const array=pin.array||pin.container==='array';
-  return array?Array.isArray(value)&&value.length<=128&&value.every(value=>validNativeEnumValue(definition,value)):validNativeEnumValue(definition,value);
+  return array?Array.isArray(value)&&value.length<=(runtime?100000:128)&&value.every(value=>validNativeEnumValue(definition,value)):validNativeEnumValue(definition,value);
 }
 export const nativeEnumMask=(definition,entry)=>definition.maskValues?entry.value>>>0:entry.value>=0&&entry.value<32?(1<<entry.value)>>>0:0;
 export function nativeEnumInitializer(text, definition, array = false) {
@@ -158,3 +158,6 @@ export function nativeEnumInitializer(text, definition, array = false) {
   let list = tokens(text); if (list[0]?.kind === 'id') { let i = 1; while (list[i]?.text === '::' && list[i + 1]?.kind === 'id') i += 2; const name = list.slice(0, i).map(token => token.text).join(''); if ([definition.name, definition.name.split('::').at(-1)].includes(name) && list[i]?.text === '{') list = list.slice(i); }
   if (!array) return read(list); if (list[0]?.text !== '{' || closeIndex(list, 0, '{', '}') !== list.length - 1) fail('enum 배열 기본값은 중괄호 목록으로 작성하세요.'); return parts(list.slice(1, -1)).map(read);
 }
+// Shared, bounded declaration lexing for the other reflected value types. This
+// remains a metadata parser; the native compiler checks the actual C++ layout.
+export const nativeReflectionSyntax=Object.freeze({tokens,metadata,closeIndex,parts,scopesFor,stringValue});

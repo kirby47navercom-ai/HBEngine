@@ -28,4 +28,4 @@ Source 안의 명시적 상대 include와 Source 루트 경로를 따라 공용 
 
 Unreal [Metadata Specifiers](https://dev.epicgames.com/documentation/en-us/unreal-engine/metadata-specifiers-in-unreal-engine)의 enum 표와 [Properties](https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-uproperties?lang=en-US)의 정수·비트마스크 본문, Unity6000.0 [serialization rules](https://docs.unity3d.com/6000.0/Documentation/Manual/script-serialization-rules.html)의 필드·enum·배열 구간을 읽고 HB 저장/실행 계약에 맞춰 구현했어요. 읽은 구간은 CORPUS_MANIFEST.supplemental1458에 등록해요. 전체 공식 문서/API를 다 읽었다는 뜻이 아니에요.
 
-전용 enum 에셋 편집기, 일반 사용자 구조체, 모든 C++ 문법/매크로·외부 헤더·alias 추론, 자동 숫자 재배정 마이그레이션, 고유 Name 타입, 임의 함수/매크로 시그니처에서 enum 정체성 일반화는 잔여예요. 모바일 공용 AOT의 호스트 실행과 실제 Android/iOS 기기 검증을 구분해요.
+C++ 값 구조체는 [NATIVE_RECORDS.md](NATIVE_RECORDS.md)에서 별도로 구현해요. 전용 enum 에셋 편집기, 모든 C++ 문법/매크로·외부 헤더·alias 추론, 자동 숫자 재배정 마이그레이션, 고유 Name 타입, 임의 함수/매크로 시그니처에서 enum 정체성 일반화는 잔여예요. 모바일 공용 AOT의 호스트 실행과 실제 Android/iOS 기기 검증을 구분해요.
