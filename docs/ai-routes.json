@@ -2353,6 +2353,38 @@
       "paths": [
         "prototype/app.js"
       ]
+    },
+    {
+      "id": "take-preset-inheritance",
+      "keywords": [
+        "resolveTakePresetTree",
+        "flattenTakePreset",
+        "takePresetRevisionGuard"
+      ],
+      "paths": [
+        "prototype/take-preset-inheritance.js"
+      ]
+    },
+    {
+      "id": "take-preset-inheritance-editor",
+      "keywords": [
+        "takeInheritanceChange",
+        "takePresetDisplay",
+        "takeInheritanceMarkup"
+      ],
+      "paths": [
+        "prototype/take-preset-inheritance-editor.js"
+      ]
+    },
+    {
+      "id": "take-preset-resolve-api",
+      "keywords": [
+        "take.preset.resolve",
+        "readTakePresetFile"
+      ],
+      "paths": [
+        "prototype/app.js"
+      ]
     }
   ]
 }
