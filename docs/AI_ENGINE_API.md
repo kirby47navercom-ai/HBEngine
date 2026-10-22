@@ -587,3 +587,5 @@ C++ 클래스·명시 반사 멤버는 `native.classes.read`로 페이지 조회
 1574–1576 네트워크 수명: `runtime.network`는 kind(replicas/remote/removals/failures), offset, limit(32/최대128), query(최대160자)로 메타데이터를 나눠 읽는다. kind 생략 시 기존 요약을 유지한다. 값·변환·그래프·접속 키는 반환하지 않으며 원격 생성의 접속 세대/루트 생존·같은 ID 교체·오프라인 풀 등록을 보호한다. [실행 계약과 경계](NETWORK_LIFETIME.md).
 
 1582 이후 `editor.history.inspect`는 slotBudget(기본2000000/최대8000000)과 truncatedBy를 제공한다. `includeRevision:false`는 현재 문서 캡처/해시 없이 확정된 이력만 읽고 revision:null/unflushed:true를 반환하며 expectedRevision 병용은 거부한다. [예산·격리 계약](DOCUMENT_HISTORY.md).
+
+반사·베이크 혼합: MeshRenderer.lightmapReflectionMix Bool(기본false), Components::SetBool/GetBool 및 같은 BP 공용 노드. runtime.state의 gameplayDebug.lightmap에 reflectionMixEnabled/Eligible·valid/source를 제공한다. [정책·비용·실행 근거](PROBE_LIGHTMAP_MIX.md).

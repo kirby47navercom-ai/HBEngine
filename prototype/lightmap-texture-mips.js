@@ -1,4 +1,4 @@
-import {LinearFilter,NearestFilter,LinearMipmapLinearFilter,NearestMipmapNearestFilter,NearestMipmapLinearFilter,LinearMipmapNearestFilter} from 'three';
+import {LinearFilter,NearestFilter,LinearMipmapLinearFilter,NearestMipmapNearestFilter,NearestMipmapLinearFilter,LinearMipmapNearestFilter} from '../node_modules/three/src/constants.js';
 import {rayMipChain} from './ray-mip.js';
 export const createLightmapMipCache=()=>({entries:[],bytes:0,limit:32*1024*1024,maxEntries:32});
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));

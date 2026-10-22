@@ -1768,6 +1768,27 @@
       "paths": [
         "prototype/app.js"
       ]
+    },
+    {
+      "id": "probe-lightmap-policy",
+      "keywords": [
+        "probeLightmapMixScale",
+        "probeLightmapMixGLSL",
+        "probeLightmapMixHLSL",
+        "probeLightmapMixPolicy"
+      ],
+      "paths": [
+        "prototype/probe-lightmap-mix.js"
+      ]
+    },
+    {
+      "id": "probe-lightmap-gpu",
+      "keywords": [
+        "gpuProbeLightmapScale"
+      ],
+      "paths": [
+        "prototype/probe-lightmap-mix-gpu.js"
+      ]
     }
   ]
 }

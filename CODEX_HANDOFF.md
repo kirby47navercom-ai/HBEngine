@@ -16,7 +16,7 @@ WORK1587: 이력진단lazy DFS/slotBudget2m(최대8m)/truncatedBy·65536선읽�
 
 ## 다음 — 렌더링과 누적 잔여 계속
 
-RND03 lightmap혼합 의미를docs/PROBE_PRIORITY_BLEND.md/PROBE_PROJECTION.md에서확인: UE reflection capture와baked indirect diffuse의roughness기반혼합이다. lightmap-rendering.js/native-scene-renderer.js현재읽음, 아직수정없음. 공식UE5.8 Reflections Captures검색결과만받음(본문아직안읽음). 다음본문/현셰이더경로대조후구현, 조사전체완료금지.
+RND03 1591–1605 구현·검사완료, 아직설치전. UE5.8 Reflections Captures반환본문0–183/혼합47–88부분읽기만CORPUS1591등록. MeshRenderer opt-in(false기본)·간접조도휘도비/rough.1→.3/max1000·GL/TSL/HLSL 공용생성·direct/atlas/base+coat·sky/direct/diffuse/refraction불변. 실제6browser경로30재질오차최대1.12e-8·D3D10경우바이트0·강도0/NULLmap/capture2/diffuse0·UV생성/Worker베이크/UndoRedo/BP→CPP/위치보존/같은D3D게임통과. bare three Worker상수import2수리·밉회귀통과. Bool실행만in-place갱신/다른속성변경fallback/재질ready뒤최신값·실제편집QaKoo9통과. Player1604 SHA07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160·native21owner/30tests·Host1041재사용. commit1605→record1606/sync1607/install1608/finish1609예정. 최종설치1600editor --package --expected-player-sha로정확1604게임확인. 126초browser matrix반복금지. edit1605-fastpath.applied재실행금지. 여기서멈추지않고누적목표계속.
 
 ENGINE_STATUS78행·분모null. NET01전용권위/장면프로토콜/부착참조/로드된루트에셋교체/일반원격풀/예측/인코딩. CPP01전용enum/structasset/globalregistry/identity/다형성/schema migration/alias·전처리·signature/wildcard/직접참조/Timeline/일반CPP참조수명. ANM06전체snapshot순회/restore/큰변경array·overlap密도/가변행/리그/warp/혼합/부모Take. RND03lightmap混合/2후보밖계층/대형HDR/변형로브;RND06GL7초/FXC/capture(1086/1308반복금지);UI03실터치/asyncrollback;RND08worldDF/HWRT/bake와타분야. 여기서종료하지않고계속.
 

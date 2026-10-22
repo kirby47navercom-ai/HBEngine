@@ -5480,5 +5480,20 @@
         "exhaustiveLinkedAPIs": false
       }
     ]
+  },
+  "supplemental1591": {
+    "date": "2026-10-22",
+    "scope": "Reflection Capture Lightmap Mixing, selected existing Unreal manual root; no full-corpus/API promotion",
+    "sources": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/reflections-captures-in-unreal-engine?lang=en-US",
+        "actualVersion": "5.8",
+        "read": "Rendered body0–183 returned/read; focus Glossy Indirect Specular47–63 and Reflection Capture Lightmap Mixing67–88; placement/shapes/limits also read. Linked pages not read in this step.",
+        "applied": "Indirect-only baked lighting, roughness-dependent capture/lightmap correction and smooth-surface fade. HB luminance ratio/per-capture implementation and opt-in compatibility policy are HB design, not a quoted Epic algorithm.",
+        "exhaustiveLinkedAPIs": false
+      }
+    ],
+    "implementationPending": false,
+    "implementation": "docs/PROBE_LIGHTMAP_MIX.md; selected implementation and executable gates, installation tracked separately; no corpus/API gate promotion"
   }
 }

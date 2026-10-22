@@ -1,4 +1,4 @@
-import {NearestFilter,NearestMipmapNearestFilter,NearestMipmapLinearFilter,LinearMipmapNearestFilter,LinearMipmapLinearFilter} from 'three';
+import {NearestFilter,NearestMipmapNearestFilter,NearestMipmapLinearFilter,LinearMipmapNearestFilter,LinearMipmapLinearFilter} from '../node_modules/three/src/constants.js';
 import {authoredTextureLevels} from './texture-authored-mips.js';
 import {validRayTextureFlags,rayTextureSampling} from './texture-sampling-mode.js';
 
