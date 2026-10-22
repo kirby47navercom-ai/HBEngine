@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-responsive-curve-settings",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "5bf71ae5e9f90df99e2c11055ade503061585120",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2dbd59641ffe92fa",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\2dbd59641ffe92fa\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\2dbd59641ffe92fa\\HBEngine.exe",
+  "bundleHash": "2dbd59641ffe92fa548da79419c1314e7ea26e19a62b58d7f634a83a7570d10a",
+  "files": 4343,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4341,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\cccdd925d31b9c71",
+        "bytes": 193480120,
+        "manifestSHA256": "c25439380f41db69c38536305baefcf682e0d10baff2f84d1a08545c83d72189"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T19:48:44.5092498Z",
+    "bytes": 193480120,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "2dbd59641ffe92fa"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1016,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/curve-settings-1760-LPTl3h/acceptance.json",
+      "sha256": "b98788f9becb1f884a24d8bc03c6bb26682b047b3cddbb72a7f9b1db44576210",
+      "scope": "Owned hidden actual editor, expanded responsive settings popup grid, bounded height/no horizontal overflow/curve remains visible at1424 and1040 CSS pixels. No runtime or shader changes; native/player controls reused only from exact1758 owners.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2dbd59641ffe92fa\\HBEngine.exe"
+      ],
+      "ms": 4943.951999999999
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\2dbd59641ffe92fa\\",
+    "elapsedMs": 63.43,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\2dbd59641ffe92fa",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "2dbd59641ffe92fa548da79419c1314e7ea26e19a62b58d7f634a83a7570d10a",
+      "installedAt": "2026-10-22T19:48:41.001Z",
+      "manifestFiles": 4343,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged native SDK21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4343,
+  "versions": [
+    "2dbd59641ffe92fa"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1763-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/curve-settings-1760-wjiDvi/acceptance.json",
+      "sha256": "526d58bc670b44b966e3b8ba2a64c28420d64207860e58a01339940969701b93",
+      "scope": "Owned hidden actual editor, expanded responsive settings popup grid, bounded height/no horizontal overflow/curve remains visible at1424 and1040 CSS pixels. No runtime or shader changes; native/player controls reused only from exact1758 owners."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/curve-settings-1760-wjiDvi/acceptance.json",
+      "sha256": "526d58bc670b44b966e3b8ba2a64c28420d64207860e58a01339940969701b93",
+      "scope": "Owned hidden actual editor, expanded responsive settings popup grid, bounded height/no horizontal overflow/curve remains visible at1424 and1040 CSS pixels. No runtime or shader changes; native/player controls reused only from exact1758 owners."
+    }
+  ],
+  "scope": "Installed responsive curve-settings popup at1424 and1040 CSS pixels: actual five/three label columns, bounded180px scroll, no horizontal overflow, exposed curve hit points, editable sample rate, Escape close/focus and actual bandstop apply/Undo. Exact unchanged filter/runtime/C++ owners reuse1758 numeric and actual D3D11 Calls1/Target1.1306563294967336; no duplicate native/game rebuild. Full source1016/native21/30tests/vendor2/Player1604/Host1041 manifest hashes and User preserved/Versions1."
+}

@@ -2,9 +2,11 @@
 
 2026-10-23. 주인님/짚짱/자연 존댓말. 여러 구현 후 묶음 검사·설치, 백그라운드, 가벼움·AI 친화성과 Versions 한 개 유지. ENGINE_STATUS 78행·전체 분모/완료율 null. 전체 UE/Unity 분석·상용 완성 주장 금지. goal 재개 답변에도 blocked였으므로 현재 승인 작업을 계속하고 임의 목표 생성·완료·반복 재개 질문 금지.
 
-## 확정 1759
+## 확정 1764
 
-source94bc273/record581ae4d/WORK1756, USER_INSTALL1758. 실제 설치 marker/context.state.installation 우선. Versions/cccdd925d31b9c71. 명세4340/source1013/native21/30 native tests/vendor2/Player1604/Host1041 SHA와 User10849 읽기 불변, 링크·association·Versions1·설치 cache lease0 확인. 이전 193316305B 퇴역. record1756/sync1757/install1758/finish1759는 started 이후 재실행 금지.
+source7226197/record5bf71ae/WORK1761, USER_INSTALL1763. 실제 설치 marker/context.state.installation 우선. Versions/2dbd59641ffe92fa. 명세4343/source1016/native21/30 tests/vendor2/Player1604/Host1041 SHA·User10849 읽기 불변·링크/association/Versions1·설치 lease0 확인. 이전193480120B 퇴역. 1756–1759와 record1761(공백 사전검사 후 resume1761 성공)/sync1762/install1763/finish1764는 재실행 금지.
+
+1760–1764: 실제 설정 캡처의 세로 팽창 수정. 폭별 5열/3열 팝업·180px 내부 스크롤·가로 넘침 없음·곡선 실제 hit 노출·샘플 Hz 편집·Escape 닫기/요약 포커스. 실제 필터 적용/Undo와 설치본 같은 UI 확인. 초기 잘못된 grid 판정/실패 실험은 성과 제외. 필터·런타임·C++ 해시 그대로여서 USER1758의 실제 게임 증거 재사용, 불필요한 게임 재빌드 없음.
 
 1754–1756: 비등간격 곡선의 원본 보간 표본화·반사 FFT·원래 키 시간으로 값만 쓰기. 자동 평균 밀도/명시 sampleRate와 4..65536 작업 격자·초과 원자 거절. 저/고역 등간격 기본 경로 보존. Butterworth/Chebyshev I 대역 통과·제거, upperCutoff. Curve 우클릭·설정 유지·Sequence AI dryRun/stale/잘못된 대역 원자성·골격·BP Timeline·부분 베이크/Undo·저장 후 실제 C++ LevelSequence Play/Pause/Seek와 BP, 별도 D3D11 게임 Calls1/Target1.1306563294967336. 독립 DFT/Bernstein1536관찰 max8.44e-15·8회귀·65k77.9ms 단발(게임 FPS 아님). 새 상주 리소스 없음. CURVE_RESAMPLE_FILTER.md/정확 filterCurveFrequency 한 소유자. NUFFT/인과 IIR/다중 곡선 동시 편집 아님.
 

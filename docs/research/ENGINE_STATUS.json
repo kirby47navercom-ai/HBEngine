@@ -247,7 +247,8 @@
         "docs/research/ENGINE_WORK_1338.json",
         "docs/research/ENGINE_WORK_1350.json",
         "docs/CURVE_RESAMPLE_FILTER.md",
-        "docs/research/ENGINE_WORK_1761.json"
+        "docs/research/ENGINE_WORK_1761.json",
+        "docs/research/USER_INSTALL_1763.json"
       ]
     },
     {
@@ -1825,7 +1826,8 @@
         "docs/CURVE_RESAMPLE_FILTER.md",
         "docs/research/ENGINE_WORK_1756.json",
         "docs/research/USER_INSTALL_1758.json",
-        "docs/research/ENGINE_WORK_1761.json"
+        "docs/research/ENGINE_WORK_1761.json",
+        "docs/research/USER_INSTALL_1763.json"
       ]
     },
     {
@@ -3514,14 +3516,14 @@
     "first": 1760,
     "last": 1761,
     "receipt": "docs/research/ENGINE_WORK_1761.json",
-    "scope": "Actual responsive curve-settings popup, actual filter binding/Undo and Escape; source UI passed. Unchanged1758 filter/runtime/C++/D3D evidence reused by exact hashes; installation pending."
+    "scope": "Installed responsive curve-settings popup at1424 and1040 CSS pixels: actual five/three label columns, bounded180px scroll, no horizontal overflow, exposed curve hit points, editable sample rate, Escape close/focus and actual bandstop apply/Undo. Exact unchanged filter/runtime/C++ owners reuse1758 numeric and actual D3D11 Calls1/Target1.1306563294967336; no duplicate native/game rebuild. Full source1016/native21/30tests/vendor2/Player1604/Host1041 manifest hashes and User preserved/Versions1."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1758.json",
-    "sourceCommit": "581ae4dbc35c55abbfa3609543b0639c322f8c9e",
-    "bundleHash": "cccdd925d31b9c714be068f7fd40f5981e846db41e9a9cbd5d62fc72ee2d8b50",
+    "receipt": "docs/research/USER_INSTALL_1763.json",
+    "sourceCommit": "5bf71ae5e9f90df99e2c11055ade503061585120",
+    "bundleHash": "2dbd59641ffe92fa548da79419c1314e7ea26e19a62b58d7f634a83a7570d10a",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actual irregular Curve bandstop/resampling/retained settings, range bake and Undo, Sequence AI invalid-band atomic/dryRun/stale, skeletal and BP Timeline saves. Actual C++ LevelSequence Play/Pause/Seek and BP receive filtered Target1.1306563294967336; independently cooked D3D11 verifies native Calls1 and same position. Eight regressions, independent DFT/Bernstein1536 observations and old uniform parity. Exact source1013/native21/30tests/vendor2/Player1604/Host1041 manifest hashes. User preserved/Versions1. No NUFFT/causal IIR/FPS or total heap claim."
+    "scope": "Installed responsive curve-settings popup at1424 and1040 CSS pixels: actual five/three label columns, bounded180px scroll, no horizontal overflow, exposed curve hit points, editable sample rate, Escape close/focus and actual bandstop apply/Undo. Exact unchanged filter/runtime/C++ owners reuse1758 numeric and actual D3D11 Calls1/Target1.1306563294967336; no duplicate native/game rebuild. Full source1016/native21/30tests/vendor2/Player1604/Host1041 manifest hashes and User preserved/Versions1."
   }
 }

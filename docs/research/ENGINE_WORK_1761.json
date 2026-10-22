@@ -1162,6 +1162,19 @@
     "newTimers": 0,
     "newPersistentCaches": 0
   },
-  "installationPending": true,
-  "scope": "Actual responsive curve-settings popup, actual filter binding/Undo and Escape; source UI passed. Unchanged1758 filter/runtime/C++/D3D evidence reused by exact hashes; installation pending."
+  "installationPending": false,
+  "scope": "Actual responsive curve-settings popup, actual filter binding/Undo and Escape; source UI passed. Unchanged1758 filter/runtime/C++/D3D evidence reused by exact hashes; installation pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1763.json",
+  "installedGates": [
+    {
+      "path": "native/build/curve-settings-1760-LPTl3h/acceptance.json",
+      "sha256": "b98788f9becb1f884a24d8bc03c6bb26682b047b3cddbb72a7f9b1db44576210",
+      "scope": "Owned hidden actual editor, expanded responsive settings popup grid, bounded height/no horizontal overflow/curve remains visible at1424 and1040 CSS pixels. No runtime or shader changes; native/player controls reused only from exact1758 owners.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2dbd59641ffe92fa\\HBEngine.exe"
+      ],
+      "ms": 4943.951999999999
+    }
+  ]
 }

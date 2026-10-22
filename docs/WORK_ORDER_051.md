@@ -1072,3 +1072,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1758–1759: 설치본 비등간격 필터 UI 34.35초·실제 C++/BP 시퀀스 및 별도 D3D11 41.70초 Calls1/Target1.1306563294967336. 명세4340/source1013/native21/30tests/vendor2/Player1604/Host1041 SHA·User10849 읽기 불변·링크/association/Versions1·이전193316305B 퇴역/lease0. 8회귀와 독립 수치 대조·NUFFT/FPS/누적 전체 완료 아님. USER_INSTALL1758.
 
 1760–1761: 곡선 설정 실제 캡처에서 세로 팽창 발견→5열/3열 반응형 팝업·높이180px·가로 넘침 없음·내부 스크롤·Escape 닫기/포커스. 실제 두 크기에서 곡선 노출·샘플 Hz·필터 적용·Undo 확인. 초기 실패/가짜 grid 판정은 성과 제외, 실제 label 위치와 elementFromPoint 노출로 보강. 필터/C++/런타임 해시 불변1758 증거 재사용·설치 예정. WORK1761.
+
+1763–1764: 설치본 설정 팝업 5열/3열·높이180px·가로 넘침 없음·곡선 실제 노출·Escape/포커스·필터 적용/Undo 확인 4.94초. 필터/런타임/C++ 정확한1758 해시·게임 증거 재사용. 명세4343/source1016/native21/30tests/vendor2/Player1604/Host1041·User10849 읽기 불변·링크/association/Versions1·이전193480120B 퇴역/lease0. USER_INSTALL1763·누적 계속.
