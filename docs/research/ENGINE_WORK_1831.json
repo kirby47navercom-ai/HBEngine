@@ -1375,12 +1375,26 @@
     "After successful source UI run, reset the two preset buttons in finally without a second timeline render; final installed UI explicitly checks they are enabled.",
     "Packaged probe waits must use the player probe, because the earlier editor probe correctly rejects waits after its process closes. No failed run counted as a package result."
   ],
-  "installationPending": true,
+  "installationPending": false,
   "scope": "Take config preset assets, UI/AI snapshot FPS/tolerance and ordinary/group UndoRedo, editor-only export exclusion. Six final affected regressions passed. Source actual3D UI/AI/human recording and CPP checkpoint passed before final button-state restoration; final current installed CPP/D3D11 gate pending.",
   "sourceCheckpoint": {
     "path": "native/build/take-presets-1829-window-bMhOiQ/acceptance.json",
     "sha256": "8378fde49a1c189b0e5a07fcfa3eca172ee78c8de7c1d0df0af367a72a84d710",
     "scope": "Owned actual3D preset create/editor/save, sequence UI load/save-as with no-overwrite/group UndoRedo, AI apply revision/noChange/UndoRedo and AI recording snapshot/override surviving source edit, human recording with filtered bone/model absence and actual compiled C++ Play/Seek/Stop. Optional independent D3D11 baked output without editor preset files. Source bindings/inheritance/timecode/devices/whole-engine parity not claimed.",
     "reportNote": "Source UI/AI/CPP run passed before final preset-button reenable fix. It ran without --package; its old package-capability result label is not package execution evidence. Test harness now uses the current player wait after editor close. Final installed full current-source --package gate is required."
-  }
+  },
+  "currentInstallation": "docs/research/USER_INSTALL_1833.json",
+  "installedGates": [
+    {
+      "path": "native/build/take-presets-1829-window-JmWMpt/acceptance.json",
+      "sha256": "2dcca8e9a272f0f553e894d5c08e25e705f7b0e9d45e273378a1616b3dfdc94e",
+      "scope": "Owned actual3D preset create/editor/save, sequence UI load/save-as with no-overwrite/group UndoRedo, AI apply revision/noChange/UndoRedo and AI recording snapshot/override surviving source edit, human recording with filtered bone/model absence and actual compiled C++ Play/Seek/Stop. Optional independent D3D11 baked output without editor preset files. Source bindings/inheritance/timecode/devices/whole-engine parity not claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\c818748b44838287\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 69332.2865
+    }
+  ]
 }

@@ -261,7 +261,8 @@
         "docs/research/ENGINE_WORK_1824.json",
         "docs/research/USER_INSTALL_1826.json",
         "docs/TAKE_PRESETS_AND_CAPTURE.md",
-        "docs/research/ENGINE_WORK_1831.json"
+        "docs/research/ENGINE_WORK_1831.json",
+        "docs/research/USER_INSTALL_1833.json"
       ]
     },
     {
@@ -1869,7 +1870,8 @@
         "docs/SEQUENCE_POSE_PREPARATION.md",
         "docs/research/ENGINE_WORK_1809.json",
         "docs/research/USER_INSTALL_1811.json",
-        "docs/research/ENGINE_WORK_1831.json"
+        "docs/research/ENGINE_WORK_1831.json",
+        "docs/research/USER_INSTALL_1833.json"
       ]
     },
     {
@@ -3087,7 +3089,8 @@
         "docs/NATIVE_TYPE_DECLARATIONS.md",
         "docs/research/ENGINE_WORK_1824.json",
         "docs/research/USER_INSTALL_1826.json",
-        "docs/research/ENGINE_WORK_1831.json"
+        "docs/research/ENGINE_WORK_1831.json",
+        "docs/research/USER_INSTALL_1833.json"
       ]
     },
     {
@@ -3625,14 +3628,14 @@
     "first": 1828,
     "last": 1831,
     "receipt": "docs/research/ENGINE_WORK_1831.json",
-    "scope": "Take config preset assets, UI/AI snapshot FPS/tolerance and ordinary/group UndoRedo, editor-only export exclusion. Six final affected regressions passed. Source actual3D UI/AI/human recording and CPP checkpoint passed before final button-state restoration; final current installed CPP/D3D11 gate pending."
+    "scope": "Installed reusable Take config preset asset creation/editor, sequence load and SaveAs no-overwrite/source CAS/group UndoRedo, AI apply revision/noChange and runtime start overrides, snapshot FPS/tolerance/channel/bone/spawn settings, active recording source-edit isolation, and editor-only export exclusion. Six affected regressions plus final installed actual3D UI/AI/human24fps/tolerance0/filtered IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback without preset files passed. Exact source1082/native21/30tests/vendor2/Player1604/Host1041 and renderer hashes. User preserved/Versions1. Source bindings/preset inheritance/clock/timecode and broader animation restore remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1826.json",
-    "sourceCommit": "1b39a490f566cbc3e042d71e0efcf9f19ee40828",
-    "bundleHash": "470afc05cf15c90eb83edf05c48df798d91999019fe9ed6bdf02e72623beca27",
+    "receipt": "docs/research/USER_INSTALL_1833.json",
+    "sourceCommit": "67468c19588b5f8397732e9837b36d941af699b1",
+    "bundleHash": "c818748b4483828766835fb9d64977fa0220e9872954fee3ad3585ee7845c026",
     "verified": true,
     "versions": 1,
-    "scope": "Installed individual enum/struct asset create dialogs, primary/helper field editor, BP explicit import and compact enum variable/Set save, atomic generated C++ headers, additive consumer migration/group UI UndoRedo and stable move identity. Six focused regressions plus final installed actual2D editor, rebuilt CPP enum37/nested2+2/position99,4,37/Actor reference and independent D3D11 same saved game passed. Exact source1074/native21/30tests/vendor2/Player1604/Host1041 and renderer hashes; User preserved/Versions1. Cross-asset field dependencies/global discovery/destructive schema/ABI hotreload remain."
+    "scope": "Installed reusable Take config preset asset creation/editor, sequence load and SaveAs no-overwrite/source CAS/group UndoRedo, AI apply revision/noChange and runtime start overrides, snapshot FPS/tolerance/channel/bone/spawn settings, active recording source-edit isolation, and editor-only export exclusion. Six affected regressions plus final installed actual3D UI/AI/human24fps/tolerance0/filtered IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback without preset files passed. Exact source1082/native21/30tests/vendor2/Player1604/Host1041 and renderer hashes. User preserved/Versions1. Source bindings/preset inheritance/clock/timecode and broader animation restore remain."
   }
 }

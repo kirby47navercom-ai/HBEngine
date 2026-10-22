@@ -1112,3 +1112,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1828–1831: Take 설정 프리셋 에셋/전용UI·생성/불러오기·SaveAs 원본guard/덮어쓰기거절·그룹UndoRedo·실제FPS/키오차·채널/뼈/생성필터snapshot·AI revision/noChange/override·녹화중 원본변경분리·editorOnly 빌드제외 구현. 6회귀+실제3D UI/AI24fps·오차0·IKMid/모델부재·실제C++ PlaySeekStop 통과. 최종설치D3D예정. Actor/source바인딩목록/상속/clock/timecode별도잔여. WORK1831.
 
 1831보완: 프리셋 비동기 완료 버튼상태를 두 컨트롤만 복원, 전체 타임라인 중복렌더 없음. source UI/CPP는 checkpoint로 구분·최종설치 current player 대기/버튼활성·D3D 확인 예정. 최종6회귀 통과.
+
+1832–1834: 최종설치 Take프리셋 실제생성/편집/불러오기·버튼복원/SaveAs덮어쓰기거절·원본guard·그룹UndoRedo·AI apply/revision/noChange/startoverride·녹화중source변경분리/human24fps·오차0·IKMid/모델부재/실제CPP PlaySeekStop/독립D3D골격0.4rad·3bones·프리셋파일제외 69.33초 통과. manifest4406/source1082/native21/30tests/vendor2·User10849읽기불변·링크/association/Versions1·이전195051087B정리/lease0. USER_INSTALL1833. Actor/source바인딩·상속/clock/timecode·기타누적잔여유지.

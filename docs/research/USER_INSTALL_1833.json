@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-take-recording-preset-assets",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "67468c19588b5f8397732e9837b36d941af699b1",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\c818748b44838287",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\c818748b44838287\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\c818748b44838287\\HBEngine.exe",
+  "bundleHash": "c818748b4483828766835fb9d64977fa0220e9872954fee3ad3585ee7845c026",
+  "files": 4406,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4399,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\470afc05cf15c90e",
+        "bytes": 195051087,
+        "manifestSHA256": "2227accd87a3ea2c54cd257f4ce78f544878b0b6827d6e7d95672dd646a2c569"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T23:05:54.6504222Z",
+    "bytes": 195051087,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "c818748b44838287"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1082,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/take-presets-1829-window-JmWMpt/acceptance.json",
+      "sha256": "2dcca8e9a272f0f553e894d5c08e25e705f7b0e9d45e273378a1616b3dfdc94e",
+      "scope": "Owned actual3D preset create/editor/save, sequence UI load/save-as with no-overwrite/group UndoRedo, AI apply revision/noChange/UndoRedo and AI recording snapshot/override surviving source edit, human recording with filtered bone/model absence and actual compiled C++ Play/Seek/Stop. Optional independent D3D11 baked output without editor preset files. Source bindings/inheritance/timecode/devices/whole-engine parity not claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\c818748b44838287\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 69332.2865
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\c818748b44838287\\",
+    "elapsedMs": 63.27,
+    "matches": 2,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\c818748b44838287",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "c818748b4483828766835fb9d64977fa0220e9872954fee3ad3585ee7845c026",
+      "installedAt": "2026-10-22T23:05:51.255Z",
+      "manifestFiles": 4406,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Exact unchanged SDK21/Player1604/Host1041/30 repository test owners and shader math hashes verified. Changed Take preset authoring/recorder/export code is covered by six final affected regressions and the final installed UI/AI/compiled CPP/independent D3D11 gate; no old runtime proof is reused for changed owners.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4406,
+  "versions": [
+    "c818748b44838287"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1833-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/preset1828-group.json",
+      "sha256": "db0efca8150adf3d5e6ac0749427c37cb520cb71381f85d2db4712dac4a46e90",
+      "scope": "Six final affected preset/recorder/snapshot/filter/skeletal/spawn regressions."
+    },
+    {
+      "path": "native/build/take-presets-1828-XhjO3F/acceptance.json",
+      "sha256": "14316a6f56b4fa50607deaeb565e105226a341c559318588af94f6f844324192",
+      "scope": "Reusable on-demand config preset assets, snapshot options/filter override isolation, unchanged sequence track identities, actual TakeRecorder FPS/tolerance key reduction and baked metadata, actual2D project/standard documents, game build excludes editor-only preset, and production UI async-read conflict protection. Actual editor/C++/D3D are separate gates; source binding lists/inheritance/timecode not claimed."
+    },
+    {
+      "path": "native/build/take-settings-1787-A9EpzP/acceptance.json",
+      "sha256": "a322aa3acd0b5b8d0e05bd1650ebfd9d8f289a0a3e6b4c7501611666206bc4a0",
+      "scope": "Owned scratch row/vector allocations and exact recorded key data, preset/config validation and dynamic topology. Admitted keys still clone their data; no whole heap/FPS/mobile-device claim."
+    },
+    {
+      "path": "native/build/take-snapshot-1718-tYw0f0/acceptance.json",
+      "sha256": "218237a7a9c06cc60dc108cd77f1676d81ad508186d0ebbc02978eb818949327",
+      "scope": "600 admitted frame samples plus an ignored repeated same-time call of one128-element actual typed record array. Compare exact key data with c1ef0d5, count direct payload structuredClone calls and preserve in-place changes/ownership. Wall times are observations, not FPS/device/end-to-end performance."
+    },
+    {
+      "path": "native/build/take-filter-215-mIG5pN/acceptance.json",
+      "sha256": "c81f131099f78c0e50e11daa2118276c706f7bf814524a25543b82e63f6e6cf8",
+      "scope": "Six final affected preset/recorder/snapshot/filter/skeletal/spawn regressions."
+    },
+    {
+      "path": "native/build/skeletal-take-209-Vf7a3r/acceptance.json",
+      "sha256": "83158b00bac704058110de50dae05a72bfaab96edf4371e5573518cc184166c3",
+      "scope": "Six final affected preset/recorder/snapshot/filter/skeletal/spawn regressions."
+    },
+    {
+      "path": "native/build/spawn-take-211-QryfTN/acceptance.json",
+      "sha256": "0e0a4a1f6be1e9e93d905ab0378a7ab0d45c76f9769d1c91d27d1d9a7a0026b8",
+      "scope": "Six final affected preset/recorder/snapshot/filter/skeletal/spawn regressions."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed reusable Take config preset asset creation/editor, sequence load and SaveAs no-overwrite/source CAS/group UndoRedo, AI apply revision/noChange and runtime start overrides, snapshot FPS/tolerance/channel/bone/spawn settings, active recording source-edit isolation, and editor-only export exclusion. Six affected regressions plus final installed actual3D UI/AI/human24fps/tolerance0/filtered IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback without preset files passed. Exact source1082/native21/30tests/vendor2/Player1604/Host1041 and renderer hashes. User preserved/Versions1. Source bindings/preset inheritance/clock/timecode and broader animation restore remain."
+}
