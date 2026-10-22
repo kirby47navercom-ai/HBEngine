@@ -1030,3 +1030,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1661–1665: 구조체·열거형 라이브러리 제작/전용UI·UUID/C++symbol/label·nested record/enum/array/Actor/null·단일생성헤더/기존CPP BP코덱·원본+헤더원자저장/checkedBatch·수동header충돌/중복/호환변경保全. 실제2D프로젝트와기존index/BP/sequence/take/트랜잭션5묶음최장0.64초·새runtime timer/worker/GPU0·native21/Player1604/Host1041재사용. 설치실제UI생성/저장→CPP→동일D3D게임예정·전역순수BP typeimport/스키마이관등누적계속.
 
 1666–1667: 새type 제작symbol context의fallback282파일/2859589B 발견·정확model/write/UI route각1파일10074/3513/6783B로수리·새daemon/index없음·실측context3검사통과. 기존source묶음성공근거유지·설치전보강.
+
+1670: 첫설치type실제UI생성/표시명편집뒤검사fixture가document.save expectedRevision누락→기존REVISION_CONFLICT정상거절. 최신document.get revision전달수리·엔진보호규칙완화없음·CPP빌드전실패라중복CPP검사없음. 첫설치1669는성공승격하지않고최종1671로교체예정.

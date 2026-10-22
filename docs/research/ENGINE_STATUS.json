@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-22",
-  "basisRevision": "2bd4f5f580fa8998d6129259c0b74339b25633a6",
+  "basisRevision": "e40e5869dbea0cff7e8da29eb9aa6834fcdd2d68",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -3385,7 +3385,7 @@
   ],
   "latestBatch": {
     "first": 1661,
-    "last": 1667,
+    "last": 1670,
     "receipt": "docs/research/ENGINE_WORK_1665.json",
     "scope": "Shared type-library authoring editor/stable IDs/nested defaults/generated C++ header and atomic paired save/batch/native type validation, source regressions grouped. Actual installed editor/C++/D3D pending; independent type assets/pure BP registry/migrations remain."
   },

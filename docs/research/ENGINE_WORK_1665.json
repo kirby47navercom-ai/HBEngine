@@ -2,7 +2,7 @@
   "version": 1,
   "date": "2026-10-22",
   "kind": "shared-type-library-authoring-native-header-atomic-publication",
-  "implementationRevision": "2bd4f5f580fa8998d6129259c0b74339b25633a6",
+  "implementationRevision": "e40e5869dbea0cff7e8da29eb9aa6834fcdd2d68",
   "targetIds": [
     "CPP-01",
     "AI-03",
@@ -644,7 +644,7 @@
     "tools/check-native-shared-cache-512.mjs": "a198f43826697175be12a557627aada26ff8e82eb681bc64264a379eccf73b5a",
     "tools/check-native-type-1659-window.mjs": "6d298656e0b15104dacadc042f6fdaf227c7c2662fc75b01f7a5277862475523",
     "tools/check-native-type-assets-1662.mjs": "92b927faa9ea141d23eca2f8cf32ce5214ec5e33ed43d5532f23d0fc4cd31440",
-    "tools/check-native-type-assets-1663-window.mjs": "312e760afdb21ee614c81cce86215e3ca50b1369f69668762f6c49bc5121d3cf",
+    "tools/check-native-type-assets-1663-window.mjs": "0e892000616532722e6d0b46315c121a60bbafccaaffaa04e27d928f8de90a57",
     "tools/check-native-type-index-1653.mjs": "806bf58c1a9347b928d1a3f978c28cee807d62b71e2206641b3ba1ec4af01373",
     "tools/check-network-deletions-1325.mjs": "2acaf1b9171a2fec765a223c0919c5bba12feef02fb6c1b65af422fc12d4117a",
     "tools/check-network-interest-1260.mjs": "8a0de0ed7c07992de67abb41e4d23f5b00ccc87f17a9b3066787df75dc18e640",
@@ -1134,5 +1134,12 @@
   "installationPending": true,
   "currentInstallation": "docs/research/USER_INSTALL_1659.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "fixtureRepair": {
+    "path": "native/build/native-type-assets-1663-window-M1ij3h/failure.json",
+    "sha256": "1cdd2a9e9a6bc7d12353f1f84a5306406aef401f727c89d56d6fa45bc2aba0e5",
+    "initialInstall": "native/build/user-install-1669-audit.json",
+    "reason": "Actual UI add+label edit succeeded; fixture omitted required expectedRevision on document.save and correctly hit REVISION_CONFLICT before native build. Query current document revision and pass it, no production guard relaxation.",
+    "finalInstallPending": true
+  }
 }
