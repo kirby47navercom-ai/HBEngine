@@ -3321,11 +3321,11 @@
     "scope": "Lazy slot-bounded history diagnostics with optional capture/hash-free committed-history query, ownership transfer of already-detached scene restoration and actual512-object Undo/Redo/save. Full snapshot/restore traversal and broader engine goals remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1580.json",
-    "sourceCommit": "b23a9ec223e4c884cbb36150e3fdb37ed851f2ac",
-    "bundleHash": "753f5603f6e098af4531b77a358de14610689b3ca2a712f2edaf46e7e93c0952",
+    "receipt": "docs/research/USER_INSTALL_1589.json",
+    "sourceCommit": "b5deda3a49ccc84d1f1b23523d4e1f5726fa77ff",
+    "bundleHash": "2bcd28c208377d3d17ca01a0145106b621d62c83e1eaeb455ef107393c2c6ec4",
     "verified": true,
     "versions": 1,
-    "scope": "Installed final network lifetime/pool/inspection: actual hidden2D editor BP Connect, remote prefab BeginPlay, public runtime.network page/query, destroy and same-ID respawn[9,4,0]; installed actual loopback ws plus BlueprintRuntime/engineOperations loading cancellation, generations, same-ID removal, partial/single snapshot, bounded1000 metadata and pool re-registration. Source final publication1025/Korean packet and unchanged packet/interest/deletion/spawn/2D100reuse/C++ proof reused. Full manifest/source/native20/29tests/vendor2 and Player1484/Host1041 hashes, User read-only inventory/links/Versions1. No renderer/native rebuild/phone/internet-loss prediction claim."
+    "scope": "Installed final actual2D editor512-object scene edits/Undo twice/Redo twice/independent tail edit/UndoRedo/save, strict slotBudget16/truncatedBy slots, includeRevision:false zero object-array clones and no CAS compatibility, fast active future counts. Source lazy diagnostic exact-count parity and65536 eager values→63/64 slots plus old sharing/container/array proofs reused. Full manifest/source/native20/29native tests/vendor2 and unchanged Player1484/Host1041 hashes, User read-only inventory/links/Versions1. Native/gameplay/network/renderer owners reused; no full renderer/native build/FPS/phone claim."
   }
 }

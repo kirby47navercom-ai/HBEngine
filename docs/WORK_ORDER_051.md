@@ -998,3 +998,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1580 설치확인: 753f5603f6e098af·4209명세/877소유/29native검사/20nativeowner/2vendor SHA·동일Player1484/Host1041. 실제2D 편집기BP접속/원격삭제/같은ID재생성[9,4,0]/BeginPlay2/공개페이지조회8.83초·설치실제socket11수명경합/생성취소/풀/1000페이지0.44초. User10849읽기SHA불변/연결/Versions1·이전190468151B회수. 변경없는렌더matrix/native빌드재반복없음·누적목표계속.
 
 1582–1587: 이력진단lazy DFS/object+slot예산2m/최대8m/truncatedBy·known dense Object.keys목록없음·65536선읽기→63값/64슬롯/키슬롯65536→0·완료계수동치/기존구조공유통과. includeRevision:false는전체문서캡처/해시/flush생략·실제복사0/16슬롯·기존revision검사유지. 씬복원분리objects소유인수로install중복clone1제거·실제512오브젝트독립편집/UndoRedo/저장통과. fixture revision누락/document.read형태/총복사수가정수리·전체old/new FPS주장없음. 08b78d7·AI owner6171B/450065B·최종설치후누적작업계속.
+
+1589 설치확인: 2bcd28c208377d3d·4213명세/881소유/29native검사/20nativeowner/2vendor SHA·동일Player1484/Host1041. 실제2D512오브젝트독립편집/Undo2Redo2/추가tail UndoRedo/저장/slot16/fastquery배열복사0/fast undo1redo2 19.7초·User10849읽기SHA불변/연결/Versions1·이전190623194B회수. 변경없는렌더matrix/native빌드재반복없음·렌더링등누적목표계속.

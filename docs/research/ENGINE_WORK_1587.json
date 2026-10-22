@@ -1015,9 +1015,6 @@
     "prototype/network-inspection.js": "f8ac1572bf0bd07b7032e6cb8b281d92e2c822d93a08ab04ef9957a55a541dd1",
     "prototype/runtime-spawn.js": "381fcafbfa35253b74ec4606fcd5c7b9b45f3e997d06f1a85eeca422a6549fc1"
   },
-  "pendingInstalledGates": [
-    "tools/check-scene-history-1583-window.mjs --executable installed"
-  ],
   "focusedAI": {
     "documentHistoryStorage": {
       "elapsedMs": 154.1,
@@ -1052,8 +1049,20 @@
     "fixtureRepair": "Initial window harness omitted required mutation revision, assumed partial document.read contained full data, and assumed total Undo array-copy count excluded view/recovery. Harness now uses existing document.get/optimistic revisions, records observed5 stacks without an old/new total claim, verifies fast query0 and actual values/Undo/Redo/save. Successful unit group was not repeated.",
     "finalTestOnlyChange": "Reset clone trace alongside counter and assert fast-query undo1/redo2 after two Undos. Source UI predates these test-only assertions; final installed replay includes them."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1580.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1589.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/scene-history-1583-window-m4bVkS/acceptance.json",
+      "sha256": "d17369bb94726da4163197c90870e6c8424fd8726015318e5011192fe147b6b1",
+      "scope": "Owned hidden actual2D editor:512 scene actors, three position edits, Undo twice/Redo twice, later independent tail edit Undo/Redo/save and strict public slot budget. Object-array JSON clone calls observed across the public Undo request, including activation/view/recovery work, are recorded with stacks; no controlled old/new total-count claim. The redundant restore install clone is removed in source; includeRevision:false diagnostic performs0 object-array clones. Detached full scene clone is retained; no total JSON bytes, renderer/FPS or large-world benchmark claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2bcd28c208377d3d\\HBEngine.exe"
+      ],
+      "ms": 19705.599199999997
+    }
+  ]
 }

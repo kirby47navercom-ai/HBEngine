@@ -1,0 +1,146 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "b5deda3a49ccc84d1f1b23523d4e1f5726fa77ff",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2bcd28c208377d3d",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\2bcd28c208377d3d\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\2bcd28c208377d3d\\HBEngine.exe",
+  "bundleHash": "2bcd28c208377d3d17ca01a0145106b621d62c83e1eaeb455ef107393c2c6ec4",
+  "files": 4213,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4210,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\753f5603f6e098af",
+        "bytes": 190623194,
+        "manifestSHA256": "5ca7435f30de783db80a9d51bb6eec1b44c52b853d4c44443fc3ff3c87c164d0"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T10:00:51.1945327Z",
+    "bytes": 190623194,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "2bcd28c208377d3d"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 881,
+  "repositoryOnlyTestSourcesVerified": 29,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
+  "installedGates": [
+    {
+      "path": "native/build/scene-history-1583-window-m4bVkS/acceptance.json",
+      "sha256": "d17369bb94726da4163197c90870e6c8424fd8726015318e5011192fe147b6b1",
+      "scope": "Owned hidden actual2D editor:512 scene actors, three position edits, Undo twice/Redo twice, later independent tail edit Undo/Redo/save and strict public slot budget. Object-array JSON clone calls observed across the public Undo request, including activation/view/recovery work, are recorded with stacks; no controlled old/new total-count claim. The redundant restore install clone is removed in source; includeRevision:false diagnostic performs0 object-array clones. Detached full scene clone is retained; no total JSON bytes, renderer/FPS or large-world benchmark claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2bcd28c208377d3d\\HBEngine.exe"
+      ],
+      "ms": 19705.599199999997
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\2bcd28c208377d3d\\",
+    "elapsedMs": 64,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\2bcd28c208377d3d",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "2bcd28c208377d3d17ca01a0145106b621d62c83e1eaeb455ef107393c2c6ec4",
+      "installedAt": "2026-10-22T10:00:47.769Z",
+      "manifestFiles": 4213,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1580.json\",\"scope\":\"Unchanged native access metadata owner hashes verified with full source and installed manifest; previous pure metadata check not repeated.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4213,
+  "versions": [
+    "2bcd28c208377d3d"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1589-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/history1584-group.json",
+      "sha256": "39e6a700ddcac2d3ea07c92388e713ad9023cf495b03167aa1877ac12b02f0eb",
+      "scope": "Grouped lazy history parity and existing structural-sharing/container/dense-array checks plus actual512-actor scene Undo/Redo/save. See fixture repair, no timing/FPS claim."
+    },
+    {
+      "path": "native/build/history-walk-1582.json",
+      "sha256": "69f29655f73683c78a39000cee512436f5dc33d0264a366e437e2687ef4e6fd7",
+      "scope": "Isolated history diagnostics, exact completed traversal parity and direct property/key counts. Generic Object.keys enumeration is still required for unknown objects/arrays; slot budget bounds visited values, not arbitrary getters/Proxy ownKeys or JSON snapshot/restore cost. No editor/FPS/heap timing claim."
+    },
+    {
+      "path": "native/build/history-array-keys-1523.json",
+      "sha256": "2cc2a9cb017038317c8f6d8a6ed4c4c9a0a27215575f0f1407ab119f5b7b56d8",
+      "scope": "Direct Object.keys call/returned-slot counts inside owned history creation. Counts include both source and previous keys; full value traversal and structuredClone restoration remain. Weak density facts cover only arrays of64+ entries produced by owned snapshots; tiny value arrays keep the old path. Timings are observations, not controlled GC/heap or gameFPS."
+    },
+    {
+      "path": "native/build/history-containers-1439.json",
+      "sha256": "4316dcd61f632ab69f7655fd3d8cde94c7187691a0cf1d8b161fc4742588d45c",
+      "scope": "Deterministic result-container allocations during 8 snapshots x16384 keys, source traversal/reused objects equal. Alternating authoring CPU samples are observations, not controlled GC/heap, total allocator traffic, game FPS or full-walk elimination. ownedPrevious requires private data-property history frames; public default retains old getter reads."
+    },
+    {
+      "path": "native/build/scene-history-1583-window-wkbiu1/acceptance.json",
+      "sha256": "d73b393ebdb016f4b8d75cf832cc57e7c894b141b1e553cca0aafc631411e52c",
+      "scope": "Owned hidden actual2D editor:512 scene actors, three position edits, Undo twice/Redo twice, later independent tail edit Undo/Redo/save and strict public slot budget. Object-array JSON clone calls observed across the public Undo request, including activation/view/recovery work, are recorded with stacks; no controlled old/new total-count claim. The redundant restore install clone is removed in source; includeRevision:false diagnostic performs0 object-array clones. Detached full scene clone is retained; no total JSON bytes, renderer/FPS or large-world benchmark claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/scene-history-1583-window-wkbiu1/acceptance.json",
+      "sha256": "d73b393ebdb016f4b8d75cf832cc57e7c894b141b1e553cca0aafc631411e52c",
+      "scope": "Owned hidden actual2D editor:512 scene actors, three position edits, Undo twice/Redo twice, later independent tail edit Undo/Redo/save and strict public slot budget. Object-array JSON clone calls observed across the public Undo request, including activation/view/recovery work, are recorded with stacks; no controlled old/new total-count claim. The redundant restore install clone is removed in source; includeRevision:false diagnostic performs0 object-array clones. Detached full scene clone is retained; no total JSON bytes, renderer/FPS or large-world benchmark claim."
+    }
+  ],
+  "scope": "Installed final actual2D editor512-object scene edits/Undo twice/Redo twice/independent tail edit/UndoRedo/save, strict slotBudget16/truncatedBy slots, includeRevision:false zero object-array clones and no CAS compatibility, fast active future counts. Source lazy diagnostic exact-count parity and65536 eager values→63/64 slots plus old sharing/container/array proofs reused. Full manifest/source/native20/29native tests/vendor2 and unchanged Player1484/Host1041 hashes, User read-only inventory/links/Versions1. Native/gameplay/network/renderer owners reused; no full renderer/native build/FPS/phone claim.",
+  "version": 1,
+  "date": "2026-10-22T10:02:47.137Z",
+  "work": "docs/research/ENGINE_WORK_1587.json",
+  "distributionSync": "native/build/distribution-1588-sync.json",
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1580.json",
+  "nativePlayerBuildReused": true,
+  "hostReuseFrom": "docs/research/USER_INSTALL_1580.json"
+}
