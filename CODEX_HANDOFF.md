@@ -18,3 +18,7 @@ WORK1724: Takecopy600→6/owner1scan1228800→13664/VM검증slot·프레임참�
 
 RND08 globalDFclipmap/directional sky/bentnormal/방향lightmap/volume/HWRT; ANM06변경배열검증·골격/복원/warp/rig/비등간격필터; CPP01direct/destructive schema/개별typeasset/globaldiscovery/Name/alias/ref수명/wildcard; UI03실기기/asyncrollback. DF/lightmap소스읽기만새 구현없음. 후속은metadata반복수작업절감도고려.
 heavy/GUI/install전activeInstalledVersions. owned hidden probe/고유프로젝트·프로필·port만·사용자창금지. guard저장Node(inlinePS현재Versions절대경로는자기pwsh오인). CXX-o relative/jsonInclude·PS외부실패자동중단아님→Node순차. 실제경로먼저·추정이름/큰minified/nativebuild재귀inventory금지. retainTestEvidence/pruneTestArtifacts/nativecache32/Versions1. Git한글 author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com/AItrailer없음. 새agent금지. Mac/Xcode/Android폰없음.
+
+## 대화 자동 이어가기
+
+앱 heartbeat automationId=hbengine ACTIVE, 이 대화에서5분 간격 누적 구현 계속하도록 연결·view 확인. 별도 새 채팅/프로젝트/goal 생성 아님. 같은 자동 작업 중복 생성 금지. 사용자 중지/필수 외부 입력만 남을 때의 일시정지·검증/설치/용량/사용 중 보호 조건은 저장된 prompt 참조. goal 도구는 여전히blocked여서 재개 복구로 보고하지 않음.
