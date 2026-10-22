@@ -4,6 +4,7 @@ import {createHash,randomUUID} from 'node:crypto';
 import {OBJLoader} from 'three/addons/loaders/OBJLoader.js';
 import {loadHeadlessModel,disposeHeadlessModel} from './headless-model.mjs';
 import {pruneCookCache} from './cook-cache.mjs';
+import {distanceFieldWorldInputs} from './distance-world-source.mjs';
 import {scenePrimitives} from '../prototype/scene-primitives.js';
 import {defaultSurface} from '../prototype/model.js';
 import {distanceFieldMeshEligible,distanceFieldMaterialEligible} from '../prototype/mesh-distance-field-scene.js';
@@ -19,7 +20,7 @@ const release=object=>{disposeHeadlessModel(object);const resources=new Set();ob
 export async function cookDistanceFields(project,content,{signal,packageBudget=32*1024*1024}={}){
  signal?.throwIfAborted();if(!Number.isSafeInteger(packageBudget)||packageBudget<0)throw Error('거리장 패키지 예산을 확인하세요.');
  const scenes=[...content].filter(([name])=>name.endsWith('.hbscene.json')).map(([,b])=>JSON.parse(b)),resolutions=new Set();for(const scene of scenes)for(const o of scene.objects||[])for(const c of o.components||[]){const p=c.properties;if(c.type==='PostProcessVolume'&&p?.enabled!==false&&p?.aoEnabled&&p.aoMode==='distanceField'&&!p.pathTracingEnabled)resolutions.add(p.aoDistanceFieldResolution??24);}
- const report={version:distanceFieldCookVersion,manifest:'',fields:0,cacheHits:0,baked:0,packageBytes:0,packageBudget,geometryInputs:0,duplicateInputs:0,unsupported:0,deferred:0,examples:[],scope:'Static primitive/OBJ/glTF/GLB local geometry; shared content hashes, exact requested resolution only; unsupported or absent quality uses owned runtime worker. No editor/driver cache.'};if(!resolutions.size)return report;
+ const report={version:distanceFieldCookVersion,manifest:'',fields:0,cacheHits:0,baked:0,packageBytes:0,packageBudget,geometryInputs:0,duplicateInputs:0,unsupported:0,deferred:0,examples:[],scope:'Static primitive/OBJ/glTF/GLB/world mesh/terrain triangles/foliage-source/all LOD-level local geometry; shared content hashes, exact requested resolution only; unsupported or absent quality uses owned runtime worker. No editor/driver cache.'};if(!resolutions.size)return report;
  if([...content.keys()].some(p=>p.startsWith(distanceFieldCookDirectory+'/')))throw Error('엔진 거리장 생성 경로와 프로젝트 에셋이 겹쳐요.');
  const generatorHash=hash(JSON.stringify(await Promise.all(owners.map(async p=>[p,hash(await fs.readFile(new URL('../prototype/'+p,import.meta.url)))]))));const folder=await project.resolve('Library/CookCache',true,false);await fs.mkdir(folder,{recursive:true});const fields=new Map(),seen=new Set();let payloadBytes=0,manifestBytes=Buffer.byteLength(JSON.stringify({version:distanceFieldCookVersion,fields:[]}));
  const example=(name,error)=>{if(report.examples.length<3)report.examples.push({path:name,message:String(error.message||error).slice(0,240)});};
@@ -42,6 +43,7 @@ export async function cookDistanceFields(project,content,{signal,packageBudget=3
  const primitives=scenePrimitives(defaultSurface);try{
   for(const scene of [...scenes,...[...content].filter(([n])=>n.endsWith('.hbprefab.json')).map(([,b])=>JSON.parse(b))])for(const row of scene.objects||[]){signal?.throwIfAborted();const root=primitives.build(row);try{await object(root,row.id);}finally{for(const resource of root.userData.resources||[])resource.dispose();}}
   for(const name of [...content.keys()].filter(n=>/\.(?:gltf|glb|obj|fbx)$/i.test(n))){signal?.throwIfAborted();let root;try{if(/\.obj$/i.test(name)){const source=await project.read(name);if(source.size>8*1024*1024)throw Error('OBJ 거리장 쿠킹 입력 예산을 넘었어요.');root=new OBJLoader().parse(await fs.readFile(source.file,'utf8'));}else if(/\.(gltf|glb)$/i.test(name))root=(await loadHeadlessModel(project,name,{geometry:true})).object;else throw Error('FBX는 실행 중 거리장 생성 경로를 사용해요.');await object(root,name);}catch(error){if(signal?.aborted)throw signal.reason;report.unsupported++;example(name,error);}finally{if(root)release(root);}}
+  report.world=await distanceFieldWorldInputs(content,geometry,{signal});report.deferred+=report.world.deferred;report.unsupported+=report.world.unsupported;for(const row of report.world.examples)example(row.path,row.message);
  }finally{primitives.dispose();report.retention=await pruneCookCache(folder);}
  if(fields.size){content.set(distanceFieldCookManifest,Buffer.from(JSON.stringify({version:distanceFieldCookVersion,fields:[...fields.values()]})));report.manifest=distanceFieldCookManifest;report.fields=fields.size;}return report;
 }

@@ -2096,6 +2096,43 @@
       "paths": [
         "prototype/sequence-quaternion-range.js"
       ]
+    },
+    {
+      "id": "distance-world-inputs",
+      "keywords": [
+        "distanceFieldWorldInputs",
+        "월드 거리장 쿠킹"
+      ],
+      "paths": [
+        "tools/distance-world-source.mjs"
+      ]
+    },
+    {
+      "id": "distance-cook-owner",
+      "keywords": [
+        "cookDistanceFields"
+      ],
+      "paths": [
+        "tools/distance-field-cook.mjs"
+      ]
+    },
+    {
+      "id": "distance-ambient-shader",
+      "keywords": [
+        "hbDFAmbient"
+      ],
+      "paths": [
+        "prototype/mesh-distance-field-shader.js"
+      ]
+    },
+    {
+      "id": "distance-ambient-tsl",
+      "keywords": [
+        "meshDistanceFieldNode"
+      ],
+      "paths": [
+        "prototype/mesh-distance-field-gpu.js"
+      ]
     }
   ]
 }
