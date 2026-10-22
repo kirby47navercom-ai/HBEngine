@@ -1,0 +1,187 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "8fea7079e027e1d4682308bcb5bb79454ca98cab",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7f4fbb9a481aad45",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\7f4fbb9a481aad45\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\7f4fbb9a481aad45\\HBEngine.exe",
+  "bundleHash": "7f4fbb9a481aad45d0fd7c771710f49ef32c20648a02d506e07b3c99141f0900",
+  "files": 4117,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4112,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2e99818704cc9235",
+        "bytes": 188673680,
+        "manifestSHA256": "412bf39fcf09813e03a0f0cf28256e802f51bc538285e50c3469d4a27e8a9d5c"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T01:16:50.9563992Z",
+    "bytes": 188673680,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "7f4fbb9a481aad45"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 775,
+  "repositoryOnlyTestSourcesVerified": 27,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "4482bc5d9b899409e25b8ef567a0a54482aac8452a7da5d09b7d45800e32a82a",
+  "installedGates": [
+    {
+      "path": "native/build/timeline-view-1452-window-jaLVOE/acceptance.json",
+      "sha256": "834a9e9c1e36c58743a72dd7354ec33b373a9f518d26aa8d99eb4241ed76d95d",
+      "scope": "Owned hidden actual editor with65536keys/actual metadata row count: native CDP wheel/pan/cancel/context, read-only view CAS/central rebinding, zoom-space key drag and clipped section trim with source offset, save and real nested Play; optional same saved project packaged to actual installed D3D11 player. No user project/profile or whole-engine/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f4fbb9a481aad45\\HBEngine.exe",
+        "--package"
+      ]
+    },
+    {
+      "path": "native/build/document-history-1400-window-nlh908/acceptance.json",
+      "sha256": "71376f799dd6e835fba845e2409e8f6c626048b202e25b25ec659a9c9dab971e",
+      "scope": "Owned hidden actual editor: visible fixed-height256track rows/density keys/search/focus/scroll/AI exact index,8 dense-key edits with shared history Undo/Redo/branch, bounded history/read diagnostics/revisions, save and actual Play. Optional actual installed D3D11 package. No user profile/project or gameFPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f4fbb9a481aad45\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/timeline-rows-1442-window-LtNJG2/acceptance.json",
+      "sha256": "bd1463740b048c03d353ba3e5b8ad351d9ca917f54e03905a7a95e2899414182",
+      "scope": "Owned hidden actual editor:68montage rows virtualized, exact slot/notify row metadata and context, drag/Undo/Redo/save, central reassignable navigation/input isolation and read-only AI CAS; subsequence row navigation. Existing dense-sequence and section runtime gates cover unchanged execution separately.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f4fbb9a481aad45\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\7f4fbb9a481aad45\\",
+    "elapsedMs": 61.65,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\7f4fbb9a481aad45",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "7f4fbb9a481aad45d0fd7c771710f49ef32c20648a02d506e07b3c99141f0900",
+      "installedAt": "2026-10-22T01:16:47.712Z",
+      "manifestFiles": 4117,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4117,
+  "versions": [
+    "7f4fbb9a481aad45"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1456-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/timeline-view-1451.json",
+      "sha256": "a9e7fe547a20f0750194dc798f12fc0c16ddf76f17ba33469b567779e56669d7",
+      "scope": "960view geometry/zoom/pivot/time inverse/min-frame/bounds observations; seconds/frames ruler;65k source key indices narrowed7 and512sections→3presentation copies. Source interval discovery remains linear."
+    },
+    {
+      "path": "native/build/timeline-view-1452-window-k54WSp/acceptance.json",
+      "sha256": "e71c091a54ef0f3f4b34b06b0245d3132f27395693c2f38e1ce7484b6b24aece",
+      "scope": "Actual hidden65536key/42row editor: native Ctrlwheel cursor pivot/pagezoom suppression/Shiftwheel/RMB-MMB xy pan/AltShiftRMB continuous zoom/pointercancel/context; no authored history/revision change; central F/AltHome/rebinding/input; actual key drag under zoom, clipped source-offset section trim and montage zoom trim/Undo, stored view switch/save/nested Play. Precedes final cross-document busy barrier and runtime cursor extra assertion; installed repeats exact source."
+    },
+    {
+      "path": "native/build/document-history-1400-window-04WZ6K/acceptance.json",
+      "sha256": "36e9f55c96839f8e8c82f27d42c5402f229db689f305bf10030e16dc24a406bc",
+      "scope": "Existing actual65536key256track editor:8UndoRedo/branch, metadata/AI exact source key navigation/rebinding/visible virtual geometry/save/actual Play under new viewport."
+    },
+    {
+      "path": "native/build/sequence-sections-1251-SKiiPC/acceptance.json",
+      "sha256": "b75cb10ed383c7ec6f90f91ab5ad197bf38b9048b7521bb01b8f926692ffc9a7",
+      "scope": "Existing actual Shot add/drag/trim/context duplicate-delete/child open/AI CAS/preview/nested actual Play under viewport changes."
+    },
+    {
+      "path": "native/build/timeline-rows-1442-window-eYjg3w/acceptance.json",
+      "sha256": "37a4c07deb82c57930f11ac0ee4228f5a0fa67f028ebb43cfab160cd4853b22a",
+      "scope": "Existing actual montage68rows, metadata/search/CAS/central rebinding/notify drag/UndoRedo/save/reserved-slot duplicate under viewport changes."
+    },
+    {
+      "path": "native/build/timeline-rows-1441.json",
+      "sha256": "c1c4550647e4a1bf5394bbd499baad94d40b06bb2230ec53339ded26fb3be44b",
+      "scope": "Pure linear groups/lazy rows/unique reserved slot IDs/original filtered indices/bounded detached metadata and central shortcut dispatch."
+    },
+    {
+      "path": "native/build/sequence-track-window-1399.json",
+      "sha256": "82412f53e0e4cfad8672b8d842ef737f125e8fd2249ca96fa58925917702d4b2",
+      "scope": "Existing row-window full scroll geometry and exact metadata read/filter isolation."
+    },
+    {
+      "path": "native/build/timeline-fixture-compaction-1453.json",
+      "sha256": "c6b1e8a191dca362af5cc7295cec49fb31fc36f8863c30fb6fd79a635b5c28ce",
+      "scope": "Five explicitly named previous owned projects preserved as ZIP with every file size/SHA read back before project removal; reports/screenshots/current fixture/user data untouched;85073863B reclaimed."
+    },
+    {
+      "path": "native/build/timeline-view-group-1453.json",
+      "sha256": "4e2daf2bad4a0a905105f17cda6709ba8479c4023534037d5546331a7c266a68",
+      "scope": "Grouped11JS syntax/157central shortcut contracts/schema/view APIs/exact AI1source145.58ms observation; static barrier owner check and exact unchanged native17/test27/vendor2/Player1430/Host1041 SHA reuse. No native compilation/renderer matrix repeat."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/timeline-view-1452-window-k54WSp/acceptance.json",
+      "sha256": "e71c091a54ef0f3f4b34b06b0245d3132f27395693c2f38e1ce7484b6b24aece",
+      "scope": "Actual hidden65536key/42row editor: native Ctrlwheel cursor pivot/pagezoom suppression/Shiftwheel/RMB-MMB xy pan/AltShiftRMB continuous zoom/pointercancel/context; no authored history/revision change; central F/AltHome/rebinding/input; actual key drag under zoom, clipped source-offset section trim and montage zoom trim/Undo, stored view switch/save/nested Play. Precedes final cross-document busy barrier and runtime cursor extra assertion; installed repeats exact source."
+    },
+    {
+      "path": "native/build/sequence-sections-1251-SKiiPC/acceptance.json",
+      "sha256": "b75cb10ed383c7ec6f90f91ab5ad197bf38b9048b7521bb01b8f926692ffc9a7",
+      "scope": "Existing actual Shot add/drag/trim/context duplicate-delete/child open/AI CAS/preview/nested actual Play under viewport changes."
+    }
+  ],
+  "scope": "Installed time viewport and typed AI view control: native pointer wheel/pan/cancel/context/fit-focus-rebind,65kkeys/42rows/zoom-space key editing/clipped section and montage trim/Undo, pointer-reachable final key, cross-document EDITOR_BUSY mutation/navigation guards, live cursor view projection, unchanged authored data on view, same saved trimmed project actual D3D11 package; dense history8UndoRedo/branch/save/Play and old montage68row/slot regression. Full manifest/owner/native27/vendor2 SHA and unchanged Player1430/Host1041/User read-only inventory/links/Versions1; no renderer rebuild/FPS/whole-engine claim.",
+  "version": 1,
+  "date": "2026-10-22T01:23:02.711Z",
+  "work": "docs/research/ENGINE_WORK_1454.json",
+  "distributionSync": "native/build/distribution-1455-sync.json",
+  "nativeReuseFrom": "docs/research/ENGINE_WORK_1444.json",
+  "vendorPatch": "tools/patch-three-uniforms.mjs",
+  "artifactCompaction": {
+    "path": "native/build/timeline-fixture-compaction-1453.json",
+    "sha256": "c6b1e8a191dca362af5cc7295cec49fb31fc36f8863c30fb6fd79a635b5c28ce",
+    "projects": 5,
+    "reclaimedBytes": 85073863,
+    "scope": "Known older private test project inputs only, per-entry size/SHA verified ZIP; not user data/source/report deletion."
+  }
+}

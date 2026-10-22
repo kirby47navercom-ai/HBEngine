@@ -912,11 +912,6 @@
       "scope": "Existing actual Shot add/drag/trim/context duplicate-delete/child open/AI CAS/preview/nested actual Play under viewport changes."
     }
   ],
-  "pendingInstalledGates": [
-    "tools/check-timeline-view-1452-window.mjs --package",
-    "tools/check-document-history-1400-window.mjs",
-    "tools/check-timeline-rows-1442-window.mjs"
-  ],
   "nativePlayerSHA256": "4482bc5d9b899409e25b8ef567a0a54482aac8452a7da5d09b7d45800e32a82a",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -962,8 +957,8 @@
   "research": "Reuses supplemental1440 official navigation table and UnityTimeline1.8.4body, scoped independent HB adapter in supplemental1450. Home preserved; no entire manual/API/corpus claim.",
   "diagnostic": "DEBUG_HANDOFF1450–1453: default fixture30fps expectation corrected to12frames; metadata row count derived42; endpoint key hit preserved. Private PS5 archive encoding/hash/path/hashtable differences repaired, all originals verified before removal. Group BOM reader strips BOM for parsing but SHA keeps original bytes.",
   "verificationMetadataNote": "Source UI predates final global cross-document drag barrier and test-only live cursor/view assertion; final installed --package gate exercises exact current source and same saved trimmed project, plus dense history and prior montage regression. Native/test/vendor SHA reuse exact.",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1446.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1456.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": {
     "animation": [
@@ -986,5 +981,35 @@
       "WebGPU 물리 재질의 임의 복합 로브·매질/기하/이력 조합 확장과 전체 백엔드 에너지 동등성 검증"
     ]
   },
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/timeline-view-1452-window-jaLVOE/acceptance.json",
+      "sha256": "834a9e9c1e36c58743a72dd7354ec33b373a9f518d26aa8d99eb4241ed76d95d",
+      "scope": "Owned hidden actual editor with65536keys/actual metadata row count: native CDP wheel/pan/cancel/context, read-only view CAS/central rebinding, zoom-space key drag and clipped section trim with source offset, save and real nested Play; optional same saved project packaged to actual installed D3D11 player. No user project/profile or whole-engine/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f4fbb9a481aad45\\HBEngine.exe",
+        "--package"
+      ]
+    },
+    {
+      "path": "native/build/document-history-1400-window-nlh908/acceptance.json",
+      "sha256": "71376f799dd6e835fba845e2409e8f6c626048b202e25b25ec659a9c9dab971e",
+      "scope": "Owned hidden actual editor: visible fixed-height256track rows/density keys/search/focus/scroll/AI exact index,8 dense-key edits with shared history Undo/Redo/branch, bounded history/read diagnostics/revisions, save and actual Play. Optional actual installed D3D11 package. No user profile/project or gameFPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f4fbb9a481aad45\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/timeline-rows-1442-window-LtNJG2/acceptance.json",
+      "sha256": "bd1463740b048c03d353ba3e5b8ad351d9ca917f54e03905a7a95e2899414182",
+      "scope": "Owned hidden actual editor:68montage rows virtualized, exact slot/notify row metadata and context, drag/Undo/Redo/save, central reassignable navigation/input isolation and read-only AI CAS; subsequence row navigation. Existing dense-sequence and section runtime gates cover unchanged execution separately.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7f4fbb9a481aad45\\HBEngine.exe"
+      ]
+    }
+  ]
 }
