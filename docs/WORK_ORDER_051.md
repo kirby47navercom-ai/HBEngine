@@ -1026,3 +1026,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1652–1657: native frozen snapshot weak type index/enum name+source모호성보존·field/ref계획metadata묶음소속분리·이전Git실제shared Parent/Child타입오인/Actor참조0 재현수리·mutable현재조회/계획유지. 512struct514enum×2000조회정의방문1024000/1028000→warm표순회0/0·1000record array/기존BP macro/sequence/take등3검사0.34초최장. UE/Unity선택본문부분읽기CORPUS1652·typeasset/globalregistry後續·최종설치CppUI/D3D예정·누적계속.
 
 1659 최종설치: e7e5824d1fb6851d·4257명세/926소유/native21/30tests/vendor2 SHA. 설치root snapshot512struct/514enum/2000조회와1000record array·shared context/참조수리통과. 실제hidden편집기 nestedrecord/enum/array·UndoRedo·Make/default/instance·sourceReference저장·C++compile/BP Actor참조와동일저장D3D게임위치99,3,2·종료0·72.5초. User10849읽기SHA불변·연결/Versions1·이전191557244B퇴역. 전용typeasset/공유제작데이터등누적작업계속.
+
+1661–1665: 구조체·열거형 라이브러리 제작/전용UI·UUID/C++symbol/label·nested record/enum/array/Actor/null·단일생성헤더/기존CPP BP코덱·원본+헤더원자저장/checkedBatch·수동header충돌/중복/호환변경保全. 실제2D프로젝트와기존index/BP/sequence/take/트랜잭션5묶음최장0.64초·새runtime timer/worker/GPU0·native21/Player1604/Host1041재사용. 설치실제UI생성/저장→CPP→동일D3D게임예정·전역순수BP typeimport/스키마이관등누적계속.
