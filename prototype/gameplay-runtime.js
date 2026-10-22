@@ -9,8 +9,7 @@ import {applySequenceParents,captureSequenceTargets} from './sequence-hierarchy.
 import {sequenceValueDiscrete,readSequenceValue,prepareSequenceValues,applySequenceValues} from './sequence-values.js';
 import {SequenceSpawns} from './sequence-spawn.js';
 import {sequenceComponent} from './sequence-properties.js';
-import {Quaternion} from 'three';
-import {motionBuffer,identityMotion,mixMotion} from './animation-root-motion.js';
+import {motionBuffer,identityMotion,mixMotion,weightMotionRotation} from './animation-root-motion.js';
 import {validGameplayAsset,validBoardValue,boardTypes,gameplayValidationError} from './gameplay-assets.js';
 import {AnimationNotifyTrack,deliverAnimationNotify} from './animation-notify-runtime.js';
 import {animationSyncLimits} from './animation-sync.js';
@@ -290,7 +289,7 @@ export function gameplaySystems(hooks){
     }return true;
   }
   const montageMotions=new Map();
-  function recordMontageMotion(id,state,values,delta){if(!values.size)return;let actor=montageMotions.get(id);if(!actor){actor=new Map();montageMotions.set(id,actor);}for(const [slot,value] of values){const key=JSON.stringify([state.group,slot]),w=delta>0?Math.min(1,value.weight/(delta*state.data.rate)):0;if(!w)continue;let row=actor.get(key);if(!row){row={motion:motionBuffer(),weight:0};actor.set(key,row);}const total=row.weight+w,normalized=motionBuffer();for(let i=0;i<3;i++)normalized[i]=value.motion[i]/w;new Quaternion().slerp(new Quaternion().fromArray(value.motion,3),1/w).toArray(normalized,3);mixMotion(row.motion,row.motion,normalized,w/total);row.weight=total;}}
+  function recordMontageMotion(id,state,values,delta){if(!values.size)return;let actor=montageMotions.get(id);if(!actor){actor=new Map();montageMotions.set(id,actor);}for(const [slot,value] of values){const key=JSON.stringify([state.group,slot]),w=delta>0?Math.min(1,value.weight/(delta*state.data.rate)):0;if(!w)continue;let row=actor.get(key);if(!row){row={motion:motionBuffer(),weight:0};actor.set(key,row);}const total=row.weight+w,normalized=state.normalizedMotion??=motionBuffer();for(let i=0;i<3;i++)normalized[i]=value.motion[i]/w;weightMotionRotation(normalized,value.motion,1/w);mixMotion(row.motion,row.motion,normalized,w/total);row.weight=total;}}
   async function tickMontages(delta,vm){
     montageMotions.clear();
     montageLoop:for(const [id,group,state] of [...new Set([...montages.keys(),...retiringMontages.keys()])].flatMap(id=>montageStates(id).map(state=>[id,state.group,state]))){

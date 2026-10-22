@@ -615,7 +615,8 @@
         "prototype/montage-clip-index.js",
         "docs/MONTAGE_INTERVAL_COST.md",
         "prototype/montage-timeline.js",
-        "docs/MONTAGE_TIMELINE_CACHE.md"
+        "docs/MONTAGE_TIMELINE_CACHE.md",
+        "docs/ROOT_MOTION_ROTATION.md"
       ]
     },
     {
@@ -835,7 +836,9 @@
         "tools/multiplayer-server.mjs",
         "prototype/network-interest.js",
         "tools/network-state-packets.mjs",
-        "docs/NETWORK_DELETIONS.md"
+        "docs/NETWORK_DELETIONS.md",
+        "prototype/network-publication.js",
+        "docs/NETWORK_PUBLICATION.md"
       ]
     },
     {
@@ -1699,7 +1702,8 @@
     {
       "id": "append-root-motion",
       "keywords": [
-        "appendMotion"
+        "appendMotion",
+        "weightMotionRotation"
       ],
       "paths": [
         "prototype/animation-root-motion.js"
@@ -1712,6 +1716,17 @@
       ],
       "paths": [
         "prototype/montage-timeline.js"
+      ]
+    },
+    {
+      "id": "network-publication",
+      "keywords": [
+        "NetworkPublication",
+        "networkStatePackets",
+        "networkUTF8Bytes"
+      ],
+      "paths": [
+        "prototype/network-publication.js"
       ]
     }
   ]

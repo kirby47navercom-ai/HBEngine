@@ -8,11 +8,8 @@ export const motionBuffer=()=>new Float64Array([0,0,0,0,0,0,1]);
 export function resetMotion(out){out.fill(0);out[6]=1;return out;}
 export function mixMotion(out,a,b,w){for(let i=0;i<3;i++)out[i]=(a?.[i]||0)*(1-w)+(b?.[i]||0)*w;Quaternion.slerpFlat(out,3,a||identityMotion,3,b||identityMotion,3,w);return out;}
 export const identityMotion=motionBuffer();
-// Same identity-to-delta SLERP, rotation, Hamilton product and normalization as
-// the former temporary Three objects; stack scalars avoid four objects and slice.
-export function appendMotion(out,value,weight=1){
- const ax=out[3],ay=out[4],az=out[5],aw=out[6],vx=value[0]*weight,vy=value[1]*weight,vz=value[2]*weight,tx=2*(ay*vz-az*vy),ty=2*(az*vx-ax*vz),tz=2*(ax*vy-ay*vx);
- out[0]+=vx+aw*tx+ay*tz-az*ty;out[1]+=vy+aw*ty+az*tx-ax*tz;out[2]+=vz+aw*tz+ax*ty-ay*tx;
+// Writes only the weighted rotation; translation stays with the caller.
+export function weightMotionRotation(out,value,weight=1){
  let bx=0,by=0,bz=0,bw=1;
  if(weight===1){bx=value[3];by=value[4];bz=value[5];bw=value[6];}
  else if(weight!==0){let cos=1*value[6]+0*value[3]+0*value[4]+0*value[5];const sign=cos<0?-1:1;cos*=sign;
@@ -21,6 +18,14 @@ export function appendMotion(out,value,weight=1){
    else{const sin=Math.sqrt(square),angle=Math.atan2(sin,cos),first=Math.sin((1-weight)*angle)/sin,second=Math.sin(weight*angle)/sin;bx=0*first+bx*second;by=0*first+by*second;bz=0*first+bz*second;bw=first+bw*second;}
   }
  }
+ out[3]=bx;out[4]=by;out[5]=bz;out[6]=bw;return out;
+}
+// Same identity-to-delta SLERP, rotation, Hamilton product and normalization as
+// the former temporary Three objects; stack scalars avoid four objects and slice.
+export function appendMotion(out,value,weight=1){
+ const ax=out[3],ay=out[4],az=out[5],aw=out[6],vx=value[0]*weight,vy=value[1]*weight,vz=value[2]*weight,tx=2*(ay*vz-az*vy),ty=2*(az*vx-ax*vz),tz=2*(ax*vy-ay*vx);
+ out[0]+=vx+aw*tx+ay*tz-az*ty;out[1]+=vy+aw*ty+az*tx-ax*tz;out[2]+=vz+aw*tz+ax*ty-ay*tx;
+ weightMotionRotation(out,value,weight);const bx=out[3],by=out[4],bz=out[5],bw=out[6];
  let x=ax*bw+aw*bx+ay*bz-az*by,y=ay*bw+aw*by+az*bx-ax*bz,z=az*bw+aw*bz+ax*by-ay*bx,w=aw*bw-ax*bx-ay*by-az*bz;const length=Math.sqrt(x*x+y*y+z*z+w*w);if(length===0){x=y=z=0;w=1;}else{const inverse=1/length;x*=inverse;y*=inverse;z*=inverse;w*=inverse;}out[3]=x;out[4]=y;out[5]=z;out[6]=w;return out;
 }
 

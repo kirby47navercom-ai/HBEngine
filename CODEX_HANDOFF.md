@@ -12,11 +12,13 @@
 
 ## 1540–1546 완료와 다음
 
-IntervalSelectionIndex: Play snapshot 승자구간sweep/heap, half-open·원배열우선·32미만단순경로·point이진조회무할당. SequenceSampler audio/animation clip조회·SequenceSectionSampler shot row/start/id우선/경계사전정렬·부모당현재shot1회. 자료형/포맷/제작한도변경없음. group1542 7검사통과: random/65536 sparse16비교0방문/전체overlap1구간·35*32rangeparity·유효64clip실행·기존15nested/3애니소유/140event·같은저장D3D. docs/SEQUENCE_INTERVAL_SELECTION.md·focus1owner3659B. a49430d/WORK1543/recordee4b0d0·sync1544/install1545/finish1546 완료·started재실행금지. 다음montage섹션/notify와누적목표. 제품변경뒤해시전제재사용주의.
+WORK1543/a49430d·1545설치: Play clip승자index/shot경계·small단순경로/원순서/halfopen/source/event동치. 65k16비교0방문/64clip/15nested/3애니소유/140event/D3D[7.5,0,0]·focus1owner3659B. SEQUENCE_INTERVAL_SELECTION.md. started1543record/1544sync/1545install/1546finish재실행금지.
 
-1547–1555 완료: MontageClipIndex(평균slot32+/8slot이하)·희소point/range·원순서/끝프레임·작음/다슬롯/겹침/dense/reentrant기존경로. appendMotion stackmath로Q3/V1/slice1명시생성제거·1200수치/alias+1000연쇄동치. real64clip2slot/원위치/pose재사용·start읽기132→2·root/2D3D30/60/120/notify/replace/cost 그룹8통과. 오래된montage검사Actor자동Mesh가정은fixture에명시수정. 실제64clip저장BP/paused126.5/원위치[10,3,0]/같은D3D통과. 2cb695b/WORK1552/record107ba91·sync1553/install1554/finish1555완료·started재실행금지. 다음montage섹션/notify frame비용과누적목표.
+WORK1552/2cb695b·1554설치: MontageClipIndex sparse/원순서/끝프레임·legacy fallback·appendQ3/V1/slice1제거·1200수치+1000연쇄·start132→2·real64clip/2slot/pose/원위치/D3D. MONTAGE_INTERVAL_COST.md. 1552record/1553sync/1554install/1555finish started재실행금지.
 
 1556–1562 완료: MontageTimeline 섹션정렬/이름/end/seek 사전준비·notify32+기존SequenceEventIndex범위/작음기존순회. 1024빈범위20time읽기/section후속0·64notify16section callbackPause/resume/seek/jump/Stop/reentrant통과. group1558 8검사(실제64clip저장BP/paused126.5/원위치[10,3,0]/같은D3D)통과; GUI는64notify검사아님. 907e211/WORK1559/recorde41dd34·sync1560/install1561/finish1562완료·started재실행금지. 다음루트정규화scratch와누적목표.
+
+1563–1570 WIP: weightMotionRotation 공통stack SLERP·state.normalizedMotion56B/복원Q2제거·1500수치/alias·격리실행12tick Float64old36/new24/같은시각·root1565 8검사+real64clip/D3D통과. edit1563부분적용뒤GPimport수리완료·재실행금지. NET NetworkPublication cursor/stampJSON재사용/UTF8행+4MiB분할: 움직이는1025/3tick 전부(old512)·속성8행48→32읽기·실제socket1025적용/한글15000자128행2packet/최대4151321B·network1569 6검사/공유·관심100k·삭제resync통과. 첫fakefixture config누락만수리. AI owner root7517B/network새receipt. 다음AI→WORK1570/commit→sync1571/install1572(rootUI+installed networkActualSocket)/finish1573.
 
 ## 누적 잔여
 
