@@ -3184,11 +3184,11 @@
     "scope": "Narrow verified reflected property rollback paths, lazy value-record snapshots, preservation of arbitrary C++/converter whole-world recovery, raw/profile counters and measured fixture copy/allocation reductions. Cumulative engine goals continue."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1488.json",
-    "sourceCommit": "53ba7cb22a4899daa1271a808491f9d0df8661fe",
-    "bundleHash": "899cf08824d38ebddc3e5f1b713ead9de07c6656aed79f410c5ced4d000b416c",
+    "receipt": "docs/research/USER_INSTALL_1499.json",
+    "sourceCommit": "f878b06e7e19e79150deccb6e6c028a62c8532f5",
+    "bundleHash": "9e357f24a9791a8c55c7f46dfdbab229c184b1b24b7e039ff91fe4781484051a",
     "verified": true,
     "versions": 1,
-    "scope": "Installed record authoring: nested fields/enum, arrays add/move/edit/remove, variable type UndoRedo, Make input/type, class and instance values/save, sourceReference without derived struct tables, actual CPP to BP Play and same saved D3D11 [99,3,2]. Legacy typed CPP 2D keyboard XY/original spawn/witness, sequence269 CPP and BP ownership/priority/lower takeover/baseline restoration in editor and D3D11/scene packages, leases0. Full manifest/814 owners/29 native test/20 native-owner/2 vendor SHA, Player1484 and Host1041, read-only User inventory/shortcuts/association/Versions1. No entire-engine, FPS or real-device completion claim."
+    "scope": "Installed final checkpoint generator and profiler counters: record fields/enum/arrays/type UndoRedo/class/instance/save/sourceReference/actual CPP to BP Play and same saved D3D11[99,3,2]; legacy CPP2D keyboard XY and original spawn/witness. Installed profiler counter aggregation/legacy packets/invalid values/clone/bound and focused HB_checkpointMode lookup. Full manifest/819 owners/29 native tests/20 unchanged native-owner/2 vendor SHA, reused Player1484 and Host1041, User read-only inventory/links/Versions1. Final generated CPP native batch/side-effecting converter rollback/copy and portable isolation proofs recorded at source; unchanged renderer matrix not repeated. No full-engine or FPS claim."
   }
 }

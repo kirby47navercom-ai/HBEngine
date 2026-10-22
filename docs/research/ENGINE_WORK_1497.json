@@ -925,10 +925,6 @@
       "scope": "Final generated code portable mobileSources2 same-named struct/class modules42/55 defaults, alternating4 host calls isolated; not device execution."
     }
   ],
-  "pendingInstalledGates": [
-    "tools/check-native-records-1474-window.mjs --package",
-    "tools/check-blueprint-2d-1221-player.mjs"
-  ],
   "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -1068,8 +1064,8 @@
     "profile": "Five scalar totals only in existing recorded frame; old ms-only nativePackets and300-frame bound retained; no new state for old workers without counters.",
     "artifacts": "Two diagnostic executables removed after SHA. Owned hidden probes use test-artifacts; portable copied SDK/binary cleanup pending after final installed gates."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1488.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1499.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": {
     "performance": [
@@ -1078,5 +1074,49 @@
     ],
     "cpp": []
   },
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/native-records-1474-window-yiNaUu/acceptance.json",
+      "sha256": "91788906c2ccb223fc27f98cc73081a47db8c6b796144bae55c79debae5f25bf",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\9e357f24a9791a8c\\HBEngine.exe",
+        "--package"
+      ]
+    },
+    {
+      "path": "native/build/blueprint-2d-1221-vR9dWo/acceptance.json",
+      "sha256": "57ac12685d1728e82e1f30fb765ec76e3a9d9185d110d93f9548eaee9ce00e70",
+      "scope": "Selected installation builder creates and runs actual Windows D3D11 game. GameMode defaultPawn is C++-derived TopDownCharacter2D, typed SpriteActor function receives authored Blueprint actor, preserves spawn position and queues witness pose; real W input moves in XY with Z fixed. No mobile-device/FPS/full-engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\9e357f24a9791a8c\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedProfiler": "C++ 프로파일러: 직렬화/명령 적용/사용자 함수/왕복 분리·중첩 시간 표시·비정상 값 제외·기록 상한 통과",
+  "portableArtifactCleanup": {
+    "retained": "Generated/authored source, metadata, diagnostics and hash reproduction receipt",
+    "removed": [
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-fmmIlv\\Native\\include",
+        "bytes": 2372321
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-fmmIlv\\probe.exe",
+        "bytes": 7140324
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-BNCwMW\\Native\\include",
+        "bytes": 2372321
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-BNCwMW\\probe.exe",
+        "bytes": 7142880
+      }
+    ],
+    "bytes": 19027846,
+    "passed": true
+  }
 }

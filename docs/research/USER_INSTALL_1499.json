@@ -1,0 +1,181 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "f878b06e7e19e79150deccb6e6c028a62c8532f5",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9e357f24a9791a8c",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\9e357f24a9791a8c\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\9e357f24a9791a8c\\HBEngine.exe",
+  "bundleHash": "9e357f24a9791a8c55c7f46dfdbab229c184b1b24b7e039ff91fe4781484051a",
+  "files": 4152,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4147,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\899cf08824d38ebd",
+        "bytes": 189274614,
+        "manifestSHA256": "de49aca163be420b1fb2d1f881557a2284f8ce5f9220aa6c869d674061403484"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T05:30:28.9081291Z",
+    "bytes": 189274614,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "9e357f24a9791a8c"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 819,
+  "repositoryOnlyTestSourcesVerified": 29,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
+  "installedGates": [
+    {
+      "path": "native/build/native-records-1474-window-yiNaUu/acceptance.json",
+      "sha256": "91788906c2ccb223fc27f98cc73081a47db8c6b796144bae55c79debae5f25bf",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\9e357f24a9791a8c\\HBEngine.exe",
+        "--package"
+      ]
+    },
+    {
+      "path": "native/build/blueprint-2d-1221-vR9dWo/acceptance.json",
+      "sha256": "57ac12685d1728e82e1f30fb765ec76e3a9d9185d110d93f9548eaee9ce00e70",
+      "scope": "Selected installation builder creates and runs actual Windows D3D11 game. GameMode defaultPawn is C++-derived TopDownCharacter2D, typed SpriteActor function receives authored Blueprint actor, preserves spawn position and queues witness pose; real W input moves in XY with Z fixed. No mobile-device/FPS/full-engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\9e357f24a9791a8c\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\9e357f24a9791a8c\\",
+    "elapsedMs": 65.33,
+    "matches": 2,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\9e357f24a9791a8c",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "9e357f24a9791a8c55c7f46dfdbab229c184b1b24b7e039ff91fe4781484051a",
+      "installedAt": "2026-10-22T05:30:25.698Z",
+      "manifestFiles": 4152,
+      "integrityChecked": false
+    }
+  },
+  "installedProfiler": "C++ 프로파일러: 직렬화/명령 적용/사용자 함수/왕복 분리·중첩 시간 표시·비정상 값 제외·기록 상한 통과",
+  "manifestVerifiedFiles": 4152,
+  "versions": [
+    "9e357f24a9791a8c"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1499-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/checkpoint1493-group.json",
+      "sha256": "831913401913f429caa6948062d1cde22f4fccb08f86faa7c38c2269f8608f3e",
+      "scope": "11 grouped jobs before final actual-type guard: syntax, instrumented snapshot paths, actual typed record C++, legacy batch50 actors/callbacks/boundaries/rollback and input-action batches, profiler, portable AOT and focused AI."
+    },
+    {
+      "path": "native/build/checkpoint1495-final.json",
+      "sha256": "2804b98532a3d31038bfcdd0c69496683e042c7794dc07686744de9d969229d0",
+      "scope": "Final9 jobs after generated actual property/recursive-record type and dynamic receiver guard: comparison, side-effecting user converter fallback, actual legacy native batch, exact portable2-module AOT, profiler/counter compatibility and AI routes. Only affected deltas repeated."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-record-checkpoint-1490-7QkuEQ/acceptance.json",
+      "sha256": "cf636ba95d1eb87d46aee464b926af5889bb06fb028a2fed40f2fbb406c5a094",
+      "scope": "Two static-linked generated C++ executables, pinned f2c326f baseline/current: 2 actors*128records*64nested;32 property reads copies64→0, writes64→32, failed getter keeps prior successful setter, arbitrary function restores both actors arrays/properties/transforms. Constructor allocation4/546→2/273B, wrapper360→376B; recorded wall timings are not FPS."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-checkpoint-alias-1494-pyImgW/acceptance.json",
+      "sha256": "9704904dfdc55d0ded47eb0dce25e3ca0123d435f06982122890aede0c629971",
+      "scope": "Same-named user Vec3 conversion throws after mutating a different actor: getter and setter use full recovery, other actor properties and coordinates restored, normal scalar property still skips capture."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-records-1480-aot-BNCwMW/acceptance.json",
+      "sha256": "d54578f105dcd4e97cf7d9b449a7aa0654b88f6c1f9aecd720d033972798f4d8",
+      "scope": "Final generated code portable mobileSources2 same-named struct/class modules42/55 defaults, alternating4 host calls isolated; not device execution."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-record-checkpoint-1490-7QkuEQ/acceptance.json",
+      "sha256": "cf636ba95d1eb87d46aee464b926af5889bb06fb028a2fed40f2fbb406c5a094",
+      "scope": "Two static-linked generated C++ executables, pinned f2c326f baseline/current: 2 actors*128records*64nested;32 property reads copies64→0, writes64→32, failed getter keeps prior successful setter, arbitrary function restores both actors arrays/properties/transforms. Constructor allocation4/546→2/273B, wrapper360→376B; recorded wall timings are not FPS."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-checkpoint-alias-1494-pyImgW/acceptance.json",
+      "sha256": "9704904dfdc55d0ded47eb0dce25e3ca0123d435f06982122890aede0c629971",
+      "scope": "Same-named user Vec3 conversion throws after mutating a different actor: getter and setter use full recovery, other actor properties and coordinates restored, normal scalar property still skips capture."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-records-1480-aot-BNCwMW/acceptance.json",
+      "sha256": "d54578f105dcd4e97cf7d9b449a7aa0654b88f6c1f9aecd720d033972798f4d8",
+      "scope": "Final generated code portable mobileSources2 same-named struct/class modules42/55 defaults, alternating4 host calls isolated; not device execution."
+    }
+  ],
+  "scope": "Installed final checkpoint generator and profiler counters: record fields/enum/arrays/type UndoRedo/class/instance/save/sourceReference/actual CPP to BP Play and same saved D3D11[99,3,2]; legacy CPP2D keyboard XY and original spawn/witness. Installed profiler counter aggregation/legacy packets/invalid values/clone/bound and focused HB_checkpointMode lookup. Full manifest/819 owners/29 native tests/20 unchanged native-owner/2 vendor SHA, reused Player1484 and Host1041, User read-only inventory/links/Versions1. Final generated CPP native batch/side-effecting converter rollback/copy and portable isolation proofs recorded at source; unchanged renderer matrix not repeated. No full-engine or FPS claim.",
+  "version": 1,
+  "date": "2026-10-22T05:38:44.063Z",
+  "work": "docs/research/ENGINE_WORK_1497.json",
+  "distributionSync": "native/build/distribution-1498-sync.json",
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1488.json",
+  "nativePlayerBuildReused": true,
+  "hostReuseFrom": "docs/research/USER_INSTALL_1488.json",
+  "vendorPatch": "tools/patch-three-uniforms.mjs",
+  "portableArtifactCleanup": {
+    "retained": "Generated/authored source, metadata, diagnostics and hash reproduction receipt",
+    "removed": [
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-fmmIlv\\Native\\include",
+        "bytes": 2372321
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-fmmIlv\\probe.exe",
+        "bytes": 7140324
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-BNCwMW\\Native\\include",
+        "bytes": 2372321
+      },
+      {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1480-aot-BNCwMW\\probe.exe",
+        "bytes": 7142880
+      }
+    ],
+    "bytes": 19027846,
+    "passed": true
+  }
+}
