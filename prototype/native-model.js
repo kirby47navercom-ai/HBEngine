@@ -1,3 +1,4 @@
+import {registerNativeTypeSnapshot} from './native-type-index.js';
 import {nativeCppType} from './native-types.js';
 import {nativeClassScopes} from './native-class-scopes.js';
 import {nativeReflectionSyntax} from './native-enums.js';
@@ -28,7 +29,7 @@ export function snapshotNativeMetadata(metadata){
  if(!validNative(metadata))throw Error('C++ 런타임 메타데이터를 확인하세요.');
  const snapshot=structuredClone(metadata),pending=[snapshot],seen=new Set();
  while(pending.length){const value=pending.pop();if(seen.has(value))continue;seen.add(value);Object.freeze(value);for(const child of Object.values(value))if(child&&typeof child==='object')pending.push(child);}
- runtimeMetadata.add(snapshot);return snapshot;
+ registerNativeTypeSnapshot(snapshot);runtimeMetadata.add(snapshot);return snapshot;
 }
 export function validNative(m,validValue=validPinValue){
   if(validValue===validPinValue&&m&&runtimeMetadata.has(m))return true;

@@ -1839,6 +1839,18 @@
       "paths": [
         "prototype/network-state.js"
       ]
+    },
+    {
+      "id": "native-type-snapshot-index",
+      "keywords": [
+        "indexedNativeStruct",
+        "indexedNativeEnum",
+        "nativeSnapshotDefinition",
+        "registerNativeTypeSnapshot"
+      ],
+      "paths": [
+        "prototype/native-type-index.js"
+      ]
     }
   ]
 }

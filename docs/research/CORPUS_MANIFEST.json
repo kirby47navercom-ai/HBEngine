@@ -5495,5 +5495,37 @@
     ],
     "implementationPending": false,
     "implementation": "docs/PROBE_LIGHTMAP_MIX.md; selected implementation and executable gates, installation tracked separately; no corpus/API gate promotion"
+  },
+  "supplemental1652": {
+    "date": "2026-10-22",
+    "scope": "Selected user type/data asset workflows and value/reference semantics; partial reading, no full-corpus/API promotion",
+    "sources": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/blueprint-struct-variables-in-unreal-engine",
+        "actualVersion": "5.8",
+        "read": "Rendered body0–97; custom creation65–80 and Split/Make/Break/Set Members20–62/83–96.",
+        "exhaustiveLinkedAPIs": false
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/structs-in-unreal-engine",
+        "actualVersion": "5.8",
+        "read": "Rendered body0–57; declaration/field metadata14–40 and Make/Break49–56.",
+        "exhaustiveLinkedAPIs": false
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-ScriptableObject.html",
+        "actualVersion": "6000.0",
+        "read": "HTML body126–148 and208–212 returned/read; other example snippets encountered, not a full API analysis.",
+        "exhaustiveLinkedAPIs": false
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/script-serialization-rules.html",
+        "actualVersion": "6000.0",
+        "read": "Returned HTML body126–208; field types and inline/reference semantics. Serialization index page inspected separately; linked APIs unread.",
+        "exhaustiveLinkedAPIs": false
+      }
+    ],
+    "analysis": "docs/research/TYPE_DATA_ASSETS_1652.md",
+    "implementation": "Only snapshot type lookup/context-plan correctness linked to docs/NATIVE_TYPE_SNAPSHOT_INDEX.md; dedicated type assets/global registry/schema migration remain pending."
   }
 }

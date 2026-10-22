@@ -1,3 +1,4 @@
+import {nativeTypeSnapshot,indexedNativeStruct,nativeSnapshotDefinition} from './native-type-index.js';
 import {validValue,defaultsFor} from './pin-values.js';
 import {nativeEnumDefinition,validNativeEnumValue,validNativeEnumPin} from './native-enums.js';
 const identifier=value=>typeof value==='string'&&/^[A-Za-z_]\w{0,79}$/.test(value);
@@ -33,13 +34,13 @@ export function validNativeRecordPin(metadata,pin,value,{deferred=false,identity
 export function nativeRecordFields(metadata,definition){
  if(!definition)return [];
  const shared=Object.isFrozen(metadata)&&Object.isFrozen(definition);
- if(shared&&fieldPlans.has(definition))return fieldPlans.get(definition);
+ const cached=nativeSnapshotDefinition(metadata,definition)&&fieldPlans.get(definition)?.get(metadata);if(cached)return cached;
  const defaults=nativeRecordTemplate(definition),fields=definition.fields.map(field=>{let pin={...field,id:field.name,default:defaults[field.name]};if(pin.enumName)pin={...pin,enumInfo:nativeEnumDefinition(metadata,pin)};if(pin.maskEnumName)pin={...pin,maskInfo:nativeEnumDefinition(metadata,{enumName:pin.maskEnumName})};return annotateNativeRecordPin(metadata,pin);});
- if(shared){fields.forEach(Object.freeze);Object.freeze(fields);fieldPlans.set(definition,fields);}
+ if(shared){fields.forEach(Object.freeze);Object.freeze(fields);if(nativeSnapshotDefinition(metadata,definition)){let contexts=fieldPlans.get(definition);if(!contexts){contexts=new WeakMap();fieldPlans.set(definition,contexts);}contexts.set(metadata,fields);}}
  return fields;
 }
 export function nativeRecordDefinition(metadata,pin){
- let found=null;
+ if(nativeTypeSnapshot(metadata))return indexedNativeStruct(metadata,pin?.structName);let found=null;
  for(const value of metadata?.structs||[])if(value.name===pin?.structName){if(found)return null;found=value;}
  return found;
 }
@@ -69,8 +70,8 @@ export function annotateNativeRecordPin(metadata,pin){
 }
 function referenceFields(metadata,definition,stack=[]){
  if(!definition||stack.includes(definition.name)||stack.length>=16)throw Error('구조체 참조 선언의 순환·깊이를 확인하세요.');
- let fields=referencePlans.get(definition);if(fields)return fields;
- fields=definition.fields.filter(field=>['object','hit'].includes(field.type)||field.type==='record'&&referenceFields(metadata,nativeRecordDefinition(metadata,field),[...stack,definition.name]).length>0);referencePlans.set(definition,fields);return fields;
+ const shared=nativeSnapshotDefinition(metadata,definition);let fields=shared&&referencePlans.get(definition)?.get(metadata);if(fields)return fields;
+ fields=definition.fields.filter(field=>['object','hit'].includes(field.type)||field.type==='record'&&referenceFields(metadata,nativeRecordDefinition(metadata,field),[...stack,definition.name]).length>0);if(shared){let contexts=referencePlans.get(definition);if(!contexts){contexts=new WeakMap();referencePlans.set(definition,contexts);}contexts.set(metadata,fields);}return fields;
 }
 export function mapNativeRecordObjects(metadata,pin,value,visit,budget={left:2000000},depth=0){
  if(--budget.left<0||depth>16)throw Error('구조체 참조 값의 크기를 확인하세요.');

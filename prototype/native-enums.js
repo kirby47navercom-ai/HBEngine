@@ -1,3 +1,4 @@
+import {nativeTypeSnapshot,indexedNativeEnum} from './native-type-index.js';
 // Reflected enum declarations use a bounded integer expression parser. User
 // C++/JavaScript expressions are never evaluated by the editor.
 const identifier = value => typeof value==='string' && /^[A-Za-z_]\w*$/.test(value);
@@ -135,7 +136,7 @@ export function validNativeEnum(value) {
     return !!(value && (value.cppNamespace===undefined||Array.isArray(value.cppNamespace)&&value.cppNamespace.length<=32&&value.cppNamespace.every(identifier)) && qualified(value.name) && typeof value.sourcePath === 'string' && value.sourcePath.length <= 2000 && typeof value.label === 'string' && typeof value.tooltip === 'string' && typeof value.scoped === 'boolean' && typeof value.blueprintType === 'boolean' && typeof value.flags === 'boolean' && typeof value.maskValues === 'boolean' && typeof value.underlying?.cpp === 'string' && [8, 16, 32].includes(value.underlying.bits) && [true, false, null].includes(value.underlying.unsigned) && (value.underlying.unsigned!==null||value.underlying.bits===32&&!value.underlying.cpp) && Array.isArray(value.entries) && value.entries.length > 0 && new Set(value.entries.map(entry => entry?.name)).size === value.entries.length && !(value.underlying.unsigned === null && value.entries.some(entry => entry?.numericValue < 0) && value.entries.some(entry => entry?.numericValue > Number(I32))) && value.entries.every(entry => entry && identifier(entry.name) && typeof entry.label === 'string' && typeof entry.hidden === 'boolean' && Number.isInteger(entry.value) && entry.value >= -2147483648 && entry.value <= 2147483647 && Number.isInteger(entry.numericValue) && entry.numericValue >= -2147483648 && entry.numericValue <= 4294967295 && wireValue(BigInt(entry.numericValue), value.underlying) === entry.value));
   } catch { return false; }
 }
-export function nativeEnumDefinition(metadata, pin) { let match=null;for(const value of metadata?.enums||[]){if(value.name!==pin?.enumName||pin.enumSource!==undefined&&value.sourcePath!==pin.enumSource)continue;if(match)return null;match=value;}return match; }
+export function nativeEnumDefinition(metadata, pin) { if(nativeTypeSnapshot(metadata))return indexedNativeEnum(metadata,pin?.enumName,pin?.enumSource);let match=null;for(const value of metadata?.enums||[]){if(value.name!==pin?.enumName||pin.enumSource!==undefined&&value.sourcePath!==pin.enumSource)continue;if(match)return null;match=value;}return match; }
 export function validNativeEnumValue(definition, value) {
   if(!definition)return false;
   if (!Number.isInteger(value) || value < -2147483648 || value > 2147483647) return false;
