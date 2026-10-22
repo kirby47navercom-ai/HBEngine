@@ -2000,6 +2000,26 @@
       "paths": [
         "prototype/native-source-watch.js"
       ]
+    },
+    {
+      "id": "runtime-object-slots",
+      "keywords": [
+        "lookupRuntimeObject",
+        "primeRuntimeObjectLookup"
+      ],
+      "paths": [
+        "prototype/runtime-object-lookup.js"
+      ]
+    },
+    {
+      "id": "take-recorder-samples",
+      "keywords": [
+        "TakeRecorder",
+        "reduceRecordedKeys"
+      ],
+      "paths": [
+        "prototype/take-recorder.js"
+      ]
     }
   ]
 }

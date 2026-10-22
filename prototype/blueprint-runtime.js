@@ -1,3 +1,4 @@
+import {lookupRuntimeObject} from './runtime-object-lookup.js';
 import {blueprintClassKey,assertBlueprintMemberAccess,assertBlueprintInterfaceImplementation} from './blueprint-access.js';
 import {snapshotNativeMetadata} from './native-model.js';
 import {validNativeRecordPin,mapNativeRecordObjects} from './native-records.js';
@@ -50,7 +51,7 @@ export class BlueprintRuntime {
     for(const b of added){for(const [key,value] of this.inputState.keys)b.input.set(key,value);b.input.sample(false);b.input.endFrame();}
     this.bindings.push(...added);installBlueprintInstances(this.objects,added);return added;
   }
-  object(id,b){return this.objects.find(o=>o.id===(id==='self'?b?.self:id));}
+  object(id,b){return lookupRuntimeObject(this,id==='self'?b?.self:id);}
   frame(b,g=b.root,args={},scope=''){return {b,g,args,scope,outputs:new Map(),stack:[],result:{},returned:false,exit:'then',generation:this.generation,evaluating:new Set()};}
   frameActive(f){return this.active&&f.generation===this.generation&&(!f.scope||this.scopes.has(f.scope));}
   beginScope(scope){if(scope)this.scopes.add(scope);}
