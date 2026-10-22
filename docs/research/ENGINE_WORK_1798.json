@@ -531,7 +531,7 @@
     "tools/check-ai-focus-priority-1432.mjs": "83432112a925dedc3b1a99809691860d1d06647d6f67d25e2a79562695377cda",
     "tools/check-animation-montage.mjs": "0f30b3115f81041ae4f6cf86a87d29821fcca8608006f358c15ba81dbcd9fd8b",
     "tools/check-animation-playback-1795.mjs": "019d9d87fb0983f5d95809ef7ac806915a5c4fe54bddcbf1345a99075828d2c0",
-    "tools/check-animation-playback-1796-window.mjs": "4d9044de0aba2e4c4506274cad9929abb083442fd1b351c2a915e5d35c8aa87b",
+    "tools/check-animation-playback-1796-window.mjs": "e2949ad87326973d63682ec92b8ad2658f32b98423f3f25019f428c3227b9dd4",
     "tools/check-authored-2d-712.mjs": "9cd271fc164607b0846fdd1d4418393731a0d236e4df07be1f41ebe8d056feb7",
     "tools/check-authored-2d-worker-714-window.mjs": "235c6b44527053e1b816c698679add29d47113202a332b8ec261c2da1bd1896e",
     "tools/check-authored-context-736-window.mjs": "7af58014c826cb47a72af033bd6dc6f2c7f8fd692c347cf504ec52d6d2f2eac9",
@@ -1324,5 +1324,12 @@
     }
   ],
   "installationPending": true,
-  "scope": "Simple pre-sequence sprite/timeline/raw imported clip playback restoration, track completion policies, controlled tick, request/identity/overlap/error guards and readonly AI query. Four final fast service regressions passed. Source GUI/CPP/D3D checkpoint passed before final failed-load guard/token import; final installed current-source GUI/CPP/D3D gate pending."
+  "scope": "Simple pre-sequence sprite/timeline/raw imported clip playback restoration, track completion policies, controlled tick, request/identity/overlap/error guards and readonly AI query. Four final fast service regressions passed. Source GUI/CPP/D3D checkpoint passed before final failed-load guard/token import; final installed current-source GUI/CPP/D3D gate pending.",
+  "verificationCorrection": {
+    "revision": "4b2c89f83c760a622e18dfff7ac23f95f8be0bf0",
+    "file": "tools/check-animation-playback-1796-window.mjs",
+    "failedAudit": "native/build/user-install-1800-audit.json",
+    "reason": "The original looping sprite was in frame1 after5s, while test assumed frame0. Engine restoration checks passed up to that fixed-frame assertion. Test now derives expected frame from actual restored clock; failed check not counted as installation pass.",
+    "engineCodeChanged": false
+  }
 }

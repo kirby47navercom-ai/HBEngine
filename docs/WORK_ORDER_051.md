@@ -1092,3 +1092,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1791–1793: 설치본 Take 프리셋/채널/뼈 UI·설정 UndoRedo/저장·모델교체 녹화·CPP/D3D 재생 77.83초, 실제2D BP128 record배열+Transform 녹화·적용·UndoRedo·D3D 값1000/위치1000 및 원본0 복원 38.56초 통과. 명세4372/source1046/native21/30tests/vendor2 SHA·User10849 읽기불변·링크/association/Versions1·이전194154625B 정리/lease0. 7빠른회귀+source CPP/D3D/최종popup 확인, 변경runtime과거재사용 제외. USER_INSTALL1792. scratch관찰을 전체heap/FPS/실기기·외부애니상태복원 완료로 계산하지 않음. 누적계속.
 
 1794–1798: 시퀀스 이전 단순 애니(sprite/Transform/raw clip) 복원·트랙 종료정책·controlled tick·소유권/수명/구간공백/실패교체 보호·AI 조회 구현. 4종 최종 빠른회귀, source GUI/C++/D3D checkpoint 통과; checkpoint 이후 실패교체 guard와 token import는 최종 설치 실제실행으로 확인 예정. Graph/몽타주 이력과 임의 async setter rollback은 남김. WORK1798.
+
+1800 설치 검사: 원본 sprite가5초 이후 두번째프레임인 경우에도 첫프레임을 기대한 검사 오류로 실패. 실제 복원 시각으로 프레임 비교를 고침(엔진 변경0). 실패는 통과로 계산하지 않으며 수정 검사와 최종 설치 검증을 다시 실행.
