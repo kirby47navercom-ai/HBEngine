@@ -1098,3 +1098,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1802–1804: 최종 설치 2D 편집기의 sprite+3D Transform·BP 외부애니→실제 C++ 시퀀스 Play/Seek/Stop·복원시간/반복/프레임·keep 고정·UI UndoRedo/저장 및 독립 D3D11 46.66초 통과. 4빠른 영향회귀·source checkpoint와 최종소스 gate 구분. 명세4379/source1054/native21/30tests/vendor2 정확SHA·User10849 읽기불변·링크/association/Versions1·이전194519914B 정리·lease0. USER_INSTALL1803. Graph/몽타주 내부이력·임의 async setter rollback 등 원장 잔여 유지. 누적계속.
 
 1805–1809: 골격 키준비/weak모델 바인딩 재사용·재활성화 이름검증·변경전 기준포즈 단일캡처·page벡터만 복사·AI 카운터 구현. 5빠른회귀, Git1bbdc4f 독립128뼈×120키 포즈 동일, 다중대상 검증9830400→30720행/바인딩640→32(이름검증608 유지), 실제 C++ 모델/빈골격/역탐색8회·원복·별도D3D 자료 통과. 첫 검사 시점 가정 두 오류는 수정하고 실패를 성과에 포함하지 않음. 원장 잔여복원/행렬·뼈별소유권 유지. WORK1809. 설치확인 예정.
+
+1810–1812: 설치 editor·C++ 모델교체/빈골격/역탐색8회·원본포즈복원·독립 D3D11 runner 자료 72.16초 통과. 키준비1/키4/포즈행9/layout3/기준캡처1·범위query벡터복사와 동일결과. 5회귀·독립이전코드 대조·다중대상 작업량 포함. 명세4385/source1061/native21/30tests/vendor2 정확SHA·User10849 읽기불변·링크/association/Versions1·이전194520829B 정리·lease0. USER_INSTALL1811. 네이티브 픽셀·전체FPS/heap·실기기나 뼈별소유권/Graph복원 완료로 계산하지 않음. 누적계속.

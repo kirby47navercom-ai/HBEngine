@@ -1342,6 +1342,20 @@
       "path": "native/build/sequence-pose-cost-1807-window-Ko7OnX/failure.json"
     }
   ],
-  "installationPending": true,
-  "scope": "Weak document/model skeletal preparation reuse, pre-structural-edit single baseline per target, page-only pose-vector copies and readonly work counters. Five fast regressions, independent old128bone*120key pose agreement and actual editor/CPP eight model-layout changes/restoration plus independent D3D11 runner data passed. Native framebuffer pixels/FPS/heap/device not claimed. Installed gate pending."
+  "installationPending": false,
+  "scope": "Weak document/model skeletal preparation reuse, pre-structural-edit single baseline per target, page-only pose-vector copies and readonly work counters. Five fast regressions, independent old128bone*120key pose agreement and actual editor/CPP eight model-layout changes/restoration plus independent D3D11 runner data passed. Native framebuffer pixels/FPS/heap/device not claimed. Installed gate pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1811.json",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-pose-cost-1807-window-axYC8D/acceptance.json",
+      "sha256": "0112bb4f74e916737b299f0eefcdc774af45bdaa38597f41a84594519601ec9b",
+      "scope": "Actual editor and optional independent D3D11 user C++ Play/Seek/Stop through8 original/alternate/empty/backward model-layout changes; exact selected bone name/angle, one program/one baseline, restoration and paginated query counts. No FPS/heap/mobile or per-bone ownership claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\ace283fa12ddec4e\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 72163.9099
+    }
+  ]
 }

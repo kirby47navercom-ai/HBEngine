@@ -1852,7 +1852,8 @@
         "docs/research/ENGINE_WORK_1798.json",
         "docs/research/USER_INSTALL_1803.json",
         "docs/SEQUENCE_POSE_PREPARATION.md",
-        "docs/research/ENGINE_WORK_1809.json"
+        "docs/research/ENGINE_WORK_1809.json",
+        "docs/research/USER_INSTALL_1811.json"
       ]
     },
     {
@@ -3052,7 +3053,8 @@
         "docs/research/ENGINE_WORK_1798.json",
         "docs/research/USER_INSTALL_1803.json",
         "docs/SEQUENCE_POSE_PREPARATION.md",
-        "docs/research/ENGINE_WORK_1809.json"
+        "docs/research/ENGINE_WORK_1809.json",
+        "docs/research/USER_INSTALL_1811.json"
       ]
     },
     {
@@ -3375,7 +3377,8 @@
         "docs/research/ENGINE_WORK_1798.json",
         "docs/research/USER_INSTALL_1803.json",
         "docs/SEQUENCE_POSE_PREPARATION.md",
-        "docs/research/ENGINE_WORK_1809.json"
+        "docs/research/ENGINE_WORK_1809.json",
+        "docs/research/USER_INSTALL_1811.json"
       ]
     },
     {
@@ -3589,14 +3592,14 @@
     "first": 1805,
     "last": 1809,
     "receipt": "docs/research/ENGINE_WORK_1809.json",
-    "scope": "Weak document/model skeletal preparation reuse, pre-structural-edit single baseline per target, page-only pose-vector copies and readonly work counters. Five fast regressions, independent old128bone*120key pose agreement and actual editor/CPP eight model-layout changes/restoration plus independent D3D11 runner data passed. Native framebuffer pixels/FPS/heap/device not claimed. Installed gate pending."
+    "scope": "Installed weak document/model skeletal preparation reuse, single pre-structural-edit baseline per target and page-only pose-vector copies/work counters. Five affected regressions and exact independent old128bone*120key posedata comparison; actual source and installed user CPP Play/Seek/Stop through8 original/alternate/empty/backward model-layout changes, original pose restoration and independent D3D11 runner data passed. One program/key4/poseRows9/baseline1 in actual model swap case. Exact source1061/native21/30tests/vendor2/Player1604/Host1041 hashes. User preserved/Versions1. No whole FPS/heap/device/native framebuffer pixel or per-bone ownership/graph-state restoration claim."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1803.json",
-    "sourceCommit": "e90c76f065f1505b158c7a462f3cc24021413564",
-    "bundleHash": "f14524824186c8362225d41a1ee9437947301f48f532d33249c0fb5502d0a243",
+    "receipt": "docs/research/USER_INSTALL_1811.json",
+    "sourceCommit": "514dd43e88aa9d638921c172fd5a3c4e39750c74",
+    "bundleHash": "ace283fa12ddec4ef6b6b0c53f2663e9cb9497255524d1e57314caf9413e542d",
     "verified": true,
     "versions": 1,
-    "scope": "Installed simple pre-sequence sprite/Transform/raw-clip playback restoration and animation completion policy. Final affected service regressions plus current installed 2D editor sprite+3D Transform, BP external playback, actual CPP LevelSequence Play/Seek/Stop and independent packaged D3D11 passed. Inspector UndoRedo/save and restored clocks/loop/frame, held pose without idle advancement. Exact source1054/native21/30tests/vendor2/Player1604/Host1041 hashes, User read-only unchanged, links/association, Versions1. Source checkpoint was not reused as final code gate. Graph/montage state, private crossfade/finite-loop history, alias blending and arbitrary async setter rollback remain."
+    "scope": "Installed weak document/model skeletal preparation reuse, single pre-structural-edit baseline per target and page-only pose-vector copies/work counters. Five affected regressions and exact independent old128bone*120key posedata comparison; actual source and installed user CPP Play/Seek/Stop through8 original/alternate/empty/backward model-layout changes, original pose restoration and independent D3D11 runner data passed. One program/key4/poseRows9/baseline1 in actual model swap case. Exact source1061/native21/30tests/vendor2/Player1604/Host1041 hashes. User preserved/Versions1. No whole FPS/heap/device/native framebuffer pixel or per-bone ownership/graph-state restoration claim."
   }
 }
