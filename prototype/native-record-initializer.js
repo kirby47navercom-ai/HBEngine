@@ -24,7 +24,9 @@ export function nativeRecordInitializer(source,metadata,pin,stack=[]){
   }
   if(list[0]?.text!=='{'||closeIndex(list,0,'{','}')!==list.length-1)throw Error('구조체 기본값은 값 초기화 중괄호를 사용하세요.');
   const values=parts(list.slice(1,-1));if(values.length>definition.fields.length)throw Error('구조체 초기화 필드가 너무 많아요.');
-  const defaults=nativeRecordDefault(metadata,field,[...stack]);
+  // Explicit aggregate elements start with their type's member defaults, not
+  // the containing field's initializer (or its array of initialized records).
+  const defaults=nativeRecordDefault(metadata,{type:'record',structName:definition.name},[...stack]);
   for(let index=0;index<values.length;index++){
    const child=definition.fields[index],text=values[index].map(token=>token.text).join('');
    Object.defineProperty(defaults,child.name,{value:child.type==='record'||child.array?nativeRecordInitializer(text,metadata,child,[...stack,definition.name]):parse(values[index],child),writable:true,configurable:true,enumerable:true});

@@ -95,6 +95,7 @@ import {CollisionPreview} from './collision-preview.js';
 import {placementCatalog,createPlacedObject} from './placement-catalog.js';
 import {session,storageKey,storage,flushStorage} from './project-session.js';
 import {connectAutomation,documentRevision,patchAsset} from './automation.js';
+import {nativeWatchedSources} from './native-source-watch.js';
 import {appendNativeTypeImportUI} from './native-type-import-ui.js';
 import {nativeTypeReference} from './native-model.js';
 import {AssetDocuments,assetTypes,assetSuffix,assetTitle,materialGraph,createAsset,validAsset,evaluateMaterial} from './asset-documents.js';
@@ -1954,10 +1955,10 @@ async function pollOpenDocuments(){
       if(doc.kind!=='blueprint'||doc.view.diskConflict)continue;const native=doc.data.native||blueprintWorkspace.view(doc.path,doc.data).native;
       if(nativeTypeReference(native)||native?.typeLibrariesOnly){const modified=Object.fromEntries(native.typeLibraries.map(path=>[path,index.get(path)?.modified]));if(JSON.stringify(modified)!==JSON.stringify(doc.view.typeModified)){const before=JSON.stringify(doc.data);await blueprintWorkspace.prepare(doc.path,doc.data);captureDocument();if(assetDocs.items.get(doc.path)!==doc||JSON.stringify(doc.data)!==before)continue;doc.view.typeModified=modified;delete doc.view.nativeMetadata;if(doc.path===assetDocs.active){installDocumentData(doc);renderBlueprintSidebar();renderBlueprintGraph();renderBlueprintInspector();}}continue;}
       if(!native?.headerPath||!native.sourcePath)continue;
-      const modified=Object.fromEntries([native.headerPath,native.sourcePath].map(path=>[path,index.get(path)?.modified]));if(JSON.stringify(modified)===JSON.stringify(doc.view.sourceModified))continue;
-      const header=await(await editorRequest(fileUrl(native.headerPath))).text(),source=await(await editorRequest(fileUrl(native.sourcePath))).text(),metadata=parseNativeHeader(header);
+      const watched=nativeWatchedSources(native,doc.view.nativeMetadata||blueprintWorkspace.nativeMetadata.get(doc.path)||native),modified=Object.fromEntries(watched.map(path=>[path,index.get(path)?.modified]));if(JSON.stringify(modified)===JSON.stringify(doc.view.sourceModified))continue;
+      const before=JSON.stringify(doc.data),header=await(await editorRequest(fileUrl(native.headerPath))).text(),source=await(await editorRequest(fileUrl(native.sourcePath))).text(),metadata=await readNativeHeader(header,{sourcePath:native.headerPath,readText:async path=>(await editorRequest(fileUrl(path))).text()});captureDocument();if(assetDocs.items.get(doc.path)!==doc||JSON.stringify(doc.data)!==before)continue;
       doc.view.sourceModified=modified;doc.view.nativeMetadata={...metadata,header,source,headerPath:native.headerPath,sourcePath:native.sourcePath};if(doc.data.native)blueprintWorkspace.nativeMetadata.set(doc.path,doc.view.nativeMetadata);await blueprintWorkspace.prepare(doc.path,doc.data);delete doc.view.nativeBuild;
-      if(doc.path===assetDocs.active){graphs.blueprint=blueprintWorkspace.view(doc.path,doc.data);graphs.blueprint.native=doc.view.nativeMetadata;nativeBuild=null;renderNativeRegistry();renderBlueprintSidebar();renderBlueprintGraph();}
+      if(doc.path===assetDocs.active){graphs.blueprint=blueprintWorkspace.view(doc.path,doc.data);graphs.blueprint.native=doc.view.nativeMetadata;nativeBuild=null;renderNativeRegistry();renderBlueprintSidebar();renderBlueprintGraph();renderBlueprintInspector();}
     }
   }catch(error){log('외부 변경 확인 실패: '+error.message,'ERROR');}finally{diskPolling=false;}
 }

@@ -1914,6 +1914,24 @@
       "paths": [
         "prototype/native-type-import-ui.js"
       ]
+    },
+    {
+      "id": "native-type-default-reconciliation",
+      "keywords": [
+        "reconcileNativeTypeDefaults"
+      ],
+      "paths": [
+        "prototype/native-type-defaults.js"
+      ]
+    },
+    {
+      "id": "native-reflected-source-watch",
+      "keywords": [
+        "nativeWatchedSources"
+      ],
+      "paths": [
+        "prototype/native-source-watch.js"
+      ]
     }
   ]
 }

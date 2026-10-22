@@ -1,10 +1,11 @@
 import {compileNativeTypeAsset,nativeTypeAssetDefault,nativeAssetValueTypes} from './native-type-assets.js';
+import {reconcileNativeTypeDefaults} from './native-type-defaults.js';
 
 export function renderNativeTypeAssetEditor(element,doc,hooks){
  const document=element.ownerDocument,view=doc.view??={},expanded=view.typeExpanded??={};let saved;try{saved=JSON.parse(doc.saved);}catch{saved={};}
  const persisted=new Set([...(saved.enums||[]),...(saved.structs||[])].flatMap(d=>[d.id,...(d.entries||d.fields).map(f=>f.id)]));
  const node=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
- const edit=change=>{try{const next=structuredClone(doc.data);change(next);compileNativeTypeAsset(next);hooks.before();doc.data=next;hooks.change();renderNativeTypeAssetEditor(element,doc,hooks);}catch(e){hooks.error(e.message);}};
+ const edit=change=>{try{let next=structuredClone(doc.data);change(next);next=reconcileNativeTypeDefaults(doc.data,next);compileNativeTypeAsset(next);hooks.before();doc.data=next;hooks.change();renderNativeTypeAssetEditor(element,doc,hooks);}catch(e){hooks.error(e.message);}};
  const input=(parent,label,value,change,{type='text',disabled=false}={})=>{const row=node('label',label),field=node('input');field.type=type;if(type==='number')field.step='any';field.setAttribute('aria-label',label);field.disabled=disabled;if(type==='checkbox')field.checked=value;else field.value=value;field.onchange=()=>change(type==='checkbox'?field.checked:type==='number'?Number(field.value):field.value);row.append(field);parent.append(row);return field;};
  const button=(parent,text,action)=>{const n=node('button',text);n.type='button';n.onclick=action;parent.append(n);return n;};
  const section=(title,action)=>{const s=node('section'),h=node('div');h.className='form-section-heading';h.append(node('h3',title));if(action)button(h,'추가',action);s.append(h);return s;};
@@ -22,7 +23,7 @@ export function renderNativeTypeAssetEditor(element,doc,hooks){
    if(kind==='enums')input(box,'비트 플래그',definition.flags,v=>update(d=>d.flags=v),{type:'checkbox'});
    const key=kind==='enums'?'entries':'fields',rows=definition[key];
    rows.forEach((field,i)=>{
-    const row=node('details');row.open=expanded[field.id]??(kind==='enums'||i===0);row.ontoggle=()=>expanded[field.id]=row.open;row.dataset.typeField=field.id;row.append(node('summary',field.label+' · '+field.symbol));box.append(row);const set=change=>update(d=>change(d[key][i]));
+    const row=node('details');row.open=expanded[field.id]??(!persisted.has(field.id)||kind==='enums'||i===0);row.ontoggle=()=>expanded[field.id]=row.open;row.dataset.typeField=field.id;row.append(node('summary',field.label+' · '+field.symbol));box.append(row);const set=change=>update(d=>change(d[key][i]));
     input(row,'멤버 이름',field.symbol,v=>set(d=>d.symbol=v),{disabled:persisted.has(field.id)});input(row,'표시 이름',field.label,v=>set(d=>d.label=v));input(row,'설명',field.tooltip,v=>set(d=>d.tooltip=v));
     if(kind==='enums'){input(row,'정수 값',field.value,v=>set(d=>d.value=v),{type:'number',disabled:persisted.has(field.id)});input(row,'메뉴에서 숨김',field.hidden,v=>set(d=>d.hidden=v),{type:'checkbox'});}
     else{
