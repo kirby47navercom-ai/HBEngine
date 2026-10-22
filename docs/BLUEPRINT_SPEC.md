@@ -607,4 +607,4 @@ HB_PROPERTY/HB_FUNCTION/HB_NODE는 protected/private 구역에서도 기존 노�
 
 반사·라이트맵 혼합은 MeshRenderer.lightmapReflectionMix Bool이며 기존 컴포넌트 Bool 설정/읽기와 C++ Components::SetBool/GetBool을 공유해요. 실제 BP→C++ 실행·원래 위치·Stop 복원을 [실행 계약](PROBE_LIGHTMAP_MIX.md)에 연결해요.
 
-1618: 공용 Component SetBool/Float/Text의 lightmapReflectionMix/lightmapIntensity/castShadow/receiveShadow/motionVectors를 시각 그룹 유지 경로로 연결해요. C++ Components와 동일 서비스이며 범위/열거형/다른 변경의 재구축을 유지해요. docs/MESH_RENDERER_LIVE_PROPERTIES.md와 후속 설치 영수증을 따라요.
+1618: 공용 Component SetBool/Float/String의 lightmapReflectionMix/lightmapIntensity/castShadow/receiveShadow/motionVectors를 시각 그룹 유지 경로로 연결해요. C++ Components와 동일 서비스이며 범위/열거형/다른 변경의 재구축을 유지해요. docs/MESH_RENDERER_LIVE_PROPERTIES.md와 후속 설치 영수증을 따라요.

@@ -7,7 +7,7 @@ auto* actor = hb::Scene::FindActorById("Receiver");
 hb::Components::SetFloat(actor, "MeshRenderer", "lightmapIntensity", 0.5f);
 hb::Components::SetBool(actor, "MeshRenderer", "castShadow", false);
 hb::Components::SetBool(actor, "MeshRenderer", "receiveShadow", false);
-hb::Components::SetText(actor, "MeshRenderer", "motionVectors", "camera");
+hb::Components::SetString(actor, "MeshRenderer", "motionVectors", "camera");
 ```
 
 공용 속성 스키마의 범위·자료형·열거형 검사를 그대로 거쳐요. 메시·머테리얼 경로 등 다른 시각 데이터가 함께 바뀌었거나 에셋 리비전 표식이 있으면 기존 재구축으로 돌아가요. 모델 자체의 그림자 오버라이드와 스프라이트 처리를 보존해요. 처음 모델/베이크를 준비하거나 재질을 비동기로 교체하는 중에 수정한 값도 준비 뒤 최신 값으로 반영해요. 매 프레임에 추가 서명 직렬화를 넣지 않아요.
