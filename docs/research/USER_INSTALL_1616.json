@@ -1,0 +1,131 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "8d08adbc96536999f7933f3963bf1a98b86e69bc",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0a643bd4bf9adaa5",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\0a643bd4bf9adaa5\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\0a643bd4bf9adaa5\\HBEngine.exe",
+  "bundleHash": "0a643bd4bf9adaa5bf587e01da215205f9ec787b3a26436c684c292c67fc4fdb",
+  "files": 4233,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4227,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\15c0e41bd4f0854a",
+        "bytes": 190941771,
+        "manifestSHA256": "51f379b1a7632c0b80fd7e7cf2af8d467989d7614e49eee9a69dbabfc116542f"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T11:48:09.6585672Z",
+    "bytes": 190941771,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "0a643bd4bf9adaa5"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 902,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/capture-revision-1612-window-k2y2ny/acceptance.json",
+      "sha256": "1e768aaa0b6f69f7a9d8e11837d6823922fb3a4feb75e0d337320756b65d00c1",
+      "scope": "Actual production WebGL2 PMREM capture/render and readback: static frames do not recapture, light/geometry/lightmap/normal-strength/time changes do, actual lightmap intensity changes pixels, once mode releases scalar facts and ignores scene change, return to onChange and disposal. Native/TSL shader math unchanged; source shared-input parity covers full data walk. No FPS/whole engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\0a643bd4bf9adaa5\\HBEngine.exe"
+      ],
+      "ms": 3732.2406999999985
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\0a643bd4bf9adaa5\\",
+    "elapsedMs": 62.07,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\0a643bd4bf9adaa5",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "0a643bd4bf9adaa5bf587e01da215205f9ec787b3a26436c684c292c67fc4fdb",
+      "installedAt": "2026-10-22T11:48:06.210Z",
+      "manifestFiles": 4233,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged C++ metadata/native21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4233,
+  "versions": [
+    "0a643bd4bf9adaa5"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1616-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/capture-revision-1611.json",
+      "sha256": "2c003a4e66eaa6b7bf032f98242e55fc99c3818d92c699db95a9363cbbe75291",
+      "scope": "Exact previous JSON input change/no-change parity for transforms/bones/morphs/instances/light/target/environment/material/texture/time, removals and100 seeded edits. Additional lightmap/physical properties/textures/normal strength and geometry versions/groups/draw/background tracked. Bounded fixture key bytes and copy counts, not FPS/heap/whole engine. Reusable scalar facts still scan the same inputs; full material JSON subobjects enumerate keys."
+    },
+    {
+      "path": "native/build/capture-revision-1612-window-Hr3K1K/acceptance.json",
+      "sha256": "9d9e4736222c285a68e295af07998259873e8b1d5b8e8d76e4394b247d196899",
+      "scope": "Actual production WebGL2 PMREM capture/render and readback: static frames do not recapture, light/geometry/lightmap/normal-strength/time changes do, actual lightmap intensity changes pixels, once mode releases scalar facts and ignores scene change, return to onChange and disposal. Native/TSL shader math unchanged; source shared-input parity covers full data walk. No FPS/whole engine claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/capture-revision-1612-window-Hr3K1K/acceptance.json",
+      "sha256": "9d9e4736222c285a68e295af07998259873e8b1d5b8e8d76e4394b247d196899",
+      "scope": "Actual production WebGL2 PMREM capture/render and readback: static frames do not recapture, light/geometry/lightmap/normal-strength/time changes do, actual lightmap intensity changes pixels, once mode releases scalar facts and ignores scene change, return to onChange and disposal. Native/TSL shader math unchanged; source shared-input parity covers full data walk. No FPS/whole engine claim."
+    }
+  ],
+  "scope": "Installed actual WebGL2 PMREM/render/readback: unchanged no recapture; light/geometry/lightmap/normal/time updates capture, lightmap intensity changes pixels, once releases facts and avoids scene recapture, onChange return/disposal. Source246 legacy-input parity/52 additional changes and compact key208178B→47B/bone8→0/color1231→0 reused. Full manifest/source/native21/30 tests/vendor2/unchanged Player1604/Host1041/User read-only/links/Versions1. No full renderer rebuild or FPS/heap/phone claim.",
+  "version": 1,
+  "date": "2026-10-22T11:49:58.030Z",
+  "work": "docs/research/ENGINE_WORK_1614.json",
+  "distributionSync": "native/build/distribution-1615-sync.json",
+  "nativePlayerBuildReused": true,
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1608.json",
+  "hostReuseFrom": "docs/research/USER_INSTALL_1608.json"
+}

@@ -3345,11 +3345,11 @@
     "scope": "Reusable scalar capture scene revision and compact epoch keys, shared material/geometry facts, broader lightmap/physical/geometry invalidation and actual GL PMREM/readback lifetime. Existing native/shader numeric proofs reused; wider engine goals continue."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1608.json",
-    "sourceCommit": "971d466677496adb67f8f40ac83d018a1f76ba2f",
-    "bundleHash": "15c0e41bd4f0854a15add307cea4f98f43531aa2eef5eb9d3101210652ae8f66",
+    "receipt": "docs/research/USER_INSTALL_1616.json",
+    "sourceCommit": "8d08adbc96536999f7933f3963bf1a98b86e69bc",
+    "bundleHash": "0a643bd4bf9adaa5bf587e01da215205f9ec787b3a26436c684c292c67fc4fdb",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actual editor UV1→indirect Worker bake, inspector Bool/UndoRedo/save, BP→compiled C++ SetBool/GetBool true/false with in-place renderer update, placement/Stop isolation, and same saved actual D3D11 game with final Player1604. Source6 browser paths/30 materials max1.12e-8/native10 display byte0/mip regressions reused. Full manifest/895 owners/native21/30 tests/vendor2/User read-only inventory/links/Versions1; no controlled FPS/full engine/mobile device claim."
+    "scope": "Installed actual WebGL2 PMREM/render/readback: unchanged no recapture; light/geometry/lightmap/normal/time updates capture, lightmap intensity changes pixels, once releases facts and avoids scene recapture, onChange return/disposal. Source246 legacy-input parity/52 additional changes and compact key208178B→47B/bone8→0/color1231→0 reused. Full manifest/source/native21/30 tests/vendor2/unchanged Player1604/Host1041/User read-only/links/Versions1. No full renderer rebuild or FPS/heap/phone claim."
   }
 }

@@ -1006,3 +1006,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1608 최종설치: 15c0e41bd4f0854a·4226명세/895소유/native21/30tests/vendor2 SHA·Player1604/Host1041. 설치실제UV1→간접Worker베이크→Bool inspector/UndoRedo/저장→BP/실제C++ truefalse/inPlace→동일저장D3D게임97.5초·원래Director위치/Stop편집값보존·User10849읽기SHA불변·연결/Versions1·이전190763674B회수. GL126초수치matrix재반복없음·다음누적렌더성능작업계속.
 
 1610–1614: browser反射onChange장면JSON→재사용스칼라facts/숫자epoch·공유material/geometry1회·본/색상배열복사없음·lightmap/normal강도/physical/geometry업로드등누락갱신추가. 기존246/추가52/실제PMREM10회·정지무갱신/LM강도pixel/once복귀/dispose통과. 511메시키208178B→47B·본8→0/색1231→0·통제FPS/총힙주장없음. native21/Player1604/Host1041/수식7owner불변재사용·최종설치후누적목표계속.
+
+1616 최종설치: 0a643bd4bf9adaa5·4233명세/902소유/native21/30tests/vendor2 SHA·Player1604/Host1041/수식owner7재사용. 설치실제GL PMREM정지무갱신/기하·LM·normal·time각갱신/LM강도pixel변화/oncefact해제·복귀/dispose10capture 3.7초·User10849읽기SHA불변·연결/Versions1·이전190941771B회수. 누적작업계속.

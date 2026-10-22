@@ -1022,9 +1022,6 @@
     "prototype/probe-lightmap-mix-gpu.js": "6b9b30c0c64bec1757f47144823ca748829b073da59bbd75d3c940c106ec51c6",
     "prototype/native-scene-renderer.js": "65d56fd49a99851a9002562971d187fb5c75ae0a25e19a31a5fbb92da975b2fe"
   },
-  "pendingInstalledGates": [
-    "tools/check-capture-revision-1612-window.mjs --executable installed"
-  ],
   "focusedAI": {
     "ReflectionCaptureRevision": {
       "elapsedMs": 152.46,
@@ -1066,8 +1063,20 @@
     "fixtureRepair": "Synthetic Time fixture used type:Time rather than actual key:time; corrected before accepted source GL run. Zero inactive time is unchanged, and accepted fixture uses actual key/nonzero time.",
     "scope": "No total FPS/heap/large HDR cost claim. Geometry uploads need normal needsUpdate. Arbitrary callbacks/private uniforms or function-valued authoring metadata are not automatically tracked."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1608.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1616.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/capture-revision-1612-window-k2y2ny/acceptance.json",
+      "sha256": "1e768aaa0b6f69f7a9d8e11837d6823922fb3a4feb75e0d337320756b65d00c1",
+      "scope": "Actual production WebGL2 PMREM capture/render and readback: static frames do not recapture, light/geometry/lightmap/normal-strength/time changes do, actual lightmap intensity changes pixels, once mode releases scalar facts and ignores scene change, return to onChange and disposal. Native/TSL shader math unchanged; source shared-input parity covers full data walk. No FPS/whole engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\0a643bd4bf9adaa5\\HBEngine.exe"
+      ],
+      "ms": 3732.2406999999985
+    }
+  ]
 }
