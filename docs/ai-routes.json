@@ -193,7 +193,10 @@
         "native.build",
         "sdk",
         "bridge",
-        "worker"
+        "worker",
+        "enum",
+        "열거형",
+        "비트마스크"
       ],
       "paths": [
         "native/include/HBEngine/Game.hpp",
@@ -202,7 +205,11 @@
         "tools/native-host.mjs",
         "tools/native-project.mjs",
         "prototype/native-channel.js",
-        "tools/generate-api.mjs"
+        "tools/generate-api.mjs",
+        "native/include/HBEngine/Enum.hpp",
+        "prototype/native-enums.js",
+        "prototype/native-header-files.js",
+        "docs/NATIVE_ENUMS.md"
       ]
     },
     {
@@ -1333,6 +1340,85 @@
         "prototype/asset-shortcut-commands.js",
         "prototype/asset-shortcuts.js",
         "docs/DENSE_SEQUENCE.md"
+      ]
+    },
+    {
+      "keywords": [
+        "parseNativeEnums",
+        "nativeEnumDefinition",
+        "validNativeEnumPin",
+        "native enum",
+        "열거형"
+      ],
+      "paths": [
+        "prototype/native-enums.js",
+        "docs/NATIVE_ENUMS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "nativeEnumControl",
+        "nativeEnumOptions",
+        "editNativeEnumArray"
+      ],
+      "paths": [
+        "prototype/native-enum-controls.js",
+        "prototype/blueprint-details.js",
+        "docs/NATIVE_ENUMS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "configureNativeEnumSwitch"
+      ],
+      "paths": [
+        "prototype/native-enum-switch.js",
+        "prototype/blueprint-model.js",
+        "docs/NATIVE_ENUMS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "native.enums.read"
+      ],
+      "paths": [
+        "prototype/app.js",
+        "tools/editor-automation.mjs",
+        "docs/NATIVE_ENUMS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "readNativeHeaderFiles",
+        "nativeHeaderClosure"
+      ],
+      "paths": [
+        "prototype/native-header-files.js",
+        "prototype/native-model.js",
+        "docs/NATIVE_ENUMS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "Enum::ToValue",
+        "Enum::FromValue",
+        "Enum::Mask",
+        "Enum::TryParse"
+      ],
+      "paths": [
+        "native/include/HBEngine/Enum.hpp",
+        "docs/NATIVE_ENUMS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "parseNativeHeader",
+        "readNativeHeader",
+        "nativePins"
+      ],
+      "paths": [
+        "prototype/native-model.js",
+        "docs/NATIVE_ENUMS.md"
       ]
     }
   ]

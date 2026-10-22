@@ -65,7 +65,7 @@ export async function inspectBuild(record,profile,{signal}={}){
     else continue;
     if(kind==='blueprint'&&data.native){
       const n=data.native,headerPath=await include(n.headerPath||'Source/DoorController.h'),sourcePath=await include(n.sourcePath||'Source/DoorController.cpp'),header=canonicalNativeText(content.get(headerPath).toString('utf8')),source=canonicalNativeText(content.get(sourcePath).toString('utf8'));
-      natives.set(nativeSignature(header,source),{header,source,files:nativeFiles});Object.assign(n,parseNativeHeader(header));delete n.header;delete n.source;content.set(name,Buffer.from(json(data)));
+      natives.set(nativeSignature(header,source),{header,source,files:nativeFiles});Object.assign(n,parseNativeHeader(header,{files:nativeFiles}));delete n.header;delete n.source;content.set(name,Buffer.from(json(data)));
     }
     for(const value of assetReferences(data,name))await include(value);
   }

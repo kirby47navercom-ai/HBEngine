@@ -1,4 +1,5 @@
 #pragma once
+#include <HBEngine/Enum.hpp>
 #include <algorithm>
 #include <chrono>
 #include <cmath>

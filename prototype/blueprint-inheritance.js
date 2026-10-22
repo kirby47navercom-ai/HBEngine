@@ -1,5 +1,6 @@
+import {validNativeEnumPin} from './native-enums.js';
 import {validBlueprint,isBlueprintParent,allGraphContexts,basePins,catalog,validValue,legacyTemplateConstruction,makeNode,graphContext} from './blueprint-model.js';
-import {nativeMember,nativeSourceReference,validNativeReference,parseNativeHeader,canonicalNativeText} from './native-model.js';
+import {nativeMember,nativeSourceReference,validNativeReference,readNativeHeader,canonicalNativeText} from './native-model.js';
 import {componentDefaults,validComponentProperties} from './scene-components.js';
 import {inputKey} from './runtime-input.js';
 
@@ -31,7 +32,7 @@ export function createBlueprintResolver(read,readText){
     if(stack.includes(path))throw Error('블루프린트 순환 상속: '+[...stack,path].join(' → '));if(stack.length>=32)throw Error('블루프린트 상속 깊이 32 초과');
     if(loaded.has(path))return loaded.get(path);
     const child=copy(await read(path));if(!validBlueprint(child))throw Error('블루프린트 검증 실패: '+path);
-    if(child.native&&readText){const n=child.native,header=canonicalNativeText(await readText(n.headerPath||'Source/DoorController.h')),source=canonicalNativeText(await readText(n.sourcePath||'Source/DoorController.cpp'));child.native={...parseNativeHeader(header),header,source,headerPath:n.headerPath,sourcePath:n.sourcePath};if(!validBlueprint(child))throw Error('C++ 원본과 블루프린트가 맞지 않아요: '+path);}else if(validNativeReference(child.native))throw Error('C++ 원본 읽기 경로가 필요해요: '+path);
+    if(child.native&&readText){const n=child.native,header=canonicalNativeText(await readText(n.headerPath||'Source/DoorController.h')),source=canonicalNativeText(await readText(n.sourcePath||'Source/DoorController.cpp'));child.native={...await readNativeHeader(header,{sourcePath:n.headerPath||'Source/DoorController.h',readText}),header,source,headerPath:n.headerPath,sourcePath:n.sourcePath};if(!validBlueprint(child))throw Error('C++ 원본과 블루프린트가 맞지 않아요: '+path);}else if(validNativeReference(child.native))throw Error('C++ 원본 읽기 경로가 필요해요: '+path);
     const parentPath=child.settings?.parentClass;
     if(!isBlueprintParent(parentPath)){loaded.set(path,child);return child;}
     const parent=await resolve(parentPath,[...stack,path]);const root=composeBlueprint(child,parent,path);loaded.set(path,root);return root;
@@ -93,9 +94,9 @@ export function editInheritedDefault(root,kind,id,value,key){
   else if(kind==='native'){settings.nativeDefaults??={};settings.nativeDefaults[id]=copy(value);}
 }
 export function setBlueprintDefault(root,kind,id,value,key){
-  if(kind==='variable'){const v=root.variables.find(v=>v.id===id);if(!v||(v.container==='array'?!(Array.isArray(value)&&value.length<=128&&value.every(x=>validValue(v.type,x))):!validValue(v.type,value)))throw Error('변수 기본값 자료형 오류');v.value=copy(value);}
+  if(kind==='variable'){const v=root.variables.find(v=>v.id===id);if(!v||!validNativeEnumPin(root.native,v,value)||(v.container==='array'?!(Array.isArray(value)&&value.length<=128&&value.every(x=>validValue(v.type,x))):!validValue(v.type,value)))throw Error('변수 기본값 자료형 오류');v.value=copy(value);}
   else if(kind==='component'){const c=root.components.find(c=>c.id===id),defaults=c&&componentDefaults(c.type),next={...defaults,...c?.properties,[key]:value};if(!c||!Object.hasOwn(defaults,key)||!validComponentProperties(c.type,next))throw Error('컴포넌트 기본값 오류');c.properties=copy(next);}
-  else if(kind==='native'){const {p}=nativeMember(root,{nativeId:id});if(!p||(p.array?!(Array.isArray(value)&&value.length<=128&&value.every(x=>validValue(p.type,x))):!validValue(p.type,value)))throw Error('C++ 속성 기본값 자료형 오류');root.settings??={};root.settings.nativeDefaults??={};root.settings.nativeDefaults[id]=copy(value);}
+  else if(kind==='native'){const {p}=nativeMember(root,{nativeId:id});if(!p||!validNativeEnumPin(root.native,p,value)||(p.array?!(Array.isArray(value)&&value.length<=128&&value.every(x=>validValue(p.type,x))):!validValue(p.type,value)))throw Error('C++ 속성 기본값 자료형 오류');root.settings??={};root.settings.nativeDefaults??={};root.settings.nativeDefaults[id]=copy(value);}
   else throw Error('기본값 종류 오류');editInheritedDefault(root,kind,id,value,key);
 }
 export function resetInheritedDefault(root,kind,id,key){

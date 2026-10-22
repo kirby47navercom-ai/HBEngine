@@ -279,6 +279,10 @@
           "record": "docs/RENDERING_105.md",
           "readScope": "Own485–532 Fn layout code generation and963–993 setLayout implementation read in installed r180 and source compared by SHA. Other functions/linked builders not fully read.",
           "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/script-serialization-rules.html",
+          "record": "docs/NATIVE_ENUMS.md"
         }
       ]
     },
@@ -5335,5 +5339,37 @@
     "fullCorpusAnalysis": false,
     "reusesScopedReading": "supplemental1440",
     "implementation": "HB independent per-document time-view projection, cursor-pivot Ctrl wheel/Shift wheel/RMB-MMB pan/AltShiftRMB zoom, central F/AltHome/=/- with existing Home retained; visible source-item presentation filtering, correct zoom-space edit/trim/playhead coordinates, read-only view APIs and drag interlock. No new entire manual/API reading claim. Range slider/region zoom/touch pinch/indexed dense discovery remain."
+  },
+  "supplemental1458": {
+    "record": "docs/NATIVE_ENUMS.md",
+    "date": "2026-10-22",
+    "fullCorpusAnalysis": false,
+    "readings": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/metadata-specifiers-in-unreal-engine",
+        "sections": [
+          "enum metadata: Bitflags, DisplayName, Hidden, ToolTip; body57–71; macro context14–32 and tables80–98"
+        ],
+        "engine": "Unreal",
+        "note": "Scoped body read, not the entire manual."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-uproperties?lang=en-US",
+        "sections": [
+          "integer and bitmask properties, body18–113; ordinal positions0–31 versus UseEnumValuesAsMaskValuesInEditor direct masks"
+        ],
+        "engine": "Unreal",
+        "note": "Scoped body read, not every property/API section."
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/script-serialization-rules.html",
+        "sections": [
+          "field serialization body126–208; enum width, arrays/lists, inline/reference and supported containers"
+        ],
+        "engine": "Unity",
+        "note": "Scoped body read; no claim to full serialization-system parity."
+      }
+    ],
+    "implementation": "Independent HB reflected C++ enum metadata, named property/pin/variable controls, arrays, hidden values, ordinal/direct masks, typed Switch, signed32 wire for U32 bits, shared headers, C++ typed worker conversion and enum SDK, bounded AI query. Native compiler asserts parsed value and base-type assumptions; no arbitrary C++ expression/preprocessor/reflection/general custom-type completion claim."
   }
 }

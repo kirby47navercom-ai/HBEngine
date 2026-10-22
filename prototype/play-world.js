@@ -1,5 +1,5 @@
 import {refreshPrefabWorld,remapPrefabInstanceReferences} from './prefab-instances.js';
-import {parseNativeHeader,canonicalNativeText} from './native-model.js';
+import {readNativeHeader,canonicalNativeText} from './native-model.js';
 import {applyTravelSpawn,parseGameJson,validGameJson} from './runtime-game.js';
 import {defaultRuntimeSettings,validScene} from './model.js';
 import {assetTitle,loadSceneBindings,validAsset} from './asset-documents.js';
@@ -11,7 +11,7 @@ import {spawnRequested,prepareSpawnCatalog} from './runtime-spawn.js';
 export async function prepareActorBindings(objects,{readAsset,readText,buildNative,builds=new Map(),nativeBuilds=new Map(),loaded}){
   loaded??=await loadSceneBindings(objects,readAsset,readText);installBlueprintInstances(objects,loaded.bindings.filter(b=>!b.retained));
   for(const {root,self,path} of loaded.bindings){
-    if(root.native){const header=canonicalNativeText(await readText(root.native.headerPath||'Source/DoorController.h')),source=canonicalNativeText(await readText(root.native.sourcePath||'Source/DoorController.cpp'));Object.assign(root.native,parseNativeHeader(header),{header,source});}
+    if(root.native){const header=canonicalNativeText(await readText(root.native.headerPath||'Source/DoorController.h')),source=canonicalNativeText(await readText(root.native.sourcePath||'Source/DoorController.cpp'));Object.assign(root.native,await readNativeHeader(header,{sourcePath:root.native.headerPath||'Source/DoorController.h',readText}),{header,source});}
     const object=objects.find(item=>item.id===self),className=root.settings?.parentClass||'Actor',definition=root.native?.classes.find(item=>item.name===className);
     if(definition){object.nativeClass=className;object.nativeProperties=blueprintInstanceDefaults(root,object).nativeProperties;}else delete object.nativeClass;
     if(root.native&&!builds.has(path)){const header=await readText(root.native.headerPath||'Source/DoorController.h'),source=await readText(root.native.sourcePath||'Source/DoorController.cpp');const compiledHeader=canonicalNativeText(header),compiledSource=canonicalNativeText(source);const signature=JSON.stringify([compiledHeader,compiledSource]);if(!nativeBuilds.has(signature))nativeBuilds.set(signature,{...await buildNative(compiledHeader,compiledSource),header:compiledHeader,source:compiledSource});builds.set(path,nativeBuilds.get(signature));}

@@ -20,7 +20,7 @@ export function nativeProjectLayout(header,source,generated,files){
   // each other. Keep their files in the source/cache inventory but compile only
   // this entry and ordinary helpers. Explicit conflicting includes still fail.
   const classes=new Set(generated.metadata.classes.map(c=>c.name)),otherEntries=new Set();
-  for(const file of headers)if(file!==primaryHeader){try{if(parseNativeHeader(file.content).classes.some(c=>classes.has(c.name)))otherEntries.add(stem(file));}catch{}}
+  for(const file of headers)if(file!==primaryHeader){try{if(parseNativeHeader(file.content,{sourcePath:file.path,files}).classes.some(c=>classes.has(c.name)))otherEntries.add(stem(file));}catch{}}
   const sourcePath=primarySource?.path||'User.cpp',records=files.map(file=>{
     let content=file.content;
     if(file===primaryHeader)content='#pragma once\n'+generated.header;

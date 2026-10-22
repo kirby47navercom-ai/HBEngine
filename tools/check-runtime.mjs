@@ -9,7 +9,7 @@ import {validLayout,restoreLayout} from '../prototype/dock-layout.js';
 import {engineOperations,validRuntimeSave} from '../prototype/engine-services.js';
 const object=()=>({id:'door',name:'Door',kind:'cube',visible:true,position:[1,2,3],rotation:[0,0,0],scale:[1,1,1]});
 const root=()=>({...structuredClone(defaultBlueprint),nodes:[],edges:[],functions:[],macros:[],construction:{nodes:[],edges:[],comments:[]}});
-const node=(g,key,id,values={})=>{const n={...makeNode(key),id,inputValues:values};g.nodes.push(n);return n;};
+const node=(g,key,id,values={})=>{const n={...makeNode(key),id,inputValues:values};if(['switchInt','switchString'].includes(key)&&Object.hasOwn(values,'case0')){delete n.flowOutputs;delete n.caseValues;}g.nodes.push(n);return n;};
 const edge=(g,a,out,b,input='exec')=>g.edges.push({from:{node:a,pin:out},to:{node:b,pin:input}});
 const runtime=(g,hooks={},o=[object()])=>new BlueprintRuntime(o,[{root:g,self:'door'}],hooks);
 assert.deepEqual(catalog.filter(n=>!runtimeKeys.has(n.key)).map(n=>n.key),[],'모든 기본 노드에 실행 경로가 필요해요.');

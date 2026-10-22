@@ -1,19 +1,17 @@
 # 현재 인계 — 누적 엔진 구현 계속
 
-2026-10-22. 전체목표까지 계속·변경묶음 후 영향검사/설치갱신·몇개완료로종료금지. 백그라운드만. AGENTS/AI_START→hb context. goal blocked/사용자재개질문대기·현재턴계속·임의new/complete금지.
+2026-10-22. 주인님은 전체누적목표까지 계속, 여러변경 뒤 필요한검사/설치갱신, 작은묶음으로턴종료금지를 지시해요. 백그라운드만. AGENTS/AI_START→hb context. goal은마지막조회blocked·사용자재개질문대기, 현재턴계속·임의새goal/complete금지.
 
-## 최신 설치
-USER_INSTALL_1456: C:/Users/kirby/HBEngine/Versions/7f4fbb9a481aad45/HBEngine.exe. 4117명세/775소유/27native검사/2vendor·User10849읽기SHA/연결/Versions1·이전188673680B회수. feature b45ba0d→metadata8fea707. Player1430 4482bc5d…/Host1041 5e785b0b…/native17/test27동일 재사용·재빌드/renderer행렬반복없음. 설치 실제view65k42행wheel/pan/cancel/context/F-rebind/keydrag/section·montage trimUndo/save/끝keyhit·교차문서busy수정/탐색거절·runtime커서50%/원게임값보존·동일저장D3D11[7.5,0,0]/exit0·기존65k256행8UndoRedo/분기Play·68행montage/slot회귀.
+## 현재 설치와 진행
 
-## 이번 턴 누적
-WORK1454: 문서view start/end·Ctrl휠cursor/Shift휠/RMB·MMBxy/AltShiftRMBzoom·cancel/blur복원/우클릭click contextvsdrag분리·F선택/AltHome전체/=+-zoom/중앙재지정/Home=시작 유지/1frame최소. ruler/키clipsection/preview·runtimehead/dragtrim/menu같은시간투영·clipped가짜handle숨김/sourceoffset보존·범위밖presentation제외/원본키·count유지/끝key여백접근/selected우선. AI timeline.view.read/set2·값dirtyrevisionUndo/time불변/CAS·reveal/drag중AI수정과문서간timeline탐색EDITOR_BUSY·exactMath1owner145.58ms관찰. CPU960/65k7indices/512section3copy·검색원본순회남음. 이전privateproject5개size/SHA검증ZIP85073863B회수. record1454/sync1455/install1456/finish1457.started재실행금지.
-WORK1444: ownedPrevious Undo결과container262176→32814/방문262176동일·미변경32772객체0container·기본getter/특수값/aliascyclefallback/restore격리/rename보존. montage·sequence lazy46px행/선형group/표시행만copy·알림속성/예약slot ID분리·검색/재지정↑↓CtrlF·AI rowread/navigate2/256이하/원index/CAS/정확focus. source1439/1441/1442/1400/1251·설치1446.
-WORK1434/1420: 독립proxy/sharedvolume·6면거리/방향fade/normal껍질/후보3승격·全raster/C++BP7·304/320B·GPUcoreThree builder identity수정·준비elapsed고정/구간sum·CPUoptional512행2048read0write·nativeliteral5→1/queue9unique8dedup. cold81.68→29.4/30.34관찰후37.15초는개선주장아님. 2D3000draw3upload2997skip/CPU3168B·native4회귀/physical각2016RGB誤差2.24e-8이하.
-WORK1403/1392/1382 및이전증거는각WORK.
+설치 USER_INSTALL1456: C:/Users/kirby/HBEngine/Versions/7f4fbb9a481aad45/HBEngine.exe,4117명세/775소유/27native검사/2vendor·User10849읽기SHA/Versions1·이전188673680B퇴역. main기준e9c08d4. WORK1454 time-view·globaldragbusy/65k키/section·montage trim/실제D3D7.5, WORK1444 historylazycontainers·몽타주행/window. WORK1434/1420 advancedprobe/literal준비증거는각기록.
 
-## 남은 작업/다음
-ENGINE_STATUS78행·전체분모null. RND03lightmap혼합/2후보밖계층/대형HDR/변형/복합로브. RND06主GL7초/FXC/capture初비용(1086/1308실패반복금지). CPP01customstruct/enum/reflection/참조·문서간Timeline. ANM06전체snapshot순회/restore/변경큰배열·겹친clip공간색인/slider/regionzoom/pinch/비고정행·리그/시간왜곡/가중혼합/부모골격origin/Take. UI03교차창/공유source/실터치/asyncrollback. NET01권한/예측/view/socket. RND08월드DF/HWRT/방향bake 및다른행잔여.
-다음CPP enum 조사만 시작(구현0): prototype/native-model.js cppType/parseNativeHeader는10fixedtypes·unknown公開type거절; tools/native-source.mjs cppType/unpack/generatedWorker. worker는nlohmann JSON .get<CppType>()/hb::bridgeValue 사용이라 enum기본직렬화 재사용가능성 확인 필요. pin-values int는signed32. traits/flags/초기화/enum identity/dropdown/arrays/C++→BP노드/동일runtime·저장/CAS 연결 필요. 아직wire/형식설계선택0, 섣부른성과주장금지. UE Metadata Specifiers57–71/Properties18–113, Unity6000.0 serialization rules126–208 실제body읽음·아직corpus기록안함(웹URL은다음요약참조). 일반CPP enum→int/JSON만으로asset/변수/핀기능전체완료라고하지말것.
+현재1458–1464: C++ HB_ENUM/값8·16·32/U32signedwire/namespace·nestedclass/기본표현식·고정기반컴파일대조. 공용상대헤더·native typedinput/return/refoutput/arrays/events·enum SDK명칭/parse/flags. 클래스/인스턴스/노드inline/변수GetSet/Promote/이름Switch·숨김/unknown보존·배열추가삭제·ordinal/directmask. native.enums.read boundedquery·sourceReference저장·AI소유1file144.79ms. UI instanceScalarArrayUndoRedoSave·native/VM/portableAOT2모듈교대4회·SDK/core/상속/구형Switch회귀통과. 최종Player1464 build25초,Host1041재사용; SDK Game.hpp+Enum.hpp새소유. 아직이번설치전: source UI Ej3WVG, portable oJcAHX, native enum JSON은1464-final report에있어요. 설치최종gate가 source뒤의schema/title/default미세수정과패키지를확인해야해요. docs/NATIVE_ENUMS.md/CORPUS.supplemental1458는3공식본문구간만,전체분석완료아님.
 
-## 운영
-heavy/install前activeInstalledVersions·사용자창/탭/프로젝트/User테스트금지·ownhidden/profile/port. installEXE literal inline자기검출주의→파일실행. retain/prune/증거보존·Versions1/전체백업금지. Git author/committer 동일kirby47navercom-ai / 228715038+kirby47navercom-ai@users.noreply.github.com·한글commit/push. Three UniformsGroup.js/three.webgpu.js2vendor sync·node_modules커밋금지. Mac/Android없음재질문금지. rg는dir+--glob/긴minified출력금지. PS5 private보조도구 BOM/.NETstreamSHA/ZIP역slash정규화/hashtable명시sum주의·원본검증전삭제없음.
+## 다음 순서와 제약
+
+1458 feature커밋→WORK1465 원장→dist sync1466/최종설치1467: enum actualUI+package,2D legacyplayer,CPP상속창 회귀를묶어검사·User읽기SHA/명세/Versions1→receipt/한글커밋푸시. 그후누적잔여계속. native/build record1454/sync1455/install1456/finish1457·build-player1462/1464 started는끝난것재실행금지. 새스크립트/번호만.
+
+CPP01 남음: 전용enum에셋/일반struct reflection MakeBreakSetMembers·일반반환참조·signature/wildcard/문서간Timeline. 임의C++전처리/constexpr/alias·같은primary H/S의서로다른relativeinclude identity일반화도검토. ANM06전체snapshot순회/restore/큰변경배열·겹친clip공간색인/slider/region/pinch/가변행·리그/warp/혼합/부모골격Take. RND03lightmap혼합/2후보밖계층/대형HDR/변형/로브, RND06主GL7초/FXC/capture(1086/1308실험반복금지), UI03교차창/실터치/asyncrollback, NET01권한/예측/socket, RND08월드DF/HWRT/bake 등 ENGINE_STATUS78행·전체분모null.
+
+검사전 activeInstalledVersions, 소유 hidden editorWindowProbe·임시project/profile/port만. 사용자창/원본/프로필변경금지. CXX -o는relative·실행absolute. PS외부실패자동중단아님, Node execFile順序권장. rg glob은directory+--glob. 큰minified줄/base64출력금지. retainTestEvidence/pruneTestArtifacts, Versions1. Three vendor2파일SHA·patch 유지. 한글 ConventionalCommit/author=committer kirby47navercom-ai,이메일228715038+kirby47navercom-ai@users.noreply.github.com,전역Git/AItrailer없음. 승인된WebGPU연구외 proactive agent금지. Mac/Xcode/Android실기기없음.

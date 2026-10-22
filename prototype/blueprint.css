@@ -196,6 +196,13 @@
 .variable-drag-preview { position:fixed; pointer-events:none; z-index:10000; padding:8px 12px; border:1px solid #7099c8; border-radius:4px; background:#303f52; color:#f3f6fc; box-shadow:0 4px 16px #0008; }
 .bp-inline-value { min-width:0; width:65px; max-width:115px; min-height:23px!important; padding:2px 5px; font-size:11px; margin-left:4px; }
 .bp-inline-value[type=checkbox] { width:13px; }
+.bp-inline-value[data-native-enum] { width:110px; }
+.bp-enum-array { display:grid; gap:5px; min-width:0; }
+.bp-enum-array>div { display:grid; grid-template-columns:24px minmax(0,1fr) 26px; align-items:center; gap:5px; }
+.bp-enum-array>div>span { color:var(--muted,#aab1b9); font-size:11px; }
+.bp-enum-array select { min-width:0; width:100%; }
+.bp-enum-mask>label { display:flex; align-items:center; gap:6px; padding:3px 0; }
+.bp-enum-mask input[type=checkbox] { width:14px; }
 .bp-node .pin-label:has(.bp-inline-value) { flex-wrap:wrap; }
 .bp-node.getVariable .node-title { border-radius:18px; padding:5px 10px; min-height:34px; }
 .bp-node.reroute { width:80px!important; min-width:80px; border-radius:14px; }
