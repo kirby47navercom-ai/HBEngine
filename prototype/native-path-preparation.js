@@ -1,7 +1,8 @@
 import {cancelGPUPathPreparation,gpuPathPreparationInfo} from './gpu-path-preparation.js';
 
 export const nativeShaderPreparationContract=Object.freeze({
- version:1,backend:'D3D11',stages:Object.freeze(['path','guide','filter','photons','temporal','auxiliary']),
+ version:2,backend:'D3D11',stages:Object.freeze(['path','guide','filter','photons','temporal','auxiliary']),
+ timing:'elapsedMS freezes at current cycle completion/cancellation; cycles counts nonoverlapping pending cycles within the same revision; preparationMS sums those cycle wall durations, excludes idle gaps and is not GPU execution or whole application startup',
  states:Object.freeze(['unused','queued','compiling','ready','failed']),queueBudgetBytes:8*1024*1024,
  idleWorkerMS:1000,workerCount:1,renderWhilePending:'raster',commitPendingHistory:false,
  rasterStages:Object.freeze(['material','material-shadow','raster-vertex','raster-surface','raster-shadow','probe-prefilter','probe-brdf','probe-diffuse','probe-panorama','particle-vertex','particle-surface','particle-compaction','particle-sort-initial','particle-sort-step','particle-simulation','particle-free-slots','particle-emission','particle-clear']),
@@ -16,6 +17,12 @@ export const nativeShaderPreparationContract=Object.freeze({
 
 // Native readiness is a decision made before drawing this frame. A worker finishing
 // during present is adopted on the next frame, never reported as an already drawn path.
+function settleNativePreparation(state,clock){
+ if(state.settled)return;
+ state.elapsedMS=Math.max(0,clock()-state.started);
+ state.preparationMS=state.priorPreparationMS+state.elapsedMS;
+ state.settled=true;
+}
 export function updateNativePathPreparation(previous,packet,clock=()=>performance.now()){
  if(!packet?.enabled){cancelGPUPathPreparation(previous);return null;}
  const stages=packet.stages.map((state,i)=>({stage:nativeShaderPreparationContract.stages[i],state:nativeShaderPreparationContract.states[state]})).filter(s=>s.state!=='unused');
@@ -23,18 +30,21 @@ export function updateNativePathPreparation(previous,packet,clock=()=>performanc
  const pending=!!packet.pending,error=packet.error?new Error(packet.error):null;
  let state=previous;
  if(!state||state.cancelled||state.revision!==packet.revision||!state.pending&&pending){
+  const continuing=state&&!state.cancelled&&state.revision===packet.revision;
+  const priorPreparationMS=continuing?state.preparationMS:0,cycles=(continuing?state.cycles:0)+(pending?1:0);
   cancelGPUPathPreparation(state);
-  state={revision:packet.revision,pending:true,error:null,cancelled:false,started:clock(),elapsedMS:0,concurrent:false};
+  state={revision:packet.revision,pending:true,error:null,cancelled:false,started:clock(),elapsedMS:0,concurrent:false,settled:false,priorPreparationMS,preparationMS:priorPreparationMS,cycles};
+  state.freezeCancellation=()=>{settleNativePreparation(state,clock);state.pending=false;};
   state.done=new Promise(resolve=>{state.resolveDone=resolve;});
   state.cancelledDone=new Promise(resolve=>{state.resolveCancellation=()=>{state.resolveDone();resolve();};});
  }
  state.stages=stages;state.queue=packet.queue;state.rasterPending=!!packet.raster?.pending;state.total=stages.reduce((n,s)=>n+(s.total??1),0);state.completed=stages.reduce((n,s)=>n+(s.ready??(s.state==='ready'?1:0)),0);
  state.submitted=stages.reduce((n,s)=>n+(s.total!==undefined?s.total-s.queued:s.state!=='queued'?1:0),0);state.error=error;state.pending=pending;
  state.currentStage=error?'failed':pending?(stages.find(s=>s.state==='compiling')||stages.find(s=>s.state==='queued'))?.stage||'queued':'ready';
- if(!pending){state.elapsedMS=clock()-state.started;state.resolveDone();}
+ if(!pending){settleNativePreparation(state,clock);state.resolveDone();}
  return state;
 }
-export function nativePathPreparationInfo(state){const info=gpuPathPreparationInfo(state);return info?{...info,rasterPending:state.rasterPending,queue:{...state.queue}}:null;}
+export function nativePathPreparationInfo(state){const info=gpuPathPreparationInfo(state);return info?{...info,cycles:state.cycles,preparationMS:state.pending?state.priorPreparationMS+info.elapsedMS:state.preparationMS,rasterPending:state.rasterPending,queue:{...state.queue}}:null;}
 
 // A capture can pause the game loop. Polling compiler status must therefore work
 // without drawing another frame or advancing simulation/path history.
@@ -50,5 +60,5 @@ export function pollNativePathPreparation(renderer,poll){
    if(next!==state){pollNativePathPreparation(renderer,poll);return;}
   }
  })().catch(error=>{if(renderer.hbPathPreparation!==state||state.cancelled)return;
-  state.error=error;state.pending=false;state.currentStage='failed';state.elapsedMS=performance.now()-state.started;state.resolveDone();});
+  state.error=error;state.pending=false;state.currentStage='failed';settleNativePreparation(state,()=>performance.now());state.resolveDone();});
 }

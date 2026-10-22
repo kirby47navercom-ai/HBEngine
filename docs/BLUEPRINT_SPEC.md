@@ -590,3 +590,5 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 1370: Timeline 트랙 삭제는 현재 graph의 출력 배선을 changed 전에 함께 제거해 한 Undo/Redo·저장으로 유지해요. 문서 이름 변경 후 창 닫기는 editor 동일성으로 참조를 정리하고 리스너·observer·WeakMap을 해제해요. 다시 열면 새 editor가 생겨요. 실제 격리 편집기에서 Undo로 graph 교체→트랙/배선 삭제·복원→콘텐츠 브라우저 F2 rename→close/reopen을 확인했어요.
 
 1407 이후: ReflectionProbes::SetProxyVolume(target,proxy=nullptr,component,proxyComponent)와 SetUseInfluenceVolume(target,bool,component)을 공용 서비스/생성 노드로 제공해요. 프록시 오브젝트+컴포넌트 참조/무한/영향영역 복원·즉시 C++ 읽기·위치 보존을 지원해요. 현재 아틀라스는 14행/224B이며, 위1354의 9행/144B는 당시 기록이에요. [투영 계약](PROBE_PROJECTION.md)을 확인해요.
+
+1424 이후 ReflectionProbes::SetAdvancedBlend/SetBlendFaces/SetFaceFade/SetNormalBlendDistance/SetNormalBlendFaces 다섯 공용 C++·생성 노드는 같은 ReflectionProbe 속성으로 실행해요. 면별 함수가 모드를 자동으로 켜지는 않으며 Inspector의숨은 값·Undo/저장·AI편집과 공유해요. [계약](PROBE_INFLUENCE.md)과 실제 C++/노드 게임 증거를 후속 원장에서 확인해요.

@@ -118,3 +118,15 @@ fallback readback뒤copyTexSubImage2D가GL1282. Float32blend가설은HalfFloat�
 - 새 고유 프로젝트/profile의 N0h1ta 29,401.78ms, ezzcMY 30,341.71ms 준비, shader queue9실제/8중복제거, 디스크0hit/10miss 관찰. ezzcMY 내부 shader preparation809.40ms와 전체 준비 시간을 구분해요. 통제된 CPU 부하 반복 실험·FPS·복잡한 GL 초기지연 해결 증거가 아니에요. 원래82초의 모든 시간 원인을 특정했다고 표현하지 않아요.
 - ezzcMY 실제 DirectX 게임: 4방 중앙 픽셀 (194,0,0)/(0,194,0)/(0,0,194)/(194,194,0), C++/BP 6번전환 metadata만224B씩 증가·이미지4/copy150/layout1 유지·위치(6,0,2)·즉시C++값 캐시. 수치/브라우저 physical/raster/UI/기존2D·혼합은 projection-final-1419와 개별 receipt로 구분해요.
 - 초기1418 검사는 private 실패 프로젝트에 의존했어요. 공용1120 fixture를 메모리에서 생성해 portable로 바꾸고 다시 통과했어요. AI context 검사는 임시 인계가5KB를 넘어서 실패했고 인계를3,949B로 줄여 기존 한계 그대로 통과했어요.
+
+## 1424–1432 반사 영향·시간 진단·AI 조회
+
+- CPU 독립 변환 평면/각도/노멀 껍질 5,400조건 오차1.11e-15. GL/TSL/native는 같은 구현을 oracle로 쓰지 않고 이 표본과 대조했어요. exact 회전 경계의 불연속은 identity 경계와 분리해요. GPU 수치와 실제 physical+clearcoat는 별도예요.
+- 첫 GPU 검사 함수 문자열의 newline escaping, private server가 제공하지 않는 tools import, fake PMREM 함수의 다섯 번째 position 인수 누락은 검사 코드 문제였어요. 문자열 raw·oracle inline·올바른 인수로 고쳤어요. 공용 native 검사 driver의 출력4096 한도를 늘리거나 표본을 버리지 않고2chunk로 전체5400을 실행했어요. 엔진 객체 한도와는 관계없어요.
+- TSL If 첫 분기의 implicit assignment 반환/다른 분기의 void가 `expected float` 진단을 냈어요. 둘 다 명시적인 void 블록으로 고쳤어요. 경고를 무시하거나 tolerance를 넓혀 통과시키지 않았어요.
+- 실제 GPU physical에서 후보1을 지웠는데 파랑 후보만 남았어요. 디버그 WGSL은 아틀라스 table load 없이 기존 direct uniform source였고, 데이터 table과 advanced flag는 맞았어요. 일반 Three 머테리얼은 render-object key 조회 뒤 node material로 변환돼 envNode 변경만으로 이전 builder를 재사용했어요. GPU 바인딩 node ID를 원래 customProgramCacheKey 함수에 덧붙여 mode/owner를 구분하고 값 변경·복원은 유지했어요. 현재 실제3백엔드의 후보2/3승격·부분페이드·outward/inward·default복원으로 확인해요.
+- 첫 physical oracle 비교의2.54e-3 차이는 검사 renderer에 실제 엔진의 installGPUCameraView가 빠졌기 때문이었어요. 같은 adapter를 설치한 뒤 허용오차1e-4로 강화했고 ikwWo9는 GL4.47e-9/WebGPU2.24e-8/fallback4.47e-9예요. 느슨한 이전 oIyrxR를 최종 근거로 승격하지 않아요.
+- 기본 optional metadata 생략은 이전 record만 가정하면 count 증가 시 옛 BVH 영역을 새 레코드로 재사용할 때 틀릴 수 있어요. count 변경은 강제 초기화해요. 실제 CPU atlas/512행 typed-array Proxy2048읽기/0쓰기·byte복원/동일크기count성장/실제resize/reorder 검사를 통과했어요. fake GPU copy라 GPU시간/FPS로 확대하지 않아요. stub backend 누락은 검사 코드만 수정했어요.
+- 준비 elapsedMS가 완료 poll마다 늘던 것을 고정하고 구간 합계/횟수·유휴 제외·취소·revision·실패를 연결했어요. 초기부터 ready만 관찰한 실제 게임은0구간으로 표시해요. 37.15초 전체 startup을 단독 shader시간0으로 해석하지 않아요. 이전29–32초보다 개선됐다고 주장하지 않으며 부하통제 실험도 아니에요.
+- ipw9k1의 C++ dark pixel 뒤 metadata 통계는 capture 전 inspect 값이어서 한 frame 늦었어요. 최종 설치 검사에서는 capture 뒤 통계 증가를 기다리도록 강화해요. 실제 검정/노랑 및 C++ 즉시 cache는 원 실행도 확인했어요.
+- 정확한 SetFaceFade 조회가 작업명과 맞는 수학 경로까지 합쳐5파일을 읽었어요. 등록된 exact symbol 경로를 먼저 읽도록 공용 context를 수정해3파일, 수학2파일/시간진단1파일로 제한해요. --all과 없을 때 전체 fallback은 유지해요. 모델 이해 속도나 전체 문서 분석 완료를 측정한 것은 아니에요.

@@ -15,3 +15,5 @@
 재현: `node tools/check-constant-buffer-cache-1367.mjs`, `node tools/check-scene-constant-cache-1368.mjs`. 후자는 `--executable`로 설치본의 네이티브 헤더를 선택할 수 있어요. 실제 사용자 프로젝트나 프로필은 사용하지 않아요.
 
 1407 이후 독립 반사 투영은 ProbeSettings를 128→208바이트로 확장해요. 두 프로브와 비활성 슬롯을 담는 기존 3슬롯 버퍼 때문에 CPU 캐시는 2,304바이트(+720), 기존 GPU 버퍼도 총 +720바이트예요. 버퍼 개수는 같아요. [프록시 계약](PROBE_PROJECTION.md)과 후속 검사 기록이 현재 크기·전송 증거예요.
+
+1424 이후 면별·노멀 페이드는 ProbeSettings304B·아틀라스320B예요. 기존3슬롯의 CPU 캐시는3,168B이며1420보다864B 늘어요. GPU 상수 저장공간도864B 늘고 버퍼 개수는 같아요. 현재 검사값은 후속 ENGINE_WORK의 cache 회귀 기록을 확인해요.

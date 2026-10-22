@@ -1,0 +1,21 @@
+import {shaderCompilationTable} from '../prototype/profiler.js';
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import {updateNativePathPreparation,nativePathPreparationInfo} from '../prototype/native-path-preparation.js';
+import {cancelGPUPathPreparation} from '../prototype/gpu-path-preparation.js';
+
+const packet=(pending,revision=1,error='')=>({enabled:true,revision,pending,stages:[pending?2:3,0,0,0,0,0],raster:{stages:[]},queue:{},error});
+let now=100;const clock=()=>now;
+let state=updateNativePathPreparation(null,packet(true),clock);
+now=125;state=updateNativePathPreparation(state,packet(false),clock);assert.equal(state.elapsedMS,25);assert.equal(state.preparationMS,25);
+now=1000;assert.equal(updateNativePathPreparation(state,packet(false),clock),state);assert.equal(state.elapsedMS,25,'ready polling must not extend completed time');
+now=2000;const first=state;state=updateNativePathPreparation(state,packet(true),clock);assert(first.cancelled);assert.equal(state.cycles,2);
+now=2040;updateNativePathPreparation(state,packet(false),clock);assert.equal(state.elapsedMS,40);assert.equal(state.preparationMS,65,'idle gaps are excluded');
+const info=nativePathPreparationInfo(state);assert.equal(info.preparationMS,65);assert.equal(info.cycles,2);const table=shaderCompilationTable([{id:'timing',backend:'D3D11',pipelinePreparation:info}]);assert(table.includes('65.00')&&table.includes('2회'));
+now=3000;state=updateNativePathPreparation(state,packet(true),clock);now=3010;cancelGPUPathPreparation(state);await state.done;assert.equal(state.pending,false);assert.equal(state.elapsedMS,10);assert.equal(state.preparationMS,75);
+now=4000;assert.equal(nativePathPreparationInfo(state).preparationMS,75);assert.equal(state.elapsedMS,10);
+state=updateNativePathPreparation(state,packet(true,2),clock);now=4050;updateNativePathPreparation(state,packet(false,2,'compiler rejected'),clock);
+assert.equal(state.cycles,1);assert.equal(state.preparationMS,50);now=5000;updateNativePathPreparation(state,packet(false,2,'compiler rejected'),clock);assert.equal(state.elapsedMS,50);
+state=updateNativePathPreparation(null,packet(false,3),clock);assert.equal(state.preparationMS,0);assert.equal(state.cycles,0);now=10000;updateNativePathPreparation(state,packet(false,3),clock);assert.equal(state.elapsedMS,0);
+await fs.writeFile('native/build/preparation-timing-1425.json',JSON.stringify({passed:true,completedPollFrozen:true,idleGapsExcluded:true,cycles:3,sumMS:75,cancellationFrozen:true,revisionReset:true,failureFrozen:true,initialReadyFrozen:true,scope:'Deterministic native diagnostic clocks/lifecycle; no shader compile/FPS performance claim or new recurring work.'},null,2));
+console.log(JSON.stringify({passed:true,completedPollFrozen:true,cycles:3,sumMS:75}));

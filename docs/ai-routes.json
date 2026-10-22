@@ -1253,6 +1253,47 @@
         "prototype/material-runtime.js",
         "docs/NATIVE_MATERIAL_LITERALS.md"
       ]
+    },
+    {
+      "keywords": [
+        "probeInfluenceWeight",
+        "probeInfluenceSettings",
+        "gpuProbeInfluenceNodes",
+        "면별 반사",
+        "노멀 억제"
+      ],
+      "paths": [
+        "prototype/reflection-probe-influence.js",
+        "prototype/reflection-probe-influence-gpu.js",
+        "docs/PROBE_INFLUENCE.md"
+      ]
+    },
+    {
+      "keywords": [
+        "SetBlendFaces",
+        "SetFaceFade",
+        "SetNormalBlendDistance",
+        "SetNormalBlendFaces",
+        "SetAdvancedBlend"
+      ],
+      "paths": [
+        "native/include/HBEngine/Game.hpp",
+        "native/include/HBEngine/Session.hpp",
+        "prototype/engine-services.js",
+        "docs/PROBE_INFLUENCE.md"
+      ]
+    },
+    {
+      "keywords": [
+        "settleNativePreparation",
+        "preparationMS",
+        "셰이더 준비 시간"
+      ],
+      "paths": [
+        "prototype/native-path-preparation.js",
+        "prototype/profiler.js",
+        "docs/PREPARATION_TIMING.md"
+      ]
     }
   ]
 }

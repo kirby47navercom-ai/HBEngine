@@ -7,13 +7,23 @@ struct ProbeSettings {
     std::array<float,4> center{0,0,0,1},minimum{-5,-5,-5,1},maximum{5,5,5,0},options{1,0,1,1};
     std::array<float,4> localX{1,0,0,0},localY{0,1,0,0},localZ{0,0,1,0},faceScale{1,1,1,0};
     std::array<float,4> projectionMinimum{-1,-1,-1,0},projectionMaximum{1,1,1,0},projectionX{1,0,0,0},projectionY{0,1,0,0},projectionZ{0,0,1,0};
+    std::array<float,4> blendPositive{},blendNegative{},fadePositive{1,1,1,0},fadeNegative{1,1,1,0},normalPositive{},normalNegative{};
 };
-static_assert(sizeof(ProbeSettings)==208,"HLSL probe settings layout");
+static_assert(sizeof(ProbeSettings)==304,"HLSL probe settings layout");
 inline bool probeVolumeBasisUsable(const ProbeSettings& p){
     const double a=p.localX[0],b=p.localX[1],c=p.localX[2],d=p.localY[0],e=p.localY[1],f=p.localY[2],g=p.localZ[0],h=p.localZ[1],i=p.localZ[2],determinant=a*(e*i-f*h)-b*(d*i-f*g)+c*(d*h-e*g);
     if(!std::isfinite(determinant)||determinant==0||!std::isfinite(p.options[3])||p.options[3]<0||p.options[3]>7||std::floor(p.options[3])!=p.options[3])return false;
     if((static_cast<unsigned>(p.options[3])&2u)!=0){const auto radius=p.maximum[0];if(radius<.001f||radius>1000000.f)return false;for(unsigned j=0;j<3;j++)if(p.minimum[j]!=-radius||p.maximum[j]!=radius)return false;const std::array<std::array<float,4>,3> rows{p.localX,p.localY,p.localZ};for(unsigned j=0;j<3;j++)for(unsigned k=0;k<3;k++){double dot=0;for(unsigned q=0;q<3;q++)dot+=double(rows[j][q])*rows[k][q];if(std::abs(dot-(j==k?1.:0.))>2e-5)return false;}}
     return true;
+}
+inline bool probeInfluenceUsable(const ProbeSettings& p){
+    for(const auto* row:{&p.blendPositive,&p.blendNegative,&p.fadePositive,&p.fadeNegative,&p.normalPositive,&p.normalNegative})if(!std::all_of(row->begin(),row->end(),[](float v){return std::isfinite(v);}))return false;
+    const auto mode=p.blendPositive[3];if(!std::isfinite(p.options[3])||(std::fmod(p.options[3],4.f)>1.5f&&std::fmod(mode,2.f)>0))return false;if(mode<0||mode>3||std::floor(mode)!=mode)return false;
+    for(unsigned i=0;i<3;i++){if(p.blendPositive[i]<0||p.blendNegative[i]<0||p.normalPositive[i]<0||p.normalNegative[i]<0||p.blendPositive[i]>100000||p.blendNegative[i]>100000||p.normalPositive[i]>100000||p.normalNegative[i]>100000||p.fadePositive[i]<0||p.fadePositive[i]>1||p.fadeNegative[i]<0||p.fadeNegative[i]>1)return false;}
+    return true;
+}
+inline void setProbeInfluence(ProbeSettings& settings,const std::array<float,3>& positive,const std::array<float,3>& negative,const std::array<float,3>& fadePositive={1,1,1},const std::array<float,3>& fadeNegative={1,1,1},const std::array<float,3>& normalPositive={0,0,0},const std::array<float,3>& normalNegative={0,0,0},bool advanced=true){
+    auto next=settings;bool normal=false;for(unsigned i=0;i<3;i++){next.blendPositive[i]=positive[i];next.blendNegative[i]=negative[i];next.fadePositive[i]=fadePositive[i];next.fadeNegative[i]=fadeNegative[i];next.normalPositive[i]=normalPositive[i];next.normalNegative[i]=normalNegative[i];normal=normal||normalPositive[i]>0||normalNegative[i]>0;}next.blendPositive[3]=(advanced?1.f:0.f)+(normal?2.f:0.f);if(!probeInfluenceUsable(next))throw std::runtime_error("Probe influence values invalid");settings=next;
 }
 inline bool probeProjectionUsable(const ProbeSettings& p){
     for(const auto* row:{&p.projectionMinimum,&p.projectionMaximum,&p.projectionX,&p.projectionY,&p.projectionZ})if(!std::all_of(row->begin(),row->end(),[](float v){return std::isfinite(v);}))return false;
@@ -159,7 +169,7 @@ public:
 
 struct SceneProbeBinding {const SceneProbes::Probe* resource=nullptr;ProbeSettings settings;};
 inline constexpr const char* sceneProbeDeclarations=R"HLSL(
-struct ProbeSettings{float4 center,minimum,maximum,options,localX,localY,localZ,faceScale,projectionMinimum,projectionMaximum,projectionX,projectionY,projectionZ;};cbuffer ProbeBindings:register(b2){ProbeSettings probeSettings[3];};
+struct ProbeSettings{float4 center,minimum,maximum,options,localX,localY,localZ,faceScale,projectionMinimum,projectionMaximum,projectionX,projectionY,projectionZ;float4 blendPositive,blendNegative,fadePositive,fadeNegative,normalPositive,normalNegative;};cbuffer ProbeBindings:register(b2){ProbeSettings probeSettings[3];};
 TextureCube<float4> probe0:register(t39),probe1:register(t40);StructuredBuffer<float4> probeSH0:register(t41),probeSH1:register(t42);Texture2D<float2> probeBrdf:register(t43);TextureCube<float4> skyProbe:register(t46);StructuredBuffer<float4> skySH:register(t47);
 )HLSL";
 inline constexpr const char* sceneProbeFunctions=R"HLSL(
@@ -169,7 +179,27 @@ float3 probeLocalRay(ProbeSettings p,float3 r){return float3(dot(p.localX.xyz,r)
 float3 probeSphereProject(float3 at,float3 ray,float3 center,float3 p,float3 r,float radius){
  if(length(p)>radius)return ray;float scale=max(abs(r.x),max(abs(r.y),abs(r.z)));if(!(scale>0))return ray;float3 q=r/scale;float size=length(q);q/=size;float3 scaled=p/radius;float b=dot(scaled,q),c=min(0,dot(scaled,scaled)-1),root=sqrt(max(0,b*b-c)),distance=b>0?(b+root>0?-c/(b+root):0):root-b;float3 result=(at-center)+(ray/scale)*(distance*radius/size);return dot(result,result)>1e-20?result:ray;
 }
-float probeWeight(ProbeSettings p,float3 at){if(p.options.x<.5)return 0;float3 local=probeLocal(p,at),edge=min(local-p.minimum.xyz,p.maximum.xyz-local)*p.faceScale.xyz;float distance=fmod(p.options.w,4)>1.5?p.maximum.x-length(local):min(edge.x,min(edge.y,edge.z));return distance<0?0:p.options.z*(p.minimum.w>0?saturate(distance/p.minimum.w):1);}
+float hbProbeSphereFade(float3 p,float radius,float blend){float d=radius-length(p);return d<0?0:blend>0?saturate(d/blend):1;}
+float hbProbeVolumeFade(float3 p,float3 lo,float3 hi,float3 scale,float blend){float3 edges=min(p-lo,hi-p)*scale;float d=min(edges.x,min(edges.y,edges.z));return d<0?0:blend>0?saturate(d/blend):1;}
+
+float hbProbeInfluenceFade(float3 local,float3 lo,float3 hi,float3 scale,float blend,bool sphere,float3 worldPoint,float3 center,float3 normal,float3 ray,float4 bp,float4 bn,float4 fp,float4 fn,float4 np,float4 nn,float4 x,float4 y,float4 z){
+ float weight=sphere?hbProbeSphereFade(local,hi.x,blend):hbProbeVolumeFade(local,lo,hi,scale,blend);if(bp.w<0.5)return weight;
+ float3 negative=(local-lo)*scale,positive=(hi-local)*scale;if(sphere?length(local)>hi.x:min(min(negative.x,min(negative.y,negative.z)),min(positive.x,min(positive.y,positive.z)))<0.0)return 0.0;
+ if(fmod(bp.w,2.0)>0.5){
+  float3 a=positive/max(bp.xyz,float3(1e-30,1e-30,1e-30)),b=negative/max(bn.xyz,float3(1e-30,1e-30,1e-30));
+  a=float3(bp.x>0.0?a.x:1.0,bp.y>0.0?a.y:1.0,bp.z>0.0?a.z:1.0);b=float3(bn.x>0.0?b.x:1.0,bn.y>0.0?b.y:1.0,bn.z>0.0?b.z:1.0);
+  weight=clamp(min(min(a.x,min(a.y,a.z)),min(b.x,min(b.y,b.z))),0.0,1.0);
+  float3 d=float3(dot(x.xyz,ray),dot(y.xyz,ray),dot(z.xyz,ray))*scale;float size=length(d);if(size>0.0){d/=size;float3 mask=clamp((4.0*d-1.0)*fp.xyz,0.0,1.0)+clamp((-4.0*d-1.0)*fn.xyz,0.0,1.0);weight*=clamp(mask.x+mask.y+mask.z,0.0,1.0);}
+ }
+ if(bp.w>1.5){
+  bool inner=sphere?hi.x-length(local)>=np.x:positive.x>=np.x&&positive.y>=np.y&&positive.z>=np.z&&negative.x>=nn.x&&negative.y>=nn.y&&negative.z>=nn.z;
+  if(!inner){float3 direction=worldPoint-center;float d=length(direction),n=length(normal);if(d>0.0&&n>0.0)weight*=clamp((0.6-dot(normal/n,direction/d))/0.4,0.0,1.0);}
+ }
+ return weight;
+}
+
+float probeShadingWeight(ProbeSettings p,float3 at,float3 normal,float3 ray){if(p.options.x<.5)return 0;return p.options.z*hbProbeInfluenceFade(probeLocal(p,at),p.minimum.xyz,p.maximum.xyz,p.faceScale.xyz,p.minimum.w,fmod(p.options.w,4)>1.5,at,p.center.xyz,normal,ray,p.blendPositive,p.blendNegative,p.fadePositive,p.fadeNegative,p.normalPositive,p.normalNegative,p.localX,p.localY,p.localZ);}
+float probeWeight(ProbeSettings p,float3 at){return probeShadingWeight(p,at,float3(0,0,0),float3(0,0,0));}
 float probeAxisExit(float p,float r,float lo,float hi){return r==0?3.402823466e38:((r>0?hi:lo)-p)/r;}
 float3 probeProjectionLocal(float3 p,float4 x,float4 y,float4 z){float4 at=float4(p,1);return float3(dot(x,at),dot(y,at),dot(z,at));}
 float3 probeProjectionRay(float3 r,float4 x,float4 y,float4 z){return float3(dot(x.xyz,r),dot(y.xyz,r),dot(z.xyz,r));}
@@ -190,8 +220,8 @@ float3 probeLight(TextureCube<float4> cube,StructuredBuffer<float4> sh,ProbeSett
 float3 skyDirection(float3 d){ProbeSettings p=probeSettings[2];return float3(p.minimum.y*d.x-p.minimum.x*d.z,d.y,p.minimum.x*d.x+p.minimum.y*d.z);}
 float3 skyLight(float3 n,float3 v,float3 base,float rough,float metal,float ao,float3 dielectric,float diffuseWeight){return probeLight(skyProbe,skySH,probeSettings[2],float3(0,0,0),skyDirection(n),skyDirection(v),base,rough,metal,ao,dielectric,diffuseWeight);}
 void probeBlendPriority(inout float a,inout float b,float flags){if(flags>=4){a=saturate(a);b=saturate(b)*(1-a);}}
-float3 refractedProbes(float3 at,float3 direction,float rough,out float coverage){if(probeSettings[0].faceScale.w>0||probeSettings[1].faceScale.w>0)return refractedAtlasProbes(at,direction,rough,coverage);float a=probeWeight(probeSettings[0],at),b=probeWeight(probeSettings[1],at);probeBlendPriority(a,b,probeSettings[0].options.w);coverage=saturate(a+b);float3 c=0;if(a>0)c+=probe0.SampleLevel(linear2d,probeDirection(probeSettings[0],at,direction),rough*probeSettings[0].maximum.w).rgb*probeSettings[0].center.w*a;if(b>0)c+=probe1.SampleLevel(linear2d,probeDirection(probeSettings[1],at,direction),rough*probeSettings[1].maximum.w).rgb*probeSettings[1].center.w*b;float sky=probeSettings[2].options.x*(1-coverage);c=c/max(a+b,1e-6)*coverage;if(sky>0)c+=skyProbe.SampleLevel(linear2d,skyDirection(direction),rough*probeSettings[2].maximum.w).rgb*probeSettings[2].center.w*sky;coverage=saturate(coverage+sky);return c/max(coverage,1e-6);}
-float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao,float3 dielectricF0,float diffuseWeight){if(probeSettings[0].faceScale.w>0||probeSettings[1].faceScale.w>0)return indirectAtlasProbes(at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight);float a=probeWeight(probeSettings[0],at),b=probeWeight(probeSettings[1],at);probeBlendPriority(a,b,probeSettings[0].options.w);float total=a+b;float3 c=0;if(a>0)c+=probeLight(probe0,probeSH0,probeSettings[0],at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*a;if(b>0)c+=probeLight(probe1,probeSH1,probeSettings[1],at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*b;c=c/max(1,total);float sky=probeSettings[2].options.x*(1-saturate(total));if(sky>0)c+=skyLight(n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*sky;return c;}
+float3 refractedProbes(float3 at,float3 direction,float rough,out float coverage){if(probeSettings[0].faceScale.w>0||probeSettings[1].faceScale.w>0)return refractedAtlasProbes(at,direction,rough,coverage);float a=probeShadingWeight(probeSettings[0],at,float3(0,0,0),direction),b=probeShadingWeight(probeSettings[1],at,float3(0,0,0),direction);probeBlendPriority(a,b,probeSettings[0].options.w);coverage=saturate(a+b);float3 c=0;if(a>0)c+=probe0.SampleLevel(linear2d,probeDirection(probeSettings[0],at,direction),rough*probeSettings[0].maximum.w).rgb*probeSettings[0].center.w*a;if(b>0)c+=probe1.SampleLevel(linear2d,probeDirection(probeSettings[1],at,direction),rough*probeSettings[1].maximum.w).rgb*probeSettings[1].center.w*b;float sky=probeSettings[2].options.x*(1-coverage);c=c/max(a+b,1e-6)*coverage;if(sky>0)c+=skyProbe.SampleLevel(linear2d,skyDirection(direction),rough*probeSettings[2].maximum.w).rgb*probeSettings[2].center.w*sky;coverage=saturate(coverage+sky);return c/max(coverage,1e-6);}
+float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao,float3 dielectricF0,float diffuseWeight){if(probeSettings[0].faceScale.w>0||probeSettings[1].faceScale.w>0)return indirectAtlasProbes(at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight);float a=probeShadingWeight(probeSettings[0],at,n,reflect(-v,n)),b=probeShadingWeight(probeSettings[1],at,n,reflect(-v,n));probeBlendPriority(a,b,probeSettings[0].options.w);float total=a+b;float3 c=0;if(a>0)c+=probeLight(probe0,probeSH0,probeSettings[0],at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*a;if(b>0)c+=probeLight(probe1,probeSH1,probeSettings[1],at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*b;c=c/max(1,total);float sky=probeSettings[2].options.x*(1-saturate(total));if(sky>0)c+=skyLight(n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*sky;return c;}
 float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao,float dielectricF0){return indirectProbes(at,n,v,base,rough,metal,ao,dielectricF0,1);}
 float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao){return indirectProbes(at,n,v,base,rough,metal,ao,.04);}
 )HLSL";

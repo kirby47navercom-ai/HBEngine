@@ -1,3 +1,4 @@
+import {probeInfluenceSettings} from './reflection-probe-influence.js';
 import {reflectionProxyVolume,resolveProbeProjection,probeProjectionSettings} from './reflection-probe-projection.js';
 import {ProbeCandidateIndex} from './reflection-probe-spatial.js';
 import {probeBlendUniforms,updateProbeBlendUniforms,probeBlendPhysicalGLSL} from './reflection-probe-blend.js';
@@ -12,7 +13,7 @@ import {ShaderChunk} from 'three';
 import {materialNodeKey} from './material-runtime.js';
 
 const uniformBanks=new WeakMap();
-function materialProbeUniforms(material){let uniforms=uniformBanks.get(material);if(!uniforms){uniforms={...probeBlendUniforms(),hbProbeAtlas:{value:null},hbProbeTable:{value:null},hbProbeAtlasCount:{value:0},hbProbeTableWidth:{value:1}};uniformBanks.set(material,uniforms);}return uniforms;}
+function materialProbeUniforms(material){let uniforms=uniformBanks.get(material);if(!uniforms){uniforms={...probeBlendUniforms(),hbProbeAtlas:{value:null},hbProbeTable:{value:null},hbProbeAtlasCount:{value:0},hbProbeAtlasInfluence:{value:false},hbProbeTableWidth:{value:1}};uniformBanks.set(material,uniforms);}return uniforms;}
 function usesOwnedClone(mesh,entry){const current=Array.isArray(mesh.material)?mesh.material:[mesh.material];return current.length===entry.owned.length&&current.every((m,i)=>m===entry.owned[i]);}
 function probeMeshMaterial(mesh){return (Array.isArray(mesh.material)?mesh.material:[mesh.material]).some(m=>m?.isMeshStandardMaterial||m?.isMeshStandardNodeMaterial);}
 const directions=[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],ups=[[0,-1,0],[0,-1,0],[0,0,1],[0,0,-1],[0,-1,0],[0,-1,0]];
@@ -35,7 +36,7 @@ export function reflectionProbeCandidates(probes,position,bounds=null,index=null
  const result=(index?index.candidates(position,bounds):probes).filter(p=>position===null&&!bounds|| (bounds?reflectionProbeIntersectsBox(p,bounds):(p.localBox?(p.localBox.shape==='sphere'?Math.hypot(...probeLocalPoint(p.localBox,position))<=p.localBox.maximum[0]:probeLocalPoint(p.localBox,position).every((v,i)=>v>=p.localBox.minimum[i]&&v<=p.localBox.maximum[i])):position.every((v,i)=>v>=p.minimum[i]&&v<=p.maximum[i]))));
  return index?result:result.sort((a,b)=>b.p.importance-a.p.importance||a.volume-b.volume||a.id.localeCompare(b.id));
 }
-export function reflectionProbeBinding(p){return {id:p.id,settings:{...(p.projection?.mode?probeProjectionSettings(p.projection):{}),center:[...p.center,p.p.intensity],minimum:[...(p.localBox?.minimum||p.minimum),p.p.blendDistance],maximum:[...(p.localBox?.maximum||p.maximum),0],...(p.localBox?{localX:p.localBox.localX,localY:p.localBox.localY,localZ:p.localBox.localZ,faceScale:p.localBox.faceScale}:{}),options:[1,p.p.diffuseIntensity,1,reflectionProbeFlags(p.p)]}};}
+export function reflectionProbeBinding(p){const influence=probeInfluenceSettings(p.p);return {id:p.id,settings:{...(influence.blendPositive[3]?influence:{}),...(p.projection?.mode?probeProjectionSettings(p.projection):{}),center:[...p.center,p.p.intensity],minimum:[...(p.localBox?.minimum||p.minimum),p.p.blendDistance],maximum:[...(p.localBox?.maximum||p.maximum),0],...(p.localBox?{localX:p.localBox.localX,localY:p.localBox.localY,localZ:p.localBox.localZ,faceScale:p.localBox.faceScale}:{}),options:[1,p.p.diffuseIntensity,1,reflectionProbeFlags(p.p)]}};}
 export function selectReflectionProbes(probes,position,bounds=null,limit=2,index=null){return reflectionProbeCandidates(probes,position,bounds,index).slice(0,limit).map(reflectionProbeBinding);}
 export function reflectionProbeDrawBindings(probes,position,bounds=null,index=null){const list=reflectionProbeCandidates(probes,position,bounds,index);return {probes:list.slice(0,2).map(reflectionProbeBinding),globalProbes:list.length>2};}
 export function probeCaptureViews(probe){
@@ -76,9 +77,15 @@ export class ReflectionProbesRendering{
           if(!material?.isMeshStandardMaterial&&!material?.isMeshStandardNodeMaterial)continue;seen.add(material);let state=view.materials.get(material);
           if(!state){
             state={map:material.envMap,intensity:material.envMapIntensity,node:material.envNode,refraction:material.hbProbeRefraction,environment:material.setupEnvironment,compile:material.onBeforeCompile,key:material.customProgramCacheKey,cacheKey:material.customProgramCacheKey(),uniforms:materialProbeUniforms(material),rotation:new THREE.Matrix3(),global};view.materials.set(material,state);
-            if(renderer.hbProbeEnvironment)material.setupEnvironment=function(builder){return this.envNode?.isLightingNode?this.envNode:state.environment.call(this,builder);};
+            if(renderer.hbProbeEnvironment){
+              material.setupEnvironment=function(builder){return this.envNode?.isLightingNode?this.envNode:state.environment.call(this,builder);};
+              // Core Three materials are converted to node materials after the
+              // render-object cache lookup. Include the binding identity so a
+              // direct/atlas transition cannot reuse the old node builder.
+              material.customProgramCacheKey=function(){return state.key.call(this)+'|hb-probe-node:'+(this.envNode?.uuid||'base');};
+            }
             else{
-              material.onBeforeCompile=(shader,r)=>{state.compile.call(material,shader,r);Object.assign(shader.uniforms,state.uniforms);shader.vertexShader='varying vec3 hbProbePosition;\n'+shader.vertexShader.replace('#include <worldpos_vertex>','#include <worldpos_vertex>\nvec4 hbProbeLocal=vec4(transformed,1.0);\n#ifdef USE_INSTANCING\nhbProbeLocal=instanceMatrix*hbProbeLocal;\n#endif\nhbProbePosition=(modelMatrix*hbProbeLocal).xyz;');shader.fragmentShader=shader.fragmentShader.replace('#include <envmap_physical_pars_fragment>',state.global?probeAtlasPhysicalGLSL():probeBlendPhysicalGLSL());if(state.global)shader.fragmentShader=shader.fragmentShader.replace('void main() {','void main() {\nhbAtlasChoose();');};material.customProgramCacheKey=()=>state.cacheKey+(state.global?'|hb-probe-atlas-v2':'|hb-probe-blend-v1');
+              material.onBeforeCompile=(shader,r)=>{state.compile.call(material,shader,r);Object.assign(shader.uniforms,state.uniforms);shader.vertexShader='varying vec3 hbProbePosition;\n'+shader.vertexShader.replace('#include <worldpos_vertex>','#include <worldpos_vertex>\nvec4 hbProbeLocal=vec4(transformed,1.0);\n#ifdef USE_INSTANCING\nhbProbeLocal=instanceMatrix*hbProbeLocal;\n#endif\nhbProbePosition=(modelMatrix*hbProbeLocal).xyz;');shader.fragmentShader=shader.fragmentShader.replace('#include <envmap_physical_pars_fragment>',state.global?probeAtlasPhysicalGLSL():probeBlendPhysicalGLSL());if(state.global)shader.fragmentShader=shader.fragmentShader.replace('void main() {','void main() {\nif(!hbProbeAtlasInfluence)hbAtlasChoose(vec3(0),vec3(0));');};material.customProgramCacheKey=()=>state.cacheKey+(state.global?'|hb-probe-atlas-v3':'|hb-probe-blend-v2');
             }material.needsUpdate=true;
           }
           if(state.global!==global){state.global=global;material.needsUpdate=true;}
@@ -86,7 +93,7 @@ export class ReflectionProbesRendering{
           const rotation=authoredMap?material.envMapRotation:scene.environmentRotation;if(rotation){view.rotationEuler.copy(rotation);if(!renderer.hbProbeEnvironment){view.rotationEuler.x*=-1;view.rotationEuler.y*=-1;view.rotationEuler.z*=-1;}state.rotation.setFromMatrix4(view.rotation.makeRotationFromEuler(view.rotationEuler));}else state.rotation.identity();
           if(renderer.hbProbeEnvironment){
             const blended=!!(primary||fallback),key=global?'gpuGlobal':'gpu';if(blended&&!state[key])state[key]=renderer.hbProbeEnvironment(primary,maps[0]||fallback,global?view.atlas:null);const binding=state[key],node=blended?binding.node:state.node;if(material.envNode!==node){material.envNode=node;material.needsUpdate=true;}if(blended){if(global)binding.setAtlas(view.atlas);binding.update(primary,maps[0],secondary,maps[1],fallback,baseIntensity,state.rotation);}material.hbProbeRefraction=blended?binding:state.refraction;
-          }else{updateProbeBlendUniforms(state.uniforms,candidates,maps,fallback,baseIntensity,state.rotation);state.uniforms.hbProbeAtlas.value=global?view.atlas.target.texture:null;state.uniforms.hbProbeTable.value=global?view.atlas.table:null;state.uniforms.hbProbeAtlasCount.value=global?view.atlas.count:0;state.uniforms.hbProbeTableWidth.value=global?view.atlas.width:1;}
+          }else{updateProbeBlendUniforms(state.uniforms,candidates,maps,fallback,baseIntensity,state.rotation);state.uniforms.hbProbeAtlas.value=global?view.atlas.target.texture:null;state.uniforms.hbProbeTable.value=global?view.atlas.table:null;state.uniforms.hbProbeAtlasCount.value=global?view.atlas.count:0;state.uniforms.hbProbeAtlasInfluence.value=global&&view.atlas.influenceActive;state.uniforms.hbProbeTableWidth.value=global?view.atlas.width:1;}
         }
       }
       for(const[m,state]of view.materials)if(!seen.has(m)){this.restore(m,state);view.materials.delete(m);}

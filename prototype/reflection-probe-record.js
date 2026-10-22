@@ -1,2 +1,2 @@
-// Nine legacy atlas fields followed by five independent projection fields.
-export const probeAtlasRecordTexels=14;
+// Nine legacy atlas fields, five projection fields, then six influence fields.
+export const probeAtlasRecordTexels=20;

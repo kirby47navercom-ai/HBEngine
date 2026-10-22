@@ -22,10 +22,10 @@ AI는 기존 `document.read/patch`, revision·dryRun·Undo를 사용해요. `Ref
 
 CPU 수집은 장면을 한 번 순회해 공유 참조를 찾아요. 투영만 바꾸면 캡처 이미지와 아틀라스 배치·영향 영역 공간 트리는 재사용하고 메타데이터만 전송해요. 기본 모드는 브라우저→네이티브 JSON에 추가 배열을 보내지 않아요.
 
-직접 네이티브 `ProbeSettings`는 208바이트, 아틀라스는 14 float4·224바이트예요. 예전 아틀라스 9 float4·144바이트에서 프로브당 80바이트가 늘었어요. 네이티브 3슬롯 상수 버퍼는 CPU 캐시와 GPU 저장공간 각각 720바이트가 늘어요. 버퍼 개수·렌더 타깃·작업자·타이머는 추가하지 않아요. 낮은 수준의 SDK 사용자는 새 헤더로 다시 컴파일해야 해요.
+1407–1420의 `ProbeSettings`는 208바이트, 아틀라스는 14 float4·224바이트였어요. 면별·노멀 페이드 추가 후 현재는 [304바이트·20 float4/320바이트](PROBE_INFLUENCE.md)예요. 예전 아틀라스 9 float4·144바이트에서 프로브당 80바이트가 늘었어요. 네이티브 3슬롯 상수 버퍼는 CPU 캐시와 GPU 저장공간 각각 720바이트가 늘어요. 버퍼 개수·렌더 타깃·작업자·타이머는 추가하지 않아요. 낮은 수준의 SDK 사용자는 새 헤더로 다시 컴파일해야 해요.
 
 공용 SDK의 `setProbeInfluenceProjection`, `setProbeInfiniteProjection`, `setProbeProjectionBox`, `setProbeProjectionSphere`는 잘못된 입력을 원자적으로 거절해요. `probeProjectionUsable`은 렌더 제출도 검사해요. WebGL·WebGPU·강제 GL과 DirectX의 직접/아틀라스 경로를 함께 구현해요.
 
 수학은 독립 THREE Ray/Box/Sphere 교차 결과와 대조해요. 수치 커널, 실제 물리 머테리얼 렌더, 네이티브 래스터, 편집기 조작, C++·노드 게임 실행은 서로 별도 증거예요. 정확한 결과·소스 해시는 후속 ENGINE_WORK/USER_INSTALL 기록에 남겨요. 큰 장면 FPS나 모든 반사 기능 완료를 뜻하지 않아요.
 
-[Unity HDRP 17.0.4의 프록시 설명과 속성](https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Proxy-Volume.html)에서 영향/투영 분리, 공유 프록시, 모양 일치와 무한 영역을 참고했어요. 교차 수식·저장 형식·비용 처리는 HB 구현이에요. 면별·노멀 페이드, 라이트맵 혼합과 추가 후보 계층은 별도 원장에 유지해요.
+[Unity HDRP 17.0.4의 프록시 설명과 속성](https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Proxy-Volume.html)에서 영향/투영 분리, 공유 프록시, 모양 일치와 무한 영역을 참고했어요. 교차 수식·저장 형식·비용 처리는 HB 구현이에요. 면별·노멀 페이드는 후속 [경계 구현](PROBE_INFLUENCE.md)에 연결하고 라이트맵 혼합과 추가 후보 계층은 별도 원장에 유지해요.

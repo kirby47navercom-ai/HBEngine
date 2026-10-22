@@ -5270,5 +5270,41 @@
       }
     ],
     "implementation": "Independent influence/capture/projection; shared box/sphere/infinite proxy, matching finite shapes, optional reference. HB math/storage and safe missing/disabled/incompatible fallback are engine choices."
+  },
+  "supplemental1424": {
+    "record": "docs/PROBE_INFLUENCE.md",
+    "fullCorpusAnalysis": false,
+    "read": [
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Reflection-Probe.html",
+        "sections": [
+          "influence body172–214 scoped reread/detail"
+        ],
+        "kind": "manual17.0.4 scoped body/property review",
+        "date": "2026-10-22"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/master/Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/Reflection/VolumeProjection.hlsl",
+        "sections": [
+          "sphere41–53",
+          "box55–99"
+        ],
+        "kind": "official public master source scoped comparison, not17.0.4 version identity"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/master/Packages/com.unity.render-pipelines.core/ShaderLibrary/ImageBasedLighting.hlsl",
+        "sections": [
+          "normal orientation626–632"
+        ],
+        "kind": "official public master source scoped comparison"
+      }
+    ],
+    "additionalOpenedNotPromoted": [
+      "CommonLighting.hlsl initial content/find no InfluenceFadeNormalWeight",
+      "LightLoopDef.hlsl initial content/find no InfluenceFadeNormalWeight",
+      "VolumeRendering.hlsl initial content",
+      "LightEvaluation.hlsl initial content"
+    ],
+    "implementation": "HB per-face world plane distances/angular face mask/normal shell, common C++/BP/JSON, basic path retained. Independent formulas/storage/candidate policies; not full source/API/corpus analysis."
   }
 }

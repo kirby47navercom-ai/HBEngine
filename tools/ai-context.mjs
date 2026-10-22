@@ -126,7 +126,8 @@ export async function engineContext(input = {}) {
     const fileHits = sourceFiles.map(file => ({file, score: fileScore(file)})).filter(item => item.score > 0).sort((a, b) => b.score - a.score || a.file.localeCompare(b.file));
     const exact = status.items.filter(item => tokens.includes(normalize(item.id)));
     const items = (exact.length ? exact : status.items.filter(item => areas.has(item.area))).map(item => ({item, score: fileScore(item.title) + item.sources.reduce((n, file) => n + fileScore(file), 0)})).sort((a, b) => b.score - a.score || a.item.id.localeCompare(b.item.id)).slice(0, 4).map(({item}) => item);
-    const focusedPaths=(routes.focusRoutes||[]).filter(route=>route.keywords.some(keyword=>hasTerm(task+' '+symbol,keyword))).flatMap(route=>route.paths);
+    const exactSymbolRoutes=symbol?(routes.focusRoutes||[]).filter(route=>route.keywords.includes(symbol)):[];
+    const focusedPaths=(exactSymbolRoutes.length?exactSymbolRoutes:(routes.focusRoutes||[]).filter(route=>route.keywords.some(keyword=>hasTerm(task+' '+symbol,keyword)))).flatMap(route=>route.paths);
     const candidates = [...new Set([...fileHits.slice(0, 3).map(item => item.file), ...focusedPaths, ...selected.flatMap(topic => topic.paths), ...items.flatMap(item => item.sources)])];
     const files = [];
     for (const file of candidates) {

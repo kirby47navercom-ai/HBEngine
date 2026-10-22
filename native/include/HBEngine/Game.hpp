@@ -119,6 +119,11 @@ public:
 HB_CLASS()
 class ReflectionProbes : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeAdvancedBlend", KoreanName="반사 고급 경계 혼합", Category="렌더링") static void SetAdvancedBlend(Actor* target,bool value=true,const std::string& component="ReflectionProbe");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeBlendFaces", KoreanName="반사 면별 혼합 거리", Category="렌더링") static void SetBlendFaces(Actor* target,const Vec3& positive,const Vec3& negative,const std::string& component="ReflectionProbe");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeFaceFade", KoreanName="반사 방향별 가중치", Category="렌더링") static void SetFaceFade(Actor* target,const Vec3& positive,const Vec3& negative,const std::string& component="ReflectionProbe");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeNormalBlend", KoreanName="반사 바깥 노멀 억제 거리", Category="렌더링") static void SetNormalBlendDistance(Actor* target,float value=0,const std::string& component="ReflectionProbe");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeNormalFaces", KoreanName="반사 면별 노멀 억제 거리", Category="렌더링") static void SetNormalBlendFaces(Actor* target,const Vec3& positive,const Vec3& negative,const std::string& component="ReflectionProbe");
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeProxy", KoreanName="반사 투영 프록시 지정", Category="렌더링") static void SetProxyVolume(Actor* target,Actor* proxy=nullptr,const std::string& component="ReflectionProbe",const std::string& proxyComponent="ReflectionProxyVolume");
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeInfluenceProxy", KoreanName="반사 영향 영역 투영 사용", Category="렌더링") static void SetUseInfluenceVolume(Actor* target,bool value=true,const std::string& component="ReflectionProbe");
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbePriorityBlend", KoreanName="반사 우선 캡처 덮어쓰기", Category="렌더링") static void SetPriorityBlend(Actor* target,bool value=true,const std::string& component="ReflectionProbe");
