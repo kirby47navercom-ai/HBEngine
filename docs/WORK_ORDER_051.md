@@ -1000,3 +1000,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1582–1587: 이력진단lazy DFS/object+slot예산2m/최대8m/truncatedBy·known dense Object.keys목록없음·65536선읽기→63값/64슬롯/키슬롯65536→0·완료계수동치/기존구조공유통과. includeRevision:false는전체문서캡처/해시/flush생략·실제복사0/16슬롯·기존revision검사유지. 씬복원분리objects소유인수로install중복clone1제거·실제512오브젝트독립편집/UndoRedo/저장통과. fixture revision누락/document.read형태/총복사수가정수리·전체old/new FPS주장없음. 08b78d7·AI owner6171B/450065B·최종설치후누적작업계속.
 
 1589 설치확인: 2bcd28c208377d3d·4213명세/881소유/29native검사/20nativeowner/2vendor SHA·동일Player1484/Host1041. 실제2D512오브젝트독립편집/Undo2Redo2/추가tail UndoRedo/저장/slot16/fastquery배열복사0/fast undo1redo2 19.7초·User10849읽기SHA불변/연결/Versions1·이전190623194B회수. 변경없는렌더matrix/native빌드재반복없음·렌더링등누적목표계속.
+
+1591–1606: 반사캡처/간접라이트맵선택혼합·GL/GPU/fallback/DirectX+direct/atlas/금속/코팅·실제6경로30재질오차최대1.12e-8/native10바이트0·무맵/강도0/밝기2배. UV→베이크Worker상수import2수리→옵션/UndoRedo/저장/BP→CPP/실제D3D게임. Bool만runtime갱신은그룹/UV/페이지재사용/다른속성fallback/비동기최신값. Player1604재빌드·Host1041유지·최종설치게임검사예정, 누적잔여계속.
