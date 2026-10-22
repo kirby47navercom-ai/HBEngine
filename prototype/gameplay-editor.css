@@ -76,3 +76,7 @@
 .take-settings .take-channel-filter{display:grid;grid-template-columns:1fr 1fr;gap:4px;border:0;border-top:1px solid var(--line);margin:8px 0;padding:8px 0 0}
 .take-settings label[hidden]{display:none}
 .take-settings select{max-width:160px}.take-settings [data-take-bones]{width:160px}
+.take-source-list{min-width:0;border:0;border-top:1px solid var(--line);margin:8px 0;padding:8px 0;display:grid;gap:6px}
+.take-source-row{display:grid;grid-template-columns:16px 64px minmax(80px,1fr) 26px;align-items:center;gap:5px;font-size:12px}
+.take-source-row input[type=checkbox]{width:14px;margin:0}.take-source-row select{width:100%;max-width:none;min-width:0}.take-source-row button{padding:3px}
+.take-source-actions{display:flex;flex-wrap:wrap;gap:5px}.take-source-actions select{min-width:0}.take-source-list>div:first-of-type{max-height:220px;overflow:auto;display:grid;gap:5px}

@@ -1,3 +1,4 @@
+import {validTakeSources} from './take-sources.js';
 import {validTakeTolerance} from './take-preset-assets.js';
 import {validTakeSettings} from './take-settings.js';
 import {montageHasOverlap} from './montage-schedule.js';
@@ -63,6 +64,7 @@ const clipValid=c=>id(c.id)&&text(c.clip)&&number(c.start,0,86400)&&number(c.dur
 const keyValue=k=>number(k.time,0,86400)&&(typeof k.value==='boolean'||text(k.value,1000)||number(k.value)||Array.isArray(k.value)&&[3,4].includes(k.value.length)&&k.value.every(v=>number(v)));
 export function validGameplayAsset(kind,data){try{return validateGameplayAsset(kind,data);}catch{return false;}}
 function validateGameplayAsset(kind,data){
+  if(kind==='sequenceasset'&&data?.recordingSources!==undefined&&!validTakeSources(data.recordingSources))return false;
   if(kind==='sequenceasset'&&data?.recordingTolerance!==undefined&&!validTakeTolerance(data.recordingTolerance))return false;
   if(data?.version!==1||!text(data.name,80)||!data.name)return false;
   if(kind==='blackboard')return keysValid(data.keys);

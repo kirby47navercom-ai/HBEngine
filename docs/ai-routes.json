@@ -2319,6 +2319,31 @@
       "paths": [
         "prototype/app.js"
       ]
+    },
+    {
+      "id": "take-source-bindings",
+      "keywords": [
+        "resolveTakeSources",
+        "validTakeSources",
+        "makeTakeSource",
+        "runtime.take.sources",
+        "recordingSources",
+        "takeSourceAction"
+      ],
+      "paths": [
+        "prototype/take-sources.js"
+      ]
+    },
+    {
+      "id": "take-source-editor",
+      "keywords": [
+        "takeSourcesMarkup",
+        "takeSourceInput"
+      ],
+      "paths": [
+        "prototype/take-sources-editor.js",
+        "prototype/take-sources.js"
+      ]
     }
   ]
 }

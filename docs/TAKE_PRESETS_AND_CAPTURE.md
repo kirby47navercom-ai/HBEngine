@@ -36,4 +36,20 @@ AI는 `sequence.take.preset.apply`에 열린 시퀀스 path/expectedRevision, pr
 
 녹화기는 FPS와 키 오차를 실제 표본/키 줄이기에 사용하고 결과 시퀀스에 fps/recordingTolerance/recordingSettings를 복사해요. 녹화 프리셋은 편집기 전용으로 일반 게임 내보내기에서 제외해요. 게임에서 해당 파일을 직접 참조하면 빌드가 거절돼요. 기록된 시퀀스의 BP·C++ 재생은 프리셋 파일 없이 독립적으로 동작해요. 이미 저장된 결과에 원본 프리셋 변경이 자동 반영되는 라이브 링크가 아니에요. 새 상주 cache/worker/timer/GPU 자원은 없고 선택/불러오기 시 기존 프로젝트 인덱스와 파일 읽기를 사용해요.
 
-AI 계약은 `engine.schema.takePresets`, 모델 소유자는 take-preset-assets.js, 저장 창은 take-preset-save.js예요. 실제 설정 프리셋·복사/녹화·키 줄이기·C++/게임 재생이 지원 범위예요. Actor/source 바인딩 목록·프리셋 상속·독립 clock/timecode·외부 캡처 소스는 별도 잔여예요. [Unreal Take Recorder](https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine)의 preset 저장/불러오기와 FPS·키 줄이기 설정 본문을 대조했으며, Unreal의 전체 source 프리셋 구현이나 전체 문서/API 분석 완료를 뜻하지 않아요.
+AI 계약은 `engine.schema.takePresets`, 설정 소유자는 take-preset-assets.js, 소스 해석은 take-sources.js, 저장 창은 take-preset-save.js예요. 프리셋 상속·독립 clock/timecode·마이크/Live Link/다른 시퀀스 등의 외부 캡처 소스는 별도 잔여예요. [Unreal Take Recorder](https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine)의 Sources·Any Actor·Player·World, 소스 활성화·프리셋 저장/불러오기와 FPS·키 줄이기 설정 본문을 대조했어요. 전체 문서/API 분석 완료나 Unreal의 모든 소스 옵션을 구현했다는 뜻은 아니에요.
+
+## 저장한 녹화 소스
+
+프리셋 편집기와 시퀀스 녹화 설정에서 **대상 방식 → 저장된 소스 목록**을 선택해요. 액터는 현재 장면의 ID로 지정하고, 플레이어는 녹화 시작 때 게임 프레임워크가 조종하는 폰을 찾아요. 월드 액터는 그 시점에 활성인 액터를 포함해요. 풀에서 비활성인 액터·삭제 중인 액터·위젯/컴포넌트 보조 오브젝트는 월드 편입에서 제외해요. 소스 추가·선택 추가·삭제·개별 활성 체크를 사용하고 일반 Undo/Redo·저장으로 유지해요. 액터 이름이 바뀌어도 ID는 유지하며, 없는 ID를 같은 이름의 다른 액터로 바꾸지 않아요.
+
+프리셋의 선택 `sources`와 시퀀스/결과 Take의 선택 `recordingSources`는 같은 목록이에요. 각 행은 `{id,type,enabled,actor?}`예요. `id`는 행의 고유 ID이고 `type`은 `actor`, `player`, `world`예요. `actor` 필드는 actor 행에만 필요해요. player는 현재 단일 로컬 게임 프레임워크의 폰이며 멀티플레이어 인덱스를 지원한다는 뜻은 아니에요. 중복 대상은 한 번만 녹화하고, 꺼진 소스는 연결을 요구하지 않아요. 켜진 액터·플레이어가 없거나 월드가 비었거나 전체가 꺼져 있으면 시작 전 오류를 내요. 다른 선택 대상으로 조용히 대체하지 않아요.
+
+sources가 없는 기존 프리셋/시퀀스는 UI의 현재 선택(선택이 없으면 전체) 방식을 유지해요. **현재 선택**으로 바꾸면 저장된 목록을 제거해요. 빈 목록은 의도적인 미설정 상태이며 자동 전체 녹화로 해석하지 않아요. 프리셋 불러오기와 새 파일 저장에는 목록이 함께 복사돼요. 기존 키·트랙은 유지해요. 실행 중 목록 편집은 다음 녹화에만 쓰고 진행 중에는 편집을 잠가요. 비동기 프리셋 읽기 도중 사람이 실행 설정을 바꾸면 늦게 도착한 프리셋은 적용하지 않아요.
+
+AI는 먼저 읽기 전용 `runtime.take.sources`에 presetAsset/expectedPresetRevision 또는 sources를 전달해 실제 targets와 행별 bindings를 확인해요. 같은 입력으로 `runtime.take.start`를 호출해요. 명시적인 `targets`가 있으면 소스 목록보다 우선하고, 빈 targets는 오류예요. 프리셋 없는 AI 호출은 targets 또는 sources를 지정해야 해요.
+
+```json
+{"method":"runtime.take.sources","params":{"sources":[{"id":"hero","type":"player","enabled":true},{"id":"camera","type":"actor","actor":"Camera01","enabled":true}]}}
+```
+
+시작 시 소스와 대상 ID를 독립 복사해요. 이후 프리셋 변경이나 폰 조종 전환·새 액터 추가는 현재 Take의 초기 대상 목록을 바꾸지 않아요. 시작 후 생성 녹화는 별도 includeSpawned/spawnFilter 옵션으로 관리해요. `runtime.take.state`에는 기존 targets 개수와 함께 resolvedTargets/sourceBindings/sources를 반환해요. 결과 키는 실제 액터 ID에 베이크되어 기존 BP·C++ LevelSequence 재생을 그대로 사용하며, 프리셋이나 소스 해석 기능이 게임 패키지에 있어야 하는 것은 아니에요. 월드 소스 판정은 시작/미리보기 때 한 번 순회하며 새 감시·타이머·상주 월드 색인·GPU 자원을 만들지 않아요.
