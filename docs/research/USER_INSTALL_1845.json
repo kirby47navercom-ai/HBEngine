@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-take-preset-inheritance",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "b38448fafe29c9786e1c52c99db6c16fe060f3b6",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\29e0bdfccd81785e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\29e0bdfccd81785e\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\29e0bdfccd81785e\\HBEngine.exe",
+  "bundleHash": "29e0bdfccd81785e3b18d9f9392813dc683943ce9b1787d60a639d4bb3b85519",
+  "files": 4418,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4413,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b1056e8701c140b1",
+        "bytes": 195448157,
+        "manifestSHA256": "dfbb18ac58e15e34a11259577f4ae91032d53f5f71bb47cf6cf9dec649235bc0"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T23:36:43.4193815Z",
+    "bytes": 195448157,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "29e0bdfccd81785e"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1094,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/take-inheritance-1842-window-VvVCT5/acceptance.json",
+      "sha256": "6965679a5958571fb067715a5b9b269213a1373e148dba9bae5fac3229cf2e03",
+      "scope": "Owned actual3D multilevel preset authoring/read, group override/disabled controls/UndoRedo, detach/Undo and explicit saved-parent refresh; complete-chain AI resolve/CAS apply and start, flattened UI load/SaveAs and recording snapshots surviving parent edit; compiled CPP Play/Seek/Stop and optional independent D3D11 output with all four editor-only preset files excluded. Clock/timecode/external capture/per-channel inheritance/devices not claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\29e0bdfccd81785e\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 66539.1911
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\29e0bdfccd81785e\\",
+    "elapsedMs": 63.4,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\29e0bdfccd81785e",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "29e0bdfccd81785e3b18d9f9392813dc683943ce9b1787d60a639d4bb3b85519",
+      "installedAt": "2026-10-22T23:36:39.940Z",
+      "manifestFiles": 4418,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Exact unchanged SDK21/Player1604/Host1041/30 repository test owners and shader math hashes verified. Changed Take preset authoring/recorder/export code is covered by eight final affected regressions and the final installed UI/AI/compiled CPP/independent D3D11 gate; no old runtime proof is reused for changed owners.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4418,
+  "versions": [
+    "29e0bdfccd81785e"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1845-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/inheritance1843-group.json",
+      "sha256": "687b53219a72a4394dff38fbb27d6356a402d4f842f95cfc06a6d90f866f7641",
+      "scope": "Eight final affected inheritance/source/preset/settings/snapshot/filter/skeletal/spawn regressions."
+    },
+    {
+      "path": "native/build/take-inheritance-1841-CMvgp3/acceptance.json",
+      "sha256": "2f8252c1b62d5935cee04c7d669a804fa576eefadc550039eda1c94fc0089562",
+      "scope": "Saved parent chains, four explicit groups fps/tolerance/settings/sources, validated flattening, independent clones and legacy assets, exact complete-chain revision guard, missing/cycle/depth safety, detach/editor toggles and normal sequence/Take output. No per-property merge or runtime preset dependency."
+    },
+    {
+      "path": "native/build/take-sources-1835-Xtpj5u/acceptance.json",
+      "sha256": "98718de03c3c29886a74d92f405dd139d1cfb171afe1206b163555ee9408198c",
+      "scope": "Shared source resolver and production source editor actions, actor/player/world identity and deduplication, no fallback for missing enabled source, explicit target override, frozen recorder targets and source metadata, no accidental later-world admission, existing sequence keys retained, legacy source absence and asynchronous runtime configuration protection. Actual UI/services/C++/D3D separate gate."
+    },
+    {
+      "path": "native/build/take-presets-1828-oUpxM6/acceptance.json",
+      "sha256": "14316a6f56b4fa50607deaeb565e105226a341c559318588af94f6f844324192",
+      "scope": "Reusable on-demand config preset assets, snapshot options/filter override isolation, unchanged sequence track identities, actual TakeRecorder FPS/tolerance key reduction and baked metadata, actual2D project/standard documents, game build excludes editor-only preset, and production UI async-read conflict protection. Actual editor/C++/D3D are separate gates; source binding lists/inheritance/timecode not claimed."
+    },
+    {
+      "path": "native/build/take-settings-1787-q0Y5Z7/acceptance.json",
+      "sha256": "a322aa3acd0b5b8d0e05bd1650ebfd9d8f289a0a3e6b4c7501611666206bc4a0",
+      "scope": "Owned scratch row/vector allocations and exact recorded key data, preset/config validation and dynamic topology. Admitted keys still clone their data; no whole heap/FPS/mobile-device claim."
+    },
+    {
+      "path": "native/build/take-snapshot-1718-fnCny5/acceptance.json",
+      "sha256": "637deb88a1171eaa322cfedc5aedef00bf20b91d157c39d902b4f8f7fc5fb4f4",
+      "scope": "600 admitted frame samples plus an ignored repeated same-time call of one128-element actual typed record array. Compare exact key data with c1ef0d5, count direct payload structuredClone calls and preserve in-place changes/ownership. Wall times are observations, not FPS/device/end-to-end performance."
+    },
+    {
+      "path": "native/build/take-filter-215-oUUmAG/acceptance.json",
+      "sha256": "c81f131099f78c0e50e11daa2118276c706f7bf814524a25543b82e63f6e6cf8",
+      "scope": "Eight final affected inheritance/source/preset/settings/snapshot/filter/skeletal/spawn regressions."
+    },
+    {
+      "path": "native/build/skeletal-take-209-IgEYWO/acceptance.json",
+      "sha256": "83158b00bac704058110de50dae05a72bfaab96edf4371e5573518cc184166c3",
+      "scope": "Eight final affected inheritance/source/preset/settings/snapshot/filter/skeletal/spawn regressions."
+    },
+    {
+      "path": "native/build/spawn-take-211-vu4XXQ/acceptance.json",
+      "sha256": "0e0a4a1f6be1e9e93d905ab0378a7ab0d45c76f9769d1c91d27d1d9a7a0026b8",
+      "scope": "Eight final affected inheritance/source/preset/settings/snapshot/filter/skeletal/spawn regressions."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed multilevel saved-parent Take presets, explicit FPS/tolerance/settings/sources group override, effective values/locked inherited inputs, value-preserving toggle/button-and-dropdown detach/UndoRedo and saved-parent refresh; complete-chain AI resolve/revision guard/shared apply and start; flat sequence/SaveAs/active recording snapshots surviving parent edit. Eight affected regressions plus exact installed actual3D UI/AI/human24fps/tolerance0/IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback with all four preset files excluded passed. Exact source1094/native21/30tests/vendor2/Player1604/Host1041/renderer hashes. User preserved/Versions1. Per-property inheritance/clock/timecode/external capture and broader animation restore remain."
+}

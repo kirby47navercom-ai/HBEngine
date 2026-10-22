@@ -269,7 +269,8 @@
         "docs/research/USER_INSTALL_1833.json",
         "docs/research/ENGINE_WORK_1837.json",
         "docs/research/USER_INSTALL_1839.json",
-        "docs/research/ENGINE_WORK_1843.json"
+        "docs/research/ENGINE_WORK_1843.json",
+        "docs/research/USER_INSTALL_1845.json"
       ]
     },
     {
@@ -1885,7 +1886,8 @@
         "docs/research/USER_INSTALL_1833.json",
         "docs/research/ENGINE_WORK_1837.json",
         "docs/research/USER_INSTALL_1839.json",
-        "docs/research/ENGINE_WORK_1843.json"
+        "docs/research/ENGINE_WORK_1843.json",
+        "docs/research/USER_INSTALL_1845.json"
       ]
     },
     {
@@ -3111,7 +3113,8 @@
         "docs/research/USER_INSTALL_1833.json",
         "docs/research/ENGINE_WORK_1837.json",
         "docs/research/USER_INSTALL_1839.json",
-        "docs/research/ENGINE_WORK_1843.json"
+        "docs/research/ENGINE_WORK_1843.json",
+        "docs/research/USER_INSTALL_1845.json"
       ]
     },
     {
@@ -3649,14 +3652,14 @@
     "first": 1841,
     "last": 1843,
     "receipt": "docs/research/ENGINE_WORK_1843.json",
-    "scope": "Take multilevel saved-parent presets with explicit FPS/tolerance/settings/sources group overrides, effective UI values and input lock, value-preserving override/detach/UndoRedo, explicit parent refresh, common UI/AI resolver with complete dependency revision guard and missing/cycle/depth errors, flattened sequence/SaveAs/recording snapshots portable to ordinary CPP playback. Eight final regressions and offline context passed; source actual3D UI/AI/human/CPP checkpoint preceded final dropdown-detach cleanup/conflict code. Final current installed D3D11 gate required."
+    "scope": "Installed multilevel saved-parent Take presets, explicit FPS/tolerance/settings/sources group override, effective values/locked inherited inputs, value-preserving toggle/button-and-dropdown detach/UndoRedo and saved-parent refresh; complete-chain AI resolve/revision guard/shared apply and start; flat sequence/SaveAs/active recording snapshots surviving parent edit. Eight affected regressions plus exact installed actual3D UI/AI/human24fps/tolerance0/IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback with all four preset files excluded passed. Exact source1094/native21/30tests/vendor2/Player1604/Host1041/renderer hashes. User preserved/Versions1. Per-property inheritance/clock/timecode/external capture and broader animation restore remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1839.json",
-    "sourceCommit": "46e3f9513aa90a4593ab9aff35d1c2928b31faa5",
-    "bundleHash": "b1056e8701c140b1ae53a843d12bff1812cc9c407bfc27f2b42fb80d30b48e50",
+    "receipt": "docs/research/USER_INSTALL_1845.json",
+    "sourceCommit": "b38448fafe29c9786e1c52c99db6c16fe060f3b6",
+    "bundleHash": "29e0bdfccd81785e3b18d9f9392813dc683943ce9b1787d60a639d4bb3b85519",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actor/player/world source bindings, enabled-list UI, sequence/preset/SaveAs/group UndoRedo, AI read-only source preview and shared start resolution, missing/empty rejection and explicit target override, frozen bindings/targets and recorded source metadata; reusable Take config preset asset creation/editor, sequence load and SaveAs no-overwrite/source CAS/group UndoRedo, AI apply revision/noChange and runtime start overrides, snapshot FPS/tolerance/channel/bone/spawn settings, active recording source-edit isolation, and editor-only export exclusion. Seven affected regressions plus final installed actual3D UI/AI/human24fps/tolerance0/filtered IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback without preset files passed. Exact source1088/native21/30tests/vendor2/Player1604/Host1041 and renderer hashes. User preserved/Versions1. Preset inheritance/clock/timecode/external source capture and broader animation restore remain."
+    "scope": "Installed multilevel saved-parent Take presets, explicit FPS/tolerance/settings/sources group override, effective values/locked inherited inputs, value-preserving toggle/button-and-dropdown detach/UndoRedo and saved-parent refresh; complete-chain AI resolve/revision guard/shared apply and start; flat sequence/SaveAs/active recording snapshots surviving parent edit. Eight affected regressions plus exact installed actual3D UI/AI/human24fps/tolerance0/IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback with all four preset files excluded passed. Exact source1094/native21/30tests/vendor2/Player1604/Host1041/renderer hashes. User preserved/Versions1. Per-property inheritance/clock/timecode/external capture and broader animation restore remain."
   }
 }

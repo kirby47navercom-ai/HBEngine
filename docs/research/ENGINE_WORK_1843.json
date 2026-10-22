@@ -1437,6 +1437,20 @@
     "Initial rename test incorrectly expected stored reference text to be rewritten. Existing ProjectService rename intentionally uses redirects; corrected test uses the ordinary redirect-aware reader and verifies inherited resolution after move.",
     "Review found dropdown detach could retain a hidden local sources field when the effective parent had none; clear raw fields before copying the flattened value. Added exact regression and both real-window detach paths to final installed gate."
   ],
-  "installationPending": true,
-  "scope": "Take multilevel saved-parent presets with explicit FPS/tolerance/settings/sources group overrides, effective UI values and input lock, value-preserving override/detach/UndoRedo, explicit parent refresh, common UI/AI resolver with complete dependency revision guard and missing/cycle/depth errors, flattened sequence/SaveAs/recording snapshots portable to ordinary CPP playback. Eight final regressions and offline context passed; source actual3D UI/AI/human/CPP checkpoint preceded final dropdown-detach cleanup/conflict code. Final current installed D3D11 gate required."
+  "installationPending": false,
+  "scope": "Take multilevel saved-parent presets with explicit FPS/tolerance/settings/sources group overrides, effective UI values and input lock, value-preserving override/detach/UndoRedo, explicit parent refresh, common UI/AI resolver with complete dependency revision guard and missing/cycle/depth errors, flattened sequence/SaveAs/recording snapshots portable to ordinary CPP playback. Eight final regressions and offline context passed; source actual3D UI/AI/human/CPP checkpoint preceded final dropdown-detach cleanup/conflict code. Final current installed D3D11 gate required.",
+  "currentInstallation": "docs/research/USER_INSTALL_1845.json",
+  "installedGates": [
+    {
+      "path": "native/build/take-inheritance-1842-window-VvVCT5/acceptance.json",
+      "sha256": "6965679a5958571fb067715a5b9b269213a1373e148dba9bae5fac3229cf2e03",
+      "scope": "Owned actual3D multilevel preset authoring/read, group override/disabled controls/UndoRedo, detach/Undo and explicit saved-parent refresh; complete-chain AI resolve/CAS apply and start, flattened UI load/SaveAs and recording snapshots surviving parent edit; compiled CPP Play/Seek/Stop and optional independent D3D11 output with all four editor-only preset files excluded. Clock/timecode/external capture/per-channel inheritance/devices not claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\29e0bdfccd81785e\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 66539.1911
+    }
+  ]
 }
