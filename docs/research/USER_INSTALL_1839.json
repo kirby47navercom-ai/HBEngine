@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-take-source-bindings",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "46e3f9513aa90a4593ab9aff35d1c2928b31faa5",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b1056e8701c140b1",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\b1056e8701c140b1\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\b1056e8701c140b1\\HBEngine.exe",
+  "bundleHash": "b1056e8701c140b1ae53a843d12bff1812cc9c407bfc27f2b42fb80d30b48e50",
+  "files": 4412,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4407,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\c818748b44838287",
+        "bytes": 195251251,
+        "manifestSHA256": "48bf7d2ed72da898ea67d50e7c180cfb38bd062aeedc810d7410e68432a97151"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T23:21:07.1949121Z",
+    "bytes": 195251251,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "b1056e8701c140b1"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1088,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/take-sources-1836-window-FacJfu/acceptance.json",
+      "sha256": "1cba19122ad2f5df393d55ca52232ed7e745a88379076b282b87c9e767fdccb4",
+      "scope": "Owned actual3D actor/player/world source list creation, enabled flags, UI/sequence/SaveAs/UndoRedo, read-only AI source resolution, explicit override and missing/empty rejection, frozen initial identities through source asset edit; preset create/editor/save, sequence UI load/save-as with no-overwrite/group UndoRedo, AI apply revision/noChange/UndoRedo and AI recording snapshot/override surviving source edit, human recording with filtered bone/model absence and actual compiled C++ Play/Seek/Stop. Optional independent D3D11 baked output without editor preset files. Preset inheritance/timecode/external sources/devices/whole-engine parity not claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\b1056e8701c140b1\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 72555.79070000001
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\b1056e8701c140b1\\",
+    "elapsedMs": 61.77,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\b1056e8701c140b1",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "b1056e8701c140b1ae53a843d12bff1812cc9c407bfc27f2b42fb80d30b48e50",
+      "installedAt": "2026-10-22T23:21:03.752Z",
+      "manifestFiles": 4412,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Exact unchanged SDK21/Player1604/Host1041/30 repository test owners and shader math hashes verified. Changed Take preset authoring/recorder/export code is covered by seven final affected regressions and the final installed UI/AI/compiled CPP/independent D3D11 gate; no old runtime proof is reused for changed owners.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4412,
+  "versions": [
+    "b1056e8701c140b1"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1839-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/sources1835-group.json",
+      "sha256": "c9d57eef79a5ad05a68fd958f65c3dcbcb68728d3c311f8f50361e2ab121c2df",
+      "scope": "Seven final affected source/preset/settings/snapshot/filter/skeletal/spawn regressions."
+    },
+    {
+      "path": "native/build/take-sources-1835-GIrKGj/acceptance.json",
+      "sha256": "98718de03c3c29886a74d92f405dd139d1cfb171afe1206b163555ee9408198c",
+      "scope": "Shared source resolver and production source editor actions, actor/player/world identity and deduplication, no fallback for missing enabled source, explicit target override, frozen recorder targets and source metadata, no accidental later-world admission, existing sequence keys retained, legacy source absence and asynchronous runtime configuration protection. Actual UI/services/C++/D3D separate gate."
+    },
+    {
+      "path": "native/build/take-presets-1828-FcT0cz/acceptance.json",
+      "sha256": "14316a6f56b4fa50607deaeb565e105226a341c559318588af94f6f844324192",
+      "scope": "Reusable on-demand config preset assets, snapshot options/filter override isolation, unchanged sequence track identities, actual TakeRecorder FPS/tolerance key reduction and baked metadata, actual2D project/standard documents, game build excludes editor-only preset, and production UI async-read conflict protection. Actual editor/C++/D3D are separate gates; source binding lists/inheritance/timecode not claimed."
+    },
+    {
+      "path": "native/build/take-settings-1787-oqMPKv/acceptance.json",
+      "sha256": "a322aa3acd0b5b8d0e05bd1650ebfd9d8f289a0a3e6b4c7501611666206bc4a0",
+      "scope": "Owned scratch row/vector allocations and exact recorded key data, preset/config validation and dynamic topology. Admitted keys still clone their data; no whole heap/FPS/mobile-device claim."
+    },
+    {
+      "path": "native/build/take-snapshot-1718-V6fQ0o/acceptance.json",
+      "sha256": "a31a62dba65b4f5a59d6c546988bfe687cbd09f38f8b2658841ddbdf62e6d4ac",
+      "scope": "600 admitted frame samples plus an ignored repeated same-time call of one128-element actual typed record array. Compare exact key data with c1ef0d5, count direct payload structuredClone calls and preserve in-place changes/ownership. Wall times are observations, not FPS/device/end-to-end performance."
+    },
+    {
+      "path": "native/build/take-filter-215-Lru0QQ/acceptance.json",
+      "sha256": "c81f131099f78c0e50e11daa2118276c706f7bf814524a25543b82e63f6e6cf8",
+      "scope": "Seven final affected source/preset/settings/snapshot/filter/skeletal/spawn regressions."
+    },
+    {
+      "path": "native/build/skeletal-take-209-OQpTXs/acceptance.json",
+      "sha256": "83158b00bac704058110de50dae05a72bfaab96edf4371e5573518cc184166c3",
+      "scope": "Seven final affected source/preset/settings/snapshot/filter/skeletal/spawn regressions."
+    },
+    {
+      "path": "native/build/spawn-take-211-M7ceUP/acceptance.json",
+      "sha256": "0e0a4a1f6be1e9e93d905ab0378a7ab0d45c76f9769d1c91d27d1d9a7a0026b8",
+      "scope": "Seven final affected source/preset/settings/snapshot/filter/skeletal/spawn regressions."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/take-sources-1836-window-bm8tAL/acceptance.json",
+      "sha256": "7fdf7424f685696235aaea178bb3e2ffb7d80d3c3b2c5aac5a9386fa7c91cea9",
+      "scope": "Owned actual3D actor/player/world source list creation, enabled flags, UI/sequence/SaveAs/UndoRedo, read-only AI source resolution, explicit override and missing/empty rejection, frozen initial identities through source asset edit; preset create/editor/save, sequence UI load/save-as with no-overwrite/group UndoRedo, AI apply revision/noChange/UndoRedo and AI recording snapshot/override surviving source edit, human recording with filtered bone/model absence and actual compiled C++ Play/Seek/Stop. Optional independent D3D11 baked output without editor preset files. Preset inheritance/timecode/external sources/devices/whole-engine parity not claimed."
+    }
+  ],
+  "scope": "Installed actor/player/world source bindings, enabled-list UI, sequence/preset/SaveAs/group UndoRedo, AI read-only source preview and shared start resolution, missing/empty rejection and explicit target override, frozen bindings/targets and recorded source metadata; reusable Take config preset asset creation/editor, sequence load and SaveAs no-overwrite/source CAS/group UndoRedo, AI apply revision/noChange and runtime start overrides, snapshot FPS/tolerance/channel/bone/spawn settings, active recording source-edit isolation, and editor-only export exclusion. Seven affected regressions plus final installed actual3D UI/AI/human24fps/tolerance0/filtered IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback without preset files passed. Exact source1088/native21/30tests/vendor2/Player1604/Host1041 and renderer hashes. User preserved/Versions1. Preset inheritance/clock/timecode/external source capture and broader animation restore remain."
+}

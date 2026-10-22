@@ -265,7 +265,8 @@
         "docs/TAKE_PRESETS_AND_CAPTURE.md",
         "docs/research/ENGINE_WORK_1831.json",
         "docs/research/USER_INSTALL_1833.json",
-        "docs/research/ENGINE_WORK_1837.json"
+        "docs/research/ENGINE_WORK_1837.json",
+        "docs/research/USER_INSTALL_1839.json"
       ]
     },
     {
@@ -1877,7 +1878,8 @@
         "docs/research/USER_INSTALL_1811.json",
         "docs/research/ENGINE_WORK_1831.json",
         "docs/research/USER_INSTALL_1833.json",
-        "docs/research/ENGINE_WORK_1837.json"
+        "docs/research/ENGINE_WORK_1837.json",
+        "docs/research/USER_INSTALL_1839.json"
       ]
     },
     {
@@ -3099,7 +3101,8 @@
         "docs/research/USER_INSTALL_1826.json",
         "docs/research/ENGINE_WORK_1831.json",
         "docs/research/USER_INSTALL_1833.json",
-        "docs/research/ENGINE_WORK_1837.json"
+        "docs/research/ENGINE_WORK_1837.json",
+        "docs/research/USER_INSTALL_1839.json"
       ]
     },
     {
@@ -3637,14 +3640,14 @@
     "first": 1835,
     "last": 1837,
     "receipt": "docs/research/ENGINE_WORK_1837.json",
-    "scope": "Take actor/current-player/world source binding authoring, enabled flags, add/selection/remove, preset/sequence snapshot and SaveAs/group UndoRedo, shared runtime preview/start resolution with missing/empty rejection and explicit targets override, frozen source/target metadata and ordinary CPP playback. Seven affected regressions, offline AI context and actual3D source UI/AI/human recording/compiled CPP passed. Independent final installed D3D11 gate pending; inheritance/timecode/external sources remain."
+    "scope": "Installed actor/player/world source bindings, enabled-list UI, sequence/preset/SaveAs/group UndoRedo, AI read-only source preview and shared start resolution, missing/empty rejection and explicit target override, frozen bindings/targets and recorded source metadata; reusable Take config preset asset creation/editor, sequence load and SaveAs no-overwrite/source CAS/group UndoRedo, AI apply revision/noChange and runtime start overrides, snapshot FPS/tolerance/channel/bone/spawn settings, active recording source-edit isolation, and editor-only export exclusion. Seven affected regressions plus final installed actual3D UI/AI/human24fps/tolerance0/filtered IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback without preset files passed. Exact source1088/native21/30tests/vendor2/Player1604/Host1041 and renderer hashes. User preserved/Versions1. Preset inheritance/clock/timecode/external source capture and broader animation restore remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1833.json",
-    "sourceCommit": "67468c19588b5f8397732e9837b36d941af699b1",
-    "bundleHash": "c818748b4483828766835fb9d64977fa0220e9872954fee3ad3585ee7845c026",
+    "receipt": "docs/research/USER_INSTALL_1839.json",
+    "sourceCommit": "46e3f9513aa90a4593ab9aff35d1c2928b31faa5",
+    "bundleHash": "b1056e8701c140b1ae53a843d12bff1812cc9c407bfc27f2b42fb80d30b48e50",
     "verified": true,
     "versions": 1,
-    "scope": "Installed reusable Take config preset asset creation/editor, sequence load and SaveAs no-overwrite/source CAS/group UndoRedo, AI apply revision/noChange and runtime start overrides, snapshot FPS/tolerance/channel/bone/spawn settings, active recording source-edit isolation, and editor-only export exclusion. Six affected regressions plus final installed actual3D UI/AI/human24fps/tolerance0/filtered IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback without preset files passed. Exact source1082/native21/30tests/vendor2/Player1604/Host1041 and renderer hashes. User preserved/Versions1. Source bindings/preset inheritance/clock/timecode and broader animation restore remain."
+    "scope": "Installed actor/player/world source bindings, enabled-list UI, sequence/preset/SaveAs/group UndoRedo, AI read-only source preview and shared start resolution, missing/empty rejection and explicit target override, frozen bindings/targets and recorded source metadata; reusable Take config preset asset creation/editor, sequence load and SaveAs no-overwrite/source CAS/group UndoRedo, AI apply revision/noChange and runtime start overrides, snapshot FPS/tolerance/channel/bone/spawn settings, active recording source-edit isolation, and editor-only export exclusion. Seven affected regressions plus final installed actual3D UI/AI/human24fps/tolerance0/filtered IKMid+model absence, compiled CPP Play/Seek/Stop and independent D3D11 baked playback without preset files passed. Exact source1088/native21/30tests/vendor2/Player1604/Host1041 and renderer hashes. User preserved/Versions1. Preset inheritance/clock/timecode/external source capture and broader animation restore remain."
   }
 }

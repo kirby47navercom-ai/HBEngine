@@ -1422,8 +1422,23 @@
     "scope": "Related primary sections only; no whole Unreal/Unity document/API analysis claim."
   },
   "testCorrections": [
-    "First actual source fixture had no possessed pawn: player source correctly rejected. Owned fixture now explicitly marks Rig209 as pawn and asserts its ID; no failed run counted as a supported player capture."
+    "First actual source fixture had no possessed pawn: player source correctly rejected. Owned fixture now explicitly marks Rig209 as pawn and asserts its ID; no failed run counted as a supported player capture.",
+    "Initial exact runtime.take.sources context route pointed only to the resolver owner where the command literal was absent, causing a bounded full-source fallback. Split the API command route to app.js; subsequent offline context and three one-owner lookups passed. Product runtime source was unchanged after the actual source GUI gate."
   ],
-  "installationPending": true,
-  "scope": "Take actor/current-player/world source binding authoring, enabled flags, add/selection/remove, preset/sequence snapshot and SaveAs/group UndoRedo, shared runtime preview/start resolution with missing/empty rejection and explicit targets override, frozen source/target metadata and ordinary CPP playback. Seven affected regressions, offline AI context and actual3D source UI/AI/human recording/compiled CPP passed. Independent final installed D3D11 gate pending; inheritance/timecode/external sources remain."
+  "installationPending": false,
+  "scope": "Take actor/current-player/world source binding authoring, enabled flags, add/selection/remove, preset/sequence snapshot and SaveAs/group UndoRedo, shared runtime preview/start resolution with missing/empty rejection and explicit targets override, frozen source/target metadata and ordinary CPP playback. Seven affected regressions, offline AI context and actual3D source UI/AI/human recording/compiled CPP passed. Independent final installed D3D11 gate pending; inheritance/timecode/external sources remain.",
+  "currentInstallation": "docs/research/USER_INSTALL_1839.json",
+  "installedGates": [
+    {
+      "path": "native/build/take-sources-1836-window-FacJfu/acceptance.json",
+      "sha256": "1cba19122ad2f5df393d55ca52232ed7e745a88379076b282b87c9e767fdccb4",
+      "scope": "Owned actual3D actor/player/world source list creation, enabled flags, UI/sequence/SaveAs/UndoRedo, read-only AI source resolution, explicit override and missing/empty rejection, frozen initial identities through source asset edit; preset create/editor/save, sequence UI load/save-as with no-overwrite/group UndoRedo, AI apply revision/noChange/UndoRedo and AI recording snapshot/override surviving source edit, human recording with filtered bone/model absence and actual compiled C++ Play/Seek/Stop. Optional independent D3D11 baked output without editor preset files. Preset inheritance/timecode/external sources/devices/whole-engine parity not claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\b1056e8701c140b1\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 72555.79070000001
+    }
+  ]
 }
