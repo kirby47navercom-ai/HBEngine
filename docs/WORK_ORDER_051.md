@@ -1082,3 +1082,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1771–1774: 월드 메시·높이/구멍 삼각형 지형·폴리지 원본·모든 월드 LOD 거리장 자동 쿠킹. Float32 동일 지문·0 렌더러/인스턴스 버퍼·기존 예산/캐시·높이/구멍/의존 메시 변경·누락/순환/취소. 7회귀+Node 재확인·GL/GPU hits3/miss0/추가worker0·AO116→132/직접67동일·LOD와변경fallback. 실제 월드 문서 AI/Undo·C++/BP stage5. 최초 두 창 검사 실패는 편집기 runtime.state에 없는 renderer를 조회한 검사 오류, 디버그 renderer로 수정·통제 LOD50/far300 후 통과. 실패를 성과로 계산하지 않음. SDK/셰이더불변·설치 D3D 검증 예정. WORK1774.
 
 1775–1777: 설치본 월드 메쉬·삼각형 지형·폴리지 원본·월드LOD 모든 단계 자동 거리장 쿠킹. 실제 지형 문서 AI revision/dryRun/stale/Undo/저장과 GL/GPU 41.18초, 별도 D3D11 41.67초 통과. GL/GPU cooked hit3/miss0/newworker0·ambient116/132·direct67동일·LOD/fallback; CPP/BP Stage5, 패키지 초기/재활성 workerStarts0. 명세4357/source1031/native21/30tests/vendor2 SHA·User10849 읽기 불변·링크/association/Versions1·이전193785216B 정리/lease0. 7회귀+fixture 재확인, 셰이더/SDK 미변경. USER_INSTALL1776. 전용 높이장·FBX·clipmap·일반 editor prebake·실기기/FPS 검증으로 계산하지 않음. 누적 계속.
+
+1778–1782: 로드된 정적 기하 편집기 거리장 생성 UI/AI·프로젝트 공용 캐시·패키징 analytic 공유·취소/충돌/검증·새 편집기 세션 재사용 구현. 7회귀+최종 대화상자/경계 재검사·GL/GPU 실제 픽셀/CPP Stage5 통과. WORK1782, 설치 후 D3D 별도 확인 예정. 전체 누적 계속.
