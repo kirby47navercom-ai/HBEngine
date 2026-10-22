@@ -1271,8 +1271,23 @@
     "fixture": "1718 expected601 copies but repeated same-time call is intentionally not admitted: actual original count600; compare remains exact.1721 initially queried unopened BP document; opened it before recording and kept production guard unchanged.",
     "actualDefect": "Original recorder clones payload before deciding a constant run only extends its last key, and builds all-world map every fixed sample; BP object() repeatedly finds same IDs. New code matches old keys/owner references and in-place actor mutation semantics while reducing counted work."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1716.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1726.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/take-runtime-1721-window-cC6t5t/acceptance.json",
+      "sha256": "3cd9a2a0fc1ff819edff0a96d0964ab97552078a4346a91c9239f8250f600c92",
+      "scope": "Owned 2D editor records128-element pure-BP typed struct array plus transform, applies/Undo/Redo/saves Take; same D3D game replays array1000/position1000 and restores authored array0 with zero native modules when packaged. Snapshot/ID work-count reductions proved by1718/1719/1720, not FPS/mobile claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a1d151728b7375eb\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 40873.163
+    }
+  ]
 }

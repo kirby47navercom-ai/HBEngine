@@ -1806,7 +1806,8 @@
         "docs/research/ENGINE_WORK_1587.json",
         "docs/research/ENGINE_WORK_1633.json",
         "docs/RUNTIME_LOOKUP_AND_TAKE_COST.md",
-        "docs/research/ENGINE_WORK_1724.json"
+        "docs/research/ENGINE_WORK_1724.json",
+        "docs/research/USER_INSTALL_1726.json"
       ]
     },
     {
@@ -2963,7 +2964,8 @@
         "docs/research/ENGINE_WORK_1714.json",
         "docs/research/USER_INSTALL_1716.json",
         "docs/RUNTIME_LOOKUP_AND_TAKE_COST.md",
-        "docs/research/ENGINE_WORK_1724.json"
+        "docs/research/ENGINE_WORK_1724.json",
+        "docs/research/USER_INSTALL_1726.json"
       ]
     },
     {
@@ -3253,7 +3255,8 @@
         "docs/research/ENGINE_WORK_1714.json",
         "docs/research/USER_INSTALL_1716.json",
         "docs/RUNTIME_LOOKUP_AND_TAKE_COST.md",
-        "docs/research/ENGINE_WORK_1724.json"
+        "docs/research/ENGINE_WORK_1724.json",
+        "docs/research/USER_INSTALL_1726.json"
       ]
     },
     {
@@ -3467,14 +3470,14 @@
     "first": 1718,
     "last": 1724,
     "receipt": "docs/research/ENGINE_WORK_1724.json",
-    "scope": "Take constant-key snapshot copy elision, fixed-owner batch lookup and validated numeric actor slots/weak-world cache. Exact original Git key/ownership/lifetime comparison and work counts; source actual2D UI Take128/UndoRedo/save/same D3D replay1000/restore0 passed. Final installed gate pending."
+    "scope": "Validated weak-world numeric actor slots, batch fixed-owner snapshot and constant Take key copy elision with original-Git semantic/work-count proof. Final installed2D UI Take128/UndoRedo/save/same D3D zero-native replay array1000/position1000/restore0 passed; User unchanged/Versions1."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1716.json",
-    "sourceCommit": "395cc914d4ae5d462fbb50640b2ac6f2066da9eb",
-    "bundleHash": "79dbe11e5ff7b4f37184c7c44034b0c69394765636f83b32a800c3f68be9265c",
+    "receipt": "docs/research/USER_INSTALL_1726.json",
+    "sourceCommit": "283a389c778fd262c4b9ffd41acf0b2c4b1a36ce",
+    "bundleHash": "a1d151728b7375ebf7237351383aa046fe954a032d1da4c60396e41ec385d24f",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actual2D editor explicitly builds byte-identical H/S in two folders with different relative included defaults, metadata1/2, actual CPP workers and same saved D3D game retain two independent modules and positions1/2. Source header/CPP-only plain include/negative-priority candidate watch, real production poll create/delete metadata1-9-1/build invalidation/human edit guards; actual private PC HTTP and mobile production handler contextual/legacy/case/ambiguity contracts and11 grouped source checks. All source/native21/30tests/vendor2/Player1604/Host1041 and full manifest verified, User unchanged/Versions1. No arbitrary preprocessor/system/generated dependency, destructive schema, whole-engine/FPS/phone claim."
+    "scope": "Installed actual2D editor records128 pure-BP typed records and transform, applies/Undo/Redo/saves Take, same D3D zero-native game replays array1000/position1000 and restores authored array0. Source original-Git comparison verifies payload copy600-to6, fixed-owner ID reads1228800-to13664 with no missing-target rescan regression, and validated weak-world slots preserve reorder/replacement/deletion/recreation/self/missing semantics.14 grouped regressions incl current changed BP runtime and Take, exact source/manifest/native21/30tests/vendor2/Player1604/Host1041 verified. User unchanged/Versions1. Earlier CPP/D3D modules reused only for unchanged SDK/compiler/transport. No FPS/phone/whole engine claim."
   }
 }

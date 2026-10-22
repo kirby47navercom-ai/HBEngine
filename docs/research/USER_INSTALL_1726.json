@@ -1,0 +1,185 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-runtime-lookup-take-snapshot-cost",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "283a389c778fd262c4b9ffd41acf0b2c4b1a36ce",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a1d151728b7375eb",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\a1d151728b7375eb\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\a1d151728b7375eb\\HBEngine.exe",
+  "bundleHash": "a1d151728b7375ebf7237351383aa046fe954a032d1da4c60396e41ec385d24f",
+  "files": 4314,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4306,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\79dbe11e5ff7b4f3",
+        "bytes": 192655393,
+        "manifestSHA256": "a92be359a0616f10c3d6e43d50b931495acc393b14b5721998ac6d99f14dca61"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T18:01:21.3415779Z",
+    "bytes": 192655393,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "a1d151728b7375eb"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 986,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/take-runtime-1721-window-cC6t5t/acceptance.json",
+      "sha256": "3cd9a2a0fc1ff819edff0a96d0964ab97552078a4346a91c9239f8250f600c92",
+      "scope": "Owned 2D editor records128-element pure-BP typed struct array plus transform, applies/Undo/Redo/saves Take; same D3D game replays array1000/position1000 and restores authored array0 with zero native modules when packaged. Snapshot/ID work-count reductions proved by1718/1719/1720, not FPS/mobile claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\a1d151728b7375eb\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 40873.163
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\a1d151728b7375eb\\",
+    "elapsedMs": 62.78,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\a1d151728b7375eb",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "a1d151728b7375ebf7237351383aa046fe954a032d1da4c60396e41ec385d24f",
+      "installedAt": "2026-10-22T18:01:17.811Z",
+      "manifestFiles": 4314,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged native SDK21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4314,
+  "versions": [
+    "a1d151728b7375eb"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1726-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/take-lookup1723-group.json",
+      "sha256": "2d810362859ce7cb0490c8799d3487db51fb6505ba243062cd59537ccdd87ed6",
+      "scope": "Take typed snapshot/owner lookup/VM slot semantic and work-count proof, existing record/sequence/skeletal/spawn/runtime/inheritance/import/entry source regressions and focused AI. Real source2D UI Take/Undo/typed replay/restore/D3D separately; installed final gate required."
+    },
+    {
+      "path": "native/build/runtime-object-lookup-1719-GmDbWh/acceptance.json",
+      "sha256": "8461569098384d8cd959eeef8e3eb69b3c319c4c08717403546d3cd90d11bea7",
+      "scope": "Runtime object() with unique scene actor IDs. Validate every cached numeric slot against current object ID, fall back to existing findIndex, preserve replacement/reorder/delete/rename/creation semantics. WeakMap world keys hold no old scene array strongly.4096 actors/2048 lookups32 IDs; count ID reads, not FPS/whole-engine throughput."
+    },
+    {
+      "path": "native/build/take-snapshot-1718-ARnXcQ/acceptance.json",
+      "sha256": "4a39137f1339133b3e50decfae514d374c3c5d128945e02123eaf148e6a28485",
+      "scope": "600 admitted frame samples plus an ignored repeated same-time call of one128-element actual typed record array. Compare exact key data with c1ef0d5, count direct payload structuredClone calls and preserve in-place changes/ownership. Wall times are observations, not FPS/device/end-to-end performance."
+    },
+    {
+      "path": "native/build/take-owner-lookup-1720-o36L7R/acceptance.json",
+      "sha256": "bc865054d8712ba96d9b88c44f70763a01c7631f938cefb0d520e104d5204e7d",
+      "scope": "4096 world actors,32 fixed targets,300 admitted samples; real original/new recorder owner lookup with counted ID reads. Missing targets and callback removal/same-ID creation preserve frame snapshots. Spawned-recording world scan remains unchanged; no FPS/device claim."
+    },
+    {
+      "path": "native/build/take-filter-215-ykx4Jo/acceptance.json",
+      "sha256": "c81f131099f78c0e50e11daa2118276c706f7bf814524a25543b82e63f6e6cf8",
+      "scope": "Existing source BP/inheritance/file transaction contract."
+    },
+    {
+      "path": "native/build/native-records-1478-uNp4RC/acceptance.json",
+      "sha256": "e5a752759b4568553d487309d5448e83c62cbd8893e5d58b09f1b22bc31ec3d2",
+      "scope": "Existing source BP/inheritance/file transaction contract."
+    },
+    {
+      "path": "native/build/sequence-values-212-tcnS1Q/acceptance.json",
+      "sha256": "151169442a8cc51c21a5fd8bcda618454329298bf2c7ecc9d8191a6b7e01499a",
+      "scope": "Existing source BP/inheritance/file transaction contract."
+    },
+    {
+      "path": "native/build/skeletal-take-209-kwZG2U/acceptance.json",
+      "sha256": "83158b00bac704058110de50dae05a72bfaab96edf4371e5573518cc184166c3",
+      "scope": "Existing source BP/inheritance/file transaction contract."
+    },
+    {
+      "path": "native/build/spawn-take-211-t4Ib18/acceptance.json",
+      "sha256": "0e0a4a1f6be1e9e93d905ab0378a7ab0d45c76f9769d1c91d27d1d9a7a0026b8",
+      "scope": "Existing source BP/inheritance/file transaction contract."
+    },
+    {
+      "path": "native/build/native-type-imports-1675-yNIpPy/acceptance.json",
+      "sha256": "4142624083ef30af9af5d19db02eadd22b4aeef462f7e6c40e9ee11be4ceeaca",
+      "scope": "Headless pure BP type-library source references/resolver scope/classless metadata, parent/child/UndoRedo cache views, actual 2D ProjectService validation and compact save, actual shared BlueprintRuntime SetMembers/Actor self refs with zero native builds/calls. UI/exported actual game separate; mixed CPP imports/per-type assets/arbitrary schema migration not claimed."
+    },
+    {
+      "path": "native/build/blueprint-inheritance-IWilJZ/acceptance.json",
+      "sha256": "3a38a09e50cda50e2851bc002e519c83fea0c3b7e4e4fce61b3ff4a90abcb36a",
+      "scope": "Existing source BP/inheritance/file transaction contract."
+    },
+    {
+      "path": "native/build/native-entry-1708-kcNQnC/acceptance.json",
+      "sha256": "6ba81c04bb6dc464af9f81cb9eabecea678a393c725b633096999a8929b854e8",
+      "scope": "Source entry selection/metadata/generated compilation units/runtime preparation/cook. Original ac611f6 helper chooses A for requested B; actual compiled worker/editor/packaged game and Android/iOS device execution are separate gates."
+    },
+    {
+      "path": "native/build/take-runtime-1721-window-YlTXEh/acceptance.json",
+      "sha256": "fb0f7ba57c50a0d7165e8e440c1bb8084843c21eddfc053f9a5608fec8348677",
+      "scope": "Owned 2D editor records128-element pure-BP typed struct array plus transform, applies/Undo/Redo/saves Take; same D3D game replays array1000/position1000 and restores authored array0 with zero native modules when packaged. Snapshot/ID work-count reductions proved by1718/1719/1720, not FPS/mobile claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/take-runtime-1721-window-YlTXEh/acceptance.json",
+      "sha256": "fb0f7ba57c50a0d7165e8e440c1bb8084843c21eddfc053f9a5608fec8348677",
+      "scope": "Owned 2D editor records128-element pure-BP typed struct array plus transform, applies/Undo/Redo/saves Take; same D3D game replays array1000/position1000 and restores authored array0 with zero native modules when packaged. Snapshot/ID work-count reductions proved by1718/1719/1720, not FPS/mobile claim."
+    }
+  ],
+  "scope": "Installed actual2D editor records128 pure-BP typed records and transform, applies/Undo/Redo/saves Take, same D3D zero-native game replays array1000/position1000 and restores authored array0. Source original-Git comparison verifies payload copy600-to6, fixed-owner ID reads1228800-to13664 with no missing-target rescan regression, and validated weak-world slots preserve reorder/replacement/deletion/recreation/self/missing semantics.14 grouped regressions incl current changed BP runtime and Take, exact source/manifest/native21/30tests/vendor2/Player1604/Host1041 verified. User unchanged/Versions1. Earlier CPP/D3D modules reused only for unchanged SDK/compiler/transport. No FPS/phone/whole engine claim."
+}
