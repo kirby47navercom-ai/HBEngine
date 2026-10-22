@@ -34,7 +34,7 @@ export class ReflectionCaptureRevision extends CaptureRevision {
   this.begin();this.pass++;this.start();this.start();for(const n of lights){this.start();this.scalar(n.uuid);this.array(n.matrixWorld.elements);this.color(n.color);this.color(n.groundColor);for(const k of lightFields)this.scalar(n[k]);this.array(n.target?.matrixWorld.elements);this.end();}this.end();
   this.color(scene.background?.isColor?scene.background:null);this.json(scene.userData.resolvedEnvironment);this.texture(scene.background?.isTexture?scene.background:null);this.start();
   for(const n of meshes){n.skeleton?.update();this.start();this.scalar(n.uuid);this.array(n.matrixWorld.elements);this.scalar(n.instanceMatrix?.version);this.array(n.morphTargetInfluences);this.array(n.skeleton?.boneMatrices);
-   const materials=n.material;if(Array.isArray(materials))for(const m of materials)this.material(m,scene);else this.material(materials,scene);this.geometry(n.geometry);this.scalar(n.renderOrder);this.end();
+   const materials=n.material;if(Array.isArray(materials))for(const m of materials)this.material(m,scene);else this.material(materials,scene);this.geometry(n.geometry);this.scalar(n.renderOrder);this.scalar(n.castShadow);this.scalar(n.receiveShadow);this.end();
   }this.end();this.end();return this.finish();
  }
 }

@@ -589,3 +589,5 @@ C++ 클래스·명시 반사 멤버는 `native.classes.read`로 페이지 조회
 1582 이후 `editor.history.inspect`는 slotBudget(기본2000000/최대8000000)과 truncatedBy를 제공한다. `includeRevision:false`는 현재 문서 캡처/해시 없이 확정된 이력만 읽고 revision:null/unflushed:true를 반환하며 expectedRevision 병용은 거부한다. [예산·격리 계약](DOCUMENT_HISTORY.md).
 
 반사·베이크 혼합: MeshRenderer.lightmapReflectionMix Bool(기본false), Components::SetBool/GetBool 및 같은 BP 공용 노드. runtime.state의 gameplayDebug.lightmap에 reflectionMixEnabled/Eligible·valid/source를 제공한다. [정책·비용·실행 근거](PROBE_LIGHTMAP_MIX.md).
+
+MeshRenderer 실행 속성 다섯 개의 자원 유지 갱신과 requestedIntensity/effectiveIntensity/inPlacePropertyUpdates는 docs/MESH_RENDERER_LIVE_PROPERTIES.md를 따라요. document.patch/Undo와 실행 값은 구분해요.

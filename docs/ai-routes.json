@@ -1799,6 +1799,17 @@
       "paths": [
         "prototype/reflection-capture-revision.js"
       ]
+    },
+    {
+      "id": "mesh-renderer-live-owner",
+      "keywords": [
+        "syncMeshRendererProperties",
+        "syncLightmapReflectionMix",
+        "setLightmapIntensity"
+      ],
+      "paths": [
+        "prototype/lightmap-rendering.js"
+      ]
     }
   ]
 }
