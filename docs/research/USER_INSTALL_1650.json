@@ -1,0 +1,161 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "baf79e56245c92a27fd56649ea359fc8ece0fde4",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5cd702581441057a",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\5cd702581441057a\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\5cd702581441057a\\HBEngine.exe",
+  "bundleHash": "5cd702581441057a25b00cff1b54d93be3cc9a2c1cdd5b82a83ee8cc52235250",
+  "files": 4250,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4246,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9a42fa3f6ade2e62",
+        "bytes": 191397227,
+        "manifestSHA256": "5f4c26fc42b5863c5846d1b383aaf8524b9a75250c60e8f8b51b30ac2b397537"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T12:51:39.3755860Z",
+    "bytes": 191397227,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "5cd702581441057a"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 919,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/network-replacement-1643-Tr4E4a/acceptance.json",
+      "sha256": "4fb96a993cbefddadfc44971efc3e30ad76f15ae64e887028a288e69c825964b",
+      "scope": "Loaded runtime prefab replacement, source-descriptor compatibility and async lifetime/CAS/queue/budget/preflight fixtures plus real local sockets/shared SceneSpawn/SceneDestroy/BP callbacks. No GUI/native renderer, class migration of authored scene actors, protocol epochs, dedicated authority or arbitrary user-side-effect rollback claim.",
+      "args": [
+        "--implementation-root",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\5cd702581441057a"
+      ],
+      "ms": 422.52000000000044
+    },
+    {
+      "path": "native/build/network-replacement-1645-window-59xGaM/acceptance.json",
+      "sha256": "d0eb0b9f46cd2b2026685b68bede6f32e6c791f7c3983b8d15a55fd126d5988d",
+      "scope": "Owned hidden actual 2D editor with local ws host, Blueprint netConnect and prefab BeginPlay, public runtime.network summary/page/query, loaded A→B asset replacement, exact A EndPlay/B BeginPlay and B destroy/same-ID respawn. Isolated project/profile; no native renderer/phone/internet-loss/prediction claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\5cd702581441057a\\HBEngine.exe"
+      ],
+      "ms": 10327.609
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\5cd702581441057a\\",
+    "elapsedMs": 60.1,
+    "matches": 2,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\5cd702581441057a",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "5cd702581441057a25b00cff1b54d93be3cc9a2c1cdd5b82a83ee8cc52235250",
+      "installedAt": "2026-10-22T12:51:35.851Z",
+      "manifestFiles": 4250,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged C++ metadata/native21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4250,
+  "versions": [
+    "5cd702581441057a"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1650-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/network1646-group.json",
+      "sha256": "e533525b330c415cfb28c05fdc30ba65bedb8da4707b92e407c2063ec3ba098d",
+      "scope": "Three grouped actual NetworkWorld/shared-operation/private-socket tests: loaded asset/descriptor compatibility and async replacement, prior11 lifetime cases,1025 fair publication and Korean4MiB transport. GUI/rendering remain separate."
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\network-replacement-1643-NB0wOj/acceptance.json",
+      "sha256": "08471b27e7dec8b0d5e711a2c6586031163231a3924238a6eb9495b6fc556610",
+      "scope": "Loaded runtime prefab replacement, source-descriptor compatibility and async lifetime/CAS/queue/budget/preflight fixtures plus real local sockets/shared SceneSpawn/SceneDestroy/BP callbacks. No GUI/native renderer, class migration of authored scene actors, protocol epochs, dedicated authority or arbitrary user-side-effect rollback claim."
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\network-lifetime-1574-9qeyNm/acceptance.json",
+      "sha256": "f3dc0938c84a261630f2902cf99321e7d290ad85e0158bb7b9b556684506c4a3",
+      "scope": "Actual NetworkWorld async identity/generation fixtures and actual local ws server plus BlueprintRuntime/engineOperations prefab build-ready gate. Public netConnect/netDisconnect/SceneDestroy exercised; no native renderer, internet loss/prediction, rollback of arbitrary user callback side effects or dedicated authority claim."
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\network-publication-1568-4vYpbd/acceptance.json",
+      "sha256": "36fa5fc724b85bd75c707bcc8a5c4d3342b781b15687620991f9084706ac19cb",
+      "scope": "Isolated actual NetworkWorld unit/reference and actual loopback ws server/client. Published world cardinality not capped at512; packet/tick/network memory budgets remain. No latency-loss prediction, dedicated simulation server, FPS/mobile/network-device claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\network-replacement-1643-NB0wOj/acceptance.json",
+      "sha256": "08471b27e7dec8b0d5e711a2c6586031163231a3924238a6eb9495b6fc556610",
+      "scope": "Loaded runtime prefab replacement, source-descriptor compatibility and async lifetime/CAS/queue/budget/preflight fixtures plus real local sockets/shared SceneSpawn/SceneDestroy/BP callbacks. No GUI/native renderer, class migration of authored scene actors, protocol epochs, dedicated authority or arbitrary user-side-effect rollback claim."
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\network-lifetime-1574-9qeyNm/acceptance.json",
+      "sha256": "f3dc0938c84a261630f2902cf99321e7d290ad85e0158bb7b9b556684506c4a3",
+      "scope": "Actual NetworkWorld async identity/generation fixtures and actual local ws server plus BlueprintRuntime/engineOperations prefab build-ready gate. Public netConnect/netDisconnect/SceneDestroy exercised; no native renderer, internet loss/prediction, rollback of arbitrary user callback side effects or dedicated authority claim."
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\network-publication-1568-4vYpbd/acceptance.json",
+      "sha256": "36fa5fc724b85bd75c707bcc8a5c4d3342b781b15687620991f9084706ac19cb",
+      "scope": "Isolated actual NetworkWorld unit/reference and actual loopback ws server/client. Published world cardinality not capped at512; packet/tick/network memory budgets remain. No latency-loss prediction, dedicated simulation server, FPS/mobile/network-device claim."
+    }
+  ],
+  "scope": "Installed-root actual NetworkWorld/shared services/private sockets loaded A→B/preflight local correction/error recovery/async delete/disconnect/C/same-ID/old child state-owner-publication-delete/budget and authored protection. Installed actual2D editor Blueprint connection, A Begin/End once→B Begin once, B destroy/same-ID B Begin twice, new transform and bounded metadata source match. Prior11 lifetime/1025 fairness/Korean4MiB grouped proof reused. Native21/30tests/vendor2/Player1604/Host1041/rendering and montage owners unchanged; full manifest/User inventory/links/Versions1. No whole engine/FPS/phone/dedicated authority claim.",
+  "version": 1,
+  "date": "2026-10-22T12:54:43.234Z",
+  "work": "docs/research/ENGINE_WORK_1648.json",
+  "distributionSync": "native/build/distribution-1649-sync.json",
+  "nativePlayerBuildReused": true,
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1639.json",
+  "hostReuseFrom": "docs/research/USER_INSTALL_1639.json"
+}

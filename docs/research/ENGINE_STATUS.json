@@ -3368,11 +3368,11 @@
     "scope": "Loaded runtime network prefab asset/local replacement, source-compatible state/owner/publication/deletion, dirty/budgeted async lifecycle and preflight error recovery. Shared actual sockets/BP plus previous lifetime/publication proofs; actual2D installed GUI planned."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1639.json",
-    "sourceCommit": "f5e3dbb9764137afbb42219803b6efc8bcd44215",
-    "bundleHash": "9a42fa3f6ade2e6222e84df6c8a27dfe2ce1ab62ae7f18536d5e4707be1f9b69",
+    "receipt": "docs/research/USER_INSTALL_1650.json",
+    "sourceCommit": "baf79e56245c92a27fd56649ea359fc8ece0fde4",
+    "bundleHash": "5cd702581441057a25b00cff1b54d93be3cc9a2c1cdd5b82a83ee8cc52235250",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actual editor connected16-slot AnimationGraph plus512-clip/16-slot montage document/save, Blueprint Play/Pause/Seek62.5, original Owner[10,3,0] retained, runtime snapshot16 slots and same saved actual Windows D3D11 game with exact source Player1604 SHA. Source direct/compiled9..256slots/8192clips, overlap256 seeds and slot/start/apply query counters, original root/index/graph/replacement/2D sprite suite reused. Native21/30tests/vendor2/Player1604/Host1041/rendering11owners unchanged; full manifest/User inventory/links/Versions1. No whole engine/FPS/phone claim."
+    "scope": "Installed-root actual NetworkWorld/shared services/private sockets loaded A→B/preflight local correction/error recovery/async delete/disconnect/C/same-ID/old child state-owner-publication-delete/budget and authored protection. Installed actual2D editor Blueprint connection, A Begin/End once→B Begin once, B destroy/same-ID B Begin twice, new transform and bounded metadata source match. Prior11 lifetime/1025 fairness/Korean4MiB grouped proof reused. Native21/30tests/vendor2/Player1604/Host1041/rendering and montage owners unchanged; full manifest/User inventory/links/Versions1. No whole engine/FPS/phone/dedicated authority claim."
   }
 }

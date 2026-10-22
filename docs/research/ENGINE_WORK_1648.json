@@ -1070,10 +1070,6 @@
     "prototype/blueprint-runtime.js": "73c645bd59967a6f103283c76ef0f41725e53f077ba9e960ddf620d4c72a2fce",
     "prototype/runtime-spawn.js": "381fcafbfa35253b74ec4606fcd5c7b9b45f3e997d06f1a85eeca422a6549fc1"
   },
-  "pendingInstalledGates": [
-    "tools/check-network-replacement-1643.mjs --implementation-root installed",
-    "tools/check-network-replacement-1645-window.mjs --executable installed"
-  ],
   "focusedAI": {
     "replaceRoots": {
       "elapsedMs": 156.47,
@@ -1098,8 +1094,30 @@
     "fixtureRepair": "Async fake remover originally selected current same-ID objects after await; changed to capture old identities before await like production SceneDestroy. Socket wait originally matched already-received invalid-local same-asset packet; now waits for asset/local/position tuple. Neither failure counted as success.",
     "scope": "Authored scene class migration, new protocol epochs/scene transition, dedicated authority, attachment refs/general remote pools/prediction remain. External callback side effects are not rolled back."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1639.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1650.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/network-replacement-1643-Tr4E4a/acceptance.json",
+      "sha256": "4fb96a993cbefddadfc44971efc3e30ad76f15ae64e887028a288e69c825964b",
+      "scope": "Loaded runtime prefab replacement, source-descriptor compatibility and async lifetime/CAS/queue/budget/preflight fixtures plus real local sockets/shared SceneSpawn/SceneDestroy/BP callbacks. No GUI/native renderer, class migration of authored scene actors, protocol epochs, dedicated authority or arbitrary user-side-effect rollback claim.",
+      "args": [
+        "--implementation-root",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\5cd702581441057a"
+      ],
+      "ms": 422.52000000000044
+    },
+    {
+      "path": "native/build/network-replacement-1645-window-59xGaM/acceptance.json",
+      "sha256": "d0eb0b9f46cd2b2026685b68bede6f32e6c791f7c3983b8d15a55fd126d5988d",
+      "scope": "Owned hidden actual 2D editor with local ws host, Blueprint netConnect and prefab BeginPlay, public runtime.network summary/page/query, loaded A→B asset replacement, exact A EndPlay/B BeginPlay and B destroy/same-ID respawn. Isolated project/profile; no native renderer/phone/internet-loss/prediction claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\5cd702581441057a\\HBEngine.exe"
+      ],
+      "ms": 10327.609
+    }
+  ]
 }

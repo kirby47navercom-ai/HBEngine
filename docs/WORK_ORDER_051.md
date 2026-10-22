@@ -1020,3 +1020,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1639 최종설치: 9a42fa3f6ade2e62·4245명세/914소유/native21/30tests/vendor2 SHA·Player1604/Host1041/렌더11소유재사용. 실제연결16-slot AnimationGraph/512clip저장→BP Play/Pause/Seek62.5→같은저장D3D게임/16slots/Owner[10,3,0]보존34초. 최초fixture그래프누락실패는성공에서제외. User10849읽기SHA불변·연결/Versions1·이전191391927B회수. 네트워크등누적작업계속.
 
 1641–1648: loaded network runtime prefab asset/local교체·사전검증/4ms예산/dirty Set·stale child state/owner/publication/delete보호·async C변경/delete/disconnect/sameID CAS·preflight실패유지/정정local복구. 실제socket/공용서비스/A EndB Begin각1·metadata페이지확장·기존11수명/1025공정/한글4MiB3검사묶음최장0.52秒. Native21/Player1604/렌더·애니메이션소유불변재사용·실제2D GUI최종설치예정·누적계속.
+
+1650 최종설치: 5cd702581441057a·4250명세/919소유/native21/30tests/vendor2 SHA·Player1604/Host1041/렌더·몽타주등불변재사용. installed-root소켓/공용서비스/비동기교체·오류복구0.42초·실제2D BP접속/A→B/AEnd1/Bbegin1→B삭제/동일ID Bbegin2·source일치페이지/위치10.3초. User10849읽기SHA불변·연결/Versions1·이전191397227B回收. CPP/제작타입등누적작업계속.
