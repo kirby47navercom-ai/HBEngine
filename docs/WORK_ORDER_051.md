@@ -1014,3 +1014,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1625 최종설치: 96090f1476afa4b0·4238명세/907소유/native21/30tests/vendor2 SHA·Player1604/Host1041/수식7재사용. 설치실제UV/bake/UndoRedo/저장→BP/컴파일CPP BoolFloatString/강도.5→0→2/자원유지→동일저장D3D게임강도.5/inPlace4/Director위치·Stop복원105초. 실제GL PMREM12capture/정지무갱신/그림자등갱신/once해제복귀/dispose3.4초. User10849읽기SHA불변·연결/Versions1·이전191093280B회수. 애니메이션등누적구현계속.
 
 1627–1633: 몽타주8slot색인우회제거/평균32밀도유지·전체range query0·authoring256일정상한제거/슬롯별정렬겹침검증. 기존순서/경계/루트합성대조9~256slots/8192clips·actual16slot512프로그램/포즈480B/원래위치保全. start8320→64/overlap slot261632→512/first apply G→1/slotNames캐시. 기존root/graph/교체/2D등5검사묶음통과·원본source64예산별도·최종설치512slot BP/D3D확인예정·누적계속.
+
+1637 fixture수리:1635 actualwindow는다중slot AnimationGraph연결누락으로준비거부·실패를성공으로세지않음. 엔진필수검증유지·16reachable slot graph/컴포넌트명시·실제연결graph tick/Owner[10,3,0]보존headless통과. production/native/shader소스불변·고친fixture만새설치마지막실행으로확인.

@@ -32,7 +32,7 @@
     "docs/LIST_CODE_API.md": "483314473d72b216e050c9f5fa1288280194e76d646ff460eb1b4ffef1473f40",
     "docs/LIST_TRANSFER.md": "7464948b55dbbb50a75766a4bcd6bc7cdaed2c726f88df4ffe11e02c7120a2b5",
     "docs/MESH_RENDERER_LIVE_PROPERTIES.md": "920711a84961cea7bbcf7ceb3f58e920772cf34fc3a1b1acf0ada48a9b26cd16",
-    "docs/MONTAGE_INTERVAL_COST.md": "1ef4b83ac0a759d020c6622a95e394d605d38602e97298b9636cd6deee26add9",
+    "docs/MONTAGE_INTERVAL_COST.md": "0c5d7fdcf7d960b3b9db2b3a4a307f060e1a98dc3ee2b18d0aabb19219a5ddad",
     "docs/MONTAGE_TIMELINE_CACHE.md": "d60216fd6d1428105227ac86caf12c8a41437fd7a165d95a5eea11d05cc43658",
     "docs/NATIVE_CHECKPOINTS.md": "25ef92aa9c344dd7b6dcfe2934d5926f5ada1f7df223eeaedfb1ce9d39eff1c6",
     "docs/NATIVE_CONSTANT_BUFFERS.md": "b62ad2fb5eb311f42dfdad99e938fa5ca2e8ab0151a8f0b31d8ef4b4a3cfde60",
@@ -600,7 +600,7 @@
     "tools/check-montage-notify-windows.mjs": "ef9d0e0ea642aa71b66f8d0a52b923e286394e09d386118ec443c7db4aa45679",
     "tools/check-montage-schedule-1629.mjs": "bd27d835970b83126593c9f02545a7cd9c70f9977f5af34328a6a5c8124a7c23",
     "tools/check-montage-slots-1628.mjs": "05f4700e87f6efa9b9288a2de42e17701a2fc8293830cd78f2ccfa2d0f80e4d2",
-    "tools/check-montage-slots-1630-window.mjs": "5b69200454ff5ad21a2ecd6f6abfb5dff503d56a78b47d91871064c5f78ec5f5",
+    "tools/check-montage-slots-1630-window.mjs": "531232bb3ca8bbd532a702754229cf5ea8360271d84dc2145d39868d2cd8fc01",
     "tools/check-montage-timeline-1557.mjs": "f3a5abdd819cfa05d5cebf8583d8b8e5ff11b1503b84772692503d10175b7671",
     "tools/check-native-access-1504.mjs": "4097e2a880863e1af1d08eb9948511af0e03b2a464ae6b921babb02aad80e4f2",
     "tools/check-native-access-1505-aot.mjs": "624301d4b3183d9ff57e52a1fc8f539188152e52e81cfe390d8b2ef564c09300",
@@ -921,7 +921,8 @@
     "tools/texture-sampling-fixture-519.mjs": "6c197c0e5982c530ac9b9bb01533266c809ab355d0cc133ebc4c72015ef687ee",
     "tools/timeline-navigation-fixture-1525.mjs": "cebe81170e9e3c5c05254a74048b865af32924661c7c1c76a887dfecfbd803ea",
     "tools/widget-window-probe-1067.mjs": "daaffffe74c98b84ca0f0a23e063cf84c8a261b3fa63862c35307e01e1e8933f",
-    "tools/world-edit-window-probe-1060.mjs": "e480bcb64ab7f576f2dddb59a3864a9af689d4e20b40a2175800ba0b8b2999e2"
+    "tools/world-edit-window-probe-1060.mjs": "e480bcb64ab7f576f2dddb59a3864a9af689d4e20b40a2175800ba0b8b2999e2",
+    "tools/check-montage-graph-1637.mjs": "77cb4f1d76d07ed9693f078b6362d5eca3d4128b5b1b8e9b552248e5f803c383"
   },
   "testSourceHashes": {
     "native/tests/builtin-normal-1167.cpp": "febb0c2edbf1e77c2294bcacfd0737b3f9bb177f906bc87ac4e92822a79b5e24",
@@ -994,6 +995,11 @@
       "path": "native/build/montage-index-root-1549.json",
       "sha256": "a0add394ae66eb724dbf81650f6405c14c133957dec994cd8fb1cb3803532b7a",
       "scope": "Montage index and direct player parity with deterministic fake pose/root sampler; independent old Three math reference. Real graph/montage/root/notify regressions run in the group."
+    },
+    {
+      "path": "native/build/montage1637-graph.json",
+      "sha256": "e1c458c2e5644b3a3d7bdc4012c47a81601f45e5a2af1b59694c7b399d92f0af",
+      "scope": "Real compiled16-slot graph linked to512-clip montage overlay, graph validation/tick and placed owner preserved. Headless fixture correction before actual window re-run."
     }
   ],
   "sourceGameGates": [],
@@ -1070,5 +1076,16 @@
   "installationPending": true,
   "currentInstallation": "docs/research/USER_INSTALL_1625.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "fixtureCorrection": {
+    "revision": "ce1d5aeebbb0edd653a5155ef7822f8116c2a4d7",
+    "failedInstalledGate": "native/build/montage-slots-1630-window-H8W0UJ/failure.json",
+    "failedInstallAudit": "native/build/user-install-1635-audit.json",
+    "reason": "Original64/default-slot fixture copied to multiple slots without required AnimationGraph. Production correctly rejected setup. Authored reachable16-slot graph/component now attached; real linked graph tick preserves placed owner. No production bypass or native/shader rebuild.",
+    "changedSources": [
+      "tools/check-montage-slots-1630-window.mjs",
+      "tools/check-montage-graph-1637.mjs",
+      "docs/MONTAGE_INTERVAL_COST.md"
+    ]
+  }
 }
