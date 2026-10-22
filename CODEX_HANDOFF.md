@@ -5,7 +5,7 @@
 ## 현재 설치와 구현
 
 현재확정설치1518: C:/Users/kirby/HBEngine/Versions/f9de3a58a55eb81b/HBEngine.exe·4163명세/828소유/29native검사/20nativeowner/2vendor·User10849읽기SHA/Versions1·이전189428904B퇴역·portableSDK4744642B회수. codee52ac2a/metadataad0b027·Player1484/Host1041정확SHA재사용. 실제private기본값/save/CPP→BP/같은저장D3D[14,3,2]/Score14/기존2DCPP XY원spawn/설치metadata/focus1owner63.74ms통과.
-신규feature f2c326f, WORK1486: C++ HB_STRUCT 값reflect/nested/enum/Actor/array/default/typedwire/SDK MakeBreakSet·분할핀/함수/매크로/원소참조·변수/속성/instance 편집Undo/save·metadata/default/fieldplan읽기공유·AI boundedread·시퀀스/Take 실제재생복원lease0·8중첩 sourceReference/override. portable2동명class/struct42/55교대4회에서wrapper/checkpoint ODR충돌발견·worker익명namespace격리수정. 그룹56+최종10/실제CPP/숨김UI/기존VM상속시퀀스회귀통과. freshPlayer1484 24.13초·SHA01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba, Host1041동일. Game.hpp/NativeRouting.hpp/Struct.hpp3소유변경,20소유전체기록. docs/NATIVE_RECORDS.md와CORPUS1469는3본문scope. 1487sync/1488install/1489finish완료·새원장과설치영수증갱신. record1486/build-player1484/sync1487/install1488/finish1489 started끝난것재실행금지. 다음 record checkpoint복사비용/누적엔진목표계속.
+기존1486(f2c326f): HB_STRUCT typedwire·nested/enum/Actor/array/default·MakeBreakSet/분할·변수/속성/함수/매크로/Take/sequence복원. portable동명wrapper/checkpoint ODR충돌은생성익명namespace로격리수정. 근거 docs/NATIVE_RECORDS.md/ENGINE_WORK_1486.json.
 
 ## 다음과 잔여
 
@@ -14,3 +14,7 @@
 ## 운영
 
 검사전 activeInstalledVersions, 소유hidden editorWindowProbe·임시project/profile/port만. 사용자창/원본/프로필변경금지. CXX -o relative·실행absolute. PS외부실패자동중단아님, Node execFile順序권장. rg glob은directory+--glob. 큰minified줄/base64출력금지. retainTestEvidence/pruneTestArtifacts, Versions1. Three vendor2SHA/patch유지. 한글ConventionalCommit author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com·전역Git/AItrailer없음. WebGPU명시승인범위외 agent금지. Mac/Xcode/Android실기기없음.
+
+## 현재1520–1527 설치전
+
+rangebar/handle키보드/jump·Ctrl영역확대/반대reset/Esc·touch배경pan/pinch/cancel·확대scrub좌표수정·행소유lazyintervalindex/선택포함memo·history64+ownedDenseArray이전키열거생략. group12통과(첫7재사용/GCflag만수정/AIhandoff5KB고침); 실제65536키/203구간 제스처·편집Undo·저장·nestedPlay·D3D[7.5,0,0]/exit0. 원래fullTool native/build/timeline1526-tested-tool.mjs/SHA와제품8소유SHA보존. 큰문서UI179초는설치뒤반복안함: --navigation-controls --quick-install512키/203구간/동일controls/편집Undo/save/Play source통과. 초기allarrayWeakSet후보느려미채택·현재64+슬롯1720380→1605692/방문262176/컨테이너32814동일·시간mixed/FPS주장없음·전순회/복원잔여. e605267/WORK1527기록완료·다음sync1528/install1529 compactUI+동일Player/Host/runtime owners→finish1530. 아직1518설치가현재·Versions1·1527source.started재실행금지.

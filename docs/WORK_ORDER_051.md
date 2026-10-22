@@ -968,3 +968,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1501–1516: 명시private/protected C++반사·private중첩class/enum·namespace·정확한const/ref/doublearray·event기본/재정의·componentowner·원본접근유지·lexical문장경계/가짜선언제외·native.classes.read128page/focus1owner4340B. std값인자1024int버퍼할당2→1/constref1/outref유지·group12/NDK ARM64syntax4통과·원장CPP01의1486완료Make/Break/Set잔여오표기제거·일반반환참조/BP호출권한잔여유지. e52ac2a·native20/Player/Host/vendor변화없어재사용·설치gate다음.
 
 1518 설치확인: f9de3a58a55eb81b·4163명세/828소유/29native검사/20nativeowner/2vendor SHA·동일Player1484/Host1041재사용. private기본값UI/CPP→BP/같은저장D3D[14,3,2]/Score14/exit0·기존2DCPP/W키XY/원spawn/참조배치통과. 설치metadata페이지/가드·nativeAccess focus1owner63.74ms·User10849읽기SHA/연결/Versions1·이전189428904B/ownedportableSDK4744642B회수. 다음ANM06 snapshot/clip조회·누적엔진목표계속.
+
+1520–1527: rangebar/pan/resize/keyboard/jump·Ctrl영역확대/반대reset·pointertouch pan/pinch/cancel·확대scrub시간수정·가시행interval색인/선택memo·큰owned이력array이전keys열거절감. group12/실제65536키203구간 편집Undo/저장/nestedPlay/D3D[7.5,0,0]통과. 작은array후보느려미채택·64+slots1720380→1605692/방문262176/컨테이너32814동일·wholeFPS주장없음. fullUI179초설치재반복대신sameownerSHA+512키compactdelta(source통과). e605267·native20/공용runtime7/Player/Host동일재사용·설치다음.
