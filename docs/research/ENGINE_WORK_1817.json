@@ -1315,6 +1315,20 @@
   "testCorrection": {
     "scope": "Initial fixture retained a value12345 while switching shared enum int32 to legacy sample uint8; fixture corrected to preserve int32. This fixture setup failure was not an engine implementation outcome."
   },
-  "installationPending": true,
-  "scope": "Direct handwritten included C++ struct additive migration through checked header/batch saves; full declared authoring sites, legacy reference normalization, source/consumer/open-view Undo/Redo and AI preview plan CAS. Four final focused regressions,70 derived files and source CPP/D3D checkpoint passed. Source checkpoint predates final AI preview-CAS surface; final installed current-source guard+runtime gate pending."
+  "installationPending": false,
+  "scope": "Direct handwritten included C++ struct additive migration through checked header/batch saves; full declared authoring sites, legacy reference normalization, source/consumer/open-view Undo/Redo and AI preview plan CAS. Four final focused regressions,70 derived files and source CPP/D3D checkpoint passed. Source checkpoint predates final AI preview-CAS surface; final installed current-source guard+runtime gate pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1819.json",
+  "installedGates": [
+    {
+      "path": "native/build/native-source-migration-1815-window-pp7jcE/acceptance.json",
+      "sha256": "d334ea258842dbbb4b2ec2c417e994690ca9adc0b211b95b20249b40ca330b44",
+      "scope": "Owned actual2D editor direct C++ included-header+source transaction expands existing BP/scene/prefab/sequence records, updates clean open views, group Undo/Redo and compiles user source reading newly appended nested scalar/array fields. Optional independent D3D11 same C++ data/position result. No post-IDE-save recovery, destructive coercion or live ABI reload.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\70d8e93df37beeca\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 74966.58350000001
+    }
+  ]
 }

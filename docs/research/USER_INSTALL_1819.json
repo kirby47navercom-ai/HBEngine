@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-direct-cpp-schema-migration",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "743d0d9ef166995563b626b9fcc1ac0316597a1c",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\70d8e93df37beeca",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\70d8e93df37beeca\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\70d8e93df37beeca\\HBEngine.exe",
+  "bundleHash": "70d8e93df37beecade9306d048ae0e8280a091c5f6d42430d407f5633546cb1e",
+  "files": 4391,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4386,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ace283fa12ddec4e",
+        "bytes": 194693088,
+        "manifestSHA256": "a0e3e35fbd2e4bebdfb583bf57b67f0f982d9dae301ff86d0b1ab20eea2d7e92"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T22:15:09.1530145Z",
+    "bytes": 194693088,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "70d8e93df37beeca"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1067,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/native-source-migration-1815-window-pp7jcE/acceptance.json",
+      "sha256": "d334ea258842dbbb4b2ec2c417e994690ca9adc0b211b95b20249b40ca330b44",
+      "scope": "Owned actual2D editor direct C++ included-header+source transaction expands existing BP/scene/prefab/sequence records, updates clean open views, group Undo/Redo and compiles user source reading newly appended nested scalar/array fields. Optional independent D3D11 same C++ data/position result. No post-IDE-save recovery, destructive coercion or live ABI reload.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\70d8e93df37beeca\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 74966.58350000001
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\70d8e93df37beeca\\",
+    "elapsedMs": 63.92,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\70d8e93df37beeca",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "70d8e93df37beecade9306d048ae0e8280a091c5f6d42430d407f5633546cb1e",
+      "installedAt": "2026-10-22T22:15:05.744Z",
+      "manifestFiles": 4391,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Exact unchanged SDK21/Player1604/Host1041/30 repository test owners and shader math hashes verified. Changed authoring app/project-service/native-type-migration/source-schema are covered by final focused and installed editor/CPP/D3D gates; old runtime evidence is not reused for them.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4391,
+  "versions": [
+    "70d8e93df37beeca"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1819-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/native-source1814-group.json",
+      "sha256": "f303c14774ea0fff5c1a5a8a1cc6eb9db6d082a53f4a12c64ef49b0cf2f9d0b6",
+      "scope": "Four final focused source/project/editor migration regressions; no unchanged renderer/SDK gate rerun."
+    },
+    {
+      "path": "native/build/native-source-migration-1814-6XMBT9/acceptance.json",
+      "sha256": "be47752f6c9b9838cfbd0a3fe6f1dbf4949f013868cb2d06d150a0e0205db6b7",
+      "scope": "Owned source-header additive migration through checkedBatch/checkedWrite, includes, full authored value sites, CAS/inventory/rollback/restart and legacy metadata reference normalization. No arbitrary destructive/rename/type coercion, external IDE post-save recovery or live ABI reload."
+    },
+    {
+      "path": "native/build/native-record-migration-1696-B2fLj8/acceptance.json",
+      "sha256": "7df0c0d0b0514c10e048e727d54443e75e51555d696409f73be97227a2825c5e",
+      "scope": "Pure additive record-value migration foundation only, owned metadata snapshots and bounded authoring values. Project discovery/transaction/rollback/editor consumers are verified separately by1700/1701/1702."
+    },
+    {
+      "path": "native/build/native-type-migration-1700-Lcig8e/acceptance.json",
+      "sha256": "bf509c6daaeaf39fde3538e96b577fe36c270d5f451880770c14920e6d6e093d",
+      "scope": "Actual source project publication and rollback. Open-document UI/Undo, compiled C++ and packaged game require their separate runtime gate."
+    },
+    {
+      "path": "native/build/native-type-migration-1701-editor-9yg8Bt/acceptance.json",
+      "sha256": "35c399bbf01f1b5a8cd91188d9e5a674eee8cfc5e767365ac1ca0a7932c81a5c",
+      "scope": "Production save/batch/Undo functions with real ProjectService, real resolver and isolated files. Native actual-window and game gate separate."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed direct handwritten included C++ struct additive migration through checked header/batch saves. Four focused regressions including70 derived files, source editor/CPP/D3D checkpoint, and final current installed actual2D editor open-view updates/group UndoRedo, AI dryRun migration/planRevision and stale-plan rejection, compiled CPP nested2+2/position99,4,2/Actor reference plus independent D3D11 passed. Exact source1067/native21/30tests/vendor2/Player1604/Host1041 and unchanged renderer hashes. User preserved/Versions1. No external IDE post-save recovery, general destructive conversion/global type discovery or live ABI reload claim."
+}

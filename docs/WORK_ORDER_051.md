@@ -1102,3 +1102,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1810–1812: 설치 editor·C++ 모델교체/빈골격/역탐색8회·원본포즈복원·독립 D3D11 runner 자료 72.16초 통과. 키준비1/키4/포즈행9/layout3/기준캡처1·범위query벡터복사와 동일결과. 5회귀·독립이전코드 대조·다중대상 작업량 포함. 명세4385/source1061/native21/30tests/vendor2 정확SHA·User10849 읽기불변·링크/association/Versions1·이전194520829B 정리·lease0. USER_INSTALL1811. 네이티브 픽셀·전체FPS/heap·실기기나 뼈별소유권/Graph복원 완료로 계산하지 않음. 누적계속.
 
 1813–1817: 직접 C++ 포함 헤더 struct 추가멤버 이관·BP/상속/노드입력/native/장면/프리팹/시퀀스·레거시 메타데이터 참조정규화·원자그룹UndoRedo/재시작·checkedWrite·AI 계획CAS 구현. 4영향회귀/70파일·취소/외부편집/소비자목록 보호 및 source CPP/D3D checkpoint 값2+2/위치99,4,2/ActorID 보존 통과. checkpoint 후 AI 계획반환/CAS UI는 최종설치로 확인 예정. 원본없는 IDE후저장/일반destructive/전역type레지스트리/ABI hotreload 남김. WORK1817.
+
+1818–1820: 최종설치 actual2D editor 직접헤더·CPP 파일묶음 구조체추가 이관·미리보기무쓰기/migration/planhash·잘못된계획거절·열린뷰갱신·그룹UndoRedo·실제 C++ 중첩scalar2/array2/위치99,4,2/ActorID·독립 D3D11 74.97초 통과. 4회귀/70파일 원자이관·sourcecheckpoint와 최종AI guard 구분. 명세4391/source1067/native21/30tests/vendor2 SHA·User10849읽기불변·링크/association/Versions1·이전194693088B정리/lease0. USER_INSTALL1819. 외부IDE후저장/일반destructive/global registry/ABI재적용 잔여유지. 누적계속.

@@ -251,7 +251,8 @@
         "docs/research/ENGINE_WORK_1761.json",
         "docs/research/USER_INSTALL_1763.json",
         "docs/NATIVE_TYPE_MIGRATION.md",
-        "docs/research/ENGINE_WORK_1817.json"
+        "docs/research/ENGINE_WORK_1817.json",
+        "docs/research/USER_INSTALL_1819.json"
       ]
     },
     {
@@ -2392,7 +2393,8 @@
         "docs/NATIVE_ENTRY_IDENTITY.md",
         "docs/research/ENGINE_WORK_1714.json",
         "docs/research/USER_INSTALL_1716.json",
-        "docs/research/ENGINE_WORK_1817.json"
+        "docs/research/ENGINE_WORK_1817.json",
+        "docs/research/USER_INSTALL_1819.json"
       ]
     },
     {
@@ -3061,7 +3063,8 @@
         "docs/SEQUENCE_POSE_PREPARATION.md",
         "docs/research/ENGINE_WORK_1809.json",
         "docs/research/USER_INSTALL_1811.json",
-        "docs/research/ENGINE_WORK_1817.json"
+        "docs/research/ENGINE_WORK_1817.json",
+        "docs/research/USER_INSTALL_1819.json"
       ]
     },
     {
@@ -3599,14 +3602,14 @@
     "first": 1813,
     "last": 1817,
     "receipt": "docs/research/ENGINE_WORK_1817.json",
-    "scope": "Direct handwritten included C++ struct additive migration through checked header/batch saves; full declared authoring sites, legacy reference normalization, source/consumer/open-view Undo/Redo and AI preview plan CAS. Four final focused regressions,70 derived files and source CPP/D3D checkpoint passed. Source checkpoint predates final AI preview-CAS surface; final installed current-source guard+runtime gate pending."
+    "scope": "Installed direct handwritten included C++ struct additive migration through checked header/batch saves. Four focused regressions including70 derived files, source editor/CPP/D3D checkpoint, and final current installed actual2D editor open-view updates/group UndoRedo, AI dryRun migration/planRevision and stale-plan rejection, compiled CPP nested2+2/position99,4,2/Actor reference plus independent D3D11 passed. Exact source1067/native21/30tests/vendor2/Player1604/Host1041 and unchanged renderer hashes. User preserved/Versions1. No external IDE post-save recovery, general destructive conversion/global type discovery or live ABI reload claim."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1811.json",
-    "sourceCommit": "514dd43e88aa9d638921c172fd5a3c4e39750c74",
-    "bundleHash": "ace283fa12ddec4ef6b6b0c53f2663e9cb9497255524d1e57314caf9413e542d",
+    "receipt": "docs/research/USER_INSTALL_1819.json",
+    "sourceCommit": "743d0d9ef166995563b626b9fcc1ac0316597a1c",
+    "bundleHash": "70d8e93df37beecade9306d048ae0e8280a091c5f6d42430d407f5633546cb1e",
     "verified": true,
     "versions": 1,
-    "scope": "Installed weak document/model skeletal preparation reuse, single pre-structural-edit baseline per target and page-only pose-vector copies/work counters. Five affected regressions and exact independent old128bone*120key posedata comparison; actual source and installed user CPP Play/Seek/Stop through8 original/alternate/empty/backward model-layout changes, original pose restoration and independent D3D11 runner data passed. One program/key4/poseRows9/baseline1 in actual model swap case. Exact source1061/native21/30tests/vendor2/Player1604/Host1041 hashes. User preserved/Versions1. No whole FPS/heap/device/native framebuffer pixel or per-bone ownership/graph-state restoration claim."
+    "scope": "Installed direct handwritten included C++ struct additive migration through checked header/batch saves. Four focused regressions including70 derived files, source editor/CPP/D3D checkpoint, and final current installed actual2D editor open-view updates/group UndoRedo, AI dryRun migration/planRevision and stale-plan rejection, compiled CPP nested2+2/position99,4,2/Actor reference plus independent D3D11 passed. Exact source1067/native21/30tests/vendor2/Player1604/Host1041 and unchanged renderer hashes. User preserved/Versions1. No external IDE post-save recovery, general destructive conversion/global type discovery or live ABI reload claim."
   }
 }
