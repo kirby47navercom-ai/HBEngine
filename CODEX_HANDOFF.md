@@ -1,23 +1,19 @@
 # 현재 인계 — 누적 엔진 구현 계속
 
-2026-10-23. 주인님·짚짱·자연존댓말. 누적끝까지/여러구현뒤영향검사·설치/백그라운드/Versions1. AGENTS/AI_START/게임스킬읽음. user goal재개답변뒤에도tool blocked였지만현재턴계속·임의goal생성/완료/반복질문금지. ENGINE_STATUS78행·분모null.
+2026-10-23. 주인님·짚짱·자연존댓말. 여러 구현 후 영향검사/설치·백그라운드·Versions1·가벼움/AI 친화성. 실제 사용자 창/프로필/게임 변경 금지. goal 재개 답변 뒤에도 도구 blocked라 현재 턴 계속, 임의 goal 생성/완료/같은 질문 금지. ENGINE_STATUS78행/전체분모null.
 
-## 확정1695
+## 현재 소스
 
-C:/Users/kirby/HBEngine/Versions/84d95f974bf36aba/HBEngine.exe·USER_INSTALL_1694. 4283명세/953소유/native21/30native검사/vendor2 SHA·User10849읽기SHA불변/링크/association/Versions1·이전192074908B퇴역. Player1604/Host1041 SHA는WORK1692/USER1694. native SDK/renderer/VM不變재빌드안함. sync1693/install1694/finish1695완료·全started/applied재실행금지. source1a2cb40/record419fa41.
+ff53f77/WORK1704(기록630dba7).1696–1704 additive 저장record 이관: shared library→BP 변수/함수·매크로/dispatch/interface defaults·분리핀·construction/inherited/native defaults,scene native/variables,prefab variant patch/baseline/conflict,sequence/Take typed키. 타입추측JSON스캔없음. 원본+header+연관71파일 기존 journal/CAS/preview planRevision/취소/재시작복원/whole UndoRedo. dirty연결문서 단일Save 거절·SaveAll합류/동시human편집 디스크복원+초안보존. native runtime layout hotreload 확대없음. raw큰typedJSON중복cache없음/변경합계8MiB·journal32MiB/새timer·worker·GPU·globalDB0.
 
-WORK1692: Child새field가Parent단일/arraydefault없어compile거절실재현1684→native-type-defaults.js/reconcileNativeTypeDefaults. schema동일label/value편집은next동일객체/추가값clone skip. schema변경은detached next·fieldUUID로new필드추가/미저장rename/delete/type(defaultreset)대응·parent/array3단까지보완·custom값/Actor null/enum保全·unknownkey/기존누락/순환budget보존. 저장된BP가새shape와안맞으면Library/header둘다유지(자동인스턴스이관은아직없음). UI새field행자동펼침.
-3단array테스트에서기존native-record-initializer.js결함발견: 명시aggregate는타입member defaults로시작해야함, containingfield.value 또는array를recordelement defaults로쓰던것수리. Git원본실제import 구부분B8→새2·실제Cpp17 [4,2,3,2,5,2,6,2] 1.15秒대조(1686/1687). 처음Cppfixture jsonInclude경로누락은test만修理. SDK/native ABI추가0.
-native-source-watch.js/nativeWatchedSources primaryH/S+reflected enum/struct source header·중복/범위guard. 기존poll include closure readNativeHeader/동시human변경CAS/inspector재갱신. 일반비reflection include/cache identity는미완. source8묶음최장0.62秒+기존Cpp단체비교reuse. 정확symbol4각1파일2871/4673/549B. 최종설치실제UI childfield추가→parent단일/arrayField1=0→paired header save→primaryH/S그대로두고포함header label변경 자동갱신→CPP scalarField1=7/arrayField1=9/Actor99,3,2→동일저장D3D에서도7/9/99,3,2·종료0 77.1秒. acceptance native-type-defaults-1688-window-7RdmyC. docs/NATIVE_TYPE_DEFAULT_EDITING.md.
+실제 source2D UI field add/save→CPP/pureBP/상속/씬/prefab/sequence 열린문서 갱신/UndoRedo·CPP field scalar7,array9,ActorKeep·동일 D3D게임99,3,2/exit0. sourceWindow native-type-migration-1702-window-1roPEk. Source10회귀 묶음 최장4.96초·symbol4개 각1owner. 최종 installed1706도 동일 실제창/CPP/새field7·9/D3D 통과. sourceRevision 자동갱신만 Save뒤scene dirty/Undo막던 실제창결함→같은 journal에 포함(restore는정확old원문).
 
-前WORK1680(USER1682) pureBP typeLibraries compactref/공유resolver/UndoRedo/상속/Play/cook/nativeModules0 D3D·1665(USER1671) 타입제작UI/UUID/원자header저장/CPP·1657 snapshot index/context·1648 network교체·1633 montage색인·1623 MR자원유지·1614 capturefacts·1606 probeLM 등각WORK근거유지.
+설치 위치는 이 문서의 이전 경로를 추측하지 말고 HBEngine.install.json/context.state.installation 실제마커를 읽기. USER_INSTALL_1706 확정·4296명세/967소유/User10849 SHA불변/Versions1/이전192253991B퇴역. 설치 C:/Users/kirby/HBEngine/Versions/e69a507e9a16243e/HBEngine.exe. WORK1704 참조. sync1705/install1706/finish1707 등 *.started/applied 있으면 재실행금지. native21/Player1604/Host1041/30native/vendor2 불변·SDK/renderer전체재검사재빌드안함. 이전1694에대해953source/4283명세/User10849불변/Versions1확정(새manifest는1706).
 
-## 다음 — 저장된 제작 데이터 새필드 이관(아직분석만)
+## 이어갈 작업
 
-주인님께저장된제작데이터도안전하게새field반영한다고안내함. 현재library helper는초안내defaults만변경; 기존BPvar/graphliteral/scene instance가구shape면pairedsave거절. 다음은additive-only(기존field ID/name/type/array/order/enum숫자유지) record value보완과기존AssetTransaction/CAS/복구를재사용. 먼저이미있는typedvalue walker/blueprint-overrides/native-reload/sequence-value 모델조사·새walker중복금지. TypedBP 변수/함수·매크로pin defaults/nodeinput literals/settings variableDefaults/nativeDefaults·장면/prefab object overrides·sequence/Take typedchannels도검토(무조건모든JSON key스캔으로타입추측금지). 신규metadata는oldBP값때문에resolver검증실패할수있으므로source-ref hydration과값이관/검증순서주의. 이전값/ActorID/custom값보존·newField만newdecldefault추가·이미newshape는무변경·호환되지않는shape는reject. 알수없는typedconsumer를성공으로버리지말것. 아직source변경/파일탐색도안함.
-
-누적잔여 CPP01개별typeasset/자동발견/schema/Name/alias/ref수명/wildcard·RND03>2계층/HDR/memoryFPS·RND06 GL7秒/FXC·RND08방향/볼륨bake/worldDF/HWRT·ANM06snapshot/restore/overlap/rig/warp/Take/source64·UI03실기기/asyncrollback 등ENGINE_STATUS.remaining. 전체공식분석/상용완료주장금지. docs/research실측710files16.8MB→불필요한evidence형식개편不要.
+일반 비reflection include 의존성/같은 H-S의 상대include build identity를 먼저 연결. CPP01 직접 C++ layout 변경·파괴적 schema/개별typeasset/global discovery/Name/alias/ref수명/wildcard, RND03>2계층/HDR/memoryFPS·RND06 GL7초/FXC·RND08 direction/volume/worldDF/HWRT, ANM06snapshot/overlap/rig/warp/Take/source64, UI03실기기/async rollback 등 ENGINE_STATUS.remaining 계속. 전체 공식문서 분석/상용완료 주장금지.
 
 ## 운영
 
-heavy/GUI/install前activeInstalledVersions·owned hidden editorWindowProbe/고유temp project/profile/port만. 사용자창/서버/프로필조작금지. CXX -o relative·PS외부실패자동중단아님→Node순차. rg실제경로확인/짧게/minified출력금지(추정파일명오류반복금지). retainTestEvidence/pruneTestArtifacts·Versions1/vendorpatch2. Git한글Conventional author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com·global/AItrailer없음. WebGPU승인밖agent금지. Mac/Xcode/Android실기기없음.
+heavy/GUI/install 전 activeInstalledVersions, owned hidden editorWindowProbe/고유 프로젝트·프로필·자동포트만. CXX -o relative/jsonInclude·PS 외부실패 자동중단아님→Node순차. rg --files 실제경로 먼저(추정파일명 오류반복금지)/minified 출력금지. retainTestEvidence/pruneTestArtifacts·native cache32·Versions1. Git 한국어 Conventional author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com/global·AI trailer없음. 새agent금지(WebGPU분석만과거승인). Mac/Xcode/Android폰없음.

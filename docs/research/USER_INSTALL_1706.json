@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-additive-saved-record-migration",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "630dba77f260f81837dc404a0f03a42c606ccab2",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e69a507e9a16243e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e69a507e9a16243e\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\e69a507e9a16243e\\HBEngine.exe",
+  "bundleHash": "e69a507e9a16243e45165313d287fd5dac8cf51ab974c93c2a9d15064bca3c9e",
+  "files": 4296,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4284,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\84d95f974bf36aba",
+        "bytes": 192253991,
+        "manifestSHA256": "43c2ff69b2625fa271672637bdb78307c325dfbf0f2ea063c4b644f24ef27e21"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T16:49:15.3162545Z",
+    "bytes": 192253991,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "e69a507e9a16243e"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 967,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/native-type-migration-1702-window-pYSEPg/acceptance.json",
+      "sha256": "69cb41003d5660c57668dc4afd27b5d21e899d48d4af9598b7afc2b12ef83ea4",
+      "scope": "Owned isolated 2D editor UI creates new member and saves existing persisted BP/scene/prefab/sequence values with clean open views and whole-group UI Undo/Redo. Same authored CPP game runs with nested7/9/Actor reference in actual D3D11 when packaged requested. No user app or project manipulated.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e69a507e9a16243e\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 78499.0667
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\e69a507e9a16243e\\",
+    "elapsedMs": 65.53,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\e69a507e9a16243e",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "e69a507e9a16243e45165313d287fd5dac8cf51ab974c93c2a9d15064bca3c9e",
+      "installedAt": "2026-10-22T16:49:11.889Z",
+      "manifestFiles": 4296,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged native SDK21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4296,
+  "versions": [
+    "e69a507e9a16243e"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1706-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/native-type1703-group.json",
+      "sha256": "5ca4b7f0004dffcfba304a2290dbdeed91061cca431ae85ee584d8a5cbc4976a",
+      "scope": "Source grouped additive-schema/batch/rollback/open-draft contracts, existing native type/BP/inheritance/source-transaction and focused AI regressions. Actual source window/CPP/D3D gate separate; final installed gate still required."
+    },
+    {
+      "path": "native/build/native-record-migration-1696-CA0Xbr/acceptance.json",
+      "sha256": "7df0c0d0b0514c10e048e727d54443e75e51555d696409f73be97227a2825c5e",
+      "scope": "Pure additive record-value migration foundation only, owned metadata snapshots and bounded authoring values. Project discovery/transaction/rollback/editor consumers are verified separately by1700/1701/1702."
+    },
+    {
+      "path": "native/build/record-value-sites-1698-homLIF/acceptance.json",
+      "sha256": "837f39a2a483300d73ae40d31893fc9a47e83b1e443016ae0725e974a75fa843",
+      "scope": "Typed document-site foundation using actual graph pin descriptors and shared override lookup. Project-wide discovery/publication/rollback/open drafts integration is verified separately by1700/1701/1702."
+    },
+    {
+      "path": "native/build/native-type-migration-1700-xJYa4H/acceptance.json",
+      "sha256": "bf509c6daaeaf39fde3538e96b577fe36c270d5f451880770c14920e6d6e093d",
+      "scope": "Actual source project publication and rollback. Open-document UI/Undo, compiled C++ and packaged game require their separate runtime gate."
+    },
+    {
+      "path": "native/build/native-type-defaults-1685-Bq7NtU/acceptance.json",
+      "sha256": "608a0d5646e3b4b0514b0f9bf0898f45e7bbf9f756f97b7a6019586d6e54c00f",
+      "scope": "Authored-library default reconciliation only. Adds new field defaults through nested record/arrays, IDs preserve provisional member edits, schema-unchanged fast path and strict compiler/persisted identity guards remain. Saved BP additive migration publishes and whole-group Undo restores both sources. Reflected header watch path selection only; arbitrary include dependency tracking/migration not claimed. Actual UI/save/CPP/game separate."
+    },
+    {
+      "path": "native/build/native-type-assets-1662-FVg8DZ/acceptance.json",
+      "sha256": "fd32e7ad7cc204980365c59607e0cd93e0a11fb7461ba9ca4b07fb7c213e85e1",
+      "scope": "Type library model and generated native metadata, actual 2D project CRUD/atomic header pair/checked-batch, identity and failure preservation. Compiled CPP, actual editor and packaged game are separate gates; dedicated independent type assets/global pure-BP registry/schema migration not claimed."
+    },
+    {
+      "path": "native/build/native-type-migration-1701-editor-DHufc7/acceptance.json",
+      "sha256": "35c399bbf01f1b5a8cd91188d9e5a674eee8cfc5e767365ac1ca0a7932c81a5c",
+      "scope": "Production save/batch/Undo functions with real ProjectService, real resolver and isolated files. Native actual-window and game gate separate."
+    },
+    {
+      "path": "native/build/native-type-imports-1675-uHmb1Z/acceptance.json",
+      "sha256": "4142624083ef30af9af5d19db02eadd22b4aeef462f7e6c40e9ee11be4ceeaca",
+      "scope": "Headless pure BP type-library source references/resolver scope/classless metadata, parent/child/UndoRedo cache views, actual 2D ProjectService validation and compact save, actual shared BlueprintRuntime SetMembers/Actor self refs with zero native builds/calls. UI/exported actual game separate; mixed CPP imports/per-type assets/arbitrary schema migration not claimed."
+    },
+    {
+      "path": "native/build/blueprint-inheritance-gEPEH0/acceptance.json",
+      "sha256": "3a38a09e50cda50e2851bc002e519c83fea0c3b7e4e4fce61b3ff4a90abcb36a",
+      "scope": "Existing source BP/inheritance/file transaction contract."
+    },
+    {
+      "path": "native/build/asset-transaction-Ud2640/acceptance.json",
+      "sha256": "09520a02fcd6bd9fb029ab08c8a57fa1efccbac23c136a23cf89ed5768d09353",
+      "scope": "Existing source BP/inheritance/file transaction contract."
+    },
+    {
+      "path": "native/build/native-type-migration-1702-window-1roPEk/acceptance.json",
+      "sha256": "2f53cf7fb6d98ce10aada408845c91d773e47caa75f16e7d7fcbc9fa2457607c",
+      "scope": "Owned isolated 2D editor UI creates new member and saves existing persisted BP/scene/prefab/sequence values with clean open views and whole-group UI Undo/Redo. Same authored CPP game runs with nested7/9/Actor reference in actual D3D11 when packaged requested. No user app or project manipulated."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/native-type-migration-1702-window-1roPEk/acceptance.json",
+      "sha256": "2f53cf7fb6d98ce10aada408845c91d773e47caa75f16e7d7fcbc9fa2457607c",
+      "scope": "Owned isolated 2D editor UI creates new member and saves existing persisted BP/scene/prefab/sequence values with clean open views and whole-group UI Undo/Redo. Same authored CPP game runs with nested7/9/Actor reference in actual D3D11 when packaged requested. No user app or project manipulated."
+    }
+  ],
+  "scope": "Installed actual2D type UI adds a member to existing persisted CPP/pure-BP/inherited/scene/prefab variant/baseline/conflict/sequence records; clean open docs update, actual UI whole-group Undo/Redo and new nested scalar7/array9/ActorKeep cross compiled CPP and same saved D3D11 game. Source71-file migration/CAS/preview hash/inventory/cancellation/restart and dirty-draft preservation pass. All manifest/source/native21/30 native tests/vendor2/Player1604/Host1041 verified, User inventory unchanged and Versions1. Earlier renderer/type-index/CPP metadata gates reused only where owner hashes match. No arbitrary destructive schema/unbranded JSON/global discovery/whole-engine/FPS/phone claim."
+}

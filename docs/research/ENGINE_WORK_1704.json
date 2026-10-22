@@ -1269,8 +1269,23 @@
     "fixture": "Initial UI fixture lacked canonical prefabRoot/prefabLocalId and assumed an array index despite normal refresh reordering. Repaired fixture, saved initial auto-refresh changes and addressed objects by stable ID. The initial sequence fixture lacked required clips[]. VM extraction includes real save/batch/Undo and stubs only the separate prefab refresh boundary.",
     "actualDefect": "Real editor showed Save immediately dirtying a linked scene solely from prefab sourceRevision. New revision is now in the same journal, while verified rollback preserves exact old source. Actual UI Undo/Redo and D3D then passed."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1694.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1706.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/native-type-migration-1702-window-pYSEPg/acceptance.json",
+      "sha256": "69cb41003d5660c57668dc4afd27b5d21e899d48d4af9598b7afc2b12ef83ea4",
+      "scope": "Owned isolated 2D editor UI creates new member and saves existing persisted BP/scene/prefab/sequence values with clean open views and whole-group UI Undo/Redo. Same authored CPP game runs with nested7/9/Actor reference in actual D3D11 when packaged requested. No user app or project manipulated.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e69a507e9a16243e\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 78499.0667
+    }
+  ]
 }

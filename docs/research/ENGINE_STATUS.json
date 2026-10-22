@@ -197,7 +197,8 @@
         "docs/research/ENGINE_WORK_208.json",
         "docs/research/ENGINE_WORK_214.json",
         "docs/NATIVE_TYPE_MIGRATION.md",
-        "docs/research/ENGINE_WORK_1704.json"
+        "docs/research/ENGINE_WORK_1704.json",
+        "docs/research/USER_INSTALL_1706.json"
       ]
     },
     {
@@ -2330,7 +2331,8 @@
         "docs/NATIVE_TYPE_DEFAULT_EDITING.md",
         "docs/research/ENGINE_WORK_1692.json",
         "docs/NATIVE_TYPE_MIGRATION.md",
-        "docs/research/ENGINE_WORK_1704.json"
+        "docs/research/ENGINE_WORK_1704.json",
+        "docs/research/USER_INSTALL_1706.json"
       ]
     },
     {
@@ -2944,7 +2946,8 @@
         "docs/NATIVE_TYPE_DEFAULT_EDITING.md",
         "docs/research/ENGINE_WORK_1692.json",
         "docs/NATIVE_TYPE_MIGRATION.md",
-        "docs/research/ENGINE_WORK_1704.json"
+        "docs/research/ENGINE_WORK_1704.json",
+        "docs/research/USER_INSTALL_1706.json"
       ]
     },
     {
@@ -3222,7 +3225,8 @@
         "docs/NATIVE_TYPE_DEFAULT_EDITING.md",
         "docs/research/ENGINE_WORK_1692.json",
         "docs/NATIVE_TYPE_MIGRATION.md",
-        "docs/research/ENGINE_WORK_1704.json"
+        "docs/research/ENGINE_WORK_1704.json",
+        "docs/research/USER_INSTALL_1706.json"
       ]
     },
     {
@@ -3436,14 +3440,14 @@
     "first": 1696,
     "last": 1704,
     "receipt": "docs/research/ENGINE_WORK_1704.json",
-    "scope": "Additive saved record migration across BP/inheritance/CPP defaults, scene/prefab variant/baseline/conflict, sequence/Take; journal/CAS/preview hash/whole UndoRedo/open drafts and actual source2D UI/CPP/D3D. Installed final gate pending."
+    "scope": "Additive saved record migration across BP/inheritance/CPP defaults, scene/prefab variant/baseline/conflict, sequence/Take; journal/CAS/preview hash/whole UndoRedo/open drafts. Final installed2D UI/CPP/new scalar7+array9/Actor reference/same D3D11 passed. User unchanged/Versions1."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1694.json",
-    "sourceCommit": "419fa41908d718f864bf8080d0f22222bb2ebe75",
-    "bundleHash": "84d95f974bf36abad1bcc81a04e53be86ea24d89bef904a34fec6bcf1f55928f",
+    "receipt": "docs/research/USER_INSTALL_1706.json",
+    "sourceCommit": "630dba77f260f81837dc404a0f03a42c606ccab2",
+    "bundleHash": "e69a507e9a16243e45165313d287fd5dac8cf51ab974c93c2a9d15064bca3c9e",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actual child field authoring fills parent single/array defaults and paired header save, unchanged primary H/S reflected include refresh/inspector, compiled CPP and same saved D3D game keep new nested scalar7/array9. Prior installed1682 pure-BP type import UI/UndoRedo/compact reference save/zero native build, nested SetMembers/Break and Actor-reference movement/Stop authored restore, same saved D3D game with0 native modules; previous CPP owner build path headless and actual1671 CPP game reused. Prior type-library UI creation/label edit, atomic original/generated header save, then shared typed C++ editor metadata/default pages, nested record/enum/array fields, type picker UndoRedo, Make pin/default/instance editing, sourceReference save without copied type tables; compiled CPP value/Actor reference and same saved actual D3D11 game with exact source Player1604. Source actual2D library create/write/checkedBatch/dryrun/conflict/identity/defaults plus snapshot512struct/514enum/2000lookups/1000record-array, valid shared frozen contexts/mutable plans and previous BP/sequence/take plus original-code failure proof reused. Native21/30tests/vendor2/Player1604/Host1041/render/network/montage/VM owners unchanged; full manifest/User inventory/links/Versions1. No independent per-enum/struct assets/pure-BP global import/arbitrary migration/whole engine/FPS/phone claim."
+    "scope": "Installed actual2D type UI adds a member to existing persisted CPP/pure-BP/inherited/scene/prefab variant/baseline/conflict/sequence records; clean open docs update, actual UI whole-group Undo/Redo and new nested scalar7/array9/ActorKeep cross compiled CPP and same saved D3D11 game. Source71-file migration/CAS/preview hash/inventory/cancellation/restart and dirty-draft preservation pass. All manifest/source/native21/30 native tests/vendor2/Player1604/Host1041 verified, User inventory unchanged and Versions1. Earlier renderer/type-index/CPP metadata gates reused only where owner hashes match. No arbitrary destructive schema/unbranded JSON/global discovery/whole-engine/FPS/phone claim."
   }
 }
