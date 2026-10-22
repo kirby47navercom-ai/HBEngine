@@ -11,3 +11,5 @@
 AI는 `sequence.curve.tool` 또는 `skeletal.curve.edit`의 `operation:'fft'`, `filterType`, `cutoff`, `upperCutoff`, `sampleRate`, `response`, `rippleDB`, `order`, `strength`, `indices`, `channel`을 사용해요. 기존 revision·dryRun·Undo/Redo·저장을 공유하고, C++와 BP의 기존 Sequence/Timeline 재생은 저장된 동일 키를 읽어요. 새 런타임 전용 필터나 C++에서 별도 구현해야 하는 곡선 포맷을 만들지 않아요.
 
 [Epic Curve Editor의 Filter Tool과 FFT 설명](https://dev.epicgames.com/documentation/en-us/unreal-engine/curve-editor?application_version=4.27)의 키를 지우지 않는 노이즈 편집·저/고역·응답 선택을 지정 대조했어요. [Epic FFT Filter API](https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/class/CurveEditorFFTFilter)는 정규화 cutoff를 설명해요. HB의 Hz 단위, 비등간격 재표본화와 두 대역 조합은 이 엔진의 명시적 계약이며 Unreal 내부 구현과 같다고 주장하지 않아요. 다중 곡선 동시 편집, 불균일 표본의 NUFFT 자체, 인과적 실시간 오디오 필터는 이 기능의 범위가 아니에요.
+
+도구 설정은 곡선을 밀어내는 긴 세로 목록 대신 폭에 맞춰 5열/3열로 배치하는 팝업이에요. 높이는 최대180px이고 좁은 창에서는 내부 스크롤로 나머지 항목에 접근해요. Escape로 닫으면 설정 요약에 포커스가 돌아가요. 입력·AI 명령·필터 계산과 문서 이력 계약은 그대로예요.
