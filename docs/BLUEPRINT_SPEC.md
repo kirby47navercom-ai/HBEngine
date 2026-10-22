@@ -643,3 +643,5 @@ Take 녹화는 프리셋·Transform 채널·뼈 필터와 시퀀스별 recording
 Take 녹화 프리셋은 전용 에셋/편집기에서 만들고 시퀀스의 설정으로 복사해요. UI 불러오기·새 파일 저장과 파일 묶음 Undo/Redo, AI sequence.take.preset.apply/runtime.take.start의 원본 기준 검사를 공유해요. FPS·키 오차와 채널/뼈/생성 필터는 실제 녹화기로 전달하고 결과 시퀀스에 남겨요. 기록한 결과는 기존 BP·C++ LevelSequence::Play/Seek/Stop을 사용하며 게임용 녹화 C++ ABI를 새로 추가한 것은 아니에요. 설정 에셋은 게임 빌드에서 제외해요. 형식·복사 정책·원본 변경/키 줄이기·남은 source 바인딩/timecode는 TAKE_PRESETS_AND_CAPTURE.md에 있어요.
 
 1841–1843: Take 프리셋 다단계 상속 parentPreset/overrides, FPS·키오차·설정·소스 묶음 덮어쓰기, 유효값 표시/상속입력잠금/덮어쓰기초기값복사·상위새로고침·상속해제·UndoRedo. take.preset.resolve/sequence.apply/runtime preview/start의 공용 해석·전체 chain revision 검사·누락/순환/깊이 오류·진행중 snapshot분리. 결과 시퀀스/SaveAs는 flat복사로 기존 BP·CPP 재생을 사용하고 preset파일은 게임에 넣지 않아요. 상세는 TAKE_PRESETS_AND_CAPTURE.md예요. clock/timecode·외부capture는 별도 잔여예요.
+
+1847–1849: Take game/unscaled/platform 시계·정수 non-drop 시작 타임코드·clock/recordingClock 프리셋/시퀀스/결과저장·clock묶음상속/UndoRedo·AI start부분override/state timecode 연결. game은배율·pause적용,unscaled는완료frame rawDelta/pause정지,platform은단조시계/기존실행loop의안전한정지포즈표본. 키는상대초라기존BP/CPP재생유지. 오디오/외부timecode/RTC/genlock/분수·dropframe은별도잔여. 상세TAKE_PRESETS_AND_CAPTURE.md.

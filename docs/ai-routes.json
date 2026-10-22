@@ -2385,6 +2385,30 @@
       "paths": [
         "prototype/app.js"
       ]
+    },
+    {
+      "id": "take-clock",
+      "keywords": [
+        "TakeClock",
+        "resolveTakeClock",
+        "validTakeClock",
+        "formatTakeTimecode",
+        "parseTakeTimecode",
+        "takeTimecodeFrame"
+      ],
+      "paths": [
+        "prototype/take-clock.js"
+      ]
+    },
+    {
+      "id": "take-clock-editor",
+      "keywords": [
+        "takeClockMarkup",
+        "takeClockInput"
+      ],
+      "paths": [
+        "prototype/take-clock-editor.js"
+      ]
     }
   ]
 }

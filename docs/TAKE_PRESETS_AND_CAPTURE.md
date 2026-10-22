@@ -38,7 +38,7 @@ AI는 `sequence.take.preset.apply`에 열린 시퀀스 path/expectedRevision, pr
 
 녹화기는 FPS와 키 오차를 실제 표본/키 줄이기에 사용하고 결과 시퀀스에 fps/recordingTolerance/recordingSettings를 복사해요. 녹화 프리셋은 편집기 전용으로 일반 게임 내보내기에서 제외해요. 게임에서 해당 파일을 직접 참조하면 빌드가 거절돼요. 기록된 시퀀스의 BP·C++ 재생은 프리셋 파일 없이 독립적으로 동작해요. 이미 저장된 결과에 원본 프리셋 변경이 자동 반영되는 라이브 링크가 아니에요. 새 상주 cache/worker/timer/GPU 자원은 없고 선택/불러오기 시 기존 프로젝트 인덱스와 파일 읽기를 사용해요.
 
-AI 계약은 `engine.schema.takePresets`, 설정 소유자는 take-preset-assets.js, 소스 해석은 take-sources.js, 상속 해석은 take-preset-inheritance.js, 저장 창은 take-preset-save.js예요. 독립 clock/timecode·마이크/Live Link/다른 시퀀스 등의 외부 캡처 소스는 별도 잔여예요. [Unreal Take Recorder](https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine)의 Sources·Any Actor·Player·World, 소스 활성화·프리셋 저장/불러오기와 FPS·키 줄이기 설정 본문을 대조했어요. 전체 문서/API 분석 완료나 Unreal의 모든 소스 옵션을 구현했다는 뜻은 아니에요.
+AI 계약은 `engine.schema.takePresets`, 설정 소유자는 take-preset-assets.js, 소스 해석은 take-sources.js, 상속 해석은 take-preset-inheritance.js, 저장 창은 take-preset-save.js예요. 오디오/외부 타임코드 제공자·마이크/Live Link/다른 시퀀스 등의 외부 캡처 소스는 별도 잔여예요. [Unreal Take Recorder](https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine)의 Sources·Any Actor·Player·World, 소스 활성화·프리셋 저장/불러오기와 FPS·키 줄이기 설정 본문을 대조했어요. 전체 문서/API 분석 완료나 Unreal의 모든 소스 옵션을 구현했다는 뜻은 아니에요.
 
 ## 저장한 녹화 소스
 
@@ -58,14 +58,34 @@ AI는 먼저 읽기 전용 `runtime.take.sources`에 presetAsset/expectedPresetR
 
 ## 상속 프리셋
 
-프리셋 편집기의 **상위 프리셋**은 저장된 다른 Take 프리셋을 가리켜요. 다단계 상속을 지원하며, **이 프리셋에서 덮어쓰기**에서 FPS·키 오차·녹화 설정·녹화 소스 묶음을 각각 선택해요. name/description은 항상 자기 값이에요. settings와 sources는 각각 전체 묶음으로 덮어쓰며, 개별 채널을 부모와 합치는 규칙은 아니에요. 상위의 저장하지 않은 편집은 적용하지 않아요.
+프리셋 편집기의 **상위 프리셋**은 저장된 다른 Take 프리셋을 가리켜요. 다단계 상속을 지원하며, **이 프리셋에서 덮어쓰기**에서 FPS·키 오차·녹화 설정·녹화 소스·녹화 시계 묶음을 각각 선택해요. name/description은 항상 자기 값이에요. settings와 sources는 각각 전체 묶음으로 덮어쓰며, 개별 채널을 부모와 합치는 규칙은 아니에요. 상위의 저장하지 않은 편집은 적용하지 않아요.
 
 상속받는 입력은 실제 상위 값으로 표시하고 잠가요. 덮어쓰기를 켤 때 현재 보이는 유효 값을 먼저 복사해 값이 튀지 않게 해요. **상위 새로고침**은 디스크의 최신 상위 설정을 다시 읽어요. **상속 해제** 또는 상위 선택의 독립 프리셋은 현재 유효 값을 복사하고 parentPreset/overrides를 제거해요. 일반 Undo/Redo·저장을 사용해요. 비동기 미리보기 중 문서가 바뀌면 늦은 결과를 새 문서에 적용하지 않아요. 닫힌 창을 다시 그리지 않아요.
 
-version1의 선택 parentPreset은 Assets/*.hbtakepreset.json 경로이고, 함께 필요한 overrides는 fps/tolerance/settings/sources의 중복 없는 배열이에요. 빈 배열은 전부 상속해요. sources를 덮어쓰면서 자체 sources가 없으면 기존 선택 방식으로 명시적으로 바꾸고, 빈 sources 배열이면 미설정 목록을 그대로 유지해요. 기존 상속 필드 없는 자료는 그대로 동작해요. 누락 파일·잘못된 자료·순환 참조·32단계 초과는 해석 오류예요. 상위 프리셋을 해석하지 않은 상태로 동기 takePresetOptions를 사용하면 오류를 내요.
+version1의 선택 parentPreset은 Assets/*.hbtakepreset.json 경로이고, 함께 필요한 overrides는 fps/tolerance/settings/sources/clock의 중복 없는 배열이에요. 빈 배열은 전부 상속해요. sources를 덮어쓰면서 자체 sources가 없으면 기존 선택 방식으로 명시적으로 바꾸고, 빈 sources 배열이면 미설정 목록을 그대로 유지해요. 기존 상속 필드 없는 자료는 그대로 동작해요. 누락 파일·잘못된 자료·순환 참조·32단계 초과는 해석 오류예요. 상위 프리셋을 해석하지 않은 상태로 동기 takePresetOptions를 사용하면 오류를 내요.
 
 AI의 읽기 전용 take.preset.resolve는 presetAsset을 받아 유효 data와 leaf→root 순서의 chain[{path,revision}]을 반환해요. sequence.take.preset.apply, runtime.take.sources/start에도 동일한 해석을 사용해요. 선택 expectedPresetRevision은 시작 파일만 검사하고, expectedPresetRevisions에 전체 chain의 path:revision 객체를 전달하면 상위 파일까지 검사해요. 빠진 항목·불필요한 항목·오래된 revision은 거절해요. 읽는 동안 파일이 달라지는 경우도 다시 읽어 검사해요. 파일 이동은 기존 프로젝트 redirect 해석과 참조 인덱스를 사용해요.
 
 시퀀스 불러오기·새 프리셋 저장·실제 Take 시작은 해석한 설정의 독립 복사본을 사용해요. 결과 시퀀스와 새 파일 저장은 상속 링크를 만들지 않아요. 녹화 중 상위 파일을 바꿔도 해당 Take의 FPS·필터·대상을 바꾸지 않아요. 모든 프리셋은 편집기 전용이며 베이크된 시퀀스의 BP/C++ 재생과 게임 패키지에는 필요하지 않아요. 전역 감시·지속 파일 캐시·작업자·타이머·GPU 자원은 추가하지 않았어요. 열린 프리셋 패널의 현재 문서에만 미리보기 결과를 보관해요.
 
 [Unity Presets](https://docs.unity3d.com/6000.0/Documentation/Manual/Presets.html)의 설정 재사용·편집기 적용 본문과 [Unreal Take Recorder](https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine)의 소스 프리셋 흐름을 참고했어요. 위 parentPreset/overrides와 체인 revision은 HBEngine의 재사용/AI 편집 계약 확장이며 두 엔진의 동일한 상속 형식을 복제했다는 주장은 아니에요. 새로 읽은 Unity 지정 본문과 기존 Unreal 관련 구역 재확인에 한정하며 전체 API 분석은 아니에요.
+
+## 녹화 시계와 타임코드
+
+프리셋과 시퀀스 녹화 설정의 **녹화 시계**에서 시간 기준과 시작 타임코드를 편집해요. 상속 프리셋에서도 clock 묶음으로 상속/덮어쓰기하며 일반 Undo/Redo·불러오기·새 프리셋 저장을 사용해요. 시작 타임코드는 HH:MM:SS:FF, 24시간 이상은 1d 00:00:00:00처럼 입력해요. 정수 FPS 1..240의 non-drop 표기예요. FPS를 바꾸면 같은 시작 프레임 수를 새 FPS로 표시해요.
+
+| 시간 기준 | 실행 중 시간 배율 | 편집기 실행 일시정지 |
+| --- | --- | --- |
+| 게임 시간 game | 적용해요. 0이면 녹화 시간도 멈춰요. | 멈춰요. |
+| 배율 무시 unscaled | 완료된 월드 프레임의 원래 delta를 사용해요. | 멈춰요. |
+| 플랫폼 시계 platform | performance.now의 단조 시계를 사용해요. | 기존 실행 루프에서 정지된 포즈를 계속 표본으로 받아요. |
+
+플랫폼은 별도 타이머·worker를 만들지 않아요. 앞선 프레임·명령·중단점 처리가 끝나지 않았을 때는 중간 상태를 캡처하지 않고, 다음 안전한 시점에 실제 경과 시간을 반영해요. UI 스레드가 멎거나 앱이 중단된 구간에 존재하지 않는 중간 포즈를 재구성하지 않아요. 브라우저/플랫폼 제한으로 프레임을 받지 못하는 동안의 실시간 수집을 보장하지 않아요. 게임/배율 무시는 합산 오차를 줄이는 보정 합산을 사용해요. 역행/비유한 시계와 기존 시퀀스 길이 예산을 벗어나는 시간은 오류예요.
+
+선택 clock은 {version:1,source:game|unscaled|platform,startFrame:0}이에요. 프리셋에서는 clock, 시퀀스/녹화 결과에서는 recordingClock에 저장해요. startFrame은 안전 정수 범위에서 최장 하루의 녹화 프레임을 더할 여유를 남기는 음수 아닌 프레임 수예요. 생략한 기존 자료는 게임 시간·0프레임으로 동작하고, 생략한 기존 녹화 결과에 필드를 강제로 추가하지 않아요. 프리셋 명시 clock의 부분 덮어쓰기는 지정 필드만 바꿔요. null과 잘못된 자료는 거절해요.
+
+runtime.take.start에 clock을 전달하고 runtime.take.state의 clock/timecode와 기존 time을 읽어요. timecode는 source/frame/text를 담고, time은 녹화 시작 후 상대 초예요. UI의 현재 타임코드는 기존 상태 갱신에서 표시하며 전체 녹화 키·소스 목록을 매 프레임 복사하지 않아요. 상속/파일/시퀀스 설정의 나중 변경은 시작한 Take의 시계나 원점을 바꾸지 않아요.
+
+시작 타임코드는 메타데이터예요. 시퀀스 키는 0초에서 시작하는 상대 시간으로 남고 기존 BP/C++ LevelSequence Play/Seek/Stop을 그대로 사용해요. 프리셋 파일 없이 게임에 내보낼 수 있어요. 정수가 아닌 FPS·drop-frame·오디오/PCM 표본 동기·외부 타임코드/RTC/genlock 제공자·카메라/마이크 동기 수집은 별도 잔여예요.
+
+[Unreal Recording Clock Source](https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine)의 Tick/Platform 및 시간 배율·정지 응답과 timecode metadata 구역을 재확인했고, [Unity Time.unscaledDeltaTime](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Time-unscaledDeltaTime.html)의 Description·timeScale 독립/FixedUpdate/Android 복귀 주의 본문을 새로 읽었어요. HBEngine의 세 시계와 수동 정수 타임코드가 여기의 구현 범위이며 Unreal의 오디오/상대·외부 타임코드/Custom/Play Every Frame을 모두 구현했다는 뜻은 아니에요. 관련 지정 본문만 확인했으며 전체 문서/API 분석 상태는 승격하지 않아요.
