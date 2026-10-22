@@ -893,11 +893,6 @@
       "scope": "Actual existing Shot add/duplicate/delete/drag/trim-source offset/AI CAS/dryRun/child-open/nested preview/actual Play/on-demand runtime tree."
     }
   ],
-  "pendingInstalledGates": [
-    "tools/check-timeline-rows-1442-window.mjs",
-    "tools/check-document-history-1400-window.mjs",
-    "tools/check-document-history-1400-window.mjs --player"
-  ],
   "nativePlayerSHA256": "4482bc5d9b899409e25b8ef567a0a54482aac8452a7da5d09b7d45800e32a82a",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -935,8 +930,8 @@
   },
   "research": "supplemental1440 scoped official UE hotkey navigation table and Timeline1.8.4pan/zoom body. Horizontal navigation reference read, not implemented/whole corpus claim.",
   "diagnostic": "DEBUG_HANDOFF1438–1443. Actual row-to-notify selection fixed; redo fixture required CAS; old pure montage root-motion disabled stub extractRange updated. Git staged check rejected one mixed CRLF line before commit, normalized own file only; no rejected commit published.",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1436.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1446.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": {
     "animation": [
@@ -960,5 +955,35 @@
     ]
   },
   "exhaustiveUEUnity": false,
-  "verificationMetadataNote": "Native/test/vendor17/27/2 exact reuse. Source UI predecessor of one validation-order follow-up is stated; final installed UI/AI +dense editor/player repeats exact shipped source."
+  "verificationMetadataNote": "Native/test/vendor17/27/2 exact reuse. Source UI predecessor of one validation-order follow-up is stated; final installed UI/AI +dense editor/player repeats exact shipped source.",
+  "installedGates": [
+    {
+      "path": "native/build/timeline-rows-1442-window-ibUGKU/acceptance.json",
+      "sha256": "65a9f27fae21efa978fca99e15efd0b224c9b0442058c1f4f4cda11613f0dfa3",
+      "scope": "Owned hidden actual editor:68montage rows virtualized, exact slot/notify row metadata and context, drag/Undo/Redo/save, central reassignable navigation/input isolation and read-only AI CAS; subsequence row navigation. Existing dense-sequence and section runtime gates cover unchanged execution separately.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2e99818704cc9235\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/document-history-1400-window-2OocCA/acceptance.json",
+      "sha256": "44f8eba12055934d22bf438f6a7a2e4b5cf5a28245e0b64a28cc7b17a0fd86d0",
+      "scope": "Owned hidden actual editor: visible fixed-height256track rows/density keys/search/focus/scroll/AI exact index,8 dense-key edits with shared history Undo/Redo/branch, bounded history/read diagnostics/revisions, save and actual Play. Optional actual installed D3D11 package. No user profile/project or gameFPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2e99818704cc9235\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/document-history-1400-window-MGbHoU/acceptance.json",
+      "sha256": "6db1d553ba96454c95a18d05b46f28529c7c58b1a988977682cd5ab70c8a0636",
+      "scope": "Owned hidden actual editor: visible fixed-height256track rows/density keys/search/focus/scroll/AI exact index,8 dense-key edits with shared history Undo/Redo/branch, bounded history/read diagnostics/revisions, save and actual Play. Optional actual installed D3D11 package. No user profile/project or gameFPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2e99818704cc9235\\HBEngine.exe",
+        "--player"
+      ]
+    }
+  ]
 }

@@ -946,3 +946,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1436 설치확인: cad520337fc0680a·4105명세/766소유SHA/27native검사/2vendor·Player1430/Host1041. 설치실제고급face UI/숨은값/Undo/save/staleAI·GL/GPU/fallback physical각2016RGB/후보3승격/복원·D3D새C++BP5/기존proxy7/4색/검정↔노랑/capture後metadata증가/위치6,0,2·AI3owner. User10849읽기SHA/연결/Versions1·이전188294910B회수. 전체누적목표계속/分母null.
 
 1438–1444: 이력 결과컨테이너 지연생성262176→32814/동일순회·공유/432비교/기본getter·특수값·alias/순환fallback·restore격리·참조rename유지. 몽타주/시퀀스lazy행/선형slot-section묶음·montage68행top10bottom7·알림속성선택/예약slot이름분리·검색/중앙재지정↑↓CtrlF/실제dragUndoRedo저장. AI row read/navigate2/최대256/원인덱스/키자료제외/CAS/readOnly선택/focus·정확2소유143.87ms. source9f39f1f·65k키256행8UndoRedo분기/저장/Play·기존Shottrim/중첩Play·전체montage notify실행회귀·11syntax/153단축키. native17/test27/vendor2동일로Player1430/Host1041/기존native근거재사용. 전체순회/복원·행내clip가상화 등누적잔여유지·설치대기.
+
+1446 설치확인: 2e99818704cc9235·4111명세/771소유SHA/27native검사/2vendor·Player1430/Host1041동일. 실제설치montage68행/조회/CAS/검색/재지정/dragUndoRedo/save/슬롯복제/하위구간탐색·65k256행8UndoRedo분기저장Play·별도D3D11게임[2.5,0,0]통과. User10849읽기SHA/연결/Versions1·이전188518454B회수·렌더러행렬/컴파일불필요반복없음. 누적목표계속/분모null.
