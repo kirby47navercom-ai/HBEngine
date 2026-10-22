@@ -1,0 +1,136 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "107ba9184721daf746c1f260eeaaba3249166604",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\6cd8c17d2ed3a661",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\6cd8c17d2ed3a661\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\6cd8c17d2ed3a661\\HBEngine.exe",
+  "bundleHash": "6cd8c17d2ed3a6617727047ef2e2acd7f866edd8df51d069bd5867003ed5fe86",
+  "files": 4191,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4186,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ef6a036b659c85b3",
+        "bytes": 190053708,
+        "manifestSHA256": "5f8f4c5c38e831461e40fc07b0a9e3f864c0941793cb7a5d81c80b60dd0025f9"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T08:03:05.4042222Z",
+    "bytes": 190053708,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "6cd8c17d2ed3a661"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 858,
+  "repositoryOnlyTestSourcesVerified": 29,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
+  "installedGates": [
+    {
+      "path": "native/build/montage-index-1551-window-GWfmyu/acceptance.json",
+      "sha256": "ec289d17c2e510ae0fe6efd62c9ddc859593ef276c51efa5a1599b3e79b8ed96",
+      "scope": "Owned hidden actual editor saves 64-clip/root-motion montage and Blueprint Play/Pause/Seek to sparse last clip; Actor original placement preserved and ready continuation reached. Optional same saved Windows D3D11 game. No user project/profile, renderer matrix, actual mobile or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\6cd8c17d2ed3a661\\HBEngine.exe"
+      ],
+      "ms": 6247.310600000001
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\6cd8c17d2ed3a661\\",
+    "elapsedMs": 63.63,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\6cd8c17d2ed3a661",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "6cd8c17d2ed3a6617727047ef2e2acd7f866edd8df51d069bd5867003ed5fe86",
+      "installedAt": "2026-10-22T08:03:01.893Z",
+      "manifestFiles": 4191,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1545.json\",\"scope\":\"Unchanged native access metadata owner hashes verified with full source and installed manifest; previous pure metadata check not repeated.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4191,
+  "versions": [
+    "6cd8c17d2ed3a661"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1554-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/montage1550-accepted.json",
+      "sha256": "e7a98523aed8cd912d88eee70750dff4602887091c84e9737dd18d51e89d1e92",
+      "scope": "Grouped old-formula math/alias/chain and indexed/legacy/real program montage parity, root 2D3D30/60/120/notify/replacement/pose cost."
+    },
+    {
+      "path": "native/build/montage-index-root-1549.json",
+      "sha256": "a0add394ae66eb724dbf81650f6405c14c133957dec994cd8fb1cb3803532b7a",
+      "scope": "Grouped old-formula math/alias/chain and indexed/legacy/real program montage parity, root 2D3D30/60/120/notify/replacement/pose cost."
+    },
+    {
+      "path": "native/build/montage-index-1551-window-0oWXIF/acceptance.json",
+      "sha256": "db67d89237d0a7ef0c4d6313cfeb91cdf9a8c1c2c8aec3eaec047dec68688889",
+      "scope": "Owned final editor valid64 montage Save/Blueprint Play/Pause/last Seek126.5/original[10,3,0]/ready and same saved D3D11/exit0."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/montage-index-1551-window-0oWXIF/acceptance.json",
+      "sha256": "db67d89237d0a7ef0c4d6313cfeb91cdf9a8c1c2c8aec3eaec047dec68688889",
+      "scope": "Owned final editor valid64 montage Save/Blueprint Play/Pause/last Seek126.5/original[10,3,0]/ready and same saved D3D11/exit0."
+    }
+  ],
+  "scope": "Installed final montage interval/root math: actual hidden editor saves valid64-clip/root-motion montage, Blueprint Play/Pause/Seek126.5 reaches continuation and keeps original Actor[10,3,0]/exit0. Source same saved Windows D3D11 also passed. Final grouped old-Three1200 math/alias+1000-chain, indexed/legacy64clip2slot/real compiled animation/root program, root2D3D30/60/120/gravity/walls/parent/tail, montage/notify/replacement/pose-byte regression passed; explicitQ3/V1/slice1 construction removed and source start reads132→2 (not FPS). Full manifest/858 source owners/29native tests/20native owners/2vendor, unchanged common runtime/Player1484/Host1041, User readonly SHA, links and Versions1. No unrelated CPP GUI,179s timeline, renderer matrix, actual phone or full-game FPS claim.",
+  "version": 1,
+  "date": "2026-10-22T08:05:18.349Z",
+  "work": "docs/research/ENGINE_WORK_1552.json",
+  "distributionSync": "native/build/distribution-1553-sync.json",
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1545.json",
+  "nativePlayerBuildReused": true,
+  "hostReuseFrom": "docs/research/USER_INSTALL_1545.json"
+}

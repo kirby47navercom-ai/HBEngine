@@ -982,3 +982,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1545 설치확인: ef6a036b659c85b3·4185명세/849소유/29native검사/20nativeowner/2vendor SHA·Player1484/Host1041재사용. 최종실제편집창 Shot생성/drag/trim/source/AI-CAS/하위열기/localpreview/Play-Pause-Seek/save/exit0 14.4초·focus1owner62.48ms. User10849읽기SHA/연결/Versions1·이전189923142B회수. 변경없는CPPmetadata/이전GUI와179초timeline검사재반복없음·다음몽타주clip/root조회와누적목표계속.
 
 1547–1552: 슬롯별몽타주clip/root범위색인·원순서/포함끝/희소조회·small/manyslot/겹침/dense/reentrant기존경로. appendMotion Q3/V1/slice1명시생성제거·1200수치/alias+1000연쇄동치·real64clip/2slot 원위치/pose재사용·start읽기132→2. root2D3D30/60/120/몽타주/notify/replace/cost그룹8통과·오래된Actor자동Mesh가정은fixture명시수정. 실제64clip저장/BP pause126.5/원위치[10,3,0]/같은D3Dexit0·2cb695b·focus1owner2716B·native20/Player/Host재사용·설치다음.
+
+1554 설치확인: 6cd8c17d2ed3a661·4191명세/858소유/29native검사/20nativeowner/2vendor SHA·Player1484/Host1041재사용. 최종실제64클립/root montage저장·BP Play/Pause/Seek126.5·ready후속실행·원위치[10,3,0]/exit0 6.25초·focus1owner63.63ms. User10849읽기SHA/연결/Versions1·이전190053708B회수. 같은saved D3D소스검사재반복없음·다음montage section/notify frame비용및누적목표계속.

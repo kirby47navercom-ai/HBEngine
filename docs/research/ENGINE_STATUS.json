@@ -3275,11 +3275,11 @@
     "scope": "Montage sparse per-slot point/range selection with authored order/final-frame and legacy fallback semantics; scalar appendMotion removes temporary Three objects with old math/alias parity. Animation/rig/sequence features in remaining stay open."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1545.json",
-    "sourceCommit": "ee4b0d08b9af2344e3b637f84f25b056ab609776",
-    "bundleHash": "ef6a036b659c85b3e8ca99ea7d0034fbb9120c60bb6df6adce8c297c6c7779dd",
+    "receipt": "docs/research/USER_INSTALL_1554.json",
+    "sourceCommit": "107ba9184721daf746c1f260eeaaba3249166604",
+    "bundleHash": "6cd8c17d2ed3a6617727047ef2e2acd7f866edd8df51d069bd5867003ed5fe86",
     "verified": true,
     "versions": 1,
-    "scope": "Installed captured interval clip/shot runtime: final existing editor section creation/drag/trim/AI-CAS/double-click/local preview and actual nested Blueprint Play/Pause/Seek, thin save and exit0. Same saved source actual Windows D3D11[7.5,0,0]/exit0; source grouped valid64-clip forward/backward/source/gap stop, 65k sparse16 comparisons/0 scans, shot/event range parity and old animation ownership/event checks. Full manifest/849 source owners/29native tests/20native owners/2vendor, exact unchanged shared runtime owners and Player1484/Host1041, User read-only SHA, links and Versions1. Existing native metadata proof reused by exact owner hashes; no old privateCPP GUI, long179s timeline, renderer matrix, actual phone or game FPS claim."
+    "scope": "Installed final montage interval/root math: actual hidden editor saves valid64-clip/root-motion montage, Blueprint Play/Pause/Seek126.5 reaches continuation and keeps original Actor[10,3,0]/exit0. Source same saved Windows D3D11 also passed. Final grouped old-Three1200 math/alias+1000-chain, indexed/legacy64clip2slot/real compiled animation/root program, root2D3D30/60/120/gravity/walls/parent/tail, montage/notify/replacement/pose-byte regression passed; explicitQ3/V1/slice1 construction removed and source start reads132→2 (not FPS). Full manifest/858 source owners/29native tests/20native owners/2vendor, unchanged common runtime/Player1484/Host1041, User readonly SHA, links and Versions1. No unrelated CPP GUI,179s timeline, renderer matrix, actual phone or full-game FPS claim."
   }
 }
