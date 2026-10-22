@@ -937,34 +937,34 @@
     {
       "path": "native/build/root1565-group.json",
       "sha256": "b67bf10d2c7d50acc75fb945b118465c5ba436f56196916ffc2b0bfde9d74dcb",
-      "scope": "Prepared section/time/notify parity and valid64-notify16-section callback controls; old root2D3D30/60/120/montage/notify/replacement/event140 checks."
+      "scope": "Grouped root normalization math/alias, constructor counter, append/real64-clip/root2D3D30/60/120/replacement/timeline and source D3D; network-only edit follows this root proof."
     },
     {
       "path": "native/build/root-normalization-1564.json",
       "sha256": "1444c8de32efdc0d3a15d852d6204f974721f969c33c5ffdc2348035a1609fc5",
-      "scope": "Prepared section/time/notify parity and valid64-notify16-section callback controls; old root2D3D30/60/120/montage/notify/replacement/event140 checks."
+      "scope": "1500 rotation+1500 alias cases and isolated actual gameplaySystems12tick old36/current24 length7 Float64Array count, same clock; not total heap/FPS."
     },
     {
       "path": "native/build/network1569-group.json",
       "sha256": "dc0713307ed7d8da7911002b4d84d44fe91cd585e2787e97aeb881fad5a10151",
-      "scope": "Prepared section/time/notify parity and valid64-notify16-section callback controls; old root2D3D30/60/120/montage/notify/replacement/event140 checks."
+      "scope": "Grouped new publication reference and actual loopback, previous shared-packet/interest100k/deletion/reconnect checks."
     },
     {
       "path": "native/build/network-publication-1568.json",
       "sha256": "07921b0bab7f698458a098e79a2de4b57fcdcb23f968260fea3c92d4d5b3d0a2",
-      "scope": "Prepared section/time/notify parity and valid64-notify16-section callback controls; old root2D3D30/60/120/montage/notify/replacement/event140 checks."
+      "scope": "Actual NetworkWorld1025-moving fairness, cached stamp/wire getter48→32 and partial send recovery; actual loopback1025 apply and128 legalKorean15k rows in2 UTF8-bounded packets."
     },
     {
       "path": "native/build/montage-index-1551-window-jZd1Ak/acceptance.json",
       "sha256": "db67d89237d0a7ef0c4d6313cfeb91cdf9a8c1c2c8aec3eaec047dec68688889",
-      "scope": "Owned final editor valid64 montage Save/Blueprint Play/Pause/last Seek126.5/original[10,3,0]/ready and same saved D3D11/exit0."
+      "scope": "Owned source root editor Save/BP Play/Pause/Seek126.5/original[10,3,0]/ready and same saved D3D; root/GP owners unchanged during subsequent network-only edit, final installed rootUI+socket gates planned."
     }
   ],
   "sourceGameGates": [
     {
       "path": "native/build/montage-index-1551-window-jZd1Ak/acceptance.json",
       "sha256": "db67d89237d0a7ef0c4d6313cfeb91cdf9a8c1c2c8aec3eaec047dec68688889",
-      "scope": "Owned final editor valid64 montage Save/Blueprint Play/Pause/last Seek126.5/original[10,3,0]/ready and same saved D3D11/exit0."
+      "scope": "Owned source root editor Save/BP Play/Pause/Seek126.5/original[10,3,0]/ready and same saved D3D; root/GP owners unchanged during subsequent network-only edit, final installed rootUI+socket gates planned."
     }
   ],
   "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
@@ -995,7 +995,7 @@
       "native/include/HBEngine/Struct.hpp": "11e0b487426a45e651b8d6c21473cbabd483c5aaa2ab55f3c3eff47c7670fa1f"
     },
     "changedNativeOwners": [],
-    "reason": "All20 native SDK/desktop owners and Player1484/Host1041 unchanged. Changed JS montage/root runtime verified by grouped real 2D3D/physics/animation tests, final actual saved64-clip D3D11 game, final installed editor gate planned."
+    "reason": "All20 native SDK/desktop owners and actual Player1484/Host1041 unchanged. Changed JS root/GP proof uses math/counter/real2D3D+savedD3D; network code uses actual loopback/reference. Final installed rootUI+real network socket gates planned."
   },
   "runtimeOwnerReuse": {
     "prototype/player.js": "cc79375fee220e8901408b52fb1ff259e174b1a24582ddd54df09db441304b36",
