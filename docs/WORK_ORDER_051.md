@@ -990,3 +990,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1561 설치확인: 801b67e62cc2ab8f·4196명세/863소유/29native검사/20nativeowner/2vendor SHA·Player1484/Host1041재사용. 섹션/notify준비최종코드의실제64clip저장/BP pause126.5/ready/원위치[10,3,0]/exit0 6.18초·focus1owner61.67ms. User10849읽기SHA/연결/Versions1·이전190194645B회수. 유효64notify16section callback검증은source별도receipt·같은saved D3D/이전CPP검사반복없음·누적작업계속.
 
 1563–1570: root역가중복원weightMotionRotation 공통stack/Q2제거/state56B재사용·1500수치/alias·실제12tick Float64 old36/new24/같은시각·root1565그룹8+같은D3D통과. NetworkPublication liveMap순환으로moving앞512뒤기아해소·1025/3갱신전부(old512)/8행속성48→32읽기·cachedJSONwire/stamp·UTF8행+4MiB분할. 실제socket1025도달/적용·한글15000자128행2packet/최대4151321B·partial실패resync·network1569그룹6/공유/관심100k/삭제재접속통과. fixture최초offline설정누락만수리·3836942·AI1owner root7517B/net2324B·native20/Player/Host재사용·최종UI+실소켓설치다음.
+
+1572 설치확인: 7bf7c27dc8284910·4203명세/871소유/29native검사/20nativeowner/2vendor SHA·동일Player1484/Host1041. 최종실제64clip저장/Play/Pause/Seek126.5/ready/원위치[10,3,0]6.2초·설치코드실socket1025이동/8행속성48→32/한글15000자128행2packet/최대4151321B/실패resync0.54초·focus1owner64.18ms. User10849읽기SHA/연결/Versions1·이전190321957B회수. 소스root3D/이전CPP/렌더matrix재반복없음·누적목표계속.

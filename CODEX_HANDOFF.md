@@ -4,7 +4,7 @@
 
 ## 설치와 근거
 
-확정1561: C:/Users/kirby/HBEngine/Versions/801b67e62cc2ab8f/HBEngine.exe. 4196명세/863소유/29native검사/20nativeowner/2vendor·User10849읽기SHA·Versions1·이전190194645B퇴역. source907e211/recorde41dd34·Player1484/Host1041정확SHA재사용. 최종64clip저장/BP pause126.5/원위치[10,3,0]/ready/exit0 6.18초·focus1owner61.67ms. USER_INSTALL_1561.json; source같은저장D3D통과. 1538BP/privateCPP·1545시퀀스·1554루트수치/색인근거유지.
+확정1572: C:/Users/kirby/HBEngine/Versions/7bf7c27dc8284910/HBEngine.exe. 4203명세/871소유/29native검사/20nativeowner/2vendor·User10849읽기SHA·Versions1·이전190321957B퇴역. source3836942/record091b8a5(scope7c3fa99)·Player1484/Host1041 SHA재사용. 최종64clip저장/BP pause126.5/원위치[10,3,0]/ready6.2초 +설치실제socket1025이동/한글15k128행/캐시/실패resync0.54초·focus1owner64.18ms. USER_INSTALL_1572.json. 이전BP/privateCPP/시퀀스/루트근거유지.
 
 이전확정: WORK1486 HB_STRUCT/typedwire/MakeBreakSet/분할/Take/sequence( NATIVE_RECORDS.md); WORK1497 actualtype Get0snapshot/Set수신cell/전체예외복구/5counter( NATIVE_CHECKPOINTS.md); WORK1516 compilecopyfriend private/protected/namespace/class/enum·traits/stdinputmove·native.classes.read·NDK ARM64syntax4/UI/CPP/D3D/2D( NATIVE_CPP_ACCESS.md). 예전started재실행금지.
 
@@ -18,7 +18,7 @@ WORK1552/2cb695b·1554설치: MontageClipIndex sparse/원순서/끝프레임·le
 
 1556–1562 완료: MontageTimeline 섹션정렬/이름/end/seek 사전준비·notify32+기존SequenceEventIndex범위/작음기존순회. 1024빈범위20time읽기/section후속0·64notify16section callbackPause/resume/seek/jump/Stop/reentrant통과. group1558 8검사(실제64clip저장BP/paused126.5/원위치[10,3,0]/같은D3D)통과; GUI는64notify검사아님. 907e211/WORK1559/recorde41dd34·sync1560/install1561/finish1562완료·started재실행금지. 다음루트정규화scratch와누적목표.
 
-1563–1570 WIP: weightMotionRotation 공통stack SLERP·state.normalizedMotion56B/복원Q2제거·1500수치/alias·격리실행12tick Float64old36/new24/같은시각·root1565 8검사+real64clip/D3D통과. edit1563부분적용뒤GPimport수리완료·재실행금지. NET NetworkPublication cursor/stampJSON재사용/UTF8행+4MiB분할: 움직이는1025/3tick 전부(old512)·속성8행48→32읽기·실제socket1025적용/한글15000자128행2packet/최대4151321B·network1569 6검사/공유·관심100k·삭제resync통과. 첫fakefixture config누락만수리. AI owner root7517B/network새receipt. 다음AI→WORK1570/commit→sync1571/install1572(rootUI+installed networkActualSocket)/finish1573.
+1563–1573 완료: weightMotionRotation 공통stack SLERP·state.normalizedMotion56B/복원Q2제거·1500수치/alias·격리실행12tick Float64old36/new24/같은시각·root1565 8검사+real64clip/D3D통과. edit1563부분적용뒤GPimport수리완료·재실행금지. NET NetworkPublication cursor/stampJSON재사용/UTF8행+4MiB분할: 움직이는1025/3tick 전부(old512)·속성8행48→32읽기·실제socket1025적용/한글15000자128행2packet/최대4151321B·network1569 6검사/공유·관심100k·삭제resync통과. 첫fakefixture config누락만수리. AI owner root7517B/network새receipt. 3836942/WORK1570/record091b8a5·sync1571/install1572/finish1573완료·started재실행금지. 다음NET01 세션/생성세대와누적목표계속.
 
 ## 누적 잔여
 

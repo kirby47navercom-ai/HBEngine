@@ -1,0 +1,156 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "7c3fa996ed1d84d7ae7b9cf18d003423385e0b52",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7bf7c27dc8284910",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\7bf7c27dc8284910\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\7bf7c27dc8284910\\HBEngine.exe",
+  "bundleHash": "7bf7c27dc8284910edef2cb1c253d45176ad6db0a4231d29000a72a176459c92",
+  "files": 4203,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4197,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\801b67e62cc2ab8f",
+        "bytes": 190321957,
+        "manifestSHA256": "c2fea15dc9b895b4302039e7c17e441cde4c5d567e124aabf54f6e75d4567e5c"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T09:00:35.4165499Z",
+    "bytes": 190321957,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "7bf7c27dc8284910"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 871,
+  "repositoryOnlyTestSourcesVerified": 29,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
+  "installedGates": [
+    {
+      "path": "native/build/montage-index-1551-window-9Xxjij/acceptance.json",
+      "sha256": "d2ae769405ce1091147ca877f0cb24dd7c025f740cba8064f8ccec8b5278737d",
+      "scope": "Owned hidden actual editor saves 64-clip/root-motion montage and Blueprint Play/Pause/Seek to sparse last clip; Actor original placement preserved and ready continuation reached. Optional same saved Windows D3D11 game. No user project/profile, renderer matrix, actual mobile or FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7bf7c27dc8284910\\HBEngine.exe"
+      ],
+      "ms": 6205.1422
+    },
+    {
+      "path": "native/build/network-publication-1568-7Rn5eW/acceptance.json",
+      "sha256": "4127c1d8fd9de9a7df90dc043556933bf43ecbc4eff542e6c4dd82c46b27aa34",
+      "scope": "Isolated actual NetworkWorld unit/reference and actual loopback ws server/client. Published world cardinality not capped at512; packet/tick/network memory budgets remain. No latency-loss prediction, dedicated simulation server, FPS/mobile/network-device claim.",
+      "args": [
+        "--implementation-root",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7bf7c27dc8284910"
+      ],
+      "ms": 536.6275999999998
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\7bf7c27dc8284910\\",
+    "elapsedMs": 64.18,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\7bf7c27dc8284910",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "7bf7c27dc8284910edef2cb1c253d45176ad6db0a4231d29000a72a176459c92",
+      "installedAt": "2026-10-22T09:00:32.015Z",
+      "manifestFiles": 4203,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1561.json\",\"scope\":\"Unchanged native access metadata owner hashes verified with full source and installed manifest; previous pure metadata check not repeated.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4203,
+  "versions": [
+    "7bf7c27dc8284910"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1572-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/root1565-group.json",
+      "sha256": "b67bf10d2c7d50acc75fb945b118465c5ba436f56196916ffc2b0bfde9d74dcb",
+      "scope": "Grouped root normalization math/alias, constructor counter, append/real64-clip/root2D3D30/60/120/replacement/timeline and source D3D; network-only edit follows this root proof."
+    },
+    {
+      "path": "native/build/root-normalization-1564.json",
+      "sha256": "1444c8de32efdc0d3a15d852d6204f974721f969c33c5ffdc2348035a1609fc5",
+      "scope": "1500 rotation+1500 alias cases and isolated actual gameplaySystems12tick old36/current24 length7 Float64Array count, same clock; not total heap/FPS."
+    },
+    {
+      "path": "native/build/network1569-group.json",
+      "sha256": "dc0713307ed7d8da7911002b4d84d44fe91cd585e2787e97aeb881fad5a10151",
+      "scope": "Grouped new publication reference and actual loopback, previous shared-packet/interest100k/deletion/reconnect checks."
+    },
+    {
+      "path": "native/build/network-publication-1568.json",
+      "sha256": "07921b0bab7f698458a098e79a2de4b57fcdcb23f968260fea3c92d4d5b3d0a2",
+      "scope": "Actual NetworkWorld1025-moving fairness, cached stamp/wire getter48→32 and partial send recovery; actual loopback1025 apply and128 legalKorean15k rows in2 UTF8-bounded packets."
+    },
+    {
+      "path": "native/build/montage-index-1551-window-jZd1Ak/acceptance.json",
+      "sha256": "db67d89237d0a7ef0c4d6313cfeb91cdf9a8c1c2c8aec3eaec047dec68688889",
+      "scope": "Owned source root editor Save/BP Play/Pause/Seek126.5/original[10,3,0]/ready and same saved D3D; root/GP owners unchanged during subsequent network-only edit, final installed rootUI+socket gates planned."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/montage-index-1551-window-jZd1Ak/acceptance.json",
+      "sha256": "db67d89237d0a7ef0c4d6313cfeb91cdf9a8c1c2c8aec3eaec047dec68688889",
+      "scope": "Owned source root editor Save/BP Play/Pause/Seek126.5/original[10,3,0]/ready and same saved D3D; root/GP owners unchanged during subsequent network-only edit, final installed rootUI+socket gates planned."
+    }
+  ],
+  "scope": "Installed final root-normalization and NetworkWorld publication: actual editor64-clip root-montage Save/Play/Pause/Seek126.5/ready/originalActor[10,3,0]/exit0; installed actual loopback host/client1025 moving all delivered/applied under unchanged512/128 budgets,128 legalKorean15k rows split2 packets largest4151321B<4MiB, partial-send recovery and cached wire/stamp getter proof. Source math1500+alias/real12tick Float64old36/current24 and legacy root2D3D30/60/120/montage/timeline/actual saved D3D, previous packet/interest100k/deletion/reconnect group reused. Network-only edit follows source root3D, final installedUI+socket verifies integration. Full manifest/871 source owners/29native tests/20native owners/2vendor, exact unchanged shared owners/Player1484/Host1041, User readonly SHA/links/Versions1. No renderer matrix/native rebuild/phone/internet-loss prediction/full-game FPS claim.",
+  "version": 1,
+  "date": "2026-10-22T09:05:24.593Z",
+  "work": "docs/research/ENGINE_WORK_1570.json",
+  "distributionSync": "native/build/distribution-1571-sync.json",
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1561.json",
+  "nativePlayerBuildReused": true,
+  "hostReuseFrom": "docs/research/USER_INSTALL_1561.json"
+}
