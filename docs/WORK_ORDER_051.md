@@ -1110,3 +1110,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1825–1827: 최종설치 개별enum/struct 실제생성/대표·보조편집/BP가져오기/enum변수·Set compact저장/전체그룹UndoRedo/C++ enum37+중첩2+2/99,4,37·ActorID/독립D3D11 79.05초 통과. manifest4398/source1074/native21/30tests/vendor2·User10849읽기불변·링크/association/Versions1·이전194864798B정리/lease0. USER_INSTALL1826. 에셋간필드의존/global자동발견/ABI재적용 잔여유지·누적계속.
 
 1828–1831: Take 설정 프리셋 에셋/전용UI·생성/불러오기·SaveAs 원본guard/덮어쓰기거절·그룹UndoRedo·실제FPS/키오차·채널/뼈/생성필터snapshot·AI revision/noChange/override·녹화중 원본변경분리·editorOnly 빌드제외 구현. 6회귀+실제3D UI/AI24fps·오차0·IKMid/모델부재·실제C++ PlaySeekStop 통과. 최종설치D3D예정. Actor/source바인딩목록/상속/clock/timecode별도잔여. WORK1831.
+
+1831보완: 프리셋 비동기 완료 버튼상태를 두 컨트롤만 복원, 전체 타임라인 중복렌더 없음. source UI/CPP는 checkpoint로 구분·최종설치 current player 대기/버튼활성·D3D 확인 예정. 최종6회귀 통과.

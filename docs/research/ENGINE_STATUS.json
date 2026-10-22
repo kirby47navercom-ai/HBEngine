@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-23",
-  "basisRevision": "ba8831ef95150ae5e32e586c25fcc312c32bf8a1",
+  "basisRevision": "f8a7f0012b386a0a4b6018b4981b9bd0cc2d5391",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -227,7 +227,7 @@
       "area": "editor",
       "title": "문서 탭·에셋별 전용 편집기",
       "status": "verified",
-      "implemented": "BP·머테리얼·애니메이션·게임플레이 에셋을 구분한 문서 ·196: 이미지 전용 텍스처 보기와 가족 면/슬라이스 검사·문서 불변 ·1338: 표시된곡선트랙선택기/포커스·선택트랙연동·XYZ체크행이동/중복열숨김·키bar/재생줄가림수정·Clamped한글라벨 ·1348: BP타임라인문서/노드소유id·실제graph쓰기/저장·rerender유지·외부Undo/Redo표시갱신·노드삭제dispose/WeakMap해제 ·1760–1761: 실제 창에서 발견한 곡선 설정 세로 팽창을 반응형 5열/3열 팝업으로 수정. 최대180px 내부 스크롤·가로 넘침 없음·실제 곡선 히트 노출·샘플 Hz 편집·Escape 닫기와 요약 포커스 복귀. 동일 설정의 실제 필터 적용·Undo 확인. 필터 수식/런타임/C++/셰이더 소스 불변이라1758 실행 증거를 정확한 해시로 재사용. ·1813–1817: 직접 C++ 구조체 추가 저장의 깨끗한 열린 BP/장면 갱신과 파일그룹 UndoRedo. 연관 dirty문서는 거절하거나 모두저장 초안에 포함하는 기존 규칙 유지. 직접 VS가 이미 덮어쓴 헤더 복원/자동이관 전체는 아님. ·1821–1824: 콘텐츠 브라우저 개별 enum/struct 생성·필터/아이콘/문서종류·대표/보조 선언 편집기·기존 dirty/저장/UndoRedo 통합. 타입 파일/폴더 이동 시 열린 BP typeLibraries와 이력 remap, 동일 UUID 헤더경로/기존 디스크 redirect 유지. ·1828–1831: 콘텐츠 브라우저 Take 녹화 프리셋·간략 settings 기본값 편집·경로별 DOM 소유. 시퀀스 SaveAs 이름/폴더·기존파일 덮어쓰기거절·원본파일/열린문서 guard·생성전체UndoRedo. 비동기 불러오기 중 사람 편집/실행전환 보호. 프리셋은 editorOnly로 빌드에서 제외하고 직접 런타임 참조는 오류로 안내.",
+      "implemented": "BP·머테리얼·애니메이션·게임플레이 에셋을 구분한 문서 ·196: 이미지 전용 텍스처 보기와 가족 면/슬라이스 검사·문서 불변 ·1338: 표시된곡선트랙선택기/포커스·선택트랙연동·XYZ체크행이동/중복열숨김·키bar/재생줄가림수정·Clamped한글라벨 ·1348: BP타임라인문서/노드소유id·실제graph쓰기/저장·rerender유지·외부Undo/Redo표시갱신·노드삭제dispose/WeakMap해제 ·1760–1761: 실제 창에서 발견한 곡선 설정 세로 팽창을 반응형 5열/3열 팝업으로 수정. 최대180px 내부 스크롤·가로 넘침 없음·실제 곡선 히트 노출·샘플 Hz 편집·Escape 닫기와 요약 포커스 복귀. 동일 설정의 실제 필터 적용·Undo 확인. 필터 수식/런타임/C++/셰이더 소스 불변이라1758 실행 증거를 정확한 해시로 재사용. ·1813–1817: 직접 C++ 구조체 추가 저장의 깨끗한 열린 BP/장면 갱신과 파일그룹 UndoRedo. 연관 dirty문서는 거절하거나 모두저장 초안에 포함하는 기존 규칙 유지. 직접 VS가 이미 덮어쓴 헤더 복원/자동이관 전체는 아님. ·1821–1824: 콘텐츠 브라우저 개별 enum/struct 생성·필터/아이콘/문서종류·대표/보조 선언 편집기·기존 dirty/저장/UndoRedo 통합. 타입 파일/폴더 이동 시 열린 BP typeLibraries와 이력 remap, 동일 UUID 헤더경로/기존 디스크 redirect 유지. ·1828–1831: 콘텐츠 브라우저 Take 녹화 프리셋·간략 settings 기본값 편집·경로별 DOM 소유. 시퀀스 SaveAs 이름/폴더·기존파일 덮어쓰기거절·원본파일/열린문서 guard·생성전체UndoRedo. 비동기 불러오기 중 사람 편집/실행전환 보호. 프리셋은 editorOnly로 빌드에서 제외하고 직접 런타임 참조는 오류로 안내. ·최종불러오기 버튼 상태를 finally에서 두 컨트롤만 복원해 대형 타임라인 재렌더를 늘리지 않음.",
       "remaining": [],
       "sources": [
         "prototype/app.js",
@@ -3625,7 +3625,7 @@
     "first": 1828,
     "last": 1831,
     "receipt": "docs/research/ENGINE_WORK_1831.json",
-    "scope": "Reusable Take config preset assets, editor/create/load/SaveAs no-overwrite/group UndoRedo, snapshot FPS/tolerance/channel/bone/spawn settings, AI apply/noChange/revision and runtime start overrides, active recording source isolation, editor-only export exclusion. Six affected regressions and exact current source actual3D editor/AI/human recording and compiled CPP Play/Seek/Stop passed. Final installed independent D3D11 baked-output gate pending."
+    "scope": "Take config preset assets, UI/AI snapshot FPS/tolerance and ordinary/group UndoRedo, editor-only export exclusion. Six final affected regressions passed. Source actual3D UI/AI/human recording and CPP checkpoint passed before final button-state restoration; final current installed CPP/D3D11 gate pending."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_1826.json",

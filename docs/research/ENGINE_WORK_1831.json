@@ -2,7 +2,7 @@
   "version": 1,
   "date": "2026-10-23",
   "kind": "take-recording-config-preset-assets",
-  "implementationRevision": "ba8831ef95150ae5e32e586c25fcc312c32bf8a1",
+  "implementationRevision": "f8a7f0012b386a0a4b6018b4981b9bd0cc2d5391",
   "targetIds": [
     "ANM-06",
     "EDT-01",
@@ -270,7 +270,7 @@
     "prototype/game-renderer.js": "fed77237f7cb6ad7a806630955efb31480f65bb67545f87d2ac5e7dff11a39ac",
     "prototype/gameplay-assets.js": "2c9caf5a222b941886ae099881ea9abeac038c963e3165b4b94b85b85b9b952f",
     "prototype/gameplay-editor.css": "e6892de183bbc94e76f72df92bfafd45ab297f26dc202392173d8e15ab128dc2",
-    "prototype/gameplay-editor.js": "32590a1dea68353fd3cb84e8c300106ccfcfde9e9483aa378c839dfac0497bf8",
+    "prototype/gameplay-editor.js": "a9a72258b955fdd3a3bf2a7d1f7f1df68419a77b2129efb08de7599db8c45b3c",
     "prototype/gameplay-preview-source.js": "ee1db1853816fc0810346cd7dfd75048a31f5325ee7e62a6c265267cf776c589",
     "prototype/gameplay-preview.js": "784107307b67d3027f1c6eb24f1a9f687caaaa6e7ea0717b099a3e2b5475b191",
     "prototype/gameplay-runtime.js": "b6d255a92986ba1100582a0649a58e071e471da994a4c587cd51d86f915e7784",
@@ -901,8 +901,8 @@
     "tools/check-surface-history-contract-362.mjs": "ff19c7f7247123ae3e5168c0ebb57a1c0ccf6b9339281bd620c2d42710da758f",
     "tools/check-surface-time-history-359.mjs": "909c2973d74f821103ddc142bcd7fe25c9b72f0aeedf9131ac5756cd32e22cf3",
     "tools/check-take-owner-lookup-1720.mjs": "e613c19626ed4466a53592e2f1da92d8deab26fbeed29b4130f9b09e4143d6b1",
-    "tools/check-take-presets-1828.mjs": "712500483422eaedef83a28e0066a7facdc41a87a3990dba4f596953a4509424",
-    "tools/check-take-presets-1829-window.mjs": "7af4f18631c97daa205d35b989013c56f3b5ecc959d1fd428806a993265fd6e2",
+    "tools/check-take-presets-1828.mjs": "e9ae947be77ea02793ebe2e785191957e15675266a5395f2fac1f082a9022576",
+    "tools/check-take-presets-1829-window.mjs": "6e7de8ed7ed807eca53c7fdfb48a047b6b4ea7536e5f1ea9cec7cb88a837bb63",
     "tools/check-take-runtime-1721-window.mjs": "be881b83bb156187d62e38195c58fb56eb3321bb7b12339284ee82021781dca5",
     "tools/check-take-settings-1787.mjs": "0218db429de595f70684b485e233726a025f552fd6872424f82437660e84ddbd",
     "tools/check-take-settings-1788-window.mjs": "795805208540394947d2ffaaaf5e7c3f730668f496f4021d97568b45960d1879",
@@ -1146,48 +1146,41 @@
   "checks": [
     {
       "path": "native/build/preset1828-group.json",
-      "sha256": "9785eed1c62042954f996ff41ef6ccd59eb4d8a7b08fce6b8a4d68bbcf585b76",
-      "scope": "Six affected preset/recorder/snapshot/filter/skeletal/spawn regressions; no unchanged SDK/renderer gate repetition."
+      "sha256": "db0efca8150adf3d5e6ac0749427c37cb520cb71381f85d2db4712dac4a46e90",
+      "scope": "Six final affected preset/recorder/snapshot/filter/skeletal/spawn regressions."
     },
     {
-      "path": "native/build/take-presets-1828-uvKyhh/acceptance.json",
+      "path": "native/build/take-presets-1828-XhjO3F/acceptance.json",
       "sha256": "14316a6f56b4fa50607deaeb565e105226a341c559318588af94f6f844324192",
       "scope": "Reusable on-demand config preset assets, snapshot options/filter override isolation, unchanged sequence track identities, actual TakeRecorder FPS/tolerance key reduction and baked metadata, actual2D project/standard documents, game build excludes editor-only preset, and production UI async-read conflict protection. Actual editor/C++/D3D are separate gates; source binding lists/inheritance/timecode not claimed."
     },
     {
-      "path": "native/build/take-settings-1787-8V3NYK/acceptance.json",
+      "path": "native/build/take-settings-1787-A9EpzP/acceptance.json",
       "sha256": "a322aa3acd0b5b8d0e05bd1650ebfd9d8f289a0a3e6b4c7501611666206bc4a0",
       "scope": "Owned scratch row/vector allocations and exact recorded key data, preset/config validation and dynamic topology. Admitted keys still clone their data; no whole heap/FPS/mobile-device claim."
     },
     {
-      "path": "native/build/take-snapshot-1718-lppu9Y/acceptance.json",
-      "sha256": "320ae35dcfdd3db3086c24fbc966f7ad481f3f042d025994c782f9e524b74e51",
+      "path": "native/build/take-snapshot-1718-tYw0f0/acceptance.json",
+      "sha256": "218237a7a9c06cc60dc108cd77f1676d81ad508186d0ebbc02978eb818949327",
       "scope": "600 admitted frame samples plus an ignored repeated same-time call of one128-element actual typed record array. Compare exact key data with c1ef0d5, count direct payload structuredClone calls and preserve in-place changes/ownership. Wall times are observations, not FPS/device/end-to-end performance."
     },
     {
-      "path": "native/build/take-filter-215-7QHeyu/acceptance.json",
+      "path": "native/build/take-filter-215-mIG5pN/acceptance.json",
       "sha256": "c81f131099f78c0e50e11daa2118276c706f7bf814524a25543b82e63f6e6cf8",
-      "scope": "Six affected preset/recorder/snapshot/filter/skeletal/spawn regressions; no unchanged SDK/renderer gate repetition."
+      "scope": "Six final affected preset/recorder/snapshot/filter/skeletal/spawn regressions."
     },
     {
-      "path": "native/build/skeletal-take-209-3X2gBP/acceptance.json",
+      "path": "native/build/skeletal-take-209-Vf7a3r/acceptance.json",
       "sha256": "83158b00bac704058110de50dae05a72bfaab96edf4371e5573518cc184166c3",
-      "scope": "Six affected preset/recorder/snapshot/filter/skeletal/spawn regressions; no unchanged SDK/renderer gate repetition."
+      "scope": "Six final affected preset/recorder/snapshot/filter/skeletal/spawn regressions."
     },
     {
-      "path": "native/build/spawn-take-211-KroZMQ/acceptance.json",
+      "path": "native/build/spawn-take-211-QryfTN/acceptance.json",
       "sha256": "0e0a4a1f6be1e9e93d905ab0378a7ab0d45c76f9769d1c91d27d1d9a7a0026b8",
-      "scope": "Six affected preset/recorder/snapshot/filter/skeletal/spawn regressions; no unchanged SDK/renderer gate repetition."
+      "scope": "Six final affected preset/recorder/snapshot/filter/skeletal/spawn regressions."
     }
   ],
-  "sourceGameGates": [
-    {
-      "path": "native/build/take-presets-1829-window-bMhOiQ/acceptance.json",
-      "sha256": "8378fde49a1c189b0e5a07fcfa3eca172ee78c8de7c1d0df0af367a72a84d710",
-      "scope": "Owned actual3D preset create/editor/save, sequence UI load/save-as with no-overwrite/group UndoRedo, AI apply revision/noChange/UndoRedo and AI recording snapshot/override surviving source edit, human recording with filtered bone/model absence and actual compiled C++ Play/Seek/Stop. Optional independent D3D11 baked output without editor preset files. Source bindings/inheritance/timecode/devices/whole-engine parity not claimed.",
-      "reportNote": "Source run had no --package; its old presetNotNeededForPackagedGame result label is not package execution evidence. The harness label was corrected afterward without product-code changes. Final installed --package gate is required."
-    }
-  ],
+  "sourceGameGates": [],
   "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -1378,8 +1371,16 @@
   },
   "testCorrections": [
     "SaveAs performs an asynchronous source-file read before opening its dialog; the UI test now waits for that dialog.",
-    "With multiple preset documents open, UI tests address the intended document path and wait for its creation instead of editing an older hidden pane. No failed fixture was counted as implementation success."
+    "With multiple preset documents open, UI tests address the intended document path and wait for its creation instead of editing an older hidden pane. No failed fixture was counted as implementation success.",
+    "After successful source UI run, reset the two preset buttons in finally without a second timeline render; final installed UI explicitly checks they are enabled.",
+    "Packaged probe waits must use the player probe, because the earlier editor probe correctly rejects waits after its process closes. No failed run counted as a package result."
   ],
   "installationPending": true,
-  "scope": "Reusable Take config preset assets, editor/create/load/SaveAs no-overwrite/group UndoRedo, snapshot FPS/tolerance/channel/bone/spawn settings, AI apply/noChange/revision and runtime start overrides, active recording source isolation, editor-only export exclusion. Six affected regressions and exact current source actual3D editor/AI/human recording and compiled CPP Play/Seek/Stop passed. Final installed independent D3D11 baked-output gate pending."
+  "scope": "Take config preset assets, UI/AI snapshot FPS/tolerance and ordinary/group UndoRedo, editor-only export exclusion. Six final affected regressions passed. Source actual3D UI/AI/human recording and CPP checkpoint passed before final button-state restoration; final current installed CPP/D3D11 gate pending.",
+  "sourceCheckpoint": {
+    "path": "native/build/take-presets-1829-window-bMhOiQ/acceptance.json",
+    "sha256": "8378fde49a1c189b0e5a07fcfa3eca172ee78c8de7c1d0df0af367a72a84d710",
+    "scope": "Owned actual3D preset create/editor/save, sequence UI load/save-as with no-overwrite/group UndoRedo, AI apply revision/noChange/UndoRedo and AI recording snapshot/override surviving source edit, human recording with filtered bone/model absence and actual compiled C++ Play/Seek/Stop. Optional independent D3D11 baked output without editor preset files. Source bindings/inheritance/timecode/devices/whole-engine parity not claimed.",
+    "reportNote": "Source UI/AI/CPP run passed before final preset-button reenable fix. It ran without --package; its old package-capability result label is not package execution evidence. Test harness now uses the current player wait after editor close. Final installed full current-source --package gate is required."
+  }
 }
