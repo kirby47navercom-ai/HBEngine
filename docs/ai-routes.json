@@ -1819,6 +1819,26 @@
       "paths": [
         "prototype/montage-schedule.js"
       ]
+    },
+    {
+      "id": "network-loaded-root-replacement",
+      "keywords": [
+        "replaceRoots",
+        "clearReplacementError",
+        "stateFor"
+      ],
+      "paths": [
+        "prototype/network-runtime.js"
+      ]
+    },
+    {
+      "id": "network-spawn-compatibility",
+      "keywords": [
+        "replicaSpawnCompatible"
+      ],
+      "paths": [
+        "prototype/network-state.js"
+      ]
     }
   ]
 }
