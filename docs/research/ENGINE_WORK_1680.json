@@ -1136,9 +1136,6 @@
     "prototype/network-inspection.js": "62f2e61f595dd4ac939eb86bee2cf810f4f538f7573fae71cf82bbf403b06e55"
   },
   "changedRuntimeOwners": [],
-  "pendingInstalledGates": [
-    "tools/check-native-type-imports-1676-window.mjs --executable installed --package --expected-player-sha 07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
-  ],
   "focusedAI": [
     {
       "symbol": "nativeTypeReference",
@@ -1185,8 +1182,23 @@
     "policy": "One resolver per prepare/read transaction, shared file compilation and same-list metadata promises. Workspace owns latest library source metadata and current BP composition; UndoRedo reconstructs without keeping every historical import combination. Runtime validated snapshots shared, per-actor values distinct. Existing polling checks source changes and preserves concurrent authored edits.",
     "remaining": "Mixed CPP-parent extra type imports, independent enum/struct assets, automatic project-wide discovery, general schema migration and cumulative ledger remain; explicit imports only."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1671.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1682.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/native-type-imports-1676-window-jj7TfI/acceptance.json",
+      "sha256": "da84b0ac5ed9359153ab93c521732ca21b8095ba954d854bb711549a02a5e5d8",
+      "scope": "Actual owned 2D editor pure-BP type import UI/UndoRedo/compact save, no CPP build, nested SetMembers/Break/Actor-reference movement and Stop authored restore. Same saved D3D11 packaged game includes type library and zero native modules. Mixed CPP extra imports/per-type assets/migrations/global arbitrary registry not claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7a2c77795fb78d51\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 37930.2969
+    }
+  ]
 }
