@@ -12,11 +12,15 @@ export function renderNativeTypeAssetEditor(element,doc,hooks){
  const unique=(list,prefix)=>{let i=1;while(list.some(d=>d.symbol===prefix+i))i++;return prefix+i;};
  const add=(kind)=>edit(d=>{const list=d[kind],symbol=unique([...d.enums,...d.structs],kind==='enums'?'Enum':'Struct'),base={id:crypto.randomUUID(),symbol,label:kind==='enums'?'열거형':'구조체',tooltip:''};list.push(kind==='enums'?{...base,flags:false,entries:[{id:crypto.randomUUID(),symbol:'None',label:'없음',tooltip:'',value:0,hidden:false}]}:{...base,fields:[{id:crypto.randomUUID(),symbol:'Value',label:'값',tooltip:'',type:'float',array:false,readOnly:false,value:0}]});});
  const header=node('header');header.className='asset-editor-heading';header.append(node('h2',doc.data.name));const form=node('div');form.className='asset-form';element.replaceChildren(header,form);element.dataset.nativeTypeEditor='';
- const identity=section('라이브러리');input(identity,'이름',doc.data.name,v=>edit(d=>d.name=v));input(identity,'C++ namespace',doc.data.namespace,v=>edit(d=>d.namespace=v),{disabled:!!saved.id});const path=node('code',compileNativeTypeAsset(doc.data).path);path.dataset.typeHeader='';identity.append(path);form.append(identity);
+ const primary=doc.data.primary,primaryKind=primary?.kind==='enum'?'enums':'structs';
+ if(primary)element.dataset.nativeTypePrimary=primary.kind;else delete element.dataset.nativeTypePrimary;
+ const identity=section(primary?primary.kind==='enum'?'열거형 에셋':'구조체 에셋':'라이브러리');input(identity,'이름',doc.data.name,v=>edit(d=>d.name=v));input(identity,'C++ namespace',doc.data.namespace,v=>edit(d=>d.namespace=v),{disabled:!!saved.id});const path=node('code',compileNativeTypeAsset(doc.data).path);path.dataset.typeHeader='';identity.append(path);form.append(identity);
+ const primaryGroup=primary?section(primary.kind==='enum'?'열거형 항목':'구조체 필드'):null;if(primaryGroup)form.append(primaryGroup);
  for(const kind of ['enums','structs']){
-  const group=section(kind==='enums'?'열거형':'구조체',()=>add(kind));form.append(group);
+  const group=section((primary?'보조 ':'')+(kind==='enums'?'열거형':'구조체'),()=>add(kind));form.append(group);
   doc.data[kind].forEach((definition,index)=>{
-   const box=node('details');box.open=expanded[definition.id]??true;box.ontoggle=()=>expanded[definition.id]=box.open;box.dataset.typeId=definition.id;box.append(node('summary',definition.label+' · '+definition.symbol));group.append(box);
+   const isPrimary=primary&&kind===primaryKind&&definition.id===primary.id;
+   const box=node('details');box.open=expanded[definition.id]??true;box.ontoggle=()=>expanded[definition.id]=box.open;box.dataset.typeId=definition.id;if(isPrimary)box.dataset.primaryDeclaration='';box.append(node('summary',definition.label+' · '+definition.symbol));(isPrimary?primaryGroup:group).append(box);
    const update=change=>edit(d=>change(d[kind][index]));
    input(box,'C++ 이름',definition.symbol,v=>update(d=>d.symbol=v),{disabled:persisted.has(definition.id)});
    input(box,'표시 이름',definition.label,v=>update(d=>d.label=v));input(box,'설명',definition.tooltip,v=>update(d=>d.tooltip=v));
@@ -39,7 +43,7 @@ export function renderNativeTypeAssetEditor(element,doc,hooks){
     if(!persisted.has(field.id)&&rows.length>1)button(row,'삭제',()=>update(d=>d[key].splice(i,1)));
    });
    button(box,kind==='enums'?'항목 추가':'필드 추가',()=>update(d=>{const symbol=unique(d[key],kind==='enums'?'Entry':'Field');d[key].push(kind==='enums'?{id:crypto.randomUUID(),symbol,label:'항목',tooltip:'',value:Math.max(-1,...d.entries.map(e=>e.value))+1,hidden:false}:{id:crypto.randomUUID(),symbol,label:'필드',tooltip:'',type:'float',array:false,readOnly:false,value:0});}));
-   if(!persisted.has(definition.id))button(box,'선언 삭제',()=>edit(d=>d[kind].splice(index,1)));
+   if(!isPrimary&&!persisted.has(definition.id))button(box,'선언 삭제',()=>edit(d=>d[kind].splice(index,1)));
   });
  }
 }

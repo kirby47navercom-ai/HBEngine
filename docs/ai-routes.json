@@ -1860,7 +1860,8 @@
         "validNativeTypeAsset",
         "nativeTypeAssetField",
         "nativeTypeAssetDefault",
-        "checkNativeTypeIdentity"
+        "checkNativeTypeIdentity",
+        "createNativeTypeDeclaration"
       ],
       "paths": [
         "prototype/native-type-assets.js"
@@ -2250,6 +2251,18 @@
       ],
       "paths": [
         "tools/native-source-schema.mjs"
+      ]
+    },
+    {
+      "id": "native-type-individual-paths",
+      "keywords": [
+        "nativeTypeAssetKind",
+        "isNativeTypeAssetKind",
+        "isNativeTypeAssetPath",
+        "nativeTypeDeclarationContract"
+      ],
+      "paths": [
+        "prototype/native-type-paths.js"
       ]
     }
   ]

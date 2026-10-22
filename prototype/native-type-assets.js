@@ -1,6 +1,7 @@
 import {parseNativeHeader} from './native-model.js';
 import {validValue,defaultsFor} from './pin-values.js';
 import {nativeRecordDefault,validNativeRecordValue} from './native-records.js';
+import {isNativeTypeAssetKind} from './native-type-paths.js';
 
 const uuid=value=>typeof value==='string'&&/^[a-f\d]{8}(?:-[a-f\d]{4}){3}-[a-f\d]{12}$/.test(value);
 const keywords=new Set(('alignas alignof and and_eq asm auto bitand bitor bool break case catch char char16_t char32_t class compl const constexpr const_cast continue decltype default delete do double dynamic_cast else enum explicit export extern false float for friend goto if inline int long mutable namespace new noexcept not not_eq nullptr operator or or_eq private protected public register reinterpret_cast return short signed sizeof static static_assert static_cast struct switch template this thread_local throw true try typedef typeid typename union unsigned using virtual void volatile wchar_t while xor xor_eq constructor prototype __proto__').split(' '));
@@ -12,6 +13,14 @@ const cppTypes={bool:'bool',int:'int',float:'float',string:'std::string',vec2:'h
 export const nativeTypeHeaderPath=data=>'Source/HBGenerated/Types_'+data.id.replaceAll('-','')+'.hpp';
 export const nativeTypeMarker=data=>'// HBEngine type library '+data.id+'\n';
 export function createNativeTypeAsset(name){const id=crypto.randomUUID();return {version:1,name,id,namespace:'Types_'+id.slice(0,8),enums:[],structs:[]};}
+export function createNativeTypeDeclaration(name,kind){
+ if(!['enumasset','structasset'].includes(kind))fail('개별 선언 종류를 확인하세요.');
+ const data=createNativeTypeAsset(name),enumType=kind==='enumasset',definition={id:crypto.randomUUID(),symbol:symbol(name)?name:enumType?'State':'Data',label:name,tooltip:''};
+ data.primary={kind:enumType?'enum':'struct',id:definition.id};
+ if(enumType)data.enums.push({...definition,flags:false,entries:[{id:crypto.randomUUID(),symbol:'None',label:'없음',tooltip:'',value:0,hidden:false}]});
+ else data.structs.push({...definition,fields:[{id:crypto.randomUUID(),symbol:'Value',label:'값',tooltip:'',type:'float',array:false,readOnly:false,value:0}]});
+ return data;
+}
 export function nativeTypeAssetField(data,field){const definition=[...data.enums,...data.structs].find(d=>d.id===field.typeId);return {...field,type:field.type==='enum'?'int':field.type,...definition?{[field.type==='enum'?'enumName':'structName']:data.namespace+'::'+definition.symbol}:{}};}
 export function nativeTypeAssetDefault(data,field){if(field.array)return [];if(field.type==='enum')return data.enums.find(d=>d.id===field.typeId)?.entries[0]?.value??0;if(field.type==='record'){const built=compileNativeTypeAsset(data);return nativeRecordDefault(built.metadata,nativeTypeAssetField(data,field));}return structuredClone(defaultsFor(field.type));}
 
@@ -22,6 +31,7 @@ export function compileNativeTypeAsset(data){
  const ids=new Set([data.id]),names=new Set(),definitions=new Map();
  const identify=(entry,set)=>{if(!entry||!uuid(entry.id)||ids.has(entry.id)||!symbol(entry.symbol)||set.has(entry.symbol)||!text(entry.label)||!text(entry.tooltip,1000))fail('중복 ID·C++ 이름·표시 이름을 확인하세요.');ids.add(entry.id);set.add(entry.symbol);};
  for(const definition of [...data.enums,...data.structs]){identify(definition,names);definitions.set(definition.id,definition);}
+ if(data.primary!==undefined&&(!data.primary||Object.keys(data.primary).length!==2||!['enum','struct'].includes(data.primary.kind)||!(data.primary.kind==='enum'?data.enums:data.structs).some(d=>d.id===data.primary.id)))fail('대표 선언의 종류·ID를 확인하세요.');
  for(const e of data.enums){if(!Array.isArray(e.entries)||!e.entries.length||e.entries.length>512||typeof e.flags!=='boolean')fail('열거형 항목·플래그를 확인하세요.');const entries=new Set();for(const entry of e.entries){identify(entry,entries);if(!Number.isInteger(entry.value)||entry.value< -2147483648||entry.value>2147483647||typeof entry.hidden!=='boolean')fail('열거형 값은32비트 정수예요.');}}
  for(const s of data.structs){if(!Array.isArray(s.fields)||!s.fields.length||s.fields.length>128)fail('구조체 필드를 확인하세요.');const fields=new Set();for(const field of s.fields){identify(field,fields);if(typeof field.array!=='boolean'||typeof field.readOnly!=='boolean'||!nativeAssetValueTypes.includes(field.type)&&!['record','enum'].includes(field.type))fail('필드 자료형을 확인하세요.');if(['record','enum'].includes(field.type)){if(!definitions.has(field.typeId)||!(field.type==='record'?data.structs:data.enums).includes(definitions.get(field.typeId)))fail('필드가 참조하는 선언이 없어요.');}else if(field.typeId!==undefined)fail('기본 자료형에 타입 참조가 있어요.');}}
  const sorted=[],complete=new Set(),active=new Set();
@@ -51,9 +61,10 @@ export function compileNativeTypeAsset(data){
  for(const s of data.structs){const d=metadata.structs.find(d=>d.name===data.namespace+'::'+s.symbol);for(const f of s.fields){const pin=d.fields.find(p=>p.name===f.symbol);if(!validNativeRecordValue(metadata,pin,f.value))fail('기본값 자료형·참조를 확인하세요.');}}
  return {path,header,metadata};
 }
-export function validNativeTypeAsset(data){try{compileNativeTypeAsset(data);return true;}catch{return false;}}
+export function validNativeTypeAsset(data,kind){try{compileNativeTypeAsset(data);return kind===undefined||isNativeTypeAssetKind(kind)&&(kind==='typelibrary'?data.primary===undefined:data.primary?.kind===(kind==='enumasset'?'enum':'struct'));}catch{return false;}}
 export function checkNativeTypeIdentity(before,after){
  if(before.id!==after.id||before.namespace!==after.namespace)fail('저장된 라이브러리의 ID·namespace는 유지해야 해요.');
+ if(JSON.stringify(before.primary)!==JSON.stringify(after.primary))fail('저장된 대표 선언의 종류·ID는 유지해야 해요.');
  const check=(old,next)=>{const current=new Map(next.map(d=>[d.id,d]));for(const d of old){const n=current.get(d.id);if(!n)fail('저장된 선언·필드를 삭제하려면 참조 이관이 필요해요.');if(d.symbol!==n.symbol||d.type!==n.type||d.typeId!==n.typeId||d.array!==n.array||d.value!==undefined&&Number.isInteger(d.value)&&!d.type&&d.value!==n.value)fail('저장된 ID의 C++ 이름·자료형·열거형 값은 유지해야 해요.');}};
  check(before.enums,after.enums);check(before.structs,after.structs);
  for(const e of before.enums)check(e.entries,after.enums.find(d=>d.id===e.id).entries);

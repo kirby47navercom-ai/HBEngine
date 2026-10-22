@@ -632,3 +632,6 @@ Take 녹화는 프리셋·Transform 채널·뼈 필터와 시퀀스별 recording
 골격 시퀀스의 키 준비·모델 바인딩 재사용과 범위별 포즈 조회도 같은 BP/C++ 실행 서비스를 사용해요. `runtime.sequencePose`의 `sampling`은 준비·복원·조회 작업 횟수를 명시적 요청에서만 보여 줘요. [SEQUENCE_POSE_PREPARATION.md](SEQUENCE_POSE_PREPARATION.md)에 재검증·수명·독립 포즈 대조 범위를 적었어요.
 
 직접 작성한 C++ 포함 헤더의 구조체 필드 추가도 기존 BP 변수·함수 입력·상속·장면·프리팹·시퀀스 값과 함께 이관해요. `files.apply` 미리보기 계획 검사와 열린 문서·전체 묶음 Undo/Redo를 공유하고, 컴파일된 사용자 C++는 같은 새 필드 자료를 읽어요. 자동 이관과 외부 IDE·ABI의 경계는 [NATIVE_TYPE_MIGRATION.md](NATIVE_TYPE_MIGRATION.md)에 적었어요.
+# 개별 데이터 타입 제작 경로
+
+열거형 `.hbenum.json`·구조체 `.hbstruct.json`은 콘텐츠 브라우저의 별도 에셋으로 만들고 대표 선언 편집기로 열어요. 같은 파일 보조 타입/배열·기본값, 명시적 BP 타입 가져오기, 원본 참조 저장의 enum 변수·Set 입력값, 생성 C++ 헤더, additive 소비자 이관과 그룹 UndoRedo를 공용 경로로 연결했어요. 자세한 형식·이동/identity·AI 계약·남은 경계는 [NATIVE_TYPE_DECLARATIONS.md](NATIVE_TYPE_DECLARATIONS.md)에 있어요. 새 에셋 경로도 `native.typeLibraries` 키를 유지해요.

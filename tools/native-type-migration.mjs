@@ -1,3 +1,4 @@
+import {isNativeTypeAssetPath} from '../prototype/native-type-paths.js';
 import {nativeSchemaCandidates,changedNativeSourceRecords} from './native-source-schema.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -14,7 +15,7 @@ import {resolvePrefab} from '../prototype/prefab-variants.js';
 import {validAsset} from '../prototype/asset-documents.js';
 
 const kinds=new Set(['blueprint','scene','prefab','sequenceasset']);
-const suffix=name=>name.endsWith('.hbtypes.json');
+const suffix=isNativeTypeAssetPath;
 const hash=text=>text===null?null:createHash('sha256').update(text).digest('hex');
 const conflict=message=>Object.assign(Error(message),{status:409,code:'REVISION_CONFLICT'});
 const merge=(parent,own)=>[...(parent||[]).filter(p=>!(own||[]).some(d=>d.id===p.id)),...(own||[])];
@@ -26,7 +27,7 @@ export async function planNativeTypeMigration(project,rows,drafts,{restoring=fal
  const changed=new Set();
  for(const row of rows.filter(r=>suffix(r.path)&&r.before!==null&&r.after!==null)){
   const before=compileNativeTypeAsset(JSON.parse(row.before)).metadata,after=compileNativeTypeAsset(JSON.parse(row.after)).metadata;
-  for(const old of before.structs){const next=after.structs.find(d=>d.name===old.name);if(next&&JSON.stringify(old.fields.map(f=>[f.name,f.type,f.array,f.structName]))!==JSON.stringify(next.fields.map(f=>[f.name,f.type,f.array,f.structName])))changed.add(old.name);}
+  for(const old of before.structs||[]){const next=(after.structs||[]).find(d=>d.name===old.name);if(next&&JSON.stringify(old.fields.map(f=>[f.name,f.type,f.array,f.structName]))!==JSON.stringify(next.fields.map(f=>[f.name,f.type,f.array,f.structName])))changed.add(old.name);}
  }
  const sourceRows=nativeSchemaCandidates(rows);if(!changed.size&&!sourceRows.length&&!restoring)return null;
  const initial=await project.files(),names=new Map(initial.filter(f=>kinds.has(f.kind)).map(f=>[f.path,f.kind]));

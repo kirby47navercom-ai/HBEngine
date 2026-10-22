@@ -1,4 +1,5 @@
-import {compileNativeTypeAsset} from './native-type-assets.js';
+import {compileNativeTypeAsset,validNativeTypeAsset} from './native-type-assets.js';
+import {nativeTypeAssetKind} from './native-type-paths.js';
 import {nativeTypeReference,validNative,snapshotNativeMetadata} from './native-model.js';
 
 // A resolver belongs to one prepare/read transaction. Editing a library starts
@@ -17,7 +18,7 @@ export function createNativeTypeImportResolver(readText){
   const key=JSON.stringify(reference.typeLibraries);if(sets.has(key))return sets.get(key);
   const pending=(async()=>{
    for(const path of reference.typeLibraries){
-    if(!files.has(path))files.set(path,Promise.resolve().then(async()=>{const text=await readText(path);if(typeof text!=='string'||text.length>2097152)throw Error('타입 라이브러리 원본 크기를 확인하세요.');const data=JSON.parse(text),built=compileNativeTypeAsset(data);return {id:data.id,namespace:data.namespace,metadata:built.metadata,bytes:new TextEncoder().encode(text).byteLength};}));
+    if(!files.has(path))files.set(path,Promise.resolve().then(async()=>{const text=await readText(path);if(typeof text!=='string'||text.length>2097152)throw Error('타입 라이브러리 원본 크기를 확인하세요.');const data=JSON.parse(text);if(!validNativeTypeAsset(data,nativeTypeAssetKind(path)))throw Error('자료형 에셋 종류·선언을 확인하세요: '+path);const built=compileNativeTypeAsset(data);return {id:data.id,namespace:data.namespace,metadata:built.metadata,bytes:new TextEncoder().encode(text).byteLength};}));
     sources.set(path,await files.get(path));
    }
    return nativeTypeImportMetadata(reference,sources);

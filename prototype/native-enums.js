@@ -145,7 +145,7 @@ export function validNativeEnumValue(definition, value) {
   return unsigned ? value >= 0 && value < 2 ** bits : value >= -(2 ** (bits - 1)) && value < 2 ** (bits - 1);
 }
 export function validNativeEnumPin(metadata,pin,value,{deferred=false,runtime=false}={}) {
-  if(pin.maskEnumName!==undefined&&(pin.type!=='int'||!nativeEnumDefinition(metadata,{enumName:pin.maskEnumName})?.flags))return false;
+  if(pin.maskEnumName!==undefined){const mask=nativeEnumDefinition(metadata,{enumName:pin.maskEnumName});if(pin.type!=='int'||!qualified(pin.maskEnumName)||(!mask?!deferred:!mask.flags))return false;}
   if(pin.enumName===undefined)return pin.enumSource===undefined;
   if(pin.type!=='int'||!qualified(pin.enumName))return false;
   const definition=nativeEnumDefinition(metadata,pin);

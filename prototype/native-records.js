@@ -24,8 +24,9 @@ export function validNativeRecordDefinitions(metadata){
 export function validNativeRecordPin(metadata,pin,value,{deferred=false,identityOnly=false,runtime=false}={}){
  if(pin.container==='array')pin={...pin,array:true};
  if(pin.enumName&&pin.type!=='int')return false;
- if(pin.maskEnumName&&(pin.type!=='int'||pin.enumName||!nativeEnumDefinition(metadata,{enumName:pin.maskEnumName})?.flags))return false;
+ if(pin.maskEnumName){const mask=nativeEnumDefinition(metadata,{enumName:pin.maskEnumName});if(pin.enumName||!validNativeEnumPin(metadata,pin,value,{deferred,runtime})||(!mask&&!deferred))return false;}
  const budget=runtime?{left:2000000,maximumArray:100000}:{left:20000};
+ if(deferred&&pin.enumName&&!nativeEnumDefinition(metadata,pin)){if(pin.structName!==undefined||!validNativeEnumPin(metadata,pin,value,{deferred,runtime}))return false;const wire={...pin};delete wire.enumName;delete wire.enumSource;return validNativeRecordValue(metadata,wire,value,budget);}
  if(pin.type!=='record')return pin.structName===undefined&&(identityOnly||validNativeRecordValue(metadata,pin,value,budget));
  if(!qualified(pin.structName))return false;
  if(!nativeRecordDefinition(metadata,pin))return deferred;

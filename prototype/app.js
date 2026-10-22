@@ -1,3 +1,4 @@
+import {isNativeTypeAssetKind} from './native-type-paths.js';
 import {inspectNativeRecords,inspectNativeRecordDefault} from './native-record-inspection.js';
 import {inspectNativeClasses} from './native-class-inspection.js';
 import {nativeRecordDefinition,nativeRecordDefault,validNativeRecordPin} from './native-records.js';
@@ -231,7 +232,7 @@ function refreshMaterialAssets(paths){
 function propagateMaterialFunctions(docs){const definitions=new Map(docs.filter(d=>['materialfunction','materiallayer','materialblend'].includes(d?.kind)).map(d=>[d.path,d.data]));for(const dependent of assetDocs.items.values()){if(!['material','materialfunction','materiallayer','materialblend'].includes(dependent.kind))continue;const next=clone(dependent.data);for(const n of next.graph?.nodes||[])if(n.key==='functionCall'&&definitions.has(n.asset))refreshMaterialFunctionCall(next.graph,n.id,definitions.get(n.asset));if(JSON.stringify(next)===JSON.stringify(dependent.data))continue;dependent.history.push({kind:dependent.kind,data:shareDocumentSnapshot(dependent.data,dependent.history.at(-1)?.data,{ownedPrevious:true})});if(dependent.history.length>undoLimit)dependent.history.shift();dependent.future=[];dependent.data=next;dependent.dirty=true;if(dependent===assetDocs.current){history=dependent.history;future=dependent.future;installDocumentData(dependent);}}refreshMaterialAssets(docs.filter(d=>materialAssetKinds.includes(d.kind)||d.kind in textureAssetTypes||projectAssetFiles.some(f=>f.path===d.path&&f.kind==='texture')).map(d=>d.path));}
 async function saveAssetDocuments(docs){
  docs=docs.filter(doc=>doc&&(assetSuffix[doc.kind]||doc.kind==='text'));
- if(docs.some(doc=>doc.kind==='typelibrary'||doc.kind==='text'&&/^Source\/.+\.(?:h|hpp)$/i.test(doc.path))){
+ if(docs.some(doc=>isNativeTypeAssetKind(doc.kind)||doc.kind==='text'&&/^Source\/.+\.(?:h|hpp)$/i.test(doc.path))){
   const entries=[];for(const doc of docs){const file=await automationFile(doc.path);if(doc.saved!==file.expected)throw batchConflict('외부에서 변경된 문서를 확인하세요: '+doc.path);entries.push({path:doc.path,expectedRevision:file.revision,expectedEditorRevision:file.editorRevision,data:assetDocumentSource(doc)});}
   return applyFileBatch({entries});
  }
