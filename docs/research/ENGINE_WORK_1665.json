@@ -2,7 +2,7 @@
   "version": 1,
   "date": "2026-10-22",
   "kind": "shared-type-library-authoring-native-header-atomic-publication",
-  "implementationRevision": "11f969e85a764555cd48beb576e5de3faee4573f",
+  "implementationRevision": "2bd4f5f580fa8998d6129259c0b74339b25633a6",
   "targetIds": [
     "CPP-01",
     "AI-03",
@@ -67,7 +67,7 @@
     "docs/TIMELINE_RANGE_CONTROLS.md": "e86f17fa4d676656136582e9630c7ebbebbcfda11be991c020824b5359ae7bbd",
     "docs/WEIGHTED_CURVES.md": "3c925f72fea237734d006d8d00886c518f7dcd647741d107bcf173e63501c640",
     "docs/WIDGET_CLASSES_AND_LISTS.md": "c8a634afc1e2754c6920fa1825c1fcad50471007c10ecb3b0e7099665468c0e4",
-    "docs/ai-routes.json": "0f72d373334872ce1e21567e44a77f4de0259b67332f2e7a385033907b16ac79",
+    "docs/ai-routes.json": "2296f2994eaf9148913f6567b070bd3973576da46594a516b3c646edd9cd0dce",
     "docs/research/AFFINE_REFLECTION_PROBES_995.md": "f350c87425d1d2f6e115dd8bd8126697c409282693a98476c76a2c421eb1f0f3",
     "docs/research/AI_BOOTSTRAP_1058.md": "f6f62a2e79cebadb6647f522cafe405bb1a4389660c75837e16202ed4b6195b5",
     "docs/research/CACHED_DISTANCE_QUALITY_915.md": "206950db1304f3d144740f455008049aae8314864acaa5afa6e4e9ffcff42771",
@@ -944,7 +944,8 @@
     "tools/texture-sampling-fixture-519.mjs": "6c197c0e5982c530ac9b9bb01533266c809ab355d0cc133ebc4c72015ef687ee",
     "tools/timeline-navigation-fixture-1525.mjs": "cebe81170e9e3c5c05254a74048b865af32924661c7c1c76a887dfecfbd803ea",
     "tools/widget-window-probe-1067.mjs": "daaffffe74c98b84ca0f0a23e063cf84c8a261b3fa63862c35307e01e1e8933f",
-    "tools/world-edit-window-probe-1060.mjs": "e480bcb64ab7f576f2dddb59a3864a9af689d4e20b40a2175800ba0b8b2999e2"
+    "tools/world-edit-window-probe-1060.mjs": "e480bcb64ab7f576f2dddb59a3864a9af689d4e20b40a2175800ba0b8b2999e2",
+    "tools/check-native-type-context-1666.mjs": "1fbe5a4e7910ea92f6cbb67c0584be359021bcac8036a82de96e7b20c49eac5b"
   },
   "testSourceHashes": {
     "native/tests/builtin-normal-1167.cpp": "febb0c2edbf1e77c2294bcacfd0737b3f9bb177f906bc87ac4e92822a79b5e24",
@@ -995,7 +996,8 @@
   "implemented": [
     " ·1661–1665: 콘텐츠브라우저 구조체·열거형 라이브러리.hbtypes.json/전용편집기·개별UUID와C++symbol/label분리·중첩record/enum/Actor/null/array/flags/hidden/default·공유헤더생성→동일기존리플렉션/CPP/BP/패키지경로. Source/HBGenerated/Types_ID.hpp·원본+header트랜잭션/CAS·중복ID/namespace/수동header변경거절·기존ID/enum수치/필드type·순서/삭제무단변경거절. typesOnly명시파싱만classes[]허용·기존primaryCPP클래스필수유지. 독립enum/struct단위asset/순수BP전역import/스키마이관은잔여.",
     " ·1661–1665: compileNativeTypeAsset 단일JSON→기존CPP파서검증·document API로원본편집/기존checkedBatch로참조문서동반검증·UUID/namespace/headerpath결정적. 사람전용type편집기enum/struct구분·필드접기상태보존/기존UI컴포넌트·CPP직접수정충돌보존. 정확symbol context실제조회근거1665focus·새영구registry/패키지/daemon없음.",
-    " ·1661–1665: 제작시점컴파일/저장만·새runtime worker/timer/GPU/global strong index0·512선언/128필드/100KB헤더/기존기본값깊이배열예산보존. 실제2D프로젝트생성/paired save/checkedBatch dryrun/commit/원본·header외부충돌·중복·주입·수명값검사와이전index/BP/sequence/take/트랜잭션5묶음최장0.64秒. native21/Player1604/Host1041/30native검사/vendor2/render/network/montage/VM재사용·최종설치editor/CPP/D3D예정. FPS/총힙/전체상용기능완료주장없음."
+    " ·1661–1665: 제작시점컴파일/저장만·새runtime worker/timer/GPU/global strong index0·512선언/128필드/100KB헤더/기존기본값깊이배열예산보존. 실제2D프로젝트생성/paired save/checkedBatch dryrun/commit/원본·header외부충돌·중복·주입·수명값검사와이전index/BP/sequence/take/트랜잭션5묶음최장0.64秒. native21/Player1604/Host1041/30native검사/vendor2/render/network/montage/VM재사용·최종설치editor/CPP/D3D예정. FPS/총힙/전체상용기능완료주장없음.",
+    "1666: 실제 새symbol context fallback282파일/2859589B 발견→모델1파일10074B/저장1파일3513B/UI1파일6783B 정확route보강·추가DB/worker/watch0·시간/FPS주장없음."
   ],
   "checks": [
     {
@@ -1022,6 +1024,11 @@
       "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-records-1483-SLJOwE/acceptance.json",
       "sha256": "d979e0592f25ba2899d0c4050b1cd836642ca925222a8671007c67af9e602c9b",
       "scope": "Existing BP/record/sequence/take regression; see individual result fields."
+    },
+    {
+      "path": "native/build/native-type1666-context.json",
+      "sha256": "e9c85b026cac398ba36eb360b3995c3f7f3c19d8fa2413800fddfe8308eb8a60",
+      "scope": "Exact new type-model/write/editor symbol routing. Warm/cold timing not benchmarked; file/byte reads measured, no extra index/daemon and global caller completeness not claimed."
     }
   ],
   "sourceGameGates": [
@@ -1100,11 +1107,21 @@
     "tools/check-native-type-assets-1663-window.mjs --executable installed --package --expected-player-sha 07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
   ],
   "focusedAI": {
-    "path": "native/build/native-type1665-focus.json",
-    "sha256": "451b651d21d816feaec8426871ac1123c72c6fdc5c1e728d42b26f16da52a2c4",
-    "mode": "fallback-all",
-    "filesRead": 282,
-    "matches": 3
+    "before": {
+      "path": "native/build/native-type1665-focus.json",
+      "sha256": "451b651d21d816feaec8426871ac1123c72c6fdc5c1e728d42b26f16da52a2c4",
+      "mode": "fallback-all",
+      "filesRead": 282,
+      "matches": 3
+    },
+    "after": {
+      "path": "native/build/native-type1666-context.json",
+      "sha256": "e9c85b026cac398ba36eb360b3995c3f7f3c19d8fa2413800fddfe8308eb8a60",
+      "filesPerSymbol": 1,
+      "modelBytes": 10074,
+      "oldModelFiles": 282,
+      "oldModelBytes": 2859589
+    }
   },
   "resources": {
     "newWorkers": 0,
