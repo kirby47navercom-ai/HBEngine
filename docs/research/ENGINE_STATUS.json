@@ -1215,7 +1215,8 @@
         "docs/research/ENGINE_WORK_1434.json",
         "docs/CURVE_TOOLS.md",
         "docs/GL_COMPILER_TRACE.md",
-        "docs/research/ENGINE_WORK_1734.json"
+        "docs/research/ENGINE_WORK_1734.json",
+        "docs/research/USER_INSTALL_1736.json"
       ]
     },
     {
@@ -1812,7 +1813,8 @@
         "docs/research/ENGINE_WORK_1724.json",
         "docs/research/USER_INSTALL_1726.json",
         "docs/GL_COMPILER_TRACE.md",
-        "docs/research/ENGINE_WORK_1734.json"
+        "docs/research/ENGINE_WORK_1734.json",
+        "docs/research/USER_INSTALL_1736.json"
       ]
     },
     {
@@ -2972,7 +2974,8 @@
         "docs/research/ENGINE_WORK_1724.json",
         "docs/research/USER_INSTALL_1726.json",
         "docs/GL_COMPILER_TRACE.md",
-        "docs/research/ENGINE_WORK_1734.json"
+        "docs/research/ENGINE_WORK_1734.json",
+        "docs/research/USER_INSTALL_1736.json"
       ]
     },
     {
@@ -3019,7 +3022,8 @@
         "docs/research/ENGINE_WORK_400.json",
         "docs/CURVE_TOOLS.md",
         "docs/GL_COMPILER_TRACE.md",
-        "docs/research/ENGINE_WORK_1734.json"
+        "docs/research/ENGINE_WORK_1734.json",
+        "docs/research/USER_INSTALL_1736.json"
       ]
     },
     {
@@ -3480,14 +3484,14 @@
     "first": 1728,
     "last": 1734,
     "receipt": "docs/research/ENGINE_WORK_1734.json",
-    "scope": "Chebyshev I curve authoring/UI/AI and single result clone, independent analytic/Git parity, source actual editor playback. Owned ANGLE trace identifies D3DCompile bottleneck; private fixed-slot candidate unadopted. Final installed gates pending."
+    "scope": "Chebyshev I authoring/UI/AI and single result clone; analytic/Git parity and actual installed UI/D3D playback passed. Owned ANGLE trace identifies D3DCompile bottleneck; private candidate unadopted. User preserved/Versions1."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1726.json",
-    "sourceCommit": "283a389c778fd262c4b9ffd41acf0b2c4b1a36ce",
-    "bundleHash": "a1d151728b7375ebf7237351383aa046fe954a032d1da4c60396e41ec385d24f",
+    "receipt": "docs/research/USER_INSTALL_1736.json",
+    "sourceCommit": "e4256b511e5ac7c6061952bf22c286dbd3201577",
+    "bundleHash": "38fbd302627986e88e0cc058d99a71a5b97cd4edac32c9a218491f89fec56915",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actual2D editor records128 pure-BP typed records and transform, applies/Undo/Redo/saves Take, same D3D zero-native game replays array1000/position1000 and restores authored array0. Source original-Git comparison verifies payload copy600-to6, fixed-owner ID reads1228800-to13664 with no missing-target rescan regression, and validated weak-world slots preserve reorder/replacement/deletion/recreation/self/missing semantics.14 grouped regressions incl current changed BP runtime and Take, exact source/manifest/native21/30tests/vendor2/Player1604/Host1041 verified. User unchanged/Versions1. Earlier CPP/D3D modules reused only for unchanged SDK/compiler/transport. No FPS/phone/whole engine claim."
+    "scope": "Installed actual Chebyshev I curve UI/right-click/options/Undo/Save, Sequence revision/dryRun/stale, skeletal AI, floating BP Timeline and runtime Play; separately cooked D3D11 game executes saved filtered position. Source8 grouped checks, analytic T3/T4/cosine/DC oracle and old Git Butterworth parity. Strict source996/native21/test30/vendor2/Player1604/Host1041 manifest verification; no shader formula change. User preserved/Versions1; private compiler trace does not claim latency solved or FPS."
   }
 }

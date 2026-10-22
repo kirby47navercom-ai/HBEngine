@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-chebyshev-curve-and-compile-trace",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "e4256b511e5ac7c6061952bf22c286dbd3201577",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\38fbd302627986e8",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\38fbd302627986e8\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\38fbd302627986e8\\HBEngine.exe",
+  "bundleHash": "38fbd302627986e88e0cc058d99a71a5b97cd4edac32c9a218491f89fec56915",
+  "files": 4323,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4315,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a1d151728b7375eb",
+        "bytes": 192827446,
+        "manifestSHA256": "2b2c63dceb1aa35e4390438f678b9b4bf141462d6661da029ed7386e506152e8"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T18:36:27.5036484Z",
+    "bytes": 192827446,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "38fbd302627986e8"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 996,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/curve-chebyshev-1731-window-PV4ODk/acceptance.json",
+      "sha256": "2a417ce3ca50d8c28f40bce19152e1e74360270a4c64f1729aed1cc94d810799",
+      "scope": "Owned hidden real UI Chebyshev I FFT/explicit interior range controls, option retention/Undo; shared revision/dryRun/stale AI Sequence and skeletal; floating BP Timeline and saves. Filtered Sequence Play/Pause/Seek2.5 feeds actual runtime position. --player uses selected installed authoring helper and actual packaged D3D11. No user profile/project or OS clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\38fbd302627986e8\\HBEngine.exe"
+      ],
+      "ms": 17497.1577
+    },
+    {
+      "path": "native/build/curve-chebyshev-1731-window-BOmsMd/acceptance.json",
+      "sha256": "00c94db58ce526b479dbed1d0fcd5a2d1960e206b71badbdcafbc8f52b854c0d",
+      "scope": "Owned hidden real UI Chebyshev I FFT/explicit interior range controls, option retention/Undo; shared revision/dryRun/stale AI Sequence and skeletal; floating BP Timeline and saves. Filtered Sequence Play/Pause/Seek2.5 feeds actual runtime position. --player uses selected installed authoring helper and actual packaged D3D11. No user profile/project or OS clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\38fbd302627986e8\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 28648.3855
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\38fbd302627986e8\\",
+    "elapsedMs": 61.6,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\38fbd302627986e8",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "38fbd302627986e88e0cc058d99a71a5b97cd4edac32c9a218491f89fec56915",
+      "installedAt": "2026-10-22T18:36:24.029Z",
+      "manifestFiles": 4323,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged native SDK21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4323,
+  "versions": [
+    "38fbd302627986e8"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1736-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/curve-trace1733-group.json",
+      "sha256": "d85329f4d1385e8f6f226e5d23ec5a5f8f930b66318095aedf7710bb916a5f02",
+      "scope": "Grouped source checks plus focused AI lookup; no renderer formula change."
+    },
+    {
+      "path": "native/build/curve-chebyshev-1731-window-ay18Qj/acceptance.json",
+      "sha256": "1f072a6a383fb220cce6a0f49094e67351b4b54307a059d8f027eccc446badd6",
+      "scope": "Owned hidden real UI Chebyshev I FFT/explicit interior range controls, option retention/Undo; shared revision/dryRun/stale AI Sequence and skeletal; floating BP Timeline and saves. Filtered Sequence Play/Pause/Seek2.5 feeds actual runtime position. --player uses selected installed authoring helper and actual packaged D3D11. No user profile/project or OS clipboard."
+    },
+    {
+      "path": "native/build/gl-compile-trace-1728-nxXJ7S/acceptance.json",
+      "sha256": "45a49c7bb93942505dc78de6e7ed8eb60d3c4be11708f89cfe075e959ed66e59",
+      "scope": "One owned packaged WebGL2 path enable. CDP GPU trace only; no shader/quality/browser-flag changes, FPS, cold-cache or platform parity claim."
+    },
+    {
+      "path": "native/build/gl-compile-trace-1728-emcanL/acceptance.json",
+      "sha256": "042d0c284e15029a891da5d52e2ba863eaf7d5518a0be2370e8f84888898a40e",
+      "scope": "One owned packaged WebGL2 path enable. Optional private fixed-slot candidate; no production shader/quality/browser-flag changes, FPS, cold-cache or platform parity claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/curve-chebyshev-1731-window-ay18Qj/acceptance.json",
+      "sha256": "1f072a6a383fb220cce6a0f49094e67351b4b54307a059d8f027eccc446badd6",
+      "scope": "Owned hidden real UI Chebyshev I FFT/explicit interior range controls, option retention/Undo; shared revision/dryRun/stale AI Sequence and skeletal; floating BP Timeline and saves. Filtered Sequence Play/Pause/Seek2.5 feeds actual runtime position. --player uses selected installed authoring helper and actual packaged D3D11. No user profile/project or OS clipboard."
+    }
+  ],
+  "scope": "Installed actual Chebyshev I curve UI/right-click/options/Undo/Save, Sequence revision/dryRun/stale, skeletal AI, floating BP Timeline and runtime Play; separately cooked D3D11 game executes saved filtered position. Source8 grouped checks, analytic T3/T4/cosine/DC oracle and old Git Butterworth parity. Strict source996/native21/test30/vendor2/Player1604/Host1041 manifest verification; no shader formula change. User preserved/Versions1; private compiler trace does not claim latency solved or FPS."
+}

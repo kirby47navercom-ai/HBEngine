@@ -1171,6 +1171,30 @@
     "traceLimitBytes": 16777216,
     "traceRawGzipFilesPerRun": 1
   },
-  "installationPending": true,
-  "scope": "Chebyshev I curve authoring/UI/AI and single result clone, independent analytic/Git parity, source actual editor playback. Owned ANGLE trace identifies D3DCompile bottleneck; private fixed-slot candidate unadopted. Final installed gates pending."
+  "installationPending": false,
+  "scope": "Chebyshev I curve authoring/UI/AI and single result clone, independent analytic/Git parity, source actual editor playback. Owned ANGLE trace identifies D3DCompile bottleneck; private fixed-slot candidate unadopted. Final installed gates pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1736.json",
+  "installedGates": [
+    {
+      "path": "native/build/curve-chebyshev-1731-window-PV4ODk/acceptance.json",
+      "sha256": "2a417ce3ca50d8c28f40bce19152e1e74360270a4c64f1729aed1cc94d810799",
+      "scope": "Owned hidden real UI Chebyshev I FFT/explicit interior range controls, option retention/Undo; shared revision/dryRun/stale AI Sequence and skeletal; floating BP Timeline and saves. Filtered Sequence Play/Pause/Seek2.5 feeds actual runtime position. --player uses selected installed authoring helper and actual packaged D3D11. No user profile/project or OS clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\38fbd302627986e8\\HBEngine.exe"
+      ],
+      "ms": 17497.1577
+    },
+    {
+      "path": "native/build/curve-chebyshev-1731-window-BOmsMd/acceptance.json",
+      "sha256": "00c94db58ce526b479dbed1d0fcd5a2d1960e206b71badbdcafbc8f52b854c0d",
+      "scope": "Owned hidden real UI Chebyshev I FFT/explicit interior range controls, option retention/Undo; shared revision/dryRun/stale AI Sequence and skeletal; floating BP Timeline and saves. Filtered Sequence Play/Pause/Seek2.5 feeds actual runtime position. --player uses selected installed authoring helper and actual packaged D3D11. No user profile/project or OS clipboard.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\38fbd302627986e8\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 28648.3855
+    }
+  ]
 }
