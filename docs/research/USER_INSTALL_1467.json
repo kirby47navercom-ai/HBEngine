@@ -1,0 +1,178 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "158f75517db5c3ce8509a821501e8ac059f23716",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7908780238a87645",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\7908780238a87645\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\7908780238a87645\\HBEngine.exe",
+  "bundleHash": "7908780238a87645953863a71f0e7c11308a8bc41bcf3f615573dba8439ebbc6",
+  "files": 4129,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4118,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7f4fbb9a481aad45",
+        "bytes": 188837073,
+        "manifestSHA256": "0b9665d43f79df7e6005a127d1c3ae22d365f34159fc3abf18bf27ad2868f835"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T02:52:09.9053266Z",
+    "bytes": 188837073,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "7908780238a87645"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 792,
+  "repositoryOnlyTestSourcesVerified": 28,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [
+    "native/include/HBEngine/Enum.hpp",
+    "native/include/HBEngine/Game.hpp"
+  ],
+  "nativePlayerSHA256": "542504c2a3fa3c3619bf7f675ab70d7781ca6d93c36925c2737e4a3c1c9d439c",
+  "installedGates": [
+    {
+      "path": "native/build/native-enums-1459-window-fcT9am/acceptance.json",
+      "sha256": "93d55b1a4c75d83db060381a226bf287eaf652a9e9d49e17f8f514ac85fa48d6",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7908780238a87645\\HBEngine.exe",
+        "--package"
+      ]
+    },
+    {
+      "path": "native/build/blueprint-2d-1221-ZMLrbk/acceptance.json",
+      "sha256": "cf3dd5d6140ae4c62e3021a8b275284e46ef70008c278d1c0baf3a8cb5ebbee9",
+      "scope": "Selected installation builder creates and runs actual Windows D3D11 game. GameMode defaultPawn is C++-derived TopDownCharacter2D, typed SpriteActor function receives authored Blueprint actor, preserves spawn position and queues witness pose; real W input moves in XY with Z fixed. No mobile-device/FPS/full-engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7908780238a87645\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/document-history-1400-window-BVnNZc/acceptance.json",
+      "sha256": "248f21d51ecf04c90147292327a61709da9d7a4c74fae2393b439416a335d4ac",
+      "scope": "Owned hidden actual editor: visible fixed-height256track rows/density keys/search/focus/scroll/AI exact index,8 dense-key edits with shared history Undo/Redo/branch, bounded history/read diagnostics/revisions, save and actual Play. Optional actual installed D3D11 package. No user profile/project or gameFPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7908780238a87645\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\7908780238a87645\\",
+    "elapsedMs": 62.29,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\7908780238a87645",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "7908780238a87645953863a71f0e7c11308a8bc41bcf3f615573dba8439ebbc6",
+      "installedAt": "2026-10-22T02:52:06.634Z",
+      "manifestFiles": 4129,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4129,
+  "versions": [
+    "7908780238a87645"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1467-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/enums1461-group.json",
+      "sha256": "3caf5164f5806ed0036c140e57ae921b581e619caaf560a9c3baef57eb318708",
+      "scope": "20syntax plus warning-clean SDK, C++ enum integration, BP inheritance, legacy VM graph, native core, generated API; source UI prior final title/default and instance proof. Only affected checks; no renderer matrix."
+    },
+    {
+      "path": "native/build/enums1464-final.json",
+      "sha256": "e9d806e2dd10e05d2d683eb11790d500925e834f8ae391f8aec2b91f4be4c66a",
+      "scope": "Final SDK qualified-name strict parse, exact C++ worker, fresh Player1464 and one-file144.79ms AI lookup."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-enums-1458-ewOJRw/acceptance.json",
+      "sha256": "0880379522c56e6f2baba804ffd9bbb0301e2a80b803d55b50a25e1c0e8abef5",
+      "scope": "Actual compiled enum types, shared header, signed32 U32 high-bit wire, functions/ref-output/arrays/properties/events/SDK names and invalid input rejection."
+    },
+    {
+      "path": "native/build/native-enums-1459-window-Ej3WVG/acceptance.json",
+      "sha256": "b37538c1fdcbdbc9a3235965adfd59607ee89a139dd4e131b11990ce13a206f7",
+      "scope": "Actual hidden editor with final source: named inline pin, typed variable UndoRedo, enum Switch names, hidden current value, array add/edit/remove, bit31mask, instance scalar/array UndoRedo/save, sourceReference without duplicate tables, actual CPP→BP Play."
+    },
+    {
+      "path": "native/build/native-enums-1460-aot-oJcAHX/acceptance.json",
+      "sha256": "de088c1e2e6a557295c3f2eb42bb6ab13236db7cea82898dae1f2f815d3ebfcd",
+      "scope": "Exact portable mobileSources compiled as two modules with same class+enum names but different values/labels, alternating four calls isolated and U32 high bit. Host execution, not Android/iOS device. Predates final SDK TryParse owner guard tested in final SDK suite; module registration/pack/codegen unchanged."
+    },
+    {
+      "path": "native/build/enum-sdk1458.json",
+      "sha256": "e31c5560294f63df74779d4b061c8df636f0ff19778fa1c20799f45579694836",
+      "scope": "C++17 -Wall -Wextra -Werror: enum scalar/array range, hidden/alias/names, ordinal/direct masks, high bit and parse atomicity including wrong namespace."
+    },
+    {
+      "path": "native/build/player1464-build.json",
+      "sha256": "f64c30fd9a7a44cfe9ae4dd23a7a453107b59e66a9a402b9e2033bcd1788a04a",
+      "scope": "Fresh final SDK Player build;1462 preceded meaningful SDK guard correction. Host1041 and raster logic unchanged."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-enums-1458-ewOJRw/acceptance.json",
+      "sha256": "0880379522c56e6f2baba804ffd9bbb0301e2a80b803d55b50a25e1c0e8abef5",
+      "scope": "Actual compiled enum types, shared header, signed32 U32 high-bit wire, functions/ref-output/arrays/properties/events/SDK names and invalid input rejection."
+    },
+    {
+      "path": "native/build/native-enums-1459-window-Ej3WVG/acceptance.json",
+      "sha256": "b37538c1fdcbdbc9a3235965adfd59607ee89a139dd4e131b11990ce13a206f7",
+      "scope": "Actual hidden editor with final source: named inline pin, typed variable UndoRedo, enum Switch names, hidden current value, array add/edit/remove, bit31mask, instance scalar/array UndoRedo/save, sourceReference without duplicate tables, actual CPP→BP Play."
+    },
+    {
+      "path": "native/build/native-enums-1460-aot-oJcAHX/acceptance.json",
+      "sha256": "de088c1e2e6a557295c3f2eb42bb6ab13236db7cea82898dae1f2f815d3ebfcd",
+      "scope": "Exact portable mobileSources compiled as two modules with same class+enum names but different values/labels, alternating four calls isolated and U32 high bit. Host execution, not Android/iOS device. Predates final SDK TryParse owner guard tested in final SDK suite; module registration/pack/codegen unchanged."
+    }
+  ],
+  "scope": "Installed enum production: native named inline pin, typed variable UndoRedo, enum Switch named cases, hidden current values, array add/edit/remove, bit31 ordinal mask, instance scalar/array UndoRedo/save, sourceReference without duplicated enum tables, actual CPP and BP Play; same saved project actual D3D11 [4,3,2]. Legacy typed C++ 2D player keyboard XY and unchanged original spawn/witness position; dense history8UndoRedo/branch/save/Play. Full manifest/792owners/28native test SHA/2vendor, fresh Player1464 final SDK, unchanged Host1041, User read-only inventory/links/Versions1. No all-engine/FPS/real-device claim.",
+  "version": 1,
+  "date": "2026-10-22T02:57:08.397Z",
+  "work": "docs/research/ENGINE_WORK_1465.json",
+  "distributionSync": "native/build/distribution-1466-sync.json",
+  "nativePlayerReceipt": "native/build/player1464-build.json",
+  "hostReuseFrom": "docs/research/USER_INSTALL_1456.json",
+  "vendorPatch": "tools/patch-three-uniforms.mjs"
+}

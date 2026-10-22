@@ -912,11 +912,6 @@
       "scope": "Exact portable mobileSources compiled as two modules with same class+enum names but different values/labels, alternating four calls isolated and U32 high bit. Host execution, not Android/iOS device. Predates final SDK TryParse owner guard tested in final SDK suite; module registration/pack/codegen unchanged."
     }
   ],
-  "pendingInstalledGates": [
-    "tools/check-native-enums-1459-window.mjs --package",
-    "tools/check-blueprint-2d-1221-player.mjs",
-    "tools/check-document-history-1400-window.mjs"
-  ],
   "nativePlayerSHA256": "542504c2a3fa3c3619bf7f675ab70d7781ca6d93c36925c2737e4a3c1c9d439c",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -961,8 +956,8 @@
   "research": "CORPUS_MANIFEST.supplemental1458: three scoped official body readings for UE enum metadata/bitmask fields and Unity serialization; not all manuals/API analysis.",
   "diagnostic": "DEBUG_HANDOFF1458–1464 records include candidate bug, SDK warnings, fixture token/API/saveCAS/hidden-value and AOT source inventory repairs, baseline legacy Switch test input repair. No failed experiment counted as shipped feature.",
   "verificationMetadataNote": "Final installed gates cover exact sealed source and same saved actual D3D11 package, legacy2D and inheritance window; portable proof before final SDK parse guard uses unchanged codegen/module paths and separate final SDK proof.",
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1456.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1467.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": {
     "cpp": [
@@ -985,5 +980,34 @@
       "WebGPU 물리 재질의 임의 복합 로브·매질/기하/이력 조합 확장과 전체 백엔드 에너지 동등성 검증"
     ]
   },
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/native-enums-1459-window-fcT9am/acceptance.json",
+      "sha256": "93d55b1a4c75d83db060381a226bf287eaf652a9e9d49e17f8f514ac85fa48d6",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7908780238a87645\\HBEngine.exe",
+        "--package"
+      ]
+    },
+    {
+      "path": "native/build/blueprint-2d-1221-ZMLrbk/acceptance.json",
+      "sha256": "cf3dd5d6140ae4c62e3021a8b275284e46ef70008c278d1c0baf3a8cb5ebbee9",
+      "scope": "Selected installation builder creates and runs actual Windows D3D11 game. GameMode defaultPawn is C++-derived TopDownCharacter2D, typed SpriteActor function receives authored Blueprint actor, preserves spawn position and queues witness pose; real W input moves in XY with Z fixed. No mobile-device/FPS/full-engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7908780238a87645\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/document-history-1400-window-BVnNZc/acceptance.json",
+      "sha256": "248f21d51ecf04c90147292327a61709da9d7a4c74fae2393b439416a335d4ac",
+      "scope": "Owned hidden actual editor: visible fixed-height256track rows/density keys/search/focus/scroll/AI exact index,8 dense-key edits with shared history Undo/Redo/branch, bounded history/read diagnostics/revisions, save and actual Play. Optional actual installed D3D11 package. No user profile/project or gameFPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7908780238a87645\\HBEngine.exe"
+      ]
+    }
+  ]
 }

@@ -4,13 +4,11 @@
 
 ## 현재 설치와 진행
 
-설치 USER_INSTALL1456: C:/Users/kirby/HBEngine/Versions/7f4fbb9a481aad45/HBEngine.exe,4117명세/775소유/27native검사/2vendor·User10849읽기SHA/Versions1·이전188673680B퇴역. main기준e9c08d4. WORK1454 time-view·globaldragbusy/65k키/section·montage trim/실제D3D7.5, WORK1444 historylazycontainers·몽타주행/window. WORK1434/1420 advancedprobe/literal준비증거는각기록.
-
-현재1458–1464: C++ HB_ENUM/값8·16·32/U32signedwire/namespace·nestedclass/기본표현식·고정기반컴파일대조. 공용상대헤더·native typedinput/return/refoutput/arrays/events·enum SDK명칭/parse/flags. 클래스/인스턴스/노드inline/변수GetSet/Promote/이름Switch·숨김/unknown보존·배열추가삭제·ordinal/directmask. native.enums.read boundedquery·sourceReference저장·AI소유1file144.79ms. UI instanceScalarArrayUndoRedoSave·native/VM/portableAOT2모듈교대4회·SDK/core/상속/구형Switch회귀통과. 최종Player1464 build25초,Host1041재사용; SDK Game.hpp+Enum.hpp새소유. 아직이번설치전: source UI Ej3WVG, portable oJcAHX, native enum JSON은1464-final report에있어요. 설치최종gate가 source뒤의schema/title/default미세수정과패키지를확인해야해요. docs/NATIVE_ENUMS.md/CORPUS.supplemental1458는3공식본문구간만,전체분석완료아님.
+설치 USER_INSTALL1467: C:/Users/kirby/HBEngine/Versions/7908780238a87645/HBEngine.exe,4129명세/792소유/28native검사/18nativeowner/2vendor·User10849읽기SHA/Versions1·이전188837073B퇴역. feature3385517/metadata158f755. WORK1465에C++enum·typedwire/sharedheader/SDK/핀·속성·변수·배열·mask·Switch와AI읽기계약. 실제설치enum 모든조작/instanceUndoRedo/save/Play와같은저장D3D[4,3,2]exit0·기존2DtypedCPP/keyboardXY/원spawn/witness·65k256행문서기록회귀통과. portable2동명enum/class모듈교대4회·최종SDK/core/VM/상속/API/AI1소유144.79ms. 최종Player1464 build25초·Host1041재사용,CPP소유변경Game.hpp와신규Enum.hpp. SDK/UI상세와잔여는docs/NATIVE_ENUMS.md. WORK1454/1444는timeview/history/rows,WORK1434/1420은probe/literal준비증거. 전체분모null/78행유지.
 
 ## 다음 순서와 제약
 
-1458 feature커밋→WORK1465 원장→dist sync1466/최종설치1467: enum actualUI+package,2D legacyplayer,대규모 문서기록 회귀를묶어검사·User읽기SHA/명세/Versions1→receipt/한글커밋푸시. 그후누적잔여계속. native/build record1454/sync1455/install1456/finish1457·build-player1462/1464 started는끝난것재실행금지. 새스크립트/번호만.
+1467설치까지완료·이번묶음으로끝내지말고누적잔여계속. 다음 일반 사용자struct reflection/MakeBreakSetMembers를 검토중. UE Structs본문0–56, Unity6000 SerializeReference본문240–317·예제319–375 일부 새읽음(아직corpus등록/구현0). 값struct와Actor/참조수명·순환차단·default/enum/object필드/배열·동일CPP실행·편집기/AI를함께연결해야해요. 기존fixed5struct→새타입registry를교체할지결정전. NativeSource CPP일반화범위는아래잔여유지. record1465/sync1466/install1467/finish1468 및build-player1462/1464 started는끝난것재실행금지.
 
 CPP01 남음: 전용enum에셋/일반struct reflection MakeBreakSetMembers·일반반환참조·signature/wildcard/문서간Timeline. 임의C++전처리/constexpr/alias·같은primary H/S의서로다른relativeinclude identity일반화도검토. ANM06전체snapshot순회/restore/큰변경배열·겹친clip공간색인/slider/region/pinch/가변행·리그/warp/혼합/부모골격Take. RND03lightmap혼합/2후보밖계층/대형HDR/변형/로브, RND06主GL7초/FXC/capture(1086/1308실험반복금지), UI03교차창/실터치/asyncrollback, NET01권한/예측/socket, RND08월드DF/HWRT/bake 등 ENGINE_STATUS78행·전체분모null.
 
