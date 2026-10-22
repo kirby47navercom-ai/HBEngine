@@ -59,12 +59,12 @@ export class NativeHost extends NativeProtocol {
     return {pid:process.pid,node:process.version,memory:process.memoryUsage(),modules,physicsQueries:this.physicsQueryPool.inspect(),nativeCache:this.moduleCache?.inspect()||{root:mutablePaths.modules,installed:false},managedNativeCache:this.managedModuleCache?.inspect()||null,legacyNativeCache:this.versionModuleCache?.inspect()||null};
   }
   registerBinary(binary,metadata){const token=randomUUID();this.sessions.set(token,{token,binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()});return {token,metadata,diagnostics:'사전 빌드 로드'};}
-  async build(header,source,{configuration='editor',signal,files=[]}={}){
+  async build(header,source,{configuration='editor',signal,files=[],headerPath,sourcePath}={}){
     const controller=new AbortController();this.buildControllers.add(controller);signal=signal?AbortSignal.any([signal,controller.signal]):controller.signal;let releaseCache,session;
     try{
     signal?.throwIfAborted();
     if(!['editor','development','release'].includes(configuration))throw Error('C++ 빌드 구성 오류');
-    const generated=nativeSources(header,source,{files}),{metadata,header:compiledHeader,source:compiledSource,worker}=generated;await prepareNative();
+    const generated=nativeSources(header,source,{files,headerPath,sourcePath}),{metadata,header:compiledHeader,source:compiledSource,worker}=generated;await prepareNative();
     const snapshot=await nativeSDKFingerprint(path.join(root,'native/include'),{dependencies:[{name:'nlohmann/json.hpp',file:path.join(jsonInclude,'nlohmann/json.hpp')}],signal,inventory:true}),{entries,...sdk}=snapshot;
     const sourceKey=createHash('sha256').update('project-source-v4-used-sdk-worker-o2'+configuration+compiledHeader+compiledSource+worker+JSON.stringify([generated.files,generated.sourceFiles,generated.includeDirectories,nativeSourceOptimization(configuration)])).digest('hex'),deadline=performance.now()+60000,compile=(args,options={})=>compileNativeStep(args,{signal,deadline,...options});
     let sdkUsed,hash,binary,cacheHit,cacheScope='version';

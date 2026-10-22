@@ -1971,6 +1971,35 @@
       "paths": [
         "tools/native-type-migration.mjs"
       ]
+    },
+    {
+      "id": "native-entry-module-key",
+      "keywords": [
+        "nativeEntryPaths",
+        "nativeModuleKey"
+      ],
+      "paths": [
+        "prototype/native-entry.js"
+      ]
+    },
+    {
+      "id": "native-project-entry-selection",
+      "keywords": [
+        "nativeEntryFiles"
+      ],
+      "paths": [
+        "tools/native-project.mjs"
+      ]
+    },
+    {
+      "id": "native-source-dependency-watch",
+      "keywords": [
+        "readNativeSourceDependencies",
+        "nativeWatchedSources"
+      ],
+      "paths": [
+        "prototype/native-source-watch.js"
+      ]
     }
   ]
 }

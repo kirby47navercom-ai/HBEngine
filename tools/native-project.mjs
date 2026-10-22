@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {canonicalNativeText,parseNativeHeader} from '../prototype/native-model.js';
 import {nativeFriendHeader} from '../prototype/native-class-scopes.js';
+import {nativeEntryPaths} from '../prototype/native-entry.js';
 
 export const nativeSourceLimits=Object.freeze({root:'Source/',extensions:['h','hpp','hh','inl','cpp','cc','cxx'],maxFiles:512,maxFileBytes:500000,maxTotalBytes:8388608,compileTimeoutMs:60000});
 export const nativeSourceFile=name=>/^Source\//.test(name)&&/\.(?:h|hpp|hh|inl|cpp|cc|cxx)$/i.test(name);
@@ -15,8 +16,14 @@ export async function readNativeFiles(project,{files,signal}={}){
   if(files.length>nativeSourceLimits.maxFiles)throw Error('C++ Source 파일은 512개까지 지원해요.');
   const result=[];let bytes=0;for(const file of files){signal?.throwIfAborted();const info=await project.read(file.path);if(info.size>nativeSourceLimits.maxFileBytes)throw Error('C++ Source 파일 500KB 제한: '+file.path);bytes+=info.size;if(bytes>nativeSourceLimits.maxTotalBytes)throw Error('C++ Source 전체 크기 8MB 제한');result.push({path:file.path,content:await fs.readFile(info.file,{encoding:'utf8',signal})});}return checkedNativeFiles(result);
 }
-export function nativeProjectLayout(header,source,generated,files){
-  files=checkedNativeFiles(files);const primarySource=files.find(file=>/\.(cpp|cc|cxx)$/i.test(file.path)&&file.content===canonicalNativeText(source)),stem=file=>file.path.replace(/\.[^.]+$/,'').toLowerCase(),headers=files.filter(file=>/\.(h|hpp|hh)$/i.test(file.path)),matching=headers.filter(file=>file.content===canonicalNativeText(header)),primaryHeader=matching.find(file=>primarySource&&stem(file)===stem(primarySource))||matching[0];
+export function nativeEntryFiles(header,source,files,options={}){
+ const paths=nativeEntryPaths(options),stem=file=>file.path.replace(/\.[^.]+$/,'').toLowerCase(),headers=files.filter(f=>/\.(h|hpp|hh)$/i.test(f.path)&&f.content===canonicalNativeText(header)),sources=files.filter(f=>/\.(cpp|cc|cxx)$/i.test(f.path)&&f.content===canonicalNativeText(source));
+ if(paths.headerPath){const h=headers.find(f=>f.path.toLowerCase()===paths.headerPath.toLowerCase()),s=sources.find(f=>f.path.toLowerCase()===paths.sourcePath.toLowerCase());if(!h||!s)throw Object.assign(Error('빌드 중 C++ 진입 파일이 변경됐거나 없어요.'),{status:409,code:'REVISION_CONFLICT'});return {headerPath:h.path,sourcePath:s.path};}
+ let hs=headers,ss=sources;if(hs.length===1&&ss.length>1){const paired=ss.filter(f=>stem(f)===stem(hs[0]));if(paired.length)ss=paired;}if(ss.length===1&&hs.length>1){const paired=hs.filter(f=>stem(f)===stem(ss[0]));if(paired.length)hs=paired;}
+ if(hs.length>1||ss.length>1)throw Error('내용이 같은 C++ 파일이 여러 개예요. headerPath·sourcePath를 지정하세요.');return {headerPath:hs[0]?.path,sourcePath:ss[0]?.path};
+}
+export function nativeProjectLayout(header,source,generated,files,{entry}={}){
+  files=checkedNativeFiles(files);entry??=nativeEntryFiles(header,source,files);const primarySource=files.find(file=>file.path===entry.sourcePath),primaryHeader=files.find(file=>file.path===entry.headerPath),stem=file=>file.path.replace(/\.[^.]+$/,'').toLowerCase(),headers=files.filter(file=>/\.(h|hpp|hh)$/i.test(file.path));
   // Same named public classes are independent BP modules, not helper units for
   // each other. Keep their files in the source/cache inventory but compile only
   // this entry and ordinary helpers. Explicit conflicting includes still fail.

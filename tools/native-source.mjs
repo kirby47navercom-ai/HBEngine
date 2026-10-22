@@ -4,7 +4,7 @@ import {nativeClassScopes,nativeFriendHeader} from '../prototype/native-class-sc
 import {nativeRecordWorkerTypes} from './native-record-code.mjs';
 import {nativeActorBases,nativeComponentBases,nativeBases} from './native-builtins.mjs';
 import {parseNativeHeader,nativeTargetPin} from '../prototype/native-model.js';
-import {nativeProjectLayout,checkedNativeFiles} from './native-project.mjs';
+import {nativeProjectLayout,checkedNativeFiles,nativeEntryFiles} from './native-project.mjs';
 function enumWorkerTypes(metadata,enumTypes){
  if(!metadata.enums?.length)return '';
  const tables=metadata.enums.map((definition,index)=>{
@@ -89,11 +89,11 @@ ${portableName?`std::string ${portableName}(const std::string& line,const std::f
 `;
 }
 
-export function nativeSources(header,source,{portableName,userNamespace='',files=[]}={}){
+export function nativeSources(header,source,{portableName,userNamespace='',files=[],headerPath,sourcePath}={}){
  files=checkedNativeFiles(files);
- if(typeof source!=='string'||source.length>500000)throw Error('C++ 구현은 500 KB 이하로 입력하세요.');const metadata=parseNativeHeader(header,{files});metadata.workerProtocol=3;metadata.nativeBatch=1;metadata.nativeModuleQueries=1;metadata.nativeStateCommit=1;metadata.nativeBatchOperations=1;metadata.nativeFrameBatch=1;metadata.nativeModuleFrameBatch=1;metadata.nativeInputBatch=1;metadata.nativeStateBatch=1;metadata.nativeSpawn=1;metadata.nativeActorLifetime=1;metadata.nativeGameSession=1;if(!metadata.classes.length)throw Error('공개 C++ 클래스가 없어요.');
+ if(typeof source!=='string'||source.length>500000)throw Error('C++ 구현은 500 KB 이하로 입력하세요.');const entry=nativeEntryFiles(header,source,files,{headerPath,sourcePath}),metadata=parseNativeHeader(header,{files,sourcePath:entry.headerPath});metadata.workerProtocol=3;metadata.nativeBatch=1;metadata.nativeModuleQueries=1;metadata.nativeStateCommit=1;metadata.nativeBatchOperations=1;metadata.nativeFrameBatch=1;metadata.nativeModuleFrameBatch=1;metadata.nativeInputBatch=1;metadata.nativeStateBatch=1;metadata.nativeSpawn=1;metadata.nativeActorLifetime=1;metadata.nativeGameSession=1;if(!metadata.classes.length)throw Error('공개 C++ 클래스가 없어요.');
  let compiledHeader=header;const scope=nativeClassScopes(header),edits=[];for(const member of scope.members.values()){if(member.kind!=='HB_FUNCTION'||!member.direct||member.owner.annotation===undefined)continue;const declaration=header.slice(member.start).match(/^(HB_FUNCTION\([^)]*Blueprint(?:Native|Implementable)Event[^)]*\)\s*)(?!virtual\b)(void\s)/);if(declaration)edits.push(member.start+declaration[1].length);}for(const at of edits.sort((a,b)=>b-a))compiledHeader=compiledHeader.slice(0,at)+'virtual '+compiledHeader.slice(at);compiledHeader=nativeFriendHeader(compiledHeader);
  let compiledSource='#include <HBEngine/Native.hpp>\n'+(files.length?source:source.replace(/^\s*#include\s*"[^"\n]+\.(?:h|hpp)"\s*$/gm,''));compiledSource='#include "User.hpp"\n'+compiledSource;
  for(const c of metadata.classes)for(const f of c.functions.filter(f=>f.event==='implementable'))if(!new RegExp('\\b'+c.name+'\\s*::\\s*'+f.name+'\\s*\\(').test(source))compiledSource+='\nvoid '+(c.cppName||c.name)+'::'+f.name+'('+f.parameters.map(p=>p.cppType+' '+p.name).join(',')+'){}\n';
- const generated={metadata,header:compiledHeader,source:compiledSource,worker:generatedWorker(metadata,{portableName,userNamespace})};return {...generated,...nativeProjectLayout(header,source,generated,files)};
+ const generated={metadata,header:compiledHeader,source:compiledSource,worker:generatedWorker(metadata,{portableName,userNamespace})};return {...generated,...nativeProjectLayout(header,source,generated,files,{entry})};
 }

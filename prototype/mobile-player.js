@@ -1,3 +1,4 @@
+import {nativeEntryPaths} from './native-entry.js';
 import {nativeLiveQueryKeys} from './native-live-query.js';
 import {createPersistentQueries,persistentQueryKeys} from './runtime-storage.js';
 import {NativeProtocol,nativeParticleQuery} from './native-protocol.js';
@@ -48,7 +49,7 @@ export function mobileBackend(manifest,{read,request,rendererQuery,mobile=true,b
         if(method==='GET'){if(url.searchParams.get('project')!==manifest.id)throw Error('프로젝트 ID 오류');const saved=await request('storageRead',{});if(saved?.version!==1||!saved.items||typeof saved.items!=='object'||Array.isArray(saved.items))throw Error('게임 저장 형식 오류');const suffix='.project.'+encodeURIComponent(manifest.id);return json({version:1,items:Object.fromEntries(Object.entries(saved.items).filter(([key])=>key.endsWith(suffix)))});}
         if(method==='PUT'){const data=body(),suffix='.project.'+encodeURIComponent(manifest.id);if(data.id!==manifest.id||!data.items||Array.isArray(data.items)||typeof data.items!=='object'||Object.entries(data.items).some(([key,value])=>key.length>1000||!key.endsWith(suffix)||!key.startsWith('hbengine.savegame.')&&!key.startsWith('hbengine.storage-migrated.v1.')||value!==null&&typeof value!=='string')||JSON.stringify(data.items).length>4194304)throw Error('게임 저장 범위 오류');return json(await request('storageWrite',data.items));}
       }
-      if(url.pathname==='/api/native/build'&&method==='POST'){const data=body(),module=[...modules.values()].find(m=>m.header===data.header&&m.source===data.source);if(!module)throw Error('패키지에 등록되지 않은 C++ 코드');return json({token:module.token,metadata:module.metadata,diagnostics:'모바일 사전 빌드 로드'});}
+      if(url.pathname==='/api/native/build'&&method==='POST'){const data=body(),entry=nativeEntryPaths(data),candidates=[...modules.values()].filter(m=>m.header===data.header&&m.source===data.source),module=entry.headerPath?candidates.find(m=>m.headerPath?.toLowerCase()===entry.headerPath.toLowerCase()&&m.sourcePath?.toLowerCase()===entry.sourcePath.toLowerCase())||(candidates.length===1&&!candidates[0].headerPath?candidates[0]:null):candidates.length===1?candidates[0]:null;if(!module)throw Error('패키지에 등록되지 않은 C++ 코드');return json({token:module.token,metadata:module.metadata,diagnostics:'모바일 사전 빌드 로드'});}
       if(url.pathname==='/api/native/call'&&method==='POST')return json(await nativeCall(body()));
       if(url.pathname==='/api/player/report'){
         if(method==='POST'){report=body();if(manifest.configuration==='development')await request('report',report);return json({ok:true});}

@@ -1,3 +1,4 @@
+import {nativeModuleKey} from '../prototype/native-entry.js';
 import {resolveEffectDefinition} from '../prototype/effect-scaling.js';
 import {fileContent,isFileContent,writeBuildContent,buildChunkBytes} from './build-content.mjs';
 import {resolvePrefab} from '../prototype/prefab-variants.js';
@@ -27,7 +28,7 @@ import {validateAbilitySetGraph} from '../prototype/ability-set-resolution.js';
 import {defaultBuildProfile,validBuildProfile,profileTarget,buildTargets,frameSettings} from '../prototype/build-profile.js';
 const root=path.resolve(import.meta.dirname,'..');
 export const digest=bytes=>createHash('sha256').update(bytes).digest('hex');
-export const nativeSignature=(header,source)=>digest(JSON.stringify([header,source]));
+export const nativeSignature=(header,source,entry={})=>digest(nativeModuleKey(header,source,entry));
 const json=data=>JSON.stringify(data,null,2)+'\n';
 const failIfCanceled=signal=>signal?.throwIfAborted();
 export async function readBuildProfiles(record){
@@ -68,7 +69,7 @@ export async function inspectBuild(record,profile,{signal}={}){
     if(kind==='blueprint'&&nativeTypeReference(data.native)){const types=await createNativeTypeImportResolver(async name=>content.get(await include(name)).toString('utf8'))(data.native);if(!validAsset('blueprint',{...data,native:types}))throw Error('타입 라이브러리와 빌드 BP가 맞지 않아요: '+name);}
     else if(kind==='blueprint'&&data.native){
       const n=data.native,headerPath=await include(n.headerPath||'Source/DoorController.h'),sourcePath=await include(n.sourcePath||'Source/DoorController.cpp'),header=canonicalNativeText(content.get(headerPath).toString('utf8')),source=canonicalNativeText(content.get(sourcePath).toString('utf8'));
-      natives.set(nativeSignature(header,source),{header,source,files:nativeFiles});Object.assign(n,parseNativeHeader(header,{files:nativeFiles}));delete n.header;delete n.source;content.set(name,Buffer.from(json(data)));
+      natives.set(nativeSignature(header,source,{headerPath,sourcePath}),{header,source,headerPath,sourcePath,files:nativeFiles});Object.assign(n,{headerPath,sourcePath},parseNativeHeader(header,{files:nativeFiles,sourcePath:headerPath}));delete n.header;delete n.source;content.set(name,Buffer.from(json(data)));
     }
     for(const value of assetReferences(data,name))await include(value);
   }
@@ -108,7 +109,7 @@ export async function buildGame(record,profile,{dryRun=false,signal,onProgress=(
   const host=new NativeHost(),artifacts=[],copied=new Set();const write=async(name,bytes)=>{artifacts.push(await writeBuildContent(out,name,bytes,{signal}));copied.add(name);};
   const copy=async(from,to)=>{if(!copied.has(to))await write(to,await packagedRuntimeContent(from,{signal}));};
   try{
-    const nativeModules=[];onProgress('C++ 빌드');for(const [signature,item] of natives){failIfCanceled(signal);const result=await host.build(item.header,item.source,{configuration:profile.configuration,signal,files:item.files}),binary='Binaries/'+signature+'.exe';await copy(host.sessions.get(result.token).binary,binary);nativeModules.push({signature,binary,metadata:result.metadata});}
+    const nativeModules=[];onProgress('C++ 빌드');for(const [signature,item] of natives){failIfCanceled(signal);const result=await host.build(item.header,item.source,{configuration:profile.configuration,signal,files:item.files,headerPath:item.headerPath,sourcePath:item.sourcePath}),binary='Binaries/'+signature+'.exe';await copy(host.sessions.get(result.token).binary,binary);nativeModules.push({signature,binary,metadata:result.metadata,headerPath:item.headerPath,sourcePath:item.sourcePath,legacySignature:nativeSignature(item.header,item.source)});}
     onProgress('콘텐츠 준비');for(const [name,bytes] of content)await write('Content/'+name,bytes);
     // Redirect aliases keep renamed model sidecars and string-based asset references working.
     let redirects={};try{redirects=JSON.parse(await fs.readFile(await record.project.resolve('.hbredirects.json',true,false),'utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}

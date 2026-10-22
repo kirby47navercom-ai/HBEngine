@@ -1,3 +1,4 @@
+import {nativeModuleKey,nativeEntryPaths} from '../prototype/native-entry.js';
 import {streamHttpFile} from './http-file.mjs';
 import {hashBuildFile} from './build-content.mjs';
 import {configureNativePersistence} from './game-storage.mjs';
@@ -20,7 +21,10 @@ export async function startPlayerServer({root=path.resolve(import.meta.dirname,'
   if(manifest.version!==1||!Array.isArray(manifest.files)||!Array.isArray(manifest.entries)||!Array.isArray(manifest.nativeModules)||!safe(manifest.startupScene)||!['development','release'].includes(manifest.configuration)||!/^[0-9a-f-]{36}$/.test(manifest.id))throw Error('게임 패키지 형식 오류');
   const files=new Map();for(const entry of manifest.files){if(!safe(entry.path)||!Number.isSafeInteger(entry.bytes)||entry.bytes<0||files.has(entry.path)||!/^[0-9a-f]{64}$/.test(entry.sha256))throw Error('패키지 파일 목록 오류');const full=await fs.realpath(path.join(root,entry.path));if(!full.toLowerCase().startsWith((root+path.sep).toLowerCase()))throw Error('패키지 경로 이탈');if(verify){const checked=await hashBuildFile(full,{root});if(checked.bytes!==entry.bytes||checked.sha256!==entry.sha256)throw Error('패키지 파일 검증 실패: '+entry.path);}files.set(entry.path,{...entry,full});}
   const entries=new Map(manifest.entries.map(e=>[e.path,e]));for(const name of entries.keys())if(!safe(name)||!files.has('Content/'+name))throw Error('콘텐츠 목록 오류');if(!entries.has(manifest.startupScene))throw Error('시작 장면 누락');
-  const native=new NativeHost(),builds=new Map();for(const module of manifest.nativeModules){const file=files.get(module.binary);if(!file||!module.binary.startsWith('Binaries/'))throw Error('C++ 실행 파일 누락');builds.set(module.signature,native.registerBinary(file.full,module.metadata));}
+  const native=new NativeHost(),builds=new Map(),legacyBuilds=new Map(),aliases=new Map(),ambiguous=new Set();
+  for(const module of manifest.nativeModules){const file=files.get(module.binary);if(!file||!module.binary.startsWith('Binaries/'))throw Error('C++ 실행 파일 누락');const entry=nativeEntryPaths(module),build=native.registerBinary(file.full,module.metadata);builds.set(module.signature,build);if(!entry.headerPath)legacyBuilds.set(module.signature,build);
+    if(module.legacySignature!==undefined){if(!/^[a-f0-9]{64}$/.test(module.legacySignature))throw Error('C++ 이전 모듈 키 오류');const key=module.legacySignature;if(aliases.has(key)){ambiguous.add(key);aliases.delete(key);}else if(!ambiguous.has(key))aliases.set(key,build);}
+  }
   userData=path.resolve(userData||path.join(process.env.LOCALAPPDATA||root,'HBEngine','Games',manifest.id));await fs.mkdir(userData,{recursive:true});
   const store=new ProjectStorage({resolve:async()=>path.join(userData,'savegames.json')},manifest.id),validKey=store.validKey.bind(store);store.validKey=key=>validKey(key)&&(key.startsWith('hbengine.savegame.')||key.startsWith('hbengine.storage-migrated.v1.'));
   configureNativePersistence(native,store,async name=>{const file=files.get('Content/'+resolveBuildPath(name,manifest.redirects));if(!file)throw Error('쿠킹된 데이터 에셋이 없어요.');return JSON.parse(await fs.readFile(file.full,'utf8'));});
@@ -38,7 +42,7 @@ export async function startPlayerServer({root=path.resolve(import.meta.dirname,'
     if(url.pathname==='/api/project'&&req.method==='GET')return json(res,{entries:manifest.entries});
     if(url.pathname==='/api/storage'&&req.method==='GET'){if(q.get('project')!==manifest.id)throw Error('프로젝트 ID 오류');return json(res,await store.read());}
     if(url.pathname==='/api/storage'&&req.method==='PUT'){const data=await body(req);if(data.id!==manifest.id)throw Error('프로젝트 ID 오류');return json(res,await store.patch(data.items));}
-    if(url.pathname==='/api/native/build'&&req.method==='POST'){const data=await body(req),build=builds.get(hash(JSON.stringify([data.header,data.source])));if(!build)throw Error('패키지에 등록되지 않은 C++ 모듈');return json(res,build);}
+    if(url.pathname==='/api/native/build'&&req.method==='POST'){const data=await body(req),entry=nativeEntryPaths(data),legacy=hash(nativeModuleKey(data.header,data.source)),build=builds.get(hash(nativeModuleKey(data.header,data.source,data)))||legacyBuilds.get(legacy)||(!entry.headerPath?aliases.get(legacy):null);if(!build)throw Error('패키지에 등록되지 않은 C++ 모듈');return json(res,build);}
     if(url.pathname==='/api/native/call'&&req.method==='POST'){const data=await body(req);return json(res,await native.call(data.token,data.request));}
     if(url.pathname==='/api/native/inspect'&&req.method==='GET'&&(manifest.configuration==='development'||process.env.HB_PLAYER_SMOKE==='1'))return json(res,native.inspectResources());
     if(url.pathname==='/api/player/report'&&req.method==='POST'){const data=await body(req);if(manifest.configuration==='development'||process.env.HB_PLAYER_SMOKE==='1'){report=data;await fs.writeFile(path.join(userData,'runtime-report.json'),JSON.stringify(data));}return json(res,{ok:true});}

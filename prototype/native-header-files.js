@@ -27,15 +27,16 @@ export function nativeHeaderClosure(header,{sourcePath='',files=[]}={}) {
   };
   visit(header,source);return result;
 }
-export async function readNativeHeaderFiles(header,{sourcePath='',readText}={}) {
+export async function readNativeHeaderFiles(header,{sourcePath='',readText,onCandidate}={}) {
   if(!sourcePath||!readText)return [];
   const files=[],seen=new Set([sourcePath]);let size=header.length;
   const visit=async(content,path)=>{
     for(const name of includes(content)) {
       let dependency;
       for(const candidate of candidates(path,name)) {
+        onCandidate?.(candidate);
         if(seen.has(candidate)){dependency=null;break;}
-        try{const text=await readText(candidate);if(typeof text==='string'){dependency={path:candidate,content:text};break;}}catch{/* Another relative candidate, or a compiler-owned include. */}
+        try{const text=await readText(candidate);if(typeof text==='string'){dependency={path:candidate,content:text};break;}}catch(error){if(error?.nativeDependencyFatal)throw error;/* Another relative candidate, or a compiler-owned include. */}
       }
       if(!dependency)continue;
       seen.add(dependency.path);size+=dependency.content.length;
