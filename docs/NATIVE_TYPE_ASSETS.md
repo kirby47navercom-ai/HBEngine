@@ -15,6 +15,6 @@
 
 UUID는 타입·필드·enum 항목에 따로 남고, 숫자 enum 값과 C++ 심벌을 표시 이름과 구분해요. 문서 API로 사람이 편집하는 원본을 AI도 읽고 수정할 수 있어요. 추가 런타임 타이머·Worker·GPU 자원·전역 타입 DB는 없어요. 기존 헤더100KB/기본값·배열·중첩 예산을 유지해요.
 
-이 기능은 C++에 연결하는 공유 타입 제작 경로예요. 별도 enum/struct 에셋, 순수 BP 프로젝트 전역 타입 import, 임의 스키마 이관·다형 클래스/참조 identity는 누적 원장에 남겨요. 기존 `HB_STRUCT`·`HB_ENUM` 소스와 값·Actor 참조 계약은 유지해요.
+이 기능은 C++에 연결하는 공유 타입 제작 경로예요. C++ 클래스 없이 사용하는 제작 경로는 [블루프린트 타입 가져오기](NATIVE_TYPE_IMPORTS.md)에 연결해요. 별도 enum/struct 에셋, 프로젝트 전역 자동 발견, 임의 스키마 이관·다형 클래스/참조 identity는 누적 원장에 남겨요. 기존 `HB_STRUCT`·`HB_ENUM` 소스와 값·Actor 참조 계약은 유지해요.
 
 근거는 [1652 연구 메모](research/TYPE_DATA_ASSETS_1652.md)의 선택 본문과 기존 구현이에요. Unreal·Unity 전체 문서/API 분석 완료를 뜻하지 않아요.

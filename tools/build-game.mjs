@@ -6,6 +6,8 @@ import {cookContent} from './cook-cache.mjs';
 import {cookDistanceFields} from './distance-field-cook.mjs';
 import {gameInstanceBlueprint} from '../prototype/runtime-game.js';
 import {loadSequenceTree} from '../prototype/sequence-sections.js';
+import {createNativeTypeImportResolver} from '../prototype/native-type-imports.js';
+import {nativeTypeReference} from '../prototype/native-model.js';
 import {parseNativeHeader,canonicalNativeText} from '../prototype/native-model.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -63,7 +65,8 @@ export async function inspectBuild(record,profile,{signal}={}){
     if(/\.hb[^/]+\.json$/i.test(name)){data=JSON.parse(bytes);if(!validAsset(kind,data))throw Error('에셋 검증 실패: '+name);}
     else if(name.endsWith('.json')||name.endsWith('.gltf')){try{data=JSON.parse(bytes);}catch{continue;}}
     else continue;
-    if(kind==='blueprint'&&data.native){
+    if(kind==='blueprint'&&nativeTypeReference(data.native)){const types=await createNativeTypeImportResolver(async name=>content.get(await include(name)).toString('utf8'))(data.native);if(!validAsset('blueprint',{...data,native:types}))throw Error('타입 라이브러리와 빌드 BP가 맞지 않아요: '+name);}
+    else if(kind==='blueprint'&&data.native){
       const n=data.native,headerPath=await include(n.headerPath||'Source/DoorController.h'),sourcePath=await include(n.sourcePath||'Source/DoorController.cpp'),header=canonicalNativeText(content.get(headerPath).toString('utf8')),source=canonicalNativeText(content.get(sourcePath).toString('utf8'));
       natives.set(nativeSignature(header,source),{header,source,files:nativeFiles});Object.assign(n,parseNativeHeader(header,{files:nativeFiles}));delete n.header;delete n.source;content.set(name,Buffer.from(json(data)));
     }

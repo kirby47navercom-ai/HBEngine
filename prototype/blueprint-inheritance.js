@@ -1,4 +1,6 @@
 import {blueprintAccess,blueprintMemberOwner,blueprintOverrideAllowed} from './blueprint-access.js';
+import {createNativeTypeImportResolver} from './native-type-imports.js';
+import {nativeTypeReference} from './native-model.js';
 import {validNativeRecordPin} from './native-records.js';
 import {validNativeEnumPin} from './native-enums.js';
 import {validBlueprint,isBlueprintParent,allGraphContexts,basePins,catalog,validValue,legacyTemplateConstruction,makeNode,graphContext} from './blueprint-model.js';
@@ -27,14 +29,14 @@ function classDefaults(root,child,parent){
   for(const [id,values] of Object.entries(child.settings?.componentOverrides||{})){const c=root.components.find(c=>c.id===id);if(!parent.components.some(c=>c.id===id)||!c||!values||Array.isArray(values)||typeof values!=='object')throw Error('상속 컴포넌트가 없어요: '+id);const next={...componentDefaults(c.type),...c.properties,...values};if(!validComponentProperties(c.type,next)||Object.keys(values).some(k=>!Object.hasOwn(componentDefaults(c.type),k)))throw Error('상속 컴포넌트 기본값 오류: '+id);c.properties=copy(next);}
 }
 export function createBlueprintResolver(read,readText){
-  const loaded=new Map();
+  const loaded=new Map(),typeImports=createNativeTypeImportResolver(readText);
   async function resolve(path,stack=[]){
     // Readers enforce project paths; legacy in-memory readers use names such as A.
     if(typeof path!=='string'||!path||path.length>1000)throw Error('블루프린트 에셋 경로를 확인하세요: '+path);
     if(stack.includes(path))throw Error('블루프린트 순환 상속: '+[...stack,path].join(' → '));if(stack.length>=32)throw Error('블루프린트 상속 깊이 32 초과');
     if(loaded.has(path))return loaded.get(path);
     const child=copy(await read(path));if(!validBlueprint(child))throw Error('블루프린트 검증 실패: '+path);
-    if(child.native&&readText){const n=child.native,header=canonicalNativeText(await readText(n.headerPath||'Source/DoorController.h')),source=canonicalNativeText(await readText(n.sourcePath||'Source/DoorController.cpp'));child.native={...await readNativeHeader(header,{sourcePath:n.headerPath||'Source/DoorController.h',readText}),header,source,headerPath:n.headerPath,sourcePath:n.sourcePath};if(!validBlueprint(child))throw Error('C++ 원본과 블루프린트가 맞지 않아요: '+path);}else if(validNativeReference(child.native))throw Error('C++ 원본 읽기 경로가 필요해요: '+path);
+    if(nativeTypeReference(child.native)){child.native=await typeImports(child.native);if(!validBlueprint(child))throw Error('타입 라이브러리와 블루프린트가 맞지 않아요: '+path);}else if(child.native&&readText){const n=child.native,header=canonicalNativeText(await readText(n.headerPath||'Source/DoorController.h')),source=canonicalNativeText(await readText(n.sourcePath||'Source/DoorController.cpp'));child.native={...await readNativeHeader(header,{sourcePath:n.headerPath||'Source/DoorController.h',readText}),header,source,headerPath:n.headerPath,sourcePath:n.sourcePath};if(!validBlueprint(child))throw Error('C++ 원본과 블루프린트가 맞지 않아요: '+path);}else if(validNativeReference(child.native))throw Error('C++ 원본 읽기 경로가 필요해요: '+path);
     const parentPath=child.settings?.parentClass;
     if(!isBlueprintParent(parentPath)){loaded.set(path,child);return child;}
     const parent=await resolve(parentPath,[...stack,path]);const root=composeBlueprint(child,parent,path);loaded.set(path,root);return root;

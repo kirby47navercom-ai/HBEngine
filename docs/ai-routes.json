@@ -1885,6 +1885,35 @@
       "paths": [
         "prototype/native-type-asset-editor.js"
       ]
+    },
+    {
+      "id": "native-type-reference-contract",
+      "keywords": [
+        "nativeTypeReference",
+        "nativeSourceMatches"
+      ],
+      "paths": [
+        "prototype/native-model.js"
+      ]
+    },
+    {
+      "id": "native-type-import-resolution",
+      "keywords": [
+        "createNativeTypeImportResolver",
+        "nativeTypeImportMetadata"
+      ],
+      "paths": [
+        "prototype/native-type-imports.js"
+      ]
+    },
+    {
+      "id": "native-type-import-ui",
+      "keywords": [
+        "appendNativeTypeImportUI"
+      ],
+      "paths": [
+        "prototype/native-type-import-ui.js"
+      ]
     }
   ]
 }

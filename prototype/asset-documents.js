@@ -10,7 +10,7 @@ import {worldAssetTypes,worldAssetSuffix,createWorldAsset,validWorldAsset} from 
 import {createEditorTool,validEditorTool} from './editor-tool-assets.js';
 import {textureAssetTypes,textureAssetSuffix,createTextureAsset,validTextureAsset,materialTextureTypes} from './texture-assets.js';
 import {retargetAssetTypes,retargetAssetSuffix,createRetargetAsset,validRetargetAsset} from './animation-retarget-assets.js';
-import {nativeSourceReference} from './native-model.js';
+import {nativeSourceReference,nativeSourceMatches} from './native-model.js';
 import {validDataAsset} from './data-assets.js';
 import {defaultBlueprint,makeNode,componentDefaults,validBlueprint,defaultTimeline,validTimeline} from './blueprint-model.js';
 import {defaultSurface,validSurface,validScene,defaultEnvironment} from './model.js';
@@ -145,7 +145,7 @@ export class AssetDocuments {
   open(path,kind,data){if(kind==='modelimport')data=normalizeModelImport(data);if(!this.items.has(path)){if(!validAsset(kind,data))throw Error(assetValidationError(kind,data)+': '+path);this.items.set(path,{path,kind,data:copy(data),saved:JSON.stringify(data),history:[],future:[],view:{},dirty:false});}return this.items.get(path);}
   select(path){if(!this.items.has(path))throw Error('열린 문서가 없어요.');this.active=path;return this.current;}
   get current(){return this.items.get(this.active);}
-  async save(doc,write){const before=JSON.stringify(doc.data),data=copy(doc.data);if(doc.kind==='blueprint'&&data.native){const metadata=doc.view?.nativeMetadata;data.native=nativeSourceReference(metadata&&metadata.headerPath===data.native.headerPath&&metadata.sourcePath===data.native.sourcePath?metadata:data.native);}if(!validAsset(doc.kind,data))throw Error(assetValidationError(doc.kind,data)+': '+doc.path);const text=doc.kind==='text'?data:JSON.stringify(data,null,2);await write(doc.path,text,doc.saved);const savedData=doc.kind==='text'?text:JSON.parse(text);if(JSON.stringify(doc.data)===before)doc.data=savedData;doc.saved=JSON.stringify(savedData);doc.dirty=JSON.stringify(doc.data)!==doc.saved;}
+  async save(doc,write){const before=JSON.stringify(doc.data),data=copy(doc.data);if(doc.kind==='blueprint'&&data.native){const metadata=doc.view?.nativeMetadata;data.native=nativeSourceReference(metadata&&nativeSourceMatches(metadata,data.native)?metadata:data.native);}if(!validAsset(doc.kind,data))throw Error(assetValidationError(doc.kind,data)+': '+doc.path);const text=doc.kind==='text'?data:JSON.stringify(data,null,2);await write(doc.path,text,doc.saved);const savedData=doc.kind==='text'?text:JSON.parse(text);if(JSON.stringify(doc.data)===before)doc.data=savedData;doc.saved=JSON.stringify(savedData);doc.dirty=JSON.stringify(doc.data)!==doc.saved;}
   close(path,discard=false){const doc=this.items.get(path);if(doc?.dirty&&!discard)return false;this.items.delete(path);if(this.active===path)this.active=[...this.items.keys()].at(-1)||null;return true;}
   rename(from,to){for(const [path,doc] of [...this.items]){if(path===from||path.startsWith(from+'/')||/\.(gltf|glb|obj|fbx)$/i.test(from)&&path===from+'.import.json'){const next=to+path.slice(from.length);this.items.delete(path);doc.path=next;this.items.set(next,doc);if(this.active===path)this.active=next;}if(renameAssetReferences(doc.data,from,to))doc.dirty=true;for(const snapshot of [...doc.history,...doc.future])renameAssetReferences(snapshot,from,to);}}
 }
