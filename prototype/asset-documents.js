@@ -1,6 +1,7 @@
 import {blueprintClassComponents} from './blueprint-class-defaults.js';
 import {createNativeTypeAsset,createNativeTypeDeclaration,validNativeTypeAsset} from './native-type-assets.js';
 import {nativeTypeAssetSuffix,isNativeTypeAssetKind} from './native-type-paths.js';
+import {createTakePreset,validTakePreset} from './take-preset-assets.js';
 import {lightmapSuffix,createLightmapAsset,validLightmapAsset} from './lightmap-assets.js';
 import {normalizeModelImport,validModelImport} from './model-import.js';
 import {validPrefabExtension,prefabDocumentRows} from './prefab-variants.js';
@@ -45,6 +46,7 @@ assetSuffix.widget='.hbwidget.json';assetTypes.widget={label:'위젯 UI',prefix:
 assetSuffix.audiomixer='.hbaudiomixer.json';assetTypes.audiomixer={label:'오디오 믹서',prefix:'MX_',group:'오디오'};
 assetSuffix.animgraph='.hbanimgraph.json';assetTypes.animgraph={label:'애니메이션 그래프',prefix:'AG_',group:'애니메이션'};
 assetSuffix.spriterig='.hbspriterig.json';assetTypes.spriterig={label:'2D 스프라이트 리그',prefix:'SR_',group:'2D'};
+assetSuffix.takepreset='.hbtakepreset.json';assetTypes.takepreset={label:'Take 녹화 프리셋',prefix:'TP_',group:'애니메이션',editorOnly:true};
 export const assetTitle=path=>path.split('/').pop().replace(/\.hb[a-z]+\.json$/i,'');
 export async function loadSceneBindings(objects,read,readText){
   const loaded=new Map(),contexts=new Map(),actions=new Map(),bindings=[];
@@ -62,6 +64,7 @@ export function createAsset(kind,name,parent='Actor'){
   if(kind==='enumasset'||kind==='structasset')return createNativeTypeDeclaration(name,kind);
   if(kind==='modelimport')throw Error('원본 모델의 가져오기 설정을 여세요.');
   if(!name||name.length>80||/[<>:"/\\|?*\x00-\x1f]/.test(name))throw Error('에셋 이름을 확인하세요.');
+  if(kind==='takepreset')return createTakePreset(name);
   if(kind==='lightmap')return createLightmapAsset(name);
   if(kind in abilityAssetTypes)return createAbilityAsset(kind,name);
   if(kind in navigationAssetTypes)return createNavigationAsset(kind,name);
@@ -101,6 +104,7 @@ export function createAsset(kind,name,parent='Actor'){
 export function assetValidationError(kind,data){return kind in gameplayTypes?gameplayValidationError(kind,data):kind+" 에셋 검증 실패";}
 export function validAsset(kind,data){
   if(isNativeTypeAssetKind(kind))return validNativeTypeAsset(data,kind);
+  if(kind==='takepreset')return validTakePreset(data);
   if(kind==='lightmap')return validLightmapAsset(data);
   if(kind==='modelimport')return validModelImport(data);
   if(kind in abilityAssetTypes)return validAbilityAsset(kind,data);

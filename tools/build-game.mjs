@@ -21,7 +21,7 @@ import {readProjectManifest} from './project-manifest.mjs';
 import {assetKind,assetReferences} from './project-service.mjs';
 import {NativeHost} from './native-host.mjs';
 import {readNativeFiles} from './native-project.mjs';
-import {validAsset} from '../prototype/asset-documents.js';
+import {validAsset,assetTypes} from '../prototype/asset-documents.js';
 import {resolveWidgetComposition} from '../prototype/widget-composition.js';
 import {resolveMaterialAsset} from '../prototype/material-runtime.js';
 import {validateAbilitySetGraph} from '../prototype/ability-set-resolution.js';
@@ -52,6 +52,7 @@ export async function inspectBuild(record,profile,{signal}={}){
   // Include all Assets for dynamic lookups; also follow actual project-file references outside Assets.
   const include=async name=>{
     signal?.throwIfAborted();const info=await record.project.read(name),canonical=path.relative(record.root,info.file).split(path.sep).join('/');
+    if(assetTypes[assetKind(canonical)]?.editorOnly)throw Error('편집기 전용 에셋은 시퀀스에 적용한 뒤 빌드하세요: '+canonical);
     if(content.has(canonical))return canonical;
     if(assetKind(canonical)==='scene'&&!enabled.has(canonical))throw Error('빌드에서 제외한 장면 참조: '+name);
     const bytes=/\.(json|gltf|h|hpp|hh|inl|cpp|cc|cxx|c)$/i.test(canonical)?await fs.readFile(info.file,{signal}):await fileContent(info.file,{root:record.root,signal});content.set(canonical,bytes);if(/\.(gltf|glb|obj|fbx)$/i.test(canonical)){try{await record.project.read(canonical+'.import.json');await include(canonical+'.import.json');}catch(error){if(error.code!=='ENOENT')throw error;}}return canonical;
@@ -60,7 +61,7 @@ export async function inspectBuild(record,profile,{signal}={}){
   for(const file of nativeFiles)await include(file.path);
   if(!gameInstanceAsset){const selected=new Set();for(const scene of enabled){const data=JSON.parse(await fs.readFile((await record.project.read(scene)).file,'utf8'));if(data.runtime?.gameConfig){const config=JSON.parse(await fs.readFile((await record.project.read(data.runtime.gameConfig)).file,'utf8'));if(!validAsset('gameconfig',config))throw Error('게임 설정 형식 오류');if(config.gameInstance)selected.add(config.gameInstance);}}if(selected.size>1)throw Error('빌드 장면의 GameInstance 클래스는 하나로 지정하세요.');gameInstanceAsset=[...selected][0]||'';}
   if(gameInstanceAsset.startsWith('Source/')){const {root:gameRoot,asset}=await gameInstanceBlueprint(gameInstanceAsset,{readText:async name=>fs.readFile((await record.project.read(name)).file,'utf8')});gameInstanceAsset=asset;content.set(asset,Buffer.from(json(gameRoot)));await include(gameRoot.native.headerPath);await include(gameRoot.native.sourcePath);}else if(gameInstanceAsset)await include(gameInstanceAsset);
-  for(const f of files.filter(f=>f.kind!=='folder'&&f.path.startsWith('Assets/')&&(f.kind!=='scene'||enabled.has(f.path))))await include(f.path);
+  for(const f of files.filter(f=>f.kind!=='folder'&&!assetTypes[f.kind]?.editorOnly&&f.path.startsWith('Assets/')&&(f.kind!=='scene'||enabled.has(f.path))))await include(f.path);
   for(const [name,bytes] of content){
     let data;const kind=assetKind(name);
     if(/\.hb[^/]+\.json$/i.test(name)){data=JSON.parse(bytes);if(!validAsset(kind,data))throw Error('에셋 검증 실패: '+name);}

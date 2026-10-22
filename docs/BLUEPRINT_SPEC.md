@@ -635,3 +635,7 @@ Take 녹화는 프리셋·Transform 채널·뼈 필터와 시퀀스별 recording
 # 개별 데이터 타입 제작 경로
 
 열거형 `.hbenum.json`·구조체 `.hbstruct.json`은 콘텐츠 브라우저의 별도 에셋으로 만들고 대표 선언 편집기로 열어요. 같은 파일 보조 타입/배열·기본값, 명시적 BP 타입 가져오기, 원본 참조 저장의 enum 변수·Set 입력값, 생성 C++ 헤더, additive 소비자 이관과 그룹 UndoRedo를 공용 경로로 연결했어요. 자세한 형식·이동/identity·AI 계약·남은 경계는 [NATIVE_TYPE_DECLARATIONS.md](NATIVE_TYPE_DECLARATIONS.md)에 있어요. 새 에셋 경로도 `native.typeLibraries` 키를 유지해요.
+
+# Take 기록 프리셋 에셋과 공용 재생
+
+Take 녹화 프리셋은 전용 에셋/편집기에서 만들고 시퀀스의 설정으로 복사해요. UI 불러오기·새 파일 저장과 파일 묶음 Undo/Redo, AI sequence.take.preset.apply/runtime.take.start의 원본 기준 검사를 공유해요. FPS·키 오차와 채널/뼈/생성 필터는 실제 녹화기로 전달하고 결과 시퀀스에 남겨요. 기록한 결과는 기존 BP·C++ LevelSequence::Play/Seek/Stop을 사용하며 게임용 녹화 C++ ABI를 새로 추가한 것은 아니에요. 설정 에셋은 게임 빌드에서 제외해요. 형식·복사 정책·원본 변경/키 줄이기·남은 source 바인딩/timecode는 TAKE_PRESETS_AND_CAPTURE.md에 있어요.

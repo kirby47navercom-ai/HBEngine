@@ -1,4 +1,5 @@
 import {isNativeTypeAssetKind} from './native-type-paths.js';
+import {renderTakePresetEditor} from './take-preset-editor.js';
 import {authoredMipFields,editAuthoredMip,editTextureSlices} from './texture-authored-mip-ui.js';
 import {renderNativeTypeAssetEditor} from './native-type-asset-editor.js';
 import {textureImportFields,normalizeTextureImportEdit,textureImportPreview,textureDiskMipFields,editDiskMipSettings,textureDiskPreviewKey} from './texture-import-ui.js';
@@ -20,6 +21,7 @@ const vectorField=(label,path,value)=>`<label>${esc(label)}<span class="asset-ve
 const assetField=(label,path,value,files,kinds)=>`<label>${esc(label)}<select data-editor-field="${path}">${assetOptions(files,kinds,value)}</select></label>`;
 export function renderDataEditor(element,doc,files,hooks){
   if(isNativeTypeAssetKind(doc.kind))return renderNativeTypeAssetEditor(element,doc,hooks);
+  if(doc.kind==='takepreset')return renderTakePresetEditor(element,doc,hooks);
   element.hbTextureViewer?.dispose();const d=doc.data,kind=doc.kind;element.hbAssetDocument=doc;if(kind==='lightmap'){element.hbTextureViewer=new LightmapEditor(element,doc,hooks);return;}if(structuredAssetKinds.includes(kind))return renderStructuredAssetEditor(element,doc,files,hooks);
   element.innerHTML=`<header class="asset-editor-heading"><span class="asset-symbol ${kind}">${icon(assetIcon(kind))}</span><div><small>${assetTypes[kind].label}</small><h2>${esc(d.name)}</h2></div></header><div class="asset-form"></div>`;
   const form=element.querySelector('.asset-form');element.classList.toggle('texture-preview-document',kind==='texture2d'&&!!hooks.textureDetailsExternal&&!hooks.textureDetailsOnly);if(kind==='texture2d'&&hooks.textureDetailsOnly)element.querySelector('.asset-editor-heading').hidden=true;

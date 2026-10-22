@@ -585,7 +585,10 @@
         "pasteCurveKeys",
         "곡선 복사",
         "키 붙여넣기",
-        "재생 헤드"
+        "재생 헤드",
+        "take",
+        "프리셋",
+        "녹화"
       ],
       "paths": [
         "prototype/animation-graph-runtime.js",
@@ -2263,6 +2266,58 @@
       ],
       "paths": [
         "prototype/native-type-paths.js"
+      ]
+    },
+    {
+      "id": "take-preset-assets",
+      "keywords": [
+        "createTakePreset",
+        "validTakePreset",
+        "takePresetOptions",
+        "applyTakePreset",
+        "takePresetFromSequence",
+        "takePresetContract"
+      ],
+      "paths": [
+        "prototype/take-preset-assets.js"
+      ]
+    },
+    {
+      "id": "take-preset-save",
+      "keywords": [
+        "openTakePresetSave"
+      ],
+      "paths": [
+        "prototype/take-preset-save.js"
+      ]
+    },
+    {
+      "id": "take-preset-editor",
+      "keywords": [
+        "renderTakePresetEditor"
+      ],
+      "paths": [
+        "prototype/take-preset-editor.js"
+      ]
+    },
+    {
+      "id": "take-preset-controls",
+      "keywords": [
+        "takePresetControls"
+      ],
+      "paths": [
+        "prototype/take-preset-controls.js"
+      ]
+    },
+    {
+      "id": "take-preset-editor-bridge",
+      "keywords": [
+        "readTakePresetFile",
+        "automationTakePresetApply",
+        "saveTakePresetDialog"
+      ],
+      "paths": [
+        "prototype/app.js"
       ]
     }
   ]

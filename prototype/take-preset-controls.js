@@ -1,0 +1,4 @@
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export function takePresetControls(files,profile,recording,selected=''){
+ const disabled=recording?'disabled':'';return '<label>프리셋 에셋<select data-take-preset-asset '+disabled+'><option value="">선택</option>'+files.filter(f=>f.kind==='takepreset').map(f=>'<option value="'+esc(f.path)+'" '+(f.path===selected?'selected':'')+'>'+esc(f.name)+'</option>').join('')+'</select></label><div><button data-act="take-load-preset" '+disabled+'>불러오기</button><button data-act="take-save-preset" '+disabled+'>프리셋으로 저장</button></div><label>녹화 FPS<input data-take-fps type="number" min="1" max="240" step="1" value="'+profile.fps+'" '+disabled+'></label><label>키 오차<input data-take-tolerance type="number" min="0" step="any" value="'+profile.tolerance+'" '+disabled+'></label>';
+}
