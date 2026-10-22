@@ -1,0 +1,156 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "b23a9ec223e4c884cbb36150e3fdb37ed851f2ac",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\753f5603f6e098af",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\753f5603f6e098af\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\753f5603f6e098af\\HBEngine.exe",
+  "bundleHash": "753f5603f6e098af4531b77a358de14610689b3ca2a712f2edaf46e7e93c0952",
+  "files": 4209,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4204,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7bf7c27dc8284910",
+        "bytes": 190468151,
+        "manifestSHA256": "f1eae0b369474f32e9ff0a36ccff28112ef34330b78488d77bb3c334f42590e4"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T09:44:11.9075206Z",
+    "bytes": 190468151,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "753f5603f6e098af"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 877,
+  "repositoryOnlyTestSourcesVerified": 29,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
+  "installedGates": [
+    {
+      "path": "native/build/network-lifetime-1576-window-DSe3cQ/acceptance.json",
+      "sha256": "7f1ae283db15a2416c08bd4ecdaa064214541aa8a8647adeb2e6c24983513cac",
+      "scope": "Owned hidden actual 2D editor with local ws host, Blueprint netConnect and prefab BeginPlay, public runtime.network summary/page/query, remote destroy and same-ID respawn. Isolated project/profile; no native renderer/phone/internet-loss/prediction claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\753f5603f6e098af\\HBEngine.exe"
+      ],
+      "ms": 8826.47
+    },
+    {
+      "path": "native/build/network-lifetime-1574-bDtjLK/acceptance.json",
+      "sha256": "e5a38d5f9c4626b862e1f8ca7de44c18b5cdd503746f48fcd3c146d747888920",
+      "scope": "Actual NetworkWorld async identity/generation fixtures and actual local ws server plus BlueprintRuntime/engineOperations prefab build-ready gate. Public netConnect/netDisconnect/SceneDestroy exercised; no native renderer, internet loss/prediction, rollback of arbitrary user callback side effects or dedicated authority claim.",
+      "args": [
+        "--implementation-root",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\753f5603f6e098af"
+      ],
+      "ms": 438.3849999999984
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\753f5603f6e098af\\",
+    "elapsedMs": 64.12,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\753f5603f6e098af",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "753f5603f6e098af4531b77a358de14610689b3ca2a712f2edaf46e7e93c0952",
+      "installedAt": "2026-10-22T09:44:08.503Z",
+      "manifestFiles": 4209,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1572.json\",\"scope\":\"Unchanged native access metadata owner hashes verified with full source and installed manifest; previous pure metadata check not repeated.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4209,
+  "versions": [
+    "753f5603f6e098af"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1580-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/network1577-final.json",
+      "sha256": "73fe2a84115e6afa32f8636808cd3ff77e0d5af7570ed27bf827667aa58d8e90",
+      "scope": "Final guarded NetworkWorld checked with11 lifetime cases and6 actual publication/socket cases. Unchanged server/interest/deletion/packet and spawn/pool owners use grouped1575 evidence. Source editor1576 predates final identity/RPC guard; final installed editor planned. No full native rebuild or renderer repeat."
+    },
+    {
+      "path": "native/build/network-lifetime-1574.json",
+      "sha256": "8984844e9529737c286860274d82b1267e3ea863062677ea446aa4720357a794",
+      "scope": "Actual NetworkWorld async identity/generation fixtures and actual local ws server plus BlueprintRuntime/engineOperations prefab build-ready gate. Public netConnect/netDisconnect/SceneDestroy exercised; no native renderer, internet loss/prediction, rollback of arbitrary user callback side effects or dedicated authority claim."
+    },
+    {
+      "path": "native/build/network-publication-1568.json",
+      "sha256": "8a861534fdab47eb2d9600e1fe15ff450f0427d2bd2b5561606617d6b7b210c3",
+      "scope": "Isolated actual NetworkWorld unit/reference and actual loopback ws server/client. Published world cardinality not capped at512; packet/tick/network memory budgets remain. No latency-loss prediction, dedicated simulation server, FPS/mobile/network-device claim."
+    },
+    {
+      "path": "native/build/network1575-group.json",
+      "sha256": "a01bf93a9433c11a13fc0b664e9fcdb65fb28484765900278be8b33050f498a8",
+      "scope": "Grouped actual packet/interest/deletion/spawn/2D pool and C++ checks; see individual cases and harness repair."
+    },
+    {
+      "path": "native/build/network-lifetime-1576-window-03xZTg/acceptance.json",
+      "sha256": "d857912716084942b8e00126c37b4e3b1f4084b7292107a294549fd52d255e96",
+      "scope": "Owned hidden actual 2D editor with local ws host, Blueprint netConnect and prefab BeginPlay, public runtime.network summary/page/query, remote destroy and same-ID respawn. Isolated project/profile; no native renderer/phone/internet-loss/prediction claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/network-lifetime-1576-window-03xZTg/acceptance.json",
+      "sha256": "d857912716084942b8e00126c37b4e3b1f4084b7292107a294549fd52d255e96",
+      "scope": "Owned hidden actual 2D editor with local ws host, Blueprint netConnect and prefab BeginPlay, public runtime.network summary/page/query, remote destroy and same-ID respawn. Isolated project/profile; no native renderer/phone/internet-loss/prediction claim."
+    }
+  ],
+  "scope": "Installed final network lifetime/pool/inspection: actual hidden2D editor BP Connect, remote prefab BeginPlay, public runtime.network page/query, destroy and same-ID respawn[9,4,0]; installed actual loopback ws plus BlueprintRuntime/engineOperations loading cancellation, generations, same-ID removal, partial/single snapshot, bounded1000 metadata and pool re-registration. Source final publication1025/Korean packet and unchanged packet/interest/deletion/spawn/2D100reuse/C++ proof reused. Full manifest/source/native20/29tests/vendor2 and Player1484/Host1041 hashes, User read-only inventory/links/Versions1. No renderer/native rebuild/phone/internet-loss prediction claim.",
+  "version": 1,
+  "date": "2026-10-22T09:45:26.666Z",
+  "work": "docs/research/ENGINE_WORK_1578.json",
+  "distributionSync": "native/build/distribution-1579-sync.json",
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1572.json",
+  "nativePlayerBuildReused": true,
+  "hostReuseFrom": "docs/research/USER_INSTALL_1572.json"
+}

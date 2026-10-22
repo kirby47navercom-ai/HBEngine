@@ -993,4 +993,6 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 
 1572 설치확인: 7bf7c27dc8284910·4203명세/871소유/29native검사/20nativeowner/2vendor SHA·동일Player1484/Host1041. 최종실제64clip저장/Play/Pause/Seek126.5/ready/원위치[10,3,0]6.2초·설치코드실socket1025이동/8행속성48→32/한글15000자128행2packet/최대4151321B/실패resync0.54초·focus1owner64.18ms. User10849읽기SHA/연결/Versions1·이전190321957B회수. 소스root3D/이전CPP/렌더matrix재반복없음·누적목표계속.
 
-1574–1578: 접속generation/root/asset/connected로pending원격생성취소·단계별생성수명·삭제/숨김C﻿AS와동일ID교체·update/RPC후대상검사·chunk/단일snapshot완료공통/부분적용방지·unregister와NetworkReplica-only풀재등록. runtime.network 메타데이터32/128페이지와검색·focus1owner. 실제socket/engineOperations11수명경합/1000페이지/4종로딩변경·전송1025/한글패킷6·기존공유/관심/삭제/프리팹/2D100회pool/C++통과·실제2D편집기원격삭제/같은ID재생성/BeginPlay2. 3bcb766·최종설치검증다음·전용권위/일반원격풀/장면프로토콜/예측잔여유지.
+1574–1578: 접속generation/root/asset/connected로pending원격생성취소·단계별생성수명·삭제/숨김CAS와동일ID교체·update/RPC후대상검사·chunk/단일snapshot완료공통/부분적용방지·unregister와NetworkReplica-only풀재등록. runtime.network 메타데이터32/128페이지와검색·focus1owner. 실제socket/engineOperations11수명경합/1000페이지/4종로딩변경·전송1025/한글패킷6·기존공유/관심/삭제/프리팹/2D100회pool/C++통과·실제2D편집기원격삭제/같은ID재생성/BeginPlay2. 3bcb766·최종설치검증다음·전용권위/일반원격풀/장면프로토콜/예측잔여유지.
+
+1580 설치확인: 753f5603f6e098af·4209명세/877소유/29native검사/20nativeowner/2vendor SHA·동일Player1484/Host1041. 실제2D 편집기BP접속/원격삭제/같은ID재생성[9,4,0]/BeginPlay2/공개페이지조회8.83초·설치실제socket11수명경합/생성취소/풀/1000페이지0.44초. User10849읽기SHA불변/연결/Versions1·이전190468151B회수. 변경없는렌더matrix/native빌드재반복없음·누적목표계속.

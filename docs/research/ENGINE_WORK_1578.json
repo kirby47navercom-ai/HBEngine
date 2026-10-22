@@ -1009,10 +1009,6 @@
     "prototype/animation-root-motion.js": "03c80ef47ecb862533617e70f8e490690cb84c7b071e69379c89ef979f4c7f72",
     "prototype/animation-montage-runtime.js": "619ed34e2e40d2da0d47cfe9f9a0f18f60bdb24775a456d972e625eeedda152d"
   },
-  "pendingInstalledGates": [
-    "tools/check-network-lifetime-1576-window.mjs --executable installed",
-    "tools/check-network-lifetime-1574.mjs --implementation-root installed"
-  ],
   "focusedAI": {
     "spawnCurrent": {
       "ms": 155.56,
@@ -1039,8 +1035,30 @@
     "proofReuse": "Previous publication1025/UTF8/cached JSON replayed after final NetworkWorld guard; unchanged server packet/interest/deletion and spawn/pool owners use grouped1575 proof. Final installed editor follows last async identity/RPC guard.",
     "fixtureRepair": "Test constructor argument order and duplicate host destroy corrected; initial plain-text C++ pool stdout parser repaired and only that test repeated. Replacement Map iteration correctly updates the new object; assertion now counts old/new identity separately."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1572.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1580.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/network-lifetime-1576-window-DSe3cQ/acceptance.json",
+      "sha256": "7f1ae283db15a2416c08bd4ecdaa064214541aa8a8647adeb2e6c24983513cac",
+      "scope": "Owned hidden actual 2D editor with local ws host, Blueprint netConnect and prefab BeginPlay, public runtime.network summary/page/query, remote destroy and same-ID respawn. Isolated project/profile; no native renderer/phone/internet-loss/prediction claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\753f5603f6e098af\\HBEngine.exe"
+      ],
+      "ms": 8826.47
+    },
+    {
+      "path": "native/build/network-lifetime-1574-bDtjLK/acceptance.json",
+      "sha256": "e5a38d5f9c4626b862e1f8ca7de44c18b5cdd503746f48fcd3c146d747888920",
+      "scope": "Actual NetworkWorld async identity/generation fixtures and actual local ws server plus BlueprintRuntime/engineOperations prefab build-ready gate. Public netConnect/netDisconnect/SceneDestroy exercised; no native renderer, internet loss/prediction, rollback of arbitrary user callback side effects or dedicated authority claim.",
+      "args": [
+        "--implementation-root",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\753f5603f6e098af"
+      ],
+      "ms": 438.3849999999984
+    }
+  ]
 }
