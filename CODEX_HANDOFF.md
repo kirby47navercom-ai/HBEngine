@@ -1,25 +1,21 @@
 # 현재 인계 — 누적 엔진 구현 계속
 
-2026-10-22. 주인님: 누적 목표 끝까지, 여러 구현 뒤 영향 검사·설치 갱신, 백그라운드만. AGENTS/AI_START/hb context/게임 스킬 읽음. goal 조회 blocked인데 사용자 재개 답변 수신; 현재 턴 계속. 임의 goal생성/완료/반복 재개질문 금지.
+2026-10-22. 주인님: 누적목표끝까지·여러구현뒤영향검사/설치·백그라운드만·Versions1. AGENTS/AI_START/게임스킬/hb context읽음. goal조회blocked지만사용자앱재개답변받음; 현재턴계속/임의goal생성·완료·반복재개질문금지.
 
-## 최신 확정 설치1590
+## 최신 확정1609
 
-C:/Users/kirby/HBEngine/Versions/2bcd28c208377d3d/HBEngine.exe. USER_INSTALL_1589.json. 4213명세/881소유/29native검사/20nativeowner/2vendor·User10849읽기SHA불변·Versions1·이전190623194B퇴역. Player1484/Host1041 유지. 설치실제2D512오브젝트독립편집/Undo2→Redo2/추가tail UndoRedo/저장/slot16/fastquery0복사/fast undo1redo2검사19.7초. source08b78d7/recordb5deda3. sync1588/install1589/finish1590완료·모든과거started재실행금지.
+C:/Users/kirby/HBEngine/Versions/15c0e41bd4f0854a/HBEngine.exe. USER_INSTALL_1608.json. 4226명세/895소유/native21/30tests/vendor2 SHA·User10849읽기불변·Versions1·이전190763674B퇴역. Player1604 SHA07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160·Host1041재사용. 설치실제UV→Worker간접베이크→Bool inspector/UndoRedo/저장→BP→실제CPP truefalse/inPlace→같은保存D3Dゲーム97.5秒통과. sourceecbfc61/record971d466. sync1607/install1608/finish1609완료·과거started/applied재실행금지.
 
-## 최근 구현 근거
+WORK1606: RND03 probe/lightmap opt-in(false기본)·rough.1→.3/max1000/휘도비HB수식·공용CPU/GLSL/TSL/HLSL생성·direct/atlas/base+coat·sky/direct/diffuse/refraction보존. 6browser경로30材최대1.12e-8/native10바이트0/무맵·강도0·capture2/diffuse0. Worker bare three상수import2수리·기존밉공유4family검사통과. Bool만runtime은그룹/UV/페이지유지·다른속성fallback·재질ready뒤최신값·userData동일성. UE본문부분읽기만CORPUS1591등록. sourcegame첫1601이었으나최종설치game1604확인완료.
 
-WORK1578: 3bcb766/b23a9ec/a7b5048·NetworkWorld generation/connected/root+asset 취소·SceneSpawn build/Construction→시스템→BeginPlay→풀 수명검사·위치갱신유지·삭제/숨김CAS/동일ID교체·update/RPC후수명·partial snapshot대기/single welcome누락정리·unregister/published tombstone/NetworkReplica-only수동풀재등록. runtime.network요약+replicas/remote/removals/failures32/128/query160메타조회. source11경합+1000페이지+실제socket/engineOperations·설치실제2D원격삭제/같은ID재생성/BeginPlay2·기존전송1025/한글4MiB분할/관심/삭제/2D100회pool/C++통과. 설치1580은1590으로대체.
+최근WORK1578network async수명/취소/partial snapshot/welcome/삭제·sameID교체·network메타페이지/socket·실제2D풀CPP. WORK1587lazy history slot예산/includeRevision:false캡처해시없음/씬복원이중복사1제거·실제512씬UndoRedo·65536선읽기→63/64slots. 이전1536BP owner/access/override·1543sequence indices·1552montage indices·1559notify indices·1570root正規化/network순환. 각WORK/USER_INSTALL근거유지.
 
-WORK1587: 이력진단lazy DFS/slotBudget2m(최대8m)/truncatedBy·65536선읽기→63값/64슬롯·dense키목록65536→0·완료계수동치/기존공유통과. includeRevision:false=확정이력만/캡처·해시·flush없음/nullrevision·expectedRevision병용거부. 씬Undo는JSON분리objects를설치단계인수하여중복clone1제거. 전체snapshot/restore/변경배열비용은여전히남음. sourceUI wkbiu1/설치m4bVkS. fixture revision누락/부분read데이터가정/총복사수가정수리·Undo요청관찰5복사는뷰/복구포함으로통제old/new주장없음. 최종testtrace-reset/fast future2는설치에서통과.
+## 현재 다음작업 — 자동캡처 JSON 재포장 줄이기
 
-이전WORK1486HB_STRUCT/MakeBreakSet/Take;1497실제type/Get0snapshot/Setcell/checkpoint;1516C++namespace/private/protected/enum/friend/traits/classes조회/ARM64. 1536BP선언owner/access/memberOrigins/override/interface/ref/UI/Undo·실제CPP/D3D/2D.1543sequence clip/shot경계index·1552montage sparse/appendscalar·1559section/notify32+index·1570root정규화56B/Q2제거/1500+alias/12tick Float64old36new24, network순환512예산1025moving3tick전부(old512)/JSON8행48→32/한글4MiB. 각docs/ENGINE_WORK_*근거유지.
+prototype/reflection-capture-revision.js 새미커밋파일작성만됨·아직연결/검사없음. 기존 reflection-probes.prepare onChange는 scene JSON전문+캡처키마다재이스케이프하며 skeleton Array.from/color.toArray도매frame복사. 새 writer는scalar facts비교→numeric epoch, flat scalar저장(강한scene참조없음). 원래JSON입력정확동치unit/geometry·material·time·bone변경/무변경/실제onChange pixel수명확인후연결. nativemath변경없으므로Player1604/126초全matrix재빌드반복금지. 여기서종료하지않고누적목표계속.
 
-## 다음 — 렌더링과 누적 잔여 계속
-
-RND03 1591–1605 구현·검사완료, 아직설치전. UE5.8 Reflections Captures반환본문0–183/혼합47–88부분읽기만CORPUS1591등록. MeshRenderer opt-in(false기본)·간접조도휘도비/rough.1→.3/max1000·GL/TSL/HLSL 공용생성·direct/atlas/base+coat·sky/direct/diffuse/refraction불변. 실제6browser경로30재질오차최대1.12e-8·D3D10경우바이트0·강도0/NULLmap/capture2/diffuse0·UV생성/Worker베이크/UndoRedo/BP→CPP/위치보존/같은D3D게임통과. bare three Worker상수import2수리·밉회귀통과. Bool실행만in-place갱신/다른속성변경fallback/재질ready뒤최신값·실제편집QaKoo9통과. Player1604 SHA07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160·native21owner/30tests·Host1041재사용. commit1605→record1606/sync1607/install1608/finish1609예정. 최종설치1600editor --package --expected-player-sha로정확1604게임확인. 126초browser matrix반복금지. edit1605-fastpath.applied재실행금지. 여기서멈추지않고누적목표계속.
-
-ENGINE_STATUS78행·분모null. NET01전용권위/장면프로토콜/부착참조/로드된루트에셋교체/일반원격풀/예측/인코딩. CPP01전용enum/structasset/globalregistry/identity/다형성/schema migration/alias·전처리·signature/wildcard/직접참조/Timeline/일반CPP참조수명. ANM06전체snapshot순회/restore/큰변경array·overlap密도/가변행/리그/warp/혼합/부모Take. RND03lightmap混合/2후보밖계층/대형HDR/변형로브;RND06GL7초/FXC/capture(1086/1308반복금지);UI03실터치/asyncrollback;RND08worldDF/HWRT/bake와타분야. 여기서종료하지않고계속.
+ENGINE_STATUS78행·분모null. RND03>2계층/대형HDR·메모리FPS/복잡로브;RND06GL7초/FXC/capture(실패1086/1308반복금지);RND08방향/볼륨bake/worldDF/HWRT. ANM06전체snapshot/restore/변경array/overlap/rig/warp/parentTake. CPP01enumstructasset/globalregistry/identity/다형성/schema/alias전처리/signature/wildcard/직접참조/Timeline/一般CPP참조수명. NET01권위/장면protocol/부착참조/로드된루트asset교체/일반원격풀/예측/encoding. UI03실터치/asyncrollback·타분야.
 
 ## 운영
 
-heavy/GUI/install전activeInstalledVersions. 소유hidden editorWindowProbe·임시project/profile/port만. 사용자창/원본/프로필변경금지. CXX -o relative. PS외부실패자동중단아님→Node execFile순차. rg directory+glob/짧은발췌·minified/base64출력금지. retainTestEvidence/pruneTestArtifacts·Versions1. Three vendor2SHA/patch유지. Git한글ConventionalCommit author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com·global설정/AItrailer없음. WebGPU승인밖agent금지. Mac/Xcode/Android실기기없음.
+heavy/GUI/install전activeInstalledVersions·소유hidden editorWindowProbe/임시project/profile/port만. 사용자창/서버/원본/프로필변경금지. CXX -o relative. PS외부실패자동중단아님→Node順次. rg경로확인·짧은발췌·minified/base64출력금지. retainTestEvidence/pruneTestArtifacts·Versions1·vendorpatch2維持. Git한글ConventionalCommit author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com·global계정/AItrailer없음. WebGPU승인밖agent금지. Mac/Xcode/Android실기기없음.

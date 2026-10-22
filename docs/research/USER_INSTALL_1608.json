@@ -1,0 +1,170 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "971d466677496adb67f8f40ac83d018a1f76ba2f",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\15c0e41bd4f0854a",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\15c0e41bd4f0854a\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\15c0e41bd4f0854a\\HBEngine.exe",
+  "bundleHash": "15c0e41bd4f0854a15add307cea4f98f43531aa2eef5eb9d3101210652ae8f66",
+  "files": 4226,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4214,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2bcd28c208377d3d",
+        "bytes": 190763674,
+        "manifestSHA256": "1df445b84745f09d4f65afd86cb22771541e26aab944a8a3e4e6150755f06ff8"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T11:33:04.5662708Z",
+    "bytes": 190763674,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "15c0e41bd4f0854a"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 895,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [
+    "native/desktop/SceneRenderBridge.hpp",
+    "native/include/HBEngine/SceneRender.hpp",
+    "native/include/HBEngine/SceneProbes.hpp",
+    "native/include/HBEngine/SceneProbeAtlas.hpp",
+    "native/include/HBEngine/ProbeLightmapMix.hpp"
+  ],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/probe-lightmap-mix-1600-editor-HUXOvh/acceptance.json",
+      "sha256": "89a19924064c5600054438f443afee77da7004a741d8c54233ad5d543c9466f4",
+      "scope": "Owned actual editor:16px indirect lightmap bake, real inspector label/boolean edit/Undo/Redo/save, BP→compiled C++ Components SetBool/GetBool true/false, renderer baked eligibility, authored flag restored after Stop and original Director placement preserved. Optional same saved actual Windows D3D11 package with new Player. Numeric GL/GPU/D3D capture mixing proved separately; no whole engine/FPS/phone claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\15c0e41bd4f0854a\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 97479.1607
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\15c0e41bd4f0854a\\",
+    "elapsedMs": 62.24,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\15c0e41bd4f0854a",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "15c0e41bd4f0854a15add307cea4f98f43531aa2eef5eb9d3101210652ae8f66",
+      "installedAt": "2026-10-22T11:33:01.079Z",
+      "manifestFiles": 4226,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1589.json\",\"scope\":\"C++ reflection metadata parser/SDK callable service unchanged; exact native21/new Player1604 owner hashes and30 repository tests verified. Final installed BP→compiled C++ and D3D package run below.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4226,
+  "versions": [
+    "15c0e41bd4f0854a"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1608-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/probe-lightmap-mix-1597.json",
+      "sha256": "53f1141ae4f26f5138e0cd9a276ee1b6a851b0532d097c9afabec46ef020833f",
+      "scope": "CPU mixing policy/reference cases, shared component operation and actual Three lightmap material ownership only. Generated HLSL source matches shared owner. Actual GL/GPU/D3D pixels, compiled C++ caller and editor/package are separate gates."
+    },
+    {
+      "path": "native/build/probe-lightmap-mix-1595-window-kZMLON/acceptance.json",
+      "sha256": "50093f51ead01caeda72dbaef705194026aa13a3111244e2768c3a2b291c8c81",
+      "scope": "Production GL/WebGPU/forcedGL physical material with known constant HDR captures and actual lightmap texture. Direct/atlas, smooth/intermediate/rough metal/coating, zero baked intensity, capture intensity normalization independent of diffuseIntensity0, no recapture. Controlled full-coverage fixtures; native/real scene capture/UI/C++ and fallback-sky/refraction remain separate gates."
+    },
+    {
+      "path": "native/build/probe-lightmap1603-group.json",
+      "sha256": "452d67c55392c5adcf5ad874706d2fcf15b5058ddca9fb1bbb767fbe85fb6535",
+      "scope": "See detailed grouped results. Numeric capture policy, existing mip regressions, actual editor/BP/CPP and final native build are separate acceptance scopes."
+    },
+    {
+      "path": "native/build/probe-lightmap-mix-1596-native-dOTmQQ/acceptance.json",
+      "sha256": "7acf2b648e6533186806aa85b2c275c36d37c1a86f523c23059fb7c7e2177e6d",
+      "scope": "Actual D3D11 SceneRenderer direct/atlas constant-white captures, float irradiance lightmap, smooth/intermediate/rough metal/coating, zero lightmap intensity and capture-intensity normalization independent of diffuseIntensity0. Display-byte comparison against disabled physical baseline; no runtime application/SDK/UI/package or FPS claim."
+    },
+    {
+      "path": "native/build/probe-lightmap-mix-1600-editor-mhd6Av/acceptance.json",
+      "sha256": "d6ee8e54aafd1e5b98be021090269f4cbfc6219c6dde5af6e7fd212763939a7d",
+      "scope": "Owned actual editor:16px indirect lightmap bake, real inspector label/boolean edit/Undo/Redo/save, BP→compiled C++ Components SetBool/GetBool true/false, renderer baked eligibility, authored flag restored after Stop and original Director placement preserved. Optional same saved actual Windows D3D11 package with new Player. Numeric GL/GPU/D3D capture mixing proved separately; no whole engine/FPS/phone claim."
+    },
+    {
+      "path": "native/build/probe-lightmap-mix-1600-editor-QaKoo9/acceptance.json",
+      "sha256": "842b8f065dec0d3fe960680c5d1e2858f36fc85f86f3bc5594b4c4eb1731e5ed",
+      "scope": "Owned actual editor:16px indirect lightmap bake, real inspector label/boolean edit/Undo/Redo/save, BP→compiled C++ Components SetBool/GetBool true/false, renderer baked eligibility, authored flag restored after Stop and original Director placement preserved. Optional same saved actual Windows D3D11 package with new Player. Numeric GL/GPU/D3D capture mixing proved separately; no whole engine/FPS/phone claim."
+    },
+    {
+      "path": "native/build/player1604.json",
+      "sha256": "08354e7757a57d1a67c11f949a64412c550ca88ca6198b9742df292e4cbae829",
+      "scope": "Fresh static Windows player compiled from current direct/atlas probe-lightmap shader and JSON bool bridge; PE runtime dependencies checked. Actual package execution is a subsequent gate."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/probe-lightmap-mix-1600-editor-mhd6Av/acceptance.json",
+      "sha256": "d6ee8e54aafd1e5b98be021090269f4cbfc6219c6dde5af6e7fd212763939a7d",
+      "scope": "Owned actual editor:16px indirect lightmap bake, real inspector label/boolean edit/Undo/Redo/save, BP→compiled C++ Components SetBool/GetBool true/false, renderer baked eligibility, authored flag restored after Stop and original Director placement preserved. Optional same saved actual Windows D3D11 package with new Player. Numeric GL/GPU/D3D capture mixing proved separately; no whole engine/FPS/phone claim."
+    },
+    {
+      "path": "native/build/probe-lightmap-mix-1600-editor-QaKoo9/acceptance.json",
+      "sha256": "842b8f065dec0d3fe960680c5d1e2858f36fc85f86f3bc5594b4c4eb1731e5ed",
+      "scope": "Owned actual editor:16px indirect lightmap bake, real inspector label/boolean edit/Undo/Redo/save, BP→compiled C++ Components SetBool/GetBool true/false, renderer baked eligibility, authored flag restored after Stop and original Director placement preserved. Optional same saved actual Windows D3D11 package with new Player. Numeric GL/GPU/D3D capture mixing proved separately; no whole engine/FPS/phone claim."
+    }
+  ],
+  "scope": "Installed actual editor UV1→indirect Worker bake, inspector Bool/UndoRedo/save, BP→compiled C++ SetBool/GetBool true/false with in-place renderer update, placement/Stop isolation, and same saved actual D3D11 game with final Player1604. Source6 browser paths/30 materials max1.12e-8/native10 display byte0/mip regressions reused. Full manifest/895 owners/native21/30 tests/vendor2/User read-only inventory/links/Versions1; no controlled FPS/full engine/mobile device claim.",
+  "version": 1,
+  "date": "2026-10-22T11:36:43.304Z",
+  "work": "docs/research/ENGINE_WORK_1606.json",
+  "distributionSync": "native/build/distribution-1607-sync.json",
+  "nativePlayerBuildReused": false,
+  "nativePlayerBuild": "native/build/player1604.json",
+  "hostReuseFrom": "docs/research/USER_INSTALL_1589.json"
+}

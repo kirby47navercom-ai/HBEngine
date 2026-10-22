@@ -1052,9 +1052,6 @@
     "receipt": "native/build/player1604.json"
   },
   "runtimeOwnerReuse": {},
-  "pendingInstalledGates": [
-    "tools/check-probe-lightmap-mix-1600-editor.mjs --executable installed --package --expected-player-sha 07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
-  ],
   "focusedAI": {
     "probeLightmapMixScale": {
       "elapsedMs": 148.74,
@@ -1078,8 +1075,23 @@
     "reuse": "126sec browser direct/atlas GL/GPU/fallback numeric matrix reused after runtime-only hook; native final explicit branch retested and final Player1604 rebuilt once.",
     "fixtureRepair": "Native reference fixture coverage set1; real editor fixture generated UV1 before bake. Actual bake exposed/fixed two bare three constants imports in Worker. Original source game used Player1601; installed same saved game must prove final1604."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1589.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1608.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/probe-lightmap-mix-1600-editor-HUXOvh/acceptance.json",
+      "sha256": "89a19924064c5600054438f443afee77da7004a741d8c54233ad5d543c9466f4",
+      "scope": "Owned actual editor:16px indirect lightmap bake, real inspector label/boolean edit/Undo/Redo/save, BP→compiled C++ Components SetBool/GetBool true/false, renderer baked eligibility, authored flag restored after Stop and original Director placement preserved. Optional same saved actual Windows D3D11 package with new Player. Numeric GL/GPU/D3D capture mixing proved separately; no whole engine/FPS/phone claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\15c0e41bd4f0854a\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 97479.1607
+    }
+  ]
 }

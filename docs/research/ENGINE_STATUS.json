@@ -3336,11 +3336,11 @@
     "scope": "Opt-in probe/indirect-lightmap specular mixing across browser/native paths, real bake Worker fix, BP/C++ live property without group rebuild, actual saved scene D3D game and fresh Player1604. Wider lighting policy/other engine goals remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1589.json",
-    "sourceCommit": "b5deda3a49ccc84d1f1b23523d4e1f5726fa77ff",
-    "bundleHash": "2bcd28c208377d3d17ca01a0145106b621d62c83e1eaeb455ef107393c2c6ec4",
+    "receipt": "docs/research/USER_INSTALL_1608.json",
+    "sourceCommit": "971d466677496adb67f8f40ac83d018a1f76ba2f",
+    "bundleHash": "15c0e41bd4f0854a15add307cea4f98f43531aa2eef5eb9d3101210652ae8f66",
     "verified": true,
     "versions": 1,
-    "scope": "Installed final actual2D editor512-object scene edits/Undo twice/Redo twice/independent tail edit/UndoRedo/save, strict slotBudget16/truncatedBy slots, includeRevision:false zero object-array clones and no CAS compatibility, fast active future counts. Source lazy diagnostic exact-count parity and65536 eager values→63/64 slots plus old sharing/container/array proofs reused. Full manifest/source/native20/29native tests/vendor2 and unchanged Player1484/Host1041 hashes, User read-only inventory/links/Versions1. Native/gameplay/network/renderer owners reused; no full renderer/native build/FPS/phone claim."
+    "scope": "Installed actual editor UV1→indirect Worker bake, inspector Bool/UndoRedo/save, BP→compiled C++ SetBool/GetBool true/false with in-place renderer update, placement/Stop isolation, and same saved actual D3D11 game with final Player1604. Source6 browser paths/30 materials max1.12e-8/native10 display byte0/mip regressions reused. Full manifest/895 owners/native21/30 tests/vendor2/User read-only inventory/links/Versions1; no controlled FPS/full engine/mobile device claim."
   }
 }
