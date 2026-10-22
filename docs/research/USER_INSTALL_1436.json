@@ -1,0 +1,247 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "5d65441b80d12f1a4d31c52656d6502d75ba695a",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\cad520337fc0680a",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\cad520337fc0680a\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\cad520337fc0680a\\HBEngine.exe",
+  "bundleHash": "cad520337fc0680aab1795be0fff7e834619990e7fc019bb88e82ed0b4cdbbe7",
+  "files": 4105,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4088,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0e7a9689f8d08f2c",
+        "bytes": 188294910,
+        "manifestSHA256": "9904c0b8ab0010d72050f56250e8767138f2e4960214046fae054f0b3c91329f"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T00:14:47.1401694Z",
+    "bytes": 188294910,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "cad520337fc0680a"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 766,
+  "repositoryOnlyTestSourcesVerified": 27,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [
+    "native/desktop/SceneRenderBridge.hpp",
+    "native/include/HBEngine/SceneRender.hpp",
+    "native/include/HBEngine/Game.hpp",
+    "native/include/HBEngine/SceneProbes.hpp",
+    "native/include/HBEngine/SceneProbeAtlas.hpp",
+    "native/include/HBEngine/Session.hpp"
+  ],
+  "nativePlayerSHA256": "4482bc5d9b899409e25b8ef567a0a54482aac8452a7da5d09b7d45800e32a82a",
+  "installedGates": [
+    {
+      "path": "native/build/probe-projection-1412-editor-HSAfm9/acceptance.json",
+      "sha256": "2b03fa5f2b24e18c40a134be9ddeb5121ff24fb2f2943532d24b702bd5f74bd2",
+      "scope": "Owned hidden actual scene editor, separate proxy placement, advanced face/normal UI toggle and numeric edits/Undo/preserved hidden values, influence toggle, filtered actor/component choices, sphere/box inspector visibility, Undo, stale revision and save/transform preservation. Synthetic select changes use actual handlers; numeric/physical rendering and game separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\cad520337fc0680a\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-influence-1427-window-9IOLcw/acceptance.json",
+      "sha256": "7f5f80e604ef06b901bc6cba0c68fbb8a342ce6facf5b1e59058ece6fb2c1af3",
+      "scope": "Actual physical+clearcoat direct/atlas GL/WebGPU/forcedGL with independent plane/angular/normal oracle and individual constant HDR color render references; asymmetric distances, partial/rejected face and outward/inward normals, third-candidate promotion, default restore and no recapture/copy/spatial rebuild. Native compute/raster/game separately.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\cad520337fc0680a\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-influence-1429-player-AcQp1M/acceptance.json",
+      "sha256": "74adf6589998493efbe4ca84fd06b29135610c33d896486c66ddd491fc48d492",
+      "scope": "Actual packaged D3D11 game freshly compiles user C++ SetProxyVolume/SetUseInfluenceVolume and generated BP nodes, nullable infinite and restore, immediate C++ component read cache and preserved actor position. Four captured images/layouts retained while native atlas metadata changes. Five new C++ setters/generatedBP nodes, immediate read cache and dark/yellow directional-fade pixels with captures/layout/position retained. Numeric and full physical proofs separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\cad520337fc0680a\\HBEngine.exe"
+      ]
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\cad520337fc0680a\\",
+    "elapsedMs": 60.91,
+    "matches": 2,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\cad520337fc0680a",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "cad520337fc0680aab1795be0fff7e834619990e7fc019bb88e82ed0b4cdbbe7",
+      "installedAt": "2026-10-22T00:14:43.900Z",
+      "manifestFiles": 4105,
+      "integrityChecked": false
+    }
+  },
+  "manifestVerifiedFiles": 4105,
+  "versions": [
+    "cad520337fc0680a"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1436-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/probe-influence-1426.json",
+      "sha256": "fd2eafa19ef91ce7321a5ed44d73664d07be8d559e33646d838eb79cdd1b4675",
+      "scope": "CPU5400 independent transformed planes/analytic angle/normal shell, error1.11e-15, default/sphere/advanced/zero/conditionalUI/invalidbounds/no spatial rebuild. Early shared-default return is value-preserving; actual final CPU packing separate."
+    },
+    {
+      "path": "native/build/probe-influence-1426-window-INeput/acceptance.json",
+      "sha256": "d0f220f6d5a50632e0cf147c18cd1dbf4e2397d97beee725a27307e6091d345d",
+      "scope": "Actual GL/WebGPU/forcedGL5400each vs independent oracle; fixed explicit void TSL branches, no suppressed console errors."
+    },
+    {
+      "path": "native/build/probe-influence-1426-native-jEyXG2/acceptance.json",
+      "sha256": "f1bfacef836fb50c78a2d030b8aa90da81b31b25b4bbcfc07f6a4cc5e7083f82",
+      "scope": "Actual optimized D3D11 all5400 in2test-driverchunks; atomic SDK invalid vector/NaN/range guards,304/320B; no production count ceiling change."
+    },
+    {
+      "path": "native/build/probe-influence-1427-window-ikwWo9/acceptance.json",
+      "sha256": "2ac1a0d079c7c0ef508f2574e2e9a5c581f42775dd5860c81c3abcbc840fba5f",
+      "scope": "Tight actual physical+clearcoat3backend2016RGB each: GL4.47e-9/GPU2.24e-8/fallback4.47e-9; perface distance/angle/normal, third candidate promotion/restore/no recapture-copy-tree; real camera adapter. Final installed proof repeats later test-only baseline assertion/diagnostic and optional count-init changes."
+    },
+    {
+      "path": "native/build/probe-projection-1414-window-bkw0GC/acceptance.json",
+      "sha256": "cc41e4c048d3bf4ddfe314df77daa558abb90d4dcb0a121663a10076244b49f7",
+      "scope": "Existing independent projection direct/atlas physical3backend regression under new shading; before later GPU node-builder identity correction, which is additionally covered by tight physical proof."
+    },
+    {
+      "path": "native/build/probe-projection-1415-native-pWnTOJ/acceptance.json",
+      "sha256": "9c690667ebbd16d35440157df3106a277f7dbcb7c6efee4bba1f22c417ec3717",
+      "scope": "Current304/320B full native raster142pixel/geometry oracle/HDRcapture/metadata-only320B/invalidatomic/release."
+    },
+    {
+      "path": "native/build/proxy-regression-1416.json",
+      "sha256": "04a8effa3414c7d6803c03a1713d51de8815d652ddf466510f33e92387a48772",
+      "scope": "All17native owners/driver/test SHA matched after4oldnative regressions: priority/sharedHDR/legacyvolume/2Dmask-lights and3000draw3uploads2997skips CPU3168B. No redundant rerun for JS-only followups."
+    },
+    {
+      "path": "native/build/probe-projection-1412-editor-wUJ9FE/acceptance.json",
+      "sha256": "3883e35dadec361334519c7922ac05bbdc7a7e71a21c0000f322df6618e0b616",
+      "scope": "Actual hidden proxy+advancedface inputs/toggle/typed edits/Undo/save/hidden values/staleAI and position; later extra screenshot only added, current tool repeated installed."
+    },
+    {
+      "path": "native/build/probe-influence-1429-player-ipw9k1/acceptance.json",
+      "sha256": "dc57b878d99481255dce022ecc0f4104ffd339f2591a31fd811c69b0284f42bf",
+      "scope": "Actual fresh C++5setters/generatedBP5 plus originalproxy7states/4roompixels/black-yellow transitions/position6,0,2/captures4-copy150-layout1 retained;readiness37152.08ms, no FPS/latency improvement claim. Source C++ dark stat read preceded capture; installed runner strengthened to wait post-capture native count."
+    },
+    {
+      "path": "native/build/preparation-timing-1425.json",
+      "sha256": "99acbe7ac12410a49d67d1bde00bd80cc0b0d64e9a35441b4dca0d018caf0eb8",
+      "scope": "Deterministic completed poll frozen/cancel/failure/revision/initialready0;3cycles sum75ms excludes idle gaps; profiler shows65.00/2cycles."
+    },
+    {
+      "path": "native/build/native-preparation-490.json",
+      "sha256": "a665f878eeb376439b1988caf76c64e71bb279b9e712eb8cecb9947ac9696b7f",
+      "scope": "Existing asyncnative pending/poll/cancel/failure/profiler/ready contracts under frozen diagnostics; current initialready counter change has focused coverage."
+    },
+    {
+      "path": "native/build/native-raster-preparation-555.json",
+      "sha256": "a9d77a4b8cfe747b0d578b220e545851f1734546baef0826bbc82d8b95165c2e",
+      "scope": "Existing raster aggregation/stages/capture-redraw/error/revision cancellation preserved."
+    },
+    {
+      "path": "native/build/probe-optional-pack-1431.json",
+      "sha256": "feaf3d1448963fa116684bafe4fbdf7affe2435dfad7b3591ce34f5950865537",
+      "scope": "Actual production CPU atlas with no-GPU stub:512static rows2048optional indexed reads/0writes; canonicalshared defaults,byte-exactrestore/same-sizecountgrowth/realresize/reorder/copy1; not GPUtiming/FPS."
+    },
+    {
+      "path": "native/build/ai-focus-priority-1432.json",
+      "sha256": "ffbb92337a2b25e9df350b7359e7f5efc2e8d0c9939498ad372872a4f617c1d3",
+      "scope": "Portable exact-symbol precedence despite broad task query: C++3/math2/timing1source files; explicit all expansion preserved."
+    },
+    {
+      "path": "native/build/influence-context-syntax-1432.json",
+      "sha256": "cc44bec862debf699082881f2ef031db6af78eaf0843d2316a4aa0809cd9535d",
+      "scope": "33changed JS/MJS syntax and tiny schema/exact focus; current branch git whitespace checked after own unpublished commit EOL correction."
+    },
+    {
+      "path": "native/build/probe-influence-services-1433.json",
+      "sha256": "3bb2cccd9d15d542378d9a32e4a3d18a80ea82c884dc3eff6e31245e38b2f90d",
+      "scope": "Real runtime paired setter input arrays detached, invalid second vectors atomic/no update, bool/float guards and typed generatedvec3pins;5updates."
+    },
+    {
+      "path": "native/build/probe-priority-1356-hj9lc5/acceptance.json",
+      "sha256": "09b3e5a6846b7d880f4ee70cc601ec811b62a3d03f6ff6fef87f81b6e587e3ac",
+      "scope": "Existing JS401independent priority/coverage/8flags/typed bool/capturecache/invalidservice; metadata ABI assertions current320B/20/v9, math unchanged."
+    },
+    {
+      "path": "native/build/ai-context-1058.json",
+      "sha256": "370e79d061d4877878dfc9c37fb7b69a8f5dfac08e4c63f661a783dffcf7e76e",
+      "scope": "Existing bounded CLI/task/unknown/absent/schema/offline behavior; handoff4902B below existing5KB gate."
+    },
+    {
+      "path": "native/build/influence-fixture-compaction-1433.json",
+      "sha256": "87373ee785e4c20b5ffac8e5e18305a431efe36b6c075557ae720695a73c3d79",
+      "scope": "Five failed owned projects in per-entry size/SHA-checked lossless ZIP,131935B reclaimed; shaders/reports/success/user data preserved."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/probe-influence-1429-player-ipw9k1/acceptance.json",
+      "sha256": "dc57b878d99481255dce022ecc0f4104ffd339f2591a31fd811c69b0284f42bf",
+      "scope": "Actual fresh C++5setters/generatedBP5 plus originalproxy7states/4roompixels/black-yellow transitions/position6,0,2/captures4-copy150-layout1 retained;readiness37152.08ms, no FPS/latency improvement claim. Source C++ dark stat read preceded capture; installed runner strengthened to wait post-capture native count."
+    }
+  ],
+  "scope": "Installed per-face/angular/normal influence authoring, hidden values/Undo/save/staleAI, three physical backends and third-candidate promotion/default restore, current installed builder D3D11 C++5/BP5 plus original projection7states/4colors and black-yellow/post-capture metadata/position6,0,2; no image/layout rebuild. Full manifest/766owners/27native test SHA/vendor2/Player1430/Host1041/User read-only inventory/links/Versions1; no gameFPS/cold improvement/whole-engine claim.",
+  "version": 1,
+  "date": "2026-10-22T00:17:22.485Z",
+  "work": "docs/research/ENGINE_WORK_1434.json",
+  "distributionSync": "native/build/distribution-1435-sync.json",
+  "sourceNativeProofs": [
+    {
+      "path": "native/build/probe-influence-1426-native-jEyXG2/acceptance.json",
+      "sha256": "f1bfacef836fb50c78a2d030b8aa90da81b31b25b4bbcfc07f6a4cc5e7083f82",
+      "scope": "Actual optimized D3D11 all5400 in2test-driverchunks; atomic SDK invalid vector/NaN/range guards,304/320B; no production count ceiling change."
+    },
+    {
+      "path": "native/build/probe-projection-1415-native-pWnTOJ/acceptance.json",
+      "sha256": "9c690667ebbd16d35440157df3106a277f7dbcb7c6efee4bba1f22c417ec3717",
+      "scope": "Current304/320B full native raster142pixel/geometry oracle/HDRcapture/metadata-only320B/invalidatomic/release."
+    },
+    {
+      "path": "native/build/proxy-regression-1416.json",
+      "sha256": "04a8effa3414c7d6803c03a1713d51de8815d652ddf466510f33e92387a48772",
+      "scope": "All17native owners/driver/test SHA matched after4oldnative regressions: priority/sharedHDR/legacyvolume/2Dmask-lights and3000draw3uploads2997skips CPU3168B. No redundant rerun for JS-only followups."
+    }
+  ],
+  "vendorPatch": "tools/patch-three-uniforms.mjs"
+}

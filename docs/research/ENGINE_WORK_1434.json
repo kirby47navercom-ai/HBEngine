@@ -942,11 +942,6 @@
       "scope": "Actual fresh C++5setters/generatedBP5 plus originalproxy7states/4roompixels/black-yellow transitions/position6,0,2/captures4-copy150-layout1 retained;readiness37152.08ms, no FPS/latency improvement claim. Source C++ dark stat read preceded capture; installed runner strengthened to wait post-capture native count."
     }
   ],
-  "pendingInstalledGates": [
-    "tools/check-probe-projection-1412-editor.mjs",
-    "tools/check-probe-influence-1427-window.mjs",
-    "tools/check-probe-influence-1429-player.mjs"
-  ],
   "nativePlayerSHA256": "4482bc5d9b899409e25b8ef567a0a54482aac8452a7da5d09b7d45800e32a82a",
   "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
   "nativePlayerBuild": {
@@ -1025,8 +1020,8 @@
     "observedPreparationCycles": 0,
     "scope": "Final inspect observed already-ready preparation state; zero cycles is not zero FXC time. Overall game readiness includes launch/driver/capture; no controlled CPU-load or FPS claim."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1422.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1436.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
   "remaining": {
     "reflection": [
@@ -1047,5 +1042,34 @@
     ]
   },
   "exhaustiveUEUnity": false,
-  "verificationMetadataNote": "Physical runner additionally returns the explicit executable-directory argument in its receipt for installed-gate identity checks; functional implementation revision remains e9bc467, no runtime algorithm change."
+  "verificationMetadataNote": "Physical runner additionally returns the explicit executable-directory argument in its receipt for installed-gate identity checks; functional implementation revision remains e9bc467, no runtime algorithm change.",
+  "installedGates": [
+    {
+      "path": "native/build/probe-projection-1412-editor-HSAfm9/acceptance.json",
+      "sha256": "2b03fa5f2b24e18c40a134be9ddeb5121ff24fb2f2943532d24b702bd5f74bd2",
+      "scope": "Owned hidden actual scene editor, separate proxy placement, advanced face/normal UI toggle and numeric edits/Undo/preserved hidden values, influence toggle, filtered actor/component choices, sphere/box inspector visibility, Undo, stale revision and save/transform preservation. Synthetic select changes use actual handlers; numeric/physical rendering and game separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\cad520337fc0680a\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-influence-1427-window-9IOLcw/acceptance.json",
+      "sha256": "7f5f80e604ef06b901bc6cba0c68fbb8a342ce6facf5b1e59058ece6fb2c1af3",
+      "scope": "Actual physical+clearcoat direct/atlas GL/WebGPU/forcedGL with independent plane/angular/normal oracle and individual constant HDR color render references; asymmetric distances, partial/rejected face and outward/inward normals, third-candidate promotion, default restore and no recapture/copy/spatial rebuild. Native compute/raster/game separately.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\cad520337fc0680a\\HBEngine.exe"
+      ]
+    },
+    {
+      "path": "native/build/probe-influence-1429-player-AcQp1M/acceptance.json",
+      "sha256": "74adf6589998493efbe4ca84fd06b29135610c33d896486c66ddd491fc48d492",
+      "scope": "Actual packaged D3D11 game freshly compiles user C++ SetProxyVolume/SetUseInfluenceVolume and generated BP nodes, nullable infinite and restore, immediate C++ component read cache and preserved actor position. Four captured images/layouts retained while native atlas metadata changes. Five new C++ setters/generatedBP nodes, immediate read cache and dark/yellow directional-fade pixels with captures/layout/position retained. Numeric and full physical proofs separate.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\cad520337fc0680a\\HBEngine.exe"
+      ]
+    }
+  ]
 }

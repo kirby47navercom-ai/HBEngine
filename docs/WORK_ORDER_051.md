@@ -942,3 +942,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1422 설치확인: 0e7a9689f8d08f2c·4087명세/750소유SHA/27native검사/2vendor·새Player1417/Host1041·설치실제proxy배치/Inspector/Undo/staleAI/save·설치builder D3D11새C++/BP/6GPUmetadata/캡처유지/위치6,0,2/4색pixel·AI정확소유·User10849읽기SHA·연결/Versions1·이전188082262B회수. 전체누적목표계속/분모null.
 
 1424–1434: 반사box6면거리/방향fade/normal껍질·sphere단일normal·고급후보3승격·기본경로유지·全raster/304B/320B·C++BP5/Inspector/Undo/save/즉시cache/벡터입력분리. GPUcore material stale directbuilder修正·실제3backend각2016RGB tight최대2.24e-8·CPU5400/3GPU5400/native5400/2chunk·raster142/기존4native(2D3000draw3upload2997skip/CPU3168B)·실제C++BP검정↔노랑/원위치/4색. 준비elapsed固定/취소/구간sum/프로파일러·기본optional512행2048read/0write/같은크기count성장/복원/resize·exactAI3/2/1owner와--all유지. 실패5ZIP131935B回收. source5a71120/e9bc467·Player1430 1회24.30초/Host동일·coldready37.15초는개선주장아님·설치대기·누적78행/分母null/다른잔여유지.
+
+1436 설치확인: cad520337fc0680a·4105명세/766소유SHA/27native검사/2vendor·Player1430/Host1041. 설치실제고급face UI/숨은값/Undo/save/staleAI·GL/GPU/fallback physical각2016RGB/후보3승격/복원·D3D새C++BP5/기존proxy7/4색/검정↔노랑/capture後metadata증가/위치6,0,2·AI3owner. User10849읽기SHA/연결/Versions1·이전188294910B회수. 전체누적목표계속/分母null.

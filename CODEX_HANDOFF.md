@@ -1,21 +1,18 @@
 # 현재 인계 — 누적 엔진 구현 계속
 
-2026-10-22. 전체누적목표까지 계속/부분완료로 종료금지·여러변경후영향검사/설치갱신. 백그라운드만. goal blocked/사용자재개질문대기·현재턴계속·임의new/complete금지. AGENTS/AI_START→hb context.
+2026-10-22. 전체누적목표까지 계속·변경묶음후影響검사/설치갱신·부분완료로종료금지. 백그라운드만. AGENTS/AI_START→hb context. goal blocked/사용자재개질문대기·현재턴계속·임의new/complete금지.
 
-## 최신 확정
-HEAD031b509 pushed main. USER_INSTALL_1422 C:/Users/kirby/HBEngine/Versions/0e7a9689f8d08f2c/HBEngine.exe. 4087명세/750소유/27native검사/2vendor·User10849읽기SHA/연결/Versions1·이전188082262B회수. WORK1420 source8fc5330→ac7a25a: 독립ReflectionProxyVolume 상자/구/무한/공유ref/Inspector/C++BP/全raster·208/224B,5native표면상수source1개/queue9unique8dedup·cold81.68→29.4/30.34관찰. 설치32.24초·위치6,0,2·4색·metadata만. Host1041/Player1417. 이전 WORK1403 history공유/Sequence가상화/AI·1392대형키/저장·1382curve필터 등은각기록.
+## 최신 설치
+USER_INSTALL_1436: C:/Users/kirby/HBEngine/Versions/cad520337fc0680a/HBEngine.exe. 4105명세/766소유/27native검사/2vendor·User10849읽기SHA/연결/Versions1·이전188294910B회수. source5a71120/e9bc467→metadata5d65441·Player1430 4482bc5d…재빌드24.30초·Host1041 5e785b0b…동일. 설치UI고급field/Undo/save·실제GL/GPU/fallback2016RGB/tight/3후보·D3D새C++BP5+proxy7/4색/검정↔노랑/capture後metadata/위치6,0,2·AI3owner.
 
-## 소스완료1424–1433
-ReflectionProbe 고급box6면blendPositive/Negative·fadePositive/Negative·blendNormalPositive/Negative, sphere기본normal거리. CPU/GL/GPU/direct/atlas/native모두연결·worldplane거리/방향각마스크/외곽노멀dot0.2..0.6억제·기본경로유지/고급후보3번째승격·캐시/캡처/BVH재사용. 새5 C++/생성BP setter/sharedservice/immediatecache. ABI304B settings/320B atlas20행·기존3CB CPU/GPU각+864B vs1420,CPU3168B·버퍼수동일. native17owner중6변경.
-Native-only 준비진단 완료poll시elapsed증가수정·취소고정·cycles(初ready0)/preparationMS(유휴제외sum)/revisionreset·profiler합계/횟수. whole startup/FPS아님; 실제game初ready snapshot0은미관찰구간표시. Browser기본optionals sharedcanonical·4scalar읽기/44fieldlane비교생략·count변경강제초기화(동일table크기에서tree영역재사용주의).
-GPUcore material의direct→atlas전환에nodebuilder cache키가같아stale directblue가남던실제버그수정: 원래key함수+envNode.uuid,복원보존/값변경키안변함. helperIf implicitreturn/void브랜치오류수정. docs/PROBE_INFLUENCE,PREPARATION_TIMING/공식scopedmanifest/AIroutes 갱신.
+## 이번 턴 누적
+WORK1434: box6면world blend/반사방향fade/normal껍질·sphere단일normal·기본경로/고급3번째후보승격·全raster·C++BP5/벡터입력분리/invalidpair원자거절·immediatecache. 304B settings/320B atlas20행·기존CB3슬롯 CPU/GPU각+864B vs1420/CPU3168B·buffer數동일. GPUcoreThree direct↔atlas nodebuilder stale재사용수정: 원키함수+envNode.uuid/복원/값변경키보존. 준비elapsed완료poll/취소固定·cycles初ready0/preparationMS유휴제외sum/revision·profiler합계/횟수. CPU기본optionals sharedcanonical/512행2048read0write·restore/same-sizecount증가/resize/reorder·캡처/BVH재사용. exactsymbol路를broadtask보다우선 C++3/math2/timing1owner/--all/fallback유지.
+CPU5400 1.11e-15·3GPU5400/native5400/2chunk·native SDKguard/래스터142·기존4native/2D3000draw3upload2997skip·physical각2016RGB GL4.47e-9/GPU2.24e-8/fallback4.47e-9(소스ikwWo9)·실제game검정/노랑. cold37.15초는기존29–32보다개선주장아님·초기ready진단0은shader0ms아님. 실패5project SHA ZIP131935B. docs/PROBE_INFLUENCE,PREPARATION_TIMING. record1434/sync1435/install1436/finish1437.started재실행금지.
+WORK1420: 독립proxy box/sphere/infinite/공유actor+component/영향·캡처분리·C++BP2·208/224B(현재304/320)·metadata만. Native直接표면상수 uniform/레거시wrapper제거5source→1/queue9unique8dedup·readonly/색공간/normal/parameter/원본보존·cold81.68→29.4/30.34관찰. WORK1403:40Undo JSON共享/restoreclone·16x16kheap49→7.3MB/289→162ms·65k8frame346ms·Sequence256행가상화/검색·재지정·AI/8UndoRedo분기. WORK1392:65k키/track·bounded총/JSONPointer/storage/poll/recovery. WORK1382curveBezier/FFT. 이전은각WORK.
 
-## 증거/현재
-Player1430 dist1회재빌드24.30초완료(native/build/player1430-build.json SHA참조),Host동일. build-player1430.started재실행금지. native/build/influence-player-1430.json PASS: actual C++5/BP5+기존proxy7states/4색/검정↔노랑/위치·이미지유지·ready37.15초(통제부하아님/기존32보다개선주장금지). probe-influence-1429-player-ipw9k1/acceptance. C++dark후stats source는1frame늦음;현재runner는capture후counter증가를기다리며설치gate에서확인.
-CPU5400/오차1.11e-15; influence1426window3backend각5400 & native全5400/2chunk(공용검사driver4096상한,엔진한도수정없음) PASS: native/build/influence-retry-1428.json의앞2job. 新physical tight proof probe-influence-1427-window-ikwWo9: 각2016 RGB/GL4.47e-9/GPU2.24e-8/fallback4.47e-9·3번째승격/기본복원/無recapture. 기존projection1414 window도retry1428끝job PASS. 처음physical실패/느슨한oIyrxR근거와구분(실제adapter installGPUCameraView누락fixture수정후tight통과).
-앞group1428 totalfalse지만ready490/555,CPU1426,legacy1408,native1415新304/320 raster142,regression1416 4native(현재headerSHA/CPU3168)/UI1412新advancededit/Undo/save PASS. stage1실패3건은修正완료/원보고보존. sourceUI prefix1412 latest receipt찾기. optional-pack1431 PASS:512행 optional2048read/0write,復元byte一致/동일크기count성장/resize/reorder/copy1 CPUstub(실GPU/FPS아님).
-소스5a71120/e9bc467·WORK1434확정·설치미완료. 次: 1429 testcapture후state갱신→context/syntax/DEBUG/필요최종검사(무변경native4재실행금지)→featurecommit→sync1435/install1436준비·finish1437대기·설치UI1412+physical1427+game1429 묶음→명세/source/native27/vendor2/Player1430/User/연결/Versions1→commitpush→누적계속. 실패fixture는SHA ZIP/retain-prune,空cache receipt금지.
+## 잔여/다음
+ENGINE_STATUS78행/전체分母null. RND03lightmap混합/2후보밖계층/대형HDR·변형·복합로브. RND06 主GL7초/FXC·capture初비용(1086/1308失敗반복금지). CPP01customstruct/enum/reflection/참조·문서간Timeline. ANM06snapshot전체순회/복원·변경배열·큰clip/section·리그/시간왜곡/가중혼합/부모골격origin/Take. UI03교차창/공유source/실터치/asyncrollback. NET01권한/예측/view/socket. RND08월드DF/HWRT/방향bake 및다른행잔여유지.
+다음候補: ANM06 문서patch가알려진경로만바꿔도Undo가전체JSON을순회하는비용, 기존isolation/alias폴백보존하며명시patch範圍최적화검토. 아직읽기/구현0. 큰변경뒤影響gate묶음/설치1버전유지, 추가영구인덱스/패키지/타이머금지.
 
-## 잔여/운영
-ENGINE_STATUS78행分母null. RND03면별/normalfade는이번검증後만제거·lightmap/후보계층/대형HDR·변형잔여유지. RND06 주GL7초/FXC·capture初비용·1086/1308실패반복금지. CPP01customstruct/enum/참조,ANM06snapshot전체순회/복원·큰clip/리그/시간왜곡,UI03교차창/공유/실터치,NET01권한/예측/view/socket,RND08월드DF/HWRT/방향bake 및다른행잔여계속.
-heavy/install前activeInstalledVersions·사용자창/탭/프로젝트/User테스트금지·ownhidden/profile/port·installEXE inline자기검출주의파일실행. Versions1/전체백업금지. 同author/committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com·한글commit/push. node_modules커밋금지·Three2vendor패치sync. Mac/Android없음재질문금지.
+## 운영
+heavy/install前activeInstalledVersions·사용자창/탭/프로젝트/User테스트금지·ownhidden/profile/port. installEXE literal inline자기검출주의파일실행. retain/prune·源/보고서/repro보존·空cache receipt금지. Versions1/전체백업금지. per-command同author/committer kirby47navercom-ai / 228715038+kirby47navercom-ai@users.noreply.github.com·한글commit/push. node_modules커밋금지·Three UniformsGroup.js/three.webgpu.js2vendor patch sync필수. Mac/Android없음재질문금지.
