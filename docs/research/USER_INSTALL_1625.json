@@ -1,0 +1,143 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "794f251de86fef8f5fa92ab473edecc662a0b1ab",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\96090f1476afa4b0",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\96090f1476afa4b0\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\96090f1476afa4b0\\HBEngine.exe",
+  "bundleHash": "96090f1476afa4b0aceea020128031916829fcb3fc89a3a86e640dd1eb8c4235",
+  "files": 4238,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4234,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0a643bd4bf9adaa5",
+        "bytes": 191093280,
+        "manifestSHA256": "450089f7ec5bfae78b51aed5082ec90e0fa51d60f5c4e596584cbb47397f97e1"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T12:01:23.7671775Z",
+    "bytes": 191093280,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "96090f1476afa4b0"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 907,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/mesh-renderer-1620-editor-XuMn9L/acceptance.json",
+      "sha256": "10c95196a806ddb67a8c77c9f56615578534ea92511f5e3d276883032517eeb9",
+      "scope": "Owned actual editor:16px indirect lightmap bake, real inspector label/boolean edit/Undo/Redo/save, BP→compiled C++ Components Bool/Float and shadow setters, intensity.5/0/2 and persistent in-place counters, renderer baked eligibility, authored flag restored after Stop and original Director placement preserved. Optional same saved actual Windows D3D11 package with new Player. Numeric GL/GPU/D3D capture mixing proved separately; no whole engine/FPS/phone claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\96090f1476afa4b0\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 105001.1283
+    },
+    {
+      "path": "native/build/capture-revision-1612-window-7P17XR/acceptance.json",
+      "sha256": "96588e8be705f0b3e056158c6862c8e99b6e1449d6244a18b0470abefb6fbf76",
+      "scope": "Actual production WebGL2 PMREM capture/render and readback: static frames do not recapture, light/geometry/lightmap/normal-strength/time changes do, actual lightmap intensity changes pixels, once mode releases scalar facts and ignores scene change, return to onChange and disposal. Native/TSL shader math unchanged; source shared-input parity covers full data walk. No FPS/whole engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\96090f1476afa4b0\\HBEngine.exe"
+      ],
+      "ms": 3408.853600000002
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\96090f1476afa4b0\\",
+    "elapsedMs": 65.39,
+    "matches": 2,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\96090f1476afa4b0",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "96090f1476afa4b0aceea020128031916829fcb3fc89a3a86e640dd1eb8c4235",
+      "installedAt": "2026-10-22T12:01:20.254Z",
+      "manifestFiles": 4238,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged C++ metadata/native21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4238,
+  "versions": [
+    "96090f1476afa4b0"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1625-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/mesh-renderer-1621.json",
+      "sha256": "65819eba355018cf042001dd5a00a33cc13739fd9a657fc34357be654f000246",
+      "scope": "Actual Three sceneRendering build with deferred lightmap asset and encoded page plus real shared BP/C++ operation service, GI callback, five live properties and identity/override/validation/fallback checks. No GUI/GPU pixel or native test claim."
+    },
+    {
+      "path": "native/build/probe-lightmap-mix-1597.json",
+      "sha256": "53f1141ae4f26f5138e0cd9a276ee1b6a851b0532d097c9afabec46ef020833f",
+      "scope": "CPU mixing policy/reference cases, shared component operation and actual Three lightmap material ownership only. Generated HLSL source matches shared owner. Actual GL/GPU/D3D pixels, compiled C++ caller and editor/package are separate gates."
+    },
+    {
+      "path": "native/build/capture-revision-1611.json",
+      "sha256": "444a359a137781cd207ce06a98de8b91697d7af0c472941df61a3ef00c3c611f",
+      "scope": "Exact previous JSON input change/no-change parity for transforms/bones/morphs/instances/light/target/environment/material/texture/time, removals and100 seeded edits. Additional lightmap/physical properties/textures/normal strength and geometry versions/groups/draw/background tracked. Bounded fixture key bytes and copy counts, not FPS/heap/whole engine. Reusable scalar facts still scan the same inputs; full material JSON subobjects enumerate keys."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed actual editor UV→indirect bake/UndoRedo/save→BP→compiled CPP Bool/Float/String calls, intensity.5/0/2, shadow/motion and persistent in-place counters; authored Stop/placement preserved; same saved final D3D11 game uses intensity.5 and at least4 in-place changes. Also real GL PMREM12 captures/static no recapture/shadow/lightmap/normal/time changes/manual release/dispose. Source delayed scene build/GI0 source/range/enum/overrides/identity/fallback and legacy246+54 shared-data proofs reused. Native21/30tests/vendor2/Player1604/Host1041/7shader owner unchanged; full manifest/User inventory/links/Versions1. No whole engine/FPS/phone claim.",
+  "version": 1,
+  "date": "2026-10-22T12:05:52.804Z",
+  "work": "docs/research/ENGINE_WORK_1623.json",
+  "distributionSync": "native/build/distribution-1624-sync.json",
+  "nativePlayerBuildReused": true,
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1616.json",
+  "hostReuseFrom": "docs/research/USER_INSTALL_1616.json"
+}

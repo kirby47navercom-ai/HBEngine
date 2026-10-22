@@ -1010,3 +1010,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1616 최종설치: 0a643bd4bf9adaa5·4233명세/902소유/native21/30tests/vendor2 SHA·Player1604/Host1041/수식owner7재사용. 설치실제GL PMREM정지무갱신/기하·LM·normal·time각갱신/LM강도pixel변화/oncefact해제·복귀/dispose10capture 3.7초·User10849읽기SHA불변·연결/Versions1·이전190941771B회수. 누적작업계속.
 
 1618–1623: MeshRenderer5속성(혼합/강도/cast/receive/motion)공용BP/CPP BoolFloatString서비스에서그룹/UV/LMpage/material보존·delayed 실제로더/encoded bake 준비중최신값·그림자override·범위/enum/fallback검사11inPlace. GI0상태source갱신수리/요청새값보존·끄면복귀/invalidbake0·요청/효과강도진단. capture54경우/25811facts·native21/Player1604/수식7불변재사용. 실제CPP/D3D/PMREM은최종설치묶음검사예정·누적계속.
+
+1625 최종설치: 96090f1476afa4b0·4238명세/907소유/native21/30tests/vendor2 SHA·Player1604/Host1041/수식7재사용. 설치실제UV/bake/UndoRedo/저장→BP/컴파일CPP BoolFloatString/강도.5→0→2/자원유지→동일저장D3D게임강도.5/inPlace4/Director위치·Stop복원105초. 실제GL PMREM12capture/정지무갱신/그림자등갱신/once해제복귀/dispose3.4초. User10849읽기SHA불변·연결/Versions1·이전191093280B회수. 애니메이션등누적구현계속.

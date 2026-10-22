@@ -3353,11 +3353,11 @@
     "scope": "Five MeshRenderer runtime properties preserve resources, latest async values and GI0/baked transitions, shared service/data validation and shadow capture invalidation. Real compiled CPP/D3D game and GL PMREM are final installed gates."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1616.json",
-    "sourceCommit": "8d08adbc96536999f7933f3963bf1a98b86e69bc",
-    "bundleHash": "0a643bd4bf9adaa5bf587e01da215205f9ec787b3a26436c684c292c67fc4fdb",
+    "receipt": "docs/research/USER_INSTALL_1625.json",
+    "sourceCommit": "794f251de86fef8f5fa92ab473edecc662a0b1ab",
+    "bundleHash": "96090f1476afa4b0aceea020128031916829fcb3fc89a3a86e640dd1eb8c4235",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actual WebGL2 PMREM/render/readback: unchanged no recapture; light/geometry/lightmap/normal/time updates capture, lightmap intensity changes pixels, once releases facts and avoids scene recapture, onChange return/disposal. Source246 legacy-input parity/52 additional changes and compact key208178B→47B/bone8→0/color1231→0 reused. Full manifest/source/native21/30 tests/vendor2/unchanged Player1604/Host1041/User read-only/links/Versions1. No full renderer rebuild or FPS/heap/phone claim."
+    "scope": "Installed actual editor UV→indirect bake/UndoRedo/save→BP→compiled CPP Bool/Float/String calls, intensity.5/0/2, shadow/motion and persistent in-place counters; authored Stop/placement preserved; same saved final D3D11 game uses intensity.5 and at least4 in-place changes. Also real GL PMREM12 captures/static no recapture/shadow/lightmap/normal/time changes/manual release/dispose. Source delayed scene build/GI0 source/range/enum/overrides/identity/fallback and legacy246+54 shared-data proofs reused. Native21/30tests/vendor2/Player1604/Host1041/7shader owner unchanged; full manifest/User inventory/links/Versions1. No whole engine/FPS/phone claim."
   }
 }

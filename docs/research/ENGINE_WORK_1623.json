@@ -1028,10 +1028,6 @@
     "prototype/probe-lightmap-mix-gpu.js": "6b9b30c0c64bec1757f47144823ca748829b073da59bbd75d3c940c106ec51c6",
     "prototype/native-scene-renderer.js": "65d56fd49a99851a9002562971d187fb5c75ae0a25e19a31a5fbb92da975b2fe"
   },
-  "pendingInstalledGates": [
-    "tools/check-mesh-renderer-1620-editor.mjs --executable installed --package --expected-player-sha 07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
-    "tools/check-capture-revision-1612-window.mjs --executable installed"
-  ],
   "focusedAI": {
     "syncMeshRendererProperties": {
       "elapsedMs": 156.58,
@@ -1049,8 +1045,33 @@
     "fixtureRepair": "New C++ fixture string assembly lacked Read closing brace and used SetText in example for a plain string; corrected to real SetString/registered componentSetString before any GUI compile. Accepted unit rerun uses actual registered key.",
     "scope": "Other components/paths/visibility rebuilds remain; no broad all-property no-rebuild or FPS claim. Actual source unit proof is separate from final installed compiled native caller and game."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1616.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1625.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/mesh-renderer-1620-editor-XuMn9L/acceptance.json",
+      "sha256": "10c95196a806ddb67a8c77c9f56615578534ea92511f5e3d276883032517eeb9",
+      "scope": "Owned actual editor:16px indirect lightmap bake, real inspector label/boolean edit/Undo/Redo/save, BP→compiled C++ Components Bool/Float and shadow setters, intensity.5/0/2 and persistent in-place counters, renderer baked eligibility, authored flag restored after Stop and original Director placement preserved. Optional same saved actual Windows D3D11 package with new Player. Numeric GL/GPU/D3D capture mixing proved separately; no whole engine/FPS/phone claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\96090f1476afa4b0\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 105001.1283
+    },
+    {
+      "path": "native/build/capture-revision-1612-window-7P17XR/acceptance.json",
+      "sha256": "96588e8be705f0b3e056158c6862c8e99b6e1449d6244a18b0470abefb6fbf76",
+      "scope": "Actual production WebGL2 PMREM capture/render and readback: static frames do not recapture, light/geometry/lightmap/normal-strength/time changes do, actual lightmap intensity changes pixels, once mode releases scalar facts and ignores scene change, return to onChange and disposal. Native/TSL shader math unchanged; source shared-input parity covers full data walk. No FPS/whole engine claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\96090f1476afa4b0\\HBEngine.exe"
+      ],
+      "ms": 3408.853600000002
+    }
+  ]
 }
