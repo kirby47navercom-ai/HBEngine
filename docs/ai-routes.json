@@ -1518,6 +1518,39 @@
         "prototype/blueprint-runtime.js",
         "docs/NATIVE_RECORDS.md"
       ]
+    },
+    {
+      "keywords": [
+        "HB_checkpointMode",
+        "checkpointCells",
+        "checkpointPlainActors",
+        "checkpointReadSkips",
+        "checkpointTargetWrites",
+        "checkpointFullCalls"
+      ],
+      "paths": [
+        "tools/native-source.mjs",
+        "docs/NATIVE_CHECKPOINTS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "nativeCounters"
+      ],
+      "paths": [
+        "prototype/profiler.js",
+        "docs/NATIVE_CHECKPOINTS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "nativeCheckpointSafety",
+        "HB_checkpointPropertySafe"
+      ],
+      "paths": [
+        "tools/native-checkpoint.mjs",
+        "docs/NATIVE_CHECKPOINTS.md"
+      ]
     }
   ]
 }

@@ -31,7 +31,7 @@ SDK의 `hb::Struct::Make<T>(...)`, `Break(value,&T::field,...)`, `SetMembers(val
 
 ## 저장·AI·비용
 
-값은 `type:"record", structName:"Namespace::Type"`와 필드 이름의 JSON 객체예요. sourceReference 에셋은 파생 struct/enum 표를 저장하지 않아요. 함수·접힌 그래프의 저장 포트에도 파생 inspection 표를 복제하지 않아요. VM 안의 검증된 선언은 읽기 전용으로 한 번 캡처해 액터들이 공유하고 각 액터의 실제 값·변수·컴포넌트 상태는 따로 소유해요. 고정 선언의 필드 핀·기본값·액터 참조 경로도 재사용해요. 새 worker/타이머/GPU 리소스를 추가하지 않아요. 사용자 C++ 구조체 속성의 checkpoint 복사는 남아 있으며 전체 heap/FPS 개선 수치는 측정하지 않았어요.
+값은 `type:"record", structName:"Namespace::Type"`와 필드 이름의 JSON 객체예요. sourceReference 에셋은 파생 struct/enum 표를 저장하지 않아요. 함수·접힌 그래프의 저장 포트에도 파생 inspection 표를 복제하지 않아요. VM 안의 검증된 선언은 읽기 전용으로 한 번 캡처해 액터들이 공유하고 각 액터의 실제 값·변수·컴포넌트 상태는 따로 소유해요. 고정 선언의 필드 핀·기본값·액터 참조 경로도 재사용해요. 새 worker/타이머/GPU 리소스를 추가하지 않아요. [상태 복구 비용](NATIVE_CHECKPOINTS.md): 기존 속성 읽기의 snapshot을 생략하고 쓰기는 수신 객체만 저장하며, 구조체 snapshot은 필요할 때 만들어요. 임의 C++ 함수의 전체 복구와 구조체 복사는 유지해요. 전체 heap/FPS 개선 수치는 측정하지 않았어요.
 
 - `native.structs.read {path,name?,offset?,limit?}`: 기본32/최대128, 선언 요약 또는 필드 페이지. 큰 기본값 대신 종류·개수·짧은 미리보기를 제공해요.
 - `native.structs.defaults.read {path,name,fieldPath?,offset?,limit?}`: 필드·배열 번호를 따라 scalar 또는 페이지를 읽어요. 구조체 전체 기본값을 중복 출력하지 않아요.
