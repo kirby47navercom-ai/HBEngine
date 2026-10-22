@@ -23,14 +23,14 @@ export async function loadSequenceTree(path,read,{isCurrent}={}){
  return visit(path);
 }
 export function selectedShot(sections,time){return sections.filter(s=>!s.muted&&s.kind==='shot'&&s.start<=time&&time<s.start+s.duration).sort((a,b)=>a.row-b.row||b.start-a.start||(a.id<b.id?-1:a.id>b.id?1:0))[0]?.id;}
-export function sectionActive(section,sections,time){return !section.muted&&section.start<=time&&time<section.start+section.duration&&(section.kind!=='shot'||selectedShot(sections,time)===section.id);}
+export function sectionActive(section,sections,time,shot){return !section.muted&&section.start<=time&&time<section.start+section.duration&&(section.kind!=='shot'||(shot===undefined?selectedShot(sections,time):shot)===section.id);}
 export function sectionTime(section,child,time){const local=section.sourceStart+Math.max(0,time-section.start)*section.rate;return section.loop?local%child.length:Math.min(child.length,local);}
-export function sectionRanges(section,sections,child,ranges){
+export function sectionRanges(section,sections,child,ranges,sampler){
  const result=[],speed=section.rate;
  for(const range of ranges){const start=Math.max(range.begin,section.start),end=Math.min(range.end,section.start+section.duration);if(end<start||end===start&&!(range.initial||start===section.start))continue;
-  const cuts=[...new Set([start,end,...sections.filter(s=>s.kind==='shot'&&!s.muted).flatMap(s=>[s.start,s.start+s.duration]).filter(t=>t>start&&t<end)])].sort((a,b)=>a-b),parts=start===end?[[start,end]]:cuts.slice(0,-1).map((v,i)=>[v,cuts[i+1]]);
-  for(const [a,b]of parts){if(section.kind==='shot'&&selectedShot(sections,a===b?a:(a+b)/2)!==section.id)continue;let x=section.sourceStart+(a-section.start)*speed,y=section.sourceStart+(b-section.start)*speed,initial=a===section.start&&range.begin<section.start||range.initial&&a===range.begin,budget=256;
-   const exclusive=b===section.start+section.duration||range.endExclusive&&b===range.end||section.kind==='shot'&&selectedShot(sections,b)!==section.id;
+  const cuts=sampler?[start,...sampler.boundariesBetween(start,end),end]:[...new Set([start,end,...sections.filter(s=>s.kind==='shot'&&!s.muted).flatMap(s=>[s.start,s.start+s.duration]).filter(t=>t>start&&t<end)])].sort((a,b)=>a-b),parts=start===end?[[start,end]]:cuts.slice(0,-1).map((v,i)=>[v,cuts[i+1]]);
+  for(const [a,b]of parts){if(section.kind==='shot'&&(sampler?sampler.shot(a===b?a:(a+b)/2):selectedShot(sections,a===b?a:(a+b)/2))!==section.id)continue;let x=section.sourceStart+(a-section.start)*speed,y=section.sourceStart+(b-section.start)*speed,initial=a===section.start&&range.begin<section.start||range.initial&&a===range.begin,budget=256;
+   const exclusive=b===section.start+section.duration||range.endExclusive&&b===range.end||section.kind==='shot'&&(sampler?sampler.shot(b):selectedShot(sections,b))!==section.id;
    if(!section.loop){result.push({begin:Math.min(child.length,x),end:Math.min(child.length,y),initial,...(exclusive&&y<=child.length?{endExclusive:true}:{})});continue;}
    if(x>section.sourceStart&&x%child.length===0)initial=true;
    do{if(--budget<0)throw Error('하위 시퀀스 반복 한도 초과');const cycle=Math.floor(x/child.length),stop=Math.min(y,(cycle+1)*child.length);result.push({begin:x-cycle*child.length,end:stop-cycle*child.length,initial,...(exclusive&&stop===y?{endExclusive:true}:{})});if(stop===y)break;x=stop;initial=true;}while(x<=y);

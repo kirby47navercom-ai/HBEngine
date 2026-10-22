@@ -1,20 +1,25 @@
 # 현재 인계 — 누적 엔진 구현 계속
 
-2026-10-22. 주인님: 전체누적목표까지 계속·작은묶음으로턴끝내지말고 여러변경후영향검사/설치갱신. 백그라운드만. AGENTS/AI_START/hb context읽음. goal마지막blocked·사용자재개답변수신, 현재턴작업계속·임의새goal/complete금지.
+2026-10-22. 주인님: 전체 누적 목표까지 계속, 여러 구현 뒤 영향 검사·설치 갱신. 백그라운드만. AGENTS/AI_START/hb context/스킬 읽음. goal 조회는 blocked인데 사용자 재개 답변 수신; 현재 턴 작업 계속, 임의 새 goal/complete/반복 재개질문 금지.
 
-## 현재 설치와 구현
+## 설치와 근거
 
-현재확정설치1538: C:/Users/kirby/HBEngine/Versions/11872c2e5a2b99fd/HBEngine.exe·4180명세/844소유/29native검사/20nativeowner/2vendor·User10849읽기SHA/Versions1·이전189765821B퇴역. codebd1640c/record2324989·Player1484/Host1041정확SHA재사용. 최종BP UI/Undo/rebind/원자거부/save/Play[7,25,9]14.9초·기존privateCPP[14,3,2]/Score14 9초·focus1owner61.91ms통과. 종료PID34276 deadlease는기존pruner정리·GUI재검사안함.
-기존1486(f2c326f): HB_STRUCT typedwire·nested/enum/Actor/array/default·MakeBreakSet/분할·변수/속성/함수/매크로/Take/sequence복원. portable동명wrapper/checkpoint ODR충돌은생성익명namespace로격리수정. 근거 docs/NATIVE_RECORDS.md/ENGINE_WORK_1486.json.
+확정1538: C:/Users/kirby/HBEngine/Versions/11872c2e5a2b99fd/HBEngine.exe. 4180명세/844소유/29native검사/20nativeowner/2vendor·User10849읽기SHA·Versions1·이전189765821B퇴역. sourcebd1640c/record2324989/install0634713. Player1484/Host1041 정확SHA재사용. BP접근UI/Undo/rebind/원자거부/save/Play[7,25,9]14.9초·privateCPP기본값/원본/save/CPP→BP[14,3,2]/Score14 9초. 종료PID34276의deadlease는기존pruner정리; GUI반복없음. 설치receipt USER_INSTALL_1538.json.
 
-## 다음과 잔여
+1486 HB_STRUCT nested/enum/Actor/array/default/typedwire/MakeBreakSet/분할/변수함수/Take/sequence·portable동명wrapper 익명namespace격리: docs/NATIVE_RECORDS.md.
+1497 실제type검증 Get0snapshot/Set수신cell/user함수·변환전체복구/optionalrecord·5counter: docs/NATIVE_CHECKPOINTS.md. 32Get Items64→0/Set64→32·default할당4/546→2/273B; 느린후보미채택.
+1516 compilecopyfriend private/protected/namespace/nestedclass/enum/function/event·lexical가짜선언제외·traits/stdinputmove1024int할당2→1·bounded native.classes.read: docs/NATIVE_CPP_ACCESS.md. NDK ARM64syntax4, actualCPP/UI/D3D/2D검증.
+1527 rangebar/keyboard/jump·Ctrl영역확대·touchpan/pinch/cancel·확대scrub·UI행소유intervalindex·history64+이전keys열거절감: docs/TIMELINE_RANGE_CONTROLS.md. full65536키203구간UI/D3D179초 통과·설치는compact25초+exactSHA. 전체순회/복원잔여·timingmixed/FPS주장없음.
+1536 함수/매크로/변수접근: memberOrigins/원caller/선언owner·부모private내부유지/자식차단·protected virtual/parent·privateoverride/상속ID위장거부·mutable ref/nativewrapper/interface공개typed계약·UI/Undo/rebind·bounded blueprint.members.read. docs/BLUEPRINT_ACCESS.md. 실제UI/D3D[7,25,9]/2D50+CPP·focus1owner2015B. 1536record/1537sync/1538install/recover/1539finish started재실행금지.
 
-설치뒤에도누적잔여계속. CPP01 전용enum/structasset·globaltyperegistry·관리identity/다형성·schema migration·일반alias/전처리/signature/wildcard/문서간Timeline. e46436a/WORK1497·1499설치완료: actualtype/recursivefield/receiver검증한Get0 snapshot·Set수신cell·user함수/생성/변환전체복구·optionalrecord·raw5counter/profiler합. fixture32Get Items64→0/32Set64→32·default할당4/546→2/273B/inline+16B; 다른Actor변경후throwconverterGet/Set·함수2Actor값/좌표복구·앞선성공Set보존. 그룹11/최종9·NativeBatch50/Actions/recordCpp/portable2모듈통과. equality후보느려미채택·DLLnew측정static보정. 1498sync/1499install/1500finish완료·record1497/sync1498/install1499/finish1500 started재실행금지. 1501–1516 e52ac2a/1518설치완료: compilecopyfriend private/protected/class/enum/function/event·lexical문장경계/가짜선언/세미콜론·traits/doublearray/ref·stdinputmove1024int할당2→1·classesread128page/focus1owner4340B. group12/NDK ARM64syntax4·실제UI기본값/sourceReference원본보존/CPP→BP/D3D[14,3,2]/Score14/기존2D통과. 1516source/record·1517sync·1518install·1519finish started재실행금지. 원장CPP01의1486완료structMakeBreakSet잔여삭제·일반반환참조/별도BP호출범위는잔여. 다음ANM06 snapshot전체순회/복원/clip공간조회 등누적목표계속. 기존work1486핵심자료/누적잔여유지. ANM06 전체snapshot순회/restore/큰변경배열·많이겹친가시밀도/runtimeclip조회/실터치/가변행·리그/warp/혼합/부모골격Take. RND03lightmap혼합/2후보밖계층/대형HDR/변형/로브, RND06主GL7초/FXC/capture(1086/1308반복금지), UI03교차창/실터치/asyncrollback, NET01권한/예측/socket, RND08worldDF/HWRT/bake 등 ENGINE_STATUS78행·전체분모null.
+## 현재1540–1543
+
+IntervalSelectionIndex: Play snapshot 승자구간sweep/heap, half-open·원배열우선·32미만단순경로·point이진조회무할당. SequenceSampler audio/animation clip조회·SequenceSectionSampler shot row/start/id우선/경계사전정렬·부모당현재shot1회. 자료형/포맷/제작한도변경없음. group1542 7검사통과: random/65536 sparse16비교0방문/전체overlap1구간·35*32rangeparity·유효64clip실행·기존15nested/3애니소유/140event·같은저장D3D. docs/SEQUENCE_INTERVAL_SELECTION.md·focus1owner3659B. 다음최종AI/check→WORK1543/commit→sync1544/install1545(최종editor1251)/finish1546. 아직미커밋. 제품변경뒤해시전제재사용주의.
+
+## 누적 잔여
+
+ENGINE_STATUS.json 78행·전체분모null. CPP01 전용enum/structasset/globalregistry/identity/다형성/schema migration/일반alias·전처리·signature/wildcard·문서간직접참조/Timeline·일반반환CPP참조수명·owning-object-only. ANM06 전체snapshot순회/restore/큰변경array·가시overlap밀도/실터치/가변행/리그/warp/혼합/부모골격Take/몽타주clip·root조회. RND03lightmap혼합/2후보밖계층/대형HDR/변형로브; RND06主GL7초/FXC/capture(1086/1308반복금지); UI03교차창/실터치/asyncrollback; NET01권한/예측/socket; RND08worldDF/HWRT/bake와원장타분야.
 
 ## 운영
 
-검사전 activeInstalledVersions, 소유hidden editorWindowProbe·임시project/profile/port만. 사용자창/원본/프로필변경금지. CXX -o relative·실행absolute. PS외부실패자동중단아님, Node execFile順序권장. rg glob은directory+--glob. 큰minified줄/base64출력금지. retainTestEvidence/pruneTestArtifacts, Versions1. Three vendor2SHA/patch유지. 한글ConventionalCommit author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com·전역Git/AItrailer없음. WebGPU명시승인범위외 agent금지. Mac/Xcode/Android실기기없음.
-
-## 현재1520–1530 완료와 다음
-
-rangebar/handle키보드/jump·Ctrl영역확대/반대reset/Esc·touch배경pan/pinch/cancel·확대scrub좌표수정·행소유lazyintervalindex/선택포함memo·history64+ownedDenseArray이전키열거생략. group12·65536키/203구간 제스처/편집Undo/save/nestedPlay/D3D[7.5,0,0]통과. fullUI179초는설치에서반복안함: --quick-install512키/203구간/동일새controls/Undo/save/Play25.2초통과·제품8소유SHA일치. initialallarray후보느려미채택·64+슬롯1720380→1605692/방문262176/컨테이너32814동일·시간mixed/FPS주장없음·전순회/복원잔여. source1527/record1527/sync1528/install1529/finish1530 started재실행금지. 1531–1535 BP함수/매크로/변수접근: 파생memberOrigins/원caller/선언소유·상속private내부유지/자식차단·override접근고정·위조ID차단·ref/nativebatch guard·interface공개/typed계약·UI필터/접근Undo·bounded blueprint.members.read. pure/상속/folding/nativebatch·실제UI/save/Play/같은D3D[7,25,9]통과. WORK1536/sync1537/install1538/recover1538/finish1539 완료·started재실행금지. 다음ANM06 runtimeclip/shot 반복선형조회와누적목표계속.
+heavy/GUI/install 전 activeInstalledVersions. 소유hidden editorWindowProbe·임시project/profile/port만, 사용자창/원본/프로필변경금지. CXX -o relative·실행absolute. PS외부실패자동중단아님→Node execFile 순차권장. rg는directory+--glob, 큰minified/base64출력금지. retainTestEvidence/pruneTestArtifacts·Versions1. Three vendor2SHA/patch유지. Git한글ConventionalCommit author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com, 전역설정/AItrailer없음. WebGPU명시승인범위밖 agent금지. Mac/Xcode/Android실기기없음.

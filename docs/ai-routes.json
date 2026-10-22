@@ -609,7 +609,9 @@
         "prototype/animation-retarget-editor.js",
         "docs/CURVE_TOOLS.md",
         "prototype/curve-clipboard.js",
-        "prototype/curve-clipboard-authoring.js"
+        "prototype/curve-clipboard-authoring.js",
+        "prototype/sequence-interval-selection.js",
+        "docs/SEQUENCE_INTERVAL_SELECTION.md"
       ]
     },
     {
@@ -1669,6 +1671,16 @@
       ],
       "paths": [
         "prototype/blueprint-member-inspection.js"
+      ]
+    },
+    {
+      "id": "sequence-interval-selection",
+      "keywords": [
+        "IntervalSelectionIndex",
+        "SequenceSectionSampler"
+      ],
+      "paths": [
+        "prototype/sequence-interval-selection.js"
       ]
     }
   ]
