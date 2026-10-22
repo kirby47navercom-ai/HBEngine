@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-quaternion-angular-and-cycle-infinity",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "503dd8ef1f56dfa907d5b67683ec3d601c3a85f6",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e8041902acb2b110",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e8041902acb2b110\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\e8041902acb2b110\\HBEngine.exe",
+  "bundleHash": "e8041902acb2b110db3a96f20255a05013626deef93d5f9f6902e3b06c5591e3",
+  "files": 4349,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4344,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2dbd59641ffe92fa",
+        "bytes": 193623067,
+        "manifestSHA256": "9692fac084241d9e61de3f5b5a7f81afe483fb752a2cca2f2827dcc5567d890b"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T20:02:41.1805969Z",
+    "bytes": 193623067,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "e8041902acb2b110"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1022,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-quaternion-1766-mFo0M7/acceptance.json",
+      "sha256": "c25dcd375bac50e0f307288288121143cddb9d7588f962ca6fbc93dd1d6eb741",
+      "scope": "Owned hidden quaternion linear/cycleOffset inspector labels, Undo/Redo/save/revision/dryRun/invalid discrete atomic. Actual BP and C++ LevelSequence post Seek4.5→25deg/false; editor additionally C++ Seek0→340deg/false. --player independently cooks/runs D3D11 and verifies native Calls1 and post pose. No user project/profile or event/reference-clock remapping.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e8041902acb2b110\\HBEngine.exe"
+      ],
+      "ms": 29977.2133
+    },
+    {
+      "path": "native/build/sequence-quaternion-1766-wfpbnI/acceptance.json",
+      "sha256": "2b1cc0ba77d1614b9a1934e32886c3d5ab4afcdb2a7a4126fbc132d2d8e4e626",
+      "scope": "Owned hidden quaternion linear/cycleOffset inspector labels, Undo/Redo/save/revision/dryRun/invalid discrete atomic. Actual BP and C++ LevelSequence post Seek4.5→25deg/false; editor additionally C++ Seek0→340deg/false. --player independently cooks/runs D3D11 and verifies native Calls1 and post pose. No user project/profile or event/reference-clock remapping.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e8041902acb2b110\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 42586.8424
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\e8041902acb2b110\\",
+    "elapsedMs": 64.88,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\e8041902acb2b110",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "e8041902acb2b110db3a96f20255a05013626deef93d5f9f6902e3b06c5591e3",
+      "installedAt": "2026-10-22T20:02:37.727Z",
+      "manifestFiles": 4349,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged native SDK21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4349,
+  "versions": [
+    "e8041902acb2b110"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1769-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/sequence-quaternion1767-group.json",
+      "sha256": "138dda534eec67a33a252d4f846a0b6382987916ad4663cbefca75c898399ca8",
+      "scope": "Eight grouped matrix/curve/event/nested sequence/runtime/AI regressions."
+    },
+    {
+      "path": "native/build/sequence-quaternion-1766-RI6e9Y/acceptance.json",
+      "sha256": "1e0857215790ac24e10b46f116d3438dde2aa5f0988907144a0101a52f040c2b",
+      "scope": "Owned hidden quaternion linear/cycleOffset inspector labels, Undo/Redo/save/revision/dryRun/invalid discrete atomic. Actual BP and C++ LevelSequence post Seek4.5→25deg/false; editor additionally C++ Seek0→340deg/false. --player independently cooks/runs D3D11 and verifies native Calls1 and post pose. No user project/profile or event/reference-clock remapping."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/sequence-quaternion-1766-RI6e9Y/acceptance.json",
+      "sha256": "1e0857215790ac24e10b46f116d3438dde2aa5f0988907144a0101a52f040c2b",
+      "scope": "Owned hidden quaternion linear/cycleOffset inspector labels, Undo/Redo/save/revision/dryRun/invalid discrete atomic. Actual BP and C++ LevelSequence post Seek4.5→25deg/false; editor additionally C++ Seek0→340deg/false. --player independently cooks/runs D3D11 and verifies native Calls1 and post pose. No user project/profile or event/reference-clock remapping."
+    }
+  ],
+  "scope": "Installed actual quaternion angular/cycle-accumulation inspector labels, Undo/Redo/save and AI revision/dryRun/stale/discrete-invalid atomic; actual C++ and BP LevelSequence Seek4.5 sees25deg/false, editor also C++ Seek0 sees340deg/false. Independently cooked D3D11 verifies native Calls1 and25deg. Eight regressions and independent Rodrigues/matrix33 observations max3.83e-15. Full source1022/native21/30tests/vendor2/Player1604/Host1041 hashes; changed SequenceSampler excluded from old runtime evidence. User preserved/Versions1. No Euler winding recovery or extra GPU/renderer claim."
+}

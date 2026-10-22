@@ -1230,6 +1230,30 @@
     "preparedKeyDuplication": 0,
     "scratch": "One lazy three-Quaternion/Euler owner per sampler for explicit new outside modes; no key or per-cycle cache; bounded constant work plus key binary search."
   },
-  "installationPending": true,
-  "scope": "Quaternion endpoint angular extrapolation and world-delta cycle accumulation in human/AI/CPP/BP flow. Eight regressions and source actual UI/C++ forward/back seek passed; installed gates pending."
+  "installationPending": false,
+  "scope": "Quaternion endpoint angular extrapolation and world-delta cycle accumulation in human/AI/CPP/BP flow. Eight regressions and source actual UI/C++ forward/back seek passed; installed gates pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1769.json",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-quaternion-1766-mFo0M7/acceptance.json",
+      "sha256": "c25dcd375bac50e0f307288288121143cddb9d7588f962ca6fbc93dd1d6eb741",
+      "scope": "Owned hidden quaternion linear/cycleOffset inspector labels, Undo/Redo/save/revision/dryRun/invalid discrete atomic. Actual BP and C++ LevelSequence post Seek4.5→25deg/false; editor additionally C++ Seek0→340deg/false. --player independently cooks/runs D3D11 and verifies native Calls1 and post pose. No user project/profile or event/reference-clock remapping.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e8041902acb2b110\\HBEngine.exe"
+      ],
+      "ms": 29977.2133
+    },
+    {
+      "path": "native/build/sequence-quaternion-1766-wfpbnI/acceptance.json",
+      "sha256": "2b1cc0ba77d1614b9a1934e32886c3d5ab4afcdb2a7a4126fbc132d2d8e4e626",
+      "scope": "Owned hidden quaternion linear/cycleOffset inspector labels, Undo/Redo/save/revision/dryRun/invalid discrete atomic. Actual BP and C++ LevelSequence post Seek4.5→25deg/false; editor additionally C++ Seek0→340deg/false. --player independently cooks/runs D3D11 and verifies native Calls1 and post pose. No user project/profile or event/reference-clock remapping.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e8041902acb2b110\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 42586.8424
+    }
+  ]
 }

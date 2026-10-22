@@ -1076,3 +1076,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1763–1764: 설치본 설정 팝업 5열/3열·높이180px·가로 넘침 없음·곡선 실제 노출·Escape/포커스·필터 적용/Undo 확인 4.94초. 필터/런타임/C++ 정확한1758 해시·게임 증거 재사용. 명세4343/source1016/native21/30tests/vendor2/Player1604/Host1041·User10849 읽기 불변·링크/association/Versions1·이전193480120B 퇴역/lease0. USER_INSTALL1763·누적 계속.
 
 1765–1767: 쿼터니언 각속도 유지·월드 델타 회전 누적/음수 반복·비가환 경계 연속·step/참조 시계 보존·지연 scratch 한 개. 독립 Rodrigues/행렬33관찰 max3.83e-15·8회귀. 실제 속성/UndoRedo/AI revision/dryRun/이산 원자 거절·BP/C++ Seek4.5→25도 및0→340도. SequenceSampler 과거 실행 재사용 제외·설치 예정. QUATERNION_INFINITY/WORK1767.
+
+1769–1770: 설치본 쿼터니언 각속도/누적 UI 29.98초·별도 D3D11 42.59초. 실제 BP/C++ Seek4.5→25도 및 editor Seek0→340도·Calls1/이산 시계 보존. 명세4349/source1022/native21/30tests/vendor2/Player1604/Host1041 SHA·User10849 읽기 불변·링크/association/Versions1·이전193623067B 퇴역/lease0. 8회귀·변경 sampler는 과거 runtime 재사용 제외. USER_INSTALL1769·누적 계속.

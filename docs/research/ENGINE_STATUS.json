@@ -1829,7 +1829,8 @@
         "docs/research/ENGINE_WORK_1761.json",
         "docs/research/USER_INSTALL_1763.json",
         "docs/QUATERNION_INFINITY.md",
-        "docs/research/ENGINE_WORK_1767.json"
+        "docs/research/ENGINE_WORK_1767.json",
+        "docs/research/USER_INSTALL_1769.json"
       ]
     },
     {
@@ -3006,7 +3007,8 @@
         "docs/research/ENGINE_WORK_1756.json",
         "docs/research/USER_INSTALL_1758.json",
         "docs/QUATERNION_INFINITY.md",
-        "docs/research/ENGINE_WORK_1767.json"
+        "docs/research/ENGINE_WORK_1767.json",
+        "docs/research/USER_INSTALL_1769.json"
       ]
     },
     {
@@ -3521,14 +3523,14 @@
     "first": 1765,
     "last": 1767,
     "receipt": "docs/research/ENGINE_WORK_1767.json",
-    "scope": "Quaternion endpoint angular extrapolation and world-delta cycle accumulation in human/AI/CPP/BP flow. Eight regressions and source actual UI/C++ forward/back seek passed; installed gates pending."
+    "scope": "Installed actual quaternion angular/cycle-accumulation inspector labels, Undo/Redo/save and AI revision/dryRun/stale/discrete-invalid atomic; actual C++ and BP LevelSequence Seek4.5 sees25deg/false, editor also C++ Seek0 sees340deg/false. Independently cooked D3D11 verifies native Calls1 and25deg. Eight regressions and independent Rodrigues/matrix33 observations max3.83e-15. Full source1022/native21/30tests/vendor2/Player1604/Host1041 hashes; changed SequenceSampler excluded from old runtime evidence. User preserved/Versions1. No Euler winding recovery or extra GPU/renderer claim."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1763.json",
-    "sourceCommit": "5bf71ae5e9f90df99e2c11055ade503061585120",
-    "bundleHash": "2dbd59641ffe92fa548da79419c1314e7ea26e19a62b58d7f634a83a7570d10a",
+    "receipt": "docs/research/USER_INSTALL_1769.json",
+    "sourceCommit": "503dd8ef1f56dfa907d5b67683ec3d601c3a85f6",
+    "bundleHash": "e8041902acb2b110db3a96f20255a05013626deef93d5f9f6902e3b06c5591e3",
     "verified": true,
     "versions": 1,
-    "scope": "Installed responsive curve-settings popup at1424 and1040 CSS pixels: actual five/three label columns, bounded180px scroll, no horizontal overflow, exposed curve hit points, editable sample rate, Escape close/focus and actual bandstop apply/Undo. Exact unchanged filter/runtime/C++ owners reuse1758 numeric and actual D3D11 Calls1/Target1.1306563294967336; no duplicate native/game rebuild. Full source1016/native21/30tests/vendor2/Player1604/Host1041 manifest hashes and User preserved/Versions1."
+    "scope": "Installed actual quaternion angular/cycle-accumulation inspector labels, Undo/Redo/save and AI revision/dryRun/stale/discrete-invalid atomic; actual C++ and BP LevelSequence Seek4.5 sees25deg/false, editor also C++ Seek0 sees340deg/false. Independently cooked D3D11 verifies native Calls1 and25deg. Eight regressions and independent Rodrigues/matrix33 observations max3.83e-15. Full source1022/native21/30tests/vendor2/Player1604/Host1041 hashes; changed SequenceSampler excluded from old runtime evidence. User preserved/Versions1. No Euler winding recovery or extra GPU/renderer claim."
   }
 }
