@@ -974,3 +974,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1529 설치확인: 2774fd6e1bb3b958·4172명세/836소유/29native검사/20nativeowner/2vendor SHA·Player1484/Host1041재사용. rangebar/영역확대/확대scrub/터치pan-pinch-cancel/구간수정Undo·저장nestedPlay[7.5,0,0]/exit0 compact25.2초통과. 소스65536키/203구간·기존제스처/trim/save/같은저장D3D[7.5,0,0]179초검사는정확8제품소유SHA재사용. User10849읽기SHA/연결/Versions1·이전189601725B회수. 다음CPP01 별도BP함수호출범위와누적엔진목표계속.
 
 1531–1536: BP함수/매크로/변수접근을선언owner/원caller로공유·3세대부모private내부유지/자식거부·protected재정의/parent호출·private재정의/접근변경/상속ID위장차단·mutable ref/nativewrapper/interface공개typed계약. sidebar/palette/상세readonly·접근UI수정/Undo/자식rebind·AI members페이지/focus1owner2015B. 상속/folding/nativebatch50→1/실제UI저장Play/같은D3D[7,25,9]/2D50조건+CPP/AI통과. bd1640c·native20/Player/Host재사용·다음설치.
+
+1538 설치확인: 11872c2e5a2b99fd·4180명세/844소유/29native검사/20nativeowner/2vendor SHA·Player1484/Host1041재사용. 최종BP접근UI/Undo/rebind/AI우회원자거부/저장Play[7,25,9]/exit0 14.9초·기존privateCPP기본값/원본헤더/save/CPP→BP[14,3,2]/Score14 9초통과. 종료PID의deadlease1개는기존pruner로정리, 같은GUI검사반복없음. User10849읽기SHA/연결/Versions1·이전189765821B회수. 다음시퀀스runtime clip/shot조회와누적엔진목표계속.

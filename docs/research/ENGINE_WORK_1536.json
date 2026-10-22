@@ -978,10 +978,6 @@
     "ms": 44677.0641,
     "finalAddedGuard": "A subsequent source-origin ID collision rejection only; final pure regression+installed UI verify final owner hashes. Package is not redundantly rebuilt."
   },
-  "pendingInstalledGates": [
-    "tools/check-blueprint-access-1534-window.mjs",
-    "tools/check-native-access-1506-window.mjs"
-  ],
   "focusedAI": {
     "symbol": "inspectBlueprintMembers",
     "elapsedMS": 194.45,
@@ -998,8 +994,41 @@
     "failedCheck": "Initial new fixture linked setPosition.value instead of position; fixture corrected before acceptance. No failed attempt counted as feature.",
     "verification": "Affected pure/compat/2D tests grouped; large timeline179s and renderer matrix not rerun."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1529.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1538.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/blueprint-access-1534-window-PyAQRT/acceptance.json",
+      "sha256": "3c7ba31023775dda4c6e0b2be28d82d5fb168ae405025f04c41131e41e0aa8b5",
+      "scope": "Owned hidden actual editor, three-generation BP ownership/private storage+helper/protected virtual override, access-details edit and Undo, descendant refresh, atomic copied/AI private-call rejection, paged AI and same saved game; no user project/profile.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\11872c2e5a2b99fd\\HBEngine.exe"
+      ],
+      "ms": 14886.075200000001
+    },
+    {
+      "path": "native/build/native-access-1506-window-eMG4pB/acceptance.json",
+      "sha256": "6dee590968bdbae8e4f911bc44427bff0df5e4e7f48a67a1819750fd7ef0ef54",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\11872c2e5a2b99fd\\HBEngine.exe"
+      ],
+      "ms": 9001.3655
+    }
+  ],
+  "installedMetadataCheck": "{\"passed\":true,\"scope\":\"scoped declarations, private metadata, class pointers, fake macro/string delimiters, friend idempotence, source preservation, reload identity\"}",
+  "postGateLeaseRecovery": {
+    "passed": true,
+    "scope": "Both actual UI gates already passed. Owner PID34276 exited; existing cache pruner removes dead lease only, preserves live owners. No GUI/build/installation repeated.",
+    "cleanup": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    }
+  }
 }

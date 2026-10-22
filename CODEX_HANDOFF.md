@@ -4,7 +4,7 @@
 
 ## 현재 설치와 구현
 
-현재확정설치1529: C:/Users/kirby/HBEngine/Versions/2774fd6e1bb3b958/HBEngine.exe·4172명세/836소유/29native검사/20nativeowner/2vendor·User10849읽기SHA/Versions1·이전189601725B퇴역. codee605267/record1408cae·Player1484/Host1041정확SHA재사용. 설치controls/Undo/save/Play[7.5,0,0]/exit0 compact25.2초/focus1owner63.88ms통과. 이전1518privateCPP/D3D/2D는같은runtime SHA재사용.
+현재확정설치1538: C:/Users/kirby/HBEngine/Versions/11872c2e5a2b99fd/HBEngine.exe·4180명세/844소유/29native검사/20nativeowner/2vendor·User10849읽기SHA/Versions1·이전189765821B퇴역. codebd1640c/record2324989·Player1484/Host1041정확SHA재사용. 최종BP UI/Undo/rebind/원자거부/save/Play[7,25,9]14.9초·기존privateCPP[14,3,2]/Score14 9초·focus1owner61.91ms통과. 종료PID34276 deadlease는기존pruner정리·GUI재검사안함.
 기존1486(f2c326f): HB_STRUCT typedwire·nested/enum/Actor/array/default·MakeBreakSet/분할·변수/속성/함수/매크로/Take/sequence복원. portable동명wrapper/checkpoint ODR충돌은생성익명namespace로격리수정. 근거 docs/NATIVE_RECORDS.md/ENGINE_WORK_1486.json.
 
 ## 다음과 잔여
@@ -17,4 +17,4 @@
 
 ## 현재1520–1530 완료와 다음
 
-rangebar/handle키보드/jump·Ctrl영역확대/반대reset/Esc·touch배경pan/pinch/cancel·확대scrub좌표수정·행소유lazyintervalindex/선택포함memo·history64+ownedDenseArray이전키열거생략. group12·65536키/203구간 제스처/편집Undo/save/nestedPlay/D3D[7.5,0,0]통과. fullUI179초는설치에서반복안함: --quick-install512키/203구간/동일새controls/Undo/save/Play25.2초통과·제품8소유SHA일치. initialallarray후보느려미채택·64+슬롯1720380→1605692/방문262176/컨테이너32814동일·시간mixed/FPS주장없음·전순회/복원잔여. source1527/record1527/sync1528/install1529/finish1530 started재실행금지. 1531–1535 BP함수/매크로/변수접근: 파생memberOrigins/원caller/선언소유·상속private내부유지/자식차단·override접근고정·위조ID차단·ref/nativebatch guard·interface공개/typed계약·UI필터/접근Undo·bounded blueprint.members.read. pure/상속/folding/nativebatch·실제UI/save/Play/같은D3D[7,25,9]통과. 최종guard/AI검사후WORK1536→sync1537/install1538/finish1539.
+rangebar/handle키보드/jump·Ctrl영역확대/반대reset/Esc·touch배경pan/pinch/cancel·확대scrub좌표수정·행소유lazyintervalindex/선택포함memo·history64+ownedDenseArray이전키열거생략. group12·65536키/203구간 제스처/편집Undo/save/nestedPlay/D3D[7.5,0,0]통과. fullUI179초는설치에서반복안함: --quick-install512키/203구간/동일새controls/Undo/save/Play25.2초통과·제품8소유SHA일치. initialallarray후보느려미채택·64+슬롯1720380→1605692/방문262176/컨테이너32814동일·시간mixed/FPS주장없음·전순회/복원잔여. source1527/record1527/sync1528/install1529/finish1530 started재실행금지. 1531–1535 BP함수/매크로/변수접근: 파생memberOrigins/원caller/선언소유·상속private내부유지/자식차단·override접근고정·위조ID차단·ref/nativebatch guard·interface공개/typed계약·UI필터/접근Undo·bounded blueprint.members.read. pure/상속/folding/nativebatch·실제UI/save/Play/같은D3D[7,25,9]통과. WORK1536/sync1537/install1538/recover1538/finish1539 완료·started재실행금지. 다음ANM06 runtimeclip/shot 반복선형조회와누적목표계속.

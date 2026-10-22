@@ -1,0 +1,154 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "2324989d66b0a3974433aa2f9dbab9413a355816",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\11872c2e5a2b99fd",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\11872c2e5a2b99fd\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\11872c2e5a2b99fd\\HBEngine.exe",
+  "bundleHash": "11872c2e5a2b99fdf97706c760d193e2662331945f9db1767ff531fc638a4f42",
+  "files": 4180,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4173,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2774fd6e1bb3b958",
+        "bytes": 189765821,
+        "manifestSHA256": "4646cb1dbd9cd6cdcd8edb00b9f02a0ef423613279516a83ca09ce717cfb78ea"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T07:36:54.5119778Z",
+    "bytes": 189765821,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "11872c2e5a2b99fd"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 844,
+  "repositoryOnlyTestSourcesVerified": 29,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
+  "installedGates": [
+    {
+      "path": "native/build/blueprint-access-1534-window-PyAQRT/acceptance.json",
+      "sha256": "3c7ba31023775dda4c6e0b2be28d82d5fb168ae405025f04c41131e41e0aa8b5",
+      "scope": "Owned hidden actual editor, three-generation BP ownership/private storage+helper/protected virtual override, access-details edit and Undo, descendant refresh, atomic copied/AI private-call rejection, paged AI and same saved game; no user project/profile.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\11872c2e5a2b99fd\\HBEngine.exe"
+      ],
+      "ms": 14886.075200000001
+    },
+    {
+      "path": "native/build/native-access-1506-window-eMG4pB/acceptance.json",
+      "sha256": "6dee590968bdbae8e4f911bc44427bff0df5e4e7f48a67a1819750fd7ef0ef54",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\11872c2e5a2b99fd\\HBEngine.exe"
+      ],
+      "ms": 9001.3655
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\11872c2e5a2b99fd\\",
+    "elapsedMs": 61.91,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\11872c2e5a2b99fd",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "11872c2e5a2b99fdf97706c760d193e2662331945f9db1767ff531fc638a4f42",
+      "installedAt": "2026-10-22T07:36:51.121Z",
+      "manifestFiles": 4180,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"scope\":\"scoped declarations, private metadata, class pointers, fake macro/string delimiters, friend idempotence, source preservation, reload identity\"}",
+  "manifestVerifiedFiles": 4180,
+  "versions": [
+    "11872c2e5a2b99fd"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1538-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/access1535-final.json",
+      "sha256": "dfa07ba87cc479f61d75aa6d64c4f18b0d04b37a6bf1b427f2f33d93da4d4d92",
+      "scope": "Final scoped ownership/compatibility/2D50+compiled SDK/AI checks; source UI/D3D reuse is described in group scope."
+    },
+    {
+      "path": "native/build/blueprint-access-1533.json",
+      "sha256": "7f6383ff3b7b221a8efc83537d14dce47ed6204522425dbb5e55286266d701fa",
+      "scope": "Final scoped ownership/compatibility/2D50+compiled SDK/AI checks; source UI/D3D reuse is described in group scope."
+    },
+    {
+      "path": "native/build/access1536-extra.json",
+      "sha256": "a9eb9160f894cb11096e7d2eff9e0fd7c71efdd9e2170795783f3b6160561645",
+      "scope": "Final scoped ownership/compatibility/2D50+compiled SDK/AI checks; source UI/D3D reuse is described in group scope."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/blueprint-access-1534-window-kqhjiK/acceptance.json",
+      "sha256": "0b20751fcf97a07d85409681067f9c5088d79e4cba6e03b0594319246837f56a",
+      "scope": "Source owned actual UI/access edit/Undo/descendant rebind/atomic private-call rejection/thin save/nestedPlay and same saved D3D11[7,25,9]/exit0. Last additional forged-origin rejection is covered by final pure regression and final installed UI."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/blueprint-access-1534-window-kqhjiK/acceptance.json",
+      "sha256": "0b20751fcf97a07d85409681067f9c5088d79e4cba6e03b0594319246837f56a",
+      "scope": "Source owned actual UI/access edit/Undo/descendant rebind/atomic private-call rejection/thin save/nestedPlay and same saved D3D11[7,25,9]/exit0. Last additional forged-origin rejection is covered by final pure regression and final installed UI."
+    }
+  ],
+  "scope": "Installed final Blueprint ownership/access: actual details/Undo/descendant rebind, private UI filtering, copied+AI private-call atomic rejection, bounded AI members, thin saved three-generation child and nested Play[7,25,9]/exit0. Prior source actual same saved D3D11[7,25,9]/exit0; final origin collision guard pure+installed flow. Existing namespaced private C++ default9/edit/save/CPP→BP[14,3,2]/Score14 UI positive regression on changed JS runtime. Fresh source2D50+compiled SDK and native-batch50→1 passed. Full manifest/844 source owners/29native tests/20native owners/2vendor, exact shared unchanged runtime owners, samePlayer1484/Host1041, User read-only SHA, links and Versions1. No renderer matrix, long timeline rerun, actual phone or FPS claim.",
+  "version": 1,
+  "date": "2026-10-22T07:40:27.134Z",
+  "work": "docs/research/ENGINE_WORK_1536.json",
+  "distributionSync": "native/build/distribution-1537-sync.json",
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1529.json",
+  "nativePlayerBuildReused": true,
+  "hostReuseFrom": "docs/research/USER_INSTALL_1529.json",
+  "postGateLeaseRecovery": {
+    "passed": true,
+    "scope": "Both actual UI gates already passed. Owner PID34276 exited; existing cache pruner removes dead lease only, preserves live owners. No GUI/build/installation repeated.",
+    "cleanup": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    }
+  }
+}

@@ -3254,11 +3254,11 @@
     "scope": "Blueprint declaration ownership/caller visibility across inheritance, private variable/reference and native-wrapper guards, override/interface typed contracts, editor visibility/details/Undo/rebind and bounded AI member pages. Separate object-only access and broader C++ type/runtime features remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1529.json",
-    "sourceCommit": "1408cae486d2a10fd37398daffdf0eac9c3a4b2d",
-    "bundleHash": "2774fd6e1bb3b9587340b886c9cce7ef3b8d2285bd405def4964aa298426e1bf",
+    "receipt": "docs/research/USER_INSTALL_1538.json",
+    "sourceCommit": "2324989d66b0a3974433aa2f9dbab9413a355816",
+    "bundleHash": "11872c2e5a2b99fdf97706c760d193e2662331945f9db1767ff531fc638a4f42",
     "verified": true,
     "versions": 1,
-    "scope": "Installed final timeline navigation: compact512-key/203-section native rangebar handles/keyboard/jump/Escape, Ctrl region right zoom/left reset, zoomed scrub, CDP pointer-touch pinch/pan/cancel without page zoom or authored changes; interval patch/Undo invalidation, source save and nested Play[7.5,0,0]/exit0. Full65536-key legacy controls/trim/save/D3D[7.5,0,0] source proof is reused with all8 exact product owner hashes; same full179s test not repeated. Full manifest/836 source owners/29 native tests/20 native owners/2 vendor SHA and7 shared runtime owners, Player1484/Host1041, User read-only inventory, links and Versions1. Existing private-native metadata pure check and one-owner TimelineIntervalIndex AI. Previous2D/CPP/D3D native/runtime proofs reused by exact unchanged owners; no actual touch device or full-engine/FPS claim."
+    "scope": "Installed final Blueprint ownership/access: actual details/Undo/descendant rebind, private UI filtering, copied+AI private-call atomic rejection, bounded AI members, thin saved three-generation child and nested Play[7,25,9]/exit0. Prior source actual same saved D3D11[7,25,9]/exit0; final origin collision guard pure+installed flow. Existing namespaced private C++ default9/edit/save/CPP→BP[14,3,2]/Score14 UI positive regression on changed JS runtime. Fresh source2D50+compiled SDK and native-batch50→1 passed. Full manifest/844 source owners/29native tests/20native owners/2vendor, exact shared unchanged runtime owners, samePlayer1484/Host1041, User read-only SHA, links and Versions1. No renderer matrix, long timeline rerun, actual phone or FPS claim."
   }
 }
