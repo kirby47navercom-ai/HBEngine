@@ -1108,3 +1108,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1821–1824: 개별enum/struct 에셋/대표·보조타입 편집/BP가져오기/공용C++헤더·enum변수/Set sourceReference 저장·enum-only 이관수정·additive소비자/그룹UndoRedo·이동identity·AI계약 연결. 최종6영향회귀 통과. 실제2D 생성UI/필드저장/UndoRedo/C++ enum37+중첩2+2→99,4,37/독립D3D checkpoint 통과; finalguard 포함 설치gate 예정. 다른에셋필드의존/전역발견/ABIhotreload 남김. WORK1824.
 
 1825–1827: 최종설치 개별enum/struct 실제생성/대표·보조편집/BP가져오기/enum변수·Set compact저장/전체그룹UndoRedo/C++ enum37+중첩2+2/99,4,37·ActorID/독립D3D11 79.05초 통과. manifest4398/source1074/native21/30tests/vendor2·User10849읽기불변·링크/association/Versions1·이전194864798B정리/lease0. USER_INSTALL1826. 에셋간필드의존/global자동발견/ABI재적용 잔여유지·누적계속.
+
+1828–1831: Take 설정 프리셋 에셋/전용UI·생성/불러오기·SaveAs 원본guard/덮어쓰기거절·그룹UndoRedo·실제FPS/키오차·채널/뼈/생성필터snapshot·AI revision/noChange/override·녹화중 원본변경분리·editorOnly 빌드제외 구현. 6회귀+실제3D UI/AI24fps·오차0·IKMid/모델부재·실제C++ PlaySeekStop 통과. 최종설치D3D예정. Actor/source바인딩목록/상속/clock/timecode별도잔여. WORK1831.
