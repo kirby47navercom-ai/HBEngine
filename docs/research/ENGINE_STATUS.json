@@ -3412,14 +3412,14 @@
     "first": 1684,
     "last": 1692,
     "receipt": "docs/research/ENGINE_WORK_1692.json",
-    "scope": "Nested authored default reconciliation/IDs/strict saved schema guards, actual old partial-default failure vs actual CPP17 and deep array initializer fix; reflected included header watch/closure/CAS/inspector refresh, grouped regressions. Final installed UI author/save/include refresh/CPP/new field/D3D pending."
+    "scope": "Nested authored default reconciliation/IDs/strict saved schema guards, actual old partial-default failure vs actual CPP17 and deep array initializer fix; reflected included header watch/closure/CAS/inspector refresh, grouped regressions. Final installed UI author/save/included header refresh with unchanged primary/CPP/new scalar7+array9/D3D passed, User inventory unchanged/Versions1."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1682.json",
-    "sourceCommit": "66baf8ada3c601378e03d3488190ff32f5b58ec5",
-    "bundleHash": "7a2c77795fb78d518e68bfac4cd9235bdaf079ea8af5ef42b8f88ddc489ae880",
+    "receipt": "docs/research/USER_INSTALL_1694.json",
+    "sourceCommit": "419fa41908d718f864bf8080d0f22222bb2ebe75",
+    "bundleHash": "84d95f974bf36abad1bcc81a04e53be86ea24d89bef904a34fec6bcf1f55928f",
     "verified": true,
     "versions": 1,
-    "scope": "Installed actual pure-BP type import UI/UndoRedo/compact reference save/zero native build, nested SetMembers/Break and Actor-reference movement/Stop authored restore, same saved D3D game with0 native modules; previous CPP owner build path headless and actual1671 CPP game reused. Prior type-library UI creation/label edit, atomic original/generated header save, then shared typed C++ editor metadata/default pages, nested record/enum/array fields, type picker UndoRedo, Make pin/default/instance editing, sourceReference save without copied type tables; compiled CPP value/Actor reference and same saved actual D3D11 game with exact source Player1604. Source actual2D library create/write/checkedBatch/dryrun/conflict/identity/defaults plus snapshot512struct/514enum/2000lookups/1000record-array, valid shared frozen contexts/mutable plans and previous BP/sequence/take plus original-code failure proof reused. Native21/30tests/vendor2/Player1604/Host1041/render/network/montage/VM owners unchanged; full manifest/User inventory/links/Versions1. No independent per-enum/struct assets/pure-BP global import/arbitrary migration/whole engine/FPS/phone claim."
+    "scope": "Installed actual child field authoring fills parent single/array defaults and paired header save, unchanged primary H/S reflected include refresh/inspector, compiled CPP and same saved D3D game keep new nested scalar7/array9. Prior installed1682 pure-BP type import UI/UndoRedo/compact reference save/zero native build, nested SetMembers/Break and Actor-reference movement/Stop authored restore, same saved D3D game with0 native modules; previous CPP owner build path headless and actual1671 CPP game reused. Prior type-library UI creation/label edit, atomic original/generated header save, then shared typed C++ editor metadata/default pages, nested record/enum/array fields, type picker UndoRedo, Make pin/default/instance editing, sourceReference save without copied type tables; compiled CPP value/Actor reference and same saved actual D3D11 game with exact source Player1604. Source actual2D library create/write/checkedBatch/dryrun/conflict/identity/defaults plus snapshot512struct/514enum/2000lookups/1000record-array, valid shared frozen contexts/mutable plans and previous BP/sequence/take plus original-code failure proof reused. Native21/30tests/vendor2/Player1604/Host1041/render/network/montage/VM owners unchanged; full manifest/User inventory/links/Versions1. No independent per-enum/struct assets/pure-BP global import/arbitrary migration/whole engine/FPS/phone claim."
   }
 }

@@ -1164,9 +1164,6 @@
     "prototype/network-inspection.js": "62f2e61f595dd4ac939eb86bee2cf810f4f538f7573fae71cf82bbf403b06e55"
   },
   "changedRuntimeOwners": [],
-  "pendingInstalledGates": [
-    "tools/check-native-type-defaults-1688-window.mjs --executable installed --package --expected-player-sha 07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
-  ],
   "focusedAI": [
     {
       "symbol": "reconcileNativeTypeDefaults",
@@ -1205,8 +1202,23 @@
     "firstCppFailure": "native/build/native-type-initializer-1686-2csKhG/failure.json",
     "reason": "Standalone fixture initially omitted existing SDK jsonInclude compiler path; added prepareNative/jsonInclude without changing dependency versions. Same actual C++ program then passed in1.15s."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1682.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1694.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/native-type-defaults-1688-window-7RdmyC/acceptance.json",
+      "sha256": "de377ac0ef141432fd2d8f37973ed845f4b86d1e0639662fe2ab2fba9589ccf6",
+      "scope": "Actual owned type-library editor child field addition automatically fills parent single/array defaults, atomic shared C++ header save, then new Field1 scalar/array values cross actual CPP and same D3D game; then actual C++ record metadata page/defaults, nested variables and enum/array edit, type picker UndoRedo, Make pin and defaults/instances, sourceReference save without tables, compiled CPP value/Actor reference and same saved actual D3D11 game. Snapshot cross-context/large lookup count is proved separately; native/renderer source unchanged.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\84d95f974bf36aba\\HBEngine.exe",
+        "--package",
+        "--expected-player-sha",
+        "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+      ],
+      "ms": 77073.0022
+    }
+  ]
 }

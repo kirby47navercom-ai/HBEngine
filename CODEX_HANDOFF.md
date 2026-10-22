@@ -1,22 +1,22 @@
 # 현재 인계 — 누적 엔진 구현 계속
 
-2026-10-22. 주인님·짚짱·자연존댓말. 누적끝까지/여러구현뒤영향검사·업데이트/백그라운드/Versions1. AGENTS/AI_START/게임스킬/context읽음. 사용자goal재개답변뒤조회blocked여도현재턴계속·임의goal생성/완료/재질문금지. ENGINE_STATUS78행·분모null.
+2026-10-23. 주인님·짚짱·자연존댓말. 누적끝까지/여러구현뒤영향검사·설치/백그라운드/Versions1. AGENTS/AI_START/게임스킬읽음. user goal재개답변뒤에도tool blocked였지만현재턴계속·임의goal생성/완료/반복질문금지. ENGINE_STATUS78행·분모null.
 
-## 확정1683
+## 확정1695
 
-C:/Users/kirby/HBEngine/Versions/7a2c77795fb78d51/HBEngine.exe·USER_INSTALL_1682. 4275명세/945소유/native21/30tests/vendor2 SHA·User10849읽기SHA불변·Versions1·이전191903132B퇴역. Player1604 SHA07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160/Host1041 SHA5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46. sync1681/install1682/finish1683완료·全started/applied재실행금지. 구현5874997/record66baf8a. native SDK/렌더/VM不變再빌드안함.
+C:/Users/kirby/HBEngine/Versions/84d95f974bf36aba/HBEngine.exe·USER_INSTALL_1694. 4283명세/953소유/native21/30native검사/vendor2 SHA·User10849읽기SHA불변/링크/association/Versions1·이전192074908B퇴역. Player1604/Host1041 SHA는WORK1692/USER1694. native SDK/renderer/VM不變재빌드안함. sync1693/install1694/finish1695완료·全started/applied재실행금지. source1a2cb40/record419fa41.
 
-WORK1680: C++없는BP sourceReference native={version:1,sourceReference:true,typeLibraries:[Assets/*.hbtypes.json]}·class defaults import UI·shared resolver(scope별file/compile/조합Promise)/classes[] frozen metadata·Workspace/Inheritance/Play/cook/compactsave. nativeSourceMatches는라이브러리목록구분·다른목록에stale metadata저장안됨. CPP없는branch builder0/기존CppOwner2인스턴스build1保全. Workspace.nativeTypeSources는library별최신한벌+nativeMetadata는현재BP조합, Undo/Redo다른목록은재조합(과거조합누적X). 같은binding schema공유/Actor값별self보존. 기존poll type파일재독/async중human변경CAS. parent imports상속/childcompactsave, CPPparent 추가import는금지유지. doc/NATIVE_TYPE_IMPORTS.md·원본배열32/8MB+합성struct512기존예산.
-source7묶음native0 BP실제VM·타입생성/index/BP/sequence/take/inheritance/transaction 최장0.62초. 실제source/UI첫오류 새import행data-property-search누락→owned Debugger stack1679로진단/모듈행만수리·성공sourceR80WND. 최종설치 실제2D import UI/UndoRedo/save/noCppbuild→SetMembers/Break/Actor99,3,2/Stop7,3,2·동일저장D3D typeJSON포함/nativeModules0/종료0 37.9초. 설치context importer1파일/루트명세검증. 새타이머/worker/GPU/globalDB0. 정확symbol5개model1파일18848B/importer2508/UI1619.
+WORK1692: Child새field가Parent단일/arraydefault없어compile거절실재현1684→native-type-defaults.js/reconcileNativeTypeDefaults. schema동일label/value편집은next동일객체/추가값clone skip. schema변경은detached next·fieldUUID로new필드추가/미저장rename/delete/type(defaultreset)대응·parent/array3단까지보완·custom값/Actor null/enum保全·unknownkey/기존누락/순환budget보존. 저장된BP가새shape와안맞으면Library/header둘다유지(자동인스턴스이관은아직없음). UI새field행자동펼침.
+3단array테스트에서기존native-record-initializer.js결함발견: 명시aggregate는타입member defaults로시작해야함, containingfield.value 또는array를recordelement defaults로쓰던것수리. Git원본실제import 구부분B8→새2·실제Cpp17 [4,2,3,2,5,2,6,2] 1.15秒대조(1686/1687). 처음Cppfixture jsonInclude경로누락은test만修理. SDK/native ABI추가0.
+native-source-watch.js/nativeWatchedSources primaryH/S+reflected enum/struct source header·중복/범위guard. 기존poll include closure readNativeHeader/동시human변경CAS/inspector재갱신. 일반비reflection include/cache identity는미완. source8묶음최장0.62秒+기존Cpp단체비교reuse. 정확symbol4각1파일2871/4673/549B. 최종설치실제UI childfield추가→parent단일/arrayField1=0→paired header save→primaryH/S그대로두고포함header label변경 자동갱신→CPP scalarField1=7/arrayField1=9/Actor99,3,2→동일저장D3D에서도7/9/99,3,2·종료0 77.1秒. acceptance native-type-defaults-1688-window-7RdmyC. docs/NATIVE_TYPE_DEFAULT_EDITING.md.
 
-前WORK1665: typelibrary.hbtypes.json 전용제작UI·UUID/symbol/label·enum flags/hidden/int32·record/array/Actor/default→Source/HBGenerated/Types_ID.hpp·typesOnly명시파싱·원본+header既存transaction/CAS/수동header충돌/중복IDnamespace/기존symboltype순서enum값보존. 실제UI추가/저장→CPP/BP필드/UndoRedo/Make/default/instance→D3D99,3,2 74.9초 USER1671. 최초fixture expectedRevision누락은guard거절로보존,수리후성공. 새context fallback282파일2859589B→model/write/UI각1파일10074/3513/6783B.
-前1657snapshot/context계획/참조수리 USER1659·1648network root교체/4ms/CAS/socket/2D USER1650·1633montage 많은slot/일정색인/16slot512 BP/D3D USER1639·1623MR자원유지·1614capture facts/epoch·1606probeLM/Player1604 등全WORK根拠유지.
+前WORK1680(USER1682) pureBP typeLibraries compactref/공유resolver/UndoRedo/상속/Play/cook/nativeModules0 D3D·1665(USER1671) 타입제작UI/UUID/원자header저장/CPP·1657 snapshot index/context·1648 network교체·1633 montage색인·1623 MR자원유지·1614 capturefacts·1606 probeLM 등각WORK근거유지.
 
-## 다음 — 중첩 타입 기본값 제작 편의(분석만, 아직미구현)
+## 다음 — 저장된 제작 데이터 새필드 이관(아직분석만)
 
-주인님께다음중첩struct 기본값수동맞춤불편도줄인다고안내함. 새library editor는edit시clone→compileNativeTypeAsset(next) 엄격검증. Child에새field추가하면Parent의record형field.value 안에새key가없어즉시거절되는닭달걀문제가예상됨(아직실제재현X). 기존BPvariables/scene등persisted schema migration은別. 우선제작중library내defaults만 schemaID기반 old→next 대응으로 새field 기본값을nested/array value에채우고, 미저장필드명변경/삭제를key가아닌ID로보존할지검토. label/value-only edit는의미없는default순회skip, arrays/Actor/null/custom기존값保全·unknownkey/invalidliteral를조용히고치지말고기존검증유지. immutable old source/no new worker/timer. UI함수추가후실제author→save→Cpp/BP실행까지연결. 실재현/회귀근거먼저작게, 관련묶음마지막검사. 기능셋완료몇개뒤종료금지.
+주인님께저장된제작데이터도안전하게새field반영한다고안내함. 현재library helper는초안내defaults만변경; 기존BPvar/graphliteral/scene instance가구shape면pairedsave거절. 다음은additive-only(기존field ID/name/type/array/order/enum숫자유지) record value보완과기존AssetTransaction/CAS/복구를재사용. 먼저이미있는typedvalue walker/blueprint-overrides/native-reload/sequence-value 모델조사·새walker중복금지. TypedBP 변수/함수·매크로pin defaults/nodeinput literals/settings variableDefaults/nativeDefaults·장면/prefab object overrides·sequence/Take typedchannels도검토(무조건모든JSON key스캔으로타입추측금지). 신규metadata는oldBP값때문에resolver검증실패할수있으므로source-ref hydration과값이관/검증순서주의. 이전값/ActorID/custom값보존·newField만newdecldefault추가·이미newshape는무변경·호환되지않는shape는reject. 알수없는typedconsumer를성공으로버리지말것. 아직source변경/파일탐색도안함.
 
-累積 CPP01개별typeasset/자동발견/schema/Name/alias/ref수명/wildcard·RND03>2계층/HDR/memoryFPS·RND06 GL7秒/FXC·RND08방향/볼륨bake/worldDF/HWRT·ANM06snapshot/restore/overlap/rig/warp/Take/source64·UI03실기기/asyncrollback 등 ENGINE_STATUS.remaining. 전체공식분석/상용완료주장금지.
+누적잔여 CPP01개별typeasset/자동발견/schema/Name/alias/ref수명/wildcard·RND03>2계층/HDR/memoryFPS·RND06 GL7秒/FXC·RND08방향/볼륨bake/worldDF/HWRT·ANM06snapshot/restore/overlap/rig/warp/Take/source64·UI03실기기/asyncrollback 등ENGINE_STATUS.remaining. 전체공식분석/상용완료주장금지. docs/research실측710files16.8MB→불필요한evidence형식개편不要.
 
 ## 운영
 
