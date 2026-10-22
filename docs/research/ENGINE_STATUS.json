@@ -1818,7 +1818,8 @@
         "docs/research/USER_INSTALL_1736.json",
         "docs/research/ENGINE_WORK_1741.json",
         "docs/research/USER_INSTALL_1743.json",
-        "docs/research/ENGINE_WORK_1749.json"
+        "docs/research/ENGINE_WORK_1749.json",
+        "docs/research/USER_INSTALL_1751.json"
       ]
     },
     {
@@ -2986,7 +2987,8 @@
         "docs/CURVE_INFINITY.md",
         "docs/research/ENGINE_WORK_1741.json",
         "docs/research/USER_INSTALL_1743.json",
-        "docs/research/ENGINE_WORK_1749.json"
+        "docs/research/ENGINE_WORK_1749.json",
+        "docs/research/USER_INSTALL_1751.json"
       ]
     },
     {
@@ -3286,7 +3288,8 @@
         "docs/research/ENGINE_WORK_1724.json",
         "docs/research/USER_INSTALL_1726.json",
         "docs/CURVE_INFINITY.md",
-        "docs/research/ENGINE_WORK_1749.json"
+        "docs/research/ENGINE_WORK_1749.json",
+        "docs/research/USER_INSTALL_1751.json"
       ]
     },
     {
@@ -3500,14 +3503,14 @@
     "first": 1745,
     "last": 1749,
     "receipt": "docs/research/ENGINE_WORK_1749.json",
-    "scope": "Validated per-track clip slots and clean saved preview signature reuse; original Git identity/invalidation and work counts, actual source cutscene UI/clip transitions/nested preview/7 clean hits and BP Play,10 grouped checks. Final installed gates pending."
+    "scope": "Clip ID slots and clean saved preview signature reuse with original Git identity/invalidation and work counts;10 regressions, actual installed cutscene authoring/nested preview/A-to-B transform transitions/7 clean hits and same D3D game Target7.5/ClipTarget0.5 passed. User preserved/Versions1."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1743.json",
-    "sourceCommit": "4b5f4bf28012255db6acdb256744b43050420b8e",
-    "bundleHash": "4dbe5dd3721fa1eb1356c6634bfd2d5b3b45719a72b3481e897e96b72818ab7e",
+    "receipt": "docs/research/USER_INSTALL_1751.json",
+    "sourceCommit": "950d75424ce6b5246263d154d74c5c02393d84b3",
+    "bundleHash": "719a27d426a8375fff27f507265f9e229ed7e2cbf319f3a59e47c19d1401ce07",
     "verified": true,
     "versions": 1,
-    "scope": "Installed quaternion/discrete value inspector pre/post cycles and pingpong with typed modes, UndoRedo/Save/AI revision/dryRun/invalid atomic and actual BP Play/Pause/Seek4.5. Separately cooked D3D11 game observes5deg and visiblefalse.8 source checks include independent quaternion/boolean oracle, reference lifetime, prior origin/variable/Take/timeline and Chebyshev regression. Exact source1001/native21/30tests/vendor2/Player1604/Host1041 manifest verification. User preserved/Versions1; no event/clip/structural clock remapping or new quaternion linear/offset extrapolation claim."
+    "scope": "Installed actual cutscene Shot creation/drag/trim/source offset/child double-click, clean saved forward preview signature reuse, animation A-to-B transition and continuous transform samples, revision/dryRun and actual BP Play. Separately cooked D3D11 game sees nested Target7.5 and ClipTarget0.5.10 source regressions, old Git clip identity and preview invalidation/work counts. Exact source1008/native21/30tests/vendor2/Player1604/Host1041 manifest verification. User preserved/Versions1. No FPS/total heap, dirty serialization or reverse simulation replay removal claim."
   }
 }

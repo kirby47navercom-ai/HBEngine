@@ -1064,3 +1064,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1743–1744: 설치본 quaternion·이산값 UI11.79초+동일D3D28.44초 확인/5deg·visiblefalse. 4328명세/1001source/native21/30native/vendor2/Player1604/Host1041 SHA·User10849읽기불변·링크/association/Versions1·이전193002529B퇴역/cachelease0. source8회귀/독립표·참조시계保존. 누적원장계속.
 
 1745–1749: Sequence clipById 검증slot 재사용·256clip2048조회16ID idreads508928→6009·원Git교체/삭제/배열/수명동일/no misscache. clean saved preview JSON16k키40스크럽40→1·dirty8→8/WeakRef/no-op무효화동일/해제. 실제컷신제작/트림/자식/중첩preview·A→B/clean9중7hit/실제BPPlay. source10회귀최장2.13초·AI1owner3021/962B·SDK불변/설치예정. SEQUENCE_PREVIEW_COST/WORK1749. FPS·총heap아님·dirty/역방향 비용남음.
+
+1751–1752: 설치본컷신UI16.15초+동일D3D26.73초·Target7.5/ClipTarget.5·preview clean9중7hit/dragtrim하위열기·source변경2runtime과거reuse제외. 4335명세/1008source/native21/30native/vendor2/Player1604/Host1041 SHA·User10849읽기불변·링크/association/Versions1·이전193154506B퇴역/cachelease0. 10source회귀·작업량대조/FPS아님·dirty/역scrub비용남음·누적계속.

@@ -1168,6 +1168,30 @@
     "previewCache": "One signature pair and WeakRef of verified current clean saved data; dirty/unknown reserialize; dispose releases.",
     "workCounts": "256 clips/2048 lookups/16 IDs508928→6009;16384 keys/40 clean scrubs40→1 payload serialization;dirty8→8. Not FPS or total heap."
   },
-  "installationPending": true,
-  "scope": "Validated per-track clip slots and clean saved preview signature reuse; original Git identity/invalidation and work counts, actual source cutscene UI/clip transitions/nested preview/7 clean hits and BP Play,10 grouped checks. Final installed gates pending."
+  "installationPending": false,
+  "scope": "Validated per-track clip slots and clean saved preview signature reuse; original Git identity/invalidation and work counts, actual source cutscene UI/clip transitions/nested preview/7 clean hits and BP Play,10 grouped checks. Final installed gates pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1751.json",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-preview-1747-gWP9sw/acceptance.json",
+      "sha256": "4c7ce655e27221d73d4dbd08dcd0b81c1b7461907c9386be648b054148f87323",
+      "scope": "Owned hidden editor: Shot creation and nested row, actual drag/trim/source offset, atomic revisioned AI, double-click referenced sequence, same-runtime local-time preview and actual Blueprint Play/Pause/Seek. Clean forward preview signatures reused; animation A-to-B transition and continuous transform sample observed. No user project/profile or renderer matrix.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\719a27d426a8375f\\HBEngine.exe"
+      ],
+      "ms": 16145.941299999999
+    },
+    {
+      "path": "native/build/sequence-preview-1747-PZLbQr/acceptance.json",
+      "sha256": "4a1eb0edfc0373ad3d265a95bdf51095cd2fddbd10a049b71f2a3a3e875e4817",
+      "scope": "Actual packaged D3D11 game: Blueprint common LevelSequence Play/Pause/Seek loads referenced child asset, maps source offset at parent 1.25 seconds to target position 7.5. Native Player/Host reused; no renderer matrix/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\719a27d426a8375f\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 26730.6809
+    }
+  ]
 }

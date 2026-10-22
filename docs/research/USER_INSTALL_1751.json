@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-sequence-clip-and-clean-preview-cost",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "950d75424ce6b5246263d154d74c5c02393d84b3",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\719a27d426a8375f",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\719a27d426a8375f\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\719a27d426a8375f\\HBEngine.exe",
+  "bundleHash": "719a27d426a8375fff27f507265f9e229ed7e2cbf319f3a59e47c19d1401ce07",
+  "files": 4335,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4329,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4dbe5dd3721fa1eb",
+        "bytes": 193154506,
+        "manifestSHA256": "66a6332dffdb5a326c6d098cbb81127a1af6d827cb9690a2af28a3eeed9e8e45"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T19:13:15.4773186Z",
+    "bytes": 193154506,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "719a27d426a8375f"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1008,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-preview-1747-gWP9sw/acceptance.json",
+      "sha256": "4c7ce655e27221d73d4dbd08dcd0b81c1b7461907c9386be648b054148f87323",
+      "scope": "Owned hidden editor: Shot creation and nested row, actual drag/trim/source offset, atomic revisioned AI, double-click referenced sequence, same-runtime local-time preview and actual Blueprint Play/Pause/Seek. Clean forward preview signatures reused; animation A-to-B transition and continuous transform sample observed. No user project/profile or renderer matrix.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\719a27d426a8375f\\HBEngine.exe"
+      ],
+      "ms": 16145.941299999999
+    },
+    {
+      "path": "native/build/sequence-preview-1747-PZLbQr/acceptance.json",
+      "sha256": "4a1eb0edfc0373ad3d265a95bdf51095cd2fddbd10a049b71f2a3a3e875e4817",
+      "scope": "Actual packaged D3D11 game: Blueprint common LevelSequence Play/Pause/Seek loads referenced child asset, maps source offset at parent 1.25 seconds to target position 7.5. Native Player/Host reused; no renderer matrix/FPS claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\719a27d426a8375f\\HBEngine.exe",
+        "--player"
+      ],
+      "ms": 26730.6809
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\719a27d426a8375f\\",
+    "elapsedMs": 62.54,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\719a27d426a8375f",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "719a27d426a8375fff27f507265f9e229ed7e2cbf319f3a59e47c19d1401ce07",
+      "installedAt": "2026-10-22T19:13:12.075Z",
+      "manifestFiles": 4335,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Unchanged native SDK21/Player1604/Host1041 and30 repository test owner hashes plus7 browser shader math owners verified; previous numeric renderer and final D3D game gates reused.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4335,
+  "versions": [
+    "719a27d426a8375f"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1751-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/sequence-preview1748-group.json",
+      "sha256": "1fde6d090d02ccbd9d98dfb3b50027821a918543238f662223f5935476e94a63",
+      "scope": "Eight grouped value/curve/origin/runtime/AI checks and focused owners."
+    },
+    {
+      "path": "native/build/sequence-preview-1747-HJeQtw/acceptance.json",
+      "sha256": "bb1ab8b5cbb9a8a814d66766795722a5530da9197e0289bec72c50adc4acdd9c",
+      "scope": "Owned hidden editor: Shot creation and nested row, actual drag/trim/source offset, atomic revisioned AI, double-click referenced sequence, same-runtime local-time preview and actual Blueprint Play/Pause/Seek. Clean forward preview signatures reused; animation A-to-B transition and continuous transform sample observed. No user project/profile or renderer matrix."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/sequence-preview-1747-HJeQtw/acceptance.json",
+      "sha256": "bb1ab8b5cbb9a8a814d66766795722a5530da9197e0289bec72c50adc4acdd9c",
+      "scope": "Owned hidden editor: Shot creation and nested row, actual drag/trim/source offset, atomic revisioned AI, double-click referenced sequence, same-runtime local-time preview and actual Blueprint Play/Pause/Seek. Clean forward preview signatures reused; animation A-to-B transition and continuous transform sample observed. No user project/profile or renderer matrix."
+    }
+  ],
+  "scope": "Installed actual cutscene Shot creation/drag/trim/source offset/child double-click, clean saved forward preview signature reuse, animation A-to-B transition and continuous transform samples, revision/dryRun and actual BP Play. Separately cooked D3D11 game sees nested Target7.5 and ClipTarget0.5.10 source regressions, old Git clip identity and preview invalidation/work counts. Exact source1008/native21/30tests/vendor2/Player1604/Host1041 manifest verification. User preserved/Versions1. No FPS/total heap, dirty serialization or reverse simulation replay removal claim."
+}
