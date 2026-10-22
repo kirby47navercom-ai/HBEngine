@@ -1100,3 +1100,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1805–1809: 골격 키준비/weak모델 바인딩 재사용·재활성화 이름검증·변경전 기준포즈 단일캡처·page벡터만 복사·AI 카운터 구현. 5빠른회귀, Git1bbdc4f 독립128뼈×120키 포즈 동일, 다중대상 검증9830400→30720행/바인딩640→32(이름검증608 유지), 실제 C++ 모델/빈골격/역탐색8회·원복·별도D3D 자료 통과. 첫 검사 시점 가정 두 오류는 수정하고 실패를 성과에 포함하지 않음. 원장 잔여복원/행렬·뼈별소유권 유지. WORK1809. 설치확인 예정.
 
 1810–1812: 설치 editor·C++ 모델교체/빈골격/역탐색8회·원본포즈복원·독립 D3D11 runner 자료 72.16초 통과. 키준비1/키4/포즈행9/layout3/기준캡처1·범위query벡터복사와 동일결과. 5회귀·독립이전코드 대조·다중대상 작업량 포함. 명세4385/source1061/native21/30tests/vendor2 정확SHA·User10849 읽기불변·링크/association/Versions1·이전194520829B 정리·lease0. USER_INSTALL1811. 네이티브 픽셀·전체FPS/heap·실기기나 뼈별소유권/Graph복원 완료로 계산하지 않음. 누적계속.
+
+1813–1817: 직접 C++ 포함 헤더 struct 추가멤버 이관·BP/상속/노드입력/native/장면/프리팹/시퀀스·레거시 메타데이터 참조정규화·원자그룹UndoRedo/재시작·checkedWrite·AI 계획CAS 구현. 4영향회귀/70파일·취소/외부편집/소비자목록 보호 및 source CPP/D3D checkpoint 값2+2/위치99,4,2/ActorID 보존 통과. checkpoint 후 AI 계획반환/CAS UI는 최종설치로 확인 예정. 원본없는 IDE후저장/일반destructive/전역type레지스트리/ABI hotreload 남김. WORK1817.
