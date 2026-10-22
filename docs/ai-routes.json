@@ -1851,6 +1851,40 @@
       "paths": [
         "prototype/native-type-index.js"
       ]
+    },
+    {
+      "id": "native-type-library-model",
+      "keywords": [
+        "compileNativeTypeAsset",
+        "nativeTypeHeaderPath",
+        "createNativeTypeAsset",
+        "validNativeTypeAsset",
+        "nativeTypeAssetField",
+        "nativeTypeAssetDefault",
+        "checkNativeTypeIdentity"
+      ],
+      "paths": [
+        "prototype/native-type-assets.js"
+      ]
+    },
+    {
+      "id": "native-type-library-write",
+      "keywords": [
+        "appendNativeTypeRows",
+        "publishNativeTypeAsset"
+      ],
+      "paths": [
+        "tools/native-type-asset-write.mjs"
+      ]
+    },
+    {
+      "id": "native-type-library-editor",
+      "keywords": [
+        "renderNativeTypeAssetEditor"
+      ],
+      "paths": [
+        "prototype/native-type-asset-editor.js"
+      ]
     }
   ]
 }
