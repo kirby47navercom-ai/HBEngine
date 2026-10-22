@@ -1,0 +1,146 @@
+{
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "1408cae486d2a10fd37398daffdf0eac9c3a4b2d",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2774fd6e1bb3b958",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\2774fd6e1bb3b958\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\2774fd6e1bb3b958\\HBEngine.exe",
+  "bundleHash": "2774fd6e1bb3b9587340b886c9cce7ef3b8d2285bd405def4964aa298426e1bf",
+  "files": 4172,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4164,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f9de3a58a55eb81b",
+        "bytes": 189601725,
+        "manifestSHA256": "81755fbbe532acc294f1fabd6a7bf4b31ce857f2bfd60f77feb3e3986a061344"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-22T07:19:29.3836529Z",
+    "bytes": 189601725,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "2774fd6e1bb3b958"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 836,
+  "repositoryOnlyTestSourcesVerified": 29,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "01bacb1ee146150ee0d24fd87499af4258e9405fc60cbb61b26bb1d051830fba",
+  "installedGates": [
+    {
+      "path": "native/build/timeline-navigation-1525-window-XikKiV/acceptance.json",
+      "sha256": "39eb8386f03c57f7b8ccdf72d7a98ab181da30e4f2c8754894f87ea342833271",
+      "scope": "Compact installed-only delta: same rangebar/region/native pointer-touch/cancel/CAS/interval-edit/Undo controls with512 keys and203 sections, saved nested Play[7.5,0,0]. Full65536-key, legacy controls, trim/save/D3D proof is reused with exact unchanged runtime-owner hashes.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2774fd6e1bb3b958\\HBEngine.exe",
+        "--navigation-controls",
+        "--quick-install"
+      ],
+      "ms": 25197.907999999996
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\2774fd6e1bb3b958\\",
+    "elapsedMs": 63.88,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\2774fd6e1bb3b958",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "2774fd6e1bb3b9587340b886c9cce7ef3b8d2285bd405def4964aa298426e1bf",
+      "installedAt": "2026-10-22T07:19:24.661Z",
+      "manifestFiles": 4172,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"scope\":\"scoped declarations, private metadata, class pointers, fake macro/string delimiters, friend idempotence, source preservation, reload identity\"}",
+  "manifestVerifiedFiles": 4172,
+  "versions": [
+    "2774fd6e1bb3b958"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1529-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/timeline1526-accepted.json",
+      "sha256": "cfd139cdf6bb4cf0a77c1343c736d72386c4e344c27864774793d9a470f1a636",
+      "scope": "Grouped compatibility/model/allocation proof; see receipt scope. "
+    },
+    {
+      "path": "native/build/timeline-intervals-1522.json",
+      "sha256": "df93fddf59b3eaad30d503c976d9d8e983b4df537117eaa61d342f15ac38359b",
+      "scope": "Grouped compatibility/model/allocation proof; see receipt scope. "
+    },
+    {
+      "path": "native/build/history-array-keys-1523.json",
+      "sha256": "792714318140b6d674b8d7380958fd25fe84c98ae96a780092784604a48d5cb5",
+      "scope": "Grouped compatibility/model/allocation proof; see receipt scope. "
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/timeline-navigation-1525-window-MfX87n/acceptance.json",
+      "sha256": "0d409a4e36e612f31929d12e1240c0056577be43f00bcc026cbcf9be8b8be8af",
+      "scope": "Full65536-key/203-section native CDP mouse/touch, interval edit/Undo invalidation, legacy gesture/CAS/save/trim/nestedPlay and same saved D3D11[7.5,0,0]/exit0."
+    },
+    {
+      "path": "native/build/timeline-navigation-1525-window-z9LOU1/acceptance.json",
+      "sha256": "62ab9f9ea4923c633c30215d2536be43f95061f8e7febe8a01fb934524a4ad52",
+      "scope": "Compact512-key/203-section owned delta with same new controls and saved nested Play; avoids repeating179s large-document test after exact owner hash verification."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/timeline-navigation-1525-window-MfX87n/acceptance.json",
+      "sha256": "0d409a4e36e612f31929d12e1240c0056577be43f00bcc026cbcf9be8b8be8af",
+      "scope": "Full65536-key/203-section native CDP mouse/touch, interval edit/Undo invalidation, legacy gesture/CAS/save/trim/nestedPlay and same saved D3D11[7.5,0,0]/exit0."
+    },
+    {
+      "path": "native/build/timeline-navigation-1525-window-z9LOU1/acceptance.json",
+      "sha256": "62ab9f9ea4923c633c30215d2536be43f95061f8e7febe8a01fb934524a4ad52",
+      "scope": "Compact512-key/203-section owned delta with same new controls and saved nested Play; avoids repeating179s large-document test after exact owner hash verification."
+    }
+  ],
+  "scope": "Installed final timeline navigation: compact512-key/203-section native rangebar handles/keyboard/jump/Escape, Ctrl region right zoom/left reset, zoomed scrub, CDP pointer-touch pinch/pan/cancel without page zoom or authored changes; interval patch/Undo invalidation, source save and nested Play[7.5,0,0]/exit0. Full65536-key legacy controls/trim/save/D3D[7.5,0,0] source proof is reused with all8 exact product owner hashes; same full179s test not repeated. Full manifest/836 source owners/29 native tests/20 native owners/2 vendor SHA and7 shared runtime owners, Player1484/Host1041, User read-only inventory, links and Versions1. Existing private-native metadata pure check and one-owner TimelineIntervalIndex AI. Previous2D/CPP/D3D native/runtime proofs reused by exact unchanged owners; no actual touch device or full-engine/FPS claim.",
+  "version": 1,
+  "date": "2026-10-22T07:22:13.194Z",
+  "work": "docs/research/ENGINE_WORK_1527.json",
+  "distributionSync": "native/build/distribution-1528-sync.json",
+  "nativePlayerReuseFrom": "docs/research/USER_INSTALL_1518.json",
+  "nativePlayerBuildReused": true,
+  "hostReuseFrom": "docs/research/USER_INSTALL_1518.json"
+}

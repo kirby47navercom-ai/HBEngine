@@ -998,9 +998,6 @@
     },
     "repeatInstalled": false
   },
-  "pendingInstalledGates": [
-    "tools/check-timeline-view-1452-window.mjs --navigation-controls --quick-install"
-  ],
   "focusedAI": {
     "symbol": "TimelineIntervalIndex",
     "elapsedMS": 204.37,
@@ -1017,8 +1014,23 @@
     "failedCandidate": "All-size array weak metadata reduced enumerations but repeated timings were slower; not adopted. Current large-only samples mixed; counts only, no FPS claim.",
     "validation": "Full source window179s is not repeated after installation; compact512-key new-feature delta, saved Play and exact owner/manifests instead."
   },
-  "installationPending": true,
-  "currentInstallation": "docs/research/USER_INSTALL_1518.json",
+  "installationPending": false,
+  "currentInstallation": "docs/research/USER_INSTALL_1529.json",
   "remainingSource": "docs/research/ENGINE_STATUS.json",
-  "exhaustiveUEUnity": false
+  "exhaustiveUEUnity": false,
+  "installedGates": [
+    {
+      "path": "native/build/timeline-navigation-1525-window-XikKiV/acceptance.json",
+      "sha256": "39eb8386f03c57f7b8ccdf72d7a98ab181da30e4f2c8754894f87ea342833271",
+      "scope": "Compact installed-only delta: same rangebar/region/native pointer-touch/cancel/CAS/interval-edit/Undo controls with512 keys and203 sections, saved nested Play[7.5,0,0]. Full65536-key, legacy controls, trim/save/D3D proof is reused with exact unchanged runtime-owner hashes.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2774fd6e1bb3b958\\HBEngine.exe",
+        "--navigation-controls",
+        "--quick-install"
+      ],
+      "ms": 25197.907999999996
+    }
+  ],
+  "installedMetadataCheck": "{\"passed\":true,\"scope\":\"scoped declarations, private metadata, class pointers, fake macro/string delimiters, friend idempotence, source preservation, reload identity\"}"
 }
