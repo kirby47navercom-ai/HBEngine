@@ -56,3 +56,5 @@ node tools/hb.mjs schema --section commands --url http://127.0.0.1:포트
 정확한 작업·명령·심볼에 연결한 docs/ai-routes.json의 focusRoutes는 넓은 분야 기본 파일보다 앞서 관련 구현을 보여줘요. 예: sequence.curve.keys/editAssetCurveKeys와 stateSerialization/SharedStatePackets. 전체 문서 선행 독서나 실행 검사는 추가하지 않아요.
 
 큰 문서는 `document.get` 전체 응답보다 `document.read`의 pointer/offset/limit을 먼저 사용해요. 기본값은 형태와 짧은 ID/name만 돌려주고, 필요한 하위 항목에 values=true를 써요. 시퀀스 키는 sequence.keys.read도 지원해요. `schema --section documentQuery`, `--section sequenceKeyStorage`, `--section authoringStorage`로 해당 계약만 볼 수 있어요. 에셋 저장과 복구 상태 flush는 별도이고 editor.storage.flush로 후자를 확정해요. 상세 범위는 docs/LARGE_AUTHORING_STORAGE.md와 docs/DENSE_SEQUENCE.md에 있어요.
+
+원장의 sourceHashBase와 changedSourceHashes는 tools/research-source-hashes.mjs로 합쳐요. 기본 CLI는 연결 경로·파일 수만 보여주고 --full은 해시 전체를 내보내요. 합성은 기록 조회이며 현재 파일·실행·설치 검증은 별도예요.

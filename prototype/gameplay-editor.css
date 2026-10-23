@@ -91,6 +91,7 @@
 
 .gameplay-transport input[data-time]{width:84px;min-width:0;flex:0 0 84px;font-variant-numeric:tabular-nums}.gameplay-transport input[data-time][type=text]{width:132px;flex-basis:132px}
 .section-time-warp>svg{display:block;width:100%;height:90px;min-height:90px;margin:8px 0;color:#b4bdc9}
+.section-warp-key{padding:5px 0;border-top:1px solid #424852}.section-warp-tangents{display:flex;flex-wrap:wrap;gap:6px}.section-warp-tangents>label{flex:1 1 90px;min-width:0}.section-warp-tangents input,.section-warp-tangents select{width:100%;min-width:0}
 .section-warp-keys .gameplay-vector{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 24px;gap:6px;align-items:end;margin-bottom:8px}
 .section-warp-keys .gameplay-vector>label{min-width:0;display:flex;flex-direction:column;gap:4px}
 .section-warp-keys .gameplay-vector>button{width:24px;min-width:24px;height:28px;min-height:0;padding:0;align-self:end}

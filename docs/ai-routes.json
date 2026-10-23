@@ -2806,6 +2806,67 @@
       "paths": [
         "prototype/engine-services.js"
       ]
+    },
+    {
+      "keywords": [
+        "prepareTimeWarp",
+        "sampleTimeWarp",
+        "timeWarpRate",
+        "timeWarpApproach",
+        "timeWarpCuts",
+        "freezeTimeWarpTangents",
+        "localTimeWarpBoundary"
+      ],
+      "paths": [
+        "prototype/sequence-warp-program.js"
+      ]
+    },
+    {
+      "keywords": [
+        "sampleSectionTimeWarp",
+        "시간 삼차 리매핑",
+        "cubic time warp"
+      ],
+      "paths": [
+        "prototype/sequence-time-warp.js"
+      ]
+    },
+    {
+      "keywords": [
+        "sectionTimeWarpMarkup"
+      ],
+      "paths": [
+        "prototype/sequence-time-warp-editor.js"
+      ]
+    },
+    {
+      "keywords": [
+        "sampleTimeWarpSide",
+        "timeWarpCrossedJump",
+        "계단 시간 보간",
+        "step time warp"
+      ],
+      "paths": [
+        "prototype/sequence-warp-program.js"
+      ]
+    },
+    {
+      "keywords": [
+        "sectionWarpCrossedJump"
+      ],
+      "paths": [
+        "prototype/sequence-time-warp.js"
+      ]
+    },
+    {
+      "keywords": [
+        "resolveResearchSourceHashes",
+        "sourceHashBase",
+        "changedSourceHashes"
+      ],
+      "paths": [
+        "tools/research-source-hashes.mjs"
+      ]
     }
   ]
 }
