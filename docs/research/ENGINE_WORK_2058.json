@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "date": "2026-10-23T13:49:53.930Z",
+  "kind": "HB-animation-canonical-transform-aliases",
+  "implementationRevision": "abeb1c13f2461ce32f21a9a1b1f22a97e6c05400",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2047.json",
+  "changedSourceHashes": {
+    "docs/SEQUENCE_ANIMATION_MIXING.md": "fe4773be08658a2074e7574c22a9ee052518005625eea2f74f730bcf8d6ce8b5",
+    "docs/SEQUENCE_TRANSFORM_ALIASES.md": "4184d284917440e47361a5151b69230beaca7636dfd0482ffe14f91744658362",
+    "docs/ai-routes.json": "534c221174588a47bd36af6413d1495d38ddb44447c86271c7c3625f6bf75309",
+    "prototype/engine-services.js": "7a2eb87a282010116cd0cb426cf2dee03995363dd71e018b7fa11da4742b15c5",
+    "prototype/gameplay-runtime.js": "f3171b4ed65a159b73d63733272b61af59ebd7d58b1a1c83918135d9843aacc8",
+    "prototype/sequence-animation-mixing.js": "69f1322133ad67057b22478044d0e5622a1142e0a4e2a64641a2419febf39350",
+    "prototype/sequence-animation-transforms.js": "fcc6235641e82c507821fbf210a8733add5303f16d03fa1e6d075536cf43b437",
+    "prototype/sequence-blending.js": "e39a302c6c792a85e2cfcc8303519c1bf0778755d97837e684302079c7458c68",
+    "prototype/sequence-channels.js": "d45894c2220996ac717b892402e1d4af5c542309f156fd8ca2ff8aa1feedfedc",
+    "prototype/sequence-origin.js": "effdcebd8f1bc1d28a5e9066aec3928b2d35586b61bc2874566ccff25aa87f20",
+    "tools/check-sequence-transform-alias-2050.mjs": "ca68f16e0bce029f4cad264e62aeb0c689eb3b40d62ee35b6dd406ee5fef9726",
+    "tools/check-sequence-transform-alias-2052-window.mjs": "4488319a4122b8f11a8b14cfc15aca87e4a8f85a68664d90979ba288b72f10da",
+    "tools/sequence-transform-alias-exercise-2052.mjs": "b632c3075e5bd024c99a907ece67ce1ace74b627a84512ce7abd2e91d88c5b34",
+    "tools/sequence-transform-alias-fixture-2052.mjs": "f3ea14ca606984e3413aece3a12abae80f9453bdd120b3b181e47e7bd71d9a12",
+    "CODEX_HANDOFF.md": "48208cc4cc8a44a9b92dd83d66e0c3ee4b70497a20ee66550ded6b4d5217cf53"
+  },
+  "targetIds": [
+    "ANM-06"
+  ],
+  "checks": [
+    {
+      "name": "check-sequence-blending-1967",
+      "passed": true,
+      "exit": 0,
+      "ms": 304.71219999999994,
+      "log": "native/build/group2053-check-sequence-blending-1967.log",
+      "sha256": "bee0a1fba00380f632988ee7398454cbed0dbd332782bdc3a4e6e1b10274afdc"
+    },
+    {
+      "name": "check-sequence-section-blend-1977",
+      "passed": true,
+      "exit": 0,
+      "ms": 209.6867000000002,
+      "log": "native/build/group2053-check-sequence-section-blend-1977.log",
+      "sha256": "9865dbefbd7c550e32efc5d629fb1018f453235475cb65a2fc03ed39c2b91a92"
+    },
+    {
+      "name": "check-sequence-animation-mixing-2036",
+      "passed": true,
+      "exit": 0,
+      "ms": 1001.9943,
+      "log": "native/build/group2056-check-sequence-animation-mixing-2036.log",
+      "sha256": "5b08a03b6b100e9613766778ea3b7edcfeb7cc20d158c70199a3d2e96f4722b4"
+    },
+    {
+      "name": "check-ai-context",
+      "passed": true,
+      "exit": 0,
+      "ms": 2246.56,
+      "log": "native/build/group2056-check-ai-context.log",
+      "sha256": "b8fa9495224507629305c0f8e14c6b3f10c98353a3f63bcc521e6290098e5e29"
+    },
+    {
+      "name": "check-sequence-transform-alias-2050",
+      "passed": true,
+      "log": "native/build/alias2057-final.log",
+      "sha256": "e69b235c89e9fd3b6569c481d954e822fe5fa74be67b1c35835446063c22d00e"
+    },
+    {
+      "name": "check-animation-playback-1795",
+      "passed": true,
+      "log": "native/build/playback2057.log",
+      "sha256": "49e574a2e8f186d3b7a09f0b2c5e398b71670fdd0c0e06bfc4f154a6f7f4114c"
+    },
+    {
+      "name": "check-playback-leases-1865",
+      "passed": true,
+      "log": "native/build/leases2057.log",
+      "sha256": "65454500933bdbc526a8a9ec8f698f3471343bebc231a4762cdc80dda554ed84"
+    },
+    {
+      "name": "check-sequence-origins-curves-1266",
+      "passed": true,
+      "log": "native/build/origin2054.log",
+      "sha256": "8775c57907fcf23f379ae79dd63f4757eb617b1da002bb8fc47a225e99e65354"
+    },
+    {
+      "name": "check-sequence-completion-271",
+      "passed": true,
+      "log": "native/build/completion2054.log",
+      "sha256": "9a27ac973339391021557e2df87d8b0341c70a2095ba7856775179d702e8d4b7"
+    }
+  ],
+  "sourceWindow": {
+    "report": "native/build/sequence-transform-alias-2052-window-o7ao5L/acceptance.json",
+    "sha256": "ae9f13a96b268482d8aa3bfbe3dc2246563f357b74787da3df7f819ad39a29e6",
+    "observations": 20,
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "postWindowChanges": [
+      "Retain existing late imported/sprite publication order relative to skeletal tracks; final dedicated order case and playback/lease gates passed"
+    ],
+    "finalInstalledGamePending": true
+  },
+  "sourceFocusedContext": {
+    "report": "native/build/context2056.json",
+    "sha256": "eb93be6afde4226279a6263ddd95fa0cb68b8da8311b571955ab4b9a4020dd2f",
+    "filesRead": 1
+  },
+  "nativeReuse": {
+    "receipt": "docs/research/USER_INSTALL_2019.json",
+    "owners": 21,
+    "binaries": {
+      "HBEngine": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+      "HBPlayer": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+    },
+    "vendorHashes": {
+      "node_modules/three/src/renderers/common/UniformsGroup.js": {
+        "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+        "bytes": 10590
+      },
+      "node_modules/three/build/three.webgpu.js": {
+        "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+        "bytes": 1875505
+      }
+    },
+    "freshFullSDKRun": false,
+    "freshRendererRun": false
+  },
+  "installationPending": true,
+  "scope": "HB transform-animation/direct TRS/Transform component canonical field aliases, per-field weighted quaternion/vec3 arbitration and shared baseline/keep/forceRestore, selective clip-gap release, sequence/actor origin mapping/order/cycle guard, ordinary external HB presentation overlay and final release reconciliation. Twelve new production cases + eight affected gates; actual source human component-curve/layer editing, AI CAS/dryRun, Undo/Redo/save and C++20 observations passed. Post-window non-HB late-publication compatibility change passed dedicated order/legacy playback+lease cases and awaits final installed game. No imported root/per-bone/renderer aliases, arbitrary side-effect rollback, FPS/device/full-engine claim."
+}
