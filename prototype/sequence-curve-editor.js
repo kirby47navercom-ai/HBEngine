@@ -13,7 +13,7 @@ export function sequenceCurveEditor(element,controller,track){
  element.dataset.sequenceCurve='true';
  element.dataset.sequenceMulti=String(ids.size>1);
  const editor=new TimelineEditor(element,()=>node,{
-  multiTrack:true,hiddenChannels:view.sequenceCurveHidden||[],hiddenChannelsChanged:value=>{view.sequenceCurveHidden=value;},viewMode:()=>view.sequenceCurveView||'absolute',maxKeys:sequenceKeyLimits.perTrack,bakeFPS:()=>timelineFPS(controller.doc.data),snapTime:time=>timelineSnap(controller.doc.data,time),enabled:()=>!controller.hooks.running?.(),toolsEditable:true,eulerAngles:track.type==='rotation',
+  multiTrack:true,toolState:view.sequenceCurveTools??={options:{},open:false},hiddenChannels:view.sequenceCurveHidden||[],hiddenChannelsChanged:value=>{view.sequenceCurveHidden=value;},viewMode:()=>view.sequenceCurveView||'absolute',maxKeys:sequenceKeyLimits.perTrack,bakeFPS:()=>timelineFPS(controller.doc.data),snapTime:time=>timelineSnap(controller.doc.data,time),enabled:()=>!controller.hooks.running?.(),toolsEditable:true,eulerAngles:track.type==='rotation',
   activeTrack:id=>{controller.selection=controller.curveTrack=id;editor.hooks.eulerAngles=controller.doc.data.tracks.find(t=>t.id===id)?.type==='rotation';const select=editor.el.querySelector('[data-sequence-curve-track]');if(select)select.value=id;for(const button of editor.el.querySelectorAll('[data-track]'))button.closest('.curve-track').classList.toggle('selected',button.dataset.track===id);},
   toolAllowed:(operation,id)=>operation!=='eulerFilter'||controller.doc.data.tracks.find(t=>t.id===id)?.type==='rotation',
   rangeEditable:!track.quaternionInterpolation,

@@ -1023,6 +1023,16 @@
   ],
   "focusRoutes": [
     {
+      "id": "curve-bake-domain-extension",
+      "keywords": [
+        "prepareCurveBakeDomain",
+        "curveBakeDomainContract"
+      ],
+      "paths": [
+        "prototype/curve-bake-domain.js"
+      ]
+    },
+    {
       "id": "sequence-pose-weight",
       "keywords": [
         "validSequencePoseWeight"

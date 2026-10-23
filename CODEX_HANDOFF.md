@@ -2,16 +2,16 @@
 
 2026-10-23. 주인님/짚짱/존댓말. 백그라운드·여러세부구현→영향검사묶음→설치. 전체UE/Unity분석/엔진완성주장금지. ENGINE_STATUS78행/분모·완료율null. goal blocked여도승인구현계속/새goal·반복질문금지.
 
-## 확정1930
+## 1931–1933 소스 확정·설치 대기
 
-source3005516/WORK1927/USER_INSTALL1929. Versions/60f2c41b27484ca5·manifest4504/source1160·native21/SDK/renderer/vendor2/HostPlayer exact불변·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전198251944B퇴역. 설치UI/CPP/별도D3D11 92.13초통과. 골격포즈 skeletalPose:<bone>채널·뼈별우선순위/최신하위샘플재개/키layout누락·빈구간양보. 실제쓴Bone객체identity기준weak복원·동명이름교체에이전TRS금지·새로샘플한교체뼈는자기쓰기전pose복원·미제어/다른actor불변. 이름/조상parent/owner표식검증. poseWeight선택0..1(default1):공유preanimated→트랙localTRS/shortestQ·누적혼합없음·0lease양보. 실제UI/UndoRedo/save/AI patch공용검증. runtime.sequencePose controlledBoneCount+페이지내controlledBones/schema계약·기존CPP LevelSequence/Skeleton공용. 1024뼈채널도동일트랙바인딩1/sample1/matrix1·정지같은대상복원순회/행렬1. SequenceChannels개별write에도batch전달/keep batch복원제외. normalized경쟁layer/Animation alias/임의notify·asyncsetter rollback별도.
+WORK1933. 키도메인밖 유지/default·선형부분bake:전/후/양끝/완전히외부범위·일반숫자/벡터키출력. 기존cubic/weighted/vertical/PCHIP곡선·반대쪽꼬리·바깥선형기울기보존. 자동기울기freeze/큰내부기울기finitecontrol·최종samples+외부키budget. 주기공유때문에어느쪽이든cycle/cycleOffset/oscillate인도메인확장은원자적거절; wholebake·기존키안쪽은유지. 새런타임형식/worker/timer/GPU없음. UIstart/end/FPS·툴패널열림을doc.view에보존·UndoRedo/문서재구성에도입력유지;게임data와분리. schema.curveBakeDomain/정확symbol route. 기존Sequence·BP Timeline·scalar skeletalcurve sampler와CPP LevelSequence같은ordinarykeys.
 
-5영향gate(1925/1806/209/271/실제1926window)와AIcontext통과. 실제UI가중치편집·Undo/Redo/save·invalidAI patch revision불변·freshCPP 8모델/빈구간/되감기와동시partial/priority재생. native21/SDK/renderer/Host1041/Player1604/vendor2 exact불변재사용·새전체SDK실행주장금지. 최종설치editor/독립D3D11/가중치hit-test도통과. 직전USER_INSTALL1923퇴역.
+6주영향gate(1931/1907/1319/1895/1883/실제1932window)·추가큰기울기분기unit·AIcontext통과. 70649 numeric samples/independent Hermite·선형·stationaryBezier oracle; 실제range UI/leftbake·AIrightbake/dryRun/CAS/invalid·UndoRedo/save·CPP13seek/Stop. 초기source창에서입력reset발견후viewstate수정·변경UI만다시검사. DEBUG_HANDOFF1931은fixture필수필드/scalar sampler오용수정이고엔진고장성과아님. native21/SDK/renderer/Host1041/Player1604/vendor2 exact불변재사용·새전체SDK실행주장금지. 설치editor/독립D3D gate대기. 직전USER_INSTALL1929/60f2c41b27484ca5·4504files/source1160/User10849보존·Versions1/cache32/lease0.
 
-1919–1921프로젝트타입catalog/picker·source/targetCAS·명시imports/oneUndo·CPP/BP실행,1915전이타입추가/default소비자원자이관·noChange save dirty수정. curve1909수직signedY/단조4/3/정확부분bake·external1903pushclock5CPP. 과거완료검사반복금지·marker/context.state.installation우선.
+1930골격Bone identity/뼈별소유·poseWeight0..1·layout양보·1024뼈binding/sample/matrix1·batchrestore/실제CPP/독립D3D확정.1919–1921typecatalog/picker·source/targetCAS/imports/oneUndo·CPP/BP.1915전이타입/default소비자이관. curve1909수직signedY/4/3단조/정확부분bake·external1903pushclock5CPP. 완료검사반복금지·marker/context.state.installation우선.
 
 ## 다음
 
-CPP01임의CPP헤더발견/일반registry·파괴적삭제/rename/형변경·IDEbefore복구·Name/alias/ref/wildcard. ANM06도메인밖bake·채널독립time/interpolation/topology·외부device/pull/PCM/genlock·시간상속·가중mixer/별칭·notify부작용rollback·rig/warp/영상/가상화/기존actor생성삭제. RND08globalDFclipmap/bentnormal/방향하늘/높이장/변형체/무화면FBX/미로드LOD/방향lightmap/volume/HWRT. UI03실기기/asyncsetterrollback. GL초기RND06:1728ANGLE nxXJ7S6878.6ms/D3DCompile6836.439·fixed emcanL6492단발미채택. GL_COMPILER_TRACE.md·1302–1307/normalmerge783/SSA1086실패반복금지.
+CPP01임의CPP헤더발견/일반registry·파괴적삭제/rename/형변경·IDEbefore·Name/alias/ref/wildcard. ANM06주기보존도메인밖부분bake·채널독립time/interpolation/topology·외부device/pull/PCM/genlock·시간상속·정규화가중mixer/별칭·notify부작용rollback·rig/warp/영상/가상화/기존actor생성삭제. RND08globalDFclipmap/bentnormal/방향하늘/높이장/변형체/무화면FBX/미로드LOD/방향lightmap/volume/HWRT. UI03실기기/asyncsetterrollback. GL초기RND06:1728ANGLE nxXJ7S6878.6ms/D3DCompile6836.439·fixed emcanL6492단발미채택. GL_COMPILER_TRACE.md·1302–1307/normalmerge783/SSA1086실패반복금지.
 
 heavy/GUI/install전activeInstalledVersions(저장Node;inlinePS자기오인). 사용자창/탭/프로필/게임금지·ownedhidden/project/profile/port·retain/pruneTestArtifacts·cache32·Versions1. CXX상대-o/jsonInclude·Node순차실패전파·native/build전체재귀금지. 한국어commit/push author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com·AI트레일러없음. 새agent금지·Mac/Xcode/Android폰없음. hbengineACTIVE·중복생성금지·확정결과만알림.

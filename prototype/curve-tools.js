@@ -1,4 +1,5 @@
 import {subdivideCurve} from './curve-subdivision.js';
+import {prepareCurveBakeDomain} from './curve-bake-domain.js';
 import {filterCurveFrequency} from './curve-frequency-filter.js';
 import {sampleCurveSegment,sampleCurveOutside,curveKeyTangent,curveStoredTangent,updateCurveControl} from './curve-sampling.js';
 const handles=['arriveTangent','leaveTangent','arriveWeight','leaveWeight','arriveControl','leaveControl'];
@@ -19,7 +20,7 @@ export function editCurveKeys(track,{operation,indices,channel,timeScale=1,timeO
   if((!rangeOnly||operation==='reduce')&&chosen.length!==keys.length||channel!==undefined)throw Error('베이크·축약은 전체 채널에 적용하세요.');
   if(operation==='bake'){
    start??=rangeOnly?chosen.reduce((n,i)=>Math.min(n,before[i].time),Infinity):keys[0].time;end??=rangeOnly?chosen.reduce((n,i)=>Math.max(n,before[i].time),-Infinity):keys.at(-1).time;if(![start,end,fps].every(Number.isFinite)||end<=start||fps<=0||fps>1000)throw Error('베이크 범위·초당 샘플을 확인하세요.');const count=Math.ceil((end-start)*fps);if(count+1>maxKeys)throw Error('베이크 키 예산을 넘었어요.');
-   const first=before.findIndex(k=>k.time===start),last=before.findIndex(k=>k.time===end);if(rangeOnly&&(first<0||last<0))return editCurveKeys(subdivideCurve(track,[start,end]),{operation:'bake',rangeOnly:true,start,end,fps,maxKeys});
+   const first=before.findIndex(k=>k.time===start),last=before.findIndex(k=>k.time===end);if(rangeOnly&&(first<0||last<0))return editCurveKeys(subdivideCurve(prepareCurveBakeDomain(track,start,end),[start,end]),{operation:'bake',rangeOnly:true,start,end,fps,maxKeys});
    const evaluate=time=>{const outside=sampleCurveOutside(before,time,track);if(outside!==undefined)return outside;let low=0,high=before.length;while(low<high){const mid=(low+high)>>>1;if(before[mid].time<=time)low=mid+1;else high=mid;}return sampleCurveSegment(before,Math.max(0,low-1),time,track.interpolation||'linear');};
    const baked=[];for(let i=0;i<count;i++){const time=start+i/fps;if(i&&end-time<=Number.EPSILON*Math.max(1,Math.abs(start),Math.abs(end))*8)break;baked.push({time,value:evaluate(time),interpolation:'linear'});}baked.push({time:end,value:evaluate(end),interpolation:'linear'});
    if(!rangeOnly){result.keys=baked;return result;}

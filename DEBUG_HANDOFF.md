@@ -1,5 +1,9 @@
 # 현재 진단 — 렌더링 지연과 거리장 LOD
 
+## 1931 검사 fixture 수정
+
+2026-10-23. 새 domain 수치 검사의 모든 외부값/내부곡선/예산 검증 뒤에 fixture 계약 오류가 있었어요. `validTimeline`은 name·기본 interpolation이 필수인데 누락했으므로 fixture를 보완했어요. 다음 실패는 벡터 키를 `animationCurveSampler`에 넘긴 검사예요. 해당 샘플러는 소스상 Float64Array(1)의 scalar 속성 전용이고, Array.from 변환만으로는 벡터 지원이 생기지 않아요. 엔진 sampler를 확대하지 않고 같은 저장 키의 X채널을 scalar 키로 투영해 동일 oracle과 대조하는 것이 다음 반증 검사예요. 이 fixture 실패를 엔진 구현 성과로 세거나 전체 벡터를 scalar sampler에 다시 넘기지 않아요.
+
 2026-10-21. 최신 구현/설치는 CODEX_HANDOFF.md·docs/research/ENGINE_STATUS.json을 먼저 읽어요. 전체 누적 목표는 active이고 완료가 아니에요. 이전 긴 진단은 Git의3d83a96:DEBUG_HANDOFF.md에 보존돼요. 잘못된 옛 설치485 정보를 현재 버전으로 쓰지 않아요.
 
 ## GL 초기 준비
