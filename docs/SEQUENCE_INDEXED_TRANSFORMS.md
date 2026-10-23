@@ -12,4 +12,8 @@
 
 성분 합성은 부분 바인딩이 실제 들어온 필드에만 활성화해요. 전체 키만 쓰는 기존 필드는 기존 빠른 경로를 유지해요. 보간 결과 버퍼와 키 배열을 공유하고, 숫자 경로에 필요한 트랙 래퍼만 지연 생성해요. 전체 Euler 키는 일반 THREE 믹서 안에서 회전 순서 메타데이터를 덮어쓰지 않도록 원본 보간기를 공유하는 세 개의 성분 바인딩으로 전달해요. 하위 노드·뼈의 행렬 갱신은 기존 루트별 묶음을 사용해요. 추가 타이머·작업자·상주 디스크 캐시는 없어요.
 
-AI 소유자: `node tools/hb.mjs context "부분 변환" --symbol importedTransformBindings`. 런타임 바인딩·복원은 이 모듈과 `sequence-imported-transforms.js`, `sequence-imported-pose.js`, `sequence-pose-playback.js`에 연결돼 있어요. 렌더 파라미터 별칭, 일반 외부 시뮬레이션·추가 액션·notify·비동기 setter 롤백, 독립 Euler 축 레이어 합성은 별도 잔여예요.
+일시정지 중 Seek도 일반 녹화 포즈를 즉시 제시해요. 생산 런타임의 골격 배치 훅이 있으면 탐색 시 override 포즈도 뼈들을 한 번에 작성·적용해서 다음 물리 프레임을 기다리지 않아요. 일반 재생 프레임의 기존 지연 배치 경로는 유지해 중복 샘플을 피했어요. 유지한 scalar 포즈 뒤의 전체 녹화 포즈, 마지막 복원, C++ 조작도 같은 경로예요. `tools/check-sequence-indexed-fixture-2139.mjs`는 물리 프레임을 끼우지 않고 이 경계를 소스에서 확인해요.
+
+미리보기는 순환 참조를 가진 SpriteRigPose/IK의 실행 상태를 복제하지 않고 해당 비주얼을 작성 컴포넌트에서 새로 만들어요. 원본 리그·포즈·계층을 수정하거나 공유하지 않고, 일반 모델 골격은 기존 복제 경로를 유지해요.
+
+AI 소유자: `node tools/hb.mjs context "부분 변환" --symbol importedTransformBindings`. 런타임 바인딩·복원은 이 모듈과 `sequence-imported-transforms.js`, `sequence-imported-pose.js`, `sequence-pose-playback.js`에 연결돼 있어요. 가져온 믹서의 일반 렌더 파라미터 별칭, 일반 외부 시뮬레이션·추가 액션·notify·비동기 setter 롤백, 독립 Euler 축 레이어 합성은 별도 잔여예요.

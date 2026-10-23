@@ -3075,7 +3075,8 @@
       "keywords": [
         "SequenceRenderParameters",
         "materialSequenceParameter",
-        "sequenceLightComponentTrack"
+        "sequenceLightComponentTrack",
+        "materialSequenceVectorParameter"
       ],
       "paths": [
         "prototype/sequence-render-parameters.js"
@@ -3102,6 +3103,26 @@
       ],
       "paths": [
         "prototype/scene-component-signature.js"
+      ]
+    },
+    {
+      "id": "sequence-material-editor",
+      "keywords": [
+        "materialVectorKeyMarkup",
+        "materialVectorColorValue",
+        "materialVectorColorHex"
+      ],
+      "paths": [
+        "prototype/sequence-material-editor.js"
+      ]
+    },
+    {
+      "id": "gameplay-preview-visual",
+      "keywords": [
+        "cloneGameplayPreviewVisual"
+      ],
+      "paths": [
+        "prototype/gameplay-preview-visual.js"
       ]
     }
   ]

@@ -74,7 +74,7 @@ export class SequenceChannels{
   clear(){this.owners.clear();this.fields=new WeakMap();}
   stats(){let leases=0;const rows=new Set();for(const values of this.owners.values())for(const row of values){rows.add(row);leases++;}return {owners:this.owners.size,channels:rows.size,leases};}
 }
-export const sequenceCompletionTypes=new Set(['position','rotation','scale','visible','camera','timeScale','light','material','component','variable','nativeProperty','parent','skeletalPose','componentState','animation']);
+export const sequenceCompletionTypes=new Set(['position','rotation','scale','visible','camera','timeScale','light','material','materialVector','component','variable','nativeProperty','parent','skeletalPose','componentState','animation']);
 export const sequenceCompletionChoices=[['default','시퀀스 기본값'],['restore','원래 값 복원'],['keep','마지막 값 유지']];
 export const validSequenceCompletion=t=>t.completionMode===undefined||sequenceCompletionChoices.some(([mode])=>mode===t.completionMode)&&(t.completionMode==='default'||sequenceCompletionTypes.has(t.type));
 export const validSequencePriority=n=>Number.isInteger(n)&&n>=-2147483648&&n<=2147483647;

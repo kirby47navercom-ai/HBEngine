@@ -1,7 +1,7 @@
 import {curveModes,curveInfinityModes,validCurveWeights,validCurveInfinity} from './curve-sampling.js';
 import {componentDefinitions} from './scene-components.js';
 export function sequenceCurveType(track){
- if(['position','rotation','scale'].includes(track.type))return 'vec3';
+ if(['position','rotation','scale','materialVector'].includes(track.type))return 'vec3';
  if(['light','material','timeScale'].includes(track.type))return 'float';
  if(['variable','nativeProperty'].includes(track.type))return !track.array&&['float','vec2','vec3','color'].includes(track.valueType)?track.valueType:null;
  if(track.type==='component'){const p=componentDefinitions[track.componentType]?.properties[track.property];return p?.type==='number'&&p.step!==1?'float':['vec3','color'].includes(p?.type)?p.type:null;}

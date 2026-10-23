@@ -11,4 +11,14 @@
 
 소유자는 `node tools/hb.mjs context "머테리얼 시퀀스" --symbol materialSequenceParameter` 또는 `--symbol syncLightIntensityProperties`로 찾아요. 소스 검사는 `tools/check-sequence-render-aliases-2118.mjs`, 저장 재현 프로젝트의 공용 실행 검사는 `tools/check-sequence-render-fixture-2126.mjs`예요. 후자는 실제 장면·머테리얼 코드를 사용하지만 C++ 제어·조회 호출 형태는 소스 어댑터로 대신해요. C++ 바이너리 검증은 아니에요. 기존 실제 창 검사 `tools/check-sequence-indexed-transforms-2104-window.mjs`는 같은 프로젝트에서 리그와 렌더 파라미터를 함께 확인하고, 설치본 사용 중이면 실행을 미뤄요. 소스 통과와 실제 C++/창/설치 통과는 각각 기록해요.
 
+## 색상·벡터 트랙
+
+트랙 추가의 **머테리얼 색상·벡터**는 `materialVector` 트랙을 만들어요. 기본 파라미터는 `BaseColor`이고, 파라미터 이름을 그래프·레이어 이름이나 `Emissive`, `Normal`, `CoatNormal`, `AttenuationColor`, `SheenColor`, `SpecularColor`, `ScatterColor`, `HairTangent` 같은 기존 벡터 별칭으로 바꿀 수 있어요.
+
+키는 선형 RGB 또는 XYZ의 숫자 세 개예요. 기존 세 채널 곡선 편집·가중 탄젠트·범위 밖 반복·채널별 도구를 재사용해요. 색상 선택기는 sRGB를 선형 RGB로 한 번 변환해 저장하고, 숫자 입력은 HDR·음수 벡터를 그대로 편집해요. 선택기를 표시할 때 HDR 원문을 바꾸지 않아요. 노멀·접선에는 색상 선택기를 표시하지 않아요. 불투명도는 기존 Float `Opacity` 트랙으로 따로 편집해요.
+
+Float와 Vector의 잘못된 바인딩은 거부해요. Vector 별칭의 가중치·우선순위·원래 값 복원·keep/forceRestore·머테리얼 교체 수명은 Float와 같은 경로를 사용해요. 색상 값은 복원 시에도 선형 값으로 전달해 중복 색 변환을 피하고, 머테리얼 인스턴스와 셰이더 버전을 유지해요.
+
+이 기능은 기존 C++ `LevelSequence` 제어와 공용 실행 경로를 사용해요. 신규 소스 검사는 `tools/check-sequence-material-vector-2132.mjs`이고, 실제 창 검사는 기존 통합 재현 프로젝트에서 색상 선택·숫자 키 편집·Undo/Redo/저장과 같은 C++ 재생 관찰을 이어서 확인하도록 준비해요.
+
 가져온 AnimationMixer의 머테리얼·광원 property binding과 위 직접 트랙 사이의 일반 공유 소유권은 별도 잔여예요. 이 문서는 렌더링 전체·엔진 전체 완료를 뜻하지 않아요.
