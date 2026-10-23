@@ -2739,6 +2739,38 @@
       "paths": [
         "prototype/sequence-sections.js"
       ]
+    },
+    {
+      "keywords": [
+        "sectionWarpApproach"
+      ],
+      "paths": [
+        "prototype/sequence-time-warp.js"
+      ]
+    },
+    {
+      "keywords": [
+        "wrappedSequenceTime"
+      ],
+      "paths": [
+        "prototype/sequence-source-ranges.js"
+      ]
+    },
+    {
+      "keywords": [
+        "appendSectionSourceRanges"
+      ],
+      "paths": [
+        "prototype/sequence-source-ranges.js"
+      ]
+    },
+    {
+      "keywords": [
+        "sectionWarpRate"
+      ],
+      "paths": [
+        "prototype/sequence-time-warp.js"
+      ]
     }
   ]
 }
