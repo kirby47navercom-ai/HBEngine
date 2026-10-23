@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "date": "2026-10-23T17:22:55.392Z",
+  "kind": "installed-indexed-pose-material-vector-light-acceptance",
+  "implementationRevision": "4e76cc53249e26eaca0224b937bf003729e57da5",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2143.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "f86bdaa6d1f7056a932f6e77c5e29abff0cf5e0c8d2cb00c5a0e67aa8efc7db1"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "targetIds": [
+    "ANM-06"
+  ],
+  "checks": {
+    "sourceReceipt": "docs/research/ENGINE_WORK_2143.json",
+    "unchangedSourceGatesReused": true,
+    "sourceGroups": 27,
+    "installedGame": {
+      "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-vector-installed-2145-j1ghLn\\acceptance.json",
+      "sha256": "ee37b839f9ef345748df0e67ef53f38f2db61c18015ef758bfbf60dbb25b1d3e"
+    },
+    "installation": {
+      "report": "docs/research/USER_INSTALL_2145.json",
+      "sha256": "7cefc69032e03649f7d14d26e8b434ca12c8d9570b283df4cbbd0904dfdbf05a"
+    },
+    "audit": {
+      "report": "native/build/user-install-2145-audit.json",
+      "sha256": "eabca866a21a59c09431248f5fe2f656c73ee45f5a6033a09ea07973c35ee71e"
+    }
+  },
+  "installation": {
+    "pending": false,
+    "updated": true,
+    "receipt": "docs/research/USER_INSTALL_2145.json",
+    "bundleHash": "73341067df5a12be1fb1758e510ffa8c0ee7ca6b285a1bc5164afc33df4571bc"
+  },
+  "excludedWorktree": [
+    "prototype/player.js",
+    "tools/check-player-keyboard-release.mjs"
+  ],
+  "scope": "시퀀스 materialVector 색상/선형HDR 숫자·공용곡선/도구·AI CAS/Undo/save·기존 C++ LevelSequence 실행, scalar/vector/scoped 별칭·형·소유권·수명·복원, 직접/컴포넌트 광원과 wholeTake 작성순서, indexed actor/child/bone 채널을 설치본으로 연결. paused override pose Seek 즉시표시와 SpriteRig/IK 순환 preview 복제 수정. source16+수정영향11gate 및 실제 편집기 C++18+render14 통과. 최종 설치builder의 독립 D3D11 게임도 C++18+render14·종료0, native swapchain 리그3414/재질627·625pixel변화 직접확인. 4643파일/1271소유자 exact hash, User10849파일 전후동일·shortcuts/association·AI1owner66.08ms·Versions1. 이전199893592B 및 소유검사Builds/WebView 정리. 일반 imported AnimationMixer 렌더속성 별칭과 누적 잔여는 별도 유지; FPS/실기기/전체엔진 완료 주장이 아님."
+}

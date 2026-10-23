@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "date": "2026-10-23T17:22:55.389Z",
+  "kind": "verified-installed-indexed-pose-material-vector-light-sequences",
+  "sourceCommit": "4e76cc53249e26eaca0224b937bf003729e57da5",
+  "sourceReceipt": "docs/research/ENGINE_WORK_2143.json",
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "independentGameVerified": true,
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\73341067df5a12be",
+  "bundleHash": "73341067df5a12be1fb1758e510ffa8c0ee7ca6b285a1bc5164afc33df4571bc",
+  "versions": 1,
+  "manifestFiles": 4643,
+  "admittedOwners": 1271,
+  "profile": {
+    "files": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4620,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ed1f58353c475d09",
+        "bytes": 199893592,
+        "manifestSHA256": "e9dd98f37aa1404a9e48d6e5f2a249d66d57faf41bac04e38c8a13a047712d9a"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T17:19:24.8398764Z",
+    "bytes": 199893592,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "73341067df5a12be"
+    ]
+  },
+  "overridden": [
+    {
+      "path": "prototype/player.js",
+      "policy": "admitted HEAD bytes; unrelated worktree file not read"
+    }
+  ],
+  "changed": 8,
+  "sourceWindow": {
+    "passed": true,
+    "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-indexed-transforms-2104-window-d97wTA\\acceptance.json",
+    "sha256": "b93628604b3e246a75c4322fa272b3766d6708c6ccea988f50bcdd4de271435c",
+    "cppIndexedObservations": 18,
+    "scalarVectorLightObservations": 14,
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "checks": {
+      "humanSpriteRigKeyEdit": true,
+      "undoRedoSave": true,
+      "aiDryRunStaleCASUndo": true,
+      "actualSpriteSkinScalarRotation": true,
+      "cppPositionRotationScaleAndSequenceControls": true,
+      "materialAliasAndLightComponentCpp": true,
+      "humanMaterialVectorKeyUndoRedoSave": true,
+      "spriteRigAndMaterialPreview": true
+    },
+    "scope": "Owned hidden admitted-staged-source editor; actual SpriteRigPose generated rotation[z] and SpriteSkin, existing human key editor/Undo/Redo/save and AI CAS/dryRun; common C++ observations and bone pose query, plus live scalar/vector material aliases, human vector key controls and C++ Light2D getter/component/take ownership. No independent installed/FPS/device claim.",
+    "finalInstalledGamePending": false,
+    "finalInstalledGameReceipt": "docs/research/USER_INSTALL_2145.json"
+  },
+  "installedGame": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\73341067df5a12be",
+    "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-vector-installed-2145-j1ghLn\\acceptance.json",
+    "sha256": "ee37b839f9ef345748df0e67ef53f38f2db61c18015ef758bfbf60dbb25b1d3e",
+    "ms": 65577.9008,
+    "cppIndexedObservations": 18,
+    "scalarVectorLightObservations": 14,
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "backend": "D3D11"
+  },
+  "nativePixelProof": {
+    "method": "Existing hbPlayerDebug.capture -> native hbCapture swapchain readback; no CDP surface as native proof",
+    "captures": [
+      {
+        "label": "rig-before-native",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-vector-installed-2145-j1ghLn\\rig-before-native.png",
+        "width": 640,
+        "height": 400,
+        "nonblack": 256000,
+        "sha256": "9dcc0af12a4b68ccafba13479cd2b27ebda29a6e674a02abe86fff6cfcd55881"
+      },
+      {
+        "label": "rig-mixed-native",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-vector-installed-2145-j1ghLn\\rig-mixed-native.png",
+        "width": 640,
+        "height": 400,
+        "nonblack": 256000,
+        "sha256": "784402d67e5eebf9ffa9c489b2c4ce652d038dba7becf048af7d9805e8ff810f"
+      },
+      {
+        "label": "material-before-native",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-vector-installed-2145-j1ghLn\\material-before-native.png",
+        "width": 640,
+        "height": 400,
+        "nonblack": 256000,
+        "sha256": "49e7d0e200252add9cfcd1784435098c3463360961c8505ffc4b67e8319bb2d1"
+      },
+      {
+        "label": "material-low-native",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-vector-installed-2145-j1ghLn\\material-low-native.png",
+        "width": 640,
+        "height": 400,
+        "nonblack": 256000,
+        "sha256": "fa6391b6806b1f7f524378f5029ca803719421f7d1723d0539cc6d362e0a462f"
+      },
+      {
+        "label": "material-mixed-native",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-vector-installed-2145-j1ghLn\\material-mixed-native.png",
+        "width": 640,
+        "height": 400,
+        "nonblack": 256000,
+        "sha256": "0454676665b0bd3e5fa5241fcca2eeaba831165ad51a04a1037f1a8b485e2ea5"
+      }
+    ],
+    "changes": {
+      "rig": 3414,
+      "materialBaselineToLow": 627,
+      "materialLowToMixed": 625
+    },
+    "scope": "Joint scalar/vector material and light rendering changes; no isolated vector-only pixel attribution",
+    "directlyInspected": true,
+    "repeatGameNeeded": false
+  },
+  "humanVisual": {
+    "report": "native/build/material-vector-visual-2143-otAkOl/acceptance.json",
+    "image": "native/build/material-vector-visual-2143-otAkOl/color-and-vector-controls.png",
+    "directlyInspected": true
+  },
+  "audit": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\73341067df5a12be",
+    "focusedAI": {
+      "symbol": "materialSequenceVectorParameter",
+      "owner": "prototype/sequence-render-parameters.js",
+      "filesRead": 1,
+      "elapsedMs": 66.08,
+      "installation": {
+        "observed": true,
+        "root": "C:\\Users\\kirby\\HBEngine\\Versions\\73341067df5a12be",
+        "marker": "HBEngine.install.json",
+        "bundleHash": "73341067df5a12be1fb1758e510ffa8c0ee7ca6b285a1bc5164afc33df4571bc",
+        "installedAt": "2026-10-23T17:19:19.485Z",
+        "manifestFiles": 4643,
+        "integrityChecked": false
+      }
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "cache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "versions": [
+      "73341067df5a12be"
+    ],
+    "scope": "Read-only installed focused context/shortcut/association plus live-aware native-cache prune. Installer preflight holds exact file/owner hashes and profile comparison. No duplicate GUI/game/renderer run."
+  },
+  "preflight": {
+    "report": "native/build/user-install-2144-preflight.json",
+    "sha256": "fc9e6c748129dac98b1f1dd3f62e0e612c8a9479e844854d2b4d401500a522cc"
+  },
+  "nativeReuse": {
+    "sourceBase": "docs/research/ENGINE_WORK_1955.json",
+    "audit": {
+      "report": "native/build/audit2137.json",
+      "sha256": "cc9e83163905119ffba7c526b68ff95fd2ad0ecad211ff6e50db7ff2eb42cdef"
+    },
+    "owners": 21,
+    "vendorOwners": 2,
+    "reason": "Exact native/vendor/binary hashes unchanged and rechecked at installation; no repeated full SDK/renderer gate."
+  },
+  "scope": "시퀀스 materialVector 색상/선형HDR 숫자·공용곡선/도구·AI CAS/Undo/save·기존 C++ LevelSequence 실행, scalar/vector/scoped 별칭·형·소유권·수명·복원, 직접/컴포넌트 광원과 wholeTake 작성순서, indexed actor/child/bone 채널을 설치본으로 연결. paused override pose Seek 즉시표시와 SpriteRig/IK 순환 preview 복제 수정. source16+수정영향11gate 및 실제 편집기 C++18+render14 통과. 최종 설치builder의 독립 D3D11 게임도 C++18+render14·종료0, native swapchain 리그3414/재질627·625pixel변화 직접확인. 4643파일/1271소유자 exact hash, User10849파일 전후동일·shortcuts/association·AI1owner66.08ms·Versions1. 이전199893592B 및 소유검사Builds/WebView 정리. 일반 imported AnimationMixer 렌더속성 별칭과 누적 잔여는 별도 유지; FPS/실기기/전체엔진 완료 주장이 아님."
+}
