@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "date": "2026-10-23T15:04:23.764Z",
+  "kind": "imported-root-and-model-child-canonical-transforms",
+  "implementationRevision": "578a9d994e3fe8d8da0272dd7cde158a49c49453",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2077.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "9357cbe8669c97b63f3107700c6c966e22955f027a20b668db4dddb6c2aa04a1",
+    "docs/SEQUENCE_ANIMATION_MIXING.md": "fbd3aa4e7fbbae44cd5126f001514bbab7b114569b398113bffb6260fed87899",
+    "docs/SEQUENCE_IMPORTED_POSE_ALIASES.md": "d4ad90dcc9f1a1decaf4a6645ebacac7c545145e00109e6c5cd7c43b0b2a4480",
+    "docs/SEQUENCE_TRANSFORM_ALIASES.md": "8030d506ab97d3c226032c0f796835ebe49c423eadba7db417565613b3011888",
+    "docs/ai-routes.json": "0efc0a4e02d764f24d5a90df846ecb1b1f42c9c6ec854449e5f0cac240df7435",
+    "prototype/animation-playback-lease.js": "fd16915cb84d2bf221aff3c94ad6b672e861e3241d79ca8ed79211d2b15d497d",
+    "prototype/engine-services.js": "9fe6322e1ee8973fb65930f88e3f008ef030e531a3fd06920cbe5d484c553092",
+    "prototype/gameplay-runtime.js": "56740722a640a9cd2abe44f2827a6cffb6b2e8d95d618280de0a273c7150d3fa",
+    "prototype/sequence-animation-mixing.js": "72080b1b52c33f26e988421e5f8bfdb4874a4bb3d707b339b32468765f5487a8",
+    "prototype/sequence-animation-transforms.js": "5ca252bdba67429e4470b23a035d132f955c7f8b18e3025376e69407849d433e",
+    "prototype/sequence-channels.js": "7c4bbaa92ade2ad621fecc675f3304de231a8f7c6af5543b855f5dcb9acde012",
+    "prototype/sequence-imported-pose.js": "54daec0ebb407328688286684820f6dde3ae92aacd218648dce5229856f27eaf",
+    "prototype/sequence-pose-ownership.js": "8a36fa51cfa1db2380101b401f415e082f16ed1585c1e1e71a2d8b7cb871be70",
+    "prototype/sequence-pose-playback.js": "3372adc15f1153d7222f0fb386c5770731c8b17be245110d8ee5f3f99b1b0a19",
+    "prototype/sequence-skeletal-channels.js": "3f8143fa788ab7a132502d2086360958aef99c5fa9041ff5d8e3557c016723c9",
+    "tools/check-animation-playback-1795.mjs": "a6c1b4ef94929a5c6f818cd1ee2925f814a989193bd801fe3d70899effb66ac1",
+    "tools/check-sequence-animation-mixing-2036.mjs": "95cad3945f0c2d44629cc130ff94c1c041765dfea676c72acb3f63dd75e3e577",
+    "tools/check-sequence-imported-pose-2065.mjs": "0191e96dc3a9d85eaed1683b1770e5feac74a0fe82ab322d35cd72393f6d5122",
+    "tools/editor-automation.mjs": "f40caf8cc15537ca1549adb56966e901c7aa11f1490717cafedbdc6abf69689d",
+    "docs/SEQUENCE_IMPORTED_TRANSFORM_ALIASES.md": "dc538ed19e0fec686745f59551d65f84f1b936f5cbefdd9a4f84531c747c59ee",
+    "prototype/sequence-imported-transforms.js": "a45d37a84d8c302bb8774574c0f8fcdaee24c18faec0f733e4d05709ad6145fb",
+    "tools/check-sequence-imported-transforms-2081.mjs": "a6424626750124aa35e52016c7c88286ae9261ddd199b415e3dd73b09368ab77",
+    "tools/check-sequence-imported-transforms-2084-window.mjs": "27cf9939cee9d13071237152b78f898301c4c2d9ac11e9ab80006e73cc1067cb",
+    "tools/sequence-imported-transforms-fixture-2083.mjs": "6822e819ac4e3ea0a73823986136e6cee82a82b38e4a790dd7bab9e6f4105f53",
+    "tools/sequence-imported-transforms-exercise-2083.mjs": "45ff299bd7404a2f49625ae2ee1de1f3d5ee367993531e69ee55e3cffbb21980"
+  },
+  "targetIds": [
+    "ANM-06"
+  ],
+  "checks": [
+    {
+      "name": "check-sequence-imported-pose-2065",
+      "passed": true,
+      "exit": 0,
+      "ms": 1114.9587000000001,
+      "log": "native/build/group2089-check-sequence-imported-pose-2065.log",
+      "sha256": "ff1a9855a69044b8fb0c536578bd718848e3f34ea00318a057c38f1542db448c"
+    },
+    {
+      "name": "check-sequence-pose-blending-1970",
+      "passed": true,
+      "exit": 0,
+      "ms": 259.30939999999987,
+      "log": "native/build/group2089-check-sequence-pose-blending-1970.log",
+      "sha256": "9e8d72269d059c9bdc115170b0e38f32967c254597c1581398214504941b3a0c"
+    },
+    {
+      "name": "check-sequence-transform-alias-2050",
+      "passed": true,
+      "exit": 0,
+      "ms": 1164.4066,
+      "log": "native/build/group2089-check-sequence-transform-alias-2050.log",
+      "sha256": "bc00b02f39f811a6923e09c34d567f40da20da393779976a81ad765676a6db1d"
+    },
+    {
+      "name": "check-sequence-animation-mixing-2036",
+      "passed": true,
+      "exit": 0,
+      "ms": 1155.0045,
+      "log": "native/build/group2089-check-sequence-animation-mixing-2036.log",
+      "sha256": "861252a22d4585bc6a379a58654a01259ad73bd9983920faed9f1fdecc8aa3e1"
+    },
+    {
+      "name": "check-animation-playback-1795",
+      "passed": true,
+      "exit": 0,
+      "ms": 1046.1677999999997,
+      "log": "native/build/group2089-check-animation-playback-1795.log",
+      "sha256": "9ab3a5e3cc01c1f614171b048b288f6ad2d1440ac87c9f969791600e19e9189a"
+    },
+    {
+      "name": "check-sequence-pose-ownership-1925",
+      "passed": true,
+      "exit": 0,
+      "ms": 265.3457000000003,
+      "log": "native/build/group2089-check-sequence-pose-ownership-1925.log",
+      "sha256": "703e95f0142a789f4bf6cf960b1258dd6f1386c3e5908e4dde6cf251b19d08e6"
+    },
+    {
+      "name": "check-playback-leases-1865",
+      "passed": true,
+      "exit": 0,
+      "ms": 1062.4258999999997,
+      "log": "native/build/group2089-check-playback-leases-1865.log",
+      "sha256": "bb8b33a9333955edd9ab53eca4e5dc1d39efc7ed7d0516f4251ceb68a1ef1638"
+    },
+    {
+      "name": "check-sequence-completion-271",
+      "passed": true,
+      "exit": 0,
+      "ms": 224.08780000000024,
+      "log": "native/build/group2089-check-sequence-completion-271.log",
+      "sha256": "f6d712b0e32d7a4ca6a1de7798f1511892157cedafecf56e721724fb293faaa6"
+    },
+    {
+      "name": "check-ai-context",
+      "passed": true,
+      "exit": 0,
+      "ms": 2382.3475,
+      "log": "native/build/group2089-check-ai-context.log",
+      "sha256": "208da16c8ff78c6facc3f452a88c0785460b8585a09012006800c0f5b2f63ece"
+    },
+    {
+      "name": "check-sequence-imported-transforms-2081",
+      "passed": true,
+      "cases": 15,
+      "report": "native/build/sequence-imported-transforms-2081-N5Zw3m/acceptance.json",
+      "sha256": "64cfa51104ef4a458b468ef88ff5032c5f3dabedd684b30e51be7ae0623ccb51"
+    }
+  ],
+  "sourceWindow": {
+    "report": "native/build/sequence-imported-transforms-2084-window-ydGXZT/acceptance.json",
+    "sha256": "a7e1518ebdb0288f98e852fa2b14c94236a0bff568621b29eb9ff78edbd3bb21",
+    "observations": 19,
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "checks": {
+      "humanComponentCurve": true,
+      "undoRedoSave": true,
+      "aiPatchDryRunStaleUndo": true,
+      "actualImportedGltfActorRootAndChild": true,
+      "cppControlsAndActorTRSGetters": true
+    },
+    "admittedStagedSource": {
+      "report": "native/build/staged-source2085.json",
+      "playerSHA": "8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1"
+    },
+    "postWindowChanges": "Only additional HB/imported cross-family source case and contract text; runtime body unchanged.",
+    "visuallyInspected": "imported-root-component-curve.png",
+    "finalInstalledGamePending": true
+  },
+  "focusedContext": {
+    "report": "native/build/context2090.json",
+    "sha256": "f586ea759f80943bbd3fff6f05d8b1ca6556219c55289228170a5b89d9b60dcf",
+    "symbol": "ImportedSequenceTransformProgram",
+    "filesRead": 1
+  },
+  "nativeReuse": {
+    "sourceBase": "docs/research/ENGINE_WORK_1955.json",
+    "owners": 21,
+    "reason": "Native source/vendor/binaries unchanged; install verifies exact admitted native/binary hashes; no full SDK/renderer rerun."
+  },
+  "failedExperiments": {
+    "countedAsAchievements": false,
+    "corrected": [
+      "New dynamic query values separated from two legacy evaluator metadata equality assertions; actual pose assertions retained/added",
+      "glTF fixture reused a skin-marked mesh as an unskinned Part; separate plain mesh fixed rendering without suppressing errors",
+      "all-zero underlying bone source was recaptured from the old baseline; sparse weak live-bone watching now retains advanced presentation"
+    ],
+    "ownedRepeatedDiagnosticsCompacted": {
+      "compact": [
+        {
+          "file": "native\\build\\sequence-imported-transforms-2084-window-b9JENI\\failure.json",
+          "before": 89373874,
+          "after": 27817
+        }
+      ]
+    }
+  },
+  "scope": "Imported full actor-root and model-child TRS alias arbitration by actual node/field; actor root shares direct/Transform/HB fields across clip families, model children remain local. Per-field normalized/quaternion weights, priority/order, gaps/zero/completion/origin, ordinary root actor/Group synchronization, sparse underlying presentation with weak player histories, held/new external evaluators and identity-safe restore. Bounded copied transformChannels query. Bone all-zero advancing ordinary source/reactivation restored using weak watched live lease fields, no whole-skeleton frame scan. Root15 cases, bone16 cases and8 other affected gates, actual staged-source human component curve/Undo/save/AI CAS and GLTF/C++19 actorTRS+child observations passed. No indexed/renderer aliases, arbitrary simulation/setter/notify rollback, FPS/device/full-engine claim.",
+  "remaining": [
+    "indexed transform/bone bindings",
+    "renderer-property aliases",
+    "arbitrary external actions/simulation/notify/async setters",
+    "other ANM/CPP/RND remaining ledger owners"
+  ]
+}
