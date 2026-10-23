@@ -157,3 +157,11 @@ C++ 공개 값 구조체/필드 타입·기본값·enum/Actor/배열 codec와 Ma
 1872 후속: 클릭 때 selection도 소유 트랙 ID로 전환한 뒤 실제 드래그/Undo/곡선 FPS·AI bake·CPP4함수 편집기 검사가 통과했어요(4kjJSW). 렌더 가드와 선택 상태 불일치가 원인이었어요. 최종 TC 눈금·DF 비호환 입력 잠금은 설치 검사에서 추가 확인해요.
 
 1876 확정: 최종 설치 BgeJeM에서 가시 격자 control/TC 눈금·DF 잠금·TC 입력132px 같은 행·드래그/Undo/곡선 열기·CPP4함수와 독립 D3D가 모두 통과했어요. 1872 선택/곡선 진단은 해결됐고 GL 초기 지연 잔여와 구분해요.
+
+## 1909 곡선 제어점 수치 진단
+
+stationary inverse 첫 독립 oracle에서 약3.7e-6 오차를 찾아 centered cubic 분기를 추가했어요. 원래 stationary 오차는 해소됐지만 legacy auto 분할 회귀가 1.9025초에서 -1 vs -0.9990497685로 달라졌어요. 재현: auto scalar keys(0:0,.6:2,1.9:-1,3.3:3,4:4), split[.2,2.6]. 근거는 native/build/diagnose1909-auto.mjs예요. a≈4.4e-16인 사실상 선형 시간 다항식이 절대 discriminant 허용치 때문에 stationary로 오분류되고 root clamp0이 됐어요. 다음 가설: discriminant 절대값 대신 실제 derivative 최소값≈0 조건을 검사하면 stationary oracle와 legacy auto dense outside 회귀를 함께 보존해요. 별도 문제였던 vector 제어점 part(...,channel) 누락은 scalar/vector 독립 oracle로 수정했고, JSON -0은 fixture 직렬화 기대값을 맞췄어요. 품질 허용치를 낮추지 않아요.
+
+1909 UI 좁은 곡선 패널: 기존 weighted 창 회귀가 graph130px 하한을 확인했어요. 최초 keybar162.5/graph100px와 상단31px클리핑을 포착했어요. 단일채널 label행·간격·selector/summary배치를 고친 뒤 keybar122/graph110.0625px로 상단클리핑은 해소됐지만3행이 남았어요. 품질 하한은 낮추지 않아요. 다음은 실제 마지막 행 제어를 확인해 기존 fit/고급 범위 제어 배치를 같은 툴바 안에서 정리하고 최소 graph130px를 복원해요.
+
+1909 해결 확인: derivative 최소값 판별로 stationary와 사실상 선형 시간 다항식을 구분해 새 oracle/기존 dense subdivision 회귀가 함께 통과했어요. 단일채널행·selector간격과 선택개수를 하단에 배치하고 Fit를 하단 조작줄로 옮겨 graph130px 하한을 보존했어요. current weighted-curves-1295-UgpOlP와 curve-controls-1908-window-4Gfa2b 실제창/C++가 통과했어요. 포인터는 수직 핸들의 화면 좌표 양자화 때문에 0.75 CSSpx 시간축 스냅을 사용해 정확히 weight0을 저장해요. 이전 실패는 구현 성과에 세지 않아요.

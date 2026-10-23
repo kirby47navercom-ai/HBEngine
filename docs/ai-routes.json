@@ -1023,6 +1023,30 @@
   ],
   "focusRoutes": [
     {
+      "id": "curve-explicit-controls",
+      "keywords": [
+        "curveTimeMonotone",
+        "validCurveTimeHandles",
+        "curveControlValue",
+        "curveStoredTangent",
+        "updateCurveControl",
+        "curveWeightLimit",
+        "curveControlContract"
+      ],
+      "paths": [
+        "prototype/curve-sampling.js"
+      ]
+    },
+    {
+      "id": "curve-exact-subdivision",
+      "keywords": [
+        "subdivideCurve"
+      ],
+      "paths": [
+        "prototype/curve-subdivision.js"
+      ]
+    },
+    {
       "keywords": [
         "curveClipboard",
         "pasteCurveKeys",

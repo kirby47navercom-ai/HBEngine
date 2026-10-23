@@ -1,11 +1,11 @@
-import {curveModes,validCurveWeights} from './curve-sampling.js';
-const fields=['time','value','interpolation','arriveTangent','leaveTangent','arriveWeight','leaveWeight'],shapes={float:1,vec2:2,vec3:3,color:4,event:0};
+import {curveModes,validCurveWeights,validCurveTimeHandles} from './curve-sampling.js';
+const fields=['time','value','interpolation','arriveTangent','leaveTangent','arriveWeight','leaveWeight','arriveControl','leaveControl'],shapes={float:1,vec2:2,vec3:3,color:4,event:0};
 export const curveClipboardMaxText=8*1024*1024;
 function checked(clipboard){
  if(!clipboard||clipboard.format!=='hb.curve.keys'||clipboard.version!==1||!Object.hasOwn(shapes,clipboard.type)||!Array.isArray(clipboard.keys)||!clipboard.keys.length||clipboard.keys.length>65536)throw Error('복사한 곡선 키 형식을 확인하세요.');
  const shape=shapes[clipboard.type],value=v=>shape===1?Number.isFinite(v)&&Math.abs(v)<=1000000:Array.isArray(v)&&v.length===shape&&v.every(x=>Number.isFinite(x)&&Math.abs(x)<=1000000);
  for(let i=0;i<clipboard.keys.length;i++){const key=clipboard.keys[i];if(!key||Object.keys(key).some(p=>!fields.includes(p))||!Number.isFinite(key.time)||key.time<0||key.time>86400||(!i?key.time!==0:key.time<=clipboard.keys[i-1].time)||shape===0&&Object.keys(key).some(p=>p!=='time')||shape>0&&(!value(key.value)||key.interpolation!==undefined&&!curveModes.includes(key.interpolation)||!validCurveWeights(key,key.value)||['arriveTangent','leaveTangent'].some(p=>key[p]!==undefined&&!value(key[p]))))throw Error('곡선 키의 시간·자료형·핸들을 확인하세요.');}
- return clipboard;
+ if(!validCurveTimeHandles(clipboard.keys))throw Error('곡선 시간 핸들은 단조롭게 증가해야 해요.');return clipboard;
 }
 export function parseCurveClipboard(text){if(typeof text!=='string'||text.length>curveClipboardMaxText)throw Error('곡선 클립보드 크기를 확인하세요.');let value;try{value=JSON.parse(text);}catch{throw Error('곡선 클립보드 JSON을 확인하세요.');}return checked(value);}
 export function copyCurveKeys(track,indices){

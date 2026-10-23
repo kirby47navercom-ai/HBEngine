@@ -1,7 +1,7 @@
 import {subdivideCurve} from './curve-subdivision.js';
 import {filterCurveFrequency} from './curve-frequency-filter.js';
-import {sampleCurveSegment,sampleCurveOutside,curveKeyTangent} from './curve-sampling.js';
-const handles=['arriveTangent','leaveTangent','arriveWeight','leaveWeight'];
+import {sampleCurveSegment,sampleCurveOutside,curveKeyTangent,curveStoredTangent,updateCurveControl} from './curve-sampling.js';
+const handles=['arriveTangent','leaveTangent','arriveWeight','leaveWeight','arriveControl','leaveControl'];
 export const curveTools=['transform','flatten','straighten','linearTangents','smooth','bake','reduce','eulerFilter','fft'];
 // Detached candidate only. Document/Timeline owners validate and commit once.
 export function editCurveKeys(track,{operation,indices,channel,timeScale=1,timeOffset=0,timePivot=0,valueScale=1,valueOffset=0,valuePivot=0,fps=30,tolerance=.001,start,end,maxKeys=65536,rangeOnly=false,cutoff=5,upperCutoff=10,sampleRate,filterType='lowpass',order=4,strength=1,response='butterworth',rippleDB=1}={}){
@@ -24,8 +24,8 @@ export function editCurveKeys(track,{operation,indices,channel,timeScale=1,timeO
    const baked=[];for(let i=0;i<count;i++){const time=start+i/fps;if(i&&end-time<=Number.EPSILON*Math.max(1,Math.abs(start),Math.abs(end))*8)break;baked.push({time,value:evaluate(time),interpolation:'linear'});}baked.push({time:end,value:evaluate(end),interpolation:'linear'});
    if(!rangeOnly){result.keys=baked;return result;}
    if(first+keys.length-last-1+baked.length>maxKeys)throw Error('부분 베이크와 외부 키의 합이 예산을 넘었어요.');
-   const mode=i=>before[i].interpolation||track.interpolation||'linear',freeze=(i,key)=>{for(const f of ['arriveTangent','leaveTangent'])key[f]=shaped(key.value,(_,c)=>curveKeyTangent(before,i,c,f,track.interpolation||'linear'));if(mode(i)==='clampedAuto')for(const f of ['arriveWeight','leaveWeight'])delete key[f];key.interpolation='break';};
-   const left={...keys[first]},right={...keys[last]};freeze(first,left);left.interpolation='linear';delete left.leaveTangent;delete left.leaveWeight;if(!['linear','constant','step'].includes(mode(last)))freeze(last,right);
+   const mode=i=>before[i].interpolation||track.interpolation||'linear',freeze=(i,key)=>{for(const f of ['arriveTangent','leaveTangent'])key[f]=shaped(key.value,(_,c)=>curveStoredTangent(before,i,c,f,track.interpolation||'linear'));if(mode(i)==='clampedAuto')for(const f of ['arriveWeight','leaveWeight','arriveControl','leaveControl'])delete key[f];key.interpolation='break';};
+   const left={...keys[first]},right={...keys[last]};freeze(first,left);left.interpolation='linear';delete left.leaveTangent;delete left.leaveWeight;delete left.leaveControl;if(!['linear','constant','step'].includes(mode(last)))freeze(last,right);
    // Clamped endpoint slopes depend on two neighbours. Preserve the only
    // outside endpoints whose second neighbour changed across this bake edge.
    if(first===1&&mode(0)==='clampedAuto')freeze(0,keys[0]);if(last===keys.length-2&&mode(keys.length-1)==='clampedAuto')freeze(keys.length-1,keys.at(-1));
@@ -37,13 +37,13 @@ export function editCurveKeys(track,{operation,indices,channel,timeScale=1,timeO
  }
  if(operation==='transform'&&(![timeScale,timeOffset,timePivot,valueScale,valueOffset,valuePivot].every(Number.isFinite)||timeScale<=0))throw Error('시간 배율은 양수, 변환 값은 유한한 수여야 해요.');
  for(const i of chosen){const key=keys[i];if(operation==='transform'){
-   key.time=timePivot+(key.time-timePivot)*timeScale+timeOffset;key.value=map(key.value,v=>valuePivot+(v-valuePivot)*valueScale+valueOffset);
+   for(const field of ['arriveControl','leaveControl'])if(key[field]!==undefined)key[field]=map(key[field],v=>v*valueScale);key.time=timePivot+(key.time-timePivot)*timeScale+timeOffset;key.value=map(key.value,v=>valuePivot+(v-valuePivot)*valueScale+valueOffset);
    // Materialize automatic slopes only when their key geometry is transformed.
    if(!['linear','constant','step'].includes(key.interpolation||track.interpolation||'linear')){for(const f of ['arriveTangent','leaveTangent'])key[f]=shaped(before[i].value,(_,c)=>curveKeyTangent(before,i,c,f,track.interpolation||'linear')*(channel===undefined||channel===c?valueScale:1)/timeScale);if((before[i].interpolation||track.interpolation)==='clampedAuto')for(const f of ['arriveWeight','leaveWeight'])delete key[f];key.interpolation='break';}
   }else{
    if(operation==='smooth'){key.value=map(key.value,(_,c)=>(part(before[Math.max(0,i-1)].value,c)+2*part(before[i].value,c)+part(before[Math.min(before.length-1,i+1)].value,c))/4);}
-   else{for(const f of ['arriveTangent','leaveTangent']){key[f]??=shaped(key.value,(_,c)=>curveKeyTangent(before,i,c,f,track.interpolation||'linear'));key[f]=map(key[f],(_,c)=>{if(operation==='flatten')return 0;if(operation==='straighten')return Math.tan((Math.atan(curveKeyTangent(before,i,c,'arriveTangent',track.interpolation||'linear'))+Math.atan(curveKeyTangent(before,i,c,'leaveTangent',track.interpolation||'linear')))/2);const j=i+(f==='arriveTangent'?-1:1),other=before[j];return other?(part(other.value,c)-part(before[i].value,c))/(other.time-before[i].time):0;});}key.interpolation=operation==='flatten'?'user':'break';}
+   else{for(const f of ['arriveTangent','leaveTangent']){key[f]??=shaped(key.value,(_,c)=>curveKeyTangent(before,i,c,f,track.interpolation||'linear'));key[f]=map(key[f],(_,c)=>{if(operation==='flatten')return 0;if(operation==='straighten')return Math.tan((Math.atan(curveKeyTangent(before,i,c,'arriveTangent',track.interpolation||'linear'))+Math.atan(curveKeyTangent(before,i,c,'leaveTangent',track.interpolation||'linear')))/2);const j=i+(f==='arriveTangent'?-1:1),other=before[j];return other?(part(other.value,c)-part(before[i].value,c))/(other.time-before[i].time):0;});}for(const f of ['arriveTangent','leaveTangent'])for(let c=0;c<shape;c++)if(channel===undefined||channel===c)updateCurveControl(keys,i,c,f.replace('Tangent',''),part(key[f],c));key.interpolation=operation==='flatten'?'user':'break';}
   }}
- if(operation==='smooth'){const automatic=keys.map(k=>({...k,interpolation:'clampedAuto'}));for(const i of chosen){const key=keys[i];if(channel===undefined){for(const f of handles)delete key[f];key.interpolation='clampedAuto';}else{for(const f of ['arriveTangent','leaveTangent'])key[f]=shaped(key.value,(_,c)=>curveKeyTangent(c===channel?automatic:before,i,c,f,track.interpolation||'linear'));for(const f of ['arriveWeight','leaveWeight'])if(key[f]!==undefined)key[f]=map(key[f],()=>1/3);key.interpolation='break';}}}
+ if(operation==='smooth'){const automatic=keys.map(k=>({...k,interpolation:'clampedAuto'}));for(const i of chosen){const key=keys[i];if(channel===undefined){for(const f of handles)delete key[f];key.interpolation='clampedAuto';}else{for(const f of ['arriveTangent','leaveTangent'])key[f]=shaped(key.value,(_,c)=>curveKeyTangent(c===channel?automatic:before,i,c,f,track.interpolation||'linear'));for(const f of ['arriveWeight','leaveWeight'])if(key[f]!==undefined)key[f]=map(key[f],()=>1/3);for(const f of ['arriveTangent','leaveTangent'])updateCurveControl(keys,i,channel,f.replace('Tangent',''),part(key[f],channel));key.interpolation='break';}}}
  keys.sort((a,b)=>a.time-b.time);return result;
 }

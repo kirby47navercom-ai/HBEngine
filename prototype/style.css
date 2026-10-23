@@ -398,3 +398,5 @@ input,textarea,[contenteditable=true],#console-logs,.help-items,.dialog-descript
 .timeline-editor[data-curve-view="stacked"] .curve-plot{overflow:auto}.timeline-editor [data-sequence-curve-view]{max-width:105px!important;flex:0 0 105px!important}.timeline-editor [data-curve-lane]{paint-order:stroke;stroke:#20282c;stroke-width:3px}
 
 .timeline-editor[data-curve-view="stacked"] .curve-plot{min-height:0;max-height:100%;height:100%}
+
+.timeline-editor[data-sequence-curve]>.curve-keybar{gap:5px}.timeline-editor[data-sequence-curve]>.curve-keybar>.curve-channels>label{display:inline-flex;flex-direction:row;align-items:center;gap:3px;margin:0}.timeline-editor [data-sequence-curve-track]{width:120px!important}.timeline-editor [data-sequence-curve-view]{max-width:95px!important;flex-basis:95px!important}.timeline-editor[data-sequence-curve] [data-curve-range]{width:92px}.timeline-editor [data-curve-selection]{white-space:nowrap;font-size:11px;color:var(--muted)}
