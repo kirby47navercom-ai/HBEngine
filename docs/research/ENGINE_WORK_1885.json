@@ -1483,6 +1483,20 @@
     "Empty-selection mirror is a selected-key tool; whole-curve multi test uses actual bake instead.",
     "Source screenshot inspected; compact multi sidebar channel labels/key counts refined for final installed gate."
   ],
-  "installationPending": true,
-  "scope": "Multiple visible sequence curves share absolute time/value view, owner-aware Ctrl/marquee/all-key selection, snapped shared drag with relative spacing and boundary clamp, time/value/interpolation/weights/delete and tools in one Undo. Strict group clipboard preserves cross-track offsets and resolves IDs or unique name/type atomically. Shared AI tracks[] batch preserves single track calls, CAS/dryRun/validation/stale/Undo/save. Existing CPP playback samples both authored targets and restores. Eight affected regressions passed; after BP Clamped Auto validator addition, focused multi/weighted units passed. Final compact sidebar/UI and installed independent D3D gate pending. Normalized/stacked views and per-key differing channel axes remain."
+  "installationPending": false,
+  "scope": "Multiple visible sequence curves share absolute time/value view, owner-aware Ctrl/marquee/all-key selection, snapped shared drag with relative spacing and boundary clamp, time/value/interpolation/weights/delete and tools in one Undo. Strict group clipboard preserves cross-track offsets and resolves IDs or unique name/type atomically. Shared AI tracks[] batch preserves single track calls, CAS/dryRun/validation/stale/Undo/save. Existing CPP playback samples both authored targets and restores. Eight affected regressions passed; after BP Clamped Auto validator addition, focused multi/weighted units passed. Final compact sidebar/UI and installed independent D3D gate pending. Normalized/stacked views and per-key differing channel axes remain.",
+  "currentInstallation": "docs/research/USER_INSTALL_1887.json",
+  "installedGates": [
+    {
+      "path": "native/build/multi-curves-1884-window-qAyuOg/acceptance.json",
+      "sha256": "e2d8503b2a91648f5506d7c60dea03474ed275774cb894a432f88adb745d1e93",
+      "scope": "Owned actual sequence multi-curve chooser/overlay, cross-owner pointer selection and shared snapped drag, Ctrl+A/interpolation, group clipboard with private browser clipboard, single Undo, shared AI batch CAS/dryRun/stale/invalid/save; real C++ samples both authored targets and restores. Optional standalone D3D11.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\89e9545cf1cd77be\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 81565.4892
+    }
+  ]
 }

@@ -1148,3 +1148,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1880–1882: 설치최종가시clock control·UndoRedo/AI CAS dryRun/invalid/save/runtime잠금·실제SDK2header CPP6함수/기존playback·별도D3D 85.92초통과. manifest4454/source1126/native21중2SDK변경/vendor2/PlayerHost불변·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전196644915B정리. USER_INSTALL1881. 외부Custom/timecode/RTC/개별시간상속·누적목표잔여유지.
 
 1883–1885: 다중곡선overlay/소유키선택/CtrlA/marquee·공통drag/snap/clamp/상대time·다중value/interpolation/weights/delete/tool/한Undo·groupclipboard 상대시각/고유대상검증·AI tracks[] batch/CAS/dryRun/invalid/stale/save·BPclampedAuto저장일치 구현.8회귀+validator2unit·실제source UI/다중drag/clipboard/CPP두대상샘플restore통과. 최종compact UI/독립D3D 설치gate예정. WORK1885·정규화/쌓기/키별다른채널축등잔여유지.
+
+1886–1888: 최종설치compact visible sidebar2/graph>=100·다중owner선택/drag/snap/한Undo·CtrlA/보간·private clipboard 상대시각paste·AI atomic/CAS/dryRun/invalid/stale/UndoRedo/save·실제CPP두대상sample/restore·별도D3D 81.57초통과. manifest4461/source1131/native21+SDK/vendor2/PlayerHost exact불변·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전196847015B정리. USER_INSTALL1887·정규화/쌓기/키별axis등잔여유지.

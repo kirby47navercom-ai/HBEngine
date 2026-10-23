@@ -1922,7 +1922,8 @@
         "docs/research/ENGINE_WORK_1879.json",
         "docs/research/USER_INSTALL_1881.json",
         "docs/SEQUENCE_MULTI_CURVE.md",
-        "docs/research/ENGINE_WORK_1885.json"
+        "docs/research/ENGINE_WORK_1885.json",
+        "docs/research/USER_INSTALL_1887.json"
       ]
     },
     {
@@ -2606,7 +2607,8 @@
         "docs/research/ENGINE_WORK_1879.json",
         "docs/research/USER_INSTALL_1881.json",
         "docs/SEQUENCE_MULTI_CURVE.md",
-        "docs/research/ENGINE_WORK_1885.json"
+        "docs/research/ENGINE_WORK_1885.json",
+        "docs/research/USER_INSTALL_1887.json"
       ]
     },
     {
@@ -3725,14 +3727,14 @@
     "first": 1883,
     "last": 1885,
     "receipt": "docs/research/ENGINE_WORK_1885.json",
-    "scope": "Multiple visible sequence curves share absolute time/value view, owner-aware Ctrl/marquee/all-key selection, snapped shared drag with relative spacing and boundary clamp, time/value/interpolation/weights/delete and tools in one Undo. Strict group clipboard preserves cross-track offsets and resolves IDs or unique name/type atomically. Shared AI tracks[] batch preserves single track calls, CAS/dryRun/validation/stale/Undo/save. Existing CPP playback samples both authored targets and restores. Eight affected regressions passed; after BP Clamped Auto validator addition, focused multi/weighted units passed. Final compact sidebar/UI and installed independent D3D gate pending. Normalized/stacked views and per-key differing channel axes remain."
+    "scope": "Installed sequence multi-curve chooser/absolute overlay and compact visible sidebar. Cross-owner Ctrl/marquee/all selection, shared snapped drag/relative spacing and single Undo; interpolation/weights/value/delete/tools and strict group clipboard. Shared AI tracks[] batch/CAS/dryRun/invalid/stale/UndoRedo/save; existing CPP playback samples both edited targets and restores in installed editor and standalone D3D11. BP Clamped Auto storage validation matches UI/sampler. Eight affected regressions plus focused validator units. Exact1131 source/all21 native+SDK/vendor2/binary/full manifest checks; User preserved, Versions1/cache32/lease0. Normalized/stacked views and per-key differing channel axes remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1881.json",
-    "sourceCommit": "019761e276d6b34b3bd301f592056c166c631354",
-    "bundleHash": "c18341dc2addcb5e7113c5c52b0057219b25143542b09aa266822426e2b0461d",
+    "receipt": "docs/research/USER_INSTALL_1887.json",
+    "sourceCommit": "a41e7684aeacc3ac9cfc65132527d08c93330030",
+    "bundleHash": "89e9545cf1cd77be72e11959bdc771673816f16ece8cb3550bfe533b60b22c13",
     "verified": true,
     "versions": 1,
-    "scope": "Installed four sequence clock modes and six common CPP/BP APIs. Manual event-aware Advance and silent Evaluate share pose/events/nested sections/restore; rational frame holds one frame/update without catch-up debt. Visible human source/hold controls, UndoRedo/AI CAS dryRun/invalid validation/save/runtime lock and six freshly compiled CPP functions passed in installed editor and standalone D3D11. Seven affected source regressions; exact1126 source/21 native owners with two changed SDK headers, vendor/binary/full manifest checks, User preserved, Versions1/cache32/lease0. External audio/timecode/RTC/genlock and independent channel clocks remain."
+    "scope": "Installed sequence multi-curve chooser/absolute overlay and compact visible sidebar. Cross-owner Ctrl/marquee/all selection, shared snapped drag/relative spacing and single Undo; interpolation/weights/value/delete/tools and strict group clipboard. Shared AI tracks[] batch/CAS/dryRun/invalid/stale/UndoRedo/save; existing CPP playback samples both edited targets and restores in installed editor and standalone D3D11. BP Clamped Auto storage validation matches UI/sampler. Eight affected regressions plus focused validator units. Exact1131 source/all21 native+SDK/vendor2/binary/full manifest checks; User preserved, Versions1/cache32/lease0. Normalized/stacked views and per-key differing channel axes remain."
   }
 }
