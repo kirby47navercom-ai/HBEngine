@@ -20,7 +20,8 @@ const field=(label,path,value,{type='number',min,max,step='.01'}={})=>`<label>${
 const vectorField=(label,path,value)=>`<label>${esc(label)}<span class="asset-vector-fields">${value.map((v,i)=>`<input type="number" step=".05" value="${v}" data-editor-field="${path}.${i}" aria-label="${esc(label)} ${'XYZW'[i]}">`).join('')}</span></label>`;
 const assetField=(label,path,value,files,kinds)=>`<label>${esc(label)}<select data-editor-field="${path}">${assetOptions(files,kinds,value)}</select></label>`;
 export function renderDataEditor(element,doc,files,hooks){
-  if(isNativeTypeAssetKind(doc.kind))return renderNativeTypeAssetEditor(element,doc,hooks);
+  element.hbAssetDocument=doc;
+  if(isNativeTypeAssetKind(doc.kind))return renderNativeTypeAssetEditor(element,doc,hooks,files);
   if(doc.kind==='takepreset')return renderTakePresetEditor(element,doc,hooks,files);
   element.hbTextureViewer?.dispose();const d=doc.data,kind=doc.kind;element.hbAssetDocument=doc;if(kind==='lightmap'){element.hbTextureViewer=new LightmapEditor(element,doc,hooks);return;}if(structuredAssetKinds.includes(kind))return renderStructuredAssetEditor(element,doc,files,hooks);
   element.innerHTML=`<header class="asset-editor-heading"><span class="asset-symbol ${kind}">${icon(assetIcon(kind))}</span><div><small>${assetTypes[kind].label}</small><h2>${esc(d.name)}</h2></div></header><div class="asset-form"></div>`;

@@ -6,7 +6,7 @@ import {createHash} from 'node:crypto';
 import {createBlueprintResolver} from '../prototype/blueprint-inheritance.js';
 import {createNativeTypeImportResolver} from '../prototype/native-type-imports.js';
 import {nativeTypeReference,readNativeHeader,nativeSourceReference} from '../prototype/native-model.js';
-import {compileNativeTypeAsset} from '../prototype/native-type-assets.js';
+import {createNativeTypeImportResolver as createTypeMigrationResolver} from '../prototype/native-type-imports.js';
 import {createNativeRecordMigration} from '../prototype/native-record-migration.js';
 import {migrateBlueprintRecordValues,migrateBlueprintInstanceRecords,migrateSequenceRecordValues} from '../prototype/record-value-sites.js';
 import {migrateRecordOverrideValue} from '../prototype/record-override-values.js';
@@ -24,9 +24,11 @@ const bytes=rows=>rows.reduce((n,r)=>n+Buffer.byteLength(r.before||'')+Buffer.by
 // A plan shares the existing batch journal and CAS, not an independent writer.
 // Only declared values are visited; arbitrary JSON/save-game data stays opaque.
 export async function planNativeTypeMigration(project,rows,drafts,{restoring=false}={}){
- const changed=new Set();
- for(const row of rows.filter(r=>suffix(r.path)&&r.before!==null&&r.after!==null)){
-  const before=compileNativeTypeAsset(JSON.parse(row.before)).metadata,after=compileNativeTypeAsset(JSON.parse(row.after)).metadata;
+ const changed=new Set(),changedTypes=rows.filter(r=>suffix(r.path)&&r.before!==null&&r.after!==null);
+ const typeRead=previous=>async name=>{const row=rows.find(r=>r.path.toLowerCase()===name.toLowerCase());if(row){const text=previous?row.before:row.after;if(text===null)throw Error('자료형 원본이 없어요: '+name);return text;}return fs.readFile(await project.canonicalFile(name),'utf8');};
+ const beforeTypes=createTypeMigrationResolver(typeRead(true)),afterTypes=createTypeMigrationResolver(typeRead(false));
+ for(const row of changedTypes){
+  const reference={version:1,sourceReference:true,typeLibraries:[row.path]},before=await beforeTypes(reference),after=await afterTypes(reference);
   for(const old of before.structs||[]){const next=(after.structs||[]).find(d=>d.name===old.name);if(next&&JSON.stringify(old.fields.map(f=>[f.name,f.type,f.array,f.structName]))!==JSON.stringify(next.fields.map(f=>[f.name,f.type,f.array,f.structName])))changed.add(old.name);}
  }
  const sourceRows=nativeSchemaCandidates(rows);if(!changed.size&&!sourceRows.length&&!restoring)return null;

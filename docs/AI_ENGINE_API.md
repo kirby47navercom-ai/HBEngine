@@ -593,3 +593,5 @@ C++ 클래스·명시 반사 멤버는 `native.classes.read`로 페이지 조회
 MeshRenderer 실행 속성 다섯 개의 자원 유지 갱신과 requestedIntensity/effectiveIntensity/inPlacePropertyUpdates는 docs/MESH_RENDERER_LIVE_PROPERTIES.md를 따라요. document.patch/Undo와 실행 값은 구분해요.
 
 1641 network: runtime.network 요약/페이지에 replacements/replacing 개수와 replacementPending/replacing/localMatchesSource를 추가해요. 기존 메타데이터 전용 페이지 계약을 보존해요. docs/NETWORK_PREFAB_REPLACEMENT.md 참조.
+
+1915: schema.nativeTypeDependencies는 타입 에셋 imports/전이 typeId 필드·로컬형태와 전체준비/저장 검증 경계·같은 journal/CAS/Undo를 설명해요. 자세한 계약은 docs/NATIVE_TYPE_DEPENDENCIES.md. 변경 없는 파일 묶음 저장도 동시 편집을 확인한 뒤 미저장 표시를 해제하고 불필요한 Undo를 추가하지 않아요.

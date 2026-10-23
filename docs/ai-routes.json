@@ -1023,6 +1023,26 @@
   ],
   "focusRoutes": [
     {
+      "id": "native-type-dependency-graph",
+      "keywords": [
+        "nativeTypeClosure",
+        "nativeTypeImports",
+        "nativeTypeDependencyContract"
+      ],
+      "paths": [
+        "prototype/native-type-graph.js"
+      ]
+    },
+    {
+      "id": "native-type-dependency-read",
+      "keywords": [
+        "readNativeTypeDependencies"
+      ],
+      "paths": [
+        "prototype/native-type-imports.js"
+      ]
+    },
+    {
       "id": "curve-explicit-controls",
       "keywords": [
         "curveTimeMonotone",

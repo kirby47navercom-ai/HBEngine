@@ -165,3 +165,6 @@ stationary inverse 첫 독립 oracle에서 약3.7e-6 오차를 찾아 centered c
 1909 UI 좁은 곡선 패널: 기존 weighted 창 회귀가 graph130px 하한을 확인했어요. 최초 keybar162.5/graph100px와 상단31px클리핑을 포착했어요. 단일채널 label행·간격·selector/summary배치를 고친 뒤 keybar122/graph110.0625px로 상단클리핑은 해소됐지만3행이 남았어요. 품질 하한은 낮추지 않아요. 다음은 실제 마지막 행 제어를 확인해 기존 fit/고급 범위 제어 배치를 같은 툴바 안에서 정리하고 최소 graph130px를 복원해요.
 
 1909 해결 확인: derivative 최소값 판별로 stationary와 사실상 선형 시간 다항식을 구분해 새 oracle/기존 dense subdivision 회귀가 함께 통과했어요. 단일채널행·selector간격과 선택개수를 하단에 배치하고 Fit를 하단 조작줄로 옮겨 graph130px 하한을 보존했어요. current weighted-curves-1295-UgpOlP와 curve-controls-1908-window-4Gfa2b 실제창/C++가 통과했어요. 포인터는 수직 핸들의 화면 좌표 양자화 때문에 0.75 CSSpx 시간축 스냅을 사용해 정확히 weight0을 저장해요. 이전 실패는 구현 성과에 세지 않아요.
+
+## 1913–1915 자료형 의존 제작
+별도3에셋/생성include/파일CAS/이관7검사통과 후 실제UI에서 record전환 기본값0을 발견. nativeTypeAssetDefault가 기존float value까지핀에 넘겨 nativeRecordDefault의명시값우선에걸림; 새record선언pin으로조회. 독립unit에이전value0회귀추가. 다음창은참조/이관/CPP[99,4,12]/Actor정상이나종료실패; diagnostics는원래내용복원/save후 Stats dirtytrue. applyFileBatch의server noChange분기가finishFileBatch를건너뛰는원인확정. no-op저장도observed/CAS확인후clean뷰확정·새Undo미생성으로수정하고VM/실제창재검사. 실패두창은성과아님.

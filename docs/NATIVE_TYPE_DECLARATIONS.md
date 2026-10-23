@@ -15,3 +15,5 @@ AI는 `engine.schema.nativeTypeDeclarations`, `createNativeTypeDeclaration`, `co
 대조한 공식 원문은 [Unreal 구조체 변수](https://dev.epicgames.com/documentation/en-us/unreal-engine/blueprint-struct-variables-in-unreal-engine)의 사용자 구조체 생성/필드 기본값/변수 자료형/Make·Break·SetMembers와 [C++ Struct](https://dev.epicgames.com/documentation/en-us/unreal-engine/structs-in-unreal-engine)의 BlueprintType 노출이에요. 이 두 원문의 관련 본문만 대조했고 UE/Unity 전체 본문/API 분석 완료로 계산하지 않아요.
 
 검사 소유자는 `tools/check-native-type-declarations-1821.mjs`와 `tools/check-native-type-declarations-1822-window.mjs`예요. 실제 C++/독립 D3D11 게임에서는 생성 enum37·새 중첩 필드2+2를 읽어 `[99,4,37]` 이동, 순수 BP는 `[99,3,2]` 이동을 확인해요. 실제 실행 결과가 통과한 기록만 WORK/USER_INSTALL에 연결해요.
+
+1913–1915: [에셋 간 타입 참조](NATIVE_TYPE_DEPENDENCIES.md)의 imports·전이 의존 필드·생성 include·상위 기본값/소비자 원자 이관을 지원해요. 독립 enum/struct 에셋과 명시적 의존은 구현됐고 프로젝트 전역 자동 발견·파괴적 변경은 별도예요. 기존 잔여 설명 중 에셋 종류·에셋 간 참조는 이 기록으로 갱신해요.

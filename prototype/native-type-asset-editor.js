@@ -1,11 +1,18 @@
-import {compileNativeTypeAsset,nativeTypeAssetDefault,nativeAssetValueTypes} from './native-type-assets.js';
+import {compileNativeTypeAsset,nativeTypeAssetDefault,nativeAssetValueTypes,nativeTypeHeaderPath} from './native-type-assets.js';
 import {reconcileNativeTypeDefaults} from './native-type-defaults.js';
+import {nativeTypeClosure,nativeTypeImports} from './native-type-graph.js';
+import {readNativeTypeDependencies} from './native-type-imports.js';
+import {appendNativeTypeImportUI} from './native-type-import-ui.js';
 
-export function renderNativeTypeAssetEditor(element,doc,hooks){
+export async function renderNativeTypeAssetEditor(element,doc,hooks,files=[]){
+ const token={},before=JSON.stringify(doc.data);element.hbTypeLoad=token;element.hbAssetDocument=doc;
+ try{const libraries=await readNativeTypeDependencies(doc.data,hooks.readAsset);if(element.hbTypeLoad!==token||element.hbAssetDocument!==doc||JSON.stringify(doc.data)!==before)return;renderResolvedNativeTypeEditor(element,doc,hooks,files,libraries);}catch(error){if(element.hbTypeLoad===token&&element.hbAssetDocument===doc)hooks.error(error.message);}
+}
+function renderResolvedNativeTypeEditor(element,doc,hooks,files,libraries){
  const document=element.ownerDocument,view=doc.view??={},expanded=view.typeExpanded??={};let saved;try{saved=JSON.parse(doc.saved);}catch{saved={};}
  const persisted=new Set([...(saved.enums||[]),...(saved.structs||[])].flatMap(d=>[d.id,...(d.entries||d.fields).map(f=>f.id)]));
  const node=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
- const edit=change=>{try{let next=structuredClone(doc.data);change(next);next=reconcileNativeTypeDefaults(doc.data,next);compileNativeTypeAsset(next);hooks.before();doc.data=next;hooks.change();renderNativeTypeAssetEditor(element,doc,hooks);}catch(e){hooks.error(e.message);}};
+ const edit=(change,nextLibraries=libraries)=>{try{let next=structuredClone(doc.data);change(next);next=reconcileNativeTypeDefaults(doc.data,next,{beforeLibraries:libraries,libraries:nextLibraries});compileNativeTypeAsset(next,{libraries:nextLibraries});hooks.before();doc.data=next;hooks.change();renderResolvedNativeTypeEditor(element,doc,hooks,files,nextLibraries);}catch(e){hooks.error(e.message);}};
  const input=(parent,label,value,change,{type='text',disabled=false}={})=>{const row=node('label',label),field=node('input');field.type=type;if(type==='number')field.step='any';field.setAttribute('aria-label',label);field.disabled=disabled;if(type==='checkbox')field.checked=value;else field.value=value;field.onchange=()=>change(type==='checkbox'?field.checked:type==='number'?Number(field.value):field.value);row.append(field);parent.append(row);return field;};
  const button=(parent,text,action)=>{const n=node('button',text);n.type='button';n.onclick=action;parent.append(n);return n;};
  const section=(title,action)=>{const s=node('section'),h=node('div');h.className='form-section-heading';h.append(node('h3',title));if(action)button(h,'추가',action);s.append(h);return s;};
@@ -14,7 +21,8 @@ export function renderNativeTypeAssetEditor(element,doc,hooks){
  const header=node('header');header.className='asset-editor-heading';header.append(node('h2',doc.data.name));const form=node('div');form.className='asset-form';element.replaceChildren(header,form);element.dataset.nativeTypeEditor='';
  const primary=doc.data.primary,primaryKind=primary?.kind==='enum'?'enums':'structs';
  if(primary)element.dataset.nativeTypePrimary=primary.kind;else delete element.dataset.nativeTypePrimary;
- const identity=section(primary?primary.kind==='enum'?'열거형 에셋':'구조체 에셋':'라이브러리');input(identity,'이름',doc.data.name,v=>edit(d=>d.name=v));input(identity,'C++ namespace',doc.data.namespace,v=>edit(d=>d.namespace=v),{disabled:!!saved.id});const path=node('code',compileNativeTypeAsset(doc.data).path);path.dataset.typeHeader='';identity.append(path);form.append(identity);
+ const identity=section(primary?primary.kind==='enum'?'열거형 에셋':'구조체 에셋':'라이브러리');input(identity,'이름',doc.data.name,v=>edit(d=>d.name=v));input(identity,'C++ namespace',doc.data.namespace,v=>edit(d=>d.namespace=v),{disabled:!!saved.id});const path=node('code',nativeTypeHeaderPath(doc.data));path.dataset.typeHeader='';identity.append(path);form.append(identity);
+ appendNativeTypeImportUI(form,{paths:nativeTypeImports(doc.data),files:files.filter(f=>f.path!==doc.path),change:async imports=>{const before=JSON.stringify(doc.data),next={...doc.data,imports},dependencies=await readNativeTypeDependencies(next,hooks.readAsset);if(element.hbAssetDocument!==doc||JSON.stringify(doc.data)!==before)throw Error('문서가 변경됐어요. 다시 시도하세요.');edit(d=>{if(imports.length)d.imports=imports;else delete d.imports;},dependencies);},error:hooks.error});
  const primaryGroup=primary?section(primary.kind==='enum'?'열거형 항목':'구조체 필드'):null;if(primaryGroup)form.append(primaryGroup);
  for(const kind of ['enums','structs']){
   const group=section((primary?'보조 ':'')+(kind==='enums'?'열거형':'구조체'),()=>add(kind));form.append(group);
@@ -32,10 +40,10 @@ export function renderNativeTypeAssetEditor(element,doc,hooks){
     if(kind==='enums'){input(row,'정수 값',field.value,v=>set(d=>d.value=v),{type:'number',disabled:persisted.has(field.id)});input(row,'메뉴에서 숨김',field.hidden,v=>set(d=>d.hidden=v),{type:'checkbox'});}
     else{
      const label=node('label','자료형'),select=node('select');select.ariaLabel='자료형';select.disabled=persisted.has(field.id);
-     const choices=nativeAssetValueTypes.map(t=>[t,t]);for(const [type,defs]of [['enum',doc.data.enums],['record',doc.data.structs.filter(d=>d!==definition)]])for(const d of defs)choices.push([type+':'+d.id,d.label+' · '+d.symbol]);
+     const choices=nativeAssetValueTypes.map(t=>[t,t]);for(const owner of nativeTypeClosure(doc.data,libraries))for(const [type,defs]of [['enum',owner.enums],['record',owner.structs.filter(d=>d!==definition)]])for(const d of defs)choices.push([type+':'+d.id,d.label+' · '+owner.namespace+'::'+d.symbol]);
      for(const[value,text]of choices){const o=node('option',text);o.value=value;select.append(o);}select.value=['record','enum'].includes(field.type)?field.type+':'+field.typeId:field.type;
-     select.onchange=()=>{const[type,typeId]=select.value.split(':'),next={...field,type,...typeId?{typeId}:{}};if(!typeId)delete next.typeId;try{next.value=nativeTypeAssetDefault(doc.data,next);set(d=>{Object.keys(d).forEach(k=>delete d[k]);Object.assign(d,next);});}catch(e){hooks.error(e.message);}};label.append(select);row.append(label);
-     input(row,'배열',field.array,v=>{try{const next={...field,array:v};next.value=nativeTypeAssetDefault(doc.data,next);set(d=>Object.assign(d,next));}catch(e){hooks.error(e.message);}},{type:'checkbox',disabled:persisted.has(field.id)});
+     select.onchange=()=>{const[type,typeId]=select.value.split(':'),next={...field,type,...typeId?{typeId}:{}};if(!typeId)delete next.typeId;try{next.value=nativeTypeAssetDefault(doc.data,next,{libraries});set(d=>{Object.keys(d).forEach(k=>delete d[k]);Object.assign(d,next);});}catch(e){hooks.error(e.message);}};label.append(select);row.append(label);
+     input(row,'배열',field.array,v=>{try{const next={...field,array:v};next.value=nativeTypeAssetDefault(doc.data,next,{libraries});set(d=>Object.assign(d,next));}catch(e){hooks.error(e.message);}},{type:'checkbox',disabled:persisted.has(field.id)});
      input(row,'읽기 전용',field.readOnly,v=>set(d=>d.readOnly=v),{type:'checkbox'});
      if(!field.array&&['bool','float','int','string'].includes(field.type))input(row,'기본값',field.value,v=>set(d=>d.value=v),{type:field.type==='bool'?'checkbox':field.type==='string'?'text':'number'});
      else{const label=node('label','기본값'),value=node('textarea');value.ariaLabel='기본값';value.value=JSON.stringify(field.value,null,2);value.rows=4;value.onchange=()=>{try{const v=JSON.parse(value.value);set(d=>d.value=v);}catch(e){hooks.error(e.message);}};label.append(value);row.append(label);}

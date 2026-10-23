@@ -13,5 +13,6 @@ export const nativeTypeDeclarationContract=Object.freeze({
  blueprint:'Explicit native.typeLibraries import paths for all three kinds; ordinary enum/record variables, arrays, Make/Break/SetMembers and native metadata readers.',
  cpp:'Include compileNativeTypeAsset(data).path without Source/; one shared C++ definition, no generated duplicate class or runtime type cache.',
  move:'Same-kind path/folder rename retains IDs/namespace/header path; opened references remap typeLibraries and disk references resolve project redirects.',
- remaining:Object.freeze(['Cross-asset field dependencies','Project-global automatic discovery','Destructive declaration changes and ABI hot reload'])
+ dependencies:'Optional imports paths resolve cross-asset enum/record typeId fields; transitive validation, generated includes and additive defaults share atomic save/Undo.',
+ remaining:Object.freeze(['Project-global automatic discovery','Destructive declaration changes and ABI hot reload'])
 });
