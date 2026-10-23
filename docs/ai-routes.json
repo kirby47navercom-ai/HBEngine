@@ -2707,6 +2707,38 @@
       "paths": [
         "prototype/curve-channel-edit.js"
       ]
+    },
+    {
+      "keywords": [
+        "sampleSectionTimeWarp"
+      ],
+      "paths": [
+        "prototype/sequence-time-warp.js"
+      ]
+    },
+    {
+      "keywords": [
+        "trimSequenceSectionStart"
+      ],
+      "paths": [
+        "prototype/sequence-time-warp.js"
+      ]
+    },
+    {
+      "keywords": [
+        "sectionSourceTime"
+      ],
+      "paths": [
+        "prototype/sequence-time-warp.js"
+      ]
+    },
+    {
+      "keywords": [
+        "sectionRanges"
+      ],
+      "paths": [
+        "prototype/sequence-sections.js"
+      ]
     }
   ]
 }
