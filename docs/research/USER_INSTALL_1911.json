@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-explicit-curve-controls",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "413bf0e3efedea0b328758e4dc4fc1964f112aad",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ab1358413b56252a",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\ab1358413b56252a\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\ab1358413b56252a\\HBEngine.exe",
+  "bundleHash": "ab1358413b56252a82b8c95fc1a3e7bdfd9f2c57386f8c3c5d736be42446b4d0",
+  "files": 4483,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4479,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\aca9fbca37308046",
+        "bytes": 197640871,
+        "manifestSHA256": "54a1fa3f048d6623037509ee18808c5f0505ab15b10d340965cc983a56a5d5aa"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T04:03:42.1931129Z",
+    "bytes": 197640871,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "ab1358413b56252a"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1145,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/curve-controls-1908-window-7twG1w/acceptance.json",
+      "sha256": "a9a8bb4a3b3c2c18f63e090e0993e6521d09475d7076a47ce70c062b683cf67d",
+      "scope": "Actual exact partial bake with vertical and extended-weight boundaries, incoming handle editing without changing outgoing linear mode, numeric conversion/UndoRedo/AI validation/private clipboard, save and C++ Seek samples against independent analytic inverse cubic oracle. Optional standalone D3D11; outside-key-domain bake still rejects.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\ab1358413b56252a\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 90877.66679999999
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\ab1358413b56252a\\",
+    "elapsedMs": 62.9,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\ab1358413b56252a",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "ab1358413b56252a82b8c95fc1a3e7bdfd9f2c57386f8c3c5d736be42446b4d0",
+      "installedAt": "2026-10-23T04:03:38.770Z",
+      "manifestFiles": 4483,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1905.json\",\"changedSDK\":[],\"scope\":\"All21 native/SDK owners, Host1041/Player1604 and renderer exact hashes unchanged. Original CPP Play/Seek/Stop actually samples new saved curve controls at three analytic times and restores in installed editor and standalone D3D11. Historical30 native test sources are provenance, not fresh all-SDK execution.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4483,
+  "versions": [
+    "ab1358413b56252a"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1911-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/curveControls1909-group.json",
+      "sha256": "d32f9d291aa1de1143aec24bfcdeff5a53f5a33236ae3298e110d02fc2176946",
+      "scope": "Affected explicit curve controls regression."
+    },
+    {
+      "path": "native/build/curve-controls-1907-CyGenI/acceptance.json",
+      "sha256": "319d4d506b38dc286767d14fdb105a447585dbac3682920fef1f99633f1eefe3",
+      "scope": "Independent analytic stationary-time Bezier oracle, exact vertical/extended-weight subdivision/bake outside preservation, all shared samplers/validators, clipboard/tool/axis integration. UI/C++/D3D separate; outside-key-domain bake remains rejected."
+    },
+    {
+      "path": "native/build/weighted-curves-1294-HZhVMo/acceptance.json",
+      "sha256": "933a79d2370d0d8e3ef69ce3d2ba61785e8e7cb9d3d44cf9a45a3c98e33de061",
+      "scope": "Independent forward Bezier time/value oracle, exact legacy fast path, numeric/vector weights and public validation, shared sequence/BP/animation samplers, atomic AI edits and gameplay service seek/restore. GUI/package separate; no physics/GPU/FPS claim."
+    },
+    {
+      "path": "native/build/curve-subdivision-1378.json",
+      "sha256": "9a7681c43a14fa0b1031343aaf970aa7031a0169cd01eb5795077dcd92abb9e8",
+      "scope": "Exact time/value subdivision and partial bake across scalar/vec2/vec3/color, linear/step/auto/PCHIP/weighted handles, both boundaries inside same or different segments, inherited modes, dense outside and linear infinity observations. Optional explicit controls and monotone extended horizontal weights preserve formerly unrepresentable boundaries; outside-domain/budget errors remain atomic."
+    },
+    {
+      "path": "native/build/curve-tools-1319-wWVFgG/acceptance.json",
+      "sha256": "5f766b79b1b4d7751c4de9a9131e4be27d65467c47ed908785fcc232887f2501",
+      "scope": "Independent PCHIP slopes/monotonic vectors, inherited and shared samplers, affine weighted oracle, channel preservation, bake/reduce max source-key error, typed/atomic budget rejection, skeletal authoring and actual AnimationGraph. GUI/native game separate."
+    },
+    {
+      "path": "native/build/curve-clipboard-1344-508CiV/acceptance.json",
+      "sha256": "e2ff76afa03b1c72bd31d019b63b291fb2fb77f5a45ba926d72e9de8e0d9cd0e",
+      "scope": "Typed scalar/vector/color/event key clipboard, relative-time origin, shape/weight/size/precision/budget atomic rejection, source isolation, cross-document sequence/skeletal authoring and legacy explicit shortcut preservation. No OS clipboard access."
+    },
+    {
+      "path": "native/build/sequence-origins-curves-1266-DcIrYB/acceptance.json",
+      "sha256": "8f0f4add53878c16ba829feb0029194f7c301e76b25312c03eff8fe8e7305a30",
+      "scope": "Prepared Hermite/constant/shared samplers, typed atomic authoring; actual shared gameplay origin composition/dynamic actor identity/order/nested world override/attached local/restore/invalid replacement. No GPU compile, native rebuild, FPS or mobile hardware claim."
+    },
+    {
+      "path": "native/build/curve-view-1889-aI7B80/acceptance.json",
+      "sha256": "0b64dc7cee4e40a760237f9880b1b7780ec1c1c0d4737390dda48bad926f9dc4",
+      "scope": "Independent affine values and weighted Bezier hull, production TimelineEditor inverse pointer edits, constant/hidden/stacked geometry and view-only preservation. Actual human controls/handles/scroll/C++ separate."
+    },
+    {
+      "path": "native/build/curve-channels-1895-7zcqBy/acceptance.json",
+      "sha256": "1638e26eb641f8bb9cb75f15964cbca87279fba9ff54dca9f6258bf5bd65f00d",
+      "scope": "Independent channel selections/tool math and atomic AI editing; production selection/remap/numeric paths. Shared record topology explicitly retained; actual UI/runtime in separate gate."
+    },
+    {
+      "path": "native/build/curve-resample-1754.json",
+      "sha256": "50095ac9c8419a62b445bbc45f5152c6e76b4c8f6b06079d871c2676e96df98f",
+      "scope": "Explicit authoring resample/reflected FFT/writeback, not NUFFT or causal IIR. Dense one-run wall time is not game FPS or total heap."
+    },
+    {
+      "path": "native/build/weighted-curves-1295-UgpOlP/acceptance.json",
+      "sha256": "a0a62e82c79aa6570c71e10ea0fc75ef709cfc49f2a6ca6a292f617ca379f552",
+      "scope": "Owned hidden editor: weight fields/Undo, real handle pointer drag changes length and slope, untouched axes and linked angles, visible wrapped controls, AI dry-run/invalid/stale atomicity, actual nested BP playback. No user window/profile touched; touch/weighted quaternion separate."
+    },
+    {
+      "path": "native/build/curve-controls-1907-DPs1O3/acceptance.json",
+      "sha256": "319d4d506b38dc286767d14fdb105a447585dbac3682920fef1f99633f1eefe3",
+      "scope": "Independent analytic stationary-time Bezier oracle, exact vertical/extended-weight subdivision/bake outside preservation, all shared samplers/validators, clipboard/tool/axis integration. UI/C++/D3D separate; outside-key-domain bake remains rejected."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/curve-controls-1908-window-4Gfa2b/acceptance.json",
+      "sha256": "ad1f7f468e34e03d344b55a76326a63c9f1fa59627e318888baf963fe9361cbf",
+      "scope": "Actual exact partial bake with vertical and extended-weight boundaries, incoming handle editing without changing outgoing linear mode, numeric conversion/UndoRedo/AI validation/private clipboard, save and C++ Seek samples against independent analytic inverse cubic oracle. Optional standalone D3D11; outside-key-domain bake still rejects.",
+      "note": "Final runtime/UI code source gate, then focused-route/docs only. Existing CPP Play/Seek/Stop exercises new saved curve math; no new native API/renderer or fresh all-SDK compile claim."
+    }
+  ],
+  "scope": "Installed optional signed value control offsets and monotone0..4/3 horizontal handles, vertical and extended-time exact subdivision/partial bake with outside preservation. Centered stationary inverse plus actual derivative minimum retains old near-linear time curves; vector offsets and absent-control Hermite compatibility. Shared BP/Sequence/skeletal sampling, affine/selected-axis tools, strict clipboard and atomic AI controls. Actual vertical incoming handle drag/pixel snap/numeric conversion preserves outgoing linear mode; UndoRedo/private clipboard/save/AI invalid/CAS and above-one weights. Narrow panel retains graph130px with Fit/selection footer. Real existing CPP Seek at .2/.5/.9 matches independent inverse cubic oracle and restores in installed editor and standalone D3D11. Ten affected regressions plus final10005-observation unit;1145 source/all21 native+SDK/vendor2/binary/full manifest exact, User preserved, Versions1/cache32/lease0. Outside-key-domain partial bake and broader engine goals remain."
+}

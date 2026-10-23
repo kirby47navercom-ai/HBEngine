@@ -1531,6 +1531,20 @@
     "Zero-weight vertical pointer gets subpixel coordinate quantization;0.75CSSpx time-axis snap stores exact weight0.",
     "Record focus gate found a broad route duplicated subdivideCurve keyword and read its import caller too. Removed only that duplicate keyword; --all remains available."
   ],
-  "installationPending": true,
-  "scope": "Optional explicit signed Y control offsets plus monotone horizontal weights0..4/3 retain vertical and extended-time handles, exact internal de Casteljau boundaries and outside-preserving partial bake. Stationary cubic centered inverse uses derivative minimum to avoid classifying nearly linear time as stationary; correct vector offsets and old Hermite compatibility. Shared BP/Sequence/skeletal evaluation, transform/selected-axis/tangent tools, strict clipboard, atomic AI control edit. Actual incoming-only handle editing preserves outgoing linear mode, zero-weight pixel snap and numeric conversion, UndoRedo/save/C++ independent analytic samples. Narrow panel toolbar restored graph130px without dropping controls. Ten affected regressions plus final unit10005 observations and source actual UI/CPP passed. Installed standalone D3D gate required. Outside-key-domain bake and broader cumulative goals remain."
+  "installationPending": false,
+  "scope": "Optional explicit signed Y control offsets plus monotone horizontal weights0..4/3 retain vertical and extended-time handles, exact internal de Casteljau boundaries and outside-preserving partial bake. Stationary cubic centered inverse uses derivative minimum to avoid classifying nearly linear time as stationary; correct vector offsets and old Hermite compatibility. Shared BP/Sequence/skeletal evaluation, transform/selected-axis/tangent tools, strict clipboard, atomic AI control edit. Actual incoming-only handle editing preserves outgoing linear mode, zero-weight pixel snap and numeric conversion, UndoRedo/save/C++ independent analytic samples. Narrow panel toolbar restored graph130px without dropping controls. Ten affected regressions plus final unit10005 observations and source actual UI/CPP passed. Installed standalone D3D gate required. Outside-key-domain bake and broader cumulative goals remain.",
+  "currentInstallation": "docs/research/USER_INSTALL_1911.json",
+  "installedGates": [
+    {
+      "path": "native/build/curve-controls-1908-window-7twG1w/acceptance.json",
+      "sha256": "a9a8bb4a3b3c2c18f63e090e0993e6521d09475d7076a47ce70c062b683cf67d",
+      "scope": "Actual exact partial bake with vertical and extended-weight boundaries, incoming handle editing without changing outgoing linear mode, numeric conversion/UndoRedo/AI validation/private clipboard, save and C++ Seek samples against independent analytic inverse cubic oracle. Optional standalone D3D11; outside-key-domain bake still rejects.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\ab1358413b56252a\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 90877.66679999999
+    }
+  ]
 }
