@@ -209,7 +209,7 @@ export function splitPin(graph,nodeId,direction,pinId,recombine=false){
 }
 
 export const defaultTimeline={length:1,loop:false,autoplay:false,playRate:1,lastKeyframe:false,ignoreTimeDilation:false,tracks:[{id:'Alpha',name:'Alpha',type:'float',interpolation:'linear',keys:[{time:0,value:0},{time:1,value:1}]}]};
-export const curveModes=['auto','user','break','linear','constant','step'];
+export const curveModes=['auto','clampedAuto','user','break','linear','constant','step'];
 export function validTimeline(t){
   return t&&Number.isFinite(t.length)&&t.length>0&&t.length<=10000&&typeof t.loop==='boolean'&&typeof t.autoplay==='boolean'&&['lastKeyframe','ignoreTimeDilation'].every(k=>t[k]===undefined||typeof t[k]==='boolean')&&(t.playRate===undefined||Number.isFinite(t.playRate)&&t.playRate>0&&t.playRate<=100)&&Array.isArray(t.tracks)&&t.tracks.length<=16&&new Set(t.tracks.map(t=>t?.id)).size===t.tracks.length&&t.tracks.every(track=>track&&/^[A-Za-z_][A-Za-z0-9_]{0,79}$/.test(track.id)&&!['update','finished','direction'].includes(track.id)&&typeof track.name==='string'&&track.name.length<=80&&['float','vec3','color','event'].includes(track.type)&&(track.type==='event'||curveModes.includes(track.interpolation))&&validCurveInfinity(track,track.type!=='event')&&Array.isArray(track.keys)&&track.keys.length<=128&&track.keys.every((k,i)=>k&&Number.isFinite(k.time)&&k.time>=0&&k.time<=t.length&&(!i||track.keys[i-1].time<k.time)&&(track.type==='event'||validValue(track.type,k.value))&&(k.interpolation===undefined||curveModes.includes(k.interpolation))&&['arriveTangent','leaveTangent'].every(p=>k[p]===undefined||validValue(track.type,k[p]))&&validCurveWeights(k,track.type==='event'?undefined:k.value)));
 }

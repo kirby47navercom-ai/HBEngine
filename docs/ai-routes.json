@@ -2499,6 +2499,46 @@
         "prototype/sequence-clock-editor.js"
       ],
       "id": "sequence-playback-clock-controls"
+    },
+    {
+      "id": "sequence-multi-curve-edit",
+      "keywords": [
+        "editSequenceCurves",
+        "sequenceMultiCurveContract"
+      ],
+      "paths": [
+        "prototype/sequence-curve-edit.js"
+      ]
+    },
+    {
+      "id": "curve-group-selection-clipboard",
+      "keywords": [
+        "curveSelectionRows",
+        "copyCurveGroup",
+        "parseCurveGroup",
+        "pasteCurveGroup"
+      ],
+      "paths": [
+        "prototype/curve-selection.js"
+      ]
+    },
+    {
+      "id": "sequence-curve-owner-editor",
+      "keywords": [
+        "sequenceCurveEditor"
+      ],
+      "paths": [
+        "prototype/sequence-curve-editor.js"
+      ]
+    },
+    {
+      "id": "sequence-curve-panel",
+      "keywords": [
+        "renderSequenceCurve"
+      ],
+      "paths": [
+        "prototype/gameplay-editor.js"
+      ]
     }
   ]
 }

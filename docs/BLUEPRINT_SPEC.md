@@ -653,3 +653,7 @@ Take 녹화 프리셋은 전용 에셋/편집기에서 만들고 시퀀스의 �
 1871–1873: LevelSequence::SeekFrame/GetFrame/GetFrameRateNumerator/GetFrameRateDenominator의 공용 BP 노드4개를 추가해요. 선택 시퀀스 displayRate 분수 격자와 같은 프레임 위치를 사용해요. 값 저장·시간 이동은 초 단위이고 편집 표시율이 엔진 FPS를 고정하지 않아요. 계약/검증은 docs/TIMELINE_DISPLAY_RATE.md 및 WORK1873/USER_INSTALL1875를 따라요.
 
 1877–1879: [시퀀스 재생 시계](SEQUENCE_PLAYBACK_CLOCK.md)에 game/unscaled/manual/PlayEveryFrame 설정·6공용 CPP/BP API·AI 편집 계약을 연결했어요. 기존 격자·초 저장·녹화율은 독립적으로 유지해요.
+
+1885에서는 공용 BP 타임라인의 Clamped Auto 저장 검증도 화면·샘플러와 맞췄어요. 여러 곡선 선택·편집과 같은 보간 모드를 저장하고 원래 평가를 사용해요.
+
+1883–1885: [다중 시퀀스 곡선](SEQUENCE_MULTI_CURVE.md)의 표시/선택·공통 드래그·그룹 클립보드·원자적 도구·Undo·AI 배치 편집을 연결했어요. 정규화/쌓기 보기와 키별 다른 채널 축 동시 선택은 별도예요.

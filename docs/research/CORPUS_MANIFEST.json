@@ -5568,5 +5568,19 @@
     ],
     "analysis": "docs/SEQUENCE_PLAYBACK_CLOCK.md",
     "implementation": "Optional playbackClock and six shared clock APIs, manual event-aware Advance versus silent Evaluate, rational frame holds and inherited child sampling. HB uses active VM unscaled delta, not global platform/DSP/timecode provider."
+  },
+  "supplemental1883": {
+    "date": "2026-10-23",
+    "scope": "Selected curve editor multi-selection/absolute value view/key transform/relative clipboard; no full-corpus promotion",
+    "sources": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/animation-curve-editor-in-unreal-engine",
+        "actualVersion": "5.8",
+        "read": "Returned rendered Toolbar25–47, Outliner68–83, Graph/Navigation84–133, Editing/Copy-Paste134–168. Rest of body, images and linked APIs not read here.",
+        "exhaustiveLinkedAPIs": false
+      }
+    ],
+    "analysis": "docs/SEQUENCE_MULTI_CURVE.md",
+    "implementation": "Shared sequence multi-owner selection/drag/tools/clipboard, absolute overlay, atomic authored data validation and existing runtime/C++ playback. Stacked/normalized views and per-key simultaneous channel axes remain."
   }
 }
