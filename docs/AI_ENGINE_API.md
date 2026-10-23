@@ -595,3 +595,5 @@ MeshRenderer 실행 속성 다섯 개의 자원 유지 갱신과 requestedIntens
 1641 network: runtime.network 요약/페이지에 replacements/replacing 개수와 replacementPending/replacing/localMatchesSource를 추가해요. 기존 메타데이터 전용 페이지 계약을 보존해요. docs/NETWORK_PREFAB_REPLACEMENT.md 참조.
 
 1915: schema.nativeTypeDependencies는 타입 에셋 imports/전이 typeId 필드·로컬형태와 전체준비/저장 검증 경계·같은 journal/CAS/Undo를 설명해요. 자세한 계약은 docs/NATIVE_TYPE_DEPENDENCIES.md. 변경 없는 파일 묶음 저장도 동시 편집을 확인한 뒤 미저장 표시를 해제하고 불필요한 Undo를 추가하지 않아요.
+
+1921: project.types.read는 파일 목록 또는 선택 source의 선언 요약·sourceRevision을 페이지로 읽어요. project.types.apply는 대상expectedRevision+원본sourceRevision으로 BP변수 생성/변경 또는 미저장구조체fieldId의 타입과참조를한Undo로적용해요. dryRun/같은타입값보존/미저장원본·ABI변경거절. schema.nativeTypeCatalog와 docs/NATIVE_TYPE_CATALOG.md를참조해요.

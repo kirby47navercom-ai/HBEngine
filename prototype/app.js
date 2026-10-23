@@ -1,3 +1,5 @@
+import {inspectNativeTypeCatalog,inspectNativeTypeDeclarations,applyCatalogBlueprintVariable,applyCatalogTypeField} from './native-type-catalog.js';
+import {pickProjectNativeType} from './native-type-picker.js';
 import {curveViewModes} from './curve-view.js';
 import {editSequenceCurves} from './sequence-curve-edit.js';
 import {openTakePresetSave} from './take-preset-save.js';
@@ -875,12 +877,15 @@ async function applyBlueprintData(data){
 }
 $('#variable-type').innerHTML=Object.entries(variableTypes).map(([key,label])=>`<option value="${key}">${label}</option>`).join('');
 $('#custom-pin-type').innerHTML=$('#variable-type').innerHTML;
+{const button=document.createElement('button');button.type='button';button.textContent='프로젝트 자료형';button.dataset.projectNewVariableType='';button.onclick=async()=>{const name=$('#variable-name').value.trim(),container=$('#variable-array').checked?'array':'single';if(!name)return notify('변수 이름을 입력하세요.');$('#variable-dialog').close();if(!await chooseBlueprintProjectType(null,{name,container}))$('#variable-dialog').showModal();};$('#variable-dialog .dialog-footer').prepend(button);}
+
 function renderBlueprintInspector(){
   const pane=$('#inspector-content'),key=JSON.stringify([assetDocs.active,blueprintView,selectedDetail.kind,selectedDetail.id]),sameSelection=pane.dataset.inspectedBlueprint===key&&!!pane.querySelector('.bp-detail-title');
   const groups=new Map(sameSelection?[...pane.querySelectorAll('.bp-detail-group')].map(el=>[el.querySelector('summary')?.textContent,el.open]):[]),scrolls=[pane,pane.parentElement].map(el=>[el,sameSelection?el.scrollTop:0]),search=sameSelection?pane.querySelector('.bp-property-search')?.value||'':'';
   const active=sameSelection&&pane.contains(editorActiveElement())?editorActiveElement():null,controlKey=el=>JSON.stringify([el.tagName,[...el.attributes].filter(a=>a.name.startsWith('data-')||a.name==='aria-label').map(a=>[a.name,a.value]).sort()]),focus=active?controlKey(active):null;
   pane.innerHTML=detailsMarkup(graphs.blueprint,currentGraph(),selectedDetail,objects,projectAssetFiles,runtimeSettings.sortingLayers);pane.dataset.inspectedBlueprint=key;renderOverrideMarkers();delete pane.dataset.inspectedObject;
   if(selectedDetail.kind==='blueprint'&&(!graphs.blueprint.native||graphs.blueprint.native.typeLibrariesOnly))appendNativeTypeImportUI(pane,{paths:graphs.blueprint.native?.typeLibraries||[],files:projectAssetFiles,disabled:running||!!graphs.blueprint.inheritance,change:changeBlueprintTypeImports,error:notify});
+  if(selectedDetail.kind==='variable'&&!graphs.blueprint.inheritance&&(!graphs.blueprint.native||graphs.blueprint.native.typeLibrariesOnly)){const row=document.createElement('div');row.className='bp-detail-row';row.dataset.propertySearch='자료형 프로젝트';const button=document.createElement('button');button.type='button';button.textContent='프로젝트 자료형 선택';button.dataset.projectVariableType=selectedDetail.id;button.disabled=running;button.onclick=()=>chooseBlueprintProjectType(button.dataset.projectVariableType);row.append(button);pane.append(row);}
   for(const el of pane.querySelectorAll('.bp-detail-group')){const name=el.querySelector('summary')?.textContent;if(groups.has(name))el.open=groups.get(name);}
   const filter=pane.querySelector('.bp-property-search');if(filter)filter.value=search;for(const row of pane.querySelectorAll('.bp-detail-row'))row.hidden=!row.dataset.propertySearch.includes(search.toLowerCase());
   if(focus)[...pane.querySelectorAll('input,select,textarea')].find(el=>controlKey(el)===focus)?.focus({preventScroll:true});for(const [el,top] of scrolls)el.scrollTop=top;
@@ -905,6 +910,37 @@ function renderOverrideMarkers(){
 function applyBlueprintAuthored(data){
   const doc=assetDocs.current;if(doc?.kind!=='blueprint'||running)throw Error('실행을 종료한 뒤 블루프린트를 편집하세요.');blueprintWorkspace.view(doc.path,data);remember();doc.data=data;installDocumentData(doc);changed();
 }
+async function automationTypeCatalogSource(source){
+ const file=await automationFile(source);if(!file.exists||!isNativeTypeAssetKind(file.kind))throw Error('타입 에셋 원본을 선택하세요.');
+ if(file.editorDirty||assetDocs.items.get(file.path)?.view.diskConflict)throw Error('선택한 자료형 원본을 먼저 저장하세요.');return {file,data:file.data};
+}
+async function automationTypeCatalogRead(params={}){
+ if(Object.keys(params).some(k=>!['source','offset','limit','query'].includes(k)))throw Error('자료형 검색 인자를 확인하세요.');
+ const {source,...options}=params;if(source!==undefined){const {file,data}=await automationTypeCatalogSource(source);return {...inspectNativeTypeDeclarations(data,file.path,options),sourceRevision:file.revision};}
+ const files=(await(await editorRequest('/api/project?recursive=1')).json()).entries;return inspectNativeTypeCatalog(files,options);
+}
+async function automationTypeCatalogApply(params){
+ if(Object.keys(params).some(k=>!['path','expectedRevision','source','sourceRevision','declarationId','variableId','name','container','fieldId','dryRun'].includes(k))||params.dryRun!==undefined&&typeof params.dryRun!=='boolean')throw Error('자료형 적용 인자를 확인하세요.');
+ const {doc,revision}=await automationDocument(params,true),selected=await automationTypeCatalogSource(params.source);
+ if(typeof params.sourceRevision!=='string'||params.sourceRevision!==selected.file.revision)throw batchConflict('자료형 원본이 변경됐어요. 목록을 다시 읽으세요.');
+ const readText=async name=>(await editorRequest(fileUrl(name))).text();let result;
+ if(doc.kind==='blueprint'){
+  if(params.fieldId!==undefined)throw Error('BP에는 변수 대상을 사용하세요.');
+  result=await applyCatalogBlueprintVariable(doc.data,selected.data,{...params,source:selected.file.path},readText);await blueprintWorkspace.prepare(doc.path,result.data);
+ }else if(isNativeTypeAssetKind(doc.kind)){
+  if(params.variableId!==undefined||params.name!==undefined||params.container!==undefined)throw Error('타입 에셋에는 필드 대상을 사용하세요.');
+  result=await applyCatalogTypeField(doc.data,selected.data,{...params,source:selected.file.path},async name=>JSON.parse(await readText(name)),{saved:JSON.parse(doc.saved)});
+ }else throw Error('BP 또는 구조체 문서를 선택하세요.');
+ await automationDocument(params,true);const current=await automationTypeCatalogSource(selected.file.path);if(current.file.revision!==params.sourceRevision)throw batchConflict('준비 중 자료형 원본이 변경됐어요.');await automationDocument(params,true);
+ const reply={path:doc.path,declaration:result.declaration,...result.variableId?{variableId:result.variableId}:{fieldId:result.fieldId}};
+ if(params.dryRun)return {...reply,valid:true,revision};if(JSON.stringify(doc.data)===JSON.stringify(result.data))return {...reply,noChange:true,revision,dirty:doc.dirty};
+ activateDocument(doc.path);if(doc.kind==='blueprint'){applyBlueprintAuthored(result.data);selectedVariable=result.variableId;selectedDetail={kind:'variable',id:result.variableId};renderBlueprintSidebar();renderBlueprintInspector();}else{remember();doc.data=result.data;installDocumentData(doc);changed();}
+ return {...reply,revision:await documentRevision(doc.data),dirty:doc.dirty};
+}
+async function chooseBlueprintProjectType(variableId,options={}){
+ try{const {doc,revision}=await automationDocument({},false);if(doc.kind!=='blueprint')throw Error('블루프린트를 여세요.');const selected=await pickProjectNativeType(document,automationTypeCatalogRead);if(!selected)return false;await automationTypeCatalogApply({path:doc.path,expectedRevision:revision,...selected,...options,...variableId?{variableId}:{}});return true;}catch(error){notify(error.message);return false;}
+}
+
 async function changeBlueprintTypeImports(paths){
   const doc=assetDocs.current;if(doc?.kind!=='blueprint'||running||graphs.blueprint.inheritance||doc.data.native&&!nativeTypeReference(doc.data.native)&&!doc.data.native.typeLibrariesOnly)throw Error('실행을 종료한 독립 BP의 타입 라이브러리를 편집하세요.');captureDocument();const before=JSON.stringify(doc.data),data=clone(doc.data);if(paths.length)data.native={version:1,sourceReference:true,typeLibraries:paths};else delete data.native;if(!validBlueprint(data))throw Error('타입을 사용하는 변수·핀을 먼저 변경하세요.');await blueprintWorkspace.prepare(doc.path,data);captureDocument();if(assetDocs.current!==doc||JSON.stringify(doc.data)!==before)throw Error('문서가 변경됐어요. 다시 시도하세요.');delete doc.view.nativeMetadata;applyBlueprintAuthored(data);renderBlueprintInspector();
 }
@@ -1343,7 +1379,7 @@ $$('[data-resize]').forEach(handle=>{
 });
 let recoveryTimer;
 function editingSurface(){if(assetDocs.current?.kind==='materialinstance')return {...surface,...assetDocs.current.view.parentParameters?.surface,...assetDocs.current.data.surfaceOverrides};return ['material','materialfunction','materiallayer','materialblend'].includes(assetDocs.current?.kind)?assetDocs.current.data.surface:workspace==='scene'?(objects.find(o=>o.id===selected)?.materialSurface||surface):surface;}
-function dataEditorHooks(){return {textureDetailsExternal:true,resolveTakePreset:previewTakePresetData,running:()=>running,world:()=>({objects,selected,selection:[...sceneSelection]}),query:runtimeEqsOperation,queryView:showEqsDebug,fileUrl,before:remember,change:()=>{changed();if(assetDocs.current?.kind in textureAssetTypes)refreshMaterialAssets([assetDocs.current.path]);else if(assetDocs.current?.kind==='materialinstance')updateSurface();},error:notify,readAsset,extract:openMaterialExtraction,preview:setMaterialPreview,openAsset:path=>openProjectAsset(projectAssetFiles.find(f=>f.path===path)),captureSelection:()=>copySceneObjects(objects,sceneSelection),instantiate:doc=>placeAsset({path:doc.path,kind:doc.kind}).catch(error=>notify(error.message))};}
+function dataEditorHooks(){return {typeCatalogRead:automationTypeCatalogRead,typeCatalogApply:automationTypeCatalogApply,textureDetailsExternal:true,resolveTakePreset:previewTakePresetData,running:()=>running,world:()=>({objects,selected,selection:[...sceneSelection]}),query:runtimeEqsOperation,queryView:showEqsDebug,fileUrl,before:remember,change:()=>{changed();if(assetDocs.current?.kind in textureAssetTypes)refreshMaterialAssets([assetDocs.current.path]);else if(assetDocs.current?.kind==='materialinstance')updateSurface();},error:notify,readAsset,extract:openMaterialExtraction,preview:setMaterialPreview,openAsset:path=>openProjectAsset(projectAssetFiles.find(f=>f.path===path)),captureSelection:()=>copySceneObjects(objects,sceneSelection),instantiate:doc=>placeAsset({path:doc.path,kind:doc.kind}).catch(error=>notify(error.message))};}
 async function placeAsset(file){
   if(file.kind==='model')return placeModel(file);if(file.kind==='blueprint')return placeBlueprint(file);
   if(running)throw Error('실행을 종료한 뒤 배치하세요.');
@@ -1966,6 +2002,8 @@ const editorCommandMethods={
   'runtime.state':()=>({frameSettings:frameSettings(runtimeSettings),pauseReason:paused||runtime?.paused?(runtime?.pending?'중단점':'사용자 일시 정지'):null,progress:{frameInFlight:!!runtimeFrame,commandInFlight:runtimeCommand,queuedDelta,document:assetDocs.active},nativeTiming:clone(runtime?.nativeTiming||null),nativeFrameGroups:clone(runtime?.nativeFrameGroups||null),game:runtimeGame?.snapshot()||null,animation:runtimeServices?.animationState?.()||[],spriteSkin:runtimeServices?.spriteSkinState?.()||[],running,paused,scene:runtimeScenePath||activeScenePath,pendingScene:runtime?.sceneRequest?.path||null,dimension:runtimeSettings.dimension,viewMode,environment:clone(environment),time:playTime,input:runtime?.inputSnapshot(),objects:clone(objects),gameplay:clone(runtimeServices?.gameplay||null),physics:clone(runtimeServices?.physicsState?.()||null),logs:clone(logs.slice(-100)),work:runtime?.inspectWork()||null}),
   'blueprint.members.read':async({path,...options}={})=>{const {doc,revision}=await automationDocument({path});if(doc.kind!=='blueprint')throw Error('블루프린트 문서가 필요해요.');const root=await blueprintWorkspace.prepare(doc.path,doc.data);return {path:doc.path,revision,...inspectBlueprintMembers(root,options)};},
   'native.classes.read':async({path,...options}={})=>{const doc=assetDocs.items.get(path||assetDocs.active);if(doc?.kind!=='blueprint')throw Error('블루프린트 문서를 여세요.');const root=await blueprintWorkspace.prepare(doc.path,doc.data);return {path:doc.path,...inspectNativeClasses(root.native,options)};},
+  'project.types.read':automationTypeCatalogRead,
+  'project.types.apply':automationTypeCatalogApply,
   'native.structs.read':async({path,...options}={})=>{const doc=assetDocs.items.get(path||assetDocs.active);if(doc?.kind!=='blueprint')throw Error('블루프린트 문서를 여세요.');const root=await blueprintWorkspace.prepare(doc.path,doc.data);return {path:doc.path,...inspectNativeRecords(root.native,options)};},
   'native.structs.defaults.read':async({path,...options}={})=>{const doc=assetDocs.items.get(path||assetDocs.active);if(doc?.kind!=='blueprint')throw Error('블루프린트 문서를 여세요.');const root=await blueprintWorkspace.prepare(doc.path,doc.data);return {path:doc.path,...inspectNativeRecordDefault(root.native,options)};},
   'native.enums.read':async({path,name,offset=0,limit=128,includeHidden=false}={})=>{const doc=assetDocs.items.get(path||assetDocs.active);if(doc?.kind!=='blueprint')throw Error('블루프린트 문서를 여세요.');if(!Number.isInteger(offset)||offset<0||!Number.isInteger(limit)||limit<1||limit>256||typeof includeHidden!=='boolean')throw Error('enum 조회 범위를 확인하세요.');const root=await blueprintWorkspace.prepare(doc.path,doc.data),enums=root.native?.enums||[];if(name!==undefined){const definition=enums.find(e=>e.name===name);if(!definition)throw Error('enum 선언이 없어요.');const entries=definition.entries.filter(e=>includeHidden||!e.hidden);return {path:doc.path,...clone({...definition,entries:undefined}),count:entries.length,offset,entries:clone(entries.slice(offset,offset+limit))};}return {path:doc.path,count:enums.length,offset,enums:enums.slice(offset,offset+limit).map(({entries,...definition})=>({...clone(definition),entries:entries.length,visible:entries.filter(e=>!e.hidden).length}))};},

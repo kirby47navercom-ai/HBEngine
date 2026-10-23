@@ -3,6 +3,8 @@ import {reconcileNativeTypeDefaults} from './native-type-defaults.js';
 import {nativeTypeClosure,nativeTypeImports} from './native-type-graph.js';
 import {readNativeTypeDependencies} from './native-type-imports.js';
 import {appendNativeTypeImportUI} from './native-type-import-ui.js';
+import {documentRevision} from './automation.js';
+import {pickProjectNativeType} from './native-type-picker.js';
 
 export async function renderNativeTypeAssetEditor(element,doc,hooks,files=[]){
  const token={},before=JSON.stringify(doc.data);element.hbTypeLoad=token;element.hbAssetDocument=doc;
@@ -43,6 +45,7 @@ function renderResolvedNativeTypeEditor(element,doc,hooks,files,libraries){
      const choices=nativeAssetValueTypes.map(t=>[t,t]);for(const owner of nativeTypeClosure(doc.data,libraries))for(const [type,defs]of [['enum',owner.enums],['record',owner.structs.filter(d=>d!==definition)]])for(const d of defs)choices.push([type+':'+d.id,d.label+' · '+owner.namespace+'::'+d.symbol]);
      for(const[value,text]of choices){const o=node('option',text);o.value=value;select.append(o);}select.value=['record','enum'].includes(field.type)?field.type+':'+field.typeId:field.type;
      select.onchange=()=>{const[type,typeId]=select.value.split(':'),next={...field,type,...typeId?{typeId}:{}};if(!typeId)delete next.typeId;try{next.value=nativeTypeAssetDefault(doc.data,next,{libraries});set(d=>{Object.keys(d).forEach(k=>delete d[k]);Object.assign(d,next);});}catch(e){hooks.error(e.message);}};label.append(select);row.append(label);
+     if(hooks.typeCatalogRead&&hooks.typeCatalogApply){const choose=button(row,'프로젝트 자료형 선택',async()=>{try{const revision=await documentRevision(doc.data),selected=await pickProjectNativeType(document,hooks.typeCatalogRead);if(selected)await hooks.typeCatalogApply({path:doc.path,expectedRevision:revision,fieldId:field.id,...selected});}catch(error){hooks.error(error.message);}});choose.dataset.projectFieldType=field.id;choose.disabled=persisted.has(field.id);}
      input(row,'배열',field.array,v=>{try{const next={...field,array:v};next.value=nativeTypeAssetDefault(doc.data,next,{libraries});set(d=>Object.assign(d,next));}catch(e){hooks.error(e.message);}},{type:'checkbox',disabled:persisted.has(field.id)});
      input(row,'읽기 전용',field.readOnly,v=>set(d=>d.readOnly=v),{type:'checkbox'});
      if(!field.array&&['bool','float','int','string'].includes(field.type))input(row,'기본값',field.value,v=>set(d=>d.value=v),{type:field.type==='bool'?'checkbox':field.type==='string'?'text':'number'});

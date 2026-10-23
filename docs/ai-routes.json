@@ -1023,6 +1023,28 @@
   ],
   "focusRoutes": [
     {
+      "id": "native-type-project-catalog",
+      "keywords": [
+        "nativeTypeCatalogContract",
+        "inspectNativeTypeCatalog",
+        "inspectNativeTypeDeclarations",
+        "applyCatalogBlueprintVariable",
+        "applyCatalogTypeField"
+      ],
+      "paths": [
+        "prototype/native-type-catalog.js"
+      ]
+    },
+    {
+      "id": "native-type-project-picker",
+      "keywords": [
+        "pickProjectNativeType"
+      ],
+      "paths": [
+        "prototype/native-type-picker.js"
+      ]
+    },
+    {
       "id": "native-type-dependency-graph",
       "keywords": [
         "nativeTypeClosure",
