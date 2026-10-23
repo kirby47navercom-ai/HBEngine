@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "date": "2026-10-23T14:28:01.155Z",
+  "kind": "verified-installed-imported-recorded-bone-aliases",
+  "sourceCommit": "a6b1e8b47783302db05e261190795e09c6f1ed8b",
+  "sourceReceipt": "docs/research/ENGINE_WORK_2073.json",
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "independentGameVerified": true,
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9cd3bc35cf26da0e",
+  "bundleHash": "9cd3bc35cf26da0e27230054aac26f629feeb24e3600a03a33d981ef81e618a6",
+  "versions": 1,
+  "manifestFiles": 4610,
+  "admittedOwners": 1246,
+  "profile": {
+    "files": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4602,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\6d70b985ad8a2061",
+        "bytes": 199764195,
+        "manifestSHA256": "48d71e9313d169f3c1b6c402a34f54764f5c9e82c37325b04e690de2c6b97f55"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T14:23:58.1132202Z",
+    "bytes": 199764195,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "9cd3bc35cf26da0e"
+    ]
+  },
+  "overridden": [
+    {
+      "path": "prototype/player.js",
+      "policy": "admitted HEAD bytes only; unrelated dirty worktree preserved"
+    }
+  ],
+  "changed": 24,
+  "sourceWindow": {
+    "report": "native/build/sequence-imported-pose-2068-window-vARWT1/acceptance.json",
+    "sha256": "e5e78d0e003cbeecb59792fe46d35ef6ab2cf26b4bc7ce341874ddfc3984a589",
+    "observations": 19,
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "checks": {
+      "humanPoseWeight": true,
+      "undoRedoSave": true,
+      "aiPatchDryRunStaleUndo": true,
+      "actualImportedGltfAndRecordedSkeletalPose": true,
+      "cppControlsAndBoneTRSGetters": true
+    },
+    "visuallyInspected": "recorded-pose-weight-controls.png editor layout; native render proof deferred to installed game",
+    "finalInstalledGamePending": false,
+    "finalInstalledGameReceipt": "docs/research/USER_INSTALL_2076.json"
+  },
+  "installedGames": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\9cd3bc35cf26da0e",
+    "rows": [
+      {
+        "id": "imported-pose-alias",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\imported-pose-installed-2075-GShcA9\\acceptance.json",
+        "sha256": "2be6bbbc34506d2865e271bf334dcc7d9bbe695709a80620aa8f410d81fa0093",
+        "ms": 40884.8972
+      }
+    ]
+  },
+  "nativePixelProof": {
+    "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\imported-pose-installed-2075-GShcA9\\acceptance.json",
+    "sha256": "2be6bbbc34506d2865e271bf334dcc7d9bbe695709a80620aa8f410d81fa0093",
+    "method": "Existing hbPlayerDebug.capture -> native hbCapture swapchain readback; no CDP black surface used as native proof",
+    "before": {
+      "width": 640,
+      "height": 400,
+      "nonblack": 256000,
+      "sha256": "ac981387b86aa893f02cf93dd393361610c30346657bc98c5e90513a8927ead1"
+    },
+    "after": {
+      "width": 640,
+      "height": 400,
+      "nonblack": 256000,
+      "sha256": "fa130622adb3f4eab20f0dea5f8efd0ea48f9d0b05c3ca2bf6b393b917912765"
+    },
+    "pixelsChanged": 4374,
+    "directlyInspected": true,
+    "repeatGameNeeded": false
+  },
+  "audit": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\9cd3bc35cf26da0e",
+    "focusedAI": {
+      "symbol": "ImportedSequencePoseProgram",
+      "owner": "prototype/sequence-imported-pose.js",
+      "filesRead": 1,
+      "elapsedMs": 64.26,
+      "installation": {
+        "observed": true,
+        "root": "C:\\Users\\kirby\\HBEngine\\Versions\\9cd3bc35cf26da0e",
+        "marker": "HBEngine.install.json",
+        "bundleHash": "9cd3bc35cf26da0e27230054aac26f629feeb24e3600a03a33d981ef81e618a6",
+        "installedAt": "2026-10-23T14:23:54.571Z",
+        "manifestFiles": 4610,
+        "integrityChecked": false
+      }
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "cache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "versions": [
+      "9cd3bc35cf26da0e"
+    ],
+    "scope": "Read-only installed focused context/shortcut/association plus live-aware native-cache prune. Installer preflight holds exact file/owner hashes and profile comparison. No duplicate GUI/game/renderer run."
+  },
+  "preflight": {
+    "report": "native/build/user-install-2074-preflight.json",
+    "sha256": "f0ac9c3017811cf38b4e541fc0e2cee6c60eaf0f94338d0702e446344fbc8180"
+  },
+  "nativeReuse": {
+    "sourceBase": "docs/research/ENGINE_WORK_1955.json",
+    "owners": 21,
+    "reason": "No native source/vendor/binary changes; install must verify exact admitted source and binary hashes. No repeated full SDK/renderer execution."
+  },
+  "scope": "Installed managed imported full bone TRS and recorded skeletalPose canonical ownership, normalized vector/quaternion weights, per-bone priority/order, zero/reactivation, selective gaps, keep/forceRestore, external/held evaluator presentation and identity-safe restoration.15 new production cases plus8 affected gates passed, including original1024-bone deferred matrix path and new256-bone/two-clock shared-buffer checks. Source human pose weight/Undo/Redo/save, AI CAS/dryRun and C++19 observations passed. Installed builder and independent D3D11 game repeat19 bone position/rotation/scale getter observations with exit0 in40.88sec; same-run native swapchain capture4374 changed pixels directly inspected. Exact4610 files/1246 owners, User read-only inventory identical, shortcuts/association, focusedAI1owner64.26ms and Versions1 verified. Prior199764195B installation retired, cacheprune0. No imported root/object/renderer/indexed-bone aliases, arbitrary external callback/setter rollback, FPS/device or whole-engine claim."
+}
