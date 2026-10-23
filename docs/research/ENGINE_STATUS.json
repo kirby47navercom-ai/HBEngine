@@ -280,7 +280,8 @@
         "docs/research/ENGINE_WORK_1855.json",
         "docs/research/USER_INSTALL_1857.json",
         "docs/SEQUENCE_POSE_AND_SKELETON.md",
-        "docs/research/ENGINE_WORK_1861.json"
+        "docs/research/ENGINE_WORK_1861.json",
+        "docs/research/USER_INSTALL_1863.json"
       ]
     },
     {
@@ -1906,7 +1907,8 @@
         "docs/research/ENGINE_WORK_1855.json",
         "docs/research/USER_INSTALL_1857.json",
         "docs/SEQUENCE_POSE_AND_SKELETON.md",
-        "docs/research/ENGINE_WORK_1861.json"
+        "docs/research/ENGINE_WORK_1861.json",
+        "docs/research/USER_INSTALL_1863.json"
       ]
     },
     {
@@ -2451,7 +2453,8 @@
         "docs/research/ENGINE_WORK_1824.json",
         "docs/research/USER_INSTALL_1826.json",
         "docs/SEQUENCE_POSE_AND_SKELETON.md",
-        "docs/research/ENGINE_WORK_1861.json"
+        "docs/research/ENGINE_WORK_1861.json",
+        "docs/research/USER_INSTALL_1863.json"
       ]
     },
     {
@@ -3146,7 +3149,8 @@
         "docs/research/ENGINE_WORK_1855.json",
         "docs/research/USER_INSTALL_1857.json",
         "docs/SEQUENCE_POSE_AND_SKELETON.md",
-        "docs/research/ENGINE_WORK_1861.json"
+        "docs/research/ENGINE_WORK_1861.json",
+        "docs/research/USER_INSTALL_1863.json"
       ]
     },
     {
@@ -3684,14 +3688,14 @@
     "first": 1859,
     "last": 1861,
     "receipt": "docs/research/ENGINE_WORK_1861.json",
-    "scope": "Shared strict bone naming and nested actor boundary; filtered/paginated local or latest-world pose with exact affine matrix/trsExact, selected ancestor updates and detached rows; failed activation/restore preserves previous controller/TRS; all targets prepare before batch pose writes and uncovered actor matrix roots update once. Human readonly pose inspector and AI schema share the helper with six generated BP/C++ Skeleton getters through validated live query. Nine final affected regressions plus source actual editor/CPP six getters/UI/8 layout swaps/backwards/empty/restoration passed. CSS-only stacking and full heading/space/output visibility assertions refined after checkpoint; final installed current-source independent D3D gate pending."
+    "scope": "Installed shared strict bone naming and nested actor boundary for capture/query/play/restore, named local/world pose pages with exact affine matrix/trsExact and selected ancestor refresh; failed activation/restore preserves prior control/local TRS; all-target prevalidation and deduplicated nested matrix roots. Human current-world pose inspector with visible heading/space/output/filter/readonly revision, AI typed schema and six generated BP/compiled CPP Skeleton getters through authorized typed live queries. Nine affected regressions, actual installed CPP local[1,0,0]/world[5,4,0]/scale2/world rotation90 offset, eight model swaps/backwards/empty layouts and restoration; exact installed SDK Game.hpp and Bridge.hpp freshly compiled, independent D3D11 new getters and original pose restore passed. Host1041/Player1604/renderer unchanged binary hashes; current21 native owner hashes with2 changed SDK headers; historical native30 test source identities verified but not a fresh all-SDK execution claim. User profile preserved, Versions1 and cache32/lease0. Per-bone ownership/weighted blending, external graph/montage/fade/finite-loop restore and broader cumulative goals remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1857.json",
-    "sourceCommit": "b5519db9d16b774e6d3c7ca644631ef59bead55e",
-    "bundleHash": "4f3c4387dd9d2a52161a6f655482b7f704abf91ef0993e79cbfcda1cfc2271a9",
+    "receipt": "docs/research/USER_INSTALL_1863.json",
+    "sourceCommit": "b322c2d32577f296386b764adc842cff06e6a65c",
+    "bundleHash": "3cfa8727f82a0175746cb93fa96c277ffd80b4a242e88ebb77bd20b483ac817e",
     "verified": true,
     "versions": 1,
-    "scope": "Installed reduced rational Take capture rates1..240, 30000/1001 and60000/1001 drop-frame labels and strict valid origins with safe BigInt arithmetic, epoch-anchored sampling/skipped interval diagnostics without fabricated poses, separate integer editing grid. Existing game/unscaled/platform clocks and pause/scale behavior retained. Rate/fraction input/blank follows grid, DF control availability/semicolon input, inherited clock-group/UndoRedo/SaveAs and AI partial overrides/state/deep snapshots/portable recordingClock with relative keys. Ten affected regressions plus independent 11-minute nominal-label enumeration and100-second60Hz input2998 samples; final installed actual3D UI rate switching, custom fraction, DF lock/UndoRedo/inheritance/flat save, compiled CPP zero scale and pause comparison, real visible DF readout, active source snapshot isolation and model absence/restore, CPP PlaySeekStop and independent D3D11 baked pose with all four editor-only preset files excluded. Exact source1104/native21/native30tests/vendor2/Player1604/Host1041/renderer hashes; User preserved, Versions1. Rational timeline editing grid, PCM/audio/external/genlock timecode providers and broader cumulative goals remain."
+    "scope": "Installed shared strict bone naming and nested actor boundary for capture/query/play/restore, named local/world pose pages with exact affine matrix/trsExact and selected ancestor refresh; failed activation/restore preserves prior control/local TRS; all-target prevalidation and deduplicated nested matrix roots. Human current-world pose inspector with visible heading/space/output/filter/readonly revision, AI typed schema and six generated BP/compiled CPP Skeleton getters through authorized typed live queries. Nine affected regressions, actual installed CPP local[1,0,0]/world[5,4,0]/scale2/world rotation90 offset, eight model swaps/backwards/empty layouts and restoration; exact installed SDK Game.hpp and Bridge.hpp freshly compiled, independent D3D11 new getters and original pose restore passed. Host1041/Player1604/renderer unchanged binary hashes; current21 native owner hashes with2 changed SDK headers; historical native30 test source identities verified but not a fresh all-SDK execution claim. User profile preserved, Versions1 and cache32/lease0. Per-bone ownership/weighted blending, external graph/montage/fade/finite-loop restore and broader cumulative goals remain."
   }
 }

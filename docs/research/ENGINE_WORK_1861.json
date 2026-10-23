@@ -1509,6 +1509,20 @@
     "First actual CPP link exposed missing Bridge inline implementations, then all six getters and typed live-query routing were implemented and actual compile/run passed. Failed attempt is not implementation evidence.",
     "Source screenshot output was visible but heading/space overlapped sticky key navigation. CSS/hit assertions refined for final installed full-current-source gate."
   ],
-  "installationPending": true,
-  "scope": "Shared strict bone naming and nested actor boundary; filtered/paginated local or latest-world pose with exact affine matrix/trsExact, selected ancestor updates and detached rows; failed activation/restore preserves previous controller/TRS; all targets prepare before batch pose writes and uncovered actor matrix roots update once. Human readonly pose inspector and AI schema share the helper with six generated BP/C++ Skeleton getters through validated live query. Nine final affected regressions plus source actual editor/CPP six getters/UI/8 layout swaps/backwards/empty/restoration passed. CSS-only stacking and full heading/space/output visibility assertions refined after checkpoint; final installed current-source independent D3D gate pending."
+  "installationPending": false,
+  "scope": "Shared strict bone naming and nested actor boundary; filtered/paginated local or latest-world pose with exact affine matrix/trsExact, selected ancestor updates and detached rows; failed activation/restore preserves previous controller/TRS; all targets prepare before batch pose writes and uncovered actor matrix roots update once. Human readonly pose inspector and AI schema share the helper with six generated BP/C++ Skeleton getters through validated live query. Nine final affected regressions plus source actual editor/CPP six getters/UI/8 layout swaps/backwards/empty/restoration passed. CSS-only stacking and full heading/space/output visibility assertions refined after checkpoint; final installed current-source independent D3D gate pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1863.json",
+  "installedGates": [
+    {
+      "path": "native/build/skeleton-1860-window-vqwVLt/acceptance.json",
+      "sha256": "b80fc466876e121bb4470b26aef8dc499426e363c1c345ed3a5fe5b459d6f8c1",
+      "scope": "Actual named world pose UI/AI with exact affine matrix and unchanged document revision, all six new generated CPP Skeleton getters with local[1,0,0]/world[5,4,0]/scale2; editor and optional independent D3D11 user C++ Play/Seek/Stop through8 original/alternate/empty/backward model-layout changes; exact selected bone name/angle, one program/one baseline, restoration and paginated query counts. No FPS/heap/mobile or per-bone ownership claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3cfa8727f82a0175\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 84005.2505
+    }
+  ]
 }

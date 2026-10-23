@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-skeleton-query-and-pose-validation",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "b322c2d32577f296386b764adc842cff06e6a65c",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3cfa8727f82a0175",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\3cfa8727f82a0175\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\3cfa8727f82a0175\\HBEngine.exe",
+  "bundleHash": "3cfa8727f82a0175746cb93fa96c277ffd80b4a242e88ebb77bd20b483ac817e",
+  "files": 4435,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4429,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4f3c4387dd9d2a52",
+        "bytes": 196049798,
+        "manifestSHA256": "b1c62636f1a6d691c7ae2d7e570c18e3cb075ef4db627b0b8d57c915cec97715"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T00:36:45.8359747Z",
+    "bytes": 196049798,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "3cfa8727f82a0175"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1113,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [
+    "native/include/HBEngine/Bridge.hpp",
+    "native/include/HBEngine/Game.hpp"
+  ],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/skeleton-1860-window-vqwVLt/acceptance.json",
+      "sha256": "b80fc466876e121bb4470b26aef8dc499426e363c1c345ed3a5fe5b459d6f8c1",
+      "scope": "Actual named world pose UI/AI with exact affine matrix and unchanged document revision, all six new generated CPP Skeleton getters with local[1,0,0]/world[5,4,0]/scale2; editor and optional independent D3D11 user C++ Play/Seek/Stop through8 original/alternate/empty/backward model-layout changes; exact selected bone name/angle, one program/one baseline, restoration and paginated query counts. No FPS/heap/mobile or per-bone ownership claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\3cfa8727f82a0175\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 84005.2505
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\3cfa8727f82a0175\\",
+    "elapsedMs": 62.26,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\3cfa8727f82a0175",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "3cfa8727f82a0175746cb93fa96c277ffd80b4a242e88ebb77bd20b483ac817e",
+      "installedAt": "2026-10-23T00:36:42.382Z",
+      "manifestFiles": 4435,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1857.json\",\"changedSDK\":[\"native/include/HBEngine/Game.hpp\",\"native/include/HBEngine/Bridge.hpp\"],\"scope\":\"Unchanged Host1041/Player1604/renderer and19 native owner hashes; two changed SDK headers freshly compiled and run through all six new Skeleton queries plus legacy CPP PlaySeekStop/model swap/restore in installed editor and standalone D3D11. Historical30 native test source hashes retained for provenance; no fresh all-SDK regression claim.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4435,
+  "versions": [
+    "3cfa8727f82a0175"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1863-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/skeleton1861-group.json",
+      "sha256": "142402b1f30e160dafe40d4f05e5de96be775cf6a76006798965d579c90a77db",
+      "scope": "Nine final skeleton/cost/swap/ownership/completion/priority/take/filter/live-query regressions; later CSS-only stacking visibility is covered by final installed gate."
+    },
+    {
+      "path": "native/build/skeleton-1859-SYHjGC/acceptance.json",
+      "sha256": "ecb5c525e216b2975a3f54c6e70df6875e752f45ff88f32f4aed298887504ee0",
+      "scope": "Shared name validation for capture/filter/query/play/restore; paginated named local/world snapshots with exact affine matrix and shear flag; ancestor-only derived matrix refresh; failed activation/restore preserve prior controller and local TRS; batch validates all before pose writes and nested actor roots update once. Shared generated BP nodes/services exercised. Actual compiled CPP/editor/independent D3D separate gate; per-bone ownership/external animation history not claimed."
+    },
+    {
+      "path": "native/build/sequence-pose-cost-1806-yUzjTY/acceptance.json",
+      "sha256": "c8d416a63ff5f322b7602790173700099da6c702da73937413755929ca177f27",
+      "scope": "Exact posedata agreement and owned work counts only. Bone-name validation on activation/query retained; no total FPS/heap/GPU/mobile-device or per-bone lease/graph-state restoration claim."
+    },
+    {
+      "path": "native/build/skeletal-take-209-JSQwAW/acceptance.json",
+      "sha256": "83158b00bac704058110de50dae05a72bfaab96edf4371e5573518cc184166c3",
+      "scope": "Nine final skeleton/cost/swap/ownership/completion/priority/take/filter/live-query regressions; later CSS-only stacking visibility is covered by final installed gate."
+    },
+    {
+      "path": "native/build/sequence-ownership-268-G6U15P/acceptance.json",
+      "sha256": "63893a1a939f943c5b94d938acefe7e2b85947330a37d4623f6614cb2647d5d5",
+      "scope": "Nine final skeleton/cost/swap/ownership/completion/priority/take/filter/live-query regressions; later CSS-only stacking visibility is covered by final installed gate."
+    },
+    {
+      "path": "native/build/sequence-completion-271-NCyMr1/acceptance.json",
+      "sha256": "316f0e70e705f0f2bc7429eedcc30f78a9bd31f521704f83f14690e0555478d1",
+      "scope": "Nine final skeleton/cost/swap/ownership/completion/priority/take/filter/live-query regressions; later CSS-only stacking visibility is covered by final installed gate."
+    },
+    {
+      "path": "native/build/sequence-priority-272-sR3l77/acceptance.json",
+      "sha256": "09df8cd16bfc1d0966d17756de24970ff2e8dc5a765d4ccbd025ae442a1a69a3",
+      "scope": "Nine final skeleton/cost/swap/ownership/completion/priority/take/filter/live-query regressions; later CSS-only stacking visibility is covered by final installed gate."
+    },
+    {
+      "path": "native/build/take-settings-1787-g4mDzV/acceptance.json",
+      "sha256": "a322aa3acd0b5b8d0e05bd1650ebfd9d8f289a0a3e6b4c7501611666206bc4a0",
+      "scope": "Owned scratch row/vector allocations and exact recorded key data, preset/config validation and dynamic topology. Admitted keys still clone their data; no whole heap/FPS/mobile-device claim."
+    },
+    {
+      "path": "native/build/take-filter-215-yEzUep/acceptance.json",
+      "sha256": "c81f131099f78c0e50e11daa2118276c706f7bf814524a25543b82e63f6e6cf8",
+      "scope": "Nine final skeleton/cost/swap/ownership/completion/priority/take/filter/live-query regressions; later CSS-only stacking visibility is covered by final installed gate."
+    },
+    {
+      "path": "native/build/live-query-244-nLKYNQ/acceptance.json",
+      "sha256": "75a2568814a2b78afadacae81f25b3cf3c15b7be3f31fd77ef5a5c2d4e825db9",
+      "scope": "Nine final skeleton/cost/swap/ownership/completion/priority/take/filter/live-query regressions; later CSS-only stacking visibility is covered by final installed gate."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed shared strict bone naming and nested actor boundary for capture/query/play/restore, named local/world pose pages with exact affine matrix/trsExact and selected ancestor refresh; failed activation/restore preserves prior control/local TRS; all-target prevalidation and deduplicated nested matrix roots. Human current-world pose inspector with visible heading/space/output/filter/readonly revision, AI typed schema and six generated BP/compiled CPP Skeleton getters through authorized typed live queries. Nine affected regressions, actual installed CPP local[1,0,0]/world[5,4,0]/scale2/world rotation90 offset, eight model swaps/backwards/empty layouts and restoration; exact installed SDK Game.hpp and Bridge.hpp freshly compiled, independent D3D11 new getters and original pose restore passed. Host1041/Player1604/renderer unchanged binary hashes; current21 native owner hashes with2 changed SDK headers; historical native30 test source identities verified but not a fresh all-SDK execution claim. User profile preserved, Versions1 and cache32/lease0. Per-bone ownership/weighted blending, external graph/montage/fade/finite-loop restore and broader cumulative goals remain."
+}
