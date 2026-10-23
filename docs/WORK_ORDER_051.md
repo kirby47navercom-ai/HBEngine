@@ -1146,3 +1146,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1877–1879: game/unscaled/manual/PlayEveryFrame시계·6공용CPP/BP함수·유지시간편집/UndoRedo/AI CAS dryRun/save·수동event/loop/complete/restore·nested root상속·오디오정지seek·재진입controlserial 구현. 7영향회귀(10새시계시나리오/10000frame)·실제source editor/CPP6함수통과. 최종가시control/독립D3D 설치gate예정. WORK1879·외부Custom/timecode/RTC/개별시간상속등유지.
 
 1880–1882: 설치최종가시clock control·UndoRedo/AI CAS dryRun/invalid/save/runtime잠금·실제SDK2header CPP6함수/기존playback·별도D3D 85.92초통과. manifest4454/source1126/native21중2SDK변경/vendor2/PlayerHost불변·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전196644915B정리. USER_INSTALL1881. 외부Custom/timecode/RTC/개별시간상속·누적목표잔여유지.
+
+1883–1885: 다중곡선overlay/소유키선택/CtrlA/marquee·공통drag/snap/clamp/상대time·다중value/interpolation/weights/delete/tool/한Undo·groupclipboard 상대시각/고유대상검증·AI tracks[] batch/CAS/dryRun/invalid/stale/save·BPclampedAuto저장일치 구현.8회귀+validator2unit·실제source UI/다중drag/clipboard/CPP두대상샘플restore통과. 최종compact UI/독립D3D 설치gate예정. WORK1885·정규화/쌓기/키별다른채널축등잔여유지.
