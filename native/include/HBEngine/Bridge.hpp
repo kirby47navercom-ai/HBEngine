@@ -517,6 +517,10 @@ inline void LevelSequence::Stop(Actor* target){engineCommand("sequenceStop",{{"t
 inline void LevelSequence::Pause(Actor* target,bool paused){engineCommand("sequencePause",{{"target",bridgeId(target)},{"paused",paused}});}
 inline void LevelSequence::Seek(Actor* target,float time){engineCommand("sequenceSeek",{{"target",bridgeId(target)},{"time",time}});}
 inline float LevelSequence::GetPosition(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0.0f:state.at("time").get<float>();}
+inline void LevelSequence::SeekFrame(Actor* target,int frame){engineCommand("sequenceSeekFrame",{{"target",bridgeId(target)},{"frame",frame}});}
+inline int LevelSequence::GetFrame(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0:state.value("frame",0);}
+inline int LevelSequence::GetFrameRateNumerator(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0:state.value("frameRateNumerator",0);}
+inline int LevelSequence::GetFrameRateDenominator(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0:state.value("frameRateDenominator",0);}
 inline void Navigation::MoveTo(Actor* target,const Vec3& destination){engineCommand("navigationMove",{{"target",bridgeId(target)},{"destination",destination}});}
 inline void Navigation::Stop(Actor* target){engineCommand("navigationStop",{{"target",bridgeId(target)}});}
 inline std::string Navigation::GetStatus(Actor* target){auto& state=gameplayField(target,"navigation");return state.is_null()?"idle":state.value("status",std::string{"idle"});}

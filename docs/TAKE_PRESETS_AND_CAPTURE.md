@@ -101,3 +101,5 @@ UI는 23.976·29.970·59.940·분자/분모 직접 입력과 기준 FPS 따르�
 표본 스케줄은 시작 시점의 프레임 번호에 고정해요. 60Hz 입력에서 29.97 수집이 이전 표본의 지연을 계속 누적해 약 20Hz로 떨어지는 문제를 방지해요. 늦은 호출에서는 현재 실제 포즈 한 개만 받아요. 놓친 중간 포즈를 복제해 수집에 성공한 것처럼 세지 않아요. 별도 타이머·worker·GPU 자원을 만들지 않아요.
 
 출처 등록: Unreal5.8 [FTimecode::FromFrameNumber](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Core/FTimecode/FromFrameNumber)의 오버로드·파라미터와 DF 지원 범위를 새로 읽었어요. 추가 대조 출처로 FFmpeg8.0 [libavutil/timecode.c](https://www.ffmpeg.org/doxygen/8.0/timecode_8c_source.html)의 분수 속도 반올림·10분 단위 DF 번호·역변환·세미콜론 구역을 읽고 이 문서와 ENGINE_WORK_1855의 research에 등록해요. 라이브러리를 추가하거나 소스를 복사하지 않고 정수 label 수를 독립적으로 계산해요. 전체 본문/API 분석 gate는 그대로 유지해요. 외부 시계·PCM·genlock과 분수 타임라인 편집 격자는 미구현 범위로 남아요.
+
+1871–1873: 시퀀스의 displayRate/displayDropFrame은 독립적인 분수 편집 격자/타임코드 표시예요. 녹화의 recordingClock.rate와 프리셋 fps는 기존 의미를 유지해요. FPS를 생략한 시퀀스 곡선 bake는 편집 격자를 사용해요. docs/TIMELINE_DISPLAY_RATE.md.

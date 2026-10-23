@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **848개**, 실제 공통 C++ API **758개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **852개**, 실제 공통 C++ API **762개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -71,7 +71,7 @@
 | 2D IK | 14 | 14 |
 | 몽타주 | 13 | 13 |
 | 애니메이션 최적화 | 4 | 4 |
-| 시퀀스 | 7 | 7 |
+| 시퀀스 | 11 | 11 |
 | AI 내비게이션 | 7 | 7 |
 | AI 감지 | 3 | 3 |
 | 파티클 | 5 | 5 |
@@ -1195,6 +1195,10 @@
 | sequencePause | Pause / 레벨 시퀀스 일시 정지 | exec: exec, target: object, paused: bool | then: exec | hb::LevelSequence::Pause | 공통 C++ + VM |
 | sequenceSeek | Seek / 레벨 시퀀스 시간 이동 | exec: exec, target: object, time: float | then: exec | hb::LevelSequence::Seek | 공통 C++ + VM |
 | sequencePosition | Get Position / 레벨 시퀀스 재생 위치 | target: object | return: float | hb::LevelSequence::GetPosition | 공통 C++ + VM |
+| sequenceSeekFrame | Seek Frame / 시퀀스 프레임 이동 | exec: exec, target: object, frame: int | then: exec | hb::LevelSequence::SeekFrame | 공통 C++ + VM |
+| sequenceFrame | Get Frame / 시퀀스 현재 프레임 | target: object | return: int | hb::LevelSequence::GetFrame | 공통 C++ + VM |
+| sequenceFrameRateNumerator | Get Frame Rate Numerator / 시퀀스 프레임률 분자 | target: object | return: int | hb::LevelSequence::GetFrameRateNumerator | 공통 C++ + VM |
+| sequenceFrameRateDenominator | Get Frame Rate Denominator / 시퀀스 프레임률 분모 | target: object | return: int | hb::LevelSequence::GetFrameRateDenominator | 공통 C++ + VM |
 
 ## AI 내비게이션
 

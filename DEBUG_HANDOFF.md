@@ -150,3 +150,8 @@ C++ 공개 값 구조체/필드 타입·기본값·enum/Actor/배열 codec와 Ma
 ## C++ 접근 연결1501–1516
 
 명시 반사 private/protected 멤버·중첩 클래스/enum·정확한 참조/배열 인자를 컴파일 사본의 friend로 연결했어요. 원본의 일반 C++ private 접근은 계속 컴파일 오류예요. 문자열 내부 세미콜론 때문에 regex가 속성을 자르는 실제 판독 문제도 lexer의 문장 경계로 고쳤어요. 두 AOT 모듈 state/enum/event 분리·CPP rollback·2D 포함 기존 50Actor batching·typed records·다중소스·클래스생성·AI 그룹12와 Android ARM64 NDK syntax4units 통과. source hidden editor/같은저장 D3D[14,3,2]/Score14/exit0 통과·최종 설치 gate는 USER_INSTALL 후속영수증을 따르세요. enum int32의 미등록 숫자13은 기존 합법값이어서 초기 검사 기대를 고쳤고 wire범위 초과4294967296은 거부해요. 큰 기본값의 AI조회는 페이지 필드만 읽어요. std detached1024-int 값인자 할당2→1/constref1/outref유지 직접계수·전체FPS주장없음. grouped 실패 원인·중간자료는 native/build 원래 폴더에 유지해요.
+
+## 1872 분수 격자·키 선택 후 곡선 열기
+실제 키 드래그·Undo 이후 curve FPS 입력이 없어 검사 실패했어요. 선택 키를 트랙으로 해석하는 클릭 처리만 고쳐도 renderSequenceCurve의 curveTrack===selection 조건이 남아 같은 오류가 재현됐어요. 다음 검증은 곡선 열기 시 소유 트랙으로 selection도 전환해 렌더 조건을 맞추고, 같은 키 드래그·Undo·곡선 열기 경로에서 FPS 입력과 이후 AI bake·C++ 실행을 확인해요. 렌더 조건을 확인하지 않고 클릭 처리만 반복하지 않아요. 아직 성공으로 기록하지 않아요.
+
+1872 후속: 클릭 때 selection도 소유 트랙 ID로 전환한 뒤 실제 드래그/Undo/곡선 FPS·AI bake·CPP4함수 편집기 검사가 통과했어요(4kjJSW). 렌더 가드와 선택 상태 불일치가 원인이었어요. 최종 TC 눈금·DF 비호환 입력 잠금은 설치 검사에서 추가 확인해요.

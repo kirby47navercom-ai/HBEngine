@@ -88,3 +88,5 @@
 .sequence-pose-inspector{border-top:1px solid var(--line);margin-top:12px;padding-top:8px}.sequence-pose-inspector input,.sequence-pose-inspector select{min-width:0}.sequence-pose-actions{display:flex;gap:4px;margin:6px 0}.sequence-pose-inspector output{display:block;color:var(--muted);margin:6px 0}.sequence-pose-inspector summary{cursor:pointer;display:flex;gap:6px;justify-content:space-between;padding:5px 0}.sequence-pose-inspector summary span{font-variant-numeric:tabular-nums;color:var(--muted);font-size:11px}.sequence-pose-inspector dd{margin-left:0;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.sequence-pose-inspector code{display:block;white-space:normal;overflow-wrap:anywhere;font-size:10px}
 
 .sequence-pose-inspector{position:relative;z-index:3;background:var(--panel,#282d33)}
+
+.gameplay-transport input[data-time]{width:84px;min-width:0;flex:0 0 84px;font-variant-numeric:tabular-nums}.gameplay-transport input[data-time][type=text]{width:132px;flex-basis:132px}

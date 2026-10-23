@@ -649,3 +649,5 @@ Take 녹화 프리셋은 전용 에셋/편집기에서 만들고 시퀀스의 �
 1853–1855: Take 시계의 양의 분수 수집 FPS(분자/분모)·29.97/59.94 DF 표기/유효 입력·정수 편집 격자 구분·프리셋 clock 상속/SaveAs/UndoRedo·AI 부분 override와 sampleRate/sampleFPS/skippedSamples 상태를 연결해요. 시작 기준 표본 스케줄로 누적 지연을 방지하고 놓친 구간의 가짜 포즈를 만들지 않아요. BP/C++ 재생 키는 상대 초를 유지해요. 외부 오디오/동기 시계와 분수 편집 격자는 잔여예요.
 
 1859–1861: 공용 hb::Skeleton 6개 함수에서 BP 순수 조회 노드 생성(개수/이름 페이지/존재/로컬·월드 위치·XYZ회전도·크기). 사람의 시퀀스 골격 속성 뷰와 AI named page/world affine matrix·trsExact를 공용 helper에 연결해요. 뼈 이름/중첩 actor 경계 검증·실패 활성화/복원 보존·전체 대상 준비 후 포즈 쓰기와 중첩 루트 행렬 통합. 즉시 Seek·모델 교체/제거/역방향/복원은 유지해요. 뼈별 소유권·가중 혼합·외부 graph/montage 복원은 잔여예요. docs/SEQUENCE_POSE_AND_SKELETON.md.
+
+1871–1873: LevelSequence::SeekFrame/GetFrame/GetFrameRateNumerator/GetFrameRateDenominator의 공용 BP 노드4개를 추가해요. 선택 시퀀스 displayRate 분수 격자와 같은 프레임 위치를 사용해요. 값 저장·시간 이동은 초 단위이고 편집 표시율이 엔진 FPS를 고정하지 않아요. 계약/검증은 docs/TIMELINE_DISPLAY_RATE.md 및 WORK1873/USER_INSTALL1875를 따라요.

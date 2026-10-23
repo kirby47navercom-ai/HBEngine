@@ -2453,6 +2453,30 @@
       "paths": [
         "prototype/animation-playback-lease.js"
       ]
+    },
+    {
+      "id": "timeline-rational-display-rate",
+      "keywords": [
+        "timelineRate",
+        "timelineFrameAt",
+        "timelineFrameTime",
+        "timelineSnap",
+        "timelineStep",
+        "timelineRateContract"
+      ],
+      "paths": [
+        "prototype/timeline-rate.js"
+      ]
+    },
+    {
+      "id": "timeline-rational-rate-controls",
+      "keywords": [
+        "timelineRateMarkup",
+        "timelineRateInput"
+      ],
+      "paths": [
+        "prototype/timeline-rate-editor.js"
+      ]
     }
   ]
 }

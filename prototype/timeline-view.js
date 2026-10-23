@@ -1,5 +1,6 @@
+import {timelineFPS,timelineTimecode} from './timeline-rate.js';
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-export const timelineMinimumSpan = data => Math.min(data.length, 1 / Math.max(1, data.fps || 60));
+export const timelineMinimumSpan = data => Math.min(data.length, 1 / Math.max(1, timelineFPS(data)));
 
 export function timelineViewRange(data, value) {
   const length = data.length;
@@ -26,10 +27,10 @@ export function timelineSegmentGeometry(item, range) {
     clippedStart: duration > 0 && item.start < range.start, clippedEnd: duration > 0 && end > range.end};
 }
 export function timelineRulerTicks(data, range, width = 800, frames = false) {
-  const scale = frames ? data.fps || 60 : 1, start = range.start * scale, end = range.end * scale, raw = (end - start) / Math.max(2, Math.min(20, Math.floor(width / 80))), power = 10 ** Math.floor(Math.log10(raw)), ratio = raw / power;
+  const scale = frames ? timelineFPS(data) : 1, start = range.start * scale, end = range.end * scale, raw = (end - start) / Math.max(2, Math.min(20, Math.floor(width / 80))), power = 10 ** Math.floor(Math.log10(raw)), ratio = raw / power;
   const step = Math.max(frames ? 1 : Number.MIN_VALUE, (ratio <= 1 ? 1 : ratio <= 2 ? 2 : ratio <= 5 ? 5 : 10) * power), digits = Math.max(0, Math.min(9, -Math.floor(Math.log10(step)))), ticks = [];
   for (let i = Math.ceil(start / step - 1e-9); i * step <= end + step * 1e-9 && ticks.length < 32; i++) {
-    const value = i * step; ticks.push({left: timelineFraction(value / scale, range) * 100, label: frames ? String(Math.round(value)) : Number(value.toFixed(digits)).toString()});
+    const value = i * step; ticks.push({left: timelineFraction(value / scale, range) * 100, label: frames==='timecode' ? timelineTimecode(data,value/scale) : frames ? String(Math.round(value)) : Number(value.toFixed(digits)).toString()});
   }
   return ticks;
 }
