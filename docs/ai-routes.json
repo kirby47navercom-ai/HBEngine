@@ -3018,6 +3018,20 @@
       "paths": [
         "prototype/sequence-animation-mixing.js"
       ]
+    },
+    {
+      "id": "sequence-animation-transform-aliases",
+      "keywords": [
+        "prepareSequenceAnimationTransforms",
+        "writeSequenceAnimationTransforms",
+        "reapplySequenceTransforms",
+        "sequenceAnimationTransformContract",
+        "sequenceMayWriteTransform",
+        "sequenceTransformProperty"
+      ],
+      "paths": [
+        "prototype/sequence-animation-transforms.js"
+      ]
     }
   ]
 }

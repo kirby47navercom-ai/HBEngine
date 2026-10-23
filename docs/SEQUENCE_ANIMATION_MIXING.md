@@ -9,4 +9,4 @@
 
 AI 편집은 기존 `document.patch`의 revision·dryRun·Undo·Save 계약을 사용해요. `hb context --symbol SequenceAnimationMixing`으로 소유 코드를 찾을 수 있어요. 별도 스키마·API·타이머·워커는 추가하지 않아요.
 
-이 구현은 시퀀스 애니메이션과 별도 skeletalPose·직접 Transform·렌더러 속성 트랙 사이의 별칭 중재까지 포함하지 않아요. 외부에서 관리하는 추가 액션, 임의 notify·비동기 setter의 부수효과 되돌리기도 별도예요. FPS·힙 절감 수치는 측정 전이에요.
+HB 변환 클립은 직접 TRS·Transform 컴포넌트와 같은 필드 소유권으로 중재돼요. 가져온 믹서의 루트·오브젝트 바인딩, 별도 skeletalPose 뼈 및 렌더러 속성 트랙의 남은 별칭 중재는 별도예요. 외부에서 관리하는 추가 액션, 임의 notify·비동기 setter의 부수효과 되돌리기도 별도예요. FPS·힙 절감 수치는 측정 전이에요.

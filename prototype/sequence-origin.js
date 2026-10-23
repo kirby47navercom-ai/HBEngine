@@ -1,5 +1,6 @@
 import {Vector3,Quaternion,Euler,MathUtils} from 'three';
 import {sceneWorldMatrix} from './scene-runtime.js';
+import {sequenceMayWriteTransform} from './sequence-animation-transforms.js';
 export const sequenceOriginDefaults=()=>({mode:'inherit',actor:'',position:[0,0,0],rotation:[0,0,0]});
 const inheritedOrigin=Object.freeze({mode:'inherit',actor:'',position:Object.freeze([0,0,0]),rotation:Object.freeze([0,0,0])});
 const vector=v=>Array.isArray(v)&&v.length===3&&v.every(n=>Number.isFinite(n)&&Math.abs(n)<=100000);
@@ -12,7 +13,7 @@ export class SequenceOrigin{
  constructor(data,owner,vm,parent=null){
   this.vm=vm;this.parent=parent;this.config=data.origin??inheritedOrigin;this.actor=this.config.mode==='actor'?vm.object(this.config.actor==='self'?owner:this.config.actor):null;
   if(this.config.mode==='actor'&&!this.actor)throw Error('시퀀스 기준 액터가 없어요: '+this.config.actor);
-  this.animatedTargets=this.actor?new Set(data.tracks.filter(t=>sequenceTransformField(t)&&t.keys.length).map(t=>t.target||owner)):null;
+  this.animatedTargets=this.actor?new Set(data.tracks.filter(t=>sequenceMayWriteTransform(t)&&(t.keys.length||t.clips.length)).map(t=>t.target||owner)):null;
   this.enabled=this.config.mode!=='inherit'||!!parent?.enabled;
   if(!this.enabled)return;
   this.offset=new Vector3(...this.config.position);this.offsetRotation=new Quaternion().setFromEuler(new Euler(...this.config.rotation.map(MathUtils.degToRad),'XYZ'));
