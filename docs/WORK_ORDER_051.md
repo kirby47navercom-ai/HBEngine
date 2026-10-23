@@ -1162,3 +1162,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1901–1903: 외부push시계(double초/독립분수frame)·5CPP/BP API/한글핀/기본30/1·anchor/hold/동일·역행/timegap검증·pause/seek/evaluate/source reset·기존event/loop/하위/rate/restore·정지audioSeek·primitive진단 구현.7회귀/최종unit9조건·실제source epoch1.7e9+.25/C++분수완료복원통과. SDK2header변경freshfixture·나머지19native/HostPlayer/renderer exact재사용. 설치최종pause-ready/독립D3D gate예정. 장치I/O/pull/PCM/genlock등잔여유지. WORK1903.
 
 1904–1906: 최종설치5새API+6기존API freshCPP editor/별도D3D·epoch1.7e9+.25→.25·pausedReadyfalse·역행/seek/reset/30000/1001 rational .8001·완료원상복원 100.27초통과. manifest4478/source1142/SDK2fresh·나머지19native/renderer/vendor2/PlayerHost exact·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전197437315B정리. USER_INSTALL1905. 장치/pull/PCM/genlock등누적잔여유지.
+
+1907–1909: explicit값control/단조0..4/3시간핸들·수직/확장경계정확분할/부분bake밖보존·stationary수치분기/vectoroffset·공용sampler/affine/다중축tool/clipboard/AI·incoming-only드래그/숫자변환/outgoinglinear유지/수직pixelSnap·좁은창graph130px복원 구현.10영향회귀/최종unit10005관찰·실제source UI/기존CPP3시각독립수식/restore통과. 불채택실험없음·수정중실패성과아님·SDK/native모두exact재사용·설치독립D3D gate예정. 키도메인밖bake등잔여유지. WORK1909.
