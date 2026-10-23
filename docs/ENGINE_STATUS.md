@@ -186,3 +186,8 @@
 |---|---|---|---|---|
 | RES-01 Unreal/Unity 전체 본문·API 대조 | partial | 출처 원장·개별 본문/소스 대조·증거/미독 경계 | 전체 discovery 분모·추가 버전/API/미디어 대조 · 전체 독립 분석 gate | [RESEARCH_STATUS.md](research/RESEARCH_STATUS.md) · [ANALYSIS_PROTOCOL.md](research/ANALYSIS_PROTOCOL.md) |
 
+
+
+## 2008–2015 참조 복원·샘플 격리와 실제 오디오 실행
+
+BP/C++ 및 컴포넌트 참조에 원래 액터 수명을 보관해 같은 ID의 새 대상에 잘못 복원되는 문제를 막았어요. 일시정지 반복 평가·명시 Seek·중첩 구조체/배열·하위 우선순위 재개와 mutable 값/TRS 격리를 공용 VM에 연결했어요. 새11조건과 영향7검사, 실제 C++ 포인터/Destroy/다음 호출 같은 ID Spawn의3단계 복원이 통과했어요. 오디오 UI·Undo·저장, C++ Seek7개와 실제 OfflineAudioContext245760 PCM 표본도 통과했어요. 설치와 독립 실행 파일 검사는 별도 기록으로 확정해요. 근거: ENGINE_WORK_2015.json. 전체 시뮬레이션·임의 외부 setter rollback이나 엔진 전체 완료를 뜻하지 않아요.

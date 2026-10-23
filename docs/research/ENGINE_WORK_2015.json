@@ -1,0 +1,172 @@
+{
+  "version": 1,
+  "date": "2026-10-23T12:09:00.140Z",
+  "kind": "sequence-identity-safe-reference-restore-and-mutable-sample-isolation",
+  "implementationRevision": "d49207b61f91b69e78a3291e1fe14ebf76297c68",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2005.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "4b73cf80b9b08bb4626b598b0e83a0c9bdb42f4e1bd68fc934be323d3e537c52",
+    "prototype/gameplay-runtime.js": "86bef04b92f0cc09819c5073ab13287fb69331137960f958b0e18d4727897ad0",
+    "prototype/sequence-channels.js": "7994362a4d121bbe3482962663c7bc4f22a155c429eac2cff8e39a4c321d8cce",
+    "prototype/sequence-component-channels.js": "59faf0ff158527e0b53dca4155a8d940d4f4e5e9ddb82a23208cbd928b13f746",
+    "prototype/sequence-properties.js": "99957a9253850b563fc10f074c78016b3d4ee5619506e47ad5fe064b958a51cf",
+    "prototype/sequence-values.js": "2528dd25392915a141656afa7d67fa5608a9991e05ca801b625bb96b5ec24797",
+    "prototype/sequence-reference-state.js": "8895decadf6a694713adda9847d6a73354b83a7d28223691ecfdaf23b8346131",
+    "prototype/sequence-value-channels.js": "7f427c0e35d9ba7b5257053bf8a8aec04dcf5b884f452082f63d3541bc8bcc7f",
+    "docs/SEQUENCE_REFERENCE_RESTORE.md": "1faf9b91a1d52b6c5b8f0676148820f72971bfe9b41b36557ed1170bacb61ee3",
+    "tools/check-sequence-reference-state-2008.mjs": "f57d2114b97756e9fba97f6845f2792dce512d2ae8f8aa56e8717d1954b48a7b",
+    "tools/check-sequence-reference-2012-window.mjs": "a623d40811d4912468f8cc69c31f92545162dd2ccf810c1970447849ac4b89df",
+    "tools/sequence-reference-fixture-2012.mjs": "7b659aff4294620da573dba82e09b02ad801360a008a29c959ab348a629bfe12",
+    "tools/sequence-reference-exercise-2012.mjs": "d18ba3c54d3796944d0325afbe883d071d058668bba1c8a11edb5bd4d2862122",
+    "CODEX_HANDOFF.md": "89d29797e6af6293ad4ffe08142136bfde5fdb26c563e62898971b58f0526f72"
+  },
+  "targetIds": [
+    "ANM-06",
+    "AUD-03"
+  ],
+  "checks": [
+    {
+      "name": "check-sequence-reference-state-2008",
+      "passed": true,
+      "exit": 0,
+      "ms": 227.4297,
+      "log": "native/build/group-reference2010-check-sequence-reference-state-2008.log",
+      "sha256": "8db61a32066017572f2bbee0568e3149d5ea6b2696cf8bafef63309d2c1e9ce1"
+    },
+    {
+      "name": "check-sequence-values-269",
+      "passed": true,
+      "exit": 0,
+      "ms": 213.7916,
+      "log": "native/build/group-reference2010-check-sequence-values-269.log",
+      "sha256": "5068cc27fff230f9076d0fea3b68769f40881361c7543f504f6e50ed481cb9c8"
+    },
+    {
+      "name": "check-sequence-values-212",
+      "passed": true,
+      "exit": 0,
+      "ms": 489.8187,
+      "log": "native/build/group-reference2010-check-sequence-values-212.log",
+      "sha256": "fc9979c86f83d8c623e05b5868e342ec0cdc84d254b4d409ca3f369491c294f8"
+    },
+    {
+      "name": "check-sequence-component-326",
+      "passed": true,
+      "exit": 0,
+      "ms": 106.3759,
+      "log": "native/build/group-reference2010-check-sequence-component-326.log",
+      "sha256": "2bcd917e3902585878bde6cd5e6edf6b8b2459652dba7e1679c070ad1caeac16"
+    },
+    {
+      "name": "check-sequence-ownership-268",
+      "passed": true,
+      "exit": 0,
+      "ms": 170.87540000000013,
+      "log": "native/build/group-reference2010-check-sequence-ownership-268.log",
+      "sha256": "36aaf21db14bd047f4d19c1e20f6a01fd01a733a7f13a6af044da3e978be81cb"
+    },
+    {
+      "name": "check-sequence-audio-envelope-2000",
+      "passed": true,
+      "exit": 0,
+      "ms": 294.6751999999999,
+      "log": "native/build/group-reference2010-check-sequence-audio-envelope-2000.log",
+      "sha256": "672f7bcaf4d53d9469c6a8e76620f376f9368ba18dd68b93da6e73c591f3d279"
+    },
+    {
+      "name": "check-ai-context",
+      "passed": true,
+      "exit": 0,
+      "ms": 2191.9483,
+      "log": "native/build/group-reference2010-check-ai-context.log",
+      "sha256": "3fd773978e4b9040544c043b35ba0c0255b1f9b257947109f8b85396a60ab543"
+    }
+  ],
+  "newCases": 11,
+  "sourceWindows": [
+    {
+      "report": "native/build/sequence-audio-envelope-2001-window-KS6GFT/acceptance.json",
+      "sha256": "623b1a76fa3de6b5fe54c8af75c5db6b9aea6ca17faffee024c105381782aa4d",
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "cpp": 7,
+      "pcmSamples": 245760
+    },
+    {
+      "report": "native/build/sequence-reference-2012-window-rtC2ZY/acceptance.json",
+      "sha256": "68416cbbadea2a9e5c09de69afbcb4ca8a7c06a584bc24c17dde1b36eed4cd40",
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "cpp": 3,
+      "pcmSamples": 0
+    }
+  ],
+  "implementation": [
+    "BP/C++ object/hit/reflected nested record and array actor identities retained for samples and shared baseline",
+    "component objectReference property and whole component presence restoration with empty-string null semantics",
+    "same-ID actor replacement cannot hijack hidden lower or preanimated references; destroying/unresolved originals discarded",
+    "stable weak owner/target/field sample tokens across paused/continuous ticks; explicit Seek or changed authored sample refreshes lifetime",
+    "live mutable BP/C++ arrays, vectors and records detached from channel samples; direct TRS and Transform component aliases copy three-value arrays before publication",
+    "existing schema and human/AI/CPP/Blueprint paths retained; focused reference/value/transform owners and help contract"
+  ],
+  "actualSourceAudio": {
+    "humanUIUndoSave": true,
+    "graphVisuallyInspected": true,
+    "cppSeeks": 7,
+    "offlinePCMConditions": 10,
+    "offlinePCMSamples": 245760,
+    "claim": "Actual owned WebView OfflineAudioContext PCM; no speaker/device claim."
+  },
+  "actualSourceReferences": {
+    "cppPointerInitRead": true,
+    "cppDestroyThenLaterSameIdSpawn": true,
+    "upperLowerAndBaseline": true,
+    "bpNativeComponentAgreement": true,
+    "report": "native/build/sequence-reference-2012-window-rtC2ZY/acceptance.json"
+  },
+  "corrections": [
+    {
+      "firstFailure": "native/build/sequence-reference-2012-window-YicoL1/failure.json",
+      "cause": "Actual paused VM ticks resampled and reacquired a same-ID replacement after otherwise correct release; source-only initial test omitted intervening ticks.",
+      "fix": "Keep latest reference token across unchanged samples and validate on every publication; add paused/continuous ticks plus explicit Seek and1000stable cache observations; rerun only affected reference window."
+    }
+  ],
+  "nativeReuse": {
+    "receipt": "docs/research/USER_INSTALL_1991.json",
+    "owners": 21,
+    "binaries": {
+      "HBEngine": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+      "HBPlayer": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+    },
+    "vendorHashes": {
+      "node_modules/three/src/renderers/common/UniformsGroup.js": {
+        "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+        "bytes": 10590
+      },
+      "node_modules/three/build/three.webgpu.js": {
+        "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+        "bytes": 1875505
+      }
+    },
+    "freshFullSDKRun": false,
+    "freshRendererRun": false
+  },
+  "resources": {
+    "referenceCache": "weak owner -> weak target -> last sampled field token only; sampled reference maps, no whole-world history",
+    "newTimers": 0,
+    "newWorkers": 0,
+    "newGPUResources": 0,
+    "mutableCopies": "required on mutable live values and three-element TRS; primitive numeric/bool/string channels unchanged",
+    "scope": "Structural/source guards, not measured full heap or FPS."
+  },
+  "pending": [
+    "safe installed bundle update and independent D3D11 audio/reference game gates"
+  ],
+  "installationPending": true,
+  "currentInstallation": "docs/research/USER_INSTALL_1991.json",
+  "scope": "Related source implementation and two owned actual source editor/C++ gates verified. Whole engine, arbitrary async setter/notify or simulation rollback, phone and installed update not yet claimed."
+}
