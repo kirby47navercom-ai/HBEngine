@@ -14,4 +14,4 @@
 
 AI 소유자: `node tools/hb.mjs context "가져온 모델 변환" --symbol ImportedSequenceTransformProgram`. `SequenceImportedTransforms`는 활성 하위 필드와 일반 믹서 presentation만 관리해요. 원본 모델 전체를 프레임마다 순회하거나 변환 키를 베이크하지 않아요. 하위 필드의 행렬 갱신은 액터 루트별로 모으고, 골격 전용 클립처럼 이 경로의 변환이 없는 경우는 즉시 기존 평가로 넘겨요.
 
-경계: 인덱스 단위 변환 바인딩, 렌더 속성 별칭, 임의 외부 추가 액션·게임 시뮬레이션·비동기 setter·notify 부수효과 롤백은 남아 있어요. 이 변경만으로 전체 FPS·힙·모바일 실기기 성능을 주장하지 않아요.
+인덱스 단위 변환은 [부분 키 바인딩](SEQUENCE_INDEXED_TRANSFORMS.md)에 연결돼 있어요. 위치·크기는 작성 성분별로 중재하고 회전은 조립한 방향 하나로 중재해요. 경계: 독립 Euler 축 레이어 합성, 렌더 속성 별칭, 임의 외부 추가 액션·게임 시뮬레이션·비동기 setter·notify 부수효과 롤백은 남아 있어요. 이 변경만으로 전체 FPS·힙·모바일 실기기 성능을 주장하지 않아요.

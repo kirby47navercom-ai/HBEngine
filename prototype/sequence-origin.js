@@ -28,6 +28,13 @@ export class SequenceOrigin{
   else{this.position.set(0,0,0);this.rotation.identity();}
   if(this.config.mode!=='inherit'){this.position.add(this.value.copy(this.offset).applyQuaternion(this.rotation));this.rotation.multiply(this.offsetRotation).normalize();}
  }
+ indexedBasis(field,basis,object){if(!this.enabled||field!=='rotation'||object.parent||object.parentId||this.isOriginActor(object))return basis;const rotation=new Quaternion().setFromEuler(new Euler(...basis.map(MathUtils.degToRad),'XYZ')).premultiply(this.rotation.clone().invert()),angles=new Euler().setFromQuaternion(rotation,'XYZ');return [angles.x,angles.y,angles.z].map(MathUtils.radToDeg);}
+ applyPartial(field,sample,basis,object){
+  if(!this.enabled||field!=='position'||object.parent||object.parentId||this.isOriginActor(object))return sample;
+  // Fill unauthored local axes by inverse-transforming the shared world basis.
+  const local=new Vector3().fromArray(basis).sub(this.position).applyQuaternion(this.rotation.clone().invert()),mask=[false,false,false];for(let k=0;k<3;k++)if(sample.mask[k]){local.setComponent(k,sample.value[k]);const axis=new Vector3().setComponent(k,1).applyQuaternion(this.rotation);for(let j=0;j<3;j++)mask[j]||=Math.abs(axis.getComponent(j))>1e-10;}
+  return {indexedTransform:true,value:local.applyQuaternion(this.rotation).add(this.position).toArray(),mask};
+ }
  isOriginActor(object){return this.enabled&&(this.actor===object||!!this.parent?.isOriginActor(object));}
  apply(track,value,object){
   if(!this.enabled)return value;const field=sequenceTransformField(track);if(!field||value===undefined||object.parent||object.parentId||this.isOriginActor(object))return value;

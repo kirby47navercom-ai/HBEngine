@@ -3055,6 +3055,20 @@
       "paths": [
         "prototype/sequence-imported-transforms.js"
       ]
+    },
+    {
+      "id": "sequence-indexed-transforms",
+      "keywords": [
+        "importedTransformBindings",
+        "importedTransformIndex",
+        "canonicalImportedTransformPath",
+        "resolveIndexedTransformEntries",
+        "mixIndexedPoseEntries",
+        "blendIndexedPoses"
+      ],
+      "paths": [
+        "prototype/sequence-indexed-transforms.js"
+      ]
     }
   ]
 }
