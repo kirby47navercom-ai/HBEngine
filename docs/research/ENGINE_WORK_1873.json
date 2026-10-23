@@ -1480,6 +1480,20 @@
     "Actual key drag selected a key; click-only curveTrack fix still failed render guard. DEBUG_HANDOFF recorded root cause, then selecting owner track passed full workflow.",
     "Final exact TC transport width/same-row and visible controls assertions added after screenshot showed text input wrapping; installed gate required."
   ],
-  "installationPending": true,
-  "scope": "Optional rational displayRate and DF authoring preserve seconds content and independent capture/game cadence. Shared frame/TC transport/ruler, step, main and curve key drag with Shift free movement, range handle and default bake cadence; key-to-owner-track curve opening fixed. Four new LevelSequence C++/BP frame functions and runtime metadata share rate. Eight affected regressions, independent BigInt expectations/10000 steps per rate, actual source editor UI/drag/Undo/bake/CPP and prior independent D3D checkpoint passed. Final TC-ruler/DF lock and compact transport CSS assertions are required in installed gate."
+  "installationPending": false,
+  "scope": "Optional rational displayRate and DF authoring preserve seconds content and independent capture/game cadence. Shared frame/TC transport/ruler, step, main and curve key drag with Shift free movement, range handle and default bake cadence; key-to-owner-track curve opening fixed. Four new LevelSequence C++/BP frame functions and runtime metadata share rate. Eight affected regressions, independent BigInt expectations/10000 steps per rate, actual source editor UI/drag/Undo/bake/CPP and prior independent D3D checkpoint passed. Final TC-ruler/DF lock and compact transport CSS assertions are required in installed gate.",
+  "currentInstallation": "docs/research/USER_INSTALL_1875.json",
+  "installedGates": [
+    {
+      "path": "native/build/timeline-rate-1872-window-BgeJeM/acceptance.json",
+      "sha256": "89a9fd03c28414667fcc2087fef36a9d22c70d88bb7e30ee5c65bc7e87962bc2",
+      "scope": "Actual human rational grid preset/DF/UndoRedo, frame/timecode transport, curve default rate and AI bake/dryRun/Undo/save validation; four freshly compiled CPP LevelSequence frame functions with rational runtime motion; optional standalone D3D11 package.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\ad14238a724a5a30\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 78059.8051
+    }
+  ]
 }
