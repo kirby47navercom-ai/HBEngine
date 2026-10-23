@@ -1477,6 +1477,20 @@
     "Actual UI exposed custom fraction field disappearing when its current rational matched a built-in rate. Fraction input is now always available and atomically commits the pair, blank follows grid; helper regression and actual UI rerun.",
     "Primitive clock partial overrides must reject null/bool/number/string/array before object spread; explicit regression added."
   ],
-  "installationPending": true,
-  "scope": "Reduced rational Take sample rates1..240, 29.97/59.94 drop-frame labels and strict skipped-label parsing with safe BigInt origins, epoch-anchored real-pose sampling and skippedSamples, integer editing grid preserved; authoring rate/fraction/drop availability, inherited clock-group/UndoRedo/SaveAs and AI partial override/state with deep snapshots. Ten affected regressions and independent 11-minute nominal-label walk plus 100-second60Hz input2998 actual samples passed. Source owned actual UI/CPP zero-scale/pause/clock snapshot/relative-key/replay gate passed; final installed independent D3D gate pending."
+  "installationPending": false,
+  "scope": "Reduced rational Take sample rates1..240, 29.97/59.94 drop-frame labels and strict skipped-label parsing with safe BigInt origins, epoch-anchored real-pose sampling and skippedSamples, integer editing grid preserved; authoring rate/fraction/drop availability, inherited clock-group/UndoRedo/SaveAs and AI partial override/state with deep snapshots. Ten affected regressions and independent 11-minute nominal-label walk plus 100-second60Hz input2998 actual samples passed. Source owned actual UI/CPP zero-scale/pause/clock snapshot/relative-key/replay gate passed; final installed independent D3D gate pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1857.json",
+  "installedGates": [
+    {
+      "path": "native/build/take-rate-1854-window-J2l7u9/acceptance.json",
+      "sha256": "3577e99a6cc7e271b23ef771045a0abeb9d9a99e2dff4165e0626b3711fa8034",
+      "scope": "Owned actual3D game/unscaled/platform clock with rational 30000/1001 capture, 29.97 DF origin, 59.94/custom UI rates and incompatible DF control locking, separate integer24 editing grid, rate UndoRedo and inherited snapshots; timecode authoring/inheritance/UndoRedo; actual CPP Clock SetTimeScale(0), paused unscaled freeze and platform frozen-pose sample/UI advancement; clock metadata and snapshots survive parent edit, relative keys and CPP/D3D playback; multilevel preset authoring/read, group override/disabled controls/UndoRedo, detach/Undo and explicit saved-parent refresh; complete-chain AI resolve/CAS apply and start, flattened UI load/SaveAs and recording snapshots surviving parent edit; compiled CPP Play/Seek/Stop and optional independent D3D11 output with all four editor-only preset files excluded. Rational timeline editing grid/audio/external timecode/genlock/per-channel inheritance/devices not claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4f3c4387dd9d2a52\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 84849.23700000001
+    }
+  ]
 }

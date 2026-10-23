@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-take-rational-rate-drop-frame",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "b5519db9d16b774e6d3c7ca644631ef59bead55e",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4f3c4387dd9d2a52",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\4f3c4387dd9d2a52\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\4f3c4387dd9d2a52\\HBEngine.exe",
+  "bundleHash": "4f3c4387dd9d2a52161a6f655482b7f704abf91ef0993e79cbfcda1cfc2271a9",
+  "files": 4428,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4425,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\6d525e4373e9c138",
+        "bytes": 195846766,
+        "manifestSHA256": "26347c1665504d0d835be3aedc96ae70672a294cf93fee7f7519221f7fa1e51a"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T00:12:16.0273785Z",
+    "bytes": 195846766,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "4f3c4387dd9d2a52"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1104,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/take-rate-1854-window-J2l7u9/acceptance.json",
+      "sha256": "3577e99a6cc7e271b23ef771045a0abeb9d9a99e2dff4165e0626b3711fa8034",
+      "scope": "Owned actual3D game/unscaled/platform clock with rational 30000/1001 capture, 29.97 DF origin, 59.94/custom UI rates and incompatible DF control locking, separate integer24 editing grid, rate UndoRedo and inherited snapshots; timecode authoring/inheritance/UndoRedo; actual CPP Clock SetTimeScale(0), paused unscaled freeze and platform frozen-pose sample/UI advancement; clock metadata and snapshots survive parent edit, relative keys and CPP/D3D playback; multilevel preset authoring/read, group override/disabled controls/UndoRedo, detach/Undo and explicit saved-parent refresh; complete-chain AI resolve/CAS apply and start, flattened UI load/SaveAs and recording snapshots surviving parent edit; compiled CPP Play/Seek/Stop and optional independent D3D11 output with all four editor-only preset files excluded. Rational timeline editing grid/audio/external timecode/genlock/per-channel inheritance/devices not claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\4f3c4387dd9d2a52\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 84849.23700000001
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\4f3c4387dd9d2a52\\",
+    "elapsedMs": 62.53,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\4f3c4387dd9d2a52",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "4f3c4387dd9d2a52161a6f655482b7f704abf91ef0993e79cbfcda1cfc2271a9",
+      "installedAt": "2026-10-23T00:12:12.565Z",
+      "manifestFiles": 4428,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1608.json\",\"scope\":\"Exact unchanged SDK21/Player1604/Host1041/30 repository test owners and shader math hashes verified. Changed Take preset authoring/recorder/export code is covered by ten final affected regressions and the final installed UI/AI/compiled CPP/independent D3D11 gate; no old runtime proof is reused for changed owners.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4428,
+  "versions": [
+    "4f3c4387dd9d2a52"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1857-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/rate1855-group.json",
+      "sha256": "c01cab524553519d2843733fcd66b8271d925967a5051514c7d76d126a47707a",
+      "scope": "Ten affected rate/clock/inheritance/source/preset/settings/snapshot/filter/skeletal/spawn regressions; recorder suites retained after UI-only field correction; rational test rerun with strict partial override primitive rejection."
+    },
+    {
+      "path": "native/build/take-rate-1853-yTx3Ab/acceptance.json",
+      "sha256": "82f6ccf0eed44360acf1d4e685c40c259a855c77b64269ccd4d7eeffabf3d74d",
+      "scope": "29.97/59.94 DF labels verified by independent nominal-field enumeration, rational sample rate and exact-safe BigInt origins, 100-second 60Hz input retaining 2998 real samples at 30000/1001, skipped intervals create no synthetic poses. Integer timeline grid remains separate; no PCM/external sync or whole-game performance claim."
+    },
+    {
+      "path": "native/build/take-clock-1847-CzNYqP/acceptance.json",
+      "sha256": "ad8a517b4ee4142c59bd5e2c6aedc33b330ec6e9e57aa9917985a5cd06fa0bd8",
+      "scope": "Game/unscaled tick clocks and injected monotonic platform time, pause/zero scale/reversal boundaries, integer non-drop frame origins including days/large safe frames, independent preset/inheritance/sequence/recorder snapshots and legacy omission. Actual editor pause/CPP scale/standalone D3D separate gate; no fractional/drop-frame/external/audio clock claim."
+    },
+    {
+      "path": "native/build/take-inheritance-1841-F2xCBj/acceptance.json",
+      "sha256": "2f8252c1b62d5935cee04c7d669a804fa576eefadc550039eda1c94fc0089562",
+      "scope": "Saved parent chains, four explicit groups fps/tolerance/settings/sources, validated flattening, independent clones and legacy assets, exact complete-chain revision guard, missing/cycle/depth safety, detach/editor toggles and normal sequence/Take output. No per-property merge or runtime preset dependency."
+    },
+    {
+      "path": "native/build/take-sources-1835-8VKYKw/acceptance.json",
+      "sha256": "98718de03c3c29886a74d92f405dd139d1cfb171afe1206b163555ee9408198c",
+      "scope": "Shared source resolver and production source editor actions, actor/player/world identity and deduplication, no fallback for missing enabled source, explicit target override, frozen recorder targets and source metadata, no accidental later-world admission, existing sequence keys retained, legacy source absence and asynchronous runtime configuration protection. Actual UI/services/C++/D3D separate gate."
+    },
+    {
+      "path": "native/build/take-presets-1828-rnRfLx/acceptance.json",
+      "sha256": "14316a6f56b4fa50607deaeb565e105226a341c559318588af94f6f844324192",
+      "scope": "Reusable on-demand config preset assets, snapshot options/filter override isolation, unchanged sequence track identities, actual TakeRecorder FPS/tolerance key reduction and baked metadata, actual2D project/standard documents, game build excludes editor-only preset, and production UI async-read conflict protection. Actual editor/C++/D3D are separate gates; source binding lists/inheritance/timecode not claimed."
+    },
+    {
+      "path": "native/build/take-settings-1787-t7fOyy/acceptance.json",
+      "sha256": "a322aa3acd0b5b8d0e05bd1650ebfd9d8f289a0a3e6b4c7501611666206bc4a0",
+      "scope": "Owned scratch row/vector allocations and exact recorded key data, preset/config validation and dynamic topology. Admitted keys still clone their data; no whole heap/FPS/mobile-device claim."
+    },
+    {
+      "path": "native/build/take-snapshot-1718-edbMen/acceptance.json",
+      "sha256": "27843fcb63098a57c6d7330fe91bdb12da38a9d3d52278b4034071fb074d9b09",
+      "scope": "600 admitted frame samples plus an ignored repeated same-time call of one128-element actual typed record array. Compare exact key data with c1ef0d5, count direct payload structuredClone calls and preserve in-place changes/ownership. Wall times are observations, not FPS/device/end-to-end performance."
+    },
+    {
+      "path": "native/build/take-filter-215-JvsTcg/acceptance.json",
+      "sha256": "c81f131099f78c0e50e11daa2118276c706f7bf814524a25543b82e63f6e6cf8",
+      "scope": "Ten affected rate/clock/inheritance/source/preset/settings/snapshot/filter/skeletal/spawn regressions; recorder suites retained after UI-only field correction; rational test rerun with strict partial override primitive rejection."
+    },
+    {
+      "path": "native/build/skeletal-take-209-1caR5m/acceptance.json",
+      "sha256": "83158b00bac704058110de50dae05a72bfaab96edf4371e5573518cc184166c3",
+      "scope": "Ten affected rate/clock/inheritance/source/preset/settings/snapshot/filter/skeletal/spawn regressions; recorder suites retained after UI-only field correction; rational test rerun with strict partial override primitive rejection."
+    },
+    {
+      "path": "native/build/spawn-take-211-1OVPgB/acceptance.json",
+      "sha256": "0e0a4a1f6be1e9e93d905ab0378a7ab0d45c76f9769d1c91d27d1d9a7a0026b8",
+      "scope": "Ten affected rate/clock/inheritance/source/preset/settings/snapshot/filter/skeletal/spawn regressions; recorder suites retained after UI-only field correction; rational test rerun with strict partial override primitive rejection."
+    }
+  ],
+  "sourceGameGates": [],
+  "scope": "Installed reduced rational Take capture rates1..240, 30000/1001 and60000/1001 drop-frame labels and strict valid origins with safe BigInt arithmetic, epoch-anchored sampling/skipped interval diagnostics without fabricated poses, separate integer editing grid. Existing game/unscaled/platform clocks and pause/scale behavior retained. Rate/fraction input/blank follows grid, DF control availability/semicolon input, inherited clock-group/UndoRedo/SaveAs and AI partial overrides/state/deep snapshots/portable recordingClock with relative keys. Ten affected regressions plus independent 11-minute nominal-label enumeration and100-second60Hz input2998 samples; final installed actual3D UI rate switching, custom fraction, DF lock/UndoRedo/inheritance/flat save, compiled CPP zero scale and pause comparison, real visible DF readout, active source snapshot isolation and model absence/restore, CPP PlaySeekStop and independent D3D11 baked pose with all four editor-only preset files excluded. Exact source1104/native21/native30tests/vendor2/Player1604/Host1041/renderer hashes; User preserved, Versions1. Rational timeline editing grid, PCM/audio/external/genlock timecode providers and broader cumulative goals remain."
+}
