@@ -1023,6 +1023,37 @@
   ],
   "focusRoutes": [
     {
+      "keywords": [
+        "sequenceAudioGainMarkup",
+        "editSequenceAudioGain"
+      ],
+      "paths": [
+        "prototype/sequence-audio-envelope-editor.js"
+      ]
+    },
+    {
+      "keywords": [
+        "recordTakeAudioGain",
+        "takeAudioGainSlice"
+      ],
+      "paths": [
+        "prototype/take-audio-gain.js"
+      ]
+    },
+    {
+      "keywords": [
+        "sequenceAudioEnvelope",
+        "sequenceAudioGain",
+        "applySequenceAudioEnvelope",
+        "validSequenceAudioEnvelope",
+        "시퀀스 음량",
+        "시퀀스 페이드"
+      ],
+      "paths": [
+        "prototype/sequence-audio-envelope.js"
+      ]
+    },
+    {
       "id": "take-existing-lifetime",
       "keywords": [
         "TakeLifetimeCapture",

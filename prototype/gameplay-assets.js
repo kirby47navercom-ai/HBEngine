@@ -1,3 +1,4 @@
+import {validSequenceAudioEnvelope} from './sequence-audio-envelope.js';
 import {validSequenceClock} from './sequence-clock.js';
 import {validTimelineRate} from './timeline-rate.js';
 import {validTakeClock} from './take-clock.js';
@@ -64,7 +65,7 @@ export function createGameplayAsset(kind,name){
   throw Error('게임플레이 에셋 종류 오류');
 }
 const point=n=>number(n.x,-100000,100000)&&number(n.y,-100000,100000);
-const clipValid=(c,audio=false)=>id(c.id)&&text(c.clip)&&number(c.start,0,86400)&&number(c.duration,.001,86400)&&number(c.sourceStart,0,86400)&&number(c.rate,.001,100)&&text(c.slot,80)&&(c.reverse===undefined||audio&&typeof c.reverse==='boolean');
+const clipValid=(c,audio=false)=>id(c.id)&&text(c.clip)&&number(c.start,0,86400)&&number(c.duration,.001,86400)&&number(c.sourceStart,0,86400)&&number(c.rate,.001,100)&&text(c.slot,80)&&validSequenceAudioEnvelope(c,audio)&&(c.reverse===undefined||audio&&typeof c.reverse==='boolean');
 const keyValue=k=>number(k.time,0,86400)&&(typeof k.value==='boolean'||text(k.value,1000)||number(k.value)||Array.isArray(k.value)&&[3,4].includes(k.value.length)&&k.value.every(v=>number(v)));
 export function validGameplayAsset(kind,data){try{return validateGameplayAsset(kind,data);}catch{return false;}}
 function validateGameplayAsset(kind,data){

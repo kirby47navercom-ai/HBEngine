@@ -2,7 +2,7 @@ export const sequenceKeyLimits={perTrack:65536,defaultTotal:262144,maximumTotal:
 export function validSequenceKeyBudget(data){
   const budget=data.keyBudget??sequenceKeyLimits.defaultTotal;
   if(!Number.isSafeInteger(budget)||budget<1||budget>sequenceKeyLimits.maximumTotal||!Array.isArray(data.tracks)||data.tracks.length>256)return false;
-  let total=0;for(const track of data.tracks){if(!Array.isArray(track?.keys)||track.keys.length>sequenceKeyLimits.perTrack)return false;total+=track.keys.length;if(total>budget)return false;}if(data.sections!==undefined&&!Array.isArray(data.sections))return false;for(const section of data.sections||[]){if(section?.weightCurve===undefined)continue;if(!Array.isArray(section.weightCurve)||section.weightCurve.length>sequenceKeyLimits.perTrack)return false;total+=section.weightCurve.length;if(total>budget)return false;}return true;
+  let total=0;for(const track of data.tracks){if(!Array.isArray(track?.keys)||track.keys.length>sequenceKeyLimits.perTrack)return false;total+=track.keys.length;if(total>budget)return false;for(const clip of track.clips||[]){if(clip.volumeCurve===undefined)continue;if(!Array.isArray(clip.volumeCurve)||clip.volumeCurve.length>sequenceKeyLimits.perTrack)return false;total+=clip.volumeCurve.length;if(total>budget)return false;}}if(data.sections!==undefined&&!Array.isArray(data.sections))return false;for(const section of data.sections||[]){if(section?.weightCurve===undefined)continue;if(!Array.isArray(section.weightCurve)||section.weightCurve.length>sequenceKeyLimits.perTrack)return false;total+=section.weightCurve.length;if(total>budget)return false;}return true;
 }
 // Overview markers are presentation only. All authored indices remain stable.
 export function sequenceOverviewKeyIndices(keys,duration,width=800,selected=-1,range){
@@ -25,7 +25,7 @@ export function sequenceKeyPage(track,selection,offset=0){
 // Stream the old candidate set; avoid flattened arrays proportional to all keys.
 export function nextSequenceKeyTime(data,time,direction){
   let best=time,found=false;const visit=value=>{if(direction>0?value>time+1e-7:value<time-1e-7)if(!found||(direction>0?value<best:value>best)){best=value;found=true;}};
-  visit(0);visit(data.length);for(const track of data.tracks){for(const key of track.keys)visit(key.time);for(const clip of track.clips){visit(clip.start);visit(clip.start+clip.duration);}}for(const section of data.sections||[]){visit(section.start);visit(section.start+section.duration);for(const key of section.weightCurve||[])if(key.time<=section.duration)visit(section.start+key.time);}return best;
+  visit(0);visit(data.length);for(const track of data.tracks){for(const key of track.keys)visit(key.time);for(const clip of track.clips){visit(clip.start);visit(clip.start+clip.duration);if(clip.fadeIn)visit(clip.start+clip.fadeIn);if(clip.fadeOut)visit(clip.start+clip.duration-clip.fadeOut);for(const key of clip.volumeCurve||[])if(key.time<=clip.duration)visit(clip.start+key.time);}}for(const section of data.sections||[]){visit(section.start);visit(section.start+section.duration);for(const key of section.weightCurve||[])if(key.time<=section.duration)visit(section.start+key.time);}return best;
 }
 export function readSequenceKeys(track,{offset=0,limit=100,values=true}={}){
   if(!Number.isSafeInteger(offset)||offset<0||!Number.isSafeInteger(limit)||limit<1||limit>1000||typeof values!=='boolean')throw Error('키 조회 offset 정수0이상·limit1~1000·values boolean을 확인하세요.');
