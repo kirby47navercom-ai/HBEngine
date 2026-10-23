@@ -1196,3 +1196,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1951 수치 보완: 일반설치후보69151e44 UI/CPP/D3D통과후 극단키 (1e-310,1)의 Infinity 반증발견. 유한기울기/지원시간·배율끝연장검증·미세유한간격허용·영향unit9/977재통과. 최종설치는 numericalGuardRevision 7ad316a 반영필수. WORK1949의중간후보근거와구분.
 
 1950–1952: 최종설치 064db2f2f17c89f0 단조속도곡선/hold/반복·원본시점보존trim·UI키/90pxcurve/AI CAS/dryRun/Undo/save·CPP10seek/Stop·독립D3D11 56.60초통과. Infinity거절/미세유한키호환guard7ad316a 설치확인. manifest4525/source1176/native21+SDK/renderer/vendor2/binaries exact·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전199070600B퇴역. USER_INSTALL1951. 역방향/불연속/삼차warp 등 누적잔여유지.
+
+1953–1955 소스: signed역방향/음수floorloop/진행전환·hold·방문이벤트역순/반열림·중첩shot/정확seam중복방지·signedloop trim·UI방향flip·페이지명목방향조회/반환행만clone 구현.7puregate/새10checks950표본+기존9checks977/AIcontext통과. 설치064db2f2 프로세스사용감지로실제창/새CPP/패키징/설치미실행·설치1951유지. 외부player키보드변경2파일은읽기만/미스테이징·후속hash대조필요. WORK1955.
