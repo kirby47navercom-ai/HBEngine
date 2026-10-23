@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "date": "2026-10-23T14:22:56.764Z",
+  "kind": "imported-recorded-bone-canonical-aliases",
+  "implementationRevision": "cfd63ce8d52d4114f049d979a3b7caebec475004",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2062.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "b4205b5b5a5a724e6480ab84a52d505faa09f3cebeff0cb5210a25ad3298b2a0",
+    "docs/SEQUENCE_ANIMATION_MIXING.md": "cc5488e26dce51f489ee04608f08a0af3a6ac2324521e4622c732cfa88967e83",
+    "docs/SEQUENCE_POSE_OWNERSHIP.md": "6c6a9121e9eaa49bc56b1c91530319bc3bf18b23042d24e851e806d22dad5b65",
+    "docs/ai-routes.json": "855f085eaacd44d18c3c1d835da8d1447ebf73a0dcba5f8b7bb0f7ff79aa4218",
+    "prototype/animation-playback-lease.js": "5f3ed5068ce9c2f178b395d3adb38c539b1c4eb9e995820389aed9ec6d7d6bcf",
+    "prototype/engine-services.js": "17ee9e135506d2dd332a2de44fbc16733a5f3ec8263e0c071097fb0da364ba9c",
+    "prototype/gameplay-runtime.js": "7df97a53f506e84f8cc0ca7ed8d0f9aad402a70b00be1fe0829dd12d08cefb99",
+    "prototype/sequence-animation-mixing.js": "33a93465b813dc79ad6695e5bf5a2fcf54f10eb41ada5f296844f23ef4606f4d",
+    "prototype/sequence-animation-transforms.js": "5379d74229289c4160602632b6802338506f81de49baeada63f6bf9db54dc470",
+    "prototype/sequence-channels.js": "39474b5292401f627087689168de3f143db9b615af3ca50071bc8bed83249447",
+    "prototype/sequence-pose-ownership.js": "f12b64271e56d7ff4ddc702a6dc30be2d175efb69489c7a5165a4ad60f12b007",
+    "prototype/sequence-pose-playback.js": "35fc7e489f4d3af104021a91795a7c86f414f5f3d0e1c79b68e462aa829c4e29",
+    "prototype/sequence-skeletal-channels.js": "b501cfd6648c0887a03a8558b509e74b84d9ee19fd6bea65d07d1920142b86a9",
+    "docs/SEQUENCE_IMPORTED_POSE_ALIASES.md": "ad396ec4987ba3e9b2327c8b74df71b1463c2290d42227f91250e6befee9bf8c",
+    "prototype/sequence-imported-pose.js": "5fb2a209d7745afca15f7c7ec23509233ff2ba7a4618803e9cbe2279ce8c7d6a",
+    "tools/check-sequence-imported-pose-2065.mjs": "462e3d4eecd5b862e0f449385a080f44f7da18436ca21db7dcefd5aaf08e8545",
+    "tools/check-sequence-imported-pose-2068-window.mjs": "44fbe3126944e5e7084a8a40fbd40ae9f17138ebed9ba8b8a52cd2bd08e8dc4a",
+    "tools/sequence-imported-pose-exercise-2068.mjs": "ba7efbe08a38415a7c1e766bcb206414f13613d3d37a760c4180f9bae0ed1f14",
+    "tools/sequence-imported-pose-fixture-2068.mjs": "09e2286915f3ed8ab178851353ebf3e30057ae989c79aa68a07d253d595f838f"
+  },
+  "targetIds": [
+    "ANM-06"
+  ],
+  "checks": [
+    {
+      "name": "check-sequence-transform-alias-2050",
+      "passed": true,
+      "exit": 0,
+      "ms": 1019.1207999999999,
+      "log": "native/build/group2071-check-sequence-transform-alias-2050.log",
+      "sha256": "ce8d3ed765dc1556f682ea0170f2ce82a27e2c868c6be05ea6bb7a529c0a568a"
+    },
+    {
+      "name": "check-sequence-pose-blending-1970",
+      "passed": true,
+      "exit": 0,
+      "ms": 243.85800000000017,
+      "log": "native/build/group2071-check-sequence-pose-blending-1970.log",
+      "sha256": "0081394badb8fb66c6f3a3adbe5b698da78c10e13d5f8107090a6e3b4926ae47"
+    },
+    {
+      "name": "check-sequence-animation-mixing-2036",
+      "passed": true,
+      "exit": 0,
+      "ms": 979.5557000000001,
+      "log": "native/build/group2071-check-sequence-animation-mixing-2036.log",
+      "sha256": "ad08439fe740c8e49e4efab0eeaa0dd412f8c1f98d2850e5d585b6d271a4b124"
+    },
+    {
+      "name": "check-animation-playback-1795",
+      "passed": true,
+      "exit": 0,
+      "ms": 968.5059000000001,
+      "log": "native/build/group2071-check-animation-playback-1795.log",
+      "sha256": "598d3b7b773ed8ac06c1587bbeb3f5015b204924de9c3b237d534fe475ef0452"
+    },
+    {
+      "name": "check-sequence-completion-271",
+      "passed": true,
+      "exit": 0,
+      "ms": 222.48579999999993,
+      "log": "native/build/group2071-check-sequence-completion-271.log",
+      "sha256": "0084abcaac3bab8c0b3aa9b602ceefad0cd20718bcdc9bca43bf1896cd156afa"
+    },
+    {
+      "name": "check-playback-leases-1865",
+      "passed": true,
+      "exit": 0,
+      "ms": 963.3110000000001,
+      "log": "native/build/group2071-check-playback-leases-1865.log",
+      "sha256": "1a9f6d7ab1c9715228f82e2ca4f78b0a79505d1e18188d1c2dd5ecc384853742"
+    },
+    {
+      "name": "check-ai-context",
+      "passed": true,
+      "exit": 0,
+      "ms": 2205.0039999999995,
+      "log": "native/build/group2071-check-ai-context.log",
+      "sha256": "eade367056a43b811dbb64d1beb14817c0e178947607c882562166ccb947a0f5"
+    },
+    {
+      "name": "check-sequence-pose-ownership-1925",
+      "passed": true,
+      "report": "native/build/sequence-pose-ownership-1925-5csWCJ/acceptance.json",
+      "sha256": "65a317c5f5960c01c67b6ce39981c093c376176f101c0f0a255dc7299b9096b4",
+      "cases": 10
+    },
+    {
+      "name": "check-sequence-imported-pose-2065",
+      "passed": true,
+      "report": "native/build/sequence-imported-pose-2065-zKtsli/acceptance.json",
+      "sha256": "2d3db658216a42280ba6bbe84aa52fbbc0500d68ec8a61422ed042ded05e21be",
+      "cases": 15
+    }
+  ],
+  "sourceWindow": {
+    "report": "native/build/sequence-imported-pose-2068-window-vARWT1/acceptance.json",
+    "sha256": "e5e78d0e003cbeecb59792fe46d35ef6ab2cf26b4bc7ce341874ddfc3984a589",
+    "observations": 19,
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "checks": {
+      "humanPoseWeight": true,
+      "undoRedoSave": true,
+      "aiPatchDryRunStaleUndo": true,
+      "actualImportedGltfAndRecordedSkeletalPose": true,
+      "cppControlsAndBoneTRSGetters": true
+    },
+    "visuallyInspected": "recorded-pose-weight-controls.png editor layout; native render proof deferred to installed game",
+    "finalInstalledGamePending": true
+  },
+  "focusedContext": {
+    "report": "native/build/context2071.json",
+    "sha256": "f495ad7c4dca4927222e1ad26ea8ea3238a377f4f1b1fc563b1a520beeff45eb",
+    "symbol": "ImportedSequencePoseProgram",
+    "filesRead": 1
+  },
+  "nativeReuse": {
+    "sourceBase": "docs/research/ENGINE_WORK_1955.json",
+    "owners": 21,
+    "reason": "No native source/vendor/binary changes; install must verify exact admitted source and binary hashes. No repeated full SDK/renderer execution."
+  },
+  "failedExperiments": {
+    "countedAsAchievements": false,
+    "corrected": [
+      "undefined external-source guard",
+      "override imported bone immediate publication",
+      "new external player reacquired on later tick",
+      "Float32 interpolant result rounding differs from THREE action Float64",
+      "pure recorded override extra matrix sampling; preserved original deferred frame path"
+    ]
+  },
+  "scope": "Managed imported full bone position/quaternion/scale and recorded skeletalPose share per-bone ownership, normalized quaternion/TRS weights, priority/order, clip gaps, zero/reactivation and completion. Importer interpolants (GLTF cubic/discrete) and original typed arrays shared; Float64 sample results preserve THREE action precision. Filter only canonical bone tracks from controlled raw mixer; preserve non-bone paths. Sparse ordinary-mixer underlying presentation and unchanged sample handling, same-name identity guard, held pose and existing graph/montage/fade/finite-loop restoration.15 new cases including256-bone/two-clock bounded matrix submissions,8 affected gates, actual source human pose-weight/Undo/save/AI CAS and C++19 TRS observations passed. No root/object/renderer/indexed bone alias, FPS/device/full-engine claim.",
+  "remaining": [
+    "imported root/object and renderer aliases",
+    "indexed bone-property aliases",
+    "arbitrary external action/setter/notify rollback",
+    "ANM/CPP/RND remaining ledger owners"
+  ]
+}
