@@ -10,6 +10,8 @@ WORK1949. section.timeWarp 선택2..256단조선형키/첫0,0·구간별가변�
 
 직전USER_INSTALL1945/74c9f5ea450f1e2b·manifest4518/source1171·User10849보존·Versions1/cache32/lease0.1946 기존2D/3D lifetime시각복제/템플릿/reduction/binaryseek/원본visibilitylease·24반복128복사정리·현재문서숨긴pane재선택복원.1933 외부constant/linear부분bake·constanttail큰tangent0·toolview보존.1927 골격뼈별lease/identity/poseWeight·1024sample/matrix1.1921 typecatalog/picker/CAS/imports.1915전이default이관. 끝난검사반복금지·marker/context.state.installation우선.
 
+1951: 일반설치후보69151e44930c50cb UI/CPP/D3D통과뒤 [(0,0),(1e-310,1)] sample(1)=Infinity 반증확인. 유한구간기울기/86400초·rate100끝연장검증추가·미세유한간격허용·영향unit9/977재통과. numericalGuardRevision 7ad316a 포함최종설치필수·691후보를최종완료로세지않음.
+
 ## 다음
 
 ANM06역방향/불연속/삼차warp(단조선형속도/hold/trim1949구현)·정규화mixer/별칭·채널독립time/interpolation/topology·주기보존외부부분bake·원본simulation/변수수명rollback·외부device/pull/PCM/genlock·시간상속·notify rollback·rig/영상/가상화/고급attachment. CPP01일반CPP헤더/registry·파괴적스키마이관·Name/alias/ref/wildcard·동일callback Destroy+명시ID교체세대관리(Spawn.hpp:24거절;삭제commit후동작). RND08globalDFclipmap/bentnormal/방향하늘/높이장/변형체/무화면FBX/미로드LOD/방향lightmap/volume/HWRT. UI03실기기/asyncsetterrollback. RND06 GL초기1728ANGLE nxXJ7S6878.6ms/D3DCompile6836.439·emcanL6492단발미채택. GL_COMPILER_TRACE/1302–1307/normalmerge783/SSA1086실패반복금지.

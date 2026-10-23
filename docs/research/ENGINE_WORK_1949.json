@@ -1168,7 +1168,7 @@
     "prototype/sequence-skeletal-channels.js": "322e11826b27263bb7f63434ca2b5cfd06b7f9eeb2a2498df01190a8149d6e84",
     "tools/check-sequence-pose-ownership-1925.mjs": "489ec652202eea4e4c6467c32dfb80c3bb00279728e237047fa6dd75cba8fed2",
     "tools/check-sequence-pose-ownership-1926-window.mjs": "bec28f70967920b3058bc4c3db65dac8136e44cf8366610eab6246ea2f1dffbf",
-    "DEBUG_HANDOFF.md": "890bbf525202da8f4509cbe0b88924f8efbfe6c6579adb60e9fa4058ddf7a6dc",
+    "DEBUG_HANDOFF.md": "51e796566e7981f2795cc4be498af8825a0e90389c8aab1e88229a7aeb5cad3b",
     "docs/CURVE_BAKE_DOMAIN.md": "634ad75ab4b25e4ce342a0b5cdd9ac884d4bfab206f024693e21a23f08903040",
     "prototype/curve-bake-domain.js": "bff813afe08fb9516d09819db070fe9548094cbf15168be6309fe7d0ce1bd0ed",
     "tools/check-curve-domain-1931.mjs": "8466c6f1003f797b88338ee69efcb85012ab7a8cdca995b68988a5976e359a28",
@@ -1179,10 +1179,10 @@
     "prototype/take-lifetime.js": "bb6b967bd98de19fd4959cd3a0978bec7d55f81d07b032277c6104c2da249eb0",
     "tools/check-take-lifetime-1937.mjs": "cdb095f9a0ce2dfdf83f41abe745caa7bc5fe4320489cbb76768a8276eaf9c08",
     "tools/check-take-lifetime-1938-window.mjs": "7b96ed6aff2efb16a2f888c3d86e1fb2e16a927519c33cd7084acac26b390e4d",
-    "docs/SEQUENCE_TIME_WARP.md": "f805acca2e387c6dc659b180704af5a8ee19d742d3a4af7847fdb041a5d1b866",
+    "docs/SEQUENCE_TIME_WARP.md": "f4edf7280ad362ceb58648c541d9312cb52e17f01a2bfac3abc3c517df0feec0",
     "prototype/sequence-time-warp-editor.js": "03e600625cf84f676de517ddd68a2216eb0b2c3e23bf9781cb139b5b4003e7b1",
-    "prototype/sequence-time-warp.js": "26bd1117a8db828fcf8b72194655d25333269e9285bb602950e4b9c95d83ccbf",
-    "tools/check-sequence-time-warp-1947.mjs": "76756d7744b7ae4879d7606c45ca91e711e8a14a0f6152ba5fbb9d618fc0ddfb",
+    "prototype/sequence-time-warp.js": "213ee7f9cae0a5409601a5cb94e7b0f240ae962403c060d8266016675b791c74",
+    "tools/check-sequence-time-warp-1947.mjs": "2cead4b83a6d633f22d9b663ab0feba909623c52a7d7422b44ac373cdf4b3258",
     "tools/check-sequence-time-warp-1948-window.mjs": "6cc67da9666737df4d418c9f4eb177a375c09cfce854e73a9deefe063324b2e8"
   },
   "testSourceHashes": {
@@ -1268,6 +1268,12 @@
       "path": "native/build/sequence-time-warp-1948-window-zHXhH7/acceptance.json",
       "sha256": "566b2ec8215a7e1c0ac5265a7d90bab80528f4db89e2dac9ccc8227202734e92",
       "scope": "Owned hidden actual editor time-warp controls, invalid edits/Undo/save, shared AI source-preserving trim/dryRun/CAS, visible held child preview and10 actual CPP LevelSequence seeks through speed/hold/loop/backward seek/restore; optional independent D3D11 repeats same CPP samples. No reverse curves, FPS or devices claimed."
+    },
+    {
+      "path": "native/build/sequence-time-warp-1947-O93NBW/acceptance.json",
+      "sha256": "20cbc6cff25f96851bdedc450bcf94373182da368acd3df4fcf904e703de81d8",
+      "scope": "Monotone piecewise-linear subsection time warp with speed changes/holds/loop/clamp; binary point sampling, source-preserving front trim, optional schema and atomic UI/AI editing; actual shared2D/3D VM seek/tick event and restore paths. No reverse/cubic warp, renderer matrix or FPS claim.",
+      "note": "Additional extreme finite-key slope/exterior overflow rejection and tiny-but-finite interval compatibility; only affected numeric gate rerun."
     }
   ],
   "sourceGameGates": [
@@ -1529,13 +1535,37 @@
     {
       "test": "1948",
       "reason": "Properties panel required scrolling before hit-test. Then actual capture exposed icon SVG sizing applied to curve; dedicated90px curve and compact remove-button CSS added with actual bounds assertion. Four unchanged pure regression results reused; affected GUI rechecked only."
+    },
+    {
+      "test": "1951",
+      "reason": "General UI/CPP/D3D gates passed; subsequent numerical counterexample exposed missing finite-slope/exterior admission. Final installation must include numericalGuardRevision."
     }
   ],
   "installationPending": true,
-  "scope": "Optional monotone piecewise-linear subsection time maps: variable speed, held intervals, endpoint slope extension and existing source offset/rate plus loop/clamp. Binary source-time sampling, crossed warp/shot/loop event ranges without held-event refiring, nested composition and existing priority/restore. Source-preserving front trim/rebase, negative source-offset rejection and legacy affine compatibility. Human key controls/90px curve/Undo/save and shared revisioned AI edits/dryRun/CAS/trim/null removal. Five affected pure gates including9checks/977observations and actual UI/CPP10-seek editor gate passed. Exact installed editor/standalone D3D gate pending. Reverse/discontinuous/cubic time maps and normalized competing-layer blending remain outside this implementation.",
+  "scope": "Optional monotone piecewise-linear subsection time maps: variable speed, held intervals, endpoint slope extension and existing source offset/rate plus loop/clamp. Binary source-time sampling, crossed warp/shot/loop event ranges without held-event refiring, nested composition and existing priority/restore. Source-preserving front trim/rebase, negative source-offset rejection and legacy affine compatibility. Human key controls/90px curve/Undo/save and shared revisioned AI edits/dryRun/CAS/trim/null removal. Five affected pure gates including9checks/977observations and actual UI/CPP10-seek editor gate passed. Exact installed editor/standalone D3D gate pending. Reverse/discontinuous/cubic time maps and normalized competing-layer blending remain outside this implementation. Finite segment slopes and supported86400-second/rate100 endpoint extrapolations now validate before publication; pathological near-coincident keys that produce Infinity reject while tiny finite-slope keys remain supported. Intermediate69151e44 general-flow gate is not final numerical completion.",
   "currentInstallation": null,
   "installedGates": [],
   "priorImplementationRevision": "0196d3558977de0213170bd96784ce62c8dc2b0d",
   "documentPaneRevision": "20a72c3d4702c3bcc59eed10a1e66b82752b3ef4",
-  "priorInstallation": "docs/research/USER_INSTALL_1945.json"
+  "priorInstallation": "docs/research/USER_INSTALL_1945.json",
+  "numericalGuardRevision": "7ad316a5449d39ceb2efe9079ef7aa2d2bf78eba",
+  "intermediateCandidate": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\69151e44930c50cb",
+    "bundleHash": "69151e44930c50cb33728ff220ee903c4371ef6774273abd396e430c51b13e06",
+    "installedGates": [
+      {
+        "path": "native/build/sequence-time-warp-1948-window-V6zQ4x/acceptance.json",
+        "sha256": "eefbf60f7c62a66a1a49be31b06a2a21e7cfade8e0433e38a81856feb23b7748",
+        "scope": "Owned hidden actual editor time-warp controls, invalid edits/Undo/save, shared AI source-preserving trim/dryRun/CAS, visible held child preview and10 actual CPP LevelSequence seeks through speed/hold/loop/backward seek/restore; optional independent D3D11 repeats same CPP samples. No reverse curves, FPS or devices claimed.",
+        "args": [
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\69151e44930c50cb\\HBEngine.exe",
+          "--package"
+        ],
+        "ms": 83402.0272
+      }
+    ],
+    "final": false,
+    "reason": "General UI/CPP/D3D gates passed; subsequent numerical counterexample exposed missing finite-slope/exterior admission. Final installation must include numericalGuardRevision."
+  }
 }
