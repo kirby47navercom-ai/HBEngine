@@ -2,11 +2,11 @@
 
 2026-10-23. 주인님/짚짱/존댓말. 백그라운드·여러세부구현→영향검사묶음→설치. 전체UE/Unity분석/엔진완성주장금지. ENGINE_STATUS78행/분모·완료율null. goal blocked여도승인구현계속/새goal·반복질문금지.
 
-## 1925–1927 소스 확정·설치 대기
+## 확정1930
 
-WORK1927. 골격포즈 skeletalPose:<bone>채널·뼈별우선순위/최신하위샘플재개/키layout누락·빈구간양보. 실제쓴Bone객체identity기준weak복원·동명이름교체에이전TRS금지·새로샘플한교체뼈는자기쓰기전pose복원·미제어/다른actor불변. 이름/조상parent/owner표식검증. poseWeight선택0..1(default1):공유preanimated→트랙localTRS/shortestQ·누적혼합없음·0lease양보. 실제UI/UndoRedo/save/AI patch공용검증. runtime.sequencePose controlledBoneCount+페이지내controlledBones/schema계약·기존CPP LevelSequence/Skeleton공용. 1024뼈채널도동일트랙바인딩1/sample1/matrix1·정지같은대상복원순회/행렬1. SequenceChannels개별write에도batch전달/keep batch복원제외. normalized경쟁layer/Animation alias/임의notify·asyncsetter rollback별도.
+source3005516/WORK1927/USER_INSTALL1929. Versions/60f2c41b27484ca5·manifest4504/source1160·native21/SDK/renderer/vendor2/HostPlayer exact불변·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전198251944B퇴역. 설치UI/CPP/별도D3D11 92.13초통과. 골격포즈 skeletalPose:<bone>채널·뼈별우선순위/최신하위샘플재개/키layout누락·빈구간양보. 실제쓴Bone객체identity기준weak복원·동명이름교체에이전TRS금지·새로샘플한교체뼈는자기쓰기전pose복원·미제어/다른actor불변. 이름/조상parent/owner표식검증. poseWeight선택0..1(default1):공유preanimated→트랙localTRS/shortestQ·누적혼합없음·0lease양보. 실제UI/UndoRedo/save/AI patch공용검증. runtime.sequencePose controlledBoneCount+페이지내controlledBones/schema계약·기존CPP LevelSequence/Skeleton공용. 1024뼈채널도동일트랙바인딩1/sample1/matrix1·정지같은대상복원순회/행렬1. SequenceChannels개별write에도batch전달/keep batch복원제외. normalized경쟁layer/Animation alias/임의notify·asyncsetter rollback별도.
 
-5영향gate(1925/1806/209/271/실제1926window)와AIcontext통과. 실제UI가중치편집·Undo/Redo/save·invalidAI patch revision불변·freshCPP 8모델/빈구간/되감기와동시partial/priority재생. native21/SDK/renderer/Host1041/Player1604/vendor2 exact불변재사용·새전체SDK실행주장금지. 최종설치editor/독립D3D gate대기. 직전USER_INSTALL1923/415eb67c57007e0c·4497files/source1155/User10849읽기보존·Versions1/cache32/lease0.
+5영향gate(1925/1806/209/271/실제1926window)와AIcontext통과. 실제UI가중치편집·Undo/Redo/save·invalidAI patch revision불변·freshCPP 8모델/빈구간/되감기와동시partial/priority재생. native21/SDK/renderer/Host1041/Player1604/vendor2 exact불변재사용·새전체SDK실행주장금지. 최종설치editor/독립D3D11/가중치hit-test도통과. 직전USER_INSTALL1923퇴역.
 
 1919–1921프로젝트타입catalog/picker·source/targetCAS·명시imports/oneUndo·CPP/BP실행,1915전이타입추가/default소비자원자이관·noChange save dirty수정. curve1909수직signedY/단조4/3/정확부분bake·external1903pushclock5CPP. 과거완료검사반복금지·marker/context.state.installation우선.
 

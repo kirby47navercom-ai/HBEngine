@@ -1247,6 +1247,33 @@
       "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-pose-ownership-1926-window-ymN1DI/acceptance.json",
       "sha256": "6fa558dfa915875b6f1e365f65c1998545efe43f1b89a85ed4aef7aab08d982b",
       "scope": "Actual poseWeight editor/UndoRedo/save/invalid AI patch guard, fresh user C++ LevelSequence and Skeleton getters through8 original/alternate/empty/backward model changes and simultaneous partial weighted/disjoint/priority directors; empty gaps yield all sampled bones; optional standalone D3D11 repeats exact production flow. Identity replacement and untouched-bone numeric oracles are in1925 unit. No normalized competing-layer mix or FPS/heap/mobile claim."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-component-326-YSu4MY/acceptance.json",
+      "sha256": "90334e20466fd220e4249cc9c6c93e18e1e883c45cb1a3676b2238780abef174",
+      "scope": "Additional narrow pure regressions for generic SequenceChannels batch adapter/keep policy: component/property aliases, shared baseline ownership, priority resume.",
+      "testSource": {
+        "path": "tools/check-sequence-component-326.mjs",
+        "sha256": "da93392e0d837f2893dfb59d5efff2d1f2c259e9983e738666d5661d31c684bb"
+      }
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-ownership-268-DAJgHb/acceptance.json",
+      "sha256": "63893a1a939f943c5b94d938acefe7e2b85947330a37d4623f6614cb2647d5d5",
+      "scope": "Additional narrow pure regressions for generic SequenceChannels batch adapter/keep policy: component/property aliases, shared baseline ownership, priority resume.",
+      "testSource": {
+        "path": "tools/check-sequence-ownership-268.mjs",
+        "sha256": "ed1150f8817e4d209c5a7e2e276bda4ad0f05e51a3af35d2afdbaa770ebe54e6"
+      }
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-priority-272-VAiS3B/acceptance.json",
+      "sha256": "09df8cd16bfc1d0966d17756de24970ff2e8dc5a765d4ccbd025ae442a1a69a3",
+      "scope": "Additional narrow pure regressions for generic SequenceChannels batch adapter/keep policy: component/property aliases, shared baseline ownership, priority resume.",
+      "testSource": {
+        "path": "tools/check-sequence-priority-272.mjs",
+        "sha256": "6469681c3d042d1a160a64ca9ae4e8035cdf2ce5c93fbe82dbc597b94f8c5c7b"
+      }
     }
   ],
   "sourceGameGates": [
@@ -1254,7 +1281,7 @@
       "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-pose-ownership-1926-window-ymN1DI/acceptance.json",
       "sha256": "6fa558dfa915875b6f1e365f65c1998545efe43f1b89a85ed4aef7aab08d982b",
       "scope": "Actual poseWeight editor/UndoRedo/save/invalid AI patch guard, fresh user C++ LevelSequence and Skeleton getters through8 original/alternate/empty/backward model changes and simultaneous partial weighted/disjoint/priority directors; empty gaps yield all sampled bones; optional standalone D3D11 repeats exact production flow. Identity replacement and untouched-bone numeric oracles are in1925 unit. No normalized competing-layer mix or FPS/heap/mobile claim.",
-      "note": "Final source runtime/UI gate; later edits only docs/focus/handoff. Exact installed and independent D3D gate required."
+      "note": "Production sources unchanged after source gate. The final installed gate additionally asserts hit-tested weight field visibility and repeats actual editor/CPP and standalone D3D11 playback."
     }
   ],
   "sourceCheckpoint": {
@@ -1500,8 +1527,20 @@
       "reason": "First unit invocation passed the wrong arity to existing validGameplayAsset(kind,data); corrected the test call, no engine workaround. All earlier numeric ownership/weight/identity/1024 checks had passed."
     }
   ],
-  "installationPending": true,
-  "scope": "Per-bone skeletal sequence leases and identity-safe weak preanimated restoration, layout gaps and owner-specific completion, shared poseWeight0..1 baseline/TRS/quaternion blend, actual editor UndoRedo/save and AI validation/query contract. Same-track bone leases share prepared binding/sample and batched restoration matrices;1024-bone work counts verified. Fresh user CPP LevelSequence/Skeleton probes cover repeated model replacement/empty/backward layout changes and disjoint/overlapping weighted sequences. Five affected gates plus AI routing passed. Exact installed editor/standalone D3D gate pending. Normalized competing-layer mix, Animation/Transform aliases and arbitrary external side-effect rollback remain.",
-  "currentInstallation": null,
-  "installedGates": []
+  "installationPending": false,
+  "scope": "Per-bone skeletal sequence leases and identity-safe weak preanimated restoration, layout gaps and owner-specific completion, shared poseWeight0..1 baseline/TRS/quaternion blend, actual editor UndoRedo/save and AI validation/query contract. Same-track bone leases share prepared binding/sample and batched restoration matrices;1024-bone work counts verified. Fresh user CPP LevelSequence/Skeleton probes cover repeated model replacement/empty/backward layout changes and disjoint/overlapping weighted sequences. Five primary affected gates, three narrow channel regressions and AI routing passed. Exact installed editor/standalone D3D11 gate passed, including hit-tested weight UI visibility. Normalized competing-layer mix, Animation/Transform aliases and arbitrary external side-effect rollback remain.",
+  "currentInstallation": "docs/research/USER_INSTALL_1929.json",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-pose-ownership-1926-window-PB0yLO/acceptance.json",
+      "sha256": "978232721a53007bf02d15400e04c8ff14a581fbfe68afa7ff8b386a8b39ca9d",
+      "scope": "Actual poseWeight editor/UndoRedo/save/invalid AI patch guard, fresh user C++ LevelSequence and Skeleton getters through8 original/alternate/empty/backward model changes and simultaneous partial weighted/disjoint/priority directors; empty gaps yield all sampled bones; optional standalone D3D11 repeats exact production flow. Identity replacement and untouched-bone numeric oracles are in1925 unit. No normalized competing-layer mix or FPS/heap/mobile claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\60f2c41b27484ca5\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 92128.1086
+    }
+  ]
 }

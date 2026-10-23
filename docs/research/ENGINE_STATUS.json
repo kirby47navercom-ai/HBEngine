@@ -1942,7 +1942,8 @@
         "docs/research/ENGINE_WORK_1909.json",
         "docs/research/USER_INSTALL_1911.json",
         "docs/SEQUENCE_POSE_OWNERSHIP.md",
-        "docs/research/ENGINE_WORK_1927.json"
+        "docs/research/ENGINE_WORK_1927.json",
+        "docs/research/USER_INSTALL_1929.json"
       ]
     },
     {
@@ -2670,7 +2671,8 @@
         "docs/research/ENGINE_WORK_1921.json",
         "docs/research/USER_INSTALL_1923.json",
         "docs/SEQUENCE_POSE_OWNERSHIP.md",
-        "docs/research/ENGINE_WORK_1927.json"
+        "docs/research/ENGINE_WORK_1927.json",
+        "docs/research/USER_INSTALL_1929.json"
       ]
     },
     {
@@ -3789,14 +3791,14 @@
     "first": 1925,
     "last": 1927,
     "receipt": "docs/research/ENGINE_WORK_1927.json",
-    "scope": "Per-bone skeletal sequence leases and identity-safe weak preanimated restoration, layout gaps and owner-specific completion, shared poseWeight0..1 baseline/TRS/quaternion blend, actual editor UndoRedo/save and AI validation/query contract. Same-track bone leases share prepared binding/sample and batched restoration matrices;1024-bone work counts verified. Fresh user CPP LevelSequence/Skeleton probes cover repeated model replacement/empty/backward layout changes and disjoint/overlapping weighted sequences. Five affected gates plus AI routing passed. Exact installed editor/standalone D3D gate pending. Normalized competing-layer mix, Animation/Transform aliases and arbitrary external side-effect rollback remain."
+    "scope": "Per-bone skeletal sequence leases and identity-safe weak preanimated restoration, layout gaps and owner-specific completion, shared poseWeight0..1 baseline/TRS/quaternion blend, actual editor UndoRedo/save and AI validation/query contract. Same-track bone leases share prepared binding/sample and batched restoration matrices;1024-bone work counts verified. Fresh user CPP LevelSequence/Skeleton probes cover repeated model replacement/empty/backward layout changes and disjoint/overlapping weighted sequences. Five primary affected gates, three narrow channel regressions and AI routing passed. Exact installed editor/standalone D3D11 gate passed, including hit-tested weight UI visibility. Normalized competing-layer mix, Animation/Transform aliases and arbitrary external side-effect rollback remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1923.json",
-    "sourceCommit": "03f2f9f1278c62e9b111381feb1cb7affd99ac75",
-    "bundleHash": "415eb67c57007e0c525c1bef65042c2f50174c48ab939de06c7a394b0ddfd222",
+    "receipt": "docs/research/USER_INSTALL_1929.json",
+    "sourceCommit": "6f63263ccb6b1503b8ccf9b84f780d540dbb0270",
+    "bundleHash": "60f2c41b27484ca55358be5cc58ccbf83453f156d19cccaed60d923709706be8",
     "verified": true,
     "versions": 1,
-    "scope": "On-demand project type-asset discovery and paged filename/declaration summaries, without scanning all bodies or compiling C++ to browse. New-variable dialog, existing BP variable and unsaved struct-field picker automatically author required imports/type and defaults in one UndoRedo. Shared project.types.read/apply, sourceRevision plus target expectedRevision, dryRun and same-type value preservation/noChange; stale or unsaved selected sources, unsupported owners and saved field ABI changes reject before mutation. Saved catalog-authored records join additive dependency/consumer migration and shared pure BP/compiled CPP Actor flow. Six affected gates and source actual UI/CPP passed; exact installed editor and standalone D3D11 passed. Type-asset discovery only, general header discovery/runtime registry/destructive migration remain."
+    "scope": "Per-bone skeletal sequence leases and identity-safe weak preanimated restoration, layout gaps and owner-specific completion, shared poseWeight0..1 baseline/TRS/quaternion blend, actual editor UndoRedo/save and AI validation/query contract. Same-track bone leases share prepared binding/sample and batched restoration matrices;1024-bone work counts verified. Fresh user CPP LevelSequence/Skeleton probes cover repeated model replacement/empty/backward layout changes and disjoint/overlapping weighted sequences. Five primary affected gates, three narrow channel regressions and AI routing passed. Exact installed editor/standalone D3D11 gate passed, including hit-tested weight UI visibility. Normalized competing-layer mix, Animation/Transform aliases and arbitrary external side-effect rollback remain."
   }
 }
