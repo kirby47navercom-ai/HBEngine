@@ -84,7 +84,7 @@ export class AudioRouting {
   async endCapture(){if(!this.capture)throw Error('녹음 중인 게임 믹스가 없어요.');return this.capture.stop();}
   acceptCapture(){this.capture?.discard();this.capture=null;}
   captureState(){return this.capture?.inspect()||{state:'idle',pcmBytes:0};}
-  async player(url,settings={}){const context=await this.ensure();const player=await createAudioPlayer(context,url,{buffered:settings.streaming!==true&&(settings.virtualize!==false||['ios','android'].includes(globalThis.hbMobileTarget)),createStream:url=>this.stream(url,context,{virtualize:settings.streaming===true&&settings.virtualize!==false}),readBuffer:async url=>{
+  async player(url,settings={}){const context=await this.ensure();const player=await createAudioPlayer(context,url,{buffered:settings.sequencePCM===true||settings.streaming!==true&&(settings.virtualize!==false||['ios','android'].includes(globalThis.hbMobileTarget)),createStream:url=>this.stream(url,context,{virtualize:settings.streaming===true&&settings.virtualize!==false}),readBuffer:async url=>{
     if(this.buffers.has(url)){const cached=this.buffers.get(url);this.buffers.delete(url);this.buffers.set(url,cached);return cached.buffer;}
     if(!this.bufferLoads.has(url)){const pending=(async()=>{const response=await fetch(url);if(!response.ok)throw Error('오디오 파일 요청 실패: '+response.status);const buffer=await context.decodeAudioData(await response.arrayBuffer());if(this.disposed)throw Error('오디오 실행이 종료됐어요.');const bytes=buffer.length*buffer.numberOfChannels*4;
       // ponytail: 32 MiB retained PCM cache; active voices/decoding can own evicted buffers.

@@ -2771,6 +2771,41 @@
       "paths": [
         "prototype/sequence-time-warp.js"
       ]
+    },
+    {
+      "keywords": [
+        "sampleSequenceAudio",
+        "sequenceAudioContract",
+        "시퀀스 오디오",
+        "sequenceAudio"
+      ],
+      "paths": [
+        "prototype/sequence-audio.js"
+      ]
+    },
+    {
+      "keywords": [
+        "reverseAudioBuffer"
+      ],
+      "paths": [
+        "prototype/buffered-audio.js"
+      ]
+    },
+    {
+      "keywords": [
+        "sectionMappedRate"
+      ],
+      "paths": [
+        "prototype/sequence-time-warp.js"
+      ]
+    },
+    {
+      "keywords": [
+        "sampleAudio"
+      ],
+      "paths": [
+        "prototype/engine-services.js"
+      ]
     }
   ]
 }
