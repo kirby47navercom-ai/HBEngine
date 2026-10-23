@@ -1960,7 +1960,8 @@
         "docs/research/USER_INSTALL_1941.json",
         "docs/research/USER_INSTALL_1945.json",
         "docs/SEQUENCE_TIME_WARP.md",
-        "docs/research/ENGINE_WORK_1949.json"
+        "docs/research/ENGINE_WORK_1949.json",
+        "docs/research/USER_INSTALL_1951.json"
       ]
     },
     {
@@ -2704,7 +2705,8 @@
         "docs/research/USER_INSTALL_1941.json",
         "docs/research/USER_INSTALL_1945.json",
         "docs/SEQUENCE_TIME_WARP.md",
-        "docs/research/ENGINE_WORK_1949.json"
+        "docs/research/ENGINE_WORK_1949.json",
+        "docs/research/USER_INSTALL_1951.json"
       ]
     },
     {
@@ -3821,16 +3823,16 @@
   ],
   "latestBatch": {
     "first": 1947,
-    "last": 1949,
+    "last": 1952,
     "receipt": "docs/research/ENGINE_WORK_1949.json",
-    "scope": "Optional monotone piecewise-linear subsection time maps: variable speed, held intervals, endpoint slope extension and existing source offset/rate plus loop/clamp. Binary source-time sampling, crossed warp/shot/loop event ranges without held-event refiring, nested composition and existing priority/restore. Source-preserving front trim/rebase, negative source-offset rejection and legacy affine compatibility. Human key controls/90px curve/Undo/save and shared revisioned AI edits/dryRun/CAS/trim/null removal. Five affected pure gates including9checks/977observations and actual UI/CPP10-seek editor gate passed. Exact installed editor/standalone D3D gate pending. Reverse/discontinuous/cubic time maps and normalized competing-layer blending remain outside this implementation. Finite segment slopes and supported86400-second/rate100 endpoint extrapolations now validate before publication; pathological near-coincident keys that produce Infinity reject while tiny finite-slope keys remain supported. Intermediate69151e44 general-flow gate is not final numerical completion."
+    "scope": "Optional monotone piecewise-linear subsection time maps provide variable speed, holds, endpoint slope extension and existing source offset/rate plus loop/clamp. Finite slopes and supported86400-second/rate100 exterior admission reject Infinity-producing keys while retaining tiny finite-slope intervals. Binary point sampling and crossed warp/shot/loop event ranges suppress hold refiring; nested maps compose with existing priority/restore. Source-preserving front trim/rebase and negative offset rejection share human key controls/90px curve/Undo/save and revisioned AI dryRun/CAS/trim/null removal. Five affected pure gates including9checks/977observations and actual source UI/CPP10-seek gate passed; only affected numeric/GUI gates repeated after diagnosed fixture/UI/numeric corrections. Final installed editor and independent D3D11 game pass visible held preview and10 actual CPP seeks with source restore, plus installed numerical guard. Native SDK/renderer/binaries are exact hash reuse, not fresh full SDK execution. Reverse/discontinuous/cubic maps and normalized competing-layer blending remain separate gaps."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1945.json",
-    "sourceCommit": "4201e85b4ecf5c8ba115315db200a255cafcb0ef",
-    "bundleHash": "74c9f5ea450f1e2b89c375118a9cb97674908fb9518307f03e050d41a0c1b0bd",
+    "receipt": "docs/research/USER_INSTALL_1951.json",
+    "sourceCommit": "f6c3f21eee4fa78f7834cfafd631e27a751e01f2",
+    "bundleHash": "064db2f2f17c89f02967e7e6320661a9644560917d2f2ed4a9190d410ba21d67",
     "verified": true,
     "versions": 1,
-    "scope": "Selected preexisting2D/3D actor lifetime capture: initial presence, pooling, deletion, same-ID/shape key templates, automatic visual components, parent remapping and validation. Template keys survive reduction; binary prepared spawn seeks rebuild owned visual copies only. Captured-identity source visibility follows shared sequence priority and restores on release. Retired-copy channels/leases are discarded;24 repeated seeks remain bounded and128 test copies are removed. Existing settings/presets/Undo/save, AI schema and CPP Play/Seek/Stop share this flow. Seven initial affected gates and a narrow actual GUI recheck passed. Same-document activation now reopens a hidden owning pane without rebuilding data or resetting layout. Final installed editor and independent D3D11 game passed capture/apply/visible preview and five-phase CPP forward/backward replay with source restoration. Source gameplay simulation/variables are not rewound; native same-callback Destroy+explicit same-ID Spawn remains a generation-management gap."
+    "scope": "Optional monotone piecewise-linear subsection time maps provide variable speed, holds, endpoint slope extension and existing source offset/rate plus loop/clamp. Finite slopes and supported86400-second/rate100 exterior admission reject Infinity-producing keys while retaining tiny finite-slope intervals. Binary point sampling and crossed warp/shot/loop event ranges suppress hold refiring; nested maps compose with existing priority/restore. Source-preserving front trim/rebase and negative offset rejection share human key controls/90px curve/Undo/save and revisioned AI dryRun/CAS/trim/null removal. Five affected pure gates including9checks/977observations and actual source UI/CPP10-seek gate passed; only affected numeric/GUI gates repeated after diagnosed fixture/UI/numeric corrections. Final installed editor and independent D3D11 game pass visible held preview and10 actual CPP seeks with source restore, plus installed numerical guard. Native SDK/renderer/binaries are exact hash reuse, not fresh full SDK execution. Reverse/discontinuous/cubic maps and normalized competing-layer blending remain separate gaps."
   }
 }

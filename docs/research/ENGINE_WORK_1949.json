@@ -1541,10 +1541,22 @@
       "reason": "General UI/CPP/D3D gates passed; subsequent numerical counterexample exposed missing finite-slope/exterior admission. Final installation must include numericalGuardRevision."
     }
   ],
-  "installationPending": true,
-  "scope": "Optional monotone piecewise-linear subsection time maps: variable speed, held intervals, endpoint slope extension and existing source offset/rate plus loop/clamp. Binary source-time sampling, crossed warp/shot/loop event ranges without held-event refiring, nested composition and existing priority/restore. Source-preserving front trim/rebase, negative source-offset rejection and legacy affine compatibility. Human key controls/90px curve/Undo/save and shared revisioned AI edits/dryRun/CAS/trim/null removal. Five affected pure gates including9checks/977observations and actual UI/CPP10-seek editor gate passed. Exact installed editor/standalone D3D gate pending. Reverse/discontinuous/cubic time maps and normalized competing-layer blending remain outside this implementation. Finite segment slopes and supported86400-second/rate100 endpoint extrapolations now validate before publication; pathological near-coincident keys that produce Infinity reject while tiny finite-slope keys remain supported. Intermediate69151e44 general-flow gate is not final numerical completion.",
-  "currentInstallation": null,
-  "installedGates": [],
+  "installationPending": false,
+  "scope": "Optional monotone piecewise-linear subsection time maps provide variable speed, holds, endpoint slope extension and existing source offset/rate plus loop/clamp. Finite slopes and supported86400-second/rate100 exterior admission reject Infinity-producing keys while retaining tiny finite-slope intervals. Binary point sampling and crossed warp/shot/loop event ranges suppress hold refiring; nested maps compose with existing priority/restore. Source-preserving front trim/rebase and negative offset rejection share human key controls/90px curve/Undo/save and revisioned AI dryRun/CAS/trim/null removal. Five affected pure gates including9checks/977observations and actual source UI/CPP10-seek gate passed; only affected numeric/GUI gates repeated after diagnosed fixture/UI/numeric corrections. Final installed editor and independent D3D11 game pass visible held preview and10 actual CPP seeks with source restore, plus installed numerical guard. Native SDK/renderer/binaries are exact hash reuse, not fresh full SDK execution. Reverse/discontinuous/cubic maps and normalized competing-layer blending remain separate gaps.",
+  "currentInstallation": "docs/research/USER_INSTALL_1951.json",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-time-warp-1948-window-hQRABy/acceptance.json",
+      "sha256": "07281f207c1f3fc952e2b5f59d55a7d17c7f458520181b22b8630bd2bec2d801",
+      "scope": "Owned hidden actual editor time-warp controls, invalid edits/Undo/save, shared AI source-preserving trim/dryRun/CAS, visible held child preview and10 actual CPP LevelSequence seeks through speed/hold/loop/backward seek/restore; optional independent D3D11 repeats same CPP samples. No reverse curves, FPS or devices claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\064db2f2f17c89f0\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 56598.74739999999
+    }
+  ],
   "priorImplementationRevision": "0196d3558977de0213170bd96784ce62c8dc2b0d",
   "documentPaneRevision": "20a72c3d4702c3bcc59eed10a1e66b82752b3ef4",
   "priorInstallation": "docs/research/USER_INSTALL_1945.json",
@@ -1567,5 +1579,6 @@
     ],
     "final": false,
     "reason": "General UI/CPP/D3D gates passed; subsequent numerical counterexample exposed missing finite-slope/exterior admission. Final installation must include numericalGuardRevision."
-  }
+  },
+  "installedNumericalGuardVerified": true
 }

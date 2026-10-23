@@ -1194,3 +1194,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1947–1949: 중첩시퀀스단조시간리매핑·가변속/hold·반복/shot/warp경계이벤트분할·원본시점보존좌측trim·UI키/90pxcurve/Undo/save·AI CAS/dryRun/trim/null제거·CPP10seek실행 구현.6gate·977독립표본/중첩·2D3D/정지이벤트복원통과. SDK exact재사용·설치D3D대기. 역방향/불연속/삼차warp는잔여. WORK1949.
 
 1951 수치 보완: 일반설치후보69151e44 UI/CPP/D3D통과후 극단키 (1e-310,1)의 Infinity 반증발견. 유한기울기/지원시간·배율끝연장검증·미세유한간격허용·영향unit9/977재통과. 최종설치는 numericalGuardRevision 7ad316a 반영필수. WORK1949의중간후보근거와구분.
+
+1950–1952: 최종설치 064db2f2f17c89f0 단조속도곡선/hold/반복·원본시점보존trim·UI키/90pxcurve/AI CAS/dryRun/Undo/save·CPP10seek/Stop·독립D3D11 56.60초통과. Infinity거절/미세유한키호환guard7ad316a 설치확인. manifest4525/source1176/native21+SDK/renderer/vendor2/binaries exact·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전199070600B퇴역. USER_INSTALL1951. 역방향/불연속/삼차warp 등 누적잔여유지.

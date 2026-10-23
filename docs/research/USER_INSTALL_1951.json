@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-subsequence-time-warp-hold-trim-and-finite-guard",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "f6c3f21eee4fa78f7834cfafd631e27a751e01f2",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\064db2f2f17c89f0",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\064db2f2f17c89f0\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\064db2f2f17c89f0\\HBEngine.exe",
+  "bundleHash": "064db2f2f17c89f02967e7e6320661a9644560917d2f2ed4a9190d410ba21d67",
+  "files": 4525,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4526,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\69151e44930c50cb",
+        "bytes": 199070600,
+        "manifestSHA256": "f494b330bfdacce6ccbef02a758997b8e9c8fd3f7ae34afbf5ba17b717fc8c0c"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T07:07:30.1915608Z",
+    "bytes": 199070600,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "064db2f2f17c89f0"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1176,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-time-warp-1948-window-hQRABy/acceptance.json",
+      "sha256": "07281f207c1f3fc952e2b5f59d55a7d17c7f458520181b22b8630bd2bec2d801",
+      "scope": "Owned hidden actual editor time-warp controls, invalid edits/Undo/save, shared AI source-preserving trim/dryRun/CAS, visible held child preview and10 actual CPP LevelSequence seeks through speed/hold/loop/backward seek/restore; optional independent D3D11 repeats same CPP samples. No reverse curves, FPS or devices claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\064db2f2f17c89f0\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 56598.74739999999
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\064db2f2f17c89f0\\",
+    "elapsedMs": 63.2,
+    "matches": 3,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\064db2f2f17c89f0",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "064db2f2f17c89f02967e7e6320661a9644560917d2f2ed4a9190d410ba21d67",
+      "installedAt": "2026-10-23T07:07:26.511Z",
+      "manifestFiles": 4525,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1945.json\",\"changedSDK\":[],\"scope\":\"All21 native/SDK owners, Host1041/Player1604/renderer/vendor exact hashes unchanged. Private WarpProbe class executes existing CPP LevelSequence APIs. Historical30 native test-source hashes are provenance, not fresh full SDK execution.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4525,
+  "numericalGuardVerified": true,
+  "versions": [
+    "064db2f2f17c89f0"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1951b-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/timeWarp1949-group.json",
+      "sha256": "f6f8b00cb43de02c0c43e4e1d55ff3a42763c244ccc13c88cfade5bee251d3c0",
+      "scope": "Five affected pure/shared-runtime gates and one actual hidden authoring/CPP window. Four unchanged regression results reused after fixture corrections. New numeric gate9checks/977samples includes nested composition, nonunit-rate trim and clamp. No full SDK/renderer rerun."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-sections-1250-PHNX4U/acceptance.json",
+      "sha256": "233db272554e0e4cd74a24e73595be3a84ff62c40b9e13d42c8f1c9116996709",
+      "scope": "Sequence sections model/tree load and actual shared gameplay services: local offset/rate/loop, seek/reenter/exit restoration, nested priority, shot row arbitration, event ranges and atomic invalid replacement. No renderer/FPS/native rebuild."
+    },
+    {
+      "path": "native/build/sequence-interval-selection-1541.json",
+      "sha256": "baa389000ffd0ea2a5a4c25c3cc3c350610a190d4814754185218beab029ee72",
+      "scope": "Pure65536 interval algorithm stress; valid64-clip runtime/audio command hooks; count reductions are not an FPS/actual audio-device claim. Existing nested section and real animation ownership regressions run in the group."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-completion-271-H3Bof2/acceptance.json",
+      "sha256": "316f0e70e705f0f2bc7429eedcc30f78a9bd31f521704f83f14690e0555478d1"
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-priority-272-zYh6i8/acceptance.json",
+      "sha256": "09df8cd16bfc1d0966d17756de24970ff2e8dc5a765d4ccbd025ae442a1a69a3"
+    },
+    {
+      "path": "native/build/sequence-time-warp-1947-Ij2rjL/acceptance.json",
+      "sha256": "20cbc6cff25f96851bdedc450bcf94373182da368acd3df4fcf904e703de81d8",
+      "scope": "Monotone piecewise-linear subsection time warp with speed changes/holds/loop/clamp; binary point sampling, source-preserving front trim, optional schema and atomic UI/AI editing; actual shared2D/3D VM seek/tick event and restore paths. No reverse/cubic warp, renderer matrix or FPS claim."
+    },
+    {
+      "path": "native/build/sequence-time-warp-1948-window-zHXhH7/acceptance.json",
+      "sha256": "566b2ec8215a7e1c0ac5265a7d90bab80528f4db89e2dac9ccc8227202734e92",
+      "scope": "Owned hidden actual editor time-warp controls, invalid edits/Undo/save, shared AI source-preserving trim/dryRun/CAS, visible held child preview and10 actual CPP LevelSequence seeks through speed/hold/loop/backward seek/restore; optional independent D3D11 repeats same CPP samples. No reverse curves, FPS or devices claimed."
+    },
+    {
+      "path": "native/build/sequence-time-warp-1947-O93NBW/acceptance.json",
+      "sha256": "20cbc6cff25f96851bdedc450bcf94373182da368acd3df4fcf904e703de81d8",
+      "scope": "Monotone piecewise-linear subsection time warp with speed changes/holds/loop/clamp; binary point sampling, source-preserving front trim, optional schema and atomic UI/AI editing; actual shared2D/3D VM seek/tick event and restore paths. No reverse/cubic warp, renderer matrix or FPS claim.",
+      "note": "Additional extreme finite-key slope/exterior overflow rejection and tiny-but-finite interval compatibility; only affected numeric gate rerun."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/sequence-time-warp-1948-window-zHXhH7/acceptance.json",
+      "sha256": "566b2ec8215a7e1c0ac5265a7d90bab80528f4db89e2dac9ccc8227202734e92",
+      "scope": "Owned hidden actual editor time-warp controls, invalid edits/Undo/save, shared AI source-preserving trim/dryRun/CAS, visible held child preview and10 actual CPP LevelSequence seeks through speed/hold/loop/backward seek/restore; optional independent D3D11 repeats same CPP samples. No reverse curves, FPS or devices claimed.",
+      "note": "Private WarpProbe CPP executes existing LevelSequence APIs; no SDK declaration changes. Human visible controls and editor preview plus actual CPP10 seeks."
+    }
+  ],
+  "scope": "Optional monotone piecewise-linear subsection time maps provide variable speed, holds, endpoint slope extension and existing source offset/rate plus loop/clamp. Finite slopes and supported86400-second/rate100 exterior admission reject Infinity-producing keys while retaining tiny finite-slope intervals. Binary point sampling and crossed warp/shot/loop event ranges suppress hold refiring; nested maps compose with existing priority/restore. Source-preserving front trim/rebase and negative offset rejection share human key controls/90px curve/Undo/save and revisioned AI dryRun/CAS/trim/null removal. Five affected pure gates including9checks/977observations and actual source UI/CPP10-seek gate passed; only affected numeric/GUI gates repeated after diagnosed fixture/UI/numeric corrections. Final installed editor and independent D3D11 game pass visible held preview and10 actual CPP seeks with source restore, plus installed numerical guard. Native SDK/renderer/binaries are exact hash reuse, not fresh full SDK execution. Reverse/discontinuous/cubic maps and normalized competing-layer blending remain separate gaps.",
+  "repositoryNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}
