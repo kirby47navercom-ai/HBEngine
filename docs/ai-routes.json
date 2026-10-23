@@ -2444,6 +2444,15 @@
       "paths": [
         "prototype/sequence-pose-inspector.js"
       ]
+    },
+    {
+      "id": "preanimated-playback-lease",
+      "keywords": [
+        "AnimationPlaybackLease"
+      ],
+      "paths": [
+        "prototype/animation-playback-lease.js"
+      ]
     }
   ]
 }
