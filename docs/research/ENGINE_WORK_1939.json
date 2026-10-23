@@ -5,7 +5,8 @@
   "implementationRevision": "0196d3558977de0213170bd96784ce62c8dc2b0d",
   "targetIds": [
     "ANM-06",
-    "AI-01"
+    "AI-01",
+    "EDT-02"
   ],
   "sourceHashes": {
     "AGENTS.md": "addf6a9d6327bab892c704514f97b462e48c12bd6de092aaf81a6194c06e31ed",
@@ -238,7 +239,7 @@
     "prototype/animation-retarget-assets.js": "f67ccf4b195d9019aa83567e42957580b14bd284115c39f67a506b01356adebb",
     "prototype/animation-retarget-editor.js": "0c0c5d1cefa4f5a39616b38d1d10be581c062d97dca719179cc98c5c0773d643",
     "prototype/animation-root-motion.js": "03c80ef47ecb862533617e70f8e490690cb84c7b071e69379c89ef979f4c7f72",
-    "prototype/app.js": "d06612edd5c38e4c4679b62fd643e29bc50747037e79d236c040d96845c05550",
+    "prototype/app.js": "22d6d13af31e8a54695280c4cbc9184c7d8ea4a2a0462e718362178a32341226",
     "prototype/asset-documents.js": "d2821de446b09db418d1a923ef443e2aa50ced0f47b24518fb152ef3e96bedcb",
     "prototype/asset-editor-ui.js": "fdac43a9f668e49688ef09641c31b0ce95ae3ac35867895ebdad520736d706e2",
     "prototype/asset-shortcut-commands.js": "f7b78de1ecf3e4d35dec1ca187365bc53d1b521f4067089046a04b40c69f742b",
@@ -1168,7 +1169,7 @@
     "prototype/sequence-skeletal-channels.js": "322e11826b27263bb7f63434ca2b5cfd06b7f9eeb2a2498df01190a8149d6e84",
     "tools/check-sequence-pose-ownership-1925.mjs": "489ec652202eea4e4c6467c32dfb80c3bb00279728e237047fa6dd75cba8fed2",
     "tools/check-sequence-pose-ownership-1926-window.mjs": "bec28f70967920b3058bc4c3db65dac8136e44cf8366610eab6246ea2f1dffbf",
-    "DEBUG_HANDOFF.md": "ec2ba23b2b0691cd749480814376027a74d17d4bf71bb8b6a294dd2b3e864467",
+    "DEBUG_HANDOFF.md": "4c52ade8fc53c36552371d72fb9c7e0721cb90d9ab1bf4ee8d9e90ea6bdc5e8b",
     "docs/CURVE_BAKE_DOMAIN.md": "634ad75ab4b25e4ce342a0b5cdd9ac884d4bfab206f024693e21a23f08903040",
     "prototype/curve-bake-domain.js": "bff813afe08fb9516d09819db070fe9548094cbf15168be6309fe7d0ce1bd0ed",
     "tools/check-curve-domain-1931.mjs": "8466c6f1003f797b88338ee69efcb85012ab7a8cdca995b68988a5976e359a28",
@@ -1178,7 +1179,7 @@
     "prototype/sequence-spawn-program.js": "312e4c0b9477253caeaf693777424af4c1d913e93090ecca41f6fa6e562637c8",
     "prototype/take-lifetime.js": "bb6b967bd98de19fd4959cd3a0978bec7d55f81d07b032277c6104c2da249eb0",
     "tools/check-take-lifetime-1937.mjs": "cdb095f9a0ce2dfdf83f41abe745caa7bc5fe4320489cbb76768a8276eaf9c08",
-    "tools/check-take-lifetime-1938-window.mjs": "a4a4c991caaaa536060282d7fec6a9561ef9b7562f06badb164087d0852b00ed"
+    "tools/check-take-lifetime-1938-window.mjs": "7b96ed6aff2efb16a2f888c3d86e1fb2e16a927519c33cd7084acac26b390e4d"
   },
   "testSourceHashes": {
     "native/tests/builtin-normal-1167.cpp": "febb0c2edbf1e77c2294bcacfd0737b3f9bb177f906bc87ac4e92822a79b5e24",
@@ -1228,7 +1229,8 @@
   ],
   "implemented": [
     " ·1937–1939: includeLifetime기존2D/3D 초기활성/풀재사용/삭제/같은ID시각템플릿·자동시각컴포넌트·immutable키reduction보존·binaryseek·원본identity표시lease/우선순위/복원·복사본제어채널정리·24반복안정/128복사제거·UI/AI/CPP실행.",
-    " ·1939: schema.gameplay.takeLifetime·기본false/기존preset호환·3정확symbol각1owner·기존dryRun/CAS/Undo/save공유·시각복제와게임rollback범위명시."
+    " ·1939: schema.gameplay.takeLifetime·기본false/기존preset호환·3정확symbol각1owner·기존dryRun/CAS/Undo/save공유·시각복제와게임rollback범위명시.",
+    "1943: 같은 문서 재선택에서 숨겨진 소유 제작 창을 다시 표시해요. 데이터·Undo·view·도킹 배치를 재설치하거나 초기화하지 않아요. 실제 보이는 시퀀스 시간 입력과 수명 미리보기로 확인해요."
   ],
   "checks": [
     {
@@ -1267,6 +1269,12 @@
       "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/take-lifetime-1938-window-AULXWU/acceptance.json",
       "sha256": "2874cec4dd41b428301500c717488ba550a0ab688ecc181c93a16cb4e07d4c90",
       "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed."
+    },
+    {
+      "path": "native/build/take-lifetime-1938-window-V6S5tQ/acceptance.json",
+      "sha256": "604e1a7831d644fea698c1499acf00de3fa47eabe872501874a6c4c9ee209604",
+      "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/visible authoring preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed.",
+      "note": "Narrow GUI recheck after screenshot review: same-document activation now reopens its hidden owning pane without rebuilding data or resetting layout. Visible time-input hit-test and capture prove authoring preview is shown. Six unrelated pure/runtime gates remain valid."
     }
   ],
   "sourceGameGates": [
@@ -1275,12 +1283,19 @@
       "sha256": "2874cec4dd41b428301500c717488ba550a0ab688ecc181c93a16cb4e07d4c90",
       "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed.",
       "note": "Human capture follows actual CPP source lifetimes; native same-callback replacement rejects. Committed deletion then same-ID rebirth is the supported source fixture. Playback uses actual CPP LevelSequence APIs; no new SDK entry points."
+    },
+    {
+      "path": "native/build/take-lifetime-1938-window-V6S5tQ/acceptance.json",
+      "sha256": "604e1a7831d644fea698c1499acf00de3fa47eabe872501874a6c4c9ee209604",
+      "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/visible authoring preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed.",
+      "note": "Narrow GUI recheck after screenshot review: same-document activation now reopens its hidden owning pane without rebuilding data or resetting layout. Visible time-input hit-test and capture prove authoring preview is shown. Six unrelated pure/runtime gates remain valid."
     }
   ],
   "sourceCheckpoint": {
-    "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/take-lifetime-1938-window-AULXWU/acceptance.json",
-    "sha256": "2874cec4dd41b428301500c717488ba550a0ab688ecc181c93a16cb4e07d4c90",
-    "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed."
+    "path": "native/build/take-lifetime-1938-window-V6S5tQ/acceptance.json",
+    "sha256": "604e1a7831d644fea698c1499acf00de3fa47eabe872501874a6c4c9ee209604",
+    "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/visible authoring preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed.",
+    "note": "Narrow GUI recheck after screenshot review: same-document activation now reopens its hidden owning pane without rebuilding data or resetting layout. Visible time-input hit-test and capture prove authoring preview is shown. Six unrelated pure/runtime gates remain valid."
   },
   "aiContextGate": {
     "command": "npm run test:ai-context",
@@ -1499,10 +1514,14 @@
     {
       "test": "1938",
       "reason": "Prefab replacement copy correctly retained prefab name root; fixture incorrectly searched source display name. Switched fixture to stable owned copy ID. Engine output was not renamed and failed test is not implementation progress."
+    },
+    {
+      "test": "1943",
+      "reason": "Original1938 report proved API preview state but capture showed ordinary viewport. Merely calling document.open still timed out: activeDocument was sequence while dock selected scene. Root cause was same-path early return in activateDocument; reopened hidden pane and reran affected GUI only."
     }
   ],
-  "installationPending": false,
-  "scope": "Selected preexisting2D/3D actor lifetime capture: initial presence, pooling, deletion, same-ID/shape template transitions, visual components, parent remapping and validation. Immutable true-key templates survive reduction; prepared binary spawn seeks replace only owned visual actors. Captured-identity source visibility uses shared sequence priority and restores on release. Retired-copy control channels are discarded without writing destroyed actors;24 repeated seek loops stay bounded and128 copies are all removed. Settings/presets/Undo/save, AI schema and existing user CPP Play/Seek/Stop share the flow. Seven affected gates passed. Exact installed editor/standalone D3D11 gate passed: human capture and apply/preview, CPP five-phase forward/backward replay with original visibility and copy cleanup. Source simulation/variables are not rewound; same-callback native Destroy+explicit same-ID Spawn remains a separate generation-management gap.",
+  "installationPending": true,
+  "scope": "Selected preexisting2D/3D actor lifetime capture: initial presence, pooling, deletion, same-ID/shape template transitions, visual components, parent remapping and validation. Immutable true-key templates survive reduction; prepared binary spawn seeks replace only owned visual actors. Captured-identity source visibility uses shared sequence priority and restores on release. Retired-copy control channels are discarded without writing destroyed actors;24 repeated seek loops stay bounded and128 copies are all removed. Settings/presets/Undo/save, AI schema and existing user CPP Play/Seek/Stop share the flow. Seven affected gates passed. Exact installed editor/standalone D3D11 gate passed: human capture and apply/preview, CPP five-phase forward/backward replay with original visibility and copy cleanup. Source simulation/variables are not rewound; same-callback native Destroy+explicit same-ID Spawn remains a separate generation-management gap.1943 fixes same-document activation after play selected a different dock tab. Only a hidden owning pane is reopened, preserving document data and layout; actual visible authoring time-control hit-test passed. Final corrected installation verification pending.",
   "currentInstallation": "docs/research/USER_INSTALL_1941.json",
   "installedGates": [
     {
@@ -1517,5 +1536,6 @@
       "ms": 97570.65770000001
     }
   ],
-  "priorImplementationRevision": "ab7bb8f855dbe348df7fcbb9bfae04e4a7a1cfeb"
+  "priorImplementationRevision": "ab7bb8f855dbe348df7fcbb9bfae04e4a7a1cfeb",
+  "documentPaneRevision": "20a72c3d4702c3bcc59eed10a1e66b82752b3ef4"
 }

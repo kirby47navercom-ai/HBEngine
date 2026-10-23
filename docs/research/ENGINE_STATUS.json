@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-23",
-  "basisRevision": "0196d3558977de0213170bd96784ce62c8dc2b0d",
+  "basisRevision": "20a72c3d4702c3bcc59eed10a1e66b82752b3ef4",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -289,7 +289,7 @@
       "area": "editor",
       "title": "독립 창·도킹·복원",
       "status": "partial",
-      "implemented": "독립 창과 재도킹·세션 배치 ·400: 다른작업공간에주차된profiler하단재열기·기존도킹/분리유지·작은창GPU표두행가시성",
+      "implemented": "독립 창과 재도킹·세션 배치 ·400: 다른작업공간에주차된profiler하단재열기·기존도킹/분리유지·작은창GPU표두행가시성 ·1943: 현재문서지만게임실행으로숨겨진제작pane 재선택시복원·데이터/Undo/도킹배치유지·실제시퀀스입력hit-test/preview검증.",
       "remaining": [
         "다중 모니터/DPI·종료/복구·대화상자 중 창 이동의 추가 안정성 검증"
       ],
@@ -300,7 +300,9 @@
       ],
       "evidence": [
         "docs/DETACHED_WINDOWS_RESEARCH.md",
-        "docs/research/ENGINE_WORK_400.json"
+        "docs/research/ENGINE_WORK_400.json",
+        "prototype/app.js",
+        "docs/research/ENGINE_WORK_1939.json"
       ]
     },
     {
@@ -3808,9 +3810,9 @@
   ],
   "latestBatch": {
     "first": 1937,
-    "last": 1939,
+    "last": 1943,
     "receipt": "docs/research/ENGINE_WORK_1939.json",
-    "scope": "Selected preexisting2D/3D actor lifetime capture: initial presence, pooling, deletion, same-ID/shape template transitions, visual components, parent remapping and validation. Immutable true-key templates survive reduction; prepared binary spawn seeks replace only owned visual actors. Captured-identity source visibility uses shared sequence priority and restores on release. Retired-copy control channels are discarded without writing destroyed actors;24 repeated seek loops stay bounded and128 copies are all removed. Settings/presets/Undo/save, AI schema and existing user CPP Play/Seek/Stop share the flow. Seven affected gates passed. Exact installed editor/standalone D3D11 gate passed: human capture and apply/preview, CPP five-phase forward/backward replay with original visibility and copy cleanup. Source simulation/variables are not rewound; same-callback native Destroy+explicit same-ID Spawn remains a separate generation-management gap."
+    "scope": "Selected preexisting2D/3D actor lifetime capture: initial presence, pooling, deletion, same-ID/shape template transitions, visual components, parent remapping and validation. Immutable true-key templates survive reduction; prepared binary spawn seeks replace only owned visual actors. Captured-identity source visibility uses shared sequence priority and restores on release. Retired-copy control channels are discarded without writing destroyed actors;24 repeated seek loops stay bounded and128 copies are all removed. Settings/presets/Undo/save, AI schema and existing user CPP Play/Seek/Stop share the flow. Seven affected gates passed. Exact installed editor/standalone D3D11 gate passed: human capture and apply/preview, CPP five-phase forward/backward replay with original visibility and copy cleanup. Source simulation/variables are not rewound; same-callback native Destroy+explicit same-ID Spawn remains a separate generation-management gap.1943 fixes same-document activation after play selected a different dock tab. Only a hidden owning pane is reopened, preserving document data and layout; actual visible authoring time-control hit-test passed. Final corrected installation verification pending."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_1941.json",
