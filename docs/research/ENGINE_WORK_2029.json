@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "date": "2026-10-23T12:39:36.645Z",
+  "kind": "periodic-finite-range-bake-and-stable-discrete-reference-semantics",
+  "implementationRevision": "49df2f046ab1b9594c77420dd82f0264d0014533",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2020.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "4ce297f02b691ed0637c5d8b8ea74edf457617218cfe94f778ecfcaddfeda34f",
+    "prototype/curve-bake-domain.js": "fe3f03534280e398f02ee67a68bee494322d69a98c59189e1979d53d05e4a5f5",
+    "prototype/curve-sampling.js": "d07f7f273879d36600242a69df29c4fe24596037a65e3feb5814d244faa69d63",
+    "prototype/curve-tools.js": "1c30b6e801173c9605f887d3f68a54ddaef016828bb7eb40596eaa59723247d3",
+    "prototype/gameplay-runtime.js": "6e97a1ea943274ca049565f5824cd5848ecaea9e73445789c1ea79be45a99fbc",
+    "prototype/sequence-curve-editor.js": "2f8ecbdb11b7fc239a4b572863f857feb39fdbe892d1adda1fce03d6f02deb4f",
+    "prototype/sequence-curves.js": "d81bef31f8398bf44a0419a6ddd1fc23eb0492cf84db3e85f6c4437d0edbf3eb",
+    "prototype/sequence-sampling.js": "5331f925718c8ebee12cfb917991c1816db36ca22b864e1300edc33a5a6e2707",
+    "prototype/timeline-editor.js": "0a6c04ce44a84a8ff12158f2cacbfa0c72efd16c8e49ebb4eeaa5bbd23b4d682",
+    "tools/check-curve-domain-1931.mjs": "c47d8409efd437f289125c338f5e697e6cd6699b3fb982830a8ae958d6a92866",
+    "tools/check-curve-domain-1932-window.mjs": "962a9ad24765445a49765774676c90413d3c35e9532195b7fa56c4bbcc4df0b4",
+    "tools/check-multi-curves-1883.mjs": "723f031c1e8ed258b21ce8f1dd3d49f86e52f8bdbb62206487a954e0441faf0e",
+    "tools/editor-automation.mjs": "4ce84bd509af1c212c806f16f3f845942ca245665b409fcc81c087fb728358d5",
+    "docs/CURVE_PERIODIC_BAKE.md": "be44f036ebb04db913db1aacf9fdab19adb12220bcfad984a70c3a5659f8e812",
+    "prototype/curve-domain-editor.js": "68a7ef3f2507fa2f120c4c263291fe583ab15f82c022602b01a5ef06911d5eeb",
+    "prototype/curve-infinity-domain.js": "0b67f39eb8268ab27cf6471db31c6cb914e6464ed5f63b16288256f160235757",
+    "prototype/curve-periodic-bake.js": "1b1878edfe9679dde4463736cbe1b99c0358c2a026926173cb77f63e2350ca97",
+    "tools/check-curve-periodic-2025.mjs": "58330e55df5714b172b38f66ab6882172b6e6838c8e1720f803e8ccb1bcb906c",
+    "tools/check-curve-periodic-2026-window.mjs": "80dd18357f654a55f3ff25c261e0bd2d80aea6e15808725a76aa6d96db9650ef",
+    "tools/curve-periodic-exercise-2026.mjs": "11eed87c247e4c75b0ce3dbfd2d7e4f23544b4492fdde23167cccfaf36abe0e6",
+    "CODEX_HANDOFF.md": "7b04d27c68a6fdfd1962dd83bdb23bb882c4194db47c86f2a4feb1c7a2ebc31d"
+  },
+  "targetIds": [
+    "ANM-06"
+  ],
+  "checks": [
+    {
+      "name": "check-curve-periodic-2025",
+      "passed": true,
+      "exit": 0,
+      "ms": 209.26590000000002,
+      "log": "native/build/group-periodic2028-check-curve-periodic-2025.log",
+      "sha256": "405d4e6bf9dbef8e89e60dad78599e9a399ccd3e8a6a2a2133d23848179a90ef"
+    },
+    {
+      "name": "check-curve-domain-1931",
+      "passed": true,
+      "exit": 0,
+      "ms": 329.39959999999996,
+      "log": "native/build/group-periodic2028-check-curve-domain-1931.log",
+      "sha256": "1994b5eb3952d346abb1a25ef0e2a126c7aa03a7575d104050acc31461f440dd"
+    },
+    {
+      "name": "check-curve-tools-1319",
+      "passed": true,
+      "exit": 0,
+      "ms": 235.7297000000001,
+      "log": "native/build/group-periodic2028-check-curve-tools-1319.log",
+      "sha256": "5e623939dbf086647173e310177687b5575679bbb5c8f871bf01345e4dcda697"
+    },
+    {
+      "name": "check-curve-controls-1907",
+      "passed": true,
+      "exit": 0,
+      "ms": 184.94650000000001,
+      "log": "native/build/group-periodic2028-check-curve-controls-1907.log",
+      "sha256": "ac34a5f8f292356cee2afe0ed8a2a7cffc52301e935da06d36a68af2b7beb178"
+    },
+    {
+      "name": "check-curve-channels-1895",
+      "passed": true,
+      "exit": 0,
+      "ms": 166.2170000000001,
+      "log": "native/build/group-periodic2028-check-curve-channels-1895.log",
+      "sha256": "4392dec03115ed908319cf0c726dbb69e7070a9a7154a12a30deb21084663ce6"
+    },
+    {
+      "name": "check-multi-curves-1883",
+      "passed": true,
+      "exit": 0,
+      "ms": null,
+      "log": "native/build/group-periodic2028-check-multi-curves-1883-final.log",
+      "sha256": "d644dc05096f3d014fde59a028082a0dbe2fb7213c27e10956123706de0f6529",
+      "correctedFixture": true,
+      "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\multi-curves-1883-Sj3MC6\\acceptance.json"
+    },
+    {
+      "name": "check-sequence-reference-state-2008",
+      "passed": true,
+      "exit": 0,
+      "ms": 228.36429999999996,
+      "log": "native/build/group-periodic2028-check-sequence-reference-state-2008.log",
+      "sha256": "10f21d65699c89418261582411ec60ae39537b9dce34820e4873f5d1f70c784e"
+    },
+    {
+      "name": "check-sequence-values-269",
+      "passed": true,
+      "exit": 0,
+      "ms": 215.05280000000016,
+      "log": "native/build/group-periodic2028-check-sequence-values-269.log",
+      "sha256": "9b6119e82e42cffb97a42ef7b67e0adc5d7fda742f295d9d622118ac6c3e91f6"
+    },
+    {
+      "name": "check-ai-context",
+      "passed": true,
+      "exit": 0,
+      "ms": 2199.6677,
+      "log": "native/build/group-periodic2028-check-ai-context.log",
+      "sha256": "a0b8d99b6252ef683045a519f4cebf14f0acee288c1c761e5d72e92e523fdbd5"
+    }
+  ],
+  "newCases": 7,
+  "observations": 50780,
+  "sourceWindow": {
+    "report": "native/build/curve-periodic-2026-window-5FAROi/acceptance.json",
+    "sha256": "3ed6e16b73925c609c90d3f7f7ad704270c2324dd75b0096c80940c0e7ec0f2a",
+    "cppSeeks": 21,
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "visualInspected": true
+  },
+  "corrections": [
+    {
+      "report": "native/build/curve-periodic-2026-window-3jQL9w/failure.json",
+      "cause": "Owned fixture left curve options overlay open above the period button; closed it and checked elementFromPoint before clicking."
+    },
+    {
+      "log": "native/build/group-periodic2028-check-multi-curves-1883.log",
+      "cause": "Existing Object.create fixture bypassed TimelineEditor constructor and lacked existing toolState; add fixture state only, then rerun that gate."
+    }
+  ],
+  "nativeReuse": {
+    "receipt": "docs/research/USER_INSTALL_2019.json",
+    "owners": 21,
+    "binaries": {
+      "HBEngine": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+      "HBPlayer": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+    },
+    "vendorHashes": {
+      "node_modules/three/src/renderers/common/UniformsGroup.js": {
+        "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+        "bytes": 10590
+      },
+      "node_modules/three/build/three.webgpu.js": {
+        "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+        "bytes": 1875505
+      }
+    },
+    "freshFullSDKRun": false,
+    "freshRendererRun": false
+  },
+  "resources": {
+    "newTimers": 0,
+    "newWorkers": 0,
+    "newGPUResources": 0,
+    "runtimePreparation": "weak key-array cache of base key references, finite range binary search; no per-frame source value copy",
+    "storage": "ordinary visible keys plus explicit two period bounds and merged interval pairs; shared key budget; no hidden source curve clone",
+    "scope": "Structural/source observations, not full heap/FPS measurements"
+  },
+  "installationPending": true,
+  "currentInstallation": "docs/research/USER_INSTALL_2019.json",
+  "scope": "Source shared samplers, human/AI authoring and actual source C++21 seeks passed. Independent axis topology and engine-wide completion not claimed."
+}
