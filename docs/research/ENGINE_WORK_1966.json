@@ -1,0 +1,270 @@
+{
+  "version": 1,
+  "date": "2026-10-23T09:09:57.293Z",
+  "kind": "cubic-step-timewarp-and-compact-hash-reader-source-pending-gui",
+  "implementationRevision": "d3254c18f321660609ee2bc7552bc7192b863c91",
+  "priorImplementationRevision": "2ad4e97242b931097baf21e9603229d85be71566",
+  "targetIds": [
+    "ANM-06",
+    "AI-01"
+  ],
+  "sourceHashBase": "docs/research/ENGINE_WORK_1958.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "bb6be775e11ded8ef006dc4d17dbac73e8d74ee2ae33f2c4d3547e2fcd9b8094",
+    "docs/AI_START.md": "3ec92a9265cb21436bd8e35fd62cce7f42c071a8b6f3666debf951e5c8258f6b",
+    "docs/SEQUENCE_TIME_WARP.md": "0ef08beffa60abb01e758b17125d435e3e6b73356914b608f5994631abe9438e",
+    "docs/ai-routes.json": "70df26442a650e48ed3b44feb732a2d55644787a34a3dc953d8bd66064626d6f",
+    "prototype/gameplay-editor.css": "e25a663538d8c896a9328e79c03c05ac90319c34ce18621ebd3212430241f1c5",
+    "prototype/gameplay-editor.js": "9d4b97788a6ef26adfb39a6e48f3adf7775f9076382fc281477cba076b869052",
+    "prototype/gameplay-runtime.js": "428a55eb7f75a5824317f5f1352abbb12afef91d748cc0cb0e19fb3258ca4518",
+    "prototype/sequence-sections.js": "8264b24caae281471106d93ba88d7db6fb7d18581bb297929e76672a8e712504",
+    "prototype/sequence-time-warp-editor.js": "eb904a55e23655a207d2a70c830dd6098289abb15b64fed3f1f83d559ba134bb",
+    "prototype/sequence-time-warp.js": "76d81814e38f08133769a9ccf42de614abe6b1ad0eeb7e6f2fc1bcdde44de82c",
+    "prototype/sequence-warp-program.js": "aa43126229e95dddd1ba490ed066e94dae601a0d77a53003f8b9737c7241be58",
+    "tools/check-sequence-cubic-warp-1959.mjs": "542427a3edc8ebe31c967cc61a7eb8fa84e3cf78b265aac0bf0214ae4417fd71",
+    "tools/check-sequence-reverse-warp-1954-window.mjs": "a72e7c5422922d498f85e9b32d7e5a3057e815c54f10badae663fe1ed6d8d925",
+    "tools/research-source-hashes.mjs": "fc8121a47c791d46f2c85de2b63b7bbcaa94c6a1bf8e0e4676a243e1a7f8481b",
+    "tools/check-research-source-hashes-1965.mjs": "f70f005aef84bef1ecacb07b13357370ac3b33ccbb56c59fec83a864068c8ff4"
+  },
+  "composition": "Use resolveResearchSourceHashes from tools/research-source-hashes.mjs. No duplicate full1179-owner manifest or native/renderer provenance. Foreign keyboard work retains earlier admitted hashes.",
+  "sourceCheckpoint": {
+    "path": "native/build/sequence-cubic-warp-1959-t9BX9b/acceptance.json",
+    "sha256": "3f530c244169bbe0af25966ed4c4e6d6cdeabd527dd8d061af76092a515498e5",
+    "checks": 18,
+    "observations": 3442,
+    "scope": "Cubic Hermite and silent step subsection source maps with auto/explicit tangents, analytical stationary boundaries and slope, source-preserving trim/split/flip, shared VM2D/3D/audio requests/event visit ordering and markup. Actual human window/C++/PCM device gates are separate."
+  },
+  "checks": [
+    {
+      "name": "sequence-cubic-warp-1959",
+      "passed": true,
+      "seconds": 0.2651003,
+      "log": "native/build/group1961-sequence-cubic-warp-1959.log",
+      "report": "native/build/sequence-cubic-warp-1959-t9BX9b/acceptance.json",
+      "reportSHA256": "3f530c244169bbe0af25966ed4c4e6d6cdeabd527dd8d061af76092a515498e5",
+      "latestCommand": "node tools/check-sequence-cubic-warp-1959.mjs",
+      "latestChecks": 18,
+      "latestObservations": 3442
+    },
+    {
+      "name": "sequence-reverse-warp-1953",
+      "passed": true,
+      "seconds": 0.24375120000000003,
+      "log": "native/build/group1961-sequence-reverse-warp-1953.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-reverse-warp-1953-wd1row/acceptance.json",
+      "reportSHA256": "bdf896d908c031241f475d0edbd9a4f8ecaa42ce12580740961e2289b23d8d8e"
+    },
+    {
+      "name": "sequence-time-warp-1947",
+      "passed": true,
+      "seconds": 0.34279779999999993,
+      "log": "native/build/group1961-sequence-time-warp-1947.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-time-warp-1947-kb7DET/acceptance.json",
+      "reportSHA256": "1f075f32ed64eb13d3a4427be8dac858eb0d00a03fdc1934e17eb0b56cc62f3a"
+    },
+    {
+      "name": "sequence-sections-1250",
+      "passed": true,
+      "seconds": 0.2467657999999999,
+      "log": "native/build/group1961-sequence-sections-1250.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-sections-1250-mhPwVd/acceptance.json",
+      "reportSHA256": "233db272554e0e4cd74a24e73595be3a84ff62c40b9e13d42c8f1c9116996709"
+    },
+    {
+      "name": "sequence-audio-1956",
+      "passed": true,
+      "seconds": 0.5068510000000002,
+      "log": "native/build/group1961-sequence-audio-1956.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-audio-1956-WyarYJ/acceptance.json",
+      "reportSHA256": "dd4c2e787430d4c4f8bb2026d41b8d2a4f49590cc4714b0057c8d20cb757f0e8"
+    },
+    {
+      "name": "sequence-clock-1877",
+      "passed": true,
+      "seconds": 0.2434828,
+      "log": "native/build/group1961-sequence-clock-1877.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-clock-1877-dhdIBH/acceptance.json",
+      "reportSHA256": "75c4615b4c824322cb2f03a4c2e7667359eba3176280bf307591b07b24a92444"
+    },
+    {
+      "name": "sequence-interval-selection-1541",
+      "passed": true,
+      "seconds": 0.3127248000000002,
+      "log": "native/build/group1961-sequence-interval-selection-1541.log",
+      "report": "native/build/sequence-interval-selection-1541.json",
+      "reportSHA256": "baa389000ffd0ea2a5a4c25c3cc3c350610a190d4814754185218beab029ee72"
+    },
+    {
+      "name": "sequence-event-index-1390",
+      "passed": true,
+      "seconds": 0.24875800000000026,
+      "log": "native/build/group1961-sequence-event-index-1390.log",
+      "report": "native/build/sequence-event-index-1390.json",
+      "reportSHA256": "454a5403dcb544c50ec187f28f0b205f86c6652ab39c5454856c8548d211d662"
+    },
+    {
+      "name": "sequence-completion-271",
+      "passed": true,
+      "seconds": 0.19542579999999998,
+      "log": "native/build/group1961-sequence-completion-271.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-completion-271-6aqgEC/acceptance.json",
+      "reportSHA256": "316f0e70e705f0f2bc7429eedcc30f78a9bd31f521704f83f14690e0555478d1"
+    },
+    {
+      "name": "sequence-priority-272",
+      "passed": true,
+      "seconds": 0.19597470000000022,
+      "log": "native/build/group1961-sequence-priority-272.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-priority-272-vywN1g/acceptance.json",
+      "reportSHA256": "09df8cd16bfc1d0966d17756de24970ff2e8dc5a765d4ccbd025ae442a1a69a3"
+    }
+  ],
+  "group": {
+    "path": "native/build/source-group1964.json",
+    "sha256": "eaf29d9226300214bc3031d46d2e0a8ed8e8cd0bf3a0124278c8d23d290795ba"
+  },
+  "hashCompositionGate": {
+    "command": "node tools/check-research-source-hashes-1965.mjs",
+    "passed": true,
+    "checks": 9,
+    "recordedBaseOwners": 1185,
+    "currentFilesVerified": false,
+    "ownerSHA256": "fc8121a47c791d46f2c85de2b63b7bbcaa94c6a1bf8e0e4676a243e1a7f8481b",
+    "testSHA256": "f70f005aef84bef1ecacb07b13357370ac3b33ccbb56c59fec83a864068c8ff4"
+  },
+  "aiContextGate": {
+    "passed": true,
+    "date": "2026-10-23T08:58:21.592Z",
+    "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+  },
+  "focusedAI": [
+    {
+      "symbol": "prepareTimeWarp",
+      "owner": "prototype/sequence-warp-program.js",
+      "filesRead": 1,
+      "elapsedMs": 161.79
+    },
+    {
+      "symbol": "sampleTimeWarpSide",
+      "owner": "prototype/sequence-warp-program.js",
+      "filesRead": 1,
+      "elapsedMs": 165.69
+    },
+    {
+      "symbol": "sectionWarpCrossedJump",
+      "owner": "prototype/sequence-time-warp.js",
+      "filesRead": 1,
+      "elapsedMs": 167.14
+    },
+    {
+      "symbol": "sectionTimeWarpMarkup",
+      "owner": "prototype/sequence-time-warp-editor.js",
+      "filesRead": 1,
+      "elapsedMs": 160.85
+    },
+    {
+      "symbol": "resolveResearchSourceHashes",
+      "owner": "tools/research-source-hashes.mjs",
+      "filesRead": 1,
+      "elapsedMs": 164.06
+    }
+  ],
+  "unchangedExactReuse": {
+    "native": {
+      "receipt": "docs/research/ENGINE_WORK_1955.json",
+      "exactSHA256Matched": 21,
+      "executed": false
+    },
+    "sdkTestSources": {
+      "receipt": "docs/research/ENGINE_WORK_1955.json",
+      "exactSHA256Matched": 30,
+      "executed": false
+    },
+    "renderer": {
+      "receipt": "docs/research/ENGINE_WORK_1955.json",
+      "exactSHA256Matched": 8,
+      "executed": false
+    },
+    "vendor": {
+      "receipt": "docs/research/ENGINE_WORK_1955.json",
+      "exactSHA256Matched": 2,
+      "executed": false
+    }
+  },
+  "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "resources": {
+    "newWorkers": 0,
+    "newRuntimeTimers": 0,
+    "newGPUResources": 0,
+    "newStrongPersistentCaches": 0,
+    "weakProgram": "Validated immutable keys prepare extrema/stationary roots once. Cubic1000 value/derivative queries solve0 new roots. Legacy linear1000 value/rate/approach queries never materialize interval descriptors. These are source structural checks, not FPS or RAM measurements.",
+    "newGuiProfiles": 0,
+    "newPackagedGames": 0,
+    "newInstalledVersions": 0,
+    "testPolicy": "Affected source checks grouped; latest new reverse-step fixture checked alone after all ten passed. Pure tools retain reports/prune regenerable work. No heavy/native/renderer suite repeated."
+  },
+  "externalWorktreeChanges": [
+    {
+      "path": "prototype/player.js",
+      "owned": false,
+      "admittedSHA256": "8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1",
+      "observedSHA256": "4d89ea43c2f9f32ad96be161ffceb4491c567ab0422ecb6c43495cf68adff247",
+      "scope": "Concurrent keyboard work preserved unchanged and unstaged; reconcile its completion before installation."
+    },
+    {
+      "path": "tools/check-player-keyboard-release.mjs",
+      "owned": false,
+      "admittedSHA256": null,
+      "observedSHA256": "1b5fa2aeadedbded2e795c4fa5f34cdfb414d3ac9ffefada46eb00ad5e75e336",
+      "scope": "Concurrent keyboard work preserved unchanged and unstaged; reconcile its completion before installation."
+    }
+  ],
+  "installationPending": true,
+  "currentInstallation": null,
+  "priorInstallation": "docs/research/USER_INSTALL_1951.json",
+  "sourceGameGates": [],
+  "installedGates": [],
+  "installationDeferral": {
+    "observedAt": "2026-10-23T09:09:57.294Z",
+    "activeInstalledVersions": [
+      {
+        "pid": 35392,
+        "version": "064db2f2f17c89f0",
+        "name": "node.exe"
+      },
+      {
+        "pid": 26312,
+        "version": "064db2f2f17c89f0",
+        "name": "python.exe"
+      }
+    ],
+    "reason": "User-installed processes remain active; no GUI/package/build/install/queued switch. External keyboard source ownership/hash reconciliation also pending.",
+    "versions": [
+      "064db2f2f17c89f0"
+    ],
+    "userProfileUsed": false,
+    "userGameTouched": false
+  },
+  "pendingGates": [
+    {
+      "command": "node tools/check-sequence-reverse-warp-1954-window.mjs",
+      "scope": "One owned hidden source editor: signed12+cubic12+step12 actual C++ seeks/Stop, human interpolation/tangents/trim/Undo/save/audio reverse, actual OfflineAudioContext10condition19200sample oracle."
+    },
+    {
+      "command": "node tools/check-sequence-reverse-warp-1954-window.mjs --executable <new-install-exe> --package",
+      "scope": "After idle/source success/external ownership admission: installed editor same tests, independent D3D11 cubic12+step12 and actual offline PCM, then User/Versions1/cache/lease audit."
+    }
+  ],
+  "testCorrections": [
+    {
+      "type": "fixture",
+      "reason": "Initial new event fixture omitted Director/Target bindings, yielding zero callbacks. Added those bindings, preserving engine callback behavior. Independent analytical and actual VM traversal checks then passed."
+    }
+  ],
+  "research": {
+    "newRead": [],
+    "scope": "Existing source owners and independent Hermite/derivative/one-sided-limit oracles. No corpus/API analysis promotion or full engine-completion claim."
+  },
+  "scope": "Source implementation of optional cubic Hermite/auto-explicit two-sided tangents, analytical stationary cuts/derivatives and signed traversal, stationary inflection/hold/seam suppression, exact source-preserving trim and insertion, signed flip and true SVG Bezier. Optional step interpolation holds then silently jumps, with one-sided source event limits in both directions, no skipped/destination callbacks, and forced descendant PCM resync including small jumps. Existing linear runtime leaves lazy interval descriptors unallocated; no per-sample roots. Shared2D/3D actor VM/event/audio request/restore checks18/3442 plus ten affected gates and AIcontext pass. Compact admitted-hash chain reader passes9 cases and does not verify current files. Actual human editor/new C++/WebView PCM/standalone D3D11/install gates are prepared but deferred for active user-installed processes."
+}
