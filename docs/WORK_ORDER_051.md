@@ -1142,3 +1142,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1871–1873: 분수displayRate/DF·초저장/녹화율/게임FPS독립·frame/TC입력과눈금·step/snap/Shift자유이동/rangehandle/defaultbake·소유키곡선열기·CPP/BP4함수/동일runtime metadata 구현. 8영향회귀/BigInt대조/각rate10000step·실제source UI/drag/Undo/bake/CPP·이전독립D3D checkpoint통과. TC입력폭/최종TC눈금·DF잠금설치gate예정. WORK1873·Custom/PlayEveryFrame/개별시간상속등잔여유지.
 
 1874–1876: 최종설치 가시편집격자3control/TC눈금/DF비호환잠금·TC입력폭132px같은행·실제snap/Shiftfree drag·키소유트랙곡선열기·AI bake/dryRun/Undo/save/잘못된rate거절·현재SDK2헤더CPP4함수/기존초API·별도D3D 78.06초통과. manifest4447/source1121/native21중2SDK변경/PlayerHost/vend2불변·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전196447999B정리. USER_INSTALL1875. Custom/PlayEveryFrame·외부시계·골격가중혼합등누적잔여유지.
+
+1877–1879: game/unscaled/manual/PlayEveryFrame시계·6공용CPP/BP함수·유지시간편집/UndoRedo/AI CAS dryRun/save·수동event/loop/complete/restore·nested root상속·오디오정지seek·재진입controlserial 구현. 7영향회귀(10새시계시나리오/10000frame)·실제source editor/CPP6함수통과. 최종가시control/독립D3D 설치gate예정. WORK1879·외부Custom/timecode/RTC/개별시간상속등유지.
