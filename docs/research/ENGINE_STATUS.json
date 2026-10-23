@@ -2374,7 +2374,7 @@
       "area": "audio",
       "title": "오디오 고급 DSP/가상화",
       "status": "partial",
-      "implemented": "gain/filter/compressor·routing/계측 · 165: 순서 DSP 필터/지연/리버브/왜곡·wet/dry·pre/post Send/Return·순환/우회/해제 · 169: 지정 버스 RMS 사이드체인·Attack/Release/압축·순환/우회·사람UI/Undo·C++/BP3·실제 WebAudio 신호 · 170: 설정 가능한 실제/추적 음성 예산·PCM 가상 시계/소스 해제/승격·우선순위/거리·Listener/Source UI·C++/BP4·실제 소스2/가상6 검증 ·192: 실제 post-DSP/공간음 스테레오 PCM16 WAV·UI/AI/예산/수명·저장 실패 재시도/일시정지/게임 종료 저장·실제 재생 ·257: 선택 streaming 가상 음성의 src/load 해제 요청·논리 시각과 decoder 재승격·미디어 lease/PCM0·실제 무음 WebView ·1958 소스: sequencePCM lazy weak-shared reverse·virtual미할당/강한idlecache추가없음·원본32MiB유지. 활성reverse추가PCM원본한벌가능. async decode/resume취소·rate/park진단·일반stream유지. 실제PCM출력/장치/RAM측정은미실행.",
+      "implemented": "gain/filter/compressor·routing/계측 · 165: 순서 DSP 필터/지연/리버브/왜곡·wet/dry·pre/post Send/Return·순환/우회/해제 · 169: 지정 버스 RMS 사이드체인·Attack/Release/압축·순환/우회·사람UI/Undo·C++/BP3·실제 WebAudio 신호 · 170: 설정 가능한 실제/추적 음성 예산·PCM 가상 시계/소스 해제/승격·우선순위/거리·Listener/Source UI·C++/BP4·실제 소스2/가상6 검증 ·192: 실제 post-DSP/공간음 스테레오 PCM16 WAV·UI/AI/예산/수명·저장 실패 재시도/일시정지/게임 종료 저장·실제 재생 ·257: 선택 streaming 가상 음성의 src/load 해제 요청·논리 시각과 decoder 재승격·미디어 lease/PCM0·실제 무음 WebView ·1958 소스: sequencePCM lazy weak-shared reverse·virtual미할당/강한idlecache추가없음·원본32MiB유지. 활성reverse추가PCM원본한벌가능. async decode/resume취소·rate/park진단·일반stream유지. OfflinePCM source1987/installed1991통과·스피커/장치/RAM미측정. ·2005소스: sequence clip음량/fade/곡선·기존GainNode예약·Take gain보존·output gain실제음성선별·새12사례3055표본·실제창/PCM/C++추가검사는사용중대기",
       "remaining": [
         "streaming 가상화의 OS/코덱별 실제 RAM 회수·고급 지각/믹서 DSP 기반 선별",
         "C++ native DSP와 모바일 실제 장치 품질·큰 음성 수/PCM 메모리 검증"
@@ -2388,7 +2388,9 @@
         "prototype/audio-capture-worklet.js",
         "prototype/sequence-audio.js",
         "prototype/buffered-audio.js",
-        "prototype/take-recorder.js"
+        "prototype/take-recorder.js",
+        "prototype/sequence-audio-envelope.js",
+        "prototype/take-audio-gain.js"
       ],
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
@@ -2398,7 +2400,9 @@
         "docs/research/ENGINE_WORK_192.json",
         "docs/research/ENGINE_WORK_257.json",
         "docs/SEQUENCE_TIME_WARP.md",
-        "docs/research/ENGINE_WORK_1958.json"
+        "docs/research/ENGINE_WORK_1958.json",
+        "docs/SEQUENCE_AUDIO_ENVELOPES.md",
+        "docs/research/ENGINE_WORK_2005.json"
       ]
     },
     {

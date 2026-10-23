@@ -21,7 +21,7 @@
     "prototype/sequence-audio-envelope.js": "61a3b32a18fd60ff491b7007c744c6734205651beb1ef599f107858e32272ede",
     "prototype/take-audio-gain.js": "a53c9e0382b5646f9d2b6a3ee390f5364259c9de51391cab3a1b7461cbb739a1",
     "tools/check-sequence-audio-envelope-2000.mjs": "c231c4aa8ed20914172088298519fb578e59d21f68dfc9487b65a91de4b0cf3e",
-    "tools/check-sequence-audio-envelope-2001-window.mjs": "699e5feb730e9410bef6b7ac7f6ce00f5fef2f54522cd160fbae9b01e1c0b99e",
+    "tools/check-sequence-audio-envelope-2001-window.mjs": "9c2c6106a922ceb2c5605eb27ef06bc83d739dcf11dccd7391c13c2ca4f6b646",
     "tools/sequence-audio-envelope-offline-2002.mjs": "cfdd7e0e78d83ea8cc6aa17df5b49f90fff2be1315e122b75b6574d9a5eb14fb"
   },
   "composition": {
@@ -39,7 +39,7 @@
   },
   "targetIds": [
     "ANM-06",
-    "AUD-01"
+    "AUD-03"
   ],
   "checks": [
     {
@@ -191,7 +191,8 @@
         "name": "node.exe"
       }
     ],
-    "openedWindows": 0
+    "openedWindows": 0,
+    "hostOwnership": "COPYFILE_EXCL plus successful-copy flag; remove only this created executable after owned probe exit and SHA match. Original development executable untouched."
   },
   "installationPending": true,
   "currentInstallation": "docs/research/USER_INSTALL_1991.json",
