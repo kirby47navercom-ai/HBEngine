@@ -1,4 +1,5 @@
 import {sequenceAudioEnvelope} from './sequence-audio-envelope.js';
+import {mixSequenceAnimationEntries} from './sequence-animation-mixing.js';
 import {sequenceAudioClipRate} from './sequence-audio.js';
 import {sectionWarpRate,sectionMappedRate,sectionSourceTime,sectionWarpCrossedJump} from './sequence-time-warp.js';
 import {prepareSequencePoseChannels,writeSequencePoseChannels} from './sequence-skeletal-channels.js';
@@ -235,15 +236,16 @@ export function gameplaySystems(hooks){
   let sequenceAnimations=new WeakMap();
   function animationAdapter(state,o,vm,b){
     const empty=snapshot=>{hooks.discardAnimation?.(snapshot);const active=sequenceAnimations.get(o);if(!active)return;sequenceAnimations.delete(o);if(hooks.holdSequenceAnimation)return hooks.holdSequenceAnimation(o.id,active);return hooks.operation('stopAnimation',{target:o.id},b,vm);};
-    return {read:()=>hooks.captureAnimation?.(o.id)??null,valid:()=>vm.object(o.id)===o,empty,apply:async(sample,restoring)=>{
-      if(restoring&&(!sample||sample.kind===animationPlaybackToken)){const active=sequenceAnimations.get(o);if(!active)return;sequenceAnimations.delete(o);if(hooks.restoreAnimation)return hooks.restoreAnimation(o.id,sample,active,vm,()=>!sequenceChannels.has(o,'animation'));return hooks.operation('stopAnimation',{target:o.id},b,vm);}
+    return {mix:hooks.sampleAnimationLayers?mixSequenceAnimationEntries:undefined,read:()=>hooks.captureAnimation?.(o.id)??null,valid:()=>vm.object(o.id)===o,empty,apply:async(sample,restoring)=>{
+      if(restoring&&(!sample||sample.kind===animationPlaybackToken)){const active=sequenceAnimations.get(o);if(!active)return;sequenceAnimations.delete(o);const dormant=sequenceChannels.has(o,'animation')&&sequenceChannels.matches(o,'animation',sample);if(hooks.restoreAnimation)return hooks.restoreAnimation(o.id,sample,active,vm,()=>!sequenceChannels.has(o,'animation')||dormant&&sequenceChannels.matches(o,'animation',sample),dormant);return hooks.operation('stopAnimation',{target:o.id},b,vm);}
       if(!sample)return empty();let active=sequenceAnimations.get(o);
+      if(restoring&&active&&hooks.ownsSequenceAnimation&&!hooks.ownsSequenceAnimation(o.id,active))return;
       if(!active||active.state!==state||active.clip!==sample.clip.clip||hooks.ownsSequenceAnimation&&!hooks.ownsSequenceAnimation(o.id,active)){
         active={state,clip:sample.clip.clip};sequenceAnimations.set(o,active);
         if(hooks.playSequenceAnimation)await hooks.playSequenceAnimation(o.id,active.clip,active,b,vm);else await hooks.operation('playAnimation',{target:o.id,clip:active.clip,loop:false},b,vm);
       }
-      if(sequenceAnimations.get(o)!==active||!sequenceChannels.owns(state,o,'animation',sample)||hooks.ownsSequenceAnimation&&!hooks.ownsSequenceAnimation(o.id,active))return;
-      await hooks.sampleAnimation?.(o.id,sample.time);
+      const current=()=>sequenceAnimations.get(o)===active&&sequenceChannels.matches(o,'animation',sample)&&(!hooks.ownsSequenceAnimation||hooks.ownsSequenceAnimation(o.id,active));if(!current())return;
+      if(hooks.sampleAnimationLayers)await hooks.sampleAnimationLayers(o.id,sample.layers||[{owner:state,sample,weight:1}],current);else await hooks.sampleAnimation?.(o.id,sample.time);
     }};
   }
   const parentBatches=new WeakMap();

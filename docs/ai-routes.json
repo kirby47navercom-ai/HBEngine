@@ -3007,6 +3007,17 @@
       "paths": [
         "prototype/curve-domain-editor.js"
       ]
+    },
+    {
+      "id": "sequence-animation-mixing",
+      "keywords": [
+        "SequenceAnimationMixing",
+        "mixSequenceAnimationEntries",
+        "sequenceAnimationMixingContract"
+      ],
+      "paths": [
+        "prototype/sequence-animation-mixing.js"
+      ]
     }
   ]
 }

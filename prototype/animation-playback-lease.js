@@ -6,12 +6,15 @@ import {animationPlaybackToken} from './animation-playback-state.js';
 export class AnimationPlaybackLease {
   constructor(object,group,{animation,mixer,graph}={}){
     Object.assign(this,{kind:animationPlaybackToken,object,group,animation,mixer,graph,phase:'pending',type:graph?'graph':mixer?'mixer':animation?.type==='sprite'?'sprite':animation?'timeline':'none'});
+    this.transform=Object.fromEntries(['position','rotation','scale'].map(field=>[field,object[field]?.slice()]));this.writtenTRS=new Set();this.activeTRS=new Set();
   }
+  reconcileTRS(fields){for(const field of this.activeTRS)if(!fields.has(field)&&this.transform[field])this.object[field]=this.transform[field].slice();for(const field of fields)this.writtenTRS.add(field);this.activeTRS=new Set(fields);}
+  restoreTRS(){for(const field of this.writtenTRS)if(this.transform[field])this.object[field]=this.transform[field].slice();}
   matches({animation,mixer,graph}){return this.animation===animation&&this.mixer===mixer&&this.graph===graph;}
   prepare(players=[]){
     // Public PropertyBinding values are copied once. update(0) alone can skip
     // unchanged accumulator values after another mixer has changed the target.
-    if(this.mixer)this.pose=this.mixer.action.getClip().tracks.map(track=>{const binding=THREE.PropertyBinding.create(this.group,track.name),value=new Array(track.getValueSize()).fill(0);binding.getValue(value,0);binding.unbind();return {path:track.name,value};});
+    if(this.mixer){const actions=this.mixer.sequenceLayerActions?[...this.mixer.sequenceLayerActions.values()].map(row=>row.action):[this.mixer.action],tracks=new Map(actions.flatMap(action=>action.getClip().tracks.map(track=>[track.name,track])));this.pose=[...tracks.values()].map(track=>{const binding=THREE.PropertyBinding.create(this.group,track.name),value=new Array(track.getValueSize()).fill(0);binding.getValue(value,0);binding.unbind();return {path:track.name,value};});}
     if(this.graph)this.presentation=this.graph.capturePresentation();
     else if(players.length)this.presentation=players.at(-1).program.capturePresentation();
   }
@@ -31,6 +34,6 @@ export class AnimationPlaybackLease {
       // Dropping an unregistered mixer needs no uncacheRoot: that operation
       // writes its old bind pose and would corrupt a newer owner's final pose.
     }
-    this.phase='released';this.animation=this.mixer=this.graph=this.montages=this.presentation=this.pose=this.object=this.group=null;
+    this.phase='released';this.animation=this.mixer=this.graph=this.montages=this.presentation=this.pose=this.object=this.group=this.transform=this.writtenTRS=this.activeTRS=null;
   }
 }
