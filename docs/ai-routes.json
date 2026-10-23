@@ -2867,6 +2867,37 @@
       "paths": [
         "tools/research-source-hashes.mjs"
       ]
+    },
+    {
+      "keywords": [
+        "SequenceChannels",
+        "sequenceChannelContract",
+        "refreshOwners"
+      ],
+      "paths": [
+        "prototype/sequence-channels.js"
+      ]
+    },
+    {
+      "keywords": [
+        "blendSequenceEntries",
+        "sequenceBlendContract",
+        "sequenceBlendModes",
+        "validSequenceWeight",
+        "validSequenceBlend"
+      ],
+      "paths": [
+        "prototype/sequence-blending.js"
+      ]
+    },
+    {
+      "keywords": [
+        "mixSequencePoseEntries",
+        "blendSequencePoses"
+      ],
+      "paths": [
+        "prototype/sequence-pose-blending.js"
+      ]
     }
   ]
 }

@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **863개**, 실제 공통 C++ API **773개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **867개**, 실제 공통 C++ API **777개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -71,7 +71,7 @@
 | 2D IK | 14 | 14 |
 | 몽타주 | 13 | 13 |
 | 애니메이션 최적화 | 4 | 4 |
-| 시퀀스 | 22 | 22 |
+| 시퀀스 | 26 | 26 |
 | AI 내비게이션 | 7 | 7 |
 | AI 감지 | 3 | 3 |
 | 파티클 | 5 | 5 |
@@ -1188,6 +1188,10 @@
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
+| sequenceSetWeight | Set Weight / 시퀀스 가중치 설정 | exec: exec, target: object, weight: float | then: exec | hb::LevelSequence::SetWeight | 공통 C++ + VM |
+| sequenceWeight | Get Weight / 시퀀스 가중치 | target: object | return: float | hb::LevelSequence::GetWeight | 공통 C++ + VM |
+| sequenceSetBlendMode | Set Blend Mode / 시퀀스 혼합 방식 설정 | exec: exec, target: object, mode: string | then: exec | hb::LevelSequence::SetBlendMode | 공통 C++ + VM |
+| sequenceBlendMode | Get Blend Mode / 시퀀스 혼합 방식 | target: object | return: string | hb::LevelSequence::GetBlendMode | 공통 C++ + VM |
 | sequenceSetPriority | Set Priority / 시퀀스 우선순위 설정 | exec: exec, target: object, priority: int | then: exec | hb::LevelSequence::SetPriority | 공통 C++ + VM |
 | sequencePriority | Get Priority / 시퀀스 우선순위 | target: object | return: int | hb::LevelSequence::GetPriority | 공통 C++ + VM |
 | playSequence | Play / 레벨 시퀀스 재생 | exec: exec, target: object, asset: string | then: exec | hb::LevelSequence::Play | 공통 C++ + VM |

@@ -16,6 +16,6 @@ export class SequenceComponentWriter{
     put(object,key(id,null,null),{component,index:object.components?.findIndex(c=>c.id===id)??-1},()=>({component:clone(object.components?.find(c=>c.id===id)||null),index:object.components?.findIndex(c=>c.id===id)??-1}),track.completionMode);
     if(component)for(const [property,v]of Object.entries({...componentDefaults(component.type),...component.properties})){const type=component.type;put(object,key(id,type,property),v,()=>clone(object.components?.find(c=>c.id===id&&c.type===type)?.properties?.[property]??componentDefaults(type)[property]),track.completionMode);}
    }else{const type=track.componentType,field=componentDefinitions[type]?.properties[track.property],v=object.sequencePlayback&&field?.objectReference?remapActorValue(value,owner.spawns.ids):value;put(object,key(id,type,track.property),v,()=>clone(object.components?.find(c=>c.id===id&&c.type===type)?.properties?.[track.property]??componentDefaults(type)[track.property]),track.completionMode);}
-  }await this.channels.writeBatch(owner,[...grouped.values()].flatMap(rows=>[...rows.values()]));
+  }const updates=[...grouped.values()].flatMap(rows=>[...rows.values()]);for(const row of updates){const [,type,property]=JSON.parse(row.key.slice(prefix.length)),field=componentDefinitions[type]?.properties[property];if(['vec3','color'].includes(field?.type)||field?.type==='number'&&field.step!==1){const options=row.options;row.options=()=>({...options(),mix:'linear'});}}await this.channels.writeBatch(owner,updates);
  }
 }

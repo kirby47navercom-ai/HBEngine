@@ -578,6 +578,10 @@ public:
 HB_CLASS()
 class LevelSequence : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceSetWeight", KoreanName="시퀀스 가중치 설정", Category="시퀀스") static void SetWeight(Actor* target,float weight=1);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequenceWeight", KoreanName="시퀀스 가중치", Category="시퀀스") static float GetWeight(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceSetBlendMode", KoreanName="시퀀스 혼합 방식 설정", Category="시퀀스") static void SetBlendMode(Actor* target,const std::string& mode="override");
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequenceBlendMode", KoreanName="시퀀스 혼합 방식", Category="시퀀스") static std::string GetBlendMode(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceSetPriority", KoreanName="시퀀스 우선순위 설정", Category="시퀀스") static void SetPriority(Actor* target,int priority);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequencePriority", KoreanName="시퀀스 우선순위", Category="시퀀스") static int GetPriority(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="playSequence", KoreanName="레벨 시퀀스 재생", Category="시퀀스") static void Play(Actor* target,const std::string& asset);
