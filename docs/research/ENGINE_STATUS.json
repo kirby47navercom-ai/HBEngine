@@ -1934,7 +1934,8 @@
         "docs/research/ENGINE_WORK_1897.json",
         "docs/research/USER_INSTALL_1899.json",
         "docs/SEQUENCE_EXTERNAL_CLOCK.md",
-        "docs/research/ENGINE_WORK_1903.json"
+        "docs/research/ENGINE_WORK_1903.json",
+        "docs/research/USER_INSTALL_1905.json"
       ]
     },
     {
@@ -2490,7 +2491,8 @@
         "docs/research/ENGINE_WORK_1879.json",
         "docs/research/USER_INSTALL_1881.json",
         "docs/SEQUENCE_EXTERNAL_CLOCK.md",
-        "docs/research/ENGINE_WORK_1903.json"
+        "docs/research/ENGINE_WORK_1903.json",
+        "docs/research/USER_INSTALL_1905.json"
       ]
     },
     {
@@ -2632,7 +2634,8 @@
         "docs/research/ENGINE_WORK_1897.json",
         "docs/research/USER_INSTALL_1899.json",
         "docs/SEQUENCE_EXTERNAL_CLOCK.md",
-        "docs/research/ENGINE_WORK_1903.json"
+        "docs/research/ENGINE_WORK_1903.json",
+        "docs/research/USER_INSTALL_1905.json"
       ]
     },
     {
@@ -3751,14 +3754,14 @@
     "first": 1901,
     "last": 1903,
     "receipt": "docs/research/ENGINE_WORK_1903.json",
-    "scope": "External push clock source with five common CPP/BP APIs, finite double epoch timestamps and independent rational frame input (default30/1). First sample anchors, no input holds, repeated/backward/discontinuous time and pause/resume/Seek/Evaluate/source changes reanchor without hidden backlog. Forward gap budget errors reject before mutation. Existing event/loop/nested source offset/rate/completion/restore and parked force-seek audio. Primitive last-time/readiness/discontinuity diagnostics, Korean pins and AI schema. Seven affected regressions, final nine-condition unit, source real UI/CPP epoch precision and rational completion passed. Final installed current SDK metadata/paused readiness and standalone D3D gate required. Device I/O/PCM/pull/genlock remain."
+    "scope": "Installed external push sequence clock with five shared C++/BP APIs, double epoch timestamps and independent rational frame input/default30/1/Korean pins. First-anchor/no-input hold/repeated and backwards samples, pause/resume/seek/reset/source reanchor, forward-gap validation, nested rate/offset/events/completion/restoration and parked force-seek audio. Final installed editor and standalone D3D11 freshly compile five new plus six legacy clock APIs, epoch1.7e9+.25 -> .25, paused-ready false, rational frame progression and completion restore. Seven affected regressions and final nine-condition production unit. Exact1142 source/21 native owners with two fresh SDK headers,19 unchanged native/renderer/vendor2/binary/full manifest; User preserved, Versions1/cache32/lease0. External device I/O/pull/PCM/genlock and broader engine goals remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1899.json",
-    "sourceCommit": "a7c840ea073880161b6405eb78d516cd57098110",
-    "bundleHash": "e9b8ef0e7b256a06b198e62d04002d07baf202df01258634a4bc2ea1e7ad10cf",
+    "receipt": "docs/research/USER_INSTALL_1905.json",
+    "sourceCommit": "4b584654e917337b6b634252af48a70530e3b5e7",
+    "bundleHash": "aca9fbca3730804692b1a64ac95143b8ac35ff6b9400a6723ca76833684313bf",
     "verified": true,
     "versions": 1,
-    "scope": "Installed independent per-key axes across owners and multiple axes of one vector key: Ctrl toggle/visible marquee and selectAll, inverse per-axis drag with shared time applied once, raw numeric/tangent edits, selected-component tools, AI selectors CAS/dryRun/late-error atomic rollback. Existing absolute/normalized/stacked views and scroll preserved. Real CPP Play/Pause/Seek/Stop samples A[101,1,0] B[-10,0,1] and restores in installed editor and standalone D3D11. Nine affected regressions plus final unit crossing-time/FFT proof. Exact1139 source/all21 native+SDK/vendor2/binary/full manifest checks; User preserved, Versions1/cache32/lease0. Independent per-component key topology and broader cumulative engine goals remain."
+    "scope": "Installed external push sequence clock with five shared C++/BP APIs, double epoch timestamps and independent rational frame input/default30/1/Korean pins. First-anchor/no-input hold/repeated and backwards samples, pause/resume/seek/reset/source reanchor, forward-gap validation, nested rate/offset/events/completion/restoration and parked force-seek audio. Final installed editor and standalone D3D11 freshly compile five new plus six legacy clock APIs, epoch1.7e9+.25 -> .25, paused-ready false, rational frame progression and completion restore. Seven affected regressions and final nine-condition production unit. Exact1142 source/21 native owners with two fresh SDK headers,19 unchanged native/renderer/vendor2/binary/full manifest; User preserved, Versions1/cache32/lease0. External device I/O/pull/PCM/genlock and broader engine goals remain."
   }
 }

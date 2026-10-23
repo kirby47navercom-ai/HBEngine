@@ -1486,6 +1486,20 @@
     "Owned window screenshot expression used conflicting quotes before launch; corrected harness syntax.",
     "Final paused HasExternalTime/debug-ready predicate is false even if a paused sample arrives; final unit plus installed CPP gate covers this state."
   ],
-  "installationPending": true,
-  "scope": "External push clock source with five common CPP/BP APIs, finite double epoch timestamps and independent rational frame input (default30/1). First sample anchors, no input holds, repeated/backward/discontinuous time and pause/resume/Seek/Evaluate/source changes reanchor without hidden backlog. Forward gap budget errors reject before mutation. Existing event/loop/nested source offset/rate/completion/restore and parked force-seek audio. Primitive last-time/readiness/discontinuity diagnostics, Korean pins and AI schema. Seven affected regressions, final nine-condition unit, source real UI/CPP epoch precision and rational completion passed. Final installed current SDK metadata/paused readiness and standalone D3D gate required. Device I/O/PCM/pull/genlock remain."
+  "installationPending": false,
+  "scope": "External push clock source with five common CPP/BP APIs, finite double epoch timestamps and independent rational frame input (default30/1). First sample anchors, no input holds, repeated/backward/discontinuous time and pause/resume/Seek/Evaluate/source changes reanchor without hidden backlog. Forward gap budget errors reject before mutation. Existing event/loop/nested source offset/rate/completion/restore and parked force-seek audio. Primitive last-time/readiness/discontinuity diagnostics, Korean pins and AI schema. Seven affected regressions, final nine-condition unit, source real UI/CPP epoch precision and rational completion passed. Final installed current SDK metadata/paused readiness and standalone D3D gate required. Device I/O/PCM/pull/genlock remain.",
+  "currentInstallation": "docs/research/USER_INSTALL_1905.json",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-external-1902-window-ejOPgJ/acceptance.json",
+      "sha256": "70d7416a7df5da7b800186adb23c5b7b8fad0990e0ce918d9a7e0b0aeca9df91",
+      "scope": "External source control and five fresh C++/BP APIs: epoch double timestamp differences, no-input hold, pause/resume anchor, backwards discontinuity, seek/reset, rational frame input, completion/restore in real C++ and optional standalone D3D11. Legacy clock controls/UndoRedo/AI CAS dryRun validation/save/runtime lock; six freshly compiled clock C++ APIs, manual pose and frame query, all source getters. Optional standalone D3D11 package.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\aca9fbca37308046\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 100265.9254
+    }
+  ]
 }

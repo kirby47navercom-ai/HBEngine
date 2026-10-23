@@ -1159,4 +1159,6 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 
 1898–1900: 최종설치다중축같은key/다른owner선택·inverse축별drag/시간+.25한번·숫자7/탄젠트6/toggle/mirror/marquee/Undo·AI selections CAS/dryRun/lateinvalidrollback·CPP A[101,1,0]/B[-10,0,1]와restore·별도D3D 75.73초통과. manifest4473/source1139/native21+SDK/vendor2/binary불변·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전197235862B정리. USER_INSTALL1899. 독립채널저장·나머지누적잔여유지.
 
-1901–1903: 外部push시계(double초/독립분수frame)·5CPP/BP API/한글핀/기본30/1·anchor/hold/동일·역행/timegap검증·pause/seek/evaluate/source reset·기존event/loop/하위/rate/restore·정지audioSeek·primitive진단 구현.7회귀/최종unit9조건·실제source epoch1.7e9+.25/C++분수완료복원통과. SDK2header변경freshfixture·나머지19native/HostPlayer/renderer exact재사용. 설치최종pause-ready/독립D3D gate예정. 장치I/O/pull/PCM/genlock등잔여유지. WORK1903.
+1901–1903: 외부push시계(double초/독립분수frame)·5CPP/BP API/한글핀/기본30/1·anchor/hold/동일·역행/timegap검증·pause/seek/evaluate/source reset·기존event/loop/하위/rate/restore·정지audioSeek·primitive진단 구현.7회귀/최종unit9조건·실제source epoch1.7e9+.25/C++분수완료복원통과. SDK2header변경freshfixture·나머지19native/HostPlayer/renderer exact재사용. 설치최종pause-ready/독립D3D gate예정. 장치I/O/pull/PCM/genlock등잔여유지. WORK1903.
+
+1904–1906: 최종설치5새API+6기존API freshCPP editor/별도D3D·epoch1.7e9+.25→.25·pausedReadyfalse·역행/seek/reset/30000/1001 rational .8001·완료원상복원 100.27초통과. manifest4478/source1142/SDK2fresh·나머지19native/renderer/vendor2/PlayerHost exact·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전197437315B정리. USER_INSTALL1905. 장치/pull/PCM/genlock등누적잔여유지.
