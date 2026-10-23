@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "date": "2026-10-23T15:10:13.218Z",
+  "kind": "installed-imported-root-model-child-alias-consolidation",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2091.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "121348a82cf98407138cdbd7c53a4d1f0c4dc1c696f2f7a49834124f944e015d"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "installedSnapshot": "docs/research/ENGINE_WORK_2091.json",
+  "installationReceipt": "docs/research/USER_INSTALL_2094.json",
+  "installedIndependentGamePending": false,
+  "installedGames": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\ed1f58353c475d09",
+    "rows": [
+      {
+        "id": "imported-transform-alias",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\imported-transforms-installed-2093-mgmor8\\acceptance.json",
+        "sha256": "62d712063a889149ac75de053800af658ded13aec8e016671a59abb090d4c5ac",
+        "ms": 42247.8118
+      }
+    ]
+  },
+  "nativePixelProof": {
+    "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\imported-transforms-installed-2093-mgmor8\\acceptance.json",
+    "sha256": "62d712063a889149ac75de053800af658ded13aec8e016671a59abb090d4c5ac",
+    "method": "Existing hbPlayerDebug.capture -> native hbCapture swapchain readback; no CDP black surface used as native proof",
+    "before": {
+      "width": 640,
+      "height": 400,
+      "nonblack": 256000,
+      "sha256": "0b653c4c0967d5056c6dae8d56719b3595524db6746abc94dd69d3a04e21df9c"
+    },
+    "after": {
+      "width": 640,
+      "height": 400,
+      "nonblack": 256000,
+      "sha256": "e8c2661ff44412e3a6b00c81e7232abf9f144dbaf8e1fbdaf05a7c72d5ba1636"
+    },
+    "pixelsChanged": 5364,
+    "directlyInspected": true,
+    "repeatGameNeeded": false
+  },
+  "scope": "Installed imported full actor-root/direct/Transform/HB canonical field arbitration and local model-child live identity aliases, normalized/quaternion weights/priority/order, zero/gaps/completion/origin, ordinary root Scene state synchronization, sparse weak-history underlying presentation and held/external/identity restoration. Explicit bounded copied transformChannels telemetry. Bone all-zero progressing original/reactivation restore fixed with weak watched live fields. Root15 cases and bone16 cases plus8 other affected gates passed. Admitted staged-source GUI human component-curve/Undo/save/AI CAS and actual GLTF/C++19 observations; installed builder and independent D3D11 game repeat19 actor Scene TRS/child local query observations, exit0 in42.25sec. Native swapchain capture5364 changed pixels directly inspected.4619 files/1252 owners, User10849 files identical read-only before/after hashes, shortcuts/association, focusedAI1owner72.74ms and Versions1 verified. Prior199821624B retired; repeated failed-fixture diagnostics89346057B compacted with reproducer/first diagnostics retained; owned profiles/Builds pruned. No indexed/renderer aliases, arbitrary external action/simulation/notify/setter rollback, FPS/device/full-engine claim.",
+  "next": {
+    "areas": [
+      "ANM-06",
+      "CPP-01",
+      "RND-08"
+    ],
+    "owner": "sequence-imported-transforms / sequence-imported-pose -> related renderer-parameter/indexed binding owners",
+    "remainingExamples": [
+      "indexed transform/bone bindings",
+      "renderer-property aliases",
+      "independent per-axis key time/interpolation/delete topology",
+      "generic external simulation/notify/async setter rollback",
+      "remaining rendering/globalDF and C++ owners"
+    ],
+    "rule": "Continue real remaining implementations. Reuse passed unchanged evidence within exact scoped source/binary hashes; no whole-engine completion claim."
+  }
+}

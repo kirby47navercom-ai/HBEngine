@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "date": "2026-10-23T15:10:13.218Z",
+  "kind": "verified-installed-imported-root-model-child-transform-aliases",
+  "sourceCommit": "344d13fec7d7d77b9e74d8a1c134606bc711a4f2",
+  "sourceReceipt": "docs/research/ENGINE_WORK_2091.json",
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "independentGameVerified": true,
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ed1f58353c475d09",
+  "bundleHash": "ed1f58353c475d09d39c0409f73dd7de3006fdf2ce22b3a35e147136c4122cc4",
+  "versions": 1,
+  "manifestFiles": 4619,
+  "admittedOwners": 1252,
+  "profile": {
+    "files": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4611,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9cd3bc35cf26da0e",
+        "bytes": 199821624,
+        "manifestSHA256": "6c2b00ace6013fe46d299e37efa2d2936949f6822c7dd33b445c979d2bab90f7"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T15:05:27.0758427Z",
+    "bytes": 199821624,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "ed1f58353c475d09"
+    ]
+  },
+  "overridden": [
+    {
+      "path": "prototype/player.js",
+      "policy": "admitted HEAD bytes only; unrelated dirty worktree preserved"
+    }
+  ],
+  "changed": 10,
+  "sourceWindow": {
+    "report": "native/build/sequence-imported-transforms-2084-window-ydGXZT/acceptance.json",
+    "sha256": "a7e1518ebdb0288f98e852fa2b14c94236a0bff568621b29eb9ff78edbd3bb21",
+    "observations": 19,
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "checks": {
+      "humanComponentCurve": true,
+      "undoRedoSave": true,
+      "aiPatchDryRunStaleUndo": true,
+      "actualImportedGltfActorRootAndChild": true,
+      "cppControlsAndActorTRSGetters": true
+    },
+    "admittedStagedSource": {
+      "report": "native/build/staged-source2085.json",
+      "playerSHA": "8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1"
+    },
+    "postWindowChanges": "Only additional HB/imported cross-family source case and contract text; runtime body unchanged.",
+    "visuallyInspected": "imported-root-component-curve.png",
+    "finalInstalledGamePending": false,
+    "finalInstalledGameReceipt": "docs/research/USER_INSTALL_2094.json"
+  },
+  "installedGames": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\ed1f58353c475d09",
+    "rows": [
+      {
+        "id": "imported-transform-alias",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\imported-transforms-installed-2093-mgmor8\\acceptance.json",
+        "sha256": "62d712063a889149ac75de053800af658ded13aec8e016671a59abb090d4c5ac",
+        "ms": 42247.8118
+      }
+    ]
+  },
+  "nativePixelProof": {
+    "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\imported-transforms-installed-2093-mgmor8\\acceptance.json",
+    "sha256": "62d712063a889149ac75de053800af658ded13aec8e016671a59abb090d4c5ac",
+    "method": "Existing hbPlayerDebug.capture -> native hbCapture swapchain readback; no CDP black surface used as native proof",
+    "before": {
+      "width": 640,
+      "height": 400,
+      "nonblack": 256000,
+      "sha256": "0b653c4c0967d5056c6dae8d56719b3595524db6746abc94dd69d3a04e21df9c"
+    },
+    "after": {
+      "width": 640,
+      "height": 400,
+      "nonblack": 256000,
+      "sha256": "e8c2661ff44412e3a6b00c81e7232abf9f144dbaf8e1fbdaf05a7c72d5ba1636"
+    },
+    "pixelsChanged": 5364,
+    "directlyInspected": true,
+    "repeatGameNeeded": false
+  },
+  "audit": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\ed1f58353c475d09",
+    "focusedAI": {
+      "symbol": "ImportedSequenceTransformProgram",
+      "owner": "prototype/sequence-imported-transforms.js",
+      "filesRead": 1,
+      "elapsedMs": 72.74,
+      "installation": {
+        "observed": true,
+        "root": "C:\\Users\\kirby\\HBEngine\\Versions\\ed1f58353c475d09",
+        "marker": "HBEngine.install.json",
+        "bundleHash": "ed1f58353c475d09d39c0409f73dd7de3006fdf2ce22b3a35e147136c4122cc4",
+        "installedAt": "2026-10-23T15:05:23.510Z",
+        "manifestFiles": 4619,
+        "integrityChecked": false
+      }
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "cache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "versions": [
+      "ed1f58353c475d09"
+    ],
+    "scope": "Read-only installed focused context/shortcut/association plus live-aware native-cache prune. Installer preflight holds exact file/owner hashes and profile comparison. No duplicate GUI/game/renderer run."
+  },
+  "preflight": {
+    "report": "native/build/user-install-2092-preflight.json",
+    "sha256": "94f3ef55b71695c589f6ecaa714d650c4e921ca45d1d53bf4fb309f921000cad"
+  },
+  "nativeReuse": {
+    "sourceBase": "docs/research/ENGINE_WORK_1955.json",
+    "owners": 21,
+    "reason": "Native source/vendor/binaries unchanged; install verifies exact admitted native/binary hashes; no full SDK/renderer rerun."
+  },
+  "scope": "Installed imported full actor-root/direct/Transform/HB canonical field arbitration and local model-child live identity aliases, normalized/quaternion weights/priority/order, zero/gaps/completion/origin, ordinary root Scene state synchronization, sparse weak-history underlying presentation and held/external/identity restoration. Explicit bounded copied transformChannels telemetry. Bone all-zero progressing original/reactivation restore fixed with weak watched live fields. Root15 cases and bone16 cases plus8 other affected gates passed. Admitted staged-source GUI human component-curve/Undo/save/AI CAS and actual GLTF/C++19 observations; installed builder and independent D3D11 game repeat19 actor Scene TRS/child local query observations, exit0 in42.25sec. Native swapchain capture5364 changed pixels directly inspected.4619 files/1252 owners, User10849 files identical read-only before/after hashes, shortcuts/association, focusedAI1owner72.74ms and Versions1 verified. Prior199821624B retired; repeated failed-fixture diagnostics89346057B compacted with reproducer/first diagnostics retained; owned profiles/Builds pruned. No indexed/renderer aliases, arbitrary external action/simulation/notify/setter rollback, FPS/device/full-engine claim."
+}
