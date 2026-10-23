@@ -2516,7 +2516,9 @@
         "curveSelectionRows",
         "copyCurveGroup",
         "parseCurveGroup",
-        "pasteCurveGroup"
+        "pasteCurveGroup",
+        "curveAxes",
+        "remapCurveSelection"
       ],
       "paths": [
         "prototype/curve-selection.js"
@@ -2549,6 +2551,16 @@
       ],
       "paths": [
         "prototype/curve-view.js"
+      ]
+    },
+    {
+      "id": "curve-channel-selection-edit",
+      "keywords": [
+        "editCurveChannels",
+        "curveChannelContract"
+      ],
+      "paths": [
+        "prototype/curve-channel-edit.js"
       ]
     }
   ]
