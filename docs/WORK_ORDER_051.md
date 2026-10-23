@@ -1174,3 +1174,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1919–1921: 프로젝트타입에셋목록자동발견/검색페이지·선택선언요약·새변수/기존변수/미저장field공용picker·타입+참조한UndoRedo·AI read/apply/source·targetrevision/dryRun/같은type값보존·미저장/오래된원본/ABI변경거절 구현.6영향gate/513목록본문0조회·실제창59.24초/후속이관/CPP[99,4,12]/BP[99,3,2]통과. nativeSDK exact재사용·설치D3D gate대기. 임의CPP헤더/전역runtime registry별도. WORK1921.
 
 1922–1924: 최종설치 415eb67c57007e0c 프로젝트타입발견/선언picker/자동참조/BP변수·새field·한UndoRedo·AI source/targetrevision/dryRun/noChange·미저장/오래된source/ABI변경거절·저장값후속이관·CPP[99,4,12]/BP[99,3,2]/Actoridentity와별도D3D11 90.65초통과. manifest4497/source1155/native21+SDK/renderer/vendor2/binaries exact·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전198044391B퇴역. USER_INSTALL1923. 임의CPP헤더발견/런타임registry/파괴적이관은별도.
+
+1925–1927: 골격뼈별lease/우선순위·layout/빈구간양보·weak Bone identity복원·poseWeight baseline혼합·UI/Undo/save·AI page/schema·1024뼈binding/sample/matrix1·정지묶음복원 구현.5영향gate·실제CPP모델교체/동시partial/priority통과. nativeSDK exact재사용·설치D3D gate대기. normalized경쟁layer/Animation별칭·외부callbackrollback별도. WORK1927.
