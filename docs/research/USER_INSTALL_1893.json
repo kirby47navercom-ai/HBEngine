@@ -1,0 +1,169 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-normalized-stacked-curve-authoring",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "92a3fc424897bb2bc61d5c8e5f4ca3930e27d349",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2da60eaae54797b3",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\2da60eaae54797b3\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\2da60eaae54797b3\\HBEngine.exe",
+  "bundleHash": "2da60eaae54797b3689779357ffb7d7d13c2af7eddac2faa84d0f58fc403d7b8",
+  "files": 4467,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4462,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\89e9545cf1cd77be",
+        "bytes": 197041864,
+        "manifestSHA256": "9b9ff42705bc15e720e14e4d811b98d3295ab3fc6edf494a63deb758671ddab7"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T02:43:00.7672808Z",
+    "bytes": 197041864,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "2da60eaae54797b3"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1135,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/curve-view-1890-window-H9Pm9q/acceptance.json",
+      "sha256": "419bc857d72e3bbf78d1ec565db3382553d4b457e746502c805583dad7b64cb0",
+      "scope": "Owned actual three view modes, normalized inverse key/handle/marquee/raw input, channel visibility across Undo, independently scrollable stacked lanes and differing raw group drag amounts, AI view read/set/CAS/dryRun/error with unchanged authored revision; real CPP raw values/restoration. Optional standalone D3D11.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2da60eaae54797b3\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 58426.319
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\2da60eaae54797b3\\",
+    "elapsedMs": 67.15,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\2da60eaae54797b3",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "2da60eaae54797b3689779357ffb7d7d13c2af7eddac2faa84d0f58fc403d7b8",
+      "installedAt": "2026-10-23T02:42:56.769Z",
+      "manifestFiles": 4467,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1887.json\",\"changedSDK\":[],\"scope\":\"All21 native owners/SDK, Host1041/Player1604 and renderer exact hash unchanged. Actual newly authored fixture compiled CPP playback samples both edited curve targets and restores in installed editor and independent D3D11. Historical30 native test sources are provenance, not a fresh full-SDK run.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4467,
+  "versions": [
+    "2da60eaae54797b3"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1893-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/curveView1891-group.json",
+      "sha256": "673674314741c5e4646ed038507c268da6919726930dd986893e1bcbdc7b7f73",
+      "scope": "Affected curve view/authoring regression."
+    },
+    {
+      "path": "native/build/curve-view-1889-cQ9ZAf/acceptance.json",
+      "sha256": "0b64dc7cee4e40a760237f9880b1b7780ec1c1c0d4737390dda48bad926f9dc4",
+      "scope": "Independent affine values and weighted Bezier hull, production TimelineEditor inverse pointer edits, constant/hidden/stacked geometry and view-only preservation. Actual human controls/handles/scroll/C++ separate."
+    },
+    {
+      "path": "native/build/multi-curves-1883-ecoJrR/acceptance.json",
+      "sha256": "b3c73e1c71e798e5550aab7ed360d7f425da7d9e23382f4524f185316aae8b4a",
+      "scope": "Atomic production multi-curve authoring/tools, shared TimelineEditor selection/edit/delete/weights, strict group clipboard and existing single-curve path. Actual pointer/C++/package proof separate."
+    },
+    {
+      "path": "native/build/timeline-rate-1871-GvbPgb/acceptance.json",
+      "sha256": "54c1706274dce2005647cc958a89c654dd9fb5466d91b73986ae5a99c259fec4",
+      "scope": "Rational authoring conversions, independent BigInt expected values,10000 steps/rate, DF boundaries, ruler/bake and production gameplay frame services. Actual editor/C++/packaged rendering is a separate gate."
+    },
+    {
+      "path": "native/build/sequence-origins-curves-1266-wtYGUM/acceptance.json",
+      "sha256": "8f0f4add53878c16ba829feb0029194f7c301e76b25312c03eff8fe8e7305a30",
+      "scope": "Prepared Hermite/constant/shared samplers, typed atomic authoring; actual shared gameplay origin composition/dynamic actor identity/order/nested world override/attached local/restore/invalid replacement. No GPU compile, native rebuild, FPS or mobile hardware claim."
+    },
+    {
+      "path": "native/build/curve-tools-1319-nvT7ty/acceptance.json",
+      "sha256": "5f766b79b1b4d7751c4de9a9131e4be27d65467c47ed908785fcc232887f2501",
+      "scope": "Independent PCHIP slopes/monotonic vectors, inherited and shared samplers, affine weighted oracle, channel preservation, bake/reduce max source-key error, typed/atomic budget rejection, skeletal authoring and actual AnimationGraph. GUI/native game separate."
+    },
+    {
+      "path": "native/build/curve-clipboard-1344-Mpzbax/acceptance.json",
+      "sha256": "e2ff76afa03b1c72bd31d019b63b291fb2fb77f5a45ba926d72e9de8e0d9cd0e",
+      "scope": "Typed scalar/vector/color/event key clipboard, relative-time origin, shape/weight/size/precision/budget atomic rejection, source isolation, cross-document sequence/skeletal authoring and legacy explicit shortcut preservation. No OS clipboard access."
+    },
+    {
+      "path": "native/build/weighted-curves-1294-FXFd5T/acceptance.json",
+      "sha256": "933a79d2370d0d8e3ef69ce3d2ba61785e8e7cb9d3d44cf9a45a3c98e33de061",
+      "scope": "Independent forward Bezier time/value oracle, exact legacy fast path, numeric/vector weights and public validation, shared sequence/BP/animation samplers, atomic AI edits and gameplay service seek/restore. GUI/package separate; no physics/GPU/FPS claim."
+    },
+    {
+      "path": "native/build/curve-authoring-1324-t9F2Vk/acceptance.json",
+      "sha256": "d120b4593bc14ea6aed1ff25b42bd0ee52f670e0033e995e14cee2439df56649",
+      "scope": "Owned hidden actual Sequence editor: Ctrl+A/6 sets all keys clamped, shared AI affine tool changes selected channel atomically with dryRun/stale/invalid/Undo, manual weighted handle drag after automatic mode. No user window/project or repeated C++/renderer matrix."
+    },
+    {
+      "path": "native/build/curve-view-1889-cwIaH4/acceptance.json",
+      "sha256": "0b64dc7cee4e40a760237f9880b1b7780ec1c1c0d4737390dda48bad926f9dc4",
+      "scope": "Independent affine values and weighted Bezier hull, production TimelineEditor inverse pointer edits, constant/hidden/stacked geometry and view-only preservation. Actual human controls/handles/scroll/C++ separate."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/curve-view-1890-window-AUqybT/acceptance.json",
+      "sha256": "78de0e64cd2780a6fab83622969ff6a87e6324e6f8a30e501d00eac3f600485d",
+      "scope": "Owned actual three view modes, normalized inverse key/handle/marquee/raw input, channel visibility across Undo, independently scrollable stacked lanes and differing raw group drag amounts, AI view read/set/CAS/dryRun/error with unchanged authored revision; real CPP raw values/restoration. Optional standalone D3D11.",
+      "note": "Full current human view/key/handle/marquee/zoom/pan/scroll/group/AI/CPP passed before final absolute identity shortcut (same math, unit checked). No source standalone package claimed. Installed full gate required."
+    }
+  ],
+  "scope": "Installed absolute/normalized/stacked sequence curve views with inverse raw key/handle/marquee/group editing, value-axis zoom/pan, independent scrollable component lanes and visibility preserved across Undo. AI view read/set/CAS/dryRun/invalid mode/bool/revision preserves authored data. Real CPP Play/Pause/Seek/Stop samples raw authored targets and restores in installed editor and standalone D3D11. Eight affected regressions plus final affine/hull/tiny/identity unit. Exact1135 source/all21 native+SDK/vendor2/binary/full manifest checks; User preserved, Versions1/cache32/lease0. Per-key differing channel axes and broader cumulative engine goals remain."
+}

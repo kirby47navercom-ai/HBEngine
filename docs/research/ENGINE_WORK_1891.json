@@ -1485,6 +1485,20 @@
     "Numeric CSS attribute selector in visibility assertion was unquoted; corrected by indexed channel list lookup.",
     "Final absolute identity shortcut and tiny-span finite scale guard unit checked after affected group; final installed UI/CPP/D3D gate required."
   ],
-  "installationPending": true,
-  "scope": "Absolute/normalized/stacked sequence value views preserve authored keys/handles/bindings and revision. Weighted control-hull affine ranges, constant/subnormal handling, independent component lanes and scroll with matching SVG viewBox. Shared inverse key/tangent/marquee/group drag/value-axis zoom/pan and raw numeric fields, stable coefficients until Fit/mode/hidden update; hidden channels survive Undo. AI view read/set/CAS/dryRun/invalid bool/mode/revision preserve authoring state. Eight affected regressions, independent affine expectations and10001 weighted samples, actual source UI interactions and CPP raw playback/restoration passed. Final identity shortcut is unit checked; installed full UI and independent D3D gate required. Per-key differing channel axes remain."
+  "installationPending": false,
+  "scope": "Absolute/normalized/stacked sequence value views preserve authored keys/handles/bindings and revision. Weighted control-hull affine ranges, constant/subnormal handling, independent component lanes and scroll with matching SVG viewBox. Shared inverse key/tangent/marquee/group drag/value-axis zoom/pan and raw numeric fields, stable coefficients until Fit/mode/hidden update; hidden channels survive Undo. AI view read/set/CAS/dryRun/invalid bool/mode/revision preserve authoring state. Eight affected regressions, independent affine expectations and10001 weighted samples, actual source UI interactions and CPP raw playback/restoration passed. Final identity shortcut is unit checked; installed full UI and independent D3D gate required. Per-key differing channel axes remain.",
+  "currentInstallation": "docs/research/USER_INSTALL_1893.json",
+  "installedGates": [
+    {
+      "path": "native/build/curve-view-1890-window-H9Pm9q/acceptance.json",
+      "sha256": "419bc857d72e3bbf78d1ec565db3382553d4b457e746502c805583dad7b64cb0",
+      "scope": "Owned actual three view modes, normalized inverse key/handle/marquee/raw input, channel visibility across Undo, independently scrollable stacked lanes and differing raw group drag amounts, AI view read/set/CAS/dryRun/error with unchanged authored revision; real CPP raw values/restoration. Optional standalone D3D11.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2da60eaae54797b3\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 58426.319
+    }
+  ]
 }
