@@ -1918,7 +1918,8 @@
         "docs/research/ENGINE_WORK_1873.json",
         "docs/research/USER_INSTALL_1875.json",
         "docs/SEQUENCE_PLAYBACK_CLOCK.md",
-        "docs/research/ENGINE_WORK_1879.json"
+        "docs/research/ENGINE_WORK_1879.json",
+        "docs/research/USER_INSTALL_1881.json"
       ]
     },
     {
@@ -2471,7 +2472,8 @@
         "docs/research/ENGINE_WORK_1873.json",
         "docs/research/USER_INSTALL_1875.json",
         "docs/SEQUENCE_PLAYBACK_CLOCK.md",
-        "docs/research/ENGINE_WORK_1879.json"
+        "docs/research/ENGINE_WORK_1879.json",
+        "docs/research/USER_INSTALL_1881.json"
       ]
     },
     {
@@ -2597,7 +2599,8 @@
         "docs/research/ENGINE_WORK_1873.json",
         "docs/research/USER_INSTALL_1875.json",
         "docs/SEQUENCE_PLAYBACK_CLOCK.md",
-        "docs/research/ENGINE_WORK_1879.json"
+        "docs/research/ENGINE_WORK_1879.json",
+        "docs/research/USER_INSTALL_1881.json"
       ]
     },
     {
@@ -3716,14 +3719,14 @@
     "first": 1877,
     "last": 1879,
     "receipt": "docs/research/ENGINE_WORK_1879.json",
-    "scope": "Optional game/unscaled/manual/PlayEveryFrame sequence clocks preserve seconds content and independent display/capture/engine cadence. Event-aware manual Advance and silent Evaluate share sampling, nested sections, restoration and reentrant control guard; parked manual/frame audio prevents free-running drift. Rational frame hold advances at most one frame/update and discards excess elapsed time. Six shared C++/BP APIs, authoring controls/UndoRedo/AI CAS dryRun/validation/save and seven affected regressions passed. Final visible controls, installed current SDK compile and independent D3D gate required. Active VM delta is not a global platform/DSP/timecode provider."
+    "scope": "Installed four sequence clock modes and six common CPP/BP APIs. Manual event-aware Advance and silent Evaluate share pose/events/nested sections/restore; rational frame holds one frame/update without catch-up debt. Visible human source/hold controls, UndoRedo/AI CAS dryRun/invalid validation/save/runtime lock and six freshly compiled CPP functions passed in installed editor and standalone D3D11. Seven affected source regressions; exact1126 source/21 native owners with two changed SDK headers, vendor/binary/full manifest checks, User preserved, Versions1/cache32/lease0. External audio/timecode/RTC/genlock and independent channel clocks remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1875.json",
-    "sourceCommit": "727db98e4f07991eb9f8dfb240e89966dd652ff9",
-    "bundleHash": "ad14238a724a5a30ef5e1b5f90838bd4ec3a87ed91acc503c7b6eb4f5137c5be",
+    "receipt": "docs/research/USER_INSTALL_1881.json",
+    "sourceCommit": "019761e276d6b34b3bd301f592056c166c631354",
+    "bundleHash": "c18341dc2addcb5e7113c5c52b0057219b25143542b09aa266822426e2b0461d",
     "verified": true,
     "versions": 1,
-    "scope": "Installed rational displayRate/DF authoring with seconds content preserved, frame/timecode transport and ruler, step, actual snapped/Shift-free drag, curve opening from selected key, default rational bake/AI dryRun/Undo/save, invalid rate rejection and locked incompatible DF input. All visible rate controls and compact same-row TC input verified. Four newly compiled CPP LevelSequence frame functions and existing play/pause/seek/stop pass in actual installed editor and independent D3D11 package; eight affected source regressions. Exact1121 source/21 native owners with two changed SDK headers, vendor/binary/full manifest checks; User profile preserved, Versions1/cache32/lease0, old install retired. Custom/PlayEveryFrame, external clocks and broader cumulative goals remain."
+    "scope": "Installed four sequence clock modes and six common CPP/BP APIs. Manual event-aware Advance and silent Evaluate share pose/events/nested sections/restore; rational frame holds one frame/update without catch-up debt. Visible human source/hold controls, UndoRedo/AI CAS dryRun/invalid validation/save/runtime lock and six freshly compiled CPP functions passed in installed editor and standalone D3D11. Seven affected source regressions; exact1126 source/21 native owners with two changed SDK headers, vendor/binary/full manifest checks, User preserved, Versions1/cache32/lease0. External audio/timecode/RTC/genlock and independent channel clocks remain."
   }
 }

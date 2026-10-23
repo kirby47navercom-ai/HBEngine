@@ -1477,6 +1477,20 @@
     "Audio fixture originally omitted required existing slot field; corrected before passing grouped runtime proof.",
     "Source screenshot had new controls below scroll fold; final installed gate scrolls fieldset and asserts actual visible labels/select/input before capture."
   ],
-  "installationPending": true,
-  "scope": "Optional game/unscaled/manual/PlayEveryFrame sequence clocks preserve seconds content and independent display/capture/engine cadence. Event-aware manual Advance and silent Evaluate share sampling, nested sections, restoration and reentrant control guard; parked manual/frame audio prevents free-running drift. Rational frame hold advances at most one frame/update and discards excess elapsed time. Six shared C++/BP APIs, authoring controls/UndoRedo/AI CAS dryRun/validation/save and seven affected regressions passed. Final visible controls, installed current SDK compile and independent D3D gate required. Active VM delta is not a global platform/DSP/timecode provider."
+  "installationPending": false,
+  "scope": "Optional game/unscaled/manual/PlayEveryFrame sequence clocks preserve seconds content and independent display/capture/engine cadence. Event-aware manual Advance and silent Evaluate share sampling, nested sections, restoration and reentrant control guard; parked manual/frame audio prevents free-running drift. Rational frame hold advances at most one frame/update and discards excess elapsed time. Six shared C++/BP APIs, authoring controls/UndoRedo/AI CAS dryRun/validation/save and seven affected regressions passed. Final visible controls, installed current SDK compile and independent D3D gate required. Active VM delta is not a global platform/DSP/timecode provider.",
+  "currentInstallation": "docs/research/USER_INSTALL_1881.json",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-clock-1878-window-wSInzl/acceptance.json",
+      "sha256": "7e7b2db32fb2da39bd74e455ec7501ca5a5168567383c3666e73389b96834fb7",
+      "scope": "Actual clock controls/UndoRedo/AI CAS dryRun validation/save/runtime lock; six freshly compiled clock C++ APIs, manual pose and frame query, all source getters. Optional standalone D3D11 package.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\c18341dc2addcb5e\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 85919.11000000002
+    }
+  ]
 }

@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-sequence-manual-frame-clocks",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "019761e276d6b34b3bd301f592056c166c631354",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\c18341dc2addcb5e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\c18341dc2addcb5e\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\c18341dc2addcb5e\\HBEngine.exe",
+  "bundleHash": "c18341dc2addcb5e7113c5c52b0057219b25143542b09aa266822426e2b0461d",
+  "files": 4454,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4448,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ad14238a724a5a30",
+        "bytes": 196644915,
+        "manifestSHA256": "6c21d43c9889b36481fd8a5e3120228d16317d66c8f4f971c6a986fabd28186a"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T01:50:23.7834818Z",
+    "bytes": 196644915,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "c18341dc2addcb5e"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1126,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [
+    "native/include/HBEngine/Bridge.hpp",
+    "native/include/HBEngine/Game.hpp"
+  ],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/sequence-clock-1878-window-wSInzl/acceptance.json",
+      "sha256": "7e7b2db32fb2da39bd74e455ec7501ca5a5168567383c3666e73389b96834fb7",
+      "scope": "Actual clock controls/UndoRedo/AI CAS dryRun validation/save/runtime lock; six freshly compiled clock C++ APIs, manual pose and frame query, all source getters. Optional standalone D3D11 package.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\c18341dc2addcb5e\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 85919.11000000002
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\c18341dc2addcb5e\\",
+    "elapsedMs": 67.76,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\c18341dc2addcb5e",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "c18341dc2addcb5e7113c5c52b0057219b25143542b09aa266822426e2b0461d",
+      "installedAt": "2026-10-23T01:50:20.194Z",
+      "manifestFiles": 4454,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1875.json\",\"changedSDK\":[\"native/include/HBEngine/Game.hpp\",\"native/include/HBEngine/Bridge.hpp\"],\"scope\":\"Host1041/Player1604/renderer and19 native owner hashes unchanged. Two changed SDK headers freshly compile/run with all six new LevelSequence clock APIs and original playback APIs in installed editor and independent D3D11. Historical30 native test source hashes are provenance, not a fresh full-SDK run.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4454,
+  "versions": [
+    "c18341dc2addcb5e"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1881-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/sequence1879-group.json",
+      "sha256": "8564fa1f0326f62ee6347b2e1a9a3a99c00a1807305f01341bdac3215b672ea7",
+      "scope": "Seven affected sequence/runtime regression families."
+    },
+    {
+      "path": "native/build/sequence-clock-1877-6hVi0X/acceptance.json",
+      "sha256": "75c4615b4c824322cb2f03a4c2e7667359eba3176280bf307591b07b24a92444",
+      "scope": "Authored clock settings and production gameplay sampling, manual/rational frame/loop/events/completion/reentrant controls and C++/BP metadata. Window/CPP/D3D proof separate."
+    },
+    {
+      "path": "native/build/timeline-rate-1871-dWV5Ul/acceptance.json",
+      "sha256": "54c1706274dce2005647cc958a89c654dd9fb5466d91b73986ae5a99c259fec4",
+      "scope": "Rational authoring conversions, independent BigInt expected values,10000 steps/rate, DF boundaries, ruler/bake and production gameplay frame services. Actual editor/C++/packaged rendering is a separate gate."
+    },
+    {
+      "path": "native/build/sequence-sections-1250-givNF7/acceptance.json",
+      "sha256": "233db272554e0e4cd74a24e73595be3a84ff62c40b9e13d42c8f1c9116996709",
+      "scope": "Sequence sections model/tree load and actual shared gameplay services: local offset/rate/loop, seek/reenter/exit restoration, nested priority, shot row arbitration, event ranges and atomic invalid replacement. No renderer/FPS/native rebuild."
+    },
+    {
+      "path": "native/build/sequence-origins-curves-1266-ViaE6T/acceptance.json",
+      "sha256": "8f0f4add53878c16ba829feb0029194f7c301e76b25312c03eff8fe8e7305a30",
+      "scope": "Prepared Hermite/constant/shared samplers, typed atomic authoring; actual shared gameplay origin composition/dynamic actor identity/order/nested world override/attached local/restore/invalid replacement. No GPU compile, native rebuild, FPS or mobile hardware claim."
+    },
+    {
+      "path": "native/build/sequence-ownership-268-6KGrBc/acceptance.json",
+      "sha256": "63893a1a939f943c5b94d938acefe7e2b85947330a37d4623f6614cb2647d5d5",
+      "scope": "Seven affected sequence/runtime regression families."
+    },
+    {
+      "path": "native/build/sequence-priority-272-TaxZFU/acceptance.json",
+      "sha256": "09df8cd16bfc1d0966d17756de24970ff2e8dc5a765d4ccbd025ae442a1a69a3",
+      "scope": "Seven affected sequence/runtime regression families."
+    },
+    {
+      "path": "native/build/playback-leases-1865-NiIEr6/acceptance.json",
+      "sha256": "3462c2d9d739a6560a7876af311349d1deecc7240beecca91521a84db7a90441",
+      "scope": "Production VM/services/THREE graph+montage+sequence and independent real finite mixer controls. No new C++ API or per-frame worker/timer; existing sequence C++ entry points share these services. Notify callbacks explicitly use interruption/re-entry, not latent rollback."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/sequence-clock-1878-window-xm9Njl/acceptance.json",
+      "sha256": "bb7a858226fc142c428da2934dff0540b46494625df3fb097a98c34c2f5ca380",
+      "scope": "Actual clock controls/UndoRedo/AI CAS dryRun validation/save/runtime lock; six freshly compiled clock C++ APIs, manual pose and frame query, all source getters. Optional standalone D3D11 package.",
+      "note": "Source editor authoring/UndoRedo/CAS dryRun/invalid validation/save/runtime lock and six newly compiled CPP functions passed. Final visible controls assertion added afterward; required in installed gate. No source standalone package claimed."
+    }
+  ],
+  "scope": "Installed four sequence clock modes and six common CPP/BP APIs. Manual event-aware Advance and silent Evaluate share pose/events/nested sections/restore; rational frame holds one frame/update without catch-up debt. Visible human source/hold controls, UndoRedo/AI CAS dryRun/invalid validation/save/runtime lock and six freshly compiled CPP functions passed in installed editor and standalone D3D11. Seven affected source regressions; exact1126 source/21 native owners with two changed SDK headers, vendor/binary/full manifest checks, User preserved, Versions1/cache32/lease0. External audio/timecode/RTC/genlock and independent channel clocks remain."
+}
