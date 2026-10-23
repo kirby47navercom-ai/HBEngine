@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "date": "2026-10-23T12:44:25.848Z",
+  "kind": "verified-installed-periodic-range-bake-and-reference-range-regression",
+  "sourceCommit": "c0bcfba0cdee2e97f1b760160937b2ebd558a30f",
+  "sourceReceipt": "docs/research/ENGINE_WORK_2029.json",
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "independentGameVerified": true,
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\6b7a38744280a4ef",
+  "bundleHash": "6b7a38744280a4ef7f61d977b3bcd2710e7f7706a3dc7856d936b466597c9941",
+  "versions": 1,
+  "manifestFiles": 4583,
+  "admittedOwners": 1228,
+  "profile": {
+    "files": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4574,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0d24335cba1e2243",
+        "bytes": 199605822,
+        "manifestSHA256": "52e3a5675e7e6ef04b88e79180368fa5c41a5cd7c5e220ddbfd37e474205dca2"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T12:40:23.4457050Z",
+    "bytes": 199605822,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "6b7a38744280a4ef"
+    ]
+  },
+  "overridden": [
+    {
+      "path": "prototype/player.js",
+      "policy": "admitted HEAD bytes only; unrelated dirty worktree preserved"
+    }
+  ],
+  "changed": 26,
+  "sourceWindow": {
+    "report": "native/build/curve-periodic-2026-window-5FAROi/acceptance.json",
+    "sha256": "3ed6e16b73925c609c90d3f7f7ad704270c2324dd75b0096c80940c0e7ec0f2a",
+    "cppSeeks": 21,
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "visualInspected": true
+  },
+  "installedGames": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\6b7a38744280a4ef",
+    "rows": [
+      {
+        "id": "periodic",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\curve-installed-2031-PibRKt\\acceptance.json",
+        "sha256": "d53e7aa029fb7b012d7f96382a2c0b324c1015bb37a7bcc0c85311fde102b66f",
+        "ms": 24739.478600000002
+      }
+    ]
+  },
+  "audit": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\6b7a38744280a4ef",
+    "focusedAI": {
+      "symbol": "bakePeriodicCurveRange",
+      "owner": "prototype/curve-periodic-bake.js",
+      "filesRead": 1,
+      "elapsedMs": 61.63,
+      "installation": {
+        "observed": true,
+        "root": "C:\\Users\\kirby\\HBEngine\\Versions\\6b7a38744280a4ef",
+        "marker": "HBEngine.install.json",
+        "bundleHash": "6b7a38744280a4ef7f61d977b3bcd2710e7f7706a3dc7856d936b466597c9941",
+        "installedAt": "2026-10-23T12:40:19.928Z",
+        "manifestFiles": 4583,
+        "integrityChecked": false
+      }
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "cache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "versions": [
+      "6b7a38744280a4ef"
+    ],
+    "scope": "Read-only installed focused context/shortcut/association plus live-aware native-cache prune. Installer preflight holds exact file/owner hashes and profile comparison. No duplicate GUI/game/renderer run."
+  },
+  "preflight": {
+    "report": "native/build/user-install-2030-preflight.json",
+    "sha256": "0d5a02c82039b880bcc346fd3466a99e4b9f64a94b5f7b5cdc2fcb3244d9d53c"
+  },
+  "nativeReuse": {
+    "receipt": "docs/research/USER_INSTALL_2019.json",
+    "owners": 21,
+    "binaries": {
+      "HBEngine": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+      "HBPlayer": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+    },
+    "vendorHashes": {
+      "node_modules/three/src/renderers/common/UniformsGroup.js": {
+        "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+        "bytes": 10590
+      },
+      "node_modules/three/build/three.webgpu.js": {
+        "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+        "bytes": 1875505
+      }
+    },
+    "freshFullSDKRun": false,
+    "freshRendererRun": false
+  },
+  "scope": "Installed explicit original infinityDomain with finite cycle/cycleOffset/oscillate partial-bake intervals, ordinary editable keys, human/AI period reset, Undo/CAS/save, anchor-preserving reduce and all-key time transforms, shared Timeline/Sequence/Animation evaluation. Stable reference read restores first-key hold and discrete repeat semantics. Seven new source cases50780observations plus eight affected gates passed. Actual source authoring/C++21Seek and independent installed D3D11 game21Seek with BP/native/component delayed and repeated references passed, exit0. Exact4583-file manifest/1228 admitted owners, read-only10849-file User profile before/after, focusedAI1owner, links and Versions1 audited. No full SDK/renderer/FPS/device/whole-engine-completion claim."
+}

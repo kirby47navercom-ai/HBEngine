@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "date": "2026-10-23T12:44:25.848Z",
+  "kind": "installed-periodic-range-bake-consolidation",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2029.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "dc0d86968669a2b8f4664afa0887e5b60a6f5c226d87cead4992f223a95b2c20"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "installedSnapshot": "docs/research/ENGINE_WORK_2029.json",
+  "installationReceipt": "docs/research/USER_INSTALL_2032.json",
+  "installedIndependentGamePending": false,
+  "installedGames": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\6b7a38744280a4ef",
+    "rows": [
+      {
+        "id": "periodic",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\curve-installed-2031-PibRKt\\acceptance.json",
+        "sha256": "d53e7aa029fb7b012d7f96382a2c0b324c1015bb37a7bcc0c85311fde102b66f",
+        "ms": 24739.478600000002
+      }
+    ]
+  },
+  "scope": "Installed explicit original infinityDomain with finite cycle/cycleOffset/oscillate partial-bake intervals, ordinary editable keys, human/AI period reset, Undo/CAS/save, anchor-preserving reduce and all-key time transforms, shared Timeline/Sequence/Animation evaluation. Stable reference read restores first-key hold and discrete repeat semantics. Seven new source cases50780observations plus eight affected gates passed. Actual source authoring/C++21Seek and independent installed D3D11 game21Seek with BP/native/component delayed and repeated references passed, exit0. Exact4583-file manifest/1228 admitted owners, read-only10849-file User profile before/after, focusedAI1owner, links and Versions1 audited. No full SDK/renderer/FPS/device/whole-engine-completion claim.",
+  "next": {
+    "areas": [
+      "ANM-06",
+      "CPP-01",
+      "RND-08"
+    ],
+    "rule": "Advance actual remaining owner implementation; do not repeat passed unchanged source/installed/SDK/renderer gates",
+    "remainingExamples": [
+      "independent per-axis key times/interpolation/topology",
+      "animation mixer action blending and aliases",
+      "general simulation/async setter rollback",
+      "rendering/globalDF remaining owners"
+    ]
+  }
+}
