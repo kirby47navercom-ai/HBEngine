@@ -5542,5 +5542,31 @@
     ],
     "analysis": "docs/research/TYPE_DATA_ASSETS_1652.md",
     "implementation": "Only snapshot type lookup/context-plan correctness linked to docs/NATIVE_TYPE_SNAPSHOT_INDEX.md; dedicated type assets/global registry/schema migration remain pending."
+  },
+  "supplemental1877": {
+    "date": "2026-10-23",
+    "scope": "Selected sequence time source, manual Evaluate and whole frame hold; no full-corpus/API promotion",
+    "sources": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/MovieScene/EUpdateClockSource?lang=en-US",
+        "actualVersion": "5.8",
+        "read": "Rendered body0–40, complete enum and Values. Linked API pages not read here.",
+        "exhaustiveLinkedAPIs": false
+      },
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.7/script-reference/unityengine/playables/directorupdatemode",
+        "actualVersion": "6000.7 beta",
+        "read": "Definition/Fields body290–318, manual/game/unscaled/DSP descriptions. Navigation/index not counted as API analysis.",
+        "exhaustiveLinkedAPIs": false
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Playables.PlayableDirector.Evaluate.html",
+        "actualVersion": "6000.0",
+        "read": "Returned HTML declaration229–240 and immediate evaluation description. Linked graph APIs unread.",
+        "exhaustiveLinkedAPIs": false
+      }
+    ],
+    "analysis": "docs/SEQUENCE_PLAYBACK_CLOCK.md",
+    "implementation": "Optional playbackClock and six shared clock APIs, manual event-aware Advance versus silent Evaluate, rational frame holds and inherited child sampling. HB uses active VM unscaled delta, not global platform/DSP/timecode provider."
   }
 }

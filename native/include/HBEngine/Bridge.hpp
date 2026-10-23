@@ -517,6 +517,12 @@ inline void LevelSequence::Stop(Actor* target){engineCommand("sequenceStop",{{"t
 inline void LevelSequence::Pause(Actor* target,bool paused){engineCommand("sequencePause",{{"target",bridgeId(target)},{"paused",paused}});}
 inline void LevelSequence::Seek(Actor* target,float time){engineCommand("sequenceSeek",{{"target",bridgeId(target)},{"time",time}});}
 inline float LevelSequence::GetPosition(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0.0f:state.at("time").get<float>();}
+inline void LevelSequence::SetClockSource(Actor* target,const std::string& source){engineCommand("sequenceSetClockSource",{{"target",bridgeId(target)},{"source",source}});}
+inline std::string LevelSequence::GetClockSource(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?"":state.value("clockSource",std::string{});}
+inline void LevelSequence::Advance(Actor* target,float delta){engineCommand("sequenceAdvance",{{"target",bridgeId(target)},{"delta",delta}});}
+inline void LevelSequence::Evaluate(Actor* target){engineCommand("sequenceEvaluate",{{"target",bridgeId(target)}});}
+inline void LevelSequence::SetSecondsPerFrame(Actor* target,float seconds){engineCommand("sequenceSetSecondsPerFrame",{{"target",bridgeId(target)},{"seconds",seconds}});}
+inline float LevelSequence::GetSecondsPerFrame(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0.0f:state.value("secondsPerFrame",0.0f);}
 inline void LevelSequence::SeekFrame(Actor* target,int frame){engineCommand("sequenceSeekFrame",{{"target",bridgeId(target)},{"frame",frame}});}
 inline int LevelSequence::GetFrame(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0:state.value("frame",0);}
 inline int LevelSequence::GetFrameRateNumerator(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0:state.value("frameRateNumerator",0);}

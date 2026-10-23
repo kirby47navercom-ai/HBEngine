@@ -585,6 +585,12 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequencePause", KoreanName="레벨 시퀀스 일시 정지", Category="시퀀스") static void Pause(Actor* target,bool paused);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceSeek", KoreanName="레벨 시퀀스 시간 이동", Category="시퀀스") static void Seek(Actor* target,float time);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequencePosition", KoreanName="레벨 시퀀스 재생 위치", Category="시퀀스") static float GetPosition(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceSetClockSource", KoreanName="시퀀스 시간 기준 설정", Category="시퀀스") static void SetClockSource(Actor* target,const std::string& source);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequenceClockSource", KoreanName="시퀀스 시간 기준", Category="시퀀스") static std::string GetClockSource(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceAdvance", KoreanName="시퀀스 수동 진행", Category="시퀀스") static void Advance(Actor* target,float delta);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceEvaluate", KoreanName="시퀀스 현재 시간 평가", Category="시퀀스") static void Evaluate(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceSetSecondsPerFrame", KoreanName="시퀀스 프레임 유지 시간 설정", Category="시퀀스") static void SetSecondsPerFrame(Actor* target,float seconds);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequenceSecondsPerFrame", KoreanName="시퀀스 프레임 유지 시간", Category="시퀀스") static float GetSecondsPerFrame(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceSeekFrame", KoreanName="시퀀스 프레임 이동", Category="시퀀스") static void SeekFrame(Actor* target,int frame);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequenceFrame", KoreanName="시퀀스 현재 프레임", Category="시퀀스") static int GetFrame(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequenceFrameRateNumerator", KoreanName="시퀀스 프레임률 분자", Category="시퀀스") static int GetFrameRateNumerator(Actor* target);

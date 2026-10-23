@@ -15,3 +15,5 @@ DF 표기는 라벨만 건너뛰며 재생·키·프레임을 버리지 않아�
 1871–1873의 계산·회귀와 실제 편집기·C++ 실행 근거, 최종 설치 검사는 WORK1873 및 USER_INSTALL1875를 따라요. Custom/PlayEveryFrame·외부 timecode/genlock·개별 채널 시간 상속·정수 tick 저장소 전환은 별도예요.
 
 이번 새 읽기는 [Epic Sequencer Time Refactor Technical Notes, UE4.27](https://dev.epicgames.com/documentation/unreal-engine/sequencer-time-refactor-technical-notes?application_version=4.27)의 DisplayRate/TickResolution, 분수 FFrameRate, 평가 종류와 타입 이관 설명, [Unity Timeline Options, 1.8.4](https://docs.unity.cn/Packages/com.unity.timeline@1.8/manual/tl-options.html)의 단위·길이·마커·프레임률 설명이에요. 표시 프레임률과 실제 저장/평가 시계를 구분하는 근거로 사용했어요. HBEngine은 초 단위 저장을 유지하며 두 엔진의 tick 저장소·프레임 잠금과 동일하다고 주장하지 않아요. 전체 본문/API 분석 gate는 승격하지 않아요.
+
+1877–1879: [시퀀스 재생 시계](SEQUENCE_PLAYBACK_CLOCK.md)에 game/unscaled/manual/PlayEveryFrame 설정·6공용 CPP/BP API·AI 편집 계약을 연결했어요. 기존 격자·초 저장·녹화율은 독립적으로 유지해요.

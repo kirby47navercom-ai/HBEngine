@@ -2477,6 +2477,28 @@
       "paths": [
         "prototype/timeline-rate-editor.js"
       ]
+    },
+    {
+      "keywords": [
+        "sequenceClockSettings",
+        "validSequenceClock",
+        "sequenceClockDelta",
+        "sequenceClockContract"
+      ],
+      "paths": [
+        "prototype/sequence-clock.js"
+      ],
+      "id": "sequence-playback-clock"
+    },
+    {
+      "keywords": [
+        "sequenceClockMarkup",
+        "sequenceClockInput"
+      ],
+      "paths": [
+        "prototype/sequence-clock-editor.js"
+      ],
+      "id": "sequence-playback-clock-controls"
     }
   ]
 }
