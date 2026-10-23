@@ -14,7 +14,7 @@
 
 ## 설치와 소유권
 
-현재 USER_INSTALL1991/c98f1f4cd3598287(4556files/1205owners/hash감사·10849User파일설치전후동일·바로가기/연결·이전199MB정리/Versions1). 실제installed게임은사용중보류. native/build/standalone1989.mjs로idle후기존소유fixture D3D11게임3종만검사(편집창전체3종반복금지). state/preflight/audit는user-install-1988-state.json·1988-preflight.json·1990-audit.json. 설치재실행/이전검사반복금지. 함수exercise는tools/sequence-{layer,warp,pose}-exercise.mjs. sourceHashBase WORK1992(metadata handoff only; installed bundle snapshot1987)→1987→1978→1974→1966→1958→1955·resolver인자는파일경로. source1198+·새metadata는순환제외. 외부dirty prototype/player.js 및check-player-keyboard-release.mjs 보존/미스테이징/미배포. player만admitted gitHEAD bytes사용(8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1). 전체폴더sync금지.
+현재 USER_INSTALL1991/c98f1f4cd3598287(4556files/1205owners/hash감사·10849User파일설치전후동일·바로가기/연결·이전199MB정리/Versions1). installed D3D11게임3종통과(1968실CPP/BP·1954 cubic12/step12+PCM19200·1926모델/partial/normalized/curve/CPP뼈조회·모두exit0). 재실행불필요. state/preflight/audit는user-install-1988-state.json·1988-preflight.json·1990-audit.json. 설치재실행/이전검사반복금지. 함수exercise는tools/sequence-{layer,warp,pose}-exercise.mjs. sourceHashBase WORK1992(metadata handoff only; installed bundle snapshot1987)→1987→1978→1974→1966→1958→1955·resolver인자는파일경로. source1198+·새metadata는순환제외. 외부dirty prototype/player.js 및check-player-keyboard-release.mjs 보존/미스테이징/미배포. player만admitted gitHEAD bytes사용(8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1). 전체폴더sync금지.
 
 Host5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46/Player07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160. native1955의21owner중Game/Bridge2header만1974staticAPI변경·19exact재사용·새API실제CPPmodule실행. 전체SDK/renderer신규검사아님.
 

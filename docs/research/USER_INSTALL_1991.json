@@ -7,9 +7,9 @@
   "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\c98f1f4cd3598287\\HBEngine.exe",
   "bundleHash": "c98f1f4cd3598287ad8a35601464907072323a873395126df745a4fcfab507b7",
   "files": 4556,
-  "verified": false,
+  "verified": true,
   "installationVerified": true,
-  "independentGameVerified": false,
+  "independentGameVerified": true,
   "versions": [
     "c98f1f4cd3598287"
   ],
@@ -122,16 +122,31 @@
     }
   ],
   "installedGames": {
-    "passed": false,
-    "deferred": true,
-    "active": [
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\c98f1f4cd3598287",
+    "rows": [
       {
-        "pid": 42956,
-        "version": "c98f1f4cd3598287",
-        "name": "node.exe"
+        "id": "blend",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-installed-1989-YeUV0V\\acceptance.json",
+        "sha256": "e38adf311c1703b29eea94a9275e631890aa87df63bf21c1c8502213cad11c95",
+        "ms": 42726.2528
+      },
+      {
+        "id": "warp",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-installed-1989-Trmin3\\acceptance.json",
+        "sha256": "325b521ac9dc8368bc4048167d03ee55c5f63c84c82459906e3e535a9d37320b",
+        "ms": 42010.318699999996
+      },
+      {
+        "id": "pose",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-installed-1989-H54gxH\\acceptance.json",
+        "sha256": "350f3559c7c97eff327a3954fdbeb10fc782d9243934ff393dc14563f789c3f1",
+        "ms": 43923.408299999996
       }
-    ],
-    "rows": []
+    ]
   },
   "nativeReuse": {
     "receipt": "docs/research/ENGINE_WORK_1974.json",
@@ -141,8 +156,16 @@
     "scope": "Same binary/19 unchanged native owners; Game/Bridge static API additions already exercised through actual newly compiled source C++ modules. No fresh full SDK or renderer gate."
   },
   "deferral": {
-    "active": [],
-    "scope": "Installed version is in use. Do not launch heavy/GUI/game tests or close user processes; source GUI/C++ evidence is already passed. No test window opened by deferred standalone runner."
+    "active": [
+      {
+        "pid": 41804,
+        "version": "c98f1f4cd3598287",
+        "name": "node.exe"
+      }
+    ],
+    "remaining": [],
+    "scope": "Three independent installed-runtime D3D11 games passed. No source editor authoring rerun."
   },
-  "scope": "Installed consolidated signed/cubic/step time remapping, real PCM reverse/rate/hold, normalized continuous and skeletal sequence layers, instance weights/modes, per-section linear/step weight curves with paged human/AI authoring. Exact4556-file manifest and1205 admitted source owners, private-profile preservation, shortcuts/association, focusedAI and Versions1 audited. Actual source editor/C++/PCM/skeletal gates3 passed. New installed standalone D3D11 games are deferred while user uses installation; no full runtime verification claim."
+  "scope": "Installed consolidated signed/cubic/step time remapping, PCM reverse/rate/hold, normalized continuous and skeletal sequence layers, instance weights/modes and section linear/step weight curves with paged human/AI authoring. Exact4556-file manifest/1205 admitted owners, read-only10849-file profile before/after preservation, shortcuts/association, focusedAI and Versions1 audited. Source editor/C++/PCM/skeletal gates3 passed. Installed independent D3D11 all3 games passed. Warp24 actual C++ seeks and OfflineAudioContext19200 PCM samples passed. No fresh full SDK/renderer/FPS/device/phone or whole-engine-completion claim.",
+  "gameVerificationUpdatedAt": "2026-10-23T11:02:47.818Z"
 }

@@ -4,7 +4,7 @@
   "kind": "installed-consolidation-and-pending-isolated-game-gates",
   "sourceHashBase": "docs/research/ENGINE_WORK_1987.json",
   "changedSourceHashes": {
-    "CODEX_HANDOFF.md": "3c752d8467293463c52c5af0d2158495bec7265dcd9bf8556ac1dc1d34929a6d"
+    "CODEX_HANDOFF.md": "2c4c2626d51eb1e221b15711c8240ce56069df3cfc6510680e921ffcab034e80"
   },
   "composition": {
     "tool": "tools/research-source-hashes.mjs",
@@ -30,14 +30,36 @@
   "checksReexecuted": false,
   "newFunctionalCases": 0,
   "installationPending": false,
-  "installedIndependentGamePending": true,
+  "installedIndependentGamePending": false,
   "next": {
-    "tool": "native/build/standalone1989.mjs",
-    "condition": "activeInstalledVersions empty",
-    "state": "native/build/user-install-1988-state.json",
-    "reuseSourceEditorReports": true,
-    "repeatFullSourceEditorGates": false,
-    "cleanup": "pruneTestArtifacts per owner after own game exits"
+    "scope": "Advance actual remaining ANM-06/CPP-01/RND-08 owners; source and installed game gates already passed, do not repeat unchanged checks."
   },
-  "scope": "Installed consolidated signed/cubic/step time remapping, real PCM reverse/rate/hold, normalized continuous and skeletal sequence layers, instance weights/modes, per-section linear/step weight curves with paged human/AI authoring. Exact4556-file manifest and1205 admitted source owners, private-profile preservation, shortcuts/association, focusedAI and Versions1 audited. Actual source editor/C++/PCM/skeletal gates3 passed. New installed standalone D3D11 games are deferred while user uses installation; no full runtime verification claim."
+  "scope": "Installed consolidated signed/cubic/step time remapping, PCM reverse/rate/hold, normalized continuous and skeletal sequence layers, instance weights/modes and section linear/step weight curves with paged human/AI authoring. Exact4556-file manifest/1205 admitted owners, read-only10849-file profile before/after preservation, shortcuts/association, focusedAI and Versions1 audited. Source editor/C++/PCM/skeletal gates3 passed. Installed independent D3D11 all3 games passed. Warp24 actual C++ seeks and OfflineAudioContext19200 PCM samples passed. No fresh full SDK/renderer/FPS/device/phone or whole-engine-completion claim.",
+  "installedGames": {
+    "passed": true,
+    "rows": [
+      {
+        "id": "blend",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-installed-1989-YeUV0V\\acceptance.json",
+        "sha256": "e38adf311c1703b29eea94a9275e631890aa87df63bf21c1c8502213cad11c95",
+        "ms": 42726.2528
+      },
+      {
+        "id": "warp",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-installed-1989-Trmin3\\acceptance.json",
+        "sha256": "325b521ac9dc8368bc4048167d03ee55c5f63c84c82459906e3e535a9d37320b",
+        "ms": 42010.318699999996
+      },
+      {
+        "id": "pose",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-installed-1989-H54gxH\\acceptance.json",
+        "sha256": "350f3559c7c97eff327a3954fdbeb10fc782d9243934ff393dc14563f789c3f1",
+        "ms": 43923.408299999996
+      }
+    ]
+  },
+  "finalizedAt": "2026-10-23T11:02:47.818Z"
 }
