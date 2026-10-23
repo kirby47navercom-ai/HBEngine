@@ -1126,7 +1126,6 @@
     {
       "keywords": [
         "editCurveKeys",
-        "subdivideCurve",
         "curveBezierParameter",
         "주파수 필터",
         "부분 베이크"
