@@ -3042,6 +3042,19 @@
       "paths": [
         "prototype/sequence-imported-pose.js"
       ]
+    },
+    {
+      "id": "sequence-imported-transform-aliases",
+      "keywords": [
+        "ImportedSequenceTransformProgram",
+        "SequenceImportedTransforms",
+        "importedSequenceTransformContract",
+        "readImportedTransform",
+        "ownedImportedNode"
+      ],
+      "paths": [
+        "prototype/sequence-imported-transforms.js"
+      ]
     }
   ]
 }

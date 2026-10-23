@@ -10,4 +10,4 @@ HB 애니메이션 클립의 위치·회전·크기는 직접 TRS 트랙 및 Tra
 
 준비한 활성 클립 설명과 첫 필드 캡처의 vec3만 보관해요. 일반 직접 트랙만 있는 시퀀스는 기존 어댑터를 재사용해요. 애셋 원문·키 배열을 수정하거나 숨은 원본 곡선을 만들지 않아요. 타이머·워커·추가 GPU 작업은 없어요. 이는 비용 구조 설명이며 FPS 향상 측정은 아니에요.
 
-`hb context --symbol prepareSequenceAnimationTransforms`가 관련 소유 파일을 가리켜요. 가져온 믹서의 루트/오브젝트 바인딩과 별도 골격 포즈, 렌더러 속성의 나머지 별칭 및 임의 비동기 setter·시뮬레이션 부수효과 되돌리기는 추가 구현 대상이에요.
+`hb context --symbol prepareSequenceAnimationTransforms`가 관련 소유 파일을 가리켜요. 가져온 전체 골격 포즈는 SEQUENCE_IMPORTED_POSE_ALIASES.md, 액터 루트·모델 하위 TRS는 SEQUENCE_IMPORTED_TRANSFORM_ALIASES.md의 공용 채널을 사용해요. 인덱스 단위 변환·렌더러 속성 별칭 및 임의 비동기 setter·시뮬레이션 부수효과 되돌리기는 남아 있어요.

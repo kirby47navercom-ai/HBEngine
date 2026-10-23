@@ -14,7 +14,7 @@ export class AnimationPlaybackLease {
   prepare(players=[]){
     // Public PropertyBinding values are copied once. update(0) alone can skip
     // unchanged accumulator values after another mixer has changed the target.
-    if(this.mixer){const actions=this.mixer.sequenceLayerActions?[...this.mixer.sequenceLayerActions.values()].map(row=>row.action):[this.mixer.action],tracks=new Map([...actions.flatMap(action=>action.getClip().tracks),...this.mixer.aliasPoseTracks||[]].map(track=>[track.name,track]));this.pose=[...tracks.values()].map(track=>{const binding=THREE.PropertyBinding.create(this.group,track.name),value=new Array(track.getValueSize()).fill(0);binding.getValue(value,0);const target=binding.targetObject,property=binding.resolvedProperty;binding.unbind();return {path:track.name,value,target,property};});}
+    if(this.mixer){const actions=this.mixer.sequenceLayerActions?[...this.mixer.sequenceLayerActions.values()].map(row=>row.action):[this.mixer.action],tracks=new Map([...actions.flatMap(action=>action.getClip().tracks),...this.mixer.aliasPoseTracks||[]].map(track=>[track.name,track]));this.pose=[...tracks.values()].map(track=>{const binding=THREE.PropertyBinding.create(this.group,track.name),value=new Array(track.getValueSize()).fill(0);binding.getValue(value,0);const saved=this.readPresentation?.(binding.targetObject,binding.parsedPath);if(saved&&saved.length===value.length)for(let i=0;i<value.length;i++)value[i]=saved[i];const target=binding.targetObject,property=binding.resolvedProperty;binding.unbind();return {path:track.name,value,target,property};});}
     if(this.graph)this.presentation=this.graph.capturePresentation();
     else if(players.length)this.presentation=players.at(-1).program.capturePresentation();
   }
@@ -34,6 +34,6 @@ export class AnimationPlaybackLease {
       // Dropping an unregistered mixer needs no uncacheRoot: that operation
       // writes its old bind pose and would corrupt a newer owner's final pose.
     }
-    this.phase='released';this.animation=this.mixer=this.graph=this.montages=this.presentation=this.pose=this.object=this.group=this.transform=this.writtenTRS=this.activeTRS=null;
+    this.readPresentation=null;this.phase='released';this.animation=this.mixer=this.graph=this.montages=this.presentation=this.pose=this.object=this.group=this.transform=this.writtenTRS=this.activeTRS=null;
   }
 }
