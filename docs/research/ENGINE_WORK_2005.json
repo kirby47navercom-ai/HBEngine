@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "date": "2026-10-23T11:40:31.122Z",
+  "kind": "sequence-audio-gain-fades-automation-and-take-curves",
+  "implementationRevision": "5e4e92e0edb4b59f2e36e98312a87686672ed335",
+  "sourceHashBase": "docs/research/ENGINE_WORK_1992.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "54734ff6cea7c385f24b5e8de164661def48bff8631dd1a11bacb1349cb5ba21",
+    "docs/ai-routes.json": "db2461b775cccd933450e07037a377befb4606158055c6c817177005225c5ab7",
+    "prototype/audio-voices.js": "2cb50e9c67d82420e28d4823e8108a4957c706a55d01fd8429c2005612f3063e",
+    "prototype/engine-services.js": "cd92434f22bd5a7fbaee8e5d77132a5c5d5f77737af0a5704825ad7b86d3b847",
+    "prototype/gameplay-assets.js": "510b7714a2a83b939e142d26749f1419432bec6094ca30ad21564562d1d4ff8a",
+    "prototype/gameplay-editor.js": "74ee5588d40d96e3f1a2043dc0831c603875f5feb7cdb9dad53b6692b5be0c59",
+    "prototype/gameplay-runtime.js": "5137db28ee26cf957e759381ff30791dd9c174d72e032f9dfa352671804b6b62",
+    "prototype/sequence-audio.js": "e93d7de814adb2fde36a1283cf3ba4f6f09747d2cf35324e91b862298c7eaa50",
+    "prototype/sequence-key-storage.js": "ba64f4ad2ca9250c86cfa3cdc25f88aafdbfbeef61cda8740b73f1f6bdc8ccaa",
+    "prototype/sequence-weight-curve.js": "a7748725f75335c7325d2c2ebaca6e8d4e28e08d660925f30ac2077f82202357",
+    "prototype/take-recorder.js": "2b83bc6833f0ea33b90337d5155480fc46092927b1a2de0e312327ba8142939d",
+    "docs/SEQUENCE_AUDIO_ENVELOPES.md": "877e85d08e9a522e7c21596005fa95b1710cf8589c82bb9209a645f71670ce62",
+    "prototype/sequence-audio-envelope-editor.js": "e2db852666c0b00ec1c1a956ef1635b2019ff870fd82a4045ffc43ca43f6b53c",
+    "prototype/sequence-audio-envelope.js": "61a3b32a18fd60ff491b7007c744c6734205651beb1ef599f107858e32272ede",
+    "prototype/take-audio-gain.js": "a53c9e0382b5646f9d2b6a3ee390f5364259c9de51391cab3a1b7461cbb739a1",
+    "tools/check-sequence-audio-envelope-2000.mjs": "c231c4aa8ed20914172088298519fb578e59d21f68dfc9487b65a91de4b0cf3e",
+    "tools/check-sequence-audio-envelope-2001-window.mjs": "699e5feb730e9410bef6b7ac7f6ce00f5fef2f54522cd160fbae9b01e1c0b99e",
+    "tools/sequence-audio-envelope-offline-2002.mjs": "cfdd7e0e78d83ea8cc6aa17df5b49f90fff2be1315e122b75b6574d9a5eb14fb"
+  },
+  "composition": {
+    "tool": "tools/research-source-hashes.mjs",
+    "lineage": [
+      "docs/research/ENGINE_WORK_1955.json",
+      "docs/research/ENGINE_WORK_1958.json",
+      "docs/research/ENGINE_WORK_1966.json",
+      "docs/research/ENGINE_WORK_1974.json",
+      "docs/research/ENGINE_WORK_1978.json",
+      "docs/research/ENGINE_WORK_1987.json",
+      "docs/research/ENGINE_WORK_1992.json"
+    ],
+    "currentFilesVerified": false
+  },
+  "targetIds": [
+    "ANM-06",
+    "AUD-01"
+  ],
+  "checks": [
+    {
+      "name": "sequence-audio-envelope-2000",
+      "passed": true,
+      "log": "native/build/group2000-sequence-audio-envelope-final.log",
+      "ms": 315.8861,
+      "sha256": "51e762385c0e31a10e3db097ff4eed28159c2e3145202f80687e74f6d128f5a6",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-audio-envelope-2000-rxkN9Y/acceptance.json",
+      "reportSHA256": "86958a04e674f88aedf15247cc5758aab5f3afc77a01c4207d6bc75e3c5296d0",
+      "cases": 12,
+      "observations": 3055
+    },
+    {
+      "name": "sequence-audio-1956",
+      "passed": true,
+      "log": "native/build/group2000-sequence-audio-1956-final.log",
+      "ms": 463.9275999999999,
+      "sha256": "862079cbe631a47c71aae415b1db60746534a9e5ba79a59bf0a8baacb058355c",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-audio-1956-WI6jWC/acceptance.json",
+      "reportSHA256": "dd4c2e787430d4c4f8bb2026d41b8d2a4f49590cc4714b0057c8d20cb757f0e8",
+      "cases": 8
+    },
+    {
+      "name": "sequence-weight-curve-1981",
+      "passed": true,
+      "log": "native/build/group2000-sequence-weight-curve-1981.log",
+      "ms": 349.40109999999993,
+      "sha256": "e6ca637087e01c9e05119a5ec87cf43edf5a9316b6353f989e99ebadeefbed13",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-weight-curve-1981-Qn35Ur/acceptance.json",
+      "reportSHA256": "0d1387830b677951bbaaa037fc73bf9fbacd798ac9bc2c200f2940b617071995",
+      "cases": 10,
+      "observations": 2005
+    },
+    {
+      "name": "sequence-cubic-warp-1959",
+      "passed": true,
+      "log": "native/build/group2000-sequence-cubic-warp-1959.log",
+      "ms": 241.23309999999992,
+      "sha256": "c93287ec37922ccfe4216c55f65999641af64e78dc93e46026a3ab3fab8fbe19",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-cubic-warp-1959-mOrk0P/acceptance.json",
+      "reportSHA256": "3f530c244169bbe0af25966ed4c4e6d6cdeabd527dd8d061af76092a515498e5",
+      "cases": 18,
+      "observations": 3442
+    },
+    {
+      "name": "sequence-sections-1250",
+      "passed": true,
+      "log": "native/build/group2000-sequence-sections-1250.log",
+      "ms": 227.40280000000007,
+      "sha256": "1dbab42fc95545f3e9b743eb253756d325eafa9f562e44661b8e1add95d31a51",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-sections-1250-d5mCyV/acceptance.json",
+      "reportSHA256": "233db272554e0e4cd74a24e73595be3a84ff62c40b9e13d42c8f1c9116996709"
+    },
+    {
+      "name": "buffered-audio",
+      "passed": true,
+      "log": "native/build/group2000-buffered-audio.log",
+      "ms": 141.30719999999997,
+      "sha256": "dad7ba27347ca0649318091b4e0c4da8c947ff1d280bba317b4bfd25dc115a91"
+    },
+    {
+      "name": "streaming-audio",
+      "passed": true,
+      "log": "native/build/group2000-streaming-audio.log",
+      "ms": 99.2056,
+      "sha256": "03d74d1894c524e5fd477cfd30f0817b7c17ffbb434426d4287fb8641d1b4707"
+    },
+    {
+      "name": "audio-sources",
+      "passed": true,
+      "log": "native/build/group2000-audio-sources.log",
+      "ms": 493.8508999999999,
+      "sha256": "43260106400028e5aa5892a6759cfb9ce6835f57415c98810e3bb17ac06fb1f4"
+    }
+  ],
+  "newCases": 12,
+  "observations": 3055,
+  "aiContext": {
+    "passed": true,
+    "report": "native/build/ai-context-1058.json",
+    "sha256": "27ae8367210558e7f2731ddfb27fdcc3f8ee7433d9b099044936184a77c71d37",
+    "focused": {
+      "mode": "focused-routes",
+      "filesRead": 1,
+      "symbol": "sequenceAudioEnvelope",
+      "report": "native/build/context2003.json"
+    },
+    "topLevelEnvelopeSchemaVerified": true
+  },
+  "nativeReuse": {
+    "sourceReceipt": "docs/research/USER_INSTALL_1991.json",
+    "headersUnchanged": 21,
+    "binaryHashes": {
+      "HBEngine.exe": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+      "HBPlayer.exe": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+    },
+    "developmentHost": {
+      "sha256": "efe7339b889643b2614173ed30a21055acb885c7d70ae703295b5bea976f2106",
+      "admitted": false,
+      "reused": false,
+      "sourceGate": "unique temporary admitted host in source root; original development executable preserved"
+    },
+    "vendorHashes": {
+      "node_modules/three/src/renderers/common/UniformsGroup.js": {
+        "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+        "bytes": 10590
+      },
+      "node_modules/three/build/three.webgpu.js": {
+        "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+        "bytes": 1875505
+      }
+    },
+    "freshFullSDKRun": false,
+    "freshRendererRun": false
+  },
+  "resources": {
+    "newGainNodes": 0,
+    "newTimers": 0,
+    "newWorkers": 0,
+    "newGPUResources": 0,
+    "maxPropertyKeys": 32,
+    "perCurveKeyLimit": "existing sequenceKeyLimits.perTrack",
+    "gainCurveBudget": "existing shared sequence keyBudget",
+    "cachedConstantPlans": true,
+    "weakPreparedClipAndCurveState": true,
+    "binaryCurveSampling": true,
+    "lookaheadSeconds": 60,
+    "lookaheadIsNotAnAuthoredFadeDurationCap": true,
+    "scope": "Structural/source cost guards, not measured FPS/heap/device performance."
+  },
+  "testCorrections": [
+    "New Take fixture initially passed0.25 repeatedly to absolute sample(time); corrected to i*0.25, only affected new test rerun.",
+    "Observed explicit Stop lacked a gain sample; keep the last observed value instead of appending unity, verified in12th case.",
+    "Offline fixture reuses established virtual-start pattern; actual OfflineAudioContext test not run yet."
+  ],
+  "pendingGates": [
+    "tools/check-sequence-audio-envelope-2001-window.mjs source actual UI/C++/PCM",
+    "admitted-only dist sync and safe install after source gate",
+    "installed independent D3D11 game and PCM using saved authored source fixture"
+  ],
+  "sourceWindow": {
+    "executed": false,
+    "reason": "active-installed-version",
+    "active": [
+      {
+        "pid": 13600,
+        "version": "c98f1f4cd3598287",
+        "name": "node.exe"
+      }
+    ],
+    "openedWindows": 0
+  },
+  "installationPending": true,
+  "currentInstallation": "docs/research/USER_INSTALL_1991.json",
+  "versions": [
+    "c98f1f4cd3598287"
+  ],
+  "distributionSynced": false,
+  "queued": false,
+  "scope": "Source/shared VM clip volume, linear overlapping fades, linear/step unit gain curves, constant-velocity linear GainNode scheduling, gain-aware voice budget, Take frame-observed gain reduction/slicing/constant storage, shared key budget and paged human/AI editing. Twelve new source cases3055observations and seven affected existing gates passed. Actual new window/C++/OfflineAudioContext/installed gate remains unexecuted while user uses installation. Nonlinear/step/product sample-accurate scheduling, pitch preservation, genlock and whole-engine completion are not claimed."
+}
