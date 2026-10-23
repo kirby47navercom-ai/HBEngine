@@ -1130,3 +1130,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1853–1855: Take 약분분수수집FPS·29.97/59.94 DF label/parse·정수편집격자구분·시작기준표본/누락표본계수·상속/SaveAs/UI UndoRedo·AI partialoverride/state/deep스냅샷 구현. 최종10영향회귀·독립11분label순회·100초60Hz→2998표본·AI context, source실제UI/CPP시계/녹화/재생checkpoint. 직접입력칸소실수정·잘못된primitive override거절추가. 최종설치CPP/D3D검사예정. 외부/오디오/RTC/genlock/분수편집격자등누적잔여유지. WORK1855.
 
 1856–1858: 최종설치분수수집FPS·29.97/59.94 DF입력/잠금/custom/UI UndoRedo·상속/SaveAs/active snapshot·CPP Scale0/pause차이·visible DF readout·relative키/metadata·human29.97수집/24편집격자/IKMid/model부재·CPP PlaySeekStop·독립D3D0.4rad3bones·4preset제외 84.85초통과. manifest4428/source1104/native21/30tests/vendor2·User10849읽기불변·링크/association/Versions1·이전195846766B정리/lease0. USER_INSTALL1857. 외부동기화/분수편집격자및누적잔여유지.
+
+1859–1861: 공용Skeleton6 getter/BP/livequery·사람현재월드골격뷰/AI named local/world page·exact affine/trsExact·전체이름/중첩actor경계·실패활성화복원보존·batch준비후쓰기/중첩행렬루트통합 구현. 최종9회귀/API생성/AI context·실제현재SDK CPP6getter/모델교체8구간/역방향/빈골격/복원source checkpoint. Bridge최초링크누락수정후통과만성과기록. sticky키탐색가림을최종CSS/제목·좌표계·출력hit로보완·설치D3D예정. perbone/가중혼합/외부이력등잔여유지. WORK1861.
