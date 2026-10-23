@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "date": "2026-10-23T13:18:33.120Z",
+  "kind": "verified-installed-managed-sequence-animation-mixing",
+  "sourceCommit": "b9fd8fea1fb5096fcbefd4543d8dfc2788388297",
+  "sourceReceipt": "docs/research/ENGINE_WORK_2042.json",
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "independentGameVerified": true,
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9ebf4ca5ba25e88e",
+  "bundleHash": "9ebf4ca5ba25e88ee014d291996c0576642e4ec245526910e4ec82eb2c048231",
+  "versions": 1,
+  "manifestFiles": 4592,
+  "admittedOwners": 1234,
+  "profile": {
+    "files": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4584,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\6b7a38744280a4ef",
+        "bytes": 199654037,
+        "manifestSHA256": "efd5ebe464379f5587150cb27696e2f42cb6e875cd3c84da6ee83c38e10778a9"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T13:10:53.7125766Z",
+    "bytes": 199654037,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "9ebf4ca5ba25e88e"
+    ]
+  },
+  "overridden": [
+    {
+      "path": "prototype/player.js",
+      "policy": "admitted HEAD bytes only; unrelated dirty worktree preserved"
+    }
+  ],
+  "changed": 21,
+  "sourceWindow": {
+    "report": "native/build/sequence-animation-mixing-2038-window-55hhpR/acceptance.json",
+    "sha256": "5bd1a0bc3d1218cd20d0a293c736dc62e1d9e12a9a0ab7b39054a4586bf6cee8",
+    "observations": 15,
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "postWindowChanges": [
+      "linear action retirement lookup and one normalization sum",
+      "bounded diagnostic arrays with total counts"
+    ],
+    "rerunEditorNeeded": false,
+    "finalInstalledGamePending": false,
+    "finalInstalledGameReceipt": "docs/research/USER_INSTALL_2046.json"
+  },
+  "installedGames": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\9ebf4ca5ba25e88e",
+    "rows": [
+      {
+        "id": "animation-mix",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\animation-installed-2044-6ftDO6\\acceptance.json",
+        "sha256": "ce925de9c758df7860c4c57f3e23ab3c5ebd48fea961896b9eb5d87d3ae6418d",
+        "ms": 41600.6287
+      }
+    ]
+  },
+  "nativePixelProof": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\9ebf4ca5ba25e88e",
+    "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\animation-pixels-2045-vkpJrI\\acceptance.json",
+    "sha256": "e3bdd20f105f3b2a7041a18e27563a39db240c1df8cd479b5de89af6c1037dec",
+    "before": {
+      "width": 640,
+      "height": 400,
+      "nonblack": 256000,
+      "min": 96,
+      "max": 210,
+      "sha256": "ac981387b86aa893f02cf93dd393361610c30346657bc98c5e90513a8927ead1"
+    },
+    "after": {
+      "width": 640,
+      "height": 400,
+      "nonblack": 256000,
+      "min": 96,
+      "max": 210,
+      "sha256": "ce7c249f6352bdeca4bfcedd8e16fe0edaf6a4d188dabc80ae034a59bc319dc3"
+    },
+    "pixelsChanged": 3359,
+    "importedRoot": 4.25,
+    "HBPosition": 4.25,
+    "capture": "Existing hbPlayerDebug.capture -> native renderer hbCapture swapchain readback. CDP Page.captureScreenshot reads only the black/transparent WebView surface and is not used as native pixel proof.",
+    "ms": 22662.3513
+  },
+  "additionalSourceChecks": [
+    {
+      "name": "check-playback-leases-1865",
+      "passed": true,
+      "checks": 9,
+      "log": "native/build/group2045-playback-leases.log",
+      "sha256": "7d828a4bb4bf8cfd971d767f58bc6734b91ce909901cf735fe9734d3eabf0ec6"
+    },
+    {
+      "name": "bounded-animation-diagnostic-query",
+      "report": "native/build/animation-query2043.json",
+      "sha256": "f1b433f6fe5c3a7f229d057bf95347d56df70579de7a38ad46a24c42e97ad80e",
+      "passed": true
+    }
+  ],
+  "audit": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\9ebf4ca5ba25e88e",
+    "focusedAI": {
+      "symbol": "SequenceAnimationMixing",
+      "owner": "prototype/sequence-animation-mixing.js",
+      "filesRead": 1,
+      "elapsedMs": 64.96,
+      "installation": {
+        "observed": true,
+        "root": "C:\\Users\\kirby\\HBEngine\\Versions\\9ebf4ca5ba25e88e",
+        "marker": "HBEngine.install.json",
+        "bundleHash": "9ebf4ca5ba25e88ee014d291996c0576642e4ec245526910e4ec82eb2c048231",
+        "installedAt": "2026-10-23T13:10:50.217Z",
+        "manifestFiles": 4592,
+        "integrityChecked": false
+      }
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "cache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "versions": [
+      "9ebf4ca5ba25e88e"
+    ],
+    "scope": "Read-only installed focused context/shortcut/association plus live-aware native-cache prune. Installer preflight holds exact file/owner hashes and profile comparison. No duplicate GUI/game/renderer run."
+  },
+  "preflight": {
+    "report": "native/build/user-install-2043-preflight.json",
+    "sha256": "5a473baed9201789dd35a18737d0b34d930379dae09f735714986b47d0e1cd65"
+  },
+  "nativeReuse": {
+    "receipt": "docs/research/USER_INSTALL_2019.json",
+    "owners": 21,
+    "binaries": {
+      "HBEngine": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+      "HBPlayer": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+    },
+    "vendorHashes": {
+      "node_modules/three/src/renderers/common/UniformsGroup.js": {
+        "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+        "bytes": 10590
+      },
+      "node_modules/three/build/three.webgpu.js": {
+        "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+        "bytes": 1875505
+      }
+    },
+    "freshFullSDKRun": false,
+    "freshRendererRun": false
+  },
+  "scope": "Installed managed animation mixing: independent imported/HB transform source clocks and same-clip actions sharing keyframe buffers; normalized layer weights, priority/mode controls, zero yield/retention/reactivation, actor TRS field/final restoration, newer external player protection and bounded diagnostic queries. Nine new source cases plus six affected gates including graph/montage/fade lease regression passed; source human/AI/C++15 observations and independent installed D3D11 game15 observations passed. A missing native pixel proof was separately checked through existing swapchain readback (3359 changed pixels); CDP black WebView screenshot was not treated as render proof. Exact4592-file/1234-owner bundle, preserved10849 User files, focusedAI1owner, shortcuts/association and Versions1 audited; previous199654037B retired. No general aliases/rollback/FPS/device/full-engine claim."
+}
