@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-project-type-catalog",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "03f2f9f1278c62e9b111381feb1cb7affd99ac75",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\415eb67c57007e0c",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\415eb67c57007e0c\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\415eb67c57007e0c\\HBEngine.exe",
+  "bundleHash": "415eb67c57007e0c525c1bef65042c2f50174c48ab939de06c7a394b0ddfd222",
+  "files": 4497,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4491,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2904c1509b0de679",
+        "bytes": 198044391,
+        "manifestSHA256": "70890f1ca017b545814c8cb154f0bc04019f1c7678e07505a0eee6c13d9ba1f0"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T04:49:10.9972405Z",
+    "bytes": 198044391,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "415eb67c57007e0c"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1155,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/native-type-catalog-1920-window-hHfWWM/acceptance.json",
+      "sha256": "11ffbe3fe6610702941e13fd34d91d6ea8745744c723bdafff244c377030c480",
+      "scope": "Owned actual2D editor project inventory→declaration picker from new-variable dialog and unsaved field. Selected type automatically adds required import in one Undo; saved source and target revisions, dryRun/noChange, stale/dirty source and saved field ABI protection. Saved catalog-authored values join existing additive graph migration and pure BP/C++ runtime; optional independent D3D11 package with transitive assets. Only type-asset discovery, not arbitrary C++ header discovery/runtime global registry/mobile hardware.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\415eb67c57007e0c\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 90650.597
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\415eb67c57007e0c\\",
+    "elapsedMs": 62.6,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\415eb67c57007e0c",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "415eb67c57007e0c525c1bef65042c2f50174c48ab939de06c7a394b0ddfd222",
+      "installedAt": "2026-10-23T04:49:07.489Z",
+      "manifestFiles": 4497,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1917.json\",\"changedSDK\":[],\"scope\":\"All21 native/SDK owners, Host1041/Player1604/renderer exact hashes unchanged. Fresh user C++ consumes saved catalog-authored type graph and generated includes; historical30 native test-source hashes are provenance, not fresh full SDK execution.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4497,
+  "versions": [
+    "415eb67c57007e0c"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1923-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/nativeCatalog1921-group.json",
+      "sha256": "45f9a4ebe82e5fcf9c6f5f1154b5c25b6c4579fddf3b23f15d2b04ab18b99d75",
+      "scope": "Five affected pure/model/project-save regressions plus actual source-window/C++ catalog authoring flow, once after grouped implementation."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-type-catalog-1919-fTsqoa/acceptance.json",
+      "sha256": "ae3c6ce24ff92fd5722848fd7c245def009813d511b984197dee13a5717f2e18",
+      "scope": "On-demand project type-asset inventory/declaration summaries and shared variable/field application. 513 inventory entries read without asset bodies; selected source resolves only explicit dependencies. Actual UI/sourceRevision/target CAS/dryRun/Undo/save/C++ and standalone player separate gate. General header discovery/runtime registry not claimed."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-type-dependencies-1913-sb0PEP/acceptance.json",
+      "sha256": "ac7df34d5b923e970ffcc38143f66514b5db2bac53c65679da422a4bd35ba228",
+      "scope": "Local structural validation is distinct from full import/save graph validation. Shared explicit enum/record dependencies, transitive metadata and generated includes; additive dependent authored defaults and actual project consumer migration/journal/CAS. Actual native compile/editor/player separate gate; no global auto-discovery/destructive migration/live ABI reload claim."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-type-imports-1675-4l89t8/acceptance.json",
+      "sha256": "4142624083ef30af9af5d19db02eadd22b4aeef462f7e6c40e9ee11be4ceeaca",
+      "scope": "Headless pure BP type-library source references/resolver scope/classless metadata, parent/child/UndoRedo cache views, actual 2D ProjectService validation and compact save, actual shared BlueprintRuntime SetMembers/Actor self refs with zero native builds/calls. UI/exported actual game separate; mixed CPP imports/per-type assets/arbitrary schema migration not claimed."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-type-migration-1701-editor-aq2vtj/acceptance.json",
+      "sha256": "35c399bbf01f1b5a8cd91188d9e5a674eee8cfc5e767365ac1ca0a7932c81a5c",
+      "scope": "Production save/batch/Undo functions with real ProjectService, real resolver and isolated files. Native actual-window and game gate separate."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-type-declarations-1821-TMcZZs/acceptance.json",
+      "sha256": "65bb8f5dcdc7d6256f96833ff8c57a36dc4e909277cd93c77071baf0c86e4915",
+      "scope": "First-class individual enum/struct assets with durable primary declaration and same-file helper types; actual2D project creation/paired C++ headers, explicit BP import and classless runtime, additive record value migration, dryRun plan CAS/group UndoRedo, path rename/redirect/header identity. Cross-asset field dependencies/global discovery/ABI hotreload are separate."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-type-catalog-1920-window-fm4bwe/acceptance.json",
+      "sha256": "378e0c7bbfe6cf9129b7d7660d9feb2abacf1996997241195dd20f2c1e61abca",
+      "scope": "Owned actual2D editor project inventory→declaration picker from new-variable dialog and unsaved field. Selected type automatically adds required import in one Undo; saved source and target revisions, dryRun/noChange, stale/dirty source and saved field ABI protection. Saved catalog-authored values join existing additive graph migration and pure BP/C++ runtime; optional independent D3D11 package with transitive assets. Only type-asset discovery, not arbitrary C++ header discovery/runtime global registry/mobile hardware."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-type-catalog-1920-window-fm4bwe/acceptance.json",
+      "sha256": "378e0c7bbfe6cf9129b7d7660d9feb2abacf1996997241195dd20f2c1e61abca",
+      "scope": "Owned actual2D editor project inventory→declaration picker from new-variable dialog and unsaved field. Selected type automatically adds required import in one Undo; saved source and target revisions, dryRun/noChange, stale/dirty source and saved field ABI protection. Saved catalog-authored values join existing additive graph migration and pure BP/C++ runtime; optional independent D3D11 package with transitive assets. Only type-asset discovery, not arbitrary C++ header discovery/runtime global registry/mobile hardware.",
+      "note": "Final runtime/UI source gate; later changes only docs/focus/handoff. Exact installed and independent D3D gate required."
+    }
+  ],
+  "scope": "On-demand project type-asset discovery and paged filename/declaration summaries, without scanning all bodies or compiling C++ to browse. New-variable dialog, existing BP variable and unsaved struct-field picker automatically author required imports/type and defaults in one UndoRedo. Shared project.types.read/apply, sourceRevision plus target expectedRevision, dryRun and same-type value preservation/noChange; stale or unsaved selected sources, unsupported owners and saved field ABI changes reject before mutation. Saved catalog-authored records join additive dependency/consumer migration and shared pure BP/compiled CPP Actor flow. Six affected gates and source actual UI/CPP passed; exact installed editor and standalone D3D11 passed. Type-asset discovery only, general header discovery/runtime registry/destructive migration remain."
+}

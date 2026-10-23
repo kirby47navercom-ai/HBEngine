@@ -2503,7 +2503,8 @@
         "docs/research/ENGINE_WORK_1915.json",
         "docs/research/USER_INSTALL_1917.json",
         "docs/NATIVE_TYPE_CATALOG.md",
-        "docs/research/ENGINE_WORK_1921.json"
+        "docs/research/ENGINE_WORK_1921.json",
+        "docs/research/USER_INSTALL_1923.json"
       ]
     },
     {
@@ -2660,7 +2661,8 @@
         "docs/research/ENGINE_WORK_1915.json",
         "docs/research/USER_INSTALL_1917.json",
         "docs/NATIVE_TYPE_CATALOG.md",
-        "docs/research/ENGINE_WORK_1921.json"
+        "docs/research/ENGINE_WORK_1921.json",
+        "docs/research/USER_INSTALL_1923.json"
       ]
     },
     {
@@ -3779,14 +3781,14 @@
     "first": 1919,
     "last": 1921,
     "receipt": "docs/research/ENGINE_WORK_1921.json",
-    "scope": "On-demand project type-asset discovery and paged filename/declaration summaries, without scanning all bodies or compiling C++ to browse. New-variable dialog, existing BP variable and unsaved struct-field picker automatically author required imports/type and defaults in one UndoRedo. Shared project.types.read/apply, sourceRevision plus target expectedRevision, dryRun and same-type value preservation/noChange; stale or unsaved selected sources, unsupported owners and saved field ABI changes reject before mutation. Saved catalog-authored records join additive dependency/consumer migration and shared pure BP/compiled CPP Actor flow. Six affected gates and source actual UI/CPP passed; exact installed editor and standalone D3D gate pending. Type-asset discovery only, general header discovery/runtime registry/destructive migration remain."
+    "scope": "On-demand project type-asset discovery and paged filename/declaration summaries, without scanning all bodies or compiling C++ to browse. New-variable dialog, existing BP variable and unsaved struct-field picker automatically author required imports/type and defaults in one UndoRedo. Shared project.types.read/apply, sourceRevision plus target expectedRevision, dryRun and same-type value preservation/noChange; stale or unsaved selected sources, unsupported owners and saved field ABI changes reject before mutation. Saved catalog-authored records join additive dependency/consumer migration and shared pure BP/compiled CPP Actor flow. Six affected gates and source actual UI/CPP passed; exact installed editor and standalone D3D11 passed. Type-asset discovery only, general header discovery/runtime registry/destructive migration remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1917.json",
-    "sourceCommit": "b4dab315020cdd64b525ee5ae7e11107640c5bb2",
-    "bundleHash": "2904c1509b0de679be1d62af55054ceedd05da02adacca9802f78c87897f1268",
+    "receipt": "docs/research/USER_INSTALL_1923.json",
+    "sourceCommit": "03f2f9f1278c62e9b111381feb1cb7affd99ac75",
+    "bundleHash": "415eb67c57007e0c525c1bef65042c2f50174c48ab939de06c7a394b0ddfd222",
     "verified": true,
     "versions": 1,
-    "scope": "Explicit cross-asset enum/record field dependencies through durable typeId and imports, transitive generated C++ includes and deduplicated immutable BP metadata. Dependency validation rejects missing/cyclic/duplicate/wrong typed defaults before publication. Additive child fields migrate parent asset scalar/array defaults, headers and BP/scene/prefab/sequence consumers in one journal, dryRun plan/CAS and UndoRedo; old-path redirects work after dependency moves. Actual UI import/type/default/save, opened pure/native consumer migration and CPP [99,4,12]/pure BP [99,3,2]/Actor identity. Fixed record type-switch previous scalar default and no-op batch-save dirty state with concurrent-edit preservation. Eight affected gates; exact installed editor and standalone D3D11 passed. No global automatic discovery/destructive schema/live ABI/full SDK/mobile-hardware claim."
+    "scope": "On-demand project type-asset discovery and paged filename/declaration summaries, without scanning all bodies or compiling C++ to browse. New-variable dialog, existing BP variable and unsaved struct-field picker automatically author required imports/type and defaults in one UndoRedo. Shared project.types.read/apply, sourceRevision plus target expectedRevision, dryRun and same-type value preservation/noChange; stale or unsaved selected sources, unsupported owners and saved field ABI changes reject before mutation. Saved catalog-authored records join additive dependency/consumer migration and shared pure BP/compiled CPP Actor flow. Six affected gates and source actual UI/CPP passed; exact installed editor and standalone D3D11 passed. Type-asset discovery only, general header discovery/runtime registry/destructive migration remain."
   }
 }

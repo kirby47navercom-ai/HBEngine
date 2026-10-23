@@ -1502,8 +1502,20 @@
     "scope": "No new corpus/API analysis promotion."
   },
   "testCorrections": [],
-  "installationPending": true,
-  "scope": "On-demand project type-asset discovery and paged filename/declaration summaries, without scanning all bodies or compiling C++ to browse. New-variable dialog, existing BP variable and unsaved struct-field picker automatically author required imports/type and defaults in one UndoRedo. Shared project.types.read/apply, sourceRevision plus target expectedRevision, dryRun and same-type value preservation/noChange; stale or unsaved selected sources, unsupported owners and saved field ABI changes reject before mutation. Saved catalog-authored records join additive dependency/consumer migration and shared pure BP/compiled CPP Actor flow. Six affected gates and source actual UI/CPP passed; exact installed editor and standalone D3D gate pending. Type-asset discovery only, general header discovery/runtime registry/destructive migration remain.",
-  "currentInstallation": null,
-  "installedGates": []
+  "installationPending": false,
+  "scope": "On-demand project type-asset discovery and paged filename/declaration summaries, without scanning all bodies or compiling C++ to browse. New-variable dialog, existing BP variable and unsaved struct-field picker automatically author required imports/type and defaults in one UndoRedo. Shared project.types.read/apply, sourceRevision plus target expectedRevision, dryRun and same-type value preservation/noChange; stale or unsaved selected sources, unsupported owners and saved field ABI changes reject before mutation. Saved catalog-authored records join additive dependency/consumer migration and shared pure BP/compiled CPP Actor flow. Six affected gates and source actual UI/CPP passed; exact installed editor and standalone D3D11 passed. Type-asset discovery only, general header discovery/runtime registry/destructive migration remain.",
+  "currentInstallation": "docs/research/USER_INSTALL_1923.json",
+  "installedGates": [
+    {
+      "path": "native/build/native-type-catalog-1920-window-hHfWWM/acceptance.json",
+      "sha256": "11ffbe3fe6610702941e13fd34d91d6ea8745744c723bdafff244c377030c480",
+      "scope": "Owned actual2D editor project inventory→declaration picker from new-variable dialog and unsaved field. Selected type automatically adds required import in one Undo; saved source and target revisions, dryRun/noChange, stale/dirty source and saved field ABI protection. Saved catalog-authored values join existing additive graph migration and pure BP/C++ runtime; optional independent D3D11 package with transitive assets. Only type-asset discovery, not arbitrary C++ header discovery/runtime global registry/mobile hardware.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\415eb67c57007e0c\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 90650.597
+    }
+  ]
 }
