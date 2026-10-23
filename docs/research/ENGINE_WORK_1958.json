@@ -1,0 +1,244 @@
+{
+  "version": 1,
+  "date": "2026-10-23T08:09:51.944Z",
+  "kind": "sequence-reverse-pcm-audio-and-take-source-pending-gui",
+  "implementationRevision": "2ad4e97242b931097baf21e9603229d85be71566",
+  "priorImplementationRevision": "db7a07b06a3d9d5ed81d8de5acfa2bed59a1304a",
+  "targetIds": [
+    "ANM-06",
+    "AUD-03",
+    "AI-01"
+  ],
+  "sourceHashBase": "docs/research/ENGINE_WORK_1955.json",
+  "changedSourceHashes": {
+    "docs/SEQUENCE_TIME_WARP.md": "da98a95492f90a93e2f1b8864aaa58e281fb004edf3d9aa5b5a472b7b3705726",
+    "docs/ai-routes.json": "f9ea06a72af51c2269dd30ba0479c4ffde8b82cb20c25fd79272503e0ab4496d",
+    "prototype/audio-mixer.js": "54189edbb5325bc122bbba259d163b99aa02f483b5d0a759b8aafc57eec20575",
+    "prototype/buffered-audio.js": "45c2b245abc769ff37bf7b63785902d85c275d57150a21d964bc338eb11fccee",
+    "prototype/engine-services.js": "3dff06156780e44f98613d11f7dda3b96e782812465b94ac0ae70d3ef56f5075",
+    "prototype/gameplay-assets.js": "5fd4e3cd67c741921d999e16d0ce31934e358584011bf38795419521a9140328",
+    "prototype/gameplay-editor.js": "89130101c66918fdeeb5f83633b4dac0a653e282767358600850a85aae582fc3",
+    "prototype/gameplay-runtime.js": "5a73757736ee45e139b72b38b21b979651b43dd132bf87a9faadfd3f576734c1",
+    "prototype/sequence-time-warp.js": "47a00564780fa58171eb8a8b24e4054b0f20039dba6ae7caddaa88ab275263a8",
+    "prototype/sequence-audio.js": "470e9ae4ee4d60cc8ded5c116b117b45387961d0f4a349c6dd350fabea718905",
+    "prototype/take-recorder.js": "d70ca8789d24aa5016d617c99db4719c96cdfff4384d50b2b5dd5234f96c3ef3",
+    "tools/editor-automation.mjs": "a8a6aa1544fc8c3bcd694779e4a1dc41d33d33a285167da7aec35be43ce5e6f3",
+    "tools/check-sequence-audio-1956.mjs": "a735ac66364f30a19f7c63204eafa70521d2d89a9c8bd5b5ab53f259bcd4360c",
+    "tools/check-sequence-reverse-warp-1954-window.mjs": "9a3fa657c198e198e96cd37680cc608d8bb8e9217cd089ade9641a7b9b6fef8b",
+    "tools/sequence-audio-offline-1957.mjs": "f8f1c77904aa6011b20e7316c509890c62894abaecfdcbe5d5504a69ece61954",
+    "CODEX_HANDOFF.md": "3bd166372f58c2171480e7371132814acb9565ed2820b31a91fff09b055dbc50"
+  },
+  "sourceHashComposition": "Merge base.sourceHashes with changedSourceHashes. Concurrent unowned keyboard files keep the earlier admitted hashes until their own completion and install reconciliation. This delta avoids repeating the1179-owner base manifest and unchanged SDK/renderer provenance.",
+  "sourceCheckpoint": {
+    "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-audio-1956-udHovk/acceptance.json",
+    "sha256": "dd4c2e787430d4c4f8bb2026d41b8d2a4f49590cc4714b0057c8d20cb757f0e8",
+    "scope": "Common gameplaySystems VM and engineOperations/BlueprintRuntime with controllable audio platform doubles; not an EXE/PCM-device gate."
+  },
+  "checks": [
+    {
+      "name": "buffered-audio",
+      "passed": true,
+      "seconds": 0.1343369,
+      "log": "native/build/group1956-buffered-audio.log",
+      "reused": true,
+      "reason": "Exact same affected buffered/streaming/native-worklet owner bytes since this run; sequence audio/Take/clip changes checked in final gates.",
+      "logSHA256": "dad7ba27347ca0649318091b4e0c4da8c947ff1d280bba317b4bfd25dc115a91"
+    },
+    {
+      "name": "streaming-audio",
+      "passed": true,
+      "seconds": 0.09994529999999997,
+      "log": "native/build/group1956-streaming-audio.log",
+      "reused": true,
+      "reason": "Exact same affected buffered/streaming/native-worklet owner bytes since this run; sequence audio/Take/clip changes checked in final gates.",
+      "logSHA256": "03d74d1894c524e5fd477cfd30f0817b7c17ffbb434426d4287fb8641d1b4707"
+    },
+    {
+      "name": "native-audio-worklet",
+      "passed": true,
+      "seconds": 0.06937069999999994,
+      "log": "native/build/group1956-native-audio-worklet.log",
+      "reused": true,
+      "reason": "Exact same affected buffered/streaming/native-worklet owner bytes since this run; sequence audio/Take/clip changes checked in final gates.",
+      "logSHA256": "0d3be97214a1a48c819180e0832faafed985ae67376f668e4f85dc2bfff5bb5f"
+    },
+    {
+      "name": "sequence-audio-1956",
+      "passed": true,
+      "seconds": 0.4763139,
+      "log": "native/build/final1958-sequence-audio-1956.log",
+      "logSHA256": "a8fa6cc4fc660d047dca476a162fd803f63b6e9f5979edfd24045ab479077ff2"
+    },
+    {
+      "name": "audio-sources",
+      "passed": true,
+      "seconds": 0.5316762000000002,
+      "log": "native/build/final1958-audio-sources.log",
+      "logSHA256": "43260106400028e5aa5892a6759cfb9ce6835f57415c98810e3bb17ac06fb1f4"
+    },
+    {
+      "name": "sequence-reverse-warp-1953",
+      "passed": true,
+      "seconds": 0.2334534000000001,
+      "log": "native/build/final1958-sequence-reverse-warp-1953.log",
+      "logSHA256": "f99e97422ed6040c1a3e9a0b2423f8008b99010fafe9157ccef762ecdf6bddf9"
+    },
+    {
+      "name": "sequence-time-warp-1947",
+      "passed": true,
+      "seconds": 0.31320749999999997,
+      "log": "native/build/final1958-sequence-time-warp-1947.log",
+      "logSHA256": "68b897de819fc47da47e7f046b5ea652b618e7fd693e2d55536d6ef45e1e6d1d"
+    },
+    {
+      "name": "sequence-sections-1250",
+      "passed": true,
+      "seconds": 0.23380480000000012,
+      "log": "native/build/final1958-sequence-sections-1250.log",
+      "logSHA256": "c70f6e29ed45b2aa081b710022a4450efc817bda267a02d33746d2a678cf919d"
+    },
+    {
+      "name": "sequence-clock-1877",
+      "passed": true,
+      "seconds": 0.2386332,
+      "log": "native/build/final1958-sequence-clock-1877.log",
+      "logSHA256": "bee4f14840eab78d967b7cc61b512a96d2e8662f234cddb88a0f0c3c6e1ec691"
+    },
+    {
+      "name": "engine-169",
+      "passed": true,
+      "seconds": 1.1074717,
+      "log": "native/build/final1958-engine-169.log",
+      "logSHA256": "572568bd7c78c36e97c6885a8e2c0e86399f609fc6385bf2a0f0acedb2df0e61"
+    }
+  ],
+  "focusedAI": [
+    {
+      "symbol": "sampleSequenceAudio",
+      "mode": "focused-routes",
+      "owner": "prototype/sequence-audio.js",
+      "elapsedMs": 162.7
+    },
+    {
+      "symbol": "reverseAudioBuffer",
+      "mode": "focused-routes",
+      "owner": "prototype/buffered-audio.js",
+      "elapsedMs": 163.34
+    },
+    {
+      "symbol": "sectionMappedRate",
+      "mode": "focused-routes",
+      "owner": "prototype/sequence-time-warp.js",
+      "elapsedMs": 194.98
+    },
+    {
+      "symbol": "sampleAudio",
+      "mode": "focused-routes",
+      "owner": "prototype/engine-services.js",
+      "elapsedMs": 167.5
+    }
+  ],
+  "aiContextGate": {
+    "passed": true,
+    "date": "2026-10-23T08:09:51.916Z",
+    "scope": "오프라인 CLI/한글·ID·심볼/무관 CWD/범위·오류/스키마 선택과 기존 전체 응답. 스키마는 격리 HTTP stub이며 실제 편집기 실행 검사가 아니에요."
+  },
+  "unchangedExactReuse": {
+    "native": {
+      "receipt": "docs/research/ENGINE_WORK_1955.json",
+      "exactSHA256Matched": 21,
+      "executed": false
+    },
+    "sdkTestSources": {
+      "receipt": "docs/research/ENGINE_WORK_1955.json",
+      "exactSHA256Matched": 30,
+      "executed": false
+    },
+    "renderer": {
+      "receipt": "docs/research/ENGINE_WORK_1955.json",
+      "exactSHA256Matched": 8,
+      "executed": false
+    },
+    "vendor": {
+      "receipt": "docs/research/ENGINE_WORK_1955.json",
+      "exactSHA256Matched": 2,
+      "executed": false
+    }
+  },
+  "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "resources": {
+    "newWorkers": 0,
+    "newRuntimeTimers": 0,
+    "newGPUResources": 0,
+    "newStrongPersistentCaches": 0,
+    "reversePCM": "One lazy reverse copy per active shared original when needed; weak references only when voices release it; virtual voices do not allocate reverse PCM. No measured RAM/FPS improvement claimed.",
+    "existingOriginalPCMCacheBytes": 33554432,
+    "testPolicy": "Final7 affected checks grouped; same earlier buffered/streaming/native-worklet checks reused. No GUI profile/build/package created this batch; pure tools retain reports and prune regenerable files."
+  },
+  "externalWorktreeChanges": [
+    {
+      "path": "prototype/player.js",
+      "owned": false,
+      "priorSHA256": "8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1",
+      "observedSHA256": "4d89ea43c2f9f32ad96be161ffceb4491c567ab0422ecb6c43495cf68adff247",
+      "scope": "Concurrent keyboard work preserved unstaged; final ownership/hash admission still pending."
+    },
+    {
+      "path": "tools/check-player-keyboard-release.mjs",
+      "owned": false,
+      "priorSHA256": null,
+      "observedSHA256": "1b5fa2aeadedbded2e795c4fa5f34cdfb414d3ac9ffefada46eb00ad5e75e336",
+      "scope": "Concurrent keyboard work preserved unstaged; final ownership/hash admission still pending."
+    }
+  ],
+  "installationPending": true,
+  "currentInstallation": null,
+  "priorInstallation": "docs/research/USER_INSTALL_1951.json",
+  "installedGates": [],
+  "sourceGameGates": [],
+  "installationDeferral": {
+    "observedAt": "2026-10-23T08:09:51.945Z",
+    "activeInstalledVersions": [
+      {
+        "pid": 3936,
+        "version": "064db2f2f17c89f0",
+        "name": "node.exe"
+      }
+    ],
+    "reason": "Ongoing installed process detected at final checkpoint. No window/package/build/install or queued switch. Concurrent keyboard owner/hash admission is also pending.",
+    "versions": [
+      "064db2f2f17c89f0"
+    ],
+    "userProfileUsed": false,
+    "userGameTouched": false
+  },
+  "pendingGates": [
+    {
+      "command": "node tools/check-sequence-reverse-warp-1954-window.mjs",
+      "scope": "One owned hidden source window: signed map/flip, audio reverse checkbox UndoRedo/save, actual OfflineAudioContext10conditions/19200samples, C++12seek/Stop."
+    },
+    {
+      "command": "node tools/check-sequence-reverse-warp-1954-window.mjs --executable <new-install-exe> --package",
+      "scope": "Only after idle, source gate and external hash reconciliation; installed editor plus independent D3D11 and offline PCM, User inventory/Versions1/lease/cache audit."
+    }
+  ],
+  "research": {
+    "newRead": [
+      {
+        "url": "https://www.w3.org/TR/webaudio/#AudioBufferSourceNode",
+        "scope": "Targeted AudioBufferSourceNode playhead, compound playback rate float bounds and immutable/shared buffer contract only; not full specification analysis."
+      }
+    ],
+    "analysisComplete": false
+  },
+  "testCorrections": [
+    {
+      "reason": "New audio fixture initially omitted required slot; fixed to DefaultSlot, no production validation weakened."
+    },
+    {
+      "reason": "New real service test exposed that resumed virtual voices waited for the next engine rebalance; resume completion now rebalances, with source regression passing."
+    }
+  ],
+  "scope": "Source/shared-runtime implementation: actual reversed stereo PCM, signed pitch resampling, holds/end guards, root/game/unscaled/nested derivative/clip rate propagation, optional human/AI reverse audio clips, latest pending decode sample, resume/pause cancellation, same-clip restart after PCM end, and managed Take direction/rate/seek/hold cue segments including reverse loops. Recording errors do not stop game audio and failed EndTake clears recording state. Source8check/real common VM+engineOperations doubles and legacy23/23;7 final affected gates plus3 unchanged audio gates reused. Actual WebView OfflineAudioContext10condition oracle, human checkbox, C++12seek, standalone D3D11 and installation are prepared but not executed while user-installed processes are active."
+}
