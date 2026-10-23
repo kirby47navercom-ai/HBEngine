@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-preanimated-evaluator-resume",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "3570a33f6d3ee43c65f0a0ef04895bd930ce96cd",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\dcd94ecde5427249",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\dcd94ecde5427249\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\dcd94ecde5427249\\HBEngine.exe",
+  "bundleHash": "dcd94ecde5427249b57e6b565c30b0eed3cc4e7aca63dbb692a30e2ea8dc7f47",
+  "files": 4440,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4436,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3cfa8727f82a0175",
+        "bytes": 196263783,
+        "manifestSHA256": "9b738e5ccdb01af6fd695137dc5ac5600b588fabe2f826e9403de76171c77e6d"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T00:58:48.0386731Z",
+    "bytes": 196263783,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "dcd94ecde5427249"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1116,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/playback-leases-1866-window-f4nR5b/acceptance.json",
+      "sha256": "6999a2c6ebdd3ce03c3efa8e6b023dc228882d5b2a3cf5e4cbd3f390453b0b20",
+      "scope": "Actual current editor authoring restore selection, compiled user CPP AnimationGraph/Montage setup and LevelSequence Play/Pause/Seek/Stop, shared two-dimensional sprite and graph+montage preanimation restore/keep; optional standalone D3D11 package. No hardware/mobile/full-engine performance claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dcd94ecde5427249\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 71110.61869999999
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\dcd94ecde5427249\\",
+    "elapsedMs": 61.97,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\dcd94ecde5427249",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "dcd94ecde5427249b57e6b565c30b0eed3cc4e7aca63dbb692a30e2ea8dc7f47",
+      "installedAt": "2026-10-23T00:58:44.569Z",
+      "manifestFiles": 4440,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1863.json\",\"changedSDK\":[],\"scope\":\"All21 native owners plus Host1041/Player1604 and renderer hashes unchanged. Historical30 native test source identities are provenance, not fresh full-SDK execution. Existing CPP Graph/Montage Setup and Sequence Play/Pause/Seek/Stop freshly compile/run through installed editor and independent D3D11 package.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4440,
+  "versions": [
+    "dcd94ecde5427249"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1869-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/playback1867-final-group.json",
+      "sha256": "d37f27c45c30ec3b69a4356d88edb08252b64a843059b4cfa47d2f12a47965aa",
+      "scope": "Seven affected regression families; module filename and fixture corrections explicitly recorded."
+    },
+    {
+      "path": "native/build/playback-leases-1865-QBogPQ/acceptance.json",
+      "sha256": "3462c2d9d739a6560a7876af311349d1deecc7240beecca91521a84db7a90441",
+      "scope": "Production VM/services/THREE graph+montage+sequence and independent real finite mixer controls. No new C++ API or per-frame worker/timer; existing sequence C++ entry points share these services. Notify callbacks explicitly use interruption/re-entry, not latent rollback."
+    },
+    {
+      "path": "native/build/animation-playback-1795-d1Vv44/acceptance.json",
+      "sha256": "465a7e5ecf8da2bd753b3e05565e79529374566e4951f56a802cbdb5c06795b4",
+      "scope": "Production services+BlueprintRuntime plus real THREE clip tracks. Restores simple sprite/timeline/raw clip only; graph/montage history, crossfade/finite-loop internals and arbitrary external async setter rollback excluded."
+    },
+    {
+      "path": "native/build/sequence-completion-271-G6cLMi/acceptance.json",
+      "sha256": "316f0e70e705f0f2bc7429eedcc30f78a9bd31f521704f83f14690e0555478d1",
+      "scope": "Seven affected regression families; module filename and fixture corrections explicitly recorded."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/playback-leases-1866-window-zGUYCm/acceptance.json",
+      "sha256": "23580ca82181c01267b56b721757aed265375a27b0e66c6e7d97f576939b2078",
+      "scope": "Actual current editor authoring restore selection, compiled user CPP AnimationGraph/Montage setup and LevelSequence Play/Pause/Seek/Stop, shared two-dimensional sprite and graph+montage preanimation restore/keep; optional standalone D3D11 package. No hardware/mobile/full-engine performance claim."
+    }
+  ],
+  "scope": "Installed detached preanimated evaluators preserve managed mixer finite-loop/fade, graph transition/parameters, montage section/retiring blend histories and presented pose. Notify windows End on sequence-suspended with scope cancellation and re-enter next tick; callback effects/latent work are not rolled back. Seven affected source regression families including final nine-case harness; actual installed editor authoring and CPP Graph/Montage/Sequence setup and restore/keep plus independent D3D11 passed. Current source/native/vendor and full manifest hashes verified; User profile read-only preserved, Versions1/cache32/lease0 and old version retirement. Unmanaged extra mixer actions, weighted channel aliases and broader cumulative goals remain."
+}

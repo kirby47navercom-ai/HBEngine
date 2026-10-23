@@ -1378,6 +1378,20 @@
     ],
     "scope": "No full corpus gate promotion or UE/Unity identity claim. Notify interruption policy is explicit HB design, not an assertion of identical UE/Unity callback behavior."
   },
-  "installationPending": true,
-  "scope": "Detached original evaluators preserve managed mixer finite Repeat/PingPong/fade, graph parameters/machine transitions and montage sections/retiring fades. Frozen single-capture presented pose restores without zero-time graph evaluation; notify interruption/re-entry cancels scoped latent work without callback rollback. Overlap final different director, keep, external graph/montage supersession, failure recovery and disposal covered. Seven affected regression families including final nine-case new production harness and actual editor/CPP/standalone D3D checkpoint passed; final installed verification pending."
+  "installationPending": false,
+  "scope": "Detached original evaluators preserve managed mixer finite Repeat/PingPong/fade, graph parameters/machine transitions and montage sections/retiring fades. Frozen single-capture presented pose restores without zero-time graph evaluation; notify interruption/re-entry cancels scoped latent work without callback rollback. Overlap final different director, keep, external graph/montage supersession, failure recovery and disposal covered. Seven affected regression families including final nine-case new production harness and actual editor/CPP/standalone D3D checkpoint passed; final installed verification pending.",
+  "currentInstallation": "docs/research/USER_INSTALL_1869.json",
+  "installedGates": [
+    {
+      "path": "native/build/playback-leases-1866-window-f4nR5b/acceptance.json",
+      "sha256": "6999a2c6ebdd3ce03c3efa8e6b023dc228882d5b2a3cf5e4cbd3f390453b0b20",
+      "scope": "Actual current editor authoring restore selection, compiled user CPP AnimationGraph/Montage setup and LevelSequence Play/Pause/Seek/Stop, shared two-dimensional sprite and graph+montage preanimation restore/keep; optional standalone D3D11 package. No hardware/mobile/full-engine performance claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\dcd94ecde5427249\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 71110.61869999999
+    }
+  ]
 }

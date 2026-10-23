@@ -1910,7 +1910,8 @@
         "docs/SEQUENCE_POSE_AND_SKELETON.md",
         "docs/research/ENGINE_WORK_1861.json",
         "docs/research/USER_INSTALL_1863.json",
-        "docs/research/ENGINE_WORK_1867.json"
+        "docs/research/ENGINE_WORK_1867.json",
+        "docs/research/USER_INSTALL_1869.json"
       ]
     },
     {
@@ -2574,7 +2575,8 @@
         "docs/research/AI_ASSET_TRANSACTIONS_041.md",
         "docs/research/ENGINE_WORK_227.json",
         "docs/ANIMATION_PLAYBACK_RESTORE.md",
-        "docs/research/ENGINE_WORK_1867.json"
+        "docs/research/ENGINE_WORK_1867.json",
+        "docs/research/USER_INSTALL_1869.json"
       ]
     },
     {
@@ -3693,14 +3695,14 @@
     "first": 1865,
     "last": 1867,
     "receipt": "docs/research/ENGINE_WORK_1867.json",
-    "scope": "Detached original evaluators preserve managed mixer finite Repeat/PingPong/fade, graph parameters/machine transitions and montage sections/retiring fades. Frozen single-capture presented pose restores without zero-time graph evaluation; notify interruption/re-entry cancels scoped latent work without callback rollback. Overlap final different director, keep, external graph/montage supersession, failure recovery and disposal covered. Seven affected regression families including final nine-case new production harness and actual editor/CPP/standalone D3D checkpoint passed; final installed verification pending."
+    "scope": "Installed detached preanimated evaluators preserve managed mixer finite-loop/fade, graph transition/parameters, montage section/retiring blend histories and presented pose. Notify windows End on sequence-suspended with scope cancellation and re-enter next tick; callback effects/latent work are not rolled back. Seven affected source regression families including final nine-case harness; actual installed editor authoring and CPP Graph/Montage/Sequence setup and restore/keep plus independent D3D11 passed. Current source/native/vendor and full manifest hashes verified; User profile read-only preserved, Versions1/cache32/lease0 and old version retirement. Unmanaged extra mixer actions, weighted channel aliases and broader cumulative goals remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1863.json",
-    "sourceCommit": "b322c2d32577f296386b764adc842cff06e6a65c",
-    "bundleHash": "3cfa8727f82a0175746cb93fa96c277ffd80b4a242e88ebb77bd20b483ac817e",
+    "receipt": "docs/research/USER_INSTALL_1869.json",
+    "sourceCommit": "3570a33f6d3ee43c65f0a0ef04895bd930ce96cd",
+    "bundleHash": "dcd94ecde5427249b57e6b565c30b0eed3cc4e7aca63dbb692a30e2ea8dc7f47",
     "verified": true,
     "versions": 1,
-    "scope": "Installed shared strict bone naming and nested actor boundary for capture/query/play/restore, named local/world pose pages with exact affine matrix/trsExact and selected ancestor refresh; failed activation/restore preserves prior control/local TRS; all-target prevalidation and deduplicated nested matrix roots. Human current-world pose inspector with visible heading/space/output/filter/readonly revision, AI typed schema and six generated BP/compiled CPP Skeleton getters through authorized typed live queries. Nine affected regressions, actual installed CPP local[1,0,0]/world[5,4,0]/scale2/world rotation90 offset, eight model swaps/backwards/empty layouts and restoration; exact installed SDK Game.hpp and Bridge.hpp freshly compiled, independent D3D11 new getters and original pose restore passed. Host1041/Player1604/renderer unchanged binary hashes; current21 native owner hashes with2 changed SDK headers; historical native30 test source identities verified but not a fresh all-SDK execution claim. User profile preserved, Versions1 and cache32/lease0. Per-bone ownership/weighted blending, external graph/montage/fade/finite-loop restore and broader cumulative goals remain."
+    "scope": "Installed detached preanimated evaluators preserve managed mixer finite-loop/fade, graph transition/parameters, montage section/retiring blend histories and presented pose. Notify windows End on sequence-suspended with scope cancellation and re-enter next tick; callback effects/latent work are not rolled back. Seven affected source regression families including final nine-case harness; actual installed editor authoring and CPP Graph/Montage/Sequence setup and restore/keep plus independent D3D11 passed. Current source/native/vendor and full manifest hashes verified; User profile read-only preserved, Versions1/cache32/lease0 and old version retirement. Unmanaged extra mixer actions, weighted channel aliases and broader cumulative goals remain."
   }
 }
