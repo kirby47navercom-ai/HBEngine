@@ -2901,6 +2901,27 @@
       "paths": [
         "prototype/sequence-pose-blending.js"
       ]
+    },
+    {
+      "keywords": [
+        "sequenceWeightCurveContract",
+        "validSectionWeightCurve",
+        "prepareSectionWeightCurve",
+        "sampleSectionWeightCurve",
+        "trimSectionWeightCurve",
+        "editSectionWeightCurve"
+      ],
+      "paths": [
+        "prototype/sequence-weight-curve.js"
+      ]
+    },
+    {
+      "keywords": [
+        "sectionWeightCurveMarkup"
+      ],
+      "paths": [
+        "prototype/sequence-weight-curve-editor.js"
+      ]
     }
   ]
 }

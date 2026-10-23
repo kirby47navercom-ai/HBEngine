@@ -1,10 +1,11 @@
+import {sampleSectionWeightCurve} from './sequence-weight-curve.js';
 import {Euler,Quaternion,MathUtils} from 'three';
 
 export const sequenceBlendModes=['override','normalized'];
 export const validSequenceWeight=n=>Number.isFinite(n)&&n>=0&&n<=1;
 export const validSequenceBlend=data=>(data.weight===undefined||validSequenceWeight(data.weight))&&(data.blendMode===undefined||sequenceBlendModes.includes(data.blendMode));
 export const validSequenceSectionBlend=section=>(section.weight===undefined||validSequenceWeight(section.weight))&&(section.blendMode===undefined||section.blendMode==='inherit'||sequenceBlendModes.includes(section.blendMode));
-export const sequenceBlendSettings=(data,parent,section)=>({weight:(parent?.weight??1)*(data.weight??1)*(section?.weight??1),blendMode:section?.blendMode&&section.blendMode!=='inherit'?section.blendMode:data.blendMode??parent?.blendMode??'override'});
+export const sequenceBlendSettings=(data,parent,section)=>({weight:(parent?.weight??1)*(data.weight??1)*(section?.weight??1)*sampleSectionWeightCurve(section,parent?.time??section?.start??0),blendMode:section?.blendMode&&section.blendMode!=='inherit'?section.blendMode:data.blendMode??parent?.blendMode??'override'});
 const weight=e=>e.owner.weight??1;
 export const sequenceEntryEnabled=e=>!e.mix||e.owner.blendMode!=='normalized'||weight(e)>0;
 const scalar=n=>typeof n==='number'&&Number.isFinite(n);

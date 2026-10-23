@@ -1,3 +1,4 @@
+import {trimSectionWeightCurve} from './sequence-weight-curve.js';
 import {prepareTimeWarp,sampleTimeWarp,timeWarpRate,timeWarpApproach,timeWarpCuts,freezeTimeWarpTangents,localTimeWarpBoundary,sampleTimeWarpSide,timeWarpCrossedJump} from './sequence-warp-program.js';
 // Local section seconds -> signed source seconds. Cubic Hermite segments can
 // change direction between keys; prepared stationary points split event visits.
@@ -13,7 +14,7 @@ export function sectionWarpApproach(section,time,direction=1){const local=localT
 export function sectionWarpRate(section,time,direction=1){return section.rate*(section.timeWarp?timeWarpRate(section.timeWarp,localTimeWarpBoundary(section.timeWarp,time,section.start),direction):1);}
 export function sectionMappedRate(section,time,length,parentRate=1){const localRate=sectionWarpRate(section,time,Math.sign(parentRate)||1),rate=parentRate===0||localRate===0?0:parentRate*localRate,source=sectionSourceTime(section,time);return !section.loop&&(source<0||source>length||source===0&&rate<0||source===length&&rate>0)?0:rate;}
 export function trimSequenceSectionStart(section,start){
- if(!Number.isFinite(start))throw Error('구간 시작 시간을 확인하세요.');const delta=start-section.start,next={...section,start,duration:section.duration-delta};
+ if(!Number.isFinite(start))throw Error('구간 시작 시간을 확인하세요.');const delta=start-section.start,next={...section,start,duration:section.duration-delta};if(section.weightCurve)next.weightCurve=trimSectionWeightCurve(section,start);
  if(!section.timeWarp){next.sourceStart=section.sourceStart+delta*section.rate;if(!section.loop)next.sourceStart=Math.max(0,next.sourceStart);return next;}
  const offset=sampleSectionTimeWarp(section.timeWarp,delta);next.sourceStart=section.sourceStart+offset*section.rate;if(!section.loop&&next.sourceStart<0)throw Error('시간 리매핑 구간을 원본 시작 이전으로 확장할 수 없어요.');
  const frozen=freezeTimeWarpTangents(section.timeWarp),program=prepareTimeWarp(section.timeWarp),segment=program.segments.find(s=>s.time<=delta&&delta<s.end),first={time:0,value:0,...segment?.step?{interpolation:'step'}:segment?.cubic?{interpolation:'cubic',outTangent:timeWarpRate(section.timeWarp,delta)}:{}},keys=[first,...frozen.filter(k=>k.time>delta).map(k=>({...k,time:k.time-delta,value:k.value-offset}))];

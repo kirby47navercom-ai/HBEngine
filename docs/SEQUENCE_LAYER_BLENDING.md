@@ -16,6 +16,16 @@
 
 AI의 `sequence.section.edit`는 optional `section.weight`와 `section.blendMode`를 같은 원자적 검증·revision·Undo 흐름으로 받아요. 각 값을 `null`로 업데이트하면 그 선택 설정을 제거해요. 앞부분 자르기도 구간 가중치·모드를 유지해요. `runtime.sequenceTree`는 요청한 페이지만 실제 `weight`·`blendMode`와 작성된 `sectionWeight`·`sectionBlendMode`를 돌려줘요. 구간 가중치는 정적인 값이며, 자동 fade 곡선이나 오디오 gain 설정은 아니에요.
 
+**가중치 곡선**을 켜면 이 정적인 가중치에 시간별 곡선 값을 곱해요. 곡선은 상위 시퀀스의 구간 경과 시간을 사용하므로 원본의 반복·역재생·시간 리매핑과 독립적이에요. 선형·계단 보간과 증가·감소·봉우리 프리셋, 키 추가·삭제·값 편집을 지원해요. 서로 겹치는 두 normalized 구간에서 한쪽을 감소시키고 다른 쪽을 증가시키면 혼합 비율이 바뀌어요. 활성 normalized 레이어가 하나이면 양수 가중치의 크기와 관계없이 그 값 전체를 사용하므로, 단독 레이어를 원래 값이나 오디오와 페이드하는 기능으로 해석하지 않아요.
+
+```json
+{"weightCurve":[{"time":0,"value":1},{"time":2,"value":0,"interpolation":"step"}]}
+```
+
+키 시각은 구간 기준 초이며 첫 시각0, 이후 오름차순, 값0~1이에요. 키 앞뒤는 끝값을 유지해요. 구간 끝을 줄여도 이후 키를 보존할 수 있고, 앞부분 자르기는 자르는 시각의 값과 보간을 새0초 키로 만든 뒤 나머지 키를 옮겨 원래 곡선을 유지해요. `sequence.section.edit`로 곡선 전체를 쓰거나 `weightCurve:null`로 제거할 수 있어요. 이 키들도 기존 조절 가능한 `keyBudget`에 포함되고, 개별 곡선은 기존 트랙의65536키 규칙을 사용해요. 사람의 속성 목록과 그래프는32키 페이지로 표시하고 타임라인의 이전·다음 키 이동도 곡선 경계를 포함해요.
+
+`runtime.sequenceTree`의 `sectionCurveWeight`는 해당 구간 시각의 곡선 값이에요. C++·BP의 기존 Play/Pause/Seek와 루트 가중치 변경도 같은 계산을 사용해요. 매 프레임 기존 하위 구간 순회에서 변한 소유자만 갱신하므로, 전체 컴포넌트 상태 트랙의 값이 캐시되어 있어도 혼합 비율이 바뀌어요. 곡선이 없으면 상수1 경로를 쓰고, 있으면 원본 키 배열을 참조하는 약한 캐시와 이진 검색을 사용해요. 키 재정렬·전체 복사·새 타이머·worker를 매 프레임 만들지 않아요.
+
 ```cpp
 hb::LevelSequence::SetBlendMode(this, "normalized");
 hb::LevelSequence::SetWeight(this, 0.5f);
