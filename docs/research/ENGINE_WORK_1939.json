@@ -1501,9 +1501,21 @@
       "reason": "Prefab replacement copy correctly retained prefab name root; fixture incorrectly searched source display name. Switched fixture to stable owned copy ID. Engine output was not renamed and failed test is not implementation progress."
     }
   ],
-  "installationPending": true,
-  "scope": "Selected preexisting2D/3D actor lifetime capture: initial presence, pooling, deletion, same-ID/shape template transitions, visual components, parent remapping and validation. Immutable true-key templates survive reduction; prepared binary spawn seeks replace only owned visual actors. Captured-identity source visibility uses shared sequence priority and restores on release. Retired-copy control channels are discarded without writing destroyed actors;24 repeated seek loops stay bounded and128 copies are all removed. Settings/presets/Undo/save, AI schema and existing user CPP Play/Seek/Stop share the flow. Seven affected gates passed. Exact installed editor/standalone D3D gate pending. Source simulation/variables are not rewound; same-callback native Destroy+explicit same-ID Spawn remains a separate generation-management gap.",
-  "currentInstallation": null,
-  "installedGates": [],
+  "installationPending": false,
+  "scope": "Selected preexisting2D/3D actor lifetime capture: initial presence, pooling, deletion, same-ID/shape template transitions, visual components, parent remapping and validation. Immutable true-key templates survive reduction; prepared binary spawn seeks replace only owned visual actors. Captured-identity source visibility uses shared sequence priority and restores on release. Retired-copy control channels are discarded without writing destroyed actors;24 repeated seek loops stay bounded and128 copies are all removed. Settings/presets/Undo/save, AI schema and existing user CPP Play/Seek/Stop share the flow. Seven affected gates passed. Exact installed editor/standalone D3D11 gate passed: human capture and apply/preview, CPP five-phase forward/backward replay with original visibility and copy cleanup. Source simulation/variables are not rewound; same-callback native Destroy+explicit same-ID Spawn remains a separate generation-management gap.",
+  "currentInstallation": "docs/research/USER_INSTALL_1941.json",
+  "installedGates": [
+    {
+      "path": "native/build/take-lifetime-1938-window-sZO2y7/acceptance.json",
+      "sha256": "e3372489b302e426141e5250f4a6c381dd42abb8c2b1980495c7bbdac4040268",
+      "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\896a808c2691d397\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 97570.65770000001
+    }
+  ],
   "priorImplementationRevision": "ab7bb8f855dbe348df7fcbb9bfae04e4a7a1cfeb"
 }

@@ -2,11 +2,11 @@
 
 2026-10-23. 주인님/짚짱/존댓말. 백그라운드·여러세부구현→영향검사묶음→설치. 전체UE/Unity분석/엔진완성주장금지. ENGINE_STATUS78행/분모·완료율null. goal blocked여도승인구현계속/새goal·반복질문금지.
 
-## 1937–1939 소스 확정·설치 대기
+## 확정1942
 
-WORK1939. Take includeLifetime 기본false/기존preset불변·명시선택기존2D/3D 액터의 초기활성/풀재사용/삭제/같은ID재생성·정적root시각형상변경을 spawn true key.object 템플릿으로녹화. 시각컴포넌트자동수집·scripts/physics/게임변수제외·widget/component거절·includeSpawned와병행. immutable 키준비+binaryseek·ownedID복사본만교체·부모remap/템플릿경계cycle검증·원본동일identity 표시lease/우선순위/정지복원. 원본simulation활성유지. 사라진복사본SequenceChannels.discardTarget로제어기록/pendingcallback무효화·반복seek누적방지. snapshot키reduction보존·새리소스참조패키지추적. 기존UI checkbox/Undo/save·AI schema.gameplay.takeLifetime/3정확symbol1owner·기존CPP LevelSequence Play/Seek/Stop 공용흐름.
+source0196d35/WORK1939/USER_INSTALL1941. Versions/896a808c2691d397·manifest4517/source1171·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전198651306B퇴역. 설치UI/CPP/별도D3D11 97.57초통과. Take includeLifetime 기본false/기존preset불변·명시선택기존2D/3D 액터의 초기활성/풀재사용/삭제/같은ID재생성·정적root시각형상변경을 spawn true key.object 템플릿으로녹화. 시각컴포넌트자동수집·scripts/physics/게임변수제외·widget/component거절·includeSpawned와병행. immutable 키준비+binaryseek·ownedID복사본만교체·부모remap/템플릿경계cycle검증·원본동일identity 표시lease/우선순위/정지복원. 원본simulation활성유지. 사라진복사본SequenceChannels.discardTarget로제어기록/pendingcallback무효화·반복seek누적방지. snapshot키reduction보존·새리소스참조패키지추적. 기존UI checkbox/Undo/save·AI schema.gameplay.takeLifetime/3정확symbol1owner·기존CPP LevelSequence Play/Seek/Stop 공용흐름.
 
-7영향gate통과:1937/211/1787/1828/271/272/실제1938window. 24회반복탐색channel/lease수안정·복사128생성/128제거·sourceidentity교체보호·우선순위복원·true동일ID형상키. 실제hidden창 source CPP Move/Destroy/Spawn→record/apply/preview/CPP5단계역탐색·원본복원통과. native SDK21/renderer/vendor2/HostPlayer exact불변재사용; 전체SDK fresh실행주장금지. 설치editor/독립D3D gate대기. 두GUI fixture실패 DEBUG_HANDOFF: 기존SDK는같은callback nonpool Destroy+같은명시ID Spawn거절(삭제commit뒤생성흐름검사;CPP01잔여등록), prefab복사본name=root정상이라fixture를stableownedID기준수정. 실패를엔진구현성과에세지않음.
+7영향gate통과:1937/211/1787/1828/271/272/실제1938window. 24회반복탐색channel/lease수안정·복사128생성/128제거·sourceidentity교체보호·우선순위복원·true동일ID형상키. 실제hidden창 source CPP Move/Destroy/Spawn→record/apply/preview/CPP5단계역탐색·원본복원통과. native SDK21/renderer/vendor2/HostPlayer exact불변재사용; 전체SDK fresh실행주장금지. 설치editor/독립D3D11 gate통과. 두GUI fixture실패 DEBUG_HANDOFF: 기존SDK는같은callback nonpool Destroy+같은명시ID Spawn거절(삭제commit뒤생성흐름검사;CPP01잔여등록), prefab복사본name=root정상이라fixture를stableownedID기준수정. 실패를엔진구현성과에세지않음.
 
 직전1936 USER_INSTALL1935/7fb466f08edd325a·manifest4510/source1165·User10849보존·Versions1/cache32/lease0. 1933 유지/선형외부부분bake·constanttail무효tangent0·Timeline/Sequence검증·도구범위/FPS/view보존. 1927 골격뼈별lease/weakidentity/poseWeight·1024binding/sample/matrix1.1921 typecatalog/picker/source-targetCAS/imports/oneUndo.1915전이타입default소비자이관. 완료검사반복금지·marker/context.state.installation우선.
 

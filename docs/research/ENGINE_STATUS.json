@@ -1951,7 +1951,8 @@
         "docs/research/ENGINE_WORK_1933.json",
         "docs/research/USER_INSTALL_1935.json",
         "docs/TAKE_EXISTING_LIFETIME.md",
-        "docs/research/ENGINE_WORK_1939.json"
+        "docs/research/ENGINE_WORK_1939.json",
+        "docs/research/USER_INSTALL_1941.json"
       ]
     },
     {
@@ -2689,7 +2690,8 @@
         "docs/research/ENGINE_WORK_1933.json",
         "docs/research/USER_INSTALL_1935.json",
         "docs/TAKE_EXISTING_LIFETIME.md",
-        "docs/research/ENGINE_WORK_1939.json"
+        "docs/research/ENGINE_WORK_1939.json",
+        "docs/research/USER_INSTALL_1941.json"
       ]
     },
     {
@@ -3808,14 +3810,14 @@
     "first": 1937,
     "last": 1939,
     "receipt": "docs/research/ENGINE_WORK_1939.json",
-    "scope": "Selected preexisting2D/3D actor lifetime capture: initial presence, pooling, deletion, same-ID/shape template transitions, visual components, parent remapping and validation. Immutable true-key templates survive reduction; prepared binary spawn seeks replace only owned visual actors. Captured-identity source visibility uses shared sequence priority and restores on release. Retired-copy control channels are discarded without writing destroyed actors;24 repeated seek loops stay bounded and128 copies are all removed. Settings/presets/Undo/save, AI schema and existing user CPP Play/Seek/Stop share the flow. Seven affected gates passed. Exact installed editor/standalone D3D gate pending. Source simulation/variables are not rewound; same-callback native Destroy+explicit same-ID Spawn remains a separate generation-management gap."
+    "scope": "Selected preexisting2D/3D actor lifetime capture: initial presence, pooling, deletion, same-ID/shape template transitions, visual components, parent remapping and validation. Immutable true-key templates survive reduction; prepared binary spawn seeks replace only owned visual actors. Captured-identity source visibility uses shared sequence priority and restores on release. Retired-copy control channels are discarded without writing destroyed actors;24 repeated seek loops stay bounded and128 copies are all removed. Settings/presets/Undo/save, AI schema and existing user CPP Play/Seek/Stop share the flow. Seven affected gates passed. Exact installed editor/standalone D3D11 gate passed: human capture and apply/preview, CPP five-phase forward/backward replay with original visibility and copy cleanup. Source simulation/variables are not rewound; same-callback native Destroy+explicit same-ID Spawn remains a separate generation-management gap."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1935.json",
-    "sourceCommit": "495e7f47f09e1bc4213907187051b647287bac2c",
-    "bundleHash": "7fb466f08edd325adad8106f94102bd623880a3cdde5c3b6d311114178599118",
+    "receipt": "docs/research/USER_INSTALL_1941.json",
+    "sourceCommit": "d5454b491d5ca4007660f871e1d4b5389a96a8f2",
+    "bundleHash": "896a808c2691d397fd615122d4f41a90f19276fd37d9e637f08ca29af3c3359c",
     "verified": true,
     "versions": 1,
-    "scope": "Constant/default and linear outside-key-domain partial bake via ordinary keys, exact surviving cubic/weighted/vertical/PCHIP segments and exterior derivatives, finite-control fallback and final sample+outside-key budgets. Existing range/FPS UI and per-document view-only tool state preserve settings across rebuild/UndoRedo; shared AI schema, dryRun/CAS/invalid range and periodic rejection, save and existing CPP LevelSequence execution. Six primary affected gates and a narrow numeric branch supplement,70649 sample observations and final actual source UI gate passed. Exact installed editor/standalone D3D11 gate passed, including persisted range/FPS controls after rebuild/UndoRedo and all13 user CPP seek samples. Periodic domain expansion retaining the original period and unrepresentable exterior slopes remain explicit limits."
+    "scope": "Selected preexisting2D/3D actor lifetime capture: initial presence, pooling, deletion, same-ID/shape template transitions, visual components, parent remapping and validation. Immutable true-key templates survive reduction; prepared binary spawn seeks replace only owned visual actors. Captured-identity source visibility uses shared sequence priority and restores on release. Retired-copy control channels are discarded without writing destroyed actors;24 repeated seek loops stay bounded and128 copies are all removed. Settings/presets/Undo/save, AI schema and existing user CPP Play/Seek/Stop share the flow. Seven affected gates passed. Exact installed editor/standalone D3D11 gate passed: human capture and apply/preview, CPP five-phase forward/backward replay with original visibility and copy cleanup. Source simulation/variables are not rewound; same-callback native Destroy+explicit same-ID Spawn remains a separate generation-management gap."
   }
 }
