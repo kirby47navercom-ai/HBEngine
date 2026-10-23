@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **858개**, 실제 공통 C++ API **768개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **863개**, 실제 공통 C++ API **773개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -71,7 +71,7 @@
 | 2D IK | 14 | 14 |
 | 몽타주 | 13 | 13 |
 | 애니메이션 최적화 | 4 | 4 |
-| 시퀀스 | 17 | 17 |
+| 시퀀스 | 22 | 22 |
 | AI 내비게이션 | 7 | 7 |
 | AI 감지 | 3 | 3 |
 | 파티클 | 5 | 5 |
@@ -1201,6 +1201,11 @@
 | sequenceEvaluate | Evaluate / 시퀀스 현재 시간 평가 | exec: exec, target: object | then: exec | hb::LevelSequence::Evaluate | 공통 C++ + VM |
 | sequenceSetSecondsPerFrame | Set Seconds Per Frame / 시퀀스 프레임 유지 시간 설정 | exec: exec, target: object, seconds: float | then: exec | hb::LevelSequence::SetSecondsPerFrame | 공통 C++ + VM |
 | sequenceSecondsPerFrame | Get Seconds Per Frame / 시퀀스 프레임 유지 시간 | target: object | return: float | hb::LevelSequence::GetSecondsPerFrame | 공통 C++ + VM |
+| sequenceSetExternalTime | Set External Time / 시퀀스 외부 시간 공급 | exec: exec, target: object, seconds: float | then: exec | hb::LevelSequence::SetExternalTime | 공통 C++ + VM |
+| sequenceSetExternalFrame | Set External Frame / 시퀀스 외부 프레임 공급 | exec: exec, target: object, frame: int, numerator: int, denominator: int | then: exec | hb::LevelSequence::SetExternalFrame | 공통 C++ + VM |
+| sequenceResetExternalTime | Reset External Time / 시퀀스 외부 시간 초기화 | exec: exec, target: object | then: exec | hb::LevelSequence::ResetExternalTime | 공통 C++ + VM |
+| sequenceExternalTime | Get External Time / 시퀀스 외부 시간 | target: object | return: float | hb::LevelSequence::GetExternalTime | 공통 C++ + VM |
+| sequenceHasExternalTime | Has External Time / 시퀀스 외부 시간 동기화 | target: object | return: bool | hb::LevelSequence::HasExternalTime | 공통 C++ + VM |
 | sequenceSeekFrame | Seek Frame / 시퀀스 프레임 이동 | exec: exec, target: object, frame: int | then: exec | hb::LevelSequence::SeekFrame | 공통 C++ + VM |
 | sequenceFrame | Get Frame / 시퀀스 현재 프레임 | target: object | return: int | hb::LevelSequence::GetFrame | 공통 C++ + VM |
 | sequenceFrameRateNumerator | Get Frame Rate Numerator / 시퀀스 프레임률 분자 | target: object | return: int | hb::LevelSequence::GetFrameRateNumerator | 공통 C++ + VM |

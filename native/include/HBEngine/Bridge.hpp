@@ -523,6 +523,11 @@ inline void LevelSequence::Advance(Actor* target,float delta){engineCommand("seq
 inline void LevelSequence::Evaluate(Actor* target){engineCommand("sequenceEvaluate",{{"target",bridgeId(target)}});}
 inline void LevelSequence::SetSecondsPerFrame(Actor* target,float seconds){engineCommand("sequenceSetSecondsPerFrame",{{"target",bridgeId(target)},{"seconds",seconds}});}
 inline float LevelSequence::GetSecondsPerFrame(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0.0f:state.value("secondsPerFrame",0.0f);}
+inline void LevelSequence::SetExternalTime(Actor* target,double seconds){engineCommand("sequenceSetExternalTime",{{"target",bridgeId(target)},{"seconds",seconds}});}
+inline void LevelSequence::SetExternalFrame(Actor* target,int frame,int numerator,int denominator){engineCommand("sequenceSetExternalFrame",{{"target",bridgeId(target)},{"frame",frame},{"numerator",numerator},{"denominator",denominator}});}
+inline void LevelSequence::ResetExternalTime(Actor* target){engineCommand("sequenceResetExternalTime",{{"target",bridgeId(target)}});}
+inline double LevelSequence::GetExternalTime(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0.0:state.value("externalTime",0.0);}
+inline bool LevelSequence::HasExternalTime(Actor* target){auto& state=gameplayField(target,"sequence");return !state.is_null()&&state.value("externalTimeReady",false);}
 inline void LevelSequence::SeekFrame(Actor* target,int frame){engineCommand("sequenceSeekFrame",{{"target",bridgeId(target)},{"frame",frame}});}
 inline int LevelSequence::GetFrame(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0:state.value("frame",0);}
 inline int LevelSequence::GetFrameRateNumerator(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0:state.value("frameRateNumerator",0);}

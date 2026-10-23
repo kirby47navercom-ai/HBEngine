@@ -2483,7 +2483,10 @@
         "sequenceClockSettings",
         "validSequenceClock",
         "sequenceClockDelta",
-        "sequenceClockContract"
+        "sequenceClockContract",
+        "sequenceExternalDelta",
+        "resetSequenceExternal",
+        "sequenceExternalFrameTime"
       ],
       "paths": [
         "prototype/sequence-clock.js"

@@ -591,6 +591,11 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceEvaluate", KoreanName="시퀀스 현재 시간 평가", Category="시퀀스") static void Evaluate(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceSetSecondsPerFrame", KoreanName="시퀀스 프레임 유지 시간 설정", Category="시퀀스") static void SetSecondsPerFrame(Actor* target,float seconds);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequenceSecondsPerFrame", KoreanName="시퀀스 프레임 유지 시간", Category="시퀀스") static float GetSecondsPerFrame(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceSetExternalTime", KoreanName="시퀀스 외부 시간 공급", Category="시퀀스") static void SetExternalTime(Actor* target,double seconds);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceSetExternalFrame", KoreanName="시퀀스 외부 프레임 공급", Category="시퀀스") static void SetExternalFrame(Actor* target,int frame,int numerator=30,int denominator=1);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceResetExternalTime", KoreanName="시퀀스 외부 시간 초기화", Category="시퀀스") static void ResetExternalTime(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequenceExternalTime", KoreanName="시퀀스 외부 시간", Category="시퀀스") static double GetExternalTime(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequenceHasExternalTime", KoreanName="시퀀스 외부 시간 동기화", Category="시퀀스") static bool HasExternalTime(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceSeekFrame", KoreanName="시퀀스 프레임 이동", Category="시퀀스") static void SeekFrame(Actor* target,int frame);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequenceFrame", KoreanName="시퀀스 현재 프레임", Category="시퀀스") static int GetFrame(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequenceFrameRateNumerator", KoreanName="시퀀스 프레임률 분자", Category="시퀀스") static int GetFrameRateNumerator(Actor* target);
