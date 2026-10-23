@@ -1,0 +1,221 @@
+{
+  "version": 1,
+  "date": "2026-10-23T10:50:12.202Z",
+  "kind": "section-weight-curves-and-source-native-window-consolidation",
+  "implementationRevision": "106f380534c1b1914c85a570ae7db69f2c884bee",
+  "sourceHashBase": "docs/research/ENGINE_WORK_1978.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "dc12824334454615c6e4f1881fbbf3f3feb07f75f07584a7a7e265b72ec31389",
+    "docs/SEQUENCE_LAYER_BLENDING.md": "1050888f5f4806de8cfbef352b9647e776ed122cd59beef9789585b3a4e4d051",
+    "docs/ai-routes.json": "2514cd991011e2a855f4943215ed23e5470f7119fe04ea64a73c11d180314498",
+    "prototype/gameplay-editor.css": "b98545deaf2519a95896e8f6b5f5b5fa95d9444b739896dd7ae1bcb0ec0deca2",
+    "prototype/gameplay-editor.js": "eaa5e865621aefd63b11a2b645c8e3cc804d0c7637a05c7b21a0b24394046184",
+    "prototype/gameplay-runtime.js": "5976dabd705b240d057e9bd7a8554a254508142c362b8d897aff32543bedf71e",
+    "prototype/sequence-blending.js": "af1408c1cc7990a7f57340d65accf701be6898fd186ec3d2ae2ec60271e17752",
+    "prototype/sequence-key-storage.js": "e89d3e7d93f9f85c2b391c53d8ecf161d500eca53d299906382783d112dcaec6",
+    "prototype/sequence-sections.js": "90b28e3be6b34127d6c89f726f6b345074bd0b6801fd6602e239f88810c571cc",
+    "prototype/sequence-time-warp.js": "70ce248093283c3e25541da145676848ee795bc9969de1a1faeb1b7e3297f36c",
+    "tools/check-sequence-blending-1968-window.mjs": "be5f98a7945b63be8e7548f86fa2d5ab74feda89d407fa68373ad8243fd53d5b",
+    "tools/check-sequence-pose-ownership-1926-window.mjs": "05c9af41c0cd47d0092d58b63cc8c334d3fe48b726832ae58f7e4c6045621b7c",
+    "tools/check-sequence-reverse-warp-1954-window.mjs": "f89e4c2d390fc84446ea4d12d75afd4e362afcd469266b77f6f8bb36ffa0b49f",
+    "tools/editor-automation.mjs": "65b20c928816d1e74c974fef3e437e9a154d680e32f96cd4c0f02325b2668e5f",
+    "tools/sequence-pose-blend-window-1972.mjs": "fa0e9d7801a7748faf01dc9e9c8a280347f92dcac6917d7f7ba9d3144e98ecfb",
+    "prototype/sequence-weight-curve-editor.js": "98323fd84d5b0c393d84314a633ed8dca8c00ba4dc069a37e01cde2936f78495",
+    "prototype/sequence-weight-curve.js": "69360984f32e2419a8a2a5abae4d80082f1af4f56c40c9fd0aa673e9475ad387",
+    "tools/check-sequence-weight-curve-1981.mjs": "f6349feff8aac2419b8f4b359719623120865339b9d9f384d8a78647dc2c87ce",
+    "tools/sequence-layer-exercise.mjs": "4b3c8f2bea63c92f93285995219f9c9b5de07f1f76999cd81d252e3dcacce9a5",
+    "tools/sequence-pose-exercise.mjs": "9049a5ecbe2f6ebd7e27ada749f576cea2708ee43edf3833c3017e1598e76c80",
+    "tools/sequence-test-tone-1986.mjs": "dfbe51dc02bce3b27f82997d17c703340909fa987f75846b19e2f33c660c1a08",
+    "tools/sequence-warp-exercise.mjs": "7808adac1d7a1caaa394ce7dc28eab0dbf301e76658fb2303d2da8eddcd6f701"
+  },
+  "composition": {
+    "tool": "tools/research-source-hashes.mjs",
+    "lineage": [
+      "docs/research/ENGINE_WORK_1955.json",
+      "docs/research/ENGINE_WORK_1958.json",
+      "docs/research/ENGINE_WORK_1966.json",
+      "docs/research/ENGINE_WORK_1974.json",
+      "docs/research/ENGINE_WORK_1978.json"
+    ],
+    "currentFilesVerified": false
+  },
+  "targetIds": [
+    "ANM-06"
+  ],
+  "newCases": 10,
+  "observations": 2005,
+  "cumulativeNewLayerCases": 37,
+  "checks": [
+    {
+      "name": "sequence-weight-curve-1981",
+      "passed": true,
+      "log": "native/build/group1983-sequence-weight-curve-1981.log",
+      "seconds": 0.3343352,
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-weight-curve-1981-8NYFS9/acceptance.json",
+      "sha256": "0d1387830b677951bbaaa037fc73bf9fbacd798ac9bc2c200f2940b617071995",
+      "cases": 10,
+      "observations": 2005
+    },
+    {
+      "name": "sequence-section-blend-1977",
+      "passed": true,
+      "log": "native/build/group1983-sequence-section-blend-1977.log",
+      "seconds": 0.1726672,
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-section-blend-1977-vNAJEf/acceptance.json",
+      "sha256": "2181c9e93221503f037ebb466283a1c048b5f8e9084f2d893430a73f809ac140",
+      "cases": 7
+    },
+    {
+      "name": "sequence-blending-1967",
+      "passed": true,
+      "log": "native/build/group1983-sequence-blending-1967.log",
+      "seconds": 0.31098120000000007,
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-blending-1967-e6VHuh/acceptance.json",
+      "sha256": "6e4230c267af76d21d48e3bc97ca1dd851a3147bc35a0df481c95bf7bf078e5c",
+      "cases": 11
+    },
+    {
+      "name": "sequence-pose-blending-1970",
+      "passed": true,
+      "log": "native/build/group1983-sequence-pose-blending-1970.log",
+      "seconds": 0.195794,
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-pose-blending-1970-E6oT7d/acceptance.json",
+      "sha256": "f2611167d6bfa381189858e6e77a99e15218976082beeee742a6e69be2b73a88",
+      "cases": 9
+    },
+    {
+      "name": "sequence-sections-1250",
+      "passed": true,
+      "log": "native/build/group1983-sequence-sections-1250.log",
+      "seconds": 0.21508069999999999,
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-sections-1250-KwkrJA/acceptance.json",
+      "sha256": "233db272554e0e4cd74a24e73595be3a84ff62c40b9e13d42c8f1c9116996709"
+    },
+    {
+      "name": "sequence-cubic-warp-1959",
+      "passed": true,
+      "log": "native/build/group1983-sequence-cubic-warp-1959.log",
+      "seconds": 0.23628790000000002,
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-cubic-warp-1959-sCnDbH/acceptance.json",
+      "sha256": "3f530c244169bbe0af25966ed4c4e6d6cdeabd527dd8d061af76092a515498e5",
+      "cases": 18,
+      "observations": 3442
+    },
+    {
+      "name": "sequence-audio-1956",
+      "passed": true,
+      "log": "native/build/group1983-sequence-audio-1956.log",
+      "seconds": 0.4598479000000002,
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-audio-1956-hDpsAg/acceptance.json",
+      "sha256": "dd4c2e787430d4c4f8bb2026d41b8d2a4f49590cc4714b0057c8d20cb757f0e8",
+      "cases": 8
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "name": "sequence-blending-1968-window",
+      "passed": true,
+      "seconds": 53.9384006,
+      "log": "native/build/group1973-sequence-blending-1968-window.log",
+      "reports": [
+        "native/build/sequence-blending-1968-window-CD9PXO/acceptance.json"
+      ],
+      "sha256": "c6f675d66ba6f4eac2e5345e1b07464cb5bb68ecf9ba6a45da496d782e0216eb"
+    },
+    {
+      "name": "sequence-reverse-warp-1954-window",
+      "passed": true,
+      "seconds": 96.1543755,
+      "log": "native/build/group1973-sequence-reverse-warp-1954-window.log",
+      "reports": [
+        "native/build/sequence-reverse-warp-1954-window-mY7Qzm/acceptance.json"
+      ],
+      "sha256": "e23c39b76adc5b42353ab729b6caef7e55c05f1a06a493c285d83897149fb976"
+    },
+    {
+      "name": "sequence-pose-ownership-1926-window",
+      "passed": true,
+      "seconds": 69.42453079999999,
+      "log": "native/build/group1973-sequence-pose-ownership-1926-window.log",
+      "reports": [
+        "native/build/sequence-pose-ownership-1926-window-CvFriF/acceptance.json"
+      ],
+      "sha256": "42bc52e8d8b2552551f487e7f71dcdb07c00d60fce6332284f01052e8d39ecfb"
+    }
+  ],
+  "visual": {
+    "path": "native/build/sequence-weight-visual-1984-381cUm/acceptance.json",
+    "sha256": "0d26ef8989219ad674c7acf99f3685307628287480cd2caceb862dc5bbd728b0",
+    "passed": true
+  },
+  "exerciseReuse": {
+    "passed": true,
+    "rows": [
+      {
+        "tool": "check-sequence-blending-1968-window.mjs",
+        "helper": "sequence-layer-exercise.mjs",
+        "bodySHA256": "19880f9ea08291ed119c81052e829668bef72476047e729231078bb56e6e69f2",
+        "identicalBody": true
+      },
+      {
+        "tool": "check-sequence-reverse-warp-1954-window.mjs",
+        "helper": "sequence-warp-exercise.mjs",
+        "bodySHA256": "64dd1af8f48f80a07c5788a30dfccd3145662257023fc5f1aa648f66f1e3c4f5",
+        "identicalBody": true
+      },
+      {
+        "tool": "check-sequence-pose-ownership-1926-window.mjs",
+        "helper": "sequence-pose-exercise.mjs",
+        "bodySHA256": "c9715b9b35668ce4fda8296e2e194b252c310e14c9ea3b8296cebcf5a41eefd7",
+        "identicalBody": true
+      }
+    ],
+    "scope": "Exact existing source-gate test bodies extracted for installed standalone-only reuse; avoid repeating already passed full source editor/CPP cases. Missing unused audio fixture reference receives a small owned WAV for export preflight; no product implementation change."
+  },
+  "aiContextGate": {
+    "report": "native/build/ai-context-1058.json",
+    "sha256": "897f9d6321f38870712e925b552b7cf2fba94a72dbfa4520a7efc16b9d44f386",
+    "passed": true
+  },
+  "nativeReuse": {
+    "receipt": "docs/research/ENGINE_WORK_1974.json",
+    "changedThisPhase": [],
+    "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+    "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+    "scope": "Same binary/19 unchanged native owners; Game/Bridge static API additions already exercised through actual newly compiled source C++ modules. No fresh full SDK or renderer gate."
+  },
+  "externalWorktreeChanges": {
+    "prototype/player.js": {
+      "observedSHA256": "4d89ea43c2f9f32ad96be161ffceb4491c567ab0422ecb6c43495cf68adff247",
+      "modified": false,
+      "staged": false,
+      "admitted": false,
+      "admittedHEADSHA256": "8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1",
+      "distributionPolicy": "Use this admitted HEAD file, not the unrelated dirty worktree file; preserve both unrelated worktree changes. Only tracked and explicitly admitted source/generation is eligible for distribution."
+    },
+    "tools/check-player-keyboard-release.mjs": {
+      "observedSHA256": "1b5fa2aeadedbded2e795c4fa5f34cdfb414d3ac9ffefada46eb00ad5e75e336",
+      "modified": false,
+      "staged": false,
+      "admitted": false
+    }
+  },
+  "installationPending": true,
+  "currentInstallation": "docs/research/USER_INSTALL_1951.json",
+  "resources": {
+    "newWorkers": 0,
+    "newTimers": 0,
+    "newGPUResources": 0,
+    "curveAbsentEarlyReturn": true,
+    "binarySearchWithoutKeyCopies": true,
+    "propertyPage": 32,
+    "maxCurveKeys": 65536,
+    "scope": "Relative normalized layer weights, not standalone opacity or sound fade; no FPS/heap claim."
+  },
+  "testCorrections": [
+    "Extracted three byte-identical exercise bodies to avoid repeating editor authoring for standalone packaging.",
+    "Owned reverse-audio fixture references Assets/Tone.wav and now writes valid PCM; unused source UI reference previously pointed to missing Tone.wav.",
+    "Final SVG-only screenshot confirms visible graph and select min-width64 after native-arrow width correction."
+  ],
+  "scope": "Optional per-section linear/step relative weight curves, live transform/component/skeletal mix, nested clock composition, zero ownership handoff, source-preserving combined trim, shared key budget, human paged authoring/AI strict model. Seven affected pure gates and three actual source editor/C++/PCM/skeletal gates passed. Installed independent D3D11 games and installation audit remain next; broader engine denominator and UE/Unity full analysis remain unestablished."
+}
