@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "date": "2026-10-23T10:57:02.995Z",
+  "sourceCommit": "75d35102d4f6217f194a851074839f1d7d31fd2c",
+  "sourceReceipt": "docs/research/ENGINE_WORK_1987.json",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\c98f1f4cd3598287",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\c98f1f4cd3598287\\HBEngine.exe",
+  "bundleHash": "c98f1f4cd3598287ad8a35601464907072323a873395126df745a4fcfab507b7",
+  "files": 4556,
+  "verified": false,
+  "installationVerified": true,
+  "independentGameVerified": false,
+  "versions": [
+    "c98f1f4cd3598287"
+  ],
+  "preflight": {
+    "path": "native/build/user-install-1988-preflight.json",
+    "sha256": "1d67e325de64fc1e6f950948d604509ad60e6360c173b28e89e11b286afcc35f",
+    "markerVerifiedFiles": 4556,
+    "admittedOwners": 1205,
+    "profile": {
+      "files": 10849,
+      "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+      "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+      "preserved": true,
+      "readOnly": true
+    },
+    "scope": "Read-only10849-file profile SHA inventory immediately before/after installation; not a claim that subsequent legitimate user edits cannot change it."
+  },
+  "audit": {
+    "path": "native/build/user-install-1990-audit.json",
+    "sha256": "47be4ad6e90dc23a9267c803cc15c27ca69c741b468a97ac3b5ec26da20c2b8a",
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\c98f1f4cd3598287",
+    "focusedAI": {
+      "symbol": "sampleSectionWeightCurve",
+      "owner": "prototype/sequence-weight-curve.js",
+      "filesRead": 1,
+      "elapsedMs": 69.2,
+      "installation": {
+        "observed": true,
+        "root": "C:\\Users\\kirby\\HBEngine\\Versions\\c98f1f4cd3598287",
+        "marker": "HBEngine.install.json",
+        "bundleHash": "c98f1f4cd3598287ad8a35601464907072323a873395126df745a4fcfab507b7",
+        "installedAt": "2026-10-23T10:52:52.325Z",
+        "manifestFiles": 4556,
+        "integrityChecked": false
+      }
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "cache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "versions": [
+      "c98f1f4cd3598287"
+    ],
+    "scope": "Read-only installed context/shortcut/association, exact earlier preflight hashes, live-reference-aware cache policy. No GUI/game/renderer rerun."
+  },
+  "cleanup": {
+    "retiredBytes": 199076655,
+    "failures": [],
+    "remainingVersions": [
+      "c98f1f4cd3598287"
+    ]
+  },
+  "externalWorktreeChanges": {
+    "prototype/player.js": {
+      "observedSHA256": "4d89ea43c2f9f32ad96be161ffceb4491c567ab0422ecb6c43495cf68adff247",
+      "modified": false,
+      "staged": false,
+      "admitted": false,
+      "admittedHEADSHA256": "8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1",
+      "distributionPolicy": "Use this admitted HEAD file, not the unrelated dirty worktree file; preserve both unrelated worktree changes. Only tracked and explicitly admitted source/generation is eligible for distribution."
+    },
+    "tools/check-player-keyboard-release.mjs": {
+      "observedSHA256": "1b5fa2aeadedbded2e795c4fa5f34cdfb414d3ac9ffefada46eb00ad5e75e336",
+      "modified": false,
+      "staged": false,
+      "admitted": false
+    }
+  },
+  "distribution": {
+    "receipt": "native/build/distribution-1988-sync.json",
+    "changedFiles": 67,
+    "policy": "Only admitted owners plus committed metadata; unrelated dirty player.js replaced with admitted git HEAD bytes only in distribution, user source left untouched."
+  },
+  "sourceGameGates": [
+    {
+      "name": "sequence-blending-1968-window",
+      "passed": true,
+      "seconds": 53.9384006,
+      "log": "native/build/group1973-sequence-blending-1968-window.log",
+      "reports": [
+        "native/build/sequence-blending-1968-window-CD9PXO/acceptance.json"
+      ],
+      "sha256": "c6f675d66ba6f4eac2e5345e1b07464cb5bb68ecf9ba6a45da496d782e0216eb"
+    },
+    {
+      "name": "sequence-reverse-warp-1954-window",
+      "passed": true,
+      "seconds": 96.1543755,
+      "log": "native/build/group1973-sequence-reverse-warp-1954-window.log",
+      "reports": [
+        "native/build/sequence-reverse-warp-1954-window-mY7Qzm/acceptance.json"
+      ],
+      "sha256": "e23c39b76adc5b42353ab729b6caef7e55c05f1a06a493c285d83897149fb976"
+    },
+    {
+      "name": "sequence-pose-ownership-1926-window",
+      "passed": true,
+      "seconds": 69.42453079999999,
+      "log": "native/build/group1973-sequence-pose-ownership-1926-window.log",
+      "reports": [
+        "native/build/sequence-pose-ownership-1926-window-CvFriF/acceptance.json"
+      ],
+      "sha256": "42bc52e8d8b2552551f487e7f71dcdb07c00d60fce6332284f01052e8d39ecfb"
+    }
+  ],
+  "installedGames": {
+    "passed": false,
+    "deferred": true,
+    "active": [
+      {
+        "pid": 42956,
+        "version": "c98f1f4cd3598287",
+        "name": "node.exe"
+      }
+    ],
+    "rows": []
+  },
+  "nativeReuse": {
+    "receipt": "docs/research/ENGINE_WORK_1974.json",
+    "changedThisPhase": [],
+    "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+    "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+    "scope": "Same binary/19 unchanged native owners; Game/Bridge static API additions already exercised through actual newly compiled source C++ modules. No fresh full SDK or renderer gate."
+  },
+  "deferral": {
+    "active": [],
+    "scope": "Installed version is in use. Do not launch heavy/GUI/game tests or close user processes; source GUI/C++ evidence is already passed. No test window opened by deferred standalone runner."
+  },
+  "scope": "Installed consolidated signed/cubic/step time remapping, real PCM reverse/rate/hold, normalized continuous and skeletal sequence layers, instance weights/modes, per-section linear/step weight curves with paged human/AI authoring. Exact4556-file manifest and1205 admitted source owners, private-profile preservation, shortcuts/association, focusedAI and Versions1 audited. Actual source editor/C++/PCM/skeletal gates3 passed. New installed standalone D3D11 games are deferred while user uses installation; no full runtime verification claim."
+}

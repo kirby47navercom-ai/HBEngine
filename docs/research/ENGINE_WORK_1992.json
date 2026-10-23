@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "date": "2026-10-23T10:57:02.997Z",
+  "kind": "installed-consolidation-and-pending-isolated-game-gates",
+  "sourceHashBase": "docs/research/ENGINE_WORK_1987.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "3c752d8467293463c52c5af0d2158495bec7265dcd9bf8556ac1dc1d34929a6d"
+  },
+  "composition": {
+    "tool": "tools/research-source-hashes.mjs",
+    "lineage": [
+      "docs/research/ENGINE_WORK_1955.json",
+      "docs/research/ENGINE_WORK_1958.json",
+      "docs/research/ENGINE_WORK_1966.json",
+      "docs/research/ENGINE_WORK_1974.json",
+      "docs/research/ENGINE_WORK_1978.json",
+      "docs/research/ENGINE_WORK_1987.json"
+    ],
+    "currentFilesVerified": false
+  },
+  "implementationRevision": "106f380534c1b1914c85a570ae7db69f2c884bee",
+  "installedSourceSnapshot": "docs/research/ENGINE_WORK_1987.json",
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "targetIds": [
+    "ANM-06"
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_1991.json",
+  "checksReexecuted": false,
+  "newFunctionalCases": 0,
+  "installationPending": false,
+  "installedIndependentGamePending": true,
+  "next": {
+    "tool": "native/build/standalone1989.mjs",
+    "condition": "activeInstalledVersions empty",
+    "state": "native/build/user-install-1988-state.json",
+    "reuseSourceEditorReports": true,
+    "repeatFullSourceEditorGates": false,
+    "cleanup": "pruneTestArtifacts per owner after own game exits"
+  },
+  "scope": "Installed consolidated signed/cubic/step time remapping, real PCM reverse/rate/hold, normalized continuous and skeletal sequence layers, instance weights/modes, per-section linear/step weight curves with paged human/AI authoring. Exact4556-file manifest and1205 admitted source owners, private-profile preservation, shortcuts/association, focusedAI and Versions1 audited. Actual source editor/C++/PCM/skeletal gates3 passed. New installed standalone D3D11 games are deferred while user uses installation; no full runtime verification claim."
+}
