@@ -1,5 +1,9 @@
 # 현재 진단 — 렌더링 지연과 거리장 LOD
 
+## 1943 활성 문서의 숨겨진 제작 창
+
+설치 캡처가 일반 뷰포트를 보여 원본 표시 API 상태와 실제 보이는 미리보기가 다름을 발견했어요. fixture에서 document.open 후 시간 입력 hit-test를 추가했지만 VFjdTZ에서도 timeout했어요. editor.state는 activeDocument=시퀀스인데 focusedWindow=scene이고, app.js activateDocument는 같은 경로이면 renderInspector 뒤 바로 반환해요. startPlay는 dock.open(scene)을 사용하므로 문서는 같아도 활성 dock 탭은 달라질 수 있어요. 가설: 같은 문서 재선택에서 실제 소유 pane이 숨겨진 경우 dock.open으로 올려야 해요. 최소 반증은 같은 fixture의 document.open 뒤 시간 입력 hit-test/보이는 시퀀스 캡처이며, 보이는 pane의 편집 상태를 재설치하거나 전체 layout을 초기화하지 않아요. 검사 timeout을 기능 성공으로 세지 않아요.
+
 ## 1938 C++ 같은 콜백의 명시 ID 교체
 
 다음 SiPvqM 창은 sphere 복사본을 실제로 만들었지만 검사에서 새 프리팹 루트의 이름을 기존 이름 Existing3D로 가정해 timeout했어요. failure.state에는 같은 소유 ID의 name=root/kind=sphere가 있어요. 비교 대상을 첫 복사본의 안정된 ID로 고치며, 표시 이름을 바꾸거나 엔진 템플릿 재생을 우회하지 않아요. 원본 이름과 새 프리팹 이름이 다를 수 있음을 그대로 검증해요.

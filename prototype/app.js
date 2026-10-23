@@ -1498,7 +1498,7 @@ function ensureAssetPane(doc){
 function activateDocument(path,reset=false,capture=true){
   if(running&&!switchingDocument&&!gameplayTypes[assetDocs.items.get(path)?.kind]&&!['blueprint','animgraph','spriterig','environmentquery',...Object.keys(retargetAssetTypes)].includes(assetDocs.items.get(path)?.kind)&&path!==activeScenePath)return notify('실행 중에는 현재 장면과 블루프린트·게임플레이 진단 에셋을 열 수 있어요.');
   if(!assetDocs.items.has(path))return;
-  if(assetDocs.active===path&&!reset){renderInspector();return;}
+  if(assetDocs.active===path&&!reset){const paneId=ensureAssetPane(assetDocs.current);if(!dock.visible(paneId))dock.open(paneId);renderInspector();return;}
   if(capture)captureDocument();switchingDocument=true;const doc=assetDocs.select(path);workspace=doc.kind;history=doc.history;future=doc.future;let ready;
   try{
     if(!running||doc.kind!=='scene')installDocumentData(doc);const paneId=ensureAssetPane(doc);focusedWindow=doc.kind==='blueprint'?'blueprint':paneId;
