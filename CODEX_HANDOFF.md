@@ -1,23 +1,25 @@
 # 현재 인계 — 누적 구현 계속
 
-2026-10-23. 주인님/짚짱/존댓말. 관련구현묶음→영향검사한번→안전설치. ENGINE_STATUS78행/전체분모·완료율null. 전체UE/Unity분석·엔진완성주장금지. blocked여도현재승인구현계속·새goal/재개질문/새agent금지. hbengine ACTIVE. Mac/Xcode/Android폰없음.
+2026-10-24. 주인님/짚짱/존댓말. 관련구현묶음→영향검사한번→안전설치. ENGINE_STATUS78행/전체분모·완료율null. 전체UE/Unity분석·엔진완성주장금지. blocked여도승인구현계속·새goal/재개질문/새agent금지. hbengine ACTIVE. Mac/Xcode/Android폰없음.
 
-## 최신 구현 WORK2091 / 확정 설치 USER_INSTALL2094
+## 최신 소스 WORK2114 / 설치는 USER_INSTALL2094 유지
 
-ImportedSequenceTransformProgram→실제Object3D/field별full position/quaternion/Euler/scale. actorGroup root는direct/Transform/HB공용field·model child는local nodefield. alias/name/UUID·perfield priority/normalized/quaternion·작성순서/lastclip·gap/zero/keep/force/origin. raw제어믹서에서는canonicalTRS만제외·키/interpolant/double 공유. ordinary root Group↔Actor/Scene getter동기화·active필드만sparse underlying presentation·weak player history·unchanged/최종Stop/current외부player보존. Overlay아래presentation캡처·held/모델교체identity. runtime.animationPlayback rows.transformChannels(limit복사/query전용). 골격zero→ordinary시계진행→재활성→최종복원도watched weakbones/sharedlivefield로교정·전체skeleton프레임scan0. noTransform mixer빠른경로·128child/2clock/typedbuffer/루트batch·순수골격1024기존비용유지. 신규root15case+골격16case/기존영향8gate 전체10gate통과. 2084-ydGXZT admitted staged source playerHEAD/실제GLTF actor-root+Part/humancomponent곡선/Undo/save/AI CAS/CPP19 rootTRS/query/exit0. GUI이후HB/importroot교차familycase추가+contract문구만수정·runtime body불변. 최종installed2094 D3D11동일CPP19관찰/Scene TRS·child query/exit0도통과. SEQUENCE_IMPORTED_TRANSFORM_ALIASES.md.
+indexed position/scale는실제actor·modelchild·bone의작성축별priority/normalized/override·zero/gap/keep/forceRestore. 다른축은lower트랙/진행중ordinary mixer현재값유지·baseline별도. Euler/quaternion부분키는shared기준방향에서조립·회전은원자방향하나. 이름/UUID/bones[name]·숫자인덱스정규화·중복/형/유한값검증·교체identity·회전origin의coverage투영/역기준. SpriteRigPose생성rotation[z]도recorded bone채널공유. 저장hbskeletalclip의scalar경로검증·기존선택기·ordinary/sequence/graph재생연결·active prepared clip프레임재읽기0. raw전체Euler는원래키/보간기를공유하는3scalar wrapper로THREE order손상방지·snapshot/graph의order문자열제외. 전체bone경로불필요Euler할당/quat왕복제거. 새worker/timer/diskcache0.
 
-첫GUI는fixture에서skin mesh를plain Part와공유해renderer오류→별도plain mesh로교정후재검증통과·성과0. 반복오류diagnostic89MB정리. 기존외부player메타동등검사2개는새dynamic채널조회와분리·실제pose추가assert. native21/vendor2/binaries불변·fresh SDK/renderer반복0. contextImportedSequenceTransformProgram focus1owner.
+신규24사례+기존영향검사전체13gate통과(최종묶음약12초). group2108.json. sourcefixture12asset공통검증통과·fixture2112.json. 실제창/C++/독립D3D11/설치는미실행: 사용자installed Node check_demo반복실행확인·최종active PID 43944. 사용중프로세스종료/프로필/원본접근금지. stage2111은dist/HBEngine에admitted HEAD player로24owner준비만·설치본수정0/Versions1. native21/vendor2/exe SHA불변·fresh SDK/renderer반복0. GUI도구scope문구와test EOF만최종gate뒤metadata교정·runtime body불변.
 
-확정설치ed1f58353c475d09/4619files/1252owners. installed builder로saved2084 fixture 독립D3D11게임CPP19관찰·actor Scene pos/rot/scale와local child query/exit0(42.25초). 같은run native hbCapture5364pixel변화·PNG직접확인. native/build/standalone2093.json. User10849파일직전/직후SHA동일·바로가기/연결·AI focus1owner72.74ms·Versions1·이전199821624B정리·cacheprune0. 불변SDK/렌더러재검사0. 최종handoff metadata2095·installed snapshot2091.
+## 다음 우선 실행
 
-이전2073 fullbone/recorded·2058 HB/directTransform·2042 animationmix·2029 periodicBake·2015참조·2005 PCM은확정원장재사용.
+저장Node active1955.mjs로사용종료확인후 tools/check-sequence-indexed-transforms-2104-window.mjs 실행(stdout/stderr자기로그). admitted distHost→새소유hidden창·리그키편집/Undo/AI CAS/실제SpriteSkin scalar+storedclip/C++관찰. 준비fixture/exercise2103. 통과후 WORK2114 hash resolver→install2092패턴안전전환→installed builder독립D3D11게임/exerciseIndexedTransforms(18관찰예정)·native hbCapture직접픽셀→paired readonlyUser/바로가기/연결/AI/Versions1확정. 현재active동안그작업보류·소스작업가능. 미실행을통과로보고금지·이전13gate변경없이반복금지.
 
-## 다음 잔여
+현재확정설치ed1f58353c475d09/4619files/1252owners/USER_INSTALL2094. 기존root/directTransform/child fullTRS·bone2073·zero외부시계복원·CPP19/독립D3D11/native5364pixel통과. User10849파일직전직후동일·Versions1·이전199821624B정리. 이번부분키는아직설치안됨.
 
-ANM06 indexed transform/bone·renderer별칭. fullroot/childTRS2091·fullbone/recorded2073통합. sequence-imported-transforms.js→sequence-skeletal-channels.js/sequence-pose-playback.js 관련owner부터·전체문서재독금지. 독립axis time/interpolation/delete topology·일반simulation/외부변수·asyncsetter/notify rollback·pitch유지/일반PCM예약/streamreverse/TakeClock·device/pull/genlock/rig/video/attachment. CPP01일반headers/registry/파괴schema/alias/ref/wildcard/Destroy+동일ID동일CPPcallback세대. RND08globalDF/bentnormal/방향sky/heightfield/변형체/미로드LOD/lightmap/volume/HWRT. GL1728 ANGLE6878.6ms/D3DCompile6836.439·미채택6492/실패1302–1307/783/1086재반복금지.
+## 다음 구현 잔여
+
+ANM06 renderer별칭·독립Euler축레이어합성·독립axis time/interpolation/delete저장topology·일반simulation/외부변수·asyncsetter/notify rollback·pitch유지/일반PCM예약/streamreverse/TakeClock·device/pull/genlock/rig/video/attachment. CPP01일반headers/registry/파괴schema/alias/ref/wildcard/Destroy+동일ID동일CPPcallback세대. RND08globalDF/bentnormal/방향sky/heightfield/변형체/미로드LOD/lightmap/volume/HWRT. GL1728 ANGLE6878.6ms/D3DCompile6836.439·미채택6492/실패1302–1307/783/1086반복금지. owner는hb context importedTransformBindings→관련파일부터.
 
 ## 격리·배포
 
-dirty prototype/player.js와tools/check-player-keyboard-release.mjs 외부소유·수정/스테이징/검사/배포금지. player만admitted HEAD bytes8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1·전체폴더sync금지. distHost5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46/Player07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160. root개발Host efe7339b…보존/미배포. source GUI는distHost root UUID COPYFILE_EXCL→own검사후hash/unlink. 사용자GUI/프로필/원본금지·heavy/GUI/install전저장Node activeInstalledVersions·활성시보류. owned profiles/Builds retain/pruneTestArtifacts·cache32+live/Versions1. 한국어commit/push 동일kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com·AI표기0.
+dirty prototype/player.js와tools/check-player-keyboard-release.mjs 외부소유·수정/스테이징/검사/배포금지. player admitted HEAD8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1. sourceGUI는dist/HBEngine/HBEngine.exe(그폴더tools/serve.mjs root)로dirty repo player로드금지. distHost5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46/Player07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160. root개발Host efe7339b…보존/미배포. active검사는Versions문자열없는저장Node명령으로selfmatch회피. GUI/설치전매번active확인·사용자창/탭/원본/프로필금지. owned profiles/Builds retain/pruneTestArtifacts·cache32+live/Versions1·빈cleanup기록0. 한국어commit/push 동일kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com·AI표기0.
 
-hash resolver파일경로: WORK2095(metadatahandoff)→2091→2077(metadatahandoff)→2073→2062(metadatahandoff)→2058→2047(metadatahandoff)→2042→2033→2029→2020→2015→2005→1992→1987→1978→1974→1966→1958→1955. tools/research-source-hashes.mjs. native/build/install2092·standalone2093·audit2093은성공참고용·변경없이재실행금지.
+hash resolver WORK2114→2095(metadata)→2091→2077(metadata)→2073→2062(metadata)→2058→2047(metadata)→2042→2033→2029→2020→2015→2005→1992→1987→1978→1974→1966→1958→1955. tools/research-source-hashes.mjs. install2092/standalone2093/audit2093 성공참고만·그대로재실행금지.
