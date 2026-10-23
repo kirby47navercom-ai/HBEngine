@@ -1150,3 +1150,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1883–1885: 다중곡선overlay/소유키선택/CtrlA/marquee·공통drag/snap/clamp/상대time·다중value/interpolation/weights/delete/tool/한Undo·groupclipboard 상대시각/고유대상검증·AI tracks[] batch/CAS/dryRun/invalid/stale/save·BPclampedAuto저장일치 구현.8회귀+validator2unit·실제source UI/다중drag/clipboard/CPP두대상샘플restore통과. 최종compact UI/독립D3D 설치gate예정. WORK1885·정규화/쌓기/키별다른채널축등잔여유지.
 
 1886–1888: 최종설치compact visible sidebar2/graph>=100·다중owner선택/drag/snap/한Undo·CtrlA/보간·private clipboard 상대시각paste·AI atomic/CAS/dryRun/invalid/stale/UndoRedo/save·실제CPP두대상sample/restore·별도D3D 81.57초통과. manifest4461/source1131/native21+SDK/vendor2/PlayerHost exact불변·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전196847015B정리. USER_INSTALL1887·정규화/쌓기/키별axis등잔여유지.
+
+1889–1891: absolute/normalized/stacked보기·weighted controlhull/constant/subnormal유한scale·채널lane/가변SVG/세로scroll·inverse key/tangent/marquee/groupdrag/valuezoom/RMBpan·raw입력/CPP불변·숨김Undo유지·AI view read/set/CAS/dryRun/type/invalid/state보존 구현.8영향회귀/weighted10001sample·실제source UI10시나리오/CPPraw값restore통과. 최종identityfastpath unit통과·설치독립D3D gate예정. WORK1891·키별다른axis등누적잔여유지.
