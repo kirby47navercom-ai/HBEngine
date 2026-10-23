@@ -1178,3 +1178,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1925–1927: 골격뼈별lease/우선순위·layout/빈구간양보·weak Bone identity복원·poseWeight baseline혼합·UI/Undo/save·AI page/schema·1024뼈binding/sample/matrix1·정지묶음복원 구현.5영향gate·실제CPP모델교체/동시partial/priority통과. nativeSDK exact재사용·설치D3D gate대기. normalized경쟁layer/Animation별칭·외부callbackrollback별도. WORK1927.
 
 1928–1930: 최종설치 60f2c41b27484ca5 골격뼈별제어·weak identity복원·poseWeight UI/UndoRedo/save·invalidAI patch불변·실제weight가시hit-test·CPP모델교체8회/partial/priority·별도D3D11 92.13초통과. manifest4504/source1160/native21+SDK/renderer/vendor2/binaries exact·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전198251944B퇴역. USER_INSTALL1929. 정규화레이어/Animation별칭·외부callbackrollback은별도.
+
+1931–1933: 유지/선형 키도메인밖부분bake·외부cubic/weighted/vertical/PCHIP/꼬리기울기보존·큰기울기control·최종키budget·도구범위/FPS/view열림보존 구현.6주gate+큰기울기unit·70649수치/실제UI·AI CAS/dryRun/invalid·Undo/save·CPP13seek/Stop통과. nativeSDK exact재사용·설치D3D대기. 반복/왕복주기보존확장은명시잔여. WORK1933.
