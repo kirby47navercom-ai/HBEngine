@@ -1023,6 +1023,34 @@
   ],
   "focusRoutes": [
     {
+      "id": "take-existing-lifetime",
+      "keywords": [
+        "TakeLifetimeCapture",
+        "takeLifetimeContract"
+      ],
+      "paths": [
+        "prototype/take-lifetime.js"
+      ]
+    },
+    {
+      "id": "sequence-spawn-program",
+      "keywords": [
+        "SequenceSpawnProgram"
+      ],
+      "paths": [
+        "prototype/sequence-spawn-program.js"
+      ]
+    },
+    {
+      "id": "sequence-target-retirement",
+      "keywords": [
+        "discardTarget"
+      ],
+      "paths": [
+        "prototype/sequence-channels.js"
+      ]
+    },
+    {
       "id": "curve-bake-domain-extension",
       "keywords": [
         "prepareCurveBakeDomain",

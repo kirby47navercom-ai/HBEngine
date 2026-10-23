@@ -1,5 +1,11 @@
 # 현재 진단 — 렌더링 지연과 거리장 LOD
 
+## 1938 C++ 같은 콜백의 명시 ID 교체
+
+다음 SiPvqM 창은 sphere 복사본을 실제로 만들었지만 검사에서 새 프리팹 루트의 이름을 기존 이름 Existing3D로 가정해 timeout했어요. failure.state에는 같은 소유 ID의 name=root/kind=sphere가 있어요. 비교 대상을 첫 복사본의 안정된 ID로 고치며, 표시 이름을 바꾸거나 엔진 템플릿 재생을 우회하지 않아요. 원본 이름과 새 프리팹 이름이 다를 수 있음을 그대로 검증해요.
+
+첫 실제창 fGyeae에서 `LifetimeProbe::Replace`가 Destroy(Existing3D)와 같은ID의 비풀 Spawn을 한 콜백에 연달아 호출해 `Spawn.hpp:24 spawn actor id already exists`로 거절됐어요. native bridge는 Destroy 뒤 로컬 상태를 destroying으로 표시하고 Spawn은 같은 에셋의 비활성 풀만 재사용해요. 이 제한을 단순 조건 제거로 풀면 활성 C++ 인스턴스/셀 세대 정리와 충돌할 수 있어 임의 우회하지 않아요. 실제창은 기존 API가 허용하는 삭제 완료 관찰 후 C++ Spawn으로 재생성을 검사하며, 연속 활성 ID교체 캡처 자체는 1937 독립 VM 검사로 구분해요. 같은 콜백의 원자적 ID교체/세대 관리는 CPP-01 잔여에 남겨요. 창 실패를 기능 완성이나 실행 성공으로 세지 않아요.
+
 ## 1931 검사 fixture 수정
 
 1933 추가 경계 반증: auto 값0@2,1@2.000001,2@2.2·상수 infinity·부분bake0..1은 원본 Sequence 검증true인데 출력false였어요. 새 외부 상수 키가 불필요한 arriveTangent≈999999를 받아 Sequence 한도100000을 넘었고, Timeline 한도1000000만 확인했던 unit이 놓쳤어요. 상수/default 외부 기울기를0으로 생성하고 같은 steep 후보를 두 validator에서 검증하는 것이 수정/반증 경로예요. 기존 선형 외부 기울기는 유지하며 내부 큰 기울기는 finite control로 남겨요. 처음 설치 후보의 일반 UI/D3D 통과만으로 이 경계까지 완료로 세지 않아요.

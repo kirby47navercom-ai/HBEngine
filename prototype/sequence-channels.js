@@ -54,6 +54,7 @@ export class SequenceChannels{
     this.validateActions(actions);for(const a of actions){a.row.top=a.entry;a.version=++a.row.version;}await this.applyActions(actions,true);
   }
   has(target,key){return this.fields.get(target)?.has(key)===true;}
+  discardTarget(target){const fields=this.fields.get(target);if(!fields)return;for(const row of fields.values()){row.version++;for(const owner of row.entries.keys()){const owned=this.owners.get(owner);owned?.delete(row);if(!owned?.size)this.owners.delete(owner);}row.entries.clear();row.top=null;}fields.clear();this.fields.delete(target);}
   active(target){return [...(this.fields.get(target)?.values()||[])].filter(row=>row.top).map(row=>({key:row.key,value:row.top.value}));}
   clear(){this.owners.clear();this.fields=new WeakMap();}
   stats(){let leases=0;const rows=new Set();for(const values of this.owners.values())for(const row of values){rows.add(row);leases++;}return {owners:this.owners.size,channels:rows.size,leases};}
