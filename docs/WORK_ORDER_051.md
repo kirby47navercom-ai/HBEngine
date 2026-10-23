@@ -1134,3 +1134,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1859–1861: 공용Skeleton6 getter/BP/livequery·사람현재월드골격뷰/AI named local/world page·exact affine/trsExact·전체이름/중첩actor경계·실패활성화복원보존·batch준비후쓰기/중첩행렬루트통합 구현. 최종9회귀/API생성/AI context·실제현재SDK CPP6getter/모델교체8구간/역방향/빈골격/복원source checkpoint. Bridge최초링크누락수정후통과만성과기록. sticky키탐색가림을최종CSS/제목·좌표계·출력hit로보완·설치D3D예정. perbone/가중혼합/외부이력등잔여유지. WORK1861.
 
 1862–1864: 최종설치가시골격뷰제목/좌표계/출력hit·namedworldAI/정확affine/trsExact·문서revision불변·현재SDK2header의CPP6getter(로컬[1,0,0]/월드[5,4,0]/회전90offset/크기2)·모델교체8구간/역방향/빈골격/원본복원·독립D3D 84.01초통과. manifest4435/source1113/native21중2SDK변경·19불변/PlayerHost불변/vend2·User10849읽기불변·링크/association/Versions1·이전196049798B정리/lease0. 역사native30test소스동일성은미변경코드출처보존이며새전체SDK실행아님. USER_INSTALL1863·perbone/외부이력등누적잔여유지.
+
+1865–1867: 외부그래프/몽타주원래평가기분리·유한Repeat/PingPong/managedfade·전이/파라미터/retiring몽타주혼합·표시포즈복원. notify End(sequence-suspended)취소/다음tick재진입·latent/부작용rollback미포함. 겹친최종다른director/keep/최신외부교체/종료오류복구/월드정리·AI제한조회/focus. 7영향회귀(신규9case)·실제CPP Graph/Montage Setup/Sequence조작·editor/별도D3D통과. WORK1867·설치예정.
