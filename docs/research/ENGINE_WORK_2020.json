@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "date": "2026-10-23T12:15:36.618Z",
+  "kind": "installed-sequence-audio-and-reference-state-consolidation",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2015.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "44c5509402fd3d07397afeeec3e994da6353d8d00722d15e827a2cc545ac5d98"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "installedSnapshot": "docs/research/ENGINE_WORK_2015.json",
+  "installationReceipt": "docs/research/USER_INSTALL_2019.json",
+  "installedIndependentGamePending": false,
+  "installedGames": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\0d24335cba1e2243",
+    "rows": [
+      {
+        "id": "audio",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-installed-2017-4ppZUx\\acceptance.json",
+        "sha256": "a39fb28eb4dffe980423fce3263a1c452a7f9f2d76b42cb5ff0c75181ef8df83",
+        "ms": 39518.3672
+      },
+      {
+        "id": "references",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-installed-2017-t3hcOn\\acceptance.json",
+        "sha256": "550e9e1a0adbf02a21679e0164542cc8c1cde445e3337897b96921bc1725e3df",
+        "ms": 40319.21629999999
+      }
+    ]
+  },
+  "scope": "Installed audio volume/fades/linear-step gain curves, Take gain recording, typed/component actor reference identity restoration and mutable value/TRS sample isolation. Exact4573-file manifest/1221 admitted owners, read-only10849-file User profile before/after preservation, focused AI one owner, shortcuts/association and Versions1 audited. Actual source audio UI/C++7seeks/OfflinePCM245760 plus reference C++ three-phase gate passed; independent installed D3D11 audio/reference2games both exited0. No fresh full SDK/renderer, speaker/device/phone, whole-engine completion or arbitrary external setter/simulation rollback claim.",
+  "next": {
+    "condition": "Actual remaining owner work; no duplicate unchanged source/installed/SDK/renderer verification",
+    "areas": [
+      "ANM-06",
+      "CPP-01",
+      "RND-08",
+      "AUD-03"
+    ],
+    "existingLimits": "No Mac/Xcode/Android phone; no new goal/resume question/agent; user UI and unowned dirty files protected"
+  }
+}

@@ -10,11 +10,11 @@
 
 새11case·영향7gate(~3.7초)통과: native/build/group-reference2010.json. 실제source2012창 rtC2ZY 통과: CPPInit/Read·Destroy→다음호출Spawn동일ID·상위/하위/원래값3phase에서 BP변수/native포인터/component 일치·lease0·exit0. 새호스트는 admitted distHost를source루트unique.exe로COPY_EXCL/소유복사만삭제·기존root개발exe보존. SEQUENCE_REFERENCE_RESTORE.md·schema.sequenceOwnership.referenceState·exactAI 1owner. publicnative21/dist Host·Player/vendor2hash불변=기존SDK/renderer근거정확재사용·새fullSDK아님.
 
-아직이소스의새dist sync/install/installed게임없음. 다음active[]에2015 admitted manifest만sync(외부dirty제외)→User profile직전/직후readonlyinventory→safeinstall→saved source2001/2012 fixture로installed D3D11 audio/reference2게임. source editor/UI/CPP authoring재반복금지·installed실행만. user활성시강행금지·source작업가능. sourceHashBase2015→2005→1992→1987→1978→1974→1966→1958→1955. resolver인자는파일경로.
+설치 USER_INSTALL2019 확정: 0d24335cba1e2243/4573files/1221owners. installed builder로saved source2001/2012 fixture재사용·D3D11 audio/ref2게임 모두exit0(CPPSeek7+PCM245760/참조3phase). native/build/standalone2017.json. User10849파일설치직전/직후hash동일·바로가기/연결/AI focus1owner·Versions1·이전199507604B정리·cacheprune0. 소스창/새설치/installed2게임재반복불필요. 다음은실제잔여owner구현. sourceHashBase2020(metadatahandoff)→2015→2005→1992→1987→1978→1974→1966→1958→1955. resolver인자는파일경로.
 
-## 현재 확정 설치 USER_INSTALL1991
+## 현재 확정 설치 USER_INSTALL2019
 
-c98f1f4cd3598287/4556files/1205owners·10849User파일전후같음·Versions1/바로가기/연결. signed/cubic/step timewarp·PCMreverse/rate/hold·Take방향·normalized 연속/골격TRS layer·구간weight/mode/weightCurve·C++/BP4API. source3창/installedD3D11 3게임exit0통과(이전검사재실행금지). 새2015만설치대기.
+0d24335cba1e2243/4573files/1221owners·10849User파일전후같음·Versions1/바로가기/연결. 이전signed/cubic/step timewarp·PCMreverse/rate/hold·Take방향·normalized 연속/골격TRS layer·구간weight/mode/weightCurve·C++/BP4API에2005/2015 gain·Take·참조/샘플격리까지설치확정. USER_INSTALL1991의기존3게임근거는정확불변소유자범위만재사용·이번새2게임은별도실행.
 
 외부dirty prototype/player.js와tools/check-player-keyboard-release.mjs 보존/미스테이징/미배포. player만admitted gitHEAD bytes사용(8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1). 전체폴더sync금지. distHost5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46/Player07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160·root개발Host efe7339b…미사용.
 

@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "date": "2026-10-23T12:15:36.618Z",
+  "kind": "verified-installed-audio-envelopes-and-sequence-reference-state",
+  "sourceCommit": "1f82f4a3a0035acce87d916024866d23b2ee6685",
+  "sourceReceipt": "docs/research/ENGINE_WORK_2015.json",
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "independentGameVerified": true,
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0d24335cba1e2243",
+  "bundleHash": "0d24335cba1e224374b3aa76dfa8ff27d70ba2af550caa9b7ff14e7b3b71d04e",
+  "versions": 1,
+  "manifestFiles": 4573,
+  "admittedOwners": 1221,
+  "profile": {
+    "files": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4557,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\c98f1f4cd3598287",
+        "bytes": 199507604,
+        "manifestSHA256": "e0d3d18dc07938650fa3f909c1146236f8d2b14f1d580e967b00b914e5c91b7d"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T12:10:36.0593015Z",
+    "bytes": 199507604,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "0d24335cba1e2243"
+    ]
+  },
+  "overridden": [
+    {
+      "path": "prototype/player.js",
+      "policy": "admitted HEAD bytes only; unrelated dirty worktree preserved"
+    }
+  ],
+  "changed": 34,
+  "sourceWindows": [
+    {
+      "report": "native/build/sequence-audio-envelope-2001-window-KS6GFT/acceptance.json",
+      "sha256": "623b1a76fa3de6b5fe54c8af75c5db6b9aea6ca17faffee024c105381782aa4d",
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "cpp": 7,
+      "pcmSamples": 245760
+    },
+    {
+      "report": "native/build/sequence-reference-2012-window-rtC2ZY/acceptance.json",
+      "sha256": "68416cbbadea2a9e5c09de69afbcb4ca8a7c06a584bc24c17dde1b36eed4cd40",
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "cpp": 3,
+      "pcmSamples": 0
+    }
+  ],
+  "installedGames": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\0d24335cba1e2243",
+    "rows": [
+      {
+        "id": "audio",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-installed-2017-4ppZUx\\acceptance.json",
+        "sha256": "a39fb28eb4dffe980423fce3263a1c452a7f9f2d76b42cb5ff0c75181ef8df83",
+        "ms": 39518.3672
+      },
+      {
+        "id": "references",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-installed-2017-t3hcOn\\acceptance.json",
+        "sha256": "550e9e1a0adbf02a21679e0164542cc8c1cde445e3337897b96921bc1725e3df",
+        "ms": 40319.21629999999
+      }
+    ]
+  },
+  "audit": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\0d24335cba1e2243",
+    "focusedAI": {
+      "symbol": "sampleSequenceReferences",
+      "owner": "prototype/sequence-reference-state.js",
+      "filesRead": 1,
+      "elapsedMs": 66.03,
+      "installation": {
+        "observed": true,
+        "root": "C:\\Users\\kirby\\HBEngine\\Versions\\0d24335cba1e2243",
+        "marker": "HBEngine.install.json",
+        "bundleHash": "0d24335cba1e224374b3aa76dfa8ff27d70ba2af550caa9b7ff14e7b3b71d04e",
+        "installedAt": "2026-10-23T12:10:32.533Z",
+        "manifestFiles": 4573,
+        "integrityChecked": false
+      }
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "cache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "versions": [
+      "0d24335cba1e2243"
+    ],
+    "scope": "Read-only installed focused context/shortcut/association plus live-aware native-cache prune. Installer preflight holds exact file/owner hashes and profile comparison. No duplicate GUI/game/renderer run."
+  },
+  "preflight": {
+    "report": "native/build/user-install-2016-preflight.json",
+    "sha256": "1d0a22b108ed580526c63c0c145c9d3a993e5df7c6fd416935891ba751e0b426"
+  },
+  "nativeReuse": {
+    "owners": 21,
+    "freshFullSDKRun": false,
+    "freshRendererRun": false
+  },
+  "scope": "Installed audio volume/fades/linear-step gain curves, Take gain recording, typed/component actor reference identity restoration and mutable value/TRS sample isolation. Exact4573-file manifest/1221 admitted owners, read-only10849-file User profile before/after preservation, focused AI one owner, shortcuts/association and Versions1 audited. Actual source audio UI/C++7seeks/OfflinePCM245760 plus reference C++ three-phase gate passed; independent installed D3D11 audio/reference2games both exited0. No fresh full SDK/renderer, speaker/device/phone, whole-engine completion or arbitrary external setter/simulation rollback claim."
+}
