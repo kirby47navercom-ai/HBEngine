@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-existing-lifetime-and-same-document-pane-reveal",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "4201e85b4ecf5c8ba115315db200a255cafcb0ef",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\74c9f5ea450f1e2b",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\74c9f5ea450f1e2b\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\74c9f5ea450f1e2b\\HBEngine.exe",
+  "bundleHash": "74c9f5ea450f1e2b89c375118a9cb97674908fb9518307f03e050d41a0c1b0bd",
+  "files": 4518,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4518,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\896a808c2691d397",
+        "bytes": 198855239,
+        "manifestSHA256": "f0aedfd7d828477c9619dd9dec404ea47a220a93e394ab6245c56c00a915dc6c"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T06:39:46.8346132Z",
+    "bytes": 198855239,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "74c9f5ea450f1e2b"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1171,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/take-lifetime-1938-window-J1raaB/acceptance.json",
+      "sha256": "4d0107a927418c93417627838071c2439b29e82c8e4b94cb1fe86363dcb55b0c",
+      "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/visible authoring preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\74c9f5ea450f1e2b\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 60667.015100000004
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\74c9f5ea450f1e2b\\",
+    "elapsedMs": 61.35,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\74c9f5ea450f1e2b",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "74c9f5ea450f1e2b89c375118a9cb97674908fb9518307f03e050d41a0c1b0bd",
+      "installedAt": "2026-10-23T06:39:43.413Z",
+      "manifestFiles": 4518,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1941.json\",\"changedSDK\":[],\"scope\":\"All21 native/SDK owners, Host1041/Player1604/renderer/vendor exact hashes unchanged. Private LifetimeProbe CPP class is freshly compiled and executes existing Scene and LevelSequence APIs. Historical30 native test hashes remain provenance, not fresh full SDK execution.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4518,
+  "versions": [
+    "74c9f5ea450f1e2b"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1945-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/lifetime1939-group.json",
+      "sha256": "d456a1e7f82332fd98baaa544647d9391b25857a9b6da2c3143383faeb339b26",
+      "scope": "Six unchanged pure/settings/preset/common-VM gates and actual hidden human existing-lifetime capture/preview/CPP replay. GUI fixture uses committed Destroy then same-ID Spawn; same-callback nonpool replacement remains rejected by existing native API. Active same-ID capture is independently covered in1937 VM unit."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/take-lifetime-1937-spsfU0/acceptance.json",
+      "sha256": "1c5ec29207bbe119d9c9f48e85529e8f045c1b8fcd0a0139ea26a5de6e4aa2c4",
+      "scope": "Saved setting/preset compatibility, 2D/3D lifetime and pool capture, same-ID visual template keys/strict validation/dependencies, production source-visibility leases, hierarchy, forward/backward seeks, bounded active ownership and full cleanup. Source gameplay simulation is not frozen; no arbitrary gameplay/variable rollback, widget lifetime, FPS/heap/mobile claim."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/spawn-take-211-9fu5ql/acceptance.json",
+      "sha256": "0e0a4a1f6be1e9e93d905ab0378a7ab0d45c76f9769d1c91d27d1d9a7a0026b8"
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/take-settings-1787-vgbEMI/acceptance.json",
+      "sha256": "a322aa3acd0b5b8d0e05bd1650ebfd9d8f289a0a3e6b4c7501611666206bc4a0",
+      "scope": "Owned scratch row/vector allocations and exact recorded key data, preset/config validation and dynamic topology. Admitted keys still clone their data; no whole heap/FPS/mobile-device claim."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/take-presets-1828-7eZM9m/acceptance.json",
+      "sha256": "14316a6f56b4fa50607deaeb565e105226a341c559318588af94f6f844324192",
+      "scope": "Reusable on-demand config preset assets, snapshot options/filter override isolation, unchanged sequence track identities, actual TakeRecorder FPS/tolerance key reduction and baked metadata, actual2D project/standard documents, game build excludes editor-only preset, and production UI async-read conflict protection. Actual editor/C++/D3D are separate gates; source binding lists/inheritance/timecode not claimed."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-completion-271-OzYSkm/acceptance.json",
+      "sha256": "316f0e70e705f0f2bc7429eedcc30f78a9bd31f521704f83f14690e0555478d1"
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-priority-272-tlCZgC/acceptance.json",
+      "sha256": "09df8cd16bfc1d0966d17756de24970ff2e8dc5a765d4ccbd025ae442a1a69a3"
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/take-lifetime-1938-window-AULXWU/acceptance.json",
+      "sha256": "2874cec4dd41b428301500c717488ba550a0ab688ecc181c93a16cb4e07d4c90",
+      "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed."
+    },
+    {
+      "path": "native/build/take-lifetime-1938-window-V6S5tQ/acceptance.json",
+      "sha256": "604e1a7831d644fea698c1499acf00de3fa47eabe872501874a6c4c9ee209604",
+      "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/visible authoring preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed.",
+      "note": "Narrow GUI recheck after screenshot review: same-document activation now reopens its hidden owning pane without rebuilding data or resetting layout. Visible time-input hit-test and capture prove authoring preview is shown. Six unrelated pure/runtime gates remain valid."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/take-lifetime-1938-window-AULXWU/acceptance.json",
+      "sha256": "2874cec4dd41b428301500c717488ba550a0ab688ecc181c93a16cb4e07d4c90",
+      "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed.",
+      "note": "Human capture follows actual CPP source lifetimes; native same-callback replacement rejects. Committed deletion then same-ID rebirth is the supported source fixture. Playback uses actual CPP LevelSequence APIs; no new SDK entry points."
+    },
+    {
+      "path": "native/build/take-lifetime-1938-window-V6S5tQ/acceptance.json",
+      "sha256": "604e1a7831d644fea698c1499acf00de3fa47eabe872501874a6c4c9ee209604",
+      "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/visible authoring preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed.",
+      "note": "Narrow GUI recheck after screenshot review: same-document activation now reopens its hidden owning pane without rebuilding data or resetting layout. Visible time-input hit-test and capture prove authoring preview is shown. Six unrelated pure/runtime gates remain valid."
+    }
+  ],
+  "scope": "Selected preexisting2D/3D actor lifetime capture: initial presence, pooling, deletion, same-ID/shape key templates, automatic visual components, parent remapping and validation. Template keys survive reduction; binary prepared spawn seeks rebuild owned visual copies only. Captured-identity source visibility follows shared sequence priority and restores on release. Retired-copy channels/leases are discarded;24 repeated seeks remain bounded and128 test copies are removed. Existing settings/presets/Undo/save, AI schema and CPP Play/Seek/Stop share this flow. Seven initial affected gates and a narrow actual GUI recheck passed. Same-document activation now reopens a hidden owning pane without rebuilding data or resetting layout. Final installed editor and independent D3D11 game passed capture/apply/visible preview and five-phase CPP forward/backward replay with source restoration. Source gameplay simulation/variables are not rewound; native same-callback Destroy+explicit same-ID Spawn remains a generation-management gap.",
+  "repositoryNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

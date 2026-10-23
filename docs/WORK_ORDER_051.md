@@ -1188,3 +1188,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1940–1942: 설치 896a808c2691d397 기존2D/3D 수명녹화·삭제/재생성템플릿·원본표시복원·실제UI/Undo/save/AI dryRun/미리보기·CPP5단계역탐색·별도D3D11 97.57초통과. manifest4517/source1171/native21+SDK/renderer/vendor2/binaries exact·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전198651306B퇴역. USER_INSTALL1941. 게임simulation수명rollback/native같은callback명시ID교체는잔여유지.
 
 1943: 설치 캡처 시각대조→일반뷰포트/미리보기API 상태 불일치. document.open만추가해도hit-test실패해 activeDocument와dock선택이분리된조기반환을수정. 같은문서의숨긴pane만복원·데이터/Undo/layout유지·실제보이는시간입력과시퀀스preview확인. 영향GUI만재검사·6puregate재사용·최종설치보완대기.
+
+1944–1946: 최종설치 74c9f5ea450f1e2b 수명녹화/복제·같은문서의숨긴제작pane복원·실제시간입력hit-test/시퀀스preview·CPP5단계역탐색/원본복원·독립D3D11 60.67초통과. manifest4518/source1171/native21+SDK/renderer/vendor2/binaries exact·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전198855239B퇴역. USER_INSTALL1945. 전체완료아님/원본simulation수명rollback·native동일callback교체등잔여유지.

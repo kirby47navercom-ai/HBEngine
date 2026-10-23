@@ -1520,22 +1520,23 @@
       "reason": "Original1938 report proved API preview state but capture showed ordinary viewport. Merely calling document.open still timed out: activeDocument was sequence while dock selected scene. Root cause was same-path early return in activateDocument; reopened hidden pane and reran affected GUI only."
     }
   ],
-  "installationPending": true,
-  "scope": "Selected preexisting2D/3D actor lifetime capture: initial presence, pooling, deletion, same-ID/shape template transitions, visual components, parent remapping and validation. Immutable true-key templates survive reduction; prepared binary spawn seeks replace only owned visual actors. Captured-identity source visibility uses shared sequence priority and restores on release. Retired-copy control channels are discarded without writing destroyed actors;24 repeated seek loops stay bounded and128 copies are all removed. Settings/presets/Undo/save, AI schema and existing user CPP Play/Seek/Stop share the flow. Seven affected gates passed. Exact installed editor/standalone D3D11 gate passed: human capture and apply/preview, CPP five-phase forward/backward replay with original visibility and copy cleanup. Source simulation/variables are not rewound; same-callback native Destroy+explicit same-ID Spawn remains a separate generation-management gap.1943 fixes same-document activation after play selected a different dock tab. Only a hidden owning pane is reopened, preserving document data and layout; actual visible authoring time-control hit-test passed. Final corrected installation verification pending.",
-  "currentInstallation": "docs/research/USER_INSTALL_1941.json",
+  "installationPending": false,
+  "scope": "Selected preexisting2D/3D actor lifetime capture: initial presence, pooling, deletion, same-ID/shape key templates, automatic visual components, parent remapping and validation. Template keys survive reduction; binary prepared spawn seeks rebuild owned visual copies only. Captured-identity source visibility follows shared sequence priority and restores on release. Retired-copy channels/leases are discarded;24 repeated seeks remain bounded and128 test copies are removed. Existing settings/presets/Undo/save, AI schema and CPP Play/Seek/Stop share this flow. Seven initial affected gates and a narrow actual GUI recheck passed. Same-document activation now reopens a hidden owning pane without rebuilding data or resetting layout. Final installed editor and independent D3D11 game passed capture/apply/visible preview and five-phase CPP forward/backward replay with source restoration. Source gameplay simulation/variables are not rewound; native same-callback Destroy+explicit same-ID Spawn remains a generation-management gap.",
+  "currentInstallation": "docs/research/USER_INSTALL_1945.json",
   "installedGates": [
     {
-      "path": "native/build/take-lifetime-1938-window-sZO2y7/acceptance.json",
-      "sha256": "e3372489b302e426141e5250f4a6c381dd42abb8c2b1980495c7bbdac4040268",
-      "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed.",
+      "path": "native/build/take-lifetime-1938-window-J1raaB/acceptance.json",
+      "sha256": "4d0107a927418c93417627838071c2439b29e82c8e4b94cb1fe86363dcb55b0c",
+      "scope": "Actual lifetime checkbox/save/UndoRedo, human capture of preexisting2D/3D actors through user CPP move/destroy/rebirth/committed same-ID kind rebirth, immutable template keys, apply/dryRun/visible authoring preview and source masking, CPP Play/Seek/Stop restoring sources; optional standalone D3D11 repeats recorded replay. Source simulation stays active; widgets/arbitrary gameplay rollback and mobile devices not claimed.",
       "args": [
         "--executable",
-        "C:\\Users\\kirby\\HBEngine\\Versions\\896a808c2691d397\\HBEngine.exe",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\74c9f5ea450f1e2b\\HBEngine.exe",
         "--package"
       ],
-      "ms": 97570.65770000001
+      "ms": 60667.015100000004
     }
   ],
   "priorImplementationRevision": "ab7bb8f855dbe348df7fcbb9bfae04e4a7a1cfeb",
-  "documentPaneRevision": "20a72c3d4702c3bcc59eed10a1e66b82752b3ef4"
+  "documentPaneRevision": "20a72c3d4702c3bcc59eed10a1e66b82752b3ef4",
+  "priorInstallation": "docs/research/USER_INSTALL_1941.json"
 }
