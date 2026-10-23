@@ -1166,3 +1166,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1907–1909: explicit값control/단조0..4/3시간핸들·수직/확장경계정확분할/부분bake밖보존·stationary수치분기/vectoroffset·공용sampler/affine/다중축tool/clipboard/AI·incoming-only드래그/숫자변환/outgoinglinear유지/수직pixelSnap·좁은창graph130px복원 구현.10영향회귀/최종unit10005관찰·실제source UI/기존CPP3시각독립수식/restore통과. 불채택실험없음·수정중실패성과아님·SDK/native모두exact재사용·설치독립D3D gate예정. 키도메인밖bake등잔여유지. WORK1909.
 
 1910–1912: 최종설치exact수직/확장내부경계bake·incoming-onlydrag/수직snap/숫자변환/outgoinglinear·AI CAS/dryRun/invalid/nonmonotone·privateclipboard/Undo/save·기존CPP독립inversecubic3시각/restore·별도D3D 90.88초통과. manifest4483/source1145/native21+SDK/renderer/vendor2/PlayerHost exact불변·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전197640871B정리. USER_INSTALL1911. 키범위밖bake/독립채널저장등누적잔여유지.
+
+1913–1915: 별도타입imports/전이enum·record필드·UUID C++include·중복경로합성·누락/순환/typeddefault검증·자식추가상위defaults/헤더/소비자원자이관·redirect후save·UI/AI/CAS/Undo/save/CPP실행 연결.8영향gate와 실제UI/CPP[99,4,12]/BP[99,3,2] 통과. 타입전환기본값/no-op저장dirty도수정·동시편집보존. SDK/nativeexact재사용, 설치별도D3D gate예정. WORK1915.
