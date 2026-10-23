@@ -2394,7 +2394,10 @@
         "validTakeClock",
         "formatTakeTimecode",
         "parseTakeTimecode",
-        "takeTimecodeFrame"
+        "takeTimecodeFrame",
+        "resolveTakeRate",
+        "takeRateAllowsDrop",
+        "takeSampleIndex"
       ],
       "paths": [
         "prototype/take-clock.js"

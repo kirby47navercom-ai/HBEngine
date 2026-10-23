@@ -86,6 +86,18 @@ AI의 읽기 전용 take.preset.resolve는 presetAsset을 받아 유효 data와 
 
 runtime.take.start에 clock을 전달하고 runtime.take.state의 clock/timecode와 기존 time을 읽어요. timecode는 source/frame/text를 담고, time은 녹화 시작 후 상대 초예요. UI의 현재 타임코드는 기존 상태 갱신에서 표시하며 전체 녹화 키·소스 목록을 매 프레임 복사하지 않아요. 상속/파일/시퀀스 설정의 나중 변경은 시작한 Take의 시계나 원점을 바꾸지 않아요.
 
-시작 타임코드는 메타데이터예요. 시퀀스 키는 0초에서 시작하는 상대 시간으로 남고 기존 BP/C++ LevelSequence Play/Seek/Stop을 그대로 사용해요. 프리셋 파일 없이 게임에 내보낼 수 있어요. 정수가 아닌 FPS·drop-frame·오디오/PCM 표본 동기·외부 타임코드/RTC/genlock 제공자·카메라/마이크 동기 수집은 별도 잔여예요.
+시작 타임코드는 메타데이터예요. 시퀀스 키는 0초에서 시작하는 상대 시간으로 남고 기존 BP/C++ LevelSequence Play/Seek/Stop을 그대로 사용해요. 프리셋 파일 없이 게임에 내보낼 수 있어요. 오디오/PCM 표본 동기·외부 타임코드/RTC/genlock 제공자·카메라/마이크 동기 수집은 별도 잔여예요.
 
 [Unreal Recording Clock Source](https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine)의 Tick/Platform 및 시간 배율·정지 응답과 timecode metadata 구역을 재확인했고, [Unity Time.unscaledDeltaTime](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Time-unscaledDeltaTime.html)의 Description·timeScale 독립/FixedUpdate/Android 복귀 주의 본문을 새로 읽었어요. HBEngine의 세 시계와 수동 정수 타임코드가 여기의 구현 범위이며 Unreal의 오디오/상대·외부 타임코드/Custom/Play Every Frame을 모두 구현했다는 뜻은 아니에요. 관련 지정 본문만 확인했으며 전체 문서/API 분석 상태는 승격하지 않아요.
+
+## 분수 수집 FPS와 드롭 프레임 표기
+
+clock.rate에 `{numerator:30000,denominator:1001}`처럼 양의 int32 쌍을 저장해요. 최대공약수로 약분하며 실제 값은 1~240 FPS여야 해요. 생략하면 기존 정수 fps를 따라요. 기준 FPS는 타임라인 편집 격자이고, 수집 FPS는 포즈 표본과 타임코드의 속도예요. 시퀀스 전체의 편집 격자를 분수로 바꾸는 기능과 구분해 UI에 두 값을 함께 표시해요. AI 상태의 sampleRate는 정확한 쌍, sampleFPS는 그 비율이에요.
+
+clock.dropFrame은 선택 boolean이에요. true는 정확히 30000/1001 또는 60000/1001에서만 유효해요. 29.97은 매 분의 00·01 번호, 59.94는 00~03 번호를 건너뛰며, 10의 배수 분에서는 건너뛰지 않아요. 실제 포즈를 버리는 기능이 아니에요. 표기는 HH:MM:SS;FF이고 NDF는 HH:MM:SS:FF예요. 존재하지 않는 번호나 구분자가 맞지 않는 입력은 거절해요. 29.97 DF의 107892프레임은 01:00:00;00, 2589408프레임은 1d 00:00:00;00이에요. NDF의 프레임 칸은 분수 FPS를 반올림한 정수 단위로 순환해요.
+
+UI는 23.976·29.970·59.940·분자/분모 직접 입력과 기준 FPS 따르기를 제공해요. 미지원 속도로 바꾸면 DF를 해제하고 체크박스를 잠가요. clock 묶음 상속·Undo/Redo·SaveAs·녹화 결과 recordingClock에 같은 설정을 보존해요. API의 부분 clock override는 rate 쌍 전체를 교체하며 나머지 clock 필드는 유지해요. 상위 DF=true를 미지원 rate로 덮어쓰려면 dropFrame:false도 명시해야 하고, 암묵적으로 설정을 낮추지 않아요.
+
+표본 스케줄은 시작 시점의 프레임 번호에 고정해요. 60Hz 입력에서 29.97 수집이 이전 표본의 지연을 계속 누적해 약 20Hz로 떨어지는 문제를 방지해요. 늦은 호출에서는 현재 실제 포즈 한 개만 받아요. 놓친 중간 포즈를 복제해 수집에 성공한 것처럼 세지 않아요. 별도 타이머·worker·GPU 자원을 만들지 않아요.
+
+출처 등록: Unreal5.8 [FTimecode::FromFrameNumber](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Core/FTimecode/FromFrameNumber)의 오버로드·파라미터와 DF 지원 범위를 새로 읽었어요. 추가 대조 출처로 FFmpeg8.0 [libavutil/timecode.c](https://www.ffmpeg.org/doxygen/8.0/timecode_8c_source.html)의 분수 속도 반올림·10분 단위 DF 번호·역변환·세미콜론 구역을 읽고 이 문서와 ENGINE_WORK_1855의 research에 등록해요. 라이브러리를 추가하거나 소스를 복사하지 않고 정수 label 수를 독립적으로 계산해요. 전체 본문/API 분석 gate는 그대로 유지해요. 외부 시계·PCM·genlock과 분수 타임라인 편집 격자는 미구현 범위로 남아요.
