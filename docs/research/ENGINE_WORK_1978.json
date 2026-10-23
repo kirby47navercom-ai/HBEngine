@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "date": "2026-10-23T10:04:55.938Z",
+  "kind": "sequence-section-instance-blend-settings",
+  "implementationRevision": "3eb7b300b5d2d4f79ced21d650bd57785b99f47a",
+  "priorImplementationRevision": "3fcc22eb792fcbaa6713a817f183e6801a9ad90c",
+  "sourceHashBase": "docs/research/ENGINE_WORK_1974.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "5b1ab4e914cc1e426350a0f1f70dabb4c08b8dcdb67917fcf11f6b081ae95f31",
+    "docs/SEQUENCE_LAYER_BLENDING.md": "c3dec9f5815e9086802006c269edf2b6509045c489d1b0d6e91641c354b665c9",
+    "docs/ai-routes.json": "1f82f4f70693d6d8d211633d5d452ee3dd89ae655436eff74050278001ed4e64",
+    "prototype/sequence-blending.js": "b74f52da4af8a6a77aeadc10f4baa5c835603037648220d168b3120933fd18c2",
+    "prototype/sequence-sections.js": "f741c2eb913e51c025ba3d1035ec5f125f5d3f351cdbe3ffc85e59259aa46d3f",
+    "prototype/gameplay-runtime.js": "e7e1b54144e7ab639d1a42a10b8f664d51441bc1b5475a09780a692ce3790646",
+    "prototype/gameplay-editor.js": "ba6fc35f92a05712043e469e43a1146f42467714e5382f0f0f6363cd627af74d",
+    "tools/check-sequence-blending-1968-window.mjs": "ceebc6011a69f8d47eb7640007fd5b7f86b7ef729f5559c38e4371e6957f07eb",
+    "tools/check-sequence-section-blend-1977.mjs": "3a9bec81435ab22da3d880dc9718d3633e4fbe53006f8ee964d744a85ac001b7"
+  },
+  "composition": {
+    "tool": "tools/research-source-hashes.mjs",
+    "lineage": [
+      "docs/research/ENGINE_WORK_1955.json",
+      "docs/research/ENGINE_WORK_1958.json",
+      "docs/research/ENGINE_WORK_1966.json",
+      "docs/research/ENGINE_WORK_1974.json"
+    ],
+    "currentFilesVerified": false
+  },
+  "targetIds": [
+    "ANM-06"
+  ],
+  "checks": [
+    {
+      "name": "sequence-section-blend-1977",
+      "passed": true,
+      "log": "native/build/group1977-sequence-section-blend-1977.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-section-blend-1977-wD2HgH/acceptance.json",
+      "reportSHA256": "2181c9e93221503f037ebb466283a1c048b5f8e9084f2d893430a73f809ac140",
+      "checks": 7
+    },
+    {
+      "name": "sequence-blending-1967",
+      "passed": true,
+      "log": "native/build/group1977-sequence-blending-1967.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-blending-1967-d3Vw9i/acceptance.json",
+      "reportSHA256": "6e4230c267af76d21d48e3bc97ca1dd851a3147bc35a0df481c95bf7bf078e5c",
+      "checks": 11
+    },
+    {
+      "name": "sequence-pose-blending-1970",
+      "passed": true,
+      "log": "native/build/group1977-sequence-pose-blending-1970.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-pose-blending-1970-9CqasJ/acceptance.json",
+      "reportSHA256": "f2611167d6bfa381189858e6e77a99e15218976082beeee742a6e69be2b73a88",
+      "checks": 9
+    },
+    {
+      "name": "sequence-sections-1250",
+      "passed": true,
+      "log": "native/build/group1977-sequence-sections-1250.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-sections-1250-ImxlJe/acceptance.json",
+      "reportSHA256": "233db272554e0e4cd74a24e73595be3a84ff62c40b9e13d42c8f1c9116996709"
+    }
+  ],
+  "priorAffectedGroup": {
+    "receipt": "docs/research/ENGINE_WORK_1974.json",
+    "passed": 11,
+    "reexecuted": false,
+    "scope": "The three affected existing VM/section cases rerun in this4gate group; unchanged9 legacy channel/pose/audio/timewarp gates are prior evidence, not another full run."
+  },
+  "newCases": 7,
+  "cumulativeNewLayerCases": 27,
+  "publicNativeAPI": {
+    "changedThisPhase": false,
+    "priorActualFourAPISourceWindow": [
+      {
+        "path": "native/build/sequence-blending-1968-window-PWKkcw/acceptance.json",
+        "sha256": "a716ef6a8c5bd6276f4f7ff12effdc7e41eacb240d149cbd01e974b3eaad3d60",
+        "passed": true,
+        "scope": "Actual private editor, compiled C++ four new API methods, generated BP controls, typed component and baseline; source before final convex/quaternion numeric hardening, same position/component outcomes. Final numeric branch changes covered by latest pure tests. No package/actual normalized skeletal gate."
+      }
+    ],
+    "scope": "Prior root/scalar source editor/C++/BP evidence only; new optional section UI has not run in actual window."
+  },
+  "externalWorktreeChanges": {
+    "prototype/player.js": {
+      "observedSHA256": "4d89ea43c2f9f32ad96be161ffceb4491c567ab0422ecb6c43495cf68adff247",
+      "modified": false,
+      "staged": false,
+      "admitted": false,
+      "admittedHEADSHA256": "8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1",
+      "distributionPolicy": "Use this admitted HEAD file, not the unrelated dirty worktree file; preserve both unrelated worktree changes. Only tracked and explicitly admitted source/generation is eligible for distribution."
+    },
+    "tools/check-player-keyboard-release.mjs": {
+      "observedSHA256": "1b5fa2aeadedbded2e795c4fa5f34cdfb414d3ac9ffefada46eb00ad5e75e336",
+      "modified": false,
+      "staged": false,
+      "admitted": false
+    }
+  },
+  "installationPending": true,
+  "currentInstallation": "docs/research/USER_INSTALL_1951.json",
+  "installationDeferral": {
+    "checkedAt": "2026-10-23T10:04:55.938Z",
+    "active": [
+      {
+        "pid": 37280,
+        "version": "064db2f2f17c89f0",
+        "name": "node.exe"
+      }
+    ],
+    "versions": [
+      "064db2f2f17c89f0"
+    ],
+    "distributionSynced": false,
+    "queued": false
+  },
+  "pendingGates": [
+    "latest source1968 human root+section controls and C++/BP",
+    "source1954 signed/cubic/step human/C++/OfflineAudioContext",
+    "source1926 actual normalized skeletal and C++ weight/getter",
+    "installed1968/1954/1926 --package D3D11 plus profile/manifest/shortcut/Versions audit"
+  ],
+  "resources": {
+    "newWorker": 0,
+    "newTimer": 0,
+    "newGPUResources": 0,
+    "newPerFrameTraversal": false,
+    "scope": "Instance settings computed on tree creation/root control changes, not every frame; existing weak channel state. No FPS/heap claim. Resource read-only audit1975 saw32recent+1live cache entry and1lease; no forced deletion of live cache."
+  },
+  "research": {
+    "wholeUEUnityAnalysisComplete": false,
+    "completionPercent": null
+  },
+  "scope": "Per-instance subsection weight and inherit/override/normalized mode with actual existing priority tiers, independent source offsets, effective/local metadata, strict authoring/AI model and source-preserving trim. Seven new source cases and four affected gates. Actual new section UI and installed game remain pending for user activity."
+}
