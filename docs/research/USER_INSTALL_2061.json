@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "date": "2026-10-23T13:56:43.032Z",
+  "kind": "verified-installed-HB-transform-canonical-aliases",
+  "sourceCommit": "7b898e9e053e6a8e9aeb8f0a43cfe1520d1f281b",
+  "sourceReceipt": "docs/research/ENGINE_WORK_2058.json",
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "independentGameVerified": true,
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\6d70b985ad8a2061",
+  "bundleHash": "6d70b985ad8a206123d1acb0d1e540b990d2f55670c92957975643916870f068",
+  "versions": 1,
+  "manifestFiles": 4601,
+  "admittedOwners": 1240,
+  "profile": {
+    "files": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4593,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9ebf4ca5ba25e88e",
+        "bytes": 199709392,
+        "manifestSHA256": "73880d6923cad00febacfbe0fb93a3e2df035f9cc759a48797bb8e24012cd494"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T13:51:40.8784320Z",
+    "bytes": 199709392,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "6d70b985ad8a2061"
+    ]
+  },
+  "overridden": [
+    {
+      "path": "prototype/player.js",
+      "policy": "admitted HEAD bytes only; unrelated dirty worktree preserved"
+    }
+  ],
+  "changed": 20,
+  "sourceWindow": {
+    "report": "native/build/sequence-transform-alias-2052-window-o7ao5L/acceptance.json",
+    "sha256": "ae9f13a96b268482d8aa3bfbe3dc2246563f357b74787da3df7f819ad39a29e6",
+    "observations": 20,
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "postWindowChanges": [
+      "Retain existing late imported/sprite publication order relative to skeletal tracks; final dedicated order case and playback/lease gates passed"
+    ],
+    "finalInstalledGamePending": false,
+    "finalInstalledGameReceipt": "docs/research/USER_INSTALL_2061.json"
+  },
+  "installedGames": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\6d70b985ad8a2061",
+    "rows": [
+      {
+        "id": "transform-alias",
+        "passed": true,
+        "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\transform-alias-installed-2060-8zjxwV\\acceptance.json",
+        "sha256": "ca219c571e6892d445da8065c9d4532faf6b4a12c971c505b4c8d9996dd8404b",
+        "ms": 40648.265
+      }
+    ]
+  },
+  "nativePixelProof": {
+    "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\transform-alias-installed-2060-8zjxwV\\acceptance.json",
+    "sha256": "ca219c571e6892d445da8065c9d4532faf6b4a12c971c505b4c8d9996dd8404b",
+    "method": "Existing hbPlayerDebug.capture -> native hbCapture swapchain readback; no CDP black surface used as native proof",
+    "before": {
+      "width": 640,
+      "height": 400,
+      "nonblack": 256000,
+      "sha256": "ac981387b86aa893f02cf93dd393361610c30346657bc98c5e90513a8927ead1"
+    },
+    "after": {
+      "width": 640,
+      "height": 400,
+      "nonblack": 256000,
+      "sha256": "fe8d9e783c69f242cc5e6a410caedb6342484658fe418ca5d5ccb0ad8b202ba2"
+    },
+    "pixelsChanged": 3501,
+    "directlyInspected": true,
+    "repeatGameNeeded": false
+  },
+  "audit": {
+    "passed": true,
+    "installed": "C:\\Users\\kirby\\HBEngine\\Versions\\6d70b985ad8a2061",
+    "focusedAI": {
+      "symbol": "prepareSequenceAnimationTransforms",
+      "owner": "prototype/sequence-animation-transforms.js",
+      "filesRead": 1,
+      "elapsedMs": 63.5,
+      "installation": {
+        "observed": true,
+        "root": "C:\\Users\\kirby\\HBEngine\\Versions\\6d70b985ad8a2061",
+        "marker": "HBEngine.install.json",
+        "bundleHash": "6d70b985ad8a206123d1acb0d1e540b990d2f55670c92957975643916870f068",
+        "installedAt": "2026-10-23T13:51:37.404Z",
+        "manifestFiles": 4601,
+        "integrityChecked": false
+      }
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "cache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null,
+      "entries": [],
+      "running": []
+    },
+    "versions": [
+      "6d70b985ad8a2061"
+    ],
+    "scope": "Read-only installed focused context/shortcut/association plus live-aware native-cache prune. Installer preflight holds exact file/owner hashes and profile comparison. No duplicate GUI/game/renderer run."
+  },
+  "preflight": {
+    "report": "native/build/user-install-2059-preflight.json",
+    "sha256": "402b541149910e19a2fa345cf9a830053ebba936016a6bb06e8897600f9b7b0e"
+  },
+  "nativeReuse": {
+    "receipt": "docs/research/USER_INSTALL_2019.json",
+    "owners": 21,
+    "binaries": {
+      "HBEngine": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+      "HBPlayer": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+    },
+    "vendorHashes": {
+      "node_modules/three/src/renderers/common/UniformsGroup.js": {
+        "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+        "bytes": 10590
+      },
+      "node_modules/three/build/three.webgpu.js": {
+        "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+        "bytes": 1875505
+      }
+    },
+    "freshFullSDKRun": false,
+    "freshRendererRun": false
+  },
+  "scope": "Installed HB transform clip/direct TRS/Transform component canonical field ownership, weighted vector/quaternion priority/order controls, zero and per-field completion, selective clip-gap release, sequence/actor origin/order/cycle guards, old/current external HB presentation reconciliation and captured held-pose restoration. Twelve new production source cases plus eight affected gates passed. Source human component curve/layer editing, AI CAS/dryRun, Undo/Redo/save and C++20 observations; final installed builder and independent D3D11 game20 observations (rotation/scale getters included) passed with exit0. Native swapchain capture in the same40.65sec run changed3501 pixels; image directly inspected. Exact4601 files/1240 owners, read-only10849-file User profile unchanged, focusedAI1owner63.5ms, shortcuts/association and Versions1 verified; prior199709392B retired. No imported root/per-bone/renderer aliases, arbitrary callback/simulation rollback, FPS/device/full-engine claim."
+}
