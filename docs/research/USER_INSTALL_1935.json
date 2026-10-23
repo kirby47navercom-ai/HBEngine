@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-exterior-partial-curve-bake-and-tool-view-state",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "495e7f47f09e1bc4213907187051b647287bac2c",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7fb466f08edd325a",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\7fb466f08edd325a\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\7fb466f08edd325a\\HBEngine.exe",
+  "bundleHash": "7fb466f08edd325adad8106f94102bd623880a3cdde5c3b6d311114178599118",
+  "files": 4510,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4511,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\1b69f6d29f02f443",
+        "bytes": 198648505,
+        "manifestSHA256": "f1b6f4d117f85a752b94ff5bf33edcd9d185e414e120902263f64e20caab71dd"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T05:48:19.8478040Z",
+    "bytes": 198648505,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "7fb466f08edd325a"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1165,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/curve-domain-1932-window-kUN5cG/acceptance.json",
+      "sha256": "57f6e4c5333af3330d59e01ead8d7b62e2575ced98165d251fb49cd915293dfe",
+      "scope": "Actual persisted range/FPS UI state after document rebuild/UndoRedo and AI partial bake crossing both authored endpoints, one UndoRedo per edit, CAS/dryRun/error guards, ordinary keys save and fresh user CPP seeks against independent analytic Hermite/linear oracles including surviving cubic middle and both exterior tails; optional standalone D3D11. Periodic domain extension rejects atomically.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7fb466f08edd325a\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 67662.0284
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\7fb466f08edd325a\\",
+    "elapsedMs": 62.12,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\7fb466f08edd325a",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "7fb466f08edd325adad8106f94102bd623880a3cdde5c3b6d311114178599118",
+      "installedAt": "2026-10-23T05:48:16.150Z",
+      "manifestFiles": 4510,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1929.json\",\"changedSDK\":[],\"scope\":\"All21 native/SDK owners, Host1041/Player1604/renderer/vendor exact hashes unchanged. Actual private-project CPP LevelSequence seeks execute emitted ordinary keys through changed shared JS authoring. Historical30 native test-source hashes are provenance, not fresh full SDK execution.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4510,
+  "versions": [
+    "7fb466f08edd325a"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1935b-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/curveDomain1933-group.json",
+      "sha256": "3bb2bef0ca4a8174714de5d1dc6034c898042e2c59fdefd1c3cef42e59b2b3b1",
+      "scope": "Five affected numeric/model/shared-sampler regressions plus one actual hidden source-editor fresh user CPP curve authoring/runtime gate, once after grouped implementation."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/curve-domain-1931-GFDQIy/acceptance.json",
+      "sha256": "6b4c979279c731ca9cd84941f7b4fc7969689987cafa266f4b39a7373bebbc8d",
+      "scope": "Constant/default and linear outside-key-domain partial bake, analytic independent extrapolation/Hermite and stationary Bezier oracles, vector/PCHIP/step/single-key preservation, final key budgets and atomic periodic rejection, shared samplers/asset validation. Existing in-domain subdivision/controls retained; periodic partial extension and unrepresentable linear endpoint slopes remain explicit limits."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/curve-controls-1907-i4KY9t/acceptance.json",
+      "sha256": "319d4d506b38dc286767d14fdb105a447585dbac3682920fef1f99633f1eefe3",
+      "scope": "Independent analytic stationary-time Bezier oracle, exact vertical/extended-weight subdivision/bake outside preservation, all shared samplers/validators, clipboard/tool/axis integration. UI/C++/D3D separate; outside-key-domain bake remains rejected."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/curve-tools-1319-VvyI8b/acceptance.json",
+      "sha256": "5f766b79b1b4d7751c4de9a9131e4be27d65467c47ed908785fcc232887f2501",
+      "scope": "Independent PCHIP slopes/monotonic vectors, inherited and shared samplers, affine weighted oracle, channel preservation, bake/reduce max source-key error, typed/atomic budget rejection, skeletal authoring and actual AnimationGraph. GUI/native game separate."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/curve-channels-1895-iJ7Kf5/acceptance.json",
+      "sha256": "1638e26eb641f8bb9cb75f15964cbca87279fba9ff54dca9f6258bf5bd65f00d",
+      "scope": "Independent channel selections/tool math and atomic AI editing; production selection/remap/numeric paths. Shared record topology explicitly retained; actual UI/runtime in separate gate."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/multi-curves-1883-PdoW5Y/acceptance.json",
+      "sha256": "b3c73e1c71e798e5550aab7ed360d7f425da7d9e23382f4524f185316aae8b4a",
+      "scope": "Atomic production multi-curve authoring/tools, shared TimelineEditor selection/edit/delete/weights, strict group clipboard and existing single-curve path. Actual pointer/C++/package proof separate."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/curve-domain-1932-window-aL33X2/acceptance.json",
+      "sha256": "29372272a1fa61fab99faf4d05ce791e6a8007970c9c0d852748a622211ac8af",
+      "scope": "Actual persisted range/FPS UI state after document rebuild/UndoRedo and AI partial bake crossing both authored endpoints, one UndoRedo per edit, CAS/dryRun/error guards, ordinary keys save and fresh user CPP seeks against independent analytic Hermite/linear oracles including surviving cubic middle and both exterior tails; optional standalone D3D11. Periodic domain extension rejects atomically."
+    },
+    {
+      "path": "native/build/curve-domain-1931-pfzePI/acceptance.json",
+      "sha256": "39077be3bad07c08a2e27a495b190d3007b9bbb9438396cd77a38e2ce9b0f31a",
+      "scope": "Same numeric gate with additional large automatic/PCHIP finite-control and ignored-clamped-control assertions. Repeated unit only after branch coverage review; all numeric implementation sources unchanged."
+    },
+    {
+      "path": "native/build/curve-domain-1931-9FTWzd/acceptance.json",
+      "sha256": "a8c15dbe0f285ea05253a9049cfb2faa9f8d3840ddc36c5b4ab4aafe8a8e26ca",
+      "scope": "Final1931 numeric/typed regression after constant-tail endpoint fix:70649 observations plus steep prefix/postfix/both-end candidates valid under both Timeline and stricter Sequence contracts."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/curve-domain-1932-window-aL33X2/acceptance.json",
+      "sha256": "29372272a1fa61fab99faf4d05ce791e6a8007970c9c0d852748a622211ac8af",
+      "scope": "Actual persisted range/FPS UI state after document rebuild/UndoRedo and AI partial bake crossing both authored endpoints, one UndoRedo per edit, CAS/dryRun/error guards, ordinary keys save and fresh user CPP seeks against independent analytic Hermite/linear oracles including surviving cubic middle and both exterior tails; optional standalone D3D11. Periodic domain extension rejects atomically.",
+      "note": "Source UI checkpoint predates the targeted constant-tail endpoint correction; linear UI/C++ path is unchanged. Final1931 typed numeric proof covers the correction; final installed editor/standalone gate must use the corrected bundle."
+    }
+  ],
+  "scope": "Constant/default and linear outside-key-domain partial bake via ordinary keys, exact surviving cubic/weighted/vertical/PCHIP segments and exterior derivatives, finite-control fallback and final sample+outside-key budgets. Existing range/FPS UI and per-document view-only tool state preserve settings across rebuild/UndoRedo; shared AI schema, dryRun/CAS/invalid range and periodic rejection, save and existing CPP LevelSequence execution. Six primary affected gates and a narrow numeric branch supplement,70649 sample observations and final actual source UI gate passed. Exact installed editor/standalone D3D11 gate passed, including persisted range/FPS controls after rebuild/UndoRedo and all13 user CPP seek samples. Periodic domain expansion retaining the original period and unrepresentable exterior slopes remain explicit limits."
+}

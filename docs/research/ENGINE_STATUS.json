@@ -1946,7 +1946,8 @@
         "docs/research/ENGINE_WORK_1927.json",
         "docs/research/USER_INSTALL_1929.json",
         "docs/CURVE_BAKE_DOMAIN.md",
-        "docs/research/ENGINE_WORK_1933.json"
+        "docs/research/ENGINE_WORK_1933.json",
+        "docs/research/USER_INSTALL_1935.json"
       ]
     },
     {
@@ -2678,7 +2679,8 @@
         "docs/research/ENGINE_WORK_1927.json",
         "docs/research/USER_INSTALL_1929.json",
         "docs/CURVE_BAKE_DOMAIN.md",
-        "docs/research/ENGINE_WORK_1933.json"
+        "docs/research/ENGINE_WORK_1933.json",
+        "docs/research/USER_INSTALL_1935.json"
       ]
     },
     {
@@ -3797,14 +3799,14 @@
     "first": 1931,
     "last": 1933,
     "receipt": "docs/research/ENGINE_WORK_1933.json",
-    "scope": "Constant/default and linear outside-key-domain partial bake via ordinary keys, exact surviving cubic/weighted/vertical/PCHIP segments and exterior derivatives, finite-control fallback and final sample+outside-key budgets. Existing range/FPS UI and per-document view-only tool state preserve settings across rebuild/UndoRedo; shared AI schema, dryRun/CAS/invalid range and periodic rejection, save and existing CPP LevelSequence execution. Six primary affected gates and a narrow numeric branch supplement,70649 sample observations and final actual source UI gate passed. Exact installed editor/standalone D3D gate pending. Periodic domain expansion retaining the original period and unrepresentable exterior slopes remain explicit limits."
+    "scope": "Constant/default and linear outside-key-domain partial bake via ordinary keys, exact surviving cubic/weighted/vertical/PCHIP segments and exterior derivatives, finite-control fallback and final sample+outside-key budgets. Existing range/FPS UI and per-document view-only tool state preserve settings across rebuild/UndoRedo; shared AI schema, dryRun/CAS/invalid range and periodic rejection, save and existing CPP LevelSequence execution. Six primary affected gates and a narrow numeric branch supplement,70649 sample observations and final actual source UI gate passed. Exact installed editor/standalone D3D11 gate passed, including persisted range/FPS controls after rebuild/UndoRedo and all13 user CPP seek samples. Periodic domain expansion retaining the original period and unrepresentable exterior slopes remain explicit limits."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1929.json",
-    "sourceCommit": "6f63263ccb6b1503b8ccf9b84f780d540dbb0270",
-    "bundleHash": "60f2c41b27484ca55358be5cc58ccbf83453f156d19cccaed60d923709706be8",
+    "receipt": "docs/research/USER_INSTALL_1935.json",
+    "sourceCommit": "495e7f47f09e1bc4213907187051b647287bac2c",
+    "bundleHash": "7fb466f08edd325adad8106f94102bd623880a3cdde5c3b6d311114178599118",
     "verified": true,
     "versions": 1,
-    "scope": "Per-bone skeletal sequence leases and identity-safe weak preanimated restoration, layout gaps and owner-specific completion, shared poseWeight0..1 baseline/TRS/quaternion blend, actual editor UndoRedo/save and AI validation/query contract. Same-track bone leases share prepared binding/sample and batched restoration matrices;1024-bone work counts verified. Fresh user CPP LevelSequence/Skeleton probes cover repeated model replacement/empty/backward layout changes and disjoint/overlapping weighted sequences. Five primary affected gates, three narrow channel regressions and AI routing passed. Exact installed editor/standalone D3D11 gate passed, including hit-tested weight UI visibility. Normalized competing-layer mix, Animation/Transform aliases and arbitrary external side-effect rollback remain."
+    "scope": "Constant/default and linear outside-key-domain partial bake via ordinary keys, exact surviving cubic/weighted/vertical/PCHIP segments and exterior derivatives, finite-control fallback and final sample+outside-key budgets. Existing range/FPS UI and per-document view-only tool state preserve settings across rebuild/UndoRedo; shared AI schema, dryRun/CAS/invalid range and periodic rejection, save and existing CPP LevelSequence execution. Six primary affected gates and a narrow numeric branch supplement,70649 sample observations and final actual source UI gate passed. Exact installed editor/standalone D3D11 gate passed, including persisted range/FPS controls after rebuild/UndoRedo and all13 user CPP seek samples. Periodic domain expansion retaining the original period and unrepresentable exterior slopes remain explicit limits."
   }
 }

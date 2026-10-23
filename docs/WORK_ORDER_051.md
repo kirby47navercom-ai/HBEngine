@@ -1180,3 +1180,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1928–1930: 최종설치 60f2c41b27484ca5 골격뼈별제어·weak identity복원·poseWeight UI/UndoRedo/save·invalidAI patch불변·실제weight가시hit-test·CPP모델교체8회/partial/priority·별도D3D11 92.13초통과. manifest4504/source1160/native21+SDK/renderer/vendor2/binaries exact·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전198251944B퇴역. USER_INSTALL1929. 정규화레이어/Animation별칭·외부callbackrollback은별도.
 
 1931–1933: 유지/선형 키도메인밖부분bake·외부cubic/weighted/vertical/PCHIP/꼬리기울기보존·큰기울기control·최종키budget·도구범위/FPS/view열림보존 구현.6주gate+큰기울기unit·70649수치/실제UI·AI CAS/dryRun/invalid·Undo/save·CPP13seek/Stop통과. nativeSDK exact재사용·설치D3D대기. 반복/왕복주기보존확장은명시잔여. WORK1933.
+
+1934–1936: 최종설치 7fb466f08edd325a 유지/선형키도메인밖부분bake·보존중간곡선/양꼬리·도구start/end/FPS입력유지·AI dryRun/CAS/invalid주기거절·Undo/save·실제CPP13seek/Stop·별도D3D11 67.66초통과. manifest4510/source1165/native21+SDK/renderer/vendor2/binaries exact·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전198648505B퇴역. USER_INSTALL1935. 주기보존부분확장은명시잔여.

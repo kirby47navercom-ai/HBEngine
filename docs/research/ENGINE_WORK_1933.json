@@ -1478,9 +1478,21 @@
       "reason": "After the first installed candidate passed ordinary linear UI/D3D, a targeted proof showed a valid steep constant-tail source produced an unused endpoint tangent above Sequence100000 although Timeline allowed1000000. Constant/default external derivatives now emit0. Final1931 passes both validators; first candidate is superseded, not final accepted installation."
     }
   ],
-  "installationPending": true,
-  "scope": "Constant/default and linear outside-key-domain partial bake via ordinary keys, exact surviving cubic/weighted/vertical/PCHIP segments and exterior derivatives, finite-control fallback and final sample+outside-key budgets. Existing range/FPS UI and per-document view-only tool state preserve settings across rebuild/UndoRedo; shared AI schema, dryRun/CAS/invalid range and periodic rejection, save and existing CPP LevelSequence execution. Six primary affected gates and a narrow numeric branch supplement,70649 sample observations and final actual source UI gate passed. Exact installed editor/standalone D3D gate pending. Periodic domain expansion retaining the original period and unrepresentable exterior slopes remain explicit limits.",
-  "currentInstallation": null,
-  "installedGates": [],
+  "installationPending": false,
+  "scope": "Constant/default and linear outside-key-domain partial bake via ordinary keys, exact surviving cubic/weighted/vertical/PCHIP segments and exterior derivatives, finite-control fallback and final sample+outside-key budgets. Existing range/FPS UI and per-document view-only tool state preserve settings across rebuild/UndoRedo; shared AI schema, dryRun/CAS/invalid range and periodic rejection, save and existing CPP LevelSequence execution. Six primary affected gates and a narrow numeric branch supplement,70649 sample observations and final actual source UI gate passed. Exact installed editor/standalone D3D11 gate passed, including persisted range/FPS controls after rebuild/UndoRedo and all13 user CPP seek samples. Periodic domain expansion retaining the original period and unrepresentable exterior slopes remain explicit limits.",
+  "currentInstallation": "docs/research/USER_INSTALL_1935.json",
+  "installedGates": [
+    {
+      "path": "native/build/curve-domain-1932-window-kUN5cG/acceptance.json",
+      "sha256": "57f6e4c5333af3330d59e01ead8d7b62e2575ced98165d251fb49cd915293dfe",
+      "scope": "Actual persisted range/FPS UI state after document rebuild/UndoRedo and AI partial bake crossing both authored endpoints, one UndoRedo per edit, CAS/dryRun/error guards, ordinary keys save and fresh user CPP seeks against independent analytic Hermite/linear oracles including surviving cubic middle and both exterior tails; optional standalone D3D11. Periodic domain extension rejects atomically.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\7fb466f08edd325a\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 67662.0284
+    }
+  ],
   "priorImplementationRevision": "ec2037c5472cc14d4e716ba20addec802e20049b"
 }
