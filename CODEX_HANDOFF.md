@@ -2,21 +2,15 @@
 
 2026-10-23. 주인님/짚짱/존댓말. 관련구현묶음→영향검사한번→안전설치. ENGINE_STATUS78행/전체분모·완료율null. 전체UE/Unity분석·엔진완성주장금지. blocked여도현재승인구현계속·새goal/재개질문/새agent금지. hbengine ACTIVE. Mac/Xcode/Android폰없음.
 
-## 최신 구현 WORK2058 / 확정 설치 USER_INSTALL2061
+## 최신 소스 WORK2073 — imported/recorded 골격 공용 채널
 
-HB timeline clip position/rotation/scale→직접TRS/Transform component와동일actor/field lease. per-field priority/order/normalized/quaternion/zero/completion. 액터별기존last-active animation clip 유지·한state에서는direct/clip작성순서마지막값. 새필드baseline은이전평가기보관/현frame쓰기전캡처. 클립gap은expired필드만해제. 공용필드복원후애니메이션presentation·유지포즈는실제캡처TRS로복원·ordinary외부HB시계는진행하되활성공용값덮기방지·최종direct release/control후외부현재presentation재반영. rootorigin/animatedoriginactor먼저/부모cycle거절·attached local. 새API/에셋스키마/키복사/타이머/worker0·plain direct는기존adapter빠른경로. SEQUENCE_TRANSFORM_ALIASES.md.
+ImportedSequencePoseProgram→가져온full bone position/quaternion/scale을skeletalPose:<bone>와동일lease. perbone priority/normalized/quaternion/zero/gap/completion·같은state작성순서·마지막activeclip유지. 누락TRS는shared actual baseline. 제어전capture·본래importer interpolant/cubic/discrete·double result buffer·원래typedkeys공유·raw mixer에서는해당bone tracks만제외·비골격트랙그대로. ordinary mixer는제어된뼈만sparse presentation 보관·unchanged샘플/최종release즉시복원·외부새player다음tick재탈취방지. heldalias actual pose/기존graph·montage·fade·finite-loop인스턴스보관·본객체identity검증. 순수recorded override기존deferred/frame1행렬유지. 신규15case(256bone2clock/버퍼/모델교체)·기존영향8gate. source2068-vARWT1 실제hiddenGUI human poseWeight/Undo/Redo/save·AI dryRun/CAS·GLTF/recorded+CPP19관찰/뼈pos/rot/scale getter/exit0. installed게임대기. contextImportedSequencePoseProgram focus1owner. 실패(즉시override/외부재탈취/float정밀도/불필요중복행렬)교정후채택·실패성과0. native21/vendor2/binaries불변·freshfullSDK/renderer반복0. SEQUENCE_IMPORTED_POSE_ALIASES.md.
 
-새2050최종12case(g6wISl)·기존영향8gate. 첫9≠0실패는direct최종Stop에외부현재presentation미반영→finish hook교정, 다음10≠15는heldalias를원본키로재평가→캡처포즈복원교정. 미채택실험성과0. source2052-o7ao5L human component곡선/weight·Undo/Redo/save·AI dryRun/CAS·GLTF/HB/Transform·CPP20관찰(exit0). GUI로드후non-HB imported/sprite는기존골격후late발행유지하도록좁힘·새12번째순서case+playback/lease최종통과. 최종installed2061게임도아래통과. context prepareSequenceAnimationTransforms focus1owner155.08ms. native21/vendor2/binaries불변·freshfullSDK/renderer없음.
-
-설치6d70b985ad8a2061/4601files/1240owners. installed builder로saved2052 fixture D3D11 독립게임CPP20관찰·rotation/scale getters·최종코드/exit0(40.65초). 같은run native hbCapture3501pixel변화·PNG직접확인. native/build/standalone2060.json. User10849파일직전/직후SHA동일·바로가기/연결·AI focus1owner63.5ms·Versions1·이전199709392B정리·cacheprune0. 소스/installed/editor/SDK/renderer 불변검사재반복불필요. 최종ledger/handoff는source-only metadata2062·installed snapshot2058.
-
-이전2042 managed clip 정규화/동일clip 독립시각/tracks버퍼공유/zero보관/query는USER_INSTALL2046. 새HB canonical route는2058/2061이최신.
-
-앞선2029 periodic부분bake infinityDomain+ranges·보이는keys/원본중복0·cycle/cycleOffset/oscillate·weighted/vertical/PCHIP·anchors/keyBudget·UI/AI reset/Undo/CAS/reduce/time변환·stable참조회귀수정은WORK2029/USER_INSTALL2032. CPP21Seek근거불변재사용. 이전2005/2015 PCM gain/fade/Take gain/참조identity·1958/1974/1987 timewarp/±PCM/normalizedskeletal은해당불변owner근거사용.
+현재확정설치USER_INSTALL2061:6d70b985ad8a2061/4601files/1240owners·HB/direct/componentTransform2058/CPP20/native3501pixel/exit0. User10849파일SHA직전/직후동일·Versions1·이전199709392B정리. 새2073소스전환·독립게임은다음단계. 이전2042 imported/HB클립혼합,2029 periodicBake,2015참조identity,2005 PCM은각확정원장재사용.
 
 ## 다음 잔여
 
-ANM06 imported mixer root/object와skeletalPose 뼈/renderer별칭. HB/direct/componentTransform만2058통합. sequence-animation-transforms.js→sequence-skeletal-channels.js/sequence-pose-playback.js 관련owner부터·전체문서재독금지. 독립axis time/interpolation/delete topology·일반simulation/외부변수·asyncsetter/notify rollback·pitch유지/일반PCM예약/streamreverse/TakeClock·device/pull/genlock/rig/video/attachment. CPP01일반headers/registry/파괴schema/alias/ref/wildcard/Destroy+동일ID동일CPPcallback세대. RND08globalDF/bentnormal/방향sky/heightfield/변형체/미로드LOD/lightmap/volume/HWRT. GL1728 ANGLE6878.6ms/D3DCompile6836.439·미채택6492/실패1302–1307/783/1086재반복금지.
+ANM06 imported mixer root/object·indexed bone·renderer별칭. fullboneTRS/recorded는2073통합. sequence-imported-pose.js→sequence-skeletal-channels.js/sequence-pose-playback.js 관련owner부터·전체문서재독금지. 독립axis time/interpolation/delete topology·일반simulation/외부변수·asyncsetter/notify rollback·pitch유지/일반PCM예약/streamreverse/TakeClock·device/pull/genlock/rig/video/attachment. CPP01일반headers/registry/파괴schema/alias/ref/wildcard/Destroy+동일ID동일CPPcallback세대. RND08globalDF/bentnormal/방향sky/heightfield/변형체/미로드LOD/lightmap/volume/HWRT. GL1728 ANGLE6878.6ms/D3DCompile6836.439·미채택6492/실패1302–1307/783/1086재반복금지.
 
 ## 격리·배포
 

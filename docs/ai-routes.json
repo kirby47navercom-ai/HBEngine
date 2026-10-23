@@ -3032,6 +3032,16 @@
       "paths": [
         "prototype/sequence-animation-transforms.js"
       ]
+    },
+    {
+      "id": "sequence-imported-pose-aliases",
+      "keywords": [
+        "ImportedSequencePoseProgram",
+        "importedSequencePoseContract"
+      ],
+      "paths": [
+        "prototype/sequence-imported-pose.js"
+      ]
     }
   ]
 }

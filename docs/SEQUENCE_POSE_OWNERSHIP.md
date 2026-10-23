@@ -12,6 +12,6 @@
 
 프로그램과 모델 바인딩은 약한 캐시를 사용하고, 활성 뼈들은 트랙·시간별로 묶어 샘플해요. 같은 트랙의 뼈 수만큼 바인딩을 만들지 않아요. 정지 시 같은 대상의 복원 뼈는 한 번 순회하고 월드 행렬도 한 번 갱신해요. 뼈별 채널/활성 샘플 관리 비용은 실제로 생기며, 전체 프레임 속도나 메모리 수치 개선을 이 구조만으로 주장하지 않아요.
 
-경계: 경쟁 시퀀스들을 가중치 합으로 정규화하는 레이어 믹서는 아니에요. 일반 Animation Mixer와 골격·Transform 채널 별칭, 임의 알림 콜백의 부작용·비동기 외부 setter의 되돌리기도 별도 범위예요. 바인딩에 관계없는 새 중복 뼈 삽입은 기존 활성화/조회 검증에서 확인해요.
+같은 우선순위의 정규화 레이어 혼합은 SEQUENCE_LAYER_BLENDING.md에 설명해요. 가져온 클립의 전체 뼈 TRS도 공용 골격 채널을 사용해요(SEQUENCE_IMPORTED_POSE_ALIASES.md). 루트·일반 오브젝트·렌더러·인덱스 단위 뼈 속성 별칭과 임의 알림 콜백의 부작용·비동기 외부 setter 되돌리기는 별도 범위예요. 바인딩에 관계없는 새 중복 뼈 삽입은 기존 활성화/조회 검증에서 확인해요.
 
 소유자는 `prototype/sequence-pose-ownership.js`, `prototype/sequence-skeletal-channels.js`, `prototype/sequence-pose-playback.js`예요. AI는 `schema.sequencePoseOwnership`으로 계약을 확인하고 `hb context "시퀀스 골격" --symbol SequencePoseOwnership`으로 좁혀요. 검사 근거는 WORK1927에 기록해요.

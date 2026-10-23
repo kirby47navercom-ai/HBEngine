@@ -14,7 +14,7 @@ export class AnimationPlaybackLease {
   prepare(players=[]){
     // Public PropertyBinding values are copied once. update(0) alone can skip
     // unchanged accumulator values after another mixer has changed the target.
-    if(this.mixer){const actions=this.mixer.sequenceLayerActions?[...this.mixer.sequenceLayerActions.values()].map(row=>row.action):[this.mixer.action],tracks=new Map(actions.flatMap(action=>action.getClip().tracks.map(track=>[track.name,track])));this.pose=[...tracks.values()].map(track=>{const binding=THREE.PropertyBinding.create(this.group,track.name),value=new Array(track.getValueSize()).fill(0);binding.getValue(value,0);binding.unbind();return {path:track.name,value};});}
+    if(this.mixer){const actions=this.mixer.sequenceLayerActions?[...this.mixer.sequenceLayerActions.values()].map(row=>row.action):[this.mixer.action],tracks=new Map([...actions.flatMap(action=>action.getClip().tracks),...this.mixer.aliasPoseTracks||[]].map(track=>[track.name,track]));this.pose=[...tracks.values()].map(track=>{const binding=THREE.PropertyBinding.create(this.group,track.name),value=new Array(track.getValueSize()).fill(0);binding.getValue(value,0);const target=binding.targetObject,property=binding.resolvedProperty;binding.unbind();return {path:track.name,value,target,property};});}
     if(this.graph)this.presentation=this.graph.capturePresentation();
     else if(players.length)this.presentation=players.at(-1).program.capturePresentation();
   }
@@ -25,7 +25,7 @@ export class AnimationPlaybackLease {
   async present(){
     if(this.graph)await this.graph.restorePresentation(this.presentation);
     else if(this.montages?.states.length)await this.montages.states.at(-1).player.program.restorePresentation(this.presentation);
-    if(this.mixer)for(const {path,value}of this.pose){const binding=THREE.PropertyBinding.create(this.group,path);binding.setValue(value,0);binding.unbind();}
+    if(this.mixer)for(const {path,value,target,property}of this.pose){const binding=THREE.PropertyBinding.create(this.group,path);binding.bind();let valid=binding.targetObject===target&&binding.resolvedProperty===property;if(target?.isBone){let root=target;while(root&&root!==this.group&&(!root.userData?.objectId||root.userData.objectId===this.group.userData.objectId))root=root.parent;valid&&=root===this.group;}if(valid)binding.setValue(value,0);binding.unbind();}
   }
   release(){
     if(this.phase==='suspended'){
