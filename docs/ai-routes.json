@@ -2953,6 +2953,33 @@
       "paths": [
         "prototype/sequence-weight-curve-editor.js"
       ]
+    },
+    {
+      "keywords": [
+        "captureSequenceReferences",
+        "resolveSequenceReferences",
+        "sequenceReferenceStateContract",
+        "sampleSequenceReferences"
+      ],
+      "paths": [
+        "prototype/sequence-reference-state.js"
+      ]
+    },
+    {
+      "keywords": [
+        "sequenceValueChannel"
+      ],
+      "paths": [
+        "prototype/sequence-value-channels.js"
+      ]
+    },
+    {
+      "keywords": [
+        "sequenceTransformChannel"
+      ],
+      "paths": [
+        "prototype/sequence-properties.js"
+      ]
     }
   ]
 }

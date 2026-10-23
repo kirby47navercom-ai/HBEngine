@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+export async function exerciseSequenceReferences({invoke,inspect,values,ownership,until},fixture){
+ const target=s=>s.objects.find(o=>o.id==='Target'),focus=async()=>(await values('Target')).values.find(v=>v.variable==='focus').value,follow=s=>target(s).components.find(c=>c.id==='Cam').properties.followTarget,rows=[];
+ await invoke('Target','Init');await invoke('Target','Read');let state=await inspect();assert.equal(target(state).nativeProperties.HasFocus,true);assert.equal(target(state).nativeProperties.MatchesOld,true);
+ for(const [id,asset]of [['Director',fixture.low],['Upper',fixture.high]]){await invoke(id,'Play',{asset});await invoke(id,'Seek',{time:1});}
+ state=await inspect();assert.equal(target(state).nativeProperties.Focus,'Next');assert.equal(await focus(),'Next');assert.equal(follow(state),'Next');assert.equal(target(state).position[0],90);rows.push({phase:'upper',native:target(state).nativeProperties.Focus,bp:await focus(),follow:follow(state),x:target(state).position[0]});
+ await invoke('Target','RemoveOld');await until(async()=>!(await inspect()).objects.some(o=>o.id==='Old'),'original actor destroyed');await invoke('Target','RecreateOld');await until(async()=>(await inspect()).objects.some(o=>o.id==='Old'&&o.spawnAsset),'new actor with same ID created');
+ for(const [id,phase,x]of [['Upper','lower',10],['Director','baseline',3]]){await invoke(id,'Stop');await invoke('Target','Read');state=await inspect();assert.equal(target(state).nativeProperties.Focus,null);assert.equal(target(state).nativeProperties.HasFocus,false);assert.equal(target(state).nativeProperties.MatchesOld,false);assert.equal(await focus(),null);assert.equal(follow(state),'');assert.equal(target(state).position[0],x);rows.push({phase,native:null,bp:null,follow:'',x});}
+ assert.deepEqual(await ownership(),{owners:0,channels:0,leases:0});return {passed:true,rows,replacementExists:(await inspect()).objects.some(o=>o.id==='Old'),actualCppPointerRead:true};
+}

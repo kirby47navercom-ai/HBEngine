@@ -34,7 +34,7 @@ export function prepareSequenceValues(changes,bindings,vm){
   if(!validSequenceValue(track,value))throw Error('시퀀스 변수 키 자료형 오류');const target=descriptor(object,track,bindings);if(!typed(target,value))throw Error('시퀀스 변수의 구조체·열거형 값을 확인하세요.');
   const reference=(id,pin=target.definition)=>{if(id===null)return null;const actor=vm.object(id==='self'?object.id:id);if(!actor)return null;const actorRoot=bindings.find(binding=>binding.self===actor.id)?.root;if(pin.className&&!(actor.actorClasses||actorClassNames(actor,actorRoot)).includes(pin.className))throw Error('시퀀스 오브젝트 참조 클래스 오류');return actor.id;};
   const mapped=mapNativeRecordObjects(target.binding.root.native,{...target.definition,array:track.array},value,reference);
-  return {target,track,value:structuredClone(mapped)};
+  return {target,track,value:structuredClone(mapped),sample:value};
  });
 }
 export function applySequenceValues(prepared){for(const {target,track,value}of prepared)if(track.type==='variable')target.binding.variables.set(track.variable,value);else{target.object.nativeProperties??={};Object.defineProperty(target.object.nativeProperties,track.property,{value,writable:true,configurable:true,enumerable:true});}}
