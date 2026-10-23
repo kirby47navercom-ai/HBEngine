@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "date": "2026-10-23T13:09:58.122Z",
+  "kind": "managed-sequence-animation-mixing",
+  "implementationRevision": "7f54903aada58db6eff450e09911f82dcd1310ff",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2033.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "8b8e742a6307a7790fbae474ed64ac21ff9a0debf3852d444e7145f54589da3d",
+    "docs/SEQUENCE_ANIMATION_MIXING.md": "7e407a664ddafb3091a4784f4d9c38477c18dd2a23f5090f992a4cc74ed5c5b2",
+    "prototype/animation-playback-lease.js": "b451376dafa42698287b7ed95367ddd1bdc9ca62033c3d4be0883f85ddd308a5",
+    "prototype/animation-playback-state.js": "25a8941f46da1db580eda9256a5e357d7fd1fc984641c6360dce2fab06648fca",
+    "prototype/engine-services.js": "4b2c8987af1a1f10a845107778235e21b4eb9c3646e0fff43f61e9660e3ea74a",
+    "prototype/gameplay-runtime.js": "4520ec248b9ee9dbd215767b7e70fd93fc595d28a651de7a0a4dbbe24f2ad15e",
+    "prototype/sequence-animation-mixing.js": "4a66ac75c3038e4646cf202e530fbb82d92bcf4b4896e5cec99405e9436b8613",
+    "prototype/sequence-blending.js": "bd252fe3fa5fb884e5c46d1b8dd1175a04686198062f4b746b25855cab8c0ce6",
+    "prototype/sequence-channels.js": "099d3479bfc16312beda9213ea6e11381caf534cf8cd8629e6100fb99444ef50",
+    "prototype/sequence-pose-ownership.js": "19bb1024c7c9f6e115a621639fd9c0a32cff9e6059704540fa28fc5c8749ed05",
+    "tools/editor-automation.mjs": "2319090178623de28399b457d7250bbd58b86de47307b998be66d25877fbf31a",
+    "tools/check-sequence-animation-mixing-2036.mjs": "be46e2799125638db9a2e74de2299cfa9d4c16df6374c5dff81c5ee019e6f964",
+    "tools/check-sequence-animation-mixing-2038-window.mjs": "ff4c3438a0e04701aef92b04f10e4149a1bf0597944e77c4bc28330672815e14",
+    "tools/sequence-animation-exercise-2038.mjs": "19de908bda9f546c0c19a9c1a71a35e0a9a0cb17016dc14df4f24c926a0b540a",
+    "tools/sequence-animation-fixture-2038.mjs": "1aad27dbf25fb2880d83815396f70d419a6c2c23c8dd1d00780166caeae7429e",
+    "CODEX_HANDOFF.md": "071320daafc0443d24982b717f8ce3f013efef54fa478f7e25123da2a700c20b"
+  },
+  "targetIds": [
+    "ANM-06"
+  ],
+  "checks": [
+    {
+      "name": "check-sequence-blending-1967",
+      "passed": true,
+      "exit": 0,
+      "ms": 306.1145999999999,
+      "log": "native/build/group2040-check-sequence-blending-1967.log",
+      "sha256": "d0e6507a17fce96d471bd767126e6f7d54793c72a81347c61a7ce0bdb1e0d653"
+    },
+    {
+      "name": "check-sequence-pose-blending-1970",
+      "passed": true,
+      "exit": 0,
+      "ms": 234.79649999999992,
+      "log": "native/build/group2040-check-sequence-pose-blending-1970.log",
+      "sha256": "730833a77be3afeea7f5363e1d4a2feca571f072a146932c837d2b779c951cda"
+    },
+    {
+      "name": "check-sequence-section-blend-1977",
+      "passed": true,
+      "exit": 0,
+      "ms": 209.16889999999967,
+      "log": "native/build/group2040-check-sequence-section-blend-1977.log",
+      "sha256": "3f448617c9708182c5c92c1d657ee4c4a124e50d4bb60cfe9efac16b73da6139"
+    },
+    {
+      "name": "check-ai-context",
+      "passed": true,
+      "exit": 0,
+      "ms": 2195.6000999999997,
+      "log": "native/build/group2040-check-ai-context.log",
+      "sha256": "90d0f0f84f09f2ed9ad9afcfba54689ae280d49564b099b4afd32ded34bb32a6"
+    },
+    {
+      "name": "check-sequence-animation-mixing-2036",
+      "passed": true,
+      "exit": 0,
+      "ms": 943.3504,
+      "log": "native/build/group2041-check-sequence-animation-mixing-2036.log",
+      "sha256": "7baf3a0565c337fdd5e27ce9ee081c1f7989240d8466f078feeed2128e08c896"
+    },
+    {
+      "name": "check-animation-playback-1795",
+      "passed": true,
+      "exit": 0,
+      "ms": 934.2263999999999,
+      "log": "native/build/group2041-check-animation-playback-1795.log",
+      "sha256": "27d60070a398810605cb4f0ba8593e54746c17077695c86f04e624d7885714e4"
+    }
+  ],
+  "sourceWindow": {
+    "report": "native/build/sequence-animation-mixing-2038-window-55hhpR/acceptance.json",
+    "sha256": "5bd1a0bc3d1218cd20d0a293c736dc62e1d9e12a9a0ab7b39054a4586bf6cee8",
+    "observations": 15,
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "postWindowChanges": [
+      "linear action retirement lookup and one normalization sum",
+      "bounded diagnostic arrays with total counts"
+    ],
+    "rerunEditorNeeded": false,
+    "finalInstalledGamePending": true
+  },
+  "sourceFocusedContext": {
+    "report": "native/build/context2041.json",
+    "sha256": "a23e0406c92e8cdc4d172b6bd73839bc06a1b1bacf40ea490499a617453b928d",
+    "filesRead": 1
+  },
+  "nativeReuse": {
+    "receipt": "docs/research/USER_INSTALL_2019.json",
+    "owners": 21,
+    "binaries": {
+      "HBEngine": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+      "HBPlayer": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160"
+    },
+    "vendorHashes": {
+      "node_modules/three/src/renderers/common/UniformsGroup.js": {
+        "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+        "bytes": 10590
+      },
+      "node_modules/three/build/three.webgpu.js": {
+        "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+        "bytes": 1875505
+      }
+    },
+    "freshFullSDKRun": false,
+    "freshRendererRun": false
+  },
+  "installationPending": true,
+  "scope": "Managed sequence animation compatible-family normalized blending with independent clocks, same-clip shared-buffer actions, HB field-wise TRS/quaternion mixing, zero-weight evaluator yield/retention/reactivation, dropped-field and final restoration, stale release protection, bounded read-only diagnostics. Nine new source cases + five affected gates, source human/AI/C++15 observations with imported GLTF and HB transform clips passed. Final linear action lookup/diagnostic pagination were added after source-window load and unit-verified; independent installed D3D11 game validates final bundle. No cross skeletal/Transform/renderer alias, generic external rollback, FPS/device or full-engine completion claim."
+}
