@@ -1,0 +1,383 @@
+{
+  "version": 1,
+  "date": "2026-10-23T17:14:58.951Z",
+  "kind": "sequence-material-vector-paused-pose-preview",
+  "implementationRevision": "2a1a956a652bf8b1c1506e59234345da776550b0",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2127.json",
+  "changedSourceHashes": {
+    "docs/SEQUENCE_INDEXED_TRANSFORMS.md": "7f2a8fb0f29afa2778407970b05de758125279c890bb58205908850eaf9fb529",
+    "docs/SEQUENCE_RENDER_PARAMETERS.md": "22adaaf386f13b1a0c17866e5e72a51e6e1f596ac4bea9ffb27f6e1787253d7a",
+    "docs/ai-routes.json": "d67b76d2ac89873a3aeb722cb426d35a4ad6cca6061acd71110dda3383a39de7",
+    "prototype/gameplay-assets.js": "fcde5bb589e51052524d2a8cf0ffcef09b5f13ea80c2ad5bf2b2545d684a59bd",
+    "prototype/gameplay-editor.js": "032a6a6751ae8e3ccf0a97bf2ecbd1b16028c19a9dc69bd25f785c0e174522a4",
+    "prototype/gameplay-preview-visual.js": "b560bbfb388703de69226ff113691e5b76db22707eb8b4fa5b0e5d9ef62b8536",
+    "prototype/gameplay-preview.js": "640317b46c98d49928f019e02a6a7228f86824c216dccc10471ca69f9438d35d",
+    "prototype/gameplay-runtime.js": "06ba671627f10351bf4b742dbdb9517728faf8c3b5fc7d133c9c69901713dff8",
+    "prototype/sequence-channels.js": "b03493837731ba98eea0579a2ebe321b45c2b1c95c188cdb5c009c764c8af116",
+    "prototype/sequence-curves.js": "62c1a2f7c8e524d4c16ddcba65574485d69e1254ce54304eaeaedc638e83e0ee",
+    "prototype/sequence-material-editor.js": "1165431d276c03e87b357386af8531cb52271ac2dcfb01799d9619e89566f95d",
+    "prototype/sequence-render-parameters.js": "4283da859c008a8c59dc3b8a4a9376cc89b3ba8c8dee7a3ade62285e0398d463",
+    "prototype/sequence-skeletal-channels.js": "50841b35690ee65b3fd98fc4f82d80a58c0d41bae92fced71bc5515fddfa0c8f",
+    "tools/check-gameplay-preview-visual-2140.mjs": "6cdd359f1d247ef806821b5afce9a46f14982df4014576a0259db305767fb7d5",
+    "tools/check-sequence-indexed-fixture-2139.mjs": "a3914b640150052c054d2d4bceccb168a95363b5a174256af454e8f14d4622c9",
+    "tools/check-sequence-indexed-transforms-2104-window.mjs": "5f68bfe1062c4102cbd5b4f5dad661a2edf45f68c8b357886df9090fb24b3d24",
+    "tools/check-sequence-material-vector-2132.mjs": "cce0647556c2ba05f9821fdb7aeaa0c118932054b1eeb2e6345e368e29aedc91",
+    "tools/check-sequence-render-fixture-2126.mjs": "ff9865af2382469aa2a806248312a4067d36b16c842143da75fefcb261d6d3b8",
+    "tools/editor-automation.mjs": "4a36f9aa58737981200c9231eeeea27aab04f42877183a9584e4e824a7cb6ac0",
+    "tools/sequence-render-aliases-exercise-2120.mjs": "a9fdba239aa99466917701c09db86cee362791016586fe510c037eba35bd039a",
+    "tools/sequence-render-aliases-fixture-2120.mjs": "d84677bf40048c5ae315871b034b753c02b8438afa303d06fa94ca9a006f0a3d",
+    "CODEX_HANDOFF.md": "e38d88a911415bf080fc67d81a1de62ed79434318be1cbc217c9d676c158c7ca"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "targetIds": [
+    "ANM-06"
+  ],
+  "checks": {
+    "vectorAndAuthoring": {
+      "passed": true,
+      "ms": 10588.8485,
+      "activeInstalled": [],
+      "execution": "Sequential lightweight source checks: production editor event handlers and shared schema/curves/runtime/material uniforms without a GPU context; C++ fixture adapter explicitly emulated. No GUI, native compilation, stress or installation.",
+      "rows": [
+        {
+          "name": "check-sequence-material-vector-2132",
+          "passed": true,
+          "exit": 0,
+          "ms": 576.0845999999999,
+          "log": "native/build/group2136-check-sequence-material-vector-2132.log",
+          "sha256": "ed771438f11f3687f17ba81012256b577ee621d40b6ef30e05f758287708bed3"
+        },
+        {
+          "name": "check-sequence-render-fixture-2126",
+          "passed": true,
+          "exit": 0,
+          "ms": 857.2506,
+          "log": "native/build/group2136-check-sequence-render-fixture-2126.log",
+          "sha256": "07ecb2d38b208421aa1d425354dc1d5ef263dff2818917162d653a41a8acd549"
+        },
+        {
+          "name": "check-sequence-render-aliases-2118",
+          "passed": true,
+          "exit": 0,
+          "ms": 575.9871,
+          "log": "native/build/group2136-check-sequence-render-aliases-2118.log",
+          "sha256": "096517b92cddad65792af48aa80ead35d85c47c685507e4d3c4a6bf101353fb6"
+        },
+        {
+          "name": "check-gameplay-timeline",
+          "passed": true,
+          "exit": 0,
+          "ms": 456.56669999999986,
+          "log": "native/build/group2136-check-gameplay-timeline.log",
+          "sha256": "a1b92ec72936df796cddbad0727fff7d05904933edecc3257c84b7e175e59046"
+        },
+        {
+          "name": "check-sequence-origins-curves-1266",
+          "passed": true,
+          "exit": 0,
+          "ms": 222.13480000000027,
+          "log": "native/build/group2136-check-sequence-origins-curves-1266.log",
+          "sha256": "4ce7a302390d26de99f1bde8c8fe3a0a1b5855189e6e656fb48c7681db63b4fa"
+        },
+        {
+          "name": "check-curve-channels-1895",
+          "passed": true,
+          "exit": 0,
+          "ms": 171.24919999999975,
+          "log": "native/build/group2136-check-curve-channels-1895.log",
+          "sha256": "adde16a0acbcf0df58694c3cca82755da28700c498272d4248c7aa62769e5b99"
+        },
+        {
+          "name": "check-sequence-repeated-values-1738",
+          "passed": true,
+          "exit": 0,
+          "ms": 162.5906,
+          "log": "native/build/group2136-check-sequence-repeated-values-1738.log",
+          "sha256": "2603c1960ad1eab0dd1015ed01821dd62310628f0e5452b9898b01519f93980e"
+        },
+        {
+          "name": "check-sequence-component-326",
+          "passed": true,
+          "exit": 0,
+          "ms": 109.80659999999989,
+          "log": "native/build/group2136-check-sequence-component-326.log",
+          "sha256": "fd67e47c4a155d9866239a0074c60caa2333d66c177cb3cba8a41cee0a22e552"
+        },
+        {
+          "name": "check-sequence-completion-271",
+          "passed": true,
+          "exit": 0,
+          "ms": 219.73019999999997,
+          "log": "native/build/group2136-check-sequence-completion-271.log",
+          "sha256": "ca4c8dc5c2b0abb7d70b21340cbb8bc38f681b4d5e6837628a27ce973ff0b315"
+        },
+        {
+          "name": "check-sequence-indexed-transforms-2100",
+          "passed": true,
+          "exit": 0,
+          "ms": 995.7552999999998,
+          "log": "native/build/group2136-check-sequence-indexed-transforms-2100.log",
+          "sha256": "b4a282070f47a144a37cf3087e338b6f5d126b4d0a94afa6df029c3826e305fc"
+        },
+        {
+          "name": "check-sequence-imported-transforms-2081",
+          "passed": true,
+          "exit": 0,
+          "ms": 968.2440999999999,
+          "log": "native/build/group2136-check-sequence-imported-transforms-2081.log",
+          "sha256": "4f8a6ea1b031065a9ea3d54cb34d9d5350fd90e263927ad558ab9a57ee952d76"
+        },
+        {
+          "name": "check-sequence-pose-blending-1970",
+          "passed": true,
+          "exit": 0,
+          "ms": 244.11260000000038,
+          "log": "native/build/group2136-check-sequence-pose-blending-1970.log",
+          "sha256": "9df614dc8277906d8760cd908696998f930727612e5c8247e1ccbfb084e23da1"
+        },
+        {
+          "name": "check-sequence-animation-mixing-2036",
+          "passed": true,
+          "exit": 0,
+          "ms": 956.3280000000004,
+          "log": "native/build/group2136-check-sequence-animation-mixing-2036.log",
+          "sha256": "e9e6e1018905d4f7469804699cbb24a0a2d7ca0b859564acd138a5c6091a1710"
+        },
+        {
+          "name": "check-material-texture-parameters",
+          "passed": true,
+          "exit": 0,
+          "ms": 406.52170000000024,
+          "log": "native/build/group2136-check-material-texture-parameters.log",
+          "sha256": "2eec558699986aa83156e27446947301b5fe5383c33433dc2c368763fecb100b"
+        },
+        {
+          "name": "check-playback-leases-1865",
+          "passed": true,
+          "exit": 0,
+          "ms": 994.1782000000003,
+          "log": "native/build/group2136-check-playback-leases-1865.log",
+          "sha256": "cde5a350b7a2102bf6931963b68fd5636835592bab1217ef33968f57fa6f4fa4"
+        },
+        {
+          "name": "check-ai-context",
+          "passed": true,
+          "exit": 0,
+          "ms": 2670.252400000001,
+          "log": "native/build/group2136-check-ai-context.log",
+          "sha256": "e90f8c238f3af55e8e5ab8e9f136828fc19d21e5987ed843b7a6275960026e0a"
+        }
+      ]
+    },
+    "pausedPoseAndPreview": {
+      "passed": true,
+      "ms": 9803.287400000001,
+      "activeInstalled": [],
+      "execution": "Affected source checks after paused-pose and SpriteRig preview fixes; no GUI/native compiler/stress/installation. Earlier unchanged vector/editor/curve gates retained.",
+      "rows": [
+        {
+          "name": "check-sequence-indexed-fixture-2139",
+          "passed": true,
+          "exit": 0,
+          "ms": 845.6572,
+          "log": "native/build/group2141-check-sequence-indexed-fixture-2139.log",
+          "sha256": "a34e24559d45005204b46e2136b9c0c570b0e01e45e14b95659641ea72afb234"
+        },
+        {
+          "name": "check-gameplay-preview-visual-2140",
+          "passed": true,
+          "exit": 0,
+          "ms": 111.69700000000012,
+          "log": "native/build/group2141-check-gameplay-preview-visual-2140.log",
+          "sha256": "844cf7f7e2572d43841b432332b26a28d0f809a8db9b111b8fe50950390b10fd"
+        },
+        {
+          "name": "check-sequence-pose-ownership-1925",
+          "passed": true,
+          "exit": 0,
+          "ms": 332.4879000000001,
+          "log": "native/build/group2141-check-sequence-pose-ownership-1925.log",
+          "sha256": "c5075be8351a984a9d30b2858bcdb3a5030b71e075ddb97391bd1588ec4e9c46"
+        },
+        {
+          "name": "check-sequence-pose-blending-1970",
+          "passed": true,
+          "exit": 0,
+          "ms": 282.7092,
+          "log": "native/build/group2141-check-sequence-pose-blending-1970.log",
+          "sha256": "76a1539c6c5c14bf5891d7969686f29d8731d34fbbde5d5416f5d659618b733e"
+        },
+        {
+          "name": "check-sequence-imported-pose-2065",
+          "passed": true,
+          "exit": 0,
+          "ms": 1137.2133999999996,
+          "log": "native/build/group2141-check-sequence-imported-pose-2065.log",
+          "sha256": "72e3e6bfc36c58dd09c68fcd692d2ff9b689a297b4237a65a901518659abd8a5"
+        },
+        {
+          "name": "check-sequence-indexed-transforms-2100",
+          "passed": true,
+          "exit": 0,
+          "ms": 1112.1634,
+          "log": "native/build/group2141-check-sequence-indexed-transforms-2100.log",
+          "sha256": "6d2394e3fea09d1689cb1e5b1d89b8962989a67c37afb7776d7dce9b302f0e10"
+        },
+        {
+          "name": "check-animation-playback-1795",
+          "passed": true,
+          "exit": 0,
+          "ms": 1052.3954000000003,
+          "log": "native/build/group2141-check-animation-playback-1795.log",
+          "sha256": "e4ff228f206b2f26656d3375b55710056844556ba341749125da502a2f0dd695"
+        },
+        {
+          "name": "check-playback-leases-1865",
+          "passed": true,
+          "exit": 0,
+          "ms": 1086.3683,
+          "log": "native/build/group2141-check-playback-leases-1865.log",
+          "sha256": "0635277894dc91c1eb97034c6c0e63bc95db27724c7d9ff8f8240eafea25a931"
+        },
+        {
+          "name": "check-sequence-animation-mixing-2036",
+          "passed": true,
+          "exit": 0,
+          "ms": 1068.9741999999997,
+          "log": "native/build/group2141-check-sequence-animation-mixing-2036.log",
+          "sha256": "554284dd706b1a50bff8d758eb0be2e613960d5194c9c7a8eb5e003ac91777bd"
+        },
+        {
+          "name": "check-sequence-completion-271",
+          "passed": true,
+          "exit": 0,
+          "ms": 238.8170999999993,
+          "log": "native/build/group2141-check-sequence-completion-271.log",
+          "sha256": "6e8b96784b68abb7578d8d84a7e41df6a9da2ee48f7a86ecf29bcc55d31fa394"
+        },
+        {
+          "name": "check-ai-context",
+          "passed": true,
+          "exit": 0,
+          "ms": 2533.129100000001,
+          "log": "native/build/group2141-check-ai-context.log",
+          "sha256": "8ab3b729d68c8bf26a27ed3d982b983083e1ea601ad6c73ccbd83c5ec6c88a98"
+        }
+      ]
+    }
+  },
+  "newCases": {
+    "vector": {
+      "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-material-vector-2132-SXCqiv\\acceptance.json",
+      "sha256": "d97f48774c804a749cb59a2a6d20ab3ebd2192ad92073314f4324c903e24a5e5",
+      "cases": 14
+    },
+    "pausedIndexed": {
+      "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-indexed-fixture-2139-VHF3Mg\\acceptance.json",
+      "sha256": "ba64b7d7d492695e61b5e4a694cdcc60f009844b4f9772200026016c6f60a4d3",
+      "observations": 18,
+      "actualCpp": false
+    },
+    "previewVisualCases": 3
+  },
+  "sourceWindow": {
+    "passed": true,
+    "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-indexed-transforms-2104-window-d97wTA\\acceptance.json",
+    "sha256": "b93628604b3e246a75c4322fa272b3766d6708c6ccea988f50bcdd4de271435c",
+    "cppIndexedObservations": 18,
+    "scalarVectorLightObservations": 14,
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "checks": {
+      "humanSpriteRigKeyEdit": true,
+      "undoRedoSave": true,
+      "aiDryRunStaleCASUndo": true,
+      "actualSpriteSkinScalarRotation": true,
+      "cppPositionRotationScaleAndSequenceControls": true,
+      "materialAliasAndLightComponentCpp": true,
+      "humanMaterialVectorKeyUndoRedoSave": true,
+      "spriteRigAndMaterialPreview": true
+    },
+    "scope": "Owned hidden admitted-staged-source editor; actual SpriteRigPose generated rotation[z] and SpriteSkin, existing human key editor/Undo/Redo/save and AI CAS/dryRun; common C++ observations and bone pose query, plus live scalar/vector material aliases, human vector key controls and C++ Light2D getter/component/take ownership. No independent installed/FPS/device claim."
+  },
+  "fixedFailures": [
+    {
+      "report": "native/build/sequence-indexed-transforms-2104-window-RexQPM/failure.json",
+      "sha256": "edec6168d967765f22aa05ea802fcc5175083207a89502ccb212102336447fd5",
+      "cause": "Paused recorded override was queued without immediate pose publication; SpriteRig/IK preview clone also failed on cyclic userData."
+    },
+    {
+      "report": "native/build/indexed-cpp-repro-2139-I266Wd/failure.json",
+      "sha256": "18dc71b5fd3eee0714c57efc9f03b6402174cd841d74b41e8d90fae201aba214",
+      "trace": "native/build/indexed-cpp-repro-2139-I266Wd/trace.json",
+      "status": "Reproduced native path before fix; source and final actual editor passed after the fix."
+    }
+  ],
+  "rejectedExperiment": {
+    "accepted": false,
+    "reason": "Unconditional immediate override publication duplicated the ordinary frame sample in the 1024-bone work gate (2 vs 1). Final implementation publishes explicit seek immediately, preserving the ordinary deferred override fast path and existing normalized/imported batching.",
+    "log": "native/build/pose-publication-2142-before.log",
+    "sha256": "8de55ad3c1685ce2acb9c2439679eb74f32ff67e85336662ee5f2caa21c2d41a"
+  },
+  "staging": {
+    "report": "native/build/staged-source2141.json",
+    "sha256": "f502d40ea1bf75069cc9513744be12f951053dadcd74e06d20b70aafa3c1f1d2",
+    "owners": 21,
+    "admittedPlayerSHA": "8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1"
+  },
+  "nativeReuse": {
+    "nativeOwners": {
+      "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+      "native/desktop/SceneRenderBridge.hpp": "d2687214d7620369219fa791731f71566722c8876e563bb87654219cacb44046",
+      "native/include/HBEngine/SceneRender.hpp": "cbaa2dbbb0008e12919ef50fe344bb625df4b5d62691c31dfb00561ee30af1f8",
+      "native/include/HBEngine/ScreenEffects.hpp": "5a582645c63b15ba23e033b7da35b12882f79cd0fb0874b39e48058552512adf",
+      "native/include/HBEngine/RayPrograms.hpp": "ca5371beb8a70efcb6164f924d7888985cee908726e1a3d7c0b0085374b8057f",
+      "native/include/HBEngine/ScreenEffectsPass.hpp": "abcd47931e8e099ec8581efa43c14b579665f0a0655b8015ff0dd9cb0300a91a",
+      "native/include/HBEngine/Game.hpp": "ae731e30bc1e1958884d27274acd5283387613799d2e623675685a037577c3f3",
+      "native/include/HBEngine/Bridge.hpp": "f7b9eb4c59057de0d5f098bd89463cc29aac63c6efb7a5a9b765abc69e97074e",
+      "native/include/HBEngine/Bloom.hpp": "e81e03b6fdc76529bfb09f6196b9ab166132d62ab4da70f16aafef36ae7ee73f",
+      "native/include/HBEngine/SceneProbes.hpp": "1777e900e4a8ccb9153bb92efbf71ee4c2aebee99bf316b04b91ac18fd5645cc",
+      "native/include/HBEngine/Compute.hpp": "b4a734eb664a97a21b54e9e021f560bacafb205b18f34dc980bce51cc7d55485",
+      "native/include/HBEngine/SceneProbeAtlas.hpp": "a90f35e0f3b0eb2d04f14cb9c10c941bc6d056653d5b2a3edd233a33f507a586",
+      "native/include/HBEngine/ProbeAtlasPadding.hpp": "72c4e21e251497626dff88dee3f8118f384a09c07c024dd0ca72e93c69b84baa",
+      "native/include/HBEngine/ProbeSpatialIndex.hpp": "f28e56b52954d90f57bdc113e4a8a160c710565c09486b73565a4da854ec9532",
+      "native/include/HBEngine/Session.hpp": "b598334beb8c7ae6fb9396e0d2a9626ecaf3a48fac45769fd593cf5acde9fc84",
+      "native/include/HBEngine/Spawn.hpp": "20e2d2cc9063ed238b3ab5463ca910a9717e4a9f7efe4093ae61fd27e595d3b2",
+      "native/include/HBEngine/ConstantBufferCache.hpp": "ad3764d605d51e2b4c6174c65251e5e67bea4a2b512d904a5c7dfe0647eab759",
+      "native/include/HBEngine/Enum.hpp": "1e23a3c6da2ef2d0a467591e752d6f0ffeefdea1769faa8b86fdb5b8dfa75305",
+      "native/include/HBEngine/NativeRouting.hpp": "deb50a8c63e43b708f7eab21b5cfa5cb3e7a9fdfb7fe6c2fceed004e46b9e85a",
+      "native/include/HBEngine/Struct.hpp": "11e0b487426a45e651b8d6c21473cbabd483c5aaa2ab55f3c3eff47c7670fa1f",
+      "native/include/HBEngine/ProbeLightmapMix.hpp": "3599d31bfbd0e131dcc5769d82770bbc5870f15fefad7c2a2cbc37fb5f5cd87f"
+    },
+    "vendorHashes": {
+      "node_modules/three/src/renderers/common/UniformsGroup.js": {
+        "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+        "bytes": 10590
+      },
+      "node_modules/three/build/three.webgpu.js": {
+        "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+        "bytes": 1875505
+      }
+    },
+    "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+    "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+    "report": "native/build/audit2137.json",
+    "reusedFrom": "docs/research/USER_INSTALL_2094.json",
+    "freshSDKRun": false
+  },
+  "installation": {
+    "pending": true,
+    "updated": false,
+    "currentReceipt": "docs/research/USER_INSTALL_2094.json",
+    "reason": "Actual source editor gate passed; immutable transition and installed independent game are next."
+  },
+  "excludedWorktree": [
+    "prototype/player.js",
+    "tools/check-player-keyboard-release.mjs"
+  ],
+  "scope": "Source and actual owned editor implementation: materialVector authoring, sRGB picker/linear HDR numeric keys, shared vec3 curves/tools/sampler, exact/scoped aliases, normalized weights/priority/completion and material identity lifetimes using existing C++ LevelSequence controls. Paused recorded override Seek now batches immediately; ordinary 1024-bone work stays one sample/root. SpriteRig/IK cyclic runtime userData is rebuilt from authored components for preview; ordinary skeletal clone unchanged, original rig protected. New14 vector/editor source cases,3 preview cases and18 no-intervening-physics indexed source observations; affected source groups16+11 passed. Actual hidden source editor human color/numeric key edit, Undo/Redo/save, AI CAS, error-free preview/focus and C++18 indexed plus14 scalar/vector/light observations passed with exit0. Installed transition/independent D3D11 proof follows separately. General imported mixer renderer aliases and cumulative ledger remain."
+}
