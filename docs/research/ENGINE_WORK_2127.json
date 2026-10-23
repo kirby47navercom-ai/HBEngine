@@ -1,0 +1,323 @@
+{
+  "version": 1,
+  "date": "2026-10-23T16:35:01.625Z",
+  "kind": "sequence-render-parameters-component-intensity-source",
+  "implementationRevision": "b392b4ce43c24571edcc93282d5256eed6293290",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2114.json",
+  "changedSourceHashes": {
+    "docs/SEQUENCE_RENDER_PARAMETERS.md": "3082d46cc643275bfbb3ad1bf6c2c995283f70dc4b70d9d0488832e30d1e44a6",
+    "docs/ai-routes.json": "2459bfd0ac2bb936099398e3dd07a63f4e47ac6d51f7117eb29cde4738dfddd2",
+    "prototype/engine-services.js": "97012be6542e5947be0fe296ac4820d179e4d27c5b0c640fda6b7a43dbbfcb60",
+    "prototype/gameplay-runtime.js": "ffe4989f939fa82643a29ded376f05b8c649dadf5cdffcc988cbc77014ea989b",
+    "prototype/light-parameter-state.js": "3b64ebd129add59cf2f31606ecadbd4b0ce077adf384a97d39d5b29533b1f120",
+    "prototype/scene-component-signature.js": "ee9ea0e60fdac2d0fb885afdf5233941d1ff776c979415f464bdb789b1b7d6b2",
+    "prototype/scene-rendering.js": "a492dec018580dba58fe90bad7543c9b3e904856aac41368fd095ab8eb8389f8",
+    "prototype/sequence-component-channels.js": "4f498b030e2c0a09d4086e6003e141c4b6dfc1ba152d31362e7b128545c27a2c",
+    "prototype/sequence-render-parameters.js": "dc9dcb9fd94b76a9f04f07ad4a84bb71cb4010589f0a736a70b7884ca797c37c",
+    "tools/check-sequence-indexed-transforms-2104-window.mjs": "9a3c8c6646c7efa47e16f3acd177e6bf18b5b34d5c63d544a69f03265cf200b0",
+    "tools/check-sequence-render-aliases-2118.mjs": "e46ea3101a19fc06f1499270ee0c6cefc10c3bf12a32e9e10286ca5ac0634cc7",
+    "tools/check-sequence-render-fixture-2126.mjs": "ad999b25b9d312b10d392b9b0eac53438438a3f58eb76572d32efce5a2cdf100",
+    "tools/sequence-render-aliases-exercise-2120.mjs": "cbb0519fb0e6c475eacb535832fbfdb58f80048714612e23b85e37624fbd807f",
+    "tools/sequence-render-aliases-fixture-2120.mjs": "ece6c574f12eda85f527c8f308bf435f6cd5c0c26be8f256375d27d77007f3a0",
+    "CODEX_HANDOFF.md": "851dd23d4374014751c12860bc31147ff97a0ba040248f397b808722e9b59428"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "targetIds": [
+    "ANM-06"
+  ],
+  "checks": [
+    {
+      "name": "check-sequence-render-aliases-2118",
+      "passed": true,
+      "exit": 0,
+      "ms": 575.5446,
+      "log": "native/build/group2124-check-sequence-render-aliases-2118.log",
+      "sha256": "73eb957e1c27eafdfffefa00ff917cedbc6cba4a3fecd80e0e80fd8a34843b2c"
+    },
+    {
+      "name": "check-sequence-component-326",
+      "passed": true,
+      "exit": 0,
+      "ms": 109.60940000000005,
+      "log": "native/build/group2124-check-sequence-component-326.log",
+      "sha256": "f0c4ba2f90b578a1856011c8b39e757a311a9e3dad417af36c0456b67b74b6d8"
+    },
+    {
+      "name": "check-material-texture-parameters",
+      "passed": true,
+      "exit": 0,
+      "ms": 407.4257,
+      "log": "native/build/group2124-check-material-texture-parameters.log",
+      "sha256": "2eec558699986aa83156e27446947301b5fe5383c33433dc2c368763fecb100b"
+    },
+    {
+      "name": "check-sequence-indexed-transforms-2100",
+      "passed": true,
+      "exit": 0,
+      "ms": 1010.3213000000001,
+      "log": "native/build/group2124-check-sequence-indexed-transforms-2100.log",
+      "sha256": "31356846bc2d4658c311046434b690feed71e79caa1c264e7d8368a0c065ded3"
+    },
+    {
+      "name": "check-sequence-imported-transforms-2081",
+      "passed": true,
+      "exit": 0,
+      "ms": 1002.9580999999998,
+      "log": "native/build/group2124-check-sequence-imported-transforms-2081.log",
+      "sha256": "d4b93ef719bf91e8627e04e32ccf532a8098f024f61b3f9305c07c7e029fafa3"
+    },
+    {
+      "name": "check-sequence-imported-pose-2065",
+      "passed": true,
+      "exit": 0,
+      "ms": 989.4658000000004,
+      "log": "native/build/group2124-check-sequence-imported-pose-2065.log",
+      "sha256": "5412e2e71ccf423bd21f7306be33254b85573c3a2fed9b108fd9185b37e99483"
+    },
+    {
+      "name": "check-sequence-transform-alias-2050",
+      "passed": true,
+      "exit": 0,
+      "ms": 993.9410000000007,
+      "log": "native/build/group2124-check-sequence-transform-alias-2050.log",
+      "sha256": "32c22c15ebb0d1795762ac09fe8f98fee567a27b091374afdcf0d2f9e1698d42"
+    },
+    {
+      "name": "check-sequence-pose-blending-1970",
+      "passed": true,
+      "exit": 0,
+      "ms": 247.6816000000008,
+      "log": "native/build/group2124-check-sequence-pose-blending-1970.log",
+      "sha256": "1462ebb25bf3c33bad4e585ba35a2b684d50d5fc368a8cfb0dd21207af60144f"
+    },
+    {
+      "name": "check-sequence-animation-mixing-2036",
+      "passed": true,
+      "exit": 0,
+      "ms": 984.4826000000003,
+      "log": "native/build/group2124-check-sequence-animation-mixing-2036.log",
+      "sha256": "d3f107191b5b28a99e1b2aa0a9b853c50435a3004d3168d1512c30f5a8e322e0"
+    },
+    {
+      "name": "check-animation-playback-1795",
+      "passed": true,
+      "exit": 0,
+      "ms": 994.0261,
+      "log": "native/build/group2124-check-animation-playback-1795.log",
+      "sha256": "c2a7b1fbcbf711a8018ba43826fac96e089f4cd5b703701104e18f2419eae2ca"
+    },
+    {
+      "name": "check-playback-leases-1865",
+      "passed": true,
+      "exit": 0,
+      "ms": 1011.6841000000004,
+      "log": "native/build/group2124-check-playback-leases-1865.log",
+      "sha256": "8fceaeb4c15256075b8d1b50b10a4bed25eda6bcfea990179514b0bc126328f4"
+    },
+    {
+      "name": "check-sequence-pose-ownership-1925",
+      "passed": true,
+      "exit": 0,
+      "ms": 244.8806000000004,
+      "log": "native/build/group2124-check-sequence-pose-ownership-1925.log",
+      "sha256": "c8aa8eb718bb07a9747b073292ca1c291c42753619fe268810ebffdee8b6bb1a"
+    },
+    {
+      "name": "check-sequence-completion-271",
+      "passed": true,
+      "exit": 0,
+      "ms": 220.41080000000147,
+      "log": "native/build/group2124-check-sequence-completion-271.log",
+      "sha256": "a125da6d3376ea8b2f0272322a1328d25f8dc1ac9471a32a580a7f32953d6577"
+    },
+    {
+      "name": "check-animation-graph",
+      "passed": true,
+      "exit": 0,
+      "ms": 336.7468000000008,
+      "log": "native/build/group2124-check-animation-graph.log",
+      "sha256": "89f31f5b779ff2cfd93f5e80c69555e8b32819ed58a3d3ab64a3b3770146349b"
+    },
+    {
+      "name": "check-animation-retarget",
+      "passed": true,
+      "exit": 0,
+      "ms": 338.46299999999974,
+      "log": "native/build/group2124-check-animation-retarget.log",
+      "sha256": "943a64fa76354a5df8d2a18c604129bf13b26fdb308998aae3b2025f6d420237"
+    },
+    {
+      "name": "check-ai-context",
+      "passed": true,
+      "exit": 0,
+      "ms": 2277.3959000000013,
+      "log": "native/build/group2124-check-ai-context.log",
+      "sha256": "8e5ed471319c85349ce1c7c5bcdb40e531f50f5feb55733a61dc52de071f1169"
+    }
+  ],
+  "lastGroupMS": 11747.3058,
+  "newCases": {
+    "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-render-aliases-2118-yXPYya\\acceptance.json",
+    "sha256": "72ea01904202bbc0a464fa18e40b18f55f5fa89bedb5348a9cbe7f16554a419c",
+    "cases": 19
+  },
+  "fixture": {
+    "passed": true,
+    "work": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-render-project-2121-H1tzjR",
+    "project": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-render-project-2121-H1tzjR\\AnimationMix2038\\AnimationMix2038.hbproject",
+    "assets": 18,
+    "report": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sequence-render-project-2121-H1tzjR\\prepared.json",
+    "sha256": "3a65d714fbcfafdf84ddb48cc7be556da90b8a9fd0c26de434a86dd03dbbbd78",
+    "runtimeExecuted": false
+  },
+  "sourceFixtureRuntime": {
+    "passed": true,
+    "report": "native/build/sequence-render-fixture-2126-pcNH4Q/acceptance.json",
+    "sha256": "e34128850c9fc9fe62fa1a04ffad553c75df5851718e84e452e11f0303638b1a",
+    "observations": 14,
+    "productionSceneAndUniforms": true,
+    "cppEmulated": true,
+    "actualCpp": false,
+    "gpuContext": false
+  },
+  "sourceWindow": {
+    "pending": true,
+    "deferred": true,
+    "active": [
+      {
+        "pid": 12068,
+        "version": "ed1f58353c475d09",
+        "name": "node.exe"
+      }
+    ],
+    "command": "node tools/check-sequence-indexed-transforms-2104-window.mjs",
+    "plannedIndexedObservations": 18,
+    "plannedRenderObservations": 14,
+    "admittedStaging": {
+      "report": "native/build/staged-source2125.json",
+      "sha256": "7147d7e5b80e17f8971c975c7e014bc762da18d63d420cd0ae1fe730bb2adf78",
+      "owners": 14,
+      "playerSHA": "8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1"
+    },
+    "scope": "Prepared only. Actual human/AI editor and C++ binary observations have not executed."
+  },
+  "installedIndependentGamePending": true,
+  "installation": {
+    "updated": false,
+    "pending": true,
+    "currentReceipt": "docs/research/USER_INSTALL_2094.json",
+    "versions": 1,
+    "active": [
+      {
+        "pid": 12068,
+        "version": "ed1f58353c475d09",
+        "name": "node.exe"
+      }
+    ],
+    "userProfileInventoryPerformed": false,
+    "reason": "Installed runtime in use; heavy/GUI/native compilation/immutable install switch deferred by user instruction."
+  },
+  "nativeReuse": {
+    "nativeOwners": {
+      "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+      "native/desktop/SceneRenderBridge.hpp": "d2687214d7620369219fa791731f71566722c8876e563bb87654219cacb44046",
+      "native/include/HBEngine/SceneRender.hpp": "cbaa2dbbb0008e12919ef50fe344bb625df4b5d62691c31dfb00561ee30af1f8",
+      "native/include/HBEngine/ScreenEffects.hpp": "5a582645c63b15ba23e033b7da35b12882f79cd0fb0874b39e48058552512adf",
+      "native/include/HBEngine/RayPrograms.hpp": "ca5371beb8a70efcb6164f924d7888985cee908726e1a3d7c0b0085374b8057f",
+      "native/include/HBEngine/ScreenEffectsPass.hpp": "abcd47931e8e099ec8581efa43c14b579665f0a0655b8015ff0dd9cb0300a91a",
+      "native/include/HBEngine/Game.hpp": "ae731e30bc1e1958884d27274acd5283387613799d2e623675685a037577c3f3",
+      "native/include/HBEngine/Bridge.hpp": "f7b9eb4c59057de0d5f098bd89463cc29aac63c6efb7a5a9b765abc69e97074e",
+      "native/include/HBEngine/Bloom.hpp": "e81e03b6fdc76529bfb09f6196b9ab166132d62ab4da70f16aafef36ae7ee73f",
+      "native/include/HBEngine/SceneProbes.hpp": "1777e900e4a8ccb9153bb92efbf71ee4c2aebee99bf316b04b91ac18fd5645cc",
+      "native/include/HBEngine/Compute.hpp": "b4a734eb664a97a21b54e9e021f560bacafb205b18f34dc980bce51cc7d55485",
+      "native/include/HBEngine/SceneProbeAtlas.hpp": "a90f35e0f3b0eb2d04f14cb9c10c941bc6d056653d5b2a3edd233a33f507a586",
+      "native/include/HBEngine/ProbeAtlasPadding.hpp": "72c4e21e251497626dff88dee3f8118f384a09c07c024dd0ca72e93c69b84baa",
+      "native/include/HBEngine/ProbeSpatialIndex.hpp": "f28e56b52954d90f57bdc113e4a8a160c710565c09486b73565a4da854ec9532",
+      "native/include/HBEngine/Session.hpp": "b598334beb8c7ae6fb9396e0d2a9626ecaf3a48fac45769fd593cf5acde9fc84",
+      "native/include/HBEngine/Spawn.hpp": "20e2d2cc9063ed238b3ab5463ca910a9717e4a9f7efe4093ae61fd27e595d3b2",
+      "native/include/HBEngine/ConstantBufferCache.hpp": "ad3764d605d51e2b4c6174c65251e5e67bea4a2b512d904a5c7dfe0647eab759",
+      "native/include/HBEngine/Enum.hpp": "1e23a3c6da2ef2d0a467591e752d6f0ffeefdea1769faa8b86fdb5b8dfa75305",
+      "native/include/HBEngine/NativeRouting.hpp": "deb50a8c63e43b708f7eab21b5cfa5cb3e7a9fdfb7fe6c2fceed004e46b9e85a",
+      "native/include/HBEngine/Struct.hpp": "11e0b487426a45e651b8d6c21473cbabd483c5aaa2ab55f3c3eff47c7670fa1f",
+      "native/include/HBEngine/ProbeLightmapMix.hpp": "3599d31bfbd0e131dcc5769d82770bbc5870f15fefad7c2a2cbc37fb5f5cd87f"
+    },
+    "vendorHashes": {
+      "node_modules/three/src/renderers/common/UniformsGroup.js": {
+        "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+        "bytes": 10590
+      },
+      "node_modules/three/build/three.webgpu.js": {
+        "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+        "bytes": 1875505
+      }
+    },
+    "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+    "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+    "reusedFrom": "docs/research/USER_INSTALL_2094.json",
+    "freshSDKOrRendererRun": false,
+    "report": "native/build/audit2125.json",
+    "sha256": "84e00fd0474e42173a5e2a1d3a2b3a630420d8ae37a3a945c2870a046b03f5e4"
+  },
+  "aiContext": [
+    {
+      "symbol": "materialSequenceParameter",
+      "report": "native/build/context2125-materialSequenceParameter.json",
+      "sha256": "5420c52ba7bd3e01454bb710def3578d61ea60c496c42d2edb8f3cd12bb060a5",
+      "filesRead": 1,
+      "bytesRead": 3456,
+      "mode": "focused-routes"
+    },
+    {
+      "symbol": "syncLightIntensityProperties",
+      "report": "native/build/context2125-syncLightIntensityProperties.json",
+      "sha256": "4184095c243cd6315a69ac7c3cca208bf24fe2e60f0b21259fc7ac2ca3ac3d59",
+      "filesRead": 1,
+      "bytesRead": 3818,
+      "mode": "focused-routes"
+    },
+    {
+      "symbol": "visualComponentSignature",
+      "report": "native/build/context2125-visualComponentSignature.json",
+      "sha256": "eb4d7afc7984022a4834469a1eee3950d28f5560fd5c3849be6729d1d5dc7bb8",
+      "filesRead": 1,
+      "bytesRead": 1040,
+      "mode": "focused-routes"
+    }
+  ],
+  "storage": {
+    "newInstalledVersions": 0,
+    "newBrowserProfiles": 0,
+    "newBuildOutputs": 0,
+    "cacheCleanupDeferredWhileUserActive": true,
+    "emptyCleanupReceipts": 0,
+    "fullSourceMapDuplicated": false
+  },
+  "excludedWorktree": [
+    "prototype/player.js",
+    "tools/check-player-keyboard-release.mjs"
+  ],
+  "fixtureCorrections": [
+    "Live production material test explicitly seeks before observing a paused sequence.",
+    "Live graph override fixture connects the parameter to an actual surface input so its uniform exists.",
+    "Saved source exercise adapter follows the production component-signature guard instead of unconditionally rebuilding unchanged materials."
+  ],
+  "scope": "Source implementation: canonical direct scalar material aliases, exact/scoped graph parameter precedence, current override restoration and material/group identity lifetimes; direct light, typed 2D/3D component intensity and whole takes share fields; owned live light registration and atomic intensity-only complete-signature fast path preserve resources; unchanged whole takes replay overlapping fields in authored order without mutating keys. New19 source cases and all16 affected gates passed in 11.75s; saved combined fixture18 shared asset validations and14 production scene/material source observations passed with explicit C++-shape emulation, not C++ binary execution. Focused AI routes read one owner. Native21/vendor2/exact binaries unchanged. Actual editor/C++, independent D3D11/native pixels and installation deferred while installed runtime is in use. Imported AnimationMixer renderer-property aliases remain.",
+  "next": {
+    "first": "When installed runtime is free, execute the combined actual editor/C++ fixture, then safe installation and independent D3D11 game/native swapchain proof. Do not repeat unchanged passed gates.",
+    "sourceOwners": [
+      "prototype/sequence-render-parameters.js",
+      "prototype/light-parameter-state.js",
+      "prototype/sequence-indexed-transforms.js",
+      "prototype/sequence-imported-transforms.js"
+    ],
+    "remaining": [
+      "general imported AnimationMixer renderer-property aliases",
+      "independent Euler-axis owner composition",
+      "independent per-axis authored time/interpolation/delete topology",
+      "arbitrary external simulation/notify/async setter rollback",
+      "other ANM/CPP/RND ledger owners"
+    ]
+  }
+}
