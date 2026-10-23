@@ -1023,6 +1023,45 @@
   ],
   "focusRoutes": [
     {
+      "id": "sequence-pose-weight",
+      "keywords": [
+        "validSequencePoseWeight"
+      ],
+      "paths": [
+        "prototype/sequence-state.js"
+      ]
+    },
+    {
+      "id": "sequence-pose-playback",
+      "keywords": [
+        "SequencePosePlayback"
+      ],
+      "paths": [
+        "prototype/sequence-pose-playback.js"
+      ]
+    },
+    {
+      "id": "sequence-pose-channels",
+      "keywords": [
+        "prepareSequencePoseChannels",
+        "writeSequencePoseChannels",
+        "skeletalSequenceKey"
+      ],
+      "paths": [
+        "prototype/sequence-skeletal-channels.js"
+      ]
+    },
+    {
+      "id": "sequence-pose-identity",
+      "keywords": [
+        "SequencePoseOwnership",
+        "sequencePoseOwnershipContract"
+      ],
+      "paths": [
+        "prototype/sequence-pose-ownership.js"
+      ]
+    },
+    {
       "id": "native-type-project-catalog",
       "keywords": [
         "nativeTypeCatalogContract",
