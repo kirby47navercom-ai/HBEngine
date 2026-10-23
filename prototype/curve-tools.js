@@ -1,3 +1,4 @@
+import {bakePeriodicCurveRange,curveDomainAnchors} from './curve-periodic-bake.js';
 import {subdivideCurve} from './curve-subdivision.js';
 import {prepareCurveBakeDomain} from './curve-bake-domain.js';
 import {filterCurveFrequency} from './curve-frequency-filter.js';
@@ -20,10 +21,11 @@ export function editCurveKeys(track,{operation,indices,channel,timeScale=1,timeO
   if((!rangeOnly||operation==='reduce')&&chosen.length!==keys.length||channel!==undefined)throw Error('베이크·축약은 전체 채널에 적용하세요.');
   if(operation==='bake'){
    start??=rangeOnly?chosen.reduce((n,i)=>Math.min(n,before[i].time),Infinity):keys[0].time;end??=rangeOnly?chosen.reduce((n,i)=>Math.max(n,before[i].time),-Infinity):keys.at(-1).time;if(![start,end,fps].every(Number.isFinite)||end<=start||fps<=0||fps>1000)throw Error('베이크 범위·초당 샘플을 확인하세요.');const count=Math.ceil((end-start)*fps);if(count+1>maxKeys)throw Error('베이크 키 예산을 넘었어요.');
+   if(rangeOnly&&(track.infinityDomain||(['cycle','cycleOffset','oscillate'].some(mode=>[track.preInfinity,track.postInfinity].includes(mode))&&(start<before[0].time||end>before.at(-1).time))))return bakePeriodicCurveRange(track,{start,end,fps,maxKeys});
    const first=before.findIndex(k=>k.time===start),last=before.findIndex(k=>k.time===end);if(rangeOnly&&(first<0||last<0))return editCurveKeys(subdivideCurve(prepareCurveBakeDomain(track,start,end),[start,end]),{operation:'bake',rangeOnly:true,start,end,fps,maxKeys});
    const evaluate=time=>{const outside=sampleCurveOutside(before,time,track);if(outside!==undefined)return outside;let low=0,high=before.length;while(low<high){const mid=(low+high)>>>1;if(before[mid].time<=time)low=mid+1;else high=mid;}return sampleCurveSegment(before,Math.max(0,low-1),time,track.interpolation||'linear');};
    const baked=[];for(let i=0;i<count;i++){const time=start+i/fps;if(i&&end-time<=Number.EPSILON*Math.max(1,Math.abs(start),Math.abs(end))*8)break;baked.push({time,value:evaluate(time),interpolation:'linear'});}baked.push({time:end,value:evaluate(end),interpolation:'linear'});
-   if(!rangeOnly){result.keys=baked;return result;}
+   if(!rangeOnly){result.keys=baked;delete result.infinityDomain;return result;}
    if(first+keys.length-last-1+baked.length>maxKeys)throw Error('부분 베이크와 외부 키의 합이 예산을 넘었어요.');
    const mode=i=>before[i].interpolation||track.interpolation||'linear',freeze=(i,key)=>{for(const f of ['arriveTangent','leaveTangent'])key[f]=shaped(key.value,(_,c)=>curveStoredTangent(before,i,c,f,track.interpolation||'linear'));if(mode(i)==='clampedAuto')for(const f of ['arriveWeight','leaveWeight','arriveControl','leaveControl'])delete key[f];key.interpolation='break';};
    const left={...keys[first]},right={...keys[last]};freeze(first,left);left.interpolation='linear';delete left.leaveTangent;delete left.leaveWeight;delete left.leaveControl;if(!['linear','constant','step'].includes(mode(last)))freeze(last,right);
@@ -34,7 +36,7 @@ export function editCurveKeys(track,{operation,indices,channel,timeScale=1,timeO
   }
   if(!Number.isFinite(tolerance)||tolerance<0||keys.some(k=>!['linear'].includes(k.interpolation||track.interpolation||'linear')))throw Error('선형 베이크 곡선과 0 이상의 허용 오차를 사용하세요.');
   // Iterative RDP: error bound at every source sample, across every channel.
-  const keep=new Set([0,keys.length-1]),stack=[[0,keys.length-1]];while(stack.length){const[a,b]=stack.pop();let worst=tolerance,index=-1;for(let i=a+1;i<b;i++){const t=(keys[i].time-keys[a].time)/(keys[b].time-keys[a].time);let error=0;for(let c=0;c<shape;c++)error=Math.max(error,Math.abs(part(keys[i].value,c)-(part(keys[a].value,c)+(part(keys[b].value,c)-part(keys[a].value,c))*t)));if(error>worst){worst=error;index=i;}}if(index>=0){keep.add(index);stack.push([a,index],[index,b]);}}result.keys=keys.filter((_,i)=>keep.has(i));return result;
+  const anchors=new Set(curveDomainAnchors(track)),ends=[0,...keys.map((k,i)=>anchors.has(k.time)?i:-1).filter(i=>i>0&&i<keys.length-1),keys.length-1],keep=new Set(ends),stack=ends.slice(1).map((end,i)=>[ends[i],end]);while(stack.length){const[a,b]=stack.pop();let worst=tolerance,index=-1;for(let i=a+1;i<b;i++){const t=(keys[i].time-keys[a].time)/(keys[b].time-keys[a].time);let error=0;for(let c=0;c<shape;c++)error=Math.max(error,Math.abs(part(keys[i].value,c)-(part(keys[a].value,c)+(part(keys[b].value,c)-part(keys[a].value,c))*t)));if(error>worst){worst=error;index=i;}}if(index>=0){keep.add(index);stack.push([a,index],[index,b]);}}result.keys=keys.filter((_,i)=>keep.has(i));return result;
  }
  if(operation==='transform'&&(![timeScale,timeOffset,timePivot,valueScale,valueOffset,valuePivot].every(Number.isFinite)||timeScale<=0))throw Error('시간 배율은 양수, 변환 값은 유한한 수여야 해요.');
  for(const i of chosen){const key=keys[i];if(operation==='transform'){
@@ -46,5 +48,5 @@ export function editCurveKeys(track,{operation,indices,channel,timeScale=1,timeO
    else{for(const f of ['arriveTangent','leaveTangent']){key[f]??=shaped(key.value,(_,c)=>curveKeyTangent(before,i,c,f,track.interpolation||'linear'));key[f]=map(key[f],(_,c)=>{if(operation==='flatten')return 0;if(operation==='straighten')return Math.tan((Math.atan(curveKeyTangent(before,i,c,'arriveTangent',track.interpolation||'linear'))+Math.atan(curveKeyTangent(before,i,c,'leaveTangent',track.interpolation||'linear')))/2);const j=i+(f==='arriveTangent'?-1:1),other=before[j];return other?(part(other.value,c)-part(before[i].value,c))/(other.time-before[i].time):0;});}for(const f of ['arriveTangent','leaveTangent'])for(let c=0;c<shape;c++)if(channel===undefined||channel===c)updateCurveControl(keys,i,c,f.replace('Tangent',''),part(key[f],c));key.interpolation=operation==='flatten'?'user':'break';}
   }}
  if(operation==='smooth'){const automatic=keys.map(k=>({...k,interpolation:'clampedAuto'}));for(const i of chosen){const key=keys[i];if(channel===undefined){for(const f of handles)delete key[f];key.interpolation='clampedAuto';}else{for(const f of ['arriveTangent','leaveTangent'])key[f]=shaped(key.value,(_,c)=>curveKeyTangent(c===channel?automatic:before,i,c,f,track.interpolation||'linear'));for(const f of ['arriveWeight','leaveWeight'])if(key[f]!==undefined)key[f]=map(key[f],()=>1/3);for(const f of ['arriveTangent','leaveTangent'])updateCurveControl(keys,i,channel,f.replace('Tangent',''),part(key[f],channel));key.interpolation='break';}}}
- keys.sort((a,b)=>a.time-b.time);return result;
+ keys.sort((a,b)=>a.time-b.time);if(result.infinityDomain&&operation==='transform'&&chosen.length===keys.length){const time=t=>timePivot+(t-timePivot)*timeScale+timeOffset,d=result.infinityDomain;d.start=time(d.start);d.end=time(d.end);for(const range of d.ranges){range.start=time(range.start);range.end=time(range.end);}}return result;
 }

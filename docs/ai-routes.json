@@ -2980,6 +2980,33 @@
       "paths": [
         "prototype/sequence-properties.js"
       ]
+    },
+    {
+      "keywords": [
+        "validCurveInfinityDomain",
+        "curveDomainBase",
+        "mergeCurveBakeRanges"
+      ],
+      "paths": [
+        "prototype/curve-infinity-domain.js"
+      ]
+    },
+    {
+      "keywords": [
+        "bakePeriodicCurveRange",
+        "curveDomainAnchors"
+      ],
+      "paths": [
+        "prototype/curve-periodic-bake.js"
+      ]
+    },
+    {
+      "keywords": [
+        "renderCurveDomainControl"
+      ],
+      "paths": [
+        "prototype/curve-domain-editor.js"
+      ]
     }
   ]
 }

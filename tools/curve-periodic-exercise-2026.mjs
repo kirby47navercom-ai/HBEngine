@@ -1,0 +1,8 @@
+import assert from 'node:assert/strict';
+export function periodicCurveOracle(time){let t=time,count=0;if(time<2||time>4){count=Math.floor((time-2)/2);const phase=time-2-count*2;t=time>4&&Math.abs(count%2)===1?4-phase:2+phase;}const u=(t-2)/2;return (2*u**3-3*u*u+1)+(u**3-2*u*u+u)*6+(-2*u**3+3*u*u)*5+(u**3-u*u)*-2+(time<2?count*4:0);}
+function referenceOracle(time){if(time<1){const n=Math.floor(time-1);time=1+(time-1-n);}else if(time>2){const n=Math.floor(time-1),phase=time-1-n;time=Math.abs(n%2)===1?2-phase:1+phase;}return time>=2?'Old':'Next';}
+export async function exercisePeriodicCurve({invoke,inspect,values},asset){
+ await invoke('Target','Init');await invoke('Director','Play',{asset});const rows=[];for(const time of [0,.25,.5,.75,1,1.5,1.75,2,2.25,2.75,3.25,3.75,4,4.5,5,5.5,6,6.5,7,8,9]){
+  await invoke('Director','Seek',{time});await invoke('Target','Read');const target=(await inspect()).objects.find(o=>o.id==='Target'),ref=referenceOracle(time),x=periodicCurveOracle(time);assert(Math.abs(target.position[0]-x)<2e-6,`${time}: ${target.position[0]} != ${x}`);assert.deepEqual(target.position.slice(1),[1,-2]);assert.equal(target.nativeProperties.Focus,ref);assert.equal(target.nativeProperties.HasFocus,true);assert.equal(target.nativeProperties.MatchesOld,ref==='Old');assert.equal((await values('Target')).values.find(v=>v.variable==='focus').value,ref);assert.equal(target.components.find(c=>c.id==='Cam').properties.followTarget,ref);rows.push({time,x:target.position[0],reference:ref});
+ }await invoke('Director','Stop');const target=(await inspect()).objects.find(o=>o.id==='Target');assert.deepEqual(target.position,[3,0,0]);assert.equal(target.nativeProperties.Focus,'Old');return {passed:true,rows,restored:true,actualCppPointerAgreement:true};
+}

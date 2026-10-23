@@ -2,15 +2,15 @@
 
 2026-10-23. 주인님/짚짱/존댓말·관련구현묶음→영향검사한번→안전설치. 전체UE/Unity분석·엔진완성주장금지. ENGINE_STATUS78행/분모·완료율null. goal blocked여도승인구현계속·새goal/재개질문/새agent금지. Mac/Xcode/Android폰없음.
 
-## 최신 소스 WORK2015 — 오디오 실동작·참조복원·샘플격리
+## 최신 소스 WORK2029 — 반복 부분 베이크/참조 샘플 회귀
 
-2005 audio volume/fadeIn·Out/volumeCurve·GainNode예약·Take gain·32key UI/AI가 source2001 실제창통과: UI/Undo/invalid/save·CPPSeek7·OfflineAudioContext10조건245760PCM·graph직접확인·exit0. 무음routing fixture·스피커/기기/일반비선형표본동기화주장아님. source work native/build/sequence-audio-envelope-2001-window-KS6GFT (프로젝트보존/Builds·profile정리).
+원래 주기 infinityDomain.start/end + finite ranges명시저장·값은기존보이는keys만·숨은원본복사0. cycle/cycleOffset/oscillate 키범위밖부분bake·구간병합/외부원래주기·weighted/vertical/PCHIP동결·required anchor검증·기존총keyBudget. 전체time transform은범위도이동·reduce는anchors유지·fullbake는고정해제. generic Timeline/Sequence curve UI 주기2–4초 버튼과AI sequence.curve.edit resetDomain:true·Undo/CAS/dryRun/save. sharedTimeline/Sequence/Animation sampler 약한basekey참조준비+구간binary;타이머/worker/GPU0·FPS/heap개선주장아님. CURVE_PERIODIC_BAKE.md.
 
-2008–2015 BP/C++ object·hit·중첩reflected record/배열, component objectReference/whole component presence에 actor identity snapshot. 같은ID신규Actor가 하위레이어/원래값복원에끼어들지않음·null/빈text복원·destroying/처음없는대상도동일. 실제첫창실패YicoL1: paused tick이재캡처해새Actor에연결. 동일sample은 weak owner→weak target→field 마지막token재사용/매게시수명확인·명시Seek/바뀐sample은새캡처로수정. BP/C++ mutable배열/vec/record와 live값분리·directTRS/Transformalias도3값복사로물리in-place변경이숨은샘플/공유baseline을못변경. primitive값추가복사없음. 타이머/worker/GPU/전체world복사0·전체FPS/heap절감주장아님.
+2015 reference:true를cache용읽기에쓴회귀수정: reference모드본래beforeFirst undefined/no반복은유지·새stable discrete읽기는기존첫키hold/repeatclock 후key참조반환. paused token/명시Seek수명규칙유지. 실제C++21Seek에서 delayed BP/native/component참조·반복position일치.
 
-새11case·영향7gate(~3.7초)통과: native/build/group-reference2010.json. 실제source2012창 rtC2ZY 통과: CPPInit/Read·Destroy→다음호출Spawn동일ID·상위/하위/원래값3phase에서 BP변수/native포인터/component 일치·lease0·exit0. 새호스트는 admitted distHost를source루트unique.exe로COPY_EXCL/소유복사만삭제·기존root개발exe보존. SEQUENCE_REFERENCE_RESTORE.md·schema.sequenceOwnership.referenceState·exactAI 1owner. publicnative21/dist Host·Player/vendor2hash불변=기존SDK/renderer근거정확재사용·새fullSDK아님.
+새7case50780관찰·기존영향8gate통과(group-periodic2028.json의multi1883초기실패는fixture constructor 우회한toolState누락; *1883-final.log만최신). source2026 실제창 5FAROi: humanprefix/AIpostfix bake·원래주기2..4·Undo/Redo·UI/AI고정해제·invalid anchor atomic·저장·실제CPP21seeks·exit0·screenshot직접확인. 첫실패3jQL9w는열린도구설정overlay로가려진button을fixture가클릭(옵션닫기+elementFromPoint검사로교정). 숫자/품질실패를성과로계산하지않음. native21/distHost·Player/vendor2hash불변·freshSDK/renderer없음.
 
-설치 USER_INSTALL2019 확정: 0d24335cba1e2243/4573files/1221owners. installed builder로saved source2001/2012 fixture재사용·D3D11 audio/ref2게임 모두exit0(CPPSeek7+PCM245760/참조3phase). native/build/standalone2017.json. User10849파일설치직전/직후hash동일·바로가기/연결/AI focus1owner·Versions1·이전199507604B정리·cacheprune0. 소스창/새설치/installed2게임재반복불필요. 다음은실제잔여owner구현. sourceHashBase2020(metadatahandoff)→2015→2005→1992→1987→1978→1974→1966→1958→1955. resolver인자는파일경로.
+아직2029새설치없음. idle후admitted2029만dist sync(외부dirty제외)→Userprofile직전/직후readonlyhash→safeinstall→source2026 savedfixture로installed D3D11게임1개(exercisePeriodicCurve/CPP21). sourceeditor/기존오디오·ref2게임재실행금지. sourceHashBase2029→2020(metadata)→2015→2005→1992→1987→1978→1974→1966→1958→1955. resolver인자는파일경로.
 
 ## 현재 확정 설치 USER_INSTALL2019
 
