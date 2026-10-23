@@ -2,7 +2,7 @@
   "version": 1,
   "date": "2026-10-23",
   "kind": "constant-linear-partial-curve-domain-bake-and-view-state",
-  "implementationRevision": "ec2037c5472cc14d4e716ba20addec802e20049b",
+  "implementationRevision": "ab7bb8f855dbe348df7fcbb9bfae04e4a7a1cfeb",
   "targetIds": [
     "ANM-06",
     "AI-01"
@@ -1168,10 +1168,10 @@
     "prototype/sequence-skeletal-channels.js": "322e11826b27263bb7f63434ca2b5cfd06b7f9eeb2a2498df01190a8149d6e84",
     "tools/check-sequence-pose-ownership-1925.mjs": "489ec652202eea4e4c6467c32dfb80c3bb00279728e237047fa6dd75cba8fed2",
     "tools/check-sequence-pose-ownership-1926-window.mjs": "bec28f70967920b3058bc4c3db65dac8136e44cf8366610eab6246ea2f1dffbf",
-    "DEBUG_HANDOFF.md": "c52db27c8413722d6e1d9f4dfe60dc16e97a0a508310c41d146902d834a87931",
+    "DEBUG_HANDOFF.md": "182485e8b45c214a07594fbbce478870ad513459413066feae1ab8e1e8a74463",
     "docs/CURVE_BAKE_DOMAIN.md": "634ad75ab4b25e4ce342a0b5cdd9ac884d4bfab206f024693e21a23f08903040",
-    "prototype/curve-bake-domain.js": "4981b3223d824d44d9b741ab647282f6a60a9be0b5ecac48a76cd3ed532a3b6f",
-    "tools/check-curve-domain-1931.mjs": "32357d3b4bc97ce510e31eade7bed1f856ee875e332a2f5744128d0f0d0b7a8b",
+    "prototype/curve-bake-domain.js": "bff813afe08fb9516d09819db070fe9548094cbf15168be6309fe7d0ce1bd0ed",
+    "tools/check-curve-domain-1931.mjs": "8466c6f1003f797b88338ee69efcb85012ab7a8cdca995b68988a5976e359a28",
     "tools/check-curve-domain-1932-window.mjs": "2eb27ef5d6063892af692701aca854af99cb8f99f0245a170ae78eb70e60f9c6"
   },
   "testSourceHashes": {
@@ -1264,6 +1264,11 @@
       "path": "native/build/curve-domain-1931-pfzePI/acceptance.json",
       "sha256": "39077be3bad07c08a2e27a495b190d3007b9bbb9438396cd77a38e2ce9b0f31a",
       "scope": "Same numeric gate with additional large automatic/PCHIP finite-control and ignored-clamped-control assertions. Repeated unit only after branch coverage review; all numeric implementation sources unchanged."
+    },
+    {
+      "path": "native/build/curve-domain-1931-9FTWzd/acceptance.json",
+      "sha256": "a8c15dbe0f285ea05253a9049cfb2faa9f8d3840ddc36c5b4ab4aafe8a8e26ca",
+      "scope": "Final1931 numeric/typed regression after constant-tail endpoint fix:70649 observations plus steep prefix/postfix/both-end candidates valid under both Timeline and stricter Sequence contracts."
     }
   ],
   "sourceGameGates": [
@@ -1271,7 +1276,7 @@
       "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/curve-domain-1932-window-aL33X2/acceptance.json",
       "sha256": "29372272a1fa61fab99faf4d05ce791e6a8007970c9c0d852748a622211ac8af",
       "scope": "Actual persisted range/FPS UI state after document rebuild/UndoRedo and AI partial bake crossing both authored endpoints, one UndoRedo per edit, CAS/dryRun/error guards, ordinary keys save and fresh user CPP seeks against independent analytic Hermite/linear oracles including surviving cubic middle and both exterior tails; optional standalone D3D11. Periodic domain extension rejects atomically.",
-      "note": "Final source UI gate after actual capture exposed option reset and view-only persistence was fixed. Private project user CPP executes existing LevelSequence APIs; no claim that all SDK tests or all cached modules were freshly compiled."
+      "note": "Source UI checkpoint predates the targeted constant-tail endpoint correction; linear UI/C++ path is unchanged. Final1931 typed numeric proof covers the correction; final installed editor/standalone gate must use the corrected bundle."
     }
   ],
   "sourceCheckpoint": {
@@ -1467,10 +1472,15 @@
     {
       "test": "1932",
       "reason": "Initial actual screenshot exposed empty range/FPS controls after sequence document rebuild; shared TimelineEditor view-state contract and sequence adapter fixed, only affected actual UI rechecked."
+    },
+    {
+      "test": "1933 typed boundary",
+      "reason": "After the first installed candidate passed ordinary linear UI/D3D, a targeted proof showed a valid steep constant-tail source produced an unused endpoint tangent above Sequence100000 although Timeline allowed1000000. Constant/default external derivatives now emit0. Final1931 passes both validators; first candidate is superseded, not final accepted installation."
     }
   ],
   "installationPending": true,
   "scope": "Constant/default and linear outside-key-domain partial bake via ordinary keys, exact surviving cubic/weighted/vertical/PCHIP segments and exterior derivatives, finite-control fallback and final sample+outside-key budgets. Existing range/FPS UI and per-document view-only tool state preserve settings across rebuild/UndoRedo; shared AI schema, dryRun/CAS/invalid range and periodic rejection, save and existing CPP LevelSequence execution. Six primary affected gates and a narrow numeric branch supplement,70649 sample observations and final actual source UI gate passed. Exact installed editor/standalone D3D gate pending. Periodic domain expansion retaining the original period and unrepresentable exterior slopes remain explicit limits.",
   "currentInstallation": null,
-  "installedGates": []
+  "installedGates": [],
+  "priorImplementationRevision": "ec2037c5472cc14d4e716ba20addec802e20049b"
 }
