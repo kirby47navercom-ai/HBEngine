@@ -1,0 +1,244 @@
+{
+  "version": 1,
+  "date": "2026-10-23T09:52:55.153Z",
+  "kind": "sequence-normalized-continuous-and-skeletal-layers",
+  "implementationRevision": "3fcc22eb792fcbaa6713a817f183e6801a9ad90c",
+  "priorImplementationRevision": "d3254c18f321660609ee2bc7552bc7192b863c91",
+  "targetIds": [
+    "ANM-06"
+  ],
+  "sourceHashBase": "docs/research/ENGINE_WORK_1966.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "d3524da460de2ecea50c0063cf570b557a4ef0857d17e7606403cc29026b01ba",
+    "docs/NODE_CATALOG.md": "55e223858e47d98b04cdb963d164ec8ab7fc7b4b69eba4e8f90b2cfb6bf48c97",
+    "docs/ai-routes.json": "124685e0f89e9815e8ffe8c4d225843fed5a47d2c6541e68d587c6c41623257f",
+    "native/include/HBEngine/Bridge.hpp": "f7b9eb4c59057de0d5f098bd89463cc29aac63c6efb7a5a9b765abc69e97074e",
+    "native/include/HBEngine/Game.hpp": "ae731e30bc1e1958884d27274acd5283387613799d2e623675685a037577c3f3",
+    "prototype/gameplay-assets.js": "e1d7b429600c0e235feba5b991e94c92d4e69af4ce81e1a049c7cf9b60bb9121",
+    "prototype/gameplay-editor.js": "1488d5aaec25ee353658e33ed21638b3f79a1f2bb7453b36760cb95668040b48",
+    "prototype/gameplay-runtime.js": "f6777d82069c3fc6eefdbb3959980e564b6797f7f51028358e32e6d5e4c93f40",
+    "prototype/sequence-channels.js": "f03578cd38247f59235539fe9f88715ed00352658a20ab1663a8d09a70d4ee12",
+    "prototype/sequence-component-channels.js": "a059c744bc5d361e24f72924899acf92253a0a50fc39c17a5124e7fb181d5132",
+    "prototype/sequence-pose-ownership.js": "7c628bd058703a77845274a386f7b683de262b76dc064a20dff868034781f202",
+    "prototype/sequence-pose-playback.js": "37669763eda84099f400b3aeb069518f081c6ff29575e27186ca376fb5eba30d",
+    "prototype/sequence-skeletal-channels.js": "b030b3aa8af27d300f98d333fe739327872e637f6ef378cd5124caac2abd3de0",
+    "prototype/sequence-state.js": "97af9b0ffc4b12f82eefb7e547e855a25d29dd6bedde004b9b6f29736c3e70e6",
+    "tools/check-sequence-pose-ownership-1926-window.mjs": "eb9bdba1202726cefbb1d4881d1299967fc33555e8be0fcaddc2e1e2d8cbd454",
+    "tools/editor-automation.mjs": "391ca2ae09349ad0d1a404be1db19658e157794cab525fb3c3504e43bbba8be0",
+    "tools/generate-api.mjs": "f189edd4f847ad29efcf9812f50c30da376edadaf7aebe49840fdbdf7edb4a25",
+    "docs/SEQUENCE_LAYER_BLENDING.md": "e38924e6ab7ed9dda636410a40a9739ecc0621c61ba1cf3566adcd413cb16231",
+    "prototype/sequence-blending.js": "5df2f32e0025e7661c6df3acf9e893a598b51188a25fc870dc71f944f91e5d5d",
+    "prototype/sequence-pose-blending.js": "facfdd18539f64ceadc43ec05d1a380a1ef0f97e64977ee46d348ef302f95ce9",
+    "tools/check-sequence-blending-1967.mjs": "474608118844205f2a598c05b39b92abd0ae1015cd3a1911ad12ecfd60450a9c",
+    "tools/check-sequence-blending-1968-window.mjs": "493b27b9b3222e5a9f8e4d07a78894ca535477cf4be89b71bfd0e1152a44ba00",
+    "tools/check-sequence-pose-blending-1970.mjs": "de256d5bf3ffa5bd622c2ba2b5a1da02e2d491741a6b855601019002bff955b5",
+    "tools/sequence-pose-blend-window-1972.mjs": "eab878b7358d8cc063f616bfb56befb7ba76737ae2c861742da69e77ea02b8c4",
+    "prototype/core-api.js": "09f3f4c12d3f5f1cba6c856e7252fbfc83a534f8bfac4bc72124da9b00400258"
+  },
+  "composition": {
+    "tool": "tools/research-source-hashes.mjs",
+    "baseLineage": [
+      "docs/research/ENGINE_WORK_1955.json",
+      "docs/research/ENGINE_WORK_1958.json",
+      "docs/research/ENGINE_WORK_1966.json"
+    ],
+    "currentFilesVerified": false,
+    "scope": "admitted HEAD player retained; generated core API explicitly rehashed; unrelated keyboard worktree changes excluded"
+  },
+  "checks": [
+    {
+      "name": "sequence-blending-1967",
+      "passed": true,
+      "seconds": 0.3320344,
+      "log": "native/build/group1969-sequence-blending-1967.log",
+      "report": "native/build/sequence-blending-1967-YvRCpb/acceptance.json",
+      "reportSHA256": "6e4230c267af76d21d48e3bc97ca1dd851a3147bc35a0df481c95bf7bf078e5c",
+      "latestFocused": true,
+      "latestCheckCount": 11
+    },
+    {
+      "name": "sequence-pose-blending-1970",
+      "passed": true,
+      "seconds": 0.20634170000000002,
+      "log": "native/build/group1969-sequence-pose-blending-1970.log",
+      "report": "native/build/sequence-pose-blending-1970-6r87Mj/acceptance.json",
+      "reportSHA256": "f2611167d6bfa381189858e6e77a99e15218976082beeee742a6e69be2b73a88",
+      "latestFocused": true,
+      "latestCheckCount": 9
+    },
+    {
+      "name": "sequence-priority-272",
+      "passed": true,
+      "seconds": 0.17774959999999998,
+      "log": "native/build/group1969-sequence-priority-272.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-priority-272-yDLmbg/acceptance.json",
+      "reportSHA256": "09df8cd16bfc1d0966d17756de24970ff2e8dc5a765d4ccbd025ae442a1a69a3"
+    },
+    {
+      "name": "sequence-completion-271",
+      "passed": true,
+      "seconds": 0.1892731,
+      "log": "native/build/group1969-sequence-completion-271.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-completion-271-f7btip/acceptance.json",
+      "reportSHA256": "316f0e70e705f0f2bc7429eedcc30f78a9bd31f521704f83f14690e0555478d1"
+    },
+    {
+      "name": "sequence-values-269",
+      "passed": true,
+      "seconds": 0.22863409999999998,
+      "log": "native/build/group1969-sequence-values-269.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-values-269-aQbB9V/acceptance.json",
+      "reportSHA256": "73c8faf3e2637adefbe8310515984e47ed1686314369663a839bf3bf70b8c7eb"
+    },
+    {
+      "name": "sequence-component-326",
+      "passed": true,
+      "seconds": 0.1140664999999999,
+      "log": "native/build/group1969-sequence-component-326.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-component-326-ZmRxRN/acceptance.json",
+      "reportSHA256": "90334e20466fd220e4249cc9c6c93e18e1e883c45cb1a3676b2238780abef174"
+    },
+    {
+      "name": "sequence-pose-ownership-1925",
+      "passed": true,
+      "seconds": 0.2477016000000001,
+      "log": "native/build/group1969-sequence-pose-ownership-1925.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-pose-ownership-1925-JFCY99/acceptance.json",
+      "reportSHA256": "65a317c5f5960c01c67b6ce39981c093c376176f101c0f0a255dc7299b9096b4"
+    },
+    {
+      "name": "sequence-pose-cost-1806",
+      "passed": true,
+      "seconds": 2.2743037,
+      "log": "native/build/group1969-sequence-pose-cost-1806.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-pose-cost-1806-z9IdlC/acceptance.json",
+      "reportSHA256": "0f96e5ee7c97847c174e71a2440f77beff5ff6fde1056d776317fb0d7b491e76"
+    },
+    {
+      "name": "sequence-cubic-warp-1959",
+      "passed": true,
+      "seconds": 0.2503265000000001,
+      "log": "native/build/group1969-sequence-cubic-warp-1959.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-cubic-warp-1959-zfQwIR/acceptance.json",
+      "reportSHA256": "3f530c244169bbe0af25966ed4c4e6d6cdeabd527dd8d061af76092a515498e5"
+    },
+    {
+      "name": "sequence-sections-1250",
+      "passed": true,
+      "seconds": 0.2264641999999999,
+      "log": "native/build/group1969-sequence-sections-1250.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-sections-1250-Bf7YlW/acceptance.json",
+      "reportSHA256": "233db272554e0e4cd74a24e73595be3a84ff62c40b9e13d42c8f1c9116996709"
+    },
+    {
+      "name": "sequence-audio-1956",
+      "passed": true,
+      "seconds": 0.4521833999999999,
+      "log": "native/build/group1969-sequence-audio-1956.log",
+      "report": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/sequence-audio-1956-BNLhb2/acceptance.json",
+      "reportSHA256": "dd4c2e787430d4c4f8bb2026d41b8d2a4f49590cc4714b0057c8d20cb757f0e8"
+    }
+  ],
+  "group": {
+    "file": "native/build/group1969.json",
+    "passed": 11,
+    "initialSeconds": 4.6990788,
+    "scope": "Source/common VM gates only. After quaternion/subnormal hardening only the two new affected math/layer gates repeated (11+9cases); legacy sampling methods unchanged."
+  },
+  "aiContextGate": {
+    "report": "native/build/ai-context-1058.json",
+    "sha256": "53d124a6d4e1f4dc7ddd3db9833f20e44aca14bf217bb89d1841b24c98b384c6",
+    "passed": true
+  },
+  "apiCheck": {
+    "command": "node tools/generate-api.mjs --check",
+    "passed": true
+  },
+  "sourceGameGates": [
+    {
+      "path": "native/build/sequence-blending-1968-window-PWKkcw/acceptance.json",
+      "sha256": "a716ef6a8c5bd6276f4f7ff12effdc7e41eacb240d149cbd01e974b3eaad3d60",
+      "passed": true,
+      "scope": "Actual private editor, compiled C++ four new API methods, generated BP controls, typed component and baseline; source before final convex/quaternion numeric hardening, same position/component outcomes. Final numeric branch changes covered by latest pure tests. No package/actual normalized skeletal gate."
+    }
+  ],
+  "nativePlayerBuild": {
+    "executed": false,
+    "changedNativeOwners": {
+      "native/include/HBEngine/Game.hpp": {
+        "before": "07a3fb7cb9789a90c7adcdcd77832c7a8ccf81d1d2497b99425a57b678e6b84e",
+        "now": "ae731e30bc1e1958884d27274acd5283387613799d2e623675685a037577c3f3"
+      },
+      "native/include/HBEngine/Bridge.hpp": {
+        "before": "8d41d631096c7ad3cf04137fda683c52fe82375e26b5c75176ec403cb5d963df",
+        "now": "f7b9eb4c59057de0d5f098bd89463cc29aac63c6efb7a5a9b765abc69e97074e"
+      }
+    },
+    "unchangedNativeOwnerCount": 19,
+    "unchangedReceipt": "docs/research/ENGINE_WORK_1955.json",
+    "scope": "Added static public declarations/inline queued service helpers only, no class layout edit. Actual new C++ module compiled/executed in source1968 window; existing Host/Player binaries unchanged. Not a fresh full SDK or renderer run."
+  },
+  "hostSHA256": "5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46",
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "externalWorktreeChanges": {
+    "prototype/player.js": {
+      "observedSHA256": "4d89ea43c2f9f32ad96be161ffceb4491c567ab0422ecb6c43495cf68adff247",
+      "modified": false,
+      "staged": false,
+      "admitted": false,
+      "admittedHEADSHA256": "8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1",
+      "distributionPolicy": "Use this admitted HEAD file, not the unrelated dirty worktree file; preserve both unrelated worktree changes. Only tracked and explicitly admitted source/generation is eligible for distribution."
+    },
+    "tools/check-player-keyboard-release.mjs": {
+      "observedSHA256": "1b5fa2aeadedbded2e795c4fa5f34cdfb414d3ac9ffefada46eb00ad5e75e336",
+      "modified": false,
+      "staged": false,
+      "admitted": false
+    }
+  },
+  "installationPending": true,
+  "currentInstallation": "docs/research/USER_INSTALL_1951.json",
+  "installationDeferral": {
+    "checkedAt": "2026-10-23T09:52:55.154Z",
+    "active": [
+      {
+        "pid": 30084,
+        "version": "064db2f2f17c89f0",
+        "name": "node.exe"
+      },
+      {
+        "pid": 38532,
+        "version": "064db2f2f17c89f0",
+        "name": "node.exe"
+      }
+    ],
+    "scope": "No install/queue or distribution sync. Protect active version064db2f2f17c89f0. Future sync must exclude unrelated dirty player and untracked keyboard tool."
+  },
+  "pendingGates": [
+    "source1954 signed/cubic/step human/C++/OfflineAudioContext",
+    "source1926 normalized skeletal/actual C++ getters and weights",
+    "installed1954/1968/1926 --package D3D11 and profile/manifest/shortcut/Versions audit"
+  ],
+  "resources": {
+    "addedTimers": 0,
+    "addedWorkers": 0,
+    "addedGPUResources": 0,
+    "wholeSceneSnapshots": 0,
+    "legacyOverrideSampling": "O(1) ordinary override writes",
+    "blendedSkeleton": "Active per-bone output/track-time snapshots;512bones one publication matrix-root update plus explicit frame sample; programs/layout maps reused",
+    "fpsOrHeapMeasured": false,
+    "versions": [
+      "064db2f2f17c89f0"
+    ]
+  },
+  "testCorrections": [
+    "New nested fixture initially inherited default section bias100; made test bias0 to test same-priority blending. Product priority rule unchanged.",
+    "New window fixture startup Blueprint placeholder lacked settings; use production createAsset before C++ fixture declaration. No product workaround."
+  ],
+  "research": {
+    "newCorpusRead": false,
+    "wholeUEUnityAnalysisComplete": false,
+    "completionPercent": null
+  },
+  "scope": "Optional normalized continuous and skeletal per-bone sequence layer blending, shared baseline lifetime, inherited root controls, public C++/BP/human/AI contract. Source11gates and final20new cases, actual source scalar controls/C++ integration. Not whole engine completion or installed/mobile/rendering/FPS proof."
+}
