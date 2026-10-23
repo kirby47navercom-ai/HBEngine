@@ -2539,6 +2539,17 @@
       "paths": [
         "prototype/gameplay-editor.js"
       ]
+    },
+    {
+      "id": "curve-value-view-projection",
+      "keywords": [
+        "curveChannelBounds",
+        "curveViewLayout",
+        "curveViewContract"
+      ],
+      "paths": [
+        "prototype/curve-view.js"
+      ]
     }
   ]
 }

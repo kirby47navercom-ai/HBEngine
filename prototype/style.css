@@ -394,3 +394,7 @@ input,textarea,[contenteditable=true],#console-logs,.help-items,.dialog-descript
 .timeline-editor[data-sequence-multi="true"]:has([data-sequence-curve-track]) .curve-tracks{display:block;width:145px}.timeline-editor[data-sequence-curve] .curve-track-actions{display:none}.sequence-curve-picker{position:relative;flex:0 0 auto;min-width:105px}.sequence-curve-picker>summary{cursor:pointer;white-space:nowrap}.sequence-curve-picker[open]{z-index:12;max-height:160px;overflow:auto;background:var(--panel);border:1px solid var(--line);padding:6px}.sequence-curve-picker>label{display:flex;align-items:center;gap:6px;margin:5px 0;white-space:nowrap}.sequence-curve-picker input{margin:0}
 
 .timeline-editor[data-sequence-multi="true"] .curve-tracks .curve-channels{display:flex;flex-wrap:wrap;gap:6px}.timeline-editor[data-sequence-multi="true"] .curve-tracks .curve-channels>label{display:inline-flex;flex-direction:row;align-items:center;gap:3px;margin:0}.timeline-editor[data-sequence-multi="true"] .curve-track{padding:4px;margin-bottom:4px}.timeline-editor[data-sequence-multi="true"] .curve-track>small{display:none}
+
+.timeline-editor[data-curve-view="stacked"] .curve-plot{overflow:auto}.timeline-editor [data-sequence-curve-view]{max-width:105px!important;flex:0 0 105px!important}.timeline-editor [data-curve-lane]{paint-order:stroke;stroke:#20282c;stroke-width:3px}
+
+.timeline-editor[data-curve-view="stacked"] .curve-plot{min-height:0;max-height:100%;height:100%}

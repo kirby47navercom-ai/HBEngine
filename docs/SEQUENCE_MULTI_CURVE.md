@@ -10,7 +10,7 @@ Ctrl/Command로 서로 다른 트랙의 키를 함께 고르거나, 빈 공간�
 
 AI는 `schema.sequenceMultiCurve`와 `editSequenceCurves`의 정확한 소유자를 읽어요. 기존 `sequence.curve.tool`에 `tracks:["TrackA","TrackB"]`를 주면 같은 도구 파라미터를 원자적으로 적용해요. 기존 `track` 하나도 호환돼요. `tracks`를 명시하면 우선하며, 중복/없는 대상은 거절해요. expectedRevision·dryRun·Undo·저장은 기존 문서 편집 경로를 공유해요. 편집한 값은 원래 시퀀스 평가를 사용하므로 C++와 BP의 Play/Seek에도 그대로 반영돼요.
 
-기존 TimelineEditor를 재사용하며 새 렌더러·타이머·워커·시퀀스 복사본을 만들지 않아요. 선택 보존은 키 집합 조회를 사용하고, 묶음 편집은 선택한 트랙만 준비해요. 곡선 표시의 화면 열별 키 밀도 제한은 원본 키를 삭제하지 않아요. 값 정규화/쌓기 보기와 키별 채널 축 동시 선택은 남겨요.
+기존 TimelineEditor를 재사용하며 새 렌더러·타이머·워커·시퀀스 복사본을 만들지 않아요. 선택 보존은 키 집합 조회를 사용하고, 묶음 편집은 선택한 트랙만 준비해요. 곡선 표시의 화면 열별 키 밀도 제한은 원본 키를 삭제하지 않아요. [값 정규화·쌓기 보기](CURVE_VIEW_MODES.md)는 1889–1891에서 추가했어요. 키별 채널 축 동시 선택은 남겨요.
 
 1883의 새 읽기는 [Epic Curve Editor, UE5.8](https://dev.epicgames.com/documentation/unreal-engine/animation-curve-editor-in-unreal-engine)의 Toolbar25–47, Outliner68–83, Graph/Navigation84–133, Editing/Copy-Paste134–168이에요. 여러 곡선의 선택·공유 값 축·키 변환·상대 시각 붙여넣기를 대조했어요. HB의 트랙 ID/고유 이름 대응과 공용 채널 적용은 자체 편집 계약이에요. 나머지 본문·이미지·링크된 모든 API를 읽었다고 계산하지 않아요.
 
