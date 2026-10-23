@@ -3069,6 +3069,40 @@
       "paths": [
         "prototype/sequence-indexed-transforms.js"
       ]
+    },
+    {
+      "id": "sequence-render-parameters",
+      "keywords": [
+        "SequenceRenderParameters",
+        "materialSequenceParameter",
+        "sequenceLightComponentTrack"
+      ],
+      "paths": [
+        "prototype/sequence-render-parameters.js"
+      ]
+    },
+    {
+      "id": "light-parameter-state",
+      "keywords": [
+        "syncLightIntensityProperties",
+        "primaryLightComponent",
+        "primaryOwnedLight",
+        "readLightIntensity",
+        "registerLightComponent",
+        "ownedLight"
+      ],
+      "paths": [
+        "prototype/light-parameter-state.js"
+      ]
+    },
+    {
+      "id": "scene-component-signature",
+      "keywords": [
+        "visualComponentSignature"
+      ],
+      "paths": [
+        "prototype/scene-component-signature.js"
+      ]
     }
   ]
 }
