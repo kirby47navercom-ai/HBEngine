@@ -2412,6 +2412,38 @@
       "paths": [
         "prototype/take-clock-editor.js"
       ]
+    },
+    {
+      "id": "skeleton-query",
+      "keywords": [
+        "skeletonQuery",
+        "skeletonQueryContract"
+      ],
+      "paths": [
+        "prototype/skeleton-query.js"
+      ]
+    },
+    {
+      "id": "skeleton-index",
+      "keywords": [
+        "skeletalBoneIndex",
+        "traverseSkeletalBones",
+        "validateSkeletalBoneName",
+        "captureSkeletalPosePage",
+        "SkeletalPoseTrack"
+      ],
+      "paths": [
+        "prototype/sequence-state.js"
+      ]
+    },
+    {
+      "id": "sequence-pose-inspector",
+      "keywords": [
+        "sequencePoseInspector"
+      ],
+      "paths": [
+        "prototype/sequence-pose-inspector.js"
+      ]
     }
   ]
 }

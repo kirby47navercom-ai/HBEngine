@@ -647,3 +647,5 @@ Take 녹화 프리셋은 전용 에셋/편집기에서 만들고 시퀀스의 �
 1847–1849: Take game/unscaled/platform 시계·정수 non-drop 시작 타임코드·clock/recordingClock 프리셋/시퀀스/결과저장·clock묶음상속/UndoRedo·AI start부분override/state timecode 연결. game은배율·pause적용,unscaled는완료frame rawDelta/pause정지,platform은단조시계/기존실행loop의안전한정지포즈표본. 키는상대초라기존BP/CPP재생유지. 오디오/외부timecode/RTC/genlock/분수·dropframe은별도잔여. 상세TAKE_PRESETS_AND_CAPTURE.md.
 
 1853–1855: Take 시계의 양의 분수 수집 FPS(분자/분모)·29.97/59.94 DF 표기/유효 입력·정수 편집 격자 구분·프리셋 clock 상속/SaveAs/UndoRedo·AI 부분 override와 sampleRate/sampleFPS/skippedSamples 상태를 연결해요. 시작 기준 표본 스케줄로 누적 지연을 방지하고 놓친 구간의 가짜 포즈를 만들지 않아요. BP/C++ 재생 키는 상대 초를 유지해요. 외부 오디오/동기 시계와 분수 편집 격자는 잔여예요.
+
+1859–1861: 공용 hb::Skeleton 6개 함수에서 BP 순수 조회 노드 생성(개수/이름 페이지/존재/로컬·월드 위치·XYZ회전도·크기). 사람의 시퀀스 골격 속성 뷰와 AI named page/world affine matrix·trsExact를 공용 helper에 연결해요. 뼈 이름/중첩 actor 경계 검증·실패 활성화/복원 보존·전체 대상 준비 후 포즈 쓰기와 중첩 루트 행렬 통합. 즉시 Seek·모델 교체/제거/역방향/복원은 유지해요. 뼈별 소유권·가중 혼합·외부 graph/montage 복원은 잔여예요. docs/SEQUENCE_POSE_AND_SKELETON.md.

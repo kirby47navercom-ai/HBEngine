@@ -451,6 +451,16 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="morphSetWeight", KoreanName="모프 가중치 지정", Category="메시 모프") static void SetWeight(Actor* target,const std::string& name,float value,const std::string& mesh="");
 };
 HB_CLASS()
+class Skeleton : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="skeletonCount", KoreanName="골격 뼈 개수", Category="3D 골격 조회") static int GetBoneCount(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="skeletonNames", KoreanName="골격 뼈 이름 페이지", Category="3D 골격 조회") static std::vector<std::string> GetBoneNames(Actor* target,int offset=0,int limit=64);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="skeletonHasBone", KoreanName="골격 뼈 존재 확인", Category="3D 골격 조회") static bool HasBone(Actor* target,const std::string& bone);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="skeletonPosition", KoreanName="골격 뼈 위치 조회", Category="3D 골격 조회") static Vec3 GetBonePosition(Actor* target,const std::string& bone,bool world=false);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="skeletonRotation", KoreanName="골격 뼈 회전 조회", Category="3D 골격 조회") static Vec3 GetBoneRotation(Actor* target,const std::string& bone,bool world=false);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="skeletonScale", KoreanName="골격 뼈 크기 조회", Category="3D 골격 조회") static Vec3 GetBoneScale(Actor* target,const std::string& bone,bool world=false);
+};
+HB_CLASS()
 class AnimationGraph : public Library {
 public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphGetCurve", KoreanName="애니메이션 커브 값", Category="애니메이션 그래프") static float GetCurve(Actor* target,const std::string& key);

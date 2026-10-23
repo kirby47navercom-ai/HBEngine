@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **842개**, 실제 공통 C++ API **752개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **848개**, 실제 공통 C++ API **758개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -63,6 +63,7 @@
 | AI | 17 | 17 |
 | 상태 머신 | 11 | 11 |
 | 메시 모프 | 3 | 3 |
+| 3D 골격 조회 | 6 | 6 |
 | 애니메이션 그래프 | 40 | 40 |
 | 애니메이션 상태 | 8 | 8 |
 | 애니메이션 동기화 | 3 | 3 |
@@ -1047,6 +1048,17 @@
 | morphNames | Get Names / 모프 이름 목록 | target: object, mesh: string | return: string[] | hb::Morphs::GetNames | 공통 C++ + VM |
 | morphWeight | Get Weight / 모프 가중치 가져오기 | target: object, name: string, mesh: string | return: float | hb::Morphs::GetWeight | 공통 C++ + VM |
 | morphSetWeight | Set Weight / 모프 가중치 지정 | exec: exec, target: object, name: string, value: float, mesh: string | then: exec | hb::Morphs::SetWeight | 공통 C++ + VM |
+
+## 3D 골격 조회
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| skeletonCount | Get Bone Count / 골격 뼈 개수 | target: object | return: int | hb::Skeleton::GetBoneCount | 공통 C++ + VM |
+| skeletonNames | Get Bone Names / 골격 뼈 이름 페이지 | target: object, offset: int, limit: int | return: string[] | hb::Skeleton::GetBoneNames | 공통 C++ + VM |
+| skeletonHasBone | Has Bone / 골격 뼈 존재 확인 | target: object, bone: string | return: bool | hb::Skeleton::HasBone | 공통 C++ + VM |
+| skeletonPosition | Get Bone Position / 골격 뼈 위치 조회 | target: object, bone: string, world: bool | return: vec3 | hb::Skeleton::GetBonePosition | 공통 C++ + VM |
+| skeletonRotation | Get Bone Rotation / 골격 뼈 회전 조회 | target: object, bone: string, world: bool | return: vec3 | hb::Skeleton::GetBoneRotation | 공통 C++ + VM |
+| skeletonScale | Get Bone Scale / 골격 뼈 크기 조회 | target: object, bone: string, world: bool | return: vec3 | hb::Skeleton::GetBoneScale | 공통 C++ + VM |
 
 ## 애니메이션 그래프
 
