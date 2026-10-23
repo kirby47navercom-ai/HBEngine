@@ -1168,3 +1168,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1910–1912: 최종설치exact수직/확장내부경계bake·incoming-onlydrag/수직snap/숫자변환/outgoinglinear·AI CAS/dryRun/invalid/nonmonotone·privateclipboard/Undo/save·기존CPP독립inversecubic3시각/restore·별도D3D 90.88초통과. manifest4483/source1145/native21+SDK/renderer/vendor2/PlayerHost exact불변·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전197640871B정리. USER_INSTALL1911. 키범위밖bake/독립채널저장등누적잔여유지.
 
 1913–1915: 별도타입imports/전이enum·record필드·UUID C++include·중복경로합성·누락/순환/typeddefault검증·자식추가상위defaults/헤더/소비자원자이관·redirect후save·UI/AI/CAS/Undo/save/CPP실행 연결.8영향gate와 실제UI/CPP[99,4,12]/BP[99,3,2] 통과. 타입전환기본값/no-op저장dirty도수정·동시편집보존. SDK/nativeexact재사용, 설치별도D3D gate예정. WORK1915.
+
+1916–1918: 최종설치 2904c1509b0de679 실제에셋간imports/전이선택/default·자식추가→부모2개/헤더/pure·nativeBP·wholegroupUndoRedo·AI누락참조거절/원복saveclean·CPP[99,4,12]/BP[99,3,2]/Actoridentity와별도D3D11 80.50초통과. manifest4490/source1150/native21+SDK/renderer/vendor2/binaries exact확인·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전197840042B퇴역. USER_INSTALL1917. 전역자동발견/파괴적스키마등누적잔여유지.

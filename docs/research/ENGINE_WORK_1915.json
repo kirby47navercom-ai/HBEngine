@@ -1491,6 +1491,20 @@
     "Actual window CPP passed but could not exit: restored same-content type save skipped clean-state transition on server noChange. Added observed-edit check and shared finish without a new Undo; VM checks concurrent human edit preservation.",
     "No-op VM fixture first changes JSON whitespace and legitimately creates a journal; normalize the baseline before checking no-new-Undo. Failed runs are not completion evidence."
   ],
-  "installationPending": true,
-  "scope": "Explicit cross-asset enum/record field dependencies through durable typeId and imports, transitive generated C++ includes and deduplicated immutable BP metadata. Dependency validation rejects missing/cyclic/duplicate/wrong typed defaults before publication. Additive child fields migrate parent asset scalar/array defaults, headers and BP/scene/prefab/sequence consumers in one journal, dryRun plan/CAS and UndoRedo; old-path redirects work after dependency moves. Actual UI import/type/default/save, opened pure/native consumer migration and CPP [99,4,12]/pure BP [99,3,2]/Actor identity. Fixed record type-switch previous scalar default and no-op batch-save dirty state with concurrent-edit preservation. Eight affected gates; exact installed editor and standalone D3D gate pending. No global automatic discovery/destructive schema/live ABI/full SDK/mobile-hardware claim."
+  "installationPending": false,
+  "scope": "Explicit cross-asset enum/record field dependencies through durable typeId and imports, transitive generated C++ includes and deduplicated immutable BP metadata. Dependency validation rejects missing/cyclic/duplicate/wrong typed defaults before publication. Additive child fields migrate parent asset scalar/array defaults, headers and BP/scene/prefab/sequence consumers in one journal, dryRun plan/CAS and UndoRedo; old-path redirects work after dependency moves. Actual UI import/type/default/save, opened pure/native consumer migration and CPP [99,4,12]/pure BP [99,3,2]/Actor identity. Fixed record type-switch previous scalar default and no-op batch-save dirty state with concurrent-edit preservation. Eight affected gates; exact installed editor and standalone D3D11 passed. No global automatic discovery/destructive schema/live ABI/full SDK/mobile-hardware claim.",
+  "currentInstallation": "docs/research/USER_INSTALL_1917.json",
+  "installedGates": [
+    {
+      "path": "native/build/native-type-dependencies-1914-window-By5dsc/acceptance.json",
+      "sha256": "71a07ec9b560eceeb6ecdc44d1f4c979fa066ec6bd783ac45fd973c11cfcf152",
+      "scope": "Owned actual2D editor imports/type choice/UndoRedo/save, three separate type assets; leaf additive field migrates two parent assets, generated headers, pure/native Blueprint values and opened views in one journal. AI locally shaped missing dependency rejects publication without changing saved originals. Rebuilt C++ shared generated types execute and preserve Actor identity; optional independent D3D11 same saved project/content. No global automatic discovery, destructive schema/ABI or all SDK/mobile hardware claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2904c1509b0de679\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 80500.0849
+    }
+  ]
 }

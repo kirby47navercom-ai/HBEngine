@@ -2498,7 +2498,8 @@
         "docs/research/ENGINE_WORK_1903.json",
         "docs/research/USER_INSTALL_1905.json",
         "docs/NATIVE_TYPE_DEPENDENCIES.md",
-        "docs/research/ENGINE_WORK_1915.json"
+        "docs/research/ENGINE_WORK_1915.json",
+        "docs/research/USER_INSTALL_1917.json"
       ]
     },
     {
@@ -2650,7 +2651,8 @@
         "docs/research/ENGINE_WORK_1909.json",
         "docs/research/USER_INSTALL_1911.json",
         "docs/NATIVE_TYPE_DEPENDENCIES.md",
-        "docs/research/ENGINE_WORK_1915.json"
+        "docs/research/ENGINE_WORK_1915.json",
+        "docs/research/USER_INSTALL_1917.json"
       ]
     },
     {
@@ -3769,14 +3771,14 @@
     "first": 1913,
     "last": 1915,
     "receipt": "docs/research/ENGINE_WORK_1915.json",
-    "scope": "Explicit cross-asset enum/record field dependencies through durable typeId and imports, transitive generated C++ includes and deduplicated immutable BP metadata. Dependency validation rejects missing/cyclic/duplicate/wrong typed defaults before publication. Additive child fields migrate parent asset scalar/array defaults, headers and BP/scene/prefab/sequence consumers in one journal, dryRun plan/CAS and UndoRedo; old-path redirects work after dependency moves. Actual UI import/type/default/save, opened pure/native consumer migration and CPP [99,4,12]/pure BP [99,3,2]/Actor identity. Fixed record type-switch previous scalar default and no-op batch-save dirty state with concurrent-edit preservation. Eight affected gates; exact installed editor and standalone D3D gate pending. No global automatic discovery/destructive schema/live ABI/full SDK/mobile-hardware claim."
+    "scope": "Explicit cross-asset enum/record field dependencies through durable typeId and imports, transitive generated C++ includes and deduplicated immutable BP metadata. Dependency validation rejects missing/cyclic/duplicate/wrong typed defaults before publication. Additive child fields migrate parent asset scalar/array defaults, headers and BP/scene/prefab/sequence consumers in one journal, dryRun plan/CAS and UndoRedo; old-path redirects work after dependency moves. Actual UI import/type/default/save, opened pure/native consumer migration and CPP [99,4,12]/pure BP [99,3,2]/Actor identity. Fixed record type-switch previous scalar default and no-op batch-save dirty state with concurrent-edit preservation. Eight affected gates; exact installed editor and standalone D3D11 passed. No global automatic discovery/destructive schema/live ABI/full SDK/mobile-hardware claim."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1911.json",
-    "sourceCommit": "413bf0e3efedea0b328758e4dc4fc1964f112aad",
-    "bundleHash": "ab1358413b56252a82b8c95fc1a3e7bdfd9f2c57386f8c3c5d736be42446b4d0",
+    "receipt": "docs/research/USER_INSTALL_1917.json",
+    "sourceCommit": "b4dab315020cdd64b525ee5ae7e11107640c5bb2",
+    "bundleHash": "2904c1509b0de679be1d62af55054ceedd05da02adacca9802f78c87897f1268",
     "verified": true,
     "versions": 1,
-    "scope": "Installed optional signed value control offsets and monotone0..4/3 horizontal handles, vertical and extended-time exact subdivision/partial bake with outside preservation. Centered stationary inverse plus actual derivative minimum retains old near-linear time curves; vector offsets and absent-control Hermite compatibility. Shared BP/Sequence/skeletal sampling, affine/selected-axis tools, strict clipboard and atomic AI controls. Actual vertical incoming handle drag/pixel snap/numeric conversion preserves outgoing linear mode; UndoRedo/private clipboard/save/AI invalid/CAS and above-one weights. Narrow panel retains graph130px with Fit/selection footer. Real existing CPP Seek at .2/.5/.9 matches independent inverse cubic oracle and restores in installed editor and standalone D3D11. Ten affected regressions plus final10005-observation unit;1145 source/all21 native+SDK/vendor2/binary/full manifest exact, User preserved, Versions1/cache32/lease0. Outside-key-domain partial bake and broader engine goals remain."
+    "scope": "Explicit cross-asset enum/record field dependencies through durable typeId and imports, transitive generated C++ includes and deduplicated immutable BP metadata. Dependency validation rejects missing/cyclic/duplicate/wrong typed defaults before publication. Additive child fields migrate parent asset scalar/array defaults, headers and BP/scene/prefab/sequence consumers in one journal, dryRun plan/CAS and UndoRedo; old-path redirects work after dependency moves. Actual UI import/type/default/save, opened pure/native consumer migration and CPP [99,4,12]/pure BP [99,3,2]/Actor identity. Fixed record type-switch previous scalar default and no-op batch-save dirty state with concurrent-edit preservation. Eight affected gates; exact installed editor and standalone D3D11 passed. No global automatic discovery/destructive schema/live ABI/full SDK/mobile-hardware claim."
   }
 }

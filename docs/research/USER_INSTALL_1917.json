@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "kind": "user-install-cross-asset-types",
+  "passed": true,
+  "pending": false,
+  "sourceCommit": "b4dab315020cdd64b525ee5ae7e11107640c5bb2",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2904c1509b0de679",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\2904c1509b0de679\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\2904c1509b0de679\\HBEngine.exe",
+  "bundleHash": "2904c1509b0de679be1d62af55054ceedd05da02adacca9802f78c87897f1268",
+  "files": 4490,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4484,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ab1358413b56252a",
+        "bytes": 197840042,
+        "manifestSHA256": "a89033ad971e31aa153dc228a8fd6101de73d578a66de317c7cec5e64afc9b91"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-23T04:32:26.1014409Z",
+    "bytes": 197840042,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "2904c1509b0de679"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "runtimeOwnersVerified": 1150,
+  "repositoryOnlyTestSourcesVerified": 30,
+  "vendorHashes": {
+    "node_modules/three/src/renderers/common/UniformsGroup.js": {
+      "sha256": "8d6779a8482432c4c16bc195559d5e47b7f476362a79702b00d59ce3276df292",
+      "bytes": 10590
+    },
+    "node_modules/three/build/three.webgpu.js": {
+      "sha256": "c2ab5c8995362fd387f6815c563815c764e16e174f36bcd330d59dc88997c275",
+      "bytes": 1875505
+    }
+  },
+  "changedNativeOwners": [],
+  "nativePlayerSHA256": "07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160",
+  "installedGates": [
+    {
+      "path": "native/build/native-type-dependencies-1914-window-By5dsc/acceptance.json",
+      "sha256": "71a07ec9b560eceeb6ecdc44d1f4c979fa066ec6bd783ac45fd973c11cfcf152",
+      "scope": "Owned actual2D editor imports/type choice/UndoRedo/save, three separate type assets; leaf additive field migrates two parent assets, generated headers, pure/native Blueprint values and opened views in one journal. AI locally shaped missing dependency rejects publication without changing saved originals. Rebuilt C++ shared generated types execute and preserve Actor identity; optional independent D3D11 same saved project/content. No global automatic discovery, destructive schema/ABI or all SDK/mobile hardware claim.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\2904c1509b0de679\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 80500.0849
+    }
+  ],
+  "installedContext": {
+    "readOnly": true,
+    "root": "C:\\Users\\kirby\\HBEngine\\Versions\\2904c1509b0de679\\",
+    "elapsedMs": 62.53,
+    "matches": 1,
+    "installation": {
+      "observed": true,
+      "root": "C:\\Users\\kirby\\HBEngine\\Versions\\2904c1509b0de679",
+      "marker": "HBEngine.install.json",
+      "bundleHash": "2904c1509b0de679be1d62af55054ceedd05da02adacca9802f78c87897f1268",
+      "installedAt": "2026-10-23T04:32:22.630Z",
+      "manifestFiles": 4490,
+      "integrityChecked": false
+    }
+  },
+  "installedMetadataCheck": "{\"passed\":true,\"reusedFrom\":\"docs/research/USER_INSTALL_1911.json\",\"changedSDK\":[],\"scope\":\"All21 native/SDK owners, Host1041/Player1604/renderer exact hashes unchanged. Fresh project C++ compiles the new generated transitive includes; historical30 native test-source hashes are provenance, not a new full SDK run.\"}",
+  "postGateNativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "manifestVerifiedFiles": 4490,
+  "versions": [
+    "2904c1509b0de679"
+  ],
+  "profile": {
+    "filesBefore": 10849,
+    "filesAfter": 10849,
+    "beforeSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "afterSHA": "0b4144b72668fe29d8f449864e32041811f17bd8d0fc1e81c9ef4f95fe737048",
+    "preserved": true,
+    "readOnly": true,
+    "beforeReceipt": "native/build/user-install-1917-before.json",
+    "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+  },
+  "shortcutsVerified": true,
+  "associationVerified": true,
+  "sourceChecks": [
+    {
+      "path": "native/build/nativeTypes1915-group.json",
+      "sha256": "727e7ed5cc088ac771a0475c294009d2568f468b5695badd7b79e9b51a11885d",
+      "scope": "Eight affected gates. Seven model/project/save regressions and actual source-window/C++ flow; passed math/project reports retained across targeted default/no-op GUI fixes. Final source transfer/watch changes are additionally covered by the exact installed gate. No elapsed total is claimed for retries or unrelated historical gates."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-type-dependencies-1913-WDs61s/acceptance.json",
+      "sha256": "ac7df34d5b923e970ffcc38143f66514b5db2bac53c65679da422a4bd35ba228",
+      "scope": "Local structural validation is distinct from full import/save graph validation. Shared explicit enum/record dependencies, transitive metadata and generated includes; additive dependent authored defaults and actual project consumer migration/journal/CAS. Actual native compile/editor/player separate gate; no global auto-discovery/destructive migration/live ABI reload claim."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-type-assets-1662-U6cbQP/acceptance.json",
+      "sha256": "fd32e7ad7cc204980365c59607e0cd93e0a11fb7461ba9ca4b07fb7c213e85e1",
+      "scope": "Type library model and generated native metadata, actual 2D project CRUD/atomic header pair/checked-batch, identity and failure preservation. Compiled CPP, actual editor and packaged game are separate gates; dedicated independent type assets/global pure-BP registry/schema migration not claimed."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-type-imports-1675-7qYwXR/acceptance.json",
+      "sha256": "4142624083ef30af9af5d19db02eadd22b4aeef462f7e6c40e9ee11be4ceeaca",
+      "scope": "Headless pure BP type-library source references/resolver scope/classless metadata, parent/child/UndoRedo cache views, actual 2D ProjectService validation and compact save, actual shared BlueprintRuntime SetMembers/Actor self refs with zero native builds/calls. UI/exported actual game separate; mixed CPP imports/per-type assets/arbitrary schema migration not claimed."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-type-migration-1700-5522KS/acceptance.json",
+      "sha256": "bf509c6daaeaf39fde3538e96b577fe36c270d5f451880770c14920e6d6e093d",
+      "scope": "Actual source project publication and rollback. Open-document UI/Undo, compiled C++ and packaged game require their separate runtime gate."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-type-migration-1701-editor-cKCbRN/acceptance.json",
+      "sha256": "35c399bbf01f1b5a8cd91188d9e5a674eee8cfc5e767365ac1ca0a7932c81a5c",
+      "scope": "Production save/batch/Undo functions with real ProjectService, real resolver and isolated files. Native actual-window and game gate separate."
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/native-type-declarations-1821-13W6KW/acceptance.json",
+      "sha256": "65bb8f5dcdc7d6256f96833ff8c57a36dc4e909277cd93c77071baf0c86e4915",
+      "scope": "First-class individual enum/struct assets with durable primary declaration and same-file helper types; actual2D project creation/paired C++ headers, explicit BP import and classless runtime, additive record value migration, dryRun plan CAS/group UndoRedo, path rename/redirect/header identity. Cross-asset field dependencies/global discovery/ABI hotreload are separate."
+    },
+    {
+      "path": "native/build/native-type-index-1653.json",
+      "sha256": "ec2c05ed3e1cb454a64509bfe6e368a01d2bc1185efd4f9da692f07af90a7689",
+      "scope": "Snapshot-only lazy weak type lookup, previous linear identity/source ambiguity and1000 record-array validation; independently valid raw frozen registries share one parent but resolve distinct child field/ref schemas, mutable schema changes stay live, copy-on-write references and immutable field-plan reset. Table traversal counts, not FPS/heap/native compilation or dedicated type assets."
+    },
+    {
+      "path": "native/build/native-type-dependencies-1914-window-UeVXsV/acceptance.json",
+      "sha256": "a91a4a3a15c232bdb9672c5a39df943dbe66ad8dce642b7a79262f98737edd75",
+      "scope": "Owned actual2D editor imports/type choice/UndoRedo/save, three separate type assets; leaf additive field migrates two parent assets, generated headers, pure/native Blueprint values and opened views in one journal. AI locally shaped missing dependency rejects publication without changing saved originals. Rebuilt C++ shared generated types execute and preserve Actor identity; optional independent D3D11 same saved project/content. No global automatic discovery, destructive schema/ABI or all SDK/mobile hardware claim."
+    }
+  ],
+  "sourceGameGates": [
+    {
+      "path": "native/build/native-type-dependencies-1914-window-UeVXsV/acceptance.json",
+      "sha256": "a91a4a3a15c232bdb9672c5a39df943dbe66ad8dce642b7a79262f98737edd75",
+      "scope": "Owned actual2D editor imports/type choice/UndoRedo/save, three separate type assets; leaf additive field migrates two parent assets, generated headers, pure/native Blueprint values and opened views in one journal. AI locally shaped missing dependency rejects publication without changing saved originals. Rebuilt C++ shared generated types execute and preserve Actor identity; optional independent D3D11 same saved project/content. No global automatic discovery, destructive schema/ABI or all SDK/mobile hardware claim.",
+      "note": "Source actual UI/compiled CPP passed; final workspace source handoff/watch plus docs/focus additionally covered by exact installed gate."
+    }
+  ],
+  "scope": "Explicit cross-asset enum/record field dependencies through durable typeId and imports, transitive generated C++ includes and deduplicated immutable BP metadata. Dependency validation rejects missing/cyclic/duplicate/wrong typed defaults before publication. Additive child fields migrate parent asset scalar/array defaults, headers and BP/scene/prefab/sequence consumers in one journal, dryRun plan/CAS and UndoRedo; old-path redirects work after dependency moves. Actual UI import/type/default/save, opened pure/native consumer migration and CPP [99,4,12]/pure BP [99,3,2]/Actor identity. Fixed record type-switch previous scalar default and no-op batch-save dirty state with concurrent-edit preservation. Eight affected gates; exact installed editor and standalone D3D11 passed. No global automatic discovery/destructive schema/live ABI/full SDK/mobile-hardware claim."
+}
