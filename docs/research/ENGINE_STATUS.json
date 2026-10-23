@@ -1931,7 +1931,8 @@
         "docs/research/ENGINE_WORK_1891.json",
         "docs/research/USER_INSTALL_1893.json",
         "docs/CURVE_CHANNEL_SELECTION.md",
-        "docs/research/ENGINE_WORK_1897.json"
+        "docs/research/ENGINE_WORK_1897.json",
+        "docs/research/USER_INSTALL_1899.json"
       ]
     },
     {
@@ -2624,7 +2625,8 @@
         "docs/research/ENGINE_WORK_1891.json",
         "docs/research/USER_INSTALL_1893.json",
         "docs/CURVE_CHANNEL_SELECTION.md",
-        "docs/research/ENGINE_WORK_1897.json"
+        "docs/research/ENGINE_WORK_1897.json",
+        "docs/research/USER_INSTALL_1899.json"
       ]
     },
     {
@@ -3743,14 +3745,14 @@
     "first": 1895,
     "last": 1897,
     "receipt": "docs/research/ENGINE_WORK_1897.json",
-    "scope": "Independent per-key component selections across owners, Ctrl toggles, visible-component marquee/selectAll/hidden removal and selected fit. Inverse drag per axis, raw numeric/handle/weight inputs and selected-component transform/tangent/smooth/FFT tools in one authoring transaction. Common vector key time moves once, channel transform candidates use original index to avoid crossing-time alias. Atomic AI selections selector with CAS/dryRun/invalid rollback. Shared record time/interpolation/delete/copy/topology explicitly retained. Nine affected regressions, final pure FFT/time-crossing proof, real source UI/CPP passed; final installed mixed-axis shared time/tangent and standalone D3D proof required."
+    "scope": "Installed independent per-key axes across owners and multiple axes of one vector key: Ctrl toggle/visible marquee and selectAll, inverse per-axis drag with shared time applied once, raw numeric/tangent edits, selected-component tools, AI selectors CAS/dryRun/late-error atomic rollback. Existing absolute/normalized/stacked views and scroll preserved. Real CPP Play/Pause/Seek/Stop samples A[101,1,0] B[-10,0,1] and restores in installed editor and standalone D3D11. Nine affected regressions plus final unit crossing-time/FFT proof. Exact1139 source/all21 native+SDK/vendor2/binary/full manifest checks; User preserved, Versions1/cache32/lease0. Independent per-component key topology and broader cumulative engine goals remain."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_1893.json",
-    "sourceCommit": "92a3fc424897bb2bc61d5c8e5f4ca3930e27d349",
-    "bundleHash": "2da60eaae54797b3689779357ffb7d7d13c2af7eddac2faa84d0f58fc403d7b8",
+    "receipt": "docs/research/USER_INSTALL_1899.json",
+    "sourceCommit": "a7c840ea073880161b6405eb78d516cd57098110",
+    "bundleHash": "e9b8ef0e7b256a06b198e62d04002d07baf202df01258634a4bc2ea1e7ad10cf",
     "verified": true,
     "versions": 1,
-    "scope": "Installed absolute/normalized/stacked sequence curve views with inverse raw key/handle/marquee/group editing, value-axis zoom/pan, independent scrollable component lanes and visibility preserved across Undo. AI view read/set/CAS/dryRun/invalid mode/bool/revision preserves authored data. Real CPP Play/Pause/Seek/Stop samples raw authored targets and restores in installed editor and standalone D3D11. Eight affected regressions plus final affine/hull/tiny/identity unit. Exact1135 source/all21 native+SDK/vendor2/binary/full manifest checks; User preserved, Versions1/cache32/lease0. Per-key differing channel axes and broader cumulative engine goals remain."
+    "scope": "Installed independent per-key axes across owners and multiple axes of one vector key: Ctrl toggle/visible marquee and selectAll, inverse per-axis drag with shared time applied once, raw numeric/tangent edits, selected-component tools, AI selectors CAS/dryRun/late-error atomic rollback. Existing absolute/normalized/stacked views and scroll preserved. Real CPP Play/Pause/Seek/Stop samples A[101,1,0] B[-10,0,1] and restores in installed editor and standalone D3D11. Nine affected regressions plus final unit crossing-time/FFT proof. Exact1139 source/all21 native+SDK/vendor2/binary/full manifest checks; User preserved, Versions1/cache32/lease0. Independent per-component key topology and broader cumulative engine goals remain."
   }
 }

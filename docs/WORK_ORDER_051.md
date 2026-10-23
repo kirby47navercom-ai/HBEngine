@@ -1156,3 +1156,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1892–1894: 최종설치3view·inverse key110/tangent25/marquee175/값zoom/RMBpan·hiddenUndo유지·stacked2lane독립scroll/서로다른rawgroupdelta·AI read/set/CAS/dryRun/invalid state보존·CPPraw두대상/restore·별도D3D 58.43초통과. manifest4467/source1135/native21+SDK/vendor2/PlayerHost exact불변·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전197041864B정리. USER_INSTALL1893·키별다른axis등누적잔여유지.
 
 1895–1897: 키별다른축/복수축·Ctrl토글/가시채널전체/범위선택·inverse다중축drag/공유시간1회·raw입력/탄젠트/가중·축별tool/FFT·원본후보고정·AI selections원자적CAS/dryRun/invalidrollback 구현.9영향회귀20.24초/최종unit9조건·실제source UI/CPP통과. 공유time/interpolation/delete/copy/topology범위명시·독립채널저장잔여유지. 설치최종time/tangent/별도D3D gate예정. WORK1897.
+
+1898–1900: 최종설치다중축같은key/다른owner선택·inverse축별drag/시간+.25한번·숫자7/탄젠트6/toggle/mirror/marquee/Undo·AI selections CAS/dryRun/lateinvalidrollback·CPP A[101,1,0]/B[-10,0,1]와restore·별도D3D 75.73초통과. manifest4473/source1139/native21+SDK/vendor2/binary불변·User10849읽기보존·링크/association/Versions1/cache32/lease0·이전197235862B정리. USER_INSTALL1899. 독립채널저장·나머지누적잔여유지.

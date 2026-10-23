@@ -1520,6 +1520,20 @@
     "Grouped report stdout JSON escaping was normalized and each report read/validated, without repeating passed gates.",
     "Source review found simultaneous time transform per-axis candidate could collide with another original time. Candidate channel computations now use original index/time, union shared time applied once; independent crossing case passed."
   ],
-  "installationPending": true,
-  "scope": "Independent per-key component selections across owners, Ctrl toggles, visible-component marquee/selectAll/hidden removal and selected fit. Inverse drag per axis, raw numeric/handle/weight inputs and selected-component transform/tangent/smooth/FFT tools in one authoring transaction. Common vector key time moves once, channel transform candidates use original index to avoid crossing-time alias. Atomic AI selections selector with CAS/dryRun/invalid rollback. Shared record time/interpolation/delete/copy/topology explicitly retained. Nine affected regressions, final pure FFT/time-crossing proof, real source UI/CPP passed; final installed mixed-axis shared time/tangent and standalone D3D proof required."
+  "installationPending": false,
+  "scope": "Independent per-key component selections across owners, Ctrl toggles, visible-component marquee/selectAll/hidden removal and selected fit. Inverse drag per axis, raw numeric/handle/weight inputs and selected-component transform/tangent/smooth/FFT tools in one authoring transaction. Common vector key time moves once, channel transform candidates use original index to avoid crossing-time alias. Atomic AI selections selector with CAS/dryRun/invalid rollback. Shared record time/interpolation/delete/copy/topology explicitly retained. Nine affected regressions, final pure FFT/time-crossing proof, real source UI/CPP passed; final installed mixed-axis shared time/tangent and standalone D3D proof required.",
+  "currentInstallation": "docs/research/USER_INSTALL_1899.json",
+  "installedGates": [
+    {
+      "path": "native/build/curve-channels-1896-window-Oi52ap/acceptance.json",
+      "sha256": "f6efec55ee7a3788c8935533a89c50bcad45a70359a7945627b6d4e94d7e37f8",
+      "scope": "Owned actual mixed per-key axes Ctrl selection/toggle, per-component inverse drag/numeric input/mirror/marquee, channel selectors CAS/dryRun/errors preserving all tracks; mixed component authored values sampled in CPP and restored. Inherited three view modes, normalized inverse key/handle/marquee/raw input, channel visibility across Undo, independently scrollable stacked lanes and differing raw group drag amounts, AI view read/set/CAS/dryRun/error with unchanged authored revision; real CPP raw values/restoration. Optional standalone D3D11.",
+      "args": [
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\e9b8ef0e7b256a06\\HBEngine.exe",
+        "--package"
+      ],
+      "ms": 75733.4739
+    }
+  ]
 }
