@@ -2884,7 +2884,10 @@
         "sequenceBlendContract",
         "sequenceBlendModes",
         "validSequenceWeight",
-        "validSequenceBlend"
+        "validSequenceBlend",
+        "validSequenceSectionBlend",
+        "sequenceBlendSettings",
+        "blendSequenceNumber"
       ],
       "paths": [
         "prototype/sequence-blending.js"
