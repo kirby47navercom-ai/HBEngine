@@ -126,11 +126,37 @@
     "newTimer": 0,
     "newGPUResources": 0,
     "newPerFrameTraversal": false,
-    "scope": "Instance settings computed on tree creation/root control changes, not every frame; existing weak channel state. No FPS/heap claim. Resource read-only audit1975 saw32recent+1live cache entry and1lease; no forced deletion of live cache."
+    "scope": "Instance settings computed on tree creation/root control changes, not every frame; existing weak channel state. No FPS/heap claim. Read-only resource audit1975 observed33 cache entries and1lease file, retaining active references under existing32-recent policy; no forced deletion."
   },
   "research": {
     "wholeUEUnityAnalysisComplete": false,
     "completionPercent": null
   },
-  "scope": "Per-instance subsection weight and inherit/override/normalized mode with actual existing priority tiers, independent source offsets, effective/local metadata, strict authoring/AI model and source-preserving trim. Seven new source cases and four affected gates. Actual new section UI and installed game remain pending for user activity."
+  "scope": "Per-instance subsection weight and inherit/override/normalized mode with actual existing priority tiers, independent source offsets, effective/local metadata, strict authoring/AI model and source-preserving trim. Seven new source cases and four affected gates. Actual new section UI and installed game remain pending for user activity.",
+  "finalAdmittedAudit": {
+    "owners": 1198,
+    "lineage": [
+      "docs/research/ENGINE_WORK_1955.json",
+      "docs/research/ENGINE_WORK_1958.json",
+      "docs/research/ENGINE_WORK_1966.json",
+      "docs/research/ENGINE_WORK_1974.json",
+      "docs/research/ENGINE_WORK_1978.json"
+    ],
+    "mismatches": [
+      {
+        "path": "prototype/player.js",
+        "admitted": "8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1",
+        "actual": "4d89ea43c2f9f32ad96be161ffceb4491c567ab0422ecb6c43495cf68adff247"
+      }
+    ],
+    "admittedHEADPlayerVerified": true,
+    "unrelatedKeyboardFilesPreserved": true
+  },
+  "focusedAI": {
+    "symbol": "sequenceBlendSettings",
+    "mode": "focused-routes",
+    "filesRead": 1,
+    "elapsedMs": 153.71,
+    "owner": "prototype/sequence-blending.js"
+  }
 }
