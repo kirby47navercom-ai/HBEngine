@@ -1138,3 +1138,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1865–1867: 외부그래프/몽타주원래평가기분리·유한Repeat/PingPong/managedfade·전이/파라미터/retiring몽타주혼합·표시포즈복원. notify End(sequence-suspended)취소/다음tick재진입·latent/부작용rollback미포함. 겹친최종다른director/keep/최신외부교체/종료오류복구/월드정리·AI제한조회/focus. 7영향회귀(신규9case)·실제CPP Graph/Montage Setup/Sequence조작·editor/별도D3D통과. WORK1867·설치예정.
 
 1868–1870: 설치editor/CPP Graph·Montage Setup/Sequence조작·2D sprite+Graph/Montage원본restore/keep·별도D3D 71.11초통과. manifest4440/source1116/native21/vendor2/PlayerHost불변SHA·User10849읽기불변·링크/association/Versions1/cache32/lease0·이전196263783B정리. USER_INSTALL1869·골격별가중혼합/임의notify부작용rollback등누적잔여보존.
+
+1871–1873: 分수displayRate/DF·초저장/녹화율/게임FPS독립·frame/TC입력과눈금·step/snap/Shift자유이동/rangehandle/defaultbake·소유키곡선열기·CPP/BP4함수/동일runtime metadata 구현. 8영향회귀/BigInt대조/각rate10000step·실제source UI/drag/Undo/bake/CPP·이전독립D3D checkpoint통과. TC입력폭/최종TC눈금·DF잠금설치gate예정. WORK1873·Custom/PlayEveryFrame/개별시간상속등잔여유지.
