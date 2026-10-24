@@ -33,6 +33,20 @@ export class RuntimeTilemaps {
     if(key==='tileHasChanges')return {return:this.dirty.has(object.id)};if(key==='tileProcessChanges'){await this.process(object);return {};}
     if(key==='tileWorldToCell'){if(!Array.isArray(args.position)||args.position.length!==3||!args.position.every(Number.isFinite))throw Error('월드 위치를 확인하세요.');const p=new THREE.Vector3(...args.position).applyMatrix4(sceneWorldMatrix(object,vm.objects).invert());return {return:tileLocalToCell(map,p.toArray())};}
     if(key==='tileCellToWorld'){if(!Array.isArray(args.cell)||args.cell.length!==2||!args.cell.every(Number.isInteger))throw Error('셀 좌표를 확인하세요.');const p=new THREE.Vector3(...tileCellPoint(map,args.cell[0]+.5,args.cell[1]+.5)).applyMatrix4(sceneWorldMatrix(object,vm.objects));return {return:p.toArray()};}
+    return this.edit(object,map,key,args);
+  }
+  // Only already-loaded, distinct non-erasing writes can share an atomic native
+  // packet run. Repeats/erases/queries/errors remain ordering barriers.
+  writeNativeRun(operations,start,b,vm){
+    const first=operations[start],a=first?.args,next=operations[start+1],basic=op=>op?.key==='tileSet'&&Array.isArray(op.args?.cell)&&op.args.cell.length===2&&op.args.cell.every(Number.isInteger)&&Number.isInteger(op.args.index)&&op.args.index>=0&&op.args.index<=1048575;
+    if(this.disposed||vm.active===false||!basic(first)||!basic(next))return 0;
+    const object=vm.object(a.target==='self'?b.self:a.target),path=object&&(enabledComponent(object,'TilemapRenderer')?.tilemap||object.tilemapAsset),map=object?.runtimeTilemap;
+    if(!object||object.poolActive===false||!path||object.runtimeTilemapPath!==path||!map||!map.layers.some(l=>l.id===a.layer))return 0;
+    const cells=[],indices=[],seen=new Set();let end=start;
+    for(;end<operations.length&&cells.length<65536;end++){const op=operations[end];if(!basic(op)||op.self!==first.self||op.args.target!==a.target||op.args.layer!==a.layer||!cellOK(map,op.args.cell))break;const key=op.args.cell.join(':');if(seen.has(key))break;seen.add(key);cells.push(op.args.cell);indices.push(op.args.index);}
+    if(cells.length<2)return 0;this.edit(object,map,'tileSetMany',{layer:a.layer,cells,indices});return end;
+  }
+  edit(object,map,key,args){
     const layer=map.layers.find(l=>l.id===args.layer);if(!layer)throw Error('타일 레이어가 없어요: '+args.layer);
     if(['tileGet','tileHas'].includes(key)){if(!cellOK(map,args.cell))return {return:key==='tileGet'?-1:false};const tile=tileAt(layer,args.cell[0],args.cell[1]);return {return:key==='tileGet'?tile?.index??-1:!!tile};}
     let next=map,changed=false,cells=null;

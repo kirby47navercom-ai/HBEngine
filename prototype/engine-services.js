@@ -221,6 +221,7 @@ export function engineOperations(hooks){
       }
       for(let i=0;i<operations.length;){
         const op=operations[i];let end=i+1;
+        if(op.key==='tileSet'){const next=tilemaps.writeNativeRun(operations,i,vm.bindings.find(owner=>owner.self===op.self)||b,vm);if(next){i=next;continue;}}
         // Flush UI before any other operation can call C++ or inspect the world.
         if(op.key.startsWith('uiSet')&&op.key!=='uiSetFont'){
           while(end<operations.length&&operations[end].key.startsWith('uiSet')&&operations[end].key!=='uiSetFont')end++;

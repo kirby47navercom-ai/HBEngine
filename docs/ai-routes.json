@@ -3327,6 +3327,17 @@
         "prototype/editor-tool.js",
         "docs/EDITOR_TOOL_API.md"
       ]
+    },
+    {
+      "keywords": [
+        "writeNativeRun",
+        "타일 네이티브 쓰기"
+      ],
+      "paths": [
+        "prototype/tilemap-runtime.js",
+        "prototype/engine-services.js",
+        "docs/TILE_RUNTIME_INDEXES.md"
+      ]
     }
   ]
 }
