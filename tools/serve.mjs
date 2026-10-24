@@ -1,3 +1,4 @@
+import {prepareModelImages,modelImagesReply,publishModelMaterial} from './model-material-publish.mjs';
 import {automationPollLimits} from '../prototype/automation-poll.js';
 import {streamHttpFile} from './http-file.mjs';
 import {sourceControlStatus,sourceControlDiff,sourceControlStage,sourceControlCommit,sourceControlInit,sourceControlConfigure,sourceControlBase} from './source-control.mjs';
@@ -98,6 +99,8 @@ const server=http.createServer(async(req,res)=>{try{
     if(url.pathname==='/api/asset/fingerprint'&&req.method==='GET'){const result=await owner.inspectFingerprint(url.searchParams.get('path'));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/document'&&req.method==='GET'){const result=await owner.inspectDocument(q.get('path'));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/registry'&&req.method==='GET'){const result=await owner.assetRegistry();checkOwner(owner);return json(res,result);}
+    if(url.pathname==='/api/asset/model-images'&&req.method==='POST'){const data=JSON.parse(await readBody(1048576));await owner.writeQueue;checkOwner(owner);return json(res,modelImagesReply(await prepareModelImages(owner,data,()=>checkOwner(owner))));}
+    if(url.pathname==='/api/asset/model-material'&&req.method==='POST'){const data=JSON.parse(await readBody(16777216));return json(res,await publishModelMaterial(owner,data,()=>checkOwner(owner)));}
     if(url.pathname==='/api/asset/model-import'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.prepareModelImport(data.path);checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/model-override'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.overrideModelSubasset(data.path,data.id,data.overrides);checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/reimport'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.reimport(data.paths);checkOwner(owner);return json(res,result);}

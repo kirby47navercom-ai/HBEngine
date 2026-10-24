@@ -3638,6 +3638,40 @@
         "prototype/app.js",
         "docs/EFFECT_ONGOING.md"
       ]
+    },
+    {
+      "id": "model-embedded-images",
+      "keywords": [
+        "prepareModelImages",
+        "publishModelMaterial",
+        "hashModelEmbeddedImages",
+        "modelImagesReply"
+      ],
+      "paths": [
+        "tools/model-material-publish.mjs",
+        "tools/asset-transaction.mjs",
+        "prototype/model-material-extraction.js",
+        "prototype/engine-services.js",
+        "prototype/app.js",
+        "tools/serve.mjs",
+        "docs/MODEL_EMBEDDED_IMAGES.md"
+      ]
+    },
+    {
+      "id": "tile-brush-session",
+      "keywords": [
+        "TileBrushSession",
+        "stageTileStroke",
+        "tilemap.stroke",
+        "tileToolCells"
+      ],
+      "paths": [
+        "prototype/tile-brush-session.js",
+        "prototype/two-d-assets.js",
+        "prototype/two-d-editor.js",
+        "prototype/app.js",
+        "docs/TILE_BRUSH_SESSIONS.md"
+      ]
     }
   ]
 }

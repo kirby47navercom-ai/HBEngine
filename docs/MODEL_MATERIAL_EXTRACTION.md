@@ -6,7 +6,7 @@
 
 glTF는 로더의 material 인덱스로 연결해 이름 중복을 추측하지 않아요. 다른 형식은 보존된 FBX ID 또는 고유 이름이 필요해요. 외부 이미지 URI는 모델 폴더 기준으로 정규화하고 `Assets/` 밖, 외부 URL·data/blob·query URL을 거절해요. 로더/parser와 임시 URL은 결과에 저장하지 않아요.
 
-내장 이미지·지원 밖 맵/셰이더/래스터 상태·추가 UV·비대칭 노멀 배율·사용자 텍스처 행렬·표현 불가능한 필터는 생성 전에 거절해요. 그림을 빼고 성공으로 처리하지 않아요. 스킨 추출·모든 DCC 형식/재질과 렌더 결과의 동등성까지 증명한 기능은 아니에요.
+내장 PNG/JPEG/WebP는 [MODEL_EMBEDDED_IMAGES.md](MODEL_EMBEDDED_IMAGES.md)의 SHA 계획과 공동 복구 저장으로 함께 추출해요. 지원 밖 코덱·맵/셰이더/래스터 상태·추가 UV·비대칭 노멀 배율·사용자 텍스처 행렬·표현 불가능한 필터는 생성 전에 거절해요. 그림을 빼고 성공으로 처리하지 않아요. 스킨 추출·모든 DCC 형식/재질과 렌더 결과의 동등성까지 증명한 기능은 아니에요.
 
 AI는 `modelimport.extractMaterial`에 열린 문서 `path`, `expectedRevision`, 재질 `subasset`, 새 `name`을 전달해요. `dryRun:true`는 요약만 반환하고, 전체 초안은 `includeData:true`로 받아요. 미리보기 로딩 뒤 문서 revision과 미리보기 수명을 다시 확인해요. 경로 소유자는 `modelMaterialSubasset`, `extractModelMaterial`, `tagModelMaterials`로 조회할 수 있어요.
 

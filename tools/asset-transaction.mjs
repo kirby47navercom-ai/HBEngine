@@ -2,12 +2,12 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {randomUUID,createHash} from 'node:crypto';
 
-const hash=text=>text===null?null:createHash('sha256').update(text).digest('hex');
-const read=file=>fs.readFile(file,'utf8').catch(error=>{if(error.code==='ENOENT')return null;throw error;});
+const hash=(text,encoding='utf8')=>text===null?null:createHash('sha256').update(encoding==='base64'?Buffer.from(text,'base64'):text).digest('hex');
+const read=(file,encoding)=>fs.readFile(file,encoding==='base64'?undefined:'utf8').then(value=>encoding==='base64'?value.toString('base64'):value).catch(error=>{if(error.code==='ENOENT')return null;throw error;});
 const conflict=message=>Object.assign(Error(message),{status:409,code:'TRANSACTION_CONFLICT'});
-async function put(file,text,create=false){
+async function put(file,text,create=false,encoding){
   await fs.mkdir(path.dirname(file),{recursive:true});const temp=file+'.'+randomUUID()+'.tmp';
-  try{await fs.writeFile(temp,text,{flag:'wx',flush:true});if(create)await fs.link(temp,file);else await fs.rename(temp,file);}
+  try{await fs.writeFile(temp,encoding==='base64'?Buffer.from(text,'base64'):text,{flag:'wx',flush:true});if(create)await fs.link(temp,file);else await fs.rename(temp,file);}
   finally{await fs.unlink(temp).catch(error=>{if(error.code!=='ENOENT')throw error;});}
 }
 const folder=project=>path.join(project.root,'Saved','Transactions');
@@ -17,9 +17,9 @@ const store=(project,journal)=>put(journalFile(project,journal.id),JSON.stringif
 export async function readAssetTransaction(project,id){
   const file=await project.resolve('Saved/Transactions/'+path.basename(journalFile(project,id)),false,false),stat=await fs.stat(file);
   if(stat.size>32*1024*1024)throw Error('저장 기록 크기 초과');const journal=JSON.parse(await fs.readFile(file,'utf8'));
-  if(journal.version!==1||journal.id!==id||!['prepared','committed','rolledBack'].includes(journal.state)||!Array.isArray(journal.rows)||!journal.rows.length)throw Error('저장 기록 형식 오류');
+  if(![1,2].includes(journal.version)||journal.id!==id||!['prepared','committed','rolledBack'].includes(journal.state)||!Array.isArray(journal.rows)||!journal.rows.length)throw Error('저장 기록 형식 오류');
   const paths=new Set();for(const row of journal.rows){
-    if(typeof row.path!=='string'||!/^(Assets|Source|Settings)\//.test(row.path)||paths.has(row.path.toLowerCase())||[row.before,row.after].some(t=>t!==null&&typeof t!=='string')||hash(row.before)!==row.beforeHash||hash(row.after)!==row.afterHash)throw Error('저장 기록 검증 실패');
+    if(typeof row.path!=='string'||!/^(Assets|Source|Settings)\//.test(row.path)||paths.has(row.path.toLowerCase())||row.encoding!==undefined&&(journal.version!==2||row.encoding!=='base64')||[row.before,row.after].some(t=>t!==null&&(typeof t!=='string'||row.encoding==='base64'&&Buffer.from(t,'base64').toString('base64')!==t))||hash(row.before,row.encoding)!==row.beforeHash||hash(row.after,row.encoding)!==row.afterHash)throw Error('저장 기록 검증 실패');
     await project.resolve(row.path,true,false);paths.add(row.path.toLowerCase());
   }
   return journal;
@@ -28,10 +28,10 @@ export async function readAssetTransaction(project,id){
 async function rollback(project,journal,writingPaths=null){
   // Check the entire group before restoring anything. Never replace a third
   // party's edit with an older backup when recovery finds a conflict.
-  const current=[];for(const row of journal.rows){if(writingPaths&&!writingPaths.has(row.path))continue;const file=await project.resolve(row.path,true,false),text=await read(file);if(hash(text)!==row.beforeHash&&hash(text)!==row.afterHash)throw conflict('복구 중 외부 변경을 발견했어요: '+row.path);current.push({row,file,text});}
+  const current=[];for(const row of journal.rows){if(writingPaths&&!writingPaths.has(row.path))continue;const file=await project.resolve(row.path,true,false),text=await read(file,row.encoding);if(hash(text,row.encoding)!==row.beforeHash&&hash(text,row.encoding)!==row.afterHash)throw conflict('복구 중 외부 변경을 발견했어요: '+row.path);current.push({row,file,text});}
   for(const {row,file,text} of current.reverse()){
-    if(hash(await read(file))!==hash(text))throw conflict('복구 중 파일이 변경됐어요: '+row.path);
-    if(hash(text)!==row.beforeHash){if(row.before===null)await fs.unlink(file);else await put(file,row.before,text===null);}
+    if(hash(await read(file,row.encoding),row.encoding)!==hash(text,row.encoding))throw conflict('복구 중 파일이 변경됐어요: '+row.path);
+    if(hash(text,row.encoding)!==row.beforeHash){if(row.before===null)await fs.unlink(file);else await put(file,row.before,text===null,row.encoding);}
     if(row.indexBefore===null)delete project.index[row.path];else project.index[row.path]=row.indexBefore;
   }
   await project.saveIndex();journal.state='rolledBack';await store(project,journal);
@@ -43,18 +43,20 @@ export async function recoverAssetTransactions(project){
 }
 
 export async function commitAssetBatch(project,rows,guard,checkReads=async()=>{},{retainJournal=true}={}){
+  const paths=new Set();for(const row of rows){if(!row||typeof row.path!=='string'||!/^(Assets|Source|Settings)\//.test(row.path)||paths.has(row.path.toLowerCase())||row.encoding!==undefined&&row.encoding!=='base64'||[row.before,row.after].some(t=>t!==null&&(typeof t!=='string'||row.encoding==='base64'&&Buffer.from(t,'base64').toString('base64')!==t)))throw Error('저장 묶음의 경로·인코딩·내용을 확인하세요.');await project.resolve(row.path,true,false);paths.add(row.path.toLowerCase());}
   await checkReads({written:false});rows=rows.filter(row=>row.before!==row.after);if(!rows.length)return {ok:true,noChange:true,paths:[]};
-  const journal={version:1,id:randomUUID(),state:'prepared',createdAt:new Date().toISOString(),rows:rows.map(row=>({...row,beforeHash:hash(row.before),afterHash:hash(row.after),indexBefore:project.index[row.path]?structuredClone(project.index[row.path]):null}))};
+  const journal={version:rows.some(row=>row.encoding==='base64')?2:1,id:randomUUID(),state:'prepared',createdAt:new Date().toISOString(),rows:rows.map(row=>({...row,beforeHash:hash(row.before,row.encoding),afterHash:hash(row.after,row.encoding),indexBefore:project.index[row.path]?structuredClone(project.index[row.path]):null}))};
+  if(Buffer.byteLength(JSON.stringify(journal))>32*1024*1024)throw Error('저장 기록 크기 초과');
   const writingPaths=new Set();
   await project.resolve('Saved/Transactions',true,false);await store(project,journal);
   try{
-    for(const row of journal.rows){guard();const file=await project.resolve(row.path,true,false);if(hash(await read(file))!==row.beforeHash)throw conflict('저장 중 외부 변경을 발견했어요: '+row.path);
+    for(const row of journal.rows){guard();const file=await project.resolve(row.path,true,false);if(hash(await read(file,row.encoding),row.encoding)!==row.beforeHash)throw conflict('저장 중 외부 변경을 발견했어요: '+row.path);
       writingPaths.add(row.path);
-      if(row.after===null)await fs.unlink(file);else await put(file,row.after,row.before===null);
+      if(row.after===null)await fs.unlink(file);else await put(file,row.after,row.before===null,row.encoding);
       if(row.after===null)delete project.index[row.path];else if(row.restoreIndex)project.index[row.path]=structuredClone(row.restoreIndex);else project.index[row.path]??={id:randomUUID()};
     }
     guard();await checkReads({written:true});await project.saveIndex();journal.state='committed';await store(project,journal);
-  }catch(error){journal.state='prepared';try{await rollback(project,journal,writingPaths);}catch(recovery){throw Object.assign(Error(error.message+'; 복구 기록을 보존했어요: '+journal.id+' ('+recovery.message+')'),{status:409,code:'TRANSACTION_RECOVERY_REQUIRED',transaction:journal.id,cause:error});}throw error;}
+  }catch(error){journal.state='prepared';try{await rollback(project,journal,writingPaths);if(!retainJournal)await fs.unlink(journalFile(project,journal.id));}catch(recovery){throw Object.assign(Error(error.message+'; 복구 기록을 보존했어요: '+journal.id+' ('+recovery.message+')'),{status:409,code:'TRANSACTION_RECOVERY_REQUIRED',transaction:journal.id,cause:error});}throw error;}
   if(!retainJournal){await fs.unlink(journalFile(project,journal.id));return {ok:true,paths:journal.rows.map(row=>row.path)};}
   return {ok:true,transaction:journal.id,paths:journal.rows.map(row=>row.path),backup:'Saved/Transactions/'+journal.id+'.json'};
 }

@@ -67,8 +67,8 @@ function editorHarness(kind,data){
 }
 const event=(x,y,button=0)=>({button,pointerId:1,clientX:x*24+12,clientY:y*24+12,preventDefault(){},stopPropagation(){}});
 const harness=editorHarness('tilemap',{...create2DAsset('tilemap','Stroke'),width:8,height:6}),editor=harness.editor;editor.mapPreview={scale:24,minX:0,top:0};
-editor.pointerDown(event(0,0));editor.pointerMove(event(4,4));assert.equal(harness.history.length,1);assert.equal(harness.states.length,0);assert.equal(editor.doc.data.layers[0].tiles.length,5);
-editor.pointerUp(event(4,4));assert.equal(harness.states.length,1);assert.equal(harness.captures.size,0);assert.equal(editor.renderCount,undefined,'A brush stroke must retain canvas focus and scroll.');
+editor.pointerDown(event(0,0));editor.pointerMove(event(4,4));assert.equal(harness.history.length,0);assert.equal(harness.states.length,0);assert.equal(editor.doc.data.layers[0].tiles.length,0);assert.equal(editor.stroke.session.data.layers[0].tiles.length,5);
+editor.pointerUp(event(4,4));assert.equal(harness.history.length,1);assert.equal(editor.doc.data.layers[0].tiles.length,5);assert.equal(harness.states.length,1);assert.equal(harness.captures.size,0);assert.equal(editor.renderCount,undefined,'A brush stroke must retain canvas focus and scroll.');
 const after=clone(editor.doc.data);editor.doc.data=clone(harness.history[0]);assert.equal(editor.doc.data.layers[0].tiles.length,0);editor.doc.data=after;
 editor.pointerDown(event(0,0));editor.pointerUp(event(0,0));assert.equal(harness.history.length,1);assert.equal(harness.states.length,1);
 editor.tool='rectangle';editor.pointerDown(event(5,1));editor.pointerMove(event(6,2));assert.equal(harness.history.length,1);editor.flush();assert.equal(harness.history.length,2);assert.equal(harness.states.length,2);assert.equal(editor.doc.data.layers[0].tiles.length,9);assert.equal(harness.captures.size,0);

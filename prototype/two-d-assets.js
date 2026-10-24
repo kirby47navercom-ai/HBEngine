@@ -82,17 +82,22 @@ export function tileLine(from,to){
   for(;;){cells.push({x,y});if(x===to.x&&y===to.y)break;const twice=2*error;if(twice>=dy){error+=dy;x+=sx;}if(twice<=dx){error+=dx;y+=sy;}}
   return cells;
 }
+export function tileToolCells(map,tool,from,to=from,index=0,lookup){
+  if(!validTileDimensions(map.width,map.height)||!['brush','erase','rectangle','fill'].includes(tool)||!from||!to||![from.x,from.y,to.x,to.y].every(Number.isInteger)||!integer(index,-1,1048575))return [];
+  const inside=({x,y})=>x>=0&&y>=0&&x<map.width&&y<map.height,key=({x,y})=>x+','+y;let cells=[];
+  if(tool==='rectangle'){const left=Math.max(0,Math.min(from.x,to.x)),right=Math.min(map.width-1,Math.max(from.x,to.x)),top=Math.max(0,Math.min(from.y,to.y)),bottom=Math.min(map.height-1,Math.max(from.y,to.y));if(left>right||top>bottom)return [];tileEditBudget((right-left+1)*(bottom-top+1));for(let y=top;y<=bottom;y++)for(let x=left;x<=right;x++)cells.push({x,y});}
+  else if(tool==='fill'){
+    if(!inside(from))return [];const source=lookup(from)?.index;if((source??-1)===index)return [];
+    const visited=new Set([key(from)]),queue=[from];
+    for(let cursor=0;cursor<queue.length;cursor++){const cell=queue[cursor];if(lookup(cell)?.index!==source)continue;cells.push(cell);tileEditBudget(cells.length);for(const adjacent of [{x:cell.x-1,y:cell.y},{x:cell.x+1,y:cell.y},{x:cell.x,y:cell.y-1},{x:cell.x,y:cell.y+1}])if(inside(adjacent)&&!visited.has(key(adjacent))){visited.add(key(adjacent));queue.push(adjacent);}}
+  }else{const clipped=clipTileLine(from,to,map.width,map.height);if(!clipped)return [];tileEditBudget(Math.max(Math.abs(clipped[1].x-clipped[0].x),Math.abs(clipped[1].y-clipped[0].y))+1);cells=tileLine(...clipped).filter(inside);}
+  return cells;
+}
 /** A tool returns an immutable map; callers group successive brush points into one undo stroke. */
 export function applyTileTool(map,layerId,tool,from,to=from,index=0){
   if(!valid2DAsset('tilemap',map)||!['brush','erase','rectangle','fill'].includes(tool)||!from||!to||![from.x,from.y,to.x,to.y].every(Number.isInteger)||!integer(index,-1,1048575))return {data:map,changed:false};
   const layerIndex=map.layers.findIndex(layer=>layer.id===layerId);if(layerIndex<0)return {data:map,changed:false};
-  const inside=({x,y})=>x>=0&&y>=0&&x<map.width&&y<map.height,key=({x,y})=>x+','+y,tiles=new Map(map.layers[layerIndex].tiles.map(tile=>[key(tile),tile]));let cells=[];
-  if(tool==='rectangle'){const left=Math.max(0,Math.min(from.x,to.x)),right=Math.min(map.width-1,Math.max(from.x,to.x)),top=Math.max(0,Math.min(from.y,to.y)),bottom=Math.min(map.height-1,Math.max(from.y,to.y));if(left>right||top>bottom)return {data:map,changed:false};tileEditBudget((right-left+1)*(bottom-top+1));for(let y=top;y<=bottom;y++)for(let x=left;x<=right;x++)cells.push({x,y});}
-  else if(tool==='fill'){
-    if(!inside(from))return {data:map,changed:false};const source=tiles.get(key(from))?.index;if((source??-1)===index)return {data:map,changed:false};
-    const visited=new Set([key(from)]),queue=[from];
-    for(let cursor=0;cursor<queue.length;cursor++){const cell=queue[cursor];if(tiles.get(key(cell))?.index!==source)continue;cells.push(cell);tileEditBudget(cells.length);for(const adjacent of [{x:cell.x-1,y:cell.y},{x:cell.x+1,y:cell.y},{x:cell.x,y:cell.y-1},{x:cell.x,y:cell.y+1}])if(inside(adjacent)&&!visited.has(key(adjacent))){visited.add(key(adjacent));queue.push(adjacent);}}
-  }else{const clipped=clipTileLine(from,to,map.width,map.height);if(!clipped)return {data:map,changed:false};tileEditBudget(Math.max(Math.abs(clipped[1].x-clipped[0].x),Math.abs(clipped[1].y-clipped[0].y))+1);cells=tileLine(...clipped).filter(inside);}
+  const key=({x,y})=>x+','+y,tiles=new Map(map.layers[layerIndex].tiles.map(tile=>[key(tile),tile])),cells=tileToolCells(map,tool,from,to,index,cell=>tiles.get(key(cell)));
   let changed=false;
   for(const cell of cells){const previous=tiles.get(key(cell));if(tool==='erase'||index===-1){if(previous){tiles.delete(key(cell));changed=true;}}else if(previous?.index!==index){tiles.set(key(cell),{...cell,index});changed=true;}}
   if(!changed)return {data:map,changed:false};

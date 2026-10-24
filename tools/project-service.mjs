@@ -163,7 +163,7 @@ export class ProjectService {
     const data=kind==='text'?text:JSON.parse(text),expected=JSON.stringify(data),revision=createHash('sha256').update(expected).digest('hex');return {path:canonical,kind,exists:true,data,revision,expected};
   }
   async undoBatch(id,guard=()=>{}){
-    await this.writeQueue;guard();const journal=await readAssetTransaction(this,id);if(journal.state!=='committed')throw Error('완료된 저장 묶음만 되돌릴 수 있어요.');
+    await this.writeQueue;guard();const journal=await readAssetTransaction(this,id);if(journal.rows.some(row=>row.encoding==='base64'))throw Error('바이너리 가져오기 기록은 장애 복구용이에요. 파일 묶음 Undo에는 텍스트 기록을 사용하세요.');if(journal.state!=='committed')throw Error('완료된 저장 묶음만 되돌릴 수 있어요.');
     return this.checkedBatch(journal.rows.map(row=>({path:row.path,text:row.before,expected:row.after===null?null:JSON.stringify(assetSuffix[assetKind(row.path)]?JSON.parse(row.after):row.after)})),guard,{[journalRestore]:journal,restoreIndex:new Map(journal.rows.filter(r=>r.before!==null&&r.indexBefore).map(r=>[r.path.toLowerCase(),r.indexBefore]))});
   }
   async validateEffects(roots,drafts=new Map()){
