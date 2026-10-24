@@ -3249,7 +3249,9 @@
     {
       "id": "audio-editor-preview",
       "keywords": [
-        "AudioMixerEditor"
+        "AudioMixerEditor",
+        "audioPreviewButton",
+        "togglePreview"
       ],
       "paths": [
         "prototype/audio-editor.js"
