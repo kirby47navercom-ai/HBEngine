@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "date": "2026-10-24T21:15:50.200Z",
+  "kind": "runtime-cue-rebinding-and-late-program-media-ownership",
+  "implementationRevision": "254003f96ffdebcfac7794a50bc3eeb5561030b5",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2534.json",
+  "changedSourceHashes": {
+    "prototype/ability-runtime.js": "9a2a39d8946fe40c0e9e08667ff0b83d76e237d29d8869f4313da70270654a40",
+    "prototype/engine-services.js": "e0d33818a6fca9944210fd1966ec3a07e9a192010505547dcc836dfabc13a4e8",
+    "prototype/gameplay-cue-assets.js": "0dbbe16e4da2574e072935fb9316db20d87b58f5a9859d3062ae2f74d33b2e9e",
+    "prototype/scene-components.js": "52851bfd8325fecb817ed8f360c3497760c259bc4294d1ea705fdd61145a37e6",
+    "tools/check-gameplay-cues-2528.mjs": "b76535261e92137fbdc229fbb568c7ee1d31cff3d383fa7587ede8bce9ff606b",
+    "docs/GAMEPLAY_CUE_ASSETS.md": "342ad21255c6004e007fc5904b66ca30dcb6972b596317a60905c8960fb0d67d",
+    "docs/BLUEPRINT_SPEC.md": "7cdc6bf26211cf1b89ca742aa1654b9a1f7cd020c51406c630a88609e9a73ca6",
+    "docs/ai-routes.json": "82a944077dd266eef6b74b1f46925bae154b1df9ff7dba41d0c9a64a64b0036f",
+    "CODEX_HANDOFF.md": "a8f4ca387244f194554dada36a317356a0f47e39a857093e9e7c85e1552dcba3"
+  },
+  "resolvedOwners": 1437,
+  "targetIds": [
+    "GAM-04"
+  ],
+  "newSourceCases": 8,
+  "checks": {
+    "cueWithPrior17": "native/build/gameplay-cues-Z8r0pv/acceptance.json",
+    "ongoing": "native/build/effect-ongoing-jrqBWf/acceptance.json",
+    "reapply": "native/build/ability-reapply-234-yEzoKX/acceptance.json",
+    "focused": {
+      "literal": "bindCueAsset",
+      "caseSensitive": true,
+      "matches": [
+        {
+          "path": "prototype/ability-runtime.js",
+          "line": 22,
+          "column": 9,
+          "excerpt": "async bindCueAsset(object,path,vm,guard,commit){const state=this.owners.get(object.id);if(state?.object!==object)throw Error('초기화된 능력 소유자가 필요해요.');i"
+        },
+        {
+          "path": "prototype/engine-services.js",
+          "line": 310,
+          "column": 406,
+          "excerpt": "erties))throw Error('게임플레이 Cue 경로·컴포넌트 값을 확인하세요.');const prior=p.cueAsset;await abilities.bindCueAsset(o,next,vm,()=>objectComponents(o).includes(c)&&c.properties?.enabled!==false&&(c.properties.cueAsset||'')===(prior||''),()=>{c.pr"
+        }
+      ],
+      "filesRead": 6,
+      "bytesRead": 268542,
+      "skippedOversize": [],
+      "truncated": false,
+      "scope": "엔진 소스만; 검사·예제·생성 헤더·사용자 프로젝트 제외; 일치한 focusRoutes만 조회, 다른 호출처는 --all로 확장",
+      "mode": "focused-routes",
+      "routeFiles": [
+        "prototype/gameplay-cue-assets.js",
+        "prototype/ability-assets.js",
+        "prototype/ability-runtime.js",
+        "prototype/engine-services.js",
+        "prototype/structured-asset-editor.js",
+        "prototype/scene-components.js"
+      ],
+      "expand": {
+        "all": true,
+        "cli": "node tools/hb.mjs context \"gameplay\" --symbol \"bindCueAsset\" --all"
+      }
+    }
+  },
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "protectedReadEditedOrTested": false,
+    "newCPPBinary": false,
+    "newGPU": false,
+    "newGUI": false,
+    "newOSAudio": false,
+    "newDevice": false
+  },
+  "failuresAndRepairs": [
+    "Owned fake factory paused every initialization; after retiring the Cue request the ordinary emitter needed its own second preparation. Fixture now releases the first request and returns an actual ParticleSimulation thereafter, with bounded per-case deadline. Not an engine implementation failure."
+  ],
+  "remainingBoundary": [
+    "Standalone VFX template/attachment and persistent/per-component VFX handles",
+    "Network Cue prediction/replication",
+    "Actual OS audio/visual and devices/install; cumulative engine goals remain"
+  ],
+  "cleanup": "native/build/temp-clean2544.json"
+}
