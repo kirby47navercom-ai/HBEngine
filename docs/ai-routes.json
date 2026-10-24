@@ -3150,6 +3150,34 @@
       "paths": [
         "prototype/gameplay-preview-visual.js"
       ]
+    },
+    {
+      "id": "fbx-identifiers",
+      "keywords": [
+        "prepareFbxIdentifiers"
+      ],
+      "paths": [
+        "prototype/fbx-identifiers.js"
+      ]
+    },
+    {
+      "id": "audio-bus-editing",
+      "keywords": [
+        "editMixerBus"
+      ],
+      "paths": [
+        "prototype/audio-bus-editing.js"
+      ]
+    },
+    {
+      "id": "collision-shortcuts",
+      "keywords": [
+        "collisionShortcut",
+        "collisionShortcutHints"
+      ],
+      "paths": [
+        "prototype/collision-shortcuts.js"
+      ]
     }
   ]
 }

@@ -23,6 +23,7 @@ import {SequencePosePlayback} from './sequence-pose-playback.js';
 import {RuntimeLevels,levelKeys} from './level-streaming.js';
 import {prepareWorldColliders} from './world-rendering.js';
 import {normalizeModelImport,tagModelSubassets,validModelImport,applyModelImportTransform} from './model-import.js';
+import {prepareFbxIdentifiers} from './fbx-identifiers.js';
 import {applyModelOverrides} from './model-subasset-overrides.js';
 import {SkeletalPoseCapture} from './skeletal-pose-capture.js';
 import {resolveTakeSettings} from './take-settings.js';
@@ -77,12 +78,12 @@ export function validRuntimeSave(data,vm){
 }
 export async function loadModel(asset,{metadata:explicit}={}){
   const manager=new THREE.LoadingManager(),folder=asset.split('/').slice(0,-1).join('/');manager.setURLModifier(url=>{if(url.startsWith('data:')||url.startsWith('blob:'))return url;if(/^https?:/.test(url))throw Error('외부 모델 의존성은 프로젝트에 가져오세요.');return fileUrl((folder?folder+'/':'')+url.replace(/^\.\//,''));});
-  const response=await editorRequest(fileUrl(asset)),bytes=await response.arrayBuffer(),extension=asset.split('.').pop().toLowerCase(),format=['gltf','glb'].includes(extension)?'gltf':extension;let result,parser;
+  const response=await editorRequest(fileUrl(asset)),bytes=await response.arrayBuffer(),extension=asset.split('.').pop().toLowerCase(),format=['gltf','glb'].includes(extension)?'gltf':extension;let result,parser,originalIds;
   if(extension==='obj')result={object:new OBJLoader(manager).parse(new TextDecoder().decode(bytes)),animations:[]};
-  else if(extension==='fbx'){const object=new FBXLoader(manager).parse(bytes,'');prepareModelMorphs(object);result={object,animations:object.animations};}
+  else if(extension==='fbx'){const prepared=prepareFbxIdentifiers(bytes),object=new FBXLoader(manager).parse(prepared.bytes,'');originalIds=prepared.originalIds;prepareModelMorphs(object);result={object,animations:object.animations};}
   else if(['glb','gltf'].includes(extension)){const loaded=await new Promise((resolve,reject)=>new GLTFLoader(manager).parse(extension==='gltf'?new TextDecoder().decode(bytes):bytes,'',resolve,reject));parser=loaded.parser;prepareModelMorphs(loaded.scene);result={object:loaded.scene,animations:loaded.animations};}
   else throw Error('미리보기 임포터가 없는 모델: '+extension);
-  try{tagModelSubassets(result.object,{format,associations:parser?.associations,json:parser?.json});let metadata=explicit;if(explicit===undefined){try{metadata=await(await editorRequest(fileUrl(asset+'.import.json'))).json();}catch(error){if(error.status!==404)throw error;}}
+  try{tagModelSubassets(result.object,{format,associations:parser?.associations,json:parser?.json,originalIds});let metadata=explicit;if(explicit===undefined){try{metadata=await(await editorRequest(fileUrl(asset+'.import.json'))).json();}catch(error){if(error.status!==404)throw error;}}
     if(metadata){metadata=normalizeModelImport(metadata);if(!validModelImport(metadata))throw Error('모델 가져오기 설정을 확인하세요.');let trustedIndices=false;if(metadata.sourceHash){const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),v=>v.toString(16).padStart(2,'0')).join('');if(hash!==metadata.sourceHash)throw Error('모델 원본이 변경됐어요. 다시 가져오기를 실행하세요: '+asset);trustedIndices=true;}applyModelOverrides(result.object,metadata.subassets,{trustedIndices});result=applyModelImportTransform(result,metadata,{format});result.object.userData.hbModelMetadata=metadata;}
     if(explicit===null)result.sourceHash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),v=>v.toString(16).padStart(2,'0')).join('');rememberAnimationBindPose(result.object);return result;
   }catch(error){const resources=new Set();result.object.traverse(o=>{if(o.geometry)resources.add(o.geometry);for(const m of o.material?(Array.isArray(o.material)?o.material:[o.material]):[]){resources.add(m);for(const t of Object.values(m))if(t?.isTexture)resources.add(t);}if(o.skeleton)resources.add(o.skeleton);});for(const r of resources)r.dispose();throw error;}

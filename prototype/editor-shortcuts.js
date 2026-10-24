@@ -23,10 +23,10 @@ export const shortcutCommands=[
  ...assetShortcutCommands,
 ];
 const byId=new Map(shortcutCommands.map(c=>[c.id,c]));
-const scopes={global:['viewport','blueprint','widget','modeling','other',...assetShortcutCategories.map(c=>c[0])],authoring:['viewport','blueprint'],viewport:['viewport'],blueprint:['blueprint'],widget:['widget'],modeling:['modeling'],...Object.fromEntries(assetShortcutCategories.map(([scope])=>[scope,[scope]]))};
+const scopes={global:['viewport','blueprint','widget','modeling','other',...assetShortcutCategories.map(c=>c[0]).filter(scope=>scope!=='collision')],authoring:['viewport','blueprint'],viewport:['viewport'],blueprint:['blueprint'],widget:['widget'],modeling:['modeling'],...Object.fromEntries(assetShortcutCategories.map(([scope])=>[scope,[scope]]))};
 const overlap=(a,b)=>scopes[a].some(s=>scopes[b].includes(s));
 export const defaultShortcutData=()=>({version:1,active:'default',profiles:[{id:'default',name:'Default',bindings:{}}]});
-export function validChord(value){return typeof value==='string'&&/^(Primary\+)?(Shift\+)?(Alt\+)?(?:Key[A-Z]|Digit[0-9]|F(?:[1-9]|1[0-2])|Arrow(?:Left|Right|Up|Down)|Space|Delete|Backspace|Tab|Enter|Home|End|BracketLeft|BracketRight|Minus|Equal|Comma|Period|Slash|Semicolon|Quote|Backquote)$/.test(value);}
+export function validChord(value){return typeof value==='string'&&/^(Primary\+)?(Shift\+)?(Alt\+)?(?:Key[A-Z]|Digit[0-9]|F(?:[1-9]|1[0-2])|Arrow(?:Left|Right|Up|Down)|Space|Insert|Delete|Backspace|Tab|Enter|Home|End|BracketLeft|BracketRight|Minus|Equal|Comma|Period|Slash|Semicolon|Quote|Backquote)$/.test(value);}
 export function eventChord(event){if(event.isComposing||!event.code)return null;const chord=(event.ctrlKey||event.metaKey?'Primary+':'')+(event.shiftKey?'Shift+':'')+(event.altKey?'Alt+':'')+event.code;return validChord(chord)?chord:null;}
 export function shortcutLabel(chord){return chord?.replace('Primary+','Ctrl+').replace(/Key([A-Z])/,'$1').replace(/Digit(\d)/,'$1').replace('Space','Space')||'—';}
 const bindings=(profile,id)=>profile.bindings[id]??byId.get(id).keys;

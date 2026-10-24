@@ -544,8 +544,8 @@ async function openColliderEditor(button){
   if(!component||!geometryColliderTypes.has(component.type)&&!['Light2D','ShadowCaster2D'].includes(component.type))throw Error('형상 컴포넌트를 선택하세요.');const before=JSON.stringify(doc.data),properties={...componentDefaults(component.type),...component.properties};
   const apply=next=>{captureDocument();if(assetDocs.current!==doc||JSON.stringify(doc.data)!==before||running)throw Error('문서가 변경됐어요. 형상 편집을 다시 여세요.');if(!validComponentProperties(component.type,next))throw Error('충돌 형상을 확인하세요.');const reason=physicsGeometryError((blueprint?graphs.blueprint.components:objectComponents(object)).map(c=>c.id===component.id?{...c,properties:next}:c));if(reason)throw Error(reason);if(blueprint){remember();component.properties=next;renderBlueprintInspector();changed();}else editScene(()=>component.properties=next,{rebuild:true});};
   if(button.dataset.bakeCollider){button.disabled=true;try{apply(await collisionBakeData(component,object));}finally{if(button.isConnected)button.disabled=false;}}
-  else if(['Light2D','ShadowCaster2D'].includes(component.type))editCollisionGeometry('PolygonCollider2D',{paths:[properties.shapePath]},{title:component.type==='Light2D'?'2D 광원 모양':'2D 그림자 모양',maximumPoints:64,singlePath:true,apply:draft=>apply({...properties,shapePath:draft.paths[0]}),error:notify});
-  else editCollisionGeometry(component.type,properties,{apply,error:notify});
+  else if(['Light2D','ShadowCaster2D'].includes(component.type))editCollisionGeometry('PolygonCollider2D',{paths:[properties.shapePath]},{shortcuts:editorShortcuts,title:component.type==='Light2D'?'2D 광원 모양':'2D 그림자 모양',maximumPoints:64,singlePath:true,apply:draft=>apply({...properties,shapePath:draft.paths[0]}),error:notify});
+  else editCollisionGeometry(component.type,properties,{shortcuts:editorShortcuts,apply,error:notify});
 }
 async function reloadImportedAssets(result){
   if(running)throw Error('실행 종료 후 장면을 갱신하세요.');captureDocument();const affected=new Set(result.affected),active=assetDocs.current;
