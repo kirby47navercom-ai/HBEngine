@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "date": "2026-10-24T13:19:36.353Z",
+  "kind": "editor-testing-pawn-debounced-query-only-preview-and-four-target-component-cook",
+  "implementationRevision": "855266b9e35e89eef91366dd5474ca544c19484f",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2367.json",
+  "changedSourceHashes": {
+    "docs/BLUEPRINT_SPEC.md": "ee16533c4c8e5826d94b08025e11665b75dfad32262bfb90e56a315258869b47",
+    "docs/ai-routes.json": "c476d135cbb067caf145c50ed9f335304cf15975a8fbf5570881e79f8e6226d3",
+    "prototype/app.js": "49e479fe7405214feb53613bb1646da7be99256da4e4fd4d9faea97379697990",
+    "prototype/placement-catalog.js": "0ae10a7e53ff6da5abc722549498c30afd66ea7c3e7e7791257b5e1d431716b0",
+    "prototype/scene-components.js": "ed73420cfeaa39211c0a28b32db1e1a5f8e6b71403375a8466f448cf7e8eed69",
+    "tools/build-game.mjs": "1fa7b5b646d254dbe7134304a57b26e230380dab1484583b422cd9fcdd425334",
+    "tools/check-eqs-preview-2231.mjs": "2cbb150afc534884596c1774321680eb555820b3407495f1b08a4b8acbae8c1d",
+    "tools/editor-automation.mjs": "e825bd9c06a80715846e4322ad7a10d35182d4df0c8b0c3af4d92ac14daed99c",
+    "docs/EQS_TESTING_PAWN.md": "a74369838636e1899294bad1b13e1af94496cf8d09d997656f6706471f8e1d6f",
+    "prototype/environment-query-tester.js": "cd5b2f0a1ea36282a65c67d407b2fc2c20dee43d182820d200dfaba757456e7a",
+    "prototype/editor-query-cook.js": "3c9a2d953d050d47c11fec1271d9454f32f4a8375a4f262c50d104f330355fb9",
+    "tools/check-eqs-tester-2370.mjs": "e9a875bc83558394fe994fe538ac9785326053bc4f6ba6363be21137cc25be2e",
+    "tools/check-eqs-tester-cook-2371.mjs": "a141159933f181edb11fa8c5e94d2c11f341e3369168918ad74dccde68e823dd",
+    "CODEX_HANDOFF.md": "47dd1b63784e9a4f4cc7c2b1f568565a88cce255ed101afad7ff523a032700c4"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1393,
+  "targetIds": [
+    "GAM-03",
+    "EDT-04",
+    "AI-03",
+    "BLD-06"
+  ],
+  "changes": {
+    "GAM-03": " ·2368–2379: 선택된EQS TestingPawn 배치/컴포넌트·scene가시/정지/revision debounce1회·기존query-only복사월드/진단. idle폴링/타이머0·수동/Hide는첫frame前도pause·취소/늦은결과수명. 新13source+기존preview18. 다수테스터/실제창/전체world O(N)제거별도.",
+    "EDT-04": " ·2368–2379: EQS테스트배치/폼/기존문서·Undo/AI상태조회·단계view연결. framepump변경때만실행·새GUI/기기검증은아님.",
+    "AI-03": " ·2368–2379: editor.eqs.tester.read와schema계약/focusroute·scene.place/Batch eqsTester 레시피로같은저작데이터사용. 읽기명령은저장/게임실행없음.",
+    "BLD-06": " ·2368–2379: 공용inspectBuild에서scene/prefab사본의editorTester컴포넌트를종속검색前제거·원본/일반actor보존·gameBP정의명시거절. 실제4target content/cook5source통과·EXE/APK/IPA새빌드주장0."
+  },
+  "checks": {
+    "newSourceCases": 18,
+    "scheduler": {
+      "path": "native/build/eqs-tester-DPQTbd/acceptance.json",
+      "sha256": "129fdf2a08cce6d36018050c056b7c3c4f0d7fe539471a8f86d3a3ee81184ece"
+    },
+    "cook": {
+      "path": "native/build/eqs-tester-cook-tOswNN/acceptance.json",
+      "sha256": "5d01c2b11707d7eb05f92b1109e5f787e427971c331839e1c6c73168cd98682c"
+    },
+    "commonPreview": {
+      "path": "native/build/eqs-preview-eseC71/acceptance.json",
+      "sha256": "860b41539c4b5572520d9cff9d2bca7f0a744d405e2a484f5b002f2704fa3ddb"
+    },
+    "group": {
+      "path": "native/build/group2374.json",
+      "sha256": "4f5e96751b0c22e72ff84081945128852ff7eba24a714b10535e411db20938b8"
+    },
+    "integrity": {
+      "path": "native/build/final2378.json",
+      "sha256": "b39a9d91543c8f48923f8550b5a0ed1140360bddf8fc7e8cbc5392170183cd5d"
+    },
+    "repair": "Initial scheduler read enabledComponent as a wrapper instead of the returned properties; corrected the owner layer. Then fixed first-frame manual pause rearming and added a regression case. Reran scheduler13 and common preview18 only; other unchanged source/cook gates retained.",
+    "reuse": "Original group failed scheduler due wrong enabledComponent return layer. Its unchanged cook5, placement10, toolcook9 and AI context source checks retained. Reran scheduler13 and preview18 after scheduler/manual-dispatch fixes; not a claim that the original full group passed.",
+    "native": {
+      "executed": false,
+      "reason": "Only editor scheduler/placement/schema/common content discovery changed; SDK/renderer sources unchanged from2367. No unchanged native rebuild."
+    },
+    "actualWindow": false,
+    "devices": false
+  },
+  "limits": [
+    "One selected tester and change-triggered reruns, no many-tester runtime scheduling or removal of full query-world copies/EQS O(N) sync.",
+    "Game cook removes editor components while retaining ordinary actors; explicit blueprint editor-only guard. Four target content inspection is not native EXE/APK/IPA generation/device proof.",
+    "No user windows/profile, installed version, whole-engine completion or rendering-quality claim."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4760,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "policy": "Owned source fixtures/reports and small cook caches only, retained via test-artifacts. No native worker/SDK/Versions/User operation."
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}
