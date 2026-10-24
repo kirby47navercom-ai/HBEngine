@@ -1,3 +1,4 @@
+import {unregisterLiveEffect} from './live-effect-captures.js';
 export async function reapplyAbilitySet(system,state,asset,{preserveBase=true,retainEffects=true}={},vm){
  if(typeof preserveBase!=='boolean'||typeof retainEffects!=='boolean')throw Error('세트 재적용 옵션을 확인하세요.');
  const owner=state.object,request=(state.setRequest||0)+1;state.setRequest=request;system.setLibrary.remove(asset);const template=await system.setLibrary.load(asset,system.refreshRead),data=template.data,paths=[...new Set([state.startingAbility,...data.abilities].filter(Boolean))],definitions=await Promise.all(paths.map(async path=>[path,await system.load(path,'ability',system.refreshRead)]));
@@ -10,5 +11,5 @@ export async function reapplyAbilitySet(system,state,asset,{preserveBase=true,re
  for(const effect of candidate.effects.values())system.validateModifiers(candidate,effect.data);if(candidate.calculated)system.aggregate(candidate);else for(const name of attributes.keys())if(!Number.isFinite(system.value(candidate,name)))throw Error('능력 속성 계산 범위 초과');
  // Commit after every asynchronous read and validation. Timers and handles of
  // retained entries stay intact; removal notifications occur only on success.
- const removedEffects=retainEffects?[]:[...state.effects.values()],removedAbilities=[...state.abilities].filter(([path])=>!abilities.has(path)).map(([,a])=>a);Object.assign(state,candidate);system.sync(state);for(const e of removedEffects)system.cue(state,e.data,'remove',{effect:e.asset,handle:e.handle,reason:'setReapplied'});for(const a of removedAbilities)system.end(state,a,'setReapplied');return true;
+ const removedEffects=retainEffects?[]:[...state.effects.values()],removedAbilities=[...state.abilities].filter(([path])=>!abilities.has(path)).map(([,a])=>a);system.atomic(state,()=>{if(!retainEffects)for(const effect of state.effects.values())unregisterLiveEffect(system,state,effect);Object.assign(state,candidate);});for(const e of removedEffects)system.cue(state,e.data,'remove',{effect:e.asset,handle:e.handle,reason:'setReapplied'});for(const a of removedAbilities)system.end(state,a,'setReapplied');return true;
 }

@@ -3178,6 +3178,86 @@
       "paths": [
         "prototype/collision-shortcuts.js"
       ]
+    },
+    {
+      "id": "live-effect-captures",
+      "keywords": [
+        "affectedLiveOwners",
+        "registerLiveEffect",
+        "unregisterLiveEffect",
+        "refreshLiveEffects",
+        "rebuildLiveEffectsIndex",
+        "liveEffectSource"
+      ],
+      "paths": [
+        "prototype/live-effect-captures.js"
+      ]
+    },
+    {
+      "id": "effect-magnitude-inputs",
+      "keywords": [
+        "hasLiveEffectInputs",
+        "captureEffectInputs",
+        "liveEffectCaptureContract"
+      ],
+      "paths": [
+        "prototype/effect-magnitude-inputs.js"
+      ]
+    },
+    {
+      "id": "audio-pcm-cache",
+      "keywords": [
+        "AudioPCMCache",
+        "audioPCMCacheContract"
+      ],
+      "paths": [
+        "prototype/audio-pcm-cache.js"
+      ]
+    },
+    {
+      "id": "tile-cell-index",
+      "keywords": [
+        "tileCellIndex",
+        "tileAt",
+        "inheritTileIndexes",
+        "tileCellsForChunks",
+        "tileCellsInRect",
+        "setRuntimeTiles",
+        "setRuntimeTile",
+        "tileRuntimeIndexContract"
+      ],
+      "paths": [
+        "prototype/tile-cell-index.js"
+      ]
+    },
+    {
+      "id": "environment-actor-index",
+      "keywords": [
+        "EnvironmentActorIndex",
+        "environmentActorIndexContract"
+      ],
+      "paths": [
+        "prototype/environment-actor-index.js"
+      ]
+    },
+    {
+      "id": "audio-editor-preview",
+      "keywords": [
+        "AudioMixerEditor"
+      ],
+      "paths": [
+        "prototype/audio-editor.js"
+      ]
+    },
+    {
+      "id": "effect-application-context",
+      "keywords": [
+        "captureEffectApplication",
+        "copyEffectApplication"
+      ],
+      "paths": [
+        "prototype/effect-application-context.js"
+      ]
     }
   ]
 }

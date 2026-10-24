@@ -1276,7 +1276,7 @@
 | --- | --- | --- | --- | --- | --- |
 | effectApply | Apply Effect / 게임플레이 효과 적용 | exec: exec, target: object, asset: string | then: exec | hb::Abilities::ApplyEffect | 공통 C++ + VM |
 | effectApplyLevel | Apply Effect At Level / 레벨로 효과 적용 | exec: exec, target: object, asset: string, level: float | then: exec | hb::Abilities::ApplyEffectAtLevel | 공통 C++ + VM |
-| effectApplySpec | Apply Effect Spec / 출처와 인자로 효과 적용 | exec: exec, target: object, asset: string, source: object, level: float, parameters: string | then: exec | hb::Abilities::ApplyEffectSpec | 공통 C++ + VM |
+| effectApplySpec | Apply Effect Spec / 출처와 인자로 효과 적용 | exec: exec, target: object, asset: string, source: object, level: float, parameters: string, instigator: object, causer: object | then: exec | hb::Abilities::ApplyEffectSpec | 공통 C++ + VM |
 | effectSetParameter | Set Effect Parameter / 활성 효과 호출 인자 지정 | exec: exec, target: object, handle: string, name: string, value: float | then: exec | hb::Abilities::SetEffectParameter | 공통 C++ + VM |
 | effectSetLevel | Set Effect Level / 활성 효과 레벨 지정 | exec: exec, target: object, handle: string, level: float | then: exec | hb::Abilities::SetEffectLevel | 공통 C++ + VM |
 | effectGetLevel | Get Effect Level / 활성 효과 레벨 | target: object, handle: string | return: float | hb::Abilities::GetEffectLevel | 공통 C++ + VM |

@@ -9,8 +9,8 @@ export function reverseAudioBuffer(context,buffer){
 }
 // A source node can start only once; resume/seek creates a new node over shared PCM.
 export class BufferedAudioPlayer extends EventTarget {
-  constructor(context,buffer){super();this.context=context;this.buffer=buffer;this.output=context.createGain();this.offset=0;this.started=0;this.rate=1;this.repeating=false;this.source=null;this.paused=true;this.disposed=false;this.readyState=4;this.networkState=1;this.error=null;this.volume=1;this.playSerial=0;}
-  get duration(){return this.buffer.duration;}
+  constructor(context,buffer){super();this.context=context;this.buffer=buffer;this.lastDuration=buffer.duration;this.output=context.createGain();this.offset=0;this.started=0;this.rate=1;this.repeating=false;this.source=null;this.paused=true;this.disposed=false;this.readyState=4;this.networkState=1;this.error=null;this.volume=1;this.playSerial=0;}
+  get duration(){return this.buffer?.duration??this.lastDuration;}
   get currentTime(){const time=this.offset+(this.paused?0:(this.context.currentTime-this.started)*this.rate);return this.repeating?((time%this.duration)+this.duration)%this.duration:Math.max(0,Math.min(this.duration,time));}
   set currentTime(value){if(!Number.isFinite(value)||value<0)throw Error('오디오 탐색 시간을 확인하세요.');const playing=!this.paused;this.pause();this.offset=Math.min(value,this.duration);if(playing)this.start();}
   get playbackRate(){return this.rate;}
@@ -29,7 +29,7 @@ export class BufferedAudioPlayer extends EventTarget {
   setVirtual(value){value=Boolean(value);if(value===Boolean(this.virtual))return;this.offset=this.currentTime;this.started=this.context.currentTime;this.stopSource();this.virtual=value;if(!this.paused&&!value)this.start();}
   tick(){if(!this.paused&&!this.repeating&&(this.rate<0?this.currentTime<=0:this.currentTime>=this.duration)){this.stopSource();this.offset=this.rate<0?0:this.duration;this.paused=true;this.dispatchEvent(new Event('ended'));}}
   pause(){++this.playSerial;if(this.paused)return;this.offset=this.currentTime;this.paused=true;this.stopSource();}
-  dispose(){this.pause();this.disposed=true;this.output.disconnect();}
+  dispose(){if(this.disposed)return;this.pause();this.disposed=true;this.output.disconnect();this.buffer=null;}
 }
 
 // A lease keeps stopped handles and their callbacks separate from a reused media element.

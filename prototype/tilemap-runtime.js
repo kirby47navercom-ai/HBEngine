@@ -1,4 +1,4 @@
-import {tileAt,setRuntimeTile} from './tile-cell-index.js';
+import {tileAt,setRuntimeTile,setRuntimeTiles} from './tile-cell-index.js';
 import {tilemapPage} from './tilemap-diagnostics.js';
 import {immutableNativeSnapshot} from './native-transport.js';
 import {TileCollisionChunks} from './tilemap-chunks.js';
@@ -38,10 +38,7 @@ export class RuntimeTilemaps {
     let next=map,changed=false,cells=null;
     if(key==='tileSetMany'){
       if(!Array.isArray(args.cells)||!Array.isArray(args.indices)||args.cells.length!==args.indices.length||args.cells.length>65536||args.cells.some((cell,i)=>!cellOK(map,cell)||!Number.isInteger(args.indices[i])||args.indices[i]<-1||args.indices[i]>1048575))throw Error('타일 묶음 좌표·인덱스·크기를 확인하세요.');
-      const updates=new Map(args.cells.map((cell,i)=>[cell[1]*map.width+cell[0],{x:cell[0],y:cell[1],index:args.indices[i]}])),tiles=[];
-      for(const tile of layer.tiles){const id=tile.y*map.width+tile.x,value=updates.get(id);updates.delete(id);if(!value)tiles.push(tile);else{changed||=value.index!==(tile.sourceIndex??tile.index);if(value.index>=0)tiles.push(value);}}
-      for(const value of updates.values())if(value.index>=0){tiles.push(value);changed=true;}
-      if(changed){cells=args.cells;next={...map,layers:map.layers.map(item=>item===layer?{...item,tiles}:item)};}
+      const result=setRuntimeTiles(map,layer,args.cells,args.indices);next=result.data;changed=result.changed;cells=result.cells;
     }
     else if(key==='tileClear'){if(layer.tiles.length){next={...map,layers:map.layers.map(l=>l===layer?{...l,tiles:[]}:l)};changed=true;}}
     else if(key==='tileLayerVisible'){if(typeof args.visible!=='boolean')throw Error('표시 값을 확인하세요.');if(layer.visible!==args.visible){next={...map,layers:map.layers.map(l=>l===layer?{...l,visible:args.visible}:l)};changed=true;}}

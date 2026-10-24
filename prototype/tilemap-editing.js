@@ -23,10 +23,4 @@ export function clipTileLine(from,to,width,height){
  return [{x:Math.max(0,Math.min(width-1,Math.round(from.x+low*dx))),y:Math.max(0,Math.min(height-1,Math.round(from.y+low*dy)))},{x:Math.max(0,Math.min(width-1,Math.round(from.x+high*dx))),y:Math.max(0,Math.min(height-1,Math.round(from.y+high*dy)))}];
 }
 
-const buckets=new WeakMap();
-export function tileCellsInRect(layer,bounds){
- let index=buckets.get(layer.tiles);if(!index){index=new Map();for(const t of layer.tiles){const key=Math.floor(t.x/32)+':'+Math.floor(t.y/32);let group=index.get(key);if(!group)index.set(key,group=[]);group.push(t);}buckets.set(layer.tiles,index);}
- const [left,top,right,bottom]=bounds,result=[];if(left>right||top>bottom)return result;const columns=Math.floor(right/32)-Math.floor(left/32)+1,rows=Math.floor(bottom/32)-Math.floor(top/32)+1;if(columns*rows>index.size*2+16){for(const group of index.values())for(const t of group)if(t.x>=left&&t.x<=right&&t.y>=top&&t.y<=bottom)result.push(t);return result;}
- for(let y=Math.floor(top/32);y<=Math.floor(bottom/32);y++)for(let x=Math.floor(left/32);x<=Math.floor(right/32);x++)for(const t of index.get(x+':'+y)||[])if(t.x>=left&&t.x<=right&&t.y>=top&&t.y<=bottom)result.push(t);
- return result;
-}
+export {tileCellsInRect} from './tile-cell-index.js';
