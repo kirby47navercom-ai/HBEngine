@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "date": "2026-10-24T07:39:39.541Z",
+  "kind": "behavior-query-and-managed-channel-lifecycle",
+  "implementationRevision": "14c3c46828707ce6e234cbd48ef3ab878a09ed5b",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2208.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "e4a515a66eec61caad7716b110a90e164abcc92cef915a4196bd3e2ca779e6c0",
+    "prototype/asset-shortcut-commands.js": "04c769cfb6a0b53ffe92878d4facd22d7642097e419a2f6391d18d226141e5cd",
+    "prototype/asset-shortcuts.js": "f75a9c98a6e96b762b5799a9465405b30f74b94d5778243030738b7ccdde5844",
+    "prototype/engine-services.js": "ce0a10781103dd1d367c0b65d5f33780cec61275eb2472a5c51e4d778d77b840",
+    "prototype/gameplay-assets.js": "386f14b11c51fbe4f368e20e009b1c9aa06578a9ec83e9744cd446ee69662c5c",
+    "prototype/gameplay-editor.js": "58ea4aa9164f7f08a1431853bf13d395acd57930c847bee1df1caf5233ef2604",
+    "prototype/gameplay-runtime.js": "2656cbe0e9a61609a9ebc6a9e270c32bcda6c4acb2bcc3b533771e5bbc4c1ab4",
+    "prototype/sequence-channels.js": "b897cd9c7507df457cd19993e78548b4107715dce676699268770e5b052f90a7",
+    "tools/editor-automation.mjs": "a3ae222244074b0c299c3e49e20fe61bc9ce40cc60a77ad4463108d7866df36a",
+    "docs/BEHAVIOR_QUERY_SERVICES.md": "fe7114ae3dac17d910cf0f4ee36b18c8c7291fbcfd9da864de86ab360d02a42a",
+    "docs/SEQUENCE_BATCH_ROLLBACK.md": "239f4177f7476cd00721317ad0c6c9679ea243ba70738c77aaff73a980321c4d",
+    "prototype/behavior-query-service.js": "f9d9488a0fe429cec381e3c764a562ce3fdc5430be7ecc02023108577dfc94c5",
+    "prototype/behavior-service-editor.js": "ceefb9698c0004241ae818e0805fac09bca92cb71b2b6bd5732763e34f75d9d3",
+    "tools/check-behavior-query-service-2214.mjs": "778d9299a44567032ace1295fb70c4395b0ff1e3846d14c5d45f13cd622e4db3",
+    "tools/check-sequence-rollback-2210.mjs": "d30c82b9ea66df218d35a86e756316bf77ce3ae23f6eeb63456e62ce43394192",
+    "docs/BLUEPRINT_SPEC.md": "0c4c3b4b67d18e757a842bc060e1f9263855cb180778b7387374f58a629e5fce",
+    "CODEX_HANDOFF.md": "a535b4431cf16b0d29d6950b595db1609446e1a79e04cce3dec579bdb32d5987"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1329,
+  "targetIds": [
+    "ANM-06",
+    "GAM-03",
+    "EDT-05"
+  ],
+  "changes": {
+    "ANM-06": " ·2209–2218: SequenceChannels.writeBatch 동일target/field 마지막값·baseline/lease1개. sync/async setter실패시실패샘플/ownership제거·이전sample/normalizedpeer/관리필드복원·새owner/동owner새sample보존·resolver복구. current()callback과clear/retire version무효화. 복원실패 AggregateError원인동시보존. 실제SequenceComponentWriter whole/scalar 두액터+updatehook 실패복원 포함 신규14source+기존completion/blend/indexed/imported4gate통과. legacy write/controls/release·비협조 setter/일반외부부작용은별도.",
+    "GAM-03": " ·2209–2218: 기존BT node.services에kind=query·asset/key/resultType/contextKey/successKey와timer/활성·비활성·완료callback. 활성노드주기만질의·느린BT기한wake·catchupburst0·idle timer0·일반noService sleep 추가node조회0. typedkeys선검증·빈결과목적지보존·stop/reset/교체late결과차단. 기존query/C++·BP RunBehaviorTree 공용/native명령재생·indexedEQS·실제BlueprintRuntime/blackboard갱신. 편집생성/Undo·저장/재읽기·신규12source/기존BT·EQSgate통과. EQS target/context비동기교체publication차단·context진단시작값보존. staticTestPawn/실제창·대규모부하는별도.",
+    "EDT-05": " ·2218: 행동트리EQS서비스 기존추가버튼·같은node서비스필드·한checkpoint/검증저장·gameplayQueryService 명령검색/키프로필/문맥·AI document/schema. source핸들러생성저장·F8재지정·유효asset확인. pointer조합/실제분리창은미검증."
+  },
+  "checks": {
+    "source": {
+      "passed": true,
+      "newCases": 26,
+      "reports": [
+        {
+          "path": "native/build/sequence-rollback-dWbEq8/acceptance.json",
+          "sha256": "c3046b765eb029cf77a8c8b1998a8da1d6b9d94a4213ff2c98863a4aa1112376"
+        },
+        {
+          "path": "native/build/behavior-query-service-J1OnrV/acceptance.json",
+          "sha256": "75b30b66a3656c7742f48bb8bba5ac001480da6d30d9fe366d1985c64f805a05"
+        }
+      ],
+      "groups": [
+        {
+          "path": "native/build/group2212.json",
+          "sha256": "0b957eb34326a5df294c81f7a666ba56a60e73f2cec08c836d79e8b650d498d8"
+        },
+        {
+          "path": "native/build/group2215.json",
+          "sha256": "5685e2bc20316f57d50f97b494e07c6917a6d1d5f91089dcb163bcbdb762738f"
+        }
+      ],
+      "integrity": {
+        "path": "native/build/final2217.json",
+        "sha256": "aa3b288d4450e3c740181d3eeb97a96d4e35bf5734c1d7d179c18a82ab0b7502"
+      },
+      "reasonForFocusedRecheck": "Added production whole-component rollback case and no-service sleeping-frame lookup regression; only the new focused scripts were rerun."
+    },
+    "actualWindow": {
+      "executed": false,
+      "reason": "Background owned source fixtures; user windows protected."
+    },
+    "nativeBinary": {
+      "executed": false,
+      "lastActual": "docs/research/ENGINE_WORK_2208.json",
+      "reason": "No further SDK/NativeHost/Player/native-renderer changes. New BT test uses existing native-command replay, not a new compiled CPP claim."
+    },
+    "devices": {
+      "executed": false,
+      "reason": "No Mac/Xcode/Android phone."
+    }
+  },
+  "limits": [
+    "Managed writeBatch restoration only; noncooperative async writes, rollback rejection and untracked callbacks/latent work are explicit failures/remaining.",
+    "EQS automatic runtime node service is implemented; static editor TestPawn, full mutable-world scan removal and actual large-scene/GUI/device validation remain."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "userProfileRead": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json"
+  },
+  "automation": {
+    "created": 0,
+    "deletedPreviously": true
+  },
+  "space": {
+    "handoffBytes": 4166,
+    "copiedEngineBuilds": 0,
+    "newBrowserProfiles": 0,
+    "cache": "No compiler/renderer/GUI build created after WORK2208; owned source reports only, retain helper active."
+  },
+  "globalScope": {
+    "completionPercent": null,
+    "exhaustiveUEUnity": false,
+    "remainingPreserved": true
+  }
+}
