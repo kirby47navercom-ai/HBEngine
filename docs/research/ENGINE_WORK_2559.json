@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "date": "2026-10-24T21:47:51.315Z",
+  "kind": "authored-existing-skeletal-trs-morph-track-keys",
+  "implementationRevision": "2470c80886d222cba1f6dcade3d3c9541ae4e4a5",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2543.json",
+  "changedSourceHashes": {
+    "prototype/skeletal-track-keys.js": "1542e77df548eeea0247ee198ad072d80a2a69e588daa7b432beefc8e02f56d2",
+    "prototype/skeletal-track-editor.js": "e4118a091f761c54b14caf90cea09dc30e44df7743b15d7c6b23145ea31d3f16",
+    "prototype/animation-retarget-editor.js": "f80076f6a4e67ca4ff8990acec84271e751f524aa2da5c2a6840b268bb7e2cd5",
+    "prototype/app.js": "48738d52fc4c2a9563bed81f8489d2860fddab03d5ad3475d8cb2c03ecb5cbb2",
+    "prototype/gameplay-editor.css": "3f23989cda85cdd099d1416a7b27d51f9173e8de529983677067f116d8fbcbce",
+    "tools/editor-automation.mjs": "344ab9a1db5a8ad60768ef91ef89e114fd39703842772380c47ea44d8680771f",
+    "docs/ai-routes.json": "61ff4b39d693385d7e32edbcbfe95fbdcdd6341f06d4bc587b63b9d3664a9403",
+    "docs/SKELETAL_TRACK_KEYS.md": "6e52597b5e13f66c928ad9119c8dcef9364edf06ae579480267135d97927526d",
+    "docs/BLUEPRINT_SPEC.md": "b987f1901c00cdba0c7617224bbafc42e37f5b16eef64744879718ef561bd1b5",
+    "tools/check-skeletal-track-keys-2553.mjs": "b41b01bc89d41eb8c1713b44c8ddc49cf7ecad5439c3aea711d8d098a25fdb4f",
+    "CODEX_HANDOFF.md": "cd4b6fd67d72f1dcb0329bc4523c1d6b68a8a89e2c8685da3d3ecd790096b6a0"
+  },
+  "resolvedOwners": 1441,
+  "targetIds": [
+    "AST-02",
+    "ANM-06"
+  ],
+  "changes": {
+    "AST-02": " ·2545–2559: 기존 v1골격 TRS/모프 트랙 생성·원래번호 수정/이동/삭제·실제Float32보간 표본삽입·보간/quat정규화·충돌검증·무변경정밀도/확장/알림/곡선보존. 32키4채널 사람위젯/AI CAS/한Undo·협력게시. 신규20·구간9/리타게팅 회귀, 저장후실제Graph 위치/Euler/인덱스scale/전체모프 재생.",
+    "ANM-06": " ·2545–2559: skeletal.track.create/keys/read 공유검증/원래번호·strictFlags/compact/full detached preview·최종CAS/소유/이름변경취소·flat선택트랙/4096키yield·paged read. 가상65536키 중2키1채널 조회는4원소접근, UI32×4. 전체자산검증/Undo복사비용 남음; 시퀀스독립채널/고급DCC 전체 완료 아님."
+  },
+  "newSourceCases": 20,
+  "checks": {
+    "new": "native/build/skeletal-track-keys-HR8pct/acceptance.json",
+    "initialGroupAndRange": "native/build/group2554.json",
+    "retarget": "native/build/retarget2556.json"
+  },
+  "performance": {
+    "virtualTrackKeys": 65536,
+    "requestedKeys": 2,
+    "requestedChannels": 1,
+    "elementReads": 4,
+    "humanPageKeys": 32,
+    "humanPageChannels": 4,
+    "cooperativeOutputKeys": 4096,
+    "scope": "Structural data access/authoring allocation boundary, not FPS/heap/constant editing. Existing whole validation/Undo remains."
+  },
+  "failuresAndRepairs": [
+    "Initial page helper read each requested time twice; cached that requested scalar once.",
+    "Owned parent fake omitted the widget dispose method; completed the production widget interface. AI test returned a copied fixture object, so its pause callback never reached the staged closure; corrected shared fixture identity. No production rename bypass was found."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "protectedReadEditedOrTested": false,
+    "newCPP": false,
+    "newGPU": false,
+    "newGUI": false,
+    "newDevice": false
+  },
+  "remainingBoundary": [
+    "Complex DCC/LOD/Avatar/skin extraction and bind ambiguity tools",
+    "Independent sequence channels, advanced curves/gizmos",
+    "Whole authored flat selected arrays, full validation and Undo snapshots still scale",
+    "Actual GUI/GPU/device and installation remain separate"
+  ],
+  "cleanup": "native/build/temp-clean2560.json"
+}
