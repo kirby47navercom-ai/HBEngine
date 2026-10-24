@@ -1202,3 +1202,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 1956–1958 소스: 실PCM 역방향/±배속/hold·중첩clock 기울기 합성·오디오clip reverse UI/저장·늦은decode/resume취소·끝후동일clip재생·Take 역반복/방향전환/seek/hold 저장→VM재생·녹화실패와게임음성분리/종료상태해제. 새8check/최종7gate+변경없는audio3재사용/engine169 23/23/AIcontext통과. 실제창PCM/CPP/설치는사용중으로대기/USER_INSTALL1951·Versions1 유지. WORK1958는1955 base+source hash delta로중복manifest절감.
 
 1959–1966 소스: 삼차Hermite/자동·수동기울기/내부전환근·step silent jump 양쪽극한/정역event·작은PCM위상강제맞춤/중첩·곡선보존trim/add/flip·실Bezier/stair UI·linear구간객체lazy 구현.18checks3442대조/영향10gate/해시합성9case/AIcontext통과. 신규fixture eventbinding누락만수정. 실제창/새CPP/PCM출력/설치는사용중대기·USER_INSTALL1951/Versions1유지. 원장delta합성도구로중복manifest절감. WORK1966.
+
+2026-10-24 WORK2208: live/periodic 효과 속성과 역할/태그, 타일 인덱스·변경 후보, PCM/미리듣기 수명, EQS 공간 검색을 제작·공용 실행에 연결. 신규55 source 사례/관련 gate와 현재SDK 실제C++4호출·include42·시작위치 검증 통과. 설치 보류·예약0, 세부 한계/잔여/해시는 docs/research/ENGINE_WORK_2208.json 및 ENGINE_STATUS.json을 따라요.

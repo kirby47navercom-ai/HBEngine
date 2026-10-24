@@ -1,0 +1,218 @@
+{
+  "version": 1,
+  "date": "2026-10-24T07:01:47.626Z",
+  "kind": "multi-area-common-runtime-manual-update-hold",
+  "implementationRevision": "81349893618671b309d9dc331240bac7a599a222",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2177.json",
+  "changedSourceHashes": {
+    "docs/BLUEPRINT_SPEC.md": "093f19910653ef557a21b63e5e9d3ff5f8b790de189c139e20156f16fa30f16e",
+    "docs/NODE_CATALOG.md": "29ddbe55f6202b8225d3d9f5300c9f8c112a8cb3bc7833ff0018e02c54e10772",
+    "docs/ai-routes.json": "4258c01a45ab013f4602063c4fc5f8246c1f5b9acd2d84d61cbfab0393b2beac",
+    "native/include/HBEngine/Bridge.hpp": "0bbcc8e6def1d7f2cd70a4543d5f9066e2d68ed88bb21e8846cc26da42e1f201",
+    "native/include/HBEngine/Game.hpp": "bcfe75b9e253f177941d6dc39fe840cd294c0ad7ec146265c8eea1a3c19d08de",
+    "prototype/ability-runtime.js": "91214b9437eed7c48fb9a878558552d6ec18bfaf67279213eb875aede54cc2dc",
+    "prototype/ability-set-reapply.js": "04738efc452c01967a54689e07cad493b99ade0b957eee742abcb2e57ee7f2b2",
+    "prototype/audio-editor.js": "315d83d2256bb4e625b872e248a2968eb61283de5cb7006c48b3532b130562dc",
+    "prototype/audio-mixer.js": "80faf92cbcbdb18283050d00b994020962bdc4b127acb1f0b0296c995a00490b",
+    "prototype/auto-tiles.js": "c0045ab354b48fc74d53edfa41b021730981d4f3d6d39db64c982d165693ee2c",
+    "prototype/buffered-audio.js": "425ab9f8091fc28a030c449dce473754e17abe5c94e10445923ee0e59051deef",
+    "prototype/effect-live-editor.js": "353ace91717a6454896c23a2ae5360fb5e962f67a8589c092ade254bc8560116",
+    "prototype/effect-magnitude-inputs.js": "1d817f83f21446eef892d39d01f80a75ca79c32385e7e18b584a768010a68042",
+    "prototype/effect-scaling-editor.js": "4b48ab4c6a74d795cc242e9ad80cbad1ba78a89162a307daa9bbce7632962b76",
+    "prototype/effect-scaling.js": "bbdfdf77a92291863ab241495a98cdc2c972e17c5dd54d092f308c0c69093b30",
+    "prototype/engine-services.js": "27b94fe1d65b01d44eae3a2c5703ef7668ff4a4b6a22519a53aa5e36ba71f4da",
+    "prototype/environment-query.js": "a42c1f95b6334b3c2b9d828cf54efc86d17043d075c6095353034bc28251cd43",
+    "prototype/tile-cell-index.js": "3eaed2e34d2f5be6c9a76d3e8688f0170f070700f3df34a28aba6da0c760168d",
+    "prototype/tilemap-chunks.js": "f6b71787e234027a5911f600a36da2908dd3d872e7a63b8ba7a62416be1f8b52",
+    "prototype/tilemap-editing.js": "441d5a5db3f25d5b636a40c6fac0df02c99d294f18e6c6a65a580a0f1f44a408",
+    "prototype/tilemap-runtime.js": "a2fcff6a4bf818a7c0ea197ce2067ace266c598b01549115bf736cf336ac9476",
+    "tools/check-native-includes-2149-cpp.mjs": "3816641c7e3aaff993db610e5f6c4de3ca4fb1995473e452ae777e09bcff8c9b",
+    "tools/editor-automation.mjs": "de39d2f98e2c6fc22e531d6cacf2431f4a9d2c2faea7bf4c794697fab169f917",
+    "tools/generate-api.mjs": "162626eeceedd10fff77daae41d8f1c36cb61434a660b0f335ba9df9dfb50b86",
+    "docs/AUDIO_PCM_LIFECYCLE.md": "e2413cdffd62354be110e82099873bdb1e52b3c01c46a1dbf8151caa695882ba",
+    "docs/ENVIRONMENT_ACTOR_INDEX.md": "f6f3fe1d6ed13af154dbae2411c0e6081bf3aef7111b4dd219cae17bcda7a61c",
+    "docs/LIVE_EFFECT_CAPTURES.md": "0780dd9c1af33c236af1e78d5038dfea6a97791c8999f5f17591811efacfebfc",
+    "docs/TILE_RUNTIME_INDEXES.md": "247153a4b57e70cb6b58ac6debc6b275a251bef7d732cb32742e75367d489317",
+    "prototype/audio-pcm-cache.js": "36a84d8f969dcdef8d874766ad8b41c0eb7af15f75528396828dd6e423aa77fc",
+    "prototype/effect-application-context.js": "f8a83866a192afb8878ceb5dd945336870000a678206b79570ebbbe1042e6459",
+    "prototype/environment-actor-index.js": "6305cfde916242f007f7921db1ca3539ffe4d66e52f653a85381cfc6a4896051",
+    "prototype/live-effect-captures.js": "a973db4d7438ae53a1b465ea014055e2a544a111a4322242c29f643943815708",
+    "tools/check-audio-preview-2197.mjs": "08ca28b1fe951678f167e28a4c1b50c28263b34734aab5d61c337ac6d5f97442",
+    "tools/check-effect-context-2202.mjs": "f9f8e7b9c7ae0abb2699dc1178682b9c2d8adc2f5788b6bf4096710b01b380f7",
+    "tools/check-effect-context-2203-cpp.mjs": "37aa9fa26690e2a468618577fc1b15bcce3ce3b5effa0073c1a7e3e2fd62926d",
+    "tools/check-eqs-index-2198.mjs": "736ff8eecfb0540a63c7c1d852f39c76dbd38024c2dd9733c80e5600cc99064b",
+    "tools/check-live-captures-2187.mjs": "65ed1e7f76d6533969212b7b2cc8f5572a9600b52eb54796e51ec0bcde53e0d0",
+    "tools/check-pcm-lifecycle-2189.mjs": "20feaf137a0a423e092ff98a56177f56a70cfef74c77022ba6a711155b4dfbf2",
+    "tools/check-tile-indexes-2188.mjs": "57369a4e8dea708615896f5ddc5cdd2013edee22ae6c46a1b01fd948fc47f394",
+    "prototype/core-api.js": "e6bb2e729607910980a06f8bcb5a47d0943c40953f051c65eae571ff43d3bfa4",
+    "CODEX_HANDOFF.md": "3928bc13e6e527c3f5f45536ac7f2bbe113984466614722851baf898b0860673"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1323,
+  "targetIds": [
+    "GAM-04",
+    "GAM-03",
+    "2D-06",
+    "AUD-03",
+    "CPP-01"
+  ],
+  "changes": {
+    "GAM-04": " ·2178–2208: snapshot=false 지속 효과를 source/target base·current 종속·파생/다중소유자 계산·원자적 rollback에 연결. 변경된 연결만 갱신·idle 재독0·source세대/풀반환freeze·동일ID재결합차단. 주기 실행 묶음 때 live입력을 다시 읽고 기존 count/stack/anchor 유지. ApplyEffectSpec 뒤 선택 instigator/causer와 네 역할ID·태그 적용시snapshot을 편집기·BP·C++·Cue·runtime.effect에 전달·사본보호·비동기삭제취소. 신규22effect source사례와 기존관련gate·현재SDK 실제C++4call→공용서비스 Health990/role태그 확인. 지연 묶음 내부 매주기 과거source값/target자기feedback재구성·설치/실기기증명은별도.",
+    "GAM-03": " ·2195–2208: 공용EQS actors생성기에 XY/XYZ 64단위공간셀·변경된셀갱신·큰반경점유셀fallback. 현재world/부모/직접변환/풀/동일ID객체/태그/순서 매질의sync·변환실패부분공개0. 원래projection/trace/진단ID/score순서보존, 복사페이지. 신규8source사례·기존EQS2gate통과. 소유4096점 예제 warm후보4096→1이며 O(N) mutableworld sync는남고 FPS측정아님.",
+    "2D-06": " ·2178–2208: 단일/다중타일 마지막값중복정리·무변경복사0·작은쓰기 lookup overlay/최대16세대on-demand압축·변경group만계승. 셀원래순서/과거snapshot·native JSON보존·대량spread제거·첫셀삭제bucket순서修理. 자동타일 affectedindex·render/collision dirtychunk 후보를공유. 신규10source사례·기존타일4gate통과. 소유4096tile warm단일수정+조회 getter8190→2050, 실변경전체배열복사/검증freeze·디스크chunk·전체frame성능은별도.",
+    "AUD-03": " ·2178–2208: retainedPCM32MiB 유지·URL중복pending공유·FIFO최대2fetch/decode·dispose대기/실행caller즉시거절/abort·취소불가능늦은decode폐기·LRU/큰clip반환·disposedplayer buffer참조해제/길이보존·primitive진단. 편집기마다 context1/PCstream미디어노드재사용·stop시suspend/graph·timer해제·close시pool/PCM해제·모바일기존buffered/cache유지·경합/실패/복수편집기격리. 신규15source사례통과. OS/codec/voice/reversePCM/기기음질총RAM증명아님.",
+    "CPP-01": " ·2208: 2151/2155에서미룬실worker리터럴include42와원위치7,3,2를현재SDK로확인. 증분reply의unchangedactor누락을오류로보던검사만교정하고실제반환Origin으로관측. ApplyEffectSpec 선택instigator/causer와string·EffectArguments 구/신호출4개실컴파일·명령재생·Health990/네역할태그조회. source/nativeBinary/GUI/install근거구분·설치보류유지."
+  },
+  "checks": {
+    "source": {
+      "passed": true,
+      "newCases": 55,
+      "reports": {
+        "live": {
+          "path": "native/build/live-captures-34Rfyd/acceptance.json",
+          "sha256": "56be6cf039bc82ffab9f9c1c4fe4c068e8986282bdd51a2fbd54dda49fb5a360"
+        },
+        "tiles": {
+          "path": "native/build/tile-indexes-JUIEOI/acceptance.json",
+          "sha256": "9ad8493cbba6d74186ee741eacf70bd2a5dd3e0b61ed92f7d0fac962f224f658"
+        },
+        "pcm": {
+          "path": "native/build/pcm-lifecycle-xsQgbt/acceptance.json",
+          "sha256": "db92433d90a4b6fc10994378ea0a449819a3fe8eb8ae4ed300706fec0bfc2513"
+        },
+        "preview": {
+          "path": "native/build/audio-preview-sispNW/acceptance.json",
+          "sha256": "6bf1bf83d9ae9327f61a5a6fe08ec8ff86c83974afc970503488f127afbfeed7"
+        },
+        "eqs": {
+          "path": "native/build/eqs-index-yZenuc/acceptance.json",
+          "sha256": "ab53f9f5d9b30e63cc47947bb1c10019a138f02e0ab0f16dbb38e0ea65b27009"
+        },
+        "periodicContext": {
+          "path": "native/build/effect-context-sN2Iu6/acceptance.json",
+          "sha256": "0890dfc313c11511693fb5ffea305bbbe515a4ac15f38453efaa2e4d0a1d6946"
+        },
+        "cpp": {
+          "path": "native/build/effect-context-cpp-r9hleO/acceptance.json",
+          "sha256": "076c4c5dd8a789abc55ef35715949d1da95528d2d73c3c6c673ebcc1d146d469"
+        }
+      },
+      "initialGroup": {
+        "path": "native/build/group2190.json",
+        "sha256": "5f0e0e62ebd872fd050b731cdd02172be409f92a72a06682b8df795cf9499cb5"
+      },
+      "initialFailureRetained": true,
+      "finalGroups": [
+        {
+          "path": "native/build/group2200.json",
+          "sha256": "1b40849af7eec47cc71d13022ca35163ce8512af7a8351262ac2e15097fa6b1d"
+        },
+        {
+          "path": "native/build/group2204.json",
+          "sha256": "f6324503f7cfe33c0fbdb4e96bdf2af0212062a6acebd9e5499a689e77328f39"
+        }
+      ],
+      "finalIntegrity": {
+        "path": "native/build/final2207.json",
+        "sha256": "fd6c2273ee88b4f26c8d09f81a6f50aae77b74b2241a4b06e6fe39aa7a6d673c"
+      },
+      "reuse": "Unchanged tile/PCM/audio gates from group2190 and group2200 retained. Changed effect owners rechecked in group2204 only. Initial failed expectations/fixtures and actual tile bucket order repair are not counted as separate accomplishments."
+    },
+    "nativeCpp": {
+      "passed": true,
+      "actualCpp": true,
+      "installed": false,
+      "workerRead": 42,
+      "origin": [
+        7,
+        3,
+        2
+      ],
+      "operations": 4,
+      "resultHealth": 990,
+      "binary": {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\fff2dcb8b2d015005c7c\\worker.exe",
+        "sha256": "86a8fc8ba5dd5d6c15521ee30efadcb1dee7a93f0891fda567d1f25447f6cca0"
+      },
+      "sdkUsed": {
+        "fingerprint": "deba1dad16213c1323452d00f50106f567434851111c09c5a31f0ffc59074e6a",
+        "preprocessedFingerprint": "62950a58777d1a790c28a80583a7f5e73200cc4e8121761c67bbcc1f9e6c4f6e",
+        "files": 10,
+        "bytes": 1351834,
+        "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+        "mode": "dependencies",
+        "planHit": true,
+        "scanMS": 0
+      },
+      "cacheKey": "fff2dcb8b2d015005c7c",
+      "cacheHit": true,
+      "scope": "Real current-SDK C++ worker compiles old default/string/EffectArguments and explicit-role overloads; actual emitted commands replay through common engine service and copied role/tag pages. Also retains literal include/position proof. No GUI/native renderer/device/installation claim.",
+      "report": {
+        "path": "native/build/effect-context-cpp-r9hleO/acceptance.json",
+        "sha256": "076c4c5dd8a789abc55ef35715949d1da95528d2d73c3c6c673ebcc1d146d469"
+      },
+      "initialFixtureFailure": "native/build/effect-context-cpp-pf1sl2/failure.json",
+      "initialFixtureFailureReason": "Owned extra native actors used an empty class string; corrected fixture to Actor. SDK compilation already succeeded; final identical SDK/module cache replay passed.",
+      "previousIncludeWorker": {
+        "path": "native/build/native-includes-2149-cpp-PywsJ4/acceptance.json",
+        "sha256": "f8fa5f4e4a5aa57ae36bde8c80a7e822e793d6dd8672d75b243f58fc9d3023f3"
+      }
+    },
+    "actualWindow": {
+      "executed": false,
+      "reason": "Background source/worker only; user UI protected."
+    },
+    "nativeRenderer": {
+      "executed": false,
+      "reason": "Renderer and Host/Player binary sources unchanged; no current DirectX claim."
+    },
+    "devices": {
+      "executed": false,
+      "reason": "No Mac/Xcode/Android device; not requested again."
+    }
+  },
+  "performance": {
+    "tiles": {
+      "tiles": 4096,
+      "baselineCoordinateReads": 8190,
+      "currentCoordinateReads": 2050,
+      "scope": "Instrumented warm edit/read getters, not FPS/time/RAM; real array copy remains."
+    },
+    "eqs": {
+      "population": 4096,
+      "examinedActors": 1,
+      "scope": "Broad-phase after full mutable-world sync, not total-frame speed."
+    },
+    "audio": {
+      "retainedPCMBytes": 33554432,
+      "concurrentJobs": 2,
+      "scope": "Retained cache excludes active/reverse/native/OS codec RAM."
+    }
+  },
+  "installation": {
+    "held": true,
+    "hold": "native/build/UPDATE_HOLD.json",
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "performed": false,
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previousDeleteConfirmedIn": "docs/research/ENGINE_WORK_2160.json"
+  },
+  "space": {
+    "cache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    },
+    "handoffBytes": 4268
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}
