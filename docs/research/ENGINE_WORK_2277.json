@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "date": "2026-10-24T10:07:01.041Z",
+  "kind": "behavior-task-generation-and-failure-safe-cleanup",
+  "implementationRevision": "609788eb9d48ea758396e7deb5829596b2ffd858",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2266.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "e7b09b25291479be1935903e8e0e2336e54867608840e7d539ecebc5032fbee1",
+    "prototype/gameplay-runtime.js": "94489569d5630e7556b07090f624a6a749256511725d0f434cd7d48cf9de8e93",
+    "tools/editor-automation.mjs": "ae5ca2bed4957fdc258ceb59e4e90d4a87f0bf83b3f04e124e9b086536452584",
+    "docs/BEHAVIOR_TASK_LIFETIME.md": "3f4e7ce5819cedcde1799aee46c0c555f187ba28ccfbc1e9d926a8005ec46982",
+    "tools/check-behavior-task-lifetime-2271.mjs": "68ac73d3194d989f45d4be08ca36d680145870dca11136bccdd9295d2f00c184",
+    "tools/check-behavior-lifecycle-2274-cpp.mjs": "a082dc035e9ef181fae0de5a1939b61a694da66a4760856303151d4589cd44d6",
+    "CODEX_HANDOFF.md": "0e7b76853a876d8fbbc885bf622138f54a5de0533d6e3cc40b4941a71e7f88ce"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1348,
+  "targetIds": [
+    "GAM-03"
+  ],
+  "changes": {
+    "GAM-03": " ·2267–2277소스: task Start/Tick/Finish await후동일memory/services/활성검사·capturedhandle전달·reset중FinishTask/nativePlan/중첩Tick차단. reset은오류뒤scope/abort/모든service정리·기존세대만삭제·reentrant stop depth보존. shutdown최종/idempotent·memory/observer/cooldown/service기한clear·원실행+cleanup오류Aggregate/cause/falsy거절보존. 비활성말단/무service빠른정리·내부무관reset이불필요wake안함(기존observer회귀에서발견/수정). 新21source와query17/observer/subtree/AI게이트. 현재SDK 실제TaskProbe GetTaskHandle/FinishTask/범위Timer7call·신선worker빌드→마지막JS빠른경로뒤同binary/SDKcache검사통과. SDK/Host/Player/renderer변경0·GUI/설치0. explicitdeferredFinishAbort/nativeBTTask클래스·비협조latent외부취소/rollback은별도."
+  },
+  "checks": {
+    "source": {
+      "passed": true,
+      "newCases": 21,
+      "report": {
+        "path": "native/build/behavior-task-life-RPKgka/acceptance.json",
+        "sha256": "97e2c86c8f777bc5e23e4a09b54f61148b55a2ad18dfe1d0d5680ac5cda39b97"
+      },
+      "groups": [
+        {
+          "path": "native/build/group2272.json",
+          "sha256": "b134731c7c36444239595320bca059781de5fefd8ae1c1945751a6b0121f4796"
+        },
+        {
+          "path": "native/build/group2275.json",
+          "sha256": "cccd12410eeeecead95fc8150a2738ff4ff74af766f0b2b0009851e72a9fe627"
+        }
+      ],
+      "integrity": {
+        "path": "native/build/final2276.json",
+        "sha256": "52c4e2fb3bc465e48ddaa979182bb6ff4c35ec6e57b973fc6c8c3a7f042fc141"
+      },
+      "recheckReason": "Source cleanup wake regressed unrelated observer scheduling; fixed and reran affected BT gates. A no-op cleanup fast path then changed runtime source; final affected checks and exact SDK/binary C++ cache execution repeated, with no recompilation."
+    },
+    "nativeBinary": {
+      "executed": true,
+      "newSDKFunction": false,
+      "first": {
+        "path": "native/build/behavior-lifecycle-cpp-NTUVMT/acceptance.json",
+        "sha256": "7578a18bc8fd31e4f1ca17c044ec39f523f64751432c306480da3d11eaed49ee"
+      },
+      "current": {
+        "path": "native/build/behavior-lifecycle-cpp-altLbs/acceptance.json",
+        "sha256": "fd87d237d426b91eb5c8774c2a7fe0a1d3cbd5b3c641e0d7144ba2d5d20a22dd"
+      },
+      "builds": [
+        {
+          "binary": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\df7f0b31b0f1a83f4b4e\\worker.exe",
+          "sha256": "e9543bb360e86df2c8d81d501eb0c9614f13dba9d83088b02aa7ddf690b8f44a",
+          "cacheKey": "df7f0b31b0f1a83f4b4e",
+          "cacheHit": true,
+          "sdkUsedFingerprint": "b641815377b5bde8d49d48aa5fe1e368c76de862aa444191019a27a2ecf0c8ca"
+        }
+      ],
+      "calls": 7,
+      "scope": "Current SDK legacy GetTaskHandle/FinishTask and scoped timer cancellation only, not explicit FinishAbort/native BTTask base classes or rendering."
+    },
+    "actualWindow": {
+      "executed": false,
+      "reason": "User UI and unowned player protection."
+    },
+    "devices": {
+      "executed": false,
+      "reason": "No physical Android device/MacXcode."
+    }
+  },
+  "limits": [
+    "Explicit deferred FinishAbort/native BTTask classes still separate; this implements callback-generation and cleanup foundations.",
+    "An existing onAbort callback Promise is awaited; arbitrary noncooperative callback/I/O rollback or forced cancellation is not claimed.",
+    "No native renderer, GUI, device, package or installation execution for these changes."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4981,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "policy": "Owned source fixtures/native worker evidence only; NativeHost build prunes compiler objects and shared modules to32+live. No user/project/Versions cleanup performed."
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}

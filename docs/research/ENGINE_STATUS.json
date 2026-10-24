@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-24",
-  "basisRevision": "9efe8ae0811a2063317946ad05637e6b53b5af71",
+  "basisRevision": "609788eb9d48ea758396e7deb5829596b2ffd858",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -2173,7 +2173,7 @@
       "area": "gameplay",
       "title": "행동트리 고급 태스크·EQS",
       "status": "partial",
-      "implemented": "기본 행동트리/감지/태그 실행 · 165: 일반 병렬 결과 집계·EQS 생성/필터/점수·BT 블랙보드·C++ 실행 연결 ·217: 선택 EQS 단계 진단/실패 원인·관측ms·UI/실제 뷰포트 점수/페이지·C++ 공용 실행과 비actors 월드복사 회피 ·220: XY grid/ring/actors·평면 distance/dot·실제2D ray/벽·legacy XZ/UI Undo·별도 게임 ·2160소스: EQS투영/중간검사/final 읽기·시각화선택을사람select/요약버튼과AI read/view에공유. 점수/실패는선택단계까지만·전체count와표본rank구분·복사페이지/실패필터·재질의0. 기본run최종반환·visualize:false/비동기UI대상변경·닫기보호. 기존BP/C++공용operation결과보존. 신규11case/영향4gate3.49초통과·실제창검증별도/사용자업데이트보류. ·2195–2208: 공용EQS actors생성기에 XY/XYZ 64단위공간셀·변경된셀갱신·큰반경점유셀fallback. 현재world/부모/직접변환/풀/동일ID객체/태그/순서 매질의sync·변환실패부분공개0. 원래projection/trace/진단ID/score순서보존, 복사페이지. 신규8source사례·기존EQS2gate통과. 소유4096점 예제 warm후보4096→1이며 O(N) mutableworld sync는남고 FPS측정아님. ·2209–2218: 기존BT node.services에kind=query·asset/key/resultType/contextKey/successKey와timer/활성·비활성·완료callback. 활성노드주기만질의·느린BT기한wake·catchupburst0·idle timer0·일반noService sleep 추가node조회0. typedkeys선검증·빈결과목적지보존·stop/reset/교체late결과차단. 기존query/C++·BP RunBehaviorTree 공용/native명령재생·indexedEQS·실제BlueprintRuntime/blackboard갱신. 편집생성/Undo·저장/재읽기·신규12source/기존BT·EQSgate통과. EQS target/context비동기교체publication차단·context진단시작값보존. staticTestPawn/실제창·대규모부하는별도. ·2229: 기존query태스크도await뒤running+동일memory/활성검사로stop/reset lateBB쓰기차단. query/event service onActivation안의stop과event의자기reset은이전질의·주기event·다음예약·task본문진행차단·deactivation정리유지. 새5source추가로queryservice17 및 기존BT2gate통과. nativeFinishAbort고급/정적TestPawn/실제창등잔여유지. ·2230–2245소스: 편집월드 수동EQS를 복사장면/기존engineOperations.eqsRun·NavMesh·실제Rapier XY/XZ 질의로연결. 미저장에셋/readOnly editor.eqs.run/read/view·사람기존단계UI·target/context identity/편집세대/풀/플레이/숨기기취소. 액터/BP/CPP/UI/음성/물리시뮬레이션시작0·원본debug쓰기0·질의뒤서비스해제·uncancellable read준비직렬화/동시worldcopy1·초안중복읽기제거. source18case와기존EQS2gate통과. 전용TestingPawn/자동편집재질의/실제창/대규모부하는별도.",
+      "implemented": "기본 행동트리/감지/태그 실행 · 165: 일반 병렬 결과 집계·EQS 생성/필터/점수·BT 블랙보드·C++ 실행 연결 ·217: 선택 EQS 단계 진단/실패 원인·관측ms·UI/실제 뷰포트 점수/페이지·C++ 공용 실행과 비actors 월드복사 회피 ·220: XY grid/ring/actors·평면 distance/dot·실제2D ray/벽·legacy XZ/UI Undo·별도 게임 ·2160소스: EQS투영/중간검사/final 읽기·시각화선택을사람select/요약버튼과AI read/view에공유. 점수/실패는선택단계까지만·전체count와표본rank구분·복사페이지/실패필터·재질의0. 기본run최종반환·visualize:false/비동기UI대상변경·닫기보호. 기존BP/C++공용operation결과보존. 신규11case/영향4gate3.49초통과·실제창검증별도/사용자업데이트보류. ·2195–2208: 공용EQS actors생성기에 XY/XYZ 64단위공간셀·변경된셀갱신·큰반경점유셀fallback. 현재world/부모/직접변환/풀/동일ID객체/태그/순서 매질의sync·변환실패부분공개0. 원래projection/trace/진단ID/score순서보존, 복사페이지. 신규8source사례·기존EQS2gate통과. 소유4096점 예제 warm후보4096→1이며 O(N) mutableworld sync는남고 FPS측정아님. ·2209–2218: 기존BT node.services에kind=query·asset/key/resultType/contextKey/successKey와timer/활성·비활성·완료callback. 활성노드주기만질의·느린BT기한wake·catchupburst0·idle timer0·일반noService sleep 추가node조회0. typedkeys선검증·빈결과목적지보존·stop/reset/교체late결과차단. 기존query/C++·BP RunBehaviorTree 공용/native명령재생·indexedEQS·실제BlueprintRuntime/blackboard갱신. 편집생성/Undo·저장/재읽기·신규12source/기존BT·EQSgate통과. EQS target/context비동기교체publication차단·context진단시작값보존. staticTestPawn/실제창·대규모부하는별도. ·2229: 기존query태스크도await뒤running+동일memory/활성검사로stop/reset lateBB쓰기차단. query/event service onActivation안의stop과event의자기reset은이전질의·주기event·다음예약·task본문진행차단·deactivation정리유지. 새5source추가로queryservice17 및 기존BT2gate통과. nativeFinishAbort고급/정적TestPawn/실제창등잔여유지. ·2230–2245소스: 편집월드 수동EQS를 복사장면/기존engineOperations.eqsRun·NavMesh·실제Rapier XY/XZ 질의로연결. 미저장에셋/readOnly editor.eqs.run/read/view·사람기존단계UI·target/context identity/편집세대/풀/플레이/숨기기취소. 액터/BP/CPP/UI/음성/물리시뮬레이션시작0·원본debug쓰기0·질의뒤서비스해제·uncancellable read준비직렬화/동시worldcopy1·초안중복읽기제거. source18case와기존EQS2gate통과. 전용TestingPawn/자동편집재질의/실제창/대규모부하는별도. ·2267–2277소스: task Start/Tick/Finish await후동일memory/services/활성검사·capturedhandle전달·reset중FinishTask/nativePlan/중첩Tick차단. reset은오류뒤scope/abort/모든service정리·기존세대만삭제·reentrant stop depth보존. shutdown최종/idempotent·memory/observer/cooldown/service기한clear·원실행+cleanup오류Aggregate/cause/falsy거절보존. 비활성말단/무service빠른정리·내부무관reset이불필요wake안함(기존observer회귀에서발견/수정). 新21source와query17/observer/subtree/AI게이트. 현재SDK 실제TaskProbe GetTaskHandle/FinishTask/범위Timer7call·신선worker빌드→마지막JS빠른경로뒤同binary/SDKcache검사통과. SDK/Host/Player/renderer변경0·GUI/설치0. explicitdeferredFinishAbort/nativeBTTask클래스·비협조latent외부취소/rollback은별도.",
       "remaining": [
         "FinishAbort/native BTTask 고급 생명주기",
         "Smart Object/Mass 계열·EQS 동기화 전체 월드 순회 제거·전용 정적 TestingPawn/자동 편집 재질의·편집월드/중간단계/자동 런타임질의 서비스의 실제 창 검증·대규모 AI 스케줄 부하"
@@ -2199,7 +2199,10 @@
         "docs/BEHAVIOR_QUERY_SERVICES.md",
         "prototype/environment-query-preview.js",
         "docs/EDITOR_ENVIRONMENT_QUERIES.md",
-        "tools/check-eqs-preview-2231.mjs"
+        "tools/check-eqs-preview-2231.mjs",
+        "docs/BEHAVIOR_TASK_LIFETIME.md",
+        "tools/check-behavior-task-lifetime-2271.mjs",
+        "tools/check-behavior-lifecycle-2274-cpp.mjs"
       ],
       "evidence": [
         "docs/BEHAVIOR_OBSERVERS_SUBTREES.md",
@@ -2210,7 +2213,8 @@
         "docs/research/ENGINE_WORK_2208.json",
         "docs/research/ENGINE_WORK_2218.json",
         "docs/research/ENGINE_WORK_2229.json",
-        "docs/research/ENGINE_WORK_2245.json"
+        "docs/research/ENGINE_WORK_2245.json",
+        "docs/research/ENGINE_WORK_2277.json"
       ]
     },
     {
@@ -3977,10 +3981,10 @@
     }
   ],
   "latestBatch": {
-    "first": 2260,
-    "last": 2266,
-    "receipt": "docs/research/ENGINE_WORK_2266.json",
-    "scope": "warm native 타일쓰기 묶음·삭제/중복/쿼리/오류순서保全·immutable JSON/native형식유지. 신규14source+기존10gate, 공개64→1은FPS/RAM아님. 전체copy/BP개별쓰기/diskchunks잔여·설치보류/예약0."
+    "first": 2267,
+    "last": 2277,
+    "receipt": "docs/research/ENGINE_WORK_2277.json",
+    "scope": "태스크callback세대·reset/중단/서비스오류뒤정리·종료idempotence/원인/falsy보존·무관wake회귀수정. 신규21source/관련gate와현재SDK실제C++task/timer7call. explicitFinishAbort/nativeBTTask클래스미완료·예약0/업데이트보류."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_2145.json",

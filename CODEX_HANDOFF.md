@@ -2,13 +2,17 @@
 
 최신사용자: 예약다시생성/업데이트금지, 여러분야실구현계속·마지막영향검사. 작은묶음뒤턴끝내지말기·사용량소진/누적목표실제충족때만중단. 주인님/짚짱/해요. hbengine2160삭제. goal/agent/설치0. UPDATE_HOLD.json active 유지. Mac/Xcode/Android폰없음·재질문0. 사용자창/탭/프로필/게임보호. heavy/GUI전active1955·마지막6:54Zactive[](이후source만).
 
-## WORK2266 core 9efe8ae0811a2063317946ad05637e6b53b5af71
+## WORK2277 core 609788eb9d48ea758396e7deb5829596b2ffd858
 
-warm native tileSet의동일self/target/layer·distinctcell/nonerase만묶음. RuntimeTilemaps.edit공유. cold/stale/pool은기존operation; query/process/다른op/소유·레이어변경/duplicate/erase/invalid는경계·유효prefix반영뒤원래오류. 재삽입배열순서/dirty/autoRule/collision/render보존.65536기존예산은packet분할·65540셀누락0/globalcap0. group2264 新14+tileindex10 ~0.9s.4096셀64write map공개64→1·혼합800동치는FPS/RAM아님. 전체copy/BP개별쓰기/diskchunks잔여. SDK/Host/Player/renderer불변·新CPP/GUI/설치0. active1955 9:28Zactive[]. exactref WORK2266/base2259. 次GAM-03 FinishAbort/nativeBTTask수명부터계속.
+BT task callback await後memory/active/service+capturedhandle guard·reset중completion/nativePlan/nestedTick차단. 오류뒤scope/abort/모든service정리·동일m만삭제·reentrantstop depth保全. shutdown terminal/idempotent·refs/timerclear·initial+cleanupAggregate/cause/falsy保全. inactive/noService fast·무관wake observer회귀수정. 新21+query17/observer/subtree/AI group2272/2275. 현재SDK TaskProbe GetTaskHandle/FinishTask/scopedTimer7call 실제실행: firstfresh→최종fastpath뒤同binary/cache. workerdf7f0b31b0f1a83f4b4e exact SHA/sdkUsed는WORK2277 refs. SDK/Host/Player/renderer불변·GUI/device/install0. sharedcache32+live auto·active1955 9:52Zactive[]. 次explicitdeferred FinishAbort/nativeBTTask class(아직코드0)·비협조latent취소/rollback잔여.
 
-## WORK2259 core61847f89 / part17f2024a
+## WORK2266 core9efe8ae0 / source14+tile10
 
-ET api.version1/requires선택manifest·legacy지원버튼維持·inspector/schema/EQS3capability. 입력/template/contextcopy/revision경로1read·전송전identity/cancel·동시1/control/config잠금·실패회복/닫기late표시0. 전송뒤실제성공/오류보존·가짜rollback/retry0. boundedJSONtext/표시실패≠명령실패. 新20source+도구/AI. ET editorOnly4target inspectBuild payload제외/runtime직접·Source참조거절/CRUD·Takepreset유지. 新9projectcase·263667B추가에도payload11506B동일. combined2258/recheck2257 refs. 실제패키지/기기미검증. native/codeABI/배포·다중원자/전송뒤취소잔여.
+warm native동일self/target/layer distinct nonerase tileSet묶음. query/process/다른op/중복/erase/invalid경계·prefix오류·순서/dirty/auto/collision/render保全. 65536예산은분할·65540누락0/globalcap0. 4096셀64write map공개64→1·800혼합동치는FPS/RAM아님. 全arraycopy/BP개별/diskchunks잔여. group2264/WORK2266 refs.
+
+## WORK2259 core61847f89 / part17f2024a / source29
+
+ET데이터api1/requires·legacy버튼·inspector/schema/EQS3·문맥/입력copy/revision1·준비identity/cancel·동시1/실패복구·전송뒤실제결과保全·boundedtext. 新20+도구/AI. editorOnly4target inspectBuild 제외/runtime참조오류·新9/263667B tool추가시payload11506B동일. native코드ABI/배포·다중원자/전송뒤취소별도. combined2258/WORK2259 refs.
 
 ## WORK2245 core301cb5a6 / source39
 
