@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "date": "2026-10-24T22:51:25.566Z",
+  "kind": "skeletal-clip-uniform-retime",
+  "implementationRevision": "b884130594a4fd1dad9444290e38f1083979b01e",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2594.json",
+  "changedSourceHashes": {
+    "prototype/skeletal-clip-retime.js": "60171d6ebf9df325b8a7651b9b74b0f22fd067d8da54a9c20d31e8b762f59ec5",
+    "prototype/animation-retarget-editor.js": "113c71cfffbac9a049e298ee1204fc8fe706238d90e2526bc85dc8e594f9f8ba",
+    "prototype/app.js": "7d78b8fce026e4b1970c317d352c51cfcfd239628d148e418dc644a7295eba57",
+    "tools/editor-automation.mjs": "652bc6f3233219da35ccbba7e1af887d0369ac3c0393a203d0089b4dcec9e498",
+    "docs/ai-routes.json": "dba88a83ca825849ebe9365eb3b40c0ab40ee77662d450974235243b9dfe94be",
+    "tools/check-skeletal-retime-2598.mjs": "fe6e1c19d3c60c8e6077541a97a6b84cd63407b00e2d0c42232a2bfec182387e",
+    "docs/SKELETAL_CLIP_RETIME.md": "a01b943e88049d8077b6c119764f7447638ccf54be85de977eb2af1f9a8c27a8",
+    "docs/SKELETAL_CLIP_RANGE.md": "9db1686040c789bcd94c671b5d197e0e79268948a6f7989000ec1c6076064e16",
+    "docs/BLUEPRINT_SPEC.md": "77e516031acc4a7242eeb46da13c96c1dff964e5b10f62e04be39db7d7dc0df1",
+    "CODEX_HANDOFF.md": "b1b02f56a87d1ef4f560aa274027b4798effda0e7de1153e1350df7c24f44782"
+  },
+  "resolvedOwners": 1452,
+  "targetIds": [
+    "AST-02",
+    "ANM-06"
+  ],
+  "changes": {
+    "AST-02": " ·2595–2608: 기존 v1 골격 클립 양수 균일 길이 재조정·TRS/quat/index/morph 값/보간·알림/마커 ID·가중/control·Infinity기준 보존/시간변환. 저장 후 실제 Graph 모든 대상채널 phase 확인. 신규15/구간9/키20.",
+    "ANM-06": " ·2595–2608: 사람 길이적용/한Undo·preview수명/정규화위치·협력flat준비4096yield/Float32충돌거절·hook오류복원/새문서보존, AI skeletal.retime compact/full복사/strictflags·최종CAS/rename취소. 전체검증/Undo·reverse/nonuniform/DCC 별도."
+  },
+  "newSourceCases": 15,
+  "regressionCases": 29,
+  "checks": {
+    "group": "native/build/group2600.json",
+    "new": "native/build/skeletal-retime-xgRTXg/acceptance.json",
+    "range": "native/build/skeletal-range-LHoEL7/acceptance.json",
+    "keys": "native/build/skeletal-track-keys-hvYv88/acceptance.json",
+    "focus": "native/build/context2601.json",
+    "syntax": 5
+  },
+  "failuresAndRepairs": [
+    "No feature gate failed. Temporary doc-writing helper had incorrectly escaped template backticks; fixed the helper before it changed any target.",
+    "Human publish rollback only restores owned data/history; a hook replacement remains intact. Explicit regression covers the replacement and failed hook."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newCPP": false,
+    "newGPU": false,
+    "newGUI": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "performance": {
+    "cooperativeKeys": 4096,
+    "valueArrays": "Shared only in pure preparation; final AI draft values/metadata detached",
+    "fullValidationUndo": "Existing whole document costs remain; not an FPS/heap claim"
+  },
+  "storage": {
+    "newRuntimeSDKProfiles": 0,
+    "helpersCleanup": "native/build/temp-clean2606.json"
+  },
+  "remainingBoundary": [
+    "Reverse/nonuniform time warp",
+    "Model-contained clips need extraction",
+    "Complex rig/DCC, wider renderer/physics/platform residuals unchanged",
+    "Actual GUI/native/GPU/device/installation validation separate"
+  ]
+}
