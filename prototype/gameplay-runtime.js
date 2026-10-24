@@ -53,14 +53,14 @@ export async function loadBehaviorProgram(name,hooks){
 export class BehaviorRunner {
   constructor(asset,board,hooks){
     if(!validGameplayAsset('behaviortree',asset))throw Error('행동트리 검증 실패');
-    this.asset=copy(asset);this.board=board;this.hooks=hooks;this.nodes=new Map(this.asset.nodes.map(n=>[n.id,n]));this.hasServices=this.asset.nodes.some(n=>n.services?.length);this.memory=new Map();this.status={};this.running=true;this.elapsed=0;this.accumulator=0;this.activeNodes=new Set();this.cooldowns=new Map();this.serviceTimes=new Map();this.runId=crypto.randomUUID();this.taskSerial=0;this.observedRevision=board.revision;
+    this.asset=copy(asset);this.board=board;this.hooks=hooks;this.nodes=new Map(this.asset.nodes.map(n=>[n.id,n]));this.hasServices=this.asset.nodes.some(n=>n.services?.length);this.memory=new Map();this.status={};this.running=true;this.elapsed=0;this.accumulator=0;this.activeNodes=new Set();this.cooldowns=new Map();this.serviceTimes=new Map();this.runId=crypto.randomUUID();this.taskSerial=0;this.resetDepth=0;this.shutdownComplete=false;this.observedRevision=board.revision;
     this.observers=new Map();this.parents=new Map();for(const n of this.asset.nodes)for(const child of n.children)this.parents.set(child,n.id);
     this.program=hooks.program;this.assetPath=hooks.program?.path||'';this.frameSerial=0;this.wake=true;
     this.rootGuards=new Map();this.proxyOwners=new Map();for(const n of this.asset.nodes.filter(n=>n.type==='subtree')){const program=this.program?.subtrees.get(n.id);if(program){const guard=this.injectRootGuards(n.id,program,program.data.root,n.id,n.id+'/root');if(guard)this.rootGuards.set(n.id,guard);}}
   }
   injectRootGuards(owner,program,id,parent,prefix){const source=program.data.nodes.find(n=>n.id===id);if(!['condition','compareBlackboard','cooldown','timeLimit','repeat','inverter','forceSuccess','subtree'].includes(source.type))return null;const key=prefix+'/'+id,node={...source,id:key,children:[]};this.nodes.set(key,node);this.parents.set(key,parent);this.proxyOwners.set(key,owner);const childProgram=source.type==='subtree'?program.subtrees.get(source.id):program,childId=source.type==='subtree'?childProgram?.data.root:source.children[0];if(childId){const child=this.injectRootGuards(owner,childProgram,childId,key,key);if(child)node.children.push(child);}return key;}
   taskHandle(key){if(typeof key!=='string')return '';const node=this.nodes.get(key)||this.asset.nodes.find(n=>n.name===key),m=node&&this.memory.get(node.id);if(m?.taskActive)return m.handle;for(const [id,m] of this.memory)if(m.child){const handle=m.child.taskHandle(key.startsWith(id+'/')?key.slice(id.length+1):key);if(handle)return handle;}return '';}
-  finishTask(handle,success){if(typeof success!=='boolean')throw Error('태스크 결과는 bool이에요.');if(!this.running)return false;for(const m of this.memory.values()){if(m.taskActive&&m.handle===handle&&m.result===undefined){m.result=success?'success':'failure';this.wake=true;this.hooks.changed?.();return true;}if(m.child?.finishTask(handle,success)){this.wake=true;return true;}}return false;}
+  finishTask(handle,success){if(typeof success!=='boolean')throw Error('태스크 결과는 bool이에요.');if(!this.running)return false;for(const m of this.memory.values()){if(m.taskActive&&!m.resetting&&m.handle===handle&&m.result===undefined){m.result=success?'success':'failure';this.wake=true;this.hooks.changed?.();return true;}if(m.child?.finishTask(handle,success)){this.wake=true;return true;}}return false;}
   ownTasks(){return [...this.memory].filter(([,m])=>m.taskActive).map(([id,m])=>({id,name:this.nodes.get(id).name,handle:m.handle,result:m.result||'running'}));}
   snapshot(){return [...this.ownTasks(),...[...this.memory].flatMap(([id,m])=>m.child?m.child.snapshot().map(t=>({...t,id:id+'/'+t.id,sourceNode:t.sourceNode||t.id,asset:t.asset||m.child.assetPath})):[])];}
   instances(scope='',path=[]){return [{scope,path,asset:this.assetPath,blackboard:this.asset.blackboard,result:this.result,status:copy(this.status),tasks:this.ownTasks()},...[...this.memory].flatMap(([id,m])=>m.child?m.child.instances(scope?scope+'/'+id:id,[...path,this.nodes.get(id).name]):[])];}
@@ -76,16 +76,25 @@ export class BehaviorRunner {
     for(const [id,{m,index}] of restarts){if(!this.running)break;if(this.memory.get(id)!==m||!m.active)continue;await this.reset(m.active);m.active=null;m.restartAt=index;aborted=true;}return aborted;
   }
   async notify(name,node,extra={},task=false){if(this.nativeCallbackSkip&&task&&extra.phase==='tick'&&this.nativeCallbackSkip.node===node.id&&this.nativeCallbackSkip.name===name){this.nativeCallbackSkip=null;return;}if(name)await (task?(this.hooks.taskEvent||this.hooks.event):this.hooks.event)?.(name,{node:node.id,task:this.memory.get(node.id)?.handle||'',delta:this.delta||0,time:this.elapsed,...extra});}
-  async deactivate(node,m){if(!m?.servicesActive)return;m.servicesActive=false;for(const service of node.services||[])await this.notify(service.onDeactivation,node,{service:service.id});}
+  async deactivate(node,m){if(!m?.servicesActive)return;m.servicesActive=false;if(!node.services?.length)return;const errors=[];for(const service of node.services||[])try{await this.notify(service.onDeactivation,node,{service:service.id,task:m.handle||''});}catch(error){errors.push(error);}if(errors.length===1)throw errors[0];if(errors.length)throw new AggregateError(errors,'행동트리 서비스 정리 실패',{cause:errors[0]});}
   async reset(id,{silent=false}={}){
-    const node=this.nodes.get(id);if(!node)return;for(const child of node.children)await this.reset(child,{silent});const m=this.memory.get(id);
-    if(m?.child)await m.child.stop({silent});
-    if(m?.taskActive){m.taskActive=false;this.hooks.scopeEnd?.(m.handle);this.status[id]='aborted';this.hooks.changed?.();if(!silent)await this.notify(node.properties.onAbort,node,{phase:'abort'},true);}
-    if(m?.moving&&!silent)await this.hooks.cancelMove?.(id);if(!silent)await this.deactivate(node,m);this.memory.delete(id);this.activeNodes.delete(id);this.observers.delete(id);for(const [key,owner] of this.proxyOwners)if(owner===id)this.observers.delete(key);
+    const node=this.nodes.get(id);if(!node)return;const m=this.memory.get(id);if(!m&&!node.children.length&&!this.activeNodes.has(id)&&!this.observers.has(id))return;if(m?.resetting)return;if(m)m.resetting=true;const children=node.children.map(child=>[child,this.memory.get(child)]);this.resetDepth++;const errors=[],attempt=async fn=>{try{await fn();}catch(error){errors.push(error);}};
+    try{
+      for(const [child,memory]of children)if(this.memory.get(child)===memory)await attempt(()=>this.reset(child,{silent}));
+      if(m?.child)await attempt(()=>m.child.stop({silent}));
+      if(m?.taskActive){m.taskActive=false;await attempt(()=>this.hooks.scopeEnd?.(m.handle));if(this.memory.get(id)===m)this.status[id]='aborted';await attempt(()=>this.hooks.changed?.());if(!silent)await attempt(()=>this.notify(node.properties.onAbort,node,{phase:'abort',task:m.handle},true));}
+      if(m?.moving&&!silent)await attempt(()=>this.hooks.cancelMove?.(id));
+    }finally{
+      if(!silent)await attempt(()=>this.deactivate(node,m));if(this.memory.get(id)===m){this.memory.delete(id);this.activeNodes.delete(id);this.observers.delete(id);for(const [key,owner]of this.proxyOwners)if(owner===id)this.observers.delete(key);}
+      if(m)m.resetting=false;this.resetDepth--;if(m&&!this.ticking&&!this.shuttingDown)this.wake=true;
+    }
+    if(errors.length===1)throw errors[0];if(errors.length)throw new AggregateError(errors,'행동트리 노드 정리 실패',{cause:errors[0]});
   }
-  async shutdown(silent=false){if(this.shuttingDown)return;this.shuttingDown=true;try{await this.reset(this.asset.root,{silent});this.memory.clear();this.activeNodes.clear();this.observers.clear();this.cooldowns.clear();this.serviceTimes.clear();this.hooks.changed?.();}finally{this.shuttingDown=false;}}
+  async shutdown(silent=false){if(this.shuttingDown||this.shutdownComplete)return;this.shuttingDown=true;let error,failed=false;try{await this.reset(this.asset.root,{silent});}catch(value){failed=true;error=value;}finally{this.memory.clear();this.activeNodes.clear();this.observers.clear();this.cooldowns.clear();this.serviceTimes.clear();this.shutdownComplete=true;try{this.hooks.changed?.();}catch(value){if(!failed){failed=true;error=value;}}this.shuttingDown=false;}if(failed)throw error;}
+  async fail(error){this.running=false;try{await this.shutdown();}catch(cleanup){throw new AggregateError([error,cleanup],'행동트리 실행·정리 실패',{cause:error});}throw error;}
   async stop({silent=false}={}){if(!this.running)return;this.running=false;this.stopSilent=silent;if(!this.ticking)await this.shutdown(silent);}
   nativeTickRow(delta,vm,id){
+    if(this.resetDepth)return;
     // ponytail: batch one stable task path. Parallel work, subtree/service
     // callbacks and branches that must reconsider earlier children stay ordered.
     let node=this.nodes.get(this.asset.root);const binding=vm.bindings.find(b=>b.self===id);
@@ -99,11 +108,11 @@ export class BehaviorRunner {
     if(!node)return;const memory=this.memory.get(node.id);
     if(!binding||!this.running||this.ticking||!memory?.taskActive||memory.result!==undefined||node.services?.length||this.board.revision!==this.observedRevision||!node.properties.onTick||!Number.isFinite(delta)||delta<0||!this.wake&&this.accumulator+delta<this.asset.interval)return;
     const event={name:node.properties.onTick,args:{node:node.id,task:memory.handle,delta:this.accumulator+delta,time:this.elapsed+delta,phase:'tick'},scope:memory.handle};let begun=false,completed=false;
-    return {binding,events:[event],before:()=>{begun=true;this.frameSerial++;this.elapsed+=delta;this.accumulator+=delta;this.ticking=true;},after:async()=>{this.nativeCallbackSkip={node:node.id,name:event.name};try{await this.tick(0,{prepared:true});completed=true;}finally{this.nativeCallbackSkip=null;}},canResume:()=>this.running&&this.memory.get(node.id)===memory,cleanup:async error=>{if(!begun)return;this.ticking=false;if(error&&!completed)this.running=false;if(!this.running)await this.shutdown(this.stopSilent);}};
+    return {binding,events:[event],before:()=>{begun=true;this.frameSerial++;this.elapsed+=delta;this.accumulator+=delta;this.ticking=true;},after:async()=>{this.nativeCallbackSkip={node:node.id,name:event.name};try{await this.tick(0,{prepared:true});completed=true;}finally{this.nativeCallbackSkip=null;}},canResume:()=>this.running&&!this.resetDepth&&!memory.resetting&&memory.taskActive&&this.memory.get(node.id)===memory,cleanup:async error=>{if(!begun)return;this.ticking=false;if(error&&!completed)this.running=false;if(!this.running)await this.shutdown(this.stopSilent);}};
   }
   async tick(delta,{prepared=false}={}){
-    if(!this.running)return;if(!Number.isFinite(delta)||delta<0)throw Error('행동트리 시간 오류');if(this.ticking&&!prepared)throw Error('행동트리 Tick을 중첩 호출할 수 없어요.');
-    if(!prepared){this.frameSerial++;this.elapsed+=delta;this.accumulator+=delta;}const changed=!prepared&&this.board.revision!==this.observedRevision;if(!prepared)this.observedRevision=this.board.revision;this.ticking=true;let interrupted=false;try{if(changed)interrupted=await this.observe();if(!prepared)for(const [id,m] of [...this.memory]){if(!this.running)break;if(this.memory.get(id)!==m||!m.child)continue;if(!m.child.result||m.child.result==='running'){await m.child.tick(delta);m.childFrame=this.frameSerial;}if(m.child.result&&m.child.result!=='running')this.wake=true;}}catch(error){this.running=false;await this.shutdown();throw error;}finally{this.ticking=false;if(!this.running)await this.shutdown(this.stopSilent);}if(!this.running)return;
+    if(!this.running||this.resetDepth)return;if(!Number.isFinite(delta)||delta<0)throw Error('행동트리 시간 오류');if(this.ticking&&!prepared)throw Error('행동트리 Tick을 중첩 호출할 수 없어요.');
+    if(!prepared){this.frameSerial++;this.elapsed+=delta;this.accumulator+=delta;}const changed=!prepared&&this.board.revision!==this.observedRevision;if(!prepared)this.observedRevision=this.board.revision;this.ticking=true;let interrupted=false;try{if(changed)interrupted=await this.observe();if(!prepared)for(const [id,m] of [...this.memory]){if(!this.running)break;if(this.memory.get(id)!==m||!m.child)continue;if(!m.child.result||m.child.result==='running'){await m.child.tick(delta);m.childFrame=this.frameSerial;}if(m.child.result&&m.child.result!=='running')this.wake=true;}}catch(error){await this.fail(error);}finally{this.ticking=false;if(!this.running)await this.shutdown(this.stopSilent);}if(!this.running)return;
     const legacy=changed&&[...this.memory].some(([id])=>this.nodes.get(id).type==='selector'&&this.nodes.get(id).properties.reactive===undefined);const serviceDue=this.hasServices&&[...this.activeNodes].some(id=>(this.nodes.get(id)?.services||[]).some(service=>(this.serviceTimes.get(id+':'+service.id)??Infinity)<=this.elapsed));if(!this.wake&&!interrupted&&!legacy&&!serviceDue&&this.accumulator<this.asset.interval)return;
     this.delta=this.accumulator;this.accumulator=0;this.wake=false;this.ticking=true;this.status={};const previous=new Set(this.activeNodes),visited=new Set();this.activeNodes.clear();let budget=1024;
     const execute=async id=>{
@@ -123,9 +132,10 @@ export class BehaviorRunner {
       else if(node.type==='cooldown'){if((this.cooldowns.get(id)||0)<=this.elapsed){result=node.children[0]?await execute(node.children[0]):'failure';if(result!=='running')this.cooldowns.set(id,this.elapsed+p.duration);}}
       else if(node.type==='timeLimit'){m.started??=this.elapsed-this.delta;if(this.elapsed-m.started>=p.duration){if(node.children[0])await this.reset(node.children[0]);delete m.started;}else result=node.children[0]?await execute(node.children[0]):'failure';if(result!=='running')delete m.started;}
       else if(node.type==='task'){
-        if(!m.taskActive){m.taskActive=true;m.handle=this.runId+':'+(++this.taskSerial);delete m.result;this.hooks.scopeBegin?.(m.handle);this.hooks.changed?.();await this.notify(p.onStart,node,{phase:'start'},true);}
-        if(this.running&&m.result===undefined)await this.notify(p.onTick,node,{phase:'tick'},true);result=m.result||'running';
-        if(result!=='running'){m.taskActive=false;this.hooks.scopeEnd?.(m.handle);this.hooks.changed?.();await this.notify(p.onFinish,node,{phase:'finish',success:result==='success'},true);}
+        if(!m.taskActive){m.taskActive=true;m.handle=this.runId+':'+(++this.taskSerial);delete m.result;this.hooks.scopeBegin?.(m.handle);this.hooks.changed?.();await this.notify(p.onStart,node,{phase:'start',task:m.handle},true);}
+        if(!this.running||this.memory.get(id)!==m||m.resetting||!m.servicesActive||!m.taskActive)return 'failure';
+        if(m.result===undefined)await this.notify(p.onTick,node,{phase:'tick',task:m.handle},true);if(!this.running||this.memory.get(id)!==m||m.resetting||!m.servicesActive||!m.taskActive)return 'failure';result=m.result||'running';
+        if(result!=='running'){m.taskActive=false;await this.hooks.scopeEnd?.(m.handle);if(!this.running||this.memory.get(id)!==m||m.resetting||!m.servicesActive)return 'failure';this.hooks.changed?.();await this.notify(p.onFinish,node,{phase:'finish',task:m.handle,success:result==='success'},true);}
       }
       else if(node.type==='subtree'){this.registerConditions(id);if(!m.child){const program=this.program?.subtrees.get(id);if(!program)throw Error('하위 행동트리 프로그램이 준비되지 않았어요: '+p.asset);m.child=new BehaviorRunner(program.data,this.board,{...this.hooks,program,taskEvent:(name,args)=>(this.hooks.taskEvent||this.hooks.event)?.(name,{...args,node:id+'/'+args.node,asset:args.asset||program.path})});}if(m.childFrame!==this.frameSerial){await m.child.tick(this.delta);m.childFrame=this.frameSerial;}result=m.child.result||'running';if(result!=='running'){await m.child.stop();m.child=null;}}
       else if(node.type==='set'){this.board.set(p.key,p.value);result='success';}
@@ -134,10 +144,10 @@ export class BehaviorRunner {
       else if(node.type==='event'){await this.notify(p.event,node);result='success';}
       else if(node.type==='playAnimation'){await this.hooks.animation(p.clip);result='success';}
       else result=node.type==='succeed'?'success':'failure';
-      if(!this.running)return 'failure';this.status[id]=result;if(result==='running')this.activeNodes.add(id);else await this.deactivate(node,m);return result;
+      if(!this.running||this.memory.get(id)!==m||m.resetting)return 'failure';this.status[id]=result;if(result==='running')this.activeNodes.add(id);else await this.deactivate(node,m);return result;
     };
     try{this.result=await execute(this.asset.root);for(const id of previous)if(!visited.has(id))await this.reset(id);return this.result;}
-    catch(error){this.running=false;await this.shutdown();throw error;}
+    catch(error){await this.fail(error);}
     finally{this.ticking=false;if(!this.running)await this.shutdown(this.stopSilent);}
   }
 }

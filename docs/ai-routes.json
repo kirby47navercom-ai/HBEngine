@@ -3338,6 +3338,17 @@
         "prototype/engine-services.js",
         "docs/TILE_RUNTIME_INDEXES.md"
       ]
+    },
+    {
+      "keywords": [
+        "async reset(id",
+        "BehaviorRunner",
+        "태스크 수명"
+      ],
+      "paths": [
+        "prototype/gameplay-runtime.js",
+        "docs/BEHAVIOR_TASK_LIFETIME.md"
+      ]
     }
   ]
 }
