@@ -1,18 +1,17 @@
 # HBEngine 현재 인계 (2026-10-25)
 
-최신 사용자: 끝내지 말고 계속. 예약 재생성 금지(hbengine 삭제2160), UPDATE_HOLD active 계속 보류. 사용자 창/프로필/게임원본/Versions 변경 금지. 새 에이전트 금지. Mac/Xcode/Android폰 없음. 여러 구현 뒤 영향 검사 묶음, 불변 SDK/렌더러 검사 반복금지. 한글 동일 kirby47navercom-ai author/committer·AI trailer 없이 commit/push.
-보호: prototype/player.js, tools/check-player-keyboard-release.mjs 읽기/편집/검사/stage 금지. docs/NODE_CATALOG.md 기존dirty 미stage. core-api generated ignored.2490 recoverAssetTransactions fallback-all 탐색으로1106소스를 읽은 경계 위반은 WORK2520 기록, 복구focus추가/focused 확인. 넓은fallback금지.
+최신: 끝내지 말고 계속 구현. 예약 재생성 금지(hbengine 삭제2160), UPDATE_HOLD active 보류. 사용자 창/프로필/게임 원본/Versions 변경 금지. 새 에이전트 금지. Mac/Xcode/Android폰 없음. 여러 구현 뒤 영향 검사 묶음, 불변 SDK/렌더러 검사 반복금지. 한글 동일 kirby47navercom-ai author/committer·AI trailer 없이 commit/push.
+보호: prototype/player.js, tools/check-player-keyboard-release.mjs 읽기/편집/실행/stage 금지. docs/NODE_CATALOG.md 기존dirty 미stage. core-api generated ignored.2490 fallback-all 경계위반 WORK2520 기록·focus수정; 새 broad fallback 금지.
 
-확정core2470c80886d222cba1f6dcade3d3c9541ae4e4a5; WORK2559/ENGINE_STATUS. 이전254003f9재바인딩2543. 이전 f97fd958 Cue2534, ddcf6f3a2520, b8ed075c+3ded8af82485.78행37verified/37partial/1unimplemented/3unverified, 전체율null. 누적엔진/전체분석·설치 완료 아님.
+확정 core 6ac70824a9fe8b594cee236bbe82c778b4ebdfbd; WORK2594/ENGINE_STATUS. 이전2470c808 골격2559, 254003f9 Cue재바인딩2543, f97fd958 초기Cue2534, ddcf6f3a2520, b8ed075c/3ded8af82485.78행37verified/37partial/1unimplemented/3unverified, 전체율null·전체분석/엔진/설치 완료 아님.
 
-누적 구현/근거:
-- WORK2485 신규70: Standard/Physical 재질/내장이미지공동v2복구·기존골격클립구간(TRS/알림/곡선)·v4지속조건·TileBrushSession/AI타일획. 기존C++타일gate 실행도2485, 반복하지않음. 관련docs에실제범위/미지원.
-- WORK2520 신규33: ongoing실제참여자/수치부분색인·DocumentMergeSession 사람/AI3방향CAS한Undo·관절거리/각도sticky파손/BP/C++SetJointBroken/0spring속도복원. 실제SDK CPP명령/solver·관절7/physics166assertion, source33/영향62. 상세/경계/실패는2520과각docs. 반력force/torque/plasticity·조건전체고정점/일반tick·binary복구충돌UI남음.
-- WORK2534 신규17: gameplaycue v1 자산·AbilitySystem.cueAsset 초기바인딩, 태그/phase 공유컴파일·one-shot음향/소유ParticleSystem burst, 커밋 후media+기존사용자Cue. 세대/효과/채널voice/stop, 실패시게임값/이벤트보존/마지막요약, lateaudio/factory취소·독립새state폐기. 사람route폼·일반save/rename/reference/4targetcontent·native-command replay. docGAMEPLAY_CUE_ASSETS. 신규17+지속22/재적용6/태그12 group2529.json. 실제OS음향/GUI/새CPP/GPU/기기/설치0.
-- WORK2543 신규8(위17포함Cue25): 기존 componentSetString/Json cueAsset 실행중교체/비우기. loadGameplayCueProgram fresh검증 후 property/program 동시commit, 최신request/owner/컴포넌트수명·직접바인딩변경guard, 다른property보존, 실패기존유지/동일경로IO0. 이전프로그램채널/대기오디오취소, privateWeakMap guard로dispatcher/asset IO 전후 보호, 늦은factory burst취소. 같은Cue경로반복은pending다른요청취소/파일재읽기없음. 비활성component는일반속성설정만. particle기존입자전체clear안함. native/build/gameplay-cues-Z8r0pv/acceptance.json25, ongoing-jrqBWf22/reapply-yEzoKX6. 새CPP/GUI/실음향/기기/설치없음. 온전한factoryfixture 두번째준비를누락해 unsettled await였던검사는고치고10초소유deadline 추가; 생산실패성과로세지않음.
+2561–2594:
+- Cue v2 exact프리팹·wrapper로작성rootTRS/객체참조보존·부착/분리(전단거절)/게임시각수명·effect/ability/channel stop/교체·동적cueAsset교체/소유/VM 종료. 기존SceneSpawn/Destroy·BP/native bindings/풀 재사용. managedSpawnCatalog 정확참조만준비/level일반catalog확장. private풀/템플릿분리·latebuild/init취소·rootlease로재사용보호. 공통삭제의 중첩spawn자식누락·EndPlay실패정리중단 수정. 사람v1한Undo변환/폼·AI일반문서CAS·rename/4targetcontent. cue-vfx-ApowrO/acceptance26.
+- 공동v1/v2 journal 외부충돌에도 읽기열기/일반쓰기잠금. 사람32행·AI inspect/resolve/open·전체hash CAS·명시before/after/disk·dryRun. linkedchild로실제binary/text rollback/재시작/ID·외부원문보존, 비UTF8텍스트도원문backup. 중간payload교체거절·자식선택우선·독립겹침family/conflictPaths로다른결정자동덮어쓰기차단.
+- 단일WriteIntent도 write:UUID로같은UI/API. 원문없는기록의가짜복원없음·disk만선택/바이트쓰기0/현재ID·외부삭제보존·다중ID충돌·수정된임시보존. 완료history원문Map누적안함. 복구메뉴파일명/해시·크기/ID·paged/no payload.
+- recovery 최종 transaction-recovery-aP9YKt/acceptance28, asset-transaction-xqltmD17/model-images-lWSAoJ14(group2589). Cue기존25/spawn8/document-merge15(group2586). 신규54+회귀79=133, syntax16+변경2. SDK컴파일/GPU/GUI/OS음향/기기/설치0. 그룹초기old-init-reject 기대는읽기허용+쓰기잠금으로검사갱신; 잘못된fixture필드/stackLimit·aria와 실제자식누락은기록2594.
 
-소스hash: base2534, owned2542.json8파일+인계 delta, 합성1437owner(2534도1437). 체크/원장/인계에 기록. 정확관련심볼 focus route: bindCueAsset/loadGameplayCueProgram/clearGameplayCueAudio, DocumentMergeSession, checkJointBreaks. context2541.json은focused.
-정리: helpers/query38개109222B(temp-clean2521),15개26527B(temp-clean2535)·그후소유임시만정리. 보고/fixture/recipe/SDK/사용자데이터 유지, CPPcache32정책. 설치는역사 USER_INSTALL2145 Versions/73341067df5a12be(SHA73341067df5a12be1fb1758e510ffa8c0ee7ca6b285a1bc5164afc33df4571bc)만확정. 새복사/예약0. 무거운검사전activeInstalledVersions.
-다음: 여러분야 잔여 계속구현. 독립VFX템플릿/부착/지속핸들, PRJ binary복구충돌UI, 물리반력/소성·추가리그/렌더링 등. GL1728 초기준비 ANGLE6878.6/FXC6836.439ms 미해결·실패실험반복금지. 목표재개/예약질문으로중단하지않음.
+이전: WORK2485 신규70(PBR추출/내장이미지/기존클립구간/ongoing/TileBrush),2520 신규33(실제참여자·3방향문서merge·거리각도jointbreak/0spring),2534 신규17/2543추가8(Cue25),2559 신규20(골격TRS/모프keyPaged/한Undo/CAS/yield/실제Graph). 상세각receipt/docs. SDK타일/관절실제실행은이전기록만, 반복금지.
 
-2545–2559: skeletal-track-keys 생성/원래index수정·이동·삭제/표본삽입·mode/wholequat정규화(동일원문tuple보존). 최종F32시간중복거절·metadata알림곡선유지/lastkey트랙삭제. 선택flat배열+작은변경descriptor만,4096키yield·그뒤게시·무변경Undo0. RetargetEditor/SkeletalTrackEditor 32키×4채널/읽기선택뷰, AI skeletal.track.create/keys/read compact/CAS/rename취소·조회복사. native/build/skeletal-track-keys-HR8pct/acceptance20, 구간9(group2554)/retarget2556. 실제savedGraph 위치/Euler/indexscale/fullmorph통과. docs/SKELETAL_TRACK_KEYS. 전체검증/Undo는여전히O(N), 독립sequence채널/고급DCC와구분. owned2558.json10+인계delta, base2543.
+다음: 본/소켓VFX·여러emitter, 고급rig/DCC/렌더링·물리반력/소성 등 실제잔여 이어가기. 일반physics tick/ongoing 고정점·태그증분·binary 임의rename/index공동복구·전원내구성 별도. GL1728 ANGLE6878.6/FXC6836.439ms 미해결·실패실험반복금지. 정확context keyword/symbol 사용, modes focused-routes 확인.
+설치 역사 USER_INSTALL2145 Versions/73341067df5a12be SHA73341067df5a12be1fb1758e510ffa8c0ee7ca6b285a1bc5164afc33df4571bc. 새복사/예약0. 무거운검사전activeInstalledVersions. CPPcache32정책/소유helpers만정리·fixture/recipe/report/SDK/사용자데이터유지. 새목표/재개질문으로중단하지않음.

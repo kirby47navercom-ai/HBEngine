@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "date": "2026-10-24T22:39:28.516Z",
+  "kind": "cue-prefab-lifecycle-and-file-recovery-decisions",
+  "implementationRevision": "6ac70824a9fe8b594cee236bbe82c778b4ebdfbd",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2559.json",
+  "changedSourceHashes": {
+    "prototype/ability-runtime.js": "88127c0f3340ccc2b72d18504f76d809910f895a22ca1dcf6dfa6c2def699b6a",
+    "prototype/app.js": "bd556cc5a38b978c8f17cd89fe0008127fbdfacdeee74dd63d0bc45156c3e20b",
+    "prototype/asset-documents.js": "778b2b89bde9f717b2507ae5fa1f27cf71d81ac5f46b5748352acb95b358c52d",
+    "prototype/engine-services.js": "3021184abba1c9faff2a231731cc4785244f5d619e48ffad68b328f94272f73b",
+    "prototype/gameplay-cue-assets.js": "65d878ced1ea308437fc8c0370d58d97f38639f0ccd6dd8447a0a380fd1a6323",
+    "prototype/gameplay-cue-vfx.js": "2709efef118f858cf3690bc39b77044732e6937d13a37f14fe3c6b4869149a51",
+    "prototype/gameplay-editor.css": "8eea51345904a6be24b7d85fb15fb422abb43c60d15a1a337255f76675d80e26",
+    "prototype/play-world.js": "abedb5f29566cbbbb490c1b420e3e480b4bb45898bb0feee583a04d3566fc112",
+    "prototype/runtime-spawn.js": "4420b11f1ff5a00f8fa2621f4c378a7efda08627c17a4002b641ee09ec454c7e",
+    "prototype/structured-asset-editor.js": "55b565b4e0786bb85c64c6f734650e2238028742dc9593a26f0184ab98ad3213",
+    "prototype/transaction-recovery-editor.js": "5715fca05e216f6b16e791a22316abf6bcee35e52ee049ea87452ac53a6cb88d",
+    "tools/asset-transaction.mjs": "694dab065d0b927a89f55ce0de61827fd14d211b265b3dc88ca501d03b2162bb",
+    "tools/asset-write-intent.mjs": "d50416ac6dbf706f3af425af79ecf83dcdc34325c7f36099663c8e26c8b03eb9",
+    "tools/check-asset-transactions.mjs": "3913d9eb7ce3c0b6038579f610ac31b36193e9f7c1313cbdb95e4456bafee6f3",
+    "tools/check-gameplay-cue-vfx-2565.mjs": "395dd1b41c04c9b144036b40b3de30d96e1827adeb98829495f2d4ebdc65fe2e",
+    "tools/check-transaction-recovery-2576.mjs": "4c839639881c72753bed61da9b2f338513bb6382b109e5d9bd0dc28600fa3e55",
+    "tools/editor-automation.mjs": "84ea4d33e730e1454479644388bf8b62653cfd8db9af19ce9198a6e8c0337e85",
+    "tools/external-editor.mjs": "d812349c7ec3b3e7d4759fc2fb0b9c8056e341909aba684c55b5c6aeae8a727a",
+    "tools/project-service.mjs": "45b6a7415817358f41ada51931e95382c735930db661a1b8da54cc5cd03368be",
+    "tools/serve.mjs": "9f37f627572a38ecc51c5fd670ad22d8318c6ba6a65cb4fe91de795979fbf8c9",
+    "docs/BLUEPRINT_SPEC.md": "79255e7b4ad705c18a3cf2251680acfe43ea161922d314e7c1965efa7ef5e897",
+    "docs/GAMEPLAY_CUE_ASSETS.md": "4f863adc7a9b1e337812004a0752a502c2dba15837d180d80261e47b35fee446",
+    "docs/TRANSACTION_RECOVERY.md": "8cf1c4929a82f60a78296348edc3a37d9f4974a893df405032c763daaa3f10ae",
+    "docs/ai-routes.json": "11f185c1235e612ef6177e2c8d3fb5136ee9ee3129e695025e0d1cdbcaab9818",
+    "CODEX_HANDOFF.md": "550ce3262a1f25c15bfffc56a15e02bf75aec7e91e4bf5a58f08dafc1263b36a"
+  },
+  "resolvedOwners": 1449,
+  "targetIds": [
+    "GAM-04",
+    "PRJ-03"
+  ],
+  "changes": {
+    "GAM-04": " ·2561–2594: Cue v2 독립프리팹/원래rootTRS·BP/native초기화/부착·분리·게임시각·채널/풀/수명·지연취소/종료실패정리. 정확참조catalog·v1명시변환/AI/CAS/rename/4targetcontent. 신규26+기존Cue25/spawn8. 새CPP바이너리/GUI/GPU/실기기/설치 아님.",
+    "PRJ-03": " ·2561–2594: 공동v1/v2·단일WriteIntent 충돌을 읽기열기/쓰기잠금·사람32행/AI inspect/resolve/open·전체원문hash CAS·명시선택/연결rollback·재시작/ID·비UTF8원문보존으로연결. 겹친미완료의자동덮어쓰기·payload교체·자식결정덮어쓰기차단. 조회no payload/완료원문유휴Map누적없음. 신규28/회귀asset17/image14/documentMerge15."
+  },
+  "newSourceCases": 54,
+  "regressionCases": 79,
+  "checks": {
+    "cueVfx": "native/build/cue-vfx-ApowrO/acceptance.json",
+    "recovery": "native/build/transaction-recovery-aP9YKt/acceptance.json",
+    "group": "native/build/group2586.json",
+    "repairedRecoveryGroup": "native/build/group2589.json",
+    "focus": "native/build/focus2591.json",
+    "syntax": 16
+  },
+  "failuresAndRepairs": [
+    "Cue fixture used wrong component setter names and omitted independent stack limit; corrected fixture. Vector controls now include their group in aria labels.",
+    "Disconnected authored prefab child exposed real nested-spawn descendant deletion omission; included owned spawnRoot closure and kept actual lifecycle regression.",
+    "EndPlay exceptions no longer skip releasing other actors/VFX; error remains reported.",
+    "Old transaction restart test expected project opening to throw. Updated to assert readable inspection, pending ID, write lock and unchanged external/all other bytes.",
+    "Review added whole journal preimage check between inspection and payload read plus explicit regression. Linked child choices supersede parent index decisions; independent pending overlap choices persist."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "protectedReadEditedOrTested": false,
+    "newCPP": false,
+    "newGPU": false,
+    "newGUI": false,
+    "newDevice": false,
+    "osAudio": false
+  },
+  "remainingBoundary": [
+    "Bone/socket VFX attachment and per-emitter component selection; network Cue prediction/replication",
+    "Special/internal folder, arbitrary binary rename/redirect/index group recovery and historical migrations",
+    "Filesystem cross-process locking, hardware power-loss durability and platform/device execution",
+    "Other canonical engine/rendering/rig/physics remaining items stay partial; no global completion claim"
+  ],
+  "storage": {
+    "engineRuntimeOrSDKCopies": 0,
+    "newProfiles": 0,
+    "helpersCleanup": "native/build/temp-clean2592.json",
+    "nativeCachePolicy": "Existing32/referenced/running policy unchanged; no new CPP cache created."
+  }
+}

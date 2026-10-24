@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-25",
-  "basisRevision": "2470c80886d222cba1f6dcade3d3c9541ae4e4a5",
+  "basisRevision": "6ac70824a9fe8b594cee236bbe82c778b4ebdfbd",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -67,10 +67,10 @@
       "area": "project",
       "title": "복구 저장·데이터 호환",
       "status": "partial",
-      "implemented": "버전 데이터 검증·복구 경로 ·208: 저장 전 프리팹 동기화 완료·진행 중 읽기/사람 편집·실패 보존 검사 ·294: 고유 wx/flush 임시 파일·ENOSPC/EPERM/실제 프로세스 중단/재열기·외부 충돌/소유 원본 보존 ·308–318: 일반 텍스트의 파일 게시/인덱스 중단 stable ID roll-forward·작은 의도/외부 충돌 보존·실제 process kill/ENOSPC/alias ·1388–1391: 큰문서 poll구4MiB/assetwrite구8MiB한도실패해소·Node복구32MiB원자v1·보조256KiB만/실패비치명/oldstale삭제·source먼저/recoveryflush기다림/실패별도로그·같은내용저장noWrite/noBackup·9MiB재로드/외부충돌/실제65k저장 ·2380–2391: 새skeletalclip initialData동일name검증·queue대기前copy·기존원자create/publish·덮어쓰기/placeholder0. 소유프로젝트에서충돌/invalid/queue참조보존검사·외부전원차단/다중파일내구성별도. ·2436–2485: v1 텍스트복구 유지·v2 canonical base64/실제바이트SHA 혼합복구, 내장이미지+재질 공동쓰기/인덱스·중간취소/외부충돌보존·재시작, 완료/완전rollback 임시journal삭제. generic binary Undo 아님. ·2486–2520: 열린 JSON/텍스트의 사람/AI 3방향 합치기·같은속성/삭제·배열의 명시선택·원래복구기준/구기준없음거절·문서/디스크CAS·한Undo 초안/일반저장. 실제 앱함수/DOM/기존파일경로15source. 바이너리journal 충돌 UI와 구분.",
+      "implemented": "버전 데이터 검증·복구 경로 ·208: 저장 전 프리팹 동기화 완료·진행 중 읽기/사람 편집·실패 보존 검사 ·294: 고유 wx/flush 임시 파일·ENOSPC/EPERM/실제 프로세스 중단/재열기·외부 충돌/소유 원본 보존 ·308–318: 일반 텍스트의 파일 게시/인덱스 중단 stable ID roll-forward·작은 의도/외부 충돌 보존·실제 process kill/ENOSPC/alias ·1388–1391: 큰문서 poll구4MiB/assetwrite구8MiB한도실패해소·Node복구32MiB원자v1·보조256KiB만/실패비치명/oldstale삭제·source먼저/recoveryflush기다림/실패별도로그·같은내용저장noWrite/noBackup·9MiB재로드/외부충돌/실제65k저장 ·2380–2391: 새skeletalclip initialData동일name검증·queue대기前copy·기존원자create/publish·덮어쓰기/placeholder0. 소유프로젝트에서충돌/invalid/queue참조보존검사·외부전원차단/다중파일내구성별도. ·2436–2485: v1 텍스트복구 유지·v2 canonical base64/실제바이트SHA 혼합복구, 내장이미지+재질 공동쓰기/인덱스·중간취소/외부충돌보존·재시작, 완료/완전rollback 임시journal삭제. generic binary Undo 아님. ·2486–2520: 열린 JSON/텍스트의 사람/AI 3방향 합치기·같은속성/삭제·배열의 명시선택·원래복구기준/구기준없음거절·문서/디스크CAS·한Undo 초안/일반저장. 실제 앱함수/DOM/기존파일경로15source. 바이너리journal 충돌 UI와 구분. ·2561–2594: 공동v1/v2·단일WriteIntent 충돌을 읽기열기/쓰기잠금·사람32행/AI inspect/resolve/open·전체원문hash CAS·명시선택/연결rollback·재시작/ID·비UTF8원문보존으로연결. 겹친미완료의자동덮어쓰기·payload교체·자식결정덮어쓰기차단. 조회no payload/완료원문유휴Map누적없음. 신규28/회귀asset17/image14/documentMerge15.",
       "remaining": [
         "특수 내부 폴더·임의 바이너리 스트림/이름 변경/redirect/index의 공동 복구(내장 이미지+재질 생성 v2복구는2485에 별도 구현)",
-        "바이너리 journal 복구 충돌 해결 UI(열린 JSON/텍스트 초안 충돌의 사람/AI 병합2520구현)·다양한 구버전 전환·실제 전원 차단과 파일시스템 내구성"
+        "다양한 구버전 전환·실제 전원 차단/다중프로세스 잠금·파일시스템 내구성(공동binary/text journal·단일ID 충돌 사람/AI선택2594구현)"
       ],
       "sources": [
         "prototype/asset-documents.js",
@@ -81,7 +81,9 @@
         "tools/serve.mjs",
         "tools/asset-transaction.mjs",
         "tools/model-material-publish.mjs",
-        "docs/MODEL_EMBEDDED_IMAGES.md"
+        "docs/MODEL_EMBEDDED_IMAGES.md",
+        "prototype/transaction-recovery-editor.js",
+        "docs/TRANSACTION_RECOVERY.md"
       ],
       "evidence": [
         "docs/EDITOR_INTERACTION_SPEC.md",
@@ -93,7 +95,8 @@
         "docs/research/ENGINE_WORK_1392.json",
         "docs/research/ENGINE_WORK_2391.json",
         "docs/research/ENGINE_WORK_2485.json",
-        "docs/research/ENGINE_WORK_2520.json"
+        "docs/research/ENGINE_WORK_2520.json",
+        "docs/research/ENGINE_WORK_2594.json"
       ]
     },
     {
@@ -2290,9 +2293,9 @@
       "area": "gameplay",
       "title": "Ability·효과/태그 체계",
       "status": "partial",
-      "implemented": "165: 능력/효과 자산·편집 UI·컴포넌트·속성·비용/쿨다운·중첩/주기/지속·태그 수명·C++/BP · 171: 능력 활성/종료·효과 적용/주기/제거 Cue 태그/이벤트·전용 목록·실패 롤백 ·218: 속성·능력 세트 에셋/표·시작능력·원자초기화/호환·실제C++BP/D3D/풀태그 ·219: 실행 base/current/범위·능력/효과 수명 표와 선택 구조갱신 ·221: 불변 속성/태그 집계 재사용·변경 시 무효화·실제CPP/BP/Inspector/AI ·222: 주기 epoch/정수tick·종료 경계/큰시각/Kahan·unsafe 거부·실제D3D ·232: 다중 세트/부모 합성·출처/재정의·그래프/원자 저장/빌드 검증·불변 공유 캐시 ·233: current/base/bonus 종속 속성 DAG/실수 커브·원자 수치 변경/참조 SHA·유휴 재집계 없음 ·234: 저장 정의 라이브 재적용·기존 수치/시간/동적 등록 보존·CPP/BP/Inspector/AI ·235: 세트256속성/능력·32시작태그 제한 제거·제작/실행25행 페이지·실제1000속성/100태그 ·243: 계수×레벨 커브·캡처 공유/예산·레벨 재설정·지속/주기/중첩·전용 제작/Inspector/CPP4/BP/AI·종속 SHA/일반 저장 원자 복구 ·254–255: source/target base/current 스냅샷·레벨 커브×호출 인자·공유/독립 컨텍스트·CPP EffectArguments와 BP/Inspector/AI 재계산 ·2178–2208: snapshot=false 지속 효과를 source/target base·current 종속·파생/다중소유자 계산·원자적 rollback에 연결. 변경된 연결만 갱신·idle 재독0·source세대/풀반환freeze·동일ID재결합차단. 주기 실행 묶음 때 live입력을 다시 읽고 기존 count/stack/anchor 유지. ApplyEffectSpec 뒤 선택 instigator/causer와 네 역할ID·태그 적용시snapshot을 편집기·BP·C++·Cue·runtime.effect에 전달·사본보호·비동기삭제취소. 신규22effect source사례와 기존관련gate·현재SDK 실제C++4call→공용서비스 Health990/role태그 확인. 지연 묶음 내부 매주기 과거source값/target자기feedback재구성·설치/실기기증명은별도. ·2278–2311: 효과v2의 적용/항목별 source/target/instigator/causer all/any/none/exact·apply태그고정·불일치연산/숫자capture/의존skip·원래index·실시간/주기/중첩·복사page·사람미리보기/AI원자편집. 신규12source+실제CPP ApplyEffectSpec. 동적지속태그조건은별도. ·2335–2367: schema역할목록copy/runtime상수freeze로조회자의분류변조차단·기존태그gate12재검증. ·2402–2435: v3 incoming 효과/4역할 태그 면역·선행 차단/blocked Cue/수명·UI Undo/AI CAS/복사 inspector·기존v1/v2/이전reader거절. 신규16+관련회귀, 실제VM명령/4target content/cook. 실행패키지·기기검증 아님. ·2436–2485: v4 ongoingRequirements 현재4역할/weakidentity/세대·최소고정점·음의순환원자취소, 수치/태그/면역/주기억제·동위상재개·inhibit/resumeCue·스택역할재캡처/수치순환복원·사람/AI/공용명령22source. ·2486–2520: v4 지속조건의 대상/설정역할/새역할·수치 종속자만 snapshot/재색인/공개, 첫 외부태그/rollback/회수 보존. 10003owner 중3공개·무관10000효과/능력읽기금지·8source 및22/13/16/6/5회귀 통과; 전체tick/FPS 아님. ·2523–2534: gameplaycue v1 태그/단일시점/계층·정확 매핑, 시작 AbilitySystem cueAsset·phase별 공유컴파일·트랜잭션 확정 후 one-shot음향/소유emitter burst·세대/효과/채널 voice/stop·늦은요청취소·실패로그/게임값/사용자이벤트보존. 사람폼/공용native-command replay·저장·4target content17source+지속22/재적용6/태그12. 실제OS음향/GUI/독립VFX/동적재바인딩 아님. ·2536–2543: 기존 component string/JSON BP/C++ 쓰기의 cueAsset 동적교체/비우기·새경로 fresh검증/동일경로 IO0·최신요청·실패/퇴역/컴포넌트교체/비활성/다른속성보존. 이전 프로그램 음성/대기요청/늦은팩토리방출 취소·사용자Cue보존. 신규8포함Cue25·지속22/재적용6 source/native-command replay.",
+      "implemented": "165: 능력/효과 자산·편집 UI·컴포넌트·속성·비용/쿨다운·중첩/주기/지속·태그 수명·C++/BP · 171: 능력 활성/종료·효과 적용/주기/제거 Cue 태그/이벤트·전용 목록·실패 롤백 ·218: 속성·능력 세트 에셋/표·시작능력·원자초기화/호환·실제C++BP/D3D/풀태그 ·219: 실행 base/current/범위·능력/효과 수명 표와 선택 구조갱신 ·221: 불변 속성/태그 집계 재사용·변경 시 무효화·실제CPP/BP/Inspector/AI ·222: 주기 epoch/정수tick·종료 경계/큰시각/Kahan·unsafe 거부·실제D3D ·232: 다중 세트/부모 합성·출처/재정의·그래프/원자 저장/빌드 검증·불변 공유 캐시 ·233: current/base/bonus 종속 속성 DAG/실수 커브·원자 수치 변경/참조 SHA·유휴 재집계 없음 ·234: 저장 정의 라이브 재적용·기존 수치/시간/동적 등록 보존·CPP/BP/Inspector/AI ·235: 세트256속성/능력·32시작태그 제한 제거·제작/실행25행 페이지·실제1000속성/100태그 ·243: 계수×레벨 커브·캡처 공유/예산·레벨 재설정·지속/주기/중첩·전용 제작/Inspector/CPP4/BP/AI·종속 SHA/일반 저장 원자 복구 ·254–255: source/target base/current 스냅샷·레벨 커브×호출 인자·공유/독립 컨텍스트·CPP EffectArguments와 BP/Inspector/AI 재계산 ·2178–2208: snapshot=false 지속 효과를 source/target base·current 종속·파생/다중소유자 계산·원자적 rollback에 연결. 변경된 연결만 갱신·idle 재독0·source세대/풀반환freeze·동일ID재결합차단. 주기 실행 묶음 때 live입력을 다시 읽고 기존 count/stack/anchor 유지. ApplyEffectSpec 뒤 선택 instigator/causer와 네 역할ID·태그 적용시snapshot을 편집기·BP·C++·Cue·runtime.effect에 전달·사본보호·비동기삭제취소. 신규22effect source사례와 기존관련gate·현재SDK 실제C++4call→공용서비스 Health990/role태그 확인. 지연 묶음 내부 매주기 과거source값/target자기feedback재구성·설치/실기기증명은별도. ·2278–2311: 효과v2의 적용/항목별 source/target/instigator/causer all/any/none/exact·apply태그고정·불일치연산/숫자capture/의존skip·원래index·실시간/주기/중첩·복사page·사람미리보기/AI원자편집. 신규12source+실제CPP ApplyEffectSpec. 동적지속태그조건은별도. ·2335–2367: schema역할목록copy/runtime상수freeze로조회자의분류변조차단·기존태그gate12재검증. ·2402–2435: v3 incoming 효과/4역할 태그 면역·선행 차단/blocked Cue/수명·UI Undo/AI CAS/복사 inspector·기존v1/v2/이전reader거절. 신규16+관련회귀, 실제VM명령/4target content/cook. 실행패키지·기기검증 아님. ·2436–2485: v4 ongoingRequirements 현재4역할/weakidentity/세대·최소고정점·음의순환원자취소, 수치/태그/면역/주기억제·동위상재개·inhibit/resumeCue·스택역할재캡처/수치순환복원·사람/AI/공용명령22source. ·2486–2520: v4 지속조건의 대상/설정역할/새역할·수치 종속자만 snapshot/재색인/공개, 첫 외부태그/rollback/회수 보존. 10003owner 중3공개·무관10000효과/능력읽기금지·8source 및22/13/16/6/5회귀 통과; 전체tick/FPS 아님. ·2523–2534: gameplaycue v1 태그/단일시점/계층·정확 매핑, 시작 AbilitySystem cueAsset·phase별 공유컴파일·트랜잭션 확정 후 one-shot음향/소유emitter burst·세대/효과/채널 voice/stop·늦은요청취소·실패로그/게임값/사용자이벤트보존. 사람폼/공용native-command replay·저장·4target content17source+지속22/재적용6/태그12. 실제OS음향/GUI/독립VFX/동적재바인딩 아님. ·2536–2543: 기존 component string/JSON BP/C++ 쓰기의 cueAsset 동적교체/비우기·새경로 fresh검증/동일경로 IO0·최신요청·실패/퇴역/컴포넌트교체/비활성/다른속성보존. 이전 프로그램 음성/대기요청/늦은팩토리방출 취소·사용자Cue보존. 신규8포함Cue25·지속22/재적용6 source/native-command replay. ·2561–2594: Cue v2 독립프리팹/원래rootTRS·BP/native초기화/부착·분리·게임시각·채널/풀/수명·지연취소/종료실패정리. 정확참조catalog·v1명시변환/AI/CAS/rename/4targetcontent. 신규26+기존Cue25/spawn8. 새CPP바이너리/GUI/GPU/실기기/설치 아님.",
       "remaining": [
-        "네트워크 능력 예측/복제·독립 VFX 템플릿/부착·다중 emitter/지속 VFX 핸들(초기 태그별 음향/소유emitter burst자산2534구현)·고급 타깃/사용자 실행 계산",
+        "네트워크 능력 예측/복제·본/소켓 VFX 부착·다중 emitter 컴포넌트 선택·고급 타깃/사용자 실행 계산(독립프리팹/일반부착/채널수명2594구현)",
         "주기 catch-up 묶음 내부의 과거 source 입력·매 주기 target 자기 피드백 재구성·조건부 태그 전체 고정점·태그별 증분 의존 색인과 일반 tick 순회 비용(참여자/수치 종속자만 snapshot/재색인/공개2520구현)·대규모 에셋/태그 제작·증분 종속 저장·깊은 종속 그래프 실기기 부하 검증"
       ],
       "sources": [
@@ -2315,7 +2318,12 @@
         "tools/check-effect-tags-2284.mjs",
         "prototype/effect-ongoing.js",
         "docs/EFFECT_ONGOING.md",
-        "tools/check-effect-ongoing-2445.mjs"
+        "tools/check-effect-ongoing-2445.mjs",
+        "prototype/gameplay-cue-vfx.js",
+        "prototype/gameplay-cue-assets.js",
+        "prototype/runtime-spawn.js",
+        "prototype/play-world.js",
+        "docs/GAMEPLAY_CUE_ASSETS.md"
       ],
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
@@ -2339,7 +2347,8 @@
         "docs/research/ENGINE_WORK_2485.json",
         "docs/research/ENGINE_WORK_2520.json",
         "docs/research/ENGINE_WORK_2534.json",
-        "docs/research/ENGINE_WORK_2543.json"
+        "docs/research/ENGINE_WORK_2543.json",
+        "docs/research/ENGINE_WORK_2594.json"
       ]
     },
     {
@@ -4075,10 +4084,10 @@
     }
   ],
   "latestBatch": {
-    "first": 2545,
-    "last": 2559,
-    "receipt": "docs/research/ENGINE_WORK_2559.json",
-    "scope": "기존골격 TRS/모프 키 생성·수정·보간·삭제·실제표본삽입, paged UI/AI·협력게시/한Undo/최종CAS. 신규20+구간9/리타게팅공용회귀·실제savedGraph 포즈. 새CPP/GPU/GUI/기기/설치0·업데이트보류/예약0."
+    "first": 2561,
+    "last": 2594,
+    "receipt": "docs/research/ENGINE_WORK_2594.json",
+    "scope": "Cue v2 독립VFX 제작/실행/풀/채널/수명·정확참조catalog, 공동binary/text·단일ID 충돌의 사람/AI CAS/선택/rollback/재시작. 신규54+관련79·구문16. 새CPP/GPU/GUI/기기/설치0·업데이트보류/예약0."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_2145.json",
