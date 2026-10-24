@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-24",
-  "basisRevision": "14c3c46828707ce6e234cbd48ef3ab878a09ed5b",
+  "basisRevision": "aac9b9f2676585386559cbbe2517ad95d77be6a9",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -2167,7 +2167,7 @@
       "area": "gameplay",
       "title": "행동트리 고급 태스크·EQS",
       "status": "partial",
-      "implemented": "기본 행동트리/감지/태그 실행 · 165: 일반 병렬 결과 집계·EQS 생성/필터/점수·BT 블랙보드·C++ 실행 연결 ·217: 선택 EQS 단계 진단/실패 원인·관측ms·UI/실제 뷰포트 점수/페이지·C++ 공용 실행과 비actors 월드복사 회피 ·220: XY grid/ring/actors·평면 distance/dot·실제2D ray/벽·legacy XZ/UI Undo·별도 게임 ·2160소스: EQS투영/중간검사/final 읽기·시각화선택을사람select/요약버튼과AI read/view에공유. 점수/실패는선택단계까지만·전체count와표본rank구분·복사페이지/실패필터·재질의0. 기본run최종반환·visualize:false/비동기UI대상변경·닫기보호. 기존BP/C++공용operation결과보존. 신규11case/영향4gate3.49초통과·실제창검증별도/사용자업데이트보류. ·2195–2208: 공용EQS actors생성기에 XY/XYZ 64단위공간셀·변경된셀갱신·큰반경점유셀fallback. 현재world/부모/직접변환/풀/동일ID객체/태그/순서 매질의sync·변환실패부분공개0. 원래projection/trace/진단ID/score순서보존, 복사페이지. 신규8source사례·기존EQS2gate통과. 소유4096점 예제 warm후보4096→1이며 O(N) mutableworld sync는남고 FPS측정아님. ·2209–2218: 기존BT node.services에kind=query·asset/key/resultType/contextKey/successKey와timer/활성·비활성·완료callback. 활성노드주기만질의·느린BT기한wake·catchupburst0·idle timer0·일반noService sleep 추가node조회0. typedkeys선검증·빈결과목적지보존·stop/reset/교체late결과차단. 기존query/C++·BP RunBehaviorTree 공용/native명령재생·indexedEQS·실제BlueprintRuntime/blackboard갱신. 편집생성/Undo·저장/재읽기·신규12source/기존BT·EQSgate통과. EQS target/context비동기교체publication차단·context진단시작값보존. staticTestPawn/실제창·대규모부하는별도.",
+      "implemented": "기본 행동트리/감지/태그 실행 · 165: 일반 병렬 결과 집계·EQS 생성/필터/점수·BT 블랙보드·C++ 실행 연결 ·217: 선택 EQS 단계 진단/실패 원인·관측ms·UI/실제 뷰포트 점수/페이지·C++ 공용 실행과 비actors 월드복사 회피 ·220: XY grid/ring/actors·평면 distance/dot·실제2D ray/벽·legacy XZ/UI Undo·별도 게임 ·2160소스: EQS투영/중간검사/final 읽기·시각화선택을사람select/요약버튼과AI read/view에공유. 점수/실패는선택단계까지만·전체count와표본rank구분·복사페이지/실패필터·재질의0. 기본run최종반환·visualize:false/비동기UI대상변경·닫기보호. 기존BP/C++공용operation결과보존. 신규11case/영향4gate3.49초통과·실제창검증별도/사용자업데이트보류. ·2195–2208: 공용EQS actors생성기에 XY/XYZ 64단위공간셀·변경된셀갱신·큰반경점유셀fallback. 현재world/부모/직접변환/풀/동일ID객체/태그/순서 매질의sync·변환실패부분공개0. 원래projection/trace/진단ID/score순서보존, 복사페이지. 신규8source사례·기존EQS2gate통과. 소유4096점 예제 warm후보4096→1이며 O(N) mutableworld sync는남고 FPS측정아님. ·2209–2218: 기존BT node.services에kind=query·asset/key/resultType/contextKey/successKey와timer/활성·비활성·완료callback. 활성노드주기만질의·느린BT기한wake·catchupburst0·idle timer0·일반noService sleep 추가node조회0. typedkeys선검증·빈결과목적지보존·stop/reset/교체late결과차단. 기존query/C++·BP RunBehaviorTree 공용/native명령재생·indexedEQS·실제BlueprintRuntime/blackboard갱신. 편집생성/Undo·저장/재읽기·신규12source/기존BT·EQSgate통과. EQS target/context비동기교체publication차단·context진단시작값보존. staticTestPawn/실제창·대규모부하는별도. ·2229: 기존query태스크도await뒤running+동일memory/활성검사로stop/reset lateBB쓰기차단. query/event service onActivation안의stop과event의자기reset은이전질의·주기event·다음예약·task본문진행차단·deactivation정리유지. 새5source추가로queryservice17 및 기존BT2gate통과. nativeFinishAbort고급/정적TestPawn/실제창등잔여유지.",
       "remaining": [
         "FinishAbort/native BTTask 고급 생명주기",
         "Smart Object/Mass 계열·EQS 동기화 전체 월드 순회 제거·정적 테스트 Pawn·중간 단계/자동 재질의 서비스의 실제 창 검증·대규모 AI 스케줄 부하"
@@ -2199,7 +2199,8 @@
         "docs/research/ENGINE_WORK_220.json",
         "docs/research/ENGINE_WORK_2160.json",
         "docs/research/ENGINE_WORK_2208.json",
-        "docs/research/ENGINE_WORK_2218.json"
+        "docs/research/ENGINE_WORK_2218.json",
+        "docs/research/ENGINE_WORK_2229.json"
       ]
     },
     {
@@ -2455,7 +2456,7 @@
       "area": "audio",
       "title": "오디오 고급 DSP/가상화",
       "status": "partial",
-      "implemented": "gain/filter/compressor·routing/계측 · 165: 순서 DSP 필터/지연/리버브/왜곡·wet/dry·pre/post Send/Return·순환/우회/해제 · 169: 지정 버스 RMS 사이드체인·Attack/Release/압축·순환/우회·사람UI/Undo·C++/BP3·실제 WebAudio 신호 · 170: 설정 가능한 실제/추적 음성 예산·PCM 가상 시계/소스 해제/승격·우선순위/거리·Listener/Source UI·C++/BP4·실제 소스2/가상6 검증 ·192: 실제 post-DSP/공간음 스테레오 PCM16 WAV·UI/AI/예산/수명·저장 실패 재시도/일시정지/게임 종료 저장·실제 재생 ·257: 선택 streaming 가상 음성의 src/load 해제 요청·논리 시각과 decoder 재승격·미디어 lease/PCM0·실제 무음 WebView ·1958 소스: sequencePCM lazy weak-shared reverse·virtual미할당/강한idlecache추가없음·원본32MiB유지. 활성reverse추가PCM원본한벌가능. async decode/resume취소·rate/park진단·일반stream유지. OfflinePCM source1987/installed1991통과·스피커/장치/RAM미측정. ·2005소스: sequence clip음량/fade/곡선·기존GainNode예약·Take gain보존·output gain실제음성선별·새12사례3055표본·실제창/PCM/C++추가검사는사용중대기 ·2015: source 실제오디오곡선창/Undo/save·CPPSeek7·OfflineAudioContext10조건245760PCM통과, installed2019 D3D11 동일PCM/CPPSeek통과·스피커/실기기미주장. ·2178–2208: retainedPCM32MiB 유지·URL중복pending공유·FIFO최대2fetch/decode·dispose대기/실행caller즉시거절/abort·취소불가능늦은decode폐기·LRU/큰clip반환·disposedplayer buffer참조해제/길이보존·primitive진단. 편집기마다 context1/PCstream미디어노드재사용·stop시suspend/graph·timer해제·close시pool/PCM해제·모바일기존buffered/cache유지·경합/실패/복수편집기격리. 신규15source사례통과. OS/codec/voice/reversePCM/기기음질총RAM증명아님.",
+      "implemented": "gain/filter/compressor·routing/계측 · 165: 순서 DSP 필터/지연/리버브/왜곡·wet/dry·pre/post Send/Return·순환/우회/해제 · 169: 지정 버스 RMS 사이드체인·Attack/Release/압축·순환/우회·사람UI/Undo·C++/BP3·실제 WebAudio 신호 · 170: 설정 가능한 실제/추적 음성 예산·PCM 가상 시계/소스 해제/승격·우선순위/거리·Listener/Source UI·C++/BP4·실제 소스2/가상6 검증 ·192: 실제 post-DSP/공간음 스테레오 PCM16 WAV·UI/AI/예산/수명·저장 실패 재시도/일시정지/게임 종료 저장·실제 재생 ·257: 선택 streaming 가상 음성의 src/load 해제 요청·논리 시각과 decoder 재승격·미디어 lease/PCM0·실제 무음 WebView ·1958 소스: sequencePCM lazy weak-shared reverse·virtual미할당/강한idlecache추가없음·원본32MiB유지. 활성reverse추가PCM원본한벌가능. async decode/resume취소·rate/park진단·일반stream유지. OfflinePCM source1987/installed1991통과·스피커/장치/RAM미측정. ·2005소스: sequence clip음량/fade/곡선·기존GainNode예약·Take gain보존·output gain실제음성선별·새12사례3055표본·실제창/PCM/C++추가검사는사용중대기 ·2015: source 실제오디오곡선창/Undo/save·CPPSeek7·OfflineAudioContext10조건245760PCM통과, installed2019 D3D11 동일PCM/CPPSeek통과·스피커/실기기미주장. ·2178–2208: retainedPCM32MiB 유지·URL중복pending공유·FIFO최대2fetch/decode·dispose대기/실행caller즉시거절/abort·취소불가능늦은decode폐기·LRU/큰clip반환·disposedplayer buffer참조해제/길이보존·primitive진단. 편집기마다 context1/PCstream미디어노드재사용·stop시suspend/graph·timer해제·close시pool/PCM해제·모바일기존buffered/cache유지·경합/실패/복수편집기격리. 신규15source사례통과. OS/codec/voice/reversePCM/기기음질총RAM증명아님. ·2219–2229: PCM FIFO연결목록으로enqueue/dequeue/queued cancel배열shift0. AbortSignal callerlease로공유URL의다른caller/legacyPromise보존·마지막대기자만fetchabort·queued즉시제거·uncancellable decode실슬롯유지/latecache0·원인/falsyreject보존·listener해제·abandonedActive계수. common음성stop/handle교체/source퇴역/pool/종료·preview정지에서cancel연결. assetlookup중stop/교체requestidentity·resolving사본count·음악자기요청보존·정상cancel로그0·nonError decode오류재예외0. UI로딩취소/재생정지·aria상태. 신규18 cancellation/기존preview8→10(신규2) source·PCM7/legacybuffer gate통과. 실제BlueprintRuntime/native명령재생과2048queued취소→fetch2/latePCM0. OS RAM/기기음질/FPS증명아님.",
       "remaining": [
         "streaming 가상화의 OS/코덱별 실제 RAM 회수·고급 지각/믹서 DSP 기반 선별",
         "C++ native DSP와 모바일 실제 장치 품질·큰 음성 수/PCM 메모리 검증"
@@ -2488,7 +2489,8 @@
         "docs/research/ENGINE_WORK_2005.json",
         "docs/research/ENGINE_WORK_2015.json",
         "docs/research/USER_INSTALL_2019.json",
-        "docs/research/ENGINE_WORK_2208.json"
+        "docs/research/ENGINE_WORK_2208.json",
+        "docs/research/ENGINE_WORK_2229.json"
       ]
     },
     {
@@ -3955,10 +3957,10 @@
     }
   ],
   "latestBatch": {
-    "first": 2209,
-    "last": 2218,
-    "receipt": "docs/research/ENGINE_WORK_2218.json",
-    "scope": "EQS 자동 서비스 편집/저장/명령/스키마/실제공용BT실행·블랙보드/수명, 관리시퀀스 batch실패복원/중복필드/clear퇴역·최신샘플보존. 신규26 source사례와영향gate통과. 이전2208 55사례/actualCPP근거와분리·새CPP/GUI/기기/설치검증주장0. 예약0·업데이트보류유지."
+    "first": 2219,
+    "last": 2229,
+    "receipt": "docs/research/ENGINE_WORK_2229.json",
+    "scope": "공유PCM 개별취소·연결FIFO·중단/교체/source수명·에셋탐색identity·미리듣기취소UI, 기존BT query/service stop/reset가드. 새source25사례(18cancellation+preview신규2+BT신규5)와영향gate통과. 이전source성공은재계산하지않고원장근거를유지. GUI/새CPP/기기/설치검증주장0·예약0/업데이트보류."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_2145.json",

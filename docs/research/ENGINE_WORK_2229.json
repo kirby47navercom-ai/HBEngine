@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "date": "2026-10-24T08:20:08.440Z",
+  "kind": "shared-audio-cancellation-and-behavior-activation-lifetime",
+  "implementationRevision": "aac9b9f2676585386559cbbe2517ad95d77be6a9",
+  "implementationParts": [
+    "e9cc5e958c61d1f3306616df858819860cba5abf"
+  ],
+  "sourceHashBase": "docs/research/ENGINE_WORK_2218.json",
+  "changedSourceHashes": {
+    "docs/AUDIO_PCM_LIFECYCLE.md": "bc52d82b47d3837954b905b6e49806e18930c1f476cac6cfc58abe296474774d",
+    "docs/BEHAVIOR_QUERY_SERVICES.md": "a64ba3293bd119f87668ad999336129858426a5fa5419542b494c67c975e7740",
+    "docs/BLUEPRINT_SPEC.md": "b281f880ee4a524bb74a5dcef1e011733d50b4e8a5dfbcc7c0a77e8c86e86b69",
+    "docs/ai-routes.json": "e49b38ec5eaa26ce3caaad7afe85d1f8996c833218376fbb5c5e83213a8b6076",
+    "prototype/audio-editor.js": "25174cedd15d4acc0dcbf95f06fc9f5a8288bf35dbd1f765d5116996db7f6d3c",
+    "prototype/audio-mixer.js": "6c1a7a6fbe791722f40420a2d6b720ed7478139401baeed67b35a42c06f07477",
+    "prototype/audio-pcm-cache.js": "d30686b4aceb6669c7b88b9238acdc68f3867e317ddc77f8a62173683265117b",
+    "prototype/behavior-query-service.js": "851b2f96443628ec3ec9a6305f94fb82667e2d2a94fcd25c6213fc17f3365270",
+    "prototype/engine-services.js": "9fd73b3c2010ed1fc622f96956d08ed152a029af981b0918a965a5c04f37a148",
+    "prototype/gameplay-runtime.js": "d5c5dd3870a2ade9770bd275ded44ce071c8bcb4b8116bf3c64cf8a4c086c57f",
+    "tools/audio-cancel-2219-fixture.mjs": "97fdc4dcf79728dcb40a61dbbed45608aab586889c9427b9432f02c17040c90b",
+    "tools/check-audio-cancellation-2220.mjs": "cbe572e4d103103e82526e3413ba9201965ef60a8937d6e71fb9617a0e1a2497",
+    "tools/check-audio-preview-2197.mjs": "78b81b9b18111e0be25260821de425d0bf5e7fd7430d5ffb4224892424c71e5f",
+    "tools/check-behavior-query-service-2214.mjs": "295f7ff226a4ed2633430bdb98384ae773ea3047d5af601388b061eaa5b3eba5",
+    "CODEX_HANDOFF.md": "d12d20c4c0f980992f772bb588549b303505c071e0658c00df6191e7aa6ae33e"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1331,
+  "targetIds": [
+    "AUD-03",
+    "GAM-03"
+  ],
+  "changes": {
+    "AUD-03": " ·2219–2229: PCM FIFO연결목록으로enqueue/dequeue/queued cancel배열shift0. AbortSignal callerlease로공유URL의다른caller/legacyPromise보존·마지막대기자만fetchabort·queued즉시제거·uncancellable decode실슬롯유지/latecache0·원인/falsyreject보존·listener해제·abandonedActive계수. common음성stop/handle교체/source퇴역/pool/종료·preview정지에서cancel연결. assetlookup중stop/교체requestidentity·resolving사본count·음악자기요청보존·정상cancel로그0·nonError decode오류재예외0. UI로딩취소/재생정지·aria상태. 신규18 cancellation/기존preview8→10(신규2) source·PCM7/legacybuffer gate통과. 실제BlueprintRuntime/native명령재생과2048queued취소→fetch2/latePCM0. OS RAM/기기음질/FPS증명아님.",
+    "GAM-03": " ·2229: 기존query태스크도await뒤running+동일memory/활성검사로stop/reset lateBB쓰기차단. query/event service onActivation안의stop과event의자기reset은이전질의·주기event·다음예약·task본문진행차단·deactivation정리유지. 새5source추가로queryservice17 및 기존BT2gate통과. nativeFinishAbort고급/정적TestPawn/실제창등잔여유지."
+  },
+  "checks": {
+    "source": {
+      "passed": true,
+      "newCases": {
+        "audioCancellation": 18,
+        "previewDelta": 2,
+        "behaviorDelta": 5,
+        "total": 25
+      },
+      "reports": {
+        "audio": {
+          "path": "native/build/audio-cancellation-2TgJjL/acceptance.json",
+          "sha256": "dd68f3f90daf9333ed741a056835b8f87a105c175ec16397b9835d2940f61cb2"
+        },
+        "preview": {
+          "path": "native/build/audio-preview-UQQH2r/acceptance.json",
+          "sha256": "18767a95ebc5b8a3cb238b9d5acebbb8e1663358564058dbd95404cd948572e7"
+        },
+        "behavior": {
+          "path": "native/build/behavior-query-service-AEoOJP/acceptance.json",
+          "sha256": "6e1ba5e5ed919d539ee3e66bd19907bbd0ec8ed1b5548c683b0b877548bdaef8"
+        }
+      },
+      "groups": [
+        {
+          "path": "native/build/group2221.json",
+          "sha256": "671c389c270e1cd7c030acd2e2af1faf104577ea2851c6f878687b77c8205025"
+        },
+        {
+          "path": "native/build/group2225.json",
+          "sha256": "47da700a72f88aa23c0cb5fcd25574b0700844d47c91be3ec229474f9da82eb3"
+        },
+        {
+          "path": "native/build/group2228.json",
+          "sha256": "2e5d5fba972c9f811b21242561e91a66c170616e729aeaf04e87b5f52c8f9cab"
+        }
+      ],
+      "integrity": {
+        "path": "native/build/final2228.json",
+        "sha256": "e45f49a462cf545e0a179f9395982a05b7622816af74b856f502fb9e8eb15e17"
+      },
+      "reasonForRechecks": "Added pending-preview human cancellation, control states, non-Error decode reporting and legacy BT activation regression; reran only affected focused scripts."
+    },
+    "nativeBinary": {
+      "executed": false,
+      "lastActual": "docs/research/ENGINE_WORK_2208.json",
+      "reason": "No additional SDK/Host/Player/native renderer change; native sound/BT command replay is a source fixture."
+    },
+    "actualWindow": {
+      "executed": false,
+      "reason": "Background user UI protection; owned fixture APIs only."
+    },
+    "devices": {
+      "executed": false,
+      "reason": "No physical Android device or Mac/Xcode."
+    }
+  },
+  "limits": [
+    "Uncancellable platform decode remains active until settle. Retained cache counts do not prove OS/native codec RAM reclaim.",
+    "2048 caller cancellation proves queue/fetch/late publication behavior, not FPS or hardware sound.",
+    "Generic external callback/latent-work rollback, static editor TestPawn and whole-engine remaining stay in the ledger."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4495,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "policy": "Owned fixture reports remain; retained/prune callbacks active. No compiler build produced after WORK2208."
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}
