@@ -1,0 +1,14 @@
+import {validAssetPath} from './material-runtime.js';
+const text=(value,max=80)=>typeof value==='string'&&value.length<=max;
+export const behaviorQueryServiceContract={storage:'Existing node.services entries with kind=query, asset, key, contextKey?, resultType=actor|position, successKey?; omitted kind remains the event service.',schedule:'Only active node services run; existing interval/randomDeviation/callOnStart/restartTimer and activation/deactivation events apply. A due active service wakes a slower tree tick. One query per due execution, no catch-up query burst or idle timer.',result:'Write the best row into an object/vec3 blackboard key; an optional bool successKey reports a match. Empty results keep the prior destination. All key types validate before querying.',lifetime:'After await, accept a result only while the same node activation and runner remain active. Stop/abort/restart cannot publish a stale result.',runtime:'The existing EQS hook/common engine service and spatial index are shared with tasks and C++ EQS commands. No static editor TestPawn or actual-device/GUI claim.'};
+export function validBehaviorQueryService(service){return service.kind==='query'&&text(service.asset,1000)&&validAssetPath(service.asset)&&text(service.key)&&!!service.key&&['actor','position'].includes(service.resultType)&&(service.contextKey===undefined||text(service.contextKey))&&(service.successKey===undefined||text(service.successKey))&&(service.event===undefined||text(service.event));}
+export const createBehaviorQueryService=(asset='')=>({id:crypto.randomUUID(),kind:'query',asset,key:'Target',contextKey:'',resultType:'actor',successKey:'',event:'',interval:1});
+export async function runBehaviorQueryService(runner,node,service,memory){
+ const expected=service.resultType==='actor'?'object':'vec3';if(runner.board.types.get(service.key)!==expected||service.successKey&&runner.board.types.get(service.successKey)!=='bool'||service.contextKey&&runner.board.types.get(service.contextKey)!=='object')throw Error('EQS 서비스의 결과·문맥·성공 키 자료형을 확인하세요.');
+ const context=service.contextKey?runner.board.get(service.contextKey):null,rows=await runner.hooks.query(service.asset,context);
+ if(!runner.running||runner.memory.get(node.id)!==memory||!memory.servicesActive)return null;
+ if(!Array.isArray(rows))throw Error('EQS 서비스 결과 목록을 확인하세요.');const matched=rows.length>0;
+ // Validate every outgoing value before changing either blackboard key.
+ const value=matched?(service.resultType==='actor'?rows[0].actor:rows[0].position):undefined;if(matched&&(expected==='object'?value!==null&&typeof value!=='string':!Array.isArray(value)||value.length!==3||value.some(v=>!Number.isFinite(v)||Math.abs(v)>100000)))throw Error('EQS 서비스 결과 자료형을 확인하세요.');
+ if(matched)runner.board.set(service.key,value);if(service.successKey)runner.board.set(service.successKey,matched);return{matched,count:rows.length};
+}

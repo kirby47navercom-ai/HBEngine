@@ -667,3 +667,5 @@ Take 녹화 프리셋은 전용 에셋/편집기에서 만들고 시퀀스의 �
 1907: 공유 곡선에 선택적 arriveControl/leaveControl 값 오프셋과 단조0..4/3 시간 핸들 검증을 추가해요. 수직·범위 밖 핸들이 필요한 내부 경계를 정확히 분할/부분 베이크하고, incoming-only 핸들 편집·숫자 변환·다중축 tool·클립보드·Sequence/골격/BP 평가를 연결해요. [명시적 제어점](CURVE_EXPLICIT_CONTROLS.md)을 참고해요.
 
 2178–2208: [효과 캡처](LIVE_EFFECT_CAPTURES.md)의 snapshot 선택을 기존 효과 노드/편집기/공용 런타임에 연결해요. 지속 효과의 종속 전파와 주기 실행 묶음의 입력 재평가, 적용 당시 네 역할/태그의 Cue·조회 전달을 지원해요. ApplyEffectSpec의 기존 입력은 보존하고 선택 instigator·causer 핀은 null이면 출처를 사용해요. 신규 source 사례와 실제 C++ 구·신 호출 → 명령 재생 → 속성·문맥 조회를 확인했어요. 지연 묶음 내부 매 주기의 과거 입력 복원·사용자 설치 업데이트는 별도예요.
+
+2209–2218: [EQS 서비스](BEHAVIOR_QUERY_SERVICES.md)를 행동트리의 기존 서비스/편집기/명령/JSON 스키마·RunBehaviorTree 공용 실행에 연결해요. 활성 노드 주기·종료 수명과 형이 지정된 블랙보드를 공유하고, 중단·교체된 비동기 결과는 기록하지 않아요. [관리 채널 묶음](SEQUENCE_BATCH_ROLLBACK.md)은 중복 필드 마지막 값과 실패 소유권/값 복원·최신 샘플 보호·clear 퇴역을 지원해요. source26 새 사례와 관련 gate를 확인했으며 일반 외부 부작용·GUI·새 네이티브 바이너리 검증 범위는 구분해요.

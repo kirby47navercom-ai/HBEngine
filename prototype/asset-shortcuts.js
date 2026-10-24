@@ -34,7 +34,7 @@ export function dispatchAssetShortcut(id,editor,event){
  if(id.startsWith('animation')&&kind==='animgraph'){
   if(id==='animationDelete'){editor.machineView?click('[data-as-act="delete"]'):editor.remove();return true;}if(id==='animationFocus'){editor.fit();return true;}if(id==='animationPreview'){click('[data-anim-act="preview"]');return true;}
  }
- if(id.startsWith('gameplay')&&['behaviortree','statemachine'].includes(kind)){if(id==='gameplayDelete'){editor.removeNode();return true;}if(id==='gameplayFocus'){click('[data-act="fit"]');return true;}}
+ if(id.startsWith('gameplay')&&['behaviortree','statemachine'].includes(kind)){if(id==='gameplayQueryService'&&kind==='behaviortree'){click('[data-act="add-query-service"]');return true;}if(id==='gameplayDelete'){editor.removeNode();return true;}if(id==='gameplayFocus'){click('[data-act="fit"]');return true;}}
  if(id.startsWith('sequence')&&['montage','sequenceasset'].includes(kind)){
   if(id==='sequencePreviousTrack'||id==='sequenceNextTrack'){editor.moveSequenceTrack(id==='sequenceNextTrack'?1:-1);return true;}if(id==='sequenceFindTrack'){editor.element.querySelector('[data-sequence-track-search]')?.focus();return true;}
   const actions={sequenceFitTimeline:()=>editor.frameTimeline(false),sequenceFocusItems:()=>editor.frameTimeline(true),sequenceZoomIn:()=>editor.timelineZoom(.8),sequenceZoomOut:()=>editor.timelineZoom(1.25),sequencePlay:()=>click('[data-act="preview"]'),sequenceFirst:()=>editor.scrub(0),sequenceLast:()=>editor.scrub(editor.doc.data.length),sequencePreviousFrame:()=>editor.timelineMove(-1),sequenceNextFrame:()=>editor.timelineMove(1),sequencePreviousKey:()=>editor.timelineMove(-1,true),sequenceNextKey:()=>editor.timelineMove(1,true)};if(actions[id]){actions[id]();return true;}

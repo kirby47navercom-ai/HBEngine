@@ -672,7 +672,11 @@
         "ability",
         "spawn",
         "controller",
-        "pawn"
+        "pawn",
+        "eqs",
+        "환경 질의",
+        "query service",
+        "실시간 속성"
       ],
       "paths": [
         "prototype/engine-services.js",
@@ -2929,7 +2933,8 @@
       "keywords": [
         "SequenceChannels",
         "sequenceChannelContract",
-        "refreshOwners"
+        "refreshOwners",
+        "rollbackBatch"
       ],
       "paths": [
         "prototype/sequence-channels.js"
@@ -3257,6 +3262,27 @@
       ],
       "paths": [
         "prototype/effect-application-context.js"
+      ]
+    },
+    {
+      "id": "behavior-query-service",
+      "keywords": [
+        "validBehaviorQueryService",
+        "createBehaviorQueryService",
+        "runBehaviorQueryService",
+        "behaviorQueryServiceContract"
+      ],
+      "paths": [
+        "prototype/behavior-query-service.js"
+      ]
+    },
+    {
+      "id": "behavior-service-editor",
+      "keywords": [
+        "behaviorServiceMarkup"
+      ],
+      "paths": [
+        "prototype/behavior-service-editor.js"
       ]
     }
   ]

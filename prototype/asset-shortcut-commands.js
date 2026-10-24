@@ -39,6 +39,7 @@ export const assetShortcutCommands=[
  ...['Auto','User','Break','Linear','Constant','ClampedAuto'].map((mode,i)=>command('curveMode'+mode,'커브 키 '+mode,'curve',['Digit'+(i+1)])),
  command('animationDelete','애니메이션 그래프 선택 삭제','animation',['Delete']),command('animationFocus','애니메이션 그래프 프레이밍','animation',['KeyF']),command('animationPreview','애니메이션 그래프 미리보기','animation',[]),
  command('gameplayDelete','행동 그래프 선택 삭제','gameplay',['Delete']),command('gameplayFocus','행동 그래프 프레이밍','gameplay',[]),
+ command('gameplayQueryService','행동트리 EQS 서비스 추가','gameplay',[],'behaviortree'),
  command('sequencePreviousTrack','타임라인 이전 행','sequencer',['ArrowUp']),command('sequenceNextTrack','타임라인 다음 행','sequencer',['ArrowDown']),command('sequenceFindTrack','타임라인 행 검색','sequencer',['Primary+KeyF']),
  command('sequenceFitTimeline','타임라인 전체 범위','sequencer',['Alt+Home']),command('sequenceFocusItems','타임라인 선택 범위','sequencer',['KeyF']),command('sequenceZoomIn','타임라인 확대','sequencer',['Equal','Shift+Equal']),command('sequenceZoomOut','타임라인 축소','sequencer',['Minus','NumpadSubtract']),
  command('sequencePlay','시퀀스 미리보기 재생·정지','sequencer',['Space']),command('sequenceFirst','시퀀스 시작으로','sequencer',['Home']),command('sequenceLast','시퀀스 끝으로','sequencer',['End']),
