@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "date": "2026-10-24T23:50:35.946Z",
+  "kind": "skeletal-sockets-general-attachments-cue-v3-and-relative-emitter-actors",
+  "implementationRevision": "3f0fa189691482bd89788ab92c059a6f97e5bce3",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2632.json",
+  "changedSourceHashes": {
+    "prototype/gameplay-cue-anchor.js": "642ba4891bda8ab88198296fc18f5c9f66c133d95d07c566092c2952e9afee45",
+    "prototype/skeletal-attachments.js": "5bc876f773df5f737adc81e4b683aa30b5aae44b00502ce3d48dd7733eb42f9e",
+    "prototype/gameplay-cue-assets.js": "57373205b5efc1424a255b4d6a711b93b2a0de45f4771a6a19e3949015699e01",
+    "prototype/gameplay-cue-vfx.js": "ff78fc0156ec4243a517a445debfed7edf90747140375c2ce08eebd7b3241e7f",
+    "prototype/scene-components.js": "453ad7fdd227d21808b636781ca436e33498c87fccb8dde17f4938efee9b5ad1",
+    "prototype/engine-services.js": "2866ffe89a2722cb46e6bff816603da3321b7a483a1544500b533c27c94f2b2d",
+    "prototype/structured-asset-editor.js": "63ad918b71cf855f08d1f9195c8de48bd8de451741c277a01a5d69bd3ec6ebf0",
+    "tools/check-gameplay-cue-anchors-2638.mjs": "e250e4f3ee477eda47cfbfe9ec52e7f3ec1a50821bdc0247132ab40ec276f1eb",
+    "tools/check-skeletal-attachments-2647.mjs": "4ec0f8d6ba7da38661956d911086c3c6d6dd93e1c33037303a449f8e8356ee84",
+    "docs/ai-routes.json": "68acc2d76481d12c85b107d7fb46bc7b393b00b18dabbb40861995ebf7be91f1",
+    "docs/SKELETAL_SOCKETS.md": "4dee55132aee2615bd87511b2a03c8ea7af569637185de129de8412a5178c99e",
+    "docs/GAMEPLAY_CUE_ASSETS.md": "c8b9eee8bfe7c8920bb788123de4d110dc9287c574a8741486412a6e2533cf0f",
+    "docs/BLUEPRINT_SPEC.md": "92b299753f51c81dba1cabfd543dd5e708308f2946676ca7856ff334c7cc28c1",
+    "CODEX_HANDOFF.md": "42711bae798329f8ad4177985f50f26cd4caef0171a73691d0ad68dde553fdcc"
+  },
+  "resolvedOwners": 1461,
+  "targetIds": [
+    "GAM-04",
+    "ANM-06"
+  ],
+  "changes": {
+    "GAM-04": " ·2633–2656: Cue v3 뼈/소켓 기준 VFX·추적/분리·명시한Undo변환·상대자식 이미터경로·async컴포넌트/소유/풀lease. 기존ownerTRS/v1v2보존·일반 SkeletalSocket/Attachment 공용속성/native명령. 신규30+관련62·구문9·4target content. 새CPP바이너리/GPU/GUI/기기/설치별도.",
+    "ANM-06": " ·2633–2656: 일반 SkeletalSocket/SkeletalAttachment 컴포넌트·부모Bone/socket/오프셋·최종포즈/중첩순서·초기/풀획득이벤트전·퇴역/교체/오류. 등록대상만평가·기존VM조회/최초골격검사비용유지. 신규10+연결20·공용명령재생; 전용시퀀스track/동적강체/같은프레임충돌/2D SpriteRig별도."
+  },
+  "newSourceCases": 30,
+  "regressionCases": 62,
+  "checks": {
+    "group": "native/build/group2651.json",
+    "anchors": "native/build/cue-anchors-or1WW9/acceptance.json",
+    "attachments": "native/build/skeletal-attachments-vznvzd/acceptance.json",
+    "focus": "native/build/focus2650.json",
+    "syntax": 9
+  },
+  "failuresAndRepairs": [
+    "Attached owner TRS originally round-tripped through a matrix and changed exact Euler bits; retained original attached-owner TRS path, regression26 passed.",
+    "New fixtures initially assumed unsupported createPlacedObject parent/rotation options, null root parent, initialized prefab components and poolAcquire target instead of pool[]; corrected explicit fixture/API fields. One fixture name shadowed component factory; renamed.",
+    "Edit helper expected import/physics line spelling that differed; failed before writing that target file, resumed only remaining edits. Documentation EOF whitespace repaired.",
+    "Final bundled gates92 passed on committed sources; earlier failed experiments are not added to implemented counts."
+  ],
+  "performance": {
+    "unrelatedActors": 10000,
+    "registeredActorUpdates": 1,
+    "idLookups": 2,
+    "proof": "Source registry fixture traps full world iteration/unrelated queries; cached follow fixture traps unrelated skeleton traversal. Empty registry does not request candidate iterator.",
+    "remaining": "Ordinary VM ID lookup, first/rebound skeleton validation and pose matrix work retained. No FPS/heap/GPU measurement."
+  },
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newCPP": false,
+    "nativeCommandReplay": true,
+    "newGPU": false,
+    "newGUI": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newRuntimeSDKProfiles": 0,
+    "helpersCleanup": "native/build/temp-clean2656.json"
+  },
+  "remainingBoundary": [
+    "Multiple ParticleSystem components per actor; network Cue prediction/replication; advanced ability targeting/execution calculations",
+    "Dedicated sequence attachment/constraint blending, same-frame solver collision/physics binding, dynamic body coupling and SpriteRig2D bone model",
+    "External runtime insertion outside supported actor/component lifecycle; arbitrary external setter rollback; real GUI/GPU/native-binary/device/installation evidence"
+  ]
+}
