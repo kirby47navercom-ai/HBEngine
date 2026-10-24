@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "date": "2026-10-24T23:33:10.066Z",
+  "kind": "ability-tick-work-and-static-clock-projections",
+  "implementationRevision": "863e330ad6307e3d47700aa9eb6de67933f0774b",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2619.json",
+  "changedSourceHashes": {
+    "prototype/ability-tick-work.js": "7cf0f07169ff4648deac957f6d0c49d8dff3d2f116cfb557dccf0e1dd4b583ae",
+    "prototype/ability-runtime.js": "84ca91d26f50c45ae768411834d5cf3579be3dab89676363809a7c00e6d30d17",
+    "tools/check-ability-tick-work-2622.mjs": "7566036a8a6691bbc727053d0a998a55bb16c44764b75e0cbfa8e855913d4874",
+    "docs/ai-routes.json": "0474fcb412296334c0279654d681d150481f7e9fc738591cf53be5355410c5c7",
+    "docs/EFFECT_ONGOING.md": "af09c965e1aac0ff685d047ea446ef089aae76df55eeda6b8129ec2987ffd570",
+    "docs/BLUEPRINT_SPEC.md": "c4f3eb64ffcdbb19dcf3afb87f5bae04c2a73dfd5eb44de6b13e8251f859a0e2",
+    "CODEX_HANDOFF.md": "fb65cad24f77d252226ff74873e21edb108cab7d50512ae2ff69cb5d0562028b"
+  },
+  "resolvedOwners": 1456,
+  "targetIds": [
+    "GAM-04"
+  ],
+  "changes": {
+    "GAM-04": " ·2620–2632: 빈맵 iterator/임시배열제거·능력한순회 기한/쿨다운/활성·dirty뒤재판정. 시간불변 무한effect/쿨다운0 표시행재사용·일반변경invalidate·유한남은시간보존. 신규11+관련97/구문3; 10003idle 소유수명20006유지·재공개0. 전체owner수명/ongoing고정점·FPS/heap/CPP/GPU/GUI/설치별도."
+  },
+  "newSourceCases": 11,
+  "regressionCases": 97,
+  "checks": {
+    "group": "native/build/group2624.json",
+    "supersedingNewTool": "native/build/ability-tick-work-FYatXQ/acceptance.json",
+    "focus": "native/build/focus2628.json",
+    "syntax": 3
+  },
+  "failuresAndRepairs": [
+    "New fixture duplicated a const name after expansion; production regression97 passed. Renamed fixture variable and reran only failed new tool:11 passed."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newCPP": false,
+    "newGPU": false,
+    "newGUI": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "performance": {
+    "idleOwners": 10003,
+    "lifetimeChecks": 20006,
+    "idleIterators": 0,
+    "idlePublications": 0,
+    "remaining": "Whole owner lifetime and ongoing fixed point retained. No FPS, heap, device or installation claim."
+  }
+}
