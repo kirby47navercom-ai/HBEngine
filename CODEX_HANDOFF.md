@@ -1,30 +1,19 @@
 # 현재 인계 — 수동 계속 / 업데이트 보류
 
-최신사용자: 멈추는때=사용량소진/전체충족. 누적기능 여러분야실구현·마지막영향검사·소수수정뒤종료금지. 예약재생성/설치갱신금지. 주인님/짚짱/해요. hbengine2160삭제·goal/agent/GUI/설치0. UPDATE_HOLD active. 사용자창/탭/프로필/게임보호. Mac/Xcode/Android폰없음·재질문0. heavy전active1955·마지막12:56:34Zactive[].
+최신 사용자: 누적 엔진 기능을 여러 분야 묶어 실제 제작·실행까지 구현하고 영향 검사는 마지막에 합쳐요. 한두 수정 뒤 종료/전체완료 포장 금지. 주인님/짚짱/해요. 예약 hbengine2160 삭제·재생성 금지. UPDATE_HOLD active, 설치/Versions/사용자 창·탭·프로필·게임 원본 변경 금지. 새 agent/goal/재개 질문 금지. Mac/Xcode/Android폰 없음·재질문 금지.
 
-## WORK2401 core f6830e130740fb95cad40db62c6cd98cc1316d6e
+## 최신 WORK2435 — core 1ba05cbccc8d6e046d1ecb71d6382ed0202befea
 
-headless glTF검증128cap삭제·반복O(N+E)/부모·참조·분리cycle검사/기존file예산維持. 실제600계층load/월드위치/독립clip/同깊이graph·原本保全 신11+강화clip14/oldimport通過. 명시glTFclip sourceIndex없으면이름fallback거절. 전체Three/renderer任意깊이주장0·SDK/GUI/device/install변경0. refs WORK2401.
+- 모델 클립 start/end: 선형·스텝·quat 내부 키/경계, 0부터 재기록. 구간 Smooth/사용자 보간만 명시 bake, sampledTracks/FPS. 점 알림 반열림/상태 겹침 자르기. auto접선 고정/가중·수직곡선 분할/선형 외삽. 반복 metadata는 명시 표본과 sampledCurves. 리타게팅도 같은 metadata helper. 실제 Float32에서 겹치는 경계는 거절. 사람 폼/AI CAS/원자 파일·기존 graph 연결. 신13+기존추출14/retarget/periodic7 통과.
+- 런타임 타일: 불변256슬롯 청크·16단계 조회·삭제 빈슬롯/압축. 쓰기마다 점유 배열 복사 제거, 소비 때 보통 JSON 배열 1회. 변경 공간 그룹/자동타일·순서·기존 가변 저작 참조 보존. visibility는 같은 데이터/공개배열 공유, clear는 이전 배열 안 펼침. 비동기 render/native protocol3/충돌 입력 경계. 신12+index10/native replay14/dirty6/169·170 통과. 65536셀64쓰기 중간공개0·마지막1, 4096셀 warm group 좌표읽기31/dirty0. FPS/RAM 측정 아님.
+- EQS: 최신 가변 월드 O(N) 확인 유지·변경 행만 준비·부모 있을 때만 행렬 pass·실패 원자 보존/임시참조 해제. actorSync 진단. 신5+기존8/preview18/tester13 통과. 10000개 unchanged staged0/matrixPassfalse; O(N) 제거 아님.
+- 효과 v3 immunity: 들어오는 grantedTags와 네 역할의 all/any/none/exact, 캡처/연산/중첩/주기 앞 차단·기존 빈 핸들, 선택 blocked Cue. 기존 v1/v2 유지·명시 v3/이전 reader거절·UI Undo/AI compact CAS/복사 inspector. 능력 로딩 뒤 현재 소유자/항목/비용/태그/쿨다운 재검사, 동시 지출/퇴역 차단·오류 비용/Cue 복원. 신16(실제 VM native명령 replay·4target 공통 content/cook 포함)+관련 회귀 통과. APK/IPA/EXE 빌드 아님.
 
-## WORK2391 core 642b660a1de3bb7fd2f272414086f4d687f6c21e
+신규46 source. 첫 묶음의 타일 호환 회귀는 가변 경로/공간색인 복구, clip/능력 fixture 오류는 올바른 파일분류/VM start로 수정. 수정 영향만 재검사. 실패 초안은 성공 수에 포함 안 함. 상세 경로·SHA·재사용 경계 WORK2435. SDK/렌더러 변경·새 C++ 바이너리·GUI·기기·설치0. 모듈 closure는 공유 service/추출 entry만 검사, dirty player sentinel.
 
-모델animation하위→독립기존v1골격clip. 표준키/보간/지원metadata保全·실제UUID대상→고유이름재바인딩·무명/중복/없는대상거절. 사용자/glTFCUBICSPLINE 기본reject·명시bake때만해당track표본화1..240FPS/목록공개·4096sample마다yield+닫힘/소유자취소. 독립파일에모델/geometry복사0·slice/material/skin추출아님.
-사람ModelImportEditor폼/AI modelimport.extractClip expectedRevision/dryRun compact/명시fullData同helper·preview소유/문서세대確認. asset.create initialData는동일name skeletalclip만·입력즉시copy/기존queue/원자publish/create전용·placeholder/덮어쓰기0. 新14source:보간roundtrip·actualglTFCubic·원자파일/queuecopy·새UUID골격/저장clip→공용VM graph. oldmodel/retarget/project/AIgate通過. cooperative변경後추출14만再검사. GUI/전체FBXcorpus/nativebinary/renderer/device/install0. refs/hash WORK2391.
+## 보호 / 잔여
 
-## 최근 확정 — 재검사 반복0
-
-WORK2379 core855266b9: EQS TestingPawn배치/폼/AI·선택/가시/정지scene/revision debounce1회→기존query-only복사월드. idle재질의/타이머0·늦은결과차단·수동/Hide는첫frame前도다음변경까지pause. 신18source(스케줄13+4target content/cook5)+oldpreview18. enabledComponent반환층오독/첫framepause수정·scheduler/preview만再검사. game scene/prefab사본 컴포넌트除去前종속검색·BP정의명시거절/빈actor유지. GUI/device/install0.
-
-WORK2367 core5387684a/2961d0d4: 실제cloth/2D3Drope 재질·반복·표면/층mask hot갱신·입자/속도/핀/연결/세대/핸들維持·직접setter없는drag/gravity/mass/shape는cold. schema role/hot복사+상수freeze. nativeInputDefaults는反映default만missing own키에copy·명시값/필수/receiver검증保全·eval0·desktop/mobile同decoder. tile dirty perlayerMap/process분리배열·비동기/실패유지·실제occupied전체copy잔여. FullBodyIK opt-in상한늘이기/뼈위치강성/공유구간最大1회·pose/alpha/root/회전制約保全·사람폼/JSON/AI+新CPP/BP. 신31source+현재SDK실제CPP14/26RPC(3예상거절). 첫group fixture실패/수정再검사와통과CPP행재사용경계는원장. SDKworker SHA/usedFPも원장. renderer/GUI/device/install0. generated core-api/NODE_CATALOG hash기록/직접commit금지.
-
-WORK2334 b88133fe:compact저작/legacyfull·5source;payload측정은원장.
-WORK2327 1053429a:ropecap/표시dirty물리유지/owner교체새세대6.
-WORK2321 efaf9133:JS행렬/CPPpoint逆변환 iterative·64cap제거/cycle/range·passCache/EQS/contact9+CPP12·전체Three/renderer깊이아님.
-WORK2311 5e1993aa:BTv2 deferredabort·효과태그v2·singlewrite복원·3Drope/commonAPI/초기getter0·AIscene배치/부모index71+CPP8.
-WORK2277 taskmemory/scope21;2266 native tilewrite14;2259 editorTool/4cook29;2245 staticEQS18+Euleraxes21;2229 audioPCM/취소25;2218 seqbatch/BTquery26;2208 liveeffect/tileindex/EQS55+CPP4. 상세는각WORK.
-
-## 보호·남은 작업
-
-마지막설치 USER_INSTALL2145:73341067df5a12be/4643files/1271owners/Versions1·당시User10849동일·독립D3D CPP18/render14. 이후소스미설치/User읽기0. resume2152/install2152/보류해제금지.
-외부dirty prototype/player.js + tools/check-player-keyboard-release.mjs read/edit/stage/검사/배포금지. admittedplayer gitHEAD SHA8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1. rootHost GUI금지. 한글commit/push author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com·AItrailer0.
-78행/완료율null/전체완성주장0. 잔여: EQS O(N)sync/다수테스터·nativeBTTask class·tile전체copy/diskchunks·animation다른Eulerorder/외부rollback·AST재질/skin/범위/복잡DCC·CPP일반schema/동일callback同ID·RNDglobalDF/bentnormal/heightfield/volume/HWRT. GL1728 ANGLE6878.6/D3DCompile6836.439ms미해결·실패반복금지. 작은묶음뒤끝내지말고승인된구현계속.
+외부 dirty prototype/player.js + tools/check-player-keyboard-release.mjs 읽기/수정/스테이지/실행·배포 금지. docs/NODE_CATALOG.md 생성물 직접 commit 금지. 관련 코드부터 tools/hb.mjs context로 찾되 넓은 fallback은 보호 파일을 읽지 않게 주의해요. 현재 소유 테스트만 사용해요.
+마지막 설치 USER_INSTALL2145=73341067df5a12be(당시 Versions1). 업데이트 요청 전 resume2152/install2152 금지. heavy/GUI/설치 전 active1955; 이번 마지막18:07:43Z active[]. SDK 마지막 실제 CPP는 WORK2367 14사례/26RPC, 이후 SDK 불변이지만 새 기능의 실제 native 실행 증거로 재포장 금지.
+잔여는 ENGINE_STATUS.json remaining이 기준. 재질/skin·복잡DCC/추가형식·기존clip편집, 타일 저작배열/diskchunks/총비용, EQS 전체 O(N)/nativeBTTask/대규모AI, 효과 ongoing/과거주기/예측, 일반 CPPschema·같은callback同ID, sequence 외부rollback/다른Eulerorder, RND globalDF/고급매질/HWRT 등 유지. GL1728 ANGLE6878.6/D3DCompile6836.439ms 미해결·실패실험 반복 금지. 이전 자세한 구현은 WORK2401→2391→2379→2367 등 원장 체인으로 확인해요. 전체 UE/Unity 완료율 null 유지.
+한글 commit/push, author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com, AI trailer0. 검사 산출물은 test-artifacts로 원본·보고서만 보존, 엔진/프로필 사본 누적 금지.

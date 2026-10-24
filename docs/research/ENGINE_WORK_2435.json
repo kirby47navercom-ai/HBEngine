@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "date": "2026-10-24T18:34:35.497Z",
+  "kind": "multi-domain-clip-ranges-persistent-runtime-tiles-eqs-staging-and-effect-immunity",
+  "implementationRevision": "1ba05cbccc8d6e046d1ecb71d6382ed0202befea",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2401.json",
+  "changedSourceHashes": {
+    "docs/BLUEPRINT_SPEC.md": "e6f0bea94b643abc04c16bacc298f5c6c07a6dedaa31a4d3f2498d08f9c74d5c",
+    "docs/EFFECT_TAG_REQUIREMENTS.md": "b11568aa86e1372d14237c796cd6c235e0134ff0112e9cbbd44ab2a0a747625e",
+    "docs/MODEL_CLIP_EXTRACTION.md": "e15f7da80b762e20c9e8ed1fe84a7c460a5280003aaa1fec9b7d4eb383ad145a",
+    "docs/TILE_DIRTY_CELLS.md": "3975136cd8d9aa42d2d9c0b5620e21f0392779dbe9dfa088501edbd93043b53e",
+    "docs/TILE_RUNTIME_INDEXES.md": "65a044e7e3fabe5c53c4dd621fac4416064d290e6d64457ed105bb7ac6db0b6d",
+    "docs/ai-routes.json": "328286acc7c71b362219ad6ffc8e3cf58ca929a8e057a90c6cfa35d5bb774c51",
+    "prototype/ability-assets.js": "409d2d0615773aed79e4189a27581b7429dadeb44278859e59a3414920811957",
+    "prototype/ability-runtime.js": "2a04a67ecd5b93234781145661f4c3d50675afbfadb6e544974b2d50d25d2a47",
+    "prototype/animation-retarget-bake.js": "959b3cfff7b8df4e6f7b627033332ea26e0bc1ef302764e970a4ce25b31f3785",
+    "prototype/app.js": "a3ea775f6af089ecc194dc762deaacb8a1bc084c6464a1eb3822aa9d0363bbe8",
+    "prototype/auto-tiles.js": "be2fccdcdd25f989968dd6d95b4572d3b29f660e9cb993436d8044bcb51cefd0",
+    "prototype/curve-periodic-bake.js": "50e0e864e13f3db3800309612f9361416e1e976c21d558ec41404a3a8de7a506",
+    "prototype/effect-tag-editor.js": "8db6b583f90ac1ac3756aeb5b1e3b3f5fd4f3278d32bb8e0998c7ccf4ecd8ce9",
+    "prototype/effect-tag-requirements.js": "d0fde76ed0707ac73f93d597afacf7a48dedd8accbcfce6ec7403d456e68aeca",
+    "prototype/environment-actor-index.js": "904dcfdb9704480bda0a3ae4245bafb44f9543ba9159a012e143250d82aa87a8",
+    "prototype/environment-query.js": "c2fd5d5e5b400e8c47dbfe2d7a109e1d3a16502004279eef727f6aa7e52dffc9",
+    "prototype/model-clip-extraction.js": "e9b6ecabad01b0608c15a98dbb1c42c0fa9e62fc37a01d945befe552d9489ccd",
+    "prototype/model-import-editor.js": "b4bf53204b94fca37b28728fe1c33e56adbcc73032f61844cb499e09af0b8789",
+    "prototype/native-transport.js": "0bc2222236a44dbf0d06edac5d260826d4c5d46add438cc7572d84bffb87f083",
+    "prototype/structured-asset-editor.js": "14e2a406eb69c46c9034a3f49928bf860f80302fb55a069c2ffaa5c337d3546a",
+    "prototype/tile-cell-index.js": "a0041bfbd1a3fe4c06210ca7d70be14e3c6c6f64e5e58b744133f9545360e66c",
+    "prototype/tilemap-chunks.js": "4e67bf385c6acfa08f6a7ad0e890004f6ab7f6212b85dee18b22a2c798cb580a",
+    "prototype/tilemap-runtime.js": "8cd9d5de8c79860a7a59a144684bde9bdc9ea6ecb5d35528ccddc053d1116d1f",
+    "tools/check-eqs-index-2198.mjs": "19c1f4c75a1f2d1ab9ad5782fcfda2593328ab0024d2a68dc34c27399a9cc8ad",
+    "tools/editor-automation.mjs": "3ed3f1d70892f6b72ff40addfde969d7b556006f65a391e07c801a5970a92aa7",
+    "docs/EFFECT_IMMUNITY.md": "433fea520289d630a4e218cb8f624a936ad77bd9fda9eb1fcb7f18e23873ebc9",
+    "docs/EQS_SYNC_COST.md": "92365f8493bce7e76b1cf366dba5da580680304545816cbd2f1a457b220027ed",
+    "prototype/animation-clip-range.js": "7b5eb1fb89561964410e21a1eb40f24a1e74a2e556d11d2ec9db5eda7ef901a5",
+    "prototype/effect-immunity.js": "bbf92e2feec43b932d528e6eb6f1094490f877aa4cf731bee25983da797051b1",
+    "prototype/tile-runtime-storage.js": "f60589787265aea129494fb283c8041367794e37534b4f15ee3fec57ae47216b",
+    "tools/check-clip-range-2408.mjs": "ded421a07708ad49f679ccf12b388377aede6bab7ed69bb93334731388544fac",
+    "tools/check-effect-immunity-2422.mjs": "94e6929d47d2b30c77af77c4ea8c4dafbe94ce5f704a8766c65bd7f9c6a4caeb",
+    "tools/check-eqs-sync-2410.mjs": "8dfb65589ba24f49623739b059973eb0883a5ac156733e704f4396ddaf34f478",
+    "tools/check-tile-storage-2409.mjs": "8bc68906dccb773bb105c213d3d877dcfee3e75d1190783c81ed8b191292fec0",
+    "CODEX_HANDOFF.md": "85ea247d8b40542f43280dea17bdefbe9606c8b93d66038983eb73fb2117178b"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1410,
+  "targetIds": [
+    "AST-02",
+    "ANM-06",
+    "2D-06",
+    "GAM-03",
+    "GAM-04",
+    "GAM-01"
+  ],
+  "changes": {
+    "AST-02": " ·2402–2435: 독립 클립 start/end·TRS 경계/알림/가중 곡선·명시 Smooth/custom/periodic 베이크·Float32 시간 겹침 거절·사람폼/AI/graph. 신규13+추출14/retarget 통과.",
+    "ANM-06": " ·2402–2435: 추출/리타게팅이 같은 metadata 구간 helper를 사용해 auto·가중·수직 곡선과 이벤트 경계를 보존. 표본 근사는 명시·기존 graph 실행. 별도 실제 창 검증 없음.",
+    "2D-06": " ·2402–2435: 런타임 불변256슬롯 청크·지연 JSON/공간그룹 상속·자동타일·삭제/표시/지우기·기존 가변 저작 참조 보존. 신규12+index10/native명령14/dirty6/169·170 통과. 65536셀64쓰기 중간배열공개0/끝1; FPS아님.",
+    "GAM-03": " ·2402–2435: EQS O(N) 최신 확인은 유지하며 변경 행만 준비·부모 없는 장면 matrix pass 생략·실패 원자/참조해제·actorSync. 신규5+기존8/preview18/tester13 통과. 10000개 unchanged staged0.",
+    "GAM-04": " ·2402–2435: v3 incoming 효과/4역할 태그 면역·선행 차단/blocked Cue/수명·UI Undo/AI CAS/복사 inspector·기존v1/v2/이전reader거절. 신규16+관련회귀, 실제VM명령/4target content/cook. 실행패키지·기기검증 아님.",
+    "GAM-01": " ·2402–2435: 비동기 능력 로딩 뒤 현재 owner/entry·활성/쿨다운/비용/태그 재확인으로 중복 지출·퇴역 뒤 commit 차단; 혼합 효과 오류 비용/Cue 원자복원. effect immunity source16에 포함."
+  },
+  "checks": {
+    "newSourceCases": 46,
+    "newCasesByTool": {
+      "clipRange": 13,
+      "tileStorage": 12,
+      "eqsSync": 5,
+      "effectImmunity": 16
+    },
+    "clip": {
+      "path": "native/build/clip-range-7y6xY4/acceptance.json",
+      "sha256": "75539b062765eaeb35b60f87b12bb2ae7f0d9b79f680a82970894cb92e3f4819"
+    },
+    "tiles": {
+      "path": "native/build/tile-storage-hVUJqU/acceptance.json",
+      "sha256": "444e85baf1d1f592caaa58c0a916942d2ab97d5b55fc41623aa416f8f283ef68"
+    },
+    "eqs": {
+      "path": "native/build/eqs-sync-sNkyOM/acceptance.json",
+      "sha256": "594674b89ea84a20f6307aa59caea5edb372d838014303a776abe13839cab4a6"
+    },
+    "immunity": {
+      "path": "native/build/effect-immunity-2Wb15J/acceptance.json",
+      "sha256": "a53aaf00cab9fac23cef1adda459cc855c86628fbf2e81c51679419bdca4dbb5"
+    },
+    "initialGroup": {
+      "path": "native/build/group2414.json",
+      "sha256": "fd7e383cff6dde20cef153720c5ceab6fa5788c17c3163fd7174b08afb7f8ff3"
+    },
+    "tileAndClipRecheck": {
+      "path": "native/build/recheck2417.json",
+      "sha256": "79b9c3ace6ca75e08d6ad1bdb236311c83a5f4afe47b8692906eb53f054fb3e0"
+    },
+    "effectGroup": {
+      "path": "native/build/group2427.json",
+      "sha256": "0c6fed0c18bcbbb77d1bfe5e134383d40035f505ae5fc5b343b81efc04cc035b"
+    },
+    "syntaxAndLatestOwners": {
+      "path": "native/build/final2431.json",
+      "sha256": "80fbd0658ee9c640efff045fb4d9a88cdcf86e8b09d46816ebad27e87c384da0"
+    },
+    "currentHashesAndModuleClosure": {
+      "path": "native/build/boundary2434.json",
+      "sha256": "f8560cf99e883d946d8189fbffefe825a630e12a7f04e9315aff568f7bc7544a"
+    },
+    "scope": "Source-owned production paths and regression gates, real graph/Blueprint VM/shared native-command replay, ordinary protocol3 JSON/deltas, actual four-target common content/cook inspection. No new compiled C++/actual-window/renderer/device/package executable/install proof.",
+    "failures": "Initial group2414 failed on lost legacy mutable tile identity/group inheritance and a clip fixture lacking its skeletal suffix. Restored ordinary mutable path and spatial inheritance; recheck2417 passed, final2431 passed after Float32/publication review. Group2427 had only the new common-ability fixture fail because prepare does not start AbilitySystem; actual BlueprintRuntime.start fixture fixed and final immunity16 passed. Failed drafts are not counted as successful implementations.",
+    "reuse": "Retain unchanged EQS/index/preview/tester and original clip/retarget/curve gates; rerun only changed tile/clip owners after their fixes and only immunity fixture after its startup correction. No unchanged SDK/renderer execution repeated.",
+    "native": {
+      "executed": false,
+      "reason": "SDK/ABI/renderer unchanged. Shared command replay is JS production execution, not a new C++ binary run."
+    },
+    "actualWindow": false,
+    "devices": false
+  },
+  "measurements": {
+    "tileWrites": {
+      "occupied": 65536,
+      "writes": 64,
+      "intermediateArrayMaterializations": 0,
+      "finalArrayMaterializations": 1,
+      "chunkSlots": 256
+    },
+    "warmTileGroup": {
+      "occupied": 4096,
+      "touchedCoordinateReads": 31,
+      "dirtyChunkCoordinateReads": 0
+    },
+    "eqsUnchanged": {
+      "actors": 10000,
+      "scanned": 10000,
+      "staged": 0,
+      "matrixPass": false
+    },
+    "scope": "Structural work/ownership counts only; not PC/mobile FPS, OS RAM/VRAM or hardware quality evidence."
+  },
+  "limits": [
+    "Mutable authoring arrays, periodic index/tombstone compaction, directory copies/full publication/validation/render/collision and disk chunks remain.",
+    "EQS mutable-world synchronization remains O(N); large AI scheduling/device proof remains.",
+    "Sliced Smooth/custom and periodic metadata are explicit approximations at selected FPS; other source-format/material/skin/unnamed-node/general DCC features remain.",
+    "Immunity affects new applications/refreshes; existing ongoing suppression, per-pulse history and network prediction remain.",
+    "No overall engine completeness or global UE/Unity percentage claim."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "newVersions": 0,
+    "userProfileUsed": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4321,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "policy": "Owned tiny source/project fixtures and reports retained via test-artifacts; no SDK/worker build/User/Versions mutation.",
+    "temporaryHelpersPruned": {
+      "files": 35,
+      "bytes": 111695,
+      "scope": "현재 작업에서 만든 임시 편집·조회·검사 보조 파일만 명시 경로로 확인 후 정리. 소스·재현 검사·원본 fixture·결과 보고서 보존."
+    }
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}
