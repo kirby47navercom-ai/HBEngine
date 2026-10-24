@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "date": "2026-10-24T23:08:10.815Z",
+  "kind": "joint-live-candidate-and-owner-index",
+  "implementationRevision": "d3a49eef93c12365378f1f7d88990c4d553c6264",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2608.json",
+  "changedSourceHashes": {
+    "prototype/joint-runtime-records.js": "9f6bc073a4454bfcb18c95b64c9420466f306e6a87890b0312ce7f22553d4a1c",
+    "prototype/physics-world.js": "a1a9173e4f012a51fececb12abe6159d7393ba1089fb95a034ef6e1bf6a037fe",
+    "tools/check-joint-index-2612.mjs": "5f641a54bde916d302ba5c10d3e82a36e9cfa9b4d6cbf5ed68e73e9738e383bc",
+    "tools/check-joint-break-2506.mjs": "4fb8100857cb21bc9035f72456cfb4f99e84851db7996d760dc53f422feff755",
+    "docs/ai-routes.json": "30ecbc3bf210af0d77c37c784dd984b28d8095a0165a57714d373c6126a11886",
+    "docs/JOINT_BREAKAGE.md": "8fd6383c36772fbaa1b464473d2c444e9b3ec73aa405f50e521d2865b94dc4d0",
+    "docs/BLUEPRINT_SPEC.md": "42d230169a0acab93f35a5345b96d004c815c866dbcf3c3458b0cb54f7bf589d",
+    "CODEX_HANDOFF.md": "03cf20f33baee9afef961163884cebf0b468ec1a8f7401c1dbe8841c53a7c676"
+  },
+  "resolvedOwners": 1454,
+  "targetIds": [
+    "PHY-02"
+  ],
+  "changes": {
+    "PHY-02": " ·2609–2619: 참조-only JointRuntimeRecords의 정상파손후보/owner색인·수명/작성순서·별도owner/component ID쌍으로구분자충돌차단. 신규8(10001중무관10000 접근trap)+실제2D/3D 파손9/DOF7·sourceOnly SDK1명시skip/구문4. 전체sync/solver·반력/plasticity잔여, FPS/새CPP/GPU/GUI/설치 주장이 아님."
+  },
+  "newSourceCases": 8,
+  "regressionCases": 16,
+  "skippedNativeCases": 1,
+  "checks": {
+    "group": "native/build/group2614.json",
+    "new": "native/build/joint-index-vjXM0D/acceptance.json",
+    "breakage": "native/build/joint-break-N3RGkA/acceptance.json",
+    "dofs": "native/build/joint-dofs-237-1bZSNv/acceptance.json",
+    "focus": "native/build/focus2615.json",
+    "syntax": 4
+  },
+  "performance": {
+    "records": 10001,
+    "excluded": 10000,
+    "breakIterations": 1,
+    "targetIterations": 1,
+    "proof": "Unrelated property getters and global values iterator throw; only requested candidates/owner iterate",
+    "addedStorage": "O(J) live references in per-owner maps/weak owner metadata plus configured break candidates",
+    "remaining": "Whole-world sync, solver, body/geometry work unchanged; no measured FPS/heap/GPU result"
+  },
+  "failuresAndRepairs": [
+    "No feature gate failed. Actual separator-key collision is covered by independent2D/3D actor/component ID pair regression.",
+    "Explicit --source-only keeps9 existing solver/VM cases and records1 skipped native SDK case instead of repeating unchanged SDK compilation. No binary hash/execution reuse claimed."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newCPP": false,
+    "newGPU": false,
+    "newGUI": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newRuntimeSDKProfiles": 0,
+    "helpersCleanup": "native/build/temp-clean2618.json"
+  },
+  "remainingBoundary": [
+    "Solver reaction force/torque thresholds, plasticity, articulation and other canonical physics residuals",
+    "Whole-world synchronization cost and GPU/device/installation validation"
+  ]
+}
