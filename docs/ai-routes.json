@@ -1028,6 +1028,26 @@
   ],
   "focusRoutes": [
     {
+      "id": "skeletal-sockets-and-cue-anchors",
+      "keywords": [
+        "SkeletalAttachments",
+        "GameplayCueAnchor",
+        "gameplayCueEmitter",
+        "cueAnchorTRS",
+        "upgradeGameplayCueAnchors"
+      ],
+      "paths": [
+        "prototype/gameplay-cue-anchor.js",
+        "prototype/skeletal-attachments.js",
+        "prototype/gameplay-cue-assets.js",
+        "prototype/gameplay-cue-vfx.js",
+        "prototype/scene-components.js",
+        "prototype/engine-services.js",
+        "prototype/structured-asset-editor.js",
+        "docs/SKELETAL_SOCKETS.md"
+      ]
+    },
+    {
       "id": "ability-tick-work",
       "keywords": [
         "abilityTickWork",
