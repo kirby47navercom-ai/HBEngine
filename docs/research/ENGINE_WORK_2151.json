@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "date": "2026-10-24T02:46:58.927Z",
+  "kind": "shared-native-literal-includes-source",
+  "implementationRevision": "7a755fe5758a0224d811562ed093cd0b71b46588",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2146.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "8ecbbbd60e645bc62dabb62a33747f6ea07b1eb8b7a02b90d48cc5cd7a24b6c9",
+    "docs/NATIVE_LITERAL_INCLUDES.md": "91cda428f12c13501eee40246595ce3d3a24fe2994026e14c8c3a351dfc05881",
+    "prototype/native-includes.js": "e08d897cdac8bb7093988b38c912404ad0df32c79cfcfd2decdcf657884ab570",
+    "prototype/native-header-files.js": "99c75aff25508dfd3294c71e047bd8fc824e7f1402d53cc1ecc0913f1a339a69",
+    "tools/native-project.mjs": "0400bcf80c6e66c04a8ba62f06c209e9d8bd34881def4323fa59fb1f03065bef",
+    "tools/native-source.mjs": "47f6893019d30c5c90a301622d28a3b4338aafd3988093c156d4717b29215156",
+    "tools/check-native-includes-2148.mjs": "9cca4ba99e0fcbf0bc32e7b087ca9da2e00dd982ff0e6195e206084201a115ee",
+    "tools/check-native-includes-2149-cpp.mjs": "237b13bf7c9bbc4bef3db8a89c68d7a15e5c1f827f647defa664ddc51c6a19db",
+    "tools/native-includes-2148-fixture.mjs": "f7de665fef804b9228d689ef90343ff374a5f9d64d11ab7a3c0567bf700e78bb",
+    "CODEX_HANDOFF.md": "f72bf57d13c9574557e1defb53e48d1b00b12665e92b2ede06a40f4d7376be04"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "targetIds": [
+    "CPP-01"
+  ],
+  "checks": {
+    "source": {
+      "passed": true,
+      "ms": 9707.18,
+      "activeInstalled": [],
+      "execution": "Grouped lightweight source/model/CAS/production-poll checks only. No compiler, GUI, stress or installation while installed runtime is in use.",
+      "rows": [
+        {
+          "name": "check-native-includes-2148",
+          "passed": true,
+          "exit": 0,
+          "ms": 118.83279999999996,
+          "log": "native/build/group2150-check-native-includes-2148.log",
+          "sha256": "c705ddbd62259bbbc1db2a267275e16f2b7594d58388b792ce1ba776718512b3"
+        },
+        {
+          "name": "check-native-source-watch-1710",
+          "passed": true,
+          "exit": 0,
+          "ms": 317.89480000000003,
+          "log": "native/build/group2150-check-native-source-watch-1710.log",
+          "sha256": "daee8c7f6919947e990d34c22c30c2682d9634bd1f104713e916695dd2043d2f"
+        },
+        {
+          "name": "check-native-entry-1708",
+          "passed": true,
+          "exit": 0,
+          "ms": 466.34950000000003,
+          "log": "native/build/group2150-check-native-entry-1708.log",
+          "sha256": "a7bff3060f4cb6cd695b3a8b73d3c2764130996c97f6476c5f1e7be0f7bf9273"
+        },
+        {
+          "name": "check-native-source-migration-1814",
+          "passed": true,
+          "exit": 0,
+          "ms": 6150.4574999999995,
+          "log": "native/build/group2150-check-native-source-migration-1814.log",
+          "sha256": "b9947ca4c48910f0ea36faccaa604379c5af9e9524281e59b3fcaf4245b8797d"
+        },
+        {
+          "name": "check-native-records-1472",
+          "passed": true,
+          "exit": 0,
+          "ms": 234.8128999999999,
+          "log": "native/build/group2150-check-native-records-1472.log",
+          "sha256": "b2c6d796689993f8602f4a8167c237b9f38ec35ab76a65dc50913622c927d2ad"
+        },
+        {
+          "name": "check-ai-context",
+          "passed": true,
+          "exit": 0,
+          "ms": 2417.7741000000005,
+          "log": "native/build/group2150-check-ai-context.log",
+          "sha256": "c236a657c393202b3f2a32bf6212a404df75e1c5efac8943d08ab264d4d5950c"
+        }
+      ]
+    },
+    "newSourceCases": 32,
+    "sourceReport": {
+      "report": "native/build/native-includes-2148-Z9rcyP/acceptance.json",
+      "sha256": "b99ffc1fea56e739eb2ea4cf6f86da5af246948e640a8d0241322c08f15c607a"
+    },
+    "focusedAI": {
+      "symbol": "nativeIncludeDirectives",
+      "filesRead": 1,
+      "bytesRead": 3528,
+      "elapsedMs": 168.38,
+      "mode": "focused-routes"
+    },
+    "actualCpp": {
+      "passed": false,
+      "deferred": true,
+      "active": [
+        {
+          "pid": 19388,
+          "version": "73341067df5a12be",
+          "name": "node.exe"
+        }
+      ],
+      "reason": "Installed runtime in use; no compilation or execution started.",
+      "log": {
+        "report": "native/build/native2149.log",
+        "sha256": "450b328e4d661a598fab13b818ace0e3e01babda4467c0edf0603a117553740c"
+      },
+      "tool": "tools/check-native-includes-2149-cpp.mjs"
+    }
+  },
+  "installation": {
+    "pending": true,
+    "updated": false,
+    "currentReceipt": "docs/research/USER_INSTALL_2145.json",
+    "reason": "Installed runtime active; no binary compilation, GUI or install transition started."
+  },
+  "nativeReuse": {
+    "sourceBase": "docs/research/ENGINE_WORK_2143.json",
+    "nativeOwners": 21,
+    "vendorOwners": 2,
+    "scope": "SDK/renderer/native binaries unchanged; changed C++ source preparation has its own actual module gate pending."
+  },
+  "excludedWorktree": [
+    "prototype/player.js",
+    "tools/check-player-keyboard-release.mjs"
+  ],
+  "scope": "C++ literal include discovery shared across reflected header closure/type migration, production source watching, helper source header inference/User.h compatibility alias, and legacy inline header removal. Comments/ordinary and prefixed raw literals/characters/numeric separators stay authored data; logical directives support line/comment splices, CRLF and digraph. Inline removal preserves raw bodies and physical line count. New32 regression cases and five existing affected source gates passed together; original admitted raw-include path error reproduced. Exact focused AI owner lookup. Compiler/system/macro/conditional support not widened. Actual C++ worker gate and immutable installation transition deferred because installed runtime is active."
+}
