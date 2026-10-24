@@ -3313,6 +3313,20 @@
         "prototype/sequence-imported-pose.js",
         "docs/SEQUENCE_EULER_LAYERS.md"
       ]
+    },
+    {
+      "keywords": [
+        "editorToolContract",
+        "runEditorTool",
+        "inspectEditorTool",
+        "editorTool.inspect",
+        "편집기 도구 API"
+      ],
+      "paths": [
+        "prototype/editor-tool-assets.js",
+        "prototype/editor-tool.js",
+        "docs/EDITOR_TOOL_API.md"
+      ]
     }
   ]
 }
