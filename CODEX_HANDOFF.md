@@ -2,6 +2,10 @@
 
 최신사용자: 멈추는때=사용량소진/전체충족. 누적기능 여러분야실구현·마지막영향검사·소수수정뒤종료금지. 예약재생성/설치갱신금지. 주인님/짚짱/해요. hbengine2160삭제·goal/agent/GUI/설치0. UPDATE_HOLD active. 사용자창/탭/프로필/게임보호. Mac/Xcode/Android폰없음·재질문0. heavy전active1955·마지막12:56:34Zactive[].
 
+## WORK2401 core f6830e130740fb95cad40db62c6cd98cc1316d6e
+
+headless glTF검증128cap삭제·반복O(N+E)/부모·참조·분리cycle검사/기존file예산維持. 실제600계층load/월드위치/독립clip/同깊이graph·原本保全 신11+강화clip14/oldimport通過. 명시glTFclip sourceIndex없으면이름fallback거절. 전체Three/renderer任意깊이주장0·SDK/GUI/device/install변경0. refs WORK2401.
+
 ## WORK2391 core 642b660a1de3bb7fd2f272414086f4d687f6c21e
 
 모델animation하위→독립기존v1골격clip. 표준키/보간/지원metadata保全·실제UUID대상→고유이름재바인딩·무명/중복/없는대상거절. 사용자/glTFCUBICSPLINE 기본reject·명시bake때만해당track표본화1..240FPS/목록공개·4096sample마다yield+닫힘/소유자취소. 독립파일에모델/geometry복사0·slice/material/skin추출아님.
@@ -13,7 +17,7 @@ WORK2379 core855266b9: EQS TestingPawn배치/폼/AI·선택/가시/정지scene/r
 
 WORK2367 core5387684a/2961d0d4: 실제cloth/2D3Drope 재질·반복·표면/층mask hot갱신·입자/속도/핀/연결/세대/핸들維持·직접setter없는drag/gravity/mass/shape는cold. schema role/hot복사+상수freeze. nativeInputDefaults는反映default만missing own키에copy·명시값/필수/receiver검증保全·eval0·desktop/mobile同decoder. tile dirty perlayerMap/process분리배열·비동기/실패유지·실제occupied전체copy잔여. FullBodyIK opt-in상한늘이기/뼈위치강성/공유구간最大1회·pose/alpha/root/회전制約保全·사람폼/JSON/AI+新CPP/BP. 신31source+현재SDK실제CPP14/26RPC(3예상거절). 첫group fixture실패/수정再검사와통과CPP행재사용경계는원장. SDKworker SHA/usedFPも원장. renderer/GUI/device/install0. generated core-api/NODE_CATALOG hash기록/직접commit금지.
 
-WORK2334 b88133fe:新4저작compact/legacyfull·5source·1000objects응답282338→137B(network/LLM/GUI실측아님).
+WORK2334 b88133fe:compact저작/legacyfull·5source;payload측정은원장.
 WORK2327 1053429a:ropecap/표시dirty물리유지/owner교체새세대6.
 WORK2321 efaf9133:JS행렬/CPPpoint逆변환 iterative·64cap제거/cycle/range·passCache/EQS/contact9+CPP12·전체Three/renderer깊이아님.
 WORK2311 5e1993aa:BTv2 deferredabort·효과태그v2·singlewrite복원·3Drope/commonAPI/초기getter0·AIscene배치/부모index71+CPP8.

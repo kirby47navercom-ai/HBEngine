@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "date": "2026-10-24T13:55:06.069Z",
+  "kind": "iterative-headless-gltf-hierarchy-validation-and-explicit-source-clip-index",
+  "implementationRevision": "f6830e130740fb95cad40db62c6cd98cc1316d6e",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2391.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "43ddb66eb46edbf9b9c2b16497212f00f9c0e8a2cf4b3e4f32e6e978ce51a214",
+    "prototype/model-clip-extraction.js": "52f739843267b3c14c253d1bff9e07cdc39b7a3d3eea261845127780dbe2081b",
+    "tools/check-model-clip-extraction-2385.mjs": "4b2f86d41f3208d1cbca2e28234bf55efad3233096fb482bfc5862841f56f5cd",
+    "tools/headless-model.mjs": "1871b68670bfcca8606e4b90085e3aa59278b76679df64c938fc550fcf87512b",
+    "docs/HEADLESS_MODEL_HIERARCHY.md": "7ce822c79aa1a87734eab300fbf0194affa31bba3aba3b72dd58f5cd860a07c2",
+    "tools/check-headless-hierarchy-2395.mjs": "fe1be75077a7823460687cba3cd7abd0176ae661081e20df86e3fe04e9ed6c3e",
+    "CODEX_HANDOFF.md": "545b5b2e51311813ed601c88dc46fc7423eed63db04f920175d5eae7541c2b69"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1399,
+  "targetIds": [
+    "AST-02",
+    "ANM-06"
+  ],
+  "changes": {
+    "AST-02": " ·2392–2401: headless glTF 계층검증기128depthcap제거·반복O(N+E)·기존부모중복/참조/분리cycle·입력file예산保全. 실제600계층load/world/독립clip→同깊이graph/원본보존 신규11·강화clip14/oldimport통과. 명시sourceIndex불일치name추측금지. 全Three/render任意깊이검증아님.",
+    "ANM-06": " ·2392–2401: 실제600단계glTF의추출클립을同계층공용graph에서재생·월드위치대조. 기존SDK/렌더러/GUI/기기검사는새로반복하지않음."
+  },
+  "checks": {
+    "newSourceCases": 11,
+    "hierarchy": {
+      "path": "native/build/headless-hierarchy-yTaIJp/acceptance.json",
+      "sha256": "7454e856d87e3a1c530a9ecf06e86f48919bee1f1f66e0d3b5b823d700d4b3d0"
+    },
+    "clip": {
+      "path": "native/build/model-clip-extraction-aMEVFn/acceptance.json",
+      "sha256": "941c110d673976ae84335490b26dd7ee5ec2ed386be932fc1184736b4fe1586e"
+    },
+    "group": {
+      "path": "native/build/group2396.json",
+      "sha256": "313b33c8d95aa1eff11e9d6dcab2e61c5d460807e1cf6f76c8e1ae36a092ddac"
+    },
+    "integrity": {
+      "path": "native/build/final2399.json",
+      "sha256": "2828aa9e9034015f1a4d2a8a8e5b39fed3fc15abc1a81aa47075ac255de74d25"
+    },
+    "scope": "Iterative hierarchy validation and actual600-level model/graph playback; source index mismatch explicit failure. Reran hierarchy11 after retaining legacy absent-child normalization, and clip14 after strengthening index identity. Unchanged model-import source gate retained. No SDK/renderer/GUI/device/install change.",
+    "reuse": "Group2396 all3 passed. Then retained legacy absent-child normalization and reran hierarchy11; explicit missing-source-index guard reran clip14. Unchanged old model-import source gate retained.",
+    "native": {
+      "executed": false,
+      "reason": "SDK/ABI/renderer unchanged; only input hierarchy and clip association changed."
+    },
+    "actualWindow": false,
+    "devices": false
+  },
+  "limits": [
+    "Removes the headless validator-specific128-depth cap; actual executed sample depth600. No arbitrary-depth guarantee for every Three/DCC/render path.",
+    "Existing per-file nodes/children/accessor/bytes budgets retained; not a global scene/object count limit.",
+    "No native C++/GUI/renderer pixels/device/install validation or global engine completion claim."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4903,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "policy": "Owned source/glTF fixtures and reports via test-artifacts; no worker/SDK/User/Versions operation."
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}
