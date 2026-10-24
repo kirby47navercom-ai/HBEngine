@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "date": "2026-10-24T08:52:48.534Z",
+  "kind": "editor-query-world-and-imported-euler-axis-layers",
+  "implementationRevision": "301cb5a6ddc3ddd4c504292f76bbdf1cf043a8a7",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2229.json",
+  "changedSourceHashes": {
+    "docs/BLUEPRINT_SPEC.md": "d3decb929e176b6ad55794e997d834aff3c5f748510d20612e34d7104e5d3a6c",
+    "docs/ENVIRONMENT_ACTOR_INDEX.md": "cfcd3304cfc1676b5fcf34eb65306a96aefc47613e9eccbf5af50eb5b92edff3",
+    "docs/SEQUENCE_IMPORTED_POSE_ALIASES.md": "d27e4154858286fc879b68f2bf7abea1a166d5c776f8adbbaa059365cb9c6b13",
+    "docs/SEQUENCE_IMPORTED_TRANSFORM_ALIASES.md": "e43d7692ba5a6745d91d65e695d58ed47deab8880ed6c4d267290b4356991fa9",
+    "docs/SEQUENCE_INDEXED_TRANSFORMS.md": "8dc6de9ceaa85205748b713ea2512c0fa14636ba45ffad26d10ed58542500b77",
+    "docs/SEQUENCE_TRANSFORM_ALIASES.md": "6ed7a61b2703c1201ac848aafd15b2d9bb882a5bfbf3b74ee943c7bf58c0c45d",
+    "docs/ai-routes.json": "5edfa5da54bde96f2a5ccf1443ead5b4b4a533dd678299454619f75fb7716553",
+    "prototype/app.js": "851da01da2bd7f3d8c85080a229db033bfb5986f230c2e0d0afbc875c840362f",
+    "prototype/engine-services.js": "5e268bd0451f4dd98fe9847256d916aa101393c98b24d8e86a66d2f750bca179",
+    "prototype/eqs-debug-controls.js": "efe0449f1d8649262db1d104fe8fe83c5154060f791de3f7372990e42ecb1ef1",
+    "prototype/gameplay-runtime.js": "7880cad8f58b146ff60b7dc1ab204a462e76ddeab270eb977f709ede399d6435",
+    "prototype/sequence-animation-transforms.js": "2a0b4a691ea11e591e9e2b27ffebd2c314c69bb00880859b9a1f285773b39d3d",
+    "prototype/sequence-blending.js": "3225c40e6e54c16b11854b2c716136b391b595cd338218a270668450ffed8d06",
+    "prototype/sequence-imported-pose.js": "11f0968d0c79acaa0f3ba9e55ca32bb5c4424963971c1ead58e2ccf1d98011a7",
+    "prototype/sequence-imported-transforms.js": "0df85c7939ff07d2ac90a0cccb6a8ba8d887d7eb76e550871fb9ac32098ca155",
+    "prototype/sequence-indexed-transforms.js": "c877fc3b082b2dfbcad3e12c25646530692ae2dd7ec326779c02dc1e1d2830f7",
+    "prototype/sequence-origin.js": "008d5ddf592fbe451eba613f4b3d68145bc9476ba65e8234d278babe9e5ebc23",
+    "prototype/sequence-pose-ownership.js": "7f7da6531a2272307f3e85eea7459f64979aff0ceda5ecdcd5be9726dabb0285",
+    "tools/editor-automation.mjs": "7798202fa5e02a6c5656e30b3edb54f011e1826199fee0946f36171e681f0338",
+    "prototype/environment-query-preview.js": "89b4a49aa72ba5a9e0af6e818507e7e2ed6a54fa7a9c06a8bc450cc288fcb9d1",
+    "docs/EDITOR_ENVIRONMENT_QUERIES.md": "c97d749434ec02cb26097577e37952babc8b7d04908bcacbb0e9332ddcb75475",
+    "docs/SEQUENCE_EULER_LAYERS.md": "643ec9be1bb5103ceef7e72915cfc9b6298411f3407f651ed001e92922695f04",
+    "tools/check-eqs-preview-2231.mjs": "ba6342df2fea2f867b9feed0550d21d62bf99cfb619e09b725822da3635e4881",
+    "tools/sequence-euler-2235-fixture.mjs": "31451ac6d7af96b572c727f29d83dcc37f1a7f7cf5ecb398f513309fea59a5c5",
+    "tools/check-sequence-euler-2235.mjs": "91363f8578835534392971213c297694c079db98596fd96f28212aaf0cbcb992",
+    "CODEX_HANDOFF.md": "7818b867c1b7e15b714d69a3203fc707b57448639a96bb6c62addff9618c443a"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1337,
+  "targetIds": [
+    "GAM-03",
+    "ANM-06",
+    "AI-03"
+  ],
+  "changes": {
+    "GAM-03": " ·2230–2245소스: 편집월드 수동EQS를 복사장면/기존engineOperations.eqsRun·NavMesh·실제Rapier XY/XZ 질의로연결. 미저장에셋/readOnly editor.eqs.run/read/view·사람기존단계UI·target/context identity/편집세대/풀/플레이/숨기기취소. 액터/BP/CPP/UI/음성/물리시뮬레이션시작0·원본debug쓰기0·질의뒤서비스해제·uncancellable read준비직렬화/동시worldcopy1·초안중복읽기제거. source18case와기존EQS2gate통과. 전용TestingPawn/자동편집재질의/실제창/대규모부하는별도.",
+    "ANM-06": " ·2234–2245소스: imported부분Euler를 액터root/모델child/골격bone 공유필드에 축별중재. 6Euler순서·원각도보존(105도등canonical분해손실방지)·이름/UUID alias·우선순위/normalized/circularwrap/0weight/Stop별축복원·recordedPose TRS·native명령재생. partial없으면기존quaternion hemisphere혼합유지·키버퍼/asset변경0·활성축metadata만. 서로다른Euler순서/회전root원점은기존원자orientation유지. VM종료시중간에드러난하위clip재시작오류수정. 신규21source/기존indexed·importedroot·importedposegate통과·실제창/신규CPP바이너리미검증.",
+    "AI-03": " ·2245: editor.eqs.run/read/view의readOnly 수동편집질의계약과편집세대진단·취소를기존사람단계UI와공유. EditorEnvironmentQuery/resolveIndexedRotationEntries 정확소유자focusRoutes·도움말연결/기존AIcontextgate통과."
+  },
+  "checks": {
+    "source": {
+      "passed": true,
+      "newCases": {
+        "editorQueries": 18,
+        "eulerLayers": 21,
+        "total": 39
+      },
+      "reports": {
+        "editorQuery": {
+          "path": "native/build/eqs-preview-P87qsJ/acceptance.json",
+          "sha256": "860b41539c4b5572520d9cff9d2bca7f0a744d405e2a484f5b002f2704fa3ddb"
+        },
+        "eulerLayers": {
+          "path": "native/build/sequence-euler-k4r4jd/acceptance.json",
+          "sha256": "1fc61c5b8052d4379748adaa486261105a3711d8fc35796da9d905529598c0b0"
+        }
+      },
+      "groups": [
+        {
+          "path": "native/build/group2243.json",
+          "sha256": "f7bde04b2003c7391fd7455ee5b05338a814c5927ccefa4e5d9fcd1e93d2a73a"
+        }
+      ],
+      "priorUnaffectedPasses": {
+        "path": "native/build/group2236.json",
+        "only": [
+          "check-eqs-stages-2157",
+          "check-eqs-index-2198"
+        ],
+        "note": "Overall group failed on then-new preview fixture expectations; only these two unchanged passes reused.",
+        "sha256": "45405ce7d79900706ce17cbdbafc00be435a44990e7c4a4e4839cdc2544d12f5"
+      },
+      "integrity": {
+        "path": "native/build/final2244.json",
+        "sha256": "5f644c0ddd840b038221bdbce40f6d775abcd2c2b151a4c56fdd8aafe9c9d7b2"
+      },
+      "reasonForRechecks": "Extended imported Euler ownership to actual skeletal leases and found/fixed world-shutdown lower-animation restart. New-only and affected old gates rerun; no GUI/native build repetition."
+    },
+    "nativeBinary": {
+      "executed": false,
+      "lastActual": "docs/research/ENGINE_WORK_2208.json",
+      "reason": "SDK/Host/Player/native renderer unchanged; current native sequence command replay is source-only."
+    },
+    "actualWindow": {
+      "executed": false,
+      "reason": "Background protection; unowned dirty player excluded."
+    },
+    "devices": {
+      "executed": false,
+      "reason": "No Android phone or Mac/Xcode."
+    }
+  },
+  "limits": [
+    "Manual editor query is not a dedicated TestingPawn or automatic editor requery. Mutable-world O(N) sync stays.",
+    "Uncancellable read/init must settle before next copied query world. No claimed cancellation of platform I/O.",
+    "Mixed Euler orders and rotated root-origin axis projection remain atomic; arbitrary external callback/latent rollback remains.",
+    "Real CPU ray fixtures are not native-render pixel/FPS/device proof."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4502,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "policy": "Small owned source fixtures only, retain/prune exit callbacks; no native compiler artifacts after2208."
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}
