@@ -184,7 +184,7 @@ export class ProjectService {
   async createFile(folder,kind,name,parent,initialData){
     await recoverAssetWrites(this);
     if(!assetTypes[kind]||kind==='code')throw Error('에셋 종류 오류');
-    if(initialData!==undefined&&(kind!=='skeletalclip'||!initialData||typeof initialData!=='object'||Array.isArray(initialData)||initialData.name!==name))throw Error('초기 데이터는 이름이 일치하는 골격 클립만 지원해요.');
+    if(initialData!==undefined&&(!['skeletalclip','material'].includes(kind)||!initialData||typeof initialData!=='object'||Array.isArray(initialData)||initialData.name!==name))throw Error('초기 데이터는 이름이 일치하는 골격 클립·머테리얼만 지원해요.');
     const data=initialData===undefined?createAsset(kind,name,parent):initialData;if(!validAsset(kind,data))throw Error('생성 데이터 검증 실패');
     const requested=(folder?folder+'/':'')+name+assetSuffix[kind],file=await this.canonicalFile(requested),relative=path.relative(this.root,file).split(path.sep).join('/');
     if(kind==='blueprint')await this.validateBlueprint(relative,data);

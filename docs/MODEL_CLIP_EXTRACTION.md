@@ -19,3 +19,5 @@ AI 명령은 `modelimport.extractClip`이에요. 열린 모델 가져오기 문�
 점 알림은 `[start,end)`만 옮기고, 겹치는 구간 알림은 경계에서 자르며 ID와 페이로드를 보존해요. 메타데이터 곡선은 auto 접선을 먼저 고정하고 가중·수직 핸들을 de Casteljau로 분할해요. 기본/선형 외삽도 같은 경계 값을 유지해요. 반복 범위 밖이나 기존 infinityDomain이 포함된 곡선은 명시적 베이크를 요구하고 `sampledCurves`와 FPS로 근사를 알려줘요. 결과 밖의 infinity는 constant로 정리해요. 리타게팅의 구간 베이크도 이 함수를 사용해 경계에서 원래 곡선을 단순 선형으로 계산하지 않아요. 표본 사이 근사를 정확한 원곡선 보존으로 표현하지 않아요.
 
 구간 경계나 베이크의 마지막 표본이 실제 플레이어의 Float32 시간에서 이웃 키와 겹치면 게시 전에 거절해요. 키를 몰래 옮기거나 제거하지 않으며 시작·끝 또는 FPS를 조정해야 해요.
+
+독립 재질 추출은 [MODEL_MATERIAL_EXTRACTION.md](MODEL_MATERIAL_EXTRACTION.md), 기존 골격 클립의 구간 편집은 [SKELETAL_CLIP_RANGE.md](SKELETAL_CLIP_RANGE.md)에 있어요. 각각 같은 기존 저장/실행 포맷을 사용해요.

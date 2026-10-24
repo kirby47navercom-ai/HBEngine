@@ -1,5 +1,5 @@
 import {clipRange,clipMetadataRange} from './animation-clip-range.js';
-import {KeyframeTrack,PropertyBinding,InterpolateLinear} from 'three';
+import {AnimationClip,KeyframeTrack,PropertyBinding,InterpolateLinear} from 'three';
 import {validRetargetAsset} from './animation-retarget-assets.js';
 
 export function modelAnimationSubasset(result,metadata,id){
@@ -17,13 +17,13 @@ function stableTrackName(root,track,names){
   if(!relative&&(!name||names.get(name)!==1||PropertyBinding.sanitizeNodeName(name)!==name))throw Error('독립 클립 대상에는 고유하고 바인딩 가능한 노드 이름이 필요해요: '+track.name);
   return name+(p.objectName?'.'+p.objectName+'['+p.objectIndex+']':'')+'.'+p.propertyName+(p.propertyIndex!==undefined?'['+p.propertyIndex+']':'');
 }
-function* modelClipExtraction(root,clip,options={}){
-  if(!root?.isObject3D||!clip||!Array.isArray(clip.tracks)||!clip.tracks.length||clip.tracks.length>1024||!Number.isFinite(clip.duration)||clip.duration<=0||clip.duration>86400||!options||typeof options!=='object'||Array.isArray(options)||Object.keys(options).some(k=>!['name','custom','fps','start','end'].includes(k)))throw Error('모델 클립·추출 옵션을 확인하세요.');
+function* clipExtraction(clip,options={},pathFor=track=>track.name){
+  if(!clip||!Array.isArray(clip.tracks)||clip.tracks.length>1024||!Number.isFinite(clip.duration)||clip.duration<=0||clip.duration>86400||!options||typeof options!=='object'||Array.isArray(options)||Object.keys(options).some(k=>!['name','custom','fps','start','end'].includes(k)))throw Error('모델 클립·추출 옵션을 확인하세요.');
   const {name=clip.name||'Clip',custom='reject',fps=30}=options,range=clipRange(clip.duration,options.start,options.end);if(!['reject','bake'].includes(custom)||!Number.isFinite(fps)||fps<1||fps>240)throw Error('사용자 보간 처리·FPS를 확인하세요.');
   const metadata={};for(const key of ['notifies','notifyStates','curves'])if(clip.userData?.[key]!==undefined)metadata[key]=clip.userData[key];if(!validRetargetAsset('skeletalclip',{version:1,name,duration:clip.duration,tracks:[],...metadata}))throw Error('원본 클립 메타데이터를 확인하세요.');
-  const names=new Map();root.traverse(node=>{if(node.name)names.set(node.name,(names.get(node.name)||0)+1);});const plans=[],sampledTracks=[];let values=0;
+  const plans=[],sampledTracks=[];let values=0;
   for(const track of clip.tracks){
-    const path=stableTrackName(root,track,names),standard=[track.InterpolantFactoryMethodDiscrete,track.InterpolantFactoryMethodLinear,track.InterpolantFactoryMethodSmooth].includes(track.createInterpolant)&&(!range.sliced||track.createInterpolant!==track.InterpolantFactoryMethodSmooth),cubic=!!track.createInterpolant.isInterpolantFactoryMethodGLTFCubicSpline,size=track.getValueSize()/(cubic?3:1),count=standard?(range.sliced?2+track.times.filter(t=>t>range.start&&t<range.end).length:track.times.length):Math.ceil(range.duration*fps-1e-9)+1;
+    const path=pathFor(track),standard=[track.InterpolantFactoryMethodDiscrete,track.InterpolantFactoryMethodLinear,track.InterpolantFactoryMethodSmooth].includes(track.createInterpolant)&&(!range.sliced||track.createInterpolant!==track.InterpolantFactoryMethodSmooth),cubic=!!track.createInterpolant.isInterpolantFactoryMethodGLTFCubicSpline,size=track.getValueSize()/(cubic?3:1),count=standard?(range.sliced?2+track.times.filter(t=>t>range.start&&t<range.end).length:track.times.length):Math.ceil(range.duration*fps-1e-9)+1;
     if(!standard&&custom!=='bake')throw Error('사용자/CUBICSPLINE 또는 구간 Smooth 보간은 FPS를 선택하고 명시적으로 베이크하세요: '+track.name);
     if(!Number.isInteger(size)||size<1||size>256||!['number','vector','quaternion'].includes(track.ValueTypeName))throw Error('독립 클립 트랙의 자료형을 확인하세요: '+track.name);
     values+=count*size;if(!Number.isSafeInteger(values)||values>8000000)throw Error('추출 값 예산을 넘어요. FPS 또는 원본 클립 길이를 줄이세요.');plans.push({track,path,standard,size,count});
@@ -37,6 +37,10 @@ function* modelClipExtraction(root,clip,options={}){
   const extracted=yield* clipMetadataRange(metadata,range,{custom,fps}),data={version:1,name,duration:range.duration,tracks,...extracted.metadata};
   if(!validRetargetAsset('skeletalclip',data))throw Error('독립 골격 클립의 경로·값·자료형·이벤트 검증에 실패했어요.');return {data,summary:{duration:data.duration,tracks:tracks.length,values,sampledTracks,sampledCurves:extracted.sampledCurves,sourceRange:{start:range.start,end:range.end},fps:sampledTracks.length||extracted.sampledCurves.length?fps:null}};
 }
+function* modelClipExtraction(root,clip,options){if(!root?.isObject3D||!clip?.tracks?.length)throw Error('모델 루트를 확인하세요.');const names=new Map();root.traverse(node=>{if(node.name)names.set(node.name,(names.get(node.name)||0)+1);});return yield* clipExtraction(clip,options,track=>stableTrackName(root,track,names));}
+export function* skeletalClipRangeJob(data,options={}){if(!options||typeof options!=='object'||Array.isArray(options)||Object.keys(options).some(k=>!['start','end','custom','fps'].includes(k)))throw Error('클립 구간 옵션을 확인하세요.');if(!validRetargetAsset('skeletalclip',data))throw Error('골격 클립을 확인하세요.');for(const track of data.tracks){if(track.interpolation!==undefined&&![2300,2301,2302].includes(track.interpolation)||track.type==='quaternion'&&track.interpolation===2302)throw Error('클립 보간 방식을 확인하세요.');let previous=-Infinity;for(const time of track.times){const value=Math.fround(time);if(value<=previous)throw Error('원본 키의 시간 해상도가 겹쳐요.');previous=value;}}const range=clipRange(data.duration,options?.start,options?.end);if(!range.sliced){if(options?.custom!==undefined&&!['reject','bake'].includes(options.custom)||options?.fps!==undefined&&(!Number.isFinite(options.fps)||options.fps<1||options.fps>240))throw Error('클립 구간 옵션을 확인하세요.');return{data,summary:{changed:false,duration:data.duration,tracks:data.tracks.length,values:data.tracks.reduce((n,t)=>n+t.values.length,0),sampledTracks:[],sampledCurves:[],sourceRange:{start:0,end:data.duration},fps:null}};}const clip=AnimationClip.parse(data);clip.userData=data;const result=yield* clipExtraction(clip,{...options,name:data.name});result.summary.changed=true;return result;}
+export function editSkeletalClipRange(data,options){const job=skeletalClipRangeJob(data,options);for(;;){const next=job.next();if(next.done){Object.assign(data,next.value.data);return next.value.summary;}}}
+export async function editSkeletalClipRangeAsync(data,options,pause=()=>new Promise(r=>setTimeout(r,0))){const job=skeletalClipRangeJob(data,options);try{for(;;){const next=job.next();if(next.done){Object.assign(data,next.value.data);return next.value.summary;}await pause();}}finally{job.return();}}
 export function extractModelClip(root,clip,options){const job=modelClipExtraction(root,clip,options);for(;;){const next=job.next();if(next.done)return next.value;}}
 export async function extractModelClipAsync(root,clip,options,pause=()=>new Promise(resolve=>setTimeout(resolve,0))){const job=modelClipExtraction(root,clip,options);try{for(;;){const next=job.next();if(next.done)return next.value;await pause();}}finally{job.return();}}
 export async function extractModelClipDocument(params,hooks){

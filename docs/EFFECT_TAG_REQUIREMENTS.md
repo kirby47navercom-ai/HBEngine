@@ -20,3 +20,5 @@ AI는 `effect.tags.edit({path,expectedRevision,modifier?,requirements?,clear?,dr
 dryRun 응답은 기본으로 검증·결과·revision만 반환하고 `dataOmitted:true`를 표시해요. `includeData:true`를 주면 제안한 전체 문서를 함께 받아요. 검증 내용이나 저장/Undo 규칙을 줄이지 않아요.
 
 들어오는 효과를 차단하는 면역은 [v3 면역 조건](EFFECT_IMMUNITY.md)으로 별도 제공해요. 기존 v1·v2 적용/항목 조건은 유지하고, v3에서 이 조건을 편집해도 버전을 v2로 내리지 않아요.
+
+적용/변경 항목의 캡처 조건은 그대로 유지해요. 현재 역할 태그에 따라 지속 효과를 억제/재개하는 v4 확장은 [EFFECT_ONGOING.md](EFFECT_ONGOING.md)에 있어요.

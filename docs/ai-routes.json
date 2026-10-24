@@ -3589,6 +3589,55 @@
         "prototype/app.js",
         "docs/EFFECT_IMMUNITY.md"
       ]
+    },
+    {
+      "id": "model-material-extraction",
+      "keywords": [
+        "extractModelMaterial",
+        "modelimport.extractMaterial",
+        "modelMaterialSubasset",
+        "tagModelMaterials"
+      ],
+      "paths": [
+        "prototype/model-material-extraction.js",
+        "prototype/model-import-editor.js",
+        "prototype/engine-services.js",
+        "prototype/app.js",
+        "docs/MODEL_MATERIAL_EXTRACTION.md"
+      ]
+    },
+    {
+      "id": "skeletal-clip-range",
+      "keywords": [
+        "editSkeletalClipRange",
+        "skeletal.range.edit",
+        "skeletalClipRangeJob",
+        "trimClip"
+      ],
+      "paths": [
+        "prototype/model-clip-extraction.js",
+        "prototype/animation-retarget-editor.js",
+        "prototype/app.js",
+        "docs/SKELETAL_CLIP_RANGE.md"
+      ]
+    },
+    {
+      "id": "effect-ongoing",
+      "keywords": [
+        "effect.ongoing.edit",
+        "editEffectOngoing",
+        "refreshOngoingEffects",
+        "ongoingTagsChanged"
+      ],
+      "paths": [
+        "prototype/effect-ongoing.js",
+        "prototype/ability-runtime.js",
+        "prototype/ability-assets.js",
+        "prototype/effect-tag-editor.js",
+        "prototype/structured-asset-editor.js",
+        "prototype/app.js",
+        "docs/EFFECT_ONGOING.md"
+      ]
     }
   ]
 }
