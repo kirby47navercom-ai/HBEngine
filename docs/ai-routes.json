@@ -3742,6 +3742,27 @@
         "prototype/scene-components.js",
         "docs/GAMEPLAY_CUE_ASSETS.md"
       ]
+    },
+    {
+      "id": "skeletal-track-keys",
+      "keywords": [
+        "skeletalTrackKeyJob",
+        "editSkeletalTrackKeys",
+        "prepareSkeletalTrackKeys",
+        "createSkeletalTrack",
+        "readSkeletalTrackKeys",
+        "SkeletalTrackEditor",
+        "skeletal.track.keys",
+        "skeletal.track.create",
+        "skeletal.track.read"
+      ],
+      "paths": [
+        "prototype/skeletal-track-keys.js",
+        "prototype/skeletal-track-editor.js",
+        "prototype/animation-retarget-editor.js",
+        "prototype/app.js",
+        "docs/SKELETAL_TRACK_KEYS.md"
+      ]
     }
   ]
 }
