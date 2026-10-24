@@ -14,4 +14,6 @@ AI는 일반 `gameplaycue` 자산 생성·`document.patch`/CAS/dryRun/Undo/save�
 
 별도 VFX 템플릿 생성/부착, 여러 ParticleSystem 중 선택·지속 VFX 정지 핸들, 네트워크 Cue 예측/복제는 별도 잔여예요. 이 구현의 소유 headless 검사와 실제 창의 영상·OS 음향 출력 검증은 구분해요.
 
-Cue 자산 바인딩은 AbilitySystem 초기화 시 설정해요. 실행 도중 일반 컴포넌트 문자열만 바꾼 경우 다음 초기화에 반영하며 동적 재바인딩 명령은 별도예요. 검사: `node tools/check-gameplay-cues-2528.mjs`에서 실제 공용 VM/native-command replay·사람 폼·저장/이름변경·4대상 콘텐츠 수집을 확인해요.
+Cue 자산은 AbilitySystem 초기화 때 읽고 실행 도중에도 기존 BP/C++ 컴포넌트 문자열 설정의 `AbilitySystem.cueAsset`로 교체/비울 수 있어요. 새 경로의 파일을 새로 읽어 검증한 뒤 속성과 경로를 함께 반영하고, 같은 경로는 파일 I/O 없이 유지해요. 최근 요청만 반영하며 실패/소유자 교체/컴포넌트 제거·비활성/외부 바인딩 변경이면 이전 설정을 보존해요. 준비 중 다른 속성의 수정은 유지하고, 이전 프로그램의 음성·대기 오디오와 늦은 파티클 burst를 취소해요. 이미 살아 있는 burst 입자는 일반 emitter 수명을 따르며 다른 VFX까지 지우지 않아요. 비활성 컴포넌트의 경로 설정은 다음 초기화를 위한 속성만 바꿔요. 검사: `node tools/check-gameplay-cues-2528.mjs`에서 실제 공용 VM/native-command replay·사람 폼·저장/이름변경·4대상 콘텐츠 수집을 확인해요.
+
+2536 이후 재바인딩 검사는 같은 소유자가 살아 있는 상태의 deferred 음향/팩토리 취소, 중첩 요청·실패·수정 재시도·무변경 I/O·다른 속성 보존과 기존 native component 명령 재생을 포함해요.

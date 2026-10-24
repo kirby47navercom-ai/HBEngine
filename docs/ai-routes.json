@@ -3728,7 +3728,10 @@
         "matchingGameplayCues",
         "gameplayCueContract",
         "playGameplayCue",
-        "gameplaycue"
+        "gameplaycue",
+        "bindCueAsset",
+        "loadGameplayCueProgram",
+        "clearGameplayCueAudio"
       ],
       "paths": [
         "prototype/gameplay-cue-assets.js",
