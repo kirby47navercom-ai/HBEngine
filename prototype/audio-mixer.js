@@ -1,4 +1,4 @@
-import {AudioPCMCache} from './audio-pcm-cache.js';
+import {AudioPCMCache,audioAbortReason} from './audio-pcm-cache.js';
 import {MixCapture} from './audio-capture.js';
 import {defaultVoiceBudget,validVoiceBudget,selectRealVoices} from './audio-voices.js';
 import {validDucking,DuckingEnvelope} from './audio-ducking.js';
@@ -85,7 +85,7 @@ export class AudioRouting {
   async endCapture(){if(!this.capture)throw Error('녹음 중인 게임 믹스가 없어요.');return this.capture.stop();}
   acceptCapture(){this.capture?.discard();this.capture=null;}
   captureState(){return this.capture?.inspect()||{state:'idle',pcmBytes:0};}
-  async player(url,settings={}){const context=await this.ensure();const player=await createAudioPlayer(context,url,{buffered:settings.sequencePCM===true||settings.streaming!==true&&(settings.virtualize!==false||['ios','android'].includes(globalThis.hbMobileTarget)),createStream:url=>this.stream(url,context,{virtualize:settings.streaming===true&&settings.virtualize!==false}),readBuffer:url=>this.pcmCache.read(context,url)});if(this.disposed){player.dispose?.();throw Error('오디오 실행이 종료됐어요.');}if(player instanceof BufferedAudioPlayer)player.setVirtual(true);return player;}
+  async player(url,settings={}){if(settings.signal?.aborted)throw audioAbortReason(settings.signal);const context=await this.ensure();if(settings.signal?.aborted)throw audioAbortReason(settings.signal);const player=await createAudioPlayer(context,url,{buffered:settings.sequencePCM===true||settings.streaming!==true&&(settings.virtualize!==false||['ios','android'].includes(globalThis.hbMobileTarget)),createStream:url=>this.stream(url,context,{virtualize:settings.streaming===true&&settings.virtualize!==false}),readBuffer:url=>this.pcmCache.read(context,url,{signal:settings.signal})});if(this.disposed||settings.signal?.aborted){player.dispose?.();throw this.disposed?Error('오디오 실행이 종료됐어요.'):audioAbortReason(settings.signal);}if(player instanceof BufferedAudioPlayer)player.setVirtual(true);return player;}
   get bufferBytes(){return this.pcmCache.bytes;}
   bufferState(){return this.pcmCache.inspect();}
   async ensure(){if(this.disposed)throw Error('오디오 실행이 종료됐어요.');if(this.context)return this.context;this.contextReady??=(async()=>{const Context=globalThis.AudioContext||globalThis.webkitAudioContext;if(!Context)throw Error('Web Audio 실행 환경이 없어요.');const native=globalThis.hbNativeAudio?await createNativeAudioContext(Context):null,context=native?.context||new Context();if(this.disposed){await context.close();throw Error('오디오 실행이 종료됐어요.');}this.context=context;this.destination=native?.destination||context.destination;if(native&&globalThis.hbNativeAudioAcceptance)globalThis.hbNativeAudioDebug=native;return context;})();return this.contextReady;}

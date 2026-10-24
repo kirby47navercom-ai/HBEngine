@@ -3213,7 +3213,8 @@
       "id": "audio-pcm-cache",
       "keywords": [
         "AudioPCMCache",
-        "audioPCMCacheContract"
+        "audioPCMCacheContract",
+        "audioAbortReason"
       ],
       "paths": [
         "prototype/audio-pcm-cache.js"
