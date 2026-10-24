@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-24",
-  "basisRevision": "efaf9133ffced19de326bb0136f780fad18e6dd1",
+  "basisRevision": "1053429a407b14c4902bfd6a8bd55901ac02db69",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -2079,7 +2079,7 @@
       "area": "physics",
       "title": "관절 프레임·cloth/차량/파괴",
       "status": "partial",
-      "implemented": "기본 관절·모터와 형상 편집 ·175–176: 2D/3D 독립관절프레임·영점·모터힘/SDK 및 RaycastVehicle 제작/휠편집/구동·조향·제동/서스펜션/실제렌더/동일C++·BP ·236: 선택 동력계 토크/RPM/자동수동변속/클러치/중립후진/엔진제동·차축배분/제동단위·Scene/BP 표/Undo·CPP3/실행진단/실제D3D ·237: 3D6축 고정/제한/자유·축별ForceBased모터·로컬영점/프레임·Scene/BP/CPP2/AI페이지/실제게임 ·238: 런타임 구조/배열셀 표시 보정 ·239: 천/핀 제작·물성/충돌/외력/강체 연결·렌더·CPP/BP/AI/실행 Inspector ·241: 2D 로프 XY 물리/리본·핀 제작·CPP/BP/AI·독립 D3D/WebGL ·244: 실제 천/2D로프 요청 입자의 위치/속도/핀 공용 getter2·BP 다중 출력·live world 채널·전체 입자 snapshot 없음 ·261: 일반 C++ Raycast/Overlap/sweep/ClosestPoint의 현재 변형체 표면 포함; 전체 입자 복사 없음 ·2278–2311: Cloth topology rope를 공용3D Rapier/clothFrame/입자API·사람배치/속성·원형튜브固定버퍼/UVseam·풀세대에연결. XYZ힘/고정/강체/월드충돌 실실행·신규10source+기존cloth/2Drope/query. SDK입자count/차량값5getter첫프레임前0·실제CPP rope0→24/Z충격. 임의메시/체적/tear/GPU별도·신규backend픽셀/기기미검증.",
+      "implemented": "기본 관절·모터와 형상 편집 ·175–176: 2D/3D 독립관절프레임·영점·모터힘/SDK 및 RaycastVehicle 제작/휠편집/구동·조향·제동/서스펜션/실제렌더/동일C++·BP ·236: 선택 동력계 토크/RPM/자동수동변속/클러치/중립후진/엔진제동·차축배분/제동단위·Scene/BP 표/Undo·CPP3/실행진단/실제D3D ·237: 3D6축 고정/제한/자유·축별ForceBased모터·로컬영점/프레임·Scene/BP/CPP2/AI페이지/실제게임 ·238: 런타임 구조/배열셀 표시 보정 ·239: 천/핀 제작·물성/충돌/외력/강체 연결·렌더·CPP/BP/AI/실행 Inspector ·241: 2D 로프 XY 물리/리본·핀 제작·CPP/BP/AI·독립 D3D/WebGL ·244: 실제 천/2D로프 요청 입자의 위치/속도/핀 공용 getter2·BP 다중 출력·live world 채널·전체 입자 snapshot 없음 ·261: 일반 C++ Raycast/Overlap/sweep/ClosestPoint의 현재 변형체 표면 포함; 전체 입자 복사 없음 ·2278–2311: Cloth topology rope를 공용3D Rapier/clothFrame/입자API·사람배치/속성·원형튜브固定버퍼/UVseam·풀세대에연결. XYZ힘/고정/강체/월드충돌 실실행·신규10source+기존cloth/2Drope/query. SDK입자count/차량값5getter첫프레임前0·실제CPP rope0→24/Z충격. 임의메시/체적/tear/GPU별도·신규backend픽셀/기기미검증. ·2322–2327: 3Drope 기본 끝막기/선택open·평면normal/별도UV/winding/固定buffer. 표시폭·단면·cap/미사용형상 변경은body 재생성없이보존·sleep frame1회재게시. 같은ID 새object/primitive캡처 componentId변경은기존body정리/새세대(인플레이스ID 회귀수정). 신규6source+oldcloth/2D3Drope·2321과정확同SDK/실행파일 현재12/25RPC cache실행; 신규GPU픽셀/GUI/기기/설치없음.",
       "remaining": [
         "임의 메시/스키닝 cloth·거리 tether/연속 가중치 paint·고급 self-contact 품질·GPU solver·volumetric softbody·destruction/절단",
         "break force/plasticity·multibody articulation·coupled-axis/정교한 6축 제약 품질",
@@ -2117,7 +2117,8 @@
         "native/desktop/SceneRenderBridge.hpp",
         "prototype/rope3d-rendering.js",
         "docs/ROPE_3D.md",
-        "tools/check-rope3d-2297.mjs"
+        "tools/check-rope3d-2297.mjs",
+        "tools/check-rope3d-lifetime-2323.mjs"
       ],
       "evidence": [
         "docs/PHYSICS_RUNTIME_RESEARCH.md",
@@ -2130,7 +2131,8 @@
         "docs/research/ENGINE_WORK_241.json",
         "docs/research/ENGINE_WORK_244.json",
         "docs/research/ENGINE_WORK_261.json",
-        "docs/research/ENGINE_WORK_2311.json"
+        "docs/research/ENGINE_WORK_2311.json",
+        "docs/research/ENGINE_WORK_2327.json"
       ]
     },
     {
@@ -4015,10 +4017,10 @@
     }
   ],
   "latestBatch": {
-    "first": 2312,
-    "last": 2321,
-    "receipt": "docs/research/ENGINE_WORK_2321.json",
-    "scope": "깊은 JS/CPP 좌표·반복계산/임시parentindex·수치안전성: 신규9source/기존gate·현재SDK 실제12항목/25RPC(3예상거절). 전체renderer깊이/픽셀·기기·설치0·예약0·업데이트보류."
+    "first": 2322,
+    "last": 2327,
+    "receipt": "docs/research/ENGINE_WORK_2327.json",
+    "scope": "3Drope cap/표시편집 물리보존·잠든frame/소유자와컴포넌트교체 수명: 신규6source+관련gate·정확동일SDK/worker12항목25RPC캐시실행. GUI/device/설치0·예약0/업데이트보류."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_2145.json",

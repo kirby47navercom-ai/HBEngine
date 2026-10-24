@@ -1,20 +1,18 @@
 # 현재 인계 — 수동 계속 / 업데이트 보류
 
-최신사용자: 멈추지말고 누적기능 여러분야실구현·마지막영향검사. 예약다시생성/설치갱신금지. 주인님/짚짱/해요. hbengine2160삭제·goal/agent/GUI/설치0. UPDATE_HOLD active. 사용자창/탭/프로필/게임보호. Mac/Xcode/Android폰없음·재질문0. heavy전active1955·마지막11:48Zactive[].
+최신사용자: 멈추지말고 누적기능 여러분야실구현·마지막영향검사. 예약다시생성/설치갱신금지. 주인님/짚짱/해요. hbengine2160삭제·goal/agent/GUI/설치0. UPDATE_HOLD active. 사용자창/탭/프로필/게임보호. Mac/Xcode/Android폰없음·재질문0. heavy전active1955·마지막12:02Zactive[].
 
 ## WORK2321 core efaf9133ffced19de326bb0136f780fad18e6dd1
 
 JS matrix/CPP point·inverse iterative·64cap제거·cycle보존. 명시적sceneMatrixCache 부모lookup지연1회/clear·EQSsync/contact공유·mutable fullscan O(N)잔여. 정상행렬old동치·新9source/4000JS/512VM. 현재SDK actualCPP12항목/25RPC(3예상cycle/range거절)·128deep/회전·음수/비균일·원래task/effect/rope/최초getter8도동반통과. forward/inverse overflow·JS특이inverse는명시실패/로컬보존. 전체Three그래프/renderer픽셀/depth/device/install증거아님. refs/SHA/sdkUsed는WORK2321. 新예약/설치0·계속다른잔여구현.
 
-## WORK2311 core 5e1993aa893e27cdc4ba3a7dd85af1750c83bd77
+## WORK2327 core 1053429a407b14c4902bfd6a8bd55901ac02db69
 
-BT v2 opt-in waitForAbort/FinishAbort·별도abortScope·다음branch/결과대기·상위service기한·subtree·강제stop취소·IsAborting/Executing·사람Undo/AI revision. v1기본유지/구엔진v2거절. 효과v2 application/modifier 네역할 all/any/none/exact·apply태그고정·불일치연산/캡처/의존skip·index보존·UI미리보기/AI. 新19+12source.
+3Drope 기본끝막기/선택open·cap노멀/UV/winding/고정buffer. renderWidth/Sides/endCaps·미사용형상필드는물리signature제외·sleep중에도표시변경1회frame. 같은ID새object/캡처componentId변경은정리후새body/세대(인플레이스id변경회귀수정). 新6source+기존cloth/2D3Drope·현재SDK12/25RPC는2321과同SHA/sdkUsed cache실행(재컴파일0). group2324/WORK2327 refs·GUI/backendpixels/device/install0. open끝한계는여기서해결.
 
-Sequence 단일write 실패복원·current/sample세대·batch뒤최신단일보존·falsy거절/정리·정상동기O(1). 복원준비늘어남→실패시에만plan·120k표본14.934ms(옛baseline11.871·FPS아님). 新15.
+## WORK2311 core5e1993aa / 新71source·actualCPP8/17RPC
 
-Cloth topology rope·3D Rapier rope/고정/강체/XYZ/충돌·공용clothFrame/API·입체튜브固定버퍼/UVseam·pool재생성세대. Rope2D 상속회귀수정·oldgrid/2D보존. 첫프레임前 SDK particlecount/vehicle getter5개 null→0. 新10+oldcloth/rope/query. 실제新SDK AbortProbe8항목/17RPC: scopeTimer/BP지연·FinishTask/Abort·효과태그·rope0→24/Z충격·최초getter5개. worker b861480316c37a4f7275 SHA/sdkUsed는WORK2311 refs. GUI/backend픽셀/device/install0.
-
-scene.place/Batch:공용레시피·1draft/검증/Undo·forward부모·미게시실패·2048/깊은chain iterative(새개수cap0). 新10. validScene 부모반복find 제거·新5/240seed차분·4만node199998부모read·2048전체검증11.882ms Node한표본. 당시runtime64제한은2321에서해결. 원장71신규source+CPP8. 마지막source/SDK체크 refs·실패실험성과제외. sharedcache32dir/31exe·엔진사본/프로필추가0. generated core-api/NODE_CATALOG는규칙상커밋제외·현재작업출력hash별도.
+BT v2 waitForAbort/FinishAbort·scope/service/subtree/강제취소·v1보존/구엔진v2거절·사람Undo/AI. 효과v2 네역할 all/any/none/exact apply태그고정·불일치연산/캡처/의존skip·원index·미리보기/AI. 단일write 실패복원/current/sample세대·최신단일보존·falsy·동기O(1)/실패때만plan. 3D Rapierrope/공용clothFrame·최초SDKcount/vehicle5getter null→0. scene.place/Batch 단일draft/검증/Undo·forward부모/미게시실패·新10. validScene 부모반복find제거·新5/240seed·4만node부모199998read·2048검증11.882ms Node1표본. 당시runtime64제한은2321에서해결. 詳refs WORK2311.
 
 ## 이전 확정 / 재검사 반복0
 

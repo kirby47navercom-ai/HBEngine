@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "date": "2026-10-24T12:06:54.325Z",
+  "kind": "rope-caps-render-settings-and-deformable-identity-lifetime",
+  "implementationRevision": "1053429a407b14c4902bfd6a8bd55901ac02db69",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2321.json",
+  "changedSourceHashes": {
+    "docs/ROPE_3D.md": "97069aa6ba636074806b82d408901a180b3e4017827892dfddbaa4e0cfb96ab3",
+    "prototype/cloth-config.js": "ea4b8ac703b5650be825071806961a8c851e908e679c82a3c5d21289014e72c4",
+    "prototype/deformable-physics.js": "340ad6b77d6ca61f1d243073abf533d43be9aa6f10b6229b0d19538734a83a9d",
+    "prototype/rope3d-rendering.js": "5e607d1d728941fbdc35bba86393eb8fd721443b2c6b8466d68840ec3c89a342",
+    "prototype/scene-components.js": "fa432b321e078c9a8059a7e93780ca673084a75c3cc2030d87f78ac348b4a8b1",
+    "tools/check-rope3d-2297.mjs": "5528cea7fad14be390dfbfdfbc3404c6cee750b786ae36b2bbf28c82fd83315e",
+    "tools/check-rope3d-lifetime-2323.mjs": "59e0653b893fcd29e74bce5896f6c84e92c5f2c5e33db5caf89a1dd56a2a19a1",
+    "CODEX_HANDOFF.md": "a3ce17df549e8b8ee29e64397a5a5800292f8cfc1d72c483d4cca87e9a6916b2"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1372,
+  "targetIds": [
+    "PHY-02"
+  ],
+  "changes": {
+    "PHY-02": " ·2322–2327: 3Drope 기본 끝막기/선택open·평면normal/별도UV/winding/固定buffer. 표시폭·단면·cap/미사용형상 변경은body 재생성없이보존·sleep frame1회재게시. 같은ID 새object/primitive캡처 componentId변경은기존body정리/새세대(인플레이스ID 회귀수정). 신규6source+oldcloth/2D3Drope·2321과정확同SDK/실행파일 현재12/25RPC cache실행; 신규GPU픽셀/GUI/기기/설치없음."
+  },
+  "checks": {
+    "newSourceCases": 6,
+    "source": {
+      "path": "native/build/rope-lifetime-RVElUI/acceptance.json",
+      "sha256": "0db8e82a6ba6853f5bd4a9f8e592522b0b3afadce63593bdb6303a9e93726479"
+    },
+    "group": {
+      "path": "native/build/group2324.json",
+      "sha256": "829ac95da124bef9c2e79f6c62db6a7e2a321b8cb21e06711c3bf0e137fb2bdf"
+    },
+    "integrity": {
+      "path": "native/build/final2326.json",
+      "sha256": "98a5f7dffd53aa59b716e5110271f44aa3efaa4c42b4a8857597a7c294d32409"
+    },
+    "native": {
+      "executed": true,
+      "recompiled": false,
+      "cases": 12,
+      "calls": 25,
+      "expectedRejectedCalls": 3,
+      "report": {
+        "path": "native/build/behavior-abort-cpp-WOGKIU/acceptance.json",
+        "sha256": "45cbf203defd518c4fbd9dda188e19d35c685d177d807db1025637e8591a10c9"
+      },
+      "exactPriorReceipt": "docs/research/ENGINE_WORK_2321.json",
+      "binary": {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\6e9da0f6380af924cc84\\worker.exe",
+        "sha256": "f6ea5d0e722ddf52a70cff897d8fe26d8c839ea5f03aeabdea26fdf9de6b2ed4",
+        "sdkUsedFingerprint": "683f058b9a418ba4c0347a76d078e99ddd2c78b083467b9424cce548ee03a232",
+        "cacheHit": true
+      }
+    },
+    "actualWindow": false,
+    "devices": false
+  },
+  "correction": "The first replacement fixture exposed comparing component.id through a mutable component reference. Capture componentId as a primitive at body construction; in-place ID replacement now rebuilds.",
+  "limits": [
+    "No new backend pixels, actual editor window, physical device or installed runtime validation.",
+    "Arbitrary/skinned cloth, continuous weights/tethers, cuts/volume/GPU solver and broader accumulated goals remain."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4309,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "policy": "Owned source/math/physics fixtures only; current native worker reused with exact SHA/used SDK; shared cache32+live. No user/Versions deletion or empty cleanup receipt."
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}
