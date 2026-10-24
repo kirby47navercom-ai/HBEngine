@@ -1,0 +1,35 @@
+import fs from 'node:fs/promises';import path from 'node:path';import assert from 'node:assert/strict';import {execFileSync} from 'node:child_process';
+import {nativeIncludeDirectives,stripNativeInlineHeaderIncludes} from '../prototype/native-includes.js';import {nativeHeaderClosure,readNativeHeaderFiles} from '../prototype/native-header-files.js';import {readNativeSourceDependencies} from '../prototype/native-source-watch.js';import {nativeSources} from './native-source.mjs';import {header,source,files,headerPath,sourcePath,helperSource} from './native-includes-2148-fixture.mjs';import {retainTestEvidence,pruneTestArtifacts} from './test-artifacts.mjs';
+const work=await fs.mkdtemp(path.resolve('native/build/native-includes-2148-'));retainTestEvidence(work);const cases=[],names=text=>nativeIncludeDirectives(text).map(row=>row.name),nl='\n',splice='\\'+nl,check=(label,text,expected)=>{assert.deepEqual(names(text),expected,label);cases.push(label);};
+try{
+ check('ordinary quote and angle directives','# include "A.h"\n#include <vector>\n',['A.h','vector']);
+ check('block and line comments','/*\n#include "Fake.h"\n*/\n// #include "Fake2.h"\n#include "A.h"',['A.h']);
+ check('comments between directive tokens','#/**/include/**/"A.h"',['A.h']);
+ for(const prefix of ['','u8','u','U','L'])check('raw literal prefix '+prefix,prefix+'R"tag(\n#include "Fake.h"\n)tag";\n#include "A.h"',['A.h']);
+ check('raw delimiter max length','R"abcdefghijklmnop(\n#include "Fake.h"\n)abcdefghijklmnop";\n#include "A.h"',['A.h']);
+ check('raw body phase-two reversal','R"tag(\n)tag'+splice+'"\n#include "Fake.h"\n)tag";\n#include "A.h"',['A.h']);
+ check('raw prefix continuation','u8R'+splice+'"tag(\n#include "Fake.h"\n)tag";\n#include "A.h"',['A.h']);
+ check('define raw body','#define HELP R"tag(\n#include "Fake.h"\n)tag"\n#include "A.h"',['A.h']);
+ check('ordinary string continuation','const char* s="first'+splice+'#include \\"Fake.h\\"'+splice+'last";\n#include "A.h"',['A.h']);
+ check('escaped quotes','const char* s="\\\" #include \\"Fake.h\\"";\n#include "A.h"',['A.h']);
+ check('numeric digit separators',"constexpr auto n=1'000+0xff'aa+0x1.fp+3;\n#include \"A.h\"",['A.h']);
+ check('character literals',"constexpr auto n='\\\'';\n#include \"A.h\"",['A.h']);
+ check('continued line comment','// continued '+splice+'#include "Fake.h"\n#include "A.h"',['A.h']);
+ check('spliced comment delimiters','/'+splice+'/ comment '+splice+'#include "Fake.h"\n/'+splice+'*\n#include "Fake2.h"\n*'+splice+'/\n#include "A.h"',['A.h']);
+ check('continued directive keyword','# in'+splice+'clude '+splice+'"A.h"',['A.h']);
+ check('CRLF continuation','#in\\\r\nclude "A.h"\r\n',['A.h']);
+ check('comment newline and BOM','\ufeff/* leading */ # include "A.h"\n/* across\n */#include "B.h"',['A.h','B.h']);
+ check('include punctuation in header name','#include "Dir//A.hpp"',['Dir//A.hpp']);
+ check('macro names stay compiler owned','#define H "A.h"\n#include H\n',[]);
+ check('conditional literals remain conservatively observed','#if 0\n#include "Maybe.h"\n#endif',['Maybe.h']);
+ check('include digraph','%:include "A.h"',['A.h']);
+ check('non-leading token is not a directive','int n; #include "Fake.h"\n#include "A.h"',['A.h']);
+ check('unterminated raw text belongs to compiler diagnostics','R"tag(\n#include "Fake.h"',[]);
+ const text='#include "User.h" // real\nconst char* x=R"doc(\n#include "Payload.hpp"\n)doc";\n#include <vector>\n',stripped=stripNativeInlineHeaderIncludes(text);assert(stripped.includes('R"doc(\n#include "Payload.hpp"\n)doc"'));assert(stripped.includes('#include <vector>'));assert.equal(stripped.split('\n').length,text.split('\n').length);assert(!stripped.includes('#include "User.h"'));assert(stripNativeInlineHeaderIncludes('#include "User.h" invalid').includes('invalid'));cases.push('inline header removal preserves authored raw text and line count');
+ const texts=new Map(files.map(f=>[f.path,f.content])),reads=[],readText=async p=>{reads.push(p);if(!texts.has(p))throw Object.assign(Error('missing'),{status:404});return texts.get(p);},dependencies=await readNativeSourceDependencies({header,source,headerPath,sourcePath},readText);
+ assert(dependencies.files.some(f=>f.path==='Source/Types/Payload.hpp'));assert(dependencies.paths.includes('Source/Module/Helper.h'));assert(!reads.some(p=>/documentation|NotAHeader|User\.h/.test(p)));const closure=nativeHeaderClosure(header,{sourcePath:headerPath,files});assert(closure.some(f=>f.path==='Source/Types/Payload.hpp'));assert((await readNativeHeaderFiles(header,{sourcePath:headerPath,readText})).some(f=>f.path==='Source/Types/Payload.hpp'));cases.push('shared reflected dependency closure and missing-candidate watch');
+ const generated=nativeSources(header,source,{files,headerPath,sourcePath}),helper=generated.files.find(f=>f.path==='Source/Helper.cpp');assert(helper.content.includes('#include "Helper.h"\n'+helperSource));assert(!generated.files.some(f=>f.path==='User.h'));assert.equal(generated.metadata.structs[0].name,'Payload');cases.push('helper auto-header and legacy User alias inspect real directives only');
+ const simple='#include <HBEngine/Game.hpp>\nHB_CLASS(Blueprintable) class InlineScan:public hb::Actor {public:HB_FUNCTION(BlueprintPure) int Read() const;};',inline='const char* help=R"help(\n#include "Example.hpp"\n)help";\n#include "InlineScan.h"\nint InlineScan::Read() const{return 42;}\n',legacy=nativeSources(simple,inline);assert(legacy.source.includes('R"help(\n#include "Example.hpp"\n)help"'));assert(!legacy.source.includes('#include "InlineScan.h"'));cases.push('real legacy nativeSources generation retains raw examples');
+ const old=execFileSync('git',['show','0521e444:prototype/native-header-files.js'],{encoding:'utf8'}),oldIncludes=[...old.matchAll(/const includes = ([^;]+);/g)];assert(oldIncludes.length);const oldHeader=old.replace(/^import[^\n]*\n/gm,'');const prior=await import('data:text/javascript;base64,'+Buffer.from(oldHeader).toString('base64'));assert.throws(()=>prior.nativeHeaderClosure(header,{sourcePath:headerPath,files}),/경로/);cases.push('previous admitted implementation failure independently reproduced');
+ const acceptance={passed:true,cases,sourceChecks:cases.length,metadataTypes:generated.metadata.structs.map(s=>s.name),scope:'Literal C++ includes shared by reflection/type migration, dependency watching, helper-header inference and legacy inline source generation. No macro/conditional preprocessor emulation, angle SDK dependency walk, binary compiler/runtime or GUI claim.'};await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify(acceptance,null,2));console.log(JSON.stringify({passed:true,work,cases:cases.length}));
+}catch(error){await fs.writeFile(path.join(work,'failure.json'),JSON.stringify({error:error.stack},null,2));throw error;}finally{await pruneTestArtifacts(work);}

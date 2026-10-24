@@ -3,6 +3,7 @@ import path from 'node:path';
 import {canonicalNativeText,parseNativeHeader} from '../prototype/native-model.js';
 import {nativeFriendHeader} from '../prototype/native-class-scopes.js';
 import {nativeEntryPaths} from '../prototype/native-entry.js';
+import {nativeIncludeDirectives} from '../prototype/native-includes.js';
 
 export const nativeSourceLimits=Object.freeze({root:'Source/',extensions:['h','hpp','hh','inl','cpp','cc','cxx'],maxFiles:512,maxFileBytes:500000,maxTotalBytes:8388608,compileTimeoutMs:60000});
 export const nativeSourceFile=name=>/^Source\//.test(name)&&/\.(?:h|hpp|hh|inl|cpp|cc|cxx)$/i.test(name);
@@ -35,7 +36,7 @@ export function nativeProjectLayout(header,source,generated,files,{entry}={}){
     else if(file===primarySource)content=generated.source;
     else if(/\.(cpp|cc|cxx)$/i.test(file.path)){
       const stem=file.path.replace(/\.[^.]+$/,'').toLowerCase(),ownHeader=files.find(header=>/\.(h|hpp|hh)$/i.test(header.path)&&header.path.replace(/\.[^.]+$/,'').toLowerCase()===stem);
-      const includes=[...content.matchAll(/^\s*#include\s*["<]([^">]+)[">]/gm)].map(match=>match[1]);
+      const includes=nativeIncludeDirectives(content).map(row=>row.name);
       const included=ownHeader&&includes.some(name=>name===path.posix.basename(ownHeader.path)||name===ownHeader.path||path.posix.normalize(path.posix.join(path.posix.dirname(file.path),name))===ownHeader.path);
       content='#include <HBEngine/Native.hpp>\n'+(ownHeader&&!included?'#include "'+path.posix.basename(ownHeader.path)+'"\n':'')+content;
     }
@@ -45,7 +46,7 @@ export function nativeProjectLayout(header,source,generated,files,{entry}={}){
   if(!primarySource)records.push({path:sourcePath,content:generated.source});
   // Older engine templates used User.h regardless of the authored header name.
   // Preserve that alias only when no real project header has that name.
-  if(!files.some(file=>path.posix.basename(file.path).toLowerCase()==='user.h')&&records.some(file=>/^\s*#include\s*"User\.h"/m.test(file.content)))records.push({path:'User.h',content:'#pragma once\n#include "User.hpp"\n'});
+  if(!files.some(file=>path.posix.basename(file.path).toLowerCase()==='user.h')&&records.some(file=>nativeIncludeDirectives(file.content).some(row=>row.style==='quote'&&row.name==='User.h')))records.push({path:'User.h',content:'#pragma once\n#include "User.hpp"\n'});
   return {header:primaryHeader?'#pragma once\n#include "'+primaryHeader.path+'"\n':'#pragma once\n'+generated.header,files:records,sourceFiles:records.filter(file=>/\.(cpp|cc|cxx)$/i.test(file.path)&&(file.path===sourcePath||!otherEntries.has(stem(file)))).map(file=>file.path),includeDirectories:[...new Set(['.','Source',...files.map(file=>path.posix.dirname(file.path))])],projectFiles:files.length};
 }
 export async function writeNativeProject(directory,generated,{prefix='',namespace=''}={}){

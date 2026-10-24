@@ -1,3 +1,4 @@
+import {nativeIncludeDirectives} from './native-includes.js';
 // Resolve project-local headers only. SDK/system includes belong to the C++
 // compiler, while reflected declarations retain their original source paths.
 const normalize = value => {
@@ -9,7 +10,7 @@ const normalize = value => {
   }
   return result.join('/');
 };
-const includes = text => [...text.replace(/\/\*[\s\S]*?\*\//g,'').matchAll(/^\s*#\s*include\s*"([^"\r\n]+)"/gm)].map(match=>match[1]);
+const includes = text => nativeIncludeDirectives(text).filter(row=>row.style==='quote').map(row=>row.name);
 const candidates = (from,name) => {
   if(/[\\:\x00-\x1f]/.test(name)||name.startsWith('/'))throw Error('C++ include 경로 오류');
   return [...new Set([from.slice(0,from.lastIndexOf('/')+1)+name,name,'Source/'+name].flatMap(path=>{try{return [normalize(path)];}catch{return [];}}))].filter(path=>path.startsWith('Source/'));

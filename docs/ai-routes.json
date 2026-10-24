@@ -1599,6 +1599,15 @@
     },
     {
       "keywords": [
+        "nativeIncludeDirectives",
+        "stripNativeInlineHeaderIncludes"
+      ],
+      "paths": [
+        "prototype/native-includes.js"
+      ]
+    },
+    {
+      "keywords": [
         "Enum::ToValue",
         "Enum::FromValue",
         "Enum::Mask",
