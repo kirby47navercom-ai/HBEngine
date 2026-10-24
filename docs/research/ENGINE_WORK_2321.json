@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "date": "2026-10-24T11:56:15.649Z",
+  "kind": "iterative-deep-scene-matrices-and-shared-parent-pass",
+  "implementationRevision": "efaf9133ffced19de326bb0136f780fad18e6dd1",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2311.json",
+  "changedSourceHashes": {
+    "docs/SCENE_RECIPE_BATCH.md": "3b99c1125c43f48d73b0e2c655f3b9ddfd08ea1b03eba04c57739ab9de98c2f6",
+    "docs/ai-routes.json": "2aaa261bffc6e84ee669f397b88ba701e805498898898bafe5b2ab203bd71e1d",
+    "native/include/HBEngine/Bridge.hpp": "62499d9e0db3377f1fb6b1a520bfe4aef2c34ec6365bb6010b537e61d42af1fd",
+    "prototype/environment-actor-index.js": "4e263cf1ca9b6743078e793b412446770db3dfc0d7a0b60f78f80bd4d799dfa1",
+    "prototype/scene-runtime.js": "6caf2784ee64524d4e88aabe93165f94c5a071d72c35cff41ab7694137d59b8a",
+    "tools/check-behavior-aborts-2279-cpp.mjs": "39e23a448f70937383cfccfa91626a6df0570d1aaabd7525e2e27df3f9538572",
+    "tools/editor-automation.mjs": "2d19554dce29da08df19d4abdbd31b09f303b6ab42eea7523f77508f6f3346e4",
+    "docs/SCENE_MATRIX_PASSES.md": "497331067b50fa9ff4809d43578a1fc5b81501dabe7750de20a4cf7d5d7119e2",
+    "tools/check-scene-matrix-pass-2314.mjs": "21519500d16aa93e2ee44f63de3638f3a388543a611ce32eedc50259aa29d469",
+    "CODEX_HANDOFF.md": "370ea3c8a1c427860c394a0db5bba89821e3da8a5a578775c0eb814f638fa6d2"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1371,
+  "targetIds": [
+    "EDT-04",
+    "GAM-03",
+    "CPP-01"
+  ],
+  "changes": {
+    "EDT-04": " ·2312–2321: JS/CPP 월드 변환의64단계 재귀제한을 반복 계산으로 제거·순환보존·정상행렬순서/비균일/음수배율 동치. 신규9source(4000행렬/512공용VM)·현재CPP128계층/읽기/역변환. 수치overflow/특이역행렬 명시거절·잘못된로컬위치미게시. 전체Three/renderer 깊이·픽셀은새검증아님.",
+    "GAM-03": " ·2312–2321: EQS sync의 부모 행렬을 명시적 임시 indexed iterative pass로 공유. 부모마다배열find/64cap 제거·deep/mutable결과검사. 전체 mutable 월드 스캔 O(N)은잔여유지.",
+    "CPP-01": " ·2312–2321: bridgeToWorld/FromWorld 반복·cycle/range검사. 현재SDK actualCPP12항목/25RPC(3예상거절), 128계층과회전/음수/비균일/역변환 및원래task/effect/rope/초기getter검사를함께통과. ABI/숫자정밀도·GUI/기기전체동등성주장0."
+  },
+  "checks": {
+    "source": {
+      "passed": true,
+      "newCases": 9,
+      "report": {
+        "path": "native/build/scene-matrix-pass-WMstnw/acceptance.json",
+        "sha256": "7d8eb21c985ab37e54895fe8f0ce9d807917cd69e2922635010d2c95d5f6e145"
+      },
+      "group": {
+        "path": "native/build/group2315.json",
+        "sha256": "5761072765a0129bce86f09f73557912b0d90c8456c0c8ae37cd367afa72ccb2"
+      },
+      "integrity": {
+        "path": "native/build/final2319.json",
+        "sha256": "a4157992013902bdc1e0867b2a56dbe095a82c83b8a245a264842665ed145de8"
+      }
+    },
+    "native": {
+      "executed": true,
+      "cases": 12,
+      "calls": 25,
+      "expectedRejectedCalls": 3,
+      "report": {
+        "path": "native/build/behavior-abort-cpp-4AITof/acceptance.json",
+        "sha256": "3e30e4f30d2844eec8aad21e1aff73a09893333ee0e5b009666f721c5356526a"
+      },
+      "builds": [
+        {
+          "binary": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\6e9da0f6380af924cc84\\worker.exe",
+          "sha256": "f6ea5d0e722ddf52a70cff897d8fe26d8c839ea5f03aeabdea26fdf9de6b2ed4",
+          "sdkUsedFingerprint": "683f058b9a418ba4c0347a76d078e99ddd2c78b083467b9424cce548ee03a232",
+          "cacheHit": false
+        }
+      ],
+      "scope": "Current SDK actual deep read/inverse placement, nonuniform/negative rotations, cycle recovery/float-range rejection and prior task/effect/rope/first snapshot cases in one worker."
+    },
+    "actualWindow": false,
+    "devices": false
+  },
+  "limits": [
+    "Only common JS/CPP transform path and current EQS/contact consumers; not whole Three scene graph/GPU/gizmo depth proof.",
+    "Explicit synchronous matrix cache must be new/cleared after changes; general Map retains current-array lookup. No hidden world cache or watcher.",
+    "Full mutable EQS O(N) refresh remains. Original JS double/C++float precision and accumulated transform numerical limits remain.",
+    "Whole accumulated engine goals and external/device-specific verification remain; not a global completion claim."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4738,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "policy": "Owned source fixtures and one current-SDK module; native cache32+live automatically pruned. No user/Versions deletion or empty cleanup receipt."
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}
