@@ -19,7 +19,7 @@ export async function openExternal(project,relative){
   // Explicit user action opens an interactive IDE. Never run shell text from an asset path.
   await new Promise((resolve,reject)=>{const child=spawn(editor.file,args,{shell:false,detached:true,stdio:'ignore',windowsHide:false});child.once('error',reject);child.once('spawn',()=>{child.unref();resolve();});});return {editor:editor.name,path:relative};
 }
-export async function createCppClass(project,folder,name,parent='Actor',{tick=false}={}){
+export async function createCppClass(project,folder,name,parent='Actor',{tick=false}={}){project.assertWritable?.();
   if(!/^[A-Za-z_][A-Za-z0-9_]{0,79}$/.test(name)||!blueprintClasses[parent])throw Error('C++ 클래스 이름 또는 부모 클래스 오류');
   if(typeof tick!=='boolean'||tick&&!derivesFrom(parent,'Actor'))throw Error('자동 Tick은 액터 파생 클래스에 사용하세요.');
   const header=(folder?folder+'/':'')+name+'.h',source=(folder?folder+'/':'')+name+'.cpp';

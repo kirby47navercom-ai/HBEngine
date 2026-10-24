@@ -3694,13 +3694,24 @@
       "keywords": [
         "recoverAssetTransactions",
         "readAssetTransaction",
-        "recoverAssetWrites"
+        "recoverAssetWrites",
+        "inspectAssetTransaction",
+        "resolveAssetTransaction",
+        "renderTransactionRecovery",
+        "project.recovery.inspect",
+        "project.recovery.resolve",
+        "inspectAssetWrite",
+        "resolveAssetWrite",
+        "pendingRecoveries"
       ],
       "paths": [
         "tools/asset-transaction.mjs",
         "tools/asset-write-intent.mjs",
         "tools/project-service.mjs",
-        "docs/MODEL_EMBEDDED_IMAGES.md"
+        "docs/MODEL_EMBEDDED_IMAGES.md",
+        "prototype/transaction-recovery-editor.js",
+        "tools/external-editor.mjs",
+        "docs/TRANSACTION_RECOVERY.md"
       ]
     },
     {
@@ -3731,16 +3742,22 @@
         "gameplaycue",
         "bindCueAsset",
         "loadGameplayCueProgram",
-        "clearGameplayCueAudio"
+        "clearGameplayCueAudio",
+        "GameplayCueVfx",
+        "gameplayCueTransform",
+        "managedSpawnCatalog"
       ],
       "paths": [
+        "prototype/gameplay-cue-vfx.js",
         "prototype/gameplay-cue-assets.js",
         "prototype/ability-assets.js",
         "prototype/ability-runtime.js",
         "prototype/engine-services.js",
         "prototype/structured-asset-editor.js",
         "prototype/scene-components.js",
-        "docs/GAMEPLAY_CUE_ASSETS.md"
+        "docs/GAMEPLAY_CUE_ASSETS.md",
+        "prototype/runtime-spawn.js",
+        "prototype/play-world.js"
       ]
     },
     {

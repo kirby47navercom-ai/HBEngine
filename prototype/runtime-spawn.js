@@ -48,6 +48,20 @@ export async function prepareSpawnCatalog(files,hooks){
   return {templates,bindings,inputAssets,builds:hooks.builds};
 }
 
+// Managed-only references (for example Cue VFX) need one exact asset without
+// reading every unrelated blueprint. Existing reflected/native spawning can
+// still request the full catalog before it executes.
+export async function managedSpawnCatalog(files,hooks,{full=false}={}){
+ const catalog=await prepareSpawnCatalog(files,hooks),pending=new Map();catalog.fullPrepared=full;
+ const merge=(next,all)=>{if(all)for(const[key,value]of catalog.templates)if(key!==value.key)catalog.templates.delete(key);for(const[key,value]of next.templates)if(all||key===value.key)catalog.templates.set(key,value);for(const[key,value]of next.bindings)catalog.bindings.set(key,value);for(const kind of ['contexts','actions'])for(const[key,value]of next.inputAssets[kind])catalog.inputAssets[kind].set(key,value);};
+ catalog.includeFiles=async files=>{merge(await prepareSpawnCatalog(files,hooks),true);catalog.fullPrepared=true;return catalog;};
+ catalog.ensure=async asset=>{
+  if(catalog.templates.has(asset))return catalog.templates.get(asset);
+  if(typeof asset!=='string'||!/^Assets\/(?:[^/\\:\x00-\x1f]+\/)*[^/\\:\x00-\x1f]+\.hb(?:prefab|blueprint)\.json$/.test(asset)||asset.split('/').some(p=>p==='.'||p==='..'))throw Error('생성할 에셋의 전체 경로를 확인하세요.');
+  if(!pending.has(asset)){const task=prepareSpawnCatalog([{path:asset,kind:asset.endsWith('.hbprefab.json')?'prefab':'blueprint'}],hooks).then(next=>{merge(next,false);return catalog.templates.get(asset);});pending.set(asset,task);task.finally(()=>{if(pending.get(asset)===task)pending.delete(asset);}).catch(()=>{});}return pending.get(asset);
+ };return catalog;
+}
+
 export function instantiateSpawn(template,transform,rootId=crypto.randomUUID(),existing){
   if(!spawnTransformValid(transform))throw Error('생성 위치·회전·크기를 확인하세요.');
   const ids=new Map(template.objects.map((o,i)=>[o.id,o.id===template.root?rootId:existing?.find(x=>x.spawnLocalId===o.id)?.id||rootId+'_'+i]));

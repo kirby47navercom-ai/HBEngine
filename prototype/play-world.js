@@ -7,7 +7,7 @@ import {assetTitle,loadSceneBindings,validAsset} from './asset-documents.js';
 import {prepareGameplay} from './scene-runtime.js';
 import {blueprintInstanceDefaults,installBlueprintInstances} from './blueprint-overrides.js';
 import {actorClassNames} from './runtime-actors.js';
-import {spawnRequested,prepareSpawnCatalog} from './runtime-spawn.js';
+import {spawnRequested,managedSpawnCatalog} from './runtime-spawn.js';
 
 export async function prepareActorBindings(objects,{readAsset,readText,buildNative,builds=new Map(),nativeBuilds=new Map(),loaded}){
   loaded??=await loadSceneBindings(objects,readAsset,readText);installBlueprintInstances(objects,loaded.bindings.filter(b=>!b.retained));
@@ -32,10 +32,10 @@ export async function preparePlayWorld(objects,settings,{readAsset,readText,buil
   await prepareActorBindings(objects,{readAsset:read,readText,buildNative,builds,nativeBuilds,loaded});
   for(const object of objects){object.actorClasses=actorClassNames(object,loaded.bindings.find(b=>b.self===object.id)?.root);const pool=object.components?.find(c=>c.type==='PooledActor'&&c.properties?.enabled!==false);if(pool){object.poolActive=pool.properties?.initiallyActive===true;object.poolVisible=object.visible;object.poolCollision=object.collisionEnabled!==false;if(!object.poolActive){object.visible=false;object.collisionEnabled=false;object.velocity=[0,0,0];object.angularVelocity=[0,0,0];}}}
   remapPrefabInstanceReferences(objects,loaded.bindings);
-  const spawnCatalog=spawnRequested(loaded.bindings,objects)?await prepareSpawnCatalog(listAssets?await listAssets():[],{readAsset:read,readText,buildNative,builds,nativeBuilds}):null;
+  const fullSpawn=spawnRequested(loaded.bindings,objects),spawnCatalog=await managedSpawnCatalog(fullSpawn&&listAssets?await listAssets():[],{readAsset:read,readText,buildNative,builds,nativeBuilds},{full:fullSpawn});
   const result={...loaded,objects,builds,spawnCatalog,gameplay:gameplay.gameplay,physicsOptions:gameplay.physicsOptions};
   result.reapplyNativeBuild=(previous,next)=>{for(const [key,build] of builds)if(build.token===previous.token)builds.set(key,next);for(const [signature,build] of nativeBuilds)if(build.token===previous.token)nativeBuilds.delete(signature);nativeBuilds.set(JSON.stringify([canonicalNativeText(next.header),canonicalNativeText(next.source)]),next);};
-  result.prepareLevel=async rows=>{await refreshPrefabWorld(rows,read,{validate:d=>validAsset('prefab',d)});const level=await prepareActorBindings(rows,{readAsset:read,readText,buildNative,builds,nativeBuilds});remapPrefabInstanceReferences(rows,level.bindings);if(spawnRequested(level.bindings,rows)&&!result.spawnCatalog)result.spawnCatalog=await prepareSpawnCatalog(listAssets?await listAssets():[],{readAsset:read,readText,buildNative,builds,nativeBuilds});return {...level,spawnCatalog:result.spawnCatalog};};return result;
+  result.prepareLevel=async rows=>{await refreshPrefabWorld(rows,read,{validate:d=>validAsset('prefab',d)});const level=await prepareActorBindings(rows,{readAsset:read,readText,buildNative,builds,nativeBuilds});remapPrefabInstanceReferences(rows,level.bindings);if(spawnRequested(level.bindings,rows)&&!spawnCatalog.fullPrepared)await spawnCatalog.includeFiles(listAssets?await listAssets():[]);return {...level,spawnCatalog};};return result;
 }
 
 export async function requestSceneTravel(vm,name,{readAsset,asset,arguments:args={}}){

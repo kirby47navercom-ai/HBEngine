@@ -24,7 +24,7 @@ export async function prepareAssetWrite(project,relative,data){
 export async function finishAssetWrite(intent){if(intent)await remove(intent.file);}
 
 export async function publishAssetText(project,relative,data,guard=()=>{},{create=false}={}){
- const file=await project.resolve(relative,true,false);if(create){const exists=await fs.lstat(file).then(()=>true,error=>{if(error.code==='ENOENT')return false;throw error;});if(exists)throw Object.assign(Error('같은 이름의 에셋이 있어요.'),{code:'EEXIST'});}
+ project.assertWritable?.();const file=await project.resolve(relative,true,false);if(create){const exists=await fs.lstat(file).then(()=>true,error=>{if(error.code==='ENOENT')return false;throw error;});if(exists)throw Object.assign(Error('같은 이름의 에셋이 있어요.'),{code:'EEXIST'});}
  const intent=await prepareAssetWrite(project,relative,data),temp=intent?.temporary||file+'.'+randomUUID()+'.tmp';let published=false,collision=false,tempCreated=false,publicationAttempted=false;
  try{
   if(create&&intent&&intent.beforeHash!==null)throw Object.assign(Error('같은 이름의 에셋이 있어요.'),{code:'EEXIST'});
@@ -35,17 +35,28 @@ export async function publishAssetText(project,relative,data,guard=()=>{},{creat
  }finally{if(!collision)await remove(temp);}
 }
 
-export async function recoverAssetWrites(project){
- let names;try{names=await fs.readdir(await project.resolve('Saved/WriteIntents',false,false));}catch(error){if(error.code==='ENOENT')return {completed:0,unpublished:0};throw error;}
- const decisions=[];for(const name of names){const id=name.slice(0,-5);if(!name.endsWith('.json')||!uuid.test(id))continue;const file=await intentPath(project,id),stat=await fs.stat(file);if(stat.size>16384)throw conflict('저장 ID 기록 크기를 확인하세요.');const row=JSON.parse(await fs.readFile(file,'utf8'));
-  if(row.version!==1||row.id!==id||typeof row.path!=='string'||!supported(row.path)||typeof row.assetId!=='string'||!row.assetId||row.assetId.length>200||![row.beforeHash,row.afterHash].every(v=>v===null||typeof v==='string'&&/^[a-f\d]{64}$/.test(v))||row.afterHash===null)throw conflict('저장 ID 기록을 확인하세요.');
-  const target=await project.resolve(row.path,true,false),actual=await fingerprint(target);if(actual!==row.beforeHash&&actual!==row.afterHash)throw conflict('복구할 저장 이후 외부 변경을 보존했어요: '+row.path);const published=actual===row.afterHash;
-  if(published&&project.index[row.path]?.id&&project.index[row.path].id!==row.assetId)throw conflict('다른 에셋 ID를 보존했어요: '+row.path);
-  decisions.push({row,file,target,published});
- }
+async function readWriteIntent(project,id){
+ if(typeof id!=='string'||!uuid.test(id))throw Error('저장 ID 복구 기록을 선택하세요.');const file=await intentPath(project,id),stat=await fs.stat(file);if(stat.size>16384)throw conflict('저장 ID 기록 크기를 확인하세요.');const row=JSON.parse(await fs.readFile(file,'utf8'));
+ if(row.version!==1||row.id!==id||typeof row.path!=='string'||!supported(row.path)||typeof row.assetId!=='string'||!row.assetId||row.assetId.length>200||![row.beforeHash,row.afterHash].every(v=>v===null||typeof v==='string'&&/^[a-f\d]{64}$/.test(v))||row.afterHash===null)throw conflict('저장 ID 기록을 확인하세요.');return{row,file,target:await project.resolve(row.path,true,false)};
+}
+export async function recoverAssetWrites(project,{tolerateConflicts=false}={}){
+ let names;try{names=await fs.readdir(await project.resolve('Saved/WriteIntents',false,false));}catch(error){if(error.code==='ENOENT')return project.writeRecovery={completed:0,unpublished:0,pending:[]};throw error;}
+ const inspected=[],idsByPath=new Map(),decisions=[],pending=[];for(const name of names){const id=name.slice(0,-5);if(!name.endsWith('.json')||!uuid.test(id))continue;const item=await readWriteIntent(project,id),actual=await fingerprint(item.target);inspected.push({...item,actual});const key=item.row.path.toLowerCase();if(!idsByPath.has(key))idsByPath.set(key,new Set());idsByPath.get(key).add(item.row.assetId);}
+ for(const item of inspected){const {row,actual}=item,published=actual===row.afterHash;if(actual!==row.beforeHash&&actual!==row.afterHash||published&&project.index[row.path]?.id&&project.index[row.path].id!==row.assetId||idsByPath.get(row.path.toLowerCase()).size>1)pending.push({id:'write:'+row.id,paths:[row.path],type:'writeIntent'});else decisions.push({...item,published});}
+ if(pending.length&&!tolerateConflicts){project.writeRecovery={completed:0,unpublished:0,pending};throw conflict('복구할 저장 이후 외부 내용·에셋 ID 변경을 보존했어요: '+pending[0].paths[0]);}
  // Check every intent before touching metadata. Content files are never overwritten.
  for(const {row,published}of decisions)if(published)project.index[row.path]={...project.index[row.path],id:row.assetId};
  if(decisions.some(d=>d.published))await project.saveIndex();
  for(const {row,file,target}of decisions){await remove(target+'.'+row.id+'.tmp');await remove(file);}
- return {completed:decisions.filter(d=>d.published).length,unpublished:decisions.filter(d=>!d.published).length};
+ return project.writeRecovery={completed:decisions.filter(d=>d.published).length,unpublished:decisions.filter(d=>!d.published).length,pending};
+}
+
+export async function inspectAssetWrite(project,transaction){
+ const {row,target}=await readWriteIntent(project,typeof transaction==='string'&&transaction.startsWith('write:')?transaction.slice(6):null),actual=await fingerprint(target),stat=await fs.stat(target).catch(error=>{if(error.code==='ENOENT')return null;throw error;}),indexId=project.index[row.path]?.id||null,disk={hash:actual,bytes:stat?.size||0,exists:actual!==null};return{id:transaction,type:'writeIntent',state:'prepared',revision:digest(JSON.stringify([row,disk,indexId])),rows:[{path:row.path,availableChoices:['disk'],conflict:true,before:{hash:row.beforeHash,bytes:null,exists:row.beforeHash!==null},after:{hash:row.afterHash,bytes:null,exists:true},disk,currentAssetId:indexId,recordedAssetId:row.assetId}]};
+}
+export async function resolveAssetWrite(project,{transaction,expectedRevision,choices={},dryRun=false},guard=()=>{}){
+ if(typeof dryRun!=='boolean'||typeof expectedRevision!=='string'||!choices||Object.getPrototypeOf(choices)!==Object.prototype)throw Error('저장 ID 복구 기준·선택을 확인하세요.');guard();const view=await inspectAssetWrite(project,transaction);if(view.revision!==expectedRevision)throw conflict('복구할 파일·에셋 ID가 변경됐어요. 다시 조회하세요.');const path=view.rows[0].path;for(const[p,value]of Object.entries(choices))if(p!==path||value!=='disk')throw Error('저장 ID 기록에는 현재 디스크 보존만 선택할 수 있어요.');const valid=choices[path]==='disk',preview={transaction,revision:view.revision,decisions:[{path,choice:valid?'disk':null}],unresolved:valid?[]:[path],unresolvedCount:valid?0:1,valid};if(dryRun)return{...preview,dryRun:true};if(!valid)throw conflict('현재 디스크 보존을 명시적으로 선택하세요.');
+ const {row,file,target}=await readWriteIntent(project,transaction.slice(6));if((await inspectAssetWrite(project,transaction)).revision!==view.revision)throw conflict('복구 준비 중 기록이 변경됐어요.');const previous=project.index[path],selectedId=view.rows[0].currentAssetId||row.assetId;guard();if(view.rows[0].disk.exists)project.index[path]={...previous,id:selectedId};else delete project.index[path];
+ try{await project.saveIndex();guard();if(await fingerprint(target)!==view.rows[0].disk.hash||JSON.stringify((await readWriteIntent(project,row.id)).row)!==JSON.stringify(row))throw conflict('복구 중 외부 변경을 보존했어요.');await remove(file);}catch(error){if(previous)project.index[path]=previous;else delete project.index[path];await project.saveIndex();throw error;}
+ const relativeTemp=row.path+'.'+row.id+'.tmp';let retainedTemporary;try{const temporary=await project.resolve(relativeTemp,true,false),tempHash=await fingerprint(temporary);if(tempHash===row.afterHash)await remove(temporary);else if(tempHash)retainedTemporary=relativeTemp;}catch{retainedTemporary=relativeTemp;}await recoverAssetWrites(project,{tolerateConflicts:true});return{...preview,ok:true,state:'resolved',contentWritten:false,...(retainedTemporary?{retainedTemporary}:{})};
 }
