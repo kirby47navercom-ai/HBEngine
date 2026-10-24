@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "date": "2026-10-24T09:15:36.533Z",
+  "kind": "data-editor-tool-api-and-editor-only-game-content",
+  "implementationRevision": "61847f896e63e0b772af5bb6892a76f8be583ccd",
+  "implementationParts": [
+    "17f2024a9712759edf8d620e55356c98335798c9"
+  ],
+  "sourceHashBase": "docs/research/ENGINE_WORK_2245.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "80cab7a9981328f41e2b437cd4cb800769e08319b7a2c0996ad21a60e748a268",
+    "prototype/app.js": "b955dd4e8f3992ce72297ac458c5b03609aa8541394a453d099ab2b95a4f7817",
+    "prototype/editor-tool-assets.js": "ad27452cc78cb95583f0241ed048b1c8937362447ff40739d621682bd14f425b",
+    "prototype/editor-tool.css": "0d4977855f46c27f6089d63fea388e78552ade3d07d385977087036d0ac1f5a1",
+    "prototype/editor-tool.js": "8075b7ce18f13a803b95b85987f2900bead771923c1a0257618e7dc2e0c0e022",
+    "tools/editor-automation.mjs": "6df2bf47b1038d375cff8c24630a49810ed0ce3ec18ced2f47e8d3a2c0261468",
+    "docs/EDITOR_TOOL_API.md": "ab5294c0828a3b0f93ad51ae7e0f20921f9f5f088d5f5261777b29ff9328d89e",
+    "tools/check-editor-tool-api-2250.mjs": "918b123cfb176fff8e161064b311e244c526db26a6e9fb999ce74ffa2be055da",
+    "prototype/asset-documents.js": "38e7523767c4da98ec1a67d35e7375946e340de20ba61ea9b758a64890b15778",
+    "prototype/build-profile.js": "52b0dec34b661a9ce73ffd744eb216171be716c96ba0690b0bb725e589c984ff",
+    "tools/build-game.mjs": "59808e1fd5bab7668ebada0941686fbb616498153f55d9c7352e6c4ebfea05e2",
+    "tools/check-editor-tool-content-2255.mjs": "a215526a73a196d43eb82a56ba7e10cbb633e6f9da4471fb6d9395dce6e4e7fc",
+    "CODEX_HANDOFF.md": "1c2aada2951c8802966b17f0592a6fab0042ceba73185607ffba42b29efe1429"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1344,
+  "targetIds": [
+    "AI-03",
+    "BLD-01"
+  ],
+  "changes": {
+    "AI-03": " ·2246–2259소스: 기존ET데이터도구의선택api.version1/requires명시·미지원차단·legacy다른미지원버튼격리. editorTool.inspect/공유schema·EQS3capability·정확owner. 입력/템플릿/문맥copy·경로별revision1read·전송전scene/doc/정의/모드/함수정체성/취소검사. 창당동시1·입력/모든액션/정의잠금·실패복구/닫기late표시0. 이미전송한명령의실제결과/오류유지·자동retry/가짜rollback0. output:json은문자4000/깊이6/항목64/노드512text만·표시실패가성공명령실패로변조0. 신규20source·기존도구/AIgate통과. 네이티브/코드확장ABI·배포/다중명령원자/전송뒤임의취소잔여.",
+    "BLD-01": " ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0."
+  },
+  "checks": {
+    "source": {
+      "passed": true,
+      "newCases": {
+        "editorToolAPI": 20,
+        "gameContent": 9,
+        "total": 29
+      },
+      "reports": {
+        "toolAPI": {
+          "path": "native/build/editor-tool-api-UHR1KG/acceptance.json",
+          "sha256": "3eb6685f3da05c905ca182db0c32e0398b91ec0c5bdb9b040daccb0aa97c15d8"
+        },
+        "content": {
+          "path": "native/build/editor-tool-content-yQaG2a/acceptance.json",
+          "sha256": "9a492be7dbbe9c8be3a8322aa837d5bb423eaf8f1c3345d87bbd3749c782d534"
+        }
+      },
+      "combined": {
+        "path": "native/build/combined2258.json",
+        "sha256": "45b988fe2ad4f001fb7d722c3129aecceaffc303a0af1460afa862ad79630179"
+      },
+      "individualGroup": {
+        "path": "native/build/group2256.json",
+        "sha256": "ef2874b20e9ec442d3d67036cf759f6d249f81ff17e63e98329792d38c7031e3",
+        "onlyPassed": [
+          "check-editor-tool-api-2250",
+          "check-lighting-tools",
+          "check-ai-context"
+        ],
+        "note": "Then-content setup failed on deliberately unsupported future API through validating project.write; fixture corrected to simulate external copied file, current recheck2257 passed. Other checks passed and unchanged."
+      },
+      "integrity": [
+        {
+          "path": "native/build/final2253.json",
+          "sha256": "f13c9ea791bc3fd790104334d1d2179c8495052c9afb2184e5790948f516dbfa"
+        },
+        {
+          "path": "native/build/final2258.json",
+          "sha256": "a1471befbce6ad08f00f8795881389cf475fe33330018d4e28fafaff2e3b7356"
+        }
+      ]
+    },
+    "nativeBinary": {
+      "executed": false,
+      "lastActual": "docs/research/ENGINE_WORK_2208.json",
+      "reason": "SDK/Host/Player/renderer unchanged."
+    },
+    "actualWindow": {
+      "executed": false,
+      "reason": "Background protection; owned minimal DOM only."
+    },
+    "packages": {
+      "executed": false,
+      "scope": "Real common inspectBuild content/cook manifests for four targets, no EXE/APK/IPA/web output or unowned player read."
+    },
+    "devices": {
+      "executed": false,
+      "reason": "No Android phone or Mac/Xcode."
+    }
+  },
+  "limits": [
+    "Data-tool API versioning is not native/code extension ABI/distribution or signing.",
+    "Preflight cancellation does not cancel or roll back an already dispatched command. Actual command outcome is preserved.",
+    "263667 omitted fixture-file bytes do not prove total engine/game size, runtime FPS or OS RAM improvement.",
+    "Whole-engine remaining stays; no exhaustive feature denominator."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4890,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "policy": "Owned small source projects/reports retained; prune exit callbacks active. No compiler build after2208."
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}
