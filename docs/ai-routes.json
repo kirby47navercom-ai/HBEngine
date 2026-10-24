@@ -3443,6 +3443,19 @@
         "tools/editor-automation.mjs",
         "docs/SCENE_RECIPE_BATCH.md"
       ]
+    },
+    {
+      "keywords": [
+        "updateDeformableProperties",
+        "deformableColdProperties",
+        "deformableProperties",
+        "실행 중 천 물성"
+      ],
+      "paths": [
+        "prototype/deformable-properties.js",
+        "prototype/deformable-physics.js",
+        "docs/DEFORMABLE_HOT_PROPERTIES.md"
+      ]
     }
   ]
 }

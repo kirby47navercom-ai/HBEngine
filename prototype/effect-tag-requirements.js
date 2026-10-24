@@ -1,5 +1,5 @@
 import {validGameplayTag,hasGameplayTag} from './scene-systems.js';
-export const effectTagRoles=['source','target','instigator','causer'];
+export const effectTagRoles=Object.freeze(['source','target','instigator','causer']);
 const tagList=value=>Array.isArray(value)&&value.length<=32&&value.every(validGameplayTag)&&new Set(value).size===value.length;
 export function validEffectTagRequirements(value){
  if(value===undefined)return true;
