@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "date": "2026-10-24T04:15:55.253Z",
+  "kind": "multi-area-engine-authoring-manual-update-hold",
+  "implementationRevision": "8af337e75e3751405ffd41b6fcd4fbc48460887c",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2160.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "530c0061b7a97c64bdf50391f11809910f4648d8177e45e92b3be0667753014b",
+    "docs/AUTHORING_TOOL_COMMANDS.md": "a94d8268f2b4ab6b253cb763f908fe7c023d55b942e916f2c72b36bd7a92ca88",
+    "docs/MODEL_IMPORT_EXACT_IDS.md": "cdcb5601e34a79506004fb15ea48b746cb0d16d06da6e27d5076945ad336b3f3",
+    "prototype/app.js": "bdc5cdf9a039cb01354dc0b1eaf864b78530f039f3de777ca140a2c332e1ba26",
+    "prototype/asset-shortcut-commands.js": "805486ceeea16e029c829e74e04243f256bf91aafbd524726091b5d5d1007d82",
+    "prototype/asset-shortcuts.js": "f4cca9645daae7bf507d8388ff6f426ca5fcb25a981babe278e6f6e0ef72cb7e",
+    "prototype/audio-editor.js": "207f1bbc6e14df013cab54aab010ccb2b958d6aa3d487fede0a0a8f063c4bed2",
+    "prototype/collision-editor.js": "05236de0f1fd881ce065b8b88994a6c4586856ad3bac4729675d4538dbc43084",
+    "prototype/editor-shortcuts.js": "08305490fe0d36b81010eafbc6f62cbdf54455bee6cbc47adf0f4d495e01688b",
+    "prototype/engine-services.js": "cc6dcb135e0d83b564d48ca6425d7fe73e5a891246e67abc191d2a50146604be",
+    "prototype/mesh-uv-editor.js": "8497af6e04e014b64f6e5df9e3cbfc0a5cc2f8d80afab3f3d44a5ddcec76aaaa",
+    "prototype/model-import.js": "085437920c8007b6970c05784afd87973b440e2d221b63cd3edd00176ef8351d",
+    "prototype/world-asset-editor.js": "48348b453481308758541d6469dc9332c433b5bccdc51f994c39df10e932013e",
+    "prototype/audio-bus-editing.js": "9ca45069f2ca65afef6c46bac64f1a231d2c57107da15688c450666162aa83b7",
+    "prototype/collision-shortcuts.js": "830d1174ce848f00a6f7e29e9611ee67fced3d7e2c0d3e3b8494535e578d1be9",
+    "prototype/fbx-identifiers.js": "112c526b4d97a470a68a48956fd8f01a9c9d7d961b19c7a5a69833512db169e1",
+    "tools/check-engine-authoring-2169.mjs": "5d21b93ab087ffdbe8ae92fffa1dfbb18a3009d55f63c3d5958527dc66081a54",
+    "tools/fbx-identifiers-2167-fixture.mjs": "528f8d0541626c5c3942657c4b3f676b57e764397d70ae2fa47e1f31328463ec",
+    "CODEX_HANDOFF.md": "91b6ec3368e74cecb37063bd6cdd34397092464ad6a62641ce5175939ecec988",
+    "tools/ai-context.mjs": "7d2516c3d26b03888869dd22c2f4ed663a9b1e0505c789793faaea310abdefdc",
+    "tools/check-ai-context.mjs": "d8e9b9a69c4490537b1298d2b8d74a8ec4193077424e8cfe94f69157a3dedcfc"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1296,
+  "targetIds": [
+    "AST-02",
+    "EDT-05",
+    "AUD-01"
+  ],
+  "checks": {
+    "source": {
+      "passed": true,
+      "initialGroup": "native/build/group2170.json",
+      "initialFailureRetained": true,
+      "unchangedAffectedGates": [
+        {
+          "name": "check-editor-shortcuts",
+          "passed": true,
+          "exit": 0,
+          "ms": 141.7518,
+          "log": "native/build/group2170-check-editor-shortcuts.log",
+          "sha256": "39068d78a852bab72c5e05b4e64cf9a388a3162d68431899c3d54fce18094408"
+        },
+        {
+          "name": "check-model-import",
+          "passed": true,
+          "exit": 0,
+          "ms": 479.48710000000005,
+          "log": "native/build/group2170-check-model-import.log",
+          "sha256": "2d1dc96c9f2f83c79163a5162ef929cda3c4d80e7b718fe86fed2329e9d71293"
+        },
+        {
+          "name": "check-mixer-transitions",
+          "passed": true,
+          "exit": 0,
+          "ms": 97.33570000000009,
+          "log": "native/build/group2170-check-mixer-transitions.log",
+          "sha256": "b9f84e9e48ab5110d0e0fe01be31561307210b8624a7afb4969a91e73e1ae506"
+        },
+        {
+          "name": "check-animation-retarget",
+          "passed": true,
+          "exit": 0,
+          "ms": 367.92499999999995,
+          "log": "native/build/group2170-check-animation-retarget.log",
+          "sha256": "f2d3ad260d598400f7f393d725fdfc3a9ac2031a3504c9ff6faaeb05a213cb80"
+        },
+        {
+          "name": "check-mesh-atlas-223",
+          "passed": true,
+          "exit": 0,
+          "ms": 163.00520000000006,
+          "log": "native/build/group2170-check-mesh-atlas-223.log",
+          "sha256": "2ec2caed28c0e451f81aa2cb7eeb4bd884373c20ffff02541b35e5fb4ad69278"
+        },
+        {
+          "name": "check-ai-context",
+          "passed": true,
+          "exit": 0,
+          "ms": 2368.6157000000003,
+          "log": "native/build/group2170-check-ai-context.log",
+          "sha256": "26060ad6a03ce8dbebf69e35f889336746536db8fe6f61d8f7e0029724b7e4cf"
+        }
+      ],
+      "finalRepair": {
+        "passed": true,
+        "rows": [
+          {
+            "name": "check-engine-authoring-2169-final",
+            "passed": true,
+            "exit": 0,
+            "log": "native/build/recheck2174.log",
+            "sha256": "1e62b6a88076278355fc4810671286bf8faef6370c3e77c130d7fcf79ec39e03"
+          },
+          {
+            "name": "changed-syntax-and-diff",
+            "passed": true
+          }
+        ],
+        "cache": {
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        }
+      },
+      "report": {
+        "path": "native/build/engine-authoring-mGRmZY/acceptance.json",
+        "sha256": "5ff957c1f3142da592afec144cb8b58bef27dd6f29b3e853177123a1a9b334d3"
+      },
+      "newCases": 20,
+      "commandsAdded": 41,
+      "actualExecutionScope": "Owned source fixtures, real Three FBX loader, production editor handlers and common audio routing. No GUI/native binary/device/install claim.",
+      "finalAI": {
+        "passed": true,
+        "log": "native/build/ai2176.log",
+        "sha256": "768cdd63cb932ad05a94ee09528c3824e9fd5f1280d8307be7fa68be69f3b31d",
+        "newSymbolCases": 3
+      }
+    },
+    "actualWindow": {
+      "pending": true,
+      "reason": "사용자 설치 런타임 사용중 보호. 소유 source/loader/핸들러만 검사."
+    },
+    "nativeBinary": {
+      "executed": false,
+      "reason": "SDK/NativeHost/Player/렌더러 변경 없음. 기존 C++ include actual worker 검사는 별도 대기."
+    },
+    "focusedAI": [
+      {
+        "symbol": "prepareFbxIdentifiers",
+        "lookup": "matched",
+        "filesRead": 1,
+        "bytesRead": 5584,
+        "elapsedMs": 156.25,
+        "mode": "focused-routes"
+      },
+      {
+        "symbol": "editMixerBus",
+        "lookup": "matched",
+        "filesRead": 1,
+        "bytesRead": 2359,
+        "elapsedMs": 139.33,
+        "mode": "focused-routes"
+      },
+      {
+        "symbol": "collisionShortcut",
+        "lookup": "matched",
+        "filesRead": 1,
+        "bytesRead": 1145,
+        "elapsedMs": 136.67,
+        "mode": "focused-routes"
+      }
+    ]
+  },
+  "userPolicy": {
+    "automation": "previously-deleted; do-not-recreate",
+    "updates": "held-until-explicit-user-request"
+  },
+  "installation": {
+    "held": true,
+    "updated": false,
+    "currentReceipt": "docs/research/USER_INSTALL_2145.json"
+  },
+  "excludedWorktree": [
+    "prototype/player.js",
+    "tools/check-player-keyboard-release.mjs"
+  ],
+  "scope": "공용 FBX 로더의 정확한 64비트 식별자/오버라이드·재가져오기, 오디오 버스 안전 삭제·독립 복제와 공용 믹서 실행, UV·충돌·리타게팅·오디오 제작 41명령을 기존 편집/프로필/AI/Undo에 연결. 신규20 소스 사례와 영향6검사 통과, JS15 syntax·diff 확인. 실제 Three 로더와 production 핸들러/AudioRouting 사용. GUI·네이티브 바이너리·실기기·설치 검증 주장이 아니며 예약 생성0/업데이트 보류 유지. 정확 심볼의 성공을 no-match로 표시하던 AI 탐색 상태도 교정하고 세 새 함수의 1파일 집중 조회를 확인했어요.",
+  "implementationRevisions": [
+    "e4b4d94afc4cf606c936ceb0d4cbcccf9d78bb2f",
+    "8af337e75e3751405ffd41b6fcd4fbc48460887c"
+  ]
+}
