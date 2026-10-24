@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "date": "2026-10-24T03:03:54.874Z",
+  "kind": "native-watch-read-boundaries-source",
+  "implementationRevision": "278ee1e64772bdd04ec52c1fd2d047217e4ee16f",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2151.json",
+  "changedSourceHashes": {
+    "prototype/native-header-files.js": "c032ae31cf553bdae8ac7f3e2ead2b68fc1a7277641db707945e53baf02e3b05",
+    "prototype/native-source-watch.js": "a21949dd15f74e33987cf023f0cb65a6410ff0baadcf19c1e1438bc714235fa1",
+    "docs/NATIVE_LITERAL_INCLUDES.md": "be9659f92cbda4d25b54a813189cab41ec212fd9935bce04ba4c536476b80931",
+    "tools/check-native-read-boundaries-2154.mjs": "9d8133bac4e3d70845f7767f79f0459e1c347fc2747ff8ae5e20230a941f3acf",
+    "CODEX_HANDOFF.md": "97f75057f7e2849560c04146f62f1b5e27ff9d6c2e8c3d3d79a1a401ba1cf4e8"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "targetIds": [
+    "CPP-01"
+  ],
+  "checks": {
+    "source": {
+      "passed": true,
+      "ms": 8199.7041,
+      "execution": "Lightweight source/model/CAS/poll only; installed runtime active. Unchanged entry/records/AI gates from2150 reused; no compiler/GUI/installation.",
+      "rows": [
+        {
+          "name": "check-native-read-boundaries-2154",
+          "passed": true,
+          "exit": 0,
+          "ms": 90.58770000000001,
+          "log": "native/build/group2155-check-native-read-boundaries-2154.log",
+          "sha256": "a7da1c51ca88f331f04f7dff28a7dbf729b312da4119b2eea2c868f05335d144"
+        },
+        {
+          "name": "check-native-includes-2148",
+          "passed": true,
+          "exit": 0,
+          "ms": 172.99630000000002,
+          "log": "native/build/group2155-check-native-includes-2148.log",
+          "sha256": "17a212bda425497e4bac0c2b59ba04e082b6f2a59ab2a73fdde21e3f7a4d58db"
+        },
+        {
+          "name": "check-native-source-watch-1710",
+          "passed": true,
+          "exit": 0,
+          "ms": 396.1228,
+          "log": "native/build/group2155-check-native-source-watch-1710.log",
+          "sha256": "be3de43f9fc1204bbddd2b9d460213ccd24e7e07c0cf571f854be85f8b05f780"
+        },
+        {
+          "name": "check-native-source-migration-1814",
+          "passed": true,
+          "exit": 0,
+          "ms": 7539.033899999999,
+          "log": "native/build/group2155-check-native-source-migration-1814.log",
+          "sha256": "4237f96c94fa39032bf32904178d567fbd817109936dbfe55976ca2305d320dc"
+        }
+      ]
+    },
+    "newSourceCases": 30,
+    "report": {
+      "path": "native/build/native-read-boundaries-2154-WoakqB/acceptance.json",
+      "sha256": "b972c28a88c9cd4de7d0e6b83dbe5f919c785b2365bc4cae9ed1e41af49c3ba5"
+    },
+    "unchangedChecks": "docs/research/ENGINE_WORK_2151.json",
+    "actualCpp": {
+      "passed": false,
+      "pending": true,
+      "tool": "tools/check-native-includes-2149-cpp.mjs",
+      "preparedCommand": "node native/build/resume2152.mjs"
+    }
+  },
+  "installation": {
+    "pending": true,
+    "updated": false,
+    "currentReceipt": "docs/research/USER_INSTALL_2145.json",
+    "reason": "Installed runtime active; no compiler/GUI/installation started."
+  },
+  "excludedWorktree": [
+    "prototype/player.js",
+    "tools/check-player-keyboard-release.mjs"
+  ],
+  "scope": "C++ source-watch accepts the same uppercase native extensions as build inputs without widening Source/path boundaries. Shared header dependency readers propagate explicit permission/I/O/HTTP/cancellation errors unchanged instead of silently selecting another candidate or returning partial dependencies; missing 404/ENOENT/legacy candidates still fall through. New30 source boundary cases and affected literal32/production-poll/type-migration checks passed together. Existing unchanged entry/records/AI source gates reused from2151. Combined2151+2155 actual C++ and immutable installation remain pending while installed runtime is in use."
+}
