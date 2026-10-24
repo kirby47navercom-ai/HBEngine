@@ -11,6 +11,8 @@ const normalize = value => {
   return result.join('/');
 };
 const includes = text => nativeIncludeDirectives(text).filter(row=>row.style==='quote').map(row=>row.name);
+const readFailures=new Set(['EACCES','EPERM','EIO','EBUSY','EISDIR','ENOTDIR','EMFILE','ENFILE','ENOMEM','ETIMEDOUT','ECONNRESET','ECONNREFUSED','ABORT_ERR','REQUEST_CANCELLED']);
+const fatalRead=error=>{const status=Number(error?.status??error?.statusCode);return error?.nativeDependencyFatal||error?.name==='AbortError'||readFailures.has(error?.code)||Number.isInteger(status)&&status>=400&&status!==404;};
 const candidates = (from,name) => {
   if(/[\\:\x00-\x1f]/.test(name)||name.startsWith('/'))throw Error('C++ include 경로 오류');
   return [...new Set([from.slice(0,from.lastIndexOf('/')+1)+name,name,'Source/'+name].flatMap(path=>{try{return [normalize(path)];}catch{return [];}}))].filter(path=>path.startsWith('Source/'));
@@ -37,7 +39,7 @@ export async function readNativeHeaderFiles(header,{sourcePath='',readText,onCan
       for(const candidate of candidates(path,name)) {
         onCandidate?.(candidate);
         if(seen.has(candidate)){dependency=null;break;}
-        try{const text=await readText(candidate);if(typeof text==='string'){dependency={path:candidate,content:text};break;}}catch(error){if(error?.nativeDependencyFatal)throw error;/* Another relative candidate, or a compiler-owned include. */}
+        try{const text=await readText(candidate);if(typeof text==='string'){dependency={path:candidate,content:text};break;}}catch(error){if(fatalRead(error))throw error;/* Missing relative candidate, or a compiler-owned include. */}
       }
       if(!dependency)continue;
       seen.add(dependency.path);size+=dependency.content.length;

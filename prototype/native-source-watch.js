@@ -2,7 +2,7 @@ import {readNativeHeaderFiles} from './native-header-files.js';
 
 export function nativeWatchedSources(reference,metadata=reference,dependencies=[]){
  const paths=[reference?.headerPath,reference?.sourcePath,...[...metadata?.structs||[],...metadata?.enums||[]].map(d=>d.sourcePath),...dependencies];
- return [...new Set(paths.filter(p=>typeof p==='string'&&/^Source\/.+\.(?:h|hpp|hh|inl|cpp|cc|cxx)$/.test(p)&&!/[\\:\x00-\x1f]/.test(p)&&!p.split('/').some(v=>!v||v==='.'||v==='..')))];
+ return [...new Set(paths.filter(p=>typeof p==='string'&&p.startsWith('Source/')&&/\.(?:h|hpp|hh|inl|cpp|cc|cxx)$/i.test(p)&&!/[\\:\x00-\x1f]/.test(p)&&!p.split('/').some(v=>!v||v==='.'||v==='..')))];
 }
 
 // Missing earlier candidates matter too: creating a nearer relative include
