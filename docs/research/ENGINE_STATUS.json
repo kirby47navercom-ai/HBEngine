@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-24",
-  "basisRevision": "61847f896e63e0b772af5bb6892a76f8be583ccd",
+  "basisRevision": "9efe8ae0811a2063317946ad05637e6b53b5af71",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -563,7 +563,7 @@
       "area": "2d",
       "title": "자동 타일·2.5D 제작 통합",
       "status": "partial",
-      "implemented": "타일 제작·2D/3D 공존과 카메라 차원 · 165: 8이웃 우선순위/회전 자동 타일·인접 경계 재계산·셀 충돌 동기화와 편집 UI · 166: 가중 랜덤 변형/고정 시드·선택 셀/이웃만 복제·묶음 런타임 쓰기의 인접 갱신·디자이너 회전 표시 · 168: 32×32 렌더/충돌 청크·변경 청크만 기하/충돌 재생성·미변경 자원/ID 보존·실제 미술 컬링 경계·등각 대각 띠/개별 정렬·C++/BP 실행 · 169: 확장 이웃/명시 타일/빈셀 규칙·회전/대칭·먼 역의존 청크 갱신·게임/편집기 UV · 170: 불변 레이어 WeakMap 셀 인덱스·반복 Get/Has 재사용·단일 Set 전체검증 생략·기존 청크/충돌 연결 ·276–279: 타일 async 수명/중간 편집 보존·불변 레이어 검증 재사용·CPP/BP/실제2렌더/15청크 기하 유지·readonly AI셀/페이지·선택 원본색 ·283: WebGPU 원본색과 HDR 합성 분리 ·308–318: 면적 비례 편집/충돌 배열·256 제한 제거·희소 flood/box·가상 화면/셀 이동·실제 에디터 Undo/CPP/BP·큰 자동 충돌·ARM64 헤더 ·2178–2208: 단일/다중타일 마지막값중복정리·무변경복사0·작은쓰기 lookup overlay/최대16세대on-demand압축·변경group만계승. 셀원래순서/과거snapshot·native JSON보존·대량spread제거·첫셀삭제bucket순서修理. 자동타일 affectedindex·render/collision dirtychunk 후보를공유. 신규10source사례·기존타일4gate통과. 소유4096tile warm단일수정+조회 getter8190→2050, 실변경전체배열복사/검증freeze·디스크chunk·전체frame성능은별도.",
+      "implemented": "타일 제작·2D/3D 공존과 카메라 차원 · 165: 8이웃 우선순위/회전 자동 타일·인접 경계 재계산·셀 충돌 동기화와 편집 UI · 166: 가중 랜덤 변형/고정 시드·선택 셀/이웃만 복제·묶음 런타임 쓰기의 인접 갱신·디자이너 회전 표시 · 168: 32×32 렌더/충돌 청크·변경 청크만 기하/충돌 재생성·미변경 자원/ID 보존·실제 미술 컬링 경계·등각 대각 띠/개별 정렬·C++/BP 실행 · 169: 확장 이웃/명시 타일/빈셀 규칙·회전/대칭·먼 역의존 청크 갱신·게임/편집기 UV · 170: 불변 레이어 WeakMap 셀 인덱스·반복 Get/Has 재사용·단일 Set 전체검증 생략·기존 청크/충돌 연결 ·276–279: 타일 async 수명/중간 편집 보존·불변 레이어 검증 재사용·CPP/BP/실제2렌더/15청크 기하 유지·readonly AI셀/페이지·선택 원본색 ·283: WebGPU 원본색과 HDR 합성 분리 ·308–318: 면적 비례 편집/충돌 배열·256 제한 제거·희소 flood/box·가상 화면/셀 이동·실제 에디터 Undo/CPP/BP·큰 자동 충돌·ARM64 헤더 ·2178–2208: 단일/다중타일 마지막값중복정리·무변경복사0·작은쓰기 lookup overlay/최대16세대on-demand압축·변경group만계승. 셀원래순서/과거snapshot·native JSON보존·대량spread제거·첫셀삭제bucket순서修理. 자동타일 affectedindex·render/collision dirtychunk 후보를공유. 신규10source사례·기존타일4gate통과. 소유4096tile warm단일수정+조회 getter8190→2050, 실변경전체배열복사/검증freeze·디스크chunk·전체frame성능은별도. ·2260–2266소스: 공용C++native패킷의 warm동일self/target/layer·서로다른셀·nonerase tileSet만묶음. cold/stale/pool은기존수명경로·query/process/레이어/소유변경/중복좌표/삭제/invalid는경계·정상prefix반영뒤원래오류·재삽입배열순서/dirty/autoRule·collision/render진단보존. 기존65536요청예산분할로65540전부처리·새globalcap0. 실제engineOperations packet대serial14source+기존tileindex10통과(총0.9s). 4096셀64쓰기 map공개64→1·혼합800쓰기동치, FPS/RAM주장0. 결과묶음당전체배열copy·일반BP개별쓰기·diskchunks잔여.",
       "remaining": [
         "디스크 청크 저장·쓰기 전체 점유 배열 복사·큰 점유 맵의 총 렌더/충돌 비용·장시간 성능",
         "큰 월드 원점 이동/좌표 정밀도·2.5D 제작 샘플과 세 렌더 경로 품질 대조"
@@ -584,7 +584,8 @@
         "prototype/two-d-editor.css",
         "tools/check-tilemap-sparse-310.mjs",
         "tools/check-tilemap-sparse-312-window.mjs",
-        "docs/TILE_RUNTIME_INDEXES.md"
+        "docs/TILE_RUNTIME_INDEXES.md",
+        "tools/check-tile-native-writes-2263.mjs"
       ],
       "evidence": [
         "docs/2D_RENDERING_SHORTCUTS.md",
@@ -599,7 +600,8 @@
         "docs/research/ENGINE_WORK_279.json",
         "docs/research/ENGINE_WORK_283.json",
         "docs/research/ENGINE_WORK_318.json",
-        "docs/research/ENGINE_WORK_2208.json"
+        "docs/research/ENGINE_WORK_2208.json",
+        "docs/research/ENGINE_WORK_2266.json"
       ]
     },
     {
@@ -3975,10 +3977,10 @@
     }
   ],
   "latestBatch": {
-    "first": 2246,
-    "last": 2259,
-    "receipt": "docs/research/ENGINE_WORK_2259.json",
-    "scope": "데이터편집도구 API버전/명령호환·준비취소/중복실행/실제결과보존·bounded출력/AI진단, 도구editorOnly 공용4target payload제외/런타임참조거절. 신규29source와관련gate. GUI/신규CPP/패키지/기기/설치검증0·예약금지/업데이트보류유지."
+    "first": 2260,
+    "last": 2266,
+    "receipt": "docs/research/ENGINE_WORK_2266.json",
+    "scope": "warm native 타일쓰기 묶음·삭제/중복/쿼리/오류순서保全·immutable JSON/native형식유지. 신규14source+기존10gate, 공개64→1은FPS/RAM아님. 전체copy/BP개별쓰기/diskchunks잔여·설치보류/예약0."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_2145.json",

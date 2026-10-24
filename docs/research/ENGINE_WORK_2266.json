@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "date": "2026-10-24T09:32:43.125Z",
+  "kind": "ordered-native-tile-write-coalescing",
+  "implementationRevision": "9efe8ae0811a2063317946ad05637e6b53b5af71",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2259.json",
+  "changedSourceHashes": {
+    "docs/TILE_RUNTIME_INDEXES.md": "326188af0a61034b7f7c09dfb8ec7fe2dd557a6eaed663afa709c18a8f599301",
+    "docs/ai-routes.json": "a6cb144189d6fb45bbb0c51fa6c9602e6321aa28ac989a0507eca3fab7ac4c6d",
+    "prototype/engine-services.js": "f844f8612cbf30f94308a4797ba5793dccf6e83398f34094cc368d28d4ade140",
+    "prototype/tile-cell-index.js": "1a8192d8e657fced1e8fa702cb9354458c6a2bcfcfac00b155dbbfdf234f5334",
+    "prototype/tilemap-runtime.js": "a187ec30647c041b882be54932be09059f2d245fdcda036c1862774a04d824a8",
+    "tools/check-tile-native-writes-2263.mjs": "3f3be2d493d09abf967cc5270af3d4fae1e5ec1bee0b9beb078d92f17cf41a00",
+    "CODEX_HANDOFF.md": "c90084e33e049540a9938c5009c808d9864a21c8b894ae40486d5ac19deb9538"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1345,
+  "targetIds": [
+    "2D-06"
+  ],
+  "changes": {
+    "2D-06": " ·2260–2266소스: 공용C++native패킷의 warm동일self/target/layer·서로다른셀·nonerase tileSet만묶음. cold/stale/pool은기존수명경로·query/process/레이어/소유변경/중복좌표/삭제/invalid는경계·정상prefix반영뒤원래오류·재삽입배열순서/dirty/autoRule·collision/render진단보존. 기존65536요청예산분할로65540전부처리·새globalcap0. 실제engineOperations packet대serial14source+기존tileindex10통과(총0.9s). 4096셀64쓰기 map공개64→1·혼합800쓰기동치, FPS/RAM주장0. 결과묶음당전체배열copy·일반BP개별쓰기·diskchunks잔여."
+  },
+  "checks": {
+    "source": {
+      "passed": true,
+      "newCases": 14,
+      "report": {
+        "path": "native/build/tile-native-writes-9hByMj/acceptance.json",
+        "sha256": "5fc822a5e17cf2ba9355179147b48d15f8ae9ed349831317b7c581dca672368e"
+      },
+      "group": {
+        "path": "native/build/group2264.json",
+        "sha256": "9bd9403e3fd3b7cd4c0d6b91764c10e29cba646bdd1cc178d0a012069398bf99"
+      },
+      "integrity": {
+        "path": "native/build/final2265.json",
+        "sha256": "bcc9d49ec6f5614942f67b2e8eb1654a4cd8401ad7dfc9925ecbca85b15bac87"
+      },
+      "measurements": {
+        "occupied": 4096,
+        "writes": 64,
+        "serialMapPublications": 64,
+        "nativeMapPublications": 1,
+        "mixedWrites": 800,
+        "segmentedPacketCells": 65540,
+        "scope": "Source fixture counts and exact serial equivalence, not FPS/OS RAM/GPU timing."
+      }
+    },
+    "nativeBinary": {
+      "executed": false,
+      "lastActual": "docs/research/ENGINE_WORK_2208.json",
+      "reason": "Same SDK wire calls, current source native-command replay only; SDK/Host/Player/renderer unchanged."
+    },
+    "actualWindow": {
+      "executed": false,
+      "reason": "Background and unowned player protection."
+    },
+    "devices": {
+      "executed": false,
+      "reason": "No Android phone/MacXcode."
+    }
+  },
+  "limits": [
+    "Real occupied-array copying/freezing/auto-tiles remains per resulting batch; ordinary BP point writes and disk chunks remain.",
+    "Only warm distinct non-erasing compatible runs merge; all other commands retain their exact ordered path.",
+    "No actual C++ binary/window/native renderer/device/installation execution for this source change."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4718,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "policy": "Owned source fixture JSON only, retain/prune callbacks; no compiler output after2208."
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}

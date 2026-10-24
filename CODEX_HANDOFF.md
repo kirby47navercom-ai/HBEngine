@@ -2,13 +2,17 @@
 
 최신사용자: 예약다시생성/업데이트금지, 여러분야실구현계속·마지막영향검사. 작은묶음뒤턴끝내지말기·사용량소진/누적목표실제충족때만중단. 주인님/짚짱/해요. hbengine2160삭제. goal/agent/설치0. UPDATE_HOLD.json active 유지. Mac/Xcode/Android폰없음·재질문0. 사용자창/탭/프로필/게임보호. heavy/GUI전active1955·마지막6:54Zactive[](이후source만).
 
-## WORK2259 core 61847f896e63e0b772af5bb6892a76f8be583ccd / part17f2024a
+## WORK2266 core 9efe8ae0811a2063317946ad05637e6b53b5af71
 
-ET api.version1/requires선택manifest·지원capability만/legacy미지원다른버튼격리. inspector/schema/EQS run/read/view/focusRoutes. 입력/템플릿/문맥copy·revision경로1read·전송전doc/scene/모드/정의/함수identity+cancel. 창당1·모든control/config잠금·실패회복·닫기late표시0. 전송뒤명령은실제성공/오류반환·retry/가짜rollback0. outputjson bounded문자4000/깊이6/노드512/항목64 text·포맷오류가성공명령실패로바뀌지않음. 新20source productionDOM/registry+공용editorEQS; schema기존editorTools필드를merge(초기중복property오류수정). ET editorOnly로4target commoninspectBuild payload제외·runtime직접/Source참조거절·CRUD/Takepreset기존안내/runtime파일유지. 소유project검사新9·263667B tool추가시payload11506B동일. futureAPI는project.write검증이올바르게거절하므로fixture외부복사상황만rawfs작성;실패성과0. combined2258/group2256선별성공+recheck2257 refs·新29source/GUI·신CPP·실제패키지·기기·설치0. hashbase2245/8+6owner중복merge·retain/prune캐시·build/profile복제0.
+warm native tileSet의동일self/target/layer·distinctcell/nonerase만묶음. RuntimeTilemaps.edit공유. cold/stale/pool은기존operation; query/process/다른op/소유·레이어변경/duplicate/erase/invalid는경계·유효prefix반영뒤원래오류. 재삽입배열순서/dirty/autoRule/collision/render보존.65536기존예산은packet분할·65540셀누락0/globalcap0. group2264 新14+tileindex10 ~0.9s.4096셀64write map공개64→1·혼합800동치는FPS/RAM아님. 전체copy/BP개별쓰기/diskchunks잔여. SDK/Host/Player/renderer불변·新CPP/GUI/설치0. active1955 9:28Zactive[]. exactref WORK2266/base2259. 次GAM-03 FinishAbort/nativeBTTask수명부터계속.
 
-## WORK2245 core301cb5a6 / 신규39source
+## WORK2259 core61847f89 / part17f2024a
 
-편집월드수동EQS: clone→공용eqsRun/NavMesh/실제Rapier queryOnly XY/XZ·초안/단계UI/AI·세대/target/context/풀/플레이/취소·동시copy1·정리뒤진단만. 원본실행/BP/CPP/UI/음성/debug쓰기0. 전용TestingPawn/자동편집재질의별도. recheck2237 18source/기존EQS2. Euler actor/child/bone6order·raw105도·name/UUID·축별priority/normalized circular/0weight/Stop·recordedTRS/native재생. partial없으면기존quat; 다른order/회전root원점은원자orientation잔여. VMstopping중낮은clip재시작0/finalcapture維持. group2243 새21+indexed2100/importedpose2065/importedroot2081/BT2214/AI통과. SDK/Host/Player/renderer불변. 자세한근거WORK2245.
+ET api.version1/requires선택manifest·legacy지원버튼維持·inspector/schema/EQS3capability. 입력/template/contextcopy/revision경로1read·전송전identity/cancel·동시1/control/config잠금·실패회복/닫기late표시0. 전송뒤실제성공/오류보존·가짜rollback/retry0. boundedJSONtext/표시실패≠명령실패. 新20source+도구/AI. ET editorOnly4target inspectBuild payload제외/runtime직접·Source참조거절/CRUD·Takepreset유지. 新9projectcase·263667B추가에도payload11506B동일. combined2258/recheck2257 refs. 실제패키지/기기미검증. native/codeABI/배포·다중원자/전송뒤취소잔여.
+
+## WORK2245 core301cb5a6 / source39
+
+편집월드EQS clone/queryOnly·NavMesh/2D3D·초안/취소/사람단계/AI:18source. Euler actor/child/bone6order/raw각도·축중재/복원/native재생/VM종료재시작수정:21source. 다른order/회전원점은원자orientation·전용TestingPawn/자동편집질의잔여. recheck2237/group2243/WORK2245 refs.
 
 ## 이전 확정 소스 / 재검사 반복0
 
