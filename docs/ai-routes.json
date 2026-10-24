@@ -1028,6 +1028,20 @@
   ],
   "focusRoutes": [
     {
+      "id": "joint-runtime-records",
+      "keywords": [
+        "JointRuntimeRecords",
+        "valuesForOwner",
+        "entriesForOwner",
+        "breakCandidates"
+      ],
+      "paths": [
+        "prototype/joint-runtime-records.js",
+        "prototype/physics-world.js",
+        "docs/JOINT_BREAKAGE.md"
+      ]
+    },
+    {
       "id": "skeletal-retime",
       "keywords": [
         "skeletalRetimeJob",
