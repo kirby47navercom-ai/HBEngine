@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "date": "2026-10-24T13:03:51.403Z",
+  "kind": "hot-deformables-reflected-native-defaults-sparse-dirty-cells-bounded-fullbody-stretch",
+  "implementationRevision": "5387684a7ca3cc665c173983a7e82e9869b6b04d",
+  "implementationRevisions": [
+    "2961d0d42ff4666c6c4e920d7a73271aad58eb96",
+    "5387684a7ca3cc665c173983a7e82e9869b6b04d"
+  ],
+  "sourceHashBase": "docs/research/ENGINE_WORK_2334.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "d1676b9ef6b4e7dd3ddfcacceccc689f4f972aa19e794864ecb05d051dbaa069",
+    "prototype/deformable-physics.js": "454e8f96b9bea7f1e89ea0bec1058aa46f56d16cad6c884e0a3d9e46ac4b0718",
+    "prototype/effect-tag-requirements.js": "58683b8348505331a0bf149ea1663e651baeb37c36539cca2364d416d3155cc7",
+    "tools/check-behavior-aborts-2279-cpp.mjs": "bbe7d6f66a0499f8f633a750c49fd068d4b02c9aca019816502651c3a036106a",
+    "tools/editor-automation.mjs": "8d8fe761eb8905c5fb4b5a068266d4c8788da7a7428cc7ad5cc02bf834efae4b",
+    "prototype/deformable-properties.js": "705d74b4aa8c579dcf051f78c8b503f3649e0dab2019b445d39effa1ff49dde2",
+    "docs/DEFORMABLE_HOT_PROPERTIES.md": "83cdaa04b898cf1a0239b7878945b98748471a6ece96abc1a85c01a04e0cc2c1",
+    "tools/check-deformable-hot-2336.mjs": "42f96083d8e63e527df10122bcad84395bb44b0511364fcbb6f1a79cf4c14d7a",
+    "docs/BLUEPRINT_SPEC.md": "72d50f84650673f089d6b8b629bf0491a6bfe951d673aae1cb89b98d662f40fc",
+    "native/include/HBEngine/Bridge.hpp": "0a48eeee79c80741430300e989720f0f24e37ae33534585cbea627b5671513da",
+    "native/include/HBEngine/Game.hpp": "e62d4206af8af8ae1f4b204b8fec4e00c9a02438a554f2fd99f2453be1a34132",
+    "prototype/animation-full-body.js": "a5e6deaf9abb9ff60880098ccf21dd8a1bc7779e51cadd7957fea1cb2ea34c61",
+    "prototype/animation-ik-editor.js": "39ee106f29963390d463ccf3764f35a1ecd59d93cd436d331273e33b600431ba",
+    "prototype/animation-ik.js": "2714ef35910e222a6f5bc4a503d5ed81ca7502eb0f4d3119887974095faa7bce",
+    "prototype/engine-services.js": "5c019f914331624a5b0142b244ae6b45d519445d44e322ceef1933befc4e6d1e",
+    "prototype/native-protocol.js": "7bcb4fece0132a46e7963cf7be666d9ff90b02638ebb42e6f9535d86ae7ec7b6",
+    "prototype/tilemap-runtime.js": "e5d43b24a3d288838dff9fd5578adb518585f0132092967fa36fc89f69638de9",
+    "tools/check-engine-170.mjs": "ae0f7a9bd9a8e40ee2e1acfd660ace9bc54a18f214a079ed362b7fafb803d16e",
+    "docs/FULL_BODY_STRETCH.md": "36c22aa64a959134865f2e8732af73ab4c6ccf63709cdf619d8baf7767d323e6",
+    "docs/NATIVE_INPUT_DEFAULTS.md": "c903da2f3d7669558a8692611e81208fdcb163641d459354d53eeebe0961d494",
+    "docs/TILE_DIRTY_CELLS.md": "7735af68fe6aa38f53fcb27225e545711057bdab34f4533a175b68a539e83cbc",
+    "prototype/native-input-defaults.js": "311250e9760ba6e434fa00ac6f6e3273d896f24300cf70e8f1d8b8042855c072",
+    "prototype/tilemap-changes.js": "6c61aa4f6badf76b7fca4d6d60d734151f64936be3c7560efb3a4baad79cec67",
+    "tools/check-fullbody-stretch-2358.mjs": "85e23dd520beb1586fa25ded74419ce3d9dd6c57f8d6d66490756e4b0abb92a5",
+    "tools/check-native-input-defaults-2353.mjs": "7c946009e4346705c3a4c070e862ba53a881d361c57bb2f8fb9ca0a4efcecfc6",
+    "tools/check-tile-dirty-2354.mjs": "04b8fd912d2c133e38a827106a9e8a28c75d5a65199299ece3ee1e865206091f",
+    "CODEX_HANDOFF.md": "e0127ef4e1979baefb040a54df03379592f0b636edb29d12a6b383ddd7473d14"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1388,
+  "targetIds": [
+    "PHY-02",
+    "GAM-04",
+    "CPP-01",
+    "2D-06",
+    "ANM-05",
+    "EDT-04"
+  ],
+  "changes": {
+    "PHY-02": " ·2335–2367: cloth/2D3Drope 실제재질/반복·표면/필터 hot갱신으로 입자·속도·핀·강체연결·세대유지·현접촉mask전환. 직접setter없는mass/shape/drag/gravity등cold유지. 新7source+현재SDK의typedCPP13/25RPC 포함.",
+    "GAM-04": " ·2335–2367: schema역할목록copy/runtime상수freeze로조회자의분류변조차단·기존태그gate12재검증.",
+    "CPP-01": " ·2348–2367: 공용desktop/mobile decoder가생략own키의반영default만분리copy·명시값/필수/receiver검증보존·임의C++eval0. 新10source. 新SetIKStretchSettings 공개노드/SDK를실제CPP→VM활성graph확인·기존13항목25RPC도현SDK통과.",
+    "2D-06": " ·2348–2367: dirty좌표perlayer keyed누적·process때분리배열1회·비동기추가/실패/전체무효화보존. 新6source·nativepacket14/기존tilegate통과. 실제점유array전체copy/diskchunks잔여·FPS주장0.",
+    "ANM-05": " ·2348–2367: opt-in상한늘이기/뼈위치강성/공유구간最大1회·원본pose/기존alpha/root/제약유지·사람폼/JSON/AI·공용CPP/BP. 新8source+실제CPP1명령→활성graph. 상충목표는잔여오차유지·압축/에너지최소해법별도.",
+    "EDT-04": " ·2335–2367: hot물성/반영default/dirty수집/FullBody늘이기 schema계약과focusroute·분리목록보존. source공용경로검증이며새GUI/실기기/설치증거아님."
+  },
+  "checks": {
+    "newSourceCases": 31,
+    "priorHot": {
+      "path": "native/build/combined2344.json",
+      "sha256": "3c8e3408773341c6138b4047aca4db4ae0a446973959cb8ca3a075a03635e57d"
+    },
+    "group": {
+      "path": "native/build/group2360.json",
+      "sha256": "c983424b480063d1d6bbce068284b7063538ec60e50c5550df6f949ea014b6b5"
+    },
+    "repair": {
+      "path": "native/build/recheck2362.json",
+      "sha256": "b434bdf5fa603086e53ba888bd526d95ea47f802bcf2ccf63e80f9a627025154"
+    },
+    "integrity": {
+      "path": "native/build/final2364.json",
+      "sha256": "2e4506faebb82c992bd661765e840f304a7f54da24c7f166ddf8afe5b384516e"
+    },
+    "source": {
+      "native": {
+        "path": "native/build/native-input-defaults-vc9Sk1/acceptance.json",
+        "sha256": "7935204a8f80563d8fa3504bfe4d716a30716a60909d80e10d6d29911e14070f"
+      },
+      "tile": {
+        "path": "native/build/tile-dirty-E6uasy/acceptance.json",
+        "sha256": "fc81545df79de7a281f7bf760a37ab8ac6ee207251a6876d0a212ba7233914b9"
+      },
+      "ik": {
+        "path": "native/build/fullbody-stretch-rMU7oO/acceptance.json",
+        "sha256": "eb0a8ae521dfe3bf398003b0bee144e439ac4dee79c5f942f859c7d80d437cb1"
+      }
+    },
+    "actualCpp": {
+      "currentSdkCases": 14,
+      "requests": 26,
+      "expectedRejected": 3,
+      "existing": {
+        "path": "native/build/behavior-abort-cpp-KVt5Wi/acceptance.json",
+        "sha256": "9122700c39249b721d3d08dd6d6a997a98690294397cbb764804f79ec8456030"
+      },
+      "newCommand": {
+        "path": "native/build/fullbody-stretch-r571Fh/acceptance.json",
+        "sha256": "437a735cd5cc37f350707f85485a2690142a0883423a4afc9ce7dc2bdf1e2b44"
+      },
+      "newCommandRow": {
+        "name": "current compiled SDK defaulted C++ call replays the new typed command through the running graph",
+        "passed": true
+      },
+      "builds": [
+        {
+          "sourceSHA256": "5551df2a06182f77329e66df4fc274e9ff1860ad1972aba6be1a7c76ee0e548f",
+          "binary": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\7e023a64bdc967344469\\worker.exe",
+          "sha256": "bbfdf7fd8422e8351d92ac6cb1341a1db50124c0bd30844b24cb86085cbec7e5",
+          "cacheHit": false,
+          "cacheKey": "7e023a64bdc967344469",
+          "sdk": {
+            "fingerprint": "ae0944ebc03c5e687188652f9f86f80daa0e48cc794226b8f42b703352d7d0e6",
+            "files": 37,
+            "bytes": 2385768
+          },
+          "sdkUsed": {
+            "fingerprint": "4bf87658877b5eba19a8ab4867e13ff8556d68ab87a3c70b225c2cf69b287ed8",
+            "preprocessedFingerprint": "528e16dbe4194a6f41fae56d53e4a3b634c87adea7fac6bd994e154910ab7fe6",
+            "files": 10,
+            "bytes": 1354466,
+            "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+            "mode": "dependencies",
+            "planHit": false,
+            "scanMS": 554.9363000000001
+          }
+        },
+        {
+          "binary": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\03af1ca2f399420f6825\\worker.exe",
+          "sha256": "9f60d17f71e6b8627a4528df61836b62d44cb1adc071901303ac67dba07f4e6d",
+          "cacheHit": false,
+          "sdkUsed": {
+            "fingerprint": "374affbc5ba41a04bf26109787a892c821b82314c6a6b4659170deacd893a1cb",
+            "preprocessedFingerprint": "be0baa2965b811b1dd9ed9697651b304595e879623606214b02fe60efacdc3fb",
+            "files": 10,
+            "bytes": 1354466,
+            "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+            "mode": "dependencies",
+            "planHit": false,
+            "scanMS": 585.0844999999999
+          }
+        }
+      ],
+      "scope": "Actual new compiled SDK command→same VM graph and defaulted arguments, plus current SDK task/effect/rope/deep transform13/25RPC. First combined IK report remains false because a conflicting-source-goal expectation was incorrect; its final compiled-native row passed. Product sources unchanged after that native execution; only fixtures corrected and source group rerun."
+    },
+    "repairScope": "Batch test accidentally supplied per-call objects; existing nonroot stiffness rejection now intentionally accepts supported bounded position stiffness (out-of-range stays rejected); mutually conflicting IK goals cannot both equal their target, so check unchanged shared segment caps and residual error instead. Product code unchanged after first grouped execution; repaired fixtures alone rerun.",
+    "actualWindow": false,
+    "devices": false
+  },
+  "generated": {
+    "committed": false,
+    "hashes": {
+      "prototype/core-api.js": "fe68ce6d629a753390bad604e56d220887aeaf930667a5ad5915fa5fd32b86b5",
+      "docs/NODE_CATALOG.md": "9fe13371c34cb649a3b07f53e24873a598a0f33e8dac1e8f8744cb3b881715df"
+    },
+    "rule": "Reproduce from current Game.hpp with tools/generate-api.mjs; do not hand edit or stage generated source/catalog."
+  },
+  "limits": [
+    "Cold physics settings still rebuild; no arbitrary mesh/volumetric/tearing/GPU solver claim.",
+    "Dirty-list accumulation improved only; actual occupied arrays, immutable JSON and disk chunks remain.",
+    "Full Body stretching is bounded kinematic extension; coupled compression/energy minimization and arbitrary unreachable-goal quality remain.",
+    "No new renderer/GUI/device/installation validation or global UE/Unity completeness claim."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4101,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "policy": "Owned fixtures/reports only; two native workers in shared bounded cache, automatic 32+live cleanup. No User/Versions operation."
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}
