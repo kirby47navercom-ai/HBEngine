@@ -86,6 +86,8 @@
 .create-asset-dialog footer button,.close-document-dialog footer button { padding:6px 18px; min-height:30px; }
 .close-document-dialog h2 { font-size:17px; }
 .close-document-dialog p { color:var(--muted); }
+.merge-conflicts { display:grid; gap:8px; max-height:40vh; overflow:auto; margin:12px 20px; }
+.merge-conflicts label { display:grid; grid-template-columns:minmax(0,1fr) 120px; align-items:center; gap:12px; overflow-wrap:anywhere; }
 
 .asset-editor-heading { display:flex; align-items:center; gap:12px; padding:17px 20px; border-bottom:1px solid var(--line); background:var(--raised); }
 .asset-editor-heading small { color:var(--muted); font-size:12px; }

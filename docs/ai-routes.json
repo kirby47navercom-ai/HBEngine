@@ -3627,7 +3627,9 @@
         "effect.ongoing.edit",
         "editEffectOngoing",
         "refreshOngoingEffects",
-        "ongoingTagsChanged"
+        "ongoingTagsChanged",
+        "ongoingParticipants",
+        "prepareOngoingParticipants"
       ],
       "paths": [
         "prototype/effect-ongoing.js",
@@ -3671,6 +3673,52 @@
         "prototype/two-d-editor.js",
         "prototype/app.js",
         "docs/TILE_BRUSH_SESSIONS.md"
+      ]
+    },
+    {
+      "id": "document-conflict-merge",
+      "keywords": [
+        "DocumentMergeSession",
+        "planDocumentMerge",
+        "document.conflict.merge",
+        "automationConflictMerge"
+      ],
+      "paths": [
+        "prototype/document-merge.js",
+        "prototype/app.js",
+        "docs/DOCUMENT_CONFLICT_MERGE.md"
+      ]
+    },
+    {
+      "id": "asset-transaction-recovery",
+      "keywords": [
+        "recoverAssetTransactions",
+        "readAssetTransaction",
+        "recoverAssetWrites"
+      ],
+      "paths": [
+        "tools/asset-transaction.mjs",
+        "tools/asset-write-intent.mjs",
+        "tools/project-service.mjs",
+        "docs/MODEL_EMBEDDED_IMAGES.md"
+      ]
+    },
+    {
+      "id": "joint-breakage",
+      "keywords": [
+        "checkJointBreaks",
+        "jointBroken",
+        "physicsJointBreak",
+        "SetJointBroken",
+        "jointBreakage"
+      ],
+      "paths": [
+        "prototype/physics-world.js",
+        "prototype/scene-components.js",
+        "prototype/engine-services.js",
+        "native/include/HBEngine/Game.hpp",
+        "native/include/HBEngine/Session.hpp",
+        "docs/JOINT_BREAKAGE.md"
       ]
     }
   ]

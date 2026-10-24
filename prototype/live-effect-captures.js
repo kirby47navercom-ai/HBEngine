@@ -13,8 +13,8 @@ export function registerLiveEffect(system,target,effect,source){
  if(!hasLiveEffectInputs(effect.definition.data)){delete effect.captureSource;return;}
  effect.captureSource={id:source.object.id,generation:source.generation};if(effect.data.period===0)bind(system,target,effect);
 }
-export function affectedLiveOwners(system,source){const result=new Set([source]),queue=[source];for(let i=0;i<queue.length;i++)for(const target of system.liveDependents.get(queue[i].generation)?.keys()||[])if(!result.has(target)&&system.owners.get(target.object.id)===target){result.add(target);queue.push(target);}return result;}
-export function rebuildLiveEffectsIndex(system){system.liveDependents.clear();system.liveTargets.clear();for(const target of system.owners.values())for(const effect of target.effects.values()){delete effect.liveDependencies;if(effect.data.period===0&&effect.captureSource&&!effect.inhibited&&hasLiveEffectInputs(effect.definition.data))bind(system,target,effect);}}
+export function affectedLiveOwners(system,source){const result=new Set(source instanceof Set?source:[source]),queue=[...result];for(let i=0;i<queue.length;i++)for(const target of system.liveDependents.get(queue[i].generation)?.keys()||[])if(!result.has(target)&&system.owners.get(target.object.id)===target){result.add(target);queue.push(target);}return result;}
+export function rebuildLiveEffectsIndex(system,affected){if(!affected){system.liveDependents.clear();system.liveTargets.clear();}for(const target of affected||system.owners.values()){system.liveTargets.delete(target);for(const effect of target.effects.values()){if(affected)unregisterLiveEffect(system,target,effect);else delete effect.liveDependencies;if(effect.data.period===0&&effect.captureSource&&!effect.inhibited&&hasLiveEffectInputs(effect.definition.data))bind(system,target,effect);}}}
 // Resolve only when an attribute/effect changes, never on idle ticks. Numeric
 // input snapshots and generation IDs are retained; source actor objects are not.
 // All values are prepared before publication so a cycle/overflow rolls back the
