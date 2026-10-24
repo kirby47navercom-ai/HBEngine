@@ -1,5 +1,6 @@
 import {tileAt,setRuntimeTile,setRuntimeTiles} from './tile-cell-index.js';
 import {tilemapPage} from './tilemap-diagnostics.js';
+import {TilemapChanges} from './tilemap-changes.js';
 import {immutableNativeSnapshot} from './native-transport.js';
 import {TileCollisionChunks} from './tilemap-chunks.js';
 import {resolveAutoTiles,affectedAutoTileCells} from './auto-tiles.js';
@@ -21,7 +22,7 @@ export class RuntimeTilemaps {
   }
   async start(objects){for(const object of objects)if(enabledComponent(object,'TilemapRenderer')?.tilemap||object.tilemapAsset)await this.load(object);}
   colliders(object,changes){let cache=this.collisionChunks.get(object.id);if(!cache)this.collisionChunks.set(object.id,cache=new TileCollisionChunks());const result=cache.update(object.runtimeTilemap,changes);object.tileColliders=[...(object.tileColliders||[]).filter(c=>c.id.startsWith('worldCollider_')),...result.colliders];object.gameplayDebug={...object.gameplayDebug,tilemap:{...object.gameplayDebug?.tilemap,collisionChunks:result.chunks,rebuiltCollisionChunks:result.rebuilt}};}
-  async process(object){if(this.disposed||!this.dirty.has(object.id))return;const previous=this.processing.get(object.id);if(previous?.object===object)return previous.promise;const map=object.runtimeTilemap,revision=this.revisions.get(object.id),changes=this.changes.get(object.id),snapshot=changes&&new Map(changes),ticket={object};this.processing.set(object.id,ticket);
+  async process(object){if(this.disposed||!this.dirty.has(object.id))return;const previous=this.processing.get(object.id);if(previous?.object===object)return previous.promise;const map=object.runtimeTilemap,revision=this.revisions.get(object.id),changes=this.changes.get(object.id),snapshot=changes?.snapshot(),ticket={object};this.processing.set(object.id,ticket);
     ticket.promise=Promise.resolve().then(()=>{if(!this.disposed&&this.processing.get(object.id)===ticket)return this.hooks.render?.(object,map,snapshot);}).then(()=>{if(this.disposed||this.processing.get(object.id)!==ticket||object.runtimeTilemap!==map||this.revisions.get(object.id)!==revision)return;if(this.collisionDirty.has(object.id))this.colliders(object,snapshot);else if(object.gameplayDebug?.tilemap)object.gameplayDebug.tilemap.rebuiltCollisionChunks=0;this.collisionDirty.delete(object.id);this.dirty.delete(object.id);this.changes.delete(object.id);this.revisions.delete(object.id);object.tilemapDirty=false;}).catch(error=>{if(!this.disposed&&this.processing.get(object.id)===ticket)throw error;}).finally(()=>{if(this.processing.get(object.id)===ticket)this.processing.delete(object.id);});return ticket.promise;
   }
   async flush(vm){for(const id of [...this.dirty]){const object=vm.object(id);if(object)await this.process(object);else this.release(id);}}
@@ -62,6 +63,6 @@ export class RuntimeTilemaps {
       const tool=key==='tileSet'?'brush':key==='tileBoxFill'?'rectangle':'fill',cell={x:args.cell[0],y:args.cell[1]},end=key==='tileBoxFill'?{x:args.end[0],y:args.end[1]}:cell;
       const result=key==='tileSet'?setRuntimeTile(map,layer,args.cell,args.index):applyTileTool(map,args.layer,args.index<0&&tool==='brush'?'erase':tool,cell,end,args.index);next=result.data;changed=result.changed;cells=result.cells;
     }
-    if(changed){next=resolveAutoTiles(next,{layerId:layer.id,cells:cells||undefined});object.runtimeTilemap=immutableNativeSnapshot(next,{clone:false});object.tilemapDirty=true;this.dirty.add(object.id);this.revisions.set(object.id,{});if(key!=='tileLayerVisible')this.collisionDirty.add(object.id);let changes=this.changes.get(object.id);if(!changes)this.changes.set(object.id,changes=new Map());const previous=changes.get(layer.id);if(cells&&previous!==null){const affected=next.autoTileRules?.length?affectedAutoTileCells(next.autoTileRules,cells):cells;changes.set(layer.id,[...new Map([...(previous||[]),...affected].map(c=>[c.join(':'),c])).values()]);}else changes.set(layer.id,null);}return {};
+    if(changed){next=resolveAutoTiles(next,{layerId:layer.id,cells:cells||undefined});object.runtimeTilemap=immutableNativeSnapshot(next,{clone:false});object.tilemapDirty=true;this.dirty.add(object.id);this.revisions.set(object.id,{});if(key!=='tileLayerVisible')this.collisionDirty.add(object.id);let changes=this.changes.get(object.id);if(!changes)this.changes.set(object.id,changes=new TilemapChanges());changes.add(layer.id,cells?(next.autoTileRules?.length?affectedAutoTileCells(next.autoTileRules,cells):cells):null);}return {};
   }
 }

@@ -10,6 +10,7 @@ import {serviceApi} from './core-api.js';
 import {validInputSnapshot,validInputActions} from './runtime-input.js';
 import {valid2DAsset} from './two-d-assets.js';
 import {validateNativeBindings,nativeModuleWorld} from './native-module-query.js';
+import {nativeInputDefaults} from './native-input-defaults.js';
 export const canonicalWorld=Symbol('canonical native world');
 export class NativeProtocol{
   module(token){return this.sessions?.get(token);}
@@ -61,11 +62,11 @@ export class NativeProtocol{
     if(result.timerCallbacks!==undefined&&(!Array.isArray(result.timerCallbacks)||result.timerCallbacks.some(e=>!e||!['event','owner','scope','handle'].every(k=>typeof e[k]==='string'&&e[k].length<=160))))throw Error('C++ 타이머 콜백 오류');if(!result.clock||!['time','delta','scale'].every(k=>Number.isFinite(result.clock[k])&&result.clock[k]>=0)||typeof result.clock.paused!=='boolean')throw Error('C++ 시간 출력 오류');return result;
   }
   decodeRequest(session,request){
-    if(request?.worldTransport===undefined)return request;
+    if(request?.worldTransport===undefined)return nativeInputDefaults(session.metadata,request);
     if(session.metadata.workerProtocol!==3||request.worldTransport!==1||request.command||typeof request.worldId!=='string'||!/^[0-9a-f-]{36}$/.test(request.worldId)||!Number.isSafeInteger(request.worldSequence)||request.worldSequence<1||!Number.isSafeInteger(request.baseSequence)||request.baseSequence<0)throw Error('C++ snapshot transport contract');
     const {objectPatch,worldTransport,worldId,baseSequence,worldSequence,...plain}=request;let objects;
     if(baseSequence===0){if(worldSequence!==1||objectPatch!==undefined||!Array.isArray(request.objects))throw Error('C++ full snapshot contract');objects=request.objects;}
     else {if(!session.requestWorld||worldId!==session.requestWorldId||baseSequence!==session.requestSequence||worldSequence!==baseSequence+1||request.objects!==undefined)throw Error('C++ snapshot sequence mismatch');objects=applyWorldPatch(session.requestWorld,objectPatch);}
-    return {...plain,objects,[canonicalWorld]:{base:session.requestWorld,patch:objectPatch}};
+    return nativeInputDefaults(session.metadata,{...plain,objects,[canonicalWorld]:{base:session.requestWorld,patch:objectPatch}});
   }
 }

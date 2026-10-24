@@ -3456,6 +3456,47 @@
         "prototype/deformable-physics.js",
         "docs/DEFORMABLE_HOT_PROPERTIES.md"
       ]
+    },
+    {
+      "keywords": [
+        "nativeInputDefaults",
+        "생략 인수",
+        "nativeInputDefaultsContract"
+      ],
+      "paths": [
+        "prototype/native-input-defaults.js",
+        "prototype/native-protocol.js",
+        "prototype/native-model.js",
+        "docs/NATIVE_INPUT_DEFAULTS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "TilemapChanges",
+        "tilemapChanges",
+        "변경 좌표"
+      ],
+      "paths": [
+        "prototype/tilemap-changes.js",
+        "prototype/tilemap-runtime.js",
+        "docs/TILE_DIRTY_CELLS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "FullBodyIK",
+        "fullBodyStretch",
+        "SetIKStretchSettings",
+        "animGraphIKStretchSettings"
+      ],
+      "paths": [
+        "prototype/animation-full-body.js",
+        "prototype/animation-ik.js",
+        "prototype/animation-ik-editor.js",
+        "native/include/HBEngine/Game.hpp",
+        "native/include/HBEngine/Bridge.hpp",
+        "docs/FULL_BODY_STRETCH.md"
+      ]
     }
   ]
 }
