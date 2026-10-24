@@ -3528,6 +3528,17 @@
         "prototype/app.js",
         "docs/MODEL_CLIP_EXTRACTION.md"
       ]
+    },
+    {
+      "keywords": [
+        "checkHierarchy",
+        "headless-model hierarchy",
+        "모델 계층 깊이"
+      ],
+      "paths": [
+        "tools/headless-model.mjs",
+        "docs/HEADLESS_MODEL_HIERARCHY.md"
+      ]
     }
   ]
 }

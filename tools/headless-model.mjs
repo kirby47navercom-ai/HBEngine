@@ -23,10 +23,10 @@ function glb(source){
   return {json,binary};
 }
 function checkHierarchy(nodes){
-  const states=new Map(),heights=new Map();
-  const parents=new Set();for(const node of nodes)for(const child of node.children||[]){if(parents.has(child))throw Error('glTF 노드 부모 중복');parents.add(child);}
-  const visit=(index,depth=1)=>{if(depth>128)throw Error('glTF 노드 깊이 제한128');if(!integer(index)||index>=nodes.length)throw Error('glTF 노드 참조 오류');if(states.get(index)===1)throw Error('glTF 노드 순환');if(states.get(index)===2)return heights.get(index);states.set(index,1);const children=nodes[index].children||[];if(!Array.isArray(children)||children.length>10000)throw Error('glTF 자식 노드 오류');let height=1;for(const child of children)height=Math.max(height,1+visit(child,depth+1));if(height>128)throw Error('glTF 노드 깊이 제한128');heights.set(index,height);states.set(index,2);return height;};
-  for(let i=0;i<nodes.length;i++)visit(i);
+  const parents=new Uint8Array(nodes.length),roots=[];
+  for(const node of nodes){if(!node||typeof node!=='object'||Array.isArray(node))throw Error('glTF 자식 노드 오류');const children=node.children||[];if(!Array.isArray(children)||children.length>10000)throw Error('glTF 자식 노드 오류');for(const child of children){if(!integer(child)||child>=nodes.length)throw Error('glTF 노드 참조 오류');if(parents[child])throw Error('glTF 노드 부모 중복');parents[child]=1;}}
+  for(let i=0;i<nodes.length;i++)if(!parents[i])roots.push(i);
+  let visited=0;for(let i=0;i<roots.length;i++){visited++;for(const child of nodes[roots[i]].children||[])roots.push(child);}if(visited!==nodes.length)throw Error('glTF 노드 순환');
 }
 
 // Reuse the game's loader for hierarchy, skins, names and interpolation. Meshes are

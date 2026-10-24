@@ -3,7 +3,7 @@ import {validRetargetAsset} from './animation-retarget-assets.js';
 
 export function modelAnimationSubasset(result,metadata,id){
   const row=metadata.subassets.find(r=>r.id===id&&r.kind==='animation');if(!row)throw Error('가져온 애니메이션 하위 에셋을 선택하세요.');const clips=result.animations||result.object?.animations||[];
-  if(/\.(gltf|glb)$/i.test(metadata.source)&&Number.isInteger(row.sourceIndex)&&clips[row.sourceIndex])return clips[row.sourceIndex];
+  if(/\.(gltf|glb)$/i.test(metadata.source)&&Number.isInteger(row.sourceIndex)){if(!clips[row.sourceIndex])throw Error('원본 애니메이션 인덱스가 달라요. 다시 가져오세요.');return clips[row.sourceIndex];}
   const matches=clips.filter(c=>c.name===row.name);if(matches.length!==1)throw Error('애니메이션 이름이 없거나 중복돼요. 원본 클립 이름을 고유하게 지정하세요.');return matches[0];
 }
 function stableTrackName(root,track,names){
