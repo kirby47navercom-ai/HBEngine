@@ -1,0 +1,187 @@
+{
+  "version": 1,
+  "date": "2026-10-24T11:36:02.921Z",
+  "kind": "behavior-deferred-abort-effect-tags-sequence-recovery-rope3d-and-authoring-batches",
+  "implementationRevision": "5e1993aa893e27cdc4ba3a7dd85af1750c83bd77",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2277.json",
+  "changedSourceHashes": {
+    "docs/BEHAVIOR_TASK_LIFETIME.md": "ab5089e4314ae6a7bc376264a9bd1868cf69b9712d12a28278365ae2844b7330",
+    "docs/BLUEPRINT_SPEC.md": "4e0989b8a601e1e6fef29c2fe18bd59e0ede4be0ce3800cc2590ab1f31c0519f",
+    "docs/SEQUENCE_BATCH_ROLLBACK.md": "eb89156bb8635d0d2344f62070836c4232cb37aad20f0c379ded957ecef0ef26",
+    "docs/ai-routes.json": "fc9b56babd8383f23939fd8c9ff5b764b587a38492ddde029d84cc9f861e17c0",
+    "native/include/HBEngine/Bridge.hpp": "99d76e102a03393df6ce4e6cf9064148db2a7bd98547dce31dde222a46fc9d8e",
+    "native/include/HBEngine/Game.hpp": "91468cfa2081bcd5279c74ea6d14789baa94e433ce144077d5ca6eee3de66f2c",
+    "native/include/HBEngine/Session.hpp": "0f380bb03dc9ff5effca531d9c5b46e96b6b18d2d45abdaa50f44c6bceb422cb",
+    "prototype/ability-assets.js": "148cf05dd12f7e674c945e31759366d437bd7e2552ac7b055d7b209eb408fa41",
+    "prototype/ability-runtime.js": "2983565bbf3539c795e5015d8a8473bdc3130cdbfed6d6fd1ab11166b0598f79",
+    "prototype/app.js": "27b70731b784b236bc221938a34e3d1a53d8fe55365fe737622a56e926dc8a4f",
+    "prototype/cloth-config.js": "6848814e41d7c1e136589f72406dd602e38c63b32e45dbb50f01511a2a35cb86",
+    "prototype/cloth-pin-editor.js": "1270353ab62a28aefeae7d625e1d5871b83d51aeaff13b5f03909336f782dd72",
+    "prototype/cloth-rendering.js": "dcf4852a390d2f2da261bb1b1c7f1aebdab3c504d8c7c39ab527314713a76344",
+    "prototype/deformable-physics.js": "4af052ac66b190104ff93a038208cc8e9ac5a2549d4362c114aa1c733aa4f51e",
+    "prototype/effect-magnitude-inputs.js": "3aaca0a445b2703f32ff2ffc5e1a58a769d9ed7a47a45c2a9cade96c3677bb11",
+    "prototype/effect-scaling-editor.js": "7e3c9be6cabeeaf5e197dfab3498832cac206baa2401fef54e26cd2c39c1e758",
+    "prototype/effect-scaling.js": "320cd01d1bf0a00c8835625800c79ea3c073116473339bbb6a188500c49c6690",
+    "prototype/gameplay-assets.js": "4f9fcf2a08450913cc2ea826af2cfa0fdaff623f1b963d8b58b5d8cbc08f018f",
+    "prototype/gameplay-editor.js": "e4a2924a67d58040a032f15764f5e20ed4e1d9e5c332551081fbc0a53adfd4e1",
+    "prototype/gameplay-runtime.js": "a65034bae310aa505246b770705cc544086aaed579d6203cabd5922f1bcb7efa",
+    "prototype/live-effect-captures.js": "5b23dbe6f3fc4d952bbf1ba2a42f57173d39c99b4c9bf10477aa9256bbd9c141",
+    "prototype/model.js": "b819240e48705a717730bf3ae00a4c93bfdae651c82937533fa74b5cf92ca542",
+    "prototype/placement-catalog.js": "4e20d4c9c1eed114c54a07e8911506826ea21e8ee76b825816dcb289cce963a7",
+    "prototype/scene-components.js": "fe525d47a18e6501cde8b4d77a892cbe671a43b8d5f9ebf55e8416ac02867369",
+    "prototype/scene-editor.js": "0e28d318f57ffe664667c47bf8fe2e2c0f4f617bb5fe002ce46c4c4a505a7ad3",
+    "prototype/sequence-channels.js": "1185d1c93c8f2c78963e99ed928f7370f11a260909947ccd0dd1602ab739b549",
+    "prototype/structured-asset-editor.js": "0a574086b677adda7c8b6b8823efdf93e7cbdd6355143f415d51fc38cc5b0c30",
+    "tools/editor-automation.mjs": "2266ea30401a9ea32ed22c5482ff3d988cd175797e1aaedc00bfa44cd7ed8e4e",
+    "docs/BEHAVIOR_DEFERRED_ABORT.md": "4645241d175bac0e957e27a9cebc50a4f3a8795bfb3b42f63930200fa0d04149",
+    "docs/EFFECT_TAG_REQUIREMENTS.md": "14e86be9084287bad18712cb76ac449b17344f5d1e09a8930d3849ac0ce08e0d",
+    "docs/SEQUENCE_SINGLE_WRITE_RECOVERY.md": "a8dfcf8defd1e2e0b5e7b22c33c04f81cbed7c517d6f7c5b5df4d2e51f5e8770",
+    "docs/ROPE_3D.md": "fbefb1b3b6222cd70d40075bac72ebb8362e20beb8244dc5adef5d4b46766afe",
+    "docs/SCENE_RECIPE_BATCH.md": "7cbcbdcf9712b3bb96fb94ba75c9dd12ce98cb46a795a6c0c441d1c86cc476a7",
+    "prototype/behavior-aborts.js": "de832dd9363ae1af8205043aba1211039d4ef7f1c90e270b79d0c066aefa6df0",
+    "prototype/effect-tag-editor.js": "56496e68fd7e09b343db1e05c420365ff11cf2f8f321f26d0fcc37b0af96d541",
+    "prototype/effect-tag-requirements.js": "466cd01532f7d357f708082fe521d07d333fc6287e0523a8f62d5147620b9ee9",
+    "prototype/rope3d-rendering.js": "4301d2caf975c62b2295c67310ba9ee5c9da2a33c8f7110627aa6cfba0e3d9f0",
+    "tools/check-behavior-aborts-2278.mjs": "6d4940ea7157d1da01c1311a9a8d2cd7522c9df8873787c3aca48a457c12d0fe",
+    "tools/check-behavior-aborts-2279-cpp.mjs": "a8a6629a1ec202c14be374fde660ccff33d31a9b9707b38ca023f4a0625c01c9",
+    "tools/check-effect-tags-2284.mjs": "71f81b7d129fb0127c61342035c4d58ed751e1030f4f1084f26e0bbf7a434c30",
+    "tools/check-sequence-single-2288.mjs": "2ac61965e84b17fcef8aa86879b0a12b4b7df40837a3d0b42a4bb4ca468b217e",
+    "tools/check-rope3d-2297.mjs": "f8705cb42ecc93f070a05ba1bef2847eda54f0a7f61f5a543cc42679af3eebb7",
+    "tools/check-placement-batch-2306.mjs": "03d8bd3937e0c89e7864a76e49d28aeafa3850fff8bb6d855bf46fb428668f53",
+    "tools/check-scene-parent-validation-2308.mjs": "698f53505f44a9517b8fec39e360ab61607a831f1c0e0f1c35de7bc94e392dc0",
+    "prototype/core-api.js": "982b1d1f11077530e12fb8f2163d30f8bfbd8fd97f16ef7c0ee8fc3278f63325",
+    "docs/NODE_CATALOG.md": "e0512e9fd39b4a24b97e32fab7027afc1d1b6be0ca9b209629ae05c0f64bc1c6",
+    "CODEX_HANDOFF.md": "1636dd954a7acb5540359d97cf0113a23f93124dc7f83d868c795153071c7b79"
+  },
+  "generatedNotCommitted": [
+    "prototype/core-api.js",
+    "docs/NODE_CATALOG.md"
+  ],
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1369,
+  "targetIds": [
+    "GAM-03",
+    "GAM-04",
+    "ANM-06",
+    "PHY-02",
+    "EDT-04",
+    "CPP-01"
+  ],
+  "changes": {
+    "GAM-03": " ·2278–2311: opt-in BT v2 중단대기/FinishAbort·별도정리범위·전환/결과대기·상위서비스/하위트리·강제취소·상태 SDK/BP·Undo/AI/CAS. 기존v1 즉시중단유지/구엔진v2거절. 신규19source+현재C++범위Timer/BP지연. native BTTask 클래스는잔여.",
+    "GAM-04": " ·2278–2311: 효과v2의 적용/항목별 source/target/instigator/causer all/any/none/exact·apply태그고정·불일치연산/숫자capture/의존skip·원래index·실시간/주기/중첩·복사page·사람미리보기/AI원자편집. 신규12source+실제CPP ApplyEffectSpec. 동적지속태그조건은별도.",
+    "ANM-06": " ·2278–2311: 단일write 실패 이전표본/peer/baseline복원·current()/sample세대·batch뒤최신단일보존·falsy거절도오류. 동기성/O(1) 유지·실패때만plan. 신규15source+기존혼합/우선/별칭. controls/release·임의외부rollback별도.",
+    "PHY-02": " ·2278–2311: Cloth topology rope를 공용3D Rapier/clothFrame/입자API·사람배치/속성·원형튜브固定버퍼/UVseam·풀세대에연결. XYZ힘/고정/강체/월드충돌 실실행·신규10source+기존cloth/2Drope/query. SDK입자count/차량값5getter첫프레임前0·실제CPP rope0→24/Z충격. 임의메시/체적/tear/GPU별도·신규backend픽셀/기기미검증.",
+    "EDT-04": " ·2278–2311: scene.place/Batch 공용레시피·forward부모/순환/고유ID·준비오류미게시·같은revision/dryRun/Undo. 신규10source/2048배치. validScene 부모인덱스/반복경로검사 신규5·이전validator240seed동치·4만node199998부모읽기. 첫scene복사/렌더설치비용·runtime64깊이제한별도·새GUI실행0.",
+    "CPP-01": " ·2278–2311: AI::FinishAbort/IsTaskAborting/IsTaskExecuting 공개SDK/노드·Physics count/vehicle getter 초기null상태를 JS와동일0. 현재SDK 실제8항목/17RPC·실행파일/usedSDK 지문보존. native BTTask 클래스/일반스키마잔여유지."
+  },
+  "checks": {
+    "newSourceCases": 71,
+    "reports": {
+      "behavior": {
+        "path": "native/build/behavior-aborts-ZlYzap/acceptance.json",
+        "sha256": "fcfb45406013da6779d50ab0f1927433d437c3b7cbcb6a44e76bced3d5132bd2"
+      },
+      "effect": {
+        "path": "native/build/effect-tags-lRApuC/acceptance.json",
+        "sha256": "4d06b15e965078251166ff48a5673cdb8c5d83892865089557fd9d43b2e7a67d"
+      },
+      "single": {
+        "path": "native/build/sequence-single-8zuuWP/acceptance.json",
+        "sha256": "256f73b607085c708cfed4cba5b9c22d29291a3c3af9517228259c31a1dd3d5e"
+      },
+      "rope": {
+        "path": "native/build/rope3d-nRZLFV/acceptance.json",
+        "sha256": "2d33bd56b57d2319d668fe743103bbd6dfd4a59677db755c6dece22df3496306"
+      },
+      "placement": {
+        "path": "native/build/placement-batch-IWu6yG/acceptance.json",
+        "sha256": "6a2a102b0c67b6556534de4be72587cebba6d155f2597367ea4a65c98f5f7118"
+      },
+      "parents": {
+        "path": "native/build/scene-parent-validation-rSZb8V/acceptance.json",
+        "sha256": "e254a49b8942e8233ff62deb8ab4c8af73d4cb9f556df4d9e5f1b887b61389f8"
+      },
+      "cpp": {
+        "path": "native/build/behavior-abort-cpp-blEPpL/acceptance.json",
+        "sha256": "363c5f6bf4b17afc59f581efe3c7f5cd6e8b02f8790cc5b6f53d2921262e8c8f"
+      }
+    },
+    "groups": [
+      {
+        "path": "native/build/group2289.json",
+        "sha256": "c0e9788175eac036105ea5577bea72302b8728915c3858d37594b50a328628fa"
+      },
+      {
+        "path": "native/build/group2294.json",
+        "sha256": "802f7d0a691df91c28983812059c70c27c4d04bb96001b3c1c60154b1e5bbbaa"
+      },
+      {
+        "path": "native/build/group2298.json",
+        "sha256": "a77d6501c08ba383ebf3ad51bd524567b63dbeab1ce9bd4997bed12f3c5dedc8"
+      },
+      {
+        "path": "native/build/group2305.json",
+        "sha256": "cd54e6d24eb9b032709a4a28b54b707be18ddbfd3eb9ab34b413e2f45ed75559"
+      }
+    ],
+    "finalIntegrity": {
+      "path": "native/build/final2310.json",
+      "sha256": "6507176d5d2bd2a685be8ad8abf207920927c581785e2d46a02b24a80cb782d7"
+    },
+    "native": {
+      "executed": true,
+      "cases": 8,
+      "calls": 17,
+      "builds": [
+        {
+          "binary": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\b861480316c37a4f7275\\worker.exe",
+          "sha256": "8b7a0d4edd3dd9d5c9488fc431a10b5480559885b817b1f568c870a182f39a2e",
+          "sdkUsedFingerprint": "88b47f3725bcf324b0dc16c584e8193675915f1a7c56eb11f620cbb3cc50efa7",
+          "cacheHit": false
+        }
+      ]
+    },
+    "actualWindow": false,
+    "devices": false,
+    "scope": "Owned production source/old-reader differential, real Rapier CPU physics, Three geometry buffer math and current SDK compiled C++ common VM. No new GPU pixels/GUI/device or installed app claim."
+  },
+  "failuresAndCorrections": [
+    "Single-write transactional preparation regressed helper cost; keep synchronous O(1) path and allocate restoration plans only on failure. Sample generation fixed newer single writes after old pending batch.",
+    "Rope2D inherited newly added grid topology through the old shared-property spread; excluded shape-specific fields and passed old 2D cloth/query regressions.",
+    "First C++ fixture used a frame delta beyond protocol1 and a Vec3 constructor rather than aggregate braces; corrected fixtures, not counted as product work.",
+    "Real C++ newly inserted rope revealed pre-physics snapshot null value() exception; null-safe particle/vehicle getters now match JS zero and current SDK8-case proof passed."
+  ],
+  "limits": [
+    "Native BTTask base classes/instanced node memory and uncooperative Promise/external rollback remain.",
+    "Captured tag decisions are apply-time snapshots; dynamic ongoing requirements and network prediction remain.",
+    "General controls/releases and arbitrary asynchronous external setters cannot be fully rolled back.",
+    "3D rope tube ends are open; arbitrary/skinned cloth/tethers/cuts/volumetric/GPU solver remain; no new backend pixel/device proof.",
+    "Scene validation is indexed but runtime sceneWorldMatrix still has64-depth restriction; queued as next implementation. Initial scene clone/validation/render install still cost memory/time."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4179,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "observedModuleDirectories": 32,
+    "observedWorkerBinaries": 31,
+    "policy": "Owned fixtures retain source/reports and prune generated artifacts; shared cache bounded32+live; no empty cleanup receipt and no user/project/Versions deletion."
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}
