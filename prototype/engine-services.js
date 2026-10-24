@@ -1,3 +1,4 @@
+import {socketQueryKeys,socketQuery} from './socket-query.js';
 import {SkeletalAttachments} from './skeletal-attachments.js';
 import {gameplayCueEmitter} from './gameplay-cue-anchor.js';
 import {GameplayCueVfx} from './gameplay-cue-vfx.js';
@@ -283,6 +284,7 @@ export function engineOperations(hooks){
     if(key==='projectileFire')return {return:projectileWorld().fire(readProjectilePattern(a.json),b.self)};
     if(key==='projectileHits'){const hits=projectileWorld().takeHits(b.self),owner=vm.object(b.self);if(owner?.gameplayDebug)owner.gameplayDebug.projectileHits=projectiles.hits.filter(hit=>hit.owner===b.self).slice(0,256);return {return:JSON.stringify(hits)};}
     if(key==='projectileClear'){projectiles?.clear(b.self);const owner=vm.object(b.self);if(owner?.gameplayDebug)owner.gameplayDebug.projectileHits=[];return {};}
+    if(socketQueryKeys.has(key)){const object=target(a,b,vm);return {return:socketQuery(object,hooks.mesh(object.id),vm.objects,key,a)};}
     if(key.startsWith('skeleton')){const object=target(a,b,vm);return {return:skeletonQuery(hooks.mesh(object.id),key,a)};}
     if(['morphNames','morphWeight','morphSetWeight'].includes(key)){
       const object=target(a,b,vm),group=hooks.mesh(object.id);if(!group)throw Error('모프 모델이 준비되지 않았어요.');if(typeof (a.mesh??'')!=='string'||(a.mesh?.length||0)>200)throw Error('모프 메시 이름을 확인하세요.');const rows=key==='morphSetWeight'?setMorphWeight(group,a.name,a.value,a.mesh):morphSnapshot(group);object.gameplayDebug={...object.gameplayDebug,morphs:rows};return {return:key==='morphNames'?morphNames(rows,a.mesh):key==='morphWeight'?morphWeight(rows,a.name,a.mesh).weight:undefined};

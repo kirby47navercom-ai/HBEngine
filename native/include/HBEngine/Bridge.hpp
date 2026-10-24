@@ -449,6 +449,14 @@ inline bool Skeleton::HasBone(Actor* target,const std::string& bone){return skel
 inline Vec3 Skeleton::GetBonePosition(Actor* target,const std::string& bone,bool world){return skeletonQuery("skeletonPosition",target,bone,world).get<Vec3>();}
 inline Vec3 Skeleton::GetBoneRotation(Actor* target,const std::string& bone,bool world){return skeletonQuery("skeletonRotation",target,bone,world).get<Vec3>();}
 inline Vec3 Skeleton::GetBoneScale(Actor* target,const std::string& bone,bool world){return skeletonQuery("skeletonScale",target,bone,world).get<Vec3>();}
+inline Json socketQuery(const char* key,Actor* target,const std::string& socket,bool world=true){if(socket.empty()||socket.size()>320)throw std::invalid_argument("socket name");return engineQuery(key,{{"target",bridgeId(target)},{"socket",socket},{"world",world}});}
+inline int Skeleton::GetSocketCount(Actor* target){return engineQuery("socketCount",{{"target",bridgeId(target)}}).get<int>();}
+inline std::vector<std::string> Skeleton::GetSocketNames(Actor* target,int offset,int limit){if(offset<0||limit<1||limit>512)throw std::invalid_argument("socket page");return engineQuery("socketNames",{{"target",bridgeId(target)},{"offset",offset},{"limit",limit}}).get<std::vector<std::string>>();}
+inline bool Skeleton::HasSocket(Actor* target,const std::string& socket){return socketQuery("socketHas",target,socket).get<bool>();}
+inline Vec3 Skeleton::GetSocketPosition(Actor* target,const std::string& socket,bool world){return socketQuery("socketPosition",target,socket,world).get<Vec3>();}
+inline Vec3 Skeleton::GetSocketRotation(Actor* target,const std::string& socket,bool world){return socketQuery("socketRotation",target,socket,world).get<Vec3>();}
+inline Vec3 Skeleton::GetSocketScale(Actor* target,const std::string& socket,bool world){return socketQuery("socketScale",target,socket,world).get<Vec3>();}
+inline Transform Skeleton::GetSocketTransform(Actor* target,const std::string& socket,bool world){return socketQuery("socketTransform",target,socket,world).get<Transform>();}
 inline float Morphs::GetWeight(Actor* target,const std::string& name,const std::string& mesh){return bridgeMorphWeight(target,name,mesh).at("weight").get<float>();}
 inline void Morphs::SetWeight(Actor* target,const std::string& name,float value,const std::string& mesh){if(!std::isfinite(value))throw std::runtime_error("morph weight must be finite");auto& row=bridgeMorphWeight(target,name,mesh);engineCommand("morphSetWeight",{{"target",bridgeId(target)},{"name",name},{"value",value},{"mesh",mesh}});row["weight"]=value;}
 inline void AnimationGraph::Stop(Actor* target){engineCommand("animGraphStop",{{"target",bridgeId(target)}});}

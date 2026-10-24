@@ -463,6 +463,13 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="skeletonPosition", KoreanName="골격 뼈 위치 조회", Category="3D 골격 조회") static Vec3 GetBonePosition(Actor* target,const std::string& bone,bool world=false);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="skeletonRotation", KoreanName="골격 뼈 회전 조회", Category="3D 골격 조회") static Vec3 GetBoneRotation(Actor* target,const std::string& bone,bool world=false);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="skeletonScale", KoreanName="골격 뼈 크기 조회", Category="3D 골격 조회") static Vec3 GetBoneScale(Actor* target,const std::string& bone,bool world=false);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="socketCount", KoreanName="골격 소켓 개수", Category="3D 소켓 조회") static int GetSocketCount(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="socketNames", KoreanName="골격 소켓 이름 페이지", Category="3D 소켓 조회") static std::vector<std::string> GetSocketNames(Actor* target,int offset=0,int limit=64);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="socketHas", KoreanName="골격 소켓 존재 확인", Category="3D 소켓 조회") static bool HasSocket(Actor* target,const std::string& socket);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="socketPosition", KoreanName="골격 소켓 위치 조회", Category="3D 소켓 조회") static Vec3 GetSocketPosition(Actor* target,const std::string& socket,bool world=true);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="socketRotation", KoreanName="골격 소켓 회전 조회", Category="3D 소켓 조회") static Vec3 GetSocketRotation(Actor* target,const std::string& socket,bool world=true);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="socketScale", KoreanName="골격 소켓 크기 조회", Category="3D 소켓 조회") static Vec3 GetSocketScale(Actor* target,const std::string& socket,bool world=true);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="socketTransform", KoreanName="골격 소켓 변환 조회", Category="3D 소켓 조회") static Transform GetSocketTransform(Actor* target,const std::string& socket,bool world=true);
 };
 HB_CLASS()
 class AnimationGraph : public Library {

@@ -27,3 +27,13 @@
 비동기 준비 중 경로·소유자·컴포넌트가 바뀌거나 회수되면 방출을 취소해요. Cue 실패는 이미 확정된 게임플레이 값을 되돌리지 않아요. 일반 부착을 먼저 갱신한 뒤 Cue 부착을 갱신해요. 독립 프리팹의 원래 루트 TRS·바인딩·풀·채널·정지·게임시각 수명은 기존 경로를 유지해요.
 
 검증: `tools/check-gameplay-cue-anchors-2638.mjs` 20개, `tools/check-skeletal-attachments-2647.mjs` 10개. 실제 공용 VM·native 명령 재생·Three 애니메이션/계층·소유 DOM·4대상 content 검사예요. 새 C++ 바이너리, GPU/GUI, 실기기, 설치 검증은 수행하지 않았어요.
+
+## 게임 로직에서 소켓 조회
+
+`hb::Skeleton`의 `GetSocketCount`, `GetSocketNames(target,offset=0,limit=64)`, `HasSocket`과 `GetSocketPosition/Rotation/Scale/Transform(target,socket,world=true)`를 사용해요. 같은 이름의 순수 블루프린트 노드도 자동 생성돼요. 소켓 이름 목록은 활성 컴포넌트 작성 순서를 유지하고, 이름 페이지는 최대 512개예요. 개수·이름·존재 조회는 모델이 준비되기 전에도 선언을 조회해요. 실제 위치·회전·크기 조회에는 지정한 뼈가 준비돼 있어야 해요.
+
+기본값은 월드 좌표예요. `world=false`는 뼈와 소켓을 합성한 액터 로컬 좌표이며, 소켓 자체의 작성 오프셋만 반환하는 값과 달라요. 회전은 XYZ 도 단위, 반환 Transform과 배열은 독립 사본이에요. 전단이 있어도 원점 위치는 정확히 조회할 수 있고, 회전·크기·Transform 조회는 근사값 대신 거절해요. C++는 현재 실행 월드가 승인한 액터에만 질의하며 입력과 반환 자료형을 검사해요.
+
+이 조회는 공용 실행 서비스의 최신 Bone 행렬을 사용해요. 파티클·투사체를 생성할 때 소켓 월드 위치를 바로 넘길 수 있어요. GPU 읽기나 별도 장면 복사 없이 뼈 참조를 재사용하지만, 이름·컴포넌트 검증과 VM 조회·포즈 계산 비용은 남아 있어요.
+
+소켓 조회 추가 검증은 `check-socket-query-2660.mjs` 8개와 `check-socket-query-2661-cpp.mjs`의 실제 현재 SDK 컴파일·실행이에요. C++ 일곱 함수의 여덟 질의가 실제 공용 VM을 통과했어요. GUI·GPU·실기기·설치 증명은 추가하지 않았어요.

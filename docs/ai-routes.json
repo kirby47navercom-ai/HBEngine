@@ -1028,6 +1028,26 @@
   ],
   "focusRoutes": [
     {
+      "id": "socket-query",
+      "keywords": [
+        "socketQuery",
+        "socketQueryKeys",
+        "socketQueryContract",
+        "validateSocketQuery",
+        "validateSocketResult",
+        "GetSocketTransform"
+      ],
+      "paths": [
+        "prototype/socket-query.js",
+        "prototype/native-live-query.js",
+        "prototype/skeleton-query.js",
+        "prototype/engine-services.js",
+        "native/include/HBEngine/Game.hpp",
+        "native/include/HBEngine/Bridge.hpp",
+        "docs/SKELETAL_SOCKETS.md"
+      ]
+    },
+    {
       "id": "skeletal-sockets-and-cue-anchors",
       "keywords": [
         "SkeletalAttachments",
