@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "date": "2026-10-24T03:38:05.979Z",
+  "kind": "eqs-diagnostic-stages-manual-work-update-hold",
+  "implementationRevision": "49bfcc509e4209b47f9c52d79c6c59190f0bd78a",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2155.json",
+  "changedSourceHashes": {
+    "docs/EQS_DIAGNOSTIC_STAGES.md": "256ddd455eb41fe6d92cc5bfae4137519cc19cc6fd0d1fc703ba160d402c3366",
+    "docs/ai-routes.json": "40155634cde3892aa97e76e92e450eee4791e1b177cdcb6f0d0397116870d9f2",
+    "prototype/app.js": "deb9e947e32cf0160e5c9984bffd64a097448ef828d89c557bb3dde70d468db5",
+    "prototype/eqs-debug-controls.js": "b5493cfbbe0a4e941d096317d8aa30a0fccb6e2e4e4440089188ae36453f05f9",
+    "prototype/eqs-debug-stages.js": "5b33b4e0b34f00ed35c0ccb799e3a22efa46bb31eb3aecff3e4caf54760cf2dc",
+    "prototype/eqs-debug.js": "e806ea1bf3a1ed506e59329504885b6bf585a9254f99a4380646b7eb85e946a4",
+    "prototype/structured-asset-editor.js": "3278f76a5bf6c5764d36c0c6c17ce225193107b44b34b646a2f6c7e80f4b4607",
+    "tools/check-eqs-stages-2157.mjs": "998ccb1e71c6a8c538b19cdbfe4635bb7e7609af8c0c7154270cf8e10be9f55a",
+    "tools/editor-automation.mjs": "cc3216639b4828a7d5c5a33b4f6d61c3f26185e512de00dadaab2720e8b7f596",
+    "tools/eqs-dom-2157.mjs": "84520fa3da58a36614a5a715746b135afc07ed673e3f5f6341c2f5f2388e2698",
+    "CODEX_HANDOFF.md": "0762891416590cb73a03ab3ee32222a0e182810e05045433b45991506caabe27"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "targetIds": [
+    "GAM-03"
+  ],
+  "checks": {
+    "source": {
+      "passed": true,
+      "ms": 3490.5295,
+      "execution": "Grouped source checks: sampler/common runtime service, production diagnostic/page/overlay/control handlers, owned minimal DOM and frame-barrier function. No browser/GUI/native compilation/install; explicit user update hold.",
+      "rows": [
+        {
+          "name": "check-eqs-stages-2157",
+          "passed": true,
+          "exit": 0,
+          "ms": 361.2045,
+          "log": "native/build/group2159-check-eqs-stages-2157.log",
+          "sha256": "f4f3ab7af80cf2ccbd2b1d834c147df0cc3b48ad94fcc0f35a331ee706770808"
+        },
+        {
+          "name": "check-eqs-debug-217",
+          "passed": true,
+          "exit": 0,
+          "ms": 166.08090000000004,
+          "log": "native/build/group2159-check-eqs-debug-217.log",
+          "sha256": "ba0a91d286cbab68e8b73e3300db0c19d01199d8c98ff5ad1176ea0a718e4cdf"
+        },
+        {
+          "name": "check-eqs-2d-220",
+          "passed": true,
+          "exit": 0,
+          "ms": 327.9615,
+          "log": "native/build/group2159-check-eqs-2d-220.log",
+          "sha256": "a14e17d0cdd4a2bcd881a435a5740f183109a38d85ee9cf5c99e334442985248"
+        },
+        {
+          "name": "check-ai-context",
+          "passed": true,
+          "exit": 0,
+          "ms": 2634.2848,
+          "log": "native/build/group2159-check-ai-context.log",
+          "sha256": "33c83cbc697b2437295e62e47840a9596df899331c7ca4169ed844b37f790060"
+        }
+      ]
+    },
+    "newCases": 11,
+    "report": {
+      "path": "native/build/eqs-stages-2157-3B8Ypb/acceptance.json",
+      "sha256": "a93a4ff94bb3fb4c97dab2d4bcc88837041ac0631976f2e067373c8ebdf2ebd3"
+    },
+    "focusedAI": {
+      "symbol": "eqsStageSnapshot",
+      "filesRead": 1,
+      "bytesRead": 1816,
+      "mode": "focused-routes",
+      "elapsedMs": 177.97
+    },
+    "actualWindow": {
+      "pending": true,
+      "reason": "Installed runtime is in use; only owned source DOM/runtime tests performed."
+    }
+  },
+  "userPolicy": {
+    "automation": {
+      "id": "hbengine",
+      "mode": "delete",
+      "deleteStatus": "deleted"
+    },
+    "updates": "held-until-explicit-user-request",
+    "continueOtherImplementation": true
+  },
+  "installation": {
+    "held": true,
+    "updated": false,
+    "currentReceipt": "docs/research/USER_INSTALL_2145.json"
+  },
+  "excludedWorktree": [
+    "prototype/player.js",
+    "tools/check-player-keyboard-release.mjs"
+  ],
+  "scope": "EQS projection/intermediate-test/final diagnostic selection shared by human stage selector/step buttons and existing AI read/view APIs. Bounded copied pages, hidden later failures/scores, complete population counts and explicit retained-only intermediate ranks preserve the final game query result. Existing BP/C++ common eqsRun source service stays unchanged. Deferred visualization and target/closed-panel stale-response guards avoid opening a view for an obsolete UI request. New11 source cases and four grouped gates passed in3.49sec. No real browser layout/native binary/install claim. User explicitly requested update hold and deletion of hbengine automation; deletion confirmed, installation unchanged."
+}

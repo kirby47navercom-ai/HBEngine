@@ -1,25 +1,27 @@
-# 현재 인계 — 누적 구현 계속
+# 현재 인계 — 수동 계속 / 업데이트 보류
 
-2026-10-24. 주인님/짚짱/존댓말. 묶음구현→영향검사→안전설치. ENGINE_STATUS78행/분모·완료율null. 전체UE/Unity분석·엔진완성주장금지. hbengine ACTIVE. 새goal/재개질문/새agent금지. Mac/Xcode/Android폰없음.
+2026-10-24 최신 사용자: “업데이트를 보류하고 다른거 만들면 안되니 그리고 예약좀 꺼라 내가 예약을 하랬나”. hbengine 예약은 앱 도구 deleteStatus=deleted 확인. 새 예약·자동 계속 생성 금지. **설치본 업데이트는 별도 사용자 지시 전 보류**, 사용 중이면 기다리기만 하지 말고 다른 구현 진행. native/build/UPDATE_HOLD.json active:true, resume2152/install2152 보호. 목표 재개 질문·새goal/agent 금지. 주인님/짚짱/존댓말. Mac/Xcode/Android폰없음.
 
-## 현재 WORK2155 — C++ include 소스 통과/실제컴파일 대기
+## 최신 WORK2160 — EQS 중간 단계 선택
 
-core commits 7a755fe5 + 278ee1e64772bdd04ec52c1fd2d047217e4ee16f. prototype/native-includes.js의 nativeIncludeDirectives/stripNativeInlineHeaderIncludes를 reflection/headerClosure·watch/type-migration·nativeProjectLayout(helper 자체헤더/User.h alias)·nativeSources legacy공용으로 연결. 주석/ordinary·raw문자열/character/숫자구분자 구별, raw prefix/16자delimiter·raw body splice보존·LF/CRLF연결·spliced comment/keyword·%:지원. 실제inline .h/.hpp지시문만공백대체·줄수/raw본문보존. 기존Source범위/후보·바이트한도/CAS/cache-key 유지. macro/conditional/system/include_next 전처리기대체아님. docs/NATIVE_LITERAL_INCLUDES.md/focusRoutes.
+core 49bfcc509e4209b47f9c52d79c6c59190f0bd78a. projection/각 실행 test/final을 eqsStageSummary/eqsStageSnapshot 공용읽기로 선택. 기존 게임 EQS결과·투영·trace·에셋read 재실행0. 이후test실패/score를이전단계에노출하지않음. 전체matched/failed와finalCounts구분, 진단잘림시중간rankBasis=retained/최종rank는all. 기존offset/limit/복사반환/실패필터유지. 잘못된/미실행단계거절, 새query검사수감소시implicit뷰는final복귀.
 
-group2150 6개source gate 모두통과 약9.7초: 새32case·기존production poll1710/entry1708/62개이관1814/records1472/AI. native/build/native-includes-2148-Z9rcyP/acceptance.json. 이전0521e444 raw문자열을실제include로오인한경로오류 독립재현. context2151 nativeIncludeDirectives 정확1owner. 실CPP/GUI/설치성공으로승격금지.
+renderEqsDebugControls: 기존환경질의화면에단계select/검사요약버튼·점수/실패표시. 문서view만/Undo·data·revision변경없음. runtime.eqs.read/view stage, run visualize:false 지원(기본run은final/시각화). UI는진단만요청후자신의유효응답때view표시. 대상변경/숨김/닫힌패널뒤늦은결과무시·새타이머0. runtimeEqsOperation framebarrier/기존BP·CPP공용eqsRun그대로. docs/EQS_DIAGNOSTIC_STAGES.md. focus eqsStageSnapshot/renderEqsDebugControls 각정확owner.
 
-설치본 사용중이라 실제 CPP/설치대기. 준비된 단일명령: node native/build/resume2152.mjs (sourceReceipt WORK2155). 먼저active확인; free때만 fresh CPP Read42/원위치[7,3,2]·원본raw/spliced header/helper연결검사. 시험전용read observer가실제worker SHA/SDK identity기록; 같은source/observer/report/exe해시일때만재사용. 이어install2152/audit2152가admitted파일·User readonly paired inventory/Versions1/shortcut/AI검증. 사용자다시실행시그단계만미룸. 실패면native2149.log/실패work를읽어고침; 통과전새설치성공주장금지.
+group2159 4gate통과3.49초: 새11case(real sampler/common engineOps, production overlay/page/control callbacks·최소ownedDOM·실제app frame함수추출) + legacyEQS217/XY220/AI. native/build/eqs-stages-2157-3B8Ypb/acceptance.json. 실제브라우저layout/GUI·C++바이너리·설치증명아님. 사용자창안건드림/업데이트0/예약삭제됨. 다음은GAM03 EQS공간가속/정적TestPawn/자동재질의 또는다른원장잔여; 끝난source gate반복말고묶어서구현.
 
-추가2155: nativeWatchedSources 대문자확장자(H/HPP/CPP 등)감시유지·Source경계보존. 명시권한/I/O/HTTP/취소는누락으로삼키지않고원래오류전달·부분자료fallback/이관방지. 404/ENOENT/legacy누락후보는종전탐색. 새30case와literal32/production poll1710/type migration1814 4gate통과8.2초. native-read-boundaries-2154-WoakqB/acceptance.json. entry/records/AI2150은변경없어재사용.
+## 이전 C++ source WORK2151+2155 (실컴파일 별도대기)
 
-## 확정 설치 USER_INSTALL2145
+WORK2151/2155 core7a755fe5/278ee1e6. C++리터럴include 공용해석·raw/줄수보존·대문자확장자감시·명시읽기오류/취소전달. macro/conditional/system전처리기대체아님. source32+30case/6+4gate통과, 실worker42·원위치검사는installed사용중이라대기. free때 tools/check-native-includes-2149-cpp.mjs 단독검사는가능하지만 설치는보류.
 
-73341067df5a12be/4643files/1271owners. User10849 SHA동일·이전199893592B정리·Versions1. standalone2145→sequence-vector-installed-2145-j1ghLn/acceptance.json: 설치builder 독립D3D11 CPPindexed18+render14/exit0/65.58초·native 리그3414/재질627·625pixel 직접확인(재질scalar/vector/light공동변화). audit2145 shortcuts/association·AI1owner66.08ms. ownBuilds/WebView정리. WORK2143은materialVector저작/AI/C++·typed별칭·광원/Takes·pausedpose즉시Seek·preview순환복제수정/1024뼈1sample1matrix보존; source27gate/실제GUI CPP18+render14통과. 실패RexQPM/I266Wd/2sample실험은성과아님. 설치2145증명은0521e444 push완료; C++2151/2155변경은미포함.
+## 마지막 확정 설치 USER_INSTALL2145
+
+73341067df5a12be/4643files/1271owners. User10849 SHA동일·Versions1·이전199893592B정리. 설치builder독립D3D11 CPPindexed18+render14/exit0·리그3414/재질627·625pixel(공동효과)직접확인. audit2145 shortcuts/association·AI1owner66.08ms. WORK2143 materialVector·별칭·광원/Takes·pausedSeek·순환preview수정,1024뼈1sample1matrix유지. source27gate/실제GUI18+14통과. 설치본에2151/2155/2160변경없음.
 
 ## 누적 잔여·보호
 
-ANM06 importedMixer렌더속성일반별칭·독립Euler축합성·axis별time/interpolation/delete저장·외부simulation/변수/asyncsetter/notifyrollback·pitch/일반PCM예약/streamreverse/TakeClock·device/pull/genlock/rig/video/attachment. CPP01 macro/system헤더·registry/파괴schema/alias/ref/wildcard/Destroy+동일ID同CPPcallback세대. RND08 globalDF/bentnormal/방향sky/heightfield/변형체/미로드LOD/lightmap/volume/HWRT. GL1728 ANGLE6878.6/D3DCompile6836.439ms·미채택6492/실패1302–1307/783/1086반복금지. hb context 관련정확심볼우선.
+ENGINE_STATUS78행/분모·완료율null. 전체UE/Unity분석·엔진완성주장금지. ANM06 importedMixer렌더일반별칭·독립Euler축/axis저장topology·외부simulation/변수/asyncsetter/notifyrollback·pitch/PCM경계/streamreverse/TakeClock·device/rig/video/attachment. CPP01 macro/system·registry/파괴schema/alias/ref/wildcard/동일callback Destroy→同ID세대. RND08 globalDF/bentnormal/방향sky/heightfield/변형체/미로드LOD/lightmap/volume/HWRT. GL1728 ANGLE6878.6/D3DCompile6836.439ms·미채택/실패반복금지.
 
-dirty prototype/player.js/tools/check-player-keyboard-release.mjs 외부소유·수정/스테이징/검사/배포금지. admitted player8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1은git HEAD bytes. 사용자창/탭/원본/프로필보호; 사용중heavy/GUI/install만미루고source진행. root개발Host보존. distHost5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46/Player07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160. native21/vendor2 unchanged audit2137. own profiles/Builds retain/pruneTestArtifacts·cache32+live·빈cleanup0. 한국어commit/push 동일kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com·AI표기0.
+dirty prototype/player.js/tools/check-player-keyboard-release.mjs 외부소유·수정/스테이징/검사/배포금지. admitted player8b7834e6237e70bcfa669e64b70bdd7c8470ad5d24125bbfeb49a3156dd1aae1은git HEAD bytes. 사용자창/탭/프로젝트/프로필보호; active1955로heavy/GUI전사용확인. root개발Host보존. distHost5e785b0b1067ecc2eb6a7b327372701624b20873895cf6efaf45abfd2e3a6a46/Player07beb9ae29591967df57482bf3d069d6fa05e93c4834d4c631f0a4fa261bf160. native21/vendor2 unchanged audit2137. retain/pruneTestArtifacts·cache32+live·빈cleanup0. 한글commit/push 동일kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com·AI표기0.
 
-hash WORK2155→2151→2146→2143→2127→2114→2095→2091→2077→2073→2062→2058→2047→2042→2033→2029→2020→2015→2005→1992→1987→1978→1974→1966→1958→1955. tools/research-source-hashes.mjs resolve로전체map복제금지.
+hash WORK2160→2155→2151→2146→2143→…→1955. tools/research-source-hashes.mjs resolver로전개/전체map복제금지.

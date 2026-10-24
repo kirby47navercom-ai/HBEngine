@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-24",
-  "basisRevision": "278ee1e64772bdd04ec52c1fd2d047217e4ee16f",
+  "basisRevision": "49bfcc509e4209b47f9c52d79c6c59190f0bd78a",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -2151,22 +2151,32 @@
       "area": "gameplay",
       "title": "행동트리 고급 태스크·EQS",
       "status": "partial",
-      "implemented": "기본 행동트리/감지/태그 실행 · 165: 일반 병렬 결과 집계·EQS 생성/필터/점수·BT 블랙보드·C++ 실행 연결 ·217: 선택 EQS 단계 진단/실패 원인·관측ms·UI/실제 뷰포트 점수/페이지·C++ 공용 실행과 비actors 월드복사 회피 ·220: XY grid/ring/actors·평면 distance/dot·실제2D ray/벽·legacy XZ/UI Undo·별도 게임",
+      "implemented": "기본 행동트리/감지/태그 실행 · 165: 일반 병렬 결과 집계·EQS 생성/필터/점수·BT 블랙보드·C++ 실행 연결 ·217: 선택 EQS 단계 진단/실패 원인·관측ms·UI/실제 뷰포트 점수/페이지·C++ 공용 실행과 비actors 월드복사 회피 ·220: XY grid/ring/actors·평면 distance/dot·실제2D ray/벽·legacy XZ/UI Undo·별도 게임 ·2160소스: EQS투영/중간검사/final 읽기·시각화선택을사람select/요약버튼과AI read/view에공유. 점수/실패는선택단계까지만·전체count와표본rank구분·복사페이지/실패필터·재질의0. 기본run최종반환·visualize:false/비동기UI대상변경·닫기보호. 기존BP/C++공용operation결과보존. 신규11case/영향4gate3.49초통과·실제창검증별도/사용자업데이트보류.",
       "remaining": [
         "FinishAbort/native BTTask 고급 생명주기",
-        "Smart Object/Mass 계열·EQS 공간 가속·정적 테스트 Pawn/중간 단계 선택/자동 재질의"
+        "Smart Object/Mass 계열·EQS 공간 가속·정적 테스트 Pawn/중간 단계 선택의 실제 창 검증/자동 재질의"
       ],
       "sources": [
         "prototype/gameplay-runtime.js",
         "prototype/scene-systems.js",
         "prototype/environment-query.js",
-        "prototype/eqs-debug.js"
+        "prototype/eqs-debug.js",
+        "docs/EQS_DIAGNOSTIC_STAGES.md",
+        "docs/ai-routes.json",
+        "prototype/app.js",
+        "prototype/eqs-debug-controls.js",
+        "prototype/eqs-debug-stages.js",
+        "prototype/structured-asset-editor.js",
+        "tools/check-eqs-stages-2157.mjs",
+        "tools/editor-automation.mjs",
+        "tools/eqs-dom-2157.mjs"
       ],
       "evidence": [
         "docs/BEHAVIOR_OBSERVERS_SUBTREES.md",
         "docs/research/ENGINE_WORK_165.json",
         "docs/research/ENGINE_WORK_217.json",
-        "docs/research/ENGINE_WORK_220.json"
+        "docs/research/ENGINE_WORK_220.json",
+        "docs/research/ENGINE_WORK_2160.json"
       ]
     },
     {
@@ -3908,10 +3918,10 @@
     }
   ],
   "latestBatch": {
-    "first": 2154,
-    "last": 2155,
-    "receipt": "docs/research/ENGINE_WORK_2155.json",
-    "scope": "C++ source-watch accepts the same uppercase native extensions as build inputs without widening Source/path boundaries. Shared header dependency readers propagate explicit permission/I/O/HTTP/cancellation errors unchanged instead of silently selecting another candidate or returning partial dependencies; missing 404/ENOENT/legacy candidates still fall through. New30 source boundary cases and affected literal32/production-poll/type-migration checks passed together. Existing unchanged entry/records/AI source gates reused from2151. Combined2151+2155 actual C++ and immutable installation remain pending while installed runtime is in use."
+    "first": 2156,
+    "last": 2160,
+    "receipt": "docs/research/ENGINE_WORK_2160.json",
+    "scope": "EQS projection/intermediate-test/final diagnostic selection shared by human stage selector/step buttons and existing AI read/view APIs. Bounded copied pages, hidden later failures/scores, complete population counts and explicit retained-only intermediate ranks preserve the final game query result. Existing BP/C++ common eqsRun source service stays unchanged. Deferred visualization and target/closed-panel stale-response guards avoid opening a view for an obsolete UI request. New11 source cases and four grouped gates passed in3.49sec. No real browser layout/native binary/install claim. User explicitly requested update hold and deletion of hbengine automation; deletion confirmed, installation unchanged."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_2145.json",
