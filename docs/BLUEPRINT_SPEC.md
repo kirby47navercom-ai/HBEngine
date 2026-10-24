@@ -1,3 +1,7 @@
+# 2278 이후 — 태스크 중단 대기·효과 캡처 태그
+
+[태스크 중단 대기](BEHAVIOR_DEFERRED_ABORT.md)는 opt-in BT v2에서 FinishAbort·중단/실행 상태 노드와 C++ SDK를 공유해요. [효과 태그 조건](EFFECT_TAG_REQUIREMENTS.md)은 효과 v2의 적용/항목 조건, 편집기 Undo·AI revision/dryRun·공용 ApplyEffectSpec에 연결해요. 구버전은 v2를 거절하며 기본 v1의 즉시 중단과 조건 없는 효과는 유지해요. native BTTask 상속 클래스와 동적 지속 태그 조건은 별도 잔여예요.
+
 # 1738–1741 — 시퀀스 회전·이산 값의 반복 범위
 
 Play Sequence·Pause·Seek 노드는 같은 시퀀스 에셋의 preInfinity/postInfinity를 사용해요. 쿼터니언 회전과 표시·변수·C++ 속성·컴포넌트 값에 유지/반복/왕복을 설정해요. 이벤트 발화·부모/생성 참조·클립 시계는 바꾸지 않아요. 키 없는 AI 범위 수정도 revision/dryRun/Undo·저장을 공유해요. 실제 BP 시작→재생→일시정지→Seek4.5에서 회전5도/표시false를 확인했어요. 자세한 자료형별 지원과 남은 각속도/누적 외삽은 CURVE_INFINITY.md를 봐요.

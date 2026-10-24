@@ -1,6 +1,6 @@
-import {clothPins} from './cloth-config.js';
+import {clothPins,ropeShape} from './cloth-config.js';
 const W=264,M=12;
-function gridConfig(p){return p.particles?{...p,columns:p.particles,rows:1}:p;}
+function gridConfig(p){return ropeShape(p)?{...p,columns:p.particles,rows:1}:p;}
 function location(index,columns,rows,h){return{x:M+Math.floor(index/rows)*(W-2*M)/(columns-1),y:rows===1?h/2:M+(index%rows)*(h-2*M)/(rows-1)};}
 export function clothPinControls(properties,attrs,esc,{disabled=false}={}){
  const p=gridConfig(properties),h=p.rows===1?64:170,pins=clothPins(p),id='cloth-grid-'+attrs.replace(/[^a-zA-Z0-9]/g,''),off=disabled?' disabled':'';

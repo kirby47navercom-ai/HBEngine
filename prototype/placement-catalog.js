@@ -26,6 +26,7 @@ export const placementCatalog=[
   ['pawn','Pawn · 폰','게임플레이','cube',{PawnMovement:{autoPossess:true},Rigidbody:{useGravity:false}}],
   ['controller','Player Controller · 플레이어 제어','게임플레이'],['gameMode','Game Mode · 게임 모드','게임플레이'],['gameState','Game State · 게임 상태','게임플레이'],['playerState','Player State · 플레이어 상태','게임플레이'],
   ['rope2d','Rope 2D · 로프','2D','empty',{Rope2D:{},MeshRenderer:{}}],
+  ['rope3d','Rope 3D · 입체 로프','물리','empty',{Cloth:{topology:'rope',pinMode:'both'},MeshRenderer:{}}],
   ['cloth','Cloth · 천','물리','empty',{Cloth:{},MeshRenderer:{}}],
   ['vehicle','Vehicle · 차량','물리','cube',{Rigidbody:{mass:1200},BoxCollider:{center:[0,.5,0]},RaycastVehicle:{}}],
   ['physicsCube','Physics Cube · 물리 큐브','물리','cube',{Rigidbody:{}}],
@@ -53,4 +54,25 @@ export function createPlacedObject(key,{position=[0,0,0],id=crypto.randomUUID()}
     const component=object.components.find(c=>c.type===type)||addSceneComponent(object,type);Object.assign(component.properties,structuredClone(properties));
   }
   if(key==='vehicle'){object.scale=[1.8,.6,3.6];object.position[1]+=.9;}return object;
+}
+
+export function appendPlacedObject(data,key,{position=[0,0,0],id,name,parent}={}){
+ if(!Array.isArray(data?.objects)||!Array.isArray(position)||position.length!==3||position.some(v=>!Number.isFinite(v))||id!==undefined&&(typeof id!=='string'||!id.trim()||id.length>160)||name!==undefined&&(typeof name!=='string'||!name.trim()||name.length>200)||parent!==undefined&&parent!==null&&(typeof parent!=='string'||!data.objects.some(o=>o.id===parent)))throw Error('배치 대상 장면·위치·이름·부모를 확인하세요.');
+ const object=createPlacedObject(key,{position,id});if(data.objects.some(o=>o.id===object.id))throw Error('오브젝트 ID가 이미 있어요.');if(name!==undefined)object.name=name;if(parent)object.parent=parent;data.objects.push(object);return {id:object.id,kind:object.kind,recipe:key,components:object.components.map(c=>({id:c.id,type:c.type}))};
+}
+
+// Prepare an entire authoring batch before changing even the caller's draft.
+// Parent links may refer forward within the batch; one iterative graph pass
+// rejects cycles without a recursion limit or a global object-count cap.
+export function appendPlacedObjects(data,placements){
+ if(!Array.isArray(data?.objects)||!Array.isArray(placements))throw Error('장면 배치 목록을 확인하세요.');
+ const ids=new Set(data.objects.map(o=>o.id)),objects=[],results=[],parents=new Map(data.objects.map(o=>[o.id,o.parent||o.parentId]));if(ids.size!==data.objects.length)throw Error('장면 오브젝트 ID가 중복됐어요.');
+ for(const row of placements){
+  if(!row||typeof row!=='object'||Array.isArray(row)||Object.keys(row).some(key=>!['kind','position','id','name','parent'].includes(key)))throw Error('오브젝트 배치 항목을 확인하세요.');
+  const {kind,position=[0,0,0],id,name,parent}=row;
+  if(!Array.isArray(position)||position.length!==3||position.some(v=>!Number.isFinite(v))||id!==undefined&&(typeof id!=='string'||!id.trim()||id.length>160)||name!==undefined&&(typeof name!=='string'||!name.trim()||name.length>200)||parent!==undefined&&parent!==null&&(typeof parent!=='string'||!parent.trim()))throw Error('배치 위치·ID·이름·부모를 확인하세요.');
+  const object=createPlacedObject(kind,{position,id});if(ids.has(object.id))throw Error('오브젝트 ID가 이미 있어요.');ids.add(object.id);if(name!==undefined)object.name=name;if(parent)object.parent=parent;objects.push(object);parents.set(object.id,parent);results.push({id:object.id,kind:object.kind,recipe:kind,components:object.components.map(c=>({id:c.id,type:c.type}))});
+ }
+ const done=new Set();for(const object of objects){const visiting=new Set(),chain=[];for(let at=object.id;at&&!done.has(at);at=parents.get(at)){if(!ids.has(at))throw Error('배치 부모 오브젝트가 없어요.');if(visiting.has(at))throw Error('배치 부모 연결이 순환해요.');visiting.add(at);chain.push(at);}for(const id of chain)done.add(id);}
+ for(const object of objects)data.objects.push(object);return {objects:results};
 }

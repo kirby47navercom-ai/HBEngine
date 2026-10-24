@@ -15,8 +15,8 @@ export function effectParameters(value={}){
 }
 // Snapshot only referenced numeric attributes. Never retain source actors or an
 // entire AbilitySystem, and never read attributes/curves during idle ticks.
-export function captureEffectInputs(data,{parameters={},readAttribute}={}){
- return {parameters:effectParameters(parameters),attributes:data.modifiers.map(row=>{const input=row.magnitudeSource;if(input?.type!=='attribute')return undefined;const value=readAttribute?.(input);if(!finite(value))throw Error('효과 캡처 속성을 확인하세요: '+input.owner+'.'+input.attribute);return value;})};
+export function captureEffectInputs(data,{parameters={},readAttribute,qualifies=()=>true}={}){
+ return {parameters:effectParameters(parameters),attributes:data.modifiers.map(row=>{const input=row.magnitudeSource;if(!qualifies(row)||input?.type!=='attribute')return undefined;const value=readAttribute?.(input);if(!finite(value))throw Error('효과 캡처 속성을 확인하세요: '+input.owner+'.'+input.attribute);return value;})};
 }
 export function effectMagnitudeInput(row,index,context){
  const input=row.magnitudeSource;if(!input)return 1;

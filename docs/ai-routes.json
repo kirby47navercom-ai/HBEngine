@@ -3349,6 +3349,60 @@
         "prototype/gameplay-runtime.js",
         "docs/BEHAVIOR_TASK_LIFETIME.md"
       ]
+    },
+    {
+      "keywords": [
+        "BehaviorAborts",
+        "FinishAbort",
+        "behavior.task.abort",
+        "waitForAbort"
+      ],
+      "paths": [
+        "prototype/behavior-aborts.js",
+        "prototype/gameplay-assets.js",
+        "prototype/gameplay-runtime.js",
+        "docs/BEHAVIOR_DEFERRED_ABORT.md"
+      ]
+    },
+    {
+      "keywords": [
+        "effectTagsMatch",
+        "effect.tags.edit",
+        "applicationRequirements",
+        "tagRequirements"
+      ],
+      "paths": [
+        "prototype/effect-tag-requirements.js",
+        "prototype/effect-tag-editor.js",
+        "prototype/ability-runtime.js",
+        "docs/EFFECT_TAG_REQUIREMENTS.md"
+      ]
+    },
+    {
+      "keywords": [
+        "failedFastSingle",
+        "failedSingle",
+        "단일 시퀀스 복원"
+      ],
+      "paths": [
+        "prototype/sequence-channels.js",
+        "docs/SEQUENCE_SINGLE_WRITE_RECOVERY.md"
+      ]
+    },
+    {
+      "keywords": [
+        "rope3d",
+        "ropeShape",
+        "buildRope3D",
+        "3D 로프"
+      ],
+      "paths": [
+        "prototype/cloth-config.js",
+        "prototype/deformable-physics.js",
+        "prototype/rope3d-rendering.js",
+        "prototype/placement-catalog.js",
+        "docs/ROPE_3D.md"
+      ]
     }
   ]
 }

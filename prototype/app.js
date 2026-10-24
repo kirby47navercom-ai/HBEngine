@@ -1,3 +1,5 @@
+import {editEffectTagRequirements} from './effect-tag-requirements.js';
+import {configureBehaviorTaskAbort} from './gameplay-assets.js';
 import {eqsStageSummary} from './eqs-debug-stages.js';
 import {EditorEnvironmentQuery} from './environment-query-preview.js';
 import {inspectNativeTypeCatalog,inspectNativeTypeDeclarations,applyCatalogBlueprintVariable,applyCatalogTypeField} from './native-type-catalog.js';
@@ -102,7 +104,7 @@ import {BuildPanel} from './build-panel.js';
 import {skyPresets,createSky,applySceneEnvironment,syncSkyToCamera,environmentActorPreset,environmentActorKinds,resolveSceneEnvironment,recaptureSceneEnvironment,disposeSceneEnvironment,releaseSceneEnvironmentRenderer} from './scene-environment.js';
 import {scenePrimitives} from './scene-primitives.js';
 import {CollisionPreview} from './collision-preview.js';
-import {placementCatalog,createPlacedObject} from './placement-catalog.js';
+import {placementCatalog,createPlacedObject,appendPlacedObject,appendPlacedObjects} from './placement-catalog.js';
 import {session,storageKey,storage,flushStorage} from './project-session.js';
 import {connectAutomation,documentRevision,patchAsset} from './automation.js';
 import {nativeWatchedSources,readNativeSourceDependencies} from './native-source-watch.js';
@@ -1800,6 +1802,10 @@ document.addEventListener('click',async event=>{
 if(session.acceptance)window.hbEditorRendererDebug={ready:()=>!!mainRenderer&&!!previewRenderer&&$('#render-fallback').hidden,inspect:()=>({materialPreview:{path:assetDocs.current?.path,selection:assetDocs.current?.view.materialPreview||null,history:assetDocs.current?.history.length,future:assetDocs.current?.future.length,material:previewSphere?.material.uuid,scene:materialPreviewScene?.snapshot()},tilemaps:[...meshMap].filter(([,g])=>g.userData.tilemapDebug).map(([id,g])=>({id,...g.userData.tilemapDebug,geometries:[...g.userData.tilemapState.meshes].map(([key,row])=>[key,row.mesh.geometry.uuid])})),renderer:gameRendererInfo(mainRenderer),previewRenderer:gameRendererInfo(previewRenderer),materials:visuals.materialState(),particles:[...meshMap.values()].filter(g=>g.userData.particleState).map(g=>({id:g.userData.objectId,...g.userData.particleState.simulation.debugState?.()})),views:extraViewports.map(v=>({id:v.id,shared:v.sharedRenderer,width:v.canvas.width,height:v.canvas.height})),logs}),capture:async(id)=>{if(id==='material'){await updateSurface();await previewSphere.material.userData.ready;materialPreviewScene.draw(0,true);return previewRenderer.domElement.toDataURL('image/png');}const v=extraViewports.find(v=>v.id===id);renderViewport(v);return (v?.canvas||mainRenderer.domElement).toDataURL('image/png');},wait:()=>Promise.all([...meshMap.values()].map(g=>g.userData.ready))};
 window.hbEngineWindows={detach:id=>dock.detach(id),redock:id=>dock.redock(id),redockAll:()=>dock.redockAll(),state:()=>({count:dock.windowCount,detached:[...dock.entries.values()].filter(e=>e.detached).map(e=>e.id)})};
 const editorCommandMethods={
+  'scene.placeBatch':params=>automationAuthoringEdit(params,'scene',data=>appendPlacedObjects(data,params.placements)),
+  'scene.place':params=>automationAuthoringEdit(params,'scene',data=>appendPlacedObject(data,params.kind,params)),
+  'effect.tags.edit':params=>automationAuthoringEdit(params,'effect',data=>{if(params.clear!==undefined&&typeof params.clear!=='boolean'||params.clear&&params.requirements!==undefined)throw Error('효과 태그 조건 변경을 확인하세요.');if(!params.clear&&params.requirements===undefined)throw Error('태그 조건 또는 clear:true를 지정하세요.');const index=params.modifier??null;editEffectTagRequirements(data,index,params.clear?undefined:params.requirements);return {modifier:index,assetVersion:data.version};}),
+  'behavior.task.abort':params=>automationAuthoringEdit(params,'behaviortree',data=>configureBehaviorTaskAbort(data,params.node,params.waitForAbort)),
   'editorTool.inspect':async params=>{const {doc,revision}=await automationDocument(params);if(doc.kind!=='editortool')throw Error('편집기 도구 문서가 필요해요.');return {revision,...assetPanes.get(doc.path).editor.inspect()};},
   'editorTool.run':async params=>{const {doc}=await automationDocument(params,true);if(doc.kind!=='editortool')throw Error('편집기 도구 문서가 필요해요.');return assetPanes.get(doc.path).editor.run(params.action,params.inputs||{});},
   'viewport.get':({id='scene'}={})=>{const v=automationViewport(id);return {id,backend:(v?.renderer||mainRenderer).hbBackend||'webgl2',sharedRenderer:!!v?.sharedRenderer,direction:v?.mode||viewMode,presentation:clone((v?.presentation||mainPresentation).settings),state:(v?.controls||orbit).getState(),bookmarks:(v?.controls||orbit).getBookmarks(),piloting:pilotObject};},
