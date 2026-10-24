@@ -3403,6 +3403,34 @@
         "prototype/placement-catalog.js",
         "docs/ROPE_3D.md"
       ]
+    },
+    {
+      "keywords": [
+        "sceneMatrixCache",
+        "sceneWorldMatrix",
+        "bridgeToWorld",
+        "bridgeFromWorld",
+        "깊은 월드 변환"
+      ],
+      "paths": [
+        "prototype/scene-runtime.js",
+        "native/include/HBEngine/Bridge.hpp",
+        "prototype/environment-actor-index.js",
+        "docs/SCENE_MATRIX_PASSES.md"
+      ]
+    },
+    {
+      "keywords": [
+        "scene.placeBatch",
+        "appendPlacedObjects",
+        "validSceneParents"
+      ],
+      "paths": [
+        "prototype/placement-catalog.js",
+        "prototype/scene-editor.js",
+        "prototype/model.js",
+        "docs/SCENE_RECIPE_BATCH.md"
+      ]
     }
   ]
 }
