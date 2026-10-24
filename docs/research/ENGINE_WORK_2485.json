@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "date": "2026-10-24T20:17:29.544Z",
+  "kind": "pbr-and-embedded-materials-existing-clip-ranges-ongoing-effects-and-grouped-tile-authoring",
+  "implementationRevision": "b8ed075ca3f01566d0b6b8954c51fe029cd08d34",
+  "implementationRevisions": [
+    "3ded8af83839dd858c4c860cbaea82a2f0224b5f",
+    "b8ed075ca3f01566d0b6b8954c51fe029cd08d34"
+  ],
+  "sourceHashBase": "docs/research/ENGINE_WORK_2435.json",
+  "changedSourceHashes": {
+    "docs/BLUEPRINT_SPEC.md": "e1d6ab471fa97b77e20caece7016cdbfc40563ba4e61a9937361f04767fd807f",
+    "docs/EFFECT_IMMUNITY.md": "c9f8bef99c388f2bf50b930d279f5e559c8153ea52661b1e9768737280df6ddb",
+    "docs/EFFECT_TAG_REQUIREMENTS.md": "d28445720ceb1985494578e67c834525a961172fc08742e0314f061babef7170",
+    "docs/MODEL_CLIP_EXTRACTION.md": "b81cec6eda1c1d6c4ddb742e0a25f08515b9a4449e50b570bd95daa337297408",
+    "docs/ai-routes.json": "fc6dac096de834ffac35bfe4850ec6d16ee0585efd1b8436b133324c4294e2dc",
+    "prototype/ability-assets.js": "1a25d8bb3df396105847733a2af9c4b5718ca0392a124986c656fb3ccff97a31",
+    "prototype/ability-inspector.js": "d6a8c9f25b9d217f213924458157a77d418f88722e75ce9dc766b768036ab8a1",
+    "prototype/ability-runtime.js": "bbfd4cf7b257a86e8fce2122962c191e8389000064ebc8c8d03f1de3878c2383",
+    "prototype/ability-set-reapply.js": "797bbd97acaad2000aaf99ecf718f871055ba8b897815ee8a8e88ec96eddb822",
+    "prototype/animation-retarget-editor.js": "e79a455398d45496ec46a12d3d1b3b5c6b2595d1b7971a0ec04b8af2f33705db",
+    "prototype/app.js": "5241ddde22773757fa585cb52b4e8cee69938fc0f5a87aa4acd11ce4658dd51f",
+    "prototype/effect-immunity.js": "db0c9b9f0d49ef28827e5cc2313262a426d0534571a18963a61da01d067decbd",
+    "prototype/effect-tag-editor.js": "e171853d00aa2c50407870e23e383fa01d597df163e4bdaf66a9136581297477",
+    "prototype/effect-tag-requirements.js": "0fce0d6f7c34299bc0f5e2d9b45be758f24cddb65e82c2d4fbdf3eeede78f41b",
+    "prototype/engine-services.js": "ac9d23b0cbfdaba1a651a95f01cd0c1ee225b68c42d3c0b6480c51c30b54a896",
+    "prototype/live-effect-captures.js": "ed76f454fb3444fbb522f73a71f01d3ab060bced4d3658d1bd59e1ef74adc022",
+    "prototype/model-clip-extraction.js": "4201e0a08d31daa824da78d3392bbdee6b864a32ccc0a3ff62664250424151b7",
+    "prototype/model-import-editor.js": "09bf526a69dab5a2a6891ef782261925063799ca3f6fc13475f050734f4ff003",
+    "prototype/structured-asset-editor.js": "9de9f9c03f8d8f7fd57cadfb3932af92ee00609487e103c883f46d65cfaeb838",
+    "tools/editor-automation.mjs": "f4e65f8b5662361ea34756e105b5f3b66a7df8104786cb41e60207b0e0369744",
+    "tools/project-service.mjs": "79c488f8676a12bee612a3389d9468b79641430315d48c1c613f723394459005",
+    "tools/serve.mjs": "d67726e903ef320bd82ed193692c27848c2b17ce1905d5a5c145b02e2891e49e",
+    "docs/EFFECT_ONGOING.md": "9341bbb0136e1a38f75b955c38bc85b07755c693372865e805c55d157848a4ba",
+    "docs/MODEL_MATERIAL_EXTRACTION.md": "5645a231922e5ba111672e9e44adcef901105292b051e3e4e62788464128357f",
+    "docs/SKELETAL_CLIP_RANGE.md": "0544f9996db770dbe6094fe30efed278b349a6e43fedd169a3b03e0fd84994fc",
+    "prototype/effect-ongoing.js": "5de7534d02dd31f0ff2e1da8c034e1c8d5d27796ecde27b4a8278f5a1f20186a",
+    "prototype/model-material-extraction.js": "2ff6f7172477cd0870d72449574cc459420b5c8e33f19b5bc020a01debc61eeb",
+    "tools/check-effect-ongoing-2445.mjs": "3006292eb24ab65668deb146ea3c38cf25a8977d2e254aa105c77e3c8f41062d",
+    "tools/check-model-material-2442.mjs": "5b2b91975b7d08b4339f7f47f01bac53af7299d8928f7037f9ecd3a5fdb40aa5",
+    "tools/check-skeletal-range-2444.mjs": "5f9b646fb5e2b514271a374e6310162332b81b76c820f412ec054158e08c3d32",
+    "prototype/two-d-assets.js": "4c53f4ebfbe423979c3476f79c8cfde42bd2da9b9fc9d10949ce952e2aafee9a",
+    "prototype/two-d-editor.js": "da0d34383b9dcc00f3bc31798d3727454fb97e0f498c0f5c315ce6c0ea035e5b",
+    "tools/asset-transaction.mjs": "dc27007e05aaf298e5e55683e54d94423d6d2f6b8d598cea2c131c70dff9766b",
+    "tools/check-2d-workflow.mjs": "17b0f4f6b47f38a8727808dfd2e8550414feacb60dedd25f3b2fcacc2b85ec92",
+    "docs/MODEL_EMBEDDED_IMAGES.md": "39d1537ebedfca8afbc636b9779efe4ffe02ab2e44c36ee8d6d0aa3a2d3ecc60",
+    "docs/TILE_BRUSH_SESSIONS.md": "93884f7ccbe8089b0c302afb2b2b9467e6a39ee0425929d20c4b9695ea9b314b",
+    "prototype/tile-brush-session.js": "fb4d44851fef80d9cd0b7b43c77fa7272d08d9075a52af41120ce1d227bb955a",
+    "tools/check-model-images-2464.mjs": "d9ef4845602edb5e22e333224bc383d1d1d5ca22be06510326d06eefdb07b39a",
+    "tools/check-tile-brush-2473.mjs": "5ba7e1b451a59abb1cce981522ed1e0c75404f0b1aadf2af3ed8f12f674d744e",
+    "tools/model-material-publish.mjs": "f4f60d6bec23e568924966c96b5a4dbd05a85a538a400f78cf673d7a6ee1182d",
+    "CODEX_HANDOFF.md": "9dec5e63c73262e670bf0026886434d8520e608442287eb42240f0f408cccefd"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1428,
+  "targetIds": [
+    "AST-02",
+    "ANM-06",
+    "GAM-04",
+    "GAM-01",
+    "PRJ-03",
+    "2D-06"
+  ],
+  "changes": {
+    "AST-02": " ·2436–2485: Standard/Physical PBR→독립v1 그래프/상수·채널/UV/샘플러와 실제생성API, GLB/glTF 내장PNG/JPEG/WebP SHA계획·선택버퍼/공동v2복구·해시재사용·14source/4target content/cook. 재질11/기존추출14 통과; 실제GPU/창 아님.",
+    "ANM-06": " ·2436–2485: 기존 골격클립 start/end TRS/모프·알림·가중곡선 보존/명시Smooth·주기베이크, 인간한Undo/AI CAS/비동기소유/무변경원형, 저장graph재생9source.",
+    "GAM-04": " ·2436–2485: v4 ongoingRequirements 현재4역할/weakidentity/세대·최소고정점·음의순환원자취소, 수치/태그/면역/주기억제·동위상재개·inhibit/resumeCue·스택역할재캡처/수치순환복원·사람/AI/공용명령22source.",
+    "GAM-01": " ·2436–2485: 능력활성/취소 태그와 지속조건을 비용/Cue와 같은원자수명으로 처리, 같은ID 교체액터 tag 명령의 퇴역소유자수정 방지. ongoing22 포함.",
+    "PRJ-03": " ·2436–2485: v1 텍스트복구 유지·v2 canonical base64/실제바이트SHA 혼합복구, 내장이미지+재질 공동쓰기/인덱스·중간취소/외부충돌보존·재시작, 완료/완전rollback 임시journal삭제. generic binary Undo 아님.",
+    "2D-06": " ·2436–2485: 단일점 경로 유지·반복획 활성레이어 한준비/내부청크·지역자동규칙·가상뷰 pending counts·종료/flush 한Undo/원본가변성/교체문서보호. AI tilemap.stroke cooperative/CAS/요약. 신규14+이전Git독립대조·저장런타임/2D/C++타일검사 통과. 65536셀64지점 중간private배열공개0/끝1; FPS 아님."
+  },
+  "checks": {
+    "newSourceCases": 70,
+    "newCasesByTool": {
+      "modelMaterials": 11,
+      "skeletalRanges": 9,
+      "effectOngoing": 22,
+      "embeddedImages": 14,
+      "tileBrush": 14
+    },
+    "reports": {
+      "modelMaterial": {
+        "path": "native/build/model-material-2A5s7F/acceptance.json",
+        "sha256": "df9f27b96957e1cfbc031c1140d7b0dcff677303650a13cb5c34ff05340a541f"
+      },
+      "skeletalRange": {
+        "path": "native/build/skeletal-range-L8XND9/acceptance.json",
+        "sha256": "bb77a17dcd58d91035754b71c4f963f3c858568dad872235b05cd77818b863e4"
+      },
+      "ongoing": {
+        "path": "native/build/effect-ongoing-S4TscF/acceptance.json",
+        "sha256": "28ccf9515fd8bd93c367109899fe86a2151ab1f6ac07f275e223e95f162ceeed"
+      },
+      "embedded": {
+        "path": "native/build/model-images-IIcwI7/acceptance.json",
+        "sha256": "677290ba04905e7fff3538426b0c05c199b23b6cabd8b77002ad7971411f841d"
+      },
+      "brush": {
+        "path": "native/build/tile-brush-PmJgCg/acceptance.json",
+        "sha256": "1d288eda1457fb52c703b9fe910c95af863414eba3e5385e2f47d7a76c0e98e9"
+      },
+      "sourceBoundary": {
+        "path": "native/build/boundary2479.json",
+        "sha256": "1023ad33c8fb5a58bade86a367482b8461fb9aa42f55d54ac498f685d56c5b5d"
+      }
+    },
+    "groups": [
+      "native/build/group2449.json (initial cue-list failure; corrected)",
+      "native/build/recheck2452.json",
+      "native/build/final2456.json",
+      "native/build/group2467.json (initial fixtures/descriptors; corrected expected-image payload)",
+      "native/build/group2477.json (old pointer expectation changed; workflow rerun passed)"
+    ],
+    "workflow": {
+      "command": "node tools/check-2d-workflow.mjs",
+      "passed": true,
+      "scope": "Actual pointer/Undo/flush/source state and disk save/reopen; expected boundary strengthened to pending preview until finish."
+    },
+    "nativeTileGate": {
+      "command": "node tools/check-2d-authoring.mjs",
+      "executed": true,
+      "passed": true,
+      "scope": "Existing owned NativeHost build/call TileProbe and current common tile/physics service. No installed app/GUI proof; binary hash not separately captured, not reusable as exact SDK executable proof."
+    },
+    "newGui": false,
+    "newGpuExecution": false,
+    "newDevice": false,
+    "newExecutableOrSdkFullProof": false
+  },
+  "measurements": {
+    "localStroke": {
+      "occupied": 65536,
+      "points": 64,
+      "ordinaryInitialEdits": 1,
+      "privateLayerPreparations": 1,
+      "intermediatePrivateArrayMaterializations": 0,
+      "finalPrivateArrayMaterializations": 1,
+      "scope": "Structural work only; initial full edit/private clone/final sort and periodic index compaction remain. No FPS or OS heap measurement."
+    }
+  },
+  "limits": [
+    "All row remaining scopes still apply; 78statuses unchanged.",
+    "Unsupported codecs/material maps, skin/unnamed/fullDCC, direct TRS-key authoring and wider engine residuals remain.",
+    "Ongoing still scans/snapshots participant world; dependency indexing optimization is next.",
+    "Initial/final authoring O(N), full map publication/render and storage/cook costs remain.",
+    "No new FPS/OS heap/mobile/native renderer parity claim."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "newVersions": 0,
+    "userProfileUsed": false
+  },
+  "automation": {
+    "created": 0,
+    "existing": "hbengine deleted2160; not recreated"
+  },
+  "space": {
+    "policy": "Owned tests retain sources/reports; no engine/SDK/browser-profile copies. Embedded publication drops completed recovery journal, content hash reuses images. Helper cleanup follows.",
+    "helperCleanup": {
+      "path": "native/build/temp-clean2483.json",
+      "files": 46,
+      "bytes": 157264
+    }
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "complete": false
+  }
+}

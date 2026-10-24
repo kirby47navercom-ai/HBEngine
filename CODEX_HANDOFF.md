@@ -1,19 +1,17 @@
-# 현재 인계 — 수동 계속 / 업데이트 보류
+# HBEngine 현재 인계 (2026-10-25)
 
-최신 사용자: 누적 엔진 기능을 여러 분야 묶어 실제 제작·실행까지 구현하고 영향 검사는 마지막에 합쳐요. 한두 수정 뒤 종료/전체완료 포장 금지. 주인님/짚짱/해요. 예약 hbengine2160 삭제·재생성 금지. UPDATE_HOLD active, 설치/Versions/사용자 창·탭·프로필·게임 원본 변경 금지. 새 agent/goal/재개 질문 금지. Mac/Xcode/Android폰 없음·재질문 금지.
+최신: 예약 재생성 금지(hbengine 삭제2160), 업데이트 계속 보류(UPDATE_HOLD active). 사용자 창·프로필·게임원본/Versions 변경 금지. 새 에이전트 금지. 여러 분야 구현 뒤 영향 검사 묶음, 같은 SDK/렌더 검사 반복 금지. 한글 동일 kirby47navercom-ai author/committer·AI trailer 없이 commit/push.
+보호: prototype/player.js, tools/check-player-keyboard-release.mjs 읽기/편집/테스트/stage 금지. docs/NODE_CATALOG.md 기존dirty stage금지. core-api 생성/ignored. Mac/Xcode/Android폰 없음.
 
-## 최신 WORK2435 — core 1ba05cbccc8d6e046d1ecb71d6382ed0202befea
+확정 소스 core 3ded8af83839dd858c4c860cbaea82a2f0224b5f, 후속 b8ed075ca3f01566d0b6b8954c51fe029cd08d34. 원장 WORK2485/ENGINE_STATUS,78행37verified/37partial/1unimplemented/3unverified, 전체 완료율null. 새 조사 전체완료/설치완료 아님.
+- 재질11: Standard/Physical→기존v1 surface/graph, 선형색/발광/물리상수·외부맵/채널/계수·UV/flip/sampler. 실제 ProjectService.create와 정확한serve asset/create 초기material검증 연결. 지원밖맵/래스터/UV/코덱은 누락성공 없이 거절. docs/MODEL_MATERIAL_EXTRACTION.
+- 기존클립9: 공통range helper로 TRS/모프·notify/state·weighted/auto 곡선경계, Smooth/periodic 명시베이크, emptytracks·Float32겹침거절·fullrange원형NoOp. RetargetEditor 한Undo/asyncdocguard, skeletal.range.edit CAS/compact, 저장graph재생. docs/SKELETAL_CLIP_RANGE.
+- ongoing22: v4 지속효과 4현재역할 weakref/owner세대, 최소고정점·음의순환/수치재활성오류 비용/태그/Cue rollback. 억제 중 수치/부여태그/면역/주기실행off, expiry/phase보존/과거몰아피해없음, inhibit/resume Cue, 스택ref재캡처·동일ID교체태그수정 보호. 사람검사창/AI/CAS/공용native-command replay. docs/EFFECT_ONGOING. 현 cost는 ongoing 존재 시 전체owner snapshot/refresh/종속index재구축; 다음 최적화 후보.
+- 내장이미지14: tools/model-material-publish prepareModelImages/publishModelMaterial, GLB header/JSON·선택BIN seek, glTF dataImage/dataBuffer/external.bin 선택range guard. PNG/JPEG/WebP loaded-image SHA와sourceSHA·해시이름재사용. 재질+이미지 v2binary/textjournal 실제바이트hash/rollback/recovery, v1유지, 외부변경보존, 완료/완전취소기록삭제(retainJournal:false), binary Undo명시거절. prototype hashModelEmbeddedImages는 오직 metadata===null 편집preview, 일반runtime 해시비용추가없음. 사람/AI exactserve handlers·저장GLSL/HLSL·4targetcontent 확인. docs/MODEL_EMBEDDED_IMAGES.
+- 타일획14: TileBrushSession 첫점ordinary·두번째변경부터활성레이어만private clone/freeze/256청크, 원본가변성유지. 화면pending·큰가상뷰 공간query/count·끝/flush 한Undo/plain sortedJSON, 교체문서취소. AI tilemap.stroke shape선검사·16구간양보·준비중identity/게시전fullCAS·원래path고정·compact. source65536/64point private중간배열공개0/최종1. O(N)첫/준비/정렬·주기compaction·전체view/속성편집 남음. docs/TILE_BRUSH_SESSIONS.
 
-- 모델 클립 start/end: 선형·스텝·quat 내부 키/경계, 0부터 재기록. 구간 Smooth/사용자 보간만 명시 bake, sampledTracks/FPS. 점 알림 반열림/상태 겹침 자르기. auto접선 고정/가중·수직곡선 분할/선형 외삽. 반복 metadata는 명시 표본과 sampledCurves. 리타게팅도 같은 metadata helper. 실제 Float32에서 겹치는 경계는 거절. 사람 폼/AI CAS/원자 파일·기존 graph 연결. 신13+기존추출14/retarget/periodic7 통과.
-- 런타임 타일: 불변256슬롯 청크·16단계 조회·삭제 빈슬롯/압축. 쓰기마다 점유 배열 복사 제거, 소비 때 보통 JSON 배열 1회. 변경 공간 그룹/자동타일·순서·기존 가변 저작 참조 보존. visibility는 같은 데이터/공개배열 공유, clear는 이전 배열 안 펼침. 비동기 render/native protocol3/충돌 입력 경계. 신12+index10/native replay14/dirty6/169·170 통과. 65536셀64쓰기 중간공개0·마지막1, 4096셀 warm group 좌표읽기31/dirty0. FPS/RAM 측정 아님.
-- EQS: 최신 가변 월드 O(N) 확인 유지·변경 행만 준비·부모 있을 때만 행렬 pass·실패 원자 보존/임시참조 해제. actorSync 진단. 신5+기존8/preview18/tester13 통과. 10000개 unchanged staged0/matrixPassfalse; O(N) 제거 아님.
-- 효과 v3 immunity: 들어오는 grantedTags와 네 역할의 all/any/none/exact, 캡처/연산/중첩/주기 앞 차단·기존 빈 핸들, 선택 blocked Cue. 기존 v1/v2 유지·명시 v3/이전 reader거절·UI Undo/AI compact CAS/복사 inspector. 능력 로딩 뒤 현재 소유자/항목/비용/태그/쿨다운 재검사, 동시 지출/퇴역 차단·오류 비용/Cue 복원. 신16(실제 VM native명령 replay·4target 공통 content/cook 포함)+관련 회귀 통과. APK/IPA/EXE 빌드 아님.
+증거: native/build/final2456.json(기존클립9/ongoing22 등), material-2A5s7F/acceptance11, model-images-IIcwI7/acceptance14, tile-brush-PmJgCg/acceptance14. group2467 최초fixture Assets누락/contentdescriptor 오해→수정, frontend expectedImages 전달실제누락 수정 뒤14통과. group2477: 신규14/2D authoring(C++NativeHost 실제호출 포함)/extensions/storage12통과, workflow는 의도된pending문서/Undo경계 강화수정 후 node tools/check-2d-workflow.mjs 재통과. 실제 새GPU/GUI/설치/기기 없음, C++tile gate는 설치본/SDK전체증명 아님.
+source boundary2479 런타임 engine-services/two-d-editor moduleClosure에 player sentinel을 미리넣어 보호파일미독. serve Closure 대신 exact backend handler 검사. OWN first30 native/build/owned2458.json + next18 owned2479.json 합집합40. 새보고/metadata와인계만추가. Work2485 sourceHashBase2435, 이전합성1410owners+합성1428owners(도구확정).
 
-신규46 source. 첫 묶음의 타일 호환 회귀는 가변 경로/공간색인 복구, clip/능력 fixture 오류는 올바른 파일분류/VM start로 수정. 수정 영향만 재검사. 실패 초안은 성공 수에 포함 안 함. 상세 경로·SHA·재사용 경계 WORK2435. SDK/렌더러 변경·새 C++ 바이너리·GUI·기기·설치0. 모듈 closure는 공유 service/추출 entry만 검사, dirty player sentinel.
-
-## 보호 / 잔여
-
-외부 dirty prototype/player.js + tools/check-player-keyboard-release.mjs 읽기/수정/스테이지/실행·배포 금지. docs/NODE_CATALOG.md 생성물 직접 commit 금지. 관련 코드부터 tools/hb.mjs context로 찾되 넓은 fallback은 보호 파일을 읽지 않게 주의해요. 현재 소유 테스트만 사용해요.
-마지막 설치 USER_INSTALL2145=73341067df5a12be(당시 Versions1). 업데이트 요청 전 resume2152/install2152 금지. heavy/GUI/설치 전 active1955; 이번 마지막18:07:43Z active[]. SDK 마지막 실제 CPP는 WORK2367 14사례/26RPC, 이후 SDK 불변이지만 새 기능의 실제 native 실행 증거로 재포장 금지.
-잔여는 ENGINE_STATUS.json remaining이 기준. 재질/skin·복잡DCC/추가형식·기존clip편집, 타일 저작배열/diskchunks/총비용, EQS 전체 O(N)/nativeBTTask/대규모AI, 효과 ongoing/과거주기/예측, 일반 CPPschema·같은callback同ID, sequence 외부rollback/다른Eulerorder, RND globalDF/고급매질/HWRT 등 유지. GL1728 ANGLE6878.6/D3DCompile6836.439ms 미해결·실패실험 반복 금지. 이전 자세한 구현은 WORK2401→2391→2379→2367 등 원장 체인으로 확인해요. 전체 UE/Unity 완료율 null 유지.
-한글 commit/push, author=committer kirby47navercom-ai/228715038+kirby47navercom-ai@users.noreply.github.com, AI trailer0. 검사 산출물은 test-artifacts로 원본·보고서만 보존, 엔진/프로필 사본 누적 금지.
+설치는 역사 USER_INSTALL2145 Versions/73341067df5a12be(SHA73341067df5a12be1fb1758e510ffa8c0ee7ca6b285a1bc5164afc33df4571bc)만 확정. 새복사0/예약0. active1955 마지막20:07:55UTC active[]. 무거운검사 전 재조회.
+다음: 멈추지 말고 구현 계속. 관련 symbol focus로 찾고 docs/ENGINE_STATUS remaining의 실제 제작/실행 범위만. ongoing 참여자/의존색인 비용, PRJ복구/UI·추가shader/material·world/animation/physics/CPP잔여 등 남음. GL 초기컴파일1728 ANGLE6878.6/FXC6836.439ms 미해결, 실패실험반복금지. 근거없는전체완료/퍼센트 금지. native/build helper/query만 exact경로검증후삭제, 보고/원본fixture/recipe보존. 공유cppcache32정책 유지. 사용자 '끝내지말고계속'이 최신, 예약/goal질문으로멈추지않음.
