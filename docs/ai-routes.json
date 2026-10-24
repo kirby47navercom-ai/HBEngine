@@ -684,7 +684,8 @@
         "prototype/runtime-spawn.js",
         "prototype/runtime-actors.js",
         "prototype/ability-runtime.js",
-        "prototype/environment-query.js"
+        "prototype/environment-query.js",
+        "prototype/environment-query-preview.js"
       ]
     },
     {
@@ -3286,6 +3287,31 @@
       ],
       "paths": [
         "prototype/behavior-service-editor.js"
+      ]
+    },
+    {
+      "keywords": [
+        "EditorEnvironmentQuery",
+        "editor.eqs.run",
+        "편집 월드 질의"
+      ],
+      "paths": [
+        "prototype/environment-query-preview.js",
+        "prototype/eqs-debug-controls.js",
+        "docs/EDITOR_ENVIRONMENT_QUERIES.md"
+      ]
+    },
+    {
+      "keywords": [
+        "resolveIndexedRotationEntries",
+        "Euler 축 레이어",
+        "indexedEuler"
+      ],
+      "paths": [
+        "prototype/sequence-indexed-transforms.js",
+        "prototype/sequence-animation-transforms.js",
+        "prototype/sequence-imported-pose.js",
+        "docs/SEQUENCE_EULER_LAYERS.md"
       ]
     }
   ]

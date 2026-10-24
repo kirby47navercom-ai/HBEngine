@@ -14,7 +14,7 @@ class ImportedTransformBinding{
  constructor(group,clip){this.group=group;this.clip=clip;this.bind();}
  bind(){const resolved=importedTransformBindings(this.group,this.clip,node=>node?.isObject3D&&!node.isBone&&ownedImportedNode(this.group,node)),seen=new Map();for(const row of resolved.rows){let fields=seen.get(row.node);if(!fields){fields=new Set();seen.set(row.node,fields);}fields.add(row.field);}Object.assign(this,resolved);this.fieldsByNode=seen;this.rootFields=new Set(seen.get(this.group)||[]);}
  validate(){if(this.edges.some(([node,[parent,owner,name]])=>node.parent!==parent||node.userData?.objectId!==owner||node.name!==name))this.bind();}
- sample(row,time,basis){return sampleImportedTransform(row,time,this.clip.duration,basis??(row.indexed?readImportedTransform(row.node,row.field):undefined));}
+ sample(row,time,basis,eulerAxes=false){return sampleImportedTransform(row,time,this.clip.duration,basis??(row.indexed?readImportedTransform(row.node,row.field):undefined),false,eulerAxes);}
 }
 // Registry contains only leased child fields; ordinary/direct root fields need
 // no model traversal. External snapshots are sparse and reuse their arrays.

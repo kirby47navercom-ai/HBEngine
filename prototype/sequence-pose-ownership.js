@@ -15,5 +15,5 @@ export const sequencePoseOwnershipContract=Object.freeze({
  restore:'Only bone objects written under the shared capture token are restored. Missing, replaced or other-actor bones are untouched; same-name replacement never receives old TRS. Captures and touched model bone references are weak.',
  weight:'Optional skeletalPose track poseWeight0..1, default1. Zero releases its bone channels. Intermediate values blend local TRS from the shared preanimated pose, quaternion shortest-arc Slerp; higher-priority tracks still win each bone. Optional sequence normalized mode mixes same-priority per-bone local TRS after each track poseWeight; zero layer weight retains its shared capture token for reactivation.',
  topology:'Bound bone names, ancestor parent edges and actor ownership markers checked on sampling; stale bindings re-resolve atomically before writes. Unrelated duplicate insertion still follows existing activation/query validation.',
- limits:['Independent Euler-axis layer composition and renderer-property aliases','Arbitrary external setter/notify rollback']
+ limits:['Mixed Euler-order layer composition and renderer-property aliases','Arbitrary external setter/notify rollback']
 });

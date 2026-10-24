@@ -4,7 +4,7 @@
 
 위치와 크기는 작성된 성분만 차지해요. 높은 우선순위의 X 키가 있어도 다른 레이어의 Y·Z를 막지 않아요. 같은 우선순위의 정규화 가중치는 해당 성분을 작성한 레이어끼리 계산해요. override·시작 순서·가중치 0·공백·keep/restore·forceRestore는 기존 조작을 사용해요. 일반 믹서가 아래에서 진행 중이면 작성하지 않은 성분은 그 믹서의 현재 값을 따라가요. 첫 기준 포즈는 최종 복원을 위해 별도로 보존해요.
 
-회전은 하나의 방향 채널이에요. 같은 클립의 Euler 또는 Quaternion 부분 키를 공유 기준 방향의 나머지 성분과 조립하고, 단위 쿼터니언으로 만든 뒤 기존 반구 정렬 혼합을 적용해요. Euler는 노드의 회전 순서를 따르고 결과는 공용 XYZ 각도로 전달해요. 서로 다른 레이어의 Euler 축을 각각 별도로 합성하는 규칙은 추가하지 않았어요. 한 노드의 같은 회전에 Euler와 Quaternion 키가 함께 있거나 같은 성분이 중복되면 실행 전에 오류로 알려요. 유한하지 않은 값·잘못된 인덱스·영 길이 쿼터니언도 거부해요.
+전체 회전과 Quaternion 키는 하나의 방향 채널이에요. 같은 클립의 Euler 또는 Quaternion 부분 키를 공유 기준 방향의 나머지 성분과 조립하고, 단위 쿼터니언으로 만든 뒤 기존 반구 정렬 혼합을 적용해요. Euler는 노드의 회전 순서를 따르고 결과는 공용 XYZ 각도로 전달해요. 부분 Euler 축은 같은 순서의 레이어 사이에서 축별로 합성해요. 액터·자식·뼈의 규칙과 경계는 [Euler 축 레이어](SEQUENCE_EULER_LAYERS.md)를 따라요. 한 노드의 같은 회전에 Euler와 Quaternion 키가 함께 있거나 같은 성분이 중복되면 실행 전에 오류로 알려요. 유한하지 않은 값·잘못된 인덱스·영 길이 쿼터니언도 거부해요.
 
 회전한 시퀀스 기준점은 부분 위치가 영향을 주는 월드 성분으로 투영해요. 나머지 로컬 성분은 월드 기준값을 역변환해 채워요. 부분 회전도 기준점을 역적용한 방향에서 조립해 중복 회전을 막아요. 부착 액터와 일반 모델 자식은 기존 로컬 규칙을 유지해요.
 
@@ -16,4 +16,4 @@
 
 미리보기는 순환 참조를 가진 SpriteRigPose/IK의 실행 상태를 복제하지 않고 해당 비주얼을 작성 컴포넌트에서 새로 만들어요. 원본 리그·포즈·계층을 수정하거나 공유하지 않고, 일반 모델 골격은 기존 복제 경로를 유지해요.
 
-AI 소유자: `node tools/hb.mjs context "부분 변환" --symbol importedTransformBindings`. 런타임 바인딩·복원은 이 모듈과 `sequence-imported-transforms.js`, `sequence-imported-pose.js`, `sequence-pose-playback.js`에 연결돼 있어요. 가져온 믹서의 일반 렌더 파라미터 별칭, 일반 외부 시뮬레이션·추가 액션·notify·비동기 setter 롤백, 독립 Euler 축 레이어 합성은 별도 잔여예요.
+AI 소유자: `node tools/hb.mjs context "부분 변환" --symbol importedTransformBindings`. 런타임 바인딩·복원은 이 모듈과 `sequence-imported-transforms.js`, `sequence-imported-pose.js`, `sequence-pose-playback.js`에 연결돼 있어요. 가져온 믹서의 일반 렌더 파라미터 별칭, 일반 외부 시뮬레이션·추가 액션·notify·비동기 setter 롤백, 서로 다른 Euler 순서의 레이어·회전 원점의 축 투영은 별도 잔여예요.

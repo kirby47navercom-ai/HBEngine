@@ -1,0 +1,12 @@
+import {Group,AnimationClip,NumberKeyframeTrack,Euler,MathUtils} from 'three';
+import {engineOperations} from '../prototype/engine-services.js';
+import {BlueprintRuntime} from '../prototype/blueprint-runtime.js';
+import {createAsset} from '../prototype/asset-documents.js';
+import {makeSequenceTrack,validGameplayAsset} from '../prototype/gameplay-assets.js';
+export async function eulerWorld(){
+ const objects=['Target','A','B','C','D','Origin'].map(id=>({id,name:id,kind:'empty',visible:true,position:[0,0,0],rotation:[10,20,30],scale:[1,1,1],components:[]})),groups=new Map(objects.map(o=>{const group=new Group();group.name=o.id;group.userData.objectId=o.id;return [o.id,group];})),target=objects[0],group=groups.get('Target'),child=new Group();child.name='Child';child.rotation.set(.1,.2,.3);group.add(child);
+ const assets=new Map(),update=o=>{const g=groups.get(o.id);g.position.fromArray(o.position);g.quaternion.setFromEuler(new Euler(...o.rotation.map(MathUtils.degToRad),'XYZ'));g.scale.fromArray(o.scale);g.updateWorldMatrix(true,true);};objects.forEach(update);
+ const services=engineOperations({headless:true,asset:async p=>assets.has(p)?p:null,readAsset:async p=>assets.get(p),mesh:id=>groups.get(id),update,build(){},remove(){},log(){}}),vm=new BlueprintRuntime(objects,[],{...services,log(){},updateObject:update});await vm.start();
+ const op=(key,id,args={})=>services.operation(key,{target:id,...args},{self:id},vm),scalar=(node,axis,value)=>new NumberKeyframeTrack(node+'.rotation['+axis+']',[0,2],[value*Math.PI/180,value*Math.PI/180]),imported=(name,tracks)=>{const clip=new AnimationClip(name,2,tracks);(group.userData.animations??=[]).push(clip);return clip;},animation=name=>({...makeSequenceTrack('animation'),target:'Target',clips:[{id:crypto.randomUUID(),clip:name,start:0,duration:2,sourceStart:0,rate:1,slot:'DefaultSlot'}]}),direct=value=>({...makeSequenceTrack('rotation'),target:'Target',keys:[{time:0,value}]}),sequence=(name,tracks,extra={})=>{const data={...createAsset('sequenceasset',name),length:4,tracks,blendMode:'override',...extra};if(!validGameplayAsset('sequenceasset',data))throw Error('Owned sequence invalid');assets.set(name,data);return data;},start=async(id,name)=>{await op('playSequence',id,{asset:name});await op('sequencePause',id,{paused:true});await op('sequenceSeek',id,{time:1});};
+ return {objects,target,group,child,groups,assets,services,vm,update,op,scalar,imported,animation,direct,sequence,start,dispose:async()=>{try{await vm.stop();}finally{services.dispose();}}};
+}

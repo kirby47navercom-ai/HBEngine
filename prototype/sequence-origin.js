@@ -29,6 +29,7 @@ export class SequenceOrigin{
   if(this.config.mode!=='inherit'){this.position.add(this.value.copy(this.offset).applyQuaternion(this.rotation));this.rotation.multiply(this.offsetRotation).normalize();}
  }
  indexedBasis(field,basis,object){if(!this.enabled||field!=='rotation'||object.parent||object.parentId||this.isOriginActor(object))return basis;const rotation=new Quaternion().setFromEuler(new Euler(...basis.map(MathUtils.degToRad),'XYZ')).premultiply(this.rotation.clone().invert()),angles=new Euler().setFromQuaternion(rotation,'XYZ');return [angles.x,angles.y,angles.z].map(MathUtils.radToDeg);}
+ applyEulerPartial(sample,object){if(!this.enabled||object.parent||object.parentId||this.isOriginActor(object)||Math.abs(this.rotation.w)>1-1e-12)return sample;return this.apply({type:'rotation'},sample.value,object);}
  applyPartial(field,sample,basis,object){
   if(!this.enabled||field!=='position'||object.parent||object.parentId||this.isOriginActor(object))return sample;
   // Fill unauthored local axes by inverse-transforming the shared world basis.

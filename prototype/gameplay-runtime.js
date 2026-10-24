@@ -242,6 +242,9 @@ export function gameplaySystems(hooks){
     const empty=snapshot=>{hooks.discardAnimation?.(snapshot);const active=sequenceAnimations.get(o);if(!active)return;sequenceAnimations.delete(o);if(hooks.holdSequenceAnimation)return hooks.holdSequenceAnimation(o.id,active);return hooks.operation('stopAnimation',{target:o.id},b,vm);};
     return {mix:hooks.sampleAnimationLayers?mixSequenceAnimationEntries:undefined,read:()=>hooks.captureAnimation?.(o.id)??null,valid:()=>vm.object(o.id)===o,empty,apply:async(sample,restoring)=>{
       if(restoring&&(!sample||sample.kind===animationPlaybackToken)){const active=sequenceAnimations.get(o);if(!active)return;sequenceAnimations.delete(o);const dormant=sequenceChannels.has(o,'animation')&&sequenceChannels.matches(o,'animation',sample);if(hooks.restoreAnimation)return hooks.restoreAnimation(o.id,sample,active,vm,()=>!sequenceChannels.has(o,'animation')||dormant&&sequenceChannels.matches(o,'animation',sample),dormant);return hooks.operation('stopAnimation',{target:o.id},b,vm);}
+      // World shutdown retires every owner. Do not restart a revealed lower
+      // clip between releases; the final capture still follows restoration.
+      if(vm.stopping)return;
       if(!sample)return empty();let active=sequenceAnimations.get(o);
       if(restoring&&active&&hooks.ownsSequenceAnimation&&!hooks.ownsSequenceAnimation(o.id,active))return;
       if(active&&active.state===state&&active.clip===sample.clip.clip&&hooks.ownsSequenceAnimation&&!hooks.ownsSequenceAnimation(o.id,active))return;

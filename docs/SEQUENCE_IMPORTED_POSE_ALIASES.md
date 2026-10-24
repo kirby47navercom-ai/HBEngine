@@ -14,4 +14,4 @@ AI 편집은 기존 `document.patch` revision·dryRun·Undo·Save를 사용해�
 
 AI 소유자 탐색: `node tools/hb.mjs context "가져온 골격 별칭" --symbol ImportedSequencePoseProgram`. 관련 소유자는 `sequence-imported-pose.js`, `sequence-skeletal-channels.js`, `sequence-pose-playback.js`, `sequence-animation-mixing.js`예요.
 
-전체 액터 루트·일반 모델 노드 TRS는 SEQUENCE_IMPORTED_TRANSFORM_ALIASES.md에 연결돼 있어요. 인덱스 단위 변환·뼈 속성은 [부분 키 바인딩](SEQUENCE_INDEXED_TRANSFORMS.md)에 연결돼 있어요. 위치·크기는 작성 성분별, 회전은 조립 방향별로 중재해요. 남은 별칭은 렌더 속성과 독립 Euler 축 레이어 합성이에요. 임의 외부 추가 액션·비동기 setter·notify 부수효과 롤백도 별도예요. 이 변경만으로 전체 프레임 속도·메모리·실기기 검증을 주장하지 않아요.
+전체 액터 루트·일반 모델 노드 TRS는 SEQUENCE_IMPORTED_TRANSFORM_ALIASES.md에 연결돼 있어요. 인덱스 단위 변환·뼈 속성은 [부분 키 바인딩](SEQUENCE_INDEXED_TRANSFORMS.md)에 연결돼 있어요. 위치·크기와 호환되는 부분 Euler 회전은 작성 성분별로 중재해요([Euler 축 레이어](SEQUENCE_EULER_LAYERS.md)). 서로 다른 Euler 순서의 회전 합성과 렌더 속성 별칭은 남아 있어요. 임의 외부 추가 액션·비동기 setter·notify 부수효과 롤백도 별도예요. 이 변경만으로 전체 프레임 속도·메모리·실기기 검증을 주장하지 않아요.
