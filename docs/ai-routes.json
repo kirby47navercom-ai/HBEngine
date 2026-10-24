@@ -3513,6 +3513,21 @@
         "prototype/app.js",
         "docs/EQS_TESTING_PAWN.md"
       ]
+    },
+    {
+      "keywords": [
+        "extractModelClip",
+        "modelimport.extractClip",
+        "modelAnimationSubasset",
+        "modelClipExtraction"
+      ],
+      "paths": [
+        "prototype/model-clip-extraction.js",
+        "prototype/model-import-editor.js",
+        "tools/project-service.mjs",
+        "prototype/app.js",
+        "docs/MODEL_CLIP_EXTRACTION.md"
+      ]
     }
   ]
 }
