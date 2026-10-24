@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "date": "2026-10-24T20:47:14.615Z",
+  "kind": "conditional-participants-document-three-way-merge-joint-breakage-and-zero-spring-correction",
+  "implementationRevision": "ddcf6f3a4ce2b9f8b4d42f77a7fbbb2510f8e94f",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2485.json",
+  "changedSourceHashes": {
+    "docs/EFFECT_ONGOING.md": "149ddd1d65aab5e58b597a8a445bd466cb0a799e866b20914e896a64716983a4",
+    "docs/BLUEPRINT_SPEC.md": "6f37ddf0e9651caa3a34248fde31247342abc3eb20873e921470e52aed950e5c",
+    "docs/ai-routes.json": "f8c63bf8ff59a4e7b8431755f21d6b18d1073c92c67a4f8e3c4080e2e5367757",
+    "docs/DOCUMENT_CONFLICT_MERGE.md": "ff6dddf6a9481b0baefa4e2cd93447b1ff9a8e7ca2ede42a595569302b8721ce",
+    "docs/JOINT_BREAKAGE.md": "325a8deb2e867d5be5ecd10c44c87a73e9f103b0ada19cdcd94a8ccf2cc7232c",
+    "native/include/HBEngine/Game.hpp": "1b3394cbb7c276be22509da08d7aa8270ec0d66f2fad767633bd82e68eee434f",
+    "native/include/HBEngine/Session.hpp": "5e9d4bf6178ec7cd179ed6f332656d6228f09a264c397cc49646ad96f2872af4",
+    "prototype/ability-runtime.js": "db38a0e9c6557f647789a909d87956c47cbd73bc8f063ea01c395f8f4f7d8072",
+    "prototype/ability-set-reapply.js": "6398e9f9a54a798000277ec03ecfa82fdfec6e33202ef907b146cedafd341077",
+    "prototype/effect-ongoing.js": "de6b7e6b172a7b1e30c1157a1b8afe9f1eecf1dcf648647de98660607acb7cbf",
+    "prototype/live-effect-captures.js": "48fdff4f241c91f50f1c5563f28c29925678ec6ff3e34e90c4ea567a81cae1ff",
+    "prototype/app.js": "58bcca3f6dd1b43895b21bc5c8eb10094ce328f5e7ce230047140d91b6d64c36",
+    "prototype/editor-shell.css": "27562b8dbd724f02e16c2ede54321944a96973849e3d3de933c9df1697638cca",
+    "prototype/document-merge.js": "cab0731209067531375b3635bb4f98c9fee9b393a0d3122b1bf150005ee2c3f4",
+    "prototype/engine-services.js": "e332ac275f6b54e5e404553ef083bff53ed8f12f6d0dd8399ddb531b34aa6cbd",
+    "prototype/physics-world.js": "840c7e6b5868c998c5ad9a2467f13312091d8d242c8e7d63fe2b28e2397079a1",
+    "prototype/scene-components.js": "2a3dc821f131ad8f1115ea7633efca71b52573c59bba4cba8f98404d325efbf4",
+    "tools/editor-automation.mjs": "27f477a2144ec320f70813afa2707ca5278c01f38088c56ff65510c8ce73399d",
+    "tools/check-document-merge-2495.mjs": "25a64ab5067a78d54366b5bef92b1b0892bd5354b567e68d696a568e6eb3edc7",
+    "tools/check-ongoing-participants-2489.mjs": "489232391f8bdb1e843c95a97068e743cf05faeda0d0ab45705dc2aa10027073",
+    "tools/check-joint-break-2506.mjs": "1f278f802b94475cfe55caa294ef156aa8e06921f2d67ca297686f453574007a",
+    "CODEX_HANDOFF.md": "90f2a37423eef385d494db3e34da39786a6d47cb779d10c46eabdce8acbc778c"
+  },
+  "resolvedOwners": 1434,
+  "targetIds": [
+    "GAM-04",
+    "PRJ-03",
+    "PHY-02",
+    "AI-02"
+  ],
+  "changes": {
+    "GAM-04": " ·2486–2520: v4 지속조건의 대상/설정역할/새역할·수치 종속자만 snapshot/재색인/공개, 첫 외부태그/rollback/회수 보존. 10003owner 중3공개·무관10000효과/능력읽기금지·8source 및22/13/16/6/5회귀 통과; 전체tick/FPS 아님.",
+    "PRJ-03": " ·2486–2520: 열린 JSON/텍스트의 사람/AI 3방향 합치기·같은속성/삭제·배열의 명시선택·원래복구기준/구기준없음거절·문서/디스크CAS·한Undo 초안/일반저장. 실제 앱함수/DOM/기존파일경로15source. 바이너리journal 충돌 UI와 구분.",
+    "PHY-02": " ·2486–2520: 2D/3D 앵커거리/상대각도 파손·sticky 수명·수동BP/C++해제/재연결·복사AI상태/퇴역정리, 강성/감쇠0 spring 속도소실 실제수정. 신규10/관절7/물리166assertion·현재SDK 실제CPP명령/solver재생. 반력 기반force/torque 아님.",
+    "AI-02": " ·2486–2520: 문서합치기/관절파손/공동복구 정확심볼 focus route 추가. 복구 심볼의 첫 fallback-all 탐색 경계를 기록하고 새 경로에서 focused-routes 확인."
+  },
+  "newSourceCases": 33,
+  "cases": {
+    "participants": 8,
+    "documentMerge": 15,
+    "jointBreakage": 10
+  },
+  "checks": {
+    "group": "native/build/group2496.json",
+    "participants": "native/build/ongoing-participants-AeLZ7Y/acceptance.json",
+    "documentMerge": "native/build/document-merge-A4ugN5/acceptance.json",
+    "jointBreakage": "native/build/joint-break-xT8iZu/acceptance.json",
+    "jointDOFs": "native/build/joint-dofs-237-QAuvaQ/acceptance.json",
+    "physics": "native/build/physics-syntax2512.json",
+    "focused": "native/build/focused2519.json"
+  },
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "userWindowsProfilesGamesChanged": false,
+    "protectedEditedStagedOrTested": false,
+    "searchException": {
+      "command": "hb context project recovery --symbol recoverAssetTransactions (2490)",
+      "mode": "fallback-all",
+      "filesRead": 1106,
+      "bytesRead": 8483083,
+      "violation": "Broad search read protected player source; no edit or execution. Not counted as implementation or analysis completion.",
+      "correction": "Explicit recovery focus route; later symbol hits use focused-routes."
+    },
+    "newGUI": false,
+    "newRenderer": false,
+    "newDevice": false
+  },
+  "failuresAndRepairs": [
+    "$ replacement expansion generated a single-$ app selector; corrected and actual UI/AI/automationEditable tests passed. A harness awaiting missing IO was terminated by its exact owned PID; bounded wait now rejects early failure.",
+    "Human disk-change fixture shared its input object; changed to actual-network-like detached input. Recovered baseline missing now requires root conflict choice.",
+    "Zero-coefficient spring unexpectedly cancelled body velocity in both real solvers; isolated raw Rapier proved zero motor impulse cap restores inactive spring behavior; fixed actual engine.",
+    "CPP fixture stripped its own native class through nativeWorld(empty allowed set), causing validated object rejection. Explicit admitted owned class fixture now compiles/emits/replays successfully."
+  ],
+  "performance": {
+    "owners": 10003,
+    "conditionalOwners": 1,
+    "publications": 3,
+    "unrelatedOwnersPreserved": 10000,
+    "claim": "Structural mutation/read scope, not FPS, heap or whole tick complexity."
+  },
+  "remainingBoundary": [
+    "Whole conditional-world fixed point/per-tag indexing and ordinary tick lifetime/clock scan",
+    "Binary journal conflict recovery UI, arbitrary rename/redirect/index streams and filesystem durability",
+    "Solver reaction-force break thresholds/plasticity/articulation; geometric thresholds are not force estimates",
+    "No cumulative engine/analysis completion or new installation claim"
+  ],
+  "cleanup": "native/build/temp-clean2521.json"
+}
