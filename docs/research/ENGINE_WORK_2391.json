@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "date": "2026-10-24T13:42:42.232Z",
+  "kind": "model-animation-subasset-to-independent-clip-preserving-keys-and-atomic-initial-content",
+  "implementationRevision": "642b660a1de3bb7fd2f272414086f4d687f6c21e",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2379.json",
+  "changedSourceHashes": {
+    "docs/BLUEPRINT_SPEC.md": "a9cdeca499dd1f75d4932737ce73a04584ff52d99a9f54b70361795a3370f6bb",
+    "docs/ai-routes.json": "c132c7158e1fff2aeb2219519c7737f03ceb2bbf59127c9fd8d5c00105fdd74f",
+    "prototype/app.js": "77a54141611e15386cac2a6fa4e3aff83759f7b345b7bc61f2f53811f73251b5",
+    "prototype/model-import-editor.js": "b15cadfe7708526b71e201eedf4fd7786f0d3a2b856c06c3f30cc9146db47aa9",
+    "tools/editor-automation.mjs": "8dbd0e68f21cae3be2060fb03ee6b2be858bfcda892533d6f90e67806f62529e",
+    "tools/project-service.mjs": "4871ccf1ef13f1d88860ab73d6698f6b77330fc8cc7c12cebbacc4df73b49c05",
+    "tools/serve.mjs": "2ec89144a85dd37fe139cf73d48f14b4a0c4fb85eacb32c38cf6c401bbfdf15e",
+    "docs/MODEL_CLIP_EXTRACTION.md": "aa5655fcc0d4e5d68c70f98ba305287e7b4afbbd7de425768de36c7bbd68c23c",
+    "prototype/model-clip-extraction.js": "472b69c87ba3d38dddfd52ea0df1a1c3135cd3c1162c875fbc63daea8f7f2381",
+    "tools/check-model-clip-extraction-2385.mjs": "c73e8aad7cd7dc9de7dfa43ae083f633cb4f7b2b560b64f50de35ab936da2b6e",
+    "CODEX_HANDOFF.md": "2f082c9870efb1442ceb7889a4e0499a47fdacce3c2bf712c7847db98c9c87c9"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1397,
+  "targetIds": [
+    "AST-02",
+    "ANM-06",
+    "EDT-04",
+    "AI-03",
+    "PRJ-03"
+  ],
+  "changes": {
+    "AST-02": " ·2380–2391: 모델animation하위→독립v1골격clip·표준키/보간/metadata保全·UUID실제대상→고유name·무명/중복거절. 명시custom베이크만표본화/yield취소. 사람ModelImport폼/AI·신14source(actualglTFcubic+저장독립clip→새UUID골격→VM재생). material/skin/복잡DCC/GUI별도.",
+    "ANM-06": " ·2380–2391: 모델clip을기존골격asset로추출·표준step/smooth/quaternion/indexedmorph roundtrip·지원metadatacopy·재로딩UUID바인딩보존·공용graph명령재생. 사용자보간원곡선정확동등성주장0/명시표본화·추가slice/포맷별도.",
+    "EDT-04": " ·2380–2391: 모델import선택animation의이름/명시베이크/FPS/새clip생성폼·같은helper/preview소유/CAS/dryRun·기존asset저장. 실제GUI새검증없음.",
+    "AI-03": " ·2380–2391: modelimport.extractClip expectedRevision·compact dryRun/명시fullData·sourceprovenance/진단·schema/focusroute. 저작문서/preview교체는미게시·새asset일회생성.",
+    "PRJ-03": " ·2380–2391: 새skeletalclip initialData동일name검증·queue대기前copy·기존원자create/publish·덮어쓰기/placeholder0. 소유프로젝트에서충돌/invalid/queue참조보존검사·외부전원차단/다중파일내구성별도."
+  },
+  "checks": {
+    "newSourceCases": 14,
+    "source": {
+      "path": "native/build/model-clip-extraction-6t88Gc/acceptance.json",
+      "sha256": "941c110d673976ae84335490b26dd7ee5ec2ed386be932fc1184736b4fe1586e"
+    },
+    "group": {
+      "path": "native/build/group2387.json",
+      "sha256": "30aff78b9e3c4bdd9525a2926c51e493e6f73cb61b782109c92fcecc95e60481"
+    },
+    "integrity": {
+      "path": "native/build/final2389.json",
+      "sha256": "97bb7dc2fbc8f59e2e1e53aea14621f15e7c8e92bfd41970b860f85aaec2680b"
+    },
+    "reuse": "Group2387 all5 gates passed initial13-case extraction. Added cooperative custom-bake yielding/cancellation and final preview/owner guard; reran updated extraction14 only. Existing model-import/retarget/project/AI source gates retained unchanged. No fresh SDK or renderer run.",
+    "scope": "Production extraction and authoring with isolated document/preview boundaries; actual glTF cubic, owned ProjectService queue/atomic creation, independent stored asset to reloaded Three skeleton and common VM graph replay. Human form markup covered, no actual DOM/GUI paint or network route execution.",
+    "native": {
+      "executed": false,
+      "reason": "No SDK/public ABI/renderer source changes from2367; existing common replay uses generated legacy graph API. No unchanged native recompile."
+    },
+    "actualWindow": false,
+    "devices": false
+  },
+  "limits": [
+    "Named/bindable TRS and morph tracks under existing v1 skeletal-clip budgets. Standard curves preserve their original keys/interpolants. Custom interpolation requires explicit sampling and remains approximate between selected knots.",
+    "No slice/material/skin extraction, complete FBX/DCC corpus parity, native headless FBX or user model/GUI pixel/device/install proof.",
+    "Atomic new-file content does not mean cross-file source/export transaction or power-cut/filesystem durability.",
+    "Original independent source model/geometry is not embedded in the new clip. Editor source revision/preview identity guards do not audit every external on-disk dependency."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4528,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "policy": "Owned tiny glTF/source project/reports only via test-artifacts. No new native workers/SDK/platform outputs or User/Versions operations."
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}
