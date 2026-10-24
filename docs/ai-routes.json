@@ -3720,6 +3720,25 @@
         "native/include/HBEngine/Session.hpp",
         "docs/JOINT_BREAKAGE.md"
       ]
+    },
+    {
+      "id": "gameplay-cue-assets",
+      "keywords": [
+        "GameplayCueLibrary",
+        "matchingGameplayCues",
+        "gameplayCueContract",
+        "playGameplayCue",
+        "gameplaycue"
+      ],
+      "paths": [
+        "prototype/gameplay-cue-assets.js",
+        "prototype/ability-assets.js",
+        "prototype/ability-runtime.js",
+        "prototype/engine-services.js",
+        "prototype/structured-asset-editor.js",
+        "prototype/scene-components.js",
+        "docs/GAMEPLAY_CUE_ASSETS.md"
+      ]
     }
   ]
 }

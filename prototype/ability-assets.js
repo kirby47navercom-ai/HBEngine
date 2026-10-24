@@ -1,3 +1,4 @@
+import {createGameplayCue,validGameplayCue} from './gameplay-cue-assets.js';
 import {validEffectImmunity} from './effect-immunity.js';
 import {validEffectTagRequirements} from './effect-tag-requirements.js';
 import {validEffectScaling} from './effect-scaling-schema.js';
@@ -10,14 +11,16 @@ const tags=v=>list(v,validGameplayTag,32);
 const asset=v=>typeof v==='string'&&/^Assets\/.+\.hb(?:ability|effect)\.json$/.test(v)&&!v.includes('..');
 export const abilitySetPath=v=>typeof v==='string'&&v.length<=1000&&/^Assets\/(?:[^/\\:\x00-\x1f]+\/)*[^/\\:\x00-\x1f]+\.hbabilityset\.json$/.test(v)&&!v.split('/').some(p=>p==='.'||p==='..');
 export const validAttributeCalculation=c=>c===undefined||c&&name(c.attribute)&&['base','current','bonus'].includes(c.policy)&&[c.coefficient,c.preAdd,c.postAdd].every(v=>num(v))&&(c.curve===''||typeof c.curve==='string'&&/^Assets\/.+\.hbcurve\.json$/.test(c.curve)&&!c.curve.split('/').some(p=>p==='.'||p==='..')&&!/[\\:\x00-\x1f]/.test(c.curve))&&typeof c.track==='string'&&c.track.length<=80;
-export const abilityAssetTypes={ability:{label:'게임플레이 능력',prefix:'GA_',group:'게임플레이'},effect:{label:'게임플레이 효과',prefix:'GE_',group:'게임플레이'},abilityset:{label:'속성·능력 세트',prefix:'AS_',group:'게임플레이'}};
-export const abilityAssetSuffix={ability:'.hbability.json',effect:'.hbeffect.json',abilityset:'.hbabilityset.json'};
+export const abilityAssetTypes={gameplaycue:{label:'게임플레이 Cue',prefix:'GC_',group:'게임플레이'},ability:{label:'게임플레이 능력',prefix:'GA_',group:'게임플레이'},effect:{label:'게임플레이 효과',prefix:'GE_',group:'게임플레이'},abilityset:{label:'속성·능력 세트',prefix:'AS_',group:'게임플레이'}};
+export const abilityAssetSuffix={gameplaycue:'.hbgameplaycue.json',ability:'.hbability.json',effect:'.hbeffect.json',abilityset:'.hbabilityset.json'};
 export function createAbilityAsset(kind,name){
+  if(kind==='gameplaycue')return createGameplayCue(name);
   if(kind==='abilityset')return {version:1,name,parent:'',includes:[],attributes:[{name:'Health',base:100,min:0,max:100},{name:'Mana',base:100,min:0,max:100}],abilities:[],grantedTags:[]};
   if(kind==='ability')return {version:1,name,cooldown:1,duration:0,costs:[],requiredTags:[],blockedTags:[],grantedTags:[],effects:[],onActivate:'',onEnd:'',cues:[]};
   return {version:1,name,duration:0,period:0,executeOnApply:true,stackLimit:1,stackPolicy:'refresh',modifiers:[{attribute:'Health',operation:'add',magnitude:-10}],grantedTags:[],cues:[]};
 }
 export function validAbilityAsset(kind,d){
+  if(kind==='gameplaycue')return validGameplayCue(d);
   if(kind==='abilityset')return d?.version===1&&name(d.name)&&(d.parent===undefined||d.parent===''||abilitySetPath(d.parent))&&(d.includes===undefined||Array.isArray(d.includes)&&d.includes.every(abilitySetPath)&&new Set(d.includes).size===d.includes.length)&&list(d.attributes,a=>name(a?.name)&&[a.base,a.min,a.max].every(v=>num(v))&&a.min<=a.base&&a.base<=a.max&&validAttributeCalculation(a.calculation),Infinity)&&new Set(d.attributes.map(a=>a.name)).size===d.attributes.length&&list(d.abilities,p=>asset(p)&&p.endsWith('.hbability.json'),Infinity)&&new Set(d.abilities).size===d.abilities.length&&list(d.grantedTags,validGameplayTag,Infinity);
   if(d?.cues!==undefined&&!list(d.cues,c=>validGameplayTag(c?.tag)&&typeof c.event==='string'&&c.event.trim().length>0&&c.event.length<=80&&!/[\x00-\x1f]/.test(c.event)&&(kind==='ability'?['activate','end']:(d.version>=4?['apply','period','remove','blocked','inhibit','resume']:d.version>=3?['apply','period','remove','blocked']:['apply','period','remove'])).includes(c.on),128))return false;
   if(!(d?.version===1||kind==='effect'&&[2,3,4].includes(d?.version))||!name(d.name)||!tags(d.grantedTags)||!(d.duration===-1||num(d.duration,0,86400)))return false;
