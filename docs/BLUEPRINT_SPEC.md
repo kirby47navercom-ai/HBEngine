@@ -711,3 +711,5 @@ Take 녹화 프리셋은 전용 에셋/편집기에서 만들고 시퀀스의 �
 2545 이후: [골격 TRS/모프 키 편집](SKELETAL_TRACK_KEYS.md)은 기존 v1 클립에 트랙 생성·키 시간/값/보간·삭제/표본삽입을 연결해요. 사람 위젯과 skeletal.track.create/keys/read는 같은 검증·실행기 Float32 정밀도·한Undo/CAS를 사용하고 큰 준비는 나눠서 완료 후 게시해요. 저장된 위치/Euler/인덱스 scale/전체모프 배열이 실제 AnimationGraphPlayer에서 재생되는지 확인했어요. 새로운 SDK·GPU 출력·설치 실행을 뜻하지 않아요.
 
 2561 이후: [독립 Cue VFX](GAMEPLAY_CUE_ASSETS.md)는 v2 프리팹·부착/분리 TRS·게임 시계·채널 교체/정지·풀과 비동기 수명 보호를 기존 BP/C++ 공용 생성/능력 서비스에 연결해요. 기존 v1은 명시적으로 변환해요. [공동 저장 충돌 복구](TRANSACTION_RECOVERY.md)는 실제 원문/해시를 비교하는 사람·AI 선택과 전체 파일 CAS, 자식 기록의 롤백/재시작을 사용해요. 단일 문서 초안 Undo와 별개의 디스크 복구이며 일반 쓰기는 충돌 해결 전 보류돼요. 새 네이티브 바이너리·GUI·GPU·설치 검증 주장은 아니에요.
+
+2595 이후: [골격 클립 길이 재조정](SKELETAL_CLIP_RETIME.md)은 양수 균일 시간 배율로 TRS/모프·점/구간 알림·선택 sync 마커·가중/명시 control/반복 영역 곡선을 함께 옮겨요. 값과 보간은 표본화하지 않고 유지하며 초당 접선만 나눠요. 사람 한 Undo/미리보기 수명과 AI skeletal.retime의 협력 준비·최종 CAS/복사 초안·저장을 공유해요. 신규15·구간9/키20와 실제 저장 Graph의 위치/quat/인덱스scale/full morph 재생을 확인했어요.

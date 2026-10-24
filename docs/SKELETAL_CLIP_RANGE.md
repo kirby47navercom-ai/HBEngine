@@ -9,3 +9,5 @@
 AI: `skeletal.range.edit`의 `path`, `expectedRevision`, `start`, `end`, 선택 `custom:'bake'`, `fps`. 기존 CAS/검증/Undo/저장을 사용해요. `dryRun` 기본 응답은 요약이고 전체 초안은 `includeData:true`예요. 런타임 포맷은 기존 v1으로 그래프·몽타주·시퀀스 로더를 그대로 사용해요.
 
 소유자: `skeletalClipRangeJob`, `editSkeletalClipRange`, `editSkeletalClipRangeAsync`, `RetargetEditor.trimClip`. 검사: `node tools/check-skeletal-range-2444.mjs`와 기존 모델 추출/구간 검사. 새 실제 창·기기/설치 증명은 포함하지 않아요.
+
+구간 자르기와 별도로 [직접 TRS/모프 키 편집](SKELETAL_TRACK_KEYS.md), [클립 길이 재조정](SKELETAL_CLIP_RETIME.md)을 제공해요. 길이 재조정은 전체 클립의 시간과 알림·곡선을 동일 배율로 옮기고 원래 보간을 유지해요.
