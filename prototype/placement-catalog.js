@@ -4,6 +4,7 @@ import {makeEnvironmentActor,environmentActorKinds} from './scene-environment.js
 // The editor and automation schema expose the same serializable recipes.
 export const placementCatalog=[
   ['empty','Empty Actor · 빈 오브젝트','기본'],['group','Group · 그룹','기본'],
+  ['eqsTester','EQS Testing Pawn · 환경 질의 테스트','AI','empty',{EnvironmentQueryTester:{}}],
   ['cube','Cube · 큐브','도형'],['sphere','Sphere · 구','도형'],['cylinder','Cylinder · 원기둥','도형'],['cone','Cone · 원뿔','도형'],['capsule','Capsule · 캡슐','도형'],['torus','Torus · 고리','도형'],['plane','Plane · 평면','도형'],
   ['sprite','Sprite · 스프라이트','2D'],['character2d','Platform Character · 플랫포머 캐릭터','2D'],['tilemap','Tilemap · 타일맵','2D'],
   ['sortingGroup','Sorting Group · 정렬 그룹','2D','empty',{SortingGroup:{}}],

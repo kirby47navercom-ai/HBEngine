@@ -689,3 +689,5 @@ Take 녹화 프리셋은 전용 에셋/편집기에서 만들고 시퀀스의 �
 - [C++ 생략 인수](NATIVE_INPUT_DEFAULTS.md)는 반영된 기본값만 공용 protocol에서 채우고 원래 전체 검증을 실행해요. 명시한 값과 필수 수신자를 유지해요.
 - [다중 IK 늘이기 설정](FULL_BODY_STRETCH.md) 노드와 AnimationGraph::SetIKStretchSettings는 같은 검증과 활성 그래프 override를 사용해요. 편집기의 선택적 늘이기·뼈별 강성과 같은 평가를 사용해요.
 - [타일 변경 좌표](TILE_DIRTY_CELLS.md)는 기존 단일/묶음 BP·C++ 쓰기의 누적 dirty 목록 복사를 줄이고 비동기 처리·실패·revision 경계를 보존해요. 실제 점유 배열 복사와 디스크 청크 비용은 남아요.
+
+2370–2379: [편집 EQS 테스트 오브젝트](EQS_TESTING_PAWN.md)는 scene.place/Batch와 같은 배치 데이터·컴포넌트 폼/문서 편집을 사용해요. 선택한 정지 장면에서 저작 변경을 합쳐 query-only 평가하고, 수동 질의/숨기기는 다음 변경까지 자동 평가를 멈춰요. 원본/게임 시뮬레이션을 바꾸지 않으며 게임 빌드에서는 테스트 컴포넌트를 제거해요. 기존 C++/BP 런타임 EQS는 그대로 유지해요.

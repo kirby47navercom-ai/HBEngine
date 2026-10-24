@@ -3497,6 +3497,22 @@
         "native/include/HBEngine/Bridge.hpp",
         "docs/FULL_BODY_STRETCH.md"
       ]
+    },
+    {
+      "keywords": [
+        "EditorQueryTester",
+        "editor.eqs.tester.read",
+        "EnvironmentQueryTester",
+        "eqsTester"
+      ],
+      "paths": [
+        "prototype/environment-query-tester.js",
+        "prototype/editor-query-cook.js",
+        "prototype/scene-components.js",
+        "prototype/placement-catalog.js",
+        "prototype/app.js",
+        "docs/EQS_TESTING_PAWN.md"
+      ]
     }
   ]
 }

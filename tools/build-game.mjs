@@ -1,4 +1,5 @@
 import {nativeModuleKey} from '../prototype/native-entry.js';
+import {stripEditorQueryTesters} from '../prototype/editor-query-cook.js';
 import {resolveEffectDefinition} from '../prototype/effect-scaling.js';
 import {fileContent,isFileContent,writeBuildContent,buildChunkBytes} from './build-content.mjs';
 import {resolvePrefab} from '../prototype/prefab-variants.js';
@@ -67,6 +68,7 @@ export async function inspectBuild(record,profile,{signal}={}){
     if(/\.hb[^/]+\.json$/i.test(name)){data=JSON.parse(bytes);if(!validAsset(kind,data))throw Error('에셋 검증 실패: '+name);}
     else if(name.endsWith('.json')||name.endsWith('.gltf')){try{data=JSON.parse(bytes);}catch{continue;}}
     else continue;
+    const gameData=stripEditorQueryTesters(data,kind);if(gameData!==data){data=gameData;content.set(name,Buffer.from(json(data)));}
     if(kind==='blueprint'&&nativeTypeReference(data.native)){const types=await createNativeTypeImportResolver(async name=>content.get(await include(name)).toString('utf8'))(data.native);if(!validAsset('blueprint',{...data,native:types}))throw Error('타입 라이브러리와 빌드 BP가 맞지 않아요: '+name);}
     else if(kind==='blueprint'&&data.native){
       const n=data.native,headerPath=await include(n.headerPath||'Source/DoorController.h'),sourcePath=await include(n.sourcePath||'Source/DoorController.cpp'),header=canonicalNativeText(content.get(headerPath).toString('utf8')),source=canonicalNativeText(content.get(sourcePath).toString('utf8'));
