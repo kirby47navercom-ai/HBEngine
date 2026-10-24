@@ -52,7 +52,7 @@ export async function inspectBuild(record,profile,{signal}={}){
   // Include all Assets for dynamic lookups; also follow actual project-file references outside Assets.
   const include=async name=>{
     signal?.throwIfAborted();const info=await record.project.read(name),canonical=path.relative(record.root,info.file).split(path.sep).join('/');
-    if(assetTypes[assetKind(canonical)]?.editorOnly)throw Error('편집기 전용 에셋은 시퀀스에 적용한 뒤 빌드하세요: '+canonical);
+    if(assetTypes[assetKind(canonical)]?.editorOnly)throw Error((assetKind(canonical)==='takepreset'?'편집기 전용 에셋은 시퀀스에 적용한 뒤 빌드하세요: ':'편집기 전용 도구는 게임 런타임에서 참조할 수 없어요: ')+canonical);
     if(content.has(canonical))return canonical;
     if(assetKind(canonical)==='scene'&&!enabled.has(canonical))throw Error('빌드에서 제외한 장면 참조: '+name);
     const bytes=/\.(json|gltf|h|hpp|hh|inl|cpp|cc|cxx|c)$/i.test(canonical)?await fs.readFile(info.file,{signal}):await fileContent(info.file,{root:record.root,signal});content.set(canonical,bytes);if(/\.(gltf|glb|obj|fbx)$/i.test(canonical)){try{await record.project.read(canonical+'.import.json');await include(canonical+'.import.json');}catch(error){if(error.code!=='ENOENT')throw error;}}return canonical;

@@ -41,7 +41,7 @@ Object.assign(assetSuffix,worldAssetSuffix);Object.assign(assetTypes,worldAssetT
 Object.assign(assetTypes,abilityAssetTypes,navigationAssetTypes,presentationAssetTypes);Object.assign(assetSuffix,abilityAssetSuffix,navigationAssetSuffix,presentationAssetSuffix);
 assetSuffix.lightmap=lightmapSuffix;assetTypes.lightmap={label:'베이크 라이트맵',prefix:'LM_',group:'렌더링'};
 assetSuffix.modelimport='.import.json';assetTypes.modelimport={label:'모델 가져오기',prefix:'',group:'에셋',sourceOnly:true};
-assetSuffix.editortool='.hbeditortool.json';assetTypes.editortool={label:'편집기 도구',prefix:'ET_',group:'편집기'};
+assetSuffix.editortool='.hbeditortool.json';assetTypes.editortool={label:'편집기 도구',prefix:'ET_',group:'편집기',editorOnly:true};
 assetSuffix.widget='.hbwidget.json';assetTypes.widget={label:'위젯 UI',prefix:'W_',group:'사용자 인터페이스'};
 assetSuffix.audiomixer='.hbaudiomixer.json';assetTypes.audiomixer={label:'오디오 믹서',prefix:'MX_',group:'오디오'};
 assetSuffix.animgraph='.hbanimgraph.json';assetTypes.animgraph={label:'애니메이션 그래프',prefix:'AG_',group:'애니메이션'};

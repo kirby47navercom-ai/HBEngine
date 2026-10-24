@@ -1,5 +1,5 @@
 export const buildTargets={'windows-x64':{label:'Windows x64',renderer:'WebView2/WebGL2'},web:{label:'웹 · GitHub Pages',renderer:'Browser/WebGL2'},android:{label:'Android',renderer:'WebView/WebGL2'},ios:{label:'iOS',renderer:'WKWebView/WebGL2'}};
-export const buildContract={target:'windows-x64',targets:buildTargets,renderer:'WebView2/WebGL2',configurations:['development','release'],content:'All Assets except disabled scenes, plus referenced project files; C++ compiled ahead of time',output:'Builds/<profile id>/<unique build id>',maxProfiles:32,maxScenes:256};
+export const buildContract={target:'windows-x64',targets:buildTargets,renderer:'WebView2/WebGL2',configurations:['development','release'],content:'All runtime Assets except disabled scenes/editor-only tools and presets, plus referenced project files; runtime references to editor-only assets are rejected; C++ compiled ahead of time',output:'Builds/<profile id>/<unique build id>',maxProfiles:32,maxScenes:256};
 export const profileTarget=p=>p.target||'windows-x64';
 export const windowsRenderer=p=>p.windowsRenderer||'scene';
 export const validWindowsRenderer=p=>p.windowsRenderer===undefined||['scene','d3d11'].includes(p.windowsRenderer);
