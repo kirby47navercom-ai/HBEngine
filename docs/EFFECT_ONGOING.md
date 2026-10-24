@@ -13,3 +13,7 @@
 검사: `node tools/check-effect-ongoing-2445.mjs`. 주기·연쇄·순환 rollback·면역·실시간 입력·역할 수명·사람/AI 편집·저장 후 native-command replay를 확인해요. 새 C++ 바이너리/실제 창·기기 실행, 네트워크 예측·주기별 과거 입력 재구성은 이 검사 범위가 아니에요.
 
 비용 검사: `node tools/check-ongoing-participants-2489.mjs`. 10,003 소유자·조건부 대상 1개·수치 종속자 1개에서 변경 공개는 3개, 무관 소유자 10,000개의 효과/능력 순회를 금지하고 태그/디버그 identity 보존을 확인해요. FPS·전체 tick/힙·실기기 수치로 해석하지 않아요.
+
+2620 이후 일반 tick의 효과/능력 판정은 임시 배열을 만들지 않고 현재 Map을 순회해요. 효과가 없으면 해당 iterator를 열지 않으며 일반 능력 판정은 한 번, 실제 만료 트랜잭션 뒤에는 쿨다운만 다시 확인해요. 종료 경계와 마지막 쿨다운 0 공개를 유지해요. 시계만 게시할 때는 동일 Map/직전 게시의 무한 효과 행과 쿨다운 0 능력 행을 공유하고, 유한 남은 시간·양수 쿨다운은 계속 계산해요. 일반 연산/강제 sync는 다시 구성하고 새 상위 객체와 시간은 계속 공개해요. raw DTO에 getter나 새 포맷을 넣지 않아요.
+
+`ability-tick-work.js`의 `abilityTickWork`/`abilityTickProjection`이 소유자예요. 신규 검사 `check-ability-tick-work-2622.mjs`는 실제 10003 유휴 소유자/2 tick에서 수명 조회 20006회는 유지하면서 효과·능력 iterator/자산 IO/게시 0을 확인해요. 빈 상태의 기존 마지막 게시 시각도 유지해요. 무한·유한 행, 재설정/종료/쿨다운/교체·원자 실패 경계와 공용 native-command replay를 함께 검사해요. 전체 소유자 수명 확인과 조건 고정점은 여전히 필요하므로 이것을 전체 O(1) tick·실측 FPS/heap 개선으로 표시하지 않아요. 추가 projection은 현재 Map/DTO 참조만 보관하고 과거 프레임을 누적하지 않아요.

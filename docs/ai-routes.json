@@ -1028,6 +1028,20 @@
   ],
   "focusRoutes": [
     {
+      "id": "ability-tick-work",
+      "keywords": [
+        "abilityTickWork",
+        "abilityTickFlags",
+        "abilityTickCooldown",
+        "abilityTickProjection"
+      ],
+      "paths": [
+        "prototype/ability-tick-work.js",
+        "prototype/ability-runtime.js",
+        "docs/EFFECT_ONGOING.md"
+      ]
+    },
+    {
       "id": "joint-runtime-records",
       "keywords": [
         "JointRuntimeRecords",
