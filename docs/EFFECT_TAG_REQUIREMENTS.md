@@ -16,3 +16,5 @@
 조건 추가는 효과 문서를 `version:2`로 같은 Undo 안에서 확장해요. 기존 조건 없는 v1은 그대로 동작하고 이전 엔진은 v2를 거절해요. 조건을 지워도 v2를 유지하며 모든 적용/항목 조건을 제거한 뒤에만 명시적으로 v1로 내릴 수 있어요. 런타임 `qualified`는 계산 결과라 저작 파일에는 허용하지 않아요.
 
 AI는 `effect.tags.edit({path,expectedRevision,modifier?,requirements?,clear?,dryRun?})`를 사용해요. `modifier` 생략/null은 효과 전체, 정수는 항목 순번이에요. 제거는 `clear:true`만 지정해요. 기존 저작 트랜잭션의 검증·revision·Undo·저장을 공유해요. `schema.effectTagRequirements`가 데이터 계약이에요. C++/BP `ApplyEffectSpec`는 같은 에셋과 기존 역할 인자를 사용해요. `runtime.effect`는 항목별 `qualified`, 조건과 캡처 문맥의 분리된 복사본을 반환해요.
+
+dryRun 응답은 기본으로 검증·결과·revision만 반환하고 `dataOmitted:true`를 표시해요. `includeData:true`를 주면 제안한 전체 문서를 함께 받아요. 검증 내용이나 저장/Undo 규칙을 줄이지 않아요.

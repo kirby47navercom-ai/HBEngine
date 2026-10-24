@@ -13,3 +13,5 @@
 AI는 `behavior.task.abort({path,expectedRevision,node,waitForAbort,dryRun?})`를 사용해요. 기존 저작 트랜잭션의 복사·검증·revision·Undo·미저장 문서 경로를 공유해요. `schema.behaviorAbort`에서 계약을 조회해요.
 
 설계 대조: [Unreal Blueprint 태스크 수명 API](https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/AIModule/UBTTask_BlueprintBase?lang=en-US), [네이티브 AbortTask API](https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/AIModule/BehaviorTree/UBTTaskNode/AbortTask?application_version=5.5). HBEngine의 데이터 태스크/공용 실행 계약이며 Unreal의 클래스 전체를 구현했다는 뜻은 아니에요.
+
+dryRun 응답은 기본으로 검증·결과·revision만 반환하고 `dataOmitted:true`를 표시해요. `includeData:true`를 주면 제안한 전체 문서를 함께 받아요. 검증 내용이나 저장/Undo 규칙을 줄이지 않아요.

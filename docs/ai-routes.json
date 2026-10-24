@@ -3431,6 +3431,18 @@
         "prototype/model.js",
         "docs/SCENE_RECIPE_BATCH.md"
       ]
+    },
+    {
+      "keywords": [
+        "automationAuthoringEdit",
+        "authoringPreview",
+        "includeData"
+      ],
+      "paths": [
+        "prototype/app.js",
+        "tools/editor-automation.mjs",
+        "docs/SCENE_RECIPE_BATCH.md"
+      ]
     }
   ]
 }
