@@ -154,6 +154,7 @@ export async function engineContext(input = {}) {
           filesRead:rest.filesRead+(initial?.filesRead||0), bytesRead:rest.bytesRead+(initial?.bytesRead||0),
           skippedOversize:[...(initial?.skippedOversize||[]),...rest.skippedOversize]};
       }
+      if (base.symbolSearch.matches.length) base.lookup = 'matched';
     }
   }
   base.elapsedMs = Math.round((performance.now() - start) * 100) / 100;

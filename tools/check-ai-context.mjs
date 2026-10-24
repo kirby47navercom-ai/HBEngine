@@ -61,6 +61,13 @@ try {
   const unknown = await cli('unknown task bounded output', 'tools/hb.mjs', ['context', 'unfindable-xyz987654']);
   assert.match(unknown.lookup, /^no-match/);
   assert.deepEqual(unknown.files, []);
+  for (const literal of ['prepareFbxIdentifiers', 'editMixerBus', 'collisionShortcut']) {
+    const focused = await engineContext({task:'unfindable-xyz987654',symbol:literal,limit:4});
+    assert.equal(focused.lookup,'matched','a successful symbol route must not report an unknown task');
+    assert.equal(focused.symbolSearch.mode,'focused-routes');
+    assert.equal(focused.symbolSearch.filesRead,1);
+    assert.ok(focused.symbolSearch.matches.length);
+  }
   const missing = await cli('absent literal', 'tools/hb.mjs', ['context', '--symbol', 'NoSuchSymbol_xq987654321', '--limit', '1']);
   assert.deepEqual(missing.symbolSearch.matches, []);
   for (const bad of [null, [], {task: 4}, {symbol: 'a\nb'}, {task: 'a'.repeat(501)}, {limit: 0}, {limit: 13}, {path: '../../'}]) await assert.rejects(() => engineContext(bad));
