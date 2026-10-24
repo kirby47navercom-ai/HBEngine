@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "date": "2026-10-24T21:03:26.011Z",
+  "kind": "authored-gameplay-cue-routing-to-owned-audio-and-emitter",
+  "implementationRevision": "f97fd9583c7ba64d3888c3542e017bb2a07abc0b",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2520.json",
+  "changedSourceHashes": {
+    "prototype/gameplay-cue-assets.js": "4f7103f03ef6508bbae29e2c65926c47a7978a40429502a65af65b6a898426b9",
+    "prototype/ability-assets.js": "33f91e562191b2cd5a741b662f0dc8a8656e8e8fb30c4c1dd4c4445eefe75528",
+    "prototype/scene-components.js": "bdfa8d7f23544c0f543e847583c10680d140ea386c84f1981d7e88920f81599f",
+    "prototype/structured-asset-editor.js": "1f992b83f18b0efaaac68bdaad9e2d8ace7241d55548d9603bd021a4fdbc2bf2",
+    "prototype/ability-runtime.js": "464e9df330e18739f8c417ed889dc0035de78f0fb1979793516c97d4e58188be",
+    "prototype/engine-services.js": "c49b1a906f390f91bea72b9aa4b2e92156da1b95c1c36cf8bd27e259cd988e45",
+    "tools/editor-automation.mjs": "d64e264d841b3d667cd0914c46d2829adc348ea97c5e4ab3d716c1600e8c853e",
+    "tools/project-service.mjs": "88092637806970129cc6550fe6f822f5d067d117f7656fe51428d58030847a36",
+    "prototype/asset-documents.js": "b9c5be3243dcaf7c79a0b9f76ab17bd745b4c5fb3717f182129140e98fccefbb",
+    "docs/ai-routes.json": "85e52b0b1d00ef0143fd5ed6e55cc2ae67912557860f04a30e437c5243c0152a",
+    "docs/GAMEPLAY_CUE_ASSETS.md": "bed8746855a029e0eec54ec184c0e27c257dfcb573e70e395ec1684e308a1fb7",
+    "docs/BLUEPRINT_SPEC.md": "271c1fba7dd80cf6458153a3ebf508137c5e4e4188be3955f85b305cf57d98bc",
+    "tools/check-gameplay-cues-2528.mjs": "d2140f1ed110b09136f147c3870f3b6374a48ddfad4cd3a4fedf307afc41e5dd",
+    "CODEX_HANDOFF.md": "b2299c67c4c98baafb1ff0d48354390b71ca59088665ba38b58100334343e864"
+  },
+  "resolvedOwners": 1437,
+  "targetIds": [
+    "GAM-04",
+    "AST-01"
+  ],
+  "changes": {
+    "GAM-04": " ·2523–2534: gameplaycue v1 태그/단일시점/계층·정확 매핑, 시작 AbilitySystem cueAsset·phase별 공유컴파일·트랜잭션 확정 후 one-shot음향/소유emitter burst·세대/효과/채널 voice/stop·늦은요청취소·실패로그/게임값/사용자이벤트보존. 사람폼/공용native-command replay·저장·4target content17source+지속22/재적용6/태그12. 실제OS음향/GUI/독립VFX/동적재바인딩 아님.",
+    "AST-01": " ·2523–2534: Cue 새종류 생성/검증/구조폼·일반문서저장/이름변경/참조등록, cueAsset/sound 경로와4targetcontent 포함·정확미디어bytes 확인(패키지/실기기 실행 아님)."
+  },
+  "newSourceCases": 17,
+  "checks": {
+    "cueAssets": "native/build/gameplay-cues-h2XolL/acceptance.json",
+    "initialGroup": "native/build/group2529.json",
+    "regressionCases": {
+      "ongoing": 22,
+      "reapply": 6,
+      "tags": 12
+    },
+    "scope": "Actual shared VM/native-command replay, regular audio operation/ParticleSimulation, owned human DOM controls, deferred IO/factory ownership guards, save/rename/reference and four-target content inspection. No audible OS output, GPU/rendered pixels, new CPP binary, GUI/device/install."
+  },
+  "boundary": {
+    "installationHeld": true,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newInstallationCopies": 0,
+    "protectedReadEditedOrTested": false,
+    "userProfilesGamesWindowsChanged": false
+  },
+  "remainingBoundary": [
+    "Standalone VFX spawning/attachment, per-component emitter and persistent VFX handles",
+    "Runtime Cue rebinding after component property change is next initialization only",
+    "Network Cue prediction/replication",
+    "Actual audible/visual device and cumulative engine goals remain separate"
+  ],
+  "cleanup": "native/build/temp-clean2535.json"
+}
