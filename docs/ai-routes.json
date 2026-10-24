@@ -1608,6 +1608,23 @@
     },
     {
       "keywords": [
+        "eqsStageSummary",
+        "eqsStageSnapshot"
+      ],
+      "paths": [
+        "prototype/eqs-debug-stages.js"
+      ]
+    },
+    {
+      "keywords": [
+        "renderEqsDebugControls"
+      ],
+      "paths": [
+        "prototype/eqs-debug-controls.js"
+      ]
+    },
+    {
+      "keywords": [
         "Enum::ToValue",
         "Enum::FromValue",
         "Enum::Mask",
