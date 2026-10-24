@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "date": "2026-10-24T12:15:29.302Z",
+  "kind": "compact-ai-authoring-preview-replies-with-full-validation",
+  "implementationRevision": "b88133fe62fb81b44b537ff09988b5f9fdf81187",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2327.json",
+  "changedSourceHashes": {
+    "docs/BEHAVIOR_DEFERRED_ABORT.md": "add73dfaa2f4897bbcc150e908f43c6012f9582821c74656dcae8c9773beac67",
+    "docs/EFFECT_TAG_REQUIREMENTS.md": "92564f76d4c4abcb8b37f9b42a918e0f338ca7f46258c3227d5758708a0c3591",
+    "docs/SCENE_RECIPE_BATCH.md": "fc6b636b27c63f7abd2fe10ec34b55b3799abb8c5116245ece626f04b6175165",
+    "docs/ai-routes.json": "919bf29dc9d42edfee3e37013311a0a3b71d72cb69863995fa3185520899dc08",
+    "prototype/app.js": "d7c9222dd74e788440faabeea0f1101390553681e7a60655d84f0b522c795c80",
+    "tools/check-placement-batch-2306.mjs": "544b2df9daaedccb37e74fa1a57665fcb3f5721da21b1dbd99ed271c2250928e",
+    "tools/editor-automation.mjs": "3ae995d8abb78fae037c09ed9b553d51cdba665f2a2d5843823d4b2e7fbd706b",
+    "tools/check-authoring-reply-2329.mjs": "2cbc5fc276597f0c23f49110e245513fe84429b8270c74baaeb1d7d7f883b418",
+    "CODEX_HANDOFF.md": "1fd4363dae4167f536679faa18283467a120eedaefa85e68564c1cd6c122217e"
+  },
+  "sourceOnlyMetadata": [
+    "CODEX_HANDOFF.md"
+  ],
+  "resolvedOwners": 1373,
+  "targetIds": [
+    "EDT-04"
+  ],
+  "changes": {
+    "EDT-04": " ·2328–2334: 새scene.place/Batch·BT abort·effect tags 저작dryRun 기본compact valid/result/revision/dataOmitted·includeData:true전체proposal·legacy생략full유지. 완전draft검증/clone/hash불변·bool검사前문서I/O·신규5 source/기존batch. 1000오브젝트 실제응답JSON282338→137B(주입read/hash 경계; GUI/network/LLM비용실측아님)."
+  },
+  "checks": {
+    "newSourceCases": 5,
+    "source": {
+      "path": "native/build/authoring-reply-uqTby3/acceptance.json",
+      "sha256": "0d0691b4c52cfec8c124b9aa19d6fd229e0cde5243ef5875b62bf6b49415799d"
+    },
+    "batch": {
+      "path": "native/build/placement-batch-VTd6dw/acceptance.json",
+      "sha256": "0210c86a2ef8d0aa0c33e8b06ac80ca5a3be56c3b894ac294d3de099d234a29a"
+    },
+    "integrity": {
+      "path": "native/build/final2333.json",
+      "sha256": "65f858339a5fc2209a6c606550cef0f8874412223d7762bc4bfa4b42cf981b68"
+    },
+    "scope": "Production app authoring function and new command handlers under injected document/read/hash boundaries, real copy and complete validators, immutable dryRun and actual reply encoding. Not actual server/GUI CAS or Undo proof.",
+    "native": {
+      "executed": false,
+      "reason": "Only authoring reply shapes changed; SDK/runtime/renderer unchanged. Prior exact-SDK execution retained in2327."
+    },
+    "actualWindow": false,
+    "devices": false
+  },
+  "limits": [
+    "Reply serialization/payload only; initial document clone/validation/hash costs remain.",
+    "No new actual UI, server latency, token billing, renderer/device or installation validation.",
+    "Whole accumulated engine goals remain; no global completion claim."
+  ],
+  "installation": {
+    "held": true,
+    "performed": false,
+    "lastConfirmed": "docs/research/USER_INSTALL_2145.json",
+    "userProfileRead": false
+  },
+  "automation": {
+    "created": 0,
+    "previouslyDeleted": true
+  },
+  "space": {
+    "handoffBytes": 4782,
+    "newEngineCopies": 0,
+    "newBrowserProfiles": 0,
+    "policy": "Owned source fixtures/reports only. No native compilation/cache cleanup or user/Versions changes for authoring metadata."
+  },
+  "globalScope": {
+    "exhaustiveUEUnity": false,
+    "completionPercent": null,
+    "remainingPreserved": true
+  }
+}

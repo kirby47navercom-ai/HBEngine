@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-24",
-  "basisRevision": "1053429a407b14c4902bfd6a8bd55901ac02db69",
+  "basisRevision": "b88133fe62fb81b44b537ff09988b5f9fdf81187",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -332,7 +332,7 @@
       "area": "editor",
       "title": "계층·컴포넌트 제작",
       "status": "verified",
-      "implemented": "계층/부모·복제/그룹·등록 컴포넌트 속성 편집 ·213: 선택 실행 값4Hz leaf·구조 변경 시 Inspector·배열/축/휠/레이어·현재 metadata·읽기전용·가상 component/widget 핸들 제외 ·219: 실행 능력 읽기전용 표·leaf/구조 갱신·실제pane경계 Take 설정 스크롤 ·1219–1224: 2D 네 기본 클래스/Actor·Pawn 빈 구성/생성·배치·Spawn·GameMode·기존 상속 조회, C++ 기본 클래스 형식·배열·원래 위치 보존, 실제 에셋 컴포넌트 미리보기·공용 조작/AI·idle 요청 그리기·닫기 해제 ·2278–2311: scene.place/Batch 공용레시피·forward부모/순환/고유ID·준비오류미게시·같은revision/dryRun/Undo. 신규10source/2048배치. validScene 부모인덱스/반복경로검사 신규5·이전validator240seed동치·4만node199998부모읽기. 첫scene복사/렌더설치비용·runtime64깊이제한별도·새GUI실행0. ·2312–2321: JS/CPP 월드 변환의64단계 재귀제한을 반복 계산으로 제거·순환보존·정상행렬순서/비균일/음수배율 동치. 신규9source(4000행렬/512공용VM)·현재CPP128계층/읽기/역변환. 수치overflow/특이역행렬 명시거절·잘못된로컬위치미게시. 전체Three/renderer 깊이·픽셀은새검증아님.",
+      "implemented": "계층/부모·복제/그룹·등록 컴포넌트 속성 편집 ·213: 선택 실행 값4Hz leaf·구조 변경 시 Inspector·배열/축/휠/레이어·현재 metadata·읽기전용·가상 component/widget 핸들 제외 ·219: 실행 능력 읽기전용 표·leaf/구조 갱신·실제pane경계 Take 설정 스크롤 ·1219–1224: 2D 네 기본 클래스/Actor·Pawn 빈 구성/생성·배치·Spawn·GameMode·기존 상속 조회, C++ 기본 클래스 형식·배열·원래 위치 보존, 실제 에셋 컴포넌트 미리보기·공용 조작/AI·idle 요청 그리기·닫기 해제 ·2278–2311: scene.place/Batch 공용레시피·forward부모/순환/고유ID·준비오류미게시·같은revision/dryRun/Undo. 신규10source/2048배치. validScene 부모인덱스/반복경로검사 신규5·이전validator240seed동치·4만node199998부모읽기. 첫scene복사/렌더설치비용·runtime64깊이제한별도·새GUI실행0. ·2312–2321: JS/CPP 월드 변환의64단계 재귀제한을 반복 계산으로 제거·순환보존·정상행렬순서/비균일/음수배율 동치. 신규9source(4000행렬/512공용VM)·현재CPP128계층/읽기/역변환. 수치overflow/특이역행렬 명시거절·잘못된로컬위치미게시. 전체Three/renderer 깊이·픽셀은새검증아님. ·2328–2334: 새scene.place/Batch·BT abort·effect tags 저작dryRun 기본compact valid/result/revision/dataOmitted·includeData:true전체proposal·legacy생략full유지. 완전draft검증/clone/hash불변·bool검사前문서I/O·신규5 source/기존batch. 1000오브젝트 실제응답JSON282338→137B(주입read/hash 경계; GUI/network/LLM비용실측아님).",
       "remaining": [],
       "sources": [
         "prototype/scene-components.js",
@@ -354,7 +354,8 @@
         "tools/check-placement-batch-2306.mjs",
         "tools/check-scene-parent-validation-2308.mjs",
         "docs/SCENE_MATRIX_PASSES.md",
-        "tools/check-scene-matrix-pass-2314.mjs"
+        "tools/check-scene-matrix-pass-2314.mjs",
+        "tools/check-authoring-reply-2329.mjs"
       ],
       "evidence": [
         "docs/EDITOR_INTERACTION_SPEC.md",
@@ -362,7 +363,8 @@
         "docs/research/ENGINE_WORK_219.json",
         "docs/research/ENGINE_WORK_1224.json",
         "docs/research/ENGINE_WORK_2311.json",
-        "docs/research/ENGINE_WORK_2321.json"
+        "docs/research/ENGINE_WORK_2321.json",
+        "docs/research/ENGINE_WORK_2334.json"
       ]
     },
     {
@@ -4017,10 +4019,10 @@
     }
   ],
   "latestBatch": {
-    "first": 2322,
-    "last": 2327,
-    "receipt": "docs/research/ENGINE_WORK_2327.json",
-    "scope": "3Drope cap/표시편집 물리보존·잠든frame/소유자와컴포넌트교체 수명: 신규6source+관련gate·정확동일SDK/worker12항목25RPC캐시실행. GUI/device/설치0·예약0/업데이트보류."
+    "first": 2328,
+    "last": 2334,
+    "receipt": "docs/research/ENGINE_WORK_2334.json",
+    "scope": "AI 저작미리보기 compact reply/legacy full·원검증보존: 신규5source/기존batch. SDK/renderer/device/GUI/설치0·예약0/업데이트보류."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_2145.json",

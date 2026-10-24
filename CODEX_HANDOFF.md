@@ -2,6 +2,10 @@
 
 최신사용자: 멈추지말고 누적기능 여러분야실구현·마지막영향검사. 예약다시생성/설치갱신금지. 주인님/짚짱/해요. hbengine2160삭제·goal/agent/GUI/설치0. UPDATE_HOLD active. 사용자창/탭/프로필/게임보호. Mac/Xcode/Android폰없음·재질문0. heavy전active1955·마지막12:02Zactive[].
 
+## WORK2334 core b88133fe62fb81b44b537ff09988b5f9fdf81187
+
+新4명령(scene.place/Batch,behavior.task.abort,effect.tags.edit) dryRun 기본compact valid/result/revision/dataOmitted; includeData:true全proposal·legacy생략full保全·bool검증前I/O. 전체clone/검증/hash동일. 실제app저작함수/handler+주입read/hash境界·新5 source/기존batch. 1000objects응답282338→137B(실측network/GUI/LLM비용아님). SDK/renderer/설치변경0. refs WORK2334.
+
 ## WORK2321 core efaf9133ffced19de326bb0136f780fad18e6dd1
 
 JS matrix/CPP point·inverse iterative·64cap제거·cycle보존. 명시적sceneMatrixCache 부모lookup지연1회/clear·EQSsync/contact공유·mutable fullscan O(N)잔여. 정상행렬old동치·新9source/4000JS/512VM. 현재SDK actualCPP12항목/25RPC(3예상cycle/range거절)·128deep/회전·음수/비균일·원래task/effect/rope/최초getter8도동반통과. forward/inverse overflow·JS특이inverse는명시실패/로컬보존. 전체Three그래프/renderer픽셀/depth/device/install증거아님. refs/SHA/sdkUsed는WORK2321. 新예약/설치0·계속다른잔여구현.
