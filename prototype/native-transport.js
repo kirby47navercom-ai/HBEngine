@@ -47,6 +47,14 @@ const immutableJSON=new WeakMap(),immutableNodes=new WeakSet();
 export function immutableNativeSnapshot(value,{clone=true}={}){
   const text=clone?JSON.stringify(value):null,snapshot=clone?JSON.parse(text):value,freeze=value=>{if(value&&typeof value==='object'&&!immutableNodes.has(value)){for(const child of Object.values(value))freeze(child);Object.freeze(value);immutableNodes.add(value);}return value;};freeze(snapshot);immutableJSON.set(snapshot,{text,value:snapshot});return snapshot;
 }
+// Engine-owned deferred fields still expose ordinary frozen JSON values. Do not
+// enumerate an expensive field just to freeze an unchanged parent on every edit.
+export function immutableNativeLazyRecord(fields,key,materialize){
+  if(Object.hasOwn(fields,key)||typeof materialize!=='function')throw Error('지연 스냅샷 필드를 확인하세요.');
+  const result={...immutableNativeSnapshot({...fields},{clone:false})};let ready=false,value;
+  Object.defineProperty(result,key,{enumerable:true,get(){if(!ready){value=immutableNativeSnapshot(materialize(),{clone:false});ready=true;}return value;}});
+  Object.freeze(result);immutableNodes.add(result);return result;
+}
 const encodedSnapshot=entry=>entry.text??=JSON.stringify(entry.value);
 function withJSONField(object,key,value){const text=JSON.stringify({...object,[key]:undefined});return text.slice(0,-1)+(text.length>2?',':'')+JSON.stringify(key)+':'+value+'}';}
 function cachedNativeFields(object){const tile=object.runtimeTilemap&&immutableJSON.get(object.runtimeTilemap),ui=object.gameplayDebug?.ui&&immutableJSON.get(object.gameplayDebug.ui);return {tile,ui};}

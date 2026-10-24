@@ -1,3 +1,4 @@
+import {runtimeTileStore} from './tile-runtime-storage.js';
 import {tileCellsForChunks} from './tile-cell-index.js';
 import * as THREE from 'three';
 import {tileAtlasRect,tileRenderRect,tileCellPoint,valid2DAsset} from './two-d-assets.js';
@@ -12,7 +13,7 @@ export class TileChunkIndex{
   for(const [id,layer] of this.layers)if(!map.layers.some(l=>l.id===id)){for(const chunk of layer.chunks.values())removed.push(chunk);this.layers.delete(id);}
   for(const [order,layer] of map.layers.entries()){
    let previous=this.layers.get(layer.id);if(previous&&!full&&(previous.source===layer||changes&&!changes.has(layer.id)&&previous.visible===layer.visible&&previous.order===order)){previous.source=layer;continue;}
-   if(previous&&!full&&previous.source.tiles===layer.tiles&&previous.order===order){for(const [key,chunk] of previous.chunks){if(chunk.visible!==layer.visible){const next={...chunk,visible:layer.visible};previous.chunks.set(key,next);updated.push(next);}}previous.source=layer;previous.visible=layer.visible;continue;}
+   if(previous&&!full&&(runtimeTileStore(previous.source)||runtimeTileStore(layer)?runtimeTileStore(previous.source)?.chunks===runtimeTileStore(layer)?.chunks:previous.source.tiles===layer.tiles)&&previous.order===order){for(const [key,chunk] of previous.chunks){if(chunk.visible!==layer.visible){const next={...chunk,visible:layer.visible};previous.chunks.set(key,next);updated.push(next);}}previous.source=layer;previous.visible=layer.visible;continue;}
    const requested=full||!previous||!changes||!changes.has(layer.id)?null:changes.get(layer.id),keys=requested?new Set(requested.map(([x,y])=>keyFor(map,x,y,individual))):null,groups=new Map();
    for(const tile of tileCellsForChunks(layer,keys,{layout:map.layout,individual})){const key=keyFor(map,tile.x,tile.y,individual);if(keys&&!keys.has(key))continue;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(tile);}
    const chunks=previous&&!full?new Map(previous.chunks):new Map();if(previous&&full)removed.push(...previous.chunks.values());

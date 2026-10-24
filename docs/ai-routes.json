@@ -3244,7 +3244,9 @@
         "environmentActorIndexContract"
       ],
       "paths": [
-        "prototype/environment-actor-index.js"
+        "prototype/environment-actor-index.js",
+        "prototype/environment-query.js",
+        "docs/EQS_SYNC_COST.md"
       ]
     },
     {
@@ -3538,6 +3540,54 @@
       "paths": [
         "tools/headless-model.mjs",
         "docs/HEADLESS_MODEL_HIERARCHY.md"
+      ]
+    },
+    {
+      "keywords": [
+        "clipRange",
+        "clipMetadataRange",
+        "model clip range",
+        "sampleClipCurve"
+      ],
+      "paths": [
+        "prototype/animation-clip-range.js",
+        "prototype/model-clip-extraction.js",
+        "prototype/animation-retarget-bake.js",
+        "prototype/model-import-editor.js",
+        "docs/MODEL_CLIP_EXTRACTION.md"
+      ]
+    },
+    {
+      "keywords": [
+        "editStoredTiles",
+        "runtimeTileStore",
+        "immutableNativeLazyRecord",
+        "tile runtime storage"
+      ],
+      "paths": [
+        "prototype/tile-runtime-storage.js",
+        "prototype/tile-cell-index.js",
+        "prototype/native-transport.js",
+        "prototype/auto-tiles.js",
+        "docs/TILE_RUNTIME_INDEXES.md"
+      ]
+    },
+    {
+      "keywords": [
+        "effect.immunity.edit",
+        "editEffectImmunity",
+        "effectImmunityMatches",
+        "effectImmunity",
+        "allowsEffect"
+      ],
+      "paths": [
+        "prototype/effect-immunity.js",
+        "prototype/ability-runtime.js",
+        "prototype/ability-assets.js",
+        "prototype/effect-tag-editor.js",
+        "prototype/structured-asset-editor.js",
+        "prototype/app.js",
+        "docs/EFFECT_IMMUNITY.md"
       ]
     }
   ]

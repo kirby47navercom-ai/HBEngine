@@ -1,3 +1,4 @@
+import {editEffectImmunity} from './effect-immunity.js';
 import {extractModelClipDocument} from './model-clip-extraction.js';
 import {EditorQueryTester} from './environment-query-tester.js';
 import {editEffectTagRequirements} from './effect-tag-requirements.js';
@@ -1810,6 +1811,7 @@ const editorCommandMethods={
   'scene.placeBatch':params=>automationAuthoringEdit({...params,includeData:params.includeData===undefined?false:params.includeData},'scene',data=>appendPlacedObjects(data,params.placements)),
   'scene.place':params=>automationAuthoringEdit({...params,includeData:params.includeData===undefined?false:params.includeData},'scene',data=>appendPlacedObject(data,params.kind,params)),
   'effect.tags.edit':params=>automationAuthoringEdit({...params,includeData:params.includeData===undefined?false:params.includeData},'effect',data=>{if(params.clear!==undefined&&typeof params.clear!=='boolean'||params.clear&&params.requirements!==undefined)throw Error('효과 태그 조건 변경을 확인하세요.');if(!params.clear&&params.requirements===undefined)throw Error('태그 조건 또는 clear:true를 지정하세요.');const index=params.modifier??null;editEffectTagRequirements(data,index,params.clear?undefined:params.requirements);return {modifier:index,assetVersion:data.version};}),
+  'effect.immunity.edit':params=>automationAuthoringEdit({...params,includeData:params.includeData===undefined?false:params.includeData},'effect',data=>{if(params.clear!==undefined&&typeof params.clear!=='boolean'||params.clear&&params.requirements!==undefined||!params.clear&&params.requirements===undefined)throw Error('면역 태그 조건 또는 clear:true를 지정하세요.');editEffectImmunity(data,params.clear?undefined:params.requirements);return {assetVersion:data.version};}),
   'behavior.task.abort':params=>automationAuthoringEdit({...params,includeData:params.includeData===undefined?false:params.includeData},'behaviortree',data=>configureBehaviorTaskAbort(data,params.node,params.waitForAbort)),
   'editorTool.inspect':async params=>{const {doc,revision}=await automationDocument(params);if(doc.kind!=='editortool')throw Error('편집기 도구 문서가 필요해요.');return {revision,...assetPanes.get(doc.path).editor.inspect()};},
   'editorTool.run':async params=>{const {doc}=await automationDocument(params,true);if(doc.kind!=='editortool')throw Error('편집기 도구 문서가 필요해요.');return assetPanes.get(doc.path).editor.run(params.action,params.inputs||{});},

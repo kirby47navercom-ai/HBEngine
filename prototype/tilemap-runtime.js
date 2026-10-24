@@ -1,4 +1,5 @@
 import {tileAt,setRuntimeTile,setRuntimeTiles} from './tile-cell-index.js';
+import {runtimeTileCount,runtimeLayerVisible,clearRuntimeTileLayer} from './tile-runtime-storage.js';
 import {tilemapPage} from './tilemap-diagnostics.js';
 import {TilemapChanges} from './tilemap-changes.js';
 import {immutableNativeSnapshot} from './native-transport.js';
@@ -55,14 +56,14 @@ export class RuntimeTilemaps {
       if(!Array.isArray(args.cells)||!Array.isArray(args.indices)||args.cells.length!==args.indices.length||args.cells.length>65536||args.cells.some((cell,i)=>!cellOK(map,cell)||!Number.isInteger(args.indices[i])||args.indices[i]<-1||args.indices[i]>1048575))throw Error('타일 묶음 좌표·인덱스·크기를 확인하세요.');
       const result=setRuntimeTiles(map,layer,args.cells,args.indices);next=result.data;changed=result.changed;cells=result.cells;
     }
-    else if(key==='tileClear'){if(layer.tiles.length){next={...map,layers:map.layers.map(l=>l===layer?{...l,tiles:[]}:l)};changed=true;}}
-    else if(key==='tileLayerVisible'){if(typeof args.visible!=='boolean')throw Error('표시 값을 확인하세요.');if(layer.visible!==args.visible){next={...map,layers:map.layers.map(l=>l===layer?{...l,visible:args.visible}:l)};changed=true;}}
+    else if(key==='tileClear'){if(runtimeTileCount(layer)){next={...map,layers:map.layers.map(l=>l===layer?clearRuntimeTileLayer(l):l)};changed=true;}}
+    else if(key==='tileLayerVisible'){if(typeof args.visible!=='boolean')throw Error('표시 값을 확인하세요.');if(layer.visible!==args.visible){next={...map,layers:map.layers.map(l=>l===layer?runtimeLayerVisible(l,args.visible):l)};changed=true;}}
     else if(key==='tileRefresh'){if(!cellOK(map,args.cell))throw Error('셀 좌표를 확인하세요.');changed=true;cells=[args.cell];}
     else{
       if(!cellOK(map,args.cell)||key==='tileBoxFill'&&!cellOK(map,args.end)||!Number.isInteger(args.index)||args.index< -1||args.index>1048575)throw Error('셀 좌표·타일 인덱스를 확인하세요.');
       const tool=key==='tileSet'?'brush':key==='tileBoxFill'?'rectangle':'fill',cell={x:args.cell[0],y:args.cell[1]},end=key==='tileBoxFill'?{x:args.end[0],y:args.end[1]}:cell;
       const result=key==='tileSet'?setRuntimeTile(map,layer,args.cell,args.index):applyTileTool(map,args.layer,args.index<0&&tool==='brush'?'erase':tool,cell,end,args.index);next=result.data;changed=result.changed;cells=result.cells;
     }
-    if(changed){next=resolveAutoTiles(next,{layerId:layer.id,cells:cells||undefined});object.runtimeTilemap=immutableNativeSnapshot(next,{clone:false});object.tilemapDirty=true;this.dirty.add(object.id);this.revisions.set(object.id,{});if(key!=='tileLayerVisible')this.collisionDirty.add(object.id);let changes=this.changes.get(object.id);if(!changes)this.changes.set(object.id,changes=new TilemapChanges());changes.add(layer.id,cells?(next.autoTileRules?.length?affectedAutoTileCells(next.autoTileRules,cells):cells):null);}return {};
+    if(changed){if(!['tileLayerVisible','tileClear'].includes(key))next=resolveAutoTiles(next,{layerId:layer.id,cells:cells||undefined});object.runtimeTilemap=immutableNativeSnapshot(next,{clone:false});object.tilemapDirty=true;this.dirty.add(object.id);this.revisions.set(object.id,{});if(key!=='tileLayerVisible')this.collisionDirty.add(object.id);let changes=this.changes.get(object.id);if(!changes)this.changes.set(object.id,changes=new TilemapChanges());changes.add(layer.id,cells?(next.autoTileRules?.length?affectedAutoTileCells(next.autoTileRules,cells):cells):null);}return {};
   }
 }
