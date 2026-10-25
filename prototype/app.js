@@ -1,3 +1,4 @@
+import {readMeshBoundaryLoops} from './mesh-boundary-selection.js';
 import {readGitAssetMerge,applyGitAssetMerge} from './source-control-asset-merge.js';
 import {readTimelineRowItems} from './timeline-row-pages.js';
 import {assetGraphDiff,assetGraphChoices} from './asset-graph-diff.js';
@@ -1931,6 +1932,7 @@ const editorCommandMethods={
   'world.mesh.uv.inspect':async params=>{const {doc}=await automationDocument(params,!!params.expectedRevision);if(doc.kind!=='mesh')throw Error('메시 문서가 필요해요.');return inspectMeshUV(doc.data,params.settings);},
   'world.mesh.uv.generate':async params=>{const {doc}=await automationDocument(params,true);if(doc.kind!=='mesh')throw Error('메시 문서가 필요해요.');const revision=await documentRevision(doc.data),result=await generateMeshAtlas(clone(doc.data),params.settings||{});return automationAuthoringEdit({...params,expectedRevision:revision},'mesh',d=>{for(const key of Object.keys(d))delete d[key];Object.assign(d,result.data);return result.layout;});},
   'world.preview.read':async params=>{const {doc}=await automationDocument(params),editor=assetPanes.get(doc.path)?.editor;if(!(doc.kind in worldAssetTypes)||!editor)throw Error('열린 월드 에셋 제작창을 지정하세요.');await editor.rebuilding;return {path:doc.path,...editor.previewState(params)};},
+  'world.mesh.boundary.read':async params=>{const {doc,revision}=await automationDocument(params);if(doc.kind!=='mesh')throw Error('메시 문서가 필요해요.');if(params.expectedRevision!==undefined&&params.expectedRevision!==revision)throw batchConflict('문서 revision이 달라요.');return{path:doc.path,revision,dirty:doc.dirty,...readMeshBoundaryLoops(doc.data,params)};},
   'world.mesh.edit':params=>automationAuthoringEdit(params,'mesh',d=>{const next=editMesh(d,params.settings);for(const key of Object.keys(d))delete d[key];Object.assign(d,next);return {vertices:d.vertices.length,triangles:d.indices.length/3};}),
   'world.terrain.brush':params=>automationAuthoringEdit(params,'terrain',d=>{Object.assign(d,terrainBrush(d,params.settings));return {samples:d.heights.length};}),
   'world.foliage.scatter':async params=>{await automationDocument(params,true);const terrain=params.terrain?await readAsset(params.terrain):undefined;return automationAuthoringEdit(params,'foliage',d=>{Object.assign(d,scatterFoliage(d,{...params.settings,terrain}));return {instances:d.instances.length};});},

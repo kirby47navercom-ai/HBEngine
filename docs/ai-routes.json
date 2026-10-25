@@ -4834,6 +4834,57 @@
       "paths": [
         "prototype/timeline-rows.js"
       ]
+    },
+    {
+      "id": "mesh-region-declaration",
+      "keywords": [
+        "editMeshRegion",
+        "validateMeshRegionContours"
+      ],
+      "paths": [
+        "prototype/mesh-region.js"
+      ]
+    },
+    {
+      "id": "mesh-topology-declarations",
+      "keywords": [
+        "meshEdges",
+        "editMeshTopology"
+      ],
+      "paths": [
+        "prototype/mesh-topology.js"
+      ]
+    },
+    {
+      "id": "mesh-region-bevel-declarations",
+      "keywords": [
+        "bevelMeshRegion",
+        "meshRegionBevelContract"
+      ],
+      "paths": [
+        "prototype/mesh-region-bevel.js"
+      ]
+    },
+    {
+      "id": "world-mesh-edit-declaration",
+      "keywords": [
+        "editMesh"
+      ],
+      "paths": [
+        "prototype/world-assets.js"
+      ]
+    },
+    {
+      "id": "mesh-boundary-selection-declarations",
+      "keywords": [
+        "selectMeshBoundaryLoops",
+        "readMeshBoundaryLoops",
+        "applyMeshBoundarySelection",
+        "meshBoundarySelectionContract"
+      ],
+      "paths": [
+        "prototype/mesh-boundary-selection.js"
+      ]
     }
   ]
 }

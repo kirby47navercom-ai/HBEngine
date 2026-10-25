@@ -6,8 +6,8 @@ const orient=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
 const inside=(p,loop)=>{let yes=false;for(let i=0,j=loop.length-1;i<loop.length;j=i++){const a=loop[i],b=loop[j];if((a[1]>p[1])!==(b[1]>p[1])&&p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])yes=!yes;}return yes;};
 // Reject foldovers before committing geometry. This bounded editing operation
 // has a comparison budget, independent of scene/actor counts or runtime limits.
-function contoursDoNotCross(loops){let checks=0;const segments=loops.flatMap((loop,l)=>loop.map((a,i)=>({a,b:loop[(i+1)%loop.length],l,i,n:loop.length})));segments.sort((a,b)=>Math.min(a.a[0],a.b[0])-Math.min(b.a[0],b.b[0]));
- for(let i=0;i<segments.length;i++){const a=segments[i],right=Math.max(a.a[0],a.b[0]);for(let j=i+1;j<segments.length;j++){const b=segments[j];if(Math.min(b.a[0],b.b[0])>right)break;if(a.l===b.l&&(a.i===b.i||(a.i+1)%a.n===b.i||(b.i+1)%a.n===a.i))continue;if(++checks>2000000)throw Error('경계 교차 검사 예산을 넘었어요. 영역을 나눠 편집하세요.');if(Math.max(a.a[1],a.b[1])<Math.min(b.a[1],b.b[1])||Math.max(b.a[1],b.b[1])<Math.min(a.a[1],a.b[1]))continue;const x=orient(a.a,a.b,b.a),y=orient(a.a,a.b,b.b),z=orient(b.a,b.b,a.a),w=orient(b.a,b.b,a.b);if(x*y<=0&&z*w<=0)throw Error('인셋 경계가 교차하거나 겹쳐요. 거리를 줄이세요.');}}
+function contoursDoNotCross(loops,budget={checks:0}){const segments=loops.flatMap((loop,l)=>loop.map((a,i)=>({a,b:loop[(i+1)%loop.length],l,i,n:loop.length})));segments.sort((a,b)=>Math.min(a.a[0],a.b[0])-Math.min(b.a[0],b.b[0]));
+ for(let i=0;i<segments.length;i++){const a=segments[i],right=Math.max(a.a[0],a.b[0]);for(let j=i+1;j<segments.length;j++){const b=segments[j];if(Math.min(b.a[0],b.b[0])>right)break;if(a.l===b.l&&(a.i===b.i||(a.i+1)%a.n===b.i||(b.i+1)%a.n===a.i))continue;if(++budget.checks>2000000)throw Error('경계 교차 검사 예산을 넘었어요. 영역을 나눠 편집하세요.');if(Math.max(a.a[1],a.b[1])<Math.min(b.a[1],b.b[1])||Math.max(b.a[1],b.b[1])<Math.min(a.a[1],a.b[1]))continue;const x=orient(a.a,a.b,b.a),y=orient(a.a,a.b,b.b),z=orient(b.a,b.b,a.a),w=orient(b.a,b.b,a.b);if(x*y<=0&&z*w<=0)throw Error('인셋 경계가 교차하거나 겹쳐요. 거리를 줄이세요.');}}
 }
 export function editMeshRegion(data,{operation,faces=[],distance=.1}={}){
  if(!['insetRegion','retriangulateRegion'].includes(operation))return null;
@@ -35,3 +35,5 @@ export function editMeshRegion(data,{operation,faces=[],distance=.1}={}){
  for(const [key,edge]of after)if(!before.has(key)&&edge.count!==2||edge.invalid&&!before.get(key)?.invalid)throw Error('영역 삼각화에 열린 간선이나 뒤집힌 연결이 생겨요. 경계 정점을 정리하세요.');
  delete result.normals;return result;
 }
+
+export function validateMeshRegionContours(loops,budget){return contoursDoNotCross(loops,budget);}

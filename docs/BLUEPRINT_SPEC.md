@@ -774,3 +774,5 @@ Two Bone IK의 [관절 회전 제어](ANIMATION_POLE_CONTROL.md)는 기존 힌�
 - 3241–3260: dense timeline interval 정확 total/64개 페이지·전체 원본/기존 query 보존·선택 페이지 이동·view-only 버튼·AI timeline.row.items.read/CAS·lazy subtree count/ID rank. docs/TIMELINE_INTERVAL_PAGES.md. 가변 행/동시 전체 라벨/실기기 품질은 별도예요.
 
 - 3261–3280: JSON Git classic/diff3/zdiff3 마커·기존 stable-ID 구조 병합·소스관리 비교 UI/파일 import·CLI/HTTP·raw working/index/reviewed候補 SHA·기존 checkedBatch 검증/복구·스테이징 별도. docs/GIT_JSON_CONFLICTS.md.
+
+- 3281–3300: 평면영역 bevelRegion 직선/round·signed높이/1~64링·UV0/UV1/색상/구멍/경계유지·typed editor/한Undo·공용 world.mesh.edit. 경계 loop 선택/읽기·view-only·bounded AI. docs/MESH_REGION_BEVEL.md.
