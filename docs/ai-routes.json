@@ -4015,7 +4015,9 @@
         "assetGraphDiff",
         "renderAssetGraphDiff",
         "graphNodeConflictPaths",
-        "assetGraphChoices"
+        "assetGraphChoices",
+        "implicitGraphLinks",
+        "graphEdgeConflictPaths"
       ],
       "paths": [
         "prototype/asset-merge.js",
@@ -4025,7 +4027,10 @@
         "tools/editor-automation.mjs",
         "prototype/asset-graph-diff.js",
         "prototype/asset-graph-diff-view.js",
-        "docs/ASSET_GRAPH_DIFF.md"
+        "docs/ASSET_GRAPH_DIFF.md",
+        "prototype/gameplay-assets.js",
+        "prototype/graph-implicit-links.js",
+        "prototype/graph-link-conflicts.js"
       ]
     },
     {
@@ -4150,6 +4155,43 @@
         "prototype/scene-inspector.js",
         "prototype/blueprint-details.js",
         "prototype/app.js"
+      ]
+    },
+    {
+      "id": "texture-disk-mips",
+      "keywords": [
+        "validDiskMipSettings",
+        "diskMipEligible",
+        "textureDiskMipFields",
+        "DiskMipSource",
+        "loadDiskMipTexture",
+        "residentSourceLevels",
+        "createResidentMipView",
+        "prepareResidentMipView",
+        "enableLayeredDiskMips",
+        "materialResidentMip",
+        "SetResidentMip"
+      ],
+      "paths": [
+        "prototype/texture-disk-mips.js",
+        "prototype/texture-import.js",
+        "prototype/texture-assets.js",
+        "prototype/texture-mip-policy.js",
+        "prototype/texture-resident-view.js",
+        "prototype/texture-streaming.js",
+        "prototype/texture-import-ui.js",
+        "prototype/asset-editor-ui.js",
+        "tools/editor-automation.mjs",
+        "docs/research/TEXTURE_DISK_MIPS_796.md",
+        "prototype/texture-disk-load.js",
+        "prototype/texture-authored-mips.js",
+        "prototype/layered-texture-import.js",
+        "prototype/texture-residency-pool.js",
+        "prototype/texture-disk-authoring.js",
+        "prototype/texture-authored-mip-ui.js",
+        "prototype/engine-services.js",
+        "prototype/material-texture-bindings.js",
+        "native/include/HBEngine/Library.hpp"
       ]
     }
   ]

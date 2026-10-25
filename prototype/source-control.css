@@ -4,3 +4,4 @@
 .asset-graph-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.asset-graph-columns>div{min-width:0}.asset-graph-columns h4{margin:6px 0}.asset-graph-canvas{max-height:430px;overflow:auto;border:1px solid var(--border,#444b55)}.asset-graph-canvas svg{display:block;width:100%;min-width:190px}.asset-graph-canvas g[role=button]{cursor:pointer}.asset-graph-canvas g[role=button]:focus{outline:none}.asset-graph-canvas g[role=button]:focus rect,.asset-graph-canvas g[role=button]:hover rect{stroke:#a8d3ff;stroke-width:3}.asset-graph-diff{padding:8px 0;border-bottom:1px solid var(--border,#444b55)}
 
 .asset-graph-canvas svg{user-select:none}
+.asset-graph-canvas g[data-edge-id]:focus path:last-of-type,.asset-graph-canvas g[data-edge-id]:hover path:last-of-type{stroke:#a8d3ff;stroke-width:3}.asset-graph-missing-edges{display:flex;flex-direction:column;gap:4px;padding:4px}

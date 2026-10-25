@@ -8,6 +8,7 @@ export function editAuthoredMip(data,button){
  else{const index=Number(button.dataset.textureMipRemove);if(Number.isInteger(index)&&index>=0&&index<(data.mips?.length||0))data.mips.splice(index);}
 }
 export function editTextureSlices(data,button){
+ if(data.streaming)data.streaming.enabled=false;
  if(button.hasAttribute('data-texture-add')){data.images.push('');for(const mip of data.mips||[])if(data.dimension==='texturearray')mip.images.push('');}
  else if(button.dataset.textureRemove!==undefined){const index=Number(button.dataset.textureRemove);data.images.splice(index,1);for(const mip of data.mips||[])if(data.dimension==='texturearray')mip.images.splice(index,1);}
  else{const index=Number(button.dataset.textureMove),to=index+Number(button.dataset.direction);if(to>=0&&to<data.images.length){[data.images[index],data.images[to]]=[data.images[to],data.images[index]];for(const mip of data.mips||[])if(data.dimension==='texturearray')[mip.images[index],mip.images[to]]=[mip.images[to],mip.images[index]];}}

@@ -1,3 +1,7 @@
+# 2841 소유 C++ 검사 문서
+
+첫 C++ 실행은 픽셀용 소유 document가 addEventListener를 제공하지 않아 engineOperations 초기화에서 실패했어요. 엔진을 바꾸지 않고 이미지 fixture에 add/removeEventListener 표면을 추가했어요. 같은 C++/SDK 캐시로 실제3메서드·9호출·9쓰기와 세 종류 밉/최종0 lease가 통과했어요(layered-disk-cpp-MjTmtg). 실패한 초기화를 성과로 계산하지 않아요.
+
 분포2824 첫 묶음: 실제 particleMass 비율이1로남음. 설치 Rapier descriptor를독립확인: setMass(2).setMasses([1.6,.4]) 후에도 mass=2 유지·uniform total 우선. 공개 descriptor.mass=null 뒤 정규화 masses 사용하도록수정. 인장전용 복원 검사의 signed X는 자유끝이원점을지날수있으므로 제약인 실제거리로수정. native솔버를대체하지않음. 첫실패는성과미포함; 최종acceptance는WORK2830에기록.
 
 # 2807 C++ 발 고정 검사 응답 해석

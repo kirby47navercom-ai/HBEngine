@@ -24,6 +24,6 @@
 
 AI 계약: `engine.schema.layeredTextureImport`. 가져오기 결과의 `report`에는 원본/최종 크기, top mip, 저장 byte, 커버리지 오차와 worker 여부가 있어요.
 
-현재 범위는 이미지 디코딩 RGBA8이에요. HDR/raw/GPU 압축·RDO·다차원 디스크 밉 스트리밍과 큐브 면 사이 seamless footprint는 별도예요. 가짜 GPU queue를 통한 실제 어댑터 데이터 대조를 실제 GPU 픽셀 검사로 계산하지 않아요. CPU 디코딩의 실제 메모리 비용도 그대로 있어요.
+현재 범위는 이미지 디코딩 RGBA8이에요. 완전한 작성 밉은 [다차원 디스크 밉](LAYERED_DISK_MIPS.md)으로 필요한 꼬리만 읽을 수 있어요. 원본을 모두 살펴보는 편집기 미리보기는 기존 가져오기 경로를 유지해요. HDR/raw/GPU 압축·RDO·자동 디스크 쿠킹과 큐브 면 사이 seamless footprint는 별도예요. 가짜 GPU queue를 통한 실제 어댑터 데이터 대조를 실제 GPU 픽셀 검사로 계산하지 않아요. CPU 디코딩의 실제 메모리 비용도 그대로 있어요.
 
 검사: `tools/check-layered-import-2816.mjs` 20개. 소유 이미지/DOM·실제 Three·프로젝트 저장·실제 단일 worker thread·취소/복구·전송 payload를 대조해요. 사용자 창·설치본·실기기는 사용하지 않았어요.

@@ -19,6 +19,7 @@ export function validateLayeredTextureMips(texture){
  return levels;
 }
 const cubeLevels=new WeakMap();
+export const clearAuthoredTextureLevelCache=texture=>cubeLevels.delete(texture);
 export function authoredTextureLevels(texture){
  if(!texture.isCubeTexture)return validateLayeredTextureMips(texture);
  const old=cubeLevels.get(texture);if(old?.version===texture.version&&old.images===texture.image&&old.mips===texture.mipmaps)return old.levels;

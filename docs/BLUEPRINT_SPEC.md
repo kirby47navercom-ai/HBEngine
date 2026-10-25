@@ -1,3 +1,6 @@
+<!-- WORK2860 -->
+추가: 배열·큐브·볼륨 작성 이미지 밉을 기존 materialResidentMip/Materials::SetResidentMip·풀·논리 LOD에 연결했어요. 필요한 꼬리만 공유 읽기·취소/해제하고 실제 장치 한도를 읽기 전에 검사해요. BT/FSM 전이·부모/자식과 포즈 입력 비교, 관계선 충돌 선택도 기존 병합/CAS/Undo로 연결해요. LAYERED_DISK_MIPS.md·ASSET_GRAPH_DIFF.md에 자료형/선택 범위를 기록해요.
+
 <!-- WORK2830 -->
 추가: 천·2D/3D 로프의 인장 전용 압축·입자별 질량 분포를 실제 솔버와 기존 Components Bool/JSON C++·BP 함수에 연결했어요. 장면/BP 숫자 폼·지정/기본값/초기화·일반 Undo를 사용하고 같은 값은 재적용하지 않아요. 질량 분포는 명시적 cold rebuild, 기존 물성 hot 변경은 현재 질량을 보존해요. ENGINE_WORK_2830·DEFORMABLE_DISTRIBUTION.md에 근거와 잔여를 기록해요.
 
