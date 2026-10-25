@@ -4566,6 +4566,18 @@
         "native/include/HBEngine/Session.hpp"
       ],
       "id": "bridge-component-property-declaration"
+    },
+    {
+      "id": "automatic-foot-plant-declarations",
+      "keywords": [
+        "AutoFootPlantIK",
+        "autoPlantDefaults",
+        "validAutoPlant",
+        "autoPlantContract"
+      ],
+      "paths": [
+        "prototype/animation-auto-plant.js"
+      ]
     }
   ]
 }

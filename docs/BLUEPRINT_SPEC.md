@@ -754,3 +754,5 @@ Two Bone IK의 작성식 보폭 보정은 기존 Float 설정 노드·`hb::Anima
 천·로프의 [고정점 경로 연결 생성](CLOTH_TETHER_GENERATION.md)은 장면/BP의 기존 최대 거리 폼에서 한 Undo로 적용해요. AI의 `scene.cloth.tethers`와 `blueprint.cloth.tethers`도 같은 생성기·컴포넌트 검증을 쓰고 기존 문서 revision·dryRun·Undo 경로를 거쳐요. 런타임은 생성된 배열을 기존 거리 제약으로 실행해요.
 
 Cloth·2D/3D 로프의 [자동 고정점 연결](DEFORMABLE_AUTO_TETHERS.md)은 기존 Bool/Float 속성 경로로 편집·BP·C++에서 제어해요. 현재 실행 고정점/강체 연결에서 다음 fixed step에 재생성하고, 기존 수동 거리/부분 고정과 합쳐 몸체를 보존해요. AI tethers 페이지와 사람 상태 표시는 같은 실행 소유자를 읽어요. [기존 프로젝트의 C++ 기본값 읽기](CPP_COMPONENT_DEFAULTS.md)는 스키마 전용 최소 질의와 같은 호출 캐시를 사용하고, Transform 읽기는 실제 로컬 TRS를 따르며 미등록 속성은 거부해요.
+
+Two Bone IK의 [자동 발 접촉](ANIMATION_AUTO_PLANT.md)은 기존 지면 광선과 표면 기준 발 높이/속도·진입/해제 히스테리시스·최소 접촉 시간으로 기존 발 고정을 구동해요. 이동/회전하는 접촉 표면·분기/시계 수명·기존 보폭/가중치와 함께 동작하고, 명시 Bool 발 고정은 우선해요. 기존 Bool 서비스·C++ API와 문서 패치/검증/Undo·타입 입력·AI 스키마를 공유해요. 물리 접촉/골반 보정 완료로 세지 않아요.
