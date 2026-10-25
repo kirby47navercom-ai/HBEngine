@@ -3569,8 +3569,6 @@
     },
     {
       "keywords": [
-        "updateDeformableProperties",
-        "deformableColdProperties",
         "deformableProperties",
         "실행 중 천 물성"
       ],
@@ -4039,13 +4037,8 @@
     {
       "id": "deformable-cloth-authoring",
       "keywords": [
-        "DeformableWorld",
-        "deformableMaterial",
-        "updateDeformableProperties",
-        "resetPlasticity",
-        "edgePage",
-        "ResetClothPlasticity",
-        "ResetRopePlasticity"
+        "변형체 통합",
+        "천 소성 통합"
       ],
       "paths": [
         "prototype/deformable-physics.js",
@@ -4086,10 +4079,7 @@
       "keywords": [
         "AnimationIK",
         "FullBodyIK",
-        "FootPlantState",
-        "GroundProjectionIK",
-        "validGroundProjection",
-        "animationPreviewActors"
+        "FootPlantState"
       ],
       "paths": [
         "prototype/animation-ik.js",
@@ -4146,27 +4136,6 @@
         "prototype/layered-texture-import.js",
         "prototype/texture-image-load.js",
         "tools/editor-automation.mjs"
-      ]
-    },
-    {
-      "id": "deformable-distribution",
-      "keywords": [
-        "deformableMasses",
-        "validDeformableMassWeights",
-        "deformableDistributionContract",
-        "clothMassControls",
-        "editClothMassWeight"
-      ],
-      "paths": [
-        "prototype/deformable-distribution.js",
-        "prototype/deformable-physics.js",
-        "prototype/deformable-properties.js",
-        "prototype/scene-components.js",
-        "tools/editor-automation.mjs",
-        "prototype/cloth-mass-editor.js",
-        "prototype/scene-inspector.js",
-        "prototype/blueprint-details.js",
-        "prototype/app.js"
       ]
     },
     {
@@ -4233,7 +4202,7 @@
     {
       "id": "animation-graph-loader",
       "keywords": [
-        "AnimationGraphPlayer"
+        "애니메이션 그래프 로드 통합"
       ],
       "paths": [
         "prototype/engine-services.js",
@@ -4243,10 +4212,7 @@
     {
       "id": "cloth-mass-brush",
       "keywords": [
-        "ClothMassBrushStroke",
-        "clothMassBrushControls",
-        "installClothMassBrush",
-        "clothMassBrushContract"
+        "질량 브러시 통합"
       ],
       "paths": [
         "prototype/cloth-mass-brush.js",
@@ -4257,6 +4223,116 @@
         "prototype/blueprint-details.js",
         "prototype/deformable-distribution.js",
         "tools/editor-automation.mjs"
+      ]
+    },
+    {
+      "id": "deformable-world-declaration",
+      "keywords": [
+        "DeformableWorld",
+        "resetPlasticity",
+        "edgePage"
+      ],
+      "paths": [
+        "prototype/deformable-physics.js"
+      ]
+    },
+    {
+      "id": "deformable-property-declarations",
+      "keywords": [
+        "deformableMaterial",
+        "updateDeformableProperties",
+        "deformableColdProperties",
+        "deformablePropertyContract"
+      ],
+      "paths": [
+        "prototype/deformable-properties.js"
+      ]
+    },
+    {
+      "id": "deformable-distribution-declarations",
+      "keywords": [
+        "deformableMasses",
+        "validDeformableMassWeights",
+        "deformableDistributionContract"
+      ],
+      "paths": [
+        "prototype/deformable-distribution.js"
+      ]
+    },
+    {
+      "id": "cloth-mass-editor-declarations",
+      "keywords": [
+        "clothMassControls",
+        "editClothMassWeight"
+      ],
+      "paths": [
+        "prototype/cloth-mass-editor.js"
+      ]
+    },
+    {
+      "id": "ground-projection-declarations",
+      "keywords": [
+        "GroundProjectionIK",
+        "validGroundProjection",
+        "groundProjectionDefaults",
+        "groundProjectionContract"
+      ],
+      "paths": [
+        "prototype/animation-ground-ik.js"
+      ]
+    },
+    {
+      "id": "animation-preview-selection-declaration",
+      "keywords": [
+        "animationPreviewActors"
+      ],
+      "paths": [
+        "prototype/animation-preview-actors.js"
+      ]
+    },
+    {
+      "id": "cloth-mass-brush-declarations",
+      "keywords": [
+        "ClothMassBrushStroke",
+        "clothMassBrushControls",
+        "installClothMassBrush",
+        "clothMassBrushContract",
+        "clothMassHeat",
+        "clothMassBrushDefaults"
+      ],
+      "paths": [
+        "prototype/cloth-mass-brush.js"
+      ]
+    },
+    {
+      "id": "animation-player-declaration",
+      "keywords": [
+        "AnimationGraphPlayer"
+      ],
+      "paths": [
+        "prototype/animation-graph-runtime.js"
+      ]
+    },
+    {
+      "id": "joint-frame-declarations",
+      "keywords": [
+        "jointFrames",
+        "applyJointFrames",
+        "validJointFrames"
+      ],
+      "paths": [
+        "prototype/joint-frames.js"
+      ]
+    },
+    {
+      "id": "deformable-cpp-entry",
+      "keywords": [
+        "ResetClothPlasticity",
+        "ResetRopePlasticity"
+      ],
+      "paths": [
+        "native/include/HBEngine/Game.hpp",
+        "native/include/HBEngine/Session.hpp"
       ]
     }
   ]

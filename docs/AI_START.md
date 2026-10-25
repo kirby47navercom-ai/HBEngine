@@ -60,3 +60,7 @@ node tools/hb.mjs schema --section commands --url http://127.0.0.1:포트
 큰 문서는 `document.get` 전체 응답보다 `document.read`의 pointer/offset/limit을 먼저 사용해요. 기본값은 형태와 짧은 ID/name만 돌려주고, 필요한 하위 항목에 values=true를 써요. 시퀀스 키는 sequence.keys.read도 지원해요. `schema --section documentQuery`, `--section sequenceKeyStorage`, `--section authoringStorage`로 해당 계약만 볼 수 있어요. 에셋 저장과 복구 상태 flush는 별도이고 editor.storage.flush로 후자를 확정해요. 상세 범위는 docs/LARGE_AUTHORING_STORAGE.md와 docs/DENSE_SEQUENCE.md에 있어요.
 
 원장의 sourceHashBase와 changedSourceHashes는 tools/research-source-hashes.mjs로 합쳐요. 기본 CLI는 연결 경로·파일 수만 보여주고 --full은 해시 전체를 내보내요. 합성은 기록 조회이며 현재 파일·실행·설치 검증은 별도예요.
+
+지면 IK·애니메이션 미리보기·변형체·질량 브러시·관절 프레임의 정확한 클래스/함수명은 선언 소유 파일에 연결돼요. 예를 들어 `--symbol DeformableWorld`는 deformable-physics.js만 읽어요. 호출부 파일 목록이 필요하면 --symbol 없이 “변형체 통합”, “천 소성 통합”, “질량 브러시 통합”, “애니메이션 그래프 로드 통합”으로 명시해서 넓혀요. 정확 조회에서 자동으로 앱·SDK·주변 도구 본문 전체를 읽지 않아요. 이 등록 범위를 엔진 전체의 최소 소유자 분해 완료로 해석하지 않아요.
+
+WORK2930의 동일 현재 소스 비교에서 DeformableWorld는 11파일/1099151byte→1파일/10894byte, GroundProjectionIK는 13파일/449465byte→1파일/6212byte, ClothMassBrushStroke는 8파일/697307byte→1파일/11158byte를 읽었어요. 기준은 WORK2920의 경로 목록이며 조회기 본문과 현재 소스는 같아요. source body 읽기량 측정이며 모델 해석 시간·토큰 계정·FPS를 측정한 값이 아니에요.
