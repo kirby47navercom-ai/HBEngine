@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "kind": "owned-vehicle-wheel-bone-visuals-and-retained-procedural-scratch",
+  "implementationRevision": "dc160d4a0c9327e6f9d30441131553c733f5763d",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3220.json",
+  "changedSourceHashes": {
+    "prototype/vehicle-wheel-bones.js": "b16aa5e351d36dc0cd17a3fde44ef33a3f31411e01b0cd32839c2d2d8f4ea840",
+    "prototype/vehicle-wheel-bones-editor.js": "1ec3086c4735f924d28ab914e498d3ad2ba3ed4eb27d5ac1e95f92406060fe91",
+    "prototype/vehicle-rendering.js": "ba0d2f999e9f7eac14d10365b436490a034ee825ba5a5b59dc98bc90cf3f9b83",
+    "prototype/vehicle-config.js": "7138b446a1685908d54402ecffaa1816a61af3e994e85ba312bd728df8c03f08",
+    "prototype/vehicle-inspector.js": "612bc65bec9383b4d4b40b483dddefe785f46db88ea6bd5c780655f527cb79b1",
+    "prototype/vehicle-physics.js": "60276eaf736637da6fc0b7002df478453598d2a32a7ecabedddc71f154c6e4a2",
+    "tools/editor-automation.mjs": "651a167acdda21c5803c5b4c31cfc8e4075bc4d77226bfbb06115d6ba0053b9f",
+    "tools/check-vehicle-wheel-bones-3223.mjs": "d38ec8c0e49c8361dc2cf4b119ac14387ac83ed6cb01e11ae60339962cf5a800",
+    "docs/ai-routes.json": "ac6bcc9b7fd4a90dc1e9d4c3109649eb0c37c4841a2315e13bd6409d96ae552e",
+    "docs/BLUEPRINT_SPEC.md": "1f287edbad2565391b1840cec2b48951239ef288cb9e02762e75604b146678db",
+    "docs/VEHICLE_WHEEL_BONES.md": "454685526be3e299bb2513815d8fd76b4ced43ef7acbf56e50fd0778ac18e470",
+    "CODEX_HANDOFF.md": "a9139362491f52b8b0279506612330e084ab1ef334319638c94ed7bdbd61cd36"
+  },
+  "resolvedOwners": 1627,
+  "targetIds": [
+    "PHY-02",
+    "AI-03"
+  ],
+  "newSourceCases": 11,
+  "relatedSourceCases": 20,
+  "checks": {
+    "source": "native/build/vehicle-wheel-bones-5T6OPt/acceptance.json",
+    "related": [
+      "native/build/vehicle-dynamics-0761KA/acceptance.json",
+      "native/build/vehicle-powertrain-236-nh9kRM/acceptance.json"
+    ]
+  },
+  "samples": [
+    {
+      "frames": 240,
+      "bones": 4,
+      "warmSkeletonTraverse": 0,
+      "updates": 240
+    },
+    {
+      "visualOnlyControllerRebuilds": 0,
+      "visualOnlyBodyWake": 0,
+      "physicalEditRebuilds": 1
+    },
+    {
+      "actualRapierFrames": 61,
+      "boneDriverUpdates": 60,
+      "sourceScope": "Real WASM inertial vehicle publication to actual Three bones; no rendered window"
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "actualCppCaller": false,
+    "actualImportedModelBuild": true,
+    "actualRapierPublication": true,
+    "GUI": false,
+    "wholeFPSClaim": false,
+    "tireMeshDeformation": false
+  },
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "newWorkers": 0,
+    "removedOwnedRegularHelpers": [
+      "vehiclewire3221.mjs",
+      "vehicledocs3224.mjs",
+      "admit3225.mjs"
+    ],
+    "handoffBytes": 4141
+  },
+  "scope": "Actual imported Three bones/build resource ownership, world suspension/bind steering/spin, guarded lifecycle/foreign edits, strict typed metadata and component JSON, actual RaycastVehicles controller signature retention and ready Rapier inertial publication. Procedural transforms independently compared and warm scratch/diagnostic identity retained. No fresh C++ build, tire mesh deformation, whole-scene FPS/heap, GUI/backend pixels/device/install claim."
+}
