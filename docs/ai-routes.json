@@ -4746,6 +4746,28 @@
       "paths": [
         "prototype/vehicle-physics.js"
       ]
+    },
+    {
+      "id": "timeline-interval-page-declarations",
+      "keywords": [
+        "timelineRowPage",
+        "timelineItemsPageMarkup",
+        "changeTimelineItemsPage",
+        "readTimelineRowItems",
+        "timelineIntervalPagesContract"
+      ],
+      "paths": [
+        "prototype/timeline-row-pages.js"
+      ]
+    },
+    {
+      "id": "timeline-interval-index-declaration",
+      "keywords": [
+        "TimelineIntervalIndex"
+      ],
+      "paths": [
+        "prototype/timeline-interval-index.js"
+      ]
     }
   ]
 }

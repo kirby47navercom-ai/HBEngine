@@ -770,3 +770,5 @@ Two Bone IK의 [관절 회전 제어](ANIMATION_POLE_CONTROL.md)는 기존 힌�
 - 3201–3220: FullBodyIK 선택 groundPelvis·명시 지지목표/기존 2D·3D 질의·공유 골반 월드 이동한도·분기별 감쇠/수명·원래 제약/Alpha·typed 체크/Bool/Undo·AI 계약. 문서: ANIMATION_GROUND_PELVIS.md. 예측 보행/접촉 반력은 별도예요.
 
 - 3221–3240: RaycastVehicle.wheels[].visual 휠 뼈·조향/구름/월드 서스펜션·소유 채널 복원·typed 휠 입력/기존 JSON·공용 렌더 흐름. 표시 메타데이터는 물리 controller 재생성/차체 wake에서 제외해요. docs/VEHICLE_WHEEL_BONES.md.
+
+- 3241–3260: dense timeline interval 정확 total/64개 페이지·전체 원본/기존 query 보존·선택 페이지 이동·view-only 버튼·AI timeline.row.items.read/CAS·lazy subtree count/ID rank. docs/TIMELINE_INTERVAL_PAGES.md. 가변 행/동시 전체 라벨/실기기 품질은 별도예요.
