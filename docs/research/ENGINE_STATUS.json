@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-25",
-  "basisRevision": "f5fa6d616b70d5c0f6c422145f6e0f7b676c831a",
+  "basisRevision": "a4554678b7035aaa03e6ec06fe72715fd795315b",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -582,20 +582,23 @@
       "area": "2d",
       "title": "2D 전용 리타게팅",
       "status": "partial",
-      "implemented": "같은 부모 계층 bind 상대 클립 리타게팅·이름/ID 뼈 대응·이동 비례·키 보존·수동/AI Undo/Redo·기존 C++/BP 재생 · 165: 다른 부모 계층의 2D 포즈 베이크·world/local 대응·스케일/연속 회전·기존 IK 솔버 연결 · 167: 계층/좌우 이름 대응·장면 외부 IK 목표/변환 키·리그 월드 변환 베이크·limb/CCD/FABRIK 실제 표본 재생",
+      "implemented": "같은 부모 계층 bind 상대 클립 리타게팅·이름/ID 뼈 대응·이동 비례·키 보존·수동/AI Undo/Redo·기존 C++/BP 재생 · 165: 다른 부모 계층의 2D 포즈 베이크·world/local 대응·스케일/연속 회전·기존 IK 솔버 연결 · 167: 계층/좌우 이름 대응·장면 외부 IK 목표/변환 키·리그 월드 변환 베이크·limb/CCD/FABRIK 실제 표본 재생 ·2745–2754: chains모드는 기준뼈 사이 단일체인 rest월드경로 길이로 최대1:1/단조/최소오차 대응, 중간뼈수차이·스케일/동일피벗·Unicode보존·분기/비조상추론보류. 사람대응표/AI공용명령/포즈bake/Three재생·스키닝연결. 신규13(독립60조합)+기존2D/공용IK2gate·source/target/CAS/dryRun/Undo hook 보존. 임의 제약·발접촉·전체체형 품질 별도.",
       "remaining": [
-        "임의 제약/정지 발의 전체 재표본화 검증·고급 자동 체인 대응"
+        "임의 제약/정지 발의 전체 재표본화 검증·분기/기준점 미등록·임의 체형의 고급 자동 체인 대응(단일 기준체인2754구현)"
       ],
       "sources": [
         "prototype/sprite-rig-assets.js",
         "prototype/sprite-rig-retarget.js",
-        "prototype/sprite-rig-retarget-editor.js"
+        "prototype/sprite-rig-retarget-editor.js",
+        "prototype/sprite-rig-chain-map.js",
+        "docs/SPRITE_RIG_CHAIN_MAPPING.md"
       ],
       "evidence": [
         "docs/ANIMATION_RETARGET_072.md",
         "docs/ENGINE_WORK_156.md",
         "docs/research/ENGINE_WORK_165.json",
-        "docs/research/ENGINE_WORK_167.json"
+        "docs/research/ENGINE_WORK_167.json",
+        "docs/research/ENGINE_WORK_2754.json"
       ]
     },
     {
@@ -4129,10 +4132,10 @@
     }
   ],
   "latestBatch": {
-    "first": 2735,
-    "last": 2744,
-    "receipt": "docs/research/ENGINE_WORK_2744.json",
-    "scope": "태그국소고정점/역할서명공유 신규13+회귀46·논리평가/수명조회절감. 설치보류/예약0."
+    "first": 2745,
+    "last": 2754,
+    "receipt": "docs/research/ENGINE_WORK_2754.json",
+    "scope": "2D 체인자동대응/사람·AI·포즈bake·실제Three, 신규13+기존2gate·전수60조합. 설치보류/예약0."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_2145.json",

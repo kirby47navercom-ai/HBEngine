@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "date": "2026-10-25T01:43:31.380Z",
+  "kind": "sprite-rig-topology-chain-mapping-authoring-and-pose-runtime",
+  "implementationRevision": "a4554678b7035aaa03e6ec06fe72715fd795315b",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2744.json",
+  "changedSourceHashes": {
+    "prototype/sprite-rig-chain-map.js": "f9a4f20d97ef341f0f8f58db9f0db1dc9ca016136144d1d9fab026c5b437d0f0",
+    "prototype/sprite-rig-retarget.js": "b3fa486925a205d00c53c1d962d984c4cdb78d5ffb52ec5cb28369d563ed460e",
+    "prototype/sprite-rig-retarget-editor.js": "266247430b10623037963393fc629fa10b28aa8c98878d4dd15fe6dcd6d06613",
+    "tools/editor-automation.mjs": "aeceffbe2b19d0c574216d6b6e5eb3c7e6b8aaa0bc9634a1b76bc9ade14c4a39",
+    "tools/check-sprite-chain-map-2748.mjs": "cdb5dd5b86648e77773cbaf5841c626fe03cca535e26ed2d5321d820a491b635",
+    "docs/SPRITE_RIG_CHAIN_MAPPING.md": "5639cb3a8e11093edc1689f2e35996c582809b3139d436edbdf4e8a76ec652fb",
+    "docs/ai-routes.json": "766668e6fae5ee0053c97ca5df02dcb748b7912d5a9d62cbfcadb71e20f37783",
+    "CODEX_HANDOFF.md": "f13316009389329f4c3de8d810dfb03838ae8ea761cc078fe1729c015a5c6d53"
+  },
+  "resolvedOwners": 1490,
+  "targetIds": [
+    "2D-05"
+  ],
+  "changes": {
+    "2D-05": " ·2745–2754: chains모드는 기준뼈 사이 단일체인 rest월드경로 길이로 최대1:1/단조/최소오차 대응, 중간뼈수차이·스케일/동일피벗·Unicode보존·분기/비조상추론보류. 사람대응표/AI공용명령/포즈bake/Three재생·스키닝연결. 신규13(독립60조합)+기존2D/공용IK2gate·source/target/CAS/dryRun/Undo hook 보존. 임의 제약·발접촉·전체체형 품질 별도."
+  },
+  "newSourceCases": 13,
+  "relatedSourceGates": 2,
+  "checks": {
+    "new": "native/build/sprite-chain-map-fkzfda/acceptance.json",
+    "group": "native/build/group2749.json",
+    "legacy": "native/build/sprite-retarget-163-cpu.2749.json",
+    "related": "native/build/check-animation-retarget.mjs.2749.log",
+    "focus": "native/build/focus2751.json",
+    "syntax": 5
+  },
+  "failuresAndRepairs": [
+    "Initial source12 and two legacy gates passed. Added independent exhaustive60-chain test and reran only new source tool:13 pass.",
+    "Escaping review corrected Unicode property escape before gate execution; no wrong normalization shipped.",
+    "Legacy fixed-name report redirected to owned .2749 output; historical evidence not overwritten."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newCPP": false,
+    "newGUI": false,
+    "newGPU": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newRuntimeSDKProfiles": 0,
+    "nativeModuleCachePolicy": 32,
+    "cleanup": "native/build/temp-clean2754.json",
+    "sharedCache": "native/build/shared-cache2754.json"
+  },
+  "remainingBoundary": [
+    "Confident name/role anchors still required; branching/unanchored/different arbitrary topology is not inferred",
+    "Full stationary-foot/contact/stride/body-shape/arbitrary IK constraint retargeting quality remains",
+    "Actual modal GUI/device/full player/native SDK execution and FPS/heap are not newly verified"
+  ]
+}

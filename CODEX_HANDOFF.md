@@ -3,12 +3,10 @@
 최신: 끝내지 말고 계속 구현. 예약 재생성 금지(hbengine 삭제2160), native/build/UPDATE_HOLD.json active 보류. 사용자 창/탭/프로필/게임 원본/Versions 변경 금지. 새 에이전트 금지. Mac/Xcode/Android폰 없음. 여러 구현 뒤 영향 검사 묶음·실패도구만 재실행, 불변 SDK/렌더러 반복금지. 한글 동일 kirby47navercom-ai author/committer·AI trailer 없이 commit/push.
 보호: prototype/player.js, tools/check-player-keyboard-release.mjs 읽기/편집/실행/stage 금지. docs/NODE_CATALOG.md 기존dirty 미stage. core-api generated ignored; generatedCore()만사용, CLI카탈로그생성금지.2490 fallback-all 경계위반 WORK2520 기록·focus수정; 새 broad fallback 금지. hb context는 등록된 keyword/실제symbol·focused-routes 확인.
 
-확정 core f5fa6d616b70d5c0f6c422145f6e0f7b676c831a; WORK2744/ENGINE_STATUS.78행37verified/37partial/1unimplemented/3unverified·전체율null. 해시2720 Map압축·보호해시새읽기금지. 전체/설치완료 아님.
+확정 core a4554678b7035aaa03e6ec06fe72715fd795315b; WORK2754/ENGINE_STATUS.78행37verified/37partial/1unimplemented/3unverified·전체율null. 해시2720 Map압축·보호해시새읽기금지. 전체/설치완료 아님.
 
 최근 실제 구현/근거:
-- WORK2594(6ac70824): Cue v2 독립프리팹 rootTRS/바인딩·채널/풀lease/게임시각·취소/종료정리, binary/text journal·WriteIntent 사람/AI/CAS·linked child·외부원문보존. 신규54+회귀79. 전용문서 참고.
-- WORK2608(b8841305): skeletal.retime 양수uniform·TRS/morph/curve tangent·범위/notify/sync·사람/AI Undo/CAS·실제Graph. 신규15+회귀29. 역재생/비균일/DCC별도.
-- WORK2619(d3a49eef): JointRuntimeRecords 정상파손후보/owner 색인·ID쌍구분. 신규8+파손9/DOF7·SDK1명시skip, 전체sync/solver/반력/plasticity별도.
+- 이전 WORK2594(Cue/stream저널54+79),2608(균일리타임15+29),2619(관절색인8+회귀): 각영수증/전용문서 참조·전체완료아님.
 - WORK2632(863e330a): ability tick 빈map/임시배열제거·단일능력순회·시간불변 DTO공유, 일반변경invalidate·유한시간/소유수명유지. 신규11+회귀97; 10003idle소유수명20006·재공개0.
 - WORK2656(3f0fa189): SkeletalSocket/Attachment 초기·풀전/최종포즈·중첩·수명·ID·오류. Cue v3 명시Undo변환·bone/socket·자식이미터경로·async lease. 신규30+회귀62. docs/SKELETAL_SOCKETS. 한actor다중ParticleSystem/전용부착track/physics/2D SpriteRig별도.
 - WORK2670(449cfcbf): 소켓7 public C++/pureBP/live 권한·형·world/local/page·전단원점/TRS거절. source8+현재SDK7함수8질의, 회귀30. worker f842ea326b46d8209d8c SHA c008234a8e2dce069f4ee6003f3acdab4756290742f5f9099e74f96b88234ec3, SDKdeps영수증. 새GPU/GUI없음.
@@ -20,6 +18,8 @@
 - WORK2734(e0888417): 선택형 휠관성·접촉충격량/동적지면반작용·차동슬립제한·ABS(주차우회), 속성/휠표시/진단·공용BP/CPP3조회. 신규15+구동계5/초기화11·현재SDK C++3정상/2오류. 실제headless 공중/21.18m/s주행/제동/후진/차동·Three표시. docs/VEHICLE_WHEEL_DYNAMICS. GUI/device/FPS/고급타이어별도.
 
 - WORK2744(f5fa6d61): 진행태그 exact/계층 개수·의존 색인(한동기transaction), 역할수명/서명공유(한호출). 최소고정점/태그순서/외부편집/교체/원자순환유지. 신규13(독립220그래프)+회귀46·group2740. 평가218960→1519·501효과2역할 ID조회1. docs/EFFECT_ONGOING. 전체snapshots/색인/벡터·tick수명순회/FPS별도.
+
+- WORK2754(a4554678): 2D chains 기준뼈사이 단일체인 rest월드길이·최대1:1/순서/최소오차 대응. 분기추론않음·Unicode보존. 사람검토표/AI rig.clip.retarget(mapMode:chains,positionMode:pose)·실제bake/Three. 신규13(독립전수60조합)+기존2sourcegate. docs/SPRITE_RIG_CHAIN_MAPPING. 원문/CAS/dryRun/Undo hook·키예산 유지; 임의접촉/전체체형/GUI별도.
 
 다음: canonical remaining의 실제 제작/실행 기능 계속. 전체 world 복사·검증/전체순회·ongoing고정점/태그증분·전용rig/DCC·반력/소성·렌더링 잔여. GL1728 ANGLE6878.6/FXC6836.439ms 미해결·실패실험반복금지. 서류정리/몇수정으로 전체완료표현금지.
 설치 역사 USER_INSTALL2145 Versions/73341067df5a12be SHA73341067df5a12be1fb1758e510ffa8c0ee7ca6b285a1bc5164afc33df4571bc. 새복사/예약0. 무거운검사전activeInstalledVersions. CPPcache32정책(nativeCacheOnly는소스열거안함). 소유helpers만정리·fixture/recipe/report/SDK/사용자데이터유지. 새목표/재개질문으로중단하지않음.
