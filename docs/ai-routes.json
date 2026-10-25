@@ -4198,6 +4198,28 @@
         "native/include/HBEngine/Library.hpp",
         "prototype/texture-disk-source-cache.js"
       ]
+    },
+    {
+      "id": "ai-context-compact",
+      "keywords": [
+        "compactEngineContext",
+        "contextArgs"
+      ],
+      "paths": [
+        "tools/ai-context-compact.mjs",
+        "tools/ai-context.mjs",
+        "tools/hb.mjs",
+        "docs/AI_START.md"
+      ]
+    },
+    {
+      "id": "reflection-probe-bounds-owner",
+      "keywords": [
+        "reflectionProbeMeshBounds"
+      ],
+      "paths": [
+        "prototype/reflection-probe-bounds.js"
+      ]
     }
   ]
 }

@@ -7,11 +7,13 @@ Codex·Claude·다른 코딩 AI는 이 문서와 루트 `AGENTS.md`, 현재 `COD
 저장소 루트에서 실행해요. 편집기·서버·브라우저·패키지 빌드 없이 현재 소스와 확정 원장을 조회해요. 설치된 Node 외에 추가 의존성을 설치하지 않아요.
 
 ```powershell
-node tools/hb.mjs context
-node tools/hb.mjs context "블루프린트 변수 드래그"
-node tools/hb.mjs context "머테리얼" --symbol "decodeNormalMap" --limit 6
-node tools/ai-context.mjs "2D 스프라이트 입력"
+node tools/hb.mjs context --compact
+node tools/hb.mjs context "블루프린트 변수 드래그" --compact
+node tools/hb.mjs context "머테리얼" --symbol "decodeNormalMap" --limit 6 --compact
+node tools/ai-context.mjs "2D 스프라이트 입력" --compact
 ```
+
+작업 중에는 `--compact`를 우선 사용해요. 소유자·심볼 발췌·읽은 파일/byte·검색 실패 모드·관련 잔여/근거·검사 후보·작업 경계를 유지하면서 공통 구조와 전체 분야 라벨·긴 과거 설치 설명·Git 경로 목록을 생략해요. 현재 설치 마커와 역사적 설치 영수증은 계속 구분해요. 더 자세한 설명은 같은 명령에서 이 옵션만 빼면 돼요. 응답 전달량을 줄이는 모드이며 디스크 탐색·컴파일 자체를 빨리 했다는 뜻은 아니에요.
 
 `context`만 실행하면 짧은 구조·Git 변경·확정 설치·26개 분야 목록을 줘요. 작업명을 넣으면 관련 파일·원장 ID·최근 근거·검사 후보만 추가해요. 정확한 ID(`RND-06`)나 파일명도 검색할 수 있어요. `--symbol`은 대소문자를 구분하는 문자열 검색이며 경로·줄·열·짧은 발췌를 반환해요. 정확한 심볼이 focusRoutes 키워드로 등록되어 있으면 작업명에 해당하는 다른 경로보다 먼저 읽어요. 그 경로에서 심볼을 찾으면 해당 소유자만 읽고 `mode=focused-routes`와 확장 명령을 표시해요. 다른 호출처도 필요하면 같은 명령에 `--all`을 붙여요. 소유자에서 못 찾으면 `mode=focused-miss`, 등록된 경로가 없으면 `mode=unregistered-symbol`로 반환하며 자동으로 전체 검색하지 않아요. 미등록 심볼은 소스 본문을 읽지 않아요. `docs/ai-routes.json`의 `focusRoutes`(분야 목록 `topics`와 별도)에 실제 소유자를 등록하고 다시 조회해요. 전체 확장은 명시적인 `--all`에서만 일어나요. 명령은 어느 CWD에서 실행해도 자신의 엔진 루트를 기준으로 조회해요.
 

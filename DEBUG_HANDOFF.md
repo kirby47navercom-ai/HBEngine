@@ -1,3 +1,8 @@
+# 2882 짧은 조회 검사
+
+첫 fixture는 async engineContext의 거절을 assert.throws로 검사해 unhandled rejection을 만들었어요. assert.rejects로 수정했어요. 다음 미등록 fixture의 task에 context가 들어 있어 기존 등록경로가 선택됐으므로 focused-miss가 맞았어요. 무관한 문자열과 등록경로 miss를 별도 사례로 분리했어요. 엔진의 fail-closed 검색을 약화하지 않아요. 최종6개 context-compact-HxpIIG 통과.
+기존1058gate도 reflectionProbeMeshBounds 소유자가 이전 HEAD에 미등록이라 실패했어요. ENGINE_STATUS에 이미 명시된 reflection-probe-bounds.js를 정확 경로로 등록해 한 파일에서 실제 선언을 확인했고, 기존gate가 통과했어요(ai-context-2885-legacy.json). --all/자동 fallback은 사용하지 않았어요.
+
 # 2841 소유 C++ 검사 문서
 
 첫 C++ 실행은 픽셀용 소유 document가 addEventListener를 제공하지 않아 engineOperations 초기화에서 실패했어요. 엔진을 바꾸지 않고 이미지 fixture에 add/removeEventListener 표면을 추가했어요. 같은 C++/SDK 캐시로 실제3메서드·9호출·9쓰기와 세 종류 밉/최종0 lease가 통과했어요(layered-disk-cpp-MjTmtg). 실패한 초기화를 성과로 계산하지 않아요.

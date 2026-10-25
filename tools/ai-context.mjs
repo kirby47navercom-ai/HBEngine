@@ -1,3 +1,4 @@
+import {compactEngineContext} from './ai-context-compact.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
@@ -27,10 +28,10 @@ function hasTerm(text, term) {
   return normalize(text).includes(normalize(term));
 }
 function optionsFor(options) {
-  if (!options || typeof options !== 'object' || Array.isArray(options) || Object.keys(options).some(key => !['task', 'symbol', 'limit', 'all'].includes(key))) throw Error('context는 task, symbol, limit, all만 받아요.');
-  const {task = '', symbol = '', limit = 8, all = false} = options;
-  if (typeof all !== 'boolean' || typeof task !== 'string' || task.length > 500 || typeof symbol !== 'string' || symbol.length > 160 || /[\r\n\0]/.test(task + symbol) || !Number.isSafeInteger(limit) || limit < 1 || limit > 12) throw Error('task 500자·symbol 160자 이하, limit 정수 1~12를 사용하세요.');
-  return {task: task.trim(), symbol: symbol.trim(), limit, ...(all ? {all:true} : {})};
+  if (!options || typeof options !== 'object' || Array.isArray(options) || Object.keys(options).some(key => !['task', 'symbol', 'limit', 'all', 'compact'].includes(key))) throw Error('context는 task, symbol, limit, all, compact만 받아요.');
+  const {task = '', symbol = '', limit = 8, all = false, compact = false} = options;
+  if (typeof compact !== 'boolean' || typeof all !== 'boolean' || typeof task !== 'string' || task.length > 500 || typeof symbol !== 'string' || symbol.length > 160 || /[\r\n\0]/.test(task + symbol) || !Number.isSafeInteger(limit) || limit < 1 || limit > 12) throw Error('task 500자·symbol 160자 이하, limit 정수 1~12를 사용하세요.');
+  return {task: task.trim(), symbol: symbol.trim(), limit, ...(all ? {all:true} : {}), ...(compact ? {compact:true} : {})};
 }
 async function inventory(directory, prefix = directory) {
   let entries;
@@ -92,7 +93,7 @@ async function findSymbol(files, symbol, limit) {
 }
 
 export async function engineContext(input = {}) {
-  const start = performance.now(), {task, symbol, limit, all = false} = optionsFor(input);
+  const start = performance.now(), {task, symbol, limit, all = false, compact = false} = optionsFor(input);
   const [routes, status, installation] = await Promise.all([
     fs.readFile(new URL('../docs/ai-routes.json', import.meta.url), 'utf8').then(JSON.parse),
     readEngineStatus(),contextInstallation()
@@ -158,7 +159,7 @@ export async function engineContext(input = {}) {
     }
   }
   base.elapsedMs = Math.round((performance.now() - start) * 100) / 100;
-  return base;
+  return compact ? compactEngineContext(base) : base;
 }
 
 export function contextArgs(args) {
@@ -170,6 +171,7 @@ export function contextArgs(args) {
       if (value === undefined || value.startsWith('--')) throw Error(arg + ' 값이 필요해요.');
       params[arg.slice(2)] = arg === '--limit' ? Number(value) : value;
     } else if (arg === '--all') params.all = true;
+    else if (arg === '--compact') params.compact = true;
     else if (arg.startsWith('--')) throw Error('알 수 없는 context 옵션: ' + arg);
     else positional.push(arg);
   }
