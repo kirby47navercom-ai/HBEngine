@@ -3,7 +3,9 @@
 최신 사용자: 계속 구현·여러 분야 묶어 마지막 영향검사. 설치 업데이트 보류(native/build/UPDATE_HOLD.json active), 예약 재생성금지(hbengine삭제2160). 사용자 창/탭/프로필/게임/Versions 변경금지·새에이전트금지. Mac/Xcode/Android폰없음. 한글 동일 kirby47navercom-ai author/committer·AI trailer없이commit/push.
 보호: prototype/player.js, tools/check-player-keyboard-release.mjs 읽기/편집/실행/stage금지. docs/NODE_CATALOG.md 기존dirty 미stage. core-api ignored generatedCore()만·카탈로그CLI금지. hb context --compact 등록keyword/실제symbol·focused-routes 확인; broad/--all금지. 새원장은 기록Map합성+명시own whitelist만새해시. updatedAt은YYYY-MM-DD·validate/read필수.
 
-core cb0fd90a0f938e7ba34368054cc4437e5f57f284; canonical WORK2920/ENGINE_STATUS. 78행37verified/37partial/1unimplemented/3unverified·전체율null. 기록hash2720압축기준→...2890→2920; 60전Map재압축. 설치완료아님.
+core 5f2ffcc5b7d99ca7fc3414f11ce21dc41779f3a8; canonical WORK2930/ENGINE_STATUS. 78행37verified/37partial/1unimplemented/3unverified·전체율null. 기록hash2720압축기준→...2890→2920→2930; 60전Map재압축. 설치완료아님.
+
+신규2930: 정확선언owner 분리·integration목록/C++선언+bridge/fail-closed보존. context-owners-1Rslef 신규6. 같은현재소스 DeformableWorld11파일1099151→1파일10894B, GroundProjectionIK13/449465→1/6212B, brush8/697307→1/11158B. 소스읽기량만·모델시간/토큰/FPS아님. 이번실행 신규52=2920의46+6. 조회기본문변경0·SDK/renderer재검사0.
 
 신규2920(2891–2920):
 - ANM: TwoBone opt-in groundProjection Bool/pose-or-target/2D3D/world ray/법선offset/경사·최소swing·기존가중치/길이/관절. nohit/비활성 입력통과·현재plant문맥해제·budgetskip0질의. 기존준비Rapier와SetBool 공용. 독립player는groundQuery주입·dispose해제. 양의균일프레임 회전제약·unreachable잔여오차정직표시. editor접힘typed폼/legacydefaults/Boolrename/Undo·AI schema. ANIMATION_GROUND_PROJECTION.md.

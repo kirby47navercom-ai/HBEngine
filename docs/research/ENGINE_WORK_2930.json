@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "date": "2026-10-25T10:22:29.712Z",
+  "kind": "정확 심볼 선언 소유자 조회비용 / 설치 보류",
+  "implementationRevision": "5f2ffcc5b7d99ca7fc3414f11ce21dc41779f3a8",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2920.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "60f2b3c7d1e882b24594c99d45d197efe2f2fecab05213c7164e4fe8fc5c04bc",
+    "docs/AI_START.md": "fd8921abf76065b057bf2e5cf6a7273ae8a68fd06b31b88d18ff9fc892d8bfd2",
+    "tools/check-context-owners-2922.mjs": "91bdfa3a8dadfa1db823c2253dadd0952b8d8445c682ac692adbeff1cff7d52b",
+    "CODEX_HANDOFF.md": "d3c95f21aab8f56dbfe0b9dec5b2e03565c8016ad5fae80933011a72e542f392"
+  },
+  "resolvedOwners": 1556,
+  "targetIds": [
+    "AI-03"
+  ],
+  "changes": {
+    "AI-03": " ·2921–2930: 지면IK/미리보기/변형체/질량편집/관절프레임의 정확심볼은선언owner만조회·관련통합파일목록은명시task로보존·C++선언/bridge2owner유지. 새6검사. 같은현재소스 읽기량 DeformableWorld1099151→10894B, GroundProjectionIK449465→6212B, ClothMassBrushStroke697307→11158B. 각각1파일·실패시자동확장0. 조회기본문/모델해석시간/토큰계정/FPS개선측정아님."
+  },
+  "newSourceCases": 6,
+  "checks": {
+    "source": "native/build/context-owners-1Rslef/acceptance.json",
+    "priorRuntime": "docs/research/ENGINE_WORK_2920.json"
+  },
+  "results": {
+    "measurements": [
+      {
+        "symbol": "DeformableWorld",
+        "before": {
+          "files": 11,
+          "bytes": 1099151
+        },
+        "after": {
+          "files": 1,
+          "bytes": 10894
+        },
+        "scope": "Reported source body reads/bytes for equal current files and different route manifests; not OS cache/model time/FPS.",
+        "reduction": 0.9900887139255662
+      },
+      {
+        "symbol": "GroundProjectionIK",
+        "before": {
+          "files": 13,
+          "bytes": 449465
+        },
+        "after": {
+          "files": 1,
+          "bytes": 6212
+        },
+        "scope": "Reported source body reads/bytes for equal current files and different route manifests; not OS cache/model time/FPS.",
+        "reduction": 0.9861791240697273
+      },
+      {
+        "symbol": "ClothMassBrushStroke",
+        "before": {
+          "files": 8,
+          "bytes": 697307
+        },
+        "after": {
+          "files": 1,
+          "bytes": 11158
+        },
+        "scope": "Reported source body reads/bytes for equal current files and different route manifests; not OS cache/model time/FPS.",
+        "reduction": 0.9839984397116335
+      }
+    ],
+    "baselineRouteCommit": "cdb63265",
+    "baselineRouteSHA": "2fd7052cc811d1f158b5c3893286fed2322e3c3c1142730b60978a48384df2b5",
+    "currentRouteSHA": "60f2b3c7d1e882b24594c99d45d197efe2f2fecab05213c7164e4fe8fc5c04bc",
+    "protectedReads": 0,
+    "automaticExpansion": 0,
+    "queryImplementationChanged": false,
+    "newCasesAcrossCurrentRun": 52,
+    "priorRelatedAndSameRunReusedCases": 33,
+    "priorCpp": {
+      "methods": 2,
+      "calls": 4,
+      "reads": 4,
+      "writes": 4
+    },
+    "currentCanonicalStatusValidated": true
+  },
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newGUI": false,
+    "newGPU": false,
+    "newDevice": false,
+    "newSDKOrRendererRerun": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newNativeModuleBinaries": 0,
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": 3,
+    "removedOwnedHelperNames": [
+      "focus2921.mjs",
+      "commit2923.mjs",
+      "meta2924.mjs"
+    ],
+    "handoffBytes": 4597
+  },
+  "scope": "Actual offline context source-body read counts/bytes with historical vs current routing over the same current sources, declaration/bridge/integration inventory and fail-closed ownership. No runtime test/compile/GUI/device/install, global all-symbol minimum proof or measured AI interpretation/token/FPS claim.",
+  "canonicalCounts": {
+    "verified": 37,
+    "partial": 37,
+    "unimplemented": 1,
+    "unverified": 3
+  },
+  "previousLineage": [
+    "docs/research/ENGINE_WORK_2720.json",
+    "docs/research/ENGINE_WORK_2734.json",
+    "docs/research/ENGINE_WORK_2744.json",
+    "docs/research/ENGINE_WORK_2754.json",
+    "docs/research/ENGINE_WORK_2762.json",
+    "docs/research/ENGINE_WORK_2790.json",
+    "docs/research/ENGINE_WORK_2820.json",
+    "docs/research/ENGINE_WORK_2830.json",
+    "docs/research/ENGINE_WORK_2860.json",
+    "docs/research/ENGINE_WORK_2870.json",
+    "docs/research/ENGINE_WORK_2880.json",
+    "docs/research/ENGINE_WORK_2890.json",
+    "docs/research/ENGINE_WORK_2920.json"
+  ]
+}
