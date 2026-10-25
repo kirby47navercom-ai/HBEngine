@@ -4640,6 +4640,28 @@
       "paths": [
         "prototype/behavior-task-index.js"
       ]
+    },
+    {
+      "id": "section-weight-cubic-declarations",
+      "keywords": [
+        "validWeightCurveGeometry",
+        "explicitWeightCurve",
+        "splitWeightCurve",
+        "weightSegmentControls",
+        "sectionWeightCubicContract"
+      ],
+      "paths": [
+        "prototype/section-weight-cubic.js"
+      ]
+    },
+    {
+      "id": "section-weight-mode-choices-declaration",
+      "keywords": [
+        "populateWeightCurveModes"
+      ],
+      "paths": [
+        "prototype/sequence-weight-curve-editor.js"
+      ]
     }
   ]
 }
