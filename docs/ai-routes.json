@@ -4915,6 +4915,82 @@
       "paths": [
         "prototype/mesh-attribute-update.js"
       ]
+    },
+    {
+      "id": "gpu-particle-simulation",
+      "keywords": [
+        "GPUParticleSimulation"
+      ],
+      "paths": [
+        "prototype/gpu-particles.js"
+      ]
+    },
+    {
+      "id": "cpu-particle-simulation",
+      "keywords": [
+        "ParticleSimulation"
+      ],
+      "paths": [
+        "prototype/scene-systems.js"
+      ]
+    },
+    {
+      "id": "native-particle-simulation",
+      "keywords": [
+        "NativeParticleSimulation"
+      ],
+      "paths": [
+        "prototype/native-particles.js"
+      ]
+    },
+    {
+      "id": "particle-service",
+      "keywords": [
+        "particleState",
+        "retireParticle"
+      ],
+      "paths": [
+        "prototype/engine-services.js"
+      ]
+    },
+    {
+      "id": "particle-interactions",
+      "keywords": [
+        "particleInteraction",
+        "collideParticle",
+        "particleInteractionContract"
+      ],
+      "paths": [
+        "prototype/particle-events.js"
+      ]
+    },
+    {
+      "id": "gpu-particle-interactions",
+      "keywords": [
+        "gpuParticleInteraction"
+      ],
+      "paths": [
+        "prototype/gpu-particle-interactions.js"
+      ]
+    },
+    {
+      "id": "particle-native-interactions",
+      "keywords": [
+        "ParticleInteraction",
+        "particleInteractionSource"
+      ],
+      "paths": [
+        "native/include/HBEngine/ParticleInteractions.hpp"
+      ]
+    },
+    {
+      "id": "particle-event-readback",
+      "keywords": [
+        "ParticleEventReadback"
+      ],
+      "paths": [
+        "prototype/gpu-particle-event-readback.js"
+      ]
     }
   ]
 }

@@ -1,0 +1,14 @@
+import {WebGPURenderer,Group,Matrix4} from 'three/webgpu';
+import {GPUParticleSimulation} from '../gpu-particles.js';
+import {componentDefaults} from '../scene-components.js';
+const assert=(v,m)=>{if(!v)throw Error(m);},near=(a,b)=>assert(Math.abs(a-b)<1e-5,`${a} != ${b}`);
+export async function runParticleInteractions(){
+  const adapter=await navigator.gpu.requestAdapter({powerPreference:'high-performance'});assert(adapter,'WebGPU adapter missing');const device=await adapter.requestDevice(),errors=[];device.addEventListener('uncapturederror',e=>errors.push(e.error.message));
+  const renderer=new WebGPURenderer({canvas:document.createElement('canvas'),device});await renderer.init();let s;
+  try{const p={...componentDefaults('ParticleSystem'),rate:0,playOnStart:false,maxParticles:32,lifetime:5,lifetimeMax:5,force:[0,0,0],gravity:0,drag:0,collisionMode:'bounce',collisionNormal:[0,2,0],collisionRestitution:.5,collisionFriction:.25,deathEvents:true,collisionEvents:true,eventCapacity:4},group=new Group();s=new GPUParticleSimulation(renderer,group,p);s.birth=()=>({position:[0,.5,0],velocity:[2,-4,0],age:0,lifetime:5});s.emit(1,new Matrix4());s.advance(.25,new Matrix4());await s.interaction.pending;let rows=s.takeEvents();assert(rows.length===1&&rows[0].type==='collision','collision record');near(rows[0].position[0],.5);near(rows[0].position[1],0);near(rows[0].velocity[0],1.5);near(rows[0].velocity[1],2);
+    s.advance(5,new Matrix4());await s.interaction.pending;rows=s.takeEvents();assert(rows.length===1&&rows[0].type==='death','final lifetime record');const firstBytes=s.interaction.bytes;
+    p.deathEvents=false;p.collisionEvents=false;p.collisionMode='none';s.submit(0,0);assert(!s.interaction.buffer&&s.interaction.bytes===0,'off releases event storage');assert(renderer.hbParticleResources.buffers===6,'default buffers');
+    p.deathEvents=true;p.collisionEvents=true;p.collisionMode='kill';p.eventCapacity=2;s.clear();s.birth=()=>({position:[0,.5,0],velocity:[2,-4,0],age:0,lifetime:5});s.emit(10);s.advance(.3);await s.interaction.pending;rows=s.takeEvents();assert(rows.length===2,'bounded GPU events');assert(s.eventDropped===18,'GPU overflow count');
+    s.clear();s.emit(1);s.advance(.3);const pending=s.interaction.pending;s.clear();await pending;assert(s.takeEvents().length===0,'clear invalidates pending map');s.dispose();s=null;await device.queue.onSubmittedWorkDone();assert(!errors.length,errors.join('\n'));assert(renderer.hbParticleResources.buffers===0&&renderer.hbParticleResources.storageBytes===0,'effect resources released');return {passed:true,actualWebGPU:true,adapter:{vendor:adapter.info.vendor,architecture:adapter.info.architecture,device:adapter.info.device,description:adapter.info.description,isFallbackAdapter:adapter.info.isFallbackAdapter},firstEventBytes:firstBytes,boundedCapacity:2,overflow:18,clearDuringReadback:true,errors,GUI:false};
+  }finally{s?.dispose();renderer.dispose();device.destroy();}
+}

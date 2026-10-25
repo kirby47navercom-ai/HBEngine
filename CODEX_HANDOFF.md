@@ -1,24 +1,11 @@
 # 현재 인계 · 2026-10-25
 최신지시: 남은기능 여러분야 계속구현·관련검사 마지막묶음. 전체완료/새goal/재개질문/예약 금지. 설치보류 UPDATE_HOLD.active=true: Versions/설치본쓰기0. GUI/사용자창·탭·프로필·게임원본금지. 새agent는새명시승인필요. Mac/Xcode/Android실기기없음·다시묻거나검증꾸미지않음.
 절대 read/edit/stage/run/test금지: prototype/player.js, tools/check-player-keyboard-release.mjs. 원래dirty docs/NODE_CATALOG.md도보존·catalog CLI/updateLibrary금지. 공개API추가필요시 generatedCore()만. hb context --compact 정확등록symbol→focused-routes; 미등록이면knownowner등록먼저·--all/광역fallback금지.
-확정원장 ENGINE_STATUS/WORK3320(소스커밋참조). 78행37verified/37partial/1unimplemented/3unverified·전체율null. hash계보2720→...3180;60전Map재압축. 설치완료아님. 출처map는 resolveResearchSourceHashes+명시own whitelist만새해시·전체재해시금지. updatedAt YYYY-MM-DD. 이파일UTF8<5000B.
-3041–3060: opt-in runtime autoTether/pin+attachment/coalesced guard/hot history·rigid삭제전detach; legacy C++ schema defaults 최소query. source23+related57·당시CPP17/20큐. WORK3060(그SDK한정).
+확정원장 ENGINE_STATUS/WORK3340(소스커밋참조). 78행37verified/37partial/1unimplemented/3unverified·전체율null. hash계보2720→...3340;60전Map재압축. 설치완료아님. 출처map는 resolveResearchSourceHashes+명시own whitelist만새해시·전체재해시금지. updatedAt YYYY-MM-DD. 이파일UTF8<5000B.
 잔여는 canonical remaining. GL1728 ANGLE6878.6/FXC6836.439ms미해결·실패실험반복금지. USER_INSTALL2145는역사기록.
 무거운검사/CPP/cache정리전activeInstalledVersions확인. 검사별retainTestEvidence·nativeCacheOnly32+protectedbinary·own regularhelper만realpath확인삭제. reports/fixtures/SDK/user보존. exactSDK/binarySHA일치만CPP증거재사용. 한글commit/push 동일kirby47navercom-ai author/committer·AI/coauthor0. 원래dirty3개보존.
 
-3061–3080: autoPlant1ray공유/표면상대속도/height/dwell/hysteresis·anchor/시계수명·typededitor/Undo/Bool+VM·source16+관련44. SDK/새CPP/GUI설치0·보고서WORK3080.
-
-3081–3100: 태스크activation JSONlazy/actor+handle·finish/지연abort수명·3BP+CPP/live최소packet·debug본문0. source11+관련40·현재SDK CPP7호출20handler·5만字/foreign/stale. WORK3100의source/SDK/binarySHA·현재proof재실행3160. generatedCore만·nativeBTTask상속별도잔여.
-
-3101–3120: RGBA8 mixed-size layers strict/stretch/contain/cover·既canvas/mip/Three/native·typed/Undo/disk배타. 실제Skia13+related38·WORK3120.
-
-3121–3140: Pole angle/Float + weak-plane branch history, editor/Undo/schema·actualThree11+related60. WORK3140.
-
-3141–3160: private activation owner index/ancestry/lifetime;7+51·CPP7/20handler exactSDK3100 cache. WORK3160.
-
-3161–3180: unit cubic section.weightCurve/exact trim+add/typedSVG+lazy mode/audio linearOnly·8+30·oracle802/2420. WORK3180.
-
-3181–3200: schema lazy137/select/list/local/HTTP旧server·isolated noProject; pre-source+seeded JSON983896B exact,actual48B/list2491B8checks·WORK3200. SDK/GUI/install0.
+3061–3200: autoPlant/태스크메모리+ownerIndex/RGBA8층정규화/Pole/cubic가중치/lazy schema. 실제 근거는 각 WORK3080–3200, 재검사금지. SDK3100, CPP3160exact재사용.
 
 3201–3220: FullBody groundPelvis·명시support rays/월드한도/공유루트1회·stiffness/excluded/Alpha·branch smoothing/reset·typed goal/Bool/rename/remove/Undo·schema/commonVM+Rapier3D. new10 ground-pelvis-Yder8k+related35/fullIK gate; SDK/새CPP/GUI/install0. WORK3200의잘못된생성문서중복을 canonical docs/ENGINE_STATUS.md로정리.
 
@@ -31,3 +18,5 @@
 3281–3300: planar relief bevel/round/signed height/1..64rings·UV/hole/topology·typed/Undo·boundary loop/view-only AI. new10 incl oldregion byte8 +Three/Rapier mesh rays. WORK3300.
 
 3301–3320: UV split boundary normal stitch position+angle/area/seed·ambiguous chains/opposites拒否·geometry/UV/color不변·typed/Undo/common edit. meshNormals exactmove16cases. Mesh same-position/index/layout attr updates retaingeometry/material/buffers +dirtyranges; structure/foreign/tangent/morph/removal fallback beforewrites. new10 mesh-normal-stitch-Y5fUBr incl old world1059 redirected; Three versions/ranges/fresh equality+colliderpayload unchanged. SDK/GUI/install0; WORK3320.
+
+3331–3340: opt-in 입자평면 충돌/사망+충돌이벤트·CPU/WebGPU/DX·bounded async/epoch/typed/common custom event. WebGPU staging1재사용/DX3ring·없으면legacy. 관련수치/실행범위WORK3340. 설치보류/예약0 유지.

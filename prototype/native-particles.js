@@ -1,4 +1,5 @@
 import {Mesh,PlaneGeometry,MeshBasicMaterial,Matrix4,Vector3} from 'three';
+import {particleInteraction,particleEvent,resetParticleEvents,syncParticleEvents} from './particle-events.js';
 import {ParticleSimulation} from './scene-systems.js';
 
 const sorts=['none','distance','distanceReverse','depth','depthReverse','oldest','youngest'];
@@ -14,21 +15,22 @@ export class NativeParticleSimulation extends ParticleSimulation {
   }
   valid(){if(this.disposed)throw Error('DirectX 파티클이 해제됐어요.');}
   reset(){super.reset();this.remainingLifetime=0;this.emptySkips=0;this.lastCount=null;if(this.renderer)this.clear();}
-  clear(){this.valid();this.remainingLifetime=0;this.lastCount=null;this.renderer.hbQueueParticles({op:'clear',id:this.id});}
+  clear(){this.valid();resetParticleEvents(this);this.remainingLifetime=0;this.lastCount=null;this.renderer.hbQueueParticles({op:'clear',id:this.id});}
   births(count,matrix){
     if(!Number.isSafeInteger(count)||count<0||count>100000)throw Error('파티클 방출 수 오류');const total=Math.min(count,this.capacity),values=[];
     for(let i=0;i<total;i++){const p=this.birth(matrix);values.push(...p.position,0,...p.velocity,p.lifetime);}
     if(total){++this.birthUploads;this.birthUploadBytes+=total*32;}return values;
   }
-  submit(delta,values){this.valid();if(values.length)this.remainingLifetime=Math.max(this.remainingLifetime,this.p.lifetime,this.p.lifetimeMax);this.renderer.hbQueueParticles({op:'step',id:this.id,delta,force:[...this.p.force],gravity:this.p.gravity,drag:this.p.drag,births:values});++this.submissions;this.lastCount=null;}
+  submit(delta,values){this.valid();syncParticleEvents(this);if(values.length)this.remainingLifetime=Math.max(this.remainingLifetime,this.p.lifetime,this.p.lifetimeMax);const interaction=particleInteraction(this.p);this.renderer.hbQueueParticles({op:'step',id:this.id,delta,force:[...this.p.force],gravity:this.p.gravity,drag:this.p.drag,births:values,...(interaction.mode||interaction.enabled?{interaction:{...interaction,time:this.time,generation:this.eventEpoch}}:{})});if(interaction.enabled&&delta>0)this.requestEvents();++this.submissions;this.lastCount=null;}
   emit(count,matrix){this.valid();this.submit(0,this.births(count,matrix));}
-  advance(delta,matrix){this.valid();const count=this.emission(delta,matrix);if(this.paused)return;const previous=this.remainingLifetime;this.remainingLifetime=Math.max(0,previous-delta);if(!count){if(!previous){++this.emptySkips;return;}if(!this.remainingLifetime){this.clear();return;}}this.submit(delta,this.births(count,matrix));}
+  advance(delta,matrix){syncParticleEvents(this);this.valid();const count=this.emission(delta,matrix);if(this.paused)return;const previous=this.remainingLifetime;this.remainingLifetime=Math.max(0,previous-delta);if(!count){if(!previous){if(particleInteraction(this.p).enabled)this.requestEvents();++this.emptySkips;return;}if(!this.remainingLifetime&&!particleInteraction(this.p).enabled){this.clear();return;}}this.submit(delta,this.births(count,matrix));}
+  requestEvents(){if(this.eventRequest)return;const epoch=this.eventEpoch;this.eventReadbacks=(this.eventReadbacks||0)+1;this.eventRequest=this.renderer.hbParticleEvents(this.id).then(packet=>{if(this.disposed||this.eventEpoch!==epoch)return;this.eventDroppedFrames=packet.droppedFrames;for(const batch of packet.batches){this.eventDropped=(this.eventDropped||0)+batch.dropped;for(const row of batch.events){const old=this.time;this.time=row.time;try{particleEvent(this,row.type,row,row.index);}finally{this.time=old;}}}}).catch(error=>{if(!this.disposed&&this.eventEpoch===epoch)this.eventError=error;}).finally(()=>{this.eventRequest=null;});}
   sort(){} // The native draw sorts the current GPU state for its own camera.
   style(camera){
     this.valid();this.group.updateWorldMatrix(true,false);camera.updateWorldMatrix(true,false);const p=this.p,mode=sorts.indexOf(p.sortMode||'none'),sort=camera.isOrthographicCamera&&(mode===1||mode===2)?mode+2:mode;
     return {world:(p.simulationSpace==='world'?new Matrix4():this.group.matrixWorld).toArray(),view:camera.matrixWorldInverse.toArray(),eye:camera.getWorldPosition(new Vector3()).toArray(),right:new Vector3().setFromMatrixColumn(camera.matrixWorld,0).normalize().toArray(),up:new Vector3().setFromMatrixColumn(camera.matrixWorld,1).normalize().toArray(),color:[...p.color],endColor:[...p.endColor],size:p.size,endScale:p.endSize,minSize:p.minParticleSize,maxSize:p.maxParticleSize,projectionY:camera.projectionMatrix.elements[5],perspective:!!camera.isPerspectiveCamera,sheet:[p.sheetColumns||1,p.sheetRows||1,p.sheetCycles??1,p.sheetStart||0],textureFlipY:true,toneMapped:true,depthTest:true,depthWrite:false,blend:p.blend==='additive'?1:0,sort};
   }
   async countAsync(){this.valid();const count=await this.renderer.hbParticleCount(this.id);this.valid();++this.readbacks;return this.lastCount=count;}
-  debugState(){return {count:this.lastCount??null,playing:this.playing,paused:this.paused,backend:'D3D11 compute',capacity:this.capacity,cpuSimulationParticles:0,automaticPositionReadbacks:0,submissions:this.submissions,explicitCountReadbacks:this.readbacks,birthUploads:this.birthUploads,birthUploadBytes:this.birthUploadBytes,remainingLifetime:this.remainingLifetime,emptySkips:this.emptySkips,sortMode:this.p.sortMode};}
-  dispose(){if(this.disposed)return;this.disposed=true;this.renderer.hbQueueParticles({op:'release',id:this.id});this.renderer.hbNativeParticles.delete(this);this.mesh.geometry.dispose();this.mesh.material.dispose();this.mesh.removeFromParent();}
+  debugState(){return {count:this.lastCount??null,playing:this.playing,paused:this.paused,backend:'D3D11 compute',capacity:this.capacity,cpuSimulationParticles:0,automaticPositionReadbacks:0,submissions:this.submissions,explicitCountReadbacks:this.readbacks,birthUploads:this.birthUploads,birthUploadBytes:this.birthUploadBytes,remainingLifetime:this.remainingLifetime,emptySkips:this.emptySkips,sortMode:this.p.sortMode,eventReadbacks:this.eventReadbacks||0,eventDropped:this.eventDropped||0,eventDroppedFrames:this.eventDroppedFrames||0,eventQueued:this.eventQueue?.length||0};}
+  dispose(){if(this.disposed)return;this.disposed=true;resetParticleEvents(this);this.renderer.hbQueueParticles({op:'release',id:this.id});this.renderer.hbNativeParticles.delete(this);this.mesh.geometry.dispose();this.mesh.material.dispose();this.mesh.removeFromParent();}
 }

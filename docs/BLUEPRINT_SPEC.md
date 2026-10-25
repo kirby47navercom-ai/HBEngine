@@ -778,3 +778,6 @@ Two Bone IK의 [관절 회전 제어](ANIMATION_POLE_CONTROL.md)는 기존 힌�
 - 3281–3300: 평면영역 bevelRegion 직선/round·signed높이/1~64링·UV0/UV1/색상/구멍/경계유지·typed editor/한Undo·공용 world.mesh.edit. 경계 loop 선택/읽기·view-only·bounded AI. docs/MESH_REGION_BEVEL.md.
 
 - 3301–3320: stitchNormals UV분리 경계 위치/각도/면적가중·seed확장/모호군집거부·geometry/UV/색상보존·typed/Undo/API. 메시 normal/UV/색상만 같은layout에서 기존 BufferGeometry/버퍼/dirty범위유지·구조변경fallback. docs/MESH_NORMAL_STITCH.md.
+
+### 입자 충돌·사망 이벤트 (3331–3340)
+ParticleSystem Collision/Events 속성→CPU/WebGPU/DirectX 공용 설정. Custom Event로 component:String/events:JSON 전달, 비동기 GPU 세대/상한/역압력 진단. 기존 입자 API·하위 이미터 start/end 유지. 세부 계약은 [PARTICLE_INTERACTIONS](PARTICLE_INTERACTIONS.md). 실제 드라이버·전달 검사 범위는 WORK3340.

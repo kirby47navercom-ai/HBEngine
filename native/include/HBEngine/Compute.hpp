@@ -4,6 +4,8 @@
 #include <filesystem>
 #include <string_view>
 
+#include "ParticleInteractions.hpp"
+
 namespace hb::gpu {
 struct FrameResult {std::uint64_t sequence=0;std::vector<float> values;};
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
@@ -194,7 +196,8 @@ class Particles {
     friend class ParticleRenderer;
     friend class ParticleEffect;
     Device& device;Kernel kernel;Buffer buffer;std::optional<FrameResources> frames;
-    std::optional<Kernel> freeKernel,emitKernel,clearKernel;
+    std::optional<Kernel> freeKernel,emitKernel,clearKernel,interactionKernel,eventKernel;
+    std::optional<Buffer> eventBuffer;std::optional<FrameResources> eventFrames;unsigned eventCapacity_=0;std::uint64_t eventDroppedFrames_=0,eventGeneration_=0;
     std::optional<Buffer> freeIndices,freeCount,requests;
     std::size_t requestCapacity=0,requestAllocations=0;
     inline static std::atomic<std::uint64_t> sequence{0};const std::uint64_t identity_=++sequence;std::uint64_t revision_=0;
@@ -267,6 +270,22 @@ public:
     Particles(Device& device,const std::vector<float>& values,Preparation& prepared):device(device),kernel(prepared.clone(device,0)),buffer(device.create(valid(values),8*sizeof(float))){freeKernel.emplace(prepared.clone(device,1));emitKernel.emplace(prepared.clone(device,2));clearKernel.emplace(prepared.clone(device,3));}
     Particles(Device& device,std::size_t capacity,Preparation& prepared):Particles(device,empty(capacity),prepared){}
     void step(float delta,const std::array<float,3>& force={0,0,0},float gravity=0,float drag=0){validStep(delta,force,gravity,drag);if(delta){const auto groups=static_cast<std::uint32_t>((count()+63)/64);device.dispatch(kernel,{&buffer},std::min(groups,65535u),(groups+65534)/65535,1,{}, {delta,force[0],force[1],force[2],gravity,drag,0,0});++revision_;}}
+    void interact(float delta,const std::array<float,3>& force,float gravity,float drag,const ParticleInteraction& c){
+        validStep(delta,force,gravity,drag);c.validate();const bool events=c.death||c.collision;
+        if(!events){resetEvents();if(!c.mode){step(delta,force,gravity,drag);return;}}
+        if(!delta)return;
+        auto& selected=events?eventKernel:interactionKernel;if(!selected)selected.emplace(device.compile(std::string("#define HB_PARTICLE_EVENTS ")+(events?"1\n":"0\n")+particleInteractionSource));
+        if(events&&(eventCapacity_!=c.capacity||eventGeneration_!=c.generation)){auto next=device.create(std::vector<float>(4+c.capacity*12),4);auto staging=device.createFrameResources(next);eventFrames.emplace(std::move(staging));eventBuffer.emplace(std::move(next));eventCapacity_=c.capacity;eventGeneration_=c.generation;}
+        if(events)device.uploadRange(*eventBuffer,0,{0,0,0,0});
+        const auto length=std::hypot(c.normal[0],c.normal[1],c.normal[2]);float packed;const auto capacity=c.capacity;std::memcpy(&packed,&capacity,4);const auto groups=static_cast<std::uint32_t>((count()+63)/64);
+        std::vector<Buffer*> outputs{&buffer};if(events)outputs.push_back(&*eventBuffer);
+        device.dispatch(*selected,outputs,std::min(groups,65535u),(groups+65534)/65535,1,{}, {delta,force[0],force[1],force[2],gravity,drag,float(c.mode),c.restitution,c.normal[0]/length,c.normal[1]/length,c.normal[2]/length,c.offset,c.friction,packed,c.death?1.f:0.f,c.collision?1.f:0.f,c.time});++revision_;
+        if(events&&!device.enqueueFrame(*eventFrames,*eventBuffer))++eventDroppedFrames_;
+    }
+    void resetEvents(){eventFrames.reset();eventBuffer.reset();eventCapacity_=0;}
+    std::optional<FrameResult> pollEvents(){return eventFrames?device.pollFrame(*eventFrames):std::nullopt;}
+    unsigned eventCapacity()const{return eventCapacity_;}
+    std::uint64_t droppedEventFrames()const{return eventDroppedFrames_;}
     // Upload births only. Free-slot selection/overflow and existing state stay on GPU.
     void emit(const std::vector<float>& values){
         if(values.empty())return;
@@ -280,15 +299,15 @@ public:
         device.dispatch(*freeKernel,{&*freeIndices},std::min(groups,65535u),(groups+65534)/65535,1,{&buffer},{},{0});device.copyCount(*freeCount,0,*freeIndices);
         const auto work=static_cast<std::uint32_t>((births+63)/64),requestCount=static_cast<std::uint32_t>(births);float packed;std::memcpy(&packed,&requestCount,sizeof(packed));device.dispatch(*emitKernel,{&buffer},std::min(work,65535u),(work+65534)/65535,1,{&*freeIndices,&*requests,&*freeCount},{packed});++revision_;
     }
-    void clear(){if(!clearKernel)clearKernel.emplace(device.compile(source,"Clear"));const auto groups=static_cast<std::uint32_t>((count()+63)/64);device.dispatch(*clearKernel,{&buffer},std::min(groups,65535u),(groups+65534)/65535,1);frames.reset();++revision_;}
+    void clear(){resetEvents();if(!clearKernel)clearKernel.emplace(device.compile(source,"Clear"));const auto groups=static_cast<std::uint32_t>((count()+63)/64);device.dispatch(*clearKernel,{&buffer},std::min(groups,65535u),(groups+65534)/65535,1);frames.reset();++revision_;}
     std::size_t emissionBufferAllocations() const{return requestAllocations;}
-    std::uint64_t storageBytes() const{return std::uint64_t(buffer.size()+(freeIndices?freeIndices->size():0)+(freeCount?freeCount->size():0)+(requests?requests->size():0))*sizeof(float); }
+    std::uint64_t storageBytes() const{return std::uint64_t(buffer.size()+(freeIndices?freeIndices->size():0)+(freeCount?freeCount->size():0)+(requests?requests->size():0)+(eventBuffer?eventBuffer->size()*4:0))*sizeof(float); }
     std::vector<float> read(){return device.read(buffer);}
     bool enqueueReadback(){if(!frames)frames.emplace(device.createFrameResources(buffer));return device.enqueueFrame(*frames,buffer);}
     std::optional<FrameResult> pollReadback(){return frames?device.pollFrame(*frames):std::nullopt;}
     std::size_t pendingReadbacks() const{return frames?frames->pending():0;}
-    std::size_t constantBufferAllocations() const{return kernel.constantBufferAllocations();}
-    void reset(const std::vector<float>& values){device.upload(buffer,valid(values));frames.reset();++revision_;}
+    std::size_t constantBufferAllocations() const{return kernel.constantBufferAllocations()+(interactionKernel?interactionKernel->constantBufferAllocations():0)+(eventKernel?eventKernel->constantBufferAllocations():0);}
+    void reset(const std::vector<float>& values){device.upload(buffer,valid(values));frames.reset();resetEvents();++revision_;}
     std::uint64_t revision() const{return revision_;}std::uint64_t identityId() const{return identity_;}
     std::size_t count() const{return buffer.size()/8;}
 };
