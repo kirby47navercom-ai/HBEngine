@@ -3960,6 +3960,22 @@
         "prototype/engine-services.js",
         "docs/VEHICLE_WHEEL_DYNAMICS.md"
       ]
+    },
+    {
+      "id": "ongoing-tag-index",
+      "keywords": [
+        "refreshOngoingEffects",
+        "ongoingTagsChanged",
+        "ongoingParticipants",
+        "solveOngoingActivation"
+      ],
+      "paths": [
+        "prototype/effect-ongoing-index.js",
+        "prototype/effect-ongoing.js",
+        "prototype/effect-tag-requirements.js",
+        "prototype/ability-runtime.js",
+        "docs/EFFECT_ONGOING.md"
+      ]
     }
   ]
 }
