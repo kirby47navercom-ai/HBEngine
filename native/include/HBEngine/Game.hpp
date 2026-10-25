@@ -415,6 +415,9 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="runBehaviorTree", KoreanName="행동트리 실행", Category="AI") static void RunBehaviorTree(Actor* target,const std::string& asset);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stopBehaviorTree", KoreanName="행동트리 정지", Category="AI") static void StopBehaviorTree(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="behaviorTaskHandle", KoreanName="실행 중 태스크 핸들", Category="AI") static std::string GetTaskHandle(Actor* target,const std::string& node);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="behaviorTaskMemoryGet", KoreanName="태스크 메모리 읽기", Category="AI") static std::string GetTaskMemory(Actor* target,const std::string& task);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="behaviorTaskMemorySet", KoreanName="태스크 메모리 지정", Category="AI") static void SetTaskMemory(Actor* target,const std::string& task,const std::string& json);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="behaviorTaskMemoryClear", KoreanName="태스크 메모리 지우기", Category="AI") static void ClearTaskMemory(Actor* target,const std::string& task);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="behaviorTaskFinish", KoreanName="태스크 완료", Category="AI") static void FinishTask(Actor* target,const std::string& task,bool success);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="behaviorTaskAbortFinish", KoreanName="태스크 중단 완료", Category="AI") static void FinishAbort(Actor* target,const std::string& task);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="behaviorTaskIsAborting", KoreanName="태스크 중단 중", Category="AI") static bool IsTaskAborting(Actor* target,const std::string& task);

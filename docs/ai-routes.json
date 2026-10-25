@@ -4578,6 +4578,29 @@
       "paths": [
         "prototype/animation-auto-plant.js"
       ]
+    },
+    {
+      "id": "behavior-task-memory-declarations",
+      "keywords": [
+        "behaviorTaskMemoryOperation",
+        "behaviorTaskMemoryContract",
+        "validateBehaviorTaskMemoryQuery",
+        "validateBehaviorTaskMemoryResult"
+      ],
+      "paths": [
+        "prototype/behavior-task-memory.js"
+      ]
+    },
+    {
+      "id": "native-task-memory-method-definitions",
+      "keywords": [
+        "AI::GetTaskMemory",
+        "AI::SetTaskMemory",
+        "AI::ClearTaskMemory"
+      ],
+      "paths": [
+        "native/include/HBEngine/Bridge.hpp"
+      ]
     }
   ]
 }

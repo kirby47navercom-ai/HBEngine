@@ -1,3 +1,4 @@
+import {behaviorTaskMemoryKeys,behaviorTaskMemoryOperation} from './behavior-task-memory.js';
 import {BehaviorAborts,resetBehaviorNode,shutdownBehavior} from './behavior-aborts.js';
 import {runBehaviorQueryService} from './behavior-query-service.js';
 import {SequenceRenderParameters} from './sequence-render-parameters.js';
@@ -135,7 +136,7 @@ export class BehaviorRunner {
         if(!m.taskActive){m.taskActive=true;m.handle=this.runId+':'+(++this.taskSerial);delete m.result;this.hooks.scopeBegin?.(m.handle);this.hooks.changed?.();await this.notify(p.onStart,node,{phase:'start',task:m.handle},true);}
         if(!this.running||this.memory.get(id)!==m||m.resetting||!m.servicesActive||!m.taskActive)return 'failure';
         if(m.result===undefined)await this.notify(p.onTick,node,{phase:'tick',task:m.handle},true);if(!this.running||this.memory.get(id)!==m||m.resetting||!m.servicesActive||!m.taskActive)return 'failure';result=m.result||'running';
-        if(result!=='running'){m.taskActive=false;await this.hooks.scopeEnd?.(m.handle);if(!this.running||this.memory.get(id)!==m||m.resetting||!m.servicesActive)return 'failure';this.hooks.changed?.();await this.notify(p.onFinish,node,{phase:'finish',task:m.handle,success:result==='success'},true);}
+        if(result!=='running'){m.taskActive=false;await this.hooks.scopeEnd?.(m.handle);if(!this.running||this.memory.get(id)!==m||m.resetting||!m.servicesActive)return 'failure';this.hooks.changed?.();m.finishing=true;try{await this.notify(p.onFinish,node,{phase:'finish',task:m.handle,success:result==='success'},true);}finally{m.finishing=false;delete m.taskData;}}
       }
       else if(node.type==='subtree'){this.registerConditions(id);if(!m.child){const program=this.program?.subtrees.get(id);if(!program)throw Error('하위 행동트리 프로그램이 준비되지 않았어요: '+p.asset);m.child=new BehaviorRunner(program.data,this.board,{...this.hooks,program,taskEvent:(name,args)=>(this.hooks.taskEvent||this.hooks.event)?.(name,{...args,node:id+'/'+args.node,asset:args.asset||program.path})});}if(m.childFrame!==this.frameSerial){await m.child.tick(this.delta);m.childFrame=this.frameSerial;}result=m.child.result||'running';if(result!=='running'){await m.child.stop();m.child=null;}}
       else if(node.type==='set'){this.board.set(p.key,p.value);result='success';}
@@ -286,6 +287,7 @@ export function gameplaySystems(hooks){
     if(key==='runBehaviorTree'){await startBrain(id,a.asset,vm);return {};}
     if(key==='stopBehaviorTree'){brainRequests.set(id,++actorRequestSerial);const runner=brains.get(id);await runner?.stop();if(brains.get(id)===runner)brains.delete(id);debug(vm,id);return {};}
     if(key==='behaviorTaskHandle')return {return:brains.get(id)?.taskHandle(a.node)||''};
+    if(behaviorTaskMemoryKeys.has(key))return {return:behaviorTaskMemoryOperation(brains.get(id),key,a)};
     if(key==='behaviorTaskAbortFinish'){if(typeof a.task!=='string')throw Error('태스크 핸들 자료형 오류');await brains.get(id)?.finishAbort(a.task);debug(vm,id);return {};}
     if(['behaviorTaskIsAborting','behaviorTaskIsExecuting'].includes(key)){if(typeof a.task!=='string')throw Error('태스크 핸들 자료형 오류');return {return:!!brains.get(id)?.[key==='behaviorTaskIsAborting'?'isTaskAborting':'isTaskExecuting'](a.task)};}
     if(key==='behaviorTaskFinish'){if(typeof a.task!=='string'||typeof a.success!=='boolean')throw Error('태스크 핸들·결과 자료형 오류');brains.get(id)?.finishTask(a.task,a.success);debug(vm,id);return {}; }

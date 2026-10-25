@@ -151,16 +151,16 @@ inline void Input::AddMappingContext(Actor* target,const std::string& context,in
 inline void Input::RemoveMappingContext(Actor* target,const std::string& context){engineCommand("inputRemoveContext",{{"target",bridgeId(target)},{"context",context}});}
 inline std::function<Json(const Json&)> bridgeQuery;
 inline Json engineQuery(const char* key,const Json& args){
-    const bool defaults=std::string(key)=="componentDefaultJson";
-    if(!defaults&&bridgePrepareQuery)bridgePrepareQuery();
-    Json world=defaults?Json::array():bridgeWorldData;
-    if(!defaults)for(const auto& updated:bridgeSnapshot()){
+    const std::string queryKey=key;const bool compactQuery=queryKey=="componentDefaultJson"||queryKey=="behaviorTaskMemoryGet"||queryKey=="behaviorTaskMemorySet"||queryKey=="behaviorTaskMemoryClear";
+    if(!compactQuery&&bridgePrepareQuery)bridgePrepareQuery();
+    Json world=compactQuery?Json::array():bridgeWorldData;
+    if(!compactQuery)for(const auto& updated:bridgeSnapshot()){
         const auto index=bridgeStateIndices.find(updated.at("id").get<std::string>());
         if(index!=bridgeStateIndices.end()&&index->second<world.size()&&world.at(index->second).at("id")==updated.at("id"))world.at(index->second).update(updated);
         // ponytail: stale index scans rows; rebuild it if unmanaged row edits become frequent.
         else for(auto& object:world)if(object.at("id")==updated.at("id"))object.update(updated);
     }
-    Json packet=defaults?Json{{"key",key},{"args",args}}:Json{{"key",key},{"args",args},{"objects",world},{"scope",Timers::GetContext().second},{"clock",{{"scale",Clock::TimeScale()},{"paused",Clock::IsPaused()}}}};if(!defaults&&std::any_of(bridgeOperations.begin(),bridgeOperations.end(),[](const Json& o){return o.at("key")=="sceneSpawn";}))packet["operations"]=bridgeOperations;if(std::string(key)=="nativeModule"&&bridgeInput.contains("keys"))packet["input"]=bridgeInput;
+    Json packet=compactQuery?Json{{"key",key},{"args",args}}:Json{{"key",key},{"args",args},{"objects",world},{"scope",Timers::GetContext().second},{"clock",{{"scale",Clock::TimeScale()},{"paused",Clock::IsPaused()}}}};if(!compactQuery&&std::any_of(bridgeOperations.begin(),bridgeOperations.end(),[](const Json& o){return o.at("key")=="sceneSpawn";}))packet["operations"]=bridgeOperations;if(std::string(key)=="nativeModule"&&bridgeInput.contains("keys"))packet["input"]=bridgeInput;
     if(std::string(key)=="nativeModule"){packet["gameState"]=Json::parse(Game::GetStateText());}
     if(bridgeQuery){const auto response=bridgeQuery(packet);if(!response.value("ok",false))throw std::runtime_error(response.value("error",std::string("engine query failed")));return response.at("value");}
     std::cout<<"HB_QUERY\t"<<packet.dump()<<std::endl;
@@ -381,6 +381,9 @@ inline void AudioMixer::ClearSnapshotTransition(Actor* target,const std::string&
 inline void AI::RunBehaviorTree(Actor* target,const std::string& asset){engineCommand("runBehaviorTree",{{"target",bridgeId(target)},{"asset",asset}});}
 inline void AI::StopBehaviorTree(Actor* target){engineCommand("stopBehaviorTree",{{"target",bridgeId(target)}});}
 inline std::string AI::GetTaskHandle(Actor* target,const std::string& node){auto& behavior=gameplayField(target,"behavior");if(behavior.is_object()&&behavior.contains("tasks"))for(const auto& task:behavior["tasks"])if(task.value("id",std::string{})==node||task.value("sourceNode",std::string{})==node||task.value("name",std::string{})==node)return task.value("handle",std::string{});return {};}
+inline std::string AI::GetTaskMemory(Actor* target,const std::string& task){return engineQuery("behaviorTaskMemoryGet",{{"target",bridgeId(target)},{"task",task}}).get<std::string>();}
+inline void AI::SetTaskMemory(Actor* target,const std::string& task,const std::string& json){if(json.size()>262144||!Json::parse(json).is_object())throw std::runtime_error("task memory JSON object");engineQuery("behaviorTaskMemorySet",{{"target",bridgeId(target)},{"task",task},{"json",json}});}
+inline void AI::ClearTaskMemory(Actor* target,const std::string& task){engineQuery("behaviorTaskMemoryClear",{{"target",bridgeId(target)},{"task",task}});}
 inline void AI::FinishTask(Actor* target,const std::string& task,bool success){engineCommand("behaviorTaskFinish",{{"target",bridgeId(target)},{"task",task},{"success",success}});}
 inline void AI::FinishAbort(Actor* target,const std::string& task){engineCommand("behaviorTaskAbortFinish",{{"target",bridgeId(target)},{"task",task}});}
 inline bool AI::IsTaskAborting(Actor* target,const std::string& handle){auto& behavior=gameplayField(target,"behavior");if(!handle.empty()&&behavior.is_object()&&behavior.contains("tasks"))for(const auto& task:behavior["tasks"])if(task.value("handle",std::string{})==handle)return task.value("result",std::string{})=="aborting";return false;}

@@ -1,5 +1,5 @@
 const errorsOrThrow=(errors,message)=>{if(errors.length===1)throw errors[0];if(errors.length)throw new AggregateError(errors,message,{cause:errors[0]});};
-const cleanupRecord=(r,node,m)=>{if(r.memory.get(node.id)!==m)return;r.memory.delete(node.id);r.activeNodes.delete(node.id);r.observers.delete(node.id);for(const[key,owner]of r.proxyOwners)if(owner===node.id)r.observers.delete(key);};
+const cleanupRecord=(r,node,m)=>{if(m)delete m.taskData;if(r.memory.get(node.id)!==m)return;r.memory.delete(node.id);r.activeNodes.delete(node.id);r.observers.delete(node.id);for(const[key,owner]of r.proxyOwners)if(owner===node.id)r.observers.delete(key);};
 const capabilities=new WeakMap();
 function programDefers(program){if(!program)return false;if(capabilities.has(program))return capabilities.get(program);const value=!!program.data?.nodes.some(node=>node.properties.waitForAbort)||[...(program.subtrees?.values()||[])].some(programDefers);capabilities.set(program,value);return value;}
 
