@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "kind": "ray-reusing-automatic-foot-contact-and-anchor-lifecycle",
+  "implementationRevision": "60755d2a3d8c68facc13d1ee1e737508ad4fde6b",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3060.json",
+  "changedSourceHashes": {
+    "prototype/animation-auto-plant.js": "e242b90bf2f75e4fd96b54577ca5e92edf524a72de565657ae9485f08c8cc8d9",
+    "prototype/animation-foot-plant.js": "532d881a91ad21acdc304fdd05aad82652b5ab6f3921740bdde43c2d3b7b3ea8",
+    "prototype/animation-ik.js": "1f3db45f2ddf65b204fd7ea05afd28cf7f77da8578722368105524a0832178a9",
+    "prototype/animation-ik-editor.js": "51fa744a303044cc40437d2fec6402848bbded2e57092055c9c4708cac370a14",
+    "prototype/animation-graph-editor.js": "5e169c92e283935ae0dae714747d696babea9063d2388cae7af7fd3dad32dcc7",
+    "prototype/animation-graph-assets.js": "c5bfa5219c285c8e8b279f394e254acf87bda887a95c6731bd5873071e071ab1",
+    "prototype/animation-ground-ik.js": "5d94cadbf35944e12f90b438b345456443670e01a5cd5c9982a83c18ebcfec71",
+    "tools/editor-automation.mjs": "13efa0443a3cc0b859c8daf6ff9410d0cd68b56d0bcd14a306f100ff7e835119",
+    "docs/ai-routes.json": "e2886453ce845b2b37ae9ddb39b4e643c650d04e5e71198ad506caf2925f316a",
+    "tools/check-auto-plant-3063.mjs": "3b8c5581bd845f8ff549e0d677f9ed1b7f520b296ecba0fac56ad3bf473714e8",
+    "docs/ANIMATION_AUTO_PLANT.md": "1243701cacad2f012c0d07e36cd5e25cb419da2906abfbd03270c1da585a99b0",
+    "docs/BLUEPRINT_SPEC.md": "0b6c177683769f22fcbbc3dd4e4ff0b6f971cabd9a1b305f5ac8cb88eba2cc9a",
+    "CODEX_HANDOFF.md": "a759cf02c898a3ca8907cf018646bb0f569a23ca6177458ee41b4c71af8d9d34"
+  },
+  "resolvedOwners": 1598,
+  "targetIds": [
+    "ANM-04",
+    "AI-03"
+  ],
+  "newSourceCases": 16,
+  "relatedSourceCases": 44,
+  "checks": {
+    "source": "native/build/auto-plant-UVN17v/acceptance.json",
+    "related": [
+      "native/build/foot-plant-iSfVdn/acceptance.json",
+      "native/build/ground-ik-aRPieY/acceptance.json",
+      "native/build/stride-warp-KI3CHL/acceptance.json"
+    ]
+  },
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "actualCppCaller": false,
+    "physicalFootContact": false,
+    "pelvisCorrection": false,
+    "GUI": false
+  },
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": [
+      "autoplant3061.mjs",
+      "autoplantui3062.mjs",
+      "autoplantdocs3064.mjs",
+      "admit3065.mjs"
+    ],
+    "handoffBytes": 4341,
+    "cacheCleanupReused": "WORK3060 nativeCacheOnly; no native builds/cache writes in this phase"
+  },
+  "scope": "Optional raw-foot height/ground-actor-relative speed/dwell/hysteresis inferred contact using existing one ray, projected position/orientation capture and per-branch lock/clock/actor/disposal lifetime. Actual Three plus shared VM/Rapier2D+3D and native Bool operation replay, typed real change/Undo/rename/schema/status. No physical foot contact/predictive gait/pelvis, new SDK/actual C++ caller, GUI/GPU/device/FPS/install."
+}
