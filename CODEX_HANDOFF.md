@@ -3,7 +3,7 @@
 최신: 끝내지 말고 계속 구현. 예약 재생성 금지(hbengine 삭제2160), UPDATE_HOLD active 보류. 사용자 창/프로필/게임 원본/Versions 변경 금지. 새 에이전트 금지. Mac/Xcode/Android폰 없음. 여러 구현 뒤 영향 검사 묶음, 불변 SDK/렌더러 검사 반복금지. 한글 동일 kirby47navercom-ai author/committer·AI trailer 없이 commit/push.
 보호: prototype/player.js, tools/check-player-keyboard-release.mjs 읽기/편집/실행/stage 금지. docs/NODE_CATALOG.md 기존dirty 미stage. core-api generated ignored.2490 fallback-all 경계위반 WORK2520 기록·focus수정; 새 broad fallback 금지.
 
-확정 core 3f0fa189691482bd89788ab92c059a6f97e5bce3; WORK2656/ENGINE_STATUS. 이전2470c808 골격2559, 254003f9 Cue재바인딩2543, f97fd958 초기Cue2534, ddcf6f3a2520, b8ed075c/3ded8af82485.78행37verified/37partial/1unimplemented/3unverified, 전체율null·전체분석/엔진/설치 완료 아님.
+확정 core 449cfcbf52dc39b162f7d4ce23a91f354dd6e5bf; WORK2670/ENGINE_STATUS. 이전2470c808 골격2559, 254003f9 Cue재바인딩2543, f97fd958 초기Cue2534, ddcf6f3a2520, b8ed075c/3ded8af82485.78행37verified/37partial/1unimplemented/3unverified, 전체율null·전체분석/엔진/설치 완료 아님.
 
 2561–2594: Cue v2 독립프리팹·rootTRS/바인딩/부착·분리·채널/게임시각/풀rootlease/지연취소·삭제실패정리. 공통journal 외부충돌 읽기허용/쓰기잠금·전체CAS·linkedchild·명시disk/before/after·writeIntent disk-only/원문보존. WORK2594/관련전용문서, 신규54+회귀79. 새SDK/GPU/GUI/기기/설치0.
 
@@ -17,4 +17,6 @@
 
 2620–2632: abilityTickWork 빈맵 iterator/임시배열0·능력한순회 기한/쿨다운/활성 판정, dirty 뒤 cooldown재판정. 시간만바뀔때 무한effect/쿨다운0 DTO행공유·일반변경invalidate, 유한remaining/cooldown/root시각계속갱신. ability-tick-work-FYatXQ11+관련97(group2624); 신규fixture중복변수만고쳐실패도구만재실행. 10003idle×2 소유수명20006확인·재공개0. 전체owner수명/ongoing고정점유지·FPS/heap/CPP/GPU/GUI/설치주장0. base2619·소스6개.
 
-2633–2656: SkeletalSocket 일반컴포넌트·SkeletalAttachment 부모Bone/socket 추적/최종pose·초기/풀획득이벤트전·중첩부모우선·동일ID/퇴역·오류진단. Cue v3 명시한Undo변환·뼈/소켓부착/분리·자식이름경로 이미터·async identity/comp/풀lease보호·기존owner TRS값보존. docs/SKELETAL_SOCKETS. final group2651: anchors-or1WW9 신규20/attachments-vznvzd 신규10+VFX26/Cue25/tick11=92, syntax9/focus2650. 최초회전값회귀수정, fixture/API인자오류수정·실패gate재실행. SDK바이너리/GPU/GUI/기기/설치0. 전체기능완료아님. generic VM ID조회·최초골격검사 비용 유지, 동적강체/같은프레임충돌·2D SpriteRig·전용시퀀스track·한actor다중ParticleSystem·네트워크별도. base2632.
+2633–2656: SkeletalSocket/일반SkeletalAttachment·초기/풀획득전·최종포즈/중첩부모우선·등록대상만·ID/퇴역/오류. Cue v3 명시Undo변환·뼈/소켓 VFX·자식이미터경로·async/pool lease·v1v2TRS보존. WORK2656 신규30+회귀62/구문9(group2651). docs/SKELETAL_SOCKETS. 전용시퀀스track/같은프레임충돌/동적강체·2D SpriteRig/한actor다중ParticleSystem/네트워크별도.
+
+2657–2670: hb::Skeleton GetSocketCount/Names/HasSocket/Position/Rotation/Scale/Transform·7pureBP·같은live VM. world=true default/actor-local·활성선언page·권한/형·전단원점정확/TRS거절·weak pose binding. source socket-query-hpEZtq8(잘못된node.inputValues fixture를serviceApi.defaults로수정후실패도구만재실행), 실제SDK socket-query-cpp-oM0cGT 7함수/8livecall 통과; 회귀부착10/Cue20(group2662). 새GUI/GPU/기기/설치0. header/Bridge/core만생성(core ignored·NODE_CATALOG dirty보호). SDKdeps fingerprint/worker SHA2670·공용cache32자동정리(nativeCacheOnly는소스열거안함). 초당질의/VM조회·충돌/리그/렌더잔여계속, 예약/업데이트보류유지.

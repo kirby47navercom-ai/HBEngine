@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "date": "2026-10-25T00:00:18.227Z",
+  "kind": "socket-public-api-bp-live-query-and-current-cpp-execution",
+  "implementationRevision": "449cfcbf52dc39b162f7d4ce23a91f354dd6e5bf",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2656.json",
+  "changedSourceHashes": {
+    "prototype/socket-query.js": "11ca6e03441b96f3864e2d0687b22717607a69e1cc74398ae8da8d11cc834cbb",
+    "prototype/native-live-query.js": "81d7fb8d86acaea38a05cf7db302cc08ea44b2e0d8fb1c7b436f08ab9545f4ef",
+    "prototype/skeleton-query.js": "b2bc29e95ea8bf747daf12e0f87ff59676ec6f0b4bb6022e80e90e9ba513537e",
+    "prototype/engine-services.js": "85144820b0f15c618ee04929a30f4c6cf7755388dbce6382bbff70b16c2e0b0e",
+    "native/include/HBEngine/Game.hpp": "3821b077261684f5b7c41f3d387b6cbbcf2481cb4f7970099bea0fe3c6f7f4b7",
+    "native/include/HBEngine/Bridge.hpp": "f9784a1ebd83b89853462fd1b4302ce1acee5cc53f678a45dcc2eec4af1de0c8",
+    "tools/check-socket-query-2660.mjs": "78032569bcf2fd22dcd5e91124e09607f52fc497e07e28fdc8fa7ca61c23482b",
+    "tools/check-socket-query-2661-cpp.mjs": "cb1f411f480e5ea9e0932db4eb0a879c72e4f91f72b180a11e0ae0ecd6087687",
+    "docs/ai-routes.json": "d7f874e8dd707cac52d79bcc8b993da1b1e836a45b02b6312b028d38bcb4fa23",
+    "docs/SKELETAL_SOCKETS.md": "9682edaf5dad93a1ab14c123e22e10d896d88b220faa838e7a39f6d2027c7a93",
+    "docs/BLUEPRINT_SPEC.md": "8d666286542b9d0bc5e63485ec1018561202f62e8249d08bc1a9419888ac7e51",
+    "CODEX_HANDOFF.md": "d685a89250276c51ace681df2ce74f75195722f93bfe1ebaf472c0dffe6c72f7"
+  },
+  "resolvedOwners": 1464,
+  "targetIds": [
+    "GAM-04",
+    "ANM-06"
+  ],
+  "changes": {
+    "GAM-04": " ·2657–2670: Skeleton 소켓7함수/7pureBP·현재liveVM/권한/형·world기본/actor-local·page·전단원점/TRS거절·weak참조. 신규source8+실제SDK C++7함수8질의(1gate)·회귀부착10/Cue20·구문6. workerSHA/SDKdeps명세·새GUI/GPU/기기/설치별도.",
+    "ANM-06": " ·2657–2670: Skeleton 소켓7함수/7pureBP·현재liveVM/권한/형·world기본/actor-local·page·전단원점/TRS거절·weak참조. 신규source8+실제SDK C++7함수8질의(1gate)·회귀부착10/Cue20·구문6. workerSHA/SDKdeps명세·새GUI/GPU/기기/설치별도."
+  },
+  "newSourceCases": 8,
+  "newCppGates": 1,
+  "cppMethods": 7,
+  "cppLiveCalls": 8,
+  "regressionCases": 30,
+  "checks": {
+    "group": "native/build/group2662.json",
+    "supersedingSource": "native/build/socket-query-hpEZtq/acceptance.json",
+    "cpp": "native/build/socket-query-cpp-oM0cGT/acceptance.json",
+    "focus": "native/build/focus2664.json",
+    "syntax": 6
+  },
+  "cpp": {
+    "freshCompilation": true,
+    "cacheKey": "f842ea326b46d8209d8c",
+    "binary": "native/build/plugins/f842ea326b46d8209d8c/worker.exe",
+    "binarySha256": "c008234a8e2dce069f4ee6003f3acdab4756290742f5f9099e74f96b88234ec3",
+    "sdk": {
+      "fingerprint": "bc6eb6134c1c3e80a86898521fc02d86426fc9bbb9de9886435b3d51d5fb07c1",
+      "files": 37,
+      "bytes": 2389261
+    },
+    "sdkUsed": {
+      "fingerprint": "6ebca59bac6b80531a27bcc3d5de2d8527de84eb1358341010a4e8017959b784",
+      "preprocessedFingerprint": "49da980aa35deaec73b07bea787df312251b63e10052b33da8726baf980d8e4b",
+      "files": 10,
+      "bytes": 1357959,
+      "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+      "mode": "dependencies",
+      "planHit": false,
+      "scanMS": 575.1351
+    },
+    "compiler": "g++.exe",
+    "activeInstalledBeforeBuild": [],
+    "policy": "Existing native module cache automatic prune retains32/referenced/running. nativeCacheOnly branch skips source enumeration. No browser/runtime/profile bundle copied."
+  },
+  "failuresAndRepairs": [
+    "Only new source fixture failed by expecting defaults on node.inputValues; makeNode stores overrides only. Asserted generated serviceApi defaults/pure metadata, reran only failed source tool:8 passed. Current C++ and regression30 were already green; not repeated."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newCPP": true,
+    "newGPU": false,
+    "newGUI": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false,
+    "generatedCoreUpdatedIgnored": true,
+    "dirtyNodeCatalogUntouched": true
+  },
+  "storage": {
+    "newSharedModuleBinaries": 1,
+    "binaryBytes": 8080656,
+    "browserRuntimeProfileCopies": 0,
+    "helpersCleanup": "native/build/temp-clean2670.json"
+  },
+  "remainingBoundary": [
+    "Dedicated attachment sequence/constraint/physics blending, dynamic body coupling and SpriteRig2D",
+    "Native query count/VM lookup cost, advanced rig/DCC/rendering and canonical cumulative residuals",
+    "Real GUI/GPU/device and installed build validation; installation remains explicitly held"
+  ]
+}
