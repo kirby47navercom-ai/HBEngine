@@ -3994,6 +3994,18 @@
         "tools/editor-automation.mjs",
         "docs/SPRITE_RIG_CHAIN_MAPPING.md"
       ]
+    },
+    {
+      "id": "cook-cache-ownership",
+      "keywords": [
+        "cookContent",
+        "pruneCookCache"
+      ],
+      "paths": [
+        "tools/cook-cache.mjs",
+        "tools/build-content.mjs",
+        "docs/COOK_CACHE_OWNERSHIP.md"
+      ]
     }
   ]
 }
