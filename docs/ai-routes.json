@@ -4170,7 +4170,8 @@
         "prepareResidentMipView",
         "enableLayeredDiskMips",
         "materialResidentMip",
-        "SetResidentMip"
+        "SetResidentMip",
+        "sharedDiskMipSource"
       ],
       "paths": [
         "prototype/texture-disk-mips.js",
@@ -4191,7 +4192,8 @@
         "prototype/texture-authored-mip-ui.js",
         "prototype/engine-services.js",
         "prototype/material-texture-bindings.js",
-        "native/include/HBEngine/Library.hpp"
+        "native/include/HBEngine/Library.hpp",
+        "prototype/texture-disk-source-cache.js"
       ]
     }
   ]
