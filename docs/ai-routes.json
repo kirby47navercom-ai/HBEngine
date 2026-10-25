@@ -4538,6 +4538,34 @@
       "paths": [
         "prototype/cloth-tether-editor-source.js"
       ]
+    },
+    {
+      "id": "deformable-auto-tether-declarations",
+      "keywords": [
+        "DeformableAutoTethers",
+        "deformableAutoTetherContract"
+      ],
+      "paths": [
+        "prototype/deformable-auto-tethers.js"
+      ]
+    },
+    {
+      "keywords": [
+        "nativeComponentDefaultJson"
+      ],
+      "paths": [
+        "prototype/native-component-defaults.js"
+      ],
+      "id": "native-component-default-json-declaration"
+    },
+    {
+      "keywords": [
+        "bridgeComponentProperty"
+      ],
+      "paths": [
+        "native/include/HBEngine/Session.hpp"
+      ],
+      "id": "bridge-component-property-declaration"
     }
   ]
 }

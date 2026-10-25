@@ -752,3 +752,5 @@ Two Bone IK의 작성식 보폭 보정은 기존 Float 설정 노드·`hb::Anima
 큰 입자 배열은 이후 [등록 입자 속성 전용 JSON 경로](COMPONENT_SPARSE_JSON.md)로 C++ 응답 검증·공용 명령에 연결했어요. 일반 BP 인라인 문자열·임의 JSON 제한은 유지해요. SDK의 `Components::SetText` 시그니처와 생성 카탈로그를 바꾸지 않고 Session의 전용 검증을 추가했으며, 현재 SDK 실제 C++ 실행 근거는 WORK3020에 기록해요.
 
 천·로프의 [고정점 경로 연결 생성](CLOTH_TETHER_GENERATION.md)은 장면/BP의 기존 최대 거리 폼에서 한 Undo로 적용해요. AI의 `scene.cloth.tethers`와 `blueprint.cloth.tethers`도 같은 생성기·컴포넌트 검증을 쓰고 기존 문서 revision·dryRun·Undo 경로를 거쳐요. 런타임은 생성된 배열을 기존 거리 제약으로 실행해요.
+
+Cloth·2D/3D 로프의 [자동 고정점 연결](DEFORMABLE_AUTO_TETHERS.md)은 기존 Bool/Float 속성 경로로 편집·BP·C++에서 제어해요. 현재 실행 고정점/강체 연결에서 다음 fixed step에 재생성하고, 기존 수동 거리/부분 고정과 합쳐 몸체를 보존해요. AI tethers 페이지와 사람 상태 표시는 같은 실행 소유자를 읽어요. [기존 프로젝트의 C++ 기본값 읽기](CPP_COMPONENT_DEFAULTS.md)는 스키마 전용 최소 질의와 같은 호출 캐시를 사용하고, Transform 읽기는 실제 로컬 TRS를 따르며 미등록 속성은 거부해요.
