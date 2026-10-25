@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "kind": "git-json-marker-structural-merge-reviewed-cas-and-transactional-publication",
+  "implementationRevision": "960b7d818e2710226b1d91165520bbe83f851277",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3260.json",
+  "changedSourceHashes": {
+    "prototype/git-conflict-markers.js": "a7c7f8b5d91d4f691cbdc8b6d279e070aacebb8d2f72060d011a9ba1b500380f",
+    "prototype/source-control-asset-merge.js": "49e9a03834c720aecd5e193bd1792d6a7562414359276a3be1a50e73f5e56c91",
+    "prototype/asset-merge-panel.js": "c696382419172557065d22beeb13a30af6e24ab2c1610223b06ed6b5aa059c86",
+    "prototype/asset-graph-diff.js": "2112be66e68449c35d6831b04b787608c63365d1ca23f3b747588b130b129dde",
+    "prototype/app.js": "996280a9a6118ece83daa27d566c72d94d1d5263d38da7d201bdf132134eb92d",
+    "tools/source-control.mjs": "9bbb96a73a2ad1e221d1807c6a215445040ae9d6a47133022bb64791934b07a9",
+    "tools/project-service.mjs": "8b17c2ae9ac10c73497dd791a85c7172086a95e81e73fd516c7192f9f5347338",
+    "tools/serve.mjs": "be3740222799480cff6cb71a9fe282c327f0b49233bc1d989865633d778fd83e",
+    "tools/hb.mjs": "f7a8278eb548475d88f585c908dd4cd7b8903b138d957a8ddbe9925aa4fc2276",
+    "tools/editor-automation.mjs": "23ce37983f6356aac5402095bf07d8b568e7d9ef87d0a4fe5c99ca59036e651d",
+    "tools/check-git-json-merge-3266.mjs": "4eaace02fe602b3cad7b42ed166f18e4333b254f1185ea9d3c09bd4dec3c968f",
+    "docs/GIT_JSON_CONFLICTS.md": "6cf87d4a4c73f680d83d0509202f24734652da681996bbf40291d95884f7df5e",
+    "docs/BLUEPRINT_SPEC.md": "b32ed428ffedc41959d15d662390e41c45e22f8f20e22bb2748b06559f654691",
+    "docs/AI_START.md": "a5fe01f46fc2109d2ae7f605f534187a1be0793f5dab45e02e30c89c1fa2f48c",
+    "docs/ai-routes.json": "baed69aea06f567e3b733fb48d9d2abef2931e1865f004ad3d5ae4ef4e2f94e9",
+    "CODEX_HANDOFF.md": "91577bf460a7676fb97502eb929e997d9de2b1726cc4a1d8407ee17e64c52eda"
+  },
+  "resolvedOwners": 1635,
+  "targetIds": [
+    "BLD-06",
+    "AI-03"
+  ],
+  "newSourceCases": 10,
+  "relatedSourceCases": 45,
+  "checks": {
+    "source": "native/build/git-json-merge-XPZyeA/acceptance.json",
+    "transactions": "native/build/asset-transaction-fx2Nlh/acceptance.json",
+    "recovery": "native/build/transaction-recovery-fa6j8m/acceptance.json",
+    "focused": "native/build/git-json-merge-XPZyeA/focused-owners.json"
+  },
+  "samples": [
+    {
+      "isolatedGitRepository": true,
+      "indexHasUnmergedStages": 2,
+      "stageBaseUsed": true,
+      "mergedCommonEditPreserved": true
+    },
+    {
+      "validatedWorkingFile": true,
+      "rawMarkerJournal": true,
+      "autoStage": false,
+      "autoCommit": false
+    },
+    {
+      "externalWorkingEditPreserved": true,
+      "afterWriteIndexMutationDetected": true,
+      "rawWorkingFileRolledBack": true
+    }
+  ],
+  "failuresAndRepairs": [
+    {
+      "cause": "Fixture request callback missed its closing brace before first execution; later fixture assumed neighboring restitution edit was outside Git conflict hunk, while Git correctly included it in the same hunk.",
+      "repair": "Fixture fixed; failed case alone rerun in git-json-merge-TGi8Tw. Expected ours now matches actual stage2; independently merged restitution remains0.3. After adding compact source reads the final entire new source10 passed in XPZyeA; previous NNUX6B failure retained."
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "userRepositoriesTouched": false,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "actualCppCaller": false,
+    "GUI": false,
+    "liveHTTPServer": false,
+    "actualIsolatedGit": true,
+    "actualProjectServicePublication": true,
+    "hardwarePowerLoss": false,
+    "autoStage": false,
+    "autoCommit": false
+  },
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "newWorkers": 0,
+    "removedOwnedRegularHelpers": [
+      "gitmerge3261.mjs",
+      "gitguard3262.mjs",
+      "gitui3263.mjs",
+      "gitreview3264.mjs",
+      "gitcli3265.mjs",
+      "gitdocs3267.mjs",
+      "gitfixture3268.mjs",
+      "gitfixture3269.mjs",
+      "gitcompact3270.mjs",
+      "gitroute3271.mjs",
+      "admit3272.mjs"
+    ],
+    "handoffBytes": 4838
+  },
+  "scope": "Actual isolated Git conflict stages/working markers, shared stable-ID merge, existing ProjectService raw/normalized CAS and journal, validated physical-material/Blueprint publish, dryRun/working/index/reviewed-candidate checks and after-write rollback, actual panel file-load method/client/CLI route. Source/headless only; no user repositories/windows/profiles, native compiler, live HTTP server or GUI/device/power-loss/remote VCS proof."
+}
