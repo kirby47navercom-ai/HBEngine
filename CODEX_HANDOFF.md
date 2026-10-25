@@ -1,20 +1,17 @@
 # HBEngine 현재 인계 (2026-10-25)
 
-최신 사용자: 계속 구현·여러 분야 묶어 마지막 영향검사. 설치 업데이트 보류(native/build/UPDATE_HOLD.json active), 예약 재생성금지(hbengine삭제2160). 사용자 창/탭/프로필/게임/Versions 변경금지·새에이전트금지. Mac/Xcode/Android폰없음. 한글 동일 kirby47navercom-ai author/committer·AI trailer없이commit/push.
-보호: prototype/player.js, tools/check-player-keyboard-release.mjs 읽기/편집/실행/stage금지. docs/NODE_CATALOG.md 기존dirty 미stage. core-api ignored generatedCore()만·카탈로그CLI금지. hb context --compact 등록keyword/실제symbol·focused-routes 확인; broad/--all금지. 새원장은 기록Map합성+명시own whitelist만새해시. updatedAt은YYYY-MM-DD·validate/read필수.
+최신 사용자: 멈추지말고 여러분야 실제구현·검사는마지막한묶음. 설치업데이트보류(native/build/UPDATE_HOLD.json active), 예약재생성금지(hbengine삭제2160). 사용자창/탭/프로필/게임/Versions 변경금지·새에이전트금지. Mac/Xcode/Android폰없음. 한글 동일 kirby47navercom-ai author/committer·AI trailer없이commit/push.
+보호: prototype/player.js, tools/check-player-keyboard-release.mjs 읽기/편집/실행/stage금지. docs/NODE_CATALOG.md 기존dirty 미stage. core-api ignored generatedCore()만·카탈로그CLI금지. hb context --compact 등록keyword/실제symbol·focused-routes 확인; broad/--all금지. 새원장은 기록Map합성+명시own whitelist만새해시. updatedAt YYYY-MM-DD·validate/read필수.
 
-core 5f2ffcc5b7d99ca7fc3414f11ce21dc41779f3a8; canonical WORK2930/ENGINE_STATUS. 78행37verified/37partial/1unimplemented/3unverified·전체율null. 기록hash2720압축기준→...2890→2920→2930; 60전Map재압축. 설치완료아님.
+core 7f1b9497af0e33fbaeee34c6a6089580ece78ad5; canonical WORK2960/ENGINE_STATUS. 78행37verified/37partial/1unimplemented/3unverified·전체율null. 기록hash2720기준→...2930→2960;60전Map재압축. 설치완료아님.
 
-신규2930: 정확선언owner 분리·integration목록/C++선언+bridge/fail-closed보존. context-owners-1Rslef 신규6. 같은현재소스 DeformableWorld11파일1099151→1파일10894B, GroundProjectionIK13/449465→1/6212B, brush8/697307→1/11158B. 소스읽기량만·모델시간/토큰/FPS아님. 이번실행 신규52=2920의46+6. 조회기본문변경0·SDK/renderer재검사0.
+신규2960(2931–2960):
+- 다중ParticleSystem: ID/고유name별CPU·WebGPU/DirectX JS팩토리·버퍼/정렬/리본/네이티브ID/2D키·수명. 기존actor함수첫활성·기존두인수hook유지. 새5 C++/BP컴포넌트API livequery·같은C++호출write후read. 무변경GPU프레임은소유registry검증후async준비생략·비입자actor빈Map생성0. disabled/replaced/pooled/removed·비동기준비취소·previewcyclicuserdata재build. docs/MULTI_PARTICLE_COMPONENTS.md.
+- Cue v4 명시변환·v1/2/3/기본v2유지·emitComponent선택·자식actor경로/컴포넌트property identityguard·기존structured폼/Undo/검증/저장. 실제effect→Cue→선택이미터방출.
+- EQS RunBatch/BatchResults/CancelBatch C++/BP·privateactorindex한번snapshot ID/position/tags/order·전체결과atomic·latest/cancel/retired/errorguard·평면별forward/nav·zero2Dtrace skipphysics. ring/grid-only actorindex0. 10000actor×8query actorrefresh80000→10000·실제전체FPS/RAM아님. actorSnapshot=true/traceSnapshot=false, 기존Run매번O(N)유지. docs/EQS_BATCH.md.
 
-신규2920(2891–2920):
-- ANM: TwoBone opt-in groundProjection Bool/pose-or-target/2D3D/world ray/법선offset/경사·최소swing·기존가중치/길이/관절. nohit/비활성 입력통과·현재plant문맥해제·budgetskip0질의. 기존준비Rapier와SetBool 공용. 독립player는groundQuery주입·dispose해제. 양의균일프레임 회전제약·unreachable잔여오차정직표시. editor접힘typed폼/legacydefaults/Boolrename/Undo·AI schema. ANIMATION_GROUND_PROJECTION.md.
-- Preview: selected/target/hint/source/plantAnchor/FBIK effector만시각복사. 지면은차원/mask/trigger/mode필터·collider/tileColliders/부모TRS만복사·시각/native/audio미복제. absent components원본불변·parentId우선·선택모델parentattach. 합성JSON100630→351B; 전체RAM/GPU/FPS측정아님.
-- PHY: query-only sensor와authored trigger구분·7종질의/live/immutable native adapter일치. 진짜trigger는includeTriggers필수.
-- 제작: Cloth격자·2D/3D로프 질량브러시 radius/strength/target/falloff. swept segment·한획시작값/최대영향·기본1희소삭제. 한획Undo/기존scene/BP검증·상속기본값·원본저장→공용queued JSON→실제입자질량. Escape/cancel/capture/blur/hidden·changed/detached/disabled owner거절·keyboard·focus/settings복원. SVG상수path수·타이머/worker/런타임paintpass0. CLOTH_MASS_BRUSH.md. 거리tether/이동반경·부분핀별도.
+최종 group2948.json: 신규26=multi12+batch10+cue4, 관련39=eqs5+foot14+cueanchors20, 기존2Dgate추가. syntax18. 최초정렬fixture는기존age계약반대가정→동일목적depth/depthReverse독립대조, production sort변경0(DEBUG_HANDOFF). 최종 multi-emitter-mEKtPF /eqs-batch-nIkM8U/cue-components-xhdfFz. GPU JS팩토리 소유queue/compute stub검사이며 실제shader/pixel/GUI/device/install0.
+실제CPP engine-batch-cpp-aW5pB4:현재SDK1회build·5메서드5호출10live(6write4read)+2queued·확정BatchResults1read. cache30ffbdd2cbacdef5bf10 hitfalse; binarySHA8c175acf2faab9a1c096dd63bcaa77a8de396ed594ab333a630629f7f1f33024; SDK5ec98440ee5a1dd798879aaa5a2fbfac6a19bf3e837bee30b7df59c1a03c138d; used53000d023794d527beb83e666c9abf7a09f25bf5fea7bd9ff2bf53724e75f7a2. 현재binary해시재확인·SDK후속변경0. UI/hook후재컴파일0. 이전SDK의CPP증거를현재새SDK완료로세지않음.
 
-최종 group2908.json: 신규46=ground16+preview11+brush13+query6, 관련19=massUI5+distribution14. 같은실행 earlier foot14 재사용(6N3lUd). syntax22. 최종 preview JKWqmI, brush IBszul, ground IY5toE, query xlUBOg; 보고서/fixture보존. GUI/GPU/device/install0.
-실제C++ ground-ik-cpp-cVylnL:2메서드4호출4읽기4쓰기·2D3D VM/물리/골격포즈. 동일PlantProbe/SDK cachehit b283e77e7ab52dcb8fee. binary SHA b07d1aded7e0411a3b19689b3b2ba15ccef4bbcbce5db51cb3b90cf874faa930; SDK6ae42160cdb0e8cdce5bcea410ec666c86453519087ed1901192da45f46811da; used0a684c26d26b98e7e13c07850428a36d1d67f89230356a4d210508711620d050. 현재binary해시재확인·UI후재build0. 첫부모회전불가/extent대신size fixture실패는성과제외(DEBUG_HANDOFF).
-
-직전:2890 context opt-incompact 신규6+legacy1058·응답9325→4870B(-47.8%)·I/O/모델시간아님. 2880 BT owner services stable목록/관계diff/충돌/CAS/Undo/save→실제주기. 2870 disk mip source공유·마지막leaseCPU0. 2860 array/cube/volume authoredRGBA8 디스크꼬리·binding/물리한도·BT/FSM관계선택. 각receipt/전용doc근거·끝난검사재반복금지.
-다음 실제잔여: 접촉phase/stride/골반·고급리그, 거리tether/이동반경/부분핀·일반관절반력/소성, HDR/압축/cook·서비스flow/임의계층·mobileeditor 등 canonical remaining. GL1728 ANGLE6878.6/FXC6836.439ms미해결·실패실험반복금지. USER_INSTALL2145 Versions/73341067df5a12be는역사. 새설치copy/예약0. 무거운검사전activeInstalledVersions·nativeCacheOnly만32cache·소유regularhelper만삭제. fixture/report/recipe/SDK/사용자데이터보존. 새goal/재개질문으로중단하지않음.
+직전2930 정확owner조회 신규6: DeformableWorld1099151→10894B/GroundProjection449465→6212B/brush697307→11158B. 소스읽기량만·모델시간/토큰/FPS아님. 2920 지면높이/경사IK·query-only sensor구분·collider-only preview·천/로프질량브러시 신규46+related19+foot14·예전CPP2/4/4/4. 각receipt/doc근거·재검사반복금지.
+다음 실제잔여: 자동접촉phase/stride/골반·고급리그, 거리tether/이동반경/부분핀·일반관절반력/소성, HDR/압축/cook·서비스flow/임의계층·mobileeditor 등 canonical remaining. 일반EQS 가변월드갱신 O(N)·GPU실픽셀/입자별리본은별도. GL1728 ANGLE6878.6/FXC6836.439ms미해결·실패실험반복금지. USER_INSTALL2145 Versions/73341067df5a12be는역사. 무거운검사전activeInstalledVersions·nativeCacheOnly만32cache·소유regularhelper만삭제. fixture/report/recipe/SDK/사용자데이터보존. 새goal/재개질문으로중단하지않음.

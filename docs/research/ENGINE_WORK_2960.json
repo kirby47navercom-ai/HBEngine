@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "date": "2026-10-25T11:02:21.725Z",
+  "kind": "다중 이미터·Cue v4·환경질의 배치 / 설치 보류",
+  "implementationRevision": "7f1b9497af0e33fbaeee34c6a6089580ece78ad5",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2930.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "8de528aa6005f12575dd0fbe0d6b6bb1742b22cc5e9d408bbd3464f1161e1ad2",
+    "prototype/particle-component-state.js": "8475a55324fc6e49561f433e051d47e6a7ef3e85cdf722f5c7a13eddf8db061e",
+    "prototype/scene-rendering.js": "5f0d722bac1e0d6168b9b5d21bd5175a57f35d734f08ca51fff6861983f7ddfa",
+    "prototype/engine-services.js": "6699fe60a7a2e7b3b2d995d897add623ca104bb64074acd52157c4f09a107151",
+    "prototype/gameplay-preview.js": "8e515357f13c7f793a5d93f622379cbd92361e831364411f5c8e5274b17b849e",
+    "prototype/gameplay-preview-visual.js": "6778bcba3b2f6135c6d7ff5ab2079d65bfd4357224f4f3fe7ab72d0d18d06cbe",
+    "prototype/ribbon-trail.js": "cd3babe8f4b8559ccff3b4fcd1a39827903a832dc552ada6a6ad8996b2fc3446",
+    "prototype/native-live-query.js": "14c8c3b7f6fd47087313a43efc6e914c63432bdcfdede95f21c127ca253547b3",
+    "prototype/gameplay-cue-anchor.js": "ea415863f35a1f49452f92523a86ec6d0a28e76236d1648870835b2622fe53d5",
+    "prototype/gameplay-cue-assets.js": "f5859d83e02ac57cf36551102cbe76c05719234131ed244ebcad67deb5abdc8a",
+    "prototype/structured-asset-editor.js": "d8820133c8d4fd288ffcb7e9e59cda9791aa04fa6db5cc84ac23a63e5776d93d",
+    "prototype/environment-query-batch.js": "ee4b1634e178e74dff1d4a28baea7f3dc655233774fbf6121f2ae43657386c4c",
+    "tools/editor-automation.mjs": "fbb930ca020b7a644831bbbcb2d0e5ed33900bdd98238c9125876cbaf09089f4",
+    "tools/generate-api.mjs": "c050f081af3b5eb3bf15ad09d7e7eb59f4a5b116ae887d1604dea777d41700bc",
+    "native/include/HBEngine/Game.hpp": "635a0ac542b9df0bae67fe79556486f0bf5b26c3de20efb0beffea897d2b04e5",
+    "native/include/HBEngine/Bridge.hpp": "43df3b8d0f4a5025227dc0deb23a28639e1c2b77aefcd3a1fb25fa47663174bb",
+    "tools/multi-emitter-fixture-2937.mjs": "11dcbae3cfca27aad4fdbf196141f9cbfe14c45720ae161bf1223cee5681b21d",
+    "tools/check-multi-emitter-2938.mjs": "7d5f63bd7a55bd1dc2387a3ee58389d686645ac083545e286107827529697678",
+    "tools/check-eqs-batch-2939.mjs": "5bc1bc3fa802b243c67e34f6613a8ff61d61689ea969f33825609d0b9fc50c87",
+    "tools/check-cue-components-2940.mjs": "09028fdbd9ed40cfc3f415f94fd6705192d6e58dbfe0c117d40378eeb0f24852",
+    "tools/check-engine-batch-2941-cpp.mjs": "1d7d1ca5119aa1fde6d7263024d34c7ffe50cd9bf8d180476e1c086624c1532e",
+    "docs/MULTI_PARTICLE_COMPONENTS.md": "0f4fe9c15d9c088e22aa10c72d8658570bb00c53aa5bd9dd9ea03191c6dd343b",
+    "docs/EQS_BATCH.md": "bc43f27ed32be345380b48192a7f626fb35d77b22c7afff91ff6cb1319e0b77b",
+    "docs/BLUEPRINT_SPEC.md": "096a3addbd2d8137290562a33eb362eecdacbd442d03cfa8ed3a0fdb88958e8d",
+    "DEBUG_HANDOFF.md": "295c98e4b3e58a4d4669c0db6ab6e918d6bd5cd89ee2c7d1027013da59e1ea3a",
+    "CODEX_HANDOFF.md": "c4d2d0d2f52673d24c949617f5673e0c458ee5d8dd361ac967359da9d7166e81"
+  },
+  "resolvedOwners": 1566,
+  "targetIds": [
+    "GAM-04",
+    "GAM-03",
+    "CPP-01",
+    "AI-03"
+  ],
+  "changes": {
+    "GAM-04": " ·2931–2960: 한actor 다중ParticleSystem ID/고유name별sim/표시/정렬/ribbon/네이티브ID/2D키·수명. legacy첫활성/2인수hook유지·새5 C++BP제어/live동기읽기. Cue v4명시변환/emitComponent·기존폼/Undo·effect→Cue→선택emit. 신규multi12+cue4·기존anchors20; 실제GPU픽셀검증아님.",
+    "GAM-03": " ·2931–2960: 명시EQS배치 RunBatch/BatchResults/CancelBatch·한번actorindex sync/captured ID·position·tags/order·atomic/latest/cancel/owner/errorguard·평면별nav/forward. 신규10·기존eqssync5/2Dgate. 10000actor8query actorrefresh80000→10000, 일반Run의가변월드 O(N)유지·physics/nav frozen아님.",
+    "CPP-01": " ·2931–2960: Particles 컴포넌트Play/Stop/Pause/Emit/Count 5함수+EQS배치Run/Results/Cancel 3함수·typed BP한글입력·AI스키마·공용native selector검증. 현재SDK 실제5메서드5호출10live질의(6쓰기4읽기)+2큐명령·확정BatchResults읽기. 생성catalog미변경·generatedCore만갱신.",
+    "AI-03": " ·2931–2960: particleComponents/environmentQueryBatch 스키마·정확선언owner와명시통합경로·Cue v4기존문서/CAS/Undo·새typed BP/native공용함수. 사용자설치본/예약미변경."
+  },
+  "newSourceCases": 26,
+  "relatedSourceCases": 39,
+  "checks": {
+    "group": "native/build/group2948.json",
+    "new": [
+      "native/build/multi-emitter-mEKtPF/acceptance.json",
+      "native/build/eqs-batch-nIkM8U/acceptance.json",
+      "native/build/cue-components-xhdfFz/acceptance.json"
+    ],
+    "related": [
+      "native/build/eqs-sync-nHOls3/acceptance.json",
+      "native/build/foot-plant-CQiYoh/acceptance.json",
+      "native/build/cue-anchors-mS3tGl/acceptance.json"
+    ],
+    "legacy2D": "native/build/eqs-2d-220-RzdNDU/acceptance.json",
+    "actualCpp": "native/build/engine-batch-cpp-aW5pB4/acceptance.json"
+  },
+  "results": {
+    "syntaxFiles": 18,
+    "actualCpp": {
+      "methods": 5,
+      "calls": 5,
+      "liveQueries": 10,
+      "liveReads": 4,
+      "liveWrites": 6,
+      "queuedOperations": 2,
+      "committedResultReads": 1,
+      "cacheKey": "30ffbdd2cbacdef5bf10",
+      "cacheHit": false,
+      "binary": {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\30ffbdd2cbacdef5bf10\\worker.exe",
+        "sha256": "8c175acf2faab9a1c096dd63bcaa77a8de396ed594ab333a630629f7f1f33024"
+      },
+      "SDK": "5ec98440ee5a1dd798879aaa5a2fbfac6a19bf3e837bee30b7df59c1a03c138d",
+      "usedSDK": "53000d023794d527beb83e666c9abf7a09f25bf5fea7bd9ff2bf53724e75f7a2",
+      "binaryHashRechecked": true
+    },
+    "actorRefresh": {
+      "actors": 10000,
+      "queries": 8,
+      "separateScans": 80000,
+      "batchScans": 10000,
+      "scope": "Actor synchronization only; nav/traces/query work and whole FPS/RAM not included."
+    },
+    "GPUWarmPreparation": {
+      "components": 2,
+      "initialHooks": 2,
+      "nextTwoFramesAdditionalHooks": 0,
+      "scope": "Owned current registry identity fast path; no measured whole frame speedup."
+    },
+    "currentCanonicalStatusValidated": true
+  },
+  "failuresAndRepairs": [
+    "Initial age-sort fixture expected the opposite of the existing renderer contract; changed the independent-component test to depth/depthReverse, production sorting unchanged. Failed fixture excluded."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newGUI": false,
+    "newGPUExecution": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newNativeModuleBinaries": 1,
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": 13,
+    "removedOwnedHelperNames": [
+      "routes2931.mjs",
+      "particles2932.mjs",
+      "particles2933.mjs",
+      "batch2934.mjs",
+      "review2935.mjs",
+      "fast2936.mjs",
+      "before2942.mjs",
+      "final2943.mjs",
+      "group2944.mjs",
+      "sort2945.mjs",
+      "warm2946.mjs",
+      "admit2947.mjs",
+      "meta2949.mjs"
+    ],
+    "handoffBytes": 4040,
+    "nativeCacheCleanup": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    },
+    "admissionWhitelist": "native/build/owned2960.json"
+  },
+  "scope": "Actual CPU/common runtime/authoring branches/current C++ execution; Native/WebGPU JS factories use owned queue/compute stubs for ownership/allocation only. No actual GPU dispatch/pixels/device/install, per-particle ribbon, all-world incremental EQS or FPS/RAM claim.",
+  "canonicalCounts": {
+    "verified": 37,
+    "partial": 37,
+    "unimplemented": 1,
+    "unverified": 3
+  },
+  "previousLineage": [
+    "docs/research/ENGINE_WORK_2720.json",
+    "docs/research/ENGINE_WORK_2734.json",
+    "docs/research/ENGINE_WORK_2744.json",
+    "docs/research/ENGINE_WORK_2754.json",
+    "docs/research/ENGINE_WORK_2762.json",
+    "docs/research/ENGINE_WORK_2790.json",
+    "docs/research/ENGINE_WORK_2820.json",
+    "docs/research/ENGINE_WORK_2830.json",
+    "docs/research/ENGINE_WORK_2860.json",
+    "docs/research/ENGINE_WORK_2870.json",
+    "docs/research/ENGINE_WORK_2880.json",
+    "docs/research/ENGINE_WORK_2890.json",
+    "docs/research/ENGINE_WORK_2920.json",
+    "docs/research/ENGINE_WORK_2930.json"
+  ]
+}
