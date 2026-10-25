@@ -722,3 +722,5 @@ Take 녹화 프리셋은 전용 에셋/편집기에서 만들고 시퀀스의 �
 SkeletalSocket/SkeletalAttachment는 기존 componentGet/Set String·Vector·Bool·Json 공용 명령과 native 명령 재생으로 제작·실행해요. 부모 Bone/소켓·로컬 TRS, 초기/풀 획득 이벤트 전 적용, 애니메이션·물리·시퀀스 후 갱신·중첩 부모 우선·수명/오류 진단을 연결했어요. Cue v3는 한 Undo 변환·뼈/소켓 VFX 추적/분리·상대 자식 이미터 경로를 지원해요. [정확한 계약과 검증 경계](SKELETAL_SOCKETS.md)를 참고해요. 전용 부착 시퀀스 트랙·동적 강체 결합·한 액터의 다중 ParticleSystem·새 C++ 바이너리/GPU/GUI/실기기·설치는 별도예요.
 
 소켓 순수 조회 노드 7개(`socketCount/Names/Has/Position/Rotation/Scale/Transform`)와 `hb::Skeleton`의 같은 조회 함수를 연결했어요. 월드 기본값·액터 로컬 선택, 선언 목록 페이지, 실행 액터 권한·입력/응답 검증과 전단 시 정확한 위치/비근사 TRS 거절 계약을 공유해요. 현재 소켓 API C++ 실행 근거와 이전 부착 기능의 source/native 명령 재생 근거는 원장에서 구분해요.
+
+차량의 독립 휠 관성·슬립 제한 차동·ABS와 휠 RPM/슬립/ABS 순수 조회 3개를 컴포넌트 속성·실행 서비스·C++ snapshot 공용 흐름에 연결했어요. [차량 휠 계약](VEHICLE_WHEEL_DYNAMICS.md)에 단위·기본 호환·오류·검사 경계를 기록해요.

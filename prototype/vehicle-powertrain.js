@@ -3,14 +3,14 @@ export function validVehiclePowertrain(p){return Array.isArray(p.gearRatios)&&p.
 export function sampleEngineTorque(curve,rpm){let lo=0,hi=curve.length;while(lo<hi){const mid=(lo+hi)>>>1;if(curve[mid].rpm<=rpm)lo=mid+1;else hi=mid;}const a=curve[Math.max(0,lo-1)],b=curve[Math.min(curve.length-1,lo)];return a===b?a.torque:a.torque+(b.torque-a.torque)*Math.max(0,Math.min(1,(rpm-a.rpm)/(b.rpm-a.rpm)));}
 export function vehicleForwardSpeed(body){const q=body.rotation(),v=body.linvel();return v.x*2*(q.x*q.z+q.w*q.y)+v.y*2*(q.y*q.z-q.w*q.x)+v.z*(1-2*(q.x*q.x+q.y*q.y));}
 // Torque/ratio drivetrain over Rapier's ray-wheel contact solver. The RPM
-// response is kinematic; this does not introduce a wheel-inertia/ABS solver.
+// response follows measured wheel RPM. Optional inertia is integrated by vehicle-wheel-dynamics.
 export class VehiclePowertrain{
  constructor(p){this.gear=p.gear;this.targetGear=p.gear;this.requestedGear=p.gear;this.remaining=0;this.cooldown=0;this.rpm=p.idleRPM;this.forces=new Float64Array(p.wheels.length);this.wheelRPM=new Float64Array(p.wheels.length);this.angles=new Float64Array(p.wheels.length);this.torque=0;this.braking=0;}
  shift(gear,p){if(!Number.isInteger(gear)||gear< -1||gear>p.gearRatios.length)throw Error('차량 기어 범위를 확인하세요.');if(gear===this.targetGear)return;this.targetGear=gear;this.remaining=p.gearChangeTime;if(!this.remaining)this.gear=gear;this.cooldown=p.gearChangeTime;}
  setGear(gear,p){this.shift(gear,p);this.requestedGear=gear;}
- step(p,controller,body,dt){
+ step(p,controller,body,dt,wheelRPM=null){
   this.gear=Math.min(this.gear,p.gearRatios.length);this.targetGear=Math.min(this.targetGear,p.gearRatios.length);const speed=vehicleForwardSpeed(body);if(this.requestedGear!==p.gear){this.requestedGear=p.gear;this.shift(p.gear,p);}this.remaining=Math.max(0,this.remaining-dt);this.cooldown=Math.max(0,this.cooldown-dt);if(this.remaining===0)this.gear=this.targetGear;
-  let sum=0,count=0;for(let i=0;i<p.wheels.length;i++){const angle=controller.wheelRotation(i)||0;this.wheelRPM[i]=(angle-this.angles[i])*60/(2*Math.PI*dt);this.angles[i]=angle;if(p.wheels[i].drive){sum+=Math.abs(this.wheelRPM[i]);count++;}}const axleRPM=count?sum/count:0;
+  let sum=0,count=0;for(let i=0;i<p.wheels.length;i++){const angle=controller.wheelRotation(i)||0;this.wheelRPM[i]=wheelRPM?wheelRPM[i]:(angle-this.angles[i])*60/(2*Math.PI*dt);this.angles[i]=angle;if(p.wheels[i].drive){sum+=Math.abs(this.wheelRPM[i]);count++;}}const axleRPM=count?sum/count:0;
   const sign=Math.sign(p.throttle),reverseBrake=p.automaticTransmission&&sign!==0&&Math.abs(speed)>1&&sign*speed<0?Math.abs(p.throttle):0;
   if(p.automaticTransmission&&!this.remaining&&!this.cooldown){if(sign&&Math.abs(speed)<=1&&(sign<0&&this.gear>=0||sign>0&&this.gear<=0))this.shift(sign<0?-1:1,p);else if(this.gear>0&&sign>=0&&!reverseBrake){const coupled=axleRPM*p.gearRatios[this.gear-1]*p.finalDriveRatio;if(coupled>=p.shiftUpRPM&&this.gear<p.gearRatios.length)this.shift(this.gear+1,p);else if(coupled<p.shiftDownRPM&&this.gear>1)this.shift(this.gear-1,p);}}
   const ratio=this.gear===-1?-p.reverseGearRatio:this.gear===0?0:p.gearRatios[this.gear-1],totalRatio=ratio*p.finalDriveRatio,coupled=axleRPM*Math.abs(totalRatio),engaged=this.remaining>0?0:p.clutch,freeRPM=p.idleRPM+Math.abs(p.throttle)*(p.maxRPM-p.idleRPM)*.95,targetRPM=ratio?Math.max(p.idleRPM,coupled)*engaged+freeRPM*(1-engaged):freeRPM;

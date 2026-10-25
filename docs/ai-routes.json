@@ -3932,6 +3932,34 @@
         "tools/ai-context.mjs",
         "docs/AI_START.md"
       ]
+    },
+    {
+      "id": "vehicle-dynamics",
+      "keywords": [
+        "VehiclePhysics",
+        "VehiclePowertrain",
+        "validVehicleWheels",
+        "validVehiclePowertrain",
+        "InertialVehicleWheels",
+        "solveWheelContact",
+        "limitedSlipTorques",
+        "vehicleWheelState"
+      ],
+      "paths": [
+        "prototype/vehicle-physics.js",
+        "prototype/vehicle-powertrain.js",
+        "prototype/vehicle-config.js",
+        "prototype/scene-components.js",
+        "prototype/vehicle-powertrain-editor.js",
+        "prototype/vehicle-inspector.js",
+        "prototype/vehicle-diagnostics.js",
+        "prototype/vehicle-rendering.js",
+        "prototype/vehicle-wheel-dynamics.js",
+        "native/include/HBEngine/Game.hpp",
+        "native/include/HBEngine/Session.hpp",
+        "prototype/engine-services.js",
+        "docs/VEHICLE_WHEEL_DYNAMICS.md"
+      ]
     }
   ]
 }

@@ -387,6 +387,9 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsVehicleGear", KoreanName="차량 기어 지정", Category="물리 차량") static void SetVehicleGear(Actor* target,int gear);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsVehicleRPM", KoreanName="차량 엔진 RPM", Category="물리 차량") static float GetVehicleRPM(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsVehicleCurrentGear", KoreanName="차량 현재 기어", Category="물리 차량") static int GetVehicleGear(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsVehicleWheelRPM", KoreanName="차량 휠 RPM", Category="물리 차량") static float GetVehicleWheelRPM(Actor* target,int index=0);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsVehicleWheelSlip", KoreanName="차량 휠 슬립", Category="물리 차량") static float GetVehicleWheelSlip(Actor* target,int index=0);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsVehicleWheelABS", KoreanName="차량 휠 ABS 상태", Category="물리 차량") static bool IsVehicleWheelABSActive(Actor* target,int index=0);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsVehicleSpeed", KoreanName="차량 속도 가져오기", Category="물리 차량") static float GetVehicleSpeed(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsMass", KoreanName="실제 질량 가져오기", Category="물리") static float GetMass(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsSleeping", KoreanName="수면 상태 가져오기", Category="물리") static bool IsSleeping(Actor* target);

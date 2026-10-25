@@ -1,3 +1,4 @@
+import {vehicleWheelState} from './vehicle-diagnostics.js';
 import {socketQueryKeys,socketQuery} from './socket-query.js';
 import {SkeletalAttachments} from './skeletal-attachments.js';
 import {gameplayCueEmitter} from './gameplay-cue-anchor.js';
@@ -305,6 +306,7 @@ export function engineOperations(hooks){
     if(key==='physicsVehicleGear'){await ensurePhysics(vm).ready?.();ensurePhysics(vm).vehicleGear(target(a,b,vm),a.gear);return {};}
     if(key==='physicsVehicleRPM')return {return:target(a,b,vm).gameplayDebug?.vehicle?.engineRPM||0};
     if(key==='physicsVehicleCurrentGear')return {return:target(a,b,vm).gameplayDebug?.vehicle?.gear||0};
+    if(['physicsVehicleWheelRPM','physicsVehicleWheelSlip','physicsVehicleWheelABS'].includes(key)){const row=vehicleWheelState(target(a,b,vm),a.index);return {return:key==='physicsVehicleWheelABS'?!!row?.absActive:row?.[key==='physicsVehicleWheelRPM'?'rpm':'slip']||0};}
     if(key==='physicsVehicleSpeed')return {return:target(a,b,vm).gameplayDebug?.vehicle?.speed||0};
     if(key==='physicsJointBreak'){const o=target(a,b,vm),component=objectComponents(o).find(c=>['PhysicsConstraint','PhysicsConstraint2D'].includes(c.type)&&[c.id,c.type,c.name].includes(a.component));if(!component)throw Error('물리 관절 컴포넌트가 필요해요.');const system=ensurePhysics(vm);await system.ready?.();system.jointBroken(o,component.id,a.broken);return {};}
     if(['physicsJointAxis','physicsJointAxisMotor'].includes(key)){const o=target(a,b,vm),c=objectComponents(o).find(c=>c.type==='PhysicsConstraint'&&[c.id,c.type,c.name].includes(a.component));if(!c)throw Error('3D 물리 관절 컴포넌트가 필요해요.');if(!Number.isInteger(a.axis)||a.axis<0||a.axis>=6)throw Error('관절 축은 0..5로 지정하세요.');const p={...componentDefaults(c.type),...c.properties},rows=validJointDOFs(p.jointDOFs)?structuredClone(p.jointDOFs):defaultJointDOFs(),row=rows[a.axis];if(key==='physicsJointAxis'){Object.assign(row,{mode:a.mode,lower:a.lower,upper:a.upper});if(a.mode==='locked')row.motor=false;}else{Object.assign(row,{motor:a.enabled,position:a.position,velocity:a.velocity,stiffness:a.stiffness,damping:a.damping,maxForce:a.maxForce});if(a.enabled&&row.mode==='locked')row.mode='free';}const next={...p,jointType:'generic',useFrames:true,jointDOFs:rows,enableLimit:false,useMotor:false};if(!validComponentProperties(c.type,next)||next.connectedBody===o.id)throw Error('6축 관절 설정 범위를 확인하세요.');const previous=c.properties;c.properties=next;try{ensurePhysics(vm).synchronize();}catch(error){c.properties=previous;ensurePhysics(vm).synchronize();throw error;}return {};}
