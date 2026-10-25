@@ -1,0 +1,281 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "kind": "activation-owned-task-memory-bp-cpp-live-resource",
+  "implementationRevision": "e2d941f4ff38ff3b465bf6d42b77cdcfa48e0429",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3080.json",
+  "changedSourceHashes": {
+    "prototype/behavior-task-memory.js": "475738bc84dc82f964164c3a131180a93d43edc5096123d830e1590ef93223e0",
+    "prototype/gameplay-runtime.js": "71a34bb7d81579613555e66095d06a6fbbb264a7fdff378c79be520fac298f0b",
+    "prototype/behavior-aborts.js": "3d5faa1f4cef48b44eda9cac3948d759cade17b2c1d27370728a2b9437518009",
+    "prototype/native-live-query.js": "ae66976217eefe08f6ecdb4b71da5296da576cc8d08dd5d4d7eef76b5d03ea28",
+    "native/include/HBEngine/Game.hpp": "d324c167709e47c40626199e5f2f004fa4aa00a83ebabda3ed8ea03bcdd6763a",
+    "native/include/HBEngine/Bridge.hpp": "d6cf4d7b8253b41a53bf4070fe191d4cb50d6503c26cb6c7787888e32cc65932",
+    "tools/generate-api.mjs": "736c2125aa261f9e53e763d1bf16bca96370255df66626e92b7b52ad508d9b4b",
+    "tools/editor-automation.mjs": "f33516905e36b574db1a0a31644bc10d5b5f0bb4248eb5bbb2e3dc6ee5512827",
+    "docs/ai-routes.json": "4a57aeab99035ecabc9827c386ab9a9d6677117a6deafdfae62184ab8950863d",
+    "tools/behavior-task-memory-fixture-3082.mjs": "c8ad19fec1151de10ffdbad7aa83257cefce363e0cb09b06ae173757efbd13b1",
+    "tools/check-task-memory-3083.mjs": "4f55e4a509b18233361c8dea04581a01fc2ec0dc145d2cb1612198e023eef58e",
+    "tools/check-task-memory-3085-cpp.mjs": "397464f9a8b6c158b02954f2c2fc44a3cfbecfb859e1ead76a4de1668b0c8cdf",
+    "docs/BEHAVIOR_TASK_MEMORY.md": "b5db26afde0848555801705632bc3a2ab55a21987ecd62e240bfcb7b77c7a4ba",
+    "docs/BLUEPRINT_SPEC.md": "d5b99f3274e93b9d8a46d0478c6e50caa606583fefbd26ad80111a2d78bd0a60",
+    "CODEX_HANDOFF.md": "4f1eb0b18bf014cfe7a18db1c55a3b327ab5414d06794929b0f1a2bfb2b973dc"
+  },
+  "resolvedOwners": 1603,
+  "targetIds": [
+    "GAM-03",
+    "CPP-01",
+    "AI-03"
+  ],
+  "newSourceCases": 11,
+  "relatedSourceCases": 40,
+  "checks": {
+    "source": "native/build/task-memory-UNQHUi/acceptance.json",
+    "related": [
+      "native/build/behavior-task-life-NW7Cd1/acceptance.json",
+      "native/build/behavior-aborts-46OUDc/acceptance.json"
+    ],
+    "cpp": "native/build/task-memory-cpp-ReRGmK/acceptance.json"
+  },
+  "cpp": {
+    "methods": 3,
+    "calls": 7,
+    "queuedOperations": 0,
+    "liveQueries": 20,
+    "liveQueryObservation": "Renderer handler invocations; one invalid-object live attempt is rejected before that handler and one array write is rejected locally in C++. Not a count of all emitted packets.",
+    "build": {
+      "token": "835877ae-6f5f-477a-8083-d95e89a91e7e",
+      "metadata": {
+        "version": 1,
+        "classes": [
+          {
+            "name": "MemoryProbe",
+            "base": "Library",
+            "blueprintable": false,
+            "properties": [],
+            "functions": [
+              {
+                "name": "Roundtrip",
+                "label": "Roundtrip",
+                "category": "C++",
+                "pure": false,
+                "static": true,
+                "event": "none",
+                "inputs": [
+                  {
+                    "id": "target",
+                    "label": "target",
+                    "type": "object",
+                    "array": false,
+                    "className": "Actor"
+                  },
+                  {
+                    "id": "task",
+                    "label": "task",
+                    "type": "string",
+                    "array": false
+                  },
+                  {
+                    "id": "count",
+                    "label": "count",
+                    "type": "int",
+                    "array": false
+                  }
+                ],
+                "outputs": [
+                  {
+                    "id": "result",
+                    "label": "Return value",
+                    "type": "string",
+                    "array": false
+                  }
+                ],
+                "returnType": "std::string",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "cppType": "hb::Actor*",
+                    "out": false
+                  },
+                  {
+                    "name": "task",
+                    "cppType": "const std::string&",
+                    "out": false
+                  },
+                  {
+                    "name": "count",
+                    "cppType": "int",
+                    "out": false
+                  }
+                ]
+              },
+              {
+                "name": "Reject",
+                "label": "Reject",
+                "category": "C++",
+                "pure": false,
+                "static": true,
+                "event": "none",
+                "inputs": [
+                  {
+                    "id": "target",
+                    "label": "target",
+                    "type": "object",
+                    "array": false,
+                    "className": "Actor"
+                  },
+                  {
+                    "id": "task",
+                    "label": "task",
+                    "type": "string",
+                    "array": false
+                  }
+                ],
+                "outputs": [
+                  {
+                    "id": "result",
+                    "label": "Return value",
+                    "type": "bool",
+                    "array": false
+                  }
+                ],
+                "returnType": "bool",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "cppType": "hb::Actor*",
+                    "out": false
+                  },
+                  {
+                    "name": "task",
+                    "cppType": "const std::string&",
+                    "out": false
+                  }
+                ]
+              },
+              {
+                "name": "Foreign",
+                "label": "Foreign",
+                "category": "C++",
+                "pure": false,
+                "static": true,
+                "event": "none",
+                "inputs": [
+                  {
+                    "id": "target",
+                    "label": "target",
+                    "type": "object",
+                    "array": false,
+                    "className": "Actor"
+                  },
+                  {
+                    "id": "task",
+                    "label": "task",
+                    "type": "string",
+                    "array": false
+                  }
+                ],
+                "outputs": [
+                  {
+                    "id": "result",
+                    "label": "Return value",
+                    "type": "bool",
+                    "array": false
+                  }
+                ],
+                "returnType": "bool",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "cppType": "hb::Actor*",
+                    "out": false
+                  },
+                  {
+                    "name": "task",
+                    "cppType": "const std::string&",
+                    "out": false
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "workerProtocol": 3,
+        "nativeBatch": 1,
+        "nativeModuleQueries": 1,
+        "nativeStateCommit": 1,
+        "nativeBatchOperations": 1,
+        "nativeFrameBatch": 1,
+        "nativeModuleFrameBatch": 1,
+        "nativeInputBatch": 1,
+        "nativeStateBatch": 1,
+        "nativeSpawn": 1,
+        "nativeActorLifetime": 1,
+        "nativeGameSession": 1
+      },
+      "cacheKey": "43fd0179550e7d1aba71",
+      "cacheHit": true,
+      "cacheScope": "version",
+      "sdk": {
+        "fingerprint": "49af65afc3e675df81bc3c768f6de3fe404de4fb51d264c0cf198bcee94b30d4",
+        "files": 38,
+        "bytes": 2400708
+      },
+      "sdkUsed": {
+        "fingerprint": "e777aa3b7aacd808c884f2b96c62e0fa11830b87b57c4bf93a4200f8587e56d0",
+        "preprocessedFingerprint": "d5851710a6f68a753a5227c10e7648a52b437ce238288701e3219f28d8a0010a",
+        "files": 11,
+        "bytes": 1369406,
+        "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+        "mode": "dependencies",
+        "planHit": true,
+        "scanMS": 0
+      },
+      "compiler": "g++.exe",
+      "diagnostics": "빌드 성공"
+    },
+    "binary": {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\43fd0179550e7d1aba71\\worker.exe",
+      "sha256": "2854c039154e179500c1af55915cc55f345d6a156c37adaccea6f77e5b11a668"
+    }
+  },
+  "failuresAndRepairs": [
+    {
+      "cause": "Owned deferred-abort fixture used v1 instead of existing required v2",
+      "repair": "Fixture version2 only for waitForAbort; production validation unchanged."
+    },
+    {
+      "cause": "Owned common fixture read handles before first logic tick",
+      "repair": "Explicit first/restart VM tick; same current-SDK binary cache hit, no production auto-tick added."
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": true,
+    "newCPPBuild": true,
+    "nativeBTTaskInheritance": false,
+    "GUI": false
+  },
+  "storage": {
+    "newNativeBinaries": 1,
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": [
+      "taskmemory3081.mjs",
+      "taskmemoryfine3084.mjs",
+      "taskmemorydocs3086.mjs",
+      "taskmemoryfixture3087.mjs",
+      "taskrecordfix3089.mjs",
+      "admit3088.mjs"
+    ],
+    "handoffBytes": 4310,
+    "cache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    }
+  },
+  "scope": "Actual task activation memory with two-actor/nested ownership, finish/abort/deferred cleanup and error/reset/stale lifetime, lazy validated JSON and no debug payload. Three generated BP and current-SDK C++ functions; seven real caller invocations/21 live queries/no queued writes, compact query packets, same-call50000-character Set/Get/Clear and foreign/stale rejection. Immediate live writes not transaction rollback; no nativeBTTask inheritance, GUI/GPU/device/install or all-SDK validation."
+}
