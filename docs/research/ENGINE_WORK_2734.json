@@ -1,0 +1,187 @@
+{
+  "version": 1,
+  "date": "2026-10-25T01:28:43.599Z",
+  "kind": "inertial-vehicle-wheels-limited-slip-abs-and-public-queries",
+  "implementationRevision": "e088841747fca110ec82793cd5d09a86f454afa6",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2720.json",
+  "changedSourceHashes": {
+    "prototype/vehicle-wheel-dynamics.js": "3823f2bc8c3ab94eddaded9ed8ef9ce64ff492f5774223b63b59c138001c5574",
+    "prototype/vehicle-physics.js": "c63757c2eaea573348bb59542b8dbfc612dac892bd665f466bff5381f440dbe8",
+    "prototype/vehicle-config.js": "a43ebd8ec502960a175a9d6a151f29a4d4638b957a6a42f5fd3a27b65dd73548",
+    "prototype/vehicle-powertrain.js": "7f396b796111e239749b4a8b62d07011aab2566a5676134740c1ebcae9536f54",
+    "prototype/vehicle-inspector.js": "0a2442621652328cc61bf5cdb940de7917d007be07dc49bc2000e4b5d5043c0a",
+    "prototype/vehicle-diagnostics.js": "ec49bac4dfcc86a1feb395f3187375c96131fd0515c57e1aaf4c5c9f5ff0d64d",
+    "prototype/scene-components.js": "4e98f1ff4ff8945e87ac8ddd551be42a703098b017f0e07ef921c08c8c48eeb7",
+    "prototype/engine-services.js": "aae936d0c00815cc279dabd46e53be732b156e4f6b51284c86752f165aa3d14e",
+    "native/include/HBEngine/Game.hpp": "c5beea9e9ecbeaf5b74926726c9518a44d090c7bf21727f3ba3ab500ece6a4b4",
+    "native/include/HBEngine/Session.hpp": "139ff9256dd4a4f9602e205911bcf0bc0bc2e49f298b2891cd8a7e64e3b557c7",
+    "tools/check-vehicle-dynamics-2725.mjs": "e37ec4c8dfe2ed51f847e2800250dbdcdfa3553b6d5b6add72c735e7c01a4e23",
+    "tools/check-vehicle-dynamics-2726-cpp.mjs": "025b191084d8e1e813163257fa542e34e9176901e80271b763a49dbf5caeae91",
+    "docs/VEHICLE_WHEEL_DYNAMICS.md": "cbfc375a61acaa1ca84b9bdd1764cf73468c2526df742d59e719e4d4d5f4a051",
+    "docs/BLUEPRINT_SPEC.md": "277e3a0a641d653fb67403a1cfd042a82b121d135e8e61035e0607025c602623",
+    "docs/ai-routes.json": "30212196c9bfe8ecb4ccaebf5484960eecae9377b631c3def3dea2e523978eb5",
+    "CODEX_HANDOFF.md": "02c9aeaa7e1b7a245b118260043f061494633ed48d03de947e8d0e85abffdf4b"
+  },
+  "resolvedOwners": 1483,
+  "targetIds": [
+    "PHY-02",
+    "CPP-01"
+  ],
+  "changes": {
+    "PHY-02": " ·2721–2734: 選択형 독립 휠관성·암시접촉충격량/회전관성/동적노면반작용, 앞뒤차축슬립제한(각운동량보존/한계), ABS전후진·주차우회. 제작속성/휠UI·Three회전·페이지진단공유. 신규15(실제Rapier주행/공중/후진/ABS/차동)+기존구동계5/초기화11. 고급타이어/임의차동축/예측별도.",
+    "CPP-01": " ·2734: 휠RPM/슬립/ABS 순수BP·hb::Physics공용snapshot3조회, index0기본/활성범위오류/비활성0false. 현재SDK actualCPP 정상3·오류2. 새live호출/중복물리없음."
+  },
+  "newSourceCases": 15,
+  "relatedSourceCases": 16,
+  "cpp": {
+    "methods": 3,
+    "validReads": 3,
+    "invalidReads": 2,
+    "binary": "native/build/plugins/82d9b75953b226161405/worker.exe",
+    "binaryHash": "40e7701226b532460437419451e20eb65251e02a512c4cd3140633a82fa09f8c",
+    "binaryBytes": 4964572,
+    "build": {
+      "token": "6d1112a0-0a04-4998-8fa4-d56092f80d0a",
+      "metadata": {
+        "version": 1,
+        "classes": [
+          {
+            "name": "WheelProbe",
+            "base": "Actor",
+            "blueprintable": true,
+            "properties": [
+              {
+                "name": "rpm",
+                "type": "float",
+                "array": false,
+                "readOnly": false,
+                "value": 0
+              },
+              {
+                "name": "slip",
+                "type": "float",
+                "array": false,
+                "readOnly": false,
+                "value": 0
+              },
+              {
+                "name": "abs",
+                "type": "bool",
+                "array": false,
+                "readOnly": false,
+                "value": false
+              },
+              {
+                "name": "invalid",
+                "type": "bool",
+                "array": false,
+                "readOnly": false,
+                "value": false
+              },
+              {
+                "name": "missing",
+                "type": "bool",
+                "array": false,
+                "readOnly": false,
+                "value": false
+              }
+            ],
+            "functions": [
+              {
+                "name": "Probe",
+                "label": "Probe",
+                "category": "C++",
+                "pure": false,
+                "static": false,
+                "event": "none",
+                "inputs": [],
+                "outputs": [],
+                "returnType": "void",
+                "parameters": []
+              }
+            ]
+          }
+        ],
+        "workerProtocol": 3,
+        "nativeBatch": 1,
+        "nativeModuleQueries": 1,
+        "nativeStateCommit": 1,
+        "nativeBatchOperations": 1,
+        "nativeFrameBatch": 1,
+        "nativeModuleFrameBatch": 1,
+        "nativeInputBatch": 1,
+        "nativeStateBatch": 1,
+        "nativeSpawn": 1,
+        "nativeActorLifetime": 1,
+        "nativeGameSession": 1
+      },
+      "cacheKey": "82d9b75953b226161405",
+      "cacheHit": false,
+      "cacheScope": "version",
+      "sdk": {
+        "fingerprint": "8f421a943aa1a8164bdcc66823c992d6ce0e049fedcc69456e0565e94a3255f2",
+        "files": 37,
+        "bytes": 2390816
+      },
+      "sdkUsed": {
+        "fingerprint": "e8efebd09024f0ad90f1245a0d4cff657aa1e01d2bcac22e841bab53ec069d0b",
+        "preprocessedFingerprint": "c6f7c140838f2c9da2ad16d02c9feac359157acc43a4da717db8721a9155c278",
+        "files": 10,
+        "bytes": 1359514,
+        "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+        "mode": "dependencies",
+        "planHit": false,
+        "scanMS": 2146.1273
+      },
+      "compiler": "g++.exe",
+      "diagnostics": "빌드 성공"
+    }
+  },
+  "checks": {
+    "new": "native/build/vehicle-dynamics-QHZbDS/acceptance.json",
+    "group": "native/build/group2727.json",
+    "cpp": "native/build/vehicle-dynamics-cpp-WedIwd/acceptance.json",
+    "legacy": "native/build/vehicle-powertrain-236-ipnYwo/acceptance.json",
+    "bindings": "native/build/binding-preparation-x197tl/acceptance.json",
+    "active": "native/build/active2724.json",
+    "focus": "native/build/focus2730.json",
+    "syntax": 10
+  },
+  "results": {
+    "airborneRPM": 560.8566343696456,
+    "stationaryAirborneChassisSpeed": 0,
+    "forwardSpeed": 21.180566785125713,
+    "brakingSpeed": -0.00006829750416354217,
+    "absFrames": 72,
+    "reverseSpeed": -14.448062904342262,
+    "unequalInertiaAirborneRPMGap": {
+      "open": 849.6688702514798,
+      "limited": 0
+    },
+    "scope": "Owned reproducible headless scenes; not hardware FPS, real vehicle fidelity or GUI results."
+  },
+  "failuresAndRepairs": [
+    "New source15/current C++/related16 pass; initial group contained12 cases, then only new source gate extended to15 and rerun. GUI/device/renderer gates not repeated.",
+    "Inertia input uses step=any so fractional inertia values are valid; final narrow syntax check after attribute-only correction."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newGUI": false,
+    "newGPU": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newRuntimeSDKProfiles": 0,
+    "nativeModuleCachePolicy": 32,
+    "cleanup": "native/build/temp-clean2734.json"
+  },
+  "remainingBoundary": [
+    "Rapier suspension and lateral approximation retained; advanced combined tire forces/deformation, arbitrary axle differential topology, damage/prediction remain",
+    "Real GUI/device/FPS, long-running large-vehicle load and installation are separate",
+    "No whole engine/analysis completeness claim"
+  ]
+}
