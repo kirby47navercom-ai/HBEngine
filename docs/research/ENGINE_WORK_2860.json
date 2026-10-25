@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "date": "2026-10-25T08:56:20.464Z",
+  "kind": "실제 제작/실행 세부 구현·묶음 영향 검사 / 설치 보류",
+  "implementationRevision": "195c7ef999efb84d4e07e642ed0e9ee83283c16e",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2830.json",
+  "changedSourceHashes": {
+    "DEBUG_HANDOFF.md": "1df7f5183f2c20048c8adbef43d14e6ca4d04404161e15b1c0c75f503cdf2d75",
+    "docs/ASSET_GRAPH_DIFF.md": "da0140c4ef2a195776770fe96f32f125e5624f15a588dbc0df9ec262c952d70f",
+    "docs/BLUEPRINT_SPEC.md": "21ed59cd3acaf6278c285de78366d16380e76cb7170fd51e15943a7db08609b7",
+    "docs/LAYERED_TEXTURE_IMPORT.md": "ed938ea5894023a7dbec86761c83da145982347fc881a7b544fdf5218c70a83f",
+    "docs/LAYERED_DISK_MIPS.md": "86222cce490fcb6307e90a396ac2e0b4b6c7138ca30c88df1538dbfabbb761d9",
+    "docs/ai-routes.json": "6a4feb6f4fa29df9888aea862d9c32d70e75c0908c5b7608b57969dba80bcfed",
+    "prototype/asset-editor-ui.js": "c22e7efb3ca2ccf370a2ce60258cea4c55a5ebeecbb29d0a3f0bac9acc13c703",
+    "prototype/asset-graph-diff-view.js": "08a70341edd2ff288fe55ee44aaa4919a2a9c9141d712ba735340795b172384f",
+    "prototype/asset-graph-diff.js": "78333364884ac8ed088e4b78009ee9981efed7edc08de9fdd45e6fe58dfd9c05",
+    "prototype/asset-merge-panel.js": "94a21dd34d2049800145ef7c05f0a6e7b5e467e0ed4cb993ef8e592e60b05b73",
+    "prototype/source-control.css": "eed5a02497d22aee52a47a15fa9904b34a7e08db48af8bf76255947cc03de735",
+    "prototype/texture-assets.js": "baa2c0baaa9f90ad7e44266e85da7499acdedb0df190f3bc471b33d1f2791a52",
+    "prototype/texture-authored-mip-ui.js": "3a93fabf9cf5a2d6f54e7204689f0a4486de1e35c4b1512231b844a2ab0117a7",
+    "prototype/texture-authored-mips.js": "c757ccf1072e87aabf1aced2b2e78f0e42e4e06124a47dc23f853b8ba99e8858",
+    "prototype/texture-disk-mips.js": "cc0f0d5c3e0c8132cbb50aa05fbd884c278578c91b5e88f7efe45f4c09316e1b",
+    "prototype/texture-import-ui.js": "176e21cdea88d5e42a2cd551dc26e34d652f9152e77c9b1b6902929255c9318e",
+    "prototype/texture-import.js": "cfaa338ffbc91b6eca718c299252b53c37966b8bbc46eb2eed44d95e5016cb08",
+    "prototype/texture-residency-pool.js": "7a5131b134fcccdc06c403832274b54f29eaedd10c2e978e7cf4ccd0c1518a47",
+    "prototype/texture-resident-view.js": "54429626a2936456e1501c256840b799c64cedd6a3efdc08ca6203888f878c05",
+    "prototype/graph-implicit-links.js": "59e7b33f607a1971c9ed068cf40645977ae4c455d0bfb7052fb709dc8310d54e",
+    "prototype/graph-link-conflicts.js": "258bc65887a42c2a28cde30e58dfd854013578da4c45982c0527ccb1a9faec0c",
+    "prototype/texture-disk-authoring.js": "db471d4e1597ca439bff85088d6ec23daa06b675cc6d1bb952aab1d6c23b2a30",
+    "prototype/texture-disk-load.js": "01ba340db7ff02edeebf54a8dece0eea614e33de5fa9d5c6d47d2cf6d3f1a4e0",
+    "tools/check-implicit-graphs-2839.mjs": "01a3bca757e2217b9737238447d9baecaee09b348b100e01f0be3db4db0f163e",
+    "tools/check-layered-disk-2838.mjs": "ac94393bdef42a17cca7fe4ff72e1e1c9b3daa0541486ee88f31f33751b5e321",
+    "tools/check-layered-disk-2841-cpp.mjs": "f74755a9bd7183bb95e407ecb47ed3838d115f2dac6eafd8a040a3048208a58a",
+    "tools/check-graph-link-choice-2845.mjs": "e162a1172056079172ba4e51f7d8b40716774f46f698264fcd1936fe4d9b860c",
+    "tools/layered-disk-fixture-2837.mjs": "7ace12a7057affc4324984bdac479db84a4f201d1b414b8c0bddbc6059a64a83",
+    "CODEX_HANDOFF.md": "723536ce714bd71a9e8f4516c33019ae44a35c9d04f374f57c6b0b07a958ced1"
+  },
+  "resolvedOwners": 1536,
+  "targetIds": [
+    "MAT-03",
+    "AST-03",
+    "BLD-06",
+    "AI-03"
+  ],
+  "changes": {
+    "MAT-03": " ·2831–2860: 배열/큐브/볼륨 작성RGBA8 디스크 밉 꼬리만공유읽기·상주binding/pool·논리LOD·기존C++SetResidentMip 연결. 면/슬라이스순차decode·마지막lease취소/CPU해제·큐브파생cache정리·ND경로보고중복제거. 초기/후속장치한도IO전검증·실패후기존바인딩보존. 사람버튼/실제크기/Undo/문서CAS/owner종료. 신규18·기존layered20/2Dgate·실제CPP3메서드9호출9쓰기; 자동cook/압축/HDR/외부snapshot/영역쓰기·전체heap별도.",
+    "AST-03": " ·2831–2860: 다차원 작성밉디스크source를기존dependency/save/schema에연결. 필요꼬리만decode·활성/후보lease만보유·새디스크사본/worker/타이머0. 미리보기의원본전체검사는유지. 대상압축/GPUformat/cook/RDO는별도.",
+    "BLD-06": " ·2831–2860: 실제BT child순서/루트·FSM states/전이/any-state/부모·시작점·안정ID/삭제/page를시각비교/AIlist-diff에연결12. 관계클릭/키보드/삭제버전/재선택7: 안정edge/transition기록·parent필드·BT children목록·pose input만선택, 다른독립충돌보존. source의위조mergePath를신뢰하지않음. 기존그래프15+context9. 서비스flow/임의깊이graph/Gitmarker·원격VCS별도.",
+    "AI-03": " ·2831–2860: textureDiskMips v2 4종source와bounded상주보고·기존Materials C++/BP실행을공유. document.graph.list/diff의nodeField states/nodes·entry·상대mergePath는본문/조건없는읽기전용. 사람의관계선택은기존mergeAsset/문서검증/CAS/Undo에연결; 별도AI쓰기우회없음."
+  },
+  "newSourceCases": 37,
+  "relatedSourceCases": 44,
+  "checks": {
+    "group": "native/build/group2847.json",
+    "disk": "native/build/layered-disk-SIEmCq/acceptance.json",
+    "implicitGraphs": "native/build/implicit-graphs-OJxEgS/acceptance.json",
+    "linkChoiceFinal": "native/build/graph-link-choice-ejEqKZ/acceptance.json",
+    "relatedContexts": "native/build/graph-contexts-NV0sJP/acceptance.json",
+    "relatedGraph": "native/build/asset-graph-diff-WcEVIA/acceptance.json",
+    "relatedImport": "native/build/layered-import-KbZVAs/acceptance.json",
+    "legacy2D": "native/build/disk-mips-2842-legacy.json",
+    "cpp": "native/build/layered-disk-cpp-LHYIZ3/acceptance.json"
+  },
+  "cpp": {
+    "methods": 3,
+    "calls": 9,
+    "writes": 9,
+    "cacheKey": "3797b21b7bd2f0101cf0",
+    "sdk": {
+      "fingerprint": "6ae42160cdb0e8cdce5bcea410ec666c86453519087ed1901192da45f46811da",
+      "files": 37,
+      "bytes": 2391557
+    },
+    "sdkUsed": {
+      "fingerprint": "dc9211f4a2343da5636cdc97b5de236f7dc9fe682a47244dd4b349e08dad22d3",
+      "preprocessedFingerprint": "70c9667b2e77c58ca31ef1a0052f28cf2667982df19833b4dae00c241d7c70c6",
+      "files": 10,
+      "bytes": 1360255,
+      "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+      "mode": "dependencies",
+      "planHit": true,
+      "scanMS": 0
+    },
+    "binary": {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\3797b21b7bd2f0101cf0\\worker.exe",
+      "sha256": "4865966fb544e13b58de09647dfcc6fa952a4b5608be908732dc985d9a51aea7"
+    },
+    "scope": "Current unchanged SDK Materials::SetResidentMip compiled once. Native operations replayed through actual engine service/VM and real materialTextureBindings for disk array/cube/volume fine/coarse/release; all resident RGBA bytes and final zero leases inspected. Renderer hook supplied, owned Image/canvas fixture; no GUI/GPU pixels/device/install."
+  },
+  "results": {
+    "syntaxFiles": 21,
+    "source37": true,
+    "related44": true,
+    "legacy2DGate": true,
+    "formalStatusValidated": true,
+    "allResidentBytes": true,
+    "finalLeases": 0
+  },
+  "failuresAndRepairs": [
+    "C++ first fixture document lacked addEventListener; fixed only owned test surface and reused identical SDK/binary. No failed initialization counted.",
+    "Final relationship boundary: authored mergePath ignored/replaced with derived stable paths; focused7 gate passes."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newGUI": false,
+    "newGPU": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newPersistentSDKCopies": 0,
+    "nativeModuleCachePolicy": 32,
+    "cache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    },
+    "removedOwnedRegularHelpers": 12,
+    "handoffBytes": 3480
+  },
+  "scope": "RGBA8 authored disk tails, physical view/device constraints, owned decode and actual bindings/pool/native payloads; actual unchanged SDK C++/VM replay with renderer hook; BT/FSM/input/explicit edge comparison and scoped existing merge controls/AI read metadata. No actual GUI/GPU pixels/mobile/install/whole heap guarantees or global engine completion.",
+  "canonicalCounts": {
+    "verified": 37,
+    "partial": 37,
+    "unimplemented": 1,
+    "unverified": 3
+  },
+  "previousLineage": [
+    "docs/research/ENGINE_WORK_2720.json",
+    "docs/research/ENGINE_WORK_2734.json",
+    "docs/research/ENGINE_WORK_2744.json",
+    "docs/research/ENGINE_WORK_2754.json",
+    "docs/research/ENGINE_WORK_2762.json",
+    "docs/research/ENGINE_WORK_2790.json",
+    "docs/research/ENGINE_WORK_2820.json",
+    "docs/research/ENGINE_WORK_2830.json"
+  ]
+}
