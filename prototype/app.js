@@ -52,8 +52,11 @@ import {withGPUFrameTiming,stopGPUFrameTiming,clearGPUFrameTiming} from './gpu-f
 import {tilemapPage} from './tilemap-diagnostics.js';
 import {openEffectLiveEditor} from './effect-live-editor.js';
 import {updateClothReadout} from './cloth-diagnostics.js';
+import {clothTetherAuthoringSource} from './cloth-tether-editor-source.js';
+import {editClothTethers} from './cloth-tether-generation.js';
 import {handleClothDistanceClick,handleClothDistanceIndex} from './cloth-distance-editor.js';
-document.addEventListener('click',event=>{try{handleClothDistanceClick(event);}catch(error){notify(error.message);}},true);
+function clothTetherSource(input,root){return clothTetherAuthoringSource(input,root,{running,objects,selected,selectedDetail,detailTarget});}
+document.addEventListener('click',event=>{try{handleClothDistanceClick(event,{source:clothTetherSource});}catch(error){notify(error.message);}},true);
 document.addEventListener('change',event=>{try{handleClothDistanceIndex(event);}catch(error){notify(error.message);}},true);
 import {handleClothMassClick,handleClothMassIndex} from './cloth-mass-editor.js';
 import {installClothMassBrush} from './cloth-mass-brush.js';
@@ -1837,6 +1840,8 @@ document.addEventListener('click',async event=>{
 if(session.acceptance)window.hbEditorRendererDebug={ready:()=>!!mainRenderer&&!!previewRenderer&&$('#render-fallback').hidden,inspect:()=>({materialPreview:{path:assetDocs.current?.path,selection:assetDocs.current?.view.materialPreview||null,history:assetDocs.current?.history.length,future:assetDocs.current?.future.length,material:previewSphere?.material.uuid,scene:materialPreviewScene?.snapshot()},tilemaps:[...meshMap].filter(([,g])=>g.userData.tilemapDebug).map(([id,g])=>({id,...g.userData.tilemapDebug,geometries:[...g.userData.tilemapState.meshes].map(([key,row])=>[key,row.mesh.geometry.uuid])})),renderer:gameRendererInfo(mainRenderer),previewRenderer:gameRendererInfo(previewRenderer),materials:visuals.materialState(),particles:[...meshMap.values()].filter(g=>g.userData.particleState).map(g=>({id:g.userData.objectId,...g.userData.particleState.simulation.debugState?.()})),views:extraViewports.map(v=>({id:v.id,shared:v.sharedRenderer,width:v.canvas.width,height:v.canvas.height})),logs}),capture:async(id)=>{if(id==='material'){await updateSurface();await previewSphere.material.userData.ready;materialPreviewScene.draw(0,true);return previewRenderer.domElement.toDataURL('image/png');}const v=extraViewports.find(v=>v.id===id);renderViewport(v);return (v?.canvas||mainRenderer.domElement).toDataURL('image/png');},wait:()=>Promise.all([...meshMap.values()].map(g=>g.userData.ready))};
 window.hbEngineWindows={detach:id=>dock.detach(id),redock:id=>dock.redock(id),redockAll:()=>dock.redockAll(),state:()=>({count:dock.windowCount,detached:[...dock.entries.values()].filter(e=>e.detached).map(e=>e.id)})};
 const editorCommandMethods={
+  'scene.cloth.tethers':params=>automationAuthoringEdit({...params,includeData:params.includeData??false},'scene',data=>editClothTethers(data,{...params,kind:'scene'})),
+  'blueprint.cloth.tethers':params=>automationAuthoringEdit({...params,includeData:params.includeData??false},'blueprint',data=>editClothTethers(data,{...params,kind:'blueprint'})),
   'scene.placeBatch':params=>automationAuthoringEdit({...params,includeData:params.includeData===undefined?false:params.includeData},'scene',data=>appendPlacedObjects(data,params.placements)),
   'scene.place':params=>automationAuthoringEdit({...params,includeData:params.includeData===undefined?false:params.includeData},'scene',data=>appendPlacedObject(data,params.kind,params)),
   'effect.tags.edit':params=>automationAuthoringEdit({...params,includeData:params.includeData===undefined?false:params.includeData},'effect',data=>{if(params.clear!==undefined&&typeof params.clear!=='boolean'||params.clear&&params.requirements!==undefined)throw Error('효과 태그 조건 변경을 확인하세요.');if(!params.clear&&params.requirements===undefined)throw Error('태그 조건 또는 clear:true를 지정하세요.');const index=params.modifier??null;editEffectTagRequirements(data,index,params.clear?undefined:params.requirements);return {modifier:index,assetVersion:data.version};}),

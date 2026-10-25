@@ -230,3 +230,6 @@ stationary inverse 첫 독립 oracle에서 약3.7e-6 오차를 찾아 centered c
 # 3001–3020 큰 입자 JSON 경로
 
 일반 game JSON 배열4096/노드10000/텍스트262144와 native wire 문자열4096이 다른 층에 있어 단순 서비스 파서 변경만으로는 큰 C++ 배열을 연결할 수 없었어요. 등록된5 입자 속성만 strict schema/토폴로지 예산·NativeProtocol 순서별 사설 검증·C++ enqueue 전 shape 검증으로 연결해요. 일반 제한은 그대로예요. 첫 source fixture는 Rope2D에 미지원 topology 및5000입자를 넣었어요. Cloth rope5000/Rope2D 기존유효4096으로 나누고 규격을 늘려 통과시키지 않았어요. 최종 source11 component-json-bvVx9N, 관련56+nativeinput10/records1478gate 통과. 현재SDK component-json-cpp-xKhzC6 2메서드6호출5queue·65536배열5종/65535tether·4거부/미존재legacy배열·공용재생 통과. 새SDK fingerprint는 WORK3020·과거SDK CPP전체를 현재검증으로세지않아요.
+# 3021–3040 작성 고정점 경로 연결
+
+처음 group3026은 새 test fixture의 non-async 거절 callback 안 await를 syntax gate에서 잡아 실행 전에 멈췄어요. fixture만 async로 고친 뒤 runtime 신규21/관련33 통과. 알고리즘 추가 검토에서 유한 행렬×기하 곱과 경로 합의 overflow가 무한 relax를 만들 수 있음을 확인해 유한 축·overflow 경로·all-pinned 결과 검증을 추가했어요. 그 변경 소유21만 다시 실행하여 cloth-tethers-trCuxz 통과, 관련33은 무변경 소유 결과를 보존했어요. 65536격자 작성 생성은 보고서의 실제 Node 시간이며 브라우저/FPS/heap 측정이 아니에요. SDK/바이너리 추가 생성·GUI·설치는 없어요.

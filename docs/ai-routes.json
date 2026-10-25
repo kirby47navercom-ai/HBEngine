@@ -4518,6 +4518,26 @@
         "prototype/component-json.js",
         "native/include/HBEngine/ComponentJson.hpp"
       ]
+    },
+    {
+      "id": "cloth-tether-generation-declarations",
+      "keywords": [
+        "generateClothTethers",
+        "editClothTethers",
+        "clothTetherGenerationContract"
+      ],
+      "paths": [
+        "prototype/cloth-tether-generation.js"
+      ]
+    },
+    {
+      "id": "cloth-tether-source-declaration",
+      "keywords": [
+        "clothTetherAuthoringSource"
+      ],
+      "paths": [
+        "prototype/cloth-tether-editor-source.js"
+      ]
     }
   ]
 }
