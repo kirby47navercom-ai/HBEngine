@@ -3,7 +3,9 @@
 최신 사용자: 재지시하게 하지 말고 여러 관련 기능 계속구현·마지막 영향검사 묶음. 업데이트 보류(native/build/UPDATE_HOLD.json active), 예약 재생성금지(hbengine삭제2160). 사용자 창/탭/프로필/게임/Versions 변경금지·새에이전트금지. Mac/Xcode/Android폰없음. 한글 동일 kirby47navercom-ai author/committer·AI trailer없이commit/push.
 보호: prototype/player.js, tools/check-player-keyboard-release.mjs 읽기/편집/실행/stage금지. docs/NODE_CATALOG.md 기존dirty 미stage. core-api ignored generatedCore()만·카탈로그CLI금지. hb context 등록keyword/실제symbol·focused-routes 확인; broad/--all금지. 새원장은 기록Map합성+명시own whitelist만새해시. 원장updatedAt은YYYY-MM-DD·validate/read필수.
 
-core c2c262391b1b90c5998aad9ec3d4c2f6292c14c7; canonical WORK2870/ENGINE_STATUS. 78행37verified/37partial/1unimplemented/3unverified·전체율null. 기록hash2720압축기준·60전Map재압축. 설치완료아님.
+core dec1538c21d24a5b46f8b4d2a04ff5ddff2c87e2; canonical WORK2880/ENGINE_STATUS. 78행37verified/37partial/1unimplemented/3unverified·전체율null. 기록hash2720압축기준·60전Map재압축. 설치완료아님.
+
+신규2880: BT소유노드별services stablekey/graphPath/nodeField·순서/삭제·동일ID소유격리·개별충돌/키보드·AIrevision. 신규8+관련43(group2874, 최종신규 behavior-service-graphs-15M70W). 실제문서적용/프로젝트save→BehaviorRunner 주기1초=1.125/2.125초, 다른owner주기유지. 서비스는부착목록·순차flow아님. 누적신규53, 관련unique44·기존2Dgate/CPP범위는2860/2870에별도.
 
 신규2870: 동일asset/URLowner/device의약한키로disk source 공유. 경로/크기/한도변경은새source·기존view snapshot보존. 물리texture/Source/sampler수명독립·마지막lease CPU0. 신규8(group2864)·관련18·동일CPP캐시9호출. 두동일material의픽셀보유byte 84/336/504/292 대168/672/1008/584; 실제전체RAM/GPU/FPS측정아님. weakmetadata만남고다음사용은외부파일재읽기.
 

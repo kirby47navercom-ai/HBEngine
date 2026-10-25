@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "date": "2026-10-25T09:11:50.855Z",
+  "kind": "서비스 제작 비교·병합·실제 실행 연결 / 설치 보류",
+  "implementationRevision": "dec1538c21d24a5b46f8b4d2a04ff5ddff2c87e2",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2870.json",
+  "changedSourceHashes": {
+    "prototype/graph-service-choices.js": "94cd4f9e839290c2f83f69f53b1a027778b482650497d57128dc89fdd11adc1f",
+    "prototype/asset-graph-diff.js": "045fec6e363a3f0b4d6386cfc821a2b1857f41393dcf27dfd4d1264923c538ac",
+    "prototype/asset-graph-diff-view.js": "a5cc4ce0adf5aeefe034aa6a8acfae09be86132a5692686bf6ec5925808a47c4",
+    "tools/check-behavior-service-graphs-2872.mjs": "8e5ff86889cf47fdec8bce0781122bb68711abe93f36a4569f4134bf5f448cf4",
+    "docs/ASSET_GRAPH_DIFF.md": "6e516422d7a91ffb644b771f3b59df8b477bd1c1906eee604718d1e51589a26f",
+    "docs/ai-routes.json": "b4a3f3c7293ff7b4d02141bcbafcd32bd251347d85dc1b5f0f460fb53b129e6e",
+    "docs/BLUEPRINT_SPEC.md": "91aa311173008127baaaecd65ef41fddb2269dd286ccf9fd03909b2661af34a3",
+    "CODEX_HANDOFF.md": "ac54f239f40a625e1166777c225cfd210f5c5353dc940e6ebb889d3f00319015"
+  },
+  "resolvedOwners": 1540,
+  "targetIds": [
+    "BLD-06",
+    "AI-03"
+  ],
+  "changes": {
+    "BLD-06": " ·2871–2880: 실제BT소유별services stablekey/graphPath/nodeField·순서·삭제·존재구분·동일ID소유격리. 개별서비스충돌/키보드/삭제·독립owner필드보존·구형빈목록제외. 신규8+관련43. 문서적용/프로젝트save후실제BehaviorRunner에서선택주기1초=1.125/2.125초·다른owner주기유지. 서비스부착목록이며실행의순차flow를만들지않음.",
+    "AI-03": " ·2871–2880: 기존graph.list/diff에owner-scoped services key·nodeField/order/orderChanged·버전존재/수와서비스이벤트이름라벨. 본문/파라미터전체없음·revision거절. 기존병합/문서검증/적용/저장/Undo흐름·새SDK/VM의미변경없음."
+  },
+  "newSourceCases": 8,
+  "relatedSourceCases": 43,
+  "checks": {
+    "group": "native/build/group2874.json",
+    "sourceFinal": "native/build/behavior-service-graphs-15M70W/acceptance.json",
+    "runtime": "native/build/behavior-service-graphs-15M70W/runtime-events.json",
+    "implicitGraphs": "native/build/implicit-graphs-GjOfF9/acceptance.json",
+    "linkChoice": "native/build/graph-link-choice-Mh0ngf/acceptance.json",
+    "contexts": "native/build/graph-contexts-GLRgiq/acceptance.json",
+    "graph": "native/build/asset-graph-diff-u3b8yK/acceptance.json"
+  },
+  "results": {
+    "syntaxFiles": 4,
+    "validatedBTProjectSaved": true,
+    "actualBehaviorRunner": true,
+    "selectedInterval": 1,
+    "actualSelectedRootTimes": [
+      1.125,
+      2.125
+    ],
+    "independentOwnerSchedulePreserved": true,
+    "currentCanonicalStatusValidated": true,
+    "uniqueNewCasesAcross2860To2880": 53,
+    "uniqueRelatedCasesAcross2860To2880": 44,
+    "legacy2DAndCppScopes": "WORK2860/WORK2870; unrelated checks not repeated"
+  },
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newGUI": false,
+    "newGPU": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newNativeModuleBinaries": 0,
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": 5,
+    "handoffBytes": 4355
+  },
+  "scope": "Actual BT service attachment authoring/merge and isolated persisted result scheduling, not invented sequential runtime flow, arbitrary nested graphs/Git marker or native BTTask subclasses. Owner DOM fixture, no new GUI/mobile/install.",
+  "canonicalCounts": {
+    "verified": 37,
+    "partial": 37,
+    "unimplemented": 1,
+    "unverified": 3
+  },
+  "previousLineage": [
+    "docs/research/ENGINE_WORK_2720.json",
+    "docs/research/ENGINE_WORK_2734.json",
+    "docs/research/ENGINE_WORK_2744.json",
+    "docs/research/ENGINE_WORK_2754.json",
+    "docs/research/ENGINE_WORK_2762.json",
+    "docs/research/ENGINE_WORK_2790.json",
+    "docs/research/ENGINE_WORK_2820.json",
+    "docs/research/ENGINE_WORK_2830.json",
+    "docs/research/ENGINE_WORK_2860.json",
+    "docs/research/ENGINE_WORK_2870.json"
+  ]
+}
