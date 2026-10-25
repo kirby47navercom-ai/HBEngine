@@ -4017,7 +4017,8 @@
         "graphNodeConflictPaths",
         "assetGraphChoices",
         "implicitGraphLinks",
-        "graphEdgeConflictPaths"
+        "graphEdgeConflictPaths",
+        "appendBehaviorServiceGraphs"
       ],
       "paths": [
         "prototype/asset-merge.js",
@@ -4030,7 +4031,9 @@
         "docs/ASSET_GRAPH_DIFF.md",
         "prototype/gameplay-assets.js",
         "prototype/graph-implicit-links.js",
-        "prototype/graph-link-conflicts.js"
+        "prototype/graph-link-conflicts.js",
+        "prototype/graph-service-choices.js",
+        "prototype/gameplay-runtime.js"
       ]
     },
     {
