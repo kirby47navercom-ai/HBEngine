@@ -1,3 +1,6 @@
+<!-- WORK2830 -->
+추가: 천·2D/3D 로프의 인장 전용 압축·입자별 질량 분포를 실제 솔버와 기존 Components Bool/JSON C++·BP 함수에 연결했어요. 장면/BP 숫자 폼·지정/기본값/초기화·일반 Undo를 사용하고 같은 값은 재적용하지 않아요. 질량 분포는 명시적 cold rebuild, 기존 물성 hot 변경은 현재 질량을 보존해요. ENGINE_WORK_2830·DEFORMABLE_DISTRIBUTION.md에 근거와 잔여를 기록해요.
+
 <!-- WORK2820 -->
 현재 추가: Two Bone IK 접촉 Bool·월드/발판 고정·회전/해제·기존 SetBool 공용 C++ 실행, 함수/매크로 그래프 시각 비교와 document.graph.list, 방향별 노멀 거칠기·배열/큐브/볼륨 가져오기를 기존 문서/Undo/실행 흐름에 연결했어요. 범위·검사·잔여는 ENGINE_WORK_2820과 전용 문서를 참고해요. 설치 보류·예약 금지를 유지해요.
 

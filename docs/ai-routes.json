@@ -4130,6 +4130,27 @@
         "prototype/texture-image-load.js",
         "tools/editor-automation.mjs"
       ]
+    },
+    {
+      "id": "deformable-distribution",
+      "keywords": [
+        "deformableMasses",
+        "validDeformableMassWeights",
+        "deformableDistributionContract",
+        "clothMassControls",
+        "editClothMassWeight"
+      ],
+      "paths": [
+        "prototype/deformable-distribution.js",
+        "prototype/deformable-physics.js",
+        "prototype/deformable-properties.js",
+        "prototype/scene-components.js",
+        "tools/editor-automation.mjs",
+        "prototype/cloth-mass-editor.js",
+        "prototype/scene-inspector.js",
+        "prototype/blueprint-details.js",
+        "prototype/app.js"
+      ]
     }
   ]
 }

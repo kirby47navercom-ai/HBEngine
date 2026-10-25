@@ -1,3 +1,5 @@
+분포2824 첫 묶음: 실제 particleMass 비율이1로남음. 설치 Rapier descriptor를독립확인: setMass(2).setMasses([1.6,.4]) 후에도 mass=2 유지·uniform total 우선. 공개 descriptor.mass=null 뒤 정규화 masses 사용하도록수정. 인장전용 복원 검사의 signed X는 자유끝이원점을지날수있으므로 제약인 실제거리로수정. native솔버를대체하지않음. 첫실패는성과미포함; 최종acceptance는WORK2830에기록.
+
 # 2807 C++ 발 고정 검사 응답 해석
 
 현상: Plant 통과 뒤 Release의 reply.objects에서 Rig를 찾지 못해 검사 TypeError. group2805와 foot-plant-cpp-ySx3vh/Plant-reply.json 근거. 같은 필드를 로깅한 재실행도 종료 오류를 재현했으므로 엔진을 추측 수정하지 않아요.
