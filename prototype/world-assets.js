@@ -1,3 +1,6 @@
+import {stitchMeshSeamNormals} from './mesh-normal-stitch.js';
+import {meshNormals} from './mesh-normals.js';
+export {meshNormals};
 import {bevelMeshRegion} from './mesh-region-bevel.js';
 import {foliageSelection,foliageScatterGrid,foliageOutsideCircle} from './foliage-local-work.js';
 import {copyWorldDraft,isWorldDraft} from './world-draft.js';
@@ -23,11 +26,12 @@ export function validWorldAsset(kind,d){
  if(kind==='foliage')return (d.mesh===''||path(d.mesh))&&(d.terrain===''||path(d.terrain))&&Number.isSafeInteger(d.seed)&&Array.isArray(d.instances)&&d.instances.length<=1000000&&new Set(d.instances.map(i=>i?.id)).size===d.instances.length&&d.instances.every(i=>label(i?.id)&&vec(i.position,3)&&vec(i.rotation,3,-360000,360000)&&vec(i.scale,3,.001,10000));
  return (d.collisionLevel===undefined||Number.isInteger(d.collisionLevel)&&d.collisionLevel>=0&&d.collisionLevel<Math.max(1,d.levels?.length||0))&&Array.isArray(d.levels)&&['distance','screen'].includes(d.mode)&&finite(d.hysteresis,0,.5)&&Number.isInteger(d.forced)&&d.forced>=-1&&d.forced<d.levels.length&&Array.isArray(d.levels)&&d.levels.length<=16&&d.levels.every((l,i)=>path(l?.asset)&&finite(l.threshold,.000001,1000000)&&(i===0||(d.mode==='distance'?l.threshold>d.levels[i-1].threshold:l.threshold<d.levels[i-1].threshold)));
 }
-export function meshNormals(d){const n=d.vertices.map(()=>[0,0,0]);for(let i=0;i<d.indices.length;i+=3){const ids=d.indices.slice(i,i+3),[a,b,c]=ids.map(j=>d.vertices[j]),u=b.map((v,j)=>v-a[j]),v=c.map((x,j)=>x-a[j]),q=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]];for(const id of ids)for(let j=0;j<3;j++)n[id][j]+=q[j];}return n.map(v=>{const l=Math.hypot(...v);return l?v.map(x=>x/l):[0,1,0];});}
+
 export function editMesh(d,settings){
  const {operation,vertices=[],faces=[],delta=[0,0,0],distance=1}=settings;
  if(!validWorldAsset('mesh',d)||!Array.isArray(vertices)||!vertices.every(i=>Number.isInteger(i)&&i>=0&&i<d.vertices.length)||!Array.isArray(faces)||!faces.every(i=>Number.isInteger(i)&&i>=0&&i<d.indices.length/3)||!vec(delta,3)||!finite(distance))throw Error('메시 선택·연산 값을 확인하세요.');
  const uv=editMeshUV(d,settings);if(uv){if(!validWorldAsset('mesh',uv))throw Error('UV 결과 범위를 확인하세요.');return uv;}
+ const stitched=stitchMeshSeamNormals(d,settings);if(stitched){if(!validWorldAsset('mesh',stitched))throw Error('노멀 경계 결과 범위를 확인하세요.');return stitched;}
  const bevel=bevelMeshRegion(d,settings);if(bevel){if(!validWorldAsset('mesh',bevel))throw Error('베벨 메시 결과 범위를 확인하세요.');return bevel;}
  const region=editMeshRegion(d,settings);if(region){if(!validWorldAsset('mesh',region))throw Error('영역 메시 결과 범위를 확인하세요.');return region;}
  const topology=editMeshTopology(operation==='setNormals'&&!d.normals?{...d,normals:meshNormals(d)}:d,settings);if(topology){if(!validWorldAsset('mesh',topology))throw Error('메시 결과 범위를 확인하세요.');return topology;}

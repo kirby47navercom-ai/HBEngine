@@ -1,3 +1,4 @@
+import {prepareMeshAttributeVisual,updateMeshAttributeVisual} from './mesh-attribute-update.js';
 import * as THREE from 'three';
 import {validWorldAsset} from './world-assets.js';
 import {reflectionProbeMeshBounds} from './reflection-probe-bounds.js';
@@ -28,7 +29,7 @@ function dirty(attribute, indices) {
 }
 
 export function prepareEditableWorldVisual(root, kind, data) {
-  states.set(root, {kind, data});
+  states.set(root, {kind, data,...kind==='mesh'?{mesh:prepareMeshAttributeVisual(root)}:{}});
   if (kind === 'terrain') root.traverse(node => {
     if (node.isMesh) {
       node.geometry.userData.terrainGrid = {width: data.resolution[0], height: data.resolution[1], holes: data.holes};
@@ -135,7 +136,7 @@ function updateTerrain(root, previous, data) {
 export function updateWorldVisual(root, data) {
   const state = states.get(root);
   if (!state || !validWorldAsset(state.kind, data)) return false;
-  const updated = state.kind === 'foliage' ? updateFoliage(root, state.data, data) : state.kind === 'terrain' ? updateTerrain(root, state.data, data) : false;
+  const updated = state.kind === 'foliage' ? updateFoliage(root, state.data, data) : state.kind === 'terrain' ? updateTerrain(root, state.data, data) : state.kind === 'mesh' ? updateMeshAttributeVisual(root,state.data,data,state.mesh,dirty) : false;
   if (updated) state.data = data;
   return updated;
 }

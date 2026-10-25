@@ -4885,6 +4885,36 @@
       "paths": [
         "prototype/mesh-boundary-selection.js"
       ]
+    },
+    {
+      "id": "mesh-normal-stitch-declarations",
+      "keywords": [
+        "stitchMeshSeamNormals",
+        "meshNormalStitchContract"
+      ],
+      "paths": [
+        "prototype/mesh-normal-stitch.js"
+      ]
+    },
+    {
+      "id": "mesh-normals-declaration",
+      "keywords": [
+        "meshNormals"
+      ],
+      "paths": [
+        "prototype/mesh-normals.js"
+      ]
+    },
+    {
+      "id": "mesh-attribute-update-declarations",
+      "keywords": [
+        "prepareMeshAttributeVisual",
+        "updateMeshAttributeVisual",
+        "meshAttributeUpdateContract"
+      ],
+      "paths": [
+        "prototype/mesh-attribute-update.js"
+      ]
     }
   ]
 }
