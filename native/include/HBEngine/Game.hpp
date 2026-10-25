@@ -660,6 +660,11 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="particlePause", KoreanName="파티클 일시정지", Category="파티클") static void Pause(Actor* target,bool paused);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="particleEmit", KoreanName="파티클 방출", Category="파티클") static void Emit(Actor* target,int count);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="particleCount", KoreanName="파티클 개수", Category="파티클") static int GetCount(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="particleComponentPlay", KoreanName="컴포넌트 파티클 재생", Category="파티클") static void PlayComponent(Actor* target,const std::string& component);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="particleComponentStop", KoreanName="컴포넌트 파티클 정지", Category="파티클") static void StopComponent(Actor* target,const std::string& component,bool clear);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="particleComponentPause", KoreanName="컴포넌트 파티클 일시정지", Category="파티클") static void PauseComponent(Actor* target,const std::string& component,bool paused);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="particleComponentEmit", KoreanName="컴포넌트 파티클 방출", Category="파티클") static void EmitComponent(Actor* target,const std::string& component,int count);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="particleComponentCount", KoreanName="컴포넌트 파티클 개수", Category="파티클") static int GetComponentCount(Actor* target,const std::string& component);
 };
 HB_CLASS()
 class Abilities : public Library {
@@ -690,6 +695,9 @@ class EnvironmentQuery : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="eqsRun", KoreanName="환경 질의 실행", Category="AI|EQS") static void Run(Actor* target,const std::string& asset,Actor* context=nullptr);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="eqsResults", KoreanName="환경 질의 결과", Category="AI|EQS") static std::string Results(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="eqsRunBatch", KoreanName="환경 질의 묶음 실행", Category="AI|EQS") static void RunBatch(Actor* target,const std::vector<std::string>& assets,Actor* context=nullptr,bool debug=false);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="eqsBatchResults", KoreanName="환경 질의 묶음 결과", Category="AI|EQS") static std::string BatchResults(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="eqsCancelBatch", KoreanName="환경 질의 묶음 취소", Category="AI|EQS") static void CancelBatch(Actor* target);
 };
 HB_CLASS()
 class Localization : public Library {

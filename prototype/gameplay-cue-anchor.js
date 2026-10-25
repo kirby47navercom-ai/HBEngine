@@ -2,6 +2,7 @@ import {Matrix4,Vector3,Quaternion,Euler,MathUtils} from 'three';
 import {skeletalBoneIndex} from './sequence-state.js';
 import {sceneWorldMatrix} from './scene-runtime.js';
 import {spawnTransformValid} from './runtime-spawn.js';
+import {particleComponent} from './particle-component-state.js';
 import {componentDefaultValues} from './scene-components.js';
 
 const matrixTRS=value=>new Matrix4().compose(new Vector3(...value.position),new Quaternion().setFromEuler(new Euler(...value.rotation.map(MathUtils.degToRad))),new Vector3(...value.scale));
@@ -28,7 +29,7 @@ export class GameplayCueAnchor {
 }
 // A relative actor-name path selects an ordinary emitter actor. Its existing
 // simulation/render snapshot stays actor-owned; no second hidden simulation.
-export function gameplayCueEmitter(owner,vm,names=null){
+export function gameplayCueEmitter(owner,vm,names=null,selector=''){
  let object=owner;const chain=[owner],edges=[];for(const name of names||[]){const parent=object,matches=vm.objects.filter(o=>(o.parentId||o.parent)===parent.id&&o.name===name&&o.poolActive!==false);if(matches.length!==1)throw Error('고유한 활성 이미터 경로를 지정하세요: '+name);object=matches[0];chain.push(object);edges.push([object,parent,name]);}
- const components=(object.components||[]).filter(c=>c.type==='ParticleSystem'&&c.properties?.enabled!==false);if(!components.length||names&&components.length!==1)throw Error('Cue 이미터 대상에는 활성 ParticleSystem 하나가 필요해요.');const component=components[0],properties=component.properties;return{object,properties:{...componentDefaultValues('ParticleSystem'),...properties},chain,current:()=>chain.every(o=>vm.object(o.id)===o&&o.poolActive!==false)&&edges.every(([child,parent,name])=>(child.parentId||child.parent)===parent.id&&child.name===name)&&object.components?.includes(component)&&component.properties===properties&&component.properties?.enabled!==false};
+ const components=(object.components||[]).filter(c=>c.type==='ParticleSystem'&&c.properties?.enabled!==false);if(!components.length||!selector&&names&&components.length!==1)throw Error('Cue 이미터 대상에는 활성 ParticleSystem 하나가 필요해요.');const component=selector?particleComponent(object,selector):components[0],properties=component.properties;return{object,component,properties:{...componentDefaultValues('ParticleSystem'),...properties},chain,current:()=>chain.every(o=>vm.object(o.id)===o&&o.poolActive!==false)&&edges.every(([child,parent,name])=>(child.parentId||child.parent)===parent.id&&child.name===name)&&object.components?.includes(component)&&component.properties===properties&&component.properties?.enabled!==false};
 }

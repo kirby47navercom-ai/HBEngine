@@ -584,6 +584,11 @@ inline void Particles::Stop(Actor* target,bool clear){particleCommand(target,"pa
 inline void Particles::Pause(Actor* target,bool paused){particleCommand(target,"particlePause",{{"target",bridgeId(target)},{"paused",paused}});}
 inline void Particles::Emit(Actor* target,int count){particleCommand(target,"particleEmit",{{"target",bridgeId(target)},{"count",count}});}
 inline int Particles::GetCount(Actor* target){auto& state=gameplayField(target,"particles");return state.is_null()?0:state.value("backend",std::string{}).find("compute")!=std::string::npos?engineQuery("particleCount",{{"target",bridgeId(target)}}).get<int>():state.value("count",0);}
+inline void Particles::PlayComponent(Actor* target,const std::string& component){engineQuery("particlePlay",{{"target",bridgeId(target)},{"component",component}});}
+inline void Particles::StopComponent(Actor* target,const std::string& component,bool clear){engineQuery("particleStop",{{"target",bridgeId(target)},{"component",component},{"clear",clear}});}
+inline void Particles::PauseComponent(Actor* target,const std::string& component,bool paused){engineQuery("particlePause",{{"target",bridgeId(target)},{"component",component},{"paused",paused}});}
+inline void Particles::EmitComponent(Actor* target,const std::string& component,int count){engineQuery("particleEmit",{{"target",bridgeId(target)},{"component",component},{"count",count}});}
+inline int Particles::GetComponentCount(Actor* target,const std::string& component){return engineQuery("particleCount",{{"target",bridgeId(target)},{"component",component}}).get<int>();}
 inline Json& bridgeTags(Actor* target){auto* state=bridgeStateFields(target,{"tags"});if(!state)throw std::runtime_error("missing tag target");auto& tags=(*state)["tags"];if(tags.is_null())tags=Json::array();return tags;}
 inline std::vector<std::string> Tags::Get(Actor* target){return bridgeTags(target).get<std::vector<std::string>>();}
 inline void Abilities::DefineAttribute(Actor* target,const std::string& attribute,float value,float min,float max){engineCommand("attributeDefine",{{"target",bridgeId(target)},{"attribute",attribute},{"value",value},{"min",min},{"max",max}});}
@@ -607,6 +612,9 @@ inline void Abilities::RemoveEffect(Actor* target,const std::string& handle){eng
 inline std::string Abilities::Effects(Actor* target){return gameplayField(target,"ability").value("effects",Json::array()).dump();}
 inline void EnvironmentQuery::Run(Actor* target,const std::string& asset,Actor* context){engineCommand("eqsRun",{{"target",bridgeId(target)},{"asset",asset},{"context",bridgeId(context)}});}
 inline std::string EnvironmentQuery::Results(Actor* target){return gameplayField(target,"eqs").dump();}
+inline void EnvironmentQuery::RunBatch(Actor* target,const std::vector<std::string>& assets,Actor* context,bool debug){engineCommand("eqsRunBatch",{{"target",bridgeId(target)},{"assets",assets},{"context",bridgeId(context)},{"debug",debug}});}
+inline std::string EnvironmentQuery::BatchResults(Actor* target){auto& batch=gameplayField(target,"eqsBatch");return batch.is_object()?batch.value("results",Json::array()).dump():"[]";}
+inline void EnvironmentQuery::CancelBatch(Actor* target){engineCommand("eqsCancelBatch",{{"target",bridgeId(target)}});}
 inline void bridgeCheckLevel(const std::string& id){if(id.empty()||id.size()>60||!std::all_of(id.begin(),id.end(),[](char c){return (c>='A'&&c<='Z')||(c>='a'&&c<='z')||(c>='0'&&c<='9')||c=='_'||c=='-';}))throw std::runtime_error("invalid level instance");}
 inline std::string bridgeLevelActorId(const std::string& instance,const std::string& local){bridgeCheckLevel(instance);std::uint32_t a=2166136261u,b=2246822507u;for(unsigned char c:local){a=(a^c)*16777619u;b=(b^c)*3266489909u;}std::string result="level_"+instance+"_";const char* hex="0123456789abcdef";for(auto v:{a,b})for(int shift=28;shift>=0;shift-=4)result+=hex[(v>>shift)&15];return result;}
 inline void Levels::Load(const std::string& scene,const std::string& instance,const Transform& transform){bridgeCheckLevel(instance);engineCommand("levelLoad",{{"scene",scene},{"instance",instance},{"transform",transform}});}

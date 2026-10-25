@@ -4334,6 +4334,104 @@
         "native/include/HBEngine/Game.hpp",
         "native/include/HBEngine/Session.hpp"
       ]
+    },
+    {
+      "id": "particle-component-rendering",
+      "keywords": [
+        "파티클 컴포넌트 통합"
+      ],
+      "paths": [
+        "prototype/particle-component-state.js",
+        "prototype/scene-rendering.js",
+        "prototype/scene-systems.js",
+        "prototype/engine-services.js",
+        "prototype/native-particles.js",
+        "prototype/gpu-particles.js",
+        "prototype/gameplay-cue-anchor.js",
+        "native/include/HBEngine/Game.hpp",
+        "native/include/HBEngine/Bridge.hpp",
+        "prototype/native-live-query.js",
+        "prototype/gameplay-preview-visual.js",
+        "prototype/ribbon-trail.js"
+      ]
+    },
+    {
+      "id": "environment-actor-index-owner",
+      "keywords": [
+        "EnvironmentActorIndex",
+        "environmentActorIndexContract"
+      ],
+      "paths": [
+        "prototype/environment-actor-index.js"
+      ]
+    },
+    {
+      "id": "environment-query-owner",
+      "keywords": [
+        "runEnvironmentQuery"
+      ],
+      "paths": [
+        "prototype/environment-query.js",
+        "prototype/engine-services.js"
+      ]
+    },
+    {
+      "id": "environment-query-batch",
+      "keywords": [
+        "runEnvironmentQueryBatch",
+        "environmentQueryBatchContract",
+        "eqsRunBatch"
+      ],
+      "paths": [
+        "prototype/environment-query-batch.js",
+        "prototype/environment-actor-index.js",
+        "prototype/engine-services.js",
+        "native/include/HBEngine/Game.hpp",
+        "native/include/HBEngine/Bridge.hpp"
+      ]
+    },
+    {
+      "id": "particle-cue-authoring",
+      "keywords": [
+        "gameplayCueEmitter",
+        "upgradeGameplayCueEmitters"
+      ],
+      "paths": [
+        "prototype/gameplay-cue-anchor.js",
+        "prototype/gameplay-cue-assets.js",
+        "prototype/structured-asset-editor.js",
+        "prototype/engine-services.js"
+      ]
+    },
+    {
+      "id": "particle-rendering-owner",
+      "keywords": [
+        "sceneRendering"
+      ],
+      "paths": [
+        "prototype/scene-rendering.js"
+      ]
+    },
+    {
+      "id": "particle-simulation-owner",
+      "keywords": [
+        "ParticleSimulation"
+      ],
+      "paths": [
+        "prototype/scene-systems.js"
+      ]
+    },
+    {
+      "id": "particle-component-owner",
+      "keywords": [
+        "particleComponent",
+        "particleComponents",
+        "particleVisualStates",
+        "particleComponentContract"
+      ],
+      "paths": [
+        "prototype/particle-component-state.js"
+      ]
     }
   ]
 }

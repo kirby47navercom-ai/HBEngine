@@ -1,0 +1,15 @@
+import {EnvironmentActorIndex} from './environment-actor-index.js';
+import {runEnvironmentQuery} from './environment-query.js';
+import {validNavigationAsset} from './navigation-mesh.js';
+export async function runEnvironmentQueryBatch(programs,{objects=[],origin,context=origin,forward,project,trace,debug=false,debugLimit=4096,current=()=>true}={}){
+ if(!Array.isArray(programs)||!programs.length||programs.some(p=>!validNavigationAsset('environmentquery',p))||typeof debug!=='boolean')throw Error('환경 질의 배치와 자산을 확인하세요.');
+ const data=structuredClone(programs),start=origin?.slice(),reference=context?.slice(),directions=data.map(p=>typeof forward==='function'?forward(p)?.slice():forward?.slice());let index;const results=[];
+ try{
+  if(!current())throw Error('취소된 환경 질의 배치예요.');
+  if(data.some(p=>p.generator==='actors')){index=new EnvironmentActorIndex().sync(objects);const detached=new Map();for(const entry of index.entries.values()){entry.object={id:entry.object.id};entry.tags=[...entry.tags];detached.set(entry.object,entry);}index.entries=detached;}
+  const ensure=()=>{if(!current())throw Error('취소된 환경 질의 배치예요.');};
+  for(const [query,program]of data.entries()){ensure();const diagnostics=debug?{limit:debugLimit}:undefined,rows=await runEnvironmentQuery(program,{origin:start,context:reference,forward:directions[query],actorIndex:program.generator==='actors'?index:undefined,project:async point=>{ensure();const value=project?await project(point,program,query):point;ensure();return value;},trace:async(a,b)=>{ensure();const hit=trace?await trace(a,b,program,query):false;ensure();return hit;},diagnostics});ensure();results.push({rows,...diagnostics?{diagnostics}:{}});}
+  return{results,queries:data.length,actorSyncs:index?1:0,actorSync:index?.inspect().lastSync||null,actorSnapshot:true,traceSnapshot:false};
+ }finally{index?.clear();}
+}
+export const environmentQueryBatchContract=Object.freeze({commands:'EnvironmentQuery::RunBatch/BatchResults/CancelBatch and matching BP nodes; ordered asset list, optional context. All results publish atomically after successful completion; cancel/retired owner/latest request rejects late completion.',actors:'One spatial-index sync per batch containing actor generators; actor IDs, positions, tags and stable source ordering captured once. Ring/grid-only batch scans no actor generator population. Every separate batch takes a fresh snapshot; ordinary mutable-world Run still refreshes every call.',traces:'Projection/navigation and collision tests use the ordinary prepared services; this is an actor-generator snapshot, not a frozen physics/nav simulation. Diagnostics identify actorSnapshot:true/traceSnapshot:false.',lifetime:'Private scoped index cleared after success/failure/cancel, no frame cache/watchers/world observers. Explicit batching removes repeated actor refresh inside the batch without hiding direct mutable-world changes in ordinary queries.',results:'gameplayDebug.eqsBatch serial/assets/results/actorSyncs; each result retains asset and rows plus optional existing bounded diagnostics. BatchResults returns JSON. Previous published results survive invalid/cancelled batches.'});

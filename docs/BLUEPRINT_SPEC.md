@@ -1,3 +1,6 @@
+<!-- WORK2960 -->
+다중 ParticleSystem은 컴포넌트별 시뮬레이션·표시·정렬·리본·수명을 사용해요. 새 ID/이름 기반 C++·BP 제어와 Cue v4 명시적 변환/Undo를 공용 실행에 연결해요. EQS 묶음 실행/결과/취소는 액터 생성 색인을 한 번 캡처하고 전체 결과를 원자적으로 확정해요. 기존 단일 질의와 액터 파티클 함수의 의미는 유지해요. MULTI_PARTICLE_COMPONENTS.md·EQS_BATCH.md와 ENGINE_WORK_2960에 검증 범위를 기록해요.
+
 <!-- WORK2920 -->
 Two Bone IK의 지면 높이·경사와 선택 Bool을 실제 공용 2D/3D 질의·C++ SetBool·미리보기에 연결해요. 미리보기는 지면 콜라이더/부모만 복사하고 원본·시각 리소스를 보존해요. 천·2D/3D 로프의 연속 질량 브러시는 한 획 Undo·취소·키보드·소유자 충돌 검사와 기존 JSON/C++ 컴포넌트 경로를 공유해요. ANIMATION_GROUND_PROJECTION.md·CLOTH_MASS_BRUSH.md에 범위와 증거를 기록해요. 설치 보류·예약 금지를 유지해요.
 
