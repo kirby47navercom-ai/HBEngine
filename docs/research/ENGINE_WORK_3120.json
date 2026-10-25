@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "kind": "opt-in-heterogeneous-layer-image-normalization",
+  "implementationRevision": "ba709a3983ab0dfe382b486c66024f48241482cd",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3100.json",
+  "changedSourceHashes": {
+    "prototype/layered-texture-normalization.js": "d2a3a8f445bb1f2a1242087500d3819778bb6c766a0659cf13a525529d393cdf",
+    "prototype/layered-texture-import.js": "cbd681d8de420c5890c85be47b89571dd1ccc724cedb9f092bf7033fdf9f78ac",
+    "prototype/texture-assets.js": "03254c790a35f8ed1fb0fb2c095978541e3915da077e688d1806eb4262dcb38f",
+    "prototype/texture-disk-mips.js": "86051e49cbea5de3ed8b54d32b93a16105c00794bd2070924f460ece1e1b9574",
+    "prototype/texture-import-ui.js": "7d896360ded29f56871fdeb852bd8a4a2e4b57b70ee5a63a507db9a72023bed8",
+    "prototype/asset-editor-ui.js": "9a03a3045b854b35c324a0d42791f9fedba30495cc3b65d592d2e9a80d559d2b",
+    "tools/editor-automation.mjs": "49a5f4ce9b143a52b8b8fc12731172eee33cc6e217f9d824d5b6e6d30d4156e7",
+    "docs/ai-routes.json": "1e9836a43385b3f84c361253b244d0993361936e564968ca7c094ce52e2c97e1",
+    "tools/check-layer-normalization-3103.mjs": "1f48afc7011df3b2681973217f1f248036cefe84644fe6d4f617606f8bab3f11",
+    "docs/LAYERED_TEXTURE_NORMALIZATION.md": "6f3aa28f94ae216aab3b4b90287d12d517e24910df9440f286bb39c44f1d8b90",
+    "docs/BLUEPRINT_SPEC.md": "437764ca103cb3c109f9a23c3d1c32682e20f1494639178fea6535857715d680",
+    "CODEX_HANDOFF.md": "0edc8305d233484877c547c2a8e5031ced0f2d0c72a4b6f09cac0c0cde534ca9"
+  },
+  "resolvedOwners": 1606,
+  "targetIds": [
+    "AST-03",
+    "AI-03"
+  ],
+  "newSourceCases": 13,
+  "relatedSourceCases": 38,
+  "checks": {
+    "source": "native/build/layer-normalization-jBralP/acceptance.json",
+    "related": [
+      "native/build/layered-import-KBvJPD/acceptance.json",
+      "native/build/layered-disk-WrA1pe/acceptance.json"
+    ]
+  },
+  "failuresAndRepairs": [
+    {
+      "cause": "Native Skia zero extent resets to default350 allocation, unlike browser extent expectation in initial fixture",
+      "repair": "Record forwarded native canvas setter requests for abort cleanup, keep actual raster operations; no RAM-release/pixel substitution claim."
+    },
+    {
+      "cause": "Partial strict-default metadata could select cook when legacy import was absent",
+      "repair": "Require explicit non-strict mode before selecting normalization cook; new source case and changed layered owner20 rerun."
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "GUI": false,
+    "GPUFormatCompression": false,
+    "HDRConversion": false,
+    "platformRDO": false
+  },
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "newRuntimeWorkers": 0,
+    "newDependenciesInstalled": 0,
+    "removedOwnedRegularHelpers": [
+      "layers3101.mjs",
+      "layerowner3102.mjs",
+      "layerdocs3104.mjs",
+      "layercanvas3105.mjs",
+      "layerlegacy3106.mjs",
+      "admit3107.mjs"
+    ],
+    "handoffBytes": 4386,
+    "cacheCleanupReused": "WORK3100 nativeCacheOnly; no native cache writes in this phase"
+  },
+  "scope": "Actual installed native Skia raster/image decoding for heterogeneous PNG/JPEG/WebP and nearest/smooth/center contain/cover/stretch, existing mip cook and actual Three/native mip serialization, authored levels/volume counts, source preservation/abort/reset intent, real editor/Undo/project save and device-limit adapter disposal. Native Skia smooth pixels are not proof of identical browser pixels or actual GPU/device. No compressed GPU/HDR conversion/RDO or RAM/FPS/install claim."
+}
