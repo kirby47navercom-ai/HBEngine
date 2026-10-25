@@ -66,5 +66,6 @@
 .cloth-pin-editor{width:100%;min-width:0}.cloth-pin-editor [data-cloth-pin-grid]{display:block;width:100%;height:170px;padding:0;background:#20252b;border:1px solid #4b5561;cursor:crosshair}.cloth-pin-editor svg{width:100%;height:100%;pointer-events:none}.cloth-pin-summary{display:flex;align-items:center;justify-content:space-between;padding:6px 0;color:#afbdca}.cloth-pin-summary button{padding:3px 7px}
 
 .cloth-pin-editor{grid-column:1/-1}
+.cloth-mass-brush{width:100%;min-width:0}.cloth-mass-brush summary{cursor:pointer;padding:5px 0}.cloth-mass-brush [data-mass-brush-grid]{display:block;width:100%;padding:0;margin-top:6px;background:#20252b;border:1px solid #4b5561;cursor:crosshair;touch-action:none;user-select:none}.cloth-mass-brush svg{width:100%;height:100%;pointer-events:none}.cloth-mass-brush [data-mass-brush-position]{display:block;color:#afbdca;font-size:11px;padding:4px 0}
 
 .deformable-live-controls{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:6px 0}.deformable-live-controls label{display:flex;align-items:center;gap:5px}.deformable-live-controls input{width:60px}.deformable-live-controls button{padding:4px 6px}

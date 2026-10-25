@@ -53,6 +53,8 @@ import {tilemapPage} from './tilemap-diagnostics.js';
 import {openEffectLiveEditor} from './effect-live-editor.js';
 import {updateClothReadout} from './cloth-diagnostics.js';
 import {handleClothMassClick,handleClothMassIndex} from './cloth-mass-editor.js';
+import {installClothMassBrush} from './cloth-mass-brush.js';
+installClothMassBrush(document,{error:message=>notify(message)});
 document.addEventListener('click',event=>{try{handleClothMassClick(event);}catch(error){notify(error.message);}},true);
 document.addEventListener('change',event=>{try{handleClothMassIndex(event);}catch(error){notify(error.message);}},true);
 import {handleClothPinClick,handleClothPinKey} from './cloth-pin-editor.js';

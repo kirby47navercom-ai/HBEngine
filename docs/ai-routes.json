@@ -4086,7 +4086,10 @@
       "keywords": [
         "AnimationIK",
         "FullBodyIK",
-        "FootPlantState"
+        "FootPlantState",
+        "GroundProjectionIK",
+        "validGroundProjection",
+        "animationPreviewActors"
       ],
       "paths": [
         "prototype/animation-ik.js",
@@ -4095,7 +4098,13 @@
         "prototype/animation-ik-editor.js",
         "prototype/animation-graph-assets.js",
         "prototype/animation-foot-plant.js",
-        "tools/editor-automation.mjs"
+        "tools/editor-automation.mjs",
+        "prototype/animation-ground-ik.js",
+        "prototype/engine-services.js",
+        "prototype/animation-graph-editor.js",
+        "prototype/gameplay-preview.js",
+        "prototype/gameplay-preview-source.js",
+        "prototype/animation-preview-actors.js"
       ]
     },
     {
@@ -4219,6 +4228,35 @@
       ],
       "paths": [
         "prototype/reflection-probe-bounds.js"
+      ]
+    },
+    {
+      "id": "animation-graph-loader",
+      "keywords": [
+        "AnimationGraphPlayer"
+      ],
+      "paths": [
+        "prototype/engine-services.js",
+        "prototype/animation-graph-runtime.js"
+      ]
+    },
+    {
+      "id": "cloth-mass-brush",
+      "keywords": [
+        "ClothMassBrushStroke",
+        "clothMassBrushControls",
+        "installClothMassBrush",
+        "clothMassBrushContract"
+      ],
+      "paths": [
+        "prototype/cloth-mass-brush.js",
+        "prototype/cloth-mass-editor.js",
+        "prototype/app.js",
+        "prototype/scene-editor.css",
+        "prototype/scene-inspector.js",
+        "prototype/blueprint-details.js",
+        "prototype/deformable-distribution.js",
+        "tools/editor-automation.mjs"
       ]
     }
   ]

@@ -1,3 +1,9 @@
+# 2895–2907 지면·미리보기·질량 브러시
+
+첫 부모 회전 fixture의 지면 목표는 길이를 유지한 다리의 도달 범위 밖이었어요. 도달 가능한 사례와 불가능한 사례를 나누고 후자는 정확한 길이·잔여 오차를 검증해요. 첫 바닥 fixture는 BoxCollider의 실제 extent 대신 size를 사용했어요. -1/1/4 마스크 직접 질의와 공용 기본값을 대조해 fixture를 고쳤고 물리 구현을 맞춰 바꾸지 않았어요.
+검토에서 구형 오브젝트의 objectComponents가 원본 components를 채우는 경로를 찾아 defaultsForObject의 반환값만 읽도록 고쳤어요. parentId 우선순위·타일 콜라이더 보존·None 필터와 재생 중 비활성화되는 브러시 소유자를 추가 대조해요.
+질의 전용 모드는 물리 sensor를 사용하므로 isSensor만 보면 트리거가 아닌 표면도 빠졌어요. authored trigger를 기준으로 공용 predicate를 고치고 2D/3D 7종 질의·실제 트리거·immutable native adapter를 대조해요. 최종 소유 보고서는 ENGINE_WORK_2920에 연결해요. 실패한 초기 fixture와 읽기 전용 심볼 탐색 실패는 구현/검사 통과 수에 넣지 않아요.
+
 # 2882 짧은 조회 검사
 
 첫 fixture는 async engineContext의 거절을 assert.throws로 검사해 unhandled rejection을 만들었어요. assert.rejects로 수정했어요. 다음 미등록 fixture의 task에 context가 들어 있어 기존 등록경로가 선택됐으므로 focused-miss가 맞았어요. 무관한 문자열과 등록경로 miss를 별도 사례로 분리했어요. 엔진의 fail-closed 검색을 약화하지 않아요. 최종6개 context-compact-HxpIIG 통과.

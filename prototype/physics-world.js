@@ -233,7 +233,7 @@ export function createRigidPhysics(objects,options={}){
     const {R}=space,mask=args.mask??-1;if(!Number.isInteger(mask)||mask< -2147483648||mask>4294967295)throw Error('질의 레이어 마스크를 확인하세요.');
     // The native adapter already selected enabled snapshot IDs. A C++ enable
     // can query a retained soft shape without changing the live collision flag.
-    const predicate=collider=>{const c=space.colliders.get(collider.handle);return !!c&&(!softOnly||c.softBody)&&(!allowed||allowed.has(c.object.id))&&(softOnly&&allowDisabledSoft&&allowed?.has(c.object.id)||c.object.collisionEnabled!==false)&&c.p.collisionMode!=='physics'&&((mask>>>0)&(1<<c.p.layer))!==0&&(args.includeTriggers||!c.collider.isSensor())&&c.object.id!==args.ignore;};
+    const predicate=collider=>{const c=space.colliders.get(collider.handle);return !!c&&(!softOnly||c.softBody)&&(!allowed||allowed.has(c.object.id))&&(softOnly&&allowDisabledSoft&&allowed?.has(c.object.id)||c.object.collisionEnabled!==false)&&c.p.collisionMode!=='physics'&&((mask>>>0)&(1<<c.p.layer))!==0&&(args.includeTriggers||!c.p.trigger)&&c.object.id!==args.ignore;};
     const checked=(v,label)=>{if(!vector(v)||v.some(x=>Math.abs(x)>1000000))throw Error(label+' 좌표를 확인하세요.');return xyz(v);};
     const size=(n,label)=>{if(!Number.isFinite(n)||n<=0||n>10000)throw Error(label+' 크기를 확인하세요.');return n;};
     // Direct collider queries use the exact narrow-phase geometry. They also
