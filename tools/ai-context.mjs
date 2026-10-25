@@ -143,16 +143,16 @@ export async function engineContext(input = {}) {
     if (symbol) {
       const searchFiles = [...new Set([...files.map(info => info.path).filter(file => sourceFiles.includes(file)), ...sourceFiles])];
       const focused = [...new Set(focusedPaths)].filter(file => sourceFiles.includes(file));
-      const initial = !all && focused.length ? await findSymbol(focused, symbol, limit) : null;
-      if (initial?.matches.length) {
-        base.symbolSearch = {...initial, mode:'focused-routes', routeFiles:focused,
-          scope:initial.scope+'; 일치한 focusRoutes만 조회, 다른 호출처는 --all로 확장',
+      if (!all) {
+        const initial = focused.length ? await findSymbol(focused, symbol, limit) : {literal:symbol,caseSensitive:true,matches:[],filesRead:0,bytesRead:0,skippedOversize:[],truncated:false,scope:'등록된 focusRoutes만 조회'};
+        const matched=initial.matches.length>0;
+        base.symbolSearch = {...initial, mode:matched?'focused-routes':focused.length?'focused-miss':'unregistered-symbol', routeFiles:focused,
+          scope:initial.scope+'; 자동 전체 검색 없음. 경로 등록을 확인하거나 명시적으로 --all로 확장',
           expand:{all:true, cli:'node tools/hb.mjs context '+JSON.stringify(task)+' --symbol '+JSON.stringify(symbol)+' --all'}};
+        if(!matched)base.lookup=focused.length?'no-match: 등록 소유자에 심볼이 없어요. 경로·심볼을 확인하세요.':'no-match: 심볼의 focusRoutes를 먼저 등록하세요.';
       } else {
-        const rest = await findSymbol(initial ? searchFiles.filter(file => !focused.includes(file)) : searchFiles, symbol, limit);
-        base.symbolSearch = {...rest, mode:all?'all':'fallback-all',
-          filesRead:rest.filesRead+(initial?.filesRead||0), bytesRead:rest.bytesRead+(initial?.bytesRead||0),
-          skippedOversize:[...(initial?.skippedOversize||[]),...rest.skippedOversize]};
+        const rest = await findSymbol(searchFiles, symbol, limit);
+        base.symbolSearch = {...rest, mode:'all'};
       }
       if (base.symbolSearch.matches.length) base.lookup = 'matched';
     }

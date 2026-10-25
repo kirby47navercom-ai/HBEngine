@@ -3920,6 +3920,18 @@
         "prototype/runtime-object-lookup.js",
         "docs/RUNTIME_BINDING_PREPARATION.md"
       ]
+    },
+    {
+      "id": "ai-context-scope",
+      "keywords": [
+        "engineContext",
+        "contextInstallation",
+        "contextArgs"
+      ],
+      "paths": [
+        "tools/ai-context.mjs",
+        "docs/AI_START.md"
+      ]
     }
   ]
 }
