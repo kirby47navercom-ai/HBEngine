@@ -1,3 +1,7 @@
+# 그래프 비교·변형체 소성·셀 측정 비용
+
+[노드 비교](ASSET_GRAPH_DIFF.md)는 기존 병합/CAS/Undo와 읽기 전용 AI 명령에 연결해요. [천·로프 영구 변형](DEFORMABLE_PLASTICITY.md)은 실제 solver 물성과 BP/C++ 공용 복원 명령을 사용해요. [셀 비용](STREAMING_GEOMETRY_BUDGET.md)은 공용 속성으로 측정 모드를 지정하고 실행 중 페이지를 조회해요. 각 문서에 검증 범위와 별도 잔여를 기록해요.
+
 # 2278 이후 — 태스크 중단 대기·효과 캡처 태그
 
 [태스크 중단 대기](BEHAVIOR_DEFERRED_ABORT.md)는 opt-in BT v2에서 FinishAbort·중단/실행 상태 노드와 C++ SDK를 공유해요. [효과 태그 조건](EFFECT_TAG_REQUIREMENTS.md)은 효과 v2의 적용/항목 조건, 편집기 Undo·AI revision/dryRun·공용 ApplyEffectSpec에 연결해요. 구버전은 v2를 거절하며 기본 v1의 즉시 중단과 조건 없는 효과는 유지해요. native BTTask 상속 클래스와 동적 지속 태그 조건은 별도 잔여예요.

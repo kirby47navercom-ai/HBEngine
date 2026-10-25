@@ -4006,6 +4006,71 @@
         "tools/build-content.mjs",
         "docs/COOK_CACHE_OWNERSHIP.md"
       ]
+    },
+    {
+      "id": "asset-graph-diff",
+      "keywords": [
+        "mergeAsset",
+        "AssetMergePanel",
+        "assetGraphDiff",
+        "renderAssetGraphDiff",
+        "graphNodeConflictPaths"
+      ],
+      "paths": [
+        "prototype/asset-merge.js",
+        "prototype/asset-merge-panel.js",
+        "prototype/source-control.css",
+        "prototype/app.js",
+        "tools/editor-automation.mjs",
+        "prototype/asset-graph-diff.js",
+        "prototype/asset-graph-diff-view.js",
+        "docs/ASSET_GRAPH_DIFF.md"
+      ]
+    },
+    {
+      "id": "deformable-cloth-authoring",
+      "keywords": [
+        "DeformableWorld",
+        "deformableMaterial",
+        "updateDeformableProperties",
+        "resetPlasticity",
+        "edgePage",
+        "ResetClothPlasticity",
+        "ResetRopePlasticity"
+      ],
+      "paths": [
+        "prototype/deformable-physics.js",
+        "prototype/deformable-properties.js",
+        "prototype/cloth-config.js",
+        "prototype/scene-components.js",
+        "prototype/cloth-diagnostics.js",
+        "prototype/physics-world.js",
+        "prototype/engine-services.js",
+        "native/include/HBEngine/Game.hpp",
+        "native/include/HBEngine/Session.hpp",
+        "prototype/app.js",
+        "tools/editor-automation.mjs",
+        "docs/DEFORMABLE_PLASTICITY.md"
+      ]
+    },
+    {
+      "id": "level-streaming-memory",
+      "keywords": [
+        "selectStreamingCells",
+        "RuntimeLevels",
+        "measureStreamingGeometry"
+      ],
+      "paths": [
+        "prototype/streaming-budget.js",
+        "prototype/level-streaming.js",
+        "prototype/scene-components.js",
+        "prototype/world-assets.js",
+        "prototype/streaming-geometry.js",
+        "prototype/engine-services.js",
+        "prototype/app.js",
+        "tools/editor-automation.mjs",
+        "docs/STREAMING_GEOMETRY_BUDGET.md"
+      ]
     }
   ]
 }

@@ -364,11 +364,13 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsRopeImpulse", KoreanName="2D 로프 충격량", Category="물리 2D 로프") static void AddRopeImpulse(Actor* target,const Vec2& impulse,int index=-1);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsRopeAttach", KoreanName="2D 로프 강체 연결", Category="물리 2D 로프") static void AttachRopeParticle(Actor* target,int index,Actor* body);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsRopeReset", KoreanName="2D 로프 초기화", Category="물리 2D 로프") static void ResetRope(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsRopeResetPlasticity", KoreanName="2D 로프 영구 변형 복원", Category="물리 2D 로프") static void ResetRopePlasticity(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsRopeCount", KoreanName="2D 로프 입자 수", Category="물리 2D 로프") static int GetRopeParticleCount(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsClothPin", KoreanName="천 입자 고정", Category="물리 천") static void PinClothParticle(Actor* target,int index,bool pinned=true);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsClothImpulse", KoreanName="천 충격량", Category="물리 천") static void AddClothImpulse(Actor* target,const Vec3& impulse,int index=-1);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsClothAttach", KoreanName="천 입자 강체 연결", Category="물리 천") static void AttachClothParticle(Actor* target,int index,Actor* body);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsClothReset", KoreanName="천 초기화", Category="물리 천") static void ResetCloth(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsClothResetPlasticity", KoreanName="천 영구 변형 복원", Category="물리 천") static void ResetClothPlasticity(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsClothCount", KoreanName="천 입자 수", Category="물리 천") static int GetClothParticleCount(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getVelocity", KoreanName="속도 가져오기", Category="물리") static Vec3 GetVelocity(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="setVelocity", KoreanName="속도 설정", Category="물리") static void SetVelocity(Actor* target,const Vec3& velocity);

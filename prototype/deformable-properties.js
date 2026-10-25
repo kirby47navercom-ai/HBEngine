@@ -1,8 +1,8 @@
-const materialKeys=['frequency','bendFrequency','dampingRatio'];
+const materialKeys=['frequency','bendFrequency','dampingRatio','edgePlasticYield','edgePlasticCreep','edgePlasticMax','edgePlasticFlow'];
 export const deformableHotProperties=Object.freeze([...materialKeys,'iterations','friction','restitution','layer','mask']);
 const gridKeys=['width','height','columns','rows'],ropeKeys=['particles','start','end'];
 export function deformableColdProperties(p,rope){const value={...p,force:undefined,renderWidth:undefined,renderSides:undefined,endCaps:undefined};for(const key of deformableHotProperties)value[key]=undefined;for(const key of rope?gridKeys:ropeKeys)value[key]=undefined;return value;}
-export function deformableMaterial(R,p){const material=R.SoftBodyMaterial.uniform(p.frequency,p.dampingRatio);material.bendSoftness={naturalFrequency:p.bendFrequency,dampingRatio:p.dampingRatio};return material;}
+export function deformableMaterial(R,p){const material=R.SoftBodyMaterial.uniform(p.frequency,p.dampingRatio);material.bendSoftness={naturalFrequency:p.bendFrequency,dampingRatio:p.dampingRatio};material.edgePlasticYield=p.edgePlasticYield??0;material.edgePlasticCreep=p.edgePlasticCreep??1;material.edgePlasticMax=p.edgePlasticMax??1;material.edgePlasticFlow=R.SoftEdgePlasticFlow[({both:'Both',tension:'Tension',compression:'Compression'})[p.edgePlasticFlow??'both']];return material;}
 export function updateDeformableProperties(item,p,space){
  const before=item.p;let changed=false;
  if(materialKeys.some(key=>before[key]!==p[key])){item.body.setMaterial(deformableMaterial(space.R,p));changed=true;}
