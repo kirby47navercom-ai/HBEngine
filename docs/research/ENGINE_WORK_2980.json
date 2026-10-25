@@ -1,0 +1,236 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "kind": "animation-stride-deformable-distance-weighted-paint-common-runtime",
+  "implementationRevision": "7efae4e3a29ac47e02b9f074f9e31b3492adce04",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2960.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "76fc1fdd43c37bdd556733e9b6e08cc7f68edef92d0e55cb2b32b53ef806743d",
+    "prototype/animation-stride-warp.js": "85aa09b3ef7bac4c00cfa7877bc0d23f78cb569c43db4cb653a870338a38b1e9",
+    "prototype/animation-ik.js": "7595dcf2f86aaea60bed5457ff7d4e0c004636d0750db4d0488d2cf7f3250243",
+    "prototype/animation-ik-editor.js": "78cca19fef4406ae1422d3ef8916b7f3695116b0717469a79979947a2b7c3e92",
+    "prototype/animation-ground-ik.js": "c2ec3b2fb84f436db20c66d603da58e11f46347088ab3d1fdd812db89dd9fa9d",
+    "prototype/animation-graph-assets.js": "fa053d64dda842750725a9d2f6cf5ecf13aa9e08e640399a077c120a7facc1a8",
+    "prototype/animation-graph-editor.js": "dbb6d3214a8923d5d8630b13564066898bf5de315f30eaf4666ce07824f2a41d",
+    "prototype/deformable-distance-limits.js": "c6904f284f1e8ebd20eed65bb0d5c7ca59a09a7bcf431ed9f2bdaf3127df196e",
+    "prototype/cloth-distance-editor.js": "0ddbfffa13ca49713784a05145f6f426c370df30b52126b64a8b95cd0ec3bbbe",
+    "prototype/cloth-mass-brush.js": "4ce24bd94223243621887ccfe5ff3812fd80c8ee5c55cfd1a2351215c55a067a",
+    "prototype/deformable-properties.js": "96e6242118bea63c0f3919fa7be9db8e6591ffb023f9c83bf33cc15a0c92d694",
+    "prototype/deformable-physics.js": "f512dc8b24f322b64d290f7f06c23c8a9e0420bece3fd93967070e3fac73c3f2",
+    "prototype/physics-world.js": "8c226d2d34dfd61909cb1e57d42da1dc95f6a7de74ee217f8372771189cb6b6b",
+    "prototype/scene-components.js": "46ff07e2c4495a3e595c626f92dab6766025bdb18f35aa721d8ba43fa71ae0fc",
+    "prototype/scene-inspector.js": "a5bfbd2c33025de8c6eadbfbfe47f42974b1e1eaf15850ad981b1fbb65ee2b29",
+    "prototype/blueprint-details.js": "5e195baa659f5a633be94abd7a1a6104dd5e3dc43278bdf28398c084fe954fd6",
+    "prototype/app.js": "cba3c5df69dd283f1a5fad4f6106165bd69aeed9ea30b2c627848c55b5d9c3b1",
+    "tools/editor-automation.mjs": "f57ac592333d9dc0e7333907281edeec3394012b698e6301a01a43c9560b4a24",
+    "tools/check-stride-warp-2964.mjs": "5b836ba525b82b88836be45f5389492aff09996335aeae6b4d4fe7a73b72812c",
+    "tools/check-deformable-distance-2965.mjs": "f0ced4570138827e5cfdd8a336870f2bdf563af9b252af5cdf6990017065fd5a",
+    "tools/check-distance-editors-2969.mjs": "7606fe6ab5aa16d97c946338453869a6943e2932ab9735f80ff2822053af4827",
+    "tools/check-weighted-pins-2974.mjs": "da34cd2cee0e5e06feb4a0230e934a8d56def84f992a89d0628078836e3cc213",
+    "docs/ANIMATION_STRIDE_WARP.md": "5334d5ae0e6bb50a63ce9436ce54c204e5fd5e467f54bfeab179ac99cc690f2f",
+    "docs/DEFORMABLE_DISTANCE_LIMITS.md": "3f0ab406e0d44fc999a0b39ec961c0d33599762cce24ad9501dfcf52819e4292",
+    "docs/BLUEPRINT_SPEC.md": "7a77cf490deff3bb88543e55f6ee21ffc597579ecf13edadd412f4e854e72084",
+    "DEBUG_HANDOFF.md": "48001abc2962d6affc12485561feb8c5abe8a70f10ec72f268ad1da6f44eef01",
+    "CODEX_HANDOFF.md": "e69fa31c66fd52f87e132db4e2bc9a7fd86be8d049872489891e1052fdccbee8"
+  },
+  "resolvedOwners": 1575,
+  "targetIds": [
+    "ANM-04",
+    "PHY-02",
+    "AI-03"
+  ],
+  "changes": {
+    "ANM-04": " ·2961–2980: 작성 Float TwoBone strideWarp pose/target·평면/진행축·높이/옆걸음 보존·기존 위치/Alpha/길이/관절. warped ground ray·plant우선/해제→stride·typed폼/Float rename/Undo/AI계약·실제 common nativeFloat 재생 신규14. 자동접촉/골반별도.",
+    "PHY-02": " ·2961–2980: grid cloth/3Drope/Rope2D 희소 motionLimits/distanceTethers·역질량/분리속도·hardpin/실강체attachment우선·hot상태보존. 부분핀 pinWeights 기준60Hz 위치/속도구동·dt보정/이동중심·한step한blend. 기존stroke/취소/키보드/Undo painter·최대4색SVG. 실제Rapier/공용JSON재생·scene/BP실handler 신규33. post-step projection/drive이며backend접촉·반력연립아님.",
+    "AI-03": " ·2961–2980: 보폭 Float와 희소 거리·부분핀 JSON 계약·소유자정확조회·기존폼/칠하기/validation/Undo/save·C++기존API nativeoperation공용재생. SDK추가/카탈로그생성/GUI설치없이 actual Three/Rapier/owner handler 신규47. 전체엔진완료아님."
+  },
+  "newSourceCases": 47,
+  "relatedSourceCases": 77,
+  "checks": [
+    {
+      "file": "tools/check-stride-warp-2964.mjs",
+      "passed": true,
+      "cases": 14,
+      "report": "native\\build\\stride-warp-qY0OrA\\acceptance.json"
+    },
+    {
+      "file": "tools/check-ground-ik-2895.mjs",
+      "passed": true,
+      "cases": 16,
+      "report": "native\\build\\ground-ik-gwHQVW\\acceptance.json"
+    },
+    {
+      "file": "tools/check-foot-plant-2798.mjs",
+      "passed": true,
+      "cases": 14,
+      "report": "native\\build\\foot-plant-8jeauq\\acceptance.json"
+    },
+    {
+      "file": "tools/check-weighted-pins-2974.mjs",
+      "passed": true,
+      "cases": 16,
+      "report": "native\\build\\weighted-pins-l9aOgY\\acceptance.json"
+    },
+    {
+      "file": "tools/check-deformable-distance-2965.mjs",
+      "passed": true,
+      "cases": 13,
+      "report": "native\\build\\deformable-distance-lhtHOt\\acceptance.json"
+    },
+    {
+      "file": "tools/check-distance-editors-2969.mjs",
+      "passed": true,
+      "cases": 4,
+      "report": "native\\build\\distance-editors-O6NQxA\\acceptance.json"
+    },
+    {
+      "file": "tools/check-cloth-mass-brush-2903.mjs",
+      "passed": true,
+      "cases": 13,
+      "report": "native\\build\\cloth-mass-brush-lKyODM\\acceptance.json"
+    },
+    {
+      "file": "tools/check-cloth-mass-ui-2828.mjs",
+      "passed": true,
+      "cases": 5,
+      "report": "native\\build\\cloth-mass-ui-lxgU5V\\acceptance.json"
+    },
+    {
+      "file": "tools/check-deformable-hot-2336.mjs",
+      "passed": true,
+      "cases": 7,
+      "report": "native\\build\\deformable-hot-8Bd5Fy\\acceptance.json"
+    },
+    {
+      "file": "tools/check-deformable-distribution-2824.mjs",
+      "passed": true,
+      "cases": 14,
+      "report": "native\\build\\deformable-distribution-3MPGd9\\acceptance.json"
+    },
+    {
+      "file": "tools/check-cloth-239.mjs",
+      "passed": true,
+      "work": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\cloth-239-eG3TMr",
+      "checks": 8
+    }
+  ],
+  "results": {
+    "stride": 14,
+    "distance": 13,
+    "distanceEditors": 4,
+    "weightedPins": 16,
+    "related": {
+      "ground": 16,
+      "footPlant": 14,
+      "massBrush": 13,
+      "massUI": 5,
+      "hot": 7,
+      "distribution": 14,
+      "cloth": 8
+    },
+    "focusedRoutes": [
+      {
+        "symbol": "StrideWarpIK",
+        "mode": "focused-routes",
+        "filesRead": 1,
+        "bytesRead": 4046
+      },
+      {
+        "symbol": "DeformableDistanceLimits",
+        "mode": "focused-routes",
+        "filesRead": 1,
+        "bytesRead": 8337
+      },
+      {
+        "symbol": "ClothPinWeightBrushStroke",
+        "mode": "focused-routes",
+        "filesRead": 1,
+        "bytesRead": 12942
+      }
+    ],
+    "syntaxFirstPass": 18,
+    "syntaxChangedPhysicalOwners": 11,
+    "freshCPPBuilds": 0,
+    "SDKChanged": false,
+    "GUI": false,
+    "actualGPU": false,
+    "installation": false
+  },
+  "failuresAndRepairs": [
+    {
+      "report": "native/build/deformable-distance-7D0QcI/acceptance.json",
+      "case": "existing native component JSON replay",
+      "cause": "Fixture passed value instead of the existing componentSetJson json field",
+      "repair": "Fixture argument corrected to json; engine validation unchanged; failed run excluded"
+    },
+    {
+      "scope": "Commit formatting only",
+      "cause": "DEBUG_HANDOFF extra trailing blank line",
+      "repair": "Trailing blank removed before staging; no runtime source changed/test rerun"
+    }
+  ],
+  "boundary": {
+    "updatesHeld": true,
+    "schedulesCreated": 0,
+    "agentsCreated": 0,
+    "userWindowsChanged": false,
+    "protectedFilesTouched": false,
+    "analysisCompletionClaim": false,
+    "wholeEngineCompletion": false
+  },
+  "storage": {
+    "newNativeModuleBinaries": 0,
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": 17,
+    "removedOwnedHelperNames": [
+      "stride2961.mjs",
+      "distance2962.mjs",
+      "stride2963.mjs",
+      "pre2966.mjs",
+      "group2967.mjs",
+      "fix2968.mjs",
+      "polish2970.mjs",
+      "pins2971.mjs",
+      "pinbrush2972.mjs",
+      "pre2975.mjs",
+      "final2976.mjs",
+      "admit2977.mjs",
+      "commit2978.mjs",
+      "eof2979.mjs",
+      "commitfix2981.mjs",
+      "commit2980.txt",
+      "meta2982.mjs"
+    ],
+    "handoffBytes": 3599,
+    "nativeCacheCleanup": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    },
+    "admissionWhitelist": "native/build/owned2980.json"
+  },
+  "scope": "Actual skeleton/physics/typed authoring/shared native-operation replay. Authored stride and engine post-step distance/weighted-pin projection; no automatic gait/pelvis/geodesic generation, coupled contact reaction, fresh C++ binary/GPU pixels/GUI/device/FPS/whole heap or installation claim.",
+  "canonicalCounts": {
+    "verified": 37,
+    "partial": 37,
+    "unimplemented": 1,
+    "unverified": 3
+  },
+  "previousLineage": [
+    "docs/research/ENGINE_WORK_2720.json",
+    "docs/research/ENGINE_WORK_2734.json",
+    "docs/research/ENGINE_WORK_2744.json",
+    "docs/research/ENGINE_WORK_2754.json",
+    "docs/research/ENGINE_WORK_2762.json",
+    "docs/research/ENGINE_WORK_2790.json",
+    "docs/research/ENGINE_WORK_2820.json",
+    "docs/research/ENGINE_WORK_2830.json",
+    "docs/research/ENGINE_WORK_2860.json",
+    "docs/research/ENGINE_WORK_2870.json",
+    "docs/research/ENGINE_WORK_2880.json",
+    "docs/research/ENGINE_WORK_2890.json",
+    "docs/research/ENGINE_WORK_2920.json",
+    "docs/research/ENGINE_WORK_2930.json",
+    "docs/research/ENGINE_WORK_2960.json"
+  ]
+}
