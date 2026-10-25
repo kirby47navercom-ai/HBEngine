@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "date": "2026-10-25T00:48:53.070Z",
+  "kind": "foliage-local-scatter-grid-selection-and-erase-work",
+  "implementationRevision": "f24c31f816cee7f8bac3ca85c453a8f62bf233a7",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2690.json",
+  "changedSourceHashes": {
+    "prototype/foliage-local-work.js": "7623ed2a201a42bb307bce0542450e86babae85ef5ddb8f27fa417a690b0f2a4",
+    "prototype/world-assets.js": "8de2596664e9da2429c02faad300fdbe3684b1a63783c01e315d781f3e50032e",
+    "prototype/world-asset-editor.js": "e7dc07133e872b4c2dc35cada2ee8c2ce0e7f24796341cb3e50e18404c79432f",
+    "tools/check-foliage-local-work-2694.mjs": "dbb8c1f8d1487dd10fa060857a4a644dc59eb1071bac6e91fb957ace7e4310d3",
+    "docs/FOLIAGE_LOCAL_WORK.md": "f90bae6d420e3f50cd911aa2cd9ef4174dd3ce97c61d96079cb654804568fd43",
+    "docs/ai-routes.json": "d0b4446d503d38dc787dd7c433ab1c8b0ae21f1262533168c627d2322084c93f",
+    "CODEX_HANDOFF.md": "69c13fb01817c4bb09c21397bd7232d3a8a77818fa927609df61506f5fc1a0ec"
+  },
+  "resolvedOwners": 1471,
+  "targetIds": [
+    "WLD-03"
+  ],
+  "changes": {
+    "WLD-03": " ·2691–2702: 산포임시grid는브러시+최소거리 근처만, 소거먼점hypot skip·선택ID조기종료/선택index변환·복제. mutable문서cache없이 시드/ID/경계/검증/불변/Undo유지. 신규14(독립전수기준)+기존draft/부분시각/장면수명3gate·구문4. 무관1만점그리드제외·hypot3/선택후접근trap 확인. 전체복사/검증/필터/렌더비용·FPS/heap/GUI/GPU별도."
+  },
+  "newSourceCases": 14,
+  "regressionGates": 3,
+  "checks": {
+    "group": "native/build/group2695.json",
+    "new": "native/build/foliage-local-KEsubm/acceptance.json",
+    "draft": "native/build/world-draft-1074.2695.json",
+    "batch": "native/build/world-edit-batch-1059.2695.json",
+    "scene": "native/build/world-scene-1061.2695.json",
+    "active": "native/build/active2695.json",
+    "focus": "native/build/focus2696.json",
+    "syntax": 4
+  },
+  "performance": {
+    "localGridInput": 10002,
+    "storedPoints": 2,
+    "eraseInput": 10003,
+    "exactDistanceCalls": 3,
+    "selectedRows": 2,
+    "unrelatedForbiddenIdAccess": 10000,
+    "proof": "Independent flat collision oracle across seeds/densities/coordinates. Non-selected ID getters throw after early completion; no persistent mutable-document cache.",
+    "remaining": "Full validation, immutable/Undo copies, erase filter, original ID collisions and worst-case selection scan retained. Legacy copy timing compares immutable vs owned1074 behavior, not this revision against previous revision. No FPS/heap/GPU result."
+  },
+  "failuresAndRepairs": [
+    "All new and related source gates passed on first grouped execution. Historical fixed-name reports redirected to owned .2695 outputs without editing old tools or overwriting earlier evidence."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newCPP": false,
+    "newGPU": false,
+    "newGUI": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newRuntimeSDKProfiles": 0,
+    "helpersCleanup": "native/build/temp-clean2702.json"
+  },
+  "remainingBoundary": [
+    "Initial document/Undo copies, whole validation/publication/comparison, selection worst-case and long-running render/collision cost",
+    "Texture terrain layers and true GPU compute authoring; no persistent mutable asset index",
+    "Large scenes/device/GUI/GPU/FPS validation and installation remain separate"
+  ]
+}

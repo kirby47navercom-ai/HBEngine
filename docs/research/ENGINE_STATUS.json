@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-25",
-  "basisRevision": "94a686f277713bf85f6cb378fd1aa8f749f752c7",
+  "basisRevision": "f24c31f816cee7f8bac3ca85c453a8f62bf233a7",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -705,10 +705,10 @@
       "area": "world",
       "title": "지형 브러시·폴리지",
       "status": "partial",
-      "implemented": "165: 지형 높이/평활/목표 높이/레이어 브러시·스트로크 Undo·폴리지 결정 산포/소거/인스턴싱 · 166: 구멍/복원·재사용 샘플 스탬프와 브러시 영향 범위 계산·안정 ID 폴리지 선택/변환/복제/삭제·충돌/인스턴스 버퍼 연결 ·1050–1062: 높이·주변 노멀/칠하기 색 부분 갱신·격자 광선500독립 대조·폴리지 행렬만 전송·브러시 불필요 전체raycast 회피·최신 미리보기 합치기·소거/선택 비용·영향 장면만 갱신 ·1074: 사람/AI 동기 소유초안의 중복 전체복사2→1·지형8모드/폴리지5연산 동일결과·원본/스트로크Undo/실패복원·순수함수 불변성 유지",
+      "implemented": "165: 지형 높이/평활/목표 높이/레이어 브러시·스트로크 Undo·폴리지 결정 산포/소거/인스턴싱 · 166: 구멍/복원·재사용 샘플 스탬프와 브러시 영향 범위 계산·안정 ID 폴리지 선택/변환/복제/삭제·충돌/인스턴스 버퍼 연결 ·1050–1062: 높이·주변 노멀/칠하기 색 부분 갱신·격자 광선500독립 대조·폴리지 행렬만 전송·브러시 불필요 전체raycast 회피·최신 미리보기 합치기·소거/선택 비용·영향 장면만 갱신 ·1074: 사람/AI 동기 소유초안의 중복 전체복사2→1·지형8모드/폴리지5연산 동일결과·원본/스트로크Undo/실패복원·순수함수 불변성 유지 ·2691–2702: 산포임시grid는브러시+최소거리 근처만, 소거먼점hypot skip·선택ID조기종료/선택index변환·복제. mutable문서cache없이 시드/ID/경계/검증/불변/Undo유지. 신규14(독립전수기준)+기존draft/부분시각/장면수명3gate·구문4. 무관1만점그리드제외·hypot3/선택후접근trap 확인. 전체복사/검증/필터/렌더비용·FPS/heap/GUI/GPU별도.",
       "remaining": [
         "텍스처 지형 레이어·GPU 직접 계산 브러시(현재 CPU 저작 뒤 부분 GPU 업로드)",
-        "최초 문서 복사·Undo 스냅샷·전체 검증/변경 비교·대규모 선택/브러시 스캔 비용과 장시간 성능 검증(트랜잭션 내부 중복 전체 복사는 제거)"
+        "최초 문서 복사·Undo 스냅샷·전체 검증/변경 비교·대규모 전체/최악 선택·브러시 검증/스캔 비용(국소grid·선택조기종료·먼점거리생략2702구현)과 장시간 성능 검증(트랜잭션 내부 중복 전체 복사는 제거)"
       ],
       "sources": [
         "prototype/scene-components.js",
@@ -720,7 +720,9 @@
         "prototype/terrain-grid-raycast.js",
         "prototype/scene-rendering.js",
         "prototype/app.js",
-        "prototype/world-draft.js"
+        "prototype/world-draft.js",
+        "prototype/foliage-local-work.js",
+        "docs/FOLIAGE_LOCAL_WORK.md"
       ],
       "evidence": [
         "docs/WORK_ORDER_051.md",
@@ -729,7 +731,8 @@
         "docs/research/ENGINE_WORK_1062.json",
         "docs/research/WORLD_EDIT_BATCH_1062.md",
         "docs/research/ENGINE_WORK_1075.json",
-        "docs/research/WORLD_DRAFT_1075.md"
+        "docs/research/WORLD_DRAFT_1075.md",
+        "docs/research/ENGINE_WORK_2702.json"
       ]
     },
     {
@@ -4117,10 +4120,10 @@
     }
   ],
   "latestBatch": {
-    "first": 2671,
-    "last": 2690,
-    "receipt": "docs/research/ENGINE_WORK_2690.json",
-    "scope": "파일/모델sidecar rename·stream hash/inode·ID/redirect 복구·사람/AI·자식 scope/재시도·완료기록압축. 신규26+회귀79/구문5, 폴더/실제전원/다중writer별도·보류/예약0."
+    "first": 2691,
+    "last": 2702,
+    "receipt": "docs/research/ENGINE_WORK_2702.json",
+    "scope": "폴리지 국소grid/선택/소거, 신규14+기존draft/시각/장면3gate·구문4. 무관1만점제외/선택접근trap·전체복사/검증별도, 설치보류/예약0."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_2145.json",
