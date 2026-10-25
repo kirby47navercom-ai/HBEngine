@@ -1028,6 +1028,24 @@
   ],
   "focusRoutes": [
     {
+      "id": "foliage-local-work",
+      "keywords": [
+        "foliageSelection",
+        "foliageScatterGrid",
+        "foliageOutsideCircle",
+        "scatterFoliage",
+        "eraseFoliage",
+        "editFoliage"
+      ],
+      "paths": [
+        "prototype/foliage-local-work.js",
+        "prototype/world-assets.js",
+        "prototype/world-asset-editor.js",
+        "prototype/world-draft.js",
+        "docs/FOLIAGE_LOCAL_WORK.md"
+      ]
+    },
+    {
       "id": "asset-rename-journal",
       "keywords": [
         "commitAssetRename",
