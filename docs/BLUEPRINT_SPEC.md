@@ -748,3 +748,5 @@ SkeletalSocket/SkeletalAttachment는 기존 componentGet/Set String·Vector·Boo
 차량의 독립 휠 관성·슬립 제한 차동·ABS와 휠 RPM/슬립/ABS 순수 조회 3개를 컴포넌트 속성·실행 서비스·C++ snapshot 공용 흐름에 연결했어요. [차량 휠 계약](VEHICLE_WHEEL_DYNAMICS.md)에 단위·기본 호환·오류·검사 경계를 기록해요.
 
 Two Bone IK의 작성식 보폭 보정은 기존 Float 설정 노드·`hb::AnimationGraph::SetFloat`와 같은 파라미터를 사용해요. 천·2D/3D 로프의 이동 반경·입자 최대 거리·부분 고정 가중치는 기존 컴포넌트 JSON 설정과 `hb::Components::SetText`로 제어하고, 사람은 기존 컴포넌트 상세 폼·부분 고정 브러시에서 같은 검증·Undo·저장 경로로 편집해요. 새 SDK/카탈로그 생성 없이 공용 런타임 명령 재생에 연결했어요. [보폭](ANIMATION_STRIDE_WARP.md)·[변형체 거리/가중치](DEFORMABLE_DISTANCE_LIMITS.md)의 순서·수명·실제 해법 경계를 유지해요.
+
+큰 입자 배열은 이후 [등록 입자 속성 전용 JSON 경로](COMPONENT_SPARSE_JSON.md)로 C++ 응답 검증·공용 명령에 연결했어요. 일반 BP 인라인 문자열·임의 JSON 제한은 유지해요. SDK의 `Components::SetText` 시그니처와 생성 카탈로그를 바꾸지 않고 Session의 전용 검증을 추가했으며, 현재 SDK 실제 C++ 실행 근거는 WORK3020에 기록해요.

@@ -4504,6 +4504,20 @@
       "paths": [
         "prototype/editor-shortcuts.js"
       ]
+    },
+    {
+      "id": "component-json-declarations",
+      "keywords": [
+        "parseComponentJson",
+        "componentSparseParticleCount",
+        "componentJsonTextLimit",
+        "componentJsonContract",
+        "ComponentJsonOperationState"
+      ],
+      "paths": [
+        "prototype/component-json.js",
+        "native/include/HBEngine/ComponentJson.hpp"
+      ]
     }
   ]
 }

@@ -1,3 +1,4 @@
+import {ComponentJsonOperationState} from './component-json.js';
 import {validNativeWireValue} from './native-records.js';
 import {validActorScale} from './transform-scale.js';
 export {nativeLiveQuery as nativeParticleQuery} from './native-live-query.js';
@@ -58,7 +59,7 @@ export class NativeProtocol{
     const changedIds=new Set(result.objects.map(o=>o.id));if(result.worldCommitted!==undefined&&(session.metadata.nativeStateCommit!==1||!Array.isArray(result.worldCommitted)||new Set(result.worldCommitted).size!==result.worldCommitted.length||result.worldCommitted.some(id=>typeof id!=='string'||!changedIds.has(id))))throw Error('C++ 상태 확인 결과 오류');
     if(!Array.isArray(result.events))throw Error('C++ 이벤트 출력 오류');for(const e of result.events){const [cls,name]=String(e.nativeId).split('.'),event=session.metadata.classes.find(c=>c.name===cls)?.functions.find(f=>f.name===name&&f.event!=='none');if(!event||!known(e.target)||event.inputs.some(p=>!valid(p,e.args?.[p.id])))throw Error('C++ 이벤트 출력 자료형 오류');}
     if(!Array.isArray(result.operations)||result.operations.length>(request.calls&&session.metadata.nativeBatchOperations===1?2000:1000))throw Error('C++ 엔진 작업 출력 오류');
-    for(const operation of result.operations){const spec=serviceApi.find(s=>s.key===operation?.key&&!s.pure);if(!spec||!operation.args||spec.inputs.filter(p=>p.type!=='exec').some(p=>!valid(p,operation.args[p.id])))throw Error('C++ 엔진 작업 자료형 오류');}
+    let componentJson;for(const operation of result.operations){const spec=serviceApi.find(s=>s.key===operation?.key&&!s.pure);if(!spec||!operation.args)throw Error('C++ 엔진 작업 자료형 오류');const json=operation.key==='componentSetJson';for(const pin of spec.inputs.filter(p=>p.type!=='exec'&&!(json&&p.id==='json')))if(!valid(pin,operation.args[pin.id]))throw Error('C++ 엔진 작업 자료형 오류');if(json){componentJson??=new ComponentJsonOperationState(objectIndex);if(!componentJson.json(operation)&&!valid(spec.inputs.find(p=>p.id==='json'),operation.args.json))throw Error('C++ 엔진 작업 자료형 오류');}else if(['componentSetFloat','componentSetString'].includes(operation.key)&&['columns','rows','particles','topology'].includes(operation.args.property)){componentJson??=new ComponentJsonOperationState(objectIndex);componentJson.observe(operation);}}
     if(result.timerCallbacks!==undefined&&(!Array.isArray(result.timerCallbacks)||result.timerCallbacks.some(e=>!e||!['event','owner','scope','handle'].every(k=>typeof e[k]==='string'&&e[k].length<=160))))throw Error('C++ 타이머 콜백 오류');if(!result.clock||!['time','delta','scale'].every(k=>Number.isFinite(result.clock[k])&&result.clock[k]>=0)||typeof result.clock.paused!=='boolean')throw Error('C++ 시간 출력 오류');return result;
   }
   decodeRequest(session,request){

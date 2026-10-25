@@ -227,3 +227,6 @@ stationary inverse 첫 독립 oracle에서 약3.7e-6 오차를 찾아 centered c
 # 2983–3000 뷰포트 마우스 명령 조합
 
 최초 소유 app hook fixture에 기존 `saveViewportPreferences` 등록 콜백이 빠져 ReferenceError가 났어요. fixture scope에 그 기존 콜백만 보충했고 실제 앱 코드는 바꾸지 않았어요. 최종 pointer-shortcuts-aeTgev 11건 통과. 같은 묶음의 기존 단축키 199명령 gate·뷰포트 185검사/머테리얼 미리보기 격리 gate는 첫 실행에서 통과해 재실행하지 않았어요. 실제 브라우저의 뒤로/앞으로 기본 동작·분리 창/DPI·화면 픽셀은 검사하지 않았어요.
+# 3001–3020 큰 입자 JSON 경로
+
+일반 game JSON 배열4096/노드10000/텍스트262144와 native wire 문자열4096이 다른 층에 있어 단순 서비스 파서 변경만으로는 큰 C++ 배열을 연결할 수 없었어요. 등록된5 입자 속성만 strict schema/토폴로지 예산·NativeProtocol 순서별 사설 검증·C++ enqueue 전 shape 검증으로 연결해요. 일반 제한은 그대로예요. 첫 source fixture는 Rope2D에 미지원 topology 및5000입자를 넣었어요. Cloth rope5000/Rope2D 기존유효4096으로 나누고 규격을 늘려 통과시키지 않았어요. 최종 source11 component-json-bvVx9N, 관련56+nativeinput10/records1478gate 통과. 현재SDK component-json-cpp-xKhzC6 2메서드6호출5queue·65536배열5종/65535tether·4거부/미존재legacy배열·공용재생 통과. 새SDK fingerprint는 WORK3020·과거SDK CPP전체를 현재검증으로세지않아요.
