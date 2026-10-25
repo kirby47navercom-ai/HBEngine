@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "date": "2026-10-25T08:11:45.806Z",
+  "kind": "추가 제작/실행 구현·영향 검사 / 사용자 설치 보류",
+  "implementationRevision": "c69d01b43962d090d448d0403cfb0e7d43c09a1a",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2820.json",
+  "changedSourceHashes": {
+    "prototype/deformable-distribution.js": "f1cbc1d42c42a7c1eb35056c51119ccbf294c6bd3022ec537ce1133be3179658",
+    "prototype/deformable-physics.js": "d5b01f96294abb00ee75784f698ad14112ebc86ac23ea0e0930017d064de56a6",
+    "prototype/deformable-properties.js": "62d60626bb62b26f19a36167a9953a064fcdda405048024ff908d64e5702bc1f",
+    "prototype/scene-components.js": "bf307dd382dc41175a242d74d81c04323cf9d9241e710d83c284a2a92848c606",
+    "prototype/physics-world.js": "8bfac3b747dd87f68ab98e07d4f888eeecdbf96dead2bfe448fa2dfa97a64809",
+    "prototype/cloth-mass-editor.js": "5467d84446ffc4adf62a4382122de7e29ddcb00453d3edc0b8ee641e463e29e2",
+    "prototype/scene-inspector.js": "58a6838ca9525663997422c8838e47ebb6d0765ba311a000df8342247f6d04c2",
+    "prototype/blueprint-details.js": "0482fbef3e109ad8ea9776610546c7eabe8ae23dedcc3cf28fc180c94d26de86",
+    "prototype/app.js": "0b279f1ee5b032dd809aa4f4e444f33280926b57406440bb1a9ac9f6ae3e8c12",
+    "tools/editor-automation.mjs": "f18b39047f41114fe4b05b2b2f033a08f242275a12fcd809c5ca1766d4795595",
+    "tools/check-deformable-distribution-2824.mjs": "91af47057db70ccce8e90b445c27bac4233e6692aeaa3757f07c01ad4e6d2751",
+    "tools/check-deformable-distribution-2826-cpp.mjs": "822b3841960e1699a65f6b7b142d17723f8e050a70155adbf5d18f00e96e011b",
+    "tools/check-cloth-mass-ui-2828.mjs": "14abe39d4fbc12d0063b9e9fa5939851d5db9868113234109f3241905517510b",
+    "docs/ai-routes.json": "0ab294292fadaa9370320294bcb7e9c12da2f51e914b7a7b297fd0d833eafc3f",
+    "docs/DEFORMABLE_DISTRIBUTION.md": "02931578a08f1b37c649bff171ab31845af65f32a75f79014fb539b3ca36b9f9",
+    "DEBUG_HANDOFF.md": "770aaa72f1d9e5ad4b42ef7aba9856cdde1d858131fee3b0047bda1a4155ff86",
+    "docs/BLUEPRINT_SPEC.md": "677d0bc4d5dd42b1dc9b9f7604a7e861d302e14b7c569fa3fee07fc0e1290912",
+    "CODEX_HANDOFF.md": "3bb78d4ec7376aa1afc0f94d3bb581e1216a1ea565f2c919a1a414d07fd86d34"
+  },
+  "resolvedOwners": 1526,
+  "targetIds": [
+    "PHY-02",
+    "AI-03"
+  ],
+  "changes": {
+    "PHY-02": " ·2821–2830: 실제 Rapier tension-only 구조edge 압축slack·sparse 입자 질량을전체mass정규화·legacy빈분포할당없음. scene/BP 번호·가중치/지정/기본/초기화·일반Undo/동일값no-op, runtime입자mass/요약. source14+실제UI핸들러5·기존소성10/hot7, 현재SDK C++3메서드4호출8쓰기. 분포/인장모델은cold rebuild·hot material분포유지; 지면tether/부분고정paint·joint소성/tear별도.",
+    "AI-03": " ·2821–2830: deformableDistribution schema와기존Components Bool/JSON 명령으로3종실제solver설정·복원. 사람의일반문서/Undo와동일typed검증·요청한입자mass만반환, 숨겨진JSON필드대신scene/BP숫자폼. 추가solver pass/worker/전체particleIPC없음; 기존동기화는작성sparse항목검증."
+  },
+  "newSourceCases": 19,
+  "relatedSourceCases": 17,
+  "checks": {
+    "source": "native/build/deformable-distribution-R3IbIJ/acceptance.json",
+    "ui": "native/build/cloth-mass-ui-0hx1NL/acceptance.json",
+    "cpp": "native/build/deformable-distribution-cpp-D4CTEK/acceptance.json",
+    "relatedPlastic": "native/build/deformable-plastic-skNcbi/acceptance.json",
+    "relatedHot": "native/build/deformable-hot-YdVAOD/acceptance.json",
+    "group": "native/build/group2829.json",
+    "previousBatch": "docs/research/ENGINE_WORK_2820.json"
+  },
+  "cpp": {
+    "methods": 3,
+    "calls": 4,
+    "writes": 8,
+    "cacheKey": "857a93ae9b69fdbf6bd6",
+    "cacheHit": false,
+    "sdk": {
+      "fingerprint": "6ae42160cdb0e8cdce5bcea410ec666c86453519087ed1901192da45f46811da",
+      "files": 37,
+      "bytes": 2391557
+    },
+    "sdkUsed": {
+      "fingerprint": "198bcbc1933a7a39d30c4e1f2e023144058df73d81e433b44eadf910f64b01aa",
+      "preprocessedFingerprint": "72cf3c1a21f9408792d4b4fb66ef1e1cb2f3bae94d8252fadf463c182794da78",
+      "files": 10,
+      "bytes": 1360255,
+      "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+      "mode": "dependencies",
+      "planHit": false,
+      "scanMS": 741.6504000000001
+    },
+    "binary": {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\857a93ae9b69fdbf6bd6\\worker.exe",
+      "sha256": "2979e77e9c8d2e981f63494cd956b1b1bc9a990815fbd7a3cba3b02e831da5d9"
+    },
+    "scope": "Current unchanged SDK existing Components::SetBool/SetText methods compiled once and replayed through actual VM/Rapier cloth+3D/2D rope; native particle masses and tension-only reset inspected. No new SDK API or whole particle IPC, GUI/GPU/device/install."
+  },
+  "results": {
+    "syntaxFiles": 13,
+    "source": 14,
+    "humanUI": 5,
+    "relatedPlastic": 10,
+    "relatedHot": 7,
+    "currentCanonicalStatusValidated": true,
+    "actualNativeMassRatio": 4,
+    "actualCppWrites": 8,
+    "totalNewSourceAcross2820And2830": 76,
+    "totalRelatedSourceAcross2820And2830": 40,
+    "legacyIKGateAlsoPassed": true
+  },
+  "failuresAndRepairs": [
+    "First native mass ratio was1: independent installed Rapier descriptor inspection proved setMasses keeps previous uniform total mass. Cleared documented public descriptor.mass before normalized per-particle mass creation; actual3D/2D ratios and impulse responses now pass.",
+    "Tension solver can swing the free end through the anchor; corrected test from signed X to actual constraint distance, no artificial direction constraint or solver replacement.",
+    "Existing generic JSON fields are hidden by scene/BP forms. Added compact numeric index/weight controls through both actual owner render/change/Undo/inherited-default hooks; no-op edits do not dispatch. Added owner-window Event and restored selection/focus.",
+    "Owned UI fixture had a missing brace; fixed syntax before actual owner checks. No failed run counted as implementation evidence.",
+    "Canonical date-only schema retained after2820 date correction; strict formal status read validated before this admission."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newGUI": false,
+    "newGPU": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newRuntimeSDKProfiles": 0,
+    "nativeModuleCachePolicy": 32,
+    "cacheDeleted": 0,
+    "removedOwnedRegularHelpers": 5,
+    "handoffBytes": 4204
+  },
+  "remainingBoundary": [
+    "Tether/motion-distance constraints and actual continuous pin paint brush, tearing/cut/volumetric/GPU softbody",
+    "Changing mass distribution or tension-only model still recreates rest state and runtime attachments/pins by documented cold policy",
+    "Solver reaction break force/torque and joint plasticity, arbitrary rig contact and other cumulative engine/rendering goals",
+    "User installation remains held; no new actual GUI/GPU pixels/mobile device proof"
+  ]
+}
