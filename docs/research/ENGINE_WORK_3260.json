@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "kind": "dense-timeline-interval-pages-and-bounded-ai-read",
+  "implementationRevision": "312c298d462d7d26b0b0422531ca1f81fc4e9e0e",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3240.json",
+  "changedSourceHashes": {
+    "prototype/timeline-interval-index.js": "f1c0f5c0453ce1647daf328a158b5d17527a0f20d5f848763367a0f130d4a4f7",
+    "prototype/timeline-row-pages.js": "22309dcf012f87571496b105971930a742af14e729ba24f9bb5d994ac8a88033",
+    "prototype/timeline-rows.js": "2035c29e3060d04f4a5925cb8d48d9b29785f0c5a8025545a8e2df59a11582a2",
+    "prototype/gameplay-editor.js": "af874de8849dbcb794cf0d069ea8124ee0b78491cc5510f0b31bb180c8886a19",
+    "prototype/gameplay-editor.css": "f6ca6b601602bf02404dce86bf934a8ccc3520a2f0c9330120ef7924db1777a7",
+    "prototype/app.js": "4411a6980bae3041614fbf88cb88b345fe29dfa53117d1a5fc5d0864699fddb2",
+    "tools/editor-automation.mjs": "39c40c18a2356b18272a60520fb105d23c7a79c537c4926096a7905083ab46c7",
+    "tools/check-timeline-pages-3243.mjs": "2cc3cae8c114021c74493aadcbcce1e879af43896f2c888feb2abb5637ecb8df",
+    "docs/ai-routes.json": "7a77503d32767ce737b233e0f3dc39e40edb80045042243ebd5646fa6bfd4eb2",
+    "docs/BLUEPRINT_SPEC.md": "2b0c3ef25dc24f4fd3598ecde8351f1a7d4abcd26ca6934007e766d0050e43cf",
+    "docs/TIMELINE_INTERVAL_PAGES.md": "b94a8b0decf2824c4427d07adcd51f62fd56299b76f7c9c1e18588340b41edce",
+    "CODEX_HANDOFF.md": "130faabb96b3b982e520fe4147e12d5609e33cb84f0690f1c734a615811dbb5f"
+  },
+  "resolvedOwners": 1630,
+  "targetIds": [
+    "ANM-06",
+    "AI-03"
+  ],
+  "newSourceCases": 9,
+  "checks": {
+    "source": "native/build/timeline-pages-oO4mLz/acceptance.json",
+    "firstFixtureFailure": "native/build/timeline-pages-DcPBY1/acceptance.json",
+    "related": "native/build/timeline-pages-oO4mLz/related-rows-1441.json",
+    "syntax": [
+      "prototype/app.js",
+      "prototype/gameplay-editor.js"
+    ]
+  },
+  "samples": [
+    {
+      "oracleComparisons": 672
+    },
+    {
+      "intervals": 65536,
+      "latePageOffset": 64000,
+      "pageSize": 64,
+      "nodes": 147,
+      "warmAuthoredStartReads": 0,
+      "warmSelectionIDReads": 0,
+      "scope": "After row index/minimum construction; not initial build or worst-case ranges"
+    },
+    {
+      "sourceIntervals": 65536,
+      "emittedIntervalButtons": 64,
+      "overviewKeyButtons": 1,
+      "allIntervalsReachableByPages": true,
+      "externalSelectionRevealed": true
+    },
+    {
+      "relatedSource": "tools/check-timeline-rows-1441.mjs",
+      "sourceSHA": "bb37f8e9e041722d5b9a3ccb41ceaa16359270413ad9480d00df1307ef42073c",
+      "report": "native\\build\\timeline-pages-oO4mLz\\related-rows-1441.json",
+      "originalHistoricalReportOverwritten": false
+    }
+  ],
+  "failuresAndRepairs": [
+    {
+      "cause": "Old gameplay click handler spans multiple source lines, so a single-line whole-handler fixture did not parse; documentation helper had unescaped template fence.",
+      "repair": "Fixture executes the exact newly added early dispatch/pointer prefixes, not the unrelated rest; docs helper corrected before writing. Final source9 passed, including unchanged historical row gate redirected to owned output. No historical report overwrite."
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "actualCppCaller": false,
+    "GUI": false,
+    "appOrPlayerExecuted": false,
+    "wholeFPSClaim": false,
+    "variableRowHeight": false,
+    "allLabelsSimultaneously": false
+  },
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "newWorkers": 0,
+    "removedOwnedRegularHelpers": [
+      "timelinewire3241.mjs",
+      "timelineui3242.mjs",
+      "timelinedocs3244.mjs",
+      "timelinefixture3245.mjs",
+      "admit3246.mjs"
+    ],
+    "handoffBytes": 4535
+  },
+  "scope": "Independent naive interval oracle,65536 dense exact subtree counts/bounded late pages/lazy ID rank, unchanged authored-order full query, actual row markup and click/pointer handler, detached bounded automation handler with revision gate, existing row source gate redirected to owned evidence. Source/headless only; initial build/irregular worst-case cost remains; no simultaneous all-overlap labels, variable row heights, GUI/touch-device/runtime-FPS/install claim."
+}
