@@ -1,0 +1,342 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "kind": "runtime-auto-tethers-and-native-legacy-component-defaults",
+  "implementationRevision": "87e84bf034bb812741e06d9f54d14666da26c2d1",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3040.json",
+  "changedSourceHashes": {
+    "prototype/deformable-auto-tethers.js": "c7d44eff6f59067ab5a34f6eb1b8cdb000024cab2f8af452bcbfb015b3d8b098",
+    "prototype/native-component-defaults.js": "2d09b7854e828daf6a653ca8c8c3977f23311237332ef76498ca4c1f20f92190",
+    "prototype/scene-components.js": "b9c5f61cb2364fed28a975fbc12f51b2ff6649bcbd5424c63cc28521841041b8",
+    "prototype/deformable-properties.js": "0d377478ca707965e06e87cdf9d8ea3bfd7ccbb6bdf857b318bef95e61145f31",
+    "prototype/deformable-distance-limits.js": "7c69429536469cf68dc098f338b29b99af36f917c2453ba220489b4573fbe78a",
+    "prototype/deformable-physics.js": "416be4e1e5ff29f2e80e362584982e14a9ccf8612da98d955e2785f38ef9745a",
+    "prototype/physics-world.js": "797d9c05d122a7222ebd2143a2ff4671290387cb5e4e67be5210ac71df3943a2",
+    "prototype/cloth-diagnostics.js": "b5e6d34921991332148c3dce3d28a149b7b6d2adc0703c8febb235040fa4f91e",
+    "native/include/HBEngine/Session.hpp": "e5ddfca1697015e491dd4acbc63de69e8ac107fbc6ac15ebd76c577637b185db",
+    "native/include/HBEngine/Bridge.hpp": "513c2de0d48d93e0f5048c2f51db3469feae1d579cbab453dd4cbcf881257bad",
+    "tools/native-host.mjs": "8822c64f6923eba61a88341374b67ef8b12ddfecbce00a2541d202350711ff91",
+    "tools/editor-automation.mjs": "735712b297b37f30f8c5858fdab3e2bfb65d1733c94b64ef3d50addea4c9e22d",
+    "tools/check-auto-tethers-3045.mjs": "d53ffab5b4dd3e8cab754262a7eecf6a648958925be25c201687698aac9064c2",
+    "tools/check-component-defaults-3051-cpp.mjs": "4e90432f1e20639d4a509a1a24522f8ee06daedfd4a82a58283a7ef8bd2f5873",
+    "docs/ai-routes.json": "2ff60f88c69f55df9800b8e92665c57c5510945545cc583fc85b7e1b3ccc9391",
+    "docs/DEFORMABLE_AUTO_TETHERS.md": "479362590ecafe5416830fbd32f82069e29bdb852c6eaaf1df9eb30e2a43c983",
+    "docs/CPP_COMPONENT_DEFAULTS.md": "9dc9554ec36c4b5d845d536e1c165c04f18aac21618a4ddab800c159d8776301",
+    "docs/DEFORMABLE_DISTANCE_LIMITS.md": "04c776df6bade13f8b74b3635bdc731f2b409753924953e1813d774ee4f27ea6",
+    "docs/CLOTH_TETHER_GENERATION.md": "0ff4ea31a89573ae1a68b572c7e6e869e273609dbd8a4d7889840fee5509bcba",
+    "docs/BLUEPRINT_SPEC.md": "42bda8526a39acc4db7babaf138ff21fe56e4a7a7b1daf9ca5fc50e97e5952c5",
+    "CODEX_HANDOFF.md": "b356b6d7d5a579eb454e97ea8882f6c09121ca28c762b56e5d9acdc706886729"
+  },
+  "resolvedOwners": 25,
+  "targetIds": [
+    "PHY-02",
+    "CPP-01",
+    "AI-03"
+  ],
+  "newSourceCases": 23,
+  "relatedSourceCases": 57,
+  "checks": {
+    "source": "native/build/auto-tethers-nICPv9/acceptance.json",
+    "related": [
+      "native/build/cloth-tethers-cXsslM/acceptance.json",
+      "native/build/deformable-distance-U5lqVd/acceptance.json",
+      "native/build/weighted-pins-xg1YGG/acceptance.json",
+      "native/build/deformable-hot-3Xs9jJ/acceptance.json"
+    ],
+    "cpp": "native/build/component-defaults-cpp-lCkxAA/acceptance.json"
+  },
+  "cpp": {
+    "methods": 4,
+    "calls": 17,
+    "queuedOperations": 20,
+    "build": {
+      "token": "f1a42437-80db-434e-9f95-0b71a2140dc5",
+      "metadata": {
+        "version": 1,
+        "classes": [
+          {
+            "name": "DefaultProbe",
+            "base": "Library",
+            "blueprintable": false,
+            "properties": [],
+            "functions": [
+              {
+                "name": "Read",
+                "label": "Read",
+                "category": "C++",
+                "pure": false,
+                "static": true,
+                "event": "none",
+                "inputs": [
+                  {
+                    "id": "target",
+                    "label": "target",
+                    "type": "object",
+                    "array": false,
+                    "className": "Actor"
+                  },
+                  {
+                    "id": "component",
+                    "label": "component",
+                    "type": "string",
+                    "array": false
+                  }
+                ],
+                "outputs": [
+                  {
+                    "id": "result",
+                    "label": "Return value",
+                    "type": "string",
+                    "array": false
+                  }
+                ],
+                "returnType": "std::string",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "cppType": "hb::Actor*",
+                    "out": false
+                  },
+                  {
+                    "name": "component",
+                    "cppType": "const std::string&",
+                    "out": false
+                  }
+                ]
+              },
+              {
+                "name": "Configure",
+                "label": "Configure",
+                "category": "C++",
+                "pure": false,
+                "static": true,
+                "event": "none",
+                "inputs": [
+                  {
+                    "id": "target",
+                    "label": "target",
+                    "type": "object",
+                    "array": false,
+                    "className": "Actor"
+                  },
+                  {
+                    "id": "component",
+                    "label": "component",
+                    "type": "string",
+                    "array": false
+                  },
+                  {
+                    "id": "enabled",
+                    "label": "enabled",
+                    "type": "bool",
+                    "array": false
+                  },
+                  {
+                    "id": "stretch",
+                    "label": "stretch",
+                    "type": "float",
+                    "array": false
+                  }
+                ],
+                "outputs": [
+                  {
+                    "id": "result",
+                    "label": "Return value",
+                    "type": "bool",
+                    "array": false
+                  }
+                ],
+                "returnType": "bool",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "cppType": "hb::Actor*",
+                    "out": false
+                  },
+                  {
+                    "name": "component",
+                    "cppType": "const std::string&",
+                    "out": false
+                  },
+                  {
+                    "name": "enabled",
+                    "cppType": "bool",
+                    "out": false
+                  },
+                  {
+                    "name": "stretch",
+                    "cppType": "float",
+                    "out": false
+                  }
+                ]
+              },
+              {
+                "name": "Transform",
+                "label": "Transform",
+                "category": "C++",
+                "pure": false,
+                "static": true,
+                "event": "none",
+                "inputs": [
+                  {
+                    "id": "target",
+                    "label": "target",
+                    "type": "object",
+                    "array": false,
+                    "className": "Actor"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "id": "result",
+                    "label": "Return value",
+                    "type": "string",
+                    "array": false
+                  }
+                ],
+                "returnType": "std::string",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "cppType": "hb::Actor*",
+                    "out": false
+                  }
+                ]
+              },
+              {
+                "name": "Unknown",
+                "label": "Unknown",
+                "category": "C++",
+                "pure": false,
+                "static": true,
+                "event": "none",
+                "inputs": [
+                  {
+                    "id": "target",
+                    "label": "target",
+                    "type": "object",
+                    "array": false,
+                    "className": "Actor"
+                  },
+                  {
+                    "id": "component",
+                    "label": "component",
+                    "type": "string",
+                    "array": false
+                  }
+                ],
+                "outputs": [
+                  {
+                    "id": "result",
+                    "label": "Return value",
+                    "type": "bool",
+                    "array": false
+                  }
+                ],
+                "returnType": "bool",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "cppType": "hb::Actor*",
+                    "out": false
+                  },
+                  {
+                    "name": "component",
+                    "cppType": "const std::string&",
+                    "out": false
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "workerProtocol": 3,
+        "nativeBatch": 1,
+        "nativeModuleQueries": 1,
+        "nativeStateCommit": 1,
+        "nativeBatchOperations": 1,
+        "nativeFrameBatch": 1,
+        "nativeModuleFrameBatch": 1,
+        "nativeInputBatch": 1,
+        "nativeStateBatch": 1,
+        "nativeSpawn": 1,
+        "nativeActorLifetime": 1,
+        "nativeGameSession": 1
+      },
+      "cacheKey": "ab39faf4d7b6015b8ccf",
+      "cacheHit": true,
+      "cacheScope": "version",
+      "sdk": {
+        "fingerprint": "ef7dac43455870091c9066dff612f808ec6ba6870a6a0bd9d2bfcdaa37078d04",
+        "files": 38,
+        "bytes": 2399268
+      },
+      "sdkUsed": {
+        "fingerprint": "b152d70bb36b576aa848f0e6275b3901ee21baab7cb04c058d82164e9a097c8c",
+        "preprocessedFingerprint": "7e3917b25760a398ac9c84bb42c5b104e705888c2c8633b6e54bf6764748c3d5",
+        "files": 11,
+        "bytes": 1367966,
+        "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+        "mode": "dependencies",
+        "planHit": true,
+        "scanMS": 0
+      },
+      "compiler": "g++.exe",
+      "diagnostics": "빌드 성공"
+    },
+    "binary": {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\ab39faf4d7b6015b8ccf\\worker.exe",
+      "sha256": "7f4a33c1912577f0ff76f4e09c7b010b3d6e5f2c76a4fea8b5ff7c58e5e7cd92"
+    }
+  },
+  "failuresAndRepairs": [
+    {
+      "cause": "Backend retained attachment after rigid owner removal",
+      "repair": "Track engine-created attachment handles; detach actual particles before rigid removal. New source23 and changed hot7 passed."
+    },
+    {
+      "cause": "C++ float color values compared exactly in fixture",
+      "repair": "Float tolerance, unchanged binary cache reuse; no engine tolerance change."
+    },
+    {
+      "cause": "Legacy missing GetText threw out_of_range",
+      "diagnostic": "native/build/defaultdiag3048.json",
+      "repair": "Registered-schema minimal default query and per-call C++ memo; same-call actual local Transform TRS."
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": true,
+    "newNativeBinaries": 1,
+    "arbitraryMeshGeodesic": false,
+    "coupledContactReaction": false,
+    "GUI": false
+  },
+  "storage": {
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": [
+      "auto3041.mjs",
+      "autofix3042.mjs",
+      "autosafety3043.mjs",
+      "autocache3044.mjs",
+      "autoview3046.mjs",
+      "autostatus3047.mjs",
+      "defaultdiag3048.mjs",
+      "defaultread3049.mjs",
+      "defaultquery3050.mjs",
+      "autodocs3052.mjs",
+      "attachmentfix3053.mjs",
+      "admit3054.mjs"
+    ],
+    "handoffBytes": 3833,
+    "cache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    }
+  },
+  "scope": "Actual owned regular cloth/3D+2D rope automatic runtime paths, live anchor mutation/removal, minimum manual merge, hot partial-pin history, bounded effective pages and human status. Current-SDK four C++ methods/17 calls/20 operations plus common fixed-step replay. Schema-only defaults have no world packet/copy or physical query budget, repeated reads local within call. No arbitrary mesh/plastic rerouting/contact reaction, GUI/GPU/device/heap/FPS/install."
+}
