@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-26",
-  "basisRevision": "a5e82784b1db3b5d308a8fc05ae890d6e45f8708",
+  "basisRevision": "cbac39575c920e06cfada7f12db5ee1da39c559e",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -2566,19 +2566,24 @@
       "area": "effects",
       "title": "이펙트 고급 저작",
       "status": "partial",
-      "implemented": "등록 ParticleSystem·Decal·효과 속성 · 165: 세 렌더 경로 시트·이미터 리본·시작/종료 하위 프리팹 수명·GPU 위치 읽기 없음",
+      "implemented": "등록 ParticleSystem·Decal·효과 속성 · 165: 세 렌더 경로 시트·이미터 리본·시작/종료 하위 프리팹 수명·GPU 위치 읽기 없음 · 3340: 입자별 사망/평면 충돌 이벤트·반사/마찰/소멸·typed/common Custom Event·CPU/WebGPU/DirectX 실제 compute·bounded readback/staging 수명",
       "remaining": [
-        "입자별 GPU 사망/충돌 이벤트·개별 입자 리본",
+        "씬 물리 콜라이더 충돌·GPU 개별 입자 리본·네이티브 WebView 게임 전달 실창 검증",
         "범용 VFX 그래프/디버깅"
       ],
       "sources": [
         "prototype/scene-components.js",
         "prototype/scene-systems.js",
-        "prototype/ribbon-trail.js"
+        "prototype/ribbon-trail.js",
+        "prototype/particle-events.js",
+        "prototype/gpu-particle-interactions.js",
+        "prototype/native-particles.js",
+        "native/include/HBEngine/ParticleInteractions.hpp"
       ],
       "evidence": [
         "docs/WORK_ORDER_051.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_3340.json"
       ]
     },
     {
@@ -4355,10 +4360,10 @@
     }
   ],
   "latestBatch": {
-    "first": 3301,
-    "last": 3320,
-    "receipt": "docs/research/ENGINE_WORK_3320.json",
-    "scope": "UV 경계노멀/속성보존·typed/Undo·메시 attr부분갱신/fallback.10checks/oldnormal16/worldgate·설치보류/예약0."
+    "first": 3331,
+    "last": 3340,
+    "receipt": "docs/research/ENGINE_WORK_3340.json",
+    "scope": "CPU/WebGPU/DX 입자 평면충돌·사망/충돌 이벤트·bounded async/세대/staging 재사용·실제 NVIDIA/D3D11·설치보류/예약0."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_2145.json",

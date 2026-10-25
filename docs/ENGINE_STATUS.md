@@ -1,6 +1,6 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-26 · 대조 기준 커밋: `a5e82784`
+갱신일: 2026-10-26 · 대조 기준 커밋: `cbac3957`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
@@ -119,7 +119,7 @@
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
 | VFX-01 입자·투사체·GPU 계산 | verified | 입자 모듈·GPU 방출/간접 draw·정렬·탄환 서비스/충돌 | 이 행의 범위는 검증됨 | [GPU_EMISSION_049.md](research/GPU_EMISSION_049.md) · [GPU_EFFECTS_054.md](research/GPU_EFFECTS_054.md) |
-| VFX-02 이펙트 고급 저작 | partial | 등록 ParticleSystem·Decal·효과 속성 · 165: 세 렌더 경로 시트·이미터 리본·시작/종료 하위 프리팹 수명·GPU 위치 읽기 없음 | 입자별 GPU 사망/충돌 이벤트·개별 입자 리본 · 범용 VFX 그래프/디버깅 | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
+| VFX-02 이펙트 고급 저작 | partial | 등록 ParticleSystem·Decal·효과 속성 · 165: 세 렌더 경로 시트·이미터 리본·시작/종료 하위 프리팹 수명·GPU 위치 읽기 없음 · 3340: 입자별 사망/평면 충돌 이벤트·반사/마찰/소멸·typed/common Custom Event·CPU/WebGPU/DirectX 실제 compute·bounded readback/staging 수명 | 씬 물리 콜라이더 충돌·GPU 개별 입자 리본·네이티브 WebView 게임 전달 실창 검증 · 범용 VFX 그래프/디버깅 | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_3340.json](research/ENGINE_WORK_3340.json) |
 
 ## 게임 UI
 

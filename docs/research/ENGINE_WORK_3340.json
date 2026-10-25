@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "kind": "optional-per-particle-collision-and-death-events",
+  "implementationRevision": "cbac39575c920e06cfada7f12db5ee1da39c559e",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3320.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "0bbcd4eb119691c3569b7dda4aa9cd6975657e4698a8564c935098ecf3dddc2e",
+    "docs/BLUEPRINT_SPEC.md": "86a628780435df0c991f964b88dd5fa98a3cd1e0154366d9bb0c1ed1a81d5383",
+    "docs/ai-routes.json": "a781fbe391df1c6368705ba67515ea511a1866d9515b1b8906ed890d39bfc61a",
+    "docs/PARTICLE_INTERACTIONS.md": "19a1f50941d9b6bf16432d8a3dd9398bf0554164d633232f97a47ad885ca8ae2",
+    "native/desktop/SceneRenderBridge.hpp": "dfbd577e106d1b94cc9b159c40b2187219e366b40f5bb62dead5d3824d274b70",
+    "native/include/HBEngine/Compute.hpp": "0ab9a0b3a008f79b6192ad2e0dbb42493dba2705b00c27fc07585143e3aad9c8",
+    "native/include/HBEngine/ParticleInteractions.hpp": "7acc3eadd952509ab509e50512918fda6ff83568d00891ac349633224d0802f1",
+    "native/tests/particle-interactions-3337.cpp": "fbf5d7842ce99772b95614d591cbe29f1128327ea4b80e10b5a7308b5d779224",
+    "prototype/engine-services.js": "c5c1a7e48e550b0949113910389213c99098f279559ffa46243cd9a9bf56a9c7",
+    "prototype/gpu-particles.js": "f5b766d1acd989895cbcae3c7897fd321e721e412185d4ae400765a06ebb1013",
+    "prototype/native-particles.js": "bc1ba05a65e9fe46df62d959d95d005593762edb8072eb5b257296ef31fda1e5",
+    "prototype/native-scene-renderer.js": "c92626e17674a6dc6b6e6c9f17808e3cfa460fd2c69827824d0f58921239f7cb",
+    "prototype/scene-components.js": "b61996df3e2139f8adb018bb4aa8e139b270d926074f592064f3836020ba2b86",
+    "prototype/scene-systems.js": "fdc0293649c0b24e6cfdeb25420b89477c6b5f4de0125b9518eb2b75ed4c6632",
+    "prototype/gpu-particle-event-readback.js": "fc92a7dce98aadc73c32c3c45b152c37a4007d2290e5fe9728e88280a6f7e261",
+    "prototype/gpu-particle-interactions.js": "834983aaa88530cf6c858298cfe11119cfe94090e3a5857a252284c9595bb036",
+    "prototype/particle-events.js": "046511458d11c06141b242421ecd6920a39e8bf30958f2fa58afbf69112c6676",
+    "prototype/tests/particle-interactions-case.js": "5e655a9e5066f935deb943fe9db5992bcf6011a95908a182968e45439ff509bd",
+    "tools/editor-automation.mjs": "422ebd219e480b45b54a9486a7f4500582c952d72e51b80ac6d4ed465bcd4ec1",
+    "tools/check-particle-interactions-3338.mjs": "c4e7f01af4f6baef7fa8921a69189afb88810de5b5f49d5c8f476b2aa2eb50c9",
+    "tools/check-particle-interactions-webgpu-3342.mjs": "b890b70959f997ae948edf6372b4364bb903bf03a47fcae2fb67d5dfdc4447ae"
+  },
+  "resolvedOwners": 1656,
+  "targetIds": [
+    "VFX-02",
+    "AI-03"
+  ],
+  "checks": {
+    "sourceReports": [
+      "native/build/particle-interactions-LJZi3y/acceptance.json",
+      "native/build/particle-interactions-pNuvwT/acceptance.json",
+      "native/build/particle-interactions-caqtPh/acceptance.json",
+      "native/build/particle-interactions-UdnfLB/acceptance.json"
+    ],
+    "mergedCases": [
+      {
+        "name": "CPU analytic bounce/friction, kill/death, lifetime position and bounded queue",
+        "passed": true
+      },
+      {
+        "name": "shared typed settings, inspector, schema and generic edits reject invalid planes/events",
+        "passed": true
+      },
+      {
+        "name": "runtime component event dispatch reaches current owner only, pause/clear and reentrant deletion",
+        "passed": true
+      },
+      {
+        "name": "GPU decoder enforces byte bounds, detached records, explicit overflow and stale epoch",
+        "passed": true
+      },
+      {
+        "name": "owned WebGPU readback reuses one staging allocation and defers destroy through map completion",
+        "passed": true
+      },
+      {
+        "name": "actual Three TSL emits bounded atomic event WGSL and default path omits event/collision buffers",
+        "passed": true
+      },
+      {
+        "name": "native async adapters retain final death step and reject late callbacks after clear/dispose",
+        "passed": true
+      },
+      {
+        "name": "actual headless D3D11 compute bounce/kill/death/saturation/ring and legacy numeric parity",
+        "passed": true
+      }
+    ],
+    "related": "native/build/multi-emitter-sw9xlL/acceptance.json",
+    "nativeAdapter": "tools/check-native-particles.mjs final PASS (stdout)",
+    "actualD3D11": "native/build/particle-interactions-UdnfLB/native.json",
+    "actualWebGPU": "native/build/particle-webgpu-3HHjQM/acceptance.json"
+  },
+  "sourceCases": 8,
+  "relatedCases": 12,
+  "actualD3D11Cases": 8,
+  "samples": {
+    "adapter": {
+      "vendor": "nvidia",
+      "architecture": "lovelace",
+      "device": "",
+      "description": "",
+      "isFallbackAdapter": false
+    },
+    "denseParticles": 65536,
+    "eventAttempts": 131072,
+    "boundedRecords": 16,
+    "nativeEventReadbackBytes": 784,
+    "WebGPUOverflow": 18,
+    "wholeFPSClaim": false
+  },
+  "failures": "First source run 5/8: fixture binding.previous, Windows near macro, mixed src/build Three builder. Corrected test fixtures; failed cases rerun separately. Native generation guard added and changed owners rechecked. First all-source cases are retained, not counted twice.",
+  "boundary": {
+    "SDKChanged": true,
+    "newCPPBuild": true,
+    "actualD3D11Hardware": true,
+    "actualWebGPUHardware": true,
+    "GUI": false,
+    "headlessOwnedProfile": true,
+    "userWindowsChanged": false,
+    "userInstallChanged": false,
+    "schedules": 0,
+    "agents": 0,
+    "nativeWebViewIPCExecuted": false,
+    "mobileDevice": false
+  },
+  "storage": {
+    "newSDKCopies": 0,
+    "newRetainedNativeBinaries": 0,
+    "WebGPUStagingPerEffect": 1,
+    "D3D11StagingSlots": 3,
+    "handoffBytes": 4030,
+    "profilesPrunedBy": "retainTestEvidence",
+    "helpersRemoved": [
+      "particle-routes3331.mjs",
+      "particle-wire3332.mjs",
+      "particle-native3333.mjs",
+      "particle-gpu3334.mjs",
+      "particle-finish3335.mjs",
+      "particle-polish3336.mjs",
+      "particle-doc3339.mjs",
+      "particle-repair3340.mjs",
+      "particle-epoch3341.mjs",
+      "particle-final3343.mjs",
+      "particle-admit3344.mjs"
+    ]
+  },
+  "scope": "Typed authoring/common runtime Custom Event and generic component commands; analytic simulation-space plane; bounded async per-particle death/collision from actual NVIDIA WebGPU and D3D11 hardware; generation/clear/dispose safeguards, one reusable WebGPU staging and native 3-slot ring, default no event buffers. Scene-geometry collision, per-particle ribbons, VFX graph remain. No user GUI/native WebView gameplay/mobile/FPS/install claim."
+}
