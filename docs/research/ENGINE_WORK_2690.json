@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "date": "2026-10-25T00:34:30.526Z",
+  "kind": "streamed-file-rename-journal-and-joint-index-redirect-recovery",
+  "implementationRevision": "94a686f277713bf85f6cb378fd1aa8f749f752c7",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2670.json",
+  "changedSourceHashes": {
+    "tools/asset-rename-journal.mjs": "1fd857a43025fa791cfc110d131ef1081a7454dc186c22841334de9555bbbdf7",
+    "tools/project-service.mjs": "e88ce5c004d6273fac84bfd63070395c0c9d5f26241bff3c968cf83439a58a1e",
+    "prototype/transaction-recovery-editor.js": "dd73e1a3f6851e6c82e39bcf1348c0fca66a63f4d9410bcca2d2fcd99710957d",
+    "tools/rename-journal-fixture-2675.mjs": "e9c766fe4ccb67e6cfc1fe38bb7f36bedb0ce739031e4e47033c8b740e8270a7",
+    "tools/check-rename-journal-2676.mjs": "45a6d02666d24e341ab07812246f1ae744f23061e7b9b82073315dee25c679f1",
+    "docs/ASSET_RENAME_RECOVERY.md": "9fb9e94e120586bbf46799f078274412ed4534a7dda6f154dad54ecf21efbdb9",
+    "docs/TRANSACTION_RECOVERY.md": "1c5a0631118d4506b7c4ebe47ee66f307c80e0276c48c27689ea4c42a5ee79d4",
+    "docs/ai-routes.json": "8fc9e7f4773a3e34b9e68a9f87ee186101fecef82cd5ea4e68edfcc2b0212440",
+    "CODEX_HANDOFF.md": "ab3a08072da5327baef9cf9a478fa572dee5dc549c62b0a18c3e95d45ce460c6"
+  },
+  "resolvedOwners": 1468,
+  "targetIds": [
+    "PRJ-03"
+  ],
+  "changes": {
+    "PRJ-03": " ·2671–2690: 일반파일/모델sidecar rename을 stream SHA/inode·배타link·ID/redirect 공동journal/초기복구로연결. 사람/AI명시선택·scope자식재시작/동일프로젝트재시도·전체CAS/preview·readonly인덱스·외부충돌보존·완료경로요약압축. 신규26+회귀79·구문5. 실제owned process중단/주입경합, 10k무관index 완료기록<4KB; 다른FS/폴더/실제전원/다중writer/GUI/설치별도."
+  },
+  "newSourceCases": 26,
+  "regressionCases": 79,
+  "checks": {
+    "group": "native/build/group2684.json",
+    "rename": "native/build/rename-journal-Ns96t9/acceptance.json",
+    "recovery": "native/build/transaction-recovery-p1JLrp/acceptance.json",
+    "assetTransactions": "native/build/asset-transaction-ow44Nn/acceptance.json",
+    "images": "native/build/model-images-pHvGyj/acceptance.json",
+    "cue": "native/build/cue-anchors-WTIhIX/acceptance.json",
+    "focus": "native/build/focus2685.json",
+    "syntax": 5
+  },
+  "failuresAndRepairs": [
+    "Owned DOM fixture lacked querySelectorAll, then a new case shadowed pending() before initialization; corrected fixture and reran failed tool only.",
+    "Source review added whole resolution scope, failed child retry without reopen, truthful dry-run feasibility, parent journal CAS and actual-byte disk SHA.",
+    "Exclusive-link race checks protect both surviving original and external replacement. Terminal history compression is best effort and cannot roll back committed data.",
+    "Final bundled105 passed; no repeated SDK/renderer/GUI tests. Earlier failed or superseded fixture runs are not extra implemented cases."
+  ],
+  "performance": {
+    "payloadBackupBytes": 0,
+    "metadataSampleUnrelatedEntries": 10000,
+    "completedTwoPathJournalMaxAssertedBytes": 4000,
+    "streamingHash": true,
+    "remaining": "File hashing I/O, prepared full metadata snapshot up to32MiB and historical journal enumeration still scale. No FPS/heap/native renderer measurement."
+  },
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newCPP": false,
+    "newGPU": false,
+    "newGUI": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newRuntimeSDKProfiles": 0,
+    "helpersCleanup": "native/build/temp-clean2690.json",
+    "policy": "Only owned helper files removed; source fixtures/recipes/reports retained. Completed project rename journals compact metadata, shared native cache32 unchanged; Versions untouched."
+  },
+  "remainingBoundary": [
+    "Directory/private folder rename stays legacy; other volumes/filesystems and permission variants not validated",
+    "General streamed content replacement, independent other write journals/remote VCS and full rename/index compatibility",
+    "Actual hardware power loss/filesystem durability/multiple writers, external removal/corruption of journals and user-visible storage-warning expansion"
+  ]
+}
