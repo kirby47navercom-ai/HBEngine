@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "kind": "typed-large-particle-json-native-command-pipeline",
+  "implementationRevision": "5e07bf1df0265a3ecb4cdfa88344aa82c2addfbc",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3000.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "b6237e73dece75d596af3c3718b7c6285e57dcec2169884089ed8901e89463f9",
+    "prototype/component-json.js": "07bab61c822c8e7d00e22e439fcd366517bf899f8902f2273173bdf0472d09b8",
+    "prototype/native-protocol.js": "2a4a966be026576ceac438bc9b8d98e23735d0b0bef065ef131346dfb538459c",
+    "prototype/engine-services.js": "7115923ddea7f2b31f0e418dbd4c24b357d96a6affd900a86639951fc8ebae94",
+    "tools/editor-automation.mjs": "e71b3cb40f3ad3f8c1151216acfaa9868c0a5d17053e18e0bfb6281b9f331779",
+    "native/include/HBEngine/ComponentJson.hpp": "49d78446cf4a3f97577da17f6034c6c39261850bedae4cf1efbf97fdb4cf9609",
+    "native/include/HBEngine/Session.hpp": "b5794de8872354f9e1b34e4e8fb08fd71ee714f73a1e82dc24d9e0e3c1085a2b",
+    "tools/check-component-json-3002.mjs": "1e9eaf74d699c9c254d228aa794dd2477bb52ffcedc25a2ec892df125133fcc9",
+    "tools/check-component-json-3004-cpp.mjs": "b8d8f3c7b8f796afaa41d639f04012c57e2c39e201c3c43af2505394557f6417",
+    "docs/COMPONENT_SPARSE_JSON.md": "b473ec0f3555582107dabe3e5840f794cc9e255373a2558e3e36da75b9f29355",
+    "docs/BLUEPRINT_SPEC.md": "145328896eff45620f36a46391897622d1f5b8bcb31b4f45c0a8c90aabf67667",
+    "DEBUG_HANDOFF.md": "7f7342278cf850ae1b09e630f8d6e5540fa689c91d324a26d878102f06784d40",
+    "CODEX_HANDOFF.md": "a2205f7d89f0176725fae6a5bf4719a6891d90827e208c0baae3d58294e826e1"
+  },
+  "resolvedOwners": 1585,
+  "targetIds": [
+    "PHY-02",
+    "CPP-01",
+    "AI-03"
+  ],
+  "newSourceCases": 11,
+  "relatedSourceCases": 66,
+  "relatedGate": "native-records1478",
+  "checks": {
+    "source": "native/build/component-json-bvVx9N/acceptance.json",
+    "related": [
+      {
+        "file": "tools/check-weighted-pins-2974.mjs",
+        "passed": true,
+        "output": "{\"passed\":true,\"cases\":16,\"report\":\"native\\\\build\\\\weighted-pins-1FevWJ\\\\acceptance.json\"}"
+      },
+      {
+        "file": "tools/check-deformable-distance-2965.mjs",
+        "passed": true,
+        "output": "{\"passed\":true,\"cases\":13,\"report\":\"native\\\\build\\\\deformable-distance-zYyejj\\\\acceptance.json\"}"
+      },
+      {
+        "file": "tools/check-cloth-mass-brush-2903.mjs",
+        "passed": true,
+        "output": "{\"passed\":true,\"cases\":13,\"report\":\"native\\\\build\\\\cloth-mass-brush-e0ZxSJ\\\\acceptance.json\"}"
+      },
+      {
+        "file": "tools/check-deformable-distribution-2824.mjs",
+        "passed": true,
+        "output": "{\"passed\":true,\"cases\":14,\"report\":\"native\\\\build\\\\deformable-distribution-afrcJ5\\\\acceptance.json\"}"
+      }
+    ],
+    "nativeInput": "native/build/native-input-defaults-4jmZXG/acceptance.json",
+    "nativeRecords": "native/build/native-records-1478-s1vywC/acceptance.json",
+    "cpp": "native/build/component-json-cpp-xKhzC6/acceptance.json",
+    "syntax": [
+      {
+        "file": "prototype/component-json.js",
+        "passed": true
+      },
+      {
+        "file": "prototype/native-protocol.js",
+        "passed": true
+      },
+      {
+        "file": "prototype/engine-services.js",
+        "passed": true
+      },
+      {
+        "file": "tools/editor-automation.mjs",
+        "passed": true
+      },
+      {
+        "file": "tools/check-component-json-3002.mjs",
+        "passed": true
+      },
+      {
+        "file": "tools/check-component-json-3004-cpp.mjs",
+        "passed": true
+      }
+    ]
+  },
+  "cpp": {
+    "methods": 2,
+    "calls": 6,
+    "queuedOperations": 5,
+    "rejections": 4,
+    "sdk": {
+      "fingerprint": "8bc2b409bf94b68a97f238b1c6a49fa8a598b5a234b9808fed0cef1d23def808",
+      "files": 38,
+      "bytes": 2398110
+    },
+    "sdkUsed": {
+      "fingerprint": "9ef3bd06f0c35df44dbe459b09e7d875b3499ee195f23cabf7ac3995b4f471ce",
+      "preprocessedFingerprint": "b0c631465c265d35bf3c1c1672000e132a3857bab398719c0c8fc0d3dbc636a7",
+      "files": 11,
+      "bytes": 1366808,
+      "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+      "mode": "dependencies",
+      "planHit": false,
+      "scanMS": 686.8847000000001
+    },
+    "cacheKey": "a162d813edcf61c3a836",
+    "cacheHit": false,
+    "binary": {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\a162d813edcf61c3a836\\worker.exe",
+      "sha256": "f6722ae69893da455223be9e47d82c73f121b88aad608cb5a3e56c80edd191ce"
+    },
+    "results": [
+      {
+        "property": "pinWeights",
+        "rows": 65536,
+        "textBytes": 1889435,
+        "operations": 1,
+        "legacyMissingArray": true,
+        "commonReplay": true,
+        "physicsAllocated": false
+      },
+      {
+        "method": "Reject",
+        "rejected": 4,
+        "operations": 0,
+        "unchanged": true
+      },
+      {
+        "property": "massWeights",
+        "rows": 65536,
+        "textBytes": 1889435,
+        "operations": 1,
+        "legacyMissingArray": true,
+        "commonReplay": true,
+        "physicsAllocated": false
+      },
+      {
+        "property": "motionLimits",
+        "rows": 65536,
+        "textBytes": 1889435,
+        "operations": 1,
+        "legacyMissingArray": true,
+        "commonReplay": true,
+        "physicsAllocated": false
+      },
+      {
+        "property": "pinOverrides",
+        "rows": 65536,
+        "textBytes": 1987739,
+        "operations": 1,
+        "legacyMissingArray": true,
+        "commonReplay": true,
+        "physicsAllocated": false
+      },
+      {
+        "property": "distanceTethers",
+        "rows": 65535,
+        "textBytes": 2861325,
+        "operations": 1,
+        "legacyMissingArray": true,
+        "commonReplay": true,
+        "physicsAllocated": false
+      }
+    ]
+  },
+  "failuresAndRepairs": [
+    {
+      "report": "native/build/component-json-GavwKF/acceptance.json",
+      "cause": "Fixture gave Rope2D unsupported topology and5000 particles",
+      "repair": "Cloth rope5000 and Rope2D existing valid4096 split; physical/JSON validators not weakened, failure excluded"
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": true,
+    "previousSDKProofHistorical": true,
+    "genericJSONUnchanged": true,
+    "largeBodyStress": false
+  },
+  "storage": {
+    "newNativeBinaries": 1,
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": [
+      "component3001.mjs",
+      "legacy3003.mjs",
+      "fixliteral3005.mjs",
+      "protocol3006.mjs",
+      "tests3007.mjs",
+      "group3008.mjs",
+      "ropefix3009.mjs",
+      "admit3010.mjs"
+    ],
+    "handoffBytes": 3863,
+    "nativeCacheCleanup": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    }
+  },
+  "scope": "Full65536 authored arrays through strict JS/native reply validation/current compiled C++/common config replay; real4225-body creation/page separately. Not full65536-body performance, whole SDK regression, GUI/GPU/device/install proof."
+}
