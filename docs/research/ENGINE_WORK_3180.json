@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "kind": "unit-bounded-cubic-section-weight-curves",
+  "implementationRevision": "2b6398834466547b11f65fb9b2e3e7733311292f",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3160.json",
+  "changedSourceHashes": {
+    "prototype/section-weight-cubic.js": "8e43c55b8aade2f4f87fcb188385c5c152f6720ed5781a2f3b481e63f3d03416",
+    "prototype/sequence-weight-curve.js": "fea3a680f30c7c0642a30c7114563f665c79ba62ff38637ea1841299aae961eb",
+    "prototype/sequence-weight-curve-editor.js": "17686c52f93edefb8932a8a27b426b0cb07ff612ac18a7d314c3be4d0de6a812",
+    "prototype/sequence-audio-envelope.js": "90b8657212a3afdd51b5cfee106e238b7f68818390e9d17d4bd4c5c77124efe7",
+    "prototype/sequence-audio-envelope-editor.js": "79a3b2a796f08feb4e5049d39e40734e1bb500f508db3a4de42ff3227cec6a73",
+    "prototype/gameplay-editor.js": "1a534b8f606ac97feded4b2b1f5c4d1fd2fbc1b5f23a4374623db515dd43e1c5",
+    "tools/editor-automation.mjs": "a5be9d233cc6edbb914f1957302f6c342046bc33e769757fb6e784e0be553d5e",
+    "docs/ai-routes.json": "a26a6a7e058c59c2ed4021126a223eeba16de3ccfeb0088879a600a0f60fb2fd",
+    "tools/check-section-cubic-3164.mjs": "7d66862179bd0192b765a6c1ef07cfda547a96d0d52fb5c937596d87841bdf6b",
+    "docs/SECTION_WEIGHT_CUBIC.md": "1d874ffa924bc3a477ac6026c1fd8a9e5ff53544ba00a0650ea874350ccfd742",
+    "docs/BLUEPRINT_SPEC.md": "f13ad3e21cb0b0cd87567429bcceafcf51afb07093d32e9501fa88b24f5db52e",
+    "CODEX_HANDOFF.md": "acdd4b749923903be7663ea3ca8b5434eb8b4edec27bb85d454afbe2e179758b"
+  },
+  "resolvedOwners": 1615,
+  "targetIds": [
+    "ANM-06",
+    "AI-03"
+  ],
+  "newSourceCases": 8,
+  "relatedSourceCases": 30,
+  "checks": {
+    "source": "native/build/section-cubic-FyHF6G/acceptance.json",
+    "related": [
+      "native/build/sequence-weight-curve-1981-8mZNY0/acceptance.json",
+      "native/build/sequence-audio-envelope-2000-FSr4Wt/acceptance.json",
+      "native/build/sequence-audio-1956-WhQNj8/acceptance.json"
+    ]
+  },
+  "samples": [
+    {
+      "bezierOracleObservations": 802
+    },
+    {
+      "trimOracleObservations": 2420
+    }
+  ],
+  "failuresAndRepairs": [
+    {
+      "cause": "Eager extra interpolation choices on32 rows exceeded existing24000-character markup gate",
+      "repair": "Current-mode-only markup, populate complete mode choices on owning input focus without document change; new source8 and changed old weight10 rerun. Gate not widened."
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "actualCppCaller": false,
+    "GUI": false,
+    "cubicAudioParamScheduling": false,
+    "pitchPreservingStretch": false
+  },
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "newWorkers": 0,
+    "removedOwnedRegularHelpers": [
+      "weightcubic3161.mjs",
+      "weightui3162.mjs",
+      "weightdocs3163.mjs",
+      "weightlazy3165.mjs",
+      "admit3166.mjs"
+    ],
+    "handoffBytes": 4794,
+    "cacheCleanupReused": "WORK3100 nativeCacheOnly32; no new native cache in this phase"
+  },
+  "scope": "Existing scalar Hermite/weighted/vertical Bezier engine for unit-bounded section weights, exact frozen-slope/deCasteljau trim and add, typed32-key UI/actual SVG/lazy mode choice and independent802 Bezier+2420 trim observations, actual nested common sequence VM mix/seek/native root weight replay and baseline restoration. Legacy linear representation/page-size gates and audio linear-only validation/scheduling retained. No new SDK/actual C++ caller, cubic AudioParam/pitch stretch, GUI/GPU/device/install."
+}
