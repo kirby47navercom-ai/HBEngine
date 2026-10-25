@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "kind": "multi-support-ground-pelvis-fullbody-ik",
+  "implementationRevision": "2e79b3db56da5e2c8a61d42fd5dd59ca1f8ac57b",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3200.json",
+  "changedSourceHashes": {
+    "prototype/animation-ground-pelvis.js": "35eb41650d86a9c0e1aaa614d22ef0f6db4b27eaee6493e0205b04ffc00e09ba",
+    "prototype/animation-ground-pelvis-editor.js": "9686bde5eb1c77dfeb231a74e1702d71286ee8304c2df8ea93a757a05a80c2f7",
+    "prototype/animation-ik.js": "31e067c6aeb102b2296602303d750fe4f29fb66f538ed91c6c907651f16ec0e2",
+    "prototype/animation-full-body.js": "3f9622bd12d1f08db96b3289d147e261fc3358a2fb40f66ba2bc673bc0cba61b",
+    "prototype/animation-graph-assets.js": "8d8541b8bed0befbfb5782dead9d9e86c2c27b1cfcbd30c8c39adec905f7bbee",
+    "prototype/animation-graph-runtime.js": "7f4a03030be762497780032ae47572778cc2e8ae00fc4df88ac5d66ea3cc4b05",
+    "prototype/animation-graph-editor.js": "e22085f21c738775b493cc2f0fe254e58b0c66fac0fe562070537529b0a4aaee",
+    "prototype/animation-ik-editor.js": "89a03e2d6b07a91e10d510f87214161d96160357ed5289bf5b2ef293be50a39b",
+    "tools/editor-automation.mjs": "8b6286e9cdafcf8937b6b660faceed686a553a6801c8febe2fedbac11e2a9c08",
+    "tools/check-ground-pelvis-3203.mjs": "000bf8171cb93741cbeba8180c44df38cd3d3e5111a44f31ffe84fd8985ee911",
+    "docs/ai-routes.json": "0414667bdce3f67181fbd565a8ae9437a85899c66640878b529b6603d139621b",
+    "docs/BLUEPRINT_SPEC.md": "c8998ab771f5a5f6d4447dc347a1cc6c65acf2ccb142ef667bbba54856904c29",
+    "docs/ANIMATION_GROUND_PELVIS.md": "57aede3607088b09a0e789b702c29419800e1e7df5e371ccd8335399a2cb6148",
+    "CODEX_HANDOFF.md": "469c909c79e67688f0bfc4cd7b27bfc90d3fa9f4559b18022baacbbe12398a64"
+  },
+  "resolvedOwners": 1622,
+  "targetIds": [
+    "ANM-04",
+    "ANM-05",
+    "AI-03"
+  ],
+  "newSourceCases": 10,
+  "relatedSourceCases": 35,
+  "checks": {
+    "source": "native/build/ground-pelvis-Yder8k/acceptance.json",
+    "related": [
+      "native/build/fullbody-stretch-rHsf3S/acceptance.json",
+      "native/build/pole-control-DuwEmt/acceptance.json",
+      "native/build/auto-plant-WiTIMn/acceptance.json"
+    ],
+    "legacyIK": "tools/check-animation-ik.mjs: passed, headless source gate"
+  },
+  "samples": [
+    {
+      "pelvis": [
+        0,
+        1.6,
+        0
+      ],
+      "feet": [
+        [
+          -0.34999998509799646,
+          0.00001556881733744131,
+          0
+        ],
+        [
+          0.34999999002984583,
+          0.20000951758828955,
+          0
+        ]
+      ],
+      "queries": 40,
+      "frames": 20
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "actualCppCaller": false,
+    "commonNativeBoolReplay": true,
+    "Rapier3D": true,
+    "GUI": false,
+    "predictiveGait": false,
+    "coupledContactForces": false
+  },
+  "metadataRepair": "WORK3200 wrote generated status Markdown to docs/research by mistake. Removed only that new duplicate and regenerated existing canonical docs/ENGINE_STATUS.md; JSON authoritative ledger unchanged by this correction.",
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "newWorkers": 0,
+    "removedOwnedRegularHelpers": [
+      "pelviswire3201.mjs",
+      "pelvisadjust3202.mjs",
+      "pelvisdocs3204.mjs",
+      "admit3205.mjs"
+    ],
+    "handoffBytes": 4692
+  },
+  "scope": "Actual Three two-leg FullBodyIK, shared support rays and bounded pelvis world translation, original lengths/joint/alpha/root stiffness policy, branch-local smooth/reset, typed editor real change/Undo/rename/removal/status, common native Bool operation replay and ready Rapier3D. No fresh C++ compiler caller, GUI/device, predicted gait/contact-force/rig calibration or whole-scene speed claim."
+}
