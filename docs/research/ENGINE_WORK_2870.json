@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "date": "2026-10-25T09:03:42.261Z",
+  "kind": "디스크소스 공유·비용 절감·영향 검사 / 설치 보류",
+  "implementationRevision": "c2c262391b1b90c5998aad9ec3d4c2f6292c14c7",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2860.json",
+  "changedSourceHashes": {
+    "prototype/texture-disk-source-cache.js": "19903265c260fefe2d1d44df759362aef6595dcf0de23fb4dc553c24ce6eaad3",
+    "prototype/texture-disk-load.js": "fd6ceb3128ecbcaeaa40105c9ef6f23800aa12b6fa5831283f78a103aab9c723",
+    "prototype/texture-disk-mips.js": "f339ae317fd3a8805267f7a33c4315b5028cd38d05253699b210057342cd0ff8",
+    "tools/check-disk-source-sharing-2862.mjs": "de2c45b7138271e5eac36f7127a301037d54cbfa6bb2f1db13808d4991186122",
+    "docs/LAYERED_DISK_MIPS.md": "f219a028cc53bbbb4b604e4f1a3804fbd1f946311bb0253609c8ff5ffbca6c94",
+    "docs/ai-routes.json": "5ca37703cdf375eed2c68323e2f96589c3f831890dfa477110662873d6e180b6",
+    "CODEX_HANDOFF.md": "cb646406146b91ad84c59fb2aaaf0a019f223b1a0b85f9a9d0e766a41b282264"
+  },
+  "resolvedOwners": 1538,
+  "targetIds": [
+    "MAT-03",
+    "AST-03",
+    "AI-03"
+  ],
+  "changes": {
+    "MAT-03": " ·2861–2870: 동일asset객체/URLowner/device의RGBA8disk source를약한키로공유. 물리texture/Source/sampler독립·경로/크기/장치한도변경분리·기존view snapshot보존·마지막lease해제CPU0. 신규8+관련18·동일SDK/실행파일 C++9호출. 두동일material fixture픽셀보유는한source분; GPU/전체heap/FPS절감주장아님.",
+    "AST-03": " ·2861–2870: 재사용disk source는약한metadata키만유지·추가파일/worker/timer0. 요청해제시buffer0·다음사용시현재외부파일재읽기. 불변external snapshot으로표현하지않음.",
+    "AI-03": " ·2861–2870: 기존disk상주보고의decodedBytes는공유소스범위로정의. 물리GPUtexture/상주풀비용은각binding별로보존·공유CPU를GPU예산절반으로계산하지않음."
+  },
+  "newSourceCases": 8,
+  "relatedSourceCases": 18,
+  "checks": {
+    "group": "native/build/group2864.json",
+    "sharing": "native/build/disk-source-sharing-MaOiLe/acceptance.json",
+    "relatedDisk": "native/build/layered-disk-fjn5ox/acceptance.json",
+    "cpp": "native/build/layered-disk-cpp-54uokP/acceptance.json"
+  },
+  "cpp": {
+    "methods": 3,
+    "calls": 9,
+    "writes": 9,
+    "cacheKey": "3797b21b7bd2f0101cf0",
+    "cacheHit": true,
+    "sdk": {
+      "fingerprint": "6ae42160cdb0e8cdce5bcea410ec666c86453519087ed1901192da45f46811da",
+      "files": 37,
+      "bytes": 2391557
+    },
+    "sdkUsed": {
+      "fingerprint": "dc9211f4a2343da5636cdc97b5de236f7dc9fe682a47244dd4b349e08dad22d3",
+      "preprocessedFingerprint": "70c9667b2e77c58ca31ef1a0052f28cf2667982df19833b4dae00c241d7c70c6",
+      "files": 10,
+      "bytes": 1360255,
+      "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+      "mode": "dependencies",
+      "planHit": true,
+      "scanMS": 0
+    },
+    "binary": {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\3797b21b7bd2f0101cf0\\worker.exe",
+      "sha256": "4865966fb544e13b58de09647dfcc6fa952a4b5608be908732dc985d9a51aea7"
+    },
+    "scope": "Current unchanged SDK Materials::SetResidentMip compiled once. Native operations replayed through actual engine service/VM and real materialTextureBindings for disk array/cube/volume fine/coarse/release; all resident RGBA bytes and final zero leases inspected. Renderer hook supplied, owned Image/canvas fixture; no GUI/GPU pixels/device/install."
+  },
+  "results": {
+    "bytes": [
+      {
+        "kind": "texture2d",
+        "materials": 2,
+        "decoded": 84,
+        "withoutSharing": 168
+      },
+      {
+        "kind": "texturearray",
+        "materials": 2,
+        "decoded": 336,
+        "withoutSharing": 672
+      },
+      {
+        "kind": "cubemap",
+        "materials": 2,
+        "decoded": 504,
+        "withoutSharing": 1008
+      },
+      {
+        "kind": "volumetexture",
+        "materials": 2,
+        "decoded": 292,
+        "withoutSharing": 584
+      }
+    ],
+    "finalDecodedBytes": 0,
+    "syntaxFiles": 4,
+    "currentCanonicalStatusValidated": true,
+    "uniqueNewCasesAcross2860And2870": 45,
+    "uniqueRelatedCasesAcross2860And2870": 44,
+    "legacy2DGateSeparatelyPassed": true
+  },
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newGUI": false,
+    "newGPU": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newPersistentSDKCopies": 0,
+    "newNativeModuleBinaries": 0,
+    "nativeCachePolicy": 32,
+    "previousCachePrune": "docs/research/ENGINE_WORK_2860.json",
+    "removedOwnedRegularHelpers": 4,
+    "handoffBytes": 3912
+  },
+  "scope": "Shared decoded RGBA payload and image jobs only; per-material GPU texture/sampler/budget independent. Owned fixture counter/byte evidence, not real process RAM/FPS, GPU heap or immutable external snapshot. No new SDK API or installation.",
+  "canonicalCounts": {
+    "verified": 37,
+    "partial": 37,
+    "unimplemented": 1,
+    "unverified": 3
+  },
+  "previousLineage": [
+    "docs/research/ENGINE_WORK_2720.json",
+    "docs/research/ENGINE_WORK_2734.json",
+    "docs/research/ENGINE_WORK_2744.json",
+    "docs/research/ENGINE_WORK_2754.json",
+    "docs/research/ENGINE_WORK_2762.json",
+    "docs/research/ENGINE_WORK_2790.json",
+    "docs/research/ENGINE_WORK_2820.json",
+    "docs/research/ENGINE_WORK_2830.json",
+    "docs/research/ENGINE_WORK_2860.json"
+  ]
+}
