@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "kind": "authored-grid-rope-geodesic-tether-generation",
+  "implementationRevision": "cf039c5ed4e7762adbe34704c6eabdb8010acb62",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3020.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "c71b8c87655b755e1aac35d9e27ced37165f830c64440b6d3e521461586ed133",
+    "prototype/cloth-tether-generation.js": "139b2706a36accc94210cc86ba043203273bccc5d7e88de9023dce3de07f3265",
+    "prototype/cloth-tether-editor-source.js": "82eaa9b51adbc57279d50a52a89aac3c3941ceacbce8d7c7d0f24522f19fd91c",
+    "prototype/cloth-distance-editor.js": "1d84e3f58d0c5ba5edab694a06dffd36475287318242f08ddd11c502286e56f9",
+    "prototype/scene-inspector.js": "ace54c87cd838938d511f68a2cae4260a23cddc569501528de5af6e5acaf8c71",
+    "prototype/blueprint-details.js": "e5d15333f147eba71455a57bb3889296829c61a9f310de0f6b5531d7504326da",
+    "prototype/app.js": "3d0da856bf5e1facdd8bb2455ec571aac0435fff5fc12d6c2cce289c39b485a6",
+    "tools/editor-automation.mjs": "6ebe5981d1b31a0facd594a561818717f354c7d652216d94da0ce3a1d5a0040d",
+    "tools/check-cloth-tethers-3025.mjs": "811ea2141e691ca6923ad90adb99dacd1740c6c123f99f48bde2877fadcb018a",
+    "docs/CLOTH_TETHER_GENERATION.md": "d1d37e0cc1c0fe2d4af0db5296c10cb31e7430e7095406484c6348c739d4efdd",
+    "docs/DEFORMABLE_DISTANCE_LIMITS.md": "c5b9c2b1fe295b852ce8a9810a5fac2981ca3217c059cdd5ee7de8f2e59d9820",
+    "docs/BLUEPRINT_SPEC.md": "1d4a576b8542f294f1db8ec90f6ebbcc3a72d4346ffbaf28b8d5e26cd25468f5",
+    "DEBUG_HANDOFF.md": "99042ecd336b6a6448996c15ab5aa6a77fe219944603f45a2968ae6b4f0d37fb",
+    "CODEX_HANDOFF.md": "4c7562d0c14a78441c343df2d5368b73a151d3a7f9adfeb84c4a3ca0005e988f"
+  },
+  "resolvedOwners": 1589,
+  "targetIds": [
+    "PHY-02",
+    "AI-03"
+  ],
+  "newSourceCases": 21,
+  "relatedSourceCases": 33,
+  "checks": {
+    "source": "native/build/cloth-tethers-trCuxz/acceptance.json",
+    "related": [
+      {
+        "file": "tools/check-distance-editors-2969.mjs",
+        "passed": true,
+        "output": "{\"passed\":true,\"cases\":4,\"report\":\"native\\\\build\\\\distance-editors-El1Vny\\\\acceptance.json\"}"
+      },
+      {
+        "file": "tools/check-deformable-distance-2965.mjs",
+        "passed": true,
+        "output": "{\"passed\":true,\"cases\":13,\"report\":\"native\\\\build\\\\deformable-distance-pmczwA\\\\acceptance.json\"}"
+      },
+      {
+        "file": "tools/check-weighted-pins-2974.mjs",
+        "passed": true,
+        "output": "{\"passed\":true,\"cases\":16,\"report\":\"native\\\\build\\\\weighted-pins-t5dCcM\\\\acceptance.json\"}"
+      }
+    ],
+    "syntax": [
+      {
+        "file": "prototype/cloth-tether-generation.js",
+        "passed": true,
+        "reused": "same source, first syntax pass"
+      },
+      {
+        "file": "prototype/cloth-tether-editor-source.js",
+        "passed": true,
+        "reused": "same source, first syntax pass"
+      },
+      {
+        "file": "prototype/cloth-distance-editor.js",
+        "passed": true,
+        "reused": "same source, first syntax pass"
+      },
+      {
+        "file": "prototype/scene-inspector.js",
+        "passed": true,
+        "reused": "same source, first syntax pass"
+      },
+      {
+        "file": "prototype/blueprint-details.js",
+        "passed": true,
+        "reused": "same source, first syntax pass"
+      },
+      {
+        "file": "prototype/app.js",
+        "passed": true,
+        "reused": "same source, first syntax pass"
+      },
+      {
+        "file": "tools/editor-automation.mjs",
+        "passed": true,
+        "reused": "same source, first syntax pass"
+      },
+      {
+        "file": "tools/check-cloth-tethers-3025.mjs",
+        "passed": true
+      }
+    ]
+  },
+  "samples": [
+    {
+      "particles": 65536,
+      "anchors": 2,
+      "tethers": 65534,
+      "elapsedMS": 26.745600000000024,
+      "scope": "One owned Node generation only; no browser paint/whole heap/FPS claim"
+    }
+  ],
+  "routes": [
+    {
+      "symbol": "generateClothTethers",
+      "filesRead": 1,
+      "bytesRead": 7279,
+      "mode": "focused-routes"
+    },
+    {
+      "symbol": "clothTetherAuthoringSource",
+      "filesRead": 1,
+      "bytesRead": 1144,
+      "mode": "focused-routes"
+    }
+  ],
+  "previousTransportIntegrity": {
+    "binary": true,
+    "headers": {
+      "native/include/HBEngine/ComponentJson.hpp": true,
+      "native/include/HBEngine/Session.hpp": true
+    }
+  },
+  "failuresAndRepairs": [
+    {
+      "scope": "Syntax gate before runtime",
+      "cause": "Owned fixture await inside non-async rejection callback",
+      "repair": "Fixture callback made async; no production change; tests had not run"
+    },
+    {
+      "scope": "Additional algorithm inspection",
+      "cause": "Finite matrix/geometry multiplication or path sum can overflow; all-pinned output also needs constraint validation",
+      "repair": "Finite-axis validation, overflow path rejection and all-pinned result validation; changed owner21 rerun only"
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "arbitraryMeshGeodesic": false,
+    "runtimeRegeneration": false,
+    "GUI": false
+  },
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": [
+      "tethers3021.mjs",
+      "tetherplane3022.mjs",
+      "tetherowner3023.mjs",
+      "tethersafe3024.mjs",
+      "group3026.mjs",
+      "fix3027.mjs",
+      "tetheroverflow3028.mjs",
+      "admit3029.mjs"
+    ],
+    "handoffBytes": 4075,
+    "cacheCleanupReused": "WORK3020 nativeCacheOnly; no cache writes/builds in this phase"
+  },
+  "scope": "Actual grid4/rope generated authoring, owned current scene/BP field and document handlers plus common real Rapier hot constraints. Node generation26.7456ms is one measurement only. No arbitrary-mesh/runtime rerouting/contact reaction, actual GUI/GPU/device/heap/FPS/installation or fresh C++ run."
+}
