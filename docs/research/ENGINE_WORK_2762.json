@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "date": "2026-10-25T01:51:08.911Z",
+  "kind": "path-independent-json-cook-cache-and-owned-crash-temporary-retention",
+  "implementationRevision": "de1dd0c061e753cbd625fdb84f079b93b9a5fa7d",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2754.json",
+  "changedSourceHashes": {
+    "tools/cook-cache.mjs": "42881312f5cb3675b86858149269871d0b147561f9f80952dfa46843e42c7857",
+    "tools/check-cook-sharing-2757.mjs": "c987e4f3e4e8fb843e216ad7c2f983b8fd3986db145556d3a33d6a8ee7c81ff3",
+    "docs/COOK_CACHE_OWNERSHIP.md": "bc7c2f1a59a9dc856efb8d5be57ea06cec85406c1266ae26381a97f983b0e280",
+    "docs/ai-routes.json": "e0962bd004241883194f2ee9e220d2b89979f7234aadd626c93af6a1b54e6387",
+    "CODEX_HANDOFF.md": "60395eaecf7bb89a23b35ccf89a2297e3a23ac1276c8b5ae1b2d89caf99381b2"
+  },
+  "resolvedOwners": 1492,
+  "targetIds": [
+    "AST-03"
+  ],
+  "changes": {
+    "AST-03": " ·2755–2762: JSONcook v3 target/sourceSHA경로독립 캐시·한build중복파싱/읽기제외·반환Buffer독립. 손상재생성/초기예산·취소가드/LRU유지. 임시PID/host/나이/identity로종료소유파일만정리·live/foreign/recent/unknown보존. Windows동시게시충돌은동일digest/본문winner검증후만재사용. 신규13:100동일경로1bin·8동시·실제child강제종료/취소/회복. 원본/opaque보존·GPU압축/RDO/전체종속쿠킹별도."
+  },
+  "newSourceCases": 13,
+  "checks": {
+    "new": "native/build/cook-sharing-gLMMfu/acceptance.json",
+    "firstFailure": "native/build/cook-sharing-kQYpDj/acceptance.json",
+    "focus": "native/build/focus2759.json",
+    "syntax": 2
+  },
+  "results": {
+    "identicalJSONPaths": 100,
+    "diskEntries": 1,
+    "sharedWithinCook": 99,
+    "concurrentCooks": 8,
+    "actualAbruptChildExit": 93,
+    "scope": "Owned filesystem byte/storage and preservation checks; not GPU compression, driver memory or FPS."
+  },
+  "failuresAndRepairs": [
+    "First13 cases:12 pass, actual8-writer race found Windows EPERM rename while same cache entry was being read.",
+    "Publication now accepts an existing concurrent winner only after stored digest and body are identical to the expected output. Failed gate rerun:13 pass.",
+    "Temporary name review aligned PID/host format with stale ownership matcher before first gate."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newCPP": false,
+    "newGUI": false,
+    "newGPU": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newRuntimeSDKProfiles": 0,
+    "cookBudgetDefaultBytes": 134217728,
+    "nativeModuleCachePolicy": 32,
+    "cleanup": "native/build/temp-clean2762.json"
+  },
+  "remainingBoundary": [
+    "Texture/model platform GPU compression/RDO and whole dependency cooking",
+    "Unknown/legacy or foreign-host temporary ownership deliberately not guessed",
+    "Full exporter/protected player packaging checks, device/GUI/FPS and installation not newly verified"
+  ]
+}

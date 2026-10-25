@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-25",
-  "basisRevision": "a4554678b7035aaa03e6ec06fe72715fd795315b",
+  "basisRevision": "de1dd0c061e753cbd625fdb84f079b93b9a5fa7d",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -170,7 +170,7 @@
       "area": "assets",
       "title": "임포트 캐시·쿠킹·압축",
       "status": "partial",
-      "implemented": "의존성을 따라 배포 리소스 수집·중복 런타임 축소 · 165: 해시/대상/버전별 지속 JSON 쿠킹 캐시·128MiB LRU·빌드 공용 연결 ·200: 불투명 파일64KiB 스트림·1.17GB 네 대상·명세/실행·게시 해시·웹 시작묶음16MiB 예산",
+      "implemented": "의존성을 따라 배포 리소스 수집·중복 런타임 축소 · 165: 해시/대상/버전별 지속 JSON 쿠킹 캐시·128MiB LRU·빌드 공용 연결 ·200: 불투명 파일64KiB 스트림·1.17GB 네 대상·명세/실행·게시 해시·웹 시작묶음16MiB 예산 ·2755–2762: JSONcook v3 target/sourceSHA경로독립 캐시·한build중복파싱/읽기제외·반환Buffer독립. 손상재생성/초기예산·취소가드/LRU유지. 임시PID/host/나이/identity로종료소유파일만정리·live/foreign/recent/unknown보존. Windows동시게시충돌은동일digest/본문winner검증후만재사용. 신규13:100동일경로1bin·8동시·실제child강제종료/취소/회복. 원본/opaque보존·GPU압축/RDO/전체종속쿠킹별도.",
       "remaining": [
         "텍스처/모델 대상별 압축 쿠킹과 전체 종속 캐시",
         "압축 컨테이너·GPU 포맷 품질/용량 비교",
@@ -180,12 +180,14 @@
         "tools/build-game.mjs",
         "tools/build-mobile.mjs",
         "tools/cook-cache.mjs",
-        "tools/build-content.mjs"
+        "tools/build-content.mjs",
+        "docs/COOK_CACHE_OWNERSHIP.md"
       ],
       "evidence": [
         "docs/MOBILE_EXPORT.md",
         "docs/research/ENGINE_WORK_165.json",
-        "docs/research/ENGINE_WORK_200.json"
+        "docs/research/ENGINE_WORK_200.json",
+        "docs/research/ENGINE_WORK_2762.json"
       ]
     },
     {
@@ -4132,10 +4134,10 @@
     }
   ],
   "latestBatch": {
-    "first": 2745,
-    "last": 2754,
-    "receipt": "docs/research/ENGINE_WORK_2754.json",
-    "scope": "2D 체인자동대응/사람·AI·포즈bake·실제Three, 신규13+기존2gate·전수60조합. 설치보류/예약0."
+    "first": 2755,
+    "last": 2762,
+    "receipt": "docs/research/ENGINE_WORK_2762.json",
+    "scope": "JSON 쿠킹 경로중복제거·중단temp소유정리·동시게시 검증, 신규13. 설치보류/예약0; GPU압축/RDO별도."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_2145.json",
