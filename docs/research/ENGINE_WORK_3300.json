@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "kind": "planar-region-relief-bevel-and-boundary-loop-authoring",
+  "implementationRevision": "109d97baf791a7ab3bdad088ae60c39849bf6624",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3280.json",
+  "changedSourceHashes": {
+    "prototype/mesh-region-bevel.js": "5b7849b8b1bb365dbdda10006591711857d83cd5f02877e9ea13b61cb229fcea",
+    "prototype/mesh-region.js": "a174265a198e32346e0b2b2aa7bfca4e4cf09eac786c3ed2458f5ebb60dac362",
+    "prototype/mesh-boundary-selection.js": "9762b44284e26ee5f6f8e7ee1c3232d4f5a81ed99589f521c41e73371c529f4b",
+    "prototype/world-assets.js": "7971e72352334b6b9a7f00f8aa7fd0e046ad9f55a2a7974da30d4ab62556d3f3",
+    "prototype/world-asset-editor.js": "389229410a970ce6d2b2cae4072746b7032102f06c8682f0c989b053d4b0322d",
+    "prototype/app.js": "d518352d6eb4c7deb180833437b0eb3b0978a74e6ba89137295bc3802dca8b28",
+    "tools/editor-automation.mjs": "c46dd35e4b438d3e0a8d6ca7558873246e14f6a43013a97e9fed34f3186a55d8",
+    "tools/check-mesh-bevel-3284.mjs": "1da53a3b833d4cc0a4ca5e53846afda574e18c64e9795ba58fac3c1ba2ebfcbf",
+    "docs/ai-routes.json": "b4d990852e2820896c471f535ecade9e5e82074c28f13d0c9136927c2a35c3f6",
+    "docs/BLUEPRINT_SPEC.md": "1638171b7685b2516ecece92ad6f497e114dd7886de9478e7b4aa3139d882ecf",
+    "docs/MESH_REGION_BEVEL.md": "011fd156c706f25fb9a7ecc030f949a66e8feb205672435b2b5f30f83e082ab2",
+    "CODEX_HANDOFF.md": "a24cbcc151095439f69847e48597873d838a16f8d5a0e732676f8d1cbee45681"
+  },
+  "resolvedOwners": 1640,
+  "targetIds": [
+    "WLD-02",
+    "AI-03"
+  ],
+  "newSourceCases": 10,
+  "relatedSourceCases": 0,
+  "checks": {
+    "source": "native/build/mesh-bevel-C0re3S/acceptance.json",
+    "baseline": "native/build/mesh-region-baseline3281.json"
+  },
+  "samples": [
+    {
+      "legacyRegionByteComparisons": 8,
+      "baselineSourceRef": "174a1b3fe646669d1324aabdc64cd57b65408240",
+      "baselineSourceSHA": "cd3dda3d5e443a5f715b974541815e3dfc3902a3dba98e7e946530dc581aceb0"
+    },
+    {
+      "profiles": 2,
+      "segmentCounts": [
+        1,
+        4,
+        16
+      ],
+      "signedHeights": 2
+    },
+    {
+      "actualThreeHoleRayMiss": true,
+      "capHeight": 0.4000000059604645,
+      "vertices": 40,
+      "triangles": 72
+    },
+    {
+      "actualRapierMeshCollider": true,
+      "holeMiss": true,
+      "capHit": [
+        1,
+        1,
+        0.3999999761581421
+      ]
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "actualCppCaller": false,
+    "GUI": false,
+    "actualThreeGeometryAndRays": true,
+    "actualRapierMeshCollider": true,
+    "arbitraryCurvedSolidBevel": false,
+    "interiorQuadLoop": false
+  },
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "newWorkers": 0,
+    "removedOwnedRegularHelpers": [
+      "meshroute3281.mjs",
+      "bevelwire3282.mjs",
+      "boundarywire3283.mjs",
+      "admit3285.mjs"
+    ],
+    "handoffBytes": 4975
+  },
+  "scope": "Exact old region differential, straight/round signed relief profiles, topology/unselected faces/UV0 UV1/color preservation, holes and real Three mesh rays/bounds, actual WorldAssetEditor action/change/Undo, closed boundary selection/read-only pages and actual ready Rapier mesh-collider rays. Source/headless only; no arbitrary curved solid bevel/interior quad-loop/global collision, GUI/backend pixels/new C++/device/install claim."
+}
