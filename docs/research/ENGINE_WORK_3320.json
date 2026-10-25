@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "kind": "area-weighted-uv-seam-normals-and-retained-mesh-attribute-updates",
+  "implementationRevision": "a5e82784b1db3b5d308a8fc05ae890d6e45f8708",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3300.json",
+  "changedSourceHashes": {
+    "prototype/mesh-normal-stitch.js": "b894763a0642142eea9b7756d58f649b98b31e898d0e56e4dccb20d272844355",
+    "prototype/mesh-normals.js": "0a09aa8cbb727164edaaa0256f1b30625a57cfaa44c4192b541d632530493fb8",
+    "prototype/mesh-attribute-update.js": "401bcae7835c41976970de4bb8fc9b1016374f20aaa1e8486b0347083d09d1f1",
+    "prototype/world-assets.js": "c22c278dc8fbc1f730bce896b6700b5297949bf3513bec8136dc458794d96d31",
+    "prototype/world-asset-editor.js": "ad91932b7295eb5741df5e09e3be87a395d3c3a58ce9f541db1e6ec864465d79",
+    "prototype/world-visual-update.js": "9f5a76937e870a95871663abf6a04c6f0545f917d74f0135ae84cef0e81129a7",
+    "tools/editor-automation.mjs": "311075b621134fac6a5e98107a299ccb06f1c69aa989850aa36607b65b97c495",
+    "tools/check-mesh-normals-3303.mjs": "2d30a8c6bd996e1f8852cf262bd3aeb4e6b2843af4f5942e90da9129880e38f2",
+    "docs/ai-routes.json": "aa00087c7852a263003064835882c88580b6c8e6d7d34285b33867a4bb798e81",
+    "docs/BLUEPRINT_SPEC.md": "7697fd70c012bf24848c70750b420f77f8333666bba33c1441480a6aeb9fe599",
+    "docs/MESH_NORMAL_STITCH.md": "414c98156acf40d177d3466b67ec746ba89d481e87b47292f5f55ca957b110a5",
+    "CODEX_HANDOFF.md": "e7390502b1b8567cac764d4cc2b0412a2cf2338c5ab7144094816eb82c7ca125"
+  },
+  "resolvedOwners": 1645,
+  "targetIds": [
+    "WLD-02",
+    "AI-03"
+  ],
+  "newSourceCases": 10,
+  "relatedSourceCases": 0,
+  "checks": {
+    "source": "native/build/mesh-normal-stitch-Y5fUBr/acceptance.json",
+    "baseline": "native/build/mesh-normal-baseline3301.json",
+    "related": "native/build/mesh-normal-stitch-Y5fUBr/related-world-1059.json"
+  },
+  "samples": [
+    {
+      "legacyNormalExactCases": 16,
+      "baselineSourceRef": "eaceb38ea9e5866847af3779c45ae32f5a764920"
+    },
+    {
+      "pathologicalTriangles": 2100,
+      "boundedComparisonRejection": true
+    },
+    {
+      "geometryRetained": true,
+      "positionWrites": 0,
+      "indexRebuilt": false,
+      "normalWrites": 4,
+      "normalRanges": [
+        {
+          "start": 0,
+          "count": 6
+        },
+        {
+          "start": 9,
+          "count": 6
+        }
+      ],
+      "uvAndColorBuffersRetained": true,
+      "noOpVersionUpdates": 0
+    },
+    {
+      "relatedSource": "tools/check-world-edit-batch-1059.mjs",
+      "sourceSHA": "41af9d756f8ce97d19b94cf286912743dca35ed6ab14a5e789b307323d087964",
+      "report": "native\\build\\mesh-normal-stitch-Y5fUBr\\related-world-1059.json",
+      "historicalReportOverwritten": false
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "actualCppCaller": false,
+    "GUI": false,
+    "actualThreeAttributes": true,
+    "physicalGeometryUnchanged": true,
+    "backendUploadPixels": false,
+    "wholeFPSClaim": false
+  },
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "newWorkers": 0,
+    "removedOwnedRegularHelpers": [
+      "normalwire3301.mjs",
+      "normalpartial3302.mjs",
+      "normaldocs3304.mjs",
+      "admit3305.mjs"
+    ],
+    "handoffBytes": 4980
+  },
+  "scope": "Exact16 legacy meshNormals cases and public export identity; analytic area-weighted UV seam normals/crease/noop/ambiguity/budget; actual WorldAssetEditor action/Undo, unchanged collider geometry, real retained Three attribute identities/versions/ranges vs fresh geometry and structural fallbacks; old terrain/foliage source gate redirected. No GUI/backend upload pixels/new SDK/C++/whole-game FPS/device/install claim."
+}
