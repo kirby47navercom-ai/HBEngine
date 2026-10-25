@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "kind": "mixer-aware-voice-admission-and-owned-headless-tests",
+  "implementationRevision": "c7cf354364210c8b0deb2e0d5b82a0c6c111c73e",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3340.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "588f780985b62d28e59dc9552b02d58027ec14229a6d49a71d0ff7d9296be67e",
+    "docs/BLUEPRINT_SPEC.md": "67550ad3628cf16770f6ce4ddfbb656b3763d8cd9a4d47ab36efd8422de4fe86",
+    "docs/ai-routes.json": "76781deb5e0ef7e05eef47375cc8c57dde78076a1ffc441d951dbdc2e6f7f7c3",
+    "docs/MIXER_VOICE_AUDIBILITY.md": "655c1977c382c2722d54d65dd663fd151ae2c56a04ec534a20bc2ffb932fc2ca",
+    "prototype/audio-mixer.js": "9e5d46049846415e4e3d5e230c329978e1143b31857f178ab90c640a5a6eaacd",
+    "prototype/audio-voices.js": "ef9c64c7e490f51f1a6642a900de23740c8e0c5a49ab58f983d060c30d36d060",
+    "prototype/engine-services.js": "d9772611a51feaebeaa378b9f028030b12636ff47bd2ee067cf8636acfe40659",
+    "prototype/scene-components.js": "98dd6682361dffc471d86548f655115f7409bc3f7473b97dd2655031dd07dfcb",
+    "prototype/mixer-voice-audibility.js": "4354a22de6b9b887d67e266a17344c8ae7e84036f662bf52fdd47dafe0867071",
+    "prototype/tests/audio-audibility-case.js": "b4633b6aa9a85b38fd72d2b85af633a2954e68174add6c9da1e503b3bd8b84fb",
+    "tools/editor-automation.mjs": "2ac00637dca1f72935af538536071d60708f1888eb5f662b794f0e144ac2cfe8",
+    "tools/check-audio-audibility-3347.mjs": "5fdea1c92a8316b6757d7e9e16588dbb127fbbef44f9c515df5f1cfa1df6045e",
+    "tools/owned-browser-case.mjs": "a8e1722b09e3083f0fdf855dbb0526e115cb33747500186ba215e78590392653",
+    "tools/check-particle-interactions-webgpu-3342.mjs": "39fd0c248b8cf31e105f44360ead9676e35073a2e14ae9b523c075baa0c6c0af"
+  },
+  "resolvedOwners": 1661,
+  "targetIds": [
+    "AUD-03",
+    "AI-03"
+  ],
+  "sourceCases": 6,
+  "relatedCases": 30,
+  "checks": {
+    "sourceReports": [
+      "native/build/audio-audibility-mguL3e/acceptance.json",
+      "native/build/audio-audibility-UBEsDY/acceptance.json",
+      "native/build/audio-audibility-D4tOQ1/acceptance.json"
+    ],
+    "merged": [
+      {
+        "name": "route gains honor ancestor faders/mute/solo, pre/post sends and compressor bypass",
+        "passed": true
+      },
+      {
+        "name": "parallel acyclic sends match independent path enumeration and visit each bus once",
+        "passed": true
+      },
+      {
+        "name": "legacy selection exactly matches prior source across 512 budgets/voice groups",
+        "passed": true
+      },
+      {
+        "name": "runtime rebalance uses one memoized graph estimate, preserves priority/protected voices and legacy switch",
+        "passed": true
+      },
+      {
+        "name": "typed listener + common native-operation replay changes live selection policy and diagnostics",
+        "passed": true
+      },
+      {
+        "name": "actual OfflineAudioContext render and compressor reduction through the common routing graph",
+        "passed": true
+      }
+    ],
+    "actualOfflinePCM": "native/build/audio-audibility-browser-FjnVvB/acceptance.json",
+    "relatedCancellation": "native/build/audio-cancellation-EQqRPE/acceptance.json",
+    "relatedSequence": "native/build/sequence-audio-envelope-2000-zaMKTL/acceptance.json",
+    "sharedBrowserHarnessWebGPU": "native/build/particle-webgpu-us30P1/acceptance.json"
+  },
+  "samples": {
+    "legacyCases": 512,
+    "voiceRows": 1000,
+    "graphDataReadsPerRebalance": 1,
+    "comparedPCMFrames": 19200,
+    "maximumPCMError": 0,
+    "compressor": {
+      "reduction": -21.495939254760742,
+      "masterReduction": -3.685904026031494,
+      "estimated": 0.055069081885268066
+    },
+    "scenarios": [
+      {
+        "mode": "mixer",
+        "muted": false,
+        "send": false,
+        "selectedA": true,
+        "selectedB": false,
+        "rms": 0.054926577440472635,
+        "referenceRMS": 0.054926577440472635,
+        "maximumError": 0
+      },
+      {
+        "mode": "mixer",
+        "muted": true,
+        "send": false,
+        "selectedA": false,
+        "selectedB": true,
+        "rms": 0.08838834680699048,
+        "referenceRMS": 0.08838834680699048,
+        "maximumError": 0
+      },
+      {
+        "mode": "legacy",
+        "muted": true,
+        "send": false,
+        "selectedA": true,
+        "selectedB": false,
+        "rms": 0,
+        "referenceRMS": 0,
+        "maximumError": 0
+      },
+      {
+        "mode": "mixer",
+        "muted": true,
+        "send": true,
+        "selectedA": true,
+        "selectedB": false,
+        "rms": 0.03390018581458417,
+        "referenceRMS": 0.03390018581458417,
+        "maximumError": 0
+      }
+    ]
+  },
+  "failures": "Initial Node5/6 pass; OfflineAudio exposed control-target vs AudioParam.value before first quantum: product now reads its scheduled controls. PCM fixture compares exact independent selected-source mixer to retain existing filter/compressor startup response, not ideal unit amplitude; parent+child compressor reductions are both recorded. Failed Offline cases retained at mguL3e/c8p7AD/84pPSx and rerun alone; protected/priority assertions strengthened and rerun separately.",
+  "boundary": {
+    "SDKChanged": false,
+    "newNativeBinaries": 0,
+    "actualOfflineWebAudio": true,
+    "actualSpeakers": false,
+    "nativeDSP": false,
+    "actualCppCaller": false,
+    "commonNativeOperationReplay": true,
+    "GUI": false,
+    "headlessOwnedProfile": true,
+    "userWindowsChanged": false,
+    "userInstallChanged": false,
+    "schedules": 0,
+    "agents": 0,
+    "OSCodecRAM": false,
+    "mobileDevice": false,
+    "wholeFPSClaim": false
+  },
+  "storage": {
+    "newAudioNodes": 0,
+    "newPCM": 0,
+    "newTimers": 0,
+    "newWorkers": 0,
+    "helpersRemoved": [
+      "audio-route3345.mjs",
+      "audio-wire3346.mjs",
+      "audio-doc3348.mjs",
+      "audio-repair3349.mjs",
+      "audio-pcm3350.mjs",
+      "audio-pcm3351.mjs",
+      "audio-browser3352.mjs",
+      "audio-protect3353.mjs",
+      "audio-admit3354.mjs"
+    ],
+    "handoffBytes": 4268,
+    "profilesPrunedBy": "retainTestEvidence"
+  },
+  "scope": "Current scheduled mixer-control targets + actual shared compressor reduction; parent/bypass/pre/post-send DAG estimates shared across voices, existing forced-real/priority/distance/tie order and selectable legacy preserved. New typed listener/common VM contract. Not spectral masking/LUFS/source-isolated DSP; no OS codec RAM/native DSP/device/install claim."
+}

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-26",
-  "basisRevision": "cbac39575c920e06cfada7f12db5ee1da39c559e",
+  "basisRevision": "c7cf354364210c8b0deb2e0d5b82a0c6c111c73e",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -2721,9 +2721,9 @@
       "area": "audio",
       "title": "오디오 고급 DSP/가상화",
       "status": "partial",
-      "implemented": "gain/filter/compressor·routing/계측 · 165: 순서 DSP 필터/지연/리버브/왜곡·wet/dry·pre/post Send/Return·순환/우회/해제 · 169: 지정 버스 RMS 사이드체인·Attack/Release/압축·순환/우회·사람UI/Undo·C++/BP3·실제 WebAudio 신호 · 170: 설정 가능한 실제/추적 음성 예산·PCM 가상 시계/소스 해제/승격·우선순위/거리·Listener/Source UI·C++/BP4·실제 소스2/가상6 검증 ·192: 실제 post-DSP/공간음 스테레오 PCM16 WAV·UI/AI/예산/수명·저장 실패 재시도/일시정지/게임 종료 저장·실제 재생 ·257: 선택 streaming 가상 음성의 src/load 해제 요청·논리 시각과 decoder 재승격·미디어 lease/PCM0·실제 무음 WebView ·1958 소스: sequencePCM lazy weak-shared reverse·virtual미할당/강한idlecache추가없음·원본32MiB유지. 활성reverse추가PCM원본한벌가능. async decode/resume취소·rate/park진단·일반stream유지. OfflinePCM source1987/installed1991통과·스피커/장치/RAM미측정. ·2005소스: sequence clip음량/fade/곡선·기존GainNode예약·Take gain보존·output gain실제음성선별·새12사례3055표본·실제창/PCM/C++추가검사는사용중대기 ·2015: source 실제오디오곡선창/Undo/save·CPPSeek7·OfflineAudioContext10조건245760PCM통과, installed2019 D3D11 동일PCM/CPPSeek통과·스피커/실기기미주장. ·2178–2208: retainedPCM32MiB 유지·URL중복pending공유·FIFO최대2fetch/decode·dispose대기/실행caller즉시거절/abort·취소불가능늦은decode폐기·LRU/큰clip반환·disposedplayer buffer참조해제/길이보존·primitive진단. 편집기마다 context1/PCstream미디어노드재사용·stop시suspend/graph·timer해제·close시pool/PCM해제·모바일기존buffered/cache유지·경합/실패/복수편집기격리. 신규15source사례통과. OS/codec/voice/reversePCM/기기음질총RAM증명아님. ·2219–2229: PCM FIFO연결목록으로enqueue/dequeue/queued cancel배열shift0. AbortSignal callerlease로공유URL의다른caller/legacyPromise보존·마지막대기자만fetchabort·queued즉시제거·uncancellable decode실슬롯유지/latecache0·원인/falsyreject보존·listener해제·abandonedActive계수. common음성stop/handle교체/source퇴역/pool/종료·preview정지에서cancel연결. assetlookup중stop/교체requestidentity·resolving사본count·음악자기요청보존·정상cancel로그0·nonError decode오류재예외0. UI로딩취소/재생정지·aria상태. 신규18 cancellation/기존preview8→10(신규2) source·PCM7/legacybuffer gate통과. 실제BlueprintRuntime/native명령재생과2048queued취소→fetch2/latePCM0. OS RAM/기기음질/FPS증명아님.",
+      "implemented": "gain/filter/compressor·routing/계측 · 165: 순서 DSP 필터/지연/리버브/왜곡·wet/dry·pre/post Send/Return·순환/우회/해제 · 169: 지정 버스 RMS 사이드체인·Attack/Release/압축·순환/우회·사람UI/Undo·C++/BP3·실제 WebAudio 신호 · 170: 설정 가능한 실제/추적 음성 예산·PCM 가상 시계/소스 해제/승격·우선순위/거리·Listener/Source UI·C++/BP4·실제 소스2/가상6 검증 ·192: 실제 post-DSP/공간음 스테레오 PCM16 WAV·UI/AI/예산/수명·저장 실패 재시도/일시정지/게임 종료 저장·실제 재생 ·257: 선택 streaming 가상 음성의 src/load 해제 요청·논리 시각과 decoder 재승격·미디어 lease/PCM0·실제 무음 WebView ·1958 소스: sequencePCM lazy weak-shared reverse·virtual미할당/강한idlecache추가없음·원본32MiB유지. 활성reverse추가PCM원본한벌가능. async decode/resume취소·rate/park진단·일반stream유지. OfflinePCM source1987/installed1991통과·스피커/장치/RAM미측정. ·2005소스: sequence clip음량/fade/곡선·기존GainNode예약·Take gain보존·output gain실제음성선별·새12사례3055표본·실제창/PCM/C++추가검사는사용중대기 ·2015: source 실제오디오곡선창/Undo/save·CPPSeek7·OfflineAudioContext10조건245760PCM통과, installed2019 D3D11 동일PCM/CPPSeek통과·스피커/실기기미주장. ·2178–2208: retainedPCM32MiB 유지·URL중복pending공유·FIFO최대2fetch/decode·dispose대기/실행caller즉시거절/abort·취소불가능늦은decode폐기·LRU/큰clip반환·disposedplayer buffer참조해제/길이보존·primitive진단. 편집기마다 context1/PCstream미디어노드재사용·stop시suspend/graph·timer해제·close시pool/PCM해제·모바일기존buffered/cache유지·경합/실패/복수편집기격리. 신규15source사례통과. OS/codec/voice/reversePCM/기기음질총RAM증명아님. ·2219–2229: PCM FIFO연결목록으로enqueue/dequeue/queued cancel배열shift0. AbortSignal callerlease로공유URL의다른caller/legacyPromise보존·마지막대기자만fetchabort·queued즉시제거·uncancellable decode실슬롯유지/latecache0·원인/falsyreject보존·listener해제·abandonedActive계수. common음성stop/handle교체/source퇴역/pool/종료·preview정지에서cancel연결. assetlookup중stop/교체requestidentity·resolving사본count·음악자기요청보존·정상cancel로그0·nonError decode오류재예외0. UI로딩취소/재생정지·aria상태. 신규18 cancellation/기존preview8→10(신규2) source·PCM7/legacybuffer gate통과. 실제BlueprintRuntime/native명령재생과2048queued취소→fetch2/latePCM0. OS RAM/기기음질/FPS증명아님. ·3341–3360: mixer/legacy Listener·예약 fader/mute/solo/duck·부모/Send/실제 compressor reduction으로 가상화 음성 선별·graph당memo1/보호/우선순위 유지. 이전512·1000음성1graphread·실제OfflinePCM19200성분 exact+부모/자식reduction·공용VM. 신규PCM/노드/timer0.",
       "remaining": [
-        "streaming 가상화의 OS/코덱별 실제 RAM 회수·고급 지각/믹서 DSP 기반 선별",
+        "streaming 가상화의 OS/코덱별 실제 RAM 회수·지각 마스킹/LUFS·음성별 독립 DSP 기여도 기반 선별",
         "C++ native DSP와 모바일 실제 장치 품질·큰 음성 수/PCM 메모리 검증"
       ],
       "sources": [
@@ -2739,7 +2739,9 @@
         "prototype/sequence-audio-envelope.js",
         "prototype/take-audio-gain.js",
         "prototype/audio-pcm-cache.js",
-        "docs/AUDIO_PCM_LIFECYCLE.md"
+        "docs/AUDIO_PCM_LIFECYCLE.md",
+        "prototype/audio-voices.js",
+        "prototype/mixer-voice-audibility.js"
       ],
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
@@ -2755,7 +2757,9 @@
         "docs/research/ENGINE_WORK_2015.json",
         "docs/research/USER_INSTALL_2019.json",
         "docs/research/ENGINE_WORK_2208.json",
-        "docs/research/ENGINE_WORK_2229.json"
+        "docs/research/ENGINE_WORK_2229.json",
+        "docs/research/ENGINE_WORK_3360.json",
+        "docs/MIXER_VOICE_AUDIBILITY.md"
       ]
     },
     {
@@ -4360,10 +4364,10 @@
     }
   ],
   "latestBatch": {
-    "first": 3331,
-    "last": 3340,
-    "receipt": "docs/research/ENGINE_WORK_3340.json",
-    "scope": "CPU/WebGPU/DX 입자 평면충돌·사망/충돌 이벤트·bounded async/세대/staging 재사용·실제 NVIDIA/D3D11·설치보류/예약0."
+    "first": 3341,
+    "last": 3360,
+    "receipt": "docs/research/ENGINE_WORK_3360.json",
+    "scope": "믹서 라우팅/Send/예약 제어값/압축 감쇠 기반 음성선별·legacy/보호유지·실제OfflinePCM/공용VM·설치보류/예약0."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_2145.json",
