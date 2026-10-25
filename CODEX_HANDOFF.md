@@ -1,21 +1,18 @@
 # HBEngine 현재 인계 (2026-10-25)
 
-최신 사용자: 재지시하게 하지 말고 여러 관련 기능 계속구현·마지막 영향검사 묶음. 업데이트 보류(native/build/UPDATE_HOLD.json active), 예약 재생성금지(hbengine삭제2160). 사용자 창/탭/프로필/게임/Versions 변경금지·새에이전트금지. Mac/Xcode/Android폰없음. 한글 동일 kirby47navercom-ai author/committer·AI trailer없이commit/push.
-보호: prototype/player.js, tools/check-player-keyboard-release.mjs 읽기/편집/실행/stage금지. docs/NODE_CATALOG.md 기존dirty 미stage. core-api ignored generatedCore()만·카탈로그CLI금지. hb context 등록keyword/실제symbol·focused-routes 확인; broad/--all금지. 새원장은 기록Map합성+명시own whitelist만새해시. 원장updatedAt은YYYY-MM-DD·validate/read필수.
+최신 사용자: 계속 구현·여러 분야 묶어 마지막 영향검사. 설치 업데이트 보류(native/build/UPDATE_HOLD.json active), 예약 재생성금지(hbengine삭제2160). 사용자 창/탭/프로필/게임/Versions 변경금지·새에이전트금지. Mac/Xcode/Android폰없음. 한글 동일 kirby47navercom-ai author/committer·AI trailer없이commit/push.
+보호: prototype/player.js, tools/check-player-keyboard-release.mjs 읽기/편집/실행/stage금지. docs/NODE_CATALOG.md 기존dirty 미stage. core-api ignored generatedCore()만·카탈로그CLI금지. hb context --compact 등록keyword/실제symbol·focused-routes 확인; broad/--all금지. 새원장은 기록Map합성+명시own whitelist만새해시. updatedAt은YYYY-MM-DD·validate/read필수.
 
-core 4e2e0a2064d1a24d71880d7101058db16fbec7aa; canonical WORK2890/ENGINE_STATUS. 78행37verified/37partial/1unimplemented/3unverified·전체율null. 기록hash2720압축기준·60전Map재압축. 설치완료아님.
+core cb0fd90a0f938e7ba34368054cc4437e5f57f284; canonical WORK2920/ENGINE_STATUS. 78행37verified/37partial/1unimplemented/3unverified·전체율null. 기록hash2720압축기준→...2890→2920; 60전Map재압축. 설치완료아님.
 
-신규2890: hb context/directCLI --compact·AI_START권장. owner/읽기량/미등록·focusedmiss/경계/잔여/근거보존·공통설명/과거install범위생략. 신규6·기존1058gate, 응답9325→4870B(-47.8%)·I/O/이해시간측정아님. reflectionProbeMeshBounds 정확owner등록복구·all0. 최종context-compact-HxpIIG·ai-context-2885-legacy.json. 누적신규59·관련unique44/legacy2gate·CPP범위는이전receipt.
+신규2920(2891–2920):
+- ANM: TwoBone opt-in groundProjection Bool/pose-or-target/2D3D/world ray/법선offset/경사·최소swing·기존가중치/길이/관절. nohit/비활성 입력통과·현재plant문맥해제·budgetskip0질의. 기존준비Rapier와SetBool 공용. 독립player는groundQuery주입·dispose해제. 양의균일프레임 회전제약·unreachable잔여오차정직표시. editor접힘typed폼/legacydefaults/Boolrename/Undo·AI schema. ANIMATION_GROUND_PROJECTION.md.
+- Preview: selected/target/hint/source/plantAnchor/FBIK effector만시각복사. 지면은차원/mask/trigger/mode필터·collider/tileColliders/부모TRS만복사·시각/native/audio미복제. absent components원본불변·parentId우선·선택모델parentattach. 합성JSON100630→351B; 전체RAM/GPU/FPS측정아님.
+- PHY: query-only sensor와authored trigger구분·7종질의/live/immutable native adapter일치. 진짜trigger는includeTriggers필수.
+- 제작: Cloth격자·2D/3D로프 질량브러시 radius/strength/target/falloff. swept segment·한획시작값/최대영향·기본1희소삭제. 한획Undo/기존scene/BP검증·상속기본값·원본저장→공용queued JSON→실제입자질량. Escape/cancel/capture/blur/hidden·changed/detached/disabled owner거절·keyboard·focus/settings복원. SVG상수path수·타이머/worker/런타임paintpass0. CLOTH_MASS_BRUSH.md. 거리tether/이동반경·부분핀별도.
 
-신규2880: BT소유노드별services stablekey/graphPath/nodeField·순서/삭제·동일ID소유격리·개별충돌/키보드·AIrevision. 신규8+관련43(group2874, 최종신규 behavior-service-graphs-15M70W). 실제문서적용/프로젝트save→BehaviorRunner 주기1초=1.125/2.125초, 다른owner주기유지. 서비스는부착목록·순차flow아님. 누적신규53, 관련unique44·기존2Dgate/CPP범위는2860/2870에별도.
+최종 group2908.json: 신규46=ground16+preview11+brush13+query6, 관련19=massUI5+distribution14. 같은실행 earlier foot14 재사용(6N3lUd). syntax22. 최종 preview JKWqmI, brush IBszul, ground IY5toE, query xlUBOg; 보고서/fixture보존. GUI/GPU/device/install0.
+실제C++ ground-ik-cpp-cVylnL:2메서드4호출4읽기4쓰기·2D3D VM/물리/골격포즈. 동일PlantProbe/SDK cachehit b283e77e7ab52dcb8fee. binary SHA b07d1aded7e0411a3b19689b3b2ba15ccef4bbcbce5db51cb3b90cf874faa930; SDK6ae42160cdb0e8cdce5bcea410ec666c86453519087ed1901192da45f46811da; used0a684c26d26b98e7e13c07850428a36d1d67f89230356a4d210508711620d050. 현재binary해시재확인·UI후재build0. 첫부모회전불가/extent대신size fixture실패는성과제외(DEBUG_HANDOFF).
 
-신규2870: 동일asset/URLowner/device의약한키로disk source 공유. 경로/크기/한도변경은새source·기존view snapshot보존. 물리texture/Source/sampler수명독립·마지막lease CPU0. 신규8(group2864)·관련18·동일CPP캐시9호출. 두동일material의픽셀보유byte 84/336/504/292 대168/672/1008/584; 실제전체RAM/GPU/FPS측정아님. weakmetadata만남고다음사용은외부파일재읽기.
-
-신규2860:
-- MAT/AST: 2D기존보존+array/cube/volume 작성RGBA8 디스크mip꼬리수요읽기. 실제binding/풀/논리LOD/nativepayload/GPUadapter·C++SetResidentMip. 공유밉/순차slice·취소/실패atomic/lastlease해제·cube cache/face정리. 장치한도초기/후속IO전검증·ND보고path복제제거. editor버튼/실제크기/Undo/문서identity·owner취소. 신규18·기존layered20/2D791 gate. docs/LAYERED_DISK_MIPS.md. 자동cook/HDR/압축/외부snapshot/영역쓰기/전체heap별도. artist preview는전체원본검사유지.
-- BLD/AI: BT child order/root·FSM states/transition/any-state/parent/entry·삭제/page12. 관계클릭/키보드/삭제버전·재선택7: stableedge/transition·parent필드·BT children목록·pose input범위만선택. source위조mergePath무시. 읽기전용list/diff nodeField/entry/mergePath·기존CAS/Undo. 기존15+context9. 서비스flow/임의subgraph/Gitmarker별도. docs/ASSET_GRAPH_DIFF.md.
-최종group2847.json 신규37+관련44, 2Dgate group2842.json. 이후관계선택위조경로강화의최종7은 graph-link-choice-ejEqKZ/acceptance.json. syntax21. 실제C++ layered-disk-cpp-LHYIZ3/acceptance.json:3메서드9호출9쓰기·actualVM/binding·모든RGBA·0lease. 첫실패는소유document 이벤트함수누락→fixture만수정, DEBUG_HANDOFF. GUI/GPU픽셀/device/install0.
-CPP cache3797b21b7bd2f0101cf0 binary SHA4865966fb544e13b58de09647dfcc6fa952a4b5608be908732dc985d9a51aea7; SDK6ae42160cdb0e8cdce5bcea410ec666c86453519087ed1901192da45f46811da·useddc9211f4a2343da5636cdc97b5de236f7dc9fe682a47244dd4b349e08dad22d3. 정확hash재사용·UI후재build금지.
-
-직전WORK2830: Rapier tensionOnly/normalized sparsemass·scene/BP숫자19+related17·CPP3/4/8. 2820: authoredBoolfootplant14+CPP2/2·slope분산14·layeredimport20·func/macrographs9+old15·FullBody8. 각receipt/전용doc·재검사불필요.
-다음: canonical remaining 실제제작/실행. cloth tether/paint·joint소성/solver반력·rig/contact/stride/pelvis·압축/HDR/cook·graph서비스flow/임의계층·mobileeditor 등. GL1728 ANGLE6878.6/FXC6836.439ms미해결·실패실험반복금지. USER_INSTALL2145 Versions/73341067df5a12be는역사·새copy/예약0. 무거운검사전activeInstalledVersions. nativeCacheOnly만·32cache. 소유regularhelper만삭제·fixture/report/recipe/SDK/사용자데이터보존. 새goal/재개질문으로중단하지않음.
+직전:2890 context opt-incompact 신규6+legacy1058·응답9325→4870B(-47.8%)·I/O/모델시간아님. 2880 BT owner services stable목록/관계diff/충돌/CAS/Undo/save→실제주기. 2870 disk mip source공유·마지막leaseCPU0. 2860 array/cube/volume authoredRGBA8 디스크꼬리·binding/물리한도·BT/FSM관계선택. 각receipt/전용doc근거·끝난검사재반복금지.
+다음 실제잔여: 접촉phase/stride/골반·고급리그, 거리tether/이동반경/부분핀·일반관절반력/소성, HDR/압축/cook·서비스flow/임의계층·mobileeditor 등 canonical remaining. GL1728 ANGLE6878.6/FXC6836.439ms미해결·실패실험반복금지. USER_INSTALL2145 Versions/73341067df5a12be는역사. 새설치copy/예약0. 무거운검사전activeInstalledVersions·nativeCacheOnly만32cache·소유regularhelper만삭제. fixture/report/recipe/SDK/사용자데이터보존. 새goal/재개질문으로중단하지않음.

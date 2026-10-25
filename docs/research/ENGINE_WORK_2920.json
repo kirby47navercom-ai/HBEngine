@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "date": "2026-10-25T10:14:18.665Z",
+  "kind": "지면 IK·경량 소유 미리보기·공용 질의·천/로프 질량 브러시 / 설치 보류",
+  "implementationRevision": "cb0fd90a0f938e7ba34368054cc4437e5f57f284",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2890.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "2fd7052cc811d1f158b5c3893286fed2322e3c3c1142730b60978a48384df2b5",
+    "prototype/animation-ground-ik.js": "915399375b4370a1f7e8e27bd802647aae884795047f06d4cd5ba0372186f6e7",
+    "prototype/animation-preview-actors.js": "550361813415b5d6f25e43454eacc145efac6a43ead595b419f4884d09d5b2fb",
+    "prototype/animation-ik.js": "eaf0add7855ac4235623e9479b85a07da786a32ccb72986e0e3fe8d243d76fc8",
+    "prototype/animation-foot-plant.js": "8b210dec6f7e80a730197274a1f0998d2cc9afbdf5f9bf8da15660c696a2eb3d",
+    "prototype/animation-graph-assets.js": "3edd0811929aa96686e152bc1e49a9403bc8f828f0124a95256bf6ad1eaf5b03",
+    "prototype/animation-graph-runtime.js": "a7e8f47951dedb94d27e00bbf3595cd70cd32fab6924e610acc8610cd4dc79f6",
+    "prototype/engine-services.js": "2a839f488409c3f125554e05d6ae64f8471a0b248acb4fd53200dc83ae6af59f",
+    "prototype/animation-ik-editor.js": "297966fc557b9ba5d0f3483b2596b3bcb970f48e27e4af2316a30d0c94175778",
+    "prototype/animation-graph-editor.js": "a8fee7b443137e20d70e0866f1efc05d5b6776caf85eef9d1e0d80a9985c22fc",
+    "prototype/gameplay-preview.js": "23c3087dc00952f71328982530ad3b8a755fd32414899439668a4c85bd81f14f",
+    "tools/editor-automation.mjs": "a3660621a9eacc37b87735289a78020631684761ad17c80c8064cfaff0d2821b",
+    "tools/ground-ik-fixture-2893.mjs": "87e39f5f71326510b3cf4f81b8d1016aadc4528f70b09bea9c18e43b887fa55b",
+    "tools/check-ground-ik-2895.mjs": "6f35423d9711231b6925429060104f54c32d1c1ee360b3672f94af3f36ea8d00",
+    "tools/check-ground-ik-2897-cpp.mjs": "678095b54404d334f711692ec651c71d48bba0184980d89dd0d0bad02e3eed2e",
+    "tools/check-animation-preview-actors-2901.mjs": "9ba8e939ae8cd3df21d054546019a9d36cb8c9c1f45bc68bfbf2cbfd27f6a573",
+    "prototype/cloth-mass-brush.js": "997577435c99ca8272ab72d86b2abeff1fd4b93fdcebe0fb3f127ae75640f1b1",
+    "prototype/cloth-mass-editor.js": "3a533606fea3bcf70d232aab0332fc5e6fd5ed1b6a8c28ddd9476012c19a8d0a",
+    "prototype/app.js": "4ad61ea7b32b0ceb0978e57c46110fecc8ce51546b03ae6692984e8537ef2314",
+    "prototype/scene-editor.css": "c64b98a290bafdae2cd920cbc618b074231d6184d6f60c074b3825635d2931be",
+    "prototype/physics-world.js": "8f28acd93794d19f72ed2f5fbb82a1ed3c6694e5503c31080de9873a5e999364",
+    "tools/check-cloth-mass-ui-2828.mjs": "e67621bcfdbd0e3b1d58323dce7995e6d1184dfbe924ce936f15c24773544529",
+    "tools/check-cloth-mass-brush-2903.mjs": "19077cd6b3f259bc699eab736a37dd0ae5311df0e058bc43b80a3ca109a15217",
+    "tools/check-query-sensors-2904.mjs": "eceae6777667f2b6b4a79c4cecf11eb9a698428cf0585f16b86203df24c1e304",
+    "docs/ANIMATION_GROUND_PROJECTION.md": "fedfb6e64c83d7da24e6055538a6be9359389bd34979cc493c174eea3b8e597d",
+    "docs/CLOTH_MASS_BRUSH.md": "dde8de291e1b029d7e0cf4e9ff514516d2d5e27df4bb1f19182fa70519f5a78d",
+    "docs/BLUEPRINT_SPEC.md": "b3b88454c52df3c5384e7fe30cace585479d9aa2171449366c1728876059da53",
+    "DEBUG_HANDOFF.md": "e0e4b3f26b3315d5bdf5ea861df89a58360f890b7daefe8b4e1741c11ce09136",
+    "CODEX_HANDOFF.md": "f828dc1f6465edec30efb67aed4bf31ef5fd54b0d5d48fb48274f5ae1a4499d3"
+  },
+  "resolvedOwners": 1555,
+  "targetIds": [
+    "ANM-04",
+    "PHY-01",
+    "PHY-02",
+    "AI-03"
+  ],
+  "changes": {
+    "ANM-04": " ·2891–2920: TwoBone opt-in 광선 지면높이/법선오프셋/경사·최소swing·작성Bool/기존가중치/길이/관절·현재plant문맥/예산/수명. 같은준비Rapier2D3D·기존C++Bool, typed접힘폼/Undo/legacydefaults/rename. 미리보기는필요collider/tile/부모만복사·원본과시각/native/audio보존·parentId/모델부모연결. 신규ground16/preview11·기존foot14·실제CPP2/4/4/4. 접촉phase/stride/골반별도.",
+    "PHY-01": " ·2891–2920: query-only 모드의sensor와실제authored trigger구분. 2D3D 7종질의·mask/ignore/disable·immutable native adapter6검사. 지면질의와같은공용predicate, 실제trigger는명시include필수.",
+    "PHY-02": " ·2891–2920: Cloth격자/2D3D로프 연속질량브러시·선분거리감쇠/강도/목표/한획시작값최대영향·희소기본삭제·한획Undo·취소/소유자CAS/keyboard. 기존저장/typedJSON·공용native-operation/VM/Rapier에서총질량과실제입자분포대조. 신규13·관련UI5+분포14. SVG고정path종류·런타임페인트/타이머/worker0. 이동거리tether/부분핀별도.",
+    "AI-03": " ·2891–2920: groundProjection/clothMassBrush typed schema·정확owner routes·기존문서Undo/Bool/JSON 공용실행. 미등록분야fallback0·새SDK/자동예약0·설치보류."
+  },
+  "newSourceCases": 46,
+  "relatedCases": 19,
+  "relatedReusedCases": 14,
+  "checks": {
+    "group": "native/build/group2908.json",
+    "source": [
+      "native/build/ground-ik-IY5toE/acceptance.json",
+      "native/build/animation-preview-actors-JKWqmI/acceptance.json",
+      "native/build/cloth-mass-brush-IBszul/acceptance.json",
+      "native/build/query-sensors-xlUBOg/acceptance.json"
+    ],
+    "related": [
+      "native/build/cloth-mass-ui-yPFqT9/acceptance.json",
+      "native/build/deformable-distribution-emfmLH/acceptance.json"
+    ],
+    "reusedFootPlant": "native/build/foot-plant-6N3lUd/acceptance.json",
+    "actualCpp": "native/build/ground-ik-cpp-cVylnL/acceptance.json"
+  },
+  "results": {
+    "syntaxFiles": 22,
+    "actualCpp": {
+      "methods": 2,
+      "calls": 4,
+      "reads": 4,
+      "writes": 4,
+      "cacheKey": "b283e77e7ab52dcb8fee",
+      "cacheHit": true,
+      "binary": {
+        "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\b283e77e7ab52dcb8fee\\worker.exe",
+        "sha256": "b07d1aded7e0411a3b19689b3b2ba15ccef4bbcbce5db51cb3b90cf874faa930"
+      },
+      "SDK": "6ae42160cdb0e8cdce5bcea410ec666c86453519087ed1901192da45f46811da",
+      "usedSDK": "0a684c26d26b98e7e13c07850428a36d1d67f89230356a4d210508711620d050",
+      "binaryHashRechecked": true,
+      "SDKWorkingTreeUnchanged": true
+    },
+    "payload": {
+      "sourceBytes": 100630,
+      "previewBytes": 351,
+      "syntheticFixture": true,
+      "scope": "Owned serialized JSON payload only; not RAM/GPU/FPS."
+    },
+    "currentCanonicalStatusValidated": true,
+    "search": {
+      "ground": "focused-routes",
+      "brush": "focused-routes",
+      "automaticExpansion": 0
+    }
+  },
+  "failuresAndRepairs": [
+    "Rotated parent fixture target exceeded preserved limb lengths; separated reachable/unreachable cases and asserted residual error for the latter.",
+    "Box floor fixture used size instead of actual extent; direct query/default comparison corrected fixture.",
+    "Review found legacy objectComponents source mutation, parentId precedence and missing generated tile copies; fixed the preview owner and added independent cases.",
+    "Actual query-only colliders were sensors; authored trigger predicate now distinguishes them across seven actual 2D/3D shape queries.",
+    "Brush became disabled mid-stroke; final commit now rejects it along with changed/detached owner. Failed/abandoned fixtures are not counted."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newGUI": false,
+    "newGPU": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newNativeModuleBinaries": 0,
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": 14,
+    "removedOwnedHelperNames": [
+      "ground2891.mjs",
+      "ground2892.mjs",
+      "ground2894.mjs",
+      "ground2896.mjs",
+      "group2898.mjs",
+      "ground2899.mjs",
+      "preview2900.mjs",
+      "brush2902.mjs",
+      "preview2905.mjs",
+      "group2906.mjs",
+      "final2907.mjs",
+      "final2908.mjs",
+      "commit2909.txt",
+      "meta2910.mjs"
+    ],
+    "handoffBytes": 4200,
+    "cacheCleanup": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    },
+    "admissionWhitelist": "native/build/owned2920.json"
+  },
+  "scope": "Actual source/form branches/common VM/Rapier and same-current-run C++ Bool control; no automatic gait phase/stride/pelvis, distance tether/partial pin, browser pixels/device/GPU/whole-memory/FPS or installation claim. Related checks rerun once together; unchanged foot/SDK execution reused with current binary hash, no SDK rebuild for UI.",
+  "canonicalCounts": {
+    "verified": 37,
+    "partial": 37,
+    "unimplemented": 1,
+    "unverified": 3
+  },
+  "previousLineage": [
+    "docs/research/ENGINE_WORK_2720.json",
+    "docs/research/ENGINE_WORK_2734.json",
+    "docs/research/ENGINE_WORK_2744.json",
+    "docs/research/ENGINE_WORK_2754.json",
+    "docs/research/ENGINE_WORK_2762.json",
+    "docs/research/ENGINE_WORK_2790.json",
+    "docs/research/ENGINE_WORK_2820.json",
+    "docs/research/ENGINE_WORK_2830.json",
+    "docs/research/ENGINE_WORK_2860.json",
+    "docs/research/ENGINE_WORK_2870.json",
+    "docs/research/ENGINE_WORK_2880.json",
+    "docs/research/ENGINE_WORK_2890.json"
+  ]
+}
