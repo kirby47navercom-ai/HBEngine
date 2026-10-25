@@ -1028,6 +1028,24 @@
   ],
   "focusRoutes": [
     {
+      "id": "asset-rename-journal",
+      "keywords": [
+        "commitAssetRename",
+        "recoverAssetRenames",
+        "inspectAssetRename",
+        "resolveAssetRename",
+        "compactCompleted",
+        "planResolution",
+        "renameFiles"
+      ],
+      "paths": [
+        "tools/asset-rename-journal.mjs",
+        "tools/project-service.mjs",
+        "prototype/transaction-recovery-editor.js",
+        "docs/ASSET_RENAME_RECOVERY.md"
+      ]
+    },
+    {
       "id": "socket-query",
       "keywords": [
         "socketQuery",
