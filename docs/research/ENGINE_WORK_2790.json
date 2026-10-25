@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "date": "2026-10-25T02:32:07.932Z",
+  "kind": "visual-asset-node-diff-deformable-plasticity-and-tracked-geometry-streaming",
+  "implementationRevision": "41dcd47ca9c99288b24c0464202c4f06c6b7d2ba",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2762.json",
+  "changedSourceHashes": {
+    "prototype/asset-graph-diff.js": "1a93043eca95577a132eaae4ff50cee43b58187d47632e577b26029e43b736ed",
+    "prototype/asset-graph-diff-view.js": "324ed6e52fcee78012a1e140f92720f674d2279e9c9648b81cda6d126199d470",
+    "prototype/asset-merge-panel.js": "a09eddcb8936b2fee097afba36b0cbe913a3d0850d58cd43dcf032839f9b04f3",
+    "prototype/source-control.css": "92ce1aa24405b5234c1f8adbd69db7e392bbe98e0d3a45fb3460b3b65d086bdf",
+    "prototype/app.js": "8aa18f1c49df216e124d78f6a2ea6ae7850ccd78120e304427525dda3c7c2620",
+    "tools/editor-automation.mjs": "197735885e5bb2c1f67bbfd58e9d39ae3abbe94e9c1e3fd0bfca739117235c85",
+    "docs/ai-routes.json": "365158bf666557bf2fcb3357cd453fb2644f6dcde41e105f47bb58c1b3aa91c9",
+    "prototype/deformable-physics.js": "48433ab592432f785b59e96eb8905fda7de712218e33c866aacfe80cb3724bca",
+    "prototype/deformable-properties.js": "9947ab9bc0654e347c5dd57fa10450f65b7297877fca5ab77be00da68682d56b",
+    "prototype/cloth-diagnostics.js": "7b690a7d28f8169ccefd33dbd448331004779482b6f96ba80e842031b9dedc22",
+    "prototype/physics-world.js": "d9f103f0fc21f747b9d83f915959ddcf2d1c944905c0eeff0b740af571354551",
+    "prototype/scene-components.js": "3ac144324ab659781ec6af83dc2409b304543fbca0062d8aaa7b4b354c9e6bd5",
+    "prototype/engine-services.js": "e3addfce678b0b6d5351ef236cc413f6cf836e1820693095586abdaa0a1e51ab",
+    "native/include/HBEngine/Game.hpp": "7f91351bc35dc32c73963751688bf11a6e65bb3f62289a03a297ab249c2c246b",
+    "native/include/HBEngine/Session.hpp": "0fdb37289044d69d56fed0b81a8960d8e6033879468296b6e61cc9f82bc87574",
+    "prototype/streaming-budget.js": "22aa57c8c385f565669e2bd04841718455242ea8c11dea62694fb6436f007918",
+    "prototype/streaming-geometry.js": "e025fd796c71b8e60c82df0facb6e3583b00619990e27d1928f4a8e54c337d20",
+    "prototype/level-streaming.js": "1234daadc8188054529500d4212605a4b2427201185530985f2c028cf7f61c6d",
+    "tools/check-asset-graph-diff-2770.mjs": "25b7c3b82e02a931f00da32852864759822d0e3425202050121a053ba37aaf47",
+    "tools/check-deformable-plastic-2773.mjs": "2f227e04f1459c02501b117adbee3fedf8de994f79385955c5f5a5618975a26e",
+    "tools/check-deformable-plastic-2774-cpp.mjs": "3b77bf14004b94501062425a251b3e38623e353adb423230fd13ff7ab55be425",
+    "tools/check-streaming-geometry-2783.mjs": "b790ccb0cdbd5eae6ce20412847982aca2d2227acdb3e53f496a1a77485a4562",
+    "docs/ASSET_GRAPH_DIFF.md": "0e8c2eb31d04ff9c304222988de0cd1802f20a8e83812a195e150a5f38eea249",
+    "docs/DEFORMABLE_PLASTICITY.md": "f330956c1b86eede3489b663aa9c83d0835255e8efaf9872b9c6cc8fdcecbbcf",
+    "docs/STREAMING_GEOMETRY_BUDGET.md": "28e378566c33ba4d3a086ab021b61857495d72125d8d0adbfda9f3406ef0a08d",
+    "docs/BLUEPRINT_SPEC.md": "9b886d27315363a9f71f261e9cf458df4d8510dcf9ce099c0e3abcb219674373",
+    "CODEX_HANDOFF.md": "569fb2455826814a8789184120f87db8f9af593c043c29d9417075ba615753ea"
+  },
+  "resolvedOwners": 1507,
+  "targetIds": [
+    "BLD-06",
+    "PHY-02",
+    "WLD-05",
+    "AI-03"
+  ],
+  "changes": {
+    "BLD-06": " ·2763–2790: stable-ID 노드/명시edge 3방향 시각diff·버전별추가/삭제/변경·키보드/재선택·페이지를 기존merge/CAS/Undo에 연결. root nodes/중첩material graph·기존legacy edge정규화. 신규15·기존문서병합15. 암시입력/서브그래프와Git marker저장별도.",
+    "PHY-02": " ·2763–2790: 실제 Rapier 천/3D·2D로프 edge 소성 항복/creep/max/방향·hot material/현재body유지·제자리소성복원·bounded edge 관찰. 사람/BP/C++2복원명령 공유. 신규10·기존hot7·현재SDK C++2 solver재생. joint소성/임의mesh/tether/paint/tear별도.",
+    "WLD-05": " ·2763–2790: opt-in geometry CPU allocation기반 셀비용·공유buffer중복제외/작성cost하한·해제뒤숫자관찰/재로드억제·기본authored추가측정0. 실제Three/RuntimeLevels 신규11. 초기/명시refresh측정이며 전체RAM/VRAM/HLOD별도.",
+    "AI-03": " ·2763–2790: document.graph.diff read-only 페이지/선택revision·runtime.cloth/rope edges·runtime.streaming 페이지/명시측정갱신·서명별schema. 사람/기존공용편집/런타임 흐름 공유, source body/buffer 응답미포함."
+  },
+  "newSourceCases": 36,
+  "relatedSourceCases": 22,
+  "checks": {
+    "newGraph": "native/build/asset-graph-diff-EFpmyB/acceptance.json",
+    "newPlastic": "native/build/deformable-plastic-rXXrFS/acceptance.json",
+    "newStreaming": "native/build/streaming-geometry-3VGMcO/acceptance.json",
+    "relatedDocumentMerge": "native/build/document-merge-SJiUo1/acceptance.json",
+    "relatedHot": "native/build/deformable-hot-AjkPW6/acceptance.json",
+    "cpp": "native/build/deformable-plastic-cpp-MVSPsj/acceptance.json",
+    "firstGroup": "native/build/group2775.json",
+    "secondGroup": "native/build/group2785.json",
+    "storage": "native/build/storage2789.json"
+  },
+  "cpp": {
+    "methods": 2,
+    "cacheKey": "a97dfbfe38a51c561cc4",
+    "cacheHit": false,
+    "sdk": {
+      "fingerprint": "6ae42160cdb0e8cdce5bcea410ec666c86453519087ed1901192da45f46811da",
+      "files": 37,
+      "bytes": 2391557
+    },
+    "sdkUsed": {
+      "fingerprint": "2711479cd6c2027fc9dd3fd5804acc09d0712d849f8cc27e39cb6d443b9e670d",
+      "preprocessedFingerprint": "57672d34ce0ceb85da87f3ba8ec2a58b616124e78bbee1ebb95a1929deb75534",
+      "files": 10,
+      "bytes": 1360255,
+      "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+      "mode": "dependencies",
+      "planHit": false,
+      "scanMS": 670.9997000000001
+    },
+    "binary": {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\a97dfbfe38a51c561cc4\\worker.exe",
+      "sha256": "3f31f9c05d9ae948a602b64c14997c8dd114418aecf8ec51e0f7281806a78298"
+    },
+    "scope": "Current SDK compiled, both new C++ commands emitted and replayed through real 2D/3D solver; same physical generations/runtime pins. Source gate tests actual strain/reset values. No GUI/device/install."
+  },
+  "results": {
+    "actualPlasticMaximum": [
+      0.2999999523162842,
+      0.2999999523162842,
+      0.2999999523162842
+    ],
+    "sharedGeometryChargedOnce": true,
+    "oversizedObservationNumbersOnly": true
+  },
+  "failuresAndRepairs": [
+    "First graph gate found legacy material edge tuples; now uses existing normalizedMaterialEdges. Added nested graph paths and BP position metadata. Final15 pass.",
+    "First rope strain fixture used two fixed particles, so no dynamic constraint load. Corrected to three particles with a free middle; actual 2D/3D permanent strains and reset now pass. Production solver was not approximated or replaced.",
+    "Refined selected node re-selection/aria-pressed, read command explicit revision check, authored-mode allocation bypass and removed-component observation retirement before final affected gates.",
+    "Commit whitespace checks caught owned source/handoff CRLF endings; normalized owned new text before staging. No semantic changes."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newGUI": false,
+    "newGPU": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newRuntimeSDKProfiles": 0,
+    "nativeModuleCachePolicy": 32,
+    "cacheDeleted": 0,
+    "handoffBytes": 4035
+  },
+  "remainingBoundary": [
+    "Implicit graph links/subgraphs, Git marker publication/VCS locks",
+    "Joint plasticity, skinned arbitrary cloth/tether/paint/tearing/GPU softbody",
+    "Live global RAM/VRAM/texture measurements, automatic partition/HLOD, unseen first-load overshoot",
+    "New real GUI/device/rendering/install verification and cumulative engine goals"
+  ]
+}
