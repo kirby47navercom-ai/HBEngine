@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "kind": "lazy-selective-schema-http-local-and-cli",
+  "implementationRevision": "ec82cf17f331d4a16a6c451170d8c84b75fb8ca5",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3180.json",
+  "changedSourceHashes": {
+    "tools/schema-sections.mjs": "84ed5b27555915db18bc9e272539e1496899793c1837ca0f3a767155be8a2590",
+    "tools/editor-automation.mjs": "3b0d450f50bb7fbbc67e1a7734a417dceb2a128fd39a5249e46d8fe3eecd1098",
+    "tools/hb.mjs": "67e6f21116109e23ea03b4eaae43e03709d6c10e6d8a6764a7a73610213e4026",
+    "tools/serve.mjs": "802d6ea7d94140c4fe994d4c9a95c16b894d18adb916241d49116a23b400f685",
+    "tools/check-schema-sections-3183.mjs": "79f7e09c20819897f2503fc698c8d7b6d89308f1e3c8bfb2c222fb956ddca710",
+    "docs/SCHEMA_SECTION_READS.md": "ce2b71092251e94046c9a6b041dfccd364422fd24632e7114927da41c8d6d00e",
+    "docs/AI_START.md": "4c2dea0755dbd57a8964a2723e086b8c3feb0fe8082343c89470cbb7873d2d57",
+    "docs/ai-routes.json": "b86f606d5676bbe9d1a8474cf196cb616b299882c02811d659be3ce287353c22",
+    "CODEX_HANDOFF.md": "59226fbdd31c9d80678b952f5ddd6647ce7a0b1d2c536339888dfa16485b4c14"
+  },
+  "resolvedOwners": 1618,
+  "targetIds": [
+    "AI-03"
+  ],
+  "newSourceCases": 8,
+  "relatedSourceCases": 0,
+  "checks": {
+    "source": "native/build/schema-sections-bMUzpe/acceptance.json",
+    "firstFailure": "native/build/schema-sections-Pq6eiQ/acceptance.json"
+  },
+  "samples": [
+    {
+      "baselineSourceRef": "2b6398834466547b11f65fb9b2e3e7733311292f",
+      "baselineSourceSHA": "a5be9d233cc6edbb914f1957302f6c342046bc33e769757fb6e784e0be553d5e",
+      "originalRandomBytes": 983896,
+      "originalRandomSHA": "c4bf5e42b51103b063c24552cdaadec17495b50499531f121de07948ccef0232",
+      "seededFullSHA": "7fde09d810ca56e246c17731fc2f9e0a398f910256695560616a9bdcc344361a",
+      "seededFullBytes": 983896,
+      "sections": 137,
+      "seededFullJSONByteIdentical": true,
+      "volatileExamples": "UUID factories remain fresh; deterministic generator used only for the exact before/after comparison"
+    },
+    {
+      "sourceHTTP": true,
+      "fullBytes": 983896,
+      "selectedBytes": 48,
+      "listBytes": 2491,
+      "selectedReplyFraction": 0.00004878564401115565,
+      "scope": "Owned headless metadata server only; no UI/GPU/engine-startup/import or whole-heap speed claim"
+    }
+  ],
+  "failuresAndRepairs": [
+    {
+      "cause": "Existing example factories issue fresh UUIDs, so naive full snapshots differed; original unselected plain contract getter is evaluated during JSON serialization.",
+      "repair": "Kept runtime UUID behavior; exact old-source SHA and seeded before/after byte comparison, wire reference relationships and poisoned JSON serialization guard. Source8 rerun passed."
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "actualCppCaller": false,
+    "GUI": false,
+    "wholeStartupSpeedClaim": false
+  },
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "newWorkers": 0,
+    "handoffBytes": 4739,
+    "removedOwnedRegularHelpers": [
+      "schemalazy3181.mjs",
+      "schemawire3182.mjs",
+      "schemasafe3184.mjs",
+      "schemadocs3185.mjs",
+      "schemaprobe3186.mjs",
+      "schemafix3187.mjs",
+      "admit3188.mjs"
+    ]
+  },
+  "scope": "Exact seeded full JSON/order against pre-refactor source plus original random-response byte count; relationship-preserving volatile example UUID comparison;137 lazy section names, all top-level selection equivalence and detached wire values, real poisoned unselected contract guard, pre-getter invalid-path admission, local CLI, actual owned source HTTP/remote CLI and old-server fallback. No parser dependency at runtime, user windows/projects/installation/SDK/GPU/device or whole startup/heap improvement claim."
+}
