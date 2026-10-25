@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "kind": "two-bone-pole-offset-and-degenerate-plane-history",
+  "implementationRevision": "464b5047969e262728f212527e9a5c25999929ce",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3120.json",
+  "changedSourceHashes": {
+    "prototype/animation-pole-control.js": "a31dac60f2c1902fd0a4c339fa8696ab5e8d7487e450b9a12c29744e89a72669",
+    "prototype/animation-ik.js": "d089b9e6c3a63dacb97c4e6076b4baa0ec0d818a524ca8433517fdc28d64a8b4",
+    "prototype/animation-graph-runtime.js": "dcedb6d9decfcfdfefaf3d727a9c50518b89c1df8761c6134c66a1dfb7d76f06",
+    "prototype/animation-graph-assets.js": "9eee4f45740f6ec20e66ba28e36b9215610374cbd6a67d1c503c96b4dd9849d5",
+    "prototype/animation-graph-editor.js": "6b722f1f8fb1084b3da2830338b2721c0cd85720f7f52d013dcbd002a9b005f7",
+    "prototype/animation-ik-editor.js": "b3c7e65ddeebb43ab63cf291328e371b84a3be0b583d0e68ef4913452371b998",
+    "tools/editor-automation.mjs": "458314e5a1b5c69f702b57857bfc9f3d78af5899edbcc8c0e3749731da3b7f12",
+    "docs/ai-routes.json": "8facef28eddc80f128018404a190410eaf830410d6efef3da123e68e63bde442",
+    "tools/check-pole-control-3122.mjs": "9d64543ff8126bd95ff81b32c2672c570ba4339ac4ab0809a34bd8735b2a8203",
+    "docs/ANIMATION_POLE_CONTROL.md": "66913850e8579e9631ad4e342bf58013a3e987a35e8abf3af124eaf8ac20109e",
+    "docs/BLUEPRINT_SPEC.md": "70f20a9bc57dc8d94a7e1a3204f0f203b3785ae85667f294926447a65f1aff39",
+    "CODEX_HANDOFF.md": "3d6a67eae09258c9ef76fc74e7252e24e18e36f521be47847697f708960bdb3f"
+  },
+  "resolvedOwners": 1609,
+  "targetIds": [
+    "ANM-04",
+    "AI-03"
+  ],
+  "newSourceCases": 11,
+  "relatedSourceCases": 60,
+  "checks": {
+    "source": "native/build/pole-control-rzktCQ/acceptance.json",
+    "related": [
+      "native/build/auto-plant-nb4Vtx/acceptance.json",
+      "native/build/foot-plant-1quHtP/acceptance.json",
+      "native/build/ground-ik-s1aav8/acceptance.json",
+      "native/build/stride-warp-hMOuQe/acceptance.json"
+    ]
+  },
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "actualCppCaller": false,
+    "GUI": false,
+    "pelvisCorrection": false,
+    "fullRigSolver": false
+  },
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": [
+      "pole3121.mjs",
+      "poledocs3123.mjs",
+      "admit3124.mjs"
+    ],
+    "handoffBytes": 4618,
+    "cacheCleanupReused": "WORK3100 nativeCacheOnly; no native cache writes since"
+  },
+  "scope": "Optional authored plus Float degree offset on two-bone bend plane, previous unrotated per-branch plane projected only for weak input knee/hint. Actual Three knee/goal/length, no accumulated offset, finite large angles, context/clock/epoch/alpha/disposal, explicit and automatic foot/ground integration, real typed editor/Undo/rename/status and common native Float replay. No new SDK/actual C++ caller, full rig/pelvis/physical joint/predictive gait, GUI/GPU/device/install."
+}
