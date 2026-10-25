@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "kind": "viewport-pointer-command-profiles",
+  "implementationRevision": "2e21aff38a9df790ca73617a00117427d8ff8cfd",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2980.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "56f8828699da6ab7d97f3c4b2147cc08ed7910d81f5b6ca8c2138b112d5bfbd2",
+    "prototype/editor-shortcuts.js": "624239c25a57830ea93912f65bddc905248b9a9ae1568292185372ccf0dad936",
+    "prototype/shortcut-editor.js": "33b00dd2aeaf33a7c0b705389fb9abe31dbc424341ccfdc67af8cf248241feda",
+    "prototype/viewport-pointer-shortcuts.js": "8ff9ff955cc87f5941cb5dc953c2b9d3282b05927a503d790a5a10d7e1eaec6e",
+    "prototype/viewport-controls.js": "b078b58ad99100ae2b9d097f3aa3dfebf23029407b96b8e0b3be5b0ae882aa03",
+    "prototype/app.js": "8b08bd849325ef030a718d0cbef7466a6732eb208ba1ef0ee445296b3e31067c",
+    "tools/editor-automation.mjs": "413f2c665e36f97460f4caf19109724f18ae0a4da29a40c877453d9d45a6d6d7",
+    "tools/check-pointer-shortcuts-2987.mjs": "49f9e439199b28f55763653bfc4ca149aaa484d5498953e7110a0f70b0e5e3aa",
+    "docs/VIEWPORT_POINTER_SHORTCUTS.md": "7778c5f81453a18144d92a260c83a2ef2299fbbdbce9ebfbccc96623785b9fed",
+    "DEBUG_HANDOFF.md": "3c708ba8c6cde7769ce5a3570d27955c1888337d3f8f9bc42ef57e14ed977b90",
+    "CODEX_HANDOFF.md": "b9c564adbfc81c2bdcc333421d55e372fac13dda70aa01344374b2493d8895f1"
+  },
+  "resolvedOwners": 1580,
+  "targetIds": [
+    "EDT-05",
+    "AI-03"
+  ],
+  "newSourceCases": 11,
+  "checks": {
+    "owned": "native/build/pointer-shortcuts-aeTgev/acceptance.json",
+    "cases": 11,
+    "legacy": [
+      {
+        "file": "tools/check-editor-shortcuts.mjs",
+        "passed": true,
+        "output": "단축키: 기본값·작업창 문맥·IME/입력/게임/비행 격리·두 키·충돌 원자 거부/덮어쓰기·재설정·프로필 복제/삭제/JSON 복원·저장 거부 복원 검사 통과: 199 명령"
+      },
+      {
+        "file": "tools/check-viewport-controls.mjs",
+        "passed": true,
+        "output": "뷰포트 입력·실제 Three 카메라 수학·대형 맵 탐색·직교 커서 확대·북마크·입력 정리 185개 검사 통과\nMaterial preview LMB orbit/pan and cursor wheel, scene input isolation PASS"
+      }
+    ],
+    "syntax": [
+      {
+        "file": "prototype/editor-shortcuts.js",
+        "passed": true
+      },
+      {
+        "file": "prototype/shortcut-editor.js",
+        "passed": true
+      },
+      {
+        "file": "prototype/viewport-pointer-shortcuts.js",
+        "passed": true
+      },
+      {
+        "file": "prototype/viewport-controls.js",
+        "passed": true
+      },
+      {
+        "file": "prototype/app.js",
+        "passed": true
+      },
+      {
+        "file": "tools/editor-automation.mjs",
+        "passed": true
+      },
+      {
+        "file": "tools/check-pointer-shortcuts-2987.mjs",
+        "passed": true
+      }
+    ]
+  },
+  "failuresAndRepairs": [
+    {
+      "report": "native/build/pointer-shortcuts-as45Sw/acceptance.json",
+      "cause": "Owned app-hook fixture omitted existing saveViewportPreferences callback during event registration",
+      "repair": "Only fixture scope corrected; production hook unchanged; failed run excluded"
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "userWindowsChanged": false,
+    "discreteCommandsOnly": true,
+    "nativeBrowserBackForwardVerified": false
+  },
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": [
+      "pointer2983.mjs",
+      "record2984.mjs",
+      "pointerfast2985.mjs",
+      "pointerscope2986.mjs",
+      "group2988.mjs",
+      "fix2989.mjs",
+      "admit2990.mjs"
+    ],
+    "handoffBytes": 4278,
+    "cacheCleanupReused": "WORK2980 cleanup; no native build/cache writes in this phase"
+  },
+  "scope": "Actual profile/recorder/camera/app-hook source paths in owned headless surfaces. No actual window/DPI/browser back-forward/GUI/native device or whole input coverage claim."
+}
