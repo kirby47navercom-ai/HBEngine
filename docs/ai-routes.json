@@ -3901,6 +3901,25 @@
         "prototype/app.js",
         "docs/SKELETAL_TRACK_KEYS.md"
       ]
+    },
+    {
+      "id": "runtime-binding-preparation",
+      "keywords": [
+        "primeObjects",
+        "prepareActorBindings",
+        "installBlueprintInstances",
+        "installBlueprintComponents"
+      ],
+      "paths": [
+        "prototype/blueprint-runtime.js",
+        "prototype/blueprint-overrides.js",
+        "prototype/scene-components.js",
+        "prototype/play-world.js",
+        "prototype/runtime-spawn.js",
+        "prototype/engine-services.js",
+        "prototype/runtime-object-lookup.js",
+        "docs/RUNTIME_BINDING_PREPARATION.md"
+      ]
     }
   ]
 }

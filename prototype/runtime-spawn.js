@@ -75,7 +75,7 @@ export function instantiateSpawn(template,transform,rootId=crypto.randomUUID(),e
 }
 export function spawnBindings(catalog,template,instance){return (catalog.bindings.get(template.key)||[]).map(b=>({...b,self:instance.ids.get(b.self),variableValues:Object.fromEntries(Object.entries(b.variableValues||{}).map(([id,value])=>{const d=b.root.variables.find(v=>v.id===id);const remap=v=>typeof v==='string'?instance.ids.get(v)||v:v;return [id,d?.type==='object'?Array.isArray(value)?value.map(remap):remap(value):copy(value)];}))}));}
 export async function initializeSpawn(vm,bindings,services,objects,{reused=false,isCurrent=()=>true}={}){
-  const generation=vm.generation,current=()=>vm.active&&!vm.stopping&&vm.generation===generation&&isCurrent();
+  const generation=vm.generation,current=()=>vm.active&&!vm.stopping&&vm.generation===generation&&isCurrent();if(vm.active&&!vm.stopping)vm.primeObjects?.(objects.map(o=>o.id));
   for(const b of bindings)if(current()&&vm.object(b.self)?.poolActive!==false&&vm.object(b.self))await vm.emit(b,'construction',{},graphContext(b.root,'construction'));
   for(const o of objects)if(current()&&vm.object(o.id)===o&&o.poolActive!==false)await services.startActor(o,vm);
   for(const o of objects)if(current()&&vm.object(o.id)===o&&o.poolActive!==false)await services.startSystems(vm,o.id);

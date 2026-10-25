@@ -1,3 +1,4 @@
+import {lookupRuntimeObject,primeRuntimeObjectLookup} from './runtime-object-lookup.js';
 import {nativeModuleKey} from './native-entry.js';
 import {refreshPrefabWorld,remapPrefabInstanceReferences} from './prefab-instances.js';
 import {readNativeHeader,canonicalNativeText} from './native-model.js';
@@ -10,14 +11,14 @@ import {actorClassNames} from './runtime-actors.js';
 import {spawnRequested,managedSpawnCatalog} from './runtime-spawn.js';
 
 export async function prepareActorBindings(objects,{readAsset,readText,buildNative,builds=new Map(),nativeBuilds=new Map(),loaded}){
-  loaded??=await loadSceneBindings(objects,readAsset,readText);installBlueprintInstances(objects,loaded.bindings.filter(b=>!b.retained));
+  loaded??=await loadSceneBindings(objects,readAsset,readText);const lookup={objects};if(loaded.bindings.length)primeRuntimeObjectLookup(lookup,loaded.bindings.map(b=>b.self));installBlueprintInstances(objects,loaded.bindings.filter(b=>!b.retained));
   for(const {root,self,path} of loaded.bindings){
     if(root.native?.classes?.length){const header=canonicalNativeText(await readText(root.native.headerPath||'Source/DoorController.h')),source=canonicalNativeText(await readText(root.native.sourcePath||'Source/DoorController.cpp'));Object.assign(root.native,await readNativeHeader(header,{sourcePath:root.native.headerPath||'Source/DoorController.h',readText}),{header,source});}
-    const object=objects.find(item=>item.id===self),className=root.settings?.parentClass||'Actor',definition=root.native?.classes.find(item=>item.name===className);
+    const object=lookupRuntimeObject(lookup,self),className=root.settings?.parentClass||'Actor',definition=root.native?.classes.find(item=>item.name===className);
     if(definition){object.nativeClass=className;object.nativeProperties=blueprintInstanceDefaults(root,object).nativeProperties;}else delete object.nativeClass;
     if(root.native?.classes?.length&&!builds.has(path)){const header=await readText(root.native.headerPath||'Source/DoorController.h'),source=await readText(root.native.sourcePath||'Source/DoorController.cpp');const compiledHeader=canonicalNativeText(header),compiledSource=canonicalNativeText(source);const entry={headerPath:root.native.headerPath||'Source/DoorController.h',sourcePath:root.native.sourcePath||'Source/DoorController.cpp'},signature=nativeModuleKey(compiledHeader,compiledSource,entry);if(!nativeBuilds.has(signature))nativeBuilds.set(signature,{...await buildNative(compiledHeader,compiledSource,entry),header:compiledHeader,source:compiledSource});builds.set(path,nativeBuilds.get(signature));}
   }
-  for(const object of objects)object.actorClasses=actorClassNames(object,loaded.bindings.find(b=>b.self===object.id)?.root);
+  const firstBinding=new Map();for(const binding of loaded.bindings)if(!firstBinding.has(binding.self))firstBinding.set(binding.self,binding);for(const object of objects)object.actorClasses=actorClassNames(object,firstBinding.get(object.id)?.root);
   return {...loaded,objects,builds};
 }
 

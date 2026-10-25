@@ -1,3 +1,4 @@
+import {primeRuntimeObjectLookup} from './runtime-object-lookup.js';
 import {validNativeRecordPin} from './native-records.js';
 import {validNativeEnumPin} from './native-enums.js';
 import {validValue,defaultsFor,boundedBlueprintValue} from './blueprint-model.js';
@@ -25,7 +26,8 @@ export function blueprintInstanceDefaults(root,object={}){
   return {variables,nativeProperties,components};
 }
 export function installBlueprintInstances(objects,bindings){
-  installBlueprintComponents(objects,bindings.filter(b=>!b.retained));
-  for(const b of bindings){const object=objects.find(o=>o.id===b.self);if(!object)continue;for(const [id,properties] of Object.entries(b.componentOverrides||{})){const c=objectComponents(object).find(c=>c.id===id||c.blueprintSources?.some(s=>s.name===b.root.name&&s.id===id));if(!c)throw Error('오브젝트 상속 컴포넌트가 없어요: '+id);Object.assign(c.properties,copy(properties));}}
+  if(bindings.length===0)return objects;const targets=primeRuntimeObjectLookup({objects},bindings.map(b=>b.self));
+  installBlueprintComponents(objects,bindings.filter(b=>!b.retained),targets);
+  for(const b of bindings){const object=targets.get(b.self);if(!object)continue;for(const [id,properties] of Object.entries(b.componentOverrides||{})){const c=objectComponents(object).find(c=>c.id===id||c.blueprintSources?.some(s=>s.name===b.root.name&&s.id===id));if(!c)throw Error('오브젝트 상속 컴포넌트가 없어요: '+id);Object.assign(c.properties,copy(properties));}}
   return objects;
 }
