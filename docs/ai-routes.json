@@ -3937,7 +3937,6 @@
     {
       "id": "vehicle-dynamics",
       "keywords": [
-        "VehiclePhysics",
         "VehiclePowertrain",
         "validVehicleWheels",
         "validVehiclePowertrain",
@@ -4704,6 +4703,48 @@
       ],
       "paths": [
         "prototype/animation-ground-pelvis-editor.js"
+      ]
+    },
+    {
+      "id": "vehicle-bone-declarations",
+      "keywords": [
+        "VehicleWheelBones",
+        "wheelVisualDefaults",
+        "validWheelVisual",
+        "physicalVehicleWheels",
+        "vehicleWheelBonesContract"
+      ],
+      "paths": [
+        "prototype/vehicle-wheel-bones.js"
+      ]
+    },
+    {
+      "id": "vehicle-bone-editor-declarations",
+      "keywords": [
+        "wheelBoneControls",
+        "editWheelVisual"
+      ],
+      "paths": [
+        "prototype/vehicle-wheel-bones-editor.js"
+      ]
+    },
+    {
+      "id": "vehicle-visual-declarations",
+      "keywords": [
+        "buildVehicleWheels",
+        "updateVehicleWheels"
+      ],
+      "paths": [
+        "prototype/vehicle-rendering.js"
+      ]
+    },
+    {
+      "id": "raycast-vehicle-declaration",
+      "keywords": [
+        "RaycastVehicles"
+      ],
+      "paths": [
+        "prototype/vehicle-physics.js"
       ]
     }
   ]
