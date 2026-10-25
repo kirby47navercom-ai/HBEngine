@@ -766,3 +766,5 @@ Two Bone IK의 [관절 회전 제어](ANIMATION_POLE_CONTROL.md)는 기존 힌�
 태스크의 핸들 기반 메모리/완료/실행·중단 상태/중단 완료는 [실행 소유자 색인](BEHAVIOR_TASK_LOOKUP.md)을 공유해 노드 메모리·하위 트리 전체를 매번 순회하지 않아요. 활성화/정리/오류 수명과 자식 접근 범위, 조상 깨우기를 유지하며 기존 BP/C++ 선언은 바뀌지 않아요.
 
 시퀀스 구간의 [곡선 가중치](SECTION_WEIGHT_CUBIC.md)는 기존 스칼라 Hermite/가중 Bézier·탄젠트/시간/값 핸들과 단위 제어점·단조 시간 검증을 공유해요. 정확한 키 추가/앞 자르기는 자동 기울기를 고정한 de Casteljau 분할을 사용하고 기존 목록 페이지·실제 SVG·편집/Undo·키 예산·AI 스키마·공용 혼합 실행에 연결해요. 오디오 volumeCurve는 현재 선형/계단 예약 범위를 유지해요.
+
+- 3201–3220: FullBodyIK 선택 groundPelvis·명시 지지목표/기존 2D·3D 질의·공유 골반 월드 이동한도·분기별 감쇠/수명·원래 제약/Alpha·typed 체크/Bool/Undo·AI 계약. 문서: ANIMATION_GROUND_PELVIS.md. 예측 보행/접촉 반력은 별도예요.

@@ -1,0 +1,12 @@
+import {groundPelvisDefaults} from './animation-ground-pelvis.js';
+export function renderGroundPelvis(editor,node,base){
+ const p={...groundPelvisDefaults(),...node.properties.groundPelvis},input=(label,key,type='number',choices)=>editor.input(label,base+'.groundPelvis.'+key,p[key],type,choices),escape=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ return '<details data-sync-section="ik-ground-pelvis"><summary>지면과 골반</summary>'+input('사용','enabled','checkbox')+(p.enabled?editor.parameter('사용 Bool 파라미터',base+'.groundPelvis.parameter',p.parameter,'bool')+'<fieldset><legend>지지 발 목표</legend>'+node.properties.effectors.map(e=>'<label><input type="checkbox" data-anim-pelvis-foot="'+escape(e.id)+'"'+(p.feet.includes(e.id)?' checked':'')+'>'+escape(e.id+(e.bone?' · '+e.bone:''))+'</label>').join('')+'</fieldset>'+input('최대 내림 · m','maxDrop')+input('최대 올림 · m','maxRise')+input('보정 가중치','weight')+input('부드러운 전환 · 초','smoothTime')+input('연속 평가 간격 · 초','maxGap')+input('충돌 차원','dimension','number',[[3,'3D'],[2,'2D · XY']])+['X','Y','Z'].map((axis,i)=>editor.input('월드 탐색 방향 '+axis,base+'.groundPelvis.direction.'+i,p.direction[i],'number')).join('')+input('시작 높이 · m','lift')+input('탐색 거리 · m','distance')+input('표면 여유 · m','offset')+input('최대 경사 · °','maxSlope')+input('충돌 마스크','mask'):'')+'</details>';
+}
+export function prepareGroundPelvisEdit(data,path,value){
+ const parts=path.split('.');if(parts[0]!=='nodes'||parts[2]!=='properties')return;const p=data.nodes[Number(parts[1])]?.properties;if(!p)return;
+ if(parts[3]==='groundPelvis'&&parts[4]==='enabled'&&value===true){p.groundPelvis={...groundPelvisDefaults(),...p.groundPelvis};if(!p.groundPelvis.feet.length)p.groundPelvis.feet=p.effectors.map(e=>e.id);p.rootBehavior='fixed';}
+ if(parts[3]==='rootBehavior'&&value!=='fixed'&&p.groundPelvis)p.groundPelvis.enabled=false;
+ if(parts[3]==='effectors'&&parts[5]==='id'&&p.groundPelvis){const old=p.effectors[Number(parts[4])]?.id;p.groundPelvis.feet=(p.groundPelvis.feet||[]).map(id=>id===old?value:id);}
+}
+export function toggleGroundPelvisFoot(node,id,enabled){if(node?.type!=='fullBodyIK'||!node.properties.effectors.some(e=>e.id===id))throw Error('지지 발 목표를 확인하세요.');const p=node.properties.groundPelvis={...groundPelvisDefaults(),...node.properties.groundPelvis};const next=enabled?[...new Set([...p.feet,id])]:p.feet.filter(v=>v!==id);if(p.enabled&&!next.length)throw Error('지지 발 목표를 하나 이상 선택하세요.');p.feet=next;}

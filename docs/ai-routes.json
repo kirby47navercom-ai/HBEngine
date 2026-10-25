@@ -4682,6 +4682,29 @@
       "paths": [
         "tools/hb.mjs"
       ]
+    },
+    {
+      "id": "ground-pelvis-declarations",
+      "keywords": [
+        "GroundPelvisIK",
+        "groundPelvisDefaults",
+        "validGroundPelvis",
+        "groundPelvisContract"
+      ],
+      "paths": [
+        "prototype/animation-ground-pelvis.js"
+      ]
+    },
+    {
+      "id": "ground-pelvis-editor-declarations",
+      "keywords": [
+        "renderGroundPelvis",
+        "prepareGroundPelvisEdit",
+        "toggleGroundPelvisFoot"
+      ],
+      "paths": [
+        "prototype/animation-ground-pelvis-editor.js"
+      ]
     }
   ]
 }
