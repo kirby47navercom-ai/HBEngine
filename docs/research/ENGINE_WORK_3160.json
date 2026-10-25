@@ -1,0 +1,292 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "kind": "indexed-behavior-task-resource-ownership",
+  "implementationRevision": "46c56c474dbd7c0d488699a5c7b45ce8992d8197",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3140.json",
+  "changedSourceHashes": {
+    "prototype/behavior-task-index.js": "56ecb098b267f67b3bec7a4069fcb26ef4e989a08e6a78601d2a7cf41301585e",
+    "prototype/gameplay-runtime.js": "acbb3aa915ca70e9f54b73905b055603e38a9bc9fb3d3d2497ef4f1874469734",
+    "prototype/behavior-aborts.js": "c67ff1bedb6cc4959b37e0b6b562a22a1766d841be572ef719b4593163bc727b",
+    "prototype/behavior-task-memory.js": "155bdb2b957c48dee6307ed16499eafe05be74e0282f97f03461c25a50920a73",
+    "tools/behavior-task-memory-fixture-3082.mjs": "01a74cc13836525b0b93bee7ef71cc3d61dd20b32c6bb8de742445265051368f",
+    "tools/check-task-memory-3083.mjs": "17e6938365c478ad2fb34f9ed78c71592dc70e6f99dd603196ac077a46fafc35",
+    "tools/check-task-index-3143.mjs": "e0892e0d9011dff51f67509dce97b4da6d3b7cee5bcfc69819b305f008cca158",
+    "tools/editor-automation.mjs": "4de6ac91008532730a21dcc475ae5a976abd7f4b53597d6d7c8ce688717a4ecb",
+    "docs/ai-routes.json": "58a65235ed66543d175a9e110b0c4fa041a4febe0ca1f9e574ab267ccf436405",
+    "docs/BEHAVIOR_TASK_LOOKUP.md": "5d7571b32e53157d6cc913498a6da1ab839906dcb812d7cb226ff57c94153d1b",
+    "docs/BEHAVIOR_TASK_MEMORY.md": "4cf76955620f62211d14ff632e9ffec254e7393b514718912767fdf3058fde63",
+    "docs/BLUEPRINT_SPEC.md": "b8638bb201bebcbd7e616daa3ef8dd84056e51ed27969e4f495be999232c9e31",
+    "CODEX_HANDOFF.md": "49d6d4930ab94644281bfb36800f6bd42c714685617b39c0ea55d34c327ca393"
+  },
+  "resolvedOwners": 1612,
+  "targetIds": [
+    "GAM-03",
+    "AI-03"
+  ],
+  "newSourceCases": 7,
+  "relatedSourceCases": 51,
+  "checks": {
+    "source": "native/build/task-index-FAstHF/acceptance.json",
+    "related": [
+      "native/build/task-memory-6OUhtF/acceptance.json",
+      "native/build/behavior-task-life-UNS9vq/acceptance.json",
+      "native/build/behavior-aborts-JpBLzJ/acceptance.json"
+    ],
+    "legacyGates": [
+      {
+        "file": "tools/check-behavior-program.mjs",
+        "passed": true
+      },
+      {
+        "file": "tools/check-behavior-observers.mjs",
+        "passed": true
+      }
+    ],
+    "cpp": "native/build/task-memory-cpp-v2V5FV/acceptance.json"
+  },
+  "samples": [
+    {
+      "activeTasks": 128,
+      "explicitQueries": 4096,
+      "elapsedMS": 3.248899999999992,
+      "nodeMemoryValueScans": 0,
+      "scope": "One owned Node structural/timing sample, no game FPS or global scheduler claim"
+    }
+  ],
+  "cpp": {
+    "reason": "Current JS resource ownership changed; re-execute unchanged current-SDK caller",
+    "methods": 3,
+    "calls": 7,
+    "queuedOperations": 0,
+    "liveHandlerInvocations": 20,
+    "exactSDK": true,
+    "exactUsedSDK": true,
+    "exactBinary": true,
+    "build": {
+      "token": "a59e3c20-4e58-41ff-9982-603123d5d649",
+      "metadata": {
+        "version": 1,
+        "classes": [
+          {
+            "name": "MemoryProbe",
+            "base": "Library",
+            "blueprintable": false,
+            "properties": [],
+            "functions": [
+              {
+                "name": "Roundtrip",
+                "label": "Roundtrip",
+                "category": "C++",
+                "pure": false,
+                "static": true,
+                "event": "none",
+                "inputs": [
+                  {
+                    "id": "target",
+                    "label": "target",
+                    "type": "object",
+                    "array": false,
+                    "className": "Actor"
+                  },
+                  {
+                    "id": "task",
+                    "label": "task",
+                    "type": "string",
+                    "array": false
+                  },
+                  {
+                    "id": "count",
+                    "label": "count",
+                    "type": "int",
+                    "array": false
+                  }
+                ],
+                "outputs": [
+                  {
+                    "id": "result",
+                    "label": "Return value",
+                    "type": "string",
+                    "array": false
+                  }
+                ],
+                "returnType": "std::string",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "cppType": "hb::Actor*",
+                    "out": false
+                  },
+                  {
+                    "name": "task",
+                    "cppType": "const std::string&",
+                    "out": false
+                  },
+                  {
+                    "name": "count",
+                    "cppType": "int",
+                    "out": false
+                  }
+                ]
+              },
+              {
+                "name": "Reject",
+                "label": "Reject",
+                "category": "C++",
+                "pure": false,
+                "static": true,
+                "event": "none",
+                "inputs": [
+                  {
+                    "id": "target",
+                    "label": "target",
+                    "type": "object",
+                    "array": false,
+                    "className": "Actor"
+                  },
+                  {
+                    "id": "task",
+                    "label": "task",
+                    "type": "string",
+                    "array": false
+                  }
+                ],
+                "outputs": [
+                  {
+                    "id": "result",
+                    "label": "Return value",
+                    "type": "bool",
+                    "array": false
+                  }
+                ],
+                "returnType": "bool",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "cppType": "hb::Actor*",
+                    "out": false
+                  },
+                  {
+                    "name": "task",
+                    "cppType": "const std::string&",
+                    "out": false
+                  }
+                ]
+              },
+              {
+                "name": "Foreign",
+                "label": "Foreign",
+                "category": "C++",
+                "pure": false,
+                "static": true,
+                "event": "none",
+                "inputs": [
+                  {
+                    "id": "target",
+                    "label": "target",
+                    "type": "object",
+                    "array": false,
+                    "className": "Actor"
+                  },
+                  {
+                    "id": "task",
+                    "label": "task",
+                    "type": "string",
+                    "array": false
+                  }
+                ],
+                "outputs": [
+                  {
+                    "id": "result",
+                    "label": "Return value",
+                    "type": "bool",
+                    "array": false
+                  }
+                ],
+                "returnType": "bool",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "cppType": "hb::Actor*",
+                    "out": false
+                  },
+                  {
+                    "name": "task",
+                    "cppType": "const std::string&",
+                    "out": false
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "workerProtocol": 3,
+        "nativeBatch": 1,
+        "nativeModuleQueries": 1,
+        "nativeStateCommit": 1,
+        "nativeBatchOperations": 1,
+        "nativeFrameBatch": 1,
+        "nativeModuleFrameBatch": 1,
+        "nativeInputBatch": 1,
+        "nativeStateBatch": 1,
+        "nativeSpawn": 1,
+        "nativeActorLifetime": 1,
+        "nativeGameSession": 1
+      },
+      "cacheKey": "43fd0179550e7d1aba71",
+      "cacheHit": true,
+      "cacheScope": "version",
+      "sdk": {
+        "fingerprint": "49af65afc3e675df81bc3c768f6de3fe404de4fb51d264c0cf198bcee94b30d4",
+        "files": 38,
+        "bytes": 2400708
+      },
+      "sdkUsed": {
+        "fingerprint": "e777aa3b7aacd808c884f2b96c62e0fa11830b87b57c4bf93a4200f8587e56d0",
+        "preprocessedFingerprint": "d5851710a6f68a753a5227c10e7648a52b437ce238288701e3219f28d8a0010a",
+        "files": 11,
+        "bytes": 1369406,
+        "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+        "mode": "dependencies",
+        "planHit": true,
+        "scanMS": 0
+      },
+      "compiler": "g++.exe",
+      "diagnostics": "빌드 성공"
+    },
+    "binary": {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\43fd0179550e7d1aba71\\worker.exe",
+      "sha256": "2854c039154e179500c1af55915cc55f345d6a156c37adaccea6f77e5b11a668"
+    }
+  },
+  "failuresAndRepairs": [
+    {
+      "cause": "Owned benchmark used existing SimpleParallel with128 children instead of its two-child contract",
+      "repair": "Fixture uses existing parallelAll; no production capacity/validation change, failed owner7 rerun only."
+    }
+  ],
+  "boundary": {
+    "installation": false,
+    "schedules": 0,
+    "agents": 0,
+    "userWindowsChanged": false,
+    "SDKChanged": false,
+    "newCPPBuild": false,
+    "GUI": false,
+    "globalSchedulerOptimization": false
+  },
+  "storage": {
+    "newNativeBinaries": 0,
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": [
+      "taskindex3141.mjs",
+      "taskindexfine3142.mjs",
+      "taskindexdocs3144.mjs",
+      "taskindexfixture3145.mjs",
+      "admit3146.mjs"
+    ],
+    "handoffBytes": 4712,
+    "cacheCleanupReused": "WORK3100 nativeCacheOnly32; current caller reused exact cached binary"
+  },
+  "scope": "Private root owner registry/per-activation index with exact memory identity/descendant checks and terminal cleanup, shared memory/finish/flags/direct abort-ticket lookup. Actual128-task4096 loop requests plus2 finish requests, node values iteration forbidden. Node3.2489ms is one structural/timing sample, not FPS/global scheduling. Related source51+two legacy gates and current exact-SDK cached actual C++7 calls/20 handler invocations. No GUI/GPU/device/install."
+}
