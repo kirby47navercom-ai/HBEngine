@@ -22,4 +22,21 @@ AI와 사람이 같은 설정을 편집해요. `engine.schema.textureComposite`�
 }
 ```
 
-노멀의 방향성까지 보존하는 필터는 아니에요. HB의 등방 근사식과 측정 범위는 [기술 기록](research/TEXTURE_COMPOSITE_549.md)에 있어요. 기하 곡률을 이용하는 화면 공간 Specular AA는 별도 기능이에요.
+기본값은 기존 등방 근사식을 유지해요. **분산 방식 → 방향별 거칠기**를 고르면 tangent X/Y 기울기의 분산을 서로 다른 RGBA 두 채널에 저장해요. Y 거칠기 채널, 최대 기울기, 분산 임계값·상한을 함께 지정해요. 두 채널은 달라야 하고 알파 출력과 알파 커버리지 유지는 동시에 사용할 수 없어요.
+
+```json
+"composite": {
+  "normalTexture": "Assets/T_Normal.hbtexture2d.json",
+  "mode": "directional",
+  "channel": "r",
+  "secondaryChannel": "g",
+  "power": 1,
+  "varianceThreshold": 0,
+  "varianceLimit": 10000,
+  "maxSlope": 16
+}
+```
+
+중앙 기울기 moment를 합성해 기울어진 평면 노멀의 큰 평균에서 분산을 빼는 오차를 피하고, 홀수 크기·더 큰 노멀 원본·작성한 밉도 처리해요. 수평선 부근의 기울기 제한 횟수와 축별 분산을 결과에 기록해요. 필요한 한 단계의 moment만 보존하고 기존 텍스처 채널을 쓰므로 실행 중 샘플러를 늘리지 않아요.
+
+저장한 두 거칠기 채널은 머테리얼에서 필요한 입력에 연결해요. 축이 돌아간 공분산 전체·이방성 BRDF 자동 연결까지 구현했다는 뜻은 아니에요. 기존 등방 근사식은 [기술 기록](research/TEXTURE_COMPOSITE_549.md), 새 처리의 실제 로더·worker·프로젝트 저장 근거는 `tools/check-normal-slopes-2799.mjs` 14개에 있어요. 기하 곡률을 이용하는 화면 공간 Specular AA는 별도 기능이에요.

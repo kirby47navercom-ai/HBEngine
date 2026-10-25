@@ -1,3 +1,11 @@
+# 2807 C++ 발 고정 검사 응답 해석
+
+현상: Plant 통과 뒤 Release의 reply.objects에서 Rig를 찾지 못해 검사 TypeError. group2805와 foot-plant-cpp-ySx3vh/Plant-reply.json 근거. 같은 필드를 로깅한 재실행도 종료 오류를 재현했으므로 엔진을 추측 수정하지 않아요.
+근거: 첫 응답은 nativeProperties.seen=true의 변경분만 반환해요. 검사가 VM의 seen=false에 이 변경을 반영하지 않아 Release의 seen=false는 변경 없음으로 생략돼요. objects는 전체 스냅샷이 아니라 변경분이에요.
+다음 반증: 동일 헤더/source/SDK 캐시 worker를 사용하고, 반환된 probe 속성 변경분을 VM에 반영한 뒤 두 호출의 Bool 결과·공용 명령·실제 foot state를 확인해요. finally에서 Promise를 반환하는 host.close()도 await해요. 새 소스/SDK 재컴파일·renderer 검사는 필요 없어요.
+확정: foot-plant-cpp-3GmwLg에서 같은 소스/SDK 캐시로 Set/GetBool2회·공용명령·실제 foot lock/release 통과. 신규 production native 수정 없음.
+금지: reply.objects가 매번 모든 액터를 포함한다고 가정하거나 native 반환 정책을 이 검사에 맞춰 바꾸지 않아요.
+
 # 현재 진단 — 렌더링 지연과 거리장 LOD
 
 ## 1951 극단 시간 키의 유한성

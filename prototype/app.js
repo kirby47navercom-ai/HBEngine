@@ -1,4 +1,4 @@
-import {assetGraphDiff} from './asset-graph-diff.js';
+import {assetGraphDiff,assetGraphChoices} from './asset-graph-diff.js';
 import {prepareSkeletalRetime} from './skeletal-clip-retime.js';
 import {prepareSkeletalTrackKeys,createSkeletalTrack,readSkeletalTrackKeys} from './skeletal-track-keys.js';
 import {renderTransactionRecovery} from './transaction-recovery-editor.js';
@@ -1977,6 +1977,7 @@ const editorCommandMethods={
   'document.read':async params=>{const {doc,revision}=await automationDocument(params);if(params.expectedRevision!==undefined&&params.expectedRevision!==revision)throw batchConflict('문서 revision이 달라요.');return {path:doc.path,kind:doc.kind,revision,dirty:doc.dirty,...readDocumentPage(doc.data,params)};},
   'document.get':async params=>{const {doc,revision}=await automationDocument(params);return {path:doc.path,kind:doc.kind,revision,dirty:doc.dirty,data:clone(doc.data)};},
   'document.graph.diff':async params=>{const {doc,revision}=await automationDocument(params);if(params.expectedRevision!==undefined&&params.expectedRevision!==revision)throw Object.assign(Error('문서가 변경됐어요. 최신 revision을 조회하세요.'),{code:'REVISION_CONFLICT'});return {path:doc.path,revision,...assetGraphDiff(params.base??doc.data,doc.data,params.theirs??doc.data,params)};},
+  'document.graph.list':async params=>{const {doc,revision}=await automationDocument(params);if(params.expectedRevision!==undefined&&params.expectedRevision!==revision)throw Object.assign(Error('문서가 변경됐어요. 최신 revision을 조회하세요.'),{code:'REVISION_CONFLICT'});return {path:doc.path,revision,...assetGraphChoices(params.base??doc.data,doc.data,params.theirs??doc.data,params)};},
   'document.merge':async params=>{const {doc,revision}=await automationDocument(params,true),result=mergeAsset(params.base,doc.data,params.theirs,{resolutions:params.resolutions||{}});if(params.dryRun||!result.clean)return {...result,valid:validAsset(doc.kind,result.data),revision};const applied=await editorCommandMethods['document.patch']({...params,operations:[{op:'replace',path:'',value:result.data}]});return {...applied,conflicts:[],resolved:result.resolved};},
   'merge.open':params=>openAssetMerge(params.path,params),
   'sourcecontrol.open':()=>{openSourceControl();return {open:true};},

@@ -9,7 +9,7 @@ export function editDiskMipSettings(data,button,dimensions){if(button.hasAttribu
 
 export function textureImportFields(data,{field,options,assetField,files}){
  const p=textureImportPolicy(data.import),select=(label,key,rows)=>`<label>${label}<select data-editor-field="import.${key}">${options(rows,p[key])}</select></label>`;
- const c=textureCompositePolicy(data.composite),composite=assetField?`<section><h3>노멀·거칠기 합성</h3>${assetField('노멀 원본','composite.normalTexture',c.normalTexture,files,['texture','texture2d'])}<label>거칠기 채널<select data-editor-field="composite.channel">${options(['r','g','b','a'].map(id=>[id,id.toUpperCase()]),c.channel)}</select></label>${field('합성 강도','composite.power',c.power,{min:0,max:16})}</section>`:'';
+ const c=textureCompositePolicy(data.composite),composite=assetField?`<section><h3>노멀·거칠기 합성</h3>${assetField('노멀 원본','composite.normalTexture',c.normalTexture,files,['texture','texture2d'])}<label>거칠기 채널<select data-editor-field="composite.channel">${options(['r','g','b','a'].map(id=>[id,id.toUpperCase()]),c.channel)}</select></label>${field('합성 강도','composite.power',c.power,{min:0,max:16})}<label>분산 방식<select data-editor-field="composite.mode">${options([['isotropic','등방성'],['directional','방향별 거칠기']],c.mode)}</select></label>${c.mode==='directional'?`<label>Y 거칠기 채널<select data-editor-field="composite.secondaryChannel">${options(['r','g','b','a'].map(id=>[id,id.toUpperCase()]),c.secondaryChannel)}</select></label>${field('최대 기울기','composite.maxSlope',c.maxSlope,{min:1,max:128})}`:''}${field('분산 임계값','composite.varianceThreshold',c.varianceThreshold,{min:0,max:10000})}${field('분산 상한','composite.varianceLimit',c.varianceLimit,{min:0,max:10000})}</section>`:'';
  return `<section><h3>가져오기</h3>${select('용도','role',[['color','색상'],['normal','노멀'],['mask','마스크'],['data','자료']])}${select('색 공간','colorSpace',[['auto','자동'],['linear','선형'],...(p.role==='normal'?[]:[['srgb','sRGB']])])}${field('밉 생성','import.mipmaps',p.mipmaps,{type:'checkbox'})}${field('상위 밉 제외','import.topMip',p.topMip,{min:0,step:'1'})}${field('최대 크기 · 0 자동','import.maxSize',p.maxSize,{min:0,step:'1'})}</section><section><h3>알파</h3>${field('커버리지 유지','import.preserveCoverage',p.preserveCoverage,{type:'checkbox'})}${field('마스크 기준','import.alphaCutoff',p.alphaCutoff,{min:0,max:1})}</section>${p.role==='normal'?`<section><h3>노멀</h3>${field('녹색 채널 반전','import.flipGreen',p.flipGreen,{type:'checkbox'})}${field('하위 밉 정규화','import.normalizeNormals',p.normalizeNormals,{type:'checkbox'})}</section>`:''}${composite}`;
 }
 export function normalizeTextureImportEdit(data,path){
@@ -17,6 +17,7 @@ export function normalizeTextureImportEdit(data,path){
   if(data.import.role!=='normal'){data.import.flipGreen=false;data.import.normalizeNormals=false;}
   else if(data.import.colorSpace==='srgb')data.import.colorSpace='auto';
  }
+ if(path==='composite.mode'&&data.composite?.mode==='directional'&&(data.composite.channel??'a')===(data.composite.secondaryChannel??'g'))data.composite.secondaryChannel=['r','g','b','a'].find(c=>c!==(data.composite.channel??'a'));
  validateTextureComposite(data.composite,data.import);
  if(data.streaming?.enabled&&(/^(images|mips)\./.test(path)||!validDiskMipSettings(data)))data.streaming.enabled=false;
 }

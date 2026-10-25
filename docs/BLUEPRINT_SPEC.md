@@ -1,3 +1,6 @@
+<!-- WORK2820 -->
+현재 추가: Two Bone IK 접촉 Bool·월드/발판 고정·회전/해제·기존 SetBool 공용 C++ 실행, 함수/매크로 그래프 시각 비교와 document.graph.list, 방향별 노멀 거칠기·배열/큐브/볼륨 가져오기를 기존 문서/Undo/실행 흐름에 연결했어요. 범위·검사·잔여는 ENGINE_WORK_2820과 전용 문서를 참고해요. 설치 보류·예약 금지를 유지해요.
+
 # 그래프 비교·변형체 소성·셀 측정 비용
 
 [노드 비교](ASSET_GRAPH_DIFF.md)는 기존 병합/CAS/Undo와 읽기 전용 AI 명령에 연결해요. [천·로프 영구 변형](DEFORMABLE_PLASTICITY.md)은 실제 solver 물성과 BP/C++ 공용 복원 명령을 사용해요. [셀 비용](STREAMING_GEOMETRY_BUDGET.md)은 공용 속성으로 측정 모드를 지정하고 실행 중 페이지를 조회해요. 각 문서에 검증 범위와 별도 잔여를 기록해요.

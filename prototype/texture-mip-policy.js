@@ -49,14 +49,14 @@ function downsample(source,srgb){
  }
  return{width,height,data};
 }
-function uploadLevel(raw,p,srgb,target){
+export function uploadTextureMipLevel(raw,p,srgb,target){
  const alpha=p.preserveCoverage?coverageScale(raw.data,p.alphaCutoff,target):{scale:1,coverage:0,error:0},data=new Uint8Array(raw.data.length);let sum=0,covered=0;
  for(let i=0;i<data.length;i+=4){
   let r=raw.data[i],g=raw.data[i+1],b=raw.data[i+2];
   if(p.role==='normal'&&p.normalizeNormals){const x=r*2-1,y=g*2-1,z=b*2-1,n=Math.hypot(x,y,z);if(n>1e-20){r=x/n*.5+.5;g=y/n*.5+.5;b=z/n*.5+.5;}else{r=.5;g=.5;b=1;}}
   data[i]=byte(srgb?encode(r):r);data[i+1]=byte(srgb?encode(g):g);data[i+2]=byte(srgb?encode(b):b);data[i+3]=byte(raw.data[i+3]*alpha.scale);sum+=raw.data[i+3];if(data[i+3]/255>=p.alphaCutoff)covered++;
  }
- return{width:raw.width,height:raw.height,data,coverage:{scale:alpha.scale,target,achieved:covered/(data.length/4),error:Math.abs(covered/(data.length/4)-target),meanSourceAlpha:sum/(data.length/4),quantizationStep:1/(data.length/4)}};
+ return{width:raw.width,height:raw.height,...(raw.depth!==undefined?{depth:raw.depth}:{}),data,coverage:{scale:alpha.scale,target,achieved:covered/(data.length/4),error:Math.abs(covered/(data.length/4)-target),meanSourceAlpha:sum/(data.length/4),quantizationStep:1/(data.length/4)}};
 }
 export function validateTextureMipPixels(pixels){
  const {width,height}=pixels??{},input=pixels?.data;
@@ -72,7 +72,7 @@ export function cookTextureMips(pixels,value={},options={}){
  while(true){
   composite?.advance(raw.width,raw.height);
   const selected=mip>=p.topMip&&(!p.maxSize||Math.max(raw.width,raw.height)<=p.maxSize)||raw.width===1&&raw.height===1;
-  if(selected){top??=mip;let level=mip===0?{width,height,data,coverage:{scale:1,target,achieved:target,error:0,meanSourceAlpha:mean/(width*height),quantizationStep:1/(width*height)}}:uploadLevel(raw,p,srgb,target);if(composite)level=composite.apply(level,mip);levels.push({width:level.width,height:level.height,data:level.data});coverage.push({sourceMip:mip,...level.coverage});if(!p.mipmaps)break;}
+  if(selected){top??=mip;let level=mip===0?{width,height,data,coverage:{scale:1,target,achieved:target,error:0,meanSourceAlpha:mean/(width*height),quantizationStep:1/(width*height)}}:uploadTextureMipLevel(raw,p,srgb,target);if(composite)level=composite.apply(level,mip);levels.push({width:level.width,height:level.height,data:level.data});coverage.push({sourceMip:mip,...level.coverage});if(!p.mipmaps)break;}
   if(raw.width===1&&raw.height===1)break;raw=downsample(raw,srgb);mip++;
  }
  const storedBytes=levels.reduce((sum,l)=>sum+l.data.byteLength,0);return{levels,report:{policy:p,...(composite?{composite:composite.report}:{}),colorSpace:srgb?'srgb':'linear',source:{width,height,bytes:input.byteLength},topMip:top,dimensions:levels.map(l=>[l.width,l.height]),storedBytes,coverage,sourcePreserved:true}};
@@ -90,7 +90,7 @@ export function cookAuthoredTextureMips(pixels,value={},options={}){
   composite?.advance(source.width,source.height);const selected=mip>=p.topMip&&(!p.maxSize||Math.max(source.width,source.height)<=p.maxSize)||source.width===1&&source.height===1;if(!selected)continue;top??=mip;
   let data=source.data;if(p.flipGreen){data=new Uint8Array(data);for(let i=1;i<data.length;i+=4)data[i]=255-data[i];}
   let level;if(mip===0)level={width,height,data,coverage:{scale:1,target,achieved:target,error:0,meanSourceAlpha:mean/(width*height),quantizationStep:1/(width*height)}};
-  else{const raw=new Float32Array(data.length);for(let i=0;i<data.length;i++)raw[i]=srgb&&i%4!==3?linear[data[i]]:data[i]/255;level=uploadLevel({width:source.width,height:source.height,data:raw},p,srgb,target);}
+  else{const raw=new Float32Array(data.length);for(let i=0;i<data.length;i++)raw[i]=srgb&&i%4!==3?linear[data[i]]:data[i]/255;level=uploadTextureMipLevel({width:source.width,height:source.height,data:raw},p,srgb,target);}
   if(composite)level=composite.apply(level,mip);levels.push({width:level.width,height:level.height,data:level.data});coverage.push({sourceMip:mip,...level.coverage});if(!p.mipmaps)break;
  }
  return {levels,report:{policy:p,authored:true,...(composite?{composite:composite.report}:{}),colorSpace:srgb?'srgb':'linear',source:{width,height,bytes:input.byteLength,mipLevels:additional.length+1,authoredBytes:[pixels,...additional].reduce((sum,l)=>sum+l.data.byteLength,0)},topMip:top,dimensions:levels.map(l=>[l.width,l.height]),storedBytes:levels.reduce((sum,l)=>sum+l.data.byteLength,0),coverage,sourcePreserved:true}};

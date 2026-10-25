@@ -1,26 +1,27 @@
+import {directionalRoughnessComposite} from './normal-slope-composite.js';
 // Import-time normal moments. This is HB's isotropic approximation, not a
 // screen-space geometric specular-AA pass. No extra runtime texture/sampler.
-export const textureCompositeDefaults=Object.freeze({normalTexture:'',channel:'a',power:1});
+export const textureCompositeDefaults=Object.freeze({normalTexture:'',channel:'a',power:1,mode:'isotropic',secondaryChannel:'g',varianceThreshold:0,varianceLimit:10000,maxSlope:16});
 export const textureCompositeContract=Object.freeze({
  assetKind:'texture2d',field:'composite',defaults:textureCompositeDefaults,
- channels:Object.freeze(['r','g','b','a']),powerRange:Object.freeze([0,16]),
+ channels:Object.freeze(['r','g','b','a']),modes:Object.freeze(['isotropic','directional']),directional:'Central slope variance along texture tangent X/Y stored in channel/secondaryChannel; no off-axis covariance rotation. A packed map consumed by existing texture samples, not automatic BRDF wiring.',powerRange:Object.freeze([0,16]),
  source:'raw image or texture2d descriptor; original RGB normal pixels, same UV layout, same or higher dimensions; nested composite is not evaluated',
  reduction:'area-weighted mean of unit source normals; never renormalize reduced moments',
  formula:'v=max(0,1-length(mean)-1e-6)/max(length(mean),1e-4); rOut=clamp(r^4+power*v,0,1)^(1/4)',
  channelSpace:'RGB uses destination import color space; alpha is linear; all other channels unchanged',
  conflict:'active alpha composition and alpha coverage preservation reject together',
  ownership:'source bytes preserved; one retained moment level, source and destination coexist during reduction; existing lazy mip worker; no per-frame work',
- approximation:'isotropic; cannot recover directional lobes, mismatched UVs or missing texture borders',
+ approximation:'legacy isotropic or axis-aligned central slope moments; does not recover off-axis covariance orientation, mismatched UVs or missing texture borders',
 });
 const localPath=p=>typeof p==='string'&&p.length<=1000&&(p===''||/^Assets\/(?:[^/\\:\x00-\x1f]+\/)*[^/\\:\x00-\x1f]+\.(?:png|jpe?g|webp|gif|bmp|svg|hbtexture2d\.json)$/i.test(p)&&!p.split('/').some(v=>v==='.'||v==='..'));
 export const compositeDescriptor=p=>typeof p==='string'&&/\.hbtexture2d\.json$/i.test(p);
 export function textureCompositePolicy(value={}){
  if(!value||typeof value!=='object'||Array.isArray(value)||Object.keys(value).some(k=>!Object.hasOwn(textureCompositeDefaults,k)))throw Error('노멀·거칠기 합성 설정을 확인하세요.');
  const p={...textureCompositeDefaults,...value};
- if(!localPath(p.normalTexture)||!textureCompositeContract.channels.includes(p.channel)||!Number.isFinite(p.power)||p.power<0||p.power>16)throw Error('합성 노멀 텍스처·채널·강도를 확인하세요.');
+ if(!['isotropic','directional'].includes(p.mode)||!textureCompositeContract.channels.includes(p.secondaryChannel)||p.mode==='directional'&&p.channel===p.secondaryChannel||!Number.isFinite(p.varianceThreshold)||p.varianceThreshold<0||p.varianceThreshold>10000||!Number.isFinite(p.varianceLimit)||p.varianceLimit<0||p.varianceLimit>10000||!Number.isFinite(p.maxSlope)||p.maxSlope<1||p.maxSlope>128||!localPath(p.normalTexture)||!textureCompositeContract.channels.includes(p.channel)||!Number.isFinite(p.power)||p.power<0||p.power>16)throw Error('합성 노멀 텍스처·채널·강도를 확인하세요.');
  return Object.freeze(p);
 }
-export function validateTextureComposite(value,importPolicy={}){const p=textureCompositePolicy(value);if(p.normalTexture&&p.power>0&&p.channel==='a'&&importPolicy.preserveCoverage)throw Error('알파의 거칠기 합성과 커버리지 유지는 다른 채널을 사용해야 해요.');return p;}
+export function validateTextureComposite(value,importPolicy={}){const p=textureCompositePolicy(value);if(p.normalTexture&&p.power>0&&(p.channel==='a'||p.mode==='directional'&&p.secondaryChannel==='a')&&importPolicy.preserveCoverage)throw Error('알파의 거칠기 합성과 커버리지 유지는 다른 채널을 사용해야 해요.');return p;}
 export function validTextureComposite(value,importPolicy){try{validateTextureComposite(value,importPolicy);return true;}catch{return false;}}
 // Descriptor resolution is deliberately one level: composition reads its RGB
 // source, not that asset's cooked/renormalized mips or another composition.
@@ -52,6 +53,7 @@ const decode=v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4,encode=v=>v<=.0031308?v*
 export function normalRoughnessComposite(value,normalPixels,base,srgb){
  const policy=textureCompositePolicy(value);if(!policy.normalTexture)return null;
  if(!normalPixels||normalPixels.width<base.width||normalPixels.height<base.height)throw Error('합성 노멀 원본은 대상 텍스처와 같거나 더 커야 해요.');
+ if(policy.mode==='directional')return directionalRoughnessComposite(policy,normalPixels,base,srgb);
  let moment=normalPixels;const levels=[],channel='rgba'.indexOf(policy.channel);let peakMomentLevelBytes=0;
  const advance=(width,height)=>{if(policy.power&&(moment.width!==width||moment.height!==height)){moment=reduce(moment,width,height);peakMomentLevelBytes=Math.max(peakMomentLevelBytes,moment.data.byteLength);}};
  return{report:{policy,normalSource:{width:normalPixels.width,height:normalPixels.height},levels},advance,apply(level,sourceMip){
@@ -60,7 +62,7 @@ export function normalRoughnessComposite(value,normalPixels,base,srgb){
   // Equal-size original normals are unit vectors, hence zero base variance.
   if(moment===normalPixels){levels.push({sourceMip,meanVariance:0,maxVariance:0,adjustedPixels:0,peakMomentLevelBytes});return level;}
   let data=level.data,sum=0,max=0,adjusted=0;
-  for(let i=0,n=0;i<data.length;i+=4,n+=3){const length=Math.min(1,Math.hypot(moment.data[n],moment.data[n+1],moment.data[n+2])),variance=Math.max(0,1-length-1e-6)/Math.max(length,1e-4);sum+=variance;max=Math.max(max,variance);if(!variance)continue;
+  for(let i=0,n=0;i<data.length;i+=4,n+=3){const length=Math.min(1,Math.hypot(moment.data[n],moment.data[n+1],moment.data[n+2])),variance=Math.min(policy.varianceLimit,Math.max(0,Math.max(0,1-length-1e-6)/Math.max(length,1e-4)-policy.varianceThreshold));sum+=variance;max=Math.max(max,variance);if(!variance)continue;
    const stored=data[i+channel]/255,r=srgb&&channel<3?decode(stored):stored,out=Math.min(1,Math.max(0,r**4+policy.power*variance))**.25,next=Math.round((srgb&&channel<3?encode(out):out)*255);
    if(next!==data[i+channel]){if(data===level.data)data=new Uint8Array(data);data[i+channel]=next;adjusted++;}
   }

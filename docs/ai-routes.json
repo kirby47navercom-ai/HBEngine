@@ -4014,7 +4014,8 @@
         "AssetMergePanel",
         "assetGraphDiff",
         "renderAssetGraphDiff",
-        "graphNodeConflictPaths"
+        "graphNodeConflictPaths",
+        "assetGraphChoices"
       ],
       "paths": [
         "prototype/asset-merge.js",
@@ -4070,6 +4071,64 @@
         "prototype/app.js",
         "tools/editor-automation.mjs",
         "docs/STREAMING_GEOMETRY_BUDGET.md"
+      ]
+    },
+    {
+      "id": "animation-ik-runtime",
+      "keywords": [
+        "AnimationIK",
+        "FullBodyIK",
+        "FootPlantState"
+      ],
+      "paths": [
+        "prototype/animation-ik.js",
+        "prototype/animation-full-body.js",
+        "prototype/animation-graph-runtime.js",
+        "prototype/animation-ik-editor.js",
+        "prototype/animation-graph-assets.js",
+        "prototype/animation-foot-plant.js",
+        "tools/editor-automation.mjs"
+      ]
+    },
+    {
+      "id": "texture-normal-moments",
+      "keywords": [
+        "normalRoughnessComposite",
+        "textureCompositePolicy",
+        "directionalRoughnessComposite"
+      ],
+      "paths": [
+        "prototype/texture-composite.js",
+        "prototype/texture-mip-policy.js",
+        "prototype/texture-import-ui.js",
+        "prototype/texture-assets.js",
+        "prototype/normal-slope-composite.js"
+      ]
+    },
+    {
+      "id": "layered-texture-import",
+      "keywords": [
+        "cookTextureMipsAsync",
+        "loadMaterialTexture",
+        "loadAuthoredLayeredTexture",
+        "textureImportFields",
+        "cookLayeredTextureMips",
+        "uploadTextureMipLevel",
+        "createLayeredTexturePreview",
+        "loadImportedLayeredTexture"
+      ],
+      "paths": [
+        "prototype/texture-mip-cook.js",
+        "prototype/texture-mip-policy.js",
+        "prototype/texture-mip-worker.js",
+        "prototype/texture-assets.js",
+        "prototype/texture-authored-mips.js",
+        "prototype/texture-import-ui.js",
+        "prototype/layered-texture-mip-cook.js",
+        "prototype/asset-editor-ui.js",
+        "prototype/layered-texture-import.js",
+        "prototype/texture-image-load.js",
+        "tools/editor-automation.mjs"
       ]
     }
   ]
