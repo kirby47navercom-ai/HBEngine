@@ -781,3 +781,6 @@ Two Bone IK의 [관절 회전 제어](ANIMATION_POLE_CONTROL.md)는 기존 힌�
 
 ### 입자 충돌·사망 이벤트 (3331–3340)
 ParticleSystem Collision/Events 속성→CPU/WebGPU/DirectX 공용 설정. Custom Event로 component:String/events:JSON 전달, 비동기 GPU 세대/상한/역압력 진단. 기존 입자 API·하위 이미터 start/end 유지. 세부 계약은 [PARTICLE_INTERACTIONS](PARTICLE_INTERACTIONS.md). 실제 드라이버·전달 검사 범위는 WORK3340.
+
+### 믹서 음성 선별 (3341–3360)
+AudioListener.voiceSelection mixer/legacy·Components SetString 공용 편집. 기존 보호/우선순위/거리 순서 + 실제 믹서 부모/Send/압축 감쇠로 가상화 음성 입장 추정. 새 PCM/AudioNode/타이머0. [MIXER_VOICE_AUDIBILITY](MIXER_VOICE_AUDIBILITY.md).

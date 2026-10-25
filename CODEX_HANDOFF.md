@@ -1,7 +1,7 @@
 # 현재 인계 · 2026-10-25
 최신지시: 남은기능 여러분야 계속구현·관련검사 마지막묶음. 전체완료/새goal/재개질문/예약 금지. 설치보류 UPDATE_HOLD.active=true: Versions/설치본쓰기0. GUI/사용자창·탭·프로필·게임원본금지. 새agent는새명시승인필요. Mac/Xcode/Android실기기없음·다시묻거나검증꾸미지않음.
 절대 read/edit/stage/run/test금지: prototype/player.js, tools/check-player-keyboard-release.mjs. 원래dirty docs/NODE_CATALOG.md도보존·catalog CLI/updateLibrary금지. 공개API추가필요시 generatedCore()만. hb context --compact 정확등록symbol→focused-routes; 미등록이면knownowner등록먼저·--all/광역fallback금지.
-확정원장 ENGINE_STATUS/WORK3340(소스커밋참조). 78행37verified/37partial/1unimplemented/3unverified·전체율null. hash계보2720→...3340;60전Map재압축. 설치완료아님. 출처map는 resolveResearchSourceHashes+명시own whitelist만새해시·전체재해시금지. updatedAt YYYY-MM-DD. 이파일UTF8<5000B.
+확정원장 ENGINE_STATUS/WORK3360(소스커밋참조). 78행37verified/37partial/1unimplemented/3unverified·전체율null. hash계보2720→...3340;60전Map재압축. 설치완료아님. 출처map는 resolveResearchSourceHashes+명시own whitelist만새해시·전체재해시금지. updatedAt YYYY-MM-DD. 이파일UTF8<5000B.
 잔여는 canonical remaining. GL1728 ANGLE6878.6/FXC6836.439ms미해결·실패실험반복금지. USER_INSTALL2145는역사기록.
 무거운검사/CPP/cache정리전activeInstalledVersions확인. 검사별retainTestEvidence·nativeCacheOnly32+protectedbinary·own regularhelper만realpath확인삭제. reports/fixtures/SDK/user보존. exactSDK/binarySHA일치만CPP증거재사용. 한글commit/push 동일kirby47navercom-ai author/committer·AI/coauthor0. 원래dirty3개보존.
 
@@ -20,3 +20,5 @@
 3301–3320: UV split boundary normal stitch position+angle/area/seed·ambiguous chains/opposites拒否·geometry/UV/color不변·typed/Undo/common edit. meshNormals exactmove16cases. Mesh same-position/index/layout attr updates retaingeometry/material/buffers +dirtyranges; structure/foreign/tangent/morph/removal fallback beforewrites. new10 mesh-normal-stitch-Y5fUBr incl old world1059 redirected; Three versions/ranges/fresh equality+colliderpayload unchanged. SDK/GUI/install0; WORK3320.
 
 3331–3340: opt-in 입자평면 충돌/사망+충돌이벤트·CPU/WebGPU/DX·bounded async/epoch/typed/common custom event. WebGPU staging1재사용/DX3ring·없으면legacy. 관련수치/실행범위WORK3340. 설치보류/예약0 유지.
+
+3341–3360: AudioListener mixer/legacy 음성선별·부모/fader/mute/solo/Send/압축reduction·보호음성유지·graph당memo1·typed/공용VM. 신규PCM/노드/timer0. 실제OfflinePCM/이전512선택근거WORK3360. 설치보류.

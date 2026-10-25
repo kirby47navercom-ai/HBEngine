@@ -4991,6 +4991,35 @@
       "paths": [
         "prototype/gpu-particle-event-readback.js"
       ]
+    },
+    {
+      "id": "audio-real-voice-selection",
+      "keywords": [
+        "selectRealVoices"
+      ],
+      "paths": [
+        "prototype/audio-voices.js"
+      ]
+    },
+    {
+      "id": "audio-mixer-graph-owner",
+      "keywords": [
+        "AudioMixerGraph",
+        "AudioRouting"
+      ],
+      "paths": [
+        "prototype/audio-mixer.js"
+      ]
+    },
+    {
+      "id": "mixer-voice-audibility",
+      "keywords": [
+        "mixerVoiceGains",
+        "mixerVoiceAudibilityContract"
+      ],
+      "paths": [
+        "prototype/mixer-voice-audibility.js"
+      ]
     }
   ]
 }
