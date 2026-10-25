@@ -4613,6 +4613,18 @@
       "paths": [
         "prototype/layered-texture-normalization.js"
       ]
+    },
+    {
+      "id": "animation-pole-control-declarations",
+      "keywords": [
+        "PoleControlIK",
+        "poleControlDefaults",
+        "validPoleControl",
+        "poleControlContract"
+      ],
+      "paths": [
+        "prototype/animation-pole-control.js"
+      ]
     }
   ]
 }

@@ -49,7 +49,7 @@ export function validAnimationGraph(data){
       const p=node.properties;
       if(node.type==='retargetPose'&&(!validRetargetNode(p)||!param(p.parameter,'float')))return false;
       if(node.type==='stateMachine'&&!validAnimationMachine(p,data.parameters))return false;
-      if(animationIKTypes.includes(node.type)&&(!validAnimationIK(node.type,p)||!param(p.parameter,'float')||node.type==='twoBoneIK'&&(!param(p.autoPlant?.parameter??'','bool')||!param(p.plantParameter??'','bool')||!param(p.groundProjection?.parameter??'','bool')||!param(p.strideWarp?.parameter??'','float'))))return false;
+      if(animationIKTypes.includes(node.type)&&(!validAnimationIK(node.type,p)||!param(p.parameter,'float')||node.type==='twoBoneIK'&&(!param(p.poleControl?.parameter??'','float')||!param(p.autoPlant?.parameter??'','bool')||!param(p.plantParameter??'','bool')||!param(p.groundProjection?.parameter??'','bool')||!param(p.strideWarp?.parameter??'','float'))))return false;
       if(node.type==='clip'&&(!text(p.clip)||typeof p.loop!=='boolean'||!numeric(p.rate)||p.rate<0||p.rate>100||!numeric(p.offset)||p.offset<0||!validAnimationSync(p)||!validRootMotion(p.rootMotion)))return false;
       if(node.type==='sync'&&(!text(p.group,80)||!p.group))return false;
       if(node.type==='slot'&&(!text(p.group,80)||!p.group.trim()||!text(p.slot,80)||!p.slot.trim()||typeof p.alwaysUpdateSource!=='boolean'))return false;

@@ -760,3 +760,5 @@ Two Bone IK의 [자동 발 접촉](ANIMATION_AUTO_PLANT.md)은 기존 지면 광
 행동트리의 [실행별 태스크 메모리](BEHAVIOR_TASK_MEMORY.md)는 대상·실행 핸들로 BP와 `hb::AI::GetTaskMemory/SetTaskMemory/ClearTaskMemory`에서 공유해요. 중첩 실행·완료 콜백·지연 중단 정리 수명을 따르고, 리셋·완료 후의 예전 핸들은 거부해요. 기존 게임 JSON 검증과 최소 실행 질의를 사용하고 본문을 매 프레임 진단 스냅샷에 추가하지 않아요. 네이티브 BTTask 상속 객체 구현과는 구분해요.
 
 다차원 텍스처의 [레이어 원본 정규화](LAYERED_TEXTURE_NORMALIZATION.md)는 선택 `layerNormalization` 객체로 크기가 다른 기존 지원 이미지들을 채우기/비율 여백/중앙 자르기로 맞춰 기존 밉·실행 업로드에 넣어요. 같은 크기 검사 기본값과 원본을 유지하고, 사람 타입 입력/Undo·AI 스키마·일반 에셋 저장·디스크 스트리밍 배타·최종 장치 한도를 공유해요. GPU 압축/HDR/RDO 구현과는 구분해요.
+
+Two Bone IK의 [관절 회전 제어](ANIMATION_POLE_CONTROL.md)는 기존 힌트 평면에 작성/Float 추가 각도를 적용하고, 입력 무릎·힌트가 모두 약한 직선 자세에서는 분기별 이전 평면을 투영해 유지해요. 시계/평가 간격/Alpha0/dispose 수명을 갖고 기존 목표·길이·제한·발 고정/지면을 함께 사용해요. 기존 Float 서비스/C++ API·타입 입력/Undo/이름 변경·AI 스키마를 공유해요.
