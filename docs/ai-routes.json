@@ -3976,6 +3976,24 @@
         "prototype/ability-runtime.js",
         "docs/EFFECT_ONGOING.md"
       ]
+    },
+    {
+      "id": "sprite-rig-chain-map",
+      "keywords": [
+        "autoMapSpriteRig",
+        "retargetSpriteRigClip",
+        "bakeSpriteRigRetarget",
+        "mapSpriteRigChains"
+      ],
+      "paths": [
+        "prototype/sprite-rig-chain-map.js",
+        "prototype/sprite-rig-retarget.js",
+        "prototype/sprite-rig-retarget-editor.js",
+        "prototype/sprite-rig-assets.js",
+        "prototype/app.js",
+        "tools/editor-automation.mjs",
+        "docs/SPRITE_RIG_CHAIN_MAPPING.md"
+      ]
     }
   ]
 }

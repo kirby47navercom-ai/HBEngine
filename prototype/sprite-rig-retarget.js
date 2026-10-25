@@ -1,3 +1,4 @@
+import {mapSpriteRigChains} from './sprite-rig-chain-map.js';
 import {rigIKChain} from './ik2d-assets.js';
 import {retargetSceneTargets} from './retarget-scene-targets.js';
 import {AnimationMixer,LoopOnce,Vector3,Quaternion,Euler} from 'three';
@@ -5,14 +6,15 @@ import {SpriteRigPose} from './sprite-rig-runtime.js';
 import {validSpriteRig} from './sprite-rig-assets.js';
 
 export function autoMapSpriteRig(source,target,{mode='exact'}={}){
- if(!validSpriteRig(source)||!validSpriteRig(target)||!['exact','hierarchy'].includes(mode))throw Error('원본·대상 2D 리그와 자동 대응 모드를 확인하세요.');
- const normalize=name=>name.split(/[:/|]/).at(-1).toLowerCase().replace(/[^a-z0-9가-힣]/g,''),side=name=>{name=name.split(/[:/|]/).at(-1);return /(^left|left$|^l[_ .-]|[_ .-]l$|왼)/i.test(name)?'left':/(^right|right$|^r[_ .-]|[_ .-]r$|오른)/i.test(name)?'right':'';},role=name=>{let key=normalize(name.split(/[:/|]/).at(-1).replace(/^(?:l|r)[_ .-]|[_ .-](?:l|r)$/gi,'')).replace(/^(left|right)/,'').replace(/(left|right)$/,'');for(const [pattern,value] of [[/^(pelvis|hips)$/,'hips'],[/^(upperarm|arm)$/,'arm'],[/^(lowerarm|forearm)$/,'forearm'],[/^(thigh|upperleg)$/,'thigh'],[/^(calf|shin|lowerleg)$/,'calf']])if(pattern.test(key))return value;return key;},pairs=new Map(),used=new Set(),depth=(bone,rig)=>{let n=bone,v=0;while(n.parent){v++;n=rig.bones.find(b=>b.id===n.parent);}return v;};
- for(const bone of [...source.bones].sort((a,b)=>depth(a,source)-depth(b,source))){let candidates=target.bones.filter(b=>!used.has(b.id)&&b.name===bone.name);if(!candidates.length&&mode==='hierarchy')candidates=target.bones.filter(b=>!used.has(b.id)&&side(b.name)===side(bone.name)&&role(b.name)===role(bone.name));if(candidates.length>1&&pairs.has(bone.parent))candidates=candidates.filter(b=>b.parent===pairs.get(bone.parent));if(candidates.length===1){pairs.set(bone.id,candidates[0].id);used.add(candidates[0].id);}}
- return [...pairs].map(([source,target])=>({source,target}));
+ if(!validSpriteRig(source)||!validSpriteRig(target)||!['exact','hierarchy','chains'].includes(mode))throw Error('원본·대상 2D 리그와 자동 대응 모드를 확인하세요.');
+ const normalize=name=>name.split(/[:/|]/).at(-1).toLowerCase().replace(/[^\p{L}\p{N}]/gu,''),side=name=>{name=name.split(/[:/|]/).at(-1);return /(^left|left$|^l[_ .-]|[_ .-]l$|왼)/i.test(name)?'left':/(^right|right$|^r[_ .-]|[_ .-]r$|오른)/i.test(name)?'right':'';},role=name=>{let key=normalize(name.split(/[:/|]/).at(-1).replace(/^(?:l|r)[_ .-]|[_ .-](?:l|r)$/gi,'')).replace(/^(left|right)/,'').replace(/(left|right)$/,'');for(const [pattern,value] of [[/^(pelvis|hips)$/,'hips'],[/^(upperarm|arm)$/,'arm'],[/^(lowerarm|forearm)$/,'forearm'],[/^(thigh|upperleg)$/,'thigh'],[/^(calf|shin|lowerleg)$/,'calf']])if(pattern.test(key))return value;return key;},pairs=new Map(),used=new Set(),depth=(bone,rig)=>{let n=bone,v=0;while(n.parent){v++;n=rig.bones.find(b=>b.id===n.parent);}return v;};
+ for(const bone of [...source.bones].sort((a,b)=>depth(a,source)-depth(b,source))){let candidates=target.bones.filter(b=>!used.has(b.id)&&b.name===bone.name);if(!candidates.length&&mode!=='exact')candidates=target.bones.filter(b=>!used.has(b.id)&&side(b.name)===side(bone.name)&&role(b.name)===role(bone.name));if(candidates.length>1&&pairs.has(bone.parent))candidates=candidates.filter(b=>b.parent===pairs.get(bone.parent));if(candidates.length===1){pairs.set(bone.id,candidates[0].id);used.add(candidates[0].id);}}
+ const result=[...pairs].map(([source,target])=>({source,target}));return mode==='chains'?mapSpriteRigChains(source,target,result):result;
 }
 
 // Bind-relative local tracks preserve authored turns and step keys; differing chain topology requires a pose solver.
 export function retargetSpriteRigClip(source,target,{clip,mapMode='exact',mapping=autoMapSpriteRig(source,target,{mode:mapMode}),name,positionMode='boneLength'}={}){
+ if(mapMode==='chains')throw Error('자동 체인 대응은 포즈 베이크를 선택하세요.');
  if(!validSpriteRig(source)||!validSpriteRig(target)||!['boneLength','relative','none'].includes(positionMode)||!Array.isArray(mapping)||!mapping.length)throw Error('2D 리그·뼈 대응·이동 모드를 확인하세요.');
  const original=source.clips.find(c=>c.id===clip);if(!original)throw Error('원본 리그 클립이 없어요.');
  const sources=new Map(source.bones.map(b=>[b.id,b])),targets=new Map(target.bones.map(b=>[b.id,b])),pairs=new Map(),used=new Set();
