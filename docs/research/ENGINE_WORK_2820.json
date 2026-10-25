@@ -114,13 +114,15 @@
     "realSharedWorker": true,
     "realCppMethods": 2,
     "realCppReads": 2,
-    "realGPU": false
+    "realGPU": false,
+    "canonicalStatusValidated": true
   },
   "failuresAndRepairs": [
     "CPP gate assumed full reply objects; current native delta replies were correct. Merge nativeProperties deltas and await close; final2/2 passed, unchanged native implementation. DEBUG_HANDOFF records cause.",
     "New ND gate caught one authored-path uploadLevel name left after public helper extraction; repaired common call. Owned DOM fixture also lacked closest; fixed fixture. Final ND20 and affected normal14 passed.",
     "Added source decode cap before unsupported array layer decode, actual shared worker 2D regression, original non-plant graph weight reporting, plant/release/missing platform UI before final affected gates.",
-    "No failed run, unadopted experiment or adapter mock is counted as shipped GPU/GUI/device proof."
+    "No failed run, unadopted experiment or adapter mock is counted as shipped GPU/GUI/device proof.",
+    "Post-admission focused context rejected updatedAt full ISO instead of required date-only. Preserved strict validator, corrected ledger date, validated canonical status; source implementation unchanged."
   ],
   "boundary": {
     "installationHeld": true,
