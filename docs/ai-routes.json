@@ -1632,9 +1632,6 @@
     },
     {
       "keywords": [
-        "timelineRows",
-        "timelineRowSelection",
-        "readTimelineRows",
         "timeline.rows.read",
         "timeline.editor.navigate",
         "몽타주 행",
@@ -3801,7 +3798,6 @@
       "id": "document-conflict-merge",
       "keywords": [
         "DocumentMergeSession",
-        "planDocumentMerge",
         "document.conflict.merge",
         "automationConflictMerge"
       ],
@@ -4767,6 +4763,76 @@
       ],
       "paths": [
         "prototype/timeline-interval-index.js"
+      ]
+    },
+    {
+      "id": "git-marker-declarations",
+      "keywords": [
+        "readGitMarkerVersions",
+        "planGitMarkerMerge",
+        "gitConflictMarkersContract"
+      ],
+      "paths": [
+        "prototype/git-conflict-markers.js"
+      ]
+    },
+    {
+      "id": "source-control-conflict-declarations",
+      "keywords": [
+        "sourceControlConflict",
+        "sourceControlResolve"
+      ],
+      "paths": [
+        "tools/source-control.mjs"
+      ]
+    },
+    {
+      "id": "document-merge-declaration-exact",
+      "keywords": [
+        "planDocumentMerge"
+      ],
+      "paths": [
+        "prototype/document-merge.js"
+      ]
+    },
+    {
+      "id": "source-control-asset-merge-declarations",
+      "keywords": [
+        "readGitAssetMerge",
+        "applyGitAssetMerge"
+      ],
+      "paths": [
+        "prototype/source-control-asset-merge.js"
+      ]
+    },
+    {
+      "id": "git-merge-ui-declaration",
+      "keywords": [
+        "openGitAssetMerge"
+      ],
+      "paths": [
+        "prototype/app.js"
+      ]
+    },
+    {
+      "id": "source-conflict-request-declaration",
+      "keywords": [
+        "requestSourceConflict"
+      ],
+      "paths": [
+        "tools/hb.mjs"
+      ]
+    },
+    {
+      "id": "timeline-row-declarations-only",
+      "keywords": [
+        "timelineRows",
+        "timelineRowContains",
+        "timelineRowSelection",
+        "readTimelineRows"
+      ],
+      "paths": [
+        "prototype/timeline-rows.js"
       ]
     }
   ]

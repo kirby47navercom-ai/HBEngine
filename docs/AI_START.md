@@ -66,3 +66,5 @@ node tools/hb.mjs schema --section commands --url http://127.0.0.1:포트
 WORK2930의 동일 현재 소스 비교에서 DeformableWorld는 11파일/1099151byte→1파일/10894byte, GroundProjectionIK는 13파일/449465byte→1파일/6212byte, ClothMassBrushStroke는 8파일/697307byte→1파일/11158byte를 읽었어요. 기준은 WORK2920의 경로 목록이며 조회기 본문과 현재 소스는 같아요. source body 읽기량 측정이며 모델 해석 시간·토큰 계정·FPS를 측정한 값이 아니에요.
 
 스키마는 전체 대신 필요한 계약부터 읽어요: `node tools/hb.mjs schema --local --list` → `node tools/hb.mjs schema --local --section poleControl`. 서버 조회의 `--section`도 서버에서 그 계약만 만들고 전달해요. 예전 서버 연결은 호환 잘라내기를 사용해 전송량 감소가 없어요. [선택 스키마 조회](SCHEMA_SECTION_READS.md).
+
+Git 충돌 JSON은 `hb schema --local --section gitConflictMarkers`와 `source.conflict.read/resolve @params.json`을 사용해요. 후보 dryRun의 SHA·working SHA·index revision을 실제 적용에 같이 보내며, 일반 코드의 줄 병합이나 Git 스테이징/커밋과 구분해요. `docs/GIT_JSON_CONFLICTS.md`에 계약이 있어요.
