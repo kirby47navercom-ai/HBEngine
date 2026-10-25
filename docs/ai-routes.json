@@ -4481,6 +4481,29 @@
       "paths": [
         "prototype/cloth-mass-brush.js"
       ]
+    },
+    {
+      "id": "viewport-pointer-shortcut-declarations",
+      "keywords": [
+        "dispatchViewportPointerShortcut",
+        "viewportPointerShortcutContract"
+      ],
+      "paths": [
+        "prototype/viewport-pointer-shortcuts.js"
+      ]
+    },
+    {
+      "id": "editor-shortcuts-declarations",
+      "keywords": [
+        "EditorShortcuts",
+        "eventChord",
+        "validChord",
+        "validShortcutData",
+        "shortcutLabel"
+      ],
+      "paths": [
+        "prototype/editor-shortcuts.js"
+      ]
     }
   ]
 }
