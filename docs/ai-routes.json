@@ -619,7 +619,8 @@
         "docs/MONTAGE_INTERVAL_COST.md",
         "prototype/montage-timeline.js",
         "docs/MONTAGE_TIMELINE_CACHE.md",
-        "docs/ROOT_MOTION_ROTATION.md"
+        "docs/ROOT_MOTION_ROTATION.md",
+        "prototype/animation-stride-warp.js"
       ]
     },
     {
@@ -648,7 +649,9 @@
         "prototype/engine-services.js",
         "prototype/native-physics-query.js",
         "prototype/vehicle-physics.js",
-        "prototype/joint-frames.js"
+        "prototype/joint-frames.js",
+        "prototype/deformable-distance-limits.js",
+        "prototype/cloth-distance-editor.js"
       ]
     },
     {
@@ -4431,6 +4434,52 @@
       ],
       "paths": [
         "prototype/particle-component-state.js"
+      ]
+    },
+    {
+      "id": "animation-stride-declarations",
+      "keywords": [
+        "StrideWarpIK",
+        "strideWarpDefaults",
+        "validStrideWarp",
+        "strideWarpContract"
+      ],
+      "paths": [
+        "prototype/animation-stride-warp.js"
+      ]
+    },
+    {
+      "id": "deformable-distance-declarations",
+      "keywords": [
+        "DeformableDistanceLimits",
+        "validDeformableDistanceLimits",
+        "deformableDistanceSignature",
+        "deformableDistanceContract"
+      ],
+      "paths": [
+        "prototype/deformable-distance-limits.js"
+      ]
+    },
+    {
+      "id": "cloth-distance-editor-declarations",
+      "keywords": [
+        "editClothDistanceRows",
+        "clothDistanceControls",
+        "handleClothDistanceClick",
+        "handleClothDistanceIndex"
+      ],
+      "paths": [
+        "prototype/cloth-distance-editor.js"
+      ]
+    },
+    {
+      "id": "weighted-pin-painter-declarations",
+      "keywords": [
+        "ClothPinWeightBrushStroke",
+        "clothPinWeightHeat"
+      ],
+      "paths": [
+        "prototype/cloth-mass-brush.js"
       ]
     }
   ]

@@ -221,3 +221,6 @@ stationary inverse 첫 독립 oracle에서 약3.7e-6 오차를 찾아 centered c
 
 ## 1913–1915 자료형 의존 제작
 별도3에셋/생성include/파일CAS/이관7검사통과 후 실제UI에서 record전환 기본값0을 발견. nativeTypeAssetDefault가 기존float value까지핀에 넘겨 nativeRecordDefault의명시값우선에걸림; 새record선언pin으로조회. 독립unit에이전value0회귀추가. 다음창은참조/이관/CPP[99,4,12]/Actor정상이나종료실패; diagnostics는원래내용복원/save후 Stats dirtytrue. applyFileBatch의server noChange분기가finishFileBatch를건너뛰는원인확정. no-op저장도observed/CAS확인후clean뷰확정·새Undo미생성으로수정하고VM/실제창재검사. 실패두창은성과아님.
+# 2961–2980 보폭·거리·부분 고정
+
+첫 거리 제약 검사 한 건은 native `componentSetJson`의 인자를 `value`로 잘못 작성했어요. 기존 공용 구현과 Bridge의 `json` 계약을 확인하고 검사 인자만 수정했어요. 엔진 JSON 검증을 약화하지 않았고 실패 실행은 성과에서 제외해요. 최종 final2976: weighted-pins-l9aOgY16·deformable-distance-lhtHOt13·distance-editors-O6NQxA4, 기존 mass brush13/UI5/hot7/distribution14/cloth8 통과. 애니메이션 소스는 group2967의 stride14/ground16/foot14 이후 변경하지 않아 재실행하지 않았어요. 신규47+관련77이며 실제 C++ 재컴파일·GPU/GUI/설치는 0이에요.
