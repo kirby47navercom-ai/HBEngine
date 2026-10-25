@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "date": "2026-10-25T01:35:44.467Z",
+  "kind": "ongoing-effect-transaction-tag-dependencies-and-call-local-role-snapshots",
+  "implementationRevision": "f5fa6d616b70d5c0f6c422145f6e0f7b676c831a",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2734.json",
+  "changedSourceHashes": {
+    "prototype/effect-ongoing-index.js": "009318e46edfa2a13c7d5b11740b0196366cf44154e1d1149754e8554d4c2511",
+    "prototype/effect-ongoing.js": "370a5a6ce11f268563790c75b1193c3f679a147e0616b11d1b22bcb39e315681",
+    "tools/check-ongoing-tag-index-2737.mjs": "38cb68b6ad6a165c6de62dd7cfb743c195e6f9bbc5fc7f7c54bb1e66443fb7bd",
+    "docs/EFFECT_ONGOING.md": "b16a1ab0f2ad2eaef3cc179db449c6a71df3942a627efd77054067a290188193",
+    "docs/ai-routes.json": "18f085171f05ee91a2b2fc531294cb29e0de58d12a99550e4ae3f7e6e73fdd36",
+    "CODEX_HANDOFF.md": "83f66bbc7e348648040b9e7297947a7c3bf94e07471013a0276c9fe06aa47894"
+  },
+  "resolvedOwners": 1485,
+  "targetIds": [
+    "GAM-04"
+  ],
+  "changes": {
+    "GAM-04": " ·2735–2744: 한트랜잭션 exact/계층 태그개수·읽기 의존색인, 존재가 바뀐 조건만 다음동기파동재평가. 역할수명/서명은한호출공유(프레임간cache0). 최소고정점/부여순서/직접편집/동일ID/순환rollback유지. 신규13(독립혼합220그래프)+회귀46.160단계+무관1200조건평가218960→1519·501효과2역할 유휴ID조회1. 전체스냅샷/색인/순환벡터/수명순회·FPS/heap별도."
+  },
+  "newSourceCases": 13,
+  "relatedSourceCases": 46,
+  "checks": {
+    "new": "native/build/ongoing-index-WYyKb2/acceptance.json",
+    "group": "native/build/group2740.json",
+    "ongoing": "native/build/effect-ongoing-vjDd4U/acceptance.json",
+    "participants": "native/build/ongoing-participants-sxjFw6/acceptance.json",
+    "tick": "native/build/ability-tick-work-STX6xm/acceptance.json",
+    "clock": "native/build/ability-clock-222-gkRpS4/acceptance.json",
+    "focus": "native/build/focus2741.json",
+    "syntax": 3
+  },
+  "results": {
+    "independentMixedGraphs": 220,
+    "cyclicGraphs": 16,
+    "chain": 160,
+    "unrelatedConditions": 1200,
+    "flatEvaluations": 218960,
+    "indexedEvaluations": 1519,
+    "idleEffects": 501,
+    "rolesPerEffect": 2,
+    "currentIdLookups": 1,
+    "scope": "Logical work counts; exact same synchronous fixed-point oracle. Not wall-clock/FPS/heap measurements."
+  },
+  "failuresAndRepairs": [
+    "Initial source12 and related46 passed. Added call-local role/signature work and a new source case; reran affected grouped gates, final source13/related46 pass.",
+    "Edit helper used const path then assigned a new test path. Production edit had completed; resumed only pending test edit with correct variable declaration, no production work discarded.",
+    "Strengthened oracle to reject unexpected non-cycle exceptions instead of allowing undefined error codes."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newCPP": false,
+    "newGUI": false,
+    "newGPU": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newRuntimeSDKProfiles": 0,
+    "nativeModuleCachePolicy": 32,
+    "cleanup": "native/build/temp-clean2744.json"
+  },
+  "remainingBoundary": [
+    "Whole conditional participant snapshots and per-transaction index building",
+    "Cycle-state bit-vector scans, idle signatures and general owner lifetime/tick iteration",
+    "Per-pulse historical inputs and replication/prediction, real GUI/device/FPS verification and installation separate"
+  ]
+}
