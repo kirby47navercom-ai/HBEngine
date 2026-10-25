@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "date": "2026-10-25T09:21:27.920Z",
+  "kind": "AI 조회 전달비용 절감·호환 검사 / 설치 보류",
+  "implementationRevision": "4e2e0a2064d1a24d71880d7101058db16fbec7aa",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2880.json",
+  "changedSourceHashes": {
+    "tools/ai-context-compact.mjs": "0cccb72d566ea3d4f868130d634e559438685ecd6f4f14b9c7c7f4062d1cadd8",
+    "tools/ai-context.mjs": "09e8e29a8c7b136adfd3263e0a3434ecf27e22b6986ff05db02b43f59f4b3125",
+    "tools/hb.mjs": "131dde4987e6747d2aad1e02ea2c65216cab5ca40e2ccdee4ec2c1aaed510c09",
+    "tools/check-context-compact-2882.mjs": "1f91c1d33221d684af584df13b44e3d749cdf31da142c79c1288ebc0c408850a",
+    "docs/AI_START.md": "7a765a4e67346fd12daa76a040bc676294e3691df71fe61b3aa7bf9d62e3a017",
+    "docs/ai-routes.json": "da15cd8be086c023714bbc6fc5a144504bea37d1f9472eb642cbd322cc542550",
+    "DEBUG_HANDOFF.md": "1afd916b25e769d452e463ad364d36fb6fac0ee73a01bb32629c77fb4a365033",
+    "CODEX_HANDOFF.md": "6b28957ea48f4a838c1df01a59d9a47f25ae3d45371da42444139db6dea39b09"
+  },
+  "resolvedOwners": 1542,
+  "targetIds": [
+    "AI-03"
+  ],
+  "changes": {
+    "AI-03": " ·2881–2890: hb context/direct CLI opt-in --compact·AI_START권장. 소유자/발췌·filesRead/bytesRead·등록miss/미등록zero-source·작업경계·잔여/근거·검사후보·현재설치/역사영수증구분유지. 공통설명/과거긴scope/Git경로목록만생략·명시omitted. 신규6·기존1058gate; 응답9325→4870byte(-47.8%)·I/O/모델이해/컴파일속도측정아님. 반사프로브심볼정확owner등록누락복구·한파일선언확인·자동확장0."
+  },
+  "newSourceCases": 6,
+  "checks": {
+    "source": "native/build/context-compact-HxpIIG/acceptance.json",
+    "legacy": "native/build/ai-context-2885-legacy.json"
+  },
+  "results": {
+    "syntaxFiles": 4,
+    "responseMeasurements": [
+      {
+        "fullBytes": 9325,
+        "compactBytes": 4870,
+        "reduction": 0.4777479892761394,
+        "filesRead": 3,
+        "bytesRead": 19806,
+        "scope": "Response bytes only; lookup time/disk/compilation/whole context token cost not claimed."
+      }
+    ],
+    "protectedReads": 0,
+    "registeredProbeOwner": "prototype/reflection-probe-bounds.js:16",
+    "ownerSourceReads": 1,
+    "searchExpansion": 0,
+    "currentCanonicalStatusValidated": true,
+    "uniqueNewCasesAcross2860To2890": 59,
+    "uniqueRelatedCasesAcross2860To2890": 44,
+    "legacy2DAndContextGates": true
+  },
+  "failuresAndRepairs": [
+    "Owned async rejection fixture corrected to await assert.rejects.",
+    "Task word context selected registered routes, so focused-miss was correct; split genuine unregistered and focused-miss fixtures. No fallback relaxation.",
+    "Existing legacy1058 symbol owner was absent in previous HEAD; registered exact known source and confirmed declaration with one source read. Existing gate now passes."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newGUI": false,
+    "newGPU": false,
+    "newDevice": false,
+    "isolatedSchemaHTTPStub": true,
+    "protectedReadEditedOrTested": false
+  },
+  "storage": {
+    "newNativeModuleBinaries": 0,
+    "newSDKCopies": 0,
+    "removedOwnedRegularHelpers": 5,
+    "handoffBytes": 4793
+  },
+  "scope": "Response bytes reduced only; search implementation, body ownership/failure boundaries and existing default output preserved. Historical install receipt distinct from actual installation marker. No actual AI interpretation/token-account, disk/compile/FPS, editor/device/install claim.",
+  "canonicalCounts": {
+    "verified": 37,
+    "partial": 37,
+    "unimplemented": 1,
+    "unverified": 3
+  },
+  "previousLineage": [
+    "docs/research/ENGINE_WORK_2720.json",
+    "docs/research/ENGINE_WORK_2734.json",
+    "docs/research/ENGINE_WORK_2744.json",
+    "docs/research/ENGINE_WORK_2754.json",
+    "docs/research/ENGINE_WORK_2762.json",
+    "docs/research/ENGINE_WORK_2790.json",
+    "docs/research/ENGINE_WORK_2820.json",
+    "docs/research/ENGINE_WORK_2830.json",
+    "docs/research/ENGINE_WORK_2860.json",
+    "docs/research/ENGINE_WORK_2870.json",
+    "docs/research/ENGINE_WORK_2880.json"
+  ]
+}
