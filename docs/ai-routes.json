@@ -4662,6 +4662,26 @@
       "paths": [
         "prototype/sequence-weight-curve-editor.js"
       ]
+    },
+    {
+      "id": "schema-section-read-declarations",
+      "keywords": [
+        "schemaSectionKeys",
+        "readSchemaSection",
+        "schemaResponse"
+      ],
+      "paths": [
+        "tools/schema-sections.mjs"
+      ]
+    },
+    {
+      "id": "schema-request-declaration",
+      "keywords": [
+        "requestEngineSchema"
+      ],
+      "paths": [
+        "tools/hb.mjs"
+      ]
     }
   ]
 }

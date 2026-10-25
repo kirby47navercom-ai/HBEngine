@@ -20,7 +20,7 @@ import {readNativeFiles} from './native-project.mjs';
 import {ProjectStorage,storageLimit} from './project-storage.mjs';
 import {readEngineStatus} from './engine-status.mjs';
 import {EditorAutomation,engineSchema} from './editor-automation.mjs';
-const root=path.resolve(import.meta.dirname,'..'),desktop=process.env.HB_DESKTOP==='1',requestedPort=Number(process.env.PORT??5173),quietRoot=path.join(root,'Projects/QuietGarden');
+const root=path.resolve(import.meta.dirname,'..'),schemaOnly=process.env.HB_SCHEMA_ONLY==='1',desktop=process.env.HB_DESKTOP==='1'||schemaOnly,requestedPort=Number(process.env.PORT??5173),quietRoot=path.join(root,'Projects/QuietGarden');
 if(!Number.isInteger(requestedPort)||requestedPort<0||requestedPort>65535)throw Error('서버 포트 범위 오류');
 const buildJobs=new BuildJobs();
 const distanceCache=new EditorDistanceFieldCache();
@@ -40,8 +40,8 @@ if(!desktop){
   const directory=process.env.HB_PROJECT_DIR||quietRoot;await new ProjectService(directory).init(!process.env.HB_PROJECT_DIR);
   const record=await ensureProjectManifest(path.resolve(directory),sameRoot(directory,quietRoot)?'QuietGarden':path.basename(path.resolve(directory)));await selectProject(record);if(sameRoot(record.root,quietRoot))defaultProject=record;
 }
-if(!defaultProject){try{if((await fs.promises.stat(quietRoot)).isDirectory())defaultProject=await ensureProjectManifest(quietRoot,'QuietGarden');}catch(error){if(error.code!=='ENOENT')console.error('기본 프로젝트 확인: '+error.message);}}
-if(desktop&&process.env.HB_PROJECT_FILE)await selectProject(await readProjectManifest(process.env.HB_PROJECT_FILE));
+if(!defaultProject&&!schemaOnly){try{if((await fs.promises.stat(quietRoot)).isDirectory())defaultProject=await ensureProjectManifest(quietRoot,'QuietGarden');}catch(error){if(error.code!=='ENOENT')console.error('기본 프로젝트 확인: '+error.message);}}
+if(desktop&&!schemaOnly&&process.env.HB_PROJECT_FILE)await selectProject(await readProjectManifest(process.env.HB_PROJECT_FILE));
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.gif':'image/gif','.mp4':'video/mp4','.webm':'video/webm','.wav':'audio/wav','.mp3':'audio/mpeg','.ogg':'audio/ogg','.txt':'text/plain; charset=utf-8','.md':'text/plain; charset=utf-8'};
 const json=(res,data,status=200)=>res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'}).end(JSON.stringify(data));
 const changedProject=()=>Object.assign(Error('프로젝트가 변경됐어요. 다시 작업하세요.'),{status:409});
@@ -53,6 +53,7 @@ function stream(req,res,file,size,projectFile=false){const mime=projectFile&&pat
 const server=http.createServer(async(req,res)=>{try{
   if(!['127.0.0.1:'+port,'localhost:'+port].includes(req.headers.host))return json(res,{error:'허용되지 않은 호스트'},403);
   const url=new URL(req.url,'http://127.0.0.1:'+port),q=url.searchParams;
+  if(schemaOnly&&(url.pathname!=='/api/schema'||req.method!=='GET'))return json(res,{error:'스키마 전용 읽기 서버예요.'},404);
   if(url.pathname.startsWith('/api/')){
     if(req.headers.origin&&!['http://127.0.0.1:'+port,'http://localhost:'+port].includes(req.headers.origin))return json(res,{error:'허용되지 않은 요청 출처'},403);
     if(!['GET','HEAD'].includes(req.method)&&req.headers['x-hb-editor']!=='1')return json(res,{error:'편집기 요청 헤더 필요'},403);
@@ -62,6 +63,7 @@ const server=http.createServer(async(req,res)=>{try{
     if(url.pathname==='/api/launcher/browse'&&req.method==='POST'){const data=JSON.parse(await body(req));return json(res,{path:await pickProjectPath(data.kind)});}
     if(url.pathname==='/api/launcher/open'&&req.method==='POST'){const data=JSON.parse(await body(req));return json(res,await selectProject(await readProjectManifest(data.file)));}
     if(url.pathname==='/api/launcher/create'&&req.method==='POST'){const data=JSON.parse(await body(req));return json(res,await selectProject(await createProject(data.name,data.directory,data.template)));}
+    if(url.pathname==='/api/schema'&&req.method==='GET'){if(q.getAll('section').length>1||q.getAll('list').length>1||q.has('list')&&q.get('list')!=='1')throw Error('스키마 조회 옵션을 확인하세요.');return json(res,engineSchema(q.has('list')?{list:true,...q.has('section')?{section:q.get('section')}:{}}:q.has('section')?{section:q.get('section')}:undefined));}
     if(!project)return json(res,{error:'프로젝트를 먼저 선택하세요.'},409);
     // Each request retains its original project through body reads and native compilation.
     const owner=project,host=native,store=storage,projectId=session.id,readBody=async(limit)=>{const data=await body(req,limit);checkOwner(owner);return data;};
@@ -85,7 +87,6 @@ const server=http.createServer(async(req,res)=>{try{
       if(url.pathname==='/api/build/cancel'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,buildJobs.cancel(record,data.id));}
     }
     if(url.pathname==='/api/engine/status'&&req.method==='GET')return json(res,await readEngineStatus(Object.fromEntries(q)));
-    if(url.pathname==='/api/schema'&&req.method==='GET')return json(res,engineSchema());
     if(url.pathname==='/api/automation'&&req.method==='GET')return json(res,automation.state());
     if(url.pathname==='/api/automation/command'&&req.method==='GET')return json(res,automation.get(q.get('id')));
     if(url.pathname==='/api/automation/command'&&req.method==='POST')return json(res,automation.submit(JSON.parse(await readBody())),202);
@@ -129,6 +130,6 @@ const server=http.createServer(async(req,res)=>{try{
   if(!file.startsWith(root+path.sep)||!/^\/(prototype\/|docs\/|native\/include\/|node_modules\/(three\/|xatlas-wasm\/|@dimforge\/rapier[23]d-compat\/))/.test(pathname)&&pathname!=='/'||pathname.includes('/../')||pathname.includes('/native/build/'))return json(res,{error:'파일 범위 밖 요청'},403);
   const stat=await fs.promises.stat(file);if(!stat.isFile())return res.writeHead(404).end();stream(req,res,file,stat.size);
 }catch(error){json(res,{error:error.message},error.status||(error.code==='ENOENT'?404:400));}});
-const nativeChannel=attachNativeChannel(server,{origin:()=>"http://127.0.0.1:"+port,scope:()=>{const owner=project,host=native;checkOwner(owner);return async(data,query)=>{checkOwner(owner);const result=await host.call(data.token,data.request,undefined,query);checkOwner(owner);return result;};}});
+const nativeChannel=schemaOnly?{descriptor:null,close(){}}:attachNativeChannel(server,{origin:()=>"http://127.0.0.1:"+port,scope:()=>{const owner=project,host=native;checkOwner(owner);return async(data,query)=>{checkOwner(owner);const result=await host.call(data.token,data.request,undefined,query);checkOwner(owner);return result;};}});
 server.listen(requestedPort,'127.0.0.1',async()=>{try{port=server.address().port;ready=true;await writeReady();console.log('HBEngine: http://127.0.0.1:'+port+'\nProject: '+(project?.root||'프로젝트 허브'));}catch(error){console.error(error.message);close();process.exitCode=1;}});
 const close=()=>{if(stopping)return;stopping=true;buildJobs.close();nativeChannel.close();native.close();server.close();server.closeAllConnections();};process.on('SIGINT',close);process.on('SIGTERM',close);

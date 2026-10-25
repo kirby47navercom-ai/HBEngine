@@ -64,3 +64,5 @@ node tools/hb.mjs schema --section commands --url http://127.0.0.1:포트
 지면 IK·애니메이션 미리보기·변형체·질량 브러시·관절 프레임의 정확한 클래스/함수명은 선언 소유 파일에 연결돼요. 예를 들어 `--symbol DeformableWorld`는 deformable-physics.js만 읽어요. 호출부 파일 목록이 필요하면 --symbol 없이 “변형체 통합”, “천 소성 통합”, “질량 브러시 통합”, “애니메이션 그래프 로드 통합”으로 명시해서 넓혀요. 정확 조회에서 자동으로 앱·SDK·주변 도구 본문 전체를 읽지 않아요. 이 등록 범위를 엔진 전체의 최소 소유자 분해 완료로 해석하지 않아요.
 
 WORK2930의 동일 현재 소스 비교에서 DeformableWorld는 11파일/1099151byte→1파일/10894byte, GroundProjectionIK는 13파일/449465byte→1파일/6212byte, ClothMassBrushStroke는 8파일/697307byte→1파일/11158byte를 읽었어요. 기준은 WORK2920의 경로 목록이며 조회기 본문과 현재 소스는 같아요. source body 읽기량 측정이며 모델 해석 시간·토큰 계정·FPS를 측정한 값이 아니에요.
+
+스키마는 전체 대신 필요한 계약부터 읽어요: `node tools/hb.mjs schema --local --list` → `node tools/hb.mjs schema --local --section poleControl`. 서버 조회의 `--section`도 서버에서 그 계약만 만들고 전달해요. 예전 서버 연결은 호환 잘라내기를 사용해 전송량 감소가 없어요. [선택 스키마 조회](SCHEMA_SECTION_READS.md).
