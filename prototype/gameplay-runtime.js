@@ -1,3 +1,4 @@
+import {initBehaviorTaskIndex,registerBehaviorTask,lookupBehaviorTask,retireBehaviorTask,wakeBehaviorTaskOwners} from './behavior-task-index.js';
 import {behaviorTaskMemoryKeys,behaviorTaskMemoryOperation} from './behavior-task-memory.js';
 import {BehaviorAborts,resetBehaviorNode,shutdownBehavior} from './behavior-aborts.js';
 import {runBehaviorQueryService} from './behavior-query-service.js';
@@ -53,19 +54,21 @@ export async function loadBehaviorProgram(name,hooks){
   return {root,board};
 }
 export class BehaviorRunner {
-  constructor(asset,board,hooks){
+  constructor(asset,board,hooks,parent=null){
     if(!validGameplayAsset('behaviortree',asset))throw Error('행동트리 검증 실패');
     this.asset=copy(asset);this.board=board;this.hooks=hooks;this.nodes=new Map(this.asset.nodes.map(n=>[n.id,n]));this.hasServices=this.asset.nodes.some(n=>n.services?.length);this.memory=new Map();this.status={};this.running=true;this.elapsed=0;this.accumulator=0;this.activeNodes=new Set();this.cooldowns=new Map();this.serviceTimes=new Map();this.runId=crypto.randomUUID();this.taskSerial=0;this.resetDepth=0;this.shutdownComplete=false;this.forceAbortRequested=false;this.aborts=new BehaviorAborts(this);this.deferredBehaviorResult=undefined;this.observedRevision=board.revision;
     this.observers=new Map();this.parents=new Map();for(const n of this.asset.nodes)for(const child of n.children)this.parents.set(child,n.id);
     this.program=hooks.program;this.assetPath=hooks.program?.path||'';this.frameSerial=0;this.wake=true;
     this.rootGuards=new Map();this.proxyOwners=new Map();for(const n of this.asset.nodes.filter(n=>n.type==='subtree')){const program=this.program?.subtrees.get(n.id);if(program){const guard=this.injectRootGuards(n.id,program,program.data.root,n.id,n.id+'/root');if(guard)this.rootGuards.set(n.id,guard);}}
+    initBehaviorTaskIndex(this,parent);
   }
   injectRootGuards(owner,program,id,parent,prefix){const source=program.data.nodes.find(n=>n.id===id);if(!['condition','compareBlackboard','cooldown','timeLimit','repeat','inverter','forceSuccess','subtree'].includes(source.type))return null;const key=prefix+'/'+id,node={...source,id:key,children:[]};this.nodes.set(key,node);this.parents.set(key,parent);this.proxyOwners.set(key,owner);const childProgram=source.type==='subtree'?program.subtrees.get(source.id):program,childId=source.type==='subtree'?childProgram?.data.root:source.children[0];if(childId){const child=this.injectRootGuards(owner,childProgram,childId,key,key);if(child)node.children.push(child);}return key;}
   taskHandle(key){if(typeof key!=='string')return '';const node=this.nodes.get(key)||this.asset.nodes.find(n=>n.name===key),m=node&&this.memory.get(node.id);if(m?.taskActive||m?.aborting)return m.handle;for(const [id,m] of this.memory)if(m.child){const handle=m.child.taskHandle(key.startsWith(id+'/')?key.slice(id.length+1):key);if(handle)return handle;}return '';}
-  finishTask(handle,success){if(typeof success!=='boolean')throw Error('태스크 결과는 bool이에요.');if(!this.running)return false;for(const m of this.memory.values()){if(m.taskActive&&!m.resetting&&m.handle===handle&&m.result===undefined){m.result=success?'success':'failure';this.wake=true;this.hooks.changed?.();return true;}if(m.child?.finishTask(handle,success)){this.wake=true;return true;}}return false;}
+  taskActivation(handle){return lookupBehaviorTask(this,handle);}
+  finishTask(handle,success){if(typeof success!=='boolean')throw Error('태스크 결과는 bool이에요.');if(!this.running)return false;const entry=this.taskActivation(handle),m=entry?.m,owner=entry?.runner;if(!m||!owner.running||!m.taskActive||m.resetting||m.result!==undefined)return false;m.result=success?'success':'failure';wakeBehaviorTaskOwners(owner);owner.hooks.changed?.();return true;}
   finishAbort(handle){if(typeof handle!=='string')throw Error('태스크 핸들은 문자열이에요.');return this.aborts.finish(handle);}
-  isTaskAborting(handle){for(const m of this.memory.values()){if(m.handle===handle&&m.aborting)return true;if(m.child?.isTaskAborting(handle))return true;}return false;}
-  isTaskExecuting(handle){for(const m of this.memory.values()){if(m.handle===handle&&m.taskActive&&!m.resetting&&this.running)return true;if(m.child?.isTaskExecuting(handle))return true;}return false;}
+  isTaskAborting(handle){return !!this.taskActivation(handle)?.m.aborting;}
+  isTaskExecuting(handle){const entry=this.taskActivation(handle),m=entry?.m;return !!(m?.taskActive&&!m.resetting&&entry.runner.running);}
   ownTasks(){return [...this.memory].filter(([,m])=>m.taskActive||m.aborting).map(([id,m])=>({id,name:this.nodes.get(id).name,handle:m.handle,result:m.aborting?'aborting':m.result||'running'}));}
   snapshot(){return [...this.ownTasks(),...[...this.memory].flatMap(([id,m])=>m.child?m.child.snapshot().map(t=>({...t,id:id+'/'+t.id,sourceNode:t.sourceNode||t.id,asset:t.asset||m.child.assetPath})):[])];}
   instances(scope='',path=[]){return [{scope,path,asset:this.assetPath,blackboard:this.asset.blackboard,result:this.result,status:copy(this.status),tasks:this.ownTasks()},...[...this.memory].flatMap(([id,m])=>m.child?m.child.instances(scope?scope+'/'+id:id,[...path,this.nodes.get(id).name]):[])];}
@@ -133,12 +136,12 @@ export class BehaviorRunner {
       else if(node.type==='cooldown'){if((this.cooldowns.get(id)||0)<=this.elapsed){result=node.children[0]?await execute(node.children[0]):'failure';if(result!=='running')this.cooldowns.set(id,this.elapsed+p.duration);}}
       else if(node.type==='timeLimit'){m.started??=this.elapsed-this.delta;if(this.elapsed-m.started>=p.duration){if(node.children[0])await this.reset(node.children[0]);delete m.started;}else result=node.children[0]?await execute(node.children[0]):'failure';if(result!=='running')delete m.started;}
       else if(node.type==='task'){
-        if(!m.taskActive){m.taskActive=true;m.handle=this.runId+':'+(++this.taskSerial);delete m.result;this.hooks.scopeBegin?.(m.handle);this.hooks.changed?.();await this.notify(p.onStart,node,{phase:'start',task:m.handle},true);}
+        if(!m.taskActive){m.taskActive=true;m.handle=this.runId+':'+(++this.taskSerial);delete m.result;registerBehaviorTask(this,node,m);this.hooks.scopeBegin?.(m.handle);this.hooks.changed?.();await this.notify(p.onStart,node,{phase:'start',task:m.handle},true);}
         if(!this.running||this.memory.get(id)!==m||m.resetting||!m.servicesActive||!m.taskActive)return 'failure';
         if(m.result===undefined)await this.notify(p.onTick,node,{phase:'tick',task:m.handle},true);if(!this.running||this.memory.get(id)!==m||m.resetting||!m.servicesActive||!m.taskActive)return 'failure';result=m.result||'running';
-        if(result!=='running'){m.taskActive=false;await this.hooks.scopeEnd?.(m.handle);if(!this.running||this.memory.get(id)!==m||m.resetting||!m.servicesActive)return 'failure';this.hooks.changed?.();m.finishing=true;try{await this.notify(p.onFinish,node,{phase:'finish',task:m.handle,success:result==='success'},true);}finally{m.finishing=false;delete m.taskData;}}
+        if(result!=='running'){m.taskActive=false;await this.hooks.scopeEnd?.(m.handle);if(!this.running||this.memory.get(id)!==m||m.resetting||!m.servicesActive)return 'failure';this.hooks.changed?.();m.finishing=true;try{await this.notify(p.onFinish,node,{phase:'finish',task:m.handle,success:result==='success'},true);}finally{m.finishing=false;retireBehaviorTask(this,m);}}
       }
-      else if(node.type==='subtree'){this.registerConditions(id);if(!m.child){const program=this.program?.subtrees.get(id);if(!program)throw Error('하위 행동트리 프로그램이 준비되지 않았어요: '+p.asset);m.child=new BehaviorRunner(program.data,this.board,{...this.hooks,program,taskEvent:(name,args)=>(this.hooks.taskEvent||this.hooks.event)?.(name,{...args,node:id+'/'+args.node,asset:args.asset||program.path})});}if(m.childFrame!==this.frameSerial){await m.child.tick(this.delta);m.childFrame=this.frameSerial;}result=m.child.result||'running';if(result!=='running'){await m.child.stop();m.child=null;}}
+      else if(node.type==='subtree'){this.registerConditions(id);if(!m.child){const program=this.program?.subtrees.get(id);if(!program)throw Error('하위 행동트리 프로그램이 준비되지 않았어요: '+p.asset);m.child=new BehaviorRunner(program.data,this.board,{...this.hooks,program,taskEvent:(name,args)=>(this.hooks.taskEvent||this.hooks.event)?.(name,{...args,node:id+'/'+args.node,asset:args.asset||program.path})},this);}if(m.childFrame!==this.frameSerial){await m.child.tick(this.delta);m.childFrame=this.frameSerial;}result=m.child.result||'running';if(result!=='running'){await m.child.stop();m.child=null;}}
       else if(node.type==='set'){this.board.set(p.key,p.value);result='success';}
       else if(node.type==='moveTo'){m.moving=true;const moved=await this.hooks.move(this.board.get(p.key),p.speed,p.tolerance,id);result=typeof moved==='string'?moved:moved?'success':'running';if(result!=='running')m.moving=false;}
       else if(node.type==='lookAt'){await this.hooks.look(this.board.get(p.key));result='success';}

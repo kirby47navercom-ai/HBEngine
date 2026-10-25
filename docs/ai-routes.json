@@ -4625,6 +4625,21 @@
       "paths": [
         "prototype/animation-pole-control.js"
       ]
+    },
+    {
+      "id": "behavior-task-index-declarations",
+      "keywords": [
+        "initBehaviorTaskIndex",
+        "registerBehaviorTask",
+        "lookupBehaviorTask",
+        "retireBehaviorTask",
+        "closeBehaviorTaskIndex",
+        "inspectBehaviorTaskIndex",
+        "behaviorTaskIndexContract"
+      ],
+      "paths": [
+        "prototype/behavior-task-index.js"
+      ]
     }
   ]
 }
