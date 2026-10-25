@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "date": "2026-10-25T07:45:49.184Z",
+  "kind": "신규 구현·영향 검사 묶음 / 사용자 설치 보류",
+  "implementationRevision": "8bf620ba3938cac64a5bff65f627e353833d6a35",
+  "sourceHashBase": "docs/research/ENGINE_WORK_2790.json",
+  "changedSourceHashes": {
+    "prototype/animation-foot-plant.js": "dabe17e7e5a9dc0730da3dc439a955b259504636ab02e7a70ff562f00de9b8ab",
+    "prototype/animation-graph-assets.js": "f8095eee21bc5d8f0395883628bd52e177004858ae0c9b10123b79069c88ba7a",
+    "prototype/animation-graph-runtime.js": "38ad4fd6618928c8db2f71ea8af3415e28310bca8a157c7bd4c6aedb96216fad",
+    "prototype/animation-ik-editor.js": "084fae294a412feeac456cea7fb68f2b1178a8f9fc7495ed3371b763bff9796b",
+    "prototype/animation-ik.js": "8886f10ce3803aedb17320bd6852dc73a93bc0225afe20610e545c765b9077f1",
+    "prototype/normal-slope-composite.js": "51bda38ca79af540dd604e870aec1e56f3975e0389e1c430362e3c8386a8c894",
+    "prototype/texture-composite.js": "6f9f0e39c0d4f43103e13443742a0c9ea60f0945aa6633829f7e738f6177d73d",
+    "prototype/texture-import-ui.js": "340878fbd68cbec46a3af64809b353365ea47f8fc039af41da55c76e64510101",
+    "prototype/asset-graph-diff.js": "8de5a2bd67ac5cca61844be5ccc3186074a94fa26c6c00d28e6d39579304dda7",
+    "prototype/asset-graph-diff-view.js": "312f7c8e8ccd07d42eb084f5eb9a0c9bfbd274c4e770f865087da6292704b260",
+    "prototype/asset-merge-panel.js": "6c5a1e7776671246dc0f1f7f6e427b9c2e47e9895432d0069706407ae862807e",
+    "prototype/app.js": "08f328cb206a7780660cdf420fe07bfffb72aebf2be9a0e936c46e05f907b2cc",
+    "tools/editor-automation.mjs": "19c79ee59637bda55fdf60533cde54a7229216aa0a8b5d65558c4cce2c374372",
+    "prototype/layered-texture-mip-cook.js": "3e247fe4f229ff5390a5ac93a188910166aaf96410882259ddb90f8963df9336",
+    "prototype/layered-texture-import.js": "f0e986321767e98695e82fdac51e4aacaa6628160c4e3871988cff75a5a55478",
+    "prototype/texture-assets.js": "b69676c45e0aa1abd6b77b2ff7e686868c35ab30a34602625c31c3629b9b52e9",
+    "prototype/texture-authored-mips.js": "35a4609c70a9de56680172bc75859f5941e6a6a621823d81ca9491a45b8ab7f7",
+    "prototype/texture-image-load.js": "ff2086b6929b5f209329aa7afe5d4cc864e426b95420ce58b3a8b4d92b402f58",
+    "prototype/texture-mip-cook.js": "4c406116ebee45174deacde4fb44867f38600a5c3df72d4d9351427cf968e58c",
+    "prototype/texture-mip-policy.js": "b25f8496ad5d5eb71852bff66ba9045dfd489c52fdcc6f6abc4b49aa029ba6bb",
+    "prototype/texture-mip-worker.js": "a43d59dd232742389bb31f3780a238d0f50d12e399bcd4e0192237a5fadad65c",
+    "prototype/asset-editor-ui.js": "b3099dd199a5e6d357083cf46a5b90b069915ef49eab584d1ce6f5051975caef",
+    "tools/check-foot-plant-2798.mjs": "9e067faa5e5fd56770adc246ce6f704e621ca04097dcd5ff5a90c383a9aa4566",
+    "tools/check-foot-plant-2804-cpp.mjs": "cda8b992eb0daa5e38800ef7705c0284fbf6099d790e3273b0497a00dbe01312",
+    "tools/check-normal-slopes-2799.mjs": "02e82d4e7d06dcac06a79096828cc7360f5a995a0c24dd78f49e0ff71e216e73",
+    "tools/check-graph-contexts-2801.mjs": "f8eb3f70d948305eb11be6f2caf8b78a1e90eda7181ace076213d13ce0034a82",
+    "tools/check-layered-import-2816.mjs": "f3467a984a582b8d242d0bfa1fd8c9144bb97fe4e742d0d86e3817c4ee3fb0e9",
+    "docs/ai-routes.json": "a73553fcc349e72fda154e15d39e5e1c5cbcd4b19cfae2cf671b56238d01baf1",
+    "docs/ANIMATION_FOOT_PLANT.md": "c0da996176fbc6646db857cd286277d2688edd790c51e4d17973cb26f1fdcfbe",
+    "docs/LAYERED_TEXTURE_IMPORT.md": "d2a0b0e42039d857d378f855f78c869df62541f53964e9706791b7d0fcdd4d79",
+    "docs/TEXTURE_COMPOSITE_549.md": "427480ad91682cb721bff87304757eac301bb056c4617c9af360d4aed962562f",
+    "docs/ASSET_GRAPH_DIFF.md": "3e70b06495f6592743327dd446fe48ce3eaa553fa98e890d16533cc6bbdb1069",
+    "DEBUG_HANDOFF.md": "fb27bc00ed73e1557da67b6ea6411d36feffdc0fcd4ee7550f8d898c5745e99c",
+    "docs/BLUEPRINT_SPEC.md": "161b0d1108743edba1c6b217e49fa6ba9e645129f6e9c15fb26723f9ac335df1",
+    "CODEX_HANDOFF.md": "176894c28e4c985017b71503851b0eb90fcd2d3dc0500bbf74a4c6d937d46481"
+  },
+  "resolvedOwners": 1520,
+  "targetIds": [
+    "ANM-04",
+    "ANM-05",
+    "MAT-03",
+    "AST-03",
+    "BLD-06",
+    "AI-03"
+  ],
+  "changes": {
+    "ANM-04": " ·2791–2820: 작성 Bool twoBoneIK 발 위치/방향 고정·월드/이동발판·해제·문맥별수명/되감기·예산skip보존. 접촉 표면/고정·해제 UI와 기존 공용 Bool 제어에 연결. source14·실제CPP Set/GetBool2회. 자동지면/Stride/골반보정 별도.",
+    "ANM-05": " ·2791–2820: 기존 twoBoneIK에 opt-in FootPlantState·관절/길이/alpha와입력pole보존·제한밖잔여오차. 비균일/반사/shear 회전거절·위치affine, 기존 FullBody8/IK gate 유지. 일반 리그/접촉해법을 대체하지 않음.",
+    "MAT-03": " ·2791–2820: 중앙 slope X/Y분산을 기존두채널에cook·threshold/cap/horizon제어·원본/등방기본보존14. Array/Cube/Volume 공용import·색공간/노멀/coverage/topMip/maxSize·3D NPOT area밉·작성mip보존·기존단일worker/preview/실행/nativepayload·WebGPU어댑터 연결20. HDR/압축/회전공분산·다차원disk별도.",
+    "AST-03": " ·2791–2820: 이미지 RGBA8 다차원 가져오기·단일 lazy worker/전송선택/취소/재디코딩복구·owner미리보기캐시/종료. 실제worker에서2D+ND같이검증·신규20에포함. GPU압축/RDO·다차원disk가아님.",
+    "BLD-06": " ·2791–2820: 함수/매크로 stable ID/name 그래프선택/페이지·버전별삭제/재정렬·선택범위충돌만반영·애니 inputs poseedge. document.graph.list/diff revision read-only. 신규9·기존시각diff15. 임의서브그래프/BT·FSM암시입력/Git marker별도.",
+    "AI-03": " ·2791–2820: footPlant/방향별composite/layeredTextureImport schema·document.graph.list 안정key/요약·선택revision. 사람의 기존 폼/merge/Undo·같은runtime/전송을사용·본문/추가워커/매프레임cook없음."
+  },
+  "newSourceCases": 57,
+  "relatedSourceCases": 23,
+  "checks": {
+    "foot": "native/build/foot-plant-0ilPbx/acceptance.json",
+    "slopes": "native/build/normal-slopes-tQRU7N/acceptance.json",
+    "graphs": "native/build/graph-contexts-0mizNo/acceptance.json",
+    "layered": "native/build/layered-import-NjJwGd/acceptance.json",
+    "relatedGraphs": "native/build/asset-graph-diff-nfGOJv/acceptance.json",
+    "relatedStretch": "native/build/fullbody-stretch-LG1k3I/acceptance.json",
+    "cpp": "native/build/foot-plant-cpp-3GmwLg/acceptance.json",
+    "group": "native/build/group2819.json",
+    "firstGroup": "native/build/group2805.json",
+    "repairedGroup": "native/build/group2809.json"
+  },
+  "cpp": {
+    "methods": 2,
+    "reads": 2,
+    "cacheKey": "b283e77e7ab52dcb8fee",
+    "cacheHit": true,
+    "sdk": {
+      "fingerprint": "6ae42160cdb0e8cdce5bcea410ec666c86453519087ed1901192da45f46811da",
+      "files": 37,
+      "bytes": 2391557
+    },
+    "sdkUsed": {
+      "fingerprint": "0a684c26d26b98e7e13c07850428a36d1d67f89230356a4d210508711620d050",
+      "preprocessedFingerprint": "71a494ffa0a13e6b1ad5a3f4a11dc38ddaa05b0c6288fb9929981305111edbec",
+      "files": 10,
+      "bytes": 1360255,
+      "identity": "514e902e9d1cdf4ae6b6afc7b754ca403eb8bcdf8decbed4f3adea32f6dac3bb",
+      "mode": "dependencies",
+      "planHit": true,
+      "scanMS": 0
+    },
+    "binary": {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\b283e77e7ab52dcb8fee\\worker.exe",
+      "sha256": "b07d1aded7e0411a3b19689b3b2ba15ccef4bbcbce5db51cb3b90cf874faa930"
+    },
+    "scope": "Current unchanged SDK built, C++ Set/GetBool controls actual AnimationGraphPlayer foot capture/world lock/release via shared queued operations. No new public SDK API/header, GUI/device/install."
+  },
+  "results": {
+    "syntaxFiles": 27,
+    "newCases": {
+      "foot": 14,
+      "directionalNormals": 14,
+      "graphContexts": 9,
+      "layeredImport": 20
+    },
+    "relatedCases": {
+      "graph": 15,
+      "fullBody": 8,
+      "legacyIKGate": true
+    },
+    "realSharedWorker": true,
+    "realCppMethods": 2,
+    "realCppReads": 2,
+    "realGPU": false
+  },
+  "failuresAndRepairs": [
+    "CPP gate assumed full reply objects; current native delta replies were correct. Merge nativeProperties deltas and await close; final2/2 passed, unchanged native implementation. DEBUG_HANDOFF records cause.",
+    "New ND gate caught one authored-path uploadLevel name left after public helper extraction; repaired common call. Owned DOM fixture also lacked closest; fixed fixture. Final ND20 and affected normal14 passed.",
+    "Added source decode cap before unsupported array layer decode, actual shared worker 2D regression, original non-plant graph weight reporting, plant/release/missing platform UI before final affected gates.",
+    "No failed run, unadopted experiment or adapter mock is counted as shipped GPU/GUI/device proof."
+  ],
+  "boundary": {
+    "installationHeld": true,
+    "newInstallationCopies": 0,
+    "automationsCreated": 0,
+    "newAgents": 0,
+    "newGUI": false,
+    "newGPU": false,
+    "newDevice": false,
+    "protectedReadEditedOrTested": false,
+    "fullAnalysisClaimed": false
+  },
+  "storage": {
+    "newRuntimeSDKProfiles": 0,
+    "nativeModuleCachePolicy": 32,
+    "cacheDeleted": 0,
+    "removedOwnedRegularHelpers": 26,
+    "handoffBytes": 3629
+  },
+  "remainingBoundary": [
+    "Automatic ground/stride/pole/hip correction, arbitrary control rig and general constraints",
+    "Off-axis covariance/BRDF integration, HDR/raw/compressed texture formats, multidimensional disk streaming, seamless cube borders",
+    "Implicit BT/FSM links/arbitrary nested graphs, Git marker publication/VCS locks",
+    "GL1728 compiler delay and other cumulative rendering/engine goals; no unsupported global completion claim"
+  ]
+}
