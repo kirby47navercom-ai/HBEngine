@@ -4601,6 +4601,18 @@
       "paths": [
         "native/include/HBEngine/Bridge.hpp"
       ]
+    },
+    {
+      "id": "layer-source-normalization-declarations",
+      "keywords": [
+        "validLayerNormalization",
+        "layerNormalizationSize",
+        "drawNormalizedLayer",
+        "layerNormalizationContract"
+      ],
+      "paths": [
+        "prototype/layered-texture-normalization.js"
+      ]
     }
   ]
 }

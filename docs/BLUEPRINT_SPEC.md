@@ -758,3 +758,5 @@ Cloth·2D/3D 로프의 [자동 고정점 연결](DEFORMABLE_AUTO_TETHERS.md)은 
 Two Bone IK의 [자동 발 접촉](ANIMATION_AUTO_PLANT.md)은 기존 지면 광선과 표면 기준 발 높이/속도·진입/해제 히스테리시스·최소 접촉 시간으로 기존 발 고정을 구동해요. 이동/회전하는 접촉 표면·분기/시계 수명·기존 보폭/가중치와 함께 동작하고, 명시 Bool 발 고정은 우선해요. 기존 Bool 서비스·C++ API와 문서 패치/검증/Undo·타입 입력·AI 스키마를 공유해요. 물리 접촉/골반 보정 완료로 세지 않아요.
 
 행동트리의 [실행별 태스크 메모리](BEHAVIOR_TASK_MEMORY.md)는 대상·실행 핸들로 BP와 `hb::AI::GetTaskMemory/SetTaskMemory/ClearTaskMemory`에서 공유해요. 중첩 실행·완료 콜백·지연 중단 정리 수명을 따르고, 리셋·완료 후의 예전 핸들은 거부해요. 기존 게임 JSON 검증과 최소 실행 질의를 사용하고 본문을 매 프레임 진단 스냅샷에 추가하지 않아요. 네이티브 BTTask 상속 객체 구현과는 구분해요.
+
+다차원 텍스처의 [레이어 원본 정규화](LAYERED_TEXTURE_NORMALIZATION.md)는 선택 `layerNormalization` 객체로 크기가 다른 기존 지원 이미지들을 채우기/비율 여백/중앙 자르기로 맞춰 기존 밉·실행 업로드에 넣어요. 같은 크기 검사 기본값과 원본을 유지하고, 사람 타입 입력/Undo·AI 스키마·일반 에셋 저장·디스크 스트리밍 배타·최종 장치 한도를 공유해요. GPU 압축/HDR/RDO 구현과는 구분해요.

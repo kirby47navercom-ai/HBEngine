@@ -4,7 +4,7 @@ import {loadTextureImage,textureImagePixels} from './texture-image-load.js';
 const sources=new WeakMap();
 export const diskMipSource=texture=>sources.get(texture);
 export const attachDiskMipSource=(texture,source)=>sources.set(texture,source);
-export function diskMipEligible(asset){if(!asset||!['texture2d','texturearray','cubemap','volumetexture'].includes(asset.dimension))return false;const p=textureImportPolicy(asset.import);return p.mipmaps&&!p.topMip&&!p.maxSize&&!p.preserveCoverage&&!p.flipGreen&&!p.normalizeNormals&&!asset.composite?.normalTexture;}
+export function diskMipEligible(asset){if(!asset||!['texture2d','texturearray','cubemap','volumetexture'].includes(asset.dimension))return false;const p=textureImportPolicy(asset.import);return (!asset.layerNormalization||!asset.layerNormalization.mode||asset.layerNormalization.mode==='strict')&&p.mipmaps&&!p.topMip&&!p.maxSize&&!p.preserveCoverage&&!p.flipGreen&&!p.normalizeNormals&&!asset.composite?.normalTexture;}
 export function validDiskMipSettings(asset){
  const s=asset?.streaming;if(s===undefined)return true;
  if(!s||typeof s!=='object'||Array.isArray(s)||Object.keys(s).some(k=>!['enabled','width','height','depth','initialMip'].includes(k))||typeof s.enabled!=='boolean')return false;
