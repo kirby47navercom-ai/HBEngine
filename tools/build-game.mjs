@@ -26,7 +26,7 @@ import {validAsset,assetTypes} from '../prototype/asset-documents.js';
 import {resolveWidgetComposition} from '../prototype/widget-composition.js';
 import {resolveMaterialAsset} from '../prototype/material-runtime.js';
 import {validateAbilitySetGraph} from '../prototype/ability-set-resolution.js';
-import {defaultBuildProfile,validBuildProfile,profileTarget,buildTargets,frameSettings} from '../prototype/build-profile.js';
+import {defaultBuildProfile,validBuildProfile,profileTarget,buildTargets,frameSettings,windowsRuntime} from '../prototype/build-profile.js';
 const root=path.resolve(import.meta.dirname,'..');
 export const digest=bytes=>createHash('sha256').update(bytes).digest('hex');
 export const nativeSignature=(header,source,entry={})=>digest(nativeModuleKey(header,source,entry));
@@ -88,23 +88,24 @@ export async function inspectBuild(record,profile,{signal}={}){
   warnings.push('텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요.');
   const distanceFields=await cookDistanceFields(record.project,content,{signal});
   const cooked=await cookContent(record.project,content,profileTarget(profile),{signal});content.clear();for(const [name,bytes] of cooked.content)content.set(name,bytes);
-  const renderBackend=profileTarget(profile)==='windows-x64'&&profile.windowsRenderer==='d3d11'?'d3d11':JSON.parse(content.get([...enabled][0])).runtime?.renderBackend||'webgl2',renderer=renderBackend==='d3d11'?'D3D11 + WebView2 UI':buildTargets[profileTarget(profile)].renderer.replace(/WebGL2$/,renderBackend==='webgpu'?'WebGPU':'WebGL2');
+  const nativeDesktop=profileTarget(profile)==='windows-x64'&&windowsRuntime(profile)==='native';if(nativeDesktop)(await import('./build-native-game.mjs')).validateNativeContent(content,profile);
+  const renderBackend=nativeDesktop?'d3d11':profileTarget(profile)==='windows-x64'&&profile.windowsRenderer==='d3d11'?'d3d11':JSON.parse(content.get([...enabled][0])).runtime?.renderBackend||'webgl2',renderer=nativeDesktop?'Win32/DirectX 11':renderBackend==='d3d11'?'D3D11 + WebView2 UI':(profileTarget(profile)==='windows-x64'?'WebView2/WebGL2':buildTargets[profileTarget(profile)].renderer).replace(/WebGL2$/,renderBackend==='webgpu'?'WebGPU':'WebGL2');
   return {content,natives,report:{distanceFields,cook:cooked.report,target:profileTarget(profile),renderer,renderBackend,profile:structuredClone(profile),startupScene:[...enabled][0],gameInstance:gameInstanceAsset,streaming:{chunkBytes:buildChunkBytes,fileBackedFiles:[...content.values()].filter(isFileContent).length,fileBackedBytes:[...content.values()].filter(isFileContent).reduce((n,b)=>n+b.length,0),bufferedBytes:[...content.values()].filter(b=>!isFileContent(b)).reduce((n,b)=>n+b.length,0)},files:content.size,bytes:[...content.values()].reduce((sum,b)=>sum+b.length,0),nativeModules:natives.size,warnings}};
 }
-export async function moduleClosure(entry,seen=new Set()){
-  const full=path.resolve(root,entry);if(seen.has(full))return seen;seen.add(full);const source=(await packagedRuntimeBytes(full)).toString('utf8');
+export async function moduleClosure(entry,seen=new Set(),options={}){
+  const full=path.resolve(root,entry);if(options.exclude?.has(path.relative(root,full).split(path.sep).join('/')))throw Error('별도 소유 소스 제외: '+entry);if(seen.has(full))return seen;seen.add(full);const source=(await packagedRuntimeBytes(full)).toString('utf8');
   for(const match of source.matchAll(/(?:\bfrom\s*|\bimport\s*\(?\s*)['"]([^'"]+)['"]/g)){
     if(match[1]==='ws'){async function collect(dir){for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=path.join(dir,e.name);if(e.isDirectory())await collect(f);else if(/\.(?:js|mjs|json)$/.test(e.name)||e.name==='LICENSE')seen.add(f);}}await collect(path.join(root,'node_modules/ws'));}
     const specifier=match[1],dependency=specifier.startsWith('.')?path.relative(root,path.resolve(path.dirname(full),specifier)):specifier==='three'?'node_modules/three/build/three.module.js':specifier==='three/webgpu'?'node_modules/three/build/three.webgpu.js':specifier==='three/tsl'?'node_modules/three/build/three.tsl.js':specifier.startsWith('three/addons/')?'node_modules/three/examples/jsm/'+specifier.slice(13):null;
     if(specifier==='three'||specifier.startsWith('three/'))seen.add(path.join(root,'node_modules/three/package.json'));
-    if(dependency)await moduleClosure(dependency,seen);
+    if(dependency)await moduleClosure(dependency,seen,options);
   }
   // Worklets/workers use module-relative URLs rather than import declarations.
-  for(const match of source.matchAll(/\bnew\s+URL\(\s*['"](\.\.?\/[^'"\r\n]+\.(?:m?js))['"]\s*,\s*import\.meta\.url\s*\)/g))await moduleClosure(path.relative(root,path.resolve(path.dirname(full),match[1])),seen);
+  for(const match of source.matchAll(/\bnew\s+URL\(\s*['"](\.\.?\/[^'"\r\n]+\.(?:m?js))['"]\s*,\s*import\.meta\.url\s*\)/g))await moduleClosure(path.relative(root,path.resolve(path.dirname(full),match[1])),seen,options);
   return seen;
 }
 export async function buildGame(record,profile,{dryRun=false,signal,onProgress=()=>{}}={}){
-  failIfCanceled(signal);onProgress('검증');const {content,natives,report}=await inspectBuild(record,profile,{signal});failIfCanceled(signal);if(profileTarget(profile)==='web')return (await import('./build-web.mjs')).buildWeb(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(profileTarget(profile)!=='windows-x64')return (await import('./build-mobile.mjs')).buildMobile(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(dryRun)return report;
+  failIfCanceled(signal);onProgress('검증');const {content,natives,report}=await inspectBuild(record,profile,{signal});failIfCanceled(signal);if(profileTarget(profile)==='web')return (await import('./build-web.mjs')).buildWeb(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(profileTarget(profile)!=='windows-x64')return (await import('./build-mobile.mjs')).buildMobile(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(windowsRuntime(profile)==='native')return (await import('./build-native-game.mjs')).buildNativeGame(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(dryRun)return report;
   if(process.platform!=='win32'||process.arch!=='x64')throw Error('Windows x64에서 빌드하세요.');
   const desktop=await fs.access(path.join(root,'HBPlayer.exe')).then(()=>root,()=>path.join(root,'dist/HBEngine'));await fs.access(path.join(desktop,'HBPlayer.exe'));
   const id=new Date().toISOString().replace(/[:.]/g,'-')+'-'+randomUUID().slice(0,8),relative='Builds/'+profile.id+'/'+id,out=await record.project.resolve(relative,true,false);await fs.mkdir(out,{recursive:true});
@@ -123,7 +124,7 @@ export async function buildGame(record,profile,{dryRun=false,signal,onProgress=(
     const windowsApplication=windowsGameIdentity(record.manifest.id);await copy(path.join(desktop,'HBPlayer.exe'),windowsApplication.executable);
     await promisify(execFile)(path.join(desktop,'HBPlayer.exe'),['--stamp-game',path.join(out,windowsApplication.executable),profile.productName],{windowsHide:true,signal,timeout:30000});const stamped=await fs.readFile(path.join(out,windowsApplication.executable));Object.assign(artifacts.find(f=>f.path===windowsApplication.executable),{bytes:stamped.length,sha256:digest(stamped)});
     await copy(path.join(root,'prototype/native-audio-worklet.js'),'prototype/native-audio-worklet.js');await copy(path.join(desktop,'runtime/node.exe'),'runtime/node.exe');await copy(path.join(desktop,'WebView2Loader.dll'),'WebView2Loader.dll');await write('package.json',Buffer.from('{"type":"module"}\n'));await copy(path.join(root,'tools/kiosk-watchdog.mjs'),'tools/kiosk-watchdog.mjs');await copy(path.join(root,'tools/windows-game-identity.mjs'),'tools/windows-game-identity.mjs');await write('Kiosk.cmd',Buffer.from('@echo off\r\n"%~dp0runtime\\node.exe" "%~dp0tools\\kiosk-watchdog.mjs" "%~dp0'+windowsApplication.executable+'"\r\n'));
-    failIfCanceled(signal);const manifest={version:1,id:record.manifest.id,name:profile.productName,windowsApplication,configuration:profile.configuration,windowsRenderer:profile.windowsRenderer||'scene',kiosk:profile.kiosk||{},...frameSettings(profile),width:profile.width,height:profile.height,startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,gameInstance:report.gameInstance||'',distanceFields:report.distanceFields?.manifest||'',entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules,redirects,files:artifacts};
+    failIfCanceled(signal);const manifest={version:1,id:record.manifest.id,name:profile.productName,windowsApplication,configuration:profile.configuration,windowsRuntime:'webview',windowsRenderer:profile.windowsRenderer||'scene',kiosk:profile.kiosk||{},...frameSettings(profile),width:profile.width,height:profile.height,startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,gameInstance:report.gameInstance||'',distanceFields:report.distanceFields?.manifest||'',entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules,redirects,files:artifacts};
     const result={...report,id,output:out,executable:path.join(out,windowsApplication.executable),windowsApplication,totalFiles:artifacts.length,totalBytes:artifacts.reduce((sum,f)=>sum+f.bytes,0)};await fs.writeFile(path.join(out,'build-report.json'),json(result),{flag:'wx'});await fs.writeFile(path.join(out,'game.hbpack.json'),json(manifest),{flag:'wx'});onProgress('완료');return result;
   }catch(error){await fs.writeFile(path.join(out,'build-failed.json'),json({error:error.message,canceled:signal?.aborted===true}));throw error;}finally{host.close();}
 }

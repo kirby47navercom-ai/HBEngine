@@ -1,3 +1,4 @@
+import {createPixelCanvas} from './pixel-canvas.js';
 export const authoredTextureMipContract=Object.freeze({version:1,dimensions:Object.freeze(['texture2d','texturearray','volumetexture','cubemap']),descriptor:'images is level zero; optional mips:[{images:[asset paths]}] stores subsequent consecutive levels',layout:'RGBA8 top-down slice-major; floor-half width/height, array/cube layer count unchanged, cube six square faces, volume depth floor-halved; a complete chain ends at 1x1 or 1x1x1 for volumes',policy:'authored levels are never regenerated; optional import preserves color/normal/coverage/top-mip policy across dimensions (composite is 2D only); all levels and slices must be present and dimensionally consistent',ownership:'decoded data is owned by the texture; source images are preserved; uploads only when texture version changes',editing:'document.patch/save and normal undo; image references participate in dependency/rename/packaging',backends:Object.freeze(['WebGL2','WebGPU','DirectX11','packed-ray-mips'])});
 export function validAuthoredMipDescriptors(kind,images,mips,imagePath){
  if(mips===undefined)return true;if(!Array.isArray(mips))return false;if(!mips.length)return true;
@@ -36,7 +37,7 @@ export function authoredTextureLevels(texture){
  cubeLevels.set(texture,{version:texture.version,images:texture.image,mips:texture.mipmaps,levels});return levels;
 }
 export async function loadAuthoredLayeredTexture(THREE,asset,loader,fileUrl,first){
- const volume=asset.dimension==='volumetexture',cube=asset.dimension==='cubemap',levels=[],canvas=document.createElement('canvas');let width=first.width,height=first.height,depth=asset.images.length;
+ const volume=asset.dimension==='volumetexture',cube=asset.dimension==='cubemap',levels=[],canvas=createPixelCanvas();let width=first.width,height=first.height,depth=asset.images.length;
  try{
   const context=canvas.getContext('2d',{willReadFrequently:true});if(!context)throw Error('사용자 지정 밉 이미지를 읽지 못했어요.');
   for(const[level,images]of [asset.images,...asset.mips.map(m=>m.images)].entries()){

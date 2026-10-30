@@ -1,3 +1,4 @@
+import {createPixelCanvas} from './pixel-canvas.js';
 import {loadDiskMipTexture} from './texture-disk-load.js';
 import {cookTextureMipsAsync} from './texture-mip-cook.js';
 import {textureImportPolicy,textureImportColorSpace} from './texture-mip-policy.js';
@@ -7,7 +8,7 @@ import {loadTextureImage} from './texture-image-load.js';
 // Canonical cook data is top-down. Bake the image-loader flip into each owned
 // upload level once so GL, WebGPU, native and packed ray data see identical UVs.
 function flipRows(level){const {width,height,data}=level,stride=width*4,row=new Uint8Array(stride);for(let y=0;y<Math.floor(height/2);y++){const a=y*stride,b=(height-y-1)*stride;row.set(data.subarray(a,a+stride));data.copyWithin(a,b,b+stride);data.set(row,b);}}
-function readImage(image){const canvas=document.createElement('canvas');canvas.width=image.width;canvas.height=image.height;try{const context=canvas.getContext('2d',{willReadFrequently:true});if(!context)throw Error('텍스처 원본 픽셀을 읽지 못했어요.');context.drawImage(image,0,0);return{width:image.width,height:image.height,data:context.getImageData(0,0,image.width,image.height).data};}finally{canvas.width=canvas.height=0;}}
+function readImage(image){const canvas=createPixelCanvas();canvas.width=image.width;canvas.height=image.height;try{const context=canvas.getContext('2d',{willReadFrequently:true});if(!context)throw Error('텍스처 원본 픽셀을 읽지 못했어요.');context.drawImage(image,0,0);return{width:image.width,height:image.height,data:context.getImageData(0,0,image.width,image.height).data};}finally{canvas.width=canvas.height=0;}}
 export async function loadImportedTexture2D(THREE,asset,fileUrl,resources,{signal,renderer}={}){
  if(asset.streaming?.enabled)return loadDiskMipTexture(THREE,asset,fileUrl,{signal,renderer});
  const policy=textureImportPolicy(asset.import),source=compositeNormalSource(asset,resources),image=await loadTextureImage(fileUrl(asset.images[0]),signal),normal=source?(source===asset.images[0]?image:await loadTextureImage(fileUrl(source),signal)):null;let cooked;const authoredImages=[];for(const mip of asset.mips||[])authoredImages.push(await loadTextureImage(fileUrl(mip.images[0]),signal));

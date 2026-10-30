@@ -43,7 +43,7 @@ export function configureLightShadow(light,p){
   shadow.mapSize.set(p.shadowMapWidth,p.shadowMapHeight);shadow.bias=p.shadowBias;shadow.normalBias=p.shadowNormalBias;shadow.radius=p.shadowRadius;shadow.intensity=p.shadowIntensity;shadow.camera.near=p.shadowNear;shadow.camera.far=p.shadowFar;
   if(light.isDirectionalLight){shadow.camera.left=shadow.camera.bottom=-p.shadowExtent;shadow.camera.right=shadow.camera.top=p.shadowExtent;}shadow.camera.updateProjectionMatrix();
 }
-export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor=false,error,gameRenderer,runtimeWorld,onVisualChange=()=>{}}){
+export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor=false,error,gameRenderer,runtimeWorld,onVisualChange=()=>{},loadTexture}){
   const textureStreaming=new SceneTextureStreaming(onVisualChange);if(gameRenderer)gameRenderer.hbTextureStreaming=options=>textureStreaming.state(options);let materialTime=0,navigationDebugWanted=false;const navigationDebugGroups=new Set();const lightmapPages=new LightmapPagePool(),bakedGroups=new Set();
   function startNavigationDebug(group){const state=group.userData.navigationDebug;if(!state||state.pending||state.overlay||!navigationDebugWanted||group.userData.disposed)return;state.error=null;const version=state.version=(state.version||0)+1;state.pending=Promise.resolve().then(()=>read(state.asset)).then(data=>{if(group.userData.disposed||current(group.userData.objectId)!==group||!navigationDebugWanted||group.userData.navigationDebug!==state||state.version!==version)return;const overlay=new NavigationDebugOverlay(data);if(!own(group,overlay))return;state.overlay=overlay;group.add(overlay.group);onVisualChange();}).catch(e=>{if(!group.userData.disposed&&navigationDebugWanted&&state.version===version){state.error=e.message;error?.('내비게이션 표시: '+e.message);}}).finally(()=>{if(state.version===version)state.pending=null;});}
   function navigationDebug(enabled){enabled=!!enabled&&editor;if(enabled===navigationDebugWanted)return;navigationDebugWanted=enabled;for(const group of navigationDebugGroups){const state=group.userData.navigationDebug;if(enabled)startNavigationDebug(group);else{state.version=(state.version||0)+1;state.pending=null;if(state.overlay){release(group,state.overlay);state.overlay=null;}}}}
@@ -58,7 +58,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     const key=JSON.stringify([path,normal]);let entry=textureSources.get(key);
     if(entry){textureSources.delete(key);textureSources.set(key,entry);}else{
       const epoch=textureEpoch;entry={bytes:0};textureSources.set(key,entry);
-      entry.promise=new THREE.TextureLoader().loadAsync(fileUrl(path)).then(result=>{result.colorSpace=normal?THREE.NoColorSpace:THREE.SRGBColorSpace;
+      entry.promise=(loadTexture?loadTexture(path):new THREE.TextureLoader().loadAsync(fileUrl(path))).then(result=>{result.colorSpace=normal?THREE.NoColorSpace:THREE.SRGBColorSpace;
         if(epoch===textureEpoch&&textureSources.get(key)===entry){entry.bytes=(result.image.width||1)*(result.image.height||1)*4;textureBytes+=entry.bytes;while(textureSources.size>128||textureBytes>32*1024*1024){const [old,value]=textureSources.entries().next().value;textureSources.delete(old);textureBytes-=value.bytes;value.promise.then(t=>t.dispose(),()=>{});}}
         return result;
       },e=>{if(textureSources.get(key)===entry)textureSources.delete(key);throw Error('텍스처를 읽지 못했어요: '+path+(e?.message?' · '+e.message:''));});

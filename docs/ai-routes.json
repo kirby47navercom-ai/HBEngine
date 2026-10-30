@@ -5020,6 +5020,83 @@
       "paths": [
         "prototype/mixer-voice-audibility.js"
       ]
+    },
+    {
+      "id": "native-game-renderer",
+      "keywords": [
+        "createNativeSceneRenderer"
+      ],
+      "paths": [
+        "prototype/native-scene-renderer.js"
+      ]
+    },
+    {
+      "id": "shared-project-runtime",
+      "keywords": [
+        "runProject"
+      ],
+      "paths": [
+        "tools/run-project.mjs"
+      ]
+    },
+    {
+      "id": "desktop-build-profiles",
+      "keywords": [
+        "defaultBuildProfile",
+        "validBuildProfile"
+      ],
+      "paths": [
+        "prototype/build-profile.js"
+      ]
+    },
+    {
+      "id": "native-game-runtime",
+      "keywords": [
+        "nativeGameMain"
+      ],
+      "paths": [
+        "tools/native-game-runner.mjs"
+      ]
+    },
+    {
+      "id": "native-game-export",
+      "keywords": [
+        "buildNativeGame",
+        "nativeRuntimeFiles",
+        "validateNativeContent"
+      ],
+      "paths": [
+        "tools/build-native-game.mjs"
+      ]
+    },
+    {
+      "id": "native-platform-adapter",
+      "keywords": [
+        "openNativePackage",
+        "installNativeAssets",
+        "nativeAudioRouting"
+      ],
+      "paths": [
+        "tools/native-game-platform.mjs"
+      ]
+    },
+    {
+      "id": "native-widget-surface",
+      "keywords": [
+        "NativeWidgetLayer"
+      ],
+      "paths": [
+        "tools/native-widget-layer.mjs"
+      ]
+    },
+    {
+      "id": "desktop-native-builder",
+      "keywords": [
+        "buildNativePlayer"
+      ],
+      "paths": [
+        "tools/build-native-player.mjs"
+      ]
     }
   ]
 }

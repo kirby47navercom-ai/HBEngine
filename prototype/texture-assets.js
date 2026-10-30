@@ -1,3 +1,4 @@
+import {createPixelCanvas} from './pixel-canvas.js';
 import {validLayerNormalization} from './layered-texture-normalization.js';
 import {loadDiskMipTexture} from './texture-disk-load.js';
 import {loadImportedLayeredTexture} from './layered-texture-import.js';
@@ -50,7 +51,7 @@ export async function loadMaterialTexture(THREE,binding,resources,fileUrl,render
     if(d.import||normalizing)map=await loadImportedLayeredTexture(THREE,d,loader,fileUrl,first,{signal});
     else if(d.mips?.length)map=await loadAuthoredLayeredTexture(THREE,d,loader,fileUrl,first);
     else if(type==='texturecube')map=new THREE.CubeTexture([first,...await Promise.all(d.images.slice(1).map(async p=>sameSize(await loader.loadAsync(fileUrl(p)))))]);
-    else{const bytes=w*h*d.images.length*4;if(!Number.isSafeInteger(bytes)||bytes>2147483647)throw Error('텍스처 데이터 크기를 확인하세요.');const pixels=new Uint8Array(bytes),canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const c=canvas.getContext('2d',{willReadFrequently:true});if(!c)throw Error('텍스처 이미지 변환을 시작할 수 없어요.');
+    else{const bytes=w*h*d.images.length*4;if(!Number.isSafeInteger(bytes)||bytes>2147483647)throw Error('텍스처 데이터 크기를 확인하세요.');const pixels=new Uint8Array(bytes),canvas=createPixelCanvas();canvas.width=w;canvas.height=h;const c=canvas.getContext('2d',{willReadFrequently:true});if(!c)throw Error('텍스처 이미지 변환을 시작할 수 없어요.');
       try{for(let z=0;z<d.images.length;z++){const image=z===0?first:sameSize(await loader.loadAsync(fileUrl(d.images[z])));c.clearRect(0,0,w,h);c.drawImage(image,0,0);pixels.set(c.getImageData(0,0,w,h).data,z*w*h*4);}}finally{canvas.width=canvas.height=0;}
       map=type==='texturearray'?new THREE.DataArrayTexture(pixels,w,h,d.images.length):new THREE.Data3DTexture(pixels,w,h,d.images.length);map.minFilter=map.magFilter=THREE.LinearFilter;
     }
