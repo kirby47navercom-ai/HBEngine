@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-26",
-  "basisRevision": "c7cf354364210c8b0deb2e0d5b82a0c6c111c73e",
+  "updatedAt": "2026-10-30",
+  "basisRevision": "f50ade8e618fb1d0becfc46244a1e3466271e7b7",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -3860,22 +3860,30 @@
       "id": "BLD-01",
       "area": "platform",
       "title": "Windows·웹 게임 배포",
-      "status": "verified",
-      "implemented": "독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0.",
-      "remaining": [],
+      "status": "partial",
+      "implemented": "독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0. ·3361–3400: Windows 기본 native / web 별도 경로·Win32/D3D11+공용V8/BP/AOT C++·Skia UI/한글/SVG·네이티브 PCM·OS키/마우스·정상종료·원자저장·미리 준비한 기본 셰이더. 실제 소유 숨김창의 픽셀/텍스처/입력/종료·공용SDK 엄격 경고 검사·무음 Windows 출력 통과. 에디터 UI WebView는 유지.",
+      "remaining": [
+        "네이티브 목록/트리·월드 추적 UI·키오스크·스트리밍 오디오·영상·화면 동기화",
+        "네이티브 게임패드·포인터 잠금·고급 위젯/DCC/대규모 게임 호환성과 성능 검증"
+      ],
       "sources": [
         "tools/build-game.mjs",
         "tools/build-web.mjs",
         "prototype/asset-documents.js",
         "prototype/build-profile.js",
-        "tools/check-editor-tool-content-2255.mjs"
+        "tools/check-editor-tool-content-2255.mjs",
+        "tools/build-native-game.mjs",
+        "tools/native-game-runner.mjs",
+        "native/desktop/HBNativePlayer.cpp",
+        "docs/NATIVE_GAME_RUNTIME.md"
       ],
       "evidence": [
         "docs/WINDOWS_GAME_IDENTITY_108.md",
         "docs/WEB_GAME_EXPORT_083.md",
         "docs/research/ENGINE_WORK_200.json",
         "docs/research/ENGINE_WORK_201.json",
-        "docs/research/ENGINE_WORK_2259.json"
+        "docs/research/ENGINE_WORK_2259.json",
+        "docs/research/ENGINE_WORK_3400.json"
       ]
     },
     {
@@ -4364,10 +4372,10 @@
     }
   ],
   "latestBatch": {
-    "first": 3341,
-    "last": 3360,
-    "receipt": "docs/research/ENGINE_WORK_3360.json",
-    "scope": "믹서 라우팅/Send/예약 제어값/압축 감쇠 기반 음성선별·legacy/보호유지·실제OfflinePCM/공용VM·설치보류/예약0."
+    "first": 3361,
+    "last": 3400,
+    "receipt": "docs/research/ENGINE_WORK_3400.json",
+    "scope": "PC 네이티브/웹 분리·공용 제작/실행·실제 OS 입력/DirectX/UI/audio·기본 shader seed·설치 갱신 승인/예약0. 누적 전체 완료 아님."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_2145.json",

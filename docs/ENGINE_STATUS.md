@@ -1,10 +1,10 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-26 · 대조 기준 커밋: `c7cf3543`
+갱신일: 2026-10-30 · 대조 기준 커밋: `f50ade8e`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
-현재 등록 78항목: 정의한 범위 구현·검증 근거 있음 37개 / 구현된 부분과 추가 구현이 함께 있음 37개 / 아래 remaining의 제작/실행 경로 미구현 1개 / 실행 경로 또는 일부 표본은 있으나 요구 조건 검증 안 됨 3개
+현재 등록 78항목: 정의한 범위 구현·검증 근거 있음 36개 / 구현된 부분과 추가 구현이 함께 있음 38개 / 아래 remaining의 제작/실행 경로 미구현 1개 / 실행 경로 또는 일부 표본은 있으나 요구 조건 검증 안 됨 3개
 
 `node tools/hb.mjs status --local`은 창/서버 없이 읽는다. 실행 서버에서는 `GET /api/engine/status`를 사용한다. id·area·status·search 필터와 전체/일치 항목 수를 제공한다. 원장 갱신 후 `node tools/engine-status.mjs --write`로 이 문서를 동기화한다. 조회는 프로젝트 파일·실행 상태를 변경하지 않는다.
 
@@ -165,7 +165,7 @@
 
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
-| BLD-01 Windows·웹 게임 배포 | verified | 독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0. | 이 행의 범위는 검증됨 | [WINDOWS_GAME_IDENTITY_108.md](WINDOWS_GAME_IDENTITY_108.md) · [WEB_GAME_EXPORT_083.md](WEB_GAME_EXPORT_083.md) · [ENGINE_WORK_200.json](research/ENGINE_WORK_200.json) · [ENGINE_WORK_201.json](research/ENGINE_WORK_201.json) · [ENGINE_WORK_2259.json](research/ENGINE_WORK_2259.json) |
+| BLD-01 Windows·웹 게임 배포 | partial | 독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0. ·3361–3400: Windows 기본 native / web 별도 경로·Win32/D3D11+공용V8/BP/AOT C++·Skia UI/한글/SVG·네이티브 PCM·OS키/마우스·정상종료·원자저장·미리 준비한 기본 셰이더. 실제 소유 숨김창의 픽셀/텍스처/입력/종료·공용SDK 엄격 경고 검사·무음 Windows 출력 통과. 에디터 UI WebView는 유지. | 네이티브 목록/트리·월드 추적 UI·키오스크·스트리밍 오디오·영상·화면 동기화 · 네이티브 게임패드·포인터 잠금·고급 위젯/DCC/대규모 게임 호환성과 성능 검증 | [WINDOWS_GAME_IDENTITY_108.md](WINDOWS_GAME_IDENTITY_108.md) · [WEB_GAME_EXPORT_083.md](WEB_GAME_EXPORT_083.md) · [ENGINE_WORK_200.json](research/ENGINE_WORK_200.json) · [ENGINE_WORK_201.json](research/ENGINE_WORK_201.json) · [ENGINE_WORK_2259.json](research/ENGINE_WORK_2259.json) · [ENGINE_WORK_3400.json](research/ENGINE_WORK_3400.json) |
 | BLD-02 Android 빌드·가상 기기 | verified | ARM64/x86_64 APK/AAB·서명/정렬·설치·게임/터치·복귀 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·242: 한글 작업경로 aapt2 SDK상대참조 보정·천/로프 SDK10 arm64 NDK·서명/정렬 APK ·248: 새SDK6 arm64 NDK/서명 APK16K·새모듈 closure·실폰 아님 ·258: 새 SDK 서명APK/16KiB ELF·ZIP·6350475B; 실제 기기 없음 ·267: arm64 서명APK7333493B·새 모듈 closure·16KiB ELF/ZIP; 실물 기기 없음 ·273: APK6326149B·16KiB ELF/ZIP·새JS모듈/SDK closure; 실물 기기 없음 ·280: 최신 arm64 서명APK·16KiB ELF/ZIP·광선/타일/색상7모듈 SHA 대조, 실물기기 없음 ·287: 최신 SDK734/사용자CPP arm64 AOT와 서명 APK·16키 모듈 원문 SHA·16KiB 정렬 | 이 행의 범위는 검증됨 | [MOBILE_EXPORT.md](MOBILE_EXPORT.md) · [ENGINE_WORK_200.json](research/ENGINE_WORK_200.json) · [ENGINE_WORK_242.json](research/ENGINE_WORK_242.json) · [ENGINE_WORK_248.json](research/ENGINE_WORK_248.json) · [ENGINE_WORK_258.json](research/ENGINE_WORK_258.json) · [ENGINE_WORK_267.json](research/ENGINE_WORK_267.json) · [ENGINE_WORK_273.json](research/ENGINE_WORK_273.json) · [ENGINE_WORK_280.json](research/ENGINE_WORK_280.json) · [ENGINE_WORK_287.json](research/ENGINE_WORK_287.json) |
 | BLD-03 iOS 원격 빌드·시뮬레이터 | verified | Xcode 두 대상·C++/물리/UI·반복 오디오·백그라운드 복귀 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) | 이 행의 범위는 검증됨 | [MOBILE_EXPORT.md](MOBILE_EXPORT.md) · [IOS_REMOTE_DISTRIBUTION.md](IOS_REMOTE_DISTRIBUTION.md) · [ENGINE_WORK_200.json](research/ENGINE_WORK_200.json) |
 | BLD-04 실제 휴대폰·스토어 배포 | unverified | 모바일 출력/빌드 경로 있음 | 실물 기기 설치/열/배터리/음향 · Apple 서명·IPA/TestFlight·스토어 배포 | [IOS_REMOTE_DISTRIBUTION.md](IOS_REMOTE_DISTRIBUTION.md) · [MOBILE_EXPORT.md](MOBILE_EXPORT.md) |

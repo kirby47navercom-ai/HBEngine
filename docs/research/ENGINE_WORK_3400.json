@@ -1,0 +1,293 @@
+{
+  "version": 1,
+  "date": "2026-10-30",
+  "kind": "windows-native-and-web-runtime-separation",
+  "implementationRevision": "f50ade8e618fb1d0becfc46244a1e3466271e7b7",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3360.json",
+  "changedSourceHashes": {
+    "CODEX_HANDOFF.md": "ffbbd577dc7c6e8be34156140ba1bb0d3eb5134e9b4f9971392951c14420f21b",
+    "docs/ai-routes.json": "962051b1148247b59653c8cba20a1fcabd84ca5241e67c0eab6182d3a2413821",
+    "docs/NATIVE_GAME_RUNTIME.md": "f5c51a704cc2c7d603828b4bb49ca4018fdba18c8677113885144a15cb674258",
+    "package.json": "c3fd7daf6302db30693d7d5b2143fdebf9426b93f25ec1a691e14ea79ce2aafb",
+    "package-lock.json": "b8f2a7b61f682c8449069ba78d48c204cf15aca6a8e33360c62a06ab0c447fb7",
+    "native/desktop/HBNativePlayer.cpp": "c805f1d3a552839a4f8827c8dc1b869b5de515ba5df3fe7197f6610d400c5b7f",
+    "native/desktop/NativeWidgetWindow.hpp": "4e274be2f78e00b09a9b5104bf18a17d9953139bcf77dae367679a3e12856fea",
+    "native/include/HBEngine/Bridge.hpp": "0c29638bae29162cef808ea7b7f2b697cb5839e1b5b6e77b8ca9193de33e827d",
+    "prototype/build-panel.js": "3c357823fd36a718021f3eafe2caf37ab45d411b1a5361fbe3c781fddbce04ca",
+    "prototype/build-profile.js": "7ff526617f7ba540a0399d14517f651b11c49f6138b7f8f3a9802eaef00a94cc",
+    "prototype/engine-services.js": "b4cab1ee5bbff4185ed77e56fb3df0f0d060d3f50bfe6c96b3f0274e31a83938",
+    "prototype/layered-texture-import.js": "10fe8d1ce7f8cc132f770fb308651b81547fea06bfec90962953d96e7ddc8c32",
+    "prototype/native-scene-renderer.js": "a3fa968ce75b7851a8c0001627b00d34330daa675748fb47934c5ead6167063d",
+    "prototype/pixel-canvas.js": "b6112e6230a8e98954705bc4d385d6badb95738ee3832939b39134a7f32fe9d0",
+    "prototype/scene-rendering.js": "85e889e38f42a71018cece9aee921a92c58ba37e9855575210171c275306483c",
+    "prototype/texture-assets.js": "1e7c8d4a6096555b2179f15955d89cf501e3298756b4bb8ac857622dc160e9a7",
+    "prototype/texture-authored-mips.js": "438c4bf7ea8b887009c7b848d02ab412f8f58edc415a600c61cd94ae20f3b7b1",
+    "prototype/texture-image-load.js": "75f5c9313857a699872d85c26b5b32b0721ddb00fad764ad81453044e7441844",
+    "prototype/texture-import.js": "84f9bac6ba7f42d03d03748edfef689a96d4efb69a05b9d780404ac2c6c4ea8e",
+    "prototype/ui-runtime.js": "827f7eb88132001216af3ace34b0ae20d3b25aa7895ec2ea03e94abe79441919",
+    "tools/build-desktop.mjs": "0ef318c27c4ecbf6778cb976930e37650040ae17ec92e5cd67816921c20bfa0c",
+    "tools/build-game.mjs": "e69f9fa3db03d311cb7b859085de0d1a2d650f6c0c52c9a542fcc6e072139d73",
+    "tools/build-native-game.mjs": "605765acbaf3cfeabcae99abbef15f08dc160658583c66dbe547c7e182c8a987",
+    "tools/build-native-player.mjs": "6a41df4540bc3051a60dd1cd3a1999318af4ae64dd2c5093892663ca8d706e97",
+    "tools/check-build-profiles.mjs": "4d4054c5be117054698f4665f518531cfe5ee7863ffb149aa19e9f465defa863",
+    "tools/check-native-game.mjs": "665e05d718ac4167655574408592209dde2dca93e2024e873c6e4a2acff875de",
+    "tools/check-native-platform.mjs": "d985f97b84a6de4148fe8bfebbda49ae4f1afdd8f843e62b9922e0b616bff2df",
+    "tools/headless-model.mjs": "5a3655c64bce525dc16addc67d85ad0fa364a1db76cbad294b992a9b2c5c6e5c",
+    "tools/native-game-platform.mjs": "9431510602a3e0729dad02fbd2573af8bcd1b0a6977293d1622663c99646c79c",
+    "tools/native-game-runner.mjs": "a4174f1d10d1f22ce7ddc67a592c0b6d4bac10e6a7b3ce58ba82152fffafe32d",
+    "tools/native-game-storage.mjs": "308686f2ef358fd8d271caa514642e9d6c2056b8e40be3e860696a7783a6c363",
+    "tools/native-widget-layer.mjs": "a43b81acc775b84686e832a79c9293176e2de4328056ec130fd99b69b4b4875c",
+    "tools/run-project.mjs": "ead75fab3b490f50f57632429be591b2876b58dd20061e5d18837a8971106bf0",
+    "tools/sync-desktop-content.mjs": "9201cc010aa852bd4b23c67990d2d3d7cf5b67e0235aff5cea059afd960a5c3d"
+  },
+  "resolvedOwners": 1677,
+  "targetIds": [
+    "BLD-01"
+  ],
+  "sourceCases": {
+    "nativeGame": [
+      "AOT same-runtime control",
+      "D3D11 texture/C++/HUD/audio 40 frames",
+      "owned Win32 mouse/keyboard and graceful close"
+    ],
+    "platform": [
+      "AI default runtime contract and unsupported native content reject without fallback",
+      "SVG→native pixels and Rapier with platform globals; external fetch rejected",
+      "per-game durable atomic storage",
+      "native Korean UI, mouse click, programmatic focus, text input, 1.5x resize and idle upload reuse",
+      "native Offline PCM through common mixer DSP",
+      "actual Windows default audio sink opened and advanced, muted to avoid disturbing the user"
+    ]
+  },
+  "relatedCases": [
+    "check-headless.mjs",
+    "check-headless-model.mjs",
+    "check-ui-layout.mjs",
+    "check-buffered-audio.mjs",
+    "check-build-profiles.mjs",
+    "check-ui-audio.mjs"
+  ],
+  "checks": [
+    {
+      "command": "node tools/check-native-game.mjs",
+      "passed": true,
+      "report": "native/build/native-game-wprLxo/acceptance.json",
+      "sha256": "41f3c492b03d3a1da942d2bfe1e2a2f1a119fe435937c71bdd1a5749351dc21a"
+    },
+    {
+      "command": "node tools/check-native-platform.mjs",
+      "passed": true,
+      "report": "native/build/native-platform-vhNNZu/acceptance.json",
+      "sha256": "a27fb2a3392714e4d5b7a226d416ee5ede774375d8a3d9b75cd5e6a89ddd3fdc"
+    },
+    {
+      "command": "related six gates",
+      "passed": true
+    }
+  ],
+  "samples": {
+    "frames": 40,
+    "nativeInput": true,
+    "nativeCloseFrames": 116,
+    "webviewProcesses": false,
+    "ownedProcesses": {
+      "ProcessId": 11900,
+      "ParentProcessId": 8244,
+      "Name": "HBScript_3bf0bbd8db10463d90be584d7dac6983.exe",
+      "WorkingSetSize": 83861504
+    },
+    "packageBytes": 183038794,
+    "nodeMemory": {
+      "rss": 187207680,
+      "heapTotal": 118468608,
+      "heapUsed": 57636080,
+      "external": 20535113,
+      "arrayBuffers": 6367527
+    },
+    "renderPreparationMS": 1252.6351000000002,
+    "shaderCache": {
+      "hits": 3,
+      "misses": 0,
+      "writes": 0,
+      "evictions": 0,
+      "lastScannedBytes": 567741,
+      "budgetBytes": 8388608,
+      "invalid": 0,
+      "errors": 0,
+      "busy": 0,
+      "configured": true
+    },
+    "ui": {
+      "frames": 1,
+      "instances": 1,
+      "hitTargets": 1
+    },
+    "audioErrors": [],
+    "unmodifiedHUDUploads": 1,
+    "renderAndHUDMS": [
+      2.745900000000347,
+      1.0819000000001324,
+      0.9259999999999309,
+      0.9855999999999767,
+      0.8291000000003805,
+      0.8362000000001899,
+      0.9420999999997548,
+      1.158100000000104,
+      1.2092999999999847,
+      1.1466999999997824,
+      0.8333000000002357,
+      0.8369999999999891,
+      0.9329999999999927,
+      0.7757999999998901,
+      0.9054000000000997,
+      0.845299999999952,
+      0.8937000000000808,
+      0.9360000000001492,
+      0.781800000000203,
+      0.7175000000002001,
+      0.7593999999999141,
+      0.7735999999999876,
+      0.7934000000000196,
+      0.6858000000001994,
+      0.7303000000001703,
+      0.6259000000000015,
+      0.6628000000000611,
+      0.6437000000000808,
+      0.6995999999999185,
+      0.6561999999998989,
+      0.6387999999997191,
+      0.7510999999999513,
+      0.6378999999997177,
+      0.6684999999997672,
+      0.6399999999998727,
+      0.6675000000000182,
+      0.6842999999998938,
+      0.6243999999996959,
+      0.6314000000002125
+    ],
+    "frameTimeScope": "onFrame rendering/HUD only; excludes VM/physics and timer wait"
+  },
+  "binary": {
+    "path": "dist/HBEngine/HBNativePlayer.exe",
+    "sha256": "990e939a72104e50a216d4755a8dca317cb5a7e1549bf747d92af2a2451fe6aa",
+    "bridgeHeader": "0c29638bae29162cef808ea7b7f2b697cb5839e1b5b6e77b8ca9193de33e827d"
+  },
+  "failures": [
+    "Windows linker/objdump required relative Unicode paths; repaired without weakening checks.",
+    "Partial window shim caused Rapier monotonic-clock panic; provide native performance/crypto globals.",
+    "Skia ICU .dat was initially absent from package; include native runtime data.",
+    "Original execution errors were hidden by shutdown errors; preserve both and propagate failing exit.",
+    "Cold default shaders took about19.6s in initial fixture; seed exact bytecode and reuse bounded cache.",
+    "Existing headless model depth expectation and strict GCC indentation warning were repaired."
+  ],
+  "boundary": {
+    "nativeUnsupported": [
+      "ListView/TreeView",
+      "tracked world UI",
+      "kiosk",
+      "media-element audio streaming",
+      "video",
+      "display synchronization"
+    ],
+    "furtherNativeWork": [
+      "gamepad",
+      "pointer lock",
+      "full advanced widget/model compatibility and large-game profiling"
+    ],
+    "editorUsesWebView": true,
+    "gameLogic": "Shared V8/BP/AOT C++ runtime; not automatic all-game multithreading",
+    "windowsPrerequisite": "Visual C++ v14 x64 runtime for native audio",
+    "mobileDeviceValidation": false,
+    "overallEngineComplete": false,
+    "webRuntime": "existing route preserved; dry-run renderer/target contract checked; protected player source not read or rebuilt"
+  },
+  "storage": {
+    "testBuildsPrunedBy": "retainTestEvidence",
+    "newSchedules": 0,
+    "handoffBytes": 4717,
+    "versionsPolicy": "one version after authorized installation",
+    "foreignBindingCleanupPending": false,
+    "foreignBindingsRemoved": {
+      "removed": [
+        {
+          "name": "node-web-audio-api.darwin-arm64.node",
+          "bytes": 5257360
+        },
+        {
+          "name": "node-web-audio-api.darwin-x64.node",
+          "bytes": 6191864
+        },
+        {
+          "name": "node-web-audio-api.linux-arm-gnueabihf.node",
+          "bytes": 5238228
+        },
+        {
+          "name": "node-web-audio-api.linux-arm64-gnu.node",
+          "bytes": 5533016
+        },
+        {
+          "name": "node-web-audio-api.linux-x64-gnu.node",
+          "bytes": 6749528
+        },
+        {
+          "name": "node-web-audio-api.win32-arm64-msvc.node",
+          "bytes": 5669376
+        }
+      ],
+      "bytes": 34639372
+    },
+    "helpersRemoved": [
+      "native-routes3361.mjs",
+      "native-runtime3362.mjs",
+      "native-host-finish3363.mjs",
+      "native-finish3364.mjs",
+      "native-build-finish3365.mjs",
+      "native-state-finish3366.mjs",
+      "native-pixel-finish3367.mjs",
+      "native-model-finish3368.mjs",
+      "native-report-finish3369.mjs",
+      "native-debug3370.mjs",
+      "native-cost3371.mjs",
+      "native-error3372.mjs",
+      "native-original3373.mjs",
+      "native-physics-probe3374.mjs",
+      "native-physics-probe3375.mjs",
+      "native-physics-probe3376.mjs",
+      "native-pack-data3377.mjs",
+      "native-warmup3378.mjs",
+      "native-final-hooks3379.mjs",
+      "native-qa3380.mjs",
+      "native-ui-cost3381.mjs",
+      "native-check3382.mjs",
+      "native-shader3383.mjs",
+      "native-texture3384.mjs",
+      "native-close3385.mjs",
+      "native-close-test3386.mjs",
+      "native-unicode3387.mjs",
+      "native-dist3388.mjs",
+      "native-ready3389.mjs",
+      "native-guard3390.mjs",
+      "native-window3391.mjs",
+      "native-dpi3392.mjs",
+      "native-unit3393.mjs",
+      "native-admit3394.mjs",
+      "native-commit3395.mjs",
+      "native-ledger3396.mjs",
+      "native-storage3397.mjs",
+      "native-finalize3398.mjs"
+    ],
+    "legacyTestBinaryRemoved": "native/build/ui-audio-native.exe"
+  },
+  "scope": "Implemented and exercised a separate browserless Windows game path with common authored/runtime logic. Fixture timings and Node RSS are not whole-game FPS, total process/GPU memory, or a WebView A/B comparison.",
+  "sourceCommits": [
+    "d1f669ef49cd1a4390641920ad97c95cf22f6453",
+    "f50ade8e618fb1d0becfc46244a1e3466271e7b7"
+  ],
+  "relatedCpp": {
+    "source": "native/build/ui-audio-native.cpp",
+    "sourceSHA256": "32d8baf0ea3c7a90c0b78e21d06067c963513b0606b05d4ad934a7378adf52d9",
+    "binarySHA256": "b93b2992ab9ccc39c1f56bd2a742a2815c109a52263284d14538cacfc1bdf6ae",
+    "flags": "C++17 -Wall -Wextra -Werror",
+    "executed": true
+  }
+}

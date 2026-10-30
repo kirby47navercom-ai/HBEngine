@@ -1208,3 +1208,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 2026-10-24 WORK2218: BT EQS 자동 서비스의 편집·저장·실행·타이머/수명과 관리 시퀀스 batch 실패 복원·중복 필드·clear 퇴역을 연결. 신규 source26 사례와 영향 검사 통과. 일반 외부 부작용/정적 TestPawn/GUI·장치·설치는 잔여로 유지. 예약0/업데이트 보류.
 
 2026-10-24 WORK2229: 공용 PCM 개별 취소/FIFO·늦은 소리 시작·미리듣기 취소UI와 기존BT query/service stop/reset 수명 교정. 신규 source25 사례/영향 gate 통과, 실제 기기·GUI·전체 엔진 완료 주장은 분리. 예약0/업데이트보류·별도 설치 사본 생성0 유지.
+
+2026-10-30 WORK3400: Windows 네이티브 게임과 웹 배포를 분리했어요. 기본 PC 패키지에는 WebView2/HTML/로컬 서버를 넣지 않고 공용 V8/BP/AOT C++·DirectX·Skia HUD·네이티브 믹서를 연결했어요. 실제 숨김 창의 OS키/마우스/정상종료·텍스처 픽셀과 관련 회귀 검사를 통과했어요. 원장/수치/제약은 docs/research/ENGINE_WORK_3400.json 및 docs/NATIVE_GAME_RUNTIME.md에 있어요. 최신 요청으로 설치 갱신 보류는 해제했고 예약은 만들지 않아요. 설치 완료는 후속 USER_INSTALL_3401 기록으로 구분해요.
