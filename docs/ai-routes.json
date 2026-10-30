@@ -5097,6 +5097,36 @@
       "paths": [
         "tools/build-native-player.mjs"
       ]
+    },
+    {
+      "id": "rigid-physics-lifetime",
+      "keywords": [
+        "createRigidPhysics",
+        "loadPhysicsLibraries"
+      ],
+      "paths": [
+        "prototype/physics-world.js"
+      ]
+    },
+    {
+      "id": "runtime-json-matchers",
+      "keywords": [
+        "runtimeDataMatcher",
+        "sameRuntimeData"
+      ],
+      "paths": [
+        "prototype/runtime-data-equal.js"
+      ]
+    },
+    {
+      "id": "runtime-world-transport",
+      "keywords": [
+        "NativeWorldClient",
+        "nativeWorldClient"
+      ],
+      "paths": [
+        "prototype/native-transport.js"
+      ]
     }
   ]
 }

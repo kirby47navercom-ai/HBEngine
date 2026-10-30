@@ -1,3 +1,4 @@
+import {runtimeDataMatcher} from './runtime-data-equal.js';
 // JSON snapshots stay separate from the mutable game world. Clone only changed
 // paths after a successful call; failures force the next request to send a full world.
 export function worldPatch(previous,current,limit=4096){
@@ -92,7 +93,7 @@ export async function advanceNativeFrames(builds,owner,delta,invoke,isCurrent=()
   else for(const build of unique){if(!isCurrent())break;await advance(build);}
 }
 export class NativeWorldClient {
-  constructor(owner){this.owner=owner;this.id=crypto.randomUUID();this.world=null;this.rows=null;this.sequence=0;this.queue=Promise.resolve();this.pendingCalls=0;this.clockRevision=0;this.frames=[];this.clockBatchable=false;this.clockState=null;this.spawnContext=null;}
+  constructor(owner){this.owner=owner;this.id=crypto.randomUUID();this.world=null;this.rows=null;this.sequence=0;this.queue=Promise.resolve();this.pendingCalls=0;this.clockRevision=0;this.frames=[];this.clockBatchable=false;this.clockState=null;this.spawnContext=null;this.rowMatchers=[];this.matcherCache=new Map();}
   call(request,metadata,send){
     this.moduleFrameBatch=metadata?.nativeModuleFrameBatch===1;
     this.pendingCalls++;
@@ -117,8 +118,8 @@ export class NativeWorldClient {
         return revision===this.clockRevision?result:{...result,clockBatchable:false};
       };
       if(metadata?.workerProtocol!==3)return send(request);
-      if(request.command==='reset'){this.frames=[];this.clockBatchable=false;const result=await send(request);this.world=null;this.rows=null;this.sequence=0;this.clockBatchable=result.clockBatchable===true;this.clockState=result.clock;return result;}
-      if(request.command==='initialize'){const result=await send(request);this.world=null;this.rows=null;this.sequence=0;this.clockBatchable=result.clockBatchable===true;this.clockState=result.clock;return result;}
+      if(request.command==='reset'){this.frames=[];this.clockBatchable=false;const result=await send(request);this.world=null;this.rows=null;this.sequence=0;this.rowMatchers=[];this.matcherCache?.clear();this.clockBatchable=result.clockBatchable===true;this.clockState=result.clock;return result;}
+      if(request.command==='initialize'){const result=await send(request);this.world=null;this.rows=null;this.sequence=0;this.rowMatchers=[];this.matcherCache?.clear();this.clockBatchable=result.clockBatchable===true;this.clockState=result.clock;return result;}
       if(request.command==='frame'){
         if(!Number.isFinite(request.delta)||request.delta<0||request.delta>1||request.clock&&(!Number.isFinite(request.clock.scale)||request.clock.scale<0||typeof request.clock.paused!=='boolean'))return send(request);
         // With one module and no active C++ timers, only the next C++ read can
@@ -129,15 +130,15 @@ export class NativeWorldClient {
       }
       // Native JSON serialization compares unchanged actor rows faster than walking
       // all their component/UI fields in JS. Keep only detached, immutable rows.
-      const serializeStart=performance.now();let reusedRows=0;const rows=request.objects.map(object=>nativeRowJSON(object)??'null'),current=rows.map((row,i)=>{if(this.world&&row===this.rows?.[i]){reusedRows++;return this.world[i];}return detachedNativeRow(request.objects[i],row);}),serializedAt=performance.now();
+      const serializeStart=performance.now();let reusedRows=0,serializedRows=0;const rows=request.objects.map((object,i)=>{if(this.owner?.hooks?.nativeRowReuse===true&&this.world?.[i]){let matcher=this.rowMatchers[i];if(matcher?.test===null&&matcher.snapshot?.id===this.world[i].id)matcher.snapshot=this.world[i];else if(matcher?.snapshot!==this.world[i])matcher=this.rowMatchers[i]=runtimeDataMatcher(this.world[i],this.matcherCache,immutableNodes)||{snapshot:this.world[i],test:null};if(matcher?.test?.(this.world[i],object))return this.rows[i];}serializedRows++;return nativeRowJSON(object)??'null';}),current=rows.map((row,i)=>{if(this.world&&row===this.rows?.[i]){reusedRows++;return this.world[i];}return detachedNativeRow(request.objects[i],row);}),serializedAt=performance.now();this.rowMatchers.length=rows.length;
       let next,packet,sequence=this.sequence+1;const patch=this.world&&worldPatch(this.world,current);
       if(patch){next=applyWorldPatch(this.world,patch);packet={...request,objects:undefined,objectPatch:patch,worldTransport:1,worldId:this.id,baseSequence:this.sequence,worldSequence:sequence};}
       if(!packet){next=current;sequence=1;packet={...request,objects:next,worldTransport:1,worldId:this.id,baseSequence:0,worldSequence:sequence};}
       const frames=this.frames;this.frames=[];if(frames.length)packet.frameAdvances=frames;
-      const preparedAt=performance.now(),result=await send(packet),acknowledgeAt=performance.now();this.clockBatchable=result.clockBatchable===true&&!result.nativeError;this.clockState=result.clock;if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');const committed=commitNativeWorld(next,result);this.world=result.nativeError?null:committed;this.rows=result.nativeError?null:rows.map((row,i)=>committed[i]===next[i]?row:JSON.stringify(committed[i]));this.sequence=result.nativeError?0:sequence;if(result.transport)Object.assign(result.transport,{clientSerializeMs:serializedAt-serializeStart,clientPatchMs:preparedAt-serializedAt,clientAckMs:performance.now()-acknowledgeAt,worldRows:rows.length,reusedRows});return result;
+      const preparedAt=performance.now(),result=await send(packet),acknowledgeAt=performance.now();this.clockBatchable=result.clockBatchable===true&&!result.nativeError;this.clockState=result.clock;if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');const committed=commitNativeWorld(next,result);this.world=result.nativeError?null:committed;this.rows=result.nativeError?null:rows.map((row,i)=>{if(this.rowMatchers[i]?.snapshot!==committed[i])this.rowMatchers[i]=undefined;return committed[i]===next[i]?row:JSON.stringify(committed[i]);});this.sequence=result.nativeError?0:sequence;if(result.nativeError){this.rowMatchers=[];this.matcherCache.clear();}if(result.transport)Object.assign(result.transport,{clientSerializeMs:serializedAt-serializeStart,clientPatchMs:preparedAt-serializedAt,clientAckMs:performance.now()-acknowledgeAt,worldRows:rows.length,reusedRows,serializedRows});return result;
     });
     // The ordering tail must not keep the last complete response alive.
-    this.queue=job.then(()=>{},()=>{this.spawnContext=null;this.world=null;this.rows=null;this.sequence=0;this.frames=[];this.clockBatchable=false;this.clockState=null;});return job.finally(()=>this.pendingCalls--);
+    this.queue=job.then(()=>{},()=>{this.spawnContext=null;this.world=null;this.rows=null;this.sequence=0;this.rowMatchers=[];this.matcherCache?.clear();this.frames=[];this.clockBatchable=false;this.clockState=null;});return job.finally(()=>this.pendingCalls--);
   }
 }
 const owners=new WeakMap();

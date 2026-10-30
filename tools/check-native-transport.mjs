@@ -25,11 +25,11 @@ const owner={},build={token:'same'};
 assert.equal(nativeWorldClient(build,owner),nativeWorldClient({...build},owner),'BP paths sharing one worker share one sequence');
 assert.notEqual(nativeWorldClient(build,owner),nativeWorldClient(build,{}),'new play world owns a new snapshot');
 for(const workerProtocol of [undefined,1,2]){
-  const request={objects:old},client=new NativeWorldClient();
+  const request={objects:old},client=new NativeWorldClient({hooks:{nativeRowReuse:true}});
   await client.call(request,{workerProtocol},async packet=>{assert.equal(packet,request);assert.equal(packet.worldTransport,undefined);return {};});
 }
 {
-  const client=new NativeWorldClient(),ui=immutableNativeSnapshot({hud:{text:'한글',value:1}}),objects=[{...object('ui',0),gameplayDebug:{ui}}],packets=[];
+  const client=new NativeWorldClient({hooks:{nativeRowReuse:true}}),ui=immutableNativeSnapshot({hud:{text:'한글',value:1}}),objects=[{...object('ui',0),gameplayDebug:{ui}}],packets=[];
   const send=async packet=>{packets.push(snapshot(packet));return {worldSequence:packet.worldSequence,objects:[],worldCommitted:[]};};
   await client.call({objects},{workerProtocol:3},send);const saved=client.world[0].gameplayDebug.ui;
   objects[0].position[0]=2;await client.call({objects},{workerProtocol:3},send);
@@ -40,13 +40,13 @@ for(const workerProtocol of [undefined,1,2]){
 }
 
 {
- const map=immutableNativeSnapshot({layers:[{tiles:Array.from({length:16384},(_,i)=>({x:i%128,y:Math.floor(i/128),index:0}))}]},{clone:false}),client=new NativeWorldClient(),objects=[{...object('tiles',0),runtimeTilemap:map,gameplayDebug:{ui:immutableNativeSnapshot({hud:{text:'한글'}})}}],packets=[];const send=async packet=>{packets.push(snapshot(packet));return {worldSequence:packet.worldSequence,objects:[],worldCommitted:[]};};await client.call({objects},{workerProtocol:3},send);const first=client.world[0].runtimeTilemap;assert.equal(first,map);objects[0].position[0]=3;await client.call({objects},{workerProtocol:3},send);assert.equal(client.world[0].runtimeTilemap,first);assert.deepEqual(packets.at(-1).objectPatch,[{op:'replace',path:'/0/position/0',value:3}]);assert.throws(()=>{map.layers[0].tiles[0].index=9;},TypeError);const next={...map,layers:[{...map.layers[0],tiles:[{...map.layers[0].tiles[0],index:9},...map.layers[0].tiles.slice(1)]}]};objects[0].runtimeTilemap=immutableNativeSnapshot(next,{clone:false});await client.call({objects},{workerProtocol:3},send);assert.equal(client.world[0].runtimeTilemap.layers[0].tiles[0].index,9);assert.equal(map.layers[0].tiles[0].index,0);assert.deepEqual(packets.at(-1).objectPatch,[{op:'replace',path:'/0/runtimeTilemap/layers/0/tiles/0/index',value:9}]);
+ const map=immutableNativeSnapshot({layers:[{tiles:Array.from({length:16384},(_,i)=>({x:i%128,y:Math.floor(i/128),index:0}))}]},{clone:false}),client=new NativeWorldClient({hooks:{nativeRowReuse:true}}),objects=[{...object('tiles',0),runtimeTilemap:map,gameplayDebug:{ui:immutableNativeSnapshot({hud:{text:'한글'}})}}],packets=[];const send=async packet=>{packets.push(snapshot(packet));return {worldSequence:packet.worldSequence,objects:[],worldCommitted:[]};};await client.call({objects},{workerProtocol:3},send);const first=client.world[0].runtimeTilemap;assert.equal(first,map);objects[0].position[0]=3;await client.call({objects},{workerProtocol:3},send);assert.equal(client.world[0].runtimeTilemap,first);assert.deepEqual(packets.at(-1).objectPatch,[{op:'replace',path:'/0/position/0',value:3}]);assert.throws(()=>{map.layers[0].tiles[0].index=9;},TypeError);const next={...map,layers:[{...map.layers[0],tiles:[{...map.layers[0].tiles[0],index:9},...map.layers[0].tiles.slice(1)]}]};objects[0].runtimeTilemap=immutableNativeSnapshot(next,{clone:false});await client.call({objects},{workerProtocol:3},send);assert.equal(client.world[0].runtimeTilemap.layers[0].tiles[0].index,9);assert.equal(map.layers[0].tiles[0].index,0);assert.deepEqual(packets.at(-1).objectPatch,[{op:'replace',path:'/0/runtimeTilemap/layers/0/tiles/0/index',value:9}]);
 }
 const host=new NativeHost();
 try {
   const header='#include <HBEngine/Game.hpp>\nHB_CLASS()\nclass TransportProbe : public hb::Library { public: HB_FUNCTION(BlueprintPure) static hb::Vec3 Read(hb::Actor* target); HB_FUNCTION(BlueprintPure) static int Nested(); HB_FUNCTION(BlueprintPure) static bool Unsigned(); HB_FUNCTION(BlueprintPure) static int WorldOnConstruct(); HB_FUNCTION(BlueprintCallable) static void Retype(); HB_FUNCTION(BlueprintCallable) static void Tamper(bool erase); HB_FUNCTION(BlueprintCallable) static void Fail(); };\nHB_CLASS()\nclass TransportActor : public hb::Actor { public: TransportActor(); HB_PROPERTY(BlueprintReadWrite) int Count=0; HB_FUNCTION(BlueprintCallable) void Mutate(); };\nHB_CLASS() class RoundingActor : public hb::Actor { public: HB_PROPERTY(BlueprintReadWrite) double Value=0; HB_FUNCTION(BlueprintCallable) void SetValue(double value); HB_FUNCTION(BlueprintPure) double ReadValue(); };';
   const source='#include "User.h"\nint constructedWorldSize=-1;\nint TransportProbe::WorldOnConstruct(){return constructedWorldSize;}\nhb::Vec3 TransportProbe::Read(hb::Actor* target){return target->transform.position;}\nint TransportProbe::Nested(){return hb::bridgeWorld.at(0).at("nested").at("a~/b").at(1).get<int>();}\nbool TransportProbe::Unsigned(){return hb::bridgeWorld.at(0).at("nested").at("a~/b").at(0).is_number_unsigned();}\nvoid TransportProbe::Retype(){hb::bridgeWorld.at(0)["nested"]["a~/b"][0]=1.0;}\nvoid TransportProbe::Tamper(bool erase){if(erase)hb::bridgeWorld.clear();else{hb::bridgeWorld.at(0)["nested"]["a~/b"][1]=999;hb::bridgeWorld.at(1)["extra"]=true;}}\nvoid TransportProbe::Fail(){throw std::runtime_error("transport probe failure");}\nTransportActor::TransportActor(){constructedWorldSize=static_cast<int>(hb::bridgeWorld.size());hb::bridgeWorld.clear();}\nvoid TransportActor::Mutate(){Count++;transform.position.x+=5;}\nvoid RoundingActor::SetValue(double value){Value=value;} double RoundingActor::ReadValue(){return Value;}';
-  const built=await host.build(header,source),client=new NativeWorldClient(),packets=[];
+  const built=await host.build(header,source),client=new NativeWorldClient({hooks:{nativeRowReuse:true}}),packets=[];
   let objects=Array.from({length:480},(_,i)=>object('actor'+i,i));
   Object.assign(objects[0],{nativeClass:'TransportActor',nativeProperties:{Count:0}});
   const send=async packet=>{const wire=snapshot(packet);packets.push(wire);return snapshot(await host.call(built.token,wire));};
@@ -79,7 +79,7 @@ try {
   assert.equal(packets.length,beforeDrop+1);reply=await call();assert.equal(reply.transport.upstreamMode,'full','lost response forces explicit full resynchronization');
   await assert.rejects(client.call(request(),built.metadata,async packet=>{const r=await send(packet);return {...r,worldSequence:r.worldSequence+1};}),/acknowledgment/);
   reply=await call();assert.equal(reply.transport.upstreamMode,'full');
-  const other=new NativeWorldClient();await other.call(request(),built.metadata,send);
+  const other=new NativeWorldClient({hooks:{nativeRowReuse:true}});await other.call(request(),built.metadata,send);
   await assert.rejects(call(),/sequence mismatch/,'different world identity cannot silently patch the wrong world');reply=await call();assert.equal(reply.transport.upstreamMode,'full');
   const forged={...packets.at(-1),objects:undefined,baseSequence:1,worldSequence:2,objectPatch:[{op:'replace',path:'/0/position',value:[99,0,0]},{op:'remove',path:'/noSuchObject'}]};
   await assert.rejects(host.call(built.token,snapshot(forged)),/array index/);assert.equal(client.world[0].position[0],6);await assert.rejects(call(),/sequence mismatch/);assert.equal((await call()).outputs.result[0],6);

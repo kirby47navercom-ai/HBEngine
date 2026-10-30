@@ -35,7 +35,8 @@ try{
     assert.equal((await call('ProbeAll',{start:[0,3,0],end:[0,-3,0],dimension})).outputs.result.length,1);
     assert.deepEqual((await call('Nearby',{center:[0,0,0],dimension})).outputs.result,['target']);
     assert.equal((await call('CountActors',{actors:[actor.id,target.id,null]})).outputs.result,3);
-    await assert.rejects(call('CountActors',{actors:['unknown']}),/참조 오류/);
+    // Actor arrays can reject unknown IDs at the typed-input boundary first.
+    await assert.rejects(call('CountActors',{actors:['unknown']}),error=>/참조 오류/.test(error.message)||error.message==='C++ 입력 자료형 오류: actors');
     const world=createRigidPhysics(objects);await world.ready();const pushed=await call('Push',{target:target.id});const services=engineOperations({update:()=>{},readAsset:async()=>null}),vm=new BlueprintRuntime(objects,[],services);await vm.start();await services.applyNativeOperations(pushed.operations,{self:target.id},vm);await vm.tick(1/60);assert.ok(target.velocity[0]>1.9&&Math.abs(target.angularVelocity[2])>.1);await vm.stop();services.dispose();world.dispose();
     if(dimension===3){target.position=[0,0,0];assert.equal((await call('MoveAndProbe',{target:target.id})).outputs.result.actor,'target');}
   }

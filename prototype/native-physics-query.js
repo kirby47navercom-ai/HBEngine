@@ -12,8 +12,8 @@ export class NativePhysicsQueryWorld {
     const job=this.queue.then(async()=>{
       if(this.closed)throw Error('종료된 C++ 물리 월드예요.');
       this.objects.length=0;for(const object of snapshot)this.objects.push(object);
-      if(!this.world){this.world=createRigidPhysics(this.objects,{queryOnly:true});this.builds++;}
-      try{await this.world.ready();if(this.closed)throw Error('종료된 C++ 물리 월드예요.');this.queries++;return this.world.query(key,args,options);}
+      if(!this.world){this.world=createRigidPhysics(this.objects,{queryOnly:true,lazyDimensions:true,dimension:args.dimension,staticCache:true});this.builds++;}
+      try{await this.world.ready(args.dimension);if(this.closed)throw Error('종료된 C++ 물리 월드예요.');this.queries++;return this.world.query(key,args,options);}
       catch(error){this.world?.dispose();this.world=null;this.objects.length=0;throw error;}
     });this.queue=job.catch(()=>{});return job;
   }

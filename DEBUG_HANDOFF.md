@@ -233,3 +233,8 @@ stationary inverse 첫 독립 oracle에서 약3.7e-6 오차를 찾아 centered c
 # 3021–3040 작성 고정점 경로 연결
 
 처음 group3026은 새 test fixture의 non-async 거절 callback 안 await를 syntax gate에서 잡아 실행 전에 멈췄어요. fixture만 async로 고친 뒤 runtime 신규21/관련33 통과. 알고리즘 추가 검토에서 유한 행렬×기하 곱과 경로 합의 overflow가 무한 relax를 만들 수 있음을 확인해 유한 축·overflow 경로·all-pinned 결과 검증을 추가했어요. 그 변경 소유21만 다시 실행하여 cloth-tethers-trCuxz 통과, 관련33은 무변경 소유 결과를 보존했어요. 65536격자 작성 생성은 보고서의 실제 Node 시간이며 브라우저/FPS/heap 측정이 아니에요. SDK/바이너리 추가 생성·GUI·설치는 없어요.
+
+# 3402 JSON 행 비교 후보
+500개 소유 행·호출당2행변경·120호출·새프로세스3회 비교. 기존 native JSON 151.63ms 중앙값 대비 일반 재귀+descriptor313.54ms, plain-data 재귀175.60ms로 모두 느렸어요. 이 두 후보는 미채택이며 직렬화 행 수 감소를 성능 향상으로 세지 않아요. raw자료 native/build/runtime-sync-4SQgzb. 같은 재귀 후보 반복 금지. 별도 가설은 검증된 engine-owned JSON 구조에 대한 한정 비교 함수를 한 번 만들고 재사용하면 필드별 JS 재귀 호출 비용을 줄일 수 있다는 것이며, 같은 fixture의 실제 CPU·전달값·실패 복구로 반증해요. 기존 임의 JS/브라우저 호출은 그대로 유지해요.
+
+3402 최종: 구조별 한정 비교 코드 재사용 후보는 같은 500행 fixture에서 81.21ms로 통과했어요. 필드 이름 데이터 인용·키 소유 검사·예산 fallback·캐시16·고정 불변 subtree 참조·행 퇴역/실패/reset 수명을 검사했어요. 일반 재귀 비교의 두 실패는 성과에서 제외해요. 물리 정적 캐시도 88.35ms 및 변경/퇴역/복귀 동등성 통과. 기존 물리 gate의 unknown Actor[] 거절은 현재 typed-input 단계에서 발생하므로 fixture가 그 정확한 메시지도 허용하도록 고쳤으며 실제 C++ 질의 gate는 통과했어요.
