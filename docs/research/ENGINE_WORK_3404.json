@@ -63,5 +63,5 @@
     "Existing packaged games need repackaging",
     "This fixes runtime sprite refresh, not all remaining engine goals"
   ],
-  "installation": "pending"
+  "installation": "docs/research/USER_INSTALL_3405.json"
 }

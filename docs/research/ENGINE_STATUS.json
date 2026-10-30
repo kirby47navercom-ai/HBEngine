@@ -4384,9 +4384,9 @@
     "scope": "네이티브 C++ 스프라이트 크기·모드 변경의 공용 타일 메시 갱신. 8사례 360픽셀·40프레임 입력/HUD/소리와 자원 재사용 확인."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_3403.json",
-    "sourceCommit": "33b1bbdb2534de42d667cc03074402e1dbd20ede",
-    "bundleHash": "7a1a8f807f69bffa30e215f09c82ef39125031b651ef8e9bac685fca7ff70650",
+    "receipt": "docs/research/USER_INSTALL_3405.json",
+    "sourceCommit": "5ba8d00f57dcf7d4b95e6d934a5773d3b0b6d1c8",
+    "bundleHash": "a471833cc0d4bff57a413efb2b7d083a60f1b43bfffc78cecce176a2a9be77b8",
     "verified": true,
     "installationVerified": true,
     "runtimeVerified": true

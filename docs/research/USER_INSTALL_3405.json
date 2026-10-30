@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "date": "2026-10-31",
+  "sourceCommit": "5ba8d00f57dcf7d4b95e6d934a5773d3b0b6d1c8",
+  "bundleMetadataCommit": "692b2de3",
+  "bundleHash": "a471833cc0d4bff57a413efb2b7d083a60f1b43bfffc78cecce176a2a9be77b8",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a471833cc0d4bff5",
+  "files": 5275,
+  "versions": [
+    "a471833cc0d4bff5"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "ownerChecks": [
+    {
+      "path": "docs/ai-routes.json",
+      "sha256": "063ff17c6a1fbc9eaa9ecc973ad34c22bfd1595b67a6a83debfd2c129a13893c"
+    },
+    {
+      "path": "docs/NATIVE_GAME_RUNTIME.md",
+      "sha256": "28a4b3271d25cc0dea0e9756b99082a90704a7589964657ef94f80c59ceb9b43"
+    },
+    {
+      "path": "prototype/scene-rendering.js",
+      "sha256": "ac6ff59c3e877adf86fc473f464cfbc60bf4a502f7d3ae271be116f902492d54"
+    },
+    {
+      "path": "tools/native-game-runner.mjs",
+      "sha256": "0139cd56781cf3aa8ff3fdb3310e73725d77ef22581132f85f6bb2d8e47d2121"
+    },
+    {
+      "path": "tools/run-project.mjs",
+      "sha256": "0f1f01ee20fa88fe8c5ac4574401b033bf732ce8936d3133cf110d3e50034d1f"
+    },
+    {
+      "path": "tools/check-native-tiled-sprite.mjs",
+      "sha256": "e95756d8cc6f4b67fbf085e55631c374c7600133e7bf042736d4df3075b057c6"
+    },
+    {
+      "path": "tools/check-sprite-visual-sync.mjs",
+      "sha256": "34a2bc17e3ec65a7faef0ae05070798e97ac7eacbd716dd203345956df9f2cfc"
+    }
+  ],
+  "nativePlayerSha256": "990e939a72104e50a216d4755a8dca317cb5a7e1549bf747d92af2a2451fe6aa",
+  "nativeBinaryChanged": false,
+  "checks": [
+    {
+      "command": "node tools/check-native-tiled-sprite.mjs C:\\Users\\kirby\\HBEngine\\Versions\\a471833cc0d4bff5",
+      "report": "native/build/native-tiled-RfZu3O/acceptance.json",
+      "sha256": "c6fc315349062805396f67a8ad4c7edc71cee709aaf6f3f91a5894f036106eb3",
+      "passed": true,
+      "gpuCases": 8,
+      "pixelSamples": 360,
+      "pixelErrors": 0
+    }
+  ],
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5272,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7a1a8f807f69bffa",
+        "bytes": 263833829,
+        "manifestSHA256": "68e4123799f3dea2fa0b179d36c1bc8893275c8195bed20783a220e880164b60"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-30T23:50:05.1423481Z",
+    "bytes": 263833829,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "a471833cc0d4bff5"
+    ]
+  },
+  "cacheCleanup": {
+    "nativeCacheOnly": true,
+    "deleted": 0
+  },
+  "scope": "반복 타일 C++ 크기·모드 갱신 수정의 설치본과 실제 패키징 실행 검증. 사용자 게임 원본은 수정·실행하지 않음. 기존 게임은 재패키징 필요."
+}
