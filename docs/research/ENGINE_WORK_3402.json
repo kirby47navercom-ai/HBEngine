@@ -2,9 +2,10 @@
   "version": 1,
   "date": "2026-10-31",
   "kind": "implementation-and-measured-runtime-cost",
-  "implementationRevision": "8e6699b7ef248303049426ff719ae199b87008a8",
+  "implementationRevision": "33b1bbdb2534de42d667cc03074402e1dbd20ede",
   "sourceCommits": [
-    "8e6699b7ef248303049426ff719ae199b87008a8"
+    "8e6699b7ef248303049426ff719ae199b87008a8",
+    "33b1bbdb2534de42d667cc03074402e1dbd20ede"
   ],
   "sourceHashBase": "docs/research/ENGINE_WORK_3400.json",
   "changedSourceHashes": {
@@ -23,9 +24,10 @@
     "tools/native-widget-layer.mjs": "a2292c31c14152d6ee0334b3339c1896c7230db0139d81b14f7cbb297714fa49",
     "tools/run-project.mjs": "88a51a182a3664cd65aa55b3840612c7ece5231cd09edc199cfaa876419cb65d",
     "tools/check-native-memory.mjs": "19375a2c1134a907048c357b057b38af527bbe6f3a31d567e779deca6b852125",
-    "tools/check-runtime-sync.mjs": "23bac3221af7c168df09994de8a3b896699cd0f094d02ae6a0963978c7116f7d"
+    "tools/check-runtime-sync.mjs": "23bac3221af7c168df09994de8a3b896699cd0f094d02ae6a0963978c7116f7d",
+    "tools/sync-desktop-content.mjs": "f3413b4b79124cab63e1ca3ad347645a173f699dc99a09975cd46e02ccc3b509"
   },
-  "resolvedOwners": 1683,
+  "resolvedOwners": 1684,
   "targetIds": [
     "BLD-01",
     "PER-01",
@@ -132,6 +134,10 @@
     {
       "kind": "fixture",
       "detail": "Memory rerun reused an existing project path; changed harness to create a fresh owned project. Sync reset regression left a matcher reference; reset/failure/retirement now clear snapshots. Older unknown Actor[] rejection fixture expected a later error; exact typed actors error is also accepted, current C++ physics gate passes."
+    },
+    {
+      "kind": "distribution-metadata",
+      "detail": "Initial installation retained a previous root DEBUG_HANDOFF.md because syncDesktopContent did not copy that source-only handoff. Added the root document to explicit synchronization; final installation receipt verifies fresh deployment. Runtime source bytes were unaffected."
     }
   ],
   "boundary": [

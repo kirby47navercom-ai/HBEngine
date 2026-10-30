@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-31",
-  "basisRevision": "8e6699b7ef248303049426ff719ae199b87008a8",
+  "basisRevision": "33b1bbdb2534de42d667cc03074402e1dbd20ede",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
