@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-31",
-  "basisRevision": "33b1bbdb2534de42d667cc03074402e1dbd20ede",
+  "basisRevision": "5ba8d00f57dcf7d4b95e6d934a5773d3b0b6d1c8",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -518,7 +518,7 @@
       "area": "2d",
       "title": "스프라이트·타일·애니메이션 입력",
       "status": "verified",
-      "implemented": "스프라이트/타일맵과 게임 중 교체·반전·플레이어 조회 ·279: Sprite/Tilemap 원본색 선택·누락=기존노출·D3D/GL SVG RGB일치·GPU재질/복제 확인 ·283: WebGPU 원본색과 HDR 합성 분리 ·1219–1224: 2D 네 기본 클래스/Actor·Pawn 빈 구성/생성·배치·Spawn·GameMode·기존 상속 조회, C++ 기본 클래스 형식·배열·원래 위치 보존, 실제 에셋 컴포넌트 미리보기·공용 조작/AI·idle 요청 그리기·닫기 해제",
+      "implemented": "스프라이트/타일맵과 게임 중 교체·반전·플레이어 조회 ·279: Sprite/Tilemap 원본색 선택·누락=기존노출·D3D/GL SVG RGB일치·GPU재질/복제 확인 ·283: WebGPU 원본색과 HDR 합성 분리 ·1219–1224: 2D 네 기본 클래스/Actor·Pawn 빈 구성/생성·배치·Spawn·GameMode·기존 상속 조회, C++ 기본 클래스 형식·배열·원래 위치 보존, 실제 에셋 컴포넌트 미리보기·공용 조작/AI·idle 요청 그리기·닫기 해제 ·3404: 네이티브 C++ 크기·모드 변경 후 공용 스프라이트 타일 메시 갱신·변경 없는 메시 재사용·8사례 360픽셀 검증.",
       "remaining": [],
       "sources": [
         "prototype/scene-rendering.js",
@@ -541,7 +541,8 @@
         "docs/AURIC_RUNTIME_FEATURES.md",
         "docs/research/ENGINE_WORK_279.json",
         "docs/research/ENGINE_WORK_283.json",
-        "docs/research/ENGINE_WORK_1224.json"
+        "docs/research/ENGINE_WORK_1224.json",
+        "docs/research/ENGINE_WORK_3404.json"
       ]
     },
     {
@@ -3862,7 +3863,7 @@
       "area": "platform",
       "title": "Windows·웹 게임 배포",
       "status": "partial",
-      "implemented": "독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0. ·3361–3400: Windows 기본 native / web 별도 경로·Win32/D3D11+공용V8/BP/AOT C++·Skia UI/한글/SVG·네이티브 PCM·OS키/마우스·정상종료·원자저장·미리 준비한 기본 셰이더. 실제 소유 숨김창의 픽셀/텍스처/입력/종료·공용SDK 엄격 경고 검사·무음 Windows 출력 통과. 에디터 UI WebView는 유지. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도.",
+      "implemented": "독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0. ·3361–3400: Windows 기본 native / web 별도 경로·Win32/D3D11+공용V8/BP/AOT C++·Skia UI/한글/SVG·네이티브 PCM·OS키/마우스·정상종료·원자저장·미리 준비한 기본 셰이더. 실제 소유 숨김창의 픽셀/텍스처/입력/종료·공용SDK 엄격 경고 검사·무음 Windows 출력 통과. 에디터 UI WebView는 유지. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3404: 네이티브 C++ 크기·모드 변경 후 공용 스프라이트 타일 메시 갱신·변경 없는 메시 재사용·8사례 360픽셀 검증.",
       "remaining": [
         "네이티브 목록/트리·월드 추적 UI·키오스크·스트리밍 오디오·영상·화면 동기화",
         "네이티브 게임패드·포인터 잠금·고급 위젯/DCC/대규모 게임 호환성과 성능 검증"
@@ -3885,7 +3886,8 @@
         "docs/research/ENGINE_WORK_201.json",
         "docs/research/ENGINE_WORK_2259.json",
         "docs/research/ENGINE_WORK_3400.json",
-        "docs/research/ENGINE_WORK_3402.json"
+        "docs/research/ENGINE_WORK_3402.json",
+        "docs/research/ENGINE_WORK_3404.json"
       ]
     },
     {
@@ -4376,10 +4378,10 @@
     }
   ],
   "latestBatch": {
-    "first": 3402,
-    "last": 3402,
-    "receipt": "docs/research/ENGINE_WORK_3402.json",
-    "scope": "메모리 수명·필요 차원 물리·C++ 행 직렬화 생략·정적 충돌체 재사용·프레임 내부 구간 보고. 전체 엔진 또는 실제 보스전의 모든 성능 문제 완료 주장은 하지 않음."
+    "first": 3404,
+    "last": 3404,
+    "receipt": "docs/research/ENGINE_WORK_3404.json",
+    "scope": "네이티브 C++ 스프라이트 크기·모드 변경의 공용 타일 메시 갱신. 8사례 360픽셀·40프레임 입력/HUD/소리와 자원 재사용 확인."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_3403.json",

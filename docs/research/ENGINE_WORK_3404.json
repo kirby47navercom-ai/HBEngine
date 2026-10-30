@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "date": "2026-10-31",
+  "kind": "native-sprite-runtime-update-fix",
+  "implementationRevision": "5ba8d00f57dcf7d4b95e6d934a5773d3b0b6d1c8",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3402.json",
+  "changedSourceHashes": {
+    "docs/ai-routes.json": "063ff17c6a1fbc9eaa9ecc973ad34c22bfd1595b67a6a83debfd2c129a13893c",
+    "docs/NATIVE_GAME_RUNTIME.md": "28a4b3271d25cc0dea0e9756b99082a90704a7589964657ef94f80c59ceb9b43",
+    "prototype/scene-rendering.js": "ac6ff59c3e877adf86fc473f464cfbc60bf4a502f7d3ae271be116f902492d54",
+    "tools/native-game-runner.mjs": "0139cd56781cf3aa8ff3fdb3310e73725d77ef22581132f85f6bb2d8e47d2121",
+    "tools/run-project.mjs": "0f1f01ee20fa88fe8c5ac4574401b033bf732ce8936d3133cf110d3e50034d1f",
+    "tools/check-native-tiled-sprite.mjs": "e95756d8cc6f4b67fbf085e55631c374c7600133e7bf042736d4df3075b057c6",
+    "tools/check-sprite-visual-sync.mjs": "34a2bc17e3ec65a7faef0ae05070798e97ac7eacbd716dd203345956df9f2cfc"
+  },
+  "targetIds": [
+    "2D-01",
+    "BLD-01"
+  ],
+  "rootCause": "Native runProject update only applied actor transforms. Sprite size/component writes did not refresh the shared sprite mesh. D3D mesh/UV rendering already supported initially authored tiled sprites.",
+  "implementation": [
+    "sceneRendering.syncSprite uses the shared spriteSlices and normalized component defaults",
+    "Native presentation update returns pending visual work; native component snapshots await it before rendering",
+    "Unchanged component state reuses geometry; disabled/hidden sprites are restored without per-tile actors"
+  ],
+  "checks": [
+    {
+      "report": "native/build/native-tiled-g51Wik/acceptance.json",
+      "sha256": "918661e8676c6e883c1e31c59cf6a487964ef5de8eaa4edc2cb76ccb66577697",
+      "passed": true
+    },
+    {
+      "report": "native/build/native-game-nWogoC/acceptance.json",
+      "sha256": "f177230c1213a8a26cca5ca11a9b5a469aa9df4c9e6a7e3e7874fd36393feb9e",
+      "passed": true
+    }
+  ],
+  "baseline": {
+    "report": "native/build/native-tiled-bzp2j0/acceptance.json",
+    "sha256": "9ab04439678dd91f752abada1dde2d70a488218bc267c2dabdaf9dfc34e5fb42",
+    "version": "7a1a8f807f69bffa",
+    "passed": false,
+    "staticCasesPassed": 6,
+    "cppResizePixelErrors": 44,
+    "cppModePixelErrors": 37,
+    "scope": "Same final display-color fixture and pixel oracle as corrected source; expected regression proof"
+  },
+  "sourceResult": {
+    "gpuCases": 8,
+    "pixelSamples": 360,
+    "pixelErrors": 0,
+    "drawCalls": 8,
+    "meshes": 8,
+    "automaticReadbacks": 0,
+    "unchangedUpdates": 300,
+    "resizes": 21,
+    "textureLoadsForRepeatedSource": 1
+  },
+  "nativePlayerSha256": "990e939a72104e50a216d4755a8dca317cb5a7e1549bf747d92af2a2451fe6aa",
+  "nativeBinaryChanged": false,
+  "limits": [
+    "Owned fixture, not a run of the user game",
+    "Existing packaged games need repackaging",
+    "This fixes runtime sprite refresh, not all remaining engine goals"
+  ],
+  "installation": "pending"
+}
