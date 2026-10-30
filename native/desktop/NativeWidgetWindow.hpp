@@ -6,7 +6,7 @@
 class NativeWidgetWindow {
     HWND window=nullptr;std::vector<BYTE> pixels;unsigned width=0,height=0;
 public:
-    void place(HWND owner){if(!window)return;POINT point{};ClientToScreen(owner,&point);SetWindowPos(window,HWND_TOP,point.x,point.y,0,0,SWP_NOSIZE|SWP_NOACTIVATE);ShowWindow(window,IsWindowVisible(owner)&&!IsIconic(owner)?SW_SHOWNOACTIVATE:SW_HIDE);}
+    void place(HWND owner){if(!window)return;POINT point{};ClientToScreen(owner,&point);const bool visible=IsWindowVisible(owner)&&!IsIconic(owner);auto previous=GetWindow(owner,GW_HWNDPREV);UINT flags=SWP_NOSIZE|SWP_NOACTIVATE;if(previous==window)flags|=SWP_NOZORDER;if(bool(IsWindowVisible(window))!=visible)flags|=visible?SWP_SHOWWINDOW:SWP_HIDEWINDOW;SetWindowPos(window,previous?previous:HWND_TOP,point.x,point.y,0,0,flags);}
     void update(HWND owner,const std::string& encoded){
         using Microsoft::WRL::ComPtr;DWORD size=0;if(!CryptStringToBinaryA(encoded.data(),DWORD(encoded.size()),CRYPT_STRING_BASE64,nullptr,&size,nullptr,nullptr)||size>128*1024*1024)throw std::runtime_error("UI PNG invalid");std::vector<BYTE> png(size);if(!CryptStringToBinaryA(encoded.data(),DWORD(encoded.size()),CRYPT_STRING_BASE64,png.data(),&size,nullptr,nullptr))throw std::runtime_error("UI PNG decode");
         ComPtr<IWICImagingFactory> factory;ComPtr<IWICStream> stream;ComPtr<IWICBitmapDecoder> decoder;ComPtr<IWICBitmapFrameDecode> frame;ComPtr<IWICFormatConverter> converter;
