@@ -4378,13 +4378,13 @@
     "scope": "PC 네이티브/웹 분리·공용 제작/실행·실제 OS 입력/DirectX/UI/audio·기본 shader seed·설치 갱신 승인/예약0. 누적 전체 완료 아님."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_2145.json",
-    "sourceCommit": "4e76cc53249e26eaca0224b937bf003729e57da5",
-    "bundleHash": "73341067df5a12be1fb1758e510ffa8c0ee7ca6b285a1bc5164afc33df4571bc",
+    "receipt": "docs/research/USER_INSTALL_3401.json",
+    "sourceCommit": "f50ade8e618fb1d0becfc46244a1e3466271e7b7",
+    "bundleHash": "467f5127f78c329a705a2fcf6582c5682719695c3c09eeda98d335d61d0af619",
     "verified": true,
     "installationVerified": true,
     "runtimeVerified": true,
     "versions": 1,
-    "scope": "시퀀스 materialVector 색상/선형HDR 숫자·공용곡선/도구·AI CAS/Undo/save·기존 C++ LevelSequence 실행, scalar/vector/scoped 별칭·형·소유권·수명·복원, 직접/컴포넌트 광원과 wholeTake 작성순서, indexed actor/child/bone 채널을 설치본으로 연결. paused override pose Seek 즉시표시와 SpriteRig/IK 순환 preview 복제 수정. source16+수정영향11gate 및 실제 편집기 C++18+render14 통과. 최종 설치builder의 독립 D3D11 게임도 C++18+render14·종료0, native swapchain 리그3414/재질627·625pixel변화 직접확인. 4643파일/1271소유자 exact hash, User10849파일 전후동일·shortcuts/association·AI1owner66.08ms·Versions1. 이전199893592B 및 소유검사Builds/WebView 정리. 일반 imported AnimationMixer 렌더속성 별칭과 누적 잔여는 별도 유지; FPS/실기기/전체엔진 완료 주장이 아님."
+    "scope": "Windows 네이티브/웹 분리와 공용 실행·HUD/PCM/입력/저장 연결. 설치본 빌더에서 소유 숨김 D3D11 게임을 실제 제작/2프레임 실행·33소스/실행파일 SHA 대조. 에디터 WebView 유지·네이티브 미지원은 WORK3400/문서 경계로 보존. 이전200091444B 제거·Versions1·예약0."
   }
 }

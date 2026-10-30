@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "date": "2026-10-30",
+  "sourceCommit": "f50ade8e618fb1d0becfc46244a1e3466271e7b7",
+  "bundleMetadataCommit": "049ef84476455fab6a36e59e6a4743efdad0cabe",
+  "bundleHash": "467f5127f78c329a705a2fcf6582c5682719695c3c09eeda98d335d61d0af619",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\467f5127f78c329a",
+  "files": 5266,
+  "versions": [
+    "467f5127f78c329a"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "ownerChecks": {
+    "files": 33,
+    "buildOnlySourceNotDistributed": [
+      "package-lock.json"
+    ],
+    "nativeBinarySHA256": "990e939a72104e50a216d4755a8dca317cb5a7e1549bf747d92af2a2451fe6aa"
+  },
+  "runtime": {
+    "builder": "installed tools/build-game.mjs",
+    "defaultRuntime": "native",
+    "backend": "D3D11",
+    "frames": 2,
+    "drawCalls": 5,
+    "webview": false,
+    "ownedEvidence": "native/build/native-installed-7V0l4g/acceptance.json",
+    "reportPreserved": true
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "files": 4645,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\73341067df5a12be",
+        "bytes": 200091444,
+        "manifestSHA256": "dc1f8c9ae678fe02336d63cf70316258e1be0fd2212750cce7851781ff83c4ff"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-30T11:39:02.8341884Z",
+    "bytes": 200091444,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\73341067df5a12be\\native\\build\\nlohmann-3.12.0-LICENSE.txt",
+        "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+        "bytes": 1076
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "467f5127f78c329a"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "scope": "Authorized user installation updated; exact 33 runtime/source owners and native executable match WORK3400. Installed builder produced and ran an isolated browserless D3D11 game. User editor was not opened or used for tests. Existing protected player/catalog edits were excluded from source synchronization; prior packaged copies remain. One Versions directory, no schedule created.",
+  "boundary": {
+    "editorStillWebView": true,
+    "nativeUnsupported": [
+      "ListView/TreeView",
+      "tracked world UI",
+      "kiosk",
+      "media-element audio streaming",
+      "video",
+      "display synchronization"
+    ],
+    "wholeEngineComplete": false,
+    "installedLedger": "Bundled source snapshot retains historical latestInstallation; current installation identity is the adjacent HBEngine.install.json marker."
+  }
+}

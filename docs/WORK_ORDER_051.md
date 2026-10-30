@@ -1210,3 +1210,5 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 2026-10-24 WORK2229: 공용 PCM 개별 취소/FIFO·늦은 소리 시작·미리듣기 취소UI와 기존BT query/service stop/reset 수명 교정. 신규 source25 사례/영향 gate 통과, 실제 기기·GUI·전체 엔진 완료 주장은 분리. 예약0/업데이트보류·별도 설치 사본 생성0 유지.
 
 2026-10-30 WORK3400: Windows 네이티브 게임과 웹 배포를 분리했어요. 기본 PC 패키지에는 WebView2/HTML/로컬 서버를 넣지 않고 공용 V8/BP/AOT C++·DirectX·Skia HUD·네이티브 믹서를 연결했어요. 실제 숨김 창의 OS키/마우스/정상종료·텍스처 픽셀과 관련 회귀 검사를 통과했어요. 원장/수치/제약은 docs/research/ENGINE_WORK_3400.json 및 docs/NATIVE_GAME_RUNTIME.md에 있어요. 최신 요청으로 설치 갱신 보류는 해제했고 예약은 만들지 않아요. 설치 완료는 후속 USER_INSTALL_3401 기록으로 구분해요.
+
+2026-10-30 USER_INSTALL3401: 사용자 설치본을 467f5127f78c329a로 전환했어요. 설치된 빌더로 소유 프로젝트를 새로 패키징하고 WebView 없는 DirectX 게임의 실제 그리기/2프레임 실행을 확인했어요. 변경 소유자33개·네이티브 EXE SHA 일치, 이전 설치본200091444바이트 정리, Versions1개예요. 원본 프로젝트/사용자 창/프로필 검사와 예약 생성은 없어요.
