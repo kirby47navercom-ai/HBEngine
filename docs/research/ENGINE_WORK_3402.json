@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "date": "2026-10-31",
+  "kind": "implementation-and-measured-runtime-cost",
+  "implementationRevision": "8e6699b7ef248303049426ff719ae199b87008a8",
+  "sourceCommits": [
+    "8e6699b7ef248303049426ff719ae199b87008a8"
+  ],
+  "sourceHashBase": "docs/research/ENGINE_WORK_3400.json",
+  "changedSourceHashes": {
+    "DEBUG_HANDOFF.md": "887ad1735ea3c8c45d128622ec632f9133a2b19101dbd9e3e421e455c86e30e0",
+    "docs/ai-routes.json": "5b92466700651e72f54c7a5fc4091a35e580f405d10ea9fe7ab311885e27c6c8",
+    "docs/NATIVE_GAME_RUNTIME.md": "f4c66e15a54c3f4e50caac1d3a2ab3c7572891311ead0f62567552139bafbab2",
+    "prototype/engine-services.js": "520cb50a260185d1cb9a3f757270b112709c468cbf1c263c0e8ffb7c4d9e658b",
+    "prototype/native-physics-query.js": "e290b54a56ee8a8a7a42d78da17fdaaa8bdc0eb18fa06a93293014eea85ab68e",
+    "prototype/native-transport.js": "7f1cc49d991ed8e7651941c08029bfce7a4410295f038da510f40480b120dbe7",
+    "prototype/physics-world.js": "0dc53e50ce7aaae82d5519961b4d764e8699e8609164dc04c95633437c0f6117",
+    "prototype/runtime-data-equal.js": "e260f7698d805ddedef55f55a88e03b5a3ae0d05830328ed35d9d80add66ce38",
+    "tools/check-native-game.mjs": "cc174ab5de8d143080cea48e86b863e2f40b15f182c778e3c6ab1a85bea7cfa8",
+    "tools/check-native-transport.mjs": "301f3af1f6a03122882d100f9b6ed5692d8b4b564af239962b072440499033ba",
+    "tools/check-physics.mjs": "2be5d6bbfe088462269df51d33808654ee5359ce79238bc98520fe11f30e487d",
+    "tools/native-game-runner.mjs": "da7fb4245431e6579f09263ca3741deeea1b72cffec0c6249f5abc5d821a5778",
+    "tools/native-widget-layer.mjs": "a2292c31c14152d6ee0334b3339c1896c7230db0139d81b14f7cbb297714fa49",
+    "tools/run-project.mjs": "88a51a182a3664cd65aa55b3840612c7ece5231cd09edc199cfaa876419cb65d",
+    "tools/check-native-memory.mjs": "19375a2c1134a907048c357b057b38af527bbe6f3a31d567e779deca6b852125",
+    "tools/check-runtime-sync.mjs": "23bac3221af7c168df09994de8a3b896699cd0f094d02ae6a0963978c7116f7d"
+  },
+  "resolvedOwners": 1683,
+  "targetIds": [
+    "BLD-01",
+    "PER-01",
+    "DBG-02"
+  ],
+  "sourceCases": 14,
+  "relatedPhysicsAssertions": 166,
+  "checks": [
+    {
+      "command": "node tools/check-native-memory.mjs native/build/native-memory-Hzfsfk",
+      "passed": true,
+      "report": "native/build/native-memory-Hzfsfk/acceptance.json",
+      "sha256": "95ba13a17460c51e8f13af415b8db7e7163400499ec13d6e03d4b6416027072c"
+    },
+    {
+      "command": "node tools/check-runtime-sync.mjs native/build/runtime-sync-4SQgzb",
+      "passed": true,
+      "report": "native/build/runtime-sync-4SQgzb/acceptance.json",
+      "sha256": "9a76cc3c5e750f1b878aecd0ebda8da05b8325934af49aeecd403b71b0d78cee"
+    },
+    {
+      "command": "node tools/check-native-game.mjs",
+      "passed": true,
+      "report": "native/build/native-game-H7oeWs/acceptance.json",
+      "sha256": "5cdd0bb9187343d4324c85c3eff8a248dd1a6955dd8dd83489358fafed2f7f07"
+    },
+    {
+      "command": "node tools/check-native-platform.mjs",
+      "passed": true,
+      "report": "native/build/native-platform-TeeSP5/acceptance.json",
+      "sha256": "a27fb2a3392714e4d5b7a226d416ee5ede774375d8a3d9b75cd5e6a89ddd3fdc"
+    },
+    {
+      "command": "node tools/check-native-transport.mjs",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-headless.mjs",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-physics.mjs",
+      "passed": true
+    },
+    {
+      "command": "focused hb context runtimeDataMatcher",
+      "passed": true
+    },
+    {
+      "command": "owned git diff --check",
+      "passed": true
+    }
+  ],
+  "memory": {
+    "scope": "Fresh owned process, native runner imports and one rigid body; live before GC and retained after explicit owned GC; not game total or GPU memory.",
+    "node": "v24.15.0",
+    "report": "native/build/native-memory-Hzfsfk/comparison.json",
+    "threeSamplesPerDimension": true,
+    "explicitGCIsSeparateFromLive": true,
+    "rows": [
+      {
+        "dimension": 2,
+        "beforeRSS": 160272384,
+        "afterRSS": 144433152
+      },
+      {
+        "dimension": 3,
+        "beforeRSS": 166432768,
+        "afterRSS": 148652032
+      }
+    ]
+  },
+  "cpu": {
+    "scope": "Owned Node CPU fixture: 500 visible actor records, two changed per call; 186 colliders, eight moving rigid bodies; 120 calls/steps, three fresh process samples. No GPU/FPS claim.",
+    "transport": {
+      "before": 151.63079999999997,
+      "after": 81.207
+    },
+    "physics": {
+      "before": 108.8012,
+      "after": 88.34730000000002
+    },
+    "report": "native/build/runtime-sync-4SQgzb/comparison.json",
+    "serializedRows": {
+      "before": 60000,
+      "after": 240
+    },
+    "exactPhysicalStateCompared": true
+  },
+  "request": {
+    "file": "Auric_Loop_무기소켓/docs/엔진_요청_C++호출_물체동기화.md",
+    "sha256": "47585c3234a2067f7d131a172c90ec1cd8d51696953e1566585f5729091ce7ef"
+  },
+  "binary": {
+    "path": "dist/HBEngine/HBNativePlayer.exe",
+    "sha256": "990e939a72104e50a216d4755a8dca317cb5a7e1549bf747d92af2a2451fe6aa",
+    "cppSDKChanged": false
+  },
+  "failures": [
+    {
+      "kind": "unadopted-performance-candidate",
+      "detail": "Generic recursive row comparisons were slower (313.54ms with descriptors;175.60ms plain traversal) than151.63ms native JSON; not admitted as improvements. Bounded structure comparator was implemented and measured separately."
+    },
+    {
+      "kind": "fixture",
+      "detail": "Memory rerun reused an existing project path; changed harness to create a fresh owned project. Sync reset regression left a matcher reference; reset/failure/retirement now clear snapshots. Older unknown Actor[] rejection fixture expected a later error; exact typed actors error is also accepted, current C++ physics gate passes."
+    }
+  ],
+  "boundary": [
+    "No actual Auric_Loop boss run, FPS/p95/p99 or periodic spike resolution claimed. Its source and saves were not used for tests.",
+    "Native/headless runProject owns plain JSON matching; arbitrary JS callers and protected browser player path keep prior serialization.",
+    "Direct createRigidPhysics default remains compatible; only engine-owned Node paths opt into static JSON cache.",
+    "Bounded code cache16,1024 values,depth16,64KiB; unsupported row keeps JSON fallback; all actors remain visible to C++.",
+    "Profile opt-in4096 frames; internal times may overlap. No always-on profiler, forced GC or heap cap in games.",
+    "User ended use and authorized installation; installation outcome belongs to subsequent USER_INSTALL_3403 receipt. No automation."
+  ],
+  "scope": "메모리 수명·필요 차원 물리·C++ 행 직렬화 생략·정적 충돌체 재사용·프레임 내부 구간 보고. 전체 엔진 또는 실제 보스전의 모든 성능 문제 완료 주장은 하지 않음."
+}
