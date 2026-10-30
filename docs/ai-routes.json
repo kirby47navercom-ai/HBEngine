@@ -5127,6 +5127,17 @@
       "paths": [
         "prototype/native-transport.js"
       ]
+    },
+    {
+      "id": "sprite-visual-sync",
+      "keywords": [
+        "syncSprite",
+        "spriteFrame",
+        "네이티브 반복 타일"
+      ],
+      "paths": [
+        "prototype/scene-rendering.js"
+      ]
     }
   ]
 }

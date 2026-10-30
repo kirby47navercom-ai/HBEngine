@@ -68,3 +68,11 @@ HUD는 같은 캔버스를 재사용하고, 참조 중인 위젯이 없어진 �
 내부 구간은 서로 포함 관계가 있고 병렬 RPC 시간도 겹칠 수 있으므로 모두 더하지 않아요. `stats.ms`의 기존 의미는 표시/HUD 시간으로 유지해요. `liveMemory`와 `peakSampledRSS`는 보고서 모드에서 30프레임마다 표본을 읽은 스크립트 프로세스 메모리이며, 전체 프로세스 트리·GPU 메모리나 완전한 최대값이 아니에요. 기존 `memory`는 종료 정리 시점이에요.
 
 AI 진입점은 `runtimeDataMatcher`, `NativeWorldClient`, `createRigidPhysics`, `nativeGameMain`을 `hb context --symbol ... --compact`로 조회해요. 재현 검사는 `tools/check-native-memory.mjs`, `tools/check-runtime-sync.mjs`에 있어요. 이미 만든 게임 EXE에는 런타임이 들어 있으므로 새 엔진으로 다시 패키징해야 이 개선이 반영돼요.
+
+### 실행 중 반복 타일 갱신
+
+네이티브 실행기도 `sceneRendering.syncSprite`로 C++·블루프린트의 SpriteRenderer 속성 변경을 공용 타일 메시 생성에 연결해요. `Sprites::SetSize`와 컴포넌트 문자열/수치 변경 후 표시 갱신을 기다리고 다음 프레임을 그려요. `drawMode: tiled`, `pixelsPerUnit`, 크기, 잘라낸 영역, 반전, `tileOrigin`은 기존 공용 `spriteSlices` 규칙을 사용해요. 별도 타일 오브젝트나 반복 이미지는 필요 없어요.
+
+원인은 DirectX의 UV 반복 샘플러 부재가 아니라 실행 중 속성 변경 뒤 메시를 갱신하지 않던 네이티브 표시 연결이에요. 이전 설치본에서도 최초 배치의 반복 타일은 통과했고, C++ 크기·모드 변경 두 사례가 실패했어요. 같은 픽셀 검사에서 수정 후 8사례·360좌표가 통과했어요. C++ 렌더러 실행 파일은 변경하지 않았어요.
+
+AI 조회는 `hb context "네이티브 반복 타일" --symbol syncSprite --compact`, 검사는 `tools/check-native-tiled-sprite.mjs`와 `tools/check-sprite-visual-sync.mjs`예요. 후자는 변환만 바뀐 300회에 메시를 다시 만들지 않고, 크기 변경과 비활성화/재활성화·자원 해제를 확인해요. 기존 패키지는 새 설치본에서 다시 패키징해야 반영돼요.
