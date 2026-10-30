@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "date": "2026-10-31",
+  "sourceCommit": "33b1bbdb2534de42d667cc03074402e1dbd20ede",
+  "runtimeSourceCommit": "8e6699b7ef248303049426ff719ae199b87008a8",
+  "bundleMetadataCommit": "1c38034c",
+  "bundleHash": "7a1a8f807f69bffa30e215f09c82ef39125031b651ef8e9bac685fca7ff70650",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7a1a8f807f69bffa",
+  "files": 5271,
+  "versions": [
+    "7a1a8f807f69bffa"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "ownerChecks": [
+    {
+      "path": "DEBUG_HANDOFF.md",
+      "sha256": "887ad1735ea3c8c45d128622ec632f9133a2b19101dbd9e3e421e455c86e30e0"
+    },
+    {
+      "path": "docs/ai-routes.json",
+      "sha256": "5b92466700651e72f54c7a5fc4091a35e580f405d10ea9fe7ab311885e27c6c8"
+    },
+    {
+      "path": "docs/NATIVE_GAME_RUNTIME.md",
+      "sha256": "f4c66e15a54c3f4e50caac1d3a2ab3c7572891311ead0f62567552139bafbab2"
+    },
+    {
+      "path": "prototype/engine-services.js",
+      "sha256": "520cb50a260185d1cb9a3f757270b112709c468cbf1c263c0e8ffb7c4d9e658b"
+    },
+    {
+      "path": "prototype/native-physics-query.js",
+      "sha256": "e290b54a56ee8a8a7a42d78da17fdaaa8bdc0eb18fa06a93293014eea85ab68e"
+    },
+    {
+      "path": "prototype/native-transport.js",
+      "sha256": "7f1cc49d991ed8e7651941c08029bfce7a4410295f038da510f40480b120dbe7"
+    },
+    {
+      "path": "prototype/physics-world.js",
+      "sha256": "0dc53e50ce7aaae82d5519961b4d764e8699e8609164dc04c95633437c0f6117"
+    },
+    {
+      "path": "prototype/runtime-data-equal.js",
+      "sha256": "e260f7698d805ddedef55f55a88e03b5a3ae0d05830328ed35d9d80add66ce38"
+    },
+    {
+      "path": "tools/check-native-game.mjs",
+      "sha256": "cc174ab5de8d143080cea48e86b863e2f40b15f182c778e3c6ab1a85bea7cfa8"
+    },
+    {
+      "path": "tools/check-native-transport.mjs",
+      "sha256": "301f3af1f6a03122882d100f9b6ed5692d8b4b564af239962b072440499033ba"
+    },
+    {
+      "path": "tools/check-physics.mjs",
+      "sha256": "2be5d6bbfe088462269df51d33808654ee5359ce79238bc98520fe11f30e487d"
+    },
+    {
+      "path": "tools/native-game-runner.mjs",
+      "sha256": "da7fb4245431e6579f09263ca3741deeea1b72cffec0c6249f5abc5d821a5778"
+    },
+    {
+      "path": "tools/native-widget-layer.mjs",
+      "sha256": "a2292c31c14152d6ee0334b3339c1896c7230db0139d81b14f7cbb297714fa49"
+    },
+    {
+      "path": "tools/run-project.mjs",
+      "sha256": "88a51a182a3664cd65aa55b3840612c7ece5231cd09edc199cfaa876419cb65d"
+    },
+    {
+      "path": "tools/check-native-memory.mjs",
+      "sha256": "19375a2c1134a907048c357b057b38af527bbe6f3a31d567e779deca6b852125"
+    },
+    {
+      "path": "tools/check-runtime-sync.mjs",
+      "sha256": "23bac3221af7c168df09994de8a3b896699cd0f094d02ae6a0963978c7116f7d"
+    },
+    {
+      "path": "tools/sync-desktop-content.mjs",
+      "sha256": "f3413b4b79124cab63e1ca3ad347645a173f699dc99a09975cd46e02ccc3b509"
+    }
+  ],
+  "nativeExecutableSHA256": "990e939a72104e50a216d4755a8dca317cb5a7e1549bf747d92af2a2451fe6aa",
+  "runtime": {
+    "builder": "installed tools/build-game.mjs",
+    "defaultRuntime": "native",
+    "backend": "D3D11",
+    "frames": 4,
+    "drawCalls": 7,
+    "profile": true,
+    "webview": false,
+    "ownedEvidence": "native/build/native-installed-tkfrkz/acceptance.json",
+    "reportPreserved": true
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5272,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0f4ccfe7b9e5dcac",
+        "bytes": 263824123,
+        "manifestSHA256": "5bd3739bff752f50f16a6043edc83bbfcfc13fe5b0bfc55d083cbd33a08adf04"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-30T16:34:48.0547335Z",
+    "bytes": 263824123,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "7a1a8f807f69bffa"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "testCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "메모리와 C++/물리 동기화 개선을 사용자 설치본으로 갱신. 배포 소스17개 및 네이티브 EXE SHA 일치, 설치된 빌더로 소유 게임 제작·DirectX4프레임·C++/물리 프로필 확인. Versions1개·예약0. 원본 게임/사용자 프로필은 검사에 사용하지 않음.",
+  "boundary": [
+    "실제 Auric_Loop 보스전 주기적 튐 또는 전체 FPS 개선을 검증했다고 주장하지 않음.",
+    "이미 만들어진 게임 실행 파일은 새 엔진으로 재패키징해야 개선이 들어감.",
+    "배포본 자체 해시를 보존하기 위해 후속 설치 영수증으로 immutable 설치 폴더를 다시 덮어쓰지 않음. 현 설치는 HBEngine.install.json 마커가 기준."
+  ]
+}

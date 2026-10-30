@@ -4382,13 +4382,11 @@
     "scope": "메모리 수명·필요 차원 물리·C++ 행 직렬화 생략·정적 충돌체 재사용·프레임 내부 구간 보고. 전체 엔진 또는 실제 보스전의 모든 성능 문제 완료 주장은 하지 않음."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_3401.json",
-    "sourceCommit": "f50ade8e618fb1d0becfc46244a1e3466271e7b7",
-    "bundleHash": "467f5127f78c329a705a2fcf6582c5682719695c3c09eeda98d335d61d0af619",
+    "receipt": "docs/research/USER_INSTALL_3403.json",
+    "sourceCommit": "33b1bbdb2534de42d667cc03074402e1dbd20ede",
+    "bundleHash": "7a1a8f807f69bffa30e215f09c82ef39125031b651ef8e9bac685fca7ff70650",
     "verified": true,
     "installationVerified": true,
-    "runtimeVerified": true,
-    "versions": 1,
-    "scope": "Windows 네이티브/웹 분리와 공용 실행·HUD/PCM/입력/저장 연결. 설치본 빌더에서 소유 숨김 D3D11 게임을 실제 제작/2프레임 실행·33소스/실행파일 SHA 대조. 에디터 WebView 유지·네이티브 미지원은 WORK3400/문서 경계로 보존. 이전200091444B 제거·Versions1·예약0."
+    "runtimeVerified": true
   }
 }
