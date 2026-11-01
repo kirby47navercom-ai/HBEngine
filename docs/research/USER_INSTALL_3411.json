@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "date": "2026-11-02",
+  "sourceCommit": "2a3859904bbd1cd1ec97a36b62a57faaea956cf9",
+  "bundleHash": "8a9e0adc4d0beae2c4b88e3acb1c1492c15b1f5b6e3b69e6327334adaf2d88c2",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\8a9e0adc4d0beae2",
+  "files": 5305,
+  "versions": [
+    "8a9e0adc4d0beae2"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": false,
+  "componentRuntimeVerified": true,
+  "ownerChecks": [
+    {
+      "path": "tools/native-widget-layer.mjs",
+      "sha256": "d69a7bf3927060549580bdb7c06bfb7600bd733595fb6726fcbe1cf8a24caabe"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "4be7a1e7eccdcd9547414149d4347c38871299a745d4f01a30f05d756242d783"
+    },
+    {
+      "path": "tools/native-game-runner.mjs",
+      "sha256": "00ddc0814789f981d1c66939ebe13b4f7326d3f2c0833149d100935576e929d9"
+    },
+    {
+      "path": "docs/ai-routes.json",
+      "sha256": "c1747ccdc1191a4a438b84f1474a6acdb1f645fa7166cd5ebe5d758b0bb88873"
+    },
+    {
+      "path": "tools/native-webp-animation.mjs",
+      "sha256": "a857ccfec598dfa727185791e0b6a8daee6e3a9c03ec6972c1f80a03f6894146"
+    },
+    {
+      "path": "tools/native-widget-paint.mjs",
+      "sha256": "11554506562179612b3ec3f8dcb185c8fafd4395e816e11e8deefc2e6404199c"
+    },
+    {
+      "path": "tools/native-widget-assets.mjs",
+      "sha256": "52dfd7b3af556cefec4a2c8500c676d216347af58326296aed9dcc3496a51891"
+    },
+    {
+      "path": "tools/native-widget-image-cache.mjs",
+      "sha256": "17309cf10ef394ae306560085c30e3d4d052cea5bd5d24afb6a22ab9f1a90720"
+    },
+    {
+      "path": "tools/check-native-widget-assets.mjs",
+      "sha256": "6ec837ab81eb5fab05677ca0f0758c3c7c33db816a97cea39a74f5c065762fc2"
+    },
+    {
+      "path": "tools/check-native-widget-image-cache.mjs",
+      "sha256": "17ac4c772677a2c3ad2f3cfb911205acb68434f421bdac55586a8755d4ebbeb3"
+    },
+    {
+      "path": "tools/check-native-widget-text-cache.mjs",
+      "sha256": "2817863da4684831f67faae3d2d91424e74c7f1ef7ebe2fd1b7ba00e0a15e277"
+    },
+    {
+      "path": "tools/check-native-widget-runtime-flow.mjs",
+      "sha256": "74e31f6ba073c880c3cdac91220b2d58e4e2279d6c0a26ad39b8b611a3c2aeb1"
+    },
+    {
+      "path": "tools/check-native-widget-frame-cost.mjs",
+      "sha256": "e219f2058a11b9d2e7d1c85510c36a3c45333083f30ce2727400e26cf38db1a7"
+    },
+    {
+      "path": "tools/check-native-visible-traversal.mjs",
+      "sha256": "82430571147438527e77ec640d6132b94ba7fe8d5ff33bae76bc0989160a0d58"
+    },
+    {
+      "path": "CODEX_HANDOFF.md",
+      "sha256": "fc0a8a685e7bc86ecf22fa9a8bce55d7bdcf457714bf3c62a0f9f32247f2e9b8"
+    },
+    {
+      "path": "docs/NATIVE_RUNTIME_COSTS.md",
+      "sha256": "20f1fe206dae98c364f56065eb35fab6b113b9b0c6339584659c71c0c289c52a"
+    },
+    {
+      "path": "docs/research/ENGINE_STATUS.json",
+      "sha256": "f52814615e943177820f0383be2252968983654cf353ddb84421b0c51ae13146"
+    },
+    {
+      "path": "docs/research/ENGINE_WORK_3410.json",
+      "sha256": "01cdd0e76c9a5d4bd15429f4a29298f97bf1ccba3d08eedeb716e0c4bd7dbd4e"
+    }
+  ],
+  "nativePlayerSha256": "3ae7aeb1e5ec6140224e159cb6e5341bba8ee9f877766e623809b6ec9e3ceb7b",
+  "nativeBinaryChanged": false,
+  "checks": [
+    {
+      "passed": true,
+      "scope": "설치 예정의 정확한 소스: 자원/표시/SVG·공용 UI API·2D 마스크",
+      "report": "native/build/runtime-update-s86lsE/acceptance.json"
+    },
+    {
+      "passed": true,
+      "scope": "설치된 공식 Node와 설치된 공용 UI API/네이티브 UI 계층으로 첫 프레임/표시/해제 실행",
+      "report": "native/build/runtime-update-s86lsE/installed-verification.json"
+    }
+  ],
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5296,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3b0ed24f230591fa",
+        "bytes": 264201362,
+        "manifestSHA256": "57e1a79614a5d079f885d1d80b587434c08c9b981f8be88a36ea377c79378d22"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-01T19:42:42.2172207Z",
+    "bytes": 264201362,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "8a9e0adc4d0beae2"
+    ]
+  },
+  "temporaryBundleRemoved": true,
+  "limits": [
+    "전체 Win32 게임 실행·실제 게임 FPS는 새로 측정하지 않음",
+    "다른 작업의 미커밋 C++/전송/스크롤/업로드 변경은 설치하지 않음",
+    "기존 독립 배포 게임은 엔진 업데이트만으로 내부 런타임이 바뀌지 않으므로 재빌드 필요"
+  ]
+}
