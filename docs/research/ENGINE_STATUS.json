@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-31",
-  "basisRevision": "5ba8d00f57dcf7d4b95e6d934a5773d3b0b6d1c8",
+  "updatedAt": "2026-11-01",
+  "basisRevision": "2081a15ec1e9c698d6b72716cb614398a354127a",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -2592,7 +2592,7 @@
       "area": "ui",
       "title": "위젯·레이아웃·SVG·입력",
       "status": "verified",
-      "implemented": "전용 위젯·모서리/배율/안전 영역·SVG·한글·포커스/이벤트",
+      "implemented": "전용 위젯·모서리/배율/안전 영역·SVG·한글·포커스/이벤트 ·3406: 네이티브 DPR·공용배치/텍스트/fit·SVG재래스터/9slice·WebP·부모변환/투명도·불변 UI 인스턴스 일괄 갱신, 실제 DOM/Skia 100·150% 표본대조",
       "remaining": [],
       "sources": [
         "prototype/ui-assets.js",
@@ -2600,7 +2600,8 @@
       ],
       "evidence": [
         "docs/UI_SCALING_SVG.md",
-        "docs/MOBILE_EXPORT.md"
+        "docs/MOBILE_EXPORT.md",
+        "docs/research/ENGINE_WORK_3406.json"
       ]
     },
     {
@@ -2682,7 +2683,7 @@
       "area": "audio",
       "title": "믹서·공간 음향·스트리밍",
       "status": "verified",
-      "implemented": "버스·노출값·snapshot·RMS·PCM/stream·정지/복귀·앱 분리 ·251: 시퀀스 actor follow/AudioSource 구분·트랙별 handle/정지 분리·지연 디코드 시각/일시정지·동일 파일3음성/외부1보존 실제 검사 ·257: AudioSource streaming 선택과 가상 음성 decoderResident 조회 ·2177소스: 하위bus독립복제(DSP/send/ducking/snapshot/transition/exposed)·삭제시자식재연결/incoming참조정리·원자검증/Master보호/한checkpoint·저장과공용AudioRouting API실행. source검증이며실제음질/장치확장은아님.",
+      "implemented": "버스·노출값·snapshot·RMS·PCM/stream·정지/복귀·앱 분리 ·251: 시퀀스 actor follow/AudioSource 구분·트랙별 handle/정지 분리·지연 디코드 시각/일시정지·동일 파일3음성/외부1보존 실제 검사 ·257: AudioSource streaming 선택과 가상 음성 decoderResident 조회 ·2177소스: 하위bus독립복제(DSP/send/ducking/snapshot/transition/exposed)·삭제시자식재연결/incoming참조정리·원자검증/Master보호/한checkpoint·저장과공용AudioRouting API실행. source검증이며실제음질/장치확장은아님. ·3406: 공급자 실행파일 서명 유지한 CoreAudio 세션별 게임명/아이콘/그룹, 실제 두 게임 독립 mute/volume",
       "remaining": [],
       "sources": [
         "prototype/audio-mixer.js",
@@ -2697,7 +2698,8 @@
         "docs/research/ENGINE_WORK_251.json",
         "docs/research/ENGINE_WORK_257.json",
         "docs/AUTHORING_TOOL_COMMANDS.md",
-        "docs/research/ENGINE_WORK_2177.json"
+        "docs/research/ENGINE_WORK_2177.json",
+        "docs/research/ENGINE_WORK_3406.json"
       ]
     },
     {
@@ -3836,7 +3838,7 @@
       "area": "debugging",
       "title": "GPU 시간·메모리/크래시 진단",
       "status": "partial",
-      "implemented": "리소스 수·일부 GPU Query·C++ host 메모리 진단 · 170: Win32 페이지 실패의 WebErrorStatus 로그·허브/프로젝트/종료 집중 검사 ·396–400: opt-in GL/GPU 비동기GPU시간·실제32render+1compute/독립출력·진행중stop/자원퇴역·UI/AI/두작업공간·GPU보기/전체행가시성·원본보존 ·1728–1734: owned자동CDPport/loopback endpoint검증·카테고리gpu.angle만/완료event후stream·16MiB상한/gzip1개·source길이SHA요약·timeout/실패stream·socket해제. 실제추적178event·GL0/비영guide/exit0와프로토콜double실패·cap·dataLoss검사. 제품상주추적기없음. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도.",
+      "implemented": "리소스 수·일부 GPU Query·C++ host 메모리 진단 · 170: Win32 페이지 실패의 WebErrorStatus 로그·허브/프로젝트/종료 집중 검사 ·396–400: opt-in GL/GPU 비동기GPU시간·실제32render+1compute/독립출력·진행중stop/자원퇴역·UI/AI/두작업공간·GPU보기/전체행가시성·원본보존 ·1728–1734: owned자동CDPport/loopback endpoint검증·카테고리gpu.angle만/완료event후stream·16MiB상한/gzip1개·source길이SHA요약·timeout/실패stream·socket해제. 실제추적178event·GL0/비영guide/exit0와프로토콜double실패·cap·dataLoss검사. 제품상주추적기없음. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3406: 패키지 C++ 파일 누락·차단 경로와 보호기록 안내·시작 실패 창, PE/COFF 회귀 검사",
       "remaining": [
         "스레드 flow·사전 생성/외부 GPU command buffer·GPU 패스별 시간 트레이스 확장",
         "할당·누수·크래시 덤프·장치 연결·간헐적 시작 실패 추가 재현"
@@ -3855,7 +3857,8 @@
         "docs/GL_COMPILER_TRACE.md",
         "docs/research/ENGINE_WORK_1734.json",
         "docs/research/USER_INSTALL_1736.json",
-        "docs/research/ENGINE_WORK_3402.json"
+        "docs/research/ENGINE_WORK_3402.json",
+        "docs/research/ENGINE_WORK_3406.json"
       ]
     },
     {
@@ -3863,10 +3866,11 @@
       "area": "platform",
       "title": "Windows·웹 게임 배포",
       "status": "partial",
-      "implemented": "독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0. ·3361–3400: Windows 기본 native / web 별도 경로·Win32/D3D11+공용V8/BP/AOT C++·Skia UI/한글/SVG·네이티브 PCM·OS키/마우스·정상종료·원자저장·미리 준비한 기본 셰이더. 실제 소유 숨김창의 픽셀/텍스처/입력/종료·공용SDK 엄격 경고 검사·무음 Windows 출력 통과. 에디터 UI WebView는 유지. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3404: 네이티브 C++ 크기·모드 변경 후 공용 스프라이트 타일 메시 갱신·변경 없는 메시 재사용·8사례 360픽셀 검증.",
+      "implemented": "독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0. ·3361–3400: Windows 기본 native / web 별도 경로·Win32/D3D11+공용V8/BP/AOT C++·Skia UI/한글/SVG·네이티브 PCM·OS키/마우스·정상종료·원자저장·미리 준비한 기본 셰이더. 실제 소유 숨김창의 픽셀/텍스처/입력/종료·공용SDK 엄격 경고 검사·무음 Windows 출력 통과. 에디터 UI WebView는 유지. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3404: 네이티브 C++ 크기·모드 변경 후 공용 스프라이트 타일 메시 갱신·변경 없는 메시 재사용·8사례 360픽셀 검증. ·3406: 공급자 Node 서명 보존·app-local Microsoft VC·첫 worker PE 리소스·COFF 복원·게임/worker Authenticode 서명 연결·무서명 release 거절·개발용 명시·파일 차단 오류·소스별 시간/최대2컴파일",
       "remaining": [
         "네이티브 목록/트리·월드 추적 UI·키오스크·스트리밍 오디오·영상·화면 동기화",
-        "네이티브 게임패드·포인터 잠금·고급 위젯/DCC/대규모 게임 호환성과 성능 검증"
+        "네이티브 게임패드·포인터 잠금·고급 위젯/DCC/대규모 게임 호환성과 성능 검증",
+        "정식 코드 서명 인증서·개인 키 제공 후 실제 서명/타임스탬프 및 수신 PC 백신 재검증"
       ],
       "sources": [
         "tools/build-game.mjs",
@@ -3877,7 +3881,11 @@
         "tools/build-native-game.mjs",
         "tools/native-game-runner.mjs",
         "native/desktop/HBNativePlayer.cpp",
-        "docs/NATIVE_GAME_RUNTIME.md"
+        "docs/NATIVE_GAME_RUNTIME.md",
+        "tools/windows-package-signing.mjs",
+        "tools/windows-portable-runtime.mjs",
+        "tools/native-worker-resources.mjs",
+        "tools/native-compile-units.mjs"
       ],
       "evidence": [
         "docs/WINDOWS_GAME_IDENTITY_108.md",
@@ -3887,7 +3895,8 @@
         "docs/research/ENGINE_WORK_2259.json",
         "docs/research/ENGINE_WORK_3400.json",
         "docs/research/ENGINE_WORK_3402.json",
-        "docs/research/ENGINE_WORK_3404.json"
+        "docs/research/ENGINE_WORK_3404.json",
+        "docs/research/ENGINE_WORK_3406.json"
       ]
     },
     {
@@ -4378,15 +4387,15 @@
     }
   ],
   "latestBatch": {
-    "first": 3404,
-    "last": 3404,
-    "receipt": "docs/research/ENGINE_WORK_3404.json",
-    "scope": "네이티브 C++ 스프라이트 크기·모드 변경의 공용 타일 메시 갱신. 8사례 360픽셀·40프레임 입력/HUD/소리와 자원 재사용 확인."
+    "first": 3406,
+    "last": 3406,
+    "receipt": "docs/research/ENGINE_WORK_3406.json",
+    "scope": "Windows 서명 보존·VC 동봉·PE COFF 복구·인증서 배포 서명 연결, 네이티브 UI/DPI·WebP·일괄 갱신·독립 소리·C++ 제한 병렬. 인증서·대상 PC 검증 미확보."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_3405.json",
-    "sourceCommit": "5ba8d00f57dcf7d4b95e6d934a5773d3b0b6d1c8",
-    "bundleHash": "a471833cc0d4bff57a413efb2b7d083a60f1b43bfffc78cecce176a2a9be77b8",
+    "receipt": "docs/research/USER_INSTALL_3407.json",
+    "sourceCommit": "2081a15ec1e9c698d6b72716cb614398a354127a",
+    "bundleHash": "f87ace806dd7b2a8fc19e15bec0f7d9db240df135f94b2a3b815c458ebe92957",
     "verified": true,
     "installationVerified": true,
     "runtimeVerified": true

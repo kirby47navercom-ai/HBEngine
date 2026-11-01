@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "date": "2026-11-01",
+  "kind": "portable-windows-package-signing-and-native-ui",
+  "implementationRevision": "2081a15ec1e9c698d6b72716cb614398a354127a",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3404.json",
+  "changedSourceHashes": {
+    "native/desktop/NativeGameAudioIdentity.hpp": "fa7bb6da5afd31f6c520056819bee736d99365df2d05484ac1d71594bc1d5db1",
+    "native/desktop/WindowsGameIdentity.hpp": "529e6a6f3ad4baf48c17200fca1f14f925a671277285c4427a11d3b4a3fc84ae",
+    "prototype/build-panel.js": "b5caaa196d855e66335d73d095a8fa5ba7642df328de84e818f36dec9c70ddb6",
+    "prototype/build-profile.js": "e69a4c42ab2a029aac2bd63e08100d881041a33a8b5707a5ed27f9202940412e",
+    "prototype/ui-runtime.js": "be90c61690f5cd6acb7aeac2710ec8df666bf052b021704ddc8bdfa1eaeab491",
+    "prototype/widget-visual-contract.js": "1493a3ef4a2008a548481127cca1365ce3b12321bcd9248eeb9ede0d32ada808",
+    "tools/build-game.mjs": "f99e357c4db87e2654b132e40fb4c182d0385243a7d8848702c49811cd8ac4a1",
+    "tools/build-native-game.mjs": "fb192d3849385b5a258259e478bb92675fe63e82e262a53789fb07b4ce169298",
+    "tools/check-native-game.mjs": "5919e8937d35434a62a71c65c48fe0e06a460a286b39ac5355a6b4ff8813a8dd",
+    "tools/check-native-compile-units.mjs": "6ed8403f08459ccfa04d5b2a51eb31a38c1819d5539eefc14518224e4845ae6b",
+    "tools/check-native-game-audio-identity.mjs": "cfcd1926fa3901bbae4b599ad0085108b3f50cc0f078259be4426b443b60a137",
+    "tools/check-native-ui-parity.mjs": "af71d22b91aaed452db9f65118dae587ccb8b6773771a4688eca4c68d37852e1",
+    "tools/check-native-webp-animation.mjs": "32a124c01bc3cff01a575a16a773899128ea0e5389e7ced7edee9fe5a42c17cd",
+    "tools/check-windows-package-policy.mjs": "1a8e29ddfcffc26730844c454d0f11422754eeb4c7d83577e926d5805f0b80b7",
+    "tools/check-windows-pe-resources.mjs": "57651fcbd2e415b3e0346b0dd29936fc43d4e77899c25e17e4349103b0b92d82",
+    "tools/native-game-platform.mjs": "205bc19aaee1e61015eb2b6956487b5af902b0796752ab22e0b6fb7334ef4ea7",
+    "tools/native-game-runner.mjs": "9befdcefd7db155115b99b0185fa550f6edb6ff0c4f8d36e3b416429518b14b3",
+    "tools/native-host.mjs": "fc91c6511550e5ad13a8671f8b3b4b519d5b39d319b9f63b999c28641469e60a",
+    "tools/native-retained-build.mjs": "44a3d9a9592c24c047c4810c53f830a06cec45063e59a9ec00709c8477da3d8b",
+    "tools/native-widget-layer.mjs": "cfff895480f0ed4ef120931185a925d5328817a133b8962a278d022d40ef6b6d",
+    "tools/sync-desktop-content.mjs": "fe3efbb2351214eb0e4749a48acb4992113a01debd25971412264dd16458b7d2",
+    "tools/native-compile-units.mjs": "ad3158a472613f20ca53f18f637a9a3c1b2f781f20cfae1f7932b9565389b206",
+    "tools/native-webp-animation.mjs": "12eec471c877e06b5e58dd265af8694a046d67c5850fba2d7eaa2dd1a4d0f9b2",
+    "tools/native-widget-paint.mjs": "5d00fd6e85e44fc4dd27e607698b54c7b52d66e7a82c8fa53f8c840e10fc9741",
+    "tools/native-worker-resources.mjs": "1d36e69652a4505723f3e1cb80c3158bb4c6b644467c602ff5b767e7d4e388a5",
+    "tools/packaged-module-error.mjs": "e71d645998a78175df3ebce5333e24064b74a643272890e9fb6faa127c7fa7e6",
+    "tools/windows-package-signing.mjs": "60c0f06b6d6e78faf850e6f53ebfe6209aa7df96a643cd8943c901c5da61238e",
+    "tools/windows-portable-runtime.mjs": "63bf15cad8377016315bb4a7583bba68fdaf110d019c938d2ac6cf788860261e",
+    "docs/NATIVE_GAME_RUNTIME.md": "d4f9e46747bb3e4ae95eed1e7000f0b7061d2fbe96ce8a954d59951400b785de",
+    "docs/ai-routes.json": "243822cc3d4e196835a60245953f4c7699c9d81fd38060b0ebc93f90a0ee7b19",
+    "native/desktop/HBNativePlayer.cpp": "0d6602ca35db809271e073d3dcb404e956c413867852ad746b7bb528e9ccf1ba"
+  },
+  "targetIds": [
+    "BLD-01",
+    "UI-01",
+    "AUD-01",
+    "DBG-02"
+  ],
+  "rootCauses": [
+    "Native packager stamped signed vendor Node resources, removing Authenticode",
+    "Audio .node imported VCRUNTIME140.dll but package assumed system installation",
+    "Windows UpdateResource truncated MinGW COFF symbol/string tables and left stale pointers",
+    "Native widget painting diverged from shared layout, image fit, text and DPR rules; UI snapshots recloned unchanged peers"
+  ],
+  "implementation": [
+    "Preserve signed vendor Node bytes; bundle verified Microsoft app-local VC in runtime and audio module folders",
+    "Game and C++ worker PE version/manifest before SHA256 signing+timestamp+Valid verification; final artifact hashes after all writes",
+    "Require signing certificate for release; mark unsigned development builds explicitly",
+    "Link initial worker resources and preserve/repoint COFF table across product metadata stamping",
+    "DPI-aware native window sizing and HUD pixelRatio; shared visual helpers, text wrapping, image fit, 9slice, SVG reraster, WebP animation, opacity/transform/layout hit-test",
+    "Per-instance once-per-tick immutable UI snapshot refresh and peer reuse",
+    "Separate owned child CoreAudio session name/icon/group without editing vendor Node",
+    "Bounded one/two translation units and source-count timeout; drain on cancellation",
+    "Missing/blocked packaged C++ worker actionable window/log diagnostics"
+  ],
+  "checks": [
+    {
+      "command": "node tools/check-native-game.mjs",
+      "report": "native/build/native-game-AamIOu/acceptance.json",
+      "sha256": "cd38abe9964a5c62736d632c186d98788aa3e5e90e1804d6ebd8a37d9ccd66f0",
+      "passed": true,
+      "scope": "Final staged-source binary: 40 D3D frames, AOT C++, HUD/audio/input/close, clean env and app-local VC, missing worker diagnosis"
+    },
+    {
+      "command": "node tools/check-windows-pe-resources.mjs",
+      "report": "native/build/windows-pe-resources-dg0mFH/acceptance.json",
+      "sha256": "fe21b44e1b35fb66d5623410ba1a1d2a7d307c7821af5dc5ab911f2df242c163",
+      "passed": true,
+      "scope": "PE structure, executable and COFF symbols survive metadata/repeated updates"
+    },
+    {
+      "command": "node tools/check-native-game-audio-identity.mjs",
+      "report": "native/build/native-audio-identity-mzO7VR/acceptance.json",
+      "sha256": "dbf9ecae00444d3de3a5e05ea6bb940f7d336bf1ea928bb41e088daa88500565",
+      "passed": true,
+      "scope": "Two owned games: separate audio display names/groups/mute/volume. Unchanged audio identity implementation; before final unrelated DPI/COFF binary rebuild"
+    },
+    {
+      "command": "node tools/check-native-ui-parity.mjs",
+      "report": "native/build/native-ui-parity-bsGsBj/acceptance.json",
+      "sha256": "29053c5899b5acc04d38c66f1e929d891c5976dea7618ab7307feb5c6223dc1a",
+      "passed": true,
+      "scope": "Actual Chrome DOM and Skia: 17 rectangles and 14 color samples at both DPR 1 and 1.5"
+    },
+    {
+      "command": "node tools/check-native-webp-animation.mjs",
+      "report": "native/build/native-webp-SPFiqS/acceptance.json",
+      "sha256": "3bf2c4600600e99191322ce30426ebea0a604a95fde0d8a40875264e1713b366",
+      "passed": true,
+      "scope": "WebP frame offset/blend/disposal/finite loops and released resources"
+    },
+    {
+      "command": "node tools/check-windows-package-policy.mjs",
+      "report": "native/build/package-policy-pJTs7W/acceptance.json",
+      "sha256": "f2264e98a4f891f71a9fc434477185728c96e536a400f38f3fa9368eddae41e3",
+      "passed": true,
+      "scope": "Signing policy, signed vendor runtime/VC, one instance refresh for 70 animated nodes, immutable peers"
+    },
+    {
+      "command": "node tools/check-native-retained-build-593.mjs",
+      "report": "native/build/native-retained-build-593-YdtrXB/acceptance.json",
+      "sha256": "05ec6835c4042d4805189000415b1ec26a18d7c7f0f600d4784340e46ecc46fa",
+      "passed": true,
+      "scope": "Actual managed C++ builds/cache/headers/debugger/cancellation/leases"
+    }
+  ],
+  "additionalChecks": [
+    {
+      "command": "node tools/check-widget-batch-1066.mjs",
+      "report": "native/build/widget-batch-1066.json",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-native-compile-units.mjs",
+      "passed": true,
+      "cases": 5,
+      "peakConcurrency": 2,
+      "eightSourceTimeoutMs": 165000
+    },
+    {
+      "command": "node --check <21 explicitly owned files>",
+      "passed": true
+    }
+  ],
+  "nativePlayerSha256": "3ae7aeb1e5ec6140224e159cb6e5341bba8ee9f877766e623809b6ec9e3ceb7b",
+  "nativeBinaryChanged": true,
+  "audioIdentitySourceSha256": "fa7bb6da5afd31f6c520056819bee736d99365df2d05484ac1d71594bc1d5db1",
+  "separateWorkingChanges": {
+    "file": "native/desktop/HBNativePlayer.cpp",
+    "description": "Pre-existing/external DPI_UNAWARE and center/fit hunks left in working tree, excluded from staged source and shipping binary",
+    "shippingSourceSha256": "0d6602ca35db809271e073d3dcb404e956c413867852ad746b7bb528e9ccf1ba"
+  },
+  "limits": [
+    "No trusted code-signing certificate/private key supplied; actual positive signing and timestamp not run",
+    "No recipient Windows PC/VM antivirus retest; Contebrew.A!ml verdict not proven resolved",
+    "PE defect is proven locally, not claimed sole cause of remote antivirus detection",
+    "Native advanced widget/video/gamepad/etc. remainder retained; font AA is not asserted pixel-identical",
+    "PCH not implemented; no full game C++ automatic parallelism claim",
+    "User games untouched; existing packages must be rebuilt"
+  ],
+  "installation": "docs/research/USER_INSTALL_3407.json",
+  "baseline": {
+    "report": "native/build/package-pe-cDH3f0/result.json",
+    "sha256": "122d7a437927885da0bfacee7440e49e075cd8dcbfc27a7f367b074955af5bb9",
+    "scope": "Before fix, UpdateResource dropped COFF table; objdump failed while Windows could execute"
+  }
+}

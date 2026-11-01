@@ -1,0 +1,229 @@
+{
+  "version": 1,
+  "date": "2026-11-01",
+  "sourceCommit": "2081a15ec1e9c698d6b72716cb614398a354127a",
+  "bundleHash": "f87ace806dd7b2a8fc19e15bec0f7d9db240df135f94b2a3b815c458ebe92957",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f87ace806dd7b2a8",
+  "files": 5295,
+  "versions": [
+    "f87ace806dd7b2a8"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "ownerChecks": [
+    {
+      "path": "native/desktop/NativeGameAudioIdentity.hpp",
+      "sha256": "fa7bb6da5afd31f6c520056819bee736d99365df2d05484ac1d71594bc1d5db1"
+    },
+    {
+      "path": "native/desktop/WindowsGameIdentity.hpp",
+      "sha256": "529e6a6f3ad4baf48c17200fca1f14f925a671277285c4427a11d3b4a3fc84ae"
+    },
+    {
+      "path": "prototype/build-panel.js",
+      "sha256": "b5caaa196d855e66335d73d095a8fa5ba7642df328de84e818f36dec9c70ddb6"
+    },
+    {
+      "path": "prototype/build-profile.js",
+      "sha256": "e69a4c42ab2a029aac2bd63e08100d881041a33a8b5707a5ed27f9202940412e"
+    },
+    {
+      "path": "prototype/ui-runtime.js",
+      "sha256": "be90c61690f5cd6acb7aeac2710ec8df666bf052b021704ddc8bdfa1eaeab491"
+    },
+    {
+      "path": "prototype/widget-visual-contract.js",
+      "sha256": "1493a3ef4a2008a548481127cca1365ce3b12321bcd9248eeb9ede0d32ada808"
+    },
+    {
+      "path": "tools/build-game.mjs",
+      "sha256": "f99e357c4db87e2654b132e40fb4c182d0385243a7d8848702c49811cd8ac4a1"
+    },
+    {
+      "path": "tools/build-native-game.mjs",
+      "sha256": "fb192d3849385b5a258259e478bb92675fe63e82e262a53789fb07b4ce169298"
+    },
+    {
+      "path": "tools/check-native-game.mjs",
+      "sha256": "5919e8937d35434a62a71c65c48fe0e06a460a286b39ac5355a6b4ff8813a8dd"
+    },
+    {
+      "path": "tools/check-native-compile-units.mjs",
+      "sha256": "6ed8403f08459ccfa04d5b2a51eb31a38c1819d5539eefc14518224e4845ae6b"
+    },
+    {
+      "path": "tools/check-native-game-audio-identity.mjs",
+      "sha256": "cfcd1926fa3901bbae4b599ad0085108b3f50cc0f078259be4426b443b60a137"
+    },
+    {
+      "path": "tools/check-native-ui-parity.mjs",
+      "sha256": "af71d22b91aaed452db9f65118dae587ccb8b6773771a4688eca4c68d37852e1"
+    },
+    {
+      "path": "tools/check-native-webp-animation.mjs",
+      "sha256": "32a124c01bc3cff01a575a16a773899128ea0e5389e7ced7edee9fe5a42c17cd"
+    },
+    {
+      "path": "tools/check-windows-package-policy.mjs",
+      "sha256": "1a8e29ddfcffc26730844c454d0f11422754eeb4c7d83577e926d5805f0b80b7"
+    },
+    {
+      "path": "tools/check-windows-pe-resources.mjs",
+      "sha256": "57651fcbd2e415b3e0346b0dd29936fc43d4e77899c25e17e4349103b0b92d82"
+    },
+    {
+      "path": "tools/native-game-platform.mjs",
+      "sha256": "205bc19aaee1e61015eb2b6956487b5af902b0796752ab22e0b6fb7334ef4ea7"
+    },
+    {
+      "path": "tools/native-game-runner.mjs",
+      "sha256": "9befdcefd7db155115b99b0185fa550f6edb6ff0c4f8d36e3b416429518b14b3"
+    },
+    {
+      "path": "tools/native-host.mjs",
+      "sha256": "fc91c6511550e5ad13a8671f8b3b4b519d5b39d319b9f63b999c28641469e60a"
+    },
+    {
+      "path": "tools/native-retained-build.mjs",
+      "sha256": "44a3d9a9592c24c047c4810c53f830a06cec45063e59a9ec00709c8477da3d8b"
+    },
+    {
+      "path": "tools/native-widget-layer.mjs",
+      "sha256": "cfff895480f0ed4ef120931185a925d5328817a133b8962a278d022d40ef6b6d"
+    },
+    {
+      "path": "tools/sync-desktop-content.mjs",
+      "sha256": "fe3efbb2351214eb0e4749a48acb4992113a01debd25971412264dd16458b7d2"
+    },
+    {
+      "path": "tools/native-compile-units.mjs",
+      "sha256": "ad3158a472613f20ca53f18f637a9a3c1b2f781f20cfae1f7932b9565389b206"
+    },
+    {
+      "path": "tools/native-webp-animation.mjs",
+      "sha256": "12eec471c877e06b5e58dd265af8694a046d67c5850fba2d7eaa2dd1a4d0f9b2"
+    },
+    {
+      "path": "tools/native-widget-paint.mjs",
+      "sha256": "5d00fd6e85e44fc4dd27e607698b54c7b52d66e7a82c8fa53f8c840e10fc9741"
+    },
+    {
+      "path": "tools/native-worker-resources.mjs",
+      "sha256": "1d36e69652a4505723f3e1cb80c3158bb4c6b644467c602ff5b767e7d4e388a5"
+    },
+    {
+      "path": "tools/packaged-module-error.mjs",
+      "sha256": "e71d645998a78175df3ebce5333e24064b74a643272890e9fb6faa127c7fa7e6"
+    },
+    {
+      "path": "tools/windows-package-signing.mjs",
+      "sha256": "60c0f06b6d6e78faf850e6f53ebfe6209aa7df96a643cd8943c901c5da61238e"
+    },
+    {
+      "path": "tools/windows-portable-runtime.mjs",
+      "sha256": "63bf15cad8377016315bb4a7583bba68fdaf110d019c938d2ac6cf788860261e"
+    },
+    {
+      "path": "docs/NATIVE_GAME_RUNTIME.md",
+      "sha256": "d4f9e46747bb3e4ae95eed1e7000f0b7061d2fbe96ce8a954d59951400b785de"
+    },
+    {
+      "path": "docs/ai-routes.json",
+      "sha256": "243822cc3d4e196835a60245953f4c7699c9d81fd38060b0ebc93f90a0ee7b19"
+    },
+    {
+      "path": "native/desktop/HBNativePlayer.cpp",
+      "sha256": "0d6602ca35db809271e073d3dcb404e956c413867852ad746b7bb528e9ccf1ba"
+    }
+  ],
+  "nativePlayerSha256": "3ae7aeb1e5ec6140224e159cb6e5341bba8ee9f877766e623809b6ec9e3ceb7b",
+  "nativeBinaryChanged": true,
+  "checks": [
+    {
+      "command": "node tools/check-native-tiled-sprite.mjs <installed directory>",
+      "report": "native/build/native-tiled-0gfxBU/acceptance.json",
+      "sha256": "9ef439d86f402047e373cc3f261ecf43a97298de844e4f691bda9c2be1763fa9",
+      "passed": true,
+      "gpuCases": 8,
+      "pixelSamples": 360,
+      "pixelErrors": 0
+    }
+  ],
+  "runtimeSignatures": {
+    "node": {
+      "status": "Valid",
+      "signer": "CN=OpenJS Foundation, O=OpenJS Foundation, L=San Francisco, S=California, C=US"
+    },
+    "vc": {
+      "status": "Valid",
+      "signer": "CN=Microsoft Windows, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+    },
+    "nativePlayer": {
+      "status": "NotSigned",
+      "signer": null
+    }
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5296,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e4ac740f922f9fab",
+        "bytes": 264199609,
+        "manifestSHA256": "6f5f46bda0bd4505602023eb3fd55ba48658c52b0e32b1014dbe546d2e2db66a"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-01T03:44:28.5763907Z",
+    "bytes": 264199609,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "f87ace806dd7b2a8"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "helperCleanup": {
+    "removed": [
+      {
+        "path": "native/build/native-audio-identity-mzO7VR/audio-identity.exe",
+        "bytes": 3253815
+      },
+      {
+        "path": "native/build/package-pe-cDH3f0/before.exe",
+        "bytes": 132964
+      },
+      {
+        "path": "native/build/package-pe-cDH3f0/after.exe",
+        "bytes": 95232
+      },
+      {
+        "path": "native/build/package-pe-cDH3f0/worker-resource.o",
+        "bytes": 1206
+      },
+      {
+        "path": "native/build/windows-pe-resources-dg0mFH/worker.exe",
+        "bytes": 132964
+      },
+      {
+        "path": "native/build/windows-pe-resources-dg0mFH/worker-resource.o",
+        "bytes": 1206
+      }
+    ],
+    "bytes": 3617387
+  },
+  "scope": "Engine installation and owned newly packaged D3D fixture. User games were not repackaged.",
+  "limits": [
+    "Trusted first-party code-signing certificate has not been supplied: positive signing/timestamp remains unverified",
+    "No recipient PC antivirus retest; Contebrew.A!ml resolution is not guaranteed",
+    "Existing games need repackaging; no user original/profile/window modified",
+    "External dirty HBNativePlayer.cpp DPI/centering edits left in working tree; installation uses committed source only"
+  ],
+  "work": "docs/research/ENGINE_WORK_3406.json"
+}
