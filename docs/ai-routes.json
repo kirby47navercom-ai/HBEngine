@@ -5138,6 +5138,96 @@
       "paths": [
         "prototype/scene-rendering.js"
       ]
+    },
+    {
+      "id": "windows-package-signing",
+      "keywords": [
+        "windowsSigningSettings",
+        "signWindowsPackage",
+        "finalizeWindowsPackage",
+        "Windows 코드 서명"
+      ],
+      "paths": [
+        "tools/windows-package-signing.mjs"
+      ]
+    },
+    {
+      "id": "portable-windows-runtime",
+      "keywords": [
+        "portableWindowsRuntime",
+        "Windows 실행 의존성"
+      ],
+      "paths": [
+        "tools/windows-portable-runtime.mjs"
+      ]
+    },
+    {
+      "id": "native-worker-resources",
+      "keywords": [
+        "nativeWorkerResource"
+      ],
+      "paths": [
+        "tools/native-worker-resources.mjs"
+      ]
+    },
+    {
+      "id": "native-compile-units",
+      "keywords": [
+        "compileNativeUnits",
+        "nativeBuildTimeoutMs"
+      ],
+      "paths": [
+        "tools/native-compile-units.mjs"
+      ]
+    },
+    {
+      "id": "packaged-module-error",
+      "keywords": [
+        "packagedModuleError"
+      ],
+      "paths": [
+        "tools/packaged-module-error.mjs"
+      ]
+    },
+    {
+      "id": "native-animated-images",
+      "keywords": [
+        "NativeWebPAnimation",
+        "NativeSVGImage",
+        "nativeWidgetImage"
+      ],
+      "paths": [
+        "tools/native-webp-animation.mjs"
+      ]
+    },
+    {
+      "id": "native-widget-paint",
+      "keywords": [
+        "paintWidgetText",
+        "paintWidgetImage"
+      ],
+      "paths": [
+        "tools/native-widget-paint.mjs"
+      ]
+    },
+    {
+      "id": "native-audio-session",
+      "keywords": [
+        "NativeGameAudioIdentity"
+      ],
+      "paths": [
+        "native/desktop/NativeGameAudioIdentity.hpp"
+      ]
+    },
+    {
+      "id": "widget-visual-contract",
+      "keywords": [
+        "widgetTextLines",
+        "widgetImageBox"
+      ],
+      "paths": [
+        "prototype/widget-visual-contract.js"
+      ]
     }
   ]
 }

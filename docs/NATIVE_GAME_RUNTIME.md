@@ -22,7 +22,29 @@ Windows 빌드의 기본값은 `windowsRuntime: "native"`예요. `target: "web"`
 
 현재 네이티브 검사에서 **목록/트리 위젯, 월드 추적 UI, 키오스크, 스트리밍 오디오, 영상, 화면 주사율 동기화**을 쓰면 해당 파일/설정과 함께 빌드를 거절해요. 기능을 버리거나 WebView로 몰래 전환하지 않아요. 네이티브 게임패드·포인터 잠금·UI 고급 레이아웃의 완전한 브라우저 동등성도 추가 구현/검증 대상이에요. 에디터·웹·모바일의 기존 경로는 별개예요.
 
-Windows 10/11 x64·DirectX 11 드라이버가 필요해요. 네이티브 오디오 모듈은 Microsoft Visual C++ v14 x64 런타임의 `VCRUNTIME140.dll`을 사용해요. 없는 PC에는 [Microsoft 공식 런타임](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)을 설치해야 해요. 운영체제의 DLL을 임의로 복사해서 배포하지 않아요.
+Windows 10/11 x64·DirectX 11 드라이버가 필요해요. 네이티브 오디오의 Microsoft Visual C++ v14 x64 런타임은 Microsoft 정식 서명을 검사한 뒤 앱 안에 동봉해요. `runtime/`와 오디오 `.node` 옆에 배치하고 실제 앱 폴더의 DLL이 로드되는지 검사해요. 다른 PC에 Node·HBEngine·VC 런타임이 미리 설치돼 있다고 가정하지 않아요. 빌드 도구는 설치본에 포함된 재배포 파일 또는 Visual Studio의 정식 `VC/Redist`를 사용하며 `HB_VC_REDIST_DIR`도 지원해요. Windows System32 DLL은 복사하지 않아요. [Microsoft 배포 지침](https://learn.microsoft.com/cpp/windows/redistributing-visual-cpp-files).
+
+## Windows 배포 서명 · 2026-11-01
+
+네이티브·WebView 패키지 모두 게임 EXE와 `Binaries/*.exe`에 게임 버전 정보·실행 매니페스트를 넣은 **다음** SHA-256 Authenticode와 타임스탬프를 적용하고 서명을 다시 검사해요. 마지막 파일 기준으로 패키지 SHA를 기록해요. 공식 Node 실행 파일의 바이트·공급자 서명은 그대로 보존해요. 게임 소리 이름·그룹·아이콘은 자식 프로세스의 CoreAudio 세션에만 적용해서 다른 게임의 볼륨과 분리해요.
+
+빌드 창의 **Windows 코드 서명**에서 CurrentUser/My 저장소에 있는 코드 서명 인증서의 40자리 지문을 지정해요. 인증서는 유효한 개인 키가 있어야 해요. AI/CLI는 빌드 프로필을 똑같이 편집하거나 `HB_CODE_SIGN_THUMBPRINT`를 지정할 수 있어요. 비밀번호·개인 키는 프로필에 넣지 않아요.
+
+```json
+{"configuration":"release","windowsSigning":{"certificateThumbprint":"인증서의_40자리_SHA1_지문","timestampServer":"http://timestamp.digicert.com"}}
+```
+
+인증서가 없는 `release`는 배포 준비 완료로 내보내지 않고 중단해요. `development`는 만들 수 있지만 결과·UI·명세에 `unsigned-development`, `distributionReady:false`를 명시해요. 코드 서명은 게시자와 파일 무결성을 확인하는 절차이고 모든 백신 통과 보증은 아니에요. 이 작업에서 정식 인증서·다른 PC의 실제 탐지 재검사는 확보되지 않았어요. [Microsoft PE 서명](https://learn.microsoft.com/windows/win32/secbp/understanding-pe-signatures).
+
+C++ worker는 처음 링크할 때부터 버전·권한 매니페스트가 있어요. 패키지의 게임별 이름 갱신 때 Windows UpdateResource가 MinGW COFF 디버그 표를 잘라내면서 이전 포인터를 남기는 문제도 수정했어요. 표를 복원하고 포인터를 재배치해서 PE 분석·실행·디버그 심볼 수가 유지돼요. 이 결함을 실제 원격 백신의 유일한 탐지 원인으로 단정하지 않아요. 파일 누락·실행 차단은 경로와 확인할 보호 기록을 오류 창·로그에 표시해요. 백신 제외·비활성화는 하지 않아요.
+
+## UI 표시와 갱신
+
+공용 위젯 자산의 기준 크기·높이/너비 배율·안전 여백·줄 높이·이미지 fit 규칙을 네이티브에도 적용해요. 절대 배치, 수평/수직 fill, Grid, NamedSlot, 부모 변환·투명도, 변환된 버튼 hit test, 텍스트 줄바꿈, SVG 선택·실제 크기 재래스터, 9-slice를 연결해요. SVG 소스를 바꾸거나 화면별 PNG를 쌓지 않아요. 애니메이션 WebP는 압축 프레임과 합성 캔버스 하나를 보관하고 프레임 변경 시에만 UI를 다시 그려요. GIF/APNG 전체 지원을 뜻하지 않아요.
+
+실제 Chrome DOM과 Skia 비교에서 100%·150%의 17개 사각형과 14개 이미지/배경 표본이 통과했어요. 글꼴의 픽셀 단위 안티앨리어싱까지 동일하다는 뜻은 아니고, 위 제한 목록의 모든 고급 위젯이 완료됐다는 뜻도 아니에요. UI 애니메이션·바인딩은 인스턴스별 한 번 갱신하고, 바뀌지 않은 다른 인스턴스의 불변 스냅샷을 재사용해요.
+
+C++ 소스 번역 단위는 CPU·가용 메모리에 따라 최대 2개씩 컴파일해요. 취소·실패 시 작업을 모두 회수하고, 소스 수에 비례해 전체 시간 제한을 늘려요. PCH·무제한 병렬 컴파일을 도입한 것은 아니에요. AI 조회: `windowsSigningSettings`, `portableWindowsRuntime`, `compileNativeUnits`, `NativeGameAudioIdentity`, `NativeWebPAnimation`.
 
 ## 제작·AI·검사 진입점
 

@@ -1,3 +1,6 @@
+import {compileNativeUnits,nativeBuildTimeoutMs} from './native-compile-units.mjs';
+import {nativeWorkerResource} from './native-worker-resources.mjs';
+import {packagedModuleError} from './packaged-module-error.mjs';
 import {nativeComponentDefaultJson} from '../prototype/native-component-defaults.js';
 import {nativeLiveQueryKeys} from '../prototype/native-live-query.js';
 import {persistentQueryKeys} from '../prototype/runtime-storage.js';
@@ -59,7 +62,7 @@ export class NativeHost extends NativeProtocol {
     // not byte ownership; arrayBuffers is already included in external.
     return {pid:process.pid,node:process.version,memory:process.memoryUsage(),modules,physicsQueries:this.physicsQueryPool.inspect(),nativeCache:this.moduleCache?.inspect()||{root:mutablePaths.modules,installed:false},managedNativeCache:this.managedModuleCache?.inspect()||null,legacyNativeCache:this.versionModuleCache?.inspect()||null};
   }
-  registerBinary(binary,metadata){const token=randomUUID();this.sessions.set(token,{token,binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()});return {token,metadata,diagnostics:'사전 빌드 로드'};}
+  registerBinary(binary,metadata){const token=randomUUID();this.sessions.set(token,{token,binary,metadata,packaged:true,queue:Promise.resolve(),lastUsed:Date.now()});return {token,metadata,diagnostics:'사전 빌드 로드'};}
   async build(header,source,{configuration='editor',signal,files=[],headerPath,sourcePath}={}){
     const controller=new AbortController();this.buildControllers.add(controller);signal=signal?AbortSignal.any([signal,controller.signal]):controller.signal;let releaseCache,session;
     try{
@@ -67,29 +70,29 @@ export class NativeHost extends NativeProtocol {
     if(!['editor','development','release'].includes(configuration))throw Error('C++ 빌드 구성 오류');
     const generated=nativeSources(header,source,{files,headerPath,sourcePath}),{metadata,header:compiledHeader,source:compiledSource,worker}=generated;await prepareNative();
     const snapshot=await nativeSDKFingerprint(path.join(root,'native/include'),{dependencies:[{name:'nlohmann/json.hpp',file:path.join(jsonInclude,'nlohmann/json.hpp')}],signal,inventory:true}),{entries,...sdk}=snapshot;
-    const sourceKey=createHash('sha256').update('project-source-v4-used-sdk-worker-o2'+configuration+compiledHeader+compiledSource+worker+JSON.stringify([generated.files,generated.sourceFiles,generated.includeDirectories,nativeSourceOptimization(configuration)])).digest('hex'),deadline=performance.now()+60000,compile=(args,options={})=>compileNativeStep(args,{signal,deadline,...options});
+    const sourceKey=createHash('sha256').update('project-source-v5-pe-resources-used-sdk-worker-o2'+configuration+compiledHeader+compiledSource+worker+JSON.stringify([generated.files,generated.sourceFiles,generated.includeDirectories,nativeSourceOptimization(configuration)])).digest('hex'),deadline=performance.now()+nativeBuildTimeoutMs(generated.sourceFiles.length),compile=(args,options={})=>compileNativeStep(args,{signal,deadline,...options});
     let sdkUsed,hash,binary,cacheHit,cacheScope='version';
     const retained=this.managedModuleCache&&await buildRetainedNative({root,directory:path.join(mutablePaths.cache,'NativeSDKPlans'),snapshot,sourceKey,generated,compiler,env,configuration,compile,signal,cache:this.managedModuleCache});
     if(retained){({sdkUsed,hash,binary,cacheHit,cacheScope,releaseCache}=retained);}else{
       sdkUsed=await nativeSDKPlan({root,directory:path.join(mutablePaths.cache,'NativeSDKPlans'),snapshot,sourceKey,generated,compiler,env,configuration,compile,signal});const conservative=!!this.managedModuleCache||sdkUsed.mode==='full';hash=createHash('sha256').update(sourceKey+sdkUsed.identity+sdkUsed.fingerprint+(conservative?randomUUID():'')).digest('hex').slice(0,20);const dir=path.join(this.versionModuleCache?.directory||mutablePaths.modules,hash);binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');if(this.versionModuleCache)releaseCache=await this.versionModuleCache.retain(hash);else await fs.mkdir(dir,{recursive:true});signal.throwIfAborted();
     cacheHit=existsSync(binary);if(!cacheHit){
       const attempt=randomUUID(),compileDir=path.join(dir,'compile-'+attempt),temporary=path.join(dir,'worker-'+attempt+(process.platform==='win32'?'.tmp.exe':'.tmp'));await fs.mkdir(compileDir);
-      const objects=[];let published=false;
+      const objects=[];let published=false,resource;
       try{
-        const layout=await writeNativeProject(compileDir,generated);
+        const layout=await writeNativeProject(compileDir,generated);resource=await nativeWorkerResource(compileDir,compiler,{signal});
         // GCC's assembler cannot reopen an intermediate file in a Unicode TEMP
         // on Windows. Pipe translation units directly; keep the game's TEMP intact.
         const common=['-std=c++17','-pipe','-I','native/include','-I',path.relative(root,jsonInclude),...layout.includeDirectories.flatMap(dir=>['-I',path.relative(root,path.join(compileDir,dir))])],file=name=>path.relative(root,path.join(compileDir,name));
         // Optimize the JSON/engine translation unit while preserving user-code
         // debugging. All stages share the existing 60-second build deadline.
         await compile([...common,'-O2','-c',file('worker.cpp'),'-o',file('worker.o')]);
-        for(const [i,source] of layout.sources.entries()){const object='source-'+i+'.o';objects.push(path.join(compileDir,object));await compile([...common,...nativeSourceOptimization(configuration),'-c',file(source),'-o',file(object)]);}
-        await compile([file('worker.o'),...objects.map(file=>path.relative(root,file)),...(configuration==='editor'?[]:['-static']),...(configuration==='release'?['-s']:[]),'-o',path.relative(root,temporary)]);
+        for(const [i] of layout.sources.entries())objects.push(path.join(compileDir,'source-'+i+'.o'));await compileNativeUnits(layout.sources,(source,i,unitSignal)=>compile([...common,...nativeSourceOptimization(configuration),'-c',file(source),'-o',path.relative(root,objects[i])],{signal:unitSignal}),{signal});
+        await compile([file('worker.o'),...(resource?[path.relative(root,resource)]:[]),...objects.map(file=>path.relative(root,file)),...(configuration==='editor'?[]:['-static']),...(configuration==='release'?['-s']:[]),'-o',path.relative(root,temporary)]);
         signal?.throwIfAborted();
         // Only a complete executable enters the shared cache. Other attempts may
         // commit the same hash while this compiler runs; keep their complete file.
         published=await publishNativeBinary(temporary,binary);
-      }finally{await Promise.all([temporary,path.join(compileDir,'worker.o'),...objects].map(file=>fs.unlink(file).catch(error=>{if(error.code!=='ENOENT')throw error;})));if(!published)await removeNativeAttempt(dir,compileDir);}
+      }finally{await Promise.all([temporary,path.join(compileDir,'worker.o'),...(resource?[resource]:[]),...objects].map(file=>fs.unlink(file).catch(error=>{if(error.code!=='ENOENT')throw error;})));if(!published)await removeNativeAttempt(dir,compileDir);}
     }
     }
     signal?.throwIfAborted();
@@ -118,9 +121,9 @@ export class NativeHost extends NativeProtocol {
   }
   rpc(session,request){
     if(request.spawnPrefix&&session.spawnContexts?.has(request.spawnPrefix)&&(!session.process||session.workerSpawnPrefix!==request.spawnPrefix))request={...request,spawnTemplates:session.spawnContexts.get(request.spawnPrefix)};
-    if(!session.process){session.transportWorld=null;session.process=spawn(session.binary,[],{env:{...env,...process.env,PATH:env.PATH},windowsHide:true,stdio:['pipe','pipe','pipe']});session.lines=readline.createInterface({input:session.process.stdout});session.process.stderr.on('data',()=>{});session.process.on('error',()=>{});session.process.once('exit',()=>{session.process=null;session.workerSpawnPrefix=null;});}
+    if(!session.process){session.transportWorld=null;session.process=spawn(session.binary,[],{env:session.packaged?{...process.env}:{...env,...process.env,PATH:env.PATH},windowsHide:true,stdio:['pipe','pipe','pipe']});session.lines=readline.createInterface({input:session.process.stdout});session.process.stderr.on('data',()=>{});session.process.on('error',()=>{});session.process.once('exit',()=>{session.process=null;session.workerSpawnPrefix=null;});}
     return new Promise((resolve,reject)=>{const prepareStart=performance.now();const clockOnly=session.metadata.workerProtocol>=2&&["frame","frames","reset"].includes(request.command);if(request.command==="reset"){session.transportWorld=null;this.physicsQueryPool.invalidate(request.gameSession?.id);}const current=clockOnly?null:request[canonicalWorld]?request.objects:JSON.parse(JSON.stringify(request.objects)),patch=!clockOnly&&session.metadata.workerProtocol>=2&&session.transportWorld?(request[canonicalWorld]?.patch&&session.transportWorld===request[canonicalWorld].base?request[canonicalWorld].patch:worldPatch(session.transportWorld,current)):null,packet=clockOnly?{...request,objects:[]}:patch?{...request,objects:undefined,objectPatch:patch}:request;if(!clockOnly)session.transportWorld=current;const payload=JSON.stringify(packet),rpcStart=performance.now();const child=session.process,lines=session.lines,queries=new NativePhysicsQueries(request.objects,{liveQuery:(query,snapshot)=>nativeParticleQuery(query,snapshot,session.rendererQuery),lease:request.command==='reset'?null:this.physicsQueryPool.acquire(request.gameSession?.id),authorizeWorld:query=>spawnQueryRequest(request,query,session.metadata,request.spawnTemplates||session.spawnContexts?.get(request.spawnPrefix))});let finished=false;
-      const cleanup=()=>{finished=true;clearTimeout(timeout);queries.close();lines.off('line',onLine);child.off('exit',onExit);child.off('error',onError);};const onError=error=>{if(finished)return;cleanup();session.transportWorld=null;reject(error);},onExit=code=>onError(Error('C++ 실행 프로세스가 종료됐어요: '+code));const timeout=setTimeout(()=>{child.kill();onError(Error('C++ 함수 실행 시간 제한 초과'));},5000);
+      const cleanup=()=>{finished=true;clearTimeout(timeout);queries.close();lines.off('line',onLine);child.off('exit',onExit);child.off('error',onError);};const onError=error=>{if(finished)return;cleanup();session.transportWorld=null;reject(session.packaged?packagedModuleError(session.binary,error):error);},onExit=code=>onError(Error('C++ 실행 프로세스가 종료됐어요: '+code));const timeout=setTimeout(()=>{child.kill();onError(Error('C++ 함수 실행 시간 제한 초과'));},5000);
       const onLine=async line=>{if(finished)return;
         if(line.startsWith('HB_QUERY\t')){let reply;try{if(Buffer.byteLength(line,'utf8')>4000000)throw Error('C++ 질의 크기 제한 초과');const query=JSON.parse(line.slice(9));let value;if(query.key==='componentDefaultJson')value=nativeComponentDefaultJson(query.args);else if(persistentQueryKeys.has(query.key)){if(!this.persistentQueries)throw Error('게임 저장·데이터 서비스가 준비되지 않았어요.');value=await this.persistentQueries(query.key,query.args);}else if(nativeLiveQueryKeys.has(query.key)){if(++session.nativeBudget.count>128)throw Error('GPU 파티클 질의 개수 오류');value=await nativeParticleQuery(query,request.objects.length?request.objects:session.transportWorld||[],session.rendererQuery);}else if(query.key==='nativeModule'){
           if(++session.nativeBudget.count>128)throw Error('C++ 모듈 질의 개수 오류');const authorized=spawnQueryRequest(request,query,session.metadata,request.spawnTemplates||session.spawnContexts?.get(request.spawnPrefix));this.validate(session,{command:'reset',objects:query.objects});const route=nativeModuleRequest(authorized,query,token=>this.module(token)),result=await this.call(route.token,route.request,session,session.rendererQuery);

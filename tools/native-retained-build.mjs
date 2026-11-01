@@ -1,3 +1,5 @@
+import {compileNativeUnits} from './native-compile-units.mjs';
+import {nativeWorkerResource} from './native-worker-resources.mjs';
 import fs from 'node:fs/promises';import path from 'node:path';import {createHash,randomUUID} from 'node:crypto';
 import {nativeSDKPlan,nativeSourceOptimization} from './native-sdk-plan.mjs';
 import {nativeToolchainIdentity} from './native-toolchain-identity.mjs';
@@ -28,12 +30,13 @@ export async function buildRetainedNative({root,directory,snapshot,sourceKey,gen
    if(rebuilt.fingerprint!==plan.fingerprint)throw Error('C++ 입력이 빌드 중 바뀌었어요. 다시 빌드하세요.');
   }
   const cwd=retained.directory,objects=['worker.o',...retained.layout.sources.map((_,i)=>'source-'+i+'.o')],common=['-std=c++17','-pipe','-I','SDK/include','-I','SDK/dependency',...retained.layout.includeDirectories.flatMap(dir=>['-I',dir])],binary=path.join(candidate.entry,process.platform==='win32'?'worker.exe':'worker'),temporary=path.join(candidate.entry,'worker-'+randomUUID()+'.tmp.exe');
-  try{
+  let resource;try{
+   resource=await nativeWorkerResource(cwd,compiler,{signal});
    await compile([...common,'-O2','-c','worker.cpp','-o',objects[0]],{cwd});
-   for(const [i,source] of retained.layout.sources.entries())await compile([...common,...nativeSourceOptimization(configuration),'-c',source,'-o',objects[i+1]],{cwd});
-   await compile([...objects,...(configuration==='editor'?[]:['-static']),...(configuration==='release'?['-s']:[]),'-o',path.relative(cwd,temporary)],{cwd});signal.throwIfAborted();
+   await compileNativeUnits(retained.layout.sources,(source,i,unitSignal)=>compile([...common,...nativeSourceOptimization(configuration),'-c',source,'-o',objects[i+1]],{cwd,signal:unitSignal}),{signal});
+   await compile([...objects,...(resource?[path.relative(cwd,resource)]:[]),...(configuration==='editor'?[]:['-static']),...(configuration==='release'?['-s']:[]),'-o',path.relative(cwd,temporary)],{cwd});signal.throwIfAborted();
    await fs.rename(temporary,binary);await nativeAtomicJSON(path.join(candidate.entry,'.artifact.json'),{format:'hb-native-artifact-1',semantic,workspace:path.basename(cwd),sdk:snapshot.fingerprint,toolchain:toolchain.fingerprint});
-  }finally{for(const file of [temporary,...objects.map(file=>path.join(cwd,file))])await fs.unlink(file).catch(error=>{if(error.code!=='ENOENT')throw error;});}
+  }finally{for(const file of [temporary,...(resource?[resource]:[]),...objects.map(file=>path.join(cwd,file))])await fs.unlink(file).catch(error=>{if(error.code!=='ENOENT')throw error;});}
   selected=await cache.publishSemantic(semantic,candidate.key);
   if(!selected.won){await abandon();signal.throwIfAborted();return {binary:selected.binary,releaseCache:selected.release,hash,cacheHit:true,sdkUsed,cacheScope:'managed-installation'};}
   signal.throwIfAborted();const releaseCache=candidate.release;candidate=null;return {binary,releaseCache,hash,cacheHit:false,sdkUsed,cacheScope:'managed-installation'};

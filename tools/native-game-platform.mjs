@@ -1,3 +1,4 @@
+import {packagedModuleError} from './packaged-module-error.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
@@ -19,7 +20,7 @@ export async function openNativePackage(directory){
  const resolve=async name=>{name=resolveBuildPath(name,manifest.redirects);if(!entries.has(name))throw Object.assign(Error('패키지 에셋이 없어요: '+name),{code:'ENOENT'});return confined(name,contentRoot);};
  const project={resolve,read:async name=>{const file=await resolve(name),stat=await fs.stat(file);if(!stat.isFile())throw Error('게임 에셋은 일반 파일이어야 해요.');return {file,size:stat.size};},files:async()=>[...entries.values()]};
  const host=new NativeHost(),aot=new Map();
- for(const row of manifest.nativeModules||[])aot.set(row.signature,host.registerBinary(await confined(row.binary),row.metadata));
+ for(const row of manifest.nativeModules||[]){try{aot.set(row.signature,host.registerBinary(await confined(row.binary),row.metadata));}catch(error){host.close();throw packagedModuleError(path.join(root,row.binary),error);}}
  host.build=async(header,source,entry={})=>{const key=createHash('sha256').update(nativeModuleKey(header,source,entry)).digest('hex'),built=aot.get(key);if(!built)throw Error('미리 컴파일한 C++ 모듈이 없어요. 게임을 다시 빌드하세요.');return built;};
  return {root,project,manifest,host,url:name=>'hbasset:'+encodeURIComponent(name),resolve};
 }
