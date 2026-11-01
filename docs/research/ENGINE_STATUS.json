@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-01",
+  "updatedAt": "2026-11-02",
   "basisRevision": "4a5805f7cbabcebe7f190149bc10ec26039a9397",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
@@ -3897,7 +3897,8 @@
         "docs/research/ENGINE_WORK_3402.json",
         "docs/research/ENGINE_WORK_3404.json",
         "docs/research/ENGINE_WORK_3406.json",
-        "docs/research/ENGINE_WORK_3408.json"
+        "docs/research/ENGINE_WORK_3408.json",
+        "docs/research/ENGINE_WORK_3410.json"
       ]
     },
     {
@@ -4388,10 +4389,10 @@
     }
   ],
   "latestBatch": {
-    "first": 3408,
-    "last": 3408,
-    "receipt": "docs/research/ENGINE_WORK_3408.json",
-    "scope": "과도한 인증서 필수 제약 제거. 무서명 최적화 release를 설치 빌더로 생성·40프레임 C++/UI/입력/소리/종료 검증. 대상 PC 보안 정책은 별도."
+    "first": 3410,
+    "last": 3410,
+    "receipt": "docs/research/ENGINE_WORK_3410.json",
+    "scope": "엔진 공용 장면/UI 비용 개선·제한된 캐시·선택적 단계 프로필. 픽셀/명령/공용 UI API 확인; 전체 게임 FPS와 설치본은 별도."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_3409.json",

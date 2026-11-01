@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "date": "2026-11-02",
+  "kind": "shared-native-runtime-cost",
+  "implementationRevision": "commit-containing-this-receipt",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3408.json",
+  "changedSourceHashes": {
+    "tools/native-widget-layer.mjs": "d69a7bf3927060549580bdb7c06bfb7600bd733595fb6726fcbe1cf8a24caabe",
+    "prototype/native-scene-renderer.js": "4be7a1e7eccdcd9547414149d4347c38871299a745d4f01a30f05d756242d783",
+    "tools/native-game-runner.mjs": "00ddc0814789f981d1c66939ebe13b4f7326d3f2c0833149d100935576e929d9",
+    "docs/ai-routes.json": "c1747ccdc1191a4a438b84f1474a6acdb1f645fa7166cd5ebe5d758b0bb88873",
+    "tools/native-webp-animation.mjs": "a857ccfec598dfa727185791e0b6a8daee6e3a9c03ec6972c1f80a03f6894146",
+    "tools/native-widget-paint.mjs": "11554506562179612b3ec3f8dcb185c8fafd4395e816e11e8deefc2e6404199c",
+    "tools/native-widget-assets.mjs": "52dfd7b3af556cefec4a2c8500c676d216347af58326296aed9dcc3496a51891",
+    "tools/native-widget-image-cache.mjs": "17309cf10ef394ae306560085c30e3d4d052cea5bd5d24afb6a22ab9f1a90720",
+    "tools/check-native-widget-assets.mjs": "6ec837ab81eb5fab05677ca0f0758c3c7c33db816a97cea39a74f5c065762fc2",
+    "tools/check-native-widget-image-cache.mjs": "17ac4c772677a2c3ad2f3cfb911205acb68434f421bdac55586a8755d4ebbeb3",
+    "tools/check-native-widget-text-cache.mjs": "2817863da4684831f67faae3d2d91424e74c7f1ef7ebe2fd1b7ba00e0a15e277",
+    "tools/check-native-widget-runtime-flow.mjs": "74e31f6ba073c880c3cdac91220b2d58e4e2279d6c0a26ad39b8b611a3c2aeb1",
+    "tools/check-native-widget-frame-cost.mjs": "e219f2058a11b9d2e7d1c85510c36a3c45333083f30ce2727400e26cf38db1a7",
+    "tools/check-native-visible-traversal.mjs": "82430571147438527e77ec640d6132b94ba7fe8d5ff33bae76bc0989160a0d58"
+  },
+  "targetIds": [
+    "BLD-01"
+  ],
+  "implementation": [
+    "보이지 않는 장면 하위 순회 제외",
+    "보이는 UI의 실제 선택 그림만 준비·공유 사용 유지·해제",
+    "정적 UI 그림의 제한된 다중 크기 재사용",
+    "제한된 글자 줄바꿈·글꼴 측정 재사용",
+    "기존 공용 UI API 연결 및 선택적 프레임 UI 단계 프로필"
+  ],
+  "checks": [
+    {
+      "command": "tools/check-native-widget-assets.mjs",
+      "report": "native/build/widget-assets-K7Se8d/acceptance.json",
+      "sha256": "53fe98ea53173bb91f365818586cea0cee1d18b44cc373c8bb66e6311e8a8e0c",
+      "passed": true
+    },
+    {
+      "command": "tools/check-native-widget-image-cache.mjs",
+      "report": "native/build/widget-image-cache-iHjON7/acceptance.json",
+      "sha256": "be7543f808548276e39a1b9b11ceb74b737791c6366d2bd0a3e29dc107d87b71",
+      "passed": true
+    },
+    {
+      "command": "tools/check-native-widget-text-cache.mjs",
+      "report": "native/build/widget-text-cache-NLUS1d/acceptance.json",
+      "sha256": "1fd4463c8e8ee9e5ae9b913df8e8cef1933ba99fa7d1ad96edb8ebaa187241a3",
+      "passed": true
+    },
+    {
+      "command": "tools/check-native-widget-runtime-flow.mjs",
+      "report": "native/build/widget-runtime-flow-R59xf3/acceptance.json",
+      "sha256": "581c6cbc45d4ca007ab33d3e39350ada706ea4cf95665b019ca0b79dc73dd8b9",
+      "passed": true
+    },
+    {
+      "command": "tools/check-native-visible-traversal.mjs",
+      "report": "native/build/visible-render-sV4Nxx/acceptance.json",
+      "sha256": "e385a19a7e0a005d7ef4ffcf8a46c36612cd7c2884e939a192335dd6f5affdbb",
+      "passed": true
+    },
+    {
+      "command": "tools/check-native-widget-frame-cost.mjs",
+      "report": "native/build/widget-frame-cost-hjdLaJ/acceptance.json",
+      "sha256": "77011f03d993a4420ca2a2220e7abbdcd791f2abea3d929f01110271f3018f09",
+      "passed": true
+    },
+    {
+      "command": "tools/check-native-widget-frame-cost.mjs <owned HEAD layer>",
+      "report": "native/build/widget-frame-cost-QflkLq/acceptance.json",
+      "sha256": "ac17ae3aaf92fd5a53a6a9109c146379e27a7fc5f112605c5665ea02d58c5873",
+      "passed": true
+    },
+    {
+      "command": "owned HEAD layer + public UI API",
+      "report": "native/build/widget-runtime-flow-BMvc47/acceptance.json",
+      "sha256": "581c6cbc45d4ca007ab33d3e39350ada706ea4cf95665b019ca0b79dc73dd8b9",
+      "passed": true
+    },
+    {
+      "command": "owned HEAD layer resource/show/hide/SVG",
+      "report": "native/build/widget-assets-qx5oBl/acceptance.json",
+      "sha256": "53fe98ea53173bb91f365818586cea0cee1d18b44cc373c8bb66e6311e8a8e0c",
+      "passed": true
+    }
+  ],
+  "additionalChecks": [
+    {
+      "passed": true,
+      "scope": "HEAD + owned renderer only: check-native-2d full mask/resource/cache/release regression",
+      "work": "native/build/engine-runtime-owned-C23uV4"
+    },
+    {
+      "passed": true,
+      "scope": "3 focused AI owner routes and runtime module closure containing both new helpers",
+      "closureSourceFiles": 43
+    }
+  ],
+  "workingTreeFailures": [
+    {
+      "command": "node tools/check-native-2d.mjs",
+      "reason": "다른 작업의 자원 개별 업로드 변경이 기존 단일 업로드 수 기대와 다름; 그 변경을 제외한 이번 renderer 후보는 기존 검사 통과"
+    },
+    {
+      "command": "node tools/check-ai-context.mjs",
+      "reason": "수정하지 않은 기존 HTTP stub이 현재 section query 경로를 허용하지 않음; 이번 3개 owner lookup은 별도 통과"
+    }
+  ],
+  "nativeBinaryChanged": false,
+  "sourceResult": "공용 엔진 소스·격리 픽셀/명령/공용 UI API 검증. 전체 엔진/게임 FPS 인증 아님",
+  "limits": [
+    "OS 표시·전체 게임 FPS·GPU 시간은 새로 검증하지 않음",
+    "기존 PNG 경로 CPU 약13.291→12.696ms; 다른 작업 Zstd가 있는 작업 트리 약1.747→1.206ms; 서로 합산하지 않음",
+    "타인 작업 트리의 C++/전송 형식/스크롤/업로드 변경은 index와 설치에 반영하지 않음"
+  ],
+  "installation": {
+    "changed": false,
+    "latestReceipt": "docs/research/USER_INSTALL_3409.json"
+  }
+}

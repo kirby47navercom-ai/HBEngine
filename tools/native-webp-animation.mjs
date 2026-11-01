@@ -1,4 +1,5 @@
 import {createCanvas,loadImage} from '@napi-rs/canvas';
+import {staticWidgetImage} from './native-widget-image-cache.mjs';
 
 const u24=(b,i)=>b[i]|b[i+1]<<8|b[i+2]<<16;
 const write24=(b,i,n)=>{b[i]=n&255;b[i+1]=(n>>>8)&255;b[i+2]=(n>>>16)&255;};
@@ -42,5 +43,5 @@ export class NativeSVGImage {
  dispose(){this.bytes=null;this.image=null;}
 }
 export async function nativeWidgetImage(bytes){
- const animation=await NativeWebPAnimation.load(bytes);if(animation)return animation;const image=await loadImage(bytes);return /<svg(?:\s|>)/i.test(bytes.toString('utf8',0,Math.min(bytes.length,4096)))?new NativeSVGImage(bytes,image):image;
+ const animation=await NativeWebPAnimation.load(bytes);if(animation)return animation;const image=await loadImage(bytes);return /<svg(?:\s|>)/i.test(bytes.toString('utf8',0,Math.min(bytes.length,4096)))?new NativeSVGImage(bytes,image):staticWidgetImage(image);
 }

@@ -1,0 +1,26 @@
+import {retainTestEvidence} from './test-artifacts.mjs';
+import fs from 'node:fs/promises';
+import {pathToFileURL} from 'node:url';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import * as T from 'three';
+
+const work=await fs.mkdtemp('native/build/visible-render-'),owner=path.resolve('prototype/native-scene-renderer.js'),current=await fs.readFile(owner,'utf8');
+retainTestEvidence(work);
+const replacements=[['scene.traverse(n=>{if(n.isMesh&&visible(n)&&n.material.visible)','scene.traverseVisible(n=>{if(n.isMesh&&visible(n)&&n.material.visible)'],['scene.traverse(node=>{if(!visible(node)||node.userData.editorHelper)','scene.traverseVisible(node=>{if(!visible(node)||node.userData.editorHelper)'],['scene.traverse(node=>{\n      if(!visible(node)||','scene.traverseVisible(node=>{\n      if(!visible(node)||']];
+let original=current;for(const [before,after]of replacements){assert(original.includes(after),'candidate owner '+after);original=original.replace(after,before);}
+for(const [name,source]of [['baseline',original],['candidate',current]])await fs.writeFile(work+'/'+name+'.mjs',source.replace(/(from\s*['"])(\.\.?\/[^'"]+)(['"])/g,(_,a,b,c)=>a+pathToFileURL(path.resolve(path.dirname(owner),b)).href+c));
+const baseline=await import(pathToFileURL(path.resolve(work,'baseline.mjs'))),candidate=await import(pathToFileURL(path.resolve(work,'candidate.mjs')));
+const geometry=new T.BoxGeometry(),material=new T.MeshBasicMaterial({color:0x8844cc}),scene=new T.Scene(),shown=new T.Mesh(geometry,material),hidden=new T.Group(),child=new T.Mesh(geometry,material),lamp=new T.PointLight(0xff4400,2);scene.add(shown,hidden);hidden.add(child,lamp);hidden.visible=false;let hiddenReads=0;
+for(let i=0;i<5000;i++){const node=new T.Object3D();Object.defineProperty(node,'visible',{configurable:true,get(){hiddenReads++;return true;}});hidden.add(node);}
+const camera=new T.PerspectiveCamera(60,16/9,.1,100);camera.position.z=6;camera.updateMatrixWorld();
+async function renderer(module){const listeners=new Set(),packets=[];const bridge={addEventListener:(_,fn)=>listeners.add(fn),removeEventListener:(_,fn)=>listeners.delete(fn),postMessage(p){if(['frame','upload'].includes(p.op))packets.push({op:p.op,data:structuredClone(p.data)});queueMicrotask(()=>{for(const fn of listeners)fn({data:{channel:'hb.render',id:p.id,ok:true,value:{calls:1,meshes:1,textures:0}}});});}};return {r:await module.createNativeSceneRenderer({clientWidth:640,clientHeight:360},error=>{throw error;},{bridge}),packets};}
+const a=await renderer(baseline),b=await renderer(candidate),rows=[];
+try{
+ for(const [name,change]of [['hidden',()=>{}],['show',()=>{hidden.visible=true;}],['move',()=>{child.position.x=2;lamp.position.y=3;}],['hide',()=>{hidden.visible=false;}],['root hidden',()=>{scene.visible=false;}],['restore',()=>{scene.visible=true;hidden.visible=true;}]]){change();a.packets.length=b.packets.length=0;await a.r.render(scene,camera);await a.r.hbFinishFrame();await b.r.render(scene,camera);await b.r.hbFinishFrame();assert.deepEqual(b.packets,a.packets,name+' preserves complete draw/light/resource packets');rows.push(name);}
+ const maskA=a.r.hbMaskTarget(64,64),maskB=b.r.hbMaskTarget(64,64);maskB.texture.uuid=maskA.texture.uuid;const offscreen=new T.Scene(),offMesh=new T.Mesh(geometry,a.r.hbMaskMaterial(null,.5)),offHidden=new T.Group(),offChild=new T.Mesh(geometry,a.r.hbMaskMaterial(null,.5));offscreen.add(offMesh,offHidden);offHidden.add(offChild);
+ for(const shown of [false,true]){offHidden.visible=shown;a.packets.length=b.packets.length=0;a.r.setRenderTarget(maskA);b.r.setRenderTarget(maskB);await a.r.render(offscreen,camera);await b.r.render(offscreen,camera);a.r.setRenderTarget(null);b.r.setRenderTarget(null);await a.r.render(scene,camera);await b.r.render(scene,camera);await a.r.hbFinishFrame();await b.r.hbFinishFrame();assert.deepEqual(b.packets,a.packets,'offscreen visible subtree parity');rows.push('offscreen '+shown);}maskA.dispose();maskB.dispose();offMesh.material.dispose();offChild.material.dispose();
+ hidden.visible=false;hiddenReads=0;await a.r.render(scene,camera);await a.r.hbFinishFrame();const beforeReads=hiddenReads;hiddenReads=0;await b.r.render(scene,camera);await b.r.hbFinishFrame();assert.equal(hiddenReads,0);assert(beforeReads>=10000);
+ const samples={baseline:[],candidate:[]};for(let round=0;round<12;round++)for(const name of round%2?['baseline','candidate']:['candidate','baseline']){const entry=name==='baseline'?a:b,begin=performance.now();for(let i=0;i<10;i++){entry.packets.length=0;await entry.r.render(scene,camera);await entry.r.hbFinishFrame();}if(round>1)samples[name].push((performance.now()-begin)/10);}
+ const median=a=>[...a].sort((x,y)=>x-y)[a.length>>1],result={passed:true,exactPacketCases:rows,hiddenObjects:5000,baselineHiddenReads:beforeReads,candidateHiddenReads:0,benchmark:{baselineMedianMs:median(samples.baseline),candidateMedianMs:median(samples.candidate),scope:'CPU native-renderer packet encoding through bridge double; GPU time and whole-game FPS not measured'}};await fs.writeFile(work+'/acceptance.json',JSON.stringify(result,null,2));console.log(JSON.stringify({work,...result}));
+}finally{await a.r.dispose();await b.r.dispose();geometry.dispose();material.dispose();}

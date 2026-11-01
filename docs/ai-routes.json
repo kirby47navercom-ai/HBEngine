@@ -5204,7 +5204,9 @@
       "id": "native-widget-paint",
       "keywords": [
         "paintWidgetText",
-        "paintWidgetImage"
+        "paintWidgetImage",
+        "clearWidgetPaintCaches",
+        "textLayout"
       ],
       "paths": [
         "tools/native-widget-paint.mjs"
@@ -5227,6 +5229,47 @@
       ],
       "paths": [
         "prototype/widget-visual-contract.js"
+      ]
+    },
+    {
+      "id": "game-frame-settings",
+      "keywords": [
+        "frameSettings",
+        "validFrameSettings",
+        "프레임 제한"
+      ],
+      "paths": [
+        "prototype/build-profile.js"
+      ]
+    },
+    {
+      "id": "native-widget-image-cache",
+      "keywords": [
+        "staticWidgetImage",
+        "cachedWidgetImage",
+        "widgetImageCacheInfo"
+      ],
+      "paths": [
+        "tools/native-widget-image-cache.mjs"
+      ]
+    },
+    {
+      "id": "native-widget-assets",
+      "keywords": [
+        "visibleWidgetNodes",
+        "visibleWidgetAssets"
+      ],
+      "paths": [
+        "tools/native-widget-assets.mjs"
+      ]
+    },
+    {
+      "id": "native-widget-snapshots",
+      "keywords": [
+        "nativeWidgetSnapshot"
+      ],
+      "paths": [
+        "prototype/ui-runtime.js"
       ]
     }
   ]
