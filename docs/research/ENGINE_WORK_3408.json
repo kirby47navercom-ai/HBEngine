@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "date": "2026-11-01",
+  "kind": "optional-code-signing-and-unsigned-release",
+  "implementationRevision": "4a5805f7cbabcebe7f190149bc10ec26039a9397",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3406.json",
+  "changedSourceHashes": {
+    "tools/windows-package-signing.mjs": "cadbd16a58afc55e6a533e091162146d31be92992f44735e9e8882b2fdc89183",
+    "tools/check-windows-package-policy.mjs": "db0da37bfff4b55f1b8a3244ef80b9c986214564b6191c51c80ec428361bba2a",
+    "tools/check-native-game.mjs": "88f9c4ba41b5fc8213be819158b0cf093465045ab812fcdaf29c6b66ad3609b3",
+    "prototype/build-panel.js": "fd6642ab3955de1a5c8593d543a17eecf9f65abc8413f0ef918d7d9271ea4472",
+    "prototype/build-profile.js": "bef6926e67ee2e3eb6f2f4ec8312bc9d28584ff920b5277f40276f97a0f3f500",
+    "docs/NATIVE_GAME_RUNTIME.md": "60fb2eb52ca498759aadecc030f152b492b33aada1e6cb85e1e16ec5edb39f92"
+  },
+  "targetIds": [
+    "BLD-01"
+  ],
+  "correction": "WORK3406 incorrectly required a code-signing certificate for release builds. This was an engine policy, not a general Windows execution prerequisite. The user confirmed no certificate.",
+  "implementation": [
+    "Both development and optimized release package without a certificate; manifest state=unsigned and distributionReady=true",
+    "Keep antivirusVerdict separate from package readiness and display unsigned state in build results",
+    "When a certificate is explicitly selected, preserve private-key/EKU/trust/timestamp validation and fail on signing errors instead of silently falling back",
+    "Update build/AI contract, native packaging guide and release regression fixture"
+  ],
+  "checks": [
+    {
+      "command": "node tools/check-windows-package-policy.mjs",
+      "report": "native/build/package-policy-5h7K70/acceptance.json",
+      "sha256": "c627cc7ff7a1541c8d9401c5cc40547a33315a06cf27d8b54dff33c609f15fae",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-native-game.mjs <installed directory>",
+      "report": "native/build/native-game-OfB09B/acceptance.json",
+      "sha256": "978f126b99dc6a289c347eb9571af21250f69df18687a36e7bebeb1cb00a14fe",
+      "passed": true
+    }
+  ],
+  "nativePlayerSha256": "3ae7aeb1e5ec6140224e159cb6e5341bba8ee9f877766e623809b6ec9e3ceb7b",
+  "nativeBinaryChanged": false,
+  "sourceResult": {
+    "configuration": "release",
+    "signing": {
+      "state": "unsigned",
+      "distributionReady": true,
+      "antivirusVerdict": "not-tested-on-recipient-PC",
+      "reason": "코드 서명 없이 만든 패키지예요. 다른 PC에 배포할 수 있으며, 해당 PC의 보안 정책에 따라 경고나 차단이 발생할 수 있어요."
+    },
+    "frames": 40,
+    "nativeMouse": true,
+    "nativeKeyboard": true,
+    "gracefulClose": true,
+    "cleanEnvironment": true,
+    "vendorRuntimeSignature": "Valid",
+    "appLocalVCRuntimeLoaded": true,
+    "workerManifest": true,
+    "audioErrors": []
+  },
+  "references": [
+    "https://learn.microsoft.com/windows/apps/package-and-deploy/smartscreen-reputation",
+    "https://support.microsoft.com/en-us/windows/security/threat-malware-protection/smart-app-control-frequently-asked-questions"
+  ],
+  "limits": [
+    "No second PC or clean Windows VM was available; the owned release ran with System32-only PATH and loaded bundled VC",
+    "Unsigned Windows applications may be warned/blocked by recipient SmartScreen, Smart App Control, organizational policies or antivirus",
+    "No trusted certificate/private key: actual successful signing/timestamp remains untested",
+    "User games and unrelated dirty sources untouched; existing packages need rebuilding"
+  ],
+  "installation": "docs/research/USER_INSTALL_3409.json"
+}

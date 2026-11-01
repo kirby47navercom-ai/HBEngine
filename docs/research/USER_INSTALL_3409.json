@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "date": "2026-11-01",
+  "sourceCommit": "4a5805f7cbabcebe7f190149bc10ec26039a9397",
+  "bundleHash": "3b0ed24f230591fac39b26b511a33d1b930d99927fbe9259c7762d7b1574d7aa",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3b0ed24f230591fa",
+  "files": 5295,
+  "versions": [
+    "3b0ed24f230591fa"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "ownerChecks": [
+    {
+      "path": "tools/windows-package-signing.mjs",
+      "sha256": "cadbd16a58afc55e6a533e091162146d31be92992f44735e9e8882b2fdc89183"
+    },
+    {
+      "path": "tools/check-windows-package-policy.mjs",
+      "sha256": "db0da37bfff4b55f1b8a3244ef80b9c986214564b6191c51c80ec428361bba2a"
+    },
+    {
+      "path": "tools/check-native-game.mjs",
+      "sha256": "88f9c4ba41b5fc8213be819158b0cf093465045ab812fcdaf29c6b66ad3609b3"
+    },
+    {
+      "path": "prototype/build-panel.js",
+      "sha256": "fd6642ab3955de1a5c8593d543a17eecf9f65abc8413f0ef918d7d9271ea4472"
+    },
+    {
+      "path": "prototype/build-profile.js",
+      "sha256": "bef6926e67ee2e3eb6f2f4ec8312bc9d28584ff920b5277f40276f97a0f3f500"
+    },
+    {
+      "path": "docs/NATIVE_GAME_RUNTIME.md",
+      "sha256": "60fb2eb52ca498759aadecc030f152b492b33aada1e6cb85e1e16ec5edb39f92"
+    }
+  ],
+  "nativePlayerSha256": "3ae7aeb1e5ec6140224e159cb6e5341bba8ee9f877766e623809b6ec9e3ceb7b",
+  "nativeBinaryChanged": false,
+  "checks": [
+    {
+      "command": "node tools/check-native-game.mjs <installed directory>",
+      "report": "native/build/native-game-OfB09B/acceptance.json",
+      "sha256": "978f126b99dc6a289c347eb9571af21250f69df18687a36e7bebeb1cb00a14fe",
+      "passed": true
+    }
+  ],
+  "releaseWithoutCertificateVerified": true,
+  "releaseFrames": 40,
+  "signing": {
+    "state": "unsigned",
+    "distributionReady": true,
+    "antivirusVerdict": "not-tested-on-recipient-PC",
+    "reason": "코드 서명 없이 만든 패키지예요. 다른 PC에 배포할 수 있으며, 해당 PC의 보안 정책에 따라 경고나 차단이 발생할 수 있어요."
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5296,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f87ace806dd7b2a8",
+        "bytes": 264200026,
+        "manifestSHA256": "a53c8f31a830069b10591c985e9db281ebca78980d1cfa6a01fc419867c10946"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-01T07:08:44.6866721Z",
+    "bytes": 264200026,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "3b0ed24f230591fa"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "Installed builder created and ran optimized unsigned release with AOT C++, UI/audio/input and missing-worker error test. Not a recipient-PC antivirus test.",
+  "limits": [
+    "No second PC or clean Windows VM was available; the owned release ran with System32-only PATH and loaded bundled VC",
+    "Unsigned Windows applications may be warned/blocked by recipient SmartScreen, Smart App Control, organizational policies or antivirus",
+    "No trusted certificate/private key: actual successful signing/timestamp remains untested",
+    "User games and unrelated dirty sources untouched; existing packages need rebuilding"
+  ],
+  "work": "docs/research/ENGINE_WORK_3408.json"
+}
