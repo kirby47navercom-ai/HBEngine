@@ -34,7 +34,9 @@ Windows 10/11 x64·DirectX 11 드라이버가 필요해요. 네이티브 오디�
 {"configuration":"release","windowsSigning":{"certificateThumbprint":"인증서의_40자리_SHA1_지문","timestampServer":"http://timestamp.digicert.com"}}
 ```
 
-인증서가 없는 `release`는 배포 준비 완료로 내보내지 않고 중단해요. `development`는 만들 수 있지만 결과·UI·명세에 `unsigned-development`, `distributionReady:false`를 명시해요. 코드 서명은 게시자와 파일 무결성을 확인하는 절차이고 모든 백신 통과 보증은 아니에요. 이 작업에서 정식 인증서·다른 PC의 실제 탐지 재검사는 확보되지 않았어요. [Microsoft PE 서명](https://learn.microsoft.com/windows/win32/secbp/understanding-pe-signatures).
+코드 서명은 `development`·`release` 모두 선택 사항이에요. 인증서가 없어도 최적화된 `release` EXE를 만들고 다른 PC에 배포할 수 있어요. 이 경우 결과·UI·명세에 `state:unsigned`, `distributionReady:true`, `antivirusVerdict:not-tested-on-recipient-PC`를 기록해요. 인증서를 명시했는데 서명·타임스탬프 검증에 실패하면 무서명으로 몰래 대체하지 않고 오류를 알려요. 이전 WORK3406의 무인증서 release 중단은 Windows의 필수 조건이 아닌 과도한 엔진 제한이어서 WORK3408에서 제거했어요.
+
+코드 서명은 게시자와 파일 무결성을 확인하는 절차이고 모든 백신 통과 보증은 아니에요. 무서명 EXE는 대상 PC의 SmartScreen 경고나 Smart App Control·조직 정책·백신에 의해 차단될 수 있어요. 실제 수신 PC의 탐지 재검사는 아직 확보되지 않았어요. [Microsoft SmartScreen 설명](https://learn.microsoft.com/windows/apps/package-and-deploy/smartscreen-reputation), [Smart App Control 설명](https://support.microsoft.com/en-us/windows/security/threat-malware-protection/smart-app-control-frequently-asked-questions).
 
 C++ worker는 처음 링크할 때부터 버전·권한 매니페스트가 있어요. 패키지의 게임별 이름 갱신 때 Windows UpdateResource가 MinGW COFF 디버그 표를 잘라내면서 이전 포인터를 남기는 문제도 수정했어요. 표를 복원하고 포인터를 재배치해서 PE 분석·실행·디버그 심볼 수가 유지돼요. 이 결함을 실제 원격 백신의 유일한 탐지 원인으로 단정하지 않아요. 파일 누락·실행 차단은 경로와 확인할 보호 기록을 오류 창·로그에 표시해요. 백신 제외·비활성화는 하지 않아요.
 
