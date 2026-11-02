@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "date": "2026-11-02",
+  "sourceCommit": "0a5d665fcbb9fa2a2dc405b5d92fc91e22d20bba",
+  "bundleHash": "52715dc67932f379203eaf7f9b8d84679465f9cb2ee362838c80ce730eef5367",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\52715dc67932f379",
+  "files": 5318,
+  "versions": [
+    "52715dc67932f379"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "componentRuntimeVerified": true,
+  "runtimeScope": "exact 31 source owner and native player SHA match the isolated release40frame fixture; installed official Node executes shared UI/native package/archive HTTP/glTF reads. Whole-game FPS and webview GUI not certified.",
+  "ownerChecks": [
+    {
+      "path": "tools/native-ui-frame.mjs",
+      "sha256": "5be5b78c0174d68123ad920bf2e17e2d8b7e265800dfed1ebe289706fd11832e"
+    },
+    {
+      "path": "tools/native-game-runner.mjs",
+      "sha256": "10a325c7263e6d25110dddb14a602e6e6e1cd26cfa9872ca2a307b4a8d2bd286"
+    },
+    {
+      "path": "prototype/native-transport.js",
+      "sha256": "3971555fffca6cb7e166a1e458dc391eac52d708c53a835a4d6f6696481a4f5b"
+    },
+    {
+      "path": "prototype/ui-runtime.js",
+      "sha256": "1c71cfc77329c704be6e27d40982a415cac5e3477673dfc37b83d6221cfd89ff"
+    },
+    {
+      "path": "tools/native-source.mjs",
+      "sha256": "b8bc640f9deed4dd608bbc4db0d8486a52428dd7ce2e045c896aba7b8e8fb1c9"
+    },
+    {
+      "path": "tools/native-widget-layer.mjs",
+      "sha256": "0a17d977fbf6f37aa3779510c46e6793af31dad1edd0a0ea7c0d8a4c95c23db8"
+    },
+    {
+      "path": "tools/native-save-migration.mjs",
+      "sha256": "db88c997302be83fc2551b148a346dfe0107140e98ecbb6bb40e49892c970c4a"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "6553b6d5f4162eb506e7097b263c590e20e0ded403c4d896837a14eb53692910"
+    },
+    {
+      "path": "tools/headless-model.mjs",
+      "sha256": "0b2bdd82d331cf51e34c9102ba4dc9e6e2bf00b16b746b073357dd6821dc99c5"
+    },
+    {
+      "path": "tools/run-project.mjs",
+      "sha256": "988a47c0aaa880154e4e9e25d07d4a93e851ab04304ff0ef1e9a53e08c8a9a84"
+    },
+    {
+      "path": "native/desktop/HBNativePlayer.cpp",
+      "sha256": "eb33822e248f6da23d40f6c083d823067e6931af552ce7706e625c0ac32045dc"
+    },
+    {
+      "path": "native/desktop/NativeWidgetWindow.hpp",
+      "sha256": "319027a6d6f58fd09fccdd85e8ef202cc0d4e25da43417aaa19deca65d1c5f25"
+    },
+    {
+      "path": "native/include/HBEngine/Bridge.hpp",
+      "sha256": "e3585b42879b240b8ee7c17f536f6b1739ea0028e961c60efd6c362e999ae37e"
+    },
+    {
+      "path": "tools/build-native-player.mjs",
+      "sha256": "75821bd08691547513537fa64b438b4eb3fa48aa936caa6674bb3487dddeaf6f"
+    },
+    {
+      "path": "native/licenses/zstd-LICENSE.txt",
+      "sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8"
+    },
+    {
+      "path": "native/include/HBEngine/Game.hpp",
+      "sha256": "8cb1f0bbcd7500180e842e73a63bfcc0d0811b2314279058a68572a01f5cc7a2"
+    },
+    {
+      "path": "tools/game-resource-archive.mjs",
+      "sha256": "dc1ac0ef56917237774c5eb28128d972bd8d4b88f9b3db187067379181e7293a"
+    },
+    {
+      "path": "tools/project-bytes.mjs",
+      "sha256": "139f87ebaa88ba42463a86e942a7536bee0d5a5f5f9e2e2a15bacea3d3bdfcba"
+    },
+    {
+      "path": "tools/build-native-game.mjs",
+      "sha256": "16a2714b8d85b9da983beafa8fd25ba997f077bd00e39a39dfeefa3fab3a8ef9"
+    },
+    {
+      "path": "tools/build-game.mjs",
+      "sha256": "85e830de094cc027c93994175ba21e58d175803b15edbbb2c29fd9574a59d4b8"
+    },
+    {
+      "path": "tools/native-game-platform.mjs",
+      "sha256": "958687be0e1ccc9cd7f95ac4ae90c8d52346fb52ca14f4a2fecc60fd3cdbdac3"
+    },
+    {
+      "path": "tools/native-project.mjs",
+      "sha256": "3c2d17124c42bb1b512faceb55d82faaaf6e8c201aeaebe4b2c0e14621638432"
+    },
+    {
+      "path": "tools/player-server.mjs",
+      "sha256": "355e330dcda383d408482f7cb59761ee4a77ac65b2791f52d71d176af02f5443"
+    },
+    {
+      "path": "tools/check-native-ui-frame-codec.mjs",
+      "sha256": "494f8c9867769cff8c81126a2e1da9d001591c733b2ed8b17eae3f77c59490b0"
+    },
+    {
+      "path": "tools/native-ui-frame-fixture.cpp",
+      "sha256": "0cd880dc59cbe2a70dc56b35351846e4a93a8226d6fdea48b192c914b358661a"
+    },
+    {
+      "path": "tools/check-native-ui-sdk-flow.mjs",
+      "sha256": "3ded7dcfd0ccefc9daac8b854e281001ebaf303b4544e8b6dcc38c3f49d5176e"
+    },
+    {
+      "path": "tools/check-native-ui-transport-cost.mjs",
+      "sha256": "b5ce4a2616627647ffe1a73b795f5476acf149b20bd707189fa44a843e694b25"
+    },
+    {
+      "path": "tools/check-game-resources.mjs",
+      "sha256": "c429c01d81bb6c7d15fcefaf03984136acd3a5945c5edf884bd03d426ff5dc82"
+    },
+    {
+      "path": "tools/check-native-2d.mjs",
+      "sha256": "aa55a51ec6c819fa7343b75224476299f4972035103b2e8698b43be49157b32e"
+    },
+    {
+      "path": "tools/check-native-game.mjs",
+      "sha256": "7080a0281ec60b19161e1470e499cb05af3a19e4bd4f0d138b5e0ea1ac9f260a"
+    },
+    {
+      "path": "docs/ai-routes.json",
+      "sha256": "d053b5af98fa43861fa2574f479ecce50927cb6e3924e9c4d88c8ea1ecb90b7c"
+    }
+  ],
+  "nativePlayerSha256": "61033b99b0b31a5b4051de13111d6a8bd034399d8e0dad9f058503edeee4359a",
+  "nativeBinaryChanged": true,
+  "evidence": "docs/research/ENGINE_WORK_3412.json",
+  "installedChecks": "native\\build\\engine-core-8BqsXn\\installed-verification.json",
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5306,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\8a9e0adc4d0beae2",
+        "bytes": 264249421,
+        "manifestSHA256": "434571e3693c4fb0187244c37c6a8a497894cfc09d5426269b2c744d909920c4"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-02T03:35:06.3025842Z",
+    "bytes": 264249421,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "52715dc67932f379"
+    ]
+  },
+  "stagingRemoved": true,
+  "retainedSources": "native\\build\\engine-core-8BqsXn\\sources",
+  "testArtifacts": {
+    "failures": [],
+    "freeAfter": 434169880576,
+    "freeBefore": 434078203904,
+    "deleted": 1,
+    "date": "2026-11-02T03:38:50.8678259Z",
+    "files": 1,
+    "bytes": 91694408,
+    "skipped": [],
+    "receipt": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\cache-prune-1793590729796-139986cb-a6c8-4b53-b5be-7f58d2328193"
+  },
+  "userGameOriginalsChanged": false,
+  "userProfilesChanged": false,
+  "scheduledWorkCreated": false,
+  "resourceFixtureCleanup": {
+    "report": "native\\build\\engine-core-8BqsXn\\resource-fixture-cleanup.json",
+    "bytes": 11563042
+  }
+}
