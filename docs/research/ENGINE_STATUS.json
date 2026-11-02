@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-11-03",
-  "basisRevision": "ec637284f4118d115da58281d2b1abb6383b80bc",
+  "basisRevision": "82bc0780c1f009eb60ef04a27d729a7a409cbe7c",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -4444,9 +4444,9 @@
     "scope": "실제 UI 명령 재생·Skia 상태/폰트·worker 자산/계층 계획 재사용. 전체 FPS 합격 아님"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_3427.json",
-    "sourceCommit": "ec637284f4118d115da58281d2b1abb6383b80bc",
-    "bundleHash": "3e050d79e49e73f45fe8387da666ac227002a2c11c8295b820af6441936d85c0",
+    "receipt": "docs/research/USER_INSTALL_3429.json",
+    "sourceCommit": "82bc0780c1f009eb60ef04a27d729a7a409cbe7c",
+    "bundleHash": "89aac7fbab369d3054343ec9fc353e473a8cbb34ada983db905b6668ca9f96b1",
     "verified": true,
     "installationVerified": true,
     "runtimeVerified": true,

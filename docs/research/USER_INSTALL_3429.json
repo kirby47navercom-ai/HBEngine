@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "sourceCommit": "82bc0780c1f009eb60ef04a27d729a7a409cbe7c",
+  "bundleHash": "89aac7fbab369d3054343ec9fc353e473a8cbb34ada983db905b6668ca9f96b1",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\89aac7fbab369d30",
+  "files": 5380,
+  "versions": [
+    "89aac7fbab369d30"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "componentRuntimeVerified": true,
+  "wholeGameFPSVerified": false,
+  "ownerChecks": [
+    {
+      "path": "tools/native-ui-tiles.mjs",
+      "sha256": "454dc8854be11038246a8a2a54b7c58aeb66f9dc1387fbc659709c4e06c9203d"
+    },
+    {
+      "path": "tools/native-widget-raster-worker.mjs",
+      "sha256": "84099d525350f4018985d3ef5d6edcc88311dae74b366ebdbfbfea86a7d20dfd"
+    },
+    {
+      "path": "tools/native-ui-frame.mjs",
+      "sha256": "8551be33f8d30bc3aebb483d30904c22c0a08c64f2c2bf3714e53f769d72015c"
+    },
+    {
+      "path": "tools/run-project.mjs",
+      "sha256": "31d956e3258f5be871069f0f3243f0589435dcb947c7275ad633dcd390291b06"
+    },
+    {
+      "path": "tools/native-game-platform.mjs",
+      "sha256": "76bbd8779f6319b8cb679bb766c7d060496fb9c22ba3fc55159bb1d2751a0408"
+    },
+    {
+      "path": "tools/native-game-runner.mjs",
+      "sha256": "01e74665f5da8e444fdc3b12665743c62c26492bf6f52a69107a576114189e11"
+    },
+    {
+      "path": "tools/native-runtime-telemetry.mjs",
+      "sha256": "3c341046884217715ab39ef5d0b8f2cda7facf628479c6bae0c94ed6a3f5f109"
+    },
+    {
+      "path": "native/include/HBEngine/D3DDevice.hpp",
+      "sha256": "28206be2f102cdf29c6066c6135516da48590864e4967cf79275d7e3b4713484"
+    },
+    {
+      "path": "native/include/HBEngine/Compute.hpp",
+      "sha256": "71c6cd995f4939c1f65dac9804be04a54290a32b91b704a92d15acbb729da2e2"
+    },
+    {
+      "path": "native/include/HBEngine/Render.hpp",
+      "sha256": "0558a7644097d745a511485db8a2d627552c00d778d41b6bf0399d3cafc31112"
+    },
+    {
+      "path": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "4aba098c9776127ede03d20f1d6b8d64f8ee40765d4ece981e211b757b44df7c"
+    },
+    {
+      "path": "native/desktop/HBNativePlayer.cpp",
+      "sha256": "cea87b7d389a9f88616018f67eb3b62ba8eb801dd5ae0f0571be19807332c109"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "9aed7c9e321de2966cf1625368493669fbd789b283d337c846fea573ed5bd6d4"
+    },
+    {
+      "path": "native/include/HBEngine/D3D12Interop.hpp",
+      "sha256": "c94ace67642fa72a4c9364981f8557378579d27e20150f21b574da625f5a52e9"
+    },
+    {
+      "path": "prototype/build-profile.js",
+      "sha256": "70068851f07cbf4f2e6a44c05a0cb03f06d2150dc933c11fe1a32602a2adbda3"
+    },
+    {
+      "path": "tools/build-native-game.mjs",
+      "sha256": "17700aa64bef0aae555a92440e6e2747a4cde5cb1d721b5fc8113d97eb9266b9"
+    },
+    {
+      "path": "prototype/build-panel.js",
+      "sha256": "c688a9b686bfde9cb4acaae4c22f577d4ca82bb72e2bdc438dd01a11893b6de0"
+    },
+    {
+      "path": "tools/native-host.mjs",
+      "sha256": "c8519a5817cb7506d5194b5f065d2eaba98c6f7c803baf592c30bcff266ff9eb"
+    },
+    {
+      "path": "tools/native-session-close.mjs",
+      "sha256": "b3dac6e6b0ada56d890c718e35d5874a20fe921817aea917ff104439070d62bb"
+    },
+    {
+      "path": "prototype/native-upload-batches.js",
+      "sha256": "145c0e08135aa3cfb6078c82c76705636487d3b0551270075a08ff8837943b4b"
+    },
+    {
+      "path": "prototype/native-transport.js",
+      "sha256": "f567fe09c732523df07450baa0d42feff625c2d5aec222f4cbdd52bdc16dc3d2"
+    },
+    {
+      "path": "prototype/ui-runtime.js",
+      "sha256": "6976f5d00793e76fbad795aabc8811c614ad0e9789c5791cb267fcc4888142e9"
+    },
+    {
+      "path": "tools/native-runtime-close.mjs",
+      "sha256": "94b3dfc2908c2d76ff6920ad009873c8fbf0cbef9dfb8d163783674a029c7a2c"
+    },
+    {
+      "path": "HBNativePlayer.exe",
+      "sha256": "d9c8e3dc37e97304b415e9a79157e4316f2bc711f0ae5a50f258bbf726549e9e"
+    },
+    {
+      "path": "tools/native-widget-layer.mjs",
+      "sha256": "67648070b49b21f63629bec15939cfcbcb1ebcd2851317d314ddd770f9b625c2"
+    },
+    {
+      "path": "tools/native-widget-paint.mjs",
+      "sha256": "cff8b154e595809b8ca7c595a52c2b67b120b8865b85f7ebf0cb6caac8a00f6d"
+    },
+    {
+      "path": "tools/native-widget-raster-thread.mjs",
+      "sha256": "daac9e2c42347a28ef2ae8a78f0b1c2ada8402c341af79e13f2d4663ff966873"
+    }
+  ],
+  "installedChecks": [
+    {
+      "work": "native/build/widget-raster-worker-8wVNKW",
+      "passed": true,
+      "cases": 16,
+      "allPixelsEqual": true,
+      "korean": true,
+      "svg": true,
+      "safeArea": true,
+      "fractionalTransforms": true,
+      "opacity": true,
+      "pressedButton": true,
+      "scroll": true,
+      "inputHitGeometry": true,
+      "scale150Percent": true,
+      "oneWorker": true,
+      "queuedBeforeRaster": true,
+      "listFallback": true,
+      "workerResume": true,
+      "concurrentScrollPreserved": true
+    }
+  ],
+  "activeDuringVerification": [],
+  "unchangedNativeBinaryReuse": "docs/research/USER_INSTALL_3427.json",
+  "sourceEvidence": "docs/research/ENGINE_WORK_3428.json",
+  "existingPackagesRequireRebuild": true,
+  "scope": "엔진 공용 UI 소스/PE 해시·설치 Skia worker 실행; 게임 코드/콘텐츠 변경 없음; 전체120FPS 합격 아님",
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5378,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3e050d79e49e73f4",
+        "bytes": 265059824,
+        "manifestSHA256": "44fa8df013ddd537f706807917db208d89e0a6b2b16e897cee1f0d8c1bc9e4c4"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-02T16:26:45.7136066Z",
+    "bytes": 265059824,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "89aac7fbab369d30"
+    ]
+  },
+  "stagingRemoved": true,
+  "userOriginalsTouched": false,
+  "userProfileTouched": false,
+  "automationCreated": false,
+  "cleanupEvidence": "native/build/frame-cost-ijcsFT/cleanup.json",
+  "sourceArchive": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\frame-cost-ijcsFT\\sources"
+}

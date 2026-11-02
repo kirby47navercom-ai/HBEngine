@@ -1,3 +1,6 @@
+## 설치 확인 · USER_INSTALL3429 / 2026-11-03
+89aac7fbab369d30·5380files·27owner/PE SHA·실제 Skia worker16case 통과. Versions1·소유 Engine/중복 패키지11개 정리·재현 sources/단일 frozen 게임/UI replay 보존. WORK3428의 UI 최적화 배포이며 전체 FPS 합격으로 해석하지 않아요. 게임원본·사용자창/프로필·금지3파일 변경 없음.
+
 ## WORK3428 · 실제 UI 명령 재생 / 2026-11-03
 게임 원본 불변·실제 UI48/합성128/타이포그래피96/worker16/첫 프레임 공용 API 통과. Skia 변환 순서 유지하며 leaf Text 상태·폰트/색·worker 자산/계층 재사용. 실제 UI 재생 중앙5.5092→5.1551ms, p95 6.6536→6.3346ms; 전체 FPS 아님. 느린 partial-readback/clip·JS 행렬·반복문 단독·scalar 실험 제외. frozen 재판/UI replay는 native/build/frame-cost-ijcsFT에 있고 원본·사용자창 불변. 남은 원장/PER-01/120 미해결은 그대로. 금지3파일/예약/agent/goal 변경 없음. 설치 기록은 후속 USER_INSTALL3429로 확인.
 
