@@ -84,7 +84,16 @@
         "path": "game.hbdata",
         "sha256": "83a3027a22059950d508f96925e7ac3695b1597685bcb81d633a29f640d9b688"
       }
-    ]
+    ],
+    "measurementSourceHashes": {
+      "tools/native-widget-layer.mjs": "e886bb1dc92ea4b29d67a6840c45395e386399a83ce72fb1e1bc87406a29023a",
+      "tools/native-widget-fonts.mjs": "c92ebc9230d5e74b9a049cfe569b7a813f1e7e386bfb958802bd89ccdd99aa09",
+      "tools/native-widget-raster-thread.mjs": "128c85ccd35051caa6332de7b3f0e2f8d1b0c6b6004f1c6ce2372aa3cf41b480",
+      "tools/native-widget-raster-worker.mjs": "3e3ff7daf027968c301d6ae2de6e1b55c86c13231e9a950d3f4539fffa65720f",
+      "tools/native-widget-lists.mjs": "c25aa671c9e536975231d5cce95f1b80d065ed0a624ea9368fd279c53d298cf3",
+      "tools/native-widget-assets.mjs": "5a9ba2d1703fcdb550931821d7bc30fb75a42643c49ea58b3ce7080fce7350ff"
+    },
+    "afterObservationChange": "Held-row click state preservation was added after the timed runs. Final list/worker pixels and click-across-paint checks passed; these timings are not claimed as a final-source FPS acceptance."
   },
   "rendererBinaryUnchanged": {
     "sha256": "d9c8e3dc37e97304b415e9a79157e4316f2bc711f0ae5a50f258bbf726549e9e",

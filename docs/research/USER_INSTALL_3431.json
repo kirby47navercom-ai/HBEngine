@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "sourceCommit": "07f3a88eb92f91fa9505958df13caf888e6003f4",
+  "bundleHash": "3f4771be4b2ecccca13be812593de056f79bb217c28a8e3b858564ea3dca2588",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3f4771be4b2ecccc",
+  "files": 5384,
+  "versions": [
+    "3f4771be4b2ecccc"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "componentRuntimeVerified": true,
+  "wholeGameFPSVerified": false,
+  "ownerChecks": [
+    {
+      "path": "tools/native-ui-tiles.mjs",
+      "sha256": "454dc8854be11038246a8a2a54b7c58aeb66f9dc1387fbc659709c4e06c9203d"
+    },
+    {
+      "path": "tools/native-widget-raster-worker.mjs",
+      "sha256": "3e3ff7daf027968c301d6ae2de6e1b55c86c13231e9a950d3f4539fffa65720f"
+    },
+    {
+      "path": "tools/native-ui-frame.mjs",
+      "sha256": "8551be33f8d30bc3aebb483d30904c22c0a08c64f2c2bf3714e53f769d72015c"
+    },
+    {
+      "path": "tools/run-project.mjs",
+      "sha256": "31d956e3258f5be871069f0f3243f0589435dcb947c7275ad633dcd390291b06"
+    },
+    {
+      "path": "tools/native-game-platform.mjs",
+      "sha256": "76bbd8779f6319b8cb679bb766c7d060496fb9c22ba3fc55159bb1d2751a0408"
+    },
+    {
+      "path": "tools/native-game-runner.mjs",
+      "sha256": "01e74665f5da8e444fdc3b12665743c62c26492bf6f52a69107a576114189e11"
+    },
+    {
+      "path": "tools/native-runtime-telemetry.mjs",
+      "sha256": "3c341046884217715ab39ef5d0b8f2cda7facf628479c6bae0c94ed6a3f5f109"
+    },
+    {
+      "path": "native/include/HBEngine/D3DDevice.hpp",
+      "sha256": "28206be2f102cdf29c6066c6135516da48590864e4967cf79275d7e3b4713484"
+    },
+    {
+      "path": "native/include/HBEngine/Compute.hpp",
+      "sha256": "71c6cd995f4939c1f65dac9804be04a54290a32b91b704a92d15acbb729da2e2"
+    },
+    {
+      "path": "native/include/HBEngine/Render.hpp",
+      "sha256": "0558a7644097d745a511485db8a2d627552c00d778d41b6bf0399d3cafc31112"
+    },
+    {
+      "path": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "4aba098c9776127ede03d20f1d6b8d64f8ee40765d4ece981e211b757b44df7c"
+    },
+    {
+      "path": "native/desktop/HBNativePlayer.cpp",
+      "sha256": "cea87b7d389a9f88616018f67eb3b62ba8eb801dd5ae0f0571be19807332c109"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "9aed7c9e321de2966cf1625368493669fbd789b283d337c846fea573ed5bd6d4"
+    },
+    {
+      "path": "native/include/HBEngine/D3D12Interop.hpp",
+      "sha256": "c94ace67642fa72a4c9364981f8557378579d27e20150f21b574da625f5a52e9"
+    },
+    {
+      "path": "prototype/build-profile.js",
+      "sha256": "70068851f07cbf4f2e6a44c05a0cb03f06d2150dc933c11fe1a32602a2adbda3"
+    },
+    {
+      "path": "tools/build-native-game.mjs",
+      "sha256": "17700aa64bef0aae555a92440e6e2747a4cde5cb1d721b5fc8113d97eb9266b9"
+    },
+    {
+      "path": "prototype/build-panel.js",
+      "sha256": "c688a9b686bfde9cb4acaae4c22f577d4ca82bb72e2bdc438dd01a11893b6de0"
+    },
+    {
+      "path": "tools/native-host.mjs",
+      "sha256": "c8519a5817cb7506d5194b5f065d2eaba98c6f7c803baf592c30bcff266ff9eb"
+    },
+    {
+      "path": "tools/native-session-close.mjs",
+      "sha256": "b3dac6e6b0ada56d890c718e35d5874a20fe921817aea917ff104439070d62bb"
+    },
+    {
+      "path": "prototype/native-upload-batches.js",
+      "sha256": "145c0e08135aa3cfb6078c82c76705636487d3b0551270075a08ff8837943b4b"
+    },
+    {
+      "path": "prototype/native-transport.js",
+      "sha256": "f567fe09c732523df07450baa0d42feff625c2d5aec222f4cbdd52bdc16dc3d2"
+    },
+    {
+      "path": "prototype/ui-runtime.js",
+      "sha256": "6976f5d00793e76fbad795aabc8811c614ad0e9789c5791cb267fcc4888142e9"
+    },
+    {
+      "path": "tools/native-runtime-close.mjs",
+      "sha256": "94b3dfc2908c2d76ff6920ad009873c8fbf0cbef9dfb8d163783674a029c7a2c"
+    },
+    {
+      "path": "HBNativePlayer.exe",
+      "sha256": "d9c8e3dc37e97304b415e9a79157e4316f2bc711f0ae5a50f258bbf726549e9e"
+    },
+    {
+      "path": "tools/native-widget-layer.mjs",
+      "sha256": "e886bb1dc92ea4b29d67a6840c45395e386399a83ce72fb1e1bc87406a29023a"
+    },
+    {
+      "path": "tools/native-widget-paint.mjs",
+      "sha256": "cff8b154e595809b8ca7c595a52c2b67b120b8865b85f7ebf0cb6caac8a00f6d"
+    },
+    {
+      "path": "tools/native-widget-raster-thread.mjs",
+      "sha256": "128c85ccd35051caa6332de7b3f0e2f8d1b0c6b6004f1c6ce2372aa3cf41b480"
+    },
+    {
+      "path": "tools/native-widget-fonts.mjs",
+      "sha256": "c92ebc9230d5e74b9a049cfe569b7a813f1e7e386bfb958802bd89ccdd99aa09"
+    },
+    {
+      "path": "tools/native-widget-lists.mjs",
+      "sha256": "c25aa671c9e536975231d5cce95f1b80d065ed0a624ea9368fd279c53d298cf3"
+    },
+    {
+      "path": "tools/native-widget-assets.mjs",
+      "sha256": "5a9ba2d1703fcdb550931821d7bc30fb75a42643c49ea58b3ce7080fce7350ff"
+    }
+  ],
+  "installedChecks": [
+    {
+      "work": "native/build/widget-fonts-8QI2uT",
+      "passed": true,
+      "cases": 5
+    },
+    {
+      "work": "native/build/list-worker-n9miWB",
+      "passed": true,
+      "frames": 24,
+      "rows": 10000,
+      "workerThread": 1
+    }
+  ],
+  "activeDuringVerification": [],
+  "unchangedNativeBinaryReuse": "docs/research/USER_INSTALL_3429.json",
+  "sourceEvidence": "docs/research/ENGINE_WORK_3430.json",
+  "existingPackagesRequireRebuild": true,
+  "scope": "Installed engine font reference ownership and list/tree real worker pixels/input. No game code/content edits. Not whole-game120 acceptance.",
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5381,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\89aac7fbab369d30",
+        "bytes": 265080864,
+        "manifestSHA256": "c12e570fadc00cc90906803ab50a48327f3677581c7d835337614304396333fb"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-02T17:02:35.5601071Z",
+    "bytes": 265080864,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "3f4771be4b2ecccc"
+    ]
+  },
+  "stagingRemoved": true,
+  "userOriginalsTouched": false,
+  "userProfileTouched": false,
+  "automationCreated": false,
+  "cleanupEvidence": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\font-cost-6HJY8U/cleanup.json",
+  "sourceArchive": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\font-cost-6HJY8U/sources"
+}

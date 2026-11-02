@@ -1,3 +1,6 @@
+## 설치·정리 · USER_INSTALL3431 / 2026-11-03
+3f4771be4b2ecccc·5384files·30owner/PE SHA·설치 실제 글꼴5/목록1만행24frame·click-across-paint 통과. Versions1·소유 Engine/중복패키지3개 삭제·sources/원본 frozen 게임/UI replay 보존. WORK3430 기능 설치이며 전체120/총RAM/VRAM 검증은 아님. 공유 작업트리 layer 외부 변경은 보존하고 canonical만 배포. 예약/새agent/goal/게임원본/사용자창/금지3파일 변경0.
+
 ## 글꼴 공용 수명·목록 워커 · WORK3430 / 2026-11-03
 프로세스 공용 Skia font 참조/내용 family·마지막 미사용 해제·빈/투명 지연 로드, 기본 한글 fallback 유지. List/Tree 메인 페인트 fallback 제거·worker 상태 revision/권위 입력/새 선택·scroll 보존. 글꼴5·1만행24·worker16·타이포96·실제 UI48 pixel/hit 일치. 실제 숨김 저장10초106.16/107.66 관측, UI p95 미개선·120/전체RAM/직접12 미합격 경계 유지. 금지3파일/게임원본/사용자창/예약/agent/goal 변경0. 설치 후속3431에서 확인.
 
