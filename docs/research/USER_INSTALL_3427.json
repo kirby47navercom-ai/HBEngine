@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "sourceCommit": "ec637284f4118d115da58281d2b1abb6383b80bc",
+  "bundleHash": "3e050d79e49e73f45fe8387da666ac227002a2c11c8295b820af6441936d85c0",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3e050d79e49e73f4",
+  "files": 5377,
+  "versions": [
+    "3e050d79e49e73f4"
+  ],
+  "ownerChecks": [
+    {
+      "path": "tools/native-ui-tiles.mjs",
+      "sha256": "454dc8854be11038246a8a2a54b7c58aeb66f9dc1387fbc659709c4e06c9203d"
+    },
+    {
+      "path": "tools/native-widget-raster-worker.mjs",
+      "sha256": "84099d525350f4018985d3ef5d6edcc88311dae74b366ebdbfbfea86a7d20dfd"
+    },
+    {
+      "path": "tools/native-widget-raster-thread.mjs",
+      "sha256": "cce808e6cb0100c00234bcfed2e0337f7624c2ecc6c8f4c1626c76250735778f"
+    },
+    {
+      "path": "tools/native-widget-layer.mjs",
+      "sha256": "7e502c8ff795c5eb5b308fe20978e6a2aced040fa08f75e618c925553e951696"
+    },
+    {
+      "path": "tools/native-ui-frame.mjs",
+      "sha256": "f08ac7fe28643da56a68994695ca496cc637c03064eca61dad5a1783a9fe99fb"
+    },
+    {
+      "path": "tools/run-project.mjs",
+      "sha256": "31d956e3258f5be871069f0f3243f0589435dcb947c7275ad633dcd390291b06"
+    },
+    {
+      "path": "tools/native-game-platform.mjs",
+      "sha256": "76bbd8779f6319b8cb679bb766c7d060496fb9c22ba3fc55159bb1d2751a0408"
+    },
+    {
+      "path": "tools/native-game-runner.mjs",
+      "sha256": "01e74665f5da8e444fdc3b12665743c62c26492bf6f52a69107a576114189e11"
+    },
+    {
+      "path": "tools/native-runtime-telemetry.mjs",
+      "sha256": "3c341046884217715ab39ef5d0b8f2cda7facf628479c6bae0c94ed6a3f5f109"
+    },
+    {
+      "path": "native/include/HBEngine/D3DDevice.hpp",
+      "sha256": "28206be2f102cdf29c6066c6135516da48590864e4967cf79275d7e3b4713484"
+    },
+    {
+      "path": "native/include/HBEngine/Compute.hpp",
+      "sha256": "71c6cd995f4939c1f65dac9804be04a54290a32b91b704a92d15acbb729da2e2"
+    },
+    {
+      "path": "native/include/HBEngine/Render.hpp",
+      "sha256": "0558a7644097d745a511485db8a2d627552c00d778d41b6bf0399d3cafc31112"
+    },
+    {
+      "path": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "4aba098c9776127ede03d20f1d6b8d64f8ee40765d4ece981e211b757b44df7c"
+    },
+    {
+      "path": "native/desktop/HBNativePlayer.cpp",
+      "sha256": "cea87b7d389a9f88616018f67eb3b62ba8eb801dd5ae0f0571be19807332c109"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "9aed7c9e321de2966cf1625368493669fbd789b283d337c846fea573ed5bd6d4"
+    },
+    {
+      "path": "native/include/HBEngine/D3D12Interop.hpp",
+      "sha256": "c94ace67642fa72a4c9364981f8557378579d27e20150f21b574da625f5a52e9"
+    },
+    {
+      "path": "prototype/build-profile.js",
+      "sha256": "70068851f07cbf4f2e6a44c05a0cb03f06d2150dc933c11fe1a32602a2adbda3"
+    },
+    {
+      "path": "tools/build-native-game.mjs",
+      "sha256": "17700aa64bef0aae555a92440e6e2747a4cde5cb1d721b5fc8113d97eb9266b9"
+    },
+    {
+      "path": "prototype/build-panel.js",
+      "sha256": "c688a9b686bfde9cb4acaae4c22f577d4ca82bb72e2bdc438dd01a11893b6de0"
+    },
+    {
+      "path": "tools/native-host.mjs",
+      "sha256": "c8519a5817cb7506d5194b5f065d2eaba98c6f7c803baf592c30bcff266ff9eb"
+    },
+    {
+      "path": "tools/native-session-close.mjs",
+      "sha256": "b3dac6e6b0ada56d890c718e35d5874a20fe921817aea917ff104439070d62bb"
+    },
+    {
+      "path": "prototype/native-upload-batches.js",
+      "sha256": "145c0e08135aa3cfb6078c82c76705636487d3b0551270075a08ff8837943b4b"
+    },
+    {
+      "path": "prototype/native-transport.js",
+      "sha256": "f567fe09c732523df07450baa0d42feff625c2d5aec222f4cbdd52bdc16dc3d2"
+    },
+    {
+      "path": "prototype/ui-runtime.js",
+      "sha256": "6976f5d00793e76fbad795aabc8811c614ad0e9789c5791cb267fcc4888142e9"
+    },
+    {
+      "path": "tools/native-runtime-close.mjs",
+      "sha256": "94b3dfc2908c2d76ff6920ad009873c8fbf0cbef9dfb8d163783674a029c7a2c"
+    },
+    {
+      "path": "HBNativePlayer.exe",
+      "sha256": "d9c8e3dc37e97304b415e9a79157e4316f2bc711f0ae5a50f258bbf726549e9e"
+    }
+  ],
+  "installedChecks": [
+    {
+      "work": "native/build/asset-lifetime-RSd9Kd",
+      "passed": true,
+      "pixelBytes": 768,
+      "duplicatePixelAllocationRemoved": true,
+      "exactPixels": true,
+      "separateDecodeOwnership": true,
+      "previousGlobalDescriptorsRestored": true,
+      "archiveClosedAfterHostFailure": true,
+      "concurrentPackageCloseShared": true,
+      "scope": "real Skia decode plus archive/host failure lifecycle; no full-game FPS or long-run memory claim"
+    }
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "componentRuntimeVerified": true,
+  "wholeGameFPSVerified": false,
+  "allPCCompatibilityVerified": false,
+  "directX12NativeCommandLists": false,
+  "directX12InteropVerified": true,
+  "rendererBinaryReusedExactly": {
+    "sha256": "d9c8e3dc37e97304b415e9a79157e4316f2bc711f0ae5a50f258bbf726549e9e",
+    "receipt": "docs/research/USER_INSTALL_3425.json"
+  },
+  "runtimeScope": "설치 26owner/PE SHA 및 실제 Skia/전역복원/종료오류 archive 해제. 3426의 60lit/반사 probe 전체 frame 패킷 대조와 변경 없는3424 PE/SDK UI 실행 근거 재사용. 전체 FPS/다른PC 합격 아님",
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5375,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3a109a1720985855",
+        "bytes": 265043129,
+        "manifestSHA256": "1e10f7c3a99695d03d155b5122f685912aed2b6369e0d0c055125064b43df17e"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-02T15:15:54.4965239Z",
+    "bytes": 265043129,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "3e050d79e49e73f4"
+    ]
+  },
+  "stagingRemoved": true,
+  "sourceArchive": "native\\build\\asset-render-followup-HBfaxK\\sources",
+  "userProfileTouched": false,
+  "userOriginalsTouched": false,
+  "automationCreated": false,
+  "existingPackagesRequireRebuild": true,
+  "changedSourceHashes": {
+    "docs/research/ENGINE_STATUS.json": "4356c74cc40eaf844344d49cc395c17adb48359a13aa0add86f859a067439131",
+    "CODEX_HANDOFF.md": "3fce1e02bbf3a7379c049485183b524f52fcdecf6b2807778a8eb4e320ff4409"
+  }
+}

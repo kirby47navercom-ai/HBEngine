@@ -1,3 +1,6 @@
+## 설치 후속 전환 · USER_INSTALL3427 / 2026-11-03
+3e050d79e49e73f4·5377files·26owner/PE SHA·설치 실제 Skia/전역복원/오류 archive 해제 확인. 네이티브 PE/SDK는3424와 exact SHA 재사용,3426 반사 패킷 대조 연결. Versions1·소유 Engine 즉시 정리·sources 보존. 120/전체PC/직접12/장시간GC 합격은 여전히 아님.
+
 ## 자원 범위·반사 좌표 후속 · WORK3426 / 2026-11-03
 설치3425 뒤에도 구현을 이어서, 디코딩된 픽셀 전체 재복사 제거·이전 전역 훅 descriptor 복원·host 종료 실패 뒤 hbdata 해제·동시 close 공유·조명/반사 위치 matrixWorld 재사용을 추가했어요. 실제 Skia pixels/독립 버퍼/오류 해제 및60lit×12frame/반사 probe/전체 패킷 일치·중복좌표720→0. Present0/highres timer 기존 경로 확인,60고정 가설 채택 안 함. 120/누적 목표 완료 아님. 설치 상태는3427 영수증/실제 마커로 대조해요.
 

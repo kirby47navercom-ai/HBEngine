@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-11-03",
-  "basisRevision": "0482b30dec1722501bd6fc4d2d146abf753c0701",
+  "basisRevision": "ec637284f4118d115da58281d2b1abb6383b80bc",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -4442,9 +4442,9 @@
     "scope": "실제 Skia 픽셀 중복 복사 제거·전역 훅 복원·종료 실패 시 archive 해제·조명 메시 반사 위치 재사용. 전체FPS 합격 아님"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_3425.json",
-    "sourceCommit": "0482b30dec1722501bd6fc4d2d146abf753c0701",
-    "bundleHash": "3a109a17209858558105b7ade09ee56a16cb9ba74a9df38dda95508c599c3451",
+    "receipt": "docs/research/USER_INSTALL_3427.json",
+    "sourceCommit": "ec637284f4118d115da58281d2b1abb6383b80bc",
+    "bundleHash": "3e050d79e49e73f45fe8387da666ac227002a2c11c8295b820af6441936d85c0",
     "verified": true,
     "installationVerified": true,
     "runtimeVerified": true,
