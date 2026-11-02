@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "date": "2026-11-02",
+  "sourceCommit": "69428ada7e973b8b97fecbeb7c2bb8ee4cca1c73",
+  "bundleHash": "3dcb5bd65c89553cbb8dd685d2447e3a373e1453052a88127543c87e7db8be17",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3dcb5bd65c89553c",
+  "files": 5331,
+  "versions": [
+    "3dcb5bd65c89553c"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "componentRuntimeVerified": true,
+  "runtimeScope": "새 SDK 실제 release C++ worker 대조 및 설치 NativeHost/NativeWorldClient의 동일 worker 기본값32종/dirty0 RPC. 변경 없는 renderer PE/source의 WORK3416 근거는 exact SHA로 재사용. 전체게임FPS 검증 아님.",
+  "ownerChecks": [
+    {
+      "path": "native/include/HBEngine/Bridge.hpp",
+      "sha256": "717826b676867cc1f6e8973ec0cc18afdd380924e1d44f2c2380b23352d2a9b8"
+    },
+    {
+      "path": "docs/ai-routes.json",
+      "sha256": "f8c808790e64d8f473aba71c692bdcb219444b6d41c345d5564c04ee4eb60546"
+    },
+    {
+      "path": "tools/check-native-gameplay-read-cost.mjs",
+      "sha256": "5511968c44f68ab0984d59e35e4d6f51bf8c65e3c12fcaca895283cc7ff91153"
+    },
+    {
+      "path": "docs/NATIVE_RUNTIME_COSTS.md",
+      "sha256": "81af3ff248e1d1c922311ba98cb9f8e36097bc97e63d4771376d42c5d61c0dd0"
+    },
+    {
+      "path": "docs/research/ENGINE_WORK_3418.json",
+      "sha256": "8070ffe0162f072478db7d747cfc24f68a913ccfb9ae16c4b74af7befb135d9f"
+    },
+    {
+      "path": "docs/research/ENGINE_STATUS.json",
+      "sha256": "7502db2ef5daf0711634a75864e7ec7d0f62cb43139c2ac75cbf284c3de1aad4"
+    },
+    {
+      "path": "CODEX_HANDOFF.md",
+      "sha256": "d9113bf7506da7674ec4ccda361bb791699ddb1843ed02f65700a4434fb8c55b"
+    },
+    {
+      "path": "HBNativePlayer.exe",
+      "sha256": "c6f466a32524bbb331e7b6a6d58bba4bf4a95b904a46bfc8e4c5e6b3c515a990"
+    }
+  ],
+  "evidence": [
+    {
+      "report": "native/build/gameplay-read-1685WZ/installed-verification.json",
+      "sha256": "3018c68408372b1194c056fa853c4278dde7d1b23d5729f92f13fce6e450a087"
+    },
+    {
+      "report": "native/build/gameplay-read-1685WZ/verification/installed-rpc.json",
+      "sha256": "1380a67178f397a081c920665c2e1aebe6f70efc6c62cabaf6dca9940420cbdf"
+    },
+    {
+      "report": "native/build/gameplay-read-cost-WquiSP/acceptance.json",
+      "sha256": "5beb4f69975ae65e2734899e327830de90faa37da93a8223c58e48759631d4cb"
+    },
+    {
+      "report": "native/build/gameplay-read-1685WZ/cleanup-final.json",
+      "sha256": "aa508cb47f32b5cc6fe5bef8fcaafe12805218a28707e2b94ff766012e118aff"
+    }
+  ],
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5330,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\d6a13f4a72854246",
+        "bytes": 264774608,
+        "manifestSHA256": "5723579a5368314ce7f4739d4bfb84db564d7403b3f4047556afd13366af4178"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-02T08:16:53.1106638Z",
+    "bytes": 264774608,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "3dcb5bd65c89553c"
+    ]
+  },
+  "stagingRemoved": true,
+  "userProfileTouched": false,
+  "userOriginalsTouched": false,
+  "wholeGameFPSVerified": false,
+  "existingPackagesRequireRebuild": true
+}
