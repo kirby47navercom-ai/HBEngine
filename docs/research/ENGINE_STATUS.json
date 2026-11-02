@@ -3868,11 +3868,12 @@
       "area": "platform",
       "title": "Windows·웹 게임 배포",
       "status": "partial",
-      "implemented": "독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0. ·3361–3400: Windows 기본 native / web 별도 경로·Win32/D3D11+공용V8/BP/AOT C++·Skia UI/한글/SVG·네이티브 PCM·OS키/마우스·정상종료·원자저장·미리 준비한 기본 셰이더. 실제 소유 숨김창의 픽셀/텍스처/입력/종료·공용SDK 엄격 경고 검사·무음 Windows 출력 통과. 에디터 UI WebView는 유지. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3404: 네이티브 C++ 크기·모드 변경 후 공용 스프라이트 타일 메시 갱신·변경 없는 메시 재사용·8사례 360픽셀 검증. ·3406: 공급자 Node 서명 보존·app-local Microsoft VC·첫 worker PE 리소스·COFF 복원·게임/worker Authenticode 서명 연결·무서명 release 허용(3408 정정)·개발용 명시·파일 차단 오류·소스별 시간/최대2컴파일 ·3408: development/release 코드 서명 선택, 무인증서 최적화 release EXE 생성·실제40프레임/공용 C++/입력/HUD/소리/정상종료·clean env 검증 ·3412: 공용 UI 무손실 Zstd/ACK XOR·위젯 leaf/descriptor 재사용·phase scheduler·Windows game.hbdata 콘텐츠 묶음/지연 읽기/한글 글꼴 메모리 등록. 원본 파일 없는 소유 release40frame·C++/SVG/한글/음성/입력/종료·네이티브와 웹뷰 서버 byte/range 검증. ·3414: 픽셀 동일 UI 전송 생략·작은 변경 사각형 전송·readonly C++ UI/입력 조회. 35codec 사례·SDK 입력2000회/복원·실제동적한글HUD40frame 검증. ·3416: 순서 입력/포커스·4슬롯 XInput 공용 키·기본 가상 목록/트리와 C++ 조작·clip/변형 좌표·긴 경로 worker/PE 원자 기록. 공용8·실제 release40frame·90/298자 PE 검증. 컨트롤러 실기기/전체FPS 별도. ·3418: 게임플레이 readonly 조회의 전체행 dirty/다음호출 비교 제거·78조회/32기본값/명시mutable복원 실제worker 검증·500객체 조회+복원 p50 2.6762→0.6286ms, 전체FPS 별도.",
+      "implemented": "독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0. ·3361–3400: Windows 기본 native / web 별도 경로·Win32/D3D11+공용V8/BP/AOT C++·Skia UI/한글/SVG·네이티브 PCM·OS키/마우스·정상종료·원자저장·미리 준비한 기본 셰이더. 실제 소유 숨김창의 픽셀/텍스처/입력/종료·공용SDK 엄격 경고 검사·무음 Windows 출력 통과. 에디터 UI WebView는 유지. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3404: 네이티브 C++ 크기·모드 변경 후 공용 스프라이트 타일 메시 갱신·변경 없는 메시 재사용·8사례 360픽셀 검증. ·3406: 공급자 Node 서명 보존·app-local Microsoft VC·첫 worker PE 리소스·COFF 복원·게임/worker Authenticode 서명 연결·무서명 release 허용(3408 정정)·개발용 명시·파일 차단 오류·소스별 시간/최대2컴파일 ·3408: development/release 코드 서명 선택, 무인증서 최적화 release EXE 생성·실제40프레임/공용 C++/입력/HUD/소리/정상종료·clean env 검증 ·3412: 공용 UI 무손실 Zstd/ACK XOR·위젯 leaf/descriptor 재사용·phase scheduler·Windows game.hbdata 콘텐츠 묶음/지연 읽기/한글 글꼴 메모리 등록. 원본 파일 없는 소유 release40frame·C++/SVG/한글/음성/입력/종료·네이티브와 웹뷰 서버 byte/range 검증. ·3414: 픽셀 동일 UI 전송 생략·작은 변경 사각형 전송·readonly C++ UI/입력 조회. 35codec 사례·SDK 입력2000회/복원·실제동적한글HUD40frame 검증. ·3416: 순서 입력/포커스·4슬롯 XInput 공용 키·기본 가상 목록/트리와 C++ 조작·clip/변형 좌표·긴 경로 worker/PE 원자 기록. 공용8·실제 release40frame·90/298자 PE 검증. 컨트롤러 실기기/전체FPS 별도. ·3418: 게임플레이 readonly 조회의 전체행 dirty/다음호출 비교 제거·78조회/32기본값/명시mutable복원 실제worker 검증·500객체 조회+복원 p50 2.6762→0.6286ms, 전체FPS 별도. ·3420: 무손실 UI 타일/작업 스레드·풀/삭제/모델 및 전역 아틀라스 소유·변경 행 스키마 재사용·WARP/무음 fallback·두 소유 실제 게임 대조",
       "remaining": [
         "네이티브 사용자 행·자동 행 높이·목록 드래그/전송 그룹·월드 추적 UI·키오스크·스트리밍 오디오·영상·화면 동기화",
         "네이티브 포인터 잠금·게임패드 실제 장치·고급 위젯/DCC/대규모 게임 호환성과 성능 검증",
-        "선택 코드 서명의 실제 서명·타임스탬프 검증(현재 인증서 미보유) 및 수신 PC 백신 재검증"
+        "선택 코드 서명의 실제 서명·타임스탬프 검증(현재 인증서 미보유) 및 수신 PC 백신 재검증",
+        "재판/실제 게임 120 FPS의 안정적 충족·보스전 및 장시간/다른 물리 PC 검증"
       ],
       "sources": [
         "tools/build-game.mjs",
@@ -3910,7 +3911,8 @@
         "docs/research/ENGINE_WORK_3410.json",
         "docs/research/ENGINE_WORK_3412.json",
         "docs/research/ENGINE_WORK_3414.json",
-        "docs/research/ENGINE_WORK_3418.json"
+        "docs/research/ENGINE_WORK_3418.json",
+        "docs/research/ENGINE_WORK_3420.json"
       ]
     },
     {
@@ -4398,13 +4400,31 @@
       "evidence": [
         "docs/ENGINE_WORK_156.md"
       ]
+    },
+    {
+      "id": "RND-09",
+      "area": "rendering",
+      "title": "네이티브 DirectX12 백엔드",
+      "status": "unimplemented",
+      "implemented": "",
+      "remaining": [
+        "D3D12 command queue/list/fence와 프레임 자원·기존 렌더링 기능 동등성·실제 실행 및 장치 호환성"
+      ],
+      "sources": [
+        "native/include/HBEngine/D3DDevice.hpp",
+        "native/desktop/SceneRenderBridge.hpp",
+        "docs/NATIVE_RUNTIME_COSTS.md"
+      ],
+      "evidence": [
+        "docs/research/ENGINE_WORK_3420.json"
+      ]
     }
   ],
   "latestBatch": {
-    "first": 3418,
-    "last": 3418,
-    "receipt": "docs/research/ENGINE_WORK_3418.json",
-    "scope": "C++ 게임플레이 const 조회/전체행 복원 제거·78조회/32기본값/가변 복원 실제 worker 검증·500객체 처리시간 대조, 전체FPS 별도"
+    "first": 3420,
+    "last": 3420,
+    "receipt": "docs/research/ENGINE_WORK_3420.json",
+    "scope": "UI 작업 스레드/타일 binary pipe·모델/아틀라스 수명·실제 삭제·풀 준비·비교 스키마 재사용·장치 fallback·두 실제 게임 대조,120미합격"
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_3419.json",

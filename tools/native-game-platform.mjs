@@ -1,4 +1,5 @@
-import {openGameResources} from './game-resource-archive.mjs';
+import {registerDeferredTexture} from '../prototype/deferred-texture-source.js';
+import {openNativeContent} from './native-package-content.mjs';
 import {packagedModuleError} from './packaged-module-error.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -6,27 +7,17 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import {createCanvas,loadImage,ImageData,GlobalFonts} from '@napi-rs/canvas';
 import * as THREE from 'three';
-import {resolveBuildPath} from '../prototype/build-profile.js';
 import {nativeModuleKey} from '../prototype/native-entry.js';
 import {NativeHost} from './native-host.mjs';
 import {AudioRouting} from '../prototype/audio-mixer.js';
 
 // The package is the only file authority. No local HTTP server, DOM or browser.
 export async function openNativePackage(directory){
- const root=await fs.realpath(directory),manifest=JSON.parse(await fs.readFile(path.join(root,'game.hbpack.json'),'utf8'));
- if(manifest.version!==1||manifest.windowsRuntime!=='native'||!Array.isArray(manifest.entries))throw Error('네이티브 게임 패키지 형식을 확인하세요.');
- const entries=new Map(manifest.entries.map(row=>[row.path,row]));
- const confined=async(relative,base=root)=>{const file=await fs.realpath(path.resolve(base,relative)),rel=path.relative(base,file);if(!rel||rel.startsWith('..')||path.isAbsolute(rel))throw Error('패키지 밖의 파일은 읽을 수 없어요.');return file;};
- const archive=manifest.contentArchive?await openGameResources(await confined(manifest.contentArchive.path)):null;
- const contentRoot=archive?null:await confined('Content');
- const checkedName=name=>{name=resolveBuildPath(name,manifest.redirects);if(!entries.has(name)||archive&&!archive.entries.has(name))throw Object.assign(Error('패키지 에셋이 없어요: '+name),{code:'ENOENT'});return name;};
- const readBytes=async(name,options)=>{name=checkedName(name);return archive?archive.read(name,options):fs.readFile(await confined(name,contentRoot),options);};
- const resolve=async name=>{name=checkedName(name);if(archive)throw Error('묶음 에셋은 readBytes로 읽으세요.');return confined(name,contentRoot);};
- const project={resolve,read:async name=>{if(archive){name=checkedName(name);return {size:archive.entries.get(name).bytes,readBytes:options=>archive.read(name,options)};}const file=await resolve(name),stat=await fs.stat(file);if(!stat.isFile())throw Error('게임 에셋은 일반 파일이어야 해요.');return {file,size:stat.size};},files:async()=>[...entries.values()]};
+ const content=await openNativeContent(directory),{root,project,manifest,url,resolve,readBytes,modulePath:confined}=content;
  const host=new NativeHost(),aot=new Map();
- for(const row of manifest.nativeModules||[]){try{aot.set(row.signature,host.registerBinary(await confined(row.binary),row.metadata));}catch(error){host.close();await archive?.close();throw packagedModuleError(path.join(root,row.binary),error);}}
+ for(const row of manifest.nativeModules||[]){try{aot.set(row.signature,host.registerBinary(await confined(row.binary),row.metadata));}catch(error){host.close();await content.close();throw packagedModuleError(path.join(root,row.binary),error);}}
  host.build=async(header,source,entry={})=>{const key=createHash('sha256').update(nativeModuleKey(header,source,entry)).digest('hex'),built=aot.get(key);if(!built)throw Error('미리 컴파일한 C++ 모듈이 없어요. 게임을 다시 빌드하세요.');return built;};
- return {root,project,manifest,host,url:name=>'hbasset:'+encodeURIComponent(name),resolve,readBytes,close:async()=>{host.close();await archive?.close();}};
+ return {root,project,manifest,host,url,resolve,readBytes,close:async()=>{host.close();await content.close();}};
 }
 
 export function installNativeAssets(pack){
@@ -40,7 +31,13 @@ export function installNativeAssets(pack){
  globalThis.createImageBitmap=async blob=>loadImage(Buffer.from(await blob.arrayBuffer()));
  globalThis.hbNativeLoadImage=async(url,signal)=>{signal?.throwIfAborted();return loadImage(await pack.readBytes(decodeURIComponent(url.slice(8)),{signal}));};
  globalThis.hbNativeImagePixels=(image,flip)=>{const surface=createCanvas(image.width,image.height),context=surface.getContext('2d');if(flip){context.translate(0,image.height);context.scale(1,-1);}context.drawImage(image,0,0);return {width:image.width,height:image.height,data:context.getImageData(0,0,image.width,image.height).data};};
- return {pixels,texture,restore(){THREE.TextureLoader.prototype.load=originalLoad;globalThis.fetch=originalFetch;delete globalThis.hbMobileFileUrl;delete globalThis.window;delete globalThis.createImageBitmap;delete globalThis.OffscreenCanvas;delete globalThis.ImageData;delete globalThis.hbNativeCanvas;delete globalThis.hbNativeLoadImage;delete globalThis.hbNativeImagePixels;}};
+ const modelTexture=async source=>{const out=new THREE.DataTexture(null,1,1);out.flipY=true;out.generateMipmaps=true;return registerDeferredTexture(out,()=>pixels(source));};
+ return {pixels,texture,modelTexture,restore(){THREE.TextureLoader.prototype.load=originalLoad;globalThis.fetch=originalFetch;delete globalThis.hbMobileFileUrl;delete globalThis.window;delete globalThis.createImageBitmap;delete globalThis.OffscreenCanvas;delete globalThis.ImageData;delete globalThis.hbNativeCanvas;delete globalThis.hbNativeLoadImage;delete globalThis.hbNativeImagePixels;}};
+}
+
+export function createNativeAudioContext(Context,{silent=false,onFallback=()=>{}}={}){
+ const settings={sampleRate:48000,latencyHint:'interactive'};if(silent)return new Context({...settings,sinkId:{type:'none'}});
+ try{return new Context(settings);}catch(deviceError){let context;try{context=new Context({...settings,sinkId:{type:'none'}});}catch(silentError){throw new AggregateError([deviceError,silentError],'네이티브 오디오 장치와 무음 실행을 모두 시작하지 못했어요.');}onFallback({audible:false,reason:deviceError.message});return context;}
 }
 
 export function nativeAudioRouting({readAsset},createContext){

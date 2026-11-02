@@ -73,7 +73,7 @@ public:
     Json command(const Json& packet,HWND window,bool development){
         const auto operation=packet.at("op").get<std::string>();const auto& data=packet.at("data");
         if(operation=="init"){
-            if(renderer)throw std::runtime_error("Render already initialized");auto nextDevice=std::make_unique<hb::gpu::Device>();auto nextRenderer=std::make_unique<Renderer>(*nextDevice,data.at("width").get<std::uint32_t>(),data.at("height").get<std::uint32_t>(),window,data.value("asyncShaderPreparation",false));asynchronousMaterials=data.value("asyncShaderPreparation",false);nextRenderer->setAsyncShaderPreparation(asynchronousMaterials);device=std::move(nextDevice);renderer=std::move(nextRenderer);return {{"backend","D3D11"},{"constantBuffers",3},{"dynamicMesh",true},{"meshFrameBuffers",3}};
+            if(renderer)throw std::runtime_error("Render already initialized");auto nextDevice=std::make_unique<hb::gpu::Device>();auto nextRenderer=std::make_unique<Renderer>(*nextDevice,data.at("width").get<std::uint32_t>(),data.at("height").get<std::uint32_t>(),window,data.value("asyncShaderPreparation",false));asynchronousMaterials=data.value("asyncShaderPreparation",false);nextRenderer->setAsyncShaderPreparation(asynchronousMaterials);device=std::move(nextDevice);renderer=std::move(nextRenderer);return {{"backend","D3D11"},{"device",device->backend()},{"software",device->software()},{"constantBuffers",3},{"dynamicMesh",true},{"meshFrameBuffers",3}};
         }
         ready();
         if(operation=="prepareStatus"){pollMaterials();renderer->pollShaderPreparation();pollParticleSimulation();return shaderPreparation();}

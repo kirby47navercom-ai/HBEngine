@@ -5374,6 +5374,66 @@
       "paths": [
         "native/desktop/WindowsGameIdentity.hpp"
       ]
+    },
+    {
+      "id": "native-frame-presentation",
+      "keywords": [
+        "NativePresentationQueue",
+        "NativeWidgetRasterWorker",
+        "nativeUITilePacket",
+        "nativeUIPipeHeader"
+      ],
+      "paths": [
+        "tools/native-presentation-queue.mjs",
+        "tools/native-widget-raster-worker.mjs",
+        "tools/native-ui-tiles.mjs",
+        "tools/native-ui-pipe.mjs"
+      ]
+    },
+    {
+      "id": "native-model-residency",
+      "keywords": [
+        "NativeModelInstances",
+        "deferredTexturePending",
+        "prepareDeferredTexture"
+      ],
+      "paths": [
+        "tools/native-model-instances.mjs",
+        "prototype/deferred-texture-source.js"
+      ]
+    },
+    {
+      "id": "native-device-startup",
+      "keywords": [
+        "createNativeAudioContext",
+        "createCompatibleDevice",
+        "DeviceDriver"
+      ],
+      "paths": [
+        "tools/native-game-platform.mjs",
+        "native/include/HBEngine/D3DDevice.hpp"
+      ]
+    },
+    {
+      "id": "native-shared-atlas",
+      "keywords": [
+        "nativeSpriteTextureSource",
+        "spriteTextureUploadKey",
+        "trackSharedTexture"
+      ],
+      "paths": [
+        "prototype/sprite-texture-source.js",
+        "prototype/native-scene-renderer.js"
+      ]
+    },
+    {
+      "id": "native-row-match-schema",
+      "keywords": [
+        "runtimeDataMatcher"
+      ],
+      "paths": [
+        "prototype/runtime-data-equal.js"
+      ]
     }
   ]
 }

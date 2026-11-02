@@ -1,3 +1,4 @@
+import {nativeUITilePacket} from './native-ui-tiles.mjs';
 // Native Skia data is premultiplied RGBA8. Retain those exact bytes across
 // the process boundary; the older PNG path remains a bounded fallback.
 import * as zlib from 'node:zlib';
@@ -7,13 +8,14 @@ const frames=new WeakMap(),pending=new WeakMap();
 export function resetNativeUIFrame(canvas){frames.delete(canvas);pending.delete(canvas);}
 export function acknowledgeNativeUIFrame(canvas,frame){const next=pending.get(canvas);if(!next||next.frame!==frame)throw Error("Native UI acknowledgment mismatch");frames.set(canvas,next.state);pending.delete(canvas);}
 export function nativeUIFrameMemory(canvas){const a=frames.get(canvas),b=pending.get(canvas)?.state;return {acknowledgedBytes:a?.bytes.length||0,scratchBytes:a?.buffer?.length||0,pendingBytes:b?.bytes.length||0};}
-export async function encodeNativeUIFrame(canvas){
+export async function encodeNativeUIFrame(canvas,{raw=false}={}){
  pending.delete(canvas);
  const width=canvas.width,height=canvas.height;
  if(width>7680||height>4320||width<1||height<1)throw Error('Native UI dimensions invalid');
- if(!compress){resetNativeUIFrame(canvas);return {png:(await canvas.encode('png')).toString('base64')};}const bytes=canvas.data();
+ if(!raw&&!compress){resetNativeUIFrame(canvas);return {png:(await canvas.encode('png')).toString('base64')};}const bytes=canvas.data();
  if(bytes.length!==width*height*4){resetNativeUIFrame(canvas);return {png:(await canvas.encode('png')).toString('base64')};}
  const prior=frames.get(canvas),sequence=prior&&prior.sequence<Number.MAX_SAFE_INTEGER?prior.sequence+1:1;
+ if(raw){if(prior&&prior.width===width&&prior.height===height&&bytes.equals(prior.bytes))return null;const tiles=prior&&sequence>1&&prior.width===width&&prior.height===height?nativeUITilePacket(bytes,prior.bytes,width,height):null;const frame={encoding:tiles?'pipe-rgba8-premultiplied-tiles':'pipe-rgba8-premultiplied',width,height,sequence,pixels:tiles||bytes};pending.set(canvas,{frame,state:{width,height,bytes,sequence}});return frame;}
  let input=bytes,delta=false,buffer,rect;
  if(prior&&sequence>1&&prior.width===width&&prior.height===height&&prior.bytes.length===bytes.length){
   if(bytes.equals(prior.bytes))return null;

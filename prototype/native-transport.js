@@ -6,6 +6,10 @@ export function worldPatch(previous,current,limit=4096){
   const add=(operation,depth)=>{operations.push(operation);if(operations.length>limit||depth>64||operation.path.length>4096)throw Error('full snapshot');};
   function walk(a,b,path,depth=0){
     if(Object.is(a,b))return;
+    const edits=b&&typeof b==='object'&&immutableRecordEdits.get(b);
+    if(edits&&edits.base===immutableRecordIds.get(a)){
+      for(const key of edits.keys){const at=path+'/'+escape(key);if(!Object.hasOwn(a,key))add({op:'add',path:at,value:b[key]},depth+1);else walk(a[key],b[key],at,depth+1);}return;
+    }
     const aa=Array.isArray(a),ba=Array.isArray(b),ao=a&&typeof a==='object',bo=b&&typeof b==='object';
     if(!ao||!bo||aa!==ba||aa&&a.length!==b.length){add({op:'replace',path,value:b},depth);return;}
     if(aa){if(a.length<=4){let changes=0,scalar=true;for(let i=0;i<a.length;i++){if(!Object.is(a[i],b[i]))changes++;if(a[i]!==null&&typeof a[i]==='object'||b[i]!==null&&typeof b[i]==='object')scalar=false;}if(!changes)return;if(scalar&&changes>1){add({op:'replace',path,value:b},depth);return;}}for(let i=0;i<a.length;i++){const value=b[i],type=typeof value;walk(a[i],value===undefined||type==='function'||type==='symbol'||type==='number'&&!Number.isFinite(value)?null:value,path+'/'+i,depth+1);}return;}
@@ -44,9 +48,20 @@ export function commitNativeWorld(world,result){
 }
 // Engine-owned UI snapshots are immutable. Cache their JSON without hiding any
 // UI fields from C++; ordinary mutable actor data is serialized on every call.
-const immutableJSON=new WeakMap(),immutableNodes=new WeakSet();
+const immutableJSON=new WeakMap(),immutableNodes=new WeakSet(),immutableRecordIds=new WeakMap(),immutableRecordEdits=new WeakMap();
+// Tokens describe an exact immutable predecessor without retaining old frames.
+// Only engine-created records may use this path; arbitrary mutations still diff.
+export function patchImmutableNativeRecord(previous,updates){
+ if(!previous||Array.isArray(previous)||!immutableNodes.has(previous))throw Error('Native immutable record base invalid');
+ const next={...previous},keys=[];for(const [key,value]of updates){if(typeof key!=='string'||value===undefined)throw Error('Native immutable record edit invalid');if(Object.hasOwn(next,key)&&Object.is(next[key],value))continue;Object.defineProperty(next,key,{value:freezeNativeValue(value),enumerable:true,writable:true,configurable:true});keys.push(key);}
+ if(!keys.length)return previous;Object.freeze(next);immutableNodes.add(next);immutableJSON.set(next,{text:null,value:next});
+ let token=immutableRecordIds.get(previous);if(!token){token={};immutableRecordIds.set(previous,token);}immutableRecordEdits.set(next,{base:token,keys:[...new Set(keys)]});return next;
+}
+function freezeNativeValue(value){if(value&&typeof value==='object'&&!immutableNodes.has(value)){for(const key of Object.keys(value)){const child=value[key];if(child&&typeof child==='object')freezeNativeValue(child);}Object.freeze(value);immutableNodes.add(value);}return value;}
+export function immutableNativeJSON(text){const snapshot=freezeNativeValue(JSON.parse(text));immutableJSON.set(snapshot,{text,value:snapshot});return snapshot;}
 export function immutableNativeSnapshot(value,{clone=true}={}){
-  const text=clone?JSON.stringify(value):null,snapshot=clone?JSON.parse(text):value,freeze=value=>{if(value&&typeof value==='object'&&!immutableNodes.has(value)){for(const child of Object.values(value))freeze(child);Object.freeze(value);immutableNodes.add(value);}return value;};freeze(snapshot);immutableJSON.set(snapshot,{text,value:snapshot});return snapshot;
+ if(clone)return immutableNativeJSON(JSON.stringify(value));
+ const snapshot=freezeNativeValue(value);immutableJSON.set(snapshot,{text:null,value:snapshot});return snapshot;
 }
 // Engine-owned deferred fields still expose ordinary frozen JSON values. Do not
 // enumerate an expensive field just to freeze an unchanged parent on every edit.
@@ -54,7 +69,7 @@ export function immutableNativeLazyRecord(fields,key,materialize){
   if(Object.hasOwn(fields,key)||typeof materialize!=='function')throw Error('지연 스냅샷 필드를 확인하세요.');
   const result={...immutableNativeSnapshot({...fields},{clone:false})};let ready=false,value;
   Object.defineProperty(result,key,{enumerable:true,get(){if(!ready){value=immutableNativeSnapshot(materialize(),{clone:false});ready=true;}return value;}});
-  Object.freeze(result);immutableNodes.add(result);return result;
+  Object.freeze(result);immutableNodes.add(result);immutableJSON.set(result,{text:null,value:result});return result;
 }
 const encodedSnapshot=entry=>entry.text??=JSON.stringify(entry.value);
 function withJSONField(object,key,value){const text=JSON.stringify({...object,[key]:undefined});return text.slice(0,-1)+(text.length>2?',':'')+JSON.stringify(key)+':'+value+'}';}
@@ -135,12 +150,12 @@ export class NativeWorldClient {
       }
       // Native JSON serialization compares unchanged actor rows faster than walking
       // all their component/UI fields in JS. Keep only detached, immutable rows.
-      const serializeStart=performance.now();let reusedRows=0,serializedRows=0;const rows=request.objects.map((object,i)=>{if(this.owner?.hooks?.nativeRowReuse===true&&this.world?.[i]){let matcher=this.rowMatchers[i];if(matcher?.test===null&&matcher.snapshot?.id===this.world[i].id)matcher.snapshot=this.world[i];else if(matcher?.snapshot!==this.world[i])matcher=this.rowMatchers[i]=runtimeDataMatcher(this.world[i],this.matcherCache,immutableNodes)||{snapshot:this.world[i],test:null};if(matcher?.test?.(this.world[i],object))return this.rows[i];}serializedRows++;return nativeRowJSON(object)??'null';}),current=rows.map((row,i)=>{if(this.world&&sameNativeRow(row,this.rows?.[i])){reusedRows++;return this.world[i];}return detachedNativeRow(request.objects[i],row);}),serializedAt=performance.now();this.rowMatchers.length=rows.length;
+      const serializeStart=performance.now();let reusedRows=0,serializedRows=0;const rows=request.objects.map((object,i)=>{if(this.owner?.hooks?.nativeRowReuse===true&&this.world?.[i]){let matcher=this.rowMatchers[i];if(matcher?.test===null&&matcher.snapshot?.id===this.world[i].id)matcher.snapshot=this.world[i];else if(matcher?.snapshot!==this.world[i]&&matcher?.accepts?.(this.world[i]))matcher.snapshot=this.world[i];else if(matcher?.snapshot!==this.world[i])matcher=this.rowMatchers[i]=runtimeDataMatcher(this.world[i],this.matcherCache,immutableNodes)||{snapshot:this.world[i],test:null};if(matcher?.test?.(this.world[i],object))return this.rows[i];}serializedRows++;return nativeRowJSON(object)??'null';}),current=rows.map((row,i)=>{if(this.world&&sameNativeRow(row,this.rows?.[i])){reusedRows++;return this.world[i];}return detachedNativeRow(request.objects[i],row);}),serializedAt=performance.now();this.rowMatchers.length=rows.length;
       let next,packet,sequence=this.sequence+1;const patch=this.world&&worldPatch(this.world,current);
       if(patch){next=current;packet={...request,objects:undefined,objectPatch:patch,worldTransport:1,worldId:this.id,baseSequence:this.sequence,worldSequence:sequence};}
       if(!packet){next=current;sequence=1;packet={...request,objects:next,worldTransport:1,worldId:this.id,baseSequence:0,worldSequence:sequence};}
       const frames=this.frames;this.frames=[];if(frames.length)packet.frameAdvances=frames;
-      const preparedAt=performance.now(),result=await send(packet),acknowledgeAt=performance.now();this.clockBatchable=result.clockBatchable===true&&!result.nativeError;this.clockState=result.clock;if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');const committed=commitNativeWorld(next,result);this.world=result.nativeError?null:committed;this.rows=result.nativeError?null:rows.map((row,i)=>{if(this.rowMatchers[i]?.snapshot!==committed[i])this.rowMatchers[i]=undefined;return committed[i]===next[i]?row:nativeRowJSON(committed[i]);});this.sequence=result.nativeError?0:sequence;if(result.nativeError){this.rowMatchers=[];this.matcherCache.clear();}if(result.transport)Object.assign(result.transport,{clientSerializeMs:serializedAt-serializeStart,clientPatchMs:preparedAt-serializedAt,clientAckMs:performance.now()-acknowledgeAt,worldRows:rows.length,reusedRows,serializedRows});return result;
+      const preparedAt=performance.now(),result=await send(packet),acknowledgeAt=performance.now();this.clockBatchable=result.clockBatchable===true&&!result.nativeError;this.clockState=result.clock;if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');const committed=commitNativeWorld(next,result);this.world=result.nativeError?null:committed;this.rows=result.nativeError?null:rows.map((row,i)=>{if(this.rowMatchers[i]?.snapshot?.id!==committed[i]?.id)this.rowMatchers[i]=undefined;return committed[i]===next[i]?row:nativeRowJSON(committed[i]);});this.sequence=result.nativeError?0:sequence;if(result.nativeError){this.rowMatchers=[];this.matcherCache.clear();}if(result.transport)Object.assign(result.transport,{clientSerializeMs:serializedAt-serializeStart,clientPatchMs:preparedAt-serializedAt,clientAckMs:performance.now()-acknowledgeAt,worldRows:rows.length,reusedRows,serializedRows});return result;
     });
     // The ordering tail must not keep the last complete response alive.
     this.queue=job.then(()=>{},()=>{this.spawnContext=null;this.world=null;this.rows=null;this.sequence=0;this.rowMatchers=[];this.matcherCache?.clear();this.frames=[];this.clockBatchable=false;this.clockState=null;});return job.finally(()=>this.pendingCalls--);

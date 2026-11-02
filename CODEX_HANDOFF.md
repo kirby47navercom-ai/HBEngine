@@ -1,3 +1,6 @@
+## UI·자원 수명·실행 호환성 · WORK3420 / 2026-11-02
+소유 Engine 후보에 UI worker/binary tile, frozen row 비교 코드 재사용, 전역 아틀라스 마지막 참조 해제, 풀 첫 준비/실제 삭제 presentation 정리, glTF 공유/숨긴 이미지 디코딩 지연, 오디오 장치/WARP fallback을 연결했어요. 일반 실제 재판 52.54→100.66FPS, Auric 같은 위치 114.35→116.08FPS. 목표120미합격·일반/계측 분리·입력 지속 시간이 다른 이동 후보/실패 실험 제외. 새 PE·SDK 실제 RPC·타일360pixel·UI16frame·수명/오류 검사 통과. 설치 요청 활성, 최신 설치 근거는 후속 USER_INSTALL3421에서 확인해요. 공유 작업트리 NativeWidgetWindow/native-widget-layer/native-ui-frame의 외부 변경은 그대로 보존했고 index/설치는 검증된 canonical snapshot만 사용해요. 금지3파일·게임원본·사용자창/프로필·예약/agent/goal 변경 없음. DX12·120·다른 물리PC/백신·누적 잔여 전체 완료로 표시하지 않아요. 상세 ENGINE_WORK3420/NATIVE_RUNTIME_COSTS.
+
 ## 게임플레이 읽기 비용 · WORK3418 / 2026-11-02
 USER_INSTALL3419/3dcb5bd65c89553c 전환·8owner/PE SHA·설치 actual SDK RPC 통과·Versions1·소유 Engine/fixture EXE 정리 완료. C++ 게임플레이 조회의 전체행 dirty/다음호출 비교 제거.78조회·32기본값·10누락/범위·4모호성·mutable/setter 직후읽기/다음RPC복원 actual release worker 통과.500객체 조회+복원 p50 2.6762→0.6286ms,p95 3.6875→0.7585ms,p99 7.1393→0.8778ms·각512표본/4교대. IPC/물리/렌더/전체FPS 아님.40frame smoke 성능증거 사용금지. renderer PE/source unchanged exact SHA 재사용·새 SDK 실제 컴파일. 설치요청 활성·Versions1 유지. 금지3파일/게임원본/사용자창/WIP보존·예약/agent/goal없음. WORK3418·NATIVE_RUNTIME_COSTS.md.
 

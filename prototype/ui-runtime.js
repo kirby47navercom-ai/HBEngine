@@ -9,7 +9,7 @@ import {componentDefaults} from './scene-components.js';
 import {resolveWidgetPresentation} from './widget-presentation.js';
 import {createVirtualList} from './virtual-list.js';
 import {validPresentationAsset} from './localization.js';
-import {immutableNativeSnapshot} from './native-transport.js';
+import {immutableNativeSnapshot,immutableNativeJSON,patchImmutableNativeRecord} from './native-transport.js';
 import {bindVirtualControl,drawVirtualControl,virtualTypes,virtualDefaults} from './virtual-controls.js';
 import {validWidgetAsset,validWidgetProperties,widgetContainers,widgetDefaults,widgetScale,widgetImageSource} from './ui-assets.js';
 
@@ -73,15 +73,23 @@ export function renderWidgetTree(host,data,{preview=false,fileUrl=p=>p,event=()=
 // Reuse only byte-identical detached, frozen node snapshots. Mutable widget
 // data never escapes into native transport; removed rows are not retained.
 const widgetSnapshots=new WeakMap(),widgetDirtyNodes=new WeakMap();
+function nativeWidgetRow(n,localization,old){
+ const value={type:n.type,...n.properties,...n.properties.stringTable&&n.properties.textKey&&localization?{text:localization.format(n.properties.stringTable,n.properties.textKey,JSON.parse(n.properties.textArguments||'{}'),n.properties.text)}:{},slot:n.slot,value:n.type==='CheckBox'?Number(n.properties.checked):n.properties.value},text=JSON.stringify(value);
+ return old?.node===n&&old.text===text?old:{node:n,text,snapshot:old?.text===text?old.snapshot:immutableNativeJSON(text)};
+}
 function nativeWidgetSnapshot(state,localization,dirtyNodes){
- const prior=widgetSnapshots.get(state),rows=new Map(),entries=[];let changed=!prior||prior.rows.size!==state.data.nodes.length,index=0;
- for(const n of state.data.nodes){
-  const old=prior?.rows.get(n.name);let row=old;
-  if(!old||!dirtyNodes||dirtyNodes.has(n)||old.node!==n){const value={type:n.type,...n.properties,...n.properties.stringTable&&n.properties.textKey&&localization?{text:localization.format(n.properties.stringTable,n.properties.textKey,JSON.parse(n.properties.textArguments||'{}'),n.properties.text)}:{},slot:n.slot,value:n.type==='CheckBox'?Number(n.properties.checked):n.properties.value},text=JSON.stringify(value);row=old?.text===text?old:{node:n,text,snapshot:immutableNativeSnapshot(value)};}
-  if(row!==old||prior?.names[index]!==n.name)changed=true;index++;rows.set(n.name,row);entries.push([n.name,row.snapshot]);
+ const prior=widgetSnapshots.get(state),nodes=state.data.nodes;
+ // A scalar edit keeps node identity/order. Validate topology, then only rebuild
+ // the dirty rows; retained immutable records are safe to share with C++.
+ if(prior&&dirtyNodes&&prior.nodes.length===nodes.length&&nodes.every((n,i)=>n===prior.nodes[i]&&n.name===prior.names[i])){
+  const changes=[];for(const node of dirtyNodes){const old=prior.rows.get(node.name);if(!old||old.node!==node)continue;const row=nativeWidgetRow(node,localization,old);if(row!==old)changes.push([node.name,row]);}
+  if(!changes.length)return prior.snapshot;
+  for(const [name,row]of changes)prior.rows.set(name,row);prior.snapshot=patchImmutableNativeRecord(prior.snapshot,changes.map(([name,row])=>[name,row.snapshot]));return prior.snapshot;
  }
+ const rows=new Map(),entries=[];let changed=!prior||prior.rows.size!==nodes.length,index=0;
+ for(const n of nodes){const old=prior?.rows.get(n.name),row=!old||!dirtyNodes||dirtyNodes.has(n)||old.node!==n?nativeWidgetRow(n,localization,old):old;if(row!==old||prior?.names[index]!==n.name)changed=true;index++;rows.set(n.name,row);entries.push([n.name,row.snapshot]);}
  const snapshot=changed?immutableNativeSnapshot(Object.fromEntries(entries),{clone:false}):prior.snapshot;
- widgetSnapshots.set(state,{rows,names:entries.map(row=>row[0]),snapshot});return snapshot;
+ widgetSnapshots.set(state,{rows,nodes:nodes.slice(),names:entries.map(row=>row[0]),snapshot});return snapshot;
 }
 
 export class WidgetSystem {
@@ -89,8 +97,8 @@ export class WidgetSystem {
   key(owner,instance){return JSON.stringify([owner,instance]);}
   state(owner,instance){const state=this.instances.get(this.key(owner,instance));if(!state)throw Error('위젯 인스턴스를 찾을 수 없어요: '+instance);return state;}
   node(state,name){const node=state.data.nodes.find(n=>n.id===name||n.name===name);if(!node)throw Error('위젯 요소가 없어요: '+name);return node;}
-  sync(state,vm,dirtyNodes){const owner=vm.object(state.owner);if(!owner)return;owner.gameplayDebug??={};owner.gameplayDebug.ui??={};const snapshot=nativeWidgetSnapshot(state,this.hooks.localization,dirtyNodes);owner.gameplayDebug.ui=immutableNativeSnapshot({...owner.gameplayDebug.ui,[state.instance]:snapshot},{clone:false});}
-  refresh(state,vm,node,preserve=false){if(!preserve){if(!node)widgetDirtyNodes.set(state,null);else if(!widgetDirtyNodes.has(state))widgetDirtyNodes.set(state,new Set([node]));else widgetDirtyNodes.get(state)?.add(node);}if(this.batchDepth){this.dirty.add(state);return;}state.view?.update();const dirtyNodes=widgetDirtyNodes.get(state);widgetDirtyNodes.delete(state);this.sync(state,vm,dirtyNodes);}
+  sync(state,vm,dirtyNodes){const owner=vm.object(state.owner);if(!owner)return;owner.gameplayDebug??={};owner.gameplayDebug.ui??={};const snapshot=nativeWidgetSnapshot(state,this.hooks.localization,dirtyNodes);const before=owner.gameplayDebug.ui;owner.gameplayDebug.ui=Object.isFrozen(before)?patchImmutableNativeRecord(before,[[state.instance,snapshot]]):immutableNativeSnapshot({...before,[state.instance]:snapshot},{clone:false});}
+  refresh(state,vm,node,preserve=false){if(!preserve){if(!node)widgetDirtyNodes.set(state,null);else if(!widgetDirtyNodes.has(state))widgetDirtyNodes.set(state,new Set([node]));else widgetDirtyNodes.get(state)?.add(node);}if(this.batchDepth){this.dirty.add(state);return;}const dirtyNodes=widgetDirtyNodes.get(state);widgetDirtyNodes.delete(state);state.view?.update(dirtyNodes);this.sync(state,vm,dirtyNodes);}
   async writeBatch(callback,vm){this.batchDepth++;try{return await callback();}finally{if(--this.batchDepth===0){const changed=[...this.dirty];this.dirty.clear();for(const state of changed)if(this.instances.get(this.key(state.owner,state.instance))===state)this.refresh(state,vm,undefined,true);}}}
   async lifecycle(state,phase,vm){const event=state.data.lifecycle?.[phase];if(!event||!vm.custom)return;for(const binding of (vm.bindings||[]).filter(binding=>binding.self===state.owner))await vm.custom(binding,event,{widget:state.instance,phase,isDesignTime:false});}
   updateRowBudget(vm,state,data){const limit=(vm.objects||[]).flatMap(o=>o.components||[]).find(c=>c.type==='UIBudget'&&c.properties?.enabled!==false)?.properties?.maxNodes??componentDefaults('UIBudget').maxNodes;this.rowBudget.maxNodes=Math.max(0,limit-[...this.instances.values()].filter(s=>s!==state).reduce((sum,s)=>sum+s.data.nodes.length,data?.nodes.length||0));}

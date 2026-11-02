@@ -17,13 +17,13 @@ export function sameRuntimeData(snapshot,current){
 // Native/headless JSON ownership is explicit. Keys are quoted as data, never
 // executable input. Keep code size/cache bounded; unusual schemas use JSON.
 export function runtimeDataMatcher(snapshot,cache,immutable){
- let fields=0;const statements=[];
+ let fields=0;const statements=[],shape=[];
  function emit(value,a,b,depth){
   if(++fields>1024||depth>16)throw Error('schema budget');
-  if(value===null||typeof value!=='object'||immutable?.has(value)){statements.push(`if(${a}!==${b})return false;`);return;}
-  if(Array.isArray(value)){statements.push(`if(!Array.isArray(${b})||${b}.length!==${value.length})return false;`);for(let i=0;i<value.length;i++)emit(value[i],a+'['+i+']',b+'['+i+']',depth+1);return;}
-  const keys=Object.keys(value);statements.push(`if(!${b}||typeof ${b}!=="object"||Array.isArray(${b})||Object.keys(${b}).length!==${keys.length})return false;`);
-  for(const key of keys){const quoted=JSON.stringify(key);statements.push(`if(!Object.hasOwn(${b},${quoted}))return false;`);emit(value[key],a+'['+quoted+']',b+'['+quoted+']',depth+1);}
+  if(value===null||typeof value!=='object'||immutable?.has(value)){shape.push(immutable?.has(value)?`if(!immutable.has(${a}))return false;`:`if(${a}!==null&&typeof ${a}==="object")return false;`);statements.push(`if(${a}!==${b})return false;`);return;}
+  if(Array.isArray(value)){shape.push(`if(!Array.isArray(${a})||${a}.length!==${value.length})return false;`);statements.push(`if(!Array.isArray(${b})||${b}.length!==${value.length})return false;`);for(let i=0;i<value.length;i++)emit(value[i],a+'['+i+']',b+'['+i+']',depth+1);return;}
+  const keys=Object.keys(value);shape.push(`if(!${a}||typeof ${a}!=="object"||Array.isArray(${a})||Object.keys(${a}).length!==${keys.length})return false;`);statements.push(`if(!${b}||typeof ${b}!=="object"||Array.isArray(${b})||Object.keys(${b}).length!==${keys.length})return false;`);
+  for(const key of keys){const quoted=JSON.stringify(key);shape.push(`if(!Object.hasOwn(${a},${quoted}))return false;`);statements.push(`if(!Object.hasOwn(${b},${quoted}))return false;`);emit(value[key],a+'['+quoted+']',b+'['+quoted+']',depth+1);}
  }
- try{emit(snapshot,'a','b',0);const source=statements.join('')+'return true;';if(source.length>65536)return null;let test=cache.get(source);if(!test){test=new Function('a','b',source);if(cache.size>=16)cache.delete(cache.keys().next().value);cache.set(source,test);}return {snapshot,test};}catch{return null;}
+ try{emit(snapshot,'a','b',0);const source=statements.join('')+'return true;',shapeSource=shape.join('')+'return true;',key=source+'\n'+shapeSource;if(source.length>65536||shapeSource.length>65536)return null;let test=cache.get(key);if(!test){test=new Function('a','b',source);test.runtimeShape=new Function('a','immutable',shapeSource);if(cache.size>=16)cache.delete(cache.keys().next().value);cache.set(key,test);}return {snapshot,test,accepts:value=>test.runtimeShape(value,immutable)};}catch{return null;}
 }

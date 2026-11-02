@@ -1,5 +1,6 @@
 #pragma once
 #include "ComputePlatform.hpp"
+#include "D3DDevice.hpp"
 #include "ShaderBytecodeCompiler.hpp"
 #include <filesystem>
 #include <string_view>
@@ -79,7 +80,7 @@ class Device {
     friend class SceneLightTiles;
     detail::Com<ID3D11Device> device;
     detail::Com<ID3D11DeviceContext> context;
-    std::mutex mutex;
+    std::mutex mutex;D3D_DRIVER_TYPE driver=D3D_DRIVER_TYPE_HARDWARE;
     void owns(const Buffer& b) const{if(!b.resource.p||b.owner!=device.p)throw std::runtime_error("Compute buffer belongs to another device or was moved");}
     static void queueKernel(KernelPreparation& request){
         if(request.job)return;
@@ -87,12 +88,13 @@ class Device {
         request.job=detail::sharedShaderPreparationQueue().submit(key,256+key.size()*2+source->size(),[source,entry,refresh]{return detail::ShaderBytecodeCompiler::create(*source,"HBCompute",entry.c_str(),"cs_5_0",[](const void*,std::size_t){return S_OK;},refresh).code;});
     }
 public:
-    Device(){auto& dll=detail::libraries();dll.symbol<decltype(&D3DCompile)>(dll.compiler,"D3DCompile");const auto create=dll.symbol<decltype(&D3D11CreateDevice)>(dll.d3d,"D3D11CreateDevice");const D3D_FEATURE_LEVEL requested=D3D_FEATURE_LEVEL_11_0;D3D_FEATURE_LEVEL actual{};detail::check(create(nullptr,D3D_DRIVER_TYPE_HARDWARE,nullptr,0,&requested,1,D3D11_SDK_VERSION,&device.p,&actual,&context.p),"DirectCompute hardware device");}
+    explicit Device(DeviceDriver preference=DeviceDriver::Automatic){auto& dll=detail::libraries();dll.symbol<decltype(&D3DCompile)>(dll.compiler,"D3DCompile");const auto create=dll.symbol<decltype(&D3D11CreateDevice)>(dll.d3d,"D3D11CreateDevice");driver=detail::createCompatibleDevice(create,preference,device,context);}
     Device(const Device&)=delete;Device& operator=(const Device&)=delete;
     static void configureShaderCache(const std::filesystem::path& directory){detail::ShaderBytecodeCompiler::configure(directory);}
     static std::array<std::uint64_t,10> shaderDiskCacheInfo(){return detail::ShaderBytecodeCompiler::info();}
     static bool available() noexcept{try{Device device;return true;}catch(...){return false;}}
-    std::string backend() const{return "Direct3D11 hardware cs_5_0";}
+    bool software() const{return driver==D3D_DRIVER_TYPE_WARP;}
+    std::string backend() const{return software()?"Direct3D11 WARP software cs_5_0":"Direct3D11 hardware cs_5_0";}
     Buffer create(const std::vector<float>& values,std::uint32_t stride=sizeof(float),bool append=false){
         std::lock_guard<std::mutex> lock(mutex);Buffer b;const UINT size=detail::bytes(values.size());if(stride<4||stride>2048||stride%4||size%stride)throw std::runtime_error("Compute structured buffer stride invalid");
         D3D11_BUFFER_DESC desc{};desc.ByteWidth=size;desc.Usage=D3D11_USAGE_DEFAULT;desc.BindFlags=D3D11_BIND_UNORDERED_ACCESS|D3D11_BIND_SHADER_RESOURCE;desc.MiscFlags=D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;desc.StructureByteStride=stride;D3D11_SUBRESOURCE_DATA data{};data.pSysMem=values.data();detail::check(device->CreateBuffer(&desc,&data,&b.resource.p),"Compute buffer");
@@ -172,7 +174,8 @@ public:
     static void configureShaderCache(const std::filesystem::path&){throw std::runtime_error("Compute unavailable");}
     static std::array<std::uint64_t,10> shaderDiskCacheInfo(){return {};}
     static bool available() noexcept{return false;}
-    Device(){throw std::runtime_error("DirectCompute requires Windows hardware; this platform has no backend");}
+    explicit Device(DeviceDriver=DeviceDriver::Automatic){throw std::runtime_error("DirectCompute requires Windows; this platform has no backend");}
+    bool software() const{return false;}
     std::string backend() const{return "unavailable";}
     Buffer create(const std::vector<float>&,std::uint32_t=sizeof(float),bool=false){throw std::runtime_error("Compute unavailable");}
     Buffer createCountBuffer(std::size_t=1){throw std::runtime_error("Compute unavailable");}
