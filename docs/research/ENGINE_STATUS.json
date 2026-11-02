@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-11-02",
-  "basisRevision": "0a5d665fcbb9fa2a2dc405b5d92fc91e22d20bba",
+  "basisRevision": "4a94d18fc7842ef566f470f36941a7be1f731501",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -3866,7 +3866,7 @@
       "area": "platform",
       "title": "Windows·웹 게임 배포",
       "status": "partial",
-      "implemented": "독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0. ·3361–3400: Windows 기본 native / web 별도 경로·Win32/D3D11+공용V8/BP/AOT C++·Skia UI/한글/SVG·네이티브 PCM·OS키/마우스·정상종료·원자저장·미리 준비한 기본 셰이더. 실제 소유 숨김창의 픽셀/텍스처/입력/종료·공용SDK 엄격 경고 검사·무음 Windows 출력 통과. 에디터 UI WebView는 유지. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3404: 네이티브 C++ 크기·모드 변경 후 공용 스프라이트 타일 메시 갱신·변경 없는 메시 재사용·8사례 360픽셀 검증. ·3406: 공급자 Node 서명 보존·app-local Microsoft VC·첫 worker PE 리소스·COFF 복원·게임/worker Authenticode 서명 연결·무서명 release 허용(3408 정정)·개발용 명시·파일 차단 오류·소스별 시간/최대2컴파일 ·3408: development/release 코드 서명 선택, 무인증서 최적화 release EXE 생성·실제40프레임/공용 C++/입력/HUD/소리/정상종료·clean env 검증 ·3412: 공용 UI 무손실 Zstd/ACK XOR·위젯 leaf/descriptor 재사용·phase scheduler·Windows game.hbdata 콘텐츠 묶음/지연 읽기/한글 글꼴 메모리 등록. 원본 파일 없는 소유 release40frame·C++/SVG/한글/음성/입력/종료·네이티브와 웹뷰 서버 byte/range 검증.",
+      "implemented": "독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0. ·3361–3400: Windows 기본 native / web 별도 경로·Win32/D3D11+공용V8/BP/AOT C++·Skia UI/한글/SVG·네이티브 PCM·OS키/마우스·정상종료·원자저장·미리 준비한 기본 셰이더. 실제 소유 숨김창의 픽셀/텍스처/입력/종료·공용SDK 엄격 경고 검사·무음 Windows 출력 통과. 에디터 UI WebView는 유지. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3404: 네이티브 C++ 크기·모드 변경 후 공용 스프라이트 타일 메시 갱신·변경 없는 메시 재사용·8사례 360픽셀 검증. ·3406: 공급자 Node 서명 보존·app-local Microsoft VC·첫 worker PE 리소스·COFF 복원·게임/worker Authenticode 서명 연결·무서명 release 허용(3408 정정)·개발용 명시·파일 차단 오류·소스별 시간/최대2컴파일 ·3408: development/release 코드 서명 선택, 무인증서 최적화 release EXE 생성·실제40프레임/공용 C++/입력/HUD/소리/정상종료·clean env 검증 ·3412: 공용 UI 무손실 Zstd/ACK XOR·위젯 leaf/descriptor 재사용·phase scheduler·Windows game.hbdata 콘텐츠 묶음/지연 읽기/한글 글꼴 메모리 등록. 원본 파일 없는 소유 release40frame·C++/SVG/한글/음성/입력/종료·네이티브와 웹뷰 서버 byte/range 검증. ·3414: 픽셀 동일 UI 전송 생략·작은 변경 사각형 전송·readonly C++ UI/입력 조회. 35codec 사례·SDK 입력2000회/복원·실제동적한글HUD40frame 검증.",
       "remaining": [
         "네이티브 목록/트리·월드 추적 UI·키오스크·스트리밍 오디오·영상·화면 동기화",
         "네이티브 게임패드·포인터 잠금·고급 위젯/DCC/대규모 게임 호환성과 성능 검증",
@@ -3902,7 +3902,8 @@
         "docs/research/ENGINE_WORK_3406.json",
         "docs/research/ENGINE_WORK_3408.json",
         "docs/research/ENGINE_WORK_3410.json",
-        "docs/research/ENGINE_WORK_3412.json"
+        "docs/research/ENGINE_WORK_3412.json",
+        "docs/research/ENGINE_WORK_3414.json"
       ]
     },
     {
@@ -4393,10 +4394,10 @@
     }
   ],
   "latestBatch": {
-    "first": 3412,
-    "last": 3412,
-    "receipt": "docs/research/ENGINE_WORK_3412.json",
-    "scope": "공용 UI/상태 비용·phase scheduler·Windows 원본 콘텐츠 바이너리 묶음. 실제 격리 DirectX/AOT/UI/음성/입력/종료 및 서버 읽기 검증. 전체 게임 성능 별도."
+    "first": 3414,
+    "last": 3414,
+    "receipt": "docs/research/ENGINE_WORK_3414.json",
+    "scope": "공용 UI 변경 사각형/동일 픽셀 전송 생략·C++ 입력 복사와 UI read-only 비용 제거·실제 동적 한글 HUD 실행. 전체 게임 FPS 별도."
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_3413.json",

@@ -25,7 +25,9 @@ int main(int argc,char** argv){
             bool failed=false;std::string message;
             try{
                 const auto& frame=row.at("frame");
-                if(frame.value("encoding",std::string())=="zstd-rgba8-premultiplied-xor")
+                if(frame.is_null()){}
+                else if(frame.value("encoding",std::string())=="zstd-rgba8-premultiplied-rect"){const auto& r=frame.at("rect");const auto before=pixels;try{NativeWidgetWindow::decodeRect(frame.at("pixels"),frame.at("width"),frame.at("height"),r.at(0),r.at(1),r.at(2),r.at(3),pixels,scratch);}catch(...){if(before!=pixels)throw std::runtime_error("rectangle failure mutated pixels");throw;}}
+                else if(frame.value("encoding",std::string())=="zstd-rgba8-premultiplied-xor")
                     NativeWidgetWindow::decodeDelta(frame.at("pixels"),frame.at("width"),frame.at("height"),pixels,scratch);
                 else NativeWidgetWindow::decodePixels(frame.at("pixels"),frame.at("width"),frame.at("height"),pixels);
                 if(row.contains("capacityLimit")&&pixels.capacity()>row.at("capacityLimit").get<std::size_t>())throw std::runtime_error("retained pixel buffer too large");

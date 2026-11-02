@@ -37,6 +37,14 @@ public:
     static void decodeDelta(const std::string& encoded,unsigned width,unsigned height,std::vector<BYTE>& pixels,std::vector<BYTE>& scratch){
         if(!width||!height||width>7680||height>4320||pixels.size()!=std::size_t(width)*height*4)throw std::runtime_error("UI delta dimensions invalid");decodePixels(encoded,width,height,scratch);for(std::size_t i=0;i<pixels.size();i++)pixels[i]^=scratch[i];
     }
+    static void decodeRect(const std::string& encoded,unsigned width,unsigned height,unsigned x,unsigned y,unsigned w,unsigned h,std::vector<BYTE>& pixels,std::vector<BYTE>& scratch){
+        if(!width||!height||width>7680||height>4320||pixels.size()!=std::size_t(width)*height*4||!w||!h||x>=width||y>=height||w>width-x||h>height-y)throw std::runtime_error("UI rectangle dimensions invalid");
+        decodePixels(encoded,w,h,scratch);for(unsigned row=0;row<h;row++)std::memcpy(pixels.data()+(std::size_t(y+row)*width+x)*4,scratch.data()+std::size_t(row)*w*4,std::size_t(w)*4);
+    }
+    void updateRect(HWND owner,const std::string& encoded,unsigned nextWidth,unsigned nextHeight,std::uint64_t sequence,std::uint64_t baseSequence,unsigned x,unsigned y,unsigned w,unsigned h){
+        const auto start=std::chrono::steady_clock::now();if(!sequence||!baseSequence||sequence!=baseSequence+1||pixelSequence!=baseSequence||width!=nextWidth||height!=nextHeight)throw std::runtime_error("UI rectangle base mismatch");
+        decodeRect(encoded,nextWidth,nextHeight,x,y,w,h,pixels,scratch);pixelSequence=sequence;const auto decoded=std::chrono::steady_clock::now();present(owner);decodeMS=std::chrono::duration<double,std::milli>(decoded-start).count();presentMS=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-decoded).count();
+    }
     void updatePixels(HWND owner,const std::string& encoded,unsigned nextWidth,unsigned nextHeight,std::uint64_t sequence=0,std::uint64_t baseSequence=0,bool delta=false){const auto start=std::chrono::steady_clock::now();if(delta){if(!sequence||!baseSequence||sequence!=baseSequence+1||pixelSequence!=baseSequence||width!=nextWidth||height!=nextHeight)throw std::runtime_error("UI delta base mismatch");decodeDelta(encoded,nextWidth,nextHeight,pixels,scratch);}else{if(width!=nextWidth||height!=nextHeight)std::vector<BYTE>().swap(scratch);decodePixels(encoded,nextWidth,nextHeight,pixels);}pixelSequence=sequence;width=nextWidth;height=nextHeight;const auto decoded=std::chrono::steady_clock::now();present(owner);decodeMS=std::chrono::duration<double,std::milli>(decoded-start).count();presentMS=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-decoded).count();}
     void update(HWND owner,const std::string& encoded){
         pixelSequence=0;using Microsoft::WRL::ComPtr;auto png=base64(encoded);ComPtr<IWICImagingFactory> factory;ComPtr<IWICStream> stream;ComPtr<IWICBitmapDecoder> decoder;ComPtr<IWICBitmapFrameDecode> frame;ComPtr<IWICFormatConverter> converter;

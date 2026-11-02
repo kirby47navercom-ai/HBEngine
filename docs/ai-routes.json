@@ -5288,7 +5288,9 @@
       "id": "native-ui-decode",
       "keywords": [
         "decodeDelta",
-        "updatePixels"
+        "updatePixels",
+        "decodeRect",
+        "updateRect"
       ],
       "paths": [
         "native/desktop/NativeWidgetWindow.hpp"
@@ -5322,6 +5324,18 @@
       ],
       "paths": [
         "native/include/HBEngine/Game.hpp",
+        "native/include/HBEngine/Bridge.hpp"
+      ]
+    },
+    {
+      "id": "native-read-only-sdk",
+      "keywords": [
+        "bridgeReadWidget",
+        "Input::GetAxis",
+        "Input::GetMousePosition",
+        "Input::DeprojectMousePositionToWorld"
+      ],
+      "paths": [
         "native/include/HBEngine/Bridge.hpp"
       ]
     }

@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "date": "2026-11-02",
+  "kind": "native-ui-region-and-read-only-sdk-cost",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3412.json",
+  "implementationRevision": "commit-containing-this-receipt",
+  "changedSourceHashes": {
+    "tools/native-ui-frame.mjs": "5dfe015d364d29e3f66e7af714daa3dfa9b04a0bb960953f5612e4fee3049251",
+    "tools/native-widget-layer.mjs": "af748c9dd1e6e7ddaabd6c46281db6f34330402959f194e9a4eac0fe0dd763aa",
+    "native/desktop/NativeWidgetWindow.hpp": "10f0dcbd186266a583af7b14c097ef06db2d85371e337f91b5ad602361e90973",
+    "native/desktop/HBNativePlayer.cpp": "fe089963cfcce1bfb58245b01a36bd0026e190460f78a4a5a30f9ffb4e587360",
+    "native/include/HBEngine/Bridge.hpp": "8a1a2df640cc05fd2f7b938d2adddd68188fdd0893fbbc600d92d94ccc692d6a",
+    "tools/check-native-ui-frame-codec.mjs": "b6cc8d3edfc1e0180b2bc3114d40470f47a92dccce49d8b4e1be5cc0da36c2a4",
+    "tools/native-ui-frame-fixture.cpp": "f65461d8fc0cd32d212b3a8e04b35f69e64ad28fcf74a12aeef6dcdadf731007",
+    "tools/check-native-sdk-read-cost.mjs": "d84f99fa653502b08a05cdf3441689ff528ee23c69574beb46919a06c4ab6597",
+    "tools/check-native-game.mjs": "5a84696fafcab72aa04fee0a6d9e74fa6734a7a1fd6c0a4b0b2739484ff6a86d",
+    "tools/check-native-ui-transport-cost.mjs": "0bbb99c6907b3f4d711ebfe9cb33336ea681948d8ac6b53dc6ec247751e39ba5",
+    "docs/ai-routes.json": "c2f5ac968366ef31dc9a500778d89594322ae05c77c4e08b25234e0610a99845"
+  },
+  "targetIds": [
+    "BLD-01"
+  ],
+  "implementation": [
+    "ACK된 프레임과 정확한 픽셀 비교·국소 변경은 RGBA 사각형만 무손실 전송·넓은 변경 full/XOR 유지",
+    "픽셀이 동일하면 UI 전송 생략, 레이아웃/입력 판정은 계속 갱신",
+    "C++ 사각형의 범위/시퀀스/크기 검사·투명 지우기와 premultiplied RGBA→BGRA 보존",
+    "C++ 입력 조회에서 keys/pointer JSON 복사 제거",
+    "C++ UI 조회는 const 참조로 읽어 불필요한 전체 객체 dirty/복원 제거·명시적 가변 접근의 복원은 유지"
+  ],
+  "checks": [
+    {
+      "report": "native/build/ui-frame-codec-mb4fOD/acceptance.json",
+      "sha256": "3995588d3b000ffca5285ab5b3bc198016f6e41270eaafea6911670b516b7db6",
+      "passed": true
+    },
+    {
+      "report": "native/build/sdk-read-cost-FkXQqu/acceptance.json",
+      "sha256": "12d22dc8cf8801beb8bf13f689c11c5c6789042934b69d0c77310c2de13dbc1d",
+      "passed": true
+    },
+    {
+      "report": "native/build/ui-sdk-flow-YEsJct/acceptance.json",
+      "sha256": "900db9a5db1d45d45775a4eaff6b9c15e5d1cf30e65249afcef77905393fd01b",
+      "passed": true
+    },
+    {
+      "report": "native/build/native-game-TAu4Sm/acceptance.json",
+      "sha256": "6fe4074097d250c66a795e635b27b16fa1da23fc20b22bc458f307445a7e4e2f",
+      "passed": true
+    },
+    {
+      "report": "native/build/ui-transport-cost-BjuGU0/acceptance.json",
+      "sha256": "db0254333f12d8275610f5f536d53223d58a78a8f1bb3e9803f0b2c03194a12f",
+      "passed": true
+    }
+  ],
+  "performance": {
+    "ui": {
+      "scope": "720p 동일 HUD CPU 그리기/인코딩, 즉시 ACK·실제 OS 전송/게임 FPS 제외",
+      "samples": 50,
+      "baselineMS": {
+        "p50": 3.9043,
+        "p95": 7.5092,
+        "p99": 7.5864
+      },
+      "candidateMS": {
+        "p50": 3.2652,
+        "p95": 4.5279,
+        "p99": 4.8748
+      },
+      "retainedScratchBytes": {
+        "baseline": 3686400,
+        "candidate": 704
+      }
+    },
+    "sdkInput": {
+      "scope": "C++ worker 내부, 256키 snapshot, 공개 getter 묶음2000회·게임 FPS 제외",
+      "samples": 6,
+      "baselineMedianMS": 35.4179,
+      "candidateMedianMS": 5.6355
+    },
+    "nativeDynamicHUD": {
+      "scope": "실제 격리 release40프레임에서 C++가 한글 텍스트를 매 프레임 갱신",
+      "frames": 40,
+      "lastPixelBytes": 1872,
+      "fullPixelBytes": 921600,
+      "lastUIDrawMS": 0.9857,
+      "nativeDecodeMS": 0.0073,
+      "nativePresentMS": 0.1443
+    }
+  },
+  "nativeBinaryChanged": true,
+  "nativePlayerSha256": "20a2897bdc30e4f28e18cc98d30e8ff8786335598adf4c9973b2e214ac010ee4",
+  "boundaries": [
+    "프레임 제한/화질/표시 기능/원본 게임 수정 없음",
+    "게임 채팅에 엔진 작업 위임·메시지 없음·새 예약/목표/에이전트 없음",
+    "공유 WIP spans/zero-alpha/frame-RPC/DPI는 설치/커밋에 미채택·작업 트리 보존",
+    "검사 실패는 새 nullable frame 계약/dirty 추적 카운터를 올바르게 대조하도록 검사만 교정·통과 후에만 채택",
+    "전체 엔진 완료·실제 사용자 게임의 전체 FPS 보장 아님"
+  ],
+  "installation": {
+    "pending": true
+  },
+  "canonicalGitSourceHashes": {
+    "tools/native-ui-frame.mjs": "16e0887dd2e0907973206a2dc6a3ca87c49a95b3d19b2a5ade35cc83cf65fa16",
+    "tools/native-widget-layer.mjs": "b759779c9590c077bdea697b8adc749cdb02708e4d07f565bfdefdda668164b3",
+    "native/desktop/NativeWidgetWindow.hpp": "cce8b509fc1abcfd21c2dad5ac285de4d04d9fe1a3ebf95cf17279007e529804",
+    "native/desktop/HBNativePlayer.cpp": "6823dbcd197f5b18d27b1fb7673239ccedbf4874920eda2ad07b6589d8cddf17",
+    "native/include/HBEngine/Bridge.hpp": "9bf69655f6d5249c335f089e3aed2498b0e87c795eb0c709e0a9b24909078eeb"
+  },
+  "lineEndings": "changedSourceHashes are the exact tested and installed source bytes; Git canonical LF hashes are recorded separately."
+}

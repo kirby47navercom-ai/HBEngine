@@ -1,3 +1,6 @@
+## 엔진 공통 비용 후속 · WORK3414 / 2026-11-02
+사용자는 리소스 묶음만이 아닌 누적 엔진 성능/메모리/동기화 구현을 계속 요구해요. 이번에는 UI 변경 사각형·동일 픽셀 전송 생략·readonly C++ 입력/UI 조회를 함께 구현. codec35·SDK 값/복원·실제 매 프레임 한글 HUD40frame 통과. UI720p CPU p95 7.5092→4.5279ms, SDK getter2000회35.4179→5.6355ms(각 구간 수치·전체FPS 아님). 설치 전환 뒤 USER_INSTALL3415에 기록할 예정. 게임 담당에게 작업 위임/메시지 없음·예약/goal/agent 없음·금지3파일/원본/사용자창 보호. 공유 미검증 WIP는 계속 보존하고 검증된 후보만 index/설치.
+
 ## 엔진 직접 소유 · WORK3412 / 2026-11-02
 최신 사용자 지시에 따라 게임 채팅에 보낸 엔진 인계·검토·추가 검사 요청 전부 취소. 엔진 수정·자체 검증·설치는 이 채팅에서 직접 소유. 설치8a 기반 격리 후보로 검증하고 설치 뒤 전체 staging을 제거했어요. 변경 소스는 native/build/engine-core-8BqsXn/sources에 보존했어요. UI720p CPU p50 43.6876→4.0705ms(즉시 ACK, 전체FPS 아님). Windows native/webview 콘텐츠를 game.hbdata에 묶고 직접/범위 읽기, 기존Content 호환. 생성 release40frame에서 packed SVG/한글font/음성/C++/입력/종료 통과. WORK3412·GAME_RESOURCE_ARCHIVE.md. 공유 WIP의 spans/zero-alpha/frame-RPC/DPI는 미채택·작업트리 그대로 보존. 금지3파일/게임원본/사용자UI 건드리지 않음. 새 예약/goal/agent 없음. USER_INSTALL3413/52715dc67932f379 전환 완료·31owner/PE SHA 확인·설치 Node UI/묶음/HTTP/glTF 통과·Versions1. 전체 게임 FPS는 별도예요.
 
