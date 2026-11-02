@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-11-02",
-  "basisRevision": "4a94d18fc7842ef566f470f36941a7be1f731501",
+  "basisRevision": "38e921482300777c461c5ed1f48218e6d1782bc9",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -4400,13 +4400,13 @@
     "scope": "공용 UI 변경 사각형/동일 픽셀 전송 생략·C++ 입력 복사와 UI read-only 비용 제거·실제 동적 한글 HUD 실행. 전체 게임 FPS 별도."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_3413.json",
-    "sourceCommit": "0a5d665fcbb9fa2a2dc405b5d92fc91e22d20bba",
-    "bundleHash": "52715dc67932f379203eaf7f9b8d84679465f9cb2ee362838c80ce730eef5367",
+    "receipt": "docs/research/USER_INSTALL_3415.json",
+    "sourceCommit": "38e921482300777c461c5ed1f48218e6d1782bc9",
+    "bundleHash": "b7f3064130489c67a14f85167a943c991ee4826bf9072b46ac3206215e4dcb36",
     "verified": true,
     "installationVerified": true,
     "runtimeVerified": true,
     "componentRuntimeVerified": true,
-    "scope": "exact 31 source owner and native player SHA match the isolated release40frame fixture; installed official Node executes shared UI/native package/archive HTTP/glTF reads. Whole-game FPS and webview GUI not certified."
+    "scope": "11개 소유 소스와 PE 해시가 실제 격리 동적 한글 HUD40frame 후보와 일치. 설치 Node의 변경 사각형/동일 픽셀 전송 생략/공용 UI API/소유자 조회 통과. 전체 사용자 게임 FPS 보장은 별도."
   }
 }

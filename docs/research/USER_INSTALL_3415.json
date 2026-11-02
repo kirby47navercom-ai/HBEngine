@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "date": "2026-11-02",
+  "sourceCommit": "38e921482300777c461c5ed1f48218e6d1782bc9",
+  "bundleHash": "b7f3064130489c67a14f85167a943c991ee4826bf9072b46ac3206215e4dcb36",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b7f3064130489c67",
+  "files": 5320,
+  "versions": [
+    "b7f3064130489c67"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "componentRuntimeVerified": true,
+  "runtimeScope": "11개 소유 소스와 PE 해시가 실제 격리 동적 한글 HUD40frame 후보와 일치. 설치 Node의 변경 사각형/동일 픽셀 전송 생략/공용 UI API/소유자 조회 통과. 전체 사용자 게임 FPS 보장은 별도.",
+  "ownerChecks": [
+    {
+      "path": "tools/native-ui-frame.mjs",
+      "sha256": "5dfe015d364d29e3f66e7af714daa3dfa9b04a0bb960953f5612e4fee3049251"
+    },
+    {
+      "path": "tools/native-widget-layer.mjs",
+      "sha256": "af748c9dd1e6e7ddaabd6c46281db6f34330402959f194e9a4eac0fe0dd763aa"
+    },
+    {
+      "path": "native/desktop/NativeWidgetWindow.hpp",
+      "sha256": "10f0dcbd186266a583af7b14c097ef06db2d85371e337f91b5ad602361e90973"
+    },
+    {
+      "path": "native/desktop/HBNativePlayer.cpp",
+      "sha256": "fe089963cfcce1bfb58245b01a36bd0026e190460f78a4a5a30f9ffb4e587360"
+    },
+    {
+      "path": "native/include/HBEngine/Bridge.hpp",
+      "sha256": "8a1a2df640cc05fd2f7b938d2adddd68188fdd0893fbbc600d92d94ccc692d6a"
+    },
+    {
+      "path": "tools/check-native-ui-frame-codec.mjs",
+      "sha256": "b6cc8d3edfc1e0180b2bc3114d40470f47a92dccce49d8b4e1be5cc0da36c2a4"
+    },
+    {
+      "path": "tools/native-ui-frame-fixture.cpp",
+      "sha256": "f65461d8fc0cd32d212b3a8e04b35f69e64ad28fcf74a12aeef6dcdadf731007"
+    },
+    {
+      "path": "tools/check-native-sdk-read-cost.mjs",
+      "sha256": "d84f99fa653502b08a05cdf3441689ff528ee23c69574beb46919a06c4ab6597"
+    },
+    {
+      "path": "tools/check-native-game.mjs",
+      "sha256": "5a84696fafcab72aa04fee0a6d9e74fa6734a7a1fd6c0a4b0b2739484ff6a86d"
+    },
+    {
+      "path": "tools/check-native-ui-transport-cost.mjs",
+      "sha256": "0bbb99c6907b3f4d711ebfe9cb33336ea681948d8ac6b53dc6ec247751e39ba5"
+    },
+    {
+      "path": "docs/ai-routes.json",
+      "sha256": "c2f5ac968366ef31dc9a500778d89594322ae05c77c4e08b25234e0610a99845"
+    }
+  ],
+  "nativePlayerSha256": "20a2897bdc30e4f28e18cc98d30e8ff8786335598adf4c9973b2e214ac010ee4",
+  "nativeBinaryChanged": true,
+  "evidence": "docs/research/ENGINE_WORK_3414.json",
+  "installedChecks": "native\\build\\ui-regions-nxQQVx\\installed-verification.json",
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5319,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\52715dc67932f379",
+        "bytes": 264674804,
+        "manifestSHA256": "e96f4f82fb5572cbcd99200e8f520989cf200cc50e72166ef051b93bd8d52090"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-02T04:05:00.1614539Z",
+    "bytes": 264674804,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "b7f3064130489c67"
+    ]
+  },
+  "stagingRemoved": true,
+  "retainedSources": "native\\build\\ui-regions-nxQQVx\\sources",
+  "testArtifacts": {
+    "failures": [],
+    "freeAfter": 432249823232,
+    "freeBefore": 432158126080,
+    "deleted": 1,
+    "date": "2026-11-02T04:08:21.0715269Z",
+    "files": 1,
+    "bytes": 91694408,
+    "skipped": [],
+    "receipt": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\cache-prune-1793592500091-80b8d7a5-da8e-4cab-b494-a3b0abc27d5d"
+  },
+  "userGameOriginalsChanged": false,
+  "userProfilesChanged": false,
+  "scheduledWorkCreated": false
+}
