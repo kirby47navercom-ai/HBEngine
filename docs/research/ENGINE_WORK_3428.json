@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "kind": "native-ui-actual-command-replay-and-paint-state-reuse",
+  "implementationRevision": "commit-containing-this-receipt",
+  "baseInstallation": "docs/research/USER_INSTALL_3427.json",
+  "targetIds": [
+    "UI-01",
+    "PER-01"
+  ],
+  "changedSourceHashes": {
+    "tools/native-widget-layer.mjs": "67648070b49b21f63629bec15939cfcbcb1ebcd2851317d314ddd770f9b625c2",
+    "tools/native-widget-paint.mjs": "cff8b154e595809b8ca7c595a52c2b67b120b8865b85f7ebf0cb6caac8a00f6d",
+    "tools/native-widget-raster-thread.mjs": "daac9e2c42347a28ef2ae8a78f0b1c2ada8402c341af79e13f2d4663ff966873",
+    "tools/check-native-ui-replay.mjs": "afad5e9eb134a203b92abe7374d069da74f138d1306136fd95f426118da03c5a",
+    "tools/check-native-widget-paint-reuse.mjs": "242cefb79f0353755e0ac66d9b961143b566179b9fbaff414cb2a36d9e1094a5",
+    "docs/ai-routes.json": "75771b6933f3519f5215d703ac5aaa4aad02ac1440118342f03251491c27d48b",
+    "docs/NATIVE_RUNTIME_COSTS.md": "86169c07824554be8412479f4a47c58ed7f158ee4fd219d2847d958c7f73fe1b",
+    "docs/research/ENGINE_STATUS.json": "e0c0b72aad7aef2dba0709de5c8b2cfb74bb5b49e1aa626fe75f67f50dc062fb",
+    "CODEX_HANDOFF.md": "adc7609f2a5192199233c21b102de3803e56089a698d6f4a822c85aa891ea662"
+  },
+  "checks": [
+    {
+      "report": "native/build/widget-text-cache-XudTdW/acceptance.json",
+      "sha256": "7734ca5fe3a2ece635282845b779b8c6474ed16d23055d42bc1d0821e247cc8a",
+      "passed": true
+    },
+    {
+      "report": "native/build/widget-runtime-flow-Z4LyMn/acceptance.json",
+      "sha256": "581c6cbc45d4ca007ab33d3e39350ada706ea4cf95665b019ca0b79dc73dd8b9",
+      "passed": true
+    },
+    {
+      "report": "native/build/widget-paint-reuse-3vn1Dg/acceptance.json",
+      "sha256": "6f2c8cb27a542cb100f3b9ceea4d361fe308e8d69f0aa5ef41eacb4962d90936",
+      "passed": true
+    },
+    {
+      "report": "native/build/widget-raster-worker-LVfm5e/acceptance.json",
+      "sha256": "a9250d28a2331d07c081c23b04a7f9c0766ba32c6d1d18aecf10f7f412b93140",
+      "passed": true
+    },
+    {
+      "report": "native/build/ui-replay-aRswCl/acceptance.json",
+      "sha256": "6ad92e8e06a6eff1a6861b0a12f417819d275255986b00b2c1e46620d539df37",
+      "passed": true
+    }
+  ],
+  "retiredExperiments": [
+    {
+      "name": "regional-readback-and-retained-paint",
+      "reason": "Exact pixels passed, identical real UI replay regressed from 5.48ms to 6.86ms and 5.54ms to 7.50ms; excluded from shipping",
+      "reports": [
+        "native/build/ui-replay-lk9rr3/acceptance.json",
+        "native/build/ui-replay-fuLDvu/acceptance.json"
+      ]
+    }
+  ],
+  "excludedExperiments": [
+    "regional Skia readback/paint (slower exact replay)",
+    "iterative traversal alone (no net gain)",
+    "scalar reconciliation early-out (inconclusive p95)",
+    "JS-composed text transforms (pixel mismatch; Skia transform sequence retained)"
+  ],
+  "rendererBinaryUnchanged": {
+    "sha256": "d9c8e3dc37e97304b415e9a79157e4316f2bc711f0ae5a50f258bbf726549e9e",
+    "receipt": "docs/research/USER_INSTALL_3427.json"
+  },
+  "runtimeComparisonPending": false,
+  "wholeGameFPSVerified": false,
+  "userOriginalsTouched": false,
+  "userWindowsTouched": false,
+  "automationCreated": false,
+  "actualSavedGame": {
+    "scope": "hidden silent owned saved court, 1280x720, requested 120; all frameDone intervals, QA muted during interval. External desktop load not controlled; observation only, not target acceptance",
+    "originalGameModuleUnchanged": true,
+    "sourceSaveSHA256": "39213948208ea9daba25904bc092f52f80df9948c16f830c733eef39d1c70b21",
+    "observations": [
+      {
+        "report": "native\\build\\frame-cost-ijcsFT\\baseline-final-paint\\acceptance.json",
+        "sha256": "31fa3086364acd46f93488d6d8c4bc84fb8c4b9931237abe7d54581058e8b461",
+        "fps": 78.6226452797287,
+        "p95MS": 16.400390625,
+        "p99MS": 22.0322265625,
+        "seconds": 20.013
+      },
+      {
+        "report": "native\\build\\frame-cost-ijcsFT\\candidate-final-paint\\acceptance.json",
+        "sha256": "dfcd83bd978426a9d7ce8c9e7221be5dbe3d1df86844aa87512d61aa21ee75fd",
+        "fps": 82.95320062566493,
+        "p95MS": 16.117431640625,
+        "p99MS": 20.6064453125,
+        "seconds": 20.009
+      }
+    ]
+  },
+  "remaining": [
+    "실제 게임 지속 120FPS/보스전 스파이크/다른 물리 PC/장시간 검증은 이 변경으로 합격하지 않음"
+  ]
+}

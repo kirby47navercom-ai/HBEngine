@@ -1,11 +1,15 @@
 import {widgetImageBox,widgetTextLines,widgetLineHeight} from '../prototype/widget-visual-contract.js';
 import {cachedWidgetImage,clearWidgetImageCache} from './native-widget-image-cache.mjs';
 
-const textLayouts=new WeakMap();
+const textLayouts=new WeakMap(),paintTypography=new WeakMap();
+// Native painting owns these settings for one draw; standalone calls still read
+// every setting so external typography edits invalidate their layout normally.
+export function beginWidgetPaint(ctx){const key=JSON.stringify([ctx.fontKerning,ctx.fontStretch,ctx.fontVariantCaps,ctx.letterSpacing,ctx.wordSpacing,ctx.direction,ctx.textRendering]);paintTypography.set(ctx,{key,style:{}});return ()=>paintTypography.delete(ctx);}
+export function invalidateWidgetTextState(ctx){const paint=paintTypography.get(ctx);if(paint)paint.style={};}
 export function clearWidgetPaintCaches(ctx){textLayouts.delete(ctx);clearWidgetImageCache(ctx);}
-function textLayout(ctx,text,width,wrap,size){
+function textLayout(ctx,text,width,wrap,size,fontValue){
  let cache=textLayouts.get(ctx);if(!cache){cache={metrics:new Map(),lines:new Map(),characters:0};textLayouts.set(ctx,cache);}
- const font=JSON.stringify([ctx.font,ctx.fontKerning,ctx.fontStretch,ctx.fontVariantCaps,ctx.letterSpacing,ctx.wordSpacing,ctx.direction,ctx.textRendering]);
+ const font=paintTypography.has(ctx)?JSON.stringify([fontValue,paintTypography.get(ctx).key]):JSON.stringify([ctx.font,ctx.fontKerning,ctx.fontStretch,ctx.fontVariantCaps,ctx.letterSpacing,ctx.wordSpacing,ctx.direction,ctx.textRendering]);
  let metrics=cache.metrics.get(font);if(!metrics){metrics=ctx.measureText('Hg한');if(cache.metrics.size>=64)cache.metrics.delete(cache.metrics.keys().next().value);cache.metrics.set(font,metrics);}
  const key=JSON.stringify([font,text,width,wrap]);let lines=cache.lines.get(key);
  if(!lines){lines=widgetTextLines(text,width,wrap,value=>ctx.measureText(value).width);const characters=key.length+lines.reduce((n,line)=>n+line.length,0);if(characters<=32768){while(cache.lines.size>=128||cache.characters+characters>32768){const first=cache.lines.keys().next().value,old=cache.lines.get(first);cache.characters-=first.length+old.reduce((n,line)=>n+line.length,0);cache.lines.delete(first);}cache.lines.set(key,lines);cache.characters+=characters;}}
@@ -24,9 +28,10 @@ export function paintWidgetImageDirect(ctx,image,width,height,properties,scale){
  ctx.restore();
 }
 export function paintWidgetText(ctx,type,p,width,height,scale,font){
+ if(ctx.globalAlpha===0||!(p.text||(type==='TextInput'?p.placeholder:'')))return;
  const size=p.fontSize*scale,border=p.borderWidth*scale,padding=type==='TextInput'?8*scale:0,check=type==='CheckBox'?28*scale:0,innerWidth=Math.max(0,width-border*2-padding*2-check);
- ctx.font=size+'px '+font;ctx.fillStyle=p.color;ctx.textBaseline='alphabetic';ctx.textAlign=type==='Button'||type==='TouchButton'?'center':p.align;
- const {lines,ascent,descent}=textLayout(ctx,p.text||(type==='TextInput'?p.placeholder:''),innerWidth,p.wrap&&type!=='TextInput',size),lineHeight=size*widgetLineHeight;
+ const fontValue=size+'px '+font,align=type==='Button'||type==='TouchButton'?'center':p.align,style=paintTypography.get(ctx)?.style;if(style){if(style.font!==fontValue){ctx.font=fontValue;style.font=fontValue;}if(style.color!==p.color){ctx.fillStyle=p.color;style.color=p.color;}if(style.baseline!=='alphabetic'){ctx.textBaseline='alphabetic';style.baseline='alphabetic';}if(style.align!==align){ctx.textAlign=align;style.align=align;}}else{if(ctx.font!==fontValue)ctx.font=fontValue;ctx.fillStyle=p.color;ctx.textBaseline='alphabetic';ctx.textAlign=align;}
+ const {lines,ascent,descent}=textLayout(ctx,p.text||(type==='TextInput'?p.placeholder:''),innerWidth,p.wrap&&type!=='TextInput',size,fontValue),lineHeight=size*widgetLineHeight;
  const centered=['Button','TouchButton','CheckBox','TextInput'].includes(type),top=centered?(height-lines.length*lineHeight)/2:border,tx=ctx.textAlign==='center'?width/2:ctx.textAlign==='right'?width-border-padding:border+padding+check;
  ctx.save();ctx.beginPath();ctx.rect(border+padding,border,Math.max(0,width-2*(border+padding)),Math.max(0,height-2*border));ctx.clip();for(let i=0;i<lines.length;i++)ctx.fillText(lines[i],tx,top+i*lineHeight+(lineHeight-ascent-descent)/2+ascent);ctx.restore();
 }

@@ -765,7 +765,13 @@
         "prototype/list-selection.js",
         "prototype/list-transfer.js",
         "prototype/list-drag.js",
-        "docs/LIST_CODE_API.md"
+        "docs/LIST_CODE_API.md",
+        "tools/native-widget-layer.mjs",
+        "tools/native-widget-paint.mjs",
+        "tools/native-widget-raster-thread.mjs",
+        "tools/check-native-ui-replay.mjs",
+        "tools/check-native-widget-paint-reuse.mjs",
+        "docs/NATIVE_RUNTIME_COSTS.md"
       ]
     },
     {
@@ -947,7 +953,13 @@
         "tools/check-native-resource-gc.mjs",
         "tools/native-model-instances.mjs",
         "prototype/deferred-texture-source.js",
-        "prototype/sprite-texture-source.js"
+        "prototype/sprite-texture-source.js",
+        "tools/native-widget-layer.mjs",
+        "tools/native-widget-paint.mjs",
+        "tools/native-widget-raster-thread.mjs",
+        "tools/check-native-ui-replay.mjs",
+        "tools/check-native-widget-paint-reuse.mjs",
+        "docs/NATIVE_RUNTIME_COSTS.md"
       ]
     },
     {
