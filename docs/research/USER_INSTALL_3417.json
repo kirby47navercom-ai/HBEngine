@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "date": "2026-11-02",
+  "sourceCommit": "34911f00fb895f6645103172ee577d97a5d208d2",
+  "bundleHash": "d6a13f4a7285424616a8cdaa9b7ad628e3dc06901ea3cb227cc1b6b6a6674312",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\d6a13f4a72854246",
+  "files": 5329,
+  "versions": [
+    "d6a13f4a72854246"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "componentRuntimeVerified": true,
+  "runtimeScope": "동일 native PE/17개 소유 소스 actual release40frame 근거와 설치 Node 공용 입력/기본 목록 그리기·조작 검증. 컨트롤러 실기기/전체FPS/수신PC AV는 별도.",
+  "ownerChecks": [
+    {
+      "path": "native/desktop/HBNativePlayer.cpp",
+      "sha256": "5531aaee6fefd368ed4976f761e5e979a01251b270d3aa5e9a85d5f1475b3d9e"
+    },
+    {
+      "path": "native/desktop/NativeGameInput.hpp",
+      "sha256": "6ca3651ed0a21f24a41e01f9130721f26e0ca640b198a14760a3e8a7f25d9ecf"
+    },
+    {
+      "path": "tools/native-game-runner.mjs",
+      "sha256": "f16bd78e027d513a00324ba761f09d7365f8e09bee763c009fb6ac23f9323b6f"
+    },
+    {
+      "path": "tools/native-input-queue.mjs",
+      "sha256": "77d367c47c05cbf68e630aad203fa5fd48f739537b012b16f19cb7f2732b953e"
+    },
+    {
+      "path": "prototype/runtime-input.js",
+      "sha256": "71795823b746ea0b6d4167de13dcd4f69dd9062541910d6bc97046098b53f40e"
+    },
+    {
+      "path": "tools/native-widget-layer.mjs",
+      "sha256": "696472915b3c7816c8599ee215d12f28728cbc87da65b46567cb8aac2f8b6236"
+    },
+    {
+      "path": "tools/native-widget-lists.mjs",
+      "sha256": "fb5d64c9a007baaa2f827618695f3c52948478d0fdb83485b189c45a5e82cce4"
+    },
+    {
+      "path": "tools/native-widget-assets.mjs",
+      "sha256": "2f1811df821de3322eea430a1e55b7436288c99cc1943a11d3e35dab02a5409f"
+    },
+    {
+      "path": "tools/build-native-game.mjs",
+      "sha256": "8e731628e9e0e4bac655a091325bd77faa709588023507565cd695a37b46df12"
+    },
+    {
+      "path": "docs/ai-routes.json",
+      "sha256": "0f850527d197540514874e23fc8c943c7ef0c9207516382095e36e86f14c020c"
+    },
+    {
+      "path": "tools/check-native-game.mjs",
+      "sha256": "5565555e350f5e83ac912ff4710772d280c5268abdc5705e89c5e27b2bd8e8c2"
+    },
+    {
+      "path": "tools/check-native-input-lists.mjs",
+      "sha256": "1644f8c46a2ab4c45d1a33915280f8ea3ba1fac38448f450ae1079922a94b9a6"
+    },
+    {
+      "path": "tools/native-input-fixture.cpp",
+      "sha256": "7829d20dcef2ab8f2c4de1760ce5072ad91e467929195f95773c951cee51b7ab"
+    },
+    {
+      "path": "native/desktop/WindowsGameIdentity.hpp",
+      "sha256": "f33b47e56cf2289a3507f6e20d73fb24fdbd246661f9c521927917c0f1110a3a"
+    },
+    {
+      "path": "tools/check-native-package-paths.mjs",
+      "sha256": "3306004e77ab92f24b8d2b6111f3db99ee4dd8d52f763f17cfa4f02fc52c03de"
+    },
+    {
+      "path": "tools/native-package-stamp-fixture.cpp",
+      "sha256": "0de45be9ec069520cebfa0a93fa233c289e85536b2ae70316b7e09d0778d4c1c"
+    },
+    {
+      "path": "tools/native-host.mjs",
+      "sha256": "873c718a58f2c4c53359fa840b45b71c1ac07cd2bb4def8502d2aa1874c3ca4c"
+    }
+  ],
+  "playerSHA": "c6f466a32524bbb331e7b6a6d58bba4bf4a95b904a46bfc8e4c5e6b3c515a990",
+  "installedNode": {
+    "passed": true,
+    "node": "v24.15.0",
+    "orderedInput": true,
+    "gamepadCommonKey": true,
+    "nativeListPaintAndOperation": true
+  },
+  "proof": "docs/research/ENGINE_WORK_3416.json",
+  "cleanup": {
+    "versions": {
+      "removed": [
+        {
+          "files": 5321,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b7f3064130489c67",
+          "bytes": 264698539,
+          "manifestSHA256": "8f27b8e57b53e0c475aac8392d9372a854c4c6ed7754412b6e7e0932361a0112"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-11-02T07:15:44.8623867Z",
+      "bytes": 264698539,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "d6a13f4a72854246"
+      ]
+    },
+    "sourceStagingRemoved": true,
+    "testArtifacts": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    }
+  },
+  "automationCreated": false
+}

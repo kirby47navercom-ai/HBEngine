@@ -1,3 +1,6 @@
+## WORK3416 해결·설치 근거
+긴 PE 경로의 선행 filesystem/EndUpdateResource와 worker spawn을 독립 반증했어요. 최종 기본/298자 PE·공용8·실제 release40frame/OS입력/C++목록·설치17owner/PE 해시 통과. DLL 원인 가설은 철회했고 실패한 경로와 fixture 수정은 성과로 세지 않아요. USER_INSTALL3417·ENGINE_WORK3416에 확정 근거를 연결했어요.
+
 # 3416 네이티브 패키징 긴 경로 재현
 
 깊게 둔 격리 검사에서 stamp-game helper 두 번60초 대기. 입력/목록 JS7개는 통과. XInput 지연 로딩으로도 같은 경로에서 재현돼 DLL 원인 가설은 철회. 대상 PE 절대 경로263문자. 다음 반증: 같은 owned PE의 BeginUpdateResource 일반경로/extended경로와 short경로를 직접 비교하고 실제 helper 오류를 무인으로 반환하도록 좁혀요. 전체 native 패키지 검사를 원인 불명 상태로 다시 반복하지 않아요. 실패는 구현 성과 아님.

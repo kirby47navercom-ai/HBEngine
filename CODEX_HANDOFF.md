@@ -1,5 +1,5 @@
 ## 엔진 입력·목록·경로 · WORK3416 / 2026-11-02
-입력/문자/포커스 발생 순서·마우스 이동 병합/다중 버튼 캡처·XInput4슬롯/공용키·기본 가상 목록/트리/C++ 이동·clip/변형 좌표·입력 scratch 수명·긴 경로 worker/PE 원자 기록을 묶었어요. 공용8/SDK실worker/90·298자 PE/실제 release40frame 통과. 전체FPS·컨트롤러 실기기·고급 행/포인터잠금은 별도. DEBUG_HANDOFF의 DLL 가설은 철회, 263자 실제파일 spawn ENOENT/확장경로 exit0과 긴PE API 원인을 반증했어요. 공유 WIP는3way 병합·검증 후보만 index/설치. 새 예약/agent/goal/게임채팅 위임/보호3파일 변경 없음. 설치 기록은 다음 영수증에 남겨요.
+입력/문자/포커스 발생 순서·마우스 이동 병합/다중 버튼 캡처·XInput4슬롯/공용키·기본 가상 목록/트리/C++ 이동·clip/변형 좌표·입력 scratch 수명·긴 경로 worker/PE 원자 기록을 묶었어요. 공용8/SDK실worker/90·298자 PE/실제 release40frame 통과. 전체FPS·컨트롤러 실기기·고급 행/포인터잠금은 별도. DEBUG_HANDOFF의 DLL 가설은 철회, 263자 실제파일 spawn ENOENT/확장경로 exit0과 긴PE API 원인을 반증했어요. 공유 WIP는3way 병합·검증 후보만 index/설치. 새 예약/agent/goal/게임채팅 위임/보호3파일 변경 없음. USER_INSTALL3417/d6a13f4a72854246 전환·17owner/PE 해시·설치 Node 입력/목록 통과·Versions1. 검사 staging 전체 제거·재현 소스/프로젝트/보고서/명세만 보존.
 
 ## 엔진 공통 비용 후속 · WORK3414 / 2026-11-02
 사용자는 리소스 묶음만이 아닌 누적 엔진 성능/메모리/동기화 구현을 계속 요구해요. 이번에는 UI 변경 사각형·동일 픽셀 전송 생략·readonly C++ 입력/UI 조회를 함께 구현. codec35·SDK 값/복원·실제 매 프레임 한글 HUD40frame 통과. UI720p CPU p95 7.5092→4.5279ms, SDK getter2000회35.4179→5.6355ms(각 구간 수치·전체FPS 아님). USER_INSTALL3415/b7f3064130489c67 전환·11owner/PE 해시 확인·설치 Node 사각형/생략/공용UI 통과. Versions1·전체 staging 제거·변경 sources만 보존. 게임 담당에게 작업 위임/메시지 없음·예약/goal/agent 없음·금지3파일/원본/사용자창 보호. 공유 미검증 WIP는 계속 보존하고 검증된 후보만 index/설치.

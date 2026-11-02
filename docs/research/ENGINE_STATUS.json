@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-11-02",
-  "basisRevision": "ce4f94e3f78ae6ac4f22e5a48f85b337a74e4dbe",
+  "basisRevision": "34911f00fb895f6645103172ee577d97a5d208d2",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -4402,13 +4402,11 @@
     "scope": "순서 입력·XInput 공용 키·기본 목록/트리와 C++ 조작·UI 입력 좌표/clip·긴 경로 실행과 PE 원자 기록. 실제40frame·전체FPS 별도."
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_3415.json",
-    "sourceCommit": "38e921482300777c461c5ed1f48218e6d1782bc9",
-    "bundleHash": "b7f3064130489c67a14f85167a943c991ee4826bf9072b46ac3206215e4dcb36",
+    "receipt": "docs/research/USER_INSTALL_3417.json",
+    "sourceCommit": "34911f00fb895f6645103172ee577d97a5d208d2",
+    "bundleHash": "d6a13f4a7285424616a8cdaa9b7ad628e3dc06901ea3cb227cc1b6b6a6674312",
     "verified": true,
     "installationVerified": true,
-    "runtimeVerified": true,
-    "componentRuntimeVerified": true,
-    "scope": "11개 소유 소스와 PE 해시가 실제 격리 동적 한글 HUD40frame 후보와 일치. 설치 Node의 변경 사각형/동일 픽셀 전송 생략/공용 UI API/소유자 조회 통과. 전체 사용자 게임 FPS 보장은 별도."
+    "runtimeVerified": true
   }
 }
