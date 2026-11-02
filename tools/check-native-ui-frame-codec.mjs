@@ -1,0 +1,27 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {execFile} from 'node:child_process';
+import {promisify} from 'node:util';
+import {createHash} from 'node:crypto';
+import {createCanvas} from '@napi-rs/canvas';
+import {pathToFileURL} from 'node:url';
+import {jsonInclude} from './prepare-native.mjs';
+import {activeInstalledVersions} from './install-editor.mjs';
+import {retainTestEvidence} from './test-artifacts.mjs';
+
+const root=path.resolve(import.meta.dirname,'..'),work=await fs.mkdtemp(path.join(root,'native/build/ui-frame-codec-'));retainTestEvidence(work);
+const active=await activeInstalledVersions(path.join(process.env.USERPROFILE,'HBEngine'));if(active.length){console.log(JSON.stringify({deferred:true,active}));process.exit(0);}
+const engine=path.resolve(process.argv[2]||root),codecPath=path.join(engine,'tools/native-ui-frame.mjs'),{encodeNativeUIFrame,acknowledgeNativeUIFrame,resetNativeUIFrame,nativeUIFrameMemory}=await import(pathToFileURL(codecPath));
+const rows=[],canvas=createCanvas(32,24),ctx=canvas.getContext('2d'),bgra=bytes=>{const out=Buffer.from(bytes);for(let i=0;i<out.length;i+=4)[out[i],out[i+2]]=[out[i+2],out[i]];return out.toString('hex');};
+for(let i=0;i<16;i++){
+ if(i===9){canvas.width=17;canvas.height=13;}ctx.fillStyle=i<5?'#13558880':i<9?'#edcc66':'#66cc1199';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.clearRect(i%9,3,3,3);ctx.fillStyle='#ee335577';ctx.fillRect(2,2,i+2,4);
+ const frame=await encodeNativeUIFrame(canvas);acknowledgeNativeUIFrame(canvas,frame);rows.push({name:'premultiplied frame '+i,frame,expected:bgra(canvas.data())});
+}
+// A missing/failed ACK must never become an XOR base. Retry after a reset is full.
+resetNativeUIFrame(canvas);const unacknowledged=await encodeNativeUIFrame(canvas),retry=await encodeNativeUIFrame(canvas);assert.equal(retry.encoding,'zstd-rgba8-premultiplied');assert.throws(()=>acknowledgeNativeUIFrame(canvas,unacknowledged),/acknowledgment mismatch/);acknowledgeNativeUIFrame(canvas,retry);resetNativeUIFrame(canvas);assert.deepEqual(nativeUIFrameMemory(canvas),{acknowledgedBytes:0,scratchBytes:0,pendingBytes:0});
+for(const [width,height]of[[512,384],[512,384],[8,8]]){canvas.width=width;canvas.height=height;canvas.getContext('2d').fillRect(0,0,width,height);const frame=await encodeNativeUIFrame(canvas);acknowledgeNativeUIFrame(canvas,frame);rows.push({name:'retained size '+width+'x'+height,frame,expected:bgra(canvas.data()),capacityLimit:width*height*8});}assert.equal(nativeUIFrameMemory(canvas).scratchBytes,0,'resize releases prior large XOR scratch');assert.equal(nativeUIFrameMemory(canvas).acknowledgedBytes,256);resetNativeUIFrame(canvas);
+const invalidData={width:2,height:2,data:()=>Buffer.alloc(1),encode:async()=>Buffer.from('png fallback')};assert.deepEqual(await encodeNativeUIFrame(invalidData),{png:Buffer.from('png fallback').toString('base64')});await assert.rejects(encodeNativeUIFrame({width:7681,height:1}),/dimensions invalid/);
+const valid=rows[0].frame;for(const [name,frame]of [['zero width',{...valid,width:0}],['over width',{...valid,width:7681}],['over height',{...valid,height:4321}],['invalid base64',{...valid,pixels:'!!!!'}],['bad padding',{...valid,pixels:'AB=='}],['truncated zstd',{...valid,pixels:Buffer.from([1,2,3]).toString('base64')}],['wrong decompressed dimensions',{...valid,width:1,height:1}],['delta size mismatch',{...valid,encoding:'zstd-rgba8-premultiplied-xor',width:3,height:3}]])rows.push({name,frame,reject:true});
+assert(rows.some(row=>row.frame.encoding==='zstd-rgba8-premultiplied-xor'),'sparse frames exercise XOR');assert.equal(rows[9].frame.encoding,'zstd-rgba8-premultiplied','resize sends full pixels');await fs.writeFile(path.join(work,'cases.json'),JSON.stringify(rows));
+const cpp='tools/native-ui-frame-fixture.cpp',header='native/desktop/NativeWidgetWindow.hpp';await fs.copyFile(path.join(root,cpp),path.join(work,'fixture.cpp'));await fs.copyFile(path.join(engine,header),path.join(work,'NativeWidgetWindow.hpp'));const compiler=process.env.CXX||'C:/msys64/ucrt64/bin/g++.exe',exec=promisify(execFile),executable=path.join(work,'fixture.exe'),env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH};await exec(compiler,['-std=c++17','-O2','-static','-I',path.relative(root,jsonInclude),path.relative(root,path.join(work,'fixture.cpp')),'-o',path.relative(root,executable),'-lzstd'],{cwd:root,windowsHide:true,env,timeout:60000});const {stdout}=await exec(executable,[path.relative(root,path.join(work,'cases.json'))],{cwd:root,windowsHide:true,env,timeout:20000}),result=JSON.parse(stdout);assert(result.passed);const sha=bytes=>createHash('sha256').update(bytes).digest('hex'),report={...result,nodeVersion:process.version,owners:Object.fromEntries(await Promise.all([cpp,header,'tools/native-ui-frame.mjs'].map(async file=>[file,sha(await fs.readFile(file===cpp?path.join(root,file):path.join(engine,file)))]))),ackRecovery:true,retainedMemoryShrink:true,pngFallback:true,nativeDecoderExecuted:true,sourcePixelEquality:true,windowsCreated:false,scope:'actual JavaScript encoder into actual C++ decodePixels/decodeDelta; no native window, game, shader or user profile'};await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify(report,null,2));canvas.width=canvas.height=1;console.log(JSON.stringify({work,...report}));

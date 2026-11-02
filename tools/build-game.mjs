@@ -1,6 +1,7 @@
 import {nativeModuleKey} from '../prototype/native-entry.js';
 import {stripEditorQueryTesters} from '../prototype/editor-query-cook.js';
 import {resolveEffectDefinition} from '../prototype/effect-scaling.js';
+import {writeGameResources} from './game-resource-archive.mjs';
 import {fileContent,isFileContent,writeBuildContent,buildChunkBytes} from './build-content.mjs';
 import {resolvePrefab} from '../prototype/prefab-variants.js';
 import {packagedRuntimeBytes,packagedRuntimeContent} from './packaged-runtime.mjs';
@@ -115,7 +116,7 @@ export async function buildGame(record,profile,{dryRun=false,signal,onProgress=(
   const copy=async(from,to)=>{if(!copied.has(to))await write(to,await packagedRuntimeContent(from,{signal}));};
   try{
     const nativeModules=[];onProgress('C++ 빌드');for(const [signature,item] of natives){failIfCanceled(signal);const result=await host.build(item.header,item.source,{configuration:profile.configuration,signal,files:item.files,headerPath:item.headerPath,sourcePath:item.sourcePath}),binary='Binaries/'+signature+'.exe';await copy(host.sessions.get(result.token).binary,binary);nativeModules.push({signature,binary,metadata:result.metadata,headerPath:item.headerPath,sourcePath:item.sourcePath,legacySignature:nativeSignature(item.header,item.source)});}
-    onProgress('콘텐츠 준비');for(const [name,bytes] of content)await write('Content/'+name,bytes);
+    onProgress('콘텐츠 준비');const contentArchive=await writeGameResources(out,content,{signal});artifacts.push({path:contentArchive.path,bytes:contentArchive.bytes,sha256:contentArchive.sha256});
     // Redirect aliases keep renamed model sidecars and string-based asset references working.
     let redirects={};try{redirects=JSON.parse(await fs.readFile(await record.project.resolve('.hbredirects.json',true,false),'utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}
     onProgress('실행 파일 구성');const modules=await moduleClosure('prototype/player.js');for(const file of await moduleClosure('tools/player-server.mjs'))modules.add(file);
@@ -125,7 +126,7 @@ export async function buildGame(record,profile,{dryRun=false,signal,onProgress=(
     const windowsApplication=windowsGameIdentity(record.manifest.id);await copy(path.join(desktop,'HBPlayer.exe'),windowsApplication.executable);
     const signing=await finalizeWindowsPackage({player:path.join(desktop,'HBNativePlayer.exe'),out,productName:profile.productName,executables:[windowsApplication.executable,...nativeModules.map(row=>row.binary)],artifacts,settings:signingSettings,signal});
     await copy(path.join(root,'prototype/native-audio-worklet.js'),'prototype/native-audio-worklet.js');await copy(path.join(desktop,'runtime/node.exe'),'runtime/node.exe');await copy(path.join(desktop,'WebView2Loader.dll'),'WebView2Loader.dll');await write('package.json',Buffer.from('{"type":"module"}\n'));await copy(path.join(root,'tools/kiosk-watchdog.mjs'),'tools/kiosk-watchdog.mjs');await copy(path.join(root,'tools/windows-game-identity.mjs'),'tools/windows-game-identity.mjs');await write('Kiosk.cmd',Buffer.from('@echo off\r\n"%~dp0runtime\\node.exe" "%~dp0tools\\kiosk-watchdog.mjs" "%~dp0'+windowsApplication.executable+'"\r\n'));
-    failIfCanceled(signal);const manifest={version:1,id:record.manifest.id,name:profile.productName,windowsApplication,configuration:profile.configuration,windowsRuntime:'webview',signing,windowsRenderer:profile.windowsRenderer||'scene',kiosk:profile.kiosk||{},...frameSettings(profile),width:profile.width,height:profile.height,startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,gameInstance:report.gameInstance||'',distanceFields:report.distanceFields?.manifest||'',entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules,redirects,files:artifacts};
+    failIfCanceled(signal);const manifest={version:1,id:record.manifest.id,name:profile.productName,windowsApplication,configuration:profile.configuration,windowsRuntime:'webview',signing,windowsRenderer:profile.windowsRenderer||'scene',kiosk:profile.kiosk||{},...frameSettings(profile),width:profile.width,height:profile.height,startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,gameInstance:report.gameInstance||'',distanceFields:report.distanceFields?.manifest||'',entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules,redirects,contentArchive,files:artifacts};
     const result={...report,id,output:out,executable:path.join(out,windowsApplication.executable),windowsApplication,signing,totalFiles:artifacts.length,totalBytes:artifacts.reduce((sum,f)=>sum+f.bytes,0)};await fs.writeFile(path.join(out,'build-report.json'),json(result),{flag:'wx'});await fs.writeFile(path.join(out,'game.hbpack.json'),json(manifest),{flag:'wx'});onProgress('완료');return result;
   }catch(error){await fs.writeFile(path.join(out,'build-failed.json'),json({error:error.message,canceled:signal?.aborted===true}));throw error;}finally{host.close();}
 }

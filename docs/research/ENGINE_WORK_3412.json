@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "date": "2026-11-02",
+  "kind": "native-shared-cost-and-packed-game-assets",
+  "implementationRevision": "commit-containing-this-receipt",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3410.json",
+  "changedSourceHashes": {
+    "tools/native-ui-frame.mjs": "5be5b78c0174d68123ad920bf2e17e2d8b7e265800dfed1ebe289706fd11832e",
+    "tools/native-game-runner.mjs": "10a325c7263e6d25110dddb14a602e6e6e1cd26cfa9872ca2a307b4a8d2bd286",
+    "prototype/native-transport.js": "3971555fffca6cb7e166a1e458dc391eac52d708c53a835a4d6f6696481a4f5b",
+    "prototype/ui-runtime.js": "1c71cfc77329c704be6e27d40982a415cac5e3477673dfc37b83d6221cfd89ff",
+    "tools/native-source.mjs": "b8bc640f9deed4dd608bbc4db0d8486a52428dd7ce2e045c896aba7b8e8fb1c9",
+    "tools/native-widget-layer.mjs": "0a17d977fbf6f37aa3779510c46e6793af31dad1edd0a0ea7c0d8a4c95c23db8",
+    "tools/native-save-migration.mjs": "db88c997302be83fc2551b148a346dfe0107140e98ecbb6bb40e49892c970c4a",
+    "prototype/native-scene-renderer.js": "6553b6d5f4162eb506e7097b263c590e20e0ded403c4d896837a14eb53692910",
+    "tools/headless-model.mjs": "0b2bdd82d331cf51e34c9102ba4dc9e6e2bf00b16b746b073357dd6821dc99c5",
+    "tools/run-project.mjs": "988a47c0aaa880154e4e9e25d07d4a93e851ab04304ff0ef1e9a53e08c8a9a84",
+    "native/desktop/HBNativePlayer.cpp": "eb33822e248f6da23d40f6c083d823067e6931af552ce7706e625c0ac32045dc",
+    "native/desktop/NativeWidgetWindow.hpp": "319027a6d6f58fd09fccdd85e8ef202cc0d4e25da43417aaa19deca65d1c5f25",
+    "native/include/HBEngine/Bridge.hpp": "e3585b42879b240b8ee7c17f536f6b1739ea0028e961c60efd6c362e999ae37e",
+    "tools/build-native-player.mjs": "75821bd08691547513537fa64b438b4eb3fa48aa936caa6674bb3487dddeaf6f",
+    "native/licenses/zstd-LICENSE.txt": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8",
+    "native/include/HBEngine/Game.hpp": "8cb1f0bbcd7500180e842e73a63bfcc0d0811b2314279058a68572a01f5cc7a2",
+    "tools/game-resource-archive.mjs": "dc1ac0ef56917237774c5eb28128d972bd8d4b88f9b3db187067379181e7293a",
+    "tools/project-bytes.mjs": "139f87ebaa88ba42463a86e942a7536bee0d5a5f5f9e2e2a15bacea3d3bdfcba",
+    "tools/build-native-game.mjs": "16a2714b8d85b9da983beafa8fd25ba997f077bd00e39a39dfeefa3fab3a8ef9",
+    "tools/build-game.mjs": "85e830de094cc027c93994175ba21e58d175803b15edbbb2c29fd9574a59d4b8",
+    "tools/native-game-platform.mjs": "958687be0e1ccc9cd7f95ac4ae90c8d52346fb52ca14f4a2fecc60fd3cdbdac3",
+    "tools/native-project.mjs": "3c2d17124c42bb1b512faceb55d82faaaf6e8c201aeaebe4b2c0e14621638432",
+    "tools/player-server.mjs": "355e330dcda383d408482f7cb59761ee4a77ac65b2791f52d71d176af02f5443",
+    "tools/check-native-ui-frame-codec.mjs": "494f8c9867769cff8c81126a2e1da9d001591c733b2ed8b17eae3f77c59490b0",
+    "tools/native-ui-frame-fixture.cpp": "0cd880dc59cbe2a70dc56b35351846e4a93a8226d6fdea48b192c914b358661a",
+    "tools/check-native-ui-sdk-flow.mjs": "3ded7dcfd0ccefc9daac8b854e281001ebaf303b4544e8b6dcc38c3f49d5176e",
+    "tools/check-native-ui-transport-cost.mjs": "b5ce4a2616627647ffe1a73b795f5476acf149b20bd707189fa44a843e694b25",
+    "tools/check-game-resources.mjs": "c429c01d81bb6c7d15fcefaf03984136acd3a5945c5edf884bd03d426ff5dc82",
+    "tools/check-native-2d.mjs": "aa55a51ec6c819fa7343b75224476299f4972035103b2e8698b43be49157b32e",
+    "tools/check-native-game.mjs": "7080a0281ec60b19161e1470e499cb05af3a19e4bd4f0d138b5e0ea1ac9f260a",
+    "docs/ai-routes.json": "d053b5af98fa43861fa2574f479ecce50927cb6e3924e9c4d88c8ea1ecb90b7c"
+  },
+  "targetIds": [
+    "BLD-01"
+  ],
+  "implementation": [
+    "공용 UI 무손실 Zstd/ACK 기반 XOR·전송 실패 후 full 복구·축소 버퍼 해제",
+    "immutable 위젯 descriptor 재사용·변경 UI leaf 복원·UI/렌더 대기 겹침·phase 기준 타이머",
+    "검증된 ScrollBox·동적 visual·glTF sampler/WebP·분할 geometry 업로드·float32 변환 경계 연결",
+    "Windows native/webview 게임 원본 콘텐츠를 game.hbdata 한 파일로 저장·스트림 압축·엔트리별 읽기·한글 글꼴 메모리 등록",
+    "리소스 묶음 HTTP 범위/HEAD 스트리밍·외부 glTF 버퍼·기존 Content 패키지 읽기 호환"
+  ],
+  "checks": [
+    {
+      "report": "native/build/ui-frame-codec-N1c8j7/acceptance.json",
+      "sha256": "774c670352d346b4b3b55b79eadeae8c871dbd5b02a9ff3e72f54c35b3b3cce2",
+      "passed": true
+    },
+    {
+      "report": "native/build/widget-runtime-flow-rw4DGw/acceptance.json",
+      "sha256": "581c6cbc45d4ca007ab33d3e39350ada706ea4cf95665b019ca0b79dc73dd8b9",
+      "passed": true
+    },
+    {
+      "report": "native/build/ui-sdk-flow-yWBrgl/acceptance.json",
+      "sha256": "e5fd828687129e5b876f6a8d9afb95e3d8f1255ebcaf6894b81db47dd5c261ea",
+      "passed": true
+    },
+    {
+      "report": "native/build/game-resources-C4detz/acceptance.json",
+      "sha256": "1d407ecc995ff013cb8191cc356cb0c0e7614ca642b939edd5b6b7518b070bdb",
+      "passed": true
+    },
+    {
+      "report": "native/build/native-game-VYXxGH/acceptance.json",
+      "sha256": "07de5a632fc412e96330fded79d55b441b7d07ab828d33c2311598ae38cabf33",
+      "passed": true
+    },
+    {
+      "report": "native/build/ui-transport-cost-heRttU/acceptance.json",
+      "sha256": "82006499c0097a056702466a0f628673c112ffc74bb24d1a3eea5b314e3e7aca",
+      "passed": true
+    }
+  ],
+  "additionalChecks": [
+    {
+      "scope": "candidate NativeWorldClient→actual C++ worker full transport recovery regression",
+      "passed": true,
+      "report": "native\\build\\engine-core-8BqsXn\\batch-repair.json"
+    },
+    {
+      "scope": "native 2D masks, data texture resources, replay/cache/release with bounded per-resource upload",
+      "passed": true,
+      "report": "native\\build\\engine-core-8BqsXn\\batch-final.json"
+    }
+  ],
+  "performance": {
+    "report": "native/build/ui-transport-cost-heRttU/acceptance.json",
+    "scope": "1280x720 identical engine HUD pixels; 50 measured frames after 10 warmup, alternating order; immediate simulated ACK; excludes OS decode/presentation and whole-game FPS",
+    "baselineMS": {
+      "p50": 43.6876,
+      "p95": 45.9267,
+      "p99": 48.0315
+    },
+    "candidateMS": {
+      "p50": 4.0705,
+      "p95": 6.9968,
+      "p99": 8.0613
+    },
+    "wireBytesFor60Frames": {
+      "baseline": 14567060,
+      "candidate": 224404
+    },
+    "candidateRetainedPixelBytes": 7372800
+  },
+  "nativePlayerSha256": "61033b99b0b31a5b4051de13111d6a8bd034399d8e0dad9f058503edeee4359a",
+  "nativeBinaryChanged": true,
+  "failedChecksFixed": [
+    "candidate SDK declaration was aligned before C++ validation",
+    "legacy mask assertion was updated to inspect every bounded upload packet",
+    "multi-chunk source buffer reuse during asynchronous Zstd compression was fixed and reproduced by large packed font"
+  ],
+  "boundaries": [
+    "게임 담당에게 보낸 엔진 인계·검토·추가 검사 요청 전부 취소. 엔진 수정/자체 검증/설치는 이 채팅에서 직접 소유",
+    "공유 작업 트리의 미검증 spans/zero-alpha/frame-RPC/DPI 변경은 candidate/index/설치에서 제외",
+    "금지 3파일 read/edit/stage/run/test 없음·사용자 게임 원본/사용자 창/프로필 변경 없음",
+    "정적 웹/모바일 리소스 형식은 이번 Windows 변경 범위 밖·웹뷰 GUI 전편 검증 없음",
+    "전체 게임 FPS/장시간 발열/수신 PC 백신/전체 엔진 완료 주장 없음"
+  ],
+  "installation": {
+    "changed": false,
+    "latestReceipt": "docs/research/USER_INSTALL_3411.json"
+  },
+  "canonicalGitSourceHashes": {
+    "tools/native-ui-frame.mjs": "7921fc4e9429d9b049d07a5e0c6f34462cc3a638af86e8cce1b6760b6534f0a5",
+    "tools/native-game-runner.mjs": "861c6c0b6a0f5fbf414277d2b9c50d06f8eea655a5674ca338fdb0aeb3769871",
+    "prototype/native-transport.js": "e55080b50479eb0e596ed6ab5f7938ff88c9a1d4a64c46e4721f8535e200f475",
+    "prototype/ui-runtime.js": "928a4a00798c0f11dc4e52a1633a4948d00b0799a019cc44d0323d28a43434b7",
+    "tools/native-source.mjs": "7e719da16be7a2bddf1078b78b030f6da35e90765fad37ae377500291a30d7a6",
+    "tools/native-widget-layer.mjs": "35b98c431e6dbd89bf65209fea27387ec697b710a6a803a3671434a54d489448",
+    "tools/native-save-migration.mjs": "db88c997302be83fc2551b148a346dfe0107140e98ecbb6bb40e49892c970c4a",
+    "prototype/native-scene-renderer.js": "6553b6d5f4162eb506e7097b263c590e20e0ded403c4d896837a14eb53692910",
+    "tools/headless-model.mjs": "0b2bdd82d331cf51e34c9102ba4dc9e6e2bf00b16b746b073357dd6821dc99c5",
+    "tools/run-project.mjs": "988a47c0aaa880154e4e9e25d07d4a93e851ab04304ff0ef1e9a53e08c8a9a84",
+    "native/desktop/HBNativePlayer.cpp": "ea13d605860674f0f2463de9c8ecf345b4baf0e8fddf5e8bc69173f071e8af2d",
+    "native/desktop/NativeWidgetWindow.hpp": "2147fb6b46a8b2b78c1fa9d754d5672eb293508eec669e45eaccc71eda286567",
+    "native/include/HBEngine/Bridge.hpp": "f5791939f1c5103b51dc7529f2654e9f9d9dbb46af3d30074fb8b3061fd81199",
+    "tools/build-native-player.mjs": "75821bd08691547513537fa64b438b4eb3fa48aa936caa6674bb3487dddeaf6f",
+    "native/licenses/zstd-LICENSE.txt": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8",
+    "native/include/HBEngine/Game.hpp": "8cb1f0bbcd7500180e842e73a63bfcc0d0811b2314279058a68572a01f5cc7a2",
+    "tools/game-resource-archive.mjs": "dc1ac0ef56917237774c5eb28128d972bd8d4b88f9b3db187067379181e7293a",
+    "tools/project-bytes.mjs": "139f87ebaa88ba42463a86e942a7536bee0d5a5f5f9e2e2a15bacea3d3bdfcba",
+    "tools/build-native-game.mjs": "16a2714b8d85b9da983beafa8fd25ba997f077bd00e39a39dfeefa3fab3a8ef9",
+    "tools/build-game.mjs": "85e830de094cc027c93994175ba21e58d175803b15edbbb2c29fd9574a59d4b8",
+    "tools/native-game-platform.mjs": "958687be0e1ccc9cd7f95ac4ae90c8d52346fb52ca14f4a2fecc60fd3cdbdac3",
+    "tools/native-project.mjs": "3c2d17124c42bb1b512faceb55d82faaaf6e8c201aeaebe4b2c0e14621638432",
+    "tools/player-server.mjs": "355e330dcda383d408482f7cb59761ee4a77ac65b2791f52d71d176af02f5443"
+  },
+  "lineEndings": "Git stores canonical LF; changedSourceHashes identify the exact CRLF/mixed source snapshot used by verified binary and installation. Canonical equivalence is recorded separately."
+}

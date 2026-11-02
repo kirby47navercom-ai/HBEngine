@@ -17,3 +17,11 @@
 UI 전체 경로의 시간은 전송 방식의 영향을 크게 받아요. 다른 작업의 무손실 RGBA/Zstd 전송이 있는 작업 트리에서는 1.747→1.206ms였지만, 그 변경을 제외한 기존 PNG 전송 경로에서는 13.291→12.696ms였어요. 서로 다른 두 전송 방식의 수치를 이번 캐시 개선으로 합산하지 않아요. 이번 커밋은 다른 채팅이 수정 중인 전송 형식·C++·스크롤·대용량 업로드 변경을 포함하지 않아요. 설치본과 실제 게임의 최종 성능 판정도 별도예요.
 
 재현 명령은 `node tools/check-native-widget-assets.mjs`, `node tools/check-native-widget-image-cache.mjs`, `node tools/check-native-widget-text-cache.mjs`, `node tools/check-native-widget-runtime-flow.mjs`, `node tools/check-native-widget-frame-cost.mjs`, `node tools/check-native-visible-traversal.mjs`예요. 공용 런타임의 기본 UI와 네이티브 빌더가 이 소유 모듈을 함께 사용해요. 별도 게임 수정은 필요하지 않아요.
+
+## WORK3412 · 공용 전송과 배포 리소스
+
+WORK3410에서 제외했던 검증된 전송·C++ 상태 경로를 별도 소유 후보로 통합했어요. 미검증 spans·zero-alpha·frame RPC 후보와 다른 DPI 변경은 제외했어요. 위젯 descriptor는 참조로 비교하고 C++ UI setter는 바뀐 leaf만 복원해요. UI 인코딩은 premultiplied RGBA를 무손실로 보존하며, ACK가 온 프레임만 XOR 기준이 돼요. 실패/창 크기 변경은 full로 복구하고 UI 해제 때 기록을 비워요. nativeDecodeMS·nativePresentMS는 submitMS에 포함된 수신 측 구간이므로 중복 합산하지 않아요.
+
+동일 1280×720 HUD의 교차 순서 50프레임(별도 warmup10)에서 그리기+인코딩 p50은43.6876→4.0705ms, p95는45.9267→6.9968ms, p99는48.0315→8.0613ms예요. ACK를 즉시 돌려준 CPU 비교이므로 OS 표시·전체 게임 FPS 수치가 아니에요. warmup 포함60번 전송 문자열은14,567,060→224,404바이트였어요. XOR 기록은720p에서픽셀+scratch 약7.03MiB를 사용하고, 축소·해제 시 큰 이전 버퍼를 반환해요. 이 비용 절감을 전체 RSS 감소로 표현하지 않아요.
+
+별도로 실제 Win32/DX11 release 패키지40프레임·공용 C++·묶음 SVG/한글 글꼴/음성·OS 입력·정상종료를 검증했어요. 게임 원본은 사용하지 않았어요. 배포 리소스는 [리소스 묶음](GAME_RESOURCE_ARCHIVE.md), 소스/근거 해시는 ENGINE_WORK_3412.json에 있어요.

@@ -15,7 +15,7 @@ export function checkedNativeFiles(files){
 export async function readNativeFiles(project,{files,signal}={}){
   files=(files||await project.files({signal})).filter(file=>file.kind!=='folder'&&nativeSourceFile(file.path));
   if(files.length>nativeSourceLimits.maxFiles)throw Error('C++ Source 파일은 512개까지 지원해요.');
-  const result=[];let bytes=0;for(const file of files){signal?.throwIfAborted();const info=await project.read(file.path);if(info.size>nativeSourceLimits.maxFileBytes)throw Error('C++ Source 파일 500KB 제한: '+file.path);bytes+=info.size;if(bytes>nativeSourceLimits.maxTotalBytes)throw Error('C++ Source 전체 크기 8MB 제한');result.push({path:file.path,content:await fs.readFile(info.file,{encoding:'utf8',signal})});}return checkedNativeFiles(result);
+  const result=[];let bytes=0;for(const file of files){signal?.throwIfAborted();const info=await project.read(file.path);if(info.size>nativeSourceLimits.maxFileBytes)throw Error('C++ Source 파일 500KB 제한: '+file.path);bytes+=info.size;if(bytes>nativeSourceLimits.maxTotalBytes)throw Error('C++ Source 전체 크기 8MB 제한');result.push({path:file.path,content:info.readBytes?(await info.readBytes({signal})).toString('utf8'):info.bytes?info.bytes.toString('utf8'):await fs.readFile(info.file,{encoding:'utf8',signal})});}return checkedNativeFiles(result);
 }
 export function nativeEntryFiles(header,source,files,options={}){
  const paths=nativeEntryPaths(options),stem=file=>file.path.replace(/\.[^.]+$/,'').toLowerCase(),headers=files.filter(f=>/\.(h|hpp|hh)$/i.test(f.path)&&f.content===canonicalNativeText(header)),sources=files.filter(f=>/\.(cpp|cc|cxx)$/i.test(f.path)&&f.content===canonicalNativeText(source));

@@ -5271,6 +5271,59 @@
       "paths": [
         "prototype/ui-runtime.js"
       ]
+    },
+    {
+      "id": "native-ui-frame-codec",
+      "keywords": [
+        "encodeNativeUIFrame",
+        "acknowledgeNativeUIFrame",
+        "resetNativeUIFrame",
+        "nativeUIFrameMemory"
+      ],
+      "paths": [
+        "tools/native-ui-frame.mjs"
+      ]
+    },
+    {
+      "id": "native-ui-decode",
+      "keywords": [
+        "decodeDelta",
+        "updatePixels"
+      ],
+      "paths": [
+        "native/desktop/NativeWidgetWindow.hpp"
+      ]
+    },
+    {
+      "id": "game-resource-archive",
+      "keywords": [
+        "writeGameResources",
+        "openGameResources",
+        "streamGameResource"
+      ],
+      "paths": [
+        "tools/game-resource-archive.mjs"
+      ]
+    },
+    {
+      "id": "project-byte-access",
+      "keywords": [
+        "projectBytes",
+        "projectText"
+      ],
+      "paths": [
+        "tools/project-bytes.mjs"
+      ]
+    },
+    {
+      "id": "native-input-canvas",
+      "keywords": [
+        "GetMousePositionForCanvas"
+      ],
+      "paths": [
+        "native/include/HBEngine/Game.hpp",
+        "native/include/HBEngine/Bridge.hpp"
+      ]
     }
   ]
 }

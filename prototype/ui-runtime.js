@@ -70,14 +70,28 @@ export function renderWidgetTree(host,data,{preview=false,fileUrl=p=>p,event=()=
   return {elements,lists,data,update:refresh,fontsReady:()=>Promise.all([...fonts.values()].map(face=>face.loaded).concat([...lists.values()].map(list=>list.fontsReady()))),resetControls:emit=>{for(const list of lists.values())list.resetControls(emit);for(const control of controls.values())control.reset(emit);},endFrame:()=>{const touch=touchDevice();if(touch!==lastTouchDevice){lastTouchDevice=touch;update();}for(const list of lists.values())list.endFrame();for(const control of controls.values())control.endFrame();},dispose(reason){observer?.disconnect();window.removeEventListener('resize',resize);for(const list of lists.values())list.dispose();lists.clear();for(const control of controls.values())control.dispose(reason);for(const lease of fontLeases.values())lease.release();fontLeases.clear();fonts.clear();frame.remove();}};
 }
 
+// Reuse only byte-identical detached, frozen node snapshots. Mutable widget
+// data never escapes into native transport; removed rows are not retained.
+const widgetSnapshots=new WeakMap(),widgetDirtyNodes=new WeakMap();
+function nativeWidgetSnapshot(state,localization,dirtyNodes){
+ const prior=widgetSnapshots.get(state),rows=new Map(),entries=[];let changed=!prior||prior.rows.size!==state.data.nodes.length,index=0;
+ for(const n of state.data.nodes){
+  const old=prior?.rows.get(n.name);let row=old;
+  if(!old||!dirtyNodes||dirtyNodes.has(n)||old.node!==n){const value={type:n.type,...n.properties,...n.properties.stringTable&&n.properties.textKey&&localization?{text:localization.format(n.properties.stringTable,n.properties.textKey,JSON.parse(n.properties.textArguments||'{}'),n.properties.text)}:{},slot:n.slot,value:n.type==='CheckBox'?Number(n.properties.checked):n.properties.value},text=JSON.stringify(value);row=old?.text===text?old:{node:n,text,snapshot:immutableNativeSnapshot(value)};}
+  if(row!==old||prior?.names[index]!==n.name)changed=true;index++;rows.set(n.name,row);entries.push([n.name,row.snapshot]);
+ }
+ const snapshot=changed?immutableNativeSnapshot(Object.fromEntries(entries),{clone:false}):prior.snapshot;
+ widgetSnapshots.set(state,{rows,names:entries.map(row=>row[0]),snapshot});return snapshot;
+}
+
 export class WidgetSystem {
   constructor(hooks={}){this.hooks=hooks;this.instances=new Map();this.events=[];this.disposed=false;this.animations=new Map();this.batchDepth=0;this.dirty=new Set();this.requests=new Map();this.releasingOwners=new Set();this.rowBudget={used:0,maxNodes:componentDefaults('UIBudget').maxNodes};}
   key(owner,instance){return JSON.stringify([owner,instance]);}
   state(owner,instance){const state=this.instances.get(this.key(owner,instance));if(!state)throw Error('위젯 인스턴스를 찾을 수 없어요: '+instance);return state;}
   node(state,name){const node=state.data.nodes.find(n=>n.id===name||n.name===name);if(!node)throw Error('위젯 요소가 없어요: '+name);return node;}
-  sync(state,vm){const owner=vm.object(state.owner);if(!owner)return;owner.gameplayDebug??={};owner.gameplayDebug.ui??={};const snapshot=immutableNativeSnapshot(Object.fromEntries(state.data.nodes.map(n=>[n.name,{type:n.type,...n.properties,...n.properties.stringTable&&n.properties.textKey&&this.hooks.localization?{text:this.hooks.localization.format(n.properties.stringTable,n.properties.textKey,JSON.parse(n.properties.textArguments||'{}'),n.properties.text)}:{},slot:structuredClone(n.slot),value:n.type==='CheckBox'?Number(n.properties.checked):n.properties.value}])));owner.gameplayDebug.ui=immutableNativeSnapshot({...owner.gameplayDebug.ui,[state.instance]:snapshot},{clone:false});}
-  refresh(state,vm){if(this.batchDepth){this.dirty.add(state);return;}state.view?.update();this.sync(state,vm);}
-  async writeBatch(callback,vm){this.batchDepth++;try{return await callback();}finally{if(--this.batchDepth===0){const changed=[...this.dirty];this.dirty.clear();for(const state of changed)if(this.instances.get(this.key(state.owner,state.instance))===state)this.refresh(state,vm);}}}
+  sync(state,vm,dirtyNodes){const owner=vm.object(state.owner);if(!owner)return;owner.gameplayDebug??={};owner.gameplayDebug.ui??={};const snapshot=nativeWidgetSnapshot(state,this.hooks.localization,dirtyNodes);owner.gameplayDebug.ui=immutableNativeSnapshot({...owner.gameplayDebug.ui,[state.instance]:snapshot},{clone:false});}
+  refresh(state,vm,node,preserve=false){if(!preserve){if(!node)widgetDirtyNodes.set(state,null);else if(!widgetDirtyNodes.has(state))widgetDirtyNodes.set(state,new Set([node]));else widgetDirtyNodes.get(state)?.add(node);}if(this.batchDepth){this.dirty.add(state);return;}state.view?.update();const dirtyNodes=widgetDirtyNodes.get(state);widgetDirtyNodes.delete(state);this.sync(state,vm,dirtyNodes);}
+  async writeBatch(callback,vm){this.batchDepth++;try{return await callback();}finally{if(--this.batchDepth===0){const changed=[...this.dirty];this.dirty.clear();for(const state of changed)if(this.instances.get(this.key(state.owner,state.instance))===state)this.refresh(state,vm,undefined,true);}}}
   async lifecycle(state,phase,vm){const event=state.data.lifecycle?.[phase];if(!event||!vm.custom)return;for(const binding of (vm.bindings||[]).filter(binding=>binding.self===state.owner))await vm.custom(binding,event,{widget:state.instance,phase,isDesignTime:false});}
   updateRowBudget(vm,state,data){const limit=(vm.objects||[]).flatMap(o=>o.components||[]).find(c=>c.type==='UIBudget'&&c.properties?.enabled!==false)?.properties?.maxNodes??componentDefaults('UIBudget').maxNodes;this.rowBudget.maxNodes=Math.max(0,limit-[...this.instances.values()].filter(s=>s!==state).reduce((sum,s)=>sum+s.data.nodes.length,data?.nodes.length||0));}
   stageView(state,vm,data=state.data){
@@ -128,13 +142,19 @@ export class WidgetSystem {
     else if(key==='uiFocus'){const el=state.view?.elements.get(node.id);(el?.querySelector('input')||el)?.focus();}
     else if(key==='uiAnimate'){if(!['opacity','rotation','x','y','blink'].includes(a.property)||!Number.isFinite(a.to)||Math.abs(a.to)>10000||a.property==='opacity'&&(a.to<0||a.to>1)||!Number.isFinite(a.duration)||a.duration<=0||a.duration>3600)throw Error('위젯 애니메이션 값을 확인하세요.');const from=a.property==='x'?node.slot.offset[0]:a.property==='y'?node.slot.offset[1]:a.property==='blink'?p.opacity:p[a.property]??0;this.animations.set(JSON.stringify([owner,a.instance,node.id,a.property]),{state,node,property:a.property,from,to:a.to,duration:a.duration,elapsed:0});return {};}
     else if(key.startsWith('uiSet')){
-      const n={...node,slot:structuredClone(node.slot),properties:structuredClone(p)},value={uiSetTexture:['texture',a.texture],uiSetRotation:['rotation',a.rotation],uiSetScale:['scale',a.scale],uiSetColor:['color',Array.isArray(a.color)&&a.color.length===4?a.color.map(v=>Math.round(clamp(v,0,1)*255).toString(16).padStart(2,'0')).join(''):a.color],uiSetOpacity:['opacity',a.opacity],uiSetFont:['font',a.font],uiSetFontSize:['fontSize',a.fontSize],uiSetFillDirection:['fillDirection',a.direction]}[key];
+      // Equal, already validated values do not need another full node clone.
+      // Changed or malformed requests still follow the complete validator.
+      const scalar=key==='uiSetRotation'?'rotation':key==='uiSetOpacity'?'opacity':key==='uiSetFontSize'?'fontSize':'';
+      if(scalar&&Number.isFinite(a[scalar])&&p[scalar]===a[scalar])return {};
+      if(key==='uiSetScale'&&Array.isArray(a.scale)&&a.scale.length===2&&a.scale.every((v,i)=>Number.isFinite(v)&&v===p.scale?.[i]))return {};
+      if(key==='uiSetPosition'||key==='uiSetSize'){const values=key==='uiSetPosition'?a.position:a.size,index=key==='uiSetPosition'?0:2;if(Array.isArray(values)&&values.length===2&&values.every((v,i)=>Number.isFinite(v)&&v===node.slot.offset[index+i]))return {};}
+      const n={...node,slot:{...node.slot,offset:[...node.slot.offset]},properties:{...p}},value={uiSetTexture:['texture',a.texture],uiSetRotation:['rotation',a.rotation],uiSetScale:['scale',a.scale],uiSetColor:['color',Array.isArray(a.color)&&a.color.length===4?a.color.map(v=>Math.round(clamp(v,0,1)*255).toString(16).padStart(2,'0')).join(''):a.color],uiSetOpacity:['opacity',a.opacity],uiSetFont:['font',a.font],uiSetFontSize:['fontSize',a.fontSize],uiSetFillDirection:['fillDirection',a.direction]}[key];
       if(key==='uiSetPosition'||key==='uiSetSize'){const v=key==='uiSetPosition'?a.position:a.size;if(!Array.isArray(v)||v.length!==2||!v.every(Number.isFinite))throw Error('위젯 위치·크기를 확인하세요.');n.slot.offset.splice(key==='uiSetPosition'?0:2,2,...v);}
       else if(value)n.properties[value[0]]=value[0]==='color'&&typeof value[1]==='string'&&!value[1].startsWith('#')?'#'+value[1]:value[1];else throw Error('위젯 함수가 없어요: '+key);
-      if(key==='uiSetTexture'&&node.properties.texture!==a.texture)n.properties.vectorTexture='';if(!validWidgetProperties(n))throw Error('위젯 속성 범위를 확인하세요.');if(JSON.stringify([node.slot,p])===JSON.stringify([n.slot,n.properties]))return {};Object.assign(node,n);
+      if(key==='uiSetTexture'&&node.properties.texture!==a.texture)n.properties.vectorTexture='';if(!validWidgetProperties(n))throw Error('위젯 속성 범위를 확인하세요.');if(key!=='uiSetPosition'&&key!=='uiSetSize'&&JSON.stringify([node.slot,p])===JSON.stringify([n.slot,n.properties]))return {};Object.assign(node,n);
     }
     else throw Error('위젯 함수가 없어요: '+key);
-    this.refresh(state,vm);if(key==='uiSetFont')await state.view?.fontsReady();return {};
+    this.refresh(state,vm,node);if(key==='uiSetFont')await state.view?.fontsReady();return {};
   }
   async remove(owner,instance,vm,{cancelRequest=true}={}){const key=this.key(owner,instance),state=this.instances.get(key);if(cancelRequest)this.requests.delete(key);if(!state)return;state.view?.dispose();state.host?.remove();this.instances.delete(key);for(const [id,animation] of this.animations)if(animation.state===state)this.animations.delete(id);this.events=this.events.filter(e=>e.state!==state);const ui=vm.object(owner)?.gameplayDebug?.ui;if(ui){const {[instance]:removed,...rest}=ui;vm.object(owner).gameplayDebug.ui=immutableNativeSnapshot(rest,{clone:false});}this.updateRowBudget(vm);for(const other of this.instances.values())other.view?.update();await this.lifecycle(state,'destruct',vm);}
   async removeOwner(owner,vm){this.releasingOwners.add(owner);try{for(const key of this.requests.keys())if(JSON.parse(key)[0]===owner)this.requests.delete(key);for(const state of [...this.instances.values()])if(state.owner===owner)await this.remove(owner,state.instance,vm);}finally{this.releasingOwners.delete(owner);}}

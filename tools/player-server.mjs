@@ -1,3 +1,4 @@
+import {openGameResources,streamGameResource} from './game-resource-archive.mjs';
 import {nativeModuleKey,nativeEntryPaths} from '../prototype/native-entry.js';
 import {streamHttpFile} from './http-file.mjs';
 import {hashBuildFile} from './build-content.mjs';
@@ -20,14 +21,15 @@ export async function startPlayerServer({root=path.resolve(import.meta.dirname,'
   if(!validKioskSettings(manifest)||!validFrameSettings(manifest)||!validWindowsRenderer(manifest))throw Error('패키지 실행 설정 오류');
   if(manifest.version!==1||!Array.isArray(manifest.files)||!Array.isArray(manifest.entries)||!Array.isArray(manifest.nativeModules)||!safe(manifest.startupScene)||!['development','release'].includes(manifest.configuration)||!/^[0-9a-f-]{36}$/.test(manifest.id))throw Error('게임 패키지 형식 오류');
   const files=new Map();for(const entry of manifest.files){if(!safe(entry.path)||!Number.isSafeInteger(entry.bytes)||entry.bytes<0||files.has(entry.path)||!/^[0-9a-f]{64}$/.test(entry.sha256))throw Error('패키지 파일 목록 오류');const full=await fs.realpath(path.join(root,entry.path));if(!full.toLowerCase().startsWith((root+path.sep).toLowerCase()))throw Error('패키지 경로 이탈');if(verify){const checked=await hashBuildFile(full,{root});if(checked.bytes!==entry.bytes||checked.sha256!==entry.sha256)throw Error('패키지 파일 검증 실패: '+entry.path);}files.set(entry.path,{...entry,full});}
-  const entries=new Map(manifest.entries.map(e=>[e.path,e]));for(const name of entries.keys())if(!safe(name)||!files.has('Content/'+name))throw Error('콘텐츠 목록 오류');if(!entries.has(manifest.startupScene))throw Error('시작 장면 누락');
+  const archive=manifest.contentArchive?await openGameResources(files.get(manifest.contentArchive.path)?.full):null;
+  const entries=new Map(manifest.entries.map(e=>[e.path,e]));for(const name of entries.keys())if(!safe(name)||!(archive?archive.entries.has(name):files.has('Content/'+name)))throw Error('콘텐츠 목록 오류');if(!entries.has(manifest.startupScene))throw Error('시작 장면 누락');
   const native=new NativeHost(),builds=new Map(),legacyBuilds=new Map(),aliases=new Map(),ambiguous=new Set();
   for(const module of manifest.nativeModules){const file=files.get(module.binary);if(!file||!module.binary.startsWith('Binaries/'))throw Error('C++ 실행 파일 누락');const entry=nativeEntryPaths(module),build=native.registerBinary(file.full,module.metadata);builds.set(module.signature,build);if(!entry.headerPath)legacyBuilds.set(module.signature,build);
     if(module.legacySignature!==undefined){if(!/^[a-f0-9]{64}$/.test(module.legacySignature))throw Error('C++ 이전 모듈 키 오류');const key=module.legacySignature;if(aliases.has(key)){ambiguous.add(key);aliases.delete(key);}else if(!ambiguous.has(key))aliases.set(key,build);}
   }
   userData=path.resolve(userData||path.join(process.env.LOCALAPPDATA||root,'HBEngine','Games',manifest.id));await fs.mkdir(userData,{recursive:true});
   const store=new ProjectStorage({resolve:async()=>path.join(userData,'savegames.json')},manifest.id),validKey=store.validKey.bind(store);store.validKey=key=>validKey(key)&&(key.startsWith('hbengine.savegame.')||key.startsWith('hbengine.storage-migrated.v1.'));
-  configureNativePersistence(native,store,async name=>{const file=files.get('Content/'+resolveBuildPath(name,manifest.redirects));if(!file)throw Error('쿠킹된 데이터 에셋이 없어요.');return JSON.parse(await fs.readFile(file.full,'utf8'));});
+  configureNativePersistence(native,store,async name=>{const resolved=resolveBuildPath(name,manifest.redirects);if(archive)return JSON.parse(await archive.read(resolved));const file=files.get('Content/'+resolved);if(!file)throw Error('쿠킹된 데이터 에셋이 없어요.');return JSON.parse(await fs.readFile(file.full,'utf8'));});
   const session={id:manifest.id,name:manifest.name,projectFile:'game.hbpack.json',startupScene:manifest.startupScene,startupBlueprint:manifest.startupBlueprint,gameInstance:manifest.gameInstance||'',legacyStorage:false,player:true};
   const json=(res,data,status=200)=>res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'}).end(JSON.stringify(data));
   const body=async req=>{const chunks=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>8388608)throw Error('요청 크기 초과');chunks.push(chunk);}return JSON.parse(Buffer.concat(chunks).toString('utf8'));};
@@ -49,11 +51,11 @@ export async function startPlayerServer({root=path.resolve(import.meta.dirname,'
     if(url.pathname==='/api/player/report'&&req.method==='GET'&&manifest.configuration==='development')return json(res,report);
     let name;if(url.pathname==='/api/file'&&['GET','HEAD'].includes(req.method)){const requested=q.get('path');if(!safe(requested))throw Error('에셋 경로 오류');const resolved=resolveBuildPath(requested,manifest.redirects);if(entries.has(resolved))name='Content/'+resolved;}
     else if(['GET','HEAD'].includes(req.method)){const requested=url.pathname==='/'?'prototype/player.html':decodeURIComponent(url.pathname.slice(1));if((requested.startsWith('prototype/')||requested.startsWith('node_modules/'))&&safe(requested))name=requested;}
-    const file=files.get(name);if(!file)return json(res,{error:'게임 파일이 없어요.'},404);
-    streamHttpFile(req,res,file.full,file.bytes,{'Content-Type':mime[path.extname(name).toLowerCase()]||'application/octet-stream','X-Content-Type-Options':'nosniff',...(name.startsWith('Content/')?{'Content-Security-Policy':(path.extname(name).toLowerCase()==='.svg'?"default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox":"default-src 'none'; sandbox")}:{}),'Cache-Control':'no-cache'});
+    const packed=archive&&name?.startsWith('Content/')?name.slice(8):null;const file=packed?archive.entries.get(packed):files.get(name);if(!file)return json(res,{error:'게임 파일이 없어요.'},404);
+    const headers={'Content-Type':mime[path.extname(name).toLowerCase()]||'application/octet-stream','X-Content-Type-Options':'nosniff',...(name.startsWith('Content/')?{'Content-Security-Policy':(path.extname(name).toLowerCase()==='.svg'?"default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox":"default-src 'none'; sandbox")}:{}),'Cache-Control':'no-cache'};if(packed)await streamGameResource(req,res,archive,packed,headers);else streamHttpFile(req,res,file.full,file.bytes,headers);
   }catch(error){if(!res.headersSent)json(res,{error:error.message},400);else res.destroy();}});
   const nativeChannel=attachNativeChannel(server,{origin:()=>"http://127.0.0.1:"+activePort,scope:()=>(data,query)=>native.call(data.token,data.request,undefined,query)});
   await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(port,'127.0.0.1',resolve);});activePort=server.address().port;
-  const close=async()=>{nativeChannel.close();native.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));};return {port:activePort,close,manifest,userData};
+  const close=async()=>{nativeChannel.close();native.close();await archive?.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));};return {port:activePort,close,manifest,userData};
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){try{const server=await startPlayerServer({port:Number(process.env.PORT||0)});if(process.env.HB_READY_FILE)await fs.writeFile(process.env.HB_READY_FILE,JSON.stringify({port:server.port,pid:process.pid,player:true}));console.log('HBPlayer http://127.0.0.1:'+server.port);for(const event of ['SIGINT','SIGTERM'])process.on(event,async()=>{await server.close();process.exit(0);});}catch(error){console.error(error);process.exitCode=1;}}

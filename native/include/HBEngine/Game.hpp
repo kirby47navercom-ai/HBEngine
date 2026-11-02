@@ -244,6 +244,8 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="inputAddContext", KoreanName="입력 컨텍스트 추가", Category="입력 액션") static void AddMappingContext(Actor* target,const std::string& context,int priority=0);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="inputRemoveContext", KoreanName="입력 컨텍스트 제거", Category="입력 액션") static void RemoveMappingContext(Actor* target,const std::string& context);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mousePosition", KoreanName="마우스 위치 가져오기", Category="입력") static bool GetMousePosition(Vec2& position);
+    // Coordinates for a fit-scaled, top-left design canvas; raw input stays unchanged.
+    static bool GetMousePositionForCanvas(const Vec2& referenceSize,Vec2& position);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mouseDelta", KoreanName="마우스 이동량 가져오기", Category="입력") static Vec2 GetMouseDelta();
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mouseRay", KoreanName="마우스 월드 방향 가져오기", Category="입력") static bool DeprojectMousePositionToWorld(Vec3& origin,Vec3& direction);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mouseWorldPlane", KoreanName="마우스 조준 평면 위치", Category="입력") static bool GetMouseWorldPosition(const Vec3& normal,const Vec3& point,Vec3& position);
