@@ -1,4 +1,5 @@
 ## UI·자원 수명·실행 호환성 · WORK3420 / 2026-11-02
+USER_INSTALL3421/59c56a17eb91063a 전환·48owner/PE SHA·설치 actual SDK UI RPC 통과·Versions1. 소유 Engine/중복 패키지/검사 PE 정리·정확한 재현용 frozen baseline 하나 보존.
 소유 Engine 후보에 UI worker/binary tile, frozen row 비교 코드 재사용, 전역 아틀라스 마지막 참조 해제, 풀 첫 준비/실제 삭제 presentation 정리, glTF 공유/숨긴 이미지 디코딩 지연, 오디오 장치/WARP fallback을 연결했어요. 일반 실제 재판 52.54→100.66FPS, Auric 같은 위치 114.35→116.08FPS. 목표120미합격·일반/계측 분리·입력 지속 시간이 다른 이동 후보/실패 실험 제외. 새 PE·SDK 실제 RPC·타일360pixel·UI16frame·수명/오류 검사 통과. 설치 요청 활성, 최신 설치 근거는 후속 USER_INSTALL3421에서 확인해요. 공유 작업트리 NativeWidgetWindow/native-widget-layer/native-ui-frame의 외부 변경은 그대로 보존했고 index/설치는 검증된 canonical snapshot만 사용해요. 금지3파일·게임원본·사용자창/프로필·예약/agent/goal 변경 없음. DX12·120·다른 물리PC/백신·누적 잔여 전체 완료로 표시하지 않아요. 상세 ENGINE_WORK3420/NATIVE_RUNTIME_COSTS.
 
 ## 게임플레이 읽기 비용 · WORK3418 / 2026-11-02

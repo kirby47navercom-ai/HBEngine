@@ -1,0 +1,279 @@
+{
+  "version": 1,
+  "date": "2026-11-02",
+  "sourceCommit": "025336655bb2dfb85960aaafbf8e7f35f675fe95",
+  "bundleHash": "59c56a17eb91063a33440bc2137b7122df1c04d15fdfddcc2134a4828df77c44",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\59c56a17eb91063a",
+  "files": 5358,
+  "versions": [
+    "59c56a17eb91063a"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "componentRuntimeVerified": true,
+  "runtimeScope": "설치 48 owner/PE 해시 일치 및 설치 SDK 실제 release C++ worker의 UI 읽기/쓰기/복원/좌표 입력 통과. 동일 SHA 후보의 실제 두 게임 숨김 실행·UI 픽셀·자원 수명 검사를 재사용해요. 전면·음향 활성 원본 측정과 직접 비교하지 않아요.",
+  "ownerChecks": [
+    {
+      "path": "native/desktop/HBNativePlayer.cpp",
+      "sha256": "6e026d12279fe0f5f3c0785730748b77bec80bdb41fe9b6b12952e407b6f9259"
+    },
+    {
+      "path": "native/desktop/NativeWidgetWindow.hpp",
+      "sha256": "caac826a53ec3c8f4bf697ba073ca57800862d6eca54fb501328a430bd64f595"
+    },
+    {
+      "path": "tools/native-game-runner.mjs",
+      "sha256": "202c8ee6615cc5256dd5599d13e686c8f68e965eb664276393a6f3578e64c9a5"
+    },
+    {
+      "path": "tools/native-widget-layer.mjs",
+      "sha256": "d7f719256ec05161f88d8aea6a059abd693bf400713e9d85329a182943fb7bb3"
+    },
+    {
+      "path": "tools/native-ui-frame.mjs",
+      "sha256": "80da5060293214853cc5f51f13cb2888b9f2c41b472b144db280c4286306d455"
+    },
+    {
+      "path": "tools/native-ui-pipe.mjs",
+      "sha256": "9ee33e6e7a9302467f2c21ccf52de6cff25503b998a0c5907ac04457c1af7aef"
+    },
+    {
+      "path": "native/desktop/NativeUIPipe.hpp",
+      "sha256": "f6d507e839bb4485278e03159b5cf08864b4347e1d013c5f8475ef7b13bcc027"
+    },
+    {
+      "path": "prototype/native-transport.js",
+      "sha256": "4846ab9ae559de6dc6a78534d71f1c1e715660005919973da2020c1397a64df0"
+    },
+    {
+      "path": "prototype/ui-runtime.js",
+      "sha256": "b4fff5dd161c9e4afb603d01efcafd467601cc4c0b5a1aeac1abb847fa3b248e"
+    },
+    {
+      "path": "tools/native-presentation-queue.mjs",
+      "sha256": "23fe9f16439519ba47e7a3546bdc6e117aaccc14941b93e4e2a9a2b01069d719"
+    },
+    {
+      "path": "prototype/scene-rendering.js",
+      "sha256": "dcc3fd54d679452411e053836c5ab53c1e666e586d6551ef06c328c862190f9d"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "995de4d8d27bf68d7264159959bf22cb0744a4f05bdea7ceeb2b407af63c76a0"
+    },
+    {
+      "path": "prototype/sprite-texture-source.js",
+      "sha256": "5ce2b8759fc3876b9868e115d239528e6b967ae86ae4920c256c745d56a3f151"
+    },
+    {
+      "path": "tools/native-widget-raster-worker.mjs",
+      "sha256": "4d2c7c4749913a1ad91620e8dee78a58aec2ec56dfd10c7eb96e076d41bf9169"
+    },
+    {
+      "path": "tools/native-widget-raster-thread.mjs",
+      "sha256": "6b145a0ca2b3f9b4a9d4c975a36839b867b372656f8dd2befa7229e51d05ef8e"
+    },
+    {
+      "path": "native/desktop/NativeGameAudioIdentity.hpp",
+      "sha256": "61aec9bbbcd4de974bdb5263533431283f1df86fa2100c2c0165f9a1ccc5a034"
+    },
+    {
+      "path": "native/include/HBEngine/Compute.hpp",
+      "sha256": "e94e4eaa557299d39d23b5328280a5f289c9b14c6de693e6f55e7a26661e13af"
+    },
+    {
+      "path": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "aa8e9c397349f9c72c7ae5cb7377cea9e59ce26d891e84dd5ae9b56b4b197a1c"
+    },
+    {
+      "path": "native/include/HBEngine/D3DDevice.hpp",
+      "sha256": "20c00ca077a53cd6a914a0f51bf44d08d7229b0000ba1fd95b7b093cc11a241b"
+    },
+    {
+      "path": "tools/native-package-content.mjs",
+      "sha256": "dfa6a321e16d70c3382ecc0bb9b33e94938cf749165ec7c91f69a27c68e87ad0"
+    },
+    {
+      "path": "tools/native-game-platform.mjs",
+      "sha256": "44345368d5c3326cf9be7e3cac7d65b16bd2fc70a0574d26cce452e1e2f433d8"
+    },
+    {
+      "path": "tools/run-project.mjs",
+      "sha256": "5424c96edbc9437ab449d0da9a6b2d20169d4db874cc7fb8c72adc967565018a"
+    },
+    {
+      "path": "prototype/engine-services.js",
+      "sha256": "f383b95fcb0fb1b217ca080ffd57c544ed77c895cd3f03f279ecfcdf1afd1dfc"
+    },
+    {
+      "path": "tools/native-model-instances.mjs",
+      "sha256": "8e36ae7c2a71c3b170d7b55c8b02b1b22a52c71fd046c498ded5268f82848e70"
+    },
+    {
+      "path": "tools/native-ui-tiles.mjs",
+      "sha256": "7f1f1f99d3f76c6eb8c852cc26db7c1d823ccd6f729dc2ab2248adffc9fd66ac"
+    },
+    {
+      "path": "prototype/deferred-texture-source.js",
+      "sha256": "05bf7a88bdbc7d1660e593c166f7f7246d555f9441c2f3e7a23f65812519eaba"
+    },
+    {
+      "path": "prototype/runtime-data-equal.js",
+      "sha256": "84642c0b8be97f3ec425b4e05158b4d2e0d213a77b6ff26df3df713095eac7ca"
+    },
+    {
+      "path": "docs/ai-routes.json",
+      "sha256": "37737880e01a01423328c17cbec431e0bd05e9a5e39c5e8cd99004518a309848"
+    },
+    {
+      "path": "tools/check-native-ui-pipe.mjs",
+      "sha256": "64def91e5e9e2f797beaa56d20db0a0df6f83559393c376f691fdd9fba2ae822"
+    },
+    {
+      "path": "tools/native-ui-pipe-fixture.cpp",
+      "sha256": "bb2451883a21d1b7e636553547e838e475dec5e961337ea30a7137d2eb95e073"
+    },
+    {
+      "path": "tools/check-native-widget-snapshot-cost.mjs",
+      "sha256": "c5b79c024d9c41d5461c8c5ec4d64d783ec8489650c1f5f29857df1c03430fb4"
+    },
+    {
+      "path": "tools/check-native-presentation-queue.mjs",
+      "sha256": "128c2e57620eb16ca049525dbae220c7dc82efc125c784373a6531b004634806"
+    },
+    {
+      "path": "tools/check-sprite-atlas-native-reuse.mjs",
+      "sha256": "731a9d4e457f83df6f66503658f01acef6537b94a302cee4d51f244e8b60859f"
+    },
+    {
+      "path": "tools/check-native-immutable-record-patch.mjs",
+      "sha256": "63e7ff815acbb9522055be79be38faf50c1147ae70df2e3ce7364705a9ed93e7"
+    },
+    {
+      "path": "tools/check-native-widget-raster-worker.mjs",
+      "sha256": "c0e8bd3843cbb446f1b0acae5d0214587a004f9a2bc5b7f972beaa8a14aba14a"
+    },
+    {
+      "path": "tools/check-native-device-fallback.mjs",
+      "sha256": "ae7e66b20f249e69ffe1359982cf293c28f1cef9bb0c6d22c66b0f1aee36e911"
+    },
+    {
+      "path": "tools/check-native-portable-imports.mjs",
+      "sha256": "d53f4c6e29246aff92fed50f9cc09d3b72e68a3abf248969a71df3c4078446f2"
+    },
+    {
+      "path": "tools/check-native-model-residency.mjs",
+      "sha256": "15fae8b0c8c511b6981bf25e8d2b2849b2f34f7c5eb36d09e877b0996c16127c"
+    },
+    {
+      "path": "tools/check-pool-visual-lifetime.mjs",
+      "sha256": "f8a863a0001c3aab7ca6544d8b82ad037cf45f0d0f2037bfe001d2c36159376e"
+    },
+    {
+      "path": "tools/check-native-ui-tiles.mjs",
+      "sha256": "4002721afd0126078de02d7c19752373167f4dab8652608b1fa6bb5fcd7b7c67"
+    },
+    {
+      "path": "tools/check-native-audio-device.mjs",
+      "sha256": "87013cd2a3a25d3f44f9a1d9a796a59e9070e8e41b629d920573f612284e74c2"
+    },
+    {
+      "path": "tools/check-native-lazy-ui-transport.mjs",
+      "sha256": "19a8fe7550848fb2a8055ae3db840651cf58ebd529d91b8fb5c0ddac79bc512e"
+    },
+    {
+      "path": "tools/check-runtime-matcher-reuse.mjs",
+      "sha256": "7e3feaf80c42e715611dfdaa1e5145ce8a6cbeff26c2e8e241022715bea121f4"
+    },
+    {
+      "path": "docs/NATIVE_RUNTIME_COSTS.md",
+      "sha256": "2eb45af57e0ad798fee15b0cf5c05a72195c8273c84ff76dbd2fbf6ed048abe9"
+    },
+    {
+      "path": "docs/research/ENGINE_STATUS.json",
+      "sha256": "dc135af10001a7da9e198f9f9f786b28c2822fcbb82bbd5cd6f3a5c6522db6f0"
+    },
+    {
+      "path": "docs/research/ENGINE_WORK_3420.json",
+      "sha256": "27c2b226af3d92733638e859e21383e44a1bdc8aae63e87b719eca848a8d4c92"
+    },
+    {
+      "path": "CODEX_HANDOFF.md",
+      "sha256": "f383e616a5c15d2426fe3e60d568b904970f971a9f361b076a01d63b2c75870c"
+    },
+    {
+      "path": "HBNativePlayer.exe",
+      "sha256": "cfb6ca92217b18faafc2457b06bdba77660f5d0c5aee3782c972e61d183ef29f"
+    }
+  ],
+  "performance": {
+    "trial": {
+      "baselineFPS": 52.537003323525695,
+      "installedCandidateFPS": 100.66113156260353,
+      "report": "native/build/fullframe-BoYqKi/release-final/acceptance.json"
+    },
+    "auricStationary": {
+      "baselineFPS": 114.34702917445144,
+      "installedCandidateFPS": 116.07727668992722,
+      "report": "native/build/fullframe-BoYqKi/auric-stationary-release-final2/acceptance.json"
+    },
+    "target120Passed": false,
+    "scope": "게임 원본·콘텐츠·게임 모듈 불변, 동일 저장/위치, 소유 숨김·무음 후보 각20초. Auric 미세 차이의 통계적 향상은 주장하지 않아요."
+  },
+  "evidence": [
+    {
+      "report": "native/build/fullframe-BoYqKi/installed-verification.json",
+      "sha256": "92d31500c2624cce0781b34f3dc1602795ba6213f3f1ccd7e2095676e7bb68ea"
+    },
+    {
+      "report": "native/build/fullframe-BoYqKi/installed-runtime.json",
+      "sha256": "3faac617c2a46333b896dda725c6a39aac33a25957ce6dfae4aeb52027b3d09c"
+    },
+    {
+      "report": "native/build/ui-sdk-flow-u77biQ/acceptance.json",
+      "sha256": "2e00a5a05b0c41596674727bba54007287c9d74283ad6b1a93f9a8cf6b099cf0"
+    },
+    {
+      "report": "native/build/fullframe-BoYqKi/cleanup-final.json",
+      "sha256": "94195a68a1f1ddf42b51bad53f2a346eaab81fa13acedf0365f48acae64861cb"
+    },
+    {
+      "report": "native/build/fullframe-BoYqKi/release-final/acceptance.json",
+      "sha256": "e5462cbae25efb5e05984ffd3ee74265411d34dd91d3d57e1a5f4b56a4228ac8"
+    },
+    {
+      "report": "native/build/fullframe-BoYqKi/auric-stationary-release-final2/acceptance.json",
+      "sha256": "a5e32287ec56e09bdc1a6a7cf6da6270969b9f23a052b9dd7cdb06eedaedf195"
+    }
+  ],
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5332,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3dcb5bd65c89553c",
+        "bytes": 264798527,
+        "manifestSHA256": "c27c865a7ae304afb0994a6111729d07920b73d585c02f97f66cd3db62c4cf91"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-02T12:04:37.9245552Z",
+    "bytes": 264798527,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "59c56a17eb91063a"
+    ]
+  },
+  "stagingRemoved": true,
+  "userProfileTouched": false,
+  "userOriginalsTouched": false,
+  "wholeGameFPSVerified": false,
+  "existingPackagesRequireRebuild": true,
+  "automationCreated": false,
+  "directX12Implemented": false,
+  "allPCCompatibilityVerified": false,
+  "longRunGCVerified": false
+}

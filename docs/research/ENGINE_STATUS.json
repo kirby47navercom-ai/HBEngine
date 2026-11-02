@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-11-02",
-  "basisRevision": "69428ada7e973b8b97fecbeb7c2bb8ee4cca1c73",
+  "basisRevision": "025336655bb2dfb85960aaafbf8e7f35f675fe95",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -4427,9 +4427,9 @@
     "scope": "UI 작업 스레드/타일 binary pipe·모델/아틀라스 수명·실제 삭제·풀 준비·비교 스키마 재사용·장치 fallback·두 실제 게임 대조,120미합격"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_3419.json",
-    "sourceCommit": "69428ada7e973b8b97fecbeb7c2bb8ee4cca1c73",
-    "bundleHash": "3dcb5bd65c89553cbb8dd685d2447e3a373e1453052a88127543c87e7db8be17",
+    "receipt": "docs/research/USER_INSTALL_3421.json",
+    "sourceCommit": "025336655bb2dfb85960aaafbf8e7f35f675fe95",
+    "bundleHash": "59c56a17eb91063a33440bc2137b7122df1c04d15fdfddcc2134a4828df77c44",
     "verified": true,
     "installationVerified": true,
     "runtimeVerified": true,
