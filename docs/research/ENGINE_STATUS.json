@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-02",
-  "basisRevision": "025336655bb2dfb85960aaafbf8e7f35f675fe95",
+  "updatedAt": "2026-11-03",
+  "basisRevision": "0482b30dec1722501bd6fc4d2d146abf753c0701",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -4439,9 +4439,9 @@
     "scope": "UI 변경 스냅샷/타일·세계 행렬·자원/월드/worker 수명·보고 계측·정렬된 업로드·명시 D3D12-11on12 실행을 연결. 120/모든PC/전체 엔진 완료 아님"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_3421.json",
-    "sourceCommit": "025336655bb2dfb85960aaafbf8e7f35f675fe95",
-    "bundleHash": "59c56a17eb91063a33440bc2137b7122df1c04d15fdfddcc2134a4828df77c44",
+    "receipt": "docs/research/USER_INSTALL_3425.json",
+    "sourceCommit": "0482b30dec1722501bd6fc4d2d146abf753c0701",
+    "bundleHash": "3a109a17209858558105b7ade09ee56a16cb9ba74a9df38dda95508c599c3451",
     "verified": true,
     "installationVerified": true,
     "runtimeVerified": true,

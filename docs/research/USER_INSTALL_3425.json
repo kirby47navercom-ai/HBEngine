@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "sourceCommit": "0482b30dec1722501bd6fc4d2d146abf753c0701",
+  "bundleHash": "3a109a17209858558105b7ade09ee56a16cb9ba74a9df38dda95508c599c3451",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3a109a1720985855",
+  "files": 5374,
+  "versions": [
+    "3a109a1720985855"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "componentRuntimeVerified": true,
+  "wholeGameFPSVerified": false,
+  "allPCCompatibilityVerified": false,
+  "directX12NativeCommandLists": false,
+  "directX12InteropVerified": true,
+  "ownerChecks": [
+    {
+      "path": "tools/native-ui-tiles.mjs",
+      "sha256": "454dc8854be11038246a8a2a54b7c58aeb66f9dc1387fbc659709c4e06c9203d"
+    },
+    {
+      "path": "tools/native-widget-raster-worker.mjs",
+      "sha256": "84099d525350f4018985d3ef5d6edcc88311dae74b366ebdbfbfea86a7d20dfd"
+    },
+    {
+      "path": "tools/native-widget-raster-thread.mjs",
+      "sha256": "cce808e6cb0100c00234bcfed2e0337f7624c2ecc6c8f4c1626c76250735778f"
+    },
+    {
+      "path": "tools/native-widget-layer.mjs",
+      "sha256": "7e502c8ff795c5eb5b308fe20978e6a2aced040fa08f75e618c925553e951696"
+    },
+    {
+      "path": "tools/native-ui-frame.mjs",
+      "sha256": "f08ac7fe28643da56a68994695ca496cc637c03064eca61dad5a1783a9fe99fb"
+    },
+    {
+      "path": "tools/run-project.mjs",
+      "sha256": "31d956e3258f5be871069f0f3243f0589435dcb947c7275ad633dcd390291b06"
+    },
+    {
+      "path": "tools/native-game-platform.mjs",
+      "sha256": "b18048964321d4600ddb1386374a4dcbbe5f9db603e74c801bda5976566c86eb"
+    },
+    {
+      "path": "tools/native-game-runner.mjs",
+      "sha256": "01e74665f5da8e444fdc3b12665743c62c26492bf6f52a69107a576114189e11"
+    },
+    {
+      "path": "tools/native-runtime-telemetry.mjs",
+      "sha256": "3c341046884217715ab39ef5d0b8f2cda7facf628479c6bae0c94ed6a3f5f109"
+    },
+    {
+      "path": "native/include/HBEngine/D3DDevice.hpp",
+      "sha256": "28206be2f102cdf29c6066c6135516da48590864e4967cf79275d7e3b4713484"
+    },
+    {
+      "path": "native/include/HBEngine/Compute.hpp",
+      "sha256": "71c6cd995f4939c1f65dac9804be04a54290a32b91b704a92d15acbb729da2e2"
+    },
+    {
+      "path": "native/include/HBEngine/Render.hpp",
+      "sha256": "0558a7644097d745a511485db8a2d627552c00d778d41b6bf0399d3cafc31112"
+    },
+    {
+      "path": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "4aba098c9776127ede03d20f1d6b8d64f8ee40765d4ece981e211b757b44df7c"
+    },
+    {
+      "path": "native/desktop/HBNativePlayer.cpp",
+      "sha256": "cea87b7d389a9f88616018f67eb3b62ba8eb801dd5ae0f0571be19807332c109"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "1e75314f8b618c521635c66a2f17ba3e955a374840dacbe0307a740fa14ffbc3"
+    },
+    {
+      "path": "native/include/HBEngine/D3D12Interop.hpp",
+      "sha256": "c94ace67642fa72a4c9364981f8557378579d27e20150f21b574da625f5a52e9"
+    },
+    {
+      "path": "prototype/build-profile.js",
+      "sha256": "70068851f07cbf4f2e6a44c05a0cb03f06d2150dc933c11fe1a32602a2adbda3"
+    },
+    {
+      "path": "tools/build-native-game.mjs",
+      "sha256": "17700aa64bef0aae555a92440e6e2747a4cde5cb1d721b5fc8113d97eb9266b9"
+    },
+    {
+      "path": "prototype/build-panel.js",
+      "sha256": "c688a9b686bfde9cb4acaae4c22f577d4ca82bb72e2bdc438dd01a11893b6de0"
+    },
+    {
+      "path": "tools/native-host.mjs",
+      "sha256": "c8519a5817cb7506d5194b5f065d2eaba98c6f7c803baf592c30bcff266ff9eb"
+    },
+    {
+      "path": "tools/native-session-close.mjs",
+      "sha256": "b3dac6e6b0ada56d890c718e35d5874a20fe921817aea917ff104439070d62bb"
+    },
+    {
+      "path": "prototype/native-upload-batches.js",
+      "sha256": "145c0e08135aa3cfb6078c82c76705636487d3b0551270075a08ff8837943b4b"
+    },
+    {
+      "path": "prototype/native-transport.js",
+      "sha256": "f567fe09c732523df07450baa0d42feff625c2d5aec222f4cbdd52bdc16dc3d2"
+    },
+    {
+      "path": "prototype/ui-runtime.js",
+      "sha256": "6976f5d00793e76fbad795aabc8811c614ad0e9789c5791cb267fcc4888142e9"
+    },
+    {
+      "path": "tools/native-runtime-close.mjs",
+      "sha256": "94b3dfc2908c2d76ff6920ad009873c8fbf0cbef9dfb8d163783674a029c7a2c"
+    },
+    {
+      "path": "HBNativePlayer.exe",
+      "sha256": "d9c8e3dc37e97304b415e9a79157e4316f2bc711f0ae5a50f258bbf726549e9e"
+    }
+  ],
+  "activeDuringLightChecks": [
+    {
+      "pid": 7208,
+      "version": "3a109a1720985855",
+      "name": "pwsh.exe"
+    },
+    {
+      "pid": 47708,
+      "version": "3a109a1720985855",
+      "name": "node.exe"
+    }
+  ],
+  "installedChecks": [
+    {
+      "work": "native/build/runtime-close-MI4oqc",
+      "passed": true,
+      "asyncDisposalAwaited": true,
+      "allResourcesAttemptedAfterFailure": true,
+      "originalRuntimeErrorPreserved": true,
+      "normalPrimaryErrorNotDuplicated": true,
+      "productionRunnerConnected": true
+    },
+    {
+      "work": "native/build/upload-batches-3eE6td",
+      "passed": true,
+      "unicodeAndEscapingExact": true,
+      "orderPreserved": true,
+      "boundedPackets": true,
+      "serializedUploadOnce": true,
+      "initialResources": 16,
+      "uploadRoundTrips": 1,
+      "graphicsProfileValidation": true,
+      "actualBackendDiagnosticPreserved": true
+    }
+  ],
+  "runtimeScope": "설치 exact owner/PE SHA와 설치 API 종료·업로드/프로필 실행. 같은 SHA 후보의 actual release C++/UI/입력/종료 및 D3D12 HW/WARP/재판 근거 재사용. 120/다른PC/장시간 전체 합격 아님",
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5359,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\59c56a17eb91063a",
+        "bytes": 264943489,
+        "manifestSHA256": "0f26659791822b628c23790950798cfdd0bd6e657d2b57e78beb720caa58cd5f"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-02T14:58:50.6448718Z",
+    "bytes": 264943489,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "3a109a1720985855"
+    ]
+  },
+  "stagingRemoved": true,
+  "userProfileTouched": false,
+  "userOriginalsTouched": false,
+  "automationCreated": false,
+  "existingPackagesRequireRebuild": true,
+  "cleanupEvidence": "native/build/runtime-followup-nURhsp/cleanup.json",
+  "sourceArchive": "native/build/runtime-followup-nURhsp/sources",
+  "changedSourceHashes": {
+    "docs/research/ENGINE_STATUS.json": "bdf7012fe2853da8bf5007eac99b8c315363525c7d562604a6fd27772e28ccf9",
+    "CODEX_HANDOFF.md": "c43b534cd3711b97b81192c107b0e5fd9ea538f048c485c0326d45c210d67695"
+  }
+}

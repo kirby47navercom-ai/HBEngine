@@ -1,3 +1,6 @@
+## 사용자 설치 전환 · USER_INSTALL3425 / 2026-11-03
+3a109a1720985855·5374files·26owner/PE SHA·설치 공용 API2개·Versions1 확인. WORK3424와 동일 SHA actual release C++/UI/입력/종료·DX12-11on12 HW/WARP/재판 근거 재사용. 소유 Engine/중복 패키지12개 정리, 재현 sources/보고서/캡처 및 단일 frozen 게임 보존. 41.8GB는 하드링크 논리합이지 물리 회수량 아님. 설치 후 다른 설치본 실행은 보호하고 GUI/부하 재검사 안 함. 120미합격/전체PC/직접D3D12목록/장시간GC는 후속. 게임원본·사용자창·프로필·금지3파일·예약·agent·goal 변경 없음.
+
 ## 엔진 비용·자원 수명·DX12 호환 · WORK3424 / 2026-11-02
 UI 불변 가지/변경 키 재사용·Buffer 타일 탐색/독점 패킷 이전·비입력 글자 행렬 생략·세계 행렬 위치 재사용·순서 보존 묶음 업로드를 연결했어요. dirty view/렌더 이벤트/unused module world/queued CPP child 종료·cache lease·오류 뒤 전체 해제를 교정했어요. report 전용 GC/각 isolate 메모리·CPU·UI 단계 관측 추가. 실제12장치/queue/fence/3-buffer와 D3D11On12 호환 HW/WARP/재판 실행, nativeCommandLists=false·기본11 유지. 120미합격/모든PC/네이티브12전체/GC pause 합격 아님. WORK3420의 옛 QA FPS는 측정 중 layout/주기 출력이 켜진 표본이어서 일반 실행/새 훅 비교로 쓰지 않아요. 최종 숨김20초 60.853/69.840은 외부 부하 미통제 관측만. 설치 상태는 후속 USER_INSTALL3425와 실제 마커를 대조해요. 게임원본/사용자창/금지3파일/예약/goal/agent 변경0. 공유 WIP 보존·canonical 후보만 index/설치.
 
