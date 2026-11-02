@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "date": "2026-11-02",
+  "kind": "native-gameplay-read-only-state-cost",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3416.json",
+  "implementationRevision": "commit-containing-this-receipt",
+  "changedSourceHashes": {
+    "native/include/HBEngine/Bridge.hpp": "717826b676867cc1f6e8973ec0cc18afdd380924e1d44f2c2380b23352d2a9b8",
+    "docs/ai-routes.json": "f8c808790e64d8f473aba71c692bdcb219444b6d41c345d5564c04ee4eb60546",
+    "tools/check-native-gameplay-read-cost.mjs": "5511968c44f68ab0984d59e35e4d6f51bf8c65e3c12fcaca895283cc7ff91153",
+    "docs/NATIVE_RUNTIME_COSTS.md": "81af3ff248e1d1c922311ba98cb9f8e36097bc97e63d4771376d42c5d61c0dd0"
+  },
+  "targetIds": [
+    "BLD-01",
+    "CPP-01"
+  ],
+  "implementation": [
+    "게임플레이 조회 공용 const 경로로 객체 dirty/전체행 비교 제거",
+    "애니메이션/모프/뼈/IK 읽기 검색을 const 경로로 분리·명시 가변 helper 호환",
+    "선택 상태 기본값·잘못된 데이터 거부·수정 후 즉시 조회와 권위 상태 복원 유지"
+  ],
+  "checks": [
+    {
+      "report": "native/build/gameplay-read-cost-WquiSP/acceptance.json",
+      "sha256": "5beb4f69975ae65e2734899e327830de90faa37da93a8223c58e48759631d4cb",
+      "passed": true,
+      "scope": "실제 두 release C++ worker·78조회/32기본값/10오류/4모호성/가변 복원"
+    }
+  ],
+  "performance": {
+    "objects": 500,
+    "framesPerBatch": 144,
+    "warmupFrames": 16,
+    "rounds": 4,
+    "baseline": {
+      "p50MS": 2.6762,
+      "p95MS": 3.6875,
+      "p99MS": 7.1393,
+      "samples": 512
+    },
+    "candidate": {
+      "p50MS": 0.6286,
+      "p95MS": 0.7585,
+      "p99MS": 0.8778,
+      "samples": 512
+    },
+    "scope": "actual C++ SDK gameplay getters and next-call authoritative restore; excludes render, physics, IPC, and whole-game FPS"
+  },
+  "rendererReuse": {
+    "previousInstallation": "docs/research/USER_INSTALL_3417.json",
+    "nativePlayerSHA256": "c6f466a32524bbb331e7b6a6d58bba4bf4a95b904a46bfc8e4c5e6b3c515a990",
+    "scope": "렌더러/입력/패키지 실행 소스와 PE는 동일·SDK는 새 worker를 실제 컴파일",
+    "wholeGameFPSVerified": false
+  },
+  "limitations": [
+    "전체 게임 FPS·사용자 게임 재판/보스전 성능 미측정",
+    "기존 패키지는 C++ 재빌드/재패키징해야 새 SDK 적용",
+    "40frame 실행 smoke를 성능/안정성 합격 근거로 사용하지 않음"
+  ],
+  "userWindowsTouched": false,
+  "userGameOriginalsTouched": false,
+  "automationCreated": false
+}
