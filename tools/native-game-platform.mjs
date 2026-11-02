@@ -1,4 +1,5 @@
 import {registerDeferredTexture} from '../prototype/deferred-texture-source.js';
+import {closeNativeRuntime} from './native-runtime-close.mjs';
 import {openNativeContent} from './native-package-content.mjs';
 import {packagedModuleError} from './packaged-module-error.mjs';
 import fs from 'node:fs/promises';
@@ -15,16 +16,17 @@ import {AudioRouting} from '../prototype/audio-mixer.js';
 export async function openNativePackage(directory){
  const content=await openNativeContent(directory),{root,project,manifest,url,resolve,readBytes,modulePath:confined}=content;
  const host=new NativeHost(),aot=new Map();
- for(const row of manifest.nativeModules||[]){try{aot.set(row.signature,host.registerBinary(await confined(row.binary),row.metadata));}catch(error){await host.close();await content.close();throw packagedModuleError(path.join(root,row.binary),error);}}
+ for(const row of manifest.nativeModules||[]){try{aot.set(row.signature,host.registerBinary(await confined(row.binary),row.metadata));}catch(error){const failure=packagedModuleError(path.join(root,row.binary),error);await closeNativeRuntime([()=>host.close(),()=>content.close()],failure);throw failure;}}
  host.build=async(header,source,entry={})=>{const key=createHash('sha256').update(nativeModuleKey(header,source,entry)).digest('hex'),built=aot.get(key);if(!built)throw Error('미리 컴파일한 C++ 모듈이 없어요. 게임을 다시 빌드하세요.');return built;};
- return {root,project,manifest,host,url,resolve,readBytes,close:async()=>{await host.close();await content.close();}};
+ let closeJob;return {root,project,manifest,host,url,resolve,readBytes,close:()=>closeJob??=closeNativeRuntime([()=>host.close(),()=>content.close()])};
 }
 
 export function installNativeAssets(pack){
  const originalFetch=globalThis.fetch,originalLoad=THREE.TextureLoader.prototype.load;
+ const globals=new Map(['fetch','hbMobileFileUrl','window','createImageBitmap','OffscreenCanvas','ImageData','hbNativeCanvas','hbNativeLoadImage','hbNativeImagePixels'].map(key=>[key,Object.getOwnPropertyDescriptor(globalThis,key)]));let restored=false;
  globalThis.hbMobileFileUrl=pack.url;globalThis.window={URL,performance:globalThis.performance,crypto:globalThis.crypto,innerWidth:pack.manifest.width,innerHeight:pack.manifest.height};
  globalThis.fetch=async(resource,options={})=>{const url=typeof resource==='string'?resource:resource?.url||String(resource);if(url.startsWith('blob:')||url.startsWith('data:'))return originalFetch(resource,options);if(!url.startsWith('hbasset:'))throw Error('네이티브 패키지의 에셋 주소가 아니에요: '+url);options.signal?.throwIfAborted();let bytes;try{bytes=await pack.readBytes(decodeURIComponent(url.slice(8)),{signal:options.signal});}catch(error){if(error.code==='ENOENT')return new Response(JSON.stringify({error:error.message}),{status:404});throw error;}return new Response(bytes,{status:200,headers:{'Content-Length':String(bytes.length)}});};
- const pixels=async(source)=>{const bytes=typeof source==='string'?/^(blob:|data:)/.test(source)?Buffer.from(await(await originalFetch(source)).arrayBuffer()):await pack.readBytes(source):Buffer.from(source),image=await loadImage(bytes);if(image.width<1||image.height<1||image.width>16384||image.height>16384)throw Error('이미지 크기 한도16384를 확인하세요.');const surface=createCanvas(image.width,image.height),context=surface.getContext('2d');context.drawImage(image,0,0);return {data:new Uint8Array(context.getImageData(0,0,image.width,image.height).data),width:image.width,height:image.height};};
+ const pixels=async(source)=>{const bytes=typeof source==='string'?/^(blob:|data:)/.test(source)?Buffer.from(await(await originalFetch(source)).arrayBuffer()):await pack.readBytes(source):Buffer.from(source),image=await loadImage(bytes);if(image.width<1||image.height<1||image.width>16384||image.height>16384)throw Error('이미지 크기 한도16384를 확인하세요.');const surface=createCanvas(image.width,image.height),context=surface.getContext('2d');context.drawImage(image,0,0);const rgba=context.getImageData(0,0,image.width,image.height).data;return {data:new Uint8Array(rgba.buffer,rgba.byteOffset,rgba.byteLength),width:image.width,height:image.height};};
  const texture=async source=>{const p=await pixels(source),out=new THREE.DataTexture(p.data,p.width,p.height);out.flipY=true;out.generateMipmaps=true;out.needsUpdate=true;return out;};
  THREE.TextureLoader.prototype.load=function(url,onLoad,onProgress,onError){const output=new THREE.Texture();this.manager.itemStart(url);pixels(url.startsWith('hbasset:')?decodeURIComponent(url.slice(8)):url).then(image=>{output.image=image;output.needsUpdate=true;onLoad?.(output);this.manager.itemEnd(url);},error=>{onError?.(error);this.manager.itemError(url);this.manager.itemEnd(url);});return output;};
  globalThis.hbNativeCanvas=()=>createCanvas(1,1);globalThis.ImageData=ImageData;globalThis.OffscreenCanvas=class {constructor(w,h){return createCanvas(w,h);}};
@@ -32,7 +34,7 @@ export function installNativeAssets(pack){
  globalThis.hbNativeLoadImage=async(url,signal)=>{signal?.throwIfAborted();return loadImage(await pack.readBytes(decodeURIComponent(url.slice(8)),{signal}));};
  globalThis.hbNativeImagePixels=(image,flip)=>{const surface=createCanvas(image.width,image.height),context=surface.getContext('2d');if(flip){context.translate(0,image.height);context.scale(1,-1);}context.drawImage(image,0,0);return {width:image.width,height:image.height,data:context.getImageData(0,0,image.width,image.height).data};};
  const modelTexture=async source=>{const out=new THREE.DataTexture(null,1,1);out.flipY=true;out.generateMipmaps=true;return registerDeferredTexture(out,()=>pixels(source));};
- return {pixels,texture,modelTexture,restore(){THREE.TextureLoader.prototype.load=originalLoad;globalThis.fetch=originalFetch;delete globalThis.hbMobileFileUrl;delete globalThis.window;delete globalThis.createImageBitmap;delete globalThis.OffscreenCanvas;delete globalThis.ImageData;delete globalThis.hbNativeCanvas;delete globalThis.hbNativeLoadImage;delete globalThis.hbNativeImagePixels;}};
+ return {pixels,texture,modelTexture,restore(){if(restored)return;restored=true;THREE.TextureLoader.prototype.load=originalLoad;for(const [key,descriptor]of globals)if(descriptor)Object.defineProperty(globalThis,key,descriptor);else delete globalThis[key];}};
 }
 
 export function createNativeAudioContext(Context,{silent=false,onFallback=()=>{}}={}){

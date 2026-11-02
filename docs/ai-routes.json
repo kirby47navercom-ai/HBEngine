@@ -5515,6 +5515,17 @@
         "native/include/HBEngine/Compute.hpp",
         "native/desktop/SceneRenderBridge.hpp"
       ]
+    },
+    {
+      "id": "native-asset-scope",
+      "keywords": [
+        "installNativeAssets",
+        "openNativePackage"
+      ],
+      "paths": [
+        "tools/native-game-platform.mjs",
+        "tools/native-runtime-close.mjs"
+      ]
     }
   ]
 }

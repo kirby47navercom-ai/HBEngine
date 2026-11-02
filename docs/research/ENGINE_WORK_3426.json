@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "kind": "native-assets-decoded-storage-renderer-position",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3424.json",
+  "implementationRevision": "commit-containing-this-receipt",
+  "targetIds": [
+    "BLD-01",
+    "DBG-02",
+    "PER-01"
+  ],
+  "changedSourceHashes": {
+    "tools/native-game-platform.mjs": "76bbd8779f6319b8cb679bb766c7d060496fb9c22ba3fc55159bb1d2751a0408",
+    "prototype/native-scene-renderer.js": "9aed7c9e321de2966cf1625368493669fbd789b283d337c846fea573ed5bd6d4",
+    "tools/check-native-asset-lifetime.mjs": "26250972c2301e73d3c3951c3c705fd05ca83bc5ee2e46b1443622bcea4daec2",
+    "tools/check-native-world-matrix-reuse.mjs": "4f8dc7b2f2e886b5636e480c554d3f9d9d016c6006db25e0160ad56deee47dda",
+    "docs/ai-routes.json": "6bc002be0b42338ec542b8fb3d725e271e6ae51c7055b46bf1e5287ddc8ae67f",
+    "docs/NATIVE_RUNTIME_COSTS.md": "7be16b3945d0d19a1715107f0c3fd1e325c269722356ea55dd6a23e963043710",
+    "docs/research/ENGINE_STATUS.json": "c6bb252515a704a0769b7ea5a44e859cd11f494aa0b5efc29dc8239aa2b5a5fb",
+    "CODEX_HANDOFF.md": "eb9ef141d0572d57e69f30223f431b6d6821a8514d169924571a41c424674c41"
+  },
+  "checks": [
+    {
+      "report": "native/build/asset-lifetime-x2fXGZ/acceptance.json",
+      "sha256": "73118a07eeedb94ccfbcc2327ab60d6362b786a71659e4e5cdc853d78212d0f1",
+      "passed": true
+    },
+    {
+      "report": "native/build/world-matrix-reuse-1BSuHE/acceptance.json",
+      "sha256": "09449c0ce2a1d3db0304f535c72ee8a97a884f31731def98bd1033410ad67ff8",
+      "passed": true
+    }
+  ],
+  "rendererBinaryUnchanged": {
+    "sha256": "d9c8e3dc37e97304b415e9a79157e4316f2bc711f0ae5a50f258bbf726549e9e",
+    "receipt": "docs/research/USER_INSTALL_3425.json"
+  },
+  "remaining": [
+    "실제120FPS·보스전/장시간·다른 물리 PC·직접12 command list는 해결 근거 없음"
+  ],
+  "userOriginalsTouched": false,
+  "userWindowsTouched": false,
+  "automationCreated": false
+}

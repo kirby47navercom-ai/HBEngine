@@ -1,3 +1,6 @@
+## 자원 범위·반사 좌표 후속 · WORK3426 / 2026-11-03
+설치3425 뒤에도 구현을 이어서, 디코딩된 픽셀 전체 재복사 제거·이전 전역 훅 descriptor 복원·host 종료 실패 뒤 hbdata 해제·동시 close 공유·조명/반사 위치 matrixWorld 재사용을 추가했어요. 실제 Skia pixels/독립 버퍼/오류 해제 및60lit×12frame/반사 probe/전체 패킷 일치·중복좌표720→0. Present0/highres timer 기존 경로 확인,60고정 가설 채택 안 함. 120/누적 목표 완료 아님. 설치 상태는3427 영수증/실제 마커로 대조해요.
+
 ## 사용자 설치 전환 · USER_INSTALL3425 / 2026-11-03
 3a109a1720985855·5374files·26owner/PE SHA·설치 공용 API2개·Versions1 확인. WORK3424와 동일 SHA actual release C++/UI/입력/종료·DX12-11on12 HW/WARP/재판 근거 재사용. 소유 Engine/중복 패키지12개 정리, 재현 sources/보고서/캡처 및 단일 frozen 게임 보존. 41.8GB는 하드링크 논리합이지 물리 회수량 아님. 설치 후 다른 설치본 실행은 보호하고 GUI/부하 재검사 안 함. 120미합격/전체PC/직접D3D12목록/장시간GC는 후속. 게임원본·사용자창·프로필·금지3파일·예약·agent·goal 변경 없음.
 

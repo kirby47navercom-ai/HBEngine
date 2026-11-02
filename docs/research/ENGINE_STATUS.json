@@ -3866,7 +3866,8 @@
         "docs/research/ENGINE_WORK_3402.json",
         "docs/research/ENGINE_WORK_3406.json",
         "docs/research/ENGINE_WORK_3422.json",
-        "docs/research/ENGINE_WORK_3424.json"
+        "docs/research/ENGINE_WORK_3424.json",
+        "docs/research/ENGINE_WORK_3426.json"
       ]
     },
     {
@@ -3920,7 +3921,8 @@
         "docs/research/ENGINE_WORK_3414.json",
         "docs/research/ENGINE_WORK_3418.json",
         "docs/research/ENGINE_WORK_3420.json",
-        "docs/research/ENGINE_WORK_3424.json"
+        "docs/research/ENGINE_WORK_3424.json",
+        "docs/research/ENGINE_WORK_3426.json"
       ]
     },
     {
@@ -4201,7 +4203,8 @@
         "docs/research/ENGINE_WORK_1809.json",
         "docs/research/USER_INSTALL_1811.json",
         "docs/research/ENGINE_WORK_3402.json",
-        "docs/research/ENGINE_WORK_3424.json"
+        "docs/research/ENGINE_WORK_3424.json",
+        "docs/research/ENGINE_WORK_3426.json"
       ]
     },
     {
@@ -4433,10 +4436,10 @@
     }
   ],
   "latestBatch": {
-    "first": 3424,
-    "last": 3424,
-    "receipt": "docs/research/ENGINE_WORK_3424.json",
-    "scope": "UI 변경 스냅샷/타일·세계 행렬·자원/월드/worker 수명·보고 계측·정렬된 업로드·명시 D3D12-11on12 실행을 연결. 120/모든PC/전체 엔진 완료 아님"
+    "first": 3426,
+    "last": 3426,
+    "receipt": "docs/research/ENGINE_WORK_3426.json",
+    "scope": "실제 Skia 픽셀 중복 복사 제거·전역 훅 복원·종료 실패 시 archive 해제·조명 메시 반사 위치 재사용. 전체FPS 합격 아님"
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_3425.json",

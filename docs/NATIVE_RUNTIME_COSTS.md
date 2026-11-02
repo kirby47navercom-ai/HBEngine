@@ -75,3 +75,10 @@ scene/camera의 월드 행렬 갱신 뒤에는 정렬 위치를 그 행렬에서
 `nativeGraphicsAPI`는 d3d11/auto/d3d12예요. d3d12는 실제 D3D12 장치·큐·fence·3-buffer 표시와 Microsoft D3D11On12를 사용하는 호환 경로예요. 기본 d3d11을 유지하며, 직접 D3D12 command-list 포트 완료로 표시하지 않아요. HW/WARP 각각 compute/readback/표시/resize를 확인했고 실제 재판의 12 호환 표시도 확인했어요.
 
 새 QA 훅은 측정 구간의 layout/캡처/주기 QA 출력/중복 입력 해석을 꺼요. 마지막 D3D11 숨김·무음20초 사본은 이전60.853FPS(p95 20.816ms), 후보69.840FPS(p95 17.956ms) 관측이에요. 별도 작업 부하 통제가 안 됐고 이전 측정에는 다른 설치본 빌드도 겹쳐, 확정 개선율이나 전면/음향 활성 원본 성능으로 주장하지 않아요. 120FPS 목표는 계속 미합격이에요. 게임 원본·에셋·모듈·저장 원본은 바꾸지 않았어요. 상세 수치/실패/재사용 경계는 [ENGINE_WORK_3424.json](research/ENGINE_WORK_3424.json)에 있어요.
+
+
+## 해제 오류·디코딩 픽셀·반사 위치 · WORK3426
+
+이미지의 getImageData가 이미 소유한 RGBA 메모리를 Uint8Array 뷰로 사용해 불필요한 두 번째 전체 픽셀 복사를 없앴어요. 독립 디코딩 간 픽셀 버퍼는 따로이며 실제 Skia PNG 픽셀 전부를 대조했어요. 설치한 네이티브 에셋 훅은 이전 전역 값/속성 descriptor를 복원하고 복원은 한 번만 실행해요. C++ host 종료가 실패해도 hbdata 파일 핸들 해제를 시도하고 동시 package close는 같은 완료를 기다려요.
+
+조명 있는 메시의 반사 후보 위치도 이미 갱신한 matrixWorld에서 읽어요. 반사 프로브가 있는60개 메시·12프레임에서 중복 getWorldPosition720→0, 부모 카메라/회전/비균일 scale/투명 순서/전체 frame 패킷이 같아요. 전체FPS나 전체 메모리 감소율로 바꾸어 주장하지 않아요. 타이머는 이미 고해상도 waitable timer, SceneRenderBridge의 Present 인자는0임을 확인했으므로 숨은60 고정이라고 결론 내리지 않았어요. 새 FPS 제한·품질 하향은 없어요.
