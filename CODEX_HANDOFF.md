@@ -1,3 +1,6 @@
+## 글꼴 공용 수명·목록 워커 · WORK3430 / 2026-11-03
+프로세스 공용 Skia font 참조/내용 family·마지막 미사용 해제·빈/투명 지연 로드, 기본 한글 fallback 유지. List/Tree 메인 페인트 fallback 제거·worker 상태 revision/권위 입력/새 선택·scroll 보존. 글꼴5·1만행24·worker16·타이포96·실제 UI48 pixel/hit 일치. 실제 숨김 저장10초106.16/107.66 관측, UI p95 미개선·120/전체RAM/직접12 미합격 경계 유지. 금지3파일/게임원본/사용자창/예약/agent/goal 변경0. 설치 후속3431에서 확인.
+
 ## 설치 확인 · USER_INSTALL3429 / 2026-11-03
 89aac7fbab369d30·5380files·27owner/PE SHA·실제 Skia worker16case 통과. Versions1·소유 Engine/중복 패키지11개 정리·재현 sources/단일 frozen 게임/UI replay 보존. WORK3428의 UI 최적화 배포이며 전체 FPS 합격으로 해석하지 않아요. 게임원본·사용자창/프로필·금지3파일 변경 없음.
 

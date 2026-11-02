@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "kind": "native-font-shared-lifetime-and-list-thread-paint",
+  "implementationRevision": "commit-containing-this-receipt",
+  "baseInstallation": "docs/research/USER_INSTALL_3429.json",
+  "targetIds": [
+    "UI-01",
+    "PER-01",
+    "PER-03"
+  ],
+  "changedSourceHashes": {
+    "tools/native-widget-layer.mjs": "e886bb1dc92ea4b29d67a6840c45395e386399a83ce72fb1e1bc87406a29023a",
+    "tools/native-widget-fonts.mjs": "c92ebc9230d5e74b9a049cfe569b7a813f1e7e386bfb958802bd89ccdd99aa09",
+    "tools/native-widget-raster-thread.mjs": "128c85ccd35051caa6332de7b3f0e2f8d1b0c6b6004f1c6ce2372aa3cf41b480",
+    "tools/native-widget-raster-worker.mjs": "3e3ff7daf027968c301d6ae2de6e1b55c86c13231e9a950d3f4539fffa65720f",
+    "tools/native-widget-lists.mjs": "c25aa671c9e536975231d5cce95f1b80d065ed0a624ea9368fd279c53d298cf3",
+    "tools/native-widget-assets.mjs": "5a9ba2d1703fcdb550931821d7bc30fb75a42643c49ea58b3ce7080fce7350ff",
+    "tools/check-native-widget-fonts.mjs": "b8cafd473ef105ecd5d512ce71756db0e32290753d93cd81e4840a9ec6038aa3",
+    "tools/check-native-list-worker.mjs": "d285eb4e0c47c32d3db9416c8087572d8ba127277dbf9760f865dceea062431d",
+    "tools/check-native-widget-raster-worker.mjs": "55023ba6d7729a01beadb99b97b56aceeb3b3fb9d91d079e0a6546b18c95ee89",
+    "tools/check-native-widget-text-cache.mjs": "da538e6cfb00e767edcd1f4c73e9832a85fae27f198bbf3edc224bb4ea21b341",
+    "docs/ai-routes.json": "02cde509a4426cd35b00740aa68c08d312f6bb2588bb3ba8351eb9f890099c67",
+    "docs/NATIVE_RUNTIME_COSTS.md": "5d4a66a85bffd92a8ae4de0563ec405e843e906367fb3a5a94e426b0e13e7383",
+    "docs/research/ENGINE_STATUS.json": "35360892c7560673ba4d756d996dd31c39ee7143b5c89220d9ff144f7526a92b",
+    "CODEX_HANDOFF.md": "227d4fb20f21b3c0b0bbf3d238f08603524697c6a6d14bf8ef27e982add65922"
+  },
+  "checks": [
+    {
+      "report": "native/build/widget-fonts-kvqj02/acceptance.json",
+      "sha256": "8efa8532e1f6cf2f73fde2a3a38dca06f6d18bf483e2c64c0eb3c383edda27dd",
+      "passed": true
+    },
+    {
+      "report": "native/build/list-worker-fPL0Bq/acceptance.json",
+      "sha256": "a1071b50b6c9a910ff2593cbd662ff8c6dd8ed26301ad353f543face92b5b2cd",
+      "passed": true
+    },
+    {
+      "report": "native/build/widget-raster-worker-x16SBz/acceptance.json",
+      "sha256": "b832a3c1eeb20466e08c456cc289aa319c4ccca2530f466d1098a94c0dcc961e",
+      "passed": true
+    },
+    {
+      "report": "native/build/widget-text-cache-6Llssy/acceptance.json",
+      "sha256": "5d50b80c7213fb0869b03fdb6e41ed670330ba97653c20a31c976e177df0128a",
+      "passed": true
+    },
+    {
+      "report": "native/build/ui-replay-boeUHe/acceptance.json",
+      "sha256": "5f8686a86c84bfdd111676cac3ae445459aafcf83817e9934a066fbac129e299",
+      "passed": true
+    }
+  ],
+  "packageClosure": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\font-cost-6HJY8U/package-closure.json",
+  "actualSavedGame": {
+    "observations": [
+      {
+        "report": "native/build/font-cost-6HJY8U/baseline-fonts/acceptance.json",
+        "sha256": "1a1f5f0ebe89b7513a7d3e253806714e75b80e076d1482b77504c5d10677ae97",
+        "fps": 106.16379907759482,
+        "p95MS": 12.521728515625,
+        "p99MS": 17.039794921875,
+        "seconds": 10.014
+      },
+      {
+        "report": "native/build/font-cost-6HJY8U/candidate-fonts/acceptance.json",
+        "sha256": "e43b9329b1488f9ca95fa25521a051131138859452a574f87a717f2da0de6bae",
+        "fps": 107.66023195045385,
+        "p95MS": 11.203125,
+        "p99MS": 18.001708984375,
+        "seconds": 10.012
+      }
+    ],
+    "immutableModuleAndContent": true,
+    "sourceSaveSHA256": "39213948208ea9daba25904bc092f52f80df9948c16f830c733eef39d1c70b21",
+    "scope": "Owned hidden silent saved normal court. Ten seconds each, all frameDone intervals; QA/layout muted during interval. External desktop load uncontrolled; not120 acceptance or a causal improvement percentage.",
+    "immutableFiles": [
+      {
+        "path": "Binaries/2a9d1632a8dddcce3a6e137c585fd4d94c12f5e641c946b27e886226ba89add3.exe",
+        "sha256": "eb9427dc5b8de1d5bd329e8672b87a6d9afded717f0457fe444d2062eefe0a89"
+      },
+      {
+        "path": "game.hbdata",
+        "sha256": "83a3027a22059950d508f96925e7ac3695b1597685bcb81d633a29f640d9b688"
+      }
+    ]
+  },
+  "rendererBinaryUnchanged": {
+    "sha256": "d9c8e3dc37e97304b415e9a79157e4316f2bc711f0ae5a50f258bbf726549e9e",
+    "reuse": "docs/research/USER_INSTALL_3429.json"
+  },
+  "diagnosticsScope": "fonts.encodedSourceBytes counts encoded source files, not decoded Skia glyph caches, total RSS or VRAM",
+  "notAdopted": [
+    "Disable system fonts: breaks unverified fallback, only import RSS experiment",
+    "No GPU text renderer or direct D3D12 command list claimed",
+    "Test-only unchanged-pixel ACK gate corrected; no product performance claim from aborted test"
+  ],
+  "remaining": [
+    "Full-game sustained120 and tail latency",
+    "Total native glyph-cache/RSS/VRAM bounds and longer scene churn",
+    "Other physical PCs/mobile hardware"
+  ],
+  "userGameModified": false,
+  "userWindowOrProfileTouched": false,
+  "automationCreated": false,
+  "newAgentCreated": false,
+  "heldRowClickAcrossPaintVerified": true
+}

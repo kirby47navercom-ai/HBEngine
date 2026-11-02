@@ -5381,7 +5381,10 @@
     {
       "id": "native-list-state",
       "keywords": [
-        "NativeWidgetList"
+        "NativeWidgetList",
+        "paintState",
+        "applyPaintState",
+        "목록 워커"
       ],
       "paths": [
         "tools/native-widget-lists.mjs"
@@ -5537,6 +5540,19 @@
       "paths": [
         "tools/native-game-platform.mjs",
         "tools/native-runtime-close.mjs"
+      ]
+    },
+    {
+      "id": "native-widget-font-lifetime",
+      "keywords": [
+        "NativeWidgetFonts",
+        "NativeWidgetFontConnection",
+        "receiveNativeWidgetFontResponse",
+        "네이티브 글꼴 수명",
+        "워커 글꼴 공유"
+      ],
+      "paths": [
+        "tools/native-widget-fonts.mjs"
       ]
     }
   ]
