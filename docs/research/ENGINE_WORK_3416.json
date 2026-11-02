@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "date": "2026-11-02",
+  "kind": "native-ordered-input-lists-and-paths",
+  "implementationRevision": "commit-containing-this-receipt",
+  "basisRevision": "ce4f94e3f78ae6ac4f22e5a48f85b337a74e4dbe",
+  "targetIds": [
+    "BLD-01",
+    "GAM-01"
+  ],
+  "changedSourceHashes": {
+    "native/desktop/HBNativePlayer.cpp": "5531aaee6fefd368ed4976f761e5e979a01251b270d3aa5e9a85d5f1475b3d9e",
+    "native/desktop/NativeGameInput.hpp": "6ca3651ed0a21f24a41e01f9130721f26e0ca640b198a14760a3e8a7f25d9ecf",
+    "tools/native-game-runner.mjs": "f16bd78e027d513a00324ba761f09d7365f8e09bee763c009fb6ac23f9323b6f",
+    "tools/native-input-queue.mjs": "77d367c47c05cbf68e630aad203fa5fd48f739537b012b16f19cb7f2732b953e",
+    "prototype/runtime-input.js": "71795823b746ea0b6d4167de13dcd4f69dd9062541910d6bc97046098b53f40e",
+    "tools/native-widget-layer.mjs": "696472915b3c7816c8599ee215d12f28728cbc87da65b46567cb8aac2f8b6236",
+    "tools/native-widget-lists.mjs": "fb5d64c9a007baaa2f827618695f3c52948478d0fdb83485b189c45a5e82cce4",
+    "tools/native-widget-assets.mjs": "2f1811df821de3322eea430a1e55b7436288c99cc1943a11d3e35dab02a5409f",
+    "tools/build-native-game.mjs": "8e731628e9e0e4bac655a091325bd77faa709588023507565cd695a37b46df12",
+    "docs/ai-routes.json": "0f850527d197540514874e23fc8c943c7ef0c9207516382095e36e86f14c020c",
+    "tools/check-native-game.mjs": "5565555e350f5e83ac912ff4710772d280c5268abdc5705e89c5e27b2bd8e8c2",
+    "tools/check-native-input-lists.mjs": "1644f8c46a2ab4c45d1a33915280f8ea3ba1fac38448f450ae1079922a94b9a6",
+    "tools/native-input-fixture.cpp": "7829d20dcef2ab8f2c4de1760ce5072ad91e467929195f95773c951cee51b7ab",
+    "native/desktop/WindowsGameIdentity.hpp": "f33b47e56cf2289a3507f6e20d73fb24fdbd246661f9c521927917c0f1110a3a",
+    "tools/check-native-package-paths.mjs": "3306004e77ab92f24b8d2b6111f3db99ee4dd8d52f763f17cfa4f02fc52c03de",
+    "tools/native-package-stamp-fixture.cpp": "0de45be9ec069520cebfa0a93fa233c289e85536b2ae70316b7e09d0778d4c1c",
+    "tools/native-host.mjs": "873c718a58f2c4c53359fa840b45b71c1ac07cd2bb4def8502d2aa1874c3ca4c"
+  },
+  "canonicalGitSourceHashes": {
+    "native/desktop/HBNativePlayer.cpp": "a680f0e5e8925674f2c59279de30847f3a0c849dfa961ebb680a64b17d691b8e",
+    "native/desktop/NativeGameInput.hpp": "6ca3651ed0a21f24a41e01f9130721f26e0ca640b198a14760a3e8a7f25d9ecf",
+    "tools/native-game-runner.mjs": "cddcfba1e47e6932de1f1df17a7d9e848fc8feaccf41a4cd4ce98fce51965987",
+    "tools/native-input-queue.mjs": "77d367c47c05cbf68e630aad203fa5fd48f739537b012b16f19cb7f2732b953e",
+    "prototype/runtime-input.js": "71795823b746ea0b6d4167de13dcd4f69dd9062541910d6bc97046098b53f40e",
+    "tools/native-widget-layer.mjs": "4e3caf675cd85422227d157cc6ba85a98a8170465b745b04d04603787b9ca6ca",
+    "tools/native-widget-lists.mjs": "fb5d64c9a007baaa2f827618695f3c52948478d0fdb83485b189c45a5e82cce4",
+    "tools/native-widget-assets.mjs": "2f1811df821de3322eea430a1e55b7436288c99cc1943a11d3e35dab02a5409f",
+    "tools/build-native-game.mjs": "8e731628e9e0e4bac655a091325bd77faa709588023507565cd695a37b46df12",
+    "docs/ai-routes.json": "0f850527d197540514874e23fc8c943c7ef0c9207516382095e36e86f14c020c",
+    "tools/check-native-game.mjs": "5565555e350f5e83ac912ff4710772d280c5268abdc5705e89c5e27b2bd8e8c2",
+    "tools/check-native-input-lists.mjs": "1644f8c46a2ab4c45d1a33915280f8ea3ba1fac38448f450ae1079922a94b9a6",
+    "tools/native-input-fixture.cpp": "7829d20dcef2ab8f2c4de1760ce5072ad91e467929195f95773c951cee51b7ab",
+    "native/desktop/WindowsGameIdentity.hpp": "f33b47e56cf2289a3507f6e20d73fb24fdbd246661f9c521927917c0f1110a3a",
+    "tools/check-native-package-paths.mjs": "3306004e77ab92f24b8d2b6111f3db99ee4dd8d52f763f17cfa4f02fc52c03de",
+    "tools/native-package-stamp-fixture.cpp": "0de45be9ec069520cebfa0a93fa233c289e85536b2ae70316b7e09d0778d4c1c",
+    "tools/native-host.mjs": "873c718a58f2c4c53359fa840b45b71c1ac07cd2bb4def8502d2aa1874c3ca4c"
+  },
+  "playerSHA": "c6f466a32524bbb331e7b6a6d58bba4bf4a95b904a46bfc8e4c5e6b3c515a990",
+  "implementation": [
+    "네이티브 입력/문자/포커스 순서·동작 경계 사이 마우스 이동 병합·복수 버튼/캡처 해제·XButton/추가 키",
+    "XInput4슬롯·변경 없음 생략·비연결 재탐색·데드존/포커스/재연결·공용 Input/C++ 매핑",
+    "기본 네이티브 목록/트리의 가시 행·선택/키보드/스크롤·공용 C++ 이동/부모변경/전송",
+    "스크롤 clip 입력 판정·redraw 중 클릭 정체성·변형된 슬라이더/가상 축 로컬 좌표·비활성 입력",
+    "입력 Raycaster scratch 재사용·무효화 후 카메라 참조 해제·hit 배열 역복사 제거·목록 전체 문자열 재결합 제거",
+    "긴 경로의 실제 C++ worker 실행과 PE 정보 기록·원본 이름/원자 교체·helper 오류의 무인 반환"
+  ],
+  "checks": [
+    {
+      "report": "native/build/input-lists-y4Ggts/verification/native-input-lists-KXoo7c.json",
+      "passed": true,
+      "scope": "8개 공용 VM/위젯·실제 Skia·주입 XInput C++"
+    },
+    {
+      "report": "native/build/input-lists-y4Ggts/verification/package-paths-LFhqUi.json",
+      "passed": true,
+      "scope": "90/298자 경로의 실제 PE 기록·무인 실패"
+    },
+    {
+      "report": "native/build/input-lists-y4Ggts/verification/ui-sdk-flow-Zt0Ktd.json",
+      "passed": true,
+      "scope": "이름 공간 경로로 실행한 C++ worker 공용SDK 값/복원"
+    },
+    {
+      "report": "native/build/input-lists-y4Ggts/verification/acceptance.json",
+      "passed": true,
+      "scope": "실제 release40frame·한글/SVG/음성·C++ 목록/트리·OS 입력/캡처/정상 종료·portable runtime"
+    }
+  ],
+  "limits": [
+    "실제 게임 전체 FPS·전체 누적 엔진 완료를 주장하지 않음",
+    "실제 컨트롤러/수신 PC 백신/실휴대폰·Mac 검증 없음",
+    "native custom row/auto row/drag group, pointer lock, tracked UI/streaming audio/video/display sync 잔여 유지"
+  ],
+  "failedWork": "초기 중첩 경로 재현과 fixture 경로/이름 수정은 통과/기능 성과로 세지 않음. DEBUG_HANDOFF와 소유 probe에 원인/반증 보존",
+  "safety": {
+    "userProjectTouched": false,
+    "userUIUsed": false,
+    "forbiddenThreeTouched": false,
+    "newAutomation": false,
+    "delegation": false,
+    "performanceQualityReduction": false
+  }
+}

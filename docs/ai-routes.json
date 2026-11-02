@@ -5338,6 +5338,36 @@
       "paths": [
         "native/include/HBEngine/Bridge.hpp"
       ]
+    },
+    {
+      "id": "native-ordered-input",
+      "keywords": [
+        "NativeInputQueue",
+        "NativeGameInputQueue",
+        "NativeGamepadInput"
+      ],
+      "paths": [
+        "tools/native-input-queue.mjs",
+        "native/desktop/NativeGameInput.hpp"
+      ]
+    },
+    {
+      "id": "native-list-state",
+      "keywords": [
+        "NativeWidgetList"
+      ],
+      "paths": [
+        "tools/native-widget-lists.mjs"
+      ]
+    },
+    {
+      "id": "native-game-resource-stamp",
+      "keywords": [
+        "stampGameExecutable"
+      ],
+      "paths": [
+        "native/desktop/WindowsGameIdentity.hpp"
+      ]
     }
   ]
 }

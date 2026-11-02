@@ -20,7 +20,7 @@ Windows 빌드의 기본값은 `windowsRuntime: "native"`예요. `target: "web"`
 
 네이티브 패키지에서 실제 확인한 범위는 2D 물리·스프라이트/SVG 텍스처, 3D 기본 도형의 DirectX 표시, AOT C++ 호출, HUD·한글·이미지·버튼, Win32 키보드/마우스 입력, 저장, 공용 믹서의 PCM, 무음으로 연 Windows 오디오 출력, 정상 창 종료예요. 추가 DCC 모델·복잡한 머테리얼·대규모 게임 전체의 호환성이나 성능을 일괄 증명한 것은 아니에요.
 
-현재 네이티브 검사에서 **목록/트리 위젯, 월드 추적 UI, 키오스크, 스트리밍 오디오, 영상, 화면 주사율 동기화**을 쓰면 해당 파일/설정과 함께 빌드를 거절해요. 기능을 버리거나 WebView로 몰래 전환하지 않아요. 네이티브 게임패드·포인터 잠금·UI 고급 레이아웃의 완전한 브라우저 동등성도 추가 구현/검증 대상이에요. 에디터·웹·모바일의 기존 경로는 별개예요.
+현재 네이티브 검사에서 **사용자 목록 행/자동 행 높이/드래그 그룹, 월드 추적 UI, 키오스크, 스트리밍 오디오, 영상, 화면 주사율 동기화**을 쓰면 해당 파일/설정과 함께 빌드를 거절해요. 기능을 버리거나 WebView로 몰래 전환하지 않아요. 기본 목록/트리와 XInput 공용 키는 WORK3416에 연결했어요. 포인터 잠금·UI 고급 레이아웃의 완전한 브라우저 동등성도 추가 구현/검증 대상이에요. 에디터·웹·모바일의 기존 경로는 별개예요.
 
 Windows 10/11 x64·DirectX 11 드라이버가 필요해요. 네이티브 오디오의 Microsoft Visual C++ v14 x64 런타임은 Microsoft 정식 서명을 검사한 뒤 앱 안에 동봉해요. `runtime/`와 오디오 `.node` 옆에 배치하고 실제 앱 폴더의 DLL이 로드되는지 검사해요. 다른 PC에 Node·HBEngine·VC 런타임이 미리 설치돼 있다고 가정하지 않아요. 빌드 도구는 설치본에 포함된 재배포 파일 또는 Visual Studio의 정식 `VC/Redist`를 사용하며 `HB_VC_REDIST_DIR`도 지원해요. Windows System32 DLL은 복사하지 않아요. [Microsoft 배포 지침](https://learn.microsoft.com/cpp/windows/redistributing-visual-cpp-files).
 
@@ -100,3 +100,5 @@ AI 진입점은 `runtimeDataMatcher`, `NativeWorldClient`, `createRigidPhysics`,
 원인은 DirectX의 UV 반복 샘플러 부재가 아니라 실행 중 속성 변경 뒤 메시를 갱신하지 않던 네이티브 표시 연결이에요. 이전 설치본에서도 최초 배치의 반복 타일은 통과했고, C++ 크기·모드 변경 두 사례가 실패했어요. 같은 픽셀 검사에서 수정 후 8사례·360좌표가 통과했어요. C++ 렌더러 실행 파일은 변경하지 않았어요.
 
 AI 조회는 `hb context "네이티브 반복 타일" --symbol syncSprite --compact`, 검사는 `tools/check-native-tiled-sprite.mjs`와 `tools/check-sprite-visual-sync.mjs`예요. 후자는 변환만 바뀐 300회에 메시를 다시 만들지 않고, 크기 변경과 비활성화/재활성화·자원 해제를 확인해요. 기존 패키지는 새 설치본에서 다시 패키징해야 반영돼요.
+
+입력·목록·긴 경로의 구체 계약과 검증 범위는 [NATIVE_INPUT_AND_LISTS.md](NATIVE_INPUT_AND_LISTS.md)에 있어요.

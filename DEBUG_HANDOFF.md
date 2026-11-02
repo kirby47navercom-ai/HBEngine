@@ -1,3 +1,7 @@
+# 3416 네이티브 패키징 긴 경로 재현
+
+깊게 둔 격리 검사에서 stamp-game helper 두 번60초 대기. 입력/목록 JS7개는 통과. XInput 지연 로딩으로도 같은 경로에서 재현돼 DLL 원인 가설은 철회. 대상 PE 절대 경로263문자. 다음 반증: 같은 owned PE의 BeginUpdateResource 일반경로/extended경로와 short경로를 직접 비교하고 실제 helper 오류를 무인으로 반환하도록 좁혀요. 전체 native 패키지 검사를 원인 불명 상태로 다시 반복하지 않아요. 실패는 구현 성과 아님.
+
 # 2938 다중 이미터 정렬 fixture
 
 새 검사에서 age 정렬 이름에 기존 Renderer 검증과 반대인 기대 순서를 가정했어요. 기존 검증의 정렬 규약을 확인하고, 이 검사의 목적에 맞게 depth/depthReverse의 서로 반대 순서를 두 컴포넌트에서 독립 대조하도록 고쳤어요. 공용 정렬 알고리즘이나 셰이더를 바꾸지 않았어요. 실패 fixture는 통과 수에 넣지 않아요. 최종 multi-emitter-mEKtPF는 12개 통과이며 나머지 영향 검사·C++ 바이너리는 같은 실행의 통과 근거를 재사용해요.
@@ -238,3 +242,9 @@ stationary inverse 첫 독립 oracle에서 약3.7e-6 오차를 찾아 centered c
 500개 소유 행·호출당2행변경·120호출·새프로세스3회 비교. 기존 native JSON 151.63ms 중앙값 대비 일반 재귀+descriptor313.54ms, plain-data 재귀175.60ms로 모두 느렸어요. 이 두 후보는 미채택이며 직렬화 행 수 감소를 성능 향상으로 세지 않아요. raw자료 native/build/runtime-sync-4SQgzb. 같은 재귀 후보 반복 금지. 별도 가설은 검증된 engine-owned JSON 구조에 대한 한정 비교 함수를 한 번 만들고 재사용하면 필드별 JS 재귀 호출 비용을 줄일 수 있다는 것이며, 같은 fixture의 실제 CPU·전달값·실패 복구로 반증해요. 기존 임의 JS/브라우저 호출은 그대로 유지해요.
 
 3402 최종: 구조별 한정 비교 코드 재사용 후보는 같은 500행 fixture에서 81.21ms로 통과했어요. 필드 이름 데이터 인용·키 소유 검사·예산 fallback·캐시16·고정 불변 subtree 참조·행 퇴역/실패/reset 수명을 검사했어요. 일반 재귀 비교의 두 실패는 성과에서 제외해요. 물리 정적 캐시도 88.35ms 및 변경/퇴역/복귀 동등성 통과. 기존 물리 gate의 unknown Actor[] 거절은 현재 typed-input 단계에서 발생하므로 fixture가 그 정확한 메시지도 허용하도록 고쳤으며 실제 C++ 질의 gate는 통과했어요.
+
+3416 반증 결과: 동일263자 PE helper --hidden 종료1/19ms, 짧은 경로0/24ms. BeginUpdateResource 일반 긴경로는 정상. C++ filesystem/stream 선행 검사에 extended-prefix를 적용하고 helper 실패는 stdout 대기 GUI 대신 stderr/exit1로 반환. XInput 원인 가설 철회.
+
+3416 긴경로 2차: extended prefix로 선행 검사는 통과했으나 EndUpdateResource가 game metadata write로 즉시 실패. 다음 소유 레이어는 PE 한 파일만 짧은 TEMP에서 기록하고 원래 이름을 보존한 뒤 sibling→원본 원자 교체. 전체 패키징 대신 작은 metadata fixture로 먼저 반증해요.
+
+3416 긴 경로 worker: 실제263자 EXE는 일반 spawn ENOENT·namespaced spawn exit0으로 반증. NativeHost의 Win32 프로세스 경로를 표준 toNamespacedPath로 넘겨 현재 CWD/다른 플랫폼/원본 파일명은 유지해요. 백신 격리라고 추정해 우회하지 않아요.

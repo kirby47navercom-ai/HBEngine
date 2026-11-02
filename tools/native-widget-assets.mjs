@@ -1,5 +1,5 @@
 import {widgetImageSource} from '../prototype/ui-assets.js';
-const textTypes=new Set(['Text','Button','TouchButton','TextInput','CheckBox']);
+const textTypes=new Set(['Text','Button','TouchButton','TextInput','CheckBox','ListView','TreeView']);
 // Match native draw visibility before decoding assets. Hidden menu trees should
 // not allocate their full-size pictures just because their widget exists.
 export function visibleWidgetNodes(data){
