@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "date": "2026-11-02",
+  "kind": "bounded-installed-resource-gc-validation",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3420.json",
+  "sourceCommit": "025336655bb2dfb85960aaafbf8e7f35f675fe95",
+  "installation": "docs/research/USER_INSTALL_3421.json",
+  "installedBundleHash": "59c56a17eb91063a33440bc2137b7122df1c04d15fdfddcc2134a4828df77c44",
+  "targetIds": [
+    "DBG-02"
+  ],
+  "productionCodeChanged": false,
+  "installationRequired": false,
+  "changedSourceHashes": {
+    "tools/check-native-resource-gc.mjs": "79922dc1e4932de2a2b9a13464010c15aa86dd69f3160afcb4a11f6c82996791",
+    "docs/ai-routes.json": "b7858ad9e5a0c2ec6b4a64eddbbf5633c0ead5fe761eeaf21cc8f60137cc601b",
+    "docs/NATIVE_RUNTIME_COSTS.md": "48546143dc063cf2646104c1ccd55dbc217a699e66edac52c5d71068b7c6916a"
+  },
+  "checks": [
+    {
+      "report": "native/build/resource-gc-Bo0aUA/acceptance.json",
+      "sha256": "650d84ea98cbef675d79c538c8c62dcd485dd567cd5f2da6090315dd0b86afd5",
+      "passed": true,
+      "scope": "bounded Three model/texture/deferred-source/lease ownership test; not long-run game, C++ heap, GPU driver, or frame-pause proof"
+    }
+  ],
+  "verified": {
+    "instances": 128,
+    "sources": 16,
+    "weakReferences": 304,
+    "collected": 304,
+    "sourceDisposals": 16,
+    "poolPixelsRetained": true,
+    "cacheKeptAlive": true,
+    "arrayBuffersAfterEachRound": [
+      41719,
+      41719,
+      41719,
+      41719
+    ]
+  },
+  "remaining": [
+    "실제 게임 장시간 할당·참조 유지·GC 중단 시간 대조",
+    "C++ heap와 GPU 자원 별도 추적"
+  ],
+  "userOriginalsTouched": false,
+  "userWindowsTouched": false,
+  "automationCreated": false
+}

@@ -3840,7 +3840,7 @@
       "area": "debugging",
       "title": "GPU 시간·메모리/크래시 진단",
       "status": "partial",
-      "implemented": "리소스 수·일부 GPU Query·C++ host 메모리 진단 · 170: Win32 페이지 실패의 WebErrorStatus 로그·허브/프로젝트/종료 집중 검사 ·396–400: opt-in GL/GPU 비동기GPU시간·실제32render+1compute/독립출력·진행중stop/자원퇴역·UI/AI/두작업공간·GPU보기/전체행가시성·원본보존 ·1728–1734: owned자동CDPport/loopback endpoint검증·카테고리gpu.angle만/완료event후stream·16MiB상한/gzip1개·source길이SHA요약·timeout/실패stream·socket해제. 실제추적178event·GL0/비영guide/exit0와프로토콜double실패·cap·dataLoss검사. 제품상주추적기없음. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3406: 패키지 C++ 파일 누락·차단 경로와 보호기록 안내·시작 실패 창, PE/COFF 회귀 검사",
+      "implemented": "리소스 수·일부 GPU Query·C++ host 메모리 진단 · 170: Win32 페이지 실패의 WebErrorStatus 로그·허브/프로젝트/종료 집중 검사 ·396–400: opt-in GL/GPU 비동기GPU시간·실제32render+1compute/독립출력·진행중stop/자원퇴역·UI/AI/두작업공간·GPU보기/전체행가시성·원본보존 ·1728–1734: owned자동CDPport/loopback endpoint검증·카테고리gpu.angle만/완료event후stream·16MiB상한/gzip1개·source길이SHA요약·timeout/실패stream·socket해제. 실제추적178event·GL0/비영guide/exit0와프로토콜double실패·cap·dataLoss검사. 제품상주추적기없음. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3406: 패키지 C++ 파일 누락·차단 경로와 보호기록 안내·시작 실패 창, PE/COFF 회귀 검사 ·3422: 설치 모델/아틀라스/지연 이미지 소유 그래프 128인스턴스·16원본·304WeakRef 실제 회수 확인, 풀 유지/마지막 dispose/캐시 잔류0. 검사 프로세스에서만 명시GC·장시간/중단시간 미검증",
       "remaining": [
         "스레드 flow·사전 생성/외부 GPU command buffer·GPU 패스별 시간 트레이스 확장",
         "할당·누수·크래시 덤프·장치 연결·간헐적 시작 실패 추가 재현"
@@ -3848,7 +3848,8 @@
       "sources": [
         "prototype/profiler.js",
         "prototype/game-renderer.js",
-        "prototype/gpu-frame-timing.js"
+        "prototype/gpu-frame-timing.js",
+        "tools/check-native-resource-gc.mjs"
       ],
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
@@ -3860,7 +3861,8 @@
         "docs/research/ENGINE_WORK_1734.json",
         "docs/research/USER_INSTALL_1736.json",
         "docs/research/ENGINE_WORK_3402.json",
-        "docs/research/ENGINE_WORK_3406.json"
+        "docs/research/ENGINE_WORK_3406.json",
+        "docs/research/ENGINE_WORK_3422.json"
       ]
     },
     {
@@ -4421,10 +4423,10 @@
     }
   ],
   "latestBatch": {
-    "first": 3420,
-    "last": 3420,
-    "receipt": "docs/research/ENGINE_WORK_3420.json",
-    "scope": "UI 작업 스레드/타일 binary pipe·모델/아틀라스 수명·실제 삭제·풀 준비·비교 스키마 재사용·장치 fallback·두 실제 게임 대조,120미합격"
+    "first": 3422,
+    "last": 3422,
+    "receipt": "docs/research/ENGINE_WORK_3422.json",
+    "scope": "WORK3420 설치본 삭제 자원 GC 회수의 격리 검증·제품 코드 변경 없음; 장시간/GC 중단 시간은 별도"
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_3421.json",

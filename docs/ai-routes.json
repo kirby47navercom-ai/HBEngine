@@ -910,7 +910,12 @@
         "latency",
         "cache",
         "memory",
-        "profiler"
+        "profiler",
+        "gc",
+        "garbage",
+        "가비지",
+        "수명",
+        "누수"
       ],
       "paths": [
         "prototype/profiler.js",
@@ -938,7 +943,11 @@
         "native/include/HBEngine/ProbeSpatialIndex.hpp",
         "docs/PROBE_SPATIAL_INDEX.md",
         "prototype/path-guide-specialization.js",
-        "docs/GPU_SHADER_EDITING.md"
+        "docs/GPU_SHADER_EDITING.md",
+        "tools/check-native-resource-gc.mjs",
+        "tools/native-model-instances.mjs",
+        "prototype/deferred-texture-source.js",
+        "prototype/sprite-texture-source.js"
       ]
     },
     {
