@@ -1,3 +1,4 @@
+import {reconcileImmutableNativeJSON} from './native-transport.js';
 import {widgetSystemFont,widgetLineHeight} from './widget-visual-contract.js';
 import {listSelectionEvent} from './list-selection.js';
 import {widgetRowEvent} from './widget-row.js';
@@ -74,8 +75,8 @@ export function renderWidgetTree(host,data,{preview=false,fileUrl=p=>p,event=()=
 // data never escapes into native transport; removed rows are not retained.
 const widgetSnapshots=new WeakMap(),widgetDirtyNodes=new WeakMap();
 function nativeWidgetRow(n,localization,old){
- const value={type:n.type,...n.properties,...n.properties.stringTable&&n.properties.textKey&&localization?{text:localization.format(n.properties.stringTable,n.properties.textKey,JSON.parse(n.properties.textArguments||'{}'),n.properties.text)}:{},slot:n.slot,value:n.type==='CheckBox'?Number(n.properties.checked):n.properties.value},text=JSON.stringify(value);
- return old?.node===n&&old.text===text?old:{node:n,text,snapshot:old?.text===text?old.snapshot:immutableNativeJSON(text)};
+ const value={type:n.type,...n.properties,...n.properties.stringTable&&n.properties.textKey&&localization?{text:localization.format(n.properties.stringTable,n.properties.textKey,JSON.parse(n.properties.textArguments||'{}'),n.properties.text)}:{},slot:n.slot,value:n.type==='CheckBox'?Number(n.properties.checked):n.properties.value},snapshot=reconcileImmutableNativeJSON(value,old?.snapshot);
+ return old?.node===n&&old.snapshot===snapshot?old:{node:n,snapshot};
 }
 function nativeWidgetSnapshot(state,localization,dirtyNodes){
  const prior=widgetSnapshots.get(state),nodes=state.data.nodes;

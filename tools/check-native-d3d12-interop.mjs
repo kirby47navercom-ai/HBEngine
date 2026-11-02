@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';import fs from 'node:fs/promises';import path from 'node:path';import {spawn} from 'node:child_process';import {createHash} from 'node:crypto';
+import {retainTestEvidence} from './test-artifacts.mjs';import {activeInstalledVersions} from './install-editor.mjs';
+assert.deepEqual(await activeInstalledVersions(path.join(process.env.USERPROFILE,'HBEngine')),[]);
+const engine=path.resolve(process.argv[2]||'.'),work=await fs.mkdtemp('native/build/d3d12-interop-');retainTestEvidence(work);
+const cpp=`#include <HBEngine/Render.hpp>
+#include <cassert>
+#include <chrono>
+#include <thread>
+#include <iostream>
+struct Window {HWND value=nullptr;Window(){WNDCLASSW wc{};wc.lpfnWndProc=DefWindowProcW;wc.hInstance=GetModuleHandleW(nullptr);wc.lpszClassName=L"HBEngineOwnedD3D12Proof";if(!RegisterClassW(&wc)&&GetLastError()!=ERROR_CLASS_ALREADY_EXISTS)throw std::runtime_error("class");value=CreateWindowExW(0,wc.lpszClassName,L"Owned hidden renderer proof",WS_OVERLAPPEDWINDOW,0,0,160,96,nullptr,nullptr,wc.hInstance,nullptr);if(!value)throw std::runtime_error("window");}~Window(){if(value)DestroyWindow(value);}};
+int main(){try{SetErrorMode(SEM_FAILCRITICALERRORS|SEM_NOGPFAULTERRORBOX);using namespace hb::gpu;Window window;
+ for(auto backend:{DeviceBackend::Direct3D11,DeviceBackend::Direct3D12Interop})for(auto driver:{DeviceDriver::Hardware,DeviceDriver::Software}){
+  Device gpu(driver,backend);assert(gpu.direct3D12Interop()==(backend==DeviceBackend::Direct3D12Interop));assert(gpu.software()==(driver==DeviceDriver::Software));
+  auto data=gpu.create({1,2,3,4});auto kernel=gpu.compile("RWStructuredBuffer<float> data:register(u0);[numthreads(4,1,1)]void Main(uint3 i:SV_DispatchThreadID){data[i.x]+=2;}");gpu.dispatch(kernel,{&data},1);assert((gpu.read(data)==std::vector<float>{3,4,5,6}));
+  auto frames=gpu.createFrameResources(data);for(int i=0;i<3;i++){gpu.dispatch(kernel,{&data},1);assert(gpu.enqueueFrame(frames,data));}assert(!gpu.enqueueFrame(frames,data));int done=0;const auto until=std::chrono::steady_clock::now()+std::chrono::seconds(10);while(done<3){assert(std::chrono::steady_clock::now()<until);if(auto result=gpu.pollFrame(frames)){assert(result->sequence==std::uint64_t(++done));assert(result->values.front()==float(3+done*2));}else std::this_thread::sleep_for(std::chrono::milliseconds(1));}assert(frames.pending()==0);
+  {ParticleRenderer renderer(gpu,64,32,window.value);for(int frame=0;frame<9;frame++){if(frame==3)renderer.resize(96,48);if(frame==6)renderer.resize(64,32);renderer.clear(frame%2?std::array<float,4>{0,1,0,1}:std::array<float,4>{0,0,1,1});const auto pixels=renderer.readPixels();assert(pixels.size()==renderer.width()*renderer.height()*4);assert(pixels[0]==0&&pixels[1]==(frame%2?255:0)&&pixels[2]==(frame%2?0:255)&&pixels[3]==255);renderer.present();}assert(renderer.presents()==9);}
+  std::cout<<gpu.backend()<<" compute/readback3/hidden-present9/resize2 passed\\n";
+ }return 0;}catch(const std::exception& error){std::cerr<<error.what();return 1;}}
+`;
+await fs.writeFile(work+'/fixture.cpp',cpp);const env={...process.env,PATH:'C:/msys64/ucrt64/bin;'+process.env.PATH};
+const run=(file,args,timeout)=>new Promise((resolve,reject)=>{const child=spawn(file,args,{env,windowsHide:true,stdio:['ignore','pipe','pipe']});let output='';const timer=setTimeout(()=>{child.kill();reject(Error('소유 DirectX 검사 시간 제한'));},timeout);child.stdout.on('data',bytes=>output+=bytes);child.stderr.on('data',bytes=>output+=bytes);child.once('error',error=>{clearTimeout(timer);reject(error);});child.once('close',code=>{clearTimeout(timer);resolve({code,output});});});
+const binary=path.resolve(work,'fixture.exe'),compile=await run('C:/msys64/ucrt64/bin/g++.exe',['-std=c++17','-O2','-s','-static','-I'+path.relative(process.cwd(),path.join(engine,'native/include')),work+'/fixture.cpp','-o',path.relative(process.cwd(),binary),'-ld3d11','-ldxgi','-ld3dcompiler','-lole32','-luuid','-lgdi32'],180000);await fs.writeFile(work+'/compile.log',compile.output);assert.equal(compile.code,0,compile.output);
+const result=await run(binary,[],90000);await fs.writeFile(work+'/runtime.log',result.output);assert.equal(result.code,0,result.output);
+const owners={};for(const file of ['native/include/HBEngine/Compute.hpp','native/include/HBEngine/D3DDevice.hpp','native/include/HBEngine/D3D12Interop.hpp','native/include/HBEngine/Render.hpp'])owners[file]=createHash('sha256').update(await fs.readFile(path.join(engine,file))).digest('hex');owners['fixture.exe']=createHash('sha256').update(await fs.readFile(binary)).digest('hex');
+const report={passed:true,engine,owners,hardwareAndWarp:true,d3d11And12Interop:true,compute:true,readbackCapacity:3,readbackResultsOrdered:true,hiddenPresents:36,resizes:8,pixelsExact:true,externalWindowsTouched:false,scope:'D3D12 device/queue/swapchain with D3D11On12 frontend; not native D3D12 command-list generation or full-game FPS',output:result.output};await fs.writeFile(work+'/acceptance.json',JSON.stringify(report,null,2));console.log(JSON.stringify({work,passed:true,output:result.output}));

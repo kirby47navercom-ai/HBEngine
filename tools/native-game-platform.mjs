@@ -15,9 +15,9 @@ import {AudioRouting} from '../prototype/audio-mixer.js';
 export async function openNativePackage(directory){
  const content=await openNativeContent(directory),{root,project,manifest,url,resolve,readBytes,modulePath:confined}=content;
  const host=new NativeHost(),aot=new Map();
- for(const row of manifest.nativeModules||[]){try{aot.set(row.signature,host.registerBinary(await confined(row.binary),row.metadata));}catch(error){host.close();await content.close();throw packagedModuleError(path.join(root,row.binary),error);}}
+ for(const row of manifest.nativeModules||[]){try{aot.set(row.signature,host.registerBinary(await confined(row.binary),row.metadata));}catch(error){await host.close();await content.close();throw packagedModuleError(path.join(root,row.binary),error);}}
  host.build=async(header,source,entry={})=>{const key=createHash('sha256').update(nativeModuleKey(header,source,entry)).digest('hex'),built=aot.get(key);if(!built)throw Error('미리 컴파일한 C++ 모듈이 없어요. 게임을 다시 빌드하세요.');return built;};
- return {root,project,manifest,host,url,resolve,readBytes,close:async()=>{host.close();await content.close();}};
+ return {root,project,manifest,host,url,resolve,readBytes,close:async()=>{await host.close();await content.close();}};
 }
 
 export function installNativeAssets(pack){

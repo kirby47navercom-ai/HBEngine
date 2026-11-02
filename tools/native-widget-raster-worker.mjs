@@ -6,7 +6,8 @@ const viewKey=view=>JSON.stringify([view.state.owner,view.state.instance]);
 // Input and the game world stay on their original owner thread.
 export class NativeWidgetRasterWorker {
  constructor(layer,directory,queued){this.layer=layer;this.directory=directory;this.queued=queued;this.views=new Map();this.dirty=new Map();this.serial=0;this.active=false;this.failure=null;}
- invalidate(view,nodes){if(!nodes||!this.dirty.has(view))this.dirty.set(view,nodes?new Set(nodes):null);else if(this.dirty.get(view))for(const node of nodes)this.dirty.get(view).add(node);}
+ invalidate(view,nodes){if(view.disposed)return;if(!nodes||!this.dirty.has(view))this.dirty.set(view,nodes?new Set(nodes):null);else if(this.dirty.get(view))for(const node of nodes)this.dirty.get(view).add(node);}
+ forget(view){this.dirty.delete(view);const key=viewKey(view);if(this.views.get(key)===view)this.views.delete(key);}
  supports(){return ![...this.layer.views].some(view=>view.data.nodes.some(node=>['ListView','TreeView'].includes(node.type)));}
  start(){
   if(this.worker)return;this.worker=new Worker(new URL('./native-widget-raster-thread.mjs',import.meta.url),{workerData:{directory:this.directory,rawFrames:this.layer.rawFrames,profile:this.layer.profile},execArgv:[]});
@@ -44,7 +45,7 @@ export class NativeWidgetRasterWorker {
   for(const key of ['focus','down']){const previous=layer[key];if(previous)layer[key]=layer.hits.find(hit=>hit.view===previous.view&&hit.node===previous.node)||previous;}
   if(Array.isArray(layer.layout))layer.layout.splice(0,layer.layout.length,...result.layout);layer.stamp=stamp;layer.uiFrames+=result.submitted?1:0;layer.lastProfile=result.profile;this.stats=result.diagnostics;
  }
- diagnostics(){return {enabled:true,thread:this.worker?.threadId??null,...this.stats};}
+ diagnostics(){return {enabled:true,thread:this.worker?.threadId??null,dirtyViews:this.dirty.size,trackedViews:this.views.size,...this.stats};}
  async capture(){return this.request({type:'capture'});}
  async dispose(){this.closing=true;this.fail(Error('Native UI raster disposed'));const worker=this.worker;this.worker=null;if(worker)await worker.terminate();this.views.clear();this.dirty.clear();}
 }

@@ -102,3 +102,10 @@ AI 진입점은 `runtimeDataMatcher`, `NativeWorldClient`, `createRigidPhysics`,
 AI 조회는 `hb context "네이티브 반복 타일" --symbol syncSprite --compact`, 검사는 `tools/check-native-tiled-sprite.mjs`와 `tools/check-sprite-visual-sync.mjs`예요. 후자는 변환만 바뀐 300회에 메시를 다시 만들지 않고, 크기 변경과 비활성화/재활성화·자원 해제를 확인해요. 기존 패키지는 새 설치본에서 다시 패키징해야 반영돼요.
 
 입력·목록·긴 경로의 구체 계약과 검증 범위는 [NATIVE_INPUT_AND_LISTS.md](NATIVE_INPUT_AND_LISTS.md)에 있어요.
+
+
+## DirectX 선택·자원 수명 · WORK3424
+
+Windows native 빌드 프로필에서 `nativeGraphicsAPI`를 `d3d11`(기본), `auto`, `d3d12`로 선택해요. 같은 선택을 CLI `--graphics-api`로 명시할 수 있어요. d3d12는 실제12 장치/큐/fence/3-buffer swapchain 위에 D3D11On12로 기존 셰이더/그리기를 연결해요. 진단에 `backend:D3D12-11on12`, `nativeCommandLists:false`를 그대로 표시하며, 직접12 명령 목록 포트나 모든 PC 성능 보장으로 표현하지 않아요. `auto`는12 하드웨어 실패 이유를 남기고11 HW/WARP로 이어가요.
+
+UI worker와 엔진 main은 이미 분리돼 있고, 이번에는 불변 위젯 가지·입력 행렬·타일 버퍼·업로드 직렬화 비용과 삭제된 UI/월드/렌더러 참조를 줄였어요. 다른 월드가 쓰지 않는 C++ 모듈은 객체/spawn 세계 참조만 비우며, 실행 코드/정적 상태는 유지해요. C++ 종료는 실제 child close와 큐 종료를 기다려요. report에 실행 중 `ui`와 EndPlay 후 `finalUI`를 구분해요. 상세 [NATIVE_RUNTIME_COSTS.md](NATIVE_RUNTIME_COSTS.md).

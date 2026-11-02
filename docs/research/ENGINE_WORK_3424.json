@@ -1,0 +1,273 @@
+{
+  "installedSourceHashes": {
+    "tools/native-ui-tiles.mjs": "454dc8854be11038246a8a2a54b7c58aeb66f9dc1387fbc659709c4e06c9203d",
+    "tools/native-widget-raster-worker.mjs": "84099d525350f4018985d3ef5d6edcc88311dae74b366ebdbfbfea86a7d20dfd",
+    "tools/native-widget-raster-thread.mjs": "cce808e6cb0100c00234bcfed2e0337f7624c2ecc6c8f4c1626c76250735778f",
+    "tools/native-widget-layer.mjs": "7e502c8ff795c5eb5b308fe20978e6a2aced040fa08f75e618c925553e951696",
+    "tools/native-ui-frame.mjs": "f08ac7fe28643da56a68994695ca496cc637c03064eca61dad5a1783a9fe99fb",
+    "tools/run-project.mjs": "31d956e3258f5be871069f0f3243f0589435dcb947c7275ad633dcd390291b06",
+    "tools/native-game-platform.mjs": "b18048964321d4600ddb1386374a4dcbbe5f9db603e74c801bda5976566c86eb",
+    "tools/native-game-runner.mjs": "01e74665f5da8e444fdc3b12665743c62c26492bf6f52a69107a576114189e11",
+    "tools/native-runtime-telemetry.mjs": "3c341046884217715ab39ef5d0b8f2cda7facf628479c6bae0c94ed6a3f5f109",
+    "native/include/HBEngine/D3DDevice.hpp": "28206be2f102cdf29c6066c6135516da48590864e4967cf79275d7e3b4713484",
+    "native/include/HBEngine/Compute.hpp": "71c6cd995f4939c1f65dac9804be04a54290a32b91b704a92d15acbb729da2e2",
+    "native/include/HBEngine/Render.hpp": "0558a7644097d745a511485db8a2d627552c00d778d41b6bf0399d3cafc31112",
+    "native/desktop/SceneRenderBridge.hpp": "4aba098c9776127ede03d20f1d6b8d64f8ee40765d4ece981e211b757b44df7c",
+    "native/desktop/HBNativePlayer.cpp": "cea87b7d389a9f88616018f67eb3b62ba8eb801dd5ae0f0571be19807332c109",
+    "prototype/native-scene-renderer.js": "1e75314f8b618c521635c66a2f17ba3e955a374840dacbe0307a740fa14ffbc3",
+    "native/include/HBEngine/D3D12Interop.hpp": "c94ace67642fa72a4c9364981f8557378579d27e20150f21b574da625f5a52e9",
+    "prototype/build-profile.js": "70068851f07cbf4f2e6a44c05a0cb03f06d2150dc933c11fe1a32602a2adbda3",
+    "tools/build-native-game.mjs": "17700aa64bef0aae555a92440e6e2747a4cde5cb1d721b5fc8113d97eb9266b9",
+    "prototype/build-panel.js": "c688a9b686bfde9cb4acaae4c22f577d4ca82bb72e2bdc438dd01a11893b6de0",
+    "tools/native-host.mjs": "c8519a5817cb7506d5194b5f065d2eaba98c6f7c803baf592c30bcff266ff9eb",
+    "tools/native-session-close.mjs": "b3dac6e6b0ada56d890c718e35d5874a20fe921817aea917ff104439070d62bb",
+    "prototype/native-upload-batches.js": "145c0e08135aa3cfb6078c82c76705636487d3b0551270075a08ff8837943b4b",
+    "prototype/native-transport.js": "f567fe09c732523df07450baa0d42feff625c2d5aec222f4cbdd52bdc16dc3d2",
+    "prototype/ui-runtime.js": "6976f5d00793e76fbad795aabc8811c614ad0e9789c5791cb267fcc4888142e9",
+    "tools/native-runtime-close.mjs": "94b3dfc2908c2d76ff6920ad009873c8fbf0cbef9dfb8d163783674a029c7a2c"
+  },
+  "sourceHashNote": "changedSourceHashes are Git LF canonical bytes; installedSourceHashes are exact tested/shipped bytes, with original CRLF retained where present",
+  "version": 1,
+  "date": "2026-11-02",
+  "kind": "native-ui-world-renderer-lifetime-d3d12-interop",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3422.json",
+  "implementationRevision": "commit-containing-this-receipt",
+  "targetIds": [
+    "RND-09",
+    "BLD-01",
+    "CPP-01",
+    "DBG-02",
+    "PER-01"
+  ],
+  "changedSourceHashes": {
+    "tools/native-ui-tiles.mjs": "454dc8854be11038246a8a2a54b7c58aeb66f9dc1387fbc659709c4e06c9203d",
+    "tools/native-widget-raster-worker.mjs": "84099d525350f4018985d3ef5d6edcc88311dae74b366ebdbfbfea86a7d20dfd",
+    "tools/native-widget-raster-thread.mjs": "cce808e6cb0100c00234bcfed2e0337f7624c2ecc6c8f4c1626c76250735778f",
+    "tools/native-widget-layer.mjs": "9616a14ae72242c2a223827929185a1feed504cfdf92ee94588cc8f75ec50fc6",
+    "tools/native-ui-frame.mjs": "8551be33f8d30bc3aebb483d30904c22c0a08c64f2c2bf3714e53f769d72015c",
+    "tools/run-project.mjs": "31d956e3258f5be871069f0f3243f0589435dcb947c7275ad633dcd390291b06",
+    "tools/native-game-platform.mjs": "b18048964321d4600ddb1386374a4dcbbe5f9db603e74c801bda5976566c86eb",
+    "tools/native-game-runner.mjs": "01e74665f5da8e444fdc3b12665743c62c26492bf6f52a69107a576114189e11",
+    "tools/native-runtime-telemetry.mjs": "3c341046884217715ab39ef5d0b8f2cda7facf628479c6bae0c94ed6a3f5f109",
+    "native/include/HBEngine/D3DDevice.hpp": "28206be2f102cdf29c6066c6135516da48590864e4967cf79275d7e3b4713484",
+    "native/include/HBEngine/Compute.hpp": "71c6cd995f4939c1f65dac9804be04a54290a32b91b704a92d15acbb729da2e2",
+    "native/include/HBEngine/Render.hpp": "0558a7644097d745a511485db8a2d627552c00d778d41b6bf0399d3cafc31112",
+    "native/desktop/SceneRenderBridge.hpp": "4aba098c9776127ede03d20f1d6b8d64f8ee40765d4ece981e211b757b44df7c",
+    "native/desktop/HBNativePlayer.cpp": "cea87b7d389a9f88616018f67eb3b62ba8eb801dd5ae0f0571be19807332c109",
+    "prototype/native-scene-renderer.js": "1e75314f8b618c521635c66a2f17ba3e955a374840dacbe0307a740fa14ffbc3",
+    "native/include/HBEngine/D3D12Interop.hpp": "c94ace67642fa72a4c9364981f8557378579d27e20150f21b574da625f5a52e9",
+    "prototype/build-profile.js": "70068851f07cbf4f2e6a44c05a0cb03f06d2150dc933c11fe1a32602a2adbda3",
+    "tools/build-native-game.mjs": "17700aa64bef0aae555a92440e6e2747a4cde5cb1d721b5fc8113d97eb9266b9",
+    "prototype/build-panel.js": "c688a9b686bfde9cb4acaae4c22f577d4ca82bb72e2bdc438dd01a11893b6de0",
+    "tools/native-host.mjs": "c8519a5817cb7506d5194b5f065d2eaba98c6f7c803baf592c30bcff266ff9eb",
+    "tools/native-session-close.mjs": "b3dac6e6b0ada56d890c718e35d5874a20fe921817aea917ff104439070d62bb",
+    "prototype/native-upload-batches.js": "145c0e08135aa3cfb6078c82c76705636487d3b0551270075a08ff8837943b4b",
+    "prototype/native-transport.js": "f567fe09c732523df07450baa0d42feff625c2d5aec222f4cbdd52bdc16dc3d2",
+    "prototype/ui-runtime.js": "6976f5d00793e76fbad795aabc8811c614ad0e9789c5791cb267fcc4888142e9",
+    "tools/native-runtime-close.mjs": "94b3dfc2908c2d76ff6920ad009873c8fbf0cbef9dfb8d163783674a029c7a2c",
+    "tools/check-native-runtime-cost-followup.mjs": "498050789a6ee999d0dee8565cf4785eb89d4a5cf1e39b4aaee93bd92fdb91cd",
+    "tools/check-native-d3d12-interop.mjs": "24b8594b5a7c7f949e5d069507c1eedf07a5da571d35eca1d901a04c2deeb34e",
+    "tools/check-native-widget-paint-work.mjs": "1f3c4fc8812875aae0ab545fa570cc95a62e95f3cee652855b1d861cf44af758",
+    "tools/check-native-upload-batches.mjs": "02195ad32b0eea3dc09ea86620b5b7d9405789983f5fd3241bfa46a18eba7010",
+    "tools/check-native-session-retirement.mjs": "c57d39e3e81852b1ab90a29b03f117ebbffb57798056e0e733a7b41c43ed9f3a",
+    "tools/check-native-widget-json-reuse.mjs": "90f7144d5fb9d5541e7b8bcec80b08591538a747d8e6464b52d1fde384157a8f",
+    "tools/check-native-world-retirement.mjs": "80bbd48e08293786bfa82c68673c96d259a3d3cb3c5033b6558818b235c80d3a",
+    "tools/check-native-renderer-retirement.mjs": "875fc11fc17182d3c7154c4edd07b10339e57d9f48bd33ef8b471a6608acff31",
+    "tools/check-native-world-matrix-reuse.mjs": "b885cf46f8bad80db23ac9a64603a447a5da1d945678c66b8b9d1e33556beddc",
+    "tools/check-native-runtime-close.mjs": "b5e90fdad1b43502a18cb24a264a93468351bad9fbe1e2f4b3a8d0f29be6a35e",
+    "tools/check-native-game.mjs": "46a872a6eaa5cb8ff25576d48dd8f460a1e6a867433dd1b59ac60000c322ce85",
+    "docs/ai-routes.json": "6e9f139871fdc68064fe37eb9bf8de0b65b109745298b5b225ea36945940befc",
+    "docs/research/ENGINE_STATUS.json": "8ab914f96137aec799baed5b0e095fcaedaecc589415620472c3dc1a12344544",
+    "docs/NATIVE_RUNTIME_COSTS.md": "ccbcbc3758af414f7ee640920ee4f5f8ee607e3c1f42391bfe332bbdacdf889b",
+    "docs/NATIVE_GAME_RUNTIME.md": "268b760333b09a73117b673240c121d4fc236ca28e877caf7af49e191778dcef"
+  },
+  "binary": {
+    "path": "HBNativePlayer.exe",
+    "sha256": "d9c8e3dc37e97304b415e9a79157e4316f2bc711f0ae5a50f258bbf726549e9e",
+    "source": "native/desktop/HBNativePlayer.cpp",
+    "scope": "fresh -O2 static Win32 build; D3D12 libraries dynamically loaded from System32"
+  },
+  "implementation": [
+    "UI tile native buffer compare/reusable mask/exclusive worker packet transfer; no pixel quality change",
+    "Plain text/panel input matrix allocation skipped; full pixels/hit/layout preserved",
+    "Immutable widget branches and exact predecessor changed-property metadata reused",
+    "World-position reuse after full scene/camera matrix update; exact transparent ordering",
+    "Ordered bounded resource uploads and preencoded JSON forwarding",
+    "Disposed view dirty/tracked entries removed; asset disposal subscriptions detached; probe index reset; reupload rearmed",
+    "Unused C++ module world reset preserves worker/static state; no retired object/spawn references",
+    "Actual child close and queued RPC drain precede cache lease release; queued restart prevented; query owner restored",
+    "All runtime disposers attempted even after failure; original and cleanup errors preserved; live UI separate from finalUI",
+    "Report-only main/UI-worker GC histograms/bounded UTC events/CPU/memory and UI encoding substeps",
+    "Explicit d3d11/auto/d3d12 profile/UI/CLI and actual D3D12 device/queue/fence/3 swap buffers with D3D11On12"
+  ],
+  "checks": [
+    {
+      "report": "native/build/runtime-cost-JKLa5C/acceptance.json",
+      "sha256": "472a25f8a7283c8ac995f339d26af99e25bd39adb7af5756c75b5d038af7d660",
+      "passed": true,
+      "scope": "isolated lifecycle/GC observer/async cleanup and tile CPU cost; no full-game FPS or physical-other-PC claim"
+    },
+    {
+      "report": "native/build/ui-tiles-Z3VrqF/acceptance.json",
+      "sha256": "afe84a907097b74fc0e2d81b937db676e1d535eaedc949c68fec377a9051d7fc",
+      "passed": true,
+      "scope": "targeted fixture; not whole-engine acceptance"
+    },
+    {
+      "report": "native/build/widget-raster-worker-lFzZ2P/acceptance.json",
+      "sha256": "a9250d28a2331d07c081c23b04a7f9c0766ba32c6d1d18aecf10f7f412b93140",
+      "passed": true,
+      "scope": "targeted fixture; not whole-engine acceptance"
+    },
+    {
+      "report": "native/build/d3d12-interop-yJMXHS/acceptance.json",
+      "sha256": "531cfb96e1d514b23c611be67066f234a63f88678fb437cd327ce98f2d2a008b",
+      "passed": true,
+      "scope": "D3D12 device/queue/swapchain with D3D11On12 frontend; not native D3D12 command-list generation or full-game FPS"
+    },
+    {
+      "report": "native/build/session-retirement-M8Vo41/acceptance.json",
+      "sha256": "d30a6c9296a927c559999ce923d4b13dd9a1a47bccb1df594f7db68da5bfc376",
+      "passed": true,
+      "scope": "targeted fixture; not whole-engine acceptance"
+    },
+    {
+      "report": "native/build/widget-paint-work-Ex3Wlk/acceptance.json",
+      "sha256": "69ccbd0a4fde4a5ecac570c6d686746a27bbcc15d2ad42a6748577e7652d6051",
+      "passed": true,
+      "scope": "CPU/Skia fixture; not a full-game FPS measurement"
+    },
+    {
+      "report": "native/build/upload-batches-Hr5FIT/acceptance.json",
+      "sha256": "a98224a363af524ace4130aac108411c040819668fd8d3cdc4d44f3739733bfb",
+      "passed": true,
+      "scope": "targeted fixture; not whole-engine acceptance"
+    },
+    {
+      "report": "native/build/widget-json-reuse-P591Yy/acceptance.json",
+      "sha256": "7f3a305a1d8fa34611ac6b79ed2bb9fff5cb0f29dbc03cf1662174e01a5268e4",
+      "passed": true,
+      "scope": "snapshot/patch CPU fixture; not full-game FPS"
+    },
+    {
+      "report": "native/build/widget-snapshot-cost-j479xv/acceptance.json",
+      "sha256": "7a7c6fea95eb05c45d711cb76776a9f68f11815cc9732983a0a47f716f71ae5d",
+      "passed": true,
+      "scope": "targeted fixture; not whole-engine acceptance"
+    },
+    {
+      "report": "native/build/immutable-record-lXKyMK/acceptance.json",
+      "sha256": "e7aaaef74938cc31a30a19eef0e0048c95b43a8f69fb7b84f05cb90e58aa8eb0",
+      "passed": true,
+      "scope": "엔진 소유 불변 UI 기록의 변경 경로 생성 CPU·렌더/전송/전체 FPS 제외"
+    },
+    {
+      "report": "native/build/world-retirement-3xvFe5/acceptance.json",
+      "sha256": "4a58ea61fa6593b4838ba673f72dae2f118a00b5f741efdfd52c7b48434ebddc",
+      "passed": true,
+      "scope": "native/headless unused module world retirement; code/static state remains loaded, not all native heap or GPU resource ownership"
+    },
+    {
+      "report": "native/build/renderer-retirement-uN2VOM/acceptance.json",
+      "sha256": "298702c690ffe85356717c404d7bbc34f6110bdad4094912442539d6e17bca9d",
+      "passed": true,
+      "scope": "targeted fixture; not whole-engine acceptance"
+    },
+    {
+      "report": "native/build/world-matrix-reuse-4G0Nvm/acceptance.json",
+      "sha256": "55a1f33cc93a06c0ef333627fdc3e12d99af3dcb0356b5419a9cb399f752753b",
+      "passed": true,
+      "scope": "targeted fixture; not whole-engine acceptance"
+    },
+    {
+      "report": "native/build/runtime-close-I8K9l9/acceptance.json",
+      "sha256": "8a19a01d6dccd4b6a42fd5020cb2097d569290ab482819343a650f72eab4a7e5",
+      "passed": true,
+      "scope": "targeted fixture; not whole-engine acceptance"
+    },
+    {
+      "report": "native/build/portable-imports-bLEZNA/acceptance.json",
+      "sha256": "89101da5985a10894841aa091aafceb4f46d8964a6f9fdd4538d7cb59c75b028",
+      "passed": true,
+      "scope": "PE import closure on this Windows x64 host; VC/toolchain redistributables must be app-local. This is not a claim of a second physical PC or antivirus acceptance."
+    },
+    {
+      "report": "native/build/native-game-Ras4rd/acceptance.json",
+      "sha256": "45be1b11f12e9a134f69cff684c0f42406e097c360c84a3a9384ecba99e5bed3",
+      "passed": true,
+      "scope": "targeted fixture; not whole-engine acceptance"
+    },
+    {
+      "report": "native/build/runtime-followup-nURhsp/candidate-retirement-final/acceptance.json",
+      "sha256": "5d2eb1b7ff2ba99c578ed715767a2e3a40f7b724e226d95d358febef9f3312d5",
+      "passed": true,
+      "scope": "actual saved court hidden/silent; 120 not passed"
+    },
+    {
+      "report": "native/build/runtime-followup-nURhsp/diagnostic-d3d12-final/acceptance.json",
+      "sha256": "f20e7eb244414a701e56984bf889c1800a1dea1530f3f829ca36f059f9c48a91",
+      "passed": true,
+      "scope": "actual saved court D3D12-11on12 functional run, not ordinary FPS"
+    },
+    {
+      "report": "native/build/runtime-followup-nURhsp/unavailable-api-acceptance.json",
+      "sha256": "4665504072fb613906a3f48ef08cb4cc06a5274d6b5aebdee627a80c07bd2571",
+      "passed": true,
+      "scope": "HB_COMPUTE_UNAVAILABLE C++ syntax-only backend API"
+    },
+    {
+      "report": "native/build/runtime-followup-nURhsp/auric-candidate-stationary-play/acceptance.json",
+      "sha256": "1279179ef57f0adc85ba324ef657f845abd51d5104746854a153cf59bb55c506",
+      "passed": true,
+      "scope": "Auric original package clone; Phase2 hub idle UI/display/lifecycle functional proof only. 120 not passed; no same-hook baseline; not boss/dungeon proof"
+    }
+  ],
+  "observations": {
+    "diagnosticProfile": "native/build/runtime-followup-nURhsp/diagnostic-cpu-d3d11-clean/profile-summary.json",
+    "lastCourtPair": {
+      "baseline": "native/build/runtime-followup-nURhsp/baseline-retirement-final/acceptance.json",
+      "candidate": "native/build/runtime-followup-nURhsp/candidate-retirement-final/acceptance.json",
+      "baselineFPS": 60.8530344805402,
+      "candidateFPS": 69.84044723863148,
+      "scope": "hidden/silent 20s immutable game snapshot; external host workload not controlled; observed values only, not an accepted improvement ratio",
+      "target120Passed": false
+    },
+    "legacyScopeCorrection": {
+      "receipt": "docs/research/ENGINE_WORK_3420.json",
+      "reason": "old QA capture hook retained layout and periodic telemetry/input parse during interval",
+      "rawValuesPreserved": true,
+      "notUntouchedOrdinaryFPS": true,
+      "notComparableToNewMutedHook": true
+    },
+    "gc": "duration sums include kinds; not a stop-the-world pause sum; counters cover observer lifetime, not necessarily the FPS interval",
+    "auric": {
+      "report": "native/build/runtime-followup-nURhsp/auric-candidate-stationary-play/acceptance.json",
+      "observedFPS": 66.09952516243195,
+      "target120Passed": false,
+      "scope": "Phase2 hub at same idle position, hidden/silent QA hook with periodic object metadata; not a baseline comparison/boss run"
+    }
+  },
+  "failuresAndExcluded": [
+    "Initial PE fixture absolute Unicode output path failed in harness; relative output fixed before accepted proof",
+    "Installed-version activity prevented some game/installation attempts; those attempts are not completed checks",
+    "FPS samples with overlapping installed build activity or different QA hooks excluded from comparative gain claims",
+    "First final native fixture asserted active UI after EndPlay and legacy rect encoding; report now distinguishes last live ui/finalUI, fixture checks actual binary tiles, fresh actual package passed",
+    "Inspector.stop polluted a diagnostic frame; not an ordinary game hitch proof",
+    "First Auric followup stayed on character choice: accepted only as lobby compatibility, excluded from gameplay/performance proof; actual digit1 input selected Phase2 in final followup",
+    "Initial syntax-only compiler shell omitted UCRT PATH; explicit child environment compiled the unchanged API stub successfully"
+  ],
+  "remaining": [
+    "120FPS sustained actual court/boss/long-run acceptance",
+    "Native D3D12 command lists/pipelines/descriptors without D3D11On12; complete feature/device parity",
+    "Other physical PC/antivirus/code-signing credential acceptance",
+    "C++/GPU heap and long-run GC stall attribution; actual mobile sustained performance"
+  ],
+  "installationRequired": true,
+  "installationState": "pending-user-update-request-active",
+  "userOriginalsTouched": false,
+  "userWindowsTouched": false,
+  "protectedFilesReadEditedStagedExecuted": false,
+  "automationCreated": false,
+  "agentsCreated": false,
+  "existingPackagesRequireRebuild": true
+}

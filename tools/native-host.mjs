@@ -1,3 +1,4 @@
+import {closeNativeSession} from './native-session-close.mjs';
 import {compileNativeUnits,nativeBuildTimeoutMs} from './native-compile-units.mjs';
 import {nativeWorkerResource} from './native-worker-resources.mjs';
 import {packagedModuleError} from './packaged-module-error.mjs';
@@ -96,17 +97,17 @@ export class NativeHost extends NativeProtocol {
     }
     }
     signal?.throwIfAborted();
-    const token=randomUUID();session={token,binary,metadata,queue:Promise.resolve(),lastUsed:Date.now(),releaseCache};this.sessions.set(token,session);releaseCache=null;for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000&&!value.busy){value.process?.kill();this.sessions.delete(key);await value.releaseCache?.();}
+    const token=randomUUID();session={token,binary,metadata,queue:Promise.resolve(),lastUsed:Date.now(),releaseCache};this.sessions.set(token,session);releaseCache=null;for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000&&!value.busy){this.sessions.delete(key);await closeNativeSession(value);}
     const now=new Date();await fs.utimes(binary,now,now);await (this.moduleCache?this.moduleCache.prune():pruneTestArtifacts(null,{nativeCacheOnly:true,protectedBinaries:[...this.sessions.values()].map(s=>s.binary)})).catch(error=>console.error('C++ 캐시 정리 실패:',error.message));
     signal.throwIfAborted();
     return {token,metadata,cacheKey:hash,cacheHit,cacheScope,sdk,sdkUsed,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
-    }catch(error){if(session){this.sessions.delete(session.token);session.process?.kill();await session.releaseCache?.();}throw error;}finally{this.buildControllers.delete(controller);await releaseCache?.();}
+    }catch(error){if(session){this.sessions.delete(session.token);try{await closeNativeSession(session);}catch(cleanup){throw new AggregateError([error,cleanup],'C++ 빌드 실패 후 실행 자원 해제도 실패했어요.');}}throw error;}finally{this.buildControllers.delete(controller);await releaseCache?.();}
   }
   async call(token,request,from,rendererQuery){
-    const session=this.sessions.get(token);if(!session)throw Error('C++을 먼저 빌드하세요.');session.lastUsed=Date.now();
+    const session=this.sessions.get(token);if(!session||session.retiring||session.closing)throw Error('C++ 실행 수명이 종료됐어요.');session.lastUsed=Date.now();
     if(from&&session.busy)throw Error('실행 중인 C++ 모듈로 순환 호출할 수 없어요.');
     if(from&&from.nativeDepth>=7)throw Error('C++ 모듈 호출 깊이 제한 초과');
-    const job=session.queue.then(async()=>{try{
+    const job=session.queue.then(async()=>{try{if(session.closing||this.sessions.get(token)!==session)throw Error('C++ 실행 수명이 종료됐어요.');
       session.busy=true;session.rendererQuery=rendererQuery;session.nativeDepth=from?from.nativeDepth+1:0;session.nativeBudget=from?.nativeBudget||{count:0};
       const started=performance.now();let decoded=this.decodeRequest(session,request);const decodedAt=performance.now();this.validate(session,decoded);if(decoded.gameSession&&this.gameSessionId!==decoded.gameSession.id){this.gameSessionId=decoded.gameSession.id;this.persistentQueries?.clear();}if(decoded.spawnTemplates){session.spawnContexts??=new Map();decoded={...decoded,spawnTemplates:retainedSpawnContext(decoded.spawnTemplates,session.spawnContexts)};session.spawnContexts.set(decoded.spawnPrefix,decoded.spawnTemplates);if(session.spawnContexts.size>8)session.spawnContexts.delete(session.spawnContexts.keys().next().value);}const validatedAt=performance.now(),frames=decoded.moduleFrames===undefined?[]:this.frameModules(token,decoded.moduleFrames),receipts=[];for(const frame of frames){if(++session.nativeBudget.count>128)throw Error("C++ 모듈 질의 개수 오류");receipts.push({token:frame.token,result:await this.call(frame.token,{...frame.request,scopes:decoded.scopes,activeActors:decoded.activeActors},session,rendererQuery)});}const {moduleFrames,...packet}=decoded,reply=await this.rpc(session,frames.length?packet:decoded),replyAt=performance.now();if(decoded.moduleFrames!==undefined)reply.moduleFrames=receipts;const result=this.validateReply(session,decoded,reply);Object.assign(result.transport,{decodeMs:decodedAt-started,validateMs:validatedAt-decodedAt,replyValidationMs:performance.now()-replyAt});
       const committed=request.worldTransport===1?commitNativeWorld(decoded.objects,result):undefined;
@@ -120,6 +121,7 @@ export class NativeHost extends NativeProtocol {
     session.queue=job.then(()=>{},()=>{});return job;
   }
   rpc(session,request){
+    if(session.closing)throw Error('C++ 실행 수명이 종료됐어요.');
     if(request.spawnPrefix&&session.spawnContexts?.has(request.spawnPrefix)&&(!session.process||session.workerSpawnPrefix!==request.spawnPrefix))request={...request,spawnTemplates:session.spawnContexts.get(request.spawnPrefix)};
     if(!session.process){session.transportWorld=null;session.process=spawn(process.platform==='win32'?path.toNamespacedPath(session.binary):session.binary,[],{env:session.packaged?{...process.env}:{...env,...process.env,PATH:env.PATH},windowsHide:true,stdio:['pipe','pipe','pipe']});session.lines=readline.createInterface({input:session.process.stdout});session.process.stderr.on('data',()=>{});session.process.on('error',()=>{});session.process.once('exit',()=>{session.process=null;session.workerSpawnPrefix=null;});}
     return new Promise((resolve,reject)=>{const prepareStart=performance.now();const clockOnly=session.metadata.workerProtocol>=2&&["frame","frames","reset"].includes(request.command);if(request.command==="reset"){session.transportWorld=null;this.physicsQueryPool.invalidate(request.gameSession?.id);}const current=clockOnly?null:request[canonicalWorld]?request.objects:JSON.parse(JSON.stringify(request.objects)),patch=!clockOnly&&session.metadata.workerProtocol>=2&&session.transportWorld?(request[canonicalWorld]?.patch&&session.transportWorld===request[canonicalWorld].base?request[canonicalWorld].patch:worldPatch(session.transportWorld,current)):null,packet=clockOnly?{...request,objects:[]}:patch?{...request,objects:undefined,objectPatch:patch}:request;if(!clockOnly)session.transportWorld=current;const payload=JSON.stringify(packet),rpcStart=performance.now();const child=session.process,lines=session.lines,queries=new NativePhysicsQueries(request.objects,{liveQuery:(query,snapshot)=>nativeParticleQuery(query,snapshot,session.rendererQuery),lease:request.command==='reset'?null:this.physicsQueryPool.acquire(request.gameSession?.id),authorizeWorld:query=>spawnQueryRequest(request,query,session.metadata,request.spawnTemplates||session.spawnContexts?.get(request.spawnPrefix))});let finished=false;
@@ -131,6 +133,20 @@ export class NativeHost extends NativeProtocol {
         }else value=await queries.query(query);reply={ok:true,value};}catch(error){reply={ok:false,error:error.message};}if(!finished)child.stdin.write(JSON.stringify(reply)+'\n',error=>{if(error)onError(error);});return;}
         const start=line.indexOf('HB_RESULT\t');if(start<0)return;try{const result=JSON.parse(line.slice(start+10));cleanup();if(result.ok){if(request.spawnTemplates)session.workerSpawnPrefix=request.spawnPrefix;result.transport={...result.transport,mode:clockOnly?"clock":packet.objectPatch?"patch":"full",bytes:Buffer.byteLength(payload),patchOperations:packet.objectPatch?.length||0,prepareMs:rpcStart-prepareStart,replyBytes:Buffer.byteLength(line),returnedObjects:result.objects?.length||0,rpcMs:performance.now()-rpcStart,physicsQueryMs:queries.queryMs,physicsQueryCount:queries.count,physicsCacheReused:!!queries.lease?.reused};resolve(result);}else{session.transportWorld=null;reject(Error(result.error));}}catch(error){onError(error);}};lines.on('line',onLine);child.once('exit',onExit);child.once('error',onError);child.stdin.write(payload+'\n',error=>{if(error)onError(error);});});
   }
-  async release(token){const session=this.sessions.get(token);if(!session)return false;await session.queue?.catch(()=>{});if(session.busy)throw Error('C++ 요청이 진행 중이에요.');if(this.sessions.get(token)!==session)return false;this.sessions.delete(token);session.process?.kill();await session.releaseCache?.();if(!this.sessions.size)this.physicsQueryPool.clear();return true;}
-  close(){for(const controller of this.buildControllers)controller.abort(Error('C++ 실행기가 닫혔어요.'));const releases=[];for(const session of this.sessions.values()){session.process?.kill();if(session.releaseCache)releases.push(session.releaseCache());}this.sessions.clear();this.physicsQueryPool.dispose();this.physicsQueryPool=new NativePhysicsQueryPool();const completion=Promise.all(releases);completion.catch(error=>console.error('C++ 캐시 참조 해제 실패:',error.message));return completion;}
+  async trimWorlds(keepTokens){
+    const keep=new Set(keepTokens),retired=[];
+    for(const [token,session]of this.sessions){
+      if(keep.has(token)||session.retiring||session.closing)continue;
+      const objects=Math.max(session.requestWorld?.length||0,session.transportWorld?.length||0),contexts=session.spawnContexts?.size||0;
+      if(!objects&&!contexts)continue;
+      // Reset the retired world, not its compiled module or C++ static storage.
+      if(session.process)await this.call(token,{command:'reset',objects:[]});
+      if(this.sessions.get(token)!==session||session.closing)continue;
+      session.requestWorld=session.transportWorld=null;session.requestSequence=0;session.requestWorldId=null;session.spawnContexts?.clear();session.workerSpawnPrefix=null;
+      retired.push({objects,spawnContexts:contexts,workerRetained:!!session.process});
+    }
+    return {worlds:retired.length,retired};
+  }
+  async release(token){const session=this.sessions.get(token);if(!session)return false;session.retiring=true;await session.queue?.catch(()=>{});if(session.busy)throw Error('C++ 요청이 진행 중이에요.');if(this.sessions.get(token)!==session)return false;this.sessions.delete(token);await closeNativeSession(session);if(!this.sessions.size)this.physicsQueryPool.clear();return true;}
+  close(){if(this.closeJob)return this.closeJob;for(const controller of this.buildControllers)controller.abort(Error('C++ 실행기가 닫혔어요.'));const sessions=[...this.sessions.values()];for(const session of sessions)session.closing=true;this.sessions.clear();const completion=Promise.all(sessions.map(closeNativeSession)).then(()=>{this.physicsQueryPool.dispose();this.physicsQueryPool=new NativePhysicsQueryPool();});this.closeJob=completion;completion.finally(()=>{if(this.closeJob===completion)this.closeJob=null;}).catch(error=>console.error('C++ 실행 자원 해제 실패:',error.message));return completion;}
 }

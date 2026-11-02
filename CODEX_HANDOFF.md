@@ -1,3 +1,6 @@
+## 엔진 비용·자원 수명·DX12 호환 · WORK3424 / 2026-11-02
+UI 불변 가지/변경 키 재사용·Buffer 타일 탐색/독점 패킷 이전·비입력 글자 행렬 생략·세계 행렬 위치 재사용·순서 보존 묶음 업로드를 연결했어요. dirty view/렌더 이벤트/unused module world/queued CPP child 종료·cache lease·오류 뒤 전체 해제를 교정했어요. report 전용 GC/각 isolate 메모리·CPU·UI 단계 관측 추가. 실제12장치/queue/fence/3-buffer와 D3D11On12 호환 HW/WARP/재판 실행, nativeCommandLists=false·기본11 유지. 120미합격/모든PC/네이티브12전체/GC pause 합격 아님. WORK3420의 옛 QA FPS는 측정 중 layout/주기 출력이 켜진 표본이어서 일반 실행/새 훅 비교로 쓰지 않아요. 최종 숨김20초 60.853/69.840은 외부 부하 미통제 관측만. 설치 상태는 후속 USER_INSTALL3425와 실제 마커를 대조해요. 게임원본/사용자창/금지3파일/예약/goal/agent 변경0. 공유 WIP 보존·canonical 후보만 index/설치.
+
 ## 삭제 자원 GC 회수 · WORK3422 / 2026-11-02
 설치59c56a17의 실제 모델/아틀라스/지연 이미지 소유 모듈을 검사했어요. 128인스턴스·16원본·304WeakRef 전부 회수·풀 픽셀 유지·cache source/lease0·dispose16 통과. 검사 자식에만 강제GC; 제품 변경/새 설치 없음. 장시간 게임/GC pause/C++ heap/GPU 메모리 전체 합격 아님. USER_INSTALL3421/Versions1·소유 중복검사37개 정리와 단일 frozen 재현본 보존 유지. 원본/사용자창/예약/agent/goal 변경0. WORK3422 및 NATIVE_RUNTIME_COSTS.
 

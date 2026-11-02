@@ -53,10 +53,25 @@ C++ 동기화에서 좌표만 바뀌면 그룹 변환만 맞추고 머테리얼 
 
 Windows 하드웨어 장치 생성 실패는 WARP를 시도하고 양쪽 오류를 남겨요. 오디오 출력 장치가 없으면 무음으로 실행하고 진단을 남겨요. 실제 WARP 계산·4 PE import closure를 확인했지만 다른 물리 PC·수신 백신·물리 장치 교체 검증과는 구분해요. D3D12 네이티브 백엔드는 이 변경에 없어요.
 
-최종 소유 숨김 창, 동일 게임/원본 저장·120 요청, 일반 실행 frameDone 간격을 재판 52.54→100.66 FPS로 측정했어요. Auric 동일 위치는 114.35→116.08 FPS이며 두 표본만으로 작은 차이를 확정 개선율로 부르지 않아요. 120 목표는 미합격이에요. 움직임 비교의 sparse heartbeat 때문에 입력 유지 시간이 달랐던 후보, 첫 초기 회귀와 실패한 포장 실험은 최종 성능 근거에서 제외해요. 계측 실행의 FPS는 일반 실행 FPS로 쓰지 않아요. 상세 정본은 [ENGINE_WORK_3420.json](research/ENGINE_WORK_3420.json)이에요.
+당시 소유 숨김 QA 실행의 재판 frameDone 관측값은 52.54→100.66 FPS였어요. WORK3424에서 그 캡처 훅이 측정 중 layout 수집과 1초 간격 QA 출력/입력 재해석을 계속한 것을 확인했으므로, 이 값을 훅 없는 일반 실행 FPS나 새 훅과의 직접 비교 근거로 사용하지 않아요. Auric 동일 위치는 114.35→116.08 FPS이며 두 표본만으로 작은 차이를 확정 개선율로 부르지 않아요. 120 목표는 미합격이에요. 움직임 비교의 sparse heartbeat 때문에 입력 유지 시간이 달랐던 후보, 첫 초기 회귀와 실패한 포장 실험은 최종 성능 근거에서 제외해요. 계측 실행의 FPS는 일반 실행 FPS로 쓰지 않아요. 상세 정본은 [ENGINE_WORK_3420.json](research/ENGINE_WORK_3420.json)이에요.
 
 ## 삭제 자원 GC 회수 확인 · WORK3422
 
 설치 `59c56a17eb91063a`의 실제 모델·아틀라스·지연 이미지 소유 모듈로 격리 Node 검사를 실행했어요. 네 장면 묶음에서 128개 인스턴스와 16개 원본을 만들고, 풀에 둔 동안 픽셀을 유지한 뒤 실제 해제했어요. 캐시 자체는 살려 둔 채 304개 WeakRef의 객체·텍스처·픽셀 배열이 전부 회수됐고, 각 묶음 끝 ArrayBuffer는 41,719byte였어요. 자원 dispose 16회와 내부 source/instance/lease 0도 확인했어요.
 
 `--expose-gc`와 명시 GC는 검사 자식 프로세스에만 사용해요. 게임 프레임의 강제 GC는 추가하지 않았어요. 이 근거는 JavaScript 소유 그래프의 회수 가능성을 확인하며, C++ 힙·GPU 드라이버·모든 게임의 장시간 누수·GC 중단 시간까지 합격시킨 근거는 아니에요. 도구: `tools/check-native-resource-gc.mjs`, 결과: `native/build/resource-gc-Bo0aUA/acceptance.json`. 제품 소스 변경이 없어 설치를 다시 만들지 않아요.
+
+
+## UI·렌더·월드 수명 후속 · WORK3424
+
+UI 변경 타일 탐색은 native Buffer 비교와 작은 재사용 마스크를 쓰고, 독점 소유 패킷은 작업 스레드에서 그대로 이전해요. 글자·패널처럼 입력을 받지 않는 노드의 불필요한 입력 행렬 생성도 없앴어요. 불변 위젯은 바뀐 가지/속성만 새로 동결해 이전 스냅샷을 보존하며 전송 diff가 그 변경 키를 재사용해요. 임의 화질/오브젝트 수/FPS 제한은 추가하지 않았어요.
+
+scene/camera의 월드 행렬 갱신 뒤에는 정렬 위치를 그 행렬에서 읽어요. 12프레임·60 draw의 카메라 부모/회전/비균일 크기/투명 정렬 패킷 전부 동일, 중복 getWorldPosition 732→0이에요. 자원 업로드는 순서를 유지하는 기본4MiB 묶음으로 보내고 Node 경로는 같은 JSON을 다시 직렬화하지 않아요. 개별128MiB 초과 자원은 여전히 분할 구현이 필요해요.
+
+삭제한 위젯의 worker dirty/tracked 참조를 즉시 없애요. 에셋 dispose 이벤트가 닫힌 렌더러를 붙잡던 결함도 실제 WeakRef로 재현해 교정했어요(살아 있는 에셋의 옛 렌더러 유지1→0). 장면 해제 때 이벤트·probe index를 지우고 재사용 시 다시 등록해요. C++ worker 종료는 실제 close와 이미 큐에 든 RPC 완료 뒤 cache lease를 해제하며, 늦은 요청의 worker 재시작을 막아요. 다른 월드에서 쓰지 않는 모듈의 객체/spawn 참조는 reset하되 C++ 정적 상태와 컴파일된 worker는 유지해요. 종료 단계 하나가 실패해도 나머지 자원 해제를 시도하고 원래 오류를 보존해요.
+
+`--report`에서만 main/UI worker의 GC 발생 시간·종류·히스토그램·최대값과 bounded UTC 사건, 메모리/CPU/loop delay를 수집해요. GC duration 합계를 stop-the-world 중단 시간으로 부르지 않아요. RSS/process CPU는 프로세스 전체, heap/external/arrayBuffers/threadCPU는 해당 isolate/thread이며 arrayBuffers는 external에 포함돼요. 일반 게임에는 GC 관찰 타이머나 강제 GC를 넣지 않아요.
+
+`nativeGraphicsAPI`는 d3d11/auto/d3d12예요. d3d12는 실제 D3D12 장치·큐·fence·3-buffer 표시와 Microsoft D3D11On12를 사용하는 호환 경로예요. 기본 d3d11을 유지하며, 직접 D3D12 command-list 포트 완료로 표시하지 않아요. HW/WARP 각각 compute/readback/표시/resize를 확인했고 실제 재판의 12 호환 표시도 확인했어요.
+
+새 QA 훅은 측정 구간의 layout/캡처/주기 QA 출력/중복 입력 해석을 꺼요. 마지막 D3D11 숨김·무음20초 사본은 이전60.853FPS(p95 20.816ms), 후보69.840FPS(p95 17.956ms) 관측이에요. 별도 작업 부하 통제가 안 됐고 이전 측정에는 다른 설치본 빌드도 겹쳐, 확정 개선율이나 전면/음향 활성 원본 성능으로 주장하지 않아요. 120FPS 목표는 계속 미합격이에요. 게임 원본·에셋·모듈·저장 원본은 바꾸지 않았어요. 상세 수치/실패/재사용 경계는 [ENGINE_WORK_3424.json](research/ENGINE_WORK_3424.json)에 있어요.

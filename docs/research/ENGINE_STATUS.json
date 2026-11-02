@@ -2861,7 +2861,8 @@
         "tools/check-scene-matrix-pass-2314.mjs",
         "prototype/component-json.js",
         "native/include/HBEngine/ComponentJson.hpp",
-        "tools/check-native-gameplay-read-cost.mjs"
+        "tools/check-native-gameplay-read-cost.mjs",
+        "tools/native-session-close.mjs"
       ],
       "evidence": [
         "docs/BLUEPRINT_SPEC.md",
@@ -2948,7 +2949,8 @@
         "docs/CPP_COMPONENT_DEFAULTS.md",
         "docs/research/ENGINE_WORK_3100.json",
         "docs/BEHAVIOR_TASK_MEMORY.md",
-        "docs/research/ENGINE_WORK_3418.json"
+        "docs/research/ENGINE_WORK_3418.json",
+        "docs/research/ENGINE_WORK_3424.json"
       ]
     },
     {
@@ -3840,7 +3842,7 @@
       "area": "debugging",
       "title": "GPU 시간·메모리/크래시 진단",
       "status": "partial",
-      "implemented": "리소스 수·일부 GPU Query·C++ host 메모리 진단 · 170: Win32 페이지 실패의 WebErrorStatus 로그·허브/프로젝트/종료 집중 검사 ·396–400: opt-in GL/GPU 비동기GPU시간·실제32render+1compute/독립출력·진행중stop/자원퇴역·UI/AI/두작업공간·GPU보기/전체행가시성·원본보존 ·1728–1734: owned자동CDPport/loopback endpoint검증·카테고리gpu.angle만/완료event후stream·16MiB상한/gzip1개·source길이SHA요약·timeout/실패stream·socket해제. 실제추적178event·GL0/비영guide/exit0와프로토콜double실패·cap·dataLoss검사. 제품상주추적기없음. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3406: 패키지 C++ 파일 누락·차단 경로와 보호기록 안내·시작 실패 창, PE/COFF 회귀 검사 ·3422: 설치 모델/아틀라스/지연 이미지 소유 그래프 128인스턴스·16원본·304WeakRef 실제 회수 확인, 풀 유지/마지막 dispose/캐시 잔류0. 검사 프로세스에서만 명시GC·장시간/중단시간 미검증",
+      "implemented": "리소스 수·일부 GPU Query·C++ host 메모리 진단 · 170: Win32 페이지 실패의 WebErrorStatus 로그·허브/프로젝트/종료 집중 검사 ·396–400: opt-in GL/GPU 비동기GPU시간·실제32render+1compute/독립출력·진행중stop/자원퇴역·UI/AI/두작업공간·GPU보기/전체행가시성·원본보존 ·1728–1734: owned자동CDPport/loopback endpoint검증·카테고리gpu.angle만/완료event후stream·16MiB상한/gzip1개·source길이SHA요약·timeout/실패stream·socket해제. 실제추적178event·GL0/비영guide/exit0와프로토콜double실패·cap·dataLoss검사. 제품상주추적기없음. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3406: 패키지 C++ 파일 누락·차단 경로와 보호기록 안내·시작 실패 창, PE/COFF 회귀 검사 ·3422: 설치 모델/아틀라스/지연 이미지 소유 그래프 128인스턴스·16원본·304WeakRef 실제 회수 확인, 풀 유지/마지막 dispose/캐시 잔류0. 검사 프로세스에서만 명시GC·장시간/중단시간 미검증 ·3424: report 전용 main/UI worker GC 발생·bounded histogram/UTC 표본·isolate 메모리/CPU/loop delay·그리기/픽셀 추출/타일 선택/복사 분리. dirty view·렌더 이벤트·폐기 월드·종료 큐 실제 회수 증명. 강제 GC는 검사 자식만.",
       "remaining": [
         "스레드 flow·사전 생성/외부 GPU command buffer·GPU 패스별 시간 트레이스 확장",
         "할당·누수·크래시 덤프·장치 연결·간헐적 시작 실패 추가 재현"
@@ -3849,7 +3851,8 @@
         "prototype/profiler.js",
         "prototype/game-renderer.js",
         "prototype/gpu-frame-timing.js",
-        "tools/check-native-resource-gc.mjs"
+        "tools/check-native-resource-gc.mjs",
+        "tools/native-runtime-telemetry.mjs"
       ],
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
@@ -3862,7 +3865,8 @@
         "docs/research/USER_INSTALL_1736.json",
         "docs/research/ENGINE_WORK_3402.json",
         "docs/research/ENGINE_WORK_3406.json",
-        "docs/research/ENGINE_WORK_3422.json"
+        "docs/research/ENGINE_WORK_3422.json",
+        "docs/research/ENGINE_WORK_3424.json"
       ]
     },
     {
@@ -3897,7 +3901,8 @@
         "docs/NATIVE_INPUT_AND_LISTS.md",
         "docs/research/ENGINE_WORK_3416.json",
         "native/include/HBEngine/Bridge.hpp",
-        "tools/check-native-gameplay-read-cost.mjs"
+        "tools/check-native-gameplay-read-cost.mjs",
+        "prototype/native-upload-batches.js"
       ],
       "evidence": [
         "docs/WINDOWS_GAME_IDENTITY_108.md",
@@ -3914,7 +3919,8 @@
         "docs/research/ENGINE_WORK_3412.json",
         "docs/research/ENGINE_WORK_3414.json",
         "docs/research/ENGINE_WORK_3418.json",
-        "docs/research/ENGINE_WORK_3420.json"
+        "docs/research/ENGINE_WORK_3420.json",
+        "docs/research/ENGINE_WORK_3424.json"
       ]
     },
     {
@@ -4194,7 +4200,8 @@
         "docs/SEQUENCE_POSE_PREPARATION.md",
         "docs/research/ENGINE_WORK_1809.json",
         "docs/research/USER_INSTALL_1811.json",
-        "docs/research/ENGINE_WORK_3402.json"
+        "docs/research/ENGINE_WORK_3402.json",
+        "docs/research/ENGINE_WORK_3424.json"
       ]
     },
     {
@@ -4407,26 +4414,29 @@
       "id": "RND-09",
       "area": "rendering",
       "title": "네이티브 DirectX12 백엔드",
-      "status": "unimplemented",
-      "implemented": "",
+      "status": "partial",
+      "implemented": "WORK3424: 실제 D3D12 장치·direct queue·fence·3-buffer swapchain 및 D3D11On12 호환 그리기/compute·HW/WARP·크기 변경·명시 프로필/CLI 선택. nativeCommandLists=false.",
       "remaining": [
-        "D3D12 command queue/list/fence와 프레임 자원·기존 렌더링 기능 동등성·실제 실행 및 장치 호환성"
+        "D3D11On12를 거치지 않는 D3D12 command list/pipeline/descriptor 직접 생성과 전체 렌더 기능 동등성",
+        "다른 물리 PC/장치·장시간 부하·보스전 성능 대조 및 120FPS 충족"
       ],
       "sources": [
         "native/include/HBEngine/D3DDevice.hpp",
         "native/desktop/SceneRenderBridge.hpp",
-        "docs/NATIVE_RUNTIME_COSTS.md"
+        "docs/NATIVE_RUNTIME_COSTS.md",
+        "native/include/HBEngine/D3D12Interop.hpp"
       ],
       "evidence": [
-        "docs/research/ENGINE_WORK_3420.json"
+        "docs/research/ENGINE_WORK_3420.json",
+        "docs/research/ENGINE_WORK_3424.json"
       ]
     }
   ],
   "latestBatch": {
-    "first": 3422,
-    "last": 3422,
-    "receipt": "docs/research/ENGINE_WORK_3422.json",
-    "scope": "WORK3420 설치본 삭제 자원 GC 회수의 격리 검증·제품 코드 변경 없음; 장시간/GC 중단 시간은 별도"
+    "first": 3424,
+    "last": 3424,
+    "receipt": "docs/research/ENGINE_WORK_3424.json",
+    "scope": "UI 변경 스냅샷/타일·세계 행렬·자원/월드/worker 수명·보고 계측·정렬된 업로드·명시 D3D12-11on12 실행을 연결. 120/모든PC/전체 엔진 완료 아님"
   },
   "latestInstallation": {
     "receipt": "docs/research/USER_INSTALL_3421.json",

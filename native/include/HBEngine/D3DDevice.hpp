@@ -3,6 +3,7 @@
 
 namespace hb::gpu {
 enum class DeviceDriver { Automatic, Hardware, Software };
+enum class DeviceBackend { Direct3D11, Direct3D12Interop };
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 namespace detail {
 template<class Create>

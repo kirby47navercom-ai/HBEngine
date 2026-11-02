@@ -1,12 +1,14 @@
-import {parentPort,workerData} from 'node:worker_threads';
+import {parentPort,workerData,isMarkedAsUntransferable} from 'node:worker_threads';
+import {NativeRuntimeTelemetry} from './native-runtime-telemetry.mjs';
 import {NativeWidgetLayer} from './native-widget-layer.mjs';
 import {openNativeContent} from './native-package-content.mjs';
 
 const pack=await openNativeContent(workerData.directory),views=new Map();let serial=0,current=0,ack;
 const send=async(op,frame)=>{if(op!=='ui'||ack)throw Error('Native UI raster packet order');const id=++serial;
  const response=new Promise((resolve,reject)=>{ack={id,resolve,reject};});
- if(Buffer.isBuffer(frame.pixels)){const bytes=new Uint8Array(frame.pixels);parentPort.postMessage({type:'frame',id,frame:{...frame,pixels:bytes}},[bytes.buffer]);}else parentPort.postMessage({type:'frame',id,frame});return response;
+ if(Buffer.isBuffer(frame.pixels)){const exclusive=frame.encoding==='pipe-rgba8-premultiplied-tiles'&&frame.pixels.byteOffset===0&&frame.pixels.byteLength===frame.pixels.buffer.byteLength&&!isMarkedAsUntransferable(frame.pixels.buffer),bytes=exclusive?new Uint8Array(frame.pixels.buffer):new Uint8Array(frame.pixels);parentPort.postMessage({type:'frame',id,frame:{...frame,pixels:bytes}},[bytes.buffer]);}else parentPort.postMessage({type:'frame',id,frame});return response;
 };
+const telemetry=new NativeRuntimeTelemetry({enabled:workerData.profile,label:'ui-raster'});let drawings=0,threadProfile;
 let layer=new NativeWidgetLayer(pack,send,{rawFrames:workerData.rawFrames,profile:workerData.profile});
 const transform=m=>({a:m.a,b:m.b,c:m.c,d:m.d,e:m.e,f:m.f});
 const clip=hit=>({w:hit.w,h:hit.h,matrix:transform(hit.matrix)});
@@ -23,7 +25,7 @@ parentPort.on('message',async message=>{
    if(row.nodes){const nodes=new Map(row.nodes.map(node=>[node.id,node]));view.data.nodes=view.data.nodes.map(node=>nodes.get(node.id)||node);}view.scrollOffsets=new Map(row.scrollOffsets);
   }
   const reference=row=>{const view=views.get(row?.key),node=view?.data.nodes.find(node=>node.id===row?.id);return view&&node?{view,node}:null;};layer.down=reference(message.down);layer.hover=reference(message.hover);layer.focus=reference(message.focus);layer.flashes=new Set(message.flashes);layer.revision++;layer.layout=message.layout?[]:undefined;const before=layer.uiFrames;
-  await layer.draw(message.width,message.height,message.pixelRatio);
-  parentPort.postMessage({id:message.id,hits:layer.hits.map(serialize),scrollHits:layer.scrollHits.map(serialize),rows:[...views].map(([key,view])=>({key,scrollOffsets:[...view.scrollOffsets]})),layout:layer.layout||[],animated:!!layer.activeAnimations?.size,submitted:layer.uiFrames!==before,profile:layer.lastProfile,diagnostics:layer.diagnostics()});
+  await layer.draw(message.width,message.height,message.pixelRatio);if(workerData.profile&&drawings++%30===0){telemetry.sample(drawings);threadProfile=telemetry.snapshot();}
+  parentPort.postMessage({id:message.id,hits:layer.hits.map(serialize),scrollHits:layer.scrollHits.map(serialize),rows:[...views].map(([key,view])=>({key,scrollOffsets:[...view.scrollOffsets]})),layout:layer.layout||[],animated:!!layer.activeAnimations?.size,submitted:layer.uiFrames!==before,profile:layer.lastProfile,diagnostics:{...layer.diagnostics(),...threadProfile?{runtimeTelemetry:threadProfile}:{}}});
  }catch(error){parentPort.postMessage({id:message.id,error:error.stack});}finally{current=0;}
 });

@@ -5443,6 +5443,78 @@
       "paths": [
         "prototype/runtime-data-equal.js"
       ]
+    },
+    {
+      "id": "native-runtime-telemetry",
+      "keywords": [
+        "NativeRuntimeTelemetry"
+      ],
+      "paths": [
+        "tools/native-runtime-telemetry.mjs",
+        "tools/native-widget-raster-thread.mjs",
+        "tools/native-game-runner.mjs"
+      ]
+    },
+    {
+      "id": "native-session-lifetime",
+      "keywords": [
+        "closeNativeSession",
+        "trimWorlds",
+        "closeNativeRuntime"
+      ],
+      "paths": [
+        "tools/native-session-close.mjs",
+        "tools/native-host.mjs",
+        "tools/native-runtime-close.mjs",
+        "tools/run-project.mjs"
+      ]
+    },
+    {
+      "id": "native-widget-immutable-reuse",
+      "keywords": [
+        "reconcileImmutableNativeJSON",
+        "nativeWidgetRow"
+      ],
+      "paths": [
+        "prototype/native-transport.js",
+        "prototype/ui-runtime.js"
+      ]
+    },
+    {
+      "id": "native-bounded-upload",
+      "keywords": [
+        "nativeUploadBatches"
+      ],
+      "paths": [
+        "prototype/native-upload-batches.js",
+        "prototype/native-scene-renderer.js",
+        "tools/native-game-runner.mjs"
+      ]
+    },
+    {
+      "id": "native-renderer-retirement",
+      "keywords": [
+        "subscribeDisposal",
+        "clearDisposalSubscriptions",
+        "hbReleaseScene"
+      ],
+      "paths": [
+        "prototype/native-scene-renderer.js"
+      ]
+    },
+    {
+      "id": "native-d3d12-interop",
+      "keywords": [
+        "D3D12Interop",
+        "D3D12SwapBuffers",
+        "DeviceBackend"
+      ],
+      "paths": [
+        "native/include/HBEngine/D3D12Interop.hpp",
+        "native/include/HBEngine/D3DDevice.hpp",
+        "native/include/HBEngine/Compute.hpp",
+        "native/desktop/SceneRenderBridge.hpp"
+      ]
     }
   ]
 }
