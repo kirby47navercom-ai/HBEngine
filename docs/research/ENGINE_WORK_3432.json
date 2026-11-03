@@ -143,6 +143,22 @@
         "freeMemoryStart": 10818297856,
         "freeMemoryEnd": 10594570240
       }
+    },
+    {
+      "report": "native/build/headroom-nPj1Uo/candidate-uncapped-sustained-installed/acceptance.json",
+      "profiling": false,
+      "finalInstalledSource": true,
+      "fps": 124.36306581363651,
+      "p50MS": 7.386474609375,
+      "p95MS": 11.19775390625,
+      "p99MS": 14.064697265625,
+      "seconds": 60.007,
+      "machine": {
+        "cpuBusyPercent": 39.76565269580252,
+        "logicalCPUs": 16,
+        "freeMemoryStart": 10054127616,
+        "freeMemoryEnd": 9668530176
+      }
     }
   ],
   "uiPhaseEvidence": [
@@ -165,7 +181,7 @@
     "surplusRequired": true,
     "criteria": "120 초과의 지속 처리 여유와 p95/p99 지연을 함께 확인; 단일/빈 host FPS로 합격 금지",
     "accepted": false,
-    "ordinaryMeasurement": "hidden silent ten seconds; uncontrolled external desktop load; final draw history added afterward"
+    "ordinaryMeasurement": "最終 installed source/PE exact SHA; owned hidden silent normal court sixty seconds/all 7462 frameDone samples; external CPU39.77%; no foreground or other physical PC acceptance"
   },
   "notAdopted": [
     "Generated immutable record copying: slower in common WidgetSystem benchmark, removed.",
@@ -179,5 +195,54 @@
   "newAgents": 0,
   "newAutomations": 0,
   "userGameModified": false,
-  "userWindowOrProfileModified": false
+  "userWindowOrProfileModified": false,
+  "followupExperiments": [
+    {
+      "report": "native\\build\\snapshot-plan-PUVQwH/experiment.json",
+      "adopted": false,
+      "reason": "캐시 키+null prototype 복사 후보는80/512필드에서 느려 현재 실제 UI63필드/최대253행에 맞지 않아 미채택. 1024필드의 부분 이득만으로 제품 개선으로 계산하지 않음.",
+      "samples": {
+        "16": [
+          {
+            "p50MS": 0.002502200000000002,
+            "p95MS": 0.0045263999999999955
+          },
+          {
+            "p50MS": 0.002807000000000002,
+            "p95MS": 0.005426999999999993
+          }
+        ],
+        "80": [
+          {
+            "p50MS": 0.0018742000000000019,
+            "p95MS": 0.002123199999999997
+          },
+          {
+            "p50MS": 0.006446200000000004,
+            "p95MS": 0.009609800000000007
+          }
+        ],
+        "512": [
+          {
+            "p50MS": 0.002982599999999934,
+            "p95MS": 0.003127200000000016
+          },
+          {
+            "p50MS": 0.023857399999999983,
+            "p95MS": 0.03551879999999994
+          }
+        ],
+        "1024": [
+          {
+            "p50MS": 0.1777144000000003,
+            "p95MS": 0.19181240000000002
+          },
+          {
+            "p50MS": 0.03757939999999985,
+            "p95MS": 0.04523480000000018
+          }
+        ]
+      }
+    }
+  ]
 }
