@@ -90,7 +90,12 @@
         "SpriteActor",
         "Pawn2D",
         "Character2D",
-        "TopDownCharacter2D"
+        "TopDownCharacter2D",
+        "다중 카메라",
+        "분할 화면",
+        "보조 화면",
+        "PiP",
+        "split screen"
       ],
       "paths": [
         "prototype/viewport-controls.js",
@@ -107,7 +112,12 @@
         "prototype/class-types.js",
         "prototype/blueprint-class-defaults.js",
         "prototype/component-preview.js",
-        "docs/BLUEPRINT_2D_CLASSES.md"
+        "docs/BLUEPRINT_2D_CLASSES.md",
+        "prototype/camera-view-rendering.js",
+        "prototype/runtime-input.js",
+        "docs/MULTI_CAMERA.md",
+        "tools/check-camera-views.mjs",
+        "tools/check-camera-views-native.mjs"
       ]
     },
     {

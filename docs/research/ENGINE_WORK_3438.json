@@ -1,0 +1,257 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "kind": "게임 다중 카메라 출력과 편집기 독립 미리보기",
+  "baseInstallation": "docs/research/USER_INSTALL_3437.json",
+  "implementationRevision": "이 영수증을 포함하는 소스 커밋",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3436.json",
+  "sourceHashes": {
+    "prototype/scene-components.js": "48c72b01264efd52593cb10c8b93d6b0f5b0874d192fdb0bdef1c762d39fcb3b",
+    "prototype/game-camera.js": "0f56f3e7465e0aaf0a18275165a652ad68b887245ca1d97f31e36997dfece7ca",
+    "prototype/camera-view-rendering.js": "3f1d6384574ba47e487ae31192f3270c8f7496d939636d23d01e10ca37bcc352",
+    "prototype/runtime-input.js": "bf21e427951e21c40db5a29b98a2fe7d09398b175c9a8a6481e30d704a7738a6",
+    "prototype/scene-rendering.js": "dcd3e88ebfb2c715af6ab0a20df8f963ec812a951db64b38384a397050127178",
+    "prototype/native-scene-renderer.js": "dd356dd6beba7cb87eaca6a3ec597b5fae32512455052785e47e4bc5440484af",
+    "native/include/HBEngine/SceneRender.hpp": "a9de578fa3c841c3713826a489065830d6d8798c2671e4f8319cd8e415f84b40",
+    "native/desktop/SceneRenderBridge.hpp": "ca9ad7501195db0ba7537bc7d64713cba2c3e71c140d7455d56e9b5702cb571c",
+    "tools/native-game-runner.mjs": "b0599becef0d793d451fe5a5197ce00f56ef8cce6d7e5d695c49edbef8c7ac7c",
+    "prototype/viewport-presentation.js": "630631168214e07a12faca76c7bc71a880951b1571ee94c57e5356a423a467f5",
+    "prototype/app.js": "e17938f0627a957c1047b80c5aff2643da0e33468036538b563d40817bc2f024",
+    "tools/check-camera-views.mjs": "d6a0eeee0faef6ae71b7d8dd8617bf21c15039c7d2687a33c27edb4a0e4e4635",
+    "tools/camera-views-native-probe.mjs": "28d9123b2882fd9796295ae273df9e0c5a5e32f9e5f48156b1a321fe83a906ff",
+    "tools/check-camera-views-native.mjs": "2afe220ee107f853276ad8003de221897b386c962bfa754750869433e3327f91",
+    "prototype/tests/camera-views.js": "61c4333ca0ba78d44b0c6f786647b7003472c31ef6bba819c9f958638e566f58",
+    "tools/owned-browser-case.mjs": "8ba9479980d1deb35cf8f6b291c048a1c95b9b5b3b35dda79250b1262d99dbf1",
+    "prototype/tests/camera-views-gpu.js": "1641c6f017e2b8f3213e2cb735c2b893c5989f99683961b852c504508e8bd7ad",
+    "docs/MULTI_CAMERA.md": "7483f7aa177656dba151005d3fe8a376ff2ea4b0638f844be938e17dc9316d5e",
+    "docs/ai-routes.json": "11df894f705deb1ccc741d95ef091a6b4cdd8085a7b3aa9992b4b82d505ae8cf",
+    "native/desktop/HBNativePlayer.cpp": "1d9b6ac293d4e95c7525cd13dbb6ea6d13972390d4c0650f1445ee450dcc7d91"
+  },
+  "rendererBinarySHA256": "59d69eedd32657ec3cb324da67e6aba5c2ca114fe2aab838737f1ef804c6f196",
+  "changes": [
+    "Camera 컴포넌트 screenOutput/region/order/사용자 비율·기존 main/priority 보존",
+    "공용 화면 영역별 조준·픽셀 맞춤 여백·별도 후처리/시간 이력",
+    "같은 DirectX 장치/장면·GPU 복사 합성·그룹당 Present1·미사용 자원 해제",
+    "에디터 뷰포트별 카메라 선택·선택 카메라 추가 미리보기·카메라 월드변환/렌즈/탐색 격리"
+  ],
+  "checks": [
+    {
+      "name": "syntax-scene-components.js",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-scene-components.js.log"
+    },
+    {
+      "name": "syntax-game-camera.js",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-game-camera.js.log"
+    },
+    {
+      "name": "syntax-camera-view-rendering.js",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-camera-view-rendering.js.log"
+    },
+    {
+      "name": "syntax-runtime-input.js",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-runtime-input.js.log"
+    },
+    {
+      "name": "syntax-scene-rendering.js",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-scene-rendering.js.log"
+    },
+    {
+      "name": "syntax-native-scene-renderer.js",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-native-scene-renderer.js.log"
+    },
+    {
+      "name": "syntax-native-game-runner.mjs",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-native-game-runner.mjs.log"
+    },
+    {
+      "name": "syntax-viewport-presentation.js",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-viewport-presentation.js.log"
+    },
+    {
+      "name": "syntax-app.js",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-app.js.log"
+    },
+    {
+      "name": "syntax-check-camera-views.mjs",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-check-camera-views.mjs.log"
+    },
+    {
+      "name": "syntax-camera-views-native-probe.mjs",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-camera-views-native-probe.mjs.log"
+    },
+    {
+      "name": "syntax-check-camera-views-native.mjs",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-check-camera-views-native.mjs.log"
+    },
+    {
+      "name": "syntax-camera-views.js",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-camera-views.js.log"
+    },
+    {
+      "name": "syntax-owned-browser-case.mjs",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-owned-browser-case.mjs.log"
+    },
+    {
+      "name": "syntax-camera-views-gpu.js",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\syntax-camera-views-gpu.js.log"
+    },
+    {
+      "name": "camera-contract",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\camera-contract.log"
+    },
+    {
+      "name": "viewport-presentation",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\viewport-presentation.log"
+    },
+    {
+      "name": "viewport-controls",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\viewport-controls.log"
+    },
+    {
+      "name": "webgl",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\webgl.log"
+    },
+    {
+      "name": "native",
+      "passed": true,
+      "log": "native\\build\\camera-views-Dia1Yq\\native.log"
+    }
+  ],
+  "native": {
+    "report": "native\\build\\camera-views-Dia1Yq\\native.json",
+    "cases": [
+      {
+        "label": "split",
+        "points": 2,
+        "presents": 1,
+        "cameraViews": 2,
+        "compositionBytes": 64000
+      },
+      {
+        "label": "pip",
+        "points": 2,
+        "presents": 2,
+        "cameraViews": 2,
+        "compositionBytes": 64000
+      },
+      {
+        "label": "mixed-projection",
+        "points": 2,
+        "presents": 3,
+        "cameraViews": 2,
+        "compositionBytes": 64000
+      },
+      {
+        "label": "pixel-letterbox",
+        "points": 3,
+        "presents": 4,
+        "cameraViews": 2,
+        "compositionBytes": 64000
+      },
+      {
+        "label": "five-cameras",
+        "points": 5,
+        "presents": 5,
+        "cameraViews": 5,
+        "compositionBytes": 64000
+      },
+      {
+        "label": "odd-resize",
+        "points": 2,
+        "presents": 6,
+        "cameraViews": 2,
+        "compositionBytes": 65044
+      },
+      {
+        "label": "temporal-0",
+        "points": 2,
+        "presents": 9,
+        "cameraViews": 2,
+        "compositionBytes": 1105748
+      },
+      {
+        "label": "temporal-1",
+        "points": 2,
+        "presents": 10,
+        "cameraViews": 2,
+        "compositionBytes": 1105748
+      },
+      {
+        "label": "temporal-2",
+        "points": 2,
+        "presents": 11,
+        "cameraViews": 2,
+        "compositionBytes": 1105748
+      },
+      {
+        "label": "temporal-3",
+        "points": 2,
+        "presents": 12,
+        "cameraViews": 2,
+        "compositionBytes": 1105748
+      },
+      {
+        "label": "single-release",
+        "points": 2,
+        "presents": 13,
+        "cameraViews": 0,
+        "compositionBytes": 0
+      }
+    ],
+    "passed": true
+  },
+  "webgl": {
+    "report": "native\\build\\camera-views-Dia1Yq\\webgl.json",
+    "checks": 21,
+    "passed": true,
+    "scope": "Isolated actual WebGL and production toolbar/preview functions; full editor shell not loaded because protected player module is forbidden"
+  },
+  "webgpu": {
+    "report": "native\\build\\camera-views-Dia1Yq\\webgpu.json",
+    "checks": 2,
+    "passed": true,
+    "backend": "WebGPU"
+  },
+  "boundaries": {
+    "fullEditorShellExecuted": false,
+    "reason": "보호 player.js 실행 금지; 실제 공용 미리보기/툴바/카메라 함수 격리 검사",
+    "advancedPostCombinationsExhaustive": false,
+    "allGPUDevices": false,
+    "gamePerformanceClaim": false,
+    "allEngineGoals": false
+  },
+  "SDK": {
+    "GameHeaderChanged": false,
+    "newCameraFieldsUseExistingValidatedComponentsAPI": true
+  },
+  "userGameChanged": false,
+  "userWindowsChanged": false,
+  "protectedFilesReadOrChanged": false,
+  "newAutomation": false,
+  "newAgent": false,
+  "postReviewChecks": {
+    "passed": true,
+    "cameraContractCases": 45,
+    "transientCameraPlanNotSerialized": true,
+    "ThreeCameraCloneSafe": true
+  }
+}

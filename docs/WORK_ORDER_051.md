@@ -1219,3 +1219,6 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 
 
 2026-11-03 WORK3436: 큰 네이티브 텍스처의 base64/JSON 제거·청크 수신·버전 협상/경계/수명 보존. 실제8MB 업로드·픽셀/33packing/64청크/오류·61frame/해제/clock 통과. 원본4K패닉 최종60.18초193.3200FPS·p99 7.4414ms·최장45.6160ms(uncapped/숨김/무음/한PC). 게임/저장 원본 불변·전체 엔진 완료 판정과 구분. ENGINE_WORK_3436 및 후속설치 영수증 대조. 예약/새agent/goal0.
+
+
+2026-11-03 WORK3438: 게임의 여러 Camera 화면 영역/순서/PiP/입력·GPU 합성/카메라별 이력과 편집기 카메라 선택/추가 미리보기를 연결. 실제DX11 11장면·WebGL21·WebGPU2·계약43·기존뷰포트413 통과. 금지player실행 때문에 전체 편집기셸 대신 공용 미리보기/툴바를 격리 실행. 공유WIP·원본·사용자창 보호. MULTI_CAMERA.md 및 후속 설치 영수증 대조.
