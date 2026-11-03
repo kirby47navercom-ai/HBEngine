@@ -15,7 +15,7 @@
     "tools/native-render-binary.mjs": "1b43b9bcc5d5a4c3a7df6465cee0dbb02f25f6319f96754676203698ab9b887a",
     "native/desktop/NativeRuntimePackets.hpp": "6190cd7af0cf69c8e6261eb26119ac4824bb9709d928ddeeb1c8e1bb5057dab2",
     "docs/ai-routes.json": "1afb2be2b7e68d9fd1a3e771f2e2dccc0abf6ef05b7ecad3ae95a43aea7dc35b",
-    "tools/check-native-binary-upload.mjs": "9861a3926c6fb48708a4ffb9d19c4e8b02023a70ff2b0af387b5714f2052e40c",
+    "tools/check-native-binary-upload.mjs": "29170c1ce318f7ab9611d05c7347b54049527e5241419e4c1330de6b9fa08d63",
     "tools/native-runtime-packets-fixture.cpp": "0c39ef2cd8d65f441bf57adc81d7546c0bddc43b1070fa8353943700081484a1",
     "docs/NATIVE_RENDER_UPLOADS.md": "3e768a1a10c923c9646173859355ff8426e8c11fa96c85d29b36dde80be7f418"
   },
@@ -420,5 +420,6 @@
   "userWindowChanged": false,
   "protectedFilesTouched": false,
   "newAutomations": false,
-  "newAgents": false
+  "newAgents": false,
+  "testPortability": "검사 자식의 Skia import는 전달한 엔진 루트로 계산하며 임시 후보 경로를 고정하지 않음"
 }
