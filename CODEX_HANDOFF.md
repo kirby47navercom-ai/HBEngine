@@ -1,3 +1,6 @@
+## 바이너리 렌더 설치·정리 · USER_INSTALL3437 / 2026-11-03
+276176917dbd5c9e·5402files·48owner/PE SHA·설치실제8MB×12 pixels/legacy/8범위/33packing 통과. 최종PE ed926eee 원본4K패닉60.18초193.3200FPS·p99 7.4414ms·최장45.6160ms(uncapped/숨김/무음). Versions1·소유 Engine/4게임package/검사runtime 정리·sources/보고서/캡처/단일legacyPE 보존·dist PE동기화. 기존게임 재패키징필요. 전체 엔진/모든PC/무지연 완료아님. 공유WIP/원본/금지3/사용자UI 보호·예약/goal/agent0.
+
 ## 렌더 픽셀 바이너리 전송 · WORK3436 / 2026-11-03
 4.6–9.9MB 문자열 업로드35–85ms 경로를 바이너리/청크수신으로 교체. 최종8MB×12 중앙84.02→4.45ms·pixels/33packing/64청크42오류/8범위/61frame/수명/clock 통과. 실제 원본4K패닉 최종60.18초193.3200FPS·p99 7.4414ms·최장45.6160ms(uncapped/숨김/무음);118대 target120과직접비교금지·전체무지연/다른장면/모든PC완료아님. 원본/금지3/사용자UI/공유WIP 보존. 설치후속3437대조·예약/goal/agent0.
 
