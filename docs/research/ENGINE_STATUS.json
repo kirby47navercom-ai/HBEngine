@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-11-03",
-  "basisRevision": "d99421b952868b9ed6650d7c2e9d3ae9db12bdb5",
+  "basisRevision": "e91508b3e53a0649751d8d05ee64c06a6d117d70",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -4497,9 +4497,9 @@
     "scope": "이미 정규화/동결한 UI 자식 재순회·중첩 JSON 캐시 할당 제거; 루트 캐시·전체 값/입력/워커 계약 보존"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_3433.json",
-    "sourceCommit": "71104963a86ed403ed9b28bc9cc6788a13c9eb87",
-    "bundleHash": "e6a3dd2a1e5c96f6a58567b1ea1e2d10e24229959773de9719e4614083e490c3",
+    "receipt": "docs/research/USER_INSTALL_3435.json",
+    "sourceCommit": "e91508b3e53a0649751d8d05ee64c06a6d117d70",
+    "bundleHash": "4bb29909610aafbd6b8715a9c95da5ee156caf877f0095bce2987153a6964d38",
     "verified": true,
     "installationVerified": true,
     "runtimeVerified": true,

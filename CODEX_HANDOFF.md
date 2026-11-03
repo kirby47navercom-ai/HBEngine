@@ -1,3 +1,6 @@
+## UI 정규화 설치·정리 · USER_INSTALL3435 / 2026-11-03
+4bb29909610aafbd·5395files·36owner/PE SHA·설치256값/Cpp full·delta wire 통과. PE/SDK 3433 exact SHA 재사용. Versions1·소유 Engine/실제게임 검사 package 정리·sources/단일 frozen 원본 보존. 성능 여유 합격 표시는 하지 않음. 현재 CPU 부하46.5%/가용RAM3.6→6.2GB 조건의 짧은97.49FPS는 앞 표본과 인과 비교 금지. 다음 소유자 native-transport::reconcileImmutableNativeJSON, native-ui-frame::encodeNativeUIFrame, NativeWidgetLayer.draw. 전체 엔진 잔여 유지·게임원본/사용자창/금지3파일/공유WIP 보호·예약/goal/agent0.
+
 ## UI 정규화 추가 감소 · WORK3434 / 2026-11-03
 검증·동결된 자식 재순회/중첩 JSON 캐시 제거·root 캐시 보존. 실제 크기 CPU0.898→0.726ms(전체FPS 아님)·256값/완전동결/Cpp wire·실제UI48 pixels/hit/worker byte 동일·lazy/목록/worker 검사 통과. 120 초과 지속 여유 기준 유지. canonical source만 배포·게임/사용자창/금지3파일/외부 WIP 보존. 설치 후속3435 확인.
 
