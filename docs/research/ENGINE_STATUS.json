@@ -4502,15 +4502,11 @@
     "scope": "게임 다중 카메라 출력·입력·GPU 합성·에디터 독립 카메라 미리보기"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_3437.json",
-    "sourceCommit": "bde864dc11f5f4efd5192a188053e6931f43978f",
-    "bundleHash": "276176917dbd5c9ed8447f956acd766f9197049884cb333e1c73685c02846e9b",
+    "receipt": "docs/research/USER_INSTALL_3439.json",
+    "sourceCommit": "74201ed77c6ef030b0496fa4a6d0376dd9a5daea",
+    "bundleHash": "efed7aac955ad9180f3dce1c6754d501fc250407df4e34bc3775c6b10eb86a4f",
     "verified": true,
     "installationVerified": true,
-    "runtimeVerified": true,
-    "performanceHeadroomVerified": {
-      "scope": "한PC 원본4K패닉 uncapped60초 p99<8.33ms",
-      "allEngineGoals": false
-    }
+    "runtimeVerified": true
   }
 }

@@ -1,3 +1,6 @@
+## 다중 카메라 설치·정리 · USER_INSTALL3439 / 2026-11-03
+efed7aac955ad918·5410files·64owner/PE SHA·설치 계약45 통과. 실제DX11/WebGL/WebGPU는 소스/PE exact SHA 근거 재사용. Versions1·소유 Engine/검사package/프로필 정리·sources/보고서/캡처 보존·dist PE동기화. 게임 분할/PiP/입력/카메라별 이력·편집기 독립 카메라 선택/추가미리보기 연결. 보호player실행 때문에 전체편집기셸은 제외, 공용 미리보기/툴바 격리실행. 기존게임 재패키징 필요. 외부WIP4파일은 겹쳐 원본working 보존·우리 canonical만 index/설치. 예약/goal/agent0.
+
 ## 다중 카메라 · WORK3438 / 2026-11-03
 게임 Camera 화면 분할/PiP/사용자 영역/순서·가장 위 출력 조준·편집기 카메라 선택/선택 카메라 추가 미리보기 연결. 장면/장치 공유·카메라별 후처리/이력·GPU 합성 후 Present1·미사용 해제. 실제DX11 11장면(5카메라/혼합투영/픽셀여백/TAA/resize/해제), WebGL21·WebGPU2·계약45·기존뷰포트413 통과. 전체 편집기셸은 금지player실행 때문에 로드하지 않고 공용 미리보기/툴바를 격리 실행. 전체 엔진 목표/성능 완료 아님. 공유외부WIP·원본·사용자창·금지3 보호·예약/goal/agent0. MULTI_CAMERA.md·WORK3438 및 후속설치 대조.
 
