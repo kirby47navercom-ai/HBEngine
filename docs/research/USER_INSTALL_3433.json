@@ -1,0 +1,252 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "sourceCommit": "71104963a86ed403ed9b28bc9cc6788a13c9eb87",
+  "bundleHash": "e6a3dd2a1e5c96f6a58567b1ea1e2d10e24229959773de9719e4614083e490c3",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e6a3dd2a1e5c96f6",
+  "files": 5393,
+  "versions": [
+    "e6a3dd2a1e5c96f6"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "componentRuntimeVerified": true,
+  "performanceHeadroomVerified": false,
+  "ownerChecks": [
+    {
+      "path": "tools/native-ui-tiles.mjs",
+      "sha256": "454dc8854be11038246a8a2a54b7c58aeb66f9dc1387fbc659709c4e06c9203d"
+    },
+    {
+      "path": "tools/native-widget-raster-worker.mjs",
+      "sha256": "2b74baa24e4fd374475dbe1fef7ba27095669a490d6458206f662549f35401fe"
+    },
+    {
+      "path": "tools/native-ui-frame.mjs",
+      "sha256": "8551be33f8d30bc3aebb483d30904c22c0a08c64f2c2bf3714e53f769d72015c"
+    },
+    {
+      "path": "tools/run-project.mjs",
+      "sha256": "31d956e3258f5be871069f0f3243f0589435dcb947c7275ad633dcd390291b06"
+    },
+    {
+      "path": "tools/native-game-platform.mjs",
+      "sha256": "76bbd8779f6319b8cb679bb766c7d060496fb9c22ba3fc55159bb1d2751a0408"
+    },
+    {
+      "path": "tools/native-game-runner.mjs",
+      "sha256": "2d708dceeb16e1335fb547097040c169b3d68de8d8738c1537c2cfdf0b09e0f9"
+    },
+    {
+      "path": "tools/native-runtime-telemetry.mjs",
+      "sha256": "3c341046884217715ab39ef5d0b8f2cda7facf628479c6bae0c94ed6a3f5f109"
+    },
+    {
+      "path": "native/include/HBEngine/D3DDevice.hpp",
+      "sha256": "28206be2f102cdf29c6066c6135516da48590864e4967cf79275d7e3b4713484"
+    },
+    {
+      "path": "native/include/HBEngine/Compute.hpp",
+      "sha256": "71c6cd995f4939c1f65dac9804be04a54290a32b91b704a92d15acbb729da2e2"
+    },
+    {
+      "path": "native/include/HBEngine/Render.hpp",
+      "sha256": "0558a7644097d745a511485db8a2d627552c00d778d41b6bf0399d3cafc31112"
+    },
+    {
+      "path": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "4aba098c9776127ede03d20f1d6b8d64f8ee40765d4ece981e211b757b44df7c"
+    },
+    {
+      "path": "native/desktop/HBNativePlayer.cpp",
+      "sha256": "06ce52e1bb1f30553fa90aa35f026fb0cb98d9d898296cbf2ae75dd4caff113b"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "466c918ea2dc420cd03f5fd551eb74a27c820aeed56912195e4f24d4521b8bcd"
+    },
+    {
+      "path": "native/include/HBEngine/D3D12Interop.hpp",
+      "sha256": "c94ace67642fa72a4c9364981f8557378579d27e20150f21b574da625f5a52e9"
+    },
+    {
+      "path": "prototype/build-profile.js",
+      "sha256": "70068851f07cbf4f2e6a44c05a0cb03f06d2150dc933c11fe1a32602a2adbda3"
+    },
+    {
+      "path": "tools/build-native-game.mjs",
+      "sha256": "17700aa64bef0aae555a92440e6e2747a4cde5cb1d721b5fc8113d97eb9266b9"
+    },
+    {
+      "path": "prototype/build-panel.js",
+      "sha256": "c688a9b686bfde9cb4acaae4c22f577d4ca82bb72e2bdc438dd01a11893b6de0"
+    },
+    {
+      "path": "tools/native-host.mjs",
+      "sha256": "c8519a5817cb7506d5194b5f065d2eaba98c6f7c803baf592c30bcff266ff9eb"
+    },
+    {
+      "path": "tools/native-session-close.mjs",
+      "sha256": "b3dac6e6b0ada56d890c718e35d5874a20fe921817aea917ff104439070d62bb"
+    },
+    {
+      "path": "prototype/native-upload-batches.js",
+      "sha256": "145c0e08135aa3cfb6078c82c76705636487d3b0551270075a08ff8837943b4b"
+    },
+    {
+      "path": "prototype/native-transport.js",
+      "sha256": "c56e84c493a98bea63ec020c3b34f20064bbf7b42fae5cb662d76b4701c91bbc"
+    },
+    {
+      "path": "prototype/ui-runtime.js",
+      "sha256": "35e454611eb56858e4fb650d55c7292a162133473297eb024a820d8057daaa52"
+    },
+    {
+      "path": "tools/native-runtime-close.mjs",
+      "sha256": "94b3dfc2908c2d76ff6920ad009873c8fbf0cbef9dfb8d163783674a029c7a2c"
+    },
+    {
+      "path": "HBNativePlayer.exe",
+      "sha256": "189a791d3acca29646a60a8417f9af026e21bce059795b4bd5bf58592e914762"
+    },
+    {
+      "path": "tools/native-widget-layer.mjs",
+      "sha256": "ffb85240810aee44bfb480fb40f36e768f670bcf4374452cbe54f793f9ff27a0"
+    },
+    {
+      "path": "tools/native-widget-paint.mjs",
+      "sha256": "cff8b154e595809b8ca7c595a52c2b67b120b8865b85f7ebf0cb6caac8a00f6d"
+    },
+    {
+      "path": "tools/native-widget-raster-thread.mjs",
+      "sha256": "d3d89e54b0278097dd2c0d3d290e8ccf85d0b501986e7fa74ebbed8e6d48aa2e"
+    },
+    {
+      "path": "tools/native-widget-fonts.mjs",
+      "sha256": "c92ebc9230d5e74b9a049cfe569b7a813f1e7e386bfb958802bd89ccdd99aa09"
+    },
+    {
+      "path": "tools/native-widget-lists.mjs",
+      "sha256": "c25aa671c9e536975231d5cce95f1b80d065ed0a624ea9368fd279c53d298cf3"
+    },
+    {
+      "path": "tools/native-widget-assets.mjs",
+      "sha256": "5a9ba2d1703fcdb550931821d7bc30fb75a42643c49ea58b3ce7080fce7350ff"
+    },
+    {
+      "path": "tools/native-presentation-queue.mjs",
+      "sha256": "41e99dcf1bb32d2081bbfab114e3da28153952f16e8510909d23b45e088f0386"
+    },
+    {
+      "path": "prototype/engine-services.js",
+      "sha256": "3f9761d50d112e92ad45b9151f75f3117b923d7975664decdcebe1b80050128c"
+    },
+    {
+      "path": "prototype/ui-assets.js",
+      "sha256": "c91adca01c85cdc8c816e9603b301d3b9d5b8f452831f645b133123223831528"
+    },
+    {
+      "path": "tools/native-ui-pipe.mjs",
+      "sha256": "c0a98ad5aa7e4fb10584d24b6f5092a789b06368e4c07b581b08bc47b636015e"
+    },
+    {
+      "path": "native/desktop/NativeUIPipe.hpp",
+      "sha256": "c43e7f232cb282656fb98b8705b99bdffbaee6d7c2967e7c9dbc71b631f8df58"
+    },
+    {
+      "path": "prototype/native-draw-history.js",
+      "sha256": "001833e03eb1b9d5936fd69ad339ef2f513cc505b7b9ae518922463b73db6b5c"
+    }
+  ],
+  "installedChecks": [
+    {
+      "work": "native/build/native-uncapped-ZIhpv3",
+      "passed": true,
+      "modes": [
+        {
+          "uncapped": false,
+          "fps": 119.96638361336599,
+          "p50MS": 8.404700000000048,
+          "p95MS": 8.632999999999981,
+          "scope": "Host tick/IPC clock only, no game logic or graphics load"
+        },
+        {
+          "uncapped": true,
+          "fps": 19299.01014754405,
+          "p50MS": 0.045700000000000074,
+          "p95MS": 0.08500000000000085,
+          "scope": "Host tick/IPC clock only, no game logic or graphics load"
+        }
+      ],
+      "defaultPacingPreserved": true,
+      "explicitUncapped": true,
+      "requestedRatePreserved": true,
+      "effectiveRateReported": true,
+      "cleanStop": true,
+      "rendererSHA256": "189a791d3acca29646a60a8417f9af026e21bce059795b4bd5bf58592e914762"
+    },
+    {
+      "work": "native/build/ui-pipe-4r1k5i",
+      "passed": true,
+      "directFrames": 6,
+      "directWorkerFrames": 3,
+      "directWorkerPixelsExact": true,
+      "mainThreadRelaySkipped": true,
+      "legacyMainFallbackAndWorkerResume": true,
+      "directBinaryAck": true,
+      "directFailurePropagated": true,
+      "singlePendingFrame": true,
+      "gracefulClose": true,
+      "truncatedAndMalformedRejected": true,
+      "engine": "C:\\Users\\kirby\\HBEngine\\Versions\\e6a3dd2a1e5c96f6",
+      "images": 3,
+      "tileFrames": 2,
+      "tileWireBytes": 262216,
+      "tileMalformedAtomicCases": 6,
+      "cppHeaderAndBoundsCases": 18,
+      "invalidJSHeaders": 26,
+      "rgbaToPremultipliedBgraExact": true,
+      "resize": true,
+      "sequenceReset": true,
+      "unchangedSkip": true,
+      "acknowledgmentIdentity": true,
+      "scratchBytes": 0,
+      "unauthorizedClientRejected": true
+    }
+  ],
+  "sourceEvidence": "docs/research/ENGINE_WORK_3432.json",
+  "existingPackagesRequireRebuild": true,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5385,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3f4771be4b2ecccc",
+        "bytes": 265113576,
+        "manifestSHA256": "351640923d28677155340c5a2a09d757b7ff86c4d2950697d22ed2ad64730cba"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-03T01:47:42.0750523Z",
+    "bytes": 265113576,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "e6a3dd2a1e5c96f6"
+    ]
+  },
+  "stagingRemoved": true,
+  "userOriginalsTouched": false,
+  "userProfileTouched": false,
+  "newAutomation": false,
+  "harnessCorrection": "직접 pipe 설치 검사 최초 호출의 명령줄에 설치 경로를 넣어 자체 Node가 사용자 실행으로 탐지됨. 설치 경로를 메모리에서 전달하는 소유 wrapper로 교정하고 동일 SHA를 검사. 제품 실패 아님.",
+  "scope": "엔진 병렬 프레임·UI worker 직접 binary ACK를 canonical source/실제 PE로 설치. 전체 성능 여유 완료 판정은 후속 측정.",
+  "cleanupEvidence": {
+    "sourceArchive": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\headroom-nPj1Uo/sources",
+    "baselineArchive": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\headroom-nPj1Uo/baseline-sources",
+    "removedOwnedPackages": 20,
+    "sourceEngineRemoved": true,
+    "frozenReproPreserved": true
+  }
+}

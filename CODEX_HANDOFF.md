@@ -1,3 +1,6 @@
+## 프레임·직접 UI 설치 · USER_INSTALL3433 / 2026-11-03
+e6a3dd2a1e5c96f6·5393files·36owner/PE SHA·설치 clock/실제 직접 UI pipe·worker pixels/fallback/close 확인. Versions1·소유 Engine/중복 패키지20개 정리·변경 sources/원본 frozen/UI replay 보존. 120 이상 성능 여유·tail 개선은 계속 진행해요. canonical만 설치·공유 WIP/게임원본/사용자창/금지3파일 보존·새 예약/agent/goal0.
+
 ## 프레임 병렬·UI 직접 ACK · WORK3432 / 2026-11-03
 scene/UI 순서 독립·UI worker direct binary ACK·stock framework clock 2→1RPC·불변 row delta·setter/검증/패킷 할당을 묶었어요. 기본120 pacing 보존/명시 uncapped. pixels/hit/실제 C++/수명/오류 묶음 통과. 숨김 무음 정상3장 일반10초138.3869FPS·p95 9.9993ms 관측, 120 이상 여유·꼬리 지연 확보는 진행 조건으로 유지. 게임 모듈/콘텐츠/원본저장/금지3파일/사용자창 불변. matrix 힌트/생성 copier 미채택. canonical source만 설치하고 공유 WIP 보존. WORK3432와 후속 설치 기록 대조.
 
