@@ -103,3 +103,16 @@ UI 진단의 fonts에는 assetReferences/uniqueCustomFaces/encodedSourceBytes/pe
 ListView/TreeView가 있으면 메인 스레드 페인트로 돌아가던 경로를 UI worker에 연결했어요. 선택/확장 상태는 revision이 바뀔 때만 전달하고, 입력·선택 anchor·게임 객체는 원래 스레드가 소유해요. 늦은 완료가 새 선택/스크롤을 덮어쓰지 않아요. 실제1만행 목록·트리24frame, 키보드/마우스/재배치와 전체 픽셀·hit/layout, 기존 worker16frame·한글/SVG/1.5배·타이포96·실제 게임 UI48 명령 재생을 통과했어요.
 
 실제 UI 재생 최종 p50 5.1720→5.0949ms, p95 6.2513→6.6430ms로 꼬리 지연 개선은 입증하지 않았어요. 소유 숨김·무음 정상 저장 장면10초씩 관측은106.16/107.66FPS이고 데스크톱 부하를 통제한 향상률이나120 합격 근거가 아니에요. 게임 모듈/콘텐츠/저장은 불변이에요. 렌더러 PE/SDK 소스는 이전 설치와 같은 해시이며 C++ 대량 컴파일은 반복하지 않았어요. 이 변경은 GPU 글자 그리기나 직접 D3D12 command list 구현이 아니에요. 근거 ENGINE_WORK_3430.json.
+
+
+## 프레임 병렬 준비·UI 직접 통신 · WORK3432
+
+게임/입력은 기존 소유 스레드에서 실행하고, scene ACK와 UI ACK를 독립적으로 기다려 다음 계산·독립 자원 준비를 겹쳐요. UI는 한 작업만 유지하고 각 채널의 프레임·화면 이력을 순서대로 적용해요. prepare2D 및 시간 이력이 있는 렌더 인코딩은 scene ACK 뒤에 두었어요. 정확한 기본 framework 4종만 clock batch 장애물에서 제외하며 authored/unknown/build 불일치/timer는 기존 경계를 지켜요. 실제 C++ 검사와 실제 게임1265/1265프레임 1RPC로 확인했어요.
+
+UI raster worker가 인증된 동일 PID pipe v2로 Win32 창과 직접 주고받아요. 계산 Node를 거치는 응답 대기를 제거하며 v1/JSON lossless fallback·오류/종료/리셋·연속 sequence를 보존해요. 두 프로필 구간에서 submit 중앙값2.1369→0.5384ms 관측, decode/present는 submit 안에 포함해요. UI 전체 중앙값6.2922→4.9589ms, 현재 p95 7.6921ms예요. 서로 다른 실행을 전체 FPS의 인과 향상률로 해석하지 않아요.
+
+C++용 동결 UI 행을 worker diff에도 공유하여 실제48프레임 상태 전송1,653,580→588,534byte, pixels/hit/상태는 같아요. 일반 공용 함수는 비동기이고 검증된 native setter 묶음만 동기 구현을 공유해요. 변경 속성 하나를 위해 위젯 전체를 JSON 비교하던 경로와 기본 JSON 임시 할당을 줄였어요. 초기 추출에서 확인한 uiAnimate owner 참조도 state.owner로 바로잡아 회귀 검사했어요. 불변 복사/경로 캐시는 한정 수명이고 임의 mutable/직접 수정은 전체 경로로 돌아가요.
+
+렌더링은 원래 월드 행렬 갱신을 유지해요. 이전에 시험한 자동 prepared-matrix 힌트는 변형/2D helper 이후 갱신을 보장하지 못해 제외했어요. 생성 schema copier는 더 느려 제외했어요. 표준 머테리얼 패킹은 반환 배열의 독립성을 유지하고 draw 이력은 분리한 JSON snapshot을 사용해 live draw 제거/scene reset 때 해제해요. 전체 패킷61frame/48draw 및 값409건을 대조했어요. shader/GPU 품질/해상도/한글 fallback/게임 규칙을 줄이지 않아요.
+
+일반 숨김·무음 실제 정상3장10초 관측은138.3869FPS·p95 9.9993ms였어요(화면82glyph·게임 모듈/콘텐츠/원본 저장 불변). 프로필 FPS와 구분하며 120을 넘는 여유의 최종 합격으로 쓰지 않아요. 상세 source SHA·진단/일반 경계·진행할 성능 조건은 ENGINE_WORK_3432.json에 있어요. 정상 목표 clock은 유지하고 명시 --uncapped가 실제 처리량을 측정해요. 이 host-only clock 수치를 게임 FPS로 쓰지 않아요. DXGI tearing은 공식 계약을 조회했으나 이 지연의 확정 원인이 없어 제품 설정을 바꾸지 않았어요.

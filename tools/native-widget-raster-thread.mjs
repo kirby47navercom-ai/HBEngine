@@ -1,11 +1,13 @@
+import {openNativeUIPipe} from './native-ui-pipe.mjs';
+const nativeAssetFields=new Set(['visible','deviceVisibility','font','texture','vectorTexture','backgroundTexture','fillTexture']);
 import {parentPort,workerData,isMarkedAsUntransferable} from 'node:worker_threads';
 import {NativeRuntimeTelemetry} from './native-runtime-telemetry.mjs';
 import {NativeWidgetLayer} from './native-widget-layer.mjs';
 import {receiveNativeWidgetFontResponse} from './native-widget-fonts.mjs';
 import {openNativeContent} from './native-package-content.mjs';
 
-const pack=await openNativeContent(workerData.directory),views=new Map();let serial=0,current=0,ack;
-const send=async(op,frame)=>{if(op!=='ui'||ack)throw Error('Native UI raster packet order');const id=++serial;
+const pack=await openNativeContent(workerData.directory),views=new Map(),directPipe=await openNativeUIPipe(workerData.directPipe,{acknowledged:true});let serial=0,current=0,ack;
+const send=async(op,frame)=>{if(op!=='ui'||ack)throw Error('Native UI raster packet order');const id=++serial;if(directPipe)return directPipe.write(frame,id);
  const response=new Promise((resolve,reject)=>{ack={id,resolve,reject};});
  if(Buffer.isBuffer(frame.pixels)){const exclusive=frame.encoding==='pipe-rgba8-premultiplied-tiles'&&frame.pixels.byteOffset===0&&frame.pixels.byteLength===frame.pixels.buffer.byteLength&&!isMarkedAsUntransferable(frame.pixels.buffer),bytes=exclusive?new Uint8Array(frame.pixels.buffer):new Uint8Array(frame.pixels);parentPort.postMessage({type:'frame',id,frame:{...frame,pixels:bytes}},[bytes.buffer]);}else parentPort.postMessage({type:'frame',id,frame});return response;
 };
@@ -20,11 +22,18 @@ parentPort.on('message',async message=>{
  if(current){parentPort.postMessage({id:message.id,error:'Native UI raster concurrency'});return;}current=message.id;
  try{
   if(message.type==='capture'){if(!layer.canvas)throw Error('Native UI raster has no surface');parentPort.postMessage({id:message.id,png:layer.canvas.toBuffer('image/png'),width:layer.canvas.width,height:layer.canvas.height});return;}
+  if(message.type==='dispose'){await layer.dispose();await directPipe?.close();await pack.close();parentPort.postMessage({id:message.id});return;}
   if(message.type==='reset'){await layer.dispose();views.clear();layer=new NativeWidgetLayer(pack,send,{rawFrames:workerData.rawFrames,profile:workerData.profile});parentPort.postMessage({id:message.id});return;}
   if(message.type!=='draw')throw Error('Native UI raster command invalid');
   const live=new Set(message.rows.map(row=>row.key));for(const [key,view]of views)if(!live.has(key)){view.dispose();views.delete(key);}
   for(const row of message.rows){let view=views.get(row.key);if(row.data){view?.dispose();view=layer.create(row.data,{acceptInput:()=>false,event(){},input(){}},{owner:row.owner,instance:row.instance});view.key=row.key;view.nativeTreeRevision=0;view.nativeAssetRevision=0;views.set(row.key,view);}if(!view)throw Error('Native UI raster view missing');
-   if(row.nodes){const nodes=new Map(view.data.nodes.map(node=>[node.id,node]));for(const node of row.nodes){const previous=nodes.get(node.id);if(!previous)continue;const topology=previous.id!==node.id||previous.parent!==node.parent||previous.slot.zIndex!==node.slot.zIndex;if(topology)view.nativeTreeRevision++;if(topology||previous.type!==node.type||(previous.properties.opacity===0)!==(node.properties.opacity===0)||!previous.properties.text!==!node.properties.text||!previous.properties.placeholder!==!node.properties.placeholder||['visible','deviceVisibility','font','texture','vectorTexture','backgroundTexture','fillTexture'].some(key=>previous.properties[key]!==node.properties[key]))view.nativeAssetRevision++;Object.assign(previous,node);}}for(const [id,state]of row.lists||[])view.lists.get(id)?.applyPaintState(state);view.scrollOffsets=new Map(row.scrollOffsets);
+   if(row.nodes){const nodes=view.nativeNodes??=new Map(view.data.nodes.map(node=>[node.id,node]));for(const node of row.nodes){const previous=nodes.get(node.id);if(!previous)continue;const topology=previous.id!==node.id||previous.parent!==node.parent||previous.slot.zIndex!==node.slot.zIndex;if(topology)view.nativeTreeRevision++;if(topology||previous.type!==node.type||(previous.properties.opacity===0)!==(node.properties.opacity===0)||!previous.properties.text!==!node.properties.text||!previous.properties.placeholder!==!node.properties.placeholder||['visible','deviceVisibility','font','texture','vectorTexture','backgroundTexture','fillTexture'].some(key=>previous.properties[key]!==node.properties[key]))view.nativeAssetRevision++;Object.assign(previous,node);}}
+   if(row.nodeDeltas){const nodes=view.nativeNodes??=new Map(view.data.nodes.map(node=>[node.id,node]));for(const delta of row.nodeDeltas){
+    const previous=nodes.get(delta.id);if(!previous)throw Error('Native UI delta target missing');
+    const {propertyEdits,...envelope}=delta,topology=previous.parent!==envelope.parent||envelope.slot&&previous.slot.zIndex!==envelope.slot.zIndex;let assets=!!topology||previous.type!==envelope.type;
+    for(const [key,exists,value]of propertyEdits){const old=previous.properties[key],next=exists?value:undefined;if(nativeAssetFields.has(key)&&old!==next||key==='opacity'&&(old===0)!==(next===0)||(key==='text'||key==='placeholder')&&!old!==!next)assets=true;if(!exists)delete previous.properties[key];else if(Object.hasOwn(previous.properties,key))previous.properties[key]=value;else Object.defineProperty(previous.properties,key,{value,writable:true,enumerable:true,configurable:true});}
+    Object.assign(previous,envelope);if(topology)view.nativeTreeRevision++;if(assets)view.nativeAssetRevision++;
+   }}for(const [id,state]of row.lists||[])view.lists.get(id)?.applyPaintState(state);view.scrollOffsets=new Map(row.scrollOffsets);
   }
   const reference=row=>{const view=views.get(row?.key),node=view?.data.nodes.find(node=>node.id===row?.id);return view&&node?{view,node}:null;};layer.down=reference(message.down);layer.hover=reference(message.hover);layer.focus=reference(message.focus);layer.flashes=new Set(message.flashes);layer.revision++;layer.layout=message.layout?[]:undefined;const before=layer.uiFrames;
   await layer.draw(message.width,message.height,message.pixelRatio);if(workerData.profile&&drawings++%30===0){telemetry.sample(drawings);threadProfile=telemetry.snapshot();}

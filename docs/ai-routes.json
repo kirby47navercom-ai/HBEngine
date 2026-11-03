@@ -5405,13 +5405,22 @@
         "NativePresentationQueue",
         "NativeWidgetRasterWorker",
         "nativeUITilePacket",
-        "nativeUIPipeHeader"
+        "nativeUIPipeHeader",
+        "submitFrame",
+        "flushRender",
+        "openNativeUIPipe",
+        "acknowledge",
+        "UI 직접 ACK",
+        "프레임 병렬"
       ],
       "paths": [
         "tools/native-presentation-queue.mjs",
         "tools/native-widget-raster-worker.mjs",
         "tools/native-ui-tiles.mjs",
-        "tools/native-ui-pipe.mjs"
+        "tools/native-ui-pipe.mjs",
+        "native/desktop/NativeUIPipe.hpp",
+        "native/desktop/HBNativePlayer.cpp",
+        "tools/native-widget-raster-thread.mjs"
       ]
     },
     {
@@ -5488,11 +5497,17 @@
       "id": "native-widget-immutable-reuse",
       "keywords": [
         "reconcileImmutableNativeJSON",
-        "nativeWidgetRow"
+        "nativeWidgetRow",
+        "nativeWidgetRowSnapshot",
+        "operationImmediate",
+        "isImmediateNativeUIWrite",
+        "패치 경로 토큰"
       ],
       "paths": [
         "prototype/native-transport.js",
-        "prototype/ui-runtime.js"
+        "prototype/ui-runtime.js",
+        "prototype/engine-services.js",
+        "prototype/ui-assets.js"
       ]
     },
     {
@@ -5553,6 +5568,18 @@
       ],
       "paths": [
         "tools/native-widget-fonts.mjs"
+      ]
+    },
+    {
+      "id": "native-native-draw-history",
+      "keywords": [
+        "NativeDrawHistory",
+        "nativeMaterial",
+        "네이티브 그리기 기록"
+      ],
+      "paths": [
+        "prototype/native-draw-history.js",
+        "prototype/native-scene-renderer.js"
       ]
     }
   ]

@@ -18,6 +18,15 @@ export function worldPatch(previous,current,limit=4096){
   }
   try{walk(previous,current,'');return operations;}catch{return null;}
 }
+// Repeat UI/actor paths share only their validated pointer tokens, never values.
+// Bound retained names to 1024 short paths; unusual/deep inputs keep validation.
+const nativePatchPaths=new Map();
+function nativePatchPath(path){
+ let parts=nativePatchPaths.get(path);if(parts)return parts;
+ if(!path.startsWith('/')||/\~(?![01])/.test(path))throw Error('C++ snapshot JSON Pointer');
+ parts=path.slice(1).split('/').map(p=>p.replace(/~1/g,'/').replace(/~0/g,'~'));if(parts.length>64)throw Error('C++ snapshot path depth');
+ if(path.length<=512){if(nativePatchPaths.size>=1024)nativePatchPaths.delete(nativePatchPaths.keys().next().value);nativePatchPaths.set(path,parts);}return parts;
+}
 export function applyWorldPatch(previous,operations){
   if(!Array.isArray(operations)||operations.length>4096)throw Error('C++ snapshot patch limit');
   const copies=new Map(),copy=value=>{if(!value||typeof value!=='object')throw Error('C++ snapshot patch parent');if(copies.has(value))return copies.get(value);const next=Array.isArray(value)?value.slice():{...value};copies.set(value,next);copies.set(next,next);return next;};
@@ -25,12 +34,11 @@ export function applyWorldPatch(previous,operations){
   for(const op of operations){
     if(!op||!['add','remove','replace'].includes(op.op)||typeof op.path!=='string'||op.path.length>4096||op.op!=='remove'&&!Object.hasOwn(op,'value'))throw Error('C++ snapshot patch operation');
     if(op.path===''){if(op.op==='remove')throw Error('C++ snapshot root removal');result=op.value;continue;}
-    if(!op.path.startsWith('/')||/\~(?![01])/.test(op.path))throw Error('C++ snapshot JSON Pointer');
-    const parts=op.path.slice(1).split('/').map(p=>p.replace(/~1/g,'/').replace(/~0/g,'~'));if(parts.length>64)throw Error('C++ snapshot path depth');result=copy(result);let parent=result;
-    for(const key of parts.slice(0,-1)){if(!Object.hasOwn(parent,key))throw Error('C++ snapshot missing parent');const child=copy(parent[key]);Object.defineProperty(parent,key,{value:child,writable:true,enumerable:true,configurable:true});parent=child;}
+    const parts=nativePatchPath(op.path);result=copy(result);let parent=result;
+    for(let at=0;at<parts.length-1;at++){const key=parts[at];if(!Object.hasOwn(parent,key))throw Error('C++ snapshot missing parent');const child=copy(parent[key]);parent[key]=child;parent=child;}
     const key=parts.at(-1),exists=Object.hasOwn(parent,key);
     if(Array.isArray(parent)){if(!/^(0|[1-9]\d*)$/.test(key)||Number(key)>parent.length||op.op!=='add'&&!exists)throw Error('C++ snapshot array index');const i=Number(key);if(op.op==='add')parent.splice(i,0,op.value);else if(op.op==='remove')parent.splice(i,1);else parent[i]=op.value;}
-    else {if(op.op!=='add'&&!exists)throw Error('C++ snapshot missing field');if(op.op==='remove')delete parent[key];else Object.defineProperty(parent,key,{value:op.value,writable:true,enumerable:true,configurable:true});}
+    else {if(op.op!=='add'&&!exists)throw Error('C++ snapshot missing field');if(op.op==='remove')delete parent[key];else if(exists)parent[key]=op.value;else Object.defineProperty(parent,key,{value:op.value,writable:true,enumerable:true,configurable:true});}
   }
   return result;
 }
@@ -48,14 +56,18 @@ export function commitNativeWorld(world,result){
 }
 // Engine-owned UI snapshots are immutable. Cache their JSON without hiding any
 // UI fields from C++; ordinary mutable actor data is serialized on every call.
-const immutableJSON=new WeakMap(),immutableNodes=new WeakSet(),immutableRecordIds=new WeakMap(),immutableRecordEdits=new WeakMap();
+const immutableJSON=new WeakMap(),immutableNodes=new WeakSet(),immutableRecordIds=new WeakMap(),immutableRecordEdits=new WeakMap(),immutableLazyFields=new WeakMap();
 // Tokens describe an exact immutable predecessor without retaining old frames.
 // Only engine-created records may use this path; arbitrary mutations still diff.
 export function patchImmutableNativeRecord(previous,updates){
  if(!previous||Array.isArray(previous)||!immutableNodes.has(previous))throw Error('Native immutable record base invalid');
- const next={...previous},keys=[];for(const [key,value]of updates){if(typeof key!=='string'||value===undefined)throw Error('Native immutable record edit invalid');if(Object.hasOwn(next,key)&&Object.is(next[key],value))continue;Object.defineProperty(next,key,{value:freezeNativeValue(value),enumerable:true,writable:true,configurable:true});keys.push(key);}
- if(!keys.length)return previous;Object.freeze(next);immutableNodes.add(next);immutableJSON.set(next,{text:null,value:next});
+ let next;const keys=[];for(const [key,value]of updates){if(typeof key!=='string'||value===undefined)throw Error('Native immutable record edit invalid');const current=next||previous;if(Object.hasOwn(current,key)&&Object.is(current[key],value))continue;next??=copyImmutableRecord(previous);const lazy=immutableLazyFields.get(next);if(Object.hasOwn(next,key)&&lazy!==key)next[key]=freezeNativeValue(value);else Object.defineProperty(next,key,{value:freezeNativeValue(value),enumerable:true,writable:true,configurable:true});if(lazy===key)immutableLazyFields.delete(next);keys.push(key);}
+ if(!next)return previous;Object.freeze(next);immutableNodes.add(next);immutableJSON.set(next,{text:null,value:next});
  let token=immutableRecordIds.get(previous);if(!token){token={};immutableRecordIds.set(previous,token);}immutableRecordEdits.set(next,{base:token,keys:[...new Set(keys)]});return next;
+}
+function copyImmutableRecord(previous){
+ const lazy=immutableLazyFields.get(previous);if(lazy===undefined)return {...previous};
+ const next={};for(const key of Reflect.ownKeys(previous))Object.defineProperty(next,key,key===lazy?{get:Object.getOwnPropertyDescriptor(previous,key).get,enumerable:true,configurable:true}:{value:previous[key],writable:true,enumerable:true,configurable:true});immutableLazyFields.set(next,lazy);return next;
 }
 function freezeNativeValue(value){if(value&&typeof value==='object'&&!immutableNodes.has(value)){for(const key of Object.keys(value)){const child=value[key];if(child&&typeof child==='object')freezeNativeValue(child);}Object.freeze(value);immutableNodes.add(value);}return value;}
 // Detached copies of validated widget JSON reuse unchanged branches. Each
@@ -76,19 +88,19 @@ export function reconcileImmutableNativeJSON(value,previous){
   const validPrior=prior&&typeof prior==='object'&&immutableNodes.has(prior)&&Array.isArray(prior)===list;
   parents.push(input);
   try{
-   if(list){let next=!validPrior||prior.length!==input.length?new Array(input.length):null;for(let i=0;i<input.length;i++){const item=copy(input[i],validPrior?prior[i]:undefined,true);if(!next&&!Object.is(item,prior[i]))next=prior.slice(0,i);if(next)next[i]=item;}return next?immutableNativeSnapshot(next,{clone:false}):prior;}
-   const keys=Object.keys(input),updates=[];let sameKeys=!!validPrior,count=0,omitted;
-   for(const key of keys){const item=copy(input[key],validPrior?prior[key]:undefined);if(item===undefined){(omitted??=new Set()).add(key);continue;}count++;if(!validPrior||!Object.hasOwn(prior,key)){sameKeys=false;updates.push([key,item]);}else if(!Object.is(item,prior[key]))updates.push([key,item]);}
+   if(list){let next=!validPrior||prior.length!==input.length?new Array(input.length):null;for(let i=0;i<input.length;i++){const raw=input[i],kind=typeof raw,item=raw===null||kind==='string'||kind==='boolean'?raw:kind==='number'?(Number.isFinite(raw)?raw===0?0:raw:null):copy(raw,validPrior?prior[i]:undefined,true);if(!next&&!Object.is(item,prior[i]))next=prior.slice(0,i);if(next)next[i]=item;}return next?immutableNativeSnapshot(next,{clone:false}):prior;}
+   const updates=[];let sameKeys=!!validPrior,count=0,omitted;
+   for(const key in input){if(!Object.hasOwn(input,key))continue;const raw=input[key],kind=typeof raw,item=raw===null||kind==='string'||kind==='boolean'?raw:kind==='number'?(Number.isFinite(raw)?raw===0?0:raw:null):copy(raw,validPrior?prior[key]:undefined);if(item===undefined){(omitted??=new Set()).add(key);continue;}count++;if(!validPrior||!Object.hasOwn(prior,key)){sameKeys=false;updates.push([key,item]);}else if(!Object.is(item,prior[key]))updates.push([key,item]);}
    if(validPrior){let oldCount=immutableKeyCounts.get(prior);if(oldCount===undefined){oldCount=Object.keys(prior).length;immutableKeyCounts.set(prior,oldCount);}if(count!==oldCount)sameKeys=false;}
-   let result;if(sameKeys)result=patchImmutableNativeRecord(prior,updates);else{const changed=new Map(updates);result=immutableNativeSnapshot(Object.fromEntries(keys.filter(key=>!omitted?.has(key)).map(key=>[key,changed.has(key)?changed.get(key):prior[key]])),{clone:false});}immutableKeyCounts.set(result,count);return result;
+   let result;if(sameKeys)result=patchImmutableNativeRecord(prior,updates);else{const changed=new Map(updates);const entries=[];for(const key in input)if(Object.hasOwn(input,key)&&!omitted?.has(key))entries.push([key,changed.has(key)?changed.get(key):prior[key]]);result=immutableNativeSnapshot(Object.fromEntries(entries),{clone:false});}immutableKeyCounts.set(result,count);return result;
   }finally{parents.pop();}
  };
  return copy(value,previous);
 }
-export function immutableNativeJSON(text){const snapshot=freezeNativeValue(JSON.parse(text));immutableJSON.set(snapshot,{text,value:snapshot});return snapshot;}
+export function immutableNativeJSON(text){const snapshot=freezeNativeValue(JSON.parse(text));if(snapshot&&typeof snapshot==='object')immutableJSON.set(snapshot,{text,value:snapshot});return snapshot;}
 export function immutableNativeSnapshot(value,{clone=true}={}){
  if(clone)return immutableNativeJSON(JSON.stringify(value));
- const snapshot=freezeNativeValue(value);immutableJSON.set(snapshot,{text:null,value:snapshot});return snapshot;
+ const snapshot=freezeNativeValue(value);if(snapshot&&typeof snapshot==='object')immutableJSON.set(snapshot,{text:null,value:snapshot});return snapshot;
 }
 // Engine-owned deferred fields still expose ordinary frozen JSON values. Do not
 // enumerate an expensive field just to freeze an unchanged parent on every edit.
@@ -96,7 +108,7 @@ export function immutableNativeLazyRecord(fields,key,materialize){
   if(Object.hasOwn(fields,key)||typeof materialize!=='function')throw Error('지연 스냅샷 필드를 확인하세요.');
   const result={...immutableNativeSnapshot({...fields},{clone:false})};let ready=false,value;
   Object.defineProperty(result,key,{enumerable:true,get(){if(!ready){value=immutableNativeSnapshot(materialize(),{clone:false});ready=true;}return value;}});
-  Object.freeze(result);immutableNodes.add(result);immutableJSON.set(result,{text:null,value:result});return result;
+  Object.freeze(result);immutableNodes.add(result);immutableLazyFields.set(result,key);immutableJSON.set(result,{text:null,value:result});return result;
 }
 const encodedSnapshot=entry=>entry.text??=JSON.stringify(entry.value);
 function withJSONField(object,key,value){const text=JSON.stringify({...object,[key]:undefined});return text.slice(0,-1)+(text.length>2?',':'')+JSON.stringify(key)+':'+value+'}';}
@@ -113,9 +125,11 @@ function detachedNativeRow(object,row){
   if(typeof row==='string')return JSON.parse(row);const value=JSON.parse(row.text);if(row.tile)value.runtimeTilemap=row.tile;if(row.ui)value.gameplayDebug.ui=row.ui;return value;
 }
 // Compiled templates without an actor cannot receive a foreign actor call.
-// Keep the boundary if even an inactive actor belongs to another module.
+// Unbound stock framework roles have no C++ owner/callback. Unknown classes,
+// authored assets and even inactive actors in another module keep the boundary.
+const nativeIntrinsicFrameworkRoles=new Map([['gameMode','GameMode'],['gameState','GameState'],['playerController','PlayerController'],['playerState','PlayerState']]);
 export function canDeferNativeFrames(objects,builds){
-  const tokens=new Set();for(const object of objects){if(!object.nativeClass)continue;const build=builds.get(object.blueprintAsset||object.nativeBuildAsset);if(!build)return false;tokens.add(build.token);if(tokens.size>1)return false;}return true;
+  const tokens=new Set();for(const object of objects){if(!object.nativeClass)continue;const build=builds.get(object.blueprintAsset||object.nativeBuildAsset);if(!build){if(!object.blueprintAsset&&!object.nativeBuildAsset&&object.nativeProperties===undefined&&nativeIntrinsicFrameworkRoles.get(object.frameworkRole)===object.nativeClass)continue;return false;}tokens.add(build.token);if(tokens.size>1)return false;}return true;
 }
 // Timer-free module clocks have no callbacks or actor writes. Send their steps
 // together instead of waiting for a separate host/UI round trip for each one.

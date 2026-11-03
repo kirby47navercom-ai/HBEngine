@@ -1,3 +1,6 @@
+## 프레임 병렬·UI 직접 ACK · WORK3432 / 2026-11-03
+scene/UI 순서 독립·UI worker direct binary ACK·stock framework clock 2→1RPC·불변 row delta·setter/검증/패킷 할당을 묶었어요. 기본120 pacing 보존/명시 uncapped. pixels/hit/실제 C++/수명/오류 묶음 통과. 숨김 무음 정상3장 일반10초138.3869FPS·p95 9.9993ms 관측, 120 이상 여유·꼬리 지연 확보는 진행 조건으로 유지. 게임 모듈/콘텐츠/원본저장/금지3파일/사용자창 불변. matrix 힌트/생성 copier 미채택. canonical source만 설치하고 공유 WIP 보존. WORK3432와 후속 설치 기록 대조.
+
 ## 설치·정리 · USER_INSTALL3431 / 2026-11-03
 3f4771be4b2ecccc·5384files·30owner/PE SHA·설치 실제 글꼴5/목록1만행24frame·click-across-paint 통과. Versions1·소유 Engine/중복패키지3개 삭제·sources/원본 frozen 게임/UI replay 보존. WORK3430 기능 설치이며 전체120/총RAM/VRAM 검증은 아님. 공유 작업트리 layer 외부 변경은 보존하고 canonical만 배포. 예약/새agent/goal/게임원본/사용자창/금지3파일 변경0.
 

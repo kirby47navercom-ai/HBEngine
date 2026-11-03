@@ -1,0 +1,183 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "kind": "native-frame-headroom-and-direct-ui-ack",
+  "baseInstallation": "docs/research/USER_INSTALL_3431.json",
+  "implementationRevision": "commit-containing-this-receipt",
+  "sourceHashes": {
+    "native/desktop/HBNativePlayer.cpp": "06ce52e1bb1f30553fa90aa35f026fb0cb98d9d898296cbf2ae75dd4caff113b",
+    "tools/native-presentation-queue.mjs": "41e99dcf1bb32d2081bbfab114e3da28153952f16e8510909d23b45e088f0386",
+    "tools/native-game-runner.mjs": "2d708dceeb16e1335fb547097040c169b3d68de8d8738c1537c2cfdf0b09e0f9",
+    "prototype/native-transport.js": "c56e84c493a98bea63ec020c3b34f20064bbf7b42fae5cb662d76b4701c91bbc",
+    "prototype/ui-runtime.js": "35e454611eb56858e4fb650d55c7292a162133473297eb024a820d8057daaa52",
+    "tools/native-widget-raster-worker.mjs": "2b74baa24e4fd374475dbe1fef7ba27095669a490d6458206f662549f35401fe",
+    "tools/native-widget-raster-thread.mjs": "d3d89e54b0278097dd2c0d3d290e8ccf85d0b501986e7fa74ebbed8e6d48aa2e",
+    "tools/native-widget-layer.mjs": "ffb85240810aee44bfb480fb40f36e768f670bcf4374452cbe54f793f9ff27a0",
+    "prototype/engine-services.js": "3f9761d50d112e92ad45b9151f75f3117b923d7975664decdcebe1b80050128c",
+    "prototype/ui-assets.js": "c91adca01c85cdc8c816e9603b301d3b9d5b8f452831f645b133123223831528",
+    "tools/native-ui-pipe.mjs": "c0a98ad5aa7e4fb10584d24b6f5092a789b06368e4c07b581b08bc47b636015e",
+    "native/desktop/NativeUIPipe.hpp": "c43e7f232cb282656fb98b8705b99bdffbaee6d7c2967e7c9dbc71b631f8df58",
+    "prototype/native-scene-renderer.js": "466c918ea2dc420cd03f5fd551eb74a27c820aeed56912195e4f24d4521b8bcd",
+    "prototype/native-draw-history.js": "001833e03eb1b9d5936fd69ad339ef2f513cc505b7b9ae518922463b73db6b5c"
+  },
+  "rendererBinarySHA256": "189a791d3acca29646a60a8417f9af026e21bce059795b4bd5bf58592e914762",
+  "checks": [
+    {
+      "report": "native/build/snapshot-headroom-HIECng/acceptance.json",
+      "sha256": "402c2a4cc75eefb3cc15a131c7fc740858d98d622438c91861c1662360348e1b",
+      "passed": true
+    },
+    {
+      "report": "native/build/ui-dispatch-WIPgyk/acceptance.json",
+      "sha256": "80170bbd2eacccd834975d7c57ff45f04cd79de9679e7ae34fe0119a65e0b339",
+      "passed": true
+    },
+    {
+      "report": "native/build/widget-delta-worker-fyPCpX/acceptance.json",
+      "sha256": "ff7ae060a4a6c8747ee4e5a9e05a805e8eec18ff20ac1799943b19f9432d9033",
+      "passed": true
+    },
+    {
+      "report": "native/build/presentation-queue-U1Rpe9/acceptance.json",
+      "sha256": "1bc3bef2af339304b7d9fa6c443db99005b52ff34bf4319cc78005420d89fc2c",
+      "passed": true
+    },
+    {
+      "report": "native/build/lazy-ui-transport-ccNvrK/acceptance.json",
+      "sha256": "4a08c13637db423f355694e7b49e0abe06db3da8d4a03828ea90767ab48e5c95",
+      "passed": true
+    },
+    {
+      "report": "native/build/list-worker-FPcFwi/acceptance.json",
+      "sha256": "191e54049a4bdc4aec0b8553abd2cc523bf90de50ebca87d65017311b7c5e34e",
+      "passed": true
+    },
+    {
+      "report": "native/build/widget-raster-worker-TbEuVy/acceptance.json",
+      "sha256": "b832a3c1eeb20466e08c456cc289aa319c4ccca2530f466d1098a94c0dcc961e",
+      "passed": true
+    },
+    {
+      "report": "native/build/ui-replay-0iknvi/acceptance.json",
+      "sha256": "2f72abb0e8dae8ac96d0d68294260a3f547f859cc00b435813d5f0056417c10a",
+      "passed": true
+    },
+    {
+      "report": "native/build/ui-pipe-VaZqs5/acceptance.json",
+      "sha256": "e4e12a248d4684921720081cdc3762b0cd4791268322c62297c163861a4c8f8a",
+      "passed": true
+    },
+    {
+      "report": "native/build/widget-raster-worker-qVPzzB/acceptance.json",
+      "sha256": "b832a3c1eeb20466e08c456cc289aa319c4ccca2530f466d1098a94c0dcc961e",
+      "passed": true
+    },
+    {
+      "report": "native/build/widget-fonts-VUpurU/acceptance.json",
+      "sha256": "315cbb200fbac3a27791265d5c7dbb54bae99b754b47dcedb84beb0ca34502f8",
+      "passed": true
+    },
+    {
+      "report": "native/build/native-uncapped-EO2JIR/acceptance.json",
+      "sha256": "9066e56b998b4664204a3755e46a14281140108d226cabab2827f16a3eadc4ba",
+      "passed": true
+    },
+    {
+      "report": "native/build/material-packing-xkv9HH/acceptance.json",
+      "sha256": "19f7acb8056604f8eaa97059a447d26f0425a8211e591ef20093be002d52fefa",
+      "passed": true
+    },
+    {
+      "report": "native/build/framework-clock-nsyK9a/acceptance.json",
+      "sha256": "550190dc7dce9f13095aacca20140ba83b96424d2a4e747d5cdc71594095bb5c",
+      "passed": true
+    },
+    {
+      "report": "native/build/draw-history-jXoAz0/acceptance.json",
+      "sha256": "dd91e7034979b881fa158ed8b09fea1a96d30c9ac5137b9a00e8ba8ab44343ce",
+      "passed": true
+    }
+  ],
+  "observations": [
+    {
+      "report": "native/build/headroom-nPj1Uo/candidate-uncapped-setter-final/acceptance.json",
+      "profiling": false,
+      "fps": 138.38691752539694,
+      "p50MS": 6.220947265625,
+      "p95MS": 9.999267578125,
+      "p99MS": 13.795654296875,
+      "seconds": 10.009,
+      "machine": {
+        "cpuBusyPercent": 19.494225408203903,
+        "logicalCPUs": 16,
+        "freeMemoryStart": 10569641984,
+        "freeMemoryEnd": 10434740224
+      }
+    },
+    {
+      "report": "native/build/headroom-nPj1Uo/diagnostic-direct-uncapped-final/acceptance.json",
+      "profiling": true,
+      "fps": 135.58504790865715,
+      "p50MS": 6.40478515625,
+      "p95MS": 10.28369140625,
+      "p99MS": 13.812255859375,
+      "seconds": 10.008,
+      "machine": {
+        "cpuBusyPercent": 17.850209080047787,
+        "logicalCPUs": 16,
+        "freeMemoryStart": 10740084736,
+        "freeMemoryEnd": 10534096896
+      }
+    },
+    {
+      "report": "native/build/headroom-nPj1Uo/diagnostic-cpu-uncapped-stamps/acceptance.json",
+      "profiling": true,
+      "fps": 132.6187855027707,
+      "p50MS": 6.405517578125,
+      "p95MS": 9.92529296875,
+      "p99MS": 14.33154296875,
+      "seconds": 10.009,
+      "machine": {
+        "cpuBusyPercent": 18.864120085134985,
+        "logicalCPUs": 16,
+        "freeMemoryStart": 10818297856,
+        "freeMemoryEnd": 10594570240
+      }
+    }
+  ],
+  "uiPhaseEvidence": [
+    "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\headroom-nPj1Uo/diagnostic-clock-uncapped-batched/phase-aggregate.json",
+    "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\headroom-nPj1Uo/diagnostic-direct-uncapped-final/phase-aggregate.json"
+  ],
+  "immutableGameFiles": [
+    {
+      "path": "Binaries/2a9d1632a8dddcce3a6e137c585fd4d94c12f5e641c946b27e886226ba89add3.exe",
+      "sha256": "eb9427dc5b8de1d5bd329e8672b87a6d9afded717f0457fe444d2062eefe0a89"
+    },
+    {
+      "path": "game.hbdata",
+      "sha256": "83a3027a22059950d508f96925e7ac3695b1597685bcb81d633a29f640d9b688"
+    }
+  ],
+  "sourceSaveSHA256": "39213948208ea9daba25904bc092f52f80df9948c16f830c733eef39d1c70b21",
+  "performanceAcceptance": {
+    "targetFPS": 120,
+    "surplusRequired": true,
+    "criteria": "120 초과의 지속 처리 여유와 p95/p99 지연을 함께 확인; 단일/빈 host FPS로 합격 금지",
+    "accepted": false,
+    "ordinaryMeasurement": "hidden silent ten seconds; uncontrolled external desktop load; final draw history added afterward"
+  },
+  "notAdopted": [
+    "Generated immutable record copying: slower in common WidgetSystem benchmark, removed.",
+    "Automatic prepared-matrix hint: prepare2D can still move vehicle/pose helpers after its first matrix traversal; keep the full renderer traversal. Packet-only proof was insufficient."
+  ],
+  "remaining": [
+    "실제 게임의 지속적인 120 초과 여유와 꼬리 지연",
+    "UI readback/paint와 mutable snapshot CPU 추가 감소",
+    "기존 전체 엔진 원장의 세부 잔여"
+  ],
+  "newAgents": 0,
+  "newAutomations": 0,
+  "userGameModified": false,
+  "userWindowOrProfileModified": false
+}

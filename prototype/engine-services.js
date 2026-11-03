@@ -73,7 +73,7 @@ import {createRigidPhysics,physicsQueryKeys} from './physics-world.js';
 import {resolveMaterialAsset,validMaterialSurface} from './material-runtime.js';
 import {spriteAnimationFrame,valid2DAsset} from './two-d-assets.js';
 import {gameplaySystems} from './gameplay-runtime.js';
-import {WidgetSystem} from './ui-runtime.js';
+import {WidgetSystem,isImmediateNativeUIWrite} from './ui-runtime.js';
 import {AudioRouting} from './audio-mixer.js';
 import {AnimationGraphPlayer} from './animation-graph-runtime.js';
 import {AnimationMontagePlayer} from './animation-montage-runtime.js';
@@ -253,7 +253,7 @@ export function engineOperations(hooks){
         // Flush UI before any other operation can call C++ or inspect the world.
         if(op.key.startsWith('uiSet')&&op.key!=='uiSetFont'){
           while(end<operations.length&&operations[end].key.startsWith('uiSet')&&operations[end].key!=='uiSetFont')end++;
-          await ui.writeBatch(async()=>{for(;i<end;i++){const op=operations[i];await operation(op.key,op.args,vm.bindings.find(owner=>owner.self===op.self)||b,vm);}},vm);continue;
+          await ui.writeBatch(async()=>{for(;i<end;i++){const op=operations[i];const binding=vm.bindings.find(owner=>owner.self===op.self)||b,result=isImmediateNativeUIWrite(op.key)?ui.operationImmediate(op.key,op.args,binding,vm):ui.operation(op.key,op.args,binding,vm);if(result&&typeof result.then==='function')await result;}},vm);continue;
         }
         if(physicsWrites.has(op.key))while(end<operations.length&&physicsWrites.has(operations[end].key))end++;
         if(end>i+1){const system=ensurePhysics(vm);await system.ready?.();if(system.writeBatch){system.writeBatch(()=>{for(;i<end;i++){const op=operations[i],binding=vm.bindings.find(owner=>owner.self===op.self)||b;writePhysics(system,op.key,target(op.args,binding,vm),op.args);}});continue;}}
@@ -274,6 +274,7 @@ export function engineOperations(hooks){
     network.register(o);await levels.register(o,vm);
   }
   const operation=async(key,a,b,vm)=>{
+    if(key.startsWith('ui'))return ui.operation(key,a,b,vm);
     if(['animationBudgetSet','animationBudgetEnable','animationBudgetObserved','animationBudgetThrottled'].includes(key)){const o=target(a,b,vm);if(key==='animationBudgetObserved')return {return:o.gameplayDebug?.animationBudget?.observedMS||0};if(key==='animationBudgetThrottled')return {return:o.gameplayDebug?.animationBudget?.throttled||0};const component=objectComponents(o).find(c=>c.type==='AnimationBudget');if(!component)throw Error('Animation Budget 컴포넌트가 필요해요.');return operation(key==='animationBudgetSet'?'componentSetFloat':'componentSetBool',{target:o.id,component:component.id,property:key==='animationBudgetSet'?'budgetMS':'enabled',value:key==='animationBudgetSet'?a.budgetMS:a.enabled},b,vm);}
     if(key.startsWith('net'))return network.operation(key,a,b,vm);
     if(levelKeys.has(key))return levels.operation(key,a,b,vm);
@@ -378,7 +379,7 @@ export function engineOperations(hooks){
       const path=await hooks.asset(a.sprite,'sprite');if(!path)throw Error('스프라이트 에셋을 확인하세요.');await resolveSprite(await readAsset(path),readAsset);if(!hooks.spriteFrame)throw Error('스프라이트 렌더 서비스가 없어요.');await hooks.spriteFrame(o,path);p.sprite=path;o.currentSprite=path;hooks.spriteFlip?.(o,p);return {};
     }
     const tileResult=await tilemaps.operation(key,a,b,vm);if(tileResult!==undefined)return tileResult;
-    const uiResult=await ui.operation(key,a,b,vm);if(uiResult!==undefined)return uiResult;
+
     const mixerResult=await soundRouting.operation(key,a,b,vm);if(mixerResult!==undefined)return mixerResult;
     if(key.startsWith('tag')){const o=target(a,b,vm);o.tags??=[];if(['tagAdd','tagRemove','tagHas'].includes(key)&&!validGameplayTag(a.tag))throw Error('게임플레이 태그 형식 오류');if(key==='tagGet')return {return:[...o.tags]};if(key==='tagHas')return {return:hasGameplayTag(o.tags,a.tag,a.exact)};if(key==='tagQuery')return {return:matchTagQuery(o.tags,JSON.parse(a.query))};if(['tagAny','tagAll'].includes(key)){if(!Array.isArray(a.tags)||a.tags.length>32)throw Error('태그 배열 크기 오류');const values=a.tags.map(t=>hasGameplayTag(o.tags,t,a.exact));return {return:key==='tagAny'?values.some(Boolean):values.every(Boolean)};}if(key==='tagAdd'||key==='tagRemove')abilities.tagChange(o,a.tag,key==='tagAdd');else throw Error('태그 함수가 없어요.');return {};}
     if(['navigationMove','navigationStop','navigationStatus','navigationPath','navigationAvoidance','navigationVelocity','navigationPreferred'].includes(key)){const o=target(a,b,vm),state=navigation.get(o.id);if(key==='navigationStatus')return {return:state?.status||'idle'};if(key==='navigationPath')return {return:structuredClone(state?.path||[])};if(key==='navigationVelocity'||key==='navigationPreferred')return {return:[...(state?.[key==='navigationVelocity'?'velocity':'preferred']||[0,0,0])]};if(key==='navigationMove')return {return:navigation.move(o,a.destination,vm.objects)};if(key==='navigationAvoidance'){navigation.configure(o,{avoidanceMode:a.mode??'orca',avoidanceHorizon:a.horizon??2,neighborDistance:a.neighborDistance??5,maxNeighbors:a.maxNeighbors??16,avoidancePriority:a.priority??50});return {};}navigation.stop(o);return {};}

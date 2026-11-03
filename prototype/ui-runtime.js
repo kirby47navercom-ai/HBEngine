@@ -14,6 +14,8 @@ import {immutableNativeSnapshot,immutableNativeJSON,patchImmutableNativeRecord} 
 import {bindVirtualControl,drawVirtualControl,virtualTypes,virtualDefaults} from './virtual-controls.js';
 import {validWidgetAsset,validWidgetProperties,widgetContainers,widgetDefaults,widgetScale,widgetImageSource} from './ui-assets.js';
 
+const immediateNativeUIWrites=new Set(['uiSetText','uiSetValue','uiSetVisible','uiSetEnabled','uiSetTexture','uiSetRotation','uiSetScale','uiSetColor','uiSetOpacity','uiSetFontSize','uiSetFillDirection','uiSetPosition','uiSetSize']);
+export const isImmediateNativeUIWrite=key=>immediateNativeUIWrites.has(key);
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 export function renderWidgetTree(host,data,{preview=false,fileUrl=p=>p,event=()=>{},select=()=>{},input=()=>{},acceptInput=()=>true,inputSignal,localization,rowBudget={used:data.nodes.length,maxNodes:100000}}={}){
   if(!validWidgetAsset(data,{expanded:true}))throw Error('위젯 에셋 검증 실패');
@@ -74,6 +76,9 @@ export function renderWidgetTree(host,data,{preview=false,fileUrl=p=>p,event=()=
 // Reuse only byte-identical detached, frozen node snapshots. Mutable widget
 // data never escapes into native transport; removed rows are not retained.
 const widgetSnapshots=new WeakMap(),widgetDirtyNodes=new WeakMap();
+// Native paint workers reuse the same detached row already prepared for C++.
+// No mutable widget object or snapshot map escapes through this accessor.
+export function nativeWidgetRowSnapshot(state,node){const row=widgetSnapshots.get(state)?.rows.get(node.name);return row?.node===node?row.snapshot:null;}
 function nativeWidgetRow(n,localization,old){
  const value={type:n.type,...n.properties,...n.properties.stringTable&&n.properties.textKey&&localization?{text:localization.format(n.properties.stringTable,n.properties.textKey,JSON.parse(n.properties.textArguments||'{}'),n.properties.text)}:{},slot:n.slot,value:n.type==='CheckBox'?Number(n.properties.checked):n.properties.value},snapshot=reconcileImmutableNativeJSON(value,old?.snapshot);
  return old?.node===n&&old.snapshot===snapshot?old:{node:n,snapshot};
@@ -95,10 +100,10 @@ function nativeWidgetSnapshot(state,localization,dirtyNodes){
 
 export class WidgetSystem {
   constructor(hooks={}){this.hooks=hooks;this.instances=new Map();this.events=[];this.disposed=false;this.animations=new Map();this.batchDepth=0;this.dirty=new Set();this.requests=new Map();this.releasingOwners=new Set();this.rowBudget={used:0,maxNodes:componentDefaults('UIBudget').maxNodes};}
-  key(owner,instance){return JSON.stringify([owner,instance]);}
+  key(owner,instance){if(typeof owner!=='string'||typeof instance!=='string')return JSON.stringify([owner,instance]);if(this.keyOwner===owner&&this.keyInstance===instance)return this.keyText;this.keyOwner=owner;this.keyInstance=instance;return this.keyText=JSON.stringify([owner,instance]);}
   state(owner,instance){const state=this.instances.get(this.key(owner,instance));if(!state)throw Error('위젯 인스턴스를 찾을 수 없어요: '+instance);return state;}
   node(state,name){const node=state.data.nodes.find(n=>n.id===name||n.name===name);if(!node)throw Error('위젯 요소가 없어요: '+name);return node;}
-  sync(state,vm,dirtyNodes){const owner=vm.object(state.owner);if(!owner)return;owner.gameplayDebug??={};owner.gameplayDebug.ui??={};const snapshot=nativeWidgetSnapshot(state,this.hooks.localization,dirtyNodes);const before=owner.gameplayDebug.ui;owner.gameplayDebug.ui=Object.isFrozen(before)?patchImmutableNativeRecord(before,[[state.instance,snapshot]]):immutableNativeSnapshot({...before,[state.instance]:snapshot},{clone:false});}
+  sync(state,vm,dirtyNodes){const owner=vm.object(state.owner);if(!owner)return;owner.gameplayDebug??={};owner.gameplayDebug.ui??={};const snapshot=nativeWidgetSnapshot(state,this.hooks.localization,dirtyNodes);const before=owner.gameplayDebug.ui;owner.gameplayDebug.ui=Object.isFrozen(before)?patchImmutableNativeRecord(before,[[state.instance,snapshot]]):immutableNativeSnapshot({...before,[state.instance]:snapshot},{clone:false});state.view?.nativeSnapshotsReady?.();}
   refresh(state,vm,node,preserve=false){if(!preserve){if(!node)widgetDirtyNodes.set(state,null);else if(!widgetDirtyNodes.has(state))widgetDirtyNodes.set(state,new Set([node]));else widgetDirtyNodes.get(state)?.add(node);}if(this.batchDepth){this.dirty.add(state);return;}const dirtyNodes=widgetDirtyNodes.get(state);widgetDirtyNodes.delete(state);state.view?.update(dirtyNodes);this.sync(state,vm,dirtyNodes);}
   async writeBatch(callback,vm){this.batchDepth++;try{return await callback();}finally{if(--this.batchDepth===0){const changed=[...this.dirty];this.dirty.clear();for(const state of changed)if(this.instances.get(this.key(state.owner,state.instance))===state)this.refresh(state,vm,undefined,true);}}}
   async lifecycle(state,phase,vm){const event=state.data.lifecycle?.[phase];if(!event||!vm.custom)return;for(const binding of (vm.bindings||[]).filter(binding=>binding.self===state.owner))await vm.custom(binding,event,{widget:state.instance,phase,isDesignTime:false});}
@@ -144,12 +149,22 @@ export class WidgetSystem {
     }
     if(key==='uiSetListItems'){const list=JSON.parse(a.json);if(!['ListView','TreeView'].includes(node.type)||!Array.isArray(list)||list.length>100000||!validWidgetProperties({...node,properties:{...p,listItems:a.json}}))throw Error('가상 목록 데이터 오류');if(node.type==='ListView'&&p.selectedIndex>=list.length){p.selectedIndex=-1;p.selectedItemId='';p.value=-1;p.text='';}if(node.type==='ListView')p.selectedIndices=JSON.stringify(JSON.parse(p.selectedIndices||'[]').filter(i=>i<list.length));else{const ids=new Set(),visit=items=>{for(const item of items){ids.add(item.id);if(item.children)visit(item.children);}};visit(list);p.selectedItemIds=JSON.stringify(JSON.parse(p.selectedItemIds||'[]').filter(id=>ids.has(id)));if(p.selectedItemId&&!ids.has(p.selectedItemId)){p.selectedItemId='';p.selectedIndex=-1;p.value=-1;p.text='';}}p.listItems=a.json;this.refresh(state,vm);return {};}
     if(key==='uiSetLocalizedText'){await this.hooks.localization?.load(a.table);p.stringTable=a.table;p.textKey=a.key;p.textArguments=a.json||'{}';JSON.parse(p.textArguments);this.refresh(state,vm);return {};}
+    const oldFont=p.font,result=this.writeNode(key,a,state,node,vm);if(key==='uiSetFont'&&oldFont!==node.properties.font)await state.view?.fontsReady();return result;
+  }
+  // Native setter runs may stay synchronous. Public operation() remains async;
+  // both paths use this exact validation/mutation implementation.
+  operationImmediate(key,a,b,vm){
+    if(!isImmediateNativeUIWrite(key))throw Error('즉시 UI 쓰기 함수가 아니에요.');
+    const owner=!a.target||a.target==='self'?b.self:a.target;if(!vm.object(owner))throw Error('위젯 소유 오브젝트가 없어요.');
+    const state=this.state(owner,a.instance),node=this.node(state,a.element);return this.writeNode(key,a,state,node,vm);
+  }
+  writeNode(key,a,state,node,vm){const p=node.properties;
     if(key==='uiSetText'){if(typeof a.text!=='string'||a.text.length>10000)throw Error('위젯 텍스트 길이 초과');if(p.text===a.text&&!p.textKey)return {};p.text=a.text;p.textKey='';}
     else if(key==='uiSetValue'){if(!Number.isFinite(a.value))throw Error('위젯 값은 유한한 수여야 해요.');const list=['ListView','TreeView'].includes(node.type);if(list&&(!Number.isInteger(a.value)||a.value< -1||a.value>100000||node.type==='ListView'&&a.value>=JSON.parse(p.listItems||'[]').length))throw Error('목록 선택 인덱스를 확인하세요.');const value=list?a.value:clamp(a.value,p.min,p.max);if(p.value===value&&(node.type!=='CheckBox'||p.checked===Boolean(a.value))&&(!list||p.selectedIndices===JSON.stringify(value<0?[]:[value])))return {};p.value=value;if(list){p.selectedIndex=value;p.selectedItemId='';p.selectedIndices=JSON.stringify(value<0?[]:[value]);p.selectedItemIds='[]';}if(node.type==='CheckBox')p.checked=Boolean(a.value);}
     else if(key==='uiSetVisible'){const value=Boolean(a.visible);if(p.visible===value)return {};p.visible=value;}
     else if(key==='uiSetEnabled'){const value=Boolean(a.enabled);if(p.enabled===value)return {};p.enabled=value;}
     else if(key==='uiFocus'){const el=state.view?.elements.get(node.id);(el?.querySelector('input')||el)?.focus();}
-    else if(key==='uiAnimate'){if(!['opacity','rotation','x','y','blink'].includes(a.property)||!Number.isFinite(a.to)||Math.abs(a.to)>10000||a.property==='opacity'&&(a.to<0||a.to>1)||!Number.isFinite(a.duration)||a.duration<=0||a.duration>3600)throw Error('위젯 애니메이션 값을 확인하세요.');const from=a.property==='x'?node.slot.offset[0]:a.property==='y'?node.slot.offset[1]:a.property==='blink'?p.opacity:p[a.property]??0;this.animations.set(JSON.stringify([owner,a.instance,node.id,a.property]),{state,node,property:a.property,from,to:a.to,duration:a.duration,elapsed:0});return {};}
+    else if(key==='uiAnimate'){if(!['opacity','rotation','x','y','blink'].includes(a.property)||!Number.isFinite(a.to)||Math.abs(a.to)>10000||a.property==='opacity'&&(a.to<0||a.to>1)||!Number.isFinite(a.duration)||a.duration<=0||a.duration>3600)throw Error('위젯 애니메이션 값을 확인하세요.');const from=a.property==='x'?node.slot.offset[0]:a.property==='y'?node.slot.offset[1]:a.property==='blink'?p.opacity:p[a.property]??0;this.animations.set(JSON.stringify([state.owner,a.instance,node.id,a.property]),{state,node,property:a.property,from,to:a.to,duration:a.duration,elapsed:0});return {};}
     else if(key.startsWith('uiSet')){
       // Equal, already validated values do not need another full node clone.
       // Changed or malformed requests still follow the complete validator.
@@ -160,10 +175,10 @@ export class WidgetSystem {
       const n={...node,slot:{...node.slot,offset:[...node.slot.offset]},properties:{...p}},value={uiSetTexture:['texture',a.texture],uiSetRotation:['rotation',a.rotation],uiSetScale:['scale',a.scale],uiSetColor:['color',Array.isArray(a.color)&&a.color.length===4?a.color.map(v=>Math.round(clamp(v,0,1)*255).toString(16).padStart(2,'0')).join(''):a.color],uiSetOpacity:['opacity',a.opacity],uiSetFont:['font',a.font],uiSetFontSize:['fontSize',a.fontSize],uiSetFillDirection:['fillDirection',a.direction]}[key];
       if(key==='uiSetPosition'||key==='uiSetSize'){const v=key==='uiSetPosition'?a.position:a.size;if(!Array.isArray(v)||v.length!==2||!v.every(Number.isFinite))throw Error('위젯 위치·크기를 확인하세요.');n.slot.offset.splice(key==='uiSetPosition'?0:2,2,...v);}
       else if(value)n.properties[value[0]]=value[0]==='color'&&typeof value[1]==='string'&&!value[1].startsWith('#')?'#'+value[1]:value[1];else throw Error('위젯 함수가 없어요: '+key);
-      if(key==='uiSetTexture'&&node.properties.texture!==a.texture)n.properties.vectorTexture='';if(!validWidgetProperties(n))throw Error('위젯 속성 범위를 확인하세요.');if(key!=='uiSetPosition'&&key!=='uiSetSize'&&JSON.stringify([node.slot,p])===JSON.stringify([n.slot,n.properties]))return {};Object.assign(node,n);
+      if(key==='uiSetTexture'&&node.properties.texture!==a.texture)n.properties.vectorTexture='';if(!validWidgetProperties(n))throw Error('위젯 속성 범위를 확인하세요.');if(value&&Object.is(p[value[0]],n.properties[value[0]])&&p.vectorTexture===n.properties.vectorTexture)return {}; Object.assign(node,n);
     }
     else throw Error('위젯 함수가 없어요: '+key);
-    this.refresh(state,vm,node);if(key==='uiSetFont')await state.view?.fontsReady();return {};
+    this.refresh(state,vm,node);return {};
   }
   async remove(owner,instance,vm,{cancelRequest=true}={}){const key=this.key(owner,instance),state=this.instances.get(key);if(cancelRequest)this.requests.delete(key);if(!state)return;state.view?.dispose();state.host?.remove();this.instances.delete(key);for(const [id,animation] of this.animations)if(animation.state===state)this.animations.delete(id);this.events=this.events.filter(e=>e.state!==state);const ui=vm.object(owner)?.gameplayDebug?.ui;if(ui){const {[instance]:removed,...rest}=ui;vm.object(owner).gameplayDebug.ui=immutableNativeSnapshot(rest,{clone:false});}this.updateRowBudget(vm);for(const other of this.instances.values())other.view?.update();await this.lifecycle(state,'destruct',vm);}
   async removeOwner(owner,vm){this.releasingOwners.add(owner);try{for(const key of this.requests.keys())if(JSON.parse(key)[0]===owner)this.requests.delete(key);for(const state of [...this.instances.values()])if(state.owner===owner)await this.remove(owner,state.instance,vm);}finally{this.releasingOwners.delete(owner);}}
