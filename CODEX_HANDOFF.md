@@ -1,3 +1,6 @@
+## 렌더 픽셀 바이너리 전송 · WORK3436 / 2026-11-03
+4.6–9.9MB 문자열 업로드35–85ms 경로를 바이너리/청크수신으로 교체. 최종8MB×12 중앙84.02→4.45ms·pixels/33packing/64청크42오류/8범위/61frame/수명/clock 통과. 실제 원본4K패닉 최종60.18초193.3200FPS·p99 7.4414ms·최장45.6160ms(uncapped/숨김/무음);118대 target120과직접비교금지·전체무지연/다른장면/모든PC완료아님. 원본/금지3/사용자UI/공유WIP 보존. 설치후속3437대조·예약/goal/agent0.
+
 ## UI 정규화 설치·정리 · USER_INSTALL3435 / 2026-11-03
 4bb29909610aafbd·5395files·36owner/PE SHA·설치256값/Cpp full·delta wire 통과. PE/SDK 3433 exact SHA 재사용. Versions1·소유 Engine/실제게임 검사 package 정리·sources/단일 frozen 원본 보존. 성능 여유 합격 표시는 하지 않음. 현재 CPU 부하46.5%/가용RAM3.6→6.2GB 조건의 짧은97.49FPS는 앞 표본과 인과 비교 금지. 다음 소유자 native-transport::reconcileImmutableNativeJSON, native-ui-frame::encodeNativeUIFrame, NativeWidgetLayer.draw. 전체 엔진 잔여 유지·게임원본/사용자창/금지3파일/공유WIP 보호·예약/goal/agent0.
 

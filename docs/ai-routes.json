@@ -5582,6 +5582,20 @@
         "prototype/native-draw-history.js",
         "prototype/native-scene-renderer.js"
       ]
+    },
+    {
+      "keywords": [
+        "NativeRuntimePackets",
+        "NativeUploadBytes",
+        "nativeBinaryUpload",
+        "writeNativeRenderBinary"
+      ],
+      "paths": [
+        "native/desktop/NativeRuntimePackets.hpp",
+        "prototype/native-upload-bytes.js",
+        "prototype/native-upload-batches.js",
+        "tools/native-render-binary.mjs"
+      ]
     }
   ]
 }

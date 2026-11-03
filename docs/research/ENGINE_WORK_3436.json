@@ -1,0 +1,424 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "kind": "네이티브 픽셀 바이너리 전송과 청크 수신",
+  "baseInstallation": "docs/research/USER_INSTALL_3435.json",
+  "implementationRevision": "이 영수증을 포함하는 소스 커밋",
+  "sourceHashBase": "docs/research/ENGINE_WORK_3434.json",
+  "sourceHashes": {
+    "prototype/native-scene-renderer.js": "62251cda1bc1bf905fb02726a9d0da193b60c5665496dfbb39f320bb32538735",
+    "tools/native-game-runner.mjs": "b6ea85f1730ed049d55cea13ba93d884050aa45fb8536da207322dff0d0ef134",
+    "native/desktop/HBNativePlayer.cpp": "1d9b6ac293d4e95c7525cd13dbb6ea6d13972390d4c0650f1445ee450dcc7d91",
+    "native/desktop/SceneRenderBridge.hpp": "caaebf8cfa81684e2f7dc4404509a0b534f921fc9af466d3a0c81445902d2f45",
+    "prototype/native-upload-bytes.js": "691ce896835a5e3a50f5cbc4f5e13af6d9607f22093319f965814c848f49ac1a",
+    "prototype/native-upload-batches.js": "cfea35239d9e439a0ae2562fd9203346a545b2aec128077683205d5cb376c768",
+    "tools/native-render-binary.mjs": "1b43b9bcc5d5a4c3a7df6465cee0dbb02f25f6319f96754676203698ab9b887a",
+    "native/desktop/NativeRuntimePackets.hpp": "6190cd7af0cf69c8e6261eb26119ac4824bb9709d928ddeeb1c8e1bb5057dab2",
+    "docs/ai-routes.json": "1afb2be2b7e68d9fd1a3e771f2e2dccc0abf6ef05b7ecad3ae95a43aea7dc35b",
+    "tools/check-native-binary-upload.mjs": "9861a3926c6fb48708a4ffb9d19c4e8b02023a70ff2b0af387b5714f2052e40c",
+    "tools/native-runtime-packets-fixture.cpp": "0c39ef2cd8d65f441bf57adc81d7546c0bddc43b1070fa8353943700081484a1",
+    "docs/NATIVE_RENDER_UPLOADS.md": "3e768a1a10c923c9646173859355ff8426e8c11fa96c85d29b36dde80be7f418"
+  },
+  "rendererBinarySHA256": "ed926eee0c6a8b2215226a44c139cc74123d120ab325be88aa905c688570537d",
+  "changes": [
+    "렌더 인코딩 시 픽셀 분리·바이너리 오프셋 패킷과 순서 보존 업로드",
+    "동일 stdout에서 JSON/바이너리 협상·128MiB 경계·청크 수신·원자적 종료 플래그",
+    "기존 texture/mip/부분 영역/ray GPU 업로드 경로의 값과 legacy JSON/WebView 호환 유지"
+  ],
+  "causeEvidence": {
+    "report": "../YumenoKuni/Game/Saved/native-performance-1793674524724/after.ui.json",
+    "observed": "UI 재그리기0 장면에서 4.6–9.9MB 텍스처 문자열 업로드가35–85ms까지 증가. 118 부근 측정은 targetRate120 상한 조건.",
+    "gpuOrGCExclusiveCauseClaim": false
+  },
+  "checks": [
+    {
+      "name": "packets-compile",
+      "passed": true
+    },
+    {
+      "name": "packets",
+      "passed": true,
+      "report": {
+        "passed": true,
+        "chunkSizes": 64,
+        "malformedAndTruncated": 42
+      }
+    },
+    {
+      "name": "binary-upload",
+      "passed": true,
+      "report": {
+        "work": "native/build/binary-upload-9W9Vwz",
+        "passed": true,
+        "packingCases": 16,
+        "actualUploads": 12,
+        "pixelsExact": true,
+        "legacyNegotiation": true,
+        "detachedSource": true,
+        "orderedBatchBounds": true,
+        "runs": [
+          {
+            "name": "legacy",
+            "wireBytes": 0,
+            "binaryCalls": 0,
+            "invalidRanges": 0,
+            "p50UploadMS": 74.85940000000005,
+            "p95UploadMS": 81.33089999999993
+          },
+          {
+            "name": "binary",
+            "wireBytes": 96003609,
+            "binaryCalls": 12,
+            "invalidRanges": 8,
+            "p50UploadMS": 3.730199999999968,
+            "p95UploadMS": 4.39020000000005
+          }
+        ],
+        "scope": "Actual hidden D3D11 repeated 8MB texture upload and final pixels; not game FPS."
+      }
+    },
+    {
+      "name": "upload-legacy",
+      "passed": true,
+      "report": {
+        "work": "native/build/upload-batches-qBGBXp",
+        "passed": true,
+        "unicodeAndEscapingExact": true,
+        "orderPreserved": true,
+        "boundedPackets": true,
+        "serializedUploadOnce": true,
+        "initialResources": 16,
+        "uploadRoundTrips": 1,
+        "graphicsProfileValidation": true,
+        "actualBackendDiagnosticPreserved": true
+      }
+    },
+    {
+      "name": "draw-packets",
+      "passed": true,
+      "report": {
+        "work": "native/build/draw-history-pLKl6h",
+        "passed": true,
+        "cases": 409,
+        "frames": 61,
+        "draws": 48,
+        "exactPackets": true,
+        "removeAndReset": true,
+        "mutableSourceDetached": true,
+        "baseline": {
+          "p50MS": 0.13877250000000033,
+          "p95MS": 0.1449325000000002
+        },
+        "candidate": {
+          "p50MS": 0.09182500000000005,
+          "p95MS": 0.1060175000000001
+        },
+        "checksum": 75241600,
+        "scope": "Complete renderer packets and unchanged draw-stamp CPU, not full-game FPS."
+      }
+    },
+    {
+      "name": "retirement",
+      "passed": true,
+      "report": {
+        "work": "native/build/renderer-retirement-QfXf7A",
+        "passed": true,
+        "before": {
+          "geometryListeners": 0,
+          "textureListeners": 0,
+          "bridgeListeners": 0,
+          "disposedRendererRetained": false,
+          "nativeDisposeAttempted": true
+        },
+        "after": {
+          "geometryListeners": 0,
+          "textureListeners": 0,
+          "bridgeListeners": 0,
+          "disposedRendererRetained": false,
+          "nativeDisposeAttempted": true
+        },
+        "failure": {
+          "geometryListeners": 0,
+          "textureListeners": 0,
+          "bridgeListeners": 0,
+          "disposedRendererRetained": false,
+          "nativeDisposeAttempted": true
+        },
+        "reuseAfterSceneRelease": true,
+        "rearmAfterResourceDisposal": true,
+        "concurrentDisposeShared": true,
+        "sharedAtlasOwnerPreserved": true,
+        "forcedGC": "isolated test child only; no production GC forcing"
+      }
+    },
+    {
+      "name": "clock",
+      "passed": true,
+      "report": {
+        "work": "native/build/native-uncapped-v4bLNe",
+        "passed": true,
+        "modes": [
+          {
+            "uncapped": false,
+            "fps": 119.96357235179337,
+            "p50MS": 8.249499999999898,
+            "p95MS": 8.674400000000333,
+            "scope": "Host tick/IPC clock only, no game logic or graphics load"
+          },
+          {
+            "uncapped": true,
+            "fps": 16965.746219192573,
+            "p50MS": 0.055299999999995464,
+            "p95MS": 0.08689999999999998,
+            "scope": "Host tick/IPC clock only, no game logic or graphics load"
+          }
+        ],
+        "defaultPacingPreserved": true,
+        "explicitUncapped": true,
+        "requestedRatePreserved": true,
+        "effectiveRateReported": true,
+        "cleanStop": true,
+        "rendererSHA256": "1af1ede11e2b6d630637d21a3b2fdb2bd586fa7fd6b3f51b708f3008e651aeaa"
+      }
+    },
+    {
+      "name": "final-binary",
+      "passed": true,
+      "report": {
+        "work": "native/build/binary-upload-sdE0xJ",
+        "passed": true,
+        "packingCases": 33,
+        "actualUploads": 12,
+        "pixelsExact": true,
+        "legacyNegotiation": true,
+        "detachedSource": true,
+        "orderedBatchBounds": true,
+        "runs": [
+          {
+            "name": "legacy",
+            "wireBytes": 0,
+            "binaryCalls": 0,
+            "invalidRanges": 0,
+            "p50UploadMS": 84.0177000000001,
+            "p95UploadMS": 90.9846
+          },
+          {
+            "name": "binary",
+            "wireBytes": 96003609,
+            "binaryCalls": 12,
+            "invalidRanges": 8,
+            "p50UploadMS": 4.447700000000054,
+            "p95UploadMS": 5.739900000000034
+          }
+        ],
+        "scope": "Actual hidden D3D11 repeated 8MB texture upload and final pixels; not game FPS."
+      }
+    },
+    {
+      "name": "final-clock",
+      "passed": true,
+      "report": {
+        "work": "native/build/native-uncapped-GhuNdb",
+        "passed": true,
+        "modes": [
+          {
+            "uncapped": false,
+            "fps": 119.9748749390934,
+            "p50MS": 8.26520000000005,
+            "p95MS": 8.73960000000011,
+            "scope": "Host tick/IPC clock only, no game logic or graphics load"
+          },
+          {
+            "uncapped": true,
+            "fps": 16517.57434388524,
+            "p50MS": 0.05089999999999861,
+            "p95MS": 0.09759999999999991,
+            "scope": "Host tick/IPC clock only, no game logic or graphics load"
+          }
+        ],
+        "defaultPacingPreserved": true,
+        "explicitUncapped": true,
+        "requestedRatePreserved": true,
+        "effectiveRateReported": true,
+        "cleanStop": true,
+        "rendererSHA256": "ed926eee0c6a8b2215226a44c139cc74123d120ab325be88aa905c688570537d"
+      }
+    }
+  ],
+  "additionalPackingProof": "native/build/binary-upload-M6PQLE/acceptance.json",
+  "actualGame": [
+    {
+      "variant": "legacy-uncapped-panic-4k",
+      "report": "native\\build\\binary-render-VpByJC\\legacy-uncapped-panic-4k\\report.json",
+      "reportSHA256": "e284b38e12bd21082a86307a6ab48d6204de15df7613be3ce67702f67b17b833",
+      "engine": "C:/Users/kirby/HBEngine/Versions/4bb29909610aafbd",
+      "frames": 5329,
+      "seconds": 30.086,
+      "fps": 177.1255733563784,
+      "p50MS": 5.332763671875,
+      "p95MS": 6.62255859375,
+      "p99MS": 8.490234375,
+      "maxMS": 195.052001953125,
+      "intervalSamples": 5328,
+      "machineSample": {
+        "logicalCPUs": 16,
+        "cpuBusyPercent": 17.74048792188453,
+        "freeMemoryStart": 9239105536,
+        "freeMemoryEnd": 10683834368
+      },
+      "saveSHA256": "dc34f51a377bd17500ce7b413eba4abd43f45aab79a82aa6d6581a450a22a6f5",
+      "uncapped": true,
+      "hidden": true,
+      "silent": true,
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "variant": "binary-uncapped-panic-4k",
+      "report": "native\\build\\binary-render-VpByJC\\binary-uncapped-panic-4k\\report.json",
+      "reportSHA256": "ab15c02f29e2c713745d81da99b745824ec8266c4a645ecb6cef5ad65a54ae5a",
+      "engine": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\binary-render-VpByJC\\Engine",
+      "frames": 5582,
+      "seconds": 30.084,
+      "fps": 185.54713468953597,
+      "p50MS": 5.32568359375,
+      "p95MS": 6.37060546875,
+      "p99MS": 7.19091796875,
+      "maxMS": 40.459716796875,
+      "intervalSamples": 5581,
+      "saveSHA256": "dc34f51a377bd17500ce7b413eba4abd43f45aab79a82aa6d6581a450a22a6f5",
+      "uncapped": true,
+      "hidden": true,
+      "silent": true,
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "variant": "binary-uncapped-panic-4k-sustained",
+      "report": "native\\build\\binary-render-VpByJC\\binary-uncapped-panic-4k-sustained\\report.json",
+      "reportSHA256": "d059cc2eba1f8e6c46de1022731664acb1faf21ba41a77736c8d4dddc428a5f2",
+      "engine": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\binary-render-VpByJC\\Engine",
+      "frames": 11132,
+      "seconds": 60.171,
+      "fps": 185.00606604510477,
+      "p50MS": 5.32421875,
+      "p95MS": 6.458984375,
+      "p99MS": 7.5009765625,
+      "maxMS": 30.86962890625,
+      "intervalSamples": 11131,
+      "machineSample": {
+        "logicalCPUs": 16,
+        "cpuBusyPercent": 15.129055123619729,
+        "freeMemoryStart": 9215590400,
+        "freeMemoryEnd": 10914058240
+      },
+      "saveSHA256": "dc34f51a377bd17500ce7b413eba4abd43f45aab79a82aa6d6581a450a22a6f5",
+      "uncapped": true,
+      "hidden": true,
+      "silent": true,
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "variant": "final-binary-uncapped-panic-4k",
+      "report": "native\\build\\binary-render-VpByJC\\final-binary-uncapped-panic-4k\\report.json",
+      "reportSHA256": "8b3f09f46868b9ef05a6b5814f1332eda0b63fb82cd0cb47876522c8c3d03f41",
+      "engine": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\binary-render-VpByJC\\Engine",
+      "frames": 11634,
+      "seconds": 60.18,
+      "fps": 193.32003988035893,
+      "p50MS": 5.040283203125,
+      "p95MS": 6.2607421875,
+      "p99MS": 7.44140625,
+      "maxMS": 45.615966796875,
+      "intervalSamples": 11633,
+      "machineSample": {
+        "logicalCPUs": 16,
+        "cpuBusyPercent": 15.75455901697036,
+        "freeMemoryStart": 8855056384,
+        "freeMemoryEnd": 10715672576
+      },
+      "saveSHA256": "dc34f51a377bd17500ce7b413eba4abd43f45aab79a82aa6d6581a450a22a6f5",
+      "uncapped": true,
+      "hidden": true,
+      "silent": true,
+      "width": 3840,
+      "height": 2160
+    }
+  ],
+  "originalGameIdentity": {
+    "gameSource": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\YumenoKuni\\Game\\Builds\\windows\\2026-11-03T02-03-22-064Z-5d725daa",
+    "gameCodeOrContentEdits": 0,
+    "files": [
+      {
+        "path": "Binaries/f8d60d87c5c60b8001636ff650f5113bff376ec1150923e8ad2d6591e1ef5501.exe",
+        "bytes": 38327368,
+        "declaredSHA256": "b608663e2c527e025862f914cde22e9141227f3f241d81c7ead049e30d6db45b",
+        "measuredSHA256": "b608663e2c527e025862f914cde22e9141227f3f241d81c7ead049e30d6db45b",
+        "checks": [
+          {
+            "variant": "legacy-uncapped-panic-4k",
+            "sameFileIdentity": true,
+            "sameSize": true
+          },
+          {
+            "variant": "binary-uncapped-panic-4k",
+            "sameFileIdentity": true,
+            "sameSize": true
+          },
+          {
+            "variant": "binary-uncapped-panic-4k-sustained",
+            "sameFileIdentity": true,
+            "sameSize": true
+          },
+          {
+            "variant": "final-binary-uncapped-panic-4k",
+            "sameFileIdentity": true,
+            "sameSize": true
+          }
+        ]
+      },
+      {
+        "path": "game.hbdata",
+        "bytes": 4527757981,
+        "declaredSHA256": "941505e30cbbc769533ddb4b9166355e3f5874c136c8d9c5bcf41c39fa7695a5",
+        "checks": [
+          {
+            "variant": "legacy-uncapped-panic-4k",
+            "sameFileIdentity": true,
+            "sameSize": true
+          },
+          {
+            "variant": "binary-uncapped-panic-4k",
+            "sameFileIdentity": true,
+            "sameSize": true
+          },
+          {
+            "variant": "binary-uncapped-panic-4k-sustained",
+            "sameFileIdentity": true,
+            "sameSize": true
+          },
+          {
+            "variant": "final-binary-uncapped-panic-4k",
+            "sameFileIdentity": true,
+            "sameSize": true
+          }
+        ]
+      }
+    ]
+  },
+  "performanceScope": "한 PC의 숨김·무음3840×2160 실제 게임, 원본 모듈/콘텐츠/저장 불변·측정 밖 캡처·옵션120 보존 및 명시uncapped. 일반 FPS와 계측/업로드 CPU를 구분. 최대45.6ms 간헐 지연은 남아 있어 전체 무지연/모든PC/다른장면 합격으로 일반화하지 않음.",
+  "performanceHeadroomAccepted": {
+    "scene": "PanicHud T4-PN-A02",
+    "finalSeconds": 60.18,
+    "localUncappedP99Below8_33": true,
+    "allEngineGoals": false,
+    "allPCs": false
+  },
+  "SDKReusedUnchanged": true,
+  "userGameChanged": false,
+  "userWindowChanged": false,
+  "protectedFilesTouched": false,
+  "newAutomations": false,
+  "newAgents": false
+}
