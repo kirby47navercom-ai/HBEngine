@@ -1,3 +1,6 @@
+## UI 정규화 추가 감소 · WORK3434 / 2026-11-03
+검증·동결된 자식 재순회/중첩 JSON 캐시 제거·root 캐시 보존. 실제 크기 CPU0.898→0.726ms(전체FPS 아님)·256값/완전동결/Cpp wire·실제UI48 pixels/hit/worker byte 동일·lazy/목록/worker 검사 통과. 120 초과 지속 여유 기준 유지. canonical source만 배포·게임/사용자창/금지3파일/외부 WIP 보존. 설치 후속3435 확인.
+
 ## 프레임·직접 UI 설치 · USER_INSTALL3433 / 2026-11-03
 e6a3dd2a1e5c96f6·5393files·36owner/PE SHA·설치 clock/실제 직접 UI pipe·worker pixels/fallback/close 확인. Versions1·소유 Engine/중복 패키지20개 정리·변경 sources/원본 frozen/UI replay 보존. 120 이상 성능 여유·tail 개선은 계속 진행해요. canonical만 설치·공유 WIP/게임원본/사용자창/금지3파일 보존·새 예약/agent/goal0.
 

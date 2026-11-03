@@ -35,7 +35,7 @@ try{
   for(const index of frame%2?[1,0]:[0,1])await states[index].layer.draw(frame<35?640:960,frame<35?360:540,frame<35?1:1.5);
   assert(pixels[0].equals(pixels[1]),'complete premultiplied UI pixels frame '+frame);const hits=layer=>layer.hits.map(h=>({id:h.node.id,w:h.w,h:h.h,m:[h.matrix.a,h.matrix.b,h.matrix.c,h.matrix.d,h.matrix.e,h.matrix.f]}));assert.deepEqual(hits(states[0].layer),hits(states[1].layer));assert.deepEqual(states[0].owner.gameplayDebug.ui,states[1].owner.gameplayDebug.ui);cases++;
  }
- assert(messages[1].deltas>500);assert(messages[1].bytes<messages[0].bytes*.5,'worker change stream carries fewer bytes without changing pixels');
+ assert(messages[1].deltas>500);if(process.argv.includes('--same-wire'))assert.equal(messages[1].bytes,messages[0].bytes,'snapshot-only changes preserve the exact worker byte count');else assert(messages[1].bytes<messages[0].bytes*.5,'worker change stream carries fewer bytes without changing pixels');
  assert(messages[1].full>0,'direct view edits use full nodes instead of stale immutable rows');
  const result={passed:true,frames:cases,completePixelsEqual:true,inputGeometryEqual:true,CPPStateEqual:true,scalarAndSlotChanges:true,manualRefresh:true,untrackedViewEditFallback:true,renameAndTypeChange:true,topologyRebuild:true,scale150Percent:true,workerMessages:messages,diagnostics:states[1].layer.raster.diagnostics(),scope:'Actual common WidgetSystem -> native UI worker, full-pixel/input parity; payload bytes exclude native pixel transport and are not FPS.'};await fs.writeFile(work+'/acceptance.json',JSON.stringify(result,null,2));console.log(JSON.stringify({work,...result}));
 }finally{for(const {ui,vm,layer}of states){await ui.dispose(vm);await layer.dispose();}}

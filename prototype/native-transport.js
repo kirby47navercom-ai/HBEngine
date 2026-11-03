@@ -73,6 +73,7 @@ function freezeNativeValue(value){if(value&&typeof value==='object'&&!immutableN
 // Detached copies of validated widget JSON reuse unchanged branches. Each
 // changed record keeps exact-predecessor edit keys for the existing wire diff.
 const immutableKeyCounts=new WeakMap();
+function freezeReconciledNative(value){Object.freeze(value);immutableNodes.add(value);return value;}
 export function reconcileImmutableNativeJSON(value,previous){
  const parents=[];
  const copy=(input,prior,array=false)=>{
@@ -88,14 +89,14 @@ export function reconcileImmutableNativeJSON(value,previous){
   const validPrior=prior&&typeof prior==='object'&&immutableNodes.has(prior)&&Array.isArray(prior)===list;
   parents.push(input);
   try{
-   if(list){let next=!validPrior||prior.length!==input.length?new Array(input.length):null;for(let i=0;i<input.length;i++){const raw=input[i],kind=typeof raw,item=raw===null||kind==='string'||kind==='boolean'?raw:kind==='number'?(Number.isFinite(raw)?raw===0?0:raw:null):copy(raw,validPrior?prior[i]:undefined,true);if(!next&&!Object.is(item,prior[i]))next=prior.slice(0,i);if(next)next[i]=item;}return next?immutableNativeSnapshot(next,{clone:false}):prior;}
+   if(list){let next=!validPrior||prior.length!==input.length?new Array(input.length):null;for(let i=0;i<input.length;i++){const raw=input[i],kind=typeof raw,item=raw===null||kind==='string'||kind==='boolean'?raw:kind==='number'?(Number.isFinite(raw)?raw===0?0:raw:null):copy(raw,validPrior?prior[i]:undefined,true);if(!next&&!Object.is(item,prior[i]))next=prior.slice(0,i);if(next)next[i]=item;}return next?freezeReconciledNative(next):prior;}
    const updates=[];let sameKeys=!!validPrior,count=0,omitted;
    for(const key in input){if(!Object.hasOwn(input,key))continue;const raw=input[key],kind=typeof raw,item=raw===null||kind==='string'||kind==='boolean'?raw:kind==='number'?(Number.isFinite(raw)?raw===0?0:raw:null):copy(raw,validPrior?prior[key]:undefined);if(item===undefined){(omitted??=new Set()).add(key);continue;}count++;if(!validPrior||!Object.hasOwn(prior,key)){sameKeys=false;updates.push([key,item]);}else if(!Object.is(item,prior[key]))updates.push([key,item]);}
    if(validPrior){let oldCount=immutableKeyCounts.get(prior);if(oldCount===undefined){oldCount=Object.keys(prior).length;immutableKeyCounts.set(prior,oldCount);}if(count!==oldCount)sameKeys=false;}
-   let result;if(sameKeys)result=patchImmutableNativeRecord(prior,updates);else{const changed=new Map(updates);const entries=[];for(const key in input)if(Object.hasOwn(input,key)&&!omitted?.has(key))entries.push([key,changed.has(key)?changed.get(key):prior[key]]);result=immutableNativeSnapshot(Object.fromEntries(entries),{clone:false});}immutableKeyCounts.set(result,count);return result;
+   let result;if(sameKeys)result=patchImmutableNativeRecord(prior,updates);else{const changed=new Map(updates);const entries=[];for(const key in input)if(Object.hasOwn(input,key)&&!omitted?.has(key))entries.push([key,changed.has(key)?changed.get(key):prior[key]]);result=freezeReconciledNative(Object.fromEntries(entries));}immutableKeyCounts.set(result,count);return result;
   }finally{parents.pop();}
  };
- return copy(value,previous);
+ const result=copy(value,previous);if(result&&typeof result==='object'&&!immutableJSON.has(result))immutableJSON.set(result,{text:null,value:result});return result;
 }
 export function immutableNativeJSON(text){const snapshot=freezeNativeValue(JSON.parse(text));if(snapshot&&typeof snapshot==='object')immutableJSON.set(snapshot,{text,value:snapshot});return snapshot;}
 export function immutableNativeSnapshot(value,{clone=true}={}){

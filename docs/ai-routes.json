@@ -5501,7 +5501,8 @@
         "nativeWidgetRowSnapshot",
         "operationImmediate",
         "isImmediateNativeUIWrite",
-        "패치 경로 토큰"
+        "패치 경로 토큰",
+        "freezeReconciledNative"
       ],
       "paths": [
         "prototype/native-transport.js",

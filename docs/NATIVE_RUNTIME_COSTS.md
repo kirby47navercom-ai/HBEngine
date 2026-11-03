@@ -120,3 +120,10 @@ C++용 동결 UI 행을 worker diff에도 공유하여 실제48프레임 상태 
 ### 3432 설치 소스의 지속 측정
 
 설치 e6a3dd2a1e5c96f6와 같은 source/PE로 소유 숨김·무음 정상3장을60초 측정했어요. 전7462프레임 평균124.3631FPS·p50 7.3865ms·p95 11.1978ms·p99 14.0647ms예요. 이 구간 전체 컴퓨터 CPU39.77%로 앞10초19.49%와 부하가 달라 향상률 비교를 하지 않아요. 게임 모듈/4GB 콘텐츠/저장 원본과 최종 변경 JS/PE SHA를 대조했어요. 이 결과는 후속 CPU 스냅샷/할당·UI paint/readback 작업의 근거이며 충분한 성능 여유의 합격으로 처리하지 않아요. 키 배열+null prototype 복사 후보는 실제 사용 크기80/512필드에서 느려 제외했고1024필드 부분 이득을 성과로 세지 않았어요.
+
+
+## 정규화된 UI 자식의 중복 순회 제거 · WORK3434
+
+reconcileImmutableNativeJSON 내부에서 새 배열/새 키 레코드의 모든 자식은 이미 검증·정규화·분리·동결된 값이에요. 그 컨테이너를 immutableNativeSnapshot으로 다시 재귀 순회하고 중첩 JSON 캐시를 등록하던 부분을 컨테이너 동결로 줄였어요. 최상위 반환 값의 JSON 캐시는 유지하며 일반 public snapshot 함수와 mutable 입력 검증을 그대로 보존해요. 자식이 검증되기 전에 이 helper를 사용하면 안 돼요.
+
+실제 UI 크기82행·63필드·8vector·100frame 반복 표본 중앙0.8979→0.7257ms. 전체 게임 FPS 수치로 환산하지 않아요.256값·모든 자식 동결·변경 전 스냅샷·getter1회·생략/비유한/프로토타입·Cpp full/delta wire, 실제48 UI명령·1.5배 pixels/hit·1만행 목록·worker·lazy/snapshot 검사를 묶어 통과했어요. delta baseline도 증분 기능이 있어 이번 검사는 전송 byte 수까지 정확한 동일성을 요구했어요. 소스/실행 근거는 ENGINE_WORK_3434.json.
