@@ -181,7 +181,7 @@
     "surplusRequired": true,
     "criteria": "120 초과의 지속 처리 여유와 p95/p99 지연을 함께 확인; 단일/빈 host FPS로 합격 금지",
     "accepted": false,
-    "ordinaryMeasurement": "最終 installed source/PE exact SHA; owned hidden silent normal court sixty seconds/all 7462 frameDone samples; external CPU39.77%; no foreground or other physical PC acceptance"
+    "ordinaryMeasurement": "최종 installed source/PE exact SHA; owned hidden silent normal court sixty seconds/all 7462 frameDone samples; external CPU39.77%; no foreground or other physical PC acceptance"
   },
   "notAdopted": [
     "Generated immutable record copying: slower in common WidgetSystem benchmark, removed.",
@@ -243,6 +243,42 @@
           }
         ]
       }
+    }
+  ],
+  "sharedWorktree": {
+    "preservedWorkingFiles": [
+      "native/desktop/HBNativePlayer.cpp",
+      "tools/native-widget-layer.mjs"
+    ],
+    "canonicalSourceCommit": "71104963a86ed403ed9b28bc9cc6788a13c9eb87",
+    "canonicalRuntime": "C:\\Users\\kirby\\HBEngine\\Versions\\e6a3dd2a1e5c96f6",
+    "sourceArchive": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\headroom-nPj1Uo/sources"
+  },
+  "nextOwners": [
+    {
+      "path": "prototype/native-transport.js",
+      "symbols": [
+        "reconcileImmutableNativeJSON",
+        "patchImmutableNativeRecord"
+      ],
+      "evidence": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\headroom-nPj1Uo/diagnostic-cpu-uncapped-stamps/cpu-summary.json",
+      "priority": "실제 UI63필드/최대253행을 보존한 복사·할당 감소. 더 느린 key-plan 후보 재시도 금지."
+    },
+    {
+      "path": "tools/native-ui-frame.mjs",
+      "symbols": [
+        "encodeNativeUIFrame"
+      ],
+      "evidence": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\headroom-nPj1Uo/diagnostic-direct-uncapped-final/phase-aggregate.json",
+      "priority": "readback p50 1.4757ms/p95 2.8075ms; premultiplied RGBA 및1.5배 품질 보존."
+    },
+    {
+      "path": "tools/native-widget-layer.mjs",
+      "symbols": [
+        "draw"
+      ],
+      "evidence": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\headroom-nPj1Uo/diagnostic-direct-uncapped-final/phase-aggregate.json",
+      "priority": "paint p50 2.0392ms/p95 2.9806ms; 원본 게임/글자/한글/효과/입력 변경 금지."
     }
   ]
 }
