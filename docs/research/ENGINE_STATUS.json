@@ -4504,9 +4504,9 @@
     "scope": "JSON 누적파일256개 실패 제거·공용 실행/네이티브/웹·모바일 질의·LRU 메모리 관리"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_3439.json",
-    "sourceCommit": "74201ed77c6ef030b0496fa4a6d0376dd9a5daea",
-    "bundleHash": "efed7aac955ad9180f3dce1c6754d501fc250407df4e34bc3775c6b10eb86a4f",
+    "receipt": "docs/research/USER_INSTALL_3441.json",
+    "sourceCommit": "596b1441cde6811c301d4a6c692f12d32dc87048",
+    "bundleHash": "2d39ca554b5790b27760acb6317441b687f0345f1e31741f053d71db6f7eee9d",
     "verified": true,
     "installationVerified": true,
     "runtimeVerified": true

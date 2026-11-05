@@ -1,3 +1,6 @@
+## JSON 제한 수정 설치·정리 · USER_INSTALL3441 / 2026-11-05
+2d39ca554b5790b2·5413files·68owner/PE SHA·설치11묶음:5000JSON/5000표·공용/네이티브어댑터/웹모바일HTTP512씩 통과. SDK/PE동일SHA재사용·Versions1·소유Engine정리·source/baseline/보고서 보존. 파일누적수제한제거·캐시LRU/메모리예산 유지·기존게임재패키징필요. 원본/금지3/사용자창/공유WIP 보호·예약/goal/agent0.
+
 ## JSON 누적파일 제한 제거 · WORK3440 / 2026-11-05
 createPersistentQueries의256파일throw 제거·shared LRU/추정payload32MiB로보관·퇴출후재읽기/중복동시요청/스냅샷격리/실패재시도/세션clear 유지. 이전257번째실패재현·새5000JSON+5000표·공용/네이티브어댑터/웹모바일HTTP512씩·11묶음/기존에셋캐시 통과. SDK/PE변경0·실C++/휴대폰/GUI/FPS검사아님. 공유WIP/원본/금지3/사용자창 보호·예약/goal/agent0. RUNTIME_DATA_CACHE.md·WORK3440 및 후속설치 대조.
 
