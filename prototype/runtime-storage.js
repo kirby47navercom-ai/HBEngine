@@ -1,9 +1,8 @@
 import {parseGameJson,validGameJson} from './game-json.js';
 import {dataContents} from './data-assets.js';
 
-// Each execution owns its cache. Return copies so one component cannot mutate
-// another component's authored defaults; failed reads remain retryable.
-export function cacheAssetReader(read,{maxEntries=256,maxBytes=32*1024*1024}={}){
+// Each execution owns a bounded cache; failed reads remain retryable.
+function retainedAssetReader(read,{maxEntries=256,maxBytes=32*1024*1024}={}){
   const entries=new Map();let bytes=0;
   const remove=key=>{const entry=entries.get(key);if(entry){bytes-=entry.bytes;entries.delete(key);}};
   const cached=async(...args)=>{
@@ -15,15 +14,25 @@ export function cacheAssetReader(read,{maxEntries=256,maxBytes=32*1024*1024}={})
       },error=>{if(entries.get(key)===entry)remove(key);throw error;});
       while(entries.size>maxEntries)remove(entries.keys().next().value);
     }
-    return structuredClone(await entry.promise);
+    return entry.promise;
   };
   cached.clear=()=>{entries.clear();bytes=0;};cached.inspect=()=>({entries:entries.size,bytes});return cached;
+}
+
+// Public asset reads return copies; data queries retain a private validated snapshot.
+export function cacheAssetReader(read,options){
+  const retained=retainedAssetReader(read,options),cached=async(...args)=>structuredClone(await retained(...args));
+  cached.clear=retained.clear;cached.inspect=retained.inspect;return cached;
 }
 
 export const persistentQueryKeys=new Set(['saveJsonWrite','saveJsonRead','saveJsonDelete','dataJsonRead','dataTableRead']);
 const validPath=path=>typeof path==='string'&&/^(Assets|Source)\//.test(path)&&path.length<=1000&&!/[\\:\x00-\x1f]/.test(path)&&!path.split('/').some(p=>!p||p==='.'||p==='..');
 export function createPersistentQueries({readAsset,readSave,writeSave,deleteSave}){
-  const cache=new Map();
+  // Eviction limits retained data, never how many different files a game can read.
+  const cache=retainedAssetReader(async path=>{
+    const data=await readAsset(path);if(!validGameJson(data,{object:false}))throw Error('데이터 에셋 JSON 범위를 확인하세요.');
+    return dataContents(structuredClone(data));
+  });
   const query=async(key,args)=>{
     if(!persistentQueryKeys.has(key))throw Error('저장·데이터 API 범위를 확인하세요.');
     if(key.startsWith('save')){
@@ -33,13 +42,12 @@ export function createPersistentQueries({readAsset,readSave,writeSave,deleteSave
       const text=await readSave(args.slot);return JSON.stringify(text===null?null:parseGameJson(text,{object:false}));
     }
     if(!validPath(args.path))throw Error('데이터 에셋 경로를 확인하세요.');
-    if(!cache.has(args.path)){if(cache.size>=256)throw Error('실행 데이터 에셋 256개 제한');const data=await readAsset(args.path);if(!validGameJson(data,{object:false}))throw Error('데이터 에셋 JSON 범위를 확인하세요.');cache.set(args.path,structuredClone(data));}
-    const data=dataContents(cache.get(args.path));
+    const data=await cache(args.path);
     if(key==='dataJsonRead')return JSON.stringify(data);
     if(typeof args.rowId!=='string'||args.rowId.length>200)throw Error('표 행 ID를 확인하세요.');
     const rows=data.rows||data.data?.rows||data.data||data;
     const row=Array.isArray(rows)?rows.find(r=>r.id===args.rowId||r.name===args.rowId):Object.hasOwn(rows,args.rowId)?rows[args.rowId]:null;
     return JSON.stringify(row??null);
   };
-  query.clear=()=>cache.clear();return query;
+  query.clear=cache.clear;query.inspect=cache.inspect;return query;
 }

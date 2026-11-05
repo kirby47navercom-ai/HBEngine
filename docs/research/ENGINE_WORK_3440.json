@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "date": "2026-11-05",
+  "kind": "런타임 JSON 파일256개 읽기 제한 제거",
+  "baseInstallation": "docs/research/USER_INSTALL_3439.json",
+  "implementationRevision": "이 영수증을 포함하는 소스 커밋",
+  "sourceHashes": {
+    "prototype/runtime-storage.js": "6993c097605d3fa13a39500ef73ae702efa61155e78d4502ad8afb1148baf7c4",
+    "tools/check-runtime-data-cache.mjs": "51b54bfa9f786cec1eb04daa4091ae5d41b176266ed60c92a1538586f65fbed5",
+    "docs/RUNTIME_DATA_CACHE.md": "e9f9bc2f02efc39cc32bacad09a4d56bbc5742704ca225872147fdcef02e295c",
+    "docs/ai-routes.json": "865afa1b74edcfb2ca6eb84afd8fc08d60cb26713ed45034fa0cb26fffd74067"
+  },
+  "originCommit": "26bd257c915b5c92fb6da2e7d5ab72b79dc7e28b",
+  "cause": "createPersistentQueries가 별도 Map에파일을 계속 보관하다256개면새파일을throw로거부했어요. 공용cacheAssetReader의LRU를사용하지않았어요.",
+  "changes": [
+    "서로다른파일 누적개수로 읽기를 거절하는 고정제약 제거",
+    "같은 bounded reader를 재사용해 LRU/추정payload32MiB/메모리보관개수 관리",
+    "동일파일 동시요청 공유·최초 검증/복사/정규화·실패 재시도·세션clear 이후 완료 무효화",
+    "공용에셋 반환복사 유지·JSON질의 hot read의 전체복제/정규화 반복 방지"
+  ],
+  "checks": [
+    {
+      "name": "data-cache",
+      "passed": true,
+      "log": "native\\build\\json-read-cache-IUBReF\\data-cache.log",
+      "output": "{\"passed\":true,\"cases\":11,\"counts\":{\"distinctJSON\":5000,\"tableReads\":5000,\"commonOperations\":512,\"nativeAdapterReads\":512,\"mobileHTTPReads\":512},\"report\":\"C:\\\\Users\\\\kirby\\\\OneDrive\\\\바탕 화면\\\\git\\\\engineCreate\\\\native\\\\build\\\\json-read-cache-IUBReF\\\\acceptance.json\"}"
+    },
+    {
+      "name": "existing-asset-cache",
+      "passed": true,
+      "log": "native\\build\\json-read-cache-IUBReF\\existing-asset-cache.log",
+      "output": "실행별 에셋 캐시: 중복 읽기·변경 격리·실패 재시도·크기 제한·Stop 수명·스프라이트 이미지 공유/UV 독립·외부 변경 무효화 통과"
+    }
+  ],
+  "acceptance": {
+    "report": "native\\build\\json-read-cache-IUBReF\\acceptance.json",
+    "reportSHA256": "a2fcbf1c236a848dbd875ad9a57f57ec6ae2032e6e9799219063218f6cc5a20f",
+    "cases": 11,
+    "counts": {
+      "distinctJSON": 5000,
+      "tableReads": 5000,
+      "commonOperations": 512,
+      "nativeAdapterReads": 512,
+      "mobileHTTPReads": 512
+    },
+    "old257thFailureReproduced": true,
+    "retainedPayloadBudget": 33554432,
+    "cacheEntryBudget": 256,
+    "gameFileCountLimit": null
+  },
+  "boundaries": {
+    "SDKAndPEChanged": false,
+    "actualCppOrMobileDeviceRun": false,
+    "GUI": false,
+    "processRAMOrFPSBenchmark": false,
+    "JSONDepthAndPerFileValidationUnchanged": true,
+    "allEngineGoals": false
+  },
+  "userGamesChanged": false,
+  "userWindowsChanged": false,
+  "protectedFilesReadOrChanged": false,
+  "newAutomation": false,
+  "newAgents": false
+}

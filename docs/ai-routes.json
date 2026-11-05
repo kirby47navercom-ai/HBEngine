@@ -5606,6 +5606,26 @@
         "prototype/native-upload-batches.js",
         "tools/native-render-binary.mjs"
       ]
+    },
+    {
+      "id": "runtime-data-cache",
+      "keywords": [
+        "createPersistentQueries",
+        "cacheAssetReader",
+        "retainedAssetReader",
+        "dataJsonRead",
+        "dataTableRead",
+        "JSON 파일 제한",
+        "256개 제한"
+      ],
+      "paths": [
+        "prototype/runtime-storage.js",
+        "prototype/engine-services.js",
+        "tools/game-storage.mjs",
+        "prototype/mobile-player.js",
+        "docs/RUNTIME_DATA_CACHE.md",
+        "tools/check-runtime-data-cache.mjs"
+      ]
     }
   ]
 }

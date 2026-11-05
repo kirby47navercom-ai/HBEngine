@@ -1,3 +1,6 @@
+## JSON 누적파일 제한 제거 · WORK3440 / 2026-11-05
+createPersistentQueries의256파일throw 제거·shared LRU/추정payload32MiB로보관·퇴출후재읽기/중복동시요청/스냅샷격리/실패재시도/세션clear 유지. 이전257번째실패재현·새5000JSON+5000표·공용/네이티브어댑터/웹모바일HTTP512씩·11묶음/기존에셋캐시 통과. SDK/PE변경0·실C++/휴대폰/GUI/FPS검사아님. 공유WIP/원본/금지3/사용자창 보호·예약/goal/agent0. RUNTIME_DATA_CACHE.md·WORK3440 및 후속설치 대조.
+
 ## 다중 카메라 설치·정리 · USER_INSTALL3439 / 2026-11-03
 efed7aac955ad918·5410files·64owner/PE SHA·설치 계약45 통과. 실제DX11/WebGL/WebGPU는 소스/PE exact SHA 근거 재사용. Versions1·소유 Engine/검사package/프로필 정리·sources/보고서/캡처 보존·dist PE동기화. 게임 분할/PiP/입력/카메라별 이력·편집기 독립 카메라 선택/추가미리보기 연결. 보호player실행 때문에 전체편집기셸은 제외, 공용 미리보기/툴바 격리실행. 기존게임 재패키징 필요. 외부WIP4파일은 겹쳐 원본working 보존·우리 canonical만 index/설치. 예약/goal/agent0.
 

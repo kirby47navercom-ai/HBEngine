@@ -1222,3 +1222,6 @@ d003320584e6c4e632d1b1ca9d5a17a26ee3ea2b ·ENGINE_WORK_1102.json·DISTANCE_COOKI
 
 
 2026-11-03 WORK3438: 게임의 여러 Camera 화면 영역/순서/PiP/입력·GPU 합성/카메라별 이력과 편집기 카메라 선택/추가 미리보기를 연결. 실제DX11 11장면·WebGL21·WebGPU2·계약43·기존뷰포트413 통과. 금지player실행 때문에 전체 편집기셸 대신 공용 미리보기/툴바를 격리 실행. 공유WIP·원본·사용자창 보호. MULTI_CAMERA.md 및 후속 설치 영수증 대조.
+
+
+2026-11-05 WORK3440: dataJsonRead/dataTableRead의256개고정 읽기실패 제거. 캐시만LRU/추정32MiB로보관하고퇴출후재읽기. 이전257번째실패 재현·새5000JSON+5000표·공용/네이티브어댑터/웹모바일HTTP 각각512·예산/복사/동시성/재시도/세션/저장 호환11묶음 및기존에셋캐시 검사 통과. SDK/PE·원본·사용자창/금지3 변경0. RUNTIME_DATA_CACHE.md·ENGINE_WORK_3440/후속설치 대조.
