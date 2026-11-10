@@ -4505,9 +4505,9 @@
     "scope": "콘텐츠 브라우저 깊은 경로·대량 탐색·선택된 문서 변경 확인"
   },
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_3441.json",
-    "sourceCommit": "596b1441cde6811c301d4a6c692f12d32dc87048",
-    "bundleHash": "2d39ca554b5790b27760acb6317441b687f0345f1e31741f053d71db6f7eee9d",
+    "receipt": "docs/research/USER_INSTALL_3443.json",
+    "sourceCommit": "7d8af05217217a0313c89db0d5dc7030d548ef19",
+    "bundleHash": "9790ee757264eac224d6ae003ccd0dd5ba573c339494203cf7f01ebfc4695b54",
     "verified": true,
     "installationVerified": true,
     "runtimeVerified": true
