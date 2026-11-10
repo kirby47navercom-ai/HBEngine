@@ -17,13 +17,14 @@ import {fileKind,validScene,defaultObjects,defaultSurface,defaultEnvironment} fr
 import {defaultBlueprint,validBlueprint} from '../prototype/blueprint-model.js';
 import {createBlueprintResolver} from '../prototype/blueprint-inheritance.js';
 import {commitAssetBatch,recoverAssetTransactions,readAssetTransaction,inspectAssetTransaction,resolveAssetTransaction} from './asset-transaction.mjs';
+import {validProjectPath} from '../prototype/project-path.js';
 const textExtensions=new Set(['.h','.hpp','.cpp','.c','.json','.txt','.md','.hlsl','.glsl','.obj','.gltf','.csv','.yaml','.yml','.svg']);
 const journalRestore=Symbol('verified asset journal restore');
 const referenceKeys=new Set(['vfx','cueAsset','sound','widgetAsset','rowWidget','asset','blueprintAsset','materialAsset','spriteAsset','tilemapAsset','tilemap','gameConfig','mesh','material','texture','cookieSprite','cookieTexture','normalTexture','vectorTexture','sheet','chordAction','context','sprite','tileset','physicalMaterial','sourceMesh','model','rig','animation','clip','blackboard','mixer','widget','audio','source','headerPath','sourcePath','inputMapping','action','parent','parentClass','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','gameInstance','defaultController','playerState','defaultPawn']);
 export function assetReferences(data,filename){const result=new Set(),visit=(value,key)=>{if(key==='widgetSlots'&&typeof value==='string'){try{const slots=JSON.parse(value);if(slots&&!Array.isArray(slots)&&typeof slots==='object')for(const asset of Object.values(slots))if(typeof asset==='string')visit(asset,'widgetAsset');}catch{}return;}if(typeof value==='string'&&(referenceKeys.has(key)||/^(Assets|Source)\/[^#]*\.[A-Za-z0-9]+(?:#[A-Za-z_]\w*)?$/.test(value))&&value&&!value.startsWith('data:')&&!/^[a-z]+:/i.test(value)&&value.includes('.'))result.add(key==='gameInstance'&&value.startsWith('Source/')?value.split('#')[0]:value);else if(Array.isArray(value))value.forEach(item=>visit(item,key));else if(value&&typeof value==='object')Object.entries(value).forEach(([k,v])=>visit(v,k));};visit(data,'');if(filename.endsWith('.gltf'))for(const item of [...data.buffers||[],...data.images||[]])if(item.uri&&!/^(?:[a-z]+:|\/)/i.test(item.uri))result.add(path.posix.normalize(path.posix.join(path.posix.dirname(filename),item.uri)));return [...result].sort();}
 export function assetKind(name){if(/\.(gltf|glb|obj|fbx)\.import\.json$/i.test(name))return 'modelimport';return Object.entries(assetSuffix).filter(([kind])=>kind!=='modelimport').find(([,suffix])=>name.endsWith(suffix))?.[0]||(/\.(cpp|hpp|h|c|hlsl|glsl)$/i.test(name)?'code':fileKind(name)==='unsupported'?'file':fileKind(name));}
 export class ProjectService {
-  constructor(root){this.root=path.resolve(root);this.index={};this.redirects={};this.queue=Promise.resolve();this.writeQueue=Promise.resolve();}
+  constructor(root){this.root=path.resolve(root);this.index={};this.redirects={};this.queue=Promise.resolve();this.writeQueue=Promise.resolve();this.discovered=0;this.savedDiscovery=0;}
   async init(seed=false){await fs.mkdir(this.root,{recursive:true});this.root=await fs.realpath(this.root);this.renameRecovery=await recoverAssetRenames(this);try{this.index=JSON.parse(await fs.readFile(path.join(this.root,'.hbassets.json'),'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;}
     if(!this.renameRecovery.length){this.writeRecovery=await recoverAssetWrites(this,{tolerateConflicts:true});await recoverAssetTransactions(this,{tolerateConflicts:true});}else{this.writeRecovery={pending:[]};this.transactionRecovery=[];}
     try{this.redirects=JSON.parse(await fs.readFile(path.join(this.root,'.hbredirects.json'),'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;}
@@ -39,27 +40,68 @@ export class ProjectService {
   async assetRecovery({transaction,offset=0,limit=32}={}){if(!Number.isSafeInteger(offset)||offset<0||!Number.isSafeInteger(limit)||limit<1||limit>128)throw Error('복구 조회 범위를 확인하세요.');await this.writeQueue;if(!transaction)return{pending:this.pendingRecoveries().map(r=>({id:r.id,type:r.type||'transaction',label:r.paths[0]+(r.type==='rename'?' · 이름 변경':r.type==='writeIntent'?' · 저장 ID':' · '+r.paths.length+'개 파일')+' · '+r.id.slice(-8),total:r.paths.length,...(r.blockedBy?{blockedBy:r.blockedBy}:{})}))};if(!this.pendingRecoveries().some(r=>r.id===transaction))throw Error('대기 중인 복구 묶음을 선택하세요.');const view=await(transaction.startsWith('rename:')?inspectAssetRename(this,transaction):transaction.startsWith('write:')?inspectAssetWrite(this,transaction):inspectAssetTransaction(this,transaction));return{...view,total:view.rows.length,conflicts:view.rows.filter(r=>r.conflict).length,rows:view.rows.slice(offset,offset+limit),nextOffset:offset+limit<view.rows.length?offset+limit:null};}
   resolveRecovery(params,guard=()=>{}){const task=this.writeQueue.then(async()=>{if(this.renameRecovery?.length&&!params.transaction?.startsWith('rename:'))throw Error('이름 변경 복구를 먼저 끝내세요.');const result=await(typeof params.transaction==='string'&&params.transaction.startsWith('rename:')?resolveAssetRename(this,params,guard):typeof params.transaction==='string'&&params.transaction.startsWith('write:')?resolveAssetWrite(this,params,guard):resolveAssetTransaction(this,params,guard));if(params.transaction?.startsWith('rename:')&&!params.dryRun&&!this.renameRecovery?.length){this.writeRecovery=await recoverAssetWrites(this,{tolerateConflicts:true});await recoverAssetTransactions(this,{tolerateConflicts:true});}return{...result,remaining:this.pendingRecoveries().length};});this.writeQueue=task.catch(()=>{});return task;}
   async resolve(relative='',allowMissing=false,followRedirects=true){
-    if(typeof relative!=='string'||relative.length>1000||relative.includes('\\')||relative.startsWith('/')||relative.split('/').some(p=>p==='..'||p==='.'||/[<>:"|?*\x00-\x1f]/.test(p)||/[. ]$/.test(p)||/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(p)))throw Error('프로젝트 경로 오류');
-    const visited=new Set();while(followRedirects){const from=Object.keys(this.redirects).sort((a,b)=>b.length-a.length).find(p=>relative===p||relative.startsWith(p+'/'));if(!from)break;if(visited.has(from))throw Error('에셋 참조 순환');visited.add(from);relative=this.redirects[from]+relative.slice(from.length);if(visited.size>32)throw Error('에셋 참조 깊이 초과');}
+    if(!validProjectPath(relative,{empty:true}))throw Error('프로젝트 경로 오류');
+    const visited=new Set();while(followRedirects){const from=Object.keys(this.redirects).sort((a,b)=>b.length-a.length).find(p=>relative===p||relative.startsWith(p+'/'));if(!from)break;if(visited.has(from))throw Error('에셋 참조 순환');visited.add(from);relative=this.redirects[from]+relative.slice(from.length);if(!validProjectPath(relative))throw Error('에셋 참조 경로 오류');if(visited.size>32)throw Error('에셋 참조 깊이 초과');}
     const full=path.resolve(this.root,relative);if(full!==this.root&&!full.startsWith(this.root+path.sep))throw Error('프로젝트 범위 밖 경로');let cursor=full;
     while(true){try{const real=await fs.realpath(cursor);if(real!==this.root&&!real.startsWith(this.root+path.sep))throw Error('프로젝트 밖 링크는 사용할 수 없어요.');break;}catch(error){if(!allowMissing||error.code!=='ENOENT')throw error;cursor=path.dirname(cursor);}}
     return full;
   }
   async canonicalFile(relative){const file=await this.resolve(relative,true),missing=[];let cursor=file;while(true){try{const real=await fs.realpath(cursor),resolved=path.resolve(real,...missing);if(resolved!==this.root&&!resolved.startsWith(this.root+path.sep))throw Error('프로젝트 범위 밖 경로');return resolved;}catch(error){if(error.code!=='ENOENT')throw error;missing.unshift(path.basename(cursor));const parent=path.dirname(cursor);if(parent===cursor)throw error;cursor=parent;}}}
-  async *walk({folder='',signal}={}){
-    await this.resolve(folder,false,false);const pending=[folder];
-    while(pending.length){signal?.throwIfAborted();const relative=pending.pop(),dir=await this.resolve(relative,false,false);
-      for await(const entry of await fs.opendir(dir)){signal?.throwIfAborted();if(entry.name.startsWith('.')||['Library','node_modules','build'].includes(entry.name)||!relative&&['Saved','Builds'].includes(entry.name)||entry.isSymbolicLink())continue;
-        const name=relative?relative+'/'+entry.name:entry.name;if(entry.isDirectory()){yield {path:name,name:entry.name,kind:'folder'};pending.push(name);}else if(entry.isFile()){const stat=await fs.lstat(await this.resolve(name,false,false));if(!stat.isFile()||stat.isSymbolicLink())continue;this.index[name]??={id:randomUUID()};yield {path:name,name:entry.name,kind:assetKind(entry.name),size:stat.size,modified:stat.mtimeMs,id:this.index[name].id,text:textExtensions.has(path.extname(name).toLowerCase())};}
-      }
+  fileId(name){if(!Object.hasOwn(this.index,name)){Object.defineProperty(this.index,name,{value:{id:randomUUID()},writable:true,enumerable:true,configurable:true});this.discovered++;}return this.index[name].id;}
+  async *walk({folder='',signal,recursive=true,metadata=true,onIssue}={}){
+    signal?.throwIfAborted();const pending=[[folder,await this.resolve(folder,false,false)]];
+    while(pending.length){
+      signal?.throwIfAborted();const [relative,resolved]=pending.pop();
+      try{
+        const dir=resolved||await this.resolve(relative,false,false);
+        for await(const entry of await fs.opendir(dir)){
+          signal?.throwIfAborted();if(entry.name.startsWith('.')||['Library','node_modules','build'].includes(entry.name)||!relative&&['Saved','Builds'].includes(entry.name)||entry.isSymbolicLink())continue;
+          const name=relative?relative+'/'+entry.name:entry.name;
+          if(!validProjectPath(name)){const error=Error('프로젝트 경로 오류');if(!onIssue)throw error;onIssue(name,error);continue;}
+          if(entry.isDirectory()){yield {path:name,name:entry.name,kind:'folder'};if(recursive)pending.push([name]);}
+          else if(entry.isFile()){
+            let details;
+            const kind=assetKind(entry.name),text=textExtensions.has(path.extname(name).toLowerCase());
+            // The directory was checked above; lstat does not follow a replaced file link.
+            if(metadata===true||typeof metadata==='function'&&metadata(name,kind,text)){try{const stat=await fs.lstat(path.join(dir,entry.name));if(!stat.isFile()||stat.isSymbolicLink())continue;details={size:stat.size,modified:stat.mtimeMs};}catch(error){if(!onIssue)throw error;onIssue(name,error);continue;}}
+            yield {path:name,name:entry.name,kind,...details,id:this.fileId(name),text};
+          }
+        }
+      }catch(error){if(!onIssue||relative===folder||signal?.aborted)throw error;onIssue(relative,error);}
     }
   }
   async files(options){const result=[];for await(const entry of this.walk(options))result.push(entry);return result.sort((a,b)=>(a.kind!=='folder')-(b.kind!=='folder')||a.path.localeCompare(b.path));}
-  async list({folder='',query='',type='all',contents=false,recursive=false}={}){await this.resolve(folder);const all=await this.files(),q=query.toLowerCase();let entries=all.filter(e=>(recursive?e.path.startsWith(folder?folder+'/':''):path.posix.dirname(e.path)===(folder||'.'))&&(type==='all'||e.kind===type));
-    if(q){const matches=[];for(const e of entries){if(e.name.toLowerCase().includes(q)||e.path.toLowerCase().includes(q))matches.push(e);else if(contents&&e.text&&e.size<=1048576){const lines=(await fs.readFile(await this.resolve(e.path),'utf8')).split(/\r?\n/),line=lines.findIndex(s=>s.toLowerCase().includes(q));if(line>=0)matches.push({...e,line:line+1,match:lines[line].slice(0,160)});}}entries=matches;}
-    await this.saveIndex();return {recovery:this.pendingRecoveries().map(r=>({id:r.id,blockedBy:r.blockedBy})),root:this.root,folder,entries,folders:all.filter(e=>e.kind==='folder'),total:all.filter(e=>e.kind!=='folder').length};
+  recoverySummary(){return this.pendingRecoveries().map(r=>({id:r.id,blockedBy:r.blockedBy}));}
+  async list({folder='',query='',type='all',contents=false,recursive=false,browse=false,catalog=false,signal}={}){
+    if(!browse&&folder)await this.resolve(folder);
+    const issues=[],onIssue=(path,error)=>{if(issues.length<8)issues.push({path,message:error.message});};
+    const q=query.toLowerCase(),scope=name=>browse||(recursive?name.startsWith(folder?folder+'/':''):path.posix.dirname(name)===(folder||'.')),matches=name=>!q||name.toLowerCase().includes(q);
+    const metadata=(name,kind,text)=>scope(name)&&(type==='all'||kind===type)&&(contents&&text||!catalog&&matches(name));
+    const all=await this.files({folder:browse?folder:'',recursive:browse?recursive:true,metadata,signal,onIssue}),folders=new Map(),entries=[];let total=0;
+    const addFolder=e=>folders.set(e.path,e);
+    for(const e of all){
+      signal?.throwIfAborted();
+      if(e.kind==='folder'){if(!browse||path.posix.dirname(e.path)===(folder||'.'))addFolder(e);}else total++;
+      if(!scope(e.path)||type!=='all'&&e.kind!==type)continue;
+      if(matches(e.path)){entries.push(e);continue;}
+      if(contents&&e.text&&e.size<=1048576){try{const lines=(await fs.readFile(await this.resolve(e.path),'utf8')).split(/\r?\n/),line=lines.findIndex(s=>s.toLowerCase().includes(q));if(line>=0)entries.push({...e,line:line+1,match:lines[line].slice(0,160)});}catch(error){onIssue(e.path,error);}}
+    }
+    if(browse&&folder){
+      for await(const e of this.walk({recursive:false,metadata:false,signal,onIssue}))if(e.kind==='folder')addFolder(e);
+      let prefix='';for(const name of folder.split('/')){prefix=prefix?prefix+'/'+name:name;addFolder({path:prefix,name,kind:'folder'});}
+    }
+    signal?.throwIfAborted();
+    // Browsing must not rewrite the asset index just because the folder changed.
+    const discovery=this.discovered;
+    try{while(this.savedDiscovery<discovery&&!this.renameRecovery?.length){this.browseIndexSave??=this.saveIndex().finally(()=>{this.browseIndexSave=null;});await this.browseIndexSave;signal?.throwIfAborted();}}catch(error){if(signal?.aborted)throw error;onIssue('.hbassets.json',error);}
+    return {recovery:this.recoverySummary(),root:this.root,folder,entries,folders:catalog?[]:[...folders.values()].sort((a,b)=>a.path.localeCompare(b.path)),total,...issues.length?{issues}:{}};
   }
-  saveIndex(){if(this.renameRecovery?.length)return Promise.resolve({deferred:true});const task=this.queue.then(async()=>{const file=path.join(this.root,'.hbassets.json'),temp=file+'.'+randomUUID()+'.tmp';try{await fs.writeFile(temp,JSON.stringify(this.index,null,2),{flag:'wx',flush:true});await fs.rename(temp,file);}finally{await fs.unlink(temp).catch(error=>{if(error.code!=='ENOENT')throw error;});}});this.queue=task.catch(()=>{});return task;}
+  async watchedFiles(paths){
+    if(!Array.isArray(paths)||paths.some(name=>!validProjectPath(name)))throw Error('문서 확인 경로 오류');
+    const entries=[];for(const name of new Set(paths)){try{const stat=await fs.stat(await this.resolve(name));if(stat.isFile())entries.push({path:name,modified:stat.mtimeMs});}catch(error){if(!['ENOENT','ENOTDIR'].includes(error.code))throw error;}}
+    return {entries,recovery:this.recoverySummary()};
+  }
+  saveIndex(){if(this.renameRecovery?.length)return Promise.resolve({deferred:true});const task=this.queue.then(async()=>{const file=path.join(this.root,'.hbassets.json'),temp=file+'.'+randomUUID()+'.tmp',revision=this.discovered;try{await fs.writeFile(temp,JSON.stringify(this.index,null,2),{flag:'wx',flush:true});await fs.rename(temp,file);this.savedDiscovery=revision;}finally{await fs.unlink(temp).catch(error=>{if(error.code!=='ENOENT')throw error;});}});this.queue=task.catch(()=>{});return task;}
   async scanAsset(relative,force=false){
     const file=await this.resolve(relative),stat=await fs.stat(file);if(!stat.isFile())throw Error('에셋 파일을 선택하세요.');const canonical=path.relative(this.root,file).split(path.sep).join('/'),entry=this.index[canonical]??={id:randomUUID()},model=modelSource(canonical);let metadata=null,metadataError=null;
     if(model){try{if(force)this.modelImportCache?.delete(canonical);metadata=await readModelImport(this,canonical);}catch(error){metadataError=error.message;}}

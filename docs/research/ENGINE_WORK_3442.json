@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "date": "2026-11-10",
+  "kind": "콘텐츠 브라우저 규모·긴 경로·문서 변경 확인",
+  "baseInstallation": "docs/research/USER_INSTALL_3441.json",
+  "sourceHashes": {
+    "prototype/project-path.js": "a6af7b8a87882b20f47fa307f59e48ab512adb9809e701ae32739fefa59d0f7d",
+    "prototype/project-browser.js": "003d5f0426dec69e18e0d7a8b91f3b26210f66c3be8e8c15e115c8a2c164379f",
+    "prototype/editor-windows.css": "6847e811a45552503f95e3ff8d16a43bba6c55f1834927eeddaf5febb29f7b41",
+    "prototype/project-session.js": "530ed13ab0e00043f96bc9154779299b931da910fa198e6fbd321382079d6cf1",
+    "prototype/app.js": "6645f2578f75c82ea192cdb91cdfd6ae5b41750542c554a9cfc37792ccb8fcea",
+    "prototype/runtime-storage.js": "94fd6a86827a3e13bb611c0b6a58e51e52b62e392126e39e9cae5aa327494310",
+    "tools/project-service.mjs": "eeb4124e4aba6933cfce79a10d7ccd19212a5c9656df6c446fc4d7266745c3e1",
+    "tools/project-manifest.mjs": "0f0072beaaa3246388e704561b6b5259c14768a582abf6318a3d829313c6246f",
+    "tools/serve.mjs": "912aa572e962f32e40661a756fd40839d1e7a2cbb6965f4ac2b3ce2139818f12",
+    "tools/check-project-browse-scale.mjs": "890632811b561712c99a173fe0d6e8c2443b854099f46e765704d385789444ab",
+    "docs/PROJECT_BROWSE_SCALE.md": "1e9284e51b88f8d5f3ac06dddc44f7da1e56fd53f042417ada2e85cc125bc783",
+    "docs/ai-routes.json": "f886ad8df33a923e798b1c9a5faf059dfbcb9d10fad09e82896c58c1f3fca8a0"
+  },
+  "baseline": {
+    "pathLength": 1458,
+    "normalFolderListingFailed": "프로젝트 경로 오류",
+    "deepFileReadFailed": "프로젝트 경로 오류"
+  },
+  "checks": {
+    "passed": true,
+    "counts": {
+      "files": 12000,
+      "folders": 1500,
+      "pathLength": 2519,
+      "depth": 69,
+      "encodedLength": 20081
+    },
+    "checks": [
+      {
+        "name": "small folder and filtered recursive search skip unrelated branches",
+        "ms": 16,
+        "resolved": 8
+      },
+      {
+        "name": "deep read/write/reopen and ID consistency",
+        "ms": 39
+      },
+      {
+        "name": "wide folders and lightweight catalog remain complete; unchanged browse does not write index",
+        "ms": 1651,
+        "catalog": 13631
+      },
+      {
+        "name": "one missing branch and cancelled listing do not poison others; path boundaries hold",
+        "ms": 5
+      },
+      {
+        "name": "installed-style WebView uses deep HTTP read/search and targeted change checks",
+        "ms": 3932
+      },
+      {
+        "name": "WebView navigates last of 12000 files and 1500 folders with bounded DOM",
+        "ms": 3697,
+        "fileCards": 7,
+        "folderButtons": 9
+      },
+      {
+        "name": "idle polling never requests a new complete catalog",
+        "ms": 4301,
+        "polls": 3,
+        "full": 0
+      },
+      {
+        "name": "reopened editor restores the previous folder and document",
+        "ms": 1053
+      }
+    ]
+  },
+  "proofFile": "native/build/project-browse-scale-x6FIxi/acceptance.json",
+  "otherChecks": [
+    "tools/check-project.mjs",
+    "tools/check-runtime-data-cache.mjs",
+    "node --check changed JavaScript"
+  ],
+  "scope": "실제 격리 Windows WebView 편집기 및 디스크·HTTP 확인. 사용자 원본 종료의 OS 오류는 확보하지 못했어요. 사용자 프로젝트·프로필·보호파일 변경 없음. PE/SDK 변경 없음."
+}

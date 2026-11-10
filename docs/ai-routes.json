@@ -5626,6 +5626,26 @@
         "docs/RUNTIME_DATA_CACHE.md",
         "tools/check-runtime-data-cache.mjs"
       ]
+    },
+    {
+      "id": "project-browse-scale",
+      "keywords": [
+        "project browser",
+        "콘텐츠 브라우저",
+        "긴 경로",
+        "watchedFiles",
+        "pollOpenDocuments",
+        "validProjectPath"
+      ],
+      "paths": [
+        "tools/project-service.mjs",
+        "tools/serve.mjs",
+        "prototype/project-browser.js",
+        "prototype/project-path.js",
+        "prototype/app.js",
+        "docs/PROJECT_BROWSE_SCALE.md",
+        "tools/check-project-browse-scale.mjs"
+      ]
     }
   ]
 }

@@ -1,5 +1,6 @@
 import {parseGameJson,validGameJson} from './game-json.js';
 import {dataContents} from './data-assets.js';
+import {validProjectPath} from './project-path.js';
 
 // Each execution owns a bounded cache; failed reads remain retryable.
 function retainedAssetReader(read,{maxEntries=256,maxBytes=32*1024*1024}={}){
@@ -26,7 +27,7 @@ export function cacheAssetReader(read,options){
 }
 
 export const persistentQueryKeys=new Set(['saveJsonWrite','saveJsonRead','saveJsonDelete','dataJsonRead','dataTableRead']);
-const validPath=path=>typeof path==='string'&&/^(Assets|Source)\//.test(path)&&path.length<=1000&&!/[\\:\x00-\x1f]/.test(path)&&!path.split('/').some(p=>!p||p==='.'||p==='..');
+const validPath=path=>validProjectPath(path)&&/^(Assets|Source)\//.test(path);
 export function createPersistentQueries({readAsset,readSave,writeSave,deleteSave}){
   // Eviction limits retained data, never how many different files a game can read.
   const cache=retainedAssetReader(async path=>{

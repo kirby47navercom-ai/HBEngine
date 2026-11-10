@@ -74,7 +74,10 @@
 .extra-viewport>select { position:absolute; left:10px; top:10px; }
 
 /* Content browser: compact file rows by default, optional thumbnail tiles. */
-.project-tree { width:175px; flex-shrink:0; overflow:auto; background:var(--panel); border-right:1px solid var(--line); padding:5px 4px; }
+.project-tree { width:175px; flex-shrink:0; min-height:0; display:flex; flex-direction:column; overflow:hidden; background:var(--panel); border-right:1px solid var(--line); padding:5px 4px; }
+.project-tree [data-project-folders] { flex:1; min-height:0; overflow:auto; overflow-anchor:none; }
+.project-folder-items { position:absolute; left:0; right:0; }
+.project-folder-items button { height:31px; }
 .project-tree button { display:flex; align-items:center; gap:7px; width:100%; min-height:31px; white-space:nowrap; text-align:left; padding:5px 6px; font-size:13px; border-radius:3px; }
 .project-tree button svg { width:16px; height:16px; color:var(--muted); }
 .project-tree button span { min-width:0; overflow:hidden; text-overflow:ellipsis; }

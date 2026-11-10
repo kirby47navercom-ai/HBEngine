@@ -1,7 +1,7 @@
+import {projectPathLimit,validProjectPath} from './project-path.js';
 // The project identity is loaded before any editor recovery or layout storage is read.
 export function validSession(value){
-  const relative=path=>typeof path==='string'&&path.length>0&&path.length<=1000&&!/^(?:[A-Za-z]:|[\\/])/.test(path)&&!path.replaceAll('\\','/').split('/').includes('..');
-  return value&&typeof value.id==='string'&&value.id.length>0&&value.id.length<=200&&typeof value.name==='string'&&value.name.length>0&&value.name.length<=120&&typeof value.projectFile==='string'&&value.projectFile.length>0&&value.projectFile.length<=2000&&relative(value.startupScene)&&relative(value.startupBlueprint)&&(value.legacyStorage===undefined||typeof value.legacyStorage==='boolean');
+  return value&&typeof value.id==='string'&&value.id.length>0&&value.id.length<=200&&typeof value.name==='string'&&value.name.length>0&&value.name.length<=120&&typeof value.projectFile==='string'&&value.projectFile.length>0&&value.projectFile.length<=projectPathLimit&&validProjectPath(value.startupScene)&&validProjectPath(value.startupBlueprint)&&(value.legacyStorage===undefined||typeof value.legacyStorage==='boolean');
 }
 export function storageKey(key,project=session){return key+'.project.'+encodeURIComponent(project?.id||'standalone');}
 function legacyKeys(storage){const keys=['hbengine-ui-scene-v1','hbengine.documents.v2','hbengine.docks.v2','hbengine.detached.windows','hbengine.viewport.presentation','hbengine.viewport.camera','hbengine.project.folder'];for(let i=0;i<storage.length;i++){const key=storage.key(i);if(key?.startsWith('hbengine.savegame.')&&!key.includes('.project.'))keys.push(key);}return keys;}

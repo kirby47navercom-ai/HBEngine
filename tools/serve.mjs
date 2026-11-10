@@ -20,6 +20,7 @@ import {readNativeFiles} from './native-project.mjs';
 import {ProjectStorage,storageLimit} from './project-storage.mjs';
 import {readEngineStatus} from './engine-status.mjs';
 import {EditorAutomation,engineSchema} from './editor-automation.mjs';
+import {projectPathLimit} from '../prototype/project-path.js';
 const root=path.resolve(import.meta.dirname,'..'),schemaOnly=process.env.HB_SCHEMA_ONLY==='1',desktop=process.env.HB_DESKTOP==='1'||schemaOnly,requestedPort=Number(process.env.PORT??5173),quietRoot=path.join(root,'Projects/QuietGarden');
 if(!Number.isInteger(requestedPort)||requestedPort<0||requestedPort>65535)throw Error('서버 포트 범위 오류');
 const buildJobs=new BuildJobs();
@@ -43,14 +44,15 @@ if(!desktop){
 if(!defaultProject&&!schemaOnly){try{if((await fs.promises.stat(quietRoot)).isDirectory())defaultProject=await ensureProjectManifest(quietRoot,'QuietGarden');}catch(error){if(error.code!=='ENOENT')console.error('기본 프로젝트 확인: '+error.message);}}
 if(desktop&&!schemaOnly&&process.env.HB_PROJECT_FILE)await selectProject(await readProjectManifest(process.env.HB_PROJECT_FILE));
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.gif':'image/gif','.mp4':'video/mp4','.webm':'video/webm','.wav':'audio/wav','.mp3':'audio/mpeg','.ogg':'audio/ogg','.txt':'text/plain; charset=utf-8','.md':'text/plain; charset=utf-8'};
-const json=(res,data,status=200)=>res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'}).end(JSON.stringify(data));
+const json=(res,data,status=200)=>{if(res.destroyed)return;const body=JSON.stringify(data);return res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'}).end(body);};
 const changedProject=()=>Object.assign(Error('프로젝트가 변경됐어요. 다시 작업하세요.'),{status:409});
 const checkOwner=owner=>{if(project!==owner||stopping)throw changedProject();};
 async function body(req,limit=1048576){const chunks=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>limit)throw Error('요청 파일 크기 제한 초과');chunks.push(chunk);}return Buffer.concat(chunks);}
 function stream(req,res,file,size,projectFile=false){const mime=projectFile&&path.extname(file).toLowerCase()==='.html'?'text/plain; charset=utf-8':types[path.extname(file).toLowerCase()]||'application/octet-stream';
   return streamHttpFile(req,res,file,size,{'Content-Type':mime,'Cache-Control':'no-cache','X-Content-Type-Options':'nosniff',...(projectFile?{'Content-Security-Policy':(path.extname(file).toLowerCase()==='.svg'?"default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox":"default-src 'none'; sandbox")}: {})});
 }
-const server=http.createServer(async(req,res)=>{try{
+// A Korean UTF-16 code unit can take nine URL-encoded bytes.
+const server=http.createServer({maxHeaderSize:projectPathLimit*9+32*1024},async(req,res)=>{try{
   if(!['127.0.0.1:'+port,'localhost:'+port].includes(req.headers.host))return json(res,{error:'허용되지 않은 호스트'},403);
   const url=new URL(req.url,'http://127.0.0.1:'+port),q=url.searchParams;
   if(schemaOnly&&(url.pathname!=='/api/schema'||req.method!=='GET'))return json(res,{error:'스키마 전용 읽기 서버예요.'},404);
@@ -111,7 +113,12 @@ const server=http.createServer(async(req,res)=>{try{
     if(url.pathname==='/api/asset/batch'&&req.method==='POST'){const data=JSON.parse(await readBody(16777216)),result=await owner.checkedBatch(data.entries,()=>checkOwner(owner),{dryRun:data.dryRun??false,guards:data.guards??[],expectedPlanRevision:data.expectedPlanRevision});checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/batch/undo'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.undoBatch(data.transaction,()=>checkOwner(owner));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/write'&&req.method==='POST'){const data=JSON.parse(await readBody(33554432)),result=await owner.checkedWrite(data.path,data.text,data.expected,()=>checkOwner(owner));checkOwner(owner);return json(res,result);}
-    if(url.pathname==='/api/project'&&req.method==='GET'){const result=await owner.list({folder:q.get('folder')||'',query:q.get('q')||'',type:q.get('type')||'all',contents:q.get('contents')==='1',recursive:q.get('recursive')==='1'});checkOwner(owner);return json(res,result);}
+    if(url.pathname==='/api/project'&&req.method==='GET'){
+      const abort=new AbortController(),cancel=()=>abort.abort();res.once('close',cancel);
+      try{const result=await owner.list({folder:q.get('folder')||'',query:q.get('q')||'',type:q.get('type')||'all',contents:q.get('contents')==='1',recursive:q.get('recursive')==='1',browse:q.get('browse')==='1',catalog:q.get('catalog')==='1',signal:abort.signal});checkOwner(owner);return json(res,result);}
+      finally{res.off('close',cancel);}
+    }
+    if(url.pathname==='/api/project/stats'&&req.method==='POST'){const {paths}=JSON.parse(await readBody());await owner.writeQueue;checkOwner(owner);const result=await owner.watchedFiles(paths);checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/file'&&['GET','HEAD'].includes(req.method)){const info=await owner.read(q.get('path'));checkOwner(owner);return stream(req,res,info.file,info.size,true);}
     if(url.pathname==='/api/file'&&req.method==='PUT'){await owner.write(q.get('path'),(await readBody()).toString('utf8'),()=>checkOwner(owner));checkOwner(owner);return json(res,{ok:true});}
     if(url.pathname==='/api/import'&&req.method==='POST'){const result=await owner.importStream(q.get('folder')||'Assets',q.get('name'),req,()=>checkOwner(owner),{expectedBytes:req.headers['content-length']===undefined?undefined:Number(req.headers['content-length'])});checkOwner(owner);return json(res,result);}
@@ -129,7 +136,7 @@ const server=http.createServer(async(req,res)=>{try{
   const file=pathname==='/'?path.join(root,desktop&&!project?'prototype/project-hub.html':'prototype/index.html'):path.resolve(root,'.'+pathname);
   if(!file.startsWith(root+path.sep)||!/^\/(prototype\/|docs\/|native\/include\/|node_modules\/(three\/|xatlas-wasm\/|@dimforge\/rapier[23]d-compat\/))/.test(pathname)&&pathname!=='/'||pathname.includes('/../')||pathname.includes('/native/build/'))return json(res,{error:'파일 범위 밖 요청'},403);
   const stat=await fs.promises.stat(file);if(!stat.isFile())return res.writeHead(404).end();stream(req,res,file,stat.size);
-}catch(error){json(res,{error:error.message},error.status||(error.code==='ENOENT'?404:400));}});
+}catch(error){if(res.destroyed)return;if(res.headersSent){res.destroy();return;}json(res,{error:error.message},error.status||(error.code==='ENOENT'?404:400));}});
 const nativeChannel=schemaOnly?{descriptor:null,close(){}}:attachNativeChannel(server,{origin:()=>"http://127.0.0.1:"+port,scope:()=>{const owner=project,host=native;checkOwner(owner);return async(data,query)=>{checkOwner(owner);const result=await host.call(data.token,data.request,undefined,query);checkOwner(owner);return result;};}});
 server.listen(requestedPort,'127.0.0.1',async()=>{try{port=server.address().port;ready=true;await writeReady();console.log('HBEngine: http://127.0.0.1:'+port+'\nProject: '+(project?.root||'프로젝트 허브'));}catch(error){console.error(error.message);close();process.exitCode=1;}});
 const close=()=>{if(stopping)return;stopping=true;buildJobs.close();nativeChannel.close();native.close();server.close();server.closeAllConnections();};process.on('SIGINT',close);process.on('SIGTERM',close);

@@ -9,15 +9,16 @@ import {promisify} from 'node:util';
 import {ProjectService} from './project-service.mjs';
 import {gameplayTemplate} from '../prototype/gameplay-templates.js';
 import {makeStarterScene} from '../prototype/scene-templates.js';
+import {projectPathLimit,validProjectPath} from '../prototype/project-path.js';
 const exec=promisify(execFile);
 export const engineVersion='0.1.0';
 export const defaultDirectory=path.join(os.homedir(),'Documents','HBEngine Projects');
 const dataDirectory=()=>process.env.HB_USER_DATA_DIR||path.join(process.env.LOCALAPPDATA||path.join(os.homedir(),'.local','share'),'HBEngine');
-const absolute=value=>{if(typeof value!=='string'||!value||value.length>32767||/[\x00-\x1f]/.test(value)||!path.isAbsolute(value))throw Error('절대 프로젝트 경로를 선택하세요.');return path.resolve(value);};
+const absolute=value=>{if(typeof value!=='string'||!value||value.length>projectPathLimit||/[\x00-\x1f]/.test(value)||!path.isAbsolute(value))throw Error('절대 프로젝트 경로를 선택하세요.');return path.resolve(value);};
 const validName=name=>typeof name==='string'&&name.length>0&&name.length<=80&&name.trim()===name&&!/[<>:"/\\|?*\x00-\x1f]/.test(name)&&!/[. ]$/.test(name)&&!/^\.{1,2}$/.test(name)&&!/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(name);
 export function validateManifest(data){
   if(!data||data.version!==1||data.engine!=='HBEngine'||data.engineVersion!==engineVersion||!validName(data.name)||typeof data.id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(data.id))throw Error('지원하지 않거나 잘못된 HBEngine 프로젝트 파일이에요.');
-  for(const [key,suffix] of [['startupScene','.hbscene.json'],['startupBlueprint','.hbblueprint.json']]){const value=data[key];if(typeof value!=='string'||!value||value.length>1000||!value.endsWith(suffix)||value.includes('\\')||value.startsWith('/')||value.split('/').some(p=>!p||p==='.'||p==='..'||/[<>:"|?*\x00-\x1f]/.test(p)||/[. ]$/.test(p)))throw Error('프로젝트 시작 에셋 경로 오류');}
+  for(const [key,suffix] of [['startupScene','.hbscene.json'],['startupBlueprint','.hbblueprint.json']]){const value=data[key];if(!validProjectPath(value)||!value.endsWith(suffix))throw Error('프로젝트 시작 에셋 경로 오류');}
   if(data.gameInstance){const value=data.gameInstance,asset=typeof value==='string'&&value.startsWith('Assets/')&&value.endsWith('.hbblueprint.json'),cpp=typeof value==='string'&&/^Source\/.+\.(?:h|hpp)(?:#[A-Za-z_]\w{0,79})?$/.test(value);if((!asset&&!cpp)||value.length>1000||/[\\:\x00-\x1f<>"|?*]/.test(value)||value.split('/').some(p=>!p||p==='.'||p==='..'))throw Error('GameInstance 에셋·C++ 경로 오류');}
 
   return data;
