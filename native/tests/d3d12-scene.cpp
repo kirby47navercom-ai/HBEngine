@@ -246,16 +246,32 @@ template<class R> static nlohmann::json stats(R& r){
         {"textureRegionUpdates",r.textureRegionUpdates()},{"textureRegionUpdateBytes",r.textureRegionUpdateBytes()},{"raySceneUpdates",r.raySceneUpdates()},{"raySceneUpdateBytes",r.raySceneUpdateBytes()},
         {"probeCaptures",r.probeCaptures()},{"transmissionCopies",r.transmissionCopies()},{"probeAtlasCount",r.probeAtlasCount()},{"bloomLevels",r.bloomLevels()},{"shadowTextureBytes",r.shadowTextureBytes()},{"captures",r.captures()}};
 }
+// Data texture layouts the engine bridge uploads (explicit mips, arrays, cubes, volumes, half and two-channel floats).
+template<class R> static std::vector<std::uint64_t> dataTextureLayouts(R& r){
+    using Level=typename R::TextureMipLevel;const auto rgba=[](std::size_t n){std::vector<std::uint8_t> v(n*4);for(std::size_t i=0;i<v.size();i++)v[i]=std::uint8_t(i*37);return v;};
+    const auto halves=[](std::size_t n){std::vector<std::uint8_t> v(n*2);for(std::size_t i=0;i<n;i++){const std::uint16_t h=std::uint16_t(0x3800+(i%64)*16);std::memcpy(v.data()+i*2,&h,2);}return v;};
+    const auto floats=[](std::size_t n){std::vector<std::uint8_t> v(n*4);for(std::size_t i=0;i<n;i++){const float f=float(i)*.25f-1;std::memcpy(v.data()+i*4,&f,4);}return v;};
+    std::vector<std::uint64_t> bytes;
+    bytes.push_back(r.createDataTexture(4,4,rgba(16),4,false,1,true,false,"2d",false,false,{Level{2,2,rgba(4),1},Level{1,1,rgba(1),1}}).storageBytes());
+    bytes.push_back(r.createDataTexture(4,4,rgba(48),4,false,3,false,true,"2d",false,false,{Level{2,2,rgba(12),3}}).storageBytes());
+    bytes.push_back(r.createDataTexture(4,4,halves(4*4*6*4),4,true,6,false,false,"cube",false,true).storageBytes());
+    bytes.push_back(r.createDataTexture(4,4,rgba(64),4,false,4,false,false,"volume",false,false,{Level{2,2,rgba(8),2},Level{1,1,rgba(1),1}}).storageBytes());
+    bytes.push_back(r.createDataTexture(3,2,floats(12),2,true).storageBytes());
+    bytes.push_back(r.createDataTexture(3,2,halves(12),2,true,1,false,false,"2d",false,true).storageBytes());
+    return bytes;
+}
+
 static nlohmann::json proof(DeviceDriver driver){
-    nlohmann::json out,referenceStats;std::array<std::vector<std::uint8_t>,41> reference;std::vector<std::uint8_t> unshadowed;
+    nlohmann::json out,referenceStats;std::array<std::vector<std::uint8_t>,41> reference;std::vector<std::uint8_t> unshadowed;std::vector<std::uint64_t> referenceLayouts;
     {Device gpu11(driver);SceneRenderer r(gpu11,W,H);out["software11"]=gpu11.software();
         reference=render(r,[](SceneRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);},[&](const std::vector<float>& v){return std::make_unique<hb::gpu::Particles>(gpu11,v);},[](auto& p,float dt,std::array<float,3> force,float gravity,float drag){p->step(dt,force,gravity,drag);});referenceStats=stats(r);
         // Proof the shadow pass matters: same frame with receiveShadow off must differ.
         const Scene scene;const Extra extra(scene);const auto d=draws();auto cube=r.createMesh(scene.cube,scene.cubeIndex);auto plain=r.createMesh(scene.quad,scene.quadIndex);
         r.setShadows(extra.shadows);r.setLights(extra.shadowLights);r.begin(frame(false));SceneMaterial m=d.lit;m.receiveShadow=false;m.color={.9f,.8f,.6f,1};
-        r.draw(plain,extra.ground,extra.ground,m);auto lit=d.lit;lit.receiveShadow=false;r.draw(cube,d.cube,d.cube,lit);unshadowed=r.readPixels();}
+        r.draw(plain,extra.ground,extra.ground,m);auto lit=d.lit;lit.receiveShadow=false;r.draw(cube,d.cube,d.cube,lit);unshadowed=r.readPixels();referenceLayouts=dataTextureLayouts(r);}
     d3d12::Device gpu(driver,true);out["software"]=gpu.software;out["debugLayer"]=gpu.debug;
-    {d3d12::SceneMeshRenderer r(gpu,W,H);gpu.begin();
+    // Debug-layer messages explain a device removal, so print them before the failure propagates.
+    try{d3d12::SceneMeshRenderer r(gpu,W,H);gpu.begin();
         const auto images=render(r,[](d3d12::SceneMeshRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);},[&](const std::vector<float>& v){return std::make_unique<d3d12::Particles>(gpu,v);},[](auto& p,float dt,std::array<float,3> force,float gravity,float drag){p->step(dt,force,gravity,drag);});
         const auto portedStats=stats(r);out["stats"]=portedStats;for(const auto& [key,value]:referenceStats.items())if(portedStats.at(key)!=value)throw std::runtime_error("statistic differs from D3D11: "+key+" "+value.dump()+" vs "+portedStats.at(key).dump());
         const char* names[]={"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps","screen","ssr","ssgi","ao","geometryGI","taa","motionBlur","program","surfaceProgram","programShadow","streamClear","mask2D","maskOutside2D","lit2D","lightMask2D","blend2D","cookie2D","stencil2D","nested2D","particles","sortedParticles","hdrParticles","maskedParticles","textureRegions","rayRows"};const std::array<float,4> clear=frame(false).clear;
@@ -267,7 +283,8 @@ static nlohmann::json proof(DeviceDriver driver){
         out["atlasChangedPixels"]=compare(reference[8],reference[9],clear)["pixelsOver2"];out["lightmapChangedPixels"]=compare(reference[10],reference[8],clear)["pixelsOver2"];
         out["probeChangedPixels"]=compare(reference[4],reference[6],clear)["pixelsOver2"];out["skyChangedPixels"]=compare(reference[5],reference[7],clear)["pixelsOver2"];
         out["shadowChangedPixels"]=compare(reference[2],unshadowed,clear)["pixelsOver2"];
-        gpu.end();gpu.waitIdle();}
+        const auto layouts=dataTextureLayouts(r);out["dataTextureLayoutBytes"]=layouts;if(layouts!=referenceLayouts)throw std::runtime_error("data texture storage differs from D3D11");
+        gpu.end();gpu.waitIdle();}catch(...){validationErrors(gpu);throw;}
     // Self-managed frames on a hidden window: begin/draw/present six times with a resize, GPU timestamps resolved.
     {Window window;d3d12::SceneMeshRenderer shown(gpu,64,48,window.value);const Scene scene;const auto d=draws();auto cube=shown.createMesh(scene.cube,scene.cubeIndex);shown.setLights(scene.lights);
         for(int i=0;i<6;i++){if(i==3)shown.resize(80,60);shown.begin(frame(false));shown.draw(cube,d.cube,d.cube,d.lit);REQUIRE(shown.present(0));}

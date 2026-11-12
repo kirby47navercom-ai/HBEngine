@@ -152,14 +152,14 @@ public:
 
     Buffer buffer(const void* data,std::uint64_t size,D3D12_RESOURCE_STATES finalState=D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER|D3D12_RESOURCE_STATE_INDEX_BUFFER){
         requireRecording();Buffer b;b.size=size;b.value=committed(D3D12_HEAP_TYPE_DEFAULT,bufferDesc(size),D3D12_RESOURCE_STATE_COMMON,nullptr,"Direct3D12 buffer");b.state=D3D12_RESOURCE_STATE_COMMON;
-        if(data){auto u=upload(size,4);std::memcpy(u.cpu,data,size);transition(b,D3D12_RESOURCE_STATE_COPY_DEST);list->CopyBufferRegion(b.get(),0,u.resource,u.offset,size);}
+        if(data){auto u=upload(size,4);std::memcpy(u.cpu,data,size);transition(b,D3D12_RESOURCE_STATE_COPY_DEST);list->CopyBufferRegion(b.get(),0,u.resource,u.offset,size);keep(b.get());}
         transition(b,finalState);return b;
     }
     // In-place buffer update ordered on the queue (like D3D11 UpdateSubresource): earlier draws read the old bytes.
     void update(Buffer& b,const void* data,std::uint64_t size,std::uint64_t offset=0){
         if(!size){return;}
         if(offset+size>b.size)throw std::runtime_error("Direct3D12 buffer update out of range");
-        auto u=upload(size,4);std::memcpy(u.cpu,data,size);const auto restore=b.state;transition(b,D3D12_RESOURCE_STATE_COPY_DEST);list->CopyBufferRegion(b.get(),offset,u.resource,u.offset,size);transition(b,restore);
+        auto u=upload(size,4);std::memcpy(u.cpu,data,size);const auto restore=b.state;transition(b,D3D12_RESOURCE_STATE_COPY_DEST);list->CopyBufferRegion(b.get(),offset,u.resource,u.offset,size);keep(b.get());transition(b,restore);
     }
     Buffer buffer(std::uint64_t size,D3D12_RESOURCE_STATES state,D3D12_RESOURCE_FLAGS flags){
         auto d=bufferDesc(size);d.Flags=flags;Buffer b;b.size=size;b.value=committed(D3D12_HEAP_TYPE_DEFAULT,d,state,nullptr,"Direct3D12 buffer");b.state=state;return b;
@@ -170,7 +170,7 @@ public:
         const UINT pitch=(rowBytes+D3D12_TEXTURE_DATA_PITCH_ALIGNMENT-1)&~(D3D12_TEXTURE_DATA_PITCH_ALIGNMENT-1);auto u=upload(std::uint64_t(pitch)*h,D3D12_TEXTURE_DATA_PLACEMENT_ALIGNMENT);
         for(UINT row=0;row<h;row++)std::memcpy(u.cpu+std::size_t(row)*pitch,static_cast<const unsigned char*>(data)+std::size_t(row)*rowBytes,rowBytes);
         D3D12_TEXTURE_COPY_LOCATION dst{},src{};dst.pResource=t.get();dst.Type=D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;dst.SubresourceIndex=subresource;src.pResource=u.resource;src.Type=D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;src.PlacedFootprint.Offset=u.offset;src.PlacedFootprint.Footprint={desc.Format,w,h,1,pitch};
-        const auto restore=t.state;transition(t,D3D12_RESOURCE_STATE_COPY_DEST);list->CopyTextureRegion(&dst,x,y,0,&src,nullptr);transition(t,restore);
+        const auto restore=t.state;transition(t,D3D12_RESOURCE_STATE_COPY_DEST);list->CopyTextureRegion(&dst,x,y,0,&src,nullptr);keep(dst.pResource);transition(t,restore);
     }
     Texture renderTarget(UINT width,UINT height,DXGI_FORMAT format,std::array<float,4> clear={0,0,0,1}){
         if(!width||!height)throw std::runtime_error("Direct3D12 render target size");
@@ -197,7 +197,19 @@ public:
         auto u=upload(total,D3D12_TEXTURE_DATA_PLACEMENT_ALIGNMENT);
         for(UINT y=0;y<rows;y++)std::memcpy(u.cpu+fp.Offset+std::size_t(y)*fp.Footprint.RowPitch,static_cast<const unsigned char*>(data)+std::size_t(y)*rowBytes,rowBytes);
         fp.Offset+=u.offset;D3D12_TEXTURE_COPY_LOCATION dst{},src{};dst.pResource=t.get();dst.Type=D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;dst.SubresourceIndex=0;src.pResource=u.resource;src.Type=D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;src.PlacedFootprint=fp;
-        list->CopyTextureRegion(&dst,0,0,0,&src,nullptr);transition(t,D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE|D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);return t;
+        list->CopyTextureRegion(&dst,0,0,0,&src,nullptr);keep(t.get());transition(t,D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE|D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);return t;
+    }
+    // Any 2D/array/cube/3D layout: data[i] is subresource i (mip + layer*mips), tightly packed rows (and slices for 3D).
+    Texture texture(const D3D12_RESOURCE_DESC& d,const std::vector<const void*>& data){
+        requireRecording();const UINT count=UINT(data.size());if(!count||count!=UINT(d.MipLevels)*(d.Dimension==D3D12_RESOURCE_DIMENSION_TEXTURE3D?1u:d.DepthOrArraySize))throw std::runtime_error("Direct3D12 texture subresource count");
+        Texture t;t.width=UINT(d.Width);t.height=d.Height;t.format=d.Format;t.value=committed(D3D12_HEAP_TYPE_DEFAULT,d,D3D12_RESOURCE_STATE_COPY_DEST,nullptr,"Direct3D12 texture");t.state=D3D12_RESOURCE_STATE_COPY_DEST;
+        std::vector<D3D12_PLACED_SUBRESOURCE_FOOTPRINT> fp(count);std::vector<UINT> rows(count);std::vector<UINT64> rowSize(count);UINT64 total=0;device->GetCopyableFootprints(&d,0,count,0,fp.data(),rows.data(),rowSize.data(),&total);
+        auto u=upload(total,D3D12_TEXTURE_DATA_PLACEMENT_ALIGNMENT);
+        for(UINT i=0;i<count;i++){if(!data[i])throw std::runtime_error("Direct3D12 texture data");const auto* source=static_cast<const unsigned char*>(data[i]);
+            for(UINT z=0;z<fp[i].Footprint.Depth;z++)for(UINT y=0;y<rows[i];y++)std::memcpy(u.cpu+fp[i].Offset+(std::size_t(z)*rows[i]+y)*fp[i].Footprint.RowPitch,source+(std::size_t(z)*rows[i]+y)*rowSize[i],std::size_t(rowSize[i]));
+            fp[i].Offset+=u.offset;D3D12_TEXTURE_COPY_LOCATION dst{},src{};dst.pResource=t.get();dst.Type=D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;dst.SubresourceIndex=i;src.pResource=u.resource;src.Type=D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;src.PlacedFootprint=fp[i];list->CopyTextureRegion(&dst,0,0,0,&src,nullptr);}
+        // Upload destinations stay alive until this frame retires, so callers may drop them at once (D3D11 semantics).
+        keep(t.get());transition(t,D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE|D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);return t;
     }
     void release(Texture& t){rtvs.give(t.rtv);dsvs.give(t.dsv);t.rtv={};t.dsv={};retire(std::move(t.value));}
 

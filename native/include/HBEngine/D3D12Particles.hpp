@@ -19,7 +19,8 @@ public:
         struct Kernels {Com<ID3D12RootSignature> root;Com<ID3D12PipelineState> step,clear,freeScan,emit,interaction,events;};
         Device* owner=nullptr;std::shared_ptr<Kernels> kernels;
     public:
-        struct Info {bool pending=false,ready=false,cancelled=false;std::string error;};
+        // Same shape as hb::gpu::Particles::Preparation::Info (kernel stages are compiled up front).
+        struct Info {std::array<KernelPreparation::Info,4> stages{};bool pending=false,ready=false,cancelled=false;std::string error;};
         explicit Preparation(Device& device):owner(&device),kernels(std::make_shared<Kernels>()){
             const D3D12_DESCRIPTOR_RANGE srv{D3D12_DESCRIPTOR_RANGE_TYPE_SRV,3,0,0,0},uav{D3D12_DESCRIPTOR_RANGE_TYPE_UAV,2,0,0,0};
             D3D12_ROOT_PARAMETER params[3]{};params[0].ParameterType=D3D12_ROOT_PARAMETER_TYPE_CBV;params[1].ParameterType=params[2].ParameterType=D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;params[1].DescriptorTable={1,&srv};params[2].DescriptorTable={1,&uav};
@@ -28,7 +29,7 @@ public:
             k.step=make(hb::gpu::Particles::source,"Main");k.clear=make(hb::gpu::Particles::source,"Clear");k.freeScan=make(hb::gpu::Particles::freeSource,"Main");k.emit=make(hb::gpu::Particles::emitSource,"Main");
             k.interaction=make(std::string("#define HB_PARTICLE_EVENTS 0\n")+particleInteractionSource,"Main");k.events=make(std::string("#define HB_PARTICLE_EVENTS 1\n")+particleInteractionSource,"Main");
         }
-        Info info()const{return {false,kernels!=nullptr,kernels==nullptr,{}};}
+        Info info()const{Info i;i.ready=kernels!=nullptr;i.cancelled=!i.ready;for(auto& stage:i.stages){stage.state=i.ready?"complete":"unused";stage.ready=i.ready;}return i;}
         bool poll(){if(!kernels)throw std::runtime_error("Particle preparation was cancelled or moved");return true;}
         void cancel(){kernels.reset();}
     };

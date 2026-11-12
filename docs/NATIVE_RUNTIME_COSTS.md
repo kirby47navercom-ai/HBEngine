@@ -72,7 +72,7 @@ scene/camera의 월드 행렬 갱신 뒤에는 정렬 위치를 그 행렬에서
 
 `--report`에서만 main/UI worker의 GC 발생 시간·종류·히스토그램·최대값과 bounded UTC 사건, 메모리/CPU/loop delay를 수집해요. GC duration 합계를 stop-the-world 중단 시간으로 부르지 않아요. RSS/process CPU는 프로세스 전체, heap/external/arrayBuffers/threadCPU는 해당 isolate/thread이며 arrayBuffers는 external에 포함돼요. 일반 게임에는 GC 관찰 타이머나 강제 GC를 넣지 않아요.
 
-`nativeGraphicsAPI`는 d3d11/auto/d3d12예요. d3d12는 실제 D3D12 장치·큐·fence·3-buffer 표시와 Microsoft D3D11On12를 사용하는 호환 경로예요. 기본 d3d11을 유지하며, 직접 D3D12 command-list 포트 완료로 표시하지 않아요. HW/WARP 각각 compute/readback/표시/resize를 확인했고 실제 재판의 12 호환 표시도 확인했어요.
+`nativeGraphicsAPI`는 d3d11/auto/d3d12/d3d12-11on12예요. d3d12는 직접 D3D12 렌더러, d3d12-11on12는 실제 D3D12 장치·큐·fence·3-buffer 표시와 Microsoft D3D11On12를 사용하는 이전 호환 경로예요. 기본 d3d11을 유지해요. 아래 HW/WARP 결과는 11On12 경로 기준이에요. HW/WARP 각각 compute/readback/표시/resize를 확인했고 실제 재판의 12 호환 표시도 확인했어요.
 
 새 QA 훅은 측정 구간의 layout/캡처/주기 QA 출력/중복 입력 해석을 꺼요. 마지막 D3D11 숨김·무음20초 사본은 이전60.853FPS(p95 20.816ms), 후보69.840FPS(p95 17.956ms) 관측이에요. 별도 작업 부하 통제가 안 됐고 이전 측정에는 다른 설치본 빌드도 겹쳐, 확정 개선율이나 전면/음향 활성 원본 성능으로 주장하지 않아요. 120FPS 목표는 계속 미합격이에요. 게임 원본·에셋·모듈·저장 원본은 바꾸지 않았어요. 상세 수치/실패/재사용 경계는 [ENGINE_WORK_3424.json](research/ENGINE_WORK_3424.json)에 있어요.
 

@@ -185,3 +185,20 @@ DX11 회귀: `check-native-scene-render --post-only`를 수정 전·후 헤더�
 - 기준: DX11 렌더러를 D3D11On12(같은 D3D12 드라이버 셰이더 컴파일러)로 실행한 결과와 정확히 같아야 해요. 순수 D3D11과는 노이즈 제거(à-trous) 장면의 한 하이라이트 주변만 다른데(드라이버의 D3D11/D3D12 컴파일러 부동소수점 차이를 필터가 증폭), D3D11On12로 같은 DX11 코드를 돌리면 D3D12 포트와 0 차이라 포트 문제가 아님을 확인했고 이 값은 보고만 해요.
 - 포트 수정: DX11 `ScreenEffectsPass::begin`처럼 단계별 셰이더 변형이 바뀌면 히스토리·필터 유효성을 무효로 해요.
 - 결과(실제 GPU): 38개 이미지 D3D11On12 대비 최대 차이 0, 디버그 레이어 오류 0, 거리장 AO 켬/끔 965픽셀 차이. 순수 D3D11 대비 48채널(최대 45). WARP는 경로 추적 셰이더 JIT가 1시간을 넘겨 `--warp`로만 실행해요.
+
+## 4-1단계 엔진 연결
+
+- 다른 세션의 미커밋 작업은 엔진 공용 기능(UI 글자 테두리·이미지 다각형 자르기, 변환 하한 검사)만 골라 커밋했고 나머지는 `git stash`에 보관했어요. 그 위에서 연결했어요.
+- `SceneRenderBridge`: 기존 본문을 `SceneRenderBridgeCore<Backend>` 템플릿으로 바꾸고, DX11(`SceneRenderer`+`hb::gpu::Particles`)과 D3D12(`SceneMeshRenderer`+`d3d12::Particles`)를 같은 JSON 프로토콜로 돌려요. 바깥 `SceneRenderBridge`가 `init`의 `backend`로 골라요: `d3d12`=직접 D3D12, `d3d12-11on12`/`auto`=기존 11On12 경로, `d3d11`. D3D12는 비동기 셰이더 준비를 끄고(동기 컴파일) `nativeCommandLists:true`를 보고해요.
+- 다중 카메라: `selectCameraView/cameraViewBytes`를 DX11 계약 그대로 옮겼어요. 카메라마다 시간 후처리 상태(자동 노출, TAA·노이즈 제거 히스토리, 변형 키)를 따로 두고 바꿔 끼우며, 각 뷰의 영역을 합성 텍스처에 복사해 마지막 뷰에서 표시해요. 중간 뷰는 제출만 하고 표시하지 않아요.
+- 데이터 텍스처: `createDataTexture`가 DX11과 같은 인자(배열·큐브·볼륨, RG/RGBA 16F/32F, 명시 RGBA8 밉)를 받아요. ponytail: 자동 밉 생성은 2D RGBA8만(다른 형식은 오류).
+- 브리지가 쓰는 객체 크기 함수(`Mesh::bufferBytes/cpuBytes`, `Texture/Probe::storageBytes`, `Instances/Deformation::bytes`)와 `Program::preparationInfo`, `setAsyncShaderPreparation` 추가.
+- 수명 수정: 업로드 복사 대상(버퍼·텍스처·영역 갱신)도 그 프레임 펜스까지 붙잡아요. 업로드 직후 텍스처를 놓으면 GPU가 해제된 리소스에 복사해 장치가 멈췄어요(887A0006).
+- 첫 실행: D3D12 렌더러 초기화는 셰이더 캐시가 비면 약 31초, 캐시가 있으면 0.2~0.3초예요. `--prepare-shaders`가 D3D12 파이프라인도 미리 컴파일해 게임 패키지 `Shaders`에 넣고, JS `init` 응답 제한을 120초로 늘렸어요.
+
+검증:
+- `check-native-d3d12-scene`: 브리지 115개 함수 누락 0(보류 없음), 41장면 + 데이터 텍스처 6형태 저장 크기 DX11과 동일, 실제 GPU·WARP 픽셀 최대 차이 0, 디버그 레이어 오류 0.
+- `check-native-d3d12-particles`, `check-native-d3d12-path`(실제 GPU, D3D11On12 대비 38장 0 차이) 재통과.
+- `HB_TEST_GRAPHICS_API=d3d12 node tools/check-native-game.mjs`: 숨긴 실제 게임 빌드가 `win32-d3d12-v8`로 40프레임, 입력·UI·오디오·종료 단계 통과. 단, 같은 검사의 `EndPlay` UI 해제 두 줄은 DX11에서도 똑같이 실패하는 기존 문제라 그 두 줄을 뺀 임시 사본으로 확인했어요.
+- `HB_CAMERA_GRAPHICS_API=d3d12 node tools/check-camera-views-native.mjs <엔진> <작업>`: 분할·PiP·혼합 투영·레터박스·5카메라·홀수 크기 변경·시간 효과 4프레임·해제를 DX11과 같이 통과. 합성 메모리는 D3D12 585,396바이트(카메라별 시간 상태만), DX11 1,105,748바이트(카메라별 BloomPass 전체).
+- 하지 않은 것: 실제 게임 FPS 비교와 기본값 전환(4-2), 보이는 창 GUI 확인, 설치본 갱신.

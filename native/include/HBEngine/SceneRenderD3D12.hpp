@@ -96,24 +96,31 @@ float3 toSrgb(float3 v){return lerp(12.92*v,1.055*pow(max(v,0),1.0/2.4)-.055,ste
 
 class SceneMeshRenderer {
 public:
-    struct Mesh {Buffer vertices,indices,uv1;UINT count=0,vertexCount=0;std::vector<SceneVertex> streamVertices;};
+    struct Mesh {Buffer vertices,indices,uv1;UINT count=0,vertexCount=0;std::vector<SceneVertex> streamVertices;
+        std::uint64_t bufferBytes()const{return vertices.size+indices.size+uv1.size;}std::uint64_t cpuBytes()const{return std::uint64_t(streamVertices.capacity())*sizeof(SceneVertex);}};
     // Node material: graph PS (single target), surface PS (screen-effect MRT), shadow PS, float parameters in t7.
     struct Program {std::vector<unsigned char> ps,surface,shadow;Buffer parameters;std::vector<float> current;
         mutable std::array<Com<ID3D12PipelineState>,144> pipelines;mutable std::map<UINT,Com<ID3D12PipelineState>> surfacePipelines;mutable std::array<Com<ID3D12PipelineState>,6> shadowPipelines;mutable std::map<UINT,Com<ID3D12PipelineState>> pipelines2D;
-        bool ready()const{return !ps.empty();}};
+        bool ready()const{return !ps.empty();}
+        // Compiled when created on this backend.
+        SceneProgramPreparation::Info preparationInfo()const{return {{3,3},false,true,{}};}};
     struct TextureRegion {std::uint32_t level,x,y,z,width,height,depth;std::vector<std::uint8_t> rgba;};
     struct RayScenePatch {std::uint32_t row,rows;std::vector<std::uint8_t> bytes;};
     struct TextureMipLevel {std::uint32_t width=0,height=0;std::vector<std::uint8_t> rgba;std::uint32_t layers=1;};
-    struct Texture : d3d12::Texture {D3D12_CPU_DESCRIPTOR_HANDLE srv{};UINT mips=1;bool generatedMips=false;Resource stencil;D3D12_CPU_DESCRIPTOR_HANDLE stencilView{};bool renderTarget()const{return rtv.ptr!=0;}};
+    struct Texture : d3d12::Texture {D3D12_CPU_DESCRIPTOR_HANDLE srv{};UINT mips=1;bool generatedMips=false;Resource stencil;D3D12_CPU_DESCRIPTOR_HANDLE stencilView{};bool renderTarget()const{return rtv.ptr!=0;}
+        // GPU bytes from the resource description (every mip, layer and slice).
+        std::uint64_t storageBytes()const{if(!value.p)return 0;const auto d=value->GetDesc();std::uint64_t texel=4;switch(d.Format){case DXGI_FORMAT_R32G32B32A32_FLOAT:case DXGI_FORMAT_R32G32B32A32_TYPELESS:texel=16;break;case DXGI_FORMAT_R16G16B16A16_FLOAT:case DXGI_FORMAT_R16G16B16A16_TYPELESS:case DXGI_FORMAT_R32G32_FLOAT:texel=8;break;default:break;}
+            const bool volume=d.Dimension==D3D12_RESOURCE_DIMENSION_TEXTURE3D;std::uint64_t bytes=0;for(UINT level=0;level<d.MipLevels;level++)bytes+=std::max<std::uint64_t>(1,d.Width>>level)*std::max(1u,d.Height>>level)*(volume?std::max(1u,UINT(d.DepthOrArraySize)>>level):d.DepthOrArraySize)*texel;return bytes+(stencil.value.p?std::uint64_t(width)*height*4:0);}};
     struct Bindings2D {Scene2D settings;std::array<const Texture*,8> maps{};std::uint32_t maskSampling=16;};
     // Particle pools live in d3d12::Particles (D3D12Particles.hpp).
     using Particles=d3d12::Particles;
-    struct Instances {Buffer data,previous;std::vector<Matrix> previousValues;UINT capacity=0,count=0,stride=sizeof(SceneInstance);bool mirrored=false;
+    struct Instances {Buffer data,previous;std::vector<Matrix> previousValues;UINT capacity=0,count=0,stride=sizeof(SceneInstance);bool mirrored=false;std::uint64_t bytes()const{return data.size+previous.size;}
         bool positionsOnly()const{return stride==16;}std::uint32_t capacityCount()const{return capacity;}};
-    struct Deformation {Buffer skin,morph,pose,previousPose;std::uint32_t vertexCount=0,boneCount=0,morphCount=0,poseBytes=0;std::vector<float> current,previous;};
+    struct Deformation {Buffer skin,morph,pose,previousPose;std::uint32_t vertexCount=0,boneCount=0,morphCount=0,poseBytes=0;std::vector<float> current,previous;std::uint64_t bytes()const{return skin.size+morph.size+pose.size+previousPose.size;}};
     // HDR cube capture (R16G16B16A16F), prefiltered mip chain, 9 SH irradiance coefficients.
     struct Probe {d3d12::Texture capture,filtered,depth;Buffer coefficients;std::array<D3D12_CPU_DESCRIPTOR_HANDLE,6> faces{};D3D12_CPU_DESCRIPTOR_HANDLE source{},view{},irradiance{};UINT size=0,mips=0;bool ready=false;std::uint64_t identity=0,revision=0;
-        bool available()const{return ready;}};
+        bool available()const{return ready;}
+        std::uint64_t storageBytes()const{std::uint64_t pixels=0;for(UINT s=size;s;s/=2)pixels+=std::uint64_t(s)*s;return size?std::uint64_t(size)*size*52+pixels*48+9*16:0;}};
     struct ProbeBinding {const Probe* resource=nullptr;ProbeSettings settings;};
 private:
     static constexpr D3D12_RESOURCE_STATES readable=D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE|D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
@@ -156,7 +163,10 @@ private:
     ReflectedLayout screenLayout,hizLayout;std::map<std::string,Com<ID3D12PipelineState>> screenKernels;Com<ID3D12PipelineState> hizKernel;
     Image surfaceNormal,surfaceAlbedo,surfaceMotion,surfaceAmbient,denoiseGuide,denoiseAux,photons,denoisePreviousGuide;std::array<Image,2> history,filtered,denoiseHistory;
     std::size_t historyIndex=0,filterIndex=0;bool historyValid=false,filterValid=false;std::array<float,4> lastFilter{},lastDenoise{},lastLens{},lastGeometryRecords{},lastEye{};std::array<float,16> lastVP{};
-    std::array<std::string,6> stageVariants;std::vector<Image> hizLevels;Image hizAtlas;std::array<UINT,2> hizSize{};std::array<D3D12_CPU_DESCRIPTOR_HANDLE,4> nullTargets{};
+    std::array<std::string,6> stageVariants;
+    // Multi-camera: each camera keeps its own temporal post state (exposure, TAA/denoise history), like SceneRenderer's per-camera BloomPass.
+    struct CameraState {std::array<Image,2> exposure,history,denoiseHistory;Image denoisePreviousGuide;std::size_t exposureIndex=0,historyIndex=0,filterIndex=0;bool exposureValid=false,historyValid=false,filterValid=false;std::array<float,4> lastFilter{},lastDenoise{},lastLens{},lastGeometryRecords{},lastEye{};std::array<float,16> lastVP{};std::array<std::string,6> stageVariants;};
+    std::map<std::string,CameraState> cameraStates;std::string activeCamera;d3d12::Texture cameraComposite;std::vector<std::string> cameraSequence;std::size_t cameraIndex=0;std::array<UINT,4> cameraRect{};std::vector<Image> hizLevels;Image hizAtlas;std::array<UINT,2> hizSize{};std::array<D3D12_CPU_DESCRIPTOR_HANDLE,4> nullTargets{};
     const Texture *geometryScene=nullptr,*pathEnvironment=nullptr,*distanceField=nullptr;
     // Global probe atlas: t50 image, t51 records + spatial index, t52 SH. ponytail: any change rebuilds the whole atlas; port DX11's incremental paths if profiling asks.
     d3d12::Texture atlasImage;Buffer atlasTable,atlasSH;D3D12_CPU_DESCRIPTOR_HANDLE atlasView{},atlasTableView{},atlasSHView{};UINT atlasCount=0;bool atlasInfluence=false;
@@ -713,15 +723,35 @@ public:
         atlasCount=UINT(bindings.size());atlasInfluence=std::any_of(bindings.begin(),bindings.end(),[](const ProbeBinding& b){return b.settings.blendPositive[3]>0;});atlasStamps=std::move(stamps);atlasSettings=std::move(settings);
     }
     void setSkyIntensity(float intensity){if(!std::isfinite(intensity)||intensity<0)throw std::runtime_error("Sky intensity invalid");skySettings.center[3]=intensity;}
-    // createDataTexture subset: 2D, one layer, RGBA8 (unorm/sRGB) or RGBA32F, optional mips for RGBA8.
-    Texture createDataTexture(std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& bytes,std::uint32_t channels=4,bool floating=false,std::uint32_t layers=1,bool srgb=false,bool array=false,const std::string& dimension="2d",bool mipmaps=false){record();
-        if(channels!=4||layers!=1||dimension!="2d"||(floating&&(srgb||mipmaps||array))||(array&&mipmaps))throw std::runtime_error("Direct3D12 data texture layout not ported yet");
+    // SceneRenderer::createDataTexture: 2D/array/cube/volume, RGBA8 (unorm/sRGB), RG/RGBA 16F/32F, explicit RGBA8 mips.
+    // ponytail: generated mips only for 2D RGBA8 (the D3D12 mip kernel's format); others throw until a game needs them.
+    Texture createDataTexture(std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& bytes,std::uint32_t channels=4,bool floating=false,std::uint32_t layers=1,bool srgb=false,bool array=false,const std::string& dimension="2d",bool mipmaps=false,bool half=false,const std::vector<TextureMipLevel>& mipLevels={}){record();
+        if(half&&!floating)throw std::runtime_error("Half texture must be floating");
+        const std::uint32_t componentBytes=half?2u:floating?4u:1u;const bool cube=dimension=="cube",volume=dimension=="volume";const UINT limit=volume?D3D12_REQ_TEXTURE3D_U_V_OR_W_DIMENSION:D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION;
+        if((dimension!="2d"&&!cube&&!volume)||(array&&(cube||volume))||!w||!h||w>limit||h>limit||!layers||layers>D3D12_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION||(cube&&(layers!=6||w!=h))||(!array&&!cube&&!volume&&layers!=1)||(channels!=4&&!(floating&&channels==2))||(srgb&&(floating||channels!=4)))throw std::runtime_error("Material texture dimensions or bytes invalid");
+        const std::uint64_t pitch=std::uint64_t(w)*channels*componentBytes;if(pitch*h*layers!=bytes.size())throw std::runtime_error("Material texture dimensions or bytes invalid");
+        if(half){for(std::size_t i=0;i<bytes.size();i+=2){std::uint16_t v;std::memcpy(&v,bytes.data()+i,2);if((v&0x7c00u)==0x7c00u)throw std::runtime_error("Half texture must be finite");}}
+        else if(floating){for(std::size_t i=0;i<bytes.size();i+=4){float v;std::memcpy(&v,bytes.data()+i,4);if(!std::isfinite(v))throw std::runtime_error("2D float texture must be finite");}}
+        if(!mipLevels.empty()){
+            if(mipmaps||floating||channels!=4)throw std::runtime_error("Explicit mips require RGBA8 without automatic generation");
+            auto lw=w,lh=h,ld=layers;
+            for(const auto& level:mipLevels){if(lw==1&&lh==1&&(!volume||ld==1))throw std::runtime_error("Explicit mip count exceeds the texture dimensions");lw=std::max(1u,lw/2);lh=std::max(1u,lh/2);if(volume)ld=std::max(1u,ld/2);if(level.width!=lw||level.height!=lh||level.layers!=ld||level.rgba.size()!=std::uint64_t(lw)*lh*ld*4)throw std::runtime_error("Explicit mip dimensions or bytes invalid");}
+        }
+        if(mipmaps){if(floating||array||cube||volume)throw std::runtime_error("Direct3D12 generated mips need a 2D RGBA8 data texture");return createTexture(w,h,bytes,srgb,true);}
+        const DXGI_FORMAT format=half?(channels==2?DXGI_FORMAT_R16G16_FLOAT:DXGI_FORMAT_R16G16B16A16_FLOAT):floating?(channels==2?DXGI_FORMAT_R32G32_FLOAT:DXGI_FORMAT_R32G32B32A32_FLOAT):(srgb?DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:DXGI_FORMAT_R8G8B8A8_UNORM);
+        const UINT mips=UINT(mipLevels.size()+1);D3D12_RESOURCE_DESC d{};d.Dimension=volume?D3D12_RESOURCE_DIMENSION_TEXTURE3D:D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=w;d.Height=h;d.DepthOrArraySize=UINT16(layers);d.MipLevels=UINT16(mips);d.Format=format;d.SampleDesc.Count=1;
+        // Subresource order is mip + layer*mips; each explicit level holds every layer (or slice) back to back.
+        std::vector<const void*> data;const auto level=[&](UINT m)->const std::uint8_t*{return m?mipLevels[m-1].rgba.data():bytes.data();};
+        if(volume){for(UINT m=0;m<mips;m++)data.push_back(level(m));}
+        else{for(UINT layer=0;layer<layers;layer++)for(UINT m=0;m<mips;m++){const std::uint64_t lw=std::max(1u,w>>m),lh=std::max(1u,h>>m);data.push_back(level(m)+layer*lw*lh*channels*componentBytes);}}
+        ++uploads_;Texture t;static_cast<d3d12::Texture&>(t)=gpu.texture(d,data);t.mips=mips;
         // A one-layer cookie still binds to Texture2DArray in HLSL.
-        if(array){auto t=createTexture(w,h,bytes,srgb,false);D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.Format=t.format;v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2DARRAY;v.Texture2DArray.MipLevels=1;v.Texture2DArray.ArraySize=1;gpu.device->CreateShaderResourceView(t.get(),&v,t.srv);return t;}
-        if(!floating)return createTexture(w,h,bytes,srgb,mipmaps);
-        if(!w||!h||bytes.size()!=std::size_t(w)*h*16)throw std::runtime_error("Material texture dimensions or bytes invalid");
-        for(std::size_t i=0;i<bytes.size();i+=4){float v;std::memcpy(&v,bytes.data()+i,4);if(!std::isfinite(v))throw std::runtime_error("2D float texture must be finite");}
-        ++uploads_;Texture t;static_cast<d3d12::Texture&>(t)=gpu.texture(w,h,DXGI_FORMAT_R32G32B32A32_FLOAT,bytes.data(),w*16);t.srv=views.take();gpu.device->CreateShaderResourceView(t.get(),nullptr,t.srv);return t;
+        D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.Format=format;
+        if(volume){v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE3D;v.Texture3D.MipLevels=mips;}
+        else if(cube){v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURECUBE;v.TextureCube.MipLevels=mips;}
+        else if(array){v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2DARRAY;v.Texture2DArray.MipLevels=mips;v.Texture2DArray.ArraySize=layers;}
+        else{v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=mips;}
+        t.srv=views.take();gpu.device->CreateShaderResourceView(t.get(),&v,t.srv);return t;
     }
     void setProgramParameters(Program& program,const std::vector<float>& values){record();
         if(!SceneRenderer::finite(values)){throw std::runtime_error("Material parameters invalid");}
@@ -948,9 +978,41 @@ public:
     }
     std::vector<std::uint8_t> readPixels(){finish();++captures_;return gpu.read(color);}
     void finish(){record();endProbe();end2D();endShadow();completeHDR();}
+    void swapCamera(CameraState& c){
+        using std::swap;swap(c.exposure,exposureImages);swap(c.history,history);swap(c.denoiseHistory,denoiseHistory);swap(c.denoisePreviousGuide,denoisePreviousGuide);swap(c.exposureIndex,exposureIndex);swap(c.historyIndex,historyIndex);swap(c.filterIndex,filterIndex);
+        swap(c.exposureValid,exposureValid);swap(c.historyValid,historyValid);swap(c.filterValid,filterValid);swap(c.lastFilter,lastFilter);swap(c.lastDenoise,lastDenoise);swap(c.lastLens,lastLens);swap(c.lastGeometryRecords,lastGeometryRecords);swap(c.lastEye,lastEye);swap(c.lastVP,lastVP);swap(c.stageVariants,stageVariants);
+    }
+    // The member state belongs to activeCamera ("" = no camera views); park it and load id's.
+    void useCamera(const std::string& id){if(id==activeCamera)return;swapCamera(cameraStates[activeCamera]);activeCamera=id;swapCamera(cameraStates[id]);cameraStates.erase(id);}
+    void releaseCamera(CameraState& c){for(auto* a:{&c.exposure,&c.history,&c.denoiseHistory})for(auto& i:*a)release(i);release(c.denoisePreviousGuide);}
+    static std::uint64_t cameraBytes(const CameraState& c){std::uint64_t n=0;for(const auto* a:{&c.exposure,&c.history,&c.denoiseHistory})for(const auto& i:*a)n+=std::uint64_t(i.texture.width)*i.texture.height*8;return n+std::uint64_t(c.denoisePreviousGuide.texture.width)*c.denoisePreviousGuide.texture.height*8;}
+public:
+    void releaseCameraViews(){useCamera("");for(auto& entry:cameraStates)releaseCamera(entry.second);cameraStates.clear();if(cameraComposite.value.p)gpu.release(cameraComposite);cameraComposite={};cameraSequence.clear();cameraIndex=0;}
+    std::uint64_t cameraViewBytes()const{std::uint64_t bytes=std::uint64_t(cameraComposite.width)*cameraComposite.height*4;for(const auto& entry:cameraStates)if(!entry.first.empty())bytes+=cameraBytes(entry.second);
+        if(!activeCamera.empty()){const auto image=[](const Image& i){return std::uint64_t(i.texture.width)*i.texture.height*8;};for(const auto* a:{&exposureImages,&history,&denoiseHistory})for(const auto& i:*a)bytes+=image(i);bytes+=image(denoisePreviousGuide);}return bytes;}
+    // Same contract as SceneRenderer::selectCameraView: views render in order, each copies its rect into a composite shown after the last.
+    void selectCameraView(const std::vector<std::string>& ids,const std::string& id,std::size_t index,const std::array<float,4>& rect){
+        if(ids.empty()){releaseCameraViews();return;}
+        if(index>=ids.size()||ids[index]!=id||std::set<std::string>(ids.begin(),ids.end()).size()!=ids.size()||!SceneRenderer::finite(rect)||rect[0]<0||rect[1]<0||rect[2]<1||rect[3]<1||rect[0]+rect[2]>surfaceWidth+.01f||rect[1]+rect[3]>surfaceHeight+.01f)throw std::runtime_error("Camera view bounds or sequence invalid");
+        if(index==0){cameraSequence=ids;cameraIndex=0;useCamera("");for(auto it=cameraStates.begin();it!=cameraStates.end();)if(!it->first.empty()&&std::find(ids.begin(),ids.end(),it->first)==ids.end()){releaseCamera(it->second);it=cameraStates.erase(it);}else ++it;
+            record();if(cameraComposite.width!=surfaceWidth||cameraComposite.height!=surfaceHeight){if(cameraComposite.value.p)gpu.release(cameraComposite);cameraComposite=gpu.renderTarget(surfaceWidth,surfaceHeight,DXGI_FORMAT_R8G8B8A8_UNORM);}
+            gpu.transition(cameraComposite,D3D12_RESOURCE_STATE_RENDER_TARGET);const float black[4]={0,0,0,1};gpu.list->ClearRenderTargetView(cameraComposite.rtv,black,0,nullptr);
+        }
+        if(cameraSequence!=ids||cameraIndex!=index||cameraComposite.width!=surfaceWidth||cameraComposite.height!=surfaceHeight)throw std::runtime_error("Camera view order invalid");
+        useCamera(id);cameraRect={UINT(std::lround(rect[0])),UINT(std::lround(rect[1])),UINT(std::lround(rect[0]+rect[2])),UINT(std::lround(rect[1]+rect[3]))};
+    }
     // Copies the final image to the window back buffer, submits the frame and presents. Without a window it only submits.
+    // With camera views, every view but the last only submits; the last shows the composite.
     bool present(std::uint32_t interval=0){
-        finish();if(swapchain){auto& back=swapchain->acquire();gpu.transition(color,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(back,D3D12_RESOURCE_STATE_COPY_DEST);gpu.list->CopyResource(back.get(),color.get());gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);swapchain->finish(back);}
+        finish();if(!cameraSequence.empty()){
+            gpu.transition(color,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(cameraComposite,D3D12_RESOURCE_STATE_COPY_DEST);
+            D3D12_TEXTURE_COPY_LOCATION to{},from{};to.pResource=cameraComposite.get();from.pResource=color.get();to.Type=from.Type=D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;const D3D12_BOX box{cameraRect[0],cameraRect[1],0,cameraRect[2],cameraRect[3],1};
+            gpu.list->CopyTextureRegion(&to,cameraRect[0],cameraRect[1],0,&from,&box);++cameraIndex;
+            if(cameraIndex<cameraSequence.size()){gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);closeTiming();gpu.end();begun=false;return false;}
+            gpu.transition(cameraComposite,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(color,D3D12_RESOURCE_STATE_COPY_DEST);gpu.list->CopyResource(color.get(),cameraComposite.get());gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);
+            cameraSequence.clear();cameraIndex=0;
+        }
+        if(swapchain){auto& back=swapchain->acquire();gpu.transition(color,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(back,D3D12_RESOURCE_STATE_COPY_DEST);gpu.list->CopyResource(back.get(),color.get());gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);swapchain->finish(back);}
         closeTiming();gpu.end();begun=false;if(swapchain)swapchain->present(interval);++presents_;return true;
     }
     void releasePostProcess(){releaseScreen();releaseHDR();releaseTransmission();postLookup=nullptr;geometryScene=pathEnvironment=distanceField=nullptr;}
@@ -959,6 +1021,7 @@ public:
     void resize(std::uint32_t w,std::uint32_t h){
         if(!w||!h||w>D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION||h>D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION){throw std::runtime_error("GPU render dimensions invalid");}
         if(w==surfaceWidth&&h==surfaceHeight)return;
+        releaseCameraViews();
         if(gpu.isRecording()){closeTiming();gpu.end();}gpu.waitIdle();begun=false;releasePostProcess();gpu.release(color);gpu.release(depth);surfaceWidth=w;surfaceHeight=h;color=gpu.renderTarget(surfaceWidth,surfaceHeight,DXGI_FORMAT_R8G8B8A8_UNORM);depth=gpu.depthTarget(surfaceWidth,surfaceHeight);if(swapchain)swapchain->resize(surfaceWidth,surfaceHeight);
     }
     std::uint32_t width()const{return surfaceWidth;}std::uint32_t height()const{return surfaceHeight;}
@@ -983,7 +1046,7 @@ public:
     }
     std::uint64_t lightTileBytes()const{return tileBits.size;}std::uint64_t lightTileDispatches()const{return lightTileDispatches_;}
     SceneLightTiles::PreparationInfo lightTilePreparationInfo()const{return {false,tilesActive,false,tilePipeline.p!=nullptr,tilePipeline.p?3u:0u,{}};}
-    static std::uint64_t probeBytes(const Probe& p){std::uint64_t pixels=0;for(UINT s=p.size;s;s/=2)pixels+=std::uint64_t(s)*s;return p.size?std::uint64_t(p.size)*p.size*52+pixels*48+9*16:0;}
+    static std::uint64_t probeBytes(const Probe& p){return p.storageBytes();}
     std::uint64_t skyEnvironmentBytes()const{return skyProbe.ready?probeBytes(skyProbe):0;}
     std::uint64_t probeCaptures()const{return probeCaptures_;}std::uint64_t probeDispatches()const{return probeDispatches_;}
     std::uint64_t probeAtlasBytes()const{return std::uint64_t(atlasImage.width)*atlasImage.height*8+atlasTable.size+atlasSH.size;}
@@ -1005,6 +1068,7 @@ public:
     bool pollRasterPreparation(){return true;}
     SceneRasterPreparation::Info rasterPreparationInfo()const{return SceneRasterPreparation::Info{{3,3,3},false,true,{}};}
     void pollShaderPreparation(){}
+    void setAsyncShaderPreparation(bool){}
     ScreenEffectsPass::PreparationInfo shaderPreparationInfo()const{ScreenEffectsPass::PreparationInfo info;info.enabled=screen.has_value();info.ready=info.enabled;if(info.ready)info.stages={3,3,3,3,3,3};return info;}
     std::array<std::uint64_t,9> shaderCompilationInfo()const{auto& c=ScreenEffectsPass::compiler();std::lock_guard<std::mutex> lock(c.mutex);return {c.compilations,c.cache.hits(),c.cache.misses(),c.cache.evictions(),c.cache.bytes(),c.cache.budget(),c.lastMS,c.totalMS,std::uint64_t(screenKernels.size())};}
     static auto shaderDiskCacheInfo(){return detail::ShaderBytecodeCompiler::info();}
