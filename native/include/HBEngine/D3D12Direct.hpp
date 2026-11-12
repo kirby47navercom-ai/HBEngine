@@ -41,7 +41,7 @@ public:
 };
 
 class Device {
-    struct Frame {Com<ID3D12CommandAllocator> allocator;std::uint64_t fence=0;std::vector<Com<ID3D12Resource>> retired;};
+    struct Frame {Com<ID3D12CommandAllocator> allocator;std::uint64_t fence=0;std::vector<Com<ID3D12Resource>> retired;std::vector<Com<IUnknown>> objects;};
     HANDLE event=nullptr;std::array<Frame,FrameCount> frames;UINT frame=0;std::uint64_t serial=0;bool recording=false;
     // Upload ring: one persistently mapped slice per frame in flight. Requests that do
     // not fit get their own buffer, released once that frame's fence passes.
@@ -102,10 +102,11 @@ public:
     Device(const Device&)=delete;Device& operator=(const Device&)=delete;
 
     UINT frameIndex()const{return frame;}
+    bool isRecording()const{return recording;}
     std::uint64_t submitted()const{return serial;}
     void begin(){
         if(recording)throw std::runtime_error("Direct3D12 frame already recording");
-        auto& f=frames[frame];wait(f.fence);f.retired.clear();used=0;shaderUsed=0;
+        auto& f=frames[frame];wait(f.fence);f.retired.clear();f.objects.clear();used=0;shaderUsed=0;
         check(f.allocator->Reset(),"Direct3D12 command allocator reset");check(list->Reset(f.allocator.p,nullptr),"Direct3D12 command list reset");
         ID3D12DescriptorHeap* heaps[]={shaderHeap.p,samplers.p};list->SetDescriptorHeaps(2,heaps);recording=true;
     }
@@ -136,6 +137,10 @@ public:
         D3D12_RESOURCE_BARRIER b{};b.Type=D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;b.Transition.pResource=r.get();b.Transition.Subresource=D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;b.Transition.StateBefore=r.state;b.Transition.StateAfter=next;
         list->ResourceBarrier(1,&b);r.state=next;
     }
+    // Holds an extra reference until the recording frame's fence passes, so callers may drop objects whose
+    // resources are still referenced by submitted work (D3D11 deferred-destruction semantics).
+    void keep(ID3D12Resource* r){if(!r||!recording)return;r->AddRef();Com<ID3D12Resource> held;held.p=r;frames[frame].retired.push_back(std::move(held));}
+    void keep(ID3D12PipelineState* o){if(!o||!recording)return;o->AddRef();Com<IUnknown> held;held.p=o;frames[frame].objects.push_back(std::move(held));}
     // Keeps a resource alive until the GPU finishes the frame currently recording.
     void retire(Com<ID3D12Resource>&& r){if(r.p)frames[recording?frame:(frame+FrameCount-1)%FrameCount].retired.push_back(std::move(r));}
 
@@ -152,6 +157,14 @@ public:
     }
     Buffer buffer(std::uint64_t size,D3D12_RESOURCE_STATES state,D3D12_RESOURCE_FLAGS flags){
         auto d=bufferDesc(size);d.Flags=flags;Buffer b;b.size=size;b.value=committed(D3D12_HEAP_TYPE_DEFAULT,d,state,nullptr,"Direct3D12 buffer");b.state=state;return b;
+    }
+    // Writes one w x h box of a texture subresource (tightly packed rows), ordered on the queue like UpdateSubresource.
+    void updateTexture(Texture& t,UINT subresource,UINT x,UINT y,UINT w,UINT h,const void* data,UINT rowBytes){
+        requireRecording();if(!w||!h||!data)throw std::runtime_error("Direct3D12 texture update box empty");const auto desc=t.get()->GetDesc();
+        const UINT pitch=(rowBytes+D3D12_TEXTURE_DATA_PITCH_ALIGNMENT-1)&~(D3D12_TEXTURE_DATA_PITCH_ALIGNMENT-1);auto u=upload(std::uint64_t(pitch)*h,D3D12_TEXTURE_DATA_PLACEMENT_ALIGNMENT);
+        for(UINT row=0;row<h;row++)std::memcpy(u.cpu+std::size_t(row)*pitch,static_cast<const unsigned char*>(data)+std::size_t(row)*rowBytes,rowBytes);
+        D3D12_TEXTURE_COPY_LOCATION dst{},src{};dst.pResource=t.get();dst.Type=D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;dst.SubresourceIndex=subresource;src.pResource=u.resource;src.Type=D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;src.PlacedFootprint.Offset=u.offset;src.PlacedFootprint.Footprint={desc.Format,w,h,1,pitch};
+        const auto restore=t.state;transition(t,D3D12_RESOURCE_STATE_COPY_DEST);list->CopyTextureRegion(&dst,x,y,0,&src,nullptr);transition(t,restore);
     }
     Texture renderTarget(UINT width,UINT height,DXGI_FORMAT format,std::array<float,4> clear={0,0,0,1}){
         if(!width||!height)throw std::runtime_error("Direct3D12 render target size");

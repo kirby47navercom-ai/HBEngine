@@ -54,6 +54,10 @@ static nlohmann::json compare(const std::vector<std::uint8_t>& a,const std::vect
     return {{"maxDiff",maxDiff},{"pixelsOver2",over},{"covered",covered}};
 }
 
+struct Window {HWND value=nullptr;
+    Window(){WNDCLASSW wc{};wc.lpfnWndProc=DefWindowProcW;wc.hInstance=GetModuleHandleW(nullptr);wc.lpszClassName=L"HBEngineD3D12SceneProof";if(!RegisterClassW(&wc)&&GetLastError()!=ERROR_CLASS_ALREADY_EXISTS)throw std::runtime_error("window class");
+        value=CreateWindowExW(0,wc.lpszClassName,L"Owned hidden D3D12 scene proof",WS_OVERLAPPEDWINDOW,0,0,160,96,nullptr,nullptr,wc.hInstance,nullptr);if(!value)throw std::runtime_error("window");}
+    ~Window(){if(value)DestroyWindow(value);}};
 static std::size_t validationErrors(d3d12::Device& gpu){
     detail::Com<ID3D12InfoQueue> info;if(FAILED(gpu.device->QueryInterface(__uuidof(ID3D12InfoQueue),reinterpret_cast<void**>(&info.p))))return 0;
     std::size_t errors=0;for(UINT64 i=0;i<info->GetNumStoredMessages();i++){SIZE_T size=0;info->GetMessage(i,nullptr,&size);std::vector<char> raw(size);auto* m=reinterpret_cast<D3D12_MESSAGE*>(raw.data());info->GetMessage(i,m,&size);
@@ -94,8 +98,8 @@ struct Extra {
 };
 
 // One scene script for both backends. Returns full, cropped, shadowed and many-light images.
-template<class R,class MakeTexture,class MakeParticles,class StepParticles> static std::array<std::vector<std::uint8_t>,39> render(R& r,MakeTexture texture,MakeParticles makeParticles,StepParticles stepParticles){
-    const Scene scene;const Extra extra(scene);const auto d=draws();std::array<std::vector<std::uint8_t>,39> images;
+template<class R,class MakeTexture,class MakeParticles,class StepParticles> static std::array<std::vector<std::uint8_t>,41> render(R& r,MakeTexture texture,MakeParticles makeParticles,StepParticles stepParticles){
+    const Scene scene;const Extra extra(scene);const auto d=draws();std::array<std::vector<std::uint8_t>,41> images;
     auto cube=r.createMesh(scene.cube,scene.cubeIndex);auto quad=r.createMesh(scene.quad,scene.quadIndex,scene.quadUV1);auto plain=r.createMesh(scene.quad,scene.quadIndex);
     auto checker=texture(r,8,8,scene.checker,true);auto rough=texture(r,8,8,scene.rough,false);
     auto instances=r.createInstances(4);r.setInstances(instances,extra.instances);auto shots=r.createInstances(4,true);r.setShotPositions(shots,extra.shots);
@@ -225,11 +229,19 @@ template<class R,class MakeTexture,class MakeParticles,class StepParticles> stat
     SceneFrame glow=frame(false);glow.bloom=SceneBloom{.8f,.9f,.5f,.5f};ParticleStyle embers=spray;embers.color={6,3,1,1};r.begin(glow);r.draw(plain,extra.ground,extra.ground,matte);r.drawParticles(*particles,embers);images[37]=r.readPixels();
     {SceneFrame p;p.viewport={0,0,96,96};p.clear={0,0,0,0};r.begin(f);r.begin2D(target,p,true);b={};b.settings.pass={1,0,0,.5f};SceneMaterial mm=m;mm.color={1,1,1,1};r.draw(left,identity,identity,mm,{},{},0,0,nullptr,{},{},nullptr,nullptr,&b);r.end2D();}
     b={};b.maps[0]=&target;b.settings.pass={0,1,0,0};r.begin(frame(false));r.draw(plain,extra.ground,extra.ground,matte);r.drawParticles(*particles,spray,nullptr,0,&b);images[38]=r.readPixels();}
+    // Phase 4 prep: texture region patches on an explicit mip chain, and ray-scene row updates driving geometry GI.
+    {std::vector<typename R::TextureMipLevel> levels{{4,4,std::vector<std::uint8_t>(64,200),1},{2,2,std::vector<std::uint8_t>(16,90),1},{1,1,{255,0,0,255},1}};
+        auto chained=r.createTexture(8,8,scene.checker,true,levels);std::vector<std::uint8_t> patch(4*3*4);for(std::size_t i=0;i<patch.size();i+=4){patch[i]=255;patch[i+1]=40;patch[i+2]=200;patch[i+3]=255;}
+        r.updateTextureRegions(chained,{{0,2,1,0,4,3,1,patch},{1,1,1,0,1,1,1,{0,255,0,255}}});
+        r.begin(frame(false));r.draw(plain,extra.ground,extra.ground,matte,{&chained,nullptr,nullptr,nullptr,nullptr,nullptr},{1,0,0,0,0,0});r.draw(cube,d.cube,d.cube,d.lit,{&chained,nullptr,nullptr,nullptr,nullptr,nullptr},{0,0,0,0,0,0});images[39]=r.readPixels();
+        auto changed=world;for(int t=0;t<2;t++){changed[12+t*24+20]=2;changed[12+t*24+21]=.2f;changed[12+t*24+22]=1.2f;}std::vector<std::uint8_t> row(changed.size()*4);std::memcpy(row.data(),changed.data(),row.size());
+        r.updateRayScenes(geometry,UINT(world.size()/4),1,{{0,1,row}});r.setGeometryScene(&geometry);
+        images[40]=screenScene(screenFrame([](SceneScreenEffects& e){e.geometry={1,20,2,4};e.geometryInfo={15,1,1,3};e.geometryLimits={256,.01f,15,0};}));r.setGeometryScene(nullptr);}
     return images;
 }
 
 static nlohmann::json proof(DeviceDriver driver){
-    nlohmann::json out;std::array<std::vector<std::uint8_t>,39> reference;std::vector<std::uint8_t> unshadowed;
+    nlohmann::json out;std::array<std::vector<std::uint8_t>,41> reference;std::vector<std::uint8_t> unshadowed;
     {Device gpu11(driver);SceneRenderer r(gpu11,W,H);out["software11"]=gpu11.software();
         reference=render(r,[](SceneRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);},[&](const std::vector<float>& v){return std::make_unique<hb::gpu::Particles>(gpu11,v);},[](auto& p,float dt,std::array<float,3> force,float gravity,float drag){p->step(dt,force,gravity,drag);});
         // Proof the shadow pass matters: same frame with receiveShadow off must differ.
@@ -239,8 +251,9 @@ static nlohmann::json proof(DeviceDriver driver){
     d3d12::Device gpu(driver,true);out["software"]=gpu.software;out["debugLayer"]=gpu.debug;
     {d3d12::SceneMeshRenderer r(gpu,W,H);gpu.begin();
         const auto images=render(r,[](d3d12::SceneMeshRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);},[&](const std::vector<float>& v){return std::make_unique<d3d12::SceneMeshRenderer::Particles>(r.createParticles(v));},[&](auto& p,float dt,std::array<float,3> force,float gravity,float drag){r.stepParticles(*p,dt,force,gravity,drag);});
-        const char* names[]={"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps","screen","ssr","ssgi","ao","geometryGI","taa","motionBlur","program","surfaceProgram","programShadow","streamClear","mask2D","maskOutside2D","lit2D","lightMask2D","blend2D","cookie2D","stencil2D","nested2D","particles","sortedParticles","hdrParticles","maskedParticles"};const std::array<float,4> clear=frame(false).clear;
-        for(std::size_t i=0;i<39;i++)out[names[i]]=compare(images[i],reference[i],clear);
+        const char* names[]={"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps","screen","ssr","ssgi","ao","geometryGI","taa","motionBlur","program","surfaceProgram","programShadow","streamClear","mask2D","maskOutside2D","lit2D","lightMask2D","blend2D","cookie2D","stencil2D","nested2D","particles","sortedParticles","hdrParticles","maskedParticles","textureRegions","rayRows"};const std::array<float,4> clear=frame(false).clear;
+        for(std::size_t i=0;i<41;i++)out[names[i]]=compare(images[i],reference[i],clear);
+        out["rayRowsChangedPixels"]=compare(reference[40],reference[20],clear)["pixelsOver2"];
         out["particleChangedPixels"]=compare(reference[35],reference[11],clear)["pixelsOver2"];
         for(std::size_t i:{17,18,19,20,21,22})out[std::string(names[i])+"ChangedPixels"]=compare(reference[i],reference[16],clear)["pixelsOver2"];
         out["bloomChangedPixels"]=compare(reference[12],reference[11],clear)["pixelsOver2"];out["postChangedPixels"]=compare(reference[13],reference[11],clear)["pixelsOver2"];out["transmissionChangedPixels"]=compare(reference[14],reference[11],clear)["pixelsOver2"];
@@ -248,9 +261,14 @@ static nlohmann::json proof(DeviceDriver driver){
         out["probeChangedPixels"]=compare(reference[4],reference[6],clear)["pixelsOver2"];out["skyChangedPixels"]=compare(reference[5],reference[7],clear)["pixelsOver2"];
         out["shadowChangedPixels"]=compare(reference[2],unshadowed,clear)["pixelsOver2"];
         gpu.end();gpu.waitIdle();}
+    // Self-managed frames on a hidden window: begin/draw/present six times with a resize, GPU timestamps resolved.
+    {Window window;d3d12::SceneMeshRenderer shown(gpu,64,48,window.value);const Scene scene;const auto d=draws();auto cube=shown.createMesh(scene.cube,scene.cubeIndex);shown.setLights(scene.lights);
+        for(int i=0;i<6;i++){if(i==3)shown.resize(80,60);shown.begin(frame(false));shown.draw(cube,d.cube,d.cube,d.lit);REQUIRE(shown.present(0));}
+        out["presents"]=shown.presents();out["drawsPresented"]=shown.draws();out["gpuTimeMs"]=shown.gpuTimeMs().value_or(-1.0);out["presentedSize"]={shown.renderWidth(),shown.renderHeight()};
+        REQUIRE(shown.presents()==6&&shown.draws()==6&&shown.gpuTimeMs().has_value()&&shown.renderWidth()==80);}
     out["validationErrors"]=validationErrors(gpu);
-    for(const char* pass:{"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps","screen","ssr","ssgi","ao","geometryGI","taa","motionBlur","program","surfaceProgram","programShadow","streamClear","mask2D","maskOutside2D","lit2D","lightMask2D","blend2D","cookie2D","stencil2D","nested2D","particles","sortedParticles","hdrParticles","maskedParticles"}){if(out[pass]["covered"].get<std::size_t>()<=(std::string(pass)=="mipmaps"?150u:400u)||out[pass]["maxDiff"].get<int>()>2)throw std::runtime_error(std::string("scene mismatch ")+pass+" "+out[pass].dump());}
-    REQUIRE(out["shadowChangedPixels"].get<std::size_t>()>50);REQUIRE(out["probeChangedPixels"].get<std::size_t>()>50);REQUIRE(out["skyChangedPixels"].get<std::size_t>()>50);REQUIRE(out["atlasChangedPixels"].get<std::size_t>()>50);REQUIRE(out["lightmapChangedPixels"].get<std::size_t>()>50);REQUIRE(out["bloomChangedPixels"].get<std::size_t>()>50);REQUIRE(out["postChangedPixels"].get<std::size_t>()>50);REQUIRE(out["transmissionChangedPixels"].get<std::size_t>()>50);REQUIRE(out["particleChangedPixels"].get<std::size_t>()>50);// TAA on a static view converges to the plain image, so it is parity-checked only.
+    for(const char* pass:{"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps","screen","ssr","ssgi","ao","geometryGI","taa","motionBlur","program","surfaceProgram","programShadow","streamClear","mask2D","maskOutside2D","lit2D","lightMask2D","blend2D","cookie2D","stencil2D","nested2D","particles","sortedParticles","hdrParticles","maskedParticles","textureRegions","rayRows"}){if(out[pass]["covered"].get<std::size_t>()<=(std::string(pass)=="mipmaps"?150u:400u)||out[pass]["maxDiff"].get<int>()>2)throw std::runtime_error(std::string("scene mismatch ")+pass+" "+out[pass].dump());}
+    REQUIRE(out["shadowChangedPixels"].get<std::size_t>()>50);REQUIRE(out["probeChangedPixels"].get<std::size_t>()>50);REQUIRE(out["skyChangedPixels"].get<std::size_t>()>50);REQUIRE(out["atlasChangedPixels"].get<std::size_t>()>50);REQUIRE(out["lightmapChangedPixels"].get<std::size_t>()>50);REQUIRE(out["bloomChangedPixels"].get<std::size_t>()>50);REQUIRE(out["postChangedPixels"].get<std::size_t>()>50);REQUIRE(out["transmissionChangedPixels"].get<std::size_t>()>50);REQUIRE(out["particleChangedPixels"].get<std::size_t>()>50);REQUIRE(out["rayRowsChangedPixels"].get<std::size_t>()>50);// TAA on a static view converges to the plain image, so it is parity-checked only.
     for(const char* effect:{"ssr","ssgi","ao","geometryGI","motionBlur"}){if(out[std::string(effect)+"ChangedPixels"].get<std::size_t>()<=50){throw std::runtime_error(std::string("screen effect had no effect: ")+effect);}}
     REQUIRE(out["validationErrors"]==0);return out;
 }

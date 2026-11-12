@@ -15,7 +15,10 @@
    - **3-4a 머테리얼 노드 프로그램·동적 메시·뷰포트 클리어 (완료)**
    - **3-4b 2D 패스·렌더 타겟 텍스처 (완료)**
    - **3-4c 파티클 그리기·기본 시뮬레이션 (완료, emit/interact는 남음)**
-4. 성능 비교 후 기본값 전환
+4. 엔진 연결·성능 비교 후 기본값 전환
+   - **4-0 전환 준비 (완료)**: 렌더러 쪽 빈 API 채우기, 지연 해제 안전성
+   - 4-1 `SceneRenderBridge` 연결(다른 세션의 멀티 카메라 작업 커밋 후)
+   - 4-2 실제 게임 FPS·GPU 시간 비교, 기본값 전환
 
 ## 1단계 코어 내용
 
@@ -133,3 +136,23 @@ DX11 회귀: `check-native-scene-render --post-only`를 수정 전·후 헤더�
 - 남은 것: `emit`(빈 슬롯 스캔·생성), `interact`(충돌·이벤트)와 읽기 프레임은 아직 DX11 전용이에요. 4단계 전환 전에 D3D12로 옮겨야 해요.
 
 검증: `check-native-d3d12-scene` 39장면(가산, 거리 정렬 알파+스프라이트 시트, HDR 블룸, 2D 마스크 파티클 추가; 일부 입자는 이미 만료된 상태로 압축 검증) 실제 GPU·WARP 모두 DX11 대비 픽셀 최대 차이 0, 디버그 레이어 오류 0. 파티클이 기본 장면을 947픽셀 바꿔 실제로 그려짐을 확인했어요.
+
+## 4-0단계 전환 준비
+
+엔진 연결 코드(`native/desktop/SceneRenderBridge.hpp`, `HBNativePlayer.cpp`)와 `SceneRender.hpp`는 다른 세션의 미커밋 작업(멀티 카메라 정리)이 진행 중이라 이번에 건드리지 않았어요. 렌더러 쪽만 준비했어요.
+
+- 프레임 자기 관리: 생성·설정·그리기 함수가 필요하면 프레임을 열고(`record`), `present`가 최종 이미지를 창 백버퍼로 복사·제출·표시해요. 테스트처럼 `Device::begin/end`를 직접 써도 돼요.
+- 창 출력: 생성자에 HWND(선택), 플립 스왑체인, `resize`(대상·스왑체인·후처리 재생성), `finish`.
+- GPU 시간: 프레임마다 타임스탬프 쌍, 같은 프레임 슬롯을 다시 쓸 때 읽어 `gpuTimeMs()`.
+- 텍스처: 명시적 밉 체인 `createTexture(..., mipLevels)`, `updateTextureRegions`(2D RGBA8, 자동 밉 텍스처는 DX11처럼 거부), `updateRayScenes/updateRayScene`(RGBA32F 행 묶음).
+- 지연 해제: D3D11은 사용 중인 리소스를 놓아도 안전하지만 D3D12는 아니에요. 그리기·파티클·후처리가 참조한 호출자 소유 리소스(메시 버퍼, 텍스처, 인스턴스·변형 버퍼, 프로브, 데이터 텍스처, 프로그램 파라미터·PSO)는 그 프레임 펜스까지 참조를 잡아요(`Device::keep`). WARP에서 메시를 렌더러보다 먼저 놓았을 때의 종료 문제를 이 방식으로 고쳤어요.
+- `releasePostProcess/releaseProbes/releaseParticles`, `draws()/presents()`.
+
+### 연결 전에 남은 차이 (브리지 기준 115개 중)
+
+- 이름 차이: `width()/height()` → 지금은 `renderWidth()/renderHeight()`(멤버 이름 충돌). 연결 때 정리해요.
+- 장치 차이: 브리지는 `hb::gpu::Device`(DX11 컴퓨트 겸용)와 `hb::gpu::Particles`를 써요. D3D12 렌더러는 `d3d12::Device`와 자체 파티클 버퍼를 써서, 파티클 방출·상호작용·읽기와 다른 DX11 컴퓨트 사용처를 먼저 옮기거나 두 장치를 함께 둘 방식을 정해야 해요.
+- 멀티 카메라: HEAD의 `selectCameraView/cameraViewBytes`는 다른 세션이 바꾸는 중이라 그 결과에 맞춰 옮겨요.
+- 통계·진단 함수 약 60개(`bloom*`, `probeAtlas*`, `shadow*`, `particle*`, `*PreparationInfo`, `constantBufferStats`, `shaderDiskCacheInfo` 등)는 아직 없어요. 비동기 셰이더 준비(`pollShaderPreparation` 등)는 D3D12에서 동기 컴파일이라 즉시 준비됨으로 연결해요.
+
+검증: `check-native-d3d12-scene` 41장면(명시적 밉+영역 패치, 레이 씬 행 갱신→지오메트리 GI 추가) 실제 GPU·WARP 모두 DX11 대비 픽셀 최대 차이 0, 디버그 레이어 오류 0. 숨긴 창에서 렌더러 자기 관리 프레임 6회 표시(3번째 뒤 80×60로 크기 변경), GPU 시간 측정값 확인.
