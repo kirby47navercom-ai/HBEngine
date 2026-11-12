@@ -33,11 +33,14 @@ inline Matrix perspective(float fovDegrees,float aspect,float nearPlane=.1f,floa
     const float scale=1/std::tan(fovDegrees*3.14159265358979323846f/360);return {scale/aspect,0,0,0,0,scale,0,0,0,0,farPlane/(farPlane-nearPlane),1,0,0,-nearPlane*farPlane/(farPlane-nearPlane),0};
 }
 
+namespace d3d12{class SceneMeshRenderer;}
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 // The same structured buffer is a compute UAV and then a vertex-stage SRV.
 // No positions are copied to the CPU or uploaded again for rendering.
 class ParticleRenderer {
     friend class SceneRenderer;
+    // The D3D12 port draws with this same shader and constant layout.
+    friend class d3d12::SceneMeshRenderer;
     Device& gpu;
     std::unique_ptr<ParticlePreparation> preparation;
     detail::Com<ID3D11Texture2D> color,depth,staging;

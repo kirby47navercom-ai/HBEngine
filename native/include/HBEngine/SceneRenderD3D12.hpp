@@ -9,7 +9,8 @@
 // SSGI/AO/TAA/motion blur/denoise/caustics), Hi-Z, MRT surface targets, motion vectors.
 // Phase 3-4a: material node programs (graph PS, surface PS, shadow PS), dynamic mesh streams, viewport clear.
 // Phase 3-4b: 2D render-target textures (RGBA8 + D24S8 stencil), begin2D/end2D offscreen modes 1..6, Bindings2D
-// (b1 settings, t31..t38 maps, s13..s15), 2D array cookies. Still D3D11-only: particles.
+// (b1 settings, t31..t38 maps, s13..s15), 2D array cookies. Phase 3-4c: GPU particles (Particles step/clear kernels,
+// ParticleRenderer compaction, bitonic sort, indirect draw). Still D3D11-only: particle emit/interact.
 #include "SceneRender.hpp"
 #include "D3D12Direct.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
@@ -100,6 +101,8 @@ public:
         bool ready()const{return !ps.empty();}};
     struct Texture : d3d12::Texture {D3D12_CPU_DESCRIPTOR_HANDLE srv{};UINT mips=1;Resource stencil;D3D12_CPU_DESCRIPTOR_HANDLE stencilView{};bool renderTarget()const{return rtv.ptr!=0;}};
     struct Bindings2D {Scene2D settings;std::array<const Texture*,8> maps{};std::uint32_t maskSampling=16;};
+    // Particle records (position+age, velocity+lifetime) resident on the D3D12 device.
+    struct Particles {Buffer buffer;std::size_t count=0;std::uint64_t revision=0;};
     struct Instances {Buffer data,previous;std::vector<Matrix> previousValues;UINT capacity=0,count=0,stride=sizeof(SceneInstance);bool mirrored=false;
         bool positionsOnly()const{return stride==16;}std::uint32_t capacityCount()const{return capacity;}};
     struct Deformation {Buffer skin,morph,pose,previousPose;std::uint32_t vertexCount=0,boneCount=0,morphCount=0,poseBytes=0;std::vector<float> current,previous;};
@@ -117,6 +120,10 @@ private:
     Com<ID3D12DescriptorHeap> nulls;DescriptorPool views;
     std::map<std::vector<std::uint32_t>,D3D12_GPU_DESCRIPTOR_HANDLE> samplerTables;UINT samplerUsed=0;
     d3d12::Texture color,depth;SceneFrame frame;bool begun=false;Mesh background;Texture* active2D=nullptr;SceneFrame saved2D;std::map<UINT,Com<ID3D12PipelineState>> pipelines2D;
+    // Particles: ParticleRenderer::shader VS/PS/Compact/SortInitial/SortStep, Particles::source Main/Clear.
+    Com<ID3D12RootSignature> particleDrawRoot,particleComputeRoot;Com<ID3D12CommandSignature> particleDrawSignature;std::map<UINT,Com<ID3D12PipelineState>> particlePipelines;
+    Com<ID3D12PipelineState> particleCompact,particleSortInitial,particleSortStep,particleStep,particleClear;std::vector<unsigned char> particleVS,particlePS;
+    Buffer particleAlive,particleCounter,particleArguments,particleKeys;std::size_t particleCapacity=0;
     std::vector<SceneLight> lights;std::uint64_t uploaded=~std::uint64_t(0);std::map<UINT,D3D12_GPU_VIRTUAL_ADDRESS> frameBuffers;Upload lightData{};
     // Shadow array: one DSV per layer, sampled as t24 with matrices in t25.
     d3d12::Texture shadowImage;Com<ID3D12DescriptorHeap> shadowTargets;UINT dsvStride=0;D3D12_CPU_DESCRIPTOR_HANDLE shadowView{},shadowDataView{};Buffer shadowBuffer;
@@ -186,12 +193,37 @@ private:
     D3D12_GPU_DESCRIPTOR_HANDLE samplerTable(const std::vector<std::uint32_t>& keys){
         const auto found=samplerTables.find(keys);if(found!=samplerTables.end())return found->second;
         // ponytail: tables are immutable; a full heap waits for the GPU once and starts over.
-        if(samplerUsed+samplerCount>SamplerCapacity){gpu.end();gpu.waitIdle();gpu.begin();samplerTables.clear();samplerUsed=0;}
+        const UINT n=UINT(keys.size());if(samplerUsed+n>SamplerCapacity){gpu.end();gpu.waitIdle();gpu.begin();samplerTables.clear();samplerUsed=0;}
         const auto cpu=gpu.samplers->GetCPUDescriptorHandleForHeapStart();auto at=gpu.samplers->GetGPUDescriptorHandleForHeapStart();
-        for(UINT i=0;i<samplerCount;i++){const auto d=samplerDesc(keys[i]);gpu.device->CreateSampler(&d,{cpu.ptr+SIZE_T(samplerUsed+i)*gpu.samplerStride});}
-        at.ptr+=UINT64(samplerUsed)*gpu.samplerStride;samplerUsed+=samplerCount;return samplerTables[keys]=at;
+        for(UINT i=0;i<n;i++){const auto d=samplerDesc(keys[i]);gpu.device->CreateSampler(&d,{cpu.ptr+SIZE_T(samplerUsed+i)*gpu.samplerStride});}
+        at.ptr+=UINT64(samplerUsed)*gpu.samplerStride;samplerUsed+=n;return samplerTables[keys]=at;
     }
     // Screen-effect MRT: color, normal, albedo, motion, ambient (SceneRenderer::surfaceShader outputs).
+    void prepareParticles(){
+        if(particleCompact.p){return;}
+        const char* src=ParticleRenderer::shader;particleVS=Device::shader(src,"HBParticleRender","VS","vs_5_0");particlePS=Device::shader(src,"HBParticleRender","PS","ps_5_0");
+        // VS and PS both use t0 (particles vs sprite), so each stage gets its own SRV table.
+        const D3D12_DESCRIPTOR_RANGE vsRange{D3D12_DESCRIPTOR_RANGE_TYPE_SRV,2,0,0,0},psRange{D3D12_DESCRIPTOR_RANGE_TYPE_SRV,3,0,0,0},samplerRange{D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER,1,0,0,0};
+        D3D12_ROOT_PARAMETER draw[4]{};draw[0].ParameterType=D3D12_ROOT_PARAMETER_TYPE_CBV;draw[0].ShaderVisibility=D3D12_SHADER_VISIBILITY_ALL;
+        for(int i=1;i<4;i++){draw[i].ParameterType=D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;}
+        draw[1].DescriptorTable={1,&vsRange};draw[1].ShaderVisibility=D3D12_SHADER_VISIBILITY_VERTEX;draw[2].DescriptorTable={1,&psRange};draw[2].ShaderVisibility=D3D12_SHADER_VISIBILITY_PIXEL;draw[3].DescriptorTable={1,&samplerRange};draw[3].ShaderVisibility=D3D12_SHADER_VISIBILITY_PIXEL;
+        D3D12_ROOT_SIGNATURE_DESC rd{};rd.NumParameters=4;rd.pParameters=draw;particleDrawRoot=gpu.rootSignature(rd);
+        const D3D12_DESCRIPTOR_RANGE srv{D3D12_DESCRIPTOR_RANGE_TYPE_SRV,1,0,0,0},uav{D3D12_DESCRIPTOR_RANGE_TYPE_UAV,2,0,0,0};D3D12_ROOT_PARAMETER compute[3]{};compute[0].ParameterType=D3D12_ROOT_PARAMETER_TYPE_CBV;compute[1].ParameterType=compute[2].ParameterType=D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;compute[1].DescriptorTable={1,&srv};compute[2].DescriptorTable={1,&uav};
+        rd.NumParameters=3;rd.pParameters=compute;particleComputeRoot=gpu.rootSignature(rd);
+        particleCompact=gpu.computePipeline(particleComputeRoot.p,Device::shader(src,"HBParticleRender","Compact","cs_5_0"));particleSortInitial=gpu.computePipeline(particleComputeRoot.p,Device::shader(src,"HBParticleSort","SortInitial","cs_5_0"));particleSortStep=gpu.computePipeline(particleComputeRoot.p,Device::shader(src,"HBParticleSort","SortStep","cs_5_0"));
+        particleStep=gpu.computePipeline(particleComputeRoot.p,Device::shader(hb::gpu::Particles::source,"HBParticles","Main","cs_5_0"));particleClear=gpu.computePipeline(particleComputeRoot.p,Device::shader(hb::gpu::Particles::source,"HBParticles","Clear","cs_5_0"));
+        D3D12_INDIRECT_ARGUMENT_DESC argument{};argument.Type=D3D12_INDIRECT_ARGUMENT_TYPE_DRAW;D3D12_COMMAND_SIGNATURE_DESC sig{};sig.ByteStride=16;sig.NumArgumentDescs=1;sig.pArgumentDescs=&argument;
+        check(gpu.device->CreateCommandSignature(&sig,nullptr,__uuidof(ID3D12CommandSignature),reinterpret_cast<void**>(&particleDrawSignature.p)),"Direct3D12 particle draw signature");
+        const UINT args[4]={6,0,0,0};particleArguments=gpu.buffer(args,16,D3D12_RESOURCE_STATE_INDIRECT_ARGUMENT);particleCounter=gpu.buffer(4,D3D12_RESOURCE_STATE_UNORDERED_ACCESS,D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS);
+    }
+    D3D12_SHADER_RESOURCE_VIEW_DESC particleView(UINT count)const{D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.ViewDimension=D3D12_SRV_DIMENSION_BUFFER;v.Buffer.NumElements=count;v.Buffer.StructureByteStride=32;return v;}
+    // One compute dispatch over n particles: t0 particles SRV (or none), u0/u1 views written by the caller's lambda.
+    template<class Views> void particleDispatch(ID3D12PipelineState* kernel,const void* constants,std::size_t bytes,std::size_t n,Views views){
+        auto srvs=gpu.table(1),uavs=gpu.table(2);views(srvs,uavs);auto* list=gpu.list.p;list->SetComputeRootSignature(particleComputeRoot.p);list->SetPipelineState(kernel);
+        list->SetComputeRootConstantBufferView(0,gpu.constants(constants,bytes));list->SetComputeRootDescriptorTable(1,srvs.gpu);list->SetComputeRootDescriptorTable(2,uavs.gpu);const auto groups=UINT((n+63)/64);list->Dispatch(std::min(groups,65535u),(groups+65534)/65535,1);
+    }
+    void particleUav(const DescriptorTable& t,UINT slot,ID3D12Resource* r,UINT count,UINT stride,ID3D12Resource* counter=nullptr){D3D12_UNORDERED_ACCESS_VIEW_DESC u{};u.ViewDimension=D3D12_UAV_DIMENSION_BUFFER;u.Buffer.NumElements=count;u.Buffer.StructureByteStride=stride;gpu.device->CreateUnorderedAccessView(r,counter,&u,t.cpuAt(slot));}
+    void nullParticleUav(const DescriptorTable& t,UINT slot){particleUav(t,slot,nullptr,1,4);}
     // SceneRenderer 2D offscreen states: blends2D (ONE/ONE with ADD or MAX, write mask off for mode 6) and stencils2D
     // (depth off; stencil off / always-replace / not-equal / equal), RGBA8 target with optional D24S8.
     ID3D12PipelineState* pipeline2D(std::size_t raster,int blend2,int stencil,bool depthStencil,const Program* program){
@@ -689,6 +721,60 @@ public:
         if(clear){gpu.list->ClearRenderTargetView(target.rtv,value.clear.data(),0,nullptr);if(target.stencilView.ptr)gpu.list->ClearDepthStencilView(target.stencilView,D3D12_CLEAR_FLAG_DEPTH|D3D12_CLEAR_FLAG_STENCIL,1,0,0,nullptr);}
     }
     void end2D(){if(!active2D)return;gpu.transition(*active2D,readable);active2D=nullptr;frame=saved2D;}
+    // Particles(Device&,values) / step / clear on the D3D12 device; same record validation and kernels.
+    Particles createParticles(const std::vector<float>& values){
+        if(values.empty()||values.size()%8){throw std::runtime_error("GPU particles require position/age/velocity/lifetime records");}
+        for(std::size_t i=0;i<values.size();i++)if(!std::isfinite(values[i])||(i%8==3&&values[i]<0)||(i%8==7&&values[i]<=0))throw std::runtime_error("GPU particle value invalid");
+        prepareParticles();Particles out;out.count=values.size()/8;out.buffer=gpu.buffer(values.size()*4,D3D12_RESOURCE_STATE_COMMON,D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS);out.buffer.state=D3D12_RESOURCE_STATE_COMMON;gpu.update(out.buffer,values.data(),values.size()*4);gpu.transition(out.buffer,readable);return out;
+    }
+    void stepParticles(Particles& p,float delta,const std::array<float,3>& force={0,0,0},float gravity=0,float drag=0){
+        if(!std::isfinite(delta)||delta<0||delta>120||!std::isfinite(gravity)||!std::isfinite(drag)||drag<0||!SceneRenderer::finite(force)){throw std::runtime_error("GPU particle step invalid");}
+        if(!delta)return;
+        const std::array<float,8> c{delta,force[0],force[1],force[2],gravity,drag,0,0};gpu.transition(p.buffer,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+        particleDispatch(particleStep.p,c.data(),sizeof(c),p.count,[&](const DescriptorTable& s,const DescriptorTable& u){const auto v=particleView(1);gpu.device->CreateShaderResourceView(nullptr,&v,s.cpu);particleUav(u,0,p.buffer.get(),UINT(p.count),32);nullParticleUav(u,1);});
+        gpu.transition(p.buffer,readable);++p.revision;
+    }
+    void clearParticles(Particles& p){const std::array<float,8> c{};gpu.transition(p.buffer,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);particleDispatch(particleClear.p,c.data(),sizeof(c),p.count,[&](const DescriptorTable& s,const DescriptorTable& u){const auto v=particleView(1);gpu.device->CreateShaderResourceView(nullptr,&v,s.cpu);particleUav(u,0,p.buffer.get(),UINT(p.count),32);nullParticleUav(u,1);});gpu.transition(p.buffer,readable);++p.revision;}
+    void release(Particles& p){gpu.retire(std::move(p.buffer.value));p.count=0;}
+    // Same sequence as SceneRenderer::drawParticles -> ParticleRenderer::drawInto (compact, optional bitonic sort, indirect draw).
+    // ponytail: compaction and sorting run on every draw; cache by revision/camera like ParticleRenderer if profiling asks.
+    void drawParticles(const Particles& particles,ParticleStyle style={},const Texture* texture=nullptr,std::uint32_t sampling=0,const Bindings2D* twoD=nullptr){
+        if(!begun||activeShadow>=0||sampling>=54){throw std::runtime_error("Particle scene pass or texture invalid");}
+        if(active2D)throw std::runtime_error("Particle offscreen pass invalid");
+        style.maskMode=twoD?static_cast<std::uint32_t>(twoD->settings.pass[1]):0;const auto* mask=twoD?twoD->maps[0]:nullptr;style.viewProjection=frame.viewProjection;style.exposure=frame.exposure;const bool toHDR=hdr.texture.value.p&&!activeProbe;style.hdr=toHDR;
+        const auto blend=static_cast<std::size_t>(style.blend);
+        if(!SceneRenderer::finite(style.sheet)||style.sheet[0]<1||style.sheet[0]>256||style.sheet[1]<1||style.sheet[1]>256||style.sheet[2]<0||style.sheet[2]>100||style.sheet[3]<0||!SceneRenderer::finite(style.viewProjection)||!SceneRenderer::finite(style.world)||!SceneRenderer::finite(style.view)||!SceneRenderer::finite(style.eye)||!SceneRenderer::finite(style.right)||!SceneRenderer::finite(style.up)||!SceneRenderer::finite(style.color)||!SceneRenderer::finite(style.endColor)||!std::isfinite(style.size)||style.size<0||!std::isfinite(style.endScale)||style.endScale<0||!std::isfinite(style.projectionY)||style.projectionY<=0||!std::isfinite(style.minSize)||style.minSize<0||!std::isfinite(style.maxSize)||style.maxSize<style.minSize||!std::isfinite(style.exposure)||style.exposure<0||blend>=3||static_cast<unsigned>(style.sort)>6||style.maskMode>2||(style.maskMode&&!mask))throw std::runtime_error("GPU particle render style invalid");
+        prepareParticles();auto& source=const_cast<Buffer&>(particles.buffer);
+        if(particleCapacity<particles.count){std::size_t capacity=1;while(capacity<particles.count)capacity*=2;gpu.retire(std::move(particleAlive.value));gpu.retire(std::move(particleKeys.value));particleAlive=gpu.buffer(capacity*4,readable,D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS);particleKeys=gpu.buffer(capacity*4,D3D12_RESOURCE_STATE_UNORDERED_ACCESS,D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS);particleCapacity=capacity;}
+        ParticleRenderer::Constants data{style.viewProjection,style.world,style.view,{style.right[0],style.right[1],style.right[2],style.size},{style.up[0],style.up[1],style.up[2],style.endScale},style.color,style.endColor,{texture?1.f:0.f,style.hdr?1.f:0.f,style.toneMapped?1.f:0.f,style.exposure},{style.projectionY,style.minSize,style.maxSize,style.perspective?1.f:0.f},{style.eye[0],style.eye[1],style.eye[2],style.textureFlipY?1.f:0.f},{0,static_cast<UINT>(style.sort),0,0},{float(style.maskMode),0,0,0},style.sheet};
+        // Compact living indices with an append counter, then copy the count into the indirect draw arguments.
+        const UINT zero=0;gpu.update(particleCounter,&zero,4);gpu.transition(particleAlive,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+        particleDispatch(particleCompact.p,&data,sizeof(data),particles.count,[&](const DescriptorTable& s,const DescriptorTable& u){const auto v=particleView(UINT(particles.count));gpu.device->CreateShaderResourceView(source.get(),&v,s.cpu);particleUav(u,0,particleAlive.get(),UINT(particleCapacity),4,particleCounter.get());nullParticleUav(u,1);});
+        gpu.transition(particleCounter,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(particleArguments,D3D12_RESOURCE_STATE_COPY_DEST);gpu.list->CopyBufferRegion(particleArguments.get(),4,particleCounter.get(),0,4);gpu.transition(particleArguments,D3D12_RESOURCE_STATE_INDIRECT_ARGUMENT);gpu.transition(particleCounter,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+        if(data.sorting[1]){
+            std::size_t sortCapacity=1;while(sortCapacity<particles.count)sortCapacity*=2;data.sorting[0]=UINT(sortCapacity);
+            const auto sortViews=[&](const DescriptorTable& s,const DescriptorTable& u){const auto v=particleView(UINT(particles.count));gpu.device->CreateShaderResourceView(source.get(),&v,s.cpu);particleUav(u,0,particleAlive.get(),UINT(particleCapacity),4);particleUav(u,1,particleKeys.get(),UINT(particleCapacity),4);};
+            const auto uavBarrier=[&]{D3D12_RESOURCE_BARRIER b[2]{};b[0].Type=b[1].Type=D3D12_RESOURCE_BARRIER_TYPE_UAV;b[0].UAV.pResource=particleAlive.get();b[1].UAV.pResource=particleKeys.get();gpu.list->ResourceBarrier(2,b);};
+            uavBarrier();particleDispatch(particleSortInitial.p,&data,sizeof(data),sortCapacity,sortViews);
+            for(std::size_t stage=2;stage<=sortCapacity;stage*=2)for(std::size_t stride=stage/2;stride;stride/=2){data.sorting[2]=UINT(stage);data.sorting[3]=UINT(stride);uavBarrier();particleDispatch(particleSortStep.p,&data,sizeof(data),sortCapacity,sortViews);}
+            uavBarrier();
+        }
+        gpu.transition(particleAlive,readable);
+        const UINT key=UINT(blend)+3u*((style.depthTest?1u:0u)|(style.depthWrite?2u:0u))+12u*(toHDR?1u:0u);auto& pso=particlePipelines[key];
+        if(!pso.p){auto d=Device::defaults(particleDrawRoot.p,particleVS,particlePS,toHDR?DXGI_FORMAT_R16G16B16A16_FLOAT:DXGI_FORMAT_R8G8B8A8_UNORM,DXGI_FORMAT_D32_FLOAT);
+            auto& t=d.BlendState.RenderTarget[0];t.BlendEnable=blend!=2;t.SrcBlend=D3D12_BLEND_SRC_ALPHA;t.DestBlend=blend==1?D3D12_BLEND_ONE:D3D12_BLEND_INV_SRC_ALPHA;t.BlendOp=D3D12_BLEND_OP_ADD;t.SrcBlendAlpha=D3D12_BLEND_ONE;t.DestBlendAlpha=D3D12_BLEND_INV_SRC_ALPHA;t.BlendOpAlpha=D3D12_BLEND_OP_ADD;t.LogicOp=D3D12_LOGIC_OP_NOOP;
+            d.DepthStencilState.DepthFunc=style.depthTest?D3D12_COMPARISON_FUNC_LESS_EQUAL:D3D12_COMPARISON_FUNC_ALWAYS;d.DepthStencilState.DepthWriteMask=style.depthWrite?D3D12_DEPTH_WRITE_MASK_ALL:D3D12_DEPTH_WRITE_MASK_ZERO;pso=gpu.pipeline(d);}
+        auto vsTable=gpu.table(2),psTable=gpu.table(3);{const auto v=particleView(UINT(particles.count));gpu.device->CreateShaderResourceView(source.get(),&v,vsTable.cpuAt(0));D3D12_SHADER_RESOURCE_VIEW_DESC a{};a.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;a.ViewDimension=D3D12_SRV_DIMENSION_BUFFER;a.Buffer.NumElements=UINT(particleCapacity);a.Buffer.StructureByteStride=4;gpu.device->CreateShaderResourceView(particleAlive.get(),&a,vsTable.cpuAt(1));}
+        {D3D12_SHADER_RESOURCE_VIEW_DESC n{};n.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;n.Format=DXGI_FORMAT_R8G8B8A8_UNORM;n.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;n.Texture2D.MipLevels=1;for(UINT i=0;i<3;i++)gpu.device->CreateShaderResourceView(nullptr,&n,psTable.cpuAt(i));
+            if(texture){gpu.device->CopyDescriptorsSimple(1,psTable.cpuAt(0),texture->srv,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);}
+            if(mask)gpu.device->CopyDescriptorsSimple(1,psTable.cpuAt(2),mask->srv,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);}
+        const auto samplers=samplerTable({sampling});
+        const auto& r=frame.viewport;const bool custom=r[2]>0&&r[3]>0;const D3D12_VIEWPORT viewport{custom?r[0]:0,custom?r[1]:0,custom?r[2]:float(width),custom?r[3]:float(height),0,1};const auto crop=frame.scissor.value_or(std::array<float,4>{viewport.TopLeftX,viewport.TopLeftY,viewport.Width,viewport.Height});const D3D12_RECT scissor{LONG(std::floor(crop[0])),LONG(std::floor(crop[1])),LONG(std::ceil(crop[0]+crop[2])),LONG(std::ceil(crop[1]+crop[3]))};
+        if(toHDR){gpu.transition(hdr.texture,D3D12_RESOURCE_STATE_RENDER_TARGET);hdrPending=true;}else gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);
+        auto* list=gpu.list.p;list->SetGraphicsRootSignature(particleDrawRoot.p);list->SetPipelineState(pso.p);list->SetGraphicsRootConstantBufferView(0,gpu.constants(&data,sizeof(data)));list->SetGraphicsRootDescriptorTable(1,vsTable.gpu);list->SetGraphicsRootDescriptorTable(2,psTable.gpu);list->SetGraphicsRootDescriptorTable(3,samplers);
+        list->OMSetRenderTargets(1,toHDR?&hdr.rtv:&color.rtv,FALSE,&depth.dsv);list->RSSetViewports(1,&viewport);list->RSSetScissorRects(1,&scissor);list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        list->ExecuteIndirect(particleDrawSignature.p,1,particleArguments.get(),0,nullptr,0);
+    }
     void setPostLookup(const Texture* value){if(value&&(value->height<2||value->height>64||value->width!=value->height*value->height))throw std::runtime_error("Post lookup texture owner/dimensions invalid");postLookup=value;}
     void releaseTransmission(){views.give(transmissionView);views.give(transmissionDepthView);transmissionView=transmissionDepthView={};gpu.retire(std::move(transmissionImage.value));gpu.retire(std::move(transmissionDepth.value));transmissionImage.width=transmissionImage.height=0;transmissionMips=0;transmissionReady=false;}
     // Same as SceneRenderer::captureTransmission: copy the HDR opaque pass and depth, then build the mip chain.
