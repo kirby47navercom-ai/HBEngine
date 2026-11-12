@@ -11,3 +11,13 @@
 공용 제작 흐름: engine-services의 컴포넌트/노드 실행, game-storage의 네이티브 질의, run-project의 실행 세션, mobile-player의 웹/모바일 cooked HTTP 질의가 모두 같은 createPersistentQueries를 사용해요. 공개 C++/노드 시그니처는 바뀌지 않아요. 캐시 clear는 기존 실행/세션 수명을 따라요.
 
 수정 근거: tools/check-runtime-data-cache.mjs 및 ENGINE_WORK_3440.json. 이전판257번째 실패, 새판5000개 JSON+표 읽기,512개씩의공용 서비스/네이티브 어댑터/웹·모바일 HTTP 경로, 예산 퇴출·재읽기·동시성·복사 격리·오류 재시도·종료 수명·저장 호환을 묶어 검사해요. SDK 바이너리와 실제 휴대폰을 새로 검증했다는 뜻은 아니에요. 기존 게임 패키지는 갱신한 엔진으로 다시 빌드해야 해요.
+
+## 데이터 에셋·저장 JSON 크기 제한 해제
+
+데이터 에셋(dataJsonRead/dataTableRead)과 저장 슬롯(saveJsonWrite/saveJsonRead)은 `validGameJson(...,{bounded:false})`로 검사해요. 행 4096개·열/속성 128개·노드 10000개·배열 4096개·문자열 65536자·파일 256KB 제한을 두지 않아요. 금지 키(`__proto__` 등), 유한 숫자, 일반 객체 형식과 스택 보호용 깊이 512는 유지해요. 일반 게임 JSON(네트워크·컴포넌트 속성·위젯 등)의 기존 제한은 그대로예요.
+
+데이터 표 편집기는 행을 200개씩 페이지로 보여줘요. 행 추가 시 마지막 페이지로 이동해요. 같은 보관 스냅샷의 dataJsonRead 문자열은 한 번만 직렬화해요.
+
+C++ `Save::*`/`Data::*` 질의는 월드 스냅샷을 보내지 않아요(compactQuery). 기존에는 호출마다 전체 오브젝트를 직렬화했어요(5000개 기준 약 30ms). 남은 운반 한도: 네이티브 C++ 질의 한 줄 4,000,000 byte, 웹/모바일 저장소 합계 4MiB.
+
+근거: tools/check-large-json-data.mjs(50000행 표·300속성×100KB·20000항목 저장·깊이100·금지 키/비유한 숫자 거부·일반 JSON 제한 유지), check-runtime-data-cache.mjs 11, check-component-json-3002 11, check-query-world(Bridge.hpp 컴파일). 편집기 페이지 UI는 브라우저 실행 확인 전이에요. 기존 게임 패키지는 다시 빌드해야 해요.

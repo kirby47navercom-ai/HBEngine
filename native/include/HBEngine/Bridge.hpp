@@ -169,7 +169,9 @@ inline void Input::AddMappingContext(Actor* target,const std::string& context,in
 inline void Input::RemoveMappingContext(Actor* target,const std::string& context){engineCommand("inputRemoveContext",{{"target",bridgeId(target)},{"context",context}});}
 inline std::function<Json(const Json&)> bridgeQuery;
 inline Json engineQuery(const char* key,const Json& args){
-    const std::string queryKey=key;const bool compactQuery=queryKey=="componentDefaultJson"||queryKey=="behaviorTaskMemoryGet"||queryKey=="behaviorTaskMemorySet"||queryKey=="behaviorTaskMemoryClear";
+    // Save/data reads never look at the world, so they skip the snapshot copy.
+    const std::string queryKey=key;
+    const bool compactQuery=queryKey.rfind("saveJson",0)==0||queryKey=="dataJsonRead"||queryKey=="dataTableRead"||queryKey=="componentDefaultJson"||queryKey=="behaviorTaskMemoryGet"||queryKey=="behaviorTaskMemorySet"||queryKey=="behaviorTaskMemoryClear";
     if(!compactQuery&&bridgePrepareQuery)bridgePrepareQuery();
     Json world=compactQuery?Json::array():bridgeWorldData;
     if(!compactQuery)for(const auto& updated:bridgeSnapshot()){

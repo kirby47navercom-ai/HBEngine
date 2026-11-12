@@ -31,20 +31,21 @@ const validPath=path=>validProjectPath(path)&&/^(Assets|Source)\//.test(path);
 export function createPersistentQueries({readAsset,readSave,writeSave,deleteSave}){
   // Eviction limits retained data, never how many different files a game can read.
   const cache=retainedAssetReader(async path=>{
-    const data=await readAsset(path);if(!validGameJson(data,{object:false}))throw Error('데이터 에셋 JSON 범위를 확인하세요.');
+    const data=await readAsset(path);if(!validGameJson(data,{object:false,bounded:false}))throw Error('데이터 에셋 JSON 범위를 확인하세요.');
     return dataContents(structuredClone(data));
   });
+  const texts=new WeakMap();// serialized once per retained snapshot; evicted with it
   const query=async(key,args)=>{
     if(!persistentQueryKeys.has(key))throw Error('저장·데이터 API 범위를 확인하세요.');
     if(key.startsWith('save')){
       if(typeof args.slot!=='string'||!args.slot||args.slot.length>80||/[\\/\x00-\x1f]/.test(args.slot)||['.','..'].includes(args.slot))throw Error('저장 슬롯 이름을 확인하세요.');
-      if(key==='saveJsonWrite'){const value=parseGameJson(args.json,{object:false});await writeSave(args.slot,JSON.stringify(value));return true;}
+      if(key==='saveJsonWrite'){const value=parseGameJson(args.json,{object:false,bounded:false});await writeSave(args.slot,JSON.stringify(value));return true;}
       if(key==='saveJsonDelete'){await deleteSave(args.slot);return true;}
-      const text=await readSave(args.slot);return JSON.stringify(text===null?null:parseGameJson(text,{object:false}));
+      const text=await readSave(args.slot);return JSON.stringify(text===null?null:parseGameJson(text,{object:false,bounded:false}));
     }
     if(!validPath(args.path))throw Error('데이터 에셋 경로를 확인하세요.');
     const data=await cache(args.path);
-    if(key==='dataJsonRead')return JSON.stringify(data);
+    if(key==='dataJsonRead'){let text=texts.get(data);if(text===undefined)texts.set(data,text=JSON.stringify(data));return text;}
     if(typeof args.rowId!=='string'||args.rowId.length>200)throw Error('표 행 ID를 확인하세요.');
     const rows=data.rows||data.data?.rows||data.data||data;
     const row=Array.isArray(rows)?rows.find(r=>r.id===args.rowId||r.name===args.rowId):Object.hasOwn(rows,args.rowId)?rows[args.rowId]:null;
