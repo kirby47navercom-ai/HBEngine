@@ -16,7 +16,9 @@ struct SceneRenderD3D11 {
 };
 struct SceneRenderD3D12 {
     using Device=hb::gpu::d3d12::Device;using Renderer=hb::gpu::d3d12::SceneMeshRenderer;using Particles=hb::gpu::d3d12::Particles;
-    static std::unique_ptr<Device> open(const std::string&,std::string&){return std::make_unique<Device>(hb::gpu::DeviceDriver::Automatic);}
+    // Each scene draw takes a 53-slot descriptor table; 3 x 262144 stays under the 1,000,000 shader-visible heap limit.
+    // ponytail: about 4900 draws per frame; reuse tables per draw if a game needs more.
+    static std::unique_ptr<Device> open(const std::string&,std::string&){return std::make_unique<Device>(hb::gpu::DeviceDriver::Automatic,false,8u<<20,1u<<18);}
     // Shaders compile synchronously on this backend, so asynchronous preparation stays off.
     static std::unique_ptr<Renderer> renderer(Device& device,std::uint32_t width,std::uint32_t height,HWND window,bool){return std::make_unique<Renderer>(device,width,height,window);}
     static nlohmann::json describe(const Device& device){return {{"backend","D3D12"},{"device","Direct3D12"},{"software",device.software}};}

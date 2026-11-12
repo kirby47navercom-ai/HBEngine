@@ -638,14 +638,14 @@ public:
         }
         gpu.update(shadowBuffer,values.data(),values.size()*sizeof(SceneShadow));shadows=values;
     }
-    void beginShadow(std::size_t index){
+    void beginShadow(std::size_t index){record();
         if(!begun||activeShadow>=0||index>=shadows.size())throw std::runtime_error("Shadow pass index invalid");
         ++shadowPasses_;shadowFrame=frame;frame.viewProjection=shadows[index].viewProjection;frame.viewport={0,0,shadows[index].size[0],shadows[index].size[1]};frame.scissor.reset();activeShadow=int(index);
         gpu.transition(shadowImage,D3D12_RESOURCE_STATE_DEPTH_WRITE);gpu.list->ClearDepthStencilView({shadowTargets->GetCPUDescriptorHandleForHeapStart().ptr+index*dsvStride},D3D12_CLEAR_FLAG_DEPTH,1,0,0,nullptr);
     }
     void endShadow(){if(activeShadow<0)return;frame=shadowFrame;activeShadow=-1;}
     std::size_t shadowLayers()const{return shadows.size();}
-    bool pollProbePreparation(bool request=false){if(request)prepareProbes();return true;}
+    bool pollProbePreparation(bool request=false){record();if(request)prepareProbes();return true;}
     Probe createProbe(std::uint32_t size){record();++uploads_;
         if(size<16||size>2048||(size&(size-1)))throw std::runtime_error("Probe resolution must be a power of two (16..2048)");
         prepareProbes();Probe out;out.size=size;out.identity=++probeIdentities;for(UINT n=size;n;n/=2)++out.mips;
@@ -660,7 +660,7 @@ public:
         return out;
     }
     void release(Probe& t){for(auto& f:t.faces){gpu.rtvs.give(f);f={};}views.give(t.source);views.give(t.view);views.give(t.irradiance);t.source=t.view=t.irradiance={};gpu.release(t.depth);gpu.retire(std::move(t.capture.value));gpu.retire(std::move(t.filtered.value));gpu.retire(std::move(t.coefficients.value));t.ready=false;}
-    void beginProbe(Probe& target,std::uint32_t faceIndex,const Matrix& projection,const std::array<float,4>& eye,const std::array<float,4>& clear,bool indirect=false,bool environment=false){
+    void beginProbe(Probe& target,std::uint32_t faceIndex,const Matrix& projection,const std::array<float,4>& eye,const std::array<float,4>& clear,bool indirect=false,bool environment=false){record();
         if(!begun||activeProbe||activeShadow>=0||faceIndex>=6||!target.capture.value.p||!SceneRenderer::finite(projection)||!SceneRenderer::finite(eye)||!SceneRenderer::finite(clear))throw std::runtime_error("Probe capture binding invalid");
         savedProbe=frame;frame.viewProjection=projection;frame.eye=eye;frame.viewDirection[3]=0;frame.viewport={0,0,float(target.size),float(target.size)};frame.scissor.reset();activeProbe=&target;probeIndirect=indirect;probeFace=faceIndex;
         if(environment){frame.fog={0,0,0,0};frame.fogRange={0,0,0,0};frame.heightFog={0,0,0,1};}
@@ -794,7 +794,7 @@ public:
             D3D12_CLEAR_VALUE c{};c.Format=d.Format;c.DepthStencil.Depth=1;out.stencil.value=gpu.committed(D3D12_HEAP_TYPE_DEFAULT,d,D3D12_RESOURCE_STATE_DEPTH_WRITE,&c,"Direct3D12 2D stencil");out.stencil.state=D3D12_RESOURCE_STATE_DEPTH_WRITE;out.stencilView=gpu.dsvs.take();gpu.device->CreateDepthStencilView(out.stencil.get(),nullptr,out.stencilView);}
         gpu.transition(out,readable);return out;
     }
-    void begin2D(Texture& target,const SceneFrame& value,bool clear=false){
+    void begin2D(Texture& target,const SceneFrame& value,bool clear=false){record();
         if(!begun||activeProbe||active2D||activeShadow>=0||!target.renderTarget()||!SceneRenderer::finite(value.viewProjection)||!SceneRenderer::finite(value.viewport)||!SceneRenderer::finite(value.clear)||(value.scissor&&!SceneRenderer::finite(*value.scissor)))throw std::runtime_error("2D pass invalid");
         if(value.viewport[2]<=0||value.viewport[3]<=0||value.viewport[0]<0||value.viewport[1]<0||value.viewport[0]+value.viewport[2]>target.width||value.viewport[1]+value.viewport[3]>target.height)throw std::runtime_error("2D pass viewport invalid");
         saved2D=frame;frame=value;active2D=&target;++passes2D_;gpu.transition(target,D3D12_RESOURCE_STATE_RENDER_TARGET);
@@ -803,7 +803,7 @@ public:
     void end2D(){if(!active2D)return;gpu.transition(*active2D,readable);active2D=nullptr;frame=saved2D;}
     // Same sequence as SceneRenderer::drawParticles -> ParticleRenderer::drawInto (compact, optional bitonic sort, indirect draw).
     // ponytail: compaction and sorting run on every draw; cache by revision/camera like ParticleRenderer if profiling asks.
-    void drawParticles(const Particles& particles,ParticleStyle style={},const Texture* texture=nullptr,std::uint32_t sampling=0,const Bindings2D* twoD=nullptr){
+    void drawParticles(const Particles& particles,ParticleStyle style={},const Texture* texture=nullptr,std::uint32_t sampling=0,const Bindings2D* twoD=nullptr){record();
         if(!begun||activeShadow>=0||sampling>=54){throw std::runtime_error("Particle scene pass or texture invalid");}
         if(active2D)throw std::runtime_error("Particle offscreen pass invalid");
         style.maskMode=twoD?static_cast<std::uint32_t>(twoD->settings.pass[1]):0;const auto* mask=twoD?twoD->maps[0]:nullptr;style.viewProjection=frame.viewProjection;style.exposure=frame.exposure;const bool toHDR=hdr.texture.value.p&&!activeProbe;style.hdr=toHDR;
@@ -838,7 +838,7 @@ public:
         if(toHDR){gpu.transition(hdr.texture,D3D12_RESOURCE_STATE_RENDER_TARGET);hdrPending=true;}else gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);
         auto* list=gpu.list.p;list->SetGraphicsRootSignature(particleDrawRoot.p);list->SetPipelineState(pso.p);list->SetGraphicsRootConstantBufferView(0,gpu.constants(&data,sizeof(data)));list->SetGraphicsRootDescriptorTable(1,vsTable.gpu);list->SetGraphicsRootDescriptorTable(2,psTable.gpu);list->SetGraphicsRootDescriptorTable(3,samplers);
         list->OMSetRenderTargets(1,toHDR?&hdr.rtv:&color.rtv,FALSE,&depth.dsv);list->RSSetViewports(1,&viewport);list->RSSetScissorRects(1,&scissor);list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-        list->ExecuteIndirect(particleDrawSignature.p,1,particleArguments.get(),0,nullptr,0);
+        list->ExecuteIndirect(particleDrawSignature.p,1,particleArguments.get(),0,nullptr,0);++draws_;
         gpu.keep(source.get());if(texture)gpu.keep(texture->get());if(mask)gpu.keep(mask->get());
     }
     void setPostLookup(const Texture* value){if(value&&(value->height<2||value->height>64||value->width!=value->height*value->height))throw std::runtime_error("Post lookup texture owner/dimensions invalid");postLookup=value;}
@@ -886,7 +886,7 @@ public:
         cullLights(frame.viewport[2]>0?frame.viewport:std::array<float,4>{0,0,float(surfaceWidth),float(surfaceHeight)});
         if(value.viewportClear){if(!background.count)background=createMesh({{{-1,-1,0}},{{1,-1,0}},{{1,1,0}},{{-1,1,0}}},{0,1,2,0,2,3});SceneMaterial fill;fill.color=*value.viewportClear;fill.unlit=true;fill.toneMapped=false;fill.depthTest=fill.depthWrite=false;const auto vp=frame.viewProjection;frame.viewProjection=identity;draw(background,identity,identity,fill);frame.viewProjection=vp;}
     }
-    void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const Program* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={},const Instances* instances=nullptr,const Deformation* deformation=nullptr,const Bindings2D* twoD=nullptr,const std::array<ProbeBinding,2>* probeBindings=nullptr,const Matrix* previousWorld=nullptr,float motionFlag=0,const Texture* lightmap=nullptr,bool globalProbes=false){
+    void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const Program* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={},const Instances* instances=nullptr,const Deformation* deformation=nullptr,const Bindings2D* twoD=nullptr,const std::array<ProbeBinding,2>* probeBindings=nullptr,const Matrix* previousWorld=nullptr,float motionFlag=0,const Texture* lightmap=nullptr,bool globalProbes=false){record();
         if((previousWorld&&!SceneRenderer::finite(*previousWorld))||!std::isfinite(motionFlag)||(motionFlag!=-1&&motionFlag!=0&&motionFlag!=1&&motionFlag!=2))throw std::runtime_error("Object motion input invalid");
         if(lightmap&&!mesh.uv1.value.p)throw std::runtime_error("Baked lightmap texture or UV1 invalid");
         if(!std::isfinite(material.lightmapIntensity)||material.lightmapIntensity<0)throw std::runtime_error("Baked lightmap intensity invalid");
@@ -1064,7 +1064,7 @@ public:
     std::uint32_t particleCount(const Particles& particles){++particleCountReadbacks_;const auto values=const_cast<Particles&>(particles).read();std::uint32_t alive=0;for(std::size_t i=0;i+8<=values.size();i+=8)alive+=values[i+3]<values[i+7];return alive;}
     // Shaders compile synchronously on this backend, so every preparation query reports ready.
     ParticlePreparationInfo particlePreparationInfo()const{ParticlePreparationInfo info;const bool sort=particleSortStep.p!=nullptr;info.stages={particleCompact.p?3u:0u,particleCompact.p?3u:0u,particleCompact.p?3u:0u,sort?3u:0u,sort?3u:0u};return info;}
-    bool pollParticlePreparation(bool request=false,bool=false){if(request)prepareParticles();return true;}
+    bool pollParticlePreparation(bool request=false,bool=false){record();if(request)prepareParticles();return true;}
     bool pollRasterPreparation(){return true;}
     SceneRasterPreparation::Info rasterPreparationInfo()const{return SceneRasterPreparation::Info{{3,3,3},false,true,{}};}
     void pollShaderPreparation(){}
