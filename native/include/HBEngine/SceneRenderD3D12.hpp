@@ -8,7 +8,8 @@
 // transmission capture, GPU mip generation. Phase 3-3b: screen effects (ScreenEffectsPass Resolve kernels: path/GI/SSR/
 // SSGI/AO/TAA/motion blur/denoise/caustics), Hi-Z, MRT surface targets, motion vectors.
 // Phase 3-4a: material node programs (graph PS, surface PS, shadow PS), dynamic mesh streams, viewport clear.
-// Still D3D11-only: 2D passes/render-target textures, particles.
+// Phase 3-4b: 2D render-target textures (RGBA8 + D24S8 stencil), begin2D/end2D offscreen modes 1..6, Bindings2D
+// (b1 settings, t31..t38 maps, s13..s15), 2D array cookies. Still D3D11-only: particles.
 #include "SceneRender.hpp"
 #include "D3D12Direct.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
@@ -95,9 +96,10 @@ public:
     struct Mesh {Buffer vertices,indices,uv1;UINT count=0,vertexCount=0;std::vector<SceneVertex> streamVertices;};
     // Node material: graph PS (single target), surface PS (screen-effect MRT), shadow PS, float parameters in t7.
     struct Program {std::vector<unsigned char> ps,surface,shadow;Buffer parameters;std::vector<float> current;
-        mutable std::array<Com<ID3D12PipelineState>,144> pipelines;mutable std::map<UINT,Com<ID3D12PipelineState>> surfacePipelines;mutable std::array<Com<ID3D12PipelineState>,6> shadowPipelines;
+        mutable std::array<Com<ID3D12PipelineState>,144> pipelines;mutable std::map<UINT,Com<ID3D12PipelineState>> surfacePipelines;mutable std::array<Com<ID3D12PipelineState>,6> shadowPipelines;mutable std::map<UINT,Com<ID3D12PipelineState>> pipelines2D;
         bool ready()const{return !ps.empty();}};
-    struct Texture : d3d12::Texture {D3D12_CPU_DESCRIPTOR_HANDLE srv{};UINT mips=1;};
+    struct Texture : d3d12::Texture {D3D12_CPU_DESCRIPTOR_HANDLE srv{};UINT mips=1;Resource stencil;D3D12_CPU_DESCRIPTOR_HANDLE stencilView{};bool renderTarget()const{return rtv.ptr!=0;}};
+    struct Bindings2D {Scene2D settings;std::array<const Texture*,8> maps{};std::uint32_t maskSampling=16;};
     struct Instances {Buffer data,previous;std::vector<Matrix> previousValues;UINT capacity=0,count=0,stride=sizeof(SceneInstance);bool mirrored=false;
         bool positionsOnly()const{return stride==16;}std::uint32_t capacityCount()const{return capacity;}};
     struct Deformation {Buffer skin,morph,pose,previousPose;std::uint32_t vertexCount=0,boneCount=0,morphCount=0,poseBytes=0;std::vector<float> current,previous;};
@@ -114,7 +116,7 @@ private:
     std::map<UINT,UINT> cbuffers;std::vector<Slot> slots;UINT samplerCount=0,srvRoot=0,samplerRoot=0;
     Com<ID3D12DescriptorHeap> nulls;DescriptorPool views;
     std::map<std::vector<std::uint32_t>,D3D12_GPU_DESCRIPTOR_HANDLE> samplerTables;UINT samplerUsed=0;
-    d3d12::Texture color,depth;SceneFrame frame;bool begun=false;Mesh background;
+    d3d12::Texture color,depth;SceneFrame frame;bool begun=false;Mesh background;Texture* active2D=nullptr;SceneFrame saved2D;std::map<UINT,Com<ID3D12PipelineState>> pipelines2D;
     std::vector<SceneLight> lights;std::uint64_t uploaded=~std::uint64_t(0);std::map<UINT,D3D12_GPU_VIRTUAL_ADDRESS> frameBuffers;Upload lightData{};
     // Shadow array: one DSV per layer, sampled as t24 with matrices in t25.
     d3d12::Texture shadowImage;Com<ID3D12DescriptorHeap> shadowTargets;UINT dsvStride=0;D3D12_CPU_DESCRIPTOR_HANDLE shadowView{},shadowDataView{};Buffer shadowBuffer;
@@ -190,6 +192,18 @@ private:
         at.ptr+=UINT64(samplerUsed)*gpu.samplerStride;samplerUsed+=samplerCount;return samplerTables[keys]=at;
     }
     // Screen-effect MRT: color, normal, albedo, motion, ambient (SceneRenderer::surfaceShader outputs).
+    // SceneRenderer 2D offscreen states: blends2D (ONE/ONE with ADD or MAX, write mask off for mode 6) and stencils2D
+    // (depth off; stencil off / always-replace / not-equal / equal), RGBA8 target with optional D24S8.
+    ID3D12PipelineState* pipeline2D(std::size_t raster,int blend2,int stencil,bool depthStencil,const Program* program){
+        auto& p=(program?program->pipelines2D:pipelines2D)[UINT(raster)+6u*(UINT(blend2)+3u*(UINT(stencil)+4u*(depthStencil?1u:0u)))];if(p.p)return p.p;
+        static const D3D12_INPUT_ELEMENT_DESC elements[]={{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,32,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"TEXCOORD",1,DXGI_FORMAT_R32G32_FLOAT,1,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0}};
+        auto d=Device::defaults(root.p,vs,program?program->ps:ps,DXGI_FORMAT_R8G8B8A8_UNORM,depthStencil?DXGI_FORMAT_D24_UNORM_S8_UINT:DXGI_FORMAT_UNKNOWN);d.InputLayout={elements,5};
+        d.RasterizerState.CullMode=raster%3==0?D3D12_CULL_MODE_BACK:raster%3==1?D3D12_CULL_MODE_FRONT:D3D12_CULL_MODE_NONE;d.RasterizerState.FrontCounterClockwise=raster<3;
+        auto& t=d.BlendState.RenderTarget[0];t.BlendEnable=TRUE;t.SrcBlend=t.DestBlend=t.SrcBlendAlpha=t.DestBlendAlpha=D3D12_BLEND_ONE;t.BlendOp=t.BlendOpAlpha=blend2==1?D3D12_BLEND_OP_ADD:D3D12_BLEND_OP_MAX;t.RenderTargetWriteMask=blend2==2?0:D3D12_COLOR_WRITE_ENABLE_ALL;t.LogicOp=D3D12_LOGIC_OP_NOOP;
+        auto& ds=d.DepthStencilState;ds.DepthEnable=FALSE;ds.DepthWriteMask=D3D12_DEPTH_WRITE_MASK_ZERO;ds.DepthFunc=D3D12_COMPARISON_FUNC_ALWAYS;ds.StencilEnable=stencil!=0;ds.StencilReadMask=ds.StencilWriteMask=255;
+        ds.FrontFace.StencilFunc=stencil==2?D3D12_COMPARISON_FUNC_NOT_EQUAL:stencil==3?D3D12_COMPARISON_FUNC_EQUAL:D3D12_COMPARISON_FUNC_ALWAYS;ds.FrontFace.StencilFailOp=ds.FrontFace.StencilDepthFailOp=D3D12_STENCIL_OP_KEEP;ds.FrontFace.StencilPassOp=D3D12_STENCIL_OP_REPLACE;ds.BackFace=ds.FrontFace;
+        p=gpu.pipeline(d);return p.p;
+    }
     // targets: bit i set when surface target i+1 exists; absent targets are UNKNOWN slots bound to null RTVs.
     ID3D12PipelineState* surfacePipeline(std::size_t raster,std::size_t blend,std::size_t depthMode,UINT targets,const Program* program=nullptr){
         auto& p=(program?program->surfacePipelines:surfacePipelines)[UINT(raster+6*(blend+3*depthMode))+72u*targets];if(p.p)return p.p;
@@ -470,7 +484,7 @@ public:
         D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.Format=format;v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=mips;
         t.srv=views.take();gpu.device->CreateShaderResourceView(t.get(),&v,t.srv);return t;
     }
-    void release(Texture& t){views.give(t.srv);t.srv={};gpu.retire(std::move(t.value));}
+    void release(Texture& t){views.give(t.srv);t.srv={};if(t.rtv.ptr){gpu.rtvs.give(t.rtv);t.rtv={};}if(t.stencilView.ptr){gpu.dsvs.give(t.stencilView);t.stencilView={};}gpu.retire(std::move(t.stencil.value));gpu.retire(std::move(t.value));}
     void release(Mesh& m){gpu.retire(std::move(m.vertices.value));gpu.retire(std::move(m.indices.value));gpu.retire(std::move(m.uv1.value));m.count=0;}
     void setLights(const std::vector<SceneLight>& values){
         for(const auto& l:values)if(!SceneRenderer::finite(l.position)||!SceneRenderer::finite(l.direction)||!SceneRenderer::finite(l.color)||!SceneRenderer::finite(l.cone)||l.position[3]<0||l.position[3]>3||l.cone[3]<0)throw std::runtime_error("Direct3D12 scene light invalid");
@@ -619,7 +633,9 @@ public:
     void setSkyIntensity(float intensity){if(!std::isfinite(intensity)||intensity<0)throw std::runtime_error("Sky intensity invalid");skySettings.center[3]=intensity;}
     // createDataTexture subset: 2D, one layer, RGBA8 (unorm/sRGB) or RGBA32F, optional mips for RGBA8.
     Texture createDataTexture(std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& bytes,std::uint32_t channels=4,bool floating=false,std::uint32_t layers=1,bool srgb=false,bool array=false,const std::string& dimension="2d",bool mipmaps=false){
-        if(channels!=4||layers!=1||array||dimension!="2d"||(floating&&(srgb||mipmaps)))throw std::runtime_error("Direct3D12 data texture layout not ported yet");
+        if(channels!=4||layers!=1||dimension!="2d"||(floating&&(srgb||mipmaps||array))||(array&&mipmaps))throw std::runtime_error("Direct3D12 data texture layout not ported yet");
+        // A one-layer cookie still binds to Texture2DArray in HLSL.
+        if(array){auto t=createTexture(w,h,bytes,srgb,false);D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.Format=t.format;v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2DARRAY;v.Texture2DArray.MipLevels=1;v.Texture2DArray.ArraySize=1;gpu.device->CreateShaderResourceView(t.get(),&v,t.srv);return t;}
         if(!floating)return createTexture(w,h,bytes,srgb,mipmaps);
         if(!w||!h||bytes.size()!=std::size_t(w)*h*16)throw std::runtime_error("Material texture dimensions or bytes invalid");
         for(std::size_t i=0;i<bytes.size();i+=4){float v;std::memcpy(&v,bytes.data()+i,4);if(!std::isfinite(v))throw std::runtime_error("2D float texture must be finite");}
@@ -659,6 +675,20 @@ public:
     }
     void releaseMotion(Instances& t){gpu.retire(std::move(t.previous.value));t.previous.size=0;t.previousValues.clear();}
     void releaseMotion(Deformation& t){gpu.retire(std::move(t.previousPose.value));t.previousPose.size=0;t.previous.clear();}
+    Texture createRenderTarget(std::uint32_t w,std::uint32_t h,bool stencil=false){
+        if(!w||!h||w>D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION||h>D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION)throw std::runtime_error("2D target dimensions invalid");
+        Texture out;static_cast<d3d12::Texture&>(out)=gpu.renderTarget(w,h,DXGI_FORMAT_R8G8B8A8_UNORM,{0,0,0,0});out.srv=views.take();gpu.device->CreateShaderResourceView(out.get(),nullptr,out.srv);
+        if(stencil){D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=w;d.Height=h;d.DepthOrArraySize=1;d.MipLevels=1;d.Format=DXGI_FORMAT_D24_UNORM_S8_UINT;d.SampleDesc.Count=1;d.Flags=D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+            D3D12_CLEAR_VALUE c{};c.Format=d.Format;c.DepthStencil.Depth=1;out.stencil.value=gpu.committed(D3D12_HEAP_TYPE_DEFAULT,d,D3D12_RESOURCE_STATE_DEPTH_WRITE,&c,"Direct3D12 2D stencil");out.stencil.state=D3D12_RESOURCE_STATE_DEPTH_WRITE;out.stencilView=gpu.dsvs.take();gpu.device->CreateDepthStencilView(out.stencil.get(),nullptr,out.stencilView);}
+        gpu.transition(out,readable);return out;
+    }
+    void begin2D(Texture& target,const SceneFrame& value,bool clear=false){
+        if(!begun||activeProbe||active2D||activeShadow>=0||!target.renderTarget()||!SceneRenderer::finite(value.viewProjection)||!SceneRenderer::finite(value.viewport)||!SceneRenderer::finite(value.clear)||(value.scissor&&!SceneRenderer::finite(*value.scissor)))throw std::runtime_error("2D pass invalid");
+        if(value.viewport[2]<=0||value.viewport[3]<=0||value.viewport[0]<0||value.viewport[1]<0||value.viewport[0]+value.viewport[2]>target.width||value.viewport[1]+value.viewport[3]>target.height)throw std::runtime_error("2D pass viewport invalid");
+        saved2D=frame;frame=value;active2D=&target;gpu.transition(target,D3D12_RESOURCE_STATE_RENDER_TARGET);
+        if(clear){gpu.list->ClearRenderTargetView(target.rtv,value.clear.data(),0,nullptr);if(target.stencilView.ptr)gpu.list->ClearDepthStencilView(target.stencilView,D3D12_CLEAR_FLAG_DEPTH|D3D12_CLEAR_FLAG_STENCIL,1,0,0,nullptr);}
+    }
+    void end2D(){if(!active2D)return;gpu.transition(*active2D,readable);active2D=nullptr;frame=saved2D;}
     void setPostLookup(const Texture* value){if(value&&(value->height<2||value->height>64||value->width!=value->height*value->height))throw std::runtime_error("Post lookup texture owner/dimensions invalid");postLookup=value;}
     void releaseTransmission(){views.give(transmissionView);views.give(transmissionDepthView);transmissionView=transmissionDepthView={};gpu.retire(std::move(transmissionImage.value));gpu.retire(std::move(transmissionDepth.value));transmissionImage.width=transmissionImage.height=0;transmissionMips=0;transmissionReady=false;}
     // Same as SceneRenderer::captureTransmission: copy the HDR opaque pass and depth, then build the mip chain.
@@ -679,7 +709,7 @@ public:
         generateMips(transmissionImage,transmissionMips,DXGI_FORMAT_R16G16B16A16_FLOAT,DXGI_FORMAT_R16G16B16A16_FLOAT,false);transmissionReady=true;
     }
     void begin(const SceneFrame& value){
-        endProbe();endShadow();for(const auto& light:lights)if(light.position[3]<3&&light.cone[3]>0&&light.cone[3]+(light.position[3]==1?5:0)>shadows.size())throw std::runtime_error("Shadow light reference invalid");
+        endProbe();end2D();endShadow();for(const auto& light:lights)if(light.position[3]<3&&light.cone[3]>0&&light.cone[3]+(light.position[3]==1?5:0)>shadows.size())throw std::runtime_error("Shadow light reference invalid");
         // ponytail: post settings are range-checked by BloomPass::begin on the D3D11 path; here only finiteness is enforced.
         if(value.postProcess)for(const auto* row:{&value.postProcess->grade,&value.postProcess->filter,&value.postProcess->effects,&value.postProcess->vignette,&value.postProcess->vignetteColor,&value.postProcess->balance,&value.postProcess->lift,&value.postProcess->gamma,&value.postProcess->gain,&value.postProcess->lens,&value.postProcess->bokeh,&value.postProcess->focus,&value.postProcess->occlusion,&value.postProcess->lookup,&value.postProcess->camera,&value.postProcess->exposure,&value.postProcess->adapt})if(!SceneRenderer::finite(*row))throw std::runtime_error("Post-process non-finite value");
         if(value.postProcess&&value.postProcess->lookup[1]>0&&(!postLookup||value.postProcess->lookup[1]!=float(postLookup->height)))throw std::runtime_error("Post lookup size mismatch");
@@ -703,11 +733,18 @@ public:
         cullLights(frame.viewport[2]>0?frame.viewport:std::array<float,4>{0,0,float(width),float(height)});
         if(value.viewportClear){if(!background.count)background=createMesh({{{-1,-1,0}},{{1,-1,0}},{{1,1,0}},{{-1,1,0}}},{0,1,2,0,2,3});SceneMaterial fill;fill.color=*value.viewportClear;fill.unlit=true;fill.toneMapped=false;fill.depthTest=fill.depthWrite=false;const auto vp=frame.viewProjection;frame.viewProjection=identity;draw(background,identity,identity,fill);frame.viewProjection=vp;}
     }
-    void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const Program* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={},const Instances* instances=nullptr,const Deformation* deformation=nullptr,const void* twoD=nullptr,const std::array<ProbeBinding,2>* probeBindings=nullptr,const Matrix* previousWorld=nullptr,float motionFlag=0,const Texture* lightmap=nullptr,bool globalProbes=false){
+    void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const Program* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={},const Instances* instances=nullptr,const Deformation* deformation=nullptr,const Bindings2D* twoD=nullptr,const std::array<ProbeBinding,2>* probeBindings=nullptr,const Matrix* previousWorld=nullptr,float motionFlag=0,const Texture* lightmap=nullptr,bool globalProbes=false){
         if((previousWorld&&!SceneRenderer::finite(*previousWorld))||!std::isfinite(motionFlag)||(motionFlag!=-1&&motionFlag!=0&&motionFlag!=1&&motionFlag!=2))throw std::runtime_error("Object motion input invalid");
         if(lightmap&&!mesh.uv1.value.p)throw std::runtime_error("Baked lightmap texture or UV1 invalid");
         if(!std::isfinite(material.lightmapIntensity)||material.lightmapIntensity<0)throw std::runtime_error("Baked lightmap intensity invalid");
-        if(twoD)throw std::runtime_error("Direct3D12 2D bindings are not ported yet");
+        // Same Scene2D validation as SceneRenderer::draw.
+        Scene2D settings=twoD?twoD->settings:Scene2D{};
+        if(!SceneRenderer::finite(settings.pass)||!SceneRenderer::finite(settings.screen)||!SceneRenderer::finite(settings.origin)||!SceneRenderer::finite(settings.modes)||!SceneRenderer::finite(settings.channels)||!SceneRenderer::finite(settings.maskX)||!SceneRenderer::finite(settings.maskY)||!SceneRenderer::finite(settings.project)||settings.pass[0]<0||settings.pass[0]>6||settings.pass[1]<0||settings.pass[1]>2||settings.screen[2]<0||settings.screen[2]>=64||settings.screen[3]<0||settings.screen[3]>64||settings.screen[0]<=0||settings.screen[1]<=0||settings.pass[2]<0||settings.pass[2]>1||settings.pass[3]<0||settings.pass[3]>1||settings.origin[2]<-1||settings.origin[2]>=64)throw std::runtime_error("2D settings invalid");
+        for(float v:{settings.pass[0],settings.pass[1],settings.pass[2],settings.screen[2],settings.screen[3],settings.origin[2]})if(std::floor(v)!=v)throw std::runtime_error("2D index must be integral");
+        for(std::size_t i=0;i<4;i++)if(settings.modes[i]<0||settings.modes[i]>2||std::floor(settings.modes[i])!=settings.modes[i]||settings.channels[i]<-1||settings.channels[i]>7||std::floor(settings.channels[i])!=settings.channels[i])throw std::runtime_error("2D blend style invalid");
+        if(twoD){if(programMaps.size()>13)throw std::runtime_error("2D effects reserve three material samplers");for(const auto* t:twoD->maps)if(t&&t==active2D)throw std::runtime_error("2D texture binding invalid");if(twoD->maskSampling>=54)throw std::runtime_error("2D mask sampler invalid");}
+        int mode2D=0,blend2D=0,stencil2D=0;
+        if(active2D){mode2D=int(settings.pass[0]);if(mode2D<1||mode2D>6)throw std::runtime_error("2D offscreen mode invalid");blend2D=mode2D==6?2:mode2D==3?1:0;stencil2D=mode2D==1||mode2D==2?0:mode2D==4?2:mode2D==5?3:1;if(stencil2D&&!active2D->stencilView.ptr)throw std::runtime_error("2D stencil target required");}
         if(program&&(!program->ready()||programMaps.size()>16||programMaps.size()!=programSampling.size()||std::any_of(programMaps.begin(),programMaps.end(),[](const Texture* t){return !t;})))throw std::runtime_error("Material program bindings invalid");
         if(!program&&(!programMaps.empty()||!programSampling.empty()))throw std::runtime_error("Material program bindings invalid");
         if(deformation&&(deformation->vertexCount!=mesh.vertexCount||deformation->current.empty()||(instances&&instances->positionsOnly())))throw std::runtime_error("Deformation draw binding invalid");
@@ -719,16 +756,17 @@ public:
         std::vector<std::uint32_t> keys(samplerCount,52);// 52 = linear clamp, D3D11's default for unbound samplers.
         for(std::size_t i=0;i<6&&i<samplerCount;i++)keys[i]=sampling[i];
         for(std::size_t i=0;i<programSampling.size();i++)keys[i]=programSampling[i];
+        if(twoD&&samplerCount>15){keys[13]=twoD->maskSampling;keys[14]=16;keys[15]=17;}
         // Probe/sky selection mirrors SceneRenderer::draw; t39..t43, t46/t47, b2, sampler s14 = key 16.
         std::array<ProbeSettings,3> probeData{};for(auto& p:probeData)p.options[0]=0;std::array<const Probe*,2> bound{};bool probeSampler=false;
-        if(probeBindings&&(!activeProbe||probeIndirect)&&activeShadow<0){for(std::size_t i=0;i<2;i++){const auto& b=(*probeBindings)[i];if(!b.resource)continue;const auto& p=*b.resource;if(activeProbe&&!p.ready)continue;
+        if(probeBindings&&(!activeProbe||probeIndirect)&&activeShadow<0&&!active2D){for(std::size_t i=0;i<2;i++){const auto& b=(*probeBindings)[i];if(!b.resource)continue;const auto& p=*b.resource;if(activeProbe&&!p.ready)continue;
             if(!p.ready||!SceneRenderer::finite(b.settings.center)||!SceneRenderer::finite(b.settings.minimum)||!SceneRenderer::finite(b.settings.maximum)||!SceneRenderer::finite(b.settings.options)||!SceneRenderer::finite(b.settings.localX)||!SceneRenderer::finite(b.settings.localY)||!SceneRenderer::finite(b.settings.localZ)||!SceneRenderer::finite(b.settings.faceScale)||!probeVolumeBasisUsable(b.settings)||!probeProjectionUsable(b.settings)||!probeInfluenceUsable(b.settings)||b.settings.faceScale[0]<=0||b.settings.faceScale[1]<=0||b.settings.faceScale[2]<=0||b.settings.center[3]<0||b.settings.minimum[3]<0||b.settings.options[1]<0||b.settings.options[2]<0)throw std::runtime_error("Probe draw binding invalid");
             for(std::size_t j=0;j<3;j++)if(b.settings.minimum[j]>=b.settings.maximum[j])throw std::runtime_error("Probe bounds invalid");
             probeData[i]=b.settings;probeData[i].maximum[3]=float(p.mips-1);bound[i]=&p;probeSampler=true;}}
-        const bool sky=skyProbe.ready&&activeShadow<0;if(sky){probeData[2]=skySettings;probeSampler=true;}
-        const bool atlas=globalProbes&&atlasCount&&(!activeProbe||probeIndirect)&&activeShadow<0;
+        const bool sky=skyProbe.ready&&activeShadow<0&&!active2D;if(sky){probeData[2]=skySettings;probeSampler=true;}
+        const bool atlas=globalProbes&&atlasCount&&(!activeProbe||probeIndirect)&&activeShadow<0&&!active2D;
         if(atlas){probeData[0].blendNegative[3]=atlasInfluence?1.f:0.f;probeData[0].faceScale[3]=float(atlasCount%65536);probeData[1].faceScale[3]=float(atlasCount/65536);probeSampler=true;}
-        const bool transmissive=transmissionReady&&(material.transmission||material.volume[0]>0)&&!activeProbe&&activeShadow<0;
+        const bool transmissive=transmissionReady&&(material.transmission||material.volume[0]>0)&&!activeProbe&&activeShadow<0&&!active2D;
         if((probeSampler||transmissive)&&programMaps.size()>14)throw std::runtime_error("Reflections and transmission reserve one material sampler");
         if((probeSampler||transmissive)&&samplerCount>14)keys[14]=16;
         const auto samplerHandle=samplerCount?samplerTable(keys):D3D12_GPU_DESCRIPTOR_HANDLE{};
@@ -742,7 +780,8 @@ public:
         if(instances){mask|=instances->positionsOnly()?512u:256u;structured(srvs,instances->positionsOnly()?27:26,instances->data,instances->stride,instances->capacity);if(!instances->positionsOnly()&&!material.doubleSided)mask|=material.backSide?131072u:65536u;}
         if(deformation){mask|=1024u;if(deformation->boneCount)structured(srvs,28,deformation->skin,sizeof(SceneSkin),deformation->vertexCount);if(deformation->morphCount)structured(srvs,29,deformation->morph,sizeof(SceneMorph),deformation->vertexCount*deformation->morphCount);structured(srvs,30,deformation->pose,16,deformation->poseBytes/16);structured(srvs,31,deformation->previousPose.value.p?deformation->previousPose:deformation->pose,16,deformation->poseBytes/16);}
         if(instances&&!instances->positionsOnly()&&instances->previous.value.p)structured(srvs,32,instances->previous,64,instances->capacity);
-        if(tilesActive&&activeShadow<0&&!activeProbe){mask|=8192u;structured(srvs,48,tileBits,4,UINT(tileBits.size/4));}
+        if(twoD){for(UINT i=0;i<8;i++)if(twoD->maps[i]){gpu.device->CopyDescriptorsSimple(1,srvs.cpuAt(31+i),twoD->maps[i]->srv,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);}}
+        if(tilesActive&&activeShadow<0&&!activeProbe&&!active2D){mask|=8192u;structured(srvs,48,tileBits,4,UINT(tileBits.size/4));}
         if(activeProbe)mask|=2048u;
         const auto copy=[&](UINT slot,D3D12_CPU_DESCRIPTOR_HANDLE h){gpu.device->CopyDescriptorsSimple(1,srvs.cpuAt(slot),h,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);};
         for(UINT i=0;i<2;i++)if(bound[i]){copy(39+i,bound[i]->view);copy(41+i,bound[i]->irradiance);copy(43,brdfView);}
@@ -750,7 +789,7 @@ public:
         if(atlas){copy(50,atlasView);copy(51,atlasTableView);copy(52,atlasSHView);copy(43,brdfView);}
         if(program){structured(srvs,7,program->parameters,4,UINT(program->parameters.size/4));for(std::size_t i=0;i<programMaps.size();i++)copy(UINT(8+i),programMaps[i]->srv);}
         if(transmissive){copy(44,transmissionView);copy(45,transmissionDepthView);mask|=4096u;}
-        const bool toHDR=hdr.texture.value.p&&!activeProbe&&activeShadow<0;if(toHDR){mask|=128u;hdrPending=true;gpu.transition(hdr.texture,D3D12_RESOURCE_STATE_RENDER_TARGET);}
+        const bool toHDR=hdr.texture.value.p&&!activeProbe&&activeShadow<0&&!active2D;if(toHDR){mask|=128u;hdrPending=true;gpu.transition(hdr.texture,D3D12_RESOURCE_STATE_RENDER_TARGET);}
         if(lightmap){copy(49,lightmap->srv);mask|=32768u|(material.lightmapReflectionMix?262144u:0u);}
         const auto& rect=frame.viewport;const bool custom=rect[2]>0&&rect[3]>0;const std::array<float,4> area=custom?rect:std::array<float,4>{0,0,float(width),float(height)};
         const auto* screenSettings=frame.screenEffects?&*frame.screenEffects:nullptr;Matrix prior=identity;if(screenSettings&&motionFlag!=0)prior=SceneRenderer::multiplyMatrix(screenSettings->previousVP,previousWorld?*previousWorld:world);
@@ -758,14 +797,15 @@ public:
         data.shotShape[3]=material.lightmapIntensity;
         auto u=gpu.upload(std::max<std::size_t>(sizeof(data),cbuffers.at(0)),256);std::memset(u.cpu,0,std::max<std::size_t>(sizeof(data),cbuffers.at(0)));std::memcpy(u.cpu,&data,sizeof(data));
         const std::size_t raster=(SceneRenderer::orientation(world)<0?3:0)+(material.doubleSided||(instances&&instances->mirrored)?2:material.backSide?1:0);
-        auto* list=gpu.list.p;list->SetGraphicsRootSignature(root.p);const bool mrt=toHDR&&screen&&(surfaceNormal.texture.value.p||surfaceMotion.texture.value.p);UINT surfaceTargets=0;{UINT bit=1;for(auto* i:{&surfaceNormal,&surfaceAlbedo,&surfaceMotion,&surfaceAmbient}){if(i->texture.value.p)surfaceTargets|=bit;bit<<=1;}}
-        list->SetPipelineState(activeShadow>=0?shadowPipeline(raster,program):mrt?surfacePipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),surfaceTargets,program):pipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),activeProbe!=nullptr||toHDR,program));
-        const auto probeAddress=gpu.constants(probeData.data(),sizeof(probeData));
-        UINT index=0;for(const auto& c:cbuffers)list->SetGraphicsRootConstantBufferView(index++,c.first==0?u.gpu:c.first==2?probeAddress:frameBuffers.at(c.first));
+        auto* list=gpu.list.p;list->SetGraphicsRootSignature(root.p);const bool mrt=!active2D&&toHDR&&screen&&(surfaceNormal.texture.value.p||surfaceMotion.texture.value.p);UINT surfaceTargets=0;{UINT bit=1;for(auto* i:{&surfaceNormal,&surfaceAlbedo,&surfaceMotion,&surfaceAmbient}){if(i->texture.value.p)surfaceTargets|=bit;bit<<=1;}}
+        list->SetPipelineState(active2D?pipeline2D(raster,blend2D,stencil2D,active2D->stencilView.ptr!=0,program):activeShadow>=0?shadowPipeline(raster,program):mrt?surfacePipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),surfaceTargets,program):pipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),activeProbe!=nullptr||toHDR,program));
+        const auto probeAddress=gpu.constants(probeData.data(),sizeof(probeData)),settingsAddress=gpu.constants(&settings,sizeof(settings));
+        UINT index=0;for(const auto& c:cbuffers)list->SetGraphicsRootConstantBufferView(index++,c.first==0?u.gpu:c.first==1?settingsAddress:c.first==2?probeAddress:frameBuffers.at(c.first));
         list->SetGraphicsRootDescriptorTable(srvRoot,srvs.gpu);if(samplerCount)list->SetGraphicsRootDescriptorTable(samplerRoot,samplerHandle);
         const D3D12_VIEWPORT viewport{area[0],area[1],area[2],area[3],0,1};const auto crop=frame.scissor.value_or(area);
         const D3D12_RECT scissor{static_cast<LONG>(std::floor(crop[0])),static_cast<LONG>(std::floor(crop[1])),static_cast<LONG>(std::ceil(crop[0]+crop[2])),static_cast<LONG>(std::ceil(crop[1]+crop[3]))};
-        if(activeProbe){list->OMSetRenderTargets(1,&activeProbe->faces[probeFace],FALSE,&activeProbe->depth.dsv);}
+        if(active2D){list->OMSetRenderTargets(1,&active2D->rtv,FALSE,active2D->stencilView.ptr?&active2D->stencilView:nullptr);list->OMSetStencilRef(mode2D==6?0:1);}
+        else if(activeProbe){list->OMSetRenderTargets(1,&activeProbe->faces[probeFace],FALSE,&activeProbe->depth.dsv);}
         else if(mrt){std::array<D3D12_CPU_DESCRIPTOR_HANDLE,5> targets{hdr.rtv,nullTargets[0],nullTargets[1],nullTargets[2],nullTargets[3]};std::size_t k=1;for(auto* i:{&surfaceNormal,&surfaceAlbedo,&surfaceMotion,&surfaceAmbient}){if(i->texture.value.p){gpu.transition(i->texture,D3D12_RESOURCE_STATE_RENDER_TARGET);targets[k]=i->rtv;}++k;}list->OMSetRenderTargets(5,targets.data(),FALSE,&depth.dsv);}
         else if(activeShadow<0){list->OMSetRenderTargets(1,toHDR?&hdr.rtv:&color.rtv,FALSE,&depth.dsv);}
         else{const D3D12_CPU_DESCRIPTOR_HANDLE layer{shadowTargets->GetCPUDescriptorHandleForHeapStart().ptr+SIZE_T(activeShadow)*dsvStride};list->OMSetRenderTargets(0,nullptr,FALSE,&layer);}
@@ -775,7 +815,7 @@ public:
         const D3D12_INDEX_BUFFER_VIEW indexView{mesh.indices.address(),mesh.count*4,DXGI_FORMAT_R32_UINT};
         list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);list->IASetVertexBuffers(0,2,buffers);list->IASetIndexBuffer(&indexView);list->DrawIndexedInstanced(count,instances?instances->count:1,first,0,0);
     }
-    std::vector<std::uint8_t> readPixels(){endProbe();endShadow();completeHDR();return gpu.read(color);}
+    std::vector<std::uint8_t> readPixels(){endProbe();end2D();endShadow();completeHDR();return gpu.read(color);}
     d3d12::Texture& target(){return color;}
 };
 }

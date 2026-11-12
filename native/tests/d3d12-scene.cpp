@@ -94,8 +94,8 @@ struct Extra {
 };
 
 // One scene script for both backends. Returns full, cropped, shadowed and many-light images.
-template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,27> render(R& r,MakeTexture texture){
-    const Scene scene;const Extra extra(scene);const auto d=draws();std::array<std::vector<std::uint8_t>,27> images;
+template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,35> render(R& r,MakeTexture texture){
+    const Scene scene;const Extra extra(scene);const auto d=draws();std::array<std::vector<std::uint8_t>,35> images;
     auto cube=r.createMesh(scene.cube,scene.cubeIndex);auto quad=r.createMesh(scene.quad,scene.quadIndex,scene.quadUV1);auto plain=r.createMesh(scene.quad,scene.quadIndex);
     auto checker=texture(r,8,8,scene.checker,true);auto rough=texture(r,8,8,scene.rough,false);
     auto instances=r.createInstances(4);r.setInstances(instances,extra.instances);auto shots=r.createInstances(4,true);r.setShotPositions(shots,extra.shots);
@@ -192,11 +192,33 @@ template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,
     r.draw(plain,extra.ground,extra.ground,skinned);r.draw(cube,d.cube,d.cube,d.lit,{},{},0,0,&graph,graphMaps,{0});images[25]=r.readPixels();r.setShadows({});r.setLights(scene.lights);
     auto stream=r.createMesh(scene.quad,scene.quadIndex,{},true);std::vector<std::array<float,6>> moved;for(const auto& v:scene.quad)moved.push_back({v.position[0]*1.3f,v.position[1]*.8f+.2f,v.position[2]+.3f,.2f,0,.98f});r.updateMeshVertices(stream,moved);
     SceneFrame cleared=frame(false);cleared.viewport={10,6,70,80};cleared.viewportClear=std::array<float,4>{.3f,.1f,.25f,1};r.begin(cleared);r.draw(stream,identity,identity,d.lit);r.draw(cube,d.cube,d.cube,d.lit);images[26]=r.readPixels();
+    // 3-4b 2D (scene-2d.hpp scenarios): offscreen mask passes, inside/outside masking, lit 2D with light data, light-mask channel,
+    // blend style, cookie array texture, and stencil/additive offscreen modes 3..6 composited back.
+    {const std::vector<std::uint32_t> idx{0,1,2,0,2,3};SceneFrame f;f.viewProjection=identity;f.clear={.05f,.07f,.1f,1};
+        auto full=r.createMesh({{{-.9f,-.9f,.5f},{0,0,1},{0,0}},{{.9f,-.9f,.5f},{0,0,1},{1,0}},{{.9f,.9f,.5f},{0,0,1},{1,1}},{{-.9f,.9f,.5f},{0,0,1},{0,1}}},idx);
+        auto left=r.createMesh({{{-.9f,-.9f,.5f}},{{0,-.9f,.5f}},{{0,.9f,.5f}},{{-.9f,.9f,.5f}}},idx);auto top=r.createMesh({{{-.9f,0,.5f}},{{.9f,0,.5f}},{{.9f,.9f,.5f}},{{-.9f,.9f,.5f}}},idx);
+        auto target=r.createRenderTarget(96,96,true);typename R::Bindings2D b;SceneMaterial m;m.unlit=true;m.toneMapped=false;m.depthTest=m.depthWrite=false;m.doubleSided=true;
+        const auto offscreen=[&](int mode,const typename R::Mesh& geometry,bool clear,std::array<float,4> color){SceneFrame p;p.viewport={0,0,96,96};p.clear={0,0,0,0};r.begin2D(target,p,clear);b.settings.pass={float(mode),0,0,.5f};m.color=color;r.draw(geometry,identity,identity,m,{},{},0,0,nullptr,{},{},nullptr,nullptr,&b);r.end2D();};
+        r.begin(f);offscreen(1,left,true,{1,1,1,1});b.settings.pass={0,1,0,0};b.maps[0]=&target;m.color={1,0,0,1};r.draw(full,identity,identity,m,{},{},0,0,nullptr,{},{},nullptr,nullptr,&b);images[27]=r.readPixels();
+        r.begin(f);b.settings.pass[1]=2;r.draw(full,identity,identity,m,{},{},0,0,nullptr,{},{},nullptr,nullptr,&b);images[28]=r.readPixels();
+        std::vector<float> data(36*2);data[0]=0;data[1]=0;data[2]=0;data[4]=0;data[5]=.25f;data[6]=0;data[7]=1;data[20]=1;const int a=36;data[a+2]=1;data[a+4]=.5f;data[a+7]=1;data[a+8]=4;data[a+9]=4;data[a+12]=1;data[a+13]=1;data[a+16]=data[a+19]=1;data[a+20]=1;
+        const auto floats=[&](const std::vector<float>& values,std::uint32_t w,std::uint32_t h){std::vector<std::uint8_t> bytes(values.size()*4);std::memcpy(bytes.data(),values.data(),bytes.size());return r.createDataTexture(w,h,bytes,4,true);};
+        auto lights2D=floats(data,9,2);b={};b.settings.pass={0,0,1,0};b.settings.screen={96,96,0,2};b.maps[1]=&lights2D;SceneMaterial lit=m;lit.unlit=false;lit.color={1,1,1,1};r.begin(f);r.draw(full,identity,identity,lit,{},{},0,0,nullptr,{},{},nullptr,nullptr,&b);images[29]=r.readPixels();
+        b.settings.channels[0]=4;b.settings.pass[3]=1;auto lightMask=r.createTexture(1,1,{255,0,0,255},false,false);b.maps[7]=&lightMask;r.begin(f);r.draw(full,identity,identity,lit,{},{},0,0,nullptr,{},{},nullptr,nullptr,&b);images[30]=r.readPixels();
+        b.settings.channels[0]=-1;b.settings.pass[3]=0;b.settings.modes[0]=1;lit.color={0,0,1,1};r.begin(f);r.draw(full,identity,identity,lit,{},{},0,0,nullptr,{},{},nullptr,nullptr,&b);images[31]=r.readPixels();
+        data.assign(36,0);data[2]=4;data[4]=data[5]=data[6]=data[7]=1;data[16]=data[19]=1;data[20]=1;data[30]=data[31]=4;data[32]=0;
+        auto cookieLight=floats(data,9,1);auto cookie=r.createDataTexture(1,1,{0,0,255,255},4,false,1,true,true);b={};b.settings.pass[2]=1;b.settings.screen={96,96,0,1};b.maps[1]=&cookieLight;b.maps[6]=&cookie;lit.color={1,1,1,1};r.begin(f);r.draw(full,identity,identity,lit,{},{},0,0,nullptr,{},{},nullptr,nullptr,&b);images[32]=r.readPixels();
+        // Stencil modes: 6 writes stencil without color, 4/5 test not-equal/equal, 3 adds.
+        b={};r.begin(f);offscreen(2,full,true,{.2f,.2f,.6f,1});offscreen(6,top,false,{1,1,1,1});offscreen(4,full,false,{.8f,.1f,.1f,1});offscreen(5,left,false,{.1f,.8f,.1f,1});offscreen(3,left,false,{.3f,.3f,.3f,1});
+        b={};SceneMaterial show=m;show.color={1,1,1,1};r.draw(full,identity,identity,show,{&target,nullptr,nullptr,nullptr,nullptr,nullptr},{4,0,0,0,0,0});images[33]=r.readPixels();
+        // 2D draws inside an offscreen pass sampling another render target.
+        auto second=r.createRenderTarget(96,96,false);b={};b.maps[0]=&target;b.settings.pass={1,1,0,.5f};{SceneFrame p;p.viewport={0,0,96,96};p.clear={0,0,0,0};r.begin2D(second,p,true);m.color={0,1,1,1};r.draw(full,identity,identity,m,{},{},0,0,nullptr,{},{},nullptr,nullptr,&b);r.end2D();}
+        b={};r.begin(f);r.draw(full,identity,identity,show,{&second,nullptr,nullptr,nullptr,nullptr,nullptr},{4,0,0,0,0,0});images[34]=r.readPixels();}
     return images;
 }
 
 static nlohmann::json proof(DeviceDriver driver){
-    nlohmann::json out;std::array<std::vector<std::uint8_t>,27> reference;std::vector<std::uint8_t> unshadowed;
+    nlohmann::json out;std::array<std::vector<std::uint8_t>,35> reference;std::vector<std::uint8_t> unshadowed;
     {Device gpu11(driver);SceneRenderer r(gpu11,W,H);out["software11"]=gpu11.software();
         reference=render(r,[](SceneRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);});
         // Proof the shadow pass matters: same frame with receiveShadow off must differ.
@@ -206,8 +228,8 @@ static nlohmann::json proof(DeviceDriver driver){
     d3d12::Device gpu(driver,true);out["software"]=gpu.software;out["debugLayer"]=gpu.debug;
     {d3d12::SceneMeshRenderer r(gpu,W,H);gpu.begin();
         const auto images=render(r,[](d3d12::SceneMeshRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);});
-        const char* names[]={"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps","screen","ssr","ssgi","ao","geometryGI","taa","motionBlur","program","surfaceProgram","programShadow","streamClear"};const std::array<float,4> clear=frame(false).clear;
-        for(std::size_t i=0;i<27;i++)out[names[i]]=compare(images[i],reference[i],clear);
+        const char* names[]={"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps","screen","ssr","ssgi","ao","geometryGI","taa","motionBlur","program","surfaceProgram","programShadow","streamClear","mask2D","maskOutside2D","lit2D","lightMask2D","blend2D","cookie2D","stencil2D","nested2D"};const std::array<float,4> clear=frame(false).clear;
+        for(std::size_t i=0;i<35;i++)out[names[i]]=compare(images[i],reference[i],clear);
         for(std::size_t i:{17,18,19,20,21,22})out[std::string(names[i])+"ChangedPixels"]=compare(reference[i],reference[16],clear)["pixelsOver2"];
         out["bloomChangedPixels"]=compare(reference[12],reference[11],clear)["pixelsOver2"];out["postChangedPixels"]=compare(reference[13],reference[11],clear)["pixelsOver2"];out["transmissionChangedPixels"]=compare(reference[14],reference[11],clear)["pixelsOver2"];
         out["atlasChangedPixels"]=compare(reference[8],reference[9],clear)["pixelsOver2"];out["lightmapChangedPixels"]=compare(reference[10],reference[8],clear)["pixelsOver2"];
@@ -215,7 +237,7 @@ static nlohmann::json proof(DeviceDriver driver){
         out["shadowChangedPixels"]=compare(reference[2],unshadowed,clear)["pixelsOver2"];
         gpu.end();gpu.waitIdle();}
     out["validationErrors"]=validationErrors(gpu);
-    for(const char* pass:{"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps","screen","ssr","ssgi","ao","geometryGI","taa","motionBlur","program","surfaceProgram","programShadow","streamClear"}){if(out[pass]["covered"].get<std::size_t>()<=(std::string(pass)=="mipmaps"?150u:400u)||out[pass]["maxDiff"].get<int>()>2)throw std::runtime_error(std::string("scene mismatch ")+pass+" "+out[pass].dump());}
+    for(const char* pass:{"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps","screen","ssr","ssgi","ao","geometryGI","taa","motionBlur","program","surfaceProgram","programShadow","streamClear","mask2D","maskOutside2D","lit2D","lightMask2D","blend2D","cookie2D","stencil2D","nested2D"}){if(out[pass]["covered"].get<std::size_t>()<=(std::string(pass)=="mipmaps"?150u:400u)||out[pass]["maxDiff"].get<int>()>2)throw std::runtime_error(std::string("scene mismatch ")+pass+" "+out[pass].dump());}
     REQUIRE(out["shadowChangedPixels"].get<std::size_t>()>50);REQUIRE(out["probeChangedPixels"].get<std::size_t>()>50);REQUIRE(out["skyChangedPixels"].get<std::size_t>()>50);REQUIRE(out["atlasChangedPixels"].get<std::size_t>()>50);REQUIRE(out["lightmapChangedPixels"].get<std::size_t>()>50);REQUIRE(out["bloomChangedPixels"].get<std::size_t>()>50);REQUIRE(out["postChangedPixels"].get<std::size_t>()>50);REQUIRE(out["transmissionChangedPixels"].get<std::size_t>()>50);// TAA on a static view converges to the plain image, so it is parity-checked only.
     for(const char* effect:{"ssr","ssgi","ao","geometryGI","motionBlur"}){if(out[std::string(effect)+"ChangedPixels"].get<std::size_t>()<=50){throw std::runtime_error(std::string("screen effect had no effect: ")+effect);}}
     REQUIRE(out["validationErrors"]==0);return out;
