@@ -18,6 +18,7 @@
 4. 엔진 연결·성능 비교 후 기본값 전환
    - **4-0 전환 준비 (완료)**: 렌더러 쪽 빈 API 채우기, 지연 해제 안전성
    - **4-0b 파티클 시뮬레이션 이전 (완료)**
+   - **4-0c 통계·진단 API (완료)**
    - 4-1 `SceneRenderBridge` 연결(다른 세션의 멀티 카메라 작업 커밋 후)
    - 4-2 실제 게임 FPS·GPU 시간 비교, 기본값 전환
 
@@ -151,10 +152,8 @@ DX11 회귀: `check-native-scene-render --post-only`를 수정 전·후 헤더�
 
 ### 연결 전에 남은 차이 (브리지 기준 115개 중)
 
-- 이름 차이: `width()/height()` → 지금은 `renderWidth()/renderHeight()`(멤버 이름 충돌). 연결 때 정리해요.
 - 장치 차이: 브리지는 `hb::gpu::Device`와 `hb::gpu::Particles`를 써요. 파티클은 같은 API의 `d3d12::Particles`(아래)로 바꿔 끼우면 되고, 브리지의 다른 DX11 컴퓨트 직접 사용은 없어요(`device->backend()/software()` 표시만).
 - 멀티 카메라: HEAD의 `selectCameraView/cameraViewBytes`는 다른 세션이 바꾸는 중이라 그 결과에 맞춰 옮겨요.
-- 통계·진단 함수 약 60개(`bloom*`, `probeAtlas*`, `shadow*`, `particle*`, `*PreparationInfo`, `constantBufferStats`, `shaderDiskCacheInfo` 등)는 아직 없어요. 비동기 셰이더 준비(`pollShaderPreparation` 등)는 D3D12에서 동기 컴파일이라 즉시 준비됨으로 연결해요.
 
 검증: `check-native-d3d12-scene` 41장면(명시적 밉+영역 패치, 레이 씬 행 갱신→지오메트리 GI 추가) 실제 GPU·WARP 모두 DX11 대비 픽셀 최대 차이 0, 디버그 레이어 오류 0. 숨긴 창에서 렌더러 자기 관리 프레임 6회 표시(3번째 뒤 80×60로 크기 변경), GPU 시간 측정값 확인.
 
@@ -167,3 +166,14 @@ DX11 회귀: `check-native-scene-render --post-only`를 수정 전·후 헤더�
 - 장면 렌더러는 `drawParticles(const d3d12::Particles&)`로 같은 버퍼를 그려요.
 
 검증: `node tools/check-native-d3d12-particles.mjs` — 같은 명령 순서(진행, 40개 방출, 평면 반사+충돌 이벤트, 소멸+사망 이벤트, 읽기 링 3칸 채움·4번째 거부, 클리어, 리셋)를 DX11과 D3D12에서 실행해 살아있는 레코드와 이벤트를 정렬 비교했어요(빈 슬롯·이벤트 순서는 GPU 순서라 비교하지 않음). 실제 GPU·WARP 모두 상태 최대 차이 0, 충돌·사망 이벤트 각 210개 일치, 방출 뒤 살아있는 입자 정확히 +40, 디버그 레이어 오류 0.
+
+## 4-0c단계 통계·진단 API
+
+- 브리지가 부르는 렌더러 함수 115개 중 113개가 D3D12 렌더러에 같은 이름·형식으로 있어요. 남은 2개(`selectCameraView`, `cameraViewBytes`)는 다른 세션의 멀티 카메라 작업이 끝나면 옮겨요.
+- 카운터: 업로드, 메시·텍스처 영역·레이 씬 갱신(횟수·바이트), 2D 패스·그리기, 그림자 패스·그리기, 투과 할당·복사, 블룸 할당·디스패치·합성, 라이트 타일 디스패치, 프로브 캡처·디스패치, 아틀라스 복사·업로드·패딩·메타데이터, 파티클 정렬 패스·인덱스 할당·개수 읽기, 캡처, GPU 타이밍 프레임. `draws/shadowDraws`는 DX11처럼 `begin`마다 0부터 세요.
+- 바이트: 블룸·화면 효과 이미지, 그림자, 투과 밉, 라이트 타일, 하늘·아틀라스·공유 프로브, 파티클 인덱스.
+- 준비 정보(`*PreparationInfo`, `poll*Preparation`): D3D12는 동기 컴파일이라 항상 준비됨으로 DX11 구조체 그대로 보고해요. `shaderCompilationInfo`는 공유 화면 효과 컴파일 캐시, `shaderDiskCacheInfo`는 공유 디스크 캐시 값이에요.
+- 다른 점: 아틀라스는 부분 갱신 대신 재생성이라 `probeAtlasMetadataFastUpdates`는 0, `constantBufferStats`는 캐시 생략 없이 그리기마다 올린 횟수예요. `particleCount`는 레코드를 읽어 CPU에서 세요(DX11도 동기 읽기).
+- `width()/height()`가 DX11과 같은 이름이에요(내부 멤버 이름을 바꿨어요).
+
+검증: `check-native-d3d12-scene`이 커밋된 브리지에서 `renderer->` 호출 이름을 뽑아 D3D12 헤더에 모두 있는지 확인해요(보류 2개 외 누락 0). 같은 장면 스크립트 뒤 두 렌더러의 2D·그림자·갱신·프로브 캡처·투과·아틀라스·블룸 단계·캡처 통계가 같아야 통과해요.

@@ -240,10 +240,16 @@ template<class R,class MakeTexture,class MakeParticles,class StepParticles> stat
     return images;
 }
 
+// Statistics both renderers must report identically after the same script (per-frame or cache-dependent counters excluded).
+template<class R> static nlohmann::json stats(R& r){
+    return {{"draws2D",r.draws2D()},{"passes2D",r.passes2D()},{"shadowPasses",r.shadowPasses()},{"shadowDraws",r.shadowDraws()},{"meshUpdates",r.meshUpdates()},{"meshUpdateBytes",r.meshUpdateBytes()},
+        {"textureRegionUpdates",r.textureRegionUpdates()},{"textureRegionUpdateBytes",r.textureRegionUpdateBytes()},{"raySceneUpdates",r.raySceneUpdates()},{"raySceneUpdateBytes",r.raySceneUpdateBytes()},
+        {"probeCaptures",r.probeCaptures()},{"transmissionCopies",r.transmissionCopies()},{"probeAtlasCount",r.probeAtlasCount()},{"bloomLevels",r.bloomLevels()},{"shadowTextureBytes",r.shadowTextureBytes()},{"captures",r.captures()}};
+}
 static nlohmann::json proof(DeviceDriver driver){
-    nlohmann::json out;std::array<std::vector<std::uint8_t>,41> reference;std::vector<std::uint8_t> unshadowed;
+    nlohmann::json out,referenceStats;std::array<std::vector<std::uint8_t>,41> reference;std::vector<std::uint8_t> unshadowed;
     {Device gpu11(driver);SceneRenderer r(gpu11,W,H);out["software11"]=gpu11.software();
-        reference=render(r,[](SceneRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);},[&](const std::vector<float>& v){return std::make_unique<hb::gpu::Particles>(gpu11,v);},[](auto& p,float dt,std::array<float,3> force,float gravity,float drag){p->step(dt,force,gravity,drag);});
+        reference=render(r,[](SceneRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);},[&](const std::vector<float>& v){return std::make_unique<hb::gpu::Particles>(gpu11,v);},[](auto& p,float dt,std::array<float,3> force,float gravity,float drag){p->step(dt,force,gravity,drag);});referenceStats=stats(r);
         // Proof the shadow pass matters: same frame with receiveShadow off must differ.
         const Scene scene;const Extra extra(scene);const auto d=draws();auto cube=r.createMesh(scene.cube,scene.cubeIndex);auto plain=r.createMesh(scene.quad,scene.quadIndex);
         r.setShadows(extra.shadows);r.setLights(extra.shadowLights);r.begin(frame(false));SceneMaterial m=d.lit;m.receiveShadow=false;m.color={.9f,.8f,.6f,1};
@@ -251,6 +257,7 @@ static nlohmann::json proof(DeviceDriver driver){
     d3d12::Device gpu(driver,true);out["software"]=gpu.software;out["debugLayer"]=gpu.debug;
     {d3d12::SceneMeshRenderer r(gpu,W,H);gpu.begin();
         const auto images=render(r,[](d3d12::SceneMeshRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);},[&](const std::vector<float>& v){return std::make_unique<d3d12::Particles>(gpu,v);},[](auto& p,float dt,std::array<float,3> force,float gravity,float drag){p->step(dt,force,gravity,drag);});
+        const auto portedStats=stats(r);out["stats"]=portedStats;for(const auto& [key,value]:referenceStats.items())if(portedStats.at(key)!=value)throw std::runtime_error("statistic differs from D3D11: "+key+" "+value.dump()+" vs "+portedStats.at(key).dump());
         const char* names[]={"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps","screen","ssr","ssgi","ao","geometryGI","taa","motionBlur","program","surfaceProgram","programShadow","streamClear","mask2D","maskOutside2D","lit2D","lightMask2D","blend2D","cookie2D","stencil2D","nested2D","particles","sortedParticles","hdrParticles","maskedParticles","textureRegions","rayRows"};const std::array<float,4> clear=frame(false).clear;
         for(std::size_t i=0;i<41;i++)out[names[i]]=compare(images[i],reference[i],clear);
         out["rayRowsChangedPixels"]=compare(reference[40],reference[20],clear)["pixelsOver2"];
@@ -264,8 +271,8 @@ static nlohmann::json proof(DeviceDriver driver){
     // Self-managed frames on a hidden window: begin/draw/present six times with a resize, GPU timestamps resolved.
     {Window window;d3d12::SceneMeshRenderer shown(gpu,64,48,window.value);const Scene scene;const auto d=draws();auto cube=shown.createMesh(scene.cube,scene.cubeIndex);shown.setLights(scene.lights);
         for(int i=0;i<6;i++){if(i==3)shown.resize(80,60);shown.begin(frame(false));shown.draw(cube,d.cube,d.cube,d.lit);REQUIRE(shown.present(0));}
-        out["presents"]=shown.presents();out["drawsPresented"]=shown.draws();out["gpuTimeMs"]=shown.gpuTimeMs().value_or(-1.0);out["presentedSize"]={shown.renderWidth(),shown.renderHeight()};
-        REQUIRE(shown.presents()==6&&shown.draws()==6&&shown.gpuTimeMs().has_value()&&shown.renderWidth()==80);}
+        out["presents"]=shown.presents();out["drawsPresented"]=shown.draws();out["gpuTimeMs"]=shown.gpuTimeMs().value_or(-1.0);out["presentedSize"]={shown.width(),shown.height()};
+        REQUIRE(shown.presents()==6&&shown.draws()==1&&shown.gpuTimeMs().has_value()&&shown.width()==80);}
     out["validationErrors"]=validationErrors(gpu);
     for(const char* pass:{"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps","screen","ssr","ssgi","ao","geometryGI","taa","motionBlur","program","surfaceProgram","programShadow","streamClear","mask2D","maskOutside2D","lit2D","lightMask2D","blend2D","cookie2D","stencil2D","nested2D","particles","sortedParticles","hdrParticles","maskedParticles","textureRegions","rayRows"}){if(out[pass]["covered"].get<std::size_t>()<=(std::string(pass)=="mipmaps"?150u:400u)||out[pass]["maxDiff"].get<int>()>2)throw std::runtime_error(std::string("scene mismatch ")+pass+" "+out[pass].dump());}
     REQUIRE(out["shadowChangedPixels"].get<std::size_t>()>50);REQUIRE(out["probeChangedPixels"].get<std::size_t>()>50);REQUIRE(out["skyChangedPixels"].get<std::size_t>()>50);REQUIRE(out["atlasChangedPixels"].get<std::size_t>()>50);REQUIRE(out["lightmapChangedPixels"].get<std::size_t>()>50);REQUIRE(out["bloomChangedPixels"].get<std::size_t>()>50);REQUIRE(out["postChangedPixels"].get<std::size_t>()>50);REQUIRE(out["transmissionChangedPixels"].get<std::size_t>()>50);REQUIRE(out["particleChangedPixels"].get<std::size_t>()>50);REQUIRE(out["rayRowsChangedPixels"].get<std::size_t>()>50);// TAA on a static view converges to the plain image, so it is parity-checked only.
