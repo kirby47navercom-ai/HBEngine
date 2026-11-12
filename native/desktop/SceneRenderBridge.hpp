@@ -18,7 +18,8 @@ struct SceneRenderD3D12 {
     using Device=hb::gpu::d3d12::Device;using Renderer=hb::gpu::d3d12::SceneMeshRenderer;using Particles=hb::gpu::d3d12::Particles;
     // Each scene draw takes a 53-slot descriptor table; 3 x 262144 stays under the 1,000,000 shader-visible heap limit.
     // ponytail: about 4900 draws per frame; reuse tables per draw if a game needs more.
-    static std::unique_ptr<Device> open(const std::string&,std::string&){return std::make_unique<Device>(hb::gpu::DeviceDriver::Automatic,false,8u<<20,1u<<18);}
+    // "auto" takes hardware only: without a Direct3D12 GPU the bridge falls back to Direct3D11 rather than WARP.
+    static std::unique_ptr<Device> open(const std::string& requested,std::string&){return std::make_unique<Device>(requested=="auto"?hb::gpu::DeviceDriver::Hardware:hb::gpu::DeviceDriver::Automatic,false,8u<<20,1u<<18);}
     // Shaders compile synchronously on this backend, so asynchronous preparation stays off.
     static std::unique_ptr<Renderer> renderer(Device& device,std::uint32_t width,std::uint32_t height,HWND window,bool){return std::make_unique<Renderer>(device,width,height,window);}
     static nlohmann::json describe(const Device& device){return {{"backend","D3D12"},{"device","Direct3D12"},{"software",device.software}};}
@@ -180,10 +181,17 @@ class SceneRenderBridge {
     std::unique_ptr<SceneRenderBridgeCore<SceneRenderD3D11>> d3d11;std::unique_ptr<SceneRenderBridgeCore<SceneRenderD3D12>> d3d12;
 public:
     void shutdown(){if(d3d11)d3d11->shutdown();if(d3d12)d3d12->shutdown();d3d11.reset();d3d12.reset();}
-    // "d3d12" is the direct Direct3D12 renderer; "d3d12-11on12" and "auto" run SceneRenderer on Direct3D11 (11On12 when available).
+    // "d3d12" is the direct Direct3D12 renderer, "d3d12-11on12" SceneRenderer on 11On12, "d3d11" plain SceneRenderer.
+    // "auto" tries direct Direct3D12 on a hardware adapter first and falls back to Direct3D11 (hardware, then WARP) with the reason.
     nlohmann::json command(const nlohmann::json& packet,HWND window,bool development,const std::vector<unsigned char>* binary=nullptr){
         if(packet.at("op").get<std::string>()=="init"){
             const auto requested=packet.at("data").value("backend",std::string("d3d11"));if(requested!="auto"&&requested!="d3d11"&&requested!="d3d12"&&requested!="d3d12-11on12")throw std::runtime_error("Graphics backend must be auto, d3d11, d3d12 or d3d12-11on12");
+            if(requested=="auto"){
+                if((d3d11&&d3d11->initialized())||(d3d12&&d3d12->initialized())){throw std::runtime_error("Render already initialized");}d3d11.reset();
+                std::string reason;try{d3d12=std::make_unique<SceneRenderBridgeCore<SceneRenderD3D12>>();return d3d12->command(packet,window,development,binary);}catch(const std::exception& error){reason=error.what();}
+                if(d3d12){d3d12->shutdown();d3d12.reset();}auto fallback=packet;fallback["data"]["backend"]="d3d11";d3d11=std::make_unique<SceneRenderBridgeCore<SceneRenderD3D11>>();
+                auto info=d3d11->command(fallback,window,development,binary);info["requestedBackend"]="auto";info["fallback"]=reason;return info;
+            }
             if(requested=="d3d12"){if(d3d11&&d3d11->initialized()){throw std::runtime_error("Render already initialized");}d3d11.reset();if(!d3d12){d3d12=std::make_unique<SceneRenderBridgeCore<SceneRenderD3D12>>();}return d3d12->command(packet,window,development,binary);}
             if(d3d12&&d3d12->initialized()){throw std::runtime_error("Render already initialized");}d3d12.reset();if(!d3d11){d3d11=std::make_unique<SceneRenderBridgeCore<SceneRenderD3D11>>();}return d3d11->command(packet,window,development,binary);
         }
