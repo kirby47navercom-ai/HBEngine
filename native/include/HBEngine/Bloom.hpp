@@ -6,8 +6,11 @@
 namespace hb::gpu {
 struct ScenePostProcess {std::array<float,4> grade{0,1,1,0},filter{1,1,1,1},effects{0,.2f,0,0},vignette{.5f,.5f,0,0},vignetteColor{0,0,0,1},balance{},lift{},gamma{1,1,1,0},gain{1,1,1,0},lens{.05f,2.8f,.024f,0},bokeh{0,0,1,12},focus{10,5,4,0},occlusion{1,.02f,0,0},lookup{},camera{.1f,1000,0,1},exposure{0,-8,8,.18f},adapt{3,1,0,0};};
 struct SceneBloom {float threshold=1,strength=.6f,radius=.4f,resolutionScale=.5f;};
+namespace d3d12{class SceneMeshRenderer;}
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 class BloomPass {
+    // The D3D12 port runs this same shader code with the same constants.
+    friend class d3d12::SceneMeshRenderer;
     // Five lazy bloom levels; depth effects and exposure allocate resources only when enabled.
     Device& gpu;ScreenEffectsPass screen;
     struct Image {detail::Com<ID3D11Texture2D> texture;detail::Com<ID3D11ShaderResourceView> view;detail::Com<ID3D11UnorderedAccessView> output;detail::Com<ID3D11RenderTargetView> target;UINT width=0,height=0;};

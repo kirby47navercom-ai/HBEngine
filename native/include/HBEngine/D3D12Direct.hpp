@@ -161,15 +161,17 @@ public:
         t.rtv=rtvs.take();device->CreateRenderTargetView(t.get(),nullptr,t.rtv);return t;
     }
     Texture depthTarget(UINT width,UINT height){
-        D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=width;d.Height=height;d.DepthOrArraySize=1;d.MipLevels=1;d.Format=DXGI_FORMAT_D32_FLOAT;d.SampleDesc.Count=1;d.Flags=D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
-        D3D12_CLEAR_VALUE c{};c.Format=d.Format;c.DepthStencil.Depth=1;
+        // Typeless storage so post effects can sample depth as R32_FLOAT.
+        D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=width;d.Height=height;d.DepthOrArraySize=1;d.MipLevels=1;d.Format=DXGI_FORMAT_R32_TYPELESS;d.SampleDesc.Count=1;d.Flags=D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+        D3D12_CLEAR_VALUE c{};c.Format=DXGI_FORMAT_D32_FLOAT;c.DepthStencil.Depth=1;
         Texture t;t.width=width;t.height=height;t.format=d.Format;t.value=committed(D3D12_HEAP_TYPE_DEFAULT,d,D3D12_RESOURCE_STATE_DEPTH_WRITE,&c,"Direct3D12 depth target");t.state=D3D12_RESOURCE_STATE_DEPTH_WRITE;
-        t.dsv=dsvs.take();device->CreateDepthStencilView(t.get(),nullptr,t.dsv);return t;
+        t.format=DXGI_FORMAT_D32_FLOAT;t.dsv=dsvs.take();D3D12_DEPTH_STENCIL_VIEW_DESC v{};v.Format=DXGI_FORMAT_D32_FLOAT;v.ViewDimension=D3D12_DSV_DIMENSION_TEXTURE2D;device->CreateDepthStencilView(t.get(),&v,t.dsv);return t;
     }
-    // Single-mip sampled texture; rowBytes is the tightly packed source pitch.
-    Texture texture(UINT width,UINT height,DXGI_FORMAT format,const void* data,UINT rowBytes){
+    // Sampled texture with level 0 uploaded; rowBytes is the tightly packed source pitch. storage overrides the
+    // resource format (typeless for sRGB textures that also need a UNORM UAV for mip generation).
+    Texture texture(UINT width,UINT height,DXGI_FORMAT format,const void* data,UINT rowBytes,UINT mips=1,D3D12_RESOURCE_FLAGS flags=D3D12_RESOURCE_FLAG_NONE,DXGI_FORMAT storage=DXGI_FORMAT_UNKNOWN){
         requireRecording();if(!width||!height||!data)throw std::runtime_error("Direct3D12 texture size or data");
-        D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=width;d.Height=height;d.DepthOrArraySize=1;d.MipLevels=1;d.Format=format;d.SampleDesc.Count=1;
+        D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=width;d.Height=height;d.DepthOrArraySize=1;d.MipLevels=UINT16(mips);d.Format=storage==DXGI_FORMAT_UNKNOWN?format:storage;d.SampleDesc.Count=1;d.Flags=flags;
         Texture t;t.width=width;t.height=height;t.format=format;t.value=committed(D3D12_HEAP_TYPE_DEFAULT,d,D3D12_RESOURCE_STATE_COPY_DEST,nullptr,"Direct3D12 texture");t.state=D3D12_RESOURCE_STATE_COPY_DEST;
         D3D12_PLACED_SUBRESOURCE_FOOTPRINT fp{};UINT64 total=0;UINT rows=0;UINT64 rowSize=0;device->GetCopyableFootprints(&d,0,1,0,&fp,&rows,&rowSize,&total);
         if(rowSize!=rowBytes)throw std::runtime_error("Direct3D12 texture row size mismatch");

@@ -4,7 +4,9 @@
 // viewport and scissor. Phase 3-1: shadow maps, instancing/shot positions, skinning/morphs, light tiles.
 // Phase 3-2: reflection probe capture/filter (SceneProbes kernels), local probe bindings, sky HDRI,
 // global probe atlas (SceneProbeAtlas packing/padding), baked lightmaps.
-// Still D3D11-only: material programs, 2D, transmission, bloom/post, motion vectors.
+// Phase 3-3a: HDR scene target, bloom, post composite (grade/vignette/lens/bokeh/occlusion/exposure/LUT/FXAA),
+// transmission capture, GPU mip generation.
+// Still D3D11-only: screen effects (SSAO/SSR/TAA...), motion vectors, material programs, 2D, particles.
 #include "SceneRender.hpp"
 #include "D3D12Direct.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
@@ -12,10 +14,84 @@
 #include <map>
 
 namespace hb::gpu::d3d12 {
+// Root signature and null-filled descriptor tables built from shader reflection:
+// one root CBV per cbuffer, one SRV table (t0..), one UAV table (u0..), static samplers.
+class ReflectedLayout {
+public:
+    struct Srv {D3D12_SRV_DIMENSION dimension=D3D12_SRV_DIMENSION_TEXTURE2D;UINT stride=0;bool raw=false;};
+    struct Uav {D3D12_UAV_DIMENSION dimension=D3D12_UAV_DIMENSION_TEXTURE2D;UINT stride=0;bool raw=false;};
+    std::map<UINT,UINT> cbuffers;std::vector<Srv> srvs;std::vector<Uav> uavs;UINT samplers=0;Com<ID3D12RootSignature> root;UINT srvRoot=0,uavRoot=0;
+    void reflect(const std::vector<unsigned char>& code){
+        static const GUID id{0x8d536ca1,0x0cca,0x4956,{0xa8,0x37,0x78,0x69,0x63,0x75,0x55,0x84}};// d3dcompiler_47 IID_ID3D11ShaderReflection
+        const auto reflectShader=detail::libraries().symbol<decltype(&D3DReflect)>(detail::libraries().compiler,"D3DReflect");
+        Com<ID3D11ShaderReflection> r;check(reflectShader(code.data(),code.size(),id,reinterpret_cast<void**>(&r.p)),"Direct3D12 shader reflection");
+        D3D11_SHADER_DESC desc{};check(r->GetDesc(&desc),"Direct3D12 shader description");
+        for(UINT i=0;i<desc.BoundResources;i++){D3D11_SHADER_INPUT_BIND_DESC b{};check(r->GetResourceBindingDesc(i,&b),"Direct3D12 shader binding");const UINT end=b.BindPoint+b.BindCount;
+            switch(b.Type){
+            case D3D_SIT_CBUFFER:{D3D11_SHADER_BUFFER_DESC c{};check(r->GetConstantBufferByName(b.Name)->GetDesc(&c),"Direct3D12 constant buffer");auto& size=cbuffers[b.BindPoint];size=std::max(size,c.Size);break;}
+            case D3D_SIT_SAMPLER:samplers=std::max(samplers,end);break;
+            case D3D_SIT_TEXTURE:case D3D_SIT_STRUCTURED:case D3D_SIT_BYTEADDRESS:if(srvs.size()<end)srvs.resize(end);for(UINT k=b.BindPoint;k<end;k++){auto& v=srvs[k];v.raw=b.Type==D3D_SIT_BYTEADDRESS;v.stride=b.Type==D3D_SIT_STRUCTURED?b.NumSamples:0;v.dimension=b.Type==D3D_SIT_TEXTURE&&b.Dimension!=D3D_SRV_DIMENSION_BUFFER?static_cast<D3D12_SRV_DIMENSION>(b.Dimension):D3D12_SRV_DIMENSION_BUFFER;}break;
+            case D3D_SIT_UAV_RWTYPED:case D3D_SIT_UAV_RWSTRUCTURED:case D3D_SIT_UAV_RWBYTEADDRESS:if(uavs.size()<end)uavs.resize(end);for(UINT k=b.BindPoint;k<end;k++){auto& v=uavs[k];v.raw=b.Type==D3D_SIT_UAV_RWBYTEADDRESS;v.stride=b.Type==D3D_SIT_UAV_RWSTRUCTURED?b.NumSamples:0;v.dimension=b.Type==D3D_SIT_UAV_RWTYPED&&b.Dimension!=D3D_SRV_DIMENSION_BUFFER?static_cast<D3D12_UAV_DIMENSION>(b.Dimension):D3D12_UAV_DIMENSION_BUFFER;}break;
+            default:throw std::runtime_error("Direct3D12 shader uses an unsupported binding");}
+        }
+    }
+    // Every reflected sampler register must be covered by staticSamplers (register = index).
+    void build(Device& gpu,std::vector<D3D12_STATIC_SAMPLER_DESC> staticSamplers,bool inputLayout=false){
+        if(staticSamplers.size()<samplers){throw std::runtime_error("Direct3D12 reflected sampler without a static sampler");}
+        staticSamplers.resize(samplers);
+        for(UINT i=0;i<samplers;i++){staticSamplers[i].ShaderRegister=i;staticSamplers[i].ShaderVisibility=D3D12_SHADER_VISIBILITY_ALL;}
+        std::vector<D3D12_ROOT_PARAMETER> params;for(const auto& c:cbuffers){D3D12_ROOT_PARAMETER p{};p.ParameterType=D3D12_ROOT_PARAMETER_TYPE_CBV;p.Descriptor={c.first,0};p.ShaderVisibility=D3D12_SHADER_VISIBILITY_ALL;params.push_back(p);}
+        const D3D12_DESCRIPTOR_RANGE srv{D3D12_DESCRIPTOR_RANGE_TYPE_SRV,UINT(srvs.size()),0,0,0},uav{D3D12_DESCRIPTOR_RANGE_TYPE_UAV,UINT(uavs.size()),0,0,0};
+        D3D12_ROOT_PARAMETER table{};table.ParameterType=D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;table.ShaderVisibility=D3D12_SHADER_VISIBILITY_ALL;
+        if(!srvs.empty()){table.DescriptorTable={1,&srv};srvRoot=UINT(params.size());params.push_back(table);}
+        if(!uavs.empty()){table.DescriptorTable={1,&uav};uavRoot=UINT(params.size());params.push_back(table);}
+        D3D12_ROOT_SIGNATURE_DESC rd{};rd.NumParameters=UINT(params.size());rd.pParameters=params.data();rd.NumStaticSamplers=samplers;rd.pStaticSamplers=staticSamplers.data();rd.Flags=inputLayout?D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT:D3D12_ROOT_SIGNATURE_FLAG_NONE;root=gpu.rootSignature(rd);
+    }
+    static D3D12_SHADER_RESOURCE_VIEW_DESC nullSrv(const Srv& s){
+        D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.ViewDimension=s.dimension;v.Format=DXGI_FORMAT_R8G8B8A8_UNORM;
+        switch(s.dimension){
+        case D3D12_SRV_DIMENSION_BUFFER:v.Format=s.raw?DXGI_FORMAT_R32_TYPELESS:s.stride?DXGI_FORMAT_UNKNOWN:DXGI_FORMAT_R32G32B32A32_FLOAT;v.Buffer.NumElements=1;v.Buffer.StructureByteStride=s.stride;v.Buffer.Flags=s.raw?D3D12_BUFFER_SRV_FLAG_RAW:D3D12_BUFFER_SRV_FLAG_NONE;break;
+        case D3D12_SRV_DIMENSION_TEXTURE2D:v.Texture2D.MipLevels=1;break;
+        case D3D12_SRV_DIMENSION_TEXTURE2DARRAY:v.Texture2DArray.MipLevels=1;v.Texture2DArray.ArraySize=1;break;
+        case D3D12_SRV_DIMENSION_TEXTURE3D:v.Texture3D.MipLevels=1;break;
+        case D3D12_SRV_DIMENSION_TEXTURECUBE:v.TextureCube.MipLevels=1;break;
+        case D3D12_SRV_DIMENSION_TEXTURECUBEARRAY:v.TextureCubeArray.MipLevels=1;v.TextureCubeArray.NumCubes=1;break;
+        default:throw std::runtime_error("Direct3D12 shader resource dimension unsupported");}
+        return v;
+    }
+    static D3D12_UNORDERED_ACCESS_VIEW_DESC nullUav(const Uav& u){
+        D3D12_UNORDERED_ACCESS_VIEW_DESC v{};v.ViewDimension=u.dimension;v.Format=DXGI_FORMAT_R32G32B32A32_FLOAT;
+        switch(u.dimension){
+        case D3D12_UAV_DIMENSION_BUFFER:v.Format=u.raw?DXGI_FORMAT_R32_TYPELESS:u.stride?DXGI_FORMAT_UNKNOWN:DXGI_FORMAT_R32_FLOAT;v.Buffer.NumElements=1;v.Buffer.StructureByteStride=u.stride;v.Buffer.Flags=u.raw?D3D12_BUFFER_UAV_FLAG_RAW:D3D12_BUFFER_UAV_FLAG_NONE;break;
+        case D3D12_UAV_DIMENSION_TEXTURE2DARRAY:v.Texture2DArray.ArraySize=1;break;
+        case D3D12_UAV_DIMENSION_TEXTURE3D:v.Texture3D.WSize=1;break;
+        case D3D12_UAV_DIMENSION_TEXTURE2D:break;
+        default:throw std::runtime_error("Direct3D12 unordered access dimension unsupported");}
+        return v;
+    }
+    DescriptorTable srvTable(Device& gpu)const{auto t=gpu.table(UINT(srvs.size()));for(UINT i=0;i<srvs.size();i++){const auto v=nullSrv(srvs[i]);gpu.device->CreateShaderResourceView(nullptr,&v,t.cpuAt(i));}return t;}
+    DescriptorTable uavTable(Device& gpu)const{auto t=gpu.table(UINT(uavs.size()));for(UINT i=0;i<uavs.size();i++){const auto v=nullUav(uavs[i]);gpu.device->CreateUnorderedAccessView(nullptr,nullptr,&v,t.cpuAt(i));}return t;}
+    // cbvs: register -> address; missing registers get a zero-filled upload.
+    void apply(Device& gpu,bool compute,const std::map<UINT,D3D12_GPU_VIRTUAL_ADDRESS>& cbvs,const DescriptorTable* srvTableValue,const DescriptorTable* uavTableValue)const{
+        auto* list=gpu.list.p;if(compute)list->SetComputeRootSignature(root.p);else list->SetGraphicsRootSignature(root.p);UINT index=0;
+        for(const auto& c:cbuffers){auto found=cbvs.find(c.first);D3D12_GPU_VIRTUAL_ADDRESS at;if(found!=cbvs.end())at=found->second;else{auto u=gpu.upload(c.second,256);std::memset(u.cpu,0,c.second);at=u.gpu;}if(compute)list->SetComputeRootConstantBufferView(index++,at);else list->SetGraphicsRootConstantBufferView(index++,at);}
+        if(srvTableValue){if(compute)list->SetComputeRootDescriptorTable(srvRoot,srvTableValue->gpu);else list->SetGraphicsRootDescriptorTable(srvRoot,srvTableValue->gpu);}
+        if(uavTableValue){if(compute)list->SetComputeRootDescriptorTable(uavRoot,uavTableValue->gpu);else list->SetGraphicsRootDescriptorTable(uavRoot,uavTableValue->gpu);}
+    }
+    static D3D12_STATIC_SAMPLER_DESC linearClamp(){D3D12_STATIC_SAMPLER_DESC s{};s.Filter=D3D12_FILTER_MIN_MAG_MIP_LINEAR;s.AddressU=s.AddressV=s.AddressW=D3D12_TEXTURE_ADDRESS_MODE_CLAMP;s.MaxLOD=D3D12_FLOAT32_MAX;s.ComparisonFunc=D3D12_COMPARISON_FUNC_NEVER;return s;}
+};
+
+// Same 2x2 linear downsample as D3D11 GenerateMips; sRGB levels are written through a UNORM view.
+inline constexpr const char* mipShader=R"HLSL(
+cbuffer Mip:register(b0){uint4 info;};Texture2D<float4> source:register(t0);RWTexture2D<float4> destination:register(u0);SamplerState linearClamp:register(s0);
+float3 toSrgb(float3 v){return lerp(12.92*v,1.055*pow(max(v,0),1.0/2.4)-.055,step(.0031308,v));}
+[numthreads(8,8,1)]void Down(uint3 id:SV_DispatchThreadID){if(any(id.xy>=info.xy))return;float4 c=source.SampleLevel(linearClamp,(id.xy+.5)/float2(info.xy),0);destination[id.xy]=info.z?float4(toSrgb(c.rgb),c.a):c;}
+)HLSL";
+
 class SceneMeshRenderer {
 public:
     struct Mesh {Buffer vertices,indices,uv1;UINT count=0,vertexCount=0;};
-    struct Texture : d3d12::Texture {D3D12_CPU_DESCRIPTOR_HANDLE srv{};};
+    struct Texture : d3d12::Texture {D3D12_CPU_DESCRIPTOR_HANDLE srv{};UINT mips=1;};
     struct Instances {Buffer data;UINT capacity=0,count=0,stride=sizeof(SceneInstance);bool mirrored=false;
         bool positionsOnly()const{return stride==16;}std::uint32_t capacityCount()const{return capacity;}};
     struct Deformation {Buffer skin,morph,pose;std::uint32_t vertexCount=0,boneCount=0,morphCount=0,poseBytes=0;std::vector<float> current;};
@@ -43,6 +119,13 @@ private:
     Com<ID3D12RootSignature> probeRoot;std::array<Com<ID3D12PipelineState>,4> probeKernels;d3d12::Texture brdf;D3D12_CPU_DESCRIPTOR_HANDLE brdfView{};
     Probe* activeProbe=nullptr;bool probeIndirect=false;UINT probeFace=0;SceneFrame savedProbe;
     Probe skyProbe;const Texture* skySource=nullptr;std::uint32_t skySize=0;ProbeSettings skySettings{};std::uint64_t probeIdentities=0;
+    // HDR scene + BloomPass port (same shaderCode, constants and level chain).
+    struct Image {d3d12::Texture texture;D3D12_CPU_DESCRIPTOR_HANDLE rtv{};};
+    ReflectedLayout bloomCompute,bloomGraphics,mipLayout;Com<ID3D12PipelineState> extractKernel,blurKernel,meterKernel,compositePipeline,fxaaPipeline,mipKernel;
+    Image hdr,aaImage;std::vector<std::array<Image,2>> levels;std::array<Image,2> exposureImages;std::size_t exposureIndex=0;bool exposureValid=false,hdrPending=false;
+    SceneBloom bloomSettings;ScenePostProcess post;std::array<float,4> postArea{};const Texture* postLookup=nullptr;
+    // Transmission: HDR opaque copy with mips (t44) and depth copy (t45).
+    d3d12::Texture transmissionImage,transmissionDepth;D3D12_CPU_DESCRIPTOR_HANDLE transmissionView{},transmissionDepthView{};UINT transmissionMips=0;bool transmissionReady=false;
     // Global probe atlas: t50 image, t51 records + spatial index, t52 SH. ponytail: any change rebuilds the whole atlas; port DX11's incremental paths if profiling asks.
     d3d12::Texture atlasImage;Buffer atlasTable,atlasSH;D3D12_CPU_DESCRIPTOR_HANDLE atlasView{},atlasTableView{},atlasSHView{};UINT atlasCount=0;bool atlasInfluence=false;
     std::vector<std::array<std::uint64_t,2>> atlasStamps;std::vector<ProbeSettings> atlasSettings;ProbeSpatialIndex atlasSpatial;Com<ID3D12RootSignature> paddingRoot;Com<ID3D12PipelineState> paddingKernel;
@@ -165,6 +248,74 @@ private:
             const UINT edge=target.size>>stage;probeDispatch(0,{float(edge),float(stage)/float(target.mips-1),0,0},&target.source,nullptr,target.filtered.get(),&u,nullptr,nullptr,(edge+7)/8,(edge+7)/8,6);gpu.transition(target.filtered,readable);
         }else{gpu.transition(target.coefficients,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);probeDispatch(2,{0,0,0,0},&target.source,nullptr,nullptr,nullptr,nullptr,nullptr,1,1,1,target.coefficients.get());gpu.transition(target.coefficients,readable);target.ready=true;++target.revision;}
     }
+    Image image(UINT w,UINT h,bool renderTarget,DXGI_FORMAT format=DXGI_FORMAT_R16G16B16A16_FLOAT,UINT mips=1){
+        D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=w;d.Height=h;d.DepthOrArraySize=1;d.MipLevels=UINT16(mips);d.Format=format;d.SampleDesc.Count=1;d.Flags=renderTarget?D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET:D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
+        Image out;out.texture.value=gpu.committed(D3D12_HEAP_TYPE_DEFAULT,d,readable,nullptr,"Direct3D12 post image");out.texture.state=readable;out.texture.width=w;out.texture.height=h;out.texture.format=format;
+        if(renderTarget){out.rtv=gpu.rtvs.take();gpu.device->CreateRenderTargetView(out.texture.get(),nullptr,out.rtv);}return out;
+    }
+    void release(Image& i){if(i.rtv.ptr){gpu.rtvs.give(i.rtv);i.rtv={};}gpu.retire(std::move(i.texture.value));i.texture.width=i.texture.height=0;}
+    void releaseHDR(){release(hdr);release(aaImage);for(auto& l:levels){release(l[0]);release(l[1]);}levels.clear();for(auto& e:exposureImages)release(e);exposureValid=false;hdrPending=false;}
+    void prepareBloom(){
+        if(compositePipeline.p){return;}
+        const auto& code=BloomPass::shaderCode();
+        const auto extract=Device::shader(code,"HBBloom","Extract","cs_5_0"),blur=Device::shader(code,"HBBloom","Blur","cs_5_0"),meter=Device::shader(code,"HBBloom","Meter","cs_5_0"),vsCode=Device::shader(code,"HBBloom","VS","vs_5_0"),psCode=Device::shader(code,"HBBloom","PS","ps_5_0"),fxaa=Device::shader(code,"HBBloom","PFxaa","ps_5_0");
+        for(const auto* c:{&extract,&blur,&meter}){bloomCompute.reflect(*c);}
+        bloomCompute.build(gpu,{ReflectedLayout::linearClamp()});
+        for(const auto* c:{&vsCode,&psCode,&fxaa}){bloomGraphics.reflect(*c);}
+        bloomGraphics.build(gpu,{ReflectedLayout::linearClamp()});
+        extractKernel=gpu.computePipeline(bloomCompute.root.p,extract);blurKernel=gpu.computePipeline(bloomCompute.root.p,blur);meterKernel=gpu.computePipeline(bloomCompute.root.p,meter);
+        auto d=Device::defaults(bloomGraphics.root.p,vsCode,psCode,DXGI_FORMAT_R8G8B8A8_UNORM);d.DepthStencilState.DepthEnable=FALSE;compositePipeline=gpu.pipeline(d);d.PS={fxaa.data(),fxaa.size()};fxaaPipeline=gpu.pipeline(d);
+    }
+    void srvAt(const DescriptorTable& t,UINT slot,ID3D12Resource* r,const D3D12_SHADER_RESOURCE_VIEW_DESC* desc=nullptr){gpu.device->CreateShaderResourceView(r,desc,t.cpuAt(slot));}
+    void bloomDispatch(ID3D12PipelineState* kernel,ID3D12Resource* input,Image& output,const BloomPass::Constants& values){
+        gpu.transition(output.texture,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);auto s=bloomCompute.srvTable(gpu),u=bloomCompute.uavTable(gpu);srvAt(s,0,input);gpu.device->CreateUnorderedAccessView(output.texture.get(),nullptr,nullptr,u.cpuAt(0));
+        bloomCompute.apply(gpu,true,{{0,gpu.constants(&values,sizeof(values))}},&s,&u);gpu.list->SetPipelineState(kernel);gpu.list->Dispatch((output.texture.width+7)/8,(output.texture.height+7)/8,1);gpu.transition(output.texture,readable);
+    }
+    // Same sequence as BloomPass::complete (screen effects resolve is phase 3-3b, so the source is the HDR scene).
+    void completeHDR(){
+        if(!hdrPending){return;}
+        BloomPass::Constants values;values.effect={bloomSettings.threshold,bloomSettings.strength,bloomSettings.radius,frame.exposure};gpu.transition(hdr.texture,readable);
+        for(std::size_t index=0;index<levels.size();index++){auto& layer=levels[index];const auto& input=index?levels[index-1][0].texture:hdr.texture;
+            values.dimensions={float(input.width),float(input.height),float(layer[0].texture.width),float(layer[0].texture.height)};values.area=index?std::array<float,4>{0,0,float(input.width),float(input.height)}:postArea;values.options={0,0,index==0?1.f:0.f,0};bloomDispatch(extractKernel.p,input.get(),layer[0],values);
+            values.dimensions={float(layer[0].texture.width),float(layer[0].texture.height),float(layer[0].texture.width),float(layer[0].texture.height)};values.options={1,0,0,0};bloomDispatch(blurKernel.p,layer[0].texture.get(),layer[1],values);values.options={0,1,0,0};bloomDispatch(blurKernel.p,layer[1].texture.get(),layer[0],values);}
+        values.grade=post.grade;values.filter=post.filter;values.effects=post.effects;values.vignette=post.vignette;values.vignetteColor=post.vignetteColor;values.balance=post.balance;values.lift=post.lift;values.gamma=post.gamma;values.gain=post.gain;values.lens=post.lens;values.bokeh=post.bokeh;values.focus=post.focus;values.occlusion=post.occlusion;values.lookup=post.lookup;values.camera=post.camera;values.exposure=post.exposure;values.adapt=post.adapt;
+        values.dimensions={float(hdr.texture.width),float(hdr.texture.height),0,0};values.area=postArea;values.options={0,0,float(levels.size()),0};
+        const bool needsDepth=post.focus[3]>0||post.occlusion[2]>0;
+        if(post.exposure[0]>0){
+            if(!exposureImages[0].texture.value.p){exposureImages[0]=image(1,1,false);exposureImages[1]=image(1,1,false);exposureValid=false;}
+            values.adapt[3]=exposureValid&&post.adapt[3]>.5f?1.f:0.f;auto& result=exposureImages[1-exposureIndex];gpu.transition(result.texture,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            auto s=bloomCompute.srvTable(gpu),u=bloomCompute.uavTable(gpu);srvAt(s,0,hdr.texture.get());srvAt(s,8,exposureImages[exposureIndex].texture.get());gpu.device->CreateUnorderedAccessView(result.texture.get(),nullptr,nullptr,u.cpuAt(0));
+            bloomCompute.apply(gpu,true,{{0,gpu.constants(&values,sizeof(values))}},&s,&u);gpu.list->SetPipelineState(meterKernel.p);gpu.list->Dispatch(1,1,1);gpu.transition(result.texture,readable);exposureIndex=1-exposureIndex;exposureValid=true;
+        }else{for(auto& e:exposureImages)release(e);exposureValid=false;}
+        if(post.occlusion[3]>0){if(aaImage.texture.width!=hdr.texture.width||aaImage.texture.height!=hdr.texture.height){release(aaImage);aaImage=image(hdr.texture.width,hdr.texture.height,true,DXGI_FORMAT_R8G8B8A8_UNORM);}}else release(aaImage);
+        auto s=bloomGraphics.srvTable(gpu);srvAt(s,0,hdr.texture.get());srvAt(s,9,hdr.texture.get());for(std::size_t i=0;i<levels.size();i++)srvAt(s,UINT(i+1),levels[i][0].texture.get());
+        if(needsDepth){gpu.transition(depth,readable);D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.Format=DXGI_FORMAT_R32_FLOAT;v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=1;srvAt(s,6,depth.get(),&v);}
+        if(postLookup)gpu.device->CopyDescriptorsSimple(1,s.cpuAt(7),postLookup->srv,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+        if(post.exposure[0]>0)srvAt(s,8,exposureImages[exposureIndex].texture.get());
+        const D3D12_VIEWPORT viewport{postArea[0],postArea[1],postArea[2],postArea[3],0,1};const auto crop=frame.scissor.value_or(postArea);const D3D12_RECT rect{LONG(std::floor(crop[0])),LONG(std::floor(crop[1])),LONG(std::ceil(crop[0]+crop[2])),LONG(std::ceil(crop[1]+crop[3]))};
+        const auto address=gpu.constants(&values,sizeof(values));auto* list=gpu.list.p;
+        const auto drawPass=[&](ID3D12PipelineState* pso,D3D12_CPU_DESCRIPTOR_HANDLE target,const DescriptorTable& table){bloomGraphics.apply(gpu,false,{{0,address}},&table,nullptr);list->SetPipelineState(pso);list->OMSetRenderTargets(1,&target,FALSE,nullptr);list->RSSetViewports(1,&viewport);list->RSSetScissorRects(1,&rect);list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);list->DrawInstanced(3,1,0,0);};
+        if(post.occlusion[3]>0){gpu.transition(aaImage.texture,D3D12_RESOURCE_STATE_RENDER_TARGET);drawPass(compositePipeline.p,aaImage.rtv,s);gpu.transition(aaImage.texture,readable);auto a=bloomGraphics.srvTable(gpu);srvAt(a,0,aaImage.texture.get());gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);drawPass(fxaaPipeline.p,color.rtv,a);}
+        else{gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);drawPass(compositePipeline.p,color.rtv,s);}
+        if(needsDepth){gpu.transition(depth,D3D12_RESOURCE_STATE_DEPTH_WRITE);}
+        hdrPending=false;
+    }
+    void prepareMips(){if(mipKernel.p)return;const auto code=Device::shader(mipShader,"HBMipDown","Down","cs_5_0");mipLayout.reflect(code);mipLayout.build(gpu,{ReflectedLayout::linearClamp()});mipKernel=gpu.computePipeline(mipLayout.root.p,code);}
+    // Levels 1.. from level 0. view: format to sample (sRGB decodes), write: UAV format (UNORM for sRGB data).
+    void generateMips(d3d12::Texture& t,UINT mips,DXGI_FORMAT view,DXGI_FORMAT write,bool srgb){
+        prepareMips();for(UINT level=1;level<mips;level++){const UINT w=std::max(1u,t.width>>level),h=std::max(1u,t.height>>level);
+            D3D12_RESOURCE_BARRIER b[2]{};for(UINT i=0;i<2;i++){b[i].Type=D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;b[i].Transition.pResource=t.get();}
+            // Per-subresource: source level readable, target level writable; the whole resource returns to t.state afterwards.
+            b[0].Transition.Subresource=level-1;b[0].Transition.StateBefore=level==1?t.state:D3D12_RESOURCE_STATE_UNORDERED_ACCESS;b[0].Transition.StateAfter=readable;
+            b[1].Transition.Subresource=level;b[1].Transition.StateBefore=t.state;b[1].Transition.StateAfter=D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
+            UINT count=0;D3D12_RESOURCE_BARRIER use[2];if(b[0].Transition.StateBefore!=b[0].Transition.StateAfter)use[count++]=b[0];if(b[1].Transition.StateBefore!=b[1].Transition.StateAfter)use[count++]=b[1];if(count)gpu.list->ResourceBarrier(count,use);
+            auto s=mipLayout.srvTable(gpu),u=mipLayout.uavTable(gpu);D3D12_SHADER_RESOURCE_VIEW_DESC sv{};sv.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;sv.Format=view;sv.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;sv.Texture2D.MostDetailedMip=level-1;sv.Texture2D.MipLevels=1;srvAt(s,0,t.get(),&sv);
+            D3D12_UNORDERED_ACCESS_VIEW_DESC uv{};uv.Format=write;uv.ViewDimension=D3D12_UAV_DIMENSION_TEXTURE2D;uv.Texture2D.MipSlice=level;gpu.device->CreateUnorderedAccessView(t.get(),nullptr,&uv,u.cpuAt(0));
+            const std::array<UINT,4> info{w,h,srgb?1u:0u,0};mipLayout.apply(gpu,true,{{0,gpu.constants(info.data(),16)}},&s,&u);gpu.list->SetPipelineState(mipKernel.p);gpu.list->Dispatch((w+7)/8,(h+7)/8,1);}
+        // Return every level to t.state: levels 0..mips-2 are readable, the last level is UAV.
+        std::vector<D3D12_RESOURCE_BARRIER> back;for(UINT level=0;level<mips;level++){const auto from=level+1<mips?readable:D3D12_RESOURCE_STATE_UNORDERED_ACCESS;if(mips==1||from==t.state)continue;D3D12_RESOURCE_BARRIER b{};b.Type=D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;b.Transition.pResource=t.get();b.Transition.Subresource=level;b.Transition.StateBefore=from;b.Transition.StateAfter=t.state;back.push_back(b);}
+        if(!back.empty())gpu.list->ResourceBarrier(UINT(back.size()),back.data());
+    }
     // Frame data lives in the upload ring; re-upload after any submit (read, sampler flush).
     void uploadFrame(){
         frameBuffers.clear();std::array<ProbeSettings,3> probeData{};for(auto& p:probeData)p.options[0]=0;const Scene2D settings{};
@@ -204,10 +355,14 @@ public:
         return m;
     }
     // ponytail: one mip level; SceneRenderer's GPU mip generation lands with phase 3 compute.
-    Texture createTexture(UINT w,UINT h,const std::vector<std::uint8_t>& rgba,bool srgb=true){
-        if(rgba.size()!=std::size_t(w)*h*4)throw std::runtime_error("Direct3D12 scene texture bytes invalid");
-        Texture t;static_cast<d3d12::Texture&>(t)=gpu.texture(w,h,srgb?DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:DXGI_FORMAT_R8G8B8A8_UNORM,rgba.data(),w*4);
-        t.srv=views.take();gpu.device->CreateShaderResourceView(t.get(),nullptr,t.srv);return t;
+    Texture createTexture(UINT w,UINT h,const std::vector<std::uint8_t>& rgba,bool srgb=true,bool mipmaps=true){
+        if(!w||!h||rgba.size()!=std::size_t(w)*h*4)throw std::runtime_error("Direct3D12 scene texture bytes invalid");
+        UINT mips=1;if(mipmaps)for(UINT extent=std::max(w,h);extent>1;extent/=2)++mips;
+        const auto format=srgb?DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:DXGI_FORMAT_R8G8B8A8_UNORM;
+        Texture t;static_cast<d3d12::Texture&>(t)=gpu.texture(w,h,format,rgba.data(),w*4,mips,mips>1?D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS:D3D12_RESOURCE_FLAG_NONE,mips>1?DXGI_FORMAT_R8G8B8A8_TYPELESS:DXGI_FORMAT_UNKNOWN);t.mips=mips;
+        if(mips>1)generateMips(t,mips,format,DXGI_FORMAT_R8G8B8A8_UNORM,srgb);
+        D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.Format=format;v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=mips;
+        t.srv=views.take();gpu.device->CreateShaderResourceView(t.get(),&v,t.srv);return t;
     }
     void release(Texture& t){views.give(t.srv);t.srv={};gpu.retire(std::move(t.value));}
     void release(Mesh& m){gpu.retire(std::move(m.vertices.value));gpu.retire(std::move(m.indices.value));gpu.retire(std::move(m.uv1.value));m.count=0;}
@@ -355,12 +510,48 @@ public:
         atlasCount=UINT(bindings.size());atlasInfluence=std::any_of(bindings.begin(),bindings.end(),[](const ProbeBinding& b){return b.settings.blendPositive[3]>0;});atlasStamps=std::move(stamps);atlasSettings=std::move(settings);
     }
     void setSkyIntensity(float intensity){if(!std::isfinite(intensity)||intensity<0)throw std::runtime_error("Sky intensity invalid");skySettings.center[3]=intensity;}
+    void setPostLookup(const Texture* value){if(value&&(value->height<2||value->height>64||value->width!=value->height*value->height))throw std::runtime_error("Post lookup texture owner/dimensions invalid");postLookup=value;}
+    void releaseTransmission(){views.give(transmissionView);views.give(transmissionDepthView);transmissionView=transmissionDepthView={};gpu.retire(std::move(transmissionImage.value));gpu.retire(std::move(transmissionDepth.value));transmissionImage.width=transmissionImage.height=0;transmissionMips=0;transmissionReady=false;}
+    // Same as SceneRenderer::captureTransmission: copy the HDR opaque pass and depth, then build the mip chain.
+    void captureTransmission(){
+        if(!frame.transmission||!hdr.texture.value.p||activeProbe||activeShadow>=0)throw std::runtime_error("Transmission opaque pass required");
+        if(transmissionImage.width!=width||transmissionImage.height!=height){
+            releaseTransmission();UINT mips=1;for(UINT extent=std::max(width,height);extent>1;extent/=2)++mips;
+            D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=width;d.Height=height;d.DepthOrArraySize=1;d.MipLevels=UINT16(mips);d.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;d.SampleDesc.Count=1;d.Flags=D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
+            transmissionImage.value=gpu.committed(D3D12_HEAP_TYPE_DEFAULT,d,readable,nullptr,"Direct3D12 transmission HDR");transmissionImage.state=readable;transmissionImage.width=width;transmissionImage.height=height;transmissionImage.format=d.Format;transmissionMips=mips;
+            transmissionView=views.take();gpu.device->CreateShaderResourceView(transmissionImage.get(),nullptr,transmissionView);
+            d.MipLevels=1;d.Format=DXGI_FORMAT_R32_TYPELESS;d.Flags=D3D12_RESOURCE_FLAG_NONE;transmissionDepth.value=gpu.committed(D3D12_HEAP_TYPE_DEFAULT,d,readable,nullptr,"Direct3D12 transmission depth");transmissionDepth.state=readable;transmissionDepth.width=width;transmissionDepth.height=height;
+            D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.Format=DXGI_FORMAT_R32_FLOAT;v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=1;transmissionDepthView=views.take();gpu.device->CreateShaderResourceView(transmissionDepth.get(),&v,transmissionDepthView);
+        }
+        gpu.transition(hdr.texture,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(transmissionImage,D3D12_RESOURCE_STATE_COPY_DEST);
+        D3D12_TEXTURE_COPY_LOCATION dst{},src{};dst.pResource=transmissionImage.get();src.pResource=hdr.texture.get();dst.Type=src.Type=D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;gpu.list->CopyTextureRegion(&dst,0,0,0,&src,nullptr);
+        gpu.transition(depth,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(transmissionDepth,D3D12_RESOURCE_STATE_COPY_DEST);gpu.list->CopyResource(transmissionDepth.get(),depth.get());
+        gpu.transition(depth,D3D12_RESOURCE_STATE_DEPTH_WRITE);gpu.transition(transmissionDepth,readable);gpu.transition(hdr.texture,D3D12_RESOURCE_STATE_RENDER_TARGET);gpu.transition(transmissionImage,readable);
+        generateMips(transmissionImage,transmissionMips,DXGI_FORMAT_R16G16B16A16_FLOAT,DXGI_FORMAT_R16G16B16A16_FLOAT,false);transmissionReady=true;
+    }
     void begin(const SceneFrame& value){
         endProbe();endShadow();for(const auto& light:lights)if(light.position[3]<3&&light.cone[3]>0&&light.cone[3]+(light.position[3]==1?5:0)>shadows.size())throw std::runtime_error("Shadow light reference invalid");
-        if(value.bloom||value.postProcess||value.screenEffects||value.transmission||value.viewportClear)throw std::runtime_error("Direct3D12 scene frame feature not ported yet");
+        if(value.screenEffects||value.viewportClear)throw std::runtime_error("Direct3D12 scene frame feature not ported yet");
+        // ponytail: post settings are range-checked by BloomPass::begin on the D3D11 path; here only finiteness is enforced.
+        if(value.postProcess)for(const auto* row:{&value.postProcess->grade,&value.postProcess->filter,&value.postProcess->effects,&value.postProcess->vignette,&value.postProcess->vignetteColor,&value.postProcess->balance,&value.postProcess->lift,&value.postProcess->gamma,&value.postProcess->gain,&value.postProcess->lens,&value.postProcess->bokeh,&value.postProcess->focus,&value.postProcess->occlusion,&value.postProcess->lookup,&value.postProcess->camera,&value.postProcess->exposure,&value.postProcess->adapt})if(!SceneRenderer::finite(*row))throw std::runtime_error("Post-process non-finite value");
+        if(value.postProcess&&value.postProcess->lookup[1]>0&&(!postLookup||value.postProcess->lookup[1]!=float(postLookup->height)))throw std::runtime_error("Post lookup size mismatch");
         if(!SceneRenderer::finite(value.viewProjection)||!SceneRenderer::finite(value.clear)||!SceneRenderer::finite(value.viewport)||!std::isfinite(value.exposure))throw std::runtime_error("Scene frame invalid");
-        frame=value;begun=true;gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);
+        frame=value;begun=true;gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);gpu.transition(depth,D3D12_RESOURCE_STATE_DEPTH_WRITE);
         gpu.list->ClearRenderTargetView(color.rtv,frame.clear.data(),0,nullptr);gpu.list->ClearDepthStencilView(depth.dsv,D3D12_CLEAR_FLAG_DEPTH,1,0,0,nullptr);tilesActive=false;uploadFrame();
+        transmissionReady=false;if(!value.transmission)releaseTransmission();hdrPending=false;
+        // BloomPass::begin: HDR target when bloom, transmission or post processing is requested.
+        post=value.postProcess.value_or(ScenePostProcess{});
+        if((!value.bloom||value.bloom->strength==0)&&!value.transmission&&!value.postProcess){releaseHDR();}
+        else{
+            bloomSettings=value.bloom.value_or(SceneBloom{});if(!value.bloom)bloomSettings.strength=0;postArea=value.viewport;if(postArea[2]==0||postArea[3]==0)postArea={0,0,float(width),float(height)};
+            const float right=std::min(float(width),postArea[0]+postArea[2]),bottom=std::min(float(height),postArea[1]+postArea[3]);postArea[0]=std::max(0.f,postArea[0]);postArea[1]=std::max(0.f,postArea[1]);postArea[2]=std::max(0.f,right-postArea[0]);postArea[3]=std::max(0.f,bottom-postArea[1]);
+            if(postArea[2]==0||postArea[3]==0)releaseHDR();
+            else{prepareBloom();const auto bw=std::max(1u,static_cast<UINT>(std::round(postArea[2]*bloomSettings.resolutionScale))),bh=std::max(1u,static_cast<UINT>(std::round(postArea[3]*bloomSettings.resolutionScale)));
+                if(hdr.texture.width!=width||hdr.texture.height!=height||((bloomSettings.strength>0)&&(levels.empty()||levels.front()[0].texture.width!=bw||levels.front()[0].texture.height!=bh))||((bloomSettings.strength==0)&&!levels.empty())){
+                    releaseHDR();hdr=image(width,height,true);for(UINT x=bw,y=bh;bloomSettings.strength>0&&levels.size()<5;){levels.push_back({image(x,y,false),image(x,y,false)});if(x==1&&y==1)break;x=std::max(1u,x/2);y=std::max(1u,y/2);}}
+                std::array<float,4> linear=value.clear;for(std::size_t i=0;i<3;i++)linear[i]=linear[i]<=.04045f?linear[i]/12.92f:std::pow((linear[i]+.055f)/1.055f,2.4f);
+                gpu.transition(hdr.texture,D3D12_RESOURCE_STATE_RENDER_TARGET);gpu.list->ClearRenderTargetView(hdr.rtv,linear.data(),0,nullptr);hdrPending=true;}
+        }
         cullLights(frame.viewport[2]>0?frame.viewport:std::array<float,4>{0,0,float(width),float(height)});
     }
     void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const void* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={},const Instances* instances=nullptr,const Deformation* deformation=nullptr,const void* twoD=nullptr,const std::array<ProbeBinding,2>* probeBindings=nullptr,const Matrix* previousWorld=nullptr,float motionFlag=0,const Texture* lightmap=nullptr,bool globalProbes=false){
@@ -386,7 +577,8 @@ public:
         const bool sky=skyProbe.ready&&activeShadow<0;if(sky){probeData[2]=skySettings;probeSampler=true;}
         const bool atlas=globalProbes&&atlasCount&&(!activeProbe||probeIndirect)&&activeShadow<0;
         if(atlas){probeData[0].blendNegative[3]=atlasInfluence?1.f:0.f;probeData[0].faceScale[3]=float(atlasCount%65536);probeData[1].faceScale[3]=float(atlasCount/65536);probeSampler=true;}
-        if(probeSampler&&samplerCount>14)keys[14]=16;
+        const bool transmissive=transmissionReady&&(material.transmission||material.volume[0]>0)&&!activeProbe&&activeShadow<0;
+        if((probeSampler||transmissive)&&samplerCount>14)keys[14]=16;
         const auto samplerHandle=samplerCount?samplerTable(keys):D3D12_GPU_DESCRIPTOR_HANDLE{};
         if(uploaded!=gpu.submitted())uploadFrame();
         auto srvs=gpu.table(UINT(slots.size()));gpu.device->CopyDescriptorsSimple(UINT(slots.size()),srvs.cpu,nulls->GetCPUDescriptorHandleForHeapStart(),D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
@@ -403,20 +595,22 @@ public:
         for(UINT i=0;i<2;i++)if(bound[i]){copy(39+i,bound[i]->view);copy(41+i,bound[i]->irradiance);copy(43,brdfView);}
         if(sky){copy(46,skyProbe.view);copy(47,skyProbe.irradiance);copy(43,brdfView);}
         if(atlas){copy(50,atlasView);copy(51,atlasTableView);copy(52,atlasSHView);copy(43,brdfView);}
+        if(transmissive){copy(44,transmissionView);copy(45,transmissionDepthView);mask|=4096u;}
+        const bool toHDR=hdr.texture.value.p&&!activeProbe&&activeShadow<0;if(toHDR){mask|=128u;hdrPending=true;gpu.transition(hdr.texture,D3D12_RESOURCE_STATE_RENDER_TARGET);}
         if(lightmap){copy(49,lightmap->srv);mask|=32768u|(material.lightmapReflectionMix?262144u:0u);}
         const auto& rect=frame.viewport;const bool custom=rect[2]>0&&rect[3]>0;const std::array<float,4> area=custom?rect:std::array<float,4>{0,0,float(width),float(height)};
-        Constants data{frame.viewProjection,world,normal,identity,{0,0,0,0},material.color,material.emissive,{material.roughness,material.metalness,material.alphaCutoff,material.unlit?1.f:0.f},frame.eye,frame.ambient,material.uvX,material.uvY,{float(mask),float(lights.size()),material.toneMapped?1.f:0.f,material.sky?2.f:material.vertexColors?1.f:0.f},{material.normalScale[0],material.normalScale[1],frame.exposure,frame.time},frame.fog,frame.fogRange,frame.heightFog,material.skyTop,material.skyHorizon,material.sunDirection,material.sunColor,material.shotShape,material.physical,{material.volume[0],material.volume[1],float(width),float(height)},area,material.absorption,material.sheenColor,material.lobes,material.film,material.specular,material.scatter,material.scatterColor,material.hairTangent,{deformation?deformation->vertexCount:0,deformation?deformation->morphCount:0,deformation?deformation->boneCount:0,0},material.moonDirection,material.moonColor,frame.viewDirection};
+        Constants data{frame.viewProjection,world,normal,identity,{0,0,0,0},material.color,material.emissive,{material.roughness,material.metalness,material.alphaCutoff,material.unlit?1.f:0.f},frame.eye,frame.ambient,material.uvX,material.uvY,{float(mask),float(lights.size()),material.toneMapped?1.f:0.f,material.sky?2.f:material.vertexColors?1.f:0.f},{material.normalScale[0],material.normalScale[1],frame.exposure,frame.time},frame.fog,frame.fogRange,frame.heightFog,material.skyTop,material.skyHorizon,material.sunDirection,material.sunColor,material.shotShape,material.physical,{material.volume[0],material.volume[1],float(width),float(height)},area,material.absorption,material.sheenColor,material.lobes,material.film,material.specular,material.scatter,material.scatterColor,material.hairTangent,{deformation?deformation->vertexCount:0,deformation?deformation->morphCount:0,deformation?deformation->boneCount:0,transmissionReady?transmissionMips-1:0},material.moonDirection,material.moonColor,frame.viewDirection};
         data.shotShape[3]=material.lightmapIntensity;
         auto u=gpu.upload(std::max<std::size_t>(sizeof(data),cbuffers.at(0)),256);std::memset(u.cpu,0,std::max<std::size_t>(sizeof(data),cbuffers.at(0)));std::memcpy(u.cpu,&data,sizeof(data));
         const std::size_t raster=(SceneRenderer::orientation(world)<0?3:0)+(material.doubleSided||(instances&&instances->mirrored)?2:material.backSide?1:0);
-        auto* list=gpu.list.p;list->SetGraphicsRootSignature(root.p);list->SetPipelineState(activeShadow<0?pipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),activeProbe!=nullptr):shadowPipeline(raster));
+        auto* list=gpu.list.p;list->SetGraphicsRootSignature(root.p);list->SetPipelineState(activeShadow<0?pipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),activeProbe!=nullptr||toHDR):shadowPipeline(raster));
         const auto probeAddress=gpu.constants(probeData.data(),sizeof(probeData));
         UINT index=0;for(const auto& c:cbuffers)list->SetGraphicsRootConstantBufferView(index++,c.first==0?u.gpu:c.first==2?probeAddress:frameBuffers.at(c.first));
         list->SetGraphicsRootDescriptorTable(srvRoot,srvs.gpu);if(samplerCount)list->SetGraphicsRootDescriptorTable(samplerRoot,samplerHandle);
         const D3D12_VIEWPORT viewport{area[0],area[1],area[2],area[3],0,1};const auto crop=frame.scissor.value_or(area);
         const D3D12_RECT scissor{static_cast<LONG>(std::floor(crop[0])),static_cast<LONG>(std::floor(crop[1])),static_cast<LONG>(std::ceil(crop[0]+crop[2])),static_cast<LONG>(std::ceil(crop[1]+crop[3]))};
         if(activeProbe){list->OMSetRenderTargets(1,&activeProbe->faces[probeFace],FALSE,&activeProbe->depth.dsv);}
-        else if(activeShadow<0){list->OMSetRenderTargets(1,&color.rtv,FALSE,&depth.dsv);}
+        else if(activeShadow<0){list->OMSetRenderTargets(1,toHDR?&hdr.rtv:&color.rtv,FALSE,&depth.dsv);}
         else{const D3D12_CPU_DESCRIPTOR_HANDLE layer{shadowTargets->GetCPUDescriptorHandleForHeapStart().ptr+SIZE_T(activeShadow)*dsvStride};list->OMSetRenderTargets(0,nullptr,FALSE,&layer);}
         list->RSSetViewports(1,&viewport);list->RSSetScissorRects(1,&scissor);
         const UINT64 bytes=UINT64(mesh.vertexCount)*sizeof(SceneVertex);
@@ -424,7 +618,7 @@ public:
         const D3D12_INDEX_BUFFER_VIEW indexView{mesh.indices.address(),mesh.count*4,DXGI_FORMAT_R32_UINT};
         list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);list->IASetVertexBuffers(0,2,buffers);list->IASetIndexBuffer(&indexView);list->DrawIndexedInstanced(count,instances?instances->count:1,first,0,0);
     }
-    std::vector<std::uint8_t> readPixels(){return gpu.read(color);}
+    std::vector<std::uint8_t> readPixels(){endProbe();endShadow();completeHDR();return gpu.read(color);}
     d3d12::Texture& target(){return color;}
 };
 }

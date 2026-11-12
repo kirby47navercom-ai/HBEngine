@@ -1,4 +1,4 @@
-// D3D12 port phases 2, 3-1 and 3-2: the same scene drawn by SceneRenderer (D3D11) and SceneMeshRenderer (D3D12),
+// D3D12 port phases 2, 3-1, 3-2 and 3-3a: the same scene drawn by SceneRenderer (D3D11) and SceneMeshRenderer (D3D12),
 // compared pixel by pixel on the same driver. Prints one JSON line.
 #include <HBEngine/SceneRenderD3D12.hpp>
 #include <nlohmann/json.hpp>
@@ -89,8 +89,8 @@ struct Extra {
 };
 
 // One scene script for both backends. Returns full, cropped, shadowed and many-light images.
-template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,11> render(R& r,MakeTexture texture){
-    const Scene scene;const Extra extra(scene);const auto d=draws();std::array<std::vector<std::uint8_t>,11> images;
+template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,16> render(R& r,MakeTexture texture){
+    const Scene scene;const Extra extra(scene);const auto d=draws();std::array<std::vector<std::uint8_t>,16> images;
     auto cube=r.createMesh(scene.cube,scene.cubeIndex);auto quad=r.createMesh(scene.quad,scene.quadIndex,scene.quadUV1);auto plain=r.createMesh(scene.quad,scene.quadIndex);
     auto checker=texture(r,8,8,scene.checker,true);auto rough=texture(r,8,8,scene.rough,false);
     auto instances=r.createInstances(4);r.setInstances(instances,extra.instances);auto shots=r.createInstances(4,true);r.setShotPositions(shots,extra.shots);
@@ -134,11 +134,30 @@ template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,
     auto lightmap=texture(r,4,4,baked,false);SceneMaterial bakedMaterial=skinned;bakedMaterial.lightmapIntensity=1.5f;bakedMaterial.lightmapReflectionMix=true;
     r.begin(frame(false));r.draw(quad,extra.ground,extra.ground,bakedMaterial,{},{},0,0,nullptr,{},{},nullptr,nullptr,nullptr,nullptr,nullptr,0,&lightmap,true);r.draw(cube,d.cube,d.cube,chrome,{},{},0,0,nullptr,{},{},nullptr,nullptr,nullptr,nullptr,nullptr,0,nullptr,true);images[10]=r.readPixels();
     r.setGlobalProbes({});
+    // 3-3a: base frame, bloom, full post chain (grade, vignette, chroma, grain, depth of field, occlusion, auto exposure, LUT, FXAA),
+    // transmission through a captured opaque pass, and GPU-generated mips on a minified texture.
+    r.setLights(scene.lights);SceneMaterial matte=skinned;
+    const auto base=[&](SceneFrame f){r.begin(f);r.draw(plain,extra.ground,extra.ground,matte);r.draw(cube,d.cube,d.cube,d.lit);};
+    base(frame(false));images[11]=r.readPixels();
+    SceneFrame bloomFrame=frame(false);SceneMaterial hot=d.lit;hot.emissive={4,2,.5f,1};bloomFrame.bloom=SceneBloom{.8f,.9f,.5f,.5f};r.begin(bloomFrame);r.draw(plain,extra.ground,extra.ground,matte);r.draw(cube,d.cube,d.cube,hot);images[12]=r.readPixels();
+    std::vector<std::uint8_t> lut;
+    for(int y=0;y<4;y++)for(int x=0;x<16;x++){const int b=x/4,rr=x%4;lut.insert(lut.end(),{std::uint8_t(std::min(255,rr*85+20)),std::uint8_t(y*85),std::uint8_t(255-b*70),255});}
+    auto lutTexture=r.createTexture(16,4,lut,false,false);r.setPostLookup(&lutTexture);
+    SceneFrame postFrame=frame(false);ScenePostProcess post;post.grade={.2f,1.1f,1.2f,.1f};post.effects={.4f,.3f,.5f,.1f};post.vignette={.5f,.5f,1,.25f};post.vignetteColor={.1f,0,.05f,1};post.balance={.1f,-.05f,0,0};post.lift={.02f,0,.01f,0};post.gamma={1.1f,1,.9f,0};post.gain={1,1.05f,1,0};
+    post.focus={4,2,3,.7f};post.occlusion={.3f,.02f,1,1};post.camera={.1f,20,0,1};post.exposure={1,-4,4,.18f};post.adapt={3,1,0,0};post.lookup={.6f,4,0,0};postFrame.postProcess=post;
+    for(int pass=0;pass<2;pass++){base(postFrame);}
+    images[13]=r.readPixels();// second pass adapts exposure from the first
+    SceneFrame glassFrame=frame(false);glassFrame.transmission=true;r.begin(glassFrame);r.draw(plain,extra.ground,extra.ground,matte);r.draw(cube,d.cube,d.cube,d.lit);r.captureTransmission();
+    SceneMaterial glass=d.alpha;glass.transmission=true;glass.volume={.8f,.4f,0,0};glass.physical={0,.1f,1.45f,.3f};glass.absorption={.8f,.9f,1,2};glass.roughness=.3f;glass.color={1,1,1,1};
+    r.draw(quad,d.glass,d.glass,glass);images[14]=r.readPixels();
+    auto mipped=r.createTexture(8,8,scene.checker,true,true);Matrix distant=translate(identity,.6f,.5f,-6);for(int i=0;i<3;i++)distant[i*5]=.25f;
+    r.begin(frame(false));r.draw(plain,distant,identity,matte,{&mipped,nullptr,nullptr,nullptr,nullptr,nullptr},{0,0,0,0,0,0});r.draw(quad,translate(identity,-.6f,-.3f,-3),identity,matte,{&mipped,nullptr,nullptr,nullptr,nullptr,nullptr},{0,0,0,0,0,0});images[15]=r.readPixels();
+    r.setPostLookup(nullptr);
     return images;
 }
 
 static nlohmann::json proof(DeviceDriver driver){
-    nlohmann::json out;std::array<std::vector<std::uint8_t>,11> reference;std::vector<std::uint8_t> unshadowed;
+    nlohmann::json out;std::array<std::vector<std::uint8_t>,16> reference;std::vector<std::uint8_t> unshadowed;
     {Device gpu11(driver);SceneRenderer r(gpu11,W,H);out["software11"]=gpu11.software();
         reference=render(r,[](SceneRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);});
         // Proof the shadow pass matters: same frame with receiveShadow off must differ.
@@ -147,16 +166,17 @@ static nlohmann::json proof(DeviceDriver driver){
         r.draw(plain,extra.ground,extra.ground,m);auto lit=d.lit;lit.receiveShadow=false;r.draw(cube,d.cube,d.cube,lit);unshadowed=r.readPixels();}
     d3d12::Device gpu(driver,true);out["software"]=gpu.software;out["debugLayer"]=gpu.debug;
     {d3d12::SceneMeshRenderer r(gpu,W,H);gpu.begin();
-        const auto images=render(r,[](d3d12::SceneMeshRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb);});
-        const char* names[]={"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap"};const std::array<float,4> clear=frame(false).clear;
-        for(std::size_t i=0;i<11;i++)out[names[i]]=compare(images[i],reference[i],clear);
+        const auto images=render(r,[](d3d12::SceneMeshRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);});
+        const char* names[]={"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps"};const std::array<float,4> clear=frame(false).clear;
+        for(std::size_t i=0;i<16;i++)out[names[i]]=compare(images[i],reference[i],clear);
+        out["bloomChangedPixels"]=compare(reference[12],reference[11],clear)["pixelsOver2"];out["postChangedPixels"]=compare(reference[13],reference[11],clear)["pixelsOver2"];out["transmissionChangedPixels"]=compare(reference[14],reference[11],clear)["pixelsOver2"];
         out["atlasChangedPixels"]=compare(reference[8],reference[9],clear)["pixelsOver2"];out["lightmapChangedPixels"]=compare(reference[10],reference[8],clear)["pixelsOver2"];
         out["probeChangedPixels"]=compare(reference[4],reference[6],clear)["pixelsOver2"];out["skyChangedPixels"]=compare(reference[5],reference[7],clear)["pixelsOver2"];
         out["shadowChangedPixels"]=compare(reference[2],unshadowed,clear)["pixelsOver2"];
         gpu.end();gpu.waitIdle();}
     out["validationErrors"]=validationErrors(gpu);
-    for(const char* pass:{"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap"}){REQUIRE(out[pass]["covered"].get<std::size_t>()>400);REQUIRE(out[pass]["maxDiff"].get<int>()<=2);}
-    REQUIRE(out["shadowChangedPixels"].get<std::size_t>()>50);REQUIRE(out["probeChangedPixels"].get<std::size_t>()>50);REQUIRE(out["skyChangedPixels"].get<std::size_t>()>50);REQUIRE(out["atlasChangedPixels"].get<std::size_t>()>50);REQUIRE(out["lightmapChangedPixels"].get<std::size_t>()>50);REQUIRE(out["validationErrors"]==0);return out;
+    for(const char* pass:{"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps"}){if(out[pass]["covered"].get<std::size_t>()<=(std::string(pass)=="mipmaps"?150u:400u)||out[pass]["maxDiff"].get<int>()>2)throw std::runtime_error(std::string("scene mismatch ")+pass+" "+out[pass].dump());}
+    REQUIRE(out["shadowChangedPixels"].get<std::size_t>()>50);REQUIRE(out["probeChangedPixels"].get<std::size_t>()>50);REQUIRE(out["skyChangedPixels"].get<std::size_t>()>50);REQUIRE(out["atlasChangedPixels"].get<std::size_t>()>50);REQUIRE(out["lightmapChangedPixels"].get<std::size_t>()>50);REQUIRE(out["bloomChangedPixels"].get<std::size_t>()>50);REQUIRE(out["postChangedPixels"].get<std::size_t>()>50);REQUIRE(out["transmissionChangedPixels"].get<std::size_t>()>50);REQUIRE(out["validationErrors"]==0);return out;
 }
 
 int main(){
