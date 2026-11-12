@@ -73,8 +73,11 @@ struct SceneFrame {
     // xyz: world-space direction toward the viewer; w: orthographic=1/perspective=0.
     std::array<float,4> viewDirection{0,0,1,0};
 };
+namespace d3d12{class SceneMeshRenderer;}
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 class SceneRenderer {
+    // D3D12 port reuses this shader source, constant layout and raster rules.
+    friend class d3d12::SceneMeshRenderer;
 public:
     struct Deformation {
         friend class SceneRenderer;

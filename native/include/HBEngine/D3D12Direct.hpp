@@ -11,7 +11,7 @@
 namespace hb::gpu::d3d12 {
 using detail::Com;using detail::check;
 
-inline constexpr UINT FrameCount=3;
+inline constexpr UINT FrameCount=3,SamplerCapacity=2048;
 
 // A GPU resource plus the state the next barrier must start from.
 struct Resource {
@@ -60,9 +60,11 @@ class Device {
     void requireRecording()const{if(!recording)throw std::runtime_error("Direct3D12 work recorded outside begin/end");}
 public:
     Com<IDXGIFactory4> factory;Com<ID3D12Device> device;Com<ID3D12CommandQueue> queue;Com<ID3D12Fence> fence;Com<ID3D12GraphicsCommandList> list;
+    // Shader-visible sampler heap; callers own its slot allocation (SceneMeshRenderer caches tables).
+    Com<ID3D12DescriptorHeap> samplers;UINT samplerStride=0;
     DescriptorPool rtvs,dsvs;bool software=false,debug=false;
 
-    explicit Device(DeviceDriver driver=DeviceDriver::Automatic,bool validation=false,std::uint64_t uploadBytesPerFrame=8u<<20,UINT descriptorsPerFrame=4096){
+    explicit Device(DeviceDriver driver=DeviceDriver::Automatic,bool validation=false,std::uint64_t uploadBytesPerFrame=8u<<20,UINT descriptorsPerFrame=16384){
         auto& dll=detail::libraries();auto& dll12=detail::libraries12();
         if(validation){
             Com<ID3D12Debug> layer;const auto getDebug=dll.symbol<decltype(&D3D12GetDebugInterface)>(dll12.d3d,"D3D12GetDebugInterface");
@@ -91,6 +93,8 @@ public:
         D3D12_DESCRIPTOR_HEAP_DESC h{};h.Type=D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;h.NumDescriptors=descriptorsPerFrame*FrameCount;h.Flags=D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
         check(device->CreateDescriptorHeap(&h,__uuidof(ID3D12DescriptorHeap),reinterpret_cast<void**>(&shaderHeap.p)),"Direct3D12 shader descriptor heap");
         shaderStride=device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);shaderSlice=descriptorsPerFrame;
+        h.Type=D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER;h.NumDescriptors=SamplerCapacity;
+        check(device->CreateDescriptorHeap(&h,__uuidof(ID3D12DescriptorHeap),reinterpret_cast<void**>(&samplers.p)),"Direct3D12 sampler heap");samplerStride=device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
         rtvs.create(device.p,D3D12_DESCRIPTOR_HEAP_TYPE_RTV,256);dsvs.create(device.p,D3D12_DESCRIPTOR_HEAP_TYPE_DSV,64);
     }
     ~Device(){try{waitIdle();}catch(...){}if(ring.p)ring->Unmap(0,nullptr);if(event)CloseHandle(event);}
@@ -102,7 +106,7 @@ public:
         if(recording)throw std::runtime_error("Direct3D12 frame already recording");
         auto& f=frames[frame];wait(f.fence);f.retired.clear();used=0;shaderUsed=0;
         check(f.allocator->Reset(),"Direct3D12 command allocator reset");check(list->Reset(f.allocator.p,nullptr),"Direct3D12 command list reset");
-        ID3D12DescriptorHeap* heaps[]={shaderHeap.p};list->SetDescriptorHeaps(1,heaps);recording=true;
+        ID3D12DescriptorHeap* heaps[]={shaderHeap.p,samplers.p};list->SetDescriptorHeaps(2,heaps);recording=true;
     }
     void end(){
         requireRecording();check(list->Close(),"Direct3D12 command list close");recording=false;
@@ -151,6 +155,18 @@ public:
         D3D12_CLEAR_VALUE c{};c.Format=d.Format;c.DepthStencil.Depth=1;
         Texture t;t.width=width;t.height=height;t.format=d.Format;t.value=committed(D3D12_HEAP_TYPE_DEFAULT,d,D3D12_RESOURCE_STATE_DEPTH_WRITE,&c,"Direct3D12 depth target");t.state=D3D12_RESOURCE_STATE_DEPTH_WRITE;
         t.dsv=dsvs.take();device->CreateDepthStencilView(t.get(),nullptr,t.dsv);return t;
+    }
+    // Single-mip sampled texture; rowBytes is the tightly packed source pitch.
+    Texture texture(UINT width,UINT height,DXGI_FORMAT format,const void* data,UINT rowBytes){
+        requireRecording();if(!width||!height||!data)throw std::runtime_error("Direct3D12 texture size or data");
+        D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=width;d.Height=height;d.DepthOrArraySize=1;d.MipLevels=1;d.Format=format;d.SampleDesc.Count=1;
+        Texture t;t.width=width;t.height=height;t.format=format;t.value=committed(D3D12_HEAP_TYPE_DEFAULT,d,D3D12_RESOURCE_STATE_COPY_DEST,nullptr,"Direct3D12 texture");t.state=D3D12_RESOURCE_STATE_COPY_DEST;
+        D3D12_PLACED_SUBRESOURCE_FOOTPRINT fp{};UINT64 total=0;UINT rows=0;UINT64 rowSize=0;device->GetCopyableFootprints(&d,0,1,0,&fp,&rows,&rowSize,&total);
+        if(rowSize!=rowBytes)throw std::runtime_error("Direct3D12 texture row size mismatch");
+        auto u=upload(total,D3D12_TEXTURE_DATA_PLACEMENT_ALIGNMENT);
+        for(UINT y=0;y<rows;y++)std::memcpy(u.cpu+fp.Offset+std::size_t(y)*fp.Footprint.RowPitch,static_cast<const unsigned char*>(data)+std::size_t(y)*rowBytes,rowBytes);
+        fp.Offset+=u.offset;D3D12_TEXTURE_COPY_LOCATION dst{},src{};dst.pResource=t.get();dst.Type=D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;dst.SubresourceIndex=0;src.pResource=u.resource;src.Type=D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;src.PlacedFootprint=fp;
+        list->CopyTextureRegion(&dst,0,0,0,&src,nullptr);transition(t,D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE|D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);return t;
     }
     void release(Texture& t){rtvs.give(t.rtv);dsvs.give(t.dsv);t.rtv={};t.dsv={};retire(std::move(t.value));}
 
