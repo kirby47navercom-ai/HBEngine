@@ -54,8 +54,11 @@ inline void setProbeProjectionSphere(ProbeSettings& settings,const std::array<fl
 }
 inline void setProbePriorityBlend(ProbeSettings& settings,bool enabled){const float flags=settings.options[3];if(!std::isfinite(flags)||flags<0||flags>7||std::floor(flags)!=flags)throw std::runtime_error("Probe flags invalid");settings.options[3]=std::fmod(flags,4.f)+(enabled?4.f:0.f);}
 
+namespace d3d12{class SceneMeshRenderer;}
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 class SceneProbes {
+    // The D3D12 port dispatches these same filter kernels.
+    friend class d3d12::SceneMeshRenderer;
 public:
     struct Probe {
         friend class SceneProbes;friend class SceneRenderer;friend class SceneProbeAtlas;

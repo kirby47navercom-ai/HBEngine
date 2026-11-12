@@ -1,4 +1,4 @@
-// D3D12 port phases 2 and 3-1: the same scene drawn by SceneRenderer (D3D11) and SceneMeshRenderer (D3D12),
+// D3D12 port phases 2, 3-1 and 3-2a: the same scene drawn by SceneRenderer (D3D11) and SceneMeshRenderer (D3D12),
 // compared pixel by pixel on the same driver. Prints one JSON line.
 #include <HBEngine/SceneRenderD3D12.hpp>
 #include <nlohmann/json.hpp>
@@ -89,10 +89,10 @@ struct Extra {
 };
 
 // One scene script for both backends. Returns full, cropped, shadowed and many-light images.
-template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,4> render(R& r,MakeTexture texture){
-    const Scene scene;const Extra extra(scene);const auto d=draws();std::array<std::vector<std::uint8_t>,4> images;
+template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,8> render(R& r,MakeTexture texture){
+    const Scene scene;const Extra extra(scene);const auto d=draws();std::array<std::vector<std::uint8_t>,8> images;
     auto cube=r.createMesh(scene.cube,scene.cubeIndex);auto quad=r.createMesh(scene.quad,scene.quadIndex,scene.quadUV1);auto plain=r.createMesh(scene.quad,scene.quadIndex);
-    auto checker=texture(r,scene.checker,true);auto rough=texture(r,scene.rough,false);
+    auto checker=texture(r,8,8,scene.checker,true);auto rough=texture(r,8,8,scene.rough,false);
     auto instances=r.createInstances(4);r.setInstances(instances,extra.instances);auto shots=r.createInstances(4,true);r.setShotPositions(shots,extra.shots);
     auto deformation=r.createDeformation(UINT(scene.quad.size()),2,1,extra.skin,extra.morph);r.setPose(deformation,extra.bones,{.6f});
     SceneMaterial shot=d.lit;shot.vertexColors=false;shot.shotShape={.15f,.15f,0,0};SceneMaterial skinned=d.lit;skinned.color={.9f,.8f,.6f,1};
@@ -111,27 +111,40 @@ template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,
     r.draw(plain,extra.ground,extra.ground,skinned);r.draw(cube,d.cube,d.cube,d.lit);images[2]=r.readPixels();
     // 20 point lights: light tiles active (>=16 lights).
     r.setShadows({});r.setLights(extra.manyLights);r.begin(frame(false));r.draw(plain,extra.ground,extra.ground,skinned);r.draw(cube,d.cube,d.cube,d.lit);images[3]=r.readPixels();
+    // Reflection probe: capture 6 faces around (0,1.5,1.5), filter, reflect on a chrome cube. Index 6 = same without the probe.
+    SceneMaterial chrome=d.lit;chrome.metalness=1;chrome.roughness=.2f;chrome.vertexColors=false;
+    auto probe=r.createProbe(32);r.setLights(scene.lights);r.begin(frame(false));
+    const std::array<std::array<float,3>,6> directions{{{1,0,0},{-1,0,0},{0,1,0},{0,-1,0},{0,0,1},{0,0,-1}}};
+    for(UINT f=0;f<6;f++){const std::array<float,3> eye{0,1.5f,1.5f},at{eye[0]+directions[f][0],eye[1]+directions[f][1],eye[2]+directions[f][2]};
+        r.beginProbe(probe,f,multiply(lightPerspective(1.5707963f,.1f,20),lookAt(eye,at)),{0,1.5f,1.5f,1},{.2f,.3f,.5f,1});r.draw(cube,d.cube,d.cube,d.lit);r.draw(plain,extra.ground,extra.ground,skinned);r.endProbe();}
+    r.filterProbe(probe);std::array<typename R::ProbeBinding,2> bindings{};bindings[0].resource=&probe;
+    for(int with=1;with>=0;with--){r.begin(frame(false));r.draw(plain,extra.ground,extra.ground,skinned);r.draw(cube,d.cube,d.cube,chrome,{},{},0,0,nullptr,{},{},nullptr,nullptr,nullptr,with?&bindings:nullptr);images[with?4:6]=r.readPixels();}
+    // Sky HDRI from a 32x16 panorama, rotated 30 degrees. Index 7 = same without the sky.
+    std::vector<std::uint8_t> panorama;for(int y=0;y<16;y++)for(int x=0;x<32;x++)panorama.insert(panorama.end(),{std::uint8_t(x*8),std::uint8_t(255-y*16),std::uint8_t(120+(x%4)*30),255});
+    auto pano=texture(r,32,16,panorama,false);
+    for(int with=1;with>=0;with--){r.setSkyEnvironment(with?&pano:nullptr,32,30,1.5f);r.begin(frame(false));r.draw(plain,extra.ground,extra.ground,skinned);r.draw(cube,d.cube,d.cube,chrome);images[with?5:7]=r.readPixels();}
     return images;
 }
 
 static nlohmann::json proof(DeviceDriver driver){
-    nlohmann::json out;std::array<std::vector<std::uint8_t>,4> reference;std::vector<std::uint8_t> unshadowed;
+    nlohmann::json out;std::array<std::vector<std::uint8_t>,8> reference;std::vector<std::uint8_t> unshadowed;
     {Device gpu11(driver);SceneRenderer r(gpu11,W,H);out["software11"]=gpu11.software();
-        reference=render(r,[](SceneRenderer& s,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(8,8,rgba,srgb,false);});
+        reference=render(r,[](SceneRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);});
         // Proof the shadow pass matters: same frame with receiveShadow off must differ.
         const Scene scene;const Extra extra(scene);const auto d=draws();auto cube=r.createMesh(scene.cube,scene.cubeIndex);auto plain=r.createMesh(scene.quad,scene.quadIndex);
         r.setShadows(extra.shadows);r.setLights(extra.shadowLights);r.begin(frame(false));SceneMaterial m=d.lit;m.receiveShadow=false;m.color={.9f,.8f,.6f,1};
         r.draw(plain,extra.ground,extra.ground,m);auto lit=d.lit;lit.receiveShadow=false;r.draw(cube,d.cube,d.cube,lit);unshadowed=r.readPixels();}
     d3d12::Device gpu(driver,true);out["software"]=gpu.software;out["debugLayer"]=gpu.debug;
     {d3d12::SceneMeshRenderer r(gpu,W,H);gpu.begin();
-        const auto images=render(r,[](d3d12::SceneMeshRenderer& s,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(8,8,rgba,srgb);});
-        const char* names[]={"full","cropped","shadowed","manyLights"};const std::array<float,4> clear=frame(false).clear;
-        for(std::size_t i=0;i<4;i++)out[names[i]]=compare(images[i],reference[i],clear);
+        const auto images=render(r,[](d3d12::SceneMeshRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb);});
+        const char* names[]={"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky"};const std::array<float,4> clear=frame(false).clear;
+        for(std::size_t i=0;i<8;i++)out[names[i]]=compare(images[i],reference[i],clear);
+        out["probeChangedPixels"]=compare(reference[4],reference[6],clear)["pixelsOver2"];out["skyChangedPixels"]=compare(reference[5],reference[7],clear)["pixelsOver2"];
         out["shadowChangedPixels"]=compare(reference[2],unshadowed,clear)["pixelsOver2"];
         gpu.end();gpu.waitIdle();}
     out["validationErrors"]=validationErrors(gpu);
-    for(const char* pass:{"full","cropped","shadowed","manyLights"}){REQUIRE(out[pass]["covered"].get<std::size_t>()>400);REQUIRE(out[pass]["maxDiff"].get<int>()<=2);}
-    REQUIRE(out["shadowChangedPixels"].get<std::size_t>()>50);REQUIRE(out["validationErrors"]==0);return out;
+    for(const char* pass:{"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky"}){REQUIRE(out[pass]["covered"].get<std::size_t>()>400);REQUIRE(out[pass]["maxDiff"].get<int>()<=2);}
+    REQUIRE(out["shadowChangedPixels"].get<std::size_t>()>50);REQUIRE(out["probeChangedPixels"].get<std::size_t>()>50);REQUIRE(out["skyChangedPixels"].get<std::size_t>()>50);REQUIRE(out["validationErrors"]==0);return out;
 }
 
 int main(){
