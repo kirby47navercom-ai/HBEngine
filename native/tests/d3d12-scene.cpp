@@ -1,4 +1,4 @@
-// D3D12 port phases 2, 3-1, 3-2 and 3-3a: the same scene drawn by SceneRenderer (D3D11) and SceneMeshRenderer (D3D12),
+// D3D12 port phases 2 and 3: the same scene drawn by SceneRenderer (D3D11) and SceneMeshRenderer (D3D12),
 // compared pixel by pixel on the same driver. Prints one JSON line.
 #include <HBEngine/SceneRenderD3D12.hpp>
 #include <nlohmann/json.hpp>
@@ -67,6 +67,11 @@ static Matrix lookAt(std::array<float,3> eye,std::array<float,3> target){
     const auto z=norm(sub(eye,target)),x=norm(cross(std::array<float,3>{0,1,.01f},z)),y=cross(z,x);
     Matrix m=identity;for(int i=0;i<3;i++){m[i*4]=x[i];m[i*4+1]=y[i];m[i*4+2]=z[i];}m[12]=-dot(x,eye);m[13]=-dot(y,eye);m[14]=-dot(z,eye);return m;
 }
+static Matrix inverse(const Matrix& m){// Gauss-Jordan on a column-major 4x4
+    double a[4][8]{};for(int r=0;r<4;r++){for(int c=0;c<4;c++)a[r][c]=m[c*4+r];a[r][4+r]=1;}
+    for(int c=0;c<4;c++){int pivot=c;for(int r=c+1;r<4;r++)if(std::abs(a[r][c])>std::abs(a[pivot][c]))pivot=r;std::swap(a[c],a[pivot]);const double d=a[c][c];for(auto& v:a[c])v/=d;for(int r=0;r<4;r++)if(r!=c){const double f=a[r][c];for(int k=0;k<8;k++)a[r][k]-=f*a[c][k];}}
+    Matrix out{};for(int r=0;r<4;r++)for(int c=0;c<4;c++)out[c*4+r]=float(a[r][4+c]);return out;
+}
 static Matrix ortho(float size,float n,float f){Matrix p=identity;p[0]=p[5]=1/size;p[10]=1/(n-f);p[14]=n/(n-f);return p;}
 static Matrix lightPerspective(float fov,float n,float f){const float s=1/std::tan(fov/2);Matrix p{};p[0]=p[5]=s;p[10]=f/(n-f);p[11]=-1;p[14]=n*f/(n-f);return p;}
 
@@ -89,8 +94,8 @@ struct Extra {
 };
 
 // One scene script for both backends. Returns full, cropped, shadowed and many-light images.
-template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,16> render(R& r,MakeTexture texture){
-    const Scene scene;const Extra extra(scene);const auto d=draws();std::array<std::vector<std::uint8_t>,16> images;
+template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,23> render(R& r,MakeTexture texture){
+    const Scene scene;const Extra extra(scene);const auto d=draws();std::array<std::vector<std::uint8_t>,23> images;
     auto cube=r.createMesh(scene.cube,scene.cubeIndex);auto quad=r.createMesh(scene.quad,scene.quadIndex,scene.quadUV1);auto plain=r.createMesh(scene.quad,scene.quadIndex);
     auto checker=texture(r,8,8,scene.checker,true);auto rough=texture(r,8,8,scene.rough,false);
     auto instances=r.createInstances(4);r.setInstances(instances,extra.instances);auto shots=r.createInstances(4,true);r.setShotPositions(shots,extra.shots);
@@ -153,11 +158,34 @@ template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,
     auto mipped=r.createTexture(8,8,scene.checker,true,true);Matrix distant=translate(identity,.6f,.5f,-6);for(int i=0;i<3;i++)distant[i*5]=.25f;
     r.begin(frame(false));r.draw(plain,distant,identity,matte,{&mipped,nullptr,nullptr,nullptr,nullptr,nullptr},{0,0,0,0,0,0});r.draw(quad,translate(identity,-.6f,-.3f,-3),identity,matte,{&mipped,nullptr,nullptr,nullptr,nullptr,nullptr},{0,0,0,0,0,0});images[15]=r.readPixels();
     r.setPostLookup(nullptr);
+    // 3-3b screen effects: neutral resolve, SSR, SSGI with Hi-Z, AO, geometry GI, TAA (2 jittered frames), motion blur with
+    // previous world / pose / instance histories.
+    const auto screenFrame=[&](auto edit){SceneFrame f=frame(false);SceneScreenEffects e;e.eye={0,0,4,1};e.forward={0,0,-1,0};e.camera={.1f,20,0,1};e.currentVP=e.previousVP=camera();e.inverseVP=inverse(camera());edit(e);f.screenEffects=e;return f;};
+    SceneMaterial glossy=matte;glossy.roughness=.1f;glossy.metalness=.7f;
+    const auto screenScene=[&](const SceneFrame& f){r.begin(f);r.draw(plain,extra.ground,extra.ground,glossy);r.draw(cube,d.cube,d.cube,d.lit);r.draw(cube,identity,identity,d.lit,{},{},0,0,nullptr,{},{},&instances);return r.readPixels();};
+    images[16]=screenScene(screenFrame([](SceneScreenEffects&){}));
+    images[17]=screenScene(screenFrame([](SceneScreenEffects& e){e.reflection={1,.8f,20,.2f};}));
+    images[18]=screenScene(screenFrame([](SceneScreenEffects& e){e.indirect={1.5f,24,4,.08f};e.hierarchy[3]=1;}));
+    images[19]=screenScene(screenFrame([](SceneScreenEffects& e){e.ambientAO={.6f,.02f,3,0};}));
+    // Geometry GI: two emissive triangles behind the camera plane (rendering-104 layout).
+    std::vector<float> world{-100,-100,-2,1,100,100,-2,0,2,0,0,0};const auto triangle=[&](std::array<float,3> a,std::array<float,3> b,std::array<float,3> c,std::array<float,3> emit){for(auto v:a)world.push_back(v);world.push_back(0);for(int i=0;i<3;i++)world.push_back(b[i]-a[i]);world.push_back(0);for(int i=0;i<3;i++)world.push_back(c[i]-a[i]);world.push_back(0);world.insert(world.end(),{0,0,1,0,1,1,1,0});for(auto v:emit)world.push_back(v);world.push_back(0);};
+    triangle({-100,-100,-2},{100,-100,-2},{100,100,-2},{.4f,1.5f,.3f});triangle({-100,-100,-2},{100,100,-2},{-100,100,-2},{.4f,1.5f,.3f});
+    std::vector<std::uint8_t> worldBytes(world.size()*4);std::memcpy(worldBytes.data(),world.data(),worldBytes.size());auto geometry=r.createDataTexture(UINT(world.size()/4),1,worldBytes,4,true);r.setGeometryScene(&geometry);
+    images[20]=screenScene(screenFrame([](SceneScreenEffects& e){e.geometry={1,20,2,4};e.geometryInfo={15,1,1,3};e.geometryLimits={256,.01f,15,0};}));r.setGeometryScene(nullptr);
+    screenScene(screenFrame([](SceneScreenEffects& e){e.temporal={1,.85f,.02f,0};e.jitter={.3f,-.2f,0,0};}));
+    images[21]=screenScene(screenFrame([](SceneScreenEffects& e){e.temporal={1,.85f,.02f,1};e.jitter={-.3f,.2f,.3f,-.2f};}));
+    // Motion blur: moving cube (previous world), previous pose and previous instances.
+    auto movedInstances=extra.instances;std::vector<Matrix> previousInstances;for(auto& i:movedInstances)previousInstances.push_back(translate(i.world,i.world[12]-.2f,i.world[13],i.world[14]));r.setPreviousInstances(instances,previousInstances);
+    auto oldBones=extra.bones;oldBones[1]=translate(rotation(.1f,0),0,0,0);r.setPose(deformation,oldBones,{.1f},{},true);
+    {const auto f=screenFrame([](SceneScreenEffects& e){e.motion={1,.05f,8,0};Matrix shifted=camera();shifted[12]+=.05f;e.previousVP=shifted;});const Matrix before=rotation(.5f,.4f);
+        r.begin(f);r.draw(plain,extra.ground,extra.ground,glossy,{},{},0,0,nullptr,{},{},nullptr,nullptr,nullptr,nullptr,nullptr,1);r.draw(cube,d.cube,d.cube,d.lit,{},{},0,0,nullptr,{},{},nullptr,nullptr,nullptr,nullptr,&before,1);
+        r.draw(cube,identity,identity,d.lit,{},{},0,0,nullptr,{},{},&instances,nullptr,nullptr,nullptr,nullptr,1);r.draw(plain,translate(identity,1.1f,-.9f,.8f),identity,skinned,{},{},0,0,nullptr,{},{},nullptr,&deformation,nullptr,nullptr,nullptr,1);images[22]=r.readPixels();}
+    r.releaseMotion(instances);r.releaseMotion(deformation);
     return images;
 }
 
 static nlohmann::json proof(DeviceDriver driver){
-    nlohmann::json out;std::array<std::vector<std::uint8_t>,16> reference;std::vector<std::uint8_t> unshadowed;
+    nlohmann::json out;std::array<std::vector<std::uint8_t>,23> reference;std::vector<std::uint8_t> unshadowed;
     {Device gpu11(driver);SceneRenderer r(gpu11,W,H);out["software11"]=gpu11.software();
         reference=render(r,[](SceneRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);});
         // Proof the shadow pass matters: same frame with receiveShadow off must differ.
@@ -167,16 +195,19 @@ static nlohmann::json proof(DeviceDriver driver){
     d3d12::Device gpu(driver,true);out["software"]=gpu.software;out["debugLayer"]=gpu.debug;
     {d3d12::SceneMeshRenderer r(gpu,W,H);gpu.begin();
         const auto images=render(r,[](d3d12::SceneMeshRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);});
-        const char* names[]={"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps"};const std::array<float,4> clear=frame(false).clear;
-        for(std::size_t i=0;i<16;i++)out[names[i]]=compare(images[i],reference[i],clear);
+        const char* names[]={"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps","screen","ssr","ssgi","ao","geometryGI","taa","motionBlur"};const std::array<float,4> clear=frame(false).clear;
+        for(std::size_t i=0;i<23;i++)out[names[i]]=compare(images[i],reference[i],clear);
+        for(std::size_t i:{17,18,19,20,21,22})out[std::string(names[i])+"ChangedPixels"]=compare(reference[i],reference[16],clear)["pixelsOver2"];
         out["bloomChangedPixels"]=compare(reference[12],reference[11],clear)["pixelsOver2"];out["postChangedPixels"]=compare(reference[13],reference[11],clear)["pixelsOver2"];out["transmissionChangedPixels"]=compare(reference[14],reference[11],clear)["pixelsOver2"];
         out["atlasChangedPixels"]=compare(reference[8],reference[9],clear)["pixelsOver2"];out["lightmapChangedPixels"]=compare(reference[10],reference[8],clear)["pixelsOver2"];
         out["probeChangedPixels"]=compare(reference[4],reference[6],clear)["pixelsOver2"];out["skyChangedPixels"]=compare(reference[5],reference[7],clear)["pixelsOver2"];
         out["shadowChangedPixels"]=compare(reference[2],unshadowed,clear)["pixelsOver2"];
         gpu.end();gpu.waitIdle();}
     out["validationErrors"]=validationErrors(gpu);
-    for(const char* pass:{"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps"}){if(out[pass]["covered"].get<std::size_t>()<=(std::string(pass)=="mipmaps"?150u:400u)||out[pass]["maxDiff"].get<int>()>2)throw std::runtime_error(std::string("scene mismatch ")+pass+" "+out[pass].dump());}
-    REQUIRE(out["shadowChangedPixels"].get<std::size_t>()>50);REQUIRE(out["probeChangedPixels"].get<std::size_t>()>50);REQUIRE(out["skyChangedPixels"].get<std::size_t>()>50);REQUIRE(out["atlasChangedPixels"].get<std::size_t>()>50);REQUIRE(out["lightmapChangedPixels"].get<std::size_t>()>50);REQUIRE(out["bloomChangedPixels"].get<std::size_t>()>50);REQUIRE(out["postChangedPixels"].get<std::size_t>()>50);REQUIRE(out["transmissionChangedPixels"].get<std::size_t>()>50);REQUIRE(out["validationErrors"]==0);return out;
+    for(const char* pass:{"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap","base","bloom","post","transmission","mipmaps","screen","ssr","ssgi","ao","geometryGI","taa","motionBlur"}){if(out[pass]["covered"].get<std::size_t>()<=(std::string(pass)=="mipmaps"?150u:400u)||out[pass]["maxDiff"].get<int>()>2)throw std::runtime_error(std::string("scene mismatch ")+pass+" "+out[pass].dump());}
+    REQUIRE(out["shadowChangedPixels"].get<std::size_t>()>50);REQUIRE(out["probeChangedPixels"].get<std::size_t>()>50);REQUIRE(out["skyChangedPixels"].get<std::size_t>()>50);REQUIRE(out["atlasChangedPixels"].get<std::size_t>()>50);REQUIRE(out["lightmapChangedPixels"].get<std::size_t>()>50);REQUIRE(out["bloomChangedPixels"].get<std::size_t>()>50);REQUIRE(out["postChangedPixels"].get<std::size_t>()>50);REQUIRE(out["transmissionChangedPixels"].get<std::size_t>()>50);// TAA on a static view converges to the plain image, so it is parity-checked only.
+    for(const char* effect:{"ssr","ssgi","ao","geometryGI","motionBlur"}){if(out[std::string(effect)+"ChangedPixels"].get<std::size_t>()<=50){throw std::runtime_error(std::string("screen effect had no effect: ")+effect);}}
+    REQUIRE(out["validationErrors"]==0);return out;
 }
 
 int main(){

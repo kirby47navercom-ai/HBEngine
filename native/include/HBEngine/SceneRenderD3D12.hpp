@@ -5,8 +5,9 @@
 // Phase 3-2: reflection probe capture/filter (SceneProbes kernels), local probe bindings, sky HDRI,
 // global probe atlas (SceneProbeAtlas packing/padding), baked lightmaps.
 // Phase 3-3a: HDR scene target, bloom, post composite (grade/vignette/lens/bokeh/occlusion/exposure/LUT/FXAA),
-// transmission capture, GPU mip generation.
-// Still D3D11-only: screen effects (SSAO/SSR/TAA...), motion vectors, material programs, 2D, particles.
+// transmission capture, GPU mip generation. Phase 3-3b: screen effects (ScreenEffectsPass Resolve kernels: path/GI/SSR/
+// SSGI/AO/TAA/motion blur/denoise/caustics), Hi-Z, MRT surface targets, motion vectors.
+// Still D3D11-only: material programs, 2D, particles, dynamic mesh streams.
 #include "SceneRender.hpp"
 #include "D3D12Direct.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
@@ -92,9 +93,9 @@ class SceneMeshRenderer {
 public:
     struct Mesh {Buffer vertices,indices,uv1;UINT count=0,vertexCount=0;};
     struct Texture : d3d12::Texture {D3D12_CPU_DESCRIPTOR_HANDLE srv{};UINT mips=1;};
-    struct Instances {Buffer data;UINT capacity=0,count=0,stride=sizeof(SceneInstance);bool mirrored=false;
+    struct Instances {Buffer data,previous;std::vector<Matrix> previousValues;UINT capacity=0,count=0,stride=sizeof(SceneInstance);bool mirrored=false;
         bool positionsOnly()const{return stride==16;}std::uint32_t capacityCount()const{return capacity;}};
-    struct Deformation {Buffer skin,morph,pose;std::uint32_t vertexCount=0,boneCount=0,morphCount=0,poseBytes=0;std::vector<float> current;};
+    struct Deformation {Buffer skin,morph,pose,previousPose;std::uint32_t vertexCount=0,boneCount=0,morphCount=0,poseBytes=0;std::vector<float> current,previous;};
     // HDR cube capture (R16G16B16A16F), prefiltered mip chain, 9 SH irradiance coefficients.
     struct Probe {d3d12::Texture capture,filtered,depth;Buffer coefficients;std::array<D3D12_CPU_DESCRIPTOR_HANDLE,6> faces{};D3D12_CPU_DESCRIPTOR_HANDLE source{},view{},irradiance{};UINT size=0,mips=0;bool ready=false;std::uint64_t identity=0,revision=0;
         bool available()const{return ready;}};
@@ -104,7 +105,7 @@ private:
     using Constants=SceneRenderer::Constants;
     struct Slot {D3D12_SRV_DIMENSION dimension=D3D12_SRV_DIMENSION_TEXTURE2D;UINT stride=0;bool raw=false;};
     Device& gpu;UINT width,height;
-    std::vector<unsigned char> vs,ps,shadowPs;Com<ID3D12RootSignature> root;std::array<Com<ID3D12PipelineState>,144> pipelines;std::array<Com<ID3D12PipelineState>,6> shadowPipelines;
+    std::vector<unsigned char> vs,ps,shadowPs,surfacePs;Com<ID3D12RootSignature> root;std::array<Com<ID3D12PipelineState>,144> pipelines;std::map<UINT,Com<ID3D12PipelineState>> surfacePipelines;std::array<Com<ID3D12PipelineState>,6> shadowPipelines;
     std::map<UINT,UINT> cbuffers;std::vector<Slot> slots;UINT samplerCount=0,srvRoot=0,samplerRoot=0;
     Com<ID3D12DescriptorHeap> nulls;DescriptorPool views;
     std::map<std::vector<std::uint32_t>,D3D12_GPU_DESCRIPTOR_HANDLE> samplerTables;UINT samplerUsed=0;
@@ -126,6 +127,13 @@ private:
     SceneBloom bloomSettings;ScenePostProcess post;std::array<float,4> postArea{};const Texture* postLookup=nullptr;
     // Transmission: HDR opaque copy with mips (t44) and depth copy (t45).
     d3d12::Texture transmissionImage,transmissionDepth;D3D12_CPU_DESCRIPTOR_HANDLE transmissionView{},transmissionDepthView{};UINT transmissionMips=0;bool transmissionReady=false;
+    // Screen effects: ScreenEffectsPass sources/validation, same image set, Resolve stages 0..5, Hi-Z atlas.
+    std::optional<SceneScreenEffects> screen;std::vector<RayProgram> rayPrograms;std::string raySource,rayDefines;bool raySourceReady=false;
+    ReflectedLayout screenLayout,hizLayout;std::map<std::string,Com<ID3D12PipelineState>> screenKernels;Com<ID3D12PipelineState> hizKernel;
+    Image surfaceNormal,surfaceAlbedo,surfaceMotion,surfaceAmbient,denoiseGuide,denoiseAux,photons,denoisePreviousGuide;std::array<Image,2> history,filtered,denoiseHistory;
+    std::size_t historyIndex=0,filterIndex=0;bool historyValid=false,filterValid=false;std::array<float,4> lastFilter{},lastDenoise{},lastLens{},lastGeometryRecords{},lastEye{};std::array<float,16> lastVP{};
+    std::vector<Image> hizLevels;Image hizAtlas;std::array<UINT,2> hizSize{};std::array<D3D12_CPU_DESCRIPTOR_HANDLE,4> nullTargets{};
+    const Texture *geometryScene=nullptr,*pathEnvironment=nullptr,*distanceField=nullptr;
     // Global probe atlas: t50 image, t51 records + spatial index, t52 SH. ponytail: any change rebuilds the whole atlas; port DX11's incremental paths if profiling asks.
     d3d12::Texture atlasImage;Buffer atlasTable,atlasSH;D3D12_CPU_DESCRIPTOR_HANDLE atlasView{},atlasTableView{},atlasSHView{};UINT atlasCount=0;bool atlasInfluence=false;
     std::vector<std::array<std::uint64_t,2>> atlasStamps;std::vector<ProbeSettings> atlasSettings;ProbeSpatialIndex atlasSpatial;Com<ID3D12RootSignature> paddingRoot;Com<ID3D12PipelineState> paddingKernel;
@@ -175,6 +183,18 @@ private:
         const auto cpu=gpu.samplers->GetCPUDescriptorHandleForHeapStart();auto at=gpu.samplers->GetGPUDescriptorHandleForHeapStart();
         for(UINT i=0;i<samplerCount;i++){const auto d=samplerDesc(keys[i]);gpu.device->CreateSampler(&d,{cpu.ptr+SIZE_T(samplerUsed+i)*gpu.samplerStride});}
         at.ptr+=UINT64(samplerUsed)*gpu.samplerStride;samplerUsed+=samplerCount;return samplerTables[keys]=at;
+    }
+    // Screen-effect MRT: color, normal, albedo, motion, ambient (SceneRenderer::surfaceShader outputs).
+    // targets: bit i set when surface target i+1 exists; absent targets are UNKNOWN slots bound to null RTVs.
+    ID3D12PipelineState* surfacePipeline(std::size_t raster,std::size_t blend,std::size_t depthMode,UINT targets){
+        auto& p=surfacePipelines[UINT(raster+6*(blend+3*depthMode))+72u*targets];if(p.p)return p.p;
+        static const D3D12_INPUT_ELEMENT_DESC elements[]={{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,32,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"TEXCOORD",1,DXGI_FORMAT_R32G32_FLOAT,1,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0}};
+        auto d=Device::defaults(root.p,vs,surfacePs,DXGI_FORMAT_R16G16B16A16_FLOAT,DXGI_FORMAT_D32_FLOAT);d.InputLayout={elements,5};d.NumRenderTargets=5;for(UINT i=1;i<5;i++)d.RTVFormats[i]=(targets>>(i-1))&1?DXGI_FORMAT_R16G16B16A16_FLOAT:DXGI_FORMAT_UNKNOWN;
+        d.RasterizerState.CullMode=raster%3==0?D3D12_CULL_MODE_BACK:raster%3==1?D3D12_CULL_MODE_FRONT:D3D12_CULL_MODE_NONE;d.RasterizerState.FrontCounterClockwise=raster<3;
+        // IndependentBlendEnable stays FALSE: RT0's blend applies to every target, as with the D3D11 blend state.
+        auto& t=d.BlendState.RenderTarget[0];t.BlendEnable=blend!=2;t.SrcBlend=D3D12_BLEND_SRC_ALPHA;t.DestBlend=blend==1?D3D12_BLEND_ONE:D3D12_BLEND_INV_SRC_ALPHA;t.BlendOp=D3D12_BLEND_OP_ADD;t.SrcBlendAlpha=D3D12_BLEND_ONE;t.DestBlendAlpha=D3D12_BLEND_INV_SRC_ALPHA;t.BlendOpAlpha=D3D12_BLEND_OP_ADD;t.LogicOp=D3D12_LOGIC_OP_NOOP;
+        d.DepthStencilState.DepthEnable=TRUE;d.DepthStencilState.DepthFunc=(depthMode&1)?D3D12_COMPARISON_FUNC_LESS_EQUAL:D3D12_COMPARISON_FUNC_ALWAYS;d.DepthStencilState.DepthWriteMask=(depthMode&2)?D3D12_DEPTH_WRITE_MASK_ALL:D3D12_DEPTH_WRITE_MASK_ZERO;
+        p=gpu.pipeline(d);return p.p;
     }
     ID3D12PipelineState* pipeline(std::size_t raster,std::size_t blend,std::size_t depthMode,bool hdr=false){
         auto& p=pipelines[raster+6*(blend+3*depthMode)+(hdr?72:0)];if(p.p)return p.p;
@@ -271,12 +291,84 @@ private:
         gpu.transition(output.texture,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);auto s=bloomCompute.srvTable(gpu),u=bloomCompute.uavTable(gpu);srvAt(s,0,input);gpu.device->CreateUnorderedAccessView(output.texture.get(),nullptr,nullptr,u.cpuAt(0));
         bloomCompute.apply(gpu,true,{{0,gpu.constants(&values,sizeof(values))}},&s,&u);gpu.list->SetPipelineState(kernel);gpu.list->Dispatch((output.texture.width+7)/8,(output.texture.height+7)/8,1);gpu.transition(output.texture,readable);
     }
-    // Same sequence as BloomPass::complete (screen effects resolve is phase 3-3b, so the source is the HDR scene).
+    static ScreenEffectsPass::DataInfo dataInfo(const Texture* t){ScreenEffectsPass::DataInfo info;if(!t)return info;info.present=true;info.width=t->width;info.height=t->height;info.rgba32f=t->format==DXGI_FORMAT_R32G32B32A32_FLOAT;return info;}
+    void releaseScreen(){for(auto* i:{&surfaceNormal,&surfaceAlbedo,&surfaceMotion,&surfaceAmbient,&denoiseGuide,&denoiseAux,&photons,&denoisePreviousGuide,&hizAtlas})release(*i);for(auto* a:{&history,&filtered,&denoiseHistory})for(auto& i:*a)release(i);for(auto& l:hizLevels)release(l);hizLevels.clear();hizSize={};historyValid=filterValid=false;historyIndex=filterIndex=0;screen.reset();}
+    ID3D12PipelineState* screenKernel(int stage){
+        auto& settings=*screen;if(!raySourceReady||rayPrograms.size()!=settings.rayPrograms.size()||!std::equal(rayPrograms.begin(),rayPrograms.end(),settings.rayPrograms.begin(),[](const auto&a,const auto&b){return a.key==b.key&&a.fieldMask==b.fieldMask&&a.instructions==b.instructions;})){raySource=rayProgramShader(settings.rayPrograms,&rayDefines);rayPrograms=settings.rayPrograms;raySourceReady=true;}
+        const auto key=ScreenEffectsPass::programVariant(settings,stage)+raySource;auto& kernel=screenKernels[key];if(kernel.p)return kernel.p;
+        if(!screenLayout.root.p){screenLayout.cbuffers[0]=sizeof(ScreenEffectsPass::Constants);screenLayout.srvs.resize(16);screenLayout.uavs.resize(1);screenLayout.samplers=1;screenLayout.build(gpu,{ReflectedLayout::linearClamp()});}
+        // ponytail: every variant stays cached for the renderer's lifetime; evict like the D3D11 bytecode cache if editors churn variants.
+        const auto code=ScreenEffectsPass::compileSource({key,ScreenEffectsPass::programSource(settings,raySource,rayDefines,stage)});kernel=gpu.computePipeline(screenLayout.root.p,code);return kernel.p;
+    }
+    // HierarchicalDepth::build: min/max pyramid of the viewport depth, stacked into one atlas.
+    ID3D12Resource* buildHierarchy(const std::array<float,4>& area){
+        const UINT w=UINT(area[2]),h=UINT(area[3]);if(!w||!h)throw std::runtime_error("Hi-Z depth/area invalid");
+        if(!hizKernel.p){const auto code=Device::shader(HierarchicalDepth::source,"HBHiZ","Downsample","cs_5_0");hizLayout.reflect(code);hizLayout.build(gpu,{});hizKernel=gpu.computePipeline(hizLayout.root.p,code);}
+        if(hizSize[0]!=w||hizSize[1]!=h){for(auto& l:hizLevels)release(l);hizLevels.clear();release(hizAtlas);hizSize={w,h};UINT a=w,b=h,offset=0;std::vector<UINT> offsets;do{a=(a+1)/2;b=(b+1)/2;hizLevels.push_back(image(a,b,false,DXGI_FORMAT_R32G32_FLOAT));offsets.push_back(offset);offset+=b;}while(a>1||b>1);
+            D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=hizLevels.front().texture.width;d.Height=offset;d.DepthOrArraySize=1;d.MipLevels=1;d.Format=DXGI_FORMAT_R32G32_FLOAT;d.SampleDesc.Count=1;hizAtlas.texture.value=gpu.committed(D3D12_HEAP_TYPE_DEFAULT,d,readable,nullptr,"Direct3D12 Hi-Z atlas");hizAtlas.texture.state=readable;hizAtlas.texture.width=UINT(d.Width);hizAtlas.texture.height=offset;hizAtlas.texture.format=d.Format;}
+        gpu.transition(depth,readable);ID3D12Resource* source=depth.get();UINT sw=w,sh=h,offset=0;bool first=true;
+        for(auto& l:hizLevels){const std::array<UINT,8> c{sw,sh,first?UINT(area[0]):0,first?UINT(area[1]):0,l.texture.width,l.texture.height,first?1u:0u,0};
+            gpu.transition(l.texture,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);auto srvs=hizLayout.srvTable(gpu),uavs=hizLayout.uavTable(gpu);
+            if(first){D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.Format=DXGI_FORMAT_R32_FLOAT;v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=1;srvAt(srvs,0,source,&v);}else srvAt(srvs,0,source);
+            gpu.device->CreateUnorderedAccessView(l.texture.get(),nullptr,nullptr,uavs.cpuAt(0));hizLayout.apply(gpu,true,{{0,gpu.constants(c.data(),sizeof(c))}},&srvs,&uavs);gpu.list->SetPipelineState(hizKernel.p);gpu.list->Dispatch((l.texture.width+7)/8,(l.texture.height+7)/8,1);
+            gpu.transition(l.texture,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(hizAtlas.texture,D3D12_RESOURCE_STATE_COPY_DEST);D3D12_TEXTURE_COPY_LOCATION dst{},src{};dst.pResource=hizAtlas.texture.get();src.pResource=l.texture.get();dst.Type=src.Type=D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;const D3D12_BOX box{0,0,0,l.texture.width,l.texture.height,1};gpu.list->CopyTextureRegion(&dst,0,offset,0,&src,&box);
+            gpu.transition(l.texture,readable);offset+=l.texture.height;source=l.texture.get();sw=l.texture.width;sh=l.texture.height;first=false;}
+        gpu.transition(hizAtlas.texture,readable);gpu.transition(depth,D3D12_RESOURCE_STATE_DEPTH_WRITE);return hizAtlas.texture.get();
+    }
+    // ScreenEffectsPass::resolve: same constants, stage order, history/denoise ping-pong and validity rules.
+    ID3D12Resource* resolveScreen(const std::array<float,4>& area){
+        if(!screen){return hdr.texture.get();}
+        auto& settings=*screen;
+        ScreenEffectsPass::validateScene(settings,dataInfo(geometryScene),dataInfo(pathEnvironment),dataInfo(distanceField));
+        ID3D12Resource* hierarchy=nullptr;if(settings.hierarchy[3]>0&&(settings.reflection[0]>0||settings.indirect[0]>0)){hierarchy=buildHierarchy(area);settings.hierarchy={float(hizAtlas.texture.width),float(hizAtlas.texture.height),float(hizLevels.size()),1};}else{for(auto& l:hizLevels)release(l);hizLevels.clear();release(hizAtlas);hizSize={};settings.hierarchy={};}
+        ScreenEffectsPass::Constants c{settings.path,settings.pathQuality,settings.pathEnvironment,settings.pathLens,settings.pathMap,settings.pathOptions,settings.pathDenoise,settings.pathCaustics,settings.pathCausticTargets,settings.pathFilter,settings.transport,settings.ambientAO,settings.geometry,settings.geometryInfo,settings.geometryRecords,settings.geometryLimits,settings.hierarchy,settings.temporal,settings.motion,settings.reflection,settings.indirect,settings.coordinates,settings.jitter,settings.eye,settings.forward,settings.camera,{float(width),float(height),0,0},area,settings.inverseVP,settings.currentVP,settings.previousVP};
+        if(!historyValid){c.temporal[3]=0;c.path[3]=0;}
+        if((settings.pathFilter[3]>0?settings.pathFilter[2]==0:settings.path[3]==0||settings.eye!=lastEye||settings.currentVP!=lastVP)||settings.pathFilter[0]!=lastFilter[0]||settings.pathFilter[1]!=lastFilter[1]||settings.pathDenoise!=lastDenoise||settings.pathLens!=lastLens||settings.geometryRecords[3]!=lastGeometryRecords[3])filterValid=false;
+        c.pathFilter[2]=filterValid?1.f:0.f;gpu.transition(hdr.texture,readable);
+        for(auto* i:{&surfaceNormal,&surfaceAlbedo,&surfaceMotion,&surfaceAmbient})if(i->texture.value.p)gpu.transition(i->texture,readable);
+        const auto run=[&](int stage,ID3D12Resource* input,Image& destination,float stride=0){
+            c.pathOptions[3]=stage==2?stride:settings.pathOptions[3];auto* kernel=screenKernel(stage);auto srvs=screenLayout.srvTable(gpu),uavs=screenLayout.uavTable(gpu);
+            const auto put=[&](UINT slot,const Image& i){if(i.texture.value.p)srvAt(srvs,slot,i.texture.get());};
+            if(input){srvAt(srvs,0,input);}
+            D3D12_SHADER_RESOURCE_VIEW_DESC dv{};dv.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;dv.Format=DXGI_FORMAT_R32_FLOAT;dv.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;dv.Texture2D.MipLevels=1;gpu.transition(depth,readable);srvAt(srvs,1,depth.get(),&dv);
+            put(2,history[historyIndex]);put(3,surfaceNormal);put(4,surfaceAlbedo);put(5,surfaceMotion);if(hierarchy)srvAt(srvs,6,hierarchy);if(geometryScene)gpu.device->CopyDescriptorsSimple(1,srvs.cpuAt(7),geometryScene->srv,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);put(8,surfaceAmbient);
+            if(stage==2||stage==4){put(9,denoiseGuide);}
+            if(pathEnvironment){gpu.device->CopyDescriptorsSimple(1,srvs.cpuAt(10),pathEnvironment->srv,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);}
+            if(stage!=3){put(11,photons);}
+            if(stage==4){put(12,denoiseHistory[filterIndex]);put(13,denoisePreviousGuide);}if(stage==2||stage==4)put(14,denoiseAux);if(distanceField)gpu.device->CopyDescriptorsSimple(1,srvs.cpuAt(15),distanceField->srv,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+            gpu.transition(destination.texture,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);gpu.device->CreateUnorderedAccessView(destination.texture.get(),nullptr,nullptr,uavs.cpuAt(0));
+            screenLayout.apply(gpu,true,{{0,gpu.constants(&c,sizeof(c))}},&srvs,&uavs);gpu.list->SetPipelineState(kernel);gpu.list->Dispatch(stage==3?16:(UINT(area[2])+7)/8,stage==3?2:(UINT(area[3])+7)/8,1);gpu.transition(destination.texture,readable);
+        };
+        if(photons.texture.value.p&&c.path[3]<c.path[2])run(3,hdr.texture.get(),photons);
+        run(0,hdr.texture.get(),history[1-historyIndex]);historyIndex=1-historyIndex;historyValid=true;
+        if(denoiseGuide.texture.value.p){run(1,hdr.texture.get(),denoiseGuide);if(settings.pathLens[0]>0||settings.pathFilter[0]>0)run(5,hdr.texture.get(),denoiseAux);
+            ID3D12Resource* current=history[historyIndex].texture.get();int last=0;for(int step=0;step<int(settings.pathDenoise[1]);step++){last=step%2;run(2,current,filtered[last],float(1<<step));current=filtered[last].texture.get();}
+            if(denoisePreviousGuide.texture.value.p){run(4,current,denoiseHistory[1-filterIndex]);filterIndex=1-filterIndex;gpu.transition(denoiseGuide.texture,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(denoisePreviousGuide.texture,D3D12_RESOURCE_STATE_COPY_DEST);gpu.list->CopyResource(denoisePreviousGuide.texture.get(),denoiseGuide.texture.get());gpu.transition(denoiseGuide.texture,readable);gpu.transition(denoisePreviousGuide.texture,readable);
+                filterValid=true;lastFilter=settings.pathFilter;lastDenoise=settings.pathDenoise;lastLens=settings.pathLens;lastGeometryRecords=settings.geometryRecords;lastEye=settings.eye;lastVP=settings.currentVP;current=denoiseHistory[filterIndex].texture.get();}
+            gpu.transition(depth,D3D12_RESOURCE_STATE_DEPTH_WRITE);return current;}
+        gpu.transition(depth,D3D12_RESOURCE_STATE_DEPTH_WRITE);return history[historyIndex].texture.get();
+    }
+    // ScreenEffectsPass::begin image allocation and per-frame surface clears.
+    void beginScreen(const SceneFrame& value){
+        if(!value.screenEffects){releaseScreen();return;}auto settings=*value.screenEffects;ScreenEffectsPass::validateSettings(settings);screen=settings;
+        const auto keep=[&](Image& i,bool want,bool target,DXGI_FORMAT format=DXGI_FORMAT_R16G16B16A16_FLOAT,UINT w=0,UINT h=0){if(!want){release(i);return false;}if(!i.texture.value.p){i=image(w?w:width,h?h:height,target,format);return true;}return false;};
+        keep(photons,settings.path[0]>0&&settings.pathCaustics[0]>0&&settings.pathCaustics[3]>0,false,DXGI_FORMAT_R32G32B32A32_FLOAT,128,16);
+        const bool denoise=settings.path[0]>0&&settings.pathDenoise[0]>0;keep(denoiseAux,denoise&&(settings.pathLens[0]>0||settings.pathFilter[0]>0),false);
+        if(keep(denoiseGuide,denoise,false)){release(filtered[0]);release(filtered[1]);filtered[0]=image(width,height,false);filtered[1]=image(width,height,false);}if(!denoise){release(filtered[0]);release(filtered[1]);}
+        if(denoiseGuide.texture.value.p&&settings.pathFilter[0]>0){if(keep(denoisePreviousGuide,true,false)){denoiseHistory[0]=image(width,height,false);denoiseHistory[1]=image(width,height,false);filterValid=false;}}else{release(denoisePreviousGuide);release(denoiseHistory[0]);release(denoiseHistory[1]);filterValid=false;}
+        if(!history[0].texture.value.p){history[0]=image(width,height,false);history[1]=image(width,height,false);historyValid=false;}
+        const bool surfaces=settings.reflection[0]>0||settings.indirect[0]>0||settings.geometry[0]>0||settings.ambientAO[2]>0;keep(surfaceNormal,surfaces,true);keep(surfaceAlbedo,surfaces,true);keep(surfaceMotion,settings.motion[3]>0,true);keep(surfaceAmbient,settings.ambientAO[2]>0,true);
+        const float neutral[4]={.5f,.5f,.5f,1},zero[4]={};
+        for(auto [i,clear]:{std::pair<Image*,const float*>{&surfaceNormal,neutral},{&surfaceAlbedo,zero},{&surfaceMotion,zero},{&surfaceAmbient,zero}})if(i->texture.value.p){gpu.transition(i->texture,D3D12_RESOURCE_STATE_RENDER_TARGET);gpu.list->ClearRenderTargetView(i->rtv,clear,0,nullptr);}
+        if(!nullTargets[0].ptr)for(auto& t:nullTargets){t=gpu.rtvs.take();D3D12_RENDER_TARGET_VIEW_DESC v{};v.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;v.ViewDimension=D3D12_RTV_DIMENSION_TEXTURE2D;gpu.device->CreateRenderTargetView(nullptr,&v,t);}
+    }
+    // Same sequence as BloomPass::complete; the extract/composite source is the screen-effect resolve.
     void completeHDR(){
         if(!hdrPending){return;}
+        ID3D12Resource* screenSource=resolveScreen(postArea);
         BloomPass::Constants values;values.effect={bloomSettings.threshold,bloomSettings.strength,bloomSettings.radius,frame.exposure};gpu.transition(hdr.texture,readable);
-        for(std::size_t index=0;index<levels.size();index++){auto& layer=levels[index];const auto& input=index?levels[index-1][0].texture:hdr.texture;
-            values.dimensions={float(input.width),float(input.height),float(layer[0].texture.width),float(layer[0].texture.height)};values.area=index?std::array<float,4>{0,0,float(input.width),float(input.height)}:postArea;values.options={0,0,index==0?1.f:0.f,0};bloomDispatch(extractKernel.p,input.get(),layer[0],values);
+        for(std::size_t index=0;index<levels.size();index++){auto& layer=levels[index];auto* input=index?levels[index-1][0].texture.get():screenSource;const auto inputWidth=index?levels[index-1][0].texture.width:hdr.texture.width,inputHeight=index?levels[index-1][0].texture.height:hdr.texture.height;
+            values.dimensions={float(inputWidth),float(inputHeight),float(layer[0].texture.width),float(layer[0].texture.height)};values.area=index?std::array<float,4>{0,0,float(inputWidth),float(inputHeight)}:postArea;values.options={0,0,index==0?1.f:0.f,0};bloomDispatch(extractKernel.p,input,layer[0],values);
             values.dimensions={float(layer[0].texture.width),float(layer[0].texture.height),float(layer[0].texture.width),float(layer[0].texture.height)};values.options={1,0,0,0};bloomDispatch(blurKernel.p,layer[0].texture.get(),layer[1],values);values.options={0,1,0,0};bloomDispatch(blurKernel.p,layer[1].texture.get(),layer[0],values);}
         values.grade=post.grade;values.filter=post.filter;values.effects=post.effects;values.vignette=post.vignette;values.vignetteColor=post.vignetteColor;values.balance=post.balance;values.lift=post.lift;values.gamma=post.gamma;values.gain=post.gain;values.lens=post.lens;values.bokeh=post.bokeh;values.focus=post.focus;values.occlusion=post.occlusion;values.lookup=post.lookup;values.camera=post.camera;values.exposure=post.exposure;values.adapt=post.adapt;
         values.dimensions={float(hdr.texture.width),float(hdr.texture.height),0,0};values.area=postArea;values.options={0,0,float(levels.size()),0};
@@ -288,7 +380,7 @@ private:
             bloomCompute.apply(gpu,true,{{0,gpu.constants(&values,sizeof(values))}},&s,&u);gpu.list->SetPipelineState(meterKernel.p);gpu.list->Dispatch(1,1,1);gpu.transition(result.texture,readable);exposureIndex=1-exposureIndex;exposureValid=true;
         }else{for(auto& e:exposureImages)release(e);exposureValid=false;}
         if(post.occlusion[3]>0){if(aaImage.texture.width!=hdr.texture.width||aaImage.texture.height!=hdr.texture.height){release(aaImage);aaImage=image(hdr.texture.width,hdr.texture.height,true,DXGI_FORMAT_R8G8B8A8_UNORM);}}else release(aaImage);
-        auto s=bloomGraphics.srvTable(gpu);srvAt(s,0,hdr.texture.get());srvAt(s,9,hdr.texture.get());for(std::size_t i=0;i<levels.size();i++)srvAt(s,UINT(i+1),levels[i][0].texture.get());
+        auto s=bloomGraphics.srvTable(gpu);srvAt(s,0,screenSource);srvAt(s,9,hdr.texture.get());for(std::size_t i=0;i<levels.size();i++)srvAt(s,UINT(i+1),levels[i][0].texture.get());
         if(needsDepth){gpu.transition(depth,readable);D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.Format=DXGI_FORMAT_R32_FLOAT;v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=1;srvAt(s,6,depth.get(),&v);}
         if(postLookup)gpu.device->CopyDescriptorsSimple(1,s.cpuAt(7),postLookup->srv,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
         if(post.exposure[0]>0)srvAt(s,8,exposureImages[exposureIndex].texture.get());
@@ -329,8 +421,8 @@ private:
     }
 public:
     SceneMeshRenderer(Device& device,UINT targetWidth,UINT targetHeight):gpu(device),width(targetWidth),height(targetHeight){
-        const auto source=SceneRenderer::shaderSource();vs=Device::shader(source,"HBSceneRender","VS","vs_5_0");ps=Device::shader(source,"HBSceneRender","PS","ps_5_0");shadowPs=Device::shader(source,"HBSceneRender","ShadowPS","ps_5_0");
-        reflect(vs);reflect(ps);if(slots.empty()||samplerCount>16||!cbuffers.count(0))throw std::runtime_error("Direct3D12 scene shader layout unexpected");
+        const auto source=SceneRenderer::shaderSource();vs=Device::shader(source,"HBSceneRender","VS","vs_5_0");ps=Device::shader(source,"HBSceneRender","PS","ps_5_0");shadowPs=Device::shader(source,"HBSceneRender","ShadowPS","ps_5_0");surfacePs=Device::shader(SceneRenderer::surfaceShader(source),"HBSceneRender","PS","ps_5_0");
+        reflect(vs);reflect(ps);reflect(surfacePs);if(slots.empty()||samplerCount>16||!cbuffers.count(0))throw std::runtime_error("Direct3D12 scene shader layout unexpected");
         std::vector<D3D12_ROOT_PARAMETER> params;for(const auto& c:cbuffers){D3D12_ROOT_PARAMETER p{};p.ParameterType=D3D12_ROOT_PARAMETER_TYPE_CBV;p.Descriptor={c.first,0};p.ShaderVisibility=D3D12_SHADER_VISIBILITY_ALL;params.push_back(p);}
         const D3D12_DESCRIPTOR_RANGE srvRange{D3D12_DESCRIPTOR_RANGE_TYPE_SRV,UINT(slots.size()),0,0,0},samplerRange{D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER,samplerCount,0,0,0};
         D3D12_ROOT_PARAMETER table{};table.ParameterType=D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;table.ShaderVisibility=D3D12_SHADER_VISIBILITY_ALL;table.DescriptorTable={1,&srvRange};srvRoot=UINT(params.size());params.push_back(table);
@@ -394,11 +486,12 @@ public:
         if(morphCount)out.morph=gpu.buffer(morph.data(),morph.size()*sizeof(SceneMorph),readable);
         out.pose=gpu.buffer(poseSize,readable,D3D12_RESOURCE_FLAG_NONE);return out;
     }
-    // Same packing as SceneRenderer::setPose. ponytail: no previous pose (motion vectors are phase 3-3).
-    bool setPose(Deformation& target,const std::vector<Matrix>& bones,const std::vector<float>& weights,const std::array<float,3>& bindTranslation={}){
+    // Same packing as SceneRenderer::setPose; previous=true fills the motion-vector pose.
+    bool setPose(Deformation& target,const std::vector<Matrix>& bones,const std::vector<float>& weights,const std::array<float,3>& bindTranslation={},bool previous=false){
         if(bones.size()!=target.boneCount||weights.size()!=target.morphCount||!SceneRenderer::finite(weights)||!SceneRenderer::finite(bindTranslation))throw std::runtime_error("Deformation pose dimensions invalid");
         std::vector<float> values;values.reserve(target.poseBytes/4);for(const auto& m:bones){if(!SceneRenderer::finite(m))throw std::runtime_error("Bone matrix must be finite");values.insert(values.end(),m.begin(),m.end());}
         values.insert(values.end(),weights.begin(),weights.end());values.resize(target.poseBytes/4,0);if(target.boneCount)std::copy(bindTranslation.begin(),bindTranslation.end(),values.end()-4);
+        if(previous){if(values==target.previous)return false;if(!target.previousPose.value.p)target.previousPose=gpu.buffer(target.poseBytes,readable,D3D12_RESOURCE_FLAG_NONE);gpu.update(target.previousPose,values.data(),values.size()*4);target.previous=std::move(values);return true;}
         if(values==target.current)return false;
         gpu.update(target.pose,values.data(),values.size()*4);target.current=std::move(values);return true;
     }
@@ -510,6 +603,26 @@ public:
         atlasCount=UINT(bindings.size());atlasInfluence=std::any_of(bindings.begin(),bindings.end(),[](const ProbeBinding& b){return b.settings.blendPositive[3]>0;});atlasStamps=std::move(stamps);atlasSettings=std::move(settings);
     }
     void setSkyIntensity(float intensity){if(!std::isfinite(intensity)||intensity<0)throw std::runtime_error("Sky intensity invalid");skySettings.center[3]=intensity;}
+    // createDataTexture subset: 2D, one layer, RGBA8 (unorm/sRGB) or RGBA32F, optional mips for RGBA8.
+    Texture createDataTexture(std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& bytes,std::uint32_t channels=4,bool floating=false,std::uint32_t layers=1,bool srgb=false,bool array=false,const std::string& dimension="2d",bool mipmaps=false){
+        if(channels!=4||layers!=1||array||dimension!="2d"||(floating&&(srgb||mipmaps)))throw std::runtime_error("Direct3D12 data texture layout not ported yet");
+        if(!floating)return createTexture(w,h,bytes,srgb,mipmaps);
+        if(!w||!h||bytes.size()!=std::size_t(w)*h*16)throw std::runtime_error("Material texture dimensions or bytes invalid");
+        for(std::size_t i=0;i<bytes.size();i+=4){float v;std::memcpy(&v,bytes.data()+i,4);if(!std::isfinite(v))throw std::runtime_error("2D float texture must be finite");}
+        Texture t;static_cast<d3d12::Texture&>(t)=gpu.texture(w,h,DXGI_FORMAT_R32G32B32A32_FLOAT,bytes.data(),w*16);t.srv=views.take();gpu.device->CreateShaderResourceView(t.get(),nullptr,t.srv);return t;
+    }
+    void setGeometryScene(const Texture* value){geometryScene=value;}
+    void setPathEnvironment(const Texture* value){pathEnvironment=value;}
+    void setDistanceFieldScene(const Texture* value){distanceField=value;}
+    void setPreviousInstances(Instances& target,const std::vector<Matrix>& values){
+        if(target.positionsOnly()||values.size()!=target.count){throw std::runtime_error("Previous instance dimensions invalid");}
+        for(const auto& m:values){if(!SceneRenderer::finite(m))throw std::runtime_error("Previous instance matrix invalid");}
+        if(values==target.previousValues){return;}
+        if(!target.previous.value.p){target.previous=gpu.buffer(std::uint64_t(target.capacity)*64,readable,D3D12_RESOURCE_FLAG_NONE);}
+        gpu.update(target.previous,values.data(),values.size()*64);target.previousValues=values;
+    }
+    void releaseMotion(Instances& t){gpu.retire(std::move(t.previous.value));t.previous.size=0;t.previousValues.clear();}
+    void releaseMotion(Deformation& t){gpu.retire(std::move(t.previousPose.value));t.previousPose.size=0;t.previous.clear();}
     void setPostLookup(const Texture* value){if(value&&(value->height<2||value->height>64||value->width!=value->height*value->height))throw std::runtime_error("Post lookup texture owner/dimensions invalid");postLookup=value;}
     void releaseTransmission(){views.give(transmissionView);views.give(transmissionDepthView);transmissionView=transmissionDepthView={};gpu.retire(std::move(transmissionImage.value));gpu.retire(std::move(transmissionDepth.value));transmissionImage.width=transmissionImage.height=0;transmissionMips=0;transmissionReady=false;}
     // Same as SceneRenderer::captureTransmission: copy the HDR opaque pass and depth, then build the mip chain.
@@ -531,7 +644,7 @@ public:
     }
     void begin(const SceneFrame& value){
         endProbe();endShadow();for(const auto& light:lights)if(light.position[3]<3&&light.cone[3]>0&&light.cone[3]+(light.position[3]==1?5:0)>shadows.size())throw std::runtime_error("Shadow light reference invalid");
-        if(value.screenEffects||value.viewportClear)throw std::runtime_error("Direct3D12 scene frame feature not ported yet");
+        if(value.viewportClear)throw std::runtime_error("Direct3D12 scene frame feature not ported yet");
         // ponytail: post settings are range-checked by BloomPass::begin on the D3D11 path; here only finiteness is enforced.
         if(value.postProcess)for(const auto* row:{&value.postProcess->grade,&value.postProcess->filter,&value.postProcess->effects,&value.postProcess->vignette,&value.postProcess->vignetteColor,&value.postProcess->balance,&value.postProcess->lift,&value.postProcess->gamma,&value.postProcess->gain,&value.postProcess->lens,&value.postProcess->bokeh,&value.postProcess->focus,&value.postProcess->occlusion,&value.postProcess->lookup,&value.postProcess->camera,&value.postProcess->exposure,&value.postProcess->adapt})if(!SceneRenderer::finite(*row))throw std::runtime_error("Post-process non-finite value");
         if(value.postProcess&&value.postProcess->lookup[1]>0&&(!postLookup||value.postProcess->lookup[1]!=float(postLookup->height)))throw std::runtime_error("Post lookup size mismatch");
@@ -541,7 +654,7 @@ public:
         transmissionReady=false;if(!value.transmission)releaseTransmission();hdrPending=false;
         // BloomPass::begin: HDR target when bloom, transmission or post processing is requested.
         post=value.postProcess.value_or(ScenePostProcess{});
-        if((!value.bloom||value.bloom->strength==0)&&!value.transmission&&!value.postProcess){releaseHDR();}
+        if((!value.bloom||value.bloom->strength==0)&&!value.transmission&&!value.postProcess&&!value.screenEffects){releaseHDR();releaseScreen();}
         else{
             bloomSettings=value.bloom.value_or(SceneBloom{});if(!value.bloom)bloomSettings.strength=0;postArea=value.viewport;if(postArea[2]==0||postArea[3]==0)postArea={0,0,float(width),float(height)};
             const float right=std::min(float(width),postArea[0]+postArea[2]),bottom=std::min(float(height),postArea[1]+postArea[3]);postArea[0]=std::max(0.f,postArea[0]);postArea[1]=std::max(0.f,postArea[1]);postArea[2]=std::max(0.f,right-postArea[0]);postArea[3]=std::max(0.f,bottom-postArea[1]);
@@ -550,12 +663,12 @@ public:
                 if(hdr.texture.width!=width||hdr.texture.height!=height||((bloomSettings.strength>0)&&(levels.empty()||levels.front()[0].texture.width!=bw||levels.front()[0].texture.height!=bh))||((bloomSettings.strength==0)&&!levels.empty())){
                     releaseHDR();hdr=image(width,height,true);for(UINT x=bw,y=bh;bloomSettings.strength>0&&levels.size()<5;){levels.push_back({image(x,y,false),image(x,y,false)});if(x==1&&y==1)break;x=std::max(1u,x/2);y=std::max(1u,y/2);}}
                 std::array<float,4> linear=value.clear;for(std::size_t i=0;i<3;i++)linear[i]=linear[i]<=.04045f?linear[i]/12.92f:std::pow((linear[i]+.055f)/1.055f,2.4f);
-                gpu.transition(hdr.texture,D3D12_RESOURCE_STATE_RENDER_TARGET);gpu.list->ClearRenderTargetView(hdr.rtv,linear.data(),0,nullptr);hdrPending=true;}
+                gpu.transition(hdr.texture,D3D12_RESOURCE_STATE_RENDER_TARGET);gpu.list->ClearRenderTargetView(hdr.rtv,linear.data(),0,nullptr);hdrPending=true;beginScreen(value);}
         }
         cullLights(frame.viewport[2]>0?frame.viewport:std::array<float,4>{0,0,float(width),float(height)});
     }
     void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const void* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={},const Instances* instances=nullptr,const Deformation* deformation=nullptr,const void* twoD=nullptr,const std::array<ProbeBinding,2>* probeBindings=nullptr,const Matrix* previousWorld=nullptr,float motionFlag=0,const Texture* lightmap=nullptr,bool globalProbes=false){
-        (void)previousWorld;if(motionFlag!=0)throw std::runtime_error("Direct3D12 motion vectors are not ported yet");
+        if((previousWorld&&!SceneRenderer::finite(*previousWorld))||!std::isfinite(motionFlag)||(motionFlag!=-1&&motionFlag!=0&&motionFlag!=1&&motionFlag!=2))throw std::runtime_error("Object motion input invalid");
         if(lightmap&&!mesh.uv1.value.p)throw std::runtime_error("Baked lightmap texture or UV1 invalid");
         if(!std::isfinite(material.lightmapIntensity)||material.lightmapIntensity<0)throw std::runtime_error("Baked lightmap intensity invalid");
         if(twoD)throw std::runtime_error("Direct3D12 2D bindings are not ported yet");
@@ -588,7 +701,8 @@ public:
         if(activeShadow<0&&shadowView.ptr){gpu.transition(shadowImage,readable);gpu.device->CopyDescriptorsSimple(1,srvs.cpuAt(24),shadowView,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);}
         if(shadowDataView.ptr)gpu.device->CopyDescriptorsSimple(1,srvs.cpuAt(25),shadowDataView,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
         if(instances){mask|=instances->positionsOnly()?512u:256u;structured(srvs,instances->positionsOnly()?27:26,instances->data,instances->stride,instances->capacity);if(!instances->positionsOnly()&&!material.doubleSided)mask|=material.backSide?131072u:65536u;}
-        if(deformation){mask|=1024u;if(deformation->boneCount)structured(srvs,28,deformation->skin,sizeof(SceneSkin),deformation->vertexCount);if(deformation->morphCount)structured(srvs,29,deformation->morph,sizeof(SceneMorph),deformation->vertexCount*deformation->morphCount);structured(srvs,30,deformation->pose,16,deformation->poseBytes/16);structured(srvs,31,deformation->pose,16,deformation->poseBytes/16);}
+        if(deformation){mask|=1024u;if(deformation->boneCount)structured(srvs,28,deformation->skin,sizeof(SceneSkin),deformation->vertexCount);if(deformation->morphCount)structured(srvs,29,deformation->morph,sizeof(SceneMorph),deformation->vertexCount*deformation->morphCount);structured(srvs,30,deformation->pose,16,deformation->poseBytes/16);structured(srvs,31,deformation->previousPose.value.p?deformation->previousPose:deformation->pose,16,deformation->poseBytes/16);}
+        if(instances&&!instances->positionsOnly()&&instances->previous.value.p)structured(srvs,32,instances->previous,64,instances->capacity);
         if(tilesActive&&activeShadow<0&&!activeProbe){mask|=8192u;structured(srvs,48,tileBits,4,UINT(tileBits.size/4));}
         if(activeProbe)mask|=2048u;
         const auto copy=[&](UINT slot,D3D12_CPU_DESCRIPTOR_HANDLE h){gpu.device->CopyDescriptorsSimple(1,srvs.cpuAt(slot),h,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);};
@@ -599,17 +713,20 @@ public:
         const bool toHDR=hdr.texture.value.p&&!activeProbe&&activeShadow<0;if(toHDR){mask|=128u;hdrPending=true;gpu.transition(hdr.texture,D3D12_RESOURCE_STATE_RENDER_TARGET);}
         if(lightmap){copy(49,lightmap->srv);mask|=32768u|(material.lightmapReflectionMix?262144u:0u);}
         const auto& rect=frame.viewport;const bool custom=rect[2]>0&&rect[3]>0;const std::array<float,4> area=custom?rect:std::array<float,4>{0,0,float(width),float(height)};
-        Constants data{frame.viewProjection,world,normal,identity,{0,0,0,0},material.color,material.emissive,{material.roughness,material.metalness,material.alphaCutoff,material.unlit?1.f:0.f},frame.eye,frame.ambient,material.uvX,material.uvY,{float(mask),float(lights.size()),material.toneMapped?1.f:0.f,material.sky?2.f:material.vertexColors?1.f:0.f},{material.normalScale[0],material.normalScale[1],frame.exposure,frame.time},frame.fog,frame.fogRange,frame.heightFog,material.skyTop,material.skyHorizon,material.sunDirection,material.sunColor,material.shotShape,material.physical,{material.volume[0],material.volume[1],float(width),float(height)},area,material.absorption,material.sheenColor,material.lobes,material.film,material.specular,material.scatter,material.scatterColor,material.hairTangent,{deformation?deformation->vertexCount:0,deformation?deformation->morphCount:0,deformation?deformation->boneCount:0,transmissionReady?transmissionMips-1:0},material.moonDirection,material.moonColor,frame.viewDirection};
+        const auto* screenSettings=frame.screenEffects?&*frame.screenEffects:nullptr;Matrix prior=identity;if(screenSettings&&motionFlag!=0)prior=SceneRenderer::multiplyMatrix(screenSettings->previousVP,previousWorld?*previousWorld:world);
+        Constants data{frame.viewProjection,world,normal,prior,{screenSettings?motionFlag:0,screenSettings?screenSettings->jitter[0]-screenSettings->jitter[2]:0,screenSettings?screenSettings->jitter[1]-screenSettings->jitter[3]:0,instances&&instances->previous.value.p?1.f:0.f},material.color,material.emissive,{material.roughness,material.metalness,material.alphaCutoff,material.unlit?1.f:0.f},frame.eye,frame.ambient,material.uvX,material.uvY,{float(mask),float(lights.size()),material.toneMapped?1.f:0.f,material.sky?2.f:material.vertexColors?1.f:0.f},{material.normalScale[0],material.normalScale[1],frame.exposure,frame.time},frame.fog,frame.fogRange,frame.heightFog,material.skyTop,material.skyHorizon,material.sunDirection,material.sunColor,material.shotShape,material.physical,{material.volume[0],material.volume[1],float(width),float(height)},area,material.absorption,material.sheenColor,material.lobes,material.film,material.specular,material.scatter,material.scatterColor,material.hairTangent,{deformation?deformation->vertexCount:0,deformation?deformation->morphCount:0,deformation?deformation->boneCount:0,transmissionReady?transmissionMips-1:0},material.moonDirection,material.moonColor,frame.viewDirection};
         data.shotShape[3]=material.lightmapIntensity;
         auto u=gpu.upload(std::max<std::size_t>(sizeof(data),cbuffers.at(0)),256);std::memset(u.cpu,0,std::max<std::size_t>(sizeof(data),cbuffers.at(0)));std::memcpy(u.cpu,&data,sizeof(data));
         const std::size_t raster=(SceneRenderer::orientation(world)<0?3:0)+(material.doubleSided||(instances&&instances->mirrored)?2:material.backSide?1:0);
-        auto* list=gpu.list.p;list->SetGraphicsRootSignature(root.p);list->SetPipelineState(activeShadow<0?pipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),activeProbe!=nullptr||toHDR):shadowPipeline(raster));
+        auto* list=gpu.list.p;list->SetGraphicsRootSignature(root.p);const bool mrt=toHDR&&screen&&(surfaceNormal.texture.value.p||surfaceMotion.texture.value.p);UINT surfaceTargets=0;{UINT bit=1;for(auto* i:{&surfaceNormal,&surfaceAlbedo,&surfaceMotion,&surfaceAmbient}){if(i->texture.value.p)surfaceTargets|=bit;bit<<=1;}}
+        list->SetPipelineState(activeShadow>=0?shadowPipeline(raster):mrt?surfacePipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),surfaceTargets):pipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),activeProbe!=nullptr||toHDR));
         const auto probeAddress=gpu.constants(probeData.data(),sizeof(probeData));
         UINT index=0;for(const auto& c:cbuffers)list->SetGraphicsRootConstantBufferView(index++,c.first==0?u.gpu:c.first==2?probeAddress:frameBuffers.at(c.first));
         list->SetGraphicsRootDescriptorTable(srvRoot,srvs.gpu);if(samplerCount)list->SetGraphicsRootDescriptorTable(samplerRoot,samplerHandle);
         const D3D12_VIEWPORT viewport{area[0],area[1],area[2],area[3],0,1};const auto crop=frame.scissor.value_or(area);
         const D3D12_RECT scissor{static_cast<LONG>(std::floor(crop[0])),static_cast<LONG>(std::floor(crop[1])),static_cast<LONG>(std::ceil(crop[0]+crop[2])),static_cast<LONG>(std::ceil(crop[1]+crop[3]))};
         if(activeProbe){list->OMSetRenderTargets(1,&activeProbe->faces[probeFace],FALSE,&activeProbe->depth.dsv);}
+        else if(mrt){std::array<D3D12_CPU_DESCRIPTOR_HANDLE,5> targets{hdr.rtv,nullTargets[0],nullTargets[1],nullTargets[2],nullTargets[3]};std::size_t k=1;for(auto* i:{&surfaceNormal,&surfaceAlbedo,&surfaceMotion,&surfaceAmbient}){if(i->texture.value.p){gpu.transition(i->texture,D3D12_RESOURCE_STATE_RENDER_TARGET);targets[k]=i->rtv;}++k;}list->OMSetRenderTargets(5,targets.data(),FALSE,&depth.dsv);}
         else if(activeShadow<0){list->OMSetRenderTargets(1,toHDR?&hdr.rtv:&color.rtv,FALSE,&depth.dsv);}
         else{const D3D12_CPU_DESCRIPTOR_HANDLE layer{shadowTargets->GetCPUDescriptorHandleForHeapStart().ptr+SIZE_T(activeShadow)*dsvStride};list->OMSetRenderTargets(0,nullptr,FALSE,&layer);}
         list->RSSetViewports(1,&viewport);list->RSSetScissorRects(1,&scissor);

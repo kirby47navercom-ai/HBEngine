@@ -11,7 +11,7 @@
    - **3-2a 반사 프로브 캡처·필터·바인딩, 하늘 HDRI (완료)**
    - **3-2b 반사 프로브 아틀라스(전역 프로브)·베이크 라이트맵 (완료)**
    - **3-3a HDR·블룸·후처리 합성·자동 노출·LUT·FXAA·투과·밉 생성 (완료)**
-   - 3-3b 화면 효과(SSAO/SSR/TAA 등)·모션 벡터·MRT
+   - **3-3b 화면 효과·Hi-Z·MRT·모션 벡터 (완료)**
    - 3-4 머테리얼 노드 프로그램·2D·파티클
 4. 성능 비교 후 기본값 전환
 
@@ -90,3 +90,16 @@
 - 단순화: 후처리 설정 범위 검사는 DX11 `BloomPass::begin`만 하고, DX12 경로는 유한값만 검사해요.
 
 검증: `check-native-d3d12-scene` 16장면(기본, 블룸, 후처리 전체[그레이드·비네트·색수차·그레인·피사계 심도·차폐·자동 노출 2프레임·LUT·FXAA], 투과, 밉맵 추가) 실제 GPU·WARP 모두 DX11 대비 픽셀 최대 차이 0, 디버그 레이어 오류 0. DX12 밉 생성도 DX11 `GenerateMips`와 같은 픽셀이에요.
+
+## 3-3b단계 화면 효과·Hi-Z·MRT·모션 벡터
+
+- `ScreenEffectsPass`에서 백엔드 공통 부분을 정적 함수로 분리했어요(동작 동일): `validateSettings`(begin 검증), `validateScene`(지오메트리·HDRI·거리장 배치 검증, `DataInfo`), `programVariant/programSource`(Resolve 변형 소스). D3D12는 같은 함수와 같은 바이트코드 캐시(`compileSource`)를 써요.
+- Resolve 단계 0~5(경로 추적·가이드·필터·포톤·시간 필터·보조)를 고정 레이아웃(t0~t15, u0, b0, s0)으로 실행하고, 변형별 PSO를 캐시해요. 히스토리·디노이즈 핑퐁, 유효성(`valid/filterValid`) 규칙은 DX11과 같아요.
+- Hi-Z: `HierarchicalDepth`의 같은 다운샘플 커널로 레벨을 만들고 아틀라스에 쌓아요.
+- MRT: 화면 효과가 표면 정보를 요구하면 `SceneRenderer::surfaceShader` PS로 색·노멀·알베도·모션·앰비언트 5개 대상에 그려요. 없는 대상은 UNKNOWN 슬롯 + null RTV로 PSO를 구분해요. 블렌드는 DX11처럼 RT0 설정을 모든 대상에 적용해요.
+- 모션 벡터: 이전 월드 행렬·모션 플래그, `setPose(..., previous=true)`, `setPreviousInstances`, `releaseMotion`.
+- 데이터 텍스처: `createDataTexture`(2D 한 층, RGBA8 또는 RGBA32F), `setGeometryScene/setPathEnvironment/setDistanceFieldScene`.
+
+검증: `check-native-d3d12-scene` 23장면(효과 없음, SSR, SSGI+Hi-Z, AO, 지오메트리 GI, TAA 2프레임, 모션 블러[이전 행렬·포즈·인스턴스] 추가) 실제 GPU·WARP 모두 DX11 대비 픽셀 최대 차이 0, 디버그 레이어 오류 0. DX11 기준 SSR 2072, SSGI 2537, AO 2996, 지오메트리 GI 4724, 모션 블러 819픽셀 변화. TAA는 정지 화면에서 같은 이미지로 수렴해 픽셀 동일성만 확인해요.
+DX11 회귀: `check-native-scene-render --post-only`를 수정 전·후 헤더로 각각 빌드해 반복 실행했어요. 통과한 실행(각 3회)의 출력 JSON은 md5까지 같았어요. 같은 바이너리 둘 다 이후 연속 실행에서는 시작 직후 세그폴트로 똑같이 종료돼(수정 전도 동일) 이 변경과 무관한 기존 불안정으로 기록해요. 원인은 미조사예요.
+미검증: 경로 추적(재질·발광체 배치가 필요한 path/denoise/caustics 변형)과 거리장 AO, HDRI 경로 환경은 코드만 이식했고 DX12 픽셀 대조는 아직 없어요.
