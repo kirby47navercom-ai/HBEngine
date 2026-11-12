@@ -487,7 +487,8 @@ public:
     std::uint64_t probeAtlasMetadataFastUpdates()const{return probeAtlas.metadataFastUpdates();}std::uint64_t probeAtlasLayoutBuilds()const{return probeAtlas.layoutBuilds();}std::size_t probeAtlasMapCount()const{return probeAtlas.mapCount();}std::size_t probeAtlasCPUBytes()const{return probeAtlas.cpuBytes();}std::uint64_t probeAtlasMetadataBytes()const{return probeAtlas.metadataBytes();}std::uint64_t probeAtlasMetadataCalls()const{return probeAtlas.metadataCalls();}std::uint64_t probeAtlasPaddingDispatches()const{return probeAtlas.dispatches();}std::size_t probeAtlasSpatialNodes()const{return probeAtlas.spatialNodes();}std::uint64_t probeAtlasSpatialBuilds()const{return probeAtlas.spatialBuilds();}std::size_t probeAtlasSpatialCPUBytes()const{return probeAtlas.spatialCPUBytes();}UINT probeAtlasCount()const{return probeAtlas.count();}std::uint64_t probeAtlasBytes()const{return probeAtlas.bytes();}SceneConstantBufferStats constantBufferStats()const{return {probeConstantCache.uploads(),probeConstantCache.skips(),twoDConstantCache.uploads(),twoDConstantCache.skips(),probeConstantCache.retainedBytes()+twoDConstantCache.retainedBytes()};}std::uint64_t probeAtlasCopies()const{return probeAtlas.copies();}std::uint64_t probeAtlasUploads()const{return probeAtlas.uploads();}
     std::uint64_t passes2D() const{return passes2D_;}std::uint64_t draws2D() const{return draws2D_;}
 
-    static std::string materialProgramSource(const std::string& declarations,const std::string& evaluation){
+    // Graph source before the surface MRT wrapper; the D3D12 port compiles both forms.
+    static std::string materialProgramBase(const std::string& declarations,const std::string& evaluation){
         if(declarations.size()+evaluation.size()>1048576)throw std::runtime_error("Material HLSL source too large");
         std::string source=shaderSource();
         // Graph shaders never render the auxiliary mask/atlas pass; keep its base-map sampler dead.
@@ -509,8 +510,9 @@ public:
         if(declarations.find("register(s13)")!=std::string::npos){erase("clipMask2d(i.position.xy);");erase("if(pass2d.z>.5)outColor=shade2d(i.at.xy,i.uv,n,base.rgb)+emit;");}
         if(declarations.find("register(s14)")!=std::string::npos){const auto at=source.find("  if(transmission>0)");source.erase(at,source.find("\n",at)-at);erase("outColor+=indirectProbes(i.at,n,v,base.rgb,rough,metal,ao,dielectricF0,1-transmission);");erase("coatLight+=indirectProbes(i.at,cn,v,float3(.04,.04,.04),coatRough,1,1);");}
         const auto entry=source.find("float4 PS("),marker=source.find("// HB_MATERIAL_EVAL");source.replace(marker,std::strlen("// HB_MATERIAL_EVAL"),evaluation);source.insert(entry,declarations+"\n");
-        return surfaceShader(source);
+        return source;
     }
+    static std::string materialProgramSource(const std::string& declarations,const std::string& evaluation){return surfaceShader(materialProgramBase(declarations,evaluation));}
     Program createProgram(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){
         if(!finite(parameters))throw std::runtime_error("Material parameters invalid");
         const auto source=materialProgramSource(declarations,evaluation);Program out;out.owner=gpu.device.p;

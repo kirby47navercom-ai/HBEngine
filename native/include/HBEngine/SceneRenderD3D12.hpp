@@ -7,7 +7,8 @@
 // Phase 3-3a: HDR scene target, bloom, post composite (grade/vignette/lens/bokeh/occlusion/exposure/LUT/FXAA),
 // transmission capture, GPU mip generation. Phase 3-3b: screen effects (ScreenEffectsPass Resolve kernels: path/GI/SSR/
 // SSGI/AO/TAA/motion blur/denoise/caustics), Hi-Z, MRT surface targets, motion vectors.
-// Still D3D11-only: material programs, 2D, particles, dynamic mesh streams.
+// Phase 3-4a: material node programs (graph PS, surface PS, shadow PS), dynamic mesh streams, viewport clear.
+// Still D3D11-only: 2D passes/render-target textures, particles.
 #include "SceneRender.hpp"
 #include "D3D12Direct.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
@@ -91,7 +92,11 @@ float3 toSrgb(float3 v){return lerp(12.92*v,1.055*pow(max(v,0),1.0/2.4)-.055,ste
 
 class SceneMeshRenderer {
 public:
-    struct Mesh {Buffer vertices,indices,uv1;UINT count=0,vertexCount=0;};
+    struct Mesh {Buffer vertices,indices,uv1;UINT count=0,vertexCount=0;std::vector<SceneVertex> streamVertices;};
+    // Node material: graph PS (single target), surface PS (screen-effect MRT), shadow PS, float parameters in t7.
+    struct Program {std::vector<unsigned char> ps,surface,shadow;Buffer parameters;std::vector<float> current;
+        mutable std::array<Com<ID3D12PipelineState>,144> pipelines;mutable std::map<UINT,Com<ID3D12PipelineState>> surfacePipelines;mutable std::array<Com<ID3D12PipelineState>,6> shadowPipelines;
+        bool ready()const{return !ps.empty();}};
     struct Texture : d3d12::Texture {D3D12_CPU_DESCRIPTOR_HANDLE srv{};UINT mips=1;};
     struct Instances {Buffer data,previous;std::vector<Matrix> previousValues;UINT capacity=0,count=0,stride=sizeof(SceneInstance);bool mirrored=false;
         bool positionsOnly()const{return stride==16;}std::uint32_t capacityCount()const{return capacity;}};
@@ -109,7 +114,7 @@ private:
     std::map<UINT,UINT> cbuffers;std::vector<Slot> slots;UINT samplerCount=0,srvRoot=0,samplerRoot=0;
     Com<ID3D12DescriptorHeap> nulls;DescriptorPool views;
     std::map<std::vector<std::uint32_t>,D3D12_GPU_DESCRIPTOR_HANDLE> samplerTables;UINT samplerUsed=0;
-    d3d12::Texture color,depth;SceneFrame frame;bool begun=false;
+    d3d12::Texture color,depth;SceneFrame frame;bool begun=false;Mesh background;
     std::vector<SceneLight> lights;std::uint64_t uploaded=~std::uint64_t(0);std::map<UINT,D3D12_GPU_VIRTUAL_ADDRESS> frameBuffers;Upload lightData{};
     // Shadow array: one DSV per layer, sampled as t24 with matrices in t25.
     d3d12::Texture shadowImage;Com<ID3D12DescriptorHeap> shadowTargets;UINT dsvStride=0;D3D12_CPU_DESCRIPTOR_HANDLE shadowView{},shadowDataView{};Buffer shadowBuffer;
@@ -186,28 +191,28 @@ private:
     }
     // Screen-effect MRT: color, normal, albedo, motion, ambient (SceneRenderer::surfaceShader outputs).
     // targets: bit i set when surface target i+1 exists; absent targets are UNKNOWN slots bound to null RTVs.
-    ID3D12PipelineState* surfacePipeline(std::size_t raster,std::size_t blend,std::size_t depthMode,UINT targets){
-        auto& p=surfacePipelines[UINT(raster+6*(blend+3*depthMode))+72u*targets];if(p.p)return p.p;
+    ID3D12PipelineState* surfacePipeline(std::size_t raster,std::size_t blend,std::size_t depthMode,UINT targets,const Program* program=nullptr){
+        auto& p=(program?program->surfacePipelines:surfacePipelines)[UINT(raster+6*(blend+3*depthMode))+72u*targets];if(p.p)return p.p;
         static const D3D12_INPUT_ELEMENT_DESC elements[]={{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,32,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"TEXCOORD",1,DXGI_FORMAT_R32G32_FLOAT,1,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0}};
-        auto d=Device::defaults(root.p,vs,surfacePs,DXGI_FORMAT_R16G16B16A16_FLOAT,DXGI_FORMAT_D32_FLOAT);d.InputLayout={elements,5};d.NumRenderTargets=5;for(UINT i=1;i<5;i++)d.RTVFormats[i]=(targets>>(i-1))&1?DXGI_FORMAT_R16G16B16A16_FLOAT:DXGI_FORMAT_UNKNOWN;
+        auto d=Device::defaults(root.p,vs,program?program->surface:surfacePs,DXGI_FORMAT_R16G16B16A16_FLOAT,DXGI_FORMAT_D32_FLOAT);d.InputLayout={elements,5};d.NumRenderTargets=5;for(UINT i=1;i<5;i++)d.RTVFormats[i]=(targets>>(i-1))&1?DXGI_FORMAT_R16G16B16A16_FLOAT:DXGI_FORMAT_UNKNOWN;
         d.RasterizerState.CullMode=raster%3==0?D3D12_CULL_MODE_BACK:raster%3==1?D3D12_CULL_MODE_FRONT:D3D12_CULL_MODE_NONE;d.RasterizerState.FrontCounterClockwise=raster<3;
         // IndependentBlendEnable stays FALSE: RT0's blend applies to every target, as with the D3D11 blend state.
         auto& t=d.BlendState.RenderTarget[0];t.BlendEnable=blend!=2;t.SrcBlend=D3D12_BLEND_SRC_ALPHA;t.DestBlend=blend==1?D3D12_BLEND_ONE:D3D12_BLEND_INV_SRC_ALPHA;t.BlendOp=D3D12_BLEND_OP_ADD;t.SrcBlendAlpha=D3D12_BLEND_ONE;t.DestBlendAlpha=D3D12_BLEND_INV_SRC_ALPHA;t.BlendOpAlpha=D3D12_BLEND_OP_ADD;t.LogicOp=D3D12_LOGIC_OP_NOOP;
         d.DepthStencilState.DepthEnable=TRUE;d.DepthStencilState.DepthFunc=(depthMode&1)?D3D12_COMPARISON_FUNC_LESS_EQUAL:D3D12_COMPARISON_FUNC_ALWAYS;d.DepthStencilState.DepthWriteMask=(depthMode&2)?D3D12_DEPTH_WRITE_MASK_ALL:D3D12_DEPTH_WRITE_MASK_ZERO;
         p=gpu.pipeline(d);return p.p;
     }
-    ID3D12PipelineState* pipeline(std::size_t raster,std::size_t blend,std::size_t depthMode,bool hdr=false){
-        auto& p=pipelines[raster+6*(blend+3*depthMode)+(hdr?72:0)];if(p.p)return p.p;
+    ID3D12PipelineState* pipeline(std::size_t raster,std::size_t blend,std::size_t depthMode,bool hdr=false,const Program* program=nullptr){
+        auto& p=(program?program->pipelines:pipelines)[raster+6*(blend+3*depthMode)+(hdr?72:0)];if(p.p)return p.p;
         static const D3D12_INPUT_ELEMENT_DESC elements[]={{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,32,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"TEXCOORD",1,DXGI_FORMAT_R32G32_FLOAT,1,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0}};
-        auto d=Device::defaults(root.p,vs,ps,hdr?DXGI_FORMAT_R16G16B16A16_FLOAT:DXGI_FORMAT_R8G8B8A8_UNORM,DXGI_FORMAT_D32_FLOAT);d.InputLayout={elements,5};
+        auto d=Device::defaults(root.p,vs,program?program->ps:ps,hdr?DXGI_FORMAT_R16G16B16A16_FLOAT:DXGI_FORMAT_R8G8B8A8_UNORM,DXGI_FORMAT_D32_FLOAT);d.InputLayout={elements,5};
         d.RasterizerState.CullMode=raster%3==0?D3D12_CULL_MODE_BACK:raster%3==1?D3D12_CULL_MODE_FRONT:D3D12_CULL_MODE_NONE;d.RasterizerState.FrontCounterClockwise=raster<3;
         auto& t=d.BlendState.RenderTarget[0];t.BlendEnable=blend!=2;t.SrcBlend=D3D12_BLEND_SRC_ALPHA;t.DestBlend=blend==1?D3D12_BLEND_ONE:D3D12_BLEND_INV_SRC_ALPHA;t.BlendOp=D3D12_BLEND_OP_ADD;t.SrcBlendAlpha=D3D12_BLEND_ONE;t.DestBlendAlpha=D3D12_BLEND_INV_SRC_ALPHA;t.BlendOpAlpha=D3D12_BLEND_OP_ADD;t.LogicOp=D3D12_LOGIC_OP_NOOP;
         d.DepthStencilState.DepthEnable=TRUE;d.DepthStencilState.DepthFunc=(depthMode&1)?D3D12_COMPARISON_FUNC_LESS_EQUAL:D3D12_COMPARISON_FUNC_ALWAYS;d.DepthStencilState.DepthWriteMask=(depthMode&2)?D3D12_DEPTH_WRITE_MASK_ALL:D3D12_DEPTH_WRITE_MASK_ZERO;
         p=gpu.pipeline(d);return p.p;
     }
-    ID3D12PipelineState* shadowPipeline(std::size_t raster){
-        auto& p=shadowPipelines[raster];if(p.p)return p.p;
-        auto d=Device::defaults(root.p,vs,shadowPs,DXGI_FORMAT_UNKNOWN,DXGI_FORMAT_D32_FLOAT);d.NumRenderTargets=0;
+    ID3D12PipelineState* shadowPipeline(std::size_t raster,const Program* program=nullptr){
+        auto& p=(program?program->shadowPipelines:shadowPipelines)[raster];if(p.p)return p.p;
+        auto d=Device::defaults(root.p,vs,program?program->shadow:shadowPs,DXGI_FORMAT_UNKNOWN,DXGI_FORMAT_D32_FLOAT);d.NumRenderTargets=0;
         static const D3D12_INPUT_ELEMENT_DESC elements[]={{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,32,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"TEXCOORD",1,DXGI_FORMAT_R32G32_FLOAT,1,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0}};d.InputLayout={elements,5};
         auto& rs=d.RasterizerState;rs.CullMode=raster%3==0?D3D12_CULL_MODE_BACK:raster%3==1?D3D12_CULL_MODE_FRONT:D3D12_CULL_MODE_NONE;rs.FrontCounterClockwise=raster<3;rs.SlopeScaledDepthBias=1;rs.DepthBiasClamp=.01f;
         p=gpu.pipeline(d);return p.p;
@@ -423,6 +428,8 @@ public:
     SceneMeshRenderer(Device& device,UINT targetWidth,UINT targetHeight):gpu(device),width(targetWidth),height(targetHeight){
         const auto source=SceneRenderer::shaderSource();vs=Device::shader(source,"HBSceneRender","VS","vs_5_0");ps=Device::shader(source,"HBSceneRender","PS","ps_5_0");shadowPs=Device::shader(source,"HBSceneRender","ShadowPS","ps_5_0");surfacePs=Device::shader(SceneRenderer::surfaceShader(source),"HBSceneRender","PS","ps_5_0");
         reflect(vs);reflect(ps);reflect(surfacePs);if(slots.empty()||samplerCount>16||!cbuffers.count(0))throw std::runtime_error("Direct3D12 scene shader layout unexpected");
+        // Node programs may bind t7..t23 and any of s0..s15 (D3D11 binds 16 samplers and 53 views).
+        samplerCount=16;if(slots.size()<53)slots.resize(53);
         std::vector<D3D12_ROOT_PARAMETER> params;for(const auto& c:cbuffers){D3D12_ROOT_PARAMETER p{};p.ParameterType=D3D12_ROOT_PARAMETER_TYPE_CBV;p.Descriptor={c.first,0};p.ShaderVisibility=D3D12_SHADER_VISIBILITY_ALL;params.push_back(p);}
         const D3D12_DESCRIPTOR_RANGE srvRange{D3D12_DESCRIPTOR_RANGE_TYPE_SRV,UINT(slots.size()),0,0,0},samplerRange{D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER,samplerCount,0,0,0};
         D3D12_ROOT_PARAMETER table{};table.ParameterType=D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;table.ShaderVisibility=D3D12_SHADER_VISIBILITY_ALL;table.DescriptorTable={1,&srvRange};srvRoot=UINT(params.size());params.push_back(table);
@@ -439,12 +446,19 @@ public:
     SceneMeshRenderer(const SceneMeshRenderer&)=delete;SceneMeshRenderer& operator=(const SceneMeshRenderer&)=delete;
 
     // Creation and drawing must happen between Device::begin and Device::end.
-    Mesh createMesh(const std::vector<SceneVertex>& vertices,const std::vector<std::uint32_t>& indices,const std::vector<std::array<float,2>>& uv1={}){
+    Mesh createMesh(const std::vector<SceneVertex>& vertices,const std::vector<std::uint32_t>& indices,const std::vector<std::array<float,2>>& uv1={},bool dynamic=false){
         if(vertices.empty()||indices.empty()||indices.size()%3||(!uv1.empty()&&uv1.size()!=vertices.size())||std::any_of(indices.begin(),indices.end(),[&](std::uint32_t i){return i>=vertices.size();}))throw std::runtime_error("Direct3D12 scene mesh invalid");
         Mesh m;m.count=UINT(indices.size());m.vertexCount=UINT(vertices.size());
         m.vertices=gpu.buffer(vertices.data(),vertices.size()*sizeof(SceneVertex),D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);m.indices=gpu.buffer(indices.data(),indices.size()*4,D3D12_RESOURCE_STATE_INDEX_BUFFER);
         if(!uv1.empty()){m.uv1=gpu.buffer(uv1.data(),uv1.size()*8,D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);}
+        if(dynamic){m.streamVertices=vertices;}
         return m;
+    }
+    // Same packing as SceneRenderer::updateMeshVertices; the copy is ordered on the queue after earlier draws.
+    void updateMeshVertices(Mesh& mesh,const std::vector<std::array<float,6>>& values){
+        if(mesh.streamVertices.empty()||values.size()!=mesh.streamVertices.size()||std::any_of(values.begin(),values.end(),[](const auto& v){return !SceneRenderer::finite(v);}))throw std::runtime_error("Dynamic mesh vertex count/data invalid");
+        for(std::size_t i=0;i<values.size();i++){std::copy_n(values[i].begin(),3,mesh.streamVertices[i].position.begin());std::copy_n(values[i].begin()+3,3,mesh.streamVertices[i].normal.begin());}
+        gpu.update(mesh.vertices,mesh.streamVertices.data(),mesh.streamVertices.size()*sizeof(SceneVertex));
     }
     // ponytail: one mip level; SceneRenderer's GPU mip generation lands with phase 3 compute.
     Texture createTexture(UINT w,UINT h,const std::vector<std::uint8_t>& rgba,bool srgb=true,bool mipmaps=true){
@@ -611,6 +625,28 @@ public:
         for(std::size_t i=0;i<bytes.size();i+=4){float v;std::memcpy(&v,bytes.data()+i,4);if(!std::isfinite(v))throw std::runtime_error("2D float texture must be finite");}
         Texture t;static_cast<d3d12::Texture&>(t)=gpu.texture(w,h,DXGI_FORMAT_R32G32B32A32_FLOAT,bytes.data(),w*16);t.srv=views.take();gpu.device->CreateShaderResourceView(t.get(),nullptr,t.srv);return t;
     }
+    void setProgramParameters(Program& program,const std::vector<float>& values){
+        if(!SceneRenderer::finite(values)){throw std::runtime_error("Material parameters invalid");}
+        if(program.current==values&&program.parameters.value.p)return;
+        const std::vector<float> defaults{0};const auto& data=values.empty()?defaults:values;
+        if(program.current.size()!=values.size()||!program.parameters.value.p){gpu.retire(std::move(program.parameters.value));program.parameters=gpu.buffer(data.size()*4,readable,D3D12_RESOURCE_FLAG_NONE);}
+        gpu.update(program.parameters,data.data(),data.size()*4);program.current=values;
+    }
+    // ponytail: the Async variants compile synchronously; SceneProgramPreparation's worker queue can feed them later.
+    Program createProgram(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){
+        if(!SceneRenderer::finite(parameters))throw std::runtime_error("Material parameters invalid");
+        const auto base=SceneRenderer::materialProgramBase(declarations,evaluation),surface=SceneRenderer::surfaceShader(base);Program out;
+        out.ps=Device::shader(base,"HBNodeMaterial","PS","ps_5_0");out.shadow=Device::shader(base,"HBNodeMaterial","ShadowPS","ps_5_0");out.surface=Device::shader(surface,"HBNodeMaterial","PS","ps_5_0");
+        // Graph bindings must fit the shared root signature (b0..b3, t0..t52, s0..s15).
+        ReflectedLayout check;for(const auto* code:{&out.ps,&out.shadow,&out.surface})check.reflect(*code);
+        if(check.srvs.size()>slots.size()||check.samplers>16||!check.uavs.empty()||std::any_of(check.cbuffers.begin(),check.cbuffers.end(),[&](const auto& c){return !cbuffers.count(c.first)||c.second>cbuffers.at(c.first);}))throw std::runtime_error("Material program bindings exceed the scene root signature");
+        setProgramParameters(out,parameters);return out;
+    }
+    Program createProgramAsync(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){return createProgram(declarations,evaluation,parameters);}
+    Program createSurfaceProgram(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){return createProgram("#define HB_NODE_SURFACE 1\n"+declarations,evaluation,parameters);}
+    Program createSurfaceProgramAsync(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){return createSurfaceProgram(declarations,evaluation,parameters);}
+    bool pollProgramPreparation(Program& program){return program.ready();}
+    void release(Program& program){gpu.retire(std::move(program.parameters.value));program={};}
     void setGeometryScene(const Texture* value){geometryScene=value;}
     void setPathEnvironment(const Texture* value){pathEnvironment=value;}
     void setDistanceFieldScene(const Texture* value){distanceField=value;}
@@ -644,7 +680,6 @@ public:
     }
     void begin(const SceneFrame& value){
         endProbe();endShadow();for(const auto& light:lights)if(light.position[3]<3&&light.cone[3]>0&&light.cone[3]+(light.position[3]==1?5:0)>shadows.size())throw std::runtime_error("Shadow light reference invalid");
-        if(value.viewportClear)throw std::runtime_error("Direct3D12 scene frame feature not ported yet");
         // ponytail: post settings are range-checked by BloomPass::begin on the D3D11 path; here only finiteness is enforced.
         if(value.postProcess)for(const auto* row:{&value.postProcess->grade,&value.postProcess->filter,&value.postProcess->effects,&value.postProcess->vignette,&value.postProcess->vignetteColor,&value.postProcess->balance,&value.postProcess->lift,&value.postProcess->gamma,&value.postProcess->gain,&value.postProcess->lens,&value.postProcess->bokeh,&value.postProcess->focus,&value.postProcess->occlusion,&value.postProcess->lookup,&value.postProcess->camera,&value.postProcess->exposure,&value.postProcess->adapt})if(!SceneRenderer::finite(*row))throw std::runtime_error("Post-process non-finite value");
         if(value.postProcess&&value.postProcess->lookup[1]>0&&(!postLookup||value.postProcess->lookup[1]!=float(postLookup->height)))throw std::runtime_error("Post lookup size mismatch");
@@ -666,13 +701,15 @@ public:
                 gpu.transition(hdr.texture,D3D12_RESOURCE_STATE_RENDER_TARGET);gpu.list->ClearRenderTargetView(hdr.rtv,linear.data(),0,nullptr);hdrPending=true;beginScreen(value);}
         }
         cullLights(frame.viewport[2]>0?frame.viewport:std::array<float,4>{0,0,float(width),float(height)});
+        if(value.viewportClear){if(!background.count)background=createMesh({{{-1,-1,0}},{{1,-1,0}},{{1,1,0}},{{-1,1,0}}},{0,1,2,0,2,3});SceneMaterial fill;fill.color=*value.viewportClear;fill.unlit=true;fill.toneMapped=false;fill.depthTest=fill.depthWrite=false;const auto vp=frame.viewProjection;frame.viewProjection=identity;draw(background,identity,identity,fill);frame.viewProjection=vp;}
     }
-    void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const void* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={},const Instances* instances=nullptr,const Deformation* deformation=nullptr,const void* twoD=nullptr,const std::array<ProbeBinding,2>* probeBindings=nullptr,const Matrix* previousWorld=nullptr,float motionFlag=0,const Texture* lightmap=nullptr,bool globalProbes=false){
+    void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const Program* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={},const Instances* instances=nullptr,const Deformation* deformation=nullptr,const void* twoD=nullptr,const std::array<ProbeBinding,2>* probeBindings=nullptr,const Matrix* previousWorld=nullptr,float motionFlag=0,const Texture* lightmap=nullptr,bool globalProbes=false){
         if((previousWorld&&!SceneRenderer::finite(*previousWorld))||!std::isfinite(motionFlag)||(motionFlag!=-1&&motionFlag!=0&&motionFlag!=1&&motionFlag!=2))throw std::runtime_error("Object motion input invalid");
         if(lightmap&&!mesh.uv1.value.p)throw std::runtime_error("Baked lightmap texture or UV1 invalid");
         if(!std::isfinite(material.lightmapIntensity)||material.lightmapIntensity<0)throw std::runtime_error("Baked lightmap intensity invalid");
         if(twoD)throw std::runtime_error("Direct3D12 2D bindings are not ported yet");
-        if(program||!programMaps.empty()||!programSampling.empty())throw std::runtime_error("Direct3D12 material programs are not ported yet");
+        if(program&&(!program->ready()||programMaps.size()>16||programMaps.size()!=programSampling.size()||std::any_of(programMaps.begin(),programMaps.end(),[](const Texture* t){return !t;})))throw std::runtime_error("Material program bindings invalid");
+        if(!program&&(!programMaps.empty()||!programSampling.empty()))throw std::runtime_error("Material program bindings invalid");
         if(deformation&&(deformation->vertexCount!=mesh.vertexCount||deformation->current.empty()||(instances&&instances->positionsOnly())))throw std::runtime_error("Deformation draw binding invalid");
         if(instances&&!instances->count)return;
         const auto blend=static_cast<std::size_t>(material.blend);
@@ -681,6 +718,7 @@ public:
         if(count>mesh.count-first||count%3||first%3)throw std::runtime_error("Scene draw range invalid");
         std::vector<std::uint32_t> keys(samplerCount,52);// 52 = linear clamp, D3D11's default for unbound samplers.
         for(std::size_t i=0;i<6&&i<samplerCount;i++)keys[i]=sampling[i];
+        for(std::size_t i=0;i<programSampling.size();i++)keys[i]=programSampling[i];
         // Probe/sky selection mirrors SceneRenderer::draw; t39..t43, t46/t47, b2, sampler s14 = key 16.
         std::array<ProbeSettings,3> probeData{};for(auto& p:probeData)p.options[0]=0;std::array<const Probe*,2> bound{};bool probeSampler=false;
         if(probeBindings&&(!activeProbe||probeIndirect)&&activeShadow<0){for(std::size_t i=0;i<2;i++){const auto& b=(*probeBindings)[i];if(!b.resource)continue;const auto& p=*b.resource;if(activeProbe&&!p.ready)continue;
@@ -691,6 +729,7 @@ public:
         const bool atlas=globalProbes&&atlasCount&&(!activeProbe||probeIndirect)&&activeShadow<0;
         if(atlas){probeData[0].blendNegative[3]=atlasInfluence?1.f:0.f;probeData[0].faceScale[3]=float(atlasCount%65536);probeData[1].faceScale[3]=float(atlasCount/65536);probeSampler=true;}
         const bool transmissive=transmissionReady&&(material.transmission||material.volume[0]>0)&&!activeProbe&&activeShadow<0;
+        if((probeSampler||transmissive)&&programMaps.size()>14)throw std::runtime_error("Reflections and transmission reserve one material sampler");
         if((probeSampler||transmissive)&&samplerCount>14)keys[14]=16;
         const auto samplerHandle=samplerCount?samplerTable(keys):D3D12_GPU_DESCRIPTOR_HANDLE{};
         if(uploaded!=gpu.submitted())uploadFrame();
@@ -709,6 +748,7 @@ public:
         for(UINT i=0;i<2;i++)if(bound[i]){copy(39+i,bound[i]->view);copy(41+i,bound[i]->irradiance);copy(43,brdfView);}
         if(sky){copy(46,skyProbe.view);copy(47,skyProbe.irradiance);copy(43,brdfView);}
         if(atlas){copy(50,atlasView);copy(51,atlasTableView);copy(52,atlasSHView);copy(43,brdfView);}
+        if(program){structured(srvs,7,program->parameters,4,UINT(program->parameters.size/4));for(std::size_t i=0;i<programMaps.size();i++)copy(UINT(8+i),programMaps[i]->srv);}
         if(transmissive){copy(44,transmissionView);copy(45,transmissionDepthView);mask|=4096u;}
         const bool toHDR=hdr.texture.value.p&&!activeProbe&&activeShadow<0;if(toHDR){mask|=128u;hdrPending=true;gpu.transition(hdr.texture,D3D12_RESOURCE_STATE_RENDER_TARGET);}
         if(lightmap){copy(49,lightmap->srv);mask|=32768u|(material.lightmapReflectionMix?262144u:0u);}
@@ -719,7 +759,7 @@ public:
         auto u=gpu.upload(std::max<std::size_t>(sizeof(data),cbuffers.at(0)),256);std::memset(u.cpu,0,std::max<std::size_t>(sizeof(data),cbuffers.at(0)));std::memcpy(u.cpu,&data,sizeof(data));
         const std::size_t raster=(SceneRenderer::orientation(world)<0?3:0)+(material.doubleSided||(instances&&instances->mirrored)?2:material.backSide?1:0);
         auto* list=gpu.list.p;list->SetGraphicsRootSignature(root.p);const bool mrt=toHDR&&screen&&(surfaceNormal.texture.value.p||surfaceMotion.texture.value.p);UINT surfaceTargets=0;{UINT bit=1;for(auto* i:{&surfaceNormal,&surfaceAlbedo,&surfaceMotion,&surfaceAmbient}){if(i->texture.value.p)surfaceTargets|=bit;bit<<=1;}}
-        list->SetPipelineState(activeShadow>=0?shadowPipeline(raster):mrt?surfacePipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),surfaceTargets):pipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),activeProbe!=nullptr||toHDR));
+        list->SetPipelineState(activeShadow>=0?shadowPipeline(raster,program):mrt?surfacePipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),surfaceTargets,program):pipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),activeProbe!=nullptr||toHDR,program));
         const auto probeAddress=gpu.constants(probeData.data(),sizeof(probeData));
         UINT index=0;for(const auto& c:cbuffers)list->SetGraphicsRootConstantBufferView(index++,c.first==0?u.gpu:c.first==2?probeAddress:frameBuffers.at(c.first));
         list->SetGraphicsRootDescriptorTable(srvRoot,srvs.gpu);if(samplerCount)list->SetGraphicsRootDescriptorTable(samplerRoot,samplerHandle);
