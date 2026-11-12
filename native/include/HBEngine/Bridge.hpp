@@ -123,7 +123,8 @@ inline void bridgeSync(const Json& objects,bool copyWorld=true,const std::unorde
     auto sync=[&](const Json& o){const auto id=o.at("id").get<std::string>();auto c=bridgeCells.find(id);auto plain=bridgeActors.find(id);Actor* a=c!=bridgeCells.end()?c->second->actor():plain!=bridgeActors.end()?plain->second.get():nullptr;if(a){a->transform=o.get<Transform>();bridgeActorIds[a]=id;bridgeSyncedTransforms[a]=a->transform;}if(c!=bridgeCells.end()&&o.contains("nativeProperties"))c->second->defaults(o.at("nativeProperties"));};
     if(stable&&changed){for(const auto i:*changed)if(i<objects.size())sync(objects.at(i));}else for(const auto& o:objects)sync(o);
 }
-inline Json bridgeSnapshot(){Json values=Json::array();for(const auto& c:bridgeCells){Json o={{"id",c.first},{"nativeProperties",c.second->properties()}};if(c.second->actor()){const auto& t=c.second->actor()->transform;o["position"]=t.position;o["rotation"]=t.rotation;o["scale"]=t.scale;}values.push_back(o);}for(const auto& c:bridgeActors){const auto& t=c.second->transform;values.push_back({{"id",c.first},{"position",t.position},{"rotation",t.rotation},{"scale",t.scale}});}for(const auto& state:bridgeWorldData){const auto id=state.at("id").get<std::string>();if(!bridgeCells.count(id)&&!bridgeActors.count(id))values.push_back({{"id",id},{"position",state.at("position")},{"rotation",state.at("rotation")},{"scale",state.at("scale")}});}return values;}
+// Plain world rows already hold their transform, so only native cells/actors are reported.
+inline Json bridgeSnapshot(){Json values=Json::array();for(const auto& c:bridgeCells){Json o={{"id",c.first},{"nativeProperties",c.second->properties()}};if(c.second->actor()){const auto& t=c.second->actor()->transform;o["position"]=t.position;o["rotation"]=t.rotation;o["scale"]=t.scale;}values.push_back(o);}for(const auto& c:bridgeActors){const auto& t=c.second->transform;values.push_back({{"id",c.first},{"position",t.position},{"rotation",t.rotation},{"scale",t.scale}});}return values;}
 inline bool bridgeSameVector(const Vec3& a,const Vec3& b){return a.x==b.x&&a.y==b.y&&a.z==b.z;}
 // Match JSON.stringify's numeric types when acknowledging C++ changes. Large
 // integral floats with ambiguous decimal rounding keep the ordinary input path.
@@ -173,15 +174,22 @@ inline Json engineQuery(const char* key,const Json& args){
     const std::string queryKey=key;
     const bool compactQuery=queryKey.rfind("saveJson",0)==0||queryKey=="dataJsonRead"||queryKey=="dataTableRead"||queryKey=="componentDefaultJson"||queryKey=="behaviorTaskMemoryGet"||queryKey=="behaviorTaskMemorySet"||queryKey=="behaviorTaskMemoryClear";
     if(!compactQuery&&bridgePrepareQuery)bridgePrepareQuery();
-    Json world=compactQuery?Json::array():bridgeWorldData;
-    if(!compactQuery)for(const auto& updated:bridgeSnapshot()){
-        const auto index=bridgeStateIndices.find(updated.at("id").get<std::string>());
-        if(index!=bridgeStateIndices.end()&&index->second<world.size()&&world.at(index->second).at("id")==updated.at("id"))world.at(index->second).update(updated);
-        // ponytail: stale index scans rows; rebuild it if unmanaged row edits become frequent.
-        else for(auto& object:world)if(object.at("id")==updated.at("id"))object.update(updated);
+    Json gameState=queryKey=="nativeModule"?Json::parse(Game::GetStateText()):Json();
+    Json packet=compactQuery?Json{{"key",key},{"args",args}}:Json{{"key",key},{"args",args},{"scope",Timers::GetContext().second},{"clock",{{"scale",Clock::TimeScale()},{"paused",Clock::IsPaused()}}}};if(!compactQuery&&std::any_of(bridgeOperations.begin(),bridgeOperations.end(),[](const Json& o){return o.at("key")=="sceneSpawn";}))packet["operations"]=bridgeOperations;if(queryKey=="nativeModule"&&bridgeInput.contains("keys"))packet["input"]=bridgeInput;
+    if(queryKey=="nativeModule")packet["gameState"]=std::move(gameState);
+    // Lend the canonical world to the packet instead of deep-copying it every query; patched rows are restored afterwards.
+    struct LentWorld{Json& packet;std::vector<std::pair<std::size_t,Json>> rows;bool lent=false;~LentWorld(){if(lent)bridgeWorldData=std::move(packet["objects"]);for(auto r=rows.rbegin();r!=rows.rend();++r)bridgeWorldData.at(r->first)=std::move(r->second);}} lend{packet};
+    if(!compactQuery){
+        auto& world=bridgeWorldData;
+        for(const auto& updated:bridgeSnapshot()){
+            const auto& id=updated.at("id");const auto patch=[&](std::size_t i){lend.rows.emplace_back(i,world.at(i));world.at(i).update(updated);};
+            const auto index=bridgeStateIndices.find(id.get<std::string>());
+            if(index!=bridgeStateIndices.end()&&index->second<world.size()&&world.at(index->second).at("id")==id)patch(index->second);
+            // ponytail: stale index scans rows; rebuild it if unmanaged row edits become frequent.
+            else for(std::size_t i=0;i<world.size();i++)if(world.at(i).at("id")==id)patch(i);
+        }
+        packet["objects"]=std::move(world);lend.lent=true;
     }
-    Json packet=compactQuery?Json{{"key",key},{"args",args}}:Json{{"key",key},{"args",args},{"objects",world},{"scope",Timers::GetContext().second},{"clock",{{"scale",Clock::TimeScale()},{"paused",Clock::IsPaused()}}}};if(!compactQuery&&std::any_of(bridgeOperations.begin(),bridgeOperations.end(),[](const Json& o){return o.at("key")=="sceneSpawn";}))packet["operations"]=bridgeOperations;if(std::string(key)=="nativeModule"&&bridgeInput.contains("keys"))packet["input"]=bridgeInput;
-    if(std::string(key)=="nativeModule"){packet["gameState"]=Json::parse(Game::GetStateText());}
     if(bridgeQuery){const auto response=bridgeQuery(packet);if(!response.value("ok",false))throw std::runtime_error(response.value("error",std::string("engine query failed")));return response.at("value");}
     std::cout<<"HB_QUERY\t"<<packet.dump()<<std::endl;
     std::string line;if(!std::getline(std::cin,line))throw std::runtime_error("engine query disconnected");const auto response=Json::parse(line);if(!response.value("ok",false))throw std::runtime_error(response.value("error",std::string("engine query failed")));return response.at("value");
