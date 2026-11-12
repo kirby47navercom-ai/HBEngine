@@ -17,10 +17,10 @@ function textLayout(ctx,text,width,wrap,size,fontValue){
 }
 
 export function paintWidgetImage(ctx,image,width,height,properties,scale){
- if(!image)return;if(!cachedWidgetImage(ctx,image,width,height,properties,scale,paintWidgetImageDirect))paintWidgetImageDirect(ctx,image,width,height,properties,scale);
+ if(!image)return;if(properties.clipPolygon||!cachedWidgetImage(ctx,image,width,height,properties,scale,paintWidgetImageDirect))paintWidgetImageDirect(ctx,image,width,height,properties,scale);
 }
 export function paintWidgetImageDirect(ctx,image,width,height,properties,scale){
- if(!image)return;const border=properties.nineSlice||[0,0,0,0];ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();ctx.imageSmoothingEnabled=properties.imageRendering!=='pixelated';
+ if(!image)return;const border=properties.nineSlice||[0,0,0,0];ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();const poly=properties.clipPolygon;if(poly){ctx.beginPath();ctx.moveTo(poly[0]*scale,poly[1]*scale);for(let i=2;i<poly.length;i+=2)ctx.lineTo(poly[i]*scale,poly[i+1]*scale);ctx.closePath();ctx.clip();}ctx.imageSmoothingEnabled=properties.imageRendering!=='pixelated';
  if(border.some(v=>v>0)){
   const [l,b,r,t]=border,sourceX=image.width/(image.hbSourceWidth||image.width),sourceY=image.height/(image.hbSourceHeight||image.height),dx=[0,Math.min(l*scale,width/2),Math.max(width/2,width-r*scale),width],dy=[0,Math.min(t*scale,height/2),Math.max(height/2,height-b*scale),height],sx=[0,l*sourceX,image.width-r*sourceX,image.width],sy=[0,t*sourceY,image.height-b*sourceY,image.height];
   for(let y=0;y<3;y++)for(let x=0;x<3;x++)if(sx[x+1]>sx[x]&&sy[y+1]>sy[y])ctx.drawImage(image,sx[x],sy[y],sx[x+1]-sx[x],sy[y+1]-sy[y],dx[x],dy[y],dx[x+1]-dx[x],dy[y+1]-dy[y]);
@@ -33,7 +33,7 @@ export function paintWidgetText(ctx,type,p,width,height,scale,font){
  const fontValue=size+'px '+font,align=type==='Button'||type==='TouchButton'?'center':p.align,style=paintTypography.get(ctx)?.style;if(style){if(style.font!==fontValue){ctx.font=fontValue;style.font=fontValue;}if(style.color!==p.color){ctx.fillStyle=p.color;style.color=p.color;}if(style.baseline!=='alphabetic'){ctx.textBaseline='alphabetic';style.baseline='alphabetic';}if(style.align!==align){ctx.textAlign=align;style.align=align;}}else{if(ctx.font!==fontValue)ctx.font=fontValue;ctx.fillStyle=p.color;ctx.textBaseline='alphabetic';ctx.textAlign=align;}
  const {lines,ascent,descent}=textLayout(ctx,p.text||(type==='TextInput'?p.placeholder:''),innerWidth,p.wrap&&type!=='TextInput',size,fontValue),lineHeight=size*widgetLineHeight;
  const centered=['Button','TouchButton','CheckBox','TextInput'].includes(type),top=centered?(height-lines.length*lineHeight)/2:border,tx=ctx.textAlign==='center'?width/2:ctx.textAlign==='right'?width-border-padding:border+padding+check;
- ctx.save();ctx.beginPath();ctx.rect(border+padding,border,Math.max(0,width-2*(border+padding)),Math.max(0,height-2*border));ctx.clip();for(let i=0;i<lines.length;i++)ctx.fillText(lines[i],tx,top+i*lineHeight+(lineHeight-ascent-descent)/2+ascent);ctx.restore();
+ ctx.save();ctx.beginPath();ctx.rect(border+padding,border,Math.max(0,width-2*(border+padding)),Math.max(0,height-2*border));ctx.clip();const outline=p.outlineWidth>0&&p.outlineColor?p.outlineWidth*scale:0;if(outline){ctx.strokeStyle=p.outlineColor;ctx.lineWidth=outline;ctx.lineJoin='round';}for(let i=0;i<lines.length;i++){const ly=top+i*lineHeight+(lineHeight-ascent-descent)/2+ascent;if(outline)ctx.strokeText(lines[i],tx,ly);ctx.fillText(lines[i],tx,ly);}ctx.restore();
 }
 export function widgetFlexBox(node,box,parentType,index,siblings,scale){
  const a=node.slot.anchors,o=node.slot.offset,al=node.slot.alignment;
