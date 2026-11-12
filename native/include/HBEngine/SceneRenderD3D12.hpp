@@ -2,8 +2,9 @@
 // D3D12 port: SceneRenderer's own scene VS/PS on real D3D12 command lists.
 // Phase 2: meshes, material constants, six material maps with sampler keys, lights, blend/depth/cull,
 // viewport and scissor. Phase 3-1: shadow maps, instancing/shot positions, skinning/morphs, light tiles.
-// Phase 3-2a: reflection probe capture/filter (SceneProbes kernels), local probe bindings, sky HDRI.
-// Still D3D11-only: probe atlas, material programs, 2D, transmission, bloom/post, motion vectors.
+// Phase 3-2: reflection probe capture/filter (SceneProbes kernels), local probe bindings, sky HDRI,
+// global probe atlas (SceneProbeAtlas packing/padding), baked lightmaps.
+// Still D3D11-only: material programs, 2D, transmission, bloom/post, motion vectors.
 #include "SceneRender.hpp"
 #include "D3D12Direct.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
@@ -19,7 +20,7 @@ public:
         bool positionsOnly()const{return stride==16;}std::uint32_t capacityCount()const{return capacity;}};
     struct Deformation {Buffer skin,morph,pose;std::uint32_t vertexCount=0,boneCount=0,morphCount=0,poseBytes=0;std::vector<float> current;};
     // HDR cube capture (R16G16B16A16F), prefiltered mip chain, 9 SH irradiance coefficients.
-    struct Probe {d3d12::Texture capture,filtered,depth;Buffer coefficients;std::array<D3D12_CPU_DESCRIPTOR_HANDLE,6> faces{};D3D12_CPU_DESCRIPTOR_HANDLE source{},view{},irradiance{};UINT size=0,mips=0;bool ready=false;
+    struct Probe {d3d12::Texture capture,filtered,depth;Buffer coefficients;std::array<D3D12_CPU_DESCRIPTOR_HANDLE,6> faces{};D3D12_CPU_DESCRIPTOR_HANDLE source{},view{},irradiance{};UINT size=0,mips=0;bool ready=false;std::uint64_t identity=0,revision=0;
         bool available()const{return ready;}};
     struct ProbeBinding {const Probe* resource=nullptr;ProbeSettings settings;};
 private:
@@ -41,7 +42,10 @@ private:
     // Probe filtering: SceneProbes' Prefilter/Integrate/Diffuse/Equirect kernels, BRDF LUT in t43.
     Com<ID3D12RootSignature> probeRoot;std::array<Com<ID3D12PipelineState>,4> probeKernels;d3d12::Texture brdf;D3D12_CPU_DESCRIPTOR_HANDLE brdfView{};
     Probe* activeProbe=nullptr;bool probeIndirect=false;UINT probeFace=0;SceneFrame savedProbe;
-    Probe skyProbe;const Texture* skySource=nullptr;std::uint32_t skySize=0;ProbeSettings skySettings{};
+    Probe skyProbe;const Texture* skySource=nullptr;std::uint32_t skySize=0;ProbeSettings skySettings{};std::uint64_t probeIdentities=0;
+    // Global probe atlas: t50 image, t51 records + spatial index, t52 SH. ponytail: any change rebuilds the whole atlas; port DX11's incremental paths if profiling asks.
+    d3d12::Texture atlasImage;Buffer atlasTable,atlasSH;D3D12_CPU_DESCRIPTOR_HANDLE atlasView{},atlasTableView{},atlasSHView{};UINT atlasCount=0;bool atlasInfluence=false;
+    std::vector<std::array<std::uint64_t,2>> atlasStamps;std::vector<ProbeSettings> atlasSettings;ProbeSpatialIndex atlasSpatial;Com<ID3D12RootSignature> paddingRoot;Com<ID3D12PipelineState> paddingKernel;
 
     void reflect(const std::vector<unsigned char>& code){
         // d3dcompiler_47's IID_ID3D11ShaderReflection.
@@ -159,7 +163,7 @@ private:
         if(stage<target.mips){
             gpu.transition(target.filtered,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);D3D12_UNORDERED_ACCESS_VIEW_DESC u{};u.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;u.ViewDimension=D3D12_UAV_DIMENSION_TEXTURE2DARRAY;u.Texture2DArray.MipSlice=stage;u.Texture2DArray.ArraySize=6;
             const UINT edge=target.size>>stage;probeDispatch(0,{float(edge),float(stage)/float(target.mips-1),0,0},&target.source,nullptr,target.filtered.get(),&u,nullptr,nullptr,(edge+7)/8,(edge+7)/8,6);gpu.transition(target.filtered,readable);
-        }else{gpu.transition(target.coefficients,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);probeDispatch(2,{0,0,0,0},&target.source,nullptr,nullptr,nullptr,nullptr,nullptr,1,1,1,target.coefficients.get());gpu.transition(target.coefficients,readable);target.ready=true;}
+        }else{gpu.transition(target.coefficients,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);probeDispatch(2,{0,0,0,0},&target.source,nullptr,nullptr,nullptr,nullptr,nullptr,1,1,1,target.coefficients.get());gpu.transition(target.coefficients,readable);target.ready=true;++target.revision;}
     }
     // Frame data lives in the upload ring; re-upload after any submit (read, sampler flush).
     void uploadFrame(){
@@ -276,7 +280,7 @@ public:
     bool pollProbePreparation(bool request=false){if(request)prepareProbes();return true;}
     Probe createProbe(std::uint32_t size){
         if(size<16||size>2048||(size&(size-1)))throw std::runtime_error("Probe resolution must be a power of two (16..2048)");
-        prepareProbes();Probe out;out.size=size;for(UINT n=size;n;n/=2)++out.mips;
+        prepareProbes();Probe out;out.size=size;out.identity=++probeIdentities;for(UINT n=size;n;n/=2)++out.mips;
         D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=d.Height=size;d.DepthOrArraySize=6;d.MipLevels=1;d.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;d.SampleDesc.Count=1;d.Flags=D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET|D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
         out.capture.value=gpu.committed(D3D12_HEAP_TYPE_DEFAULT,d,readable,nullptr,"Direct3D12 probe capture");out.capture.state=readable;out.capture.width=out.capture.height=size;out.capture.format=d.Format;
         for(UINT f=0;f<6;f++){D3D12_RENDER_TARGET_VIEW_DESC v{};v.Format=d.Format;v.ViewDimension=D3D12_RTV_DIMENSION_TEXTURE2DARRAY;v.Texture2DArray.FirstArraySlice=f;v.Texture2DArray.ArraySize=1;out.faces[f]=gpu.rtvs.take();gpu.device->CreateRenderTargetView(out.capture.get(),&v,out.faces[f]);}
@@ -307,6 +311,49 @@ public:
         const float radians=rotation*.01745329252f;skySettings.center={0,0,0,intensity};skySettings.minimum={std::sin(radians),std::cos(radians),0,0};skySettings.maximum={0,0,0,float(skyProbe.mips-1)};skySettings.options={1,1,1,0};
     }
     void setSkyProbe(Probe&& target,float intensity=1){if(!target.ready)throw std::runtime_error("Sky probe invalid");if(!std::isfinite(intensity)||intensity<0)throw std::runtime_error("Sky intensity invalid");if(skyProbe.capture.value.p)release(skyProbe);skyProbe=std::move(target);skySource=nullptr;skySize=0;skySettings.center={0,0,0,intensity};skySettings.minimum={0,1,0,0};skySettings.maximum={0,0,0,float(skyProbe.mips-1)};skySettings.options={1,1,1,0};}
+    void releaseAtlas(){views.give(atlasView);views.give(atlasTableView);views.give(atlasSHView);atlasView=atlasTableView=atlasSHView={};gpu.retire(std::move(atlasImage.value));gpu.retire(std::move(atlasTable.value));gpu.retire(std::move(atlasSH.value));atlasCount=0;atlasInfluence=false;atlasStamps.clear();atlasSettings.clear();atlasSpatial.clear();}
+    // Same record/region/spatial layout as SceneProbeAtlas::update.
+    void setGlobalProbes(const std::vector<ProbeBinding>& bindings){
+        if(bindings.empty()){releaseAtlas();return;}
+        std::vector<std::array<std::uint64_t,2>> stamps;std::vector<ProbeSettings> settings;
+        for(const auto& b:bindings){
+            if(!b.resource||!b.resource->ready||!probeVolumeBasisUsable(b.settings)||!probeProjectionUsable(b.settings)||!probeInfluenceUsable(b.settings))throw std::runtime_error("Probe atlas resource owner/pose invalid");
+            for(const auto* row:{&b.settings.center,&b.settings.minimum,&b.settings.maximum,&b.settings.options,&b.settings.localX,&b.settings.localY,&b.settings.localZ,&b.settings.faceScale})if(!SceneRenderer::finite(*row))throw std::runtime_error("Probe atlas settings nonfinite");
+            for(std::size_t j=0;j<3;j++)if(b.settings.minimum[j]>=b.settings.maximum[j]||b.settings.faceScale[j]<=0)throw std::runtime_error("Probe atlas bounds invalid");
+            if(b.settings.center[3]<0||b.settings.minimum[3]<0||b.settings.options[1]<0)throw std::runtime_error("Probe atlas light invalid");
+            stamps.push_back({b.resource->identity,b.resource->revision});settings.push_back(b.settings);}
+        if(stamps==atlasStamps&&settings.size()==atlasSettings.size()&&!std::memcmp(settings.data(),atlasSettings.data(),settings.size()*sizeof(ProbeSettings)))return;
+        const auto tableCount=bindings.size()+((bindings.size()*2-1)*3+19)/20;
+        std::vector<const Probe*> unique;std::vector<UINT> indices;
+        for(const auto& b:bindings){const auto found=std::find(unique.begin(),unique.end(),b.resource);indices.push_back(UINT(found-unique.begin()));if(found==unique.end())unique.push_back(b.resource);}
+        struct Packed {const Probe* resource;};std::vector<Packed> packing;for(auto* p:unique)packing.push_back({p});
+        UINT w=0,h=0;const auto regions=SceneProbeAtlas::layout(packing,w,h);
+        std::vector<ProbeSpatialShape> shapes;for(const auto& b:bindings){const auto& p=b.settings;shapes.push_back({p.minimum[0],p.minimum[1],p.minimum[2],p.maximum[0],p.maximum[1],p.maximum[2],p.localX[0],p.localX[1],p.localX[2],p.localX[3],p.localY[0],p.localY[1],p.localY[2],p.localY[3],p.localZ[0],p.localZ[1],p.localZ[2],p.localZ[3]});}
+        releaseAtlas();atlasSpatial.update(shapes);
+        if(!paddingKernel.p){const D3D12_DESCRIPTOR_RANGE srv{D3D12_DESCRIPTOR_RANGE_TYPE_SRV,1,0,0,0},uav{D3D12_DESCRIPTOR_RANGE_TYPE_UAV,1,0,0,0};D3D12_ROOT_PARAMETER params[3]{};params[0].ParameterType=D3D12_ROOT_PARAMETER_TYPE_CBV;params[1].ParameterType=params[2].ParameterType=D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;params[1].DescriptorTable={1,&srv};params[2].DescriptorTable={1,&uav};
+            D3D12_ROOT_SIGNATURE_DESC rd{};rd.NumParameters=3;rd.pParameters=params;paddingRoot=gpu.rootSignature(rd);paddingKernel=gpu.computePipeline(paddingRoot.p,Device::shader(probeAtlasPaddingSource,"HBProbeAtlasPadding","Fill","cs_5_0"));}
+        D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=w;d.Height=h;d.DepthOrArraySize=1;d.MipLevels=1;d.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;d.SampleDesc.Count=1;d.Flags=D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
+        atlasImage.value=gpu.committed(D3D12_HEAP_TYPE_DEFAULT,d,D3D12_RESOURCE_STATE_COPY_DEST,nullptr,"Direct3D12 probe atlas");atlasImage.state=D3D12_RESOURCE_STATE_COPY_DEST;atlasImage.width=w;atlasImage.height=h;atlasImage.format=d.Format;
+        atlasSH=gpu.buffer(unique.size()*9*16,D3D12_RESOURCE_STATE_COPY_DEST,D3D12_RESOURCE_FLAG_NONE);
+        for(std::size_t i=0;i<unique.size();i++){const auto& p=*unique[i];const auto& rect=regions[i];auto& filtered=const_cast<d3d12::Texture&>(p.filtered);auto& coefficients=const_cast<Buffer&>(p.coefficients);
+            gpu.transition(filtered,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(atlasImage,D3D12_RESOURCE_STATE_COPY_DEST);
+            for(UINT level=0;level<p.mips;level++){const UINT size=p.size>>level;for(UINT face=0;face<6;face++){D3D12_TEXTURE_COPY_LOCATION dst{},src{};dst.pResource=atlasImage.get();src.pResource=filtered.get();dst.Type=src.Type=D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;src.SubresourceIndex=level+face*p.mips;gpu.list->CopyTextureRegion(&dst,rect.x+face*(size+2)+1,rect.y+2*p.size-2*size+2*level+1,0,&src,nullptr);}}
+            gpu.transition(filtered,readable);gpu.transition(atlasImage,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            for(UINT level=0;level<p.mips;level++){const UINT size=p.size>>level;const std::array<UINT,8> values{rect.x,rect.y,p.size,p.mips,level,size,0,0};auto srvs=gpu.table(1),uavs=gpu.table(1);
+                D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2DARRAY;v.Texture2DArray.MipLevels=p.mips;v.Texture2DArray.ArraySize=6;gpu.device->CreateShaderResourceView(filtered.get(),&v,srvs.cpu);
+                D3D12_UNORDERED_ACCESS_VIEW_DESC u{};u.Format=d.Format;u.ViewDimension=D3D12_UAV_DIMENSION_TEXTURE2D;gpu.device->CreateUnorderedAccessView(atlasImage.get(),nullptr,&u,uavs.cpu);
+                auto* list=gpu.list.p;list->SetComputeRootSignature(paddingRoot.p);list->SetPipelineState(paddingKernel.p);list->SetComputeRootConstantBufferView(0,gpu.constants(values.data(),sizeof(values)));list->SetComputeRootDescriptorTable(1,srvs.gpu);list->SetComputeRootDescriptorTable(2,uavs.gpu);list->Dispatch((4*size+4+63)/64,6,1);}
+            gpu.transition(coefficients,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.list->CopyBufferRegion(atlasSH.get(),i*9*16,coefficients.get(),0,9*16);gpu.transition(coefficients,readable);}
+        gpu.transition(atlasImage,readable);gpu.transition(atlasSH,readable);
+        std::vector<SceneProbeAtlas::Record> packet;for(std::size_t i=0;i<bindings.size();i++){const auto& p=*bindings[i].resource;auto set=bindings[i].settings;set.maximum[3]=float(p.mips-1);const auto& rect=regions[indices[i]];packet.push_back({set,{float(rect.x),float(rect.y),float(p.size),float(indices[i])}});}
+        packet.resize(tableCount);std::memcpy(reinterpret_cast<char*>(packet.data())+bindings.size()*sizeof(SceneProbeAtlas::Record),atlasSpatial.data().data(),atlasSpatial.data().size()*16);
+        atlasTable=gpu.buffer(packet.data(),packet.size()*sizeof(SceneProbeAtlas::Record),readable);
+        atlasView=views.take();gpu.device->CreateShaderResourceView(atlasImage.get(),nullptr,atlasView);
+        D3D12_SHADER_RESOURCE_VIEW_DESC b{};b.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;b.ViewDimension=D3D12_SRV_DIMENSION_BUFFER;b.Buffer.StructureByteStride=16;
+        b.Buffer.NumElements=UINT(packet.size()*sizeof(SceneProbeAtlas::Record)/16);atlasTableView=views.take();gpu.device->CreateShaderResourceView(atlasTable.get(),&b,atlasTableView);
+        b.Buffer.NumElements=UINT(unique.size()*9);atlasSHView=views.take();gpu.device->CreateShaderResourceView(atlasSH.get(),&b,atlasSHView);
+        atlasCount=UINT(bindings.size());atlasInfluence=std::any_of(bindings.begin(),bindings.end(),[](const ProbeBinding& b){return b.settings.blendPositive[3]>0;});atlasStamps=std::move(stamps);atlasSettings=std::move(settings);
+    }
     void setSkyIntensity(float intensity){if(!std::isfinite(intensity)||intensity<0)throw std::runtime_error("Sky intensity invalid");skySettings.center[3]=intensity;}
     void begin(const SceneFrame& value){
         endProbe();endShadow();for(const auto& light:lights)if(light.position[3]<3&&light.cone[3]>0&&light.cone[3]+(light.position[3]==1?5:0)>shadows.size())throw std::runtime_error("Shadow light reference invalid");
@@ -316,7 +363,10 @@ public:
         gpu.list->ClearRenderTargetView(color.rtv,frame.clear.data(),0,nullptr);gpu.list->ClearDepthStencilView(depth.dsv,D3D12_CLEAR_FLAG_DEPTH,1,0,0,nullptr);tilesActive=false;uploadFrame();
         cullLights(frame.viewport[2]>0?frame.viewport:std::array<float,4>{0,0,float(width),float(height)});
     }
-    void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const void* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={},const Instances* instances=nullptr,const Deformation* deformation=nullptr,const void* twoD=nullptr,const std::array<ProbeBinding,2>* probeBindings=nullptr){
+    void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const void* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={},const Instances* instances=nullptr,const Deformation* deformation=nullptr,const void* twoD=nullptr,const std::array<ProbeBinding,2>* probeBindings=nullptr,const Matrix* previousWorld=nullptr,float motionFlag=0,const Texture* lightmap=nullptr,bool globalProbes=false){
+        (void)previousWorld;if(motionFlag!=0)throw std::runtime_error("Direct3D12 motion vectors are not ported yet");
+        if(lightmap&&!mesh.uv1.value.p)throw std::runtime_error("Baked lightmap texture or UV1 invalid");
+        if(!std::isfinite(material.lightmapIntensity)||material.lightmapIntensity<0)throw std::runtime_error("Baked lightmap intensity invalid");
         if(twoD)throw std::runtime_error("Direct3D12 2D bindings are not ported yet");
         if(program||!programMaps.empty()||!programSampling.empty())throw std::runtime_error("Direct3D12 material programs are not ported yet");
         if(deformation&&(deformation->vertexCount!=mesh.vertexCount||deformation->current.empty()||(instances&&instances->positionsOnly())))throw std::runtime_error("Deformation draw binding invalid");
@@ -334,6 +384,8 @@ public:
             for(std::size_t j=0;j<3;j++)if(b.settings.minimum[j]>=b.settings.maximum[j])throw std::runtime_error("Probe bounds invalid");
             probeData[i]=b.settings;probeData[i].maximum[3]=float(p.mips-1);bound[i]=&p;probeSampler=true;}}
         const bool sky=skyProbe.ready&&activeShadow<0;if(sky){probeData[2]=skySettings;probeSampler=true;}
+        const bool atlas=globalProbes&&atlasCount&&(!activeProbe||probeIndirect)&&activeShadow<0;
+        if(atlas){probeData[0].blendNegative[3]=atlasInfluence?1.f:0.f;probeData[0].faceScale[3]=float(atlasCount%65536);probeData[1].faceScale[3]=float(atlasCount/65536);probeSampler=true;}
         if(probeSampler&&samplerCount>14)keys[14]=16;
         const auto samplerHandle=samplerCount?samplerTable(keys):D3D12_GPU_DESCRIPTOR_HANDLE{};
         if(uploaded!=gpu.submitted())uploadFrame();
@@ -350,6 +402,8 @@ public:
         const auto copy=[&](UINT slot,D3D12_CPU_DESCRIPTOR_HANDLE h){gpu.device->CopyDescriptorsSimple(1,srvs.cpuAt(slot),h,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);};
         for(UINT i=0;i<2;i++)if(bound[i]){copy(39+i,bound[i]->view);copy(41+i,bound[i]->irradiance);copy(43,brdfView);}
         if(sky){copy(46,skyProbe.view);copy(47,skyProbe.irradiance);copy(43,brdfView);}
+        if(atlas){copy(50,atlasView);copy(51,atlasTableView);copy(52,atlasSHView);copy(43,brdfView);}
+        if(lightmap){copy(49,lightmap->srv);mask|=32768u|(material.lightmapReflectionMix?262144u:0u);}
         const auto& rect=frame.viewport;const bool custom=rect[2]>0&&rect[3]>0;const std::array<float,4> area=custom?rect:std::array<float,4>{0,0,float(width),float(height)};
         Constants data{frame.viewProjection,world,normal,identity,{0,0,0,0},material.color,material.emissive,{material.roughness,material.metalness,material.alphaCutoff,material.unlit?1.f:0.f},frame.eye,frame.ambient,material.uvX,material.uvY,{float(mask),float(lights.size()),material.toneMapped?1.f:0.f,material.sky?2.f:material.vertexColors?1.f:0.f},{material.normalScale[0],material.normalScale[1],frame.exposure,frame.time},frame.fog,frame.fogRange,frame.heightFog,material.skyTop,material.skyHorizon,material.sunDirection,material.sunColor,material.shotShape,material.physical,{material.volume[0],material.volume[1],float(width),float(height)},area,material.absorption,material.sheenColor,material.lobes,material.film,material.specular,material.scatter,material.scatterColor,material.hairTangent,{deformation?deformation->vertexCount:0,deformation?deformation->morphCount:0,deformation?deformation->boneCount:0,0},material.moonDirection,material.moonColor,frame.viewDirection};
         data.shotShape[3]=material.lightmapIntensity;

@@ -1,4 +1,4 @@
-// D3D12 port phases 2, 3-1 and 3-2a: the same scene drawn by SceneRenderer (D3D11) and SceneMeshRenderer (D3D12),
+// D3D12 port phases 2, 3-1 and 3-2: the same scene drawn by SceneRenderer (D3D11) and SceneMeshRenderer (D3D12),
 // compared pixel by pixel on the same driver. Prints one JSON line.
 #include <HBEngine/SceneRenderD3D12.hpp>
 #include <nlohmann/json.hpp>
@@ -89,8 +89,8 @@ struct Extra {
 };
 
 // One scene script for both backends. Returns full, cropped, shadowed and many-light images.
-template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,8> render(R& r,MakeTexture texture){
-    const Scene scene;const Extra extra(scene);const auto d=draws();std::array<std::vector<std::uint8_t>,8> images;
+template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,11> render(R& r,MakeTexture texture){
+    const Scene scene;const Extra extra(scene);const auto d=draws();std::array<std::vector<std::uint8_t>,11> images;
     auto cube=r.createMesh(scene.cube,scene.cubeIndex);auto quad=r.createMesh(scene.quad,scene.quadIndex,scene.quadUV1);auto plain=r.createMesh(scene.quad,scene.quadIndex);
     auto checker=texture(r,8,8,scene.checker,true);auto rough=texture(r,8,8,scene.rough,false);
     auto instances=r.createInstances(4);r.setInstances(instances,extra.instances);auto shots=r.createInstances(4,true);r.setShotPositions(shots,extra.shots);
@@ -123,11 +123,22 @@ template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,
     std::vector<std::uint8_t> panorama;for(int y=0;y<16;y++)for(int x=0;x<32;x++)panorama.insert(panorama.end(),{std::uint8_t(x*8),std::uint8_t(255-y*16),std::uint8_t(120+(x%4)*30),255});
     auto pano=texture(r,32,16,panorama,false);
     for(int with=1;with>=0;with--){r.setSkyEnvironment(with?&pano:nullptr,32,30,1.5f);r.begin(frame(false));r.draw(plain,extra.ground,extra.ground,skinned);r.draw(cube,d.cube,d.cube,chrome);images[with?5:7]=r.readPixels();}
+    // Global probe atlas: the captured probe plus a 16px probe, two overlapping boxes (one with blend influence). Index 9 = without atlas.
+    auto small=r.createProbe(16);r.begin(frame(false));
+    for(UINT f=0;f<6;f++){const std::array<float,3> eye{-1.5f,.5f,1},at{eye[0]+directions[f][0],eye[1]+directions[f][1],eye[2]+directions[f][2]};r.beginProbe(small,f,multiply(lightPerspective(1.5707963f,.1f,20),lookAt(eye,at)),{-1.5f,.5f,1,1},{.6f,.2f,.1f,1});r.draw(cube,d.cube,d.cube,d.lit);r.endProbe();}
+    r.filterProbe(small);std::vector<typename R::ProbeBinding> global(2);global[0].resource=&probe;global[1].resource=&small;global[1].settings.center={-1.5f,.5f,1,1};
+    global[1].settings.minimum={-3,-2,-2,1};global[1].settings.maximum={0,2,3,0};setProbeInfluence(global[1].settings,{.5f,.5f,.5f},{.5f,.5f,.5f});r.setGlobalProbes(global);
+    for(int with=1;with>=0;with--){r.begin(frame(false));r.draw(plain,extra.ground,extra.ground,skinned);r.draw(cube,d.cube,d.cube,chrome,{},{},0,0,nullptr,{},{},nullptr,nullptr,nullptr,nullptr,nullptr,0,nullptr,with==1);images[with?8:9]=r.readPixels();}
+    // Baked lightmap through UV1 with reflection mixing.
+    std::vector<std::uint8_t> baked;for(int y=0;y<4;y++)for(int x=0;x<4;x++)baked.insert(baked.end(),{std::uint8_t(60+x*50),std::uint8_t(200-y*40),std::uint8_t(90),255});
+    auto lightmap=texture(r,4,4,baked,false);SceneMaterial bakedMaterial=skinned;bakedMaterial.lightmapIntensity=1.5f;bakedMaterial.lightmapReflectionMix=true;
+    r.begin(frame(false));r.draw(quad,extra.ground,extra.ground,bakedMaterial,{},{},0,0,nullptr,{},{},nullptr,nullptr,nullptr,nullptr,nullptr,0,&lightmap,true);r.draw(cube,d.cube,d.cube,chrome,{},{},0,0,nullptr,{},{},nullptr,nullptr,nullptr,nullptr,nullptr,0,nullptr,true);images[10]=r.readPixels();
+    r.setGlobalProbes({});
     return images;
 }
 
 static nlohmann::json proof(DeviceDriver driver){
-    nlohmann::json out;std::array<std::vector<std::uint8_t>,8> reference;std::vector<std::uint8_t> unshadowed;
+    nlohmann::json out;std::array<std::vector<std::uint8_t>,11> reference;std::vector<std::uint8_t> unshadowed;
     {Device gpu11(driver);SceneRenderer r(gpu11,W,H);out["software11"]=gpu11.software();
         reference=render(r,[](SceneRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb,false);});
         // Proof the shadow pass matters: same frame with receiveShadow off must differ.
@@ -137,14 +148,15 @@ static nlohmann::json proof(DeviceDriver driver){
     d3d12::Device gpu(driver,true);out["software"]=gpu.software;out["debugLayer"]=gpu.debug;
     {d3d12::SceneMeshRenderer r(gpu,W,H);gpu.begin();
         const auto images=render(r,[](d3d12::SceneMeshRenderer& s,std::uint32_t w,std::uint32_t h,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(w,h,rgba,srgb);});
-        const char* names[]={"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky"};const std::array<float,4> clear=frame(false).clear;
-        for(std::size_t i=0;i<8;i++)out[names[i]]=compare(images[i],reference[i],clear);
+        const char* names[]={"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap"};const std::array<float,4> clear=frame(false).clear;
+        for(std::size_t i=0;i<11;i++)out[names[i]]=compare(images[i],reference[i],clear);
+        out["atlasChangedPixels"]=compare(reference[8],reference[9],clear)["pixelsOver2"];out["lightmapChangedPixels"]=compare(reference[10],reference[8],clear)["pixelsOver2"];
         out["probeChangedPixels"]=compare(reference[4],reference[6],clear)["pixelsOver2"];out["skyChangedPixels"]=compare(reference[5],reference[7],clear)["pixelsOver2"];
         out["shadowChangedPixels"]=compare(reference[2],unshadowed,clear)["pixelsOver2"];
         gpu.end();gpu.waitIdle();}
     out["validationErrors"]=validationErrors(gpu);
-    for(const char* pass:{"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky"}){REQUIRE(out[pass]["covered"].get<std::size_t>()>400);REQUIRE(out[pass]["maxDiff"].get<int>()<=2);}
-    REQUIRE(out["shadowChangedPixels"].get<std::size_t>()>50);REQUIRE(out["probeChangedPixels"].get<std::size_t>()>50);REQUIRE(out["skyChangedPixels"].get<std::size_t>()>50);REQUIRE(out["validationErrors"]==0);return out;
+    for(const char* pass:{"full","cropped","shadowed","manyLights","probe","sky","noProbe","noSky","atlas","noAtlas","lightmap"}){REQUIRE(out[pass]["covered"].get<std::size_t>()>400);REQUIRE(out[pass]["maxDiff"].get<int>()<=2);}
+    REQUIRE(out["shadowChangedPixels"].get<std::size_t>()>50);REQUIRE(out["probeChangedPixels"].get<std::size_t>()>50);REQUIRE(out["skyChangedPixels"].get<std::size_t>()>50);REQUIRE(out["atlasChangedPixels"].get<std::size_t>()>50);REQUIRE(out["lightmapChangedPixels"].get<std::size_t>()>50);REQUIRE(out["validationErrors"]==0);return out;
 }
 
 int main(){

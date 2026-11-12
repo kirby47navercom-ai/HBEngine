@@ -5,8 +5,11 @@
 #include <unordered_map>
 
 namespace hb::gpu {
+namespace d3d12{class SceneMeshRenderer;}
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 class SceneProbeAtlas {
+    // The D3D12 port reuses the packing, record layout and padding kernel.
+    friend class d3d12::SceneMeshRenderer;
     struct Rect {UINT x=0,y=0,width=0,height=0;};
     struct Record {ProbeSettings settings;std::array<float,4> region;};
     static_assert(sizeof(Record)==320,"Probe atlas record layout");
@@ -15,7 +18,7 @@ class SceneProbeAtlas {
     void preparePadding(){if(padding.p)return;detail::ShaderBytecodeCompiler::create(probeAtlasPaddingSource,"HBProbeAtlasPadding","Fill","cs_5_0",[&](const void* bytes,std::size_t size){std::lock_guard<std::mutex> lock(gpu.mutex);return gpu.device->CreateComputeShader(bytes,size,nullptr,&padding.p);});std::lock_guard<std::mutex> lock(gpu.mutex);D3D11_BUFFER_DESC d{};d.ByteWidth=32;d.Usage=D3D11_USAGE_DEFAULT;d.BindFlags=D3D11_BIND_CONSTANT_BUFFER;detail::check(gpu.device->CreateBuffer(&d,nullptr,&paddingConstants.p),"Probe atlas padding constants");}
     detail::Com<ID3D11Texture2D> image;detail::Com<ID3D11ShaderResourceView> view,metadata,irradiance;detail::Com<ID3D11Buffer> recordsBuffer,shBuffer;
     std::vector<Rect> regions;std::vector<UINT> sourceIndices;std::vector<Stamp> captureStamps;std::vector<Record> records;ProbeSpatialIndex spatial;std::size_t tableRecords=0,shCount=0,influenceCount=0;UINT width=0,height=0;std::uint64_t copies_=0,uploads_=0,metadataBytes_=0,metadataCalls_=0,metadataFastUpdates_=0,layoutBuilds_=0;
-    static std::vector<Rect> layout(const std::vector<SceneProbeBinding>& bindings,UINT& width,UINT& height){
+    template<class Binding> static std::vector<Rect> layout(const std::vector<Binding>& bindings,UINT& width,UINT& height){
         constexpr UINT maximum=D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION;std::vector<std::size_t> order;UINT minimum=0;std::uint64_t sum=0;for(std::size_t i=0;i<bindings.size();i++){order.push_back(i);minimum=std::max(minimum,(bindings[i].resource->size+2)*6);sum+=(bindings[i].resource->size+2)*6;}
         std::stable_sort(order.begin(),order.end(),[&](auto a,auto b){return bindings[a].resource->size>bindings[b].resource->size;});std::vector<UINT> widths{minimum,maximum,UINT(std::min<std::uint64_t>(sum,maximum))};for(UINT n=1;n<maximum;n*=2)if(n>=minimum)widths.push_back(n);std::vector<Rect> best;
         for(const auto candidate:widths){UINT x=0,y=0,row=0;bool fits=true;std::vector<Rect> packed(bindings.size());for(auto i:order){const auto size=bindings[i].resource->size,w=(size+2)*6,h=size*2-1+2*bindings[i].resource->mips;if(w>candidate){fits=false;break;}if(x+w>candidate){x=0;y+=row;row=0;}if(y+h>maximum){fits=false;break;}packed[i]={x,y,w,h};x+=w;row=std::max(row,h);}const auto used=y+row;if(!fits||used>maximum)continue;if(best.empty()||std::uint64_t(candidate)*used<std::uint64_t(width)*height){best=std::move(packed);width=candidate;height=used;}}
