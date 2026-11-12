@@ -53,13 +53,13 @@ class Device {
         // WARP JIT-compiles shaders on the GPU timeline at first draw; large scene shaders take seconds.
         if(WaitForSingleObject(event,software?120000:10000)!=WAIT_OBJECT_0)throw std::runtime_error("Direct3D12 frame fence timeout");
     }
+    static D3D12_RESOURCE_DESC bufferDesc(std::uint64_t size){D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_BUFFER;d.Width=size;d.Height=1;d.DepthOrArraySize=1;d.MipLevels=1;d.SampleDesc.Count=1;d.Layout=D3D12_TEXTURE_LAYOUT_ROW_MAJOR;return d;}
+    void requireRecording()const{if(!recording)throw std::runtime_error("Direct3D12 work recorded outside begin/end");}
+public:
     Com<ID3D12Resource> committed(D3D12_HEAP_TYPE heapType,const D3D12_RESOURCE_DESC& desc,D3D12_RESOURCE_STATES state,const D3D12_CLEAR_VALUE* clear,const char* action){
         D3D12_HEAP_PROPERTIES heap{};heap.Type=heapType;Com<ID3D12Resource> out;
         check(device->CreateCommittedResource(&heap,D3D12_HEAP_FLAG_NONE,&desc,state,clear,__uuidof(ID3D12Resource),reinterpret_cast<void**>(&out.p)),action);return out;
     }
-    static D3D12_RESOURCE_DESC bufferDesc(std::uint64_t size){D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_BUFFER;d.Width=size;d.Height=1;d.DepthOrArraySize=1;d.MipLevels=1;d.SampleDesc.Count=1;d.Layout=D3D12_TEXTURE_LAYOUT_ROW_MAJOR;return d;}
-    void requireRecording()const{if(!recording)throw std::runtime_error("Direct3D12 work recorded outside begin/end");}
-public:
     Com<IDXGIFactory4> factory;Com<ID3D12Device> device;Com<ID3D12CommandQueue> queue;Com<ID3D12Fence> fence;Com<ID3D12GraphicsCommandList> list;
     // Shader-visible sampler heap; callers own its slot allocation (SceneMeshRenderer caches tables).
     Com<ID3D12DescriptorHeap> samplers;UINT samplerStride=0;
@@ -144,6 +144,15 @@ public:
         if(data){auto u=upload(size,4);std::memcpy(u.cpu,data,size);transition(b,D3D12_RESOURCE_STATE_COPY_DEST);list->CopyBufferRegion(b.get(),0,u.resource,u.offset,size);}
         transition(b,finalState);return b;
     }
+    // In-place buffer update ordered on the queue (like D3D11 UpdateSubresource): earlier draws read the old bytes.
+    void update(Buffer& b,const void* data,std::uint64_t size,std::uint64_t offset=0){
+        if(!size){return;}
+        if(offset+size>b.size)throw std::runtime_error("Direct3D12 buffer update out of range");
+        auto u=upload(size,4);std::memcpy(u.cpu,data,size);const auto restore=b.state;transition(b,D3D12_RESOURCE_STATE_COPY_DEST);list->CopyBufferRegion(b.get(),offset,u.resource,u.offset,size);transition(b,restore);
+    }
+    Buffer buffer(std::uint64_t size,D3D12_RESOURCE_STATES state,D3D12_RESOURCE_FLAGS flags){
+        auto d=bufferDesc(size);d.Flags=flags;Buffer b;b.size=size;b.value=committed(D3D12_HEAP_TYPE_DEFAULT,d,state,nullptr,"Direct3D12 buffer");b.state=state;return b;
+    }
     Texture renderTarget(UINT width,UINT height,DXGI_FORMAT format,std::array<float,4> clear={0,0,0,1}){
         if(!width||!height)throw std::runtime_error("Direct3D12 render target size");
         D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=width;d.Height=height;d.DepthOrArraySize=1;d.MipLevels=1;d.Format=format;d.SampleDesc.Count=1;d.Flags=D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;
@@ -183,6 +192,10 @@ public:
     }
     Com<ID3D12PipelineState> pipeline(D3D12_GRAPHICS_PIPELINE_STATE_DESC desc){
         Com<ID3D12PipelineState> out;check(device->CreateGraphicsPipelineState(&desc,__uuidof(ID3D12PipelineState),reinterpret_cast<void**>(&out.p)),"Direct3D12 graphics pipeline");return out;
+    }
+    Com<ID3D12PipelineState> computePipeline(ID3D12RootSignature* root,const std::vector<unsigned char>& cs){
+        D3D12_COMPUTE_PIPELINE_STATE_DESC d{};d.pRootSignature=root;d.CS={cs.data(),cs.size()};Com<ID3D12PipelineState> out;
+        check(device->CreateComputePipelineState(&d,__uuidof(ID3D12PipelineState),reinterpret_cast<void**>(&out.p)),"Direct3D12 compute pipeline");return out;
     }
     static D3D12_GRAPHICS_PIPELINE_STATE_DESC defaults(ID3D12RootSignature* root,const std::vector<unsigned char>& vs,const std::vector<unsigned char>& ps,DXGI_FORMAT color,DXGI_FORMAT depth=DXGI_FORMAT_UNKNOWN){
         D3D12_GRAPHICS_PIPELINE_STATE_DESC d{};d.pRootSignature=root;d.VS={vs.data(),vs.size()};d.PS={ps.data(),ps.size()};

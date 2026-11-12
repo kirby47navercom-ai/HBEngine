@@ -1,4 +1,4 @@
-// D3D12 port phase 2: the same scene drawn by SceneRenderer (D3D11) and SceneMeshRenderer (D3D12),
+// D3D12 port phases 2 and 3-1: the same scene drawn by SceneRenderer (D3D11) and SceneMeshRenderer (D3D12),
 // compared pixel by pixel on the same driver. Prints one JSON line.
 #include <HBEngine/SceneRenderD3D12.hpp>
 #include <nlohmann/json.hpp>
@@ -61,31 +61,77 @@ static std::size_t validationErrors(d3d12::Device& gpu){
     return errors;
 }
 
+static Matrix lookAt(std::array<float,3> eye,std::array<float,3> target){
+    auto sub=[](auto a,auto b){return std::array<float,3>{a[0]-b[0],a[1]-b[1],a[2]-b[2]};};auto norm=[](auto v){const float l=std::sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);return std::array<float,3>{v[0]/l,v[1]/l,v[2]/l};};
+    auto cross=[](auto a,auto b){return std::array<float,3>{a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]};};auto dot=[](auto a,auto b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];};
+    const auto z=norm(sub(eye,target)),x=norm(cross(std::array<float,3>{0,1,.01f},z)),y=cross(z,x);
+    Matrix m=identity;for(int i=0;i<3;i++){m[i*4]=x[i];m[i*4+1]=y[i];m[i*4+2]=z[i];}m[12]=-dot(x,eye);m[13]=-dot(y,eye);m[14]=-dot(z,eye);return m;
+}
+static Matrix ortho(float size,float n,float f){Matrix p=identity;p[0]=p[5]=1/size;p[10]=1/(n-f);p[14]=n/(n-f);return p;}
+static Matrix lightPerspective(float fov,float n,float f){const float s=1/std::tan(fov/2);Matrix p{};p[0]=p[5]=s;p[10]=f/(n-f);p[11]=-1;p[14]=n*f/(n-f);return p;}
+
+// Phase 3-1 content: instancing, shot positions, skin+morph, shadow maps, light tiles.
+struct Extra {
+    std::vector<SceneInstance> instances;std::vector<std::array<float,4>> shots{{-1.2f,-.9f,.5f,0},{-.9f,-1.1f,.6f,0},{-1.4f,-1.2f,.4f,0}};
+    std::vector<SceneSkin> skin;std::vector<SceneMorph> morph;std::vector<Matrix> bones;std::vector<SceneShadow> shadows;std::vector<SceneLight> shadowLights,manyLights;Matrix ground;
+    Extra(const Scene& scene){
+        for(int i=0;i<3;i++){SceneInstance s;s.world=translate(rotation(.3f*i,.2f),-1.3f+1.3f*i,1.1f,-.5f);for(int k=0;k<3;k++)for(int j=0;j<3;j++)s.world[k*4+j]*=.35f;if(i==2)for(int j=0;j<3;j++)s.world[j]*=-1;s.normal=s.world;s.color={.6f+.2f*i,.9f-.2f*i,.7f,1};instances.push_back(s);}
+        for(std::size_t v=0;v<scene.quad.size();v++){SceneSkin k;k.joints={v<2?0u:1u,1,0,0};k.weights={.8f,.2f,0,0};skin.push_back(k);SceneMorph m;m.position={0,.2f*float(v%2),.1f,0};m.normal={0,0,0,0};m.color={.2f,-.2f,0,0};morph.push_back(m);}
+        bones={identity,translate(rotation(.4f,.1f),.1f,.2f,0)};
+        SceneLight sun;sun.position={0,0,0,0};sun.direction={-.3f,-1,-.4f,0};sun.color={1,.95f,.9f,3};sun.cone={1,0,2,1};
+        SceneLight spot;spot.position={1.5f,2.2f,1.5f,2};spot.direction={-.5f,-.8f,-.5f,12};spot.color={1,.5f,.3f,14};spot.cone={.8f,.93f,2,2};
+        shadowLights={sun,spot};
+        SceneShadow a;a.viewProjection=multiply(ortho(2.6f,.1f,12),lookAt({1.8f,6,2.4f},{0,0,0}));a.parameters={-.0005f,.02f,1,1};a.size={128,128,0,0};
+        SceneShadow b;b.viewProjection=multiply(lightPerspective(1.3f,.2f,15),lookAt({1.5f,2.2f,1.5f},{0,0,0}));b.parameters={-.0005f,.02f,0,.8f};b.size={96,96,0,0};shadows={a,b};
+        for(int i=0;i<20;i++){SceneLight l;l.position={-1.8f+.19f*i,-.85f+.05f*(i%4),.6f-.12f*(i%5),1};l.direction={0,0,0,.9f};l.color={float(i%3==0),float(i%3==1),float(i%3==2),3};manyLights.push_back(l);}
+        ground=identity;ground[0]=3;ground[5]=0;ground[6]=-3;ground[9]=3;ground[10]=0;ground[13]=-.9f;
+    }
+};
+
+// One scene script for both backends. Returns full, cropped, shadowed and many-light images.
+template<class R,class MakeTexture> static std::array<std::vector<std::uint8_t>,4> render(R& r,MakeTexture texture){
+    const Scene scene;const Extra extra(scene);const auto d=draws();std::array<std::vector<std::uint8_t>,4> images;
+    auto cube=r.createMesh(scene.cube,scene.cubeIndex);auto quad=r.createMesh(scene.quad,scene.quadIndex,scene.quadUV1);auto plain=r.createMesh(scene.quad,scene.quadIndex);
+    auto checker=texture(r,scene.checker,true);auto rough=texture(r,scene.rough,false);
+    auto instances=r.createInstances(4);r.setInstances(instances,extra.instances);auto shots=r.createInstances(4,true);r.setShotPositions(shots,extra.shots);
+    auto deformation=r.createDeformation(UINT(scene.quad.size()),2,1,extra.skin,extra.morph);r.setPose(deformation,extra.bones,{.6f});
+    SceneMaterial shot=d.lit;shot.vertexColors=false;shot.shotShape={.15f,.15f,0,0};SceneMaterial skinned=d.lit;skinned.color={.9f,.8f,.6f,1};
+    r.setLights(scene.lights);
+    for(int pass=0;pass<2;pass++){r.begin(frame(pass==1));
+        r.draw(cube,d.cube,d.cube,d.lit,{&checker,nullptr,&rough,nullptr,nullptr,nullptr},{0,0,1,0,0,0});
+        r.draw(quad,d.glass,d.glass,d.alpha,{&checker,nullptr,nullptr,nullptr,nullptr,nullptr},{4,0,0,0,0,0});
+        r.draw(quad,d.mirrored,d.mirrored,d.additive);
+        r.draw(cube,identity,identity,d.lit,{},{},0,0,nullptr,{},{},&instances);
+        r.draw(plain,identity,identity,shot,{},{},0,0,nullptr,{},{},&shots);
+        r.draw(plain,translate(identity,1.1f,-.9f,.8f),identity,skinned,{},{},0,0,nullptr,{},{},nullptr,&deformation);
+        images[pass]=r.readPixels();}
+    // Shadows: directional (layer 0) and spot (layer 1) cast by the cube and instances onto a ground plane.
+    r.setShadows(extra.shadows);r.setLights(extra.shadowLights);r.begin(frame(false));
+    for(std::size_t layer=0;layer<2;layer++){r.beginShadow(layer);r.draw(cube,d.cube,d.cube,d.lit);r.draw(cube,identity,identity,d.lit,{},{},0,0,nullptr,{},{},&instances);r.endShadow();}
+    r.draw(plain,extra.ground,extra.ground,skinned);r.draw(cube,d.cube,d.cube,d.lit);images[2]=r.readPixels();
+    // 20 point lights: light tiles active (>=16 lights).
+    r.setShadows({});r.setLights(extra.manyLights);r.begin(frame(false));r.draw(plain,extra.ground,extra.ground,skinned);r.draw(cube,d.cube,d.cube,d.lit);images[3]=r.readPixels();
+    return images;
+}
+
 static nlohmann::json proof(DeviceDriver driver){
-    const Scene scene;const auto d=draws();nlohmann::json out;
-    // D3D11 reference.
-    std::array<std::vector<std::uint8_t>,2> reference;
+    nlohmann::json out;std::array<std::vector<std::uint8_t>,4> reference;std::vector<std::uint8_t> unshadowed;
     {Device gpu11(driver);SceneRenderer r(gpu11,W,H);out["software11"]=gpu11.software();
-        auto cube=r.createMesh(scene.cube,scene.cubeIndex);auto quad=r.createMesh(scene.quad,scene.quadIndex,scene.quadUV1);
-        auto checker=r.createTexture(8,8,scene.checker,true,false);auto rough=r.createTexture(8,8,scene.rough,false,false);r.setLights(scene.lights);
-        for(int pass=0;pass<2;pass++){r.begin(frame(pass==1));
-            r.draw(cube,d.cube,d.cube,d.lit,{&checker,nullptr,&rough,nullptr,nullptr,nullptr},{0,0,1,0,0,0});
-            r.draw(quad,d.glass,d.glass,d.alpha,{&checker,nullptr,nullptr,nullptr,nullptr,nullptr},{4,0,0,0,0,0});
-            r.draw(quad,d.mirrored,d.mirrored,d.additive);reference[pass]=r.readPixels();}}
-    // D3D12.
+        reference=render(r,[](SceneRenderer& s,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(8,8,rgba,srgb,false);});
+        // Proof the shadow pass matters: same frame with receiveShadow off must differ.
+        const Scene scene;const Extra extra(scene);const auto d=draws();auto cube=r.createMesh(scene.cube,scene.cubeIndex);auto plain=r.createMesh(scene.quad,scene.quadIndex);
+        r.setShadows(extra.shadows);r.setLights(extra.shadowLights);r.begin(frame(false));SceneMaterial m=d.lit;m.receiveShadow=false;m.color={.9f,.8f,.6f,1};
+        r.draw(plain,extra.ground,extra.ground,m);auto lit=d.lit;lit.receiveShadow=false;r.draw(cube,d.cube,d.cube,lit);unshadowed=r.readPixels();}
     d3d12::Device gpu(driver,true);out["software"]=gpu.software;out["debugLayer"]=gpu.debug;
     {d3d12::SceneMeshRenderer r(gpu,W,H);gpu.begin();
-        auto cube=r.createMesh(scene.cube,scene.cubeIndex);auto quad=r.createMesh(scene.quad,scene.quadIndex,scene.quadUV1);
-        auto checker=r.createTexture(8,8,scene.checker,true);auto rough=r.createTexture(8,8,scene.rough,false);r.setLights(scene.lights);
-        for(int pass=0;pass<2;pass++){r.begin(frame(pass==1));
-            r.draw(cube,d.cube,d.cube,d.lit,{&checker,nullptr,&rough,nullptr,nullptr,nullptr},{0,0,1,0,0,0});
-            r.draw(quad,d.glass,d.glass,d.alpha,{&checker,nullptr,nullptr,nullptr,nullptr,nullptr},{4,0,0,0,0,0});
-            r.draw(quad,d.mirrored,d.mirrored,d.additive);
-            const auto result=compare(r.readPixels(),reference[pass],frame(pass==1).clear);out[pass?"cropped":"full"]=result;}
-        r.release(checker);r.release(rough);r.release(cube);r.release(quad);gpu.end();gpu.waitIdle();}
+        const auto images=render(r,[](d3d12::SceneMeshRenderer& s,const std::vector<std::uint8_t>& rgba,bool srgb){return s.createTexture(8,8,rgba,srgb);});
+        const char* names[]={"full","cropped","shadowed","manyLights"};const std::array<float,4> clear=frame(false).clear;
+        for(std::size_t i=0;i<4;i++)out[names[i]]=compare(images[i],reference[i],clear);
+        out["shadowChangedPixels"]=compare(reference[2],unshadowed,clear)["pixelsOver2"];
+        gpu.end();gpu.waitIdle();}
     out["validationErrors"]=validationErrors(gpu);
-    for(const char* pass:{"full","cropped"}){REQUIRE(out[pass]["covered"].get<std::size_t>()>400);REQUIRE(out[pass]["maxDiff"].get<int>()<=2);}
-    REQUIRE(out["validationErrors"]==0);return out;
+    for(const char* pass:{"full","cropped","shadowed","manyLights"}){REQUIRE(out[pass]["covered"].get<std::size_t>()>400);REQUIRE(out[pass]["maxDiff"].get<int>()<=2);}
+    REQUIRE(out["shadowChangedPixels"].get<std::size_t>()>50);REQUIRE(out["validationErrors"]==0);return out;
 }
 
 int main(){

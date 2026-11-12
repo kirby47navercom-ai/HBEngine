@@ -4,8 +4,11 @@
 
 namespace hb::gpu {
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
+namespace d3d12{class SceneMeshRenderer;}
 // One bit per light per 16px tile. No per-tile list capacity or dropped lights.
 class SceneLightTiles {
+    // The D3D12 port dispatches this same culling shader.
+    friend class d3d12::SceneMeshRenderer;
     Device& gpu;
     detail::Com<ID3D11ComputeShader> shader;
     detail::Com<ID3D11Buffer> bits,constants;
