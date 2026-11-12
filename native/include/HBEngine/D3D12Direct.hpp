@@ -43,6 +43,8 @@ public:
 class Device {
     struct Frame {Com<ID3D12CommandAllocator> allocator;std::uint64_t fence=0;std::vector<Com<ID3D12Resource>> retired;std::vector<Com<IUnknown>> objects;};
     HANDLE event=nullptr;std::array<Frame,FrameCount> frames;UINT frame=0;std::uint64_t serial=0;bool recording=false;
+    // Frame tickets: begin() numbers each recording; end() remembers the fence value that completes it.
+    std::uint64_t recordingId=0;std::vector<std::pair<std::uint64_t,std::uint64_t>> submittedTickets;
     // Upload ring: one persistently mapped slice per frame in flight. Requests that do
     // not fit get their own buffer, released once that frame's fence passes.
     Com<ID3D12Resource> ring;unsigned char* ringCPU=nullptr;std::uint64_t slice=0,used=0;
@@ -103,17 +105,21 @@ public:
 
     UINT frameIndex()const{return frame;}
     bool isRecording()const{return recording;}
+    // Ticket of the frame being recorded; ticketDone() turns true once that frame was submitted and its fence passed.
+    std::uint64_t ticket()const{requireRecording();return recordingId;}
+    bool ticketDone(std::uint64_t id)const{for(const auto& t:submittedTickets)if(t.first==id)return fence->GetCompletedValue()>=t.second;return !submittedTickets.empty()&&id<submittedTickets.front().first;}
     std::uint64_t submitted()const{return serial;}
     void begin(){
         if(recording)throw std::runtime_error("Direct3D12 frame already recording");
         auto& f=frames[frame];wait(f.fence);f.retired.clear();f.objects.clear();used=0;shaderUsed=0;
         check(f.allocator->Reset(),"Direct3D12 command allocator reset");check(list->Reset(f.allocator.p,nullptr),"Direct3D12 command list reset");
-        ID3D12DescriptorHeap* heaps[]={shaderHeap.p,samplers.p};list->SetDescriptorHeaps(2,heaps);recording=true;
+        ID3D12DescriptorHeap* heaps[]={shaderHeap.p,samplers.p};list->SetDescriptorHeaps(2,heaps);recording=true;++recordingId;
     }
     void end(){
         requireRecording();check(list->Close(),"Direct3D12 command list close");recording=false;
         ID3D12CommandList* lists[]={list.p};queue->ExecuteCommandLists(1,lists);
         frames[frame].fence=++serial;check(queue->Signal(fence.p,serial),"Direct3D12 frame signal");frame=(frame+1)%FrameCount;
+        submittedTickets.emplace_back(recordingId,serial);if(submittedTickets.size()>64)submittedTickets.erase(submittedTickets.begin());
     }
     void waitIdle(){if(!queue.p)return;check(queue->Signal(fence.p,++serial),"Direct3D12 idle signal");wait(serial);}
 

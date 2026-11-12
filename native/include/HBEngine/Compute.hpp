@@ -200,11 +200,12 @@ public:
 
 // Persistent GPU state. step() dispatches without reading particle positions back.
 // read() is explicit because CPU readback waits for the GPU and copies the buffer.
-namespace d3d12{class SceneMeshRenderer;}
+namespace d3d12{class SceneMeshRenderer;class Particles;}
 class Particles {
     friend class ParticleRenderer;
     // The D3D12 port shares the record validation and the step/clear kernels.
     friend class d3d12::SceneMeshRenderer;
+    friend class d3d12::Particles;
     friend class ParticleEffect;
     Device& device;Kernel kernel;Buffer buffer;std::optional<FrameResources> frames;
     std::optional<Kernel> freeKernel,emitKernel,clearKernel,interactionKernel,eventKernel;

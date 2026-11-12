@@ -14,9 +14,10 @@
    - **3-3b 화면 효과·Hi-Z·MRT·모션 벡터 (완료)**
    - **3-4a 머테리얼 노드 프로그램·동적 메시·뷰포트 클리어 (완료)**
    - **3-4b 2D 패스·렌더 타겟 텍스처 (완료)**
-   - **3-4c 파티클 그리기·기본 시뮬레이션 (완료, emit/interact는 남음)**
+   - **3-4c 파티클 그리기·시뮬레이션 전체 (완료)**
 4. 엔진 연결·성능 비교 후 기본값 전환
    - **4-0 전환 준비 (완료)**: 렌더러 쪽 빈 API 채우기, 지연 해제 안전성
+   - **4-0b 파티클 시뮬레이션 이전 (완료)**
    - 4-1 `SceneRenderBridge` 연결(다른 세션의 멀티 카메라 작업 커밋 후)
    - 4-2 실제 게임 FPS·GPU 시간 비교, 기본값 전환
 
@@ -151,8 +152,18 @@ DX11 회귀: `check-native-scene-render --post-only`를 수정 전·후 헤더�
 ### 연결 전에 남은 차이 (브리지 기준 115개 중)
 
 - 이름 차이: `width()/height()` → 지금은 `renderWidth()/renderHeight()`(멤버 이름 충돌). 연결 때 정리해요.
-- 장치 차이: 브리지는 `hb::gpu::Device`(DX11 컴퓨트 겸용)와 `hb::gpu::Particles`를 써요. D3D12 렌더러는 `d3d12::Device`와 자체 파티클 버퍼를 써서, 파티클 방출·상호작용·읽기와 다른 DX11 컴퓨트 사용처를 먼저 옮기거나 두 장치를 함께 둘 방식을 정해야 해요.
+- 장치 차이: 브리지는 `hb::gpu::Device`와 `hb::gpu::Particles`를 써요. 파티클은 같은 API의 `d3d12::Particles`(아래)로 바꿔 끼우면 되고, 브리지의 다른 DX11 컴퓨트 직접 사용은 없어요(`device->backend()/software()` 표시만).
 - 멀티 카메라: HEAD의 `selectCameraView/cameraViewBytes`는 다른 세션이 바꾸는 중이라 그 결과에 맞춰 옮겨요.
 - 통계·진단 함수 약 60개(`bloom*`, `probeAtlas*`, `shadow*`, `particle*`, `*PreparationInfo`, `constantBufferStats`, `shaderDiskCacheInfo` 등)는 아직 없어요. 비동기 셰이더 준비(`pollShaderPreparation` 등)는 D3D12에서 동기 컴파일이라 즉시 준비됨으로 연결해요.
 
 검증: `check-native-d3d12-scene` 41장면(명시적 밉+영역 패치, 레이 씬 행 갱신→지오메트리 GI 추가) 실제 GPU·WARP 모두 DX11 대비 픽셀 최대 차이 0, 디버그 레이어 오류 0. 숨긴 창에서 렌더러 자기 관리 프레임 6회 표시(3번째 뒤 80×60로 크기 변경), GPU 시간 측정값 확인.
+
+## 4-0b단계 파티클 시뮬레이션 이전
+
+- `native/include/HBEngine/D3D12Particles.hpp`의 `d3d12::Particles`: `hb::gpu::Particles`와 같은 공개 API(`Preparation/prepare`, 생성자 4종, `step`, `interact`, `resetEvents`, `pollEvents`, `eventCapacity`, `droppedEventFrames`, `emit`, `clear`, `reset`, `read`, `enqueueReadback/pollReadback/pendingReadbacks`, `count`, `revision`, `identityId`, `storageBytes`, `emissionBufferAllocations`).
+- 같은 레코드 검증과 커널(`source` Main/Clear, `freeSource`, `emitSource`, `particleInteractionSource` 이벤트 0/1)을 하나의 루트(b0, t0~t2, u0~u1)로 실행해요. 빈 슬롯 스캔은 UAV 카운터 append, 개수는 `Buffer<uint>` 타입 버퍼로 복사해요.
+- 읽기 링 3칸: 기록 중 프레임의 티켓(`Device::ticket`)을 저장하고 그 프레임 펜스가 지나면(`ticketDone`) 맵해요. 링이 차면 DX11처럼 거부하고 이벤트는 `droppedEventFrames`를 늘려요.
+- 단순화: `Preparation`은 동기 컴파일(공유 바이트코드 캐시), 커널 PSO를 같은 장치의 풀들이 공유해요.
+- 장면 렌더러는 `drawParticles(const d3d12::Particles&)`로 같은 버퍼를 그려요.
+
+검증: `node tools/check-native-d3d12-particles.mjs` — 같은 명령 순서(진행, 40개 방출, 평면 반사+충돌 이벤트, 소멸+사망 이벤트, 읽기 링 3칸 채움·4번째 거부, 클리어, 리셋)를 DX11과 D3D12에서 실행해 살아있는 레코드와 이벤트를 정렬 비교했어요(빈 슬롯·이벤트 순서는 GPU 순서라 비교하지 않음). 실제 GPU·WARP 모두 상태 최대 차이 0, 충돌·사망 이벤트 각 210개 일치, 방출 뒤 살아있는 입자 정확히 +40, 디버그 레이어 오류 0.
