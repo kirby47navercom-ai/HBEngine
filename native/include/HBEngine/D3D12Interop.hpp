@@ -1,6 +1,11 @@
 #pragma once
 #include "ComputePlatform.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
+// MinGW returns small structs in registers unless asked; D3D12 methods such as
+// GetCPUDescriptorHandleForHeapStart use the MSVC hidden-pointer ABI.
+#ifndef WIDL_EXPLICIT_AGGREGATE_RETURNS
+#define WIDL_EXPLICIT_AGGREGATE_RETURNS
+#endif
 #include <d3d12.h>
 #include <d3d11on12.h>
 #include <dxgi1_4.h>
