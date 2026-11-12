@@ -50,7 +50,8 @@ class Device {
     void wait(std::uint64_t value){
         if(!value||fence->GetCompletedValue()>=value)return;
         check(fence->SetEventOnCompletion(value,event),"Direct3D12 frame fence event");
-        if(WaitForSingleObject(event,10000)!=WAIT_OBJECT_0)throw std::runtime_error("Direct3D12 frame fence timeout");
+        // WARP JIT-compiles shaders on the GPU timeline at first draw; large scene shaders take seconds.
+        if(WaitForSingleObject(event,software?120000:10000)!=WAIT_OBJECT_0)throw std::runtime_error("Direct3D12 frame fence timeout");
     }
     Com<ID3D12Resource> committed(D3D12_HEAP_TYPE heapType,const D3D12_RESOURCE_DESC& desc,D3D12_RESOURCE_STATES state,const D3D12_CLEAR_VALUE* clear,const char* action){
         D3D12_HEAP_PROPERTIES heap{};heap.Type=heapType;Com<ID3D12Resource> out;

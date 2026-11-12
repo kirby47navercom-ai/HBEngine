@@ -88,12 +88,10 @@ static nlohmann::json proof(DeviceDriver driver){
     REQUIRE(out["validationErrors"]==0);return out;
 }
 
-// --warp also runs WARP. Open issue: D3D12 WARP never finishes the lit draw without vertex
-// colors (fence timeout) while D3D11 WARP renders it, so WARP is opt-in until that is fixed.
-int main(int argc,char** argv){
-    try{SetErrorMode(SEM_FAILCRITICALERRORS|SEM_NOGPFAULTERRORBOX);nlohmann::json result;const bool warp=argc>1&&std::string(argv[1])=="--warp";
+int main(){
+    try{SetErrorMode(SEM_FAILCRITICALERRORS|SEM_NOGPFAULTERRORBOX);nlohmann::json result;
         try{result["hardware"]=proof(DeviceDriver::Hardware);}catch(const std::exception& e){result["hardware"]["error"]=e.what();}
-        if(warp){try{result["software"]=proof(DeviceDriver::Software);}catch(const std::exception& e){result["software"]["error"]=e.what();}}
-        result["passed"]=!result["hardware"].contains("error")&&(!warp||!result["software"].contains("error"));std::cout<<result.dump()<<std::endl;return result["passed"]?0:1;
+        try{result["software"]=proof(DeviceDriver::Software);}catch(const std::exception& e){result["software"]["error"]=e.what();}
+        result["passed"]=!result["hardware"].contains("error")&&!result["software"].contains("error");std::cout<<result.dump()<<std::endl;return result["passed"]?0:1;
     }catch(const std::exception& e){nlohmann::json failed;failed["passed"]=false;failed["error"]=e.what();std::cout<<failed.dump()<<std::endl;return 1;}
 }

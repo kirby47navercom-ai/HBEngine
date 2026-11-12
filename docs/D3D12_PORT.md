@@ -5,7 +5,7 @@
 ## 단계
 
 1. **코어 (완료)** — `native/include/HBEngine/D3D12Direct.hpp`
-2. **기본 메시·머테리얼 (실제 GPU 완료, WARP 미해결)** — `native/include/HBEngine/SceneRenderD3D12.hpp`
+2. **기본 메시·머테리얼 (완료)** — `native/include/HBEngine/SceneRenderD3D12.hpp`
 3. 그림자·라이트 타일·프로브·블룸·후처리·컴퓨트 이전
 4. 성능 비교 후 기본값 전환
 
@@ -35,6 +35,11 @@
 
 ## 2단계 검증
 
-`node tools/check-native-d3d12-scene.mjs` — 같은 장면(조명 큐브+텍스처 2장, 반투명 사각형, 거울 가산 사각형; 전체 화면과 뷰포트·가위 2회)을 DX11과 D3D12로 그려 실제 GPU에서 픽셀 최대 차이 0, 디버그 레이어 오류 0을 확인했어요.
+`node tools/check-native-d3d12-scene.mjs` — 같은 장면(조명 큐브+텍스처 2장, 반투명 사각형, 거울 가산 사각형; 전체 화면과 뷰포트·가위 2회)을 DX11과 D3D12로 그려 실제 GPU와 WARP 모두 픽셀 최대 차이 0, 디버그 레이어 오류 0을 확인했어요.
 
-**미해결:** D3D12 WARP에서는 조명을 받고 정점 색을 쓰지 않는 그리기가 끝나지 않아요(펜스 시간 초과). 같은 그리기가 DX11 WARP와 실제 GPU D3D12에서는 정상이에요. 원인 미확정이라 WARP 대조는 `--warp`로만 실행하고, 이 문제가 풀리기 전에는 기본값을 D3D12로 바꾸지 않아요.
+### WARP 멈춤 해결
+
+- 증상: D3D12 WARP에서 조명 그리기의 첫 펜스가 끝나지 않음(9분 이상).
+- 원인: WARP는 셰이더를 첫 그리기 때 GPU 타임라인에서 JIT 컴파일해요. 투과 분산 계산이 `[unroll]` 3채널 + 일반 경로로 `refractedBackground`(프로브 아틀라스 탐색 포함)를 네 번 인라인해서 JIT 시간이 폭증했어요. 무한 루프는 아니었어요(구간별 조기 반환·치환으로 확인).
+- 수정: 채널 수(1 또는 3)만큼 도는 `[loop]` 하나로 바꿨어요. 결과 식은 같고(DX11 `--transmission-only` 결과 전 항목 동일, `dispersionChangedChannels` 568), WARP 첫 그리기는 약 6초로 끝나요.
+- WARP 장치의 펜스 대기는 첫 그리기 JIT를 고려해 120초, 하드웨어는 10초 그대로예요.
