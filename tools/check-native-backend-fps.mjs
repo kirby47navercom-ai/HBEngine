@@ -1,5 +1,6 @@
 // Same packaged 3D game on each native graphics backend: hidden window, uncapped frames, steady-state frame rate.
-// node tools/check-native-backend-fps.mjs [frames=600] [rounds=2] [light|heavy]
+// node tools/check-native-backend-fps.mjs [frames=600] [rounds=2] [light|heavy|2d]
+// 2d: 2D project, 2000 non-overlapping sprites (each with its default BoxCollider2D), four 2D point lights + global light, 2D shadow casters, two 2D particle systems.
 // heavy: 1920x1080 with SSR, SSGI, AO, TAA, motion blur, auto exposure and grading on the post volume.
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -14,17 +15,18 @@ import {retainTestEvidence} from './test-artifacts.mjs';
 import {activeInstalledVersions} from './install-editor.mjs';
 
 assert.deepEqual(await activeInstalledVersions('C:/Users/kirby/HBEngine'),[]);
-const frames=Number(process.argv[2]||600),rounds=Number(process.argv[3]||2),heavy=process.argv[4]==='heavy',backends=(process.env.HB_FPS_BACKENDS||'d3d11,d3d12-11on12,d3d12').split(',');
+const frames=Number(process.argv[2]||600),rounds=Number(process.argv[3]||2),heavy=process.argv[4]==='heavy',twoD=process.argv[4]==='2d',backends=(process.env.HB_FPS_BACKENDS||'d3d11,d3d12-11on12,d3d12').split(',');
 // HB_FPS_CPU_PROFILE=1 writes a V8 CPU profile of each game script runtime (frames 100..end) to <work>/cpu-<backend>-<round>.cpuprofile.
 const root=path.resolve(import.meta.dirname,'..'),work=await fs.mkdtemp(path.join(root,'native/build/backend-fps-'));retainTestEvidence(work);
-const record=await createProject('백엔드 FPS 비교',path.join(work,'Project'),'3d'),scenePath=record.manifest.startupScene;
+const record=await createProject('백엔드 FPS 비교',path.join(work,'Project'),twoD?'2d':'3d'),scenePath=record.manifest.startupScene;
 const scene=JSON.parse(await fs.readFile(path.join(record.root,scenePath),'utf8'));
 // 20x20 grid of lit, shadowed primitives, eight point lights, two spot lights, post volume, reflection probe, two particle systems.
 const shapes=['cube','sphere','torus','cylinder','cone','capsule'];
-for(let i=0;i<400;i++)scene.objects.push(createPlacedObject(shapes[i%shapes.length],{id:'mesh'+i,position:[(i%20-9.5)*1.6,.6+(i%3)*.4,(Math.floor(i/20)-9.5)*1.6]}));
+if(twoD){for(let i=0;i<2000;i++){const sprite=createPlacedObject('sprite',{id:'sprite'+i,position:[(i%50-24.5)*.4,(Math.floor(i/50)-19.5)*.4,0]});sprite.scale=[.35,.35,1];scene.objects.push(sprite);}for(let i=0;i<4;i++)scene.objects.push(createPlacedObject('pointLight2d',{id:'light'+i,position:[Math.cos(i*1.6)*6,Math.sin(i*1.6)*4,0]}));scene.objects.push(createPlacedObject('globalLight2d',{id:'global',position:[0,0,0]}));for(let i=0;i<20;i++)scene.objects.push(createPlacedObject('shadowCaster2d',{id:'caster'+i,position:[(i%5-2)*3,(Math.floor(i/5)-1.5)*3,0]}));for(let i=0;i<2;i++)scene.objects.push(createPlacedObject('particles2d',{id:'fx'+i,position:[i?4:-4,0,0]}));}
+else{for(let i=0;i<400;i++)scene.objects.push(createPlacedObject(shapes[i%shapes.length],{id:'mesh'+i,position:[(i%20-9.5)*1.6,.6+(i%3)*.4,(Math.floor(i/20)-9.5)*1.6]}));
 for(let i=0;i<8;i++)scene.objects.push(createPlacedObject('pointLight',{id:'point'+i,position:[Math.cos(i)*10,3,Math.sin(i)*10]}));
 for(let i=0;i<2;i++)scene.objects.push(createPlacedObject('spotLight',{id:'spot'+i,position:[i?8:-8,6,0]}));
-for(const [key,id,position] of [['postProcess','post',[0,0,0]],['reflectionProbe','probe',[0,2,0]],['particles','fx0',[-4,1,-4]],['particles','fx1',[4,1,4]]])scene.objects.push(createPlacedObject(key,{id,position}));
+for(const [key,id,position] of [['postProcess','post',[0,0,0]],['reflectionProbe','probe',[0,2,0]],['particles','fx0',[-4,1,-4]],['particles','fx1',[4,1,4]]])scene.objects.push(createPlacedObject(key,{id,position}));}
 if(heavy)Object.assign(scene.objects.find(o=>o.id==='post').components.find(c=>c.type==='PostProcessVolume').properties,{ssrEnabled:true,ssgiEnabled:true,aoEnabled:true,antiAliasing:'taa',motionBlurEnabled:true,autoExposureEnabled:true,colorGradingEnabled:true,vignetteEnabled:true});
 await record.project.write(scenePath,JSON.stringify(scene));
 const profile={...defaultBuildProfile(record.manifest),configuration:'release',width:heavy?1920:1280,height:heavy?1080:720},built=await buildGame(record,profile);
@@ -45,5 +47,5 @@ const rows=[];for(let round=0;round<rounds;round++)for(const api of round%2?[...
 const summary=Object.fromEntries(backends.map(api=>{const r=rows.filter(x=>x.api===api);return [api,{fps:r.reduce((a,x)=>a+x.fps,0)/r.length,wallFPS:r.reduce((a,x)=>a+x.wallFPS,0)/r.length,draws:r[0].draws,lastGpuMs:r.map(x=>x.lastGpuMs),median:r.reduce((a,x)=>a+x.median,0)/r.length,p99:Math.max(...r.map(x=>x.p99)),backend:r[0].backend}];}));
 for(const api of backends)assert.equal(rows.find(r=>r.api===api).runtime,'win32-'+api+'-v8');
 assert.equal(new Set(rows.map(r=>r.draws)).size,1,'every backend draws the same calls');
-await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({frames,rounds,mode:heavy?'heavy 1920x1080 SSR/SSGI/AO/TAA/motion blur/auto exposure':'light 1280x720 bloom only',cpu:os.cpus()[0]?.model,summary,rows,scope:'One packaged release 3D scene (400 shadowed primitives, 8 point + 2 spot lights, post volume, reflection probe, 2 particle systems) at 1280x720, hidden window, uncapped. fps = steady frames / sum of runtime frameWorkMs after the first quarter (simulation and submission time); wallFPS uses the runner whole per-frame time (stats.ms, including presentation wait) over the same steady frames. lastGpuMs is the GPU timestamp time of the final frame only. Same machine, alternating order per round.'},null,2));
+await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({frames,rounds,mode:twoD?'2d 1280x720 2000 sprites, 2D lights/shadows/particles':heavy?'heavy 1920x1080 SSR/SSGI/AO/TAA/motion blur/auto exposure':'light 1280x720 bloom only',cpu:os.cpus()[0]?.model,summary,rows,scope:'One packaged release 3D scene (400 shadowed primitives, 8 point + 2 spot lights, post volume, reflection probe, 2 particle systems) at 1280x720, hidden window, uncapped. fps = steady frames / sum of runtime frameWorkMs after the first quarter (simulation and submission time); wallFPS uses the runner whole per-frame time (stats.ms, including presentation wait) over the same steady frames. lastGpuMs is the GPU timestamp time of the final frame only. Same machine, alternating order per round.'},null,2));
 console.log(JSON.stringify({work,summary}));
