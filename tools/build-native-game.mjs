@@ -27,7 +27,13 @@ export function validateNativeContent(content,profile){
 }
 export async function buildNativeGame(record,profile,{content,natives,report},{signal,onProgress=()=>{},dryRun=false}={}){
  validateNativeContent(content,profile);if(dryRun)return report;if(process.platform!=='win32'||process.arch!=='x64')throw Error('Windows x64에서 네이티브 게임을 빌드하세요.');const signingSettings=windowsSigningSettings(profile);
- const desktop=await fs.access(path.join(root,'HBNativePlayer.exe')).then(()=>root,()=>path.join(root,'dist/HBEngine')),player=path.join(desktop,'HBNativePlayer.exe');await fs.access(player);
+ let desktop;
+ for(const candidate of [root,path.join(root,'dist/HBEngineNative'),path.join(root,'dist/HBEngine')]){
+  const ready=await Promise.all(['HBNativePlayer.exe','runtime/node.exe','Shaders','licenses'].map(name=>fs.access(path.join(candidate,name)).then(()=>true,()=>false)));
+  if(ready.every(Boolean)){desktop=candidate;break;}
+ }
+ if(!desktop)throw Error('네이티브 플레이어와 런타임이 있는 데스크톱 빌드를 준비하세요.');
+ const player=path.join(desktop,'HBNativePlayer.exe');
  const id=new Date().toISOString().replace(/[:.]/g,'-')+'-'+randomUUID().slice(0,8),out=await record.project.resolve('Builds/'+profile.id+'/'+id,true,false);await fs.mkdir(out,{recursive:true});const canonical=await fs.realpath(out),rel=path.relative(record.root,canonical);if(rel.startsWith('..')||path.isAbsolute(rel))throw Error('네이티브 빌드 경로 오류');
  const artifacts=[],copied=new Set(),host=new NativeHost(),write=async(name,bytes)=>{signal?.throwIfAborted();artifacts.push(await writeBuildContent(out,name,bytes,{signal}));copied.add(name);},copy=async(from,to)=>{if(!copied.has(to))await write(to,await packagedRuntimeContent(from,{signal}));};
  try{

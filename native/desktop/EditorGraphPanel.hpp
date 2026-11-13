@@ -184,7 +184,7 @@ public:
         return info;
     }
     Json spawnPosition()const{return {{"x",(bounds[2]*.35f-pan.x)/zoom},{"y",(bounds[3]*.25f-pan.y)/zoom}};}
-    void probePaint(){InvalidateRect(window,nullptr,FALSE);UpdateWindow(window);}
+    void probePaint(){InvalidateRect(window,nullptr,FALSE);SendMessageW(window,WM_PAINT,0,0);}
     void probeMove(const std::string& id,int dx,int dy){
         const auto* node=find(id);
         if(!node)throw std::runtime_error("Missing graph test node");

@@ -69,6 +69,7 @@ const fieldLabels = {name:'이름',sceneName:'레벨 이름',objects:'오브젝�
 export function nativeEditorSession(bridge) {
   let record, documents = new AssetDocuments(), viewport, preview, previewSource, previewScene, previewNode, build, buildJobs, lastBuild;
   const sequenceSamplers=new WeakMap();
+  const sceneViews=new Map();
   let nativeMetadata=new WeakMap();
   let audioPreview,cppJob;
   async function stopAudioPreview(){
@@ -147,6 +148,8 @@ export function nativeEditorSession(bridge) {
     if(cppJob?.status==='running'||build&&buildJobs.get(record,build).status==='running')throw Error('빌드가 끝나면 프로젝트를 바꾸세요.');
     const candidate = await next();
     await stopAudioPreview();
+    for(const view of sceneViews.values())await view.close();
+    sceneViews.clear();
     await rememberProject(candidate);
     record = candidate;
     documents = new AssetDocuments();
@@ -592,6 +595,16 @@ export function nativeEditorSession(bridge) {
     'document.open': ({path}) => openDocument(path),
     'document.load': async ({path})=>response(await loadDocument(path)),
     'document.read': ({path}) => response(targetDocument(path)),
+    'document.reload': async ({path,discard=false,expectedRevision})=>{
+      const doc=targetDocument(path);await check(doc,expectedRevision);
+      if(doc.dirty&&!discard)throw Error('저장하지 않은 변경 사항이 있어요.');
+      const text=(await projectBytes(project(),doc.path)).toString('utf8');
+      const data=doc.kind==='text'?text:JSON.parse(text.replace(/^\uFEFF/,''));
+      if(!validAsset(doc.kind,data))throw Error('디스크 문서 형식을 확인하세요.');
+      doc.data=data;doc.saved=JSON.stringify(data);doc.history.length=0;doc.future.length=0;doc.dirty=false;
+      if(doc.kind==='text'&&doc.path.startsWith('Source/'))nativeMetadata=new WeakMap();
+      return response(doc);
+    },
     'document.reorder': async ({path,before})=>{
       const doc=targetDocument(path);
       if(before===path)return response(current());
@@ -665,9 +678,22 @@ export function nativeEditorSession(bridge) {
     'scene.viewport': async params=>{
       const {width,height}=params;
       if (!bridge||![width,height].every(value=>Number.isInteger(value)&&value>0&&value<=16384)) throw Error('장면 뷰포트 연결이나 크기를 확인하세요.');
-      const doc=scene();
-      viewport??=(await import('./native-editor-viewport.mjs')).nativeEditorViewport(bridge);
-      return viewport.draw(doc.data,project(),params);
+      const {nativeEditorViewport}=await import('./native-editor-viewport.mjs');
+      if(params.surface!==undefined){
+        if(typeof params.surface!=='string'||!/^native-scene-\d+$/.test(params.surface))throw Error('독립 장면 표면을 확인하세요.');
+        const doc=targetDocument(params.path);
+        if(doc.kind!=='scene')throw Error('장면 문서를 선택하세요.');
+        let view=sceneViews.get(params.surface);
+        if(!view){view=nativeEditorViewport(bridge,params.surface);sceneViews.set(params.surface,view);}
+        return view.draw(doc.data,project(),params);
+      }
+      viewport??=nativeEditorViewport(bridge);
+      return viewport.draw(scene().data,project(),params);
+    },
+    'scene.viewportClose': async ({surface})=>{
+      const view=sceneViews.get(surface);
+      if(view){try{await view.close();}finally{sceneViews.delete(surface);}}
+      return {closed:!!view};
     },
     'asset.preview': async params=>{
       const {width,height,node}=params;

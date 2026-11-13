@@ -84,12 +84,17 @@ class NativeEditorShell {
         HWND editor=nullptr,save=nullptr,toggle=nullptr,viewPicker=nullptr,palette=nullptr,status=nullptr;
         std::unique_ptr<EditorGraphPanel> graph;
         std::unique_ptr<EditorFormPanel> graphForm;
+        std::unique_ptr<EditorScenePanel> sceneView;
         Json doc,model,inputs=Json::array();
-        std::string view="event",selection;
+        Json sceneInput;
+        std::string view="event",selection,surface,cameraId;
+        bool cameraOutputs=false;
         std::uint64_t inputRevision=0;
         bool updating=false,draft=false,source=false;
     };
     std::map<HWND,DocumentWindow> documentWindows;
+    std::map<std::string,EditorScenePanel*> sceneSurfaces;
+    unsigned nextSceneSurface=1;
     HWND splitDocument=nullptr;
     bool splitBelow=false;
     RECT splitTarget{},belowTarget{},splitDivider{},inspectorDivider{};
@@ -170,6 +175,7 @@ class NativeEditorShell {
                     const auto surface=reply.at("surface").get<std::string>();
                     if(surface=="native-editor")result["value"]=viewport.render(reply,acceptance);
                     else if(surface=="native-preview")result["value"]=previewViewport.render(reply,acceptance);
+                    else if(const auto scene=sceneSurfaces.find(surface);scene!=sceneSurfaces.end())result["value"]=scene->second->render(reply,acceptance);
                     else throw std::runtime_error("Native editor render surface");
                 }
                 catch(const std::exception& error){result["ok"]=false;result["error"]=error.what();}
@@ -1034,6 +1040,7 @@ class NativeEditorShell {
         RECT rect{};GetClientRect(owner,&rect);
         const int width=std::max(1L,rect.right),height=std::max(1L,rect.bottom);
         const bool graphShown=item.graph&&!item.source;
+        const bool sceneShown=item.sceneView&&!item.source;
         MoveWindow(item.editor,5,70,std::max(1,width-10),std::max(1,height-98),TRUE);
         MoveWindow(item.status,5,height-23,std::max(1,width-10),20,TRUE);
         MoveWindow(GetDlgItem(owner,DocDock),std::min(295,std::max(5,width-113)),5,108,26,TRUE);
@@ -1041,13 +1048,29 @@ class NativeEditorShell {
         MoveWindow(item.palette,10+std::min(160,width/3),37,std::max(1,width-125-std::min(160,width/3)),300,TRUE);
         MoveWindow(GetDlgItem(owner,DocAdd),std::max(5,width-107),37,100,26,TRUE);
         ShowWindow(GetDlgItem(owner,DocReload),width>=410?SW_SHOWNOACTIVATE:SW_HIDE);
-        ShowWindow(item.editor,graphShown?SW_HIDE:SW_SHOWNOACTIVATE);
-        ShowWindow(item.viewPicker,graphShown&&!item.model.value("views",Json::array()).empty()?SW_SHOWNOACTIVATE:SW_HIDE);
+        ShowWindow(item.editor,graphShown||sceneShown?SW_HIDE:SW_SHOWNOACTIVATE);
+        ShowWindow(item.viewPicker,sceneShown||(graphShown&&!item.model.value("views",Json::array()).empty())?SW_SHOWNOACTIVATE:SW_HIDE);
         ShowWindow(item.palette,graphShown?SW_SHOWNOACTIVATE:SW_HIDE);
         ShowWindow(GetDlgItem(owner,DocAdd),graphShown?SW_SHOWNOACTIVATE:SW_HIDE);
         const int side=graphShown&&item.graphForm&&width>=365?std::min(240,width*42/100):0;
         if(item.graph)item.graph->layout(5,70,std::max(1,width-side-10),std::max(1,height-98),graphShown);
         if(item.graphForm)item.graphForm->update({{"rect",{width-side-5,70,side,std::max(1,height-98)}},{"visible",side>0}});
+        if(item.sceneView){
+            item.sceneView->layout(owner,5,70,std::max(1,width-10),std::max(1,height-98),sceneShown);
+            if(sceneShown)SetTimer(owner,1,16,nullptr);else KillTimer(owner,1);
+        }
+    }
+    Json drawWindowScene(HWND owner,DocumentWindow& item,Json input=Json::object()){
+        const auto size=item.sceneView->size();
+        input["width"]=size.cx;input["height"]=size.cy;
+        input["path"]=item.doc.at("path");input["surface"]=item.surface;
+        input["cameraId"]=item.cameraId;input["cameraOutputs"]=item.cameraOutputs;input["selected"]=item.selection;
+        if(input.value("command",std::string())=="focus")input["id"]=item.selection;
+        auto state=request("scene.viewport",input);
+        if(input.value("command",std::string())=="pick")item.selection=state.at("selection");
+        if(state.at("shaderPreparation").value("pending",false))SetTimer(owner,1,120,nullptr);
+        else if(!state.at("warnings").empty())SetWindowTextW(item.status,wide(state.at("warnings").front()).c_str());
+        return state;
     }
     void refreshWindowGraphInputs(DocumentWindow& item){
         if(!item.graphForm)return;
@@ -1082,6 +1105,23 @@ class NativeEditorShell {
             const auto last=LRESULT(item.model.at("palette").size())-1;
             if(last>=0)SendMessageW(item.palette,CB_SETCURSEL,std::clamp<LRESULT>(selection,0,last),0);
             refreshWindowGraphInputs(item);
+        }
+        if(item.sceneView){
+            const auto scene=Json::parse(item.doc.at("text").get<std::string>());
+            item.model["cameras"]=Json::array({"","@outputs"});
+            SendMessageW(item.viewPicker,CB_RESETCONTENT,0,0);
+            SendMessageW(item.viewPicker,CB_ADDSTRING,0,LPARAM(L"편집기 카메라"));
+            SendMessageW(item.viewPicker,CB_ADDSTRING,0,LPARAM(L"게임 카메라 출력"));
+            int selected=item.cameraOutputs?1:0;
+            for(const auto& actor:scene.at("objects")){
+                const auto components=actor.value("components",Json::array());
+                if(!std::any_of(components.begin(),components.end(),[](const Json& component){return component.at("type")=="Camera"&&component.at("properties").value("enabled",true);}))continue;
+                if(actor.at("id")==item.cameraId)selected=int(item.model.at("cameras").size());
+                item.model["cameras"].push_back(actor.at("id"));
+                SendMessageW(item.viewPicker,CB_ADDSTRING,0,LPARAM(wide(actor.at("name")).c_str()));
+            }
+            if(!selected)item.cameraId.clear();
+            SendMessageW(item.viewPicker,CB_SETCURSEL,selected,0);
         }
         SetWindowTextW(item.status,item.doc.value("dirty",false)?L"저장하지 않은 변경 사항":L"");
         layoutDocumentWindow(owner,item);
@@ -1200,6 +1240,22 @@ class NativeEditorShell {
                 }
                 item.view=settings.is_object()?settings.value("view",std::string("event")):view;
                 item.source=settings.is_object()&&settings.value("source",false);
+            }else if(target.at("kind")=="scene"){
+                item.surface="native-scene-"+std::to_string(nextSceneSurface++);
+                item.source=settings.is_object()&&settings.value("source",false);
+                if(settings.is_object()){item.cameraId=settings.value("cameraId",std::string());item.cameraOutputs=settings.value("cameraOutputs",false);}
+                SetWindowTextW(item.toggle,L"장면 / 소스");
+                item.sceneView=std::make_unique<EditorScenePanel>();
+                item.sceneView->attach(owner,instance,[this,owner](Json input){
+                    auto& pane=documentWindows.at(owner);
+                    const auto command=input.at("command");
+                    if(pane.sceneInput.is_object()&&pane.sceneInput.at("command")==command&&(command=="pan"||command=="orbit"||command=="zoom")){
+                        input["dx"]=input.value("dx",0.0)+pane.sceneInput.value("dx",0.0);
+                        input["dy"]=input.value("dy",0.0)+pane.sceneInput.value("dy",0.0);
+                    }
+                    pane.sceneInput=std::move(input);SetTimer(owner,1,16,nullptr);
+                });
+                sceneSurfaces.emplace(item.surface,item.sceneView.get());
             }else ShowWindow(item.toggle,SW_HIDE);
             refreshDocumentWindow(owner,item,request("document.read",{{"path",target.at("path")}}));
             if(split)layout();
@@ -1211,13 +1267,32 @@ class NativeEditorShell {
     void destroyDocumentWindow(HWND owner){
         const bool split=owner==splitDocument;
         if(split)splitDocument=nullptr;
+        auto& item=documentWindows.at(owner);
+        if(item.sceneView){
+            KillTimer(owner,1);
+            if(!waiting)try{request("scene.viewportClose",{{"surface",item.surface}});}catch(const std::exception&){}
+            sceneSurfaces.erase(item.surface);
+        }
         SetWindowLongPtrW(owner,GWLP_USERDATA,0);
         DestroyWindow(owner);
         documentWindows.erase(owner);
         if(split)layout();
     }
     LRESULT documentWindowEvent(HWND owner,DocumentWindow& item,UINT message,WPARAM w,LPARAM l){
+        if(message==WM_DPICHANGED&&owner!=splitDocument){
+            const auto& rect=*reinterpret_cast<const RECT*>(l);
+            SetWindowPos(owner,nullptr,rect.left,rect.top,rect.right-rect.left,rect.bottom-rect.top,SWP_NOZORDER|SWP_NOACTIVATE);
+            return 0;
+        }
         if(message==WM_SIZE){if(item.status)layoutDocumentWindow(owner,item);return 0;}
+        if(message==WM_TIMER&&w==1){
+            KillTimer(owner,1);
+            if(item.sceneView&&!item.source&&IsWindowVisible(owner)&&!IsIconic(owner)){
+                auto input=std::move(item.sceneInput);item.sceneInput=nullptr;
+                drawWindowScene(owner,item,input.is_object()?std::move(input):Json::object());
+            }
+            return 0;
+        }
         if(message==WM_CLOSE){
             if(item.draft){
                 const auto choice=MessageBoxW(owner,L"이 창에서 편집한 소스를 저장할까요?",L"HBEngine",MB_YESNOCANCEL|MB_ICONWARNING);
@@ -1237,13 +1312,17 @@ class NativeEditorShell {
             else if(id==DocDock)PostMessageW(window,redockMessage,WPARAM(owner),0);
             else if(id==CloseDocument)PostMessageW(owner,WM_CLOSE,0,0);
             else if(id==DocToggle){captureDocumentWindow(owner,item);item.source=!item.source;layoutDocumentWindow(owner,item);}
-            else if(id==DocReload&&(!item.draft||MessageBoxW(owner,L"이 창의 초안을 버리고 문서를 다시 읽을까요?",L"HBEngine",MB_YESNO|MB_ICONWARNING)==IDYES))
-                refreshDocumentWindow(owner,item,request("document.read",{{"path",item.doc.at("path")}}));
+            else if(id==DocReload){
+                if(item.doc.at("path")==document.value("path",std::string())&&sourceChanged)throw std::runtime_error("같은 문서의 기본 창 초안을 먼저 처리하세요.");
+                const auto latest=request("document.read",{{"path",item.doc.at("path")}});
+                if((item.draft||latest.value("dirty",false))&&MessageBoxW(owner,L"저장하지 않은 변경을 버리고 디스크에서 다시 읽을까요?",L"HBEngine",MB_YESNO|MB_ICONWARNING)!=IDYES)return 0;
+                commitDocumentWindowChange(owner,item,request("document.reload",{{"path",latest.at("path")},{"expectedRevision",latest.at("revision")},{"discard",true}}));
+            }
             else if(id==DocView&&notification==CBN_SELCHANGE){
                 const auto index=SendMessageW(item.viewPicker,CB_GETCURSEL,0,0);
                 if(index>=0){
-                    item.view=item.model.at("views").at(index).at(0);item.selection.clear();
-                    item.graph->resetView();refreshDocumentWindow(owner,item,item.doc);
+                    if(item.sceneView){item.cameraOutputs=index==1;item.cameraId=item.cameraOutputs?std::string():item.model.at("cameras").at(index).get<std::string>();SetTimer(owner,1,16,nullptr);}
+                    else{item.view=item.model.at("views").at(index).at(0);item.selection.clear();item.graph->resetView();refreshDocumentWindow(owner,item,item.doc);}
                 }
             }else if(id==DocAdd){
                 const auto index=SendMessageW(item.palette,CB_GETCURSEL,0,0);
@@ -1393,13 +1472,9 @@ class NativeEditorShell {
         if(sceneOpen())args+=L" --editor-scene "+quote(wide(document.at("path")));
         fs::path recordingFile;
         if(!recording.empty()){
-            if(!sceneOpen()||sceneSelection.empty())throw std::runtime_error("장면에서 녹화할 오브젝트를 선택하세요.");
+            if(!sceneOpen()||(!allActors&&sceneSelection.empty()))throw std::runtime_error("장면에서 녹화할 오브젝트를 선택하세요.");
             recordingFile=editorProfile/L"Sessions"/(L"take-"+std::to_wstring(GetCurrentProcessId())+L"-"+std::to_wstring(GetTickCount64())+L".json");
-            Json targets=Json::array({sceneSelection});
-            if(allActors){
-                targets=Json::array();
-                for(const auto& row:sceneRows)targets.push_back(row.at("id"));
-            }
+            const Json targets=allActors?Json(nullptr):Json::array({sceneSelection});
             args+=L" --editor-take-output "+quote(recordingFile.wstring())+L" --editor-take-name "+quote(recording)
                 +L" --editor-take-target "+quote(wide(targets.dump()))+L" --editor-take-preset "+quote(wide(preset));
         }
@@ -1465,7 +1540,7 @@ class NativeEditorShell {
             WINDOWPLACEMENT placement{sizeof(placement)};
             if(!GetWindowPlacement(owner,&placement))continue;
             const auto& r=placement.rcNormalPosition;
-            panes.push_back({{"path",item.doc.at("path")},{"view",item.view},{"source",item.source},{"split",owner==splitDocument},{"below",owner==splitDocument&&splitBelow},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}}});
+            panes.push_back({{"path",item.doc.at("path")},{"view",item.view},{"source",item.source},{"split",owner==splitDocument},{"below",owner==splitDocument&&splitBelow},{"cameraId",item.cameraId},{"cameraOutputs",item.cameraOutputs},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}}});
         }
         return panes;
     }
@@ -1680,13 +1755,15 @@ class NativeEditorShell {
         }
         case PlayScene:startPlay();return;
         case RecordTake:{
-            if(playProcess||!sceneOpen()||sceneSelection.empty())return;
+            if(playProcess||!sceneOpen())return;
             const auto name=inputName(L"시퀀스 녹화 이름",L"Take",70);
             if(name.empty())return;
             if(name.find_first_of(L"/\\:<>?\"|*")!=std::wstring::npos)throw std::runtime_error("시퀀스 파일 이름을 확인하세요.");
             const auto targets=chooseMenu({L"선택한 오브젝트",L"장면의 모든 오브젝트"});if(!targets)return;
-            const auto preset=chooseMenu({L"트랜스폼",L"트랜스폼과 컴포넌트 속성"});if(!preset)return;
-            startPlay({},name,*preset==0?"transform":"default",*targets==1);return;
+            const auto preset=chooseMenu({L"트랜스폼",L"트랜스폼과 컴포넌트 속성",L"녹화 프리셋 에셋"});if(!preset)return;
+            auto profile=*preset==0?std::string("transform"):std::string("default");
+            if(*preset==2){profile=chooseProjectAsset(L"녹화 프리셋",L".hbtakepreset.json");if(profile.empty())return;}
+            startPlay({},name,profile,*targets==1);return;
         }
         case StopPlay:stopPlay();return;
         case OpenProject:case NewProject:{
@@ -1969,6 +2046,11 @@ class NativeEditorShell {
             const auto part=dividerAt(owner,point.x,point.y);
             if(part!=Divider::None){SetCursor(LoadCursorW(nullptr,part==Divider::Documents&&splitBelow?IDC_SIZENS:IDC_SIZEWE));return TRUE;}
         }
+        if(message==WM_DPICHANGED){
+            const auto& rect=*reinterpret_cast<const RECT*>(l);
+            SetWindowPos(owner,nullptr,rect.left,rect.top,rect.right-rect.left,rect.bottom-rect.top,SWP_NOZORDER|SWP_NOACTIVATE);
+            return 0;
+        }
         if(message==WM_SIZE){layout();return 0;}
         if(message==WM_TIMER&&w==1){KillTimer(window,1);refreshFiles();return 0;}
         if(message==WM_TIMER&&w==2){
@@ -2178,7 +2260,7 @@ private:
         Json playEvidence;
         if(!env(L"HB_EDITOR_TEST_PLAYER").empty()){
             auto playReport=smoke;playReport+=L".play.json";
-            startPlay(playReport,L"NativeTake","default",true);waitForPlaySmoke();
+            startPlay(playReport,L"NativeTake","Assets/TakeNative.hbtakepreset.json",true);waitForPlaySmoke();
             const auto result=Json::parse(read(playReport));
             playEvidence={{"frames",result.at("frames")},{"webview",result.at("webview")},{"backend",result.at("renderer").at("backend")},{"scene",result.at("logic").at("scene")}};
             if(playEvidence.at("frames")!=4||playEvidence.at("webview")!=false||playEvidence.at("backend")!="D3D12"||playEvidence.at("scene")!=document.at("path"))
@@ -2199,6 +2281,15 @@ private:
             const auto picked=drawViewport({{"command","pick"},{"x",cameraSize.cx*(i?3:1)/4},{"y",cameraSize.cy/2}});
             if(picked.at("selection")!=(i?"cube-right":"cube-left"))throw std::runtime_error("Native camera region selection failed: "+picked.dump());
         }
+        command(PinDocument);
+        const auto cameraWindow=documentWindows.begin()->first;
+        auto& cameraPane=documentWindows.at(cameraWindow);
+        SendMessageW(cameraPane.viewPicker,CB_SETCURSEL,1,0);
+        SendMessageW(cameraWindow,WM_COMMAND,MAKEWPARAM(DocView,CBN_SELCHANGE),LPARAM(cameraPane.viewPicker));
+        const auto independentCamera=drawWindowScene(cameraWindow,cameraPane,{{"capture",true}});
+        if(independentCamera.at("backend")!="D3D12"||independentCamera.at("cameraViews")!=2)throw std::runtime_error("Independent native scene surface failed");
+        SendMessageW(cameraWindow,WM_CLOSE,0,0);
+        if(!sceneSurfaces.empty()||!documentWindows.empty())throw std::runtime_error("Independent scene surface close failed");
         showDocument(request("document.open",{{"path","Assets/AN_Native.hbanimation.json"}}));
         assetCanvas.probeAddKey();assetCanvas.probePaint();
         const auto timelineSurface=assetCanvas.inspect();

@@ -6,7 +6,10 @@ import path from 'node:path';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {createHash} from 'node:crypto';
-const exec=promisify(execFile),root=path.resolve(import.meta.dirname,'..'),build=path.join(root,'native/build'),output=path.join(root,'dist/HBEngine');
+const exec=promisify(execFile),root=path.resolve(import.meta.dirname,'..'),build=path.join(root,'native/build'),legacyOutput=path.join(root,'dist/HBEngine');
+const nativeOnly=process.argv.includes('--native-editor-only'),outputOption=process.argv.find(arg=>arg.startsWith('--output='));
+const output=outputOption?path.resolve(outputOption.slice('--output='.length)):nativeOnly?path.join(root,'dist/HBEngineNative'):legacyOutput;
+if(outputOption&&(!nativeOnly||!outputOption.slice('--output='.length)))throw Error('--output=폴더는 --native-editor-only와 함께 지정하세요.');
 const relative=file=>path.relative(root,file).split(path.sep).join('/');
 const sdkVersion='1.0.4258.31',sdkHash='56f7f4b8bf9aee4b8efefbbdd4f67d5f74ebd1b100ed0806da71bf76af481aa9',sdk=path.join(build,'webview2');
 const exists=async file=>fs.access(file).then(()=>true,()=>false);
@@ -34,7 +37,6 @@ if(process.platform!=='win32'||process.arch!=='x64')throw Error('현재 데스�
 const compiler=process.env.CXX||'C:/msys64/ucrt64/bin/g++.exe';if(!await exists(compiler))throw Error('CXX에 g++ 경로를 지정하세요.');
 const compilerEnv={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH};
 await fs.mkdir(build,{recursive:true});await fs.mkdir(output,{recursive:true});
-const nativeOnly=process.argv.includes('--native-editor-only');
 if(!nativeOnly){
   const archive=path.join(sdk,'sdk.zip');
   await download('https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/'+sdkVersion+'/microsoft.web.webview2.'+sdkVersion+'.nupkg',archive,sdkHash);
@@ -43,11 +45,19 @@ if(!nativeOnly){
 const {prepareNative,jsonInclude}=await import('./prepare-native.mjs');await prepareNative();
 const include=path.join(sdk,'build/native/include'),loader=path.join(sdk,'build/native/x64/WebView2Loader.dll');
 await fs.writeFile(path.join(build,'HBEngine.ico'),icon());
-const resource=path.join(build,'HBEngine-resource.o'),windres=path.join(path.dirname(compiler),'windres.exe');
+const resource=path.join(build,nativeOnly?'HBEngineNative-resource.o':'HBEngine-resource.o'),windres=path.join(path.dirname(compiler),'windres.exe');
 await exec(windres,['--use-temp-file','-I',relative(build),'-I','native/desktop','native/desktop/HBEngine.rc',relative(resource)],{cwd:root,windowsHide:true,env:compilerEnv});
 const executable=path.join(output,nativeOnly?'HBEngineNative.exe':'HBEngine.exe');
 await exec(compiler,['-std=c++17','-O2','-s','-static','-municode','-mwindows','-I','native/include','-I',relative(jsonInclude),...(nativeOnly?['-DHB_NATIVE_EDITOR_ONLY']:['-I',relative(include)]),'native/desktop/HBEngine.cpp',relative(resource),'-o',relative(executable),'-lole32','-lshell32','-ldwmapi','-ladvapi32','-luuid','-ld2d1','-ldwrite','-lwindowscodecs','-lcomdlg32','-lcomctl32','-lgdi32'],{cwd:root,windowsHide:true,env:compilerEnv,maxBuffer:4194304});
 if(nativeOnly){
+  const {stdout}=await exec(path.join(path.dirname(compiler),'objdump.exe'),['-p',relative(executable)],{cwd:root,windowsHide:true,env:compilerEnv,maxBuffer:16777216});
+  if(/DLL Name: (?:WebView2|libgcc|libstdc\+\+|libwinpthread)/i.test(stdout))throw Error('네이티브 편집기 실행 의존성을 확인하세요.');
+  await fs.mkdir(path.join(output,'runtime'),{recursive:true});
+  await fs.copyFile(process.execPath,path.join(output,'runtime/node.exe'));
+  const portableFrom=await exists(path.join(output,'runtime/vcruntime140.dll'))?output:legacyOutput;
+  await (await import('./sync-desktop-content.mjs')).syncDesktopContent(output,{portableFrom});
+  await (await import('./build-native-player.mjs')).buildNativePlayer(path.join(output,'HBNativePlayer.exe'));
+  await fs.writeFile(path.join(output,'실행 안내.txt'),'HBEngineNative.exe에서 프로젝트를 열거나 만들어요.\r\nWindows 네이티브 편집기와 게임 실행기는 WebView2 없이 작동해요.\r\nC++ 클래스 빌드에는 C++17 컴파일러가 필요해요.\r\n');
   console.log('HBEngineNative.exe: '+executable);
   process.exit(0);
 }

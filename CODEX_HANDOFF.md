@@ -1,3 +1,7 @@
+## Windows 네이티브 단독 빌드·장면 창·녹화 프리셋 · 2026-11-13
+
+WebView2 없는 단독 빌드에서 분리·분할 장면을 독립 D3D12 표면으로 열고, 상속 녹화 프리셋과 공용 런타임 녹화기를 연결했어요. 문서 다시 읽기는 디스크와 리비전을 확인해요. 격리 편집기 `native/build/native-authoring-pbtVT4/report.json`과 깨끗한 환경에서 실행한 네이티브 게임 패키지 `native/build/native-game-UB0DUv/acceptance.json`이 통과했어요. 사용자 설치본 전환은 별도예요.
+
 ## Windows 네이티브 C++ 제작·에셋 탐색·다중 키 · 2026-11-13
 
 C++ 헤더·구현 파일 생성과 공용 SDK 컴파일, C++ 상속 블루프린트·공개 노드 저장을 연결했어요. 그래프 복사·붙여넣기, 콘텐츠 폴더 탐색 이력과 이름 변경, 선택한 여러 시퀀스 키 채널 이동을 추가했어요. `native/build/native-authoring-mfZSSQ/report.json`에서 격리 Win32/D3D12 제작·저장·플레이와 C++ 컴파일을 확인했어요. 곡선 채널 공용 검사 9개도 통과했어요.

@@ -6,6 +6,7 @@ import {promisify} from 'node:util';
 import {createCanvas} from '@napi-rs/canvas';
 import {createAsset} from '../prototype/asset-documents.js';
 import {createPlacedObject} from '../prototype/placement-catalog.js';
+import {createTakePreset} from '../prototype/take-preset-assets.js';
 import {activeInstalledVersions} from './install-editor.mjs';
 import {nativeEditorSession} from './native-editor-session.mjs';
 import {createProject} from './project-manifest.mjs';
@@ -18,6 +19,9 @@ retainTestEvidence(work);
 process.env.HB_USER_DATA_DIR=path.join(work,'UserData');
 const project=await createProject('NativeAuthoring',work,'3d');
 const cameraScene='Assets/Scenes/NativeCameras.hbscene.json';
+const baseTake='Assets/TakeBase.hbtakepreset.json',nativeTake='Assets/TakeNative.hbtakepreset.json';
+await project.project.write(baseTake,JSON.stringify(createTakePreset('TakeBase',{fps:60,clock:{source:'game',startFrame:24},sources:[{id:'world',type:'world',enabled:true}]})));
+await project.project.write(nativeTake,JSON.stringify(createTakePreset('TakeNative',{parentPreset:baseTake,overrides:[]})));
 const cameraData=createAsset('scene','NativeCameras');
 for(const [i,region] of ['left','right'].entries()){
   const at=i?4:-4,camera=createPlacedObject('camera2d',{position:[at,.5,8],id:'camera-'+region});
@@ -132,6 +136,10 @@ const outside=JSON.parse(original.text);outside.density=2;
 await project.project.write(material,JSON.stringify(outside));
 await assert.rejects(dispatch('document.save',{expectedRevision:modified.revision}),{status:409});
 assert.deepEqual(JSON.parse(await fs.readFile(path.join(project.root,material),'utf8')),outside);
+await assert.rejects(dispatch('document.reload',{expectedRevision:modified.revision}),/저장하지 않은/);
+const reloaded=await dispatch('document.reload',{expectedRevision:modified.revision,discard:true});
+assert.deepEqual(JSON.parse(reloaded.text),outside);
+assert.equal(reloaded.dirty,false);
 let authoredBlueprint=await dispatch('document.open',{path:blueprint});
 authoredBlueprint=await dispatch('blueprint.memberAdd',{kind:'variable',name:'속도',type:'float',expectedRevision:authoredBlueprint.revision});
 const variables=(await dispatch('blueprint.members')).variables;
@@ -282,7 +290,7 @@ const report=path.join(work,'report.json');
 const executable=path.resolve(process.argv[2] || path.join(root,'dist/HBEngine/HBEngine.exe'));
 if(process.argv[3]){
   process.env.HB_EDITOR_TEST_PLAYER=path.resolve(process.argv[3]);
-  process.env.HB_EDITOR_TEST_RUNTIME=root;
+  process.env.HB_EDITOR_TEST_RUNTIME=path.resolve(process.env.HB_EDITOR_TEST_RUNTIME||root);
 }
 try {
   const mode=process.env.HB_TEST_NATIVE_ONLY==='1'?[]:['--native-editor'];
@@ -317,6 +325,12 @@ assert.equal(evidence.timelineSurface.backend,'D3D12');
 assert.equal(evidence.widgetSurface.backend,'D3D12');
 await assert.rejects(fs.stat(path.join(process.env.HB_USER_DATA_DIR,'WebView2')),{code:'ENOENT'});
 const read=async file=>JSON.parse(await fs.readFile(path.join(project.root,file),'utf8'));
+if(process.argv[3]){
+  const take=await read(evidence.play.take);
+  assert.equal(take.fps,60);
+  assert.equal(take.recordingClock.startFrame,24);
+  assert.equal(take.recordingSources[0].type,'world');
+}
 const cube=(await read(project.manifest.startupScene)).objects.find(actor=>actor.id===evidence.newCube);
 assert.equal(cube?.position[0],2.5);
 assert.ok(cube.components.some(component=>component.type==='AudioSource'));
