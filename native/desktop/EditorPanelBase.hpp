@@ -18,6 +18,12 @@ public:
     using Json=nlohmann::json;
     using Post=std::function<void(const Json&)>;
     virtual ~EditorPanelBase(){release();if(write)write->Release();if(factory)factory->Release();if(window)DestroyWindow(window);}
+    HWND parentWindow()const{return window?GetParent(window):nullptr;}
+    void reparent(HWND owner){
+        if(GetParent(window)==owner)return;
+        ShowWindow(window,SW_HIDE);
+        SetParent(window,owner);
+    }
     void attach(HWND owner,HINSTANCE instance,Post post,const wchar_t* className,std::string panelName){
         poster=std::move(post);name=std::move(panelName);
         WNDCLASSW wc{};wc.style=CS_DBLCLKS;wc.lpfnWndProc=procedure;wc.hInstance=instance;wc.lpszClassName=className;wc.hCursor=LoadCursorW(nullptr,IDC_ARROW);RegisterClassW(&wc);
@@ -41,13 +47,14 @@ public:
         for(IUnknown* u:std::initializer_list<IUnknown*>{frame,encoder,stream,own,rt,bitmap,wic})if(u)u->Release();return out;
     }
     // op "menu": native popup at the cursor (or menuAt); reports {event:"command",command} or {event:"menuClosed"}.
-    void showMenu(const Json& items){
+    void showMenu(const Json& items,std::optional<POINT> anchor={}){
         HMENU menu=CreatePopupMenu();std::vector<std::string> commands,captions;
         for(const auto& item:items){if(item.is_null()){AppendMenuW(menu,MF_SEPARATOR,0,nullptr);continue;}
             auto caption=wide(item.at(0).get<std::string>());if(item.size()>3&&item.at(3).is_string()&&!item.at(3).get<std::string>().empty())caption+=L"\t"+wide(item.at(3).get<std::string>());
             const bool disabled=item.size()>2&&item.at(2).is_string()&&item.at(2).get<std::string>().find("disabled")!=std::string::npos;
             commands.push_back(item.at(1).get<std::string>());captions.push_back(item.at(0).get<std::string>());AppendMenuW(menu,MF_STRING|(disabled?MF_GRAYED:0),commands.size(),caption.c_str());}
         POINT at{};GetCursorPos(&at);if(menuAt){at=*menuAt;menuAt.reset();}
+        if(anchor){at=*anchor;ClientToScreen(GetParent(window),&at);}
         lastMenu=Json::array();for(const auto& c:commands)lastMenu.push_back(c);
         if(!automaticCommand.empty()){for(std::size_t i=0;i<commands.size();i++)if(commands[i]==automaticCommand||captions[i]==automaticCommand)automaticMenu=UINT(i+1);automaticCommand.clear();}
         const UINT chosen=automaticMenu?automaticMenu:TrackPopupMenu(menu,TPM_RETURNCMD|TPM_RIGHTBUTTON|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);automaticMenu=0;DestroyMenu(menu);
@@ -73,7 +80,7 @@ protected:
         if(model.contains("visible"))shown=model.at("visible").get<bool>();
     }
     void place(){++updates;if(shown&&bounds[2]>0&&bounds[3]>0)SetWindowPos(window,HWND_TOP,bounds[0],bounds[1],bounds[2],bounds[3],SWP_NOACTIVATE|SWP_SHOWWINDOW);else ShowWindow(window,SW_HIDE);InvalidateRect(window,nullptr,FALSE);}
-    Json common()const{return {{"window",window!=nullptr},{"shown",window&&IsWindowVisible(window)},{"topmost",aboveWebView()},{"rect",{bounds[0],bounds[1],bounds[2],bounds[3]}},{"paints",paints},{"updates",updates},{"lastPaintMS",lastPaintMS}};}
+    Json common()const{return {{"window",window!=nullptr},{"shown",window&&IsWindowVisible(window)},{"topmost",aboveWebView()},{"owner",reinterpret_cast<std::uintptr_t>(parentWindow())},{"rect",{bounds[0],bounds[1],bounds[2],bounds[3]}},{"paints",paints},{"updates",updates},{"lastPaintMS",lastPaintMS}};}
     // Only other native panels may be above this window; the WebView must be below it.
     bool aboveWebView()const{if(!window)return false;for(HWND h=GetWindow(GetParent(window),GW_CHILD);h&&h!=window;h=GetWindow(h,GW_HWNDNEXT)){wchar_t name[64]{};GetClassNameW(h,name,64);if(std::wstring(name).rfind(L"HBEngine.Editor",0)!=0)return false;}return true;}
     void dropText(){for(auto** f:{&text,&bold,&icons})if(*f){(*f)->Release();*f=nullptr;}if(ellipsis){ellipsis->Release();ellipsis=nullptr;}}
@@ -116,6 +123,7 @@ private:
     static LRESULT CALLBACK procedure(HWND h,UINT m,WPARAM w,LPARAM l){
         auto* self=reinterpret_cast<EditorPanelBase*>(GetWindowLongPtrW(h,GWLP_USERDATA));
         if(m==WM_NCCREATE){self=static_cast<EditorPanelBase*>(reinterpret_cast<CREATESTRUCTW*>(l)->lpCreateParams);SetWindowLongPtrW(h,GWLP_USERDATA,reinterpret_cast<LONG_PTR>(self));self->window=h;}
+        if(m==WM_NCDESTROY&&self){self->window=nullptr;return DefWindowProcW(h,m,w,l);}
         if(!self)return DefWindowProcW(h,m,w,l);try{return self->handle(m,w,l);}catch(const std::exception&){return DefWindowProcW(h,m,w,l);}
     }
 };

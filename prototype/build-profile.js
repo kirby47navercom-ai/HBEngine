@@ -3,7 +3,8 @@ export const buildContract={target:'windows-x64',targets:buildTargets,renderer:'
 export const profileTarget=p=>p.target||'windows-x64';
 export const windowsRuntime=p=>p.windowsRuntime||'native';
 export const windowsRenderer=p=>p.windowsRenderer||'scene';
-export const nativeGraphicsAPIs=['d3d11','auto','d3d12','d3d12-11on12'],defaultNativeGraphicsAPI='auto';
+export const nativeGraphicsAPIs=['d3d11','auto','d3d12','d3d12-11on12'],defaultNativeGraphicsAPI='d3d12';
+export const nativeGraphicsAPI=p=>p.nativeGraphicsAPI??defaultNativeGraphicsAPI;
 export const nativeRendererLabels={d3d11:'Win32/DirectX 11',auto:'Win32/DirectX 12 (DirectX 11 대체)',d3d12:'Win32/DirectX 12','d3d12-11on12':'Win32/DirectX 12 · 11On12'};
 export const validNativeGraphicsAPI=p=>p.nativeGraphicsAPI===undefined||nativeGraphicsAPIs.includes(p.nativeGraphicsAPI);
 export const validWindowsRenderer=p=>p.windowsRenderer===undefined||['scene','d3d11'].includes(p.windowsRenderer);

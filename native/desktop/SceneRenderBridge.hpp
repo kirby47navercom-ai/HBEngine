@@ -41,7 +41,7 @@ template<class Backend> class SceneRenderBridgeCore {
     std::unordered_map<std::string,typename Renderer::Instances> instances;std::uint64_t instanceUpdates=0;
     std::unordered_map<std::string,typename Renderer::Deformation> deformations;std::uint64_t poseUpdates=0;
     std::unique_ptr<typename Particles::Preparation> particleSimulation;std::array<unsigned,4> lastSimulationStages{};bool lastSimulationRequested=false;
-    bool pollParticleSimulation(bool request=false){if(!asynchronousMaterials)return true;if(request&&!particleSimulation)particleSimulation=std::make_unique<typename Particles::Preparation>(*device);return !particleSimulation||particleSimulation->poll();}
+    bool pollParticleSimulation(bool request=false){if(!asynchronousMaterials||std::is_same<Backend,SceneRenderD3D12>::value)return true;if(request&&!particleSimulation)particleSimulation=std::make_unique<typename Particles::Preparation>(*device);return !particleSimulation||particleSimulation->poll();}
     std::unordered_map<std::string,std::unique_ptr<Particles>> particles;std::uint64_t particleSteps=0,particleBirths=0;
     std::vector<std::pair<std::string,hb::gpu::ProbeSettings>> globalProbeBindings;std::vector<typename Renderer::ProbeBinding> globalProbeScratch;
     struct Draw {bool globalProbes=false;std::array<std::string,2> probes{};std::array<hb::gpu::ProbeSettings,2> probeSettings{};hb::gpu::Scene2D twoD;std::array<std::string,8> maps2d{};std::uint32_t maskSampling=16;std::string particles,texture;hb::gpu::ParticleStyle particleStyle;std::uint32_t particleSampling=0;std::string mesh,program,instances,deformation,lightmap;hb::gpu::Matrix world=hb::gpu::identity,normal=hb::gpu::identity,previousWorld=hb::gpu::identity;float motionFlag=0;hb::gpu::SceneMaterial material;std::array<std::string,6> maps{};std::array<std::uint32_t,6> sampling{};std::vector<std::string> programMaps;std::vector<std::uint32_t> programSampling;std::uint32_t first=0,count=0;float shadowAlphaCutoff=0;};
@@ -91,11 +91,27 @@ template<class Backend> class SceneRenderBridgeCore {
     void ready() const{if(!renderer)throw std::runtime_error("Render initialization required");}
 public:
     bool initialized()const{return bool(renderer);}
+    template<class Regions> bool updateOverlay(const std::vector<std::uint8_t>& pixels,unsigned width,unsigned height,const Regions* regions){
+        if constexpr(std::is_same<Backend,SceneRenderD3D12>::value){
+            std::vector<typename Renderer::OverlayRegion> dirty;
+            if(regions){dirty.reserve(regions->size());for(const auto& r:*regions)dirty.push_back({r.x,r.y,r.width,r.height});}
+            renderer->updateOverlay(pixels,width,height,regions?&dirty:nullptr);return true;
+        }
+        return false;
+    }
+    std::uint64_t overlayDraws()const{
+        if constexpr(std::is_same<Backend,SceneRenderD3D12>::value)return renderer?renderer->overlayDraws():0;
+        return 0;
+    }
+    std::uint64_t overlayUploadBytes()const{
+        if constexpr(std::is_same<Backend,SceneRenderD3D12>::value)return renderer?renderer->overlayUploadBytes():0;
+        return 0;
+    }
     void shutdown(){clearSkyCapture();probes.clear();probeSizes.clear();globalProbeBindings.clear();globalProbeScratch.clear();draws.clear();order.clear();shadowCasters.clear();meshes.clear();textures.clear();programs.clear();preparingPrograms.clear();instances.clear();deformations.clear();particles.clear();particleSimulation.reset();renderer.reset();device.reset();}
     Json command(const Json& packet,HWND window,bool development,const std::vector<unsigned char>* binary=nullptr){
         const auto operation=packet.at("op").get<std::string>();const auto& data=packet.at("data");
         if(operation=="init"){
-            if(renderer){throw std::runtime_error("Render already initialized");}const auto requested=data.value("backend",std::string("d3d11"));std::string fallback;auto nextDevice=Backend::open(requested,fallback);asynchronousMaterials=data.value("asyncShaderPreparation",false)&&std::is_same<Backend,SceneRenderD3D11>::value;auto nextRenderer=Backend::renderer(*nextDevice,data.at("width").get<std::uint32_t>(),data.at("height").get<std::uint32_t>(),window,asynchronousMaterials);nextRenderer->setAsyncShaderPreparation(asynchronousMaterials);device=std::move(nextDevice);renderer=std::move(nextRenderer);auto info=Backend::describe(*device);info.update({{"requestedBackend",requested},{"fallback",fallback},{"nativeCommandLists",std::is_same<Backend,SceneRenderD3D12>::value},{"constantBuffers",3},{"dynamicMesh",true},{"meshFrameBuffers",3}});return info;
+            if(renderer){throw std::runtime_error("Render already initialized");}const auto requested=data.value("backend",std::string("d3d11"));std::string fallback;auto nextDevice=Backend::open(requested,fallback);asynchronousMaterials=data.value("asyncShaderPreparation",false)&&(std::is_same<Backend,SceneRenderD3D11>::value||data.value("asyncD3D12",false));auto nextRenderer=Backend::renderer(*nextDevice,data.at("width").get<std::uint32_t>(),data.at("height").get<std::uint32_t>(),window,asynchronousMaterials);nextRenderer->setAsyncShaderPreparation(asynchronousMaterials);device=std::move(nextDevice);renderer=std::move(nextRenderer);auto info=Backend::describe(*device);info.update({{"requestedBackend",requested},{"fallback",fallback},{"nativeCommandLists",std::is_same<Backend,SceneRenderD3D12>::value},{"constantBuffers",3},{"dynamicMesh",true},{"meshFrameBuffers",3}});return info;
         }
         ready();
         if(operation=="prepareStatus"){pollMaterials();renderer->pollShaderPreparation();pollParticleSimulation();return shaderPreparation();}
@@ -180,6 +196,11 @@ public:
 class SceneRenderBridge {
     std::unique_ptr<SceneRenderBridgeCore<SceneRenderD3D11>> d3d11;std::unique_ptr<SceneRenderBridgeCore<SceneRenderD3D12>> d3d12;
 public:
+    template<class Regions> bool updateOverlay(const std::vector<std::uint8_t>& pixels,unsigned width,unsigned height,const Regions* regions){
+        return d3d12&&d3d12->initialized()&&d3d12->updateOverlay(pixels,width,height,regions);
+    }
+    std::uint64_t overlayDraws()const{return d3d12?d3d12->overlayDraws():0;}
+    std::uint64_t overlayUploadBytes()const{return d3d12?d3d12->overlayUploadBytes():0;}
     void shutdown(){if(d3d11)d3d11->shutdown();if(d3d12)d3d12->shutdown();d3d11.reset();d3d12.reset();}
     // "d3d12" is the direct Direct3D12 renderer, "d3d12-11on12" SceneRenderer on 11On12, "d3d11" plain SceneRenderer.
     // "auto" tries direct Direct3D12 on a hardware adapter first and falls back to Direct3D11 (hardware, then WARP) with the reason.

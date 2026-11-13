@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import {installGPURefractionCopy} from './gpu-refraction-copy.js';
 
 export async function createGameRenderer(canvas,backend='webgl2',onError,options={}){
-  if(backend==='d3d11'){const renderer=await(await import('./native-scene-renderer.js')).createNativeSceneRenderer(canvas,onError,{graphicsAPI:'auto',...options});renderer.setPixelRatio(Math.min(devicePixelRatio,2));return renderer;}
+  if(backend==='d3d11'||backend==='d3d12'){const renderer=await(await import('./native-scene-renderer.js')).createNativeSceneRenderer(canvas,onError,{graphicsAPI:backend==='d3d12'?'d3d12':'auto',...options});renderer.setPixelRatio(Math.min(devicePixelRatio,2));return renderer;}
   if(!['webgl2','webgpu'].includes(backend))throw Error('실행 렌더러 설정 오류');
   const renderer=backend==='webgpu'?await(await import('./gpu-particles.js')).createGPURenderer(canvas):new THREE.WebGLRenderer({canvas,antialias:true});
   renderer.hbBackend=backend;renderer.hbOnError=onError;renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;
@@ -27,7 +27,7 @@ export function gameRendererCompilationInfo(renderer){
  if(!renderer)return null;
  const native=renderer.hbBackend==='d3d11'?renderer.hbDiagnostics():null;
  const nativeTime=Number.isFinite(native?.gpuTimeMs)&&native.gpuTimeMs>=0?native.gpuTimeMs:null;
- const gpuTiming=native?{api:'D3D11',supported:nativeTime!==null?true:null,enabled:null,status:nativeTime!==null?'ready':'unavailable',lastMs:nativeTime,completedSequence:native.gpuTimingFrame??null,scope:'existing native asynchronous GPU frame query; native collection policy'}:gpuFrameTimingInfo(renderer);
+ const gpuTiming=native?{api:native.backend,supported:nativeTime!==null?true:null,enabled:null,status:nativeTime!==null?'ready':'unavailable',lastMs:nativeTime,completedSequence:native.gpuTimingFrame??null,scope:'existing native asynchronous GPU frame query; native collection policy'}:gpuFrameTimingInfo(renderer);
  return {backend:renderer.hbBackend,distanceFields:renderer.hbDistanceFields?.state()||renderer.hbDistanceFieldState||null,textureStreaming:renderer.hbTextureStreaming?.({limit:1})||null,gpuTiming,pipelinePreparation:native?.pipelinePreparation??gpuPathPreparationInfo(renderer.hbPathPreparation),shaderCompilation:native?.shaderCompilation||null,shaderDiskCache:native?.shaderDiskCache||null};
 }
 export function gameRendererInfo(renderer){

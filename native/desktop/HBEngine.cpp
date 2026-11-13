@@ -37,10 +37,35 @@ struct State {
 #ifdef HB_GAME_PLAYER
     NativeAudio audio;
 #else
-    // Fixed panels plus form panels created on demand by name (inspector, content browser toolbars).
-    EditorTreePanel hierarchy;EditorListPanel assets,folders;std::map<std::string,std::unique_ptr<EditorFormPanel>> forms;nlohmann::json pendingMenu;std::string pendingMenuPanel;HINSTANCE instance=nullptr;EditorPanelBase::Post panelPost;
-    EditorFormPanel& form(const std::string& name){auto& slot=forms[name];if(!slot){if(forms.size()>16)throw std::runtime_error("Too many native form panels");slot=std::make_unique<EditorFormPanel>();slot->attach(window,instance,panelPost,name);}return *slot;}
-    EditorPanelBase& panel(const std::string& name){if(name=="hierarchy")return hierarchy;if(name=="assets")return assets;if(name=="folders")return folders;return form(name);}
+    EditorTreePanel hierarchy;
+    std::map<std::string,std::unique_ptr<EditorFormPanel>> forms;
+    std::map<std::string,std::unique_ptr<EditorListPanel>> lists;
+    struct ViewportSurface {
+        HWND window=nullptr;
+        SceneRenderBridge renderer;
+        ~ViewportSurface(){renderer.shutdown();if(IsWindow(window))DestroyWindow(window);}
+    };
+    std::map<std::string,std::unique_ptr<ViewportSurface>> surfaces;
+    nlohmann::json pendingMenu;
+    std::string pendingMenuPanel;
+    std::optional<POINT> pendingMenuAnchor;
+    HINSTANCE instance=nullptr;
+    EditorPanelBase::Post panelPost;
+    EditorFormPanel& form(const std::string& name){
+        if(const auto it=forms.find(name);it!=forms.end())return *it->second;
+        auto value=std::make_unique<EditorFormPanel>();value->attach(window,instance,panelPost,name);
+        return *forms.emplace(name,std::move(value)).first->second;
+    }
+    EditorListPanel& list(const std::string& name){
+        if(const auto it=lists.find(name);it!=lists.end())return *it->second;
+        auto value=std::make_unique<EditorListPanel>();value->attach(window,instance,panelPost,name);
+        return *lists.emplace(name,std::move(value)).first->second;
+    }
+    EditorPanelBase& panel(const std::string& name){
+        if(name=="hierarchy")return hierarchy;
+        if(const auto it=lists.find(name);it!=lists.end())return *it->second;
+        return form(name);
+    }
 #endif
     fs::path root,userData,ready,log,smoke; std::wstring url; bool closing=false,smokeSuccess=false,failed=false,development=true,windowSmoke=false,windowSmokeStarted=false,editorAcceptance=false,kiosk=false,kioskFullscreen=false,kioskPreventMinimize=false,operatorUnlocked=false;
     ~State(){if(view)view->Release();if(controller){controller->Close();controller->Release();}if(environment)environment->Release();if(job)CloseHandle(job);if(process)CloseHandle(process);}
@@ -80,14 +105,68 @@ struct DetachedWindow {
 };
 std::map<HWND,std::shared_ptr<DetachedWindow>> detachedWindows;
 LRESULT CALLBACK detachedProcedure(HWND,UINT,WPARAM,LPARAM);
-void closeDetached(){while(!detachedWindows.empty())DestroyWindow(detachedWindows.begin()->first);}
+HWND panelOwner(const nlohmann::json& packet){
+    const auto id=packet.value("owner",std::string());
+    if(id.empty())return app.window;
+    const auto uri=app.url+L"prototype/detached-window.html?id="+wide(id);
+    for(const auto& [handle,value]:detachedWindows)if(value->uri==uri)return handle;
+    return app.window;
+}
+void returnDetachedPanels(HWND owner){
+    if(!app.window)return;
+    for(auto& [name,panel]:app.forms)if(panel->parentWindow()==owner)panel->reparent(app.window);
+    for(auto& [name,panel]:app.lists)if(panel->parentWindow()==owner)panel->reparent(app.window);
+    if(app.hierarchy.parentWindow()==owner)app.hierarchy.reparent(app.window);
+    for(auto& [name,surface]:app.surfaces)if(GetParent(surface->window)==owner){ShowWindow(surface->window,SW_HIDE);SetParent(surface->window,app.window);}
+}
+void transparentController(ICoreWebView2Controller* controller){
+    ICoreWebView2Controller2* transparent=nullptr;
+    const auto result=controller->QueryInterface(IID_ICoreWebView2Controller2,reinterpret_cast<void**>(&transparent));
+    if(FAILED(result))throw std::runtime_error("Transparent WebView2 controller unavailable");
+    const auto background=transparent->put_DefaultBackgroundColor({0,0,0,0});transparent->Release();
+    if(FAILED(background))throw std::runtime_error("Transparent WebView2 background unavailable");
+}
+nlohmann::json surfaceCommand(const std::string& name,const nlohmann::json& packet){
+    const auto op=packet.at("op").get<std::string>();
+    if(op=="dispose"){app.surfaces.erase(name);return nullptr;}
+    auto found=app.surfaces.find(name);
+    if(op=="init"){
+        if(found!=app.surfaces.end())throw std::runtime_error("Render surface already initialized");
+        auto surface=std::make_unique<State::ViewportSurface>();
+        surface->window=CreateWindowExW(WS_EX_TRANSPARENT,L"STATIC",L"",WS_CHILD,0,0,1,1,app.window,nullptr,app.instance,nullptr);
+        if(!surface->window)throw std::runtime_error("Direct3D12 viewport window");
+        auto result=surface->renderer.command(packet,surface->window,app.development);
+        transparentController(app.controller);
+        app.surfaces.emplace(name,std::move(surface));
+        return result;
+    }
+    if(found==app.surfaces.end())throw std::runtime_error("Render surface missing");
+    auto& surface=*found->second;
+    if(op=="placement"){
+        const auto& data=packet.at("data");const auto owner=panelOwner(data);
+        if(!data.value("visible",false)){ShowWindow(surface.window,SW_HIDE);return nullptr;}
+        if(GetParent(surface.window)!=owner){
+            ShowWindow(surface.window,SW_HIDE);SetParent(surface.window,owner);
+            if(const auto child=detachedWindows.find(owner);child!=detachedWindows.end())transparentController(child->second->controller);
+        }
+        const auto rect=data.at("rect").get<std::array<int,4>>();
+        SetWindowPos(surface.window,HWND_BOTTOM,rect[0],rect[1],rect[2],rect[3],SWP_NOACTIVATE|SWP_SHOWWINDOW);
+        return nullptr;
+    }
+    if(op=="surfaceInfo"){
+        RECT bounds{};GetClientRect(surface.window,&bounds);
+        return {{"owner",reinterpret_cast<std::uintptr_t>(GetParent(surface.window))},{"visible",bool(IsWindowVisible(surface.window))},{"size",{bounds.right,bounds.bottom}}};
+    }
+    return surface.renderer.command(packet,surface.window,app.development);
+}
+void closeDetached(){while(!detachedWindows.empty()){const auto window=detachedWindows.begin()->first;returnDetachedPanels(window);DestroyWindow(window);}}
 class DetachedMessage final:public Callback<ICoreWebView2WebMessageReceivedEventHandler>{
     std::weak_ptr<DetachedWindow> owner;
 public:
     explicit DetachedMessage(std::shared_ptr<DetachedWindow> value):Callback(L"{57213f19-00e6-49fa-8e07-898ea01ecbd2}"),owner(value){}
     HRESULT STDMETHODCALLTYPE Invoke(ICoreWebView2*,ICoreWebView2WebMessageReceivedEventArgs* args) override{
         const auto window=owner.lock();if(!window)return S_OK;LPWSTR source=nullptr,message=nullptr;args->get_Source(&source);args->TryGetWebMessageAsString(&message);
-        if(source&&message&&std::wstring(source)==window->uri&&std::wstring(message)==L"hbengine.detached.close"){window->closing=true;DestroyWindow(window->window);}
+        if(source&&message&&std::wstring(source)==window->uri&&std::wstring(message)==L"hbengine.detached.close"){window->closing=true;returnDetachedPanels(window->window);DestroyWindow(window->window);}
         if(source&&message&&app.windowSmoke&&std::wstring(source)==window->uri&&std::wstring(message)==L"hbengine.detached.test.resize")SetWindowPos(window->window,nullptr,0,0,840,560,SWP_NOMOVE|SWP_NOZORDER);
         CoTaskMemFree(source);CoTaskMemFree(message);return S_OK;
     }
@@ -147,7 +226,7 @@ LRESULT CALLBACK detachedProcedure(HWND window,UINT message,WPARAM wParam,LPARAM
     if(message==WM_SIZE&&value->controller){RECT bounds;GetClientRect(window,&bounds);value->controller->put_Bounds(bounds);}
     else if(message==WM_SETFOCUS&&value->controller)value->controller->MoveFocus(COREWEBVIEW2_MOVE_FOCUS_REASON_PROGRAMMATIC);
     else if(message==WM_DPICHANGED){const auto bounds=reinterpret_cast<RECT*>(lParam);SetWindowPos(window,nullptr,bounds->left,bounds->top,bounds->right-bounds->left,bounds->bottom-bounds->top,SWP_NOZORDER|SWP_NOACTIVATE);}
-    else if(message==WM_CLOSE){if(!app.closing&&!value->closing&&value->view){const auto result=value->view->ExecuteScript(L"if(window.hbEngineRequestClose){window.hbEngineRequestClose();}else{window.chrome.webview.postMessage('hbengine.detached.close');}",nullptr);if(SUCCEEDED(result))return 0;}value->closing=true;DestroyWindow(window);return 0;}
+    else if(message==WM_CLOSE){if(!app.closing&&!value->closing&&value->view){const auto result=value->view->ExecuteScript(L"if(window.hbEngineRequestClose){window.hbEngineRequestClose();}else{window.chrome.webview.postMessage('hbengine.detached.close');}",nullptr);if(SUCCEEDED(result))return 0;}value->closing=true;returnDetachedPanels(window);DestroyWindow(window);return 0;}
     else if(message==WM_NCDESTROY){value->window=nullptr;detachedWindows.erase(found);return 0;}
     return DefWindowProcW(window,message,wParam,lParam);
 }
@@ -165,21 +244,30 @@ public:
                 nlohmann::json response;try{
                     if(std::wcslen(raw)>134217728)throw std::runtime_error("Render message too large");const auto packet=nlohmann::json::parse(utf8(raw));
                     if(packet.value("channel","")=="hb.render"){
-                        response={{"channel","hb.render"},{"id",packet.at("id")},{"ok",true}};response["value"]=app.sceneRenderer.command(packet,app.window,app.development);
+                        response={{"channel","hb.render"},{"id",packet.at("id")},{"ok",true}};
+#ifndef HB_GAME_PLAYER
+                        const auto surface=packet.value("surface",std::string());
+                        if(!surface.empty()){response["surface"]=surface;response["value"]=surfaceCommand(surface,packet);}
+                        else
+#endif
+                        {
+                        response["value"]=app.sceneRenderer.command(packet,app.window,app.development);
                         if(packet.at("op")=="init"){ICoreWebView2Controller2* transparent=nullptr;const auto result=app.controller->QueryInterface(IID_ICoreWebView2Controller2,reinterpret_cast<void**>(&transparent));if(FAILED(result))throw std::runtime_error("Transparent WebView2 controller unavailable");const auto background=transparent->put_DefaultBackgroundColor({0,0,0,0});transparent->Release();if(FAILED(background))throw std::runtime_error("Transparent WebView2 background unavailable");}
+                        }
                     }
 #ifndef HB_GAME_PLAYER
                     // Native editor panels: the script sends models, the panel windows report input back on the same channel.
                     else if(packet.value("channel","")=="hb.panel"){
                         const auto op=packet.at("op").get<std::string>();response={{"channel","hb.panel"},{"ok",true}};if(packet.contains("id"))response["id"]=packet.at("id");
                         const auto panel=packet.value("panel",std::string(op=="inspector"?"inspector":"hierarchy"));
-                        if(op=="hierarchy")app.hierarchy.update(packet.at("data"));
-                        else if(op=="inspector"||op=="form")app.form(panel).update(packet.at("data"));
-                        else if(op=="assets")(panel=="folders"?app.folders:app.assets).update(packet.at("data"));
-                        else if(op=="menu"){app.pendingMenu=packet.at("data").at("items");app.pendingMenuPanel=panel;PostMessageW(app.window,WM_APP+60,0,0);}
-                        else if(op=="inspect"){if(panel=="hierarchy")response["value"]=app.hierarchy.inspect();else if(panel=="assets"||panel=="folders")response["value"]=(panel=="folders"?app.folders:app.assets).inspect();else response["value"]=app.form(panel).inspect();}
+                        if(op=="hierarchy"){app.hierarchy.reparent(panelOwner(packet));app.hierarchy.update(packet.at("data"));}
+                        else if(op=="inspector"||op=="form"){auto& form=app.form(panel);form.reparent(panelOwner(packet));form.update(packet.at("data"));}
+                        else if(op=="assets"){auto& list=app.list(panel=="hierarchy"?"assets":panel);list.reparent(panelOwner(packet));list.update(packet.at("data"));}
+                        else if(op=="dispose"){app.forms.erase(panel);app.lists.erase(panel);}
+                        else if(op=="menu"){const auto& data=packet.at("data");app.pendingMenu=data.at("items");app.pendingMenuPanel=panel;app.pendingMenuAnchor.reset();if(data.contains("anchor"))app.pendingMenuAnchor=POINT{data.at("anchor").at(0).get<LONG>(),data.at("anchor").at(1).get<LONG>()};PostMessageW(app.window,WM_APP+60,0,0);}
+                        else if(op=="inspect"){if(panel=="hierarchy")response["value"]=app.hierarchy.inspect();else if(const auto it=app.lists.find(panel);it!=app.lists.end())response["value"]=it->second->inspect();else response["value"]=app.form(panel).inspect();}
                         else if(op=="snapshot"){if(!app.editorAcceptance)throw std::runtime_error("Panel snapshot is acceptance only");response["value"]=app.panel(panel).snapshot();}
-                        else if(op=="probe"){if(!app.editorAcceptance)throw std::runtime_error("Panel probe is acceptance only");if(panel=="hierarchy")app.hierarchy.probe(packet.at("data"));else if(panel=="assets"||panel=="folders")(panel=="folders"?app.folders:app.assets).probe(packet.at("data"));else app.form(panel).probe(packet.at("data"));}
+                        else if(op=="probe"){if(!app.editorAcceptance)throw std::runtime_error("Panel probe is acceptance only");if(panel=="hierarchy")app.hierarchy.probe(packet.at("data"));else if(const auto it=app.lists.find(panel);it!=app.lists.end())it->second->probe(packet.at("data"));else app.form(panel).probe(packet.at("data"));}
                         else throw std::runtime_error("Panel operation invalid");
                     }
 #endif
@@ -290,7 +378,7 @@ LRESULT CALLBACK windowProcedure(HWND window,UINT message,WPARAM wParam,LPARAM l
     if(app.kiosk&&app.smoke.empty()&&!app.operatorUnlocked){if(message==WM_CLOSE)return 0;if(message==WM_SYSCOMMAND&&app.kioskPreventMinimize&&((wParam&0xfff0)==SC_MINIMIZE||(wParam&0xfff0)==SC_MAXIMIZE))return 0;}
     if(message==WM_SIZE&&app.controller){RECT bounds;GetClientRect(window,&bounds);app.controller->put_Bounds(bounds);}
 #ifndef HB_GAME_PLAYER
-    else if(message==WM_APP+60){const auto items=std::move(app.pendingMenu);app.pendingMenu=nlohmann::json();if(items.is_array())app.panel(app.pendingMenuPanel).showMenu(items);return 0;}
+    else if(message==WM_APP+60){const auto items=std::move(app.pendingMenu);app.pendingMenu=nlohmann::json();if(items.is_array())app.panel(app.pendingMenuPanel).showMenu(items,app.pendingMenuAnchor);return 0;}
 #endif
     else if(message==WM_SETFOCUS&&app.controller)app.controller->MoveFocus(COREWEBVIEW2_MOVE_FOCUS_REASON_PROGRAMMATIC);
     else if(message==WM_DPICHANGED){const auto bounds=reinterpret_cast<RECT*>(lParam);SetWindowPos(window,nullptr,bounds->left,bounds->top,bounds->right-bounds->left,bounds->bottom-bounds->top,SWP_NOZORDER|SWP_NOACTIVATE);}
@@ -307,6 +395,7 @@ LRESULT CALLBACK windowProcedure(HWND window,UINT message,WPARAM wParam,LPARAM l
         app.audio.shutdown();
 #endif
 #ifndef HB_GAME_PLAYER
+        app.surfaces.clear();
         closeDetached();
 #endif
         app.window=nullptr;PostQuitMessage(0);return 0;}
@@ -393,7 +482,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         WNDCLASSW windowClass{};windowClass.hInstance=instance;windowClass.lpszClassName=className.c_str();windowClass.lpfnWndProc=windowProcedure;windowClass.hCursor=LoadCursorW(nullptr,IDC_ARROW);windowClass.hIcon=LoadIconW(instance,MAKEINTRESOURCEW(101));windowClass.hbrBackground=CreateSolidBrush(RGB(23,26,31));RegisterClassW(&windowClass);
         app.window=CreateWindowExW(0,className.c_str(),L"HBEngine",WS_OVERLAPPEDWINDOW,CW_USEDEFAULT,CW_USEDEFAULT,1440,900,nullptr,nullptr,instance,nullptr);if(!app.window)throw std::runtime_error("native window");
 #ifndef HB_GAME_PLAYER
-        {const auto post=[](const nlohmann::json& event){if(app.view)app.view->PostWebMessageAsJson(wide(event.dump()).c_str());};app.instance=instance;app.panelPost=post;app.hierarchy.attach(app.window,instance,post);app.assets.attach(app.window,instance,post,L"HBEngine.EditorListPanel","assets");app.folders.attach(app.window,instance,post,L"HBEngine.EditorListPanel","folders");}
+        {const auto post=[](const nlohmann::json& event){if(app.view)app.view->PostWebMessageAsJson(wide(event.dump()).c_str());};app.instance=instance;app.panelPost=post;app.hierarchy.attach(app.window,instance,post);}
 #endif
 
         #ifdef HB_GAME_PLAYER

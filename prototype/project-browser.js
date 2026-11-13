@@ -144,7 +144,7 @@ export class ProjectBrowser {
       if(this.disposed||request!==this.request||controller.signal.aborted)return;this.entries=data.entries;this.anchor=undefined;
       if(this.selected.size){const available=new Set(this.entries.map(f=>f.path));this.selected=new Set([...this.selected].filter(path=>available.has(path)));}
       this.folders=[{path:'',name:'Project',kind:'folder'},...data.folders];this.folderGrid.tabIndex=-1;
-      this.renderFolders(true);if(this.folderKey!==state.folder){const index=this.folders.findIndex(f=>f.path===state.folder);this.folderGrid.scrollTop=Math.max(0,index*31-62);this.folderKey=state.folder;this.renderFolders();}
+      this.renderFolders(true);if(this.folderKey!==state.folder){const index=this.folders.findIndex(f=>f.path===state.folder);this.nativeFolderFocus=index>=0?index:null;this.folderGrid.scrollTop=Math.max(0,index*31-62);this.folderKey=state.folder;this.renderFolders();}
       if(this.breadcrumb){this.breadcrumb.textContent=this.folder||'Project';this.breadcrumb.title=data.root;}
       const key=query.toString();if(this.refreshKey!==key){this.grid.scrollTop=0;this.focusedIndex=undefined;}this.refreshKey=key;this.renderEntries(true);
       this.hooks.files?.(data.entries);this.selection();this.updateNavigation();if(data.issues?.length){const issue=data.issues[0];this.hooks.error?.('일부 항목을 확인하지 못했어요: '+issue.path+' · '+issue.message);}
@@ -159,6 +159,7 @@ export class ProjectBrowser {
     this.selection();this.hooks.select?.(file);
   }
   selection(){
+    this.selectionVersion=(this.selectionVersion||0)+1;
     this.el.querySelectorAll('[data-project-entry]').forEach(card=>{const selected=this.selected.has(this.entries[Number(card.dataset.projectEntry)]?.path);card.classList.toggle('selected',selected);card.setAttribute('aria-selected',String(selected));});
     this.el.querySelector('[data-project-results]').textContent=this.entries.length+'개 · '+this.selected.size+'개 선택';this.rememberNavigation();
   }

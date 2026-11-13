@@ -100,11 +100,28 @@ public:
         std::uint64_t bufferBytes()const{return vertices.size+indices.size+uv1.size;}std::uint64_t cpuBytes()const{return std::uint64_t(streamVertices.capacity())*sizeof(SceneVertex);}};
     // Node material: graph PS (single target), surface PS (screen-effect MRT), shadow PS, float parameters in t7.
     struct Program {std::vector<unsigned char> ps,surface,shadow;Buffer parameters;std::vector<float> current;
+        std::array<std::shared_ptr<detail::ShaderPreparationQueue::Job>,3> preparation{};
+        std::shared_ptr<const std::string> preparationBase,preparationSurface;
         mutable std::array<Com<ID3D12PipelineState>,144> pipelines;mutable std::map<UINT,Com<ID3D12PipelineState>> surfacePipelines;mutable std::array<Com<ID3D12PipelineState>,6> shadowPipelines;mutable std::map<UINT,Com<ID3D12PipelineState>> pipelines2D;
-        bool ready()const{return !ps.empty();}
-        // Compiled when created on this backend.
-        SceneProgramPreparation::Info preparationInfo()const{return {{3,3},false,true,{}};}};
+        bool ready()const{return !ps.empty()&&!surface.empty()&&!shadow.empty();}
+        SceneProgramPreparation::Info preparationInfo()const{
+            using Status=detail::ShaderPreparationQueue::Status;
+            SceneProgramPreparation::Info info;info.ready=ready();info.pending=!info.ready;
+            const auto stage=[&](std::size_t i,bool adopted){
+                if(adopted)return 3u;if(!preparation[i])return 1u;
+                switch(preparation[i]->status.load(std::memory_order_acquire)){
+                    case Status::failed:info.error=preparation[i]->error;return 4u;
+                    case Status::ready:return 3u;
+                    case Status::compiling:return 2u;
+                    default:return 1u;
+                }
+            };
+            const auto base=stage(0,!ps.empty()),mrt=stage(2,!surface.empty());
+            info.stages={base==4||mrt==4?4u:std::min(base,mrt),stage(1,!shadow.empty())};
+            info.pending=info.pending&&info.error.empty();return info;
+        }};
     struct TextureRegion {std::uint32_t level,x,y,z,width,height,depth;std::vector<std::uint8_t> rgba;};
+    struct OverlayRegion {std::uint32_t x,y,width,height;};
     struct RayScenePatch {std::uint32_t row,rows;std::vector<std::uint8_t> bytes;};
     struct TextureMipLevel {std::uint32_t width=0,height=0;std::vector<std::uint8_t> rgba;std::uint32_t layers=1;};
     struct Texture : d3d12::Texture {D3D12_CPU_DESCRIPTOR_HANDLE srv{};UINT mips=1;bool generatedMips=false;Resource stencil;D3D12_CPU_DESCRIPTOR_HANDLE stencilView{};bool renderTarget()const{return rtv.ptr!=0;}
@@ -124,6 +141,47 @@ public:
     struct ProbeBinding {const Probe* resource=nullptr;ProbeSettings settings;};
 private:
     static constexpr D3D12_RESOURCE_STATES readable=D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE|D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+    d3d12::Texture overlay;
+    Com<ID3D12RootSignature> overlayRoot;
+    Com<ID3D12PipelineState> overlayPipeline;
+    std::uint64_t overlayDraws_=0,overlayUploadBytes_=0;
+    void drawOverlay(){
+        if(!overlay.value.p||overlay.width!=surfaceWidth||overlay.height!=surfaceHeight)return;
+        if(!overlayPipeline.p){
+            static constexpr auto source=R"hlsl(
+Texture2D<float4> hud : register(t0);
+float4 VS(uint id : SV_VertexID) : SV_Position {
+    float2 p = float2((id << 1) & 2, id & 2);
+    return float4(p * float2(2,-2) + float2(-1,1), 0, 1);
+}
+float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pixel.xy),0)); }
+)hlsl";
+            const D3D12_DESCRIPTOR_RANGE range{D3D12_DESCRIPTOR_RANGE_TYPE_SRV,1,0,0,0};
+            D3D12_ROOT_PARAMETER param{};param.ParameterType=D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;param.DescriptorTable={1,&range};param.ShaderVisibility=D3D12_SHADER_VISIBILITY_PIXEL;
+            D3D12_ROOT_SIGNATURE_DESC rootDesc{};rootDesc.NumParameters=1;rootDesc.pParameters=&param;
+            overlayRoot=gpu.rootSignature(rootDesc);
+            const auto vs=Device::shader(source,"HBGameOverlay","VS","vs_5_0"),ps=Device::shader(source,"HBGameOverlay","PS","ps_5_0");
+            auto desc=Device::defaults(overlayRoot.p,vs,ps,DXGI_FORMAT_R8G8B8A8_UNORM);
+            desc.RasterizerState.CullMode=D3D12_CULL_MODE_NONE;
+            desc.DepthStencilState.DepthEnable=FALSE;desc.DSVFormat=DXGI_FORMAT_UNKNOWN;
+            auto& blend=desc.BlendState.RenderTarget[0];blend.BlendEnable=TRUE;
+            blend.SrcBlend=D3D12_BLEND_ONE;blend.DestBlend=D3D12_BLEND_INV_SRC_ALPHA;
+            blend.SrcBlendAlpha=D3D12_BLEND_ONE;blend.DestBlendAlpha=D3D12_BLEND_INV_SRC_ALPHA;
+            blend.BlendOp=blend.BlendOpAlpha=D3D12_BLEND_OP_ADD;blend.LogicOp=D3D12_LOGIC_OP_NOOP;
+            overlayPipeline=gpu.pipeline(desc);
+        }
+        auto table=gpu.table(1);
+        gpu.device->CreateShaderResourceView(overlay.get(),nullptr,table.cpuAt(0));
+        gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);gpu.keep(overlay.get());
+        auto* list=gpu.list.p;
+        const D3D12_VIEWPORT viewport{0,0,float(surfaceWidth),float(surfaceHeight),0,1};
+        const D3D12_RECT scissor{0,0,LONG(surfaceWidth),LONG(surfaceHeight)};
+        list->RSSetViewports(1,&viewport);list->RSSetScissorRects(1,&scissor);
+        list->OMSetRenderTargets(1,&color.rtv,FALSE,nullptr);
+        list->SetGraphicsRootSignature(overlayRoot.p);list->SetGraphicsRootDescriptorTable(0,table.gpu);
+        list->SetPipelineState(overlayPipeline.p);list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        list->DrawInstanced(3,1,0,0);++overlayDraws_;
+    }
     using Constants=SceneRenderer::Constants;
     struct Slot {D3D12_SRV_DIMENSION dimension=D3D12_SRV_DIMENSION_TEXTURE2D;UINT stride=0;bool raw=false;};
     Device& gpu;UINT surfaceWidth,surfaceHeight;
@@ -149,6 +207,8 @@ private:
     Com<ID3D12RootSignature> tileRoot;Com<ID3D12PipelineState> tilePipeline;Buffer tileBits;bool tilesActive=false;SceneLightTiles::Settings tileSettings{};
     // Probe filtering: SceneProbes' Prefilter/Integrate/Diffuse/Equirect kernels, BRDF LUT in t43.
     Com<ID3D12RootSignature> probeRoot;std::array<Com<ID3D12PipelineState>,4> probeKernels;d3d12::Texture brdf;D3D12_CPU_DESCRIPTOR_HANDLE brdfView{};
+    std::array<std::shared_ptr<detail::ShaderPreparationQueue::Job>,4> probePreparation;
+    bool asynchronousShaders=false,probeRequested=false;
     Probe* activeProbe=nullptr;bool probeIndirect=false;UINT probeFace=0;SceneFrame savedProbe;
     Probe skyProbe;const Texture* skySource=nullptr;std::uint32_t skySize=0;ProbeSettings skySettings{};std::uint64_t probeIdentities=0;
     // HDR scene + BloomPass port (same shaderCode, constants and level chain).
@@ -313,18 +373,36 @@ private:
         gpu.transition(tileBits,readable);
     }
     // Kernel order: Prefilter, Integrate, Diffuse, Equirect. Root: b0 CBV, t0..t1 table, u0..u2 table, static s0 (clamp) and s1 (wrap U).
-    void prepareProbes(){
-        if(brdfView.ptr)return;
+    static std::shared_ptr<detail::ShaderPreparationQueue::Job> prepareBytecode(std::shared_ptr<const std::string> source,const char* group,const char* entry,const char* target){
+        const std::string key=std::string(group)+":"+entry+":"+target+":"+*source;
+        return ScreenEffectsPass::sharedPreparationQueue().submit(key,256+key.size()*2+source->size(),[source,group,entry,target]{return Device::shader(*source,group,entry,target);});
+    }
+    bool prepareProbes(bool wait=true){
+        probeRequested=true;
+        if(brdfView.ptr)return true;
+        static const char* names[]={"Prefilter","Integrate","Diffuse","Equirect"};
+        if(asynchronousShaders&&!wait){
+            using Status=detail::ShaderPreparationQueue::Status;
+            static const auto source=std::make_shared<const std::string>(SceneProbes::shader);
+            for(std::size_t i=0;i<4;++i)if(!probePreparation[i])probePreparation[i]=prepareBytecode(source,"HBProbeFilter",names[i],"cs_5_0");
+            for(const auto& job:probePreparation){
+                if(!job) return false;
+                const auto status=job->status.load(std::memory_order_acquire);
+                if(status==Status::failed)throw std::runtime_error(job->error);
+                if(status!=Status::ready)return false;
+            }
+        }
         const D3D12_DESCRIPTOR_RANGE srv{D3D12_DESCRIPTOR_RANGE_TYPE_SRV,2,0,0,0},uav{D3D12_DESCRIPTOR_RANGE_TYPE_UAV,3,0,0,0};
         D3D12_ROOT_PARAMETER params[3]{};params[0].ParameterType=D3D12_ROOT_PARAMETER_TYPE_CBV;params[1].ParameterType=params[2].ParameterType=D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;params[1].DescriptorTable={1,&srv};params[2].DescriptorTable={1,&uav};
         D3D12_STATIC_SAMPLER_DESC samplers[2]{};for(UINT i=0;i<2;i++){auto& t=samplers[i];t.Filter=D3D12_FILTER_MIN_MAG_MIP_LINEAR;t.AddressU=i?D3D12_TEXTURE_ADDRESS_MODE_WRAP:D3D12_TEXTURE_ADDRESS_MODE_CLAMP;t.AddressV=t.AddressW=D3D12_TEXTURE_ADDRESS_MODE_CLAMP;t.MaxLOD=D3D12_FLOAT32_MAX;t.ShaderRegister=i;t.ShaderVisibility=D3D12_SHADER_VISIBILITY_ALL;t.ComparisonFunc=D3D12_COMPARISON_FUNC_NEVER;}
         D3D12_ROOT_SIGNATURE_DESC rd{};rd.NumParameters=3;rd.pParameters=params;rd.NumStaticSamplers=2;rd.pStaticSamplers=samplers;probeRoot=gpu.rootSignature(rd);
-        const char* names[]={"Prefilter","Integrate","Diffuse","Equirect"};for(std::size_t i=0;i<4;i++)probeKernels[i]=gpu.computePipeline(probeRoot.p,Device::shader(SceneProbes::shader,"HBProbeFilter",names[i],"cs_5_0"));
+        for(std::size_t i=0;i<4;i++)probeKernels[i]=gpu.computePipeline(probeRoot.p,asynchronousShaders&&!wait?probePreparation[i]->code:Device::shader(SceneProbes::shader,"HBProbeFilter",names[i],"cs_5_0"));
+        probePreparation={};
         D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=d.Height=128;d.DepthOrArraySize=1;d.MipLevels=1;d.Format=DXGI_FORMAT_R32G32_FLOAT;d.SampleDesc.Count=1;d.Flags=D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
         brdf.value=gpu.committed(D3D12_HEAP_TYPE_DEFAULT,d,D3D12_RESOURCE_STATE_UNORDERED_ACCESS,nullptr,"Direct3D12 probe BRDF");brdf.state=D3D12_RESOURCE_STATE_UNORDERED_ACCESS;brdf.width=brdf.height=128;brdf.format=d.Format;
         D3D12_UNORDERED_ACCESS_VIEW_DESC u{};u.Format=d.Format;u.ViewDimension=D3D12_UAV_DIMENSION_TEXTURE2D;
         probeDispatch(1,{0,0,0,0},nullptr,nullptr,nullptr,nullptr,brdf.get(),&u,16,16,1);
-        gpu.transition(brdf,readable);brdfView=views.take();gpu.device->CreateShaderResourceView(brdf.get(),nullptr,brdfView);
+        gpu.transition(brdf,readable);brdfView=views.take();gpu.device->CreateShaderResourceView(brdf.get(),nullptr,brdfView);return true;
     }
     // Null descriptors fill every unbound kernel slot.
     void probeDispatch(std::size_t kernel,const std::array<float,4>& settings,const D3D12_CPU_DESCRIPTOR_HANDLE* cube,const D3D12_CPU_DESCRIPTOR_HANDLE* panorama,ID3D12Resource* u0,const D3D12_UNORDERED_ACCESS_VIEW_DESC* u0Desc,ID3D12Resource* u2,const D3D12_UNORDERED_ACCESS_VIEW_DESC* u2Desc,UINT x,UINT y,UINT z,ID3D12Resource* u1=nullptr){
@@ -507,6 +585,25 @@ private:
         uploaded=gpu.submitted();
     }
 public:
+    void updateOverlay(const std::vector<std::uint8_t>& pixels,UINT width,UINT height,const std::vector<OverlayRegion>* regions){
+        if(!width||!height||pixels.size()!=std::uint64_t(width)*height*4)throw std::runtime_error("Direct3D12 HUD dimensions invalid");
+        if(regions)for(const auto& r:*regions)if(!r.width||!r.height||r.x>=width||r.y>=height||r.width>width-r.x||r.height>height-r.y)throw std::runtime_error("Direct3D12 HUD region invalid");
+        record();
+        const UINT pitch=width*4;
+        if(overlay.width!=width||overlay.height!=height){
+            if(overlay.value.p)gpu.release(overlay);
+            overlay=gpu.texture(width,height,DXGI_FORMAT_B8G8R8A8_UNORM,pixels.data(),pitch);
+            overlayUploadBytes_+=pixels.size();
+        }else if(!regions){
+            gpu.updateTexture(overlay,0,0,0,width,height,pixels.data(),pitch);
+            overlayUploadBytes_+=pixels.size();
+        }else for(const auto& r:*regions){
+            gpu.updateTexture(overlay,0,r.x,r.y,r.width,r.height,pixels.data()+(std::size_t(r.y)*width+r.x)*4,r.width*4,pitch);
+            overlayUploadBytes_+=std::uint64_t(r.width)*r.height*4;
+        }
+    }
+    std::uint64_t overlayDraws()const{return overlayDraws_;}
+    std::uint64_t overlayUploadBytes()const{return overlayUploadBytes_;}
     // hwnd is optional and borrowed; present() copies the final image into its flip swapchain.
     SceneMeshRenderer(Device& device,UINT targetWidth,UINT targetHeight,void* hwnd=nullptr):gpu(device),surfaceWidth(targetWidth),surfaceHeight(targetHeight){
         const auto source=SceneRenderer::shaderSource();vs=Device::shader(source,"HBSceneRender","VS","vs_5_0");ps=Device::shader(source,"HBSceneRender","PS","ps_5_0");shadowPs=Device::shader(source,"HBSceneRender","ShadowPS","ps_5_0");surfacePs=Device::shader(SceneRenderer::surfaceShader(source),"HBSceneRender","PS","ps_5_0");
@@ -645,7 +742,7 @@ public:
     }
     void endShadow(){if(activeShadow<0)return;frame=shadowFrame;activeShadow=-1;}
     std::size_t shadowLayers()const{return shadows.size();}
-    bool pollProbePreparation(bool request=false){record();if(request)prepareProbes();return true;}
+    bool pollProbePreparation(bool request=false){if(!request&&!probeRequested)return true;record();return prepareProbes(false);}
     Probe createProbe(std::uint32_t size){record();++uploads_;
         if(size<16||size>2048||(size&(size-1)))throw std::runtime_error("Probe resolution must be a power of two (16..2048)");
         prepareProbes();Probe out;out.size=size;out.identity=++probeIdentities;for(UINT n=size;n;n/=2)++out.mips;
@@ -760,20 +857,39 @@ public:
         if(program.current.size()!=values.size()||!program.parameters.value.p){gpu.retire(std::move(program.parameters.value));program.parameters=gpu.buffer(data.size()*4,readable,D3D12_RESOURCE_FLAG_NONE);}
         gpu.update(program.parameters,data.data(),data.size()*4);program.current=values;
     }
-    // ponytail: the Async variants compile synchronously; SceneProgramPreparation's worker queue can feed them later.
+    void validateProgram(const Program& out){
+        ReflectedLayout check;for(const auto* code:{&out.ps,&out.shadow,&out.surface})check.reflect(*code);
+        if(check.srvs.size()>slots.size()||check.samplers>16||!check.uavs.empty()||std::any_of(check.cbuffers.begin(),check.cbuffers.end(),[&](const auto& c){return !cbuffers.count(c.first)||c.second>cbuffers.at(c.first);}))throw std::runtime_error("Material program bindings exceed the scene root signature");
+    }
     Program createProgram(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){
         if(!SceneRenderer::finite(parameters))throw std::runtime_error("Material parameters invalid");
         const auto base=SceneRenderer::materialProgramBase(declarations,evaluation),surface=SceneRenderer::surfaceShader(base);Program out;
         out.ps=Device::shader(base,"HBNodeMaterial","PS","ps_5_0");out.shadow=Device::shader(base,"HBNodeMaterial","ShadowPS","ps_5_0");out.surface=Device::shader(surface,"HBNodeMaterial","PS","ps_5_0");
-        // Graph bindings must fit the shared root signature (b0..b3, t0..t52, s0..s15).
-        ReflectedLayout check;for(const auto* code:{&out.ps,&out.shadow,&out.surface})check.reflect(*code);
-        if(check.srvs.size()>slots.size()||check.samplers>16||!check.uavs.empty()||std::any_of(check.cbuffers.begin(),check.cbuffers.end(),[&](const auto& c){return !cbuffers.count(c.first)||c.second>cbuffers.at(c.first);}))throw std::runtime_error("Material program bindings exceed the scene root signature");
+        validateProgram(out);
         setProgramParameters(out,parameters);return out;
     }
-    Program createProgramAsync(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){return createProgram(declarations,evaluation,parameters);}
+    Program createProgramAsync(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){
+        if(!SceneRenderer::finite(parameters))throw std::runtime_error("Material parameters invalid");
+        Program out;
+        out.preparationBase=std::make_shared<const std::string>(SceneRenderer::materialProgramBase(declarations,evaluation));
+        out.preparationSurface=std::make_shared<const std::string>(SceneRenderer::surfaceShader(*out.preparationBase));
+        pollProgramPreparation(out);
+        setProgramParameters(out,parameters);return out;
+    }
     Program createSurfaceProgram(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){return createProgram("#define HB_NODE_SURFACE 1\n"+declarations,evaluation,parameters);}
-    Program createSurfaceProgramAsync(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){return createSurfaceProgram(declarations,evaluation,parameters);}
-    bool pollProgramPreparation(Program& program){return program.ready();}
+    Program createSurfaceProgramAsync(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){return createProgramAsync("#define HB_NODE_SURFACE 1\n"+declarations,evaluation,parameters);}
+    bool pollProgramPreparation(Program& program){
+        if(program.ready())return true;
+        if(!program.preparationBase)return false;
+        for(std::size_t i=0;i<program.preparation.size();++i)if(!program.preparation[i]){
+            program.preparation[i]=prepareBytecode(i==2?program.preparationSurface:program.preparationBase,"HBNodeMaterial",i==1?"ShadowPS":"PS","ps_5_0");
+        }
+        using Status=detail::ShaderPreparationQueue::Status;
+        for(const auto& job:program.preparation)if(!job||job->status.load(std::memory_order_acquire)!=Status::ready)return false;
+        program.ps=program.preparation[0]->code;program.shadow=program.preparation[1]->code;program.surface=program.preparation[2]->code;
+        try{validateProgram(program);}catch(...){program.ps.clear();program.shadow.clear();program.surface.clear();throw;}
+        program.preparation={};program.preparationBase.reset();program.preparationSurface.reset();return true;
+    }
     void release(Program& program){gpu.retire(std::move(program.parameters.value));program={};}
     void setGeometryScene(const Texture* value){geometryScene=value;}
     void setPathEnvironment(const Texture* value){pathEnvironment=value;}
@@ -1012,6 +1128,7 @@ public:
             gpu.transition(cameraComposite,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(color,D3D12_RESOURCE_STATE_COPY_DEST);gpu.list->CopyResource(color.get(),cameraComposite.get());gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);
             cameraSequence.clear();cameraIndex=0;
         }
+        drawOverlay();
         if(swapchain){auto& back=swapchain->acquire();gpu.transition(color,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(back,D3D12_RESOURCE_STATE_COPY_DEST);gpu.list->CopyResource(back.get(),color.get());gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);swapchain->finish(back);}
         closeTiming();gpu.end();begun=false;if(swapchain)swapchain->present(interval);++presents_;return true;
     }
@@ -1051,7 +1168,17 @@ public:
     std::uint64_t probeCaptures()const{return probeCaptures_;}std::uint64_t probeDispatches()const{return probeDispatches_;}
     std::uint64_t probeAtlasBytes()const{return std::uint64_t(atlasImage.width)*atlasImage.height*8+atlasTable.size+atlasSH.size;}
     std::uint64_t probeSharedBytes()const{return (brdfView.ptr?128*128*8:0)+probeAtlasBytes();}
-    SceneProbes::PreparationInfo probePreparationInfo()const{SceneProbes::PreparationInfo info;info.requested=info.ready=brdfView.ptr!=0;if(info.ready)info.stages={3,3,3,3};return info;}
+    SceneProbes::PreparationInfo probePreparationInfo()const{
+        using Status=detail::ShaderPreparationQueue::Status;
+        SceneProbes::PreparationInfo info;info.enabled=asynchronousShaders;info.requested=probeRequested;info.ready=brdfView.ptr!=0;info.pending=info.requested&&!info.ready;
+        if(info.ready)info.stages={3,3,3,3};
+        else if(info.requested)for(std::size_t i=0;i<probePreparation.size();++i){
+            const auto& job=probePreparation[i];const auto status=job?job->status.load(std::memory_order_acquire):Status::queued;
+            info.stages[i]=status==Status::failed?4:status==Status::ready?3:status==Status::compiling?2:1;
+            if(status==Status::failed)info.error=job->error;
+        }
+        info.pending=info.pending&&info.error.empty();return info;
+    }
     std::size_t probeAtlasCPUBytes()const{return atlasSpatial.cpuBytes()+atlasSettings.capacity()*sizeof(ProbeSettings)+atlasStamps.capacity()*16;}
     std::uint64_t probeAtlasCopies()const{return atlasCopies_;}UINT probeAtlasCount()const{return atlasCount;}std::uint64_t probeAtlasLayoutBuilds()const{return atlasUploads_;}std::size_t probeAtlasMapCount()const{return atlasMaps_;}
     std::uint64_t probeAtlasMetadataBytes()const{return atlasMetadataBytes_;}std::uint64_t probeAtlasMetadataCalls()const{return atlasUploads_;}
@@ -1068,7 +1195,7 @@ public:
     bool pollRasterPreparation(){return true;}
     SceneRasterPreparation::Info rasterPreparationInfo()const{return SceneRasterPreparation::Info{{3,3,3},false,true,{}};}
     void pollShaderPreparation(){}
-    void setAsyncShaderPreparation(bool){}
+    void setAsyncShaderPreparation(bool value){asynchronousShaders=value;}
     ScreenEffectsPass::PreparationInfo shaderPreparationInfo()const{ScreenEffectsPass::PreparationInfo info;info.enabled=screen.has_value();info.ready=info.enabled;if(info.ready)info.stages={3,3,3,3,3,3};return info;}
     std::array<std::uint64_t,9> shaderCompilationInfo()const{auto& c=ScreenEffectsPass::compiler();std::lock_guard<std::mutex> lock(c.mutex);return {c.compilations,c.cache.hits(),c.cache.misses(),c.cache.evictions(),c.cache.bytes(),c.cache.budget(),c.lastMS,c.totalMS,std::uint64_t(screenKernels.size())};}
     static auto shaderDiskCacheInfo(){return detail::ShaderBytecodeCompiler::info();}

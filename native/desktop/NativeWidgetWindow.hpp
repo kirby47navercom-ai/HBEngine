@@ -13,6 +13,8 @@
 class NativeWidgetWindow {
 public:
     struct PixelRect {unsigned x,y,width,height;std::size_t offset;};
+    using Composite=std::function<bool(const std::vector<BYTE>&,unsigned,unsigned,const std::vector<PixelRect>*)>;
+    Composite composite;
 private:
     HWND window=nullptr;std::vector<BYTE> pixels,scratch;std::uint64_t pixelSequence=0;unsigned width=0,height=0;
     HDC memory=nullptr;HBITMAP image=nullptr;HGDIOBJ previous=nullptr;void* bits=nullptr;unsigned bitmapWidth=0,bitmapHeight=0;
@@ -30,6 +32,10 @@ private:
     }
     void resetBitmap(){if(image){SelectObject(memory,previous);DeleteObject(image);image=nullptr;bits=nullptr;}if(memory){DeleteDC(memory);memory=nullptr;}bitmapWidth=bitmapHeight=0;}
     void present(HWND owner,const std::vector<PixelRect>* dirty=nullptr){
+        if(composite&&composite(pixels,width,height,dirty)){
+            if(window){DestroyWindow(window);window=nullptr;resetBitmap();}
+            return;
+        }
         if(!window){window=CreateWindowExW(WS_EX_LAYERED|WS_EX_TRANSPARENT|WS_EX_NOACTIVATE|WS_EX_TOOLWINDOW,L"STATIC",L"",WS_POPUP,0,0,width,height,owner,nullptr,GetModuleHandleW(nullptr),nullptr);if(!window)throw std::runtime_error("Native UI window");}
         if(!image||bitmapWidth!=width||bitmapHeight!=height){dirty=nullptr;resetBitmap();memory=CreateCompatibleDC(nullptr);if(!memory)throw std::runtime_error("Native UI device context");BITMAPINFO bitmap{};bitmap.bmiHeader.biSize=sizeof(BITMAPINFOHEADER);bitmap.bmiHeader.biWidth=width;bitmap.bmiHeader.biHeight=-LONG(height);bitmap.bmiHeader.biPlanes=1;bitmap.bmiHeader.biBitCount=32;bitmap.bmiHeader.biCompression=BI_RGB;image=CreateDIBSection(memory,&bitmap,DIB_RGB_COLORS,&bits,nullptr,0);if(!image){resetBitmap();throw std::runtime_error("Native UI bitmap");}previous=SelectObject(memory,image);bitmapWidth=width;bitmapHeight=height;}
         if(dirty){for(const auto& rect:*dirty)for(unsigned row=0;row<rect.height;row++){const auto at=(std::size_t(rect.y+row)*width+rect.x)*4;std::memcpy(static_cast<BYTE*>(bits)+at,pixels.data()+at,std::size_t(rect.width)*4);}}else std::memcpy(bits,pixels.data(),pixels.size());HDC screen=GetDC(nullptr);POINT origin{},position{};ClientToScreen(owner,&position);SIZE extent{LONG(width),LONG(height)};BLENDFUNCTION blend{AC_SRC_OVER,0,255,AC_SRC_ALPHA};const bool ok=UpdateLayeredWindow(window,screen,&position,&extent,memory,&origin,0,&blend,ULW_ALPHA);ReleaseDC(nullptr,screen);if(!ok)throw std::runtime_error("Native UI surface update");place(owner);

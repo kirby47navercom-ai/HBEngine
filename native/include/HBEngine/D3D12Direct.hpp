@@ -165,10 +165,10 @@ public:
         auto d=bufferDesc(size);d.Flags=flags;Buffer b;b.size=size;b.value=committed(D3D12_HEAP_TYPE_DEFAULT,d,state,nullptr,"Direct3D12 buffer");b.state=state;return b;
     }
     // Writes one w x h box of a texture subresource (tightly packed rows), ordered on the queue like UpdateSubresource.
-    void updateTexture(Texture& t,UINT subresource,UINT x,UINT y,UINT w,UINT h,const void* data,UINT rowBytes){
+    void updateTexture(Texture& t,UINT subresource,UINT x,UINT y,UINT w,UINT h,const void* data,UINT rowBytes,UINT sourcePitch=0){
         requireRecording();if(!w||!h||!data)throw std::runtime_error("Direct3D12 texture update box empty");const auto desc=t.get()->GetDesc();
         const UINT pitch=(rowBytes+D3D12_TEXTURE_DATA_PITCH_ALIGNMENT-1)&~(D3D12_TEXTURE_DATA_PITCH_ALIGNMENT-1);auto u=upload(std::uint64_t(pitch)*h,D3D12_TEXTURE_DATA_PLACEMENT_ALIGNMENT);
-        for(UINT row=0;row<h;row++)std::memcpy(u.cpu+std::size_t(row)*pitch,static_cast<const unsigned char*>(data)+std::size_t(row)*rowBytes,rowBytes);
+        for(UINT row=0;row<h;row++)std::memcpy(u.cpu+std::size_t(row)*pitch,static_cast<const unsigned char*>(data)+std::size_t(row)*(sourcePitch?sourcePitch:rowBytes),rowBytes);
         D3D12_TEXTURE_COPY_LOCATION dst{},src{};dst.pResource=t.get();dst.Type=D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;dst.SubresourceIndex=subresource;src.pResource=u.resource;src.Type=D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;src.PlacedFootprint.Offset=u.offset;src.PlacedFootprint.Footprint={desc.Format,w,h,1,pitch};
         const auto restore=t.state;transition(t,D3D12_RESOURCE_STATE_COPY_DEST);list->CopyTextureRegion(&dst,x,y,0,&src,nullptr);keep(dst.pResource);transition(t,restore);
     }
