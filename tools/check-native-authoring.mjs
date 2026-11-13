@@ -118,6 +118,20 @@ startup.objects[0].components.push(makeSceneComponent('AudioSource',{
   clip:'Assets/NativeTone.wav',playOnStart:true,loop:true,spatial:false,
 }));
 await project.project.write(project.manifest.startupScene,JSON.stringify(startup));
+const travelAudio='Assets/Scenes/TravelAudio.hbscene.json',arrivalAudio='Assets/Scenes/ArrivalAudio.hbscene.json';
+const travelGraph=createAsset('blueprint','TravelAudio'),travelNode=makeNode('openScene'),delayNode=makeNode('delay');
+travelNode.inputValues={scene:arrivalAudio};delayNode.inputValues={duration:.05};
+travelGraph.nodes.push(delayNode,travelNode);
+assert.ok(connect(travelGraph,{node:'beginPlay',pin:'then'},{node:delayNode.id,pin:'exec'}).ok);
+assert.ok(connect(travelGraph,{node:delayNode.id,pin:'then'},{node:travelNode.id,pin:'exec'}).ok);
+const travelGraphFile='Assets/BP_TravelAudio.hbblueprint.json';
+const firstScene=createAsset('scene','TravelAudio'),secondScene=createAsset('scene','ArrivalAudio');
+const travelActor=createPlacedObject('cube',{id:'traveler'});travelActor.blueprintAsset=travelGraphFile;
+const tone=createPlacedObject('audio',{id:'arrival-tone'});
+Object.assign(tone.components.find(component=>component.type==='AudioSource').properties,{clip:'Assets/NativeTone.wav',playOnStart:true,loop:true,spatial:false});
+firstScene.objects.push(travelActor);secondScene.objects.push(tone);
+for(const [file,data] of [[travelGraphFile,travelGraph],[travelAudio,firstScene],[arrivalAudio,secondScene]])
+  await project.project.write(file,JSON.stringify(data));
 const debugAsset='Assets/BP_NativeDebug.hbblueprint.json',debugScene='Assets/Scenes/NativeDebug.hbscene.json';
 const debugBP=createAsset('blueprint','NativeDebug'),firstBreak=makeNode('print'),afterBreak=makeNode('print'),watchedTick=makeNode('tick');
 firstBreak.breakpoint=true;firstBreak.inputValues={message:'HB_BREAK_FIRST'};afterBreak.inputValues={message:'HB_BREAK_NEXT'};
@@ -151,7 +165,7 @@ assert.equal(restored.revision,placedBP.revision);
 await dispatch('document.close',{path:cameraScene,discard:true});
 const settings=await dispatch('project.buildProfiles');
 assert.ok(settings.profiles.some(profile=>profile.id==='windows'));
-const updatedSettings=await dispatch('project.buildProfileSave',{id:'windows',changes:{targetFrameRate:144},expectedRevision:settings.revision});
+const updatedSettings=await dispatch('project.buildProfileSave',{id:'windows',changes:{targetFrameRate:144,scenes:[project.manifest.startupScene,travelAudio,arrivalAudio].map(path=>({path,enabled:true}))},expectedRevision:settings.revision});
 assert.equal(updatedSettings.profiles[0].targetFrameRate,144);
 await assert.rejects(dispatch('project.buildProfileSave',{id:'windows',changes:{targetFrameRate:165},expectedRevision:settings.revision}),/변경/);
 const copiedSettings=await dispatch('project.buildProfileSave',{id:'windows',action:'copy',newId:'windows-qa',changes:{name:'QA'},expectedRevision:updatedSettings.revision});
@@ -479,6 +493,8 @@ if(process.argv[3]){
   assert.equal(mix.readUInt32LE(24),48000);
   assert.equal(mix.readUInt32LE(40),mix.length-44);
   assert.ok(mix.subarray(44).some(byte=>byte!==0),'Native game mix contains the test tone');
+  const travelledMix=await fs.readFile(path.join(project.root,'Assets/Recordings/TravelMix.wav'));
+  assert.ok(travelledMix.subarray(44).some(byte=>byte!==0),'Capture reaches sound from the scene entered after recording begins');
   assert.deepEqual(await fs.readdir(path.join(process.env.HB_USER_DATA_DIR,'Play')),[]);
 }
 assert.equal(evidence.contentDock,true);
@@ -501,6 +517,7 @@ assert.equal(evidence.sceneAssetDrop,true);
 assert.equal(evidence.simultaneousDocking,true);
 assert.equal(evidence.browserTreeAndFilter,true);
 assert.equal(evidence.modelImportPreview,true);
+assert.equal(evidence.independentAssetPreview,true);
 assert.deepEqual(evidence.worldAssets,{backend:'D3D12',terrain:true,foliage:true,mesh:true,meshTools:true,uvView:true,lod:true});
 assert.equal(evidence.curveBox,true);
 assert.equal(evidence.independentAssetForm,true);

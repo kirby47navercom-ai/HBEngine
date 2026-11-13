@@ -94,7 +94,9 @@ static nlohmann::json proof(DeviceDriver driver,HWND window){
     out["descriptorReusedPages"]=gpu.descriptorReusedPages();
     // Present through a hidden window, including a resize.
     {d3d12::Swapchain chain(gpu,window,160,96);
-        for(int i=0;i<6;i++){if(i==3)chain.resize(200,120);gpu.begin();auto& back=chain.acquire();const float c[4]={0,float(i)/6,0,1};gpu.list->ClearRenderTargetView(back.rtv,c,0,nullptr);chain.finish(back);gpu.end();chain.present(0);}
+        for(int i=0;i<6;i++){if(i==3)chain.resize(200,120);gpu.begin();auto& back=chain.acquire();const float c[4]={0,float(i)/6,0,1};gpu.list->ClearRenderTargetView(back.rtv,c,0,nullptr);chain.finish(back);gpu.end();chain.present(i==4?1:0,true);
+            REQUIRE(chain.presentFlags()==(i!=4&&chain.tearingSupported()?DXGI_PRESENT_ALLOW_TEARING:0));}
+        out["tearingSupported"]=chain.tearingSupported();out["finalPresentFlags"]=chain.presentFlags();
         gpu.waitIdle();}
     out["validationErrors"]=validationErrors(gpu);REQUIRE(out["validationErrors"]==0);out["frames"]=frames;out["submitted"]=gpu.submitted();return out;
 }

@@ -110,7 +110,7 @@ class NativeEditorShell {
         Json doc,model,inputs=Json::array(),assetFields=Json::array(),assetPath=Json::array();
         Json sceneInput;
         std::string view="event",selection,surface,cameraId,cameraDirection;
-        bool cameraOutputs=false;
+        bool cameraOutputs=false,assetPreview=false;
         bool sceneQueued=false;
         std::uint64_t inputRevision=0;
         bool updating=false,draft=false,source=false;
@@ -1343,15 +1343,16 @@ class NativeEditorShell {
         MoveWindow(GetDlgItem(owner,DocAdd),std::max(5,width-107),37,100,26,TRUE);
         ShowWindow(GetDlgItem(owner,DocReload),width>=410?SW_SHOWNOACTIVATE:SW_HIDE);
         ShowWindow(item.editor,graphShown||sceneShown||assetShown?SW_HIDE:SW_SHOWNOACTIVATE);
-        ShowWindow(item.viewPicker,sceneShown||(graphShown&&!item.model.value("views",Json::array()).empty())?SW_SHOWNOACTIVATE:SW_HIDE);
+        ShowWindow(item.viewPicker,(sceneShown&&!item.assetPreview)||(graphShown&&!item.model.value("views",Json::array()).empty())?SW_SHOWNOACTIVATE:SW_HIDE);
         ShowWindow(item.palette,graphShown?SW_SHOWNOACTIVATE:SW_HIDE);
         ShowWindow(GetDlgItem(owner,DocAdd),graphShown?SW_SHOWNOACTIVATE:SW_HIDE);
         const int side=graphShown&&item.graphForm&&width>=365?std::min(240,width*42/100):0;
         if(item.graph)item.graph->layout(5,70,std::max(1,width-side-10),std::max(1,height-98),graphShown);
         if(item.graphForm)item.graphForm->update({{"rect",{width-side-5,70,side,std::max(1,height-98)}},{"visible",side>0}});
-        if(item.assetForm)item.assetForm->update({{"rect",{5,38,std::max(1,width-10),std::max(1,height-62)}},{"visible",assetShown}});
+        const int assetSide=assetShown&&sceneShown&&item.assetPreview?std::clamp(width/3,130,280):0;
+        if(item.assetForm)item.assetForm->update({{"rect",{assetSide?width-assetSide:5,38,assetSide?assetSide-5:std::max(1,width-10),std::max(1,height-62)}},{"visible",assetShown}});
         if(item.sceneView){
-            item.sceneView->layout(owner,5,70,std::max(1,width-10),std::max(1,height-98),sceneShown);
+            item.sceneView->layout(owner,5,item.assetPreview?38:70,std::max(1,width-10-assetSide),std::max(1,height-(item.assetPreview?66:98)),sceneShown);
             if(sceneShown)scheduleWindowScene(owner,item);
             else{KillTimer(owner,1);item.sceneQueued=false;}
         }
@@ -1366,7 +1367,12 @@ class NativeEditorShell {
         input["cameraId"]=item.cameraId;input["cameraOutputs"]=item.cameraOutputs;input["direction"]=item.cameraDirection;input["selected"]=item.selection;
         if(input.value("command",std::string())=="focus")input["id"]=item.selection;
         if(!input.contains("tool"))input["tool"]=item.sceneView->transformTool();
-        auto state=request("scene.viewport",input);
+        auto state=request(item.assetPreview?"asset.preview":"scene.viewport",input);
+        if(item.assetPreview){
+            if(state.at("shaderPreparation").value("pending",false))scheduleWindowScene(owner,item,120);
+            else if(!state.at("warnings").empty())SetWindowTextW(item.status,wide(state.at("warnings").front()).c_str());
+            return state;
+        }
         item.sceneView->setHandles(state.at("segments"));
         const auto action=input.value("command",std::string());
         if(action=="pick")item.selection=state.at("selection");
@@ -1453,7 +1459,7 @@ class NativeEditorShell {
             if(last>=0)SendMessageW(item.palette,CB_SETCURSEL,std::clamp<LRESULT>(selection,0,last),0);
             refreshWindowGraphInputs(item);
         }
-        if(item.sceneView){
+        if(item.sceneView&&!item.assetPreview){
             const auto scene=Json::parse(item.doc.at("text").get<std::string>());
             auto& cameras=item.model["cameras"];cameras=Json::array();
             const int active=populateCameraViews(item.viewPicker,cameras,item.cameraId,item.cameraDirection,item.cameraOutputs);
@@ -1611,6 +1617,19 @@ class NativeEditorShell {
                     catch(const std::exception& error){SetWindowTextW(pane.status,wide(std::string(error.what())).c_str());}
                 },"asset");
                 item.assetForm->useD3D12(graphics);
+                const auto kind=target.at("kind");
+                item.assetPreview=kind=="modelimport"||kind=="materialinstance"||kind=="mesh"||kind=="terrain"||kind=="foliage"||kind=="lod";
+                if(item.assetPreview){
+                    item.surface="native-asset-"+std::to_string(nextSceneSurface++);
+                    item.sceneView=std::make_unique<EditorScenePanel>();
+                    item.sceneView->attach(owner,instance,[this,owner](Json input){
+                        auto& pane=documentWindows.at(owner);
+                        mergeCameraInput(pane.sceneInput,std::move(input));scheduleWindowScene(owner,pane);
+                    });
+                    item.sceneInput={{"command","focus"}};
+                    sceneSurfaces.emplace(item.surface,item.sceneView.get());
+                    SetWindowTextW(item.toggle,L"미리보기 / 소스");
+                }
             }else ShowWindow(item.toggle,SW_HIDE);
             refreshDocumentWindow(owner,item,request("document.read",{{"path",target.at("path")}}));
             if(split)layout();
@@ -1626,7 +1645,7 @@ class NativeEditorShell {
         auto& item=documentWindows.at(owner);
         if(item.sceneView){
             KillTimer(owner,1);
-            if(!waiting)try{request("scene.viewportClose",{{"surface",item.surface}});}catch(const std::exception&){}
+            if(!waiting)try{request(item.assetPreview?"asset.previewClose":"scene.viewportClose",{{"surface",item.surface}});}catch(const std::exception&){}
             sceneSurfaces.erase(item.surface);
         }
         SetWindowLongPtrW(owner,GWLP_USERDATA,0);
@@ -2148,7 +2167,7 @@ class NativeEditorShell {
              {"windowsRuntime",L"Windows 실행기",0,false,{L"네이티브",L"WebView2 호환"},{"native","webview"}},
              {"nativeGraphicsAPI",L"Windows 그래픽 API",0,false,{L"DirectX 12",L"DirectX 12 · 11On12",L"자동",L"DirectX 11"},{"d3d12","d3d12-11on12","auto","d3d11"}},
              {"windowsRenderer",L"호환 실행기 렌더러",0,false,{L"웹 그래픽",L"DirectX 12 호환 장면"},{"scene","d3d11"}}},
-            {{"targetFrameRate",L"목표 FPS (15–240)",3,true},{"framePacing",L"프레임 표시 방식",0,false,{L"고정 목표 FPS",L"화면 주사율 동기화"},{"fixed","display"}}},
+            {{"targetFrameRate",L"목표 FPS (15–240)",3,true},{"framePacing",L"프레임 표시 방식",0,false,{L"고정 목표 FPS",L"화면 주사율 동기화",L"제한 없음 · Windows 네이티브"},{"fixed","display","uncapped"}}},
             {{"enabled",L"키오스크 모드",0,false,toggle,toggleValues},{"fullscreen",L"전체 화면",0,false,toggle,toggleValues},
              {"hideCursor",L"커서 숨기기",0,false,toggle,toggleValues},{"preventMinimize",L"최소화 막기",0,false,toggle,toggleValues},
              {"idleResetSeconds",L"재시작 대기 시간 (초, 0은 사용 안 함)",5,true}},
@@ -2181,11 +2200,20 @@ class NativeEditorShell {
             next=field.number?Json::parse(utf8(input)):Json(utf8(input));
         }else{
             auto marked=field.labels;
-            for(std::size_t i=0;i<field.options.size();++i)if(field.options.at(i)==previous)marked.at(i)=L"● "+marked.at(i);
+            if(std::string(field.key)=="framePacing"&&(effective.value("target",std::string("windows-x64"))!="windows-x64"||effective.value("windowsRuntime",std::string("native"))=="webview"))marked.pop_back();
+            for(std::size_t i=0;i<marked.size();++i)if(field.options.at(i)==previous)marked.at(i)=L"● "+marked.at(i);
             const auto option=chooseMenu(marked);if(!option)return Json::object();
             next=field.options.at(*option);
         }
-        if(section.empty())return {{field.key,next}};
+        if(section.empty()){
+            Json changes={{field.key,next}};
+            if(effective.value("framePacing",std::string())=="uncapped"){
+                const auto key=std::string(field.key);
+                if(key=="target"&&next!="windows-x64")changes["framePacing"]=next=="android"||next=="ios"?"display":"fixed";
+                if(key=="windowsRuntime"&&next=="webview")changes["framePacing"]="fixed";
+            }
+            return changes;
+        }
         values[field.key]=next;
         return {{section,values}};
     }
@@ -3449,6 +3477,13 @@ private:
             if(std::none_of(take.at("tracks").begin(),take.at("tracks").end(),[&](const Json& row){return row.at("target")==newCube&&row.at("type")=="component";}))
                 throw std::runtime_error("Native editor take has no recorded object");
             playEvidence["take"]=document.at("path");
+            showDocument(request("document.open",{{"path","Assets/Scenes/TravelAudio.hbscene.json"}}));
+            auto audioReport=smoke;audioReport+=L".travel-audio.json";
+            startPlay(audioReport,{},"transform",false,L"TravelMix");waitForPlaySmoke();
+            const auto audioPlay=Json::parse(read(audioReport)).at("logic");
+            if(audioPlay.at("scene")!="Assets/Scenes/ArrivalAudio.hbscene.json"||audioPlay.at("sceneHistory").size()!=2)
+                throw std::runtime_error("Native audio capture did not travel to the second scene");
+            finishAudioCapture();
             showDocument(request("document.open",{{"path","Assets/Scenes/NativeDebug.hbscene.json"}}));
             auto debugReport=smoke;debugReport+=L".debug.json";
             startPlay(debugReport);waitForPlaySmoke();
@@ -3746,7 +3781,16 @@ private:
         const auto modelPreview=drawPreview({{"capture",true},{"command","focus"}});
         if(modelPreview.at("backend")!="D3D12"||modelPreview.at("calls")<1||!modelPreview.at("warnings").empty())
             throw std::runtime_error("Native model preview: "+modelPreview.dump());
+        const auto modelPath=document.at("path");
+        openDocumentWindow(document);
+        auto modelPane=documentWindows.begin()->first;
         showDocument(request("document.open",{{"path","Assets/T_Native.hbterrain.json"}}));
+        auto& independentModel=documentWindows.at(modelPane);
+        const auto independentPreview=drawWindowScene(modelPane,independentModel,{{"capture",true},{"command","focus"}});
+        if(!independentModel.assetPreview||independentModel.doc.at("path")!=modelPath||
+            independentPreview.at("backend")!="D3D12"||independentPreview.at("calls")<1||!independentPreview.at("warnings").empty())
+            throw std::runtime_error("Independent D3D12 asset preview: "+independentPreview.dump());
+        destroyDocumentWindow(modelPane);
         const auto terrainBefore=document.at("revision");
         const auto terrainView=drawPreview({{"capture",true},{"command","focus"}});
         if(terrainView.at("backend")!="D3D12"||!terrainView.at("warnings").empty())throw std::runtime_error("Native terrain preview: "+terrainView.dump());
@@ -3823,7 +3867,7 @@ private:
         showDocument(request("document.open",{{"path","Assets/A_Native.hbaudioasset.json"}}));
         command(ShowAudioWaveform);assetCanvas.probePaint();
         if(assetCanvas.inspect().at("backend")!="D3D12")throw std::runtime_error("Native waveform present failed");
-        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
+        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
 };

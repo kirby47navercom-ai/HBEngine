@@ -82,7 +82,8 @@ const pointerPart = key => key.replaceAll('~','~0').replaceAll('/','~1');
 const fieldLabels = {settings:'설정',convertUnits:'파일 단위 변환',sourceUnit:'원본 단위',sourceUp:'원본 위 축',flipForward:'앞 방향 뒤집기',translation:'이동',name:'이름',sceneName:'레벨 이름',objects:'오브젝트',environment:'환경',position:'위치',rotation:'회전',scale:'크기',parent:'부모 에셋',clip:'오디오 클립',volume:'볼륨',pitch:'피치',loop:'반복',friction:'마찰',restitution:'반발력',density:'밀도',parameters:'매개변수',surfaceOverrides:'표면 오버라이드'};
 
 export function nativeEditorSession(bridge) {
-  let record, documents = new AssetDocuments(), viewport, preview, previewSource, previewScene, previewNode, build, buildJobs, lastBuild;
+  let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBuild;
+  const previews=new Map();
   const sequenceSamplers=new WeakMap();
   const sceneViews=new Map();
   let nativeMetadata=new WeakMap();
@@ -166,6 +167,8 @@ export function nativeEditorSession(bridge) {
     await stopAudioPreview();
     for(const view of sceneViews.values())await view.close();
     sceneViews.clear();
+    for(const preview of previews.values())await preview.view.close();
+    previews.clear();
     await rememberProject(candidate);
     contentScan?.controller.abort();contentScan=undefined;
     if(meshAtlas?.worker)await meshAtlas.worker.terminate();
@@ -1156,12 +1159,17 @@ export function nativeEditorSession(bridge) {
       return {closed:!!view};
     },
     'asset.preview': async params=>{
-      const {width,height,node}=params;
+      const {width,height,node,surface='native-preview',path:file}=params;
       if(!bridge||![width,height].every(value=>Number.isInteger(value)&&value>0&&value<=4096))throw Error('3D 미리보기 연결이나 크기를 확인하세요.');
-      const doc=current();
+      const doc=targetDocument(file);
       if(!previewKind(doc))throw Error('미리 볼 에셋을 선택하세요.');
-      preview??=(await import('./native-editor-viewport.mjs')).nativeEditorViewport(bridge,'native-preview');
-      if(previewSource!==doc.data||previewNode!==node){
+      if(surface!=='native-preview'&&!/^native-asset-\d+$/.test(surface))throw Error('3D 미리보기 표면을 확인하세요.');
+      let preview=previews.get(surface);
+      if(!preview){
+        preview={view:(await import('./native-editor-viewport.mjs')).nativeEditorViewport(bridge,surface)};
+        previews.set(surface,preview);
+      }
+      if(preview.data!==doc.data||preview.node!==node){
         const asset=async name=>name===doc.path?doc.data:JSON.parse((await projectBytes(project(),name)).toString('utf8').replace(/^\uFEFF/,''));
         const worldAsset=Object.hasOwn(worldAssetTypes,doc.kind);
         const actor=createPlacedObject(doc.kind==='blueprint'?'cube':doc.kind==='modelimport'||worldAsset?'empty':'sphere',{id:'asset-preview'});
@@ -1186,14 +1194,14 @@ export function nativeEditorSession(bridge) {
           addSceneComponent(ground,'MeshRenderer').properties.mesh=data.terrain;
           objects.push(ground);
         }
-        previewScene={objects,surface:defaultSurface,environment:defaultEnvironment,assetDraft:{path:doc.path,data,kind:worldAsset?doc.kind:undefined}};
-        previewSource=doc.data;previewNode=node;
+        preview.scene={objects,surface:defaultSurface,environment:defaultEnvironment,assetDraft:{path:doc.path,data,kind:worldAsset?doc.kind:undefined}};
+        preview.data=doc.data;preview.node=node;
       }
-      return preview.draw(previewScene,project(),params.command==='focus'?{...params,id:'asset-preview'}:params);
+      return preview.view.draw(preview.scene,project(),params.command==='focus'?{...params,id:'asset-preview'}:params);
     },
-    'asset.previewClose': async ()=>{
-      if(preview)await preview.close();
-      previewSource=previewNode=previewScene=null;
+    'asset.previewClose': async ({surface='native-preview'}={})=>{
+      const preview=previews.get(surface);
+      if(preview){try{await preview.view.close();}finally{previews.delete(surface);}}
       return {ok:true};
     },
     'timeline.read': () => {

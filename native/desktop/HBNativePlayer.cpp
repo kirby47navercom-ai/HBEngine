@@ -31,6 +31,10 @@ struct Host {
  HWND window=nullptr,editorOwner=nullptr;HANDLE input=nullptr,output=nullptr,process=nullptr,job=nullptr,timer=nullptr;std::thread reader;std::mutex mutex;std::condition_variable space;std::deque<NativeRuntimePackets::Packet> packets;std::atomic<bool> closing{false};bool hidden=false,ready=false,inFrame=false,closeRequested=false,uncapped=false,tickPosted=false,displaySync=false;std::atomic<bool> failed{false};unsigned rate=120,width=1280,height=720;wchar_t highSurrogate=0;std::uint64_t frames=0;std::chrono::steady_clock::time_point last=std::chrono::steady_clock::now(),nextFrame=last;SceneRenderBridge renderer;NativeWidgetWindow ui;NativeUIPipe uiPipe;NativeGameAudioIdentity audioIdentity;NativeGameInputQueue inputQueue;NativeGamepadInput gamepads;unsigned mouseButtons=0;POINT cursor{};std::unordered_set<UINT32> contacts;bool touchAvailable=false;
  bool mouseLocked=false,mouseCaptureRequested=false;
  std::int64_t mouseRelativeX=0,mouseRelativeY=0;
+ bool timingReport=false;
+ double wakeMS=0,renderCommandMS=0;
+ unsigned presentCount=0;
+ std::chrono::steady_clock::time_point frameSent;
  bool kiosk=false,kioskFullscreen=false,kioskHideCursor=false,kioskPreventMinimize=false,operatorUnlocked=false;
  unsigned kioskIdleSeconds=0;ULONGLONG lastActivity=GetTickCount64();fs::path root,logFile,debugSnapshot;std::wstring failureMessage;
  void write(Json packet){const auto s=packet.dump()+"\n";std::size_t at=0;while(at<s.size()){DWORD sent=0;if(!WriteFile(input,s.data()+at,DWORD(std::min<std::size_t>(s.size()-at,1048576)),&sent,nullptr)||!sent)throw std::runtime_error("Native game pipe closed");at+=sent;}}
@@ -47,11 +51,17 @@ struct Host {
  void drain(){for(unsigned i=0;i<8;i++){NativeRuntimePackets::Packet packet;{std::lock_guard<std::mutex> lock(mutex);if(packets.empty())return;packet=std::move(packets.front());packets.pop_front();}space.notify_one();auto message=Json::parse(packet.text);const auto op=message.value("op",std::string());const auto id=message.value("id",std::uint64_t(0));try{
    if(message.value("channel",std::string())=="hb.render"){
        if(op=="frame"&&displaySync)message["data"]["presentInterval"]=1;
-       auto value=renderer.command(message,window,true,&packet.binary);if(op=="init")value["binaryResourceUpload"]=1;if(op=="frame"){value["overlayDraws"]=renderer.overlayDraws();value["overlayUploadBytes"]=renderer.overlayUploadBytes();}write({{"channel","hb.render"},{"id",id},{"ok",true},{"value",value}});}
+       if(op=="frame"&&uncapped)message["data"]["allowTearing"]=true;
+       const bool measure=timingReport&&inFrame&&op=="frame";
+       const auto before=measure?std::chrono::steady_clock::now():std::chrono::steady_clock::time_point{};
+       auto value=renderer.command(message,window,true,&packet.binary);
+       if(measure){renderCommandMS+=milliseconds(std::chrono::steady_clock::now()-before);++presentCount;}
+       if(op=="init")value["binaryResourceUpload"]=1;if(op=="frame"){value["overlayDraws"]=renderer.overlayDraws();value["overlayUploadBytes"]=renderer.overlayUploadBytes();}write({{"channel","hb.render"},{"id",id},{"ok",true},{"value",value}});}
    else if(message.value("channel",std::string())=="hb.platform"){Json value;if(op=="ui"){const auto& frame=message.at("data");if(frame.value("encoding",std::string())=="zstd-rgba8-premultiplied-rect"){const auto& r=frame.at("rect");if(!r.is_array()||r.size()!=4)throw std::runtime_error("UI rectangle shape invalid");ui.updateRect(window,frame.at("pixels").get<std::string>(),frame.at("width").get<unsigned>(),frame.at("height").get<unsigned>(),frame.at("sequence").get<std::uint64_t>(),frame.at("baseSequence").get<std::uint64_t>(),r.at(0).get<unsigned>(),r.at(1).get<unsigned>(),r.at(2).get<unsigned>(),r.at(3).get<unsigned>());}else if(frame.value("encoding",std::string())=="zstd-rgba8-premultiplied"||frame.value("encoding",std::string())=="zstd-rgba8-premultiplied-xor")ui.updatePixels(window,frame.at("pixels").get<std::string>(),frame.at("width").get<unsigned>(),frame.at("height").get<unsigned>(),frame.value("sequence",std::uint64_t(0)),frame.value("baseSequence",std::uint64_t(0)),frame.value("encoding",std::string())=="zstd-rgba8-premultiplied-xor");else ui.update(window,frame.at("png").get<std::string>());value={{"ok",true},{"nativeUiDecodeMS",ui.decodeMS},{"nativeUiPresentMS",ui.presentMS}};}else if(op=="frameRate"){if(!message.at("data").at("rate").is_number_integer())throw std::runtime_error("Frame rate invalid");const auto requested=message.at("data").at("rate").get<unsigned>();if(requested<15||requested>240)throw std::runtime_error("Frame rate invalid");rate=requested;nextFrame=last+std::chrono::duration_cast<std::chrono::steady_clock::duration>(std::chrono::duration<double>(1.0/rate));value={{"rate",rate},{"effectiveRate",uncapped?0u:rate}};}else if(op=="mouseCapture"){
      mouseCaptureRequested=message.at("data").at("enabled").get<bool>();syncMouseCapture();value={{"locked",mouseLocked}};
-   }else if(op=="capture")value=renderer.command({{"op","capture"},{"data",Json::object()}},window,true);else throw std::runtime_error("Unknown native platform operation");write({{"channel","hb.platform"},{"id",id},{"ok",true},{"value",value}});}
-   else if(op=="ready"){ready=true;activity();displaySync=!uncapped&&message.value("displaySync",false);rate=message.value("rate",120u);if(rate<15||rate>240)throw std::runtime_error("Frame rate invalid");nextFrame=std::chrono::steady_clock::now();touchAvailable=(GetSystemMetrics(SM_DIGITIZER)&(NID_INTEGRATED_TOUCH|NID_EXTERNAL_TOUCH))!=0&&GetSystemMetrics(SM_MAXIMUMTOUCHES)>0;write({{"event","touchDevice"},{"enabled",touchAvailable}});schedule();write({{"event","resize"},{"width",width},{"height",height},{"pixelRatio",GetDpiForWindow(window)/96.0}});}
+   }else if(op=="timingFlush")value={{"frames",frames}};
+   else if(op=="capture")value=renderer.command({{"op","capture"},{"data",Json::object()}},window,true);else throw std::runtime_error("Unknown native platform operation");write({{"channel","hb.platform"},{"id",id},{"ok",true},{"value",value}});}
+   else if(op=="ready"){ready=true;timingReport=message.value("timingReport",false);activity();uncapped=uncapped||message.value("uncapped",false);displaySync=!uncapped&&message.value("displaySync",false);rate=message.value("rate",120u);if(rate<15||rate>240)throw std::runtime_error("Frame rate invalid");nextFrame=std::chrono::steady_clock::now();touchAvailable=(GetSystemMetrics(SM_DIGITIZER)&(NID_INTEGRATED_TOUCH|NID_EXTERNAL_TOUCH))!=0&&GetSystemMetrics(SM_MAXIMUMTOUCHES)>0;write({{"event","touchDevice"},{"enabled",touchAvailable}});schedule();write({{"event","resize"},{"width",width},{"height",height},{"pixelRatio",GetDpiForWindow(window)/96.0}});}
    else if(op=="debugBreak"){
        if(editorOwner){
            const auto snapshot=message.dump();
@@ -63,14 +73,22 @@ struct Host {
            PostMessageW(editorOwner,debugBreakMessage,GetCurrentProcessId(),0);
        }
    }
-   else if(op=="frameDone"){inFrame=false;++frames;schedule();}
+   else if(op=="frameDone"){
+       if(timingReport){
+           const double inFlight=milliseconds(std::chrono::steady_clock::now()-frameSent);
+           write({{"event","hostFrame"},{"frame",frames},{"wakeMS",wakeMS},{"inFlightMS",inFlight},
+               {"renderCommandMS",renderCommandMS},{"renderCommands",presentCount}});
+       }
+       inFrame=false;++frames;schedule();
+   }
    else if(op=="title"){SetWindowTextW(window,wide(message.at("text").get<std::string>()).c_str());}
    else if(op=="quit"){ready=false;PostMessageW(window,WM_CLOSE,0,0);}
    else if(op=="error"){failed=true;ready=false;failureMessage=wide(message.at("message").get<std::string>()).substr(0,3000);log(message.at("message").get<std::string>());PostMessageW(window,WM_CLOSE,0,0);}
    else throw std::runtime_error("Unknown native host operation");
   }catch(const std::exception& e){if(id)write({{"channel",message.value("channel",std::string("hb.render"))},{"id",id},{"ok",false},{"error",e.what()}});else{failed=true;ready=false;log(e.what());PostMessageW(window,WM_CLOSE,0,0);}}}}
+ static double milliseconds(std::chrono::steady_clock::duration duration){return std::chrono::duration<double,std::milli>(duration).count();}
  void activity(){lastActivity=GetTickCount64();}
- void tick(){tickPosted=false;if(!ready||inFrame)return;const auto now=std::chrono::steady_clock::now();double seconds=std::chrono::duration<double>(now-last).count();if(!uncapped&&now<nextFrame){schedule();return;}last=now;nextFrame+=std::chrono::duration_cast<std::chrono::steady_clock::duration>(std::chrono::duration<double>(1.0/rate));if(nextFrame<now)nextFrame=now;gamepads.poll(GetTickCount64(),GetForegroundWindow()==window,[this](const char* key,double value,const std::string& source){if(value!=0)activity();inputQueue.push({{"event","input"},{"packet",{{"key",key},{"value",value},{"device","gamepad"},{"source",source}}}});});flushMouseMotion();auto events=inputQueue.take();if(!events.empty())write({{"event","inputBatch"},{"events",std::move(events)}});if(kiosk&&!operatorUnlocked&&kioskIdleSeconds&&GetTickCount64()-lastActivity>=ULONGLONG(kioskIdleSeconds)*1000){activity();write({{"event","kioskReset"}});}inFrame=true;write({{"event","tick"},{"delta",std::min(.25,seconds)},{"frame",frames}});}
+ void tick(){tickPosted=false;if(!ready||inFrame)return;const auto now=std::chrono::steady_clock::now();double seconds=std::chrono::duration<double>(now-last).count();if(!uncapped&&now<nextFrame){schedule();return;}if(timingReport){wakeMS=uncapped?0:std::max(0.,milliseconds(now-nextFrame));renderCommandMS=0;presentCount=0;}last=now;nextFrame+=std::chrono::duration_cast<std::chrono::steady_clock::duration>(std::chrono::duration<double>(1.0/rate));if(nextFrame<now)nextFrame=now;gamepads.poll(GetTickCount64(),GetForegroundWindow()==window,[this](const char* key,double value,const std::string& source){if(value!=0)activity();inputQueue.push({{"event","input"},{"packet",{{"key",key},{"value",value},{"device","gamepad"},{"source",source}}}});});flushMouseMotion();auto events=inputQueue.take();if(!events.empty())write({{"event","inputBatch"},{"events",std::move(events)}});if(kiosk&&!operatorUnlocked&&kioskIdleSeconds&&GetTickCount64()-lastActivity>=ULONGLONG(kioskIdleSeconds)*1000){activity();write({{"event","kioskReset"}});}if(timingReport)frameSent=std::chrono::steady_clock::now();inFrame=true;write({{"event","tick"},{"delta",std::min(.25,seconds)},{"frame",frames}});}
  void character(wchar_t value){activity();if(value>=0xd800&&value<=0xdbff){highSurrogate=value;return;}std::wstring text;if(highSurrogate){if(value>=0xdc00&&value<=0xdfff)text+=highSurrogate;else text+=wchar_t(0xfffd);highSurrogate=0;}if(value>=32&&!(value>=0xdc00&&value<=0xdfff&&text.empty()))text+=value;if(!text.empty())inputQueue.push({{"event","text"},{"text",utf8(text)}});}
  void publishMouseCapture(bool locked,bool motion=false){
     Json pointer={{"position",{cursor.x,cursor.y}},{"size",{width,height}},{"inside",locked},{"locked",locked}};

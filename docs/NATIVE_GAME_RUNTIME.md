@@ -16,6 +16,12 @@ Windows 빌드의 기본값은 `windowsRuntime: "native"`예요. `target: "web"`
 - 게임 ID별 실행 파일·저장 폴더를 사용해요. 저장 파일은 `%LOCALAPPDATA%/HBEngine/Games/<id>`에 원자적으로 기록해요.
 - 초기 기본 셰이더 바이트코드를 함께 배포하고 내용 기반 캐시에서 재사용해요. 종료 때 공용 VM의 EndPlay·저장·리소스 해제를 먼저 완료해요.
 
+## 프레임 설정과 진단
+
+Windows 네이티브 빌드 프로필은 목표 FPS, 화면 동기화, 제한 없음 모드를 지원해요. 제한 없음 모드에서는 목표 FPS 타이머가 프레임을 기다리지 않아요. 직접 D3D12는 지원이 확인된 경우 DXGI 가변 주사율 표시 플래그를 사용해요. [Microsoft DXGI 문서](https://learn.microsoft.com/en-us/windows/win32/direct3ddxgi/variable-refresh-rate-displays)
+
+`--report`의 `hostFrames`는 각 틱의 `wakeMS`(목표 시각 이후 타이머 지연), `inFlightMS`(틱 송신부터 완료 수신), `renderCommandMS`(호스트가 처리한 렌더 명령 합계)를 기록해요. 렌더 명령 시간은 호스트 구간 안에 들어 있으며 GPU 실행 시간은 별도의 `renderer.gpuTimeMs`예요.
+
 ## 현재 범위와 명시적인 제한
 
 네이티브 패키지에서 실제 확인한 범위는 2D 물리·스프라이트/SVG 텍스처, 3D 기본 도형의 DirectX 표시, AOT C++ 호출, HUD·한글·이미지·버튼, Win32 키보드/마우스 입력, 저장, 공용 믹서의 PCM, 무음으로 연 Windows 오디오 출력, 정상 창 종료예요. 추가 DCC 모델·복잡한 머테리얼·대규모 게임 전체의 호환성이나 성능을 일괄 증명한 것은 아니에요.

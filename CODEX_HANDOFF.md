@@ -1,3 +1,9 @@
+## Windows 독립 에셋 미리보기·장면 전환 녹음·프레임 진단 · 2026-11-13
+
+모델·머테리얼 인스턴스·월드 에셋의 독립 D3D12 표면과 속성을 연결하고, 게임 믹스는 장면 전환 뒤에도 같은 세션에서 녹음해요. 화면 밖 Win32 편집기에서 기본 문서와 독립 모델 미리보기를 함께 열고 두 번째 장면에서만 재생한 WAV 신호를 확인했어요. `native/build/native-authoring-6PVoX2/report.json`에 기록했어요.
+
+빌드 프로필의 Windows 네이티브 프레임 제한 없음은 호스트 타이머를 건너뛰어요. Direct3D12는 DXGI 지원을 확인해 sync interval 0에서만 가변 주사율용 표시 플래그를 사용해요. `--report`에서는 프레임별 타이머 기상 지연, 호스트 왕복, 렌더 명령 처리 시간을 기록해요. `native/build/native-game-9jLkaz/acceptance.json`은 실제 D3D12 패키지 40프레임과 표시 플래그를 확인했고, `native/build/d3d12-direct-JdYuDc/acceptance.json`은 하드웨어·WARP와 크기 변경에서 검증 오류 0을 기록했어요.
+
 ## Windows 지형·LOD 편집과 붓질 비용 · 2026-11-13
 
 지형 크기·레이어 색, 폴리지 메시·배치 기준 지형, LOD 단계 교체와 거리/화면 높이 전환을 네이티브 편집에 연결했어요. D3D12 통합 결과는 `native/build/native-authoring-Y2xTbM/report.json`이에요. 지형 스트로크는 시작 시 한 번 검증하고 평활화에 필요한 주변 높이만 복사해요. 263,169정점·60지점 합성 검사에서 같은 높이 결과를 얻으며 점별 호출 520.95ms와 스트로크 57.55ms를 기록했어요. 8개 붓 모드의 일치·경계·소유권은 `native/build/world-draft-1074.json`에서 확인했어요.

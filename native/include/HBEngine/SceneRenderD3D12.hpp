@@ -1121,7 +1121,7 @@ public:
     }
     // Copies the final image to the window back buffer, submits the frame and presents. Without a window it only submits.
     // With camera views, every view but the last only submits; the last shows the composite.
-    bool present(std::uint32_t interval=0){
+    bool present(std::uint32_t interval=0,bool allowTearing=false){
         finish();if(!cameraSequence.empty()){
             gpu.transition(color,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(cameraComposite,D3D12_RESOURCE_STATE_COPY_DEST);
             D3D12_TEXTURE_COPY_LOCATION to{},from{};to.pResource=cameraComposite.get();from.pResource=color.get();to.Type=from.Type=D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;const D3D12_BOX box{cameraRect[0],cameraRect[1],0,cameraRect[2],cameraRect[3],1};
@@ -1132,7 +1132,7 @@ public:
         }
         drawOverlay();
         if(swapchain){auto& back=swapchain->acquire();gpu.transition(color,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(back,D3D12_RESOURCE_STATE_COPY_DEST);gpu.list->CopyResource(back.get(),color.get());gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);swapchain->finish(back);}
-        closeTiming();gpu.end();begun=false;if(swapchain)swapchain->present(interval);++presents_;return true;
+        closeTiming();gpu.end();begun=false;if(swapchain)swapchain->present(interval,allowTearing);++presents_;return true;
     }
     void releasePostProcess(){releaseScreen();releaseHDR();releaseTransmission();postLookup=nullptr;geometryScene=pathEnvironment=distanceField=nullptr;}
     void releaseProbes(){endProbe();setGlobalProbes({});setSkyEnvironment(nullptr);}
@@ -1145,6 +1145,8 @@ public:
     }
     std::uint32_t width()const{return surfaceWidth;}std::uint32_t height()const{return surfaceHeight;}
     std::optional<double> gpuTimeMs()const{return gpuMilliseconds;}
+    bool tearingSupported()const{return swapchain&&swapchain->tearingSupported();}
+    UINT presentFlags()const{return swapchain?swapchain->presentFlags():0;}
     std::uint64_t draws()const{return draws_;}std::uint64_t presents()const{return presents_;}
     // SceneRenderer statistics with the same names; counted where the D3D12 path does the equivalent work.
     std::uint64_t uploads()const{return uploads_;}std::uint64_t captures()const{return captures_;}std::uint64_t gpuTimingFrame()const{return timedFrames_;}

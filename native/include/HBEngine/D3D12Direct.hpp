@@ -6,6 +6,7 @@
 #include "ShaderBytecodeCompiler.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 #include <d3d12sdklayers.h>
+#include <dxgi1_5.h>
 #include <memory>
 
 namespace hb::gpu::d3d12 {
@@ -363,10 +364,16 @@ public:
 // Flip-model swapchain whose back buffers are plain D3D12 render targets.
 class Swapchain {
     Device& gpu;Com<IDXGISwapChain3> swap;std::array<Texture,FrameCount> buffers;
+    UINT flags=0,lastFlags=0;
     void wrap(){for(UINT i=0;i<FrameCount;i++){auto& b=buffers[i];check(swap->GetBuffer(i,__uuidof(ID3D12Resource),reinterpret_cast<void**>(&b.value.p)),"Direct3D12 swap buffer");b.state=D3D12_RESOURCE_STATE_PRESENT;if(!b.rtv.ptr)b.rtv=gpu.rtvs.take();gpu.device->CreateRenderTargetView(b.get(),nullptr,b.rtv);}}
 public:
     Swapchain(Device& device,HWND window,UINT width,UINT height,DXGI_FORMAT format=DXGI_FORMAT_R8G8B8A8_UNORM):gpu(device){
         DXGI_SWAP_CHAIN_DESC1 d{};d.Width=width;d.Height=height;d.Format=format;d.SampleDesc.Count=1;d.BufferUsage=DXGI_USAGE_RENDER_TARGET_OUTPUT;d.BufferCount=FrameCount;d.SwapEffect=DXGI_SWAP_EFFECT_FLIP_DISCARD;
+        Com<IDXGIFactory5> features;BOOL tearing=FALSE;
+        if(SUCCEEDED(gpu.factory->QueryInterface(__uuidof(IDXGIFactory5),reinterpret_cast<void**>(&features.p)))&&
+            SUCCEEDED(features->CheckFeatureSupport(DXGI_FEATURE_PRESENT_ALLOW_TEARING,&tearing,sizeof(tearing)))&&tearing)
+            flags=DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING;
+        d.Flags=flags;
         Com<IDXGISwapChain1> chain;check(gpu.factory->CreateSwapChainForHwnd(gpu.queue.p,window,&d,nullptr,nullptr,&chain.p),"Direct3D12 window swapchain");
         check(gpu.factory->MakeWindowAssociation(window,DXGI_MWA_NO_ALT_ENTER),"Direct3D12 window association");
         check(chain->QueryInterface(__uuidof(IDXGISwapChain3),reinterpret_cast<void**>(&swap.p)),"Direct3D12 indexed swapchain");
@@ -377,10 +384,15 @@ public:
     Texture& acquire(){auto& b=buffers.at(swap->GetCurrentBackBufferIndex());gpu.transition(b,D3D12_RESOURCE_STATE_RENDER_TARGET);return b;}
     void finish(Texture& b){gpu.transition(b,D3D12_RESOURCE_STATE_PRESENT);}
     // Call after Device::end.
-    void present(UINT sync){check(swap->Present(sync,0),"Direct3D12 present");}
+    bool tearingSupported()const{return flags!=0;}
+    UINT presentFlags()const{return lastFlags;}
+    void present(UINT sync,bool allowTearing=false){
+        lastFlags=sync==0&&allowTearing&&tearingSupported()?DXGI_PRESENT_ALLOW_TEARING:0;
+        check(swap->Present(sync,lastFlags),"Direct3D12 present");
+    }
     void resize(UINT width,UINT height){
         gpu.waitIdle();for(auto& b:buffers)b.value={};
-        check(swap->ResizeBuffers(FrameCount,width,height,DXGI_FORMAT_UNKNOWN,0),"Direct3D12 swapchain resize");
+        check(swap->ResizeBuffers(FrameCount,width,height,DXGI_FORMAT_UNKNOWN,flags),"Direct3D12 swapchain resize");
         for(auto& b:buffers){b.width=width;b.height=height;}wrap();
     }
 };
