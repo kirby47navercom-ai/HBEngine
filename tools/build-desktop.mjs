@@ -34,16 +34,23 @@ if(process.platform!=='win32'||process.arch!=='x64')throw Error('현재 데스�
 const compiler=process.env.CXX||'C:/msys64/ucrt64/bin/g++.exe';if(!await exists(compiler))throw Error('CXX에 g++ 경로를 지정하세요.');
 const compilerEnv={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH};
 await fs.mkdir(build,{recursive:true});await fs.mkdir(output,{recursive:true});
-const archive=path.join(sdk,'sdk.zip');
-await download('https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/'+sdkVersion+'/microsoft.web.webview2.'+sdkVersion+'.nupkg',archive,sdkHash);
-await exec('tar.exe',['-xf',archive,'-C',sdk],{windowsHide:true});
+const nativeOnly=process.argv.includes('--native-editor-only');
+if(!nativeOnly){
+  const archive=path.join(sdk,'sdk.zip');
+  await download('https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/'+sdkVersion+'/microsoft.web.webview2.'+sdkVersion+'.nupkg',archive,sdkHash);
+  await exec('tar.exe',['-xf',archive,'-C',sdk],{windowsHide:true});
+}
 const {prepareNative,jsonInclude}=await import('./prepare-native.mjs');await prepareNative();
 const include=path.join(sdk,'build/native/include'),loader=path.join(sdk,'build/native/x64/WebView2Loader.dll');
 await fs.writeFile(path.join(build,'HBEngine.ico'),icon());
 const resource=path.join(build,'HBEngine-resource.o'),windres=path.join(path.dirname(compiler),'windres.exe');
 await exec(windres,['--use-temp-file','-I',relative(build),'-I','native/desktop','native/desktop/HBEngine.rc',relative(resource)],{cwd:root,windowsHide:true,env:compilerEnv});
-const executable=path.join(output,'HBEngine.exe');
-await exec(compiler,['-std=c++17','-O2','-s','-static','-municode','-mwindows','-I','native/include','-I',relative(jsonInclude),'-I',relative(include),'native/desktop/HBEngine.cpp',relative(resource),'-o',relative(executable),'-lole32','-lshell32','-ldwmapi','-ladvapi32','-luuid','-ld2d1','-ldwrite','-lwindowscodecs','-lcomdlg32','-lcomctl32','-lgdi32'],{cwd:root,windowsHide:true,env:compilerEnv,maxBuffer:4194304});
+const executable=path.join(output,nativeOnly?'HBEngineNative.exe':'HBEngine.exe');
+await exec(compiler,['-std=c++17','-O2','-s','-static','-municode','-mwindows','-I','native/include','-I',relative(jsonInclude),...(nativeOnly?['-DHB_NATIVE_EDITOR_ONLY']:['-I',relative(include)]),'native/desktop/HBEngine.cpp',relative(resource),'-o',relative(executable),'-lole32','-lshell32','-ldwmapi','-ladvapi32','-luuid','-ld2d1','-ldwrite','-lwindowscodecs','-lcomdlg32','-lcomctl32','-lgdi32'],{cwd:root,windowsHide:true,env:compilerEnv,maxBuffer:4194304});
+if(nativeOnly){
+  console.log('HBEngineNative.exe: '+executable);
+  process.exit(0);
+}
 await exec(compiler,['-std=c++17','-O2','-s','-static','-municode','-mwindows','-DHB_GAME_PLAYER','-I','native/include','-I',relative(jsonInclude),'-I',relative(include),'native/desktop/HBEngine.cpp',relative(resource),'-o',relative(path.join(output,'HBPlayer.exe')),'-lole32','-lshell32','-ldwmapi','-ladvapi32','-luuid'],{cwd:root,windowsHide:true,env:compilerEnv,maxBuffer:4194304});
 await (await import('./build-native-player.mjs')).buildNativePlayer(path.join(output,'HBNativePlayer.exe'));
 const {stdout}=await exec(path.join(path.dirname(compiler),'objdump.exe'),['-p',relative(executable)],{cwd:root,windowsHide:true,env:compilerEnv,maxBuffer:16777216});if(/DLL Name: (?:libgcc|libstdc\+\+|libwinpthread)/i.test(stdout))throw Error('MSYS2 런타임 DLL 의존성');

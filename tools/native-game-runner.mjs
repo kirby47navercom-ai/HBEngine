@@ -14,7 +14,7 @@ import {AudioContext} from 'node-web-audio-api';
 import {nativeGameStorage} from './native-game-storage.mjs';
 import {migrateLegacyGameSaves} from './native-save-migration.mjs';
 import {runProject} from './run-project.mjs';
-import {openNativePackage,installNativeAssets,nativeAudioRouting,createNativeAudioContext} from './native-game-platform.mjs';
+import {openNativePackage,openNativeEditorProject,installNativeAssets,nativeAudioRouting,createNativeAudioContext} from './native-game-platform.mjs';
 import {NativeWidgetLayer} from './native-widget-layer.mjs';
 import {loadModel} from '../prototype/engine-services.js';
 import {loadHeadlessModel,disposeHeadlessModel} from './headless-model.mjs';
@@ -26,7 +26,9 @@ import {selectGameCamera} from '../prototype/game-camera.js';
 
 export async function nativeGameMain(options){
  const directUIPipe=Number(options['ui-pipe-protocol'])===2?options['ui-pipe']:null,uiPipe=directUIPipe?null:await openNativeUIPipe(options['ui-pipe']),presentationQueue=new NativePresentationQueue({profile:!!options.report});let onUIQueued;
- const pack=await openNativePackage(options.package),assets=installNativeAssets(pack),listeners=new Set(),requests=new Map(),ticks=[],waiting=[],inputQueue=new NativeInputQueue();let serial=1,closed=false,resize,renderer,appliedFrameRate=pack.manifest.targetFrameRate||120;
+ const editor=options['editor-project'];
+ if(editor&&!options['editor-state'])throw Error('편집기 플레이 저장 경로가 없어요.');
+ const pack=editor?await openNativeEditorProject(editor,{scene:options['editor-scene'],width:1280,height:720,rate:120}):await openNativePackage(options.package),assets=installNativeAssets(pack),listeners=new Set(),requests=new Map(),ticks=[],waiting=[],inputQueue=new NativeInputQueue();let serial=1,closed=false,resize,renderer,appliedFrameRate=pack.manifest.targetFrameRate||120;
  const write=packet=>new Promise((resolve,reject)=>process.stdout.write(JSON.stringify(packet)+'\n',error=>error?reject(error):resolve()));
  const send=(op,data={})=>new Promise((resolve,reject)=>{const id=serial++,timer=setTimeout(()=>{requests.delete(id);reject(Error('네이티브 창 응답 시간 초과: '+op));},30000);requests.set(id,{resolve,reject,timer});(op==='ui'&&data.encoding?.startsWith('pipe-rgba8-premultiplied')&&uiPipe?uiPipe.write(data,id):write({channel:'hb.platform',op,data,id})).catch(error=>{requests.delete(id);clearTimeout(timer);reject(error);});if(op==='ui')onUIQueued?.();});
  const bridge={postSerializedMessage:text=>{void new Promise((resolve,reject)=>process.stdout.write(text+'\n',error=>error?reject(error):resolve())).catch(error=>{throw error;});},addEventListener:(type,fn)=>listeners.add(fn),removeEventListener:(type,fn)=>listeners.delete(fn),postMessage:packet=>{void write(packet).catch(error=>{throw error;});}};
@@ -35,13 +37,14 @@ export async function nativeGameMain(options){
  lines.on('line',line=>{try{const packet=JSON.parse(line);if(packet.channel==='hb.render'){for(const fn of listeners)fn({data:packet});return;}if(packet.channel==='hb.platform'){const r=requests.get(packet.id);if(r){requests.delete(packet.id);clearTimeout(r.timer);packet.ok?r.resolve(packet.value):r.reject(Error(packet.error));}return;}if(packet.event==='stop'){closed=true;for(const done of waiting.splice(0))done({stop:true});}if(packet.event==='tick'){if(waiting.length)waiting.shift()(packet);else if(!ticks.length)ticks.push(packet);}if(packet.event==='inputBatch'){if(!Array.isArray(packet.events)||packet.events.length>4096)throw Error('네이티브 입력 묶음 오류');for(const event of packet.events)inputQueue.push(event);}if(['input','text','releaseInput'].includes(packet.event))inputQueue.push(packet);if(packet.event==='resize')resize=packet;}catch(error){void write({op:'error',message:error.stack});}});
  lines.on('close',()=>{closed=true;for(const done of waiting.splice(0))done({stop:true});for(const r of requests.values()){clearTimeout(r.timer);r.reject(Error('네이티브 창이 종료됐어요.'));}requests.clear();});
  const canvas={width:pack.manifest.width,height:pack.manifest.height,clientWidth:pack.manifest.width,clientHeight:pack.manifest.height,pixelRatio:1};
- const stateDirectory=process.env.HB_NATIVE_TEST_STATE||path.join(process.env.LOCALAPPDATA||process.env.TEMP,'HBEngine/Games',pack.manifest.id);const ui=new NativeWidgetLayer(pack,send,{profile:!!options.report,rawFrames:!!uiPipe,rasterPackage:options.package,rasterPipe:directUIPipe,queued:()=>onUIQueued?.()}),stats={frames:0,ms:[],resizes:0,inputs:0,renderer:null,audio:null,ui:null};
+ const stateDirectory=editor?options['editor-state']:process.env.HB_NATIVE_TEST_STATE||path.join(process.env.LOCALAPPDATA||process.env.TEMP,'HBEngine/Games',pack.manifest.id);
+ const ui=new NativeWidgetLayer(pack,send,{profile:!!options.report,rawFrames:!!uiPipe,rasterPackage:editor?null:options.package,rasterPipe:directUIPipe,queued:()=>onUIQueued?.()}),stats={frames:0,ms:[],resizes:0,inputs:0,renderer:null,audio:null,ui:null};
  const telemetry=new NativeRuntimeTelemetry({enabled:!!options.report,label:'game'});let runtimeError;
  try{
-  stats.legacySaveMigration=await migrateLegacyGameSaves(stateDirectory,pack.manifest.id);
+  if(!editor)stats.legacySaveMigration=await migrateLegacyGameSaves(stateDirectory,pack.manifest.id);
   renderer=await createNativeSceneRenderer(canvas,error=>{throw error;},{bridge,graphicsAPI:options['graphics-api']||pack.manifest.nativeGraphicsAPI||'auto'});
   await write({op:'ready',rate:pack.manifest.targetFrameRate||120});
-  const result=await runProject(path.join(pack.root,'game.hbpack.json'),{interactive:true,lazyPhysics:true,captureState:!!options.report,profile:!!options.report,storage:nativeGameStorage(stateDirectory),nativeHost:pack.host,openProject:async()=>pack,saveDirectory:process.env.HB_NATIVE_TEST_STATE?path.join(process.env.HB_NATIVE_TEST_STATE,'Saves'):path.join(process.env.LOCALAPPDATA||process.env.TEMP,'HBEngine/Games',pack.manifest.id,'Saves'),
+  const result=await runProject(editor||path.join(pack.root,'game.hbpack.json'),{interactive:true,lazyPhysics:true,captureState:!!options.report,profile:!!options.report,storage:nativeGameStorage(stateDirectory),nativeHost:pack.host,openProject:async()=>pack,saveDirectory:path.join(stateDirectory,'Saves'),
    presentation:async({world,meshes,objects,readAsset,project,data})=>{
     if(stats.frames)await renderer.hbReleaseScene();const models=new Set(),modelInstances=new NativeModelInstances(name=>/\.(gltf|glb)$/i.test(name)?loadHeadlessModel(project,name,{geometry:true,loadTexture:assets.modelTexture}):loadModel(name),disposeHeadlessModel),primitives=scenePrimitives({color:0x9faa91,roughness:.8,metalness:0});
     const visual=sceneRendering({read:readAsset,fileUrl:pack.url,loadTexture:assets.texture,loadModel:async name=>{const loaded=await modelInstances.acquire(name);loaded.object.traverse(node=>{node.userData.hbNativeModelVisible=node.visible;});models.add(loaded.object);const lease=loaded.object.userData.hbModelInstanceLease;if(lease){const release=lease.dispose;lease.dispose=()=>{models.delete(loaded.object);release();};}return loaded;},current:id=>meshes.get(id),all:()=>[...meshes.values()],runtimeWorld:()=>objects,gameRenderer:renderer,error:message=>{throw Error(message);}});

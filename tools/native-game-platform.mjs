@@ -11,6 +11,8 @@ import * as THREE from 'three';
 import {nativeModuleKey} from '../prototype/native-entry.js';
 import {NativeHost} from './native-host.mjs';
 import {AudioRouting} from '../prototype/audio-mixer.js';
+import {readProjectManifest} from './project-manifest.mjs';
+import {projectBytes} from './project-bytes.mjs';
 
 // The package is the only file authority. No local HTTP server, DOM or browser.
 export async function openNativePackage(directory){
@@ -19,6 +21,14 @@ export async function openNativePackage(directory){
  for(const row of manifest.nativeModules||[]){try{aot.set(row.signature,host.registerBinary(await confined(row.binary),row.metadata));}catch(error){const failure=packagedModuleError(path.join(root,row.binary),error);await closeNativeRuntime([()=>host.close(),()=>content.close()],failure);throw failure;}}
  host.build=async(header,source,entry={})=>{const key=createHash('sha256').update(nativeModuleKey(header,source,entry)).digest('hex'),built=aot.get(key);if(!built)throw Error('미리 컴파일한 C++ 모듈이 없어요. 게임을 다시 빌드하세요.');return built;};
  let closeJob;return {root,project,manifest,host,url,resolve,readBytes,close:()=>closeJob??=closeNativeRuntime([()=>host.close(),()=>content.close()])};
+}
+
+export async function openNativeEditorProject(file,{scene,width,height,rate}){
+ const record=await readProjectManifest(file),{project}=record;
+ if(scene&&(!scene.startsWith('Assets/')||!scene.endsWith('.hbscene.json')))throw Error('실행할 장면을 선택하세요.');
+ if(scene)await project.read(scene);
+ return {...record,manifest:{...record.manifest,width,height,targetFrameRate:rate,nativeGraphicsAPI:'d3d12',startupScene:scene||record.manifest.startupScene},
+  url:name=>'hbasset:'+encodeURIComponent(name),readBytes:(name,options)=>projectBytes(project,name,options),resolve:name=>project.resolve(name)};
 }
 
 export function installNativeAssets(pack){

@@ -18,7 +18,13 @@ class EditorPanelBase {
 public:
     using Json=nlohmann::json;
     using Post=std::function<void(const Json&)>;
-    virtual ~EditorPanelBase(){release();if(write)write->Release();if(factory)factory->Release();if(window)DestroyWindow(window);}
+    virtual ~EditorPanelBase(){
+        if(IsWindow(window)){
+            SetWindowLongPtrW(window,GWLP_USERDATA,0);
+            DestroyWindow(window);
+        }
+        release();if(write)write->Release();if(factory)factory->Release();
+    }
     HWND parentWindow()const{return window?GetParent(window):nullptr;}
     void useD3D12(const std::shared_ptr<EditorD3D12Surface::Graphics>& graphics){presenter=std::make_unique<EditorD3D12Surface>(graphics);}
     void reparent(HWND owner){

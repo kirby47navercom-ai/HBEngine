@@ -57,10 +57,74 @@ struct Host {
  void stop(){if(closing)return;{std::lock_guard<std::mutex> lock(mutex);closing=true;}space.notify_all();uiPipe.stop();audioIdentity.stop();if(input){CloseHandle(input);input=nullptr;}if(process&&WaitForSingleObject(process,2000)==WAIT_TIMEOUT)TerminateProcess(process,0);if(reader.joinable())reader.join();if(output)CloseHandle(output);if(process)CloseHandle(process);if(job)CloseHandle(job);renderer.shutdown();}
  ~Host(){stop();if(timer)CloseHandle(timer);}
 };
+LRESULT CALLBACK procedure(HWND,UINT,WPARAM,LPARAM);
+int playEditorProject(Host& host,HINSTANCE instance,const fs::path& project,const fs::path& profile,HWND owner,int show,std::wstring extra){
+    if(!fs::is_regular_file(project)||_wcsicmp(project.extension().c_str(),L".hbproject")||!fs::is_directory(profile))throw std::runtime_error("Editor play project or profile");
+    const auto state=profile/L"Play"/(std::to_wstring(GetCurrentProcessId())+L"-"+std::to_wstring(GetTickCount64()));
+    if(!fs::create_directories(state))throw std::runtime_error("Editor play state already exists");
+    struct SessionDirectory {
+        fs::path path,parent;
+        ~SessionDirectory(){
+            std::error_code error;
+            const auto current=fs::canonical(path,error);
+            if(!error&&current==path&&current.parent_path()==parent)fs::remove_all(current,error);
+        }
+    } cleanup{fs::canonical(state),fs::canonical(profile)/L"Play"};
+    host.logFile=profile/L"Sessions"/(L"play-"+std::to_wstring(GetCurrentProcessId())+L".log");
+    fs::create_directories(host.logFile.parent_path());
+    const auto cache=profile/L"Cache"/L"ShaderBytecode";
+    auto bundled=host.root/L"Shaders";
+    if(!fs::is_directory(bundled))bundled=host.root/L"dist/HBEngine/Shaders";
+    fs::create_directories(cache);
+    if(fs::is_directory(bundled))for(const auto& entry:fs::directory_iterator(bundled))if(entry.is_regular_file()&&!entry.is_symlink()){
+        std::error_code error;fs::copy_file(entry.path(),cache/entry.path().filename(),fs::copy_options::skip_existing,error);
+    }
+    hb::gpu::SceneRenderer::configureShaderCache(cache);
+    host.timer=CreateWaitableTimerExW(nullptr,nullptr,2,TIMER_ALL_ACCESS);
+    if(!host.timer)host.timer=CreateWaitableTimerW(nullptr,FALSE,nullptr);
+    if(!host.timer)throw std::runtime_error("Native frame timer");
+    WNDCLASSW type{};type.lpfnWndProc=procedure;type.hInstance=instance;type.lpszClassName=L"HBEngine.NativeGame";type.hCursor=LoadCursorW(nullptr,IDC_ARROW);
+    RegisterClassW(&type);
+    const auto title=L"플레이 · "+project.stem().wstring();
+    const auto window=CreateWindowExW(WS_EX_APPWINDOW,type.lpszClassName,title.c_str(),WS_OVERLAPPEDWINDOW,CW_USEDEFAULT,CW_USEDEFAULT,1296,759,owner,nullptr,instance,&host);
+    if(!window)throw std::runtime_error("Native editor play window");
+    SetEnvironmentVariableW(L"DISABLE_SYSTEM_FONTS_LOAD",L"1");
+    auto node=host.root/L"runtime/node.exe";
+    if(!fs::is_regular_file(node))node=host.root/L"dist/HBEngine/runtime/node.exe";
+    GUID playAudio{};
+    if(FAILED(CoCreateGuid(&playAudio)))throw std::runtime_error("Editor play audio identity");
+    host.audioIdentity.configure(playAudio,title,(host.root/L"HBNativePlayer.exe").wstring());
+    extra+=L" --editor-project "+quote(project.wstring())+L" --editor-state "+quote(state.wstring());
+    host.start(node,host.root/L"tools/native-game-runner.mjs",extra);
+    if(!host.hidden)ShowWindow(window,show);
+    MSG message{};bool running=true;
+    while(running){
+        const auto result=MsgWaitForMultipleObjectsEx(1,&host.timer,INFINITE,QS_ALLINPUT,MWMO_INPUTAVAILABLE);
+        if(result==WAIT_OBJECT_0)host.tick();
+        else if(result==WAIT_FAILED)throw std::runtime_error("Native message wait");
+        while(PeekMessageW(&message,nullptr,0,0,PM_REMOVE)){
+            if(message.message==WM_QUIT){running=false;break;}
+            TranslateMessage(&message);DispatchMessageW(&message);
+        }
+    }
+    host.stop();
+    if(host.failed&&!host.hidden)MessageBoxW(owner,(L"편집기 플레이 중 오류가 발생했어요.\n"+host.failureMessage+L"\n"+host.logFile.wstring()).c_str(),L"HBEngine",MB_OK|MB_ICONERROR);
+    return host.failed?1:0;
+}
 LRESULT CALLBACK procedure(HWND window,UINT message,WPARAM w,LPARAM l){auto* h=reinterpret_cast<Host*>(GetWindowLongPtrW(window,GWLP_USERDATA));if(message==WM_NCCREATE){h=static_cast<Host*>(reinterpret_cast<CREATESTRUCTW*>(l)->lpCreateParams);h->window=window;SetWindowLongPtrW(window,GWLP_USERDATA,reinterpret_cast<LONG_PTR>(h));}if(!h)return DefWindowProcW(window,message,w,l);try{switch(message){case tickMessage:h->tick();return 0;case uiPipeMessage:h->drainUI();return 0;case packetMessage:h->drain();return 0;case WM_MOVE:case WM_SHOWWINDOW:h->ui.place(window);break;case WM_CHAR:if(h->ready)h->character(wchar_t(w));return 0;case WM_DPICHANGED:{const auto* next=reinterpret_cast<RECT*>(l);SetWindowPos(window,nullptr,next->left,next->top,next->right-next->left,next->bottom-next->top,SWP_NOZORDER|SWP_NOACTIVATE);return 0;}case WM_SIZE:h->width=std::max(1u,unsigned(LOWORD(l)));h->height=std::max(1u,unsigned(HIWORD(l)));if(h->ready)h->write({{"event","resize"},{"width",h->width},{"height",h->height},{"pixelRatio",GetDpiForWindow(window)/96.0}});return 0;case WM_MOUSEMOVE:if(h->ready){h->pointer(l);TRACKMOUSEEVENT track{sizeof(track),TME_LEAVE,window,0};TrackMouseEvent(&track);}return 0;case WM_MOUSELEAVE:if(h->ready&&!h->mouseButtons)h->inputQueue.push({{"event","input"},{"packet",{{"device","mouse"},{"pointer",{{"position",{h->cursor.x,h->cursor.y}},{"size",{h->width,h->height}},{"inside",false}}}}}});return 0;case WM_MOUSEWHEEL:if(h->ready){POINT at{short(LOWORD(l)),short(HIWORD(l))};if(ScreenToClient(window,&at)){h->pointer(MAKELPARAM(at.x,at.y));h->inputQueue.push({{"event","input"},{"packet",{{"key","mousewheelaxis"},{"value",std::clamp(double(short(HIWORD(w)))/WHEEL_DELTA,-1.0,1.0)},{"device","mouse"}}}});}}return 0;case WM_LBUTTONDOWN:case WM_LBUTTONUP:case WM_RBUTTONDOWN:case WM_RBUTTONUP:case WM_MBUTTONDOWN:case WM_MBUTTONUP:case WM_XBUTTONDOWN:case WM_XBUTTONUP:if(h->ready){h->pointer(l);const bool down=message==WM_LBUTTONDOWN||message==WM_RBUTTONDOWN||message==WM_MBUTTONDOWN||message==WM_XBUTTONDOWN;const unsigned index=message==WM_LBUTTONDOWN||message==WM_LBUTTONUP?0:message==WM_RBUTTONDOWN||message==WM_RBUTTONUP?1:message==WM_MBUTTONDOWN||message==WM_MBUTTONUP?2:HIWORD(w)==XBUTTON1?3:4;const unsigned bit=1u<<index;if(down){h->mouseButtons|=bit;SetCapture(window);}else h->mouseButtons&=~bit;h->key(index==0?"leftmousebutton":index==1?"rightmousebutton":index==2?"middlemousebutton":index==3?"thumbmousebutton":"thumbmousebutton2",down,"mouse");if(!h->mouseButtons&&GetCapture()==window)ReleaseCapture();}return message==WM_XBUTTONDOWN||message==WM_XBUTTONUP?TRUE:0;case WM_CAPTURECHANGED:if(h->ready&&reinterpret_cast<HWND>(l)!=window)h->releaseMouse();return 0;case WM_CANCELMODE:if(h->ready)h->releaseMouse();return 0;case WM_KEYDOWN:case WM_KEYUP:case WM_SYSKEYDOWN:case WM_SYSKEYUP:if(message==WM_SYSKEYDOWN&&w==VK_F4)return DefWindowProcW(window,message,w,l);if(h->ready){if((message==WM_KEYDOWN||message==WM_SYSKEYDOWN)&&(l&(1ll<<30)))return 0;std::wstring key;if((w>=L'A'&&w<=L'Z')||(w>=L'0'&&w<=L'9'))key=wchar_t(w);else if(w>=VK_F1&&w<=VK_F24)key=L"f"+std::to_wstring(w-VK_F1+1);else switch(w){case VK_HOME:key=L"home";break;case VK_END:key=L"end";break;case VK_PRIOR:key=L"pageup";break;case VK_NEXT:key=L"pagedown";break;case VK_DELETE:key=L"delete";break;case VK_INSERT:key=L"insert";break;case VK_SPACE:key=L" ";break;case VK_BACK:key=L"backspace";break;case VK_ESCAPE:key=L"escape";break;case VK_TAB:key=L"tab";break;case VK_RETURN:key=L"enter";break;case VK_SHIFT:key=L"shift";break;case VK_CONTROL:key=L"control";break;case VK_MENU:key=L"alt";break;case VK_LEFT:key=L"arrowleft";break;case VK_RIGHT:key=L"arrowright";break;case VK_UP:key=L"arrowup";break;case VK_DOWN:key=L"arrowdown";break;}if(!key.empty())h->key(utf8(key),message==WM_KEYDOWN||message==WM_SYSKEYDOWN);}return 0;case WM_KILLFOCUS:if(h->ready)h->releaseInput();return 0;case WM_TIMER:if(w==2){h->ready=false;PostMessageW(window,WM_CLOSE,0,0);}return 0;case WM_CLOSE:if(h->ready){if(!h->closeRequested){h->closeRequested=true;h->write({{"event","stop"}});SetTimer(window,2,5000,nullptr);}return 0;}KillTimer(window,2);h->stop();DestroyWindow(window);return 0;case WM_DESTROY:PostQuitMessage(0);return 0;}}catch(const std::exception& e){h->failed=true;h->log(e.what());PostMessageW(window,WM_CLOSE,0,0);}return DefWindowProcW(window,message,w,l);}
 }
 int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,PWSTR,int show){bool hiddenRequested=false;try{SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);CoInitializeEx(nullptr,COINIT_APARTMENTTHREADED);int count=0;auto argv=CommandLineToArgvW(GetCommandLineW(),&count);struct Args{LPWSTR* p;~Args(){LocalFree(p);}} args{argv};wchar_t self[32768];GetModuleFileNameW(nullptr,self,32768);Host host;host.root=fs::path(self).parent_path();std::wstring extra;for(int i=1;i<count;i++){const std::wstring a=argv[i];if(a==L"--prepare-shaders"&&i+1<count){hb::gpu::SceneRenderer::configureShaderCache(fs::absolute(argv[i+1]));SceneRenderBridge warmup;warmup.command({{"op","init"},{"data",{{"width",16},{"height",16},{"asyncShaderPreparation",false}}}},nullptr,true);warmup.shutdown();
   // The direct Direct3D12 renderer compiles its own pipeline set at init; bundle it too (skipped where Direct3D12 is unavailable).
   try{warmup.command({{"op","init"},{"data",{{"width",16},{"height",16},{"backend","d3d12"}}}},nullptr,true);}catch(const std::exception&){}warmup.shutdown();return 0;}if(a==L"--stamp-game"&&i+2<count){hiddenRequested=true;stampGameExecutable(argv[i+1],argv[i+2]);return 0;}if(a==L"--package"&&i+1<count)host.root=fs::absolute(argv[++i]);else if(a==L"--hidden")host.hidden=hiddenRequested=true;else if(a==L"--silent")extra+=L" --silent";else if(a==L"--uncapped"){host.uncapped=true;extra+=L" --uncapped 1";}else if((a==L"--frames"||a==L"--report"||a==L"--graphics-api")&&i+1<count){extra+=L" "+a+L" "+quote(argv[++i]);}}
+ fs::path editorProject,editorProfile;
+ HWND owner=nullptr;
+ for(int i=1;i+1<count;i++){
+     const std::wstring flag=argv[i];
+     if(flag==L"--editor-project")editorProject=fs::absolute(argv[++i]);
+     else if(flag==L"--editor-profile")editorProfile=fs::absolute(argv[++i]);
+     else if(flag==L"--editor-owner")owner=reinterpret_cast<HWND>(std::stoull(argv[++i]));
+     else if(flag==L"--editor-scene")extra+=L" --editor-scene "+quote(argv[++i]);
+ }
+ if(!editorProject.empty())return playEditorProject(host,instance,editorProject,editorProfile,owner,show,std::move(extra));
  Json manifest;{std::ifstream file(host.root/L"game.hbpack.json");if(!file)throw std::runtime_error("Native game manifest missing");file>>manifest;}const auto projectId=manifest.at("id").get<std::string>();gameIdentity(wide(projectId));SetCurrentProcessExplicitAppUserModelID(wide(manifest.at("windowsApplication").at("id").get<std::string>()).c_str());wchar_t local[32768];const auto n=GetEnvironmentVariableW(L"LOCALAPPDATA",local,32768);if(!n||n>=32768)throw std::runtime_error("Local app data path");const fs::path localData(local);const auto testLength=host.hidden?GetEnvironmentVariableW(L"HB_NATIVE_TEST_STATE",local,32768):0;const auto state=testLength&&testLength<32768?fs::path(local):fs::path(local)/L"HBEngine"/L"Games"/wide(projectId);fs::create_directories(state);const auto shaderCache=(testLength?state:localData/L"HBEngine")/L"Cache"/L"ShaderBytecode";fs::create_directories(shaderCache);const auto bundled=host.root/L"Shaders";if(fs::is_directory(bundled))for(const auto& entry:fs::directory_iterator(bundled)){if(entry.is_regular_file()&&!entry.is_symlink()&&entry.file_size()<=8*1024*1024){std::error_code error;fs::copy_file(entry.path(),shaderCache/entry.path().filename(),fs::copy_options::skip_existing,error);}}hb::gpu::SceneRenderer::configureShaderCache(shaderCache);host.logFile=state/L"native-runtime.log";host.timer=CreateWaitableTimerExW(nullptr,nullptr,2,TIMER_ALL_ACCESS);if(!host.timer)host.timer=CreateWaitableTimerW(nullptr,FALSE,nullptr);if(!host.timer)throw std::runtime_error("Native frame timer");host.width=manifest.value("width",1280u);host.height=manifest.value("height",720u);if(host.width<1||host.width>7680||host.height<1||host.height>4320)throw std::runtime_error("Window dimensions invalid");const auto title=wide(manifest.value("name",std::string("HBEngine Game")));host.width=MulDiv(host.width,GetDpiForSystem(),96);host.height=MulDiv(host.height,GetDpiForSystem(),96);RECT initialWork{};if(SystemParametersInfoW(SPI_GETWORKAREA,0,&initialWork,0)){const double fit=std::min({1.0,double(initialWork.right-initialWork.left-32)/host.width,double(initialWork.bottom-initialWork.top-80)/host.height});if(fit>0&&fit<1){host.width=std::max(1u,unsigned(host.width*fit));host.height=std::max(1u,unsigned(host.height*fit));}}WNDCLASSW wc{};wc.lpfnWndProc=procedure;wc.hInstance=instance;wc.lpszClassName=L"HBEngine.NativeGame";wc.hCursor=LoadCursorW(nullptr,IDC_ARROW);RegisterClassW(&wc);RECT rect{0,0,LONG(host.width),LONG(host.height)};AdjustWindowRectExForDpi(&rect,WS_OVERLAPPEDWINDOW,FALSE,0,GetDpiForSystem());const auto window=CreateWindowExW(0,wc.lpszClassName,title.c_str(),WS_OVERLAPPEDWINDOW,CW_USEDEFAULT,CW_USEDEFAULT,rect.right-rect.left,rect.bottom-rect.top,nullptr,nullptr,instance,&host);if(!window)throw std::runtime_error("Native game window");SetEnvironmentVariableW(L"DISABLE_SYSTEM_FONTS_LOAD",L"1");host.audioIdentity.configure(gameIdentity(wide(projectId)),title,self);host.start(host.root/wide(manifest.at("scriptRuntime").get<std::string>()),host.root/L"tools/native-game-runner.mjs",extra);if(!host.hidden)ShowWindow(window,show);MSG message{};bool running=true;while(running){const auto result=MsgWaitForMultipleObjectsEx(1,&host.timer,INFINITE,QS_ALLINPUT,MWMO_INPUTAVAILABLE);if(result==WAIT_OBJECT_0)host.tick();else if(result==WAIT_FAILED)throw std::runtime_error("Native message wait");while(PeekMessageW(&message,nullptr,0,0,PM_REMOVE)){if(message.message==WM_QUIT){running=false;break;}TranslateMessage(&message);DispatchMessageW(&message);}}host.stop();if(host.failed&&!host.hidden)MessageBoxW(nullptr,(L"게임 실행 중 오류가 발생했어요.\n"+host.failureMessage+L"\n\n기록: "+host.logFile.wstring()).c_str(),L"HBEngine",MB_OK|MB_ICONERROR);return host.failed?1:0;
  }catch(const std::exception& e){OutputDebugStringA(e.what());const auto diagnostic=std::string(e.what())+"\n";DWORD written=0;const auto errorOutput=GetStdHandle(STD_ERROR_HANDLE);if(errorOutput&&errorOutput!=INVALID_HANDLE_VALUE)WriteFile(errorOutput,diagnostic.data(),DWORD(diagnostic.size()),&written,nullptr);if(!hiddenRequested)MessageBoxW(nullptr,wide(std::string("게임을 시작하지 못했어요.\n")+e.what()).c_str(),L"HBEngine",MB_OK|MB_ICONERROR);return 1;}}

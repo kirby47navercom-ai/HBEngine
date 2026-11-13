@@ -16,12 +16,35 @@ import {addWidget,removeWidget,reparentWidget,widgetContainers,widgetTypes} from
 import {projectBytes} from './project-bytes.mjs';
 import {copySceneObjects,pasteSceneObjects,setObjectMatrix,validParent} from '../prototype/scene-editor.js';
 import {sceneWorldMatrix} from '../prototype/scene-runtime.js';
+import {addState,behaviorNodes,makeBehaviorNode,makeSequenceTrack,removeState} from '../prototype/gameplay-assets.js';
+import {timelineRows} from '../prototype/timeline-rows.js';
+import {timelineSnap} from '../prototype/timeline-rate.js';
+import {SequenceSampler} from '../prototype/sequence-sampling.js';
+import {makeAnimationNotifyState} from '../prototype/animation-sync.js';
+import {animationGraphNodes,animationInputs,makeAnimationNode} from '../prototype/animation-graph-assets.js';
 import {defaultEnvironment,defaultSurface} from '../prototype/model.js';
 import {createBlueprintResolver} from '../prototype/blueprint-inheritance.js';
 
 const materialKinds = new Set(['material', 'materialfunction', 'materiallayer', 'materialblend']);
-const graphKind = doc => doc.kind === 'blueprint' || materialKinds.has(doc.kind);
-const timelineKind = doc => doc.kind === 'curve' || doc.kind === 'animation';
+const gameplayGraphs=new Set(['behaviortree','statemachine','animgraph']);
+const graphKind = doc => doc.kind === 'blueprint' || materialKinds.has(doc.kind) || gameplayGraphs.has(doc.kind);
+const previewKind = doc => doc.kind==='blueprint'||doc.kind==='materialinstance'||materialKinds.has(doc.kind);
+const timelineKind = doc => ['curve','animation','sequenceasset','montage'].includes(doc.kind);
+const sequenceTracks=['position','rotation','scale','visible','camera','timeScale','event','animation','audio'];
+const sampleSequenceTrack=(sampler,track,time)=>['audio','animation'].includes(track.type)
+  ?sampler.clip(track,time)?.clip
+  :sampler.sample(track,time,{reference:['camera','event','parent'].includes(track.type)});
+function timelineItems(kind,data,track){
+  if(kind==='montage'){
+    if(track==='sections'||track==='notifies')return [track,data[track],'time'];
+    if(track.startsWith('notify-state:'))return ['notifyStates',data.notifyStates??=[],'time'];
+    if(track.startsWith('slot:'))return ['clips',data.clips,'start'];
+  }
+  if(track.startsWith('section-row:'))return ['sections',data.sections??=[],'start'];
+  const index=data.tracks?.findIndex(row=>row.id===track);
+  if(index>=0)return [String(index),data.tracks[index].clips,'start'];
+  throw Error('타임라인 항목을 선택하세요.');
+}
 const editableText = /\.(?:cpp|hpp|h|c|hlsl|glsl|txt|md|json|yaml|yml|csv|svg|obj|gltf)$/i;
 const names = data => [
   ['event', '이벤트 그래프'],
@@ -34,6 +57,7 @@ const fieldLabels = {name:'이름',sceneName:'레벨 이름',objects:'오브젝�
 
 export function nativeEditorSession(bridge) {
   let record, documents = new AssetDocuments(), viewport, preview, previewSource, previewScene, previewNode, build, buildJobs, lastBuild;
+  const sequenceSamplers=new WeakMap();
   const project = () => {
     if (!record) throw Error('프로젝트를 먼저 여세요.');
     return record.project;
@@ -42,6 +66,12 @@ export function nativeEditorSession(bridge) {
     if (!documents.current) throw Error('문서를 먼저 여세요.');
     return documents.current;
   };
+  function targetDocument(file) {
+    if (file===undefined) return current();
+    const doc=documents.items.get(file);
+    if (!doc) throw Error('열린 문서를 선택하세요.');
+    return doc;
+  }
   const summary = doc => ({path:doc.path, kind:doc.kind, dirty:doc.dirty});
   const tabs = () => [...documents.items.values()].map(summary);
   const revision = doc => documentRevision(doc.data);
@@ -85,6 +115,8 @@ export function nativeEditorSession(bridge) {
     return graphContext(data, view);
   }
   function graphModel(doc, view) {
+    if(doc.kind==='animgraph')return animationGraphModel(doc.data);
+    if(gameplayGraphs.has(doc.kind))return gameplayGraph(doc.kind,doc.data);
     const data = structuredClone(doc.data), bp = doc.kind === 'blueprint', graph = graphFor(doc, data, view);
     const nodes = graph.nodes.map(node => {
       const pins = bp ? {inputs:effectivePins(node,'in',graph),outputs:effectivePins(node,'out',graph)} : materialPins(node,graph);
@@ -100,8 +132,91 @@ export function nativeEditorSession(bridge) {
     }
     return {view, views:bp ? names(data) : [], nodes, edges:bp ? graph.edges : normalizedMaterialEdges(graph), comments:graph.comments || [], palette};
   }
+  function animationGraphModel(data){
+    const pin=id=>({id,label:id,color:typeColors.object});
+    const nodes=data.nodes.filter(node=>!node.scope);
+    const ids=new Set(nodes.map(node=>node.id));
+    return {views:[],comments:[],palette:Object.entries(animationGraphNodes).filter(([id])=>id!=='output').map(([id,meta])=>({id,title:meta.label})),
+      nodes:nodes.map(node=>({id:node.id,title:node.name,x:node.x,y:node.y,inputs:animationInputs(node).map(pin),
+        outputs:node.id===data.output?[]:[pin('pose')]})),
+      edges:nodes.flatMap(node=>Object.entries(node.inputs).filter(([,source])=>ids.has(source))
+        .map(([input,source])=>({from:{node:source,pin:'pose'},to:{node:node.id,pin:input}})))};
+  }
+  function editAnimationGraph(data,{action,id,key,x,y,from,to,pin,output}){
+    const node=data.nodes.find(row=>row.id===id&&!row.scope);
+    if(action==='add'||action==='move'){
+      if(![x,y].every(Number.isFinite))throw Error('노드 위치를 확인하세요.');
+      if(action==='move'){
+        if(!node)throw Error('노드를 선택하세요.');
+        Object.assign(node,{x,y});
+      }else{
+        if(key==='output'||!Object.hasOwn(animationGraphNodes,key))throw Error('애니메이션 노드 종류를 확인하세요.');
+        data.nodes.push(makeAnimationNode(key,x,y));
+      }
+    }else if(action==='connect'){
+      const source=data.nodes.find(row=>row.id===from?.node&&!row.scope),target=data.nodes.find(row=>row.id===to?.node&&!row.scope);
+      if(!source||!target||source.id===data.output||from.pin!=='pose'||!animationInputs(target).includes(to.pin))throw Error('포즈 연결을 확인하세요.');
+      target.inputs[to.pin]=source.id;
+    }else if(action==='disconnect'||action==='delete'){
+      if(!node)throw Error('노드를 선택하세요.');
+      if(action==='disconnect'&&!output)delete node.inputs[pin];
+      else{
+        if(action==='delete'&&id===data.output)throw Error('출력 노드는 유지해야 해요.');
+        const removed=new Set([id]);
+        if(action==='delete'){
+          for(const row of data.nodes)if(row.scope?.startsWith(id+'/'))removed.add(row.id);
+          data.nodes=data.nodes.filter(row=>!removed.has(row.id));
+        }
+        for(const row of data.nodes)for(const [input,source] of Object.entries(row.inputs))if(removed.has(source))delete row.inputs[input];
+      }
+    }else throw Error('포즈 그래프 편집 명령을 확인하세요.');
+  }
+  function gameplayGraph(kind,data){
+    const behavior=kind==='behaviortree',rows=behavior?data.nodes:data.states;
+    const inputs=[{id:'in',label:behavior?'부모':'진입',color:'#d1dadd'}],outputs=[{id:'out',label:behavior?'자식':'전이',color:'#d1dadd'}];
+    const nodes=rows.map(row=>({id:row.id,title:row.name,x:row.x,y:row.y,inputs:behavior&&row.id===data.root?[]:inputs,
+      outputs:behavior&&behaviorNodes[row.type].children===0?[]:outputs}));
+    const edges=(behavior?rows.flatMap(row=>row.children.map(child=>({from:row.id,to:child}))):data.transitions)
+      .map(edge=>({from:{node:edge.from,pin:'out'},to:{node:edge.to,pin:'in'}}));
+    const palette=behavior?Object.entries(behaviorNodes).map(([id,node])=>({id,title:node.label})):[{id:'state',title:'상태'}];
+    return {nodes,edges,views:[],comments:[],palette};
+  }
+  function changeGameplayGraph(doc,next,{action,id,key,x,y,from,to,pin,output}){
+    const behavior=doc.kind==='behaviortree',rows=behavior?next.nodes:next.states;
+    const get=id=>{const node=rows.find(row=>row.id===id);if(!node)throw Error('노드를 선택하세요.');return node;};
+    if(action==='add'||action==='move'){
+      if(![x,y].every(Number.isFinite))throw Error('노드 위치를 확인하세요.');
+      x=Math.max(-10000,Math.min(10000,x));y=Math.max(-10000,Math.min(10000,y));
+      if(action==='move')Object.assign(get(id),{x,y});
+      else if(behavior){
+        const parent=get(id||next.root),node=makeBehaviorNode(key,x,y);
+        parent.children.push(node.id);rows.push(node);
+      }else addState(next,{position:[x,y]});
+    }else if(action==='connect'){
+      const a=get(from.node),b=get(to.node);
+      if(a===b)throw Error('서로 다른 노드를 선택하세요.');
+      if(behavior){
+        if(b.id===next.root)throw Error('루트 노드에는 부모가 없어요.');
+        for(const row of rows)row.children=row.children.filter(child=>child!==b.id);
+        a.children.push(b.id);
+      }else if(!next.transitions.some(edge=>edge.from===a.id&&edge.to===b.id)){
+        next.transitions.push({id:crypto.randomUUID(),from:a.id,to:b.id,exitTime:0,hasExitTime:false,event:'',conditions:[]});
+      }
+    }else if(action==='disconnect'&&!behavior)next.transitions=next.transitions.filter(edge=>edge[output?'from':'to']!==id);
+    else if(action==='delete'){
+      get(id);
+      if(behavior){
+        if(id===next.root)throw Error('루트 노드는 유지해야 해요.');
+        const removed=new Set(),pending=[id];
+        while(pending.length){const item=get(pending.pop());if(removed.has(item.id))continue;removed.add(item.id);pending.push(...item.children);}
+        next.nodes=rows.filter(row=>!removed.has(row.id));
+        for(const row of next.nodes)row.children=row.children.filter(child=>!removed.has(child));
+      }else removeState(next,id);
+    }else throw Error('이 그래프에서 사용할 수 있는 편집 명령을 선택하세요.');
+    change(doc,next);
+  }
   function fieldsFor(doc, parts) {
-    if (doc.kind === 'text' || graphKind(doc)) throw Error('속성 편집 문서를 선택하세요.');
+      if (doc.kind === 'text' || graphKind(doc)&&!gameplayGraphs.has(doc.kind)) throw Error('속성 편집 문서를 선택하세요.');
     let data = doc.data;
     for (const key of parts) {
       if (!data || typeof data !== 'object' || !Object.hasOwn(data,key)) throw Error('속성 경로를 다시 선택하세요.');
@@ -137,6 +252,26 @@ export function nativeEditorSession(bridge) {
       const {readBuildProfiles}=await import('./build-game.mjs');
       const {profiles,revision}=await readBuildProfiles(record);
       return {profiles,revision};
+    },
+    'project.buildProfileSave': async ({id,changes,expectedRevision,action='edit',newId})=>{
+      project();
+      const {readBuildProfiles}=await import('./build-game.mjs');
+      const {profiles,revision}=await readBuildProfiles(record);
+      if(revision!==expectedRevision)throw Error('빌드 프로필이 변경됐어요. 다시 읽으세요.');
+      const index=profiles.findIndex(item=>item.id===id);
+      if(index<0)throw Error('빌드 프로필을 선택하세요.');
+      const profile=profiles[index];
+      const editable=new Set(['name','productName','configuration','width','height','targetFrameRate','framePacing','scenes','nativeGraphicsAPI','mobile','windowsSigning','kiosk','target','windowsRuntime','windowsRenderer']);
+      if(action==='delete')profiles.splice(index,1);
+      else{
+        if(!changes||typeof changes!=='object'||Array.isArray(changes)||Object.keys(changes).some(key=>!editable.has(key)))throw Error('편집할 빌드 설정을 확인하세요.');
+        if(action==='edit')Object.assign(profile,changes);
+        else if(action==='copy')profiles.push({...profile,...changes,id:newId});
+        else throw Error('빌드 프로필 명령을 확인하세요.');
+      }
+      buildJobs??=new (await import('./build-jobs.mjs')).BuildJobs();
+      const saved=await buildJobs.save(record,{version:1,profiles},expectedRevision);
+      return {profiles:saved.profiles,revision:saved.revision};
     },
     'project.build': async ({id,expectedRevision,dryRun=false})=>{
       project();
@@ -175,6 +310,13 @@ export function nativeEditorSession(bridge) {
       if (typeof folder!=='string' || !/^Assets(?:\/|$)/.test(folder) || !Object.hasOwn(assetSuffix,kind) || typeof name!=='string' || !name.trim() || /[/\\:<>?"|*\x00-\x1f]/.test(name)) throw Error('Assets 폴더와 에셋 이름, 종류를 확인하세요.');
       return openDocument((await project().create(folder,kind,name.trim())).path);
     },
+    'content.mkdir': async ({folder,name})=>{
+      if(typeof folder!=='string'||!/^(Assets|Source|Settings)(?:\/|$)/.test(folder)||
+        typeof name!=='string'||!name.trim()||/[\/\\:<>?"|*\x00-\x1f]/.test(name))throw Error('상위 폴더와 새 폴더 이름을 확인하세요.');
+      const target=folder+'/'+name.trim();
+      await project().mkdir(target);
+      return {path:target};
+    },
     'content.import': async ({folder,file})=>{
       if(typeof folder!=='string'||!/^Assets(?:\/|$)/.test(folder)||typeof file!=='string'||!path.isAbsolute(file))throw Error('Assets 폴더와 가져올 파일을 선택하세요.');
       const stat=await fs.stat(file);
@@ -182,24 +324,24 @@ export function nativeEditorSession(bridge) {
       return project().importStream(folder,path.basename(file),createReadStream(file),()=>{},{expectedBytes:stat.size});
     },
     'document.open': ({path}) => openDocument(path),
-    'document.read': () => response(current()),
-    'document.replace': async ({text,expectedRevision}) => {
-      const doc = current();
+    'document.read': ({path}) => response(targetDocument(path)),
+    'document.replace': async ({path,text,expectedRevision}) => {
+      const doc = targetDocument(path);
       await check(doc,expectedRevision);
       if (typeof text !== 'string') throw Error('문서 내용을 확인하세요.');
       change(doc,doc.kind === 'text' ? text : JSON.parse(text));
       return response(doc);
     },
-    'document.patch': async ({operations,expectedRevision,dryRun=false}) => {
-      const doc = current();
+    'document.patch': async ({path,operations,expectedRevision,dryRun=false}) => {
+      const doc = targetDocument(path);
       await check(doc,expectedRevision);
       const next = patchAsset(doc.kind,doc.data,operations);
       if (dryRun) return {valid:true, revision:await documentRevision(next), data:next};
       change(doc,next);
       return response(doc);
     },
-    'document.save': async ({expectedRevision}) => {
-      const doc = current();
+    'document.save': async ({path,expectedRevision}) => {
+      const doc = targetDocument(path);
       await check(doc,expectedRevision);
       await documents.save(doc,(file,text,expected) => project().checkedWrite(file,text,expected));
       return response(doc);
@@ -208,8 +350,8 @@ export function nativeEditorSession(bridge) {
       if (!documents.close(path,discard)) throw Error('저장하지 않은 변경 사항이 있어요.');
       return documents.current ? response(documents.current) : {tabs:tabs()};
     },
-    'editor.undo': () => restore('history','future'),
-    'editor.redo': () => restore('future','history'),
+    'editor.undo': ({path,expectedRevision}) => restore('history','future',path,expectedRevision),
+    'editor.redo': ({path,expectedRevision}) => restore('future','history',path,expectedRevision),
     'scene.catalog': () => ({placements:placementCatalog.map(([id,label,group])=>({id,label,group})),components:Object.keys(componentDefinitions)}),
     'scene.hierarchy': () => scene().data.objects.map(({id,name,kind,parent,visible,locked,components})=>({id,name,kind,parent,visible,locked,camera:components?.some(c=>c.type==='Camera'&&c.properties?.enabled!==false)??kind==='camera'})),
     'scene.edit': async ({action,id,target,key,expectedRevision}) => {
@@ -254,7 +396,7 @@ export function nativeEditorSession(bridge) {
       const {width,height,node}=params;
       if(!bridge||![width,height].every(value=>Number.isInteger(value)&&value>0&&value<=4096))throw Error('3D 미리보기 연결이나 크기를 확인하세요.');
       const doc=current();
-      if(!graphKind(doc)&&doc.kind!=='materialinstance')throw Error('미리 볼 에셋을 선택하세요.');
+      if(!previewKind(doc))throw Error('미리 볼 에셋을 선택하세요.');
       preview??=(await import('./native-editor-viewport.mjs')).nativeEditorViewport(bridge,'native-preview');
       if(previewSource!==doc.data||previewNode!==node){
         const asset=async name=>name===doc.path?doc.data:JSON.parse((await projectBytes(project(),name)).toString('utf8').replace(/^\uFEFF/,''));
@@ -284,32 +426,103 @@ export function nativeEditorSession(bridge) {
       return {ok:true};
     },
     'timeline.read': () => {
-      const {timeline}=assetOfKind('timeline').data;
+      const doc=assetOfKind('timeline'),{timeline}=doc.data;
+      if(!timeline){
+        const rows=timelineRows(doc.kind,doc.data,{keyItems:track=>track.keys.map((key,index)=>({id:track.id+':'+index,start:key.time,key:true}))});
+      if(doc.kind==='montage'){
+        if(!rows.some(row=>row.id==='slot:DefaultSlot'))rows.push({id:'slot:DefaultSlot',type:'slot',name:'DefaultSlot',items:()=>[]});
+        rows.push({id:'notify-state:',type:'notify-state-add',name:'구간 알림 추가',items:()=>[]});
+      }
+      return {length:doc.data.length,tracks:rows.map(row=>{
+          const items=row.items();
+          return {id:row.id,name:row.name,type:row.type,
+            keys:items.filter(item=>item.key).map(item=>item.start),
+            clips:items.filter(item=>!item.key).map(item=>({id:item.id,start:item.start,duration:item.duration||0,label:item.name||item.clip||''}))};
+        })};
+      }
       const length=timelineLength(timeline);
       return {length, tracks:timeline.tracks.map(track=>({id:track.id,name:track.name,type:track.type,keys:track.keys.map(key=>key.time)}))};
     },
-    'timeline.sample': ({time}) => {
-      const {timeline}=assetOfKind('timeline').data;
-      return timeline.tracks.map(track=>({id:track.id,value:sampleTimeline(track,time)}));
+    'timeline.trackTypes': ()=>sequenceTracks,
+    'timeline.inspectorPath': ({track,id})=>{
+      const {kind,data}=assetOfKind('timeline');
+      const [key,items]=timelineItems(kind,data,track);
+      const index=items.findIndex(item=>item.id===id);
+      if(index<0)return [];
+      return data.tracks&&key!=='sections'?['tracks',key,'clips',String(index)]:[key,String(index)];
     },
-    'timeline.edit': async ({action,track,index,time,expectedRevision})=>{
+    'timeline.sample': ({time}) => {
+      const doc=assetOfKind('timeline'),timeline=doc.data.timeline;
+      if(!timeline){
+        if(doc.kind!=='sequenceasset'||!Number.isFinite(time))return [];
+        let sampler=sequenceSamplers.get(doc.data);
+        if(!sampler){sampler=new SequenceSampler(doc.data.tracks);sequenceSamplers.set(doc.data,sampler);}
+        return doc.data.tracks.map(track=>({id:track.name,value:sampleSequenceTrack(sampler,track,time)}));
+      }
+      return timeline.tracks.map(track=>({id:track.name,value:sampleTimeline(track,time)}));
+    },
+    'timeline.edit': async ({action,track,index,time,type,value,id,asset,slot,expectedRevision})=>{
       const doc=assetOfKind('timeline');
       await check(doc,expectedRevision);
-      const next=structuredClone(doc.data),row=next.timeline.tracks.find(item=>item.id===track);
+      const next=structuredClone(doc.data);
+      if(action==='trackAdd'&&doc.kind==='sequenceasset'){
+        if(!sequenceTracks.includes(type))throw Error('시퀀스 트랙 종류를 확인하세요.');
+        next.tracks.push(makeSequenceTrack(type));change(doc,next);return response(doc);
+      }
+      if(action==='clipAdd'||action==='clipMove'||action==='clipDelete'){
+        if(typeof track!=='string'||!['montage','sequenceasset'].includes(doc.kind))throw Error('시퀀스나 몽타주 타임라인을 선택하세요.');
+        const [key,items,position]=timelineItems(doc.kind,next,track);
+        const clipIndex=items.findIndex(item=>item.id===id);
+        if(action==='clipDelete'){
+          if(clipIndex<0)throw Error('삭제할 항목을 선택하세요.');
+          const [removed]=items.splice(clipIndex,1);
+          if(doc.kind==='montage'&&key==='sections')for(const section of items)if(section.next===removed.name)section.next='';
+        }else{
+          if(!Number.isFinite(time)||time<0||time>next.length)throw Error('타임라인 시간을 확인하세요.');
+          if(doc.kind==='sequenceasset')time=Math.min(next.length,timelineSnap(next,time));
+          if(action==='clipMove'){
+            if(clipIndex<0)throw Error('이동할 항목을 선택하세요.');
+            items[clipIndex][position]=time;
+          }else if(doc.kind==='montage'&&['sections','notifies','notifyStates'].includes(key)){
+            if(typeof value!=='string'||!value.trim())throw Error('항목 이름을 입력하세요.');
+            const name=value.trim();
+            if(key==='sections')items.push({id:crypto.randomUUID(),name,time,next:''});
+            else if(key==='notifies')items.push({id:crypto.randomUUID(),event:name,time});
+            else items.push(makeAnimationNotifyState(name,time,Math.min(.25,next.length-time)));
+          }else{
+            const audio=doc.kind==='sequenceasset'&&next.tracks[Number(key)]?.type==='audio';
+            if(doc.kind==='sequenceasset'&&!['audio','animation'].includes(next.tracks[Number(key)]?.type))
+              throw Error('애니메이션 또는 오디오 트랙을 선택하세요.');
+            const assetTypes=audio?['audio','audioasset']:['animation','spriteanimation','skeletalclip'];
+            if(typeof asset!=='string'||!assetTypes.includes(assetKind(asset)))throw Error('트랙에 맞는 클립 에셋을 선택하세요.');
+            await project().read(asset);
+            const slotName=typeof slot==='string'&&slot.trim()?slot.trim():track.startsWith('slot:')?track.slice(5):'DefaultSlot';
+            const duration=Math.min(1,next.length-time);
+            items.push({id:crypto.randomUUID(),clip:asset,slot:slotName,start:time,duration,sourceStart:0,rate:1});
+          }
+        }
+        items.sort((a,b)=>a[position]-b[position]);
+        change(doc,next);return response(doc);
+      }
+      const row=(next.timeline?.tracks||next.tracks||[]).find(item=>item.id===track);
       if(!row)throw Error('트랙을 선택하세요.');
       if(action==='delete'){
         if(!Number.isInteger(index)||!row.keys[index])throw Error('키를 선택하세요.');
         row.keys.splice(index,1);
       }else{
-        if(!Number.isFinite(time)||time<0||time>timelineLength(next.timeline))throw Error('키의 시간을 확인하세요.');
+        const length=next.timeline?timelineLength(next.timeline):next.length;
+        if(!Number.isFinite(time)||time<0||time>length)throw Error('키의 시간을 확인하세요.');
+        if(doc.kind==='sequenceasset')time=Math.min(length,timelineSnap(next,time));
         if(action==='move'){
           if(!Number.isInteger(index)||!row.keys[index])throw Error('이동할 키를 선택하세요.');
           if(row.keys.some((key,i)=>i!==index&&key.time===time))throw Error('이 시간에 이미 키가 있어요.');
           row.keys[index].time=time;
         }else if(action==='add'){
-          if(row.type==='event')throw Error('이벤트 키 값은 속성에서 편집하세요.');
+          if(row.type==='event'&&typeof value!=='string')throw Error('이벤트 이름을 입력하세요.');
+          if(['animation','audio'].includes(row.type))throw Error('클립은 트랙 속성에서 선택하세요.');
           if(row.keys.some(key=>key.time===time))throw Error('이 시간에 이미 키가 있어요.');
-          row.keys.push({time,value:sampleTimeline(row,time)});
+          const sampled=next.timeline?sampleTimeline(row,time):sampleSequenceTrack(new SequenceSampler([row]),row,time);
+          row.keys.push({time,value:value??sampled??makeSequenceTrack(row.type).keys[0]?.value});
         }else throw Error('키 편집 명령을 확인하세요.');
         row.keys.sort((a,b)=>a.time-b.time);
       }
@@ -357,8 +570,8 @@ export function nativeEditorSession(bridge) {
       return {...await response(doc),selection};
     },
     'asset.fields': ({parts=[]}) => fieldsFor(current(),parts),
-    'graph.inputs': ({view='event',id}) => {
-      const doc=current(), graph=graphFor(doc,structuredClone(doc.data),view), node=graph.nodes.find(row=>row.id===id);
+    'graph.inputs': ({path,view='event',id}) => {
+      const doc=targetDocument(path), graph=graphFor(doc,structuredClone(doc.data),view), node=graph.nodes.find(row=>row.id===id);
       if (!node) throw Error('노드가 없어요.');
       const bp=doc.kind==='blueprint', pins=bp?effectivePins(node,'in',graph):materialPins(node,graph).inputs;
       const incoming=new Set((bp?graph.edges:normalizedMaterialEdges(graph)).filter(edge=>edge.to.node===id).map(edge=>edge.to.pin));
@@ -381,7 +594,14 @@ export function nativeEditorSession(bridge) {
       change(doc,patchAsset(doc.kind,doc.data,[{op:'replace',path:pointer,value}]));
       return response(doc);
     },
-    'graph.read': ({view='event'}) => graphModel(current(),view),
+    'graph.read': ({path,view='event'}) => graphModel(targetDocument(path),view),
+    'graph.inspectorPath': ({id})=>{
+      const doc=current();
+      if(!gameplayGraphs.has(doc.kind))throw Error('게임플레이 그래프를 선택하세요.');
+      const key=doc.kind==='statemachine'?'states':'nodes';
+      const index=doc.data[key].findIndex(row=>row.id===id);
+      return index<0?[]:[key,String(index)];
+    },
     'blueprint.members': () => ({
       types:Object.entries(variableTypes).filter(([id])=>id!=='record').map(([id,label])=>({id,label})),
       variables:assetOfKind('blueprint').data.variables
@@ -402,9 +622,18 @@ export function nativeEditorSession(bridge) {
       change(doc,next);
       return {...await response(doc),view};
     },
-    'graph.edit': async ({view='event',action,id,x,y,key,from,to,pin,output,value,expectedRevision}) => {
-      const doc = current();
+    'graph.edit': async ({path,view='event',action,id,x,y,key,from,to,pin,output,value,expectedRevision}) => {
+      const doc = targetDocument(path);
       await check(doc,expectedRevision);
+      if(gameplayGraphs.has(doc.kind)){
+        const next=structuredClone(doc.data);
+        if(doc.kind==='animgraph'){
+          editAnimationGraph(next,{action,id,key,x,y,from,to,pin,output});change(doc,next);
+          return {...await response(doc),model:animationGraphModel(doc.data)};
+        }
+        changeGameplayGraph(doc,next,{action,id,key,x,y,from,to,pin,output});
+        return {...await response(doc),model:gameplayGraph(doc.kind,doc.data)};
+      }
       const next = structuredClone(doc.data), graph = graphFor(doc,next,view), bp = doc.kind === 'blueprint';
       if (action === 'move' || action === 'add') {
         if (![x,y].every(Number.isFinite)) throw Error('노드 위치를 확인하세요.');
@@ -435,7 +664,7 @@ export function nativeEditorSession(bridge) {
         if (bp) graph.edges = graph.edges.filter(edge => edge[side].node!==id || edge[side].pin!==pin);
         else disconnectMaterial(graph,id,pin,side);
       } else if (action === 'input') {
-        const input=methods['graph.inputs']({view,id}).find(row=>row.id===pin);
+        const input=methods['graph.inputs']({path,view,id}).find(row=>row.id===pin);
         if (!input || input.linked) throw Error('편집할 수 있는 기본값을 선택하세요.');
         const node=graph.nodes.find(row=>row.id===id);
         if (pin) (node.inputValues??={})[pin]=value;
@@ -452,8 +681,9 @@ export function nativeEditorSession(bridge) {
       return {...await response(doc), model:graphModel(doc,view)};
     }
   };
-  async function restore(from,to) {
-    const doc = current();
+  async function restore(from,to,file,expected) {
+    const doc = targetDocument(file);
+    if(file!==undefined||expected!==undefined)await check(doc,expected);
     if (doc[from].length) {
       doc[to].push(doc.data);
       doc.data = doc[from].pop();

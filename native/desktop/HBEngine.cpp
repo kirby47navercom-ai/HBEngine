@@ -1,5 +1,4 @@
 #include <algorithm>
-// Both the editor (scene viewport) and the WebView player draw scenes with the engine renderer behind the WebView.
 #include <nlohmann/json.hpp>
 #include "SceneRenderBridge.hpp"
 #ifndef UNICODE
@@ -10,7 +9,9 @@
 #include <shellapi.h>
 #include <shlobj.h>
 #include <dwmapi.h>
+#ifndef HB_NATIVE_EDITOR_ONLY
 #include <WebView2.h>
+#endif
 #include <filesystem>
 #include <fstream>
 #include <regex>
@@ -30,7 +31,9 @@ namespace fs=std::filesystem;
 #include "EditorListPanel.hpp"
 #endif
 struct State {
-    HWND window=nullptr; HANDLE job=nullptr,process=nullptr;
+    HWND window=nullptr;
+#ifndef HB_NATIVE_EDITOR_ONLY
+    HANDLE job=nullptr,process=nullptr;
     ICoreWebView2Controller* controller=nullptr; ICoreWebView2* view=nullptr;
     ICoreWebView2Environment* environment=nullptr;
     SceneRenderBridge sceneRenderer;
@@ -67,8 +70,14 @@ struct State {
         return form(name);
     }
 #endif
-    fs::path root,userData,ready,log,smoke; std::wstring url; bool closing=false,smokeSuccess=false,failed=false,development=true,windowSmoke=false,windowSmokeStarted=false,editorAcceptance=false,kiosk=false,kioskFullscreen=false,kioskPreventMinimize=false,operatorUnlocked=false;
     ~State(){if(view)view->Release();if(controller){controller->Close();controller->Release();}if(environment)environment->Release();if(job)CloseHandle(job);if(process)CloseHandle(process);}
+#endif
+    fs::path root,userData,ready,log,smoke;
+    bool closing=false,failed=false,windowSmoke=false;
+#ifndef HB_NATIVE_EDITOR_ONLY
+    std::wstring url;
+    bool smokeSuccess=false,development=true,windowSmokeStarted=false,editorAcceptance=false,kiosk=false,kioskFullscreen=false,kioskPreventMinimize=false,operatorUnlocked=false;
+#endif
 } app;
 std::wstring quote(const std::wstring& value){
     std::wstring out=L"\"";size_t slashes=0;
@@ -89,6 +98,7 @@ void error(const wchar_t* text,HRESULT code=E_FAIL){
     else MessageBoxW(app.window,text,L"HBEngine",MB_OK|MB_ICONERROR);
     app.closing=true;if(app.window)DestroyWindow(app.window);
 }
+#ifndef HB_NATIVE_EDITOR_ONLY
 template<class Interface> class Callback : public Interface {
     ULONG references=1;const wchar_t* guid;
 public:
@@ -404,6 +414,7 @@ LRESULT CALLBACK windowProcedure(HWND window,UINT message,WPARAM wParam,LPARAM l
         app.window=nullptr;PostQuitMessage(0);return 0;}
     return DefWindowProcW(window,message,wParam,lParam);
 }
+#endif
 bool setRegistry(const std::wstring& path,const wchar_t* name,const std::wstring& value){
     HKEY key;const auto result=RegCreateKeyExW(HKEY_CURRENT_USER,path.c_str(),0,nullptr,0,KEY_SET_VALUE,nullptr,&key,nullptr);if(result!=ERROR_SUCCESS)return false;
     const auto written=RegSetValueExW(key,name,0,REG_SZ,reinterpret_cast<const BYTE*>(value.c_str()),DWORD((value.size()+1)*sizeof(wchar_t)));RegCloseKey(key);return written==ERROR_SUCCESS;
@@ -418,7 +429,9 @@ void associateProject(const fs::path& executable){
 }
 int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
     const auto initialized=CoInitializeEx(nullptr,COINIT_APARTMENTTHREADED);if(FAILED(initialized))return 1;
+#ifndef HB_NATIVE_EDITOR_ONLY
     HMODULE loader=nullptr;HANDLE single=nullptr;
+#endif
     try{
         wchar_t buffer[32768];GetModuleFileNameW(nullptr,buffer,32768);const fs::path executable=buffer;const auto folder=executable.parent_path();
         #ifdef HB_GAME_PLAYER
@@ -427,6 +440,9 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         #ifdef HB_GAME_PLAYER
         app.root=folder;
         const auto serverScript=L"tools/player-server.mjs";
+        #elif defined(HB_NATIVE_EDITOR_ONLY)
+        const auto serverScript=L"tools/native-editor-session.mjs";
+        app.root=fs::exists(folder/serverScript)?folder:folder/L"dist/HBEngine";
         #else
         const auto serverScript=L"tools/serve.mjs";
         app.root=fs::exists(folder/serverScript)?folder:folder/L"dist/HBEngine";
@@ -440,6 +456,9 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         #endif
         if(app.userData.empty())app.userData=defaultUserData;
         fs::create_directories(app.userData/L"Sessions");std::wstring project;bool registerOnly=false,nativeEditor=false;
+        #ifdef HB_NATIVE_EDITOR_ONLY
+        nativeEditor=true;
+        #endif
         int count=0;
         std::unique_ptr<wchar_t*,decltype(&LocalFree)> arguments(CommandLineToArgvW(GetCommandLineW(),&count),LocalFree);
         if(!arguments)throw std::runtime_error("command line");
@@ -454,7 +473,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         }
         if(!project.empty()&&(!fs::is_regular_file(project)||_wcsicmp(fs::path(project).extension().c_str(),L".hbproject")))throw std::runtime_error("project file");
         #ifndef HB_GAME_PLAYER
-        if(!nativeEditor&&app.smoke.empty()&&(registerOnly||fs::is_regular_file(app.root/L"HBEngine.install.json")))associateProject(executable);
+        if(app.smoke.empty()&&(registerOnly||(!nativeEditor&&fs::is_regular_file(app.root/L"HBEngine.install.json"))))associateProject(executable);
         #else
         if(!project.empty()||registerOnly||app.windowSmoke||nativeEditor)throw std::runtime_error("player argument");
         const auto game=nlohmann::json::parse(read(app.root/L"game.hbpack.json"));app.development=game.value("configuration",std::string{})=="development";
@@ -464,7 +483,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         if(env(L"HB_USER_DATA_DIR").empty()){app.userData=fs::path(env(L"LOCALAPPDATA"))/L"HBEngine"/L"Games"/gameId;fs::create_directories(app.userData/L"Sessions");}
         SetEnvironmentVariableW(L"HB_PLAYER_SMOKE",app.smoke.empty()?nullptr:L"1");
         #endif
-#ifndef HB_GAME_PLAYER
+#if !defined(HB_GAME_PLAYER) && !defined(HB_NATIVE_EDITOR_ONLY)
         app.editorAcceptance=!app.smoke.empty()&&!project.empty()&&env(L"HB_EDITOR_ACCEPTANCE")==L"1";
 #endif
         if(registerOnly){CoUninitialize();return 0;}
@@ -483,6 +502,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
             CoUninitialize();return result;
         }
 #endif
+#ifndef HB_NATIVE_EDITOR_ONLY
         unsigned hash=2166136261u;for(wchar_t c:(project.empty()?app.root.wstring():project)){hash^=std::towlower(c);hash*=16777619;}
         const auto className=L"HBEngine."+std::to_wstring(hash);single=CreateMutexW(nullptr,FALSE,(L"Local\\"+className).c_str());
         if(GetLastError()==ERROR_ALREADY_EXISTS){const auto window=FindWindowW(className.c_str(),nullptr);if(window){ShowWindow(window,SW_RESTORE);SetForegroundWindow(window);}CloseHandle(single);CoUninitialize();return 0;}
@@ -529,11 +549,16 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         const auto profile=app.userData/L"WebView2";auto handler=new EnvironmentHandler;const auto result=create(nullptr,profile.c_str(),nullptr,handler);handler->Release();if(FAILED(result))error(L"WebView2 Runtime을 시작하지 못했어요.",result);
         SetTimer(app.window,1,1000,nullptr);if(!app.smoke.empty()){UINT timeout=(app.editorAcceptance||env(L"HB_PLAYER_ACCEPTANCE")==L"1")?180000:30000;const auto soak=env(L"HB_PLAYER_SOAK_HOURS");if(!soak.empty()&&env(L"HB_PLAYER_ACCEPTANCE")==L"1"){const auto hours=std::stoul(soak);if(hours<1||hours>24||std::to_wstring(hours)!=soak)throw std::runtime_error("soak hours");timeout=static_cast<UINT>(hours*3600000+60000);}SetTimer(app.window,2,timeout,nullptr);}
         MSG message;while(GetMessageW(&message,nullptr,0,0)>0){TranslateMessage(&message);DispatchMessageW(&message);}
+#endif
     }catch(const std::exception& exception){
         const auto details=L"엔진을 시작하지 못했어요: "+wide(exception.what())+L"\n실행 로그: "+app.log.wstring();error(details.c_str());
     }
+#ifdef HB_NATIVE_EDITOR_ONLY
+    CoUninitialize();return app.failed?1:0;
+#else
     app.closing=true;if(app.view){app.view->Release();app.view=nullptr;}if(app.controller){app.controller->Close();app.controller->Release();app.controller=nullptr;}
     if(app.environment){app.environment->Release();app.environment=nullptr;}
     if(app.job){CloseHandle(app.job);app.job=nullptr;}if(loader)FreeLibrary(loader);if(single)CloseHandle(single);CoUninitialize();
     return app.smoke.empty()?(app.failed?1:0):(app.smokeSuccess&&!app.failed?0:1);
+#endif
 }

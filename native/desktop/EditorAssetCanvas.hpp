@@ -6,14 +6,28 @@ class EditorAssetCanvas final : public EditorPanelBase {
     Json data,rows=Json::array();
     hb::gpu::d3d12::Com<ID2D1Bitmap> frame;
     std::vector<unsigned char> pixels;
-    std::string selection,track;
+    std::string selection,track,clipSelection;
     int key=-1;
+    int scroll=0;
     double playhead=0;
     POINT start{};
     bool dragging=false,widget=false;
     static constexpr float gutter=126,heading=32,lane=28;
     float timeX(double t)const{return gutter+float(t/data.value("length",1.0))*std::max(1.f,bounds[2]-gutter-12);}
     double xTime(float x)const{return std::clamp(double(x-gutter)/std::max(1.f,bounds[2]-gutter-12),0.0,1.0)*data.value("length",1.0);}
+    float clipWidth(const Json& clip)const{
+        const double begin=clip.at("start"),duration=clip.at("duration");
+        return std::max(5.f,timeX(begin+duration)-timeX(begin));
+    }
+    std::string hitClip(const Json& row,int x)const{
+        if(!row.contains("clips"))return {};
+        const auto& clips=row.at("clips");
+        for(auto clip=clips.rbegin();clip!=clips.rend();++clip){
+            const float left=timeX(clip->at("start"));
+            if(x>=left-3&&x<=left+clipWidth(*clip)+3)return clip->at("id");
+        }
+        return {};
+    }
     std::array<float,4> frameRect()const{
         const auto w=data.value("width",1),h=data.value("height",1);
         const float scale=std::min(float(bounds[2])/w,float(bounds[3])/h);
@@ -46,21 +60,30 @@ class EditorAssetCanvas final : public EditorPanelBase {
             const double time=data.value("length",1.0)*i/8;
             const float x=timeX(time);
             fill(x,heading,1,float(bounds[3]),theme.line);
-            wchar_t labelText[24]{};swprintf(labelText,24,L"%.2f",time);
-            label(labelText,text,x+2,0,54,heading,theme.muted);
         }
-        for(std::size_t i=0;i<rows.size();++i){
+        for(std::size_t i=std::min(rows.size(),std::size_t(scroll/lane));i<rows.size();++i){
             const auto& row=rows.at(i);const auto id=row.at("id").get<std::string>();
-            const float y=heading+float(i)*lane;
+            const float y=heading+float(i)*lane-scroll;
             if(y>bounds[3])break;
             if(id==track)fill(0,y,float(bounds[2]),lane,theme.selection);
             label(wide(row.at("name")),text,7,y,gutter-14,lane,theme.text);
             const auto& keys=row.at("keys");
+            if(row.contains("clips"))for(const auto& clip:row.at("clips")){
+                const float x=timeX(clip.at("start")),width=clipWidth(clip);
+                fill(x,y+3,width,lane-6,clip.at("id")==clipSelection?theme.accent:theme.raised);
+                if(width>=24)label(wide(clip.at("label")),text,x+4,y,width-7,lane,theme.text);
+            }
             for(std::size_t k=0;k<keys.size();++k){
                 const float x=timeX(keys.at(k).get<double>());
                 brush->SetColor(id==track&&int(k)==key?theme.text:theme.accent);
                 canvas->FillEllipse(D2D1::Ellipse(D2D1::Point2F(x,y+lane/2),5,5),brush);
             }
+        }
+        fill(0,0,float(bounds[2]),heading,theme.background);
+        for(int i=0;i<=8;++i){
+            const double time=data.value("length",1.0)*i/8;
+            wchar_t labelText[24]{};swprintf(labelText,24,L"%.2f",time);
+            label(labelText,text,timeX(time)+2,0,54,heading,theme.muted);
         }
         fill(timeX(playhead),0,1,float(bounds[3]),theme.accent);
     }
@@ -84,25 +107,31 @@ class EditorAssetCanvas final : public EditorPanelBase {
                 dragging=!selection.empty();if(dragging)SetCapture(window);
                 emit({{"event","select"},{"id",selection}});
             }else{
-                const int row=y>=heading?int((y-heading)/lane):-1;
-                key=-1;
+                const int row=y>=heading?int((y-heading+scroll)/lane):-1;
+                key=-1;clipSelection.clear();track.clear();
                 if(row>=0&&row<int(rows.size())){
                     track=rows.at(row).at("id");
                     const auto& keys=rows.at(row).at("keys");
                     for(std::size_t i=0;i<keys.size();++i)if(std::abs(timeX(keys.at(i))-x)<=7){key=int(i);break;}
+                    if(key<0)clipSelection=hitClip(rows.at(row),x);
                 }
+                emit({{"event","timelineSelect"},{"track",track},{"id",clipSelection}});
                 if(x>=gutter){playhead=xTime(float(x));emit({{"event","sample"},{"time",playhead}});}
-                dragging=key>=0;if(dragging)SetCapture(window);
+                dragging=key>=0||!clipSelection.empty();if(dragging)SetCapture(window);
             }
             InvalidateRect(window,nullptr,FALSE);return 0;
         }
         case WM_LBUTTONDBLCLK:
             if(!widget&&y>=heading&&x>=gutter){
-                const int row=int((y-heading)/lane);
+                const int row=int((y-heading+scroll)/lane);
                 if(row<int(rows.size())){
                     track=rows.at(row).at("id");const auto& keys=rows.at(row).at("keys");
-                    if(std::none_of(keys.begin(),keys.end(),[&](const Json& time){return std::abs(timeX(time)-x)<=7;}))
-                        emit({{"event","edit"},{"action","add"},{"track",track},{"time",xTime(float(x))}});
+                    if(hitClip(rows.at(row),x).empty()&&std::none_of(keys.begin(),keys.end(),[&](const Json& time){return std::abs(timeX(time)-x)<=7;})){
+                        const auto type=rows.at(row).at("type").get<std::string>();
+                        const bool clips=type=="slot"||type=="notifies"||type=="sections"||type=="notify-state-add"||type=="animation"||type=="audio";
+                        if(type!="notify-state"&&type!="shot"&&type!="subsequence")
+                            emit({{"event","edit"},{"action",clips?"clipAdd":"add"},{"track",track},{"type",type},{"time",xTime(float(x))}});
+                    }
                 }
             }
             return 0;
@@ -113,13 +142,22 @@ class EditorAssetCanvas final : public EditorPanelBase {
             if(widget){
                 const auto [ox,oy,dw,dh]=frameRect();
                 emit({{"event","edit"},{"action","move"},{"id",selection},{"dx",double(x-start.x)*data.at("width").get<double>()/dw},{"dy",double(y-start.y)*data.at("height").get<double>()/dh}});
+            }else if(!clipSelection.empty()){
+                for(const auto& row:rows)if(row.at("id")==track&&row.contains("clips"))for(const auto& clip:row.at("clips"))if(clip.at("id")==clipSelection){
+                    const double time=std::clamp(clip.at("start").get<double>()+xTime(float(x))-xTime(float(start.x)),0.0,data.at("length").get<double>());
+                    emit({{"event","edit"},{"action","clipMove"},{"track",track},{"id",clipSelection},{"time",time}});return 0;
+                }
             }else emit({{"event","edit"},{"action","move"},{"track",track},{"index",key},{"time",xTime(float(x))}});
             return 0;
         }
         case WM_CAPTURECHANGED:dragging=false;return 0;
+        case WM_MOUSEWHEEL:
+            if(!widget){scroll=std::clamp(scroll-int(GET_WHEEL_DELTA_WPARAM(w)/120)*int(lane)*3,0,std::max(0,int(rows.size()*lane+heading)-bounds[3]));InvalidateRect(window,nullptr,FALSE);}
+            return 0;
         case WM_KEYDOWN:
             if(w==VK_DELETE){
                 if(widget&&!selection.empty())emit({{"event","edit"},{"action","delete"},{"id",selection}});
+                else if(!widget&&!clipSelection.empty())emit({{"event","edit"},{"action","clipDelete"},{"track",track},{"id",clipSelection}});
                 else if(!widget&&key>=0)emit({{"event","edit"},{"action","delete"},{"track",track},{"index",key}});
                 return 0;
             }
@@ -131,8 +169,12 @@ public:
     void attach(HWND owner,HINSTANCE instance,Post post){EditorPanelBase::attach(owner,instance,std::move(post),L"HBEngine.EditorAssetCanvas","assetCanvas");}
     void updateTimeline(Json value){
         widget=false;data=std::move(value);rows=data.at("tracks");pixels.clear();key=-1;
-        playhead=std::min(playhead,data.value("length",1.0));InvalidateRect(window,nullptr,FALSE);
+        if(!clipSelection.empty()&&std::none_of(rows.begin(),rows.end(),[this](const Json& row){
+            return row.at("id")==track&&row.contains("clips")&&std::any_of(row.at("clips").begin(),row.at("clips").end(),[this](const Json& clip){return clip.at("id")==clipSelection;});
+        }))clipSelection.clear();
+        playhead=std::min(playhead,data.value("length",1.0));scroll=std::min(scroll,std::max(0,int(rows.size()*lane+heading)-bounds[3]));InvalidateRect(window,nullptr,FALSE);
     }
+    void resetTimeline(){key=-1;clipSelection.clear();track.clear();playhead=0;scroll=0;}
     void updateWidget(Json value,std::vector<unsigned char> bytes,std::string selected){
         widget=true;data=std::move(value);rows=std::move(data.at("rows"));data.erase("pixels");
         pixels=std::move(bytes);selection=std::move(selected);InvalidateRect(window,nullptr,FALSE);

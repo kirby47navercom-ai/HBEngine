@@ -19,15 +19,31 @@ const material='Assets/Materials/PM_Native.hbphysicalmaterial.json';
 const blueprint='Assets/Blueprints/BP_Garden.hbblueprint.json';
 const graphMaterial='Assets/Materials/Moss_stone.hbmaterial.json';
 const animation='Assets/AN_Native.hbanimation.json',widget='Assets/W_Native.hbwidget.json';
+const sequence='Assets/LS_Native.hbsequence.json',behavior='Assets/BT_Native.hbbehaviortree.json',fsm='Assets/FSM_Native.hbstatemachine.json';
+const montage='Assets/AM_Native.hbmontage.json';
+const animationGraph='Assets/AG_Native.hbanimgraph.json';
 await project.project.write(material,JSON.stringify(createAsset('physicalmaterial','검사 머테리얼')));
 await project.project.write(animation,JSON.stringify(createAsset('animation','AN_Native')));
 await project.project.write(widget,JSON.stringify(createAsset('widget','W_Native')));
+await project.project.write(sequence,JSON.stringify(createAsset('sequenceasset','LS_Native')));
+await project.project.write(behavior,JSON.stringify(createAsset('behaviortree','BT_Native')));
+await project.project.write(fsm,JSON.stringify(createAsset('statemachine','FSM_Native')));
+await project.project.write(montage,JSON.stringify(createAsset('montage','AM_Native')));
+await project.project.write(animationGraph,JSON.stringify(createAsset('animgraph','AG_Native')));
 await project.project.mkdir('Assets/Empty/Sub');
 const dispatch=nativeEditorSession();
 await dispatch('project.open',{file:project.file});
 const settings=await dispatch('project.buildProfiles');
 assert.ok(settings.profiles.some(profile=>profile.id==='windows'));
-await dispatch('project.build',{id:'windows',expectedRevision:settings.revision,dryRun:true});
+const updatedSettings=await dispatch('project.buildProfileSave',{id:'windows',changes:{targetFrameRate:144},expectedRevision:settings.revision});
+assert.equal(updatedSettings.profiles[0].targetFrameRate,144);
+await assert.rejects(dispatch('project.buildProfileSave',{id:'windows',changes:{targetFrameRate:165},expectedRevision:settings.revision}),/변경/);
+const copiedSettings=await dispatch('project.buildProfileSave',{id:'windows',action:'copy',newId:'windows-qa',changes:{name:'QA'},expectedRevision:updatedSettings.revision});
+assert.equal(copiedSettings.profiles.find(profile=>profile.id==='windows-qa').targetFrameRate,144);
+const restoredSettings=await dispatch('project.buildProfileSave',{id:'windows-qa',action:'delete',expectedRevision:copiedSettings.revision});
+assert.equal(restoredSettings.profiles.length,1);
+await assert.rejects(dispatch('project.buildProfileSave',{id:'windows',action:'delete',expectedRevision:restoredSettings.revision}),/프로필/);
+await dispatch('project.build',{id:'windows',expectedRevision:restoredSettings.revision,dryRun:true});
 let job=await dispatch('project.buildStatus');
 const deadline=Date.now()+15000;
 while(job.status==='running'&&Date.now()<deadline){
@@ -43,6 +59,8 @@ assert.ok((await dispatch('project.recent')).some(row=>row.file===project.file))
 const created=await dispatch('content.create',{folder:'Assets/Materials',kind:'physicalmaterial',name:'PM_새에셋'});
 assert.equal(created.path,'Assets/Materials/PM_새에셋.hbphysicalmaterial.json');
 assert.ok((await dispatch('content.list',{folder:'Assets'})).entries.some(row=>row.path==='Assets/Empty'));
+const folder=await dispatch('content.mkdir',{folder:'Assets/Empty/Sub',name:'네이티브 폴더'});
+assert.ok((await dispatch('content.list',{folder:'Assets/Empty/Sub'})).entries.some(row=>row.path===folder.path));
 assert.ok((await dispatch('content.list',{folder:'Assets',query:'pm_native'})).entries.some(row=>row.path===material));
 const original=await dispatch('document.open',{path:material});
 const operation={op:'replace',path:'/friction',value:.85};
@@ -64,10 +82,43 @@ assert.ok((await dispatch('graph.read',{view:authoredBlueprint.view})).nodes.len
 const palette=(await dispatch('graph.read')).palette;
 assert.ok(palette.some(row=>row.title==='Get 속도'));
 assert.ok(palette.some(row=>row.title==='새 함수'));
+let montageDoc=await dispatch('document.open',{path:montage});
+const editMontage=async input=>{
+  montageDoc=await dispatch('timeline.edit',{...input,expectedRevision:montageDoc.revision});
+};
+await editMontage({action:'clipAdd',track:'sections',time:1,value:'다음'});
+await editMontage({action:'clipAdd',track:'notifies',time:.75,value:'OnPoint'});
+await editMontage({action:'clipAdd',track:'notify-state:',time:1.25,value:'Active'});
+await editMontage({action:'clipAdd',track:'slot:DefaultSlot',time:0,asset:animation});
+await editMontage({action:'clipAdd',track:'slot:DefaultSlot',time:.25,asset:animation,slot:'UpperBody'});
+const montageRows=(await dispatch('timeline.read')).tracks;
+const event=montageRows.find(row=>row.id==='notifies').clips[0];
+const section=montageRows.find(row=>row.id==='sections').clips[1];
+await assert.rejects(editMontage({action:'clipMove',track:'sections',id:section.id,time:0}),/에셋 형식/);
+assert.deepEqual(await dispatch('timeline.inspectorPath',{track:'notifies',id:event.id}),['notifies','0']);
+await editMontage({action:'clipMove',track:'notifies',id:event.id,time:.9});
+await editMontage({action:'clipDelete',track:'notifies',id:event.id});
+await dispatch('document.save',{expectedRevision:montageDoc.revision});
+assert.equal((await dispatch('document.read',{path:blueprint})).revision,authoredBlueprint.revision);
+const patchedBlueprint=await dispatch('graph.edit',{path:blueprint,action:'add',key:'print',x:10,y:10,expectedRevision:authoredBlueprint.revision});
+await assert.rejects(dispatch('editor.undo',{path:blueprint,expectedRevision:authoredBlueprint.revision}),{code:'REVISION_CONFLICT'});
+assert.equal((await dispatch('editor.undo',{path:blueprint,expectedRevision:patchedBlueprint.revision})).revision,authoredBlueprint.revision);
+assert.equal((await dispatch('document.read')).path,montage);
+let pose=await dispatch('document.open',{path:animationGraph});
+pose=await dispatch('graph.edit',{action:'add',key:'clip',x:200,y:210,expectedRevision:pose.revision});
+const clipNode=pose.model.nodes.find(node=>node.title==='Sequence Player');
+const outputNode=pose.model.nodes.find(node=>node.title==='Output Pose');
+pose=await dispatch('graph.edit',{action:'connect',from:{node:clipNode.id,pin:'pose'},to:{node:outputNode.id,pin:'pose'},expectedRevision:pose.revision});
+await dispatch('document.save',{expectedRevision:pose.revision});
 const report=path.join(work,'report.json');
 const executable=path.resolve(process.argv[2] || path.join(root,'dist/HBEngine/HBEngine.exe'));
+if(process.argv[3]){
+  process.env.HB_EDITOR_TEST_PLAYER=path.resolve(process.argv[3]);
+  process.env.HB_EDITOR_TEST_RUNTIME=root;
+}
 try {
-  await promisify(execFile)(executable,['--native-editor','--smoke-test',report,project.file],{windowsHide:true,timeout:120000});
+  const mode=process.env.HB_TEST_NATIVE_ONLY==='1'?[]:['--native-editor'];
+  await promisify(execFile)(executable,[...mode,'--smoke-test',report,project.file],{windowsHide:true,timeout:180000});
 } catch (error) {
   const log=await fs.readFile(report+'.error.txt','utf8').catch(()=>error.message);
   throw Error(log,{cause:error});
@@ -75,8 +126,13 @@ try {
 const evidence=JSON.parse(await fs.readFile(report,'utf8'));
 assert.equal(evidence.webview,false);
 assert.equal(evidence.saved,true);
+if(process.argv[3]){
+  assert.deepEqual(evidence.play,{backend:'D3D12',frames:4,scene:project.manifest.startupScene,webview:false});
+  assert.deepEqual(await fs.readdir(path.join(process.env.HB_USER_DATA_DIR,'Play')),[]);
+}
 assert.equal(evidence.contentDock,true);
 assert.equal(evidence.outputLog,true);
+assert.deepEqual(evidence.independentDocuments,{graph:'D3D12',count:2});
 assert.equal(evidence.blueprintSurface.backend,'D3D12');
 assert.equal(evidence.materialSurface.backend,'D3D12');
 assert.equal(evidence.materialPreview.backend,'D3D12');
@@ -95,6 +151,15 @@ const cube=(await read(project.manifest.startupScene)).objects.find(actor=>actor
 assert.equal(cube?.position[0],2.5);
 assert.ok(cube.components.some(component=>component.type==='AudioSource'));
 assert.equal((await read(animation)).timeline.tracks[0].keys.length,4);
+assert.equal((await read(sequence)).tracks[0].keys.length,2);
+const authoredMontage=await read(montage);
+assert.deepEqual(authoredMontage.clips.map(clip=>clip.slot),['DefaultSlot','UpperBody']);
+assert.equal(authoredMontage.notifyStates[0].name,'Active');
+assert.equal(authoredMontage.sections.length,2);
+assert.equal(authoredMontage.notifies.length,0);
+assert.equal((await read(animationGraph)).nodes.find(node=>node.id===outputNode.id).inputs.pose,clipNode.id);
+assert.equal((await read(behavior)).nodes[0].children.length,1);
+assert.equal((await read(fsm)).transitions.length,1);
 const widgetOffset=(await read(widget)).nodes.find(node=>node.id===evidence.widget).slot.offset;
 assert.ok(widgetOffset[0]>32&&widgetOffset[1]>32);
 const result=await read(blueprint), moved=result.nodes.find(node=>node.position.x===452&&node.position.y===356);
@@ -104,4 +169,5 @@ assert.ok(result.edges.some(edge=>edge.to.node===moved.id));
 assert.equal((await read(graphMaterial)).graph.nodes.length,evidence.materialNodes);
 assert.equal((await read(material)).friction,.75);
 assert.equal((await read(material)).density,2);
+assert.equal(await fs.readFile(path.join(project.root,imported.path),'utf8'),'독립 문서 저장');
 console.log(JSON.stringify({...evidence,report}));

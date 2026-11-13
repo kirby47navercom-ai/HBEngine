@@ -1,3 +1,9 @@
+## Windows 네이티브 빌드·플레이·독립 문서 · 2026-11-13
+
+`tools/build-desktop.mjs --native-editor-only`가 WebView2 SDK 없이 네이티브 실행 파일을 빌드해요. 공용 게임 런타임의 D3D12 플레이, 경로별 독립 문서와 충돌 검사, 몽타주·시퀀스 타임라인과 포즈·행동트리·상태 머신 그래프, 빌드 프로필 복제·삭제를 연결했어요. 다음 작업 범위와 격리 검사는 [EDITOR_NATIVE.md](docs/EDITOR_NATIVE.md)를 참고해요.
+
+격리 검사 `native/build/native-authoring-kOW1Yw/report.json`에서 네이티브 EXE의 플래그 없는 시작, WebView2 미로드, 독립 문서 두 개, D3D12 장면·그래프·미리보기 및 패키징 없는 D3D12 4프레임 플레이를 확인했어요. 사용자 설치는 보류 상태예요.
+
 ## WebView 없는 Windows 장면·에셋 편집 · 2026-11-13
 
 네이티브 문서 편집기에 D3D12 장면·계층·속성 편집, 애니메이션/커브 키 타임라인, 위젯 캔버스, 블루프린트 멤버·주석 생성, 에셋 가져오기, 저장 충돌 복구, 배치 복원과 빌드 프로필 선택을 연결했어요. `tools/check-native-authoring.mjs`가 화면 밖 Win32 창에서 장면 픽셀과 저장된 편집을 확인해요. 전체 도킹·전용 미리보기·편집기 내부 게임 실행은 [EDITOR_NATIVE.md](docs/EDITOR_NATIVE.md)의 남은 범위를 참고해요.

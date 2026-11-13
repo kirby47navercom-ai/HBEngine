@@ -36,16 +36,38 @@ class NativeEditorShell {
     Json previewInput;
     Json widgetPreview;
     std::string widgetSelection,widgetRevision;
+    std::string timelineTrack,timelineItem;
     fs::path layoutFile;
+    fs::path playLauncher,playRuntimeRoot,editorProfile,projectFile;
+    HANDLE playProcess=nullptr;
+    DWORD playPid=0;
+    bool stopPlayRequested=false;
+    bool closeAfterPlay=false;
+    HANDLE playJob=nullptr;
     bool building=false,checkingBuild=false;
     bool layoutMaximized=false;
     bool consoleVisible=false,contentDetachedOnStart=false;
     Json logItems=Json::array();
     std::uint64_t logRevision=0;
     unsigned browsePercent=24,inspectorPercent=25;
+    enum class Divider {None,Browser,Inspector};
+    Divider divider=Divider::None;
+    HWND dividerOwner=nullptr;
+    int dividerStart=0;
+    unsigned dividerInitial=0;
     std::uint64_t formRevision=0;
     bool sourceMode=false,updating=false,sourceChanged=false,acceptance=false,waiting=false;
-    enum Command {OpenProject=100,NewProject,Save,CloseDocument,Undo,Redo,Detach,ToggleSource,AddNode,Up,Search,Assets,Tabs,Source,Palette,Views,Status,NewAsset,AddActor,AddComponent,DeleteActor,FocusActor,AddWidget,ResetLayout,WideInspector,WideBrowser,Recovery,AddVariable,AddFunction,AddMacro,ImportAsset,DuplicateActor,CheckBuild,BuildGame,RunBuild,CancelBuild,PreviewAsset,DetachContent,ShowConsole,RecentBase=200};
+    enum Command {OpenProject=100,NewProject,Save,CloseDocument,Undo,Redo,Detach,ToggleSource,AddNode,Up,Search,Assets,Tabs,Source,Palette,Views,Status,NewAsset,AddActor,AddComponent,DeleteActor,FocusActor,AddWidget,ResetLayout,WideInspector,WideBrowser,Recovery,AddVariable,AddFunction,AddMacro,ImportAsset,DuplicateActor,CheckBuild,BuildGame,RunBuild,CancelBuild,PreviewAsset,DetachContent,ShowConsole,PlayScene,StopPlay,EditBuildProfile,AddSequenceTrack,PinDocument,NewFolder,CopyBuildProfile,DeleteBuildProfile,RecentBase=200};
+    struct DocumentWindow {
+        HWND editor=nullptr,save=nullptr,toggle=nullptr,viewPicker=nullptr,palette=nullptr,status=nullptr;
+        std::unique_ptr<EditorGraphPanel> graph;
+        Json doc,model;
+        std::string view="event";
+        bool updating=false,draft=false,source=false;
+    };
+    std::map<HWND,DocumentWindow> documentWindows;
+    std::shared_ptr<EditorD3D12Surface::Graphics> graphics;
+    enum DocumentControl {DocSource=1,DocSave=2,DocToggle=3,DocView=4,DocPalette=5,DocAdd=6,DocReload=7};
     HMENU recentMenu=nullptr;
 
     static std::wstring controlText(HWND control){
@@ -134,7 +156,9 @@ class NativeEditorShell {
                     auto input=event;input["action"]="comment";editGraph(input);
                 }
                 if(event.at("event")=="select"){
-                    graphSelection=event.at("id").get<std::string>();refreshGraphInputs();layout();queuePreview();
+                    const auto id=event.at("id").get<std::string>();
+                    if(graphSelection!=id&&gameplayGraphOpen())fieldPath=Json::array();
+                    graphSelection=id;refreshGraphInputs();layout();queuePreview();
                 }
                 if(event.at("event")=="graphicsError")SetWindowTextW(status,wide(event.at("message")).c_str());
                 if(event.at("event")=="key"&&event.value("ctrl",false)){
@@ -155,7 +179,7 @@ class NativeEditorShell {
                 if(action!="click"&&action!="change")return;
                 if(event.at("revision")!=formRevision)return;
                 const int i=event.at("i");
-                if(document.value("graph",false)){
+                if(document.value("graph",false)&&!gameplayGraphOpen()){
                     const auto& input=graphInputs.at(i);
                     Json value=event.contains("checked")?event.at("checked"):event.at("value");
                     if(value.is_string()&&!input.at("value").is_string())value=Json::parse(value.get<std::string>());
@@ -170,7 +194,7 @@ class NativeEditorShell {
                 showDocument(request("asset.fieldEdit",{{"parts",parts},{"key",key},{"value",event.contains("checked")?event.at("checked"):event.at("value")},{"expectedRevision",document.at("revision")}}));
             }catch(const std::exception& error){report(error);}
         },"asset");
-        const auto graphics=std::make_shared<EditorD3D12Surface::Graphics>();
+        graphics=std::make_shared<EditorD3D12Surface::Graphics>();
         graph.useD3D12(graphics);form.useD3D12(graphics);
         hierarchy.attach(window,instance,[this](const Json& event){
             try{
@@ -205,6 +229,10 @@ class NativeEditorShell {
                 if(action=="select"&&widgetOpen()){
                     widgetSelection=event.at("id").get<std::string>();fieldPath=Json::array();refreshForm();return;
                 }
+                if(action=="timelineSelect"&&timelineOpen()){
+                    timelineTrack=event.at("track");timelineItem=event.at("id");
+                    fieldPath=Json::array();refreshForm();return;
+                }
                 if(action=="sample"){
                     const auto values=request("timeline.sample",{{"time",event.at("time")}});
                     std::string text;
@@ -221,6 +249,21 @@ class NativeEditorShell {
                         }
                         editWidget(input);
                     }else{
+                        const auto edit=input.value("action",std::string()),type=input.value("type",std::string());
+                        if((edit=="add"&&type=="event")||(edit=="clipAdd"&&(type=="sections"||type=="notifies"||type=="notify-state-add"))){
+                            const auto name=inputName(type=="sections"?L"구간 이름":L"이벤트 이름",{},80);
+                            if(name.empty())return;
+                            input["value"]=utf8(name);
+                        }else if(edit=="clipAdd"){
+                            const auto asset=chooseTimelineAsset(type=="audio");
+                            if(asset.empty())return;
+                            input["asset"]=asset;
+                            if(type=="slot"){
+                                const auto slot=inputName(L"몽타주 슬롯 이름",wide(input.at("track")).substr(5),80);
+                                if(slot.empty())return;
+                                input["slot"]=utf8(slot);
+                            }
+                        }
                         input["expectedRevision"]=document.at("revision");showDocument(request("timeline.edit",input));
                     }
                     return;
@@ -239,6 +282,7 @@ class NativeEditorShell {
         AppendMenuW(file,MF_POPUP,UINT_PTR(recentMenu),L"최근 프로젝트");
         AppendMenuW(file,MF_SEPARATOR,0,nullptr);
         AppendMenuW(file,MF_STRING,NewAsset,L"새 에셋");
+        AppendMenuW(file,MF_STRING,NewFolder,L"새 폴더");
         AppendMenuW(file,MF_STRING,ImportAsset,L"에셋 가져오기");
         AppendMenuW(file,MF_STRING,Save,L"문서 저장\tCtrl+S");
         AppendMenuW(file,MF_STRING,CloseDocument,L"문서 닫기\tCtrl+W");
@@ -250,7 +294,9 @@ class NativeEditorShell {
         AppendMenuW(edit,MF_STRING,AddFunction,L"블루프린트 함수 추가");
         AppendMenuW(edit,MF_STRING,AddMacro,L"블루프린트 매크로 추가");
         AppendMenuW(edit,MF_STRING,AddWidget,L"위젯 요소 추가");
+        AppendMenuW(edit,MF_STRING,AddSequenceTrack,L"시퀀스 트랙 추가");
         AppendMenuW(viewMenu,MF_STRING,Detach,L"문서 창 분리 / 합치기");
+        AppendMenuW(viewMenu,MF_STRING,PinDocument,L"문서를 독립 창에 열기");
         AppendMenuW(viewMenu,MF_STRING,DetachContent,L"콘텐츠 브라우저 분리 / 합치기");
         AppendMenuW(viewMenu,MF_STRING,ShowConsole,L"출력 로그 표시 / 숨기기");
         AppendMenuW(viewMenu,MF_STRING,ToggleSource,L"편집 화면 / 소스 전환");
@@ -264,7 +310,13 @@ class NativeEditorShell {
         AppendMenuW(sceneMenu,MF_STRING,DeleteActor,L"선택 오브젝트 삭제");
         AppendMenuW(sceneMenu,MF_STRING,DuplicateActor,L"선택 오브젝트 복제");
         AppendMenuW(sceneMenu,MF_STRING,FocusActor,L"선택 오브젝트에 초점\tF");
+        AppendMenuW(sceneMenu,MF_SEPARATOR,0,nullptr);
+        AppendMenuW(sceneMenu,MF_STRING,PlayScene,L"플레이\tF5");
+        AppendMenuW(sceneMenu,MF_STRING,StopPlay,L"플레이 중지\tShift+F5");
         AppendMenuW(buildMenu,MF_STRING,CheckBuild,L"빌드 검사");
+        AppendMenuW(buildMenu,MF_STRING,EditBuildProfile,L"빌드 프로필 설정");
+        AppendMenuW(buildMenu,MF_STRING,CopyBuildProfile,L"빌드 프로필 복제");
+        AppendMenuW(buildMenu,MF_STRING,DeleteBuildProfile,L"빌드 프로필 삭제");
         AppendMenuW(buildMenu,MF_STRING,BuildGame,L"패키징");
         AppendMenuW(buildMenu,MF_STRING,RunBuild,L"마지막 Windows 빌드 실행");
         AppendMenuW(buildMenu,MF_STRING,CancelBuild,L"현재 빌드 취소");
@@ -323,19 +375,52 @@ class NativeEditorShell {
         const int side=sceneShown?std::min(std::clamp(int(w*inspectorPercent/100),190,420),std::max(0,w-160)):0;
         const int split=std::max(1,h*40/100);
         hierarchy.reparent(owner);
-        hierarchy.update({{"rect",{x+w-side,top,side,split}},{"visible",sceneShown&&side>0}});
-        viewport.layout(owner,x,top,std::max(1,w-side),h,sceneShown);
+        hierarchy.update({{"rect",{x+w-side+3,top,std::max(1,side-3),split}},{"visible",sceneShown&&side>0}});
+        viewport.layout(owner,x,top,std::max(1,w-side-3),h,sceneShown);
         if(sceneShown)queueViewport();
         const int assetSide=canvasShown?std::min(std::clamp(int(w*inspectorPercent/100),190,420),std::max(0,w-160)):0;
-        if(sceneShown)form.update({{"rect",{x+w-side,top+split,side,h-split}},{"visible",side>0}});
-        else if(canvasShown)form.update({{"rect",{x+w-assetSide,top,assetSide,h}},{"visible",assetSide>0}});
+        if(sceneShown)form.update({{"rect",{x+w-side+3,top+split,std::max(1,side-3),h-split}},{"visible",side>0}});
+        else if(canvasShown)form.update({{"rect",{x+w-assetSide+3,top,std::max(1,assetSide-3),h}},{"visible",assetSide>0}});
         else if(graphShown)form.update({{"rect",{x+w-inspectorWidth,top,inspectorWidth,h}},{"visible",inspectorWidth>0}});
         else if(previewShown)form.update({{"rect",{x+std::max(1,w/2),top,w-w/2,h}},{"visible",true}});
         else form.update({{"rect",{x,top,w,h}},{"visible",formShown}});
-        assetCanvas.layout(x,top,std::max(1,w-assetSide),h,canvasShown);
+        assetCanvas.layout(x,top,std::max(1,w-assetSide-3),h,canvasShown);
         if(widgetOpen()&&canvasShown)SetTimer(window,3,100,nullptr);
         previewViewport.layout(owner,x,top+(graphShown?h-previewHeight:0),graphShown?std::max(1,w-inspectorWidth):std::max(1,w/2),graphShown?previewHeight:h,previewShown);
         if(previewShown)queuePreview();
+    }
+    Divider dividerAt(HWND owner,int x,int y)const{
+        RECT rect{};GetClientRect(owner,&rect);
+        if(owner==window&&!contentWindow&&y>=32){
+            const int edge=std::clamp(int(rect.right*browsePercent/100),150,460);
+            if(std::abs(edge-x)<=4)return Divider::Browser;
+        }
+        if(owner!=(detached?detached:window)||sourceMode||!(sceneOpen()||timelineOpen()||widgetOpen()))return Divider::None;
+        const int left=detached||contentWindow?5:std::clamp(int(rect.right*browsePercent/100),150,460)+5;
+        const int width=std::max(1,int(rect.right)-left-6),side=std::min(std::clamp(int(width*inspectorPercent/100),190,420),std::max(0,width-160));
+        return side>0&&y>=(detached?4:36)&&std::abs(rect.right-6-side-x)<=3?Divider::Inspector:Divider::None;
+    }
+    bool moveDivider(HWND owner,UINT message,LPARAM l){
+        const int x=short(LOWORD(l)),y=short(HIWORD(l));
+        if(message==WM_LBUTTONDOWN){
+            divider=dividerAt(owner,x,y);
+            if(divider==Divider::None)return false;
+            dividerOwner=owner;dividerStart=x;dividerInitial=divider==Divider::Browser?browsePercent:inspectorPercent;
+            SetCapture(owner);SetCursor(LoadCursorW(nullptr,IDC_SIZEWE));return true;
+        }
+        if(dividerOwner!=owner)return false;
+        if(message==WM_CAPTURECHANGED){dividerOwner=nullptr;divider=Divider::None;return true;}
+        if(message==WM_LBUTTONUP){ReleaseCapture();return true;}
+        if(message!=WM_MOUSEMOVE)return false;
+        RECT rect{};GetClientRect(owner,&rect);
+        const int direction=divider==Divider::Browser?1:-1;
+        const int left=owner==window&&!contentWindow?std::clamp(int(rect.right*browsePercent/100),150,460)+5:5;
+        const int width=std::max(1,int(rect.right)-(divider==Divider::Browser?0:left+6));
+        const int next=int(dividerInitial)+direction*(x-dividerStart)*100/width;
+        auto& size=divider==Divider::Browser?browsePercent:inspectorPercent;
+        const auto clamped=unsigned(std::clamp(next,18,divider==Divider::Browser?40:42));
+        if(size!=clamped){size=clamped;layout();}
+        return true;
     }
     void refreshFiles(){
         if(projectTitle.empty())return;
@@ -368,6 +453,7 @@ class NativeEditorShell {
         refreshGraphInputs();
     }
     void refreshGraphInputs(){
+        if(gameplayGraphOpen()){refreshForm();return;}
         if(graphSelection.empty()){
             graphInputs=Json::array();
             form.update({{"rows",Json::array({{{"kind","message"},{"text","노드를 선택하면 입력을 편집할 수 있어요."}}})},{"revision",++formRevision}});
@@ -385,7 +471,10 @@ class NativeEditorShell {
         form.update({{"rows",rows},{"revision",++formRevision}});
     }
     bool sceneOpen()const{return document.value("kind",std::string())=="scene";}
-    bool canPreview()const{return document.value("graph",false)||document.value("kind",std::string())=="materialinstance";}
+    bool gameplayGraphOpen()const{
+        const auto kind=document.value("kind",std::string());return kind=="behaviortree"||kind=="statemachine"||kind=="animgraph";
+    }
+    bool canPreview()const{return !gameplayGraphOpen()&&(document.value("graph",false)||document.value("kind",std::string())=="materialinstance");}
     void queuePreview(){if(previewOpen&&canPreview()&&!sourceMode)SetTimer(window,5,35,nullptr);}
     Json drawPreview(Json input=Json::object()){
         const auto size=previewViewport.size();
@@ -399,7 +488,7 @@ class NativeEditorShell {
     }
     bool widgetOpen()const{return document.value("kind",std::string())=="widget";}
     bool timelineOpen()const{
-        const auto kind=document.value("kind",std::string());return kind=="animation"||kind=="curve";
+        const auto kind=document.value("kind",std::string());return kind=="animation"||kind=="curve"||kind=="sequenceasset"||kind=="montage";
     }
     void refreshWidget(){
         if(!widgetOpen()||sourceMode)return;
@@ -514,7 +603,7 @@ class NativeEditorShell {
         showDocument(std::move(changed));
     }
     void refreshForm(){
-        if(!document.value("form",false))return;
+        if(!document.value("form",false)&&!gameplayGraphOpen())return;
         Json base=Json::array();
         if(sceneOpen()&&!sceneSelection.empty()){
             for(std::size_t i=0;i<sceneRows.size();++i)if(sceneRows.at(i).at("id")==sceneSelection){
@@ -525,6 +614,8 @@ class NativeEditorShell {
             const auto nodes=request("widget.nodes");
             for(std::size_t i=0;i<nodes.size();++i)if(nodes.at(i).at("id")==widgetSelection){base=Json::array({"nodes",std::to_string(i)});break;}
         }
+        if(gameplayGraphOpen()&&!graphSelection.empty())base=request("graph.inspectorPath",{{"id",graphSelection}});
+        if(timelineOpen()&&!timelineItem.empty())base=request("timeline.inspectorPath",{{"track",timelineTrack},{"id",timelineItem}});
         const auto fetch=[&](){
             auto parts=base;
             for(const auto& key:fieldPath)parts.push_back(key);
@@ -542,20 +633,23 @@ class NativeEditorShell {
         inspectedBase=std::move(base);
         form.update({{"rows",rows},{"revision",++formRevision}});
     }
-    void showDocument(Json value){
-        const auto previous=document.value("path",std::string());
-        Json updatedGraph;
-        if(value.contains("model")){updatedGraph=std::move(value.at("model"));value.erase("model");}
-        document=std::move(value);updating=true;
-        if(previous!=document.value("path",std::string())){view="event";sourceMode=false;graph.resetView();graphSelection.clear();fieldPath=Json::array();sceneSelection.clear();cameraId.clear();folded.clear();cameraInput=nullptr;viewportPreparing=false;widgetSelection.clear();widgetRevision.clear();widgetPreview=nullptr;}
-        const auto original=document.value("text",std::string());
+    static void displayText(HWND editor,const std::string& original){
         std::string displayed;displayed.reserve(original.size());
         for(std::size_t i=0;i<original.size();++i){
             if(original[i]=='\n'&&(i==0||original[i-1]!='\r'))displayed+='\r';
             displayed+=original[i];
         }
-        SetWindowTextW(source,wide(displayed).c_str());
-        sourceChanged=false;
+        SetWindowTextW(editor,wide(displayed).c_str());
+    }
+    static std::string editedText(HWND editor,const Json& doc){
+        auto text=utf8(controlText(editor));
+        if(doc.value("text",std::string()).find("\r\n")!=std::string::npos)return text;
+        std::string normalized;normalized.reserve(text.size());
+        for(std::size_t i=0;i<text.size();++i)
+            if(text[i]!='\r'||i+1==text.size()||text[i+1]!='\n')normalized+=text[i];
+        return normalized;
+    }
+    void refreshTabs(){
         TabCtrl_DeleteAllItems(tabs);
         int index=0;
         for(const auto& item:document.at("tabs")){
@@ -566,28 +660,203 @@ class NativeEditorShell {
             if(item.at("path")==document.value("path",std::string()))TabCtrl_SetCurSel(tabs,index);
             ++index;
         }
+    }
+    void showDocument(Json value){
+        const auto previous=document.value("path",std::string());
+        Json updatedGraph;
+        if(value.contains("model")){updatedGraph=std::move(value.at("model"));value.erase("model");}
+        document=std::move(value);updating=true;
+        if(previous!=document.value("path",std::string())){view="event";sourceMode=false;graph.resetView();graphSelection.clear();fieldPath=Json::array();sceneSelection.clear();cameraId.clear();folded.clear();cameraInput=nullptr;viewportPreparing=false;widgetSelection.clear();widgetRevision.clear();widgetPreview=nullptr;timelineTrack.clear();timelineItem.clear();assetCanvas.resetTimeline();}
+        displayText(source,document.value("text",std::string()));
+        sourceChanged=false;
+        refreshTabs();
         updating=false;refreshGraph(updatedGraph);refreshScene();refreshForm();layout();
         if(timelineOpen())assetCanvas.updateTimeline(request("timeline.read"));
         SetWindowTextW(status,wide(document.value("path",folder)).c_str());
     }
     void captureSource(){
         if(!sourceChanged)return;
-        auto text=utf8(controlText(source));
-        if(document.value("text",std::string()).find("\r\n")==std::string::npos){
-            std::string normalized;normalized.reserve(text.size());
-            for(std::size_t i=0;i<text.size();++i){
-                if(text[i]!='\r'||i+1==text.size()||text[i+1]!='\n')normalized+=text[i];
-            }
-            text=std::move(normalized);
-        }
-        showDocument(request("document.replace",{{"text",text},{"expectedRevision",document.at("revision")}}));
+        showDocument(request("document.replace",{{"text",editedText(source,document)},{"expectedRevision",document.at("revision")}}));
     }
     void editGraph(Json event){
         captureSource();
         event["view"]=view;event["expectedRevision"]=document.at("revision");
         showDocument(request("graph.edit",event));
     }
-    struct NameDialog {const wchar_t* title;HINSTANCE instance;HWND input=nullptr;std::wstring value;};
+    void layoutDocumentWindow(HWND owner,DocumentWindow& item){
+        RECT rect{};GetClientRect(owner,&rect);
+        const int width=std::max(1L,rect.right),height=std::max(1L,rect.bottom);
+        const bool graphShown=item.graph&&!item.source;
+        MoveWindow(item.editor,5,70,std::max(1,width-10),std::max(1,height-98),TRUE);
+        MoveWindow(item.status,5,height-23,std::max(1,width-10),20,TRUE);
+        ShowWindow(item.editor,graphShown?SW_HIDE:SW_SHOWNOACTIVATE);
+        ShowWindow(item.viewPicker,graphShown&&!item.model.value("views",Json::array()).empty()?SW_SHOWNOACTIVATE:SW_HIDE);
+        ShowWindow(item.palette,graphShown?SW_SHOWNOACTIVATE:SW_HIDE);
+        ShowWindow(GetDlgItem(owner,DocAdd),graphShown?SW_SHOWNOACTIVATE:SW_HIDE);
+        if(item.graph)item.graph->layout(5,70,std::max(1,width-10),std::max(1,height-98),graphShown);
+    }
+    void refreshDocumentWindow(HWND owner,DocumentWindow& item,Json next){
+        item.doc=std::move(next);
+        item.updating=true;
+        displayText(item.editor,item.doc.at("text"));
+        item.updating=false;item.draft=false;
+        if(item.graph){
+            Json input={{"path",item.doc.at("path")},{"view",item.view}};
+            try{item.model=request("graph.read",input);}
+            catch(const std::exception&){
+                if(item.view=="event")throw;
+                item.view="event";input["view"]=item.view;
+                item.model=request("graph.read",input);item.graph->resetView();
+            }
+            item.graph->update(item.model);
+            SendMessageW(item.viewPicker,CB_RESETCONTENT,0,0);
+            int index=0;
+            for(const auto& row:item.model.at("views")){
+                SendMessageW(item.viewPicker,CB_ADDSTRING,0,LPARAM(wide(row.at(1)).c_str()));
+                if(row.at(0)==item.view)SendMessageW(item.viewPicker,CB_SETCURSEL,index,0);
+                ++index;
+            }
+            const auto selection=SendMessageW(item.palette,CB_GETCURSEL,0,0);
+            SendMessageW(item.palette,CB_RESETCONTENT,0,0);
+            for(const auto& row:item.model.at("palette"))SendMessageW(item.palette,CB_ADDSTRING,0,LPARAM(wide(row.at("title")).c_str()));
+            const auto last=LRESULT(item.model.at("palette").size())-1;
+            if(last>=0)SendMessageW(item.palette,CB_SETCURSEL,std::clamp<LRESULT>(selection,0,last),0);
+        }
+        SetWindowTextW(item.status,item.doc.value("dirty",false)?L"저장하지 않은 변경 사항":L"");
+        layoutDocumentWindow(owner,item);
+    }
+    Json documentWindowTarget(const DocumentWindow& item)const{
+        return {{"path",item.doc.at("path")},{"expectedRevision",item.doc.at("revision")}};
+    }
+    void commitDocumentWindowChange(HWND owner,DocumentWindow& item,Json changed){
+        if(changed.at("path")==document.value("path",std::string()))showDocument(changed);
+        else{
+            document["tabs"]=changed.at("tabs");
+            refreshTabs();
+        }
+        refreshDocumentWindow(owner,item,std::move(changed));
+    }
+    void captureDocumentWindow(HWND owner,DocumentWindow& item){
+        if(!item.draft)return;
+        if(item.doc.at("path")==document.value("path",std::string())&&sourceChanged)
+            throw std::runtime_error("같은 문서를 편집하는 기본 창의 변경을 먼저 처리하세요.");
+        auto input=documentWindowTarget(item);input["text"]=editedText(item.editor,item.doc);
+        commitDocumentWindowChange(owner,item,request("document.replace",input));
+    }
+    void saveDocumentWindow(HWND owner,DocumentWindow& item){
+        if(item.doc.at("path")==document.value("path",std::string())&&sourceChanged)
+            throw std::runtime_error("같은 문서를 편집하는 기본 창의 변경을 먼저 처리하세요.");
+        captureDocumentWindow(owner,item);
+        commitDocumentWindowChange(owner,item,request("document.save",documentWindowTarget(item)));
+        SetWindowTextW(item.status,L"저장했어요.");
+    }
+    void editWindowGraph(HWND owner,DocumentWindow& item,Json event){
+        if(item.doc.at("path")==document.value("path",std::string())&&sourceChanged)
+            throw std::runtime_error("같은 문서를 편집하는 기본 창의 변경을 먼저 처리하세요.");
+        auto input=documentWindowTarget(item);input.update(event);input["view"]=item.view;
+        commitDocumentWindowChange(owner,item,request("graph.edit",input));
+    }
+    void openDocumentWindow(){
+        if(!document.contains("path"))return;
+        captureSource();
+        for(const auto& [owner,item]:documentWindows)if(item.doc.at("path")==document.at("path")){
+            ShowWindow(owner,SW_RESTORE);return;
+        }
+        const auto title=fs::u8path(document.at("path").get<std::string>()).filename().wstring();
+        const auto owner=CreateWindowExW(WS_EX_TOOLWINDOW,L"HBEngine.NativeAuthoring",title.c_str(),WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,
+            CW_USEDEFAULT,CW_USEDEFAULT,950,640,window,nullptr,instance,this);
+        if(!owner)throw std::runtime_error("독립 문서 창을 열지 못했어요.");
+        auto& item=documentWindows.try_emplace(owner).first->second;
+        try{
+            const auto make=[&](const wchar_t* type,const wchar_t* label,DWORD style,int id,int x,int y,int width,int height){
+                const auto child=CreateWindowExW(0,type,label,WS_CHILD|WS_VISIBLE|style,x,y,width,height,owner,HMENU(INT_PTR(id)),instance,nullptr);
+                if(!child)throw std::runtime_error("독립 문서의 컨트롤을 열지 못했어요.");
+                SendMessageW(child,WM_SETFONT,WPARAM(font),TRUE);return child;
+            };
+            item.editor=make(L"EDIT",L"",WS_BORDER|WS_VSCROLL|WS_HSCROLL|ES_MULTILINE|ES_WANTRETURN|ES_AUTOVSCROLL|ES_AUTOHSCROLL,DocSource,0,0,1,1);
+            SendMessageW(item.editor,EM_SETLIMITTEXT,0,0);
+            item.save=make(L"BUTTON",L"저장",0,DocSave,5,5,70,26);
+            item.toggle=make(L"BUTTON",L"그래프 / 소스",0,DocToggle,80,5,120,26);
+            make(L"BUTTON",L"다시 읽기",0,DocReload,205,5,85,26);
+            item.status=make(L"STATIC",L"",SS_LEFT,0,0,0,1,1);
+            item.viewPicker=make(L"COMBOBOX",L"",CBS_DROPDOWNLIST|WS_VSCROLL,DocView,5,37,160,220);
+            item.palette=make(L"COMBOBOX",L"",CBS_DROPDOWNLIST|WS_VSCROLL,DocPalette,170,37,250,300);
+            make(L"BUTTON",L"노드 추가",0,DocAdd,425,37,100,26);
+            if(document.value("graph",false)){
+                item.graph=std::make_unique<EditorGraphPanel>();
+                item.graph->attach(owner,instance,[this,owner](const Json& event){
+                    auto& pane=documentWindows.at(owner);
+                    try{
+                        const auto action=event.at("event").get<std::string>();
+                        if(action=="edit")editWindowGraph(owner,pane,event);
+                        else if(action=="comment"&&pane.doc.at("kind")=="blueprint"){
+                            auto input=event;input["action"]="comment";editWindowGraph(owner,pane,std::move(input));
+                        }else if(action=="graphicsError")SetWindowTextW(pane.status,wide(event.at("message")).c_str());
+                        else if(action=="key"&&event.value("ctrl",false)){
+                            const auto key=event.at("key");
+                            if(key=="s")saveDocumentWindow(owner,pane);
+                            else if(key=="z"||key=="y")commitDocumentWindowChange(owner,pane,request(key=="z"?"editor.undo":"editor.redo",documentWindowTarget(pane)));
+                        }
+                    }catch(const std::exception& error){SetWindowTextW(pane.status,wide(std::string(error.what())).c_str());}
+                });
+                item.graph->useD3D12(graphics);item.view=view;
+            }else ShowWindow(item.toggle,SW_HIDE);
+            refreshDocumentWindow(owner,item,request("document.read",{{"path",document.at("path")}}));
+            if(acceptance)SetWindowPos(owner,nullptr,-20000,-20000,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_NOACTIVATE|SWP_SHOWWINDOW);
+            else ShowWindow(owner,SW_SHOW);
+        }catch(...){destroyDocumentWindow(owner);throw;}
+    }
+    void destroyDocumentWindow(HWND owner){
+        SetWindowLongPtrW(owner,GWLP_USERDATA,0);
+        DestroyWindow(owner);
+        documentWindows.erase(owner);
+    }
+    LRESULT documentWindowEvent(HWND owner,DocumentWindow& item,UINT message,WPARAM w,LPARAM l){
+        if(message==WM_SIZE){if(item.editor)layoutDocumentWindow(owner,item);return 0;}
+        if(message==WM_CLOSE){
+            if(item.draft){
+                const auto choice=MessageBoxW(owner,L"이 창에서 편집한 소스를 저장할까요?",L"HBEngine",MB_YESNOCANCEL|MB_ICONWARNING);
+                if(choice==IDCANCEL)return 0;
+                if(choice==IDYES)saveDocumentWindow(owner,item);
+            }
+            destroyDocumentWindow(owner);return 0;
+        }
+        if(message==WM_ACTIVATE&&LOWORD(w)!=WA_INACTIVE&&!item.draft&&!waiting&&!item.doc.is_null()){
+            const auto latest=request("document.read",{{"path",item.doc.at("path")}});
+            if(latest.at("revision")!=item.doc.at("revision")||latest.at("dirty")!=item.doc.at("dirty"))refreshDocumentWindow(owner,item,latest);
+        }
+        if(message==WM_COMMAND){
+            const auto id=LOWORD(w),notification=HIWORD(w);
+            if(id==DocSource&&notification==EN_CHANGE&&!item.updating){item.draft=true;SetWindowTextW(item.status,L"저장하지 않은 변경 사항");}
+            else if(id==DocSave||id==Save)saveDocumentWindow(owner,item);
+            else if(id==CloseDocument)PostMessageW(owner,WM_CLOSE,0,0);
+            else if(id==DocToggle){captureDocumentWindow(owner,item);item.source=!item.source;layoutDocumentWindow(owner,item);}
+            else if(id==DocReload&&(!item.draft||MessageBoxW(owner,L"이 창의 초안을 버리고 문서를 다시 읽을까요?",L"HBEngine",MB_YESNO|MB_ICONWARNING)==IDYES))
+                refreshDocumentWindow(owner,item,request("document.read",{{"path",item.doc.at("path")}}));
+            else if(id==DocView&&notification==CBN_SELCHANGE){
+                const auto index=SendMessageW(item.viewPicker,CB_GETCURSEL,0,0);
+                if(index>=0){
+                    item.view=item.model.at("views").at(index).at(0);
+                    item.graph->resetView();refreshDocumentWindow(owner,item,item.doc);
+                }
+            }else if(id==DocAdd){
+                const auto index=SendMessageW(item.palette,CB_GETCURSEL,0,0);
+                if(index>=0){auto input=item.graph->spawnPosition();input["action"]="add";input["key"]=item.model.at("palette").at(index).at("id");editWindowGraph(owner,item,std::move(input));}
+            }else if(id==Undo||id==Redo){
+                if((item.source||!item.graph)&&item.draft){if(id==Undo)SendMessageW(item.editor,EM_UNDO,0,0);}
+                else commitDocumentWindowChange(owner,item,request(id==Undo?"editor.undo":"editor.redo",documentWindowTarget(item)));
+            }
+            return 0;
+        }
+        return DefWindowProcW(owner,message,w,l);
+    }
+    bool closeDocumentWindows(const std::string& only={}){
+        std::vector<HWND> owners;
+        for(const auto& [owner,item]:documentWindows)if(only.empty()||item.doc.at("path")==only)owners.push_back(owner);
+        for(auto owner:owners){SendMessageW(owner,WM_CLOSE,0,0);if(documentWindows.count(owner))return false;}
+        return true;
+    }
+    struct NameDialog {const wchar_t* title;HINSTANCE instance;HWND input=nullptr;std::wstring value;int limit=80;};
     static INT_PTR CALLBACK nameProcedure(HWND dialog,UINT message,WPARAM w,LPARAM l){
         auto* state=reinterpret_cast<NameDialog*>(GetWindowLongPtrW(dialog,DWLP_USER));
         if(message==WM_INITDIALOG){
@@ -598,9 +867,9 @@ class NativeEditorShell {
                 const auto child=CreateWindowExW(0,type,label,WS_CHILD|WS_VISIBLE|WS_TABSTOP|style,x,y,width,height,dialog,HMENU(INT_PTR(id)),state->instance,nullptr);
                 SendMessageW(child,WM_SETFONT,WPARAM(GetStockObject(DEFAULT_GUI_FONT)),TRUE);return child;
             };
-            state->input=add(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,12,12,rect.right-24,26,10);
-            SendMessageW(state->input,EM_SETLIMITTEXT,80,0);
-            add(L"BUTTON",L"추가",BS_DEFPUSHBUTTON,rect.right-174,52,74,26,IDOK);
+            state->input=add(L"EDIT",state->value.c_str(),WS_BORDER|ES_AUTOHSCROLL,12,12,rect.right-24,26,10);
+            SendMessageW(state->input,EM_SETLIMITTEXT,state->limit,0);SendMessageW(state->input,EM_SETSEL,0,-1);
+            add(L"BUTTON",L"확인",BS_DEFPUSHBUTTON,rect.right-174,52,74,26,IDOK);
             add(L"BUTTON",L"취소",BS_PUSHBUTTON,rect.right-90,52,74,26,IDCANCEL);
             SetFocus(state->input);return FALSE;
         }
@@ -611,14 +880,22 @@ class NativeEditorShell {
         if(message==WM_CLOSE){EndDialog(dialog,IDCANCEL);return TRUE;}
         return FALSE;
     }
-    std::wstring inputName(const wchar_t* title){
+    std::wstring inputName(const wchar_t* title,std::wstring initial={},int limit=80){
         struct alignas(DWORD) Dialog {DLGTEMPLATE value;WORD menu=0,windowClass=0,title=0;} layout{};
         layout.value.style=WS_POPUP|WS_CAPTION|WS_SYSMENU|DS_MODALFRAME|DS_CENTER;
         layout.value.cx=230;layout.value.cy=62;
-        NameDialog input{title,instance};
+        NameDialog input{title,instance,nullptr,std::move(initial),limit};
         const auto result=DialogBoxIndirectParamW(instance,&layout.value,detached?detached:window,nameProcedure,reinterpret_cast<LPARAM>(&input));
         if(result==-1)throw std::runtime_error("Windows 이름 입력 창을 열 수 없어요.");
         return result==IDOK?input.value:L"";
+    }
+    std::optional<std::size_t> chooseMenu(const std::vector<std::wstring>& labels){
+        const auto menu=CreatePopupMenu();
+        for(std::size_t i=0;i<labels.size();++i)AppendMenuW(menu,MF_STRING,i+1,labels[i].c_str());
+        POINT at{};GetCursorPos(&at);
+        const auto selected=TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
+        DestroyMenu(menu);
+        return selected?std::optional<std::size_t>(selected-1):std::nullopt;
     }
     std::wstring pickFile(bool create,const std::wstring& description,const std::wstring& suffix,const std::wstring& name,const fs::path& initialFolder={}){
         IFileDialog* dialog=nullptr;
@@ -644,9 +921,18 @@ class NativeEditorShell {
         }
         dialog->Release();return result;
     }
+    std::string chooseTimelineAsset(bool audio){
+        const auto name=pickFile(false,audio?L"오디오 클립":L"애니메이션 클립",L"",L"",projectRoot/L"Assets");
+        if(name.empty())return {};
+        std::error_code error;
+        const auto relative=fs::relative(fs::path(name),projectRoot,error);
+        if(error||relative.empty()||*relative.begin()!=L"Assets")throw std::runtime_error("프로젝트의 Assets 폴더에서 클립을 고르세요.");
+        return utf8(relative.generic_wstring());
+    }
     void openProject(Json project){
         projectTitle=wide(project.at("name"));SetWindowTextW(window,(projectTitle+L" — HBEngine").c_str());
-        projectRoot=fs::path(wide(project.at("file"))).parent_path();
+        projectFile=fs::path(wide(project.at("file")));
+        projectRoot=projectFile.parent_path();
         folder="Assets";updating=true;SetWindowTextW(search,L"");updating=false;refreshFiles();
         showDocument(request("document.open",{{"path",project.at("startupScene")}}));
         refreshRecent();
@@ -670,6 +956,58 @@ class NativeEditorShell {
             return MessageBoxW(window,L"다른 문서에 저장하지 않은 변경 사항이 있어요. 버릴까요?",L"HBEngine",MB_YESNO|MB_ICONWARNING)==IDYES;
         }
         return true;
+    }
+    void startPlay(const fs::path& reportFile={}){
+        if(projectFile.empty()||playProcess)return;
+        captureSource();
+        if(std::any_of(documentWindows.begin(),documentWindows.end(),[](const auto& pane){return pane.second.draft;}))
+            throw std::runtime_error("플레이 전에 독립 창에서 편집한 문서를 저장하세요.");
+        for(const auto& tab:document.value("tabs",Json::array()))
+            if(tab.value("dirty",false))throw std::runtime_error("플레이 전에 수정한 문서를 저장하세요.");
+        if(!fs::is_regular_file(playLauncher))throw std::runtime_error("네이티브 플레이 실행 파일을 찾을 수 없어요.");
+        const auto root=playRuntimeRoot.empty()?playLauncher.parent_path():playRuntimeRoot;
+        auto args=quote(playLauncher.wstring())+L" --package "+quote(root.wstring())+L" --editor-project "+quote(projectFile.wstring())+L" --editor-profile "+quote(editorProfile.wstring())+
+            L" --editor-owner "+std::to_wstring(reinterpret_cast<std::uintptr_t>(window));
+        if(sceneOpen())args+=L" --editor-scene "+quote(wide(document.at("path")));
+        if(!reportFile.empty())args+=L" --hidden --silent --frames 4 --report "+quote(reportFile.wstring());
+        STARTUPINFOW startup{sizeof(startup)};PROCESS_INFORMATION child{};
+        HANDLE ownership=CreateJobObjectW(nullptr,nullptr);JOBOBJECT_EXTENDED_LIMIT_INFORMATION limits{};
+        limits.BasicLimitInformation.LimitFlags=JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
+        if(!ownership||!SetInformationJobObject(ownership,JobObjectExtendedLimitInformation,&limits,sizeof(limits))
+            ||!CreateProcessW(playLauncher.c_str(),args.data(),nullptr,nullptr,FALSE,CREATE_SUSPENDED,nullptr,root.c_str(),&startup,&child)){
+            if(ownership)CloseHandle(ownership);
+            throw std::runtime_error("편집기 플레이를 시작하지 못했어요.");
+        }
+        if(!AssignProcessToJobObject(ownership,child.hProcess)||ResumeThread(child.hThread)==DWORD(-1)){
+            TerminateProcess(child.hProcess,1);CloseHandle(child.hThread);CloseHandle(child.hProcess);CloseHandle(ownership);
+            throw std::runtime_error("편집기 플레이 프로세스를 관리할 수 없어요.");
+        }
+        CloseHandle(child.hThread);playJob=ownership;playProcess=child.hProcess;playPid=child.dwProcessId;stopPlayRequested=false;
+        SetTimer(window,6,150,nullptr);statusText(L"플레이를 시작했어요.");
+    }
+    void stopPlay(){
+        if(!playProcess||WaitForSingleObject(playProcess,0)!=WAIT_TIMEOUT)return;
+        stopPlayRequested=true;
+        EnumWindows([](HWND candidate,LPARAM value)->BOOL{
+            DWORD pid=0;GetWindowThreadProcessId(candidate,&pid);
+            if(pid!=DWORD(value))return TRUE;
+            wchar_t name[64]{};GetClassNameW(candidate,name,64);
+            if(std::wstring_view(name)!=L"HBEngine.NativeGame")return TRUE;
+            PostMessageW(candidate,WM_CLOSE,0,0);return FALSE;
+        },LPARAM(playPid));
+    }
+    void waitForPlaySmoke(){
+        const auto deadline=GetTickCount64()+120000;
+        while(WaitForSingleObject(playProcess,0)==WAIT_TIMEOUT&&GetTickCount64()<deadline){
+            MSG message{};
+            while(PeekMessageW(&message,nullptr,WM_PAINT,WM_PAINT,PM_REMOVE))DispatchMessageW(&message);
+            Sleep(20);
+        }
+        DWORD code=STILL_ACTIVE;
+        GetExitCodeProcess(playProcess,&code);
+        if(code==STILL_ACTIVE){stopPlay();throw std::runtime_error("Native editor play timeout");}
+        CloseHandle(playProcess);playProcess=nullptr;playPid=0;CloseHandle(playJob);playJob=nullptr;KillTimer(window,6);
+        if(code)throw std::runtime_error("Native editor play failed");
     }
     void saveLayout(){
         WINDOWPLACEMENT placement{sizeof(placement)};
@@ -739,15 +1077,35 @@ class NativeEditorShell {
         layout();
     }
     void perform(Command command){
+        if(playProcess&&(command==OpenProject||command==NewProject||command>=RecentBase))
+            throw std::runtime_error("플레이를 중지한 뒤 프로젝트를 바꾸세요.");
         if(command>=RecentBase&&std::size_t(command-RecentBase)<recent.size()){
+            if(!closeDocumentWindows())return;
             captureSource();openProject(request("project.open",{{"file",recent.at(command-RecentBase).at("file")}}));return;
         }
         switch(command){
+        case PlayScene:startPlay();return;
+        case StopPlay:stopPlay();return;
         case OpenProject:case NewProject:{
+            std::string templateId;
+            if(command==NewProject){
+                const auto choice=chooseMenu({L"2D",L"3D",L"2D 게임플레이",L"3D 게임플레이",L"2D 슈터",L"정원"});
+                if(!choice)return;
+                const std::array<std::string,6> templates={"2d","3d","gameplay2d","gameplay3d","shooter2d","garden"};
+                templateId=templates.at(*choice);
+            }
             captureSource();const auto target=pickFile(command==NewProject,L"HBEngine 프로젝트",L".hbproject",L"새 프로젝트.hbproject");
-            if(target.empty())return;
+            if(target.empty()||!closeDocumentWindows())return;
             const fs::path path(target);
-            openProject(command==OpenProject?request("project.open",{{"file",utf8(target)}}):request("project.create",{{"name",utf8(path.stem().wstring())},{"directory",utf8(path.parent_path().wstring())},{"template","3d"}}));
+            openProject(command==OpenProject?request("project.open",{{"file",utf8(target)}}):request("project.create",{{"name",utf8(path.stem().wstring())},{"directory",utf8(path.parent_path().wstring())},{"template",templateId}}));
+            return;
+        }
+        case NewFolder:{
+            if(projectRoot.empty())return;
+            const auto name=inputName(L"새 폴더 이름");
+            if(name.empty())return;
+            folder=request("content.mkdir",{{"folder",folder},{"name",utf8(name)}}).at("path");
+            updating=true;SetWindowTextW(search,L"");updating=false;refreshFiles();
             return;
         }
         case NewAsset:{
@@ -782,8 +1140,9 @@ class NativeEditorShell {
         case Save:
             saveCurrent();return;
         case CloseDocument:
-            if(document.contains("path")&&confirmClose())showDocument(request("document.close",{{"path",document.at("path")},{"discard",true}}));
+            if(document.contains("path")&&closeDocumentWindows(document.at("path"))&&confirmClose())showDocument(request("document.close",{{"path",document.at("path")},{"discard",true}}));
             return;
+        case PinDocument:openDocumentWindow();return;
         case Undo:case Redo:
             if(command==Undo&&sourceChanged&&SendMessageW(source,EM_CANUNDO,0,0)){SendMessageW(source,EM_UNDO,0,0);return;}
             if(document.contains("path")){captureSource();showDocument(request(command==Undo?"editor.undo":"editor.redo"));}return;
@@ -843,6 +1202,15 @@ class NativeEditorShell {
             if(!sceneSelection.empty())editScene({{"action","duplicate"},{"id",sceneSelection}});
             return;
         case FocusActor:queueViewport({{"command","focus"}});return;
+        case AddSequenceTrack:{
+            if(document.value("kind",std::string())!="sequenceasset"||sourceMode)return;
+            const auto types=request("timeline.trackTypes");
+            std::vector<std::wstring> labels;
+            for(const auto& type:types)labels.push_back(wide(type));
+            const auto selection=chooseMenu(labels);
+            if(selection)showDocument(request("timeline.edit",{{"action","trackAdd"},{"type",types.at(*selection)},{"expectedRevision",document.at("revision")}}));
+            return;
+        }
         case WideBrowser:browsePercent=browsePercent==24?34:24;layout();return;
         case WideInspector:inspectorPercent=inspectorPercent==25?38:25;layout();return;
         case ResetLayout:
@@ -858,18 +1226,47 @@ class NativeEditorShell {
                 layout();
             }
             return;
-        case CheckBuild:case BuildGame:{
+        case CheckBuild:case BuildGame:case EditBuildProfile:case CopyBuildProfile:case DeleteBuildProfile:{
             if(projectRoot.empty()||building)return;
             captureSource();
             const auto settings=request("project.buildProfiles");const auto& profiles=settings.at("profiles");
-            const auto menu=CreatePopupMenu();
-            for(std::size_t i=0;i<profiles.size();++i)AppendMenuW(menu,MF_STRING,i+1,wide(profiles.at(i).at("name")).c_str());
-            POINT at{};GetCursorPos(&at);
-            const auto choice=TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
-            DestroyMenu(menu);
+            std::vector<std::wstring> labels;
+            for(const auto& profile:profiles)labels.push_back(wide(profile.at("name")));
+            const auto choice=chooseMenu(labels);
             if(!choice)return;
+            const auto& profile=profiles.at(*choice);
+            if(command==CopyBuildProfile||command==DeleteBuildProfile){
+                Json input={{"id",profile.at("id")},{"expectedRevision",settings.at("revision")}};
+                if(command==DeleteBuildProfile){
+                    if(MessageBoxW(window,L"선택한 빌드 프로필을 삭제할까요?",L"HBEngine",MB_YESNO|MB_ICONWARNING)!=IDYES)return;
+                    input["action"]="delete";
+                }else{
+                    const auto id=inputName(L"새 프로필 ID",wide(profile.at("id"))+L"-copy",40);
+                    if(id.empty())return;
+                    const auto name=inputName(L"새 프로필 이름",wide(profile.at("name"))+L" 복사본",80);
+                    if(name.empty())return;
+                    input["action"]="copy";input["newId"]=utf8(id);input["changes"]={{"name",utf8(name)}};
+                }
+                request("project.buildProfileSave",input);statusText(L"빌드 프로필을 저장했어요.");return;
+            }
+            if(command==EditBuildProfile){
+                const std::vector<std::string> keys={"name","productName","width","height","targetFrameRate","configuration","nativeGraphicsAPI","scenes","mobile","windowsSigning"};
+                const std::vector<std::wstring> titles={L"프로필 이름",L"게임 이름",L"화면 너비",L"화면 높이",L"목표 FPS",L"빌드 구성",L"Windows 그래픽 API",L"장면 목록 (JSON)",L"모바일 설정 (JSON)",L"Windows 서명 설정 (JSON)"};
+                const auto field=chooseMenu(titles);if(!field)return;
+                const auto& key=keys.at(*field);
+                const auto value=profile.value(key,Json());
+                const bool string=*field<2||key=="configuration"||key=="nativeGraphicsAPI";
+                auto display=value.is_string()?wide(value.get<std::string>()):value.is_null()?std::wstring():wide(value.dump());
+                const auto input=inputName(titles.at(*field).c_str(),std::move(display),16000);
+                if(input.empty())return;
+                const auto next=string?Json(utf8(input)):Json::parse(utf8(input));
+                request("project.buildProfileSave",{{"id",profile.at("id")},{"expectedRevision",settings.at("revision")},{"changes",{{key,next}}}});
+                statusText(L"빌드 프로필을 저장했어요.");return;
+            }
+            if(std::any_of(documentWindows.begin(),documentWindows.end(),[](const auto& pane){return pane.second.draft;}))
+                throw std::runtime_error("빌드하기 전에 독립 창에서 편집한 문서를 저장하세요.");
             statusText(command==CheckBuild?L"빌드 검사 중":L"패키징 중");
-            request("project.build",{{"id",profiles.at(choice-1).at("id")},{"expectedRevision",settings.at("revision")},{"dryRun",command==CheckBuild}});
+            request("project.build",{{"id",profile.at("id")},{"expectedRevision",settings.at("revision")},{"dryRun",command==CheckBuild}});
             building=true;checkingBuild=command==CheckBuild;SetTimer(window,4,350,nullptr);
             return;
         }
@@ -891,7 +1288,7 @@ class NativeEditorShell {
         case AddNode:{
             if(!document.value("graph",false))return;
             const auto index=SendMessageW(palette,CB_GETCURSEL,0,0);if(index<0)return;
-            auto event=graph.spawnPosition();event["action"]="add";event["key"]=model.at("palette").at(index).at("id");editGraph(std::move(event));return;
+            auto event=graph.spawnPosition();event["action"]="add";event["key"]=model.at("palette").at(index).at("id");event["id"]=graphSelection;editGraph(std::move(event));return;
         }
         case AddVariable:case AddFunction:case AddMacro:{
             if(document.value("kind",std::string())!="blueprint"||sourceMode)return;
@@ -916,6 +1313,16 @@ class NativeEditorShell {
         }
     }
     LRESULT event(HWND owner,UINT message,WPARAM w,LPARAM l){
+        if(const auto it=documentWindows.find(owner);it!=documentWindows.end()){
+            try{return documentWindowEvent(owner,it->second,message,w,l);}
+            catch(const std::exception& error){SetWindowTextW(it->second.status,wide(std::string(error.what())).c_str());return 0;}
+        }
+        if(owner!=window&&owner!=detached&&owner!=contentWindow)return DefWindowProcW(owner,message,w,l);
+        if(moveDivider(owner,message,l))return 0;
+        if(message==WM_SETCURSOR&&LOWORD(l)==HTCLIENT){
+            POINT point{};GetCursorPos(&point);ScreenToClient(owner,&point);
+            if(dividerAt(owner,point.x,point.y)!=Divider::None){SetCursor(LoadCursorW(nullptr,IDC_SIZEWE));return TRUE;}
+        }
         if(message==WM_SIZE){layout();return 0;}
         if(message==WM_TIMER&&w==1){KillTimer(window,1);refreshFiles();return 0;}
         if(message==WM_TIMER&&w==2){
@@ -939,6 +1346,17 @@ class NativeEditorShell {
         if(message==WM_TIMER&&w==5){
             KillTimer(window,5);
             if(previewOpen&&canPreview()&&!sourceMode){auto input=std::move(previewInput);previewInput=nullptr;drawPreview(input.is_object()?std::move(input):Json::object());}
+            return 0;
+        }
+        if(message==WM_TIMER&&w==6){
+            if(playProcess&&WaitForSingleObject(playProcess,0)==WAIT_TIMEOUT){if(stopPlayRequested)stopPlay();return 0;}
+            KillTimer(window,6);
+            if(playProcess){
+                DWORD result=0;GetExitCodeProcess(playProcess,&result);CloseHandle(playProcess);playProcess=nullptr;playPid=0;
+                CloseHandle(playJob);playJob=nullptr;
+                statusText(result?L"플레이 실행 오류. 세션 로그를 확인하세요.":L"플레이를 종료했어요.");
+            }
+            if(closeAfterPlay){closeAfterPlay=false;PostMessageW(window,WM_CLOSE,0,0);}
             return 0;
         }
         if(message==WM_COMMAND){
@@ -981,8 +1399,9 @@ class NativeEditorShell {
         if(message==WM_CLOSE){
             if(owner==detached){detached=nullptr;attachDocument(window);DestroyWindow(owner);return 0;}
             if(owner==contentWindow){contentWindow=nullptr;attachBrowser(window);DestroyWindow(owner);return 0;}
+            if(playProcess){closeAfterPlay=true;stopPlay();statusText(L"플레이를 종료하고 있어요.");return 0;}
             if(building){SetWindowTextW(status,L"빌드가 끝나면 창을 닫을 수 있어요.");return 0;}
-            if(!confirmWorkspace())return 0;
+            if(!closeDocumentWindows()||!confirmWorkspace())return 0;
             saveLayout();
             if(detached)SendMessageW(detached,WM_CLOSE,0,0);
             if(contentWindow)SendMessageW(contentWindow,WM_CLOSE,0,0);
@@ -999,10 +1418,17 @@ class NativeEditorShell {
     }
 public:
     explicit NativeEditorShell(HINSTANCE appInstance):instance(appInstance){}
-    ~NativeEditorShell(){if(IsWindow(window))DestroyWindow(window);if(font)DeleteObject(font);if(childInput)CloseHandle(childInput);if(job)CloseHandle(job);if(childOutput)CloseHandle(childOutput);}
+    ~NativeEditorShell(){if(playProcess){stopPlay();CloseHandle(playProcess);}if(playJob)CloseHandle(playJob);while(!documentWindows.empty())destroyDocumentWindow(documentWindows.begin()->first);if(IsWindow(window))DestroyWindow(window);if(font)DeleteObject(font);if(childInput)CloseHandle(childInput);if(job)CloseHandle(job);if(childOutput)CloseHandle(childOutput);}
     int run(const fs::path& node,const fs::path& script,const fs::path& profile,const std::wstring& project,int show,const fs::path& smoke){
         acceptance=!smoke.empty();
         layoutFile=profile/L"native-editor-layout.json";
+        editorProfile=profile;
+        playLauncher=node.parent_path().parent_path()/L"HBNativePlayer.exe";
+        if(acceptance){
+            const auto testLauncher=env(L"HB_EDITOR_TEST_PLAYER"),testRuntime=env(L"HB_EDITOR_TEST_RUNTIME");
+            if(!testLauncher.empty())playLauncher=testLauncher;
+            if(!testRuntime.empty())playRuntimeRoot=testRuntime;
+        }
         startWorker(node,script,profile);
         WNDCLASSW type{};type.hInstance=instance;type.lpszClassName=L"HBEngine.NativeAuthoring";type.lpfnWndProc=procedure;type.hCursor=LoadCursorW(nullptr,IDC_ARROW);type.hbrBackground=GetSysColorBrush(COLOR_BTNFACE);type.hIcon=LoadIconW(instance,MAKEINTRESOURCEW(101));
         RegisterClassW(&type);
@@ -1014,10 +1440,15 @@ public:
         restoreLayout();
         ShowWindow(window,layoutMaximized?SW_SHOWMAXIMIZED:show);
         if(contentDetachedOnStart)perform(DetachContent);
-        ACCEL keys[]={{FVIRTKEY|FCONTROL,'O',OpenProject},{FVIRTKEY|FCONTROL,'S',Save},{FVIRTKEY|FCONTROL,'W',CloseDocument},{FVIRTKEY|FCONTROL,'Z',Undo},{FVIRTKEY|FCONTROL,'Y',Redo},{FVIRTKEY|FALT,VK_UP,Up}};
+        ACCEL keys[]={{FVIRTKEY|FCONTROL,'O',OpenProject},{FVIRTKEY|FCONTROL,'S',Save},{FVIRTKEY|FCONTROL,'W',CloseDocument},{FVIRTKEY|FCONTROL,'Z',Undo},{FVIRTKEY|FCONTROL,'Y',Redo},{FVIRTKEY|FALT,VK_UP,Up},{FVIRTKEY,VK_F5,PlayScene},{FVIRTKEY|FSHIFT,VK_F5,StopPlay}};
         const auto accelerator=CreateAcceleratorTableW(keys,int(std::size(keys)));
         MSG message;
-        while(GetMessageW(&message,nullptr,0,0)>0)if(!TranslateAcceleratorW(window,accelerator,&message)){TranslateMessage(&message);DispatchMessageW(&message);}
+        while(GetMessageW(&message,nullptr,0,0)>0){
+            const auto owner=GetAncestor(message.hwnd,GA_ROOT);
+            const bool independent=documentWindows.count(owner)!=0;
+            const bool documentShortcut=message.wParam=='S'||message.wParam=='W'||message.wParam=='Z'||message.wParam=='Y';
+            if((independent&&!documentShortcut)||!TranslateAcceleratorW(independent?owner:window,accelerator,&message)){TranslateMessage(&message);DispatchMessageW(&message);}
+        }
         DestroyAcceleratorTable(accelerator);return 0;
     }
 private:
@@ -1039,6 +1470,13 @@ private:
         command(ResetLayout);
         if(contentWindow||GetParent(files)!=window||GetParent(search)!=window)
             throw std::runtime_error("Native content window redock failed");
+        RECT layoutRect{};GetClientRect(window,&layoutRect);
+        const int dividerX=std::clamp(int(layoutRect.right*browsePercent/100),150,460);
+        SendMessageW(window,WM_LBUTTONDOWN,MK_LBUTTON,MAKELPARAM(dividerX,95));
+        SendMessageW(window,WM_MOUSEMOVE,MK_LBUTTON,MAKELPARAM(dividerX+90,95));
+        SendMessageW(window,WM_LBUTTONUP,0,MAKELPARAM(dividerX+90,95));
+        if(browsePercent<=24)throw std::runtime_error("Native dock divider drag failed");
+        command(ResetLayout);
         const auto sceneSurface=drawViewport({{"capture",true}});
         if(sceneSurface.at("backend")!="D3D12"||sceneSurface.at("calls")<1)
             throw std::runtime_error("Native scene did not draw: "+sceneSurface.dump());
@@ -1070,11 +1508,35 @@ private:
         const auto afterZoom=drawViewport(std::move(cameraChange));
         if(afterZoom.at("backend")!="D3D12")throw std::runtime_error("Native scene zoom failed");
         command(Save);
+        Json playEvidence;
+        if(!env(L"HB_EDITOR_TEST_PLAYER").empty()){
+            auto playReport=smoke;playReport+=L".play.json";
+            startPlay(playReport);waitForPlaySmoke();
+            const auto result=Json::parse(read(playReport));
+            playEvidence={{"frames",result.at("frames")},{"webview",result.at("webview")},{"backend",result.at("renderer").at("backend")},{"scene",result.at("logic").at("scene")}};
+            if(playEvidence.at("frames")!=4||playEvidence.at("webview")!=false||playEvidence.at("backend")!="D3D12"||playEvidence.at("scene")!=document.at("path"))
+                throw std::runtime_error("Native editor play evidence mismatch");
+        }
         showDocument(request("document.open",{{"path","Assets/AN_Native.hbanimation.json"}}));
         assetCanvas.probeAddKey();assetCanvas.probePaint();
         const auto timelineSurface=assetCanvas.inspect();
         if(timelineSurface.at("backend")!="D3D12"||!document.at("dirty").get<bool>())
             throw std::runtime_error("Native timeline key editing failed");
+        command(Save);
+        showDocument(request("document.open",{{"path","Assets/LS_Native.hbsequence.json"}}));
+        showDocument(request("timeline.edit",{{"action","trackAdd"},{"type","position"},{"expectedRevision",document.at("revision")}}));
+        assetCanvas.probeAddKey();assetCanvas.probePaint();
+        if(!document.at("dirty").get<bool>()||assetCanvas.inspect().at("backend")!="D3D12")
+            throw std::runtime_error("Native sequence editing failed");
+        command(Save);
+        showDocument(request("document.open",{{"path","Assets/BT_Native.hbbehaviortree.json"}}));
+        editGraph({{"action","add"},{"key","task"},{"x",340},{"y",260}});
+        if(model.at("edges").size()!=1)throw std::runtime_error("Native behavior tree editing failed");
+        graph.probePaint();command(Save);
+        showDocument(request("document.open",{{"path","Assets/FSM_Native.hbstatemachine.json"}}));
+        editGraph({{"action","add"},{"key","state"},{"x",420},{"y",340}});
+        graph.probeConnect({{"node",model.at("nodes").front().at("id")},{"pin","out"}},{{"node",model.at("nodes").back().at("id")},{"pin","in"}});
+        if(model.at("edges").size()!=1)throw std::runtime_error("Native state machine transition failed");
         command(Save);
         showDocument(request("document.open",{{"path","Assets/W_Native.hbwidget.json"}}));
         editWidget({{"action","add"},{"key","Button"}});
@@ -1136,7 +1598,28 @@ private:
         form.probe({{"action","paint"}});
         const auto assetSurface=form.inspect();
         if(assetSurface.at("backend")!="D3D12")throw std::runtime_error("Asset panel present failed: "+assetSurface.at("graphicsError").get<std::string>());
-        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"newCube",newCube},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"saved",!document.at("dirty").get<bool>()}}.dump());
+        showDocument(request("document.open",{{"path","Assets/Blueprints/BP_Garden.hbblueprint.json"}}));
+        command(PinDocument);
+        if(documentWindows.size()!=1)throw std::runtime_error("Independent graph window missing");
+        const auto graphWindow=documentWindows.begin()->first;
+        auto& graphPane=documentWindows.at(graphWindow);
+        showDocument(request("document.open",{{"path","Assets/Empty/가져오기.txt"}}));
+        command(PinDocument);
+        if(documentWindows.size()!=2)throw std::runtime_error("Independent text window missing");
+        const auto textWindow=std::find_if(documentWindows.begin(),documentWindows.end(),[&](const auto& row){return row.first!=graphWindow;})->first;
+        auto& textPane=documentWindows.at(textWindow);
+        showDocument(request("document.open",{{"path","Assets/AM_Native.hbmontage.json"}}));
+        assetCanvas.probePaint();graphPane.graph->probePaint();
+        const auto independent=graphPane.graph->inspect();
+        if(independent.at("backend")!="D3D12"||independent.at("paints")==0)throw std::runtime_error("Independent graph present failed");
+        SendMessageW(textPane.editor,EM_SETSEL,0,-1);
+        SendMessageW(textPane.editor,EM_REPLACESEL,TRUE,LPARAM(L"독립 문서 저장"));
+        if(!textPane.draft)throw std::runtime_error("Independent text edit did not mark the draft");
+        SendMessageW(textWindow,WM_COMMAND,DocSave,0);
+        if(textPane.draft||textPane.doc.at("dirty")!=false||document.at("kind")!="montage")throw std::runtime_error("Independent document save changed the active document");
+        const Json independentDocuments={{"graph",independent.at("backend")},{"count",documentWindows.size()}};
+        if(!closeDocumentWindows())throw std::runtime_error("Independent documents close failed");
+        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"independentDocuments",independentDocuments},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
 };
