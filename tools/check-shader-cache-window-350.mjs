@@ -21,7 +21,7 @@ try{
   probe=await editorWindowProbe({work,mode:'player',executable:built.executable});await probe.until(()=>probe.evaluate('window.hbPlayerDebug?.ready?.()'),'game ready');
   await probe.evaluate('window.hbPlayerDebug.captureAsync()');
   const info=await probe.until(async()=>{const value=await probe.evaluate('window.hbPlayerDebug.inspect()?.renderer');return value?.shaderDiskCache?.configured&&(cycle==='cold'?value.shaderDiskCache.writes>0:value.shaderDiskCache.hits>0)?value:null;},'native disk diagnostics');
-  assert.equal(info.backend,'D3D11');assert.equal(info.shaderDiskCache.errors,0);assert.equal(info.shaderDiskCache.invalid,0);assert.ok(info.shaderDiskCache.lastScannedBytes<=info.shaderDiskCache.budgetBytes);if(cycle==='warm')assert.equal(info.shaderDiskCache.writes,0);
+  assert.equal(info.backend,'D3D12');assert.equal(info.shaderDiskCache.errors,0);assert.equal(info.shaderDiskCache.invalid,0);assert.ok(info.shaderDiskCache.lastScannedBytes<=info.shaderDiskCache.budgetBytes);if(cycle==='warm')assert.equal(info.shaderDiskCache.writes,0);
   const observed=[];for(let n=0;n<3;++n)observed.push((await probe.evaluate('window.hbPlayerDebug.inspect()?.renderer')).shaderDiskCache);assert.ok(observed.every(d=>JSON.stringify(d)===JSON.stringify(info.shaderDiskCache)));
   await probe.capture(cycle+'.png');rows.push({cycle,disk:info.shaderDiskCache,screen:info.shaderCompilation,cacheCountersStable:true,exit:await probe.finish()});probe=null;
  }

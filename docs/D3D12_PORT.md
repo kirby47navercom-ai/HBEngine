@@ -233,3 +233,10 @@ DX11 회귀: `check-native-scene-render --post-only`를 수정 전·후 헤더�
 - 빌드 보고서 렌더러 이름은 선택한 API를 따라요(`nativeRendererLabels`: auto는 `Win32/DirectX 12 (DirectX 11 대체)`).
 - 검증: `check-build-profiles`, `check-native-upload-batches` 통과. 기본 프로필 그대로 만든 숨긴 실제 게임(`check-native-game`, EndPlay UI 두 줄 제외 사본)이 `win32-d3d12-v8`, `requestedBackend:auto`, 대체 없음으로 통과.
 - `check-native-platform`은 이 변경 전부터 두 곳에서 실패해요(목록 위젯이 이미 네이티브 지원인데 거부를 기대, 모의 패키지에 `readBytes` 없음). 렌더러 이름 기대값만 바꿨어요.
+
+### 편집기·WebView 실행기도 auto로
+
+- `prototype/game-renderer.js`의 `d3d11` 장면 백엔드(WebView2 UI + 네이티브 장면, 편집기 플레이와 WebView 실행기)가 브리지에 `auto`를 요청해요. 같은 `SceneRenderBridge`라 하드웨어 직접 D3D12 우선, 실패하면 D3D11이에요. 장면 설정 값 이름 `d3d11`은 저장 데이터 호환 때문에 그대로예요. 빌드 보고서 이름은 `DirectX 12 (DirectX 11 대체) + WebView2 UI`예요.
+- 편집기 호스트는 사용자 셰이더 캐시를 쓰므로 첫 D3D12 초기화만 캐시가 비어 있으면 약 30초 걸리고 이후 0.2초 안팎이에요.
+- 렌더러 `backend`를 `D3D11`로 기대하던 창·플레이어 검사 120개 파일을 `D3D12`로 바꿨어요(이 PC 기준 auto 결과).
+- 검증 한계: `dist` 편집기·WebView 실행기 EXE는 다시 빌드했지만, 대표 창 검사 `check-native-scene-window`는 WebView 디버그 페이지가 45초 안에 안 열려 시간 초과로 끝났어요. 변경 전 JS로 돌려도 똑같이 실패해서 이번 변경과 무관한 검사 환경 문제로 보지만, WebView 경로의 D3D12 화면은 아직 직접 확인하지 못했어요. 바꾼 120개 검사도 실행하지 않았어요.

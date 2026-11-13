@@ -11,7 +11,7 @@ now=125;state=updateNativePathPreparation(state,packet(false),clock);assert.equa
 now=1000;assert.equal(updateNativePathPreparation(state,packet(false),clock),state);assert.equal(state.elapsedMS,25,'ready polling must not extend completed time');
 now=2000;const first=state;state=updateNativePathPreparation(state,packet(true),clock);assert(first.cancelled);assert.equal(state.cycles,2);
 now=2040;updateNativePathPreparation(state,packet(false),clock);assert.equal(state.elapsedMS,40);assert.equal(state.preparationMS,65,'idle gaps are excluded');
-const info=nativePathPreparationInfo(state);assert.equal(info.preparationMS,65);assert.equal(info.cycles,2);const table=shaderCompilationTable([{id:'timing',backend:'D3D11',pipelinePreparation:info}]);assert(table.includes('65.00')&&table.includes('2회'));
+const info=nativePathPreparationInfo(state);assert.equal(info.preparationMS,65);assert.equal(info.cycles,2);const table=shaderCompilationTable([{id:'timing',backend:'D3D12',pipelinePreparation:info}]);assert(table.includes('65.00')&&table.includes('2회'));
 now=3000;state=updateNativePathPreparation(state,packet(true),clock);now=3010;cancelGPUPathPreparation(state);await state.done;assert.equal(state.pending,false);assert.equal(state.elapsedMS,10);assert.equal(state.preparationMS,75);
 now=4000;assert.equal(nativePathPreparationInfo(state).preparationMS,75);assert.equal(state.elapsedMS,10);
 state=updateNativePathPreparation(state,packet(true,2),clock);now=4050;updateNativePathPreparation(state,packet(false,2,'compiler rejected'),clock);
