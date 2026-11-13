@@ -224,5 +224,12 @@ DX11 회귀: `check-native-scene-render --post-only`를 수정 전·후 헤더�
 
 ### auto를 직접 D3D12 우선으로
 
-- `nativeGraphicsAPI:auto`(또는 `--graphics-api auto`)는 하드웨어 어댑터에서 직접 D3D12 렌더러를 먼저 만들고, 장치·렌더러 생성이 실패하면 그 이유를 `fallback`으로 보고하며 D3D11(HW, 다음 WARP)로 이어가요. D3D12는 WARP로 내려가지 않아요(느린 소프트웨어 D3D12보다 D3D11이 나아서). 프로필 기본값은 `d3d11` 그대로예요.
+- `nativeGraphicsAPI:auto`(또는 `--graphics-api auto`)는 하드웨어 어댑터에서 직접 D3D12 렌더러를 먼저 만들고, 장치·렌더러 생성이 실패하면 그 이유를 `fallback`으로 보고하며 D3D11(HW, 다음 WARP)로 이어가요. D3D12는 WARP로 내려가지 않아요(느린 소프트웨어 D3D12보다 D3D11이 나아서).
 - 검증: `HB_TEST_GRAPHICS_API=auto node tools/check-native-game.mjs`(EndPlay UI 두 줄 제외 사본) 숨긴 실제 게임이 `win32-d3d12-v8`, `requestedBackend:auto`, 대체 없음으로 40프레임·입력·UI·오디오·종료 통과. D3D12가 없는 PC의 대체 경로는 이 PC에서 실행해 보지 못했어요.
+
+### 기본값을 auto로
+
+- 빌드 프로필에 `nativeGraphicsAPI`가 없으면 `auto`예요(`defaultNativeGraphicsAPI`). 편집기 선택 목록 맨 위가 "자동 · DirectX 12 우선 (기본)"이에요. 이미 `d3d11`을 저장한 프로필은 바꾸지 않아요.
+- 빌드 보고서 렌더러 이름은 선택한 API를 따라요(`nativeRendererLabels`: auto는 `Win32/DirectX 12 (DirectX 11 대체)`).
+- 검증: `check-build-profiles`, `check-native-upload-batches` 통과. 기본 프로필 그대로 만든 숨긴 실제 게임(`check-native-game`, EndPlay UI 두 줄 제외 사본)이 `win32-d3d12-v8`, `requestedBackend:auto`, 대체 없음으로 통과.
+- `check-native-platform`은 이 변경 전부터 두 곳에서 실패해요(목록 위젯이 이미 네이티브 지원인데 거부를 기대, 모의 패키지에 `readBytes` 없음). 렌더러 이름 기대값만 바꿨어요.

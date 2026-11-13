@@ -28,7 +28,7 @@ import {validAsset,assetTypes} from '../prototype/asset-documents.js';
 import {resolveWidgetComposition} from '../prototype/widget-composition.js';
 import {resolveMaterialAsset} from '../prototype/material-runtime.js';
 import {validateAbilitySetGraph} from '../prototype/ability-set-resolution.js';
-import {defaultBuildProfile,validBuildProfile,profileTarget,buildTargets,frameSettings,windowsRuntime} from '../prototype/build-profile.js';
+import {defaultBuildProfile,validBuildProfile,profileTarget,buildTargets,frameSettings,windowsRuntime,nativeRendererLabels} from '../prototype/build-profile.js';
 const root=path.resolve(import.meta.dirname,'..');
 export const digest=bytes=>createHash('sha256').update(bytes).digest('hex');
 export const nativeSignature=(header,source,entry={})=>digest(nativeModuleKey(header,source,entry));
@@ -91,7 +91,7 @@ export async function inspectBuild(record,profile,{signal}={}){
   const distanceFields=await cookDistanceFields(record.project,content,{signal});
   const cooked=await cookContent(record.project,content,profileTarget(profile),{signal});content.clear();for(const [name,bytes] of cooked.content)content.set(name,bytes);
   const nativeDesktop=profileTarget(profile)==='windows-x64'&&windowsRuntime(profile)==='native';if(nativeDesktop)(await import('./build-native-game.mjs')).validateNativeContent(content,profile);
-  const renderBackend=nativeDesktop?'d3d11':profileTarget(profile)==='windows-x64'&&profile.windowsRenderer==='d3d11'?'d3d11':JSON.parse(content.get([...enabled][0])).runtime?.renderBackend||'webgl2',renderer=nativeDesktop?'Win32/DirectX 11':renderBackend==='d3d11'?'D3D11 + WebView2 UI':(profileTarget(profile)==='windows-x64'?'WebView2/WebGL2':buildTargets[profileTarget(profile)].renderer).replace(/WebGL2$/,renderBackend==='webgpu'?'WebGPU':'WebGL2');
+  const renderBackend=nativeDesktop?'d3d11':profileTarget(profile)==='windows-x64'&&profile.windowsRenderer==='d3d11'?'d3d11':JSON.parse(content.get([...enabled][0])).runtime?.renderBackend||'webgl2',renderer=nativeDesktop?nativeRendererLabels[profile.nativeGraphicsAPI||'auto']:renderBackend==='d3d11'?'D3D11 + WebView2 UI':(profileTarget(profile)==='windows-x64'?'WebView2/WebGL2':buildTargets[profileTarget(profile)].renderer).replace(/WebGL2$/,renderBackend==='webgpu'?'WebGPU':'WebGL2');
   return {content,natives,report:{distanceFields,cook:cooked.report,target:profileTarget(profile),renderer,renderBackend,profile:structuredClone(profile),startupScene:[...enabled][0],gameInstance:gameInstanceAsset,streaming:{chunkBytes:buildChunkBytes,fileBackedFiles:[...content.values()].filter(isFileContent).length,fileBackedBytes:[...content.values()].filter(isFileContent).reduce((n,b)=>n+b.length,0),bufferedBytes:[...content.values()].filter(b=>!isFileContent(b)).reduce((n,b)=>n+b.length,0)},files:content.size,bytes:[...content.values()].reduce((sum,b)=>sum+b.length,0),nativeModules:natives.size,warnings}};
 }
 export async function moduleClosure(entry,seen=new Set(),options={}){

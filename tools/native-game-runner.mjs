@@ -39,7 +39,7 @@ export async function nativeGameMain(options){
  const telemetry=new NativeRuntimeTelemetry({enabled:!!options.report,label:'game'});let runtimeError;
  try{
   stats.legacySaveMigration=await migrateLegacyGameSaves(stateDirectory,pack.manifest.id);
-  renderer=await createNativeSceneRenderer(canvas,error=>{throw error;},{bridge,graphicsAPI:options['graphics-api']||pack.manifest.nativeGraphicsAPI||'d3d11'});
+  renderer=await createNativeSceneRenderer(canvas,error=>{throw error;},{bridge,graphicsAPI:options['graphics-api']||pack.manifest.nativeGraphicsAPI||'auto'});
   await write({op:'ready',rate:pack.manifest.targetFrameRate||120});
   const result=await runProject(path.join(pack.root,'game.hbpack.json'),{interactive:true,lazyPhysics:true,captureState:!!options.report,profile:!!options.report,storage:nativeGameStorage(stateDirectory),nativeHost:pack.host,openProject:async()=>pack,saveDirectory:process.env.HB_NATIVE_TEST_STATE?path.join(process.env.HB_NATIVE_TEST_STATE,'Saves'):path.join(process.env.LOCALAPPDATA||process.env.TEMP,'HBEngine/Games',pack.manifest.id,'Saves'),
    presentation:async({world,meshes,objects,readAsset,project,data})=>{
