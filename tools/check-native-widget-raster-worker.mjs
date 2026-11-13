@@ -102,5 +102,28 @@ try{
    assert.ok(!layers[1].layer.hits.some(hit=>hit.node.id==='tracked'));
   }
  }
- const report={passed:true,touchControls:true,trackedWidgets:true,cases,allPixelsEqual:true,korean:true,svg:true,safeArea:true,fractionalTransforms:true,opacity:true,pressedButton:true,scroll:true,inputHitGeometry:true,scale150Percent:true,oneWorker:true,queuedBeforeRaster:true,listsRemainOnWorker:true,workerResume:true,concurrentScrollPreserved:true};await fs.writeFile(work+'/acceptance.json',JSON.stringify(report,null,2));console.log(JSON.stringify({work,...report,cases:cases.length}));
+ const rowTemplate=createWidgetAsset('행 템플릿'),check=createWidgetNode('CheckBox','toggle','root');
+ check.name='Toggle';check.slot.offset=[5,2,130,32];check.events.changed='RowChanged';rowTemplate.nodes.push(check);
+ const renderedRows=[];
+ for(const {layer} of layers){
+  const data=createWidgetAsset('사용자 행'),list=createWidgetNode('ListView','custom','root');list.slot.offset=[270,80,170,150];
+  Object.assign(list.properties,{rowWidget:'Assets/Row.hbwidget.json',rowBindings:'{"Toggle":{"text":"name","checked":"checked"}}',rowWriteback:true,listItems:'[{"name":"한글","checked":false},{"name":"둘","checked":false}]'});
+  list.rowTemplate=rowTemplate;data.nodes.push(list);
+  const events=[];
+  const view=layer.create(data,{acceptInput:()=>true,event:(node,type)=>events.push({node,type}),input(){}},{owner:'rows',instance:'Custom'});
+  await layer.draw(960,540,1.5);
+  const hit=layer.hits.find(hit=>hit.row?.index===1&&hit.node.id==='toggle');
+  assert.ok(hit,'the worker returns the visible row hit');
+  layer.input({device:'mouse',pointer:{position:[hit.matrix.e+10,hit.matrix.f+10],size:[960,540]}});
+  layer.input({device:'mouse',key:'leftmousebutton',value:1});
+  await layer.draw(960,540,1.5);
+  layer.input({device:'mouse',key:'leftmousebutton',value:0});
+  assert.equal(JSON.parse(list.properties.listItems)[1].checked,true);
+  assert.equal(JSON.parse(list.properties.listItems)[0].checked,false);
+  assert.ok(events.some(e=>e.type==='changed'&&e.node.rowIndex===1&&e.node.rowElement==='Toggle'));
+  await layer.draw(960,540,1.5);
+  renderedRows.push(Buffer.from(last[layers.findIndex(entry=>entry.layer===layer)]));view.dispose();
+ }
+ assert.ok(renderedRows[0].equals(renderedRows[1]),'custom row widgets render identical worker pixels');
+ const report={passed:true,touchControls:true,trackedWidgets:true,customRows:true,cases,allPixelsEqual:true,korean:true,svg:true,safeArea:true,fractionalTransforms:true,opacity:true,pressedButton:true,scroll:true,inputHitGeometry:true,scale150Percent:true,oneWorker:true,queuedBeforeRaster:true,listsRemainOnWorker:true,workerResume:true,concurrentScrollPreserved:true};await fs.writeFile(work+'/acceptance.json',JSON.stringify(report,null,2));console.log(JSON.stringify({work,...report,cases:cases.length}));
 }finally{await Promise.all(layers.map(({layer})=>layer.dispose()));}

@@ -23,8 +23,8 @@ const root=path.resolve(import.meta.dirname,'..'),work=await fs.mkdtemp(path.joi
 assert.equal(buildContract.windowsRuntime.default,'native');
 assert.equal(buildContract.renderer,'Win32/DirectX 12 (DirectX 11 대체)');
 const content=(name,data)=>new Map([[name,Buffer.from(JSON.stringify(data))]]);
-assert.throws(()=>validateNativeContent(new Map(),{kiosk:{enabled:true}}),/키오스크/);
-assert.throws(()=>validateNativeContent(content('Assets/list.hbwidget.json',{nodes:[{type:'ListView',properties:{rowWidget:'Assets/row.hbwidget.json'}}]}),{}),/행 위젯/);
+assert.doesNotThrow(()=>validateNativeContent(new Map(),{kiosk:{enabled:true}}));
+assert.doesNotThrow(()=>validateNativeContent(content('Assets/list.hbwidget.json',{nodes:[{type:'ListView',properties:{rowWidget:'Assets/row.hbwidget.json'}}]}),{}));
 assert.throws(()=>validateNativeContent(content('Assets/a.hbblueprint.json',{components:[{type:'AudioSource',properties:{streaming:true,clip:'Assets/clip.ogg'}}]}),{}),/WAV/);
 assert.doesNotThrow(()=>validateNativeContent(content('Assets/b.hbblueprint.json',{components:[{type:'UIWidget',properties:{space:'tracked'}}]}),{framePacing:'display'}));
 record('AI default runtime contract, tracked widgets, display sync and unsupported native content validation');
