@@ -545,7 +545,7 @@ public:
     }
     // ponytail: one mip level; SceneRenderer's GPU mip generation lands with phase 3 compute.
     Texture createTexture(UINT w,UINT h,const std::vector<std::uint8_t>& rgba,bool srgb=true,bool mipmaps=true){record();
-        if(!w||!h||rgba.size()!=std::size_t(w)*h*4)throw std::runtime_error("Direct3D12 scene texture bytes invalid");
+        if(!w||!h||rgba.size()!=std::size_t(w)*h*4)throw std::runtime_error("Scene texture dimensions or bytes invalid");
         UINT mips=1;if(mipmaps)for(UINT extent=std::max(w,h);extent>1;extent/=2)++mips;
         const auto format=srgb?DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:DXGI_FORMAT_R8G8B8A8_UNORM;
         ++uploads_;Texture t;static_cast<d3d12::Texture&>(t)=gpu.texture(w,h,format,rgba.data(),w*4,mips,mips>1?D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS:D3D12_RESOURCE_FLAG_NONE,mips>1?DXGI_FORMAT_R8G8B8A8_TYPELESS:DXGI_FORMAT_UNKNOWN);t.mips=mips;
@@ -555,7 +555,7 @@ public:
     }
     // Explicit RGBA8 mip chain (no automatic generation), like SceneRenderer::createTexture(..., mipLevels).
     Texture createTexture(UINT w,UINT h,const std::vector<std::uint8_t>& rgba,bool srgb,const std::vector<TextureMipLevel>& mipLevels){
-        record();if(!w||!h||rgba.size()!=std::size_t(w)*h*4)throw std::runtime_error("Direct3D12 scene texture bytes invalid");
+        record();if(!w||!h||rgba.size()!=std::size_t(w)*h*4)throw std::runtime_error("Scene texture dimensions or bytes invalid");
         UINT lw=w,lh=h;for(const auto& level:mipLevels){if(lw==1&&lh==1)throw std::runtime_error("Explicit mip count exceeds the texture dimensions");lw=std::max(1u,lw/2);lh=std::max(1u,lh/2);if(level.width!=lw||level.height!=lh||level.layers!=1||level.rgba.size()!=std::uint64_t(lw)*lh*4)throw std::runtime_error("Explicit mip dimensions or bytes invalid");}
         const auto format=srgb?DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:DXGI_FORMAT_R8G8B8A8_UNORM;const UINT mips=UINT(mipLevels.size()+1);
         ++uploads_;Texture t;static_cast<d3d12::Texture&>(t)=gpu.texture(w,h,format,rgba.data(),w*4,mips);t.mips=mips;
