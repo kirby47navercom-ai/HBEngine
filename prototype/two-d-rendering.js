@@ -34,9 +34,12 @@ export class TwoDRendering{
     layers??=defaultSortingLayers;
     const displayCounts=scene.userData.hbDisplayColorCounts={display:0,sceneColors:0,transparent:false};
     if(!groups.some(g=>g.userData.sortingGroup||g.userData.maskMesh||g.userData.spriteMesh||g.userData.tilemapResources||g.children.some(n=>n.userData.draw2d))){this.dispose();return {renderers:0,maskPasses:0,maskTargets:0};}
-    scene.updateMatrixWorld();camera.updateWorldMatrix(true,false);camera.getWorldPosition(cameraPosition);camera.getWorldDirection(direction);
+    // 2D lights and shadow casters read arbitrary group matrices: keep the whole-scene pass for them. Otherwise sorting reads
+    // only its own nodes, so refresh those (and their parents) once each: same matrices, without walking the 3D scene.
+    const lit=groups.some(g=>g.userData.light2d),fresh=new Set(),refresh=node=>{if(lit||fresh.has(node))return;if(node.parent)refresh(node.parent);node.updateWorldMatrix(false,false);fresh.add(node);};if(lit)scene.updateMatrixWorld();
+    camera.updateWorldMatrix(true,false);camera.getWorldPosition(cameraPosition);camera.getWorldDirection(direction);
     const roots=[],scopes=new Map(),entries=[],masks=[];
-    const depth=(node,mode)=>{if(mode==='y'&&node.userData.sortPoint)position.fromArray(node.userData.sortPoint).applyMatrix4(node.matrixWorld);else position.setFromMatrixPosition(node.matrixWorld);return mode==='y'?-position.y:camera.isOrthographicCamera?-position.sub(cameraPosition).dot(direction):-position.distanceToSquared(cameraPosition);};
+    const depth=(node,mode)=>{refresh(node);if(mode==='y'&&node.userData.sortPoint)position.fromArray(node.userData.sortPoint).applyMatrix4(node.matrixWorld);else position.setFromMatrixPosition(node.matrixWorld);return mode==='y'?-position.y:camera.isOrthographicCamera?-position.sub(cameraPosition).dot(direction):-position.distanceToSquared(cameraPosition);};
     const item=(node,p,id)=>({node,layer:sortingLayerIndex(layers,p.sortingLayer),order:p.sortingOrder||0,depth:depth(node,p.sortMode||layers?.find(l=>l.id===p.sortingLayer)?.sortMode),id,owner:node.userData.objectId||id,tileOrder:node.userData.tileSortOrder||0});
     for(const group of groups){if(group.userData.disposed)continue;const p=group.userData.sortingGroup;if(p)scopes.set(group,{...item(group,p,group.userData.objectId||group.uuid),children:[]});}
     for(const [group,scope] of scopes){const parent=group.userData.sortingGroup.sortAtRoot?null:nearestGroup(group.parent);(scopes.get(parent)?.children||roots).push(scope);}
