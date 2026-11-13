@@ -25,11 +25,12 @@ Git 정보는 실행할 때 읽고 원장은 `docs/research/ENGINE_STATUS.json`�
 
 | 바꾸려는 것 | 먼저 볼 소유자 |
 |---|---|
-| 편집·문서·Undo/저장 | `prototype/app.js`, `asset-documents.js`, `document-snapshot.js`, 에셋별 편집기 |
+| Windows 네이티브 편집·문서·Undo/저장 | `native/desktop/NativeEditorShell.hpp` → `tools/native-editor-session.mjs` → `prototype/asset-documents.js`, `tools/project-service.mjs` |
+| 웹 편집·문서·Undo/저장 | `prototype/app.js`, `asset-documents.js`, `document-snapshot.js`, 에셋별 편집기 |
 | 플레이 월드·BP·서비스 | `prototype/player.js`, `play-world.js`, `blueprint-runtime.js`, `engine-services.js` |
 | C++와 공용 노드 | `native/include/HBEngine/Game.hpp`, `Library.hpp` → `tools/generate-api.mjs` → `prototype/core-api.js`(생성 파일) |
 | C++ 호출 전송·컴파일 | `prototype/native-channel.js`, `native-transport.js`, `tools/native-host.mjs` |
-| 렌더러 선택 | `prototype/game-renderer.js` → WebGL/WebGPU 또는 `native-scene-renderer.js` → `native/desktop/SceneRenderBridge.hpp` → DX11 SDK |
+| 렌더러 선택 | `prototype/game-renderer.js` → WebGL/WebGPU 또는 `native-scene-renderer.js` → `native/desktop/SceneRenderBridge.hpp` → D3D12 및 D3D11 호환 경로 |
 | 제작 데이터·AI 편집 | JSON 에셋·공용 검증, `tools/editor-automation.mjs`, `prototype/automation.js` |
 | 배포·설치 | `tools/build-game.mjs`, `build-web.mjs`, `build-mobile.mjs`, `install-editor.mjs` |
 

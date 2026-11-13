@@ -3,11 +3,13 @@ import {createReadStream} from 'node:fs';
 import path from 'node:path';
 import readline from 'node:readline';
 import {pathToFileURL} from 'node:url';
-import {AssetDocuments, assetSuffix, assetTypes, validAsset} from '../prototype/asset-documents.js';
+import {AssetDocuments, assetSuffix, assetTypes, createAsset, validAsset} from '../prototype/asset-documents.js';
 import {documentRevision, patchAsset} from '../prototype/automation.js';
-import {catalog, defaultInputValue, defaultsFor, effectivePins, graphContext, makeComment, makeDefinition, makeNode, nodeTitle, sampleTimeline, timelineLength, typeColors, variableTypes} from '../prototype/blueprint-model.js';
+import {blueprintClipboard, catalog, defaultInputValue, defaultsFor, effectivePins, graphContext, makeComment, makeDefinition, makeNode, nodeTitle, pasteNodes, sampleTimeline, timelineLength, typeColors, variableTypes} from '../prototype/blueprint-model.js';
 import {connectAutomatic} from '../prototype/blueprint-connections.js';
-import {connectMaterial, disconnectMaterial, makeMaterialFunctionCall, makeMaterialNode, materialCatalog, materialFunctionDependencies, materialFunctionTypes, materialGraph, materialLiteralDefault, materialPins, materialPortName, newMaterialLayer, normalizedMaterialEdges, refreshMaterialFunctionCall, removeMaterialNodes, resolveMaterialPreview, validMaterialLayer} from '../prototype/material-runtime.js';
+import {connectMaterial, copyMaterialNodes, disconnectMaterial, makeMaterialFunctionCall, makeMaterialNode, materialCatalog, materialFunctionDependencies, materialFunctionTypes, materialGraph, materialLiteralDefault, materialPins, materialPortName, newMaterialLayer, normalizedMaterialEdges, pasteMaterialNodes, refreshMaterialFunctionCall, removeMaterialNodes, resolveMaterialPreview, validMaterialLayer} from '../prototype/material-runtime.js';
+import {blueprintClasses} from '../prototype/class-types.js';
+import {nativeEntries, nativeSourceReference, readNativeHeader} from '../prototype/native-model.js';
 import {assetKind} from './project-service.mjs';
 import {createProject, readProjectManifest, recentProjects, rememberProject} from './project-manifest.mjs';
 import {createPlacedObject,placementCatalog} from '../prototype/placement-catalog.js';
@@ -67,7 +69,8 @@ const fieldLabels = {name:'이름',sceneName:'레벨 이름',objects:'오브젝�
 export function nativeEditorSession(bridge) {
   let record, documents = new AssetDocuments(), viewport, preview, previewSource, previewScene, previewNode, build, buildJobs, lastBuild;
   const sequenceSamplers=new WeakMap();
-  let audioPreview;
+  let nativeMetadata=new WeakMap();
+  let audioPreview,cppJob;
   async function stopAudioPreview(){
     if(!audioPreview)return;
     const {context,source}=audioPreview;
@@ -111,6 +114,7 @@ export function nativeEditorSession(bridge) {
     if (doc.history.length > 80) doc.history.shift();
     doc.future.length = 0;
     doc.data = next;
+    if(doc.kind==='text'&&doc.path.startsWith('Source/'))nativeMetadata=new WeakMap();
     doc.dirty = JSON.stringify(next) !== doc.saved;
   }
   async function loadDocument(file) {
@@ -128,22 +132,45 @@ export function nativeEditorSession(bridge) {
     await loadDocument(file);
     return response(documents.select(file));
   }
+  function cppPaths(doc,headerPath,sourcePath){
+    const native=doc.kind==='blueprint'?doc.data.native:null;
+    if(native?.headerPath||native?.classes){headerPath=native.headerPath||'Source/DoorController.h';sourcePath=native.sourcePath||'Source/DoorController.cpp';}
+    else if(doc.kind==='text'&&/^Source\/.*\.(?:h|hpp|hh|cpp|cc|cxx)$/i.test(doc.path)){
+      const base=doc.path.replace(/\.[^.]+$/,'');
+      headerPath??=/\.(h|hpp|hh)$/i.test(doc.path)?doc.path:base+'.h';
+      sourcePath??=/\.(cpp|cc|cxx)$/i.test(doc.path)?doc.path:base+'.cpp';
+    }else throw Error('C++ 소스 또는 C++ 클래스 블루프린트를 열어 주세요.');
+    return {headerPath,sourcePath};
+  }
   async function openProject(next) {
     if (tabs().some(doc => doc.dirty)) throw Error('변경한 문서를 먼저 저장하거나 닫으세요.');
-    if(build&&buildJobs.get(record,build).status==='running')throw Error('빌드가 끝나면 프로젝트를 바꾸세요.');
+    if(cppJob?.status==='running'||build&&buildJobs.get(record,build).status==='running')throw Error('빌드가 끝나면 프로젝트를 바꾸세요.');
     const candidate = await next();
     await stopAudioPreview();
     await rememberProject(candidate);
     record = candidate;
     documents = new AssetDocuments();
     buildJobs?.close();buildJobs=undefined;build=undefined;lastBuild=undefined;
+    cppJob=undefined;
+    nativeMetadata=new WeakMap();
     return {file:record.file, name:record.manifest.name, startupScene:record.manifest.startupScene};
   }
   function graphFor(doc, data, view) {
     if (!graphKind(doc)) throw Error('노드 그래프 문서를 선택하세요.');
     if (doc.kind !== 'blueprint') return data.graph ??= materialGraph();
     if (!names(data).some(([id]) => id === view)) throw Error('그래프가 없어요.');
+    if(nativeMetadata.has(doc.data))data.native=nativeMetadata.get(doc.data);
     return graphContext(data, view);
+  }
+  async function loadGraphNative(doc){
+    const native=doc.kind==='blueprint'&&doc.data.native;
+    if(!native?.headerPath||nativeMetadata.has(doc.data))return;
+    const readText=async file=>{
+      const open=documents.items.get(file);
+      return open?.kind==='text'?open.data:(await projectBytes(project(),file)).toString('utf8');
+    };
+    const header=await readText(native.headerPath);
+    nativeMetadata.set(doc.data,{...await readNativeHeader(header,{sourcePath:native.headerPath,readText}),header,headerPath:native.headerPath,sourcePath:native.sourcePath});
   }
   function graphModel(doc, view) {
     if(doc.kind==='animgraph')return animationGraphModel(doc.data,view);
@@ -162,6 +189,8 @@ export function nativeEditorSession(bridge) {
     if(bp){
       for(const variable of data.variables)for(const prefix of ['get','set'])palette.push({id:prefix+'Variable:'+variable.id,title:(prefix==='get'?'Get ':'Set ')+variable.name});
       for(const [kind,items] of [['callFunction',data.functions],['callMacro',data.macros]])for(const definition of items||[])if(definition.id!==view)palette.push({id:kind+':'+definition.id,title:definition.name});
+      for(const entry of nativeEntries(graph))if(entry.kind!=='event'||view==='event'&&!graph.nodes.some(node=>node.key===entry.key&&node.nativeId===entry.nativeId))
+        palette.push({id:entry.key+':'+entry.nativeId,title:entry.title+' · '+entry.group});
     }
     return {view, views:bp ? names(data) : [], nodes, edges:bp ? graph.edges : normalizedMaterialEdges(graph), comments:graph.comments || [], palette};
   }
@@ -432,6 +461,60 @@ export function nativeEditorSession(bridge) {
       if(!lastBuild)throw Error('실행할 Windows 빌드가 없어요.');
       return buildJobs.open(record,lastBuild,'run');
     },
+    'cpp.parents': ()=>Object.keys(blueprintClasses),
+    'cpp.create': async ({folder='Source',name,parent='Actor',tick=false})=>{
+      if(typeof folder!=='string'||!/^Source(?:\/[^/]+)*$/.test(folder))throw Error('Source 폴더를 선택하세요.');
+      const {createCppClass}=await import('./external-editor.mjs');
+      const files=await createCppClass(project(),folder,name,parent,{tick});
+      await loadDocument(files.source);
+      return openDocument(files.path);
+    },
+    'cpp.openExternal': async ({path})=>{
+      const {openExternal}=await import('./external-editor.mjs');
+      return openExternal(project(),path);
+    },
+    'cpp.build': async ({path,expectedRevision,headerPath,sourcePath})=>{
+      if(cppJob?.status==='running')throw Error('C++ 빌드가 실행 중이에요.');
+      const doc=targetDocument(path),owner=project();
+      await check(doc,expectedRevision);
+      ({headerPath,sourcePath}=cppPaths(doc,headerPath,sourcePath));
+      if(tabs().some(item=>item.dirty&&(item.path.startsWith('Source/')||item.path===doc.path)))throw Error('빌드할 소스와 문서를 저장하세요.');
+      const job={status:'running',path:doc.path};cppJob=job;
+      (async()=>{
+        const {readNativeFiles}=await import('./native-project.mjs');
+        const files=await readNativeFiles(owner);
+        const header=files.find(file=>file.path===headerPath)?.content,source=files.find(file=>file.path===sourcePath)?.content;
+        if(header===undefined||source===undefined)throw Error('C++ 헤더와 구현 파일을 확인하세요.');
+        const {NativeHost}=await import('./native-host.mjs');
+        const host=new NativeHost();
+        try{
+          const result=await host.build(header,source,{files,headerPath,sourcePath});
+          Object.assign(job,{status:'done',compiler:result.compiler,classes:result.metadata.classes.map(row=>row.name),key:result.cacheKey});
+        }finally{await host.close();}
+      })().catch(error=>Object.assign(job,{status:'failed',error:error.message}));
+      return {...job};
+    },
+    'cpp.buildStatus': ()=>cppJob?{...cppJob}:{status:'idle'},
+    'cpp.classes': async ({path,headerPath,sourcePath}={})=>{
+      const doc=targetDocument(path),readText=async file=>(await projectBytes(project(),file)).toString('utf8');
+      ({headerPath,sourcePath}=cppPaths(doc,headerPath,sourcePath));
+      const header=await readText(headerPath),data=await readNativeHeader(header,{sourcePath:headerPath,readText});
+      return {headerPath,sourcePath,classes:data.classes.filter(row=>row.blueprintable).map(row=>row.name)};
+    },
+    'cpp.blueprint': async ({folder='Assets',name,className,headerPath,sourcePath})=>{
+      if(typeof folder!=='string'||!/^Assets(?:\/[^/]+)*$/.test(folder)||typeof name!=='string'||!name.trim()||/[/\\:<>?"|*\x00-\x1f]/.test(name)||
+        typeof headerPath!=='string'||!/^Source\/.+\.(?:h|hpp|hh)$/i.test(headerPath)||typeof sourcePath!=='string'||!/^Source\/.+\.(?:cpp|cc|cxx)$/i.test(sourcePath))throw Error('클래스 블루프린트 이름과 경로를 확인하세요.');
+      const readText=async file=>(await projectBytes(project(),file)).toString('utf8');
+      const header=await readText(headerPath),source=await readText(sourcePath);
+      const metadata=await readNativeHeader(header,{sourcePath:headerPath,readText});
+      if(!metadata.classes.some(row=>row.name===className&&row.blueprintable))throw Error('블루프린트에서 상속할 수 있는 C++ 클래스를 선택하세요.');
+      const data=createAsset('blueprint',name.trim());
+      data.settings.parentClass=className;
+      data.native=nativeSourceReference({header,source,headerPath,sourcePath});
+      const file=folder+'/'+name.trim()+assetSuffix.blueprint;
+      await project().checkedBatch([{path:file,text:JSON.stringify(data,null,2),expected:null}]);
+      return openDocument(file);
+    },
     'content.types': () => Object.entries(assetTypes).filter(([kind,info])=>assetSuffix[kind]&&!info.sourceOnly)
       .map(([kind,info])=>({kind,suffix:assetSuffix[kind],label:info.label,prefix:info.prefix})),
     'content.list': async ({folder='',query=''}) => {
@@ -495,6 +578,17 @@ export function nativeEditorSession(bridge) {
       if(!stat.isFile())throw Error('가져올 파일을 선택하세요.');
       return project().importStream(folder,path.basename(file),createReadStream(file),()=>{},{expectedBytes:stat.size});
     },
+    'content.rename': async ({path:file,name})=>{
+      name=typeof name==='string'?name.trim():'';
+      if(typeof file!=='string'||!/^(?:Assets|Source|Settings)\//.test(file)||!name||name==='.'||name==='..'||/[/\\:<>?"|*\x00-\x1f]/.test(name))throw Error('이름을 바꿀 프로젝트 에셋을 확인하세요.');
+      const next=path.posix.join(path.posix.dirname(file),name);
+      if(next===file)return {path:file};
+      if(tabs().some(doc=>doc.path===file||doc.path.startsWith(file+'/')||doc.path===file+'.import.json'))throw Error('이름을 바꿀 에셋의 문서를 먼저 닫으세요.');
+      if(assetKind(file)!==assetKind(next))throw Error('에셋 파일 형식을 유지하세요.');
+      await project().rename(file,next);
+      nativeMetadata=new WeakMap();
+      return {path:next};
+    },
     'document.open': ({path}) => openDocument(path),
     'document.load': async ({path})=>response(await loadDocument(path)),
     'document.read': ({path}) => response(targetDocument(path)),
@@ -535,7 +629,7 @@ export function nativeEditorSession(bridge) {
     },
     'editor.undo': ({path,expectedRevision}) => restore('history','future',path,expectedRevision),
     'editor.redo': ({path,expectedRevision}) => restore('future','history',path,expectedRevision),
-    'scene.catalog': () => ({placements:placementCatalog.map(([id,label,group])=>({id,label,group})),components:Object.keys(componentDefinitions)}),
+    'scene.catalog': () => ({placements:placementCatalog.map(({key,label,category})=>({id:key,label,group:category})),components:Object.keys(componentDefinitions)}),
     'scene.hierarchy': () => scene().data.objects.map(({id,name,kind,parent,visible,locked,components})=>({id,name,kind,parent,visible,locked,camera:components?.some(c=>c.type==='Camera'&&c.properties?.enabled!==false)??kind==='camera'})),
     'scene.edit': async ({action,id,target,key,expectedRevision}) => {
       const doc=scene();
@@ -690,12 +784,23 @@ export function nativeEditorSession(bridge) {
       else throw Error('곡선 편집 옵션을 확인하세요.');
       change(doc,next);return response(doc);
     },
-    'timeline.curveKeyMove': async ({track,index,channel,time,value,expectedRevision})=>{
+    'timeline.curveKeyMove': async ({track,index,channel,time,value,selections,expectedRevision})=>{
       const doc=assetOfKind('sequenceasset');await check(doc,expectedRevision);
       const next=structuredClone(doc.data),row=next.tracks.find(item=>item.id===track),key=row?.keys[index];
       if(!key||!sequenceCurveType(row)||!Number.isFinite(value)||!Number.isFinite(time)||time<0||time>next.length||
         !Number.isInteger(channel)||channel<0||channel>=(Array.isArray(key.value)?key.value.length:1))throw Error('곡선 키를 확인하세요.');
       time=Math.min(next.length,timelineSnap(next,time));
+      if(selections!==undefined){
+        if(!Array.isArray(selections)||!selections.some(item=>item?.index===index&&item.channels?.includes(channel)))throw Error('이동할 곡선 키를 선택하세요.');
+        const anchor=Array.isArray(key.value)?key.value[channel]:key.value;
+        const timeOffset=time-key.time;
+        const original=row.keys;
+        editSequenceCurves(next,{operation:'transform',selections:selections.map(item=>({...item,track})),timeOffset,valueOffset:value-anchor});
+        if(row.keys.some(item=>item.time<0||item.time>next.length))throw Error('곡선 키가 시퀀스 범위를 벗어나요.');
+        const indices=new Map(row.keys.map((nextKey,i)=>[nextKey.time,i]));
+        const indexMap=Object.fromEntries(selections.map(item=>[item.index,indices.get(original[item.index].time+timeOffset)]));
+        change(doc,next);return {...await response(doc),keyIndex:indexMap[index],indexMap};
+      }
       if(row.keys.some((other,i)=>i!==index&&other.time===time))throw Error('같은 시간에 키가 있어요.');
       key.time=time;
       if(Array.isArray(key.value))key.value[channel]=value;else key.value=value;
@@ -928,8 +1033,9 @@ export function nativeEditorSession(bridge) {
       return {...await response(doc),selection};
     },
     'asset.fields': ({parts=[]}) => fieldsFor(current(),parts),
-    'graph.inputs': ({path,view='event',id}) => {
-      const doc=targetDocument(path), graph=graphFor(doc,structuredClone(doc.data),view), node=graph.nodes.find(row=>row.id===id);
+    'graph.inputs': async ({path,view='event',id}) => {
+      const doc=targetDocument(path);await loadGraphNative(doc);
+      const graph=graphFor(doc,structuredClone(doc.data),view), node=graph.nodes.find(row=>row.id===id);
       if (!node) throw Error('노드가 없어요.');
       const bp=doc.kind==='blueprint', pins=bp?effectivePins(node,'in',graph):materialPins(node,graph).inputs;
       const incoming=new Set((bp?graph.edges:normalizedMaterialEdges(graph)).filter(edge=>edge.to.node===id).map(edge=>edge.to.pin));
@@ -953,7 +1059,15 @@ export function nativeEditorSession(bridge) {
       change(doc,patchAsset(doc.kind,doc.data,[{op:'replace',path:pointer,value}]));
       return response(doc);
     },
-    'graph.read': ({path,view='event'}) => graphModel(targetDocument(path),view),
+    'graph.read': async ({path,view='event'})=>{
+      const doc=targetDocument(path);await loadGraphNative(doc);return graphModel(doc,view);
+    },
+    'graph.copy': ({path,view='event',ids})=>{
+      const doc=targetDocument(path);
+      if(!Array.isArray(ids)||!ids.length||!ids.every(id=>typeof id==='string')||gameplayGraphs.has(doc.kind))throw Error('복사할 블루프린트 또는 머테리얼 노드를 선택하세요.');
+      const graph=graphFor(doc,structuredClone(doc.data),view);
+      return doc.kind==='blueprint'?{type:'HBBlueprintNodes',...blueprintClipboard(doc.data,graph,ids)}:copyMaterialNodes(graph,new Set(ids));
+    },
     'graph.transitions': ({view})=>{
       const doc=current(),{machine,state}=animationView(assetOfKind('animgraph',doc).data,view);
       if(!machine||state)throw Error('애니메이션 상태 머신 보기를 선택하세요.');
@@ -1044,9 +1158,10 @@ export function nativeEditorSession(bridge) {
       change(doc,next);
       return {...await response(doc),view};
     },
-    'graph.edit': async ({path,view='event',action,id,x,y,key,from,to,pin,output,value,asset,expectedRevision}) => {
+    'graph.edit': async ({path,view='event',action,id,x,y,key,from,to,pin,output,value,asset,clipboard,expectedRevision}) => {
       const doc = targetDocument(path);
       await check(doc,expectedRevision);
+      await loadGraphNative(doc);
       if(gameplayGraphs.has(doc.kind)){
         const next=structuredClone(doc.data);
         if(doc.kind==='animgraph'){
@@ -1075,6 +1190,7 @@ export function nativeEditorSession(bridge) {
           if(bp){
             const [type,target]=key.split(':'),node=makeNode(type,x,y,['getVariable','setVariable'].includes(type)?target:undefined);
             if(['callFunction','callMacro'].includes(type))node.definitionId=target;
+            if(type.startsWith('native'))node.nativeId=target;
             graph.nodes.push(node);
           }else if(key==='functionCall'){
             if(typeof asset!=='string'||asset===doc.path||assetKind(asset)!=='materialfunction')throw Error('다른 머테리얼 함수 에셋을 선택하세요.');
@@ -1086,6 +1202,12 @@ export function nativeEditorSession(bridge) {
             graph.nodes.push(node);
           }
         }
+      } else if(action==='paste'){
+        if(![x,y].every(Number.isFinite)||clipboard?.type!==(bp?'HBBlueprintNodes':'HBMaterialNodes'))throw Error('같은 유형의 그래프에서 복사한 노드를 확인하세요.');
+        const position={x:Math.max(-10000,Math.min(10000,x)),y:Math.max(-10000,Math.min(10000,y))};
+        const result=bp?pasteNodes(next,view,clipboard,position):pasteMaterialNodes(graph,clipboard,position);
+        if(!result.ok)throw Error(result.reason);
+        if(!bp&&result.nodes.some(node=>node.key==='functionCall'))await materialFunctionDependencies(graph,readMaterial,{checkSignatures:false});
       } else if(action==='refreshFunction'&&!bp){
         const node=graph.nodes.find(row=>row.id===id&&row.key==='functionCall');
         if(!node)throw Error('머테리얼 함수 호출 노드를 선택하세요.');
@@ -1110,7 +1232,7 @@ export function nativeEditorSession(bridge) {
         if (bp) graph.edges = graph.edges.filter(edge => edge[side].node!==id || edge[side].pin!==pin);
         else disconnectMaterial(graph,id,pin,side);
       } else if (action === 'input') {
-        const input=methods['graph.inputs']({path,view,id}).find(row=>row.id===pin);
+        const input=(await methods['graph.inputs']({path,view,id})).find(row=>row.id===pin);
         if (!input || input.linked || input.property) throw Error('편집할 수 있는 기본값을 선택하세요.');
         const node=graph.nodes.find(row=>row.id===id);
         if (pin) (node.inputValues??={})[pin]=value;
@@ -1123,6 +1245,11 @@ export function nativeEditorSession(bridge) {
           if (next.watches) next.watches = next.watches.filter(watch=>watch.view!==view || watch.node!==id);
         } else removeMaterialNodes(graph,new Set([id]));
       } else throw Error('그래프 편집 명령을 확인하세요.');
+      if(bp&&nativeMetadata.has(doc.data)){
+        const metadata=nativeMetadata.get(doc.data);
+        next.native=doc.data.native;
+        nativeMetadata.set(next,metadata);
+      }
       change(doc,next);
       return {...await response(doc), model:graphModel(doc,view)};
     }
@@ -1134,6 +1261,7 @@ export function nativeEditorSession(bridge) {
       doc[to].push(doc.data);
       doc.data = doc[from].pop();
       doc.dirty = JSON.stringify(doc.data) !== doc.saved;
+      if(doc.kind==='text'&&doc.path.startsWith('Source/'))nativeMetadata=new WeakMap();
     }
     return response(doc);
   }

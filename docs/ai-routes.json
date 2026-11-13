@@ -1062,6 +1062,25 @@
   ],
   "focusRoutes": [
     {
+      "id": "windows-native-authoring",
+      "keywords": [
+        "nativeEditorSession",
+        "NativeEditorShell",
+        "graphClipboardAction",
+        "cpp.blueprint",
+        "scene.viewport",
+        "timeline.curveHandleMove",
+        "tilemap.paint"
+      ],
+      "paths": [
+        "tools/native-editor-session.mjs",
+        "native/desktop/NativeEditorShell.hpp",
+        "tools/native-editor-viewport.mjs",
+        "native/desktop/EditorAssetCanvas.hpp",
+        "docs/EDITOR_NATIVE.md"
+      ]
+    },
+    {
       "id": "foliage-local-work",
       "keywords": [
         "foliageSelection",
