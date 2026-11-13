@@ -407,6 +407,58 @@ function nativeHierarchyEvent(m){
 if(nativeHierarchy){window.chrome.webview.addEventListener('message',event=>{const m=event.data;if(m?.channel==='hb.panel'&&m.panel==='hierarchy')try{nativeHierarchyEvent(m);}catch(error){notify(error.message);}});
   new ResizeObserver(syncNativeHierarchy).observe(document.body);window.addEventListener('resize',syncNativeHierarchy);
   new MutationObserver(syncNativeHierarchy).observe(document.body,{attributes:true,attributeFilter:['hidden','open','class'],subtree:true});}
+// Desktop host: the property panel is the native EditorFormPanel over #inspector-content. The HTML form stays underneath
+// (covered) as the source of truth: its controls become rows, and native edits are written back with input/change events.
+const nativeInspector=!!window.chrome?.webview;let nativeInspectorControls=[],nativeInspectorToggles=[],nativeInspectorSignature='',nativeInspectorPlacement='',nativeInspectorRevision=0;
+if(nativeInspector){const style=document.createElement('style');style.textContent='.inspector{overflow:hidden!important}';document.head.append(style);}
+function inspectorLabel(container,control){
+  const own=container.querySelector(':scope>label:not(:has(input,select,textarea)),:scope>span:not(:has(input,select,textarea,button)),:scope>em');
+  return (own&&own!==control?own.textContent:'').trim()||(container!==control.parentElement?'':'')||control.getAttribute('aria-label')||'';
+}
+function nativeInspectorModel(){
+  const root=$('#inspector-content'),rows=[],controls=[],toggles=[];if(!root)return {rows,controls,toggles};let current=null,currentContainer=null;
+  const folded=el=>{for(let d=el.closest('details:not([open])');d;d=d.parentElement?.closest('details:not([open])')){const summary=d.querySelector(':scope>summary');if(!summary||!summary.contains(el))return true;}return false;};
+  const visible=el=>el.getClientRects().length>0&&!el.closest('[hidden]')&&!folded(el);
+  for(const el of root.querySelectorAll('h3,summary,.inspector-empty,.asset-error,input,select,textarea,button')){
+    if(!visible(el)||el.closest('summary')&&el.tagName!=='SUMMARY')continue;
+    if(el.tagName==='H3'||el.tagName==='SUMMARY'){const details=el.tagName==='SUMMARY'?el.parentElement:null;let toggle=-1;if(details){toggle=toggles.length;toggles.push(details);}rows.push({kind:'heading',text:[...el.childNodes].map(n=>n.textContent.trim()).filter(Boolean).join(' · ').replace(/\s+/g,' '),toggle,open:details?details.open:true});current=null;continue;}
+    if(el.matches('.inspector-empty,.asset-error')){rows.push({kind:'message',text:el.textContent.trim()});current=null;continue;}
+    if(el.type==='hidden')continue;
+    const i=controls.length;controls.push(el);const tag=el.tagName,type=(el.type||'').toLowerCase();
+    const kind=tag==='SELECT'?'select':tag==='TEXTAREA'?'textarea':tag==='BUTTON'||type==='file'||type==='submit'?'button':type==='checkbox'||type==='radio'?'checkbox':type==='range'?'range':type==='color'?'color':type==='number'?'number':'text';
+    const control={kind,i,value:kind==='checkbox'?'':String(el.value??''),checked:!!el.checked,disabled:!!(el.disabled||el.readOnly&&kind!=='button'),text:kind==='button'?(el.textContent.trim()||el.getAttribute('aria-label')||el.title||'…'):(el.placeholder||'')};
+    if(kind==='checkbox')control.text=el.closest('label')?.textContent.trim()||'';
+    if(kind==='select')control.options=[...el.options].map(o=>[o.value,o.textContent.trim()]);
+    if(kind==='range'||kind==='number'){control.min=Number(el.min||0);control.max=Number(el.max||1);control.step=Number(el.step)||0;}
+    const container=el.closest('.vector-row,.component-property,.property-row,.range-property,.object-identity')||el.parentElement;
+    if(current&&currentContainer===container&&current.controls.length<4){current.controls.push(control);continue;}
+    current={kind:'row',label:inspectorLabel(container,el),controls:[control]};currentContainer=container;rows.push(current);
+  }
+  return {rows,controls,toggles};
+}
+function syncNativeInspector(force){
+  if(!nativeInspector)return;const root=$('#inspector-content'),aside=$('.inspector');if(!root||!aside)return;
+  const model=nativeInspectorModel(),signature=JSON.stringify(model.rows);nativeInspectorControls=model.controls;nativeInspectorToggles=model.toggles;
+  const a=aside.getBoundingClientRect(),c=root.getBoundingClientRect(),d=devicePixelRatio,top=Math.max(a.top,c.top),visible=root.ownerDocument===document&&a.width>1&&a.bottom-top>1&&!nativeHierarchyOverlay();
+  const rect=[Math.round(a.left*d),Math.round(top*d),Math.round(a.width*d),Math.round((a.bottom-top)*d)],placement=JSON.stringify([rect,visible,d]),changed=signature!==nativeInspectorSignature||force;
+  if(!changed&&placement===nativeInspectorPlacement)return;nativeInspectorPlacement=placement;
+  const data={visible,rect,scale:d,theme:{background:themeColor('--panel'),text:themeColor('--text'),muted:themeColor('--muted'),accent:themeColor('--accent'),selection:themeColor('--accent-dark'),line:themeColor('--line'),field:themeColor('--field'),raised:themeColor('--raised')}};
+  if(changed){nativeInspectorSignature=signature;data.rows=model.rows;data.revision=++nativeInspectorRevision;}
+  window.chrome.webview.postMessage({channel:'hb.panel',op:'inspector',data});
+}
+function nativeInspectorEvent(m){
+  if(m.event==='focus-panel'){return;}
+  if(m.event==='key'){$('#inspector-content').dispatchEvent(new KeyboardEvent('keydown',{key:m.key,ctrlKey:m.ctrl,shiftKey:m.shift,altKey:m.alt,bubbles:true,cancelable:true}));return;}
+  if(m.revision!==nativeInspectorRevision)return;
+  if(m.event==='toggle'){const details=nativeInspectorToggles[m.i];if(details){details.open=!details.open;details.dispatchEvent(new Event('toggle'));}syncNativeInspector(true);return;}
+  const el=nativeInspectorControls[m.i];if(!el||!el.isConnected)return;
+  if(m.event==='click'){el.click();return;}
+  if('checked' in m&&m.checked!==undefined&&(el.type==='checkbox'||el.type==='radio')){el.checked=m.checked;el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));return;}
+  el.value=m.value;el.dispatchEvent(new Event('input',{bubbles:true}));if(m.event==='change')el.dispatchEvent(new Event('change',{bubbles:true}));
+}
+if(nativeInspector){window.chrome.webview.addEventListener('message',event=>{const m=event.data;if(m?.channel==='hb.panel'&&m.panel==='inspector')try{nativeInspectorEvent(m);}catch(error){notify(error.message);}});
+  // Values change in place (gizmo drags, live play), so the form is re-read every frame and sent only when it differs.
+  const tick=()=>{try{syncNativeInspector();}catch{}requestAnimationFrame(tick);};requestAnimationFrame(tick);}
 function renderHierarchy() {
   sceneSelection=new Set([...sceneSelection].filter(id=>objects.some(o=>o.id===id)));if(!sceneSelection.size&&selected)sceneSelection.add(selected);
   if(nativeHierarchy){$('#hierarchy-list').innerHTML='';syncNativeHierarchy();}else $('#hierarchy-list').innerHTML=hierarchyMarkup(objects,sceneSelection,$('#hierarchy-search').value,collapsedObjects,kindIcon);
@@ -1884,7 +1936,7 @@ document.addEventListener('click',async event=>{
   }catch(error){notify(error.message);}
 });
 
-if(session.acceptance)window.hbEditorRendererDebug={hierarchy:()=>({selected:[...sceneSelection],collapsed:[...collapsedObjects],objects:objects.map(o=>({id:o.id,parent:o.parent||'',visible:o.visible!==false,locked:!!o.locked}))}),viewport:()=>({backend:mainRenderer?.hbBackend,...mainRenderer?.hbDiagnostics?.()}),captureViewport:()=>mainRenderer?.hbCapture?.(),ready:()=>!!mainRenderer&&!!previewRenderer&&$('#render-fallback').hidden,inspect:()=>({materialPreview:{path:assetDocs.current?.path,selection:assetDocs.current?.view.materialPreview||null,history:assetDocs.current?.history.length,future:assetDocs.current?.future.length,material:previewSphere?.material.uuid,scene:materialPreviewScene?.snapshot()},tilemaps:[...meshMap].filter(([,g])=>g.userData.tilemapDebug).map(([id,g])=>({id,...g.userData.tilemapDebug,geometries:[...g.userData.tilemapState.meshes].map(([key,row])=>[key,row.mesh.geometry.uuid])})),renderer:gameRendererInfo(mainRenderer),previewRenderer:gameRendererInfo(previewRenderer),materials:visuals.materialState(),particles:[...meshMap.values()].filter(g=>g.userData.particleState).map(g=>({id:g.userData.objectId,...g.userData.particleState.simulation.debugState?.()})),views:extraViewports.map(v=>({id:v.id,shared:v.sharedRenderer,width:v.canvas.width,height:v.canvas.height})),logs}),capture:async(id)=>{if(id==='material'){await updateSurface();await previewSphere.material.userData.ready;materialPreviewScene.draw(0,true);return previewRenderer.domElement.toDataURL('image/png');}const v=extraViewports.find(v=>v.id===id);renderViewport(v);return (v?.canvas||mainRenderer.domElement).toDataURL('image/png');},wait:()=>Promise.all([...meshMap.values()].map(g=>g.userData.ready))};
+if(session.acceptance)window.hbEditorRendererDebug={object:id=>structuredClone(objects.find(o=>o.id===id)||null),hierarchy:()=>({selected:[...sceneSelection],collapsed:[...collapsedObjects],objects:objects.map(o=>({id:o.id,parent:o.parent||'',visible:o.visible!==false,locked:!!o.locked}))}),viewport:()=>({backend:mainRenderer?.hbBackend,...mainRenderer?.hbDiagnostics?.()}),captureViewport:()=>mainRenderer?.hbCapture?.(),ready:()=>!!mainRenderer&&!!previewRenderer&&$('#render-fallback').hidden,inspect:()=>({materialPreview:{path:assetDocs.current?.path,selection:assetDocs.current?.view.materialPreview||null,history:assetDocs.current?.history.length,future:assetDocs.current?.future.length,material:previewSphere?.material.uuid,scene:materialPreviewScene?.snapshot()},tilemaps:[...meshMap].filter(([,g])=>g.userData.tilemapDebug).map(([id,g])=>({id,...g.userData.tilemapDebug,geometries:[...g.userData.tilemapState.meshes].map(([key,row])=>[key,row.mesh.geometry.uuid])})),renderer:gameRendererInfo(mainRenderer),previewRenderer:gameRendererInfo(previewRenderer),materials:visuals.materialState(),particles:[...meshMap.values()].filter(g=>g.userData.particleState).map(g=>({id:g.userData.objectId,...g.userData.particleState.simulation.debugState?.()})),views:extraViewports.map(v=>({id:v.id,shared:v.sharedRenderer,width:v.canvas.width,height:v.canvas.height})),logs}),capture:async(id)=>{if(id==='material'){await updateSurface();await previewSphere.material.userData.ready;materialPreviewScene.draw(0,true);return previewRenderer.domElement.toDataURL('image/png');}const v=extraViewports.find(v=>v.id===id);renderViewport(v);return (v?.canvas||mainRenderer.domElement).toDataURL('image/png');},wait:()=>Promise.all([...meshMap.values()].map(g=>g.userData.ready))};
 window.hbEngineWindows={detach:id=>dock.detach(id),redock:id=>dock.redock(id),redockAll:()=>dock.redockAll(),state:()=>({count:dock.windowCount,detached:[...dock.entries.values()].filter(e=>e.detached).map(e=>e.id)})};
 const editorCommandMethods={
   'scene.cloth.tethers':params=>automationAuthoringEdit({...params,includeData:params.includeData??false},'scene',data=>editClothTethers(data,{...params,kind:'scene'})),

@@ -24,6 +24,16 @@
 - 우클릭 메뉴는 Win32 `TrackPopupMenu`예요. 항목은 편집기 스크립트의 `sceneMenuItems()`(HTML 메뉴와 같은 목록)에서 받아요.
 - 스크립트 쪽(`app.js`): 장면 모델과 명령 실행은 그대로 두고, `sceneRows()` 결과·테마 색·`#hierarchy-list` 위치를 `hb.panel` 메시지로 보내고, 패널이 보낸 의도(select·fold·lock·visible·reparent·activate·contextmenu·command·key)를 기존 함수로 처리해요. 키는 `#hierarchy-list`에서 `keydown`으로 다시 보내 기존 단축키 처리를 써요.
 - 겹침(airspace): HTML 떠 있는 메뉴나 열린 `dialog`가 있으면 패널을 잠깐 숨겨요. 패널을 다른 창으로 분리하면 숨겨요(분리 창 지원은 아직).
-- 남은 HTML: 패널 제목·검색칸·빠른 추가 버튼(다음 이전 대상), 다른 패널 전부.
+- 남은 HTML: 패널 제목·검색칸·빠른 추가 버튼(다음 이전 대상), 아래 속성 패널 외 다른 패널.
 
 검증: `node tools/check-editor-native-hierarchy.mjs` — 숨긴 실제 편집기에서 패널 창이 WebView 위에 있고 HTML 행은 0개, 실제 WM_ 마우스·키 메시지로 선택, Ctrl 다중 선택, 숨기기, 잠금, 접기/펼치기, 그룹으로 드래그, 루트로 드래그, 네이티브 메뉴의 7번째 항목(`scene:duplicate`) 실행, Delete 키 삭제까지 11단계 통과. 같은 그리기 코드의 PNG 스냅샷으로 한글 이름·아이콘·들여쓰기를 눈으로 확인했어요. `check-editor-distance-1780-window`(네이티브 메뉴로 거리장 준비), `check-editor-native-viewport` 통과. `check-sequence-values-212-window`는 계층 확인을 지난 뒤 시퀀스 트랙 선택 `[data-select-track]`이 없어 실패해요(트랙 목록 가상화 쪽 문제로 보이며 이번 변경과 무관해 보이나 확인하지 않았어요). 보이는 창에서 사람이 직접 조작해 보지는 않았어요.
+
+## 2단계 진행: 속성(인스펙터) 패널
+
+- 공통 기반 `native/desktop/EditorPanelBase.hpp`(자식 창, Direct2D·DirectWrite, 테마·배율·위치, PNG 스냅샷, 키 전달)를 만들고 계층 패널도 그 위로 옮겼어요.
+- `native/desktop/EditorFormPanel.hpp`: 섹션 제목(접는 섹션 포함), 안내 문구, 라벨+컨트롤 행을 그려요. 컨트롤은 글자·숫자·여러 줄 글자(Win32 EDIT로 편집해 한글 입력기·복사·붙여넣기 그대로), 선택(네이티브 팝업 메뉴), 체크, 범위(드래그 중 input·놓으면 change), 색(Windows 색 대화상자), 버튼이에요. 휠 스크롤과 스크롤 막대를 직접 그려요.
+- 원본은 기존 HTML 폼이에요. `app.js`가 `#inspector-content`의 제목·컨트롤을 행으로 읽어 보내고(바뀐 경우에만, 매 프레임 확인), 네이티브 편집은 같은 HTML 컨트롤에 값을 넣고 `input`/`change`를 보내 기존 처리 코드를 그대로 써요. 버튼은 `click()`, 섹션 접기는 `details.open`. 모델 번호(`revision`)가 다르면 늦게 온 편집은 버려요.
+- HTML 폼은 네이티브 패널 아래에 그대로 그려져요(텍스트 조회·대체 표시용). `.inspector`의 HTML 스크롤만 끄고 스크롤은 네이티브가 해요.
+
+검증: `node tools/check-editor-native-inspector.mjs` — 숨긴 실제 편집기에서 실제 WM_ 메시지로 이름(EDIT로 "빨간 공"), 위치 X(3.5), 부모 선택(네이티브 팝업), 체크박스, 범위 드래그, 색(#ff0000), Mesh Renderer 섹션 접기(행 44→30)까지 통과하고 편집기 모델이 따라왔어요. 스냅샷으로 한글 라벨·벡터·선택·색 견본·슬라이더·체크박스를 눈으로 확인했어요. `check-editor-native-hierarchy`, `check-editor-native-viewport`, `check-editor-distance-1780-window`, `check-distance-field-822-editor` 통과.
+- 알려진 기존 문제: `check-mesh-renderer-1620-editor`는 편집기 종료가 약 13~14초 걸려 10초 제한에 걸려요. 네이티브 패널을 C++·JS 모두 끈 빌드에서도 같아서 이번 변경 때문이 아니고, 종료 중 JS 닫기 처리(복구 저장·저장소 비우기) 구간이 느린 걸로 보여요(렌더러 종료는 47ms).

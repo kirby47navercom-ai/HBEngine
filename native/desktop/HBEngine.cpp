@@ -26,6 +26,7 @@ namespace fs=std::filesystem;
 #include "NativeAudio.hpp"
 #else
 #include "EditorTreePanel.hpp"
+#include "EditorFormPanel.hpp"
 #endif
 struct State {
     HWND window=nullptr; HANDLE job=nullptr,process=nullptr;
@@ -35,7 +36,7 @@ struct State {
 #ifdef HB_GAME_PLAYER
     NativeAudio audio;
 #else
-    EditorTreePanel hierarchy;nlohmann::json pendingMenu;
+    EditorTreePanel hierarchy;EditorFormPanel inspector;nlohmann::json pendingMenu;
 #endif
     fs::path root,userData,ready,log,smoke; std::wstring url; bool closing=false,smokeSuccess=false,failed=false,development=true,windowSmoke=false,windowSmokeStarted=false,editorAcceptance=false,kiosk=false,kioskFullscreen=false,kioskPreventMinimize=false,operatorUnlocked=false;
     ~State(){if(view)view->Release();if(controller){controller->Close();controller->Release();}if(environment)environment->Release();if(job)CloseHandle(job);if(process)CloseHandle(process);}
@@ -167,11 +168,13 @@ public:
                     // Native editor panels: the script sends models, the panel windows report input back on the same channel.
                     else if(packet.value("channel","")=="hb.panel"){
                         const auto op=packet.at("op").get<std::string>();response={{"channel","hb.panel"},{"ok",true}};if(packet.contains("id"))response["id"]=packet.at("id");
+                        const auto panel=packet.value("panel",std::string("hierarchy"));
                         if(op=="hierarchy")app.hierarchy.update(packet.at("data"));
+                        else if(op=="inspector")app.inspector.update(packet.at("data"));
                         else if(op=="menu"){app.pendingMenu=packet.at("data").at("items");PostMessageW(app.window,WM_APP+60,0,0);}
-                        else if(op=="inspect")response["value"]=app.hierarchy.inspect();
-                        else if(op=="snapshot"){if(!app.editorAcceptance)throw std::runtime_error("Panel snapshot is acceptance only");response["value"]=app.hierarchy.snapshot();}
-                        else if(op=="probe"){if(!app.editorAcceptance)throw std::runtime_error("Panel probe is acceptance only");app.hierarchy.probe(packet.at("data"));}
+                        else if(op=="inspect")response["value"]=panel=="inspector"?app.inspector.inspect():app.hierarchy.inspect();
+                        else if(op=="snapshot"){if(!app.editorAcceptance)throw std::runtime_error("Panel snapshot is acceptance only");response["value"]=panel=="inspector"?app.inspector.snapshot():app.hierarchy.snapshot();}
+                        else if(op=="probe"){if(!app.editorAcceptance)throw std::runtime_error("Panel probe is acceptance only");if(panel=="inspector")app.inspector.probe(packet.at("data"));else app.hierarchy.probe(packet.at("data"));}
                         else throw std::runtime_error("Panel operation invalid");
                     }
 #endif
@@ -385,7 +388,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         WNDCLASSW windowClass{};windowClass.hInstance=instance;windowClass.lpszClassName=className.c_str();windowClass.lpfnWndProc=windowProcedure;windowClass.hCursor=LoadCursorW(nullptr,IDC_ARROW);windowClass.hIcon=LoadIconW(instance,MAKEINTRESOURCEW(101));windowClass.hbrBackground=CreateSolidBrush(RGB(23,26,31));RegisterClassW(&windowClass);
         app.window=CreateWindowExW(0,className.c_str(),L"HBEngine",WS_OVERLAPPEDWINDOW,CW_USEDEFAULT,CW_USEDEFAULT,1440,900,nullptr,nullptr,instance,nullptr);if(!app.window)throw std::runtime_error("native window");
 #ifndef HB_GAME_PLAYER
-        app.hierarchy.attach(app.window,instance,[](const nlohmann::json& event){if(app.view)app.view->PostWebMessageAsJson(wide(event.dump()).c_str());});
+        {const auto post=[](const nlohmann::json& event){if(app.view)app.view->PostWebMessageAsJson(wide(event.dump()).c_str());};app.hierarchy.attach(app.window,instance,post);app.inspector.attach(app.window,instance,post);}
 #endif
 
         #ifdef HB_GAME_PLAYER
