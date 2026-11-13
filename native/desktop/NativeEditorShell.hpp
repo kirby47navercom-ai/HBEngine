@@ -37,6 +37,11 @@ class NativeEditorShell {
     Json widgetPreview;
     std::string widgetSelection,widgetRevision;
     std::string timelineTrack,timelineItem;
+    std::string selectedTransition,draggedTab;
+    int timelineKey=-1;
+    HWND dockDragControl=nullptr;
+    POINT tabDragStart{};
+    bool tabDragging=false;
     unsigned imageIndex=0,imageLevel=0;
     fs::path layoutFile;
     fs::path playLauncher,playRuntimeRoot,editorProfile,projectFile;
@@ -68,7 +73,10 @@ class NativeEditorShell {
     };
     std::map<HWND,DocumentWindow> documentWindows;
     std::shared_ptr<EditorD3D12Surface::Graphics> graphics;
-    enum DocumentControl {DocSource=1,DocSave=2,DocToggle=3,DocView=4,DocPalette=5,DocAdd=6,DocReload=7};
+    enum DocumentControl {DocSource=1,DocSave=2,DocToggle=3,DocView=4,DocPalette=5,DocAdd=6,DocReload=7,DocDock=8};
+    static constexpr Command EditTransition=static_cast<Command>(190);
+    static constexpr Command EditSequenceCurve=static_cast<Command>(191);
+    static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
 
     static std::wstring controlText(HWND control){
@@ -145,6 +153,7 @@ class NativeEditorShell {
         SendMessageW(files,CCM_SETUNICODEFORMAT,TRUE,0);
         LVCOLUMNW column{};column.mask=LVCF_WIDTH;column.cx=240;ListView_InsertColumn(files,0,&column);
         tabs=control(WC_TABCONTROLW,L"",WS_CLIPSIBLINGS,Tabs);
+        if(!SetWindowSubclass(tabs,tabProcedure,1,reinterpret_cast<DWORD_PTR>(this)))throw std::runtime_error("문서 탭 입력을 초기화하지 못했어요.");
         source=control(L"EDIT",L"",WS_BORDER|WS_VSCROLL|WS_HSCROLL|ES_MULTILINE|ES_WANTRETURN|ES_AUTOVSCROLL|ES_AUTOHSCROLL,Source);
         SendMessageW(source,EM_SETLIMITTEXT,0,0);
         palette=control(L"COMBOBOX",L"",CBS_DROPDOWNLIST|WS_VSCROLL,Palette);
@@ -159,7 +168,7 @@ class NativeEditorShell {
                 if(event.at("event")=="select"){
                     const auto id=event.at("id").get<std::string>();
                     if(graphSelection!=id&&gameplayGraphOpen())fieldPath=Json::array();
-                    graphSelection=id;refreshGraphInputs();layout();queuePreview();
+                    selectedTransition.clear();graphSelection=id;refreshGraphInputs();layout();queuePreview();
                 }
                 if(event.at("event")=="graphicsError")SetWindowTextW(status,wide(event.at("message")).c_str());
                 if(event.at("event")=="key"&&event.value("ctrl",false)){
@@ -180,6 +189,15 @@ class NativeEditorShell {
                 if(action!="click"&&action!="change")return;
                 if(event.at("revision")!=formRevision)return;
                 const int i=event.at("i");
+                if(!selectedTransition.empty()){
+                    const auto& field=fields.at(i);
+                    Json input={{"view",view},{"id",selectedTransition},{"key",field.at("key")},{"expectedRevision",document.at("revision")}};
+                    if(field.contains("index"))input["index"]=field.at("index");
+                    if(action=="change")input["value"]=event.contains("checked")?event.at("checked"):event.at("value");
+                    auto changed=request("graph.transitionEdit",input);
+                    if(field.at("key")=="delete")selectedTransition.clear();
+                    showDocument(std::move(changed));return;
+                }
                 if(document.value("graph",false)&&!gameplayGraphOpen()){
                     const auto& input=graphInputs.at(i);
                     Json value=event.contains("checked")?event.at("checked"):event.at("value");
@@ -232,6 +250,7 @@ class NativeEditorShell {
                 }
                 if(action=="timelineSelect"&&timelineOpen()){
                     timelineTrack=event.at("track");timelineItem=event.at("id");
+                    timelineKey=event.at("index");
                     fieldPath=Json::array();refreshForm();return;
                 }
                 if(action=="sample"){
@@ -291,6 +310,8 @@ class NativeEditorShell {
         AppendMenuW(edit,MF_STRING,Undo,L"되돌리기\tCtrl+Z");
         AppendMenuW(edit,MF_STRING,Redo,L"다시 적용\tCtrl+Y");
         AppendMenuW(edit,MF_STRING,AddNode,L"선택한 종류의 노드 추가");
+        AppendMenuW(edit,MF_STRING,EditTransition,L"애니메이션 전이 편집");
+        AppendMenuW(edit,MF_STRING,EditSequenceCurve,L"시퀀스 곡선 설정");
         AppendMenuW(edit,MF_STRING,AddVariable,L"블루프린트 변수 추가");
         AppendMenuW(edit,MF_STRING,AddFunction,L"블루프린트 함수 추가");
         AppendMenuW(edit,MF_STRING,AddMacro,L"블루프린트 매크로 추가");
@@ -436,7 +457,7 @@ class NativeEditorShell {
             try{model=request("graph.read",{{"view",view}});}
             catch(const std::exception&){
                 if(view=="event")throw;
-                view="event";graphSelection.clear();graph.resetView();model=request("graph.read",{{"view",view}});
+                view="event";graphSelection.clear();selectedTransition.clear();graph.resetView();model=request("graph.read",{{"view",view}});
             }
         }else model=updated;
         graph.update(model);
@@ -622,6 +643,19 @@ class NativeEditorShell {
     void refreshForm(){
         if(!document.value("form",false)&&!gameplayGraphOpen())return;
         Json base=Json::array();
+        if(!selectedTransition.empty()){
+            const auto transitions=request("graph.transitions",{{"view",view}});
+            if(std::none_of(transitions.begin(),transitions.end(),[this](const Json& row){return row.at("id")==selectedTransition;}))selectedTransition.clear();
+            else{
+                fields=request("graph.transitionFields",{{"view",view},{"id",selectedTransition}});
+                Json rows=Json::array();
+                for(std::size_t i=0;i<fields.size();++i){
+                    auto control=fields.at(i).at("control");control["i"]=i;
+                    rows.push_back({{"label",fields.at(i).at("label")},{"controls",Json::array({std::move(control)})}});
+                }
+                form.update({{"rows",std::move(rows)},{"revision",++formRevision}});return;
+            }
+        }
         if(sceneOpen()&&!sceneSelection.empty()){
             for(std::size_t i=0;i<sceneRows.size();++i)if(sceneRows.at(i).at("id")==sceneSelection){
                 base=Json::array({"objects",std::to_string(i)});break;
@@ -683,7 +717,7 @@ class NativeEditorShell {
         Json updatedGraph;
         if(value.contains("model")){updatedGraph=std::move(value.at("model"));value.erase("model");}
         document=std::move(value);updating=true;
-        if(previous!=document.value("path",std::string())){view="event";sourceMode=false;graph.resetView();graphSelection.clear();fieldPath=Json::array();sceneSelection.clear();cameraId.clear();folded.clear();cameraInput=nullptr;viewportPreparing=false;widgetSelection.clear();widgetRevision.clear();widgetPreview=nullptr;timelineTrack.clear();timelineItem.clear();assetCanvas.resetTimeline();imageIndex=imageLevel=0;}
+        if(previous!=document.value("path",std::string())){view="event";sourceMode=false;graph.resetView();graphSelection.clear();selectedTransition.clear();fieldPath=Json::array();sceneSelection.clear();cameraId.clear();folded.clear();cameraInput=nullptr;viewportPreparing=false;widgetSelection.clear();widgetRevision.clear();widgetPreview=nullptr;timelineTrack.clear();timelineItem.clear();timelineKey=-1;assetCanvas.resetTimeline();imageIndex=imageLevel=0;}
         displayText(source,document.value("text",std::string()));
         sourceChanged=false;
         refreshTabs();
@@ -700,6 +734,81 @@ class NativeEditorShell {
         captureSource();
         event["view"]=view;event["expectedRevision"]=document.at("revision");
         showDocument(request("graph.edit",event));
+    }
+    static LRESULT CALLBACK tabProcedure(HWND owner,UINT message,WPARAM w,LPARAM l,UINT_PTR,DWORD_PTR ref){
+        auto& self=*reinterpret_cast<NativeEditorShell*>(ref);
+        if(message==WM_LBUTTONDOWN){
+            TCHITTESTINFO hit{{short(LOWORD(l)),short(HIWORD(l))},0};
+            const int index=TabCtrl_HitTest(owner,&hit);
+            self.draggedTab.clear();self.tabDragging=false;self.tabDragStart=hit.pt;
+            if(self.document.contains("tabs")){
+                const auto& tabs=self.document.at("tabs");
+                if(index>=0&&std::size_t(index)<tabs.size())self.draggedTab=tabs.at(index).at("path");
+            }
+        }else if(message==WM_MOUSEMOVE&&(w&MK_LBUTTON)&&!self.draggedTab.empty()){
+            const int dx=short(LOWORD(l))-self.tabDragStart.x,dy=short(HIWORD(l))-self.tabDragStart.y;
+            if(!self.tabDragging&&(std::abs(dx)>=GetSystemMetrics(SM_CXDRAG)||std::abs(dy)>=GetSystemMetrics(SM_CYDRAG))){
+                self.tabDragging=true;SetCapture(owner);
+            }
+            if(self.tabDragging){SetCursor(LoadCursorW(nullptr,IDC_SIZEALL));return 0;}
+        }else if(message==WM_LBUTTONUP&&self.tabDragging){
+            self.tabDragging=false;
+            auto path=std::move(self.draggedTab);self.draggedTab.clear();
+            POINT point{short(LOWORD(l)),short(HIWORD(l))};ClientToScreen(owner,&point);
+            if(GetCapture()==owner)ReleaseCapture();
+            try{self.dropTab(path,point);}catch(const std::exception& error){self.report(error);}
+            return 0;
+        }else if(message==WM_CAPTURECHANGED||message==WM_CANCELMODE||message==WM_LBUTTONUP){
+            self.tabDragging=false;self.draggedTab.clear();
+        }
+        return DefSubclassProc(owner,message,w,l);
+    }
+    void dropTab(const std::string& path,POINT screen){
+        captureSource();
+        RECT tabRect{},frame{};GetWindowRect(tabs,&tabRect);GetWindowRect(window,&frame);
+        if(PtInRect(&tabRect,screen)){
+            POINT local=screen;ScreenToClient(tabs,&local);
+            TCHITTESTINFO hit{local,0};const int index=TabCtrl_HitTest(tabs,&hit);
+            const auto& list=document.at("tabs");
+            std::size_t position=index<0?list.size():std::size_t(index);
+            RECT item{};
+            if(index>=0&&TabCtrl_GetItemRect(tabs,index,&item)&&local.x>(item.left+item.right)/2)++position;
+            const Json before=position<list.size()?list.at(position).at("path"):Json(nullptr);
+            document["tabs"]=request("document.reorder",{{"path",path},{"before",before}}).at("tabs");
+            refreshTabs();
+        }else if(!PtInRect(&frame,screen)){
+            const auto currentPath=document.value("path",std::string());
+            openDocumentWindow(request("document.read",{{"path",path}}),{{"view",path==currentPath?view:"event"},{"window",{screen.x,screen.y,950,640}}});
+        }
+    }
+    static LRESULT CALLBACK dockProcedure(HWND control,UINT message,WPARAM w,LPARAM l,UINT_PTR,DWORD_PTR ref){
+        auto& self=*reinterpret_cast<NativeEditorShell*>(ref);
+        if(message==WM_LBUTTONDOWN){SetFocus(control);self.dockDragControl=control;SetCapture(control);return 0;}
+        if(message==WM_MOUSEMOVE&&self.dockDragControl==control){SetCursor(LoadCursorW(nullptr,IDC_SIZEALL));return 0;}
+        if(message==WM_LBUTTONUP&&self.dockDragControl==control){
+            self.dockDragControl=nullptr;
+            if(GetCapture()==control)ReleaseCapture();
+            POINT point{short(LOWORD(l)),short(HIWORD(l))};ClientToScreen(control,&point);
+            RECT tabs{},button{};GetWindowRect(self.tabs,&tabs);GetWindowRect(control,&button);
+            if(PtInRect(&tabs,point)||PtInRect(&button,point))PostMessageW(self.window,redockMessage,WPARAM(GetParent(control)),0);
+            return 0;
+        }
+        if((message==WM_CAPTURECHANGED||message==WM_CANCELMODE||message==WM_NCDESTROY)&&self.dockDragControl==control)
+            self.dockDragControl=nullptr;
+        return DefSubclassProc(control,message,w,l);
+    }
+    void redockDocument(HWND owner){
+        const auto it=documentWindows.find(owner);
+        if(it==documentWindows.end())return;
+        auto& pane=it->second;
+        captureSource();captureDocumentWindow(owner,pane);
+        const auto path=pane.doc.at("path").get<std::string>(),restoredView=pane.view;
+        const bool restoredSource=pane.source;
+        showDocument(request("document.open",{{"path",path}}));
+        if(view!=restoredView){selectedTransition.clear();graphSelection.clear();fieldPath=Json::array();graph.resetView();}
+        view=restoredView;sourceMode=restoredSource;
+        refreshGraph();layout();
+        destroyDocumentWindow(owner);
     }
     void layoutDocumentWindow(HWND owner,DocumentWindow& item){
         RECT rect{};GetClientRect(owner,&rect);
@@ -798,6 +907,8 @@ class NativeEditorShell {
             item.save=make(L"BUTTON",L"저장",0,DocSave,5,5,70,26);
             item.toggle=make(L"BUTTON",L"그래프 / 소스",0,DocToggle,80,5,120,26);
             make(L"BUTTON",L"다시 읽기",0,DocReload,205,5,85,26);
+            const auto dock=make(L"BUTTON",L"탭으로 합치기",0,DocDock,295,5,108,26);
+            if(!SetWindowSubclass(dock,dockProcedure,1,reinterpret_cast<DWORD_PTR>(this)))throw std::runtime_error("독립 창 도킹을 초기화하지 못했어요.");
             item.status=make(L"STATIC",L"",SS_LEFT,0,0,0,1,1);
             item.viewPicker=make(L"COMBOBOX",L"",CBS_DROPDOWNLIST|WS_VSCROLL,DocView,5,37,160,220);
             item.palette=make(L"COMBOBOX",L"",CBS_DROPDOWNLIST|WS_VSCROLL,DocPalette,170,37,250,300);
@@ -852,6 +963,7 @@ class NativeEditorShell {
             const auto id=LOWORD(w),notification=HIWORD(w);
             if(id==DocSource&&notification==EN_CHANGE&&!item.updating){item.draft=true;SetWindowTextW(item.status,L"저장하지 않은 변경 사항");}
             else if(id==DocSave||id==Save)saveDocumentWindow(owner,item);
+            else if(id==DocDock)PostMessageW(window,redockMessage,WPARAM(owner),0);
             else if(id==CloseDocument)PostMessageW(owner,WM_CLOSE,0,0);
             else if(id==DocToggle){captureDocumentWindow(owner,item);item.source=!item.source;layoutDocumentWindow(owner,item);}
             else if(id==DocReload&&(!item.draft||MessageBoxW(owner,L"이 창의 초안을 버리고 문서를 다시 읽을까요?",L"HBEngine",MB_YESNO|MB_ICONWARNING)==IDYES))
@@ -1131,6 +1243,31 @@ class NativeEditorShell {
             captureSource();openProject(request("project.open",{{"file",recent.at(command-RecentBase).at("file")}}));return;
         }
         switch(command){
+        case EditSequenceCurve:{
+            if(sourceMode||document.value("kind",std::string())!="sequenceasset"||timelineTrack.empty())return;
+            const auto options=request("timeline.curveOptions",{{"track",timelineTrack},{"index",timelineKey}});
+            const auto selected=chooseMenu({L"키 보간",L"이전 범위",L"이후 범위",L"트랙 곡선 도구"});
+            if(!selected)return;
+            const std::array<const char*,4> keys={"interpolation","preInfinity","postInfinity","tool"};
+            const auto& items=options.at(*selected==0?"interpolation":*selected==3?"tools":"infinity");
+            if(items.empty()){statusText(L"곡선 키 또는 값 트랙을 선택하세요.");return;}
+            std::vector<std::wstring> labels;
+            for(const auto& item:items)labels.push_back(wide(item));
+            const auto choice=chooseMenu(labels);if(!choice)return;
+            showDocument(request("timeline.curveEdit",{{"track",timelineTrack},{"index",timelineKey},{"key",keys.at(*selected)},
+                {"value",items.at(*choice)},{"expectedRevision",document.at("revision")}}));
+            return;
+        }
+        case EditTransition:{
+            if(sourceMode||document.value("kind",std::string())!="animgraph"||view.rfind("machine:",0)!=0)return;
+            const auto transitions=request("graph.transitions",{{"view",view}});
+            std::vector<std::wstring> labels;
+            for(const auto& transition:transitions)labels.push_back(wide(transition.at("label")));
+            if(labels.empty()){statusText(L"그래프에서 상태를 연결해 전이를 먼저 추가하세요.");return;}
+            const auto choice=chooseMenu(labels);if(!choice)return;
+            selectedTransition=transitions.at(*choice).at("id");graphSelection.clear();fieldPath=Json::array();
+            refreshForm();layout();return;
+        }
         case PlayScene:startPlay();return;
         case StopPlay:stopPlay();return;
         case OpenProject:case NewProject:{
@@ -1373,6 +1510,7 @@ class NativeEditorShell {
         }
     }
     LRESULT event(HWND owner,UINT message,WPARAM w,LPARAM l){
+        if(owner==window&&message==redockMessage){redockDocument(reinterpret_cast<HWND>(w));return 0;}
         if(const auto it=documentWindows.find(owner);it!=documentWindows.end()){
             try{return documentWindowEvent(owner,it->second,message,w,l);}
             catch(const std::exception& error){SetWindowTextW(it->second.status,wide(std::string(error.what())).c_str());return 0;}
@@ -1427,7 +1565,7 @@ class NativeEditorShell {
                 const auto i=SendMessageW(views,CB_GETCURSEL,0,0);
                 if(i>=0){
                     if(sceneOpen()){cameraId=cameraRows.at(i);queueViewport();}
-                    else{view=model.at("views").at(i).at(0);graph.resetView();graphSelection.clear();refreshGraph();layout();}
+                    else{view=model.at("views").at(i).at(0);graph.resetView();graphSelection.clear();selectedTransition.clear();refreshGraph();layout();}
                 }
             }else if(HIWORD(w)==0)perform(id);
             return 0;
@@ -1590,6 +1728,9 @@ private:
         assetCanvas.probeAddKey();assetCanvas.probePaint();
         if(!document.at("dirty").get<bool>()||assetCanvas.inspect().at("backend")!="D3D12")
             throw std::runtime_error("Native sequence editing failed");
+        assetCanvas.probeSelectFirstKey();
+        if(timelineTrack.empty()||timelineKey!=0)throw std::runtime_error("Sequence curve key selection failed");
+        showDocument(request("timeline.curveEdit",{{"track",timelineTrack},{"index",timelineKey},{"key","interpolation"},{"value","constant"},{"expectedRevision",document.at("revision")}}));
         command(Save);
         showDocument(request("document.open",{{"path","Assets/BT_Native.hbbehaviortree.json"}}));
         editGraph({{"action","add"},{"key","task"},{"x",340},{"y",260}});
@@ -1685,6 +1826,25 @@ private:
         restoreDocumentWindows();
         if(documentWindows.size()!=2||document.at("kind")!="montage")throw std::runtime_error("Independent document layout restore changed the active document");
         if(!closeDocumentWindows())throw std::runtime_error("Restored independent documents close failed");
+        showDocument(request("document.open",{{"path",document.at("tabs").front().at("path")}}));
+        RECT firstTab{};if(!TabCtrl_GetItemRect(tabs,0,&firstTab))throw std::runtime_error("Native tab missing");
+        const auto firstPath=document.at("tabs").front().at("path");
+        const auto startX=(firstTab.left+firstTab.right)/2,startY=(firstTab.top+firstTab.bottom)/2;
+        SendMessageW(tabs,WM_LBUTTONDOWN,MK_LBUTTON,MAKELPARAM(startX,startY));
+        SendMessageW(tabs,WM_MOUSEMOVE,MK_LBUTTON,MAKELPARAM(startX,startY+2000));
+        SendMessageW(tabs,WM_LBUTTONUP,0,MAKELPARAM(startX,startY+2000));
+        if(documentWindows.size()!=1||documentWindows.begin()->second.doc.at("path")!=firstPath)
+            throw std::runtime_error("Dragging a tab out did not detach the document");
+        const auto draggedWindow=documentWindows.begin()->first;
+        const auto dock=GetDlgItem(draggedWindow,DocDock);
+        POINT destination{startX,startY};ClientToScreen(tabs,&destination);ScreenToClient(dock,&destination);
+        SendMessageW(dock,WM_LBUTTONDOWN,MK_LBUTTON,MAKELPARAM(5,5));
+        SendMessageW(dock,WM_MOUSEMOVE,MK_LBUTTON,MAKELPARAM(destination.x,destination.y));
+        SendMessageW(dock,WM_LBUTTONUP,0,MAKELPARAM(destination.x,destination.y));
+        MSG docking{};
+        if(!PeekMessageW(&docking,window,redockMessage,redockMessage,PM_REMOVE))throw std::runtime_error("Dock drop did not post");
+        DispatchMessageW(&docking);
+        if(!documentWindows.empty()||document.at("path")!=firstPath)throw std::runtime_error("Dragging back did not dock the document");
         showDocument(request("document.open",{{"path","Assets/AG_Native.hbanimgraph.json"}}));
         const auto machineView=std::find_if(model.at("views").begin(),model.at("views").end(),[](const Json& row){
             return row.at(0).get<std::string>().rfind("machine:",0)==0;
@@ -1693,6 +1853,11 @@ private:
         SendMessageW(views,CB_SETCURSEL,machineView-model.at("views").begin(),0);
         SendMessageW(window,WM_COMMAND,MAKEWPARAM(Views,CBN_SELCHANGE),LPARAM(views));
         if(model.at("nodes").size()<4||model.at("edges").size()<2)throw std::runtime_error("Animation state graph missing nodes or transitions");
+        selectedTransition=request("graph.transitions",{{"view",view}}).front().at("id");refreshForm();
+        const auto durationField=std::find_if(fields.begin(),fields.end(),[](const Json& row){return row.at("key")=="duration";});
+        if(durationField==fields.end())throw std::runtime_error("Transition form missing duration");
+        form.probe({{"action","edit"},{"i",durationField-fields.begin()},{"text","0.35"}});
+        command(Save);
         graph.probePaint();
         const auto stateSurface=graph.inspect();
         if(stateSurface.at("backend")!="D3D12")throw std::runtime_error("Animation state graph present failed");

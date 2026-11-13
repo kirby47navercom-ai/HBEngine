@@ -18,7 +18,9 @@
 - 보기 메뉴의 문서를 독립 창에 열기는 각 창에 문서 경로를 고정해요. 그래프의 노드와 소스를 편집하면서 기본 창에서 다른 장면이나 에셋을 열 수 있어요. 모든 창이 문서 리비전과 Undo 이력을 공유하고, 같은 프로젝트를 열면 독립 창의 문서·위치·보기를 복원해요.
 - `node tools/build-desktop.mjs --native-editor-only`는 기존 데스크톱 런타임 폴더에 WebView2 SDK 없이 `HBEngineNative.exe`를 컴파일해요. `HBEngineNative.exe [프로젝트.hbproject]`는 네이티브 편집기를 직접 열어요.
 - 장면·타임라인·위젯 문서에서 구분선을 드래그해 브라우저와 속성 패널의 너비를 바꿀 수 있어요. 새 프로젝트는 2D·3D와 게임플레이 템플릿을 고르고, 콘텐츠 폴더는 파일 메뉴에서 만들어요.
-- 현재 기본 설치 경로는 기존 편집기예요. 전체 탭 도킹, 전이 조건 편집 UI, 시퀀스 곡선·녹화 도구, 나머지 전용 에셋 편집기가 전환 범위에 남아 있어요.
+- 문서 탭을 끌어 순서를 바꾸거나 기본 창 밖으로 빼면 독립 창에서 열려요. 독립 창의 탭으로 합치기 버튼을 누르거나 기본 탭 줄로 끌면 다시 합쳐져요.
+- 편집 메뉴에서 상태 머신의 전이를 선택해 조건과 비교값, 혼합, 종료 시점, 이벤트를 편집해요. 레벨 시퀀스는 선택한 키의 보간, 트랙 양끝의 범위 처리와 곡선 도구를 지원해요.
+- 현재 기본 설치 경로는 기존 편집기예요. 화면 분할 도킹, 시퀀스 곡선 그래프와 녹화, 나머지 전용 에셋 편집기가 전환 범위에 남아 있어요.
 
 관련 검사 `check-editor-native-viewport.mjs`, `check-editor-native-assets.mjs`, `check-editor-native-hierarchy.mjs`, `check-editor-native-inspector.mjs`, `check-build-profiles.mjs`, `check-native-game.mjs`.
 

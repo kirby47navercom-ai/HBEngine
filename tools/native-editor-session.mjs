@@ -22,11 +22,13 @@ import {timelineSnap} from '../prototype/timeline-rate.js';
 import {SequenceSampler} from '../prototype/sequence-sampling.js';
 import {makeAnimationNotifyState} from '../prototype/animation-sync.js';
 import {addAnimationGraphNode,addAnimationStatePose,animationGraphNodes,animationInputs} from '../prototype/animation-graph-assets.js';
-import {addAnimationTransition,removeAnimationOwnedNodes,removeAnimationState} from '../prototype/animation-state-assets.js';
+import {addAnimationTransition,animationBlendCurves,animationConditionOps,animationInterrupts,removeAnimationOwnedNodes,removeAnimationState} from '../prototype/animation-state-assets.js';
 import {animationPinLabel,animationScopeNodes,statePoseOutput} from '../prototype/animation-state-editor.js';
 import {resolveSprite} from '../prototype/sprite-import.js';
 import {spriteImage} from '../prototype/two-d-assets.js';
 import {editSequenceSection,loadSequenceTree} from '../prototype/sequence-sections.js';
+import {configureSequenceCurve,sequenceCurveModes,sequenceCurveType,sequenceRangeModes} from '../prototype/sequence-curves.js';
+import {editSequenceCurves} from '../prototype/sequence-curve-edit.js';
 import {defaultEnvironment,defaultSurface} from '../prototype/model.js';
 import {createBlueprintResolver} from '../prototype/blueprint-inheritance.js';
 
@@ -79,6 +81,14 @@ export function nativeEditorSession(bridge) {
   }
   const summary = doc => ({path:doc.path, kind:doc.kind, dirty:doc.dirty});
   const tabs = () => [...documents.items.values()].map(summary);
+  const animationTransition=(doc,view,id)=>{
+    if(doc.kind!=='animgraph')throw Error('애니메이션 상태 그래프를 선택하세요.');
+    const {machine,state}=animationView(doc.data,view);
+    const transition=!state&&machine?.properties.transitions.find(row=>row.id===id);
+    if(!transition)throw Error('전이를 선택하세요.');
+    return {machine,transition};
+  };
+  const conditionOps=type=>type==='trigger'?['true']:type==='bool'?['true','false']:type==='enum'?['eq','ne']:['eq','ne','gt','ge','lt','le'];
   const revision = doc => documentRevision(doc.data);
   const response = async doc => ({...summary(doc), revision:await revision(doc), tabs:tabs(), text:doc.kind === 'text' ? doc.data : JSON.stringify(doc.data, null, 2), graph:graphKind(doc), form:doc.kind !== 'text' && !graphKind(doc)});
   const check = async (doc, expected) => {
@@ -380,6 +390,16 @@ export function nativeEditorSession(bridge) {
     'document.open': ({path}) => openDocument(path),
     'document.load': async ({path})=>response(await loadDocument(path)),
     'document.read': ({path}) => response(targetDocument(path)),
+    'document.reorder': async ({path,before})=>{
+      const doc=targetDocument(path);
+      if(before===path)return response(current());
+      const ordered=[...documents.items.values()].filter(row=>row!==doc);
+      const index=before==null?ordered.length:ordered.findIndex(row=>row.path===before);
+      if(index<0)throw Error('탭을 선택하세요.');
+      ordered.splice(index,0,doc);
+      documents.items=new Map(ordered.map(row=>[row.path,row]));
+      return response(current());
+    },
     'document.replace': async ({path,text,expectedRevision}) => {
       const doc = targetDocument(path);
       await check(doc,expectedRevision);
@@ -504,6 +524,24 @@ export function nativeEditorSession(bridge) {
       return {length, tracks:timeline.tracks.map(track=>({id:track.id,name:track.name,type:track.type,keys:track.keys.map(key=>key.time)}))};
     },
     'timeline.trackTypes': ()=>sequenceTracks,
+    'timeline.curveOptions': ({track,index})=>{
+      const row=assetOfKind('sequenceasset').data.tracks.find(item=>item.id===track);
+      if(!row)throw Error('시퀀스 트랙을 선택하세요.');
+      return {
+        interpolation:row.keys[index]&&sequenceCurveType(row)?row.quaternionInterpolation?['linear','constant']:sequenceCurveModes:[],
+        infinity:sequenceRangeModes(row),
+        tools:sequenceCurveType(row)&&!row.quaternionInterpolation&&row.keys.length?['smooth','flatten','straighten','linearTangents',...(row.type==='rotation'?['eulerFilter']:[])]:[]
+      };
+    },
+    'timeline.curveEdit': async ({track,index,key,value,expectedRevision})=>{
+      const doc=assetOfKind('sequenceasset');await check(doc,expectedRevision);
+      const next=structuredClone(doc.data),options=methods['timeline.curveOptions']({track,index});
+      if(key==='tool'&&options.tools.includes(value))editSequenceCurves(next,{track,operation:value});
+      else if(key==='interpolation'&&options.interpolation.includes(value))configureSequenceCurve(next,{track,key:index,interpolation:value});
+      else if(['preInfinity','postInfinity'].includes(key)&&options.infinity.includes(value))configureSequenceCurve(next,{track,[key]:value});
+      else throw Error('곡선 편집 옵션을 확인하세요.');
+      change(doc,next);return response(doc);
+    },
     'timeline.inspectorPath': ({track,id})=>{
       const {kind,data}=assetOfKind('timeline');
       const [key,items]=timelineItems(kind,data,track);
@@ -702,6 +740,65 @@ export function nativeEditorSession(bridge) {
       return response(doc);
     },
     'graph.read': ({path,view='event'}) => graphModel(targetDocument(path),view),
+    'graph.transitions': ({view})=>{
+      const doc=current(),{machine,state}=animationView(assetOfKind('animgraph',doc).data,view);
+      if(!machine||state)throw Error('애니메이션 상태 머신 보기를 선택하세요.');
+      const names=new Map(machine.properties.states.map(row=>[row.id,row.name]));
+      names.set('any','Any State');
+      return machine.properties.transitions.map(row=>({id:row.id,label:names.get(row.from)+' → '+names.get(row.to)}));
+    },
+    'graph.transitionFields': ({view,id})=>{
+      const doc=current(),{machine,transition}=animationTransition(doc,view,id);
+      const fields=[];
+      const field=(label,key,value,options,index)=>{
+        const control=options?{kind:'select',value:String(value),options}
+          :typeof value==='boolean'?{kind:'checkbox',checked:value}:{kind:'text',value:String(value)};
+        fields.push({label,key,index,control});
+      };
+      const states=machine.properties.states.map(row=>[row.id,row.name]);
+      field('출발 상태','from',transition.from,[['any','Any State'],...states]);
+      field('도착 상태','to',transition.to,states);
+      for(const [label,key] of [['우선순위','priority'],['종료 시점 사용','hasExitTime'],['종료 비율','exitTime'],
+        ['초 단위','fixedDuration'],['혼합 시간','duration'],['대상 시작 비율','offset'],['순서대로 중단','ordered'],
+        ['자기 상태 전이','allowSelf'],['시작 이벤트','onStart'],['완료 이벤트','onEnd'],['중단 이벤트','onInterrupt']])
+        field(label,key,transition[key]);
+      field('혼합 곡선','curve',transition.curve,Object.entries(animationBlendCurves));
+      field('중단 검사','interrupt',transition.interrupt,Object.entries(animationInterrupts));
+      for(const [index,condition] of transition.conditions.entries()){
+        const parameter=doc.data.parameters.find(row=>row.name===condition.parameter);
+        field('파라미터 '+(index+1),'parameter',parameter.name,doc.data.parameters.map(row=>[row.name,row.name]),index);
+        field('비교','op',condition.op,conditionOps(parameter.type).map(op=>[op,animationConditionOps[op]]),index);
+        if(!['bool','trigger'].includes(parameter.type))
+          field('값','value',condition.value,parameter.values?.map(row=>[String(row.value),row.name]),index);
+        fields.push({label:'조건 '+(index+1),key:'removeCondition',index,control:{kind:'button',text:'삭제'}});
+      }
+      fields.push({label:'전이 조건',key:'addCondition',control:{kind:'button',text:'추가',disabled:doc.data.parameters.length===0}},
+        {label:'전이',key:'delete',control:{kind:'button',text:'삭제'}});
+      return fields;
+    },
+    'graph.transitionEdit': async ({view,id,key,index,value,expectedRevision})=>{
+      const doc=current();await check(doc,expectedRevision);
+      const next=structuredClone(doc.data),{machine,transition}=animationTransition({...doc,data:next},view,id);
+      const listed=methods['graph.transitionFields']({view,id}).find(row=>row.key===key&&row.index===index);
+      if(!listed||listed.control.disabled)throw Error('편집할 전이 속성을 선택하세요.');
+      const defaultCondition=parameter=>({parameter:parameter.name,op:conditionOps(parameter.type)[0],
+        value:['bool','trigger'].includes(parameter.type)?true:parameter.values?.[0]?.value??0});
+      if(key==='delete')machine.properties.transitions=machine.properties.transitions.filter(row=>row!==transition);
+      else if(key==='addCondition')transition.conditions.push(defaultCondition(next.parameters[0]));
+      else if(key==='removeCondition')transition.conditions.splice(index,1);
+      else if(key==='parameter'){
+        const parameter=next.parameters.find(row=>row.name===value);
+        if(!parameter)throw Error('전이 파라미터를 선택하세요.');
+        transition.conditions[index]=defaultCondition(parameter);
+      }else{
+        const target=index===undefined?transition:transition.conditions[index];
+        if(typeof target[key]==='number'&&typeof value==='string'&&value.trim())value=Number(value);
+        if(typeof value!==typeof target[key])throw Error('전이 속성의 형식을 확인하세요.');
+        target[key]=value;
+        if(key==='op'&&(value==='true'||value==='false'))target.value=value==='true';
+      }
+      change(doc,next);return response(doc);
+    },
     'graph.inspectorPath': ({id,view='event'})=>{
       const doc=current();
       if(!gameplayGraphs.has(doc.kind))throw Error('게임플레이 그래프를 선택하세요.');

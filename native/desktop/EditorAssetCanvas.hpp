@@ -121,7 +121,7 @@ class EditorAssetCanvas final : public EditorPanelBase {
                     for(std::size_t i=0;i<keys.size();++i)if(std::abs(timeX(keys.at(i))-x)<=7){key=int(i);break;}
                     if(key<0)clipSelection=hitClip(rows.at(row),x);
                 }
-                emit({{"event","timelineSelect"},{"track",track},{"id",clipSelection}});
+                emit({{"event","timelineSelect"},{"track",track},{"id",clipSelection},{"index",key}});
                 if(x>=gutter){playhead=xTime(float(x));emit({{"event","sample"},{"time",playhead}});}
                 dragging=key>=0||!clipSelection.empty();if(dragging)SetCapture(window);
             }
@@ -193,6 +193,11 @@ public:
     void probe(UINT message,WPARAM w,LPARAM l){SendMessageW(window,message,w,l);}
     void probePaint(){RedrawWindow(window,nullptr,nullptr,RDW_INVALIDATE|RDW_UPDATENOW);paint();}
     void probeAddKey(){SendMessageW(window,WM_LBUTTONDBLCLK,MK_LBUTTON,MAKELPARAM(int(timeX(data.at("length").get<double>()*.25)),int(heading+lane/2)));}
+    void probeSelectFirstKey(){
+        const int x=int(timeX(rows.at(0).at("keys").at(0))),y=int(heading+lane/2);
+        SendMessageW(window,WM_LBUTTONDOWN,MK_LBUTTON,MAKELPARAM(x,y));
+        SendMessageW(window,WM_LBUTTONUP,0,MAKELPARAM(x,y));
+    }
     void probeMoveWidget(const std::string& id,int dx,int dy){
         const auto row=std::find_if(rows.begin(),rows.end(),[&](const Json& item){return item.at("id")==id;});
         if(row==rows.end())throw std::runtime_error("Widget layout row missing");
