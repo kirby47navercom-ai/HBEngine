@@ -8,6 +8,7 @@
 #include <d3d12sdklayers.h>
 #include <dxgi1_5.h>
 #include <memory>
+#include <unordered_map>
 
 namespace hb::gpu::d3d12 {
 using detail::Com;using detail::check;
@@ -80,13 +81,18 @@ class Device {
         std::uint64_t fence=0;
         std::vector<Com<ID3D12Resource>> retired;
         std::vector<Com<IUnknown>> objects;
+        std::unordered_map<IUnknown*,std::uint64_t> retained;
         std::vector<Com<ID3D12DescriptorHeap>> descriptorPages;
         Com<ID3D12DescriptorHeap> cachedPage;
         bool usedCachedPage=false;
+        std::uint64_t retainedSweep=0;
     };
     HANDLE event=nullptr;std::array<Frame,FrameCount> frames;UINT frame=0;std::uint64_t serial=0;bool recording=false;
     // Frame tickets: begin() numbers each recording; end() remembers the fence value that completes it.
-    std::uint64_t recordingId=0;std::vector<std::pair<std::uint64_t,std::uint64_t>> submittedTickets;
+    std::uint64_t recordingId=0;
+    std::array<std::pair<std::uint64_t,std::uint64_t>,64> submittedTickets{};
+    std::size_t nextTicket=0;
+    std::uint64_t latestSubmittedTicket=0;
     // Upload ring: one persistently mapped slice per frame in flight. Requests that do
     // not fit get their own buffer, released once that frame's fence passes.
     Com<ID3D12Resource> ring;unsigned char* ringCPU=nullptr;std::uint64_t slice=0,used=0;
@@ -181,11 +187,24 @@ public:
     bool isRecording()const{return recording;}
     // Ticket of the frame being recorded; ticketDone() turns true once that frame was submitted and its fence passed.
     std::uint64_t ticket()const{requireRecording();return recordingId;}
-    bool ticketDone(std::uint64_t id)const{for(const auto& t:submittedTickets)if(t.first==id)return fence->GetCompletedValue()>=t.second;return !submittedTickets.empty()&&id<submittedTickets.front().first;}
+    bool ticketDone(std::uint64_t id)const{
+        if(!id||id>latestSubmittedTicket)return false;
+        if(latestSubmittedTicket-id>=submittedTickets.size())return true;
+        const auto index=(nextTicket+submittedTickets.size()-1-(latestSubmittedTicket-id))%submittedTickets.size();
+        const auto& ticket=submittedTickets[index];
+        return ticket.first==id&&fence->GetCompletedValue()>=ticket.second;
+    }
+    std::size_t retainedObjects()const{return recording?frames[frame].objects.size():0;}
     std::uint64_t submitted()const{return serial;}
     void begin(){
         if(recording)throw std::runtime_error("Direct3D12 frame already recording");
         auto& f=frames[frame];wait(f.fence);f.retired.clear();f.objects.clear();f.descriptorPages.clear();used=0;
+        if(f.retained.size()>4096&&recordingId-f.retainedSweep>=64){
+            f.retainedSweep=recordingId;
+            for(auto i=f.retained.begin();i!=f.retained.end();){
+                if(recordingId-i->second>FrameCount*4)i=f.retained.erase(i);else ++i;
+            }
+        }
         if(!f.usedCachedPage)f.cachedPage={};
         f.usedCachedPage=false;
         check(f.allocator->Reset(),"Direct3D12 command allocator reset");check(list->Reset(f.allocator.p,nullptr),"Direct3D12 command list reset");
@@ -195,14 +214,14 @@ public:
         requireRecording();check(list->Close(),"Direct3D12 command list close");recording=false;
         ID3D12CommandList* lists[]={list.p};queue->ExecuteCommandLists(1,lists);
         frames[frame].fence=++serial;check(queue->Signal(fence.p,serial),"Direct3D12 frame signal");frame=(frame+1)%FrameCount;
-        submittedTickets.emplace_back(recordingId,serial);if(submittedTickets.size()>64)submittedTickets.erase(submittedTickets.begin());
+        submittedTickets[nextTicket]={recordingId,serial};nextTicket=(nextTicket+1)%submittedTickets.size();latestSubmittedTicket=recordingId;
     }
     void waitIdle(){
         if(!queue.p)return;
         check(queue->Signal(fence.p,++serial),"Direct3D12 idle signal");wait(serial);
         // ResizeBuffers requires every old back buffer reference to be released.
         // Submitted frames are complete here. Unsubmitted work still owns its resources.
-        if(!recording)for(auto& submitted:frames){submitted.retired.clear();submitted.objects.clear();submitted.descriptorPages.clear();submitted.cachedPage={};submitted.usedCachedPage=false;}
+        if(!recording)for(auto& submitted:frames){submitted.retired.clear();submitted.objects.clear();submitted.retained.clear();submitted.descriptorPages.clear();submitted.cachedPage={};submitted.usedCachedPage=false;}
     }
 
     Upload upload(std::uint64_t size,std::uint64_t alignment=256){
@@ -251,8 +270,14 @@ public:
     }
     // Holds an extra reference until the recording frame's fence passes, so callers may drop objects whose
     // resources are still referenced by submitted work (D3D11 deferred-destruction semantics).
-    void keep(ID3D12Resource* r){if(!r||!recording)return;r->AddRef();Com<ID3D12Resource> held;held.p=r;frames[frame].retired.push_back(std::move(held));}
-    void keep(ID3D12PipelineState* o){if(!o||!recording)return;o->AddRef();Com<IUnknown> held;held.p=o;frames[frame].objects.push_back(std::move(held));}
+    void keep(IUnknown* object){
+        if(!object||!recording)return;
+        auto& frameState=frames[frame];
+        auto [entry,inserted]=frameState.retained.try_emplace(object,recordingId);
+        if(!inserted&&entry->second==recordingId)return;
+        entry->second=recordingId;
+        object->AddRef();Com<IUnknown> held;held.p=object;frameState.objects.push_back(std::move(held));
+    }
     // Keeps a resource alive until the GPU finishes the frame currently recording.
     void retire(Com<ID3D12Resource>&& r){if(r.p)frames[recording?frame:(frame+FrameCount-1)%FrameCount].retired.push_back(std::move(r));}
 

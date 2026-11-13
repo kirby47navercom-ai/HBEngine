@@ -92,6 +92,17 @@ static nlohmann::json proof(DeviceDriver driver,HWND window){
     for(int i=0;i<8;++i){gpu.begin();gpu.table(62);gpu.reserveTables(5);gpu.table(2);gpu.table(3);gpu.end();}
     REQUIRE(gpu.descriptorReusedPages()>=5);
     out["descriptorReusedPages"]=gpu.descriptorReusedPages();
+    gpu.begin();
+    const auto oldTicket=gpu.ticket();
+    REQUIRE(!gpu.ticketDone(oldTicket));
+    for(int i=0;i<1024;++i)gpu.keep(pso.p);
+    REQUIRE(gpu.retainedObjects()==1);
+    gpu.end();
+    for(int i=0;i<72;++i){gpu.begin();gpu.keep(pso.p);REQUIRE(gpu.retainedObjects()==1);gpu.end();}
+    gpu.waitIdle();
+    REQUIRE(gpu.ticketDone(oldTicket));
+    gpu.begin();const auto pending=gpu.ticket();REQUIRE(!gpu.ticketDone(pending));gpu.end();gpu.waitIdle();REQUIRE(gpu.ticketDone(pending));
+    out["deduplicatedFrameObjects"]=true;out["wrappedFenceTickets"]=true;
     // Present through a hidden window, including a resize.
     {d3d12::Swapchain chain(gpu,window,160,96);
         for(int i=0;i<6;i++){if(i==3)chain.resize(200,120);gpu.begin();auto& back=chain.acquire();const float c[4]={0,float(i)/6,0,1};gpu.list->ClearRenderTargetView(back.rtv,c,0,nullptr);chain.finish(back);gpu.end();chain.present(i==4?1:0,true);

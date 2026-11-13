@@ -1,3 +1,7 @@
+## Direct3D12 프레임 자원 수명과 입자 펜스 · 2026-11-13
+
+프레임에 같은 버퍼·텍스처·PSO가 반복돼도 펜스가 끝날 때까지 한 번만 보유해요. 완료 티켓은 고정 순환 배열에서 바로 찾아요. `native/build/d3d12-direct-ckuFFn/acceptance.json`에서 1,024회 요청을 한 참조로 유지하고 64개를 넘긴 티켓 순환을 확인했어요. `native/build/d3d12-particles-fklJ0a/acceptance.json`은 하드웨어와 WARP에서 D3D11 대비 입자 상태·충돌·사망 차이 0, 검증 오류 0을 기록했어요.
+
 ## Windows 일반 프레임의 진단 비용 절감 · 2026-11-13
 
 일반 네이티브 실행에서 렌더러는 그리기 완료·셰이더 준비·개수만 응답해요. 리소스별 전체 크기 합산과 긴 진단 JSON은 보고서 요청이나 기존 편집기 호출에 남겨요. `native/build/native-game-jyLQFB/acceptance.json`에서 같은 D3D12 배포본의 일반 실행과 40프레임 계측, 픽셀·UI·입력·C++·오디오를 확인했어요.
