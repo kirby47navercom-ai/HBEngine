@@ -125,6 +125,7 @@ class NativeEditorShell {
     static constexpr Command RenameAsset=static_cast<Command>(180);
     static constexpr Command WidgetAnchor=static_cast<Command>(179);
     static constexpr Command WidgetMobile=static_cast<Command>(178);
+    static constexpr Command TranslateActor=static_cast<Command>(177),RotateActor=static_cast<Command>(176),ScaleActor=static_cast<Command>(175);
     static const std::array<std::pair<const char*,const wchar_t*>,8>& viewportDirections(){
         static const std::array<std::pair<const char*,const wchar_t*>,8> values={{{"3d",L"원근"},{"2d",L"2D · XY"},{"top",L"위"},{"bottom",L"아래"},{"front",L"앞"},{"back",L"뒤"},{"left",L"왼쪽"},{"right",L"오른쪽"}}};
         return values;
@@ -431,6 +432,9 @@ class NativeEditorShell {
         AppendMenuW(sceneMenu,MF_STRING,DeleteActor,L"선택 오브젝트 삭제");
         AppendMenuW(sceneMenu,MF_STRING,DuplicateActor,L"선택 오브젝트 복제");
         AppendMenuW(sceneMenu,MF_STRING,FocusActor,L"선택 오브젝트에 초점\tF");
+        AppendMenuW(sceneMenu,MF_STRING,TranslateActor,L"이동 도구\tW");
+        AppendMenuW(sceneMenu,MF_STRING,RotateActor,L"회전 도구\tE");
+        AppendMenuW(sceneMenu,MF_STRING,ScaleActor,L"크기 도구\tR");
         AppendMenuW(sceneMenu,MF_SEPARATOR,0,nullptr);
         AppendMenuW(sceneMenu,MF_STRING,PlayScene,L"플레이\tF5");
         AppendMenuW(sceneMenu,MF_STRING,StopPlay,L"플레이 중지\tShift+F5");
@@ -822,7 +826,7 @@ class NativeEditorShell {
     }
     void selectActor(const std::string& id){
         if(!sceneOpen())return;
-        if(sceneSelection!=id)fieldPath=Json::array();
+        if(sceneSelection!=id){fieldPath=Json::array();viewport.setHandles(Json::array());}
         sceneSelection=id;refreshHierarchy();refreshForm();
     }
     void queueViewport(Json input=Json::object()){
@@ -851,10 +855,15 @@ class NativeEditorShell {
         const auto size=viewport.size();
         if(size.cx<=0||size.cy<=0)return Json::object();
         input["width"]=size.cx;input["height"]=size.cy;input["selected"]=sceneSelection;input["cameraId"]=cameraId;input["cameraOutputs"]=cameraOutputs;input["direction"]=cameraDirection;
+        if(!input.contains("tool"))input["tool"]=viewport.transformTool();
         auto state=request("scene.viewport",input);
+        viewport.setHandles(state.at("segments"));
         const auto action=input.value("command",std::string());
         if(action=="pick")selectActor(state.value("selection",std::string()));
-        else if(action=="translate"&&state.contains("translation"))editScene({{"action","translate"},{"id",sceneSelection},{"delta",state.at("translation")}});
+        else if((action=="translate"||action=="transform")&&state.contains("translation"))editScene({{"action","translate"},{"id",sceneSelection},{"delta",state.at("translation")}});
+        else if(action=="transform"&&state.contains("sceneTransform")){
+            auto edit=state.at("sceneTransform");edit["action"]=input.at("tool");edit["id"]=sceneSelection;editScene(std::move(edit));
+        }
         const auto prep=state.value("shaderPreparation",Json::object());
         const auto issue=prep.value("error",std::string());
         const bool preparing=prep.value("pending",false);
@@ -956,7 +965,7 @@ class NativeEditorShell {
         if(value.contains("model")){updatedGraph=std::move(value.at("model"));value.erase("model");}
         document=std::move(value);updating=true;
         if(previous!=document.value("path",std::string())){tileOrigin={};tileLayer.clear();tileAtlasSource=nullptr;assetCanvas.updateAtlas(nullptr,{});}
-        if(previous!=document.value("path",std::string())){view="event";sourceMode=false;graph.resetView();graphSelection.clear();selectedTransition.clear();fieldPath=Json::array();sceneSelection.clear();cameraId.clear();cameraDirection.clear();cameraOutputs=false;folded.clear();cameraInput=nullptr;viewportPreparing=false;widgetSelection.clear();widgetRevision.clear();widgetPreview=nullptr;timelineTrack.clear();timelineItem.clear();timelineKey=timelineChannel=-1;curveView=false;assetCanvas.resetTimeline();imageIndex=imageLevel=0;}
+        if(previous!=document.value("path",std::string())){view="event";sourceMode=false;graph.resetView();graphSelection.clear();selectedTransition.clear();fieldPath=Json::array();sceneSelection.clear();cameraId.clear();cameraDirection.clear();cameraOutputs=false;folded.clear();viewport.setHandles(Json::array());cameraInput=nullptr;viewportPreparing=false;widgetSelection.clear();widgetRevision.clear();widgetPreview=nullptr;timelineTrack.clear();timelineItem.clear();timelineKey=timelineChannel=-1;curveView=false;assetCanvas.resetTimeline();imageIndex=imageLevel=0;}
         displayText(source,document.value("text",std::string()));
         sourceChanged=false;
         refreshTabs();
@@ -1107,11 +1116,15 @@ class NativeEditorShell {
         input["path"]=item.doc.at("path");input["surface"]=item.surface;
         input["cameraId"]=item.cameraId;input["cameraOutputs"]=item.cameraOutputs;input["direction"]=item.cameraDirection;input["selected"]=item.selection;
         if(input.value("command",std::string())=="focus")input["id"]=item.selection;
+        if(!input.contains("tool"))input["tool"]=item.sceneView->transformTool();
         auto state=request("scene.viewport",input);
+        item.sceneView->setHandles(state.at("segments"));
         const auto action=input.value("command",std::string());
         if(action=="pick")item.selection=state.at("selection");
-        else if(action=="translate"&&state.contains("translation")){
-            auto edit=documentWindowTarget(item);edit["action"]="translate";edit["id"]=item.selection;edit["delta"]=state.at("translation");
+        else if((action=="translate"||action=="transform")&&(state.contains("translation")||state.contains("sceneTransform"))){
+            auto edit=documentWindowTarget(item);edit["id"]=item.selection;
+            if(state.contains("translation")){edit["action"]="translate";edit["delta"]=state.at("translation");}
+            else{edit["action"]=input.at("tool");edit.update(state.at("sceneTransform"));}
             if(item.doc.at("path")==document.value("path",std::string())&&sourceChanged)throw std::runtime_error("같은 장면의 기본 창 초안을 먼저 처리하세요.");
             commitDocumentWindowChange(owner,item,request("scene.edit",edit));
         }
@@ -1950,6 +1963,9 @@ class NativeEditorShell {
             if(!sceneSelection.empty())editScene({{"action","duplicate"},{"id",sceneSelection}});
             return;
         case FocusActor:queueViewport({{"command","focus"}});return;
+        case TranslateActor:case RotateActor:case ScaleActor:
+            if(sceneOpen()&&!sourceMode)viewport.selectTransformTool(command==TranslateActor?"translate":command==RotateActor?"rotate":"scale");
+            return;
         case AddSequenceTrack:{
             if(document.value("kind",std::string())!="sequenceasset"||sourceMode)return;
             const auto types=request("timeline.trackTypes");
@@ -2332,6 +2348,36 @@ private:
         command(Undo);
         if(Json::parse(document.at("text").get<std::string>()).at("objects").back().at("position")!=moveBefore)throw std::runtime_error("Native viewport transform undo failed");
         command(Save);
+        const auto inspectActor=[&]{return Json::parse(document.at("text").get<std::string>()).at("objects").back();};
+        const auto transformBefore=inspectActor();
+        Json transformEvidence=Json::object();
+        for(const auto& [key,field]:std::array<std::pair<WPARAM,const char*>,3>{{{'W',"position"},{'E',"rotation"},{'R',"scale"}}}){
+            viewport.probe(WM_KEYDOWN,key,0);
+            const auto state=drawViewport();
+            const auto& segments=state.at("segments");
+            if(segments.empty())throw std::runtime_error("Native transform handles missing");
+            const auto& segment=segments.front();
+            const double x0=segment.at(1),y0=segment.at(2),x1=segment.at(3),y1=segment.at(4);
+            const double length=std::hypot(x1-x0,y1-y0);
+            const auto x=std::lround((x0+x1)*.5),y=std::lround((y0+y1)*.5);
+            const auto xEnd=x+std::lround(34*(x1-x0)/length),yEnd=y+std::lround(34*(y1-y0)/length);
+            viewport.probe(WM_LBUTTONDOWN,MK_LBUTTON,MAKELPARAM(x,y));
+            viewport.probe(WM_MOUSEMOVE,MK_LBUTTON,MAKELPARAM(xEnd,yEnd));
+            auto preview=std::move(cameraInput);cameraInput=nullptr;
+            if(preview.value("command",std::string())!="transformPreview")throw std::runtime_error("Native transform hit failed");
+            const auto frame=drawViewport(std::move(preview));
+            if((!frame.contains("translation")&&!frame.contains("sceneTransform"))||inspectActor()!=transformBefore)throw std::runtime_error("Native transform preview failed");
+            viewport.probe(WM_LBUTTONUP,0,MAKELPARAM(xEnd,yEnd));
+            auto commit=std::move(cameraInput);cameraInput=nullptr;drawViewport(std::move(commit));
+            const auto after=inspectActor();
+            if(after.at(field)==transformBefore.at(field))throw std::runtime_error(std::string("Native transform commit failed: ")+field);
+            for(const auto* other:{"position","rotation","scale"})
+                if(std::string(other)!=field&&after.at(other)!=transformBefore.at(other))throw std::runtime_error("Native transform changed a separate field");
+            command(Undo);
+            if(inspectActor()!=transformBefore)throw std::runtime_error("Native transform undo failed");
+            transformEvidence[field]=true;
+        }
+        viewport.probe(WM_KEYDOWN,'W',0);
         Json playEvidence;
         if(!env(L"HB_EDITOR_TEST_PLAYER").empty()){
             auto playReport=smoke;playReport+=L".play.json";
@@ -2582,7 +2628,7 @@ private:
         showDocument(request("document.open",{{"path","Assets/A_Native.hbaudioasset.json"}}));
         command(ShowAudioWaveform);assetCanvas.probePaint();
         if(assetCanvas.inspect().at("backend")!="D3D12")throw std::runtime_error("Native waveform present failed");
-        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"saved",!document.at("dirty").get<bool>()}}.dump());
+        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
 };

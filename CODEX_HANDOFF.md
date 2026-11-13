@@ -1,3 +1,7 @@
+## Windows 네이티브 변형 도구 · 2026-11-13
+
+기본·독립 D3D12 뷰포트에서 W/E/R로 월드 축 이동, 로컬 축 회전·크기 도구를 선택해요. 조작 핸들 드래그와 공용 장면 편집의 미리보기·한 번의 Undo를 연결했어요. `native/build/native-authoring-6KehBU/report.json`에서 실제 Win32 입력으로 세 편집을 확인했어요.
+
 ## Windows 네이티브 직교 뷰와 장면 직접 편집 · 2026-11-13
 
 기본·독립 뷰포트의 여섯 직교 방향과 원근/2D 전환, 선택 크기에 맞춘 초점, 화면 평면 이동 미리보기와 한 번의 Undo를 연결했어요. `native/build/native-authoring-XSQ68r/report.json`의 D3D12 편집·저장·플레이 묶음을 통과했어요.

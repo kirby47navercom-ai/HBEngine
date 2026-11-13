@@ -4,6 +4,7 @@ import {scenePrimitives} from '../prototype/scene-primitives.js';
 import {sceneRendering} from '../prototype/scene-rendering.js';
 import {createSky,applySceneEnvironment,disposeSceneEnvironment,syncSkyToCamera} from '../prototype/scene-environment.js';
 import {cameraScreenRect,fallbackGameCamera,previewGameCamera,selectGameCamera} from '../prototype/game-camera.js';
+import {editSceneTransform} from '../prototype/scene-editor.js';
 import {defaultSurface} from '../prototype/model.js';
 import {loadModel} from '../prototype/engine-services.js';
 import {loadHeadlessModel,disposeHeadlessModel} from './headless-model.mjs';
@@ -15,7 +16,7 @@ import {applyViewportDirection,fitViewportSelection,viewportDirections} from '..
 export function nativeEditorViewport(bridge,surface='native-editor') {
   const canvas={width:1,height:1,clientWidth:1,clientHeight:1,pixelRatio:1};
   let renderer, content, world, source, project, dimension, camera, orthoCamera, sky, visual, primitives, updateEnvironment;
-  let selection='', gizmo, models=new Set(), groups=new Map(), owners=new Map();
+  let selection='', gizmo, handles, models=new Set(), groups=new Map(), owners=new Map();
   let previewTransform;
   const target=new THREE.Vector3(0,.45,0), orbit=new THREE.Spherical();
   const ray=new THREE.Raycaster();
@@ -33,6 +34,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   const releaseVisual=()=>{
     if (!world) return;
     gizmo?.geometry.dispose();gizmo?.material.dispose();gizmo=null;
+    handles?.geometry.dispose();handles?.material.dispose();handles=null;
     disposeSceneEnvironment(world);
     for (const model of models) disposeHeadlessModel(model);
     for (const group of groups.values()) visual.dispose(group);
@@ -101,14 +103,14 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     updateEnvironment();
     source=data;content={objects,warnings};
   }
-  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false,flight,direction=''}) {
+  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false,flight,direction='',tool='translate',axis=-1,tangent}) {
     const assets=installNativeAssets({url:name=>'hbasset:'+encodeURIComponent(name),manifest:{width,height},readBytes:(name,opts)=>projectBytes(nextProject,name,opts)});
-    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction},assets);}
+    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction,tool,axis,tangent},assets);}
     finally{assets.restore();}
   }
-  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction},assets) {
+  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction,tool,axis,tangent},assets) {
     canvas.clientWidth=width;canvas.clientHeight=height;
-    if(previewTransform){previewTransform.group.position.copy(previewTransform.position);previewTransform=null;}
+    if(previewTransform){transform(previewTransform.actor,previewTransform.group);previewTransform=null;}
     await open(data,nextProject,assets);
     selection=selected;
     const aspect=width/height;
@@ -151,19 +153,41 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     const active=(cameraOutputs?selectGameCamera(content.objects,size,cameraId,current):cameraId&&previewGameCamera(content.objects,size,cameraId,current))||editorCamera;
     const views=active.userData.gameViews;
     world.updateMatrixWorld(true);
-    let translation;
-    if(!cameraId&&!cameraOutputs&&['translatePreview','translate'].includes(command)){
+    const authoring=!cameraId&&!cameraOutputs;
+    const screen=point=>{
+      const p=point.clone().project(active);
+      return [(p.x+1)*width/2,(1-p.y)*height/2];
+    };
+    const handleSize=origin=>{
+      const depth=-origin.clone().applyMatrix4(active.matrixWorldInverse).z;
+      return 120*(active.isOrthographicCamera?1:depth)/(height*active.projectionMatrix.elements[5]);
+    };
+    let translation,sceneTransform;
+    if(authoring&&['translatePreview','translate','transformPreview','transform'].includes(command)){
       const actor=content.objects.find(row=>row.id===selection),group=groups.get(selection);
-      if(group&&!actor?.locked&&[x,y,dx,dy].every(Number.isFinite)){
-        const center=group.getWorldPosition(new THREE.Vector3()).project(active);
+      if(group?.visible&&!actor.locked&&[x,y,dx,dy].every(Number.isFinite)){
+        const origin=group.getWorldPosition(new THREE.Vector3()),center=origin.clone().project(active);
         if(center.z>=-1&&center.z<=1){
-          const before=new THREE.Vector3(2*x/width-1,1-2*y/height,center.z).unproject(active);
-          const after=new THREE.Vector3(2*(x+dx)/width-1,1-2*(y+dy)/height,center.z).unproject(active);
-          translation=after.clone().sub(before).toArray();
-          if(command==='translatePreview'){
-            previewTransform={group,position:group.position.clone()};
-            const target=group.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3().fromArray(translation));
-            group.position.copy(group.parent.worldToLocal(target));group.updateWorldMatrix(false,true);
+          if(command.startsWith('translate')){
+            const before=new THREE.Vector3(2*x/width-1,1-2*y/height,center.z).unproject(active);
+            const after=new THREE.Vector3(2*(x+dx)/width-1,1-2*(y+dy)/height,center.z).unproject(active);
+            translation=after.sub(before).toArray();
+          }else if(Number.isInteger(axis)&&axis>=0&&axis<3&&Array.isArray(tangent)&&tangent.length===2&&tangent.every(Number.isFinite)){
+            const distance=dx*tangent[0]+dy*tangent[1];
+            if(tool==='translate'){
+              const length=handleSize(origin);
+              const from=screen(origin),to=screen(origin.clone().addScaledVector(new THREE.Vector3().setComponent(axis,1),length));
+              const pixels=Math.hypot(to[0]-from[0],to[1]-from[1]);
+              if(pixels>=6&&Math.abs(distance)>1e-6)translation=new THREE.Vector3().setComponent(axis,distance*length/pixels).toArray();
+            }else if(Math.abs(distance)>1e-6&&(tool==='rotate'||tool==='scale')){
+              sceneTransform={axis,value:tool==='rotate'?distance/60:Math.exp(THREE.MathUtils.clamp(distance/60,-12,12))};
+            }
+          }
+          if(command.endsWith('Preview')&&(translation||sceneTransform)){
+            const draft={...actor};
+            editSceneTransform(draft,content.objects,translation?{mode:'translate',value:translation}:{mode:tool,...sceneTransform});
+            previewTransform={group,actor};
+            transform(draft,group);group.updateWorldMatrix(false,true);
           }
         }
       }
@@ -198,6 +222,50 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       const bounds=new THREE.Box3().setFromObject(group);
       if (!bounds.isEmpty()) {gizmo=new THREE.Box3Helper(bounds,0x68abff);gizmo.userData.editorHelper=true;world.add(gizmo);}
     }
+    const segments=[];
+    const actor=content.objects.find(row=>row.id===selection);
+    if(handles)handles.visible=false;
+    if(authoring&&group?.visible&&!actor.locked){
+      const origin=group.getWorldPosition(new THREE.Vector3()),center=origin.clone().project(active);
+      if(Math.abs(center.x)<=1&&Math.abs(center.y)<=1&&Math.abs(center.z)<=1){
+        const length=handleSize(origin),positions=[],colors=[];
+        const localBasis=axis=>new THREE.Vector3().setComponent(axis,1).applyQuaternion(group.quaternion).transformDirection(group.parent.matrixWorld);
+        for(let axis=0;axis<3;axis++){
+          const color=new THREE.Color([0xff6669,0x62df91,0x70adff][axis]).toArray();
+          const count=tool==='rotate'?24:1;
+          const u=tool==='rotate'?localBasis((axis+1)%3):tool==='scale'?localBasis(axis):new THREE.Vector3().setComponent(axis,1);
+          const v=tool==='rotate'?localBasis((axis+2)%3):null;
+          const endpoint=index=>{
+            if(!v)return origin.clone().addScaledVector(u,length*(index||.18));
+            const angle=index*2*Math.PI/count;
+            return origin.clone().addScaledVector(u,length*Math.cos(angle)).addScaledVector(v,length*Math.sin(angle));
+          };
+          let from=endpoint(0);
+          for(let index=1;index<=count;index++){
+            const to=endpoint(index),a=screen(from),b=screen(to);
+            if(Math.hypot(b[0]-a[0],b[1]-a[1])>=1){
+              positions.push(...from.toArray(),...to.toArray());colors.push(...color,...color);
+              segments.push([axis,...a,...b]);
+            }
+            from=to;
+          }
+        }
+        if(positions.length){
+          if(!handles){
+            const geometry=new THREE.BufferGeometry();
+            geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(72*6),3));
+            geometry.setAttribute('color',new THREE.BufferAttribute(new Float32Array(72*6),3));
+            handles=new THREE.LineSegments(geometry,new THREE.LineBasicMaterial({vertexColors:true,linewidth:3,toneMapped:false,depthTest:false,depthWrite:false}));
+            handles.userData.editorHelper=true;handles.frustumCulled=false;handles.renderOrder=1000;world.add(handles);
+          }
+          const {position,color}=handles.geometry.attributes;
+          if(handles.geometry.drawRange.count!==positions.length/3||positions.some((value,index)=>Math.fround(value)!==position.array[index])){
+            position.array.set(positions);color.array.set(colors);position.needsUpdate=true;color.needsUpdate=true;
+          }
+          handles.geometry.setDrawRange(0,positions.length/3);handles.visible=true;
+        }
+      }
+    }
     renderer.setSize(width,height,false);
     const render=async()=>{
       syncSkyToCamera(sky,active,0);
@@ -213,7 +281,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       }
     }
     const {backend,shaderPreparation,calls,cameraViews}=renderer.hbDiagnostics();
-    return {backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',...(translation?{translation}:{}),warnings:content.warnings.slice(0,8)};
+    return {backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),warnings:content.warnings.slice(0,8)};
   }
   return {draw,close};
 }

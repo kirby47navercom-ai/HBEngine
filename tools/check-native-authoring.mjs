@@ -334,6 +334,7 @@ assert.equal(evidence.stateSurface.backend,'D3D12');
 assert.equal(evidence.sceneSurface.backend,'D3D12');
 assert.ok(evidence.sceneSurface.calls>0);
 assert.ok(evidence.sceneColors>=4);
+assert.deepEqual(evidence.sceneTransforms,{position:true,rotation:true,scale:true});
 assert.equal(evidence.timelineSurface.backend,'D3D12');
 assert.equal(evidence.widgetSurface.backend,'D3D12');
 await assert.rejects(fs.stat(path.join(process.env.HB_USER_DATA_DIR,'WebView2')),{code:'ENOENT'});

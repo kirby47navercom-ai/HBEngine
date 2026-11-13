@@ -22,6 +22,29 @@ export function setObjectMatrix(object,matrix){const position=new Vector3(),rota
 export function copySceneObjects(objects,ids){const result=copy(sceneDescendants(objects,ids)),included=new Set(result.map(o=>o.id));for(const object of result)if(object.parent&&!included.has(object.parent)){setObjectMatrix(object,sceneWorldMatrix(object,objects));delete object.parent;}return result;}
 export function selectionMatrices(objects,ids){const selected=new Set(ids);return objects.filter(object=>selected.has(object.id)&&!object.locked).filter(object=>{let parent=objects.find(o=>o.id===object.parent);while(parent){if(selected.has(parent.id)&&!parent.locked)return false;parent=objects.find(o=>o.id===parent.parent);}return true;}).map(object=>({id:object.id,matrix:sceneWorldMatrix(object,objects)}));}
 export function transformSceneSelection(objects,selection,delta){for(const item of selection){const object=objects.find(o=>o.id===item.id);if(!object)continue;const world=item.matrix.clone().premultiply(delta),parent=objects.find(o=>o.id===object.parent);if(parent)world.premultiply(sceneWorldMatrix(parent,objects).invert());setObjectMatrix(object,world);}}
+export function editSceneTransform(actor,objects,{mode,axis,value}){
+  if(mode==='translate'){
+    if(!Array.isArray(value)||value.length!==3||!value.every(Number.isFinite))throw Error('오브젝트 이동 거리를 확인하세요.');
+    const position=new Vector3().fromArray(value);
+    const parent=objects.find(object=>object.id===actor.parent);
+    if(parent){
+      const inverse=sceneWorldMatrix(parent,objects).invert();
+      inverse.setPosition(0,0,0);
+      position.applyMatrix4(inverse);
+    }
+    actor.position=position.add(new Vector3().fromArray(actor.position)).toArray();
+    return;
+  }
+  if(!Number.isInteger(axis)||axis<0||axis>2||!Number.isFinite(value))throw Error('변형 축과 값을 확인하세요.');
+  if(mode==='rotate'){
+    const basis=new Vector3().setComponent(axis,1);
+    const rotation=new Quaternion().setFromEuler(new Euler(...actor.rotation.map(angle=>angle*Math.PI/180)));
+    const angles=new Euler().setFromQuaternion(rotation.multiply(new Quaternion().setFromAxisAngle(basis,value)));
+    actor.rotation=[angles.x,angles.y,angles.z].map(angle=>angle*180/Math.PI);
+  }else if(mode==='scale'&&value>0){
+    actor.scale=actor.scale.map((size,index)=>index===axis?clampScaleAxis(size*value):size);
+  }else throw Error('오브젝트 변형 명령을 확인하세요.');
+}
 export function pasteSceneObjects(objects,copied,{offset=[0,0,0],newId=()=>crypto.randomUUID()}={}){
   const ids=new Map(copied.map(o=>[o.id,newId()])),names=new Set(objects.map(o=>o.name));
   const remap=value=>Array.isArray(value)?value.map(remap):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([key,item])=>[key,remap(item)])):typeof value==='string'&&ids.has(value)?ids.get(value):value;
