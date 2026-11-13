@@ -37,7 +37,10 @@ export async function installEditor({source=path.join(repository,'dist/HBEngine'
   source=await fs.realpath(source);destination=await canonicalDestination(destination);
   if(inside(repository,destination)||inside(source,destination))throw Error('사용자용 설치 폴더를 개발 저장소 밖에 지정하세요.');
   const files=await inventory(source);
-  for(const name of ['HBEngine.exe','WebView2Loader.dll','runtime/node.exe','tools/serve.mjs','prototype/index.html'])if(!files.some(file=>file.path===name))throw Error('배포 파일 누락: '+name);
+  const paths=new Set(files.map(file=>file.path)),native=paths.has('HBEngineNative.exe');
+  const executableName=native?'HBEngineNative.exe':'HBEngine.exe';
+  const required=native?[executableName,'HBNativePlayer.exe','tools/native-editor-session.mjs']:['HBEngine.exe','WebView2Loader.dll','tools/serve.mjs','prototype/index.html'];
+  for(const name of ['runtime/node.exe',...required])if(!paths.has(name))throw Error('배포 파일 누락: '+name);
   const bundleHash=sha(JSON.stringify(files)),versions=path.join(destination,'Versions'),directory=path.join(versions,bundleHash.slice(0,16));
   if(expectedBundleHash!==undefined&&bundleHash!==expectedBundleHash)throw Object.assign(Error('대기 중 배포본이 변경됐어요. 새 배포본으로 설치를 다시 요청하세요.'),{code:'INSTALL_SOURCE_CHANGED'});
   const deferred=active=>({deferred:true,reason:'running-install',bundleHash,source,destination,active,files:files.length}),busy=(await activeInstalledVersions(destination)).filter(p=>p.version!==path.basename(directory));if(busy.length)return deferred(busy);
@@ -57,7 +60,7 @@ export async function installEditor({source=path.join(repository,'dist/HBEngine'
       await fs.rm(staging,{recursive:true,force:true});throw error;
     }
   }
-  const executable=path.join(directory,'HBEngine.exe'),link=path.join(destination,'HBEngine.lnk');let desktopShortcut=null;
+  const executable=path.join(directory,executableName),link=path.join(destination,'HBEngine.lnk');let desktopShortcut=null;
   if(shortcut){
     const quote=value=>"'"+value.replaceAll("'","''")+"'";
     const script='$shell=New-Object -ComObject WScript.Shell; $link=$shell.CreateShortcut('+quote(link)+'); $link.TargetPath='+quote(executable)+'; $link.WorkingDirectory='+quote(directory)+'; $link.Description="HBEngine 사용자용 편집기"; $link.Save(); $desktop=[Environment]::GetFolderPath("Desktop"); if($desktop){$target=Join-Path $desktop "HBEngine 사용자용.lnk"; Copy-Item -LiteralPath '+quote(link)+' -Destination $target; [Console]::Write($target)}';
@@ -70,8 +73,11 @@ export async function installEditor({source=path.join(repository,'dist/HBEngine'
   return {directory,executable,shortcut:shortcut?link:null,desktopShortcut,projectAssociation:shortcut?executable:null,bundleHash,files:files.length,cleanup,nativeCache};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
-  const args=process.argv.slice(2),whenIdle=args.includes('--when-idle'),status=args.includes('--status'),positional=args.filter(a=>!['--when-idle','--status'].includes(a));if(positional.length>1||positional.some(a=>a.startsWith('--'))||whenIdle&&status)throw Error('사용법: node tools/install-editor.mjs [설치 폴더] [--when-idle 또는 --status]');
+  const args=process.argv.slice(2),whenIdle=args.includes('--when-idle'),status=args.includes('--status'),native=args.includes('--native-editor-only');
+  const positional=args.filter(a=>!['--when-idle','--status','--native-editor-only'].includes(a));
+  if(positional.length>1||positional.some(a=>a.startsWith('--'))||status&&(whenIdle||native))
+    throw Error('사용법: node tools/install-editor.mjs [설치 폴더] [--native-editor-only] [--when-idle 또는 --status]');
   if(status){const {queuedEditorInstallStatus}=await import('./queued-editor-install.mjs');console.log(JSON.stringify(await queuedEditorInstallStatus(positional[0]),null,2));process.exit(0);}
-  const result=await installEditor(positional.length?{destination:positional[0]}:{});
+  const result=await installEditor({destination:positional[0],source:native?path.join(repository,'dist/HBEngineNative'):undefined});
   if(whenIdle&&result.deferred){const {queueEditorInstall}=await import('./queued-editor-install.mjs');console.log(JSON.stringify(await queueEditorInstall(result),null,2));}else console.log(JSON.stringify(result,null,2));
 }

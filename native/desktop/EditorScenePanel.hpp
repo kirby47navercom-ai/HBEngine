@@ -160,6 +160,14 @@ public:
             handles.push_back({row.at(0).get<int>(),x,y,row.at(3).get<double>()-x,row.at(4).get<double>()-y});
         }
     }
+    void toScreen(POINT& point)const{ClientToScreen(window,&point);}
+    std::optional<POINT> dropPoint(POINT screen)const{
+        if(!IsWindowVisible(window))return {};
+        ScreenToClient(window,&screen);
+        const auto area=size();
+        if(screen.x<0||screen.y<0||screen.x>=area.cx||screen.y>=area.cy)return {};
+        return screen;
+    }
     SIZE size()const{RECT r{};GetClientRect(window,&r);return {r.right,r.bottom};}
     Json render(const Json& packet,bool development){
         const auto op=packet.at("op").get<std::string>();

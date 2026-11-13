@@ -192,6 +192,13 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
         }
       }
     }
+    let placement;
+    if(command==='place'&&authoring&&x>=0&&y>=0&&x<width&&y<height){
+      ray.setFromCamera({x:2*x/width-1,y:1-2*y/height},active);
+      const normal=new THREE.Vector3(0,dimension==='2d'?0:1,dimension==='2d'?1:0);
+      const plane=new THREE.Plane(normal,0);
+      placement=(ray.ray.intersectPlane(plane,new THREE.Vector3())||target).toArray();
+    }
     if (command==='pick') {
       selection='';
       const hitY=height-y-.5;
@@ -281,7 +288,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       }
     }
     const {backend,shaderPreparation,calls,cameraViews}=renderer.hbDiagnostics();
-    return {backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),warnings:content.warnings.slice(0,8)};
+    return {backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),warnings:content.warnings.slice(0,8)};
   }
   return {draw,close};
 }

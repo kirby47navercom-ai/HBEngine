@@ -49,7 +49,21 @@ const resource=path.join(build,nativeOnly?'HBEngineNative-resource.o':'HBEngine-
 await exec(windres,['--use-temp-file','-I',relative(build),'-I','native/desktop','native/desktop/HBEngine.rc',relative(resource)],{cwd:root,windowsHide:true,env:compilerEnv});
 const executable=path.join(output,nativeOnly?'HBEngineNative.exe':'HBEngine.exe');
 await exec(compiler,['-std=c++17','-O2','-s','-static','-municode','-mwindows','-I','native/include','-I',relative(jsonInclude),...(nativeOnly?['-DHB_NATIVE_EDITOR_ONLY']:['-I',relative(include)]),'native/desktop/HBEngine.cpp',relative(resource),'-o',relative(executable),'-lole32','-lshell32','-ldwmapi','-ladvapi32','-luuid','-ld2d1','-ldwrite','-lwindowscodecs','-lcomdlg32','-lcomctl32','-lgdi32'],{cwd:root,windowsHide:true,env:compilerEnv,maxBuffer:4194304});
+async function writeLicenses(){
+  await fs.mkdir(path.join(output,'licenses'),{recursive:true});
+  const nodeLicense=path.join(build,'Node-'+process.version+'-LICENSE.txt');await download('https://raw.githubusercontent.com/nodejs/node/'+process.version+'/LICENSE',nodeLicense);await fs.copyFile(nodeLicense,path.join(output,'licenses/Node.txt'));
+  const jsonLicense=path.join(build,'nlohmann-3.12.0-LICENSE.txt');await download('https://raw.githubusercontent.com/nlohmann/json/v3.12.0/LICENSE.MIT',jsonLicense);await fs.copyFile(jsonLicense,path.join(output,'licenses/nlohmann-json.txt'));
+  for(const name of ['gcc-libs','libwinpthread','crt']){
+    const source=path.join(path.dirname(path.dirname(compiler)),'share/licenses',name);
+    if(await exists(source))await fs.cp(source,path.join(output,'licenses/MinGW-'+name),{recursive:true});
+  }
+  for(const name of ['Three','ws','rapier2d-compat','rapier3d-compat']){
+    const dependency=name.startsWith('rapier')?'@dimforge/'+name:name.toLowerCase();
+    await fs.copyFile(path.join(root,'node_modules',dependency,'LICENSE'),path.join(output,'licenses',name+'.txt'));
+  }
+}
 if(nativeOnly){
+  await writeLicenses();
   const {stdout}=await exec(path.join(path.dirname(compiler),'objdump.exe'),['-p',relative(executable)],{cwd:root,windowsHide:true,env:compilerEnv,maxBuffer:16777216});
   if(/DLL Name: (?:WebView2|libgcc|libstdc\+\+|libwinpthread)/i.test(stdout))throw Error('네이티브 편집기 실행 의존성을 확인하세요.');
   await fs.mkdir(path.join(output,'runtime'),{recursive:true});
@@ -66,12 +80,7 @@ await (await import('./build-native-player.mjs')).buildNativePlayer(path.join(ou
 const {stdout}=await exec(path.join(path.dirname(compiler),'objdump.exe'),['-p',relative(executable)],{cwd:root,windowsHide:true,env:compilerEnv,maxBuffer:16777216});if(/DLL Name: (?:libgcc|libstdc\+\+|libwinpthread)/i.test(stdout))throw Error('MSYS2 런타임 DLL 의존성');
 await fs.mkdir(path.join(output,'runtime'),{recursive:true});await fs.copyFile(process.execPath,path.join(output,'runtime/node.exe'));await fs.copyFile(loader,path.join(output,'WebView2Loader.dll'));
 await fs.mkdir(path.join(output,'licenses'),{recursive:true});await fs.copyFile(path.join(sdk,'LICENSE.txt'),path.join(output,'licenses/WebView2-SDK.txt'));
-const nodeLicense=path.join(build,'Node-'+process.version+'-LICENSE.txt');await download('https://raw.githubusercontent.com/nodejs/node/'+process.version+'/LICENSE',nodeLicense);await fs.copyFile(nodeLicense,path.join(output,'licenses/Node.txt'));
-const jsonLicense=path.join(build,'nlohmann-3.12.0-LICENSE.txt');await download('https://raw.githubusercontent.com/nlohmann/json/v3.12.0/LICENSE.MIT',jsonLicense);await fs.copyFile(jsonLicense,path.join(output,'licenses/nlohmann-json.txt'));
-for(const name of ['gcc-libs','libwinpthread','crt']){const source=path.join(path.dirname(path.dirname(compiler)),'share/licenses',name);if(await exists(source))await fs.cp(source,path.join(output,'licenses/MinGW-'+name),{recursive:true});}
-await fs.copyFile(path.join(root,'node_modules/three/LICENSE'),path.join(output,'licenses/Three.txt'));
-await fs.copyFile(path.join(root,'node_modules/ws/LICENSE'),path.join(output,'licenses/ws.txt'));
-for(const name of ['rapier2d-compat','rapier3d-compat'])await fs.copyFile(path.join(root,'node_modules/@dimforge',name,'LICENSE'),path.join(output,'licenses',name+'.txt'));
+await writeLicenses();
 await (await import('./sync-desktop-content.mjs')).syncDesktopContent(output);
 const {ProjectService}=await import('./project-service.mjs');const sample=path.join(output,'Projects/QuietGarden');await new ProjectService(sample).init(true);
 const {ensureProjectManifest}=await import('./project-manifest.mjs');await ensureProjectManifest(sample,'QuietGarden');

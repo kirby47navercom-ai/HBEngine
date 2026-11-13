@@ -69,6 +69,8 @@ class NativeEditorShell {
     HANDLE playJob=nullptr;
     bool building=false,checkingBuild=false;
     Json graphClipboard;
+    std::wstring graphSearchProbe;
+    std::string draggedAsset;
     bool layoutMaximized=false;
     bool consoleVisible=false,contentDetachedOnStart=false;
     Json logItems=Json::array();
@@ -210,6 +212,7 @@ class NativeEditorShell {
         EnableWindow(folderBack,FALSE);EnableWindow(folderForward,FALSE);
         files=control(WC_LISTVIEWW,L"",WS_BORDER|LVS_REPORT|LVS_OWNERDATA|LVS_SINGLESEL|LVS_NOCOLUMNHEADER|LVS_SHOWSELALWAYS,Assets);
         SendMessageW(files,CCM_SETUNICODEFORMAT,TRUE,0);
+        if(!SetWindowSubclass(files,fileProcedure,1,reinterpret_cast<DWORD_PTR>(this)))throw std::runtime_error("콘텐츠 드래그를 초기화하지 못했어요.");
         LVCOLUMNW column{};column.mask=LVCF_WIDTH;column.cx=240;ListView_InsertColumn(files,0,&column);
         tabs=control(WC_TABCONTROLW,L"",WS_CLIPSIBLINGS,Tabs);
         if(!SetWindowSubclass(tabs,tabProcedure,1,reinterpret_cast<DWORD_PTR>(this)))throw std::runtime_error("문서 탭 입력을 초기화하지 못했어요.");
@@ -221,6 +224,7 @@ class NativeEditorShell {
         graph.attach(window,instance,[this](const Json& event){
             try{
                 if(event.at("event")=="edit")editGraph(event);
+                if(event.at("event")=="palette"||event.at("event")=="find")searchGraph(event,graph,model,graphSelection,nullptr);
                 if(event.at("event")=="comment"&&document.value("kind",std::string())=="blueprint"){
                     auto input=event;input["action"]="comment";editGraph(input);
                 }
@@ -1003,6 +1007,37 @@ class NativeEditorShell {
         auto edit=panel.spawnPosition();edit["action"]="paste";edit["clipboard"]=std::move(payload);
         if(owner)editWindowGraph(owner,documentWindows.at(owner),std::move(edit));else editGraph(std::move(edit));
     }
+    void dropAsset(const std::string& asset,POINT screen){
+        for(auto& [owner,item]:documentWindows)if(item.sceneView&&!item.source){
+            if(item.doc.at("path")==document.value("path",std::string())&&sourceChanged)continue;
+            if(const auto point=item.sceneView->dropPoint(screen)){
+                const auto frame=drawWindowScene(owner,item,{{"command","place"},{"x",point->x},{"y",point->y}});
+                if(!frame.contains("placement"))return;
+                auto input=documentWindowTarget(item);
+                input.update(Json{{"action","placeAsset"},{"asset",asset},{"id",item.selection},{"position",frame.at("placement")}});
+                auto result=request("scene.edit",input);
+                item.selection=result.at("selection");commitDocumentWindowChange(owner,item,std::move(result));return;
+            }
+        }
+        if(!sceneOpen()||sourceMode)return;
+        if(const auto point=viewport.dropPoint(screen)){
+            const auto frame=drawViewport({{"command","place"},{"x",point->x},{"y",point->y}});
+            if(frame.contains("placement"))editScene({{"action","placeAsset"},{"asset",asset},{"id",sceneSelection},{"position",frame.at("placement")}});
+        }
+    }
+    static LRESULT CALLBACK fileProcedure(HWND list,UINT message,WPARAM w,LPARAM l,UINT_PTR,DWORD_PTR ref){
+        auto& self=*reinterpret_cast<NativeEditorShell*>(ref);
+        if(message==WM_MOUSEMOVE&&!self.draggedAsset.empty()){SetCursor(LoadCursorW(nullptr,IDC_HAND));return 0;}
+        if(message==WM_LBUTTONUP&&!self.draggedAsset.empty()){
+            auto asset=std::move(self.draggedAsset);self.draggedAsset.clear();
+            POINT screen{short(LOWORD(l)),short(HIWORD(l))};ClientToScreen(list,&screen);
+            if(GetCapture()==list)ReleaseCapture();
+            try{self.dropAsset(asset,screen);}catch(const std::exception& error){self.report(error);}
+            return 0;
+        }
+        if(message==WM_CAPTURECHANGED||message==WM_CANCELMODE||message==WM_NCDESTROY)self.draggedAsset.clear();
+        return DefSubclassProc(list,message,w,l);
+    }
     static LRESULT CALLBACK tabProcedure(HWND owner,UINT message,WPARAM w,LPARAM l,UINT_PTR,DWORD_PTR ref){
         auto& self=*reinterpret_cast<NativeEditorShell*>(ref);
         if(message==WM_LBUTTONDOWN){
@@ -1267,9 +1302,10 @@ class NativeEditorShell {
                     try{
                         const auto action=event.at("event").get<std::string>();
                         if(action=="edit")editWindowGraph(owner,pane,event);
+                        else if(action=="palette"||action=="find")searchGraph(event,*pane.graph,pane.model,pane.selection,owner);
                         else if(action=="comment"&&pane.doc.at("kind")=="blueprint"){
                             auto input=event;input["action"]="comment";editWindowGraph(owner,pane,std::move(input));
-                        }else if(action=="select"&&pane.graphForm){pane.selection=event.at("id");refreshWindowGraphInputs(pane);}
+                        }else if(action=="select"){pane.selection=event.at("id");if(pane.graphForm)refreshWindowGraphInputs(pane);}
                         else if(action=="graphicsError")SetWindowTextW(pane.status,wide(event.at("message")).c_str());
                         else if(action=="key"&&event.value("ctrl",false)){
                             const auto key=event.at("key");
@@ -1434,6 +1470,89 @@ class NativeEditorShell {
         const auto result=DialogBoxIndirectParamW(instance,&layout.value,detached?detached:window,nameProcedure,reinterpret_cast<LPARAM>(&input));
         if(result==-1)throw std::runtime_error("Windows 이름 입력 창을 열 수 없어요.");
         return result==IDOK?input.value:L"";
+    }
+    struct SearchDialog{
+        const wchar_t* title;
+        HINSTANCE instance;
+        std::vector<std::wstring> labels,keys;
+        std::wstring probe;
+        HWND query=nullptr,list=nullptr;
+        std::optional<std::size_t> result;
+    };
+    static bool searchContains(const std::wstring& input,const std::wstring& query){
+        if(query.empty())return true;
+        return FindNLSStringEx(LOCALE_NAME_USER_DEFAULT,FIND_FROMSTART|NORM_IGNORECASE,input.c_str(),int(input.size()),query.c_str(),int(query.size()),nullptr,nullptr,nullptr,0)>=0;
+    }
+    static void filterSearch(SearchDialog& state){
+        const auto query=controlText(state.query);
+        SendMessageW(state.list,WM_SETREDRAW,FALSE,0);
+        SendMessageW(state.list,LB_RESETCONTENT,0,0);
+        for(std::size_t i=0;i<state.labels.size();++i){
+            if(!searchContains(state.labels[i],query)&&!searchContains(state.keys[i],query))continue;
+            const auto row=SendMessageW(state.list,LB_ADDSTRING,0,LPARAM(state.labels[i].c_str()));
+            if(row>=0)SendMessageW(state.list,LB_SETITEMDATA,row,i);
+        }
+        SendMessageW(state.list,LB_SETCURSEL,0,0);
+        SendMessageW(state.list,WM_SETREDRAW,TRUE,0);InvalidateRect(state.list,nullptr,TRUE);
+    }
+    static INT_PTR CALLBACK searchProcedure(HWND dialog,UINT message,WPARAM w,LPARAM l){
+        auto* state=reinterpret_cast<SearchDialog*>(GetWindowLongPtrW(dialog,DWLP_USER));
+        if(message==WM_INITDIALOG){
+            state=reinterpret_cast<SearchDialog*>(l);SetWindowLongPtrW(dialog,DWLP_USER,reinterpret_cast<LONG_PTR>(state));
+            SetWindowTextW(dialog,state->title);
+            RECT rect{};GetClientRect(dialog,&rect);
+            const auto add=[&](const wchar_t* type,const wchar_t* label,DWORD style,int x,int y,int width,int height,int id){
+                const auto child=CreateWindowExW(0,type,label,WS_CHILD|WS_VISIBLE|WS_TABSTOP|style,x,y,width,height,dialog,HMENU(INT_PTR(id)),state->instance,nullptr);
+                SendMessageW(child,WM_SETFONT,WPARAM(GetStockObject(DEFAULT_GUI_FONT)),TRUE);return child;
+            };
+            state->query=add(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,12,10,rect.right-24,25,10);
+            SendMessageW(state->query,EM_SETCUEBANNER,TRUE,LPARAM(L"이름 또는 키로 검색"));
+            state->list=add(L"LISTBOX",L"",LBS_NOTIFY|WS_BORDER|WS_VSCROLL,12,41,rect.right-24,rect.bottom-85,11);
+            add(L"BUTTON",L"선택",BS_DEFPUSHBUTTON,rect.right-174,rect.bottom-37,74,26,IDOK);
+            add(L"BUTTON",L"취소",BS_PUSHBUTTON,rect.right-90,rect.bottom-37,74,26,IDCANCEL);
+            filterSearch(*state);SetFocus(state->query);
+            if(!state->probe.empty()){
+                SetWindowPos(dialog,nullptr,-20000,-20000,0,0,SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOZORDER);
+                SetWindowTextW(state->query,state->probe.c_str());PostMessageW(dialog,WM_COMMAND,IDOK,0);
+            }
+            return FALSE;
+        }
+        if(message==WM_COMMAND&&state){
+            if(LOWORD(w)==10&&HIWORD(w)==EN_CHANGE&&state->list){filterSearch(*state);return TRUE;}
+            if(LOWORD(w)==IDOK||(LOWORD(w)==11&&HIWORD(w)==LBN_DBLCLK)){
+                const auto row=SendMessageW(state->list,LB_GETCURSEL,0,0);
+                if(row!=LB_ERR){state->result=SendMessageW(state->list,LB_GETITEMDATA,row,0);EndDialog(dialog,IDOK);}
+                else if(!state->probe.empty())EndDialog(dialog,IDCANCEL);
+                return TRUE;
+            }
+            if(LOWORD(w)==IDCANCEL){EndDialog(dialog,IDCANCEL);return TRUE;}
+        }
+        if(message==WM_CLOSE){EndDialog(dialog,IDCANCEL);return TRUE;}
+        return FALSE;
+    }
+    void searchGraph(Json event,EditorGraphPanel& panel,const Json& graphModel,const std::string& selection,HWND owner){
+        const bool find=event.at("event")=="find";
+        const auto& rows=graphModel.at(find?"nodes":"palette");
+        if(rows.empty())return;
+        SearchDialog input{find?L"그래프 노드 찾기":L"그래프 노드 추가",instance,{},{},std::move(graphSearchProbe)};
+        graphSearchProbe.clear();
+        for(const auto& row:rows){input.labels.push_back(wide(row.at("title")));input.keys.push_back(wide(row.at("id")));}
+        struct alignas(DWORD) Dialog {DLGTEMPLATE value;WORD menu=0,windowClass=0,title=0;} layout{};
+        layout.value.style=WS_POPUP|WS_CAPTION|WS_SYSMENU|DS_MODALFRAME|DS_CENTER;
+        layout.value.cx=285;layout.value.cy=196;
+        if(DialogBoxIndirectParamW(instance,&layout.value,owner?owner:window,searchProcedure,reinterpret_cast<LPARAM>(&input))==-1)
+            throw std::runtime_error("Windows 그래프 검색 창을 열 수 없어요.");
+        if(!input.result)return;
+        const auto key=rows.at(*input.result).at("id").get<std::string>();
+        if(find){panel.focusNode(key);return;}
+        event["action"]="add";event["key"]=key;event["id"]=selection;
+        if(key=="functionCall"){
+            const auto asset=chooseProjectAsset(L"머테리얼 함수",L".hbmaterialfunction.json");
+            if(asset.empty())return;
+            event["asset"]=asset;
+        }
+        if(owner)editWindowGraph(owner,documentWindows.at(owner),std::move(event));
+        else editGraph(std::move(event));
     }
     std::optional<std::size_t> chooseMenu(const std::vector<std::wstring>& labels){
         const auto menu=CreatePopupMenu();
@@ -2194,6 +2313,13 @@ class NativeEditorShell {
                     lstrcpynW(item.pszText,name.c_str(),item.cchTextMax);
                 }
             }
+            if(header->hwndFrom==files&&header->code==LVN_BEGINDRAG){
+                const auto index=reinterpret_cast<const NMLISTVIEW*>(l)->iItem;
+                if(index>=0&&index<int(entries.size())&&entries.at(index).at("kind")!="folder"){
+                    draggedAsset=entries.at(index).at("path");SetCapture(files);
+                }
+                return 0;
+            }
             if(header->hwndFrom==files&&header->code==LVN_KEYDOWN&&reinterpret_cast<const NMLVKEYDOWN*>(l)->wVKey==VK_F2){perform(RenameAsset);return 0;}
             if(header->hwndFrom==files&&(header->code==NM_DBLCLK||header->code==NM_RETURN)){
                 const int i=ListView_GetNextItem(files,-1,LVNI_SELECTED);
@@ -2378,6 +2504,18 @@ private:
             transformEvidence[field]=true;
         }
         viewport.probe(WM_KEYDOWN,'W',0);
+        const auto beforeAssetDrop=Json::parse(document.at("text").get<std::string>()).at("objects").size();
+        const auto surface=viewport.size();
+        POINT dropPoint{surface.cx/2,surface.cy/2};
+        viewport.toScreen(dropPoint);ScreenToClient(files,&dropPoint);
+        draggedAsset="Assets/S_Native.hbsprite.json";
+        SendMessageW(files,WM_LBUTTONUP,0,MAKELPARAM(dropPoint.x,dropPoint.y));
+        const auto placed=Json::parse(document.at("text").get<std::string>()).at("objects");
+        if(placed.size()!=beforeAssetDrop+1||placed.back().at("kind")!="sprite"||placed.back().at("id")!=sceneSelection)
+            throw std::runtime_error("Native scene asset drop failed: "+utf8(controlText(status)));
+        command(Undo);
+        if(Json::parse(document.at("text").get<std::string>()).at("objects").size()!=beforeAssetDrop)
+            throw std::runtime_error("Native scene asset drop undo failed");
         Json playEvidence;
         if(!env(L"HB_EDITOR_TEST_PLAYER").empty()){
             auto playReport=smoke;playReport+=L".play.json";
@@ -2472,7 +2610,9 @@ private:
         command(Save);
         showDocument(request("document.open",{{"path","Assets/Blueprints/BP_Garden.hbblueprint.json"}}));
         const auto count=model.at("nodes").size();
-        editGraph({{"action","add"},{"key","print"},{"x",420},{"y",340}});
+        graphSearchProbe=L"print";
+        graph.probePalette(456,376);
+        if(!graphSearchProbe.empty()||model.at("nodes").back().at("x")!=420)throw std::runtime_error("Native graph palette search failed");
         if(model.at("nodes").size()!=count+1)throw std::runtime_error("Blueprint node creation failed");
         command(Undo);if(model.at("nodes").size()!=count)throw std::runtime_error("Blueprint undo failed");
         command(Redo);
@@ -2481,8 +2621,10 @@ private:
         if(model.at("nodes").back().at("x")!=452||model.at("nodes").back().at("y")!=356)throw std::runtime_error("Blueprint native drag failed");
         editGraph({{"action","add"},{"key","print"},{"x",145},{"y",340}});
         const auto edgeCount=model.at("edges").size();
-        graph.probeConnect({{"node",model.at("nodes").back().at("id")},{"pin","then"}},{{"node",movedId},{"pin","exec"}});
+        graph.probeWire({{"node",model.at("nodes").back().at("id")},{"pin","then"}},{{"node",movedId},{"pin","exec"}});
         if(model.at("edges").size()!=edgeCount+1)throw std::runtime_error("Blueprint native connection failed");
+        graphSearchProbe=wide(movedId);graph.probeFind();
+        if(graphSelection!=movedId)throw std::runtime_error("Native graph node find failed");
         form.probe({{"action","edit"},{"i",0},{"text","네이티브 그래프 검사"}});
         if(document.at("text").get<std::string>().find("네이티브 그래프 검사")==std::string::npos)throw std::runtime_error("Blueprint input value edit failed");
         command(PreviewAsset);
@@ -2628,7 +2770,7 @@ private:
         showDocument(request("document.open",{{"path","Assets/A_Native.hbaudioasset.json"}}));
         command(ShowAudioWaveform);assetCanvas.probePaint();
         if(assetCanvas.inspect().at("backend")!="D3D12")throw std::runtime_error("Native waveform present failed");
-        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"saved",!document.at("dirty").get<bool>()}}.dump());
+        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
 };

@@ -32,9 +32,9 @@ Unreal/Unity의 외형뿐 아니라 제작 흐름·실행 의미·키보드/포�
 
 ## 실행과 검사
 
-Windows에서 **HBEngine.exe를 더블클릭**하면 프로젝트 허브가 열린다. `.hbproject`는 더블클릭하거나 EXE 위로 끌어 열 수 있고, 명령줄에서도 프로젝트 파일의 절대경로를 넘길 수 있다. 배포 폴더 `dist/HBEngine`에는 Node.js와 WebView2Loader.dll, 편집기 파일, 예제 프로젝트, 라이선스를 동봉한다. 이 폴더 전체를 함께 옮겨야 한다. 저장소 루트의 `HBEngine.exe`는 저장소의 편집기 파일과 `dist/HBEngine`의 동봉 런타임·loader를 사용한다.
+Windows 네이티브 편집기는 `dist/HBEngineNative/HBEngineNative.exe`에서 열어요. 파일 메뉴에서 프로젝트를 열거나 EXE에 `.hbproject`를 넘겨요. 배포 폴더에는 Node 런타임과 D3D12 편집기, 네이티브 게임 실행기, 라이선스를 포함해요. C++ 소스 빌드에는 C++17 컴파일러가 필요해요.
 
-Microsoft WebView2 Runtime이 필요하다. 없으면 [공식 Runtime 다운로드](https://developer.microsoft.com/microsoft-edge/webview2/)에서 설치한다. 배포 폴더를 실행할 때 Node.js/npm을 따로 설치할 필요는 없다. 사용자 C++ 코드를 빌드하려면 C++17 컴파일러가 별도로 필요하다.
+호환 편집기는 `dist/HBEngine/HBEngine.exe`이며 [WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/)을 사용해요. 브라우저 호환 게임 빌드용 `HBPlayer.exe`도 이 폴더에 들어가요.
 
 엔진 개발과 동시에 사용할 때는 `npm run desktop:install`로 저장소 밖의 사용자용 설치본을 만든다. 바탕 화면의 **HBEngine 사용자용** 바로가기는 고정된 배포본을 열고, 개발 빌드와 WebView 프로필·C++ 캐시·포트를 분리한다. 개발 중 사용자용 설치본과 게임 원본을 변경하지 않는다. 업데이트는 새 버전 폴더로 설치하고 사용자 요청에 따라 전환한다. [동시 사용·저장·검증 방식](docs/USER_DEVELOPMENT_SEPARATION.md).
 
@@ -42,11 +42,11 @@ Microsoft WebView2 Runtime이 필요하다. 없으면 [공식 Runtime 다운로�
 
 ```powershell
 npm install
-npm run desktop:build
-.\HBEngine.exe
+npm run desktop:build -- --native-editor-only
+.\dist\HBEngineNative\HBEngineNative.exe
 ```
 
-빌드는 `HBEngine.exe`, `dist/HBEngine/HBEngine.exe`와 게임 패키지에 쓰는 `dist/HBEngine/HBPlayer.exe`를 만든다. 빌드에 사용하는 Node 실행 파일을 동봉하고 공식 WebView2 SDK 1.0.4258.31의 x64 loader를 사용한다. Node·WebView2 SDK·Three·Rapier·nlohmann/json·사용한 MinGW 런타임 고지는 `dist/HBEngine/licenses`에 포함하고 게임 패키지에도 동봉한다. 실행 로그·최근 프로젝트·WebView2 데이터는 기본적으로 `%LOCALAPPDATA%/HBEngine`에 둔다. 파일 연결만 다시 등록하려면 `.\HBEngine.exe --register`를 실행한다.
+사용자용 네이티브 설치는 `npm run desktop:install -- --native-editor-only`로 실행해요. 바로가기와 `.hbproject` 파일 연결은 설치된 실행기를 열어요. `npm run desktop:build`는 기존 호환 배포본을 빌드해요. [네이티브 편집기 조작과 빌드](docs/EDITOR_NATIVE.md).
 
 브라우저 개발 미리보기는 다음 명령으로 실행한다.
 
@@ -93,17 +93,17 @@ npm run api:generate는 공통 라이브러리 헤더와 노드 메타데이터�
 
 편집기에서 **파일 → 빌드 프로필**을 열고 실행할 장면을 포함한다. 첫 활성 장면이 시작 장면이며 목록 순서는 드래그나 위/아래 버튼으로 바꾼다. 프로필은 `Settings/BuildProfiles.json`에 저장한다. **모두 저장하고 빌드**는 열린 에셋을 저장한 뒤 실행하고, **검사**는 저장된 디스크 콘텐츠만 확인한다. 프로필 창에 포커스가 있으면 `Ctrl+S`는 프로필을 저장한다.
 
-완료한 `Builds/<profile id>/<build id>` **폴더 전체**를 옮겨 `Game.exe`를 실행한다. Node와 사전 빌드 C++ worker를 동봉하므로 게임 실행에는 별도 Node/npm/C++ 컴파일러가 필요하지 않다. Microsoft WebView2 Runtime은 필요하다. `Esc`로 계속·전체 화면·종료 메뉴를 열며 게임 저장은 패키지를 수정하지 않고 `%LOCALAPPDATA%/HBEngine/Games/<project UUID>`에 보관한다.
+완료한 `Builds/<profile id>/<build id>` 폴더 전체를 옮겨 빌드 보고서에 표시된 게임 EXE를 실행해요. Windows 기본 빌드는 네이티브 D3D12이며 실행에 필요한 Node와 C++ 모듈을 동봉해요. 호환 프로필에서 WebView 실행기를 선택한 게임은 WebView2 Runtime을 사용해요. 게임 저장은 `%LOCALAPPDATA%/HBEngine/Games/<project UUID>`에 보관해요.
 
 디스크 프로젝트를 CLI로 검사/빌드할 수도 있다. C++가 연결된 프로젝트는 제작 단계에 C++17 컴파일러가 필요하다.
 
 ```powershell
-npm run desktop:build
+npm run desktop:build -- --native-editor-only
 npm run build:game -- C:/Games/MyGame/MyGame.hbproject windows --dry-run
 npm run build:game -- C:/Games/MyGame/MyGame.hbproject windows
 ```
 
-패키지는 활성 Scene과 모든 비장면 Assets를 포함하고 원본 미디어 형식을 유지한다. 없는 참조, 제외된 Scene 참조, 디스크와 BP 등록 C++ 소스의 불일치를 사전 검사한다. 플랫폼 변환·텍스처/음향 압축·미사용 에셋 제거·chunk/patch·installer는 추가 제작 대상이다. 개발 구성은 사용자 worker의 디버그 정보와 실행 보고를, 배포 구성은 worker 최적화/기호 제거를 적용한다. 두 구성 모두 현재 WebView2/WebGL2 실행 경로다.
+Windows 네이티브 패키지는 콘텐츠를 `game.hbdata` 바이너리 아카이브에 묶어요. 빌드가 누락된 참조와 C++ 소스 불일치를 사전 검사해요. 개발 구성은 디버그 정보와 실행 보고를, 배포 구성은 C++ 최적화와 기호 제거를 적용해요.
 
 ## 조작과 저장
 

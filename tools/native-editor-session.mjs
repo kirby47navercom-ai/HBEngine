@@ -3,19 +3,24 @@ import {createReadStream} from 'node:fs';
 import path from 'node:path';
 import readline from 'node:readline';
 import {pathToFileURL} from 'node:url';
-import {AssetDocuments, assetSuffix, assetTypes, createAsset, validAsset} from '../prototype/asset-documents.js';
+import {AssetDocuments, assetSuffix, assetTitle, assetTypes, createAsset, validAsset} from '../prototype/asset-documents.js';
 import {documentRevision, patchAsset} from '../prototype/automation.js';
 import {blueprintClipboard, catalog, defaultInputValue, defaultsFor, effectivePins, graphContext, makeComment, makeDefinition, makeNode, nodeTitle, pasteNodes, sampleTimeline, timelineLength, typeColors, variableTypes} from '../prototype/blueprint-model.js';
 import {connectAutomatic} from '../prototype/blueprint-connections.js';
-import {connectMaterial, copyMaterialNodes, disconnectMaterial, makeMaterialFunctionCall, makeMaterialNode, materialCatalog, materialFunctionDependencies, materialFunctionTypes, materialGraph, materialLiteralDefault, materialPins, materialPortName, newMaterialLayer, normalizedMaterialEdges, pasteMaterialNodes, refreshMaterialFunctionCall, removeMaterialNodes, resolveMaterialPreview, validMaterialLayer} from '../prototype/material-runtime.js';
+import {connectMaterial, copyMaterialNodes, disconnectMaterial, evaluateMaterial, resolveMaterialAsset, makeMaterialFunctionCall, makeMaterialNode, materialCatalog, materialFunctionDependencies, materialFunctionTypes, materialGraph, materialLiteralDefault, materialPins, materialPortName, newMaterialLayer, normalizedMaterialEdges, pasteMaterialNodes, refreshMaterialFunctionCall, removeMaterialNodes, resolveMaterialPreview, validMaterialLayer} from '../prototype/material-runtime.js';
 import {blueprintClasses} from '../prototype/class-types.js';
+import {blueprintClassDefinition,blueprintClassKind} from '../prototype/blueprint-class-defaults.js';
 import {nativeEntries, nativeSourceReference, readNativeHeader} from '../prototype/native-model.js';
 import {assetKind} from './project-service.mjs';
 import {createProject, readProjectManifest, recentProjects, rememberProject} from './project-manifest.mjs';
 import {createPlacedObject,placementCatalog} from '../prototype/placement-catalog.js';
-import {addSceneComponent,componentDefinitions,componentPropertyVisible} from '../prototype/scene-components.js';
+import {addSceneComponent,componentDefinitions,componentPropertyVisible,defaultsForObject,installBlueprintComponents,objectComponents} from '../prototype/scene-components.js';
 import {addMobileControls,addWidget,duplicateWidget,removeWidget,reparentWidget,setWidgetAnchorPreset,transformWidgetSlot,widgetContainers,widgetTypes} from '../prototype/ui-assets.js';
-import {projectBytes} from './project-bytes.mjs';
+import {projectBytes,projectText} from './project-bytes.mjs';
+import {createPrefabInstance} from '../prototype/prefab-instances.js';
+import {resolvePrefab} from '../prototype/prefab-variants.js';
+import {validateSpriteRigProgram} from '../prototype/sprite-rig-assets.js';
+import {worldAssetTypes} from '../prototype/world-assets.js';
 import {copySceneObjects,editSceneTransform,pasteSceneObjects,setObjectMatrix,validParent} from '../prototype/scene-editor.js';
 import {sceneWorldMatrix} from '../prototype/scene-runtime.js';
 import {addState,behaviorNodes,makeBehaviorNode,makeSequenceTrack,removeState} from '../prototype/gameplay-assets.js';
@@ -157,6 +162,80 @@ export function nativeEditorSession(bridge) {
     cppJob=undefined;
     nativeMetadata=new WeakMap();
     return {file:record.file, name:record.manifest.name, startupScene:record.manifest.startupScene};
+  }
+  async function placeSceneAsset(next,doc,asset,actor,position){
+    if(typeof asset!=='string'||!Array.isArray(position)||position.length!==3||!position.every(Number.isFinite))
+      throw Error('배치할 에셋과 위치를 확인하세요.');
+    const kind=assetKind(asset);
+    const readText=async name=>{
+      const open=documents.items.get(name);
+      return open?.kind==='text'?open.data:projectText(project(),name);
+    };
+    const read=async name=>documents.items.get(name)?.data??JSON.parse((await projectText(project(),name)).replace(/^\uFEFF/,''));
+    const data=Object.hasOwn(assetSuffix,kind)?await read(asset):null;
+    if(data&&!validAsset(kind,data))throw Error('에셋 형식을 확인하세요.');
+    const attached={navmesh:'NavigationMesh',ability:'AbilitySystem',animgraph:'AnimationGraph',behaviortree:'BehaviorTree',statemachine:'StateMachine',montage:'MontagePlayer',sequenceasset:'SequencePlayer'}[kind];
+    if(attached||kind==='material'||kind==='materialinstance'){
+      if(!actor||actor.locked)throw Error('잠겨 있지 않은 장면 오브젝트를 먼저 선택하세요.');
+      if(attached){
+        const component=objectComponents(actor).find(row=>row.type===attached)||addSceneComponent(actor,attached);
+        component.properties[kind==='ability'?'ability':'asset']=asset;
+      }else{
+        actor.materialSurface=evaluateMaterial(await resolveMaterialAsset(data,read));
+        actor.materialAsset=asset;
+        const renderer=objectComponents(actor).find(row=>row.type==='MeshRenderer');
+        if(renderer)renderer.properties.material=asset;
+      }
+      return actor.id;
+    }
+    if(kind==='prefab'){
+      const dependencies=new Set();
+      const prefab=await resolvePrefab(asset,name=>{dependencies.add(name);return read(name);},{validate:row=>validAsset('prefab',row)});
+      const rows=createPrefabInstance(asset,{...prefab,dependencies:[...dependencies],sourceRevision:await documentRevision(data)});
+      const root=rows.find(row=>row.prefabLink);
+      root.position=root.position.map((value,index)=>value+position[index]);
+      next.objects.push(...rows);return root.id;
+    }
+    let object;
+    const make=(kind,group='WORLD')=>({id:crypto.randomUUID(),name:assetTitle(asset),kind,group,position:[...position],rotation:[0,0,0],scale:[1,1,1],visible:true,components:defaultsForObject(kind)});
+    if(kind==='blueprint'){
+      const root=await createBlueprintResolver(read,readText)(asset),parent=root.settings?.parentClass||'Actor';
+      if(!blueprintClassDefinition(parent,root.native)?.placeable)throw Error('이 클래스는 장면에 배치할 수 없어요.');
+      object=make(blueprintClassKind(parent,root.components,root.native));
+      object.name=root.name;object.blueprint=root.name;object.blueprintAsset=asset;object.components=[];
+      installBlueprintComponents([object],[{self:object.id,root}]);
+    }else if(kind==='model'&&/\.(?:gltf|glb|obj|fbx)$/i.test(asset)){
+      await project().read(asset);
+      object=make('model');object.asset=asset;
+    }else if(Object.hasOwn(worldAssetTypes,kind)){
+      object=make('empty');
+      addSceneComponent(object,'MeshRenderer').properties.mesh=asset;
+      addSceneComponent(object,'WorldCollision').properties.enabled=kind!=='foliage';
+    }else if(kind==='scene'){
+      if(asset===doc.path)throw Error('현재 장면을 자기 안에 배치할 수 없어요.');
+      object=make('empty','LEVELS');
+      Object.assign(addSceneComponent(object,'LevelStreaming').properties,{scene:asset,mode:'always'});
+    }else if(kind==='tilemap'){
+      object=make('tilemap');
+      object.components.find(row=>row.type==='TilemapRenderer').properties.tilemap=asset;
+    }else if(kind==='audioasset'){
+      object=make('audio');
+      Object.assign(object.components.find(row=>row.type==='AudioSource').properties,{clip:asset,playOnStart:data.autoplay});
+    }else if(['texture','sprite','spriterig','spriteanimation'].includes(kind)){
+      object=make('sprite');
+      const sprite=object.components.find(row=>row.type==='SpriteRenderer').properties;
+      if(kind==='texture'){await project().read(asset);sprite.texture=asset;}
+      else if(kind==='sprite')sprite.sprite=asset;
+      else if(kind==='spriterig'){
+        validateSpriteRigProgram(data);sprite.sprite=data.sprite;
+        addSceneComponent(object,'SpriteSkin').properties.rig=asset;
+        if(data.solvers?.length)addSceneComponent(object,'IKManager2D');
+      }else{
+        sprite.sprite=data.frames[0]?.sprite||'';
+        addSceneComponent(object,'Animator').properties.clip=asset;
+      }
+    }else throw Error('장면에 배치할 수 없는 에셋이에요.');
+    next.objects.push(object);return object.id;
   }
   function graphFor(doc, data, view) {
     if (!graphKind(doc)) throw Error('노드 그래프 문서를 선택하세요.');
@@ -644,7 +723,7 @@ export function nativeEditorSession(bridge) {
     'editor.redo': ({path,expectedRevision}) => restore('future','history',path,expectedRevision),
     'scene.catalog': () => ({placements:placementCatalog.map(({key,label,category})=>({id:key,label,group:category})),components:Object.keys(componentDefinitions)}),
     'scene.hierarchy': () => scene().data.objects.map(({id,name,kind,parent,visible,locked,components})=>({id,name,kind,parent,visible,locked,camera:components?.some(c=>c.type==='Camera'&&c.properties?.enabled!==false)??kind==='camera'})),
-    'scene.edit': async ({path,action,id,target,key,delta,axis,value,expectedRevision}) => {
+    'scene.edit': async ({path,action,id,target,key,delta,axis,value,asset,position,expectedRevision}) => {
       const doc=targetDocument(path);
       if(doc.kind!=='scene')throw Error('장면 문서를 선택하세요.');
       await check(doc,expectedRevision);
@@ -653,7 +732,8 @@ export function nativeEditorSession(bridge) {
       let selection=id;
       if (action==='add') {
         const created=createPlacedObject(key);next.objects.push(created);selection=created.id;
-      } else {
+      } else if(action==='placeAsset')selection=await placeSceneAsset(next,doc,asset,actor,position);
+      else {
         if (!actor) throw Error('오브젝트를 선택하세요.');
         if (actor.locked&&action!=='lock'&&action!=='visible') throw Error('오브젝트 잠금을 해제하세요.');
         if (action==='lock') actor.locked=!actor.locked;
