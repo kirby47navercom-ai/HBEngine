@@ -248,3 +248,7 @@ DX11 회귀: `check-native-scene-render --post-only`를 수정 전·후 헤더�
 - 수정: 변경되지 않은 형상(같은 index·attribute 객체와 버전)은 JSON 서명을 만들지 않고 건너뛰어요. 그리기 비교는 저장한 값의 키 목록을 한 번만 만들고 숫자 배열은 재귀 없이 비교해요.
 - 검증: `check-native-draw-history`(변경 전/후 렌더러가 61프레임 동안 같은 패킷), `check-native-geometry-stream-240`, `check-native-frame-307`, `check-native-material-packing`, `check-native-deformation`, `check-native-particles` 통과. 변경 전 작업 트리와 번갈아 3회씩: 중앙값 84.2→129.7 FPS(프레임 작업 11.44→7.76ms). PC가 다른 게임 실행 중(CPU 40~80%)이라 1회차는 반대로 나올 만큼 흔들림이 커요.
 - 남은 큰 비용: 그리기 비교(`same`)는 여전히 약 11%, 매 프레임 `updateMatrixWorld`, 물리 `sync`의 런타임 데이터 깊은 비교. `check-native-2d`는 변경 전에도 "bounded upload packets" 단계에서 실패해요.
+- 2차: 데워진 그리기 기록과 정적 물리 충돌체 스냅샷을 모양별 생성형 비교기(`runtimeDataMatcher`)로 비교해요. ABBA 4회 평균 153.8→162.9 FPS.
+- 3차: 정적 충돌체 변경 확인을 매 프레임 JSON 대신 값 목록 비교로, 접촉 쌍 키의 JSON 생성을 4회→2회로 줄였어요. 2D 마스크·2D 조명이 없는 머테리얼은 2D 설정 배열(약 10개)을 만들지 않아요. ABBA 4회 평균 183.0→191.8 FPS(중앙 프레임 5.24→5.02ms), 2회차는 반대로 나와 잡음 범위 안의 개선이에요.
+- 3차 프로파일에서 확인한 것: 데워진 그리기 비교는 항상 생성형 비교기로 끝나고(범용 비교로 넘어가는 경우 0), 매 프레임 다시 JSON을 만드는 그리기 약 30개는 실제로 world/normal 행렬이 바뀌는 물체예요. `scene.updateMatrixWorld`가 한 프레임에 세 번(2D 준비 시작, `TwoDRendering.prepare`, 인코딩) 불려 약 7%예요. 사이에 바퀴·천·로프·LOD 갱신이 위치를 바꿀 수 있어 그대로 두었어요.
+- 되돌린 시도: 반사 프로브 경계 상자 변환을 중심·반경식으로 바꾸면 약 1.4% 줄지만, 8꼭짓점 `applyMatrix4`와 마지막 자리 비트가 달라 `check-probe-instances-1050`의 정확 일치 조건을 깨서 넣지 않았어요. `check-probe-selection-1010`은 변경 전에도 실패해요.

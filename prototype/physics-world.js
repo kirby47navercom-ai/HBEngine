@@ -170,8 +170,10 @@ export function createRigidPhysics(objects,options={}){
   function fixedContacts(space,dim){
     // Rapier skips fixed/fixed event pairs. Preserve editor-authored static
     // trigger/hit events with cached exact tests, using a conservative sweep.
-    const fixed=[...space.colliders.values()].filter(c=>!c.softBody&&c.collider.parent()?.isFixed()),signature=JSON.stringify(fixed.map(c=>[c.collider.handle,c.signature,array(c.collider.translation()),c.collider.rotation()]));
-    if(signature===space.fixedSignature)return space.fixedContacts;space.fixedSignature=signature;
+    // Flat value list compared element-wise: no per-frame JSON of every static collider.
+    const fixed=[...space.colliders.values()].filter(c=>!c.softBody&&c.collider.parent()?.isFixed()),signature=[];
+    for(const c of fixed){const t=c.collider.translation(),r=c.collider.rotation();signature.push(c.collider.handle,c.signature,t.x,t.y,t.z??0);if(typeof r==='number')signature.push(r);else signature.push(r.x,r.y,r.z,r.w);}
+    const old=space.fixedSignature;if(old&&old.length===signature.length&&old.every((v,i)=>v===signature[i]))return space.fixedContacts;space.fixedSignature=signature;
     const bounds=fixed.map(c=>{const p=c.collider.translation(),shape=c.collider.shape,radius=c.radius??(shape.radius!==undefined?shape.radius+(shape.halfHeight||0):Math.hypot(...array(shape.halfExtents).slice(0,dim)));return {c,position:array(p),radius,min:p.x-radius,max:p.x+radius};}).sort((a,b)=>a.min-b.min),contacts=[];
     for(let i=0;i<bounds.length;i++)for(let j=i+1;j<bounds.length&&bounds[j].min<=bounds[i].max;j++){
       const a=bounds[i],b=bounds[j],c=a.c,d=b.c;if(!pairAllowed(space,c.collider.handle,d.collider.handle)||Math.hypot(...a.position.slice(0,dim).map((v,k)=>v-b.position[k]))>a.radius+b.radius)continue;
@@ -182,7 +184,7 @@ export function createRigidPhysics(objects,options={}){
   function collectContacts(){
     const result=new Map();
     for(const [dim,space] of spaces)for(const c of space.colliders.values()){
-      const add=(other,trigger)=>{const d=space.colliders.get(other.handle);if(!d||!pairAllowed(space,c.collider.handle,d.collider.handle))return;const ids=[c.object.id,c.component.id,d.object.id,d.component.id],key=dim+':'+JSON.stringify(JSON.stringify(ids.slice(0,2))<JSON.stringify(ids.slice(2))?ids:[ids[2],ids[3],ids[0],ids[1]]);if(result.has(key))return;
+      const add=(other,trigger)=>{const d=space.colliders.get(other.handle);if(!d||!pairAllowed(space,c.collider.handle,d.collider.handle))return;const x=JSON.stringify([c.object.id,c.component.id]),y=JSON.stringify([d.object.id,d.component.id]),key=dim+':'+(x<y?x+y:y+x);if(result.has(key))return;
         const otherPosition=array(d.collider.translation());let normal=[0,0,0],position=array(c.collider.translation()).map((v,i)=>(v+otherPosition[i])/2),penetration=0,contact=false;
         if(trigger)contact=space.world.intersectionPair(c.collider,d.collider);
         else space.world.contactPair(c.collider,d.collider,(manifold,flipped)=>{if(!manifold.numContacts())return;contact=true;normal=array(manifold.normal()).map(v=>v*(flipped?1:-1));penetration=Math.max(penetration,...Array.from({length:manifold.numContacts()},(_,i)=>-manifold.contactDist(i)));if(manifold.numSolverContacts())position=array(manifold.solverContactPoint(0));});
