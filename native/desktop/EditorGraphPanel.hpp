@@ -5,7 +5,7 @@
 
 class EditorGraphPanel final : public EditorPanelBase {
     struct Pin {std::string id;std::wstring label;D2D1_COLOR_F color;};
-    struct Node {std::string id;std::wstring title;float x,y;std::vector<Pin> inputs,outputs;};
+    struct Node {std::string id;std::wstring title;float x,y;std::vector<Pin> inputs,outputs;bool breakpoint;};
     struct Endpoint {std::string node,pin;bool output;};
     std::vector<Node> nodes;
     std::unordered_map<std::string,std::size_t> nodeIndex;
@@ -94,6 +94,7 @@ class EditorGraphPanel final : public EditorPanelBase {
             if(at.x+w<0||at.y+h<0||at.x>bounds[2]||at.y>bounds[3])continue;
             box(at.x,at.y,w,h,theme.field,node.id==selected?theme.accent:theme.line);
             fill(at.x+1,at.y+1,w-2,header*zoom,theme.raised);
+            if(node.breakpoint){brush->SetColor(D2D1::ColorF(0xef6368));canvas->FillEllipse(D2D1::Ellipse({at.x+w-13*zoom,at.y+header*zoom*.5f},5*zoom,5*zoom),brush);}
             label(node.title,bold,at.x+8,at.y,w-16,header*zoom,theme.text);
             for(bool output:{false,true}){
                 const auto& list=output?node.outputs:node.inputs;
@@ -184,6 +185,7 @@ class EditorGraphPanel final : public EditorPanelBase {
             if(w=='C'&&!(GetKeyState(VK_CONTROL)&0x8000)){
                 auto event=spawnPosition();event["event"]="comment";event["id"]=selected;emit(event);return 0;
             }
+            if(w==VK_F9&&!selected.empty()){emit({{"event","edit"},{"action","breakpoint"},{"id",selected}});return 0;}
             if(w==VK_DELETE&&!selected.empty()){emit({{"event","edit"},{"action","delete"},{"id",selected}});return 0;}
             if(w==VK_ESCAPE){pending.reset();if(GetCapture()==window)ReleaseCapture();InvalidateRect(window,nullptr,FALSE);return 0;}
             if(w==VK_SPACE){auto event=spawnPosition();event["event"]="palette";emit(event);return 0;}
@@ -199,7 +201,7 @@ public:
         nodes.reserve(model.at("nodes").size());nodeIndex.reserve(model.at("nodes").size());
         for(const auto& n:model.at("nodes")){
             auto id=n.at("id").get<std::string>();nodeIndex.emplace(id,nodes.size());
-            nodes.push_back({std::move(id),wide(n.at("title")),n.at("x"),n.at("y"),pins(n.at("inputs")),pins(n.at("outputs"))});
+            nodes.push_back({std::move(id),wide(n.at("title")),n.at("x"),n.at("y"),pins(n.at("inputs")),pins(n.at("outputs")),n.value("breakpoint",false)});
         }
         edges=model.at("edges");comments=model.at("comments");InvalidateRect(window,nullptr,FALSE);
     }

@@ -261,7 +261,7 @@ export function nativeEditorSession(bridge) {
     const nodes = graph.nodes.map(node => {
       const pins = bp ? {inputs:effectivePins(node,'in',graph),outputs:effectivePins(node,'out',graph)} : materialPins(node,graph);
       const x = bp ? node.position.x : node.px ?? (Math.abs(node.x) < 2 ? node.x * 580 : node.x);
-      return {id:node.id, title:bp ? nodeTitle(node,graph) : node.portName || node.title || node.key || node.id, x, y:bp ? node.position.y : node.y,
+      return {id:node.id,breakpoint:bp&&node.breakpoint===true, title:bp ? nodeTitle(node,graph) : node.portName || node.title || node.key || node.id, x, y:bp ? node.position.y : node.y,
         inputs:pins.inputs.map(packPin), outputs:pins.outputs.map(packPin)};
     });
     const palette = (bp ? catalog.filter(row => row.kind !== 'variable' && (row.kind!=='event'||view==='event'&&!graph.nodes.some(node=>node.key===row.key))) : materialCatalog.filter(row => graph.mode==='function'
@@ -271,6 +271,11 @@ export function nativeEditorSession(bridge) {
     if(bp){
       for(const variable of data.variables)for(const prefix of ['get','set'])palette.push({id:prefix+'Variable:'+variable.id,title:(prefix==='get'?'Get ':'Set ')+variable.name});
       for(const [kind,items] of [['callFunction',data.functions],['callMacro',data.macros]])for(const definition of items||[])if(definition.id!==view)palette.push({id:kind+':'+definition.id,title:definition.name});
+      const symbolActions={dispatcherCall:'Call',dispatcherBind:'Bind',dispatcherUnbind:'Unbind',dispatcherEvent:'Event',interfaceCall:'Message'};
+      for(const [kind,items] of [['dispatcher',data.dispatchers],['interface',data.interfaces]])for(const symbol of items||[]){
+        const actions=kind==='interface'?['interfaceCall']:['dispatcherCall','dispatcherBind','dispatcherUnbind',...(view==='event'&&!graph.nodes.some(node=>node.key==='dispatcherEvent'&&node.symbolId===symbol.id)?['dispatcherEvent']:[])];
+        for(const key of actions)palette.push({id:key+':'+symbol.id,title:symbolActions[key]+' '+symbol.name});
+      }
       for(const entry of nativeEntries(graph))if(entry.kind!=='event'||view==='event'&&!graph.nodes.some(node=>node.key===entry.key&&node.nativeId===entry.nativeId))
         palette.push({id:entry.key+':'+entry.nativeId,title:entry.title+' · '+entry.group});
     }
@@ -501,7 +506,13 @@ export function nativeEditorSession(bridge) {
       project();
       const {readBuildProfiles}=await import('./build-game.mjs');
       const {profiles,revision}=await readBuildProfiles(record);
-      return {profiles,revision};
+      const {profileTarget,frameSettings,kioskSettings,mobileSettings,nativeGraphicsAPI,windowsRuntime,windowsRenderer}=await import('../prototype/build-profile.js');
+      const effective=Object.fromEntries(profiles.map(profile=>[profile.id,{
+        target:profileTarget(profile),...frameSettings(profile),kiosk:kioskSettings(profile),
+        mobile:mobileSettings(profile),nativeGraphicsAPI:nativeGraphicsAPI(profile),
+        windowsRuntime:windowsRuntime(profile),windowsRenderer:windowsRenderer(profile),
+      }]));
+      return {profiles,revision,effective};
     },
     'project.buildProfileSave': async ({id,changes,expectedRevision,action='edit',newId})=>{
       project();
@@ -599,8 +610,8 @@ export function nativeEditorSession(bridge) {
     },
     'content.types': () => Object.entries(assetTypes).filter(([kind,info])=>assetSuffix[kind]&&!info.sourceOnly)
       .map(([kind,info])=>({kind,suffix:assetSuffix[kind],label:info.label,prefix:info.prefix})),
-    'content.list': async ({folder='',query=''}) => {
-      const listed = await project().list({folder,query,browse:true,recursive:!!query});
+    'content.list': async ({folder='',query='',recursive=!!query,contents=false,type='all'}) => {
+      const listed = await project().list({folder,query,browse:true,recursive,contents,type});
       const found = new Map(listed.entries.map(row => [row.path,row]));
       for (const row of listed.folders) {
         const parent = path.posix.dirname(row.path);
@@ -608,7 +619,7 @@ export function nativeEditorSession(bridge) {
       }
       const entries = [...found.values()];
       entries.sort((a,b) => Number(b.kind==='folder')-Number(a.kind==='folder') || a.path.localeCompare(b.path));
-      return {entries, issues:listed.issues || []};
+      return {entries,folders:listed.folders,total:listed.total,issues:listed.issues||[]};
     },
     'content.create': async ({folder,kind,name}) => {
       if (typeof folder!=='string' || !/^Assets(?:\/|$)/.test(folder) || !Object.hasOwn(assetSuffix,kind) || typeof name!=='string' || !name.trim() || /[/\\:<>?"|*\x00-\x1f]/.test(name)) throw Error('Assets 폴더와 에셋 이름, 종류를 확인하세요.');
@@ -1255,9 +1266,30 @@ export function nativeEditorSession(bridge) {
     },
     'blueprint.members': () => ({
       types:Object.entries(variableTypes).filter(([id])=>id!=='record').map(([id,label])=>({id,label})),
-      variables:assetOfKind('blueprint').data.variables
+      variables:assetOfKind('blueprint').data.variables,
+      dispatchers:assetOfKind('blueprint').data.dispatchers||[],interfaces:assetOfKind('blueprint').data.interfaces||[]
     }),
-    'blueprint.memberAdd': async ({kind,name,type,expectedRevision})=>{
+    'blueprint.newPort': ({label,type,array=false})=>{
+      if(typeof label!=='string'||!label.trim()||label.length>80||!Object.hasOwn(variableTypes,type)||typeof array!=='boolean')throw Error('핀 이름과 자료형을 확인하세요.');
+      return {id:'pin_'+crypto.randomUUID().replaceAll('-',''),label:label.trim(),type,array};
+    },
+    'blueprint.symbolPorts': async ({id,direction,ports,expectedRevision})=>{
+      const doc=assetOfKind('blueprint');await check(doc,expectedRevision);
+      const next=structuredClone(doc.data),dispatcher=next.dispatchers?.find(row=>row.id===id),symbol=dispatcher||next.interfaces?.find(row=>row.id===id);
+      if(!symbol||!['inputs','outputs'].includes(direction)||dispatcher&&direction==='outputs'||!Array.isArray(ports))throw Error('편집할 시그니처와 핀 방향을 확인하세요.');
+      const prior=symbol[direction],changed=new Set(prior.filter(pin=>!ports.some(row=>row?.id===pin.id&&row.type===pin.type&&row.array===pin.array)).map(pin=>pin.id));
+      symbol[direction]=structuredClone(ports);
+      for(const view of names(next).map(([id])=>id)){
+        const graph=graphContext(next,view),ids=new Set(graph.nodes.filter(node=>node.symbolId===id).map(node=>node.id));
+        for(const node of graph.nodes)if(ids.has(node.id)){
+          for(const key of Object.keys(node.inputValues||{}))if(changed.has(key.split('.')[0]))delete node.inputValues[key];
+          node.splitPins=node.splitPins?.filter(pin=>!changed.has(pin.split(':').at(-1).split('.')[0]))||[];
+        }
+        graph.edges=graph.edges.filter(edge=>!(ids.has(edge.from.node)&&changed.has(edge.from.pin.split('.')[0])||ids.has(edge.to.node)&&changed.has(edge.to.pin.split('.')[0])));
+      }
+      change(doc,next);return response(doc);
+    },
+    'blueprint.memberAdd': async ({kind,name,type,inputs=[],outputs=[],expectedRevision})=>{
       const doc=assetOfKind('blueprint');
       await check(doc,expectedRevision);
       const next=structuredClone(doc.data);
@@ -1265,6 +1297,10 @@ export function nativeEditorSession(bridge) {
       if(kind==='variable'){
         if(typeof name!=='string'||!name.trim()||!Object.hasOwn(variableTypes,type)||type==='record'||next.variables.some(item=>item.name===name.trim()))throw Error('변수 이름과 자료형을 확인하세요.');
         next.variables.push({id:'var_'+crypto.randomUUID().replaceAll('-',''),name:name.trim(),type,container:'single',value:defaultsFor(type)});
+      }else if(kind==='dispatcher'||kind==='interface'){
+        const key=kind==='dispatcher'?'dispatchers':'interfaces',symbols=next[key]??=[];
+        if(typeof name!=='string'||!name.trim()||name.length>80||symbols.some(row=>row.name===name.trim()))throw Error('시그니처 이름을 확인하세요.');
+        symbols.push({id:'symbol_'+crypto.randomUUID().replaceAll('-',''),name:name.trim(),inputs,outputs});
       }else{
         const result=makeDefinition(next,kind,name);
         if(!result.ok)throw Error(result.reason);
@@ -1306,6 +1342,7 @@ export function nativeEditorSession(bridge) {
             const [type,target]=key.split(':'),node=makeNode(type,x,y,['getVariable','setVariable'].includes(type)?target:undefined);
             if(['callFunction','callMacro'].includes(type))node.definitionId=target;
             if(type.startsWith('native'))node.nativeId=target;
+            if(type.startsWith('dispatcher')||type==='interfaceCall')node.symbolId=target;
             graph.nodes.push(node);
           }else if(key==='functionCall'){
             if(typeof asset!=='string'||asset===doc.path||assetKind(asset)!=='materialfunction')throw Error('다른 머테리얼 함수 에셋을 선택하세요.');
@@ -1317,6 +1354,10 @@ export function nativeEditorSession(bridge) {
             graph.nodes.push(node);
           }
         }
+      }else if(action==='breakpoint'&&bp){
+        const node=graph.nodes.find(row=>row.id===id);
+        if(!node)throw Error('중단점을 설정할 노드를 선택하세요.');
+        node.breakpoint=!node.breakpoint;
       } else if(action==='paste'){
         if(![x,y].every(Number.isFinite)||clipboard?.type!==(bp?'HBBlueprintNodes':'HBMaterialNodes'))throw Error('같은 유형의 그래프에서 복사한 노드를 확인하세요.');
         const position={x:Math.max(-10000,Math.min(10000,x)),y:Math.max(-10000,Math.min(10000,y))};
