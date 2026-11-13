@@ -75,6 +75,8 @@ try {
 const evidence=JSON.parse(await fs.readFile(report,'utf8'));
 assert.equal(evidence.webview,false);
 assert.equal(evidence.saved,true);
+assert.equal(evidence.contentDock,true);
+assert.equal(evidence.outputLog,true);
 assert.equal(evidence.blueprintSurface.backend,'D3D12');
 assert.equal(evidence.materialSurface.backend,'D3D12');
 assert.equal(evidence.materialPreview.backend,'D3D12');
