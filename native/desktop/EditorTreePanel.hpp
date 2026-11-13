@@ -17,19 +17,6 @@ public:
         if(model.contains("reveal")&&model.at("reveal").is_string()){const auto id=model.at("reveal").get<std::string>();for(std::size_t i=0;i<rows.size();i++)if(rows[i].id==id){const int top=int(i)*rowHeight(),bottom=top+rowHeight();if(top<scroll)scroll=top;else if(bottom>scroll+std::max(1,bounds[3]))scroll=bottom-bounds[3];}}
         clampScroll();place();
     }
-    // op "menu": native popup at the cursor; reports {event:"command",command} or {event:"menuClosed"}.
-    void showMenu(const Json& items){
-        HMENU menu=CreatePopupMenu();std::vector<std::string> commands;
-        for(const auto& item:items){if(item.is_null()){AppendMenuW(menu,MF_SEPARATOR,0,nullptr);continue;}
-            auto caption=wide(item.at(0).get<std::string>());if(item.size()>3&&item.at(3).is_string()&&!item.at(3).get<std::string>().empty())caption+=L"\t"+wide(item.at(3).get<std::string>());
-            const bool disabled=item.size()>2&&item.at(2).is_string()&&item.at(2).get<std::string>().find("disabled")!=std::string::npos;
-            commands.push_back(item.at(1).get<std::string>());AppendMenuW(menu,MF_STRING|(disabled?MF_GRAYED:0),commands.size(),caption.c_str());}
-        POINT at{};GetCursorPos(&at);if(menuAt){at=*menuAt;menuAt.reset();}
-        lastMenu=Json::array();for(const auto& c:commands)lastMenu.push_back(c);
-        if(!automaticCommand.empty()){for(std::size_t i=0;i<commands.size();i++)if(commands[i]==automaticCommand)automaticMenu=UINT(i+1);automaticCommand.clear();}
-        const UINT chosen=automaticMenu?automaticMenu:TrackPopupMenu(menu,TPM_RETURNCMD|TPM_RIGHTBUTTON|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);automaticMenu=0;DestroyMenu(menu);
-        if(chosen&&chosen<=commands.size())emit({{"event","command"},{"command",commands[chosen-1]}});else emit({{"event","menuClosed"}});
-    }
     Json inspect()const{
         Json list=Json::array();for(const auto& row:rows)list.push_back({{"id",row.id},{"name",row.name},{"depth",row.depth},{"selected",row.selected}});
         auto out=common();out["rows"]=list;out["scroll"]=scroll;out["paintedRows"]=paintedRows;out["lastMenu"]=lastMenu;return out;
@@ -50,7 +37,7 @@ public:
     }
 private:
     std::vector<Row> rows;int scroll=0,hover=-1,downRow=-1,dropRow=-2;Part downPart=None;POINT downAt{};bool dragging=false;std::size_t paintedRows=0;
-    Json lastMenu=Json::array();std::optional<POINT> menuAt;UINT automaticMenu=0;std::string automaticCommand;WPARAM probeKeys=0;bool probeCtrl=false;
+    WPARAM probeKeys=0;bool probeCtrl=false;
     int rowHeight()const{return std::max(1,px(26));}
     int indent(int depth)const{return px(6)+depth*px(14);}
     void clampScroll(){scroll=std::clamp(scroll,0,std::max(0,int(rows.size())*rowHeight()-bounds[3]));}

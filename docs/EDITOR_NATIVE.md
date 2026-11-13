@@ -37,3 +37,14 @@
 
 검증: `node tools/check-editor-native-inspector.mjs` — 숨긴 실제 편집기에서 실제 WM_ 메시지로 이름(EDIT로 "빨간 공"), 위치 X(3.5), 부모 선택(네이티브 팝업), 체크박스, 범위 드래그, 색(#ff0000), Mesh Renderer 섹션 접기(행 44→30)까지 통과하고 편집기 모델이 따라왔어요. 스냅샷으로 한글 라벨·벡터·선택·색 견본·슬라이더·체크박스를 눈으로 확인했어요. `check-editor-native-hierarchy`, `check-editor-native-viewport`, `check-editor-distance-1780-window`, `check-distance-field-822-editor` 통과.
 - 알려진 기존 문제: `check-mesh-renderer-1620-editor`는 편집기 종료가 약 13~14초 걸려 10초 제한에 걸려요. 네이티브 패널을 C++·JS 모두 끈 빌드에서도 같아서 이번 변경 때문이 아니고, 종료 중 JS 닫기 처리(복구 저장·저장소 비우기) 구간이 느린 걸로 보여요(렌더러 종료는 47ms).
+
+## 2단계 진행: 콘텐츠 브라우저 에셋 목록
+
+- `native/desktop/EditorListPanel.hpp`: 목록·타일 보기, 호버, 클릭 선택(Ctrl·Shift), 더블클릭 열기, 휠 스크롤, 키 입력, 바깥으로 끌어 놓기. 우클릭 메뉴 팝업은 공통 기반(`EditorPanelBase::showMenu`)으로 옮겨 세 패널이 같이 써요.
+- `app.js`: 기본 콘텐츠 브라우저(`projectBrowsers.get('project')`)의 항목·선택·보기를 보내요. 목록(경로·순서·보기)이 바뀔 때만 모델 번호를 올려 늦은 클릭을 버려요.
+- 우클릭: 기존 `ProjectBrowser.menu`가 만든 HTML 메뉴를 숨긴 채 버튼 목록을 네이티브 팝업으로 띄우고, 고른 버튼을 눌러 원래 동작을 실행해요(`nativeMenuFromHtml`, 다른 HTML 메뉴에도 쓸 수 있어요).
+- 끌어 놓기: 패널 밖에서 놓으면 그 위치의 HTML 요소에 `application/x-hb-assets` 데이터로 `dragenter/dragover/drop`을 보내요. 장면 뷰포트의 기존 `placeAsset`이 그대로 동작해요.
+- 네이티브 뷰포트가 OBJ·FBX 가져오기의 Phong/Lambert/Toon 재질도 그려요(Phong 광택→거칠기, 금속 0). 전에는 모델을 놓으면 "DirectX 셰이더 변환이 필요해요" 오류였어요.
+- 남은 HTML: 폴더 트리, 도구줄(검색·종류·보기), 추가 콘텐츠 브라우저 창. 타일은 썸네일 대신 종류 아이콘이에요.
+
+검증: `node tools/check-editor-native-assets.mjs` — 숨긴 실제 편집기에서 Models 폴더 더블클릭 열기, 선택, Ctrl 선택, 네이티브 메뉴 65항목 중 "에셋 정보" 실행(대화상자 열림), 모델을 뷰포트 가운데로 끌어 놓아 오브젝트 +1, Backspace로 뒤로 가기 통과. 스냅샷 확인. 계층·속성·뷰포트·1780·822 편집기 검사 재통과.

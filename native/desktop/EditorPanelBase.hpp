@@ -40,10 +40,24 @@ public:
         }catch(...){canvas=target;for(IUnknown* u:std::initializer_list<IUnknown*>{frame,encoder,stream,own,rt,bitmap,wic})if(u)u->Release();throw;}
         for(IUnknown* u:std::initializer_list<IUnknown*>{frame,encoder,stream,own,rt,bitmap,wic})if(u)u->Release();return out;
     }
+    // op "menu": native popup at the cursor (or menuAt); reports {event:"command",command} or {event:"menuClosed"}.
+    void showMenu(const Json& items){
+        HMENU menu=CreatePopupMenu();std::vector<std::string> commands,captions;
+        for(const auto& item:items){if(item.is_null()){AppendMenuW(menu,MF_SEPARATOR,0,nullptr);continue;}
+            auto caption=wide(item.at(0).get<std::string>());if(item.size()>3&&item.at(3).is_string()&&!item.at(3).get<std::string>().empty())caption+=L"\t"+wide(item.at(3).get<std::string>());
+            const bool disabled=item.size()>2&&item.at(2).is_string()&&item.at(2).get<std::string>().find("disabled")!=std::string::npos;
+            commands.push_back(item.at(1).get<std::string>());captions.push_back(item.at(0).get<std::string>());AppendMenuW(menu,MF_STRING|(disabled?MF_GRAYED:0),commands.size(),caption.c_str());}
+        POINT at{};GetCursorPos(&at);if(menuAt){at=*menuAt;menuAt.reset();}
+        lastMenu=Json::array();for(const auto& c:commands)lastMenu.push_back(c);
+        if(!automaticCommand.empty()){for(std::size_t i=0;i<commands.size();i++)if(commands[i]==automaticCommand||captions[i]==automaticCommand)automaticMenu=UINT(i+1);automaticCommand.clear();}
+        const UINT chosen=automaticMenu?automaticMenu:TrackPopupMenu(menu,TPM_RETURNCMD|TPM_RIGHTBUTTON|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);automaticMenu=0;DestroyMenu(menu);
+        if(chosen&&chosen<=commands.size())emit({{"event","command"},{"command",commands[chosen-1]}});else emit({{"event","menuClosed"}});
+    }
 protected:
     struct Theme {D2D1_COLOR_F background{.13f,.14f,.15f,1},text{.89f,.91f,.94f,1},muted{.55f,.58f,.62f,1},accent{.35f,.6f,.84f,1},selection{.15f,.27f,.4f,1},line{.25f,.28f,.31f,1},field{.13f,.14f,.16f,1},raised{.19f,.2f,.23f,1};};
     HWND window=nullptr;Post poster;std::string name;ID2D1Factory* factory=nullptr;IDWriteFactory* write=nullptr;ID2D1HwndRenderTarget* target=nullptr;ID2D1RenderTarget* canvas=nullptr;ID2D1SolidColorBrush* brush=nullptr;
     IDWriteTextFormat* text=nullptr;IDWriteTextFormat* bold=nullptr;IDWriteTextFormat* icons=nullptr;IDWriteInlineObject* ellipsis=nullptr;
+    Json lastMenu=Json::array();std::optional<POINT> menuAt;UINT automaticMenu=0;std::string automaticCommand;
     Theme theme;float scale=1;std::array<int,4> bounds{};bool shown=false;std::uint64_t paints=0,updates=0;double lastPaintMS=0;
     static int xOf(LPARAM l){return short(LOWORD(l));}static int yOf(LPARAM l){return short(HIWORD(l));}
     static std::wstring wide(const std::string& s){const int n=MultiByteToWideChar(CP_UTF8,0,s.data(),int(s.size()),nullptr,0);std::wstring out(std::max(0,n),0);if(n>0)MultiByteToWideChar(CP_UTF8,0,s.data(),int(s.size()),out.data(),n);return out;}

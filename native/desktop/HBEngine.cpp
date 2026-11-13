@@ -27,6 +27,7 @@ namespace fs=std::filesystem;
 #else
 #include "EditorTreePanel.hpp"
 #include "EditorFormPanel.hpp"
+#include "EditorListPanel.hpp"
 #endif
 struct State {
     HWND window=nullptr; HANDLE job=nullptr,process=nullptr;
@@ -36,7 +37,8 @@ struct State {
 #ifdef HB_GAME_PLAYER
     NativeAudio audio;
 #else
-    EditorTreePanel hierarchy;EditorFormPanel inspector;nlohmann::json pendingMenu;
+    EditorTreePanel hierarchy;EditorFormPanel inspector;EditorListPanel assets;nlohmann::json pendingMenu;std::string pendingMenuPanel;
+    EditorPanelBase& panel(const std::string& name){if(name=="inspector")return inspector;if(name=="assets")return assets;return hierarchy;}
 #endif
     fs::path root,userData,ready,log,smoke; std::wstring url; bool closing=false,smokeSuccess=false,failed=false,development=true,windowSmoke=false,windowSmokeStarted=false,editorAcceptance=false,kiosk=false,kioskFullscreen=false,kioskPreventMinimize=false,operatorUnlocked=false;
     ~State(){if(view)view->Release();if(controller){controller->Close();controller->Release();}if(environment)environment->Release();if(job)CloseHandle(job);if(process)CloseHandle(process);}
@@ -171,10 +173,11 @@ public:
                         const auto panel=packet.value("panel",std::string("hierarchy"));
                         if(op=="hierarchy")app.hierarchy.update(packet.at("data"));
                         else if(op=="inspector")app.inspector.update(packet.at("data"));
-                        else if(op=="menu"){app.pendingMenu=packet.at("data").at("items");PostMessageW(app.window,WM_APP+60,0,0);}
-                        else if(op=="inspect")response["value"]=panel=="inspector"?app.inspector.inspect():app.hierarchy.inspect();
-                        else if(op=="snapshot"){if(!app.editorAcceptance)throw std::runtime_error("Panel snapshot is acceptance only");response["value"]=panel=="inspector"?app.inspector.snapshot():app.hierarchy.snapshot();}
-                        else if(op=="probe"){if(!app.editorAcceptance)throw std::runtime_error("Panel probe is acceptance only");if(panel=="inspector")app.inspector.probe(packet.at("data"));else app.hierarchy.probe(packet.at("data"));}
+                        else if(op=="assets")app.assets.update(packet.at("data"));
+                        else if(op=="menu"){app.pendingMenu=packet.at("data").at("items");app.pendingMenuPanel=panel;PostMessageW(app.window,WM_APP+60,0,0);}
+                        else if(op=="inspect")response["value"]=panel=="inspector"?app.inspector.inspect():panel=="assets"?app.assets.inspect():app.hierarchy.inspect();
+                        else if(op=="snapshot"){if(!app.editorAcceptance)throw std::runtime_error("Panel snapshot is acceptance only");response["value"]=app.panel(panel).snapshot();}
+                        else if(op=="probe"){if(!app.editorAcceptance)throw std::runtime_error("Panel probe is acceptance only");if(panel=="inspector")app.inspector.probe(packet.at("data"));else if(panel=="assets")app.assets.probe(packet.at("data"));else app.hierarchy.probe(packet.at("data"));}
                         else throw std::runtime_error("Panel operation invalid");
                     }
 #endif
@@ -285,7 +288,7 @@ LRESULT CALLBACK windowProcedure(HWND window,UINT message,WPARAM wParam,LPARAM l
     if(app.kiosk&&app.smoke.empty()&&!app.operatorUnlocked){if(message==WM_CLOSE)return 0;if(message==WM_SYSCOMMAND&&app.kioskPreventMinimize&&((wParam&0xfff0)==SC_MINIMIZE||(wParam&0xfff0)==SC_MAXIMIZE))return 0;}
     if(message==WM_SIZE&&app.controller){RECT bounds;GetClientRect(window,&bounds);app.controller->put_Bounds(bounds);}
 #ifndef HB_GAME_PLAYER
-    else if(message==WM_APP+60){const auto items=std::move(app.pendingMenu);app.pendingMenu=nlohmann::json();if(items.is_array())app.hierarchy.showMenu(items);return 0;}
+    else if(message==WM_APP+60){const auto items=std::move(app.pendingMenu);app.pendingMenu=nlohmann::json();if(items.is_array())app.panel(app.pendingMenuPanel).showMenu(items);return 0;}
 #endif
     else if(message==WM_SETFOCUS&&app.controller)app.controller->MoveFocus(COREWEBVIEW2_MOVE_FOCUS_REASON_PROGRAMMATIC);
     else if(message==WM_DPICHANGED){const auto bounds=reinterpret_cast<RECT*>(lParam);SetWindowPos(window,nullptr,bounds->left,bounds->top,bounds->right-bounds->left,bounds->bottom-bounds->top,SWP_NOZORDER|SWP_NOACTIVATE);}
@@ -388,7 +391,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         WNDCLASSW windowClass{};windowClass.hInstance=instance;windowClass.lpszClassName=className.c_str();windowClass.lpfnWndProc=windowProcedure;windowClass.hCursor=LoadCursorW(nullptr,IDC_ARROW);windowClass.hIcon=LoadIconW(instance,MAKEINTRESOURCEW(101));windowClass.hbrBackground=CreateSolidBrush(RGB(23,26,31));RegisterClassW(&windowClass);
         app.window=CreateWindowExW(0,className.c_str(),L"HBEngine",WS_OVERLAPPEDWINDOW,CW_USEDEFAULT,CW_USEDEFAULT,1440,900,nullptr,nullptr,instance,nullptr);if(!app.window)throw std::runtime_error("native window");
 #ifndef HB_GAME_PLAYER
-        {const auto post=[](const nlohmann::json& event){if(app.view)app.view->PostWebMessageAsJson(wide(event.dump()).c_str());};app.hierarchy.attach(app.window,instance,post);app.inspector.attach(app.window,instance,post);}
+        {const auto post=[](const nlohmann::json& event){if(app.view)app.view->PostWebMessageAsJson(wide(event.dump()).c_str());};app.hierarchy.attach(app.window,instance,post);app.inspector.attach(app.window,instance,post);app.assets.attach(app.window,instance,post,L"HBEngine.EditorListPanel","assets");}
 #endif
 
         #ifdef HB_GAME_PLAYER
