@@ -20,7 +20,13 @@
 - 장면·타임라인·위젯 문서에서 구분선을 드래그해 브라우저와 속성 패널의 너비를 바꿀 수 있어요. 새 프로젝트는 2D·3D와 게임플레이 템플릿을 고르고, 콘텐츠 폴더는 파일 메뉴에서 만들어요.
 - 문서 탭을 끌어 순서를 바꾸거나 기본 창 밖으로 빼면 독립 창에서 열려요. 독립 창의 탭으로 합치기 버튼을 누르거나 기본 탭 줄로 끌면 다시 합쳐져요.
 - 편집 메뉴에서 상태 머신의 전이를 선택해 조건과 비교값, 혼합, 종료 시점, 이벤트를 편집해요. 레벨 시퀀스는 선택한 키의 보간, 트랙 양끝의 범위 처리와 곡선 도구를 지원해요.
-- 현재 기본 설치 경로는 기존 편집기예요. 화면 분할 도킹, 시퀀스 곡선 그래프와 녹화, 나머지 전용 에셋 편집기가 전환 범위에 남아 있어요.
+- 탭을 작업 영역 오른쪽이나 아래에 놓거나 보기 메뉴에서 분할 방향을 선택하면 두 문서를 함께 편집해요. 구분선을 끌어 크기를 조절하고 프로젝트를 다시 열 때 방향·크기·문서를 복원해요. 같은 문서의 저장과 Undo 이력을 공유하고, 다른 창에 편집 중인 소스 초안은 보존해요.
+- 시퀀스 곡선 그래프는 런타임 샘플을 그려요. 키와 탄젠트 핸들을 끌어 시간·채널 값·곡률을 편집해요. 네이티브 플레이 중 선택 오브젝트나 장면 전체의 트랜스폼과 컴포넌트 속성을 녹화해 새 시퀀스로 저장해요.
+- 타일맵은 화면 범위의 셀을 조회하고 공용 타일 도구로 붓·지우개·사각형·채우기를 적용해요. 직교·아이소메트릭 모드의 그리드와 아틀라스를 표시하고 휠과 Shift+휠로 이동해요.
+- 스프라이트 애니메이션은 프레임 추가·순서·길이·삭제와 재생 미리보기를 지원해요. 오디오 에셋은 파형과 길이를 표시하고 클립의 볼륨·피치·반복 설정으로 미리 들을 수 있어요.
+- 머테리얼 노드 속성은 기본·독립 그래프 창에서 편집해요. 함수 에셋 선택·핀 갱신·입출력 형식, 레이어 추가·교체·복제·순서·블렌드·파라미터 편집을 지원해요.
+- 장면의 카메라 콤보에서 게임 카메라 출력을 선택하면 게임과 같은 화면 영역·겹침 순서로 합성하고 각 영역에서 오브젝트를 선택할 수 있어요. 카메라 컴포넌트에서 화면 영역을 선택하고 직접 지정 영역의 좌표를 편집해요.
+- 현재 기본 설치 경로는 기존 편집기예요. 다중 분할 도킹, 곡선 다중 키·채널 편집, 녹화 프리셋 전체 설정, 나머지 전용 에셋 편집기가 전환 범위에 남아 있어요.
 
 관련 검사 `check-editor-native-viewport.mjs`, `check-editor-native-assets.mjs`, `check-editor-native-hierarchy.mjs`, `check-editor-native-inspector.mjs`, `check-build-profiles.mjs`, `check-native-game.mjs`.
 
@@ -28,9 +34,9 @@
 
 `tools/native-editor-session.mjs`는 줄마다 `{"method":"document.open","params":{"path":"Assets/…"}}`를 표준 입력에서 받아 `{"ok":true,"value":…}` 또는 오류를 표준 출력으로 돌려줘요. 프로젝트가 열리면 `content.list`, `document.read`, `document.patch`, `document.save`, `graph.read`, `graph.edit`, `editor.undo`, `editor.redo`를 사용할 수 있어요. 수정과 저장은 읽을 때 받은 `revision`을 `expectedRevision`으로 전달해요. `document.patch`의 `dryRun`으로 먼저 변경을 검증할 수 있어요. 네이티브 UI와 이 명령은 같은 프로젝트 서비스와 에셋 검증기를 써요.
 
-`document.load`는 활성 탭을 바꾸지 않고 문서를 불러와요. `document.read`, `document.patch`, `document.replace`, `document.save`, `graph.read`, `graph.edit`, `editor.undo`, `editor.redo`에 열린 문서의 `path`를 전달하면 활성 문서를 유지한 채 대상으로 삼을 수 있어요. 경로를 지정한 Undo/Redo도 `expectedRevision`을 확인해요.
+`document.load`는 활성 탭을 바꾸지 않고 문서를 불러와요. `document.read`, `document.patch`, `document.replace`, `document.save`, `graph.read`, `graph.inputs`, `graph.edit`, `editor.undo`, `editor.redo`에 열린 문서의 `path`를 전달하면 활성 문서를 유지한 채 대상으로 삼을 수 있어요. `graph.inputs`는 편집 가능한 핀과 속성을 반환하고 `graph.edit`의 `property`, `refreshFunction`이 같은 속성 창의 명령을 실행해요. 경로를 지정한 Undo/Redo도 `expectedRevision`을 확인해요.
 
-`node tools/check-native-authoring.mjs [HBEngine.exe] [HBNativePlayer.exe]`는 격리된 프로젝트와 화면 밖 Win32 창에서 D3D12 장면 픽셀, 오브젝트·컴포넌트·위젯·그래프·타임라인의 편집과 저장, 독립 문서 두 개, 외부 수정 충돌을 확인해요. 두 번째 실행 파일을 지정하면 패키징 없는 D3D12 플레이도 확인해요.
+`node tools/check-native-authoring.mjs [HBEngine.exe] [HBNativePlayer.exe]`는 격리된 프로젝트와 화면 밖 Win32 창에서 D3D12 장면 픽셀·다중 카메라 영역, 오브젝트·위젯·타임라인·타일맵·스프라이트·오디오·머테리얼 편집, 분할 방향·크기와 독립 문서 복원, 외부 수정 충돌을 확인해요. 두 번째 실행 파일을 지정하면 패키징 없는 D3D12 플레이와 시퀀스 녹화도 확인해요.
 
 아래는 초기 이전 단계의 기록이에요.
 

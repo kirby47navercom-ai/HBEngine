@@ -261,12 +261,34 @@ export async function resolveMaterialPreview(data,selection,read){
   if(preview.selection.type!=='attributes'){const root=resolved.graph.nodes.find(n=>nodeKey(n)==='surface');resolved.graph.edges=normalizedMaterialEdges(resolved.graph).map(e=>e.to.node===root.id&&e.to.pin==='baseColor'?{from:e.from,to:{node:root.id,pin:'emissive'}}:e);}
   return {data:resolved,selection:preview.selection};
 }
+export async function materialFunctionDependencies(graph,read,{checkSignatures=true}={}){
+  if(!validMaterialGraph(graph))throw Error('머테리얼 함수 그래프 검증 실패');
+  const definitions=new Map(),loaded=new Set();
+  const load=async(g,stack=[])=>{
+    for(const node of g.nodes.filter(row=>nodeKey(row)==='functionCall')){
+      if(stack.includes(node.asset)||stack.length>=16)throw Error('머테리얼 함수 의존성이 순환하거나 너무 깊어요: '+node.asset);
+      if(!definitions.has(node.asset)){
+        const data=await read(node.asset);
+        if(!validMaterialFunction(data))throw Error('머테리얼 함수 에셋 오류: '+node.asset);
+        definitions.set(node.asset,data);
+      }
+      const data=definitions.get(node.asset);
+      if(checkSignatures){
+        const signature=materialFunctionSignature(data.graph);
+        for(const side of ['inputs','outputs']){
+          if(node.signature[side].length!==signature[side].length||node.signature[side].some(port=>!signature[side].some(row=>port.id===row.id&&port.type===row.type)))
+            throw Error('머테리얼 함수 핀이 변경됐어요. 핀을 갱신하세요: '+node.asset);
+        }
+      }
+      if(!loaded.has(node.asset)){await load(data.graph,[...stack,node.asset]);loaded.add(node.asset);}
+    }
+  };
+  await load(graph);
+  return definitions;
+}
 export async function resolveMaterialFunctions(data,read){
   const graph=data.graph;if(!graph||graph.mode!=='function'&&!graph.nodes?.some(n=>nodeKey(n)==='functionCall'))return data;
-  if(!validMaterialGraph(graph))throw Error('머테리얼 함수 그래프 검증 실패');const definitions=new Map(),loaded=new Set();
-  const load=async(g,stack=[])=>{for(const n of g.nodes.filter(n=>nodeKey(n)==='functionCall')){if(stack.includes(n.asset)||stack.length>=16)throw Error('머테리얼 함수 의존성이 순환하거나 너무 깊어요: '+n.asset);if(!definitions.has(n.asset)){const d=await read(n.asset);if(!validMaterialFunction(d))throw Error('머테리얼 함수 에셋 오류: '+n.asset);definitions.set(n.asset,d);}const d=definitions.get(n.asset),signature=materialFunctionSignature(d.graph);
-    for(const side of ['inputs','outputs'])if(n.signature[side].length!==signature[side].length||n.signature[side].some(p=>!signature[side].some(v=>p.id===v.id&&p.type===v.type)))throw Error('머테리얼 함수 핀이 변경됐어요. 핀을 갱신하세요: '+n.asset);
-    if(!loaded.has(n.asset)){await load(d.graph,[...stack,n.asset]);loaded.add(n.asset);}}};await load(graph);
+  const definitions=await materialFunctionDependencies(graph,read);
   // ponytail: inline expansion uses the existing 1000-node compile budget; shared subexpressions if shader size becomes a measured bottleneck.
   const nodes=[],edges=[],aliases=new Map();let serial=0;const refKey=r=>r.node+':'+r.pin;
   const constant=(type,value)=>{if(type==='attributes'){const n=makeMaterialNode('makeAttributes');n.id='mf_'+serial++;n.inputValues=copy(value);nodes.push(n);return {node:n.id,pin:'value'};}const n={...makeMaterialNode(materialTextureTypes[type]?.object||(type==='staticBool'?'staticBool':type==='float'?'scalar':'vector'+type.slice(3))),id:'mf_'+serial++,...(materialTextureTypes[type]?{texture:value}:{value:copy(type==='staticBool'||type==='float'?value:vector(value,Number(type.slice(3))))})};nodes.push(n);return {node:n.id,pin:'value'};};

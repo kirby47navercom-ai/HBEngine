@@ -3,7 +3,7 @@ import {createNativeSceneRenderer} from '../prototype/native-scene-renderer.js';
 import {scenePrimitives} from '../prototype/scene-primitives.js';
 import {sceneRendering} from '../prototype/scene-rendering.js';
 import {createSky,applySceneEnvironment,disposeSceneEnvironment,syncSkyToCamera} from '../prototype/scene-environment.js';
-import {fallbackGameCamera,previewGameCamera} from '../prototype/game-camera.js';
+import {cameraScreenRect,fallbackGameCamera,previewGameCamera,selectGameCamera} from '../prototype/game-camera.js';
 import {defaultSurface} from '../prototype/model.js';
 import {loadModel} from '../prototype/engine-services.js';
 import {loadHeadlessModel,disposeHeadlessModel} from './headless-model.mjs';
@@ -13,7 +13,7 @@ import {projectBytes,projectText} from './project-bytes.mjs';
 export function nativeEditorViewport(bridge,surface='native-editor') {
   const canvas={width:1,height:1,clientWidth:1,clientHeight:1,pixelRatio:1};
   let renderer, content, world, source, project, dimension, camera, sky, visual, primitives, updateEnvironment;
-  let selection='', previewCamera='', gizmo, models=new Set(), groups=new Map(), owners=new Map();
+  let selection='', gizmo, models=new Set(), groups=new Map(), owners=new Map();
   const target=new THREE.Vector3(0,.45,0), orbit=new THREE.Spherical();
   const ray=new THREE.Raycaster();
   const visualKey=object=>{
@@ -97,15 +97,15 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     updateEnvironment();
     source=data;content={objects,warnings};
   }
-  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',capture=false}) {
+  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false}) {
     const assets=installNativeAssets({url:name=>'hbasset:'+encodeURIComponent(name),manifest:{width,height},readBytes:(name,opts)=>projectBytes(nextProject,name,opts)});
-    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,capture},assets);}
+    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture},assets);}
     finally{assets.restore();}
   }
-  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,capture},assets) {
+  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture},assets) {
     canvas.clientWidth=width;canvas.clientHeight=height;
     await open(data,nextProject,assets);
-    selection=selected;previewCamera=cameraId;
+    selection=selected;
     if (command==='focus') {
       const group=groups.get(id);
       if (group) target.copy(group.getWorldPosition(new THREE.Vector3()));
@@ -126,12 +126,25 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       camera.aspect=aspect;camera.position.copy(target).add(new THREE.Vector3().setFromSpherical(orbit));camera.lookAt(target);
     }
     camera.updateProjectionMatrix();camera.updateMatrixWorld();
-    const active=previewCamera&&previewGameCamera(content.objects,{width,height},previewCamera,id=>groups.get(id))||camera;
+    const size={width,height},current=id=>groups.get(id);
+    const active=(cameraOutputs?selectGameCamera(content.objects,size,cameraId,current):cameraId&&previewGameCamera(content.objects,size,cameraId,current))||camera;
+    const views=active.userData.gameViews;
     world.updateMatrixWorld(true);
     if (command==='pick') {
-      ray.setFromCamera({x:2*x/width-1,y:1-2*y/height},active);
       selection='';
-      for (const hit of ray.intersectObjects(world.children,true)) {
+      const hitY=height-y-.5;
+      const hitView=views?.findLast(view=>{
+        const rect=cameraScreenRect(view.region,width,height);
+        return x>=rect.x&&x<rect.x+rect.width&&hitY>=rect.y&&hitY<rect.y+rect.height;
+      });
+      const hitCamera=views?hitView?.camera:active;
+      const region=hitView?cameraScreenRect(hitView.region,width,height):{x:0,y:0,width,height};
+      const fit=hitCamera?.userData.pixelViewport;
+      const rect=fit?{...fit,x:region.x+fit.x,y:region.y+fit.y}:region;
+      const cursor={x:2*(x+.5-rect.x)/rect.width-1,y:2*(hitY-rect.y)/rect.height-1};
+      const inside=hitCamera&&Math.abs(cursor.x)<=1&&Math.abs(cursor.y)<=1;
+      if(inside)ray.setFromCamera(cursor,hitCamera);
+      for (const hit of inside?ray.intersectObjects(world.children,true):[]) {
         if (!hit.object.isMesh||hit.object.userData.editorHelper) continue;
         let found='';
         for (let group=hit.object;group&&group.visible;group=group.parent) {
@@ -161,8 +174,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
         await new Promise(resolve=>setTimeout(resolve,120));await render();
       }
     }
-    const {backend,shaderPreparation,calls}=renderer.hbDiagnostics();
-    return {backend,shaderPreparation,calls,selection,warnings:content.warnings.slice(0,8)};
+    const {backend,shaderPreparation,calls,cameraViews}=renderer.hbDiagnostics();
+    return {backend,shaderPreparation,calls,cameraViews,selection,warnings:content.warnings.slice(0,8)};
   }
   return {draw,close};
 }

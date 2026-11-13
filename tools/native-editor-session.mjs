@@ -7,11 +7,11 @@ import {AssetDocuments, assetSuffix, assetTypes, validAsset} from '../prototype/
 import {documentRevision, patchAsset} from '../prototype/automation.js';
 import {catalog, defaultInputValue, defaultsFor, effectivePins, graphContext, makeComment, makeDefinition, makeNode, nodeTitle, sampleTimeline, timelineLength, typeColors, variableTypes} from '../prototype/blueprint-model.js';
 import {connectAutomatic} from '../prototype/blueprint-connections.js';
-import {connectMaterial, disconnectMaterial, makeMaterialNode, materialCatalog, materialGraph, materialPins, normalizedMaterialEdges, removeMaterialNodes, resolveMaterialPreview} from '../prototype/material-runtime.js';
+import {connectMaterial, disconnectMaterial, makeMaterialFunctionCall, makeMaterialNode, materialCatalog, materialFunctionDependencies, materialFunctionTypes, materialGraph, materialLiteralDefault, materialPins, materialPortName, newMaterialLayer, normalizedMaterialEdges, refreshMaterialFunctionCall, removeMaterialNodes, resolveMaterialPreview, validMaterialLayer} from '../prototype/material-runtime.js';
 import {assetKind} from './project-service.mjs';
 import {createProject, readProjectManifest, recentProjects, rememberProject} from './project-manifest.mjs';
 import {createPlacedObject,placementCatalog} from '../prototype/placement-catalog.js';
-import {addSceneComponent,componentDefinitions} from '../prototype/scene-components.js';
+import {addSceneComponent,componentDefinitions,componentPropertyVisible} from '../prototype/scene-components.js';
 import {addWidget,removeWidget,reparentWidget,widgetContainers,widgetTypes} from '../prototype/ui-assets.js';
 import {projectBytes} from './project-bytes.mjs';
 import {copySceneObjects,pasteSceneObjects,setObjectMatrix,validParent} from '../prototype/scene-editor.js';
@@ -25,10 +25,12 @@ import {addAnimationGraphNode,addAnimationStatePose,animationGraphNodes,animatio
 import {addAnimationTransition,animationBlendCurves,animationConditionOps,animationInterrupts,removeAnimationOwnedNodes,removeAnimationState} from '../prototype/animation-state-assets.js';
 import {animationPinLabel,animationScopeNodes,statePoseOutput} from '../prototype/animation-state-editor.js';
 import {resolveSprite} from '../prototype/sprite-import.js';
-import {spriteImage} from '../prototype/two-d-assets.js';
+import {applyTileTool,spriteAnimationFrame,spriteImage} from '../prototype/two-d-assets.js';
+import {tileCellsInRect} from '../prototype/tilemap-editing.js';
 import {editSequenceSection,loadSequenceTree} from '../prototype/sequence-sections.js';
 import {configureSequenceCurve,sequenceCurveModes,sequenceCurveType,sequenceRangeModes} from '../prototype/sequence-curves.js';
 import {editSequenceCurves} from '../prototype/sequence-curve-edit.js';
+import {curveControlValue,curveKeyWeight} from '../prototype/curve-sampling.js';
 import {defaultEnvironment,defaultSurface} from '../prototype/model.js';
 import {createBlueprintResolver} from '../prototype/blueprint-inheritance.js';
 
@@ -65,6 +67,14 @@ const fieldLabels = {name:'이름',sceneName:'레벨 이름',objects:'오브젝�
 export function nativeEditorSession(bridge) {
   let record, documents = new AssetDocuments(), viewport, preview, previewSource, previewScene, previewNode, build, buildJobs, lastBuild;
   const sequenceSamplers=new WeakMap();
+  let audioPreview;
+  async function stopAudioPreview(){
+    if(!audioPreview)return;
+    const {context,source}=audioPreview;
+    audioPreview=null;
+    try{source?.stop();}catch{}
+    await context.close();
+  }
   const project = () => {
     if (!record) throw Error('프로젝트를 먼저 여세요.');
     return record.project;
@@ -122,6 +132,7 @@ export function nativeEditorSession(bridge) {
     if (tabs().some(doc => doc.dirty)) throw Error('변경한 문서를 먼저 저장하거나 닫으세요.');
     if(build&&buildJobs.get(record,build).status==='running')throw Error('빌드가 끝나면 프로젝트를 바꾸세요.');
     const candidate = await next();
+    await stopAudioPreview();
     await rememberProject(candidate);
     record = candidate;
     documents = new AssetDocuments();
@@ -144,13 +155,73 @@ export function nativeEditorSession(bridge) {
       return {id:node.id, title:bp ? nodeTitle(node,graph) : node.portName || node.title || node.key || node.id, x, y:bp ? node.position.y : node.y,
         inputs:pins.inputs.map(packPin), outputs:pins.outputs.map(packPin)};
     });
-    const palette = (bp ? catalog.filter(row => row.kind !== 'variable' && (row.kind!=='event'||view==='event'&&!graph.nodes.some(node=>node.key===row.key))) : materialCatalog.filter(row => row.key !== 'surface' && row.key !== 'functionCall'))
+    const palette = (bp ? catalog.filter(row => row.kind !== 'variable' && (row.kind!=='event'||view==='event'&&!graph.nodes.some(node=>node.key===row.key))) : materialCatalog.filter(row => graph.mode==='function'
+      ? !['surface','layerStack','legacyColor','legacyRough'].includes(row.key)&&(!data.domain||!['functionInput','functionOutput'].includes(row.key))
+      : !['surface','functionInput','functionOutput'].includes(row.key)))
       .map(row => ({id:row.key, title:row.title}));
     if(bp){
       for(const variable of data.variables)for(const prefix of ['get','set'])palette.push({id:prefix+'Variable:'+variable.id,title:(prefix==='get'?'Get ':'Set ')+variable.name});
       for(const [kind,items] of [['callFunction',data.functions],['callMacro',data.macros]])for(const definition of items||[])if(definition.id!==view)palette.push({id:kind+':'+definition.id,title:definition.name});
     }
     return {view, views:bp ? names(data) : [], nodes, edges:bp ? graph.edges : normalizedMaterialEdges(graph), comments:graph.comments || [], palette};
+  }
+  function materialNodeProperties(node,data){
+    const field=(id,label,value,extra={})=>({id,label,value,linked:false,property:true,...extra});
+    const rows=[];
+    if(['functionInput','functionOutput'].includes(node.key)){
+      rows.push(field('portName','핀 이름',node.portName),field('priority','핀 순서',node.priority),field('description','핀 설명',node.description));
+      if(node.key==='functionInput')rows.push(field('useDefault','기본값 사용',node.useDefault));
+    }
+    if(['functionInput','functionOutput','staticSwitch'].includes(node.key)){
+      const types=node.key==='staticSwitch'?['numeric',...materialFunctionTypes]:materialFunctionTypes;
+      rows.push(field('valueType','핀 자료형',node.valueType,{linked:!!data.domain&&node.key!=='staticSwitch',options:types.map(type=>[type,type])}));
+    }
+    if(node.key==='functionCall')rows.push(field('refreshFunction','함수',node.asset,{button:'핀 갱신'}));
+    if(node.key==='layerStack'){
+      rows.push(field('layer:add','레이어 스택','',{button:'레이어 추가',assetKind:'materiallayer'}));
+      for(const [index,layer] of node.layers.entries()){
+        const id='layer:'+layer.id+':';
+        rows.push(field(id+'name',`${index+1}. 레이어 이름`,layer.name),
+          field(id+'asset',layer.asset,layer.asset,{button:'레이어 교체',assetKind:'materiallayer'}),
+          field(id+'parameters','레이어 파라미터',layer.parameters),
+          field(id+'duplicate','레이어','',{button:'복제'}));
+        if(index)rows.push(field(id+'enabled','레이어 표시',layer.enabled),
+          field(id+'blend',layer.blend||'블렌드',layer.blend,{button:'블렌드 선택',assetKind:'materialblend'}),
+          field(id+'blendClear','블렌드','',{button:'블렌드 해제',linked:!layer.blend}),
+          field(id+'blendParameters','블렌드 파라미터',layer.blendParameters,{linked:!layer.blend}),
+          field(id+'up','레이어 순서','',{button:'위로',linked:index===1}),
+          field(id+'down','레이어 순서','',{button:'아래로',linked:index===node.layers.length-1}),
+          field(id+'remove','레이어','',{button:'삭제'}));
+      }
+    }
+    return rows;
+  }
+  function editMaterialNodeProperty(data,graph,node,property,value){
+    if(property.id.startsWith('layer:')){
+      const [,layerId,key]=property.id.split(':');
+      const index=node.layers.findIndex(layer=>layer.id===layerId),layer=node.layers[index];
+      if(property.assetKind&&(typeof value!=='string'||assetKind(value)!==property.assetKind))throw Error('레이어 에셋 형식을 확인하세요.');
+      if(layerId==='add')node.layers.push(newMaterialLayer(value,value.split('/').at(-1).split('.').slice(0,-2).join('.').slice(0,80)));
+      else if(key==='duplicate')node.layers.splice(index+1,0,{...structuredClone(layer),id:newMaterialLayer(layer.asset,layer.name).id,name:(layer.name+' 복사').slice(0,80)});
+      else if(key==='remove')node.layers.splice(index,1);
+      else if(key==='up'||key==='down'){
+        const other=index+(key==='up'?-1:1);
+        [node.layers[index],node.layers[other]]=[node.layers[other],node.layers[index]];
+      }else if(key==='blendClear'){layer.blend='';layer.blendParameters={};}
+      else{
+        layer[key]=value;
+        if(key==='asset')layer.parameters={};
+        if(key==='blend')layer.blendParameters={};
+      }
+      return;
+    }
+    if(property.options&&!property.options.some(option=>option[0]===value))throw Error('핀 자료형을 확인하세요.');
+    if(property.id==='valueType'&&value!==node.valueType){
+      if(node.key==='functionInput')node.value=materialLiteralDefault(value);
+      node.inputValues={};
+      graph.edges=normalizedMaterialEdges(graph).filter(edge=>edge.from.node!==node.id&&edge.to.node!==node.id);
+    }
+    node[property.id]=value;
   }
   function animationView(data,view){
     if(view==='event')return {};
@@ -287,10 +358,14 @@ export function nativeEditorSession(bridge) {
       data = data[key];
     }
     if (!data || typeof data !== 'object') throw Error('속성 경로를 다시 선택하세요.');
-    return Object.entries(data).map(([key,value]) => {
+    const component=doc.kind==='scene'&&parts.length===5&&parts[0]==='objects'&&parts[2]==='components'&&parts[4]==='properties'
+      ? doc.data.objects[parts[1]]?.components[parts[3]] : null;
+    return Object.entries(data).filter(([key])=>!component||componentPropertyVisible(component.type,key,data)).map(([key,value]) => {
       const type = value === null ? 'null' : typeof value;
-      const label = fieldLabels[key] || value?.name || key;
-      const control = type === 'object' ? {kind:'button',text:Array.isArray(value) ? `열기 (${value.length})` : '열기'}
+      const definition=component&&componentDefinitions[component.type]?.properties[key];
+      const label = definition?.label || fieldLabels[key] || value?.name || key;
+      const control = definition?.type==='select' ? {kind:'select',value,options:definition.choices.map(choice=>Array.isArray(choice)?choice:[choice,choice])}
+        : type === 'object' ? {kind:'button',text:Array.isArray(value) ? `열기 (${value.length})` : '열기'}
         : type === 'boolean' ? {kind:'checkbox',checked:value}
         : {kind:'text',value:String(value),disabled:key==='version' || type==='null'};
       return {key, label, type, control};
@@ -373,6 +448,39 @@ export function nativeEditorSession(bridge) {
     'content.create': async ({folder,kind,name}) => {
       if (typeof folder!=='string' || !/^Assets(?:\/|$)/.test(folder) || !Object.hasOwn(assetSuffix,kind) || typeof name!=='string' || !name.trim() || /[/\\:<>?"|*\x00-\x1f]/.test(name)) throw Error('Assets 폴더와 에셋 이름, 종류를 확인하세요.');
       return openDocument((await project().create(folder,kind,name.trim())).path);
+    },
+    'timeline.importTake': async ({name,data})=>{
+      if(typeof name!=='string'||!name.trim()||name.length>70||/[\/\\:<>?"|*\x00-\x1f]/.test(name)||
+        !validAsset('sequenceasset',data)||data.name!==name||!data.tracks.length)throw Error('녹화 이름과 시퀀스 데이터를 확인하세요.');
+      const file='Assets/'+name+'.hbsequence.json';
+      await project().checkedBatch([{path:file,text:JSON.stringify(data,null,2),expected:null}]);
+      return openDocument(file);
+    },
+    'tilemap.view': ({x=0,y=0,columns,rows})=>{
+      const doc=assetOfKind('tilemap'),{width,height,layers,layout,tileset,tileSize}=doc.data;
+      if(![x,y,columns,rows].every(Number.isSafeInteger)||x<0||y<0||columns<1||rows<1||columns*rows>16384)
+        throw Error('타일 편집기의 표시 범위를 확인하세요.');
+      return {width,height,layout,atlasSource:[tileset,tileSize],layers:layers.map(({id,name,visible,collision})=>({id,name,visible,collision})),
+        tiles:layers.filter(row=>row.visible).flatMap(row=>tileCellsInRect(row,[x,y,x+columns-1,y+rows-1]).map(({x,y,index,rotation,flipX,flipY})=>({x,y,index,rotation,flipX,flipY})))};
+    },
+    'tilemap.atlas': async ()=>{
+      const {tileset,tileSize}=assetOfKind('tilemap').data;
+      if(!tileset)return null;
+      const {createCanvas,loadImage}=await import('@napi-rs/canvas');
+      const image=await loadImage(await projectBytes(project(),tileset));
+      const [tileWidth,tileHeight]=tileSize,columns=Math.floor(image.width/tileWidth),rows=Math.floor(image.height/tileHeight);
+      if(!columns||!rows)return null;
+      const scale=Math.min(1,2048/Math.max(image.width,image.height));
+      const width=Math.max(1,Math.round(image.width*scale)),height=Math.max(1,Math.round(image.height*scale));
+      const canvas=createCanvas(width,height),ctx=canvas.getContext('2d');
+      ctx.imageSmoothingEnabled=false;ctx.drawImage(image,0,0,width,height);
+      return {width,height,columns,rows,tileWidth:tileWidth*width/image.width,tileHeight:tileHeight*height/image.height,pixels:canvas.data().toString('base64')};
+    },
+    'tilemap.paint': async ({layer,tool,from,to,index,expectedRevision})=>{
+      const doc=assetOfKind('tilemap');await check(doc,expectedRevision);
+      const edit=applyTileTool(doc.data,layer,tool,from,to,index);
+      if(edit.changed)change(doc,edit.data);
+      return response(doc);
     },
     'content.mkdir': async ({folder,name})=>{
       if(typeof folder!=='string'||!/^(Assets|Source|Settings)(?:\/|$)/.test(folder)||
@@ -524,6 +632,46 @@ export function nativeEditorSession(bridge) {
       return {length, tracks:timeline.tracks.map(track=>({id:track.id,name:track.name,type:track.type,keys:track.keys.map(key=>key.time)}))};
     },
     'timeline.trackTypes': ()=>sequenceTracks,
+    'timeline.curveGraph': ({track})=>{
+      const doc=assetOfKind('sequenceasset'),row=doc.data.tracks.find(item=>item.id===track);
+      if(!row||!sequenceCurveType(row)||!row.keys.length)throw Error('키가 있는 곡선 트랙을 선택하세요.');
+      let sampler=sequenceSamplers.get(doc.data);
+      if(!sampler){sampler=new SequenceSampler(doc.data.tracks);sequenceSamplers.set(doc.data,sampler);}
+      const channels=value=>Array.isArray(value)?value:[value];
+      const samples=Array.from({length:385},(_,index)=>{
+        const time=doc.data.length*index/384;
+        return {time,value:channels(sampler.sample(row,time))};
+      });
+      const keys=row.keys.map((key,index)=>({index,time:key.time,value:channels(key.value)}));
+      return {track,length:doc.data.length,name:row.name,samples,keys};
+    },
+    'timeline.curveHandles': ({track,index,channel})=>{
+      const row=assetOfKind('sequenceasset').data.tracks.find(item=>item.id===track),key=row?.keys[index];
+      if(!key||row.quaternionInterpolation||!sequenceCurveType(row))return [];
+      const value=Array.isArray(key.value)?key.value[channel]:channel===0?key.value:undefined;
+      if(value===undefined)return [];
+      return ['arrive','leave'].flatMap(side=>{
+        const neighbour=row.keys[index+(side==='arrive'?-1:1)];
+        if(!neighbour||neighbour.time===key.time)return [];
+        return [{side,time:key.time+(neighbour.time-key.time)*curveKeyWeight(key,channel,side+'Weight'),
+          value:value+curveControlValue(row.keys,index,channel,side,'linear')}];
+      });
+    },
+    'timeline.curveHandleMove': async ({track,index,channel,side,time,value,expectedRevision})=>{
+      const doc=assetOfKind('sequenceasset');await check(doc,expectedRevision);
+      const next=structuredClone(doc.data),row=next.tracks.find(item=>item.id===track),key=row?.keys[index];
+      const valid=methods['timeline.curveHandles']({track,index,channel}).some(handle=>handle.side===side);
+      if(!valid||!Number.isFinite(time)||!Number.isFinite(value))throw Error('곡선 탄젠트 핸들을 선택하세요.');
+      const neighbour=row.keys[index+(side==='arrive'?-1:1)];
+      const weight=Math.max(0,Math.min(1,(time-key.time)/(neighbour.time-key.time)));
+      const component=Array.isArray(key.value)?key.value[channel]:key.value;
+      const values=(field,replacement,defaultValue)=>Array.isArray(key.value)
+        ?key.value.map((_,i)=>i===channel?replacement:defaultValue(i)):replacement;
+      configureSequenceCurve(next,{track,key:index,
+        [side+'Weight']:values(side+'Weight',weight,i=>curveKeyWeight(key,i,side+'Weight')),
+        [side+'Control']:values(side+'Control',value-component,i=>curveControlValue(row.keys,index,i,side,'linear'))});
+      change(doc,next);return response(doc);
+    },
     'timeline.curveOptions': ({track,index})=>{
       const row=assetOfKind('sequenceasset').data.tracks.find(item=>item.id===track);
       if(!row)throw Error('시퀀스 트랙을 선택하세요.');
@@ -541,6 +689,18 @@ export function nativeEditorSession(bridge) {
       else if(['preInfinity','postInfinity'].includes(key)&&options.infinity.includes(value))configureSequenceCurve(next,{track,[key]:value});
       else throw Error('곡선 편집 옵션을 확인하세요.');
       change(doc,next);return response(doc);
+    },
+    'timeline.curveKeyMove': async ({track,index,channel,time,value,expectedRevision})=>{
+      const doc=assetOfKind('sequenceasset');await check(doc,expectedRevision);
+      const next=structuredClone(doc.data),row=next.tracks.find(item=>item.id===track),key=row?.keys[index];
+      if(!key||!sequenceCurveType(row)||!Number.isFinite(value)||!Number.isFinite(time)||time<0||time>next.length||
+        !Number.isInteger(channel)||channel<0||channel>=(Array.isArray(key.value)?key.value.length:1))throw Error('곡선 키를 확인하세요.');
+      time=Math.min(next.length,timelineSnap(next,time));
+      if(row.keys.some((other,i)=>i!==index&&other.time===time))throw Error('같은 시간에 키가 있어요.');
+      key.time=time;
+      if(Array.isArray(key.value))key.value[channel]=value;else key.value=value;
+      row.keys.sort((a,b)=>a.time-b.time);
+      change(doc,next);return {...await response(doc),keyIndex:row.keys.indexOf(key)};
     },
     'timeline.inspectorPath': ({track,id})=>{
       const {kind,data}=assetOfKind('timeline');
@@ -650,13 +810,19 @@ export function nativeEditorSession(bridge) {
       return response(doc);
     },
     'widget.catalog': ()=>Object.entries(widgetTypes).map(([id,label])=>({id,label})),
-    'asset.imagePreview': async ({index=0,level=0}={})=>{
+    'asset.imagePreview': async ({index=0,level=0,time,previousFrame}={})=>{
       const doc=current(),data=doc.data;
       if(!Number.isInteger(index)||index<0||!Number.isInteger(level)||level<0)throw Error('이미지 미리보기 범위를 확인하세요.');
       const read=async name=>JSON.parse((await projectBytes(project(),name)).toString('utf8').replace(/^\uFEFF/,''));
-      let sprite,images,filter='linear';
-      if(doc.kind==='sprite'){
-        sprite=await resolveSprite(data,read);filter=sprite.filter;
+      let sprite,images,filter='linear',frameInfo;
+      if(doc.kind==='sprite'||doc.kind==='spriteanimation'){
+        const frame=doc.kind==='spriteanimation'?(time===undefined?data.frames[index]:spriteAnimationFrame(data,time)):null;
+        if(doc.kind==='spriteanimation'&&!frame)return null;
+        if(time!==undefined&&frame){
+          frameInfo={index:frame.index,finished:frame.finished};
+          if(previousFrame===frame.index)return {frame:frameInfo};
+        }
+        sprite=await resolveSprite(frame?await read(frame.sprite):data,read);filter=sprite.filter;
         const texture=assetKind(sprite.texture)==='texture2d'?await read(sprite.texture):null;
         images=[texture?.images?.[0]||sprite.texture];
       }else if(['texture2d','cubemap','texturearray','volumetexture'].includes(doc.kind)){
@@ -673,8 +839,55 @@ export function nativeEditorSession(bridge) {
       const canvas=createCanvas(width,height),ctx=canvas.getContext('2d');
       ctx.imageSmoothingEnabled=filter!=='nearest';
       ctx.drawImage(image,x,y,w,h,0,0,width,height);
-      return {width,height,nearest:filter==='nearest',pixels:canvas.data().toString('base64')};
+      return {width,height,nearest:filter==='nearest',pixels:canvas.data().toString('base64'),frame:frameInfo};
     },
+    'spriteAnimation.edit': async ({action,index,asset,duration,expectedRevision})=>{
+      const doc=assetOfKind('spriteanimation');await check(doc,expectedRevision);
+      const next=structuredClone(doc.data);
+      if(action==='add'){
+        if(typeof asset!=='string'||assetKind(asset)!=='sprite')throw Error('스프라이트 에셋을 선택하세요.');
+        await project().read(asset);
+        next.frames.push({sprite:asset,duration:.1});
+      }else{
+        if(!Number.isInteger(index)||!next.frames[index])throw Error('편집할 프레임을 선택하세요.');
+        if(action==='duration')next.frames[index].duration=duration;
+        else if(action==='delete')next.frames.splice(index,1);
+        else if(action==='up'&&index>0)[next.frames[index-1],next.frames[index]]=[next.frames[index],next.frames[index-1]];
+        else throw Error('프레임 편집 명령을 확인하세요.');
+      }
+      change(doc,next);return response(doc);
+    },
+    'asset.audioPreview': async ({play=false,silent=false}={})=>{
+      await stopAudioPreview();
+      const doc=assetOfKind('audioasset');
+      if(!doc.data.clip)throw Error('오디오 클립을 선택하세요.');
+      const bytes=await projectBytes(project(),doc.data.clip);
+      const {AudioContext}=await import('node-web-audio-api');
+      const context=new AudioContext(silent||!play?{sinkId:{type:'none'}}:{});
+      audioPreview={context};
+      try{
+        const audio=await context.decodeAudioData(Uint8Array.from(bytes).buffer);
+        const channels=Array.from({length:audio.numberOfChannels},(_,index)=>audio.getChannelData(index));
+        const count=Math.min(audio.length,256);
+        const bins=Array.from({length:count},(_,index)=>{
+          const start=Math.floor(index*audio.length/count);
+          const end=Math.floor((index+1)*audio.length/count);
+          let low=0,high=0;
+          for(const channel of channels)for(let sample=start;sample<end;sample++){low=Math.min(low,channel[sample]);high=Math.max(high,channel[sample]);}
+          return [low,high];
+        });
+        if(play){
+          const source=context.createBufferSource(),gain=context.createGain();
+          source.buffer=audio;source.loop=doc.data.loop;source.playbackRate.value=doc.data.pitch;
+          gain.gain.value=doc.data.volume;source.connect(gain);gain.connect(context.destination);
+          audioPreview.source=source;
+          source.onended=()=>{if(audioPreview?.source===source)void stopAudioPreview().catch(()=>{});};
+          source.start();
+        }else await stopAudioPreview();
+        return {duration:audio.duration,bins};
+      }catch(error){await stopAudioPreview();throw error;}
+    },
+    'asset.audioStop': async ()=>{await stopAudioPreview();return {ok:true};},
     'widget.nodes': ()=>assetOfKind('widget').data.nodes.map(({id,name,type})=>({id,name,type})),
     'widget.preview': async ({width,height})=>{
       if(![width,height].every(size=>Number.isInteger(size)&&size>0&&size<=4096))throw Error('위젯 미리보기 크기를 확인하세요.');
@@ -725,6 +938,7 @@ export function nativeEditorSession(bridge) {
         value:bp?defaultInputValue(node,pin):node.inputValues?.[pin.id]??pin.value??null
       }));
       if (!bp && Object.hasOwn(node,'value')) inputs.unshift({id:'',label:'값',linked:false,value:node.value});
+      if (!bp) inputs.push(...materialNodeProperties(node,doc.data));
       return inputs;
     },
     'asset.fieldEdit': async ({parts=[],key,value,expectedRevision}) => {
@@ -830,7 +1044,7 @@ export function nativeEditorSession(bridge) {
       change(doc,next);
       return {...await response(doc),view};
     },
-    'graph.edit': async ({path,view='event',action,id,x,y,key,from,to,pin,output,value,expectedRevision}) => {
+    'graph.edit': async ({path,view='event',action,id,x,y,key,from,to,pin,output,value,asset,expectedRevision}) => {
       const doc = targetDocument(path);
       await check(doc,expectedRevision);
       if(gameplayGraphs.has(doc.kind)){
@@ -843,6 +1057,11 @@ export function nativeEditorSession(bridge) {
         return {...await response(doc),model:gameplayGraph(doc.kind,doc.data)};
       }
       const next = structuredClone(doc.data), graph = graphFor(doc,next,view), bp = doc.kind === 'blueprint';
+      const readMaterial=async name=>{
+        if(name===doc.path)return next;
+        const open=documents.items.get(name);
+        return open?.data??JSON.parse((await projectBytes(project(),name)).toString('utf8').replace(/^\uFEFF/,''));
+      };
       if (action === 'move' || action === 'add') {
         if (![x,y].every(Number.isFinite)) throw Error('노드 위치를 확인하세요.');
         x = Math.max(-10000,Math.min(10000,x));
@@ -857,8 +1076,27 @@ export function nativeEditorSession(bridge) {
             const [type,target]=key.split(':'),node=makeNode(type,x,y,['getVariable','setVariable'].includes(type)?target:undefined);
             if(['callFunction','callMacro'].includes(type))node.definitionId=target;
             graph.nodes.push(node);
-          }else graph.nodes.push({...makeMaterialNode(key,x,y),px:x});
+          }else if(key==='functionCall'){
+            if(typeof asset!=='string'||asset===doc.path||assetKind(asset)!=='materialfunction')throw Error('다른 머테리얼 함수 에셋을 선택하세요.');
+            graph.nodes.push({...makeMaterialFunctionCall(asset,await readMaterial(asset),x,y),px:x});
+            await materialFunctionDependencies(graph,readMaterial,{checkSignatures:false});
+          }else{
+            const node={...makeMaterialNode(key,x,y),px:x};
+            if(node.portName)node.portName=materialPortName(graph,key,node.portName);
+            graph.nodes.push(node);
+          }
         }
+      } else if(action==='refreshFunction'&&!bp){
+        const node=graph.nodes.find(row=>row.id===id&&row.key==='functionCall');
+        if(!node)throw Error('머테리얼 함수 호출 노드를 선택하세요.');
+        refreshMaterialFunctionCall(graph,id,await readMaterial(node.asset));
+        await materialFunctionDependencies(graph,readMaterial,{checkSignatures:false});
+      } else if(action==='property'&&!bp){
+        const node=graph.nodes.find(row=>row.id===id);
+        const property=node&&materialNodeProperties(node,next).find(row=>row.id===pin);
+        if(!property||property.linked||pin==='refreshFunction')throw Error('편집할 머테리얼 노드 속성을 선택하세요.');
+        if(property.assetKind&&(typeof value!=='string'||assetKind(value)!==property.assetKind||!validMaterialLayer(await readMaterial(value),property.assetKind==='materialblend')))throw Error('레이어 에셋을 확인하세요.');
+        editMaterialNodeProperty(next,graph,node,property,value);
       } else if(action==='comment'){
         if(!bp)throw Error('블루프린트 그래프를 선택하세요.');
         if(![x,y].every(Number.isFinite))throw Error('주석 위치를 확인하세요.');
@@ -873,7 +1111,7 @@ export function nativeEditorSession(bridge) {
         else disconnectMaterial(graph,id,pin,side);
       } else if (action === 'input') {
         const input=methods['graph.inputs']({path,view,id}).find(row=>row.id===pin);
-        if (!input || input.linked) throw Error('편집할 수 있는 기본값을 선택하세요.');
+        if (!input || input.linked || input.property) throw Error('편집할 수 있는 기본값을 선택하세요.');
         const node=graph.nodes.find(row=>row.id===id);
         if (pin) (node.inputValues??={})[pin]=value;
         else node.value=value;
