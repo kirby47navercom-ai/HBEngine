@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 class EditorGraphPanel final : public EditorPanelBase {
+    bool blueprint=false;
     struct Pin {std::string id;std::wstring label;D2D1_COLOR_F color;};
     struct Node {std::string id;std::wstring title;float x,y;std::vector<Pin> inputs,outputs;bool breakpoint;};
     struct Endpoint {std::string node,pin;bool output;};
@@ -133,10 +134,12 @@ class EditorGraphPanel final : public EditorPanelBase {
                     const Json event={{"event","edit"},{"action","disconnect"},{"id",node->id},{"pin",list[i].id},{"output",output}};
                     HMENU menu=CreatePopupMenu();
                     AppendMenuW(menu,MF_STRING,1,L"핀 연결 끊기");
+                    if(output&&blueprint)AppendMenuW(menu,MF_STRING,2,L"출력 값 관찰 / 해제");
                     POINT screen{LONG(x),LONG(y)};ClientToScreen(window,&screen);
                     const auto choice=TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY|TPM_RIGHTBUTTON,screen.x,screen.y,0,window,nullptr);
                     DestroyMenu(menu);
                     if(choice==1)emit(event);
+                    if(choice==2){auto watch=event;watch["action"]="watch";emit(watch);}
                     return 0;
                 }
             }
@@ -197,6 +200,7 @@ class EditorGraphPanel final : public EditorPanelBase {
 public:
     void attach(HWND parent,HINSTANCE instance,Post post){EditorPanelBase::attach(parent,instance,std::move(post),L"HBEngine.EditorGraphPanel","graph");}
     void update(const Json& model){
+        blueprint=model.value("kind",std::string())=="blueprint";
         nodes.clear();nodeIndex.clear();
         nodes.reserve(model.at("nodes").size());nodeIndex.reserve(model.at("nodes").size());
         for(const auto& n:model.at("nodes")){

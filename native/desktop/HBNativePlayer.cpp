@@ -30,7 +30,7 @@ std::wstring quote(const std::wstring& text){std::wstring out=L"\"";std::size_t 
 struct Host {
  HWND window=nullptr,editorOwner=nullptr;HANDLE input=nullptr,output=nullptr,process=nullptr,job=nullptr,timer=nullptr;std::thread reader;std::mutex mutex;std::condition_variable space;std::deque<NativeRuntimePackets::Packet> packets;std::atomic<bool> closing{false};bool hidden=false,ready=false,inFrame=false,closeRequested=false,uncapped=false,tickPosted=false,displaySync=false;std::atomic<bool> failed{false};unsigned rate=120,width=1280,height=720;wchar_t highSurrogate=0;std::uint64_t frames=0;std::chrono::steady_clock::time_point last=std::chrono::steady_clock::now(),nextFrame=last;SceneRenderBridge renderer;NativeWidgetWindow ui;NativeUIPipe uiPipe;NativeGameAudioIdentity audioIdentity;NativeGameInputQueue inputQueue;NativeGamepadInput gamepads;unsigned mouseButtons=0;POINT cursor{};std::unordered_set<UINT32> contacts;bool touchAvailable=false;
  bool kiosk=false,kioskFullscreen=false,kioskHideCursor=false,kioskPreventMinimize=false,operatorUnlocked=false;
- unsigned kioskIdleSeconds=0;ULONGLONG lastActivity=GetTickCount64();fs::path root,logFile;std::wstring failureMessage;
+ unsigned kioskIdleSeconds=0;ULONGLONG lastActivity=GetTickCount64();fs::path root,logFile,debugSnapshot;std::wstring failureMessage;
  void write(Json packet){const auto s=packet.dump()+"\n";std::size_t at=0;while(at<s.size()){DWORD sent=0;if(!WriteFile(input,s.data()+at,DWORD(std::min<std::size_t>(s.size()-at,1048576)),&sent,nullptr)||!sent)throw std::runtime_error("Native game pipe closed");at+=sent;}}
  void log(const std::string& text){std::ofstream(logFile,std::ios::app)<<text<<'\n';}
  void schedule(){if(!ready||inFrame)return;if(uncapped){if(!tickPosted){if(!PostMessageW(window,tickMessage,0,0))throw std::runtime_error("Native uncapped tick queue");tickPosted=true;}return;}const double remaining=std::chrono::duration<double>(nextFrame-std::chrono::steady_clock::now()).count();LARGE_INTEGER due{};due.QuadPart=-std::max<LONGLONG>(1,LONGLONG(remaining*10000000));SetWaitableTimer(timer,&due,0,nullptr,nullptr,FALSE);}
@@ -49,7 +49,15 @@ struct Host {
    else if(message.value("channel",std::string())=="hb.platform"){Json value;if(op=="ui"){const auto& frame=message.at("data");if(frame.value("encoding",std::string())=="zstd-rgba8-premultiplied-rect"){const auto& r=frame.at("rect");if(!r.is_array()||r.size()!=4)throw std::runtime_error("UI rectangle shape invalid");ui.updateRect(window,frame.at("pixels").get<std::string>(),frame.at("width").get<unsigned>(),frame.at("height").get<unsigned>(),frame.at("sequence").get<std::uint64_t>(),frame.at("baseSequence").get<std::uint64_t>(),r.at(0).get<unsigned>(),r.at(1).get<unsigned>(),r.at(2).get<unsigned>(),r.at(3).get<unsigned>());}else if(frame.value("encoding",std::string())=="zstd-rgba8-premultiplied"||frame.value("encoding",std::string())=="zstd-rgba8-premultiplied-xor")ui.updatePixels(window,frame.at("pixels").get<std::string>(),frame.at("width").get<unsigned>(),frame.at("height").get<unsigned>(),frame.value("sequence",std::uint64_t(0)),frame.value("baseSequence",std::uint64_t(0)),frame.value("encoding",std::string())=="zstd-rgba8-premultiplied-xor");else ui.update(window,frame.at("png").get<std::string>());value={{"ok",true},{"nativeUiDecodeMS",ui.decodeMS},{"nativeUiPresentMS",ui.presentMS}};}else if(op=="frameRate"){if(!message.at("data").at("rate").is_number_integer())throw std::runtime_error("Frame rate invalid");const auto requested=message.at("data").at("rate").get<unsigned>();if(requested<15||requested>240)throw std::runtime_error("Frame rate invalid");rate=requested;nextFrame=last+std::chrono::duration_cast<std::chrono::steady_clock::duration>(std::chrono::duration<double>(1.0/rate));value={{"rate",rate},{"effectiveRate",uncapped?0u:rate}};}else if(op=="capture")value=renderer.command({{"op","capture"},{"data",Json::object()}},window,true);else throw std::runtime_error("Unknown native platform operation");write({{"channel","hb.platform"},{"id",id},{"ok",true},{"value",value}});}
    else if(op=="ready"){ready=true;activity();displaySync=!uncapped&&message.value("displaySync",false);rate=message.value("rate",120u);if(rate<15||rate>240)throw std::runtime_error("Frame rate invalid");nextFrame=std::chrono::steady_clock::now();touchAvailable=(GetSystemMetrics(SM_DIGITIZER)&(NID_INTEGRATED_TOUCH|NID_EXTERNAL_TOUCH))!=0&&GetSystemMetrics(SM_MAXIMUMTOUCHES)>0;write({{"event","touchDevice"},{"enabled",touchAvailable}});schedule();write({{"event","resize"},{"width",width},{"height",height},{"pixelRatio",GetDpiForWindow(window)/96.0}});}
    else if(op=="debugBreak"){
-       if(editorOwner)PostMessageW(editorOwner,debugBreakMessage,GetCurrentProcessId(),0);
+       if(editorOwner){
+           const auto snapshot=message.dump();
+           if(snapshot.size()<=128*1024){
+               const auto pending=debugSnapshot.wstring()+L".tmp";
+               {std::ofstream file(fs::path(pending),std::ios::binary|std::ios::trunc);file<<snapshot;}
+               MoveFileExW(pending.c_str(),debugSnapshot.c_str(),MOVEFILE_REPLACE_EXISTING);
+           }
+           PostMessageW(editorOwner,debugBreakMessage,GetCurrentProcessId(),0);
+       }
    }
    else if(op=="frameDone"){inFrame=false;++frames;schedule();}
    else if(op=="title"){SetWindowTextW(window,wide(message.at("text").get<std::string>()).c_str());}
@@ -100,15 +108,18 @@ int playEditorProject(Host& host,HINSTANCE instance,const fs::path& project,cons
     const auto state=profile/L"Play"/(std::to_wstring(GetCurrentProcessId())+L"-"+std::to_wstring(GetTickCount64()));
     if(!fs::create_directories(state))throw std::runtime_error("Editor play state already exists");
     struct SessionDirectory {
-        fs::path path,parent;
+        fs::path path,parent,debug;
         ~SessionDirectory(){
+            if(!debug.empty()){DeleteFileW(debug.c_str());DeleteFileW((debug.wstring()+L".tmp").c_str());}
             std::error_code error;
             const auto current=fs::canonical(path,error);
             if(!error&&current==path&&current.parent_path()==parent)fs::remove_all(current,error);
         }
-    } cleanup{fs::canonical(state),fs::canonical(profile)/L"Play"};
+    } cleanup{fs::canonical(state),fs::canonical(profile)/L"Play",{}};
     host.logFile=profile/L"Sessions"/(L"play-"+std::to_wstring(GetCurrentProcessId())+L".log");
     fs::create_directories(host.logFile.parent_path());
+    host.debugSnapshot=host.logFile.parent_path()/(L"debug-"+std::to_wstring(GetCurrentProcessId())+L".json");
+    cleanup.debug=host.debugSnapshot;
     const auto cache=profile/L"Cache"/L"ShaderBytecode";
     auto bundled=host.root/L"Shaders";
     if(!fs::is_directory(bundled))bundled=host.root/L"dist/HBEngine/Shaders";

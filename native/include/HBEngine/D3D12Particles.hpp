@@ -50,7 +50,7 @@ private:
     void uav(const DescriptorTable& t,UINT slot,ID3D12Resource* r,UINT count,UINT stride,ID3D12Resource* counter=nullptr){D3D12_UNORDERED_ACCESS_VIEW_DESC u{};u.ViewDimension=D3D12_UAV_DIMENSION_BUFFER;u.Buffer.NumElements=count;u.Buffer.StructureByteStride=stride;gpu.device->CreateUnorderedAccessView(r,counter,&u,t.cpuAt(slot));}
     // t0..t2 SRVs and u0..u1 UAVs filled by the caller's lambda after null defaults; constants padded like Device::dispatch.
     template<class Views> void dispatch(ID3D12PipelineState* kernel,const std::vector<float>& constants,std::uint32_t groups,Views views){
-        auto srvs=gpu.table(3),uavs=gpu.table(2);
+        gpu.reserveTables(5);auto srvs=gpu.table(3),uavs=gpu.table(2);
         for(UINT i=0;i<3;i++){const auto v=structured(1,4);gpu.device->CreateShaderResourceView(nullptr,&v,srvs.cpuAt(i));}for(UINT i=0;i<2;i++)uav(uavs,i,nullptr,1,4);
         views(srvs,uavs);std::vector<float> padded((std::max<std::size_t>(constants.size(),4)+3)/4*4,0.f);std::copy(constants.begin(),constants.end(),padded.begin());
         auto* list=gpu.list.p;list->SetComputeRootSignature(kernels->root.p);list->SetPipelineState(kernel);list->SetComputeRootConstantBufferView(0,gpu.constants(padded.data(),padded.size()*4));

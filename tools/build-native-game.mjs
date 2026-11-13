@@ -21,8 +21,21 @@ export async function nativeRuntimeFiles(){
  return files;
 }
 export function validateNativeContent(content,profile){
- for(const[name,bytes]of content){if(/\.(?:mp4|webm)$/i.test(name))throw Error('네이티브 영상 디코더가 필요해요: '+name);if(!/\.json$/i.test(name)||!Buffer.isBuffer(bytes))continue;let data;try{data=JSON.parse(bytes);}catch{continue;}const components=[...data.components||[],...(data.objects||[]).flatMap(o=>o.components||[])];const streamingClips=[...components.filter(c=>c.type==='AudioSource'&&c.properties?.streaming).map(c=>c.properties.clip),...(data.streaming===true&&assetKind(name)==='audioasset'?[data.clip]:[])];
-  if(streamingClips.some(clip=>clip&&!/\.(?:wav|hbaudioasset\.json)$/i.test(clip)))throw Error('네이티브 스트리밍은 PCM WAV 클립을 사용해요: '+name);}
+ for(const[name,bytes]of content){
+  if(/\.(?:mp4|webm)$/i.test(name))throw Error('네이티브 영상 디코더가 필요해요: '+name);
+  if(!Buffer.isBuffer(bytes))continue;
+  const kind=assetKind(name);
+  if(!['scene','blueprint','prefab','audioasset'].includes(kind))continue;
+  let data;
+  try{data=JSON.parse(bytes);}catch{continue;}
+  const components=[
+   ...(Array.isArray(data?.components)?data.components:[]),
+   ...(Array.isArray(data?.objects)?data.objects.flatMap(actor=>Array.isArray(actor?.components)?actor.components:[]):[])
+  ];
+  const clips=components.filter(c=>c?.type==='AudioSource'&&c.properties?.streaming).map(c=>c.properties.clip);
+  if(kind==='audioasset'&&data?.streaming===true)clips.push(data.clip);
+  if(clips.some(clip=>clip&&!/\.(?:wav|hbaudioasset\.json)$/i.test(clip)))throw Error('네이티브 스트리밍은 PCM WAV 클립을 사용해요: '+name);
+ }
 }
 export async function buildNativeGame(record,profile,{content,natives,report},{signal,onProgress=()=>{},dryRun=false}={}){
  validateNativeContent(content,profile);if(dryRun)return report;if(process.platform!=='win32'||process.arch!=='x64')throw Error('Windows x64에서 네이티브 게임을 빌드하세요.');const signingSettings=windowsSigningSettings(profile);

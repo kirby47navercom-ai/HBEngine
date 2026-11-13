@@ -67,9 +67,22 @@ static nlohmann::json proof(DeviceDriver driver,HWND window){
     out["frameMs"]=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-started).count()/frames;
     gpu.begin();pixels=gpu.read(target);// last frame i=29: odd, red, shifted left by .0167
     REQUIRE(pixels[at(32,32)]>250&&pixels[at(32,32)+2]<3);
-    bool threw=false;try{gpu.table(65);}catch(const std::runtime_error&){threw=true;}REQUIRE(threw);
-    auto t=gpu.table(64);REQUIRE(t.gpu.ptr&&t.stride);
+    bool threw=false;
+    try{gpu.table(D3D12_MAX_SHADER_VISIBLE_DESCRIPTOR_HEAP_SIZE_TIER_1+1);}catch(const std::runtime_error&){threw=true;}
+    REQUIRE(threw);
+    auto base=gpu.table(62);
+    gpu.reserveTables(5);
+    const auto srvs=gpu.table(2),uavs=gpu.table(3);
+    REQUIRE(base.gpu.ptr&&srvs.gpu.ptr&&srvs.stride);
+    REQUIRE(uavs.gpu.ptr==srvs.gpu.ptr+2*srvs.stride);
+    REQUIRE(gpu.descriptorOverflowPages()==1);
+    out["descriptorOverflowPages"]=gpu.descriptorOverflowPages();
+    out["adapterVendor"]=gpu.adapter.VendorId;
+    REQUIRE(gpu.adapter.VendorId>0);
     gpu.release(target);gpu.release(depth);gpu.retire(std::move(mesh.value));gpu.end();
+    for(int i=0;i<8;++i){gpu.begin();gpu.table(62);gpu.reserveTables(5);gpu.table(2);gpu.table(3);gpu.end();}
+    REQUIRE(gpu.descriptorReusedPages()>=5);
+    out["descriptorReusedPages"]=gpu.descriptorReusedPages();
     // Present through a hidden window, including a resize.
     {d3d12::Swapchain chain(gpu,window,160,96);
         for(int i=0;i<6;i++){if(i==3)chain.resize(200,120);gpu.begin();auto& back=chain.acquire();const float c[4]={0,float(i)/6,0,1};gpu.list->ClearRenderTargetView(back.rtv,c,0,nullptr);chain.finish(back);gpu.end();chain.present(0);}

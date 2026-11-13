@@ -108,7 +108,8 @@ public:
             using Status=detail::ShaderPreparationQueue::Status;
             SceneProgramPreparation::Info info;info.ready=ready();info.pending=!info.ready;
             const auto stage=[&](std::size_t i,bool adopted){
-                if(adopted)return 3u;if(!preparation[i])return 1u;
+                if(adopted)return 3u;
+                if(!preparation[i])return 1u;
                 switch(preparation[i]->status.load(std::memory_order_acquire)){
                     case Status::failed:info.error=preparation[i]->error;return 4u;
                     case Status::ready:return 3u;
@@ -298,7 +299,7 @@ float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pi
     D3D12_SHADER_RESOURCE_VIEW_DESC particleView(UINT count)const{D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.ViewDimension=D3D12_SRV_DIMENSION_BUFFER;v.Buffer.NumElements=count;v.Buffer.StructureByteStride=32;return v;}
     // One compute dispatch over n particles: t0 particles SRV (or none), u0/u1 views written by the caller's lambda.
     template<class Views> void particleDispatch(ID3D12PipelineState* kernel,const void* constants,std::size_t bytes,std::size_t n,Views views){
-        auto srvs=gpu.table(1),uavs=gpu.table(2);views(srvs,uavs);auto* list=gpu.list.p;list->SetComputeRootSignature(particleComputeRoot.p);list->SetPipelineState(kernel);
+        gpu.reserveTables(3);auto srvs=gpu.table(1),uavs=gpu.table(2);views(srvs,uavs);auto* list=gpu.list.p;list->SetComputeRootSignature(particleComputeRoot.p);list->SetPipelineState(kernel);
         list->SetComputeRootConstantBufferView(0,gpu.constants(constants,bytes));list->SetComputeRootDescriptorTable(1,srvs.gpu);list->SetComputeRootDescriptorTable(2,uavs.gpu);const auto groups=UINT((n+63)/64);list->Dispatch(std::min(groups,65535u),(groups+65534)/65535,1);
     }
     void particleUav(const DescriptorTable& t,UINT slot,ID3D12Resource* r,UINT count,UINT stride,ID3D12Resource* counter=nullptr){D3D12_UNORDERED_ACCESS_VIEW_DESC u{};u.ViewDimension=D3D12_UAV_DIMENSION_BUFFER;u.Buffer.NumElements=count;u.Buffer.StructureByteStride=stride;gpu.device->CreateUnorderedAccessView(r,counter,&u,t.cpuAt(slot));}
@@ -406,7 +407,7 @@ float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pi
     }
     // Null descriptors fill every unbound kernel slot.
     void probeDispatch(std::size_t kernel,const std::array<float,4>& settings,const D3D12_CPU_DESCRIPTOR_HANDLE* cube,const D3D12_CPU_DESCRIPTOR_HANDLE* panorama,ID3D12Resource* u0,const D3D12_UNORDERED_ACCESS_VIEW_DESC* u0Desc,ID3D12Resource* u2,const D3D12_UNORDERED_ACCESS_VIEW_DESC* u2Desc,UINT x,UINT y,UINT z,ID3D12Resource* u1=nullptr){
-        auto srvs=gpu.table(2),uavs=gpu.table(3);
+        gpu.reserveTables(5);auto srvs=gpu.table(2),uavs=gpu.table(3);
         D3D12_SHADER_RESOURCE_VIEW_DESC s{};s.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;s.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;s.ViewDimension=D3D12_SRV_DIMENSION_TEXTURECUBE;s.TextureCube.MipLevels=1;
         if(cube)gpu.device->CopyDescriptorsSimple(1,srvs.cpuAt(0),*cube,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);else gpu.device->CreateShaderResourceView(nullptr,&s,srvs.cpuAt(0));
         s.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;s.Texture2D.MipLevels=1;
@@ -446,9 +447,10 @@ float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pi
         extractKernel=gpu.computePipeline(bloomCompute.root.p,extract);blurKernel=gpu.computePipeline(bloomCompute.root.p,blur);meterKernel=gpu.computePipeline(bloomCompute.root.p,meter);
         auto d=Device::defaults(bloomGraphics.root.p,vsCode,psCode,DXGI_FORMAT_R8G8B8A8_UNORM);d.DepthStencilState.DepthEnable=FALSE;compositePipeline=gpu.pipeline(d);d.PS={fxaa.data(),fxaa.size()};fxaaPipeline=gpu.pipeline(d);
     }
+    void reserveLayout(const ReflectedLayout& layout){gpu.reserveTables(UINT(layout.srvs.size()+layout.uavs.size()));}
     void srvAt(const DescriptorTable& t,UINT slot,ID3D12Resource* r,const D3D12_SHADER_RESOURCE_VIEW_DESC* desc=nullptr){gpu.device->CreateShaderResourceView(r,desc,t.cpuAt(slot));}
     void bloomDispatch(ID3D12PipelineState* kernel,ID3D12Resource* input,Image& output,const BloomPass::Constants& values){
-        gpu.transition(output.texture,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);auto s=bloomCompute.srvTable(gpu),u=bloomCompute.uavTable(gpu);srvAt(s,0,input);gpu.device->CreateUnorderedAccessView(output.texture.get(),nullptr,nullptr,u.cpuAt(0));
+        gpu.transition(output.texture,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);reserveLayout(bloomCompute);auto s=bloomCompute.srvTable(gpu),u=bloomCompute.uavTable(gpu);srvAt(s,0,input);gpu.device->CreateUnorderedAccessView(output.texture.get(),nullptr,nullptr,u.cpuAt(0));
         bloomCompute.apply(gpu,true,{{0,gpu.constants(&values,sizeof(values))}},&s,&u);gpu.list->SetPipelineState(kernel);gpu.list->Dispatch((output.texture.width+7)/8,(output.texture.height+7)/8,1);gpu.transition(output.texture,readable);++bloomDispatches_;
     }
     static ScreenEffectsPass::DataInfo dataInfo(const Texture* t){ScreenEffectsPass::DataInfo info;if(!t)return info;info.present=true;info.width=t->width;info.height=t->height;info.rgba32f=t->format==DXGI_FORMAT_R32G32B32A32_FLOAT;return info;}
@@ -468,7 +470,7 @@ float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pi
             D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=hizLevels.front().texture.width;d.Height=offset;d.DepthOrArraySize=1;d.MipLevels=1;d.Format=DXGI_FORMAT_R32G32_FLOAT;d.SampleDesc.Count=1;hizAtlas.texture.value=gpu.committed(D3D12_HEAP_TYPE_DEFAULT,d,readable,nullptr,"Direct3D12 Hi-Z atlas");hizAtlas.texture.state=readable;hizAtlas.texture.width=UINT(d.Width);hizAtlas.texture.height=offset;hizAtlas.texture.format=d.Format;}
         gpu.transition(depth,readable);ID3D12Resource* source=depth.get();UINT sw=w,sh=h,offset=0;bool first=true;
         for(auto& l:hizLevels){const std::array<UINT,8> c{sw,sh,first?UINT(area[0]):0,first?UINT(area[1]):0,l.texture.width,l.texture.height,first?1u:0u,0};
-            gpu.transition(l.texture,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);auto srvs=hizLayout.srvTable(gpu),uavs=hizLayout.uavTable(gpu);
+            gpu.transition(l.texture,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);reserveLayout(hizLayout);auto srvs=hizLayout.srvTable(gpu),uavs=hizLayout.uavTable(gpu);
             if(first){D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.Format=DXGI_FORMAT_R32_FLOAT;v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=1;srvAt(srvs,0,source,&v);}else srvAt(srvs,0,source);
             gpu.device->CreateUnorderedAccessView(l.texture.get(),nullptr,nullptr,uavs.cpuAt(0));hizLayout.apply(gpu,true,{{0,gpu.constants(c.data(),sizeof(c))}},&srvs,&uavs);gpu.list->SetPipelineState(hizKernel.p);gpu.list->Dispatch((l.texture.width+7)/8,(l.texture.height+7)/8,1);
             gpu.transition(l.texture,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(hizAtlas.texture,D3D12_RESOURCE_STATE_COPY_DEST);D3D12_TEXTURE_COPY_LOCATION dst{},src{};dst.pResource=hizAtlas.texture.get();src.pResource=l.texture.get();dst.Type=src.Type=D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;const D3D12_BOX box{0,0,0,l.texture.width,l.texture.height,1};gpu.list->CopyTextureRegion(&dst,0,offset,0,&src,&box);
@@ -492,7 +494,7 @@ float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pi
         c.pathFilter[2]=filterValid?1.f:0.f;gpu.transition(hdr.texture,readable);
         for(auto* i:{&surfaceNormal,&surfaceAlbedo,&surfaceMotion,&surfaceAmbient})if(i->texture.value.p)gpu.transition(i->texture,readable);
         const auto run=[&](int stage,ID3D12Resource* input,Image& destination,float stride=0){
-            c.pathOptions[3]=stage==2?stride:settings.pathOptions[3];auto* kernel=screenKernel(stage);auto srvs=screenLayout.srvTable(gpu),uavs=screenLayout.uavTable(gpu);
+            c.pathOptions[3]=stage==2?stride:settings.pathOptions[3];auto* kernel=screenKernel(stage);reserveLayout(screenLayout);auto srvs=screenLayout.srvTable(gpu),uavs=screenLayout.uavTable(gpu);
             const auto put=[&](UINT slot,const Image& i){if(i.texture.value.p)srvAt(srvs,slot,i.texture.get());};
             if(input){srvAt(srvs,0,input);}
             D3D12_SHADER_RESOURCE_VIEW_DESC dv{};dv.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;dv.Format=DXGI_FORMAT_R32_FLOAT;dv.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;dv.Texture2D.MipLevels=1;gpu.transition(depth,readable);srvAt(srvs,1,depth.get(),&dv);
@@ -541,7 +543,7 @@ float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pi
         if(post.exposure[0]>0){
             if(!exposureImages[0].texture.value.p){exposureImages[0]=image(1,1,false);exposureImages[1]=image(1,1,false);exposureValid=false;}
             values.adapt[3]=exposureValid&&post.adapt[3]>.5f?1.f:0.f;auto& result=exposureImages[1-exposureIndex];gpu.transition(result.texture,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-            auto s=bloomCompute.srvTable(gpu),u=bloomCompute.uavTable(gpu);srvAt(s,0,hdr.texture.get());srvAt(s,8,exposureImages[exposureIndex].texture.get());gpu.device->CreateUnorderedAccessView(result.texture.get(),nullptr,nullptr,u.cpuAt(0));
+            reserveLayout(bloomCompute);auto s=bloomCompute.srvTable(gpu),u=bloomCompute.uavTable(gpu);srvAt(s,0,hdr.texture.get());srvAt(s,8,exposureImages[exposureIndex].texture.get());gpu.device->CreateUnorderedAccessView(result.texture.get(),nullptr,nullptr,u.cpuAt(0));
             bloomCompute.apply(gpu,true,{{0,gpu.constants(&values,sizeof(values))}},&s,&u);gpu.list->SetPipelineState(meterKernel.p);gpu.list->Dispatch(1,1,1);++bloomDispatches_;gpu.transition(result.texture,readable);exposureIndex=1-exposureIndex;exposureValid=true;
         }else{for(auto& e:exposureImages)release(e);exposureValid=false;}
         if(post.occlusion[3]>0){if(aaImage.texture.width!=hdr.texture.width||aaImage.texture.height!=hdr.texture.height){release(aaImage);aaImage=image(hdr.texture.width,hdr.texture.height,true,DXGI_FORMAT_R8G8B8A8_UNORM);}}else release(aaImage);
@@ -566,7 +568,7 @@ float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pi
             b[0].Transition.Subresource=level-1;b[0].Transition.StateBefore=level==1?t.state:D3D12_RESOURCE_STATE_UNORDERED_ACCESS;b[0].Transition.StateAfter=readable;
             b[1].Transition.Subresource=level;b[1].Transition.StateBefore=t.state;b[1].Transition.StateAfter=D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
             UINT count=0;D3D12_RESOURCE_BARRIER use[2];if(b[0].Transition.StateBefore!=b[0].Transition.StateAfter)use[count++]=b[0];if(b[1].Transition.StateBefore!=b[1].Transition.StateAfter)use[count++]=b[1];if(count)gpu.list->ResourceBarrier(count,use);
-            auto s=mipLayout.srvTable(gpu),u=mipLayout.uavTable(gpu);D3D12_SHADER_RESOURCE_VIEW_DESC sv{};sv.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;sv.Format=view;sv.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;sv.Texture2D.MostDetailedMip=level-1;sv.Texture2D.MipLevels=1;srvAt(s,0,t.get(),&sv);
+            reserveLayout(mipLayout);auto s=mipLayout.srvTable(gpu),u=mipLayout.uavTable(gpu);D3D12_SHADER_RESOURCE_VIEW_DESC sv{};sv.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;sv.Format=view;sv.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;sv.Texture2D.MostDetailedMip=level-1;sv.Texture2D.MipLevels=1;srvAt(s,0,t.get(),&sv);
             D3D12_UNORDERED_ACCESS_VIEW_DESC uv{};uv.Format=write;uv.ViewDimension=D3D12_UAV_DIMENSION_TEXTURE2D;uv.Texture2D.MipSlice=level;gpu.device->CreateUnorderedAccessView(t.get(),nullptr,&uv,u.cpuAt(0));
             const std::array<UINT,4> info{w,h,srgb?1u:0u,0};mipLayout.apply(gpu,true,{{0,gpu.constants(info.data(),16)}},&s,&u);gpu.list->SetPipelineState(mipKernel.p);gpu.list->Dispatch((w+7)/8,(h+7)/8,1);}
         // Return every level to t.state: levels 0..mips-2 are readable, the last level is UAV.
@@ -804,7 +806,7 @@ public:
             gpu.transition(filtered,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(atlasImage,D3D12_RESOURCE_STATE_COPY_DEST);
             for(UINT level=0;level<p.mips;level++){const UINT size=p.size>>level;for(UINT face=0;face<6;face++){D3D12_TEXTURE_COPY_LOCATION dst{},src{};dst.pResource=atlasImage.get();src.pResource=filtered.get();dst.Type=src.Type=D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;src.SubresourceIndex=level+face*p.mips;gpu.list->CopyTextureRegion(&dst,rect.x+face*(size+2)+1,rect.y+2*p.size-2*size+2*level+1,0,&src,nullptr);++atlasCopies_;}}
             gpu.transition(filtered,readable);gpu.transition(atlasImage,D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-            for(UINT level=0;level<p.mips;level++){const UINT size=p.size>>level;const std::array<UINT,8> values{rect.x,rect.y,p.size,p.mips,level,size,0,0};auto srvs=gpu.table(1),uavs=gpu.table(1);
+            for(UINT level=0;level<p.mips;level++){const UINT size=p.size>>level;const std::array<UINT,8> values{rect.x,rect.y,p.size,p.mips,level,size,0,0};gpu.reserveTables(2);auto srvs=gpu.table(1),uavs=gpu.table(1);
                 D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2DARRAY;v.Texture2DArray.MipLevels=p.mips;v.Texture2DArray.ArraySize=6;gpu.device->CreateShaderResourceView(filtered.get(),&v,srvs.cpu);
                 D3D12_UNORDERED_ACCESS_VIEW_DESC u{};u.Format=d.Format;u.ViewDimension=D3D12_UAV_DIMENSION_TEXTURE2D;gpu.device->CreateUnorderedAccessView(atlasImage.get(),nullptr,&u,uavs.cpu);
                 auto* list=gpu.list.p;list->SetComputeRootSignature(paddingRoot.p);list->SetPipelineState(paddingKernel.p);list->SetComputeRootConstantBufferView(0,gpu.constants(values.data(),sizeof(values)));list->SetComputeRootDescriptorTable(1,srvs.gpu);list->SetComputeRootDescriptorTable(2,uavs.gpu);list->Dispatch((4*size+4+63)/64,6,1);++atlasPaddingDispatches_;++probeDispatches_;}
@@ -945,7 +947,7 @@ public:
         if(!pso.p){auto d=Device::defaults(particleDrawRoot.p,particleVS,particlePS,toHDR?DXGI_FORMAT_R16G16B16A16_FLOAT:DXGI_FORMAT_R8G8B8A8_UNORM,DXGI_FORMAT_D32_FLOAT);
             auto& t=d.BlendState.RenderTarget[0];t.BlendEnable=blend!=2;t.SrcBlend=D3D12_BLEND_SRC_ALPHA;t.DestBlend=blend==1?D3D12_BLEND_ONE:D3D12_BLEND_INV_SRC_ALPHA;t.BlendOp=D3D12_BLEND_OP_ADD;t.SrcBlendAlpha=D3D12_BLEND_ONE;t.DestBlendAlpha=D3D12_BLEND_INV_SRC_ALPHA;t.BlendOpAlpha=D3D12_BLEND_OP_ADD;t.LogicOp=D3D12_LOGIC_OP_NOOP;
             d.DepthStencilState.DepthFunc=style.depthTest?D3D12_COMPARISON_FUNC_LESS_EQUAL:D3D12_COMPARISON_FUNC_ALWAYS;d.DepthStencilState.DepthWriteMask=style.depthWrite?D3D12_DEPTH_WRITE_MASK_ALL:D3D12_DEPTH_WRITE_MASK_ZERO;pso=gpu.pipeline(d);}
-        auto vsTable=gpu.table(2),psTable=gpu.table(3);{const auto v=particleView(UINT(particles.count()));gpu.device->CreateShaderResourceView(source.get(),&v,vsTable.cpuAt(0));D3D12_SHADER_RESOURCE_VIEW_DESC a{};a.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;a.ViewDimension=D3D12_SRV_DIMENSION_BUFFER;a.Buffer.NumElements=UINT(particleCapacity);a.Buffer.StructureByteStride=4;gpu.device->CreateShaderResourceView(particleAlive.get(),&a,vsTable.cpuAt(1));}
+        gpu.reserveTables(5);auto vsTable=gpu.table(2),psTable=gpu.table(3);{const auto v=particleView(UINT(particles.count()));gpu.device->CreateShaderResourceView(source.get(),&v,vsTable.cpuAt(0));D3D12_SHADER_RESOURCE_VIEW_DESC a{};a.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;a.ViewDimension=D3D12_SRV_DIMENSION_BUFFER;a.Buffer.NumElements=UINT(particleCapacity);a.Buffer.StructureByteStride=4;gpu.device->CreateShaderResourceView(particleAlive.get(),&a,vsTable.cpuAt(1));}
         {D3D12_SHADER_RESOURCE_VIEW_DESC n{};n.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;n.Format=DXGI_FORMAT_R8G8B8A8_UNORM;n.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;n.Texture2D.MipLevels=1;for(UINT i=0;i<3;i++)gpu.device->CreateShaderResourceView(nullptr,&n,psTable.cpuAt(i));
             if(texture){gpu.device->CopyDescriptorsSimple(1,psTable.cpuAt(0),texture->srv,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);}
             if(mask)gpu.device->CopyDescriptorsSimple(1,psTable.cpuAt(2),mask->srv,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);}

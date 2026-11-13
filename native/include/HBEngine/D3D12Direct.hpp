@@ -41,14 +41,39 @@ public:
 };
 
 class Device {
-    struct Frame {Com<ID3D12CommandAllocator> allocator;std::uint64_t fence=0;std::vector<Com<ID3D12Resource>> retired;std::vector<Com<IUnknown>> objects;};
+    struct Frame {
+        Com<ID3D12CommandAllocator> allocator;
+        std::uint64_t fence=0;
+        std::vector<Com<ID3D12Resource>> retired;
+        std::vector<Com<IUnknown>> objects;
+        std::vector<Com<ID3D12DescriptorHeap>> descriptorPages;
+        Com<ID3D12DescriptorHeap> cachedPage;
+        bool usedCachedPage=false;
+    };
     HANDLE event=nullptr;std::array<Frame,FrameCount> frames;UINT frame=0;std::uint64_t serial=0;bool recording=false;
     // Frame tickets: begin() numbers each recording; end() remembers the fence value that completes it.
     std::uint64_t recordingId=0;std::vector<std::pair<std::uint64_t,std::uint64_t>> submittedTickets;
     // Upload ring: one persistently mapped slice per frame in flight. Requests that do
     // not fit get their own buffer, released once that frame's fence passes.
     Com<ID3D12Resource> ring;unsigned char* ringCPU=nullptr;std::uint64_t slice=0,used=0;
-    Com<ID3D12DescriptorHeap> shaderHeap;UINT shaderStride=0,shaderSlice=0,shaderUsed=0;
+    Com<ID3D12DescriptorHeap> shaderHeap;
+    ID3D12DescriptorHeap* activeShaderHeap=nullptr;
+    UINT shaderStride=0,shaderSlice=0,shaderUsed=0,shaderCapacity=0,shaderOffset=0;
+    static constexpr UINT descriptorPageSize=65536;
+    std::uint64_t overflowPages=0,reusedPages=0;
+    Com<ID3D12DescriptorHeap> createShaderHeap(UINT count){
+        D3D12_DESCRIPTOR_HEAP_DESC desc{};
+        desc.Type=D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+        desc.NumDescriptors=count;desc.Flags=D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+        Com<ID3D12DescriptorHeap> heap;
+        check(device->CreateDescriptorHeap(&desc,__uuidof(ID3D12DescriptorHeap),reinterpret_cast<void**>(&heap.p)),"Direct3D12 shader descriptor heap");
+        return heap;
+    }
+    void bindShaderHeap(ID3D12DescriptorHeap* heap,UINT capacity,UINT offset){
+        activeShaderHeap=heap;shaderCapacity=capacity;shaderOffset=offset;shaderUsed=0;
+        ID3D12DescriptorHeap* heaps[]={heap,samplers.p};
+        list->SetDescriptorHeaps(2,heaps);
+    }
     void wait(std::uint64_t value){
         if(!value||fence->GetCompletedValue()>=value)return;
         check(fence->SetEventOnCompletion(value,event),"Direct3D12 frame fence event");
@@ -66,6 +91,7 @@ public:
     // Shader-visible sampler heap; callers own its slot allocation (SceneMeshRenderer caches tables).
     Com<ID3D12DescriptorHeap> samplers;UINT samplerStride=0;
     DescriptorPool rtvs,dsvs;bool software=false,debug=false;
+    DXGI_ADAPTER_DESC1 adapter{};
 
     explicit Device(DeviceDriver driver=DeviceDriver::Automatic,bool validation=false,std::uint64_t uploadBytesPerFrame=8u<<20,UINT descriptorsPerFrame=16384){
         auto& dll=detail::libraries();auto& dll12=detail::libraries12();
@@ -76,29 +102,43 @@ public:
         const auto create=dll.symbol<decltype(&D3D12CreateDevice)>(dll12.d3d,"D3D12CreateDevice");const auto createFactory=dll.symbol<decltype(&CreateDXGIFactory2)>(dll12.dxgi,"CreateDXGIFactory2");
         check(createFactory(0,__uuidof(IDXGIFactory4),reinterpret_cast<void**>(&factory.p)),"Direct3D12 DXGI factory");
         HRESULT hardware=E_FAIL;
-        if(driver!=DeviceDriver::Software){hardware=create(nullptr,D3D_FEATURE_LEVEL_11_0,__uuidof(ID3D12Device),reinterpret_cast<void**>(&device.p));if(FAILED(hardware)&&driver==DeviceDriver::Hardware)check(hardware,"Direct3D12 hardware device");}
+        if(driver!=DeviceDriver::Software){
+            for(UINT index=0;;++index){
+                Com<IDXGIAdapter1> candidate;
+                if(FAILED(factory->EnumAdapters1(index,&candidate.p)))break;
+                DXGI_ADAPTER_DESC1 info{};
+                if(FAILED(candidate->GetDesc1(&info))||(info.Flags&DXGI_ADAPTER_FLAG_SOFTWARE))continue;
+                hardware=create(candidate.p,D3D_FEATURE_LEVEL_11_0,__uuidof(ID3D12Device),reinterpret_cast<void**>(&device.p));
+                if(SUCCEEDED(hardware)){adapter=info;break;}
+            }
+            if(!device.p&&driver==DeviceDriver::Hardware)check(hardware,"Direct3D12 hardware device");
+        }
         if(!device.p){
             Com<IDXGIAdapter> warp;check(factory->EnumWarpAdapter(__uuidof(IDXGIAdapter),reinterpret_cast<void**>(&warp.p)),"Direct3D12 WARP adapter");
             const auto result=create(warp.p,D3D_FEATURE_LEVEL_11_0,__uuidof(ID3D12Device),reinterpret_cast<void**>(&device.p));
             if(FAILED(result))throw std::runtime_error("Direct3D12 device creation failed: hardware HRESULT "+std::to_string(static_cast<unsigned long>(hardware))+", WARP HRESULT "+std::to_string(static_cast<unsigned long>(result)));
             software=true;
+            Com<IDXGIAdapter1> adapter1;
+            if(SUCCEEDED(warp->QueryInterface(__uuidof(IDXGIAdapter1),reinterpret_cast<void**>(&adapter1.p))))adapter1->GetDesc1(&adapter);
         }
         D3D12_COMMAND_QUEUE_DESC q{};q.Type=D3D12_COMMAND_LIST_TYPE_DIRECT;
         check(device->CreateCommandQueue(&q,__uuidof(ID3D12CommandQueue),reinterpret_cast<void**>(&queue.p)),"Direct3D12 command queue");
         check(device->CreateFence(0,D3D12_FENCE_FLAG_NONE,__uuidof(ID3D12Fence),reinterpret_cast<void**>(&fence.p)),"Direct3D12 frame fence");
-        event=CreateEventW(nullptr,FALSE,FALSE,nullptr);if(!event)throw std::runtime_error("Direct3D12 fence event creation failed");
         for(auto& f:frames)check(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT,__uuidof(ID3D12CommandAllocator),reinterpret_cast<void**>(&f.allocator.p)),"Direct3D12 command allocator");
         check(device->CreateCommandList(0,D3D12_COMMAND_LIST_TYPE_DIRECT,frames[0].allocator.p,nullptr,__uuidof(ID3D12GraphicsCommandList),reinterpret_cast<void**>(&list.p)),"Direct3D12 command list");
         check(list->Close(),"Direct3D12 initial command list close");
         slice=(uploadBytesPerFrame+65535)&~std::uint64_t(65535);
         ring=committed(D3D12_HEAP_TYPE_UPLOAD,bufferDesc(slice*FrameCount),D3D12_RESOURCE_STATE_GENERIC_READ,nullptr,"Direct3D12 upload ring");
         D3D12_RANGE none{0,0};check(ring->Map(0,&none,reinterpret_cast<void**>(&ringCPU)),"Direct3D12 upload ring map");
-        D3D12_DESCRIPTOR_HEAP_DESC h{};h.Type=D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;h.NumDescriptors=descriptorsPerFrame*FrameCount;h.Flags=D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-        check(device->CreateDescriptorHeap(&h,__uuidof(ID3D12DescriptorHeap),reinterpret_cast<void**>(&shaderHeap.p)),"Direct3D12 shader descriptor heap");
+        if(!descriptorsPerFrame||descriptorsPerFrame>D3D12_MAX_SHADER_VISIBLE_DESCRIPTOR_HEAP_SIZE_TIER_1/FrameCount)
+            throw std::runtime_error("Direct3D12 frame descriptor slice size");
+        shaderHeap=createShaderHeap(descriptorsPerFrame*FrameCount);
+        D3D12_DESCRIPTOR_HEAP_DESC h{};h.Flags=D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
         shaderStride=device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);shaderSlice=descriptorsPerFrame;
         h.Type=D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER;h.NumDescriptors=SamplerCapacity;
         check(device->CreateDescriptorHeap(&h,__uuidof(ID3D12DescriptorHeap),reinterpret_cast<void**>(&samplers.p)),"Direct3D12 sampler heap");samplerStride=device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
         rtvs.create(device.p,D3D12_DESCRIPTOR_HEAP_TYPE_RTV,256);dsvs.create(device.p,D3D12_DESCRIPTOR_HEAP_TYPE_DSV,64);
+        event=CreateEventW(nullptr,FALSE,FALSE,nullptr);if(!event)throw std::runtime_error("Direct3D12 fence event creation failed");
     }
     ~Device(){try{waitIdle();}catch(...){}if(ring.p)ring->Unmap(0,nullptr);if(event)CloseHandle(event);}
     Device(const Device&)=delete;Device& operator=(const Device&)=delete;
@@ -111,9 +151,11 @@ public:
     std::uint64_t submitted()const{return serial;}
     void begin(){
         if(recording)throw std::runtime_error("Direct3D12 frame already recording");
-        auto& f=frames[frame];wait(f.fence);f.retired.clear();f.objects.clear();used=0;shaderUsed=0;
+        auto& f=frames[frame];wait(f.fence);f.retired.clear();f.objects.clear();f.descriptorPages.clear();used=0;
+        if(!f.usedCachedPage)f.cachedPage={};
+        f.usedCachedPage=false;
         check(f.allocator->Reset(),"Direct3D12 command allocator reset");check(list->Reset(f.allocator.p,nullptr),"Direct3D12 command list reset");
-        ID3D12DescriptorHeap* heaps[]={shaderHeap.p,samplers.p};list->SetDescriptorHeaps(2,heaps);recording=true;++recordingId;
+        bindShaderHeap(shaderHeap.p,shaderSlice,frame*shaderSlice);recording=true;++recordingId;
     }
     void end(){
         requireRecording();check(list->Close(),"Direct3D12 command list close");recording=false;
@@ -126,7 +168,7 @@ public:
         check(queue->Signal(fence.p,++serial),"Direct3D12 idle signal");wait(serial);
         // ResizeBuffers requires every old back buffer reference to be released.
         // Submitted frames are complete here. Unsubmitted work still owns its resources.
-        if(!recording)for(auto& submitted:frames){submitted.retired.clear();submitted.objects.clear();}
+        if(!recording)for(auto& submitted:frames){submitted.retired.clear();submitted.objects.clear();submitted.descriptorPages.clear();submitted.cachedPage={};submitted.usedCachedPage=false;}
     }
 
     Upload upload(std::uint64_t size,std::uint64_t alignment=256){
@@ -138,12 +180,36 @@ public:
         Upload result{cpu,own->GetGPUVirtualAddress(),own.p,0};frames[frame].retired.push_back(std::move(own));return result;
     }
     D3D12_GPU_VIRTUAL_ADDRESS constants(const void* data,std::uint64_t size){auto u=upload(size,256);std::memcpy(u.cpu,data,size);return u.gpu;}
-    // ponytail: fixed per-frame shader-visible slice; grow the heap if a frame ever needs more.
-    DescriptorTable table(UINT count){
-        requireRecording();if(!count||shaderUsed+count>shaderSlice)throw std::runtime_error("Direct3D12 shader descriptors exhausted for this frame");
-        const UINT at=frame*shaderSlice+shaderUsed;shaderUsed+=count;
-        DescriptorTable t;t.cpu={shaderHeap->GetCPUDescriptorHandleForHeapStart().ptr+SIZE_T(at)*shaderStride};t.gpu={shaderHeap->GetGPUDescriptorHandleForHeapStart().ptr+UINT64(at)*shaderStride};t.stride=shaderStride;return t;
+    // Reserve all tables for a draw or dispatch before binding any. A heap change invalidates root tables.
+    void reserveTables(UINT count){
+        requireRecording();
+        if(!count||count>D3D12_MAX_SHADER_VISIBLE_DESCRIPTOR_HEAP_SIZE_TIER_1)throw std::runtime_error("Direct3D12 descriptor group size");
+        if(count<=shaderCapacity-shaderUsed)return;
+        auto& current=frames[frame];
+        if(count<=descriptorPageSize&&!current.usedCachedPage){
+            if(current.cachedPage.p)++reusedPages;
+            else current.cachedPage=createShaderHeap(descriptorPageSize);
+            current.usedCachedPage=true;
+            bindShaderHeap(current.cachedPage.p,descriptorPageSize,0);
+        }else{
+            const auto capacity=std::max(count,descriptorPageSize);
+            auto& pages=current.descriptorPages;
+            pages.push_back(createShaderHeap(capacity));
+            bindShaderHeap(pages.back().p,capacity,0);
+        }
+        ++overflowPages;
     }
+    DescriptorTable table(UINT count){
+        reserveTables(count);
+        const UINT at=shaderOffset+shaderUsed;shaderUsed+=count;
+        DescriptorTable t;
+        t.cpu={activeShaderHeap->GetCPUDescriptorHandleForHeapStart().ptr+SIZE_T(at)*shaderStride};
+        t.gpu={activeShaderHeap->GetGPUDescriptorHandleForHeapStart().ptr+UINT64(at)*shaderStride};
+        t.stride=shaderStride;
+        return t;
+    }
+    std::uint64_t descriptorOverflowPages()const{return overflowPages;}
+    std::uint64_t descriptorReusedPages()const{return reusedPages;}
     void transition(Resource& r,D3D12_RESOURCE_STATES next){
         requireRecording();if(r.state==next)return;
         D3D12_RESOURCE_BARRIER b{};b.Type=D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;b.Transition.pResource=r.get();b.Transition.Subresource=D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;b.Transition.StateBefore=r.state;b.Transition.StateAfter=next;

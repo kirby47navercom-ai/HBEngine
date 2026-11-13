@@ -1,3 +1,9 @@
+## Windows D3D12 디스크립터·블루프린트 관찰·패키지 JSON · 2026-11-13
+
+D3D12는 지원하는 하드웨어 어댑터를 열거해 사용하고, 기존 기본 슬라이스를 넘을 때 페이지를 추가해 명령이 많아도 계속 기록해요. GPU 펜스가 끝난 페이지를 프레임 슬롯별로 재사용하고 나머지 페이지는 해제해요. `native/build/d3d12-direct-L9jONL/acceptance.json`의 하드웨어·WARP에서 재사용 6회와 검증 오류 0을 확인했어요. 작은 슬라이스로 페이지 전환을 강제한 장면 검사 `native/build/d3d12-scene-9oelxV/acceptance.json`은 두 드라이버에서 37회 전환하며 41종 픽셀 비교를 통과했어요. 입자 상태·충돌·사망 데이터 비교는 `native/build/d3d12-particles-42fECk/acceptance.json`이에요.
+
+독립 D3D12 속성 창에서 수정·Undo를 확인했고, 플레이 중단점은 해당 노드로 이동하고 변수·관찰 핀을 표시해요. `native/build/native-authoring-DNyTpP/report.json`에서 변수 27, 미실행 출력 핀, 두 중단점과 독립 창 편집을 확인했어요. 패키징은 일반 JSON의 objects/components 속성을 엔진 스키마로 오인하지 않아요. 문자열·숫자·불리언·null JSON도 C++에서 읽을 수 있어요. `native/build/native-game-W3oD4f/acceptance.json`은 D3D12 게임에서 깊은 경로의 JSON 300개와 캐시에서 빠진 첫 파일의 재읽기, `native/build/json-read-cache-check-qMwa0Y/acceptance.json`은 공용 경로 5,000개 읽기 결과예요.
+
 ## Windows 네이티브 콘텐츠 검색·모델·시퀀스 제작 · 2026-11-13
 
 콘텐츠 스캔을 취소할 수 있는 백그라운드 작업으로 옮겼어요. 12단계 폴더·600개 이상 파일을 대상으로 검색을 바꾸고 최신 결과만 받는 것을 확인했어요. 모델 원본에서 설정, D3D12 미리보기, 다시 가져오기와 독립 PBR 머테리얼·골격 클립 추출을 연결했어요. 시퀀스 곡선 상자 선택과 프리셋 상속·재정의·복사·시퀀스 적용도 확인했어요. 통합 결과는 `native/build/native-authoring-OmIEzk/report.json`이에요. 중단점이 저장된 블루프린트를 포함한 별도 배포용 D3D12 게임은 `native/build/native-game-8OEyLa/acceptance.json`에서 40프레임과 실제 C++·UI·음향을 확인했어요.

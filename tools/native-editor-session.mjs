@@ -285,7 +285,7 @@ export function nativeEditorSession(bridge) {
       for(const entry of nativeEntries(graph))if(entry.kind!=='event'||view==='event'&&!graph.nodes.some(node=>node.key===entry.key&&node.nativeId===entry.nativeId))
         palette.push({id:entry.key+':'+entry.nativeId,title:entry.title+' · '+entry.group});
     }
-    return {view, views:bp ? names(data) : [], nodes, edges:bp ? graph.edges : normalizedMaterialEdges(graph), comments:graph.comments || [], palette};
+    return {kind:doc.kind, view, views:bp ? names(data) : [], nodes, edges:bp ? graph.edges : normalizedMaterialEdges(graph), comments:graph.comments || [], palette};
   }
   function materialNodeProperties(node,data){
     const field=(id,label,value,extra={})=>({id,label,value,linked:false,property:true,...extra});
@@ -1335,7 +1335,7 @@ export function nativeEditorSession(bridge) {
       change(doc,next);
       return {...await response(doc),selection};
     },
-    'asset.fields': ({parts=[]}) => fieldsFor(current(),parts),
+    'asset.fields': ({path,parts=[]}) => fieldsFor(targetDocument(path),parts),
     'graph.inputs': async ({path,view='event',id}) => {
       const doc=targetDocument(path);await loadGraphNative(doc);
       const graph=graphFor(doc,structuredClone(doc.data),view), node=graph.nodes.find(row=>row.id===id);
@@ -1350,8 +1350,8 @@ export function nativeEditorSession(bridge) {
       if (!bp) inputs.push(...materialNodeProperties(node,doc.data));
       return inputs;
     },
-    'asset.fieldEdit': async ({parts=[],key,value,expectedRevision}) => {
-      const doc = current();
+    'asset.fieldEdit': async ({path,parts=[],key,value,expectedRevision}) => {
+      const doc = targetDocument(path);
       await check(doc,expectedRevision);
       if(doc.kind==='scene'&&parts[0]==='objects'&&doc.data.objects[Number(parts[1])]?.locked)throw Error('오브젝트 잠금을 해제하세요.');
       const field = fieldsFor(doc,parts).find(row=>row.key===key);
@@ -1535,6 +1535,15 @@ export function nativeEditorSession(bridge) {
         const node=graph.nodes.find(row=>row.id===id);
         if(!node)throw Error('중단점을 설정할 노드를 선택하세요.');
         node.breakpoint=!node.breakpoint;
+      } else if(action==='watch'&&bp){
+        const node=graph.nodes.find(row=>row.id===id);
+        if(!node||!output||!effectivePins(node,'out',graph).some(row=>row.id===pin&&row.type!=='exec'))
+          throw Error('관찰할 출력 값 핀을 선택하세요.');
+        const watches=next.watches??=[];
+        const index=watches.findIndex(row=>row.view===view&&row.node===id&&row.pin===pin&&row.direction==='out');
+        if(index>=0)watches.splice(index,1);
+        else if(watches.length<100)watches.push({view,node:id,direction:'out',pin});
+        else throw Error('관찰 핀은 최대 100개까지 설정할 수 있어요.');
       } else if(action==='paste'){
         if(![x,y].every(Number.isFinite)||clipboard?.type!==(bp?'HBBlueprintNodes':'HBMaterialNodes'))throw Error('같은 유형의 그래프에서 복사한 노드를 확인하세요.');
         const position={x:Math.max(-10000,Math.min(10000,x)),y:Math.max(-10000,Math.min(10000,y))};

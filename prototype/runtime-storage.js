@@ -45,9 +45,14 @@ export function createPersistentQueries({readAsset,readSave,writeSave,deleteSave
     }
     if(!validPath(args.path))throw Error('데이터 에셋 경로를 확인하세요.');
     const data=await cache(args.path);
-    if(key==='dataJsonRead'){let text=texts.get(data);if(text===undefined)texts.set(data,text=JSON.stringify(data));return text;}
+    if(key==='dataJsonRead'){
+      if(data===null||typeof data!=='object')return JSON.stringify(data);
+      let text=texts.get(data);
+      if(text===undefined)texts.set(data,text=JSON.stringify(data));
+      return text;
+    }
     if(typeof args.rowId!=='string'||args.rowId.length>200)throw Error('표 행 ID를 확인하세요.');
-    const rows=data.rows||data.data?.rows||data.data||data;
+    const rows=data?.rows||data?.data?.rows||data?.data||data||{};
     const row=Array.isArray(rows)?rows.find(r=>r.id===args.rowId||r.name===args.rowId):Object.hasOwn(rows,args.rowId)?rows[args.rowId]:null;
     return JSON.stringify(row??null);
   };

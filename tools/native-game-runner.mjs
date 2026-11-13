@@ -5,6 +5,7 @@ import {NativeModelInstances} from './native-model-instances.mjs';
 import {NativePresentationQueue} from './native-presentation-queue.mjs';
 import {openNativeUIPipe} from './native-ui-pipe.mjs';
 import {NativeInputQueue} from './native-input-queue.mjs';
+import {basePins,blueprintGraphView,fieldsFor,graphContext,nodeTitle} from '../prototype/blueprint-model.js';
 import readline from 'node:readline';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -24,6 +25,36 @@ import {scenePrimitives} from '../prototype/scene-primitives.js';
 import {sceneRendering,visualComponentSignature} from '../prototype/scene-rendering.js';
 import {selectGameCamera} from '../prototype/game-camera.js';
 
+function nativeBreakpointSnapshot(vm,node,frame){
+ const {b,g,outputs,stack}=frame,root=b.root,origins=root.inheritance?.nodeOrigins||{};
+ const current=origins[node.id],actor=vm.object(b.self);
+ const file=current?.path||actor?.blueprintAsset||root.inheritance?.path||'';
+ const view=current?.view||blueprintGraphView(root,g);
+ const display=value=>{
+  if(value===undefined)return '미실행';
+  if(typeof value==='string')return value.slice(0,256);
+  if(value===null||typeof value!=='object')return String(value);
+  if(Array.isArray(value))return '['+value.slice(0,8).map(item=>item!==null&&typeof item==='object'?'…':String(item).slice(0,32)).join(', ')+(value.length>8?', …':'')+']';
+  return '{'+Object.keys(value).slice(0,8).map(key=>key.slice(0,24)).join(', ')+'}';
+ };
+ const watched=[];
+ for(const watch of root.watches||[]){
+  if(watch.direction!=='out'||watch.view!==view||watched.length>=40)continue;
+  const graph=graphContext(root,watch.view),source=graph.nodes.find(row=>row.id===watch.node);
+  if(!source)continue;
+  const [pin,...members]=watch.pin.split('.');
+  const output=basePins(source,'out',graph).find(row=>row.id===pin);
+  let type=output?.type,info=output?.structInfo,value=outputs.get(source.id)?.[pin];
+  for(const member of members){
+   const fields=fieldsFor(type,info,graph.native),index=fields.findIndex(row=>row.id===member);
+   value=Array.isArray(value)?value[index]:value?.[member];type=fields[index]?.type;info=fields[index]?.structInfo;
+  }
+  watched.push({title:nodeTitle(source,graph).slice(0,100)+' · '+watch.pin.slice(0,100),value:display(value)});
+ }
+ return {file,view,node:current?.node||node.id,actor:b.self,title:nodeTitle(node,g).slice(0,256),
+  stack:stack.slice(-16).map(row=>row.slice(0,100)),watched,
+  variables:root.variables.slice(0,32).map(row=>({title:row.name.slice(0,100),value:display(b.variables.get(row.id))}))};
+}
 export async function nativeGameMain(options){
  const directUIPipe=Number(options['ui-pipe-protocol'])===2?options['ui-pipe']:null,uiPipe=directUIPipe?null:await openNativeUIPipe(options['ui-pipe']),presentationQueue=new NativePresentationQueue({profile:!!options.report});let onUIQueued;
  const editor=options['editor-project'];
@@ -62,7 +93,10 @@ export async function nativeGameMain(options){
    debugBreakpoint:editor?((vm,node,scope)=>{
     pausedVM=vm;
     if(closed){pausedVM=null;vm.hooks.ignoreBreakpoints=true;queueMicrotask(()=>vm.continue());return;}
-    void write({op:'debugBreak',node:node.id,actor:scope.b.self}).catch(()=>{pausedVM=null;vm.continue();});
+    let snapshot;
+    try{snapshot=nativeBreakpointSnapshot(vm,node,scope);}
+    catch{snapshot={node:node.id,actor:scope.b.self,title:node.key};}
+    void write({op:'debugBreak',...snapshot}).catch(()=>{pausedVM=null;vm.continue();});
    }):undefined,
    presentation:async({world,meshes,objects,readAsset,project,data})=>{
     if(stats.frames)await renderer.hbReleaseScene();const models=new Set(),modelInstances=new NativeModelInstances(name=>/\.(gltf|glb)$/i.test(name)?loadHeadlessModel(project,name,{geometry:true,loadTexture:assets.modelTexture}):loadModel(name),disposeHeadlessModel),primitives=scenePrimitives({color:0x9faa91,roughness:.8,metalness:0});

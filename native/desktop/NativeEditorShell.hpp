@@ -67,6 +67,8 @@ class NativeEditorShell {
     std::wstring takeName;
     HANDLE playProcess=nullptr;
     unsigned playBreaks=0;
+    Json playDebug;
+    bool atBreakpoint=false;
     DWORD playPid=0;
     bool stopPlayRequested=false;
     bool closeAfterPlay=false;
@@ -93,9 +95,9 @@ class NativeEditorShell {
     struct DocumentWindow {
         HWND editor=nullptr,save=nullptr,toggle=nullptr,viewPicker=nullptr,palette=nullptr,status=nullptr;
         std::unique_ptr<EditorGraphPanel> graph;
-        std::unique_ptr<EditorFormPanel> graphForm;
+        std::unique_ptr<EditorFormPanel> graphForm,assetForm;
         std::unique_ptr<EditorScenePanel> sceneView;
-        Json doc,model,inputs=Json::array();
+        Json doc,model,inputs=Json::array(),assetFields=Json::array(),assetPath=Json::array();
         Json sceneInput;
         std::string view="event",selection,surface,cameraId,cameraDirection;
         bool cameraOutputs=false;
@@ -144,6 +146,7 @@ class NativeEditorShell {
     }
     static constexpr Command ModelSettings=static_cast<Command>(165),ModelSubassets=static_cast<Command>(164),ModelReimport=static_cast<Command>(163),ModelFocus=static_cast<Command>(162);
     static constexpr Command EditTakeInheritance=static_cast<Command>(161),ApplyTakePreset=static_cast<Command>(160),CreateTakePreset=static_cast<Command>(159);
+    static constexpr Command InspectPlay=static_cast<Command>(158);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
 
@@ -480,6 +483,7 @@ class NativeEditorShell {
         AppendMenuW(sceneMenu,MF_STRING,ScaleActor,L"크기 도구\tR");
         AppendMenuW(sceneMenu,MF_SEPARATOR,0,nullptr);
         AppendMenuW(sceneMenu,MF_STRING,PlayScene,L"플레이\tF5");
+        AppendMenuW(sceneMenu,MF_STRING,InspectPlay,L"중단점 위치·변수·관찰값");
         AppendMenuW(sceneMenu,MF_STRING,StopPlay,L"플레이 중지\tShift+F5");
         AppendMenuW(sceneMenu,MF_STRING,ContinuePlay,L"블루프린트 계속 실행");
         AppendMenuW(sceneMenu,MF_STRING,StepPlay,L"블루프린트 한 단계 실행");
@@ -1247,6 +1251,7 @@ class NativeEditorShell {
         const int width=std::max(1L,rect.right),height=std::max(1L,rect.bottom);
         const bool graphShown=item.graph&&!item.source;
         const bool sceneShown=item.sceneView&&!item.source;
+        const bool assetShown=item.assetForm&&!item.source;
         MoveWindow(item.editor,5,70,std::max(1,width-10),std::max(1,height-98),TRUE);
         MoveWindow(item.status,5,height-23,std::max(1,width-10),20,TRUE);
         MoveWindow(GetDlgItem(owner,DocDock),std::min(295,std::max(5,width-113)),5,108,26,TRUE);
@@ -1254,13 +1259,14 @@ class NativeEditorShell {
         MoveWindow(item.palette,10+std::min(160,width/3),37,std::max(1,width-125-std::min(160,width/3)),300,TRUE);
         MoveWindow(GetDlgItem(owner,DocAdd),std::max(5,width-107),37,100,26,TRUE);
         ShowWindow(GetDlgItem(owner,DocReload),width>=410?SW_SHOWNOACTIVATE:SW_HIDE);
-        ShowWindow(item.editor,graphShown||sceneShown?SW_HIDE:SW_SHOWNOACTIVATE);
+        ShowWindow(item.editor,graphShown||sceneShown||assetShown?SW_HIDE:SW_SHOWNOACTIVATE);
         ShowWindow(item.viewPicker,sceneShown||(graphShown&&!item.model.value("views",Json::array()).empty())?SW_SHOWNOACTIVATE:SW_HIDE);
         ShowWindow(item.palette,graphShown?SW_SHOWNOACTIVATE:SW_HIDE);
         ShowWindow(GetDlgItem(owner,DocAdd),graphShown?SW_SHOWNOACTIVATE:SW_HIDE);
         const int side=graphShown&&item.graphForm&&width>=365?std::min(240,width*42/100):0;
         if(item.graph)item.graph->layout(5,70,std::max(1,width-side-10),std::max(1,height-98),graphShown);
         if(item.graphForm)item.graphForm->update({{"rect",{width-side-5,70,side,std::max(1,height-98)}},{"visible",side>0}});
+        if(item.assetForm)item.assetForm->update({{"rect",{5,38,std::max(1,width-10),std::max(1,height-62)}},{"visible",assetShown}});
         if(item.sceneView){
             item.sceneView->layout(owner,5,70,std::max(1,width-10),std::max(1,height-98),sceneShown);
             if(sceneShown)scheduleWindowScene(owner,item);
@@ -1297,6 +1303,44 @@ class NativeEditorShell {
         if(!item.selection.empty()&&std::none_of(item.model.at("nodes").begin(),item.model.at("nodes").end(),[&](const Json& row){return row.at("id")==item.selection;}))item.selection.clear();
         item.inputs=item.selection.empty()?Json::array():request("graph.inputs",{{"path",item.doc.at("path")},{"view",item.view},{"id",item.selection}});
         item.graphForm->update({{"rows",graphInputRows(item.inputs)},{"revision",++item.inputRevision}});
+    }
+    void refreshWindowAssetFields(DocumentWindow& item){
+        const auto fetch=[&](){return request("asset.fields",{{"path",item.doc.at("path")},{"parts",item.assetPath}});};
+        try{item.assetFields=fetch();}
+        catch(const std::exception&){if(item.assetPath.empty())throw;item.assetPath=Json::array();item.assetFields=fetch();}
+        Json rows=Json::array();
+        if(!item.assetPath.empty())rows.push_back({{"label",item.assetPath.back()},
+            {"controls",Json::array({{{"kind","button"},{"i",item.assetFields.size()},{"text","상위 속성"}}})}});
+        for(std::size_t i=0;i<item.assetFields.size();++i){
+            const auto& field=item.assetFields.at(i);
+            auto control=field.at("control");control["i"]=i;
+            if(field.at("key")=="id"||field.at("key")=="parent")control["disabled"]=true;
+            rows.push_back({{"label",field.at("label")},{"controls",Json::array({std::move(control)})}});
+        }
+        item.assetForm->update({{"rows",rows},{"revision",++item.inputRevision}});
+    }
+    void editWindowAsset(HWND owner,DocumentWindow& item,const Json& event){
+        const auto action=event.value("event",std::string());
+        if(action=="graphicsError"){SetWindowTextW(item.status,wide(event.at("message")).c_str());return;}
+        if(action=="key"&&event.value("ctrl",false)){
+            const auto key=event.at("key");
+            if(key=="s")saveDocumentWindow(owner,item);
+            else if(key=="z"||key=="y")commitDocumentWindowChange(owner,item,request(key=="z"?"editor.undo":"editor.redo",documentWindowTarget(item)));
+            return;
+        }
+        if((action!="change"&&action!="click")||event.at("revision")!=item.inputRevision)return;
+        const auto index=event.at("i").get<std::size_t>();
+        if(action=="click"){
+            if(index==item.assetFields.size()){if(!item.assetPath.empty())item.assetPath.erase(item.assetPath.end()-1);}
+            else item.assetPath.push_back(item.assetFields.at(index).at("key"));
+            refreshWindowAssetFields(item);return;
+        }
+        if(item.doc.at("path")==document.value("path",std::string())&&sourceChanged)
+            throw std::runtime_error("같은 문서의 기본 창 초안을 먼저 저장하세요.");
+        auto input=documentWindowTarget(item);
+        input.update({{"parts",item.assetPath},{"key",item.assetFields.at(index).at("key")},
+            {"value",event.contains("checked")?event.at("checked"):event.at("value")}});
+        commitDocumentWindowChange(owner,item,request("asset.fieldEdit",input));
     }
     void refreshDocumentWindow(HWND owner,DocumentWindow& item,Json next){
         item.doc=std::move(next);
@@ -1341,6 +1385,7 @@ class NativeEditorShell {
             if(selected==active)item.cameraId.clear();
             SendMessageW(item.viewPicker,CB_SETCURSEL,selected,0);
         }
+        if(item.assetForm)refreshWindowAssetFields(item);
         SetWindowTextW(item.status,item.doc.value("dirty",false)?L"저장하지 않은 변경 사항":L"");
         layoutDocumentWindow(owner,item);
     }
@@ -1471,6 +1516,18 @@ class NativeEditorShell {
                     mergeCameraInput(pane.sceneInput,std::move(input));scheduleWindowScene(owner,pane);
                 });
                 sceneSurfaces.emplace(item.surface,item.sceneView.get());
+            }else if(target.value("form",false)){
+                SetWindowTextW(item.toggle,L"속성 / 소스");
+                item.source=settings.is_object()&&settings.value("source",false);
+                if(target.at("kind")=="modelimport")item.assetPath=Json::array({"settings"});
+                if(settings.is_object()&&settings.contains("assetPath")&&settings.at("assetPath").is_array())item.assetPath=settings.at("assetPath");
+                item.assetForm=std::make_unique<EditorFormPanel>();
+                item.assetForm->attach(owner,instance,[this,owner](const Json& event){
+                    auto& pane=documentWindows.at(owner);
+                    try{editWindowAsset(owner,pane,event);}
+                    catch(const std::exception& error){SetWindowTextW(pane.status,wide(std::string(error.what())).c_str());}
+                },"asset");
+                item.assetForm->useD3D12(graphics);
             }else ShowWindow(item.toggle,SW_HIDE);
             refreshDocumentWindow(owner,item,request("document.read",{{"path",target.at("path")}}));
             if(split)layout();
@@ -1794,7 +1851,7 @@ class NativeEditorShell {
             TerminateProcess(child.hProcess,1);CloseHandle(child.hThread);CloseHandle(child.hProcess);CloseHandle(ownership);
             throw std::runtime_error("편집기 플레이 프로세스를 관리할 수 없어요.");
         }
-        CloseHandle(child.hThread);playJob=ownership;playProcess=child.hProcess;playPid=child.dwProcessId;stopPlayRequested=false;playBreaks=0;
+        CloseHandle(child.hThread);playJob=ownership;playProcess=child.hProcess;playPid=child.dwProcessId;stopPlayRequested=false;playBreaks=0;playDebug=nullptr;atBreakpoint=false;
         takeOutput=std::move(recordingFile);takeName=recording;
         SetTimer(window,6,150,nullptr);statusText(L"플레이를 시작했어요.");
     }
@@ -1808,7 +1865,8 @@ class NativeEditorShell {
         DeleteFileW(output.c_str());refreshFiles();statusText(L"녹화한 시퀀스를 저장했어요.");
     }
     void continuePlay(bool step){
-        if(!playProcess)return;
+        if(!playProcess||!atBreakpoint)return;
+        atBreakpoint=false;
         struct Target{DWORD pid;bool step;} target{playPid,step};
         EnumWindows([](HWND candidate,LPARAM value)->BOOL{
             const auto& target=*reinterpret_cast<Target*>(value);
@@ -1817,6 +1875,41 @@ class NativeEditorShell {
             if(pid!=target.pid||std::wstring_view(name)!=L"HBEngine.NativeGame")return TRUE;
             PostMessageW(candidate,WM_APP+42,target.step,0);return FALSE;
         },reinterpret_cast<LPARAM>(&target));
+    }
+    void inspectPlay(bool showValues){
+        if(!atBreakpoint||!playDebug.is_object())return;
+        const auto file=playDebug.value("file",std::string());
+        const auto node=playDebug.value("node",std::string());
+        if(!file.empty()&&!node.empty()){
+            captureSource();
+            showDocument(request("document.open",{{"path",file}}));
+            if(document.value("kind",std::string())=="blueprint"){
+                view=playDebug.value("view",std::string("event"));
+                graph.resetView();graphSelection.clear();refreshGraph();layout();graph.focusNode(node);
+            }
+        }
+        if(showValues){
+            auto body=wide(playDebug.value("title",std::string()))+L" · "+wide(playDebug.value("actor",std::string()));
+            for(const auto& row:playDebug.value("stack",Json::array()))body+=L"\n→ "+wide(row);
+            for(const auto& [group,title]:std::array<std::pair<const char*,const wchar_t*>,2>{{{"watched",L"관찰 핀"},{"variables",L"블루프린트 변수"}}}){
+                const auto rows=playDebug.value(group,Json::array());
+                if(rows.empty())continue;
+                body+=L"\n\n";body+=title;
+                for(const auto& row:rows)body+=L"\n"+wide(row.at("title"))+L" = "+wide(row.at("value"));
+            }
+            if(body.size()>7000){body.resize(7000);body+=L"\n…";}
+            MessageBoxW(window,body.c_str(),L"블루프린트 중단점",MB_OK|MB_ICONINFORMATION);
+        }
+    }
+    void readPlayBreakpoint(){
+        const auto snapshot=editorProfile/L"Sessions"/(L"debug-"+std::to_wstring(playPid)+L".json");
+        playDebug=nullptr;
+        std::error_code error;
+        const auto size=fs::file_size(snapshot,error);
+        if(!error&&size<=128*1024){
+            try{playDebug=Json::parse(read(snapshot));}catch(const Json::exception&){}
+            DeleteFileW(snapshot.c_str());
+        }
     }
     void stopPlay(){
         if(!playProcess||WaitForSingleObject(playProcess,0)!=WAIT_TIMEOUT)return;
@@ -1855,7 +1948,7 @@ class NativeEditorShell {
             WINDOWPLACEMENT placement{sizeof(placement)};
             if(!GetWindowPlacement(owner,&placement))continue;
             const auto& r=placement.rcNormalPosition;
-            panes.push_back({{"path",item.doc.at("path")},{"view",item.view},{"source",item.source},{"split",owner==splitDocument||owner==lowerSplitDocument},{"below",owner==lowerSplitDocument||owner==splitDocument&&splitBelow},{"lower",owner==lowerSplitDocument},{"cameraId",item.cameraId},{"cameraOutputs",item.cameraOutputs},{"direction",item.cameraDirection},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}}});
+            panes.push_back({{"path",item.doc.at("path")},{"view",item.view},{"source",item.source},{"assetPath",item.assetPath},{"split",owner==splitDocument||owner==lowerSplitDocument},{"below",owner==lowerSplitDocument||owner==splitDocument&&splitBelow},{"lower",owner==lowerSplitDocument},{"cameraId",item.cameraId},{"cameraOutputs",item.cameraOutputs},{"direction",item.cameraDirection},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}}});
         }
         return panes;
     }
@@ -2274,6 +2367,7 @@ class NativeEditorShell {
         }
         case StopPlay:stopPlay();return;
         case ContinuePlay:case StepPlay:continuePlay(command==StepPlay);return;
+        case InspectPlay:inspectPlay(true);return;
         case OpenProject:case NewProject:{
             std::string templateId;
             if(command==NewProject){
@@ -2625,7 +2719,13 @@ class NativeEditorShell {
             if(previewOpen&&canPreview()&&!sourceMode){auto input=std::move(previewInput);previewInput=nullptr;drawPreview(input.is_object()?std::move(input):Json::object());}
             return 0;
         }
-        if(message==WM_APP+43&&owner==window){if(playProcess&&w==playPid){++playBreaks;statusText(L"블루프린트 중단점 · 장면 메뉴에서 계속 실행하거나 한 단계 실행하세요.");}return 0;}
+        if(message==WM_APP+43&&owner==window){
+            if(playProcess&&w==playPid){
+                ++playBreaks;atBreakpoint=true;readPlayBreakpoint();
+                statusText(L"블루프린트 중단점 · 장면 메뉴에서 위치·값을 보거나 실행을 이어가세요.");
+            }
+            return 0;
+        }
         if(message==WM_TIMER&&w==6){
             if(playProcess&&WaitForSingleObject(playProcess,0)==WAIT_TIMEOUT){if(stopPlayRequested)stopPlay();return 0;}
             KillTimer(window,6);
@@ -2929,6 +3029,13 @@ private:
             startPlay(debugReport);waitForPlaySmoke();
             const auto debug=Json::parse(read(debugReport));
             if(playBreaks!=2||debug.at("logic").at("logs").dump().find("HB_BREAK_NEXT")==std::string::npos)throw std::runtime_error("Native breakpoint, step and continue failed");
+            if(!playDebug.is_object()||playDebug.at("file")!="Assets/BP_NativeDebug.hbblueprint.json"||
+                playDebug.at("variables").empty()||playDebug.at("variables").front().at("value")!="27"||
+                playDebug.at("watched").empty()||playDebug.at("watched").front().at("value")!="미실행")
+                throw std::runtime_error("Native debugger snapshot failed: "+playDebug.dump());
+            atBreakpoint=true;inspectPlay(false);atBreakpoint=false;
+            if(document.at("path")!=playDebug.at("file")||graphSelection!=playDebug.at("node"))
+                throw std::runtime_error("Native debugger graph focus failed");
             showDocument(request("document.open",{{"path",playEvidence.at("take")}}));
         }
         showDocument(request("document.open",{{"path","Assets/Scenes/NativeCameras.hbscene.json"}}));
@@ -3149,6 +3256,24 @@ private:
         if(!PeekMessageW(&docking,window,redockMessage,redockMessage,PM_REMOVE))throw std::runtime_error("Dock drop did not post");
         DispatchMessageW(&docking);
         if(!documentWindows.empty()||document.at("path")!=firstPath)throw std::runtime_error("Dragging back did not dock the document");
+        auto fieldDocument=request("document.open",{{"path","Assets/Materials/PM_Native.hbphysicalmaterial.json"}});
+        const auto fieldFile=fieldDocument.at("path");
+        openDocumentWindow(fieldDocument);
+        auto& fieldPane=documentWindows.begin()->second;
+        showDocument(request("document.open",{{"path","Assets/Scenes/Garden.hbscene.json"}}));
+        const auto friction=std::find_if(fieldPane.assetFields.begin(),fieldPane.assetFields.end(),[](const Json& row){return row.at("key")=="friction";});
+        if(friction==fieldPane.assetFields.end())throw std::runtime_error("Independent asset property missing");
+        const auto index=friction-fieldPane.assetFields.begin();
+        const auto originalField=Json::parse(fieldPane.doc.at("text").get<std::string>()).at("friction");
+        fieldPane.assetForm->probe({{"action","paint"}});
+        fieldPane.assetForm->probe({{"action","edit"},{"i",index},{"text","0.45"}});
+        const auto changedField=request("document.read",{{"path",fieldFile}});
+        if(fieldPane.assetForm->inspect().at("backend")!="D3D12"||Json::parse(changedField.at("text").get<std::string>()).at("friction")!=.45||
+            document.at("path")==fieldFile)throw std::runtime_error("Independent native asset form editing failed");
+        SendMessageW(documentWindows.begin()->first,WM_COMMAND,Undo,0);
+        if(Json::parse(fieldPane.doc.at("text").get<std::string>()).at("friction")!=originalField)
+            throw std::runtime_error("Independent native asset form undo failed");
+        closeDocumentWindows();
         showDocument(request("document.open",{{"path","Assets/AG_Native.hbanimgraph.json"}}));
         const auto machineView=std::find_if(model.at("views").begin(),model.at("views").end(),[](const Json& row){
             return row.at(0).get<std::string>().rfind("machine:",0)==0;
@@ -3199,7 +3324,7 @@ private:
         showDocument(request("document.open",{{"path","Assets/A_Native.hbaudioasset.json"}}));
         command(ShowAudioWaveform);assetCanvas.probePaint();
         if(assetCanvas.inspect().at("backend")!="D3D12")throw std::runtime_error("Native waveform present failed");
-        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"curveBox",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
+        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
 };
