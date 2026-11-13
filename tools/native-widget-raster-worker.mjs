@@ -45,11 +45,12 @@ export class NativeWidgetRasterWorker {
   }
   for(const key of this.views.keys())if(!live.has(key)){this.readySnapshots.delete(this.views.get(key));this.nodeSnapshots.delete(this.views.get(key));this.views.delete(key);}
   const reference=hit=>hit?{key:viewKey(hit.view),id:hit.node.id}:null;
-  const job=this.request({type:'draw',width,height,pixelRatio,rows,flashes:[...(layer.flashes||[])],down:reference(layer.down),hover:reference(layer.hover),focus:reference(layer.focus),touch:layer.touch,touches:[...layer.touches].map(([source,hit])=>[source,reference(hit)]),layout:Array.isArray(layer.layout)});this.queued?.();
+  const job=this.request({type:'draw',width,height,pixelRatio,rows,flashes:[...(layer.flashes||[])],down:reference(layer.down),hover:reference(layer.hover),focus:reference(layer.focus),listDrop:layer.listDrop?{...reference(layer.listDrop.hit),y:layer.listDrop.y,h:layer.listDrop.h}:null,touch:layer.touch,touches:[...layer.touches].map(([source,hit])=>[source,reference(hit)]),layout:Array.isArray(layer.layout)});this.queued?.();
   const result=await job;this.active=true;this.animated=result.animated;
   const lookup=(key,id)=>{const view=this.views.get(key),node=view?.data.nodes.find(node=>node.id===id);return view&&node?{view,node}:null;};
   const hit=row=>{const target=lookup(row.key,row.id);if(!target)return null;return {...row,...target,...row.list?{list:target.view.lists.get(target.node.id)}:{},clips:row.clips.map(clip=>({...clip}))};};
-  layer.hits=result.hits.map(hit).filter(Boolean);layer.scrollHits=result.scrollHits.map(hit).filter(Boolean);
+  layer.hits=result.hits.map(hit).filter(Boolean);
+  for(const row of layer.hits)if(row.measurements&&row.measurementItems===row.node.properties.listItems)row.list?.applyMeasurements(row.measurements);layer.scrollHits=result.scrollHits.map(hit).filter(Boolean);
   // Input for N+1 can arrive while N paints. Clamp only offsets that input has
   // not changed since N was submitted; an old completion cannot undo a scroll.
   for(const row of result.rows){const view=this.views.get(row.key),before=scrollBefore.get(view);if(!view||!before||!layer.views.has(view))continue;for(const [id,value]of row.scrollOffsets)if(Object.is(view.scrollOffsets.get(id),before.get(id)))view.scrollOffsets.set(id,value);}

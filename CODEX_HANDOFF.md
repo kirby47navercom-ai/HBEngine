@@ -1,3 +1,9 @@
+## Windows 네이티브 기본 빌드·목록 제작 · 2026-11-13
+
+`npm run desktop:build`와 `npm run desktop:install`은 이제 WebView2 없는 Windows 배포본을 선택해요. 별도 `:compat` 명령으로 기존 호환 배포본을 만들거나 설치할 수 있어요. 현재 사용자 설치 전환은 보류 중이에요.
+
+목록·트리의 실제 포인터 드래그로 순서·부모를 바꾸고 같은 전송 그룹끼리 항목을 옮겨요. 공용 C++·블루프린트 목록 변경과 같은 검증·이벤트를 사용해요. 자동 행 높이는 화면 범위만 글꼴로 측정하고, 소유 스레드와 작업자가 높이와 입력 위치를 공유해요. `native/build/native-input-lists-oL0pVC/acceptance.json`의 9개 동작, `native/build/widget-raster-worker-wPTCNO/acceptance.json`의 worker 픽셀·입력 검사와 빌드 프로필 검사가 통과했어요.
+
 ## Windows 네이티브 표시 동기화·터치·월드 위젯 · 2026-11-13
 
 패키지의 화면 주사율 동기화가 Win32 호스트에서 DXGI 표시 간격 1로 전달돼요. 목표 FPS 모드는 간격 0이에요. 터치 접촉 ID를 순서대로 받아 조이스틱과 버튼을 동시에 누르고 독립적으로 해제해요. 월드 추적 UI는 공용 카메라 투영을 쓰며 소유 스레드와 래스터 작업자가 위치·숨김·입력 사각형을 공유해요.

@@ -8,7 +8,7 @@
 
 | 대상 | 사용자용 | 개발·검증용 |
 | --- | --- | --- |
-| 실행 파일·리소스 | 저장소 밖 `HBEngine/Versions/<배포본 해시>` | 저장소와 `dist/HBEngine` |
+| 실행 파일·리소스 | 저장소 밖 `HBEngine/Versions/<배포본 해시>` | 저장소와 `dist/HBEngineNative` |
 | WebView·로그·최근 목록 | `%LOCALAPPDATA%/HBEngine/User` | 개발 기본 프로필 또는 검사마다 고유한 임시 프로필 |
 | C++ 빌드 캐시 | 사용자용 버전의 `native/build` | 개발 저장소 또는 고유 임시 경로 |
 | 게임 원본 | 주인님이 선택한 프로젝트 폴더 | 독립 테스트 프로젝트·원본의 읽기 전용 복사 |
@@ -20,7 +20,7 @@
 
 ## 설치와 확인
 
-Windows 배포본을 만든 뒤 `npm run desktop:install`로 별도 사용자용 설치본과 바로가기를 만들어요. 목적지를 지정하려면 `node tools/install-editor.mjs C:/사용자용/설치폴더`를 사용해요. 저장소 안 설치는 거절하며, 배포본의 `Projects`와 `native/build`를 복사하지 않아요. 파일별 SHA-256으로 설치 버전을 고정하고 같은 버전의 다른 파일은 덮어쓰지 않아요.
+Windows 배포본을 만든 뒤 `npm run desktop:install`로 별도 사용자용 설치본과 바로가기를 만들어요. 목적지를 지정하려면 `node tools/install-editor.mjs C:/사용자용/설치폴더 --native-editor-only`를 사용해요. 저장소 안 설치는 거절하며, 배포본의 `Projects`와 `native/build`를 복사하지 않아요. 파일별 SHA-256으로 설치 버전을 고정하고 같은 버전의 다른 파일은 덮어쓰지 않아요.
 
 `npm run test:user-install`은 설치 재사용/변조 거절, 두 서버의 동시 실행·포트/파일/최근 목록 분리, 실제 두 EXE의 서로 다른 기본 프로필·프로젝트·종료와 장면 원본 바이트 보존을 검사해요. EXE 검사는 별도 프로젝트를 화면 밖 비활성 창으로 열고 사용자의 현재 창이나 실제 사용자 프로필을 건드리지 않아요. 증거는 `native/build/user-install-*/acceptance.json`에 남겨요.
 

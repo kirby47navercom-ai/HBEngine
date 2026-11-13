@@ -69,6 +69,19 @@ try{
   layer.setTouch(false);
  }
  assert.ok(touchReports[0].equals(touchReports[1]),'two simultaneous touch presses produce equal worker pixels');
+ const lists=[];
+ for(const {layer} of layers){
+  const data=createWidgetAsset('자동 높이'),list=createWidgetNode('ListView','auto','root');
+  list.slot.offset=[300,120,150,175];
+  Object.assign(list.properties,{autoRows:true,wrap:true,rowHeight:24,fontSize:20,listItems:JSON.stringify(['여러 줄을 만드는 긴 한글과 영문 텍스트. Long text for measurement.','짧음','세 번째'])});
+  data.nodes.push(list);
+  const view=layer.create(data,{acceptInput:()=>true,event(){},input(){}},{owner:'auto',instance:'Rows'});lists.push(view);
+  await layer.draw(960,540,1.5);
+  assert.ok(view.lists.get('auto').layout.rows[0].height>48);
+ }
+ assert.ok(last[0].equals(last[1]),'auto rows produce equal pixels');
+ assert.equal(lists[0].lists.get('auto').offset(1),lists[1].lists.get('auto').offset(1));
+ lists.forEach(view=>view.dispose());
  const camera=new OrthographicCamera(-4,4,2,-2,.1,100);camera.position.z=5;camera.updateMatrixWorld();
  const anchor={id:'marker',position:[1,0,0],rotation:[0,0,0],scale:[1,1,1],visible:true,components:[{type:'UIWidget',properties:{instance:'Marker',space:'tracked',drawWidth:320,drawHeight:180,pivotX:.5,pivotY:.5}}]};
  const vm={objects:[anchor],object:id=>id===anchor.id?anchor:null};

@@ -59,6 +59,7 @@ view.fontsReady=async(scale=view.assetScale||1)=>{view.assetScale=scale;if(this.
  pressed(node,view){for(const hit of this.touches.values())if(hit.node===node&&hit.view===view)return true;return false;}
  releaseInput(){this.modifiers={};this.release();for(const source of this.touches.keys())this.releaseTouch(source);}
  releaseTouch(source){
+  if(this.listDrag?.source===source)this.cancelListDrag();
   const hit=this.touches.get(source);
   if(!hit)return null;
   this.touches.delete(source);this.virtual(hit,0,0,false,source);this.event(hit,'released');return hit;
@@ -70,6 +71,7 @@ view.fontsReady=async(scale=view.assetScale||1)=>{view.assetScale=scale;if(this.
   const {source,key,value}=packet,point=packet.pointer.position;
   const current=this.touches.get(source);
   if(current&&!key){
+   if(this.moveListDrag(source,point))return true;
    if(current.view.disposed||!nativeWidgetVisible(current.node,this.touch)||current.node.properties.enabled===false||!current.view.options.acceptInput()){this.releaseTouch(source);return true;}
    this.virtual(current,...point,true,source);if(current.node.type==='Slider')this.slider(current,point);return true;
   }
@@ -81,10 +83,12 @@ view.fontsReady=async(scale=view.assetScale||1)=>{view.assetScale=scale;if(this.
    if(this.focus!==hit){this.event(this.focus,'blur');this.focus=hit;this.event(hit,'focus');}
    this.touches.set(source,hit);this.event(hit,'pressed');this.virtual(hit,...point,true,source);
    if(hit.node.type==='Slider')this.slider(hit,point);
-   if(hit.list)hit.pressedRow=hit.list.layout.at((local(hit,...point)[1]+(hit.view.scrollOffsets.get(hit.node.id)||0))/hit.scale);
+   if(hit.list)this.beginListDrag(hit,source,point);
    return true;
   }
+  const moved=this.finishListDrag(source,point);
   const old=this.releaseTouch(source);
+  if(moved)return true;
   if(!old)return false;
   if(hit?.node===old.node&&hit.view===old.view){
    if(hit.list){
@@ -95,20 +99,59 @@ view.fontsReady=async(scale=view.assetScale||1)=>{view.assetScale=scale;if(this.
   }
   return true;
  }
- release(){this.scrollDrag=null;const hit=this.down;if(!hit)return;this.down=null;this.virtual(hit,0,0,false);this.event(hit,'released');}
+ release(){this.scrollDrag=null;this.cancelListDrag();const hit=this.down;if(!hit)return;this.down=null;this.virtual(hit,0,0,false);this.event(hit,'released');}
  virtual(hit,x,y,pressed,contact=''){if(!hit)return;const p={...widgetDefaults,...hit.node.properties},type=hit.node.type,source=contact||'native-ui:'+hit.view.state.owner+':'+hit.node.id,write=(key,value)=>hit.view.options.input(key,value,source);if(type==='TouchButton'){write(p.inputKey,pressed?1:0);return;}if(!['Joystick','DPad','TouchPad'].includes(type))return;const point=local(hit,x,y);let [ax,ay]=pressed?stickValue(clamp(point[0]/(hit.w/2)-1,-1,1),clamp(1-point[1]/(hit.h/2),-1,1),p.deadZone):[0,0];if(type==='DPad'){ax=Math.round(ax);ay=Math.round(ay);}if(p.inputMode==='axes'||type==='TouchPad'){write(p.axisX,ax);write(p.axisY,ay);}else{write(p.keyRight,Math.max(0,ax));write(p.keyLeft,Math.max(0,-ax));write(p.keyUp,Math.max(0,ay));write(p.keyDown,Math.max(0,-ay));}}
+ cancelListDrag(){
+  if(this.listDrag?.active)this.revision++;
+  this.listDrag=null;this.listDrop=null;
+ }
+ beginListDrag(hit,source,point){
+  const offset=hit.view.scrollOffsets.get(hit.node.id)||0;
+  hit.pressedRow=hit.list.layout.at((local(hit,...point)[1]+offset)/hit.scale);
+  if(hit.node.properties.reorderable&&!this.listDrag){
+   const selection=hit.list.dragSelection(hit.pressedRow);
+   if(selection)this.listDrag={source,hit,point:[...point],selection,active:false};
+  }
+ }
+ listDestination(drag,point){
+  const origin=drag.hit;
+  origin.list.update();
+  if(origin.view.disposed||origin.list.items!==drag.selection.items||!origin.node.properties.reorderable||!origin.view.options.acceptInput())return null;
+  const hit=this.hits.findLast(hit=>hit.list&&hit.list.tree===origin.list.tree&&hit.node.properties.reorderable&&hit.view.options.acceptInput()&&contains(hit,...point)&&
+   (hit.list===origin.list||origin.node.properties.transferGroup&&hit.node.properties.transferGroup===origin.node.properties.transferGroup));
+  if(!hit)return null;
+  const offset=hit.view.scrollOffsets.get(hit.node.id)||0;
+  return {hit,...hit.list.dropLocation(local(hit,...point)[1],hit.scale,offset)};
+ }
+ moveListDrag(source,point){
+  const drag=this.listDrag;
+  if(drag?.source!==source||!drag.active&&Math.hypot(point[0]-drag.point[0],point[1]-drag.point[1])<5)return false;
+  drag.active=true;this.listDrop=this.listDestination(drag,point);this.revision++;return true;
+ }
+ finishListDrag(source,point){
+  const drag=this.listDrag;
+  if(drag?.source!==source)return false;
+  const drop=drag.active?this.listDestination(drag,point):null;
+  this.cancelListDrag();
+  if(drop){
+   const from=drag.hit.list;
+   try{from.transferItems(drop.hit.list,from.tree?drag.selection.keys:drag.selection.indices,drop.parent,drop.destination);}
+   catch(error){drag.hit.view.options.error?.(error);}
+  }
+  return drag.active;
+ }
  scrollLocal(hit){const m=hit.matrix,d=m.a*m.d-m.b*m.c,dx=this.pointer[0]-m.e,dy=this.pointer[1]-m.f;return [(m.d*dx-m.c*dy)/d,(m.a*dy-m.b*dx)/d];}
  scrollTo(hit,value){const next=clamp(value,0,hit.max);if(next!==hit.view.scrollOffsets.get(hit.node.id)){hit.view.scrollOffsets.set(hit.node.id,next);this.revision++;}return true;}
  input(packet){
   if(packet.device==='touch')return this.touchInput(packet);
   if(packet.device==='keyboard'&&['shift','control','alt'].includes(packet.key))this.modifiers[packet.key==='shift'?'shiftKey':packet.key==='control'?'ctrlKey':'altKey']=Boolean(packet.value);
-  if(packet.device==='keyboard'&&packet.value&&this.focus?.list&&this.focus.enabled&&this.focus.node.properties.enabled!==false&&this.focus.node.properties.visible!==false&&this.focus.view.options.acceptInput()){const hit=this.focus;if(hit.list.key(packet.key,this.modifiers)){const list=hit.list,y=list.layout.offsets[list.focus]*hit.scale,bottom=list.layout.offsets[list.focus+1]*hit.scale,top=hit.view.scrollOffsets.get(hit.node.id)||0;if(Number.isFinite(y)){if(y<top)this.scrollTo(hit,y);else if(bottom>top+hit.h)this.scrollTo(hit,bottom-hit.h);}return true;}}
+  if(packet.device==='keyboard'&&packet.value&&this.focus?.list&&this.focus.enabled&&this.focus.node.properties.enabled!==false&&this.focus.node.properties.visible!==false&&this.focus.view.options.acceptInput()){const hit=this.focus;if(hit.list.key(packet.key,this.modifiers)){const list=hit.list,y=list.offset(list.focus)*hit.scale,bottom=list.offset(list.focus+1)*hit.scale,top=hit.view.scrollOffsets.get(hit.node.id)||0;if(Number.isFinite(y)){if(y<top)this.scrollTo(hit,y);else if(bottom>top+hit.h)this.scrollTo(hit,bottom-hit.h);}return true;}}
 
   if(packet.device==='mouse'&&String(packet.key).toLowerCase()==='mousewheelaxis'){const hit=this.scrollHits.findLast(h=>h.max>0&&contains(h,...this.pointer)&&h.view.options.acceptInput());return hit?this.scrollTo(hit,(hit.view.scrollOffsets.get(hit.node.id)||0)-packet.value*48):false;}
-  if(packet.pointer){this.pointer=packet.pointer.position;if(this.scrollDrag){const hit=this.scrollDrag;if(hit.view.disposed||!hit.view.options.acceptInput()){this.scrollDrag=null;return false;}return this.scrollTo(hit,(this.scrollLocal(hit)[1]-hit.grab)/(hit.h-hit.thumb)*hit.max);}const hover=this.hits.findLast(h=>contains(h,...this.pointer));if(hover?.node!==this.hover?.node||hover?.view!==this.hover?.view){this.hover=hover;this.revision++;}if(this.down){this.virtual(this.down,...this.pointer,true);if(this.down.node.type==='Slider')this.slider(this.down);}if(packet.key===undefined)return;}if(packet.device==='mouse'&&packet.key==='leftmousebutton'){
+  if(packet.pointer){this.pointer=packet.pointer.position;if(this.scrollDrag){const hit=this.scrollDrag;if(hit.view.disposed||!hit.view.options.acceptInput()){this.scrollDrag=null;return false;}return this.scrollTo(hit,(this.scrollLocal(hit)[1]-hit.grab)/(hit.h-hit.thumb)*hit.max);}const hover=this.hits.findLast(h=>contains(h,...this.pointer));if(hover?.node!==this.hover?.node||hover?.view!==this.hover?.view){this.hover=hover;this.revision++;}if(this.down){if(this.moveListDrag('mouse',this.pointer))return true;this.virtual(this.down,...this.pointer,true);if(this.down.node.type==='Slider')this.slider(this.down);}if(packet.key===undefined)return;}if(packet.device==='mouse'&&packet.key==='leftmousebutton'){
    if(!packet.value&&this.scrollDrag){this.scrollDrag=null;return true;}
    if(packet.value){const hit=this.scrollHits.findLast(h=>h.max>0&&contains(h,...this.pointer)&&this.scrollLocal(h)[0]>=h.w-12&&h.view.options.acceptInput());if(hit){const y=this.scrollLocal(hit)[1],top=(hit.view.scrollOffsets.get(hit.node.id)||0)/hit.max*(hit.h-hit.thumb);hit.grab=y>=top&&y<=top+hit.thumb?y-top:hit.thumb/2;this.scrollDrag=hit;return this.scrollTo(hit,(y-hit.grab)/(hit.h-hit.thumb)*hit.max);}}
-  const hit=this.hits.findLast(h=>contains(h,...this.pointer)&&h.view.options.acceptInput());if(packet.value){this.release();if(this.focus!==hit){this.event(this.focus,'blur');this.focus=hit;this.event(hit,'focus');}this.down=hit;if(hit?.list)hit.pressedRow=hit.list.layout.at((local(hit,...this.pointer)[1]+(hit.view.scrollOffsets.get(hit.node.id)||0))/hit.scale);this.event(hit,'pressed');this.virtual(hit,...this.pointer,true);if(hit?.node.type==='Slider')this.slider(hit);}else{const old=this.down;this.release();if(old&&hit&&old.node===hit.node&&old.view===hit.view){if(hit.list){const [x,y]=local(hit,...this.pointer),offset=hit.view.scrollOffsets.get(hit.node.id)||0;if(old.pressedRow===hit.list.layout.at((y+offset)/hit.scale))hit.list.click(x,y,hit.scale,offset,this.modifiers);}else if(hit.node.type==='CheckBox'){hit.node.properties.checked=!hit.node.properties.checked;this.event(hit,'changed');}else if(['Button','TouchButton'].includes(hit.node.type))this.event(hit,'click');}}return !!hit;}if(packet.device==='keyboard'&&packet.value&&this.focus?.enabled&&this.focus.node.properties.enabled!==false&&this.focus?.node.type==='TextInput'){const p=this.focus.node.properties;if(packet.key==='backspace'){p.text=Array.from(p.text||'').slice(0,-1).join('');this.event(this.focus,'changed');}else if(packet.key==='enter')this.event(this.focus,'submit');return true;}return false;}
+  const hit=this.hits.findLast(h=>contains(h,...this.pointer)&&h.view.options.acceptInput());if(packet.value){this.release();if(this.focus!==hit){this.event(this.focus,'blur');this.focus=hit;this.event(hit,'focus');}this.down=hit;if(hit?.list)this.beginListDrag(hit,'mouse',this.pointer);this.event(hit,'pressed');this.virtual(hit,...this.pointer,true);if(hit?.node.type==='Slider')this.slider(hit);}else{const old=this.down,moved=this.finishListDrag('mouse',this.pointer);this.release();if(moved)return true;if(old&&hit&&old.node===hit.node&&old.view===hit.view){if(hit.list){const [x,y]=local(hit,...this.pointer),offset=hit.view.scrollOffsets.get(hit.node.id)||0;if(old.pressedRow===hit.list.layout.at((y+offset)/hit.scale))hit.list.click(x,y,hit.scale,offset,this.modifiers);}else if(hit.node.type==='CheckBox'){hit.node.properties.checked=!hit.node.properties.checked;this.event(hit,'changed');}else if(['Button','TouchButton'].includes(hit.node.type))this.event(hit,'click');}}return !!hit;}if(packet.device==='keyboard'&&packet.value&&this.focus?.enabled&&this.focus.node.properties.enabled!==false&&this.focus?.node.type==='TextInput'){const p=this.focus.node.properties;if(packet.key==='backspace'){p.text=Array.from(p.text||'').slice(0,-1).join('');this.event(this.focus,'changed');}else if(packet.key==='enter')this.event(this.focus,'submit');return true;}return false;}
  text(text){if(this.focus?.node.type!=='TextInput'||!this.focus.enabled||this.focus.node.properties.enabled===false||this.focus.node.properties.visible===false||!this.focus.view.options.acceptInput())return;const p=this.focus.node.properties;p.text=Array.from((p.text||'')+text).slice(0,p.maxLength??256).join('');this.event(this.focus,'changed');}
  slider(hit,point=this.pointer){const p=hit.node.properties,step=p.step||.01,next=clamp(p.min+Math.round(clamp(local(hit,...point)[0]/hit.w,0,1)*(p.max-p.min)/step)*step,p.min,p.max);if(next!==p.value){p.value=next;this.event(hit,'changed');}}
  async draw(width,height,pixelRatio=1){
@@ -144,7 +187,7 @@ view.fontsReady=async(scale=view.assetScale||1)=>{view.assetScale=scale;if(this.
     }
     if(node.type==='CheckBox'){const size=20*scale,top=(h-size)/2;ctx.strokeStyle=p.color;ctx.lineWidth=scale;ctx.strokeRect(0,top,size,size);if(p.checked){ctx.fillStyle=p.accent;ctx.fillRect(3*scale,top+3*scale,size-6*scale,size-6*scale);}}
     if(textWidgets.has(node.type))paintWidgetText(ctx,node.type,p,w,h,scale,p.font?'"'+this.fonts.get(p.font)+'"':'"HBSystemUI", "HBKorean"');
-    if(['ListView','TreeView'].includes(node.type)){const list=view.lists.get(node.id);list.node=node;hit.list=list;const metrics=list.paint(ctx,w,h,scale,p.font?'"'+this.fonts.get(p.font)+'"':'"HBSystemUI", "HBKorean"',view.scrollOffsets.get(node.id)||0);Object.assign(hit,metrics);view.scrollOffsets.set(node.id,metrics.offset);this.scrollHits.push(hit);if(hit.max>0){ctx.fillStyle=p.color;ctx.fillRect(w-8,hit.offset/hit.max*(h-hit.thumb),6,hit.thumb);}}
+    if(['ListView','TreeView'].includes(node.type)){const list=view.lists.get(node.id);list.node=node;hit.list=list;const metrics=list.paint(ctx,w,h,scale,p.font?'"'+this.fonts.get(p.font)+'"':'"HBSystemUI", "HBKorean"',view.scrollOffsets.get(node.id)||0,this.listDrop?.hit.node===node&&this.listDrop.hit.view===view?this.listDrop:null);Object.assign(hit,metrics);view.scrollOffsets.set(node.id,metrics.offset);this.scrollHits.push(hit);if(hit.max>0){ctx.fillStyle=p.color;ctx.fillRect(w-8,hit.offset/hit.max*(h-hit.thumb),6,hit.thumb);}}
     const list=children.get(node.id)||[],absolute=['Canvas','Panel','Widget','NamedSlot'].includes(node.type),padding=absolute?0:widgetContainers.has(node.type)?p.padding*scale:0,childBox={x:x+border+padding,y:y+border+padding,w:w-2*(border+padding),h:h-2*(border+padding),gap:p.gap*scale,columns:p.columns};
     let scroll;
     if(node.type==='ScrollBox'){const bottom=Math.max(h,...list.map((child,i)=>{const r=widgetFlexBox(child,childBox,node.type,i,list,scale);return r.y+r.h-y;})),max=Math.max(0,bottom-h),offset=clamp(view.scrollOffsets.get(node.id)||0,0,max);view.scrollOffsets.set(node.id,offset);scroll={...hit,max,offset,thumb:Math.min(h,Math.max(24,h*h/bottom))};this.scrollHits.push(scroll);ctx.beginPath();ctx.rect(0,0,w,h);ctx.clip();ctx.translate(0,-offset);clips.push(hit);}

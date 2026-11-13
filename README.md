@@ -42,11 +42,11 @@ Windows 네이티브 편집기는 `dist/HBEngineNative/HBEngineNative.exe`에서
 
 ```powershell
 npm install
-npm run desktop:build -- --native-editor-only
+npm run desktop:build
 .\dist\HBEngineNative\HBEngineNative.exe
 ```
 
-사용자용 네이티브 설치는 `npm run desktop:install -- --native-editor-only`로 실행해요. 바로가기와 `.hbproject` 파일 연결은 설치된 실행기를 열어요. `npm run desktop:build`는 기존 호환 배포본을 빌드해요. [네이티브 편집기 조작과 빌드](docs/EDITOR_NATIVE.md).
+사용자용 네이티브 설치는 `npm run desktop:install`로 실행해요. 바로가기와 `.hbproject` 파일 연결은 설치된 실행기를 열어요. WebView 호환 배포본은 `npm run desktop:build:compat`로 빌드해요. [네이티브 편집기 조작과 빌드](docs/EDITOR_NATIVE.md).
 
 브라우저 개발 미리보기는 다음 명령으로 실행한다.
 
@@ -76,7 +76,7 @@ C++17 g++이 필요하다. Windows에서는 설치된 MSYS2 UCRT64 컴파일러�
 | npm run test:assets | 확장 에셋·부모 클래스 실제 C++ 빌드·독립 문서 저장·참조 재열기·입력·다중 BP 실행 |
 | npm run test:server | 기본 Project의 dev 서버 실행 중 HTTP 범위 응답·Origin/헤더·에셋 실행 차단 |
 | npm run test:hub-ui | 실제 허브 핸들러의 검색·선택·열기·모달·키보드·오류/입력 보존 |
-| npm run desktop:build | Windows x64 편집기/Player EXE·아이콘·Node/loader 동봉·라이선스·외부 MSYS2 런타임 DLL 의존성 검사 |
+| npm run desktop:build | Windows x64 D3D12 편집기·네이티브 게임 실행기·Node·라이선스 동봉 및 실행 의존성 확인 |
 | npm run test:package | 실제 2D 개발/3D 배포 Game.exe·GPU·BP→사전 컴파일 C++·AudioContext/음원 재생·EndPlay 저장/재열기·취소/충돌/손상 거부·소유 서버 종료 |
 | npm run test:launcher | 프로젝트 JSON/UUID·한글/공백 경로·원본 보호·허브/API·두 프로젝트 전환·동적 포트·프로젝트별 C++ 소유 상태 |
 | npm run test:session | 프로젝트 ID별 복구/도킹/폴더/SaveGame 분리·기존 기본 프로젝트의 1회 이관·원본 보존·디스크 복구 연결 |
@@ -98,7 +98,7 @@ npm run api:generate는 공통 라이브러리 헤더와 노드 메타데이터�
 디스크 프로젝트를 CLI로 검사/빌드할 수도 있다. C++가 연결된 프로젝트는 제작 단계에 C++17 컴파일러가 필요하다.
 
 ```powershell
-npm run desktop:build -- --native-editor-only
+npm run desktop:build
 npm run build:game -- C:/Games/MyGame/MyGame.hbproject windows --dry-run
 npm run build:game -- C:/Games/MyGame/MyGame.hbproject windows
 ```
