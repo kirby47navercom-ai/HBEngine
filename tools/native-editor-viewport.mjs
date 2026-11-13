@@ -9,6 +9,7 @@ import {loadModel} from '../prototype/engine-services.js';
 import {loadHeadlessModel,disposeHeadlessModel} from './headless-model.mjs';
 import {installNativeAssets} from './native-game-platform.mjs';
 import {projectBytes,projectText} from './project-bytes.mjs';
+import {defaultViewportSettings} from '../prototype/viewport-controls.js';
 
 export function nativeEditorViewport(bridge,surface='native-editor') {
   const canvas={width:1,height:1,clientWidth:1,clientHeight:1,pixelRatio:1};
@@ -97,12 +98,12 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     updateEnvironment();
     source=data;content={objects,warnings};
   }
-  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false}) {
+  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false,flight}) {
     const assets=installNativeAssets({url:name=>'hbasset:'+encodeURIComponent(name),manifest:{width,height},readBytes:(name,opts)=>projectBytes(nextProject,name,opts)});
-    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture},assets);}
+    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight},assets);}
     finally{assets.restore();}
   }
-  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture},assets) {
+  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight},assets) {
     canvas.clientWidth=width;canvas.clientHeight=height;
     await open(data,nextProject,assets);
     selection=selected;
@@ -118,6 +119,14 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     } else if (command==='zoom') {
       if (dimension==='2d') camera.zoom=THREE.MathUtils.clamp(camera.zoom*1.15**dy,.01,500);
       else orbit.radius=THREE.MathUtils.clamp(orbit.radius*1.15**-dy,.025,100000);
+    }
+    if(flight&&!cameraId&&!cameraOutputs&&dimension!=='2d'){
+      const {forward=0,right=0,up=0,seconds=0,fast=false}=flight;
+      if(![forward,right,up,seconds].every(Number.isFinite))throw Error('뷰포트 이동 값을 확인하세요.');
+      const speed=defaultViewportSettings.speed*(fast?defaultViewportSettings.fastMultiplier:1);
+      const delta=new THREE.Vector3(right,0,-forward).applyQuaternion(camera.quaternion).add(new THREE.Vector3(0,up,0));
+      if(delta.lengthSq()>1)delta.normalize();
+      target.addScaledVector(delta,speed*THREE.MathUtils.clamp(seconds,0,.1));
     }
     const aspect=width/height;
     if (dimension==='2d') {
@@ -175,7 +184,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       }
     }
     const {backend,shaderPreparation,calls,cameraViews}=renderer.hbDiagnostics();
-    return {backend,shaderPreparation,calls,cameraViews,selection,warnings:content.warnings.slice(0,8)};
+    return {backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:camera.position.toArray(),warnings:content.warnings.slice(0,8)};
   }
   return {draw,close};
 }

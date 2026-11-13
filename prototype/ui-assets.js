@@ -93,6 +93,21 @@ export function widgetImageSource(properties,scale,pixelRatio=1){
   return properties.vectorTexture&&Math.abs(effective-Math.round(effective))>.001?properties.vectorTexture:properties.texture||properties.vectorTexture||'';
 }
 
+export const widgetAnchorPresets={topLeft:[[0,0,0,0],[0,0]],topRight:[[1,0,1,0],[1,0]],bottomLeft:[[0,1,0,1],[0,1]],bottomRight:[[1,1,1,1],[1,1]],center:[[.5,.5,.5,.5],[.5,.5]],stretch:[[0,0,1,1],[0,0]],wide:[[0,0,1,0],[0,0]]};
+export function setWidgetAnchorPreset(node,key){
+  if(!Object.hasOwn(widgetAnchorPresets,key))throw Error('앵커 프리셋을 확인하세요.');
+  [node.slot.anchors,node.slot.alignment]=structuredClone(widgetAnchorPresets[key]);
+  node.slot.offset=key==='stretch'?[0,0,0,0]:key==='wide'?[0,0,0,48]:[0,0,200,48];
+}
+export function transformWidgetSlot(slot,{dx,dy,resize=false,round=false}){
+  const {anchors:a,offset:o}=slot;
+  for(const [i,delta] of [dx,dy].entries()){
+    const fixed=a[i]===a[i+2];
+    if(resize)o[i+2]=fixed?Math.max(1,o[i+2]+delta):o[i+2]-delta;
+    else{o[i]+=delta;if(!fixed)o[i+2]-=delta;}
+  }
+  if(round)slot.offset=o.map(Math.round);
+}
 export function addMobileControls(data,{movement='Joystick'}={}){
   if(!['Joystick','DPad'].includes(movement))throw Error('모바일 이동 컨트롤을 확인하세요.');const ids=[];
   const add=(type,name,anchors,offset,key)=>{const id=addWidget(data,type,{name:data.nodes.some(n=>n.name===name)?undefined:name});const n=data.nodes.find(n=>n.id===id);n.slot={...n.slot,anchors,offset,alignment:[anchors[0],anchors[1]],zIndex:20};n.properties.deviceVisibility='touch';if(key)n.properties.inputKey=key;ids.push(id);return n;};

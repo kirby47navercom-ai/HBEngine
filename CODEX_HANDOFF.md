@@ -1,3 +1,7 @@
+## Windows 네이티브 위젯·모바일 입력 제작과 뷰포트 이동 · 2026-11-13
+
+캔버스 모서리 크기 조절, 위젯 복제·앵커·모바일 조작 추가를 공용 위젯 모델에 연결했어요. 기본·독립 뷰포트에 오른쪽 마우스와 WASD/QE 이동을 연결하고 연속 입력을 프레임마다 모아서 처리해요. `native/build/native-authoring-xh5RzG/report.json`에서 Win32 입력·D3D12 표시·저장을 확인했고 뷰포트 공용 검사 185개도 통과했어요.
+
 ## Windows 네이티브 단독 빌드·장면 창·녹화 프리셋 · 2026-11-13
 
 WebView2 없는 단독 빌드에서 분리·분할 장면을 독립 D3D12 표면으로 열고, 상속 녹화 프리셋과 공용 런타임 녹화기를 연결했어요. 문서 다시 읽기는 디스크와 리비전을 확인해요. 격리 편집기 `native/build/native-authoring-pbtVT4/report.json`과 깨끗한 환경에서 실행한 네이티브 게임 패키지 `native/build/native-game-UB0DUv/acceptance.json`이 통과했어요. 사용자 설치본 전환은 별도예요.

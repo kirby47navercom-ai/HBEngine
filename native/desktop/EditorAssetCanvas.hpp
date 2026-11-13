@@ -12,7 +12,7 @@ class EditorAssetCanvas final : public EditorPanelBase {
     int scroll=0;
     double playhead=0;
     POINT start{};
-    bool dragging=false,widget=false,image=false;
+    bool dragging=false,widget=false,image=false,resizingWidget=false;
     Json curve;
     Json tilemap;
     Json waveform;
@@ -170,7 +170,9 @@ class EditorAssetCanvas final : public EditorPanelBase {
                 const float sx=w/data.at("width").get<float>(),sy=h/data.at("height").get<float>();
                 const float left=x+item->at("x").get<float>()*sx,top=y+item->at("y").get<float>()*sy;
                 brush->SetColor(theme.accent);
-                canvas->DrawRectangle(D2D1::RectF(left,top,left+item->at("w").get<float>()*sx,top+item->at("h").get<float>()*sy),brush,1.f);
+                const float right=left+item->at("w").get<float>()*sx,bottom=top+item->at("h").get<float>()*sy;
+                canvas->DrawRectangle(D2D1::RectF(left,top,right,bottom),brush,1.f);
+                if(item->value("editable",false))fill(right-4,bottom-4,8,8,theme.accent);
             }
             return;
         }
@@ -291,14 +293,22 @@ class EditorAssetCanvas final : public EditorPanelBase {
                 const auto [ox,oy,dw,dh]=frameRect();
                 if(dw<=0||dh<=0)return 0;
                 const float px=(x-ox)*data.at("width").get<float>()/dw,py=(y-oy)*data.at("height").get<float>()/dh;
+                resizingWidget=false;
+                for(const auto& row:rows)if(row.at("id")==selection&&row.value("editable",false)){
+                    const auto right=ox+(row.at("x").get<float>()+row.at("w").get<float>())*dw/data.at("width").get<float>();
+                    const auto bottom=oy+(row.at("y").get<float>()+row.at("h").get<float>())*dh/data.at("height").get<float>();
+                    if(std::abs(x-right)<=7&&std::abs(y-bottom)<=7){resizingWidget=dragging=true;SetCapture(window);return 0;}
+                    break;
+                }
                 selection.clear();
+                dragging=false;
                 for(auto item=rows.rbegin();item!=rows.rend();++item){
                     const float left=item->at("x"),top=item->at("y");
                     if(px>=left&&py>=top&&px<=left+item->at("w").get<float>()&&py<=top+item->at("h").get<float>()){
-                        selection=item->at("id");break;
+                        selection=item->at("id");dragging=item->value("editable",false);break;
                     }
                 }
-                dragging=!selection.empty();if(dragging)SetCapture(window);
+                if(dragging)SetCapture(window);
                 emit({{"event","select"},{"id",selection}});
             }else{
                 const int row=y>=heading?int((y-heading+scroll)/lane):-1;
@@ -335,7 +345,7 @@ class EditorAssetCanvas final : public EditorPanelBase {
             if(std::abs(x-start.x)+std::abs(y-start.y)<3)return 0;
             if(widget){
                 const auto [ox,oy,dw,dh]=frameRect();
-                emit({{"event","edit"},{"action","move"},{"id",selection},{"dx",double(x-start.x)*data.at("width").get<double>()/dw},{"dy",double(y-start.y)*data.at("height").get<double>()/dh}});
+                emit({{"event","edit"},{"action",resizingWidget?"resize":"move"},{"id",selection},{"dx",double(x-start.x)*data.at("width").get<double>()/dw},{"dy",double(y-start.y)*data.at("height").get<double>()/dh}});
             }else if(!clipSelection.empty()){
                 for(const auto& row:rows)if(row.at("id")==track&&row.contains("clips"))for(const auto& clip:row.at("clips"))if(clip.at("id")==clipSelection){
                     const double time=std::clamp(clip.at("start").get<double>()+xTime(float(x))-xTime(float(start.x)),0.0,data.at("length").get<double>());
@@ -457,6 +467,15 @@ public:
         const float sx=dw/data.at("width").get<float>(),sy=dh/data.at("height").get<float>();
         const int x=int(ox+(row->at("x").get<float>()+row->at("w").get<float>()/2)*sx);
         const int y=int(oy+(row->at("y").get<float>()+row->at("h").get<float>()/2)*sy);
+        SendMessageW(window,WM_LBUTTONDOWN,MK_LBUTTON,MAKELPARAM(x,y));
+        SendMessageW(window,WM_LBUTTONUP,0,MAKELPARAM(x+dx,y+dy));
+    }
+    void probeResizeWidget(const std::string& id,int dx,int dy){
+        const auto row=std::find_if(rows.begin(),rows.end(),[&](const Json& item){return item.at("id")==id;});
+        if(row==rows.end())throw std::runtime_error("Widget resize target missing");
+        const auto [ox,oy,dw,dh]=frameRect();
+        const int x=int(std::lround(ox+(row->at("x").get<float>()+row->at("w").get<float>())*dw/data.at("width").get<float>()));
+        const int y=int(std::lround(oy+(row->at("y").get<float>()+row->at("h").get<float>())*dh/data.at("height").get<float>()));
         SendMessageW(window,WM_LBUTTONDOWN,MK_LBUTTON,MAKELPARAM(x,y));
         SendMessageW(window,WM_LBUTTONUP,0,MAKELPARAM(x+dx,y+dy));
     }

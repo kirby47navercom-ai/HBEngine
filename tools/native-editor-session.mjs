@@ -14,7 +14,7 @@ import {assetKind} from './project-service.mjs';
 import {createProject, readProjectManifest, recentProjects, rememberProject} from './project-manifest.mjs';
 import {createPlacedObject,placementCatalog} from '../prototype/placement-catalog.js';
 import {addSceneComponent,componentDefinitions,componentPropertyVisible} from '../prototype/scene-components.js';
-import {addWidget,removeWidget,reparentWidget,widgetContainers,widgetTypes} from '../prototype/ui-assets.js';
+import {addMobileControls,addWidget,duplicateWidget,removeWidget,reparentWidget,setWidgetAnchorPreset,transformWidgetSlot,widgetContainers,widgetTypes} from '../prototype/ui-assets.js';
 import {projectBytes} from './project-bytes.mjs';
 import {copySceneObjects,pasteSceneObjects,setObjectMatrix,validParent} from '../prototype/scene-editor.js';
 import {sceneWorldMatrix} from '../prototype/scene-runtime.js';
@@ -1035,7 +1035,9 @@ export function nativeEditorSession(bridge) {
       try {
         await view.fontsReady();
         await layer.draw(width,height);
-        return {width,height,pixels:layer.canvas.data().toString('base64'),rows:layer.layout};
+        const nodes=new Map(data.nodes.map(node=>[node.id,node]));
+        const rows=layer.layout.map(row=>({...row,editable:['Canvas','Panel','Widget','NamedSlot'].includes(nodes.get(nodes.get(row.id)?.parent)?.type)}));
+        return {width,height,pixels:layer.canvas.data().toString('base64'),rows};
       } finally {await layer.dispose();}
     },
     'widget.edit': async ({action,id,key,parent,dx,dy,expectedRevision})=>{
@@ -1048,12 +1050,17 @@ export function nativeEditorSession(bridge) {
         selection=addWidget(next,key,{parent:owner});
       }else if(action==='delete'){removeWidget(next,id);selection='';}
       else if(action==='reparent')reparentWidget(next,id,parent);
-      else if(action==='move'){
+      else if(action==='duplicate')selection=duplicateWidget(next,id);
+      else if(action==='mobile')selection=addMobileControls(next,{movement:key})[0];
+      else if(action==='anchor'){
+        if(!node?.parent)throw Error('앵커를 바꿀 위젯을 선택하세요.');
+        setWidgetAnchorPreset(node,key);
+      }
+      else if(action==='move'||action==='resize'){
         if(!node?.parent||![dx,dy].every(Number.isFinite))throw Error('이동할 위젯과 위치를 확인하세요.');
         const owner=next.nodes.find(item=>item.id===node.parent);
         if(!['Canvas','Panel','Widget','NamedSlot'].includes(owner.type))throw Error('자동 배치 위젯의 슬롯은 속성에서 수정하세요.');
-        const {anchors:a,offset:o}=node.slot;
-        o[0]+=dx;o[1]+=dy;if(a[0]!==a[2])o[2]-=dx;if(a[1]!==a[3])o[3]-=dy;
+        transformWidgetSlot(node.slot,{dx,dy,resize:action==='resize'});
       }else throw Error('위젯 편집 명령을 확인하세요.');
       change(doc,next);
       return {...await response(doc),selection};
