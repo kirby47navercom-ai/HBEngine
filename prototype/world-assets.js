@@ -46,19 +46,39 @@ export function editMesh(d,settings){
 }
 export function terrainMesh(d){if(!validWorldAsset('terrain',d))throw Error('지형 데이터 오류');const [w,h]=d.resolution,result={version:1,name:d.name,vertices:[],uvs:[],indices:[],colors:[]};for(let y=0;y<h;y++)for(let x=0;x<w;x++){const i=y*w+x;result.vertices.push([(x/(w-1)-.5)*d.size[0],d.heights[i],(y/(h-1)-.5)*d.size[1]]);result.uvs.push([x/(w-1),y/(h-1)]);result.colors.push([0,1,2].map(c=>d.weights[i].reduce((v,a,k)=>v+a*d.layers[k].color[c],0)));}for(let y=0;y<h-1;y++)for(let x=0;x<w-1;x++){const a=y*w+x,b=a+1,c=a+w,e=c+1;if(!d.holes?.[y*(w-1)+x])result.indices.push(a,c,b,b,c,e);}return result;}
 export function terrainHeight(d,x,z){const [w,h]=d.resolution,fx=Math.max(0,Math.min(w-1,(x/d.size[0]+.5)*(w-1))),fy=Math.max(0,Math.min(h-1,(z/d.size[1]+.5)*(h-1))),a=Math.floor(fx),b=Math.floor(fy),u=fx-a,v=fy-b,s=(i,j)=>d.heights[Math.min(h-1,j)*w+Math.min(w-1,i)];return (s(a,b)*(1-u)+s(a+1,b)*u)*(1-v)+(s(a,b+1)*(1-u)+s(a+1,b+1)*u)*v;}
-export function terrainBrush(d,{position=[0,0],radius=2,strength=1,mode='raise',height=0,layer=0,stamp}){
- if(!validWorldAsset('terrain',d)||!vec(position,2)||!finite(radius,.000001,1000000)||!finite(strength,0,10000)||!finite(height,-10000,10000)||!['raise','lower','flatten','smooth','paint','hole','fillHole','stamp'].includes(mode)||!Number.isInteger(layer)||layer<0||layer>=d.layers.length||stamp&&(!vec(stamp.resolution,2,2,1025)||!stamp.resolution.every(Number.isInteger)||!Array.isArray(stamp.values)||stamp.values.length!==stamp.resolution[0]*stamp.resolution[1]||!stamp.values.every(v=>finite(v,0,1))))throw Error('지형 브러시 오류');
- const n=copyWorldDraft(d),[w,h]=d.resolution,holes=mode==='hole'||mode==='fillHole',width=holes?w-1:w,depth=holes?h-1:h,offset=holes?.5:0;
+export function terrainBrush(d,settings={}){
+ return terrainStroke(d,[settings.position===undefined?[0,0]:settings.position],settings);
+}
+export function terrainStroke(d,points,{radius=2,strength=1,mode='raise',height=0,layer=0,stamp}={}){
+ if(!validWorldAsset('terrain',d)||!Array.isArray(points)||!points.length||!points.every(point=>vec(point,2))||
+   !finite(radius,.000001,1000000)||!finite(strength,0,10000)||!finite(height,-10000,10000)||
+   !['raise','lower','flatten','smooth','paint','hole','fillHole','stamp'].includes(mode)||
+   !Number.isInteger(layer)||layer<0||layer>=d.layers.length||stamp&&(!vec(stamp.resolution,2,2,1025)||
+   !stamp.resolution.every(Number.isInteger)||!Array.isArray(stamp.values)||
+   stamp.values.length!==stamp.resolution[0]*stamp.resolution[1]||!stamp.values.every(v=>finite(v,0,1))))throw Error('지형 브러시 오류');
+ const next=copyWorldDraft(d),settings={radius,strength,mode,height,layer,stamp};
+ for(const position of points)paintTerrain(next,position,settings);
+ return next;
+}
+function paintTerrain(n,position,{radius,strength,mode,height,layer,stamp}){
+ const [w,h]=n.resolution,holes=mode==='hole'||mode==='fillHole',width=holes?w-1:w,depth=holes?h-1:h,offset=holes?.5:0;
  if(holes)n.holes??=Array((w-1)*(h-1)).fill(false);
- const sourceHeights=n===d&&mode==='smooth'?d.heights.slice():d.heights;
- const x0=Math.max(0,Math.ceil(((position[0]-radius)/d.size[0]+.5)*(w-1)-offset)),x1=Math.min(width-1,Math.floor(((position[0]+radius)/d.size[0]+.5)*(w-1)-offset)),y0=Math.max(0,Math.ceil(((position[1]-radius)/d.size[1]+.5)*(h-1)-offset)),y1=Math.min(depth-1,Math.floor(((position[1]+radius)/d.size[1]+.5)*(h-1)-offset));
- for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){const px=((x+offset)/(w-1)-.5)*d.size[0],pz=((y+offset)/(h-1)-.5)*d.size[1],t=Math.max(0,1-Math.hypot(px-position[0],pz-position[1])/radius);if(!t)continue;const i=y*w+x,a=Math.min(1,strength*t*t*(3-2*t));
-  if(holes){if(strength>0)n.holes[y*(w-1)+x]=mode==='hole';continue;}
-  if(mode==='paint'){for(let k=0;k<n.layers.length;k++)n.weights[i][k]=d.weights[i][k]*(1-a)+(k===layer?a:0);}
-  else if(mode==='stamp'){let value=t*t*(3-2*t);if(stamp){const [sw,sh]=stamp.resolution,sx=Math.max(0,Math.min(sw-1,(px-position[0]+radius)/(2*radius)*(sw-1))),sy=Math.max(0,Math.min(sh-1,(pz-position[1]+radius)/(2*radius)*(sh-1))),ix=Math.floor(sx),iy=Math.floor(sy),u=sx-ix,v=sy-iy,get=(x,y)=>stamp.values[Math.min(sh-1,y)*sw+Math.min(sw-1,x)];value=(get(ix,iy)*(1-u)+get(ix+1,iy)*u)*(1-v)+(get(ix,iy+1)*(1-u)+get(ix+1,iy+1)*u)*v;}n.heights[i]+=height*strength*value;}
-  else if(mode==='raise'||mode==='lower')n.heights[i]+=strength*t*(mode==='raise'?1:-1);else if(mode==='flatten')n.heights[i]+=(height-sourceHeights[i])*a;else{let sum=0,count=0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)if(x+dx>=0&&x+dx<w&&y+dy>=0&&y+dy<h){sum+=sourceHeights[(y+dy)*w+x+dx];count++;}n.heights[i]+=(sum/count-sourceHeights[i])*a;}
+ const x0=Math.max(0,Math.ceil(((position[0]-radius)/n.size[0]+.5)*(w-1)-offset)),x1=Math.min(width-1,Math.floor(((position[0]+radius)/n.size[0]+.5)*(w-1)-offset)),y0=Math.max(0,Math.ceil(((position[1]-radius)/n.size[1]+.5)*(h-1)-offset)),y1=Math.min(depth-1,Math.floor(((position[1]+radius)/n.size[1]+.5)*(h-1)-offset));
+ if(x0>x1||y0>y1)return;
+ const originX=Math.max(0,x0-1),originY=Math.max(0,y0-1),endX=Math.min(w-1,x1+1),endY=Math.min(h-1,y1+1);
+ const stride=endX-originX+1;
+ let smooth;
+ if(mode==='smooth'){
+  smooth=new Float64Array(stride*(endY-originY+1));
+  for(let y=originY;y<=endY;y++)for(let x=originX;x<=endX;x++)smooth[(y-originY)*stride+x-originX]=n.heights[y*w+x];
  }
- if(!validWorldAsset('terrain',n))throw Error('지형 높이 범위를 넘었어요.');return n;
+ for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){const px=((x+offset)/(w-1)-.5)*n.size[0],pz=((y+offset)/(h-1)-.5)*n.size[1],t=Math.max(0,1-Math.hypot(px-position[0],pz-position[1])/radius);if(!t)continue;const i=y*w+x,a=Math.min(1,strength*t*t*(3-2*t));
+  if(holes){if(strength>0)n.holes[y*(w-1)+x]=mode==='hole';continue;}
+  if(mode==='paint'){for(let k=0;k<n.layers.length;k++)n.weights[i][k]=n.weights[i][k]*(1-a)+(k===layer?a:0);}
+  else if(mode==='stamp'){let value=t*t*(3-2*t);if(stamp){const [sw,sh]=stamp.resolution,sx=Math.max(0,Math.min(sw-1,(px-position[0]+radius)/(2*radius)*(sw-1))),sy=Math.max(0,Math.min(sh-1,(pz-position[1]+radius)/(2*radius)*(sh-1))),ix=Math.floor(sx),iy=Math.floor(sy),u=sx-ix,v=sy-iy,get=(x,y)=>stamp.values[Math.min(sh-1,y)*sw+Math.min(sw-1,x)];value=(get(ix,iy)*(1-u)+get(ix+1,iy)*u)*(1-v)+(get(ix,iy+1)*(1-u)+get(ix+1,iy+1)*u)*v;}n.heights[i]+=height*strength*value;}
+  else if(mode==='raise'||mode==='lower')n.heights[i]+=strength*t*(mode==='raise'?1:-1);else if(mode==='flatten')n.heights[i]+=(height-n.heights[i])*a;else{let sum=0,count=0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)if(x+dx>=0&&x+dx<w&&y+dy>=0&&y+dy<h){sum+=smooth[(y+dy-originY)*stride+x+dx-originX];count++;}n.heights[i]+=(sum/count-n.heights[i])*a;}
+  if(!finite(n.heights[i],-10000,10000))throw Error('지형 높이 범위를 넘었어요.');
+ }
 }
 export function editFoliage(d,{operation,ids=[],delta=[0,0,0],position,rotation,scale}={}){
  if(!validWorldAsset('foliage',d)||!Array.isArray(ids)||!ids.length||new Set(ids).size!==ids.length||!vec(delta,3)||position&&!vec(position,3)||rotation&&!vec(rotation,3,-360000,360000)||scale&&!vec(scale,3,.001,10000))throw Error('폴리지 선택·변환을 확인하세요.');

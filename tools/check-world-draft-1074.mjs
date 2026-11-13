@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises';import path from 'node:path';import assert from 'node:assert/strict';
-import {withWorldDraft,isWorldDraft} from '../prototype/world-draft.js';import {createWorldAsset,terrainBrush,scatterFoliage,eraseFoliage,editFoliage,validWorldAsset} from '../prototype/world-assets.js';
+import {withWorldDraft,isWorldDraft} from '../prototype/world-draft.js';import {createWorldAsset,terrainBrush,terrainStroke,scatterFoliage,eraseFoliage,editFoliage,validWorldAsset} from '../prototype/world-assets.js';
 const started=performance.now(),checks=[],clone=globalThis.structuredClone;let fullCopies=0;
 globalThis.structuredClone=value=>{if(value?.version===1&&(value.heights||value.instances))fullCopies++;return clone(value);};
 try{
@@ -11,5 +11,20 @@ try{
  checks.push('foliage transform/duplicate/delete/scatter/erase keep source unchanged and identical results with 1 rather than 2 whole copies');
  let escaped;assert.throws(()=>withWorldDraft(foliage,data=>{escaped=data;data.instances[0].position[0]=123;throw Error('rollback');}),/rollback/);assert.equal(JSON.stringify(foliage),original);assert.equal(isWorldDraft(escaped),false);assert.throws(()=>withWorldDraft(foliage,data=>editFoliage(data,{operation:'transform',ids:['i0'],delta:[1e12,0,0]})));assert.equal(JSON.stringify(foliage),original);checks.push('callback/result-validation failure cannot mutate source or retain ownership');
  const {WorldAssetEditor}=await import('../prototype/world-asset-editor.js'),editor=Object.create(WorldAssetEditor.prototype),history=[],errors=[];let changes=0;Object.assign(editor,{doc:{kind:'terrain',data:terrain},hooks:{running:()=>false,before:()=>history.push(JSON.stringify(editor.doc.data)),change:()=>changes++,error:error=>errors.push(error)},render(){},rebuild:()=>Promise.resolve()});fullCopies=0;assert.equal(editor.edit(data=>terrainBrush(data,{mode:'raise',radius:2,strength:.5})),true);assert.equal(fullCopies,1);assert.equal(history[0],source);assert.equal(changes,1);editor.stroke={remembered:false};editor.edit(data=>terrainBrush(data,{mode:'lower',radius:2,strength:.2}));editor.edit(data=>terrainBrush(data,{mode:'smooth',radius:2,strength:.5}));assert.equal(history.length,2);assert.equal(changes,1);const stable=JSON.stringify(editor.doc.data);assert.equal(editor.edit(data=>terrainBrush(data,{mode:'raise',height:1e20})),false);assert.equal(JSON.stringify(editor.doc.data),stable);assert.equal(history.length,2);assert.equal(errors.length,1);checks.push('actual WorldAssetEditor.edit method with isolated hooks: one full copy, old-data Undo snapshot, one history entry per stroke and failed edit rollback');
- const result={passed:true,checks,measurements,elapsedMs:performance.now()-started,scope:'CPU copy count and immutable vs owned results. Timings include validation and are single fixtures, not game FPS or all editor/history costs.'};await fs.writeFile(path.resolve('native/build/world-draft-1074.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result));
+ const width=513,large={...createWorldAsset('terrain','LargeTerrain'),size:[512,512],resolution:[width,width],
+   heights:Array.from({length:width*width},(_,i)=>Math.sin(i*.07)),weights:Array.from({length:width*width},()=>[1])};
+ const points=Array.from({length:60},(_,i)=>[i-30,Math.sin(i*.2)*3]),settings={mode:'smooth',radius:4,strength:.6};
+ let at=performance.now(),expected;
+ withWorldDraft(large,draft=>{for(const position of points)terrainBrush(draft,{...settings,position});expected=draft;});
+ const perPointMS=performance.now()-at;at=performance.now();
+ const stroke=terrainStroke(large,points,settings),strokeMS=performance.now()-at;
+ assert.deepEqual(stroke,expected);assert.notEqual(stroke,large);
+ for(const mode of modes){
+   const settings={mode,radius:2,strength:.7,height:2,layer:1},points=[[-15,-15],[.5,-.25],[1,1],[16,16],[200,200]];
+   const separate=points.reduce((data,position)=>terrainBrush(data,{...settings,position}),terrain);
+   assert.deepEqual(terrainStroke(terrain,points,settings),separate,mode);
+ }
+ assert.equal(JSON.stringify(terrain),source);
+ checks.push('batched terrain stroke matches successive point edits for all 8 modes and smooth borders');
+ const result={passed:true,checks,measurements,terrainStroke:{vertices:width*width,points:points.length,perPointMS,strokeMS},elapsedMs:performance.now()-started,scope:'CPU copy count and immutable vs owned results. Timings include validation and are single fixtures, not game FPS or all editor/history costs.'};await fs.writeFile(path.resolve('native/build/world-draft-1074.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result));
 }finally{globalThis.structuredClone=clone;}

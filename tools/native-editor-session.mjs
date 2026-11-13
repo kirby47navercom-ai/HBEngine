@@ -23,7 +23,7 @@ import {projectBytes,projectText} from './project-bytes.mjs';
 import {createPrefabInstance} from '../prototype/prefab-instances.js';
 import {resolvePrefab} from '../prototype/prefab-variants.js';
 import {validateSpriteRigProgram} from '../prototype/sprite-rig-assets.js';
-import {editFoliage,editMesh,eraseFoliage,scatterFoliage,simplifyMesh,terrainBrush,worldAssetTypes} from '../prototype/world-assets.js';
+import {editFoliage,editMesh,eraseFoliage,scatterFoliage,simplifyMesh,terrainBrush,terrainStroke,worldAssetTypes} from '../prototype/world-assets.js';
 import {withWorldDraft} from '../prototype/world-draft.js';
 import {selectMeshBoundaryLoops} from '../prototype/mesh-boundary-selection.js';
 import {inspectMeshUV} from '../prototype/mesh-uv-inspection.js';
@@ -489,13 +489,15 @@ export function nativeEditorSession(bridge) {
     }
     if (!data || typeof data !== 'object') throw Error('속성 경로를 다시 선택하세요.');
     const modelSettings=doc.kind==='modelimport'&&parts.length===1&&parts[0]==='settings';
+    const lodMode=doc.kind==='lod'&&!parts.length;
     const component=doc.kind==='scene'&&parts.length===5&&parts[0]==='objects'&&parts[2]==='components'&&parts[4]==='properties'
       ? doc.data.objects[parts[1]]?.components[parts[3]] : null;
     return Object.entries(data).filter(([key])=>!component||componentPropertyVisible(component.type,key,data)).map(([key,value]) => {
       const type = value === null ? 'null' : typeof value;
       const definition=component&&componentDefinitions[component.type]?.properties[key];
       const label = definition?.label || fieldLabels[key] || value?.name || key;
-      const modelChoices=modelSettings?(key==='sourceUnit'?modelUnitChoices:key==='sourceUp'?modelUpChoices:null):null;
+      const modelChoices=modelSettings?(key==='sourceUnit'?modelUnitChoices:key==='sourceUp'?modelUpChoices:null)
+        :lodMode&&key==='mode'?[['distance','거리'],['screen','화면 높이']]:null;
       const control = modelChoices ? {kind:'select',value,options:modelChoices}
         : definition?.type==='select' ? {kind:'select',value,options:definition.choices.map(choice=>Array.isArray(choice)?choice:[choice,choice])}
         : type === 'object' ? {kind:'button',text:Array.isArray(value) ? `열기 (${value.length})` : '열기'}
@@ -770,16 +772,21 @@ export function nativeEditorSession(bridge) {
       await check(doc,expectedRevision);
       const read=async name=>JSON.parse((await projectText(owner,name)).replace(/^\uFEFF/,''));
       const terrain=kind==='foliage'&&action==='scatter'&&doc.data.terrain?await read(doc.data.terrain):undefined;
+      const reference=kind==='foliage'&&action==='reference'||kind==='lod'&&['addLevel','replaceLevel'].includes(action);
+      if(reference&&settings.asset){
+        const allowed=kind==='lod'?['mesh','terrain','foliage']:settings.key==='terrain'?['terrain']:['mesh','terrain'];
+        if(!allowed.includes(assetKind(settings.asset))||settings.asset===doc.path)throw Error('월드 에셋 참조 종류를 확인하세요.');
+        await owner.read(settings.asset);
+      }
       if(owner!==project())throw Error('편집 중 프로젝트가 변경됐어요.');
       await check(doc,expectedRevision);
       const {draft,result}=withWorldDraft(doc.data,data=>{
         if(kind==='terrain'){
           if(action==='brush'){
-            if(!settings.points)return terrainBrush(data,settings);
-            if(!Array.isArray(settings.points)||!settings.points.length)throw Error('지형 브러시 경로를 확인하세요.');
-            for(const position of settings.points)terrainBrush(data,{...settings,position});
-            return;
+            return settings.points===undefined?terrainBrush(data,settings):terrainStroke(data,settings.points,settings);
           }
+          if(action==='terrainSize'){data.size=settings.size;return;}
+          if(action==='layerColor'&&data.layers[settings.index]){data.layers[settings.index].color=settings.color;return;}
           if(action==='addLayer'){
             if(data.layers.length>=8)throw Error('지형 레이어는 최대 8개예요.');
             data.layers.push({name:settings.name,color:settings.color});
@@ -795,11 +802,16 @@ export function nativeEditorSession(bridge) {
             return;
           }
           if(action==='instances')return editFoliage(data,settings);
+          if(action==='reference'&&['mesh','terrain'].includes(settings.key)){data[settings.key]=settings.asset;return;}
         }else if(kind==='mesh'&&action==='geometry')return editMesh(data,settings);
         else if(kind==='lod'){
           if(action==='addLevel'){
             if(settings.asset===doc.path)throw Error('LOD에 자기 자신을 추가할 수 없어요.');
             data.levels.push({asset:settings.asset,threshold:settings.threshold});return;
+          }
+          if(action==='replaceLevel'&&Number.isInteger(settings.index)&&data.levels[settings.index]){
+            if(settings.asset===doc.path)throw Error('LOD에 자기 자신을 추가할 수 없어요.');
+            data.levels[settings.index]={asset:settings.asset,threshold:settings.threshold};return;
           }
           if(action==='removeLevel'&&Number.isInteger(settings.index)&&settings.index>=0&&settings.index<data.levels.length){
             data.levels.splice(settings.index,1);
@@ -1544,6 +1556,11 @@ export function nativeEditorSession(bridge) {
       if (!field || field.control.disabled || field.type==='object') throw Error('편집 가능한 속성을 선택하세요.');
       if (field.type==='number' && typeof value==='string' && value.trim()) value=Number(value);
       if (typeof value!==field.type || typeof value==='number' && !Number.isFinite(value)) throw Error('속성 값의 형식을 확인하세요.');
+      if(doc.kind==='lod'&&!parts.length&&key==='mode'&&value!==doc.data.mode){
+        const next=structuredClone(doc.data);next.mode=value;
+        next.levels.forEach((level,index)=>level.threshold=value==='distance'?.001+index*20:1/(index+1));
+        change(doc,next);return response(doc);
+      }
       const pointer = '/'+[...parts,key].map(pointerPart).join('/');
       change(doc,patchAsset(doc.kind,doc.data,[{op:'replace',path:pointer,value}]));
       return response(doc);

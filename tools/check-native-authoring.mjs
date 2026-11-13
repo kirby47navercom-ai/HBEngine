@@ -200,6 +200,13 @@ for(let i=0;i<500;i++){
 }
 assert.equal(scan?.status,'done');
 assert.deepEqual(scan.result.entries.map(row=>row.path),[nested+'/찾을파일.json']);
+const lodDraft=await dispatch('document.open',{path:lodFile});
+const lodAdded=await dispatch('world.edit',{path:lodFile,action:'addLevel',settings:{asset:meshFile,threshold:1},expectedRevision:lodDraft.revision});
+const lodReplaced=await dispatch('world.edit',{path:lodFile,action:'replaceLevel',settings:{index:0,asset:terrainFile,threshold:5},expectedRevision:lodAdded.revision});
+const lodScreen=await dispatch('asset.fieldEdit',{path:lodFile,parts:[],key:'mode',value:'screen',expectedRevision:lodReplaced.revision});
+assert.deepEqual(JSON.parse(lodScreen.text).levels,[{asset:terrainFile,threshold:1}]);
+for(let i=0;i<3;i++)await dispatch('editor.undo');
+assert.equal((await dispatch('document.read',{path:lodFile})).revision,lodDraft.revision);
 const meshDraft=await dispatch('document.open',{path:meshFile});
 await dispatch('world.meshAtlasStart',{settings:{channel:1,resolution:128,padding:2},expectedRevision:meshDraft.revision});
 assert.equal((await dispatch('world.meshAtlasCancel')).status,'canceled');

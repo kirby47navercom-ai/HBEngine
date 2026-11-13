@@ -2473,12 +2473,38 @@ class NativeEditorShell {
         const auto kind=document.at("kind").get<std::string>();
         const auto data=Json::parse(document.at("text").get<std::string>());
         if(kind=="terrain"){
-            const auto name=inputName(L"지형 레이어 이름",L"Ground",120);if(name.empty())return;
-            const auto color=worldVector({L"레이어 색 R (0–1)",L"레이어 색 G (0–1)",L"레이어 색 B (0–1)"},{.3,.45,.2});
-            if(color)editWorld({{"action","addLayer"},{"settings",{{"name",utf8(name)},{"color",*color}}}});
+            const auto action=chooseMenu({L"레이어 추가",L"레이어 색 수정",L"지형 가로·세로 크기"});if(!action)return;
+            if(*action==2){
+                const auto width=worldNumber(L"지형 가로",data.at("size").at(0));if(!width)return;
+                const auto depth=worldNumber(L"지형 세로",data.at("size").at(1));if(!depth)return;
+                editWorld({{"action","terrainSize"},{"settings",{{"size",{*width,*depth}}}}});
+            }else{
+                const std::array<const wchar_t*,3> rgb={L"레이어 색 R (0–1)",L"레이어 색 G (0–1)",L"레이어 색 B (0–1)"};
+                if(*action==0){
+                    const auto name=inputName(L"지형 레이어 이름",L"Ground",120);if(name.empty())return;
+                    const auto color=worldVector(rgb,{.3,.45,.2});
+                    if(color)editWorld({{"action","addLayer"},{"settings",{{"name",utf8(name)},{"color",*color}}}});
+                }else{
+                    std::vector<std::wstring> labels;
+                    for(const auto& layer:data.at("layers"))labels.push_back(wide(layer.at("name")));
+                    const auto layer=chooseMenu(labels);if(!layer)return;
+                    const auto color=worldVector(rgb,data.at("layers").at(*layer).at("color").get<std::array<double,3>>());
+                    if(color)editWorld({{"action","layerColor"},{"settings",{{"index",*layer},{"color",*color}}}});
+                }
+            }
         }else if(kind=="foliage"){
+            const auto action=chooseMenu({L"이동",L"회전 지정",L"크기 지정",L"복제",L"삭제",L"폴리지 메시",L"배치 기준 지형"});if(!action)return;
+            if(*action>=5){
+                const auto source=*action==5?chooseMenu({L"메시 선택",L"지형 메시 선택",L"기본 메시 사용"}):chooseMenu({L"지형 선택",L"지형 연결 해제"});
+                if(!source)return;
+                std::string asset;
+                if(*source==0||(*action==5&&*source==1)){
+                    asset=chooseProjectAsset(L"폴리지 에셋",*action==5&&*source==0?L".hbmesh.json":L".hbterrain.json");
+                    if(asset.empty())return;
+                }
+                editWorld({{"action","reference"},{"settings",{{"key",*action==5?"mesh":"terrain"},{"asset",asset}}}});return;
+            }
             if(worldInstances.empty())throw std::runtime_error("폴리지 인스턴스를 선택하세요.");
-            const auto action=chooseMenu({L"이동",L"회전 지정",L"크기 지정",L"복제",L"삭제"});if(!action)return;
             Json settings={{"ids",worldInstances},{"operation",*action==3?"duplicate":*action==4?"delete":"transform"}};
             if(*action<3){
                 const std::array<const char*,3> keys={"delta","rotation","scale"};
@@ -2511,22 +2537,26 @@ class NativeEditorShell {
             editWorld({{"action","geometry"},{"settings",settings}});
             clearWorldMeshSelection();
         }else{
-            const auto action=chooseMenu({L"LOD 단계 추가",L"LOD 단계 삭제"});if(!action)return;
-            if(*action==0){
+            const auto action=chooseMenu({L"LOD 단계 추가",L"LOD 단계 삭제",L"LOD 단계 수정"});if(!action)return;
+            const auto& levels=data.at("levels");
+            std::optional<std::size_t> level;
+            if(*action!=0){
+                std::vector<std::wstring> labels;
+                for(const auto& row:levels)labels.push_back(wide(row.at("asset")));
+                if(labels.empty())return;
+                level=chooseMenu(labels);if(!level)return;
+            }
+            if(*action==1){editWorld({{"action","removeLevel"},{"settings",{{"index",*level}}}});return;}
+            {
                 const auto type=chooseMenu({L"메시",L"지형",L"폴리지"});if(!type)return;
                 const std::array<const wchar_t*,3> extensions={L".hbmesh.json",L".hbterrain.json",L".hbfoliage.json"};
                 const auto asset=chooseProjectAsset(L"LOD 단계 에셋",extensions[*type]);if(asset.empty())return;
-                const auto& levels=data.at("levels");
                 const bool distance=data.at("mode")=="distance";
-                const double initial=levels.empty()?1.0:levels.back().at("threshold").get<double>()*(distance?2.:.5);
+                const double initial=level?levels.at(*level).at("threshold").get<double>():levels.empty()?1.0:levels.back().at("threshold").get<double>()*(distance?2.:.5);
                 const auto threshold=worldNumber(distance?L"거리 기준":L"화면 높이 비율",initial);if(!threshold)return;
-                editWorld({{"action","addLevel"},{"settings",{{"asset",asset},{"threshold",*threshold}}}});
-            }else{
-                std::vector<std::wstring> labels;
-                for(const auto& level:data.at("levels"))labels.push_back(wide(level.at("asset")));
-                if(labels.empty())return;
-                const auto level=chooseMenu(labels);
-                if(level)editWorld({{"action","removeLevel"},{"settings",{{"index",*level}}}});
+                Json settings={{"asset",asset},{"threshold",*threshold}};
+                if(level)settings["index"]=*level;
+                editWorld({{"action",level?"replaceLevel":"addLevel"},{"settings",settings}});
             }
         }
     }
