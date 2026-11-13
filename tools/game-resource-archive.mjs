@@ -13,7 +13,7 @@ const compress=promisify(zstdCompress),decompress=promisify(zstdDecompress),magi
 const digest=bytes=>createHash('sha256').update(bytes).digest('hex');
 const safe=name=>typeof name==='string'&&name.length>0&&name.length<=2000&&!/[\\:\x00-\x1f]/.test(name)&&!name.startsWith('/')&&!name.split('/').some(p=>!p||p==='.'||p==='..');
 const integer=value=>Number.isSafeInteger(value)&&value>=0;
-const compressedMedia=/\.(?:png|jpe?g|webp|gif|ogg|mp3|m4a|aac|mp4|webm|zip|gz|woff2)$/i;
+const compressedMedia=/\.(?:png|jpe?g|webp|gif|ogg|mp3|m4a|aac|wav|mp4|webm|zip|gz|woff2)$/i;
 async function writeAll(handle,bytes,position){let at=0;while(at<bytes.length){const result=await handle.write(bytes,at,bytes.length-at,position+at);if(!result.bytesWritten)throw Error('리소스 묶음 쓰기 실패');at+=result.bytesWritten;}}
 async function readAll(handle,size,position){const bytes=Buffer.allocUnsafe(size);let at=0;while(at<size){const result=await handle.read(bytes,at,size-at,position+at);if(!result.bytesRead)throw Error('리소스 묶음이 잘렸어요.');at+=result.bytesRead;}return bytes;}
 

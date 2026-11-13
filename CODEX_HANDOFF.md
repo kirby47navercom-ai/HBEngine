@@ -1,3 +1,7 @@
+## Windows 네이티브 WAV 스트리밍 · 2026-11-13
+
+WAV PCM/float 클립은 게임 바이너리 아카이브에서 샘플 범위만 읽어 공용 믹서에 전달해요. 탐색·피치·반복과 가상화에서 기존 소스를 해제하고, 압축 형식의 스트리밍에는 별도 디코더가 필요해요. `native/build/native-game-u4xpEW/acceptance.json`의 실제 패키지에서 오디오 오류 0, 믹서 피크와 전체 PCM 캐시 0바이트를 확인했어요. `native/build/native-platform-EQz9IO/acceptance.json`의 공용 플랫폼·믹서 검사와 브라우저 스트리밍 소스 재사용 검사도 통과했어요.
+
 ## Windows 네이티브 기본 빌드·목록 제작 · 2026-11-13
 
 `npm run desktop:build`와 `npm run desktop:install`은 이제 WebView2 없는 Windows 배포본을 선택해요. 별도 `:compat` 명령으로 기존 호환 배포본을 만들거나 설치할 수 있어요. 현재 사용자 설치 전환은 보류 중이에요.

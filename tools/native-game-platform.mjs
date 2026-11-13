@@ -11,16 +11,18 @@ import * as THREE from 'three';
 import {nativeModuleKey} from '../prototype/native-entry.js';
 import {NativeHost} from './native-host.mjs';
 import {AudioRouting} from '../prototype/audio-mixer.js';
+import {openNativeWavStream} from './native-wav-stream.mjs';
+import {createReadStream} from 'node:fs';
 import {readProjectManifest} from './project-manifest.mjs';
 import {projectBytes} from './project-bytes.mjs';
 
 // The package is the only file authority. No local HTTP server, DOM or browser.
 export async function openNativePackage(directory){
- const content=await openNativeContent(directory),{root,project,manifest,url,resolve,readBytes,modulePath:confined}=content;
+ const content=await openNativeContent(directory),{root,project,manifest,url,resolve,readBytes,stream,modulePath:confined}=content;
  const host=new NativeHost(),aot=new Map();
  for(const row of manifest.nativeModules||[]){try{aot.set(row.signature,host.registerBinary(await confined(row.binary),row.metadata));}catch(error){const failure=packagedModuleError(path.join(root,row.binary),error);await closeNativeRuntime([()=>host.close(),()=>content.close()],failure);throw failure;}}
  host.build=async(header,source,entry={})=>{const key=createHash('sha256').update(nativeModuleKey(header,source,entry)).digest('hex'),built=aot.get(key);if(!built)throw Error('미리 컴파일한 C++ 모듈이 없어요. 게임을 다시 빌드하세요.');return built;};
- let closeJob;return {root,project,manifest,host,url,resolve,readBytes,close:()=>closeJob??=closeNativeRuntime([()=>host.close(),()=>content.close()])};
+ let closeJob;return {root,project,manifest,host,url,resolve,readBytes,stream,close:()=>closeJob??=closeNativeRuntime([()=>host.close(),()=>content.close()])};
 }
 
 export async function openNativeEditorProject(file,{scene,width,height,rate}){
@@ -28,7 +30,7 @@ export async function openNativeEditorProject(file,{scene,width,height,rate}){
  if(scene&&(!scene.startsWith('Assets/')||!scene.endsWith('.hbscene.json')))throw Error('실행할 장면을 선택하세요.');
  if(scene)await project.read(scene);
  return {...record,manifest:{...record.manifest,width,height,targetFrameRate:rate,nativeGraphicsAPI:'d3d12',startupScene:scene||record.manifest.startupScene},
-  url:name=>'hbasset:'+encodeURIComponent(name),readBytes:(name,options)=>projectBytes(project,name,options),resolve:name=>project.resolve(name)};
+  url:name=>'hbasset:'+encodeURIComponent(name),readBytes:(name,options)=>projectBytes(project,name,options),resolve:name=>project.resolve(name),stream:async(name,start,end)=>createReadStream((await project.read(name)).file,{start,end,highWaterMark:65536})};
 }
 
 export function installNativeAssets(pack){
@@ -52,11 +54,17 @@ export function createNativeAudioContext(Context,{silent=false,onFallback=()=>{}
  try{return new Context(settings);}catch(deviceError){let context;try{context=new Context({...settings,sinkId:{type:'none'}});}catch(silentError){throw new AggregateError([deviceError,silentError],'네이티브 오디오 장치와 무음 실행을 모두 시작하지 못했어요.');}onFallback({audible:false,reason:deviceError.message});return context;}
 }
 
-export function nativeAudioRouting({readAsset},createContext){
+export function nativeAudioRouting({readAsset,stream},createContext){
  const routing=new AudioRouting({readAsset});routing.ensure=async()=>{if(routing.disposed)throw Error('오디오 실행이 종료됐어요.');if(!routing.context){routing.context=createContext();routing.destination=routing.context.destination;}return routing.context;};
- // Native audio uses the same PCM player, voice selection and mixer graph.
- // Explicit media-element streaming cannot be emulated by a browserless host.
- const player=routing.player.bind(routing);routing.player=(url,settings={})=>{if(settings.streaming===true)throw Error('네이티브 오디오 스트리밍 디코더가 필요해요. 클립의 스트리밍을 꺼주세요.');return player(url,{...settings,sequencePCM:true});};
+ const player=routing.player.bind(routing);
+ routing.player=async(url,settings={})=>{
+  if(settings.streaming!==true||settings.sequencePCM)return player(url,{...settings,sequencePCM:true});
+  const name=url.startsWith('hbasset:')?decodeURIComponent(url.slice('hbasset:'.length)):'';
+  if(!stream||!/\.wav$/i.test(name))throw Error('네이티브 스트리밍은 PCM WAV 클립을 사용해요.');
+  const voice=await openNativeWavStream(await routing.ensure(),(start,end)=>stream(name,start,end),settings.signal);
+  if(routing.disposed||settings.signal?.aborted){voice.dispose();settings.signal?.throwIfAborted();throw Error('오디오 실행이 종료됐어요.');}
+  return voice;
+ };
  return routing;
 }
 export {createCanvas,loadImage,GlobalFonts};
