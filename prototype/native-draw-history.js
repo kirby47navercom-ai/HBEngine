@@ -13,10 +13,11 @@ function same(a,b,depth=0){
  const keys=a[KEYS]||(a[KEYS]=Object.keys(a));let count=0;for(const key in b){if(!Object.prototype.hasOwnProperty.call(b,key))continue;const value=b[key];if(value===undefined||typeof value==='function'||typeof value==='symbol')continue;if(keys[count++]!==key||!same(a[key],value,depth+1))return false;}return count===keys.length;
 }
 export class NativeDrawHistory {
- constructor(){this.records=new Map();}
+ // retained: renderer-owned draw records for its in-place fast path (one per draw id, same lifetime as records).
+ constructor(){this.records=new Map();this.retained=new Map();}
  // A warmed record compares through a compiled field-by-field matcher (shared per draw shape); the generic
  // comparison stays as the fallback for shapes the matcher cannot express or values it rejects (undefined keys).
  stamp(id,draw){const previous=this.records.get(id);if(previous?.value&&(previous.match?.test(previous.value,draw)||same(previous.value,draw)))return previous.stamp;const stamp=JSON.stringify(draw);if(previous?.stamp===stamp){if(!previous.value){previous.value=JSON.parse(stamp);previous.match=runtimeDataMatcher(previous.value,matchers);}}else this.records.set(id,{stamp,value:null,match:null});return stamp;}
- delete(id){this.records.delete(id);}
- clear(){this.records.clear();}
+ delete(id){this.records.delete(id);this.retained.delete(id);}
+ clear(){this.records.clear();this.retained.clear();}
 }
