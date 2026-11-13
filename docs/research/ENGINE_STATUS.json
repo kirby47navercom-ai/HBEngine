@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-10",
-  "basisRevision": "bde864dc11f5f4efd5192a188053e6931f43978f",
+  "updatedAt": "2026-11-13",
+  "basisRevision": "04ef7ddc18b6a0ffae710a64989655d44cb1e9a1",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -694,7 +694,7 @@
       "area": "world",
       "title": "폴리곤·메시 저작",
       "status": "partial",
-      "implemented": "기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌 · 166: 간선 선택/분할·UV 경계 보존 용접·면 복제·플랫/스무스/커스텀 노멀과 면별 UV 패킹 · 169: 닫힌 동수 경계 bridge·개별 삼각면 inset·UV/색 보존·사람/AI Undo · 170: 전용 UV 캔버스·연결 섬 선택/드래그·전용 이동/회전/크기 폼·분리/평면 펼치기/종횡비 shelf패킹·AI보기 · 171: UV 분리 노멀/기하 보존 경계 좌표 맞추기 ·182: 서로 다른 정점 수의 두 폐곡선/열린 경로 연결·선형 길이 대응/시작 오프셋·평면 영역 인셋/구멍·오목 경계/UV색 보간·재삼각화·실패 선택 보존·AI dryRun/revision/Undo·실제 렌더/충돌 C++ ·223: 별도UV1·전속성 보존·분리Worker xatlas 자동 곡면 차트/회전 패킹·겹침 검사·사람/AI/Undo/저장 ·224: 기존48B 정점 유지·선택8B UV1 네이티브 스트림/실제DirectX 픽셀 ·3300: 평면영역 relief bevel straight/round·signed높이/1..64링·UV0/UV1/색상/구멍/경계/비선택면유지·typed/oneUndo·공용mesh.edit; 열린 경계 loop 선택/AI페이지·view-only. source10/옛region바이트8·실제Three+Rapier mesh ray. ·3320: UV split境界노멀 면적가중/seed/각도/모호군집거부·원래geometry/UV/colors·typed/oneUndo·meshNormals exact16. 같은 구조 normal/UV/color 속성만 Three geometry/버퍼/dirty범위재사용·structure/외부교체/removal fallback. source10+기존worldgate·실제fresh geometry/version/range·collisionpayload불변.",
+      "implemented": "기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌 · 166: 간선 선택/분할·UV 경계 보존 용접·면 복제·플랫/스무스/커스텀 노멀과 면별 UV 패킹 · 169: 닫힌 동수 경계 bridge·개별 삼각면 inset·UV/색 보존·사람/AI Undo · 170: 전용 UV 캔버스·연결 섬 선택/드래그·전용 이동/회전/크기 폼·분리/평면 펼치기/종횡비 shelf패킹·AI보기 · 171: UV 분리 노멀/기하 보존 경계 좌표 맞추기 ·182: 서로 다른 정점 수의 두 폐곡선/열린 경로 연결·선형 길이 대응/시작 오프셋·평면 영역 인셋/구멍·오목 경계/UV색 보간·재삼각화·실패 선택 보존·AI dryRun/revision/Undo·실제 렌더/충돌 C++ ·223: 별도UV1·전속성 보존·분리Worker xatlas 자동 곡면 차트/회전 패킹·겹침 검사·사람/AI/Undo/저장 ·224: 기존48B 정점 유지·선택8B UV1 네이티브 스트림/실제DirectX 픽셀 ·3300: 평면영역 relief bevel straight/round·signed높이/1..64링·UV0/UV1/색상/구멍/경계/비선택면유지·typed/oneUndo·공용mesh.edit; 열린 경계 loop 선택/AI페이지·view-only. source10/옛region바이트8·실제Three+Rapier mesh ray. ·3320: UV split境界노멀 면적가중/seed/각도/모호군집거부·원래geometry/UV/colors·typed/oneUndo·meshNormals exact16. 같은 구조 normal/UV/color 속성만 Three geometry/버퍼/dirty범위재사용·structure/외부교체/removal fallback. source10+기존worldgate·실제fresh geometry/version/range·collisionpayload불변. ·11-13: Win32/D3D12 메시 정점·간선·면 선택, 토폴로지·노멀, UV0/UV1 캔버스·Undo, 취소 가능한 xatlas 작업 스레드와 리비전 검증.",
       "remaining": [
         "임의 곡면/솔리드 edge bevel·일반 내부 edge loop(평면 relief bevel/열린 경계 루프3300 구현)·곡면 영역 offset/재투영·3D 연결 스트립의 고급 꼬임/교차 복구",
         "복잡 곡면/재료별 normal seam(위치/각도/면적가중 UV 경계 노멀3320 구현)·사용자 고정 chart 재패킹·다중 아틀라스·대형/비다양체 곡면 품질 검증"
@@ -741,7 +741,7 @@
       "area": "world",
       "title": "지형 브러시·폴리지",
       "status": "partial",
-      "implemented": "165: 지형 높이/평활/목표 높이/레이어 브러시·스트로크 Undo·폴리지 결정 산포/소거/인스턴싱 · 166: 구멍/복원·재사용 샘플 스탬프와 브러시 영향 범위 계산·안정 ID 폴리지 선택/변환/복제/삭제·충돌/인스턴스 버퍼 연결 ·1050–1062: 높이·주변 노멀/칠하기 색 부분 갱신·격자 광선500독립 대조·폴리지 행렬만 전송·브러시 불필요 전체raycast 회피·최신 미리보기 합치기·소거/선택 비용·영향 장면만 갱신 ·1074: 사람/AI 동기 소유초안의 중복 전체복사2→1·지형8모드/폴리지5연산 동일결과·원본/스트로크Undo/실패복원·순수함수 불변성 유지 ·2691–2702: 산포임시grid는브러시+최소거리 근처만, 소거먼점hypot skip·선택ID조기종료/선택index변환·복제. mutable문서cache없이 시드/ID/경계/검증/불변/Undo유지. 신규14(독립전수기준)+기존draft/부분시각/장면수명3gate·구문4. 무관1만점그리드제외·hypot3/선택후접근trap 확인. 전체복사/검증/필터/렌더비용·FPS/heap/GUI/GPU별도.",
+      "implemented": "165: 지형 높이/평활/목표 높이/레이어 브러시·스트로크 Undo·폴리지 결정 산포/소거/인스턴싱 · 166: 구멍/복원·재사용 샘플 스탬프와 브러시 영향 범위 계산·안정 ID 폴리지 선택/변환/복제/삭제·충돌/인스턴스 버퍼 연결 ·1050–1062: 높이·주변 노멀/칠하기 색 부분 갱신·격자 광선500독립 대조·폴리지 행렬만 전송·브러시 불필요 전체raycast 회피·최신 미리보기 합치기·소거/선택 비용·영향 장면만 갱신 ·1074: 사람/AI 동기 소유초안의 중복 전체복사2→1·지형8모드/폴리지5연산 동일결과·원본/스트로크Undo/실패복원·순수함수 불변성 유지 ·2691–2702: 산포임시grid는브러시+최소거리 근처만, 소거먼점hypot skip·선택ID조기종료/선택index변환·복제. mutable문서cache없이 시드/ID/경계/검증/불변/Undo유지. 신규14(독립전수기준)+기존draft/부분시각/장면수명3gate·구문4. 무관1만점그리드제외·hypot3/선택후접근trap 확인. 전체복사/검증/필터/렌더비용·FPS/heap/GUI/GPU별도. ·11-13: D3D12 지형 브러시·레이어 색·크기, 폴리지 산포·선택·참조·Undo, 스트로크 시작 한 번 검증과 국소 평활 스냅샷. 합성 263169정점·60점 일치와 Win32 저장 근거는 CODEX_HANDOFF.",
       "remaining": [
         "텍스처 지형 레이어·GPU 직접 계산 브러시(현재 CPU 저작 뒤 부분 GPU 업로드)",
         "최초 문서 복사·Undo 스냅샷·전체 검증/변경 비교·대규모 전체/최악 선택·브러시 검증/스캔 비용(국소grid·선택조기종료·먼점거리생략2702구현)과 장시간 성능 검증(트랜잭션 내부 중복 전체 복사는 제거)"
@@ -776,7 +776,7 @@
       "area": "world",
       "title": "LOD 제작·전환",
       "status": "partial",
-      "implemented": "165: LOD 자산·클러스터링 기하 생성·거리/화면 높이·히스테리시스·강제 단계와 공용 렌더 · 171: 표시와 별도 충돌 LOD 선택·기존 충돌 청크 연결 ·179: 2D/2.5D/3D 거리 구간·포즈 표시 간격/시간·이벤트 보존·공용 컴포넌트/C++·명시 충돌 LOD 교체·32MiB 추정 캐시/수명·AI 실행 진단 ·195: 표시 사이 로컬 뼈/스프라이트 포즈 계산 생략·시간/Notify 보존·보호 경로/opt-out·속성/Undo·공용 C++·실제 D3D/GPU ·197: 안정ID 주기 분산·선택형 로컬 뼈 지연 보간/3버퍼 재사용·예산/해제·CPU5군·실제 속성/Undo/저장·D3D/WebGPU/C++ 전환/보간/픽셀 ·210: 다중카메라 구 경계·선택 시각 포즈 ms 예산/최소Hz·보호 work·위상/재사용·C++/BP4함수·실제 창/D3D",
+      "implemented": "165: LOD 자산·클러스터링 기하 생성·거리/화면 높이·히스테리시스·강제 단계와 공용 렌더 · 171: 표시와 별도 충돌 LOD 선택·기존 충돌 청크 연결 ·179: 2D/2.5D/3D 거리 구간·포즈 표시 간격/시간·이벤트 보존·공용 컴포넌트/C++·명시 충돌 LOD 교체·32MiB 추정 캐시/수명·AI 실행 진단 ·195: 표시 사이 로컬 뼈/스프라이트 포즈 계산 생략·시간/Notify 보존·보호 경로/opt-out·속성/Undo·공용 C++·실제 D3D/GPU ·197: 안정ID 주기 분산·선택형 로컬 뼈 지연 보간/3버퍼 재사용·예산/해제·CPU5군·실제 속성/Undo/저장·D3D/WebGPU/C++ 전환/보간/픽셀 ·210: 다중카메라 구 경계·선택 시각 포즈 ms 예산/최소Hz·보호 work·위상/재사용·C++/BP4함수·실제 창/D3D ·11-13: D3D12 LOD 미리보기와 단계 추가·교체·삭제, 거리/화면 높이 기준과 공용 저장·Undo.",
       "remaining": [
         "고품질 메시 단순화·교차 페이드·골격 수/충돌 단순화와 큰 씬 품질 대조",
         "보호 그래프/레거시 Mixer/SpriteSkin 전체 CPU 예산·골격 수 LOD·시야/가림 중요도·다중 분리창 실측"
@@ -3900,10 +3900,10 @@
       "area": "platform",
       "title": "Windows·웹 게임 배포",
       "status": "partial",
-      "implemented": "독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0. ·3361–3400: Windows 기본 native / web 별도 경로·Win32/D3D11+공용V8/BP/AOT C++·Skia UI/한글/SVG·네이티브 PCM·OS키/마우스·정상종료·원자저장·미리 준비한 기본 셰이더. 실제 소유 숨김창의 픽셀/텍스처/입력/종료·공용SDK 엄격 경고 검사·무음 Windows 출력 통과. 에디터 UI WebView는 유지. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3404: 네이티브 C++ 크기·모드 변경 후 공용 스프라이트 타일 메시 갱신·변경 없는 메시 재사용·8사례 360픽셀 검증. ·3406: 공급자 Node 서명 보존·app-local Microsoft VC·첫 worker PE 리소스·COFF 복원·게임/worker Authenticode 서명 연결·무서명 release 허용(3408 정정)·개발용 명시·파일 차단 오류·소스별 시간/최대2컴파일 ·3408: development/release 코드 서명 선택, 무인증서 최적화 release EXE 생성·실제40프레임/공용 C++/입력/HUD/소리/정상종료·clean env 검증 ·3412: 공용 UI 무손실 Zstd/ACK XOR·위젯 leaf/descriptor 재사용·phase scheduler·Windows game.hbdata 콘텐츠 묶음/지연 읽기/한글 글꼴 메모리 등록. 원본 파일 없는 소유 release40frame·C++/SVG/한글/음성/입력/종료·네이티브와 웹뷰 서버 byte/range 검증. ·3414: 픽셀 동일 UI 전송 생략·작은 변경 사각형 전송·readonly C++ UI/입력 조회. 35codec 사례·SDK 입력2000회/복원·실제동적한글HUD40frame 검증. ·3416: 순서 입력/포커스·4슬롯 XInput 공용 키·기본 가상 목록/트리와 C++ 조작·clip/변형 좌표·긴 경로 worker/PE 원자 기록. 공용8·실제 release40frame·90/298자 PE 검증. 컨트롤러 실기기/전체FPS 별도. ·3418: 게임플레이 readonly 조회의 전체행 dirty/다음호출 비교 제거·78조회/32기본값/명시mutable복원 실제worker 검증·500객체 조회+복원 p50 2.6762→0.6286ms, 전체FPS 별도. ·3420: 무손실 UI 타일/작업 스레드·풀/삭제/모델 및 전역 아틀라스 소유·변경 행 스키마 재사용·WARP/무음 fallback·두 소유 실제 게임 대조",
+      "implemented": "독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·2254–2259소스: ET를editorOnly로분류해 Windows/web/Android/iOS 공용inspectBuild에서payload제외·프로젝트CRUD유지·직접/Source경유runtime참조는명시경로오류. 기존Take프리셋제외/시퀀스적용안내·일반동적runtime파일포함유지. 새9source: 실제소유프로젝트4target dependency/cook매니페스트·원본보존. 예제tool263667B추가뒤payload11506B그대로. 새실행패키지/CPP/SDK/GUI/실기기/설치주장0. ·3361–3400: Windows 기본 native / web 별도 경로·Win32/D3D11+공용V8/BP/AOT C++·Skia UI/한글/SVG·네이티브 PCM·OS키/마우스·정상종료·원자저장·미리 준비한 기본 셰이더. 실제 소유 숨김창의 픽셀/텍스처/입력/종료·공용SDK 엄격 경고 검사·무음 Windows 출력 통과. 에디터 UI WebView는 유지. ·3402: 네이티브/헤드리스 메모리 수명·필요 차원 물리·엔진 JSON 구조 비교/변경행 직렬화·정적 충돌체 재사용·opt-in C++/물리 프레임 구간 보고. 소유 500행/186충돌체 값 동등성·실제 C++/숨김 DirectX 검증. 실제 게임 전체 성능은 별도. ·3404: 네이티브 C++ 크기·모드 변경 후 공용 스프라이트 타일 메시 갱신·변경 없는 메시 재사용·8사례 360픽셀 검증. ·3406: 공급자 Node 서명 보존·app-local Microsoft VC·첫 worker PE 리소스·COFF 복원·게임/worker Authenticode 서명 연결·무서명 release 허용(3408 정정)·개발용 명시·파일 차단 오류·소스별 시간/최대2컴파일 ·3408: development/release 코드 서명 선택, 무인증서 최적화 release EXE 생성·실제40프레임/공용 C++/입력/HUD/소리/정상종료·clean env 검증 ·3412: 공용 UI 무손실 Zstd/ACK XOR·위젯 leaf/descriptor 재사용·phase scheduler·Windows game.hbdata 콘텐츠 묶음/지연 읽기/한글 글꼴 메모리 등록. 원본 파일 없는 소유 release40frame·C++/SVG/한글/음성/입력/종료·네이티브와 웹뷰 서버 byte/range 검증. ·3414: 픽셀 동일 UI 전송 생략·작은 변경 사각형 전송·readonly C++ UI/입력 조회. 35codec 사례·SDK 입력2000회/복원·실제동적한글HUD40frame 검증. ·3416: 순서 입력/포커스·4슬롯 XInput 공용 키·기본 가상 목록/트리와 C++ 조작·clip/변형 좌표·긴 경로 worker/PE 원자 기록. 공용8·실제 release40frame·90/298자 PE 검증. 컨트롤러 실기기/전체FPS 별도. ·3418: 게임플레이 readonly 조회의 전체행 dirty/다음호출 비교 제거·78조회/32기본값/명시mutable복원 실제worker 검증·500객체 조회+복원 p50 2.6762→0.6286ms, 전체FPS 별도. ·3420: 무손실 UI 타일/작업 스레드·풀/삭제/모델 및 전역 아틀라스 소유·변경 행 스키마 재사용·WARP/무음 fallback·두 소유 실제 게임 대조. ·11-13: Win32/D3D12 기본 빌드·패키지와 분리된 웹 경로, 사용자 목록 행·자동 높이·드래그 전송·월드 추적 UI·키오스크·WAV 범위 스트리밍·화면 주사율 동기화·BP/C++ 상대 마우스 입력. 실제 격리 게임 패키지와 편집기에서 확인한 범위는 CODEX_HANDOFF를 참고.",
       "remaining": [
-        "네이티브 사용자 행·자동 행 높이·목록 드래그/전송 그룹·월드 추적 UI·키오스크·스트리밍 오디오·영상·화면 동기화",
-        "네이티브 포인터 잠금·게임패드 실제 장치·고급 위젯/DCC/대규모 게임 호환성과 성능 검증",
+        "네이티브 영상 재생과 압축 오디오 스트리밍",
+        "실제 장치의 마우스 잠금·게임패드·터치와 고급 위젯/DCC/대규모 게임 호환성 및 성능 검증",
         "선택 코드 서명의 실제 서명·타임스탬프 검증(현재 인증서 미보유) 및 수신 PC 백신 재검증",
         "재판/실제 게임 120 FPS의 안정적 충족·보스전 및 장시간/다른 물리 PC 검증"
       ],
@@ -3947,7 +3947,9 @@
         "docs/research/ENGINE_WORK_3418.json",
         "docs/research/ENGINE_WORK_3420.json",
         "docs/research/ENGINE_WORK_3424.json",
-        "docs/research/ENGINE_WORK_3426.json"
+        "docs/research/ENGINE_WORK_3426.json",
+        "CODEX_HANDOFF.md",
+        "docs/NATIVE_GAME_RUNTIME.md"
       ]
     },
     {
@@ -4481,20 +4483,23 @@
       "area": "rendering",
       "title": "네이티브 DirectX12 백엔드",
       "status": "partial",
-      "implemented": "WORK3424: 실제 D3D12 장치·direct queue·fence·3-buffer swapchain 및 D3D11On12 호환 그리기/compute·HW/WARP·크기 변경·명시 프로필/CLI 선택. nativeCommandLists=false.",
+      "implemented": "11-13: Windows 기본 네이티브 게임과 독립 편집기에서 직접 D3D12 command list·PSO·디스크립터·프레임 펜스. 하드웨어와 WARP, 렌더 장면 픽셀 비교, GPU 입자, 다중 카메라, HUD 합성, CPU/GPU 디스크립터 확장과 재사용 검증. D3D11On12는 명시 호환 경로로 제공.",
       "remaining": [
-        "D3D11On12를 거치지 않는 D3D12 command list/pipeline/descriptor 직접 생성과 전체 렌더 기능 동등성",
+        "직접 D3D12의 전체 렌더 기능 동등성과 여러 하드웨어·드라이버 조합 검증",
         "다른 물리 PC/장치·장시간 부하·보스전 성능 대조 및 120FPS 충족"
       ],
       "sources": [
         "native/include/HBEngine/D3DDevice.hpp",
         "native/desktop/SceneRenderBridge.hpp",
         "docs/NATIVE_RUNTIME_COSTS.md",
-        "native/include/HBEngine/D3D12Interop.hpp"
+        "native/include/HBEngine/D3D12Interop.hpp",
+        "native/include/HBEngine/D3D12Direct.hpp"
       ],
       "evidence": [
         "docs/research/ENGINE_WORK_3420.json",
-        "docs/research/ENGINE_WORK_3424.json"
+        "docs/research/ENGINE_WORK_3424.json",
+        "CODEX_HANDOFF.md",
+        "docs/EDITOR_NATIVE.md"
       ]
     }
   ],
