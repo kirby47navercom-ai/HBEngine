@@ -91,7 +91,7 @@ export async function nativeGameMain(options){
  try{
   if(!editor)stats.legacySaveMigration=await migrateLegacyGameSaves(stateDirectory,pack.manifest.id);
   renderer=await createNativeSceneRenderer(canvas,error=>{throw error;},{bridge,graphicsAPI:options['graphics-api']||pack.manifest.nativeGraphicsAPI||'auto'});
-  await write({op:'ready',timingReport:!!options.report,rate:pack.manifest.targetFrameRate||120,displaySync,uncapped});
+  await write({op:'ready',timingReport:!!options.report,compactFrameResponses:!options.report,rate:pack.manifest.targetFrameRate||120,displaySync,uncapped});
   const result=await runProject(editor||path.join(pack.root,'game.hbpack.json'),{interactive:true,lazyPhysics:true,captureState:!!options.report,profile:!!options.report,storage:nativeGameStorage(stateDirectory),nativeHost:pack.host,openProject:async()=>pack,saveDirectory:path.join(stateDirectory,'Saves'),
    debugBreakpoint:editor?((vm,node,scope)=>{
     pausedVM=vm;
