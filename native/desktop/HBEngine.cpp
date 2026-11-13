@@ -24,6 +24,8 @@ namespace fs=std::filesystem;
 #ifdef HB_GAME_PLAYER
 #include "WindowsGameIdentity.hpp"
 #include "NativeAudio.hpp"
+#else
+#include "EditorTreePanel.hpp"
 #endif
 struct State {
     HWND window=nullptr; HANDLE job=nullptr,process=nullptr;
@@ -32,6 +34,8 @@ struct State {
     SceneRenderBridge sceneRenderer;
 #ifdef HB_GAME_PLAYER
     NativeAudio audio;
+#else
+    EditorTreePanel hierarchy;nlohmann::json pendingMenu;
 #endif
     fs::path root,userData,ready,log,smoke; std::wstring url; bool closing=false,smokeSuccess=false,failed=false,development=true,windowSmoke=false,windowSmokeStarted=false,editorAcceptance=false,kiosk=false,kioskFullscreen=false,kioskPreventMinimize=false,operatorUnlocked=false;
     ~State(){if(view)view->Release();if(controller){controller->Close();controller->Release();}if(environment)environment->Release();if(job)CloseHandle(job);if(process)CloseHandle(process);}
@@ -159,6 +163,18 @@ public:
                         response={{"channel","hb.render"},{"id",packet.at("id")},{"ok",true}};response["value"]=app.sceneRenderer.command(packet,app.window,app.development);
                         if(packet.at("op")=="init"){ICoreWebView2Controller2* transparent=nullptr;const auto result=app.controller->QueryInterface(IID_ICoreWebView2Controller2,reinterpret_cast<void**>(&transparent));if(FAILED(result))throw std::runtime_error("Transparent WebView2 controller unavailable");const auto background=transparent->put_DefaultBackgroundColor({0,0,0,0});transparent->Release();if(FAILED(background))throw std::runtime_error("Transparent WebView2 background unavailable");}
                     }
+#ifndef HB_GAME_PLAYER
+                    // Native editor panels: the script sends models, the panel windows report input back on the same channel.
+                    else if(packet.value("channel","")=="hb.panel"){
+                        const auto op=packet.at("op").get<std::string>();response={{"channel","hb.panel"},{"ok",true}};if(packet.contains("id"))response["id"]=packet.at("id");
+                        if(op=="hierarchy")app.hierarchy.update(packet.at("data"));
+                        else if(op=="menu"){app.pendingMenu=packet.at("data").at("items");PostMessageW(app.window,WM_APP+60,0,0);}
+                        else if(op=="inspect")response["value"]=app.hierarchy.inspect();
+                        else if(op=="snapshot"){if(!app.editorAcceptance)throw std::runtime_error("Panel snapshot is acceptance only");response["value"]=app.hierarchy.snapshot();}
+                        else if(op=="probe"){if(!app.editorAcceptance)throw std::runtime_error("Panel probe is acceptance only");app.hierarchy.probe(packet.at("data"));}
+                        else throw std::runtime_error("Panel operation invalid");
+                    }
+#endif
 #ifdef HB_GAME_PLAYER
                     else if(packet.value("channel","")=="hb.audio"){
                         response={{"channel","hb.audio"},{"ok",true}};if(packet.contains("id"))response["id"]=packet.at("id");
@@ -265,6 +281,9 @@ public:
 LRESULT CALLBACK windowProcedure(HWND window,UINT message,WPARAM wParam,LPARAM lParam){
     if(app.kiosk&&app.smoke.empty()&&!app.operatorUnlocked){if(message==WM_CLOSE)return 0;if(message==WM_SYSCOMMAND&&app.kioskPreventMinimize&&((wParam&0xfff0)==SC_MINIMIZE||(wParam&0xfff0)==SC_MAXIMIZE))return 0;}
     if(message==WM_SIZE&&app.controller){RECT bounds;GetClientRect(window,&bounds);app.controller->put_Bounds(bounds);}
+#ifndef HB_GAME_PLAYER
+    else if(message==WM_APP+60){const auto items=std::move(app.pendingMenu);app.pendingMenu=nlohmann::json();if(items.is_array())app.hierarchy.showMenu(items);return 0;}
+#endif
     else if(message==WM_SETFOCUS&&app.controller)app.controller->MoveFocus(COREWEBVIEW2_MOVE_FOCUS_REASON_PROGRAMMATIC);
     else if(message==WM_DPICHANGED){const auto bounds=reinterpret_cast<RECT*>(lParam);SetWindowPos(window,nullptr,bounds->left,bounds->top,bounds->right-bounds->left,bounds->bottom-bounds->top,SWP_NOZORDER|SWP_NOACTIVATE);}
     else if(message==WM_CLOSE){
@@ -365,6 +384,10 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         if(port<1||port>65535)throw std::runtime_error("server ready");app.url=L"http://127.0.0.1:"+std::to_wstring(port)+L"/";
         WNDCLASSW windowClass{};windowClass.hInstance=instance;windowClass.lpszClassName=className.c_str();windowClass.lpfnWndProc=windowProcedure;windowClass.hCursor=LoadCursorW(nullptr,IDC_ARROW);windowClass.hIcon=LoadIconW(instance,MAKEINTRESOURCEW(101));windowClass.hbrBackground=CreateSolidBrush(RGB(23,26,31));RegisterClassW(&windowClass);
         app.window=CreateWindowExW(0,className.c_str(),L"HBEngine",WS_OVERLAPPEDWINDOW,CW_USEDEFAULT,CW_USEDEFAULT,1440,900,nullptr,nullptr,instance,nullptr);if(!app.window)throw std::runtime_error("native window");
+#ifndef HB_GAME_PLAYER
+        app.hierarchy.attach(app.window,instance,[](const nlohmann::json& event){if(app.view)app.view->PostWebMessageAsJson(wide(event.dump()).c_str());});
+#endif
+
         #ifdef HB_GAME_PLAYER
         SetWindowTextW(app.window,wide(game.at("name").get<std::string>()).c_str());
         {RECT size{0,0,std::clamp(game.value("width",1280),320,7680),std::clamp(game.value("height",720),240,4320)};AdjustWindowRect(&size,WS_OVERLAPPEDWINDOW,FALSE);SetWindowPos(app.window,nullptr,0,0,size.right-size.left,size.bottom-size.top,SWP_NOMOVE|SWP_NOZORDER);}

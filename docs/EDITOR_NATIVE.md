@@ -16,3 +16,14 @@
 - 남은 WebGL: 머테리얼 미리보기(호스트에 네이티브 렌더러가 하나라서), 렌더러를 공유하는 추가 도킹 뷰포트(네이티브에서는 비어 있음; 카메라 뷰 `selectCameraView`로 옮길 예정), RoomEnvironment 기본 환경맵(네이티브는 자체 하늘 캡처·프로브 사용).
 
 검증: `node tools/check-editor-native-viewport.mjs` — 숨긴 실제 편집기와 임시 3D 프로젝트에서 뷰포트 백엔드 `D3D12`(`requestedBackend:auto`), 그리기 33개, 네이티브 표면 캡처에서 캔버스 안은 음영 있는 장면(서로 다른 색 14개), 캔버스 밖은 편집기 배경 `32,34,38`. 기존 `check-distance-field-822-editor`, `check-mesh-renderer-1620-editor` 통과. 보이는 창 사람 확인은 하지 않았어요.
+
+## 2단계 진행: 계층(아웃라이너) 패널
+
+- `native/desktop/EditorTreePanel.hpp`: 편집기 창의 Win32 자식 창(WebView 위)으로 Direct2D·DirectWrite로 그려요. 한글은 DirectWrite 글꼴 대체로, 아이콘·접기·잠금·표시는 Segoe MDL2 Assets 글리프예요.
+- 패널이 직접 처리: 행 배치·스크롤(휠), 호버, 클릭 선택(Ctrl·Shift), 접기, 잠금·표시 전환, 드래그 재배치(행 위·빈 곳=루트), 더블클릭 초점, 키 입력.
+- 우클릭 메뉴는 Win32 `TrackPopupMenu`예요. 항목은 편집기 스크립트의 `sceneMenuItems()`(HTML 메뉴와 같은 목록)에서 받아요.
+- 스크립트 쪽(`app.js`): 장면 모델과 명령 실행은 그대로 두고, `sceneRows()` 결과·테마 색·`#hierarchy-list` 위치를 `hb.panel` 메시지로 보내고, 패널이 보낸 의도(select·fold·lock·visible·reparent·activate·contextmenu·command·key)를 기존 함수로 처리해요. 키는 `#hierarchy-list`에서 `keydown`으로 다시 보내 기존 단축키 처리를 써요.
+- 겹침(airspace): HTML 떠 있는 메뉴나 열린 `dialog`가 있으면 패널을 잠깐 숨겨요. 패널을 다른 창으로 분리하면 숨겨요(분리 창 지원은 아직).
+- 남은 HTML: 패널 제목·검색칸·빠른 추가 버튼(다음 이전 대상), 다른 패널 전부.
+
+검증: `node tools/check-editor-native-hierarchy.mjs` — 숨긴 실제 편집기에서 패널 창이 WebView 위에 있고 HTML 행은 0개, 실제 WM_ 마우스·키 메시지로 선택, Ctrl 다중 선택, 숨기기, 잠금, 접기/펼치기, 그룹으로 드래그, 루트로 드래그, 네이티브 메뉴의 7번째 항목(`scene:duplicate`) 실행, Delete 키 삭제까지 11단계 통과. 같은 그리기 코드의 PNG 스냅샷으로 한글 이름·아이콘·들여쓰기를 눈으로 확인했어요. `check-editor-distance-1780-window`(네이티브 메뉴로 거리장 준비), `check-editor-native-viewport` 통과. `check-sequence-values-212-window`는 계층 확인을 지난 뒤 시퀀스 트랙 선택 `[data-select-track]`이 없어 실패해요(트랙 목록 가상화 쪽 문제로 보이며 이번 변경과 무관해 보이나 확인하지 않았어요). 보이는 창에서 사람이 직접 조작해 보지는 않았어요.
