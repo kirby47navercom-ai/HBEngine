@@ -1,0 +1,4 @@
+// Normal-guide packet and expected values shared by the native normal-guide check (from the removed 740 window check).
+import {normalFootprintFixture738} from './normal-footprint-fixture-738.mjs';
+export function expectedNormalGuide740(kind,mode){const a=2*Math.tan(Math.PI/6)/16,spread=2*Math.sin(Math.atan(a)/2),width=4*spread,active=mode!==0&&(mode===2||kind==='geometry'),span=slope=>active?2*Math.atan(slope*width):0,current=spread+.02**2/2+span(kind==='geometry'?.25:.5),old=spread+.02**2/2+span(kind==='geometry'?.5:.25);return [width+current*(7-2e-5),width+old*7,current,old];}
+export function normalGuidePacket740(kind){const f=normalFootprintFixture738(kind,{guide:true});return {...f.current,geometryRecords:[...f.current.geometryRecords.slice(0,3),1],kind,field:kind==='coat'?5:0,previousTime:0,currentTime:0,limits:[4096,1e-5,0,0],rayInfo:{...f.current.rayInfo}};}

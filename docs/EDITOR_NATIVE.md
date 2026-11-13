@@ -138,4 +138,4 @@
 
 검증: 네이티브 전용 빌드 성공(실행 파일에 WebView2 의존 없음 검사 포함), `check-native-authoring`(단독 Win32 편집기, D3D12), `check-native-game`(기본 D3D12 게임 40프레임·입력·UI·종료), `check-build-profiles`, `check-native-upload-batches` 통과.
 
-남은 정리: WebView2 편집기 창(`tools/editor-window-probe.mjs`)이나 `HBPlayer.exe`에 의존하던 검사 스크립트 약 369개는 이제 실행할 수 없어요. 네이티브 편집기 검사로 옮기거나 지워야 해요. HTML 편집기 코드(`prototype/app.js` 등)는 개발 서버(`npm run dev`)·웹 대상용으로 남아 있어요.
+WebView2 편집기 창(`editor-window-probe.mjs`)·`HBPlayer.exe`·WebView 게임 패키지에 의존하던 도구 564개(검사 400개와 그 전용 픽스처·실행기)를 지웠어요. 다른 검사가 쓰던 노멀 가이드 기댓값은 `tools/normal-guide-fixture-740.mjs`로 옮겼고, `package.json`의 해당 스크립트 70개를 지우고 3개는 남은 검사만 실행하게 줄였어요. 원장 근거 목록에서 지운 파일 7개를 뺐어요. HTML 편집기 코드(`prototype/app.js` 등)는 개발 서버(`npm run dev`)·웹 대상용으로 남아 있어요.

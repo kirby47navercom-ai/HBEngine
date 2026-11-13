@@ -39,9 +39,6 @@ for(const [name,args] of [
  ['desktop-build',['tools/build-desktop.mjs']],
 ]){if(!previous?.rows.some(r=>r.name===name&&r.code===0)||name==='desktop-build')await step(name,args);else rows.push({...previous.rows.find(r=>r.name===name),preservedEvidence:true});}
 if(rows.every(r=>r.code===0))for(const [name,args] of [
- ['2d-effects-player',['tools/check-2d-effects-window.mjs']],
- ['auric-player',['tools/check-auric-features-window.mjs',fixture.out]],
- ['auric-editor',['tools/check-auric-features-editor.mjs',fixture.out]],
  ['auric-android',['tools/check-auric-spawn-android.mjs',fixture.out]],
 ])await step(name,args);
 const passed=rows.every(r=>r.code===0)&&rows.some(r=>r.name==='auric-android');await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({work,fixture:fixture.out,passed,rows},null,2));console.log(JSON.stringify({work,fixture:fixture.out,passed}));process.exitCode=passed?0:1;
