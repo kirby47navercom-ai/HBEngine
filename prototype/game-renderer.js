@@ -6,8 +6,8 @@ import {sharedRayInfo} from './shared-ray-geometry.js';
 import * as THREE from 'three';
 import {installGPURefractionCopy} from './gpu-refraction-copy.js';
 
-export async function createGameRenderer(canvas,backend='webgl2',onError){
-  if(backend==='d3d11'){const renderer=await(await import('./native-scene-renderer.js')).createNativeSceneRenderer(canvas,onError,{graphicsAPI:'auto'});renderer.setPixelRatio(Math.min(devicePixelRatio,2));return renderer;}
+export async function createGameRenderer(canvas,backend='webgl2',onError,options={}){
+  if(backend==='d3d11'){const renderer=await(await import('./native-scene-renderer.js')).createNativeSceneRenderer(canvas,onError,{graphicsAPI:'auto',...options});renderer.setPixelRatio(Math.min(devicePixelRatio,2));return renderer;}
   if(!['webgl2','webgpu'].includes(backend))throw Error('실행 렌더러 설정 오류');
   const renderer=backend==='webgpu'?await(await import('./gpu-particles.js')).createGPURenderer(canvas):new THREE.WebGLRenderer({canvas,antialias:true});
   renderer.hbBackend=backend;renderer.hbOnError=onError;renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;

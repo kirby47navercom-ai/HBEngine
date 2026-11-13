@@ -1,8 +1,7 @@
 #include <algorithm>
-#ifdef HB_GAME_PLAYER
+// Both the editor (scene viewport) and the WebView player draw scenes with the engine renderer behind the WebView.
 #include <nlohmann/json.hpp>
 #include "SceneRenderBridge.hpp"
-#endif
 #ifndef UNICODE
 #define UNICODE
 #endif
@@ -30,8 +29,8 @@ struct State {
     HWND window=nullptr; HANDLE job=nullptr,process=nullptr;
     ICoreWebView2Controller* controller=nullptr; ICoreWebView2* view=nullptr;
     ICoreWebView2Environment* environment=nullptr;
-#ifdef HB_GAME_PLAYER
     SceneRenderBridge sceneRenderer;
+#ifdef HB_GAME_PLAYER
     NativeAudio audio;
 #endif
     fs::path root,userData,ready,log,smoke; std::wstring url; bool closing=false,smokeSuccess=false,failed=false,development=true,windowSmoke=false,windowSmokeStarted=false,editorAcceptance=false,kiosk=false,kioskFullscreen=false,kioskPreventMinimize=false,operatorUnlocked=false;
@@ -152,23 +151,24 @@ public:
     HRESULT STDMETHODCALLTYPE Invoke(ICoreWebView2*,ICoreWebView2WebMessageReceivedEventArgs* args) override{
         LPWSTR source=nullptr,message=nullptr;args->get_Source(&source);args->TryGetWebMessageAsString(&message);
         const bool own=source&&std::wstring(source).rfind(app.url,0)==0;
-#ifdef HB_GAME_PLAYER
-        if(source&&std::wstring(source)==app.url&&!message){
+        if(source&&std::wstring(source).rfind(app.url,0)==0&&!message){
             LPWSTR raw=nullptr;if(SUCCEEDED(args->get_WebMessageAsJson(&raw))&&raw){
                 nlohmann::json response;try{
                     if(std::wcslen(raw)>134217728)throw std::runtime_error("Render message too large");const auto packet=nlohmann::json::parse(utf8(raw));
                     if(packet.value("channel","")=="hb.render"){
                         response={{"channel","hb.render"},{"id",packet.at("id")},{"ok",true}};response["value"]=app.sceneRenderer.command(packet,app.window,app.development);
                         if(packet.at("op")=="init"){ICoreWebView2Controller2* transparent=nullptr;const auto result=app.controller->QueryInterface(IID_ICoreWebView2Controller2,reinterpret_cast<void**>(&transparent));if(FAILED(result))throw std::runtime_error("Transparent WebView2 controller unavailable");const auto background=transparent->put_DefaultBackgroundColor({0,0,0,0});transparent->Release();if(FAILED(background))throw std::runtime_error("Transparent WebView2 background unavailable");}
-                    }else if(packet.value("channel","")=="hb.audio"){
+                    }
+#ifdef HB_GAME_PLAYER
+                    else if(packet.value("channel","")=="hb.audio"){
                         response={{"channel","hb.audio"},{"ok",true}};if(packet.contains("id"))response["id"]=packet.at("id");
                         const auto op=packet.at("op").get<std::string>();if(op=="init")app.audio.initialize(app.environment,app.view);else if(op=="close")app.audio.shutdown();else if(op=="stats")response["value"]=app.audio.stats();else if(op=="block"){response["slot"]=packet.at("slot");app.audio.submit(packet.at("slot").get<unsigned>(),packet.at("serial").get<uint64_t>());}else throw std::runtime_error("Windows audio command");
                     }
+#endif
                 }catch(const std::exception& issue){response["ok"]=false;response["error"]=issue.what();}
                 CoTaskMemFree(raw);if(response.contains("id")||response.contains("slot"))app.view->PostWebMessageAsJson(wide(response.dump()).c_str());
             }
         }
-#endif
         if(own&&message&&!app.smoke.empty()&&(std::wstring(message)==L"hbengine.ready.hub"||std::wstring(message)==L"hbengine.ready.editor"||std::wstring(message)==L"hbengine.ready.player")){
 #ifndef HB_GAME_PLAYER
             if(app.windowSmoke&&!app.windowSmokeStarted){app.windowSmokeStarted=true;app.view->ExecuteScript(L"import('/prototype/tests/detached-window-cases.js').then(test=>test.detachedWindowCases()).catch(error=>window.chrome.webview.postMessage('hbengine.windows.failed:'+error.message));",nullptr);CoTaskMemFree(source);CoTaskMemFree(message);return S_OK;}
@@ -274,9 +274,9 @@ LRESULT CALLBACK windowProcedure(HWND window,UINT message,WPARAM wParam,LPARAM l
         if(wParam==2){error(L"편집기 초기화 시간이 초과됐어요.");return 0;}
         if(app.process&&WaitForSingleObject(app.process,0)==WAIT_OBJECT_0){error(L"편집기 서버가 종료됐어요. 실행 로그를 확인해 주세요.");return 0;}
     }else if(message==WM_DESTROY){
-#ifdef HB_GAME_PLAYER
         // Release D3D COM objects before function-local system DLL loaders exit.
         app.sceneRenderer.shutdown();
+#ifdef HB_GAME_PLAYER
         app.audio.shutdown();
 #endif
 #ifndef HB_GAME_PLAYER
@@ -338,9 +338,11 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         app.editorAcceptance=!app.smoke.empty()&&!project.empty()&&env(L"HB_EDITOR_ACCEPTANCE")==L"1";
 #endif
         if(registerOnly){CoUninitialize();return 0;}
-#ifdef HB_GAME_PLAYER
-        hb::gpu::SceneRenderer::configureShaderCache((env(L"HB_USER_DATA_DIR").empty()?fs::path(env(L"LOCALAPPDATA"))/L"HBEngine":app.userData)/L"Cache"/L"ShaderBytecode");
-#endif
+        // Editor and WebView player share the disk bytecode cache; the editor viewport is native too.
+        {const auto shaderCache=(env(L"HB_USER_DATA_DIR").empty()?fs::path(env(L"LOCALAPPDATA"))/L"HBEngine":app.userData)/L"Cache"/L"ShaderBytecode";
+        // Seed the cache from the bundled bytecode (DirectX 11 and 12 pipelines) so the first native viewport does not compile for ~30 s.
+        std::error_code ignored;fs::create_directories(shaderCache,ignored);for(const auto& bundled:{app.root/L"Shaders",folder/L"dist/HBEngine/Shaders"})if(fs::is_directory(bundled,ignored)){for(const auto& entry:fs::directory_iterator(bundled,ignored))if(entry.is_regular_file()&&!entry.is_symlink()&&entry.file_size()<=8*1024*1024)fs::copy_file(entry.path(),shaderCache/entry.path().filename(),fs::copy_options::skip_existing,ignored);break;}
+        hb::gpu::SceneRenderer::configureShaderCache(shaderCache);}
         unsigned hash=2166136261u;for(wchar_t c:(project.empty()?app.root.wstring():project)){hash^=std::towlower(c);hash*=16777619;}
         const auto className=L"HBEngine."+std::to_wstring(hash);single=CreateMutexW(nullptr,FALSE,(L"Local\\"+className).c_str());
         if(GetLastError()==ERROR_ALREADY_EXISTS){const auto window=FindWindowW(className.c_str(),nullptr);if(window){ShowWindow(window,SW_RESTORE);SetForegroundWindow(window);}CloseHandle(single);CoUninitialize();return 0;}
