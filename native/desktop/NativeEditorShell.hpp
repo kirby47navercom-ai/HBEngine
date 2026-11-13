@@ -41,7 +41,11 @@ class NativeEditorShell {
     Json inspectedBase=Json::array();
     bool viewportPreparing=false;
     bool viewportQueued=false;
-    bool previewOpen=false;
+    bool previewOpen=false,foliageSelect=false;
+    Json worldBrush={{"mode","raise"},{"radius",2.0},{"strength",1.0},{"height",0.0},{"layer",0}};
+    Json foliageBrush={{"radius",5.0},{"count",24},{"minDistance",0.5}};
+    std::map<int,std::vector<int>> worldFaces;
+    std::set<std::string> worldInstances;
     Json previewInput;
     Json widgetPreview;
     std::string widgetSelection,widgetRevision;
@@ -147,6 +151,7 @@ class NativeEditorShell {
     static constexpr Command ModelSettings=static_cast<Command>(165),ModelSubassets=static_cast<Command>(164),ModelReimport=static_cast<Command>(163),ModelFocus=static_cast<Command>(162);
     static constexpr Command EditTakeInheritance=static_cast<Command>(161),ApplyTakePreset=static_cast<Command>(160),CreateTakePreset=static_cast<Command>(159);
     static constexpr Command InspectPlay=static_cast<Command>(158),RecordAudio=static_cast<Command>(157),SaveCapturedMix=static_cast<Command>(156);
+    static constexpr Command ConfigureWorld=static_cast<Command>(155),EditWorld=static_cast<Command>(154);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
 
@@ -334,7 +339,7 @@ class NativeEditorShell {
         console.useD3D12(graphics);
         console.update({{"view","log"}});
         viewport.attach(window,instance,[this](Json value){queueViewport(std::move(value));});
-        previewViewport.attach(window,instance,[this](Json value){previewInput=std::move(value);queuePreview();});
+        previewViewport.attach(window,instance,[this](Json value){mergeCameraInput(previewInput,std::move(value));queuePreview();});
         assetCanvas.attach(window,instance,[this](const Json& event){
             try{
                 const auto action=event.at("event").get<std::string>();
@@ -469,10 +474,12 @@ class NativeEditorShell {
         AppendMenuW(viewMenu,MF_STRING,ResetLayout,L"기본 배치 복원");
         AppendMenuW(viewMenu,MF_STRING,PreviewAsset,L"에셋 3D 미리보기");
         AppendMenuW(viewMenu,MF_STRING,PickImageView,L"텍스처 밉 / 면 / 슬라이스 선택");
-        AppendMenuW(viewMenu,MF_STRING,ModelFocus,L"모델 미리보기 초점");
+        AppendMenuW(viewMenu,MF_STRING,ModelFocus,L"3D 에셋 미리보기 초점");
         AppendMenuW(edit,MF_STRING,ModelSettings,L"모델 단위·방향·변환");
         AppendMenuW(edit,MF_STRING,ModelSubassets,L"모델 하위 에셋 편집");
         AppendMenuW(edit,MF_STRING,ModelReimport,L"원본 모델 다시 가져오기");
+        AppendMenuW(edit,MF_STRING,ConfigureWorld,L"지형·폴리지 도구 설정");
+        AppendMenuW(edit,MF_STRING,EditWorld,L"월드 에셋 편집");
         AppendMenuW(sceneMenu,MF_STRING,AddActor,L"오브젝트 추가");
         AppendMenuW(sceneMenu,MF_STRING,AddComponent,L"컴포넌트 추가");
         AppendMenuW(sceneMenu,MF_STRING,DeleteActor,L"선택 오브젝트 삭제");
@@ -792,17 +799,61 @@ class NativeEditorShell {
         const auto kind=document.value("kind",std::string());return kind=="behaviortree"||kind=="statemachine"||kind=="animgraph";
     }
     bool modelOpen()const{return document.value("kind",std::string())=="modelimport";}
-    bool canPreview()const{return !gameplayGraphOpen()&&(document.value("graph",false)||document.value("kind",std::string())=="materialinstance"||modelOpen());}
+    bool worldOpen()const{
+        const auto kind=document.value("kind",std::string());return kind=="terrain"||kind=="foliage"||kind=="mesh"||kind=="lod";
+    }
+    bool canPreview()const{return !gameplayGraphOpen()&&(document.value("graph",false)||document.value("kind",std::string())=="materialinstance"||modelOpen()||worldOpen());}
     void queuePreview(){if(previewOpen&&canPreview()&&!sourceMode)SetTimer(window,5,35,nullptr);}
     Json drawPreview(Json input=Json::object()){
         const auto size=previewViewport.size();
         if(size.cx<=0||size.cy<=0)return Json::object();
         input["width"]=std::min<LONG>(4096,size.cx);input["height"]=std::min<LONG>(4096,size.cy);input["node"]=graphSelection;
+        if(worldOpen()){
+            input["faces"]=Json::array();for(const auto& [face,vertices]:worldFaces)input["faces"].push_back(face);
+            input["instances"]=worldInstances;
+        }
         const auto result=request("asset.preview",input);
         const auto prep=result.value("shaderPreparation",Json::object());
         if(prep.value("pending",false))SetTimer(window,5,120,nullptr);
         if(!result.at("warnings").empty())SetWindowTextW(status,wide(result.at("warnings").front()).c_str());
         return result;
+    }
+    void editWorld(Json input){
+        captureSource();input["expectedRevision"]=document.at("revision");
+        showDocument(request("world.edit",input));
+    }
+    Json applyPreviewInput(Json input){
+        const auto cmd=input.value("command",std::string());
+        const auto kind=document.value("kind",std::string());
+        if(worldOpen()&&cmd=="pick"&&(kind=="mesh"||(kind=="foliage"&&foliageSelect))){
+            input["command"]="worldSelect";
+            const auto result=drawPreview(input);
+            if(!input.value("add",false)){worldFaces.clear();worldInstances.clear();}
+            if(result.contains("worldSelection")){
+                const auto& hit=result.at("worldSelection");
+                if(kind=="mesh"){
+                    const int face=hit.at("face");
+                    if(!worldFaces.erase(face))worldFaces.emplace(face,hit.at("vertices").get<std::vector<int>>());
+                }else if(hit.contains("instance")){
+                    const auto id=hit.at("instance").get<std::string>();
+                    if(!worldInstances.erase(id))worldInstances.insert(id);
+                }
+            }
+            queuePreview();
+            statusText((L"선택 · "+std::to_wstring(kind=="mesh"?worldFaces.size():worldInstances.size())).c_str());
+            return result;
+        }
+        if(worldOpen()&&cmd=="worldBrush"&&(kind=="terrain"||kind=="foliage")){
+            auto settings=kind=="terrain"?worldBrush:foliageBrush;
+            input["brushSpacing"]=settings.at("radius").get<double>()*.1;
+            const auto result=drawPreview(input);
+            if(result.contains("worldBrush")&&!result.at("worldBrush").empty()){
+                settings["points"]=result.at("worldBrush");
+                editWorld({{"action",kind=="terrain"?"brush":input.value("erase",false)?"erase":"scatter"},{"settings",settings}});
+            }
+            return result;
+        }
+        return drawPreview(std::move(input));
     }
     bool widgetOpen()const{return document.value("kind",std::string())=="widget";}
     bool tilemapOpen()const{return document.value("kind",std::string())=="tilemap";}
@@ -1099,7 +1150,9 @@ class NativeEditorShell {
         Json updatedGraph;
         if(value.contains("model")){updatedGraph=std::move(value.at("model"));value.erase("model");}
         document=std::move(value);updating=true;
-        if(previous!=document.value("path",std::string())){tileOrigin={};tileLayer.clear();tileAtlasSource=nullptr;assetCanvas.updateAtlas(nullptr,{});if(modelOpen())previewOpen=true;}
+        if(previous!=document.value("path",std::string())){tileOrigin={};tileLayer.clear();tileAtlasSource=nullptr;assetCanvas.updateAtlas(nullptr,{});if(modelOpen()||worldOpen())previewOpen=true;
+            previewInput=nullptr;worldFaces.clear();worldInstances.clear();foliageSelect=false;
+            previewViewport.useBrush(document.value("kind",std::string())=="terrain"||document.value("kind",std::string())=="foliage");}
         if(previous!=document.value("path",std::string())){view="event";sourceMode=false;graph.resetView();graphSelection.clear();selectedTransition.clear();fieldPath=modelOpen()?Json::array({"settings"}):Json::array();sceneSelection.clear();cameraId.clear();cameraDirection.clear();cameraOutputs=false;folded.clear();viewport.setHandles(Json::array());cameraInput=nullptr;viewportPreparing=false;widgetSelection.clear();widgetRevision.clear();widgetPreview=nullptr;timelineTrack.clear();timelineItem.clear();timelineKey=timelineChannel=-1;curveView=false;assetCanvas.resetTimeline();imageIndex=imageLevel=0;}
         displayText(source,document.value("text",std::string()));
         sourceChanged=false;
@@ -2189,6 +2242,119 @@ class NativeEditorShell {
         }
         showDocument(request("modelimport.edit",params));
     }
+    std::optional<double> worldNumber(const wchar_t* title,double current){
+        const auto value=inputName(title,wide(Json(current).dump()),24);
+        if(value.empty())return {};
+        const auto number=Json::parse(utf8(value),nullptr,false);
+        if(!number.is_number()||!std::isfinite(number.get<double>()))throw std::runtime_error("숫자를 입력하세요.");
+        return number.get<double>();
+    }
+    std::optional<std::array<double,3>> worldVector(const std::array<const wchar_t*,3>& titles,const std::array<double,3>& initial){
+        auto values=initial;
+        for(std::size_t i=0;i<values.size();++i){
+            const auto number=worldNumber(titles[i],initial[i]);if(!number)return {};
+            values[i]=*number;
+        }
+        return values;
+    }
+    void configureWorld(){
+        if(!worldOpen()||sourceMode)return;
+        const auto kind=document.at("kind").get<std::string>();
+        if(kind!="terrain"&&kind!="foliage")return;
+        const auto data=Json::parse(document.at("text").get<std::string>());
+        if(kind=="terrain"){
+            const auto mode=chooseMenu({L"높이 올리기",L"높이 내리기",L"높이 맞추기",L"평활화",L"레이어 칠하기",L"구멍 뚫기",L"구멍 메우기",L"높이 스탬프"});if(!mode)return;
+            const std::array<const char*,8> modes={"raise","lower","flatten","smooth","paint","hole","fillHole","stamp"};
+            auto settings=worldBrush;
+            settings["mode"]=modes[*mode];
+            const auto radius=worldNumber(L"지형 브러시 반경",settings.at("radius"));if(!radius)return;
+            const auto strength=worldNumber(L"지형 브러시 강도",settings.at("strength"));if(!strength)return;
+            settings["radius"]=*radius;settings["strength"]=*strength;
+            if(*mode==2||*mode==7){const auto height=worldNumber(L"높이",settings.at("height"));if(!height)return;settings["height"]=*height;}
+            if(*mode==4){
+                std::vector<std::wstring> labels;
+                for(const auto& layer:data.at("layers"))labels.push_back(wide(layer.at("name")));
+                const auto layer=chooseMenu(labels);if(!layer)return;settings["layer"]=*layer;
+            }
+            if(*radius<=0||*radius>1000000||*strength<0||*strength>10000)throw std::runtime_error("지형 브러시 반경과 강도를 확인하세요.");
+            worldBrush=std::move(settings);previewViewport.useBrush(true);
+        }else{
+            const auto tool=chooseMenu({L"산포 브러시 · Shift로 소거",L"인스턴스 선택"});if(!tool)return;
+            if(*tool==0){
+                const auto radius=worldNumber(L"폴리지 브러시 반경",foliageBrush.at("radius"));if(!radius)return;
+                const auto count=worldNumber(L"한 번에 뿌릴 인스턴스 수",foliageBrush.at("count"));if(!count)return;
+                const auto spacing=worldNumber(L"폴리지 최소 간격",foliageBrush.at("minDistance"));if(!spacing)return;
+                if(*radius<.001||*radius>1000000||*count<0||*count>1000000||std::floor(*count)!=*count||*spacing<.0001||*spacing>100000)
+                    throw std::runtime_error("폴리지 브러시 설정을 확인하세요.");
+                foliageBrush={{"radius",*radius},{"count",int(*count)},{"minDistance",*spacing}};
+            }
+            foliageSelect=*tool==1;previewViewport.useBrush(!foliageSelect);
+        }
+        previewOpen=true;layout();
+    }
+    void editWorldAsset(){
+        if(!worldOpen()||sourceMode)return;
+        const auto kind=document.at("kind").get<std::string>();
+        const auto data=Json::parse(document.at("text").get<std::string>());
+        if(kind=="terrain"){
+            const auto name=inputName(L"지형 레이어 이름",L"Ground",120);if(name.empty())return;
+            const auto color=worldVector({L"레이어 색 R (0–1)",L"레이어 색 G (0–1)",L"레이어 색 B (0–1)"},{.3,.45,.2});
+            if(color)editWorld({{"action","addLayer"},{"settings",{{"name",utf8(name)},{"color",*color}}}});
+        }else if(kind=="foliage"){
+            if(worldInstances.empty())throw std::runtime_error("폴리지 인스턴스를 선택하세요.");
+            const auto action=chooseMenu({L"이동",L"회전 지정",L"크기 지정",L"복제",L"삭제"});if(!action)return;
+            Json settings={{"ids",worldInstances},{"operation",*action==3?"duplicate":*action==4?"delete":"transform"}};
+            if(*action<3){
+                const std::array<const char*,3> keys={"delta","rotation","scale"};
+                const auto values=worldVector({L"X",L"Y",L"Z"},*action==2?std::array<double,3>{1,1,1}:std::array<double,3>{});
+                if(!values)return;
+                settings[keys[*action]]=*values;
+            }
+            editWorld({{"action","instances"},{"settings",settings}});
+            if(*action==4)worldInstances.clear();
+        }else if(kind=="mesh"){
+            const auto action=chooseMenu({L"정점 이동",L"면 분할",L"면 압출",L"면 뒤집기",L"면 삭제",L"면 복제",L"XZ UV 투영",L"LOD용 메시 생성"});if(!action)return;
+            if(*action==7){
+                const auto name=inputName(L"새 메시 이름",wide(data.at("name"))+L"_LOD",80);if(name.empty())return;
+                const auto cell=worldNumber(L"단순화 셀 크기",.25);if(!cell)return;
+                const auto created=request("world.simplify",{{"name",utf8(name)},{"cellSize",*cell},{"expectedRevision",document.at("revision")}});
+                refreshFiles();statusText(wide(created.at("path")).c_str());return;
+            }
+            if(worldFaces.empty()&&*action!=6)throw std::runtime_error("메시 면을 선택하세요.");
+            const std::array<const char*,7> operations={"move","subdivide","extrude","flip","deleteFaces","duplicateFaces","uvXZ"};
+            std::set<int> vertices;Json faces=Json::array();
+            for(const auto& [face,ids]:worldFaces){faces.push_back(face);vertices.insert(ids.begin(),ids.end());}
+            Json settings={{"operation",operations[*action]},{"faces",faces},{"vertices",vertices}};
+            if(*action==0){
+                const auto delta=worldVector({L"이동 X",L"이동 Y",L"이동 Z"},{0,0,0});if(!delta)return;
+                settings["delta"]=*delta;
+            }
+            if(*action==2){
+                const auto distance=worldNumber(L"압출 거리",1);if(!distance)return;
+                settings["distance"]=*distance;
+            }
+            editWorld({{"action","geometry"},{"settings",settings}});
+            worldFaces.clear();
+        }else{
+            const auto action=chooseMenu({L"LOD 단계 추가",L"LOD 단계 삭제"});if(!action)return;
+            if(*action==0){
+                const auto type=chooseMenu({L"메시",L"지형",L"폴리지"});if(!type)return;
+                const std::array<const wchar_t*,3> extensions={L".hbmesh.json",L".hbterrain.json",L".hbfoliage.json"};
+                const auto asset=chooseProjectAsset(L"LOD 단계 에셋",extensions[*type]);if(asset.empty())return;
+                const auto& levels=data.at("levels");
+                const bool distance=data.at("mode")=="distance";
+                const double initial=levels.empty()?1.0:levels.back().at("threshold").get<double>()*(distance?2.:.5);
+                const auto threshold=worldNumber(distance?L"거리 기준":L"화면 높이 비율",initial);if(!threshold)return;
+                editWorld({{"action","addLevel"},{"settings",{{"asset",asset},{"threshold",*threshold}}}});
+            }else{
+                std::vector<std::wstring> labels;
+                for(const auto& level:data.at("levels"))labels.push_back(wide(level.at("asset")));
+                if(labels.empty())return;
+                const auto level=chooseMenu(labels);
+                if(level)editWorld({{"action","removeLevel"},{"settings",{{"index",*level}}}});
+            }
+        }
+    }
     void perform(Command command){
         if(playProcess&&(command==OpenProject||command==NewProject||command>=RecentBase))
             throw std::runtime_error("플레이를 중지한 뒤 프로젝트를 바꾸세요.");
@@ -2303,6 +2469,8 @@ class NativeEditorShell {
             const std::array<const char*,4> tools={"brush","erase","rectangle","fill"};
             tileLayer=options.at(*layer).at("id");tileTool=tools.at(*tool);tileIndex=value;return;
         }
+        case ConfigureWorld:configureWorld();return;
+        case EditWorld:editWorldAsset();return;
         case ShowCurve:
             if(document.value("kind",std::string())!="sequenceasset"||sourceMode)return;
             if(curveView){assetCanvas.updateTimeline(request("timeline.read"));curveView=false;timelineChannel=-1;}
@@ -2548,7 +2716,7 @@ class NativeEditorShell {
         case ModelSettings:
             if(modelOpen()){fieldPath=Json::array({"settings"});refreshForm();layout();}return;
         case ModelFocus:
-            if(modelOpen()){previewOpen=true;layout();drawPreview({{"command","focus"}});}return;
+            if(modelOpen()||worldOpen()){previewOpen=true;layout();drawPreview({{"command","focus"}});}return;
         case ModelSubassets:
             if(modelOpen())editModelSubasset();return;
         case ModelReimport:
@@ -2742,7 +2910,7 @@ class NativeEditorShell {
         }
         if(message==WM_TIMER&&w==5){
             KillTimer(window,5);
-            if(previewOpen&&canPreview()&&!sourceMode){auto input=std::move(previewInput);previewInput=nullptr;drawPreview(input.is_object()?std::move(input):Json::object());}
+            if(previewOpen&&canPreview()&&!sourceMode){auto input=std::move(previewInput);previewInput=nullptr;applyPreviewInput(input.is_object()?std::move(input):Json::object());}
             return 0;
         }
         if(message==WM_APP+43&&owner==window){
@@ -3348,10 +3516,50 @@ private:
         const auto modelPreview=drawPreview({{"capture",true},{"command","focus"}});
         if(modelPreview.at("backend")!="D3D12"||modelPreview.at("calls")<1||!modelPreview.at("warnings").empty())
             throw std::runtime_error("Native model preview: "+modelPreview.dump());
+        showDocument(request("document.open",{{"path","Assets/T_Native.hbterrain.json"}}));
+        const auto terrainBefore=document.at("revision");
+        const auto terrainView=drawPreview({{"capture",true},{"command","focus"}});
+        if(terrainView.at("backend")!="D3D12"||!terrainView.at("warnings").empty())throw std::runtime_error("Native terrain preview: "+terrainView.dump());
+        const auto brushSize=previewViewport.size();
+        const auto brushPoint=MAKELPARAM(brushSize.cx/2,brushSize.cy/2);
+        const auto brushEnd=MAKELPARAM(brushSize.cx/2+16,brushSize.cy/2);
+        previewViewport.probe(WM_LBUTTONDOWN,MK_LBUTTON,brushPoint);
+        previewViewport.probe(WM_MOUSEMOVE,MK_LBUTTON,brushEnd);
+        previewViewport.probe(WM_LBUTTONUP,0,brushEnd);
+        if(previewInput.value("command",std::string())!="worldBrush"||previewInput.at("points").size()!=2)
+            throw std::runtime_error("Native terrain pointer stroke missing");
+        auto stroke=std::exchange(previewInput,Json());
+        const auto terrainStroke=applyPreviewInput(std::move(stroke));
+        if(document.at("revision")==terrainBefore||terrainStroke.at("worldBrush").empty())throw std::runtime_error("Native terrain stroke failed");
+        command(Undo);
+        if(document.at("revision")!=terrainBefore)throw std::runtime_error("Native terrain stroke undo failed");
+        command(Redo);command(Save);
+        showDocument(request("document.open",{{"path","Assets/F_Native.hbfoliage.json"}}));
+        drawPreview({{"command","focus"}});
+        const auto foliageView=applyPreviewInput({{"command","worldBrush"},{"points",{{brushSize.cx/2,brushSize.cy/2}}}});
+        const auto planted=Json::parse(document.at("text").get<std::string>()).at("instances");
+        if(foliageView.at("backend")!="D3D12"||!foliageView.at("warnings").empty()||planted.empty())
+            throw std::runtime_error("Native foliage paint: "+foliageView.dump());
+        const auto changedFoliage=drawPreview({{"capture",true}});
+        if(changedFoliage.at("calls")<1||!changedFoliage.at("warnings").empty())throw std::runtime_error("Native foliage preview after paint: "+changedFoliage.dump());
+        command(Save);
+        showDocument(request("document.open",{{"path","Assets/SM_Native.hbmesh.json"}}));
+        const auto meshView=drawPreview({{"capture",true},{"command","focus"}});
+        const auto hit=applyPreviewInput({{"command","pick"},{"x",brushSize.cx/2},{"y",brushSize.cy/2}});
+        if(meshView.at("backend")!="D3D12"||!meshView.at("warnings").empty()||worldFaces.size()!=1)
+            throw std::runtime_error("Native mesh face selection: "+hit.dump());
+        editWorld({{"action","geometry"},{"settings",{{"operation","subdivide"},{"faces",{worldFaces.begin()->first}}}}});
+        command(Save);
+        showDocument(request("document.open",{{"path","Assets/LOD_Native.hblod.json"}}));
+        editWorld({{"action","addLevel"},{"settings",{{"asset","Assets/SM_Native.hbmesh.json"},{"threshold",1}}}});
+        const auto lodView=drawPreview({{"capture",true},{"command","focus"}});
+        if(lodView.at("backend")!="D3D12"||lodView.at("calls")<1||!lodView.at("warnings").empty())
+            throw std::runtime_error("Native LOD preview: "+lodView.dump());
+        command(Save);
         showDocument(request("document.open",{{"path","Assets/A_Native.hbaudioasset.json"}}));
         command(ShowAudioWaveform);assetCanvas.probePaint();
         if(assetCanvas.inspect().at("backend")!="D3D12")throw std::runtime_error("Native waveform present failed");
-        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
+        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
 };

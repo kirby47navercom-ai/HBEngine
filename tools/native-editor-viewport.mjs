@@ -4,6 +4,7 @@ import {scenePrimitives} from '../prototype/scene-primitives.js';
 import {sceneRendering} from '../prototype/scene-rendering.js';
 import {createSky,applySceneEnvironment,disposeSceneEnvironment,syncSkyToCamera} from '../prototype/scene-environment.js';
 import {cameraScreenRect,fallbackGameCamera,previewGameCamera,selectGameCamera} from '../prototype/game-camera.js';
+import {raycastTerrainGrid} from '../prototype/terrain-grid-raycast.js';
 import {editSceneTransform} from '../prototype/scene-editor.js';
 import {defaultSurface} from '../prototype/model.js';
 import {loadModel} from '../prototype/engine-services.js';
@@ -17,7 +18,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   const canvas={width:1,height:1,clientWidth:1,clientHeight:1,pixelRatio:1};
   let renderer, content, world, source, project, dimension, camera, orthoCamera, sky, visual, primitives, updateEnvironment;
   let selection='', gizmo, handles, models=new Set(), groups=new Map(), owners=new Map();
-  let previewTransform;
+  let previewTransform,worldOutline,outlineKey;
   const target=new THREE.Vector3(0,.45,0), orbit=new THREE.Spherical();
   const ray=new THREE.Raycaster();
   const visualKey=object=>{
@@ -33,6 +34,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   };
   const releaseVisual=()=>{
     if (!world) return;
+    if(worldOutline){worldOutline.geometry.dispose();worldOutline.material.dispose();worldOutline=null;}
+    outlineKey=null;
     gizmo?.geometry.dispose();gizmo?.material.dispose();gizmo=null;
     handles?.geometry.dispose();handles?.material.dispose();handles=null;
     disposeSceneEnvironment(world);
@@ -48,6 +51,10 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   };
   async function open(data,nextProject,assets) {
     if (source===data && project===nextProject) return;
+    const draft=data.assetDraft;
+    if(draft?.kind&&source?.assetDraft?.path===draft.path&&project===nextProject&&draft.data.terrain===source.assetDraft.data.terrain&&visual.updateWorldAsset(content.objects[0],draft.path,draft.data)){
+      source=data;outlineKey=null;return;
+    }
     if(source&&project===nextProject&&!data.assetDraft&&!source.assetDraft&&data.objects.length===source.objects.length&&
       ['surface','environment','runtime'].every(key=>JSON.stringify(source[key])===JSON.stringify(data[key]))&&
       data.objects.every((actor,index)=>actor.id===source.objects[index].id&&visualKey(actor)===visualKey(source.objects[index]))){
@@ -104,12 +111,12 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     updateEnvironment();
     source=data;content={objects,warnings};
   }
-  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false,flight,direction='',tool='translate',axis=-1,tangent}) {
+  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false,flight,direction='',tool='translate',axis=-1,tangent,points,brushSpacing,faces,instances}) {
     const assets=installNativeAssets({url:name=>'hbasset:'+encodeURIComponent(name),manifest:{width,height},readBytes:(name,opts)=>projectBytes(nextProject,name,opts)});
-    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction,tool,axis,tangent},assets);}
+    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction,tool,axis,tangent,points,brushSpacing,faces,instances},assets);}
     finally{assets.restore();}
   }
-  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction,tool,axis,tangent},assets) {
+  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction,tool,axis,tangent,points,brushSpacing,faces,instances},assets) {
     canvas.clientWidth=width;canvas.clientHeight=height;
     if(previewTransform){transform(previewTransform.actor,previewTransform.group);previewTransform=null;}
     await open(data,nextProject,assets);
@@ -200,6 +207,66 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       const plane=new THREE.Plane(normal,0);
       placement=(ray.ray.intersectPlane(plane,new THREE.Vector3())||target).toArray();
     }
+    let worldBrush,worldSelection;
+    if(data.assetDraft?.kind&&command==='worldBrush'&&Array.isArray(points)){
+      const surface=groups.get('asset-preview');
+      const plane=new THREE.Plane(new THREE.Vector3(0,1,0),0);
+      let terrain;
+      (groups.get('asset-preview-terrain')||surface).traverse(node=>{
+        if(node.geometry?.userData.terrainGrid)terrain=node;
+      });
+      worldBrush=[];
+      for(const [px,py] of points){
+        if(!(px>=0&&py>=0&&px<width&&py<height))continue;
+        ray.setFromCamera({x:2*(px+.5)/width-1,y:1-2*(py+.5)/height},active);
+        const point=raycastTerrainGrid(terrain,ray.ray)?.point||ray.ray.intersectPlane(plane,new THREE.Vector3());
+        const last=worldBrush.at(-1);
+        if(point&&(!last||Math.hypot(point.x-last[0],point.z-last[1])>=(brushSpacing||0)))worldBrush.push([point.x,point.z]);
+      }
+    }
+    if(data.assetDraft?.kind&&command==='worldSelect'){
+      const surface=groups.get('asset-preview');
+      ray.setFromCamera({x:2*(x+.5)/width-1,y:1-2*(y+.5)/height},active);
+      const hit=ray.intersectObject(surface,true).find(hit=>hit.object.isMesh&&!hit.object.userData.editorHelper);
+      if(hit)worldSelection={
+        face:hit.faceIndex,vertices:[hit.face.a,hit.face.b,hit.face.c],
+        instance:hit.object.userData.foliageIds?.[hit.instanceId],
+      };
+    }
+    const outline=data.assetDraft?.kind&&JSON.stringify([faces,instances]);
+    if(outline!==outlineKey){
+      outlineKey=outline;
+      if(worldOutline){world.remove(worldOutline);worldOutline.geometry.dispose();worldOutline.material.dispose();worldOutline=null;}
+      const positions=[],selectedFaces=new Set(faces),selectedInstances=new Set(instances);
+      if(selectedFaces.size||selectedInstances.size)groups.get('asset-preview')?.traverse(node=>{
+        if(!node.isMesh)return;
+        const matrix=new THREE.Matrix4(),point=new THREE.Vector3(),{geometry}=node;
+        const line=(a,b)=>positions.push(...a.toArray(),...b.toArray());
+        if(node.isInstancedMesh&&node.userData.foliageIds&&selectedInstances.size){
+          node.userData.foliageIds.forEach((id,i)=>{
+            if(!selectedInstances.has(id))return;
+            const box=geometry.boundingBox;
+            if(!box)return;
+            node.getMatrixAt(i,matrix);matrix.premultiply(node.matrixWorld);
+            const corners=Array.from({length:8},(_,i)=>new THREE.Vector3(
+              i&1?box.max.x:box.min.x,i&2?box.max.y:box.min.y,i&4?box.max.z:box.min.z,
+            ).applyMatrix4(matrix));
+            for(let i=0;i<8;i++)for(const bit of [1,2,4])if(!(i&bit))line(corners[i],corners[i|bit]);
+          });
+        }else if(geometry.index)for(const face of selectedFaces){
+          if(face*3+2>=geometry.index.count)continue;
+          const corners=[0,1,2].map(i=>point.fromBufferAttribute(geometry.attributes.position,geometry.index.getX(face*3+i)).clone().applyMatrix4(node.matrixWorld));
+          for(let i=0;i<3;i++)line(corners[i],corners[(i+1)%3]);
+        }
+      });
+      if(positions.length){
+        const geometry=new THREE.BufferGeometry();
+        geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+        worldOutline=new THREE.LineSegments(geometry,new THREE.LineBasicMaterial({color:0x68abff,depthTest:false}));
+        worldOutline.userData.editorHelper=true;
+        world.add(worldOutline);
+      }
+    }
     if (command==='pick') {
       selection='';
       const hitY=height-y-.5;
@@ -289,7 +356,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       }
     }
     const {backend,shaderPreparation,calls,cameraViews}=renderer.hbDiagnostics();
-    return {backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),warnings:content.warnings.slice(0,8)};
+    return {backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),warnings:content.warnings.slice(0,8)};
   }
   return {draw,close};
 }

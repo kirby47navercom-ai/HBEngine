@@ -1,3 +1,7 @@
+## Windows 네이티브 월드 에셋 제작 · 2026-11-13
+
+D3D12 에셋 미리보기에서 지형 브러시 스트로크를 Undo 한 번으로 되돌리고 폴리지를 배치해요. 메시 면 선택·분할과 LOD 에셋 단계 편집도 공용 모델에 저장해요. `world.edit`, `world.simplify`는 문서 리비전을 확인해요. 화면 밖 Win32 포인터 입력, 저장된 높이·인스턴스·인덱스·LOD 단계, D3D12 미리보기와 공용 게임 플레이는 `native/build/native-authoring-XJhUeq/report.json`에서 확인했어요.
+
 ## Windows 네이티브 게임 믹스 녹음·CPU 디스크립터 · 2026-11-13
 
 장면 메뉴에서 플레이를 녹음하고 종료하면 원래 프로젝트의 `Assets/Recordings`에 WAV를 저장해요. 공용 믹서의 AudioWorklet과 상한이 있는 버퍼를 사용해요. 격리된 Win32 편집기에서 D3D12 16프레임·시퀀스·48kHz 스테레오 WAV의 실제 PCM 신호를 확인했어요. `native/build/native-authoring-Ri0qVt/report.json`과 `native/build/native-game-tYjMjl/acceptance.json`을 참고해요. CPU용 D3D12 SRV·RTV·DSV 디스크립터도 페이지가 필요할 때 늘어나고, 비어 있는 추가 페이지를 반환해요. 하드웨어와 WARP 검사 `native/build/d3d12-direct-o0lLav/acceptance.json`을 통과했어요.

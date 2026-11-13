@@ -10,7 +10,8 @@ class EditorScenePanel {
     std::function<void(Json)> post;
     POINT start{},previous{};
     int button=0;
-    bool moved=false,painted=false,transformDrag=false;
+    bool moved=false,painted=false,transformDrag=false,brushEnabled=false;
+    std::vector<POINT> brushPoints;
     struct Handle {int axis;double x,y,dx,dy;};
     std::vector<Handle> handles;
     std::optional<Handle> grabbed;
@@ -69,11 +70,17 @@ class EditorScenePanel {
             if(!button){
                 SetFocus(window);SetCapture(window);start=previous=point(l);moved=false;
                 button=message==WM_LBUTTONDOWN?1:message==WM_RBUTTONDOWN?2:3;
+                if(button==1&&brushEnabled){brushPoints.assign(1,start);return 0;}
                 grabbed=button==1&&!(w&MK_SHIFT)?hitHandle(start):std::nullopt;
                 transformDrag=button==1&&((w&MK_SHIFT)!=0||grabbed.has_value());
             }
             return 0;
         case WM_MOUSEMOVE:{
+            if(button==1&&!brushPoints.empty()){
+                const auto at=point(l),last=brushPoints.back();
+                if(std::hypot(double(at.x-last.x),double(at.y-last.y))>=6)brushPoints.push_back(at);
+                return 0;
+            }
             if(button==1&&transformDrag){
                 const auto at=point(l);
                 moved=moved||std::abs(at.x-start.x)>=3||std::abs(at.y-start.y)>=3;
@@ -91,15 +98,22 @@ class EditorScenePanel {
             const int up=message==WM_LBUTTONUP?1:message==WM_RBUTTONUP?2:3;
             if(button!=up)return 0;
             const bool translate=up==1&&transformDrag;
+            auto stroke=std::exchange(brushPoints,std::vector<POINT>{});
             button=0;transformDrag=false;if(up==2)stopFlight();if(GetCapture()==window)ReleaseCapture();
             const auto at=point(l);
+            if(!stroke.empty()){
+                if(at.x!=stroke.back().x||at.y!=stroke.back().y)stroke.push_back(at);
+                Json points=Json::array();
+                for(const auto& p:stroke)points.push_back({p.x,p.y});
+                post({{"command","worldBrush"},{"points",std::move(points)},{"erase",(w&MK_SHIFT)!=0}});return 0;
+            }
             if(translate&&(moved||std::abs(at.x-start.x)+std::abs(at.y-start.y)>=3))drag(at,false);
-            else if(up==1&&!grabbed&&std::abs(at.x-start.x)<4&&std::abs(at.y-start.y)<4)post({{"command","pick"},{"x",at.x},{"y",at.y}});
+            else if(up==1&&!grabbed&&std::abs(at.x-start.x)<4&&std::abs(at.y-start.y)<4)post({{"command","pick"},{"x",at.x},{"y",at.y},{"add",(w&MK_CONTROL)!=0}});
             grabbed.reset();return 0;
         }
         case WM_CAPTURECHANGED:
             if(transformDrag&&moved)post({{"command","translateCancel"}});
-            transformDrag=false;button=0;stopFlight();return 0;
+            transformDrag=false;button=0;brushPoints.clear();stopFlight();return 0;
         case WM_KILLFOCUS:
             button=0;stopFlight();if(GetCapture()==window)ReleaseCapture();return 0;
         case WM_TIMER:
@@ -148,6 +162,7 @@ public:
         if(visible)SetWindowPos(window,HWND_TOP,x,y,width,height,SWP_NOACTIVATE|SWP_SHOWWINDOW);
         else{stopFlight();handles.clear();ShowWindow(window,SW_HIDE);}
     }
+    void useBrush(bool enabled){brushEnabled=enabled;}
     void selectTransformTool(std::string mode){
         if(button)return;
         tool=std::move(mode);handles.clear();post({{"command","transformTool"}});

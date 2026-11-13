@@ -22,7 +22,8 @@ import {projectBytes,projectText} from './project-bytes.mjs';
 import {createPrefabInstance} from '../prototype/prefab-instances.js';
 import {resolvePrefab} from '../prototype/prefab-variants.js';
 import {validateSpriteRigProgram} from '../prototype/sprite-rig-assets.js';
-import {worldAssetTypes} from '../prototype/world-assets.js';
+import {editFoliage,editMesh,eraseFoliage,scatterFoliage,simplifyMesh,terrainBrush,validWorldAsset,worldAssetTypes} from '../prototype/world-assets.js';
+import {withWorldDraft} from '../prototype/world-draft.js';
 import {copySceneObjects,editSceneTransform,pasteSceneObjects,setObjectMatrix,validParent} from '../prototype/scene-editor.js';
 import {sceneWorldMatrix} from '../prototype/scene-runtime.js';
 import {addState,behaviorNodes,makeBehaviorNode,makeSequenceTrack,removeState} from '../prototype/gameplay-assets.js';
@@ -49,7 +50,7 @@ import {captureSaveSettings} from '../prototype/audio-capture-save.js';
 const materialKinds = new Set(['material', 'materialfunction', 'materiallayer', 'materialblend']);
 const gameplayGraphs=new Set(['behaviortree','statemachine','animgraph']);
 const graphKind = doc => doc.kind === 'blueprint' || materialKinds.has(doc.kind) || gameplayGraphs.has(doc.kind);
-const previewKind = doc => doc.kind==='blueprint'||doc.kind==='materialinstance'||doc.kind==='modelimport'||materialKinds.has(doc.kind);
+const previewKind = doc => doc.kind==='blueprint'||doc.kind==='materialinstance'||doc.kind==='modelimport'||Object.hasOwn(worldAssetTypes,doc.kind)||materialKinds.has(doc.kind);
 const timelineKind = doc => ['curve','animation','sequenceasset','montage'].includes(doc.kind);
 const sequenceTracks=['position','rotation','scale','visible','camera','timeScale','event','animation','audio'];
 const sampleSequenceTrack=(sampler,track,time)=>['audio','animation'].includes(track.type)
@@ -757,6 +758,67 @@ export function nativeEditorSession(bridge) {
       ctx.imageSmoothingEnabled=false;ctx.drawImage(image,0,0,width,height);
       return {width,height,columns,rows,tileWidth:tileWidth*width/image.width,tileHeight:tileHeight*height/image.height,pixels:canvas.data().toString('base64')};
     },
+    'world.edit': async ({path:file,action,settings={},expectedRevision})=>{
+      const doc=targetDocument(file),kind=doc.kind,owner=project();
+      if(!Object.hasOwn(worldAssetTypes,kind))throw Error('월드 에셋을 선택하세요.');
+      await check(doc,expectedRevision);
+      const read=async name=>JSON.parse((await projectText(owner,name)).replace(/^\uFEFF/,''));
+      const terrain=kind==='foliage'&&action==='scatter'&&doc.data.terrain?await read(doc.data.terrain):undefined;
+      if(owner!==project())throw Error('편집 중 프로젝트가 변경됐어요.');
+      await check(doc,expectedRevision);
+      const {draft,result}=withWorldDraft(doc.data,data=>{
+        if(kind==='terrain'){
+          if(action==='brush'){
+            if(!settings.points)return terrainBrush(data,settings);
+            if(!Array.isArray(settings.points)||!settings.points.length)throw Error('지형 브러시 경로를 확인하세요.');
+            for(const position of settings.points)terrainBrush(data,{...settings,position});
+            return;
+          }
+          if(action==='addLayer'){
+            if(data.layers.length>=8)throw Error('지형 레이어는 최대 8개예요.');
+            data.layers.push({name:settings.name,color:settings.color});
+            for(const weights of data.weights)weights.push(0);
+            return;
+          }
+        }else if(kind==='foliage'){
+          if(action==='scatter'||action==='erase'){
+            const apply=center=>action==='scatter'?scatterFoliage(data,{...settings,center,terrain}):eraseFoliage(data,center,settings.radius);
+            if(!settings.points)return apply(settings.center);
+            if(!Array.isArray(settings.points)||!settings.points.length)throw Error('폴리지 브러시 경로를 확인하세요.');
+            for(const center of settings.points)apply(center);
+            return;
+          }
+          if(action==='instances')return editFoliage(data,settings);
+        }else if(kind==='mesh'&&action==='geometry')return editMesh(data,settings);
+        else if(kind==='lod'){
+          if(action==='addLevel'){
+            if(settings.asset===doc.path)throw Error('LOD에 자기 자신을 추가할 수 없어요.');
+            data.levels.push({asset:settings.asset,threshold:settings.threshold});return;
+          }
+          if(action==='removeLevel'&&Number.isInteger(settings.index)&&settings.index>=0&&settings.index<data.levels.length){
+            data.levels.splice(settings.index,1);
+            data.forced=data.forced===settings.index?-1:data.forced>settings.index?data.forced-1:data.forced;
+            const collision=data.collisionLevel||0;
+            data.collisionLevel=Math.max(0,Math.min(data.levels.length-1,collision>settings.index?collision-1:collision));
+            return;
+          }
+        }
+        throw Error('월드 에셋 편집 도구를 확인하세요.');
+      });
+      change(doc,result||draft);
+      return response(doc);
+    },
+    'world.simplify': async ({path:file,name,cellSize,expectedRevision})=>{
+      const doc=assetOfKind('mesh',targetDocument(file)),owner=project();
+      await check(doc,expectedRevision);
+      if(typeof name!=='string'||!name.trim()||name.length>80||/[\\/:<>?"|*]/.test(name)||/[. ]$/.test(name))
+        throw Error('LOD 메시 이름을 확인하세요.');
+      const result=simplifyMesh(doc.data,cellSize);
+      result.name=name;
+      const target=path.posix.join(path.posix.dirname(doc.path),name+assetSuffix.mesh);
+      await owner.checkedBatch([{path:target,text:JSON.stringify(result,null,2),expected:null}]);
+      return {path:target};
+    },
     'tilemap.paint': async ({layer,tool,from,to,index,expectedRevision})=>{
       const doc=assetOfKind('tilemap');await check(doc,expectedRevision);
       const edit=applyTileTool(doc.data,layer,tool,from,to,index);
@@ -991,13 +1053,14 @@ export function nativeEditorSession(bridge) {
       preview??=(await import('./native-editor-viewport.mjs')).nativeEditorViewport(bridge,'native-preview');
       if(previewSource!==doc.data||previewNode!==node){
         const asset=async name=>name===doc.path?doc.data:JSON.parse((await projectBytes(project(),name)).toString('utf8').replace(/^\uFEFF/,''));
-        const actor=createPlacedObject(doc.kind==='blueprint'?'cube':doc.kind==='modelimport'?'empty':'sphere',{id:'asset-preview'});
+        const worldAsset=Object.hasOwn(worldAssetTypes,doc.kind);
+        const actor=createPlacedObject(doc.kind==='blueprint'?'cube':doc.kind==='modelimport'||worldAsset?'empty':'sphere',{id:'asset-preview'});
         let data=doc.data;
         if(doc.kind==='blueprint'){
           const root=await createBlueprintResolver(asset,async name=>(await projectBytes(project(),name)).toString('utf8'))(doc.path);
           actor.components=structuredClone(root.components);
           if(!actor.components.some(component=>component.type==='MeshRenderer'))actor.kind='empty';
-        }else if(doc.kind==='modelimport')addSceneComponent(actor,'MeshRenderer').properties.mesh=data.source;
+        }else if(doc.kind==='modelimport'||worldAsset)addSceneComponent(actor,'MeshRenderer').properties.mesh=worldAsset?doc.path:data.source;
         else{
           if(materialKinds.has(doc.kind)&&doc.kind!=='material'){
             const graph=data.graph;
@@ -1007,7 +1070,13 @@ export function nativeEditorSession(bridge) {
           }
           actor.materialAsset=doc.path;
         }
-        previewScene={objects:[actor],surface:defaultSurface,environment:defaultEnvironment,assetDraft:{path:doc.path,data}};
+        const objects=[actor];
+        if(doc.kind==='foliage'&&data.terrain){
+          const ground=createPlacedObject('empty',{id:'asset-preview-terrain'});
+          addSceneComponent(ground,'MeshRenderer').properties.mesh=data.terrain;
+          objects.push(ground);
+        }
+        previewScene={objects,surface:defaultSurface,environment:defaultEnvironment,assetDraft:{path:doc.path,data,kind:worldAsset?doc.kind:undefined}};
         previewSource=doc.data;previewNode=node;
       }
       return preview.draw(previewScene,project(),params.command==='focus'?{...params,id:'asset-preview'}:params);

@@ -7,6 +7,7 @@
 - 콘텐츠 브라우저는 추가 창도 창별 Win32 목록, 폴더 트리, 검색·보기 도구를 사용해요. 목록 그리기와 포인터 선택은 표시 범위를 사용해요. 아이콘 버튼과 툴팁, 계층·속성 머리줄, 주 메뉴와 출력 로그도 Win32 쪽에 연결돼요.
 - 네이티브 키오스크 프로필은 전체 화면·커서 숨김·최소화 제한과 무입력 시 시작 장면 초기화를 지원해요. 운영자는 F12로 종료할 수 있어요.
 - 장면 메뉴에서 플레이 중 게임 믹스를 녹음하고 종료하면 프로젝트의 `Assets/Recordings`에 WAV로 저장해요. 녹음을 시작한 프로젝트에서 저장을 다시 시도할 수 있어요.
+- 지형·폴리지·메시·LOD 에셋은 D3D12 미리보기를 사용해요. 편집 메뉴에서 지형 브러시와 레이어, 폴리지 산포·소거·선택, 메시 면 편집과 단순화, LOD 단계 추가·삭제를 열어요. 붓을 떼면 한 번의 Undo로 묶여요.
 - 네이티브 게임에서 WAV 스트리밍은 패키지에서 필요한 PCM 구간을 읽고 믹서·가상 음성·반복 재생에 연결해요.
 - 네이티브 목록과 트리는 행을 끌어 재정렬하고 같은 그룹의 다른 목록으로 옮길 수 있어요. 행 템플릿은 화면에 보이는 행의 데이터만 바인딩하고, 체크박스·텍스트·슬라이더의 변경을 원래 항목에 기록할 수 있어요. 줄바꿈이 있는 행은 실제 글꼴로 보이는 범위의 높이를 측정해요.
 - 네이티브 게임의 월드 추적 위젯은 같은 카메라 투영과 거리·피벗 설정을 사용해 장면 오브젝트를 따라 움직여요. 화면 밖이나 거리 범위를 벗어나면 입력과 표시를 해제해요.
@@ -60,6 +61,8 @@
 `tools/native-editor-session.mjs`는 줄마다 `{"method":"document.open","params":{"path":"Assets/…"}}`를 표준 입력에서 받아 `{"ok":true,"value":…}` 또는 오류를 표준 출력으로 돌려줘요. 프로젝트가 열리면 `content.list`, `document.read`, `document.patch`, `document.save`, `graph.read`, `graph.edit`, `editor.undo`, `editor.redo`를 사용할 수 있어요. 수정과 저장은 읽을 때 받은 `revision`을 `expectedRevision`으로 전달해요. `document.patch`의 `dryRun`으로 먼저 변경을 검증할 수 있어요. 네이티브 UI와 이 명령은 같은 프로젝트 서비스와 에셋 검증기를 써요.
 
 `document.load`는 활성 탭을 바꾸지 않고 문서를 불러와요. `document.read`, `document.patch`, `document.replace`, `document.save`, `graph.read`, `graph.inputs`, `graph.edit`, `editor.undo`, `editor.redo`에 열린 문서의 `path`를 전달하면 활성 문서를 유지한 채 대상으로 삼을 수 있어요. `graph.inputs`는 편집 가능한 핀과 속성을 반환하고 `graph.edit`의 `property`, `refreshFunction`이 같은 속성 창의 명령을 실행해요. 경로를 지정한 Undo/Redo도 `expectedRevision`을 확인해요.
+
+`world.edit`는 지형·폴리지 브러시, 인스턴스·메시 편집, LOD 단계 편집을 적용해요. 브러시의 `settings.points`는 XZ 좌표 배열이며 한 번에 Undo할 수 있어요. `world.simplify`는 지정한 셀 크기로 새 메시 에셋을 만들어요. 두 명령 모두 `expectedRevision`을 사용해요.
 
 `graph.copy`는 선택 ID 목록을 받아 공용 복사 데이터를 반환해요. `graph.edit`의 `paste`에 복사 데이터와 위치를 전달하면 노드 ID와 내부 연결을 새 그래프에 맞춰 옮겨요. `cpp.create`, `cpp.classes`, `cpp.blueprint`는 C++와 블루프린트 제작에 사용해요. `cpp.build`와 `cpp.buildStatus`는 저장한 소스의 컴파일을 시작하고 결과를 조회해요.
 
