@@ -468,6 +468,10 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         app.editorAcceptance=!app.smoke.empty()&&!project.empty()&&env(L"HB_EDITOR_ACCEPTANCE")==L"1";
 #endif
         if(registerOnly){CoUninitialize();return 0;}
+        // Seed the same shader bytecode cache for both desktop authoring paths.
+        {const auto shaderCache=(env(L"HB_USER_DATA_DIR").empty()?fs::path(env(L"LOCALAPPDATA"))/L"HBEngine":app.userData)/L"Cache"/L"ShaderBytecode";
+        std::error_code ignored;fs::create_directories(shaderCache,ignored);for(const auto& bundled:{app.root/L"Shaders",folder/L"dist/HBEngine/Shaders"})if(fs::is_directory(bundled,ignored)){for(const auto& entry:fs::directory_iterator(bundled,ignored))if(entry.is_regular_file()&&!entry.is_symlink()&&entry.file_size()<=8*1024*1024)fs::copy_file(entry.path(),shaderCache/entry.path().filename(),fs::copy_options::skip_existing,ignored);break;}
+        hb::gpu::SceneRenderer::configureShaderCache(shaderCache);}
 #ifndef HB_GAME_PLAYER
         if(nativeEditor){
             SetEnvironmentVariableW(L"HB_USER_DATA_DIR",app.userData.c_str());
@@ -479,11 +483,6 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
             CoUninitialize();return result;
         }
 #endif
-        // Editor and WebView player share the disk bytecode cache; the editor viewport is native too.
-        {const auto shaderCache=(env(L"HB_USER_DATA_DIR").empty()?fs::path(env(L"LOCALAPPDATA"))/L"HBEngine":app.userData)/L"Cache"/L"ShaderBytecode";
-        // Seed the cache from the bundled bytecode (DirectX 11 and 12 pipelines) so the first native viewport does not compile for ~30 s.
-        std::error_code ignored;fs::create_directories(shaderCache,ignored);for(const auto& bundled:{app.root/L"Shaders",folder/L"dist/HBEngine/Shaders"})if(fs::is_directory(bundled,ignored)){for(const auto& entry:fs::directory_iterator(bundled,ignored))if(entry.is_regular_file()&&!entry.is_symlink()&&entry.file_size()<=8*1024*1024)fs::copy_file(entry.path(),shaderCache/entry.path().filename(),fs::copy_options::skip_existing,ignored);break;}
-        hb::gpu::SceneRenderer::configureShaderCache(shaderCache);}
         unsigned hash=2166136261u;for(wchar_t c:(project.empty()?app.root.wstring():project)){hash^=std::towlower(c);hash*=16777619;}
         const auto className=L"HBEngine."+std::to_wstring(hash);single=CreateMutexW(nullptr,FALSE,(L"Local\\"+className).c_str());
         if(GetLastError()==ERROR_ALREADY_EXISTS){const auto window=FindWindowW(className.c_str(),nullptr);if(window){ShowWindow(window,SW_RESTORE);SetForegroundWindow(window);}CloseHandle(single);CoUninitialize();return 0;}

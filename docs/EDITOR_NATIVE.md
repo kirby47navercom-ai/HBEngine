@@ -8,7 +8,11 @@
 - Windows 네이티브 게임 빌드에서 API를 지정하지 않으면 D3D12를 사용해요. 저장된 명시적 호환 프로필은 해당 API를 사용해요. D3D12에서는 HUD 변경 타일을 GPU 텍스처로 보내고 장면 후처리 뒤 같은 프레임에 합성해요. HUD의 글자·SVG·위젯 래스터와 입력은 기존 공용 모델을 사용해요.
 - Windows 데스크톱의 `HBEngine.exe --native-editor [프로젝트.hbproject]`로 WebView2 없이 편집기를 열 수 있어요. 프로젝트 열기·생성·최근 목록과 콘텐츠 검색, 에셋 생성, 문서 탭·저장·Undo/Redo, 문서 창 분리·합치기가 Win32에서 실행돼요. 에셋 속성의 숫자·문자열·체크 및 중첩 항목은 속성 창에서 수정할 수 있어요.
 - 네이티브 블루프린트·머테리얼 그래프에서 노드 추가·이동·삭제, 핀 연결·해제, 연결되지 않은 핀의 기본값 편집을 지원해요. 그래프와 속성의 글자·도형은 DirectWrite·Direct2D로 래스터화해 직접 D3D12 스왑 체인으로 표시해요. 두 패널은 D3D12 장치와 업로드 버퍼를 공유해요.
-- 기본 실행 경로는 기존 편집기예요. 네이티브 모드에는 장면 뷰포트, 전용 에셋 편집기(타임라인·위젯 캔버스 등), 전체 도킹 레이아웃, 나머지 제작 대화상자의 이전이 필요해요.
+- 네이티브 장면 문서는 엔진의 D3D12 렌더러로 그려요. 뷰포트에서 선택·회전·이동·확대·초점을 제어하고, 카메라 콤보에서 장면 카메라로 전환해요. 계층에서 접기·잠금·표시·부모 변경과 오브젝트 추가·복제·삭제, 컴포넌트 추가 및 속성 수정을 할 수 있어요.
+- 네이티브 애니메이션·커브 편집기는 트랙의 키를 표시하고 클릭으로 샘플링해요. 더블클릭으로 키를 추가하고, 드래그와 Delete로 옮기거나 지워요. 위젯 캔버스는 공용 게임 위젯 래스터를 사용하며 요소 추가·선택·이동·삭제와 속성 편집을 지원해요.
+- 네이티브 파일 메뉴에서 에셋 가져오기와 저장 충돌 복구를 열어요. 보기 메뉴에서 콘텐츠 브라우저·속성 너비를 변경할 수 있고, 편집기 창 위치와 패널 너비를 다음 실행에 복원해요.
+- 네이티브 빌드 메뉴는 저장된 빌드 프로필로 검사·패키징을 요청하고, 마지막 Windows 결과물을 실행할 수 있어요.
+- 기본 실행은 기존 편집기를 사용해요. 네이티브 전환의 남은 범위에는 전체 도킹 트리·다중 독립 문서, 머테리얼·블루프린트 컴포넌트 3D 미리보기, 세부 에셋 편집기, 편집기 안의 게임 실행과 빌드 프로필 관리 UI가 있어요.
 
 관련 검사 `check-editor-native-viewport.mjs`, `check-editor-native-assets.mjs`, `check-editor-native-hierarchy.mjs`, `check-editor-native-inspector.mjs`, `check-build-profiles.mjs`, `check-native-game.mjs`.
 
@@ -16,7 +20,7 @@
 
 `tools/native-editor-session.mjs`는 줄마다 `{"method":"document.open","params":{"path":"Assets/…"}}`를 표준 입력에서 받아 `{"ok":true,"value":…}` 또는 오류를 표준 출력으로 돌려줘요. 프로젝트가 열리면 `content.list`, `document.read`, `document.patch`, `document.save`, `graph.read`, `graph.edit`, `editor.undo`, `editor.redo`를 사용할 수 있어요. 수정과 저장은 읽을 때 받은 `revision`을 `expectedRevision`으로 전달해요. `document.patch`의 `dryRun`으로 먼저 변경을 검증할 수 있어요. 네이티브 UI와 이 명령은 같은 프로젝트 서비스와 에셋 검증기를 써요.
 
-`node tools/check-native-authoring.mjs [HBEngine.exe]`는 격리된 프로젝트와 화면 밖 Win32 창에서 저장·Undo/Redo, 그래프 이동·핀 연결·기본값, D3D12 표시와 분리·복귀, 에셋 속성, 외부 수정 충돌을 확인해요.
+`node tools/check-native-authoring.mjs [HBEngine.exe]`는 격리된 프로젝트와 화면 밖 Win32 창에서 D3D12 장면 픽셀, 오브젝트 위치·컴포넌트 저장, 애니메이션 키 추가, 위젯 이동, 그래프 입력과 분리·복귀, 외부 수정 충돌을 확인해요.
 
 아래는 초기 이전 단계의 기록이에요.
 

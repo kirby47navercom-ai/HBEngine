@@ -1,3 +1,7 @@
+## WebView 없는 Windows 장면·에셋 편집 · 2026-11-13
+
+네이티브 문서 편집기에 D3D12 장면·계층·속성 편집, 애니메이션/커브 키 타임라인, 위젯 캔버스, 블루프린트 멤버·주석 생성, 에셋 가져오기, 저장 충돌 복구, 배치 복원과 빌드 프로필 선택을 연결했어요. `tools/check-native-authoring.mjs`가 화면 밖 Win32 창에서 장면 픽셀과 저장된 편집을 확인해요. 전체 도킹·전용 미리보기·편집기 내부 게임 실행은 [EDITOR_NATIVE.md](docs/EDITOR_NATIVE.md)의 남은 범위를 참고해요.
+
 ## WebView 없는 Windows 제작 경로 · 2026-11-13
 
 `HBEngine.exe --native-editor`에서 프로젝트·문서 명령, 노드 편집, 에셋 속성과 문서 분리/합치기를 Win32와 공용 프로젝트 서비스로 연결했어요. 그래프·속성은 같은 D3D12 장치를 사용해요. 검사는 `tools/check-native-authoring.mjs`. 기본 편집기 전환에 앞서 장면 뷰포트·전용 에셋 편집기·전체 도킹과 나머지 대화상자 연결이 필요해요. 상세 기능과 실행 경로는 [EDITOR_NATIVE.md](docs/EDITOR_NATIVE.md)에 있어요.

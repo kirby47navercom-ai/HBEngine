@@ -153,6 +153,9 @@ class EditorGraphPanel final : public EditorPanelBase {
             pan={at.x-(at.x-pan.x)*next/zoom,at.y-(at.y-pan.y)*next/zoom};zoom=next;InvalidateRect(window,nullptr,FALSE);return 0;
         }
         case WM_KEYDOWN:
+            if(w=='C'&&!(GetKeyState(VK_CONTROL)&0x8000)){
+                auto event=spawnPosition();event["event"]="comment";event["id"]=selected;emit(event);return 0;
+            }
             if(w==VK_DELETE&&!selected.empty()){emit({{"event","edit"},{"action","delete"},{"id",selected}});return 0;}
             if(w==VK_ESCAPE){pending.reset();InvalidateRect(window,nullptr,FALSE);return 0;}
             forwardKey(message,w);return 0;
