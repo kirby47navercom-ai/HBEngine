@@ -5,13 +5,13 @@
 
 class EditorListPanel : public EditorPanelBase {
 public:
-    struct Item {std::string name,detail,icon;bool selected=false,folder=false;};
+    struct Item {std::string name,detail,icon;int depth=0;bool selected=false,folder=false;};
     void attach(HWND owner,HINSTANCE instance,Post post,const wchar_t* className,const char* panelName){EditorPanelBase::attach(owner,instance,std::move(post),className,panelName);}
 
     // op "assets": {visible, rect, scale, theme, view:"list"|"tiles", revision, items:[{name,detail,icon,selected,folder}], focus}
     void update(const Json& model){
         if(!window)return;
-        if(model.contains("items")){items.clear();revision=model.value("revision",0ull);for(const auto& r:model.at("items")){Item item;item.name=r.value("name",std::string());item.detail=r.value("detail",std::string());item.icon=r.value("icon",std::string());item.selected=r.value("selected",false);item.folder=r.value("folder",false);items.push_back(std::move(item));}}
+        if(model.contains("items")){items.clear();revision=model.value("revision",0ull);for(const auto& r:model.at("items")){Item item;item.name=r.value("name",std::string());item.detail=r.value("detail",std::string());item.icon=r.value("icon",std::string());item.selected=r.value("selected",false);item.folder=r.value("folder",false);item.depth=std::clamp(r.value("depth",0),0,16);items.push_back(std::move(item));}}
         if(model.contains("view"))tiles=model.at("view").get<std::string>()=="tiles";
         applyCommon(model);clampScroll();
         if(model.contains("focus")&&model.at("focus").is_number_integer())reveal(model.at("focus").get<int>());
@@ -56,8 +56,8 @@ private:
             if(tiles){box(x,y,w,h,item.selected?theme.selection:(i==hover?theme.raised:theme.field),item.selected?theme.accent:theme.line);label(glyph(item.icon,item.folder),big,x,y+px(6),w,h-px(36),item.folder?theme.muted:theme.accent);
                 text->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);label(wide(item.name),text,x+px(6),y+h-px(32),w-px(12),float(px(26)),ink);text->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);}
             else{if(item.selected)fill(x,y,w,h,theme.selection);else if(i==hover)fill(x,y,w,h,{theme.selection.r,theme.selection.g,theme.selection.b,.45f});
-                label(glyph(item.icon,item.folder),icons,x+px(8),y,float(px(18)),h,item.folder?theme.muted:theme.accent);const float detailW=item.detail.empty()?0.f:std::min(w*.38f,float(px(170)));
-                label(wide(item.name),text,x+px(32),y,w-px(40)-detailW,h,ink);if(detailW>0)label(wide(item.detail),text,x+w-detailW-px(8),y,detailW,h,theme.muted);}}
+                const float indent=float(item.depth*px(11));label(glyph(item.icon,item.folder),icons,x+px(8)+indent,y,float(px(18)),h,item.folder?theme.muted:theme.accent);const float detailW=item.detail.empty()?0.f:std::min(w*.38f,float(px(170)));
+                label(wide(item.name),text,x+px(32)+indent,y,w-px(40)-detailW-indent,h,ink);if(detailW>0)label(wide(item.detail),text,x+w-detailW-px(8),y,detailW,h,theme.muted);}}
         if(big)big->Release();
         if(items.empty())label(L"표시할 에셋이 없어요.",text,float(px(12)),float(px(8)),float(bounds[2]-px(24)),float(px(28)),theme.muted);
         const int total=contentHeight();if(total>bounds[3]){const float track=float(bounds[3]),thumb=std::max(float(px(24)),track*track/total),top=(track-thumb)*scroll/std::max(1,total-bounds[3]);fill(float(bounds[2]-px(4)),top,float(px(3)),thumb,theme.line);}

@@ -37,8 +37,10 @@ struct State {
 #ifdef HB_GAME_PLAYER
     NativeAudio audio;
 #else
-    EditorTreePanel hierarchy;EditorFormPanel inspector;EditorListPanel assets;nlohmann::json pendingMenu;std::string pendingMenuPanel;
-    EditorPanelBase& panel(const std::string& name){if(name=="inspector")return inspector;if(name=="assets")return assets;return hierarchy;}
+    // Fixed panels plus form panels created on demand by name (inspector, content browser toolbars).
+    EditorTreePanel hierarchy;EditorListPanel assets,folders;std::map<std::string,std::unique_ptr<EditorFormPanel>> forms;nlohmann::json pendingMenu;std::string pendingMenuPanel;HINSTANCE instance=nullptr;EditorPanelBase::Post panelPost;
+    EditorFormPanel& form(const std::string& name){auto& slot=forms[name];if(!slot){if(forms.size()>16)throw std::runtime_error("Too many native form panels");slot=std::make_unique<EditorFormPanel>();slot->attach(window,instance,panelPost,name);}return *slot;}
+    EditorPanelBase& panel(const std::string& name){if(name=="hierarchy")return hierarchy;if(name=="assets")return assets;if(name=="folders")return folders;return form(name);}
 #endif
     fs::path root,userData,ready,log,smoke; std::wstring url; bool closing=false,smokeSuccess=false,failed=false,development=true,windowSmoke=false,windowSmokeStarted=false,editorAcceptance=false,kiosk=false,kioskFullscreen=false,kioskPreventMinimize=false,operatorUnlocked=false;
     ~State(){if(view)view->Release();if(controller){controller->Close();controller->Release();}if(environment)environment->Release();if(job)CloseHandle(job);if(process)CloseHandle(process);}
@@ -170,14 +172,14 @@ public:
                     // Native editor panels: the script sends models, the panel windows report input back on the same channel.
                     else if(packet.value("channel","")=="hb.panel"){
                         const auto op=packet.at("op").get<std::string>();response={{"channel","hb.panel"},{"ok",true}};if(packet.contains("id"))response["id"]=packet.at("id");
-                        const auto panel=packet.value("panel",std::string("hierarchy"));
+                        const auto panel=packet.value("panel",std::string(op=="inspector"?"inspector":"hierarchy"));
                         if(op=="hierarchy")app.hierarchy.update(packet.at("data"));
-                        else if(op=="inspector")app.inspector.update(packet.at("data"));
-                        else if(op=="assets")app.assets.update(packet.at("data"));
+                        else if(op=="inspector"||op=="form")app.form(panel).update(packet.at("data"));
+                        else if(op=="assets")(panel=="folders"?app.folders:app.assets).update(packet.at("data"));
                         else if(op=="menu"){app.pendingMenu=packet.at("data").at("items");app.pendingMenuPanel=panel;PostMessageW(app.window,WM_APP+60,0,0);}
-                        else if(op=="inspect")response["value"]=panel=="inspector"?app.inspector.inspect():panel=="assets"?app.assets.inspect():app.hierarchy.inspect();
+                        else if(op=="inspect"){if(panel=="hierarchy")response["value"]=app.hierarchy.inspect();else if(panel=="assets"||panel=="folders")response["value"]=(panel=="folders"?app.folders:app.assets).inspect();else response["value"]=app.form(panel).inspect();}
                         else if(op=="snapshot"){if(!app.editorAcceptance)throw std::runtime_error("Panel snapshot is acceptance only");response["value"]=app.panel(panel).snapshot();}
-                        else if(op=="probe"){if(!app.editorAcceptance)throw std::runtime_error("Panel probe is acceptance only");if(panel=="inspector")app.inspector.probe(packet.at("data"));else if(panel=="assets")app.assets.probe(packet.at("data"));else app.hierarchy.probe(packet.at("data"));}
+                        else if(op=="probe"){if(!app.editorAcceptance)throw std::runtime_error("Panel probe is acceptance only");if(panel=="hierarchy")app.hierarchy.probe(packet.at("data"));else if(panel=="assets"||panel=="folders")(panel=="folders"?app.folders:app.assets).probe(packet.at("data"));else app.form(panel).probe(packet.at("data"));}
                         else throw std::runtime_error("Panel operation invalid");
                     }
 #endif
@@ -391,7 +393,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         WNDCLASSW windowClass{};windowClass.hInstance=instance;windowClass.lpszClassName=className.c_str();windowClass.lpfnWndProc=windowProcedure;windowClass.hCursor=LoadCursorW(nullptr,IDC_ARROW);windowClass.hIcon=LoadIconW(instance,MAKEINTRESOURCEW(101));windowClass.hbrBackground=CreateSolidBrush(RGB(23,26,31));RegisterClassW(&windowClass);
         app.window=CreateWindowExW(0,className.c_str(),L"HBEngine",WS_OVERLAPPEDWINDOW,CW_USEDEFAULT,CW_USEDEFAULT,1440,900,nullptr,nullptr,instance,nullptr);if(!app.window)throw std::runtime_error("native window");
 #ifndef HB_GAME_PLAYER
-        {const auto post=[](const nlohmann::json& event){if(app.view)app.view->PostWebMessageAsJson(wide(event.dump()).c_str());};app.hierarchy.attach(app.window,instance,post);app.inspector.attach(app.window,instance,post);app.assets.attach(app.window,instance,post,L"HBEngine.EditorListPanel","assets");}
+        {const auto post=[](const nlohmann::json& event){if(app.view)app.view->PostWebMessageAsJson(wide(event.dump()).c_str());};app.instance=instance;app.panelPost=post;app.hierarchy.attach(app.window,instance,post);app.assets.attach(app.window,instance,post,L"HBEngine.EditorListPanel","assets");app.folders.attach(app.window,instance,post,L"HBEngine.EditorListPanel","folders");}
 #endif
 
         #ifdef HB_GAME_PLAYER

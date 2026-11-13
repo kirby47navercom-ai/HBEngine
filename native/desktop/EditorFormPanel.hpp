@@ -9,10 +9,10 @@ class EditorFormPanel : public EditorPanelBase {
 public:
     struct Control {std::string kind,value,text;int i=-1;bool checked=false,disabled=false;double min=0,max=1,step=0;std::vector<std::pair<std::string,std::string>> options;};
     struct Row {std::string kind,text,label;int toggle=-1;bool open=true;std::vector<Control> controls;};
-    void attach(HWND owner,HINSTANCE instance,Post post){EditorPanelBase::attach(owner,instance,std::move(post),L"HBEngine.EditorFormPanel","inspector");}
+    void attach(HWND owner,HINSTANCE instance,Post post,const std::string& panelName="inspector"){EditorPanelBase::attach(owner,instance,std::move(post),L"HBEngine.EditorFormPanel",panelName);}
     ~EditorFormPanel()override{if(font)DeleteObject(font);}
 
-    // op "inspector": {visible, rect, scale, theme, revision, rows:[{kind:"heading"|"message"|"row", text, label, toggle, open, controls:[...]}]}
+    // op "form" (or "inspector"): {visible, rect, scale, theme, revision, rows:[{kind:"heading"|"message"|"row", text, label, toggle, open, controls:[...]}]}
     void update(const Json& model){
         if(!window)return;
         if(model.contains("rows")){
