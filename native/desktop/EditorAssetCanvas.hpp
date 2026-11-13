@@ -11,7 +11,7 @@ class EditorAssetCanvas final : public EditorPanelBase {
     int scroll=0;
     double playhead=0;
     POINT start{};
-    bool dragging=false,widget=false;
+    bool dragging=false,widget=false,image=false;
     static constexpr float gutter=126,heading=32,lane=28;
     float timeX(double t)const{return gutter+float(t/data.value("length",1.0))*std::max(1.f,bounds[2]-gutter-12);}
     double xTime(float x)const{return std::clamp(double(x-gutter)/std::max(1.f,bounds[2]-gutter-12),0.0,1.0)*data.value("length",1.0);}
@@ -36,14 +36,15 @@ class EditorAssetCanvas final : public EditorPanelBase {
     void draw()override{
         canvas->Clear(theme.background);
         if(data.is_null())return;
-        if(widget){
+        if(widget||image){
             const auto [x,y,w,h]=frameRect();
             fill(x,y,w,h,theme.field);
             if(!pixels.empty()){
                 const auto width=data.at("width").get<UINT>(),height=data.at("height").get<UINT>();
                 const auto props=D2D1::BitmapProperties(D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM,D2D1_ALPHA_MODE_PREMULTIPLIED),96,96);
                 if(SUCCEEDED(canvas->CreateBitmap(D2D1::SizeU(width,height),pixels.data(),width*4,props,&frame.p))){
-                    canvas->DrawBitmap(frame.p,D2D1::RectF(x,y,x+w,y+h));
+                    canvas->DrawBitmap(frame.p,D2D1::RectF(x,y,x+w,y+h),1.f,
+                        data.value("nearest",false)?D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR:D2D1_BITMAP_INTERPOLATION_MODE_LINEAR);
                     frame={};
                 }
             }
@@ -88,6 +89,11 @@ class EditorAssetCanvas final : public EditorPanelBase {
         fill(timeX(playhead),0,1,float(bounds[3]),theme.accent);
     }
     LRESULT handle(UINT message,WPARAM w,LPARAM l)override{
+        if(image){
+            if(message==WM_KEYDOWN){forwardKey(message,w);return 0;}
+            if(message==WM_LBUTTONDOWN){SetFocus(window);return 0;}
+            return common(message,w,l);
+        }
         const int x=xOf(l),y=yOf(l);
         switch(message){
         case WM_LBUTTONDOWN:{
@@ -128,8 +134,8 @@ class EditorAssetCanvas final : public EditorPanelBase {
                     track=rows.at(row).at("id");const auto& keys=rows.at(row).at("keys");
                     if(hitClip(rows.at(row),x).empty()&&std::none_of(keys.begin(),keys.end(),[&](const Json& time){return std::abs(timeX(time)-x)<=7;})){
                         const auto type=rows.at(row).at("type").get<std::string>();
-                        const bool clips=type=="slot"||type=="notifies"||type=="sections"||type=="notify-state-add"||type=="animation"||type=="audio";
-                        if(type!="notify-state"&&type!="shot"&&type!="subsequence")
+                        const bool clips=type=="slot"||type=="notifies"||type=="sections"||type=="notify-state-add"||type=="animation"||type=="audio"||type=="shot"||type=="subsequence";
+                        if(type!="notify-state")
                             emit({{"event","edit"},{"action",clips?"clipAdd":"add"},{"track",track},{"type",type},{"time",xTime(float(x))}});
                     }
                 }
@@ -168,7 +174,7 @@ class EditorAssetCanvas final : public EditorPanelBase {
 public:
     void attach(HWND owner,HINSTANCE instance,Post post){EditorPanelBase::attach(owner,instance,std::move(post),L"HBEngine.EditorAssetCanvas","assetCanvas");}
     void updateTimeline(Json value){
-        widget=false;data=std::move(value);rows=data.at("tracks");pixels.clear();key=-1;
+        widget=image=false;data=std::move(value);rows=data.at("tracks");pixels.clear();key=-1;
         if(!clipSelection.empty()&&std::none_of(rows.begin(),rows.end(),[this](const Json& row){
             return row.at("id")==track&&row.contains("clips")&&std::any_of(row.at("clips").begin(),row.at("clips").end(),[this](const Json& clip){return clip.at("id")==clipSelection;});
         }))clipSelection.clear();
@@ -176,12 +182,16 @@ public:
     }
     void resetTimeline(){key=-1;clipSelection.clear();track.clear();playhead=0;scroll=0;}
     void updateWidget(Json value,std::vector<unsigned char> bytes,std::string selected){
-        widget=true;data=std::move(value);rows=std::move(data.at("rows"));data.erase("pixels");
+        widget=true;image=false;data=std::move(value);rows=std::move(data.at("rows"));data.erase("pixels");
         pixels=std::move(bytes);selection=std::move(selected);InvalidateRect(window,nullptr,FALSE);
+    }
+    void updateImage(Json value,std::vector<unsigned char> bytes){
+        widget=false;image=true;data=std::move(value);rows=Json::array();pixels=std::move(bytes);
+        InvalidateRect(window,nullptr,FALSE);
     }
     void layout(int x,int y,int w,int h,bool visible){bounds={x,y,w,h};shown=visible;place();}
     void probe(UINT message,WPARAM w,LPARAM l){SendMessageW(window,message,w,l);}
-    void probePaint(){InvalidateRect(window,nullptr,FALSE);UpdateWindow(window);}
+    void probePaint(){RedrawWindow(window,nullptr,nullptr,RDW_INVALIDATE|RDW_UPDATENOW);paint();}
     void probeAddKey(){SendMessageW(window,WM_LBUTTONDBLCLK,MK_LBUTTON,MAKELPARAM(int(timeX(data.at("length").get<double>()*.25)),int(heading+lane/2)));}
     void probeMoveWidget(const std::string& id,int dx,int dy){
         const auto row=std::find_if(rows.begin(),rows.end(),[&](const Json& item){return item.at("id")==id;});
@@ -193,5 +203,5 @@ public:
         SendMessageW(window,WM_LBUTTONDOWN,MK_LBUTTON,MAKELPARAM(x,y));
         SendMessageW(window,WM_LBUTTONUP,0,MAKELPARAM(x+dx,y+dy));
     }
-    Json inspect()const{return {{"backend",graphicsBackend()},{"paints",paints},{"rows",rows.size()}};}
+    Json inspect()const{return {{"backend",graphicsBackend()},{"paints",paints},{"rows",rows.size()},{"graphicsError",graphicsError},{"shown",shown},{"rect",bounds},{"pixelBytes",pixels.size()}};}
 };

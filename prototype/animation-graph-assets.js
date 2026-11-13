@@ -37,6 +37,38 @@ export function makeAnimationNode(type,x=100,y=100){
 }
 export function createAnimationGraph(name){const output=makeAnimationNode('output',680,180),rest=makeAnimationNode('rest',140,180);output.inputs.pose=rest.id;return {version:1,name,model:'',parameters:[{name:'Speed',type:'float',value:0},{name:'Moving',type:'bool',value:false}],output:output.id,nodes:[rest,output]};}
 export function addAnimationStatePose(data,machine,settings={}){const state=addAnimationState(machine,settings),rest=makeAnimationNode('rest',100,180);rest.scope=machine.id+'/'+state.id;data.nodes.push(rest);machine.inputs[state.input]=rest.id;return state;}
+export function addAnimationGraphNode(data,type,x,y,scope){
+  const node=makeAnimationNode(type,x,y);
+  const parameter=(field,type)=>{
+    let name=node.properties[field];
+    if(data.parameters.some(row=>row.name===name&&row.type!==type)){
+      let suffix=2;
+      while(data.parameters.some(row=>row.name===name))name=node.properties[field]+suffix++;
+      node.properties[field]=name;
+    }
+    let row=data.parameters.find(row=>row.name===name);
+    if(!row){
+      row={name,type,value:0,...type==='enum'?{values:[{name:'Idle',value:0},{name:'Run',value:1}]}:{}};
+      data.parameters.push(row);
+    }
+    return row;
+  };
+  if(type==='blend2d')for(const field of ['parameterX','parameterY'])parameter(field,'float');
+  if(type==='selectInt')parameter('parameter','int');
+  if(type==='selectEnum'){
+    const row=parameter('parameter','enum');
+    node.properties.samples[1].value=(row.values[1]||row.values[0]).value;
+  }
+  if(scope)node.scope=scope;
+  if(type==='stateMachine'){
+    const state=node.properties.states[0],rest=makeAnimationNode('rest',node.x-260,node.y);
+    rest.scope=node.id+'/'+state.id;
+    node.inputs[state.input]=rest.id;
+    data.nodes.push(rest);
+  }
+  data.nodes.push(node);
+  return node;
+}
 export function validAnimationGraph(data){
   try{
     if(data?.version!==1||!text(data.name,80)||!data.name||!text(data.model)||data.rootMotionMode!==undefined&&!rootMotionModes.includes(data.rootMotionMode)||!Array.isArray(data.parameters)||data.parameters.length>64||new Set(data.parameters.map(p=>p?.name)).size!==data.parameters.length||data.parameters.some(p=>!validAnimationParameter(p))||!Array.isArray(data.nodes)||!data.nodes.length||data.nodes.length>256)return false;

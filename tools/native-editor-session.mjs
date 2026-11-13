@@ -21,7 +21,12 @@ import {timelineRows} from '../prototype/timeline-rows.js';
 import {timelineSnap} from '../prototype/timeline-rate.js';
 import {SequenceSampler} from '../prototype/sequence-sampling.js';
 import {makeAnimationNotifyState} from '../prototype/animation-sync.js';
-import {animationGraphNodes,animationInputs,makeAnimationNode} from '../prototype/animation-graph-assets.js';
+import {addAnimationGraphNode,addAnimationStatePose,animationGraphNodes,animationInputs} from '../prototype/animation-graph-assets.js';
+import {addAnimationTransition,removeAnimationOwnedNodes,removeAnimationState} from '../prototype/animation-state-assets.js';
+import {animationPinLabel,animationScopeNodes,statePoseOutput} from '../prototype/animation-state-editor.js';
+import {resolveSprite} from '../prototype/sprite-import.js';
+import {spriteImage} from '../prototype/two-d-assets.js';
+import {editSequenceSection,loadSequenceTree} from '../prototype/sequence-sections.js';
 import {defaultEnvironment,defaultSurface} from '../prototype/model.js';
 import {createBlueprintResolver} from '../prototype/blueprint-inheritance.js';
 
@@ -88,7 +93,8 @@ export function nativeEditorSession(bridge) {
     doc.data = next;
     doc.dirty = JSON.stringify(next) !== doc.saved;
   }
-  async function openDocument(file) {
+  async function loadDocument(file) {
+    if(typeof file!=='string')throw Error('프로젝트 문서를 선택하세요.');
     const kind = assetKind(file);
     if (!assetSuffix[kind] && !editableText.test(file)) throw Error('이 파일은 전용 미리보기에서 열어야 해요.');
     if (!documents.items.has(file)) {
@@ -96,6 +102,10 @@ export function nativeEditorSession(bridge) {
       const text = await fs.readFile(source.file,'utf8');
       documents.open(file, assetSuffix[kind] ? kind : 'text', assetSuffix[kind] ? JSON.parse(text.replace(/^\uFEFF/, '')) : text);
     }
+    return documents.items.get(file);
+  }
+  async function openDocument(file) {
+    await loadDocument(file);
     return response(documents.select(file));
   }
   async function openProject(next) {
@@ -115,7 +125,7 @@ export function nativeEditorSession(bridge) {
     return graphContext(data, view);
   }
   function graphModel(doc, view) {
-    if(doc.kind==='animgraph')return animationGraphModel(doc.data);
+    if(doc.kind==='animgraph')return animationGraphModel(doc.data,view);
     if(gameplayGraphs.has(doc.kind))return gameplayGraph(doc.kind,doc.data);
     const data = structuredClone(doc.data), bp = doc.kind === 'blueprint', graph = graphFor(doc, data, view);
     const nodes = graph.nodes.map(node => {
@@ -132,18 +142,61 @@ export function nativeEditorSession(bridge) {
     }
     return {view, views:bp ? names(data) : [], nodes, edges:bp ? graph.edges : normalizedMaterialEdges(graph), comments:graph.comments || [], palette};
   }
-  function animationGraphModel(data){
-    const pin=id=>({id,label:id,color:typeColors.object});
-    const nodes=data.nodes.filter(node=>!node.scope);
+  function animationView(data,view){
+    if(view==='event')return {};
+    const [kind,id,subview]=view.split(':');
+    const machine=data.nodes.find(node=>node.id===id&&node.type==='stateMachine');
+    const state=machine?.properties.states.find(row=>row.id===subview);
+    if(!machine||kind!=='machine'&&kind!=='pose'||kind==='pose'&&!state)throw Error('애니메이션 그래프 보기를 선택하세요.');
+    return {machine,state};
+  }
+  function animationGraphModel(data,view){
+    const {machine,state}=animationView(data,view);
+    const views=[['event','포즈 그래프']];
+    for(const node of data.nodes)if(node.type==='stateMachine'){
+      views.push(['machine:'+node.id,node.name]);
+      for(const row of node.properties.states)views.push(['pose:'+node.id+':'+row.id,node.name+' / '+row.name]);
+    }
+    const pin=(id,label=id)=>({id,label,color:typeColors.object});
+    if(machine&&!state){
+      const {entry,states,transitions}=machine.properties;
+      const graphNode=(id,title,x,y,input=true)=>({id,title,x,y,inputs:input?[pin('in','진입')]:[],outputs:[pin('out','전이')]});
+      const edge=(from,to)=>({from:{node:from,pin:'out'},to:{node:to,pin:'in'}});
+      return {view,views,comments:[],palette:[{id:'state',title:'상태'}],
+        nodes:[graphNode('entry','Entry',20,80,false),graphNode('any','Any State',20,260,false),...states.map(row=>graphNode(row.id,row.name,row.x,row.y))],
+        edges:[edge('entry',entry),...transitions.map(row=>edge(row.from,row.to))]};
+    }
+    const nodes=animationScopeNodes({doc:{data},poseScope:state?{machine:machine.id,state:state.id}:null});
     const ids=new Set(nodes.map(node=>node.id));
-    return {views:[],comments:[],palette:Object.entries(animationGraphNodes).filter(([id])=>id!=='output').map(([id,meta])=>({id,title:meta.label})),
-      nodes:nodes.map(node=>({id:node.id,title:node.name,x:node.x,y:node.y,inputs:animationInputs(node).map(pin),
-        outputs:node.id===data.output?[]:[pin('pose')]})),
+    return {view,views,comments:[],palette:Object.entries(animationGraphNodes).filter(([id])=>id!=='output').map(([id,meta])=>({id,title:meta.label})),
+      nodes:nodes.map(node=>({id:node.id,title:node.name,x:node.x,y:node.y,inputs:animationInputs(node).map((id,index)=>pin(id,animationPinLabel(node,id,index,data))),
+        outputs:node.type==='output'?[]:[pin('pose','포즈')]})),
       edges:nodes.flatMap(node=>Object.entries(node.inputs).filter(([,source])=>ids.has(source))
         .map(([input,source])=>({from:{node:source,pin:'pose'},to:{node:node.id,pin:input}})))};
   }
-  function editAnimationGraph(data,{action,id,key,x,y,from,to,pin,output}){
-    const node=data.nodes.find(row=>row.id===id&&!row.scope);
+  function editAnimationGraph(data,view,{action,id,key,x,y,from,to,pin,output}){
+    const {machine,state}=animationView(data,view);
+    if(machine&&!state){
+      const props=machine.properties,selected=props.states.find(row=>row.id===id);
+      if(action==='add'||action==='move'){
+        if(![x,y].every(Number.isFinite))throw Error('상태 위치를 확인하세요.');
+        if(action==='add')addAnimationStatePose(data,machine,{x,y});
+        else if(selected)Object.assign(selected,{x,y});
+        else throw Error('이동할 상태를 선택하세요.');
+      }else if(action==='connect'){
+        if(from?.pin!=='out'||to?.pin!=='in'||!props.states.some(row=>row.id===to.node))throw Error('상태 전이를 연결하세요.');
+        if(from.node==='entry')props.entry=to.node;
+        else{
+          if(from.node===to.node||props.transitions.some(row=>row.from===from.node&&row.to===to.node))throw Error('이미 연결된 전이예요.');
+          addAnimationTransition(machine,from.node,to.node,data.parameters);
+        }
+      }else if(action==='disconnect')props.transitions=props.transitions.filter(row=>row[output?'from':'to']!==id);
+      else if(action==='delete')removeAnimationState(machine,id,data);
+      else throw Error('상태 그래프 편집 명령을 확인하세요.');
+      return;
+    }
+    const visible=new Set(animationScopeNodes({doc:{data},poseScope:state?{machine:machine.id,state:state.id}:null}).map(row=>row.id));
+    const node=data.nodes.find(row=>row.id===id&&visible.has(row.id));
     if(action==='add'||action==='move'){
       if(![x,y].every(Number.isFinite))throw Error('노드 위치를 확인하세요.');
       if(action==='move'){
@@ -151,24 +204,25 @@ export function nativeEditorSession(bridge) {
         Object.assign(node,{x,y});
       }else{
         if(key==='output'||!Object.hasOwn(animationGraphNodes,key))throw Error('애니메이션 노드 종류를 확인하세요.');
-        data.nodes.push(makeAnimationNode(key,x,y));
+        addAnimationGraphNode(data,key,x,y,state?machine.id+'/'+state.id:undefined);
       }
     }else if(action==='connect'){
-      const source=data.nodes.find(row=>row.id===from?.node&&!row.scope),target=data.nodes.find(row=>row.id===to?.node&&!row.scope);
-      if(!source||!target||source.id===data.output||from.pin!=='pose'||!animationInputs(target).includes(to.pin))throw Error('포즈 연결을 확인하세요.');
-      target.inputs[to.pin]=source.id;
-    }else if(action==='disconnect'||action==='delete'){
-      if(!node)throw Error('노드를 선택하세요.');
-      if(action==='disconnect'&&!output)delete node.inputs[pin];
+      const source=data.nodes.find(row=>row.id===from?.node&&visible.has(row.id));
+      if(!source||source.type==='output'||from.pin!=='pose')throw Error('포즈 연결을 확인하세요.');
+      if(state&&to?.node===statePoseOutput&&to.pin==='pose')machine.inputs[state.input]=source.id;
       else{
-        if(action==='delete'&&id===data.output)throw Error('출력 노드는 유지해야 해요.');
-        const removed=new Set([id]);
-        if(action==='delete'){
-          for(const row of data.nodes)if(row.scope?.startsWith(id+'/'))removed.add(row.id);
-          data.nodes=data.nodes.filter(row=>!removed.has(row.id));
-        }
-        for(const row of data.nodes)for(const [input,source] of Object.entries(row.inputs))if(removed.has(source))delete row.inputs[input];
+        const target=data.nodes.find(row=>row.id===to?.node&&visible.has(row.id));
+        if(!target||!animationInputs(target).includes(to.pin))throw Error('포즈 연결을 확인하세요.');
+        target.inputs[to.pin]=source.id;
       }
+    }else if(action==='disconnect'||action==='delete'){
+      if(action==='disconnect'&&!output&&state&&id===statePoseOutput){delete machine.inputs[state.input];return;}
+      if(!node)throw Error('노드를 선택하세요.');
+      if(action==='delete'){
+        if(id===data.output)throw Error('출력 노드는 유지해야 해요.');
+        removeAnimationOwnedNodes(data,new Set([id]),new Set([id]));
+      }else if(!output)delete node.inputs[pin];
+      else for(const row of data.nodes)for(const [input,source] of Object.entries(row.inputs))if(source===id)delete row.inputs[input];
     }else throw Error('포즈 그래프 편집 명령을 확인하세요.');
   }
   function gameplayGraph(kind,data){
@@ -324,6 +378,7 @@ export function nativeEditorSession(bridge) {
       return project().importStream(folder,path.basename(file),createReadStream(file),()=>{},{expectedBytes:stat.size});
     },
     'document.open': ({path}) => openDocument(path),
+    'document.load': async ({path})=>response(await loadDocument(path)),
     'document.read': ({path}) => response(targetDocument(path)),
     'document.replace': async ({path,text,expectedRevision}) => {
       const doc = targetDocument(path);
@@ -432,6 +487,11 @@ export function nativeEditorSession(bridge) {
       if(doc.kind==='montage'){
         if(!rows.some(row=>row.id==='slot:DefaultSlot'))rows.push({id:'slot:DefaultSlot',type:'slot',name:'DefaultSlot',items:()=>[]});
         rows.push({id:'notify-state:',type:'notify-state-add',name:'구간 알림 추가',items:()=>[]});
+      }else{
+        for(const [kind,name] of [['shot','샷 추가'],['subsequence','하위 시퀀스 추가']]){
+          const id='section-row:'+kind+':0';
+          if(!rows.some(row=>row.id===id))rows.push({id,type:kind,name,items:()=>[]});
+        }
       }
       return {length:doc.data.length,tracks:rows.map(row=>{
           const items=row.items();
@@ -473,6 +533,27 @@ export function nativeEditorSession(bridge) {
         if(typeof track!=='string'||!['montage','sequenceasset'].includes(doc.kind))throw Error('시퀀스나 몽타주 타임라인을 선택하세요.');
         const [key,items,position]=timelineItems(doc.kind,next,track);
         const clipIndex=items.findIndex(item=>item.id===id);
+        if(doc.kind==='sequenceasset'&&key==='sections'){
+          if(action==='clipDelete')editSequenceSection(next,{operation:'remove',id});
+          else{
+            if(!Number.isFinite(time)||time<0||time>=next.length)throw Error('구간 시간을 확인하세요.');
+            const start=Math.min(next.length,timelineSnap(next,time));
+            if(action==='clipMove')editSequenceSection(next,{operation:'update',id,section:{start}});
+            else{
+              if(typeof asset!=='string'||assetKind(asset)!=='sequenceasset')throw Error('하위 시퀀스 에셋을 선택하세요.');
+              const [,kind,row]=track.split(':');
+              editSequenceSection(next,{operation:'add',section:{asset,name:path.posix.basename(asset,'.hbsequence.json').slice(0,80),kind,row:Number(row),start,duration:Math.min(1,next.length-start)}});
+              await loadSequenceTree(doc.path,async name=>{
+                if(name===doc.path)return next;
+                const source=await project().read(name);
+                const data=JSON.parse((await fs.readFile(source.file,'utf8')).replace(/^\uFEFF/,''));
+                if(!validAsset('sequenceasset',data))throw Error('하위 시퀀스 에셋을 확인하세요.');
+                return data;
+              });
+            }
+          }
+          change(doc,next);return response(doc);
+        }
         if(action==='clipDelete'){
           if(clipIndex<0)throw Error('삭제할 항목을 선택하세요.');
           const [removed]=items.splice(clipIndex,1);
@@ -493,8 +574,9 @@ export function nativeEditorSession(bridge) {
             const audio=doc.kind==='sequenceasset'&&next.tracks[Number(key)]?.type==='audio';
             if(doc.kind==='sequenceasset'&&!['audio','animation'].includes(next.tracks[Number(key)]?.type))
               throw Error('애니메이션 또는 오디오 트랙을 선택하세요.');
-            const assetTypes=audio?['audio','audioasset']:['animation','spriteanimation','skeletalclip'];
-            if(typeof asset!=='string'||!assetTypes.includes(assetKind(asset)))throw Error('트랙에 맞는 클립 에셋을 선택하세요.');
+            const kind=typeof asset==='string'?assetKind(asset):null;
+            const allowed=audio?kind==='audioasset'||kind==='media'&&/\.(wav|mp3|ogg|flac)$/i.test(asset):['animation','spriteanimation','skeletalclip'].includes(kind);
+            if(!allowed)throw Error('트랙에 맞는 클립 에셋을 선택하세요.');
             await project().read(asset);
             const slotName=typeof slot==='string'&&slot.trim()?slot.trim():track.startsWith('slot:')?track.slice(5):'DefaultSlot';
             const duration=Math.min(1,next.length-time);
@@ -530,6 +612,31 @@ export function nativeEditorSession(bridge) {
       return response(doc);
     },
     'widget.catalog': ()=>Object.entries(widgetTypes).map(([id,label])=>({id,label})),
+    'asset.imagePreview': async ({index=0,level=0}={})=>{
+      const doc=current(),data=doc.data;
+      if(!Number.isInteger(index)||index<0||!Number.isInteger(level)||level<0)throw Error('이미지 미리보기 범위를 확인하세요.');
+      const read=async name=>JSON.parse((await projectBytes(project(),name)).toString('utf8').replace(/^\uFEFF/,''));
+      let sprite,images,filter='linear';
+      if(doc.kind==='sprite'){
+        sprite=await resolveSprite(data,read);filter=sprite.filter;
+        const texture=assetKind(sprite.texture)==='texture2d'?await read(sprite.texture):null;
+        images=[texture?.images?.[0]||sprite.texture];
+      }else if(['texture2d','cubemap','texturearray','volumetexture'].includes(doc.kind)){
+        images=level===0?data.images:data.mips?.[level-1]?.images;
+        filter=data.sampler?.magFilter||filter;
+      }else throw Error('스프라이트 또는 텍스처 문서를 선택하세요.');
+      if(!images?.[index])return null;
+      const source=await project().read(images[index]);
+      const {createCanvas,loadImage}=await import('@napi-rs/canvas');
+      const image=await loadImage(await fs.readFile(source.file));
+      const rect=sprite?spriteImage(sprite,image)?.rect:[0,0,image.width,image.height];
+      if(!rect)throw Error('스프라이트가 이미지 범위를 벗어났어요.');
+      const [x,y,w,h]=rect,scale=Math.min(1,960/Math.max(w,h)),width=Math.max(1,Math.round(w*scale)),height=Math.max(1,Math.round(h*scale));
+      const canvas=createCanvas(width,height),ctx=canvas.getContext('2d');
+      ctx.imageSmoothingEnabled=filter!=='nearest';
+      ctx.drawImage(image,x,y,w,h,0,0,width,height);
+      return {width,height,nearest:filter==='nearest',pixels:canvas.data().toString('base64')};
+    },
     'widget.nodes': ()=>assetOfKind('widget').data.nodes.map(({id,name,type})=>({id,name,type})),
     'widget.preview': async ({width,height})=>{
       if(![width,height].every(size=>Number.isInteger(size)&&size>0&&size<=4096))throw Error('위젯 미리보기 크기를 확인하세요.');
@@ -595,9 +702,13 @@ export function nativeEditorSession(bridge) {
       return response(doc);
     },
     'graph.read': ({path,view='event'}) => graphModel(targetDocument(path),view),
-    'graph.inspectorPath': ({id})=>{
+    'graph.inspectorPath': ({id,view='event'})=>{
       const doc=current();
       if(!gameplayGraphs.has(doc.kind))throw Error('게임플레이 그래프를 선택하세요.');
+      if(doc.kind==='animgraph'&&view.startsWith('machine:')){
+        const {machine}=animationView(doc.data,view),index=machine.properties.states.findIndex(row=>row.id===id);
+        if(index>=0)return ['nodes',String(doc.data.nodes.indexOf(machine)),'properties','states',String(index)];
+      }
       const key=doc.kind==='statemachine'?'states':'nodes';
       const index=doc.data[key].findIndex(row=>row.id===id);
       return index<0?[]:[key,String(index)];
@@ -628,8 +739,8 @@ export function nativeEditorSession(bridge) {
       if(gameplayGraphs.has(doc.kind)){
         const next=structuredClone(doc.data);
         if(doc.kind==='animgraph'){
-          editAnimationGraph(next,{action,id,key,x,y,from,to,pin,output});change(doc,next);
-          return {...await response(doc),model:animationGraphModel(doc.data)};
+          editAnimationGraph(next,view,{action,id,key,x,y,from,to,pin,output});change(doc,next);
+          return {...await response(doc),model:animationGraphModel(doc.data,view)};
         }
         changeGameplayGraph(doc,next,{action,id,key,x,y,from,to,pin,output});
         return {...await response(doc),model:gameplayGraph(doc.kind,doc.data)};
