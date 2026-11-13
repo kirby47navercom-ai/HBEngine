@@ -30,6 +30,15 @@ static std::size_t validationErrors(Device& gpu){
 static nlohmann::json proof(DeviceDriver driver,HWND window){
     // Tiny upload slice forces the oversized-upload fallback path.
     Device gpu(driver,true,64*1024,64);nlohmann::json out;out["software"]=gpu.software;out["debugLayer"]=gpu.debug;
+    d3d12::DescriptorPool cpuViews;
+    cpuViews.create(gpu.device.p,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,4);
+    std::array<D3D12_CPU_DESCRIPTOR_HANDLE,13> cpuHandles{};
+    for(auto& handle:cpuHandles)handle=cpuViews.take();
+    REQUIRE(cpuViews.pageCount()==4);
+    for(std::size_t i=cpuHandles.size();i>4;--i)cpuViews.give(cpuHandles[i-1]);
+    REQUIRE(cpuViews.pageCount()==1);
+    cpuViews.give(cpuHandles[1]);REQUIRE(cpuViews.take().ptr==cpuHandles[1].ptr);
+    out["cpuDescriptorPaging"]=true;
     D3D12_ROOT_PARAMETER params[2]{};
     params[0].ParameterType=D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;params[0].Constants={0,0,4};params[0].ShaderVisibility=D3D12_SHADER_VISIBILITY_PIXEL;
     params[1].ParameterType=D3D12_ROOT_PARAMETER_TYPE_CBV;params[1].Descriptor={1,0};params[1].ShaderVisibility=D3D12_SHADER_VISIBILITY_VERTEX;

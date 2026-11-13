@@ -13,6 +13,7 @@ import {NativeHost} from './native-host.mjs';
 import {AudioRouting} from '../prototype/audio-mixer.js';
 import {openNativeWavStream} from './native-wav-stream.mjs';
 import {createReadStream} from 'node:fs';
+import {AudioWorkletNode} from 'node-web-audio-api';
 import {readProjectManifest} from './project-manifest.mjs';
 import {projectBytes} from './project-bytes.mjs';
 
@@ -55,7 +56,13 @@ export function createNativeAudioContext(Context,{silent=false,onFallback=()=>{}
 }
 
 export function nativeAudioRouting({readAsset,stream},createContext){
- const routing=new AudioRouting({readAsset});routing.ensure=async()=>{if(routing.disposed)throw Error('오디오 실행이 종료됐어요.');if(!routing.context){routing.context=createContext();routing.destination=routing.context.destination;}return routing.context;};
+ const routing=new AudioRouting({readAsset});
+ routing.capturePlatform={WorkletNode:AudioWorkletNode,loadModule:async context=>{
+  const source=await fs.readFile(new URL('../prototype/audio-capture-worklet.js',import.meta.url));
+  const url=URL.createObjectURL(new Blob([source],{type:'text/javascript'}));
+  try{await context.audioWorklet.addModule(url);}finally{URL.revokeObjectURL(url);}
+ }};
+ routing.ensure=async()=>{if(routing.disposed)throw Error('오디오 실행이 종료됐어요.');if(!routing.context){routing.context=createContext();routing.destination=routing.context.destination;}return routing.context;};
  const player=routing.player.bind(routing);
  routing.player=async(url,settings={})=>{
   if(settings.streaming!==true||settings.sequencePCM)return player(url,{...settings,sequencePCM:true});

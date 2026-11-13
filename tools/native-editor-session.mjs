@@ -44,6 +44,7 @@ import {defaultEnvironment,defaultSurface} from '../prototype/model.js';
 import {createBlueprintResolver} from '../prototype/blueprint-inheritance.js';
 import {resolveTakePresetTree,takePresetGroups,takePresetRevisionGuard} from '../prototype/take-preset-inheritance.js';
 import {applyTakePreset,takePresetFromSequence} from '../prototype/take-preset-assets.js';
+import {captureSaveSettings} from '../prototype/audio-capture-save.js';
 
 const materialKinds = new Set(['material', 'materialfunction', 'materiallayer', 'materialblend']);
 const gameplayGraphs=new Set(['behaviortree','statemachine','animgraph']);
@@ -710,6 +711,24 @@ export function nativeEditorSession(bridge) {
       if(!validAsset('takepreset',data)||/[\\/:<>?"|*\x00-\x1f]/.test(data.name))throw Error('새 프리셋 이름을 확인하세요.');
       await project().checkedBatch([{path:target,text:JSON.stringify(data,null,2),expected:null}]);
       return openDocument(target);
+    },
+    'audio.importCapture': async ({name,file})=>{
+      const {folder,name:stem}=captureSaveSettings({name});
+      if(typeof file!=='string'||!path.isAbsolute(file)||!/^mix-\d+-\d+\.wav$/.test(path.basename(file)))
+        throw Error('편집기에서 녹음한 WAV 파일을 선택하세요.');
+      const directory=process.env.HB_USER_DATA_DIR;
+      if(!directory||path.relative(path.join(directory,'Sessions'),path.dirname(file))!=='')throw Error('편집기 녹음 저장 경로를 확인하세요.');
+      const owner=project(),stat=await fs.lstat(file);
+      if(!stat.isFile()||stat.isSymbolicLink()||stat.size<=44||stat.size>32*1024*1024+44)throw Error('녹음된 WAV 크기를 확인하세요.');
+      const handle=await fs.open(file,'r');
+      try{
+        const header=Buffer.alloc(44);
+        if((await handle.read(header,0,44,0)).bytesRead!==44||header.toString('ascii',0,4)!=='RIFF'||
+          header.toString('ascii',8,12)!=='WAVE'||header.readUInt32LE(40)!==stat.size-44)
+          throw Error('녹음된 WAV 형식을 확인하세요.');
+      }finally{await handle.close();}
+      await owner.mkdir(folder);
+      return owner.importStream(folder,stem+'.wav',createReadStream(file),()=>{},{expectedBytes:stat.size});
     },
     'timeline.importTake': async ({name,data})=>{
       if(typeof name!=='string'||!name.trim()||name.length>70||/[\/\\:<>?"|*\x00-\x1f]/.test(name)||

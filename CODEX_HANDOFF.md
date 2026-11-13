@@ -1,3 +1,7 @@
+## Windows 네이티브 게임 믹스 녹음·CPU 디스크립터 · 2026-11-13
+
+장면 메뉴에서 플레이를 녹음하고 종료하면 원래 프로젝트의 `Assets/Recordings`에 WAV를 저장해요. 공용 믹서의 AudioWorklet과 상한이 있는 버퍼를 사용해요. 격리된 Win32 편집기에서 D3D12 16프레임·시퀀스·48kHz 스테레오 WAV의 실제 PCM 신호를 확인했어요. `native/build/native-authoring-Ri0qVt/report.json`과 `native/build/native-game-tYjMjl/acceptance.json`을 참고해요. CPU용 D3D12 SRV·RTV·DSV 디스크립터도 페이지가 필요할 때 늘어나고, 비어 있는 추가 페이지를 반환해요. 하드웨어와 WARP 검사 `native/build/d3d12-direct-o0lLav/acceptance.json`을 통과했어요.
+
 ## Windows D3D12 디스크립터·블루프린트 관찰·패키지 JSON · 2026-11-13
 
 D3D12는 지원하는 하드웨어 어댑터를 열거해 사용하고, 기존 기본 슬라이스를 넘을 때 페이지를 추가해 명령이 많아도 계속 기록해요. GPU 펜스가 끝난 페이지를 프레임 슬롯별로 재사용하고 나머지 페이지는 해제해요. `native/build/d3d12-direct-L9jONL/acceptance.json`의 하드웨어·WARP에서 재사용 6회와 검증 오류 0을 확인했어요. 작은 슬라이스로 페이지 전환을 강제한 장면 검사 `native/build/d3d12-scene-9oelxV/acceptance.json`은 두 드라이버에서 37회 전환하며 41종 픽셀 비교를 통과했어요. 입자 상태·충돌·사망 데이터 비교는 `native/build/d3d12-particles-42fECk/acceptance.json`이에요.

@@ -178,7 +178,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,PWSTR,int show){bool hiddenRequ
      else if(flag==L"--editor-profile")editorProfile=fs::absolute(argv[++i]);
      else if(flag==L"--editor-owner")owner=reinterpret_cast<HWND>(std::stoull(argv[++i]));
      else if(flag==L"--editor-scene")extra+=L" --editor-scene "+quote(argv[++i]);
-     else if(flag==L"--editor-take-output"||flag==L"--editor-take-name"||flag==L"--editor-take-target"||flag==L"--editor-take-preset")
+     else if(flag==L"--editor-take-output"||flag==L"--editor-take-name"||flag==L"--editor-take-target"||flag==L"--editor-take-preset"||flag==L"--editor-audio-output")
          extra+=L" "+flag+L" "+quote(argv[++i]);
  }
  if(!editorProject.empty())return playEditorProject(host,instance,editorProject,editorProfile,owner,show,std::move(extra));

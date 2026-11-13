@@ -24,20 +24,53 @@ struct Upload {unsigned char* cpu=nullptr;D3D12_GPU_VIRTUAL_ADDRESS gpu=0;ID3D12
 struct DescriptorTable {D3D12_CPU_DESCRIPTOR_HANDLE cpu{};D3D12_GPU_DESCRIPTOR_HANDLE gpu{};UINT stride=0;
     D3D12_CPU_DESCRIPTOR_HANDLE cpuAt(UINT i)const{return {cpu.ptr+SIZE_T(i)*stride};}};
 
-// CPU-only RTV/DSV descriptors with slot reuse.
+// CPU-only descriptors are copied into command lists or shader-visible tables at record time.
 class DescriptorPool {
-    Com<ID3D12DescriptorHeap> heap;D3D12_CPU_DESCRIPTOR_HANDLE start{};UINT stride=0,capacity=0,next=0;std::vector<UINT> free;
+    struct Page {
+        Com<ID3D12DescriptorHeap> heap;
+        D3D12_CPU_DESCRIPTOR_HANDLE start{};
+        UINT next=0,live=0;
+        std::vector<UINT> free;
+    };
+    ID3D12Device* owner=nullptr;
+    D3D12_DESCRIPTOR_HEAP_TYPE type=D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+    UINT stride=0,capacity=0;
+    std::vector<Page> pages;
+    void append(){
+        D3D12_DESCRIPTOR_HEAP_DESC desc{};desc.Type=type;desc.NumDescriptors=capacity;
+        Page page;
+        check(owner->CreateDescriptorHeap(&desc,__uuidof(ID3D12DescriptorHeap),reinterpret_cast<void**>(&page.heap.p)),"Direct3D12 CPU descriptor page");
+        page.start=page.heap->GetCPUDescriptorHandleForHeapStart();
+        page.free.reserve(capacity);
+        pages.push_back(std::move(page));
+    }
 public:
-    void create(ID3D12Device* device,D3D12_DESCRIPTOR_HEAP_TYPE type,UINT count){
-        D3D12_DESCRIPTOR_HEAP_DESC d{};d.Type=type;d.NumDescriptors=count;
-        check(device->CreateDescriptorHeap(&d,__uuidof(ID3D12DescriptorHeap),reinterpret_cast<void**>(&heap.p)),"Direct3D12 descriptor pool");
-        start=heap->GetCPUDescriptorHandleForHeapStart();stride=device->GetDescriptorHandleIncrementSize(type);capacity=count;
+    void create(ID3D12Device* device,D3D12_DESCRIPTOR_HEAP_TYPE kind,UINT count){
+        owner=device;type=kind;capacity=count;stride=device->GetDescriptorHandleIncrementSize(type);
+        append();
     }
     D3D12_CPU_DESCRIPTOR_HANDLE take(){
-        UINT slot;if(!free.empty()){slot=free.back();free.pop_back();}else{if(next==capacity)throw std::runtime_error("Direct3D12 render target descriptors exhausted");slot=next++;}
-        return {start.ptr+SIZE_T(slot)*stride};
+        auto found=std::find_if(pages.begin(),pages.end(),[this](const Page& page){return !page.free.empty()||page.next<capacity;});
+        if(found==pages.end()){append();found=std::prev(pages.end());}
+        auto& page=*found;
+        UINT slot;
+        if(page.free.empty())slot=page.next++;
+        else{slot=page.free.back();page.free.pop_back();}
+        ++page.live;
+        return {page.start.ptr+SIZE_T(slot)*stride};
     }
-    void give(D3D12_CPU_DESCRIPTOR_HANDLE h){if(h.ptr&&stride)free.push_back(UINT((h.ptr-start.ptr)/stride));}
+    void give(D3D12_CPU_DESCRIPTOR_HANDLE handle){
+        if(!handle.ptr)return;
+        const auto found=std::find_if(pages.begin(),pages.end(),[&](const Page& page){
+            return handle.ptr>=page.start.ptr&&handle.ptr-page.start.ptr<SIZE_T(page.next)*stride;
+        });
+        if(found==pages.end())return;
+        if(--found->live==0){
+            found->free.clear();found->next=0;
+            if(found!=pages.begin())pages.erase(found);
+        }else found->free.push_back(UINT((handle.ptr-found->start.ptr)/stride));
+    }
+    std::size_t pageCount()const{return pages.size();}
 };
 
 class Device {

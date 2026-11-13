@@ -15,6 +15,7 @@ const root=path.resolve(import.meta.dirname,'..'),json=v=>JSON.stringify(v,null,
 const forbidden=new Set(['prototype/player.js','tools/check-player-keyboard-release.mjs','docs/NODE_CATALOG.md']);
 export async function nativeRuntimeFiles(){
  const files=new Set(await moduleClosure('tools/native-game-runner.mjs',new Set(),{exclude:forbidden})),packages=new Set();
+ files.add(path.join(root,'prototype/audio-capture-worklet.js'));
  async function dependency(name){if(packages.has(name))return;packages.add(name);const dir=path.join(root,'node_modules',name),p=JSON.parse(await fs.readFile(path.join(dir,'package.json'),'utf8'));async function walk(at){for(const e of await fs.readdir(at,{withFileTypes:true})){if(e.isSymbolicLink())throw Error('네이티브 의존성 심볼릭 링크');const file=path.join(at,e.name);if(e.isDirectory()){if(!['test','tests','examples','.github','docs'].includes(e.name))await walk(file);}else if(e.name.endsWith('.node')&&!e.name.includes('win32-x64-msvc'))continue;else if(/\.(?:m?js|cjs|json|node|wasm|dat)$/.test(e.name)||/^licen[cs]e/i.test(e.name))files.add(file);}}await walk(dir);for(const dep of Object.keys(p.dependencies||{}))await dependency(dep);}
  for(const dep of ['@napi-rs/canvas','@napi-rs/canvas-win32-x64-msvc','node-web-audio-api','@dimforge/rapier2d-compat','@dimforge/rapier3d-compat'])await dependency(dep);
  for(const file of files){const name=path.relative(root,file).split(path.sep).join('/');if(forbidden.has(name))throw Error('별도 소유 소스는 네이티브 패키지에 포함할 수 없어요: '+name);}

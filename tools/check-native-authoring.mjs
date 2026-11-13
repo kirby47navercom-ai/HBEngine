@@ -7,6 +7,7 @@ import {createCanvas} from '@napi-rs/canvas';
 import {createAsset} from '../prototype/asset-documents.js';
 import {makeNode,connect} from '../prototype/blueprint-model.js';
 import {createPlacedObject} from '../prototype/placement-catalog.js';
+import {makeSceneComponent} from '../prototype/scene-components.js';
 import {createTakePreset} from '../prototype/take-preset-assets.js';
 import {activeInstalledVersions} from './install-editor.mjs';
 import {nativeEditorSession} from './native-editor-session.mjs';
@@ -106,6 +107,11 @@ wave.write('data',36);wave.writeUInt32LE(samples*2,40);
 for(let i=0;i<samples;i++)wave.writeInt16LE(Math.round(Math.sin(i*Math.PI/10)*14000),44+i*2);
 await fs.writeFile(path.join(project.root,'Assets/NativeTone.wav'),wave);
 await project.project.write(audioAsset,JSON.stringify({...createAsset('audioasset','NativeTone'),clip:'Assets/NativeTone.wav',loop:true}));
+const startup=JSON.parse(await fs.readFile(path.join(project.root,project.manifest.startupScene),'utf8'));
+startup.objects[0].components.push(makeSceneComponent('AudioSource',{
+  clip:'Assets/NativeTone.wav',playOnStart:true,loop:true,spatial:false,
+}));
+await project.project.write(project.manifest.startupScene,JSON.stringify(startup));
 const debugAsset='Assets/BP_NativeDebug.hbblueprint.json',debugScene='Assets/Scenes/NativeDebug.hbscene.json';
 const debugBP=createAsset('blueprint','NativeDebug'),firstBreak=makeNode('print'),afterBreak=makeNode('print'),watchedTick=makeNode('tick');
 firstBreak.breakpoint=true;firstBreak.inputValues={message:'HB_BREAK_FIRST'};afterBreak.inputValues={message:'HB_BREAK_NEXT'};
@@ -436,7 +442,13 @@ const evidence=JSON.parse(await fs.readFile(report,'utf8'));
 assert.equal(evidence.webview,false);
 assert.equal(evidence.saved,true);
 if(process.argv[3]){
-  assert.deepEqual(evidence.play,{backend:'D3D12',frames:4,scene:project.manifest.startupScene,take:'Assets/NativeTake.hbsequence.json',webview:false});
+  assert.deepEqual(evidence.play,{backend:'D3D12',frames:16,scene:project.manifest.startupScene,take:'Assets/NativeTake.hbsequence.json',webview:false});
+  const mix=await fs.readFile(path.join(project.root,'Assets/Recordings/NativeMix.wav'));
+  assert.equal(mix.toString('ascii',0,4),'RIFF');
+  assert.equal(mix.readUInt16LE(22),2);
+  assert.equal(mix.readUInt32LE(24),48000);
+  assert.equal(mix.readUInt32LE(40),mix.length-44);
+  assert.ok(mix.subarray(44).some(byte=>byte!==0),'Native game mix contains the test tone');
   assert.deepEqual(await fs.readdir(path.join(process.env.HB_USER_DATA_DIR,'Play')),[]);
 }
 assert.equal(evidence.contentDock,true);
