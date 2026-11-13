@@ -19,6 +19,9 @@ import {createRigidPhysics} from '../prototype/physics-world.js';
 import {packedTexture} from '../prototype/native-scene-renderer.js';
 import {createAudioMixer} from '../prototype/audio-mixer.js';
 import {retainTestEvidence} from './test-artifacts.mjs';
+import {nativeImaFixture} from './native-ima-fixture.mjs';
+import {openNativeWavStream} from './native-wav-stream.mjs';
+import {Readable} from 'node:stream';
 const root=path.resolve(import.meta.dirname,'..'),work=await fs.mkdtemp(path.join(root,'native/build/native-platform-'));retainTestEvidence(work);const report={passed:false,cases:[]},record=name=>report.cases.push(name);
 assert.equal(buildContract.windowsRuntime.default,'native');
 assert.equal(buildContract.renderer,'Win32/DirectX 12 (DirectX 11 대체)');
@@ -28,6 +31,39 @@ assert.doesNotThrow(()=>validateNativeContent(content('Assets/list.hbwidget.json
 assert.throws(()=>validateNativeContent(content('Assets/a.hbblueprint.json',{components:[{type:'AudioSource',properties:{streaming:true,clip:'Assets/clip.ogg'}}]}),{}),/WAV/);
 assert.doesNotThrow(()=>validateNativeContent(content('Assets/b.hbblueprint.json',{components:[{type:'UIWidget',properties:{space:'tracked'}}]}),{framePacing:'display'}));
 record('AI default runtime contract, tracked widgets, display sync and unsupported native content validation');
+{
+  const {bytes,frames,rate,stride,blockFrames}=nativeImaFixture({blocks:200});
+  const ranges=[],sources=[];
+  const clock={
+    currentTime:0,createGain:()=>({disconnect(){}}),
+    createBuffer:(channels,length)=>{const pcm=Array.from({length:channels},()=>new Float32Array(length));return {length,getChannelData:channel=>pcm[channel]};},
+    createBufferSource:()=>({playbackRate:{},connect(){},start(){sources.push(this);},stop(){},disconnect(){}}),
+  };
+  const stream=(start,end)=>{ranges.push([start,end]);return Readable.from([bytes.subarray(start,end+1)]);};
+  const voice=await openNativeWavStream(clock,stream);
+  assert.equal(voice.duration,frames/rate);
+  const waveform=await voice.waveform();
+  assert.equal(waveform.bins.length,256);
+  assert.ok(waveform.bins.every(([min,max])=>min<-.30&&max>.24));
+  assert.ok(ranges.every(([start,end])=>end-start+1<bytes.length/2));
+  ranges.length=0;
+  const at=3*blockFrames+2;
+  voice.currentTime=at/rate;
+  voice.setVirtual(false);
+  await voice.play();
+  while(voice.loading)await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(ranges[0][0],60+3*stride);
+  assert.deepEqual(sources[0].buffer.getChannelData(0).slice(0,2),Float32Array.of(8331/32768,8748/32768));
+  assert.deepEqual(sources[0].buffer.getChannelData(1).slice(0,2),Float32Array.of(-10331/32768,-10748/32768));
+  voice.setVirtual(true);
+  assert.equal(voice.decoderResident,false);
+  voice.dispose();
+  bytes[62]=255;
+  const broken=await openNativeWavStream(clock,stream);
+  await assert.rejects(broken.waveform(),/블록 헤더/);
+  broken.dispose();
+  record('IMA ADPCM stereo samples, fact length, block-aligned seek, bounded reads, waveform and corrupt header');
+}
 const pack={manifest:{width:640,height:360},url:name=>'hbasset:'+encodeURIComponent(name),readBytes:name=>fs.readFile(path.join(work,path.basename(name))),resolve:async name=>{if(name!=='Assets/art.svg')throw Object.assign(Error('missing'),{code:'ENOENT'});return path.join(work,'art.svg');}};
 await fs.writeFile(path.join(work,'art.svg'),'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="16" height="32" fill="#ff0000"/><rect x="16" width="16" height="32" fill="#0000ff"/></svg>');
 const assets=installNativeAssets(pack);try{const map=await assets.texture('Assets/art.svg'),packed=packedTexture(map);assert.equal(packed.width,32);assert.equal(packed.height,32);assert.deepEqual([...Buffer.from(packed.rgbaBase64,'base64').subarray(0,4)],[255,0,0,255]);map.dispose();const physics=createRigidPhysics(make2DScene());await physics.ready();physics.step(.05);physics.dispose();await assert.rejects(fetch('https://example.com'),/패키지/);record('SVG→native pixels and Rapier with platform globals; external fetch rejected');}finally{assets.restore();}

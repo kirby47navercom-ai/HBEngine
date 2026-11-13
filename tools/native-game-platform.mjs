@@ -67,7 +67,7 @@ export function nativeAudioRouting({readAsset,stream},createContext){
  routing.player=async(url,settings={})=>{
   if(settings.streaming!==true||settings.sequencePCM)return player(url,{...settings,sequencePCM:true});
   const name=url.startsWith('hbasset:')?decodeURIComponent(url.slice('hbasset:'.length)):'';
-  if(!stream||!/\.wav$/i.test(name))throw Error('네이티브 스트리밍은 PCM WAV 클립을 사용해요.');
+  if(!stream||!/\.wav$/i.test(name))throw Error('네이티브 스트리밍은 WAV 클립을 사용해요.');
   const voice=await openNativeWavStream(await routing.ensure(),(start,end)=>stream(name,start,end),settings.signal);
   if(routing.disposed||settings.signal?.aborted){voice.dispose();settings.signal?.throwIfAborted();throw Error('오디오 실행이 종료됐어요.');}
   return voice;

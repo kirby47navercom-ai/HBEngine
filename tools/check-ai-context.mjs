@@ -79,10 +79,15 @@ try {
   assert.equal(schemaSection(sample), sample);
   for (const key of ['zero', 'no', 'absent']) assert.equal(schemaSection(sample, 'limits.' + key).value, sample.limits[key]);
   for (const key of ['', 'missing', 'blueprint.missing', '__proto__', 'constructor', 'blueprint..nodes']) assert.throws(() => schemaSection(sample, key));
-  let requests = 0;
+  const requests = [];
   server = http.createServer((request, response) => {
-    assert.equal(request.method, 'GET'); assert.equal(request.url, '/api/schema'); requests++;
-    response.setHeader('Content-Type', 'application/json'); response.end(JSON.stringify(sample));
+    assert.equal(request.method, 'GET');
+    const url = new URL(request.url, 'http://localhost');
+    assert.equal(url.pathname, '/api/schema');
+    requests.push(url.search);
+    const section = url.searchParams.get('section');
+    const body = section === 'blueprint.nodes' ? schemaSection(sample, section) : sample;
+    response.setHeader('Content-Type', 'application/json'); response.end(JSON.stringify(body));
   });
   let address;
   // Windows can allocate an HTTP port forbidden by fetch (for example 6679).
@@ -92,13 +97,15 @@ try {
     try { await (await fetch(address + '/api/schema')).json(); break; }
     catch (error) { await new Promise(resolve => server.close(resolve)); if (attempt === 7) throw error; }
   }
-  requests = 0;
+  requests.length = 0;
   const section = await cli('selected live schema via isolated HTTP stub', 'tools/hb.mjs', ['schema', '--section', 'blueprint.nodes', '--url', address]);
   assert.deepEqual(section, {section: 'blueprint.nodes', value: sample.blueprint.nodes});
   assert.equal(section.commands, undefined);
   assert.deepEqual(await cli('legacy full schema unchanged', 'tools/hb.mjs', ['schema', '--url', address]), sample);
   await assert.rejects(() => cli('unknown section error', 'tools/hb.mjs', ['schema', '--section', 'missing', '--url', address]));
-  assert.equal(requests, 3);
+  const legacy = await cli('legacy server full response selected by client', 'tools/hb.mjs', ['schema', '--section', 'commands.read', '--url', address]);
+  assert.deepEqual(legacy, {section: 'commands.read', value: sample.commands.read});
+  assert.deepEqual(requests, ['?section=blueprint.nodes', '', '?section=missing', '?section=commands.read']);
   const bytes = {};
   for (const file of ['AGENTS.md', 'docs/AI_START.md', 'CODEX_HANDOFF.md', 'docs/archive/CODEX_HANDOFF_THROUGH_1049.md', 'docs/AI_ENGINE_API.md', 'docs/ENGINE_STATUS.md']) bytes[file] = (await fs.stat(path.join(root, file))).size;
   assert.ok(bytes['CODEX_HANDOFF.md'] < 5000);

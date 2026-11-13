@@ -5131,6 +5131,17 @@
       ]
     },
     {
+      "id": "native-wav-stream",
+      "keywords": [
+        "openNativeWavStream",
+        "decodeIma",
+        "NativeWavStream"
+      ],
+      "paths": [
+        "tools/native-wav-stream.mjs"
+      ]
+    },
+    {
       "id": "native-widget-surface",
       "keywords": [
         "NativeWidgetLayer"

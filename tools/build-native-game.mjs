@@ -35,7 +35,7 @@ export function validateNativeContent(content,profile){
   ];
   const clips=components.filter(c=>c?.type==='AudioSource'&&c.properties?.streaming).map(c=>c.properties.clip);
   if(kind==='audioasset'&&data?.streaming===true)clips.push(data.clip);
-  if(clips.some(clip=>clip&&!/\.(?:wav|hbaudioasset\.json)$/i.test(clip)))throw Error('네이티브 스트리밍은 PCM WAV 클립을 사용해요: '+name);
+  if(clips.some(clip=>clip&&!/\.(?:wav|hbaudioasset\.json)$/i.test(clip)))throw Error('네이티브 스트리밍은 WAV 클립을 사용해요: '+name);
  }
 }
 export async function buildNativeGame(record,profile,{content,natives,report},{signal,onProgress=()=>{},dryRun=false}={}){

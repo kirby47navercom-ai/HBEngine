@@ -15,6 +15,8 @@ import {makeNode,connect} from '../prototype/blueprint-model.js';
 import {parseNativeHeader} from '../prototype/native-model.js';
 import {retainTestEvidence} from './test-artifacts.mjs';
 import {activeInstalledVersions} from './install-editor.mjs';
+import {nativeImaFixture} from './native-ima-fixture.mjs';
+import {createPlacedObject} from '../prototype/placement-catalog.js';
 assert.deepEqual(await activeInstalledVersions('C:/Users/kirby/HBEngine'),[]);
 const root=path.resolve(import.meta.dirname,'..'),engine=process.argv[2]?path.resolve(process.argv[2]):root,{buildGame,inspectBuild}=await import(pathToFileURL(path.join(engine,'tools/build-game.mjs'))),work=await fs.mkdtemp(path.join(root,'native/build/native-game-'));retainTestEvidence(work);const exec=promisify(execFile),record=await createProject('네이티브 실행 검증',path.join(work,'Project'),'2d');
 const write=(name,value)=>record.project.write(name,JSON.stringify(value));
@@ -29,6 +31,10 @@ const header='#include <HBEngine/Game.hpp>\nHB_CLASS(Blueprintable)\nclass Nativ
 bp.native={...parseNativeHeader(header),headerPath:'Source/NativeGame.h',sourcePath:'Source/NativeGame.cpp'};bp.settings.parentClass='NativeGameActor';bp.construction={nodes:[],edges:[],comments:[]};const clicked=makeNode('customEvent'),message=makeNode('print');clicked.options={eventName:'Clicked'};message.inputValues={message:'NATIVE_BUTTON_CLICKED'};button.events.click='Clicked';bp.nodes.push(clicked,message);assert.ok(connect(bp,{node:clicked.id,pin:'then'},{node:message.id,pin:'exec'}).ok);await write('Assets/UI_Native.hbwidget.json',widget);const call=makeNode('nativeCall');call.nativeId='NativeGameActor.Move';call.breakpoint=true;bp.nodes.push(call);assert.ok(connect(bp,{node:'beginPlay',pin:'then'},{node:call.id,pin:'exec'}).ok);const tickCall=makeNode('nativeCall');tickCall.nativeId='NativeGameActor.Move';bp.nodes.push(tickCall);assert.ok(connect(bp,{node:'tick',pin:'then'},{node:tickCall.id,pin:'exec'}).ok);await record.project.write('Source/NativeGame.h',header);await record.project.write('Source/NativeGame.cpp',source);await write('Assets/BP_NativeGame.hbblueprint.json',bp);
 const scene=JSON.parse(await fs.readFile((await record.project.read(record.manifest.startupScene)).file,'utf8'));const actor={id:'native',name:'Native',kind:'cube',position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],visible:true,blueprintAsset:'Assets/BP_NativeGame.hbblueprint.json',components:[makeSceneComponent('UIWidget',{asset:'Assets/UI_Native.hbwidget.json',instance:'HUD'}),makeSceneComponent('AudioSource',{clip:'Assets/tone.wav',playOnStart:true,loop:true,streaming:true,volume:.05})]};scene.objects.push(actor);await write(record.manifest.startupScene,scene);
 const tracked=createAsset('widget','UI_Tracked'),marker=createWidgetNode('Button','marker');
+await fs.writeFile(await record.project.resolve('Assets/stream-ima.wav',true,false),nativeImaFixture().bytes);
+scene.objects.push({...createPlacedObject('empty',{id:'stream-ima',name:'IMA ADPCM'}),components:[
+  makeSceneComponent('AudioSource',{clip:'Assets/stream-ima.wav',playOnStart:true,loop:true,streaming:true,volume:.03}),
+]});
 marker.properties.text='월드';marker.slot.offset=[0,0,160,45];tracked.nodes.push(marker);
 await write('Assets/UI_Tracked.hbwidget.json',tracked);
 scene.objects.push({id:'tracked',name:'Tracked UI',kind:'empty',position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],visible:true,components:[makeSceneComponent('UIWidget',{asset:'Assets/UI_Tracked.hbwidget.json',instance:'Tracked',space:'tracked',drawWidth:200,drawHeight:120})]});
@@ -58,6 +64,8 @@ if(result.renderer.backend==='D3D12'){
 await exec(built.executable,['--hidden','--silent','--frames','40',...graphicsArgs],{
   windowsHide:true,env:{...cleanEnv,HB_NATIVE_TEST_STATE:path.join(work,'NoReportState')},timeout:30000,
 });
+const ima=result.audio.voices.find(voice=>voice.clip==='Assets/stream-ima.wav');
+assert.ok(ima?.playing&&ima.decoderResident&&ima.peak>.0001,JSON.stringify(ima));
 const noReportLog=await fs.readFile(path.join(work,'NoReportState/native-runtime.log'),'utf8');
 assert.doesNotMatch(noReportLog,/script exit|Error:/);
 const imports=(await exec('C:/msys64/ucrt64/bin/objdump.exe',['-p',path.basename(built.executable)],{cwd:built.output,windowsHide:true,maxBuffer:8*1024*1024})).stdout;assert.ok(!/DLL Name: .*webview|DLL Name: (?:libgcc|libstdc\+\+|libwinpthread)/i.test(imports));

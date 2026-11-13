@@ -91,10 +91,13 @@ export function nativeEditorSession(bridge) {
   let contentScanId=0;
   async function stopAudioPreview(){
     if(!audioPreview)return;
-    const {context,source}=audioPreview;
+    const {context,source,voice,timer,controller}=audioPreview;
     audioPreview=null;
+    controller?.abort();
+    clearInterval(timer);
+    voice?.dispose();
     try{source?.stop();}catch{}
-    await context.close();
+    await context?.close();
   }
   const project = () => {
     if (!record) throw Error('프로젝트를 먼저 여세요.');
@@ -1465,15 +1468,43 @@ export function nativeEditorSession(bridge) {
       change(doc,next);return response(doc);
     },
     'asset.audioPreview': async ({play=false,silent=false}={})=>{
-      await stopAudioPreview();
       const doc=assetOfKind('audioasset');
       if(!doc.data.clip)throw Error('오디오 클립을 선택하세요.');
-      const bytes=await projectBytes(project(),doc.data.clip);
-      const {AudioContext}=await import('node-web-audio-api');
-      const context=new AudioContext(silent||!play?{sinkId:{type:'none'}}:{});
-      audioPreview={context};
+      const owner=project();
+      const streaming=doc.data.streaming===true&&/\.wav$/i.test(doc.data.clip);
+      const stopping=stopAudioPreview();
+      const preview={controller:new AbortController()};
+      audioPreview=preview;
+      const {signal}=preview.controller;
+      const stop=()=>audioPreview===preview?stopAudioPreview():undefined;
       try{
+        await stopping;
+        const {AudioContext}=await import('node-web-audio-api');
+        signal.throwIfAborted();
+        const context=preview.context=new AudioContext(silent||!play?{sinkId:{type:'none'}}:{});
+        if(streaming){
+          const [{openNativeWavStream},{file}]=await Promise.all([
+            import('./native-wav-stream.mjs'),owner.read(doc.data.clip)
+          ]);
+          const voice=await openNativeWavStream(context,(start,end)=>createReadStream(file,{start,end}),signal);
+          if(signal.aborted){voice.dispose();signal.throwIfAborted();}
+          preview.voice=voice;
+          const result=await voice.waveform(signal);
+          if(play){
+            const gain=context.createGain();
+            gain.gain.value=doc.data.volume;voice.output.connect(gain);gain.connect(context.destination);
+            voice.loop=doc.data.loop;voice.playbackRate=doc.data.pitch;
+            const done=()=>{void Promise.resolve(stop()).catch(()=>{});};
+            voice.addEventListener('ended',done,{once:true});voice.addEventListener('error',done,{once:true});
+            voice.setVirtual(false);await voice.play();
+            if(audioPreview===preview)preview.timer=setInterval(()=>voice.tick(),20);
+          }else await stop();
+          return result;
+        }
+        const bytes=await projectBytes(owner,doc.data.clip,{signal});
+        signal.throwIfAborted();
         const audio=await context.decodeAudioData(Uint8Array.from(bytes).buffer);
+        signal.throwIfAborted();
         const channels=Array.from({length:audio.numberOfChannels},(_,index)=>audio.getChannelData(index));
         const count=Math.min(audio.length,256);
         const bins=Array.from({length:count},(_,index)=>{
@@ -1487,12 +1518,12 @@ export function nativeEditorSession(bridge) {
           const source=context.createBufferSource(),gain=context.createGain();
           source.buffer=audio;source.loop=doc.data.loop;source.playbackRate.value=doc.data.pitch;
           gain.gain.value=doc.data.volume;source.connect(gain);gain.connect(context.destination);
-          audioPreview.source=source;
-          source.onended=()=>{if(audioPreview?.source===source)void stopAudioPreview().catch(()=>{});};
+          preview.source=source;
+          source.onended=()=>{void Promise.resolve(stop()).catch(()=>{});};
           source.start();
-        }else await stopAudioPreview();
+        }else await stop();
         return {duration:audio.duration,bins};
-      }catch(error){await stopAudioPreview();throw error;}
+      }catch(error){await stop();throw error;}
     },
     'asset.audioStop': async ()=>{await stopAudioPreview();return {ok:true};},
     'widget.nodes': ()=>assetOfKind('widget').data.nodes.map(({id,name,type})=>({id,name,type})),

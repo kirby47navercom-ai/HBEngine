@@ -77,7 +77,7 @@ const montage='Assets/AM_Native.hbmontage.json';
 const animationGraph='Assets/AG_Native.hbanimgraph.json';
 const sprite='Assets/S_Native.hbsprite.json',texture='Assets/T_Native.hbtexture2d.json';
 const spriteAnimation='Assets/SA_Native.hbspriteanimation.json';
-const audioAsset='Assets/A_Native.hbaudioasset.json';
+const audioAsset='Assets/A_Native.hbaudioasset.json',streamAudioAsset='Assets/A_NativeStream.hbaudioasset.json';
 await project.project.write(material,JSON.stringify(createAsset('physicalmaterial','검사 머테리얼')));
 const fn=createAsset('materialfunction','NativeFunction');
 fn.graph.nodes[0].useDefault=false;
@@ -113,6 +113,9 @@ wave.write('data',36);wave.writeUInt32LE(samples*2,40);
 for(let i=0;i<samples;i++)wave.writeInt16LE(Math.round(Math.sin(i*Math.PI/10)*14000),44+i*2);
 await fs.writeFile(path.join(project.root,'Assets/NativeTone.wav'),wave);
 await project.project.write(audioAsset,JSON.stringify({...createAsset('audioasset','NativeTone'),clip:'Assets/NativeTone.wav',loop:true}));
+const imaFixture=(await import('./native-ima-fixture.mjs')).nativeImaFixture({blocks:200});
+await fs.writeFile(await project.project.resolve('Assets/NativeStream.wav',true,false),imaFixture.bytes);
+await project.project.write(streamAudioAsset,JSON.stringify({...createAsset('audioasset','NativeStream'),clip:'Assets/NativeStream.wav',loop:true,streaming:true}));
 const startup=JSON.parse(await fs.readFile(path.join(project.root,project.manifest.startupScene),'utf8'));
 startup.objects[0].components.push(makeSceneComponent('AudioSource',{
   clip:'Assets/NativeTone.wav',playOnStart:true,loop:true,spatial:false,
@@ -460,6 +463,13 @@ await dispatch('document.open',{path:audioAsset});
 const waveform=await dispatch('asset.audioPreview',{play:true,silent:true});
 assert.ok(Math.abs(waveform.duration-.1)<.001&&waveform.bins.some(([low,high])=>low<-.2||high>.2));
 await dispatch('asset.audioStop');
+await dispatch('document.open',{path:streamAudioAsset});
+const streamWaveform=await dispatch('asset.audioPreview',{play:true,silent:true});
+assert.equal(streamWaveform.duration,imaFixture.frames/imaFixture.rate);
+assert.ok(streamWaveform.bins.some(([low,high])=>low<-.30&&high>.24));
+await dispatch('asset.audioStop');
+// The Win32 waveform smoke action opens this fixed fixture path.
+await project.project.write(audioAsset,JSON.stringify({...createAsset('audioasset','NativeTone'),clip:'Assets/NativeStream.wav',loop:true,streaming:true}));
 await dispatch('document.open',{path:texture});
 assert.equal((await dispatch('asset.imagePreview')).width,8);
 let sequenceDoc=await dispatch('document.open',{path:sequence});
