@@ -34,6 +34,8 @@ class EditorAssetCanvas final : public EditorPanelBase {
     }
     int curveChannel=-1;
     std::set<std::pair<int,int>> selectedCurveKeys;
+    std::optional<POINT> curveBoxEnd;
+    bool extendCurveBox=false;
     Json handles=Json::array();
     std::string draggedHandle;
     double curveMin=0,curveMax=1;
@@ -62,6 +64,14 @@ class EditorAssetCanvas final : public EditorPanelBase {
                 brush->SetColor(selected?theme.text:colors.at(channel));
                 canvas->FillEllipse(D2D1::Ellipse(point(row,channel),4,4),brush);
             }
+        }
+        if(curveBoxEnd){
+            const auto left=float(std::min(start.x,curveBoxEnd->x)),right=float(std::max(start.x,curveBoxEnd->x));
+            const auto top=float(std::min(start.y,curveBoxEnd->y)),bottom=float(std::max(start.y,curveBoxEnd->y));
+            auto fillColor=theme.accent;fillColor.a=.15f;
+            fill(left,top,right-left,bottom-top,fillColor);
+            brush->SetColor(theme.accent);
+            canvas->DrawRectangle(D2D1::RectF(left,top,right,bottom),brush);
         }
         if(key>=0&&curveChannel>=0&&std::size_t(key)<curve.at("keys").size()){
             const auto origin=point(curve.at("keys").at(key),curveChannel);
@@ -247,8 +257,13 @@ class EditorAssetCanvas final : public EditorPanelBase {
                         if(distance<nearest){nearest=distance;key=row.at("index");curveChannel=channel;}
                     }
                 }
-                if(key<0)selectedCurveKeys.clear();
-                else{
+                if(key<0){
+                    if(x>=gutter&&y>=heading){
+                        curveBoxEnd=POINT{x,y};extendCurveBox=(w&(MK_CONTROL|MK_SHIFT))!=0;
+                        SetCapture(window);InvalidateRect(window,nullptr,FALSE);return 0;
+                    }
+                    selectedCurveKeys.clear();
+                }else{
                     const auto point=std::pair{key,curveChannel};
                     if(w&MK_CONTROL){
                         if(!selectedCurveKeys.erase(point))selectedCurveKeys.insert(point);
@@ -261,6 +276,32 @@ class EditorAssetCanvas final : public EditorPanelBase {
                 }
                 dragging=key>=0;
                 if(dragging)SetCapture(window);
+                emit({{"event","curveSelect"},{"track",curve.at("track")},{"index",key},{"component",curveChannel}});
+                InvalidateRect(window,nullptr,FALSE);return 0;
+            }
+            if(message==WM_MOUSEMOVE&&curveBoxEnd){
+                curveBoxEnd=POINT{x,y};InvalidateRect(window,nullptr,FALSE);return 0;
+            }
+            if(message==WM_LBUTTONUP&&curveBoxEnd){
+                curveBoxEnd.reset();if(GetCapture()==window)ReleaseCapture();
+                if(!extendCurveBox)selectedCurveKeys.clear();
+                if(std::abs(x-start.x)+std::abs(y-start.y)>=3){
+                    const int left=std::min<int>(start.x,x),right=std::max<int>(start.x,x);
+                    const int top=std::min<int>(start.y,y),bottom=std::max<int>(start.y,y);
+                    for(const auto& row:curve.at("keys")){
+                        const float at=timeX(row.at("time"));
+                        if(at<left||at>right)continue;
+                        const auto& values=row.at("value");
+                        for(int channel=0;channel<int(values.size());++channel){
+                            const float ordinate=curveY(values.at(channel));
+                            if(ordinate>=top&&ordinate<=bottom)selectedCurveKeys.insert({row.at("index"),channel});
+                        }
+                    }
+                }
+                if(!selectedCurveKeys.empty()){
+                    const auto anchor=*selectedCurveKeys.rbegin();
+                    key=anchor.first;curveChannel=anchor.second;
+                }
                 emit({{"event","curveSelect"},{"track",curve.at("track")},{"index",key},{"component",curveChannel}});
                 InvalidateRect(window,nullptr,FALSE);return 0;
             }
@@ -281,7 +322,16 @@ class EditorAssetCanvas final : public EditorPanelBase {
                 draggedHandle.clear();
                 return 0;
             }
-            if(message==WM_CAPTURECHANGED){dragging=false;return 0;}
+            if(message==WM_CAPTURECHANGED||message==WM_KEYDOWN&&w==VK_ESCAPE&&curveBoxEnd){
+                const bool selecting=curveBoxEnd.has_value();
+                dragging=false;curveBoxEnd.reset();
+                if(selecting){
+                    if(!selectedCurveKeys.empty()){const auto anchor=*selectedCurveKeys.rbegin();key=anchor.first;curveChannel=anchor.second;}
+                    if(GetCapture()==window)ReleaseCapture();
+                    InvalidateRect(window,nullptr,FALSE);
+                }
+                return 0;
+            }
             if(message==WM_KEYDOWN){forwardKey(message,w);return 0;}
             return common(message,w,l);
         }
@@ -378,7 +428,7 @@ public:
         }))clipSelection.clear();
         playhead=std::min(playhead,data.value("length",1.0));scroll=std::min(scroll,std::max(0,int(rows.size()*lane+heading)-bounds[3]));InvalidateRect(window,nullptr,FALSE);
     }
-    void resetTimeline(){key=curveChannel=-1;selectedCurveKeys.clear();handles=Json::array();clipSelection.clear();track.clear();playhead=0;scroll=0;}
+    void resetTimeline(){key=curveChannel=-1;curveBoxEnd.reset();selectedCurveKeys.clear();handles=Json::array();clipSelection.clear();track.clear();playhead=0;scroll=0;}
     void updateCurve(Json value){
         if(curve.is_null()||curve.at("track")!=value.at("track"))selectedCurveKeys.clear();
         waveform=tilemap=nullptr;widget=image=false;curve=std::move(value);data={{"length",curve.at("length")}};
@@ -453,6 +503,14 @@ public:
         const int x=int(std::lround(timeX(row.at("time")))),y=int(std::lround(curveY(row.at("value").at(0))));
         SendMessageW(window,WM_LBUTTONDOWN,MK_LBUTTON,MAKELPARAM(x,y));
         SendMessageW(window,WM_LBUTTONUP,0,MAKELPARAM(x,y-25));
+    }
+    void probeCurveBox(){
+        const int left=int(gutter),top=int(heading),right=bounds[2]-3,bottom=bounds[3]-3;
+        SendMessageW(window,WM_LBUTTONDOWN,MK_LBUTTON,MAKELPARAM(left,top));
+        SendMessageW(window,WM_MOUSEMOVE,MK_LBUTTON,MAKELPARAM(right,bottom));
+        SendMessageW(window,WM_LBUTTONUP,0,MAKELPARAM(right,bottom));
+        if(selectedCurveKeys.size()<2)throw std::runtime_error("Native curve selection box");
+        probeCurveDrag();
     }
     void probeTileCell(long long x,long long y){
         const auto point=tilePoint(x,y);

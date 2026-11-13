@@ -30,6 +30,28 @@ for(const [i,region] of ['left','right'].entries()){
   cameraData.objects.push(camera,createPlacedObject('cube',{position:[at,0,0],id:'cube-'+region}));
 }
 await project.project.write(cameraScene,JSON.stringify(cameraData));
+const modelSource='Assets/Models/NativePreview.obj';
+const modelText='o Preview\nv -1 0 0\nv 1 0 0\nv 0 2 0\nf 1 2 3\n';
+await project.project.write(modelSource,modelText);
+const extractionSource='Assets/Models/Extract.gltf';
+const modelBuffer=Buffer.alloc(104);
+[0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1].forEach((value,index)=>modelBuffer.writeFloatLE(value,index*4));
+await project.project.write(extractionSource,JSON.stringify({
+  asset:{version:'2.0'},scene:0,scenes:[{nodes:[0]}],nodes:[{name:'Body',mesh:0}],
+  meshes:[{name:'Body',primitives:[{attributes:{POSITION:0,NORMAL:3},material:0}]}],
+  materials:[{name:'Bronze',pbrMetallicRoughness:{baseColorFactor:[.3,.2,.1,1],metallicFactor:.6}}],
+  buffers:[{uri:'data:application/octet-stream;base64,'+modelBuffer.toString('base64'),byteLength:modelBuffer.length}],
+  bufferViews:[{buffer:0,byteOffset:0,byteLength:36},{buffer:0,byteOffset:36,byteLength:8},{buffer:0,byteOffset:44,byteLength:24},{buffer:0,byteOffset:68,byteLength:36}],
+  accessors:[{bufferView:0,componentType:5126,count:3,type:'VEC3',min:[0,0,0],max:[1,1,0]},
+    {bufferView:1,componentType:5126,count:2,type:'SCALAR',min:[0],max:[1]},
+    {bufferView:2,componentType:5126,count:2,type:'VEC3'},{bufferView:3,componentType:5126,count:3,type:'VEC3'}],
+  animations:[{name:'Move',samplers:[{input:1,output:2}],channels:[{sampler:0,target:{node:0,path:'translation'}}]}]
+}));
+const nested='Assets/Empty/'+Array.from({length:12},(_,i)=>'깊은폴더'+i).join('/');
+await fs.mkdir(path.join(project.root,nested),{recursive:true});
+for(let offset=0;offset<600;offset+=60)
+  await Promise.all(Array.from({length:60},(_,i)=>fs.writeFile(path.join(project.root,nested,'서랍-'+(offset+i)+'.json'),'{}')));
+await fs.writeFile(path.join(project.root,nested,'찾을파일.json'),'{}');
 const material='Assets/Materials/PM_Native.hbphysicalmaterial.json';
 const blueprint='Assets/Blueprints/BP_Garden.hbblueprint.json';
 const graphMaterial='Assets/Materials/Moss_stone.hbmaterial.json';
@@ -153,6 +175,64 @@ assert.ok((await dispatch('content.list',{folder:'Assets'})).entries.some(row=>r
 const folder=await dispatch('content.mkdir',{folder:'Assets/Empty/Sub',name:'네이티브 폴더'});
 assert.ok((await dispatch('content.list',{folder:'Assets/Empty/Sub'})).entries.some(row=>row.path===folder.path));
 assert.ok((await dispatch('content.list',{folder:'Assets',query:'pm_native'})).entries.some(row=>row.path===material));
+const obsoleteScan=await dispatch('content.listStart',{folder:'Assets',query:'서랍'});
+const latestScan=await dispatch('content.listStart',{folder:'Assets',query:'찾을파일'});
+assert.equal((await dispatch('content.listStatus',obsoleteScan)).status,'canceled');
+let scan;
+for(let i=0;i<500;i++){
+  scan=await dispatch('content.listStatus',latestScan);
+  if(scan.status!=='running')break;
+  await new Promise(resolve=>setTimeout(resolve,10));
+}
+assert.equal(scan?.status,'done');
+assert.deepEqual(scan.result.entries.map(row=>row.path),[nested+'/찾을파일.json']);
+const model=await dispatch('modelimport.open',{path:modelSource});
+const scaled=await dispatch('modelimport.edit',{action:'settings',value:{scale:2,sourceUnit:'cm'},expectedRevision:model.revision});
+const modelData=JSON.parse(scaled.text);
+assert.equal(modelData.settings.scale,2);
+assert.equal((await dispatch('asset.fields',{parts:['settings']})).find(row=>row.key==='sourceUnit').control.kind,'select');
+const meshId=modelData.subassets.find(row=>row.kind==='mesh').id;
+const mesh=await dispatch('modelimport.edit',{action:'override',id:meshId,key:'castShadow',value:false,expectedRevision:scaled.revision});
+assert.equal(JSON.parse(mesh.text).subassets.find(row=>row.id===meshId).overrides.castShadow,false);
+await assert.rejects(dispatch('modelimport.reimport',{expectedRevision:mesh.revision}),/저장/);
+const savedModel=await dispatch('document.save',{expectedRevision:mesh.revision});
+await project.project.write(modelSource,modelText.replace('0 2 0','0 3 0'));
+const reimportedModel=await dispatch('modelimport.reimport',{expectedRevision:savedModel.revision});
+assert.notEqual(JSON.parse(reimportedModel.text).sourceHash,modelData.sourceHash);
+assert.equal(JSON.parse(reimportedModel.text).settings.scale,2);
+await dispatch('document.close',{path:reimportedModel.path});
+const extractionModel=await dispatch('modelimport.open',{path:extractionSource});
+const extractionRows=JSON.parse(extractionModel.text).subassets;
+for(const [kind,name,suffix] of [['material','M_Extracted','.hbmaterial.json'],['animation','SK_Extracted','.hbskeletalclip.json']]){
+  const subasset=extractionRows.find(row=>row.kind===kind).id;
+  const params={kind,name,subasset,expectedRevision:extractionModel.revision};
+  const planned=await dispatch('modelimport.extract',{...params,dryRun:true,includeData:true});
+  assert.equal(planned.valid,true);
+  const produced=await dispatch('modelimport.extract',params);
+  assert.equal(produced.path,'Assets/Models/'+name+suffix);
+  const parsed=JSON.parse(await fs.readFile(path.join(project.root,produced.path),'utf8'));
+  if(kind==='material')assert.equal(parsed.surface.metalness,.6);
+  else assert.deepEqual(parsed.tracks[0].times,[0,1]);
+}
+await dispatch('document.close',{path:extractionModel.path});
+const takeDoc=await dispatch('document.open',{path:nativeTake});
+const inheritedTake=await dispatch('take.preset.resolve',{path:nativeTake,draft:true});
+assert.equal(inheritedTake.data.fps,60);
+const overriddenTake=await dispatch('take.preset.edit',{action:'override',group:'fps',enabled:true,expectedRevision:takeDoc.revision});
+assert.deepEqual(JSON.parse(overriddenTake.text).overrides,['fps']);
+await assert.rejects(dispatch('take.preset.edit',{action:'parent',parent:nativeTake,expectedRevision:overriddenTake.revision}),/순환/);
+const flatTake=await dispatch('take.preset.edit',{action:'flatten',expectedRevision:overriddenTake.revision});
+assert.equal(JSON.parse(flatTake.text).parentPreset,undefined);
+await dispatch('document.close',{path:nativeTake,discard:true});
+const seqTake=await dispatch('document.open',{path:sequence});
+const appliedTake=await dispatch('take.preset.apply',{presetAsset:nativeTake,expectedRevision:seqTake.revision,
+  expectedPresetRevisions:Object.fromEntries(inheritedTake.chain.map(row=>[row.path,row.revision]))});
+assert.equal(JSON.parse(appliedTake.text).recordingClock.startFrame,24);
+assert.deepEqual(JSON.parse(appliedTake.text).tracks,JSON.parse(seqTake.text).tracks);
+const newTake=await dispatch('take.preset.fromSequence',{name:'SavedTake',expectedRevision:appliedTake.revision});
+assert.equal(JSON.parse(newTake.text).fps,60);
+await dispatch('document.close',{path:newTake.path});
+await dispatch('document.close',{path:sequence,discard:true});
 const original=await dispatch('document.open',{path:material});
 const operation={op:'replace',path:'/friction',value:.85};
 const preview=await dispatch('document.patch',{operations:[operation],expectedRevision:original.revision,dryRun:true});
@@ -376,6 +456,8 @@ assert.deepEqual(evidence.sceneTransforms,{position:true,rotation:true,scale:tru
 assert.equal(evidence.sceneAssetDrop,true);
 assert.equal(evidence.simultaneousDocking,true);
 assert.equal(evidence.browserTreeAndFilter,true);
+assert.equal(evidence.modelImportPreview,true);
+assert.equal(evidence.curveBox,true);
 assert.equal(evidence.debugBreaks,process.argv[3]?2:0);
 assert.equal(evidence.graphSearchAndWire,true);
 assert.equal(evidence.timelineSurface.backend,'D3D12');

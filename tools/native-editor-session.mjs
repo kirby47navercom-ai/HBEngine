@@ -12,6 +12,8 @@ import {blueprintClasses} from '../prototype/class-types.js';
 import {blueprintClassDefinition,blueprintClassKind} from '../prototype/blueprint-class-defaults.js';
 import {nativeEntries, nativeSourceReference, readNativeHeader} from '../prototype/native-model.js';
 import {assetKind} from './project-service.mjs';
+import {modelSource} from './model-import-state.mjs';
+import {modelImportDefaults,modelUnitChoices,modelUpChoices,remapModelOverrides} from '../prototype/model-import.js';
 import {createProject, readProjectManifest, recentProjects, rememberProject} from './project-manifest.mjs';
 import {createPlacedObject,placementCatalog} from '../prototype/placement-catalog.js';
 import {addSceneComponent,componentDefinitions,componentPropertyVisible,defaultsForObject,installBlueprintComponents,objectComponents} from '../prototype/scene-components.js';
@@ -40,11 +42,13 @@ import {editSequenceCurves} from '../prototype/sequence-curve-edit.js';
 import {curveControlValue,curveKeyWeight} from '../prototype/curve-sampling.js';
 import {defaultEnvironment,defaultSurface} from '../prototype/model.js';
 import {createBlueprintResolver} from '../prototype/blueprint-inheritance.js';
+import {resolveTakePresetTree,takePresetGroups,takePresetRevisionGuard} from '../prototype/take-preset-inheritance.js';
+import {applyTakePreset,takePresetFromSequence} from '../prototype/take-preset-assets.js';
 
 const materialKinds = new Set(['material', 'materialfunction', 'materiallayer', 'materialblend']);
 const gameplayGraphs=new Set(['behaviortree','statemachine','animgraph']);
 const graphKind = doc => doc.kind === 'blueprint' || materialKinds.has(doc.kind) || gameplayGraphs.has(doc.kind);
-const previewKind = doc => doc.kind==='blueprint'||doc.kind==='materialinstance'||materialKinds.has(doc.kind);
+const previewKind = doc => doc.kind==='blueprint'||doc.kind==='materialinstance'||doc.kind==='modelimport'||materialKinds.has(doc.kind);
 const timelineKind = doc => ['curve','animation','sequenceasset','montage'].includes(doc.kind);
 const sequenceTracks=['position','rotation','scale','visible','camera','timeScale','event','animation','audio'];
 const sampleSequenceTrack=(sampler,track,time)=>['audio','animation'].includes(track.type)
@@ -69,14 +73,15 @@ const names = data => [
 ];
 const packPin = pin => ({id:pin.id, label:pin.label, color:typeColors[pin.type] || typeColors.any});
 const pointerPart = key => key.replaceAll('~','~0').replaceAll('/','~1');
-const fieldLabels = {name:'이름',sceneName:'레벨 이름',objects:'오브젝트',environment:'환경',position:'위치',rotation:'회전',scale:'크기',parent:'부모 에셋',clip:'오디오 클립',volume:'볼륨',pitch:'피치',loop:'반복',friction:'마찰',restitution:'반발력',density:'밀도',parameters:'매개변수',surfaceOverrides:'표면 오버라이드'};
+const fieldLabels = {settings:'설정',convertUnits:'파일 단위 변환',sourceUnit:'원본 단위',sourceUp:'원본 위 축',flipForward:'앞 방향 뒤집기',translation:'이동',name:'이름',sceneName:'레벨 이름',objects:'오브젝트',environment:'환경',position:'위치',rotation:'회전',scale:'크기',parent:'부모 에셋',clip:'오디오 클립',volume:'볼륨',pitch:'피치',loop:'반복',friction:'마찰',restitution:'반발력',density:'밀도',parameters:'매개변수',surfaceOverrides:'표면 오버라이드'};
 
 export function nativeEditorSession(bridge) {
   let record, documents = new AssetDocuments(), viewport, preview, previewSource, previewScene, previewNode, build, buildJobs, lastBuild;
   const sequenceSamplers=new WeakMap();
   const sceneViews=new Map();
   let nativeMetadata=new WeakMap();
-  let audioPreview,cppJob;
+  let audioPreview,cppJob,contentScan;
+  let contentScanId=0;
   async function stopAudioPreview(){
     if(!audioPreview)return;
     const {context,source}=audioPreview;
@@ -156,6 +161,7 @@ export function nativeEditorSession(bridge) {
     for(const view of sceneViews.values())await view.close();
     sceneViews.clear();
     await rememberProject(candidate);
+    contentScan?.controller.abort();contentScan=undefined;
     record = candidate;
     documents = new AssetDocuments();
     buildJobs?.close();buildJobs=undefined;build=undefined;lastBuild=undefined;
@@ -474,13 +480,16 @@ export function nativeEditorSession(bridge) {
       data = data[key];
     }
     if (!data || typeof data !== 'object') throw Error('속성 경로를 다시 선택하세요.');
+    const modelSettings=doc.kind==='modelimport'&&parts.length===1&&parts[0]==='settings';
     const component=doc.kind==='scene'&&parts.length===5&&parts[0]==='objects'&&parts[2]==='components'&&parts[4]==='properties'
       ? doc.data.objects[parts[1]]?.components[parts[3]] : null;
     return Object.entries(data).filter(([key])=>!component||componentPropertyVisible(component.type,key,data)).map(([key,value]) => {
       const type = value === null ? 'null' : typeof value;
       const definition=component&&componentDefinitions[component.type]?.properties[key];
       const label = definition?.label || fieldLabels[key] || value?.name || key;
-      const control = definition?.type==='select' ? {kind:'select',value,options:definition.choices.map(choice=>Array.isArray(choice)?choice:[choice,choice])}
+      const modelChoices=modelSettings?(key==='sourceUnit'?modelUnitChoices:key==='sourceUp'?modelUpChoices:null):null;
+      const control = modelChoices ? {kind:'select',value,options:modelChoices}
+        : definition?.type==='select' ? {kind:'select',value,options:definition.choices.map(choice=>Array.isArray(choice)?choice:[choice,choice])}
         : type === 'object' ? {kind:'button',text:Array.isArray(value) ? `열기 (${value.length})` : '열기'}
         : type === 'boolean' ? {kind:'checkbox',checked:value}
         : {kind:'text',value:String(value),disabled:key==='version' || type==='null'};
@@ -495,6 +504,14 @@ export function nativeEditorSession(bridge) {
   const assetOfKind=(kind,doc=current())=>{
     if (kind==='timeline'? !timelineKind(doc):doc.kind!==kind) throw Error('편집기와 일치하는 에셋을 선택하세요.');
     return doc;
+  };
+  const takePreset=async (file,root)=>{
+    const owner=project();
+    const read=async name=>{
+      const data=JSON.parse((await projectText(owner,name)).replace(/^\uFEFF/,''));
+      return {data,revision:await documentRevision(data)};
+    };
+    return resolveTakePresetTree(file,read,root?{root:{data:root.data,revision:await revision(root)}}:{});
   };
   const methods = {
     'project.open': ({file}) => openProject(() => readProjectManifest(file)),
@@ -610,8 +627,8 @@ export function nativeEditorSession(bridge) {
     },
     'content.types': () => Object.entries(assetTypes).filter(([kind,info])=>assetSuffix[kind]&&!info.sourceOnly)
       .map(([kind,info])=>({kind,suffix:assetSuffix[kind],label:info.label,prefix:info.prefix})),
-    'content.list': async ({folder='',query='',recursive=!!query,contents=false,type='all'}) => {
-      const listed = await project().list({folder,query,browse:true,recursive,contents,type});
+    'content.list': async ({folder='',query='',recursive=!!query,contents=false,type='all'},signal) => {
+      const listed = await project().list({folder,query,browse:true,recursive,contents,type,signal});
       const found = new Map(listed.entries.map(row => [row.path,row]));
       for (const row of listed.folders) {
         const parent = path.posix.dirname(row.path);
@@ -621,9 +638,78 @@ export function nativeEditorSession(bridge) {
       entries.sort((a,b) => Number(b.kind==='folder')-Number(a.kind==='folder') || a.path.localeCompare(b.path));
       return {entries,folders:listed.folders,total:listed.total,issues:listed.issues||[]};
     },
+    'content.listStart': params=>{
+      project();
+      const previous=contentScan;
+      const controller=new AbortController(),id=++contentScanId;
+      const scan={controller,id,status:'running'};
+      contentScan=scan;
+      previous?.controller.abort();
+      const activeProject=record;
+      scan.done=(async()=>{
+        await previous?.done;
+        try{
+          controller.signal.throwIfAborted();
+          if(record!==activeProject)throw Error('콘텐츠를 검색하는 동안 프로젝트가 변경됐어요.');
+          scan.result=await methods['content.list'](params,controller.signal);
+          scan.status='done';
+        }catch(error){
+          scan.error=error.message;
+          scan.status=controller.signal.aborted?'canceled':'error';
+        }
+      })();
+      return {id};
+    },
+    'content.listStatus': ({id})=>{
+      const scan=contentScan;
+      if(!scan||scan.id!==id)return {status:'canceled'};
+      const {status,result,error}=scan;
+      if(status!=='running')contentScan=undefined;
+      return {status,result,error};
+    },
     'content.create': async ({folder,kind,name}) => {
       if (typeof folder!=='string' || !/^Assets(?:\/|$)/.test(folder) || !Object.hasOwn(assetSuffix,kind) || typeof name!=='string' || !name.trim() || /[/\\:<>?"|*\x00-\x1f]/.test(name)) throw Error('Assets 폴더와 에셋 이름, 종류를 확인하세요.');
       return openDocument((await project().create(folder,kind,name.trim())).path);
+    },
+    'take.preset.resolve': ({path,draft=false})=>takePreset(path,draft?assetOfKind('takepreset',targetDocument(path)):null),
+    'take.preset.edit': async ({path,action,parent,group,enabled,expectedRevision})=>{
+      const doc=assetOfKind('takepreset',targetDocument(path));
+      await check(doc,expectedRevision);
+      const next=structuredClone(doc.data);
+      if(action==='parent'){
+        if(typeof parent!=='string')throw Error('상위 녹화 프리셋을 선택하세요.');
+        next.parentPreset=parent;next.overrides??=[];
+        await takePreset(doc.path,{...doc,data:next});
+      }else if(action==='override'){
+        if(!next.parentPreset||typeof enabled!=='boolean'||!takePresetGroups.some(([key])=>key===group))
+          throw Error('상속할 녹화 설정 그룹을 선택하세요.');
+        if(enabled&&!next.overrides.includes(group)){
+          const inherited=await takePreset(doc.path,doc);
+          if(inherited.data[group]===undefined)delete next[group];else next[group]=inherited.data[group];
+          next.overrides.push(group);
+        }else if(!enabled)next.overrides=next.overrides.filter(key=>key!==group);
+      }else if(action==='flatten'){
+        const resolved=await takePreset(doc.path,doc);
+        change(doc,resolved.data);return response(doc);
+      }else throw Error('녹화 프리셋 상속 명령을 확인하세요.');
+      change(doc,next);return response(doc);
+    },
+    'take.preset.apply': async ({path,presetAsset,expectedRevision,expectedPresetRevisions})=>{
+      const doc=assetOfKind('sequenceasset',targetDocument(path));
+      await check(doc,expectedRevision);
+      const resolved=await takePreset(presetAsset);
+      takePresetRevisionGuard(resolved.chain,expectedPresetRevisions);
+      change(doc,applyTakePreset(doc.data,resolved.data));return response(doc);
+    },
+    'take.preset.fromSequence': async ({path:file,name,expectedRevision})=>{
+      const doc=assetOfKind('sequenceasset',targetDocument(file));
+      await check(doc,expectedRevision);
+      if(typeof name!=='string'||!name.trim())throw Error('새 프리셋 이름을 입력하세요.');
+      const data=takePresetFromSequence(doc.data,name.trim());
+      const target=path.posix.join(path.posix.dirname(doc.path),data.name+assetSuffix.takepreset);
+      if(!validAsset('takepreset',data)||/[\\/:<>?"|*\x00-\x1f]/.test(data.name))throw Error('새 프리셋 이름을 확인하세요.');
+      await project().checkedBatch([{path:target,text:JSON.stringify(data,null,2),expected:null}]);
+      return openDocument(target);
     },
     'timeline.importTake': async ({name,data})=>{
       if(typeof name!=='string'||!name.trim()||name.length>70||/[\/\\:<>?"|*\x00-\x1f]/.test(name)||
@@ -681,6 +767,96 @@ export function nativeEditorSession(bridge) {
       await project().rename(file,next);
       nativeMetadata=new WeakMap();
       return {path:next};
+    },
+    'modelimport.open': async ({path:source})=>{
+      if(!modelSource(source))throw Error('원본 모델을 선택하세요.');
+      const existing=documents.items.get(source+'.import.json');
+      if(existing)return response(documents.select(existing.path));
+      const {path:file}=await project().prepareModelImport(source);
+      return openDocument(file);
+    },
+    'modelimport.extract': async params=>{
+      if(!['material','animation'].includes(params.kind))throw Error('추출할 하위 에셋 종류를 확인하세요.');
+      const doc=assetOfKind('modelimport',targetDocument(params.path));
+      await check(doc,params.expectedRevision);
+      const owner=project(),data=doc.data,folder=path.posix.dirname(doc.path);
+      const assertOwner=()=>{
+        if(record?.project!==owner||documents.items.get(doc.path)!==doc||doc.data!==data)
+          throw Object.assign(Error('추출 중 모델 문서가 변경됐어요.'),{code:'REVISION_CONFLICT'});
+      };
+      const {loadHeadlessModel,disposeHeadlessModel}=await import('./headless-model.mjs');
+      const {installNativeAssets}=await import('./native-game-platform.mjs');
+      const isGltf=/\.(gltf|glb)$/i.test(data.source);
+      const assets=installNativeAssets({url:name=>'hbasset:'+encodeURIComponent(name),manifest:{width:1,height:1},readBytes:name=>projectBytes(owner,name)});
+      let result;
+      try{
+        if(isGltf)result=await loadHeadlessModel(owner,data.source,{
+          geometry:params.kind==='material',loadTexture:params.kind==='material'?async()=>new (await import('three')).Texture():undefined,
+          metadata:null,extract:true
+        });
+        else{
+          const {loadModel}=await import('../prototype/engine-services.js');
+          result=await loadModel(data.source,{metadata:null});
+        }
+      }finally{assets.restore();}
+      try{
+        assertOwner();
+        if(data.sourceHash&&result.sourceHash!==data.sourceHash)throw Error('원본 모델이 변경됐어요. 다시 가져오세요.');
+        const preview={result,ready:Promise.resolve(),snapshot:assertOwner};
+        const hooks={
+          document:async()=>{assertOwner();return {doc,revision:params.expectedRevision};},
+          preview:()=>preview,
+          create:async(_doc,asset,images)=>{
+            assertOwner();
+            if(images)return (await import('./model-material-publish.mjs')).publishModelMaterial(owner,{...images,folder,name:asset.name,data:asset},assertOwner);
+            return owner.create(folder,params.kind==='material'?'material':'skeletalclip',asset.name,assertOwner,asset);
+          },
+        };
+        if(params.kind==='material'){
+          hooks.images=async(_doc,options)=>(await import('./model-material-publish.mjs')).prepareModelImages(owner,{...options,folder},assertOwner);
+          return await (await import('../prototype/model-material-extraction.js')).extractModelMaterialDocument(params,hooks);
+        }
+        return await (await import('../prototype/model-clip-extraction.js')).extractModelClipDocument(params,hooks);
+      }finally{
+        if(isGltf)disposeHeadlessModel(result.object);
+        else{
+          const resources=new Set();
+          result.object.traverse(node=>{
+            if(node.geometry)resources.add(node.geometry);
+            if(node.skeleton)resources.add(node.skeleton);
+            for(const material of node.material?(Array.isArray(node.material)?node.material:[node.material]):[]){
+              resources.add(material);
+              for(const value of Object.values(material))if(value?.isTexture)resources.add(value);
+            }
+          });
+          for(const resource of resources)resource.dispose();
+        }
+      }
+    },
+    'modelimport.reimport': async ({path,expectedRevision})=>{
+      const doc=assetOfKind('modelimport',targetDocument(path));
+      await check(doc,expectedRevision);
+      if(doc.dirty)throw Error('다시 가져오기 전에 설정을 저장하세요.');
+      await project().prepareModelImport(doc.data.source);
+      return methods['document.reload']({path:doc.path,expectedRevision});
+    },
+    'modelimport.edit': async ({path,expectedRevision,action,id,key,value,target})=>{
+      const doc=assetOfKind('modelimport',targetDocument(path));
+      await check(doc,expectedRevision);
+      let next=structuredClone(doc.data);
+      if(action==='remap')next=remapModelOverrides(next,id,target);
+      else if(action==='override'){
+        const row=next.subassets.find(row=>row.id===id&&row.kind==='mesh');
+        if(!row||!['visible','castShadow','receiveShadow'].includes(key)||value!==null&&typeof value!=='boolean')
+          throw Error('메시 오버라이드 항목을 확인하세요.');
+        if(value===null)delete row.overrides[key];else row.overrides[key]=value;
+      }else if(action==='settings'){
+        if(!value||typeof value!=='object'||Array.isArray(value))throw Error('모델 변환 설정을 확인하세요.');
+        next.settings={...modelImportDefaults,...next.settings,...value};
+      }
+      else throw Error('모델 가져오기 편집을 확인하세요.');
+      change(doc,next);
+      return response(doc);
     },
     'document.open': ({path}) => openDocument(path),
     'document.load': async ({path})=>response(await loadDocument(path)),
@@ -796,13 +972,14 @@ export function nativeEditorSession(bridge) {
       preview??=(await import('./native-editor-viewport.mjs')).nativeEditorViewport(bridge,'native-preview');
       if(previewSource!==doc.data||previewNode!==node){
         const asset=async name=>name===doc.path?doc.data:JSON.parse((await projectBytes(project(),name)).toString('utf8').replace(/^\uFEFF/,''));
-        const actor=createPlacedObject(doc.kind==='blueprint'?'cube':'sphere',{id:'asset-preview'});
+        const actor=createPlacedObject(doc.kind==='blueprint'?'cube':doc.kind==='modelimport'?'empty':'sphere',{id:'asset-preview'});
         let data=doc.data;
         if(doc.kind==='blueprint'){
           const root=await createBlueprintResolver(asset,async name=>(await projectBytes(project(),name)).toString('utf8'))(doc.path);
           actor.components=structuredClone(root.components);
           if(!actor.components.some(component=>component.type==='MeshRenderer'))actor.kind='empty';
-        }else{
+        }else if(doc.kind==='modelimport')addSceneComponent(actor,'MeshRenderer').properties.mesh=data.source;
+        else{
           if(materialKinds.has(doc.kind)&&doc.kind!=='material'){
             const graph=data.graph;
             const selected=graph?.nodes.find(row=>row.id===node)||graph?.nodes.find(row=>row.key==='functionOutput'&&materialPins(row,graph).inputs.length);
@@ -814,7 +991,7 @@ export function nativeEditorSession(bridge) {
         previewScene={objects:[actor],surface:defaultSurface,environment:defaultEnvironment,assetDraft:{path:doc.path,data}};
         previewSource=doc.data;previewNode=node;
       }
-      return preview.draw(previewScene,project(),params);
+      return preview.draw(previewScene,project(),params.command==='focus'?{...params,id:'asset-preview'}:params);
     },
     'asset.previewClose': async ()=>{
       if(preview)await preview.close();

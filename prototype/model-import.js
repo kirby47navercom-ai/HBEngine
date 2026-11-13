@@ -1,11 +1,12 @@
 import {Group,Quaternion,Euler,Vector3} from 'three';
+import {validProjectPath} from './project-path.js';
 export const modelImportDefaults={scale:1,convertUnits:false,sourceUnit:'auto',sourceUp:'loader',flipForward:false,translation:[0,0,0],rotation:[0,0,0]};
 export const modelUnitChoices=[['auto','파일 단위'],['m','미터'],['cm','센티미터'],['mm','밀리미터'],['inch','인치'],['foot','피트']];
 export const modelUpChoices=[['loader','로더 원본'],['y','Y 위'],['z','Z 위'],['x','X 위']];
 export function normalizeModelImport(data){if(data?.version===1&&data.subassets?.some(row=>row.kind==='meshe'))return{...data,subassets:data.subassets.map(row=>row.kind==='meshe'?{...row,kind:'mesh'}:row)};return data;}
 const vector=(v,limit)=>Array.isArray(v)&&v.length===3&&v.every(n=>Number.isFinite(n)&&Math.abs(n)<=limit);
 export function validModelImportSettings(p){return !!p&&typeof p==='object'&&!Array.isArray(p)&&Object.keys(p).every(k=>Object.hasOwn(modelImportDefaults,k))&&Number.isFinite(p.scale)&&p.scale>=.000001&&p.scale<=1000000&&typeof p.convertUnits==='boolean'&&modelUnitChoices.some(([key])=>key===p.sourceUnit)&&modelUpChoices.some(([key])=>key===p.sourceUp)&&typeof p.flipForward==='boolean'&&vector(p.translation,1000000)&&vector(p.rotation,360000);}
-const safeSource=p=>typeof p==='string'&&p.length>0&&p.length<=1000&&!/^(?:[a-z][a-z0-9+.-]*:|[\/])/i.test(p)&&!/[\\\x00-\x1f]/.test(p)&&!p.split('/').some(v=>v==='.'||v==='..')&&/\.(gltf|glb|obj|fbx)$/i.test(p);
+const safeSource=p=>validProjectPath(p)&&/\.(gltf|glb|obj|fbx)$/i.test(p);
 export function validModelImport(data){
  data=normalizeModelImport(data);
  if(!data||![1,2].includes(data.version)||!safeSource(data.source)||data.settings!==undefined&&!validModelImportSettings(data.settings)||data.sourceHash!==undefined&&!/^[a-f0-9]{64}$/.test(data.sourceHash)||data.sourceId!==undefined&&(typeof data.sourceId!=='string'||!data.sourceId||data.sourceId.length>160)||data.name!==undefined&&(typeof data.name!=='string'||!data.name||data.name.length>200))return false;

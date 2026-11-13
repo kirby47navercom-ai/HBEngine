@@ -80,7 +80,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     const read=async name=>data.assetDraft?.path===name?data.assetDraft.data:JSON.parse((await projectText(project,name)).replace(/^\uFEFF/,''));
     const warnings=[];
     visual=sceneRendering({read,fileUrl:url,loadTexture:assets.texture,loadModel:async name=>{
-      const model=/\.(?:gltf|glb)$/i.test(name)?await loadHeadlessModel(project,name,{geometry:true,loadTexture:assets.modelTexture}):await loadModel(name);
+      const metadata=data.assetDraft?.data?.source===name?data.assetDraft.data:undefined;
+      const model=/\.(?:gltf|glb)$/i.test(name)?await loadHeadlessModel(project,name,{geometry:true,loadTexture:assets.modelTexture,metadata}):await loadModel(name,{metadata});
       models.add(model.object);return model;
     },current:id=>groups.get(id),all:()=>[...groups.values()],editor:true,gameRenderer:renderer,error:message=>warnings.push(message)});
     const objects=structuredClone(data.objects);
