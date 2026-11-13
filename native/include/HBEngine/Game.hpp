@@ -246,6 +246,8 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mousePosition", KoreanName="마우스 위치 가져오기", Category="입력") static bool GetMousePosition(Vec2& position);
     // Coordinates for a fit-scaled, top-left design canvas; raw input stays unchanged.
     static bool GetMousePositionForCanvas(const Vec2& referenceSize,Vec2& position);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mouseSetCapture", KoreanName="마우스 잠금 설정", Category="입력") static void SetMouseCapture(bool enabled);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mouseIsCaptured", KoreanName="마우스 잠금 확인", Category="입력") static bool IsMouseCaptured();
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mouseDelta", KoreanName="마우스 이동량 가져오기", Category="입력") static Vec2 GetMouseDelta();
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mouseRay", KoreanName="마우스 월드 방향 가져오기", Category="입력") static bool DeprojectMousePositionToWorld(Vec3& origin,Vec3& direction);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mouseWorldPlane", KoreanName="마우스 조준 평면 위치", Category="입력") static bool GetMouseWorldPosition(const Vec3& normal,const Vec3& point,Vec3& position);

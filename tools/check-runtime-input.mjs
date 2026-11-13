@@ -12,6 +12,7 @@ import {makeSceneComponent} from '../prototype/scene-components.js';
 import {preparePlayWorld} from '../prototype/play-world.js';
 import {engineOperations} from '../prototype/engine-services.js';
 import {NativeHost} from './native-host.mjs';
+import {NativeInputQueue} from './native-input-queue.mjs';
 import {nativeWorld} from '../prototype/native-model.js';
 
 const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-5,`${a} != ${b}`),vnear=(a,b)=>a.forEach((v,i)=>near(v,b[i]));
@@ -25,6 +26,26 @@ assert.ok(validInputPacket({pointer:{position:[400,100],size:[800,400]}}));asser
 assert.equal(input.query('mousePosition').return,false);input.pointerSample({position:[600,100],size:[800,400]});input.snapshot(camera);vnear(input.query('mouseWorldPlane',{normal:[0,0,1],point:[0,0,0]}).position,[8,6.5,0]);assert.ok(validInputSnapshot(input.snapshot(camera)));
 assert.equal(input.query('mouseWorldPlane',{normal:[0,1,0],point:[0,0,0]}).return,false);assert.equal(input.query('mouseWorldPlane',{normal:[0,0,1],point:[0,0,30]}).return,false);
 input.pointerSample({position:[800,400],size:[800,400],inside:false});input.snapshot(camera);assert.equal(input.query('mouseRay').return,false);input.clear();
+const relative=(x,y)=>({position:[400,200],size:[800,400],inside:true,locked:true,relative:[x,y]});
+const nativeInput=new NativeInputQueue(),received=[],clicks=[];
+let uiReleases=0,uiInputs=0;
+nativeInput.push({event:'input',packet:{device:'mouse',pointer:relative(7,-3)}});
+nativeInput.push({event:'input',packet:{device:'mouse',key:'leftmousebutton',value:1}});
+nativeInput.push({event:'input',packet:{device:'mouse',pointer:relative(9,8)}});
+nativeInput.push({event:'input',packet:{device:'mouse',pointer:{position:[400,200],size:[800,400],inside:false,locked:false}}});
+nativeInput.push({event:'input',packet:{device:'mouse',key:'leftmousebutton',value:0}});
+await nativeInput.apply({dispatchInput:({pointer,key})=>{
+  if(key)clicks.push(key);
+  if(pointer){input.pointerSample(pointer);received.push(input.snapshot(camera));}
+}},{input:()=>{uiInputs++;return true;},releaseInput:()=>uiReleases++});
+assert.deepEqual(clicks,['leftmousebutton']);
+assert.equal(uiInputs,1);assert.equal(uiReleases,1);
+assert.equal(received.length,3);
+assert.equal(received[0].pointer.locked,true);
+assert.deepEqual(received[1].pointer.delta,[16,5]);
+assert.equal(received[2].pointer.locked,false);
+assert.equal(validInputPacket({pointer:{...relative(0,0),locked:false}}),false);
+input.endFrame();assert.deepEqual(input.query('mouseDelta').return,[0,0]);input.clear();
 const perspective=new THREE.PerspectiveCamera(60,2,.1,100);perspective.position.set(0,8,8);perspective.lookAt(0,0,0);input.pointerSample({position:[400,200],size:[800,400]});input.snapshot(perspective);vnear(input.query('mouseWorldPlane',{normal:[0,1,0],point:[0,0,0]}).position,[0,0,0]);
 input.set('d',1,'keyboard');input.set('d',.5,'joystick');input.set('d',0,'joystick');assert.equal(input.query('inputAxisValue',{key:'D'}).return,1);input.set('d',0,'keyboard');assert.equal(input.query('inputKeyDown',{key:'d'}).return,false);
 assert.deepEqual(stickValue(.1,0,.15),[0,0]);vnear(stickValue(2,0),[1,0]);near(Math.hypot(...stickValue(1,1)),1);
@@ -43,6 +64,11 @@ class Element extends EventTarget {
 const win=new EventTarget(),doc=new EventTarget();doc.defaultView=win;doc.createElement=()=>new Element(doc);
 const event=(target,type,props={})=>{const e=new Event(type,{cancelable:true});Object.assign(e,{clientX:300,clientY:150,pointerId:1,pointerType:'mouse',button:0,isPrimary:true,...props});target.dispatchEvent(e);return e;};
 g=graph();vm=new BlueprintRuntime([object('player')],[],{inputCamera:()=>camera});await vm.start();const canvas=new Element(doc),unbind=bindRuntimePointer(canvas,{runtime:()=>vm,error:e=>{throw e;}});
+canvas.requestPointerLock=()=>{doc.pointerLockElement=canvas;event(doc,'pointerlockchange');};
+doc.exitPointerLock=()=>{doc.pointerLockElement=null;event(doc,'pointerlockchange');};
+await vm.mouseCapture(true);event(canvas,'pointermove',{movementX:13,movementY:-4});
+assert.deepEqual(vm.inputSnapshot().pointer.delta,[13,-4]);assert.equal(vm.inputSnapshot().pointer.locked,true);
+await vm.mouseCapture(false);assert.equal(vm.inputSnapshot().pointer.locked??false,false);
 event(canvas,'pointerdown');await vm.flushInput();assert.equal(vm.inputSnapshot().keys.leftmousebutton,1);assert.deepEqual(vm.inputSnapshot().pointer.position,[200,100]);event(doc,'pointerup',{clientX:900});await vm.flushInput();assert.equal(vm.inputSnapshot().keys.leftmousebutton,undefined);assert.equal(vm.inputSnapshot().pointer.inside,false);
 const stickNode=createWidgetNode('Joystick'),buttonNode=createWidgetNode('TouchButton'),stickEl=new Element(doc),buttonEl=new Element(doc),controls=[];
 const options={input:(key,value,source)=>vm.dispatchInput({key,value,source}),accept:()=>vm.active&&!vm.paused};controls.push(bindVirtualControl(stickEl,stickNode,options),bindVirtualControl(buttonEl,buttonNode,options));
@@ -65,11 +91,16 @@ const services=engineOperations({gameplay:prepared.gameplay,physicsOptions:prepa
 const collider=makeSceneComponent('BoxCollider2D');player.components.push(collider);const originalCollider=structuredClone(collider);await services.operation('spriteFlip',{target:'player',flipX:true,flipY:false},vm.bindings[0],vm);assert.equal(player.components.find(c=>c.type==='SpriteRenderer').properties.flipX,true);assert.deepEqual(collider,originalCollider);assert.deepEqual(player.scale,[1,1,1]);
 
 const host=new NativeHost();try{
-  const header='#include <HBEngine/Game.hpp>\nHB_CLASS()\nclass InputProbe : public hb::Library { public: HB_FUNCTION(BlueprintPure) static bool Read(hb::Vec2& position,hb::Vec3& origin,hb::Vec3& direction,hb::Vec3& aim,hb::Vec2& delta,bool& down); HB_FUNCTION(BlueprintPure) static hb::Actor* Player(); HB_FUNCTION(BlueprintCallable) static void Flip(hb::Actor* target,bool& x,bool& y); };';
-  const source='#include "User.h"\nbool InputProbe::Read(hb::Vec2& position,hb::Vec3& origin,hb::Vec3& direction,hb::Vec3& aim,hb::Vec2& delta,bool& down){hb::Input::GetMousePosition(position);hb::Input::DeprojectMousePositionToWorld(origin,direction);delta=hb::Input::GetMouseDelta();down=hb::Input::IsKeyDown("Mouse0");return hb::Input::GetMouseWorldPosition({0,0,1},{0,0,0},aim);}\nhb::Actor* InputProbe::Player(){return hb::Gameplay::GetPlayerPawn();}\nvoid InputProbe::Flip(hb::Actor* target,bool& x,bool& y){hb::Sprites::SetFlip(target,true,true);hb::Sprites::GetFlip(target,x,y);}';
+  const header='#include <HBEngine/Game.hpp>\nHB_CLASS()\nclass InputProbe : public hb::Library { public: HB_FUNCTION(BlueprintPure) static bool Read(hb::Vec2& position,hb::Vec3& origin,hb::Vec3& direction,hb::Vec3& aim,hb::Vec2& delta,bool& down); HB_FUNCTION(BlueprintPure) static hb::Actor* Player(); HB_FUNCTION(BlueprintCallable) static void Capture(bool enabled,bool& locked); HB_FUNCTION(BlueprintCallable) static void Flip(hb::Actor* target,bool& x,bool& y); };';
+  const source='#include "User.h"\nbool InputProbe::Read(hb::Vec2& position,hb::Vec3& origin,hb::Vec3& direction,hb::Vec3& aim,hb::Vec2& delta,bool& down){hb::Input::GetMousePosition(position);hb::Input::DeprojectMousePositionToWorld(origin,direction);delta=hb::Input::GetMouseDelta();down=hb::Input::IsKeyDown("Mouse0");return hb::Input::GetMouseWorldPosition({0,0,1},{0,0,0},aim);}\nhb::Actor* InputProbe::Player(){return hb::Gameplay::GetPlayerPawn();}\nvoid InputProbe::Capture(bool enabled,bool& locked){locked=hb::Input::IsMouseCaptured();hb::Input::SetMouseCapture(enabled);}\nvoid InputProbe::Flip(hb::Actor* target,bool& x,bool& y){hb::Sprites::SetFlip(target,true,true);hb::Sprites::GetFlip(target,x,y);}';
   const build=await host.build(header,source);await vm.dispatchInput({key:'LeftMouseButton',pointer:{position:[600,100],size:[800,400]}});const snapshot=vm.inputSnapshot(),objects=nativeWorld(vm.objects,new Set()),request={key:'nativeCall',nativeId:'InputProbe.Read',args:{},objects,input:snapshot};
   const reply=await host.call(build.token,request);assert.equal(reply.outputs.result,true);assert.equal(reply.outputs.down,true);vnear(reply.outputs.aim,vm.inputState.query('mouseWorldPlane',{normal:[0,0,1],point:[0,0,0]}).position);assert.deepEqual(reply.outputs.position,[600,100]);
   assert.equal((await host.call(build.token,{...request,nativeId:'InputProbe.Player'})).outputs.result,'player');const flipped=await host.call(build.token,{...request,nativeId:'InputProbe.Flip',args:{target:'player'}});assert.ok(flipped.outputs.x&&flipped.outputs.y);for(const op of flipped.operations)await services.operation(op.key,op.args,vm.bindings[0],vm);assert.deepEqual((await services.operation('spriteGetFlip',{target:'player'},vm.bindings[0],vm)),{flipX:true,flipY:true});
+  const captured=await host.call(build.token,{...request,nativeId:'InputProbe.Capture',args:{enabled:true},input:received[1]});
+  assert.equal(captured.outputs.locked,true);assert.equal(captured.operations[0].key,'mouseSetCapture');assert.equal(captured.operations[0].args.enabled,true);
+  let captureRequest;const pointerServices=engineOperations({mouseCapture:enabled=>{captureRequest=enabled;}});
+  try{await pointerServices.operation('mouseSetCapture',{enabled:true},null,vm);assert.equal(captureRequest,true);}
+  finally{pointerServices.dispose();}
   await assert.rejects(host.call(build.token,{...request,input:{...snapshot,pointer:{...snapshot.pointer,direction:[2,0,0]}}}),/입력 상태/);
 }finally{host.close();await vm.stop();services.dispose();}
 console.log('마우스 좌표·2D/3D 조준·클릭 Pressed/Released·입력 액션·포커스/정지·터치 멀티입력·키보드 동시입력·모바일 위젯·탑다운 제어·스프라이트 반전·실제 C++ 입력 검사 통과');

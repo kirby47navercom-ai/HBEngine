@@ -143,6 +143,10 @@ animGraphSetEnum/GetEnum 공용 서비스와 C++ SetEnum/GetEnum/GetEnumValue<E>
 
 **실행됨**은 공용 BlueprintRuntime/게임 서비스에 연결됐다는 뜻이고 **공통 C++**은 실제 C++ 함수도 존재한다는 뜻이다. 편집기 Play, 화면 없는 로직 검사, 독립 Windows Player의 검사 범위를 각각 구분한다. Game.exe는 기본 웹 장면 경로와 선택 가능한 Windows DirectX 11 장면 경로를 구분한다. D3D11 정적/인스턴스/뼈대·모프·그림자·HDR/HLSL·GPU ParticleSystem의 실제 범위와 증거는 086–091 기록을 따른다.
 
+## 2026-11-13 Windows 마우스 잠금
+
+블루프린트의 마우스 잠금 설정·확인 노드와 C++ `hb::Input::SetMouseCapture`, `hb::Input::IsMouseCaptured`를 연결해요. 잠금 중에는 `GetMouseDelta`에 상대 이동량을 누적하고 화면 중앙의 조준 방향을 유지해요. Win32 게임은 창이 전면일 때만 잠그며 Esc·포커스 상실·장면 전환에서 해제해요. 브라우저 캔버스의 잠금은 브라우저가 허용하는 사용자 입력에서 시작해요.
+
 ## 2026-10-04 입력·모바일·풀 연동
 
 - Input Event의 Pressed/Released와 hb::Input의 키/축/마우스 CSS 좌표/델타/월드 ray/조준 평면을 에디터 Play·Player·headless·실제 C++에 연결했다. 핀의 자료형과 out 매개변수는 공통 헤더에서 생성한다.

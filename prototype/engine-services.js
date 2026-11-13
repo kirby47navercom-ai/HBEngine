@@ -358,7 +358,12 @@ export function engineOperations(hooks){
       if(key==='physicsMass'||key==='physicsSleeping'){system.inspect();const body=o.gameplayDebug?.physics;if(!body)throw Error('Rigidbody가 필요해요.');return {return:key==='physicsMass'?body.mass:body.sleeping};}
       writePhysics(system,key,o,a);return {};
     }
-    if(['inputLastDevice','inputAnyPressed','inputJustPressed','inputJustReleased','inputKeyDown','inputAxisValue','mousePosition','mouseDelta','mouseRay','mouseWorldPlane'].includes(key)){vm.inputSnapshot();return vm.inputState.query(key,a);}
+    if(key==='mouseSetCapture'){
+      if(typeof a.enabled!=='boolean')throw Error('마우스 잠금 값을 확인하세요.');
+      await (hooks.mouseCapture||vm.mouseCapture)?.(a.enabled);
+      return {};
+    }
+    if(['mouseIsCaptured','inputLastDevice','inputAnyPressed','inputJustPressed','inputJustReleased','inputKeyDown','inputAxisValue','mousePosition','mouseDelta','mouseRay','mouseWorldPlane'].includes(key)){vm.inputSnapshot();return vm.inputState.query(key,a);}
     if(['inputAddContext','inputRemoveContext','actionValue','actionState','actionEvent','actionElapsed'].includes(key)){
       const o=target(a,b,vm),bindings=vm.bindings.filter(binding=>binding.self===o.id);if(!bindings.length)throw Error('입력 액션을 받을 블루프린트가 필요해요.');
       if(key==='inputRemoveContext'){const path=await hooks.asset(a.context,'inputmapping');if(!path)throw Error('입력 컨텍스트가 없어요.');for(const binding of bindings)binding.input.removeContext(path);return {};}

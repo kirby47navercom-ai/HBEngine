@@ -17,7 +17,7 @@ class NativeGameInputQueue {
 public:
     std::uint64_t coalesced=0;
     void push(Json event){
-        const auto motion=[](const Json& e){return e.value("event",std::string())=="input"&&e.at("packet").contains("pointer")&&!e.at("packet").contains("key");};
+        const auto motion=[](const Json& e){return e.value("event",std::string())=="input"&&e.at("packet").contains("pointer")&&!e.at("packet").at("pointer").contains("locked")&&!e.at("packet").contains("key");};
         if(!events.empty()&&motion(event)&&motion(events.back())){
             const auto& next=event.at("packet");const auto& previous=events.back().at("packet");
             if(next.value("device",std::string())==previous.value("device",std::string())&&next.value("source",std::string())==previous.value("source",std::string())){

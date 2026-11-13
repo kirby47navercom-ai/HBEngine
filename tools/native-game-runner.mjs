@@ -60,7 +60,7 @@ export async function nativeGameMain(options){
  const editor=options['editor-project'];
  if(editor&&!options['editor-state'])throw Error('편집기 플레이 저장 경로가 없어요.');
  let recordingOptions,recording,kioskReset=false,pausedVM;
- let captureAudio=editor&&options['editor-audio-output'];
+ let captureAudio=editor&&options['editor-audio-output'],captureRequested=false;
  const pack=editor?await openNativeEditorProject(editor,{scene:options['editor-scene'],width:1280,height:720,rate:120}):await openNativePackage(options.package),assets=installNativeAssets(pack),listeners=new Set(),requests=new Map(),ticks=[],waiting=[],inputQueue=new NativeInputQueue();let serial=1,closed=false,resize,renderer,appliedFrameRate=pack.manifest.targetFrameRate||120;
  const displaySync=pack.manifest.framePacing==='display'&&!options.uncapped;
  if(editor&&options['editor-take-output']){
@@ -116,7 +116,7 @@ export async function nativeGameMain(options){
      for(const child of children)replacement.add(child);group.removeFromParent();disposeVisual(group);
     };
     const ambientLight=new THREE.HemisphereLight(0xffffff,0x444444,1),sky=createSky(world,renderer);world.add(ambientLight);const environment=()=>applySceneEnvironment({scene:world,environment:data.environment,surface:data.surface,runtimeSettings:data.runtime,ambientLight,mainRenderer:renderer,...sky,objects});
-    return {visual,sky,environment,modelInstances,buildBase:primitives.build,prepareVisual:visual.build,update:updateVisual,remove:(_object,group)=>{if(group)disposeVisual(group);},services:{...visual,mesh:id=>meshes.get(id),camera:()=>null,audioPlayback:true,renderProjectiles:true,projectileMaterial:createNativeProjectileMaterial,widgetView:ui.create,legacyWidget:ui.legacy,screenFlash:ui.flash,audioRouting:hooks=>{const createContext=()=>createNativeAudioContext(AudioContext,{silent:!!options.silent,onFallback:state=>{stats.audioDevice=state;console.error('소리 장치를 열지 못해 무음으로 실행해요: '+state.reason);}});const routing=nativeAudioRouting({...hooks,stream:pack.stream},createContext);return routing;}},dispose:()=>{ui.dropLegacy();disposeSceneEnvironment(world);sky.skyDome.geometry.dispose();sky.skyDome.material.dispose();sky.cloudGroup.traverse(node=>{node.geometry?.dispose();node.material?.dispose();});for(const group of meshes.values())visual.dispose(group);visual.dispose2D();primitives.dispose();for(const model of models)disposeHeadlessModel(model);models.clear();modelInstances.dispose();}};
+    return {visual,sky,environment,modelInstances,buildBase:primitives.build,prepareVisual:visual.build,update:updateVisual,remove:(_object,group)=>{if(group)disposeVisual(group);},services:{...visual,mesh:id=>meshes.get(id),camera:()=>null,audioPlayback:true,mouseCapture:async enabled=>{const result=await send('mouseCapture',{enabled});captureRequested=enabled;return result;},renderProjectiles:true,projectileMaterial:createNativeProjectileMaterial,widgetView:ui.create,legacyWidget:ui.legacy,screenFlash:ui.flash,audioRouting:hooks=>{const createContext=()=>createNativeAudioContext(AudioContext,{silent:!!options.silent,onFallback:state=>{stats.audioDevice=state;console.error('소리 장치를 열지 못해 무음으로 실행해요: '+state.reason);}});const routing=nativeAudioRouting({...hooks,stream:pack.stream},createContext);return routing;}},dispose:()=>{ui.dropLegacy();disposeSceneEnvironment(world);sky.skyDome.geometry.dispose();sky.skyDome.material.dispose();sky.cloudGroup.traverse(node=>{node.geometry?.dispose();node.material?.dispose();});for(const group of meshes.values())visual.dispose(group);visual.dispose2D();primitives.dispose();for(const model of models)disposeHeadlessModel(model);models.clear();modelInstances.dispose();}};
    },
    beforeFrame:async(frame,vm,services)=>{presentationQueue.throwIfFailed();if(closed||options.frames!==undefined&&frame>=options.frames){await presentationQueue.flush();return {stop:true};}const tick=ticks.shift()||await new Promise(resolve=>waiting.push(resolve));if(tick.stop){await presentationQueue.flush();return tick;}if(resize){canvas.pixelRatio=resize.pixelRatio||1;canvas.clientWidth=resize.width;canvas.clientHeight=resize.height;renderer.setSize(resize.width,resize.height,false);resize=null;stats.resizes++;}stats.inputs+=await inputQueue.apply(vm,ui);if(kioskReset){kioskReset=false;await vm.hooks.operation('gameReset',{},null,vm);await vm.releaseInput();ui.releaseInput();stats.kioskResets=(stats.kioskResets||0)+1;}if(recordingOptions){
     services.beginTake(recordingOptions);recordingOptions=null;recording=true;
@@ -125,6 +125,7 @@ export async function nativeGameMain(options){
     await services.beginAudioCapture({maxSeconds:60,maxBytes:32*1024*1024});
    return {delta:Math.max(.000001,Math.min(.25,tick.delta))};},
    beforeWorldStop:async services=>{
+    if(captureRequested){await send('mouseCapture',{enabled:false});captureRequested=false;}
     if(captureAudio&&services.audioCaptureState().state!=='idle'){
      const captured=await services.endAudioCapture();
      if(captured.info.frames){await fs.writeFile(captureAudio,captured.bytes,{flag:'wx'});captureAudio=null;}

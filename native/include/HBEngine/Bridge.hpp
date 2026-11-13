@@ -61,6 +61,7 @@ inline bool Input::GetMousePositionForCanvas(const Vec2& referenceSize,Vec2& pos
  const double scale=std::min(double(size.x)/referenceSize.x,double(size.y)/referenceSize.y);position.x=float(position.x/scale);position.y=float(position.y/scale);return true;
 }
 
+inline bool Input::IsMouseCaptured(){const auto p=bridgeInput.find("pointer");return p!=bridgeInput.end()&&p->value("locked",false);}
 inline Vec2 Input::GetMouseDelta(){const auto p=bridgeInput.find("pointer");return p==bridgeInput.end()?Vec2{}:p->value("delta",Vec2{});}
 inline bool Input::DeprojectMousePositionToWorld(Vec3& origin,Vec3& direction){const auto p=bridgeInput.find("pointer");if(p==bridgeInput.end()){origin={};direction={};return false;}origin=p->value("origin",Vec3{});direction=p->value("direction",Vec3{});return p->value("rayValid",false);}
 inline bool Input::GetMouseWorldPosition(const Vec3& normal,const Vec3& point,Vec3& position){Vec3 origin,direction;const bool valid=DeprojectMousePositionToWorld(origin,direction);position={};const float denominator=VectorMath::DotProduct(normal,direction);if(!valid||VectorMath::VectorLengthSquared(normal)<=1e-12f||std::abs(denominator)<=1e-8f)return false;const float distance=VectorMath::DotProduct(normal,point-origin)/denominator;if(!std::isfinite(distance)||distance<0)return false;position=origin+direction*distance;return true;}
@@ -166,6 +167,7 @@ inline Vec3 Input::GetActionValue(Actor* target,const std::string& action){const
 inline std::string Input::GetActionState(Actor* target,const std::string& action){return bridgeAction(target,action).at("state").get<std::string>();}
 inline bool Input::HasActionEvent(Actor* target,const std::string& action,const std::string& event){const auto& data=bridgeAction(target,action);for(const auto& e:data.at("events"))if(e==event)return true;return false;}
 inline float Input::GetActionElapsed(Actor* target,const std::string& action){return bridgeAction(target,action).at("elapsed").get<float>();}
+inline void Input::SetMouseCapture(bool enabled){engineCommand("mouseSetCapture",{{"enabled",enabled}});}
 inline void Input::AddMappingContext(Actor* target,const std::string& context,int priority){engineCommand("inputAddContext",{{"target",bridgeId(target)},{"context",context},{"priority",priority}});}
 inline void Input::RemoveMappingContext(Actor* target,const std::string& context){engineCommand("inputRemoveContext",{{"target",bridgeId(target)},{"context",context}});}
 inline std::function<Json(const Json&)> bridgeQuery;

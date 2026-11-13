@@ -1,6 +1,6 @@
 # Windows 네이티브 게임과 웹 배포
 
-Windows 빌드의 기본값은 `windowsRuntime: "native"`예요. `target: "web"`은 기존 정적 웹 실행기를 사용해요. 편집기 UI는 WebView2를 계속 사용하지만, 네이티브 게임 패키지에는 WebView2 DLL·HTML 실행 화면·로컬 HTTP 서버를 넣지 않아요.
+Windows 빌드의 기본값은 `windowsRuntime: "native"`예요. `target: "web"`은 기존 정적 웹 실행기를 사용해요. Windows 기본 편집기는 Win32/D3D12를 사용해요. 네이티브 게임 패키지에는 WebView2 DLL·HTML 실행 화면·로컬 HTTP 서버가 없어요.
 
 ```json
 {"target":"windows-x64","windowsRuntime":"native","targetFrameRate":120,"framePacing":"fixed"}
@@ -10,7 +10,7 @@ Windows 빌드의 기본값은 `windowsRuntime: "native"`예요. `target: "web"`
 
 ## 실제 실행 구조
 
-- Win32 창·입력·D3D11 표시는 `HBNativePlayer.cpp`와 기존 `SceneRenderBridge`를 사용해요.
+- Win32 창·입력·Direct3D12 표시는 `HBNativePlayer.cpp`와 기존 `SceneRenderBridge`를 사용해요.
 - 프로젝트별 이름으로 배포한 Node/V8 실행기가 기존 `runProject`·블루프린트·게임 서비스·물리를 실행하고, 미리 컴파일한 C++ 모듈을 호출해요. 게임을 새로 작성하거나 DirectX API를 직접 호출할 필요가 없어요. 게임 로직 전체를 C++로 변환하거나 자동 병렬화한 구조는 아니에요.
 - 그림·SVG·글꼴·HUD는 네이티브 Skia, 오디오는 네이티브 Web Audio 구현을 사용해요. Web Audio라는 API 이름과 브라우저 실행은 별개예요. 기존 믹서·공간음·가상 음성·PCM 캐시를 재사용해요.
 - 게임 ID별 실행 파일·저장 폴더를 사용해요. 저장 파일은 `%LOCALAPPDATA%/HBEngine/Games/<id>`에 원자적으로 기록해요.
@@ -20,9 +20,9 @@ Windows 빌드의 기본값은 `windowsRuntime: "native"`예요. `target: "web"`
 
 네이티브 패키지에서 실제 확인한 범위는 2D 물리·스프라이트/SVG 텍스처, 3D 기본 도형의 DirectX 표시, AOT C++ 호출, HUD·한글·이미지·버튼, Win32 키보드/마우스 입력, 저장, 공용 믹서의 PCM, 무음으로 연 Windows 오디오 출력, 정상 창 종료예요. 추가 DCC 모델·복잡한 머테리얼·대규모 게임 전체의 호환성이나 성능을 일괄 증명한 것은 아니에요.
 
-현재 네이티브 검사에서 **사용자 목록 행/자동 행 높이/드래그 그룹, 월드 추적 UI, 키오스크, 스트리밍 오디오, 영상, 화면 주사율 동기화**을 쓰면 해당 파일/설정과 함께 빌드를 거절해요. 기능을 버리거나 WebView로 몰래 전환하지 않아요. 기본 목록/트리와 XInput 공용 키는 WORK3416에 연결했어요. 포인터 잠금·UI 고급 레이아웃의 완전한 브라우저 동등성도 추가 구현/검증 대상이에요. 에디터·웹·모바일의 기존 경로는 별개예요.
+네이티브 게임은 사용자 목록 행·자동 높이·드래그 전송, 월드 추적 UI, 키오스크, WAV 스트리밍, 화면 주사율 동기화와 XInput 키를 지원해요. Windows 마우스 잠금은 상대 이동량을 공용 입력 상태에 보내요. 영상과 압축 오디오 스트리밍을 포함한 패키징은 현재 관련 파일이나 에셋을 표시하며 중단해요.
 
-Windows 10/11 x64·DirectX 11 드라이버가 필요해요. 네이티브 오디오의 Microsoft Visual C++ v14 x64 런타임은 Microsoft 정식 서명을 검사한 뒤 앱 안에 동봉해요. `runtime/`와 오디오 `.node` 옆에 배치하고 실제 앱 폴더의 DLL이 로드되는지 검사해요. 다른 PC에 Node·HBEngine·VC 런타임이 미리 설치돼 있다고 가정하지 않아요. 빌드 도구는 설치본에 포함된 재배포 파일 또는 Visual Studio의 정식 `VC/Redist`를 사용하며 `HB_VC_REDIST_DIR`도 지원해요. Windows System32 DLL은 복사하지 않아요. [Microsoft 배포 지침](https://learn.microsoft.com/cpp/windows/redistributing-visual-cpp-files).
+Windows 10/11 x64와 선택한 그래픽 API를 지원하는 드라이버가 필요해요. 신규 네이티브 프로필은 Direct3D12를 사용하고 호환 프로필은 Direct3D11을 선택할 수 있어요. 네이티브 오디오의 Microsoft Visual C++ v14 x64 런타임은 Microsoft 정식 서명을 검사한 뒤 앱 안에 동봉해요. `runtime/`와 오디오 `.node` 옆에 배치하고 실제 앱 폴더의 DLL이 로드되는지 검사해요. 다른 PC에 Node·HBEngine·VC 런타임이 미리 설치돼 있다고 가정하지 않아요. 빌드 도구는 설치본에 포함된 재배포 파일 또는 Visual Studio의 정식 `VC/Redist`를 사용하며 `HB_VC_REDIST_DIR`도 지원해요. Windows System32 DLL은 복사하지 않아요. [Microsoft 배포 지침](https://learn.microsoft.com/cpp/windows/redistributing-visual-cpp-files).
 
 ## Windows 배포 서명 · 2026-11-01
 
