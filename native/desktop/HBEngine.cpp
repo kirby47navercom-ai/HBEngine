@@ -80,6 +80,9 @@ std::wstring wide(const std::string& value){int n=MultiByteToWideChar(CP_UTF8,MB
 std::string utf8(const std::wstring& value){const int n=WideCharToMultiByte(CP_UTF8,0,value.data(),int(value.size()),nullptr,0,nullptr,nullptr);std::string result(n,'\0');WideCharToMultiByte(CP_UTF8,0,value.data(),int(value.size()),result.data(),n,nullptr,nullptr);return result;}
 std::string read(const fs::path& file){std::ifstream in(file,std::ios::binary);return {std::istreambuf_iterator<char>(in),{}};}
 void write(const fs::path& file,const std::string& value){std::ofstream out(file,std::ios::binary);out<<value;if(!out)throw std::runtime_error("output file");}
+#ifndef HB_GAME_PLAYER
+#include "NativeEditorShell.hpp"
+#endif
 void error(const wchar_t* text,HRESULT code=E_FAIL){
     app.failed=true;
     if(!app.smoke.empty()){try{write(app.smoke,"{\"ok\":false,\"hresult\":"+std::to_string(unsigned(code))+"}");write(fs::path(app.smoke.wstring()+L".error.txt"),utf8(text));}catch(...){}}
@@ -436,13 +439,24 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         if(fs::is_regular_file(app.root/L"HBEngine.install.json")){defaultUserData/=L"User";SetEnvironmentVariableW(L"PORT",L"0");}
         #endif
         if(app.userData.empty())app.userData=defaultUserData;
-        fs::create_directories(app.userData/L"Sessions");std::wstring project;bool registerOnly=false;int count;auto arguments=CommandLineToArgvW(GetCommandLineW(),&count);
-        for(int i=1;i<count;i++){const std::wstring value=arguments[i];if(value==L"--register")registerOnly=true;else if((value==L"--smoke-test"||value==L"--smoke-windows")&&i+1<count){app.windowSmoke=value==L"--smoke-windows";app.smoke=fs::absolute(arguments[++i]);}else if(value.rfind(L"--",0)==0)throw std::runtime_error("argument");else if(project.empty())project=fs::absolute(value).wstring();else throw std::runtime_error("argument");}LocalFree(arguments);
+        fs::create_directories(app.userData/L"Sessions");std::wstring project;bool registerOnly=false,nativeEditor=false;
+        int count=0;
+        std::unique_ptr<wchar_t*,decltype(&LocalFree)> arguments(CommandLineToArgvW(GetCommandLineW(),&count),LocalFree);
+        if(!arguments)throw std::runtime_error("command line");
+        for(int i=1;i<count;i++){
+            const std::wstring value=arguments.get()[i];
+            if(value==L"--register")registerOnly=true;
+            else if(value==L"--native-editor")nativeEditor=true;
+            else if((value==L"--smoke-test"||value==L"--smoke-windows")&&i+1<count){app.windowSmoke=value==L"--smoke-windows";app.smoke=fs::absolute(arguments.get()[++i]);}
+            else if(value.rfind(L"--",0)==0)throw std::runtime_error("argument");
+            else if(project.empty())project=fs::absolute(value).wstring();
+            else throw std::runtime_error("argument");
+        }
         if(!project.empty()&&(!fs::is_regular_file(project)||_wcsicmp(fs::path(project).extension().c_str(),L".hbproject")))throw std::runtime_error("project file");
         #ifndef HB_GAME_PLAYER
-        if(app.smoke.empty()&&(registerOnly||fs::is_regular_file(app.root/L"HBEngine.install.json")))associateProject(executable);
+        if(!nativeEditor&&app.smoke.empty()&&(registerOnly||fs::is_regular_file(app.root/L"HBEngine.install.json")))associateProject(executable);
         #else
-        if(!project.empty()||registerOnly||app.windowSmoke)throw std::runtime_error("player argument");
+        if(!project.empty()||registerOnly||app.windowSmoke||nativeEditor)throw std::runtime_error("player argument");
         const auto game=nlohmann::json::parse(read(app.root/L"game.hbpack.json"));app.development=game.value("configuration",std::string{})=="development";
         const auto kiosk=game.value("kiosk",nlohmann::json::object());app.kiosk=kiosk.value("enabled",false);app.kioskFullscreen=app.kiosk&&kiosk.value("fullscreen",true);app.kioskPreventMinimize=app.kiosk&&kiosk.value("preventMinimize",true);
         const auto gameId=wide(game.at("id").get<std::string>());const auto sessionId=gameIdentity(gameId);std::wstring appId=L"HBEngine.Game.";for(wchar_t c:gameId)if(c!=L'-')appId+=c;if(FAILED(SetCurrentProcessExplicitAppUserModelID(appId.c_str())))throw std::runtime_error("Windows application identity");
@@ -454,6 +468,17 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         app.editorAcceptance=!app.smoke.empty()&&!project.empty()&&env(L"HB_EDITOR_ACCEPTANCE")==L"1";
 #endif
         if(registerOnly){CoUninitialize();return 0;}
+#ifndef HB_GAME_PLAYER
+        if(nativeEditor){
+            SetEnvironmentVariableW(L"HB_USER_DATA_DIR",app.userData.c_str());
+            auto node=app.root/L"runtime/node.exe";
+            if(!fs::is_regular_file(node))node=folder/L"dist/HBEngine/runtime/node.exe";
+            if(!fs::is_regular_file(node))throw std::runtime_error("node runtime");
+            int result=0;
+            {NativeEditorShell editor(instance);result=editor.run(node,app.root/L"tools/native-editor-session.mjs",app.userData,project,show,app.smoke);}
+            CoUninitialize();return result;
+        }
+#endif
         // Editor and WebView player share the disk bytecode cache; the editor viewport is native too.
         {const auto shaderCache=(env(L"HB_USER_DATA_DIR").empty()?fs::path(env(L"LOCALAPPDATA"))/L"HBEngine":app.userData)/L"Cache"/L"ShaderBytecode";
         // Seed the cache from the bundled bytecode (DirectX 11 and 12 pipelines) so the first native viewport does not compile for ~30 s.

@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include "EditorD3D12Surface.hpp"
 
 class EditorPanelBase {
 public:
@@ -19,6 +20,7 @@ public:
     using Post=std::function<void(const Json&)>;
     virtual ~EditorPanelBase(){release();if(write)write->Release();if(factory)factory->Release();if(window)DestroyWindow(window);}
     HWND parentWindow()const{return window?GetParent(window):nullptr;}
+    void useD3D12(const std::shared_ptr<EditorD3D12Surface::Graphics>& graphics){presenter=std::make_unique<EditorD3D12Surface>(graphics);}
     void reparent(HWND owner){
         if(GetParent(window)==owner)return;
         ShowWindow(window,SW_HIDE);
@@ -34,16 +36,17 @@ public:
     }
     // Acceptance evidence: the same draw() into a WIC bitmap, returned as base64 PNG.
     std::string snapshot(){
-        const UINT w=UINT(std::max(1,bounds[2])),h=UINT(std::max(1,bounds[3]));prepare();
+        const UINT w=UINT(std::max(1,bounds[2])),h=UINT(std::max(1,bounds[3]));prepareText();
+        auto* savedBrush=brush;
         IWICImagingFactory* wic=nullptr;IWICBitmap* bitmap=nullptr;ID2D1RenderTarget* rt=nullptr;ID2D1SolidColorBrush* own=nullptr;IStream* stream=nullptr;IWICBitmapEncoder* encoder=nullptr;IWICBitmapFrameEncode* frame=nullptr;std::string out;
         auto check=[](HRESULT hr,const char* what){if(FAILED(hr))throw std::runtime_error(what);};
         try{check(CoCreateInstance(CLSID_WICImagingFactory,nullptr,CLSCTX_INPROC_SERVER,IID_PPV_ARGS(&wic)),"WIC");check(wic->CreateBitmap(w,h,GUID_WICPixelFormat32bppPBGRA,WICBitmapCacheOnLoad,&bitmap),"WIC bitmap");
             check(factory->CreateWicBitmapRenderTarget(bitmap,D2D1::RenderTargetProperties(D2D1_RENDER_TARGET_TYPE_SOFTWARE,D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM,D2D1_ALPHA_MODE_PREMULTIPLIED),96,96),&rt),"WIC target");check(rt->CreateSolidColorBrush(theme.text,&own),"brush");
-            auto* savedBrush=brush;brush=own;canvas=rt;rt->BeginDraw();draw();check(rt->EndDraw(),"snapshot draw");brush=savedBrush;canvas=target;
+            brush=own;canvas=rt;rt->BeginDraw();draw();check(rt->EndDraw(),"snapshot draw");brush=savedBrush;canvas=target;
             check(CreateStreamOnHGlobal(nullptr,TRUE,&stream),"stream");check(wic->CreateEncoder(GUID_ContainerFormatPng,nullptr,&encoder),"PNG");check(encoder->Initialize(stream,WICBitmapEncoderNoCache),"PNG init");check(encoder->CreateNewFrame(&frame,nullptr),"PNG frame");check(frame->Initialize(nullptr),"frame init");check(frame->WriteSource(bitmap,nullptr),"frame write");check(frame->Commit(),"frame commit");check(encoder->Commit(),"PNG commit");
             HGLOBAL memory=nullptr;GetHGlobalFromStream(stream,&memory);const auto size=GlobalSize(memory);const auto* bytes=static_cast<const unsigned char*>(GlobalLock(memory));
             static const char* digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";for(SIZE_T i=0;i<size;i+=3){const unsigned v=(bytes[i]<<16)|(i+1<size?bytes[i+1]<<8:0)|(i+2<size?bytes[i+2]:0);out+=digits[v>>18&63];out+=digits[v>>12&63];out+=i+1<size?digits[v>>6&63]:'=';out+=i+2<size?digits[v&63]:'=';}GlobalUnlock(memory);
-        }catch(...){canvas=target;for(IUnknown* u:std::initializer_list<IUnknown*>{frame,encoder,stream,own,rt,bitmap,wic})if(u)u->Release();throw;}
+        }catch(...){brush=savedBrush;canvas=target;for(IUnknown* u:std::initializer_list<IUnknown*>{frame,encoder,stream,own,rt,bitmap,wic})if(u)u->Release();throw;}
         for(IUnknown* u:std::initializer_list<IUnknown*>{frame,encoder,stream,own,rt,bitmap,wic})if(u)u->Release();return out;
     }
     // op "menu": native popup at the cursor (or menuAt); reports {event:"command",command} or {event:"menuClosed"}.
@@ -66,6 +69,8 @@ protected:
     IDWriteTextFormat* text=nullptr;IDWriteTextFormat* bold=nullptr;IDWriteTextFormat* icons=nullptr;IDWriteInlineObject* ellipsis=nullptr;
     Json lastMenu=Json::array();std::optional<POINT> menuAt;UINT automaticMenu=0;std::string automaticCommand;
     Theme theme;float scale=1;std::array<int,4> bounds{};bool shown=false;std::uint64_t paints=0,updates=0;double lastPaintMS=0;
+    std::unique_ptr<EditorD3D12Surface> presenter;
+    std::string graphicsError;
     static int xOf(LPARAM l){return short(LOWORD(l));}static int yOf(LPARAM l){return short(HIWORD(l));}
     static std::wstring wide(const std::string& s){const int n=MultiByteToWideChar(CP_UTF8,0,s.data(),int(s.size()),nullptr,0);std::wstring out(std::max(0,n),0);if(n>0)MultiByteToWideChar(CP_UTF8,0,s.data(),int(s.size()),out.data(),n);return out;}
     static std::string utf8(const std::wstring& s){const int n=WideCharToMultiByte(CP_UTF8,0,s.data(),int(s.size()),nullptr,0,nullptr,nullptr);std::string out(std::max(0,n),0);if(n>0)WideCharToMultiByte(CP_UTF8,0,s.data(),int(s.size()),out.data(),n,nullptr,nullptr);return out;}
@@ -85,11 +90,15 @@ protected:
     bool aboveWebView()const{if(!window)return false;for(HWND h=GetWindow(GetParent(window),GW_CHILD);h&&h!=window;h=GetWindow(h,GW_HWNDNEXT)){wchar_t name[64]{};GetClassNameW(h,name,64);if(std::wstring(name).rfind(L"HBEngine.Editor",0)!=0)return false;}return true;}
     void dropText(){for(auto** f:{&text,&bold,&icons})if(*f){(*f)->Release();*f=nullptr;}if(ellipsis){ellipsis->Release();ellipsis=nullptr;}}
     void release(){dropText();if(brush){brush->Release();brush=nullptr;}if(target){target->Release();target=nullptr;}}
+    std::string graphicsBackend()const{return paints?(presenter?(graphicsError.empty()?"D3D12":""):"Direct2D"):"";}
     virtual void fontChanged(){}
     void prepare(){
         RECT client{};GetClientRect(window,&client);const auto size=D2D1::SizeU(std::max<LONG>(1,client.right),std::max<LONG>(1,client.bottom));
         if(!target){if(FAILED(factory->CreateHwndRenderTarget(D2D1::RenderTargetProperties(D2D1_RENDER_TARGET_TYPE_DEFAULT,D2D1::PixelFormat(),96,96),D2D1::HwndRenderTargetProperties(window,size),&target)))throw std::runtime_error("Direct2D panel target");target->CreateSolidColorBrush(theme.text,&brush);}
         else target->Resize(size);
+        prepareText();
+    }
+    void prepareText(){
         if(!text){const auto format=[&](DWRITE_FONT_WEIGHT weight,IDWriteTextFormat** out){write->CreateTextFormat(L"Segoe UI",nullptr,weight,DWRITE_FONT_STYLE_NORMAL,DWRITE_FONT_STRETCH_NORMAL,12.5f*scale,L"ko-kr",out);(*out)->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);(*out)->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);};
             format(DWRITE_FONT_WEIGHT_NORMAL,&text);format(DWRITE_FONT_WEIGHT_SEMI_BOLD,&bold);
             write->CreateEllipsisTrimmingSign(text,&ellipsis);DWRITE_TRIMMING trim{DWRITE_TRIMMING_GRANULARITY_CHARACTER,0,0};text->SetTrimming(&trim,ellipsis);bold->SetTrimming(&trim,ellipsis);
@@ -99,15 +108,28 @@ protected:
     void box(float x,float y,float w,float h,const D2D1_COLOR_F& background,const D2D1_COLOR_F& border){const auto r=D2D1::RoundedRect(D2D1::RectF(x,y,x+w,y+h),float(px(3)),float(px(3)));brush->SetColor(background);canvas->FillRoundedRectangle(r,brush);brush->SetColor(border);canvas->DrawRoundedRectangle(r,brush,1.f);}
     void label(const std::wstring& s,IDWriteTextFormat* format,float x,float y,float w,float h,const D2D1_COLOR_F& c){if(w<=0)return;brush->SetColor(c);canvas->DrawText(s.c_str(),UINT32(s.size()),format,D2D1::RectF(x,y,x+w,y+h),brush,D2D1_DRAW_TEXT_OPTIONS_CLIP);}
     void paint(){
-        const auto start=std::chrono::steady_clock::now();prepare();canvas=target;target->BeginDraw();draw();
-        if(target->EndDraw()==HRESULT(D2DERR_RECREATE_TARGET))release();
+        const auto start=std::chrono::steady_clock::now();
+        if(presenter){
+            try{
+                prepareText();
+                if(!presenter->paint(window,factory,[this](ID2D1RenderTarget* raster,ID2D1SolidColorBrush* ink){canvas=raster;brush=ink;draw();}))return;
+                brush=nullptr;canvas=nullptr;graphicsError.clear();
+            }catch(const std::exception& error){
+                brush=nullptr;canvas=nullptr;presenter->reset();
+                if(graphicsError!=error.what()){graphicsError=error.what();emit({{"event","graphicsError"},{"message",graphicsError}});}
+                return;
+            }
+        }else{
+            prepare();canvas=target;target->BeginDraw();draw();
+            if(target->EndDraw()==HRESULT(D2DERR_RECREATE_TARGET))release();
+        }
         ++paints;lastPaintMS=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();
     }
     virtual void draw()=0;
     virtual LRESULT handle(UINT message,WPARAM w,LPARAM l)=0;
     LRESULT common(UINT message,WPARAM w,LPARAM l){
         switch(message){
-        case WM_PAINT:{PAINTSTRUCT ps;BeginPaint(window,&ps);paint();EndPaint(window,&ps);return 0;}
+        case WM_PAINT:{PAINTSTRUCT ps;BeginPaint(window,&ps);try{paint();}catch(...){EndPaint(window,&ps);throw;}EndPaint(window,&ps);return 0;}
         case WM_ERASEBKGND:return 1;
         case WM_SIZE:if(target)target->Resize(D2D1::SizeU(LOWORD(l),HIWORD(l)));InvalidateRect(window,nullptr,FALSE);return 0;
         case WM_GETDLGCODE:return DLGC_WANTALLKEYS;

@@ -1,3 +1,7 @@
+## WebView 없는 Windows 제작 경로 · 2026-11-13
+
+`HBEngine.exe --native-editor`에서 프로젝트·문서 명령, 노드 편집, 에셋 속성과 문서 분리/합치기를 Win32와 공용 프로젝트 서비스로 연결했어요. 그래프·속성은 같은 D3D12 장치를 사용해요. 검사는 `tools/check-native-authoring.mjs`. 기본 편집기 전환에 앞서 장면 뷰포트·전용 에셋 편집기·전체 도킹과 나머지 대화상자 연결이 필요해요. 상세 기능과 실행 경로는 [EDITOR_NATIVE.md](docs/EDITOR_NATIVE.md)에 있어요.
+
 ## 대량 에셋 탐색 설치·정리 · USER_INSTALL3443 / 2026-11-10
 9790ee757264eac2·5417files·80owner/편집기 PE/Node SHA. 격리 Windows 편집기12,000파일/1,500폴더/2,519자 경로·저장/외부 변경/재시작 복원 검증과 동일 소스. Versions1·소유 Engine 정리·재현 프로젝트/소스/증거 보존. 사용자 프로젝트/창/프로필 불변.
 

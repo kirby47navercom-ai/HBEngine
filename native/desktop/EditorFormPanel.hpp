@@ -31,11 +31,12 @@ public:
     }
     Json inspect()const{
         Json list=Json::array();for(const auto& row:rows){Json controls=Json::array();for(const auto& c:row.controls)controls.push_back({{"kind",c.kind},{"i",c.i},{"value",c.value},{"checked",c.checked},{"text",c.text},{"icon",c.icon},{"hint",c.hint}});list.push_back({{"kind",row.kind},{"text",row.text},{"label",row.label},{"toggle",row.toggle},{"controls",controls}});}
-        auto out=common();out["rows"]=list;out["scroll"]=scroll;out["contentHeight"]=contentHeight;out["editing"]=editing;out["revision"]=revision;out["paintedRows"]=paintedRows;out["lastMenu"]=lastMenu;return out;
+        auto out=common();out["rows"]=list;out["scroll"]=scroll;out["contentHeight"]=contentHeight;out["editing"]=editing;out["revision"]=revision;out["paintedRows"]=paintedRows;out["lastMenu"]=lastMenu;out["backend"]=graphicsBackend();out["graphicsError"]=graphicsError;return out;
     }
     // Acceptance only: real window messages at a control. {action:"click"|"edit"|"select"|"color"|"range"|"heading"|"wheel", i, text, option, value, fraction, row, delta}
     void probe(const Json& p){
         const auto action=p.at("action").get<std::string>();
+        if(action=="paint"){InvalidateRect(window,nullptr,FALSE);UpdateWindow(window);return;}
         if(action=="menu"){automaticCommand=p.at("command").get<std::string>();return;}
         if(action=="wheel"){SendMessageW(window,WM_MOUSEWHEEL,MAKEWPARAM(0,short(p.at("delta").get<int>())),0);return;}
         if(action=="heading"){const auto& hit=headingHit(p.at("row").get<int>());click(hit.left+px(10),(hit.top+hit.bottom)/2);return;}

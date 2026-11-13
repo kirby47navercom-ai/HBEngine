@@ -1,3 +1,7 @@
+## Windows 네이티브 그래프 편집
+
+`HBEngine.exe --native-editor`에서 이벤트·Construction Script·함수·매크로 그래프를 열 수 있어요. 노드 추가·이동·삭제, 핀 연결·해제, 연결되지 않은 입력의 값 변경에 공용 노드 규칙과 문서 저장·Undo/Redo를 사용해요. 변수·함수·매크로 정의와 디버그 UI는 기존 편집기 경로를 사용해요. 실행 방법과 검사는 [편집기 네이티브 전환](EDITOR_NATIVE.md)에 있어요.
+
 <!-- WORK2960 -->
 다중 ParticleSystem은 컴포넌트별 시뮬레이션·표시·정렬·리본·수명을 사용해요. 새 ID/이름 기반 C++·BP 제어와 Cue v4 명시적 변환/Undo를 공용 실행에 연결해요. EQS 묶음 실행/결과/취소는 액터 생성 색인을 한 번 캡처하고 전체 결과를 원자적으로 확정해요. 기존 단일 질의와 액터 파티클 함수의 의미는 유지해요. MULTI_PARTICLE_COMPONENTS.md·EQS_BATCH.md와 ENGINE_WORK_2960에 검증 범위를 기록해요.
 

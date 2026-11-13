@@ -160,7 +160,7 @@ export class ProjectService {
     if(typeof text!=='string'||typeof expected!=='string')throw Error('저장 내용과 이전 저장 기준이 필요해요.');
     if(nativeHeaderPath(relative))return this.checkedBatch([{path:relative,text,expected}],guard);
     const task=this.writeQueue.then(async()=>{guard();let source;try{source=await fs.readFile(await this.resolve(relative),'utf8');}catch(error){if(error.code==='ENOENT')throw Object.assign(Error('외부에서 삭제된 파일이에요. 다른 이름으로 저장하세요.'),{status:409});throw error;}
-      const kind=assetKind(relative);let actual;try{actual=JSON.stringify(assetSuffix[kind]?JSON.parse(source):source);}catch{actual=null;}
+      const kind=assetKind(relative);let actual;try{actual=JSON.stringify(assetSuffix[kind]?JSON.parse(source.replace(/^\uFEFF/,'')):source);}catch{actual=null;}
       if(actual!==expected)throw Object.assign(Error('외부에서 변경된 에셋이에요. 다시 읽거나 변경 내용을 비교하세요.'),{status:409});
       const next=assetSuffix[kind]?JSON.parse(text):text;if(assetSuffix[kind]&&!validAsset(kind,next))throw Error(assetValidationError(kind,next));if(JSON.stringify(next)===actual){guard();return {ok:true,noChange:true};}
       if(isNativeTypeAssetKind(kind))return this.writeFile(relative,text,guard);

@@ -121,7 +121,13 @@ public:
         frames[frame].fence=++serial;check(queue->Signal(fence.p,serial),"Direct3D12 frame signal");frame=(frame+1)%FrameCount;
         submittedTickets.emplace_back(recordingId,serial);if(submittedTickets.size()>64)submittedTickets.erase(submittedTickets.begin());
     }
-    void waitIdle(){if(!queue.p)return;check(queue->Signal(fence.p,++serial),"Direct3D12 idle signal");wait(serial);}
+    void waitIdle(){
+        if(!queue.p)return;
+        check(queue->Signal(fence.p,++serial),"Direct3D12 idle signal");wait(serial);
+        // ResizeBuffers requires every old back buffer reference to be released.
+        // Submitted frames are complete here. Unsubmitted work still owns its resources.
+        if(!recording)for(auto& submitted:frames){submitted.retired.clear();submitted.objects.clear();}
+    }
 
     Upload upload(std::uint64_t size,std::uint64_t alignment=256){
         requireRecording();if(!size)throw std::runtime_error("Direct3D12 empty upload");
@@ -260,8 +266,8 @@ class Swapchain {
     Device& gpu;Com<IDXGISwapChain3> swap;std::array<Texture,FrameCount> buffers;
     void wrap(){for(UINT i=0;i<FrameCount;i++){auto& b=buffers[i];check(swap->GetBuffer(i,__uuidof(ID3D12Resource),reinterpret_cast<void**>(&b.value.p)),"Direct3D12 swap buffer");b.state=D3D12_RESOURCE_STATE_PRESENT;if(!b.rtv.ptr)b.rtv=gpu.rtvs.take();gpu.device->CreateRenderTargetView(b.get(),nullptr,b.rtv);}}
 public:
-    Swapchain(Device& device,HWND window,UINT width,UINT height):gpu(device){
-        DXGI_SWAP_CHAIN_DESC1 d{};d.Width=width;d.Height=height;d.Format=DXGI_FORMAT_R8G8B8A8_UNORM;d.SampleDesc.Count=1;d.BufferUsage=DXGI_USAGE_RENDER_TARGET_OUTPUT;d.BufferCount=FrameCount;d.SwapEffect=DXGI_SWAP_EFFECT_FLIP_DISCARD;
+    Swapchain(Device& device,HWND window,UINT width,UINT height,DXGI_FORMAT format=DXGI_FORMAT_R8G8B8A8_UNORM):gpu(device){
+        DXGI_SWAP_CHAIN_DESC1 d{};d.Width=width;d.Height=height;d.Format=format;d.SampleDesc.Count=1;d.BufferUsage=DXGI_USAGE_RENDER_TARGET_OUTPUT;d.BufferCount=FrameCount;d.SwapEffect=DXGI_SWAP_EFFECT_FLIP_DISCARD;
         Com<IDXGISwapChain1> chain;check(gpu.factory->CreateSwapChainForHwnd(gpu.queue.p,window,&d,nullptr,nullptr,&chain.p),"Direct3D12 window swapchain");
         check(gpu.factory->MakeWindowAssociation(window,DXGI_MWA_NO_ALT_ENTER),"Direct3D12 window association");
         check(chain->QueryInterface(__uuidof(IDXGISwapChain3),reinterpret_cast<void**>(&swap.p)),"Direct3D12 indexed swapchain");
