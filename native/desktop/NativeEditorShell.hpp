@@ -45,6 +45,12 @@ class NativeEditorShell {
     Json worldBrush={{"mode","raise"},{"radius",2.0},{"strength",1.0},{"height",0.0},{"layer",0}};
     Json foliageBrush={{"radius",5.0},{"count",24},{"minDistance",0.5}};
     std::map<int,std::vector<int>> worldFaces;
+    std::set<int> worldVertices;
+    std::set<std::array<int,2>> worldEdges;
+    unsigned meshSelectionMode=0,meshUVChannel=0;
+    bool meshUVOpen=false,meshAtlasRunning=false;
+    Json meshUVCenter;
+    double meshUVZoom=1,meshUVUnit=1;
     std::set<std::string> worldInstances;
     Json previewInput;
     Json widgetPreview;
@@ -152,6 +158,9 @@ class NativeEditorShell {
     static constexpr Command EditTakeInheritance=static_cast<Command>(161),ApplyTakePreset=static_cast<Command>(160),CreateTakePreset=static_cast<Command>(159);
     static constexpr Command InspectPlay=static_cast<Command>(158),RecordAudio=static_cast<Command>(157),SaveCapturedMix=static_cast<Command>(156);
     static constexpr Command ConfigureWorld=static_cast<Command>(155),EditWorld=static_cast<Command>(154);
+    static constexpr Command MeshSelection=static_cast<Command>(153),MeshAdvanced=static_cast<Command>(152);
+    static constexpr Command MeshUVView=static_cast<Command>(151),MeshUVFit=static_cast<Command>(150);
+    static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
 
@@ -344,6 +353,7 @@ class NativeEditorShell {
             try{
                 const auto action=event.at("event").get<std::string>();
                 if(action=="graphicsError"){SetWindowTextW(status,wide(event.at("message")).c_str());return;}
+                if(meshUVOpen&&action.rfind("uv",0)==0){editMeshUVView(event);return;}
                 if(action=="select"&&widgetOpen()){
                     widgetSelection=event.at("id").get<std::string>();fieldPath=Json::array();refreshForm();return;
                 }
@@ -480,6 +490,12 @@ class NativeEditorShell {
         AppendMenuW(edit,MF_STRING,ModelReimport,L"원본 모델 다시 가져오기");
         AppendMenuW(edit,MF_STRING,ConfigureWorld,L"지형·폴리지 도구 설정");
         AppendMenuW(edit,MF_STRING,EditWorld,L"월드 에셋 편집");
+        AppendMenuW(edit,MF_STRING,MeshSelection,L"메시 선택 모드");
+        AppendMenuW(edit,MF_STRING,MeshAdvanced,L"메시 간선·영역·노멀·UV 도구");
+        AppendMenuW(edit,MF_STRING,MeshAtlasStart,L"UV 아틀라스 생성");
+        AppendMenuW(edit,MF_STRING,MeshAtlasCancel,L"UV 아틀라스 작업 취소");
+        AppendMenuW(viewMenu,MF_STRING,MeshUVView,L"메시 UV0·UV1 보기 / 3D 보기");
+        AppendMenuW(viewMenu,MF_STRING,MeshUVFit,L"메시 UV 전체 보기");
         AppendMenuW(sceneMenu,MF_STRING,AddActor,L"오브젝트 추가");
         AppendMenuW(sceneMenu,MF_STRING,AddComponent,L"컴포넌트 추가");
         AppendMenuW(sceneMenu,MF_STRING,DeleteActor,L"선택 오브젝트 삭제");
@@ -574,7 +590,7 @@ class NativeEditorShell {
         }
         const bool graphShown=document.value("graph",false)&&!sourceMode;
         const bool sceneShown=document.value("kind",std::string())=="scene"&&!sourceMode;
-        const bool canvasShown=(timelineOpen()||widgetOpen()||imageOpen()||tilemapOpen()||audioAssetOpen())&&!sourceMode;
+        const bool canvasShown=(timelineOpen()||widgetOpen()||imageOpen()||tilemapOpen()||audioAssetOpen()||meshUVOpen)&&!sourceMode;
         const bool formShown=document.value("form",false)&&!sourceMode&&!sceneShown&&!canvasShown;
         const int top=graphShown||sceneShown?y+32:y,h=std::max(1,y+bodyHeight-top);
         MoveWindow(views,x,y,std::min(230,w/2),220,TRUE);MoveWindow(palette,x+std::min(235,w/2),y,std::max(1,w-std::min(235,w/2)),300,TRUE);
@@ -583,7 +599,7 @@ class NativeEditorShell {
         MoveWindow(source,x,top,w,h,TRUE);
         ShowWindow(source,document.contains("path")&&!graphShown&&!formShown&&!sceneShown&&!canvasShown?SW_SHOW:SW_HIDE);
         const int inspectorWidth=graphShown&&w>=365?std::min(240,w*42/100):0;
-        const bool previewShown=previewOpen&&canPreview()&&!sourceMode;
+        const bool previewShown=previewOpen&&canPreview()&&!sourceMode&&!meshUVOpen;
         const int previewHeight=previewShown&&graphShown?std::max(1,h/3):0;
         graph.layout(x,top,w-inspectorWidth,h-previewHeight,graphShown);
         const int side=sceneShown?std::min(std::clamp(int(w*inspectorPercent/100),190,420),std::max(0,w-160)):0;
@@ -605,6 +621,7 @@ class NativeEditorShell {
         if(tilemapOpen()&&canvasShown)SetTimer(window,7,60,nullptr);
         previewViewport.layout(owner,x,top+(graphShown?h-previewHeight:0),graphShown?std::max(1,w-inspectorWidth):std::max(1,w/2),graphShown?previewHeight:h,previewShown);
         if(previewShown)queuePreview();
+        if(meshUVOpen&&!sourceMode)SetTimer(window,11,60,nullptr);
     }
     Divider dividerAt(HWND owner,int x,int y)const{
         RECT rect{};GetClientRect(owner,&rect);
@@ -810,7 +827,7 @@ class NativeEditorShell {
         input["width"]=std::min<LONG>(4096,size.cx);input["height"]=std::min<LONG>(4096,size.cy);input["node"]=graphSelection;
         if(worldOpen()){
             input["faces"]=Json::array();for(const auto& [face,vertices]:worldFaces)input["faces"].push_back(face);
-            input["instances"]=worldInstances;
+            input["instances"]=worldInstances;input["meshVertices"]=worldVertices;input["meshEdges"]=worldEdges;
         }
         const auto result=request("asset.preview",input);
         const auto prep=result.value("shaderPreparation",Json::object());
@@ -818,6 +835,7 @@ class NativeEditorShell {
         if(!result.at("warnings").empty())SetWindowTextW(status,wide(result.at("warnings").front()).c_str());
         return result;
     }
+    void clearWorldMeshSelection(){worldFaces.clear();worldVertices.clear();worldEdges.clear();}
     void editWorld(Json input){
         captureSource();input["expectedRevision"]=document.at("revision");
         showDocument(request("world.edit",input));
@@ -828,19 +846,28 @@ class NativeEditorShell {
         if(worldOpen()&&cmd=="pick"&&(kind=="mesh"||(kind=="foliage"&&foliageSelect))){
             input["command"]="worldSelect";
             const auto result=drawPreview(input);
-            if(!input.value("add",false)){worldFaces.clear();worldInstances.clear();}
+            if(!input.value("add",false)){clearWorldMeshSelection();worldInstances.clear();}
             if(result.contains("worldSelection")){
                 const auto& hit=result.at("worldSelection");
                 if(kind=="mesh"){
-                    const int face=hit.at("face");
-                    if(!worldFaces.erase(face))worldFaces.emplace(face,hit.at("vertices").get<std::vector<int>>());
+                    if(meshSelectionMode==0){
+                        const int face=hit.at("face");
+                        if(!worldFaces.erase(face))worldFaces.emplace(face,hit.at("vertices").get<std::vector<int>>());
+                    }else if(meshSelectionMode==1){
+                        auto edge=hit.at("edge").get<std::array<int,2>>();
+                        if(edge[1]<edge[0])std::swap(edge[0],edge[1]);
+                        if(!worldEdges.erase(edge))worldEdges.insert(edge);
+                    }else{
+                        const int vertex=hit.at("vertex");
+                        if(!worldVertices.erase(vertex))worldVertices.insert(vertex);
+                    }
                 }else if(hit.contains("instance")){
                     const auto id=hit.at("instance").get<std::string>();
                     if(!worldInstances.erase(id))worldInstances.insert(id);
                 }
             }
             queuePreview();
-            statusText((L"선택 · "+std::to_wstring(kind=="mesh"?worldFaces.size():worldInstances.size())).c_str());
+            statusText((L"선택 · "+std::to_wstring(kind=="mesh"?worldFaces.size()+worldEdges.size()+worldVertices.size():worldInstances.size())).c_str());
             return result;
         }
         if(worldOpen()&&cmd=="worldBrush"&&(kind=="terrain"||kind=="foliage")){
@@ -1151,7 +1178,8 @@ class NativeEditorShell {
         if(value.contains("model")){updatedGraph=std::move(value.at("model"));value.erase("model");}
         document=std::move(value);updating=true;
         if(previous!=document.value("path",std::string())){tileOrigin={};tileLayer.clear();tileAtlasSource=nullptr;assetCanvas.updateAtlas(nullptr,{});if(modelOpen()||worldOpen())previewOpen=true;
-            previewInput=nullptr;worldFaces.clear();worldInstances.clear();foliageSelect=false;
+            previewInput=nullptr;clearWorldMeshSelection();worldInstances.clear();foliageSelect=false;meshSelectionMode=0;
+            worldBrush["layer"]=0;meshUVOpen=false;meshUVCenter=nullptr;meshUVZoom=1;
             previewViewport.useBrush(document.value("kind",std::string())=="terrain"||document.value("kind",std::string())=="foliage");}
         if(previous!=document.value("path",std::string())){view="event";sourceMode=false;graph.resetView();graphSelection.clear();selectedTransition.clear();fieldPath=modelOpen()?Json::array({"settings"}):Json::array();sceneSelection.clear();cameraId.clear();cameraDirection.clear();cameraOutputs=false;folded.clear();viewport.setHandles(Json::array());cameraInput=nullptr;viewportPreparing=false;widgetSelection.clear();widgetRevision.clear();widgetPreview=nullptr;timelineTrack.clear();timelineItem.clear();timelineKey=timelineChannel=-1;curveView=false;assetCanvas.resetTimeline();imageIndex=imageLevel=0;}
         displayText(source,document.value("text",std::string()));
@@ -2292,6 +2320,154 @@ class NativeEditorShell {
         }
         previewOpen=true;layout();
     }
+    Json meshEditSettings(const char* operation){
+        auto vertices=worldVertices;
+        Json faces=Json::array();
+        for(const auto& [face,ids]:worldFaces){faces.push_back(face);vertices.insert(ids.begin(),ids.end());}
+        for(const auto& edge:worldEdges)vertices.insert(edge.begin(),edge.end());
+        return {{"operation",operation},{"faces",faces},{"vertices",vertices},{"edges",worldEdges}};
+    }
+    void startMeshAtlas(){
+        if(document.value("kind",std::string())!="mesh"||sourceMode||meshAtlasRunning)return;
+        const auto channel=chooseMenu({L"UV0",L"UV1 · 라이트맵"});if(!channel)return;
+        const auto resolution=worldNumber(L"아틀라스 해상도",512);if(!resolution)return;
+        const auto padding=worldNumber(L"섬 사이 여백 (픽셀)",4);if(!padding)return;
+        if(*resolution<32||*resolution>8192||std::floor(*resolution)!=*resolution||*padding<0||
+            *padding>*resolution/8||std::floor(*padding)!=*padding)throw std::runtime_error("아틀라스 해상도와 여백을 확인하세요.");
+        request("world.meshAtlasStart",{{"settings",{{"channel",*channel},{"resolution",int(*resolution)},{"padding",int(*padding)}}},
+            {"expectedRevision",document.at("revision")}});
+        meshAtlasRunning=true;SetTimer(window,12,150,nullptr);statusText(L"UV 아틀라스를 만들고 있어요.");
+    }
+    bool pollMeshAtlas(){
+        if(!meshAtlasRunning)return true;
+        const auto result=request("world.meshAtlasStatus",{{"apply",true}});
+        const auto state=result.at("status").get<std::string>();
+        if(state=="running"){
+            if(result.contains("progress"))statusText((L"UV 아틀라스 · "+wide(result.at("progress").at("value").dump())+L"%").c_str());
+            return false;
+        }
+        meshAtlasRunning=false;
+        if(state=="error")throw std::runtime_error(result.at("error").get<std::string>());
+        if(state=="done"){
+            const auto changed=request("document.read",{{"path",result.at("path")}});
+            if(document.at("path")==result.at("path")){
+                clearWorldMeshSelection();meshUVCenter=nullptr;showDocument(changed);
+            }else{
+                syncDocumentWindows(changed,nullptr);
+                document["tabs"]=changed.at("tabs");refreshTabs();
+            }
+            statusText(L"UV 아틀라스를 생성했어요.");
+        }
+        return true;
+    }
+    Json refreshMeshUV(Json pick=nullptr){
+        const auto [width,height]=assetCanvas.canvasSize();
+        if(width<=0||height<=0)return nullptr;
+        const auto scale=std::min(1.,1280./std::max(width,height));
+        Json faces=Json::array();for(const auto& [face,vertices]:worldFaces)faces.push_back(face);
+        Json input={{"channel",meshUVChannel},{"width",std::max(1,int(width*scale))},{"height",std::max(1,int(height*scale))},
+            {"zoom",meshUVZoom},{"faces",faces},{"expectedRevision",document.at("revision")}};
+        if(!meshUVCenter.is_null())input["center"]=meshUVCenter;
+        if(!pick.is_null())input["pick"]=std::move(pick);
+        auto result=request("world.meshUVView",input);
+        meshUVCenter=result.at("center");meshUVZoom=result.at("zoom");meshUVUnit=result.at("unit");
+        auto pixels=takePixels(result);
+        assetCanvas.updateUV(result,std::move(pixels));return result;
+    }
+    void editMeshUVView(const Json& event){
+        const auto action=event.at("event").get<std::string>();
+        if(action=="uvZoom"){
+            meshUVZoom=std::clamp(meshUVZoom*std::pow(1.2,event.at("delta").get<double>()),.000001,10000.);
+        }else if(action=="uvPan"&&!meshUVCenter.is_null()){
+            meshUVCenter[0]=meshUVCenter.at(0).get<double>()-event.at("dx").get<double>()/meshUVUnit;
+            meshUVCenter[1]=meshUVCenter.at(1).get<double>()+event.at("dy").get<double>()/meshUVUnit;
+        }else if(action=="uvPick"){
+            const auto result=refreshMeshUV({{"point",event.at("point")},{"island",event.at("island")}});
+            if(!event.at("add").get<bool>())clearWorldMeshSelection();
+            if(!result.is_null()){
+                const auto data=Json::parse(document.at("text").get<std::string>());
+                for(const int face:result.at("selection")){
+                    const auto& indices=data.at("indices");
+                    if(!worldFaces.erase(face))worldFaces[face]={indices.at(face*3),indices.at(face*3+1),indices.at(face*3+2)};
+                }
+            }
+        }else if(action=="uvTranslate"){
+            if(worldFaces.empty())return;
+            auto settings=meshEditSettings("uvTransform");
+            settings["channel"]=meshUVChannel;settings["wholeIsland"]=false;
+            settings["offset"]={event.at("dx").get<double>()/meshUVUnit,-event.at("dy").get<double>()/meshUVUnit};
+            editWorld({{"action","geometry"},{"settings",settings}});
+        }
+        refreshMeshUV();
+    }
+    void editAdvancedMesh(){
+        if(document.value("kind",std::string())!="mesh"||sourceMode)return;
+        const auto group=chooseMenu({L"간선·영역·토폴로지",L"노멀",L"UV"});if(!group)return;
+        const auto action=*group==0?chooseMenu({L"간선 분할",L"경계 루프 선택",L"경계 연결",L"개별 면 인셋",L"영역 인셋",L"영역 베벨",L"영역 재삼각화",L"정점 용접"})
+            :*group==1?chooseMenu({L"플랫 노멀",L"스무스 노멀",L"UV 경계 노멀 잇기",L"선택 노멀 지정"})
+            :chooseMenu({L"면별 패킹",L"섬 펼치기",L"섬 패킹",L"경계 맞추기",L"선택 면 분리",L"UV0을 UV1로 복사",L"UV1 삭제",L"UV 검사"});
+        if(!action)return;
+        const std::array<const char*,8> geometry={"splitEdges","","bridge","insetFaces","insetRegion","bevelRegion","retriangulateRegion","weld"};
+        const std::array<const char*,4> normals={"flatNormals","smoothNormals","stitchNormals","setNormals"};
+        const std::array<const char*,8> uv={"uvPack","uvUnwrap","uvPackIslands","uvStitch","uvCut","uvCopy","uvRemove",""};
+        auto settings=meshEditSettings(*group==0?geometry[*action]:*group==1?normals[*action]:uv[*action]);
+        if(*group==0&&*action==1){
+            const auto result=request("world.meshBoundary",{{"edges",worldEdges},{"expectedRevision",document.at("revision")}});
+            clearWorldMeshSelection();meshSelectionMode=1;
+            for(auto edge:result.at("edges").get<std::vector<std::array<int,2>>>()){
+                if(edge[1]<edge[0])std::swap(edge[0],edge[1]);
+                worldEdges.insert(edge);
+            }
+            queuePreview();statusText((L"경계 루프 · "+wide(result.at("loops").dump())).c_str());return;
+        }
+        if(*group==0&&*action>=2&&*action<=5){
+            const auto value=worldNumber(*action==2?L"경계 연결 시작 오프셋":L"거리",*action==2?0:.1);if(!value)return;
+            settings[*action==2?"bridgeOffset":"distance"]=*value;
+            if(*action==5){
+                const auto height=worldNumber(L"베벨 높이",.1);if(!height)return;
+                const auto segments=worldNumber(L"베벨 분할",4);if(!segments)return;
+                const auto profile=chooseMenu({L"직선",L"둥글게"});if(!profile)return;
+                settings.update({{"height",*height},{"segments",*segments},{"profile",*profile==0?"linear":"round"}});
+            }
+        }
+        if(*group==0&&*action==7){
+            const auto tolerance=worldNumber(L"용접 허용 오차",.001);if(!tolerance)return;
+            const auto preserve=chooseMenu({L"UV 경계 유지",L"UV 경계 병합 허용"});if(!preserve)return;
+            settings.update({{"tolerance",*tolerance},{"preserveUV",*preserve==0}});
+        }
+        if(*group==1&&*action==2){
+            const auto angle=worldNumber(L"최대 노멀 각도",60);if(!angle)return;settings["maxAngle"]=*angle;
+        }
+        if(*group==1&&*action==3){
+            if(settings.at("vertices").empty())throw std::runtime_error("노멀을 적용할 정점을 선택하세요.");
+            const auto normal=worldVector({L"노멀 X",L"노멀 Y",L"노멀 Z"},{0,1,0});if(!normal)return;settings["normal"]=*normal;
+        }
+        if(*group==2){
+            if(*action==4&&worldFaces.empty())throw std::runtime_error("분리할 UV 면을 선택하세요.");
+            if(*action==6)settings["channel"]=1;
+            if(*action!=0&&*action!=5&&*action!=6){
+                const auto channel=chooseMenu({L"UV0",L"UV1"});if(!channel)return;settings["channel"]=*channel;
+                if(*action==7){
+                    const auto result=request("world.meshUVInspect",{{"channel",*channel},{"expectedRevision",document.at("revision")}});
+                    clearWorldMeshSelection();
+                    const auto data=Json::parse(document.at("text").get<std::string>());
+                    for(const int face:result.at("faces")){
+                        const auto& indices=data.at("indices");
+                        worldFaces[face]={indices.at(face*3),indices.at(face*3+1),indices.at(face*3+2)};
+                    }
+                    queuePreview();
+                    if(!result.at("present").get<bool>()){statusText(L"선택한 UV 채널이 없어요.");return;}
+                    const auto status=L"UV 검사 · 겹침 "+wide(result.at("overlapPairs").dump())+L" · 범위 밖 "+
+                        wide(result.at("outside").dump())+L" · 퇴화 "+wide(result.at("degenerate").dump());
+                    statusText((status+(result.at("complete").get<bool>()?L"":L" · 부분 검사")).c_str());return;
+                }
+            }
+            if(*action<=2){
+                const auto padding=worldNumber(L"UV 여백",.04);if(!padding)return;settings["padding"]=*padding;
+            }
+        }
+        editWorld({{"action","geometry"},{"settings",settings}});clearWorldMeshSelection();
+    }
     void editWorldAsset(){
         if(!worldOpen()||sourceMode)return;
         const auto kind=document.at("kind").get<std::string>();
@@ -2320,11 +2496,10 @@ class NativeEditorShell {
                 const auto created=request("world.simplify",{{"name",utf8(name)},{"cellSize",*cell},{"expectedRevision",document.at("revision")}});
                 refreshFiles();statusText(wide(created.at("path")).c_str());return;
             }
-            if(worldFaces.empty()&&*action!=6)throw std::runtime_error("메시 면을 선택하세요.");
+            if(worldFaces.empty()&&*action!=6&&(*action!=0||(worldVertices.empty()&&worldEdges.empty())))
+                throw std::runtime_error("메시 정점이나 면을 선택하세요.");
             const std::array<const char*,7> operations={"move","subdivide","extrude","flip","deleteFaces","duplicateFaces","uvXZ"};
-            std::set<int> vertices;Json faces=Json::array();
-            for(const auto& [face,ids]:worldFaces){faces.push_back(face);vertices.insert(ids.begin(),ids.end());}
-            Json settings={{"operation",operations[*action]},{"faces",faces},{"vertices",vertices}};
+            auto settings=meshEditSettings(operations[*action]);
             if(*action==0){
                 const auto delta=worldVector({L"이동 X",L"이동 Y",L"이동 Z"},{0,0,0});if(!delta)return;
                 settings["delta"]=*delta;
@@ -2334,7 +2509,7 @@ class NativeEditorShell {
                 settings["distance"]=*distance;
             }
             editWorld({{"action","geometry"},{"settings",settings}});
-            worldFaces.clear();
+            clearWorldMeshSelection();
         }else{
             const auto action=chooseMenu({L"LOD 단계 추가",L"LOD 단계 삭제"});if(!action)return;
             if(*action==0){
@@ -2471,6 +2646,25 @@ class NativeEditorShell {
         }
         case ConfigureWorld:configureWorld();return;
         case EditWorld:editWorldAsset();return;
+        case MeshAdvanced:editAdvancedMesh();return;
+        case MeshUVView:
+            if(document.value("kind",std::string())=="mesh"&&!sourceMode){
+                const auto view=chooseMenu({L"3D 미리보기",L"UV0",L"UV1"});if(!view)return;
+                meshUVOpen=*view!=0;meshUVChannel=meshUVOpen?unsigned(*view-1):0;meshUVCenter=nullptr;meshUVZoom=1;
+                layout();
+            }
+            return;
+        case MeshUVFit:if(meshUVOpen){meshUVCenter=nullptr;refreshMeshUV();}return;
+        case MeshAtlasStart:startMeshAtlas();return;
+        case MeshAtlasCancel:
+            if(meshAtlasRunning){request("world.meshAtlasCancel");meshAtlasRunning=false;KillTimer(window,12);statusText(L"UV 작업을 취소했어요.");}
+            return;
+        case MeshSelection:
+            if(document.value("kind",std::string())=="mesh"&&!sourceMode){
+                const auto mode=chooseMenu({L"면",L"간선",L"정점"});if(!mode)return;
+                meshSelectionMode=unsigned(*mode);clearWorldMeshSelection();queuePreview();
+            }
+            return;
         case ShowCurve:
             if(document.value("kind",std::string())!="sequenceasset"||sourceMode)return;
             if(curveView){assetCanvas.updateTimeline(request("timeline.read"));curveView=false;timelineChannel=-1;}
@@ -2910,7 +3104,7 @@ class NativeEditorShell {
         }
         if(message==WM_TIMER&&w==5){
             KillTimer(window,5);
-            if(previewOpen&&canPreview()&&!sourceMode){auto input=std::move(previewInput);previewInput=nullptr;applyPreviewInput(input.is_object()?std::move(input):Json::object());}
+            if(previewOpen&&canPreview()&&!sourceMode&&!meshUVOpen){auto input=std::move(previewInput);previewInput=nullptr;applyPreviewInput(input.is_object()?std::move(input):Json::object());}
             return 0;
         }
         if(message==WM_APP+43&&owner==window){
@@ -2932,6 +3126,12 @@ class NativeEditorShell {
             if(closeAfterPlay){closeAfterPlay=false;PostMessageW(window,WM_CLOSE,0,0);}
             return 0;
         }
+        if(message==WM_TIMER&&w==12){
+            try{if(pollMeshAtlas())KillTimer(window,12);}
+            catch(...){meshAtlasRunning=false;KillTimer(window,12);throw;}
+            return 0;
+        }
+        if(message==WM_TIMER&&w==11){KillTimer(window,11);if(meshUVOpen&&!sourceMode)refreshMeshUV();return 0;}
         if(message==WM_TIMER&&w==7){KillTimer(window,7);if(tilemapOpen()&&!sourceMode)refreshTilemap();return 0;}
         if(message==WM_TIMER&&w==8){try{spritePreviewTick();}catch(...){stopSpritePreview();throw;}return 0;}
         if(message==WM_TIMER&&w==9){
@@ -3549,6 +3749,40 @@ private:
         if(meshView.at("backend")!="D3D12"||!meshView.at("warnings").empty()||worldFaces.size()!=1)
             throw std::runtime_error("Native mesh face selection: "+hit.dump());
         editWorld({{"action","geometry"},{"settings",{{"operation","subdivide"},{"faces",{worldFaces.begin()->first}}}}});
+        clearWorldMeshSelection();meshSelectionMode=1;
+        applyPreviewInput({{"command","pick"},{"x",brushSize.cx/2},{"y",brushSize.cy/2}});
+        if(worldEdges.size()!=1)throw std::runtime_error("Native mesh edge selection failed");
+        const auto beforeEdges=Json::parse(document.at("text").get<std::string>()).at("indices").size();
+        editWorld({{"action","geometry"},{"settings",meshEditSettings("splitEdges")}});
+        if(Json::parse(document.at("text").get<std::string>()).at("indices").size()<=beforeEdges)
+            throw std::runtime_error("Native mesh edge split failed");
+        command(Undo);
+        clearWorldMeshSelection();meshSelectionMode=2;
+        applyPreviewInput({{"command","pick"},{"x",brushSize.cx/2},{"y",brushSize.cy/2}});
+        if(worldVertices.size()!=1)throw std::runtime_error("Native mesh vertex selection failed");
+        auto normal=meshEditSettings("setNormals");normal["normal"]={0,1,0};
+        editWorld({{"action","geometry"},{"settings",normal}});
+        auto mesh=Json::parse(document.at("text").get<std::string>());
+        if(mesh.at("normals").at(*worldVertices.begin())!=Json::array({0,1,0}))
+            throw std::runtime_error("Native mesh vertex normal failed");
+        editWorld({{"action","geometry"},{"settings",meshEditSettings("uvCopy")}});
+        const auto inspection=request("world.meshUVInspect",{{"channel",1},{"expectedRevision",document.at("revision")}});
+        if(inspection.at("present")!=true||inspection.at("triangles")!=15)
+            throw std::runtime_error("Native UV copy and inspection failed");
+        clearWorldMeshSelection();meshUVOpen=true;meshUVChannel=1;layout();
+        const auto uv=refreshMeshUV();
+        const int ux=uv.at("width").get<int>()/2,uy=uv.at("height").get<int>()/2;
+        assetCanvas.probe(WM_LBUTTONDOWN,MK_LBUTTON,MAKELPARAM(ux,uy));
+        assetCanvas.probe(WM_LBUTTONUP,0,MAKELPARAM(ux,uy));
+        if(worldFaces.empty())throw std::runtime_error("Native UV face pick failed");
+        const auto uvBefore=document.at("revision");
+        assetCanvas.probe(WM_LBUTTONDOWN,MK_LBUTTON,MAKELPARAM(ux,uy));
+        assetCanvas.probe(WM_LBUTTONUP,0,MAKELPARAM(ux+12,uy));
+        assetCanvas.probePaint();
+        if(document.at("revision")==uvBefore||assetCanvas.inspect().at("backend")!="D3D12")
+            throw std::runtime_error("Native UV drag and presentation failed");
+        command(Undo);
+        if(document.at("revision")!=uvBefore)throw std::runtime_error("Native UV drag undo failed");
         command(Save);
         showDocument(request("document.open",{{"path","Assets/LOD_Native.hblod.json"}}));
         editWorld({{"action","addLevel"},{"settings",{{"asset","Assets/SM_Native.hbmesh.json"},{"threshold",1}}}});
@@ -3559,7 +3793,7 @@ private:
         showDocument(request("document.open",{{"path","Assets/A_Native.hbaudioasset.json"}}));
         command(ShowAudioWaveform);assetCanvas.probePaint();
         if(assetCanvas.inspect().at("backend")!="D3D12")throw std::runtime_error("Native waveform present failed");
-        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
+        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
 };

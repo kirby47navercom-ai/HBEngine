@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import {createReadStream} from 'node:fs';
+import {Worker} from 'node:worker_threads';
 import path from 'node:path';
 import readline from 'node:readline';
 import {pathToFileURL} from 'node:url';
@@ -22,8 +23,11 @@ import {projectBytes,projectText} from './project-bytes.mjs';
 import {createPrefabInstance} from '../prototype/prefab-instances.js';
 import {resolvePrefab} from '../prototype/prefab-variants.js';
 import {validateSpriteRigProgram} from '../prototype/sprite-rig-assets.js';
-import {editFoliage,editMesh,eraseFoliage,scatterFoliage,simplifyMesh,terrainBrush,validWorldAsset,worldAssetTypes} from '../prototype/world-assets.js';
+import {editFoliage,editMesh,eraseFoliage,scatterFoliage,simplifyMesh,terrainBrush,worldAssetTypes} from '../prototype/world-assets.js';
 import {withWorldDraft} from '../prototype/world-draft.js';
+import {selectMeshBoundaryLoops} from '../prototype/mesh-boundary-selection.js';
+import {inspectMeshUV} from '../prototype/mesh-uv-inspection.js';
+import {meshUVSelection} from '../prototype/mesh-uv.js';
 import {copySceneObjects,editSceneTransform,pasteSceneObjects,setObjectMatrix,validParent} from '../prototype/scene-editor.js';
 import {sceneWorldMatrix} from '../prototype/scene-runtime.js';
 import {addState,behaviorNodes,makeBehaviorNode,makeSequenceTrack,removeState} from '../prototype/gameplay-assets.js';
@@ -82,7 +86,7 @@ export function nativeEditorSession(bridge) {
   const sequenceSamplers=new WeakMap();
   const sceneViews=new Map();
   let nativeMetadata=new WeakMap();
-  let audioPreview,cppJob,contentScan;
+  let audioPreview,cppJob,contentScan,meshAtlas;
   let contentScanId=0;
   async function stopAudioPreview(){
     if(!audioPreview)return;
@@ -164,6 +168,8 @@ export function nativeEditorSession(bridge) {
     sceneViews.clear();
     await rememberProject(candidate);
     contentScan?.controller.abort();contentScan=undefined;
+    if(meshAtlas?.worker)await meshAtlas.worker.terminate();
+    meshAtlas=undefined;
     record = candidate;
     documents = new AssetDocuments();
     buildJobs?.close();buildJobs=undefined;build=undefined;lastBuild=undefined;
@@ -807,6 +813,98 @@ export function nativeEditorSession(bridge) {
       });
       change(doc,result||draft);
       return response(doc);
+    },
+    'world.meshBoundary': async ({path:file,edges,expectedRevision})=>{
+      const doc=assetOfKind('mesh',targetDocument(file));
+      await check(doc,expectedRevision);
+      return selectMeshBoundaryLoops(doc.data,edges);
+    },
+    'world.meshUVView': async ({path:file,channel=0,width,height,center,zoom=1,faces=[],pick,expectedRevision})=>{
+      const doc=assetOfKind('mesh',targetDocument(file));
+      await check(doc,expectedRevision);
+      if(![0,1].includes(channel)||![width,height].every(n=>Number.isInteger(n)&&n>0&&n<=1280)||
+        !Number.isFinite(zoom)||zoom<.000001||zoom>10000||center&&(!Array.isArray(center)||center.length!==2||!center.every(Number.isFinite)))
+        throw Error('UV 보기 크기·채널·확대를 확인하세요.');
+      const {indices}=doc.data,uvs=channel===1?doc.data.uvs1:doc.data.uvs;
+      if(!uvs)throw Error('선택한 UV 채널이 없어요.');
+      if(!center){
+        const min=[Infinity,Infinity],max=[-Infinity,-Infinity];
+        for(const uv of uvs)for(let i=0;i<2;i++){min[i]=Math.min(min[i],uv[i]);max[i]=Math.max(max[i],uv[i]);}
+        center=min.map((value,i)=>(value+max[i])/2);
+        zoom=1/Math.max(.0001,max[0]-min[0],max[1]-min[1]);
+      }
+      zoom=Math.min(10000,Math.max(.000001,zoom));
+      if(pick&&(!Array.isArray(pick.point)||pick.point.length!==2||!pick.point.every(Number.isFinite)))throw Error('UV 선택 좌표를 확인하세요.');
+      const unit=Math.min(width,height)*.8*zoom;
+      const point=uv=>[width/2+(uv[0]-center[0])*unit,height/2-(uv[1]-center[1])*unit];
+      const {createCanvas}=await import('@napi-rs/canvas');
+      const canvas=createCanvas(width,height),ctx=canvas.getContext('2d');
+      ctx.fillStyle='#20262d';ctx.fillRect(0,0,width,height);
+      const [left,top]=point([0,1]);ctx.strokeStyle='#56616e';ctx.strokeRect(left,top,unit,unit);
+      const selected=new Set(faces),marks=[];
+      let hit=-1;
+      ctx.strokeStyle='#8094aa';ctx.beginPath();
+      for(let i=0;i<indices.length;i+=3){
+        const a=point(uvs[indices[i]]),b=point(uvs[indices[i+1]]),c=point(uvs[indices[i+2]]);
+        if(Math.max(a[0],b[0],c[0])<0||Math.min(a[0],b[0],c[0])>width||
+          Math.max(a[1],b[1],c[1])<0||Math.min(a[1],b[1],c[1])>height)continue;
+        ctx.moveTo(...a);ctx.lineTo(...b);ctx.lineTo(...c);ctx.closePath();
+        const face=i/3;
+        if(selected.has(face))marks.push([a,b,c]);
+        if(pick){
+          const cross=(p,q,r)=>(q[0]-p[0])*(r[1]-p[1])-(q[1]-p[1])*(r[0]-p[0]);
+          const ab=cross(a,b,pick.point),bc=cross(b,c,pick.point),ca=cross(c,a,pick.point);
+          if(cross(a,b,c)!==0&&((ab>=0&&bc>=0&&ca>=0)||(ab<=0&&bc<=0&&ca<=0)))hit=face;
+        }
+      }
+      ctx.stroke();
+      ctx.strokeStyle='#69b8ff';ctx.fillStyle='rgba(90,160,230,.30)';
+      for(const [a,b,c] of marks){ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.lineTo(...c);ctx.closePath();ctx.fill();ctx.stroke();}
+      const selection=hit<0?[]:pick.island?meshUVSelection(doc.data,[hit],{wholeIsland:true}):[hit];
+      return {width,height,center,zoom,unit,selection,pixels:canvas.data().toString('base64')};
+    },
+    'world.meshAtlasStart': async ({path:file,settings={},expectedRevision})=>{
+      const doc=assetOfKind('mesh',targetDocument(file)),owner=record;
+      await check(doc,expectedRevision);
+      if(meshAtlas)throw Error('이전 UV 아틀라스 작업 결과를 확인하세요.');
+      const worker=new Worker(new URL('./native-mesh-atlas-thread.mjs',import.meta.url),{
+        workerData:{mesh:doc.data,settings},execArgv:[],
+      });
+      const job={worker,doc,owner,expectedRevision,status:'running'};
+      meshAtlas=job;
+      worker.on('message',packet=>{
+        if(job.status!=='running')return;
+        if(packet.progress)job.progress=packet.progress;
+        else if(packet.error){job.status='error';job.error=packet.error;}
+        else{job.status='ready';job.result=packet.result;}
+      });
+      worker.on('error',error=>{if(job.status==='running'){job.status='error';job.error=error.message;}});
+      worker.on('exit',()=>{job.worker=null;if(job.status==='running'){job.status='error';job.error='UV 작업이 종료됐어요.';}});
+      return {path:doc.path,status:job.status};
+    },
+    'world.meshAtlasCancel': async ()=>{
+      const job=meshAtlas;
+      meshAtlas=undefined;
+      if(job?.worker)await job.worker.terminate();
+      return {status:'canceled'};
+    },
+    'world.meshAtlasStatus': async ({apply=false}={})=>{
+      const job=meshAtlas;
+      if(!job)return {status:'canceled'};
+      const {status,progress,error}=job;
+      if(status==='error'){meshAtlas=undefined;return {status,error};}
+      if(status!=='ready'||!apply)return {status,progress};
+      meshAtlas=undefined;
+      if(record!==job.owner||documents.items.get(job.doc.path)!==job.doc)throw Error('UV 작업 중 문서가 닫혔어요.');
+      await check(job.doc,job.expectedRevision);
+      change(job.doc,job.result.data);
+      const {data,...summary}=job.result;
+      return {status:'done',path:job.doc.path,result:summary};
+    },
+    'world.meshUVInspect': async ({path:file,channel=0,expectedRevision})=>{
+      const doc=assetOfKind('mesh',targetDocument(file));
+      await check(doc,expectedRevision);
+      return inspectMeshUV(doc.data,{channel});
     },
     'world.simplify': async ({path:file,name,cellSize,expectedRevision})=>{
       const doc=assetOfKind('mesh',targetDocument(file)),owner=project();

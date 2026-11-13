@@ -1,3 +1,7 @@
+## Windows 네이티브 메시·UV 제작 · 2026-11-13
+
+D3D12 뷰포트에서 정점·간선·면을 선택하고 경계·토폴로지·노멀 작업에 전달해요. UV0·UV1 캔버스는 면/섬 선택, 확대·이동, 선택 UV 드래그와 Undo를 지원해요. 라이트맵 UV 아틀라스를 작업 스레드에서 만들고, 문서 리비전 확인 뒤 반영해요. `native/build/native-authoring-xgyJmn/report.json`의 통합 실행과 서비스 검사에서 Win32 입력·D3D12 UV 표시·Undo, 실제 아틀라스 생성·겹침 검사·작업 취소를 확인했어요.
+
 ## Windows 네이티브 월드 에셋 제작 · 2026-11-13
 
 D3D12 에셋 미리보기에서 지형 브러시 스트로크를 Undo 한 번으로 되돌리고 폴리지를 배치해요. 메시 면 선택·분할과 LOD 에셋 단계 편집도 공용 모델에 저장해요. `world.edit`, `world.simplify`는 문서 리비전을 확인해요. 화면 밖 Win32 포인터 입력, 저장된 높이·인스턴스·인덱스·LOD 단계, D3D12 미리보기와 공용 게임 플레이는 `native/build/native-authoring-XJhUeq/report.json`에서 확인했어요.

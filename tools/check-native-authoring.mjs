@@ -200,6 +200,23 @@ for(let i=0;i<500;i++){
 }
 assert.equal(scan?.status,'done');
 assert.deepEqual(scan.result.entries.map(row=>row.path),[nested+'/찾을파일.json']);
+const meshDraft=await dispatch('document.open',{path:meshFile});
+await dispatch('world.meshAtlasStart',{settings:{channel:1,resolution:128,padding:2},expectedRevision:meshDraft.revision});
+assert.equal((await dispatch('world.meshAtlasCancel')).status,'canceled');
+assert.equal((await dispatch('document.read',{path:meshFile})).revision,meshDraft.revision);
+await dispatch('world.meshAtlasStart',{settings:{channel:1,resolution:128,padding:2},expectedRevision:meshDraft.revision});
+let atlas;
+for(let i=0;i<200;i++){
+  atlas=await dispatch('world.meshAtlasStatus',{apply:true});
+  if(atlas.status!=='running')break;
+  await new Promise(resolve=>setTimeout(resolve,20));
+}
+assert.equal(atlas.status,'done',JSON.stringify(atlas));
+const atlasDraft=await dispatch('document.read',{path:meshFile});
+assert.ok(JSON.parse(atlasDraft.text).uvs1.length>0);
+const atlasInspection=await dispatch('world.meshUVInspect',{path:meshFile,channel:1,expectedRevision:atlasDraft.revision});
+assert.equal(atlasInspection.overlapPairs,0);
+assert.equal((await dispatch('editor.undo',{path:meshFile,expectedRevision:atlasDraft.revision})).revision,meshDraft.revision);
 const model=await dispatch('modelimport.open',{path:modelSource});
 const scaled=await dispatch('modelimport.edit',{action:'settings',value:{scale:2,sourceUnit:'cm'},expectedRevision:model.revision});
 const modelData=JSON.parse(scaled.text);
@@ -477,7 +494,7 @@ assert.equal(evidence.sceneAssetDrop,true);
 assert.equal(evidence.simultaneousDocking,true);
 assert.equal(evidence.browserTreeAndFilter,true);
 assert.equal(evidence.modelImportPreview,true);
-assert.deepEqual(evidence.worldAssets,{backend:'D3D12',terrain:true,foliage:true,mesh:true,lod:true});
+assert.deepEqual(evidence.worldAssets,{backend:'D3D12',terrain:true,foliage:true,mesh:true,meshTools:true,uvView:true,lod:true});
 assert.equal(evidence.curveBox,true);
 assert.equal(evidence.independentAssetForm,true);
 assert.equal(evidence.debugBreaks,process.argv[3]?2:0);
@@ -489,7 +506,9 @@ await assert.rejects(fs.stat(path.join(process.env.HB_USER_DATA_DIR,'WebView2'))
 const read=async file=>JSON.parse(await fs.readFile(path.join(project.root,file),'utf8'));
 assert.ok((await read(terrainFile)).heights.some(height=>height>0));
 assert.ok((await read(foliageFile)).instances.length>0);
-assert.equal((await read(meshFile)).indices.length,45);
+const authoredMesh=await read(meshFile);
+assert.equal(authoredMesh.indices.length,45);
+assert.deepEqual(authoredMesh.uvs1,authoredMesh.uvs);
 assert.deepEqual((await read(lodFile)).levels,[{asset:meshFile,threshold:1}]);
 if(process.argv[3]){
   const take=await read(evidence.play.take);

@@ -12,7 +12,8 @@ class EditorAssetCanvas final : public EditorPanelBase {
     int scroll=0;
     double playhead=0;
     POINT start{};
-    bool dragging=false,widget=false,image=false,resizingWidget=false;
+    bool dragging=false,widget=false,image=false,resizingWidget=false,uv=false;
+    unsigned uvButton=0;
     Json curve;
     Json tilemap;
     Json waveform;
@@ -219,6 +220,22 @@ class EditorAssetCanvas final : public EditorPanelBase {
     }
     LRESULT handle(UINT message,WPARAM w,LPARAM l)override{
         if(image&&tilemap.is_null()){
+            if(uv&&message==WM_MOUSEWHEEL){emit({{"event","uvZoom"},{"delta",short(HIWORD(w))/120.0}});return 0;}
+            if(uv&&(message==WM_LBUTTONDOWN||message==WM_MBUTTONDOWN||message==WM_RBUTTONDOWN)){
+                SetFocus(window);SetCapture(window);start={xOf(l),yOf(l)};
+                uvButton=message==WM_LBUTTONDOWN?1:message==WM_MBUTTONDOWN?2:3;return 0;
+            }
+            if(uv&&(message==WM_LBUTTONUP||message==WM_MBUTTONUP||message==WM_RBUTTONUP)&&uvButton){
+                const auto button=std::exchange(uvButton,0u);if(GetCapture()==window)ReleaseCapture();
+                const auto [x,y,width,height]=frameRect();
+                const auto scale=data.at("width").get<double>()/width;
+                const auto dx=(xOf(l)-start.x)*scale,dy=(yOf(l)-start.y)*scale;
+                if(button==2)emit({{"event","uvPan"},{"dx",dx},{"dy",dy}});
+                else if(std::hypot(dx,dy)>3&&button==1)emit({{"event","uvTranslate"},{"dx",dx},{"dy",dy}});
+                else emit({{"event","uvPick"},{"point",{(xOf(l)-x)*scale,(yOf(l)-y)*scale}},{"add",(w&MK_CONTROL)!=0},{"island",button==3}});
+                return 0;
+            }
+            if(uv&&message==WM_CAPTURECHANGED){uvButton=0;return 0;}
             if(message==WM_KEYDOWN){forwardKey(message,w);return 0;}
             if(message==WM_LBUTTONDOWN){SetFocus(window);return 0;}
             return common(message,w,l);
@@ -422,7 +439,7 @@ class EditorAssetCanvas final : public EditorPanelBase {
 public:
     void attach(HWND owner,HINSTANCE instance,Post post){EditorPanelBase::attach(owner,instance,std::move(post),L"HBEngine.EditorAssetCanvas","assetCanvas");}
     void updateTimeline(Json value){
-        waveform=tilemap=curve=nullptr;widget=image=false;data=std::move(value);rows=data.at("tracks");pixels.clear();key=-1;selectedCurveKeys.clear();
+        waveform=tilemap=curve=nullptr;widget=image=uv=false;data=std::move(value);rows=data.at("tracks");pixels.clear();key=-1;selectedCurveKeys.clear();
         if(!clipSelection.empty()&&std::none_of(rows.begin(),rows.end(),[this](const Json& row){
             return row.at("id")==track&&row.contains("clips")&&std::any_of(row.at("clips").begin(),row.at("clips").end(),[this](const Json& clip){return clip.at("id")==clipSelection;});
         }))clipSelection.clear();
@@ -431,7 +448,7 @@ public:
     void resetTimeline(){key=curveChannel=-1;curveBoxEnd.reset();selectedCurveKeys.clear();handles=Json::array();clipSelection.clear();track.clear();playhead=0;scroll=0;}
     void updateCurve(Json value){
         if(curve.is_null()||curve.at("track")!=value.at("track"))selectedCurveKeys.clear();
-        waveform=tilemap=nullptr;widget=image=false;curve=std::move(value);data={{"length",curve.at("length")}};
+        waveform=tilemap=nullptr;widget=image=uv=false;curve=std::move(value);data={{"length",curve.at("length")}};
         rows=Json::array();pixels.clear();
         curveMin=std::numeric_limits<double>::infinity();curveMax=-curveMin;
         for(const auto* values:{&curve.at("samples"),&curve.at("keys")})for(const auto& row:*values)for(const auto& item:row.at("value")){
@@ -455,7 +472,7 @@ public:
     }
     void updateTilemap(Json value,std::array<long long,2> origin){
         isometric=value.value("layout",std::string())=="isometric";
-        tilemap=std::move(value);tileOrigin=origin;widget=image=false;waveform=curve=data=nullptr;rows=Json::array();pixels.clear();
+        tilemap=std::move(value);tileOrigin=origin;widget=image=uv=false;waveform=curve=data=nullptr;rows=Json::array();pixels.clear();
         InvalidateRect(window,nullptr,FALSE);
     }
     void updateAtlas(Json value,std::vector<unsigned char> bytes){atlas=std::move(value);atlasPixels=std::move(bytes);}
@@ -464,13 +481,15 @@ public:
     }
     std::array<int,2> tileViewport()const{return {std::max(1,bounds[2]/cellSize+1),std::max(1,bounds[3]/cellSize+1)};}
     void updateWidget(Json value,std::vector<unsigned char> bytes,std::string selected){
-        waveform=tilemap=curve=nullptr;widget=true;image=false;data=std::move(value);rows=std::move(data.at("rows"));data.erase("pixels");
+        waveform=tilemap=curve=nullptr;widget=true;image=uv=false;data=std::move(value);rows=std::move(data.at("rows"));data.erase("pixels");
         pixels=std::move(bytes);selection=std::move(selected);InvalidateRect(window,nullptr,FALSE);
     }
     void updateImage(Json value,std::vector<unsigned char> bytes){
-        waveform=tilemap=curve=nullptr;widget=false;image=true;data=std::move(value);rows=Json::array();pixels=std::move(bytes);
+        waveform=tilemap=curve=nullptr;widget=uv=false;image=true;data=std::move(value);rows=Json::array();pixels=std::move(bytes);
         InvalidateRect(window,nullptr,FALSE);
     }
+    void updateUV(Json value,std::vector<unsigned char> bytes){updateImage(std::move(value),std::move(bytes));uv=true;}
+    std::array<int,2> canvasSize()const{return {bounds[2],bounds[3]};}
     void layout(int x,int y,int w,int h,bool visible){bounds={x,y,w,h};shown=visible;place();}
     void probe(UINT message,WPARAM w,LPARAM l){SendMessageW(window,message,w,l);}
     void probePaint(){RedrawWindow(window,nullptr,nullptr,RDW_INVALIDATE|RDW_UPDATENOW);paint();}

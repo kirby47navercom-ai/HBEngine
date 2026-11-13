@@ -111,12 +111,12 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     updateEnvironment();
     source=data;content={objects,warnings};
   }
-  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false,flight,direction='',tool='translate',axis=-1,tangent,points,brushSpacing,faces,instances}) {
+  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false,flight,direction='',tool='translate',axis=-1,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges}) {
     const assets=installNativeAssets({url:name=>'hbasset:'+encodeURIComponent(name),manifest:{width,height},readBytes:(name,opts)=>projectBytes(nextProject,name,opts)});
-    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction,tool,axis,tangent,points,brushSpacing,faces,instances},assets);}
+    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets);}
     finally{assets.restore();}
   }
-  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction,tool,axis,tangent,points,brushSpacing,faces,instances},assets) {
+  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets) {
     canvas.clientWidth=width;canvas.clientHeight=height;
     if(previewTransform){transform(previewTransform.actor,previewTransform.group);previewTransform=null;}
     await open(data,nextProject,assets);
@@ -228,17 +228,28 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       const surface=groups.get('asset-preview');
       ray.setFromCamera({x:2*(x+.5)/width-1,y:1-2*(y+.5)/height},active);
       const hit=ray.intersectObject(surface,true).find(hit=>hit.object.isMesh&&!hit.object.userData.editorHelper);
-      if(hit)worldSelection={
-        face:hit.faceIndex,vertices:[hit.face.a,hit.face.b,hit.face.c],
-        instance:hit.object.userData.foliageIds?.[hit.instanceId],
-      };
+      if(hit){
+        const ids=[hit.face.a,hit.face.b,hit.face.c],position=hit.object.geometry.attributes.position;
+        const points=ids.map(i=>new THREE.Vector3().fromBufferAttribute(position,i).applyMatrix4(hit.object.matrixWorld));
+        const cursor=new THREE.Vector2(x+.5,y+.5),projected=points.map(point=>new THREE.Vector2(...screen(point)));
+        let vertex=0,edge=0,minEdge=Infinity;
+        for(let i=0;i<3;i++){
+          if(projected[i].distanceToSquared(cursor)<projected[vertex].distanceToSquared(cursor))vertex=i;
+          const a=projected[i],b=projected[(i+1)%3],delta=b.clone().sub(a);
+          const t=delta.lengthSq()?THREE.MathUtils.clamp(cursor.clone().sub(a).dot(delta)/delta.lengthSq(),0,1):0;
+          const distance=delta.multiplyScalar(t).add(a).distanceToSquared(cursor);
+          if(distance<minEdge){minEdge=distance;edge=i;}
+        }
+        worldSelection={face:hit.faceIndex,vertices:ids,vertex:ids[vertex],edge:[ids[edge],ids[(edge+1)%3]],
+          instance:hit.object.userData.foliageIds?.[hit.instanceId]};
+      }
     }
-    const outline=data.assetDraft?.kind&&JSON.stringify([faces,instances]);
+    const outline=data.assetDraft?.kind&&JSON.stringify([faces,instances,meshVertices,meshEdges]);
     if(outline!==outlineKey){
       outlineKey=outline;
       if(worldOutline){world.remove(worldOutline);worldOutline.geometry.dispose();worldOutline.material.dispose();worldOutline=null;}
       const positions=[],selectedFaces=new Set(faces),selectedInstances=new Set(instances);
-      if(selectedFaces.size||selectedInstances.size)groups.get('asset-preview')?.traverse(node=>{
+      if(selectedFaces.size||selectedInstances.size||meshVertices?.length||meshEdges?.length)groups.get('asset-preview')?.traverse(node=>{
         if(!node.isMesh)return;
         const matrix=new THREE.Matrix4(),point=new THREE.Vector3(),{geometry}=node;
         const line=(a,b)=>positions.push(...a.toArray(),...b.toArray());
@@ -253,10 +264,23 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
             ).applyMatrix4(matrix));
             for(let i=0;i<8;i++)for(const bit of [1,2,4])if(!(i&bit))line(corners[i],corners[i|bit]);
           });
-        }else if(geometry.index)for(const face of selectedFaces){
-          if(face*3+2>=geometry.index.count)continue;
-          const corners=[0,1,2].map(i=>point.fromBufferAttribute(geometry.attributes.position,geometry.index.getX(face*3+i)).clone().applyMatrix4(node.matrixWorld));
-          for(let i=0;i<3;i++)line(corners[i],corners[(i+1)%3]);
+        }else if(geometry.index){
+          const at=i=>point.fromBufferAttribute(geometry.attributes.position,i).clone().applyMatrix4(node.matrixWorld);
+          const valid=i=>Number.isInteger(i)&&i>=0&&i<geometry.attributes.position.count;
+          for(const face of selectedFaces){
+            if(face*3+2>=geometry.index.count)continue;
+            const corners=[0,1,2].map(i=>at(geometry.index.getX(face*3+i)));
+            for(let i=0;i<3;i++)line(corners[i],corners[(i+1)%3]);
+          }
+          for(const [a,b] of meshEdges||[])if(valid(a)&&valid(b))line(at(a),at(b));
+          const radius=(geometry.boundingSphere?.radius||1)*.018;
+          for(const id of meshVertices||[])if(valid(id)){
+            const p=at(id);
+            for(let axis=0;axis<3;axis++){
+              const offset=new THREE.Vector3().setComponent(axis,radius);
+              line(p.clone().sub(offset),p.clone().add(offset));
+            }
+          }
         }
       });
       if(positions.length){
