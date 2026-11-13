@@ -1,7 +1,7 @@
 import {Box3,Sphere} from 'three';
 import {reflectionProbeDeformedBounds} from './reflection-probe-deformed-bounds.js';
 
-const geometryBounds=new WeakMap(),instanceBounds=new WeakMap();
+const geometryBounds=new WeakMap(),instanceBounds=new WeakMap(),worldBounds=new WeakMap();
 function localGeometryBounds(geometry){
  const position=geometry?.attributes.position;if(!position)return null;
  const data=position.isInterleavedBufferAttribute?position.data:position;
@@ -31,8 +31,13 @@ export function reflectionProbeMeshBounds(mesh,target=new Box3()){
   }
   box=cached.box;
  }
+ // Plain meshes: same local-bounds record and bit-equal world matrix give the same box, so reuse it.
+ const m=mesh.matrixWorld.elements;let cached=mesh.isInstancedMesh?null:worldBounds.get(mesh);
+ if(cached&&cached.geometry===geometry){let same=true;for(let i=0;i<16;i++)if(cached.matrix[i]!==m[i]){same=false;break;}if(same)return cached.valid?target.copy(cached.box):null;}
  target.copy(box).applyMatrix4(mesh.matrixWorld);
- return Number.isFinite(target.min.x)&&Number.isFinite(target.min.y)&&Number.isFinite(target.min.z)&&Number.isFinite(target.max.x)&&Number.isFinite(target.max.y)&&Number.isFinite(target.max.z)?target:null;
+ const valid=Number.isFinite(target.min.x)&&Number.isFinite(target.min.y)&&Number.isFinite(target.min.z)&&Number.isFinite(target.max.x)&&Number.isFinite(target.max.y)&&Number.isFinite(target.max.z);
+ if(!mesh.isInstancedMesh){if(!cached)worldBounds.set(mesh,cached={geometry,matrix:new Float64Array(16),box:new Box3(),valid});cached.geometry=geometry;cached.matrix.set(m);cached.box.copy(target);cached.valid=valid;}
+ return valid?target:null;
 }
 
 // Full separating-axis test: 3 AABB faces, 3 affine-box faces, 9 edge crosses.
