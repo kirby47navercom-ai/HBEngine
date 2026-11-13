@@ -210,7 +210,7 @@ export function physicsGeometryError(components){
   }return '';
 }
 export function addSceneComponent(object,type){const components=objectComponents(object);if(components.length>=100)throw Error('컴포넌트 제한 초과');if(['Transform','Rigidbody','Rigidbody2D','PawnMovement','CharacterMovement','CharacterMovement2D','PlayerController','GameMode','GameState','PlayerState','Renderer2D','ShadowCaster2D','CompositeShadowCaster2D'].includes(type)&&components.some(c=>c.type===type))throw Error('이미 있는 컴포넌트예요.');const component=makeSceneComponent(type);const reason=physicsGeometryError([...components,component]);if(reason)throw Error(reason);components.push(component);return component;}
-export function enabledComponent(object,type){if(object?.poolActive===false)return null;const c=objectComponents(object).find(c=>c.type===type&&c.properties?.enabled!==false);return c?{...componentDefaultValues(type),...c.properties}:null;}
+export function enabledComponent(object,type){if(object?.poolActive===false)return null;for(const c of objectComponents(object))if(c.type===type&&c.properties?.enabled!==false)return {...componentDefaultValues(type),...c.properties};return null;}
 const safePath=value=>typeof value==='string'&&value.length<=1000&&!/[\x00-\x1f]/.test(value)&&!value.includes('..')&&!/^(?:[a-z]+:|[/\\])/i.test(value);
 export function validComponentProperties(type,values){
   if(!values||typeof values!=='object'||Array.isArray(values))return false;const definitions=componentDefinitions[type]?.properties||{className:field('클래스','text','MyComponent'),enabled:enabled()};
