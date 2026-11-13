@@ -41,11 +41,11 @@ export class NativeWidgetRasterWorker {
     else{nodes.push(node);this.fullNodes++;}sent.set(node.id,snapshot);
    }update={...nodes.length?{nodes}:{},...nodeDeltas.length?{nodeDeltas}:{}};}
    const lists=[];let versions=this.listStates.get(view);if(!versions){versions=new Map();this.listStates.set(view,versions);}for(const [id,list]of view.lists){const state=list.paintState();if(update?.data||versions.get(id)!==state.revision){lists.push([id,state]);versions.set(id,state.revision);}}
-   rows.push({key,owner:view.state.owner,instance:view.state.instance,...update,...lists.length?{lists}:{},scrollOffsets:[...view.scrollOffsets]});this.views.set(key,view);this.dirty.delete(view);
+   rows.push({key,owner:view.state.owner,instance:view.state.instance,worldBox:view.worldBox,...update,...lists.length?{lists}:{},scrollOffsets:[...view.scrollOffsets]});this.views.set(key,view);this.dirty.delete(view);
   }
   for(const key of this.views.keys())if(!live.has(key)){this.readySnapshots.delete(this.views.get(key));this.nodeSnapshots.delete(this.views.get(key));this.views.delete(key);}
   const reference=hit=>hit?{key:viewKey(hit.view),id:hit.node.id}:null;
-  const job=this.request({type:'draw',width,height,pixelRatio,rows,flashes:[...(layer.flashes||[])],down:reference(layer.down),hover:reference(layer.hover),focus:reference(layer.focus),layout:Array.isArray(layer.layout)});this.queued?.();
+  const job=this.request({type:'draw',width,height,pixelRatio,rows,flashes:[...(layer.flashes||[])],down:reference(layer.down),hover:reference(layer.hover),focus:reference(layer.focus),touch:layer.touch,touches:[...layer.touches].map(([source,hit])=>[source,reference(hit)]),layout:Array.isArray(layer.layout)});this.queued?.();
   const result=await job;this.active=true;this.animated=result.animated;
   const lookup=(key,id)=>{const view=this.views.get(key),node=view?.data.nodes.find(node=>node.id===id);return view&&node?{view,node}:null;};
   const hit=row=>{const target=lookup(row.key,row.id);if(!target)return null;return {...row,...target,...row.list?{list:target.view.lists.get(target.node.id)}:{},clips:row.clips.map(clip=>({...clip}))};};
@@ -54,6 +54,7 @@ export class NativeWidgetRasterWorker {
   // not changed since N was submitted; an old completion cannot undo a scroll.
   for(const row of result.rows){const view=this.views.get(row.key),before=scrollBefore.get(view);if(!view||!before||!layer.views.has(view))continue;for(const [id,value]of row.scrollOffsets)if(Object.is(view.scrollOffsets.get(id),before.get(id)))view.scrollOffsets.set(id,value);}
   for(const key of ['focus','down']){const previous=layer[key];if(previous){const next=layer.hits.find(hit=>hit.view===previous.view&&hit.node===previous.node)||previous;if(key==='down'&&previous.pressedRow!==undefined)next.pressedRow=previous.pressedRow;layer[key]=next;}}
+  for(const [source,previous] of layer.touches){const next=layer.hits.find(hit=>hit.view===previous.view&&hit.node===previous.node);if(next){next.pressedRow=previous.pressedRow;layer.touches.set(source,next);}else layer.releaseTouch(source);}
   if(Array.isArray(layer.layout))layer.layout.splice(0,layer.layout.length,...result.layout);layer.stamp=stamp;layer.uiFrames+=result.submitted?1:0;layer.lastProfile=result.profile;this.stats=result.diagnostics;
  }
  diagnostics(){return {enabled:true,directTransport:!!this.directPipe,thread:this.worker?.threadId??null,dirtyViews:this.dirty.size,deltaNodes:this.deltaNodes,fullNodes:this.fullNodes,trackedViews:this.views.size,...this.stats};}

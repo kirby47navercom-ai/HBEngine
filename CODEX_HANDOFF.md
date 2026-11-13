@@ -1,3 +1,9 @@
+## Windows 네이티브 표시 동기화·터치·월드 위젯 · 2026-11-13
+
+패키지의 화면 주사율 동기화가 Win32 호스트에서 DXGI 표시 간격 1로 전달돼요. 목표 FPS 모드는 간격 0이에요. 터치 접촉 ID를 순서대로 받아 조이스틱과 버튼을 동시에 누르고 독립적으로 해제해요. 월드 추적 UI는 공용 카메라 투영을 쓰며 소유 스레드와 래스터 작업자가 위치·숨김·입력 사각형을 공유해요.
+
+`native/build/native-game-KRqT0d/acceptance.json`은 WebView2 없이 패키징한 D3D12 게임에서 화면 동기화와 월드 위젯, C++·입력·한글·SVG·오디오를 확인했어요. 목표 FPS 모드 별도 보고서는 `native/build/native-game-ogrllB/acceptance.json`이에요. `native/build/widget-raster-worker-V85rBc/acceptance.json`에서 두 터치의 동시 입력·취소·수명과 월드 위젯의 worker 픽셀 일치를 확인했어요. 물리 터치 디스플레이는 별도 검증이 필요해요.
+
 ## Windows 네이티브 그래프·장면 에셋 배치·설치 경로 · 2026-11-13
 
 기본·독립 그래프의 위치 지정 노드 추가, 이름 검색·초점 이동과 핀 드래그 연결을 지원해요. 콘텐츠 브라우저에서 장면으로 에셋을 끌어 배치하거나 선택한 오브젝트에 머테리얼·동작을 연결할 수 있어요. `native/build/native-authoring-jVvq9i/report.json`에서 실제 Win32 검색 대화상자·핀 연결·스프라이트 배치·Undo와 D3D12 플레이를 확인했어요. AI 문서 명령은 블루프린트 배치와 머테리얼 지정, 리비전 검사도 통과했어요.

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
-import {createRequire} from 'node:module';
+import {OrthographicCamera} from 'three';
 import {createWidgetAsset,createWidgetNode} from '../prototype/ui-assets.js';
 import {retainTestEvidence} from './test-artifacts.mjs';
 const engine=path.resolve(process.argv[2]||'.'),{NativeWidgetLayer}=await import(pathToFileURL(path.join(engine,'tools/native-widget-layer.mjs')));
@@ -30,5 +30,64 @@ try{
  for(const view of listViews)view.dispose();
  await layers[0].layer.draw(960,540,1.5);await layers[1].layer.draw(960,540,1.5);assert.deepEqual(last[0],last[1]);
  const {layer,view}=layers[1],send=layer.send;let received,release;const arrived=new Promise(r=>received=r),gate=new Promise(r=>release=r);layer.send=async(...args)=>{received();await gate;return send(...args);};view.data.nodes.find(n=>n.id==='text').properties.text='비동기 스크롤';view.update();const pending=layer.draw(960,540,1.5);await arrived;view.scrollOffsets.set('scroll',71);layer.revision++;release();await pending;assert.equal(view.scrollOffsets.get('scroll'),71,'old raster completion must not overwrite new input');layer.send=send;
- const report={passed:true,cases,allPixelsEqual:true,korean:true,svg:true,safeArea:true,fractionalTransforms:true,opacity:true,pressedButton:true,scroll:true,inputHitGeometry:true,scale150Percent:true,oneWorker:true,queuedBeforeRaster:true,listsRemainOnWorker:true,workerResume:true,concurrentScrollPreserved:true};await fs.writeFile(work+'/acceptance.json',JSON.stringify(report,null,2));console.log(JSON.stringify({work,...report,cases:cases.length}));
+ const baseline=layers[0];
+ baseline.view.data.nodes.find(n=>n.id==='text').properties.text='비동기 스크롤';baseline.view.update();baseline.view.scrollOffsets.set('scroll',71);
+ await layers[0].layer.draw(960,540,1.5);
+ await layers[1].layer.draw(960,540,1.5);
+ assert.ok(last[0].equals(last[1]),'touch starts from the same previous frame');
+ const touchReports=[];
+ for(const {layer} of layers){
+  const asset=createWidgetAsset('터치 검증'),stick=createWidgetNode('Joystick','joystick','root'),button=createWidgetNode('TouchButton','attack','root');
+  asset.referenceSize=[640,360];
+  stick.slot.offset=[15,200,135,320];button.slot.offset=[515,200,620,320];
+  Object.assign(stick.properties,{deviceVisibility:'touch',keyRight:'d',inputMode:'keys'});
+  Object.assign(button.properties,{deviceVisibility:'touch',inputKey:'f'});
+  asset.nodes.push(stick,button);
+  const keys=new Map(),events=[];
+  const view=layer.create(asset,{acceptInput:()=>true,event:(node,event)=>events.push([node.id,event]),input:(key,value,source)=>keys.set(source+':'+key,value)},{owner:'touch',instance:'Controls'});
+  const point=(id,x,y)=>{const {matrix:m,w,h}=layer.hits.find(hit=>hit.node.id===id);return [m.e+m.a*w*x+m.c*h*y,m.f+m.b*w*x+m.d*h*y];};
+  const send=(id,position,key,value,cancelled)=>layer.input({device:'touch',source:'contact:'+id,key,value,cancelled,pointer:{position,size:[960,540],inside:true}});
+  await layer.draw(960,540,1.5);
+  assert.ok(!layer.hits.some(hit=>hit.node.id==='joystick'));
+  layer.setTouch(true);await layer.draw(960,540,1.5);
+  const move=point('joystick',.9,.5),attack=point('attack',.5,.5);
+  assert.equal(send(1,move,'leftmousebutton',1),true);
+  assert.equal(send(2,attack,'leftmousebutton',1),true);
+  assert.ok(keys.get('contact:1:d')>0);
+  assert.equal(keys.get('contact:2:f'),1);
+  await layer.draw(960,540,1.5);
+  touchReports.push(Buffer.from(last[layers.findIndex(row=>row.layer===layer)]));
+  assert.equal(send(2,attack,'leftmousebutton',0),true);
+  assert.equal(keys.get('contact:2:f'),0);
+  assert.ok(keys.get('contact:1:d')>0);
+  assert.ok(events.some(([node,event])=>node==='attack'&&event==='click'));
+  assert.equal(send(1,move,'leftmousebutton',0,true),true);
+  assert.equal(keys.get('contact:1:d'),0);
+  assert.equal(layer.touches.size,0);
+  send(1,move,'leftmousebutton',1);view.dispose();
+  assert.equal(keys.get('contact:1:d'),0);
+  layer.setTouch(false);
+ }
+ assert.ok(touchReports[0].equals(touchReports[1]),'two simultaneous touch presses produce equal worker pixels');
+ const camera=new OrthographicCamera(-4,4,2,-2,.1,100);camera.position.z=5;camera.updateMatrixWorld();
+ const anchor={id:'marker',position:[1,0,0],rotation:[0,0,0],scale:[1,1,1],visible:true,components:[{type:'UIWidget',properties:{instance:'Marker',space:'tracked',drawWidth:320,drawHeight:180,pivotX:.5,pivotY:.5}}]};
+ const vm={objects:[anchor],object:id=>id===anchor.id?anchor:null};
+ const tracked=[];
+ for(const {layer} of layers){
+  const data=createWidgetAsset('추적 UI'),button=createWidgetNode('Button','tracked','root');button.slot.offset=[0,0,120,40];data.nodes.push(button);
+  tracked.push(layer.create(data,{acceptInput:()=>true,event(){},input(){}},{owner:'marker',instance:'Marker'}));
+ }
+ for(const x of [1,2,30]){
+  anchor.position[0]=x;
+  for(const {layer} of layers){layer.placeWorld(vm,camera,960,540);await layer.draw(960,540,1.5);}
+  assert.ok(last[0].equals(last[1]),'tracked UI produces equal worker pixels');
+  if(x<30){
+   assert.equal(tracked[0].worldBox.x,480+120*x-160);
+   assert.ok(layers[1].layer.hits.some(hit=>hit.node.id==='tracked'));
+  }else{
+   assert.equal(tracked[0].worldBox,false);
+   assert.ok(!layers[1].layer.hits.some(hit=>hit.node.id==='tracked'));
+  }
+ }
+ const report={passed:true,touchControls:true,trackedWidgets:true,cases,allPixelsEqual:true,korean:true,svg:true,safeArea:true,fractionalTransforms:true,opacity:true,pressedButton:true,scroll:true,inputHitGeometry:true,scale150Percent:true,oneWorker:true,queuedBeforeRaster:true,listsRemainOnWorker:true,workerResume:true,concurrentScrollPreserved:true};await fs.writeFile(work+'/acceptance.json',JSON.stringify(report,null,2));console.log(JSON.stringify({work,...report,cases:cases.length}));
 }finally{await Promise.all(layers.map(({layer})=>layer.dispose()));}
