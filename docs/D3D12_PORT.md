@@ -240,3 +240,11 @@ DX11 회귀: `check-native-scene-render --post-only`를 수정 전·후 헤더�
 - 편집기 호스트는 사용자 셰이더 캐시를 쓰므로 첫 D3D12 초기화만 캐시가 비어 있으면 약 30초 걸리고 이후 0.2초 안팎이에요.
 - 렌더러 `backend`를 `D3D11`로 기대하던 창·플레이어 검사 120개 파일을 `D3D12`로 바꿨어요(이 PC 기준 auto 결과).
 - 검증 한계: `dist` 편집기·WebView 실행기 EXE는 다시 빌드했지만, 대표 창 검사 `check-native-scene-window`는 WebView 디버그 페이지가 45초 안에 안 열려 시간 초과로 끝났어요. 변경 전 JS로 돌려도 똑같이 실패해서 이번 변경과 무관한 검사 환경 문제로 보지만, WebView 경로의 D3D12 화면은 아직 직접 확인하지 못했어요. 바꾼 120개 검사도 실행하지 않았어요.
+
+## 성능: JS 장면 인코딩 비용 (2026-11-13)
+
+- 측정 도구: `HB_FPS_CPU_PROFILE=1 HB_FPS_BACKENDS=d3d12 node tools/check-native-backend-fps.mjs` — 게임 스크립트 런타임에 V8 CPU 프로파일(100프레임 이후)을 `<작업>/cpu-*.cpuprofile`로 남겨요(`HB_CPU_PROFILE`, `tools/native-game-runner.mjs`).
+- 프로파일 결과(D3D12, 메시 400개): 프레임 CPU의 약 44%가 JS 장면 인코딩(`native-scene-renderer.js` encode), 그중 그리기 변경 비교(`native-draw-history.js` same/stamp) 약 14%, 형상 서명(`geometryStreamStamp`) 약 3~4%, 물리 동기화 약 16%였어요. 호스트 D3D12 렌더 명령은 1.5ms였어요.
+- 수정: 변경되지 않은 형상(같은 index·attribute 객체와 버전)은 JSON 서명을 만들지 않고 건너뛰어요. 그리기 비교는 저장한 값의 키 목록을 한 번만 만들고 숫자 배열은 재귀 없이 비교해요.
+- 검증: `check-native-draw-history`(변경 전/후 렌더러가 61프레임 동안 같은 패킷), `check-native-geometry-stream-240`, `check-native-frame-307`, `check-native-material-packing`, `check-native-deformation`, `check-native-particles` 통과. 변경 전 작업 트리와 번갈아 3회씩: 중앙값 84.2→129.7 FPS(프레임 작업 11.44→7.76ms). PC가 다른 게임 실행 중(CPU 40~80%)이라 1회차는 반대로 나올 만큼 흔들림이 커요.
+- 남은 큰 비용: 그리기 비교(`same`)는 여전히 약 11%, 매 프레임 `updateMatrixWorld`, 물리 `sync`의 런타임 데이터 깊은 비교. `check-native-2d`는 변경 전에도 "bounded upload packets" 단계에서 실패해요.

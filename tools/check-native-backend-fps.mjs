@@ -14,7 +14,8 @@ import {retainTestEvidence} from './test-artifacts.mjs';
 import {activeInstalledVersions} from './install-editor.mjs';
 
 assert.deepEqual(await activeInstalledVersions('C:/Users/kirby/HBEngine'),[]);
-const frames=Number(process.argv[2]||600),rounds=Number(process.argv[3]||2),heavy=process.argv[4]==='heavy',backends=['d3d11','d3d12-11on12','d3d12'];
+const frames=Number(process.argv[2]||600),rounds=Number(process.argv[3]||2),heavy=process.argv[4]==='heavy',backends=(process.env.HB_FPS_BACKENDS||'d3d11,d3d12-11on12,d3d12').split(',');
+// HB_FPS_CPU_PROFILE=1 writes a V8 CPU profile of each game script runtime (frames 100..end) to <work>/cpu-<backend>-<round>.cpuprofile.
 const root=path.resolve(import.meta.dirname,'..'),work=await fs.mkdtemp(path.join(root,'native/build/backend-fps-'));retainTestEvidence(work);
 const record=await createProject('백엔드 FPS 비교',path.join(work,'Project'),'3d'),scenePath=record.manifest.startupScene;
 const scene=JSON.parse(await fs.readFile(path.join(record.root,scenePath),'utf8'));
@@ -28,7 +29,7 @@ if(heavy)Object.assign(scene.objects.find(o=>o.id==='post').components.find(c=>c
 await record.project.write(scenePath,JSON.stringify(scene));
 const profile={...defaultBuildProfile(record.manifest),configuration:'release',width:heavy?1920:1280,height:heavy?1080:720},built=await buildGame(record,profile);
 
-const env=name=>({SystemRoot:process.env.SystemRoot||'C:/Windows',WINDIR:process.env.WINDIR||'C:/Windows',PATH:(process.env.SystemRoot||'C:/Windows')+'/System32',TEMP:path.join(work,'Temp'),TMP:path.join(work,'Temp'),LOCALAPPDATA:path.join(work,'User-'+name),APPDATA:path.join(work,'User-'+name,'Roaming'),HB_NATIVE_TEST_STATE:path.join(work,'State-'+name)});
+const env=name=>({SystemRoot:process.env.SystemRoot||'C:/Windows',WINDIR:process.env.WINDIR||'C:/Windows',PATH:(process.env.SystemRoot||'C:/Windows')+'/System32',TEMP:path.join(work,'Temp'),TMP:path.join(work,'Temp'),LOCALAPPDATA:path.join(work,'User-'+name),APPDATA:path.join(work,'User-'+name,'Roaming'),HB_NATIVE_TEST_STATE:path.join(work,'State-'+name),...process.env.HB_FPS_CPU_PROFILE?{HB_CPU_PROFILE:path.join(work,'cpu-'+name+'.cpuprofile')}:{}});
 await fs.mkdir(path.join(work,'Temp'),{recursive:true});
 async function run(api,round){
   const report=path.join(work,`report-${api}-${round}.json`),child=spawn(built.executable,['--hidden','--silent','--uncapped','--frames',String(frames),'--report',report,'--graphics-api',api],{windowsHide:true,env:env(api+'-'+round)});

@@ -155,10 +155,15 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   const attributes=new WeakMap();let nextAttribute=0;const attributeId=a=>{if(!a)return 0;if(!attributes.has(a))attributes.set(a,++nextAttribute);return attributes.get(a);};
   function track(resource,kind,id,cache){let entries=tracked.get(resource);if(!entries){entries=new Set();tracked.set(resource,entries);}const key=kind+':'+id;if(entries.has(key))return;entries.add(key);subscribeDisposal(resource,target=>{tracked.get(target)?.delete(key);cache.delete(id);maskPassCache.delete(id);released[kind].add(id);});}
   const info={autoReset:false,memory:{geometries:0,textures:0},render:{calls:0,triangles:0,points:0,lines:0},reset(){this.render.calls=this.render.triangles=0;}};
+  // Unchanged geometry (same index/attribute objects and versions) skips the JSON stamp entirely.
+  const geometryVersions=new WeakMap();
+  function geometryVersionKey(geometry){const out=[geometry.index,geometry.index?.version];for(const name in geometry.attributes){const a=geometry.attributes[name];out.push(name,a,a.isInterleavedBufferAttribute?a.data.version:a.version,a.usage);}return out;}
   function geometryResource(geometry,resources){
+    const versions=geometryVersionKey(geometry),known=geometryVersions.get(geometry);
+    if(known&&known.length===versions.length&&known.every((v,i)=>v===versions[i])&&geometries.has(geometry.uuid))return geometry.uuid;
     track(geometry,'meshes',geometry.uuid,geometries);
     const stamp=geometryStreamStamp(geometry,attributeId,capabilities?.dynamicMesh),previous=geometries.get(geometry.uuid);
-    if(previous?.signature!==stamp.signature){if(stamp.dynamic&&previous?.layout===stamp.layout){const vertices=packedDynamicVertices(geometry,previous.vertices);resources.push({kind:'meshVertices',id:geometry.uuid,vertices});geometries.set(geometry.uuid,{...stamp,vertices});}else{resources.push({kind:'mesh',id:geometry.uuid,...packedGeometry(geometry),...(stamp.dynamic?{dynamic:true}:{})});geometries.set(geometry.uuid,stamp);}}return geometry.uuid;
+    if(previous?.signature!==stamp.signature){if(stamp.dynamic&&previous?.layout===stamp.layout){const vertices=packedDynamicVertices(geometry,previous.vertices);resources.push({kind:'meshVertices',id:geometry.uuid,vertices});geometries.set(geometry.uuid,{...stamp,vertices});}else{resources.push({kind:'mesh',id:geometry.uuid,...packedGeometry(geometry),...(stamp.dynamic?{dynamic:true}:{})});geometries.set(geometry.uuid,stamp);}}geometryVersions.set(geometry,versions);return geometry.uuid;
   }
   function instanceResource(node,resources,objectMotion){
     const owner=node.isInstancedMesh?node:node.geometry,id=owner.uuid,u=node.material?.userData.hbNativeProjectile?node.material.uniforms:null,signature=JSON.stringify([node.count,node.geometry.instanceCount,node.instanceMatrix?.version,node.instanceColor?.version,node.geometry.attributes.shotPosition?.version,node.instanceMatrix?.count,node.geometry.attributes.shotPosition?.count,objectMotion?.pose?.instances,u?.size?.value,u?.shape?.value.toArray(),u?.planeXZ?.value]);track(owner,'instances',id,instances);if(node.isInstancedMesh)track(node.geometry,'instances',id,instances);

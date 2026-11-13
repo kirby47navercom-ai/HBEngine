@@ -1,12 +1,15 @@
 // Draw records are detached JSON packets. Compare their values before allocating
 // another large string for unchanged geometry/material state. A changed record
 // still uses the original JSON encoding and an independent normalized snapshot.
+// Stored values are JSON.parse results we own, so their key lists are cached once under a symbol
+// (not enumerable by JSON or Object.keys) instead of allocated on every comparison.
+const KEYS=Symbol('keys');
 function same(a,b,depth=0){
  if(a===b)return true;
  if(a===null||b===null||typeof a!=='object'||typeof b!=='object'||depth>16||typeof b.toJSON==='function')return false;
- if(Array.isArray(a)){if(!Array.isArray(b)||a.length!==b.length)return false;for(let i=0;i<a.length;i++)if(!same(a[i],b[i],depth+1))return false;return true;}
+ if(Array.isArray(a)){if(!Array.isArray(b)||a.length!==b.length)return false;for(let i=0;i<a.length;i++){const x=a[i],y=b[i];if(x===y)continue;if(typeof x!=='object'||typeof y!=='object'||!same(x,y,depth+1))return false;}return true;}
  if(Array.isArray(b)||Object.getPrototypeOf(b)!==Object.prototype)return false;
- const keys=Object.keys(a);let count=0;for(const key of Object.keys(b)){const value=b[key];if(value===undefined||typeof value==='function'||typeof value==='symbol')continue;if(keys[count++]!==key||!same(a[key],value,depth+1))return false;}return count===keys.length;
+ const keys=a[KEYS]||(a[KEYS]=Object.keys(a));let count=0;for(const key in b){if(!Object.prototype.hasOwnProperty.call(b,key))continue;const value=b[key];if(value===undefined||typeof value==='function'||typeof value==='symbol')continue;if(keys[count++]!==key||!same(a[key],value,depth+1))return false;}return count===keys.length;
 }
 export class NativeDrawHistory {
  constructor(){this.records=new Map();}
