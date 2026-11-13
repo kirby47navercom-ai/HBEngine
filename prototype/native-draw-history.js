@@ -3,7 +3,8 @@
 // still uses the original JSON encoding and an independent normalized snapshot.
 // Stored values are JSON.parse results we own, so their key lists are cached once under a symbol
 // (not enumerable by JSON or Object.keys) instead of allocated on every comparison.
-const KEYS=Symbol('keys');
+import {runtimeDataMatcher} from './runtime-data-equal.js';
+const KEYS=Symbol('keys'),matchers=new Map();
 function same(a,b,depth=0){
  if(a===b)return true;
  if(a===null||b===null||typeof a!=='object'||typeof b!=='object'||depth>16||typeof b.toJSON==='function')return false;
@@ -13,7 +14,9 @@ function same(a,b,depth=0){
 }
 export class NativeDrawHistory {
  constructor(){this.records=new Map();}
- stamp(id,draw){const previous=this.records.get(id);if(previous?.value&&same(previous.value,draw))return previous.stamp;const stamp=JSON.stringify(draw);if(previous?.stamp===stamp){previous.value??=JSON.parse(stamp);}else this.records.set(id,{stamp,value:null});return stamp;}
+ // A warmed record compares through a compiled field-by-field matcher (shared per draw shape); the generic
+ // comparison stays as the fallback for shapes the matcher cannot express or values it rejects (undefined keys).
+ stamp(id,draw){const previous=this.records.get(id);if(previous?.value&&(previous.match?.test(previous.value,draw)||same(previous.value,draw)))return previous.stamp;const stamp=JSON.stringify(draw);if(previous?.stamp===stamp){if(!previous.value){previous.value=JSON.parse(stamp);previous.match=runtimeDataMatcher(previous.value,matchers);}}else this.records.set(id,{stamp,value:null,match:null});return stamp;}
  delete(id){this.records.delete(id);}
  clear(){this.records.clear();}
 }
