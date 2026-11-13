@@ -5,7 +5,7 @@ AI로 처음 작업할 때는 [빠른 시작](docs/AI_START.md)과 짧은 [현�
 사용자의 후속 구현 지시에 따라 [누적 작업·검증·설치 순서](docs/WORK_ORDER_051.md)로 진행한다. Unity·Unreal 전체 공식 본문·API 분석 gate는 false이며 일부 구현이나 문서 읽기로 승격하지 않는다. 실제 읽은 범위·미독·전체 분모는 [현재 연구 상태](docs/research/RESEARCH_STATUS.md)에 기록한다. 최신 [머테리얼 함수](docs/MATERIAL_FUNCTIONS_075.md)·[Attributes/Layer/Blend와 인스턴스](docs/MATERIAL_LAYERS_076.md)는 공용 CPU/GLSL/TSL·C++/BP·AI/패키징의 실제 창 검증을 포함한다. [WebGL Float 재사용·인스턴스 레이어 배치](docs/MATERIAL_UNIFORMS_077.md)도 이어서 검증했다.
 
 078은 [머테리얼 함수 추출·Texture2D/StaticBool](docs/MATERIAL_TYPED_FUNCTIONS_078.md)을 기존 편집기/AI/파일 묶음/CPU·GLSL·TSL·C++ 적용에 연결했다. 실제 분리 Editor/GL·GPU release 검증과 원본/SHA·sampler 수·반복 자원 보존이 통과했다. 설치 갱신은 051 선행 작업 순서를 유지한다.
-C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 프로젝트다. 현재는 **Windows x64 HBEngine.exe + WebView2 편집기 + 실제 C++ 빌드 호스트 + 블루프린트 실행기 + 독립 게임 Game.exe 패키지**를 연결했다. 편집기와 게임 창은 Win32 C++ 프로그램이고 렌더링은 Three.js/WebGL2 또는 선택한 WebGPU, 물리는 Rapier 2D/3D WASM이다. DirectX 11/HLSL 렌더러와 타깃별 에셋 cook·installer는 별도 제작 항목이다.
+C++ / Win32 / Direct3D 12 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 프로젝트다. 현재는 **Windows x64 네이티브 편집기(HBEngineNative.exe, Win32·Direct3D 12) + 실제 C++ 빌드 호스트 + 블루프린트 실행기 + 독립 게임 Game.exe 패키지**를 연결했다. 편집기와 게임 창은 Win32 C++ 프로그램이고 렌더링은 Three.js/WebGL2 또는 선택한 WebGPU, 물리는 Rapier 2D/3D WASM이다. DirectX 11/HLSL 렌더러와 타깃별 에셋 cook·installer는 별도 제작 항목이다.
 
 ## 현재 구현
 
@@ -34,7 +34,7 @@ Unreal/Unity의 외형뿐 아니라 제작 흐름·실행 의미·키보드/포�
 
 Windows 네이티브 편집기는 `dist/HBEngineNative/HBEngineNative.exe`에서 열어요. 파일 메뉴에서 프로젝트를 열거나 EXE에 `.hbproject`를 넘겨요. 배포 폴더에는 Node 런타임과 D3D12 편집기, 네이티브 게임 실행기, 라이선스를 포함해요. C++ 소스 빌드에는 C++17 컴파일러가 필요해요.
 
-호환 편집기는 `dist/HBEngine/HBEngine.exe`이며 [WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/)을 사용해요. 브라우저 호환 게임 빌드용 `HBPlayer.exe`도 이 폴더에 들어가요.
+WebView2 호환 편집기(`HBEngine.exe`)와 브라우저 호환 게임 실행기(`HBPlayer.exe`)는 2026-11-13에 제거했어요. Windows 편집기와 게임은 `dist/HBEngineNative`의 네이티브 빌드만 있어요.
 
 엔진 개발과 동시에 사용할 때는 `npm run desktop:install`로 저장소 밖의 사용자용 설치본을 만든다. 바탕 화면의 **HBEngine 사용자용** 바로가기는 고정된 배포본을 열고, 개발 빌드와 WebView 프로필·C++ 캐시·포트를 분리한다. 개발 중 사용자용 설치본과 게임 원본을 변경하지 않는다. 업데이트는 새 버전 폴더로 설치하고 사용자 요청에 따라 전환한다. [동시 사용·저장·검증 방식](docs/USER_DEVELOPMENT_SEPARATION.md).
 
@@ -80,14 +80,12 @@ C++17 g++이 필요하다. Windows에서는 설치된 MSYS2 UCRT64 컴파일러�
 | npm run test:package | 실제 2D 개발/3D 배포 Game.exe·GPU·BP→사전 컴파일 C++·AudioContext/음원 재생·EndPlay 저장/재열기·취소/충돌/손상 거부·소유 서버 종료 |
 | npm run test:launcher | 프로젝트 JSON/UUID·한글/공백 경로·원본 보호·허브/API·두 프로젝트 전환·동적 포트·프로젝트별 C++ 소유 상태 |
 | npm run test:session | 프로젝트 ID별 복구/도킹/폴더/SaveGame 분리·기존 기본 프로젝트의 1회 이관·원본 보존·디스크 복구 연결 |
-| npm run test:desktop | 실제 배포/루트 EXE의 WebView2 내 편집기/허브 JS 초기화·실제 닫기 흐름·다른 작업 폴더/프로젝트 경로·비정상 descriptor 거부·소유 서버 정리 |
 | npm run test:viewport | 카메라 입력 185·보기/프레이밍/축 위젯/재질 수명 228·환경 Actor 33·분리 창 frame 예약 검사 |
 | npm run test:detached | 실제 별도 HWND·원본 문서/DOM/GPU 유지·창 간 속성·태양광·검색/저장·닫기 복귀·부모 종료 |
 | node tools/check-viewport-workflow.mjs URL | viewport-qa 전용 공용 AI 명령·큰 좌표·북마크/조종·보기와 에셋 격리·실제 Play/Stop·저장 |
 
 npm run api:generate는 공통 라이브러리 헤더와 노드 메타데이터를 재생성한다. Library.hpp는 추적하고 core-api.js는 설치 시 생성한다.
 
-데스크톱 smoke는 내장 WebView2 탐색 이후 허브/편집기 JS의 준비 메시지와 실제 닫기 핸들러·종료 뒤 서버 정리를 확인한다. 모든 편집 조작은 별도의 화면 검증이 필요하다. 공식 실행/프로젝트 근거와 SDK 배포 범위는 [엔진 분석](docs/ENGINE_REFERENCE_ANALYSIS.md)에 적었다.
 
 ## 만든 게임 빌드와 실행
 
@@ -152,7 +150,7 @@ AI도 현재 미저장 문서를 읽고 revision 조건부 부분 변경·Undo·
 
 ## 현재 한계
 
-Windows 편집기 실행 파일/배포 폴더와 독립 게임 Game.exe 패키지를 구현했다. 현재 WebView2가 편집기/게임을 표시하고 Node가 로컬 서버 및 제작 단계의 C++ 빌드 호스트를 제공한다. 독립 Player는 패키지에 등록된 C++ worker를 실행하며 새 사용자 소스를 컴파일하지 않는다. DirectX 11·HLSL backend·native 물리/음향·임의 형식의 엔진 변환·타깃 cook/압축/chunk·installer·다른 플랫폼 배포는 추가 구현 범위다. 미지원 모델/영상도 원본을 보존하지만 미리보기에는 해당 임포터/브라우저 코덱이 필요하다. 프로젝트 생성은 기본 예제·빈 3D·2D 플랫폼·3D 플레이어·2D/3D AI와 효과 템플릿을 제공한다. 전체 프로젝트 버전 업그레이드·여러 엔진 버전 선택은 미구현이다.
+Windows 편집기 실행 파일/배포 폴더와 독립 게임 Game.exe 패키지를 구현했다. Windows 편집기/게임은 Win32·Direct3D 12로 직접 표시하고(WebView2 없음) Node가 로컬 서버 및 제작 단계의 C++ 빌드 호스트를 제공한다. 독립 Player는 패키지에 등록된 C++ worker를 실행하며 새 사용자 소스를 컴파일하지 않는다. DirectX 11·HLSL backend·native 물리/음향·임의 형식의 엔진 변환·타깃 cook/압축/chunk·installer·다른 플랫폼 배포는 추가 구현 범위다. 미지원 모델/영상도 원본을 보존하지만 미리보기에는 해당 임포터/브라우저 코덱이 필요하다. 프로젝트 생성은 기본 예제·빈 3D·2D 플랫폼·3D 플레이어·2D/3D AI와 효과 템플릿을 제공한다. 전체 프로젝트 버전 업그레이드·여러 엔진 버전 선택은 미구현이다.
 
 문서 저장은 디스크의 이전 내용과 대조해 외부 변경을 거부하고 Saved/Backups에 원본을 보관한다. 자동 충돌 병합·다중 파일 트랜잭션은 지원하지 않는다.
 

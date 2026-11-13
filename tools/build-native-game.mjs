@@ -41,7 +41,7 @@ export function validateNativeContent(content,profile){
 export async function buildNativeGame(record,profile,{content,natives,report},{signal,onProgress=()=>{},dryRun=false}={}){
  validateNativeContent(content,profile);if(dryRun)return report;if(process.platform!=='win32'||process.arch!=='x64')throw Error('Windows x64에서 네이티브 게임을 빌드하세요.');const signingSettings=windowsSigningSettings(profile);
  let desktop;
- for(const candidate of [root,path.join(root,'dist/HBEngineNative'),path.join(root,'dist/HBEngine')]){
+ for(const candidate of [root,path.join(root,'dist/HBEngineNative')]){
   const ready=await Promise.all(['HBNativePlayer.exe','runtime/node.exe','Shaders','licenses'].map(name=>fs.access(path.join(candidate,name)).then(()=>true,()=>false)));
   if(ready.every(Boolean)){desktop=candidate;break;}
  }

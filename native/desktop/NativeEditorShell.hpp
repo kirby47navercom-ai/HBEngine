@@ -2164,9 +2164,7 @@ class NativeEditorShell {
             {{"name",L"프로필 이름",80},{"productName",L"게임 이름",80},{"width",L"화면 너비",5,true},{"height",L"화면 높이",5,true}},
             {{"target",L"대상 플랫폼",0,false,{L"Windows x64",L"웹",L"Android",L"iOS"},{"windows-x64","web","android","ios"}},
              {"configuration",L"빌드 구성",0,false,{L"개발",L"배포"},{"development","release"}},
-             {"windowsRuntime",L"Windows 실행기",0,false,{L"네이티브",L"WebView2 호환"},{"native","webview"}},
-             {"nativeGraphicsAPI",L"Windows 그래픽 API",0,false,{L"DirectX 12",L"DirectX 12 · 11On12",L"자동",L"DirectX 11"},{"d3d12","d3d12-11on12","auto","d3d11"}},
-             {"windowsRenderer",L"호환 실행기 렌더러",0,false,{L"웹 그래픽",L"DirectX 12 호환 장면"},{"scene","d3d11"}}},
+             {"nativeGraphicsAPI",L"Windows 그래픽 API",0,false,{L"DirectX 12",L"DirectX 12 · 11On12",L"자동",L"DirectX 11"},{"d3d12","d3d12-11on12","auto","d3d11"}}},
             {{"targetFrameRate",L"목표 FPS (15–240)",3,true},{"framePacing",L"프레임 표시 방식",0,false,{L"고정 목표 FPS",L"화면 주사율 동기화",L"제한 없음 · Windows 네이티브"},{"fixed","display","uncapped"}}},
             {{"enabled",L"키오스크 모드",0,false,toggle,toggleValues},{"fullscreen",L"전체 화면",0,false,toggle,toggleValues},
              {"hideCursor",L"커서 숨기기",0,false,toggle,toggleValues},{"preventMinimize",L"최소화 막기",0,false,toggle,toggleValues},
@@ -2200,7 +2198,7 @@ class NativeEditorShell {
             next=field.number?Json::parse(utf8(input)):Json(utf8(input));
         }else{
             auto marked=field.labels;
-            if(std::string(field.key)=="framePacing"&&(effective.value("target",std::string("windows-x64"))!="windows-x64"||effective.value("windowsRuntime",std::string("native"))=="webview"))marked.pop_back();
+            if(std::string(field.key)=="framePacing"&&effective.value("target",std::string("windows-x64"))!="windows-x64")marked.pop_back();
             for(std::size_t i=0;i<marked.size();++i)if(field.options.at(i)==previous)marked.at(i)=L"● "+marked.at(i);
             const auto option=chooseMenu(marked);if(!option)return Json::object();
             next=field.options.at(*option);
@@ -2210,7 +2208,6 @@ class NativeEditorShell {
             if(effective.value("framePacing",std::string())=="uncapped"){
                 const auto key=std::string(field.key);
                 if(key=="target"&&next!="windows-x64")changes["framePacing"]=next=="android"||next=="ios"?"display":"fixed";
-                if(key=="windowsRuntime"&&next=="webview")changes["framePacing"]="fixed";
             }
             return changes;
         }

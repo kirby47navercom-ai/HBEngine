@@ -480,7 +480,7 @@ const ordered=await dispatch('document.reorder',{path:blueprint,before:material}
 assert.equal(ordered.path,sequence);
 assert.ok(ordered.tabs.findIndex(row=>row.path===blueprint)<ordered.tabs.findIndex(row=>row.path===material));
 const report=path.join(work,'report.json');
-const executable=path.resolve(process.argv[2] || path.join(root,'dist/HBEngine/HBEngine.exe'));
+const executable=path.resolve(process.argv[2] || path.join(root,'dist/HBEngineNative/HBEngineNative.exe'));
 if(process.argv[3]){
   process.env.HB_EDITOR_TEST_PLAYER=path.resolve(process.argv[3]);
   process.env.HB_EDITOR_TEST_RUNTIME=path.resolve(process.env.HB_EDITOR_TEST_RUNTIME||root);

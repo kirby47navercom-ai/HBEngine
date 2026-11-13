@@ -31,15 +31,15 @@ export async function activeInstalledVersions(destination){
   const quote=v=>"'"+v.replaceAll("'","''")+"'",script="$root="+quote(path.resolve(versions))+"; $pattern=[regex]::Escape($root)+'[\\\\/]([a-f0-9]{16})'; $rows=@(Get-CimInstance Win32_Process | ForEach-Object { $match=[regex]::Match(($_.ExecutablePath+' '+$_.CommandLine).Replace('/','\\'),$pattern,'IgnoreCase'); if($match.Success){[pscustomobject]@{pid=$_.ProcessId;version=$match.Groups[1].Value.ToLowerInvariant();name=$_.Name}} }); ConvertTo-Json -InputObject $rows -Compress";
   const {stdout}=await exec('powershell.exe',['-NoProfile','-NonInteractive','-Command',script],{windowsHide:true,encoding:'utf8',timeout:30000});return JSON.parse(stdout).filter(p=>names.has(p.version));
 }
-export async function installEditor({source=path.join(repository,'dist/HBEngine'),destination=path.join(os.homedir(),'HBEngine'),shortcut=true,expectedBundleHash}={}){
+export async function installEditor({source=path.join(repository,'dist/HBEngineNative'),destination=path.join(os.homedir(),'HBEngine'),shortcut=true,expectedBundleHash}={}){
   if(process.platform!=='win32')throw Error('Windows 사용자용 편집기 설치예요.');
   if(expectedBundleHash!==undefined&&!/^[a-f0-9]{64}$/.test(expectedBundleHash))throw Error('설치할 배포본 SHA를 확인하세요.');
   source=await fs.realpath(source);destination=await canonicalDestination(destination);
   if(inside(repository,destination)||inside(source,destination))throw Error('사용자용 설치 폴더를 개발 저장소 밖에 지정하세요.');
   const files=await inventory(source);
-  const paths=new Set(files.map(file=>file.path)),native=paths.has('HBEngineNative.exe');
-  const executableName=native?'HBEngineNative.exe':'HBEngine.exe';
-  const required=native?[executableName,'HBNativePlayer.exe','tools/native-editor-session.mjs']:['HBEngine.exe','WebView2Loader.dll','tools/serve.mjs','prototype/index.html'];
+  // Only the native Win32/Direct3D editor is installed; the WebView2 build no longer exists.
+  const paths=new Set(files.map(file=>file.path)),native=true,executableName='HBEngineNative.exe';
+  const required=[executableName,'HBNativePlayer.exe','tools/native-editor-session.mjs'];
   for(const name of ['runtime/node.exe',...required])if(!paths.has(name))throw Error('배포 파일 누락: '+name);
   const bundleHash=sha(JSON.stringify(files)),versions=path.join(destination,'Versions'),directory=path.join(versions,bundleHash.slice(0,16));
   if(expectedBundleHash!==undefined&&bundleHash!==expectedBundleHash)throw Object.assign(Error('대기 중 배포본이 변경됐어요. 새 배포본으로 설치를 다시 요청하세요.'),{code:'INSTALL_SOURCE_CHANGED'});
@@ -78,6 +78,6 @@ if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.ur
   if(positional.length>1||positional.some(a=>a.startsWith('--'))||status&&(whenIdle||native))
     throw Error('사용법: node tools/install-editor.mjs [설치 폴더] [--native-editor-only] [--when-idle 또는 --status]');
   if(status){const {queuedEditorInstallStatus}=await import('./queued-editor-install.mjs');console.log(JSON.stringify(await queuedEditorInstallStatus(positional[0]),null,2));process.exit(0);}
-  const result=await installEditor({destination:positional[0],source:native?path.join(repository,'dist/HBEngineNative'):undefined});
+  const result=await installEditor({destination:positional[0]});
   if(whenIdle&&result.deferred){const {queueEditorInstall}=await import('./queued-editor-install.mjs');console.log(JSON.stringify(await queueEditorInstall(result),null,2));}else console.log(JSON.stringify(result,null,2));
 }
