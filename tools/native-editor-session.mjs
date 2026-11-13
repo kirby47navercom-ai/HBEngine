@@ -16,7 +16,7 @@ import {createPlacedObject,placementCatalog} from '../prototype/placement-catalo
 import {addSceneComponent,componentDefinitions,componentPropertyVisible} from '../prototype/scene-components.js';
 import {addMobileControls,addWidget,duplicateWidget,removeWidget,reparentWidget,setWidgetAnchorPreset,transformWidgetSlot,widgetContainers,widgetTypes} from '../prototype/ui-assets.js';
 import {projectBytes} from './project-bytes.mjs';
-import {copySceneObjects,pasteSceneObjects,setObjectMatrix,validParent} from '../prototype/scene-editor.js';
+import {copySceneObjects,pasteSceneObjects,selectionMatrices,setObjectMatrix,transformSceneSelection,validParent} from '../prototype/scene-editor.js';
 import {sceneWorldMatrix} from '../prototype/scene-runtime.js';
 import {addState,behaviorNodes,makeBehaviorNode,makeSequenceTrack,removeState} from '../prototype/gameplay-assets.js';
 import {timelineRows} from '../prototype/timeline-rows.js';
@@ -644,8 +644,9 @@ export function nativeEditorSession(bridge) {
     'editor.redo': ({path,expectedRevision}) => restore('future','history',path,expectedRevision),
     'scene.catalog': () => ({placements:placementCatalog.map(({key,label,category})=>({id:key,label,group:category})),components:Object.keys(componentDefinitions)}),
     'scene.hierarchy': () => scene().data.objects.map(({id,name,kind,parent,visible,locked,components})=>({id,name,kind,parent,visible,locked,camera:components?.some(c=>c.type==='Camera'&&c.properties?.enabled!==false)??kind==='camera'})),
-    'scene.edit': async ({action,id,target,key,expectedRevision}) => {
-      const doc=scene();
+    'scene.edit': async ({path,action,id,target,key,delta,expectedRevision}) => {
+      const doc=targetDocument(path);
+      if(doc.kind!=='scene')throw Error('장면 문서를 선택하세요.');
       await check(doc,expectedRevision);
       const next=structuredClone(doc.data), byId=new Map(next.objects.map(actor=>[actor.id,actor]));
       const actor=byId.get(id);
@@ -658,6 +659,11 @@ export function nativeEditorSession(bridge) {
         if (action==='lock') actor.locked=!actor.locked;
         else if (action==='visible') actor.visible=!actor.visible;
         else if (action==='component') addSceneComponent(actor,key);
+        else if(action==='translate'){
+          if(!Array.isArray(delta)||delta.length!==3||!delta.every(Number.isFinite))throw Error('오브젝트 이동 거리를 확인하세요.');
+          const matrix=sceneWorldMatrix(actor,next.objects).identity().makeTranslation(...delta);
+          transformSceneSelection(next.objects,selectionMatrices(next.objects,[id]),matrix);
+        }
         else if (action==='reparent') {
           if (!validParent(next.objects,id,target)) throw Error('오브젝트의 부모를 확인하세요.');
           const world=sceneWorldMatrix(actor,next.objects),parent=byId.get(target);

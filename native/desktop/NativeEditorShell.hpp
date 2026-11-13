@@ -33,6 +33,7 @@ class NativeEditorShell {
     Json sceneRows=Json::array(),cameraRows=Json::array(),cameraInput;
     std::set<std::string> folded;
     std::string sceneSelection,cameraId;
+    std::string cameraDirection;
     bool cameraOutputs=false;
     Json inspectedBase=Json::array();
     bool viewportPreparing=false;
@@ -88,7 +89,7 @@ class NativeEditorShell {
         std::unique_ptr<EditorScenePanel> sceneView;
         Json doc,model,inputs=Json::array();
         Json sceneInput;
-        std::string view="event",selection,surface,cameraId;
+        std::string view="event",selection,surface,cameraId,cameraDirection;
         bool cameraOutputs=false;
         bool sceneQueued=false;
         std::uint64_t inputRevision=0;
@@ -124,6 +125,10 @@ class NativeEditorShell {
     static constexpr Command RenameAsset=static_cast<Command>(180);
     static constexpr Command WidgetAnchor=static_cast<Command>(179);
     static constexpr Command WidgetMobile=static_cast<Command>(178);
+    static const std::array<std::pair<const char*,const wchar_t*>,8>& viewportDirections(){
+        static const std::array<std::pair<const char*,const wchar_t*>,8> values={{{"3d",L"원근"},{"2d",L"2D · XY"},{"top",L"위"},{"bottom",L"아래"},{"front",L"앞"},{"back",L"뒤"},{"left",L"왼쪽"},{"right",L"오른쪽"}}};
+        return values;
+    }
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
 
@@ -787,21 +792,33 @@ class NativeEditorShell {
     void refreshScene(){
         if(!sceneOpen())return;
         sceneRows=request("scene.hierarchy");
-        cameraRows=Json::array({"","@outputs"});
-        SendMessageW(views,CB_RESETCONTENT,0,0);
-        SendMessageW(views,CB_ADDSTRING,0,LPARAM(L"편집기 카메라"));
-        SendMessageW(views,CB_ADDSTRING,0,LPARAM(L"게임 카메라 출력"));
-        int active=cameraOutputs?1:0;bool found=false;
+        cameraRows=Json::array();
+        const int active=populateCameraViews(views,cameraRows,cameraId,cameraDirection,cameraOutputs);
+        int selected=active;bool found=false;
         for(const auto& actor:sceneRows){
             if(actor.at("id")==sceneSelection)found=true;
             if(!actor.value("camera",false))continue;
-            if(!cameraOutputs&&actor.at("id")==cameraId)active=int(cameraRows.size());
-            cameraRows.push_back(actor.at("id"));
+            if(!cameraOutputs&&actor.at("id")==cameraId)selected=int(cameraRows.size());
+            cameraRows.push_back({{"camera",actor.at("id")}});
             SendMessageW(views,CB_ADDSTRING,0,LPARAM(wide(actor.at("name")).c_str()));
         }
-        if(!active)cameraId.clear();
+        if(selected==active)cameraId.clear();
         if(!found&&!sceneSelection.empty()){sceneSelection.clear();fieldPath=Json::array();}
-        SendMessageW(views,CB_SETCURSEL,active,0);refreshHierarchy();
+        SendMessageW(views,CB_SETCURSEL,selected,0);refreshHierarchy();
+    }
+    static int populateCameraViews(HWND combo,Json& rows,const std::string& camera,const std::string& direction,bool outputs){
+        SendMessageW(combo,CB_RESETCONTENT,0,0);
+        rows.push_back({{"direction",""}});SendMessageW(combo,CB_ADDSTRING,0,LPARAM(L"편집기 카메라"));
+        rows.push_back({{"outputs",true}});SendMessageW(combo,CB_ADDSTRING,0,LPARAM(L"게임 카메라 출력"));
+        int selected=outputs?1:0;
+        for(const auto& [key,label]:viewportDirections()){
+            if(!outputs&&camera.empty()&&direction==key)selected=int(rows.size());
+            rows.push_back({{"direction",key}});SendMessageW(combo,CB_ADDSTRING,0,LPARAM(label));
+        }
+        return selected;
+    }
+    static void selectCameraView(const Json& choice,std::string& camera,std::string& direction,bool& outputs){
+        camera=choice.value("camera",std::string());direction=choice.value("direction",std::string());outputs=choice.value("outputs",false);
     }
     void selectActor(const std::string& id){
         if(!sceneOpen())return;
@@ -833,9 +850,11 @@ class NativeEditorShell {
     Json drawViewport(Json input=Json::object()){
         const auto size=viewport.size();
         if(size.cx<=0||size.cy<=0)return Json::object();
-        input["width"]=size.cx;input["height"]=size.cy;input["selected"]=sceneSelection;input["cameraId"]=cameraId;input["cameraOutputs"]=cameraOutputs;
+        input["width"]=size.cx;input["height"]=size.cy;input["selected"]=sceneSelection;input["cameraId"]=cameraId;input["cameraOutputs"]=cameraOutputs;input["direction"]=cameraDirection;
         auto state=request("scene.viewport",input);
-        if(input.value("command",std::string())=="pick")selectActor(state.value("selection",std::string()));
+        const auto action=input.value("command",std::string());
+        if(action=="pick")selectActor(state.value("selection",std::string()));
+        else if(action=="translate"&&state.contains("translation"))editScene({{"action","translate"},{"id",sceneSelection},{"delta",state.at("translation")}});
         const auto prep=state.value("shaderPreparation",Json::object());
         const auto issue=prep.value("error",std::string());
         const bool preparing=prep.value("pending",false);
@@ -937,7 +956,7 @@ class NativeEditorShell {
         if(value.contains("model")){updatedGraph=std::move(value.at("model"));value.erase("model");}
         document=std::move(value);updating=true;
         if(previous!=document.value("path",std::string())){tileOrigin={};tileLayer.clear();tileAtlasSource=nullptr;assetCanvas.updateAtlas(nullptr,{});}
-        if(previous!=document.value("path",std::string())){view="event";sourceMode=false;graph.resetView();graphSelection.clear();selectedTransition.clear();fieldPath=Json::array();sceneSelection.clear();cameraId.clear();cameraOutputs=false;folded.clear();cameraInput=nullptr;viewportPreparing=false;widgetSelection.clear();widgetRevision.clear();widgetPreview=nullptr;timelineTrack.clear();timelineItem.clear();timelineKey=timelineChannel=-1;curveView=false;assetCanvas.resetTimeline();imageIndex=imageLevel=0;}
+        if(previous!=document.value("path",std::string())){view="event";sourceMode=false;graph.resetView();graphSelection.clear();selectedTransition.clear();fieldPath=Json::array();sceneSelection.clear();cameraId.clear();cameraDirection.clear();cameraOutputs=false;folded.clear();cameraInput=nullptr;viewportPreparing=false;widgetSelection.clear();widgetRevision.clear();widgetPreview=nullptr;timelineTrack.clear();timelineItem.clear();timelineKey=timelineChannel=-1;curveView=false;assetCanvas.resetTimeline();imageIndex=imageLevel=0;}
         displayText(source,document.value("text",std::string()));
         sourceChanged=false;
         refreshTabs();
@@ -1086,10 +1105,16 @@ class NativeEditorShell {
         const auto size=item.sceneView->size();
         input["width"]=size.cx;input["height"]=size.cy;
         input["path"]=item.doc.at("path");input["surface"]=item.surface;
-        input["cameraId"]=item.cameraId;input["cameraOutputs"]=item.cameraOutputs;input["selected"]=item.selection;
+        input["cameraId"]=item.cameraId;input["cameraOutputs"]=item.cameraOutputs;input["direction"]=item.cameraDirection;input["selected"]=item.selection;
         if(input.value("command",std::string())=="focus")input["id"]=item.selection;
         auto state=request("scene.viewport",input);
-        if(input.value("command",std::string())=="pick")item.selection=state.at("selection");
+        const auto action=input.value("command",std::string());
+        if(action=="pick")item.selection=state.at("selection");
+        else if(action=="translate"&&state.contains("translation")){
+            auto edit=documentWindowTarget(item);edit["action"]="translate";edit["id"]=item.selection;edit["delta"]=state.at("translation");
+            if(item.doc.at("path")==document.value("path",std::string())&&sourceChanged)throw std::runtime_error("같은 장면의 기본 창 초안을 먼저 처리하세요.");
+            commitDocumentWindowChange(owner,item,request("scene.edit",edit));
+        }
         if(state.at("shaderPreparation").value("pending",false))scheduleWindowScene(owner,item,120);
         else if(!state.at("warnings").empty())SetWindowTextW(item.status,wide(state.at("warnings").front()).c_str());
         return state;
@@ -1130,19 +1155,17 @@ class NativeEditorShell {
         }
         if(item.sceneView){
             const auto scene=Json::parse(item.doc.at("text").get<std::string>());
-            item.model["cameras"]=Json::array({"","@outputs"});
-            SendMessageW(item.viewPicker,CB_RESETCONTENT,0,0);
-            SendMessageW(item.viewPicker,CB_ADDSTRING,0,LPARAM(L"편집기 카메라"));
-            SendMessageW(item.viewPicker,CB_ADDSTRING,0,LPARAM(L"게임 카메라 출력"));
-            int selected=item.cameraOutputs?1:0;
+            auto& cameras=item.model["cameras"];cameras=Json::array();
+            const int active=populateCameraViews(item.viewPicker,cameras,item.cameraId,item.cameraDirection,item.cameraOutputs);
+            int selected=active;
             for(const auto& actor:scene.at("objects")){
                 const auto components=actor.value("components",Json::array());
                 if(!std::any_of(components.begin(),components.end(),[](const Json& component){return component.at("type")=="Camera"&&component.at("properties").value("enabled",true);}))continue;
-                if(actor.at("id")==item.cameraId)selected=int(item.model.at("cameras").size());
-                item.model["cameras"].push_back(actor.at("id"));
+                if(actor.at("id")==item.cameraId)selected=int(cameras.size());
+                cameras.push_back({{"camera",actor.at("id")}});
                 SendMessageW(item.viewPicker,CB_ADDSTRING,0,LPARAM(wide(actor.at("name")).c_str()));
             }
-            if(!selected)item.cameraId.clear();
+            if(selected==active)item.cameraId.clear();
             SendMessageW(item.viewPicker,CB_SETCURSEL,selected,0);
         }
         SetWindowTextW(item.status,item.doc.value("dirty",false)?L"저장하지 않은 변경 사항":L"");
@@ -1265,7 +1288,7 @@ class NativeEditorShell {
             }else if(target.at("kind")=="scene"){
                 item.surface="native-scene-"+std::to_string(nextSceneSurface++);
                 item.source=settings.is_object()&&settings.value("source",false);
-                if(settings.is_object()){item.cameraId=settings.value("cameraId",std::string());item.cameraOutputs=settings.value("cameraOutputs",false);}
+                if(settings.is_object()){item.cameraId=settings.value("cameraId",std::string());item.cameraOutputs=settings.value("cameraOutputs",false);item.cameraDirection=settings.value("direction",std::string());}
                 SetWindowTextW(item.toggle,L"장면 / 소스");
                 item.sceneView=std::make_unique<EditorScenePanel>();
                 item.sceneView->attach(owner,instance,[this,owner](Json input){
@@ -1338,7 +1361,7 @@ class NativeEditorShell {
             else if(id==DocView&&notification==CBN_SELCHANGE){
                 const auto index=SendMessageW(item.viewPicker,CB_GETCURSEL,0,0);
                 if(index>=0){
-                    if(item.sceneView){item.cameraOutputs=index==1;item.cameraId=item.cameraOutputs?std::string():item.model.at("cameras").at(index).get<std::string>();scheduleWindowScene(owner,item);}
+                    if(item.sceneView){selectCameraView(item.model.at("cameras").at(index),item.cameraId,item.cameraDirection,item.cameraOutputs);scheduleWindowScene(owner,item);}
                     else{item.view=item.model.at("views").at(index).at(0);item.selection.clear();item.graph->resetView();refreshDocumentWindow(owner,item,item.doc);}
                 }
             }else if(id==DocAdd){
@@ -1557,7 +1580,7 @@ class NativeEditorShell {
             WINDOWPLACEMENT placement{sizeof(placement)};
             if(!GetWindowPlacement(owner,&placement))continue;
             const auto& r=placement.rcNormalPosition;
-            panes.push_back({{"path",item.doc.at("path")},{"view",item.view},{"source",item.source},{"split",owner==splitDocument},{"below",owner==splitDocument&&splitBelow},{"cameraId",item.cameraId},{"cameraOutputs",item.cameraOutputs},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}}});
+            panes.push_back({{"path",item.doc.at("path")},{"view",item.view},{"source",item.source},{"split",owner==splitDocument},{"below",owner==splitDocument&&splitBelow},{"cameraId",item.cameraId},{"cameraOutputs",item.cameraOutputs},{"direction",item.cameraDirection},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}}});
         }
         return panes;
     }
@@ -2135,7 +2158,7 @@ class NativeEditorShell {
             else if(id==Views&&HIWORD(w)==CBN_SELCHANGE){
                 const auto i=SendMessageW(views,CB_GETCURSEL,0,0);
                 if(i>=0){
-                    if(sceneOpen()){cameraOutputs=i==1;cameraId=cameraOutputs?std::string():cameraRows.at(i).get<std::string>();queueViewport();}
+                    if(sceneOpen()){selectCameraView(cameraRows.at(i),cameraId,cameraDirection,cameraOutputs);queueViewport();}
                     else{view=model.at("views").at(i).at(0);graph.resetView();graphSelection.clear();selectedTransition.clear();refreshGraph();layout();}
                 }
             }else if(HIWORD(w)==0)perform(id);
@@ -2291,6 +2314,23 @@ private:
         auto flight=std::move(cameraInput);cameraInput=nullptr;
         viewport.probe(WM_KEYUP,'W',0);viewport.probe(WM_RBUTTONUP,0,MAKELPARAM(20,20));
         if(!flight.is_object()||drawViewport(std::move(flight)).at("cameraPosition")==afterZoom.at("cameraPosition"))throw std::runtime_error("Native viewport flight failed");
+        SendMessageW(views,CB_SETCURSEL,4,0);
+        SendMessageW(window,WM_COMMAND,MAKEWPARAM(Views,CBN_SELCHANGE),LPARAM(views));
+        if(cameraDirection!="top"||drawViewport().at("projection")!="orthographic")throw std::runtime_error("Native top viewport failed");
+        SendMessageW(views,CB_SETCURSEL,2,0);
+        SendMessageW(window,WM_COMMAND,MAKEWPARAM(Views,CBN_SELCHANGE),LPARAM(views));
+        if(drawViewport().at("projection")!="perspective")throw std::runtime_error("Native perspective viewport restore failed");
+        viewport.probe(WM_LBUTTONDOWN,MK_LBUTTON|MK_SHIFT,MAKELPARAM(220,220));
+        viewport.probe(WM_MOUSEMOVE,MK_LBUTTON|MK_SHIFT,MAKELPARAM(255,228));
+        const auto moveBefore=Json::parse(document.at("text").get<std::string>()).at("objects").back().at("position");
+        auto previewMove=std::move(cameraInput);cameraInput=nullptr;
+        if(!drawViewport(std::move(previewMove)).contains("translation")||Json::parse(document.at("text").get<std::string>()).at("objects").back().at("position")!=moveBefore)
+            throw std::runtime_error("Native viewport move preview failed");
+        viewport.probe(WM_LBUTTONUP,MK_SHIFT,MAKELPARAM(255,228));
+        auto finishMove=std::move(cameraInput);cameraInput=nullptr;drawViewport(std::move(finishMove));
+        if(Json::parse(document.at("text").get<std::string>()).at("objects").back().at("position")==moveBefore)throw std::runtime_error("Native viewport transform failed");
+        command(Undo);
+        if(Json::parse(document.at("text").get<std::string>()).at("objects").back().at("position")!=moveBefore)throw std::runtime_error("Native viewport transform undo failed");
         command(Save);
         Json playEvidence;
         if(!env(L"HB_EDITOR_TEST_PLAYER").empty()){

@@ -9,7 +9,7 @@ class EditorScenePanel {
     std::function<void(Json)> post;
     POINT start{},previous{};
     int button=0;
-    bool moved=false,painted=false;
+    bool moved=false,painted=false,transformDrag=false;
     std::array<bool,6> flightKeys{};
     ULONGLONG flightTime=0;
     void stopFlight(){KillTimer(window,1);flightTime=0;flightKeys.fill(false);}
@@ -40,9 +40,16 @@ class EditorScenePanel {
             if(!button){
                 SetFocus(window);SetCapture(window);start=previous=point(l);moved=false;
                 button=message==WM_LBUTTONDOWN?1:message==WM_RBUTTONDOWN?2:3;
+                transformDrag=button==1&&(w&MK_SHIFT)!=0;
             }
             return 0;
         case WM_MOUSEMOVE:{
+            if(button==1&&transformDrag){
+                const auto at=point(l);
+                moved=moved||std::abs(at.x-start.x)>=3||std::abs(at.y-start.y)>=3;
+                if(moved)post({{"command","translatePreview"},{"x",start.x},{"y",start.y},{"dx",at.x-start.x},{"dy",at.y-start.y}});
+                return 0;
+            }
             if(button<2)return 0;
             const auto at=point(l);
             if(!moved&&std::abs(at.x-start.x)<3&&std::abs(at.y-start.y)<3)return 0;
@@ -53,12 +60,16 @@ class EditorScenePanel {
         case WM_LBUTTONUP:case WM_RBUTTONUP:case WM_MBUTTONUP:{
             const int up=message==WM_LBUTTONUP?1:message==WM_RBUTTONUP?2:3;
             if(button!=up)return 0;
-            button=0;if(up==2)stopFlight();if(GetCapture()==window)ReleaseCapture();
+            const bool translate=up==1&&transformDrag;
+            button=0;transformDrag=false;if(up==2)stopFlight();if(GetCapture()==window)ReleaseCapture();
             const auto at=point(l);
-            if(up==1&&std::abs(at.x-start.x)<4&&std::abs(at.y-start.y)<4)post({{"command","pick"},{"x",at.x},{"y",at.y}});
+            if(translate&&(moved||std::abs(at.x-start.x)+std::abs(at.y-start.y)>=3))post({{"command","translate"},{"x",start.x},{"y",start.y},{"dx",at.x-start.x},{"dy",at.y-start.y}});
+            else if(up==1&&std::abs(at.x-start.x)<4&&std::abs(at.y-start.y)<4)post({{"command","pick"},{"x",at.x},{"y",at.y}});
             return 0;
         }
-        case WM_CAPTURECHANGED:button=0;stopFlight();return 0;
+        case WM_CAPTURECHANGED:
+            if(transformDrag&&moved)post({{"command","translateCancel"}});
+            transformDrag=false;button=0;stopFlight();return 0;
         case WM_KILLFOCUS:
             button=0;stopFlight();if(GetCapture()==window)ReleaseCapture();return 0;
         case WM_TIMER:
