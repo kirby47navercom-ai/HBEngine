@@ -7,7 +7,7 @@ import {AssetDocuments, assetSuffix, assetTypes, validAsset} from '../prototype/
 import {documentRevision, patchAsset} from '../prototype/automation.js';
 import {catalog, defaultInputValue, defaultsFor, effectivePins, graphContext, makeComment, makeDefinition, makeNode, nodeTitle, sampleTimeline, timelineLength, typeColors, variableTypes} from '../prototype/blueprint-model.js';
 import {connectAutomatic} from '../prototype/blueprint-connections.js';
-import {connectMaterial, disconnectMaterial, makeMaterialNode, materialCatalog, materialGraph, materialPins, normalizedMaterialEdges, removeMaterialNodes} from '../prototype/material-runtime.js';
+import {connectMaterial, disconnectMaterial, makeMaterialNode, materialCatalog, materialGraph, materialPins, normalizedMaterialEdges, removeMaterialNodes, resolveMaterialPreview} from '../prototype/material-runtime.js';
 import {assetKind} from './project-service.mjs';
 import {createProject, readProjectManifest, recentProjects, rememberProject} from './project-manifest.mjs';
 import {createPlacedObject,placementCatalog} from '../prototype/placement-catalog.js';
@@ -16,6 +16,8 @@ import {addWidget,removeWidget,reparentWidget,widgetContainers,widgetTypes} from
 import {projectBytes} from './project-bytes.mjs';
 import {copySceneObjects,pasteSceneObjects,setObjectMatrix,validParent} from '../prototype/scene-editor.js';
 import {sceneWorldMatrix} from '../prototype/scene-runtime.js';
+import {defaultEnvironment,defaultSurface} from '../prototype/model.js';
+import {createBlueprintResolver} from '../prototype/blueprint-inheritance.js';
 
 const materialKinds = new Set(['material', 'materialfunction', 'materiallayer', 'materialblend']);
 const graphKind = doc => doc.kind === 'blueprint' || materialKinds.has(doc.kind);
@@ -31,7 +33,7 @@ const pointerPart = key => key.replaceAll('~','~0').replaceAll('/','~1');
 const fieldLabels = {name:'이름',sceneName:'레벨 이름',objects:'오브젝트',environment:'환경',position:'위치',rotation:'회전',scale:'크기',parent:'부모 에셋',clip:'오디오 클립',volume:'볼륨',pitch:'피치',loop:'반복',friction:'마찰',restitution:'반발력',density:'밀도',parameters:'매개변수',surfaceOverrides:'표면 오버라이드'};
 
 export function nativeEditorSession(bridge) {
-  let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBuild;
+  let record, documents = new AssetDocuments(), viewport, preview, previewSource, previewScene, previewNode, build, buildJobs, lastBuild;
   const project = () => {
     if (!record) throw Error('프로젝트를 먼저 여세요.');
     return record.project;
@@ -247,6 +249,39 @@ export function nativeEditorSession(bridge) {
       const doc=scene();
       viewport??=(await import('./native-editor-viewport.mjs')).nativeEditorViewport(bridge);
       return viewport.draw(doc.data,project(),params);
+    },
+    'asset.preview': async params=>{
+      const {width,height,node}=params;
+      if(!bridge||![width,height].every(value=>Number.isInteger(value)&&value>0&&value<=4096))throw Error('3D 미리보기 연결이나 크기를 확인하세요.');
+      const doc=current();
+      if(!graphKind(doc)&&doc.kind!=='materialinstance')throw Error('미리 볼 에셋을 선택하세요.');
+      preview??=(await import('./native-editor-viewport.mjs')).nativeEditorViewport(bridge,'native-preview');
+      if(previewSource!==doc.data||previewNode!==node){
+        const asset=async name=>name===doc.path?doc.data:JSON.parse((await projectBytes(project(),name)).toString('utf8').replace(/^\uFEFF/,''));
+        const actor=createPlacedObject(doc.kind==='blueprint'?'cube':'sphere',{id:'asset-preview'});
+        let data=doc.data;
+        if(doc.kind==='blueprint'){
+          const root=await createBlueprintResolver(asset,async name=>(await projectBytes(project(),name)).toString('utf8'))(doc.path);
+          actor.components=structuredClone(root.components);
+          if(!actor.components.some(component=>component.type==='MeshRenderer'))actor.kind='empty';
+        }else{
+          if(materialKinds.has(doc.kind)&&doc.kind!=='material'){
+            const graph=data.graph;
+            const selected=graph?.nodes.find(row=>row.id===node)||graph?.nodes.find(row=>row.key==='functionOutput'&&materialPins(row,graph).inputs.length);
+            if(!selected)throw Error('미리 볼 머테리얼 함수 출력을 선택하세요.');
+            data=(await resolveMaterialPreview(data,{node:selected.id},asset)).data;
+          }
+          actor.materialAsset=doc.path;
+        }
+        previewScene={objects:[actor],surface:defaultSurface,environment:defaultEnvironment,assetDraft:{path:doc.path,data}};
+        previewSource=doc.data;previewNode=node;
+      }
+      return preview.draw(previewScene,project(),params);
+    },
+    'asset.previewClose': async ()=>{
+      if(preview)await preview.close();
+      previewSource=previewNode=previewScene=null;
+      return {ok:true};
     },
     'timeline.read': () => {
       const {timeline}=assetOfKind('timeline').data;

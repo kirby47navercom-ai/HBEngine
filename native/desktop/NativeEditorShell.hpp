@@ -22,13 +22,15 @@ class NativeEditorShell {
     EditorGraphPanel graph;
     EditorFormPanel form;
     EditorTreePanel hierarchy;
-    EditorScenePanel viewport;
+    EditorScenePanel viewport,previewViewport;
     EditorAssetCanvas assetCanvas;
     Json sceneRows=Json::array(),cameraRows=Json::array(),cameraInput;
     std::set<std::string> folded;
     std::string sceneSelection,cameraId;
     Json inspectedBase=Json::array();
     bool viewportPreparing=false;
+    bool previewOpen=false;
+    Json previewInput;
     Json widgetPreview;
     std::string widgetSelection,widgetRevision;
     fs::path layoutFile;
@@ -37,7 +39,7 @@ class NativeEditorShell {
     unsigned browsePercent=24,inspectorPercent=25;
     std::uint64_t formRevision=0;
     bool sourceMode=false,updating=false,sourceChanged=false,acceptance=false,waiting=false;
-    enum Command {OpenProject=100,NewProject,Save,CloseDocument,Undo,Redo,Detach,ToggleSource,AddNode,Up,Search,Assets,Tabs,Source,Palette,Views,Status,NewAsset,AddActor,AddComponent,DeleteActor,FocusActor,AddWidget,ResetLayout,WideInspector,WideBrowser,Recovery,AddVariable,AddFunction,AddMacro,ImportAsset,DuplicateActor,CheckBuild,BuildGame,RunBuild,CancelBuild,RecentBase=200};
+    enum Command {OpenProject=100,NewProject,Save,CloseDocument,Undo,Redo,Detach,ToggleSource,AddNode,Up,Search,Assets,Tabs,Source,Palette,Views,Status,NewAsset,AddActor,AddComponent,DeleteActor,FocusActor,AddWidget,ResetLayout,WideInspector,WideBrowser,Recovery,AddVariable,AddFunction,AddMacro,ImportAsset,DuplicateActor,CheckBuild,BuildGame,RunBuild,CancelBuild,PreviewAsset,RecentBase=200};
     HMENU recentMenu=nullptr;
 
     static std::wstring controlText(HWND control){
@@ -88,7 +90,12 @@ class NativeEditorShell {
             buffered.erase(0,end+1);
             if(reply.value("channel",std::string())=="hb.render"){
                 Json result={{"channel","hb.render"},{"id",reply.at("id")},{"surface",reply.at("surface")},{"ok",true}};
-                try{result["value"]=viewport.render(reply,acceptance);}
+                try{
+                    const auto surface=reply.at("surface").get<std::string>();
+                    if(surface=="native-editor")result["value"]=viewport.render(reply,acceptance);
+                    else if(surface=="native-preview")result["value"]=previewViewport.render(reply,acceptance);
+                    else throw std::runtime_error("Native editor render surface");
+                }
                 catch(const std::exception& error){result["ok"]=false;result["error"]=error.what();}
                 send(result);continue;
             }
@@ -121,7 +128,7 @@ class NativeEditorShell {
                     auto input=event;input["action"]="comment";editGraph(input);
                 }
                 if(event.at("event")=="select"){
-                    graphSelection=event.at("id").get<std::string>();refreshGraphInputs();layout();
+                    graphSelection=event.at("id").get<std::string>();refreshGraphInputs();layout();queuePreview();
                 }
                 if(event.at("event")=="graphicsError")SetWindowTextW(status,wide(event.at("message")).c_str());
                 if(event.at("event")=="key"&&event.value("ctrl",false)){
@@ -181,6 +188,7 @@ class NativeEditorShell {
         });
         hierarchy.useD3D12(graphics);
         viewport.attach(window,instance,[this](Json value){queueViewport(std::move(value));});
+        previewViewport.attach(window,instance,[this](Json value){previewInput=std::move(value);queuePreview();});
         assetCanvas.attach(window,instance,[this](const Json& event){
             try{
                 const auto action=event.at("event").get<std::string>();
@@ -239,6 +247,7 @@ class NativeEditorShell {
         AppendMenuW(viewMenu,MF_STRING,WideBrowser,L"콘텐츠 브라우저 너비 변경");
         AppendMenuW(viewMenu,MF_STRING,WideInspector,L"속성 패널 너비 변경");
         AppendMenuW(viewMenu,MF_STRING,ResetLayout,L"기본 배치 복원");
+        AppendMenuW(viewMenu,MF_STRING,PreviewAsset,L"에셋 3D 미리보기");
         AppendMenuW(sceneMenu,MF_STRING,AddActor,L"오브젝트 추가");
         AppendMenuW(sceneMenu,MF_STRING,AddComponent,L"컴포넌트 추가");
         AppendMenuW(sceneMenu,MF_STRING,DeleteActor,L"선택 오브젝트 삭제");
@@ -287,20 +296,25 @@ class NativeEditorShell {
         MoveWindow(source,x,top,w,h,TRUE);
         ShowWindow(source,document.contains("path")&&!graphShown&&!formShown&&!sceneShown&&!canvasShown?SW_SHOW:SW_HIDE);
         const int inspectorWidth=graphShown&&w>=640?240:0;
-        graph.layout(x,top,w-inspectorWidth,h,graphShown);
-        form.update({{"rect",{x+w-inspectorWidth,top,inspectorWidth,h}},{"visible",graphShown&&inspectorWidth>0}});
-        if(formShown)form.update({{"rect",{x,top,w,h}},{"visible",true}});
+        const bool previewShown=previewOpen&&canPreview()&&!sourceMode;
+        const int previewHeight=previewShown&&graphShown?std::max(1,h/3):0;
+        graph.layout(x,top,w-inspectorWidth,h-previewHeight,graphShown);
         const int side=sceneShown?std::min(std::clamp(int(w*inspectorPercent/100),190,420),std::max(0,w-160)):0;
         const int split=std::max(1,h*40/100);
         hierarchy.reparent(owner);
         hierarchy.update({{"rect",{x+w-side,top,side,split}},{"visible",sceneShown&&side>0}});
-        if(sceneShown)form.update({{"rect",{x+w-side,top+split,side,h-split}},{"visible",side>0}});
         viewport.layout(owner,x,top,std::max(1,w-side),h,sceneShown);
         if(sceneShown)queueViewport();
         const int assetSide=canvasShown?std::min(std::clamp(int(w*inspectorPercent/100),190,420),std::max(0,w-160)):0;
-        if(canvasShown)form.update({{"rect",{x+w-assetSide,top,assetSide,h}},{"visible",assetSide>0}});
+        if(sceneShown)form.update({{"rect",{x+w-side,top+split,side,h-split}},{"visible",side>0}});
+        else if(canvasShown)form.update({{"rect",{x+w-assetSide,top,assetSide,h}},{"visible",assetSide>0}});
+        else if(graphShown)form.update({{"rect",{x+w-inspectorWidth,top,inspectorWidth,h}},{"visible",inspectorWidth>0}});
+        else if(previewShown)form.update({{"rect",{x+std::max(1,w/2),top,w-w/2,h}},{"visible",true}});
+        else form.update({{"rect",{x,top,w,h}},{"visible",formShown}});
         assetCanvas.layout(x,top,std::max(1,w-assetSide),h,canvasShown);
         if(widgetOpen()&&canvasShown)SetTimer(window,3,100,nullptr);
+        previewViewport.layout(owner,x,top+(graphShown?h-previewHeight:0),graphShown?std::max(1,w-inspectorWidth):std::max(1,w/2),graphShown?previewHeight:h,previewShown);
+        if(previewShown)queuePreview();
     }
     void refreshFiles(){
         if(projectTitle.empty())return;
@@ -350,6 +364,18 @@ class NativeEditorShell {
         form.update({{"rows",rows},{"revision",++formRevision}});
     }
     bool sceneOpen()const{return document.value("kind",std::string())=="scene";}
+    bool canPreview()const{return document.value("graph",false)||document.value("kind",std::string())=="materialinstance";}
+    void queuePreview(){if(previewOpen&&canPreview()&&!sourceMode)SetTimer(window,5,35,nullptr);}
+    Json drawPreview(Json input=Json::object()){
+        const auto size=previewViewport.size();
+        if(size.cx<=0||size.cy<=0)return Json::object();
+        input["width"]=std::min<LONG>(4096,size.cx);input["height"]=std::min<LONG>(4096,size.cy);input["node"]=graphSelection;
+        const auto result=request("asset.preview",input);
+        const auto prep=result.value("shaderPreparation",Json::object());
+        if(prep.value("pending",false))SetTimer(window,5,120,nullptr);
+        if(!result.at("warnings").empty())SetWindowTextW(status,wide(result.at("warnings").front()).c_str());
+        return result;
+    }
     bool widgetOpen()const{return document.value("kind",std::string())=="widget";}
     bool timelineOpen()const{
         const auto kind=document.value("kind",std::string());return kind=="animation"||kind=="curve";
@@ -781,6 +807,13 @@ class NativeEditorShell {
             if(detached)SendMessageW(detached,WM_CLOSE,0,0);
             layout();return;
         case Recovery:recoverAssets();return;
+        case PreviewAsset:
+            if(canPreview()){
+                previewOpen=!previewOpen;
+                if(!previewOpen)request("asset.previewClose");
+                layout();
+            }
+            return;
         case CheckBuild:case BuildGame:{
             if(projectRoot.empty()||building)return;
             captureSource();
@@ -857,6 +890,11 @@ class NativeEditorShell {
             const auto& result=state.at("result");
             const auto output=wide(result.value("output",std::string()));
             SetWindowTextW(status,checkingBuild?L"빌드 검사 통과":output.c_str());
+            return 0;
+        }
+        if(message==WM_TIMER&&w==5){
+            KillTimer(window,5);
+            if(previewOpen&&canPreview()&&!sourceMode){auto input=std::move(previewInput);previewInput=nullptr;drawPreview(input.is_object()?std::move(input):Json::object());}
             return 0;
         }
         if(message==WM_COMMAND){
@@ -1006,6 +1044,11 @@ private:
         if(model.at("edges").size()!=edgeCount+1)throw std::runtime_error("Blueprint native connection failed");
         form.probe({{"action","edit"},{"i",0},{"text","네이티브 그래프 검사"}});
         if(document.at("text").get<std::string>().find("네이티브 그래프 검사")==std::string::npos)throw std::runtime_error("Blueprint input value edit failed");
+        command(PreviewAsset);
+        const auto componentPreview=drawPreview({{"capture",true}});
+        if(componentPreview.at("backend")!="D3D12"||componentPreview.at("calls")<1||!componentPreview.at("warnings").empty()||!componentPreview.at("shaderPreparation").at("ready").get<bool>())
+            throw std::runtime_error("Native component preview failed: "+componentPreview.dump());
+        command(PreviewAsset);
         graph.probePaint();const auto blueprintSurface=graph.inspect();
         if(blueprintSurface.at("backend")!="D3D12")throw std::runtime_error("Blueprint graph present failed: "+blueprintSurface.at("graphicsError").get<std::string>());
         command(Save);
@@ -1013,6 +1056,11 @@ private:
         const auto materialCount=model.at("nodes").size();const auto paletteEntry=model.at("palette").front();
         editGraph({{"action","add"},{"key",paletteEntry.at("id")},{"x",230},{"y",200}});
         if(model.at("nodes").size()!=materialCount+1)throw std::runtime_error("Material node creation failed");
+        command(PreviewAsset);
+        const auto materialPreview=drawPreview({{"capture",true}});
+        if(materialPreview.at("backend")!="D3D12"||materialPreview.at("calls")<1||!materialPreview.at("warnings").empty()||!materialPreview.at("shaderPreparation").at("ready").get<bool>())
+            throw std::runtime_error("Native material preview failed: "+materialPreview.dump());
+        command(PreviewAsset);
         command(Save);command(Detach);
         if(!detached||graph.parentWindow()!=detached)throw std::runtime_error("Graph detach failed");
         graph.probePaint();const auto materialSurface=graph.inspect();
@@ -1028,7 +1076,7 @@ private:
         form.probe({{"action","paint"}});
         const auto assetSurface=form.inspect();
         if(assetSurface.at("backend")!="D3D12")throw std::runtime_error("Asset panel present failed: "+assetSurface.at("graphicsError").get<std::string>());
-        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"newCube",newCube},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"saved",!document.at("dirty").get<bool>()}}.dump());
+        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"newCube",newCube},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
 };

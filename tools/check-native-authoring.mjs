@@ -67,7 +67,7 @@ assert.ok(palette.some(row=>row.title==='새 함수'));
 const report=path.join(work,'report.json');
 const executable=path.resolve(process.argv[2] || path.join(root,'dist/HBEngine/HBEngine.exe'));
 try {
-  await promisify(execFile)(executable,['--native-editor','--smoke-test',report,project.file],{windowsHide:true,timeout:90000});
+  await promisify(execFile)(executable,['--native-editor','--smoke-test',report,project.file],{windowsHide:true,timeout:120000});
 } catch (error) {
   const log=await fs.readFile(report+'.error.txt','utf8').catch(()=>error.message);
   throw Error(log,{cause:error});
@@ -77,6 +77,10 @@ assert.equal(evidence.webview,false);
 assert.equal(evidence.saved,true);
 assert.equal(evidence.blueprintSurface.backend,'D3D12');
 assert.equal(evidence.materialSurface.backend,'D3D12');
+assert.equal(evidence.materialPreview.backend,'D3D12');
+assert.ok(evidence.materialPreview.calls>0);
+assert.equal(evidence.componentPreview.backend,'D3D12');
+assert.ok(evidence.componentPreview.calls>0);
 assert.equal(evidence.assetSurface.backend,'D3D12');
 assert.equal(evidence.sceneSurface.backend,'D3D12');
 assert.ok(evidence.sceneSurface.calls>0);

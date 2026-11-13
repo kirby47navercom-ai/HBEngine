@@ -10,12 +10,23 @@ import {loadHeadlessModel,disposeHeadlessModel} from './headless-model.mjs';
 import {installNativeAssets} from './native-game-platform.mjs';
 import {projectBytes,projectText} from './project-bytes.mjs';
 
-export function nativeEditorViewport(bridge) {
+export function nativeEditorViewport(bridge,surface='native-editor') {
   const canvas={width:1,height:1,clientWidth:1,clientHeight:1,pixelRatio:1};
-  let renderer, content, assets, world, source, project, dimension, camera, sky, visual, primitives;
+  let renderer, content, world, source, project, dimension, camera, sky, visual, primitives, updateEnvironment;
   let selection='', previewCamera='', gizmo, models=new Set(), groups=new Map(), owners=new Map();
   const target=new THREE.Vector3(0,.45,0), orbit=new THREE.Spherical();
   const ray=new THREE.Raycaster();
+  const visualKey=object=>{
+    const {position,rotation,scale,visible,locked,name,parent,...appearance}=object;
+    return JSON.stringify(appearance);
+  };
+  const transform=(actor,group)=>{
+    group.name=actor.name;
+    group.position.fromArray(actor.position);
+    group.rotation.set(...actor.rotation.map(THREE.MathUtils.degToRad));
+    group.scale.fromArray(actor.scale);
+    group.visible=actor.visible;
+  };
   const releaseVisual=()=>{
     if (!world) return;
     gizmo?.geometry.dispose();gizmo?.material.dispose();gizmo=null;
@@ -28,22 +39,40 @@ export function nativeEditorViewport(bridge) {
   };
   const close=async()=>{
     try { if (renderer) await renderer.dispose(); }
-    finally {releaseVisual();assets?.restore();renderer=null;assets=null;project=null;}
+    finally {releaseVisual();renderer=null;project=null;camera=null;}
   };
-  async function open(data,nextProject) {
+  async function open(data,nextProject,assets) {
     if (source===data && project===nextProject) return;
-    if (project && project!==nextProject) await close();
+    if(source&&project===nextProject&&!data.assetDraft&&!source.assetDraft&&data.objects.length===source.objects.length&&
+      ['surface','environment','runtime'].every(key=>JSON.stringify(source[key])===JSON.stringify(data[key]))&&
+      data.objects.every((actor,index)=>actor.id===source.objects[index].id&&visualKey(actor)===visualKey(source.objects[index]))){
+      for(const [index,actor] of data.objects.entries()){
+        const group=groups.get(actor.id);
+        for(const key of ['position','rotation','scale','visible','locked','name','parent'])content.objects[index][key]=actor[key];
+        transform(actor,group);
+        const parent=groups.get(actor.parent)||world;
+        if(group.parent!==parent)world.add(group);
+      }
+      for(const actor of data.objects){
+        const parent=groups.get(actor.parent);
+        if(parent&&groups.get(actor.id).parent!==parent)parent.add(groups.get(actor.id));
+      }
+      updateEnvironment();source=data;return;
+    }
+    if (project && project!==nextProject) {
+      if(renderer)await renderer.hbReleaseScene();
+      releaseVisual();camera=null;
+    }
     if (renderer && source) await renderer.hbReleaseScene();
     releaseVisual();
     project=nextProject;
     const url=name=>'hbasset:'+encodeURIComponent(name);
-    assets??=installNativeAssets({url,manifest:{width:canvas.width,height:canvas.height},readBytes:(name,opts)=>projectBytes(project,name,opts)});
-    renderer??=await createNativeSceneRenderer(canvas,()=>{},{bridge,surface:'native-editor',graphicsAPI:'d3d12'});
+    renderer??=await createNativeSceneRenderer(canvas,()=>{},{bridge,surface,graphicsAPI:'d3d12'});
     world=new THREE.Scene();
     primitives=scenePrimitives(data.surface||defaultSurface);
     const ambientLight=new THREE.HemisphereLight(0xffffff,0x444444,1);
     sky=createSky(world,renderer);world.add(ambientLight);
-    const read=async name=>JSON.parse((await projectText(project,name)).replace(/^\uFEFF/,''));
+    const read=async name=>data.assetDraft?.path===name?data.assetDraft.data:JSON.parse((await projectText(project,name)).replace(/^\uFEFF/,''));
     const warnings=[];
     visual=sceneRendering({read,fileUrl:url,loadTexture:assets.texture,loadModel:async name=>{
       const model=/\.(?:gltf|glb)$/i.test(name)?await loadHeadlessModel(project,name,{geometry:true,loadTexture:assets.modelTexture}):await loadModel(name);
@@ -52,8 +81,7 @@ export function nativeEditorViewport(bridge) {
     const objects=structuredClone(data.objects);
     for (const actor of objects) {
       const group=primitives.build(actor);groups.set(actor.id,group);owners.set(group,actor.id);
-      group.position.fromArray(actor.position);group.rotation.set(...actor.rotation.map(THREE.MathUtils.degToRad));
-      group.scale.fromArray(actor.scale);group.visible=actor.visible;world.add(group);
+      transform(actor,group);world.add(group);
     }
     for (const actor of objects) if (actor.parent) groups.get(actor.parent)?.add(groups.get(actor.id));
     for (const actor of objects) {
@@ -65,12 +93,18 @@ export function nativeEditorViewport(bridge) {
       target.set(0,dimension==='2d'?0:.45,0);
       orbit.setFromVector3(camera.position.clone().sub(target));
     }
-    applySceneEnvironment({scene:world,environment:data.environment,surface:data.surface,runtimeSettings:data.runtime,ambientLight,mainRenderer:renderer,...sky,objects});
+    updateEnvironment=()=>applySceneEnvironment({scene:world,environment:data.environment,surface:data.surface,runtimeSettings:data.runtime,ambientLight,mainRenderer:renderer,...sky,objects});
+    updateEnvironment();
     source=data;content={objects,warnings};
   }
   async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',capture=false}) {
+    const assets=installNativeAssets({url:name=>'hbasset:'+encodeURIComponent(name),manifest:{width,height},readBytes:(name,opts)=>projectBytes(nextProject,name,opts)});
+    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,capture},assets);}
+    finally{assets.restore();}
+  }
+  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,capture},assets) {
     canvas.clientWidth=width;canvas.clientHeight=height;
-    await open(data,nextProject);
+    await open(data,nextProject,assets);
     selection=selected;previewCamera=cameraId;
     if (command==='focus') {
       const group=groups.get(id);
@@ -122,9 +156,9 @@ export function nativeEditorViewport(bridge) {
     };
     await render();
     if (capture) {
-      const end=Date.now()+25000;
+      const end=Date.now()+70000;
       while (renderer.hbDiagnostics().shaderPreparation?.pending&&Date.now()<end) {
-        await new Promise(resolve=>setTimeout(resolve,25));await render();
+        await new Promise(resolve=>setTimeout(resolve,120));await render();
       }
     }
     const {backend,shaderPreparation,calls}=renderer.hbDiagnostics();

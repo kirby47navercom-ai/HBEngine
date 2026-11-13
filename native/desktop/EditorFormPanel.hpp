@@ -36,7 +36,7 @@ public:
     // Acceptance only: real window messages at a control. {action:"click"|"edit"|"select"|"color"|"range"|"heading"|"wheel", i, text, option, value, fraction, row, delta}
     void probe(const Json& p){
         const auto action=p.at("action").get<std::string>();
-        if(action=="paint"){InvalidateRect(window,nullptr,FALSE);UpdateWindow(window);return;}
+        if(action=="paint"){InvalidateRect(window,nullptr,FALSE);SendMessageW(window,WM_PAINT,0,0);return;}
         if(action=="menu"){automaticCommand=p.at("command").get<std::string>();return;}
         if(action=="wheel"){SendMessageW(window,WM_MOUSEWHEEL,MAKEWPARAM(0,short(p.at("delta").get<int>())),0);return;}
         if(action=="heading"){const auto& hit=headingHit(p.at("row").get<int>());click(hit.left+px(10),(hit.top+hit.bottom)/2);return;}
