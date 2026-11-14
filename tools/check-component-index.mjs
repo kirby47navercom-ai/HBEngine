@@ -4,7 +4,7 @@
 // node tools/check-component-index.mjs
 import assert from 'node:assert/strict';
 import {createComponentIndex,componentIndexConfig} from '../prototype/component-index.js';
-import {touchComponents,revisionConfig,revisionMismatches} from '../prototype/object-revision.js';
+import {touchComponents,revisionConfig,revisionMismatches,listCacheConfig} from '../prototype/object-revision.js';
 
 revisionConfig.verify=false;
 const types=['A','B','C','D'],objects=[],index=createComponentIndex();
@@ -26,6 +26,6 @@ assert(componentIndexConfig.trusted,'announced changes keep the index trusted');
 // Unannounced edit: of() may be stale until the sampled rebuild, which reports it and turns the index off.
 const before=revisionMismatches.length,target=objects.find(o=>!o.components.some(c=>c.type==='D'));target.components.push({id:'silent',type:'D'});
 for(let i=0;i<componentIndexConfig.sampleEvery*8;i++)index.sync(objects);
-assert.equal(componentIndexConfig.trusted,false,'sampled rebuild switches the index off');assert.equal(revisionMismatches.at(-1).kind,'componentIndex');assert(revisionMismatches.length>before);
-check('after fallback');index.dispose();componentIndexConfig.trusted=true;
+assert.equal(componentIndexConfig.trusted,false,'sampled rebuild switches the index off');assert.equal(listCacheConfig.trusted,false,'filtered list caches stop reusing');assert.equal(revisionMismatches.at(-1).kind,'componentIndex');assert(revisionMismatches.length>before);
+check('after fallback');index.dispose();componentIndexConfig.trusted=true;listCacheConfig.trusted=true;
 console.log(JSON.stringify({passed:true,steps:400,objects:objects.length,scope:'Component index equals brute-force scans after announced edits and list changes; unannounced edit caught by sampling.'}));

@@ -22,10 +22,12 @@ let componentSerial=0;export const componentRevisionSerial=()=>componentSerial;
 // Every announced change (transform or components) advances serial.
 export const revisionSerialNow=()=>serial;
 // Filtered object lists (and an id map) per list, reused while the list (watched mutators and length) and every
-// announced component stay the same; the 64th call rebuilds anyway. test must depend on components only.
+// announced component stay the same. test must depend on components only. Unannounced component edits are found by the
+// component index's rolling verification, which advances listCacheConfig.epoch (and, once untrusted, every call rebuilds).
+export const listCacheConfig={epoch:0,trusted:true};
 const filteredLists=new WeakMap();
 function cachedList(objects,key,build){if(!Array.isArray(objects))return build(objects);watchObjectList(objects);let byKey=filteredLists.get(objects);if(!byKey)filteredLists.set(objects,byKey=new Map());let c=byKey.get(key);const version=listVersion(objects);
- if(!c||c.version!==version||c.length!==objects.length||c.serial!==componentSerial||++c.calls%64===0){c={version,length:objects.length,serial:componentSerial,calls:c?.calls||0,value:build(objects)};byKey.set(key,c);}return c.value;}
+ if(!c||c.version!==version||c.length!==objects.length||c.serial!==componentSerial||c.epoch!==listCacheConfig.epoch||!listCacheConfig.trusted){c={version,length:objects.length,serial:componentSerial,epoch:listCacheConfig.epoch,value:build(objects)};byKey.set(key,c);}return c.value;}
 export const objectsWhere=(objects,key,test)=>cachedList(objects,key,list=>[...list].filter(test));
 // First object per id (the same object list.find(o=>o.id===id) returns).
 export const objectMapOf=objects=>cachedList(objects,'#byId',list=>{const map=new Map();for(const o of list)if(!map.has(o.id))map.set(o.id,o);return map;});
