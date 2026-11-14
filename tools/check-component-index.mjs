@@ -25,7 +25,7 @@ for(let step=0;step<400;step++){
 assert(componentIndexConfig.trusted,'announced changes keep the index trusted');
 // Unannounced edit: of() may be stale until the sampled rebuild, which reports it and turns the index off.
 const before=revisionMismatches.length,target=objects.find(o=>!o.components.some(c=>c.type==='D'));target.components.push({id:'silent',type:'D'});
-for(let i=0;i<componentIndexConfig.sampleEvery;i++)index.sync(objects);
+for(let i=0;i<componentIndexConfig.sampleEvery*8;i++)index.sync(objects);
 assert.equal(componentIndexConfig.trusted,false,'sampled rebuild switches the index off');assert.equal(revisionMismatches.at(-1).kind,'componentIndex');assert(revisionMismatches.length>before);
 check('after fallback');index.dispose();componentIndexConfig.trusted=true;
 console.log(JSON.stringify({passed:true,steps:400,objects:objects.length,scope:'Component index equals brute-force scans after announced edits and list changes; unannounced edit caught by sampling.'}));

@@ -1,5 +1,5 @@
 import {staticGroupSphere,staticGroupRecord,staticGroupBox,staticConfig} from './static-groups.js';
-import {materialRevision,revisionTrust,revisionConfig,reportRevisionMismatch,objectRevision,subscribeObjectChanges} from './object-revision.js';
+import {materialRevision,revisionTrust,revisionConfig,reportRevisionMismatch,objectRevision,subscribeObjectChanges,revisionSerialNow} from './object-revision.js';
 import {NativeUploadBytes} from './native-upload-bytes.js';
 import {NativeDrawHistory} from './native-draw-history.js';
 import {nativeUploadBatches} from './native-upload-batches.js';
@@ -396,8 +396,11 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   }
   const identityElements=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],identityWorld=node=>{const e=node.matrixWorld.elements;for(let i=0;i<16;i++)if(e[i]!==identityElements[i])return false;return true;};
   const wrap=value=>value===THREE.RepeatWrapping?0:value===THREE.MirroredRepeatWrapping?1:2;
+  // Scene matrices were updated by this frame's 2D preparation and no change was announced since (one in 64 encodes
+  // updates anyway): the second whole-scene update is skipped.
+  let matrixSkips=0;
   function encode(scene,camera){
-    scene.updateMatrixWorld();camera.updateWorldMatrix(true,false);cameraAt.setFromMatrixPosition(camera.matrixWorld);cameraBack.setFromMatrixColumn(camera.matrixWorld,2).normalize();projectionView.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);frustum.setFromProjectionMatrix(projectionView);
+    const matricesAt=scene.userData.hbMatricesAt;scene.userData.hbMatricesAt=-1;if(matricesAt!==revisionSerialNow()||revisionConfig.verify||++matrixSkips%64===0)scene.updateMatrixWorld();camera.updateWorldMatrix(true,false);cameraAt.setFromMatrixPosition(camera.matrixWorld);cameraBack.setFromMatrixColumn(camera.matrixWorld,2).normalize();projectionView.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);frustum.setFromProjectionMatrix(projectionView);
     const materialsPending=!!stats.shaderPreparation?.raster?.pending;if(materialsPending)probeCache.clear();
     // Announced changes leave host sets before probes are collected (a probe added to a held group is seen at once).
     if(hostEpoch!==staticDrawEpoch){hostReset();hostEpoch=staticDrawEpoch;}for(const o of hostChanges){const g=hostObjects.get(o);if(g)hostDemote(g);}hostChanges.clear();

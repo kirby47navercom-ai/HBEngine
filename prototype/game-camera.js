@@ -4,7 +4,7 @@ import {listVersion,watchObjectList,componentRevisionSerial} from './object-revi
 // Camera candidates per object list (objects without a component list, or with a Camera component), rebuilt when the
 // list or any announced component changes, and every 64th call; the selection loop below reads only these.
 const cameraCandidates=new WeakMap();
-function candidatesOf(objects){if(!Array.isArray(objects))return objects;watchObjectList(objects);let c=cameraCandidates.get(objects);const version=listVersion(objects),serial=componentRevisionSerial();
+function candidatesOf(objects){if(!Array.isArray(objects))return objects;watchObjectList(objects);let c=cameraCandidates.get(objects);const version=listVersion(objects)+':'+objects.length,serial=componentRevisionSerial();
  if(!c||c.version!==version||c.serial!==serial||++c.calls%64===0){const list=[];for(const o of objects)if(!o.components||o.components.some(x=>x.type==='Camera'))list.push(o);c={version,serial,calls:c?.calls||0,list};cameraCandidates.set(objects,c);}return c.list;}
 
 export function cameraFieldOfView(p){return p.physicalLens?2*Math.atan((p.sensorHeight??24)/(2*(p.focalLength??50)))*180/Math.PI:p.fieldOfView;}
