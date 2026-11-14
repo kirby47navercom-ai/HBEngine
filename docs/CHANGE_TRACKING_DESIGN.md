@@ -131,3 +131,37 @@
   - 물리·스폰·시퀀스·타일맵·충돌·관절·천·루트 모션·2D·게임 실행 검사 25개 통과
   - `check-runtime-sync`(기능 부분 `--baseline`), `check-native-gameplay-read-cost`, `check-native-spawn-aot`는 변경 전에도 같은 방식으로 실패해요.
 - 성능: ABBA 4회. 2D 2000개 70.5→76.4 FPS(중앙 프레임 13.65→12.46ms, 4회 중 3회 개선). 3D 258.0→272.1 FPS(잡음 범위).
+
+### 3단계 (2026-11-14, 스프라이트 머테리얼)
+
+- `object-revision`: `touchMaterial`/`materialRevision`(머테리얼 객체의 심볼 키), `revisionTrust.spriteMaterial`
+- 알림
+  - 스프라이트 생성·재사용 끝(`scene-rendering` `sprite`)
+  - `onBeforeRender`의 번쩍임·발광 값: 실제로 바뀔 때만 쓰고 알려요. 예전에는 매 렌더 다시 썼어요.
+  - 머테리얼 연산 `material`·`materialFloat`·`materialVector`·`materialTexture`·`materialTextureRegion`·`materialResidentMip`과 `spriteFrame`·`syncSprite`: 호출 뒤(비동기는 완료 뒤에도) 그룹 머테리얼 전체에 알려요.
+- 인코딩: 유지형 그리기에서 스프라이트 머테리얼 리비전과 머테리얼 객체가 같으면 `nativeMaterialInto`(값 약 70개 읽기·비교)를 건너뛰어요. 검증 모드는 항상 읽고, 그 밖에는 64번 중 1번 표본을 읽어요. 리비전이 같은데 값이 다르면 보고하고 `revisionTrust.spriteMaterial`을 꺼요.
+- 검사
+  - `check-sprite-material-revision`: 알린 변경 반영, 표본 끔 상태에서 알리지 않은 변경 건너뜀, 표본 발견·신뢰 해제·반영, 검증 모드 반영
+  - `check-revision-verify-games`: 템플릿 5종 600프레임 불일치 0건(물리·머테리얼)
+  - `check-native-sprite-batch-gpu`: 픽셀 동일, 그리기 364→175
+  - 렌더러·2D·파티클 검사 통과
+
+## 규모 측정과 다음 목표 (2026-11-14)
+
+`check-native-backend-fps` D3D12, 프레임 작업 중앙값:
+
+| 장면 | 2000개 | 1만 개 |
+|---|---|---|
+| 2D 스프라이트 | 11.7ms (81 FPS) | 184.7ms (5 FPS) |
+| 3D 메시 | 15.8ms (59 FPS) | 183.2ms (5 FPS) |
+
+- 개수가 5배인데 시간이 15배예요.
+- 1만 개 2D 프로파일
+  - 물리 `advance`가 48.5%예요. 프레임이 느리면 고정 단계 물리가 프레임당 최대 8번 돌고, 매번 전체 `sync`·접촉 수집·고정 접촉 서명을 다시 해요. 느릴수록 일이 늘어요.
+  - 2D 준비 15.5%, 행렬 갱신 13.5%, 인코딩 12.7%: 매 프레임 전체 순회예요.
+- 목표: 정적 오브젝트의 프레임당 비용을 0에 가깝게 해서 1만 개에서 1000 FPS급, 10만 개에서 240 FPS급으로 가요. 그러려면 "전체 순회 안의 비교 생략"이 아니라 "바뀐 것만 방문"이 필요해요.
+  - **A. 물리:** 알림이 쌓이는 변경 집합만 동기화해요. 오브젝트 추가·삭제·활성 변경도 알림으로 받아요. 고정 접촉 서명은 리비전으로 대체하고, 접촉 수집은 비고정 몸체만 해요.
+  - **B. 그리기:** 정적 노드 방문 생략(변환·머테리얼·가시성 리비전), 호스트 쪽 공간 컬링
+  - **C. 행렬:** 변경된 하위 트리만 갱신
+  - **D. 2D 정렬:** 변경 시에만 재정렬
+  - **E. 게임 서비스:** 컴포넌트 종류별 등록 목록으로 순회

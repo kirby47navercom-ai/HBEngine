@@ -1,3 +1,4 @@
+import {materialRevision,revisionTrust,revisionConfig,reportRevisionMismatch} from './object-revision.js';
 import {NativeUploadBytes} from './native-upload-bytes.js';
 import {NativeDrawHistory} from './native-draw-history.js';
 import {nativeUploadBatches} from './native-upload-batches.js';
@@ -176,7 +177,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   // Retained draws go into the packet without a copy: a frame packet is serialized when sent (or at encode for capture
   // views), and render() refuses to encode again while the previous frame job is pending, so no later write reaches it.
   // Draw id strings are reused per node (a rebuilt string is rehashed on every Map lookup).
-  const retainTracker={changed:false},instanceTracker={changed:false},drawIds=new WeakMap();
+  const retainTracker={changed:false},instanceTracker={changed:false},materialTracker={changed:false},materialInstanceTracker={changed:false},drawIds=new WeakMap();let materialSamples=0;
   // Sprite batching (2D): consecutive sorted sprites with identical non-instance draw values become one instanced draw.
   // Per instance: world, normal, colour (material colour incl. opacity) and the map's UV rows; the batch draw keeps an
   // identity world/normal, white colour and identity UV rows. renderer.hbSpriteBatching=false turns it off.
@@ -290,7 +291,13 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
         if(!program&&!deformation&&!instanced&&!objectMotion&&!(material.isShaderMaterial&&material.uniforms?.topColor)){
          checkNativeMaterial(material);const w=retainTracker,wi=instanceTracker,settings=material.userData.hbSpriteMask||material.userData.hbLight2D?native2DSettings(material,[canvas.width,canvas.height]):null,twoDActive=!!(settings&&(settings.pass[1]||settings.pass[2]));let entry=drawHistory.retained.get(id);if(entry&&entry.twoD!==twoDActive)entry=null;w.changed=!entry;wi.changed=false;
          if(!entry){entry={stamp:'',twoD:twoDActive,draw:{...(twoDActive?{twoD:{settings:{},maps:[],maskSampling:0}}:{}),id,transmissive:false,mesh:'',world:[],normal:[],lightmap:'',maps:[],sampling:[],first:0,count:0,material:{},probes:[],globalProbes:false,shadowAlphaCutoff:0}};drawHistory.retained.set(id,entry);drawHistory.records.delete(id);}
-         const d=entry.draw;nativeMaterialInto(material,d.material,w,wi);put(d.material,'receiveShadow',!!node.receiveShadow,w);
+         const d=entry.draw;
+          // Sprite material revision (docs/CHANGE_TRACKING_DESIGN.md stage 3): an announced-unchanged sprite material keeps
+          // its record without re-reading ~70 values. Verify mode always re-reads; otherwise one in (sampleMask+1) skips is
+          // sampled, and a value change without a revision is reported and switches the skip off.
+          const mrev=node.userData.sprite?materialRevision(material):null,announced=mrev!==null&&!w.changed&&entry.material===material&&entry.materialRev===mrev;
+          if(!announced||!revisionTrust.spriteMaterial||revisionConfig.verify||((++materialSamples)&revisionConfig.sampleMask)===0){const mt=materialTracker,mti=materialInstanceTracker;mt.changed=mti.changed=false;nativeMaterialInto(material,d.material,mt,mti);if(mt.changed)w.changed=true;if(mti.changed)wi.changed=true;if(announced&&(mt.changed||mti.changed)){reportRevisionMismatch('spriteMaterial',{id:node.userData.objectId,name:material.name},{material:material.uuid});if(!revisionConfig.verify)revisionTrust.spriteMaterial=false;}}
+          entry.material=material;entry.materialRev=mrev;put(d.material,'receiveShadow',!!node.receiveShadow,w);
           // 2D pass record (sprite mask / 2D light): same values and texture order as the full build.
           if(twoDActive){const t=d.twoD,maps=native2DTextures(material);syncData(t,'settings',settings,w);for(let k=0;k<maps.length;k++){const key=textureResource(maps[k],resources);put(t.maps,k,key,w);if(key)used.textures.add(key);}const mask=material.hbLight2DMaskTexture;put(t,'maskSampling',mask?(mask.magFilter===THREE.NearestFilter?1:0)+wrap(mask.wrapS)*2+wrap(mask.wrapT)*6:16,w);}
          normalMatrix.copy(world).invert().transpose();transmissive=material.transmission>0;

@@ -5,7 +5,12 @@ const REVISION=Symbol('hbRevision');
 let serial=0;
 // Trusted consumers skip re-checks of objects whose revisions are unchanged. physics: every runtime writer of collider /
 // physics-body components, tileColliders and root transforms announces (stage 2). A failed sample check turns it off.
-export const revisionTrust={physics:true};
+export const revisionTrust={physics:true,spriteMaterial:true};
+// Material revisions (stage 3): sprite materials are announced by their writers (sprite build, effect values, material
+// operations); a material never announced has no revision and is always fully checked.
+const MATERIAL=Symbol('hbMaterialRevision');
+export function touchMaterial(m){if(m&&typeof m==='object')Object.defineProperty(m,MATERIAL,{value:++serial,enumerable:false,configurable:true,writable:true});}
+export function materialRevision(m){return m?.[MATERIAL]??null;}
 function state(o){let r=o[REVISION];if(!r){r={components:0,transform:0};Object.defineProperty(o,REVISION,{value:r,enumerable:false,configurable:true});}return r;}
 export function touchComponents(o){if(o&&typeof o==='object')state(o).components=++serial;}
 export function touchTransform(o){if(o&&typeof o==='object')state(o).transform=++serial;}
