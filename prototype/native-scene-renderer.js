@@ -1,5 +1,5 @@
-import {staticGroupSphere,staticGroupRecord,staticGroupBox} from './static-groups.js';
-import {materialRevision,revisionTrust,revisionConfig,reportRevisionMismatch} from './object-revision.js';
+import {staticGroupSphere,staticGroupRecord,staticGroupBox,staticConfig} from './static-groups.js';
+import {materialRevision,revisionTrust,revisionConfig,reportRevisionMismatch,objectRevision} from './object-revision.js';
 import {NativeUploadBytes} from './native-upload-bytes.js';
 import {NativeDrawHistory} from './native-draw-history.js';
 import {nativeUploadBatches} from './native-upload-batches.js';
@@ -195,8 +195,14 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   function emitSpriteBatch(run,resources,used,items){
     const first=run[0],batchId='sprites:'+first.item.id,instId=batchId+':instances',n=run.length;let cache=spriteInstances.get(instId);
     if(!cache||cache.values.length<n*SPRITE_STRIDE){cache={values:new Float64Array(2**Math.ceil(Math.log2(n))*SPRITE_STRIDE),count:-1};spriteInstances.set(instId,cache);}
-    const v=cache.values;let changed=cache.count!==n;const set=(i,value)=>{if(v[i]!==value){v[i]=value;changed=true;}};
-    for(let i=0;i<n;i++){const d=run[i].c.entry.draw,m=d.material,o=i*SPRITE_STRIDE;for(let k=0;k<16;k++){set(o+k,d.world[k]);set(o+16+k,d.normal[k]);}for(let k=0;k<4;k++)set(o+32+k,m.color[k]);for(let k=0;k<3;k++){set(o+36+k,m.uvX[0][k]);set(o+40+k,m.uvY[0][k]);}set(o+39,0);set(o+43,0);}
+    const v=cache.values;let changed=cache.count!==n;
+    // Compare-on-write per instance row (inline: this runs for every visible batched draw each frame).
+    for(let i=0;i<n;i++){const d=run[i].c.entry.draw,m=d.material,o=i*SPRITE_STRIDE,w=d.world,nm=d.normal,c=m.color,x=m.uvX[0],y=m.uvY[0];let same=true;
+     for(let k=0;k<16;k++)if(v[o+k]!==w[k]||v[o+16+k]!==nm[k]){same=false;break;}
+     if(same)for(let k=0;k<4;k++)if(v[o+32+k]!==c[k]){same=false;break;}
+     if(same)for(let k=0;k<3;k++)if(v[o+36+k]!==x[k]||v[o+40+k]!==y[k]){same=false;break;}
+     if(same&&v[o+39]===0&&v[o+43]===0)continue;changed=true;
+     for(let k=0;k<16;k++){v[o+k]=w[k];v[o+16+k]=nm[k];}for(let k=0;k<4;k++)v[o+32+k]=c[k];for(let k=0;k<3;k++){v[o+36+k]=x[k];v[o+40+k]=y[k];}v[o+39]=0;v[o+43]=0;}
     if(changed){cache.count=n;resources.push({kind:'instances',id:instId,capacity:cache.values.length/SPRITE_STRIDE,uv:true,values:Array.from(v.subarray(0,n*SPRITE_STRIDE))});}
     cache.used=true;used.instances.add(instId);
     const draw=copyData(first.c.entry.draw);draw.id=batchId;draw.world=identity16.slice();draw.normal=identity16.slice();draw.material.color=[1,1,1,1];draw.material.uvX=draw.material.uvX.map(()=>[1,0,0,0]);draw.material.uvY=draw.material.uvY.map(()=>[0,1,0,0]);draw.instances=instId;
@@ -275,7 +281,33 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   const worldSphere=new THREE.Sphere();
   function nodeWorldSphere(node){if(node.boundingSphere!==undefined){if(node.boundingSphere===null)node.computeBoundingSphere();worldSphere.copy(node.boundingSphere).applyMatrix4(node.matrixWorld);}else{const geometry=node.geometry;if(geometry.boundingSphere===null)geometry.computeBoundingSphere();worldSphere.copy(geometry.boundingSphere).applyMatrix4(node.matrixWorld);}return worldSphere;}
   // traverseVisible with a subtree skip: same visit order; skip(node) is asked before visiting a visible node.
+  // traverseVisible with a subtree skip: same visit order; skip(node) is asked before visiting a visible node.
   function traverseVisibleSkipping(node,callback,skip,leave){if(node.visible===false||skip(node))return;callback(node);const children=node.children;for(let i=0;i<children.length;i++)traverseVisibleSkipping(children[i],callback,skip,leave);leave?.(node);}
+  // Static cells: clean static groups that were skipped once join a world grid cell (cell size from their radius). Each
+  // frame a cell is tested once; when it misses the camera and every shadow frustum, its members that still match their
+  // entry (visibility, revisions, parent, draw cache) are marked, and the traversal skips a marked group with a property
+  // read, adding the same cached draws in the same order as the per-group skip.
+  const STATIC_ENTRY=Symbol('hbStaticEntry'),staticCells=new Map();let cellFrame=0;
+  function staticCellKey(sphere){const level=Math.max(4,Math.ceil(Math.log2(Math.max(sphere.radius*4,1)))),size=2**level,c=sphere.center;return level+':'+Math.floor(c.x/size)+','+Math.floor(c.y/size)+','+Math.floor(c.z/size);}
+  function admitStatic(node,r,sphere,box,cache,probes){
+   let e=node[STATIC_ENTRY];if(e&&e.cell.members.has(node))return;const key=staticCellKey(sphere);let cell=staticCells.get(key);if(!cell)staticCells.set(key,cell={members:new Set(),sphere:new THREE.Sphere(),box:new THREE.Box3(),dirty:true});
+   const rev=objectRevision(r.object);e={cell,r,transform:rev?rev.transform:0,components:rev?rev.components:0,cache,probes,epoch:staticDrawEpoch,pre:0,main:0};Object.defineProperty(node,STATIC_ENTRY,{value:e,writable:true,configurable:true,enumerable:false});
+   cell.members.add(node);if(cell.dirty)return;if(cell.sphere.isEmpty())cell.sphere.copy(sphere);else cell.sphere.union(sphere);if(box)cell.box.union(box);else cell.boxPartial=true;
+  }
+  function staticEntryValid(node,e,probes){
+   if(node.visible===false||!node.parent||node.matrixWorldNeedsUpdate||e.probes!==probes||e.epoch!==staticDrawEpoch||e.r.drawCache!==e.cache)return false;
+   const p=node.parent;if(p.hbIdentityFrame!==cellFrame){p.hbIdentityFrame=cellFrame;p.hbIdentity=identityWorld(p);}if(!p.hbIdentity)return false;
+   const rev=objectRevision(e.r.object);return (rev?rev.transform:0)===e.transform&&(rev?rev.components:0)===e.components;
+  }
+  // Marks the valid members of cells that pass offscreen(cell); invalid members leave their cell.
+  function markStaticCells(probes,key,offscreen){
+   for(const [id,cell] of staticCells){
+    if(cell.dirty){cell.sphere.makeEmpty();cell.box.makeEmpty();cell.boxPartial=false;for(const node of cell.members){const r=node[STATIC_ENTRY].r,sphere=staticGroupSphere(node,r);if(!sphere){cell.members.delete(node);node[STATIC_ENTRY]=undefined;continue;}if(cell.sphere.isEmpty())cell.sphere.copy(sphere);else cell.sphere.union(sphere);const box=probes?staticGroupBox(node,r):null;if(box)cell.box.union(box);else cell.boxPartial=true;}cell.dirty=false;}
+    if(!cell.members.size){staticCells.delete(id);continue;}if(probes&&cell.boxPartial||!offscreen(cell))continue;
+    for(const node of cell.members){const e=node[STATIC_ENTRY];if(staticEntryValid(node,e,probes))e[key]=cellFrame;else{cell.members.delete(node);node[STATIC_ENTRY]=undefined;cell.dirty=true;}}
+   }
+  }
+  const identityElements=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],identityWorld=node=>{const e=node.matrixWorld.elements;for(let i=0;i<16;i++)if(e[i]!==identityElements[i])return false;return true;};
   const wrap=value=>value===THREE.RepeatWrapping?0:value===THREE.MirroredRepeatWrapping?1:2;
   function encode(scene,camera){
     scene.updateMatrixWorld();camera.updateWorldMatrix(true,false);cameraAt.setFromMatrixPosition(camera.matrixWorld);cameraBack.setFromMatrixColumn(camera.matrixWorld,2).normalize();projectionView.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);frustum.setFromProjectionMatrix(projectionView);
@@ -292,15 +324,18 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     // cache (and with probes) the group is visited and its cache recorded (leaveStaticGroup).
     let capture=null;const reuseStatic=drawHistory===defaultDrawHistory;
     // With probes the per-mesh culling uses reflection-probe AABBs, so the group test uses their union (never tighter).
-    const skipStaticGroup=node=>{if(!node.parent)return false;const r=staticGroupRecord(node),sphere=r&&staticGroupSphere(node,r),box=probes.length&&r?staticGroupBox(node,r):null;if(!sphere||probes.length&&!box)return false;
+    const skipStaticGroup=node=>{const marked=node[STATIC_ENTRY];if(marked&&marked.main===cellFrame){const cache=marked.cache;if(cache){for(const id of cache.ids)seen.add(id);for(const entry of cache.probeDraws)probeDraws.push(entry);}staticSkips++;cellSkips++;return true;}
+     if(!node.parent)return false;const r=staticGroupRecord(node),sphere=r&&staticGroupSphere(node,r),box=probes.length&&r?staticGroupBox(node,r):null;if(!sphere||probes.length&&!box)return false;
      let offscreen=box?!frustum.intersectsBox(box):!frustum.intersectsSphere(sphere);if(offscreen)for(const record of shadowRecords)if(box?(!record.sphere||box.distanceToPoint(record.sphere.center)<=record.sphere.radius)&&record.frustum.intersectsBox(box):(!record.sphere||record.sphere.center.distanceTo(sphere.center)<=record.sphere.radius+sphere.radius)&&record.frustum.intersectsSphere(sphere)){offscreen=false;break;}
      const cache=reuseStatic&&r.drawCache?.epoch===staticDrawEpoch&&r.drawCache.transform===r.updatedTransform&&r.drawCache.components===r.updatedComponents?r.drawCache:null;
-     if(offscreen&&cache){for(const id of cache.ids)seen.add(id);for(const entry of cache.probeDraws)probeDraws.push(entry);staticSkips++;return true;}
-     if(offscreen&&!probes.length){staticSkips++;return true;}
+     if(offscreen&&cache){for(const id of cache.ids)seen.add(id);for(const entry of cache.probeDraws)probeDraws.push(entry);staticSkips++;if(staticCellsOn)admitStatic(node,r,sphere,box,cache,!!probes.length);return true;}
+     if(offscreen&&!probes.length){staticSkips++;if(staticCellsOn)admitStatic(node,r,sphere,null,null,false);return true;}
      if(reuseStatic&&!capture)capture={node,record:r,ids:[],probeDraws:[]};return false;},
-    leaveStaticGroup=node=>{if(capture?.node===node){capture.record.drawCache={epoch:staticDrawEpoch,transform:capture.record.updatedTransform,components:capture.record.updatedComponents,ids:capture.ids,probeDraws:capture.probeDraws};capture=null;}},skipOffscreenOnly=node=>{if(probes.length||!node.parent)return false;const sphere=staticGroupSphere(node);return !!sphere&&!frustum.intersectsSphere(sphere);};let staticSkips=0;
+    leaveStaticGroup=node=>{if(capture?.node===node){capture.record.drawCache={epoch:staticDrawEpoch,transform:capture.record.updatedTransform,components:capture.record.updatedComponents,ids:capture.ids,probeDraws:capture.probeDraws};capture=null;}},staticCellsOn=staticConfig.enabled&&!revisionConfig.verify&&reuseStatic,blockOffscreen=b=>{let offscreen=probes.length?!frustum.intersectsBox(b.box):!frustum.intersectsSphere(b.sphere);if(offscreen)for(const record of shadowRecords)if(probes.length?(!record.sphere||b.box.distanceToPoint(record.sphere.center)<=record.sphere.radius)&&record.frustum.intersectsBox(b.box):(!record.sphere||record.sphere.center.distanceTo(b.sphere.center)<=record.sphere.radius+b.sphere.radius)&&record.frustum.intersectsSphere(b.sphere)){offscreen=false;break;}return offscreen;},
+    skipOffscreenOnly=node=>{if(node[STATIC_ENTRY]?.pre===cellFrame)return true;if(probes.length||!node.parent)return false;const sphere=staticGroupSphere(node);return !!sphere&&!frustum.intersectsSphere(sphere);};let staticSkips=0,cellSkips=0;cellFrame++;if(staticCellsOn&&!probes.length)markStaticCells(false,'pre',cell=>!frustum.intersectsSphere(cell.sphere));
     traverseVisibleSkipping(scene,node=>{if(!visible(node)||node.userData.editorHelper)return;if(node.isLight)shadowLights.push(node);else if((node.isMesh||node.isSprite)&&node.receiveShadow&&node.layers.test(camera.layers)&&(probes.length||isDeformed(node)||!node.frustumCulled||node.isSprite||frustum.intersectsObject(node))&&(Array.isArray(node.material)?node.material:[node.material]).some(m=>m?.isMeshStandardMaterial&&m.visible))receivers=true;},skipOffscreenOnly);
     if(receivers)for(const node of shadowLights){const records=nativeShadows(node);if(records.length){shadowIndexes.set(node.uuid,shadowRecords.length+1);shadowRecords.push(...records);}}
+    if(staticCellsOn)markStaticCells(!!probes.length,'main',cell=>{const box=probes.length?cell.box:null,sphere=cell.sphere;if(box?frustum.intersectsBox(box):frustum.intersectsSphere(sphere))return false;for(const record of shadowRecords)if(box?(!record.sphere||box.distanceToPoint(record.sphere.center)<=record.sphere.radius)&&record.frustum.intersectsBox(box):(!record.sphere||record.sphere.center.distanceTo(sphere.center)<=record.sphere.radius+sphere.radius)&&record.frustum.intersectsSphere(sphere))return false;return true;});
     traverseVisibleSkipping(scene,node=>{
       if(!visible(node)||node.userData.editorHelper)return;
       if(node.isLight){
@@ -359,7 +394,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
         used.meshes.add(draw.mesh);draw.maps.forEach(id=>used.textures.add(id));if(draw.program)used.programs.add(draw.program);draw.programMaps?.forEach(id=>used.textures.add(id));stamp??=drawHistory.stamp(id,draw);if(casts.length)shadowCache.draw(id,draw,stamp,!!program?.animated);if(previous.get(id)!==stamp){updates.push(draw);previous.set(id,stamp);}seen.add(id);capture?.ids.push(id);if(skyNodes.has(node))skyDraws.push(id);if(probes.length&&!node.userData.draw2d&&!transmissive){const entry={id,node,deformed,sky:!!properties.sky};probeDraws.push(entry);capture?.probeDraws.push(entry);}for(const record of casts)record.casters.push(id);if((casts.length||probes.length&&!node.userData.draw2d)&&program?.animated)animatedCaster=true;if(inView){at.setFromMatrixPosition(node.matrixWorld);items.push({id,order:node.renderOrder,transparent:material.transparent,transmissive:!!transmissive,depth:at.distanceToSquared(cameraAt)});}
       }
     },skipStaticGroup,leaveStaticGroup);
-    renderer.hbStaticSkips=staticSkips;
+    renderer.hbStaticSkips=staticSkips;renderer.hbStaticCellSkips=cellSkips;
     const phase=item=>item.transmissive?1:item.transparent?2:0;items.sort((a,b)=>phase(a)-phase(b)||a.order-b.order||(a.transmissive||a.transparent?b.depth-a.depth:a.depth-b.depth)||a.id.localeCompare(b.id));
     linePool.end();
     if(spriteCandidates.size)emitSpriteDraws(items,updates,seen,resources,used);releaseSpriteInstances();
