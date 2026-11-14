@@ -1,3 +1,4 @@
+import {touchComponents,touchTransform} from './object-revision.js';
 import {blueprintClassComponents,blueprintClassKind} from './blueprint-class-defaults.js';
 import {validActorScale} from './transform-scale.js';
 import {resolvePrefab} from './prefab-variants.js';
@@ -70,7 +71,7 @@ export function instantiateSpawn(template,transform,rootId=crypto.randomUUID(),e
     // Only reference-bearing state is remapped; names, tags and arbitrary strings stay authored.
     if(o.nativeProperties)for(const key of template.references?.[source.id]||[])if(Object.hasOwn(o.nativeProperties,key))o.nativeProperties[key]=remap(o.nativeProperties[key]);
     for(const c of o.components||[])for(const key of template.componentReferences?.[source.id]?.[c.id]||[])if(Object.hasOwn(c.properties,key))c.properties[key]=remap(c.properties[key]);
-    o.poolActive=true;delete o.destroying;if(source.id===template.root)Object.assign(o,copy(transform));return o;});
+    o.poolActive=true;delete o.destroying;touchComponents(o);touchTransform(o);if(source.id===template.root)Object.assign(o,copy(transform));return o;});
   return {rootId,objects,ids};
 }
 export function spawnBindings(catalog,template,instance){return (catalog.bindings.get(template.key)||[]).map(b=>({...b,self:instance.ids.get(b.self),variableValues:Object.fromEntries(Object.entries(b.variableValues||{}).map(([id,value])=>{const d=b.root.variables.find(v=>v.id===id);const remap=v=>typeof v==='string'?instance.ids.get(v)||v:v;return [id,d?.type==='object'?Array.isArray(value)?value.map(remap):remap(value):copy(value)];}))}));}

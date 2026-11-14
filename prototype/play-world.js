@@ -1,3 +1,4 @@
+import {touchComponents,touchTransform} from './object-revision.js';
 import {lookupRuntimeObject,primeRuntimeObjectLookup} from './runtime-object-lookup.js';
 import {nativeModuleKey} from './native-entry.js';
 import {refreshPrefabWorld,remapPrefabInstanceReferences} from './prefab-instances.js';
@@ -34,7 +35,7 @@ export async function preparePlayWorld(objects,settings,{readAsset,readText,buil
   applyTravelSpawn(objects,gameplay.gameplay,travelArguments);
   await prepareActorBindings(objects,{readAsset:read,readText,buildNative,builds,nativeBuilds,loaded});
   const bindingBySelf=firstBinding();
-  for(const object of objects){object.actorClasses=actorClassNames(object,bindingBySelf.get(object.id)?.root);const pool=object.components?.find(c=>c.type==='PooledActor'&&c.properties?.enabled!==false);if(pool){object.poolActive=pool.properties?.initiallyActive===true;object.poolVisible=object.visible;object.poolCollision=object.collisionEnabled!==false;if(!object.poolActive){object.visible=false;object.collisionEnabled=false;object.velocity=[0,0,0];object.angularVelocity=[0,0,0];}}}
+  for(const object of objects){object.actorClasses=actorClassNames(object,bindingBySelf.get(object.id)?.root);const pool=object.components?.find(c=>c.type==='PooledActor'&&c.properties?.enabled!==false);if(pool){object.poolActive=pool.properties?.initiallyActive===true;touchComponents(object);object.poolVisible=object.visible;object.poolCollision=object.collisionEnabled!==false;if(!object.poolActive){object.visible=false;object.collisionEnabled=false;object.velocity=[0,0,0];object.angularVelocity=[0,0,0];}}}
   remapPrefabInstanceReferences(objects,loaded.bindings);
   const fullSpawn=spawnRequested(loaded.bindings,objects),spawnCatalog=await managedSpawnCatalog(fullSpawn&&listAssets?await listAssets():[],{readAsset:read,readText,buildNative,builds,nativeBuilds},{full:fullSpawn});
   const result={...loaded,objects,builds,spawnCatalog,gameplay:gameplay.gameplay,physicsOptions:gameplay.physicsOptions};

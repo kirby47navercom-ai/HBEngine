@@ -12,8 +12,26 @@ const MATERIAL=Symbol('hbMaterialRevision');
 export function touchMaterial(m){if(m&&typeof m==='object')Object.defineProperty(m,MATERIAL,{value:++serial,enumerable:false,configurable:true,writable:true});}
 export function materialRevision(m){return m?.[MATERIAL]??null;}
 function state(o){let r=o[REVISION];if(!r){r={components:0,transform:0};Object.defineProperty(o,REVISION,{value:r,enumerable:false,configurable:true});}return r;}
-export function touchComponents(o){if(o&&typeof o==='object')state(o).components=++serial;}
-export function touchTransform(o){if(o&&typeof o==='object')state(o).transform=++serial;}
+// Change subscribers (physics partial sync): every announced object is added to each subscribed Set until consumed.
+const subscribers=new Set();
+export function subscribeObjectChanges(){const changes=new Set();subscribers.add(changes);return changes;}
+export function unsubscribeObjectChanges(changes){subscribers.delete(changes);}
+function notify(o){for(const changes of subscribers)changes.add(o);}
+export function touchComponents(o){if(o&&typeof o==='object'){state(o).components=++serial;notify(o);}}
+export function touchTransform(o){if(o&&typeof o==='object'){state(o).transform=++serial;notify(o);}}
+// Object list versions: membership changes (push/splice/... wrappers, index replacement) bump the list's version.
+const LIST=Symbol('hbListVersion');
+export function touchList(list){if(list&&typeof list==='object')Object.defineProperty(list,LIST,{value:(list[LIST]||0)+1,enumerable:false,configurable:true,writable:true});}
+export function listVersion(list){return list?.[LIST]||0;}
+// Wrap an object list's mutating methods (on that array only) so membership changes bump its version.
+export function watchObjectList(list){
+ for(const name of ['push','pop','shift','unshift','splice','sort','reverse','fill','copyWithin']){
+  if(list[name]?.hbWatched)continue;const original=Array.prototype[name];
+  const wrapped=function(...args){touchList(this);return original.apply(this,args);};wrapped.hbWatched=true;
+  Object.defineProperty(list,name,{value:wrapped,enumerable:false,configurable:true,writable:true});
+ }
+ return list;
+}
 // Current revisions, or null for an object no writer has announced yet (consumers then treat it as unknown).
 export function objectRevision(o){return o?.[REVISION]||null;}
 // Snapshot taken with a consumer's cached state. An object never announced gets revision 0 entries, so a later

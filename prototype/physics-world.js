@@ -1,4 +1,4 @@
-import {touchTransform,revisionTrust,revisionConfig,revisionSnapshot,sameRevision,reportRevisionMismatch} from './object-revision.js';
+import {touchTransform,revisionTrust,revisionConfig,revisionSnapshot,sameRevision,reportRevisionMismatch,subscribeObjectChanges,unsubscribeObjectChanges,listVersion,watchObjectList} from './object-revision.js';
 import {JointRuntimeRecords} from './joint-runtime-records.js';
 import {validActorScale} from './transform-scale.js';
 import {DeformableWorld} from './deformable-physics.js';
@@ -39,7 +39,26 @@ export function createRigidPhysics(objects,options={}){
   if(!vector(gravity)||!Number.isFinite(dt)||dt<=0||dt>1||!Number.isInteger(maxSubsteps)||maxSubsteps<1||maxSubsteps>128)throw Error('물리 설정을 확인하세요.');
   const rootMotions=new Map(),rootDriven=new Set();const spaces=new Map(),materials=new Map(options.materials||[]),inputs=new Map(),keys=new Map(),jumps=new Set();
   // forceObjects: ConstantForce owners found by the latest sync (the force loop runs right after it).
-  const forceObjects=new Set(),movementObjects=new Set();let revisionSamples=0,prepared=false,disposed=false,accumulator=0,elapsed=0,lastContacts=[],nonce=0,writingBatch=false;const pendingSpaces=new Map(),timing={syncCalls:0,staticReused:0,staticRefreshed:0,syncMs:0,stepMs:0,solverMs:0};
+  const forceObjects=new Set(),movementObjects=new Set();
+  // Partial sync (docs/CHANGE_TRACKING_DESIGN.md): while physics revisions are trusted, a sync visits only announced
+  // objects plus bodies with physics properties (scripts may set their velocities) and parented bodies (parents move
+  // them). Membership changes of the object list (watched methods, index replacement, length), material count,
+  // deformables, verify mode, query worlds and every FULL_SYNC_EVERY-th sync take the full path.
+  // Opt-in (options.partialSync, set by the game runtime whose writers announce): other users keep full syncs.
+  // Partial syncs also force a full check on a rotating window of SAMPLE_WINDOW unvisited objects, so an unannounced write
+  // is found, reported and switches trust off (full syncs again).
+  const FULL_SYNC_EVERY=30,SAMPLE_WINDOW=64,partialSyncEnabled=options.partialSync===true&&!options.queryOnly,pendingChanges=partialSyncEnabled?subscribeObjectChanges():null,forcedChecks=new Set();if(partialSyncEnabled)watchObjectList(objects);let sampleCursor=0;
+  let objectIndex=null,lastListVersion=-1,lastListLength=-1,lastMaterialCount=-1,syncsSinceFull=0;
+  function syncList(){
+    let partial=!!pendingChanges&&!!objectIndex&&revisionTrust.physics&&!revisionConfig.verify&&listVersion(objects)===lastListVersion&&objects.length===lastListLength&&materials.size===lastMaterialCount&&syncsSinceFull<FULL_SYNC_EVERY&&![...spaces.values()].some(s=>s.deformables?.items?.size);
+    if(partial)for(const o of pendingChanges){const components=objectComponents(o);if(hasComponentType(components,'Cloth')||hasComponentType(components,'Rope2D')){partial=false;break;}}
+    if(!partial){syncsSinceFull=0;forcedChecks.clear();pendingChanges?.clear();objectIndex=new Map();objects.forEach((o,i)=>objectIndex.set(o,i));lastListVersion=listVersion(objects);lastListLength=objects.length;lastMaterialCount=materials.size;return objects;}
+    syncsSinceFull++;const set=new Set();for(const o of pendingChanges)if(objectIndex.has(o))set.add(o);pendingChanges.clear();
+    for(const s of spaces.values()){for(const r of s.pRecords??[])if(objectIndex.has(r.object))set.add(r.object);for(const r of s.childRecords??[])if(objectIndex.has(r.object))set.add(r.object);}
+    forcedChecks.clear();for(let i=0;i<SAMPLE_WINDOW&&i<objects.length;i++){const o=objects[(sampleCursor+i)%objects.length];if(!set.has(o)){set.add(o);forcedChecks.add(o);}}sampleCursor=(sampleCursor+SAMPLE_WINDOW)%Math.max(1,objects.length);
+    // Same visiting order as a full sync (object list order): creation order decides collider handles and contact order.
+    return [...set].sort((a,b)=>objectIndex.get(a)-objectIndex.get(b));
+  }let revisionSamples=0,prepared=false,disposed=false,accumulator=0,elapsed=0,lastContacts=[],nonce=0,writingBatch=false;const pendingSpaces=new Map(),timing={syncCalls:0,staticReused:0,staticRefreshed:0,syncMs:0,stepMs:0,solverMs:0};
   const alive=()=>{if(disposed)throw Error('종료된 물리 월드예요.');};
   const properties=(o,dim)=>{
     const type=dim===2?'Rigidbody2D':'Rigidbody',movement=enabledComponent(o,dim===2?'CharacterMovement2D':'CharacterMovement');
@@ -71,17 +90,17 @@ export function createRigidPhysics(objects,options={}){
     else{r.body.setTranslation(position,true);r.body.setRotation(rotation,true);}
   }
   function sync(){
-    alive();if(!spaces.size)return;forceObjects.clear();movementObjects.clear();const at=options.profile?performance.now():0;if(options.profile)timing.syncCalls++;
+    alive();if(!spaces.size)return;const list=syncList(),partial=list!==objects;if(partial){for(const o of list){forceObjects.delete(o);movementObjects.delete(o);}}else{forceObjects.clear();movementObjects.clear();}const at=options.profile?performance.now():0;if(options.profile){timing.syncCalls++;if(partial)timing.partialSyncs=(timing.partialSyncs||0)+1;}
     try{
     for(const [dim,space] of spaces){
-      const {R,world}=space,active=new Set(),deformableObjects=[],jointObjects=[],deformableType=dim===2?'Rope2D':'Cloth',jointType=dim===2?'PhysicsConstraint2D':'PhysicsConstraint';
-      for(const o of objects){
-        if(o.poolActive===false)continue;const authoredComponents=objectComponents(o);if(hasComponentType(authoredComponents,jointType))jointObjects.push(o);if(hasComponentType(authoredComponents,'ConstantForce')||hasComponentType(authoredComponents,'ConstantForce2D'))forceObjects.add(o);if(hasComponentType(authoredComponents,'TopDownMovement2D')||hasComponentType(authoredComponents,'CharacterMovement2D')||hasComponentType(authoredComponents,'CharacterMovement')||hasComponentType(authoredComponents,'PawnMovement'))movementObjects.add(o);if(!options.queryOnly&&hasComponentType(authoredComponents,deformableType))deformableObjects.push(o);if(o.kind==='component'||o.kind==='widget')continue;
+      const {R,world}=space,active=new Set(),deformableObjects=[],jointOwners=space.jointOwners??=new Set(),deformableType=dim===2?'Rope2D':'Cloth',jointType=dim===2?'PhysicsConstraint2D':'PhysicsConstraint';if(!partial)jointOwners.clear();
+      for(const o of list){
+        if(partial)jointOwners.delete(o);if(o.poolActive===false)continue;const authoredComponents=objectComponents(o);if(hasComponentType(authoredComponents,jointType))jointOwners.add(o);if(hasComponentType(authoredComponents,'ConstantForce')||hasComponentType(authoredComponents,'ConstantForce2D'))forceObjects.add(o);if(hasComponentType(authoredComponents,'TopDownMovement2D')||hasComponentType(authoredComponents,'CharacterMovement2D')||hasComponentType(authoredComponents,'CharacterMovement')||hasComponentType(authoredComponents,'PawnMovement'))movementObjects.add(o);if(!options.queryOnly&&hasComponentType(authoredComponents,deformableType))deformableObjects.push(o);if(o.kind==='component'||o.kind==='widget')continue;
         const previous=space.bodies.get(o.id),fixed=previous?.staticState;let source;const sourceOf=()=>source??=(options.staticCache?physicsSourceComponents(authoredComponents):null);
         // Revisions (docs/CHANGE_TRACKING_DESIGN.md): an announced-unchanged static collider is reused without the deep
         // check while physics is trusted; verify mode always checks, and one in (sampleMask+1) skips is sampled.
         const announced=!!fixed&&previous.object===o&&!o.parentId&&!o.parent&&fixed.collisionEnabled===o.collisionEnabled&&fixed.materialCount===materials.size&&sameRevision(fixed.revision,o,'components')&&sameRevision(fixed.revision,o,'transform');
-        const check=!announced||!revisionTrust.physics||revisionConfig.verify||((++revisionSamples)&revisionConfig.sampleMask)===0;
+        const check=!announced||!revisionTrust.physics||revisionConfig.verify||forcedChecks.has(o)||((++revisionSamples)&revisionConfig.sampleMask)===0;
         const reuse=!check||fixed&&previous.object===o&&!o.parentId&&!o.parent&&samePoseInput(previous.poseInput,o)&&fixed.collisionEnabled===o.collisionEnabled&&fixed.materialCount===materials.size&&matchStatic(fixed.componentMatch,fixed.components,sourceOf())&&(fixed.tiles===null?!o.tileColliders:matchStatic(fixed.tileMatch,fixed.tiles,o.tileColliders||null));
         if(announced&&check&&!reuse){reportRevisionMismatch('physicsStatic',o,{pose:!samePoseInput(previous.poseInput,o),components:!matchStatic(fixed.componentMatch,fixed.components,sourceOf()),tiles:!(fixed.tiles===null?!o.tileColliders:matchStatic(fixed.tileMatch,fixed.tiles,o.tileColliders||null))});if(!revisionConfig.verify)revisionTrust.physics=false;}
         if(reuse){active.add(o.id);if(options.profile)timing.staticReused++;continue;}
@@ -92,7 +111,7 @@ export function createRigidPhysics(objects,options={}){
         // Root scalar comparison also catches in-place C++/script edits. Parented
         // actors still resolve the hierarchy on every sync, including parent motion.
         if(!cached){r.pose=transform;r.poseKey=transformKey;r.poseInput=root?[...o.position,...o.rotation,...o.scale]:null;}
-        r.object=o;r.p=p;
+        r.object=o;r.p=p;if(p)(space.pRecords??=new Set()).add(r);else space.pRecords?.delete(r);if(root)space.childRecords?.delete(r);else(space.childRecords??=new Set()).add(r);
         const kind=typeOf(p),bodyType={static:R.RigidBodyType.Fixed,dynamic:R.RigidBodyType.Dynamic,kinematic:R.RigidBodyType.KinematicPositionBased}[kind];
         if(r.body.bodyType()!==bodyType){r.body.setBodyType(bodyType,true);space.structure=(space.structure||0)+1;}
         if(transformKey!==r.lastPose){setPose(r,transform,kind==='kinematic'&&!options.queryOnly);r.lastPose=transformKey;space.structure=(space.structure||0)+1;}
@@ -133,8 +152,9 @@ export function createRigidPhysics(objects,options={}){
         }
         if(options.staticCache&&!p&&root&&r.body.isFixed()&&!sourceOf().some(c=>physicsBodyTypes.has(c.type))){const components=JSON.parse(JSON.stringify(sourceOf())),tiles=o.tileColliders?JSON.parse(JSON.stringify(o.tileColliders)):null;r.staticState={components,tiles,revision:revisionSnapshot(o),componentMatch:runtimeDataMatcher(components,staticMatchers),tileMatch:tiles?runtimeDataMatcher(tiles,staticMatchers):null,collisionEnabled:o.collisionEnabled,materialCount:materials.size};if(options.profile)timing.staticRefreshed++;}else delete r.staticState;
       }
-      for(const [id,r] of space.bodies)if(!active.has(id)){space.structure=(space.structure||0)+1;for(const c of r.colliders.values())space.colliders.delete(c.collider.handle);space.vehicles?.remove(id);space.deformables?.detachBody(r.body.handle);world.removeRigidBody(r.body);space.bodies.delete(id);}
-      world.propagateModifiedBodyPositionsToColliders();if(!options.queryOnly)syncJoints(space,dim,jointObjects);space.vehicles?.sync();space.deformables?.sync(deformableObjects);for(const r of space.bodies.values())mirror(r);
+      const removeBody=(id,r)=>{space.structure=(space.structure||0)+1;for(const c of r.colliders.values())space.colliders.delete(c.collider.handle);space.vehicles?.remove(id);space.deformables?.detachBody(r.body.handle);world.removeRigidBody(r.body);space.bodies.delete(id);space.pRecords?.delete(r);space.childRecords?.delete(r);};
+      if(partial){for(const o of list){const r=space.bodies.get(o.id);if(r&&r.object===o&&!active.has(o.id))removeBody(o.id,r);}}else for(const [id,r] of space.bodies)if(!active.has(id))removeBody(id,r);
+      world.propagateModifiedBodyPositionsToColliders();if(!options.queryOnly)syncJoints(space,dim,[...jointOwners]);space.vehicles?.sync();space.deformables?.sync(deformableObjects);for(const r of space.pRecords??[])mirror(r);
     }
     }finally{if(options.profile)timing.syncMs+=performance.now()-at;}
   }
@@ -219,7 +239,7 @@ export function createRigidPhysics(objects,options={}){
     for(const o of objects)o.grounded=false;for(const c of result.values())if(!c.trigger){const a=c.colliderA.object,b=c.colliderB.object;if(c.normal[1]>.5)a.grounded=true;if(c.normal[1]<-.5)b.grounded=true;}for(const f of fixed)for(const r of f.grounds)r.object.grounded=true;
   }
   function updateObjects(){
-    const records=[...spaces.values()].flatMap(s=>[...s.bodies.values()]).filter(r=>r.p);
+    const records=[...spaces.values()].flatMap(s=>[...(s.pRecords??[])]).filter(r=>r.p);
     const depth=o=>{let n=0,at=o;while(at.parent||at.parentId){at=objects.find(v=>v.id===(at.parentId||at.parent));if(!at)break;if(++n>64)throw Error('부모 계층 깊이 제한 초과');}return n;};records.sort((a,b)=>depth(a.object)-depth(b.object));
     for(const r of records){const parent=(r.object.parentId||r.object.parent)?objects.find(o=>o.id===(r.object.parentId||r.object.parent)):null,parentKey=parent?sceneWorldMatrix(parent,objects).elements.join():null,sleeping=r.body.isFixed()||r.body.isSleeping();if(sleeping&&parentKey===r.lastParentKey){if(!r.lastSleeping)mirror(r);r.lastSleeping=true;continue;}r.lastSleeping=sleeping;r.lastParentKey=parentKey;const position=array(r.body.translation());if(r.dim===2)position[2]=sceneWorldPosition(r.object,objects)[2];setSceneWorldPosition(r.object,position,objects);touchTransform(r.object);
       const rotation=r.dim===2?new Quaternion().setFromAxisAngle(new Vector3(0,0,1),r.body.rotation()):new Quaternion().copy(r.body.rotation());
@@ -338,13 +358,13 @@ export function createRigidPhysics(objects,options={}){
     step(delta,limit=maxSubsteps){alive();if(!prepared)throw Error('물리 월드를 먼저 준비하세요.');if(!Number.isFinite(delta)||delta<0)throw Error('물리 시간을 확인하세요.');const at=options.profile?performance.now():0;accumulator=Math.min(accumulator+delta,dt*maxSubsteps);let count=0;
       while(accumulator+1e-9>=dt&&count<limit){sync();if(movement(dt))sync();for(const o of forceObjects)for(const c of objectComponents(o).filter(c=>['ConstantForce','ConstantForce2D'].includes(c.type)&&c.properties?.enabled!==false)){const p={...componentDefaultValues(c.type),...c.properties},r=record(o,c.type.endsWith('2D')?2:3);if(!r?.body.isDynamic())continue;r.body.addForce(xyz(p.force),p.force.some(v=>v!==0));r.body.addTorque(r.dim===2?p.torque[2]:xyz(p.torque),p.torque.some(v=>v!==0));}
         for(const[dimension,s]of spaces){checkJointBreaks(s,dimension);s.vehicles?.step(dt);s.deformables?.step(dt);const solverAt=options.profile?performance.now():0;s.world.step(s.eventQueue,s.hooks);if(options.profile)timing.solverMs+=performance.now()-solverAt;s.deformables?.postStep(dt);checkJointBreaks(s,dimension,elapsed+dt);}updateObjects();for(const s of spaces.values()){s.vehicles?.publish();s.deformables?.publish();}collectContacts();elapsed+=dt;accumulator=Math.max(0,accumulator-dt);count++;jumps.clear();
-        inputs.clear();for(const s of spaces.values())for(const r of s.bodies.values())if(r.p){r.body.resetForces(false);r.body.resetTorques(false);}
+        inputs.clear();for(const s of spaces.values())for(const r of s.pRecords??[])if(r.p){r.body.resetForces(false);r.body.resetTorques(false);}
       }
-      if(count){inputs.clear();for(const s of spaces.values())for(const r of s.bodies.values())if(r.p){r.body.resetForces(false);r.body.resetTorques(false);}}
+      if(count){inputs.clear();for(const s of spaces.values())for(const r of s.pRecords??[])if(r.p){r.body.resetForces(false);r.body.resetTorques(false);}}
       if(state.gameplay){state.gameplay.elapsed=elapsed;for(const type of ['GameMode','GameState']){const o=objects.find(o=>o.id===state.gameplay[type==='GameMode'?'gameMode':'gameState']),c=o&&objectComponents(o).find(c=>c.type===type);if(c){c.properties.elapsed=elapsed;c.properties.matchState=state.gameplay.matchState;}}}if(options.profile)timing.stepMs+=performance.now()-at;return count;
     },
     async advance(delta,before,after){await state.ready();if(!Number.isFinite(delta)||delta<0)throw Error('물리 시간을 확인하세요.');accumulator=Math.min(accumulator+delta,dt*maxSubsteps);let count=0;while(accumulator+1e-9>=dt&&count<maxSubsteps){await before?.(dt);state.step(0,1);await after?.(dt);count++;}return count;},
-    dispose(){if(disposed)return;disposed=true;state.releaseInput();rootMotions.clear();rootDriven.clear();for(const s of spaces.values()){for(const j of s.joints.values())clearJointBreak(j);s.vehicles?.dispose();s.deformables?.dispose();if(s.rootController)s.world.removeCharacterController(s.rootController);s.world.free();s.eventQueue.free();}spaces.clear();lastContacts=[];}
+    dispose(){if(disposed)return;disposed=true;if(pendingChanges)unsubscribeObjectChanges(pendingChanges);state.releaseInput();rootMotions.clear();rootDriven.clear();for(const s of spaces.values()){for(const j of s.joints.values())clearJointBreak(j);s.vehicles?.dispose();s.deformables?.dispose();if(s.rootController)s.world.removeCharacterController(s.rootController);s.world.free();s.eventQueue.free();}spaces.clear();lastContacts=[];}
   };return state;
 }
 
