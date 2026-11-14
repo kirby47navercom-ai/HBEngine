@@ -24,8 +24,11 @@ struct SceneVertex {
 struct SceneInstance {
     Matrix world=identity,normal=identity;
     std::array<float,4> color{1,1,1,1};
+    // Per-instance UV affine rows applied to the vertex UV before the material's slot transforms (sprite batches).
+    // Identity by default, so ordinary instanced meshes keep their exact UVs.
+    std::array<float,4> uvX{1,0,0,0},uvY{0,1,0,0};
 };
-static_assert(sizeof(SceneInstance)==144,"HLSL instance buffer layout");
+static_assert(sizeof(SceneInstance)==176,"HLSL instance buffer layout");
 struct SceneSkin {
     std::array<std::uint32_t,4> joints{};
     std::array<float,4> weights{1,0,0,0};
@@ -208,7 +211,7 @@ Texture2D baseMap:register(t0),normalMap:register(t1),roughMap:register(t2),meta
 SamplerState baseSampler:register(s0),normalSampler:register(s1),roughSampler:register(s2),metalSampler:register(s3),emissiveSampler:register(s4),aoSampler:register(s5);
 Texture2DArray<float> shadowMap:register(t24);
 struct Shadow{float4x4 vp;float4 parameters,size;};StructuredBuffer<Shadow> shadows:register(t25);
-struct Instance{float4x4 world,normal;float4 color;};StructuredBuffer<Instance> instances:register(t26);
+struct Instance{float4x4 world,normal;float4 color,uvX,uvY;};StructuredBuffer<Instance> instances:register(t26);
 StructuredBuffer<float4> shots:register(t27);
 struct Skin{uint4 joints;float4 weights;};StructuredBuffer<Skin> skinVertices:register(t28);
 struct Morph{float4 position,normal,color;};StructuredBuffer<Morph> morphVertices:register(t29);
@@ -223,7 +226,7 @@ Output VS(Input i,uint id:SV_InstanceID,uint vertexId:SV_VertexID){Output o;floa
   for(uint t=0;t<deformation.y;t++){Morph m=morphVertices[t*deformation.x+vertexId];if(motionData.x!=0)previousPosition.xyz+=m.position.xyz*previousPose[deformation.z*4+t/4][t%4];float weight=pose[deformation.z*4+t/4][t%4];if(weight!=0){position.xyz+=m.position.xyz*weight;normal+=m.normal.xyz*weight;color+=m.color*weight;}}
   if(deformation.z){Skin s=skinVertices[vertexId];float4x4 skin=0;[unroll]for(uint j=0;j<4;j++){uint b=s.joints[j]*4;skin+=transpose(float4x4(pose[b],pose[b+1],pose[b+2],pose[b+3]))*s.weights[j];}position=float4(mul(skin,position).xyz+pose[deformation.z*4+(deformation.y+3)/4].xyz*(1-dot(s.weights,float4(1,1,1,1))),1);normal=mul((float3x3)skin,normal);if(motionData.x!=0){float4x4 oldSkin=0;[unroll]for(uint j=0;j<4;j++){uint b=s.joints[j]*4;oldSkin+=transpose(float4x4(previousPose[b],previousPose[b+1],previousPose[b+2],previousPose[b+3]))*s.weights[j];}previousPosition=float4(mul(oldSkin,previousPosition).xyz+previousPose[deformation.z*4+(deformation.y+3)/4].xyz*(1-dot(s.weights,float4(1,1,1,1))),1);}}
  }
- if((uint)flags.x&256){Instance item=instances[id];o.orientation=determinant((float3x3)item.world)<0?-1:1;if(motionData.x!=0)previousPosition=mul(motionData.w>.5?previousInstances[id]:item.world,previousPosition);position=mul(item.world,position);normal=mul((float3x3)item.normal,normal);o.instanceColor=item.color;}else if((uint)flags.x&512){float2 offset=i.position.xy*shotShape.xy;position=float4(shots[id].xyz+(shotShape.z>0?float3(offset.x,0,offset.y):float3(offset,0)),1);if(shotShape.z>0)normal=float3(0,-1,0);}if(motionData.x!=0)o.previousClip=mul(previousMVP,previousPosition);float4 at=mul(world,position);if(pass2d.x>=4&&pass2d.x<=5){float2 ray=at.xy-project2d.xy;ray*=rsqrt(max(dot(ray,ray),1e-12));if(length(ray)<.00001)ray=float2(0,1);float a=i.color.y*project2d.w*.261799388,c=cos(a),s=sin(a);ray=float2(c*ray.x+s*ray.y,-s*ray.x+c*ray.y);at=float4(at.xy+ray*i.color.x*project2d.z,0,1);color=float4(0,0,i.color.z,i.color.x);}else if(pass2d.x>=2)at.z=0;o.position=mul(vp,at);if(flags.w>1.5&&((uint)flags.x&2048))o.position.z=o.position.w*.999999;o.at=at.xyz;o.normal=mul((float3x3)normalMatrix,normal);o.uv=i.uv;o.uv1=((uint)flags.x&16384)?i.uv1:float2(0,0);o.color=pass2d.x>=4&&pass2d.x<=5?color:flags.w==1?color:float4(1,1,1,1);return o;}
+ if((uint)flags.x&256){Instance item=instances[id];o.orientation=determinant((float3x3)item.world)<0?-1:1;if(motionData.x!=0)previousPosition=mul(motionData.w>.5?previousInstances[id]:item.world,previousPosition);position=mul(item.world,position);normal=mul((float3x3)item.normal,normal);o.instanceColor=item.color;}else if((uint)flags.x&512){float2 offset=i.position.xy*shotShape.xy;position=float4(shots[id].xyz+(shotShape.z>0?float3(offset.x,0,offset.y):float3(offset,0)),1);if(shotShape.z>0)normal=float3(0,-1,0);}if(motionData.x!=0)o.previousClip=mul(previousMVP,previousPosition);float4 at=mul(world,position);if(pass2d.x>=4&&pass2d.x<=5){float2 ray=at.xy-project2d.xy;ray*=rsqrt(max(dot(ray,ray),1e-12));if(length(ray)<.00001)ray=float2(0,1);float a=i.color.y*project2d.w*.261799388,c=cos(a),s=sin(a);ray=float2(c*ray.x+s*ray.y,-s*ray.x+c*ray.y);at=float4(at.xy+ray*i.color.x*project2d.z,0,1);color=float4(0,0,i.color.z,i.color.x);}else if(pass2d.x>=2)at.z=0;o.position=mul(vp,at);if(flags.w>1.5&&((uint)flags.x&2048))o.position.z=o.position.w*.999999;o.at=at.xyz;o.normal=mul((float3x3)normalMatrix,normal);o.uv=((uint)flags.x&256)?float2(dot(instances[id].uvX.xyz,float3(i.uv,1)),dot(instances[id].uvY.xyz,float3(i.uv,1))):i.uv;o.uv1=((uint)flags.x&16384)?i.uv1:float2(0,0);o.color=pass2d.x>=4&&pass2d.x<=5?color:flags.w==1?color:float4(1,1,1,1);return o;}
 float2 mapUv(float2 uv,uint slot){return float2(dot(uvX[slot].xyz,float3(uv,1)),dot(uvY[slot].xyz,float3(uv,1)));}
 float3 sampleBakedLightmap(float2 uv){uint w,h;bakedLightmap.GetDimensions(w,h);float2 at=saturate(uv)*float2(w,h)-.5;int2 a=(int2)floor(at),last=int2(w,h)-1;float2 f=frac(at);return lerp(lerp(bakedLightmap.Load(int3(clamp(a,0,last),0)).rgb,bakedLightmap.Load(int3(clamp(a+int2(1,0),0,last),0)).rgb,f.x),lerp(bakedLightmap.Load(int3(clamp(a+int2(0,1),0,last),0)).rgb,bakedLightmap.Load(int3(clamp(a+1,0,last),0)).rgb,f.x),f.y);}
 float3 safeNormal(float3 v){return v*rsqrt(max(dot(v,v),1e-12));}
