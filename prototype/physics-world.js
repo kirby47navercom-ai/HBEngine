@@ -1,4 +1,4 @@
-import {componentRevisionSerial,touchTransform,revisionTrust,revisionConfig,revisionSnapshot,sameRevision,reportRevisionMismatch,subscribeObjectChanges,unsubscribeObjectChanges,listVersion,watchObjectList} from './object-revision.js';
+import {objectMapOf,componentRevisionSerial,touchTransform,revisionTrust,revisionConfig,revisionSnapshot,sameRevision,reportRevisionMismatch,subscribeObjectChanges,unsubscribeObjectChanges,listVersion,watchObjectList} from './object-revision.js';
 import {JointRuntimeRecords} from './joint-runtime-records.js';
 import {validActorScale} from './transform-scale.js';
 import {DeformableWorld} from './deformable-physics.js';
@@ -248,8 +248,8 @@ export function createRigidPhysics(objects,options={}){
   }
   function updateObjects(){
     const records=[...spaces.values()].flatMap(s=>[...(s.pRecords??[])]).filter(r=>r.p);
-    const depth=o=>{let n=0,at=o;while(at.parent||at.parentId){at=objects.find(v=>v.id===(at.parentId||at.parent));if(!at)break;if(++n>64)throw Error('부모 계층 깊이 제한 초과');}return n;};records.sort((a,b)=>depth(a.object)-depth(b.object));
-    for(const r of records){const parent=(r.object.parentId||r.object.parent)?objects.find(o=>o.id===(r.object.parentId||r.object.parent)):null,parentKey=parent?sceneWorldMatrix(parent,objects).elements.join():null,sleeping=r.body.isFixed()||r.body.isSleeping();if(sleeping&&parentKey===r.lastParentKey){if(!r.lastSleeping)mirror(r);r.lastSleeping=true;continue;}r.lastSleeping=sleeping;r.lastParentKey=parentKey;const position=array(r.body.translation());if(r.dim===2)position[2]=sceneWorldPosition(r.object,objects)[2];setSceneWorldPosition(r.object,position,objects);touchTransform(r.object);
+    const depth=o=>{let n=0,at=o;while(at.parent||at.parentId){at=objectMapOf(objects).get(at.parentId||at.parent);if(!at)break;if(++n>64)throw Error('부모 계층 깊이 제한 초과');}return n;};records.sort((a,b)=>depth(a.object)-depth(b.object));
+    for(const r of records){const parent=(r.object.parentId||r.object.parent)?objectMapOf(objects).get(r.object.parentId||r.object.parent):null,parentKey=parent?sceneWorldMatrix(parent,objects).elements.join():null,sleeping=r.body.isFixed()||r.body.isSleeping();if(sleeping&&parentKey===r.lastParentKey){if(!r.lastSleeping)mirror(r);r.lastSleeping=true;continue;}r.lastSleeping=sleeping;r.lastParentKey=parentKey;const position=array(r.body.translation());if(r.dim===2)position[2]=sceneWorldPosition(r.object,objects)[2];setSceneWorldPosition(r.object,position,objects);touchTransform(r.object);
       const rotation=r.dim===2?new Quaternion().setFromAxisAngle(new Vector3(0,0,1),r.body.rotation()):new Quaternion().copy(r.body.rotation());
       if(parent)rotation.premultiply(pose(parent,objects).rotation.invert());r.object.rotation=new Euler().setFromQuaternion(rotation).toArray().slice(0,3).map(v=>v/rad);
       const p=pose(r.object,objects);r.lastPose=JSON.stringify([p.position.toArray(),p.rotation.toArray()]);mirror(r);options.update?.(r.object);
@@ -275,7 +275,7 @@ export function createRigidPhysics(objects,options={}){
         if(!r.body.isFixed()&&rotation.angleTo(new Quaternion())>1e-10){const before=r.dim===2?new Quaternion().setFromAxisAngle(new Vector3(0,0,1),r.body.rotation()):new Quaternion().copy(r.body.rotation()),next=rotation.multiply(before);r.body[r.body.isKinematic()?'setNextKinematicRotation':'setRotation'](r.dim===2?new Euler().setFromQuaternion(next).z:qValue(next),true);}
         if(!state.segments.length&&left===step){rootMotions.delete(o);rootDriven.delete(o);}
       }else if(r){rootMotions.delete(o);rootDriven.delete(o);}else{
-        setSceneWorldPosition(o,sceneWorldPosition(o,objects).map((v,i)=>v+amount[i]),objects);const transform=pose(o,objects);transform.rotation.premultiply(rotation);const parent=objects.find(v=>v.id===(o.parentId||o.parent));if(parent)transform.rotation.premultiply(pose(parent,objects).rotation.invert());o.rotation=new Euler().setFromQuaternion(transform.rotation).toArray().slice(0,3).map(v=>v/rad);touchTransform(o);o.velocity=amount.map(v=>v/step);options.update?.(o);changed=true;if(!state.segments.length&&left===step)rootMotions.delete(o);
+        setSceneWorldPosition(o,sceneWorldPosition(o,objects).map((v,i)=>v+amount[i]),objects);const transform=pose(o,objects);transform.rotation.premultiply(rotation);const parent=objectMapOf(objects).get(o.parentId||o.parent);if(parent)transform.rotation.premultiply(pose(parent,objects).rotation.invert());o.rotation=new Euler().setFromQuaternion(transform.rotation).toArray().slice(0,3).map(v=>v/rad);touchTransform(o);o.velocity=amount.map(v=>v/step);options.update?.(o);changed=true;if(!state.segments.length&&left===step)rootMotions.delete(o);
       }
     }return changed;
   }
@@ -283,7 +283,7 @@ export function createRigidPhysics(objects,options={}){
     let changedPose=rootMotionStep(step);
     // Movement owners come from the sync that runs right before movement (objects without these components never move here).
     for(const o of movementObjects){if(o.poolActive===false||rootDriven.has(o))continue;const move=enabledComponent(o,'TopDownMovement2D')||enabledComponent(o,'CharacterMovement2D')||enabledComponent(o,'CharacterMovement')||enabledComponent(o,'PawnMovement');if(!move)continue;
-      const r=record(o,2)?.p?record(o,2):record(o,3),top=!!enabledComponent(o,'TopDownMovement2D'),controller=objects.find(v=>v.id===state.gameplay?.controller),control=controller&&enabledComponent(controller,'PlayerController'),allow=!control||control.inputEnabled,controlled=state.gameplay?.pawn===o.id||move.autoPossess;
+      const r=record(o,2)?.p?record(o,2):record(o,3),top=!!enabledComponent(o,'TopDownMovement2D'),controller=objectMapOf(objects).get(state.gameplay?.controller),control=controller&&enabledComponent(controller,'PlayerController'),allow=!control||control.inputEnabled,controlled=state.gameplay?.pawn===o.id||move.autoPossess;
       const keyboard=controlled&&allow?[(keys.get('d')||keys.get('arrowright')||0)-(keys.get('a')||keys.get('arrowleft')||0),top?(keys.get('w')||keys.get('arrowup')||0)-(keys.get('s')||keys.get('arrowdown')||0):0,top?0:(keys.get('s')||keys.get('arrowdown')||0)-(keys.get('w')||keys.get('arrowup')||0)]:[0,0,0],direction=o.navigationControl?.direction||new Vector3(...(inputs.get(o.id)||[0,0,0])).add(new Vector3(...keyboard)).toArray(),length=Math.hypot(...direction),target=direction.map(v=>v/Math.max(1,length)*(o.navigationControl?.speed??move.speed)),velocity=r?.p?array(r.body.linvel()):o.velocity??[0,0,0],blend=o.navigationControl?.instant?1:Math.min(1,move.acceleration*step);
       for(const i of top||o.navigationControl&&r?.dim===2?[0,1]:r?.dim===2?[0]:[0,2])velocity[i]+=(target[i]-velocity[i])*blend;
       if(jumps.has(o.id)&&move.jumpSpeed!==undefined&&o.grounded)velocity[1]=move.jumpSpeed;
@@ -370,7 +370,7 @@ export function createRigidPhysics(objects,options={}){
         inputs.clear();for(const s of spaces.values())for(const r of s.pRecords??[])if(r.p){r.body.resetForces(false);r.body.resetTorques(false);}
       }
       if(count){inputs.clear();for(const s of spaces.values())for(const r of s.pRecords??[])if(r.p){r.body.resetForces(false);r.body.resetTorques(false);}}
-      if(state.gameplay){state.gameplay.elapsed=elapsed;for(const type of ['GameMode','GameState']){const o=objects.find(o=>o.id===state.gameplay[type==='GameMode'?'gameMode':'gameState']),c=o&&objectComponents(o).find(c=>c.type===type);if(c){c.properties.elapsed=elapsed;c.properties.matchState=state.gameplay.matchState;}}}if(options.profile)timing.stepMs+=performance.now()-at;return count;
+      if(state.gameplay){state.gameplay.elapsed=elapsed;for(const type of ['GameMode','GameState']){const o=objectMapOf(objects).get(state.gameplay[type==='GameMode'?'gameMode':'gameState']),c=o&&objectComponents(o).find(c=>c.type===type);if(c){c.properties.elapsed=elapsed;c.properties.matchState=state.gameplay.matchState;}}}if(options.profile)timing.stepMs+=performance.now()-at;return count;
     },
     async advance(delta,before,after){await state.ready();if(!Number.isFinite(delta)||delta<0)throw Error('물리 시간을 확인하세요.');accumulator=Math.min(accumulator+delta,dt*maxSubsteps);let count=0;while(accumulator+1e-9>=dt&&count<maxSubsteps){await before?.(dt);state.step(0,1);await after?.(dt);count++;}return count;},
     dispose(){if(disposed)return;disposed=true;if(pendingChanges)unsubscribeObjectChanges(pendingChanges);state.releaseInput();rootMotions.clear();rootDriven.clear();for(const s of spaces.values()){for(const j of s.joints.values())clearJointBreak(j);s.vehicles?.dispose();s.deformables?.dispose();if(s.rootController)s.world.removeCharacterController(s.rootController);s.world.free();s.eventQueue.free();}spaces.clear();lastContacts=[];}

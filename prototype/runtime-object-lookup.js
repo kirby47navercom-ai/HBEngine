@@ -5,7 +5,8 @@ function slotsFor(owner){
 export function lookupRuntimeObject(owner,id){
  if(!owner.objectLookup&&owner.objects[0]?.id===id)return owner.objects[0];
  const slots=slotsFor(owner),cached=slots.get(id);if(cached!==undefined&&owner.objects[cached]?.id===id)return owner.objects[cached];
- slots.delete(id);const index=owner.objects.findIndex(o=>o.id===id);if(index<0)return undefined;
+ // An empty id never matches (objects always have ids): no whole-list scan for it.
+ slots.delete(id);if(id===undefined||id===null)return undefined;const index=owner.objects.findIndex(o=>o.id===id);if(index<0)return undefined;
  if(slots.size>=owner.objects.length)slots.delete(slots.keys().next().value);slots.set(id,index);return owner.objects[index];
 }
 // A batch of new targets scans the world once, not once for each target.
