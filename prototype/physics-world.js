@@ -113,14 +113,14 @@ export function createRigidPhysics(objects,options={}){
         const p=properties(o,dim),components=[...authoredComponents,...(o.tileColliders||[])].filter(c=>colliderTypes.has(c.type)&&c.type.endsWith('2D')===(dim===2)&&c.properties?.enabled!==false&&c.properties?.collisionMode!=='none'&&o.collisionEnabled!==false);
         if(!p&&!components.length)continue;active.add(o.id);
         let r=space.bodies.get(o.id);const root=!o.parentId&&!o.parent,cached=root&&samePoseInput(r?.poseInput,o),transform=cached?r.pose:pose(o,objects),transformKey=cached?r.poseKey:JSON.stringify([transform.position.toArray(),transform.rotation.toArray()]);
-        if(!r){const desc=R.RigidBodyDesc.fixed();r={object:o,p,body:world.createRigidBody(desc),colliders:new Map(),dim,nonce:++nonce};space.structure=(space.structure||0)+1;space.bodies.set(o.id,r);setPose(r,transform);r.lastPose=transformKey;}
+        if(!r){const desc=R.RigidBodyDesc.fixed();r={object:o,p,body:world.createRigidBody(desc),colliders:new Map(),dim,nonce:++nonce};space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;space.bodies.set(o.id,r);setPose(r,transform);r.lastPose=transformKey;}
         // Root scalar comparison also catches in-place C++/script edits. Parented
         // actors still resolve the hierarchy on every sync, including parent motion.
         if(!cached){r.pose=transform;r.poseKey=transformKey;r.poseInput=root?[...o.position,...o.rotation,...o.scale]:null;}
         r.object=o;r.p=p;if(p)(space.pRecords??=new Set()).add(r);else space.pRecords?.delete(r);if(root)space.childRecords?.delete(r);else(space.childRecords??=new Set()).add(r);
         const kind=typeOf(p),bodyType={static:R.RigidBodyType.Fixed,dynamic:R.RigidBodyType.Dynamic,kinematic:R.RigidBodyType.KinematicPositionBased}[kind];
-        if(r.body.bodyType()!==bodyType){r.body.setBodyType(bodyType,true);space.structure=(space.structure||0)+1;}
-        if(transformKey!==r.lastPose){setPose(r,transform,kind==='kinematic'&&!options.queryOnly);r.lastPose=transformKey;space.structure=(space.structure||0)+1;}
+        if(r.body.bodyType()!==bodyType){r.body.setBodyType(bodyType,true);space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;}
+        if(transformKey!==r.lastPose){setPose(r,transform,kind==='kinematic'&&!options.queryOnly);r.lastPose=transformKey;space.structure=(space.structure||0)+1;if(r.body.isFixed())space.fixedVersion=(space.fixedVersion||0)+1;}
         const configuration=JSON.stringify(p);
         if(configuration!==r.configuration){
           r.body.setLinearDamping(p?.drag??0);r.body.setAngularDamping(p?.angularDrag??.05);
@@ -135,15 +135,15 @@ export function createRigidPhysics(objects,options={}){
           if(p&&!p.isKinematic&&(p.bodyType||'dynamic')==='dynamic'&&(component.type==='EdgeCollider2D'||component.type==='MeshCollider'&&cp.mode==='mesh'))throw Error(o.name+': 동적 강체에는 볼록 메시 또는 다각형 충돌을 사용하세요.');
           let c=r.colliders.get(component.id);
           if(c?.signature===signature){c.object=o;c.component=component;continue;}
-          if(c){space.colliders.delete(c.collider.handle);world.removeCollider(c.collider,true);space.structure=(space.structure||0)+1;}
+          if(c){space.colliders.delete(c.collider.handle);world.removeCollider(c.collider,true);space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;}
           const material=coefficients(cp,R),desc=shape(component,transform.scale,R,dim),center=cp.center.map((v,i)=>v*transform.scale.getComponent(i));
           desc.setTranslation(...center.slice(0,dim)).setSensor(cp.trigger||cp.collisionMode==='query').setFriction(material.friction).setRestitution(material.restitution);
           desc.setFrictionCombineRule(material.frictionCombine).setRestitutionCombineRule(R.CoefficientCombineRule[{average:'Average',min:'Min',max:'Max',multiply:'Multiply'}[material.restitutionCombine]||'Average']);
           desc.setDensity(p?.autoMass?(material.density??1):1);
           desc.setActiveHooks(R.ActiveHooks.FILTER_CONTACT_PAIRS|R.ActiveHooks.FILTER_INTERSECTION_PAIRS).setActiveCollisionTypes(R.ActiveCollisionTypes.ALL);
-          space.structure=(space.structure||0)+1;c={object:o,component,p:cp,signature,collider:world.createCollider(desc,r.body),is2D:dim===2,radius:geometryColliderTypes.has(component.type)?colliderGeometryRadius(component.type,cp,transform.scale.toArray().map(Math.abs)):null};r.colliders.set(component.id,c);space.colliders.set(c.collider.handle,c);r.massDirty=true;
+          space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;c={object:o,component,p:cp,signature,collider:world.createCollider(desc,r.body),is2D:dim===2,radius:geometryColliderTypes.has(component.type)?colliderGeometryRadius(component.type,cp,transform.scale.toArray().map(Math.abs)):null};r.colliders.set(component.id,c);space.colliders.set(c.collider.handle,c);r.massDirty=true;
         }
-        for(const [id,c] of r.colliders)if(!activeColliders.has(id)){space.structure=(space.structure||0)+1;space.colliders.delete(c.collider.handle);world.removeCollider(c.collider,true);r.colliders.delete(id);r.massDirty=true;}
+        for(const [id,c] of r.colliders)if(!activeColliders.has(id)){space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;space.colliders.delete(c.collider.handle);world.removeCollider(c.collider,true);r.colliders.delete(id);r.massDirty=true;}
         if(r.massDirty&&p){
           for(const c of r.colliders.values())c.collider.setDensity(p.autoMass?(coefficients(c.p,R).density??1):1);
           r.body.setAdditionalMass(0,true);r.body.recomputeMassPropertiesFromColliders();
@@ -158,7 +158,7 @@ export function createRigidPhysics(objects,options={}){
         }
         if(options.staticCache&&!p&&root&&r.body.isFixed()&&!sourceOf().some(c=>physicsBodyTypes.has(c.type))){const components=JSON.parse(JSON.stringify(sourceOf())),tiles=o.tileColliders?JSON.parse(JSON.stringify(o.tileColliders)):null;r.staticState={components,tiles,revision:revisionSnapshot(o),componentMatch:runtimeDataMatcher(components,staticMatchers),tileMatch:tiles?runtimeDataMatcher(tiles,staticMatchers):null,collisionEnabled:o.collisionEnabled,materialCount:materials.size};if(options.profile)timing.staticRefreshed++;}else delete r.staticState;
       }
-      const removeBody=(id,r)=>{space.structure=(space.structure||0)+1;for(const c of r.colliders.values())space.colliders.delete(c.collider.handle);space.vehicles?.remove(id);space.deformables?.detachBody(r.body.handle);world.removeRigidBody(r.body);space.bodies.delete(id);space.pRecords?.delete(r);space.childRecords?.delete(r);};
+      const removeBody=(id,r)=>{space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;for(const c of r.colliders.values())space.colliders.delete(c.collider.handle);space.vehicles?.remove(id);space.deformables?.detachBody(r.body.handle);world.removeRigidBody(r.body);space.bodies.delete(id);space.pRecords?.delete(r);space.childRecords?.delete(r);};
       if(partial){for(const o of list){const r=space.bodies.get(o.id);if(r&&r.object===o&&!active.has(o.id))removeBody(o.id,r);}}else for(const [id,r] of space.bodies)if(!active.has(id))removeBody(id,r);
       world.propagateModifiedBodyPositionsToColliders();if(!options.queryOnly)syncJoints(space,dim,[...jointOwners]);space.vehicles?.sync();space.deformables?.sync(deformableObjects);for(const r of space.pRecords??[])mirror(r);
     }
@@ -205,19 +205,21 @@ export function createRigidPhysics(objects,options={}){
     const rotation=body=>dimension===2?new Quaternion().setFromAxisAngle(new Vector3(0,0,1),body.rotation()):new Quaternion().copy(body.rotation()),qa=rotation(j.a),qb=rotation(j.b),a=(dimension===2?j.anchorA.clone().setZ(0):j.anchorA.clone()).applyQuaternion(qa).add(new Vector3(...array(j.a.translation()))),b=(dimension===2?j.anchorB.clone().setZ(0):j.anchorB.clone()).applyQuaternion(qb).add(new Vector3(...array(j.b.translation()))),distance=a.distanceTo(b),angle=j.breakReference.angleTo(qb.invert().multiply(qa))/rad;
     if(p.breakDistance>0&&distance>p.breakDistance||p.breakAngle>0&&angle>p.breakAngle)breakJoint(space,j,p.breakDistance>0&&distance>p.breakDistance?'distance':'angle',{distance,angle,time});
   }}
+  // Fixed contacts depend only on fixed bodies/colliders: a pose change of a moving body does not rebuild them.
+  const fixedKey=space=>space.fixedVersion||0;
   const pairAllowed=(space,a,b)=>{const x=space.colliders.get(a),y=space.colliders.get(b);return !!x&&!!y&&x.object!==y.object&&((x.p.mask>>>0)&(1<<y.p.layer))!==0&&((y.p.mask>>>0)&(1<<x.p.layer))!==0&&!(x.p.collisionMode==='query'&&y.p.collisionMode==='physics'||y.p.collisionMode==='query'&&x.p.collisionMode==='physics');};
   function fixedContacts(space,dim){
     // Rapier skips fixed/fixed event pairs. Preserve editor-authored static
     // trigger/hit events with cached exact tests, using a conservative sweep.
     // Fixed colliders only change when sync changes a body or collider (space.structure); otherwise reuse the contacts.
-    if(space.fixedContacts&&space.fixedStructure===space.structure)return space.fixedContacts;space.fixedStructure=space.structure;
+    if(space.fixedContacts&&space.fixedStructure===fixedKey(space))return space.fixedContacts;space.fixedStructure=fixedKey(space);
     // Flat value list compared element-wise: no per-frame JSON of every static collider.
     const fixed=[...space.colliders.values()].filter(c=>!c.softBody&&c.collider.parent()?.isFixed()),signature=[];
     for(const c of fixed){const t=c.collider.translation(),r=c.collider.rotation();signature.push(c.collider.handle,c.signature,t.x,t.y,t.z??0);if(typeof r==='number')signature.push(r);else signature.push(r.x,r.y,r.z,r.w);}
     const old=space.fixedSignature;if(old&&old.length===signature.length&&old.every((v,i)=>v===signature[i]))return space.fixedContacts;space.fixedSignature=signature;
     const bounds=fixed.map(c=>{const p=c.collider.translation(),shape=c.collider.shape,radius=c.radius??(shape.radius!==undefined?shape.radius+(shape.halfHeight||0):Math.hypot(...array(shape.halfExtents).slice(0,dim)));return {c,position:array(p),radius,min:p.x-radius,max:p.x+radius};}).sort((a,b)=>a.min-b.min),contacts=[];
     for(let i=0;i<bounds.length;i++)for(let j=i+1;j<bounds.length&&bounds[j].min<=bounds[i].max;j++){
-      const a=bounds[i],b=bounds[j],c=a.c,d=b.c;if(!pairAllowed(space,c.collider.handle,d.collider.handle)||Math.hypot(...a.position.slice(0,dim).map((v,k)=>v-b.position[k]))>a.radius+b.radius)continue;
+      const a=bounds[i],b=bounds[j],c=a.c,d=b.c,dx=a.position[0]-b.position[0],dy=a.position[1]-b.position[1],dz=dim===2?0:a.position[2]-b.position[2],reach=a.radius+b.radius;if(dx*dx+dy*dy+dz*dz>reach*reach||!pairAllowed(space,c.collider.handle,d.collider.handle))continue;
       const hit=c.collider.contactCollider(d.collider,0);if(!hit||hit.distance>0)continue;
       contacts.push({a:c.object.id,b:d.object.id,componentA:c.component.id,componentB:d.component.id,colliderA:c,colliderB:d,trigger:c.collider.isSensor()||d.collider.isSensor(),normal:array(hit.normal1).map(v=>-v),position:array(hit.point1),penetration:-hit.distance});
     }contacts.grounds=[];for(const c of contacts)if(!c.trigger){if(c.normal[1]>.5)contacts.grounds.push(c.colliderA);if(c.normal[1]<-.5)contacts.grounds.push(c.colliderB);}space.fixedContacts=contacts;return contacts;

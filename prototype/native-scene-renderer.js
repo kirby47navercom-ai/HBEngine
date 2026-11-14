@@ -291,8 +291,8 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   // its instance rows and bounding spheres go to the host once, the host culls them per frame and draws one instanced
   // draw per set, and the traversal skips the group with one property read. Any announced change, visibility, parent or
   // matrix flag change, leaving the scene, probes, verify mode or static skipping off moves the group back.
-  const HOST_AGE=30,hostOwner={},hostSets=new Map(),hostGroups=new Map(),hostObjects=new WeakMap(),hostChanges=subscribeObjectChanges(),hostPending=new Map(),hostReleased=[],hostSets2D=new Map();let hostSeq2D=[],hostRuns2D=[],hostSeqDirty=false;const hostContainers=new Map(),hostLoose=new Set(),HOST_CONTAINER_CHECK=4096;let hostMoving=false,hostContained=0;
-  let hostActive=false,lastHostProbeKey='',hostSerial=0,hostEpoch=-1,hostFrame=0,hostBuildNode=null,hostForceLeft=0;const hostForce=new Set(),HOST_FORCE_BUDGET=512;
+  const HOST_AGE=30,hostOwner={},hostSets=new Map(),hostGroups=new Map(),hostObjects=new WeakMap(),hostChanges=subscribeObjectChanges(),hostPending=new Map(),hostReleased=[],hostSets2D=new Map();let hostSeq2D=[],hostRuns2D=[],hostSeqDirty=false;const hostToContain=[],hostContainers=new Map(),hostLoose=new Set(),HOST_CONTAINER_CHECK=4096;let hostMoving=false,hostContained=0;
+  let hostActive=false,lastHostProbeKey='',hostSerial=0,hostEpoch=-1,hostFrame=0,hostBuildNode=null,hostForceLeft=0;const hostForce=new Set(),HOST_FORCE_BUDGET=4096;
   function hostDemote(group){const h=hostGroups.get(group);if(!h)return;hostGroups.delete(group);hostLoose.delete(group);group.hbHost=undefined;if(h.contained){hostContained++;renderer.hbHostContained=hostContained;}if(h.contained&&group.parent?.hbHostContainer===hostOwner&&h.parent){hostMoving=true;try{h.parent.add(group);}finally{hostMoving=false;}}for(const m of h.members){m.set.members.delete(m);m.set.dirty=true;m.set.removed=true;if(m.set.twoD)hostSeqDirty=true;}}
   // Host container (one per parent): 3D groups held by host sets move under it, so frame traversals see one child instead
   // of every held group. Anything else added to it goes to its parent; a group removed from it (destroyed or moved by
@@ -309,6 +309,13 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     cursor=n?(cursor+count)%n:0;for(const child of back){if(child.hbHost?.owner===hostOwner)hostDemote(child);else{hostMoving=true;try{(this.parent||parent).add(child);}finally{hostMoving=false;}}}
    };
    hostMoving=true;try{parent.add(c);}finally{hostMoving=false;}hostContainers.set(parent,c);return c;
+  }
+  // Moves this encode's promoted groups under their parents' containers at once: each parent's child list is compacted
+  // in one pass (removing them one by one would shift a list of up to every group per removal).
+  function hostContainPending(){
+   if(!hostToContain.length)return;const byParent=new Map();for(const g of hostToContain.splice(0)){const h=g.hbHost;if(h?.owner!==hostOwner||g.parent!==h.parent)continue;let list=byParent.get(g.parent);if(!list)byParent.set(g.parent,list=new Set());list.add(g);}
+   for(const [parent,moving] of byParent){const container=hostContainer(parent),children=parent.children;let n=0;for(let i=0;i<children.length;i++){const c=children[i];if(!moving.has(c))children[n++]=c;}children.length=n;
+    for(const g of moving){g.parent=container;container.children.push(g);g.hbHost.contained=true;hostContained++;}renderer.hbHostContained=hostContained;}
   }
   function hostKeep(child,h){
    if(child.visible===false||child.matrixWorldNeedsUpdate||child.parent!==h.parent){hostDemote(child);return false;}
@@ -331,7 +338,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     const d=c.entry.draw,m=d.material,row=new Float32Array(44),sphere=nodeWorldSphere(node);row.set(d.world,0);row.set(d.normal,16);row.set(m.color,32);row.set(m.uvX[0].slice(0,3),36);row.set(m.uvY[0].slice(0,3),40);
     const box=reflectionProbeMeshBounds(node,new THREE.Box3()),member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],box:box?box.clone():null,receives:c.receives};set.source??=copyData(d);set.members.add(member);set.dirty=true;h.members.push(member);}
    hostGroups.set(group,h);group.hbHost=h;hostObjects.set(record.object,group);record.drawCache=null;for(const id of ids)promoted.add(id);
-   if(group.parent===h.parent&&h.parent){hostMoving=true;try{hostContainer(h.parent).add(group);}finally{hostMoving=false;}h.contained=true;hostContained++;renderer.hbHostContained=hostContained;}else hostLoose.add(group);
+   if(group.parent===h.parent&&h.parent)hostToContain.push(group);else hostLoose.add(group);
   }
   // Sends changed sets (rows and spheres as bytes), releases empty ones, and adds every set to this frame's draw lists.
   function hostEmit(items,updates,seen,resources,used,shadowRecords,probeDraws){let globalProbes=false;const probeEntries=[];
@@ -399,6 +406,8 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   const STATIC_ENTRY=Symbol('hbStaticEntry'),staticCells=new Map();let cellFrame=0;// unique across renderers: node.hbCellMark is shared by every renderer
   function staticCellKey(sphere){const level=Math.max(4,Math.ceil(Math.log2(Math.max(sphere.radius*4,1)))),size=2**level,c=sphere.center;return level+':'+Math.floor(c.x/size)+','+Math.floor(c.y/size)+','+Math.floor(c.z/size);}
   function admitStatic(node,r,sphere,box,cache,probes){
+   // Host age starts when the group is first seen clean here, so one later forced visit can move it into a host set.
+   if(r.hostT===undefined){const rev=objectRevision(r.object);r.hostT=rev?rev.transform:0;r.hostC=rev?rev.components:0;r.hostSince=hostFrame;}
    let e=node[STATIC_ENTRY];if(e&&e.cell.members.has(node))return;const key=staticCellKey(sphere);let cell=staticCells.get(key);if(!cell)staticCells.set(key,cell={members:new Set(),sphere:new THREE.Sphere(),box:new THREE.Box3(),dirty:true});
    const rev=objectRevision(r.object);e={cell,r,transform:rev?rev.transform:0,components:rev?rev.components:0,cache,probes,epoch:staticDrawEpoch,pre:0,main:0};Object.defineProperty(node,STATIC_ENTRY,{value:e,writable:true,configurable:true,enumerable:false});
    cell.members.add(node);if(cell.dirty)return;if(cell.sphere.isEmpty())cell.sphere.copy(sphere);else cell.sphere.union(sphere);if(box)cell.box.union(box);else cell.boxPartial=true;
@@ -529,6 +538,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
      let oldest=Infinity;for(const p of hostPending.values())oldest=Math.min(oldest,p.since);
      // Draws of groups promoted now leave this frame's lists: their set already holds them.
      const promoted=new Set();if(hostPending.size>=256||hostFrame-oldest>=60)for(const [g,p] of hostPending){if(p.seen===hostFrame){hostPending.delete(g);if(!g.hbHost&&g.parent)hostPromote(p,promoted);}else if(hostFrame-p.seen>120)hostPending.delete(g);}
+     hostContainPending();
      if(promoted.size){let n=0;for(const item of items)if(!promoted.has(item.id))items[n++]=item;items.length=n;for(const record of shadowRecords){let k=0;for(const id of record.casters)if(!promoted.has(id))record.casters[k++]=id;record.casters.length=k;}{let k=0;for(const e of probeDraws)if(!promoted.has(e.id))probeDraws[k++]=e;probeDraws.length=k;}for(const id of promoted)seen.delete(id);}
      if(hostEmit(items,updates,seen,resources,used,shadowRecords,probes.length?probeDraws:null))needsGlobalProbes=true;hostEmit2D(items,updates,seen,resources,used);}
     renderer.hbHostStats={groups:hostGroups.size,sets:hostSets.size,sets2D:hostSets2D.size,runs2D:hostRuns2D.length,pending:hostPending.size};

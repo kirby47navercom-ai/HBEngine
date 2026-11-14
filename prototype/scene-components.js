@@ -143,7 +143,9 @@ componentDefinitions.Rope2D={label:'Rope 2D · 로프',group:'2D 물리',icon:'c
 const readDefaults=new Map(),freezeDefaults=value=>{if(value&&typeof value==='object'){Object.values(value).forEach(freezeDefaults);Object.freeze(value);}return value;};
 // Read-only runtime fallbacks; authoring receives a separate mutable deep copy.
 export function componentDefaultValues(type){if(!readDefaults.has(type))readDefaults.set(type,freezeDefaults(Object.fromEntries(Object.entries(componentDefinitions[type]?.properties||{className:field('클래스','text','MyComponent'),enabled:enabled()}).map(([key,meta])=>[key,structuredClone(meta.default)]))));return readDefaults.get(type);}
-export function componentDefaults(type){return structuredClone(componentDefaultValues(type));}
+// Defaults are JSON-like (plain objects, arrays, primitives): a direct deep copy (other values use structuredClone).
+const plainCopy=v=>{if(v===null||typeof v!=='object')return v;if(Array.isArray(v)){const out=new Array(v.length);for(let i=0;i<v.length;i++)out[i]=plainCopy(v[i]);return out;}if(Object.getPrototypeOf(v)!==Object.prototype)return structuredClone(v);const out={};for(const k in v)out[k]=plainCopy(v[k]);return out;};
+export function componentDefaults(type){return plainCopy(componentDefaultValues(type));}
 export function componentPropertyVisible(type,key,p){
  if(type==='Cloth'){if(['particles','start','end','renderWidth','renderSides','endCaps'].includes(key))return p.topology==='rope';if(['width','height','columns','rows'].includes(key))return p.topology!=='rope';}
  if(type==='ReflectionProxyVolume'){if(key==='size')return p.volumeShape==='box';if(key==='volumeRadius')return p.volumeShape==='sphere';if(key==='offset')return p.volumeShape!=='infinite';}
