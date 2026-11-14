@@ -26,11 +26,11 @@ export const revisionSerialNow=()=>serial;
 // component index's rolling verification, which advances listCacheConfig.epoch (and, once untrusted, every call rebuilds).
 export const listCacheConfig={epoch:0,trusted:true};
 const filteredLists=new WeakMap();
-function cachedList(objects,key,build){if(!Array.isArray(objects))return build(objects);watchObjectList(objects);let byKey=filteredLists.get(objects);if(!byKey)filteredLists.set(objects,byKey=new Map());let c=byKey.get(key);const version=listVersion(objects);
- if(!c||c.version!==version||c.length!==objects.length||c.serial!==componentSerial||c.epoch!==listCacheConfig.epoch||!listCacheConfig.trusted){c={version,length:objects.length,serial:componentSerial,epoch:listCacheConfig.epoch,value:build(objects)};byKey.set(key,c);}return c.value;}
+function cachedList(objects,key,build,components=true){if(!Array.isArray(objects))return build(objects);watchObjectList(objects);let byKey=filteredLists.get(objects);if(!byKey)filteredLists.set(objects,byKey=new Map());let c=byKey.get(key);const version=listVersion(objects);
+ if(!c||c.version!==version||c.length!==objects.length||(components&&c.serial!==componentSerial)||c.epoch!==listCacheConfig.epoch||!listCacheConfig.trusted){c={version,length:objects.length,serial:componentSerial,epoch:listCacheConfig.epoch,value:build(objects)};byKey.set(key,c);}return c.value;}
 export const objectsWhere=(objects,key,test)=>cachedList(objects,key,list=>[...list].filter(test));
-// First object per id (the same object list.find(o=>o.id===id) returns).
-export const objectMapOf=objects=>cachedList(objects,'#byId',list=>{const map=new Map();for(const o of list)if(!map.has(o.id))map.set(o.id,o);return map;});
+// First object per id (the same object list.find(o=>o.id===id) returns); ids do not depend on components.
+export const objectMapOf=objects=>cachedList(objects,'#byId',list=>{const map=new Map();for(const o of list)if(!map.has(o.id))map.set(o.id,o);return map;},false);
 export function touchComponents(o){if(o&&typeof o==='object'){state(o).components=++serial;componentSerial++;notify(o);}}
 export function touchTransform(o){if(o&&typeof o==='object'){state(o).transform=++serial;notify(o);}}
 // Object list versions: membership changes (push/splice/... wrappers, index replacement) bump the list's version.
