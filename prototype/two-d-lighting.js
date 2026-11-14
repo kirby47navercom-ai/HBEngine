@@ -96,9 +96,11 @@ outgoingLight=hbLight2DVolume>=0.0?hbLight2DAccum[0]+hbLight2DAccum[1]+hbLight2D
 
 export class TwoDLighting{
   constructor(){this.texture=null;this.shapeTexture=null;this.count=0;this.uploads=0;this.row=new Float32Array(stride);this.masks=new Uint8Array(8);this.shadows=new TwoDShadows();this.cookies=new LightCookieArray();this.modes=new THREE.Vector4();this.channels=new THREE.Vector4(-1,-1,-1,-1);}
-  prepare(renderer,groups,entries,layers=defaultSortingLayers){
+  // extra (optional): {receivers,layers} of the 2D static block (two-d-rendering.js). Their per-receiver uniforms depend
+  // only on frame-wide values, so they are rewritten only when those change (or when the block is new).
+  prepare(renderer,groups,entries,layers=defaultSortingLayers,extra=null){
     const receivers=[];for(const e of entries){const shading=e.properties.shading;if(shading!=='lit2d'&&shading!=='volume2d')continue;const m=e.node.material;if(Array.isArray(m)?m.some(x=>x.isMeshStandardMaterial):m.isMeshStandardMaterial)receivers.push(e);}
-    if(!receivers.length){this.dispose();return {lights:0,lightBytes:0};}
+    if(!receivers.length&&!extra?.receivers.length){this.dispose();this.lastGlobals=null;return {lights:0,lightBytes:0};}
     let config,priority=-Infinity;for(const group of groups){const p=group.userData.renderer2d;if(group.userData.disposed||!p||p.enabled===false)continue;let shown=true;for(let node=group;node;node=node.parent)if(!node.visible){shown=false;break;}if(shown&&(p.priority??0)>priority){config=p;priority=p.priority??0;}}
     for(let i=0;i<4;i++){this.modes.setComponent(i,lightBlendModes.indexOf(config?.['style'+i+'Mode']??defaultLightBlendStyles[i].mode));this.channels.setComponent(i,lightMaskChannels.indexOf(config?.['style'+i+'Mask']??defaultLightBlendStyles[i].mask)-1);}
     const lights=[];
@@ -107,7 +109,7 @@ export class TwoDLighting{
     lights.sort((a,b)=>Number(b.userData.light2d.lightType==='global')-Number(a.userData.light2d.lightType==='global')||(a.userData.light2d.lightType==='global'?0:(a.userData.light2d.lightOrder||0)-(b.userData.light2d.lightOrder||0)));
     if(lights.length>light2dLimit)throw Error('활성 2D 광원은64개까지예요.');
     const cookies=this.cookies.prepare(lights);
-    const receiverLayers=new Set(receivers.filter(e=>{for(let n=e.node;n;n=n.parent)if(!n.visible)return false;return true;}).map(e=>sortingLayerIndex(layers,e.properties.sortingLayer))),shadows=this.shadows.prepare(renderer,groups,lights,receiverLayers,layers);
+    const receiverLayers=new Set([...receivers.filter(e=>{for(let n=e.node;n;n=n.parent)if(!n.visible)return false;return true;}).map(e=>sortingLayerIndex(layers,e.properties.sortingLayer)),...(extra?.layers||[])]),shadows=this.shadows.prepare(renderer,groups,lights,receiverLayers,layers);
     const capacity=Math.max(1,2**Math.ceil(Math.log2(lights.length||1)));
     if(lights.length&&(!this.texture||this.texture.image.height!==capacity)){
       this.texture?.dispose();this.texture=new THREE.DataTexture(new Float32Array(stride*capacity),width,capacity,THREE.RGBAFormat,THREE.FloatType);this.texture.minFilter=this.texture.magFilter=THREE.NearestFilter;
@@ -132,7 +134,9 @@ export class TwoDLighting{
     if(this.texture&&changed){this.texture.needsUpdate=true;this.uploads++;}
     if(!lights.length){this.texture?.dispose();this.texture=null;}
     this.count=lights.length;
-    for(const entry of receivers)for(const material of Array.isArray(entry.node.material)?entry.node.material:[entry.node.material]){
+    const globals=[...this.modes.toArray(),...this.channels.toArray(),this.texture,this.count,capacity,this.cookies.texture,this.cookies.size,this.shapeTexture,shapeCapacity,this.shadows.atlas?.texture,this.shadows.rects,this.shadows.bounds],same=!!this.lastGlobals&&!extra?.fresh&&globals.every((v,i)=>v===this.lastGlobals[i]);this.lastGlobals=globals;
+    const written=extra&&!same?[...receivers,...extra.receivers]:receivers;
+    for(const entry of written)for(const material of Array.isArray(entry.node.material)?entry.node.material:[entry.node.material]){
       if(!material.isMeshStandardMaterial)continue;
       const u=light2DUniforms(material),mask=material.hbLight2DMaskTexture;u.hbLight2DModes.value=this.modes;u.hbLight2DChannels.value=this.channels;u.hbLight2DMask.value=mask||null;u.hbLight2DHasMask.value=mask?1:0;if(mask){mask.updateMatrix();u.hbLight2DMaskTransform.value.copy(mask.matrix);}
       u.hbLight2DCookies.value=this.cookies.texture;u.hbLight2DCookieSize.value=this.cookies.size||1;u.hbLight2DVolume.value=entry.node.userData.light2dVolume?lights.indexOf(entry.node.parent):-1;
@@ -143,5 +147,5 @@ export class TwoDLighting{
     }
     return {lights:this.count,lightBytes:this.texture?.image.data.byteLength||0,shapeBytes:this.shapeTexture?.image.data.byteLength||0,cookieBytes:this.cookies.texture?.image.data.byteLength||0,cookieUploads:this.cookies.uploads,volumeLights:receivers.filter(e=>e.node.userData.light2dVolume&&e.node.visible).length,lightUploads:this.uploads,...shadows};
   }
-  dispose(){this.texture?.dispose();this.shapeTexture?.dispose();this.texture=this.shapeTexture=null;this.count=0;this.shadows.dispose();this.cookies.dispose();}
+  dispose(){this.lastGlobals=null;this.texture?.dispose();this.shapeTexture?.dispose();this.texture=this.shapeTexture=null;this.count=0;this.shadows.dispose();this.cookies.dispose();}
 }
