@@ -1,3 +1,4 @@
+import {markFrameVisual} from './frame-visuals.js';
 import * as T from 'three';
 const TAU=Math.PI*2;
 // Fixed topology tube over the physical particle chain. No TubeGeometry rebuild,
@@ -7,7 +8,7 @@ export function buildRope3D(group,p,own){
  for(let i=0;i<count;i++){point.fromArray(p.start).lerp(end,i/(count-1)).toArray(rest,i*3);for(let side=0;side<=sides;side++){const at=i*(sides+1)+side;uv[at*2]=i/(count-1);uv[at*2+1]=side/sides;if(i<count-1&&side<sides){const next=side+1,a=at,b=i*(sides+1)+next,c=(i+1)*(sides+1)+side,d=(i+1)*(sides+1)+next;indices.set([a,c,b,b,c,d],(i*sides+side)*6);}}}
  if(caps)for(let end=0;end<2;end++){const center=sideVertices+end*(sides+1);uv.set([.5,.5],center*2);for(let side=0;side<sides;side++){const angle=side/sides*TAU;uv.set([.5+Math.cos(angle)/2,.5+Math.sin(angle)/2],(center+1+side)*2);const a=center+1+side,b=center+1+(side+1)%sides;indices.set(end?[center,a,b]:[center,b,a],(count-1)*sides*6+(end*sides+side)*3);}}
  const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.BufferAttribute(positions,3).setUsage(T.DynamicDrawUsage));geometry.setAttribute('normal',new T.BufferAttribute(normals,3).setUsage(T.DynamicDrawUsage));geometry.setAttribute('uv',new T.BufferAttribute(uv,2));geometry.setIndex(new T.BufferAttribute(indices,1));const material=new T.MeshStandardMaterial({color:0xd3b981,roughness:.8,side:T.DoubleSide}),mesh=new T.Mesh(geometry,material);mesh.userData.cloth=true;mesh.userData.rope3d=true;mesh.userData.hbMotionVectors='perVertex';own(group,geometry);own(group,material);group.add(mesh);
- group.userData.clothMesh={rope:true,p,caps,sideVertices,capDirections:new Float64Array(6),mesh,geometry,rest,points:new Float32Array(count*3),version:null,inverse:new T.Matrix4(),point,tangent:new T.Vector3(),normal:new T.Vector3(),binormal:new T.Vector3(),axis:new T.Vector3()};updateRope3D(group,false);
+ markFrameVisual(group);group.userData.clothMesh={rope:true,p,caps,sideVertices,capDirections:new Float64Array(6),mesh,geometry,rest,points:new Float32Array(count*3),version:null,inverse:new T.Matrix4(),point,tangent:new T.Vector3(),normal:new T.Vector3(),binormal:new T.Vector3(),axis:new T.Vector3()};updateRope3D(group,false);
 }
 export function updateRope3D(group,running){
  const state=group.userData.clothMesh;if(!state?.rope)return;const frame=running?group.userData.clothFrame:null,version=frame?.version??-1;if(state.version===version&&state.generation===frame?.generation)return;const source=frame?.positions||state.rest,{p,points,geometry,point,tangent,normal,binormal,axis}=state;if(source.length!==points.length)return;

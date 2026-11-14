@@ -97,7 +97,7 @@ outgoingLight=hbLight2DVolume>=0.0?hbLight2DAccum[0]+hbLight2DAccum[1]+hbLight2D
 export class TwoDLighting{
   constructor(){this.texture=null;this.shapeTexture=null;this.count=0;this.uploads=0;this.row=new Float32Array(stride);this.masks=new Uint8Array(8);this.shadows=new TwoDShadows();this.cookies=new LightCookieArray();this.modes=new THREE.Vector4();this.channels=new THREE.Vector4(-1,-1,-1,-1);}
   prepare(renderer,groups,entries,layers=defaultSortingLayers){
-    const receivers=entries.filter(e=>['lit2d','volume2d'].includes(e.properties.shading)&&(Array.isArray(e.node.material)?e.node.material:[e.node.material]).some(m=>m.isMeshStandardMaterial));
+    const receivers=[];for(const e of entries){const shading=e.properties.shading;if(shading!=='lit2d'&&shading!=='volume2d')continue;const m=e.node.material;if(Array.isArray(m)?m.some(x=>x.isMeshStandardMaterial):m.isMeshStandardMaterial)receivers.push(e);}
     if(!receivers.length){this.dispose();return {lights:0,lightBytes:0};}
     let config,priority=-Infinity;for(const group of groups){const p=group.userData.renderer2d;if(group.userData.disposed||!p||p.enabled===false)continue;let shown=true;for(let node=group;node;node=node.parent)if(!node.visible){shown=false;break;}if(shown&&(p.priority??0)>priority){config=p;priority=p.priority??0;}}
     for(let i=0;i<4;i++){this.modes.setComponent(i,lightBlendModes.indexOf(config?.['style'+i+'Mode']??defaultLightBlendStyles[i].mode));this.channels.setComponent(i,lightMaskChannels.indexOf(config?.['style'+i+'Mask']??defaultLightBlendStyles[i].mask)-1);}

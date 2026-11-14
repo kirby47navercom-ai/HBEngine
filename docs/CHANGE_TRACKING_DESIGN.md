@@ -280,3 +280,29 @@
 - 검사: 물리 15종, `check-static-groups`, `check-revision-verify-games`(5종 600프레임 불일치 0), `check-native-mesh-batch-gpu`(기본·static), `check-native-sprite-batch-gpu`, `check-native-mesh-batch`, `check-native-sprite-batch`, `check-sprite-material-revision`, `check-object-revision`, `check-two-d-sort-matrices` 통과.
   - `check-native-memory`(위젯 계층)와 `check-native-2d`(업로드 패킷)는 기준 코드에서도 같은 이유로 실패해요.
 - 1만 개에서 남은 큰 비용: 화면 안 오브젝트의 인코딩 콜백·묶음 행 작성, 2D 정렬(모든 스프라이트 매 프레임), 그룹마다 행렬 갱신 호출, 제거 목록 계산(이전 그리기 전체 순회).
+
+### 2D 준비 캐시·프레임 시각 등록 (2026-11-14)
+
+- 구간 측정(게임 안, 1만 개): 2D 준비 `twoD.prepare`가 2D 장면에서 약 26ms, 3D 장면에서도 약 15ms였어요. 3D 장면에 2D 요소가 하나라도 있으면 모든 그룹이 2D 경로를 지나요.
+- **정적 2D 항목 캐시**
+  - 깨끗한 정적 그룹은 정렬 항목(레이어·순서·ID·범위·정렬 기준)을 한 번 만들어 둬요. 리비전·부모·레이어 목록이 바뀌면 다시 만들어요.
+  - 캐시된 프레임은 노드 표시, 머테리얼 수 세기, 카메라 기준 깊이(저장한 위치로 계산)만 해요. y 정렬 깊이는 행렬이 같으니 그대로예요.
+  - 마스크·2D 광원·파티클이 있는 그룹은 캐시하지 않아요.
+- **한 번의 그룹 순회:** 정적 그룹은 2D 여부·광원·정렬 그룹·마스크·그림자 캐스터·2D 렌더러 설정 표시를 캐시해요. 범위·조명·그림자 단계에는 그런 역할이 있거나 정적 기록이 없는 그룹만 넘겨요.
+- **중복 행렬 갱신 생략:** 2D 광원이 있으면 `twoD.prepare`가 장면 행렬을 다시 갱신했어요. 바로 앞 `prepareCamera2D`가 이미 갱신했고 그 사이 프레임 시각 갱신이 없으면 생략해요.
+- **프레임 시각 등록**(`prototype/frame-visuals.js`)
+  - 차량 바퀴·천·로프·월드 LOD·스프라이트 스킨·파티클을 만드는 곳에서 노드를 등록해요.
+  - 준비 루프는 등록된 노드의 오브젝트 그룹만 돌아요.
+- **시간 머테리얼 등록:** `updateTime`이 있는 리소스는 `own()`에서 등록하고, 시간 갱신은 그것만 돌아요.
+- **정적 판정 비용:** `clean()`의 배열 할당을 없앴어요. 리비전 상태 객체를 캐시하고, 단위행렬 비교를 펼쳤어요. 2D 조명 수신자 필터도 클로저 없이 해요.
+- **정적 칸 순회:** 표시된 구성원은 부모의 자식 루프에서 속성 하나로 처리해요(함수 호출 없음). 칸 프레임 번호는 렌더러 사이에서도 겹치지 않게 공용 일련번호를 써요.
+- 검사 `check-two-d-static-entries`(신규)
+  - 캐시 끄기·켜기 80프레임에서 정렬 순서와 결과가 같아요. 카메라 이동, 알린 이동, 정렬 순서 변경, 표시·머테리얼 숨김, y 정렬, 정렬 기준점, 정렬 그룹을 포함해요.
+  - 재사용 23,698회. 깊이 갱신을 끄는 변이는 8프레임에서 실패해요.
+- 측정(1만 개, ABBA 2회, 흔들림 큼)
+  - 2D: 기준 108.2·103.0ms → 68.4·74.2ms
+  - 3D(반사 프로브 장면): 기준 106.2·133.5ms → 60.2·95.9ms
+- 검사 통과: `check-revision-verify-games`, `check-native-mesh-batch-gpu`(기본·static), `check-native-sprite-batch-gpu`, `check-native-mesh-batch`, `check-static-groups`, `check-two-d-static-entries`, `check-two-d-sort-matrices`, `check-2d-lighting`, `check-object-revision`, `check-physics-partial-sync`, `check-vehicle-wheel-bones-3223`, 스프라이트·타일맵 검사들
+  - `check-deformables-mobile-242`: APK 묶기 단계의 `tar` 환경 오류로 끝났어요(로프 갱신 이전 단계).
+- 남은 큰 비용: 그룹·노드마다 남는 메모리 접근(정적 판정, 2D 표시 확인, 행렬 갱신 호출), 매 프레임 2D 전체 정렬, 2D 조명 수신자마다 유니폼 쓰기, 화면 안 3D 그리기 기록 비교.
+  - 1만 개 1ms 목표에는 변하지 않은 오브젝트에 프레임 작업이 0이어야 해요. 다음 단계는 정적 장면 상태를 C++ 호스트에 두고, JS는 바뀐 오브젝트만 보내는 구조예요.

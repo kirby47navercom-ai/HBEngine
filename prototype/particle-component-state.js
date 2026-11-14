@@ -1,3 +1,4 @@
+import {markFrameVisual} from './frame-visuals.js';
 import {Group} from 'three';
 import {objectComponents,componentDefaultValues} from './scene-components.js';
 const emptyComponents=Object.freeze([]);
@@ -9,11 +10,11 @@ export function particleComponent(o,selector=''){
 }
 export const particleProperties=c=>({...componentDefaultValues('ParticleSystem'),...c.properties});
 export function particleRenderGroup(root,component){
- const states=root.userData.particleStates??=new Map();if(states.has(component.id))throw Error('파티클 컴포넌트 표시가 중복돼요: '+component.id);
+ const states=root.userData.particleStates??=new Map();markFrameVisual(root);if(states.has(component.id))throw Error('파티클 컴포넌트 표시가 중복돼요: '+component.id);
  let group=root;if(states.size){group=new Group();group.name='ParticleSystem:'+component.id;group.userData.objectId=root.userData.objectId;group.userData.resources=root.userData.resources??=new Set();Object.defineProperty(group.userData,'disposed',{get:()=>root.userData.disposed});root.add(group);}states.set(component.id,null);return group;
 }
 export function registerParticleVisual(root,group,component,state){
- Object.assign(state,{group,component:component.id,name:component.name||component.id});state.simulation.hbParticleComponent=component.id;state.simulation.hbParticleStates=root.userData.particleStates;state.simulation.hbParticleTrail=state.trail;const mesh=state.mesh||state.simulation.mesh;if(mesh){mesh.userData.particleComponent=component.id;if(group!==root)mesh.userData.draw2dId='particles:'+component.id;}root.userData.particleStates.set(component.id,state);if(!root.userData.particleState)root.userData.particleState=state;return state;
+ Object.assign(state,{group,component:component.id,name:component.name||component.id});state.simulation.hbParticleComponent=component.id;state.simulation.hbParticleStates=root.userData.particleStates;state.simulation.hbParticleTrail=state.trail;const mesh=state.mesh||state.simulation.mesh;if(mesh){mesh.userData.particleComponent=component.id;if(group!==root)mesh.userData.draw2dId='particles:'+component.id;}markFrameVisual(root);root.userData.particleStates.set(component.id,state);if(!root.userData.particleState)root.userData.particleState=state;return state;
 }
 export const particleVisualStates=group=>group?.userData.particleStates?.values()||(group?.userData.particleState?[group.userData.particleState]:[]);
 export const particleDebug=state=>state.debugState?.()||{count:state.particles.length,playing:state.playing,paused:state.paused};

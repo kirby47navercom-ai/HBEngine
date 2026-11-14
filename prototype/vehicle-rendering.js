@@ -1,11 +1,12 @@
+import {markFrameVisual} from './frame-visuals.js';
 import * as T from 'three';
 import {VehicleWheelBones} from './vehicle-wheel-bones.js';
 const y=new T.Vector3(0,1,0),x=new T.Vector3(1,0,0),unit=new T.Vector3(1,1,1);
 function scratch(){return{position:new T.Vector3(),rotation:new T.Quaternion(),scale:new T.Vector3(),center:new T.Vector3(),orientation:new T.Quaternion(),turn:new T.Quaternion(),spin:new T.Quaternion(),inverse:new T.Matrix4(),matrix:new T.Matrix4()};}
 export function buildVehicleWheels(group,p,own){
- group.userData.vehicleProperties=p;if(p.wheels.some(w=>w.visual?.bone)){const bones=new VehicleWheelBones(group,p.wheels);own(group,bones);group.userData.vehicleWheelBones=bones;}
+ group.userData.vehicleProperties=p;if(p.wheels.some(w=>w.visual?.bone)){const bones=new VehicleWheelBones(group,p.wheels);own(group,bones);group.userData.vehicleWheelBones=bones;markFrameVisual(group);}
  if(!p.showWheels)return;const geometry=new T.CylinderGeometry(1,1,1,16,1),tire=new T.MeshStandardMaterial({color:0x25292e,roughness:.94}),rim=new T.MeshStandardMaterial({color:0x99a3ad,metalness:.7,roughness:.34});geometry.rotateZ(Math.PI/2);for(const resource of [geometry,tire,rim])own(group,resource);
- group.userData.vehicleWheels=p.wheels.map(w=>{const root=new T.Group(),mesh=new T.Mesh(geometry,tire),hub=new T.Mesh(geometry,rim);mesh.scale.set(w.width,w.radius,w.radius);hub.scale.set(w.width+.006,w.radius*.48,w.radius*.48);root.add(mesh,hub);root.matrixAutoUpdate=false;root.userData.vehicleWheel=true;group.add(root);return root;});group.userData.vehicleWheelScratch=scratch();group.userData.vehicleVisual={wheelCount:p.wheels.length,contacts:0,speed:0,centers:p.wheels.map(()=>[0,0,0])};
+ markFrameVisual(group);group.userData.vehicleWheels=p.wheels.map(w=>{const root=new T.Group(),mesh=new T.Mesh(geometry,tire),hub=new T.Mesh(geometry,rim);mesh.scale.set(w.width,w.radius,w.radius);hub.scale.set(w.width+.006,w.radius*.48,w.radius*.48);root.add(mesh,hub);root.matrixAutoUpdate=false;root.userData.vehicleWheel=true;group.add(root);return root;});group.userData.vehicleWheelScratch=scratch();group.userData.vehicleVisual={wheelCount:p.wheels.length,contacts:0,speed:0,centers:p.wheels.map(()=>[0,0,0])};
 }
 export function updateVehicleWheels(group,running){
  const state=running?group.userData.vehicleFrame:null;group.userData.vehicleWheelBones?.apply(state,running);const roots=group.userData.vehicleWheels;if(!roots)return;const p=group.userData.vehicleProperties,s=group.userData.vehicleWheelScratch,d=group.userData.vehicleVisual;group.matrixWorld.decompose(s.position,s.rotation,s.scale);s.inverse.copy(group.matrixWorld).invert();let contacts=0;

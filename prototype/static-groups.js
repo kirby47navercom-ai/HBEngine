@@ -33,12 +33,12 @@ function eligible(group,object){
  for(const c of object.components||[])if(!allowedComponents.has(c.type))return false;
  return eligibleNode(group);
 }
-const identity=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
-function identityParent(group){const p=group.parent;if(!p)return false;const e=p.matrixWorld.elements;for(let i=0;i<16;i++)if(e[i]!==identity[i])return false;return true;}
+function identityParent(group){const p=group.parent;if(!p)return false;const e=p.matrixWorld.elements;return e[0]===1&&e[1]===0&&e[2]===0&&e[3]===0&&e[4]===0&&e[5]===1&&e[6]===0&&e[7]===0&&e[8]===0&&e[9]===0&&e[10]===1&&e[11]===0&&e[12]===0&&e[13]===0&&e[14]===0&&e[15]===1;}
 function revisions(object){const r=objectRevision(object);return r?[r.transform,r.components]:[0,0];}
 function clean(r,group){
  if(!staticConfig.enabled||revisionConfig.verify||group.matrixWorldNeedsUpdate)return false;
- const [t,c]=revisions(r.object);
+ // The revision state object of an object is created once and kept (object-revision.js), so it is cached here.
+ const rev=r.rev??=objectRevision(r.object),t=rev?rev.transform:0,c=rev?rev.components:0;
  if(c!==r.eligibleComponents){r.eligible=eligible(group,r.object);r.eligibleComponents=c;}
  return r.eligible&&t===r.updatedTransform&&c===r.updatedComponents&&identityParent(group);
 }

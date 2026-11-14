@@ -29,6 +29,7 @@ import {NativeParticleSimulation} from './native-particles.js';
 import * as THREE from 'three';
 import {createNativeMaterial} from './native-materials.js';
 import {bloomSettings} from './bloom-rendering.js';
+const cellFrames={serial:0};
 
 const clipDepth=new THREE.Matrix4().set(1,0,0,0,0,1,0,0,0,0,.5,.5,0,0,0,1);
 const isDeformed=node=>{if(node.isSkinnedMesh)return true;const morph=node.geometry?.morphAttributes;if(morph)for(const key in morph)if(Object.hasOwn(morph,key)&&morph[key].length)return true;return false;};
@@ -282,12 +283,14 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   function nodeWorldSphere(node){if(node.boundingSphere!==undefined){if(node.boundingSphere===null)node.computeBoundingSphere();worldSphere.copy(node.boundingSphere).applyMatrix4(node.matrixWorld);}else{const geometry=node.geometry;if(geometry.boundingSphere===null)geometry.computeBoundingSphere();worldSphere.copy(geometry.boundingSphere).applyMatrix4(node.matrixWorld);}return worldSphere;}
   // traverseVisible with a subtree skip: same visit order; skip(node) is asked before visiting a visible node.
   // traverseVisible with a subtree skip: same visit order; skip(node) is asked before visiting a visible node.
-  function traverseVisibleSkipping(node,callback,skip,leave){if(node.visible===false||skip(node))return;callback(node);const children=node.children;for(let i=0;i<children.length;i++)traverseVisibleSkipping(children[i],callback,skip,leave);leave?.(node);}
+  // marked(child) (optional) handles a child marked by a static cell this frame without a call per member.
+  function traverseVisibleSkipping(node,callback,skip,leave,mark){if(node.visible===false||skip(node))return;callback(node);const children=node.children;for(let i=0;i<children.length;i++){const child=children[i];if(mark!==undefined&&child.hbCellMark===mark){if(child.visible!==false)skippedMarked(child);continue;}traverseVisibleSkipping(child,callback,skip,leave,mark);}leave?.(node);}
+  let skippedMarked=null;
   // Static cells: clean static groups that were skipped once join a world grid cell (cell size from their radius). Each
   // frame a cell is tested once; when it misses the camera and every shadow frustum, its members that still match their
   // entry (visibility, revisions, parent, draw cache) are marked, and the traversal skips a marked group with a property
   // read, adding the same cached draws in the same order as the per-group skip.
-  const STATIC_ENTRY=Symbol('hbStaticEntry'),staticCells=new Map();let cellFrame=0;
+  const STATIC_ENTRY=Symbol('hbStaticEntry'),staticCells=new Map();let cellFrame=0;// unique across renderers: node.hbCellMark is shared by every renderer
   function staticCellKey(sphere){const level=Math.max(4,Math.ceil(Math.log2(Math.max(sphere.radius*4,1)))),size=2**level,c=sphere.center;return level+':'+Math.floor(c.x/size)+','+Math.floor(c.y/size)+','+Math.floor(c.z/size);}
   function admitStatic(node,r,sphere,box,cache,probes){
    let e=node[STATIC_ENTRY];if(e&&e.cell.members.has(node))return;const key=staticCellKey(sphere);let cell=staticCells.get(key);if(!cell)staticCells.set(key,cell={members:new Set(),sphere:new THREE.Sphere(),box:new THREE.Box3(),dirty:true});
@@ -304,7 +307,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
    for(const [id,cell] of staticCells){
     if(cell.dirty){cell.sphere.makeEmpty();cell.box.makeEmpty();cell.boxPartial=false;for(const node of cell.members){const r=node[STATIC_ENTRY].r,sphere=staticGroupSphere(node,r);if(!sphere){cell.members.delete(node);node[STATIC_ENTRY]=undefined;continue;}if(cell.sphere.isEmpty())cell.sphere.copy(sphere);else cell.sphere.union(sphere);const box=probes?staticGroupBox(node,r):null;if(box)cell.box.union(box);else cell.boxPartial=true;}cell.dirty=false;}
     if(!cell.members.size){staticCells.delete(id);continue;}if(probes&&cell.boxPartial||!offscreen(cell))continue;
-    for(const node of cell.members){const e=node[STATIC_ENTRY];if(staticEntryValid(node,e,probes))e[key]=cellFrame;else{cell.members.delete(node);node[STATIC_ENTRY]=undefined;cell.dirty=true;}}
+    for(const node of cell.members){const e=node[STATIC_ENTRY];if(staticEntryValid(node,e,probes)){e[key]=cellFrame;if(key==='main')node.hbCellMark=cellFrame;}else{cell.members.delete(node);node[STATIC_ENTRY]=undefined;cell.dirty=true;}}
    }
   }
   const identityElements=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],identityWorld=node=>{const e=node.matrixWorld.elements;for(let i=0;i<16;i++)if(e[i]!==identityElements[i])return false;return true;};
@@ -324,7 +327,8 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     // cache (and with probes) the group is visited and its cache recorded (leaveStaticGroup).
     let capture=null;const reuseStatic=drawHistory===defaultDrawHistory;
     // With probes the per-mesh culling uses reflection-probe AABBs, so the group test uses their union (never tighter).
-    const skipStaticGroup=node=>{const marked=node[STATIC_ENTRY];if(marked&&marked.main===cellFrame){const cache=marked.cache;if(cache){for(const id of cache.ids)seen.add(id);for(const entry of cache.probeDraws)probeDraws.push(entry);}staticSkips++;cellSkips++;return true;}
+    skippedMarked=node=>{const cache=node[STATIC_ENTRY].cache;if(cache){for(const id of cache.ids)seen.add(id);for(const entry of cache.probeDraws)probeDraws.push(entry);}staticSkips++;cellSkips++;};
+    const skipStaticGroup=node=>{const marked=node[STATIC_ENTRY];if(marked&&marked.main===cellFrame){skippedMarked(node);return true;}
      if(!node.parent)return false;const r=staticGroupRecord(node),sphere=r&&staticGroupSphere(node,r),box=probes.length&&r?staticGroupBox(node,r):null;if(!sphere||probes.length&&!box)return false;
      let offscreen=box?!frustum.intersectsBox(box):!frustum.intersectsSphere(sphere);if(offscreen)for(const record of shadowRecords)if(box?(!record.sphere||box.distanceToPoint(record.sphere.center)<=record.sphere.radius)&&record.frustum.intersectsBox(box):(!record.sphere||record.sphere.center.distanceTo(sphere.center)<=record.sphere.radius+sphere.radius)&&record.frustum.intersectsSphere(sphere)){offscreen=false;break;}
      const cache=reuseStatic&&r.drawCache?.epoch===staticDrawEpoch&&r.drawCache.transform===r.updatedTransform&&r.drawCache.components===r.updatedComponents?r.drawCache:null;
@@ -332,7 +336,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
      if(offscreen&&!probes.length){staticSkips++;if(staticCellsOn)admitStatic(node,r,sphere,null,null,false);return true;}
      if(reuseStatic&&!capture)capture={node,record:r,ids:[],probeDraws:[]};return false;},
     leaveStaticGroup=node=>{if(capture?.node===node){capture.record.drawCache={epoch:staticDrawEpoch,transform:capture.record.updatedTransform,components:capture.record.updatedComponents,ids:capture.ids,probeDraws:capture.probeDraws};capture=null;}},staticCellsOn=staticConfig.enabled&&!revisionConfig.verify&&reuseStatic,blockOffscreen=b=>{let offscreen=probes.length?!frustum.intersectsBox(b.box):!frustum.intersectsSphere(b.sphere);if(offscreen)for(const record of shadowRecords)if(probes.length?(!record.sphere||b.box.distanceToPoint(record.sphere.center)<=record.sphere.radius)&&record.frustum.intersectsBox(b.box):(!record.sphere||record.sphere.center.distanceTo(b.sphere.center)<=record.sphere.radius+b.sphere.radius)&&record.frustum.intersectsSphere(b.sphere)){offscreen=false;break;}return offscreen;},
-    skipOffscreenOnly=node=>{if(node[STATIC_ENTRY]?.pre===cellFrame)return true;if(probes.length||!node.parent)return false;const sphere=staticGroupSphere(node);return !!sphere&&!frustum.intersectsSphere(sphere);};let staticSkips=0,cellSkips=0;cellFrame++;if(staticCellsOn&&!probes.length)markStaticCells(false,'pre',cell=>!frustum.intersectsSphere(cell.sphere));
+    skipOffscreenOnly=node=>{if(node[STATIC_ENTRY]?.pre===cellFrame)return true;if(probes.length||!node.parent)return false;const sphere=staticGroupSphere(node);return !!sphere&&!frustum.intersectsSphere(sphere);};let staticSkips=0,cellSkips=0;cellFrame=++cellFrames.serial;if(staticCellsOn&&!probes.length)markStaticCells(false,'pre',cell=>!frustum.intersectsSphere(cell.sphere));
     traverseVisibleSkipping(scene,node=>{if(!visible(node)||node.userData.editorHelper)return;if(node.isLight)shadowLights.push(node);else if((node.isMesh||node.isSprite)&&node.receiveShadow&&node.layers.test(camera.layers)&&(probes.length||isDeformed(node)||!node.frustumCulled||node.isSprite||frustum.intersectsObject(node))&&(Array.isArray(node.material)?node.material:[node.material]).some(m=>m?.isMeshStandardMaterial&&m.visible))receivers=true;},skipOffscreenOnly);
     if(receivers)for(const node of shadowLights){const records=nativeShadows(node);if(records.length){shadowIndexes.set(node.uuid,shadowRecords.length+1);shadowRecords.push(...records);}}
     if(staticCellsOn)markStaticCells(!!probes.length,'main',cell=>{const box=probes.length?cell.box:null,sphere=cell.sphere;if(box?frustum.intersectsBox(box):frustum.intersectsSphere(sphere))return false;for(const record of shadowRecords)if(box?(!record.sphere||box.distanceToPoint(record.sphere.center)<=record.sphere.radius)&&record.frustum.intersectsBox(box):(!record.sphere||record.sphere.center.distanceTo(sphere.center)<=record.sphere.radius+sphere.radius)&&record.frustum.intersectsSphere(sphere))return false;return true;});
@@ -393,7 +397,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
         if(retainedEntry&&renderer.hbSpriteBatching!==false&&inView&&!transmissive&&node.isMesh&&!node.isSkinnedMesh&&!skyNodes.has(node)&&batchableSpriteUV(draw))spriteCandidates.set(id,{entry:retainedEntry,geometry});
         used.meshes.add(draw.mesh);draw.maps.forEach(id=>used.textures.add(id));if(draw.program)used.programs.add(draw.program);draw.programMaps?.forEach(id=>used.textures.add(id));stamp??=drawHistory.stamp(id,draw);if(casts.length)shadowCache.draw(id,draw,stamp,!!program?.animated);if(previous.get(id)!==stamp){updates.push(draw);previous.set(id,stamp);}seen.add(id);capture?.ids.push(id);if(skyNodes.has(node))skyDraws.push(id);if(probes.length&&!node.userData.draw2d&&!transmissive){const entry={id,node,deformed,sky:!!properties.sky};probeDraws.push(entry);capture?.probeDraws.push(entry);}for(const record of casts)record.casters.push(id);if((casts.length||probes.length&&!node.userData.draw2d)&&program?.animated)animatedCaster=true;if(inView){at.setFromMatrixPosition(node.matrixWorld);items.push({id,order:node.renderOrder,transparent:material.transparent,transmissive:!!transmissive,depth:at.distanceToSquared(cameraAt)});}
       }
-    },skipStaticGroup,leaveStaticGroup);
+    },skipStaticGroup,leaveStaticGroup,staticCellsOn?cellFrame:undefined);
     renderer.hbStaticSkips=staticSkips;renderer.hbStaticCellSkips=cellSkips;
     const phase=item=>item.transmissive?1:item.transparent?2:0;items.sort((a,b)=>phase(a)-phase(b)||a.order-b.order||(a.transmissive||a.transparent?b.depth-a.depth:a.depth-b.depth)||a.id.localeCompare(b.id));
     linePool.end();
