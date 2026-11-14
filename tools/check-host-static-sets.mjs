@@ -56,7 +56,7 @@ for(const [index,h] of hosts.entries()){
  const listeners=new Set(),bridge={addEventListener:(_,f)=>listeners.add(f),removeEventListener:(_,f)=>listeners.delete(f),postMessage(packet){h.apply(packet.op,JSON.parse(JSON.stringify(packet.data??null)));for(const f of listeners)f({data:{channel:'hb.render',id:packet.id,ok:true,value:packet.op==='frame'?{calls:1,meshes:1,textures:0}:{}}});}};
  const r=await createNativeSceneRenderer({clientWidth:64,clientHeight:64},()=>{},{bridge});r.hbHostStatic=index===1;renderers.push(r);
 }
-let hostGroups=0,setDraws=0,extraCasters=0,leftSets=false,probeFaces=0;
+let contained=0,hostGroups=0,setDraws=0,extraCasters=0,leftSets=false,probeFaces=0;
 for(let frame=0;frame<FRAMES;frame++){
  for(const w of worlds){
   if(frame===100){const o=w.objects[150];o.position=[o.position[0],1,o.position[2]];w.sync(o);}
@@ -64,6 +64,8 @@ for(let frame=0;frame<FRAMES;frame++){
   if(frame===115){w.groups.get('o154').children[0].material.color.set(0xff0000);touchComponents(w.objects[154]);}
   if(frame===120)w.groups.get('o156').removeFromParent();
   if(frame>=130&&frame<150)w.camera.position.x=(frame-130)*.5;
+  // Runtime rebuild: a replacement is added to the old group's parent (the host container when held).
+  if(frame===160){const g=w.groups.get('o170'),parent=g.parent,rep=new THREE.Group();rep.position.copy(g.position);const mesh=new THREE.Mesh(g.children[0].geometry,new THREE.MeshStandardMaterial({color:0x00ff00}));mesh.castShadow=mesh.receiveShadow=true;mesh.uuid='rep-mesh';rep.uuid='rep';rep.add(mesh);parent.remove(g);parent.add(rep);w.groups.set('o170',rep);}
  }
  for(const [i,r] of renderers.entries()){await r.render(worlds[i].scene,worlds[i].camera);await r.hbFinishFrame();}
  const [a,b]=hosts.map(h=>h.state),view=planes(b.vp);
@@ -74,11 +76,12 @@ for(let frame=0;frame<FRAMES;frame++){
    for(const row of ac)assert(bc.has(row),'shadow caster kept frame '+frame);
    const acSet=new Set(ac);for(const id of b.casters[layer]){const d=b.draws.get(id);if(!d.cullSet)continue;const inShadow=rows(b,id,()=>true).filter(row=>visibleRow(shadow,row));for(const row of inShadow)assert(acSet.has(row),'extra caster row only outside the shadow frustum, frame '+frame);extraCasters+=rows(b,id,()=>true).length-inShadow.length;}}}
  if(frame===125){const g=worlds[1].groups;leftSets=['o150','o152','o154','o156'].every(id=>!g.get(id).hbHost)&&renderers[1].hbHostStats.groups>100;}
+ if(frame===150)contained=Math.max(contained,worlds[1].scene.children[0].children.find(c=>c.name==='HBHostStatic')?.children.length||0);
  hostGroups=Math.max(hostGroups,renderers[1].hbHostStats?.groups||0);setDraws=Math.max(setDraws,b.order.filter(id=>id.startsWith('host:')).length);
 }
 assert(hostGroups>=390,'visible and off-screen groups moved into host sets: '+hostGroups);assert(setDraws>0,'main pass draws host sets');
-assert(leftSets,'changed groups left their sets');if(withProbe)assert(probeFaces>0,'probe faces compared');
-const result={hostGroups,setDraws,finalStats:renderers[1].hbHostStats,mainPassDraws:[hosts[0].state.order.length,hosts[1].state.order.length],extraShadowRowsOutsideFrustum:extraCasters,probeFaces};
+assert(leftSets,'changed groups left their sets');assert(contained>100,'held groups moved under the host container: '+contained);if(withProbe)assert(probeFaces>0,'probe faces compared');
+const result={contained,hostGroups,setDraws,finalStats:renderers[1].hbHostStats,mainPassDraws:[hosts[0].state.order.length,hosts[1].state.order.length],extraShadowRowsOutsideFrustum:extraCasters,probeFaces};
 for(const r of renderers)await r.dispose();return result;
 }
 const FRAMES=300,plain=await run(false),probe=await run(true);
