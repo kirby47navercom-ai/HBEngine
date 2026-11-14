@@ -1,3 +1,4 @@
+import {touchTransform,revisionVerify,revisionSnapshot,sameRevision,reportRevisionMismatch} from './object-revision.js';
 import {JointRuntimeRecords} from './joint-runtime-records.js';
 import {validActorScale} from './transform-scale.js';
 import {DeformableWorld} from './deformable-physics.js';
@@ -76,7 +77,10 @@ export function createRigidPhysics(objects,options={}){
       for(const o of objects){
         if(o.poolActive===false)continue;const authoredComponents=objectComponents(o);if(!options.queryOnly&&hasComponentType(authoredComponents,deformableType))deformableObjects.push(o);if(o.kind==='component'||o.kind==='widget')continue;
         const previous=space.bodies.get(o.id),fixed=previous?.staticState,source=options.staticCache?physicsSourceComponents(authoredComponents):null;
-        if(fixed&&previous.object===o&&!o.parentId&&!o.parent&&samePoseInput(previous.poseInput,o)&&fixed.collisionEnabled===o.collisionEnabled&&fixed.materialCount===materials.size&&matchStatic(fixed.componentMatch,fixed.components,source)&&(fixed.tiles===null?!o.tileColliders:matchStatic(fixed.tileMatch,fixed.tiles,o.tileColliders||null))){active.add(o.id);if(options.profile)timing.staticReused++;continue;}
+        const reuse=fixed&&previous.object===o&&!o.parentId&&!o.parent&&samePoseInput(previous.poseInput,o)&&fixed.collisionEnabled===o.collisionEnabled&&fixed.materialCount===materials.size&&matchStatic(fixed.componentMatch,fixed.components,source)&&(fixed.tiles===null?!o.tileColliders:matchStatic(fixed.tileMatch,fixed.tiles,o.tileColliders||null));
+        // Revision verify: unchanged revisions must mean an unchanged static collider (else a writer did not announce).
+        if(revisionVerify&&!reuse&&fixed&&previous.object===o&&!o.parentId&&!o.parent&&fixed.collisionEnabled===o.collisionEnabled&&fixed.materialCount===materials.size&&sameRevision(fixed.revision,o,'components')&&sameRevision(fixed.revision,o,'transform'))reportRevisionMismatch('physicsStatic',o,{pose:!samePoseInput(previous.poseInput,o),components:!matchStatic(fixed.componentMatch,fixed.components,source),tiles:!(fixed.tiles===null?!o.tileColliders:matchStatic(fixed.tileMatch,fixed.tiles,o.tileColliders||null))});
+        if(reuse){active.add(o.id);if(options.profile)timing.staticReused++;continue;}
         const p=properties(o,dim),components=[...authoredComponents,...(o.tileColliders||[])].filter(c=>colliderTypes.has(c.type)&&c.type.endsWith('2D')===(dim===2)&&c.properties?.enabled!==false&&c.properties?.collisionMode!=='none'&&o.collisionEnabled!==false);
         if(!p&&!components.length)continue;active.add(o.id);
         let r=space.bodies.get(o.id);const root=!o.parentId&&!o.parent,cached=root&&samePoseInput(r?.poseInput,o),transform=cached?r.pose:pose(o,objects),transformKey=cached?r.poseKey:JSON.stringify([transform.position.toArray(),transform.rotation.toArray()]);
@@ -123,7 +127,7 @@ export function createRigidPhysics(objects,options={}){
           if(JSON.stringify(velocity)!==r.lastVelocity){r.body.setLinvel(xyz(velocity),true);r.lastVelocity=JSON.stringify(velocity);}
           if(JSON.stringify(angular)!==r.lastAngular){r.body.setAngvel(dim===2?angular[2]:xyz(angular),true);r.lastAngular=JSON.stringify(angular);}
         }
-        if(options.staticCache&&!p&&root&&r.body.isFixed()&&!source.some(c=>physicsBodyTypes.has(c.type))){const components=JSON.parse(JSON.stringify(source)),tiles=o.tileColliders?JSON.parse(JSON.stringify(o.tileColliders)):null;r.staticState={components,tiles,componentMatch:runtimeDataMatcher(components,staticMatchers),tileMatch:tiles?runtimeDataMatcher(tiles,staticMatchers):null,collisionEnabled:o.collisionEnabled,materialCount:materials.size};if(options.profile)timing.staticRefreshed++;}else delete r.staticState;
+        if(options.staticCache&&!p&&root&&r.body.isFixed()&&!source.some(c=>physicsBodyTypes.has(c.type))){const components=JSON.parse(JSON.stringify(source)),tiles=o.tileColliders?JSON.parse(JSON.stringify(o.tileColliders)):null;r.staticState={components,tiles,revision:revisionSnapshot(o),componentMatch:runtimeDataMatcher(components,staticMatchers),tileMatch:tiles?runtimeDataMatcher(tiles,staticMatchers):null,collisionEnabled:o.collisionEnabled,materialCount:materials.size};if(options.profile)timing.staticRefreshed++;}else delete r.staticState;
       }
       for(const [id,r] of space.bodies)if(!active.has(id)){for(const c of r.colliders.values())space.colliders.delete(c.collider.handle);space.vehicles?.remove(id);space.deformables?.detachBody(r.body.handle);world.removeRigidBody(r.body);space.bodies.delete(id);}
       world.propagateModifiedBodyPositionsToColliders();if(!options.queryOnly)syncJoints(space,dim);space.vehicles?.sync();space.deformables?.sync(deformableObjects);for(const r of space.bodies.values())mirror(r);
@@ -208,7 +212,7 @@ export function createRigidPhysics(objects,options={}){
   function updateObjects(){
     const records=[...spaces.values()].flatMap(s=>[...s.bodies.values()]).filter(r=>r.p);
     const depth=o=>{let n=0,at=o;while(at.parent||at.parentId){at=objects.find(v=>v.id===(at.parentId||at.parent));if(!at)break;if(++n>64)throw Error('부모 계층 깊이 제한 초과');}return n;};records.sort((a,b)=>depth(a.object)-depth(b.object));
-    for(const r of records){const parent=(r.object.parentId||r.object.parent)?objects.find(o=>o.id===(r.object.parentId||r.object.parent)):null,parentKey=parent?sceneWorldMatrix(parent,objects).elements.join():null,sleeping=r.body.isFixed()||r.body.isSleeping();if(sleeping&&parentKey===r.lastParentKey){if(!r.lastSleeping)mirror(r);r.lastSleeping=true;continue;}r.lastSleeping=sleeping;r.lastParentKey=parentKey;const position=array(r.body.translation());if(r.dim===2)position[2]=sceneWorldPosition(r.object,objects)[2];setSceneWorldPosition(r.object,position,objects);
+    for(const r of records){const parent=(r.object.parentId||r.object.parent)?objects.find(o=>o.id===(r.object.parentId||r.object.parent)):null,parentKey=parent?sceneWorldMatrix(parent,objects).elements.join():null,sleeping=r.body.isFixed()||r.body.isSleeping();if(sleeping&&parentKey===r.lastParentKey){if(!r.lastSleeping)mirror(r);r.lastSleeping=true;continue;}r.lastSleeping=sleeping;r.lastParentKey=parentKey;const position=array(r.body.translation());if(r.dim===2)position[2]=sceneWorldPosition(r.object,objects)[2];setSceneWorldPosition(r.object,position,objects);touchTransform(r.object);
       const rotation=r.dim===2?new Quaternion().setFromAxisAngle(new Vector3(0,0,1),r.body.rotation()):new Quaternion().copy(r.body.rotation());
       if(parent)rotation.premultiply(pose(parent,objects).rotation.invert());r.object.rotation=new Euler().setFromQuaternion(rotation).toArray().slice(0,3).map(v=>v/rad);
       const p=pose(r.object,objects);r.lastPose=JSON.stringify([p.position.toArray(),p.rotation.toArray()]);mirror(r);options.update?.(r.object);

@@ -90,3 +90,23 @@
 - **사용자 C++·블루프린트:** 모두 `componentSet*`과 상태 반영 한 지점을 지나서 1단계에서 처리돼요.
 - **저장·복제:** 리비전은 심볼 키라 JSON·`structuredClone`에 나타나지 않아요. 복제된 오브젝트는 리비전이 없어 "모름"으로 처리해 전체 비교해요.
 - **편집기:** 편집기 쓰기(app.js, scene-editor 등)는 런타임 소비자와 무관해요. 편집기 플레이 시작 때 리비전을 새로 매겨요.
+
+## 진행 상황
+
+### 1단계 (2026-11-14, 완료)
+
+- `prototype/object-revision.js`
+  - 심볼 키 리비전: `touchComponents`, `touchTransform`, `revisionSnapshot`, `sameRevision`
+  - 신뢰 표시 `revisionTrust`(모두 꺼짐)
+  - 검증 모드 `HB_VERIFY_REVISIONS=1`
+  - 보고서 `HB_REVISION_REPORT` 또는 `HB_REVISION_REPORT_DIR`(프로세스별 파일)
+- 알림을 넣은 한 지점 쓰기:
+  - `tools/run-project.mjs`의 C++ 상태 반영(변환·컴포넌트)
+  - `engine-services.js`의 `componentSet*`(Transform이면 변환도)과 큐 에셋·반사 경계 연산
+  - `physics-world.js`의 물리 결과 위치·회전 쓰기
+- 물리 정적 확인: 스냅샷에 리비전을 함께 저장해요. 검증 모드에서 리비전은 같은데 값이 다르면 `physicsStatic` 보고(자세·컴포넌트·타일 중 무엇인지)를 남겨요. 신뢰 표시가 꺼져 있어 동작은 그대로예요.
+- 검사: `tools/check-object-revision.mjs`
+  - 리비전이 JSON·스프레드·`structuredClone`에 섞이지 않아요.
+  - 알리지 않은 컴포넌트 쓰기와 이동은 보고하고, 알린 쓰기는 보고하지 않아요.
+- 검증 모드 실행(`check-native-backend-fps` 2D·3D, check-native-game, check-native-chain, check-native-lifecycle-263, check-collision-dispatch, check-2d-extensions, check-input-authoring, check-blueprint-2d-1219, check-engine-175/176/179)에서 정적 충돌체 불일치는 0건이었어요.
+  - 이 검사들은 템플릿·UI·애니메이션 쓰기 경로를 정적 충돌체에 거의 쓰지 않아요. 그래서 2단계에서 25개 모듈을 바꾼 뒤 신뢰 표시를 켜기 전에, 게임플레이 템플릿이 들어간 장면으로 검증 모드를 다시 돌려야 해요.
