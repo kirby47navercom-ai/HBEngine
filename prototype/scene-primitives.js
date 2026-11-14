@@ -10,10 +10,13 @@ const grassMaterial = new THREE.MeshStandardMaterial({ color: 0x7f9c61, roughnes
 const paleGrass = new THREE.MeshStandardMaterial({ color: 0xa4b97c, roughness: 1, flatShading: true });
 const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x607851, roughness: 1, flatShading: true });
 const crystalMaterial = new THREE.MeshPhysicalMaterial({ color: 0xc3e3b9, roughness: 0.13, metalness: 0.18, clearcoat: 1, emissive: 0x669853, emissiveIntensity: 0.13, flatShading: true });
+// Built-in parametric geometries are shared by type and parameters (never edited in place; lightmaps swap geometry).
+const sharedGeometries=new Map(),shareable=new Set(['BoxGeometry','CapsuleGeometry','ConeGeometry','CylinderGeometry','DodecahedronGeometry','IcosahedronGeometry','OctahedronGeometry','SphereGeometry','TorusGeometry','PlaneGeometry']);
+function sharedGeometry(geometry){if(!shareable.has(geometry.type))return geometry;const key=geometry.type+JSON.stringify(geometry.parameters);const found=sharedGeometries.get(key);if(found){geometry.dispose();return found;}sharedGeometries.set(key,geometry);pooled.add(geometry);return geometry;}
 const pooled=new Set([surfaceMaterial,stoneMaterial,darkStone,grassMaterial,paleGrass,groundMaterial,crystalMaterial]);let disposed=false;
 
 function mesh(group, geometry, material, position = [0, 0, 0], rotation = [0, 0, 0], scale = [1, 1, 1]) {
-  const resources=group.userData.resources??=new Set();resources.add(geometry);for(const m of Array.isArray(material)?material:[material])if(!pooled.has(m))resources.add(m);
+  geometry=sharedGeometry(geometry);const resources=group.userData.resources??=new Set();if(!pooled.has(geometry))resources.add(geometry);for(const m of Array.isArray(material)?material:[material])if(!pooled.has(m))resources.add(m);
   const m = new THREE.Mesh(geometry, material); m.position.set(...position); m.rotation.set(...rotation); m.scale.set(...scale); m.castShadow = true; m.receiveShadow = true; group.add(m); return m;
 }
 const box = (group, size, material, pos, rot) => mesh(group, new THREE.BoxGeometry(...size), material, pos, rot);

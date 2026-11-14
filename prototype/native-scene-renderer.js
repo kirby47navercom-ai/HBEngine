@@ -306,13 +306,13 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
    // 2D: transparent sprites (no 3D shadow casting) go into ordered 2D sets; other groups must be opaque 3D meshes.
    const twoD=members.every(c=>c.node.userData.draw2d&&c.transparent&&!c.node.castShadow);if(!twoD&&members.some(c=>c.transparent||c.entry.twoD||c.node.userData.draw2d))return;
    const h={owner:hostOwner,parent:group.parent,members:[],seen:hostFrame,twoD};
-   if(twoD){for(const c of members){const node=c.node,key=spriteStateKey(c);let set=hostSets2D.get(key);if(!set)hostSets2D.set(key,set={id:'host2d:'+(++hostSerial),twoD:true,members:new Set(),order:[],dirty:true,version:0,template:null,stamp:'',receives:false});
+   if(twoD){for(const c of members){const node=c.node,key=spriteStateKey(c);let set=hostSets2D.get(key);if(!set)hostSets2D.set(key,set={id:'host2d:'+(++hostSerial),twoD:true,members:new Set(),order:[],dirty:true,version:0,template:null,stamp:'',receives:false,source:null});
      const d=c.entry.draw,m=d.material,row=new Float32Array(44),sphere=nodeWorldSphere(node);row.set(d.world,0);row.set(d.normal,16);row.set(m.color,32);row.set(m.uvX[0].slice(0,3),36);row.set(m.uvY[0].slice(0,3),40);
-     const member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],box:null,draw:d,node,group,receives:c.receives,twoD:true,index:-1};set.members.add(member);set.dirty=true;h.members.push(member);}
+     const member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],box:null,node,group,receives:c.receives,twoD:true,index:-1};set.source??=copyData(d);set.members.add(member);set.dirty=true;h.members.push(member);}
     hostSeqDirty=true;hostGroups.set(group,h);group.hbHost=h;hostObjects.set(record.object,group);record.drawCache=null;for(const id of ids)promoted.add(id);return;}
-   for(const c of members){const node=c.node,key=spriteStateKey(c)+'|'+node.renderOrder+'|'+(node.castShadow?1:0);let set=hostSets.get(key);if(!set)hostSets.set(key,set={id:'host:'+(++hostSerial),members:new Set(),dirty:true,version:0,order:node.renderOrder,casts:!!node.castShadow,receives:false,template:null,stamp:''});
+   for(const c of members){const node=c.node,key=spriteStateKey(c)+'|'+node.renderOrder+'|'+(node.castShadow?1:0);let set=hostSets.get(key);if(!set)hostSets.set(key,set={id:'host:'+(++hostSerial),members:new Set(),dirty:true,version:0,order:node.renderOrder,casts:!!node.castShadow,receives:false,template:null,stamp:'',source:null});
     const d=c.entry.draw,m=d.material,row=new Float32Array(44),sphere=nodeWorldSphere(node);row.set(d.world,0);row.set(d.normal,16);row.set(m.color,32);row.set(m.uvX[0].slice(0,3),36);row.set(m.uvY[0].slice(0,3),40);
-    const box=reflectionProbeMeshBounds(node,new THREE.Box3()),member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],box:box?box.clone():null,draw:d,receives:c.receives};set.members.add(member);set.dirty=true;h.members.push(member);}
+    const box=reflectionProbeMeshBounds(node,new THREE.Box3()),member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],box:box?box.clone():null,receives:c.receives};set.source??=copyData(d);set.members.add(member);set.dirty=true;h.members.push(member);}
    hostGroups.set(group,h);group.hbHost=h;hostObjects.set(record.object,group);record.drawCache=null;for(const id of ids)promoted.add(id);
   }
   // Sends changed sets (rows and spheres as bytes), releases empty ones, and adds every set to this frame's draw lists.
@@ -321,7 +321,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     if(!set.members.size){hostSets.delete(key);if(set.sent)hostReleased.push(set.id);continue;}
     if(set.dirty){const list=[...set.members],rows=new Float32Array(list.length*44),spheres=new Float32Array(list.length*4);let receives=false;set.box=new THREE.Box3();for(let i=0;i<list.length;i++){rows.set(list[i].row,i*44);spheres.set(list[i].sphere,i*4);receives||=list[i].receives;if(set.box&&list[i].box)set.box.union(list[i].box);else set.box=null;}
      resources.push({kind:'cullSet',id:set.id,rows:uploadBytes(new Uint8Array(rows.buffer)),spheres:uploadBytes(new Uint8Array(spheres.buffer))});
-     const draw=copyData(list[0].draw);draw.id=set.id;draw.world=identity16.slice();draw.normal=identity16.slice();draw.material.color=[1,1,1,1];draw.material.uvX=draw.material.uvX.map(()=>[1,0,0,0]);draw.material.uvY=draw.material.uvY.map(()=>[0,1,0,0]);delete draw.instances;draw.cullSet=set.id;
+     const draw=copyData(set.source);draw.id=set.id;draw.world=identity16.slice();draw.normal=identity16.slice();draw.material.color=[1,1,1,1];draw.material.uvX=draw.material.uvX.map(()=>[1,0,0,0]);draw.material.uvY=draw.material.uvY.map(()=>[0,1,0,0]);delete draw.instances;draw.cullSet=set.id;
      set.template=draw;set.receives=receives;set.version++;set.dirty=false;set.sent=true;set.stamp=drawHistory.stamp(set.id,draw)+':'+set.version;updates.push(draw);previous.set(set.id,set.stamp);}
     const draw=set.template;seen.add(set.id);used.meshes.add(draw.mesh);for(const id of draw.maps)if(id)used.textures.add(id);if(draw.lightmap)used.textures.add(draw.lightmap);
     if(set.casts&&shadowRecords.length){shadowCache.draw(set.id,draw,set.stamp,false);for(const record of shadowRecords)record.casters.push(set.id);}
@@ -350,7 +350,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
    for(const set of hostSets2D.values()){
     if(set.dirty){const list=set.order,rows=new Float32Array(list.length*44),spheres=new Float32Array(list.length*4);let receives=false;for(let i=0;i<list.length;i++){rows.set(list[i].row,i*44);spheres.set(list[i].sphere,i*4);receives||=list[i].receives;}
      resources.push({kind:'cullSet',id:set.id,rows:uploadBytes(new Uint8Array(rows.buffer)),spheres:uploadBytes(new Uint8Array(spheres.buffer))});
-     const draw=copyData(list[0].draw);draw.world=identity16.slice();draw.normal=identity16.slice();draw.material.color=[1,1,1,1];draw.material.uvX=draw.material.uvX.map(()=>[1,0,0,0]);draw.material.uvY=draw.material.uvY.map(()=>[0,1,0,0]);delete draw.instances;draw.cullSet=set.id;
+     const draw=copyData(set.source);draw.world=identity16.slice();draw.normal=identity16.slice();draw.material.color=[1,1,1,1];draw.material.uvX=draw.material.uvX.map(()=>[1,0,0,0]);draw.material.uvY=draw.material.uvY.map(()=>[0,1,0,0]);delete draw.instances;draw.cullSet=set.id;
      set.template=draw;set.receives=receives;set.version++;set.dirty=false;set.sent=true;set.stamp='';}
     // Frame-wide 2D values (light count, light textures, masks) are read again from a member material, as a visit would.
     const material=set.order[0].node.material,t=set.template.twoD;if(t){const settings=native2DSettings(material,size),maps=native2DTextures(material).map(x=>textureResource(x,resources)),mask=material.hbLight2DMaskTexture,maskSampling=mask?(mask.magFilter===THREE.NearestFilter?1:0)+wrap(mask.wrapS)*2+wrap(mask.wrapT)*6:16;

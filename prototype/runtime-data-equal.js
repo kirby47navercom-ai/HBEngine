@@ -16,6 +16,9 @@ export function sameRuntimeData(snapshot,current){
 
 // Native/headless JSON ownership is explicit. Keys are quoted as data, never
 // executable input. Keep code size/cache bounded; unusual schemas use JSON.
+// Built outside runtimeDataMatcher so the returned closure does not keep that call's context (its generated source
+// strings) alive: one matcher is kept per static object.
+const matcherOf=(snapshot,test,immutable)=>({snapshot,test,accepts:value=>test.runtimeShape(value,immutable)});
 export function runtimeDataMatcher(snapshot,cache,immutable){
  let fields=0;const statements=[],shape=[];
  function emit(value,a,b,depth){
@@ -25,5 +28,5 @@ export function runtimeDataMatcher(snapshot,cache,immutable){
   const keys=Object.keys(value);shape.push(`if(!${a}||typeof ${a}!=="object"||Array.isArray(${a})||Object.keys(${a}).length!==${keys.length})return false;`);statements.push(`if(!${b}||typeof ${b}!=="object"||Array.isArray(${b})||Object.keys(${b}).length!==${keys.length})return false;`);
   for(const key of keys){const quoted=JSON.stringify(key);shape.push(`if(!Object.hasOwn(${a},${quoted}))return false;`);statements.push(`if(!Object.hasOwn(${b},${quoted}))return false;`);emit(value[key],a+'['+quoted+']',b+'['+quoted+']',depth+1);}
  }
- try{emit(snapshot,'a','b',0);const source=statements.join('')+'return true;',shapeSource=shape.join('')+'return true;',key=source+'\n'+shapeSource;if(source.length>65536||shapeSource.length>65536)return null;let test=cache.get(key);if(!test){test=new Function('a','b',source);test.runtimeShape=new Function('a','immutable',shapeSource);if(cache.size>=16)cache.delete(cache.keys().next().value);cache.set(key,test);}return {snapshot,test,accepts:value=>test.runtimeShape(value,immutable)};}catch{return null;}
+ try{emit(snapshot,'a','b',0);const source=statements.join('')+'return true;',shapeSource=shape.join('')+'return true;',key=source+'\n'+shapeSource;if(source.length>65536||shapeSource.length>65536)return null;let test=cache.get(key);if(!test){test=new Function('a','b',source);test.runtimeShape=new Function('a','immutable',shapeSource);if(cache.size>=16)cache.delete(cache.keys().next().value);cache.set(key,test);}return matcherOf(snapshot,test,immutable);}catch{return null;}
 }
