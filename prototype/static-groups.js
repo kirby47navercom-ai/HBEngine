@@ -9,12 +9,15 @@
 // difference is reported and switches static skipping off (every group updates and is visited again).
 import {Object3D,Sphere,Box3} from 'three';
 import {reflectionProbeMeshBounds} from './reflection-probe-bounds.js';
-import {objectRevision,reportRevisionMismatch,revisionConfig} from './object-revision.js';
+import {objectRevision,reportRevisionMismatch,revisionConfig,subscribeObjectChanges} from './object-revision.js';
 
 export const staticConfig={enabled:true,sampleEvery:64,skippedUpdates:0};
 const records=new WeakMap(),baseUpdate=Object3D.prototype.updateMatrixWorld,baseBeforeRender=Object3D.prototype.onBeforeRender;
 const allowedComponents=new Set(['Transform','SpriteRenderer','MeshRenderer','BoxCollider','SphereCollider','CapsuleCollider','MeshCollider','BoxCollider2D','CircleCollider2D','CapsuleCollider2D','PolygonCollider2D','EdgeCollider2D','Rigidbody','Rigidbody2D']);
-let samples=0;
+let samples=0,changes=null,knownEpoch=0;const objectRecords=new WeakMap();
+// Known-clean records: a record found clean stays known until its object announces a change (subscription), its parent
+// changes or it really updates; the revision check is then skipped. Unannounced moves are still caught by sampling.
+function drain(){if(changes.size>100000){knownEpoch++;changes.clear();return;}for(const o of changes){const list=objectRecords.get(o);if(list)for(const r of list)r.known=-1;}changes.clear();}
 
 function eligibleNode(node,root=node){
  if(node!==root&&records.has(node))return false;// another object's group inside: its own revisions move it
@@ -37,14 +40,16 @@ function identityParent(group){const p=group.parent;if(!p)return false;const e=p
 function revisions(object){const r=objectRevision(object);return r?[r.transform,r.components]:[0,0];}
 function clean(r,group){
  if(!staticConfig.enabled||revisionConfig.verify||group.matrixWorldNeedsUpdate)return false;
+ if(changes.size)drain();if(r.known===knownEpoch&&r.knownParent===group.parent)return identityParent(group);
  // The revision state object of an object is created once and kept (object-revision.js), so it is cached here.
  const rev=r.rev??=objectRevision(r.object),t=rev?rev.transform:0,c=rev?rev.components:0;
  if(c!==r.eligibleComponents){r.eligible=eligible(group,r.object);r.eligibleComponents=c;}
- return r.eligible&&t===r.updatedTransform&&c===r.updatedComponents&&identityParent(group);
+ const ok=r.eligible&&t===r.updatedTransform&&c===r.updatedComponents;r.known=ok?knownEpoch:-1;r.knownParent=group.parent;
+ return ok&&identityParent(group);
 }
 function snapshot(group){const out=[];group.traverse(n=>out.push(n,n.matrixWorld.elements.slice()));return out;}
 function staticUpdateMatrixWorld(force){
- const r=records.get(this);
+ const r=this.hbStaticRecord;
  if(r&&clean(r,this)){
   if(++samples%staticConfig.sampleEvery!==0){this.matrixWorldNeedsUpdate=false;staticConfig.skippedUpdates++;return;}
   const before=snapshot(this);baseUpdate.call(this,force);
@@ -52,18 +57,19 @@ function staticUpdateMatrixWorld(force){
   return;
  }
  baseUpdate.call(this,force);
- if(r){[r.updatedTransform,r.updatedComponents]=revisions(r.object);r.sphereValid=r.boxValid=false;}
+ if(r){[r.updatedTransform,r.updatedComponents]=revisions(r.object);r.sphereValid=r.boxValid=false;r.known=-1;}
 }
 // Called by the runtime for each object's visual root.
 export function watchStaticGroup(group,object){
- if(!group||records.has(group))return;
- records.set(group,{object,eligible:false,eligibleComponents:-1,updatedTransform:-1,updatedComponents:-1,sphere:new Sphere(),sphereValid:false,box:new Box3(),boxValid:false});
+ if(!group||records.has(group))return;changes??=subscribeObjectChanges();
+ const record={object,known:-1,knownParent:null,eligible:false,eligibleComponents:-1,updatedTransform:-1,updatedComponents:-1,sphere:new Sphere(),sphereValid:false,box:new Box3(),boxValid:false};records.set(group,record);let list=objectRecords.get(object);if(!list)objectRecords.set(object,list=[]);list.push(record);
+ Object.defineProperty(group,'hbStaticRecord',{value:record,writable:true,configurable:true,enumerable:false});
  Object.defineProperty(group,'updateMatrixWorld',{value:staticUpdateMatrixWorld,writable:true,configurable:true,enumerable:false});
 }
 const part=new Sphere();
 // Bounding sphere of a clean group (world space, every mesh), or null when the group is not clean/eligible.
 // Clean record of a watched group (eligible and unchanged since its last real update), or null.
-export function staticGroupRecord(group){const r=records.get(group);return r&&clean(r,group)?r:null;}
+export function staticGroupRecord(group){const r=group.hbStaticRecord;return r&&clean(r,group)?r:null;}
 export function staticGroupSphere(group,r=staticGroupRecord(group)){
  if(!r)return null;
  if(!r.sphereValid){r.sphere.makeEmpty();group.traverse(n=>{if(!n.isMesh)return;const g=n.geometry;if(g.boundingSphere===null)g.computeBoundingSphere();part.copy(g.boundingSphere).applyMatrix4(n.matrixWorld);if(r.sphere.isEmpty())r.sphere.copy(part);else r.sphere.union(part);});r.sphereValid=true;}

@@ -17,7 +17,9 @@ const subscribers=new Set();
 export function subscribeObjectChanges(){const changes=new Set();subscribers.add(changes);return changes;}
 export function unsubscribeObjectChanges(changes){subscribers.delete(changes);}
 function notify(o){for(const changes of subscribers)changes.add(o);}
-export function touchComponents(o){if(o&&typeof o==='object'){state(o).components=++serial;notify(o);}}
+// componentSerial counts every announced component change (a cheap "did any object's components change" test).
+let componentSerial=0;export const componentRevisionSerial=()=>componentSerial;
+export function touchComponents(o){if(o&&typeof o==='object'){state(o).components=++serial;componentSerial++;notify(o);}}
 export function touchTransform(o){if(o&&typeof o==='object'){state(o).transform=++serial;notify(o);}}
 // Object list versions: membership changes (push/splice/... wrappers, index replacement) bump the list's version.
 const LIST=Symbol('hbListVersion');

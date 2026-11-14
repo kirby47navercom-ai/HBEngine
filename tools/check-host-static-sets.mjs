@@ -2,7 +2,7 @@
 // groups into host sets. A test host expands both main passes (B's sets culled with the same sphere/plane test as the
 // C++ bridge) and every frame the opaque main-pass draws must be equal; B's shadow casters must contain A's, and any
 // extra B caster row must lie outside that shadow frustum. Announced moves, hiding, material changes, removal and camera
-// moves must keep the result equal, and B must actually draw through sets.
+// moves must keep the result equal, and B must actually draw through sets (off-screen groups too, via forced visits).
 // node tools/check-host-static-sets.mjs
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
@@ -44,8 +44,8 @@ for(const [index,h] of hosts.entries()){
  const listeners=new Set(),bridge={addEventListener:(_,f)=>listeners.add(f),removeEventListener:(_,f)=>listeners.delete(f),postMessage(packet){h.apply(packet.op,JSON.parse(JSON.stringify(packet.data??null)));for(const f of listeners)f({data:{channel:'hb.render',id:packet.id,ok:true,value:packet.op==='frame'?{calls:1,meshes:1,textures:0}:{}}});}};
  const r=await createNativeSceneRenderer({clientWidth:64,clientHeight:64},()=>{},{bridge});r.hbHostStatic=index===1;renderers.push(r);
 }
-let hostGroups=0,setDraws=0,extraCasters=0,leftSets=false;
-for(let frame=0;frame<170;frame++){
+const FRAMES=300;let hostGroups=0,setDraws=0,extraCasters=0,leftSets=false;
+for(let frame=0;frame<FRAMES;frame++){
  for(const w of worlds){
   if(frame===100){const o=w.objects[150];o.position=[o.position[0],1,o.position[2]];w.sync(o);}
   if(frame===110)w.groups.get('o152').visible=false;
@@ -63,7 +63,7 @@ for(let frame=0;frame<170;frame++){
  if(frame===125){const g=worlds[1].groups;leftSets=['o150','o152','o154','o156'].every(id=>!g.get(id).hbHost)&&renderers[1].hbHostStats.groups>100;}
  hostGroups=Math.max(hostGroups,renderers[1].hbHostStats?.groups||0);setDraws=Math.max(setDraws,b.order.filter(id=>id.startsWith('host:')).length);
 }
-assert(hostGroups>100,'groups moved into host sets: '+hostGroups);assert(setDraws>0,'main pass draws host sets');
+assert(hostGroups>=390,'visible and off-screen groups moved into host sets: '+hostGroups);assert(setDraws>0,'main pass draws host sets');
 const ra=renderers[1].hbHostStats;assert(leftSets,'changed groups left their sets');
-console.log(JSON.stringify({passed:true,frames:170,hostGroups,setDraws,finalStats:ra,mainPassDraws:[hosts[0].state.order.length,hosts[1].state.order.length],extraShadowRowsOutsideFrustum:extraCasters,scope:'Host static sets vs per-object draws: identical culled main pass, shadow casters a superset only outside each shadow frustum.'}));
+console.log(JSON.stringify({passed:true,frames:FRAMES,hostGroups,setDraws,finalStats:ra,mainPassDraws:[hosts[0].state.order.length,hosts[1].state.order.length],extraShadowRowsOutsideFrustum:extraCasters,scope:'Host static sets vs per-object draws: identical culled main pass, shadow casters a superset only outside each shadow frustum.'}));
 for(const r of renderers)await r.dispose();

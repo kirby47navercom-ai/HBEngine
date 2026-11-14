@@ -1,5 +1,11 @@
 import {OrthographicCamera,PerspectiveCamera,Vector3,Vector4,Color} from 'three';
 import {enabledComponent} from './scene-components.js';
+import {listVersion,watchObjectList,componentRevisionSerial} from './object-revision.js';
+// Camera candidates per object list (objects without a component list, or with a Camera component), rebuilt when the
+// list or any announced component changes, and every 64th call; the selection loop below reads only these.
+const cameraCandidates=new WeakMap();
+function candidatesOf(objects){if(!Array.isArray(objects))return objects;watchObjectList(objects);let c=cameraCandidates.get(objects);const version=listVersion(objects),serial=componentRevisionSerial();
+ if(!c||c.version!==version||c.serial!==serial||++c.calls%64===0){const list=[];for(const o of objects)if(!o.components||o.components.some(x=>x.type==='Camera'))list.push(o);c={version,serial,calls:c?.calls||0,list};cameraCandidates.set(objects,c);}return c.list;}
 
 export function cameraFieldOfView(p){return p.physicalLens?2*Math.atan((p.sensorHeight??24)/(2*(p.focalLength??50)))*180/Math.PI:p.fieldOfView;}
 export function createGameCamera(p){const camera=p.projection==='orthographic'?new OrthographicCamera(-p.orthographicSize,p.orthographicSize,p.orthographicSize,-p.orthographicSize,p.near,p.far):new PerspectiveCamera(cameraFieldOfView(p),1,p.near,p.far);camera.userData.cameraProperties=p;return camera;}
@@ -31,7 +37,7 @@ function prepareCamera(selected,size,current){
 }
 export function selectGameCamera(objects,size,override,current,{single=false}={}){
   const entries=[];let selected;
-  for(const object of objects){
+  for(const object of candidatesOf(objects)){
     if(object.visible===false)continue;const authored=object.components?enabledComponent(object,'Camera'):null;if(object.components&&!authored)continue;
     const camera=current(object.id)?.userData.gameCamera,properties=authored||camera?.userData.cameraProperties;if(!camera||!properties)continue;
     const entry={object,camera,properties};entries.push(entry);if(override?object.id===override:properties.main&&(!selected||properties.priority>selected.properties.priority))selected=entry;

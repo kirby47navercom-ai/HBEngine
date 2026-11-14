@@ -1,4 +1,4 @@
-import {touchTransform,revisionTrust,revisionConfig,revisionSnapshot,sameRevision,reportRevisionMismatch,subscribeObjectChanges,unsubscribeObjectChanges,listVersion,watchObjectList} from './object-revision.js';
+import {componentRevisionSerial,touchTransform,revisionTrust,revisionConfig,revisionSnapshot,sameRevision,reportRevisionMismatch,subscribeObjectChanges,unsubscribeObjectChanges,listVersion,watchObjectList} from './object-revision.js';
 import {JointRuntimeRecords} from './joint-runtime-records.js';
 import {validActorScale} from './transform-scale.js';
 import {DeformableWorld} from './deformable-physics.js';
@@ -64,7 +64,7 @@ export function createRigidPhysics(objects,options={}){
     forcedChecks.clear();for(let i=0;i<SAMPLE_WINDOW&&i<objects.length;i++){const o=objects[(sampleCursor+i)%objects.length];if(!set.has(o)){set.add(o);forcedChecks.add(o);}}sampleCursor=(sampleCursor+SAMPLE_WINDOW)%Math.max(1,objects.length);
     // Same visiting order as a full sync (object list order): creation order decides collider handles and contact order.
     return [...set].sort((a,b)=>objectIndex.get(a)-objectIndex.get(b));
-  }let revisionSamples=0,prepared=false,disposed=false,accumulator=0,elapsed=0,lastContacts=[],nonce=0,writingBatch=false;const pendingSpaces=new Map(),timing={syncCalls:0,staticReused:0,staticRefreshed:0,syncMs:0,stepMs:0,solverMs:0};
+  }let revisionSamples=0,lastDimensionScan=null,dimensionScans=0,prepared=false,disposed=false,accumulator=0,elapsed=0,lastContacts=[],nonce=0,writingBatch=false;const pendingSpaces=new Map(),timing={syncCalls:0,staticReused:0,staticRefreshed:0,syncMs:0,stepMs:0,solverMs:0};
   const alive=()=>{if(disposed)throw Error('종료된 물리 월드예요.');};
   const properties=(o,dim)=>{
     const type=dim===2?'Rigidbody2D':'Rigidbody',movement=enabledComponent(o,dim===2?'CharacterMovement2D':'CharacterMovement');
@@ -327,7 +327,8 @@ export function createRigidPhysics(objects,options={}){
     async ready(dimension){
       alive();if(dimension!==undefined&&dimension!==2&&dimension!==3)throw Error('물리 차원은 2 또는 3이에요.');
       const required=new Set(options.lazyDimensions?[options.dimension===2?2:3]:[2,3]);if(dimension!==undefined)required.add(dimension);
-      if(options.lazyDimensions&&!options.queryOnly&&spaces.size<2)for(const o of objects){for(const c of objectComponents(o))if(colliderTypes.has(c.type)||physicsBodyTypes.has(c.type))required.add(c.type.endsWith('2D')?2:3);if(o.tileColliders)for(const c of o.tileColliders)if(colliderTypes.has(c.type))required.add(c.type.endsWith('2D')?2:3);if(required.size===2)break;}
+      // The scan for another dimension's colliders repeats only when the list or announced components changed (or every 64th call).
+      watchObjectList(objects);const scanKey=listVersion(objects)+':'+componentRevisionSerial();if(options.lazyDimensions&&!options.queryOnly&&spaces.size<2&&(scanKey!==lastDimensionScan||++dimensionScans%64===0)){lastDimensionScan=scanKey;for(const o of objects){for(const c of objectComponents(o))if(colliderTypes.has(c.type)||physicsBodyTypes.has(c.type))required.add(c.type.endsWith('2D')?2:3);if(o.tileColliders)for(const c of o.tileColliders)if(colliderTypes.has(c.type))required.add(c.type.endsWith('2D')?2:3);if(required.size===2)break;}}
       const missing=[...required].filter(dim=>!spaces.has(dim));if(!missing.length){prepared=true;return state;}
       try{await Promise.all(missing.map(dim=>{if(!pendingSpaces.has(dim))pendingSpaces.set(dim,loadPhysicsLibraries([dim]).then(([R])=>{alive();const world=new R.World(xyz(gravity));world.timestep=dt;world.numSolverIterations=options.solverIterations??8;const space={R,world,bodies:new Map(),colliders:new Map(),joints:new JointRuntimeRecords(),eventQueue:new R.EventQueue(true),anchorBody:world.createRigidBody(R.RigidBodyDesc.fixed())};if(dim===3)space.vehicles=new RaycastVehicles(space,objects,{queryOnly:options.queryOnly,frame:options.vehicleFrame});space.deformables=new DeformableWorld(space,objects,{queryOnly:options.queryOnly,type:dim===2?'Rope2D':'Cloth',frame:dim===2?options.ropeFrame:options.clothFrame});space.hooks={filterContactPair:(a,b)=>pairAllowed(space,a,b)?R.SolverFlags.COMPUTE_IMPULSE:null,filterIntersectionPair:(a,b)=>pairAllowed(space,a,b)};spaces.set(dim,space);}));return pendingSpaces.get(dim);}));alive();if(spaces.size===2){const two=spaces.get(2),three=spaces.get(3);spaces.clear();spaces.set(2,two);spaces.set(3,three);}prepared=true;sync();return state;}catch(error){state.dispose();throw error;}
     },
