@@ -8,7 +8,7 @@ const visible=node=>{for(let p=node;p;p=p.parent)if(!p.visible)return false;retu
 const nearestGroup=node=>{for(let p=node;p;p=p.parent)if(p.userData.sortingGroup)return p;return null;};
 // Sorting entries of clean static groups (static-groups.js), rebuilt when the group's revisions, parent or the sorting
 // layer list change. A cached frame reads only node visibility, materials and (for camera sorting) the cached position.
-const staticEntries=new WeakMap(),staticFlags=new WeakMap(),worldAt=new THREE.Vector3();
+const HOST_HELD={},staticEntries=new WeakMap(),staticFlags=new WeakMap(),worldAt=new THREE.Vector3();
 export const twoDStaticStats={reusedGroups:0};
 const compare=(a,b)=>a.layer-b.layer||a.order-b.order||a.depth-b.depth||(a.owner===b.owner?a.tileOrder-b.tileOrder:0)||(a.id<b.id?-1:a.id>b.id?1:0);
 export function spriteEffectsUniforms(material){
@@ -41,8 +41,10 @@ export class TwoDRendering{
     // One pass over the groups: clean static groups reuse their cached 2D flags (has 2D content, 2D light, sorting group,
     // mask, caster, 2D renderer settings); only groups with such roles or without a static record are passed on to the
     // scope, lighting and shadow passes (static groups never have them: their components are not static-eligible).
-    const records=new Array(groups.length),special=[];let any2D=false,lit=false;
-    for(let i=0;i<groups.length;i++){const g=groups[i],r=staticGroupRecord(g);records[i]=r;let fl=r&&staticFlags.get(g);if(fl&&(fl.transform!==r.updatedTransform||fl.components!==r.updatedComponents||fl.parent!==g.parent))fl=null;
+    // Groups held by host static sets (node.hbHost) are static plain meshes without 2D nodes; when the renderer does not
+    // read display colour counts (renderer.hbDisplayCounts===false) they are skipped without any per-group check.
+    const records=new Array(groups.length),special=[],countDisplay=renderer.hbDisplayCounts!==false;let any2D=false,lit=false;
+    for(let i=0;i<groups.length;i++){const g=groups[i];if(!countDisplay&&g.hbHost!==undefined){records[i]=HOST_HELD;continue;}const r=staticGroupRecord(g);records[i]=r;let fl=r&&staticFlags.get(g);if(fl&&(fl.transform!==r.updatedTransform||fl.components!==r.updatedComponents||fl.parent!==g.parent))fl=null;
       if(!fl){const u=g.userData;fl={transform:r?.updatedTransform,components:r?.updatedComponents,parent:g.parent,has2D:!!(u.sortingGroup||u.maskMesh||u.spriteMesh||u.tilemapResources||g.children.some(n=>n.userData.draw2d)),light:!!u.light2d,special:!!(u.sortingGroup||u.light2d||u.renderer2d||u.maskMesh||u.shadowCaster2d)};if(r)staticFlags.set(g,fl);}
       if(fl.has2D)any2D=true;if(fl.light)lit=true;if(!r||fl.special)special.push(g);}
     if(!any2D){this.dispose();return {renderers:0,maskPasses:0,maskTargets:0};}
@@ -56,8 +58,8 @@ export class TwoDRendering{
     for(const group of special){if(group.userData.disposed)continue;const p=group.userData.sortingGroup;if(p)scopes.set(group,{...item(group,p,group.userData.objectId||group.uuid),children:[]});}
     for(const [group,scope] of scopes){const parent=group.userData.sortingGroup.sortAtRoot?null:nearestGroup(group.parent);(scopes.get(parent)?.children||roots).push(scope);}
     const countMaterials=node=>{for(const material of Array.isArray(node.material)?node.material:[node.material]){if(!material.visible)continue;if(material.toneMapped===false)++displayCounts.display;else ++displayCounts.sceneColors;displayCounts.transparent||=material.transparent;}};
-    for(let index=0;index<groups.length;index++){const group=groups[index];if(group.userData.disposed)continue;
-      const record=records[index];let cached=record&&staticEntries.get(group);
+    for(let index=0;index<groups.length;index++){const group=groups[index],record=records[index];if(record===HOST_HELD||group.userData.disposed)continue;
+      let cached=record&&staticEntries.get(group);
       if(cached&&(cached.transform!==record.updatedTransform||cached.components!==record.updatedComponents||cached.parent!==group.parent||cached.layers!==layers))cached=null;
       if(cached){twoDStaticStats.reusedGroups++;for(const info of cached.nodes){if(info.node.material&&visible(info.node))countMaterials(info.node);const entry=info.entry;if(!entry)continue;
         if(info.position)entry.depth=camera.isOrthographicCamera?-worldAt.copy(info.position).sub(cameraPosition).dot(direction):-info.position.distanceToSquared(cameraPosition);
