@@ -291,9 +291,9 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   // its instance rows and bounding spheres go to the host once, the host culls them per frame and draws one instanced
   // draw per set, and the traversal skips the group with one property read. Any announced change, visibility, parent or
   // matrix flag change, leaving the scene, probes, verify mode or static skipping off moves the group back.
-  const HOST_AGE=30,hostOwner={},hostSets=new Map(),hostGroups=new Map(),hostObjects=new WeakMap(),hostChanges=subscribeObjectChanges(),hostPending=new Map(),hostReleased=[],hostSets2D=new Map();let hostSeq2D=[],hostRuns2D=[],hostSeqDirty=false;const hostContainers=new Map(),hostLoose=new Set(),HOST_CONTAINER_CHECK=4096;let hostMoving=false;
+  const HOST_AGE=30,hostOwner={},hostSets=new Map(),hostGroups=new Map(),hostObjects=new WeakMap(),hostChanges=subscribeObjectChanges(),hostPending=new Map(),hostReleased=[],hostSets2D=new Map();let hostSeq2D=[],hostRuns2D=[],hostSeqDirty=false;const hostContainers=new Map(),hostLoose=new Set(),HOST_CONTAINER_CHECK=4096;let hostMoving=false,hostContained=0;
   let hostActive=false,lastHostProbeKey='',hostSerial=0,hostEpoch=-1,hostFrame=0,hostBuildNode=null,hostForceLeft=0;const hostForce=new Set(),HOST_FORCE_BUDGET=512;
-  function hostDemote(group){const h=hostGroups.get(group);if(!h)return;hostGroups.delete(group);hostLoose.delete(group);group.hbHost=undefined;if(h.contained&&group.parent?.hbHostContainer===hostOwner&&h.parent){hostMoving=true;try{h.parent.add(group);}finally{hostMoving=false;}}for(const m of h.members){m.set.members.delete(m);m.set.dirty=true;if(m.set.twoD)hostSeqDirty=true;}}
+  function hostDemote(group){const h=hostGroups.get(group);if(!h)return;hostGroups.delete(group);hostLoose.delete(group);group.hbHost=undefined;if(h.contained){hostContained++;renderer.hbHostContained=hostContained;}if(h.contained&&group.parent?.hbHostContainer===hostOwner&&h.parent){hostMoving=true;try{h.parent.add(group);}finally{hostMoving=false;}}for(const m of h.members){m.set.members.delete(m);m.set.dirty=true;m.set.removed=true;if(m.set.twoD)hostSeqDirty=true;}}
   // Host container (one per parent): 3D groups held by host sets move under it, so frame traversals see one child instead
   // of every held group. Anything else added to it goes to its parent; a group removed from it (destroyed or moved by
   // runtime code) leaves its sets. Its matrix update checks held groups (all of them up to HOST_CONTAINER_CHECK, then a
@@ -331,16 +331,20 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     const d=c.entry.draw,m=d.material,row=new Float32Array(44),sphere=nodeWorldSphere(node);row.set(d.world,0);row.set(d.normal,16);row.set(m.color,32);row.set(m.uvX[0].slice(0,3),36);row.set(m.uvY[0].slice(0,3),40);
     const box=reflectionProbeMeshBounds(node,new THREE.Box3()),member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],box:box?box.clone():null,receives:c.receives};set.source??=copyData(d);set.members.add(member);set.dirty=true;h.members.push(member);}
    hostGroups.set(group,h);group.hbHost=h;hostObjects.set(record.object,group);record.drawCache=null;for(const id of ids)promoted.add(id);
-   if(group.parent===h.parent&&h.parent){hostMoving=true;try{hostContainer(h.parent).add(group);}finally{hostMoving=false;}h.contained=true;}else hostLoose.add(group);
+   if(group.parent===h.parent&&h.parent){hostMoving=true;try{hostContainer(h.parent).add(group);}finally{hostMoving=false;}h.contained=true;hostContained++;renderer.hbHostContained=hostContained;}else hostLoose.add(group);
   }
   // Sends changed sets (rows and spheres as bytes), releases empty ones, and adds every set to this frame's draw lists.
   function hostEmit(items,updates,seen,resources,used,shadowRecords,probeDraws){let globalProbes=false;const probeEntries=[];
    for(const [key,set] of hostSets){
     if(!set.members.size){hostSets.delete(key);if(set.sent)hostReleased.push(set.id);continue;}
+    // Only additions since the last send: append the new rows (members keep insertion order).
+    if(set.dirty&&set.sent&&!set.removed&&set.members.size>set.sentCount){const list=[];let k=0;for(const m of set.members)if(k++>=set.sentCount)list.push(m);const rows=new Float32Array(list.length*44),spheres=new Float32Array(list.length*4);
+     for(let i=0;i<list.length;i++){rows.set(list[i].row,i*44);spheres.set(list[i].sphere,i*4);set.receives||=list[i].receives;if(set.box&&list[i].box)set.box.union(list[i].box);else set.box=null;}
+     resources.push({kind:'cullSetAppend',id:set.id,rows:uploadBytes(new Uint8Array(rows.buffer)),spheres:uploadBytes(new Uint8Array(spheres.buffer))});set.sentCount=set.members.size;set.version++;set.dirty=false;set.stamp=drawHistory.stamp(set.id,set.template)+':'+set.version;updates.push(set.template);previous.set(set.id,set.stamp);}
     if(set.dirty){const list=[...set.members],rows=new Float32Array(list.length*44),spheres=new Float32Array(list.length*4);let receives=false;set.box=new THREE.Box3();for(let i=0;i<list.length;i++){rows.set(list[i].row,i*44);spheres.set(list[i].sphere,i*4);receives||=list[i].receives;if(set.box&&list[i].box)set.box.union(list[i].box);else set.box=null;}
      resources.push({kind:'cullSet',id:set.id,rows:uploadBytes(new Uint8Array(rows.buffer)),spheres:uploadBytes(new Uint8Array(spheres.buffer))});
      const draw=copyData(set.source);draw.id=set.id;draw.world=identity16.slice();draw.normal=identity16.slice();draw.material.color=[1,1,1,1];draw.material.uvX=draw.material.uvX.map(()=>[1,0,0,0]);draw.material.uvY=draw.material.uvY.map(()=>[0,1,0,0]);delete draw.instances;draw.cullSet=set.id;
-     set.template=draw;set.receives=receives;set.version++;set.dirty=false;set.sent=true;set.stamp=drawHistory.stamp(set.id,draw)+':'+set.version;updates.push(draw);previous.set(set.id,set.stamp);}
+     set.template=draw;set.receives=receives;set.version++;set.dirty=false;set.sent=true;set.removed=false;set.sentCount=list.length;set.stamp=drawHistory.stamp(set.id,draw)+':'+set.version;updates.push(draw);previous.set(set.id,set.stamp);}
     const draw=set.template;seen.add(set.id);used.meshes.add(draw.mesh);for(const id of draw.maps)if(id)used.textures.add(id);if(draw.lightmap)used.textures.add(draw.lightmap);
     if(set.casts&&shadowRecords.length){shadowCache.draw(set.id,draw,set.stamp,false);for(const record of shadowRecords)record.casters.push(set.id);}
     items.push({id:set.id,order:set.order,transparent:false,transmissive:false,depth:-1e30});globalProbes||=!!draw.globalProbes;

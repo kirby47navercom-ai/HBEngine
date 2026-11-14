@@ -56,7 +56,7 @@ export function createRigidPhysics(objects,options={}){
   const FULL_SYNC_EVERY=30,SAMPLE_WINDOW=64,partialSyncEnabled=options.partialSync===true&&!options.queryOnly,pendingChanges=partialSyncEnabled?subscribeObjectChanges():null,forcedChecks=new Set();if(partialSyncEnabled)watchObjectList(objects);let sampleCursor=0;
   let objectIndex=null,lastListVersion=-1,lastListLength=-1,lastMaterialCount=-1,syncsSinceFull=0;
   function syncList(){
-    let partial=!!pendingChanges&&!!objectIndex&&revisionTrust.physics&&!revisionConfig.verify&&listVersion(objects)===lastListVersion&&objects.length===lastListLength&&materials.size===lastMaterialCount&&syncsSinceFull<FULL_SYNC_EVERY&&![...spaces.values()].some(s=>s.deformables?.items?.size);
+    let partial=!!pendingChanges&&!!objectIndex&&revisionTrust.physics&&!revisionConfig.verify&&listVersion(objects)===lastListVersion&&objects.length===lastListLength&&materials.size===lastMaterialCount&&syncsSinceFull<Math.max(FULL_SYNC_EVERY,Math.ceil(objects.length/SAMPLE_WINDOW))&&![...spaces.values()].some(s=>s.deformables?.items?.size);
     if(partial)for(const o of pendingChanges){const components=objectComponents(o);if(hasComponentType(components,'Cloth')||hasComponentType(components,'Rope2D')){partial=false;break;}}
     if(!partial){syncsSinceFull=0;forcedChecks.clear();pendingChanges?.clear();objectIndex=new Map();objects.forEach((o,i)=>objectIndex.set(o,i));lastListVersion=listVersion(objects);lastListLength=objects.length;lastMaterialCount=materials.size;return objects;}
     syncsSinceFull++;const set=new Set();for(const o of pendingChanges)if(objectIndex.has(o))set.add(o);pendingChanges.clear();
