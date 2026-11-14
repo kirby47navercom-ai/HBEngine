@@ -24,7 +24,7 @@ import {GeometryGIWorld} from './geometry-gi.js';
 import {screenEffectsEnabled,ScreenFrameState} from './screen-effects.js';
 import {native2DSettings,native2DTextures,native2DTarget,nativeMaskMaterial,nativeShadowMaterials,nativeOffscreenDraw} from './native-2d.js';
 import {postProcessActive,postProcessSettings,packedPostProcess,lookupSize} from './post-processing.js';
-import {collectReflectionProbes,selectReflectionProbes,reflectionProbeDrawBindings,probeCaptureViews,probeCaptureKey} from './reflection-probes.js';
+import {collectReflectionProbes,selectReflectionProbes,reflectionProbeDrawBindings,probeCaptureViews,probeCaptureKey,probeCaptureProperties} from './reflection-probes.js';
 import {NativeParticleSimulation} from './native-particles.js';
 import * as THREE from 'three';
 import {createNativeMaterial} from './native-materials.js';
@@ -291,7 +291,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   // its instance rows and bounding spheres go to the host once, the host culls them per frame and draws one instanced
   // draw per set, and the traversal skips the group with one property read. Any announced change, visibility, parent or
   // matrix flag change, leaving the scene, probes, verify mode or static skipping off moves the group back.
-  const HOST_AGE=30,hostOwner={},hostSets=new Map(),hostGroups=new Map(),hostObjects=new WeakMap(),hostChanges=subscribeObjectChanges(),hostPending=new Map(),hostReleased=[];let hostActive=false,hostSerial=0,hostEpoch=-1,hostFrame=0,hostBuildNode=null,hostForceLeft=0;const hostForce=new Set(),HOST_FORCE_BUDGET=512;
+  const HOST_AGE=30,hostOwner={},hostSets=new Map(),hostGroups=new Map(),hostObjects=new WeakMap(),hostChanges=subscribeObjectChanges(),hostPending=new Map(),hostReleased=[];let hostActive=false,lastHostProbeKey='',hostSerial=0,hostEpoch=-1,hostFrame=0,hostBuildNode=null,hostForceLeft=0;const hostForce=new Set(),HOST_FORCE_BUDGET=512;
   function hostDemote(group){const h=hostGroups.get(group);if(!h)return;hostGroups.delete(group);group.hbHost=undefined;for(const m of h.members){m.set.members.delete(m);m.set.dirty=true;}}
   function hostKeep(child,h){
    if(child.visible===false||child.matrixWorldNeedsUpdate||child.parent!==h.parent){hostDemote(child);return false;}
@@ -306,21 +306,24 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
    const h={owner:hostOwner,parent:group.parent,members:[],seen:hostFrame};
    for(const c of members){const node=c.node,key=spriteStateKey(c)+'|'+node.renderOrder+'|'+(node.castShadow?1:0);let set=hostSets.get(key);if(!set)hostSets.set(key,set={id:'host:'+(++hostSerial),members:new Set(),dirty:true,version:0,order:node.renderOrder,casts:!!node.castShadow,receives:false,template:null,stamp:''});
     const d=c.entry.draw,m=d.material,row=new Float32Array(44),sphere=nodeWorldSphere(node);row.set(d.world,0);row.set(d.normal,16);row.set(m.color,32);row.set(m.uvX[0].slice(0,3),36);row.set(m.uvY[0].slice(0,3),40);
-    const member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],draw:d,receives:c.receives};set.members.add(member);set.dirty=true;h.members.push(member);}
+    const box=reflectionProbeMeshBounds(node,new THREE.Box3()),member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],box:box?box.clone():null,draw:d,receives:c.receives};set.members.add(member);set.dirty=true;h.members.push(member);}
    hostGroups.set(group,h);group.hbHost=h;hostObjects.set(record.object,group);record.drawCache=null;for(const id of ids)promoted.add(id);
   }
   // Sends changed sets (rows and spheres as bytes), releases empty ones, and adds every set to this frame's draw lists.
-  function hostEmit(items,updates,seen,resources,used,shadowRecords){
+  function hostEmit(items,updates,seen,resources,used,shadowRecords,probeDraws){let globalProbes=false;const probeEntries=[];
    for(const [key,set] of hostSets){
     if(!set.members.size){hostSets.delete(key);if(set.sent)hostReleased.push(set.id);continue;}
-    if(set.dirty){const list=[...set.members],rows=new Float32Array(list.length*44),spheres=new Float32Array(list.length*4);let receives=false;for(let i=0;i<list.length;i++){rows.set(list[i].row,i*44);spheres.set(list[i].sphere,i*4);receives||=list[i].receives;}
+    if(set.dirty){const list=[...set.members],rows=new Float32Array(list.length*44),spheres=new Float32Array(list.length*4);let receives=false;set.box=new THREE.Box3();for(let i=0;i<list.length;i++){rows.set(list[i].row,i*44);spheres.set(list[i].sphere,i*4);receives||=list[i].receives;if(set.box&&list[i].box)set.box.union(list[i].box);else set.box=null;}
      resources.push({kind:'cullSet',id:set.id,rows:uploadBytes(new Uint8Array(rows.buffer)),spheres:uploadBytes(new Uint8Array(spheres.buffer))});
      const draw=copyData(list[0].draw);draw.id=set.id;draw.world=identity16.slice();draw.normal=identity16.slice();draw.material.color=[1,1,1,1];draw.material.uvX=draw.material.uvX.map(()=>[1,0,0,0]);draw.material.uvY=draw.material.uvY.map(()=>[0,1,0,0]);delete draw.instances;draw.cullSet=set.id;
      set.template=draw;set.receives=receives;set.version++;set.dirty=false;set.sent=true;set.stamp=drawHistory.stamp(set.id,draw)+':'+set.version;updates.push(draw);previous.set(set.id,set.stamp);}
     const draw=set.template;seen.add(set.id);used.meshes.add(draw.mesh);for(const id of draw.maps)if(id)used.textures.add(id);if(draw.lightmap)used.textures.add(draw.lightmap);
     if(set.casts&&shadowRecords.length){shadowCache.draw(set.id,draw,set.stamp,false);for(const record of shadowRecords)record.casters.push(set.id);}
-    items.push({id:set.id,order:set.order,transparent:false,transmissive:false,depth:-1e30});
+    items.push({id:set.id,order:set.order,transparent:false,transmissive:false,depth:-1e30});globalProbes||=!!draw.globalProbes;
+    // Probe captures draw every row of a set whose member union box meets the face (rows outside are clipped).
+    if(probeDraws)probeEntries.push({id:set.id,set,sky:false,deformed:false,node:null});
    }
+   if(probeEntries.length)probeDraws.unshift(...probeEntries);return globalProbes;
   }
   // Static cells: clean static groups that were skipped once join a world grid cell (cell size from their radius). Each
   // frame a cell is tested once; when it misses the camera and every shadow frustum, its members that still match their
@@ -380,7 +383,10 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     skipOffscreenOnly=node=>{if(node[STATIC_ENTRY]?.pre===cellFrame)return true;if(probes.length||!node.parent)return false;const sphere=staticGroupSphere(node);return !!sphere&&!frustum.intersectsSphere(sphere);};let staticSkips=0,cellSkips=0;cellFrame=++cellFrames.serial;if(staticCellsOn&&!probes.length)markStaticCells(false,'pre',cell=>!frustum.intersectsSphere(cell.sphere));
     hostFrame=cellFrame;
     // Other camera contexts traverse host groups normally; anything else that rules sets out moves every group back.
-    const hostAllowed=staticCellsOn&&!probes.length&&renderer.hbSpriteBatching!==false&&renderer.hbHostStatic!==false;hostActive=hostAllowed&&reuseStatic;if(!hostAllowed&&reuseStatic&&hostGroups.size){for(const g of [...hostGroups.keys()])hostDemote(g);hostPending.clear();}
+    // Probe bindings held in sets depend on probe placement/influence, not on capture settings: a change of the former
+    // moves every group back (its bindings are rebuilt on the next visit).
+    const hostProbeKey=probes.length?JSON.stringify(probes.map(({group,p,...rest})=>{const q={...p};for(const k of probeCaptureProperties)delete q[k];return [rest,q];})):'';if(hostProbeKey!==lastHostProbeKey){lastHostProbeKey=hostProbeKey;if(reuseStatic&&hostGroups.size){for(const g of [...hostGroups.keys()])hostDemote(g);hostPending.clear();}}
+    const hostAllowed=staticCellsOn&&renderer.hbSpriteBatching!==false&&renderer.hbHostStatic!==false;hostActive=hostAllowed&&reuseStatic;if(!hostAllowed&&reuseStatic&&hostGroups.size){for(const g of [...hostGroups.keys()])hostDemote(g);hostPending.clear();}
     traverseVisibleSkipping(scene,node=>{if(!visible(node)||node.userData.editorHelper)return;if(node.isLight)shadowLights.push(node);else if((node.isMesh||node.isSprite)&&node.receiveShadow&&node.layers.test(camera.layers)&&(probes.length||isDeformed(node)||!node.frustumCulled||node.isSprite||frustum.intersectsObject(node))&&(Array.isArray(node.material)?node.material:[node.material]).some(m=>m?.isMeshStandardMaterial&&m.visible))receivers=true;},skipOffscreenOnly);
     if(hostActive&&!receivers)for(const set of hostSets.values())if(set.receives&&set.members.size){receivers=true;break;}
     if(receivers)for(const node of shadowLights){const records=nativeShadows(node);if(records.length){shadowIndexes.set(node.uuid,shadowRecords.length+1);shadowRecords.push(...records);}}
@@ -453,8 +459,8 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
      let oldest=Infinity;for(const p of hostPending.values())oldest=Math.min(oldest,p.since);
      // Draws of groups promoted now leave this frame's lists: their set already holds them.
      const promoted=new Set();if(hostPending.size>=256||hostFrame-oldest>=60)for(const [g,p] of hostPending){if(p.seen===hostFrame){hostPending.delete(g);if(!g.hbHost&&g.parent)hostPromote(p,promoted);}else if(hostFrame-p.seen>120)hostPending.delete(g);}
-     if(promoted.size){let n=0;for(const item of items)if(!promoted.has(item.id))items[n++]=item;items.length=n;for(const record of shadowRecords){let k=0;for(const id of record.casters)if(!promoted.has(id))record.casters[k++]=id;record.casters.length=k;}for(const id of promoted)seen.delete(id);}
-     hostEmit(items,updates,seen,resources,used,shadowRecords);}
+     if(promoted.size){let n=0;for(const item of items)if(!promoted.has(item.id))items[n++]=item;items.length=n;for(const record of shadowRecords){let k=0;for(const id of record.casters)if(!promoted.has(id))record.casters[k++]=id;record.casters.length=k;}{let k=0;for(const e of probeDraws)if(!promoted.has(e.id))probeDraws[k++]=e;probeDraws.length=k;}for(const id of promoted)seen.delete(id);}
+     if(hostEmit(items,updates,seen,resources,used,shadowRecords,probes.length?probeDraws:null))needsGlobalProbes=true;}
     renderer.hbHostStats={groups:hostGroups.size,sets:hostSets.size,pending:hostPending.size};
     const phase=item=>item.transmissive?1:item.transparent?2:0;items.sort((a,b)=>phase(a)-phase(b)||a.order-b.order||(a.transmissive||a.transparent?b.depth-a.depth:a.depth-b.depth)||a.id.localeCompare(b.id));
     linePool.end();
@@ -469,7 +475,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     const probeIds=new Set(probes.map(p=>p.id));for(const id of probeCache.keys())if(!probeIds.has(id))probeCache.delete(id);
     data.probes=probes.map(probe=>{
       const p=probe.p,key=probeCaptureKey(probe,[lights,ambient,bg.toArray(),scene.userData.resolvedEnvironment]),old=probeCache.get(probe.id),refresh=old!==key||p.refreshMode==='onChange'&&(probeSceneChanged||data.shadowRefresh);
-      const record={id:probe.id,size:p.resolution,bounces:p.bounces,refresh};if(refresh){record.eye=[...probe.center,1];record.clear=[...bg.toArray(),1];record.faces=probeCaptureViews(probe).map(view=>{const f=new THREE.Frustum().setFromProjectionMatrix(view.projection);return {viewProjection:clipDepth.clone().multiply(view.projection).toArray(),draws:probeDraws.filter(d=>{if(p.excludeOwner&&d.node.userData.objectId===probe.owner)return false;if(d.sky||d.deformed||!d.node.frustumCulled)return true;const b=reflectionProbeMeshBounds(d.node,probeBounds);return b?f.intersectsBox(b):f.intersectsObject(d.node);}).map(d=>d.id)};});probeCache.set(probe.id,key);}return record;
+      const record={id:probe.id,size:p.resolution,bounces:p.bounces,refresh};if(refresh){record.eye=[...probe.center,1];record.clear=[...bg.toArray(),1];record.faces=probeCaptureViews(probe).map(view=>{const f=new THREE.Frustum().setFromProjectionMatrix(view.projection);return {viewProjection:clipDepth.clone().multiply(view.projection).toArray(),draws:probeDraws.filter(d=>{if(d.set)return !d.set.box||f.intersectsBox(d.set.box);if(p.excludeOwner&&d.node.userData.objectId===probe.owner)return false;if(d.sky||d.deformed||!d.node.frustumCulled)return true;const b=reflectionProbeMeshBounds(d.node,probeBounds);return b?f.intersectsBox(b):f.intersectsObject(d.node);}).map(d=>d.id)};});probeCache.set(probe.id,key);}return record;
     });
     const globalBindings=needsGlobalProbes?selectReflectionProbes(probes,null,null,Infinity,probeCandidateIndex):[];if(JSON.stringify(globalBindings)!==globalProbeStamp)data.globalProbeBindings=globalBindings;
     data.skyCapture=skyCapture?{key:skyCapture.key,size:skyCapture.size,intensity:skyCapture.intensity,tint:skyCapture.tint,clear:skyCapture.clear,faces:probeCaptureViews({center:[0,0,0],p:{near:.1,far:1000000}}).map(view=>clipDepth.clone().multiply(view.projection).toArray()),draws:skyDraws}:null;
