@@ -48,8 +48,20 @@ function clean(r,group){
  return ok&&identityParent(group);
 }
 function snapshot(group){const out=[];group.traverse(n=>out.push(n,n.matrixWorld.elements.slice()));return out;}
+// Parent of watched groups (installed on first use when it still has three's own updateMatrixWorld): the same update as
+// Object3D.updateMatrixWorld, but a known-clean static child under an identity parent is skipped in the loop without a
+// call (exactly what its own update would do: the sampled real update still runs one in sampleEvery times).
+function parentUpdateMatrixWorld(force){
+ if(this.matrixAutoUpdate)this.updateMatrix();
+ if(this.matrixWorldNeedsUpdate||force){if(this.matrixWorldAutoUpdate===true){if(this.parent===null)this.matrixWorld.copy(this.matrix);else this.matrixWorld.multiplyMatrices(this.parent.matrixWorld,this.matrix);}this.matrixWorldNeedsUpdate=false;force=true;}
+ const children=this.children,e=this.matrixWorld.elements,fast=staticConfig.enabled&&!revisionConfig.verify&&e[0]===1&&e[1]===0&&e[2]===0&&e[3]===0&&e[4]===0&&e[5]===1&&e[6]===0&&e[7]===0&&e[8]===0&&e[9]===0&&e[10]===1&&e[11]===0&&e[12]===0&&e[13]===0&&e[14]===0&&e[15]===1;
+ if(fast&&changes.size)drain();
+ for(let i=0,l=children.length;i<l;i++){const child=children[i],r=child.hbStaticRecord;
+  if(fast&&r!==undefined&&r.known===knownEpoch&&r.knownParent===this&&!child.matrixWorldNeedsUpdate&&++samples%staticConfig.sampleEvery!==0){staticConfig.skippedUpdates++;continue;}
+  child.updateMatrixWorld(force);}
+}
 function staticUpdateMatrixWorld(force){
- const r=this.hbStaticRecord;
+ const r=this.hbStaticRecord,parent=this.parent;if(parent&&parent.updateMatrixWorld===baseUpdate&&!parent.hbStaticRecord)Object.defineProperty(parent,'updateMatrixWorld',{value:parentUpdateMatrixWorld,writable:true,configurable:true,enumerable:false});
  if(r&&clean(r,this)){
   if(++samples%staticConfig.sampleEvery!==0){this.matrixWorldNeedsUpdate=false;staticConfig.skippedUpdates++;return;}
   const before=snapshot(this);baseUpdate.call(this,force);
