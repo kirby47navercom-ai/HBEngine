@@ -1,3 +1,4 @@
+import {touchComponents} from './object-revision.js';
 import {componentDefaults,enabledComponent} from './scene-components.js';
 import {worldAssetKind,worldCollisionGeometry} from './world-rendering.js';
 import {meshColliderChunks} from './world-assets.js';
@@ -18,12 +19,12 @@ export class WorldCollisionLODs {
  stats(){return {entries:this.geometry.size,estimatedBytes:[...this.geometry.values()].reduce((sum,entry)=>sum+entry.bytes,0),budgetBytes:this.cacheBytes};}
  async update(object,level){
   if(this.disposed)return false;const settings=enabledComponent(object,'WorldCollision'),mesh=enabledComponent(object,'MeshRenderer')?.mesh,previous=this.applied.get(object);
-  if(!settings||!worldAssetKind(mesh)){this.pending.delete(object);if(object.gameplayDebug?.runtimeLOD){delete object.gameplayDebug.runtimeLOD.collisionLevel;delete object.gameplayDebug.runtimeLOD.collisionReason;}if(previous){object.tileColliders=(object.tileColliders||[]).filter(c=>!c.id.startsWith('worldCollider_'));this.applied.delete(object);return true;}return false;}
+  if(!settings||!worldAssetKind(mesh)){this.pending.delete(object);if(object.gameplayDebug?.runtimeLOD){delete object.gameplayDebug.runtimeLOD.collisionLevel;delete object.gameplayDebug.runtimeLOD.collisionReason;}if(previous){touchComponents(object);object.tileColliders=(object.tileColliders||[]).filter(c=>!c.id.startsWith('worldCollider_'));this.applied.delete(object);return true;}return false;}
   const body=enabledComponent(object,'Rigidbody')||enabledComponent(object,'Rigidbody2D'),dynamic=body&&body.bodyType==='dynamic'&&!body.isKinematic,automatic=settings.lodMode==='runtime'&&!dynamic,selected=automatic?level:undefined,signature=JSON.stringify([mesh,selected,settings]);
   if(previous===signature)return false;
   const token=Symbol();this.pending.set(object,token);const chunks=await this.chunks(mesh,selected);if(this.disposed||this.pending.get(object)!==token||object.poolActive===false)return false;
   const {lodMode,...collisionSettings}=settings,colliders=chunks.map((chunk,i)=>({id:'worldCollider_'+i,name:'World geometry',type:'MeshCollider',properties:{...componentDefaults('MeshCollider'),...collisionSettings,vertices:chunk.vertices,indices:chunk.indices,mode:'mesh'}}));
-  object.tileColliders=[...(object.tileColliders||[]).filter(c=>!c.id.startsWith('worldCollider_')),...colliders];this.applied.set(object,signature);
+  touchComponents(object);object.tileColliders=[...(object.tileColliders||[]).filter(c=>!c.id.startsWith('worldCollider_')),...colliders];this.applied.set(object,signature);
   if(object.gameplayDebug?.runtimeLOD)object.gameplayDebug.runtimeLOD={...object.gameplayDebug.runtimeLOD,collisionLevel:selected??'fixed',collisionReason:settings.lodMode==='runtime'&&dynamic?'dynamic-body':''};return true;
  }
  release(object){this.applied.delete(object);this.pending.delete(object);}

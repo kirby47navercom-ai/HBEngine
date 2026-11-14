@@ -1,3 +1,4 @@
+import {touchComponents} from './object-revision.js';
 import {blendSequenceNumber} from './sequence-blending.js';
 import {validComponents} from './scene-components.js';
 import {Quaternion,Vector3,Matrix4} from 'three';
@@ -20,7 +21,7 @@ export function captureSkeletalPosePage(group,{offset=0,limit=64,boneNames=[],sp
   return {total,modelTotal:index.size,space,offset,bones,nextOffset:offset+limit<total?offset+limit:null};
 }
 export function applySkeletalPose(group,pose){if(!validRecordedState('skeletalPose',{},pose))throw Error('녹화 골격 포즈 형식 오류');const bones=skeletalBoneIndex(group);if(pose.some(p=>!bones.has(p.bone)))throw Error('녹화한 뼈가 대상에 없어요.');for(const p of pose){const bone=bones.get(p.bone);bone.position.fromArray(p.position);bone.quaternion.fromArray(p.quaternion).normalize();bone.scale.fromArray(p.scale);}group?.updateWorldMatrix(true,true);}
-export function applyComponentStates(object,changes){const next=[...(object.components||[])];for(const {track,value} of changes){if(!validRecordedState('componentState',track,value))throw Error('녹화 컴포넌트 형식 오류');if(value===null){const i=next.findIndex(c=>c.id===track.component);if(i>=0)next.splice(i,1);}}for(const {track,value,index} of changes){if(value===null)continue;const i=next.findIndex(c=>c.id===track.component);if(i<0)next.splice(index===undefined?next.length:Math.min(index,next.length),0,structuredClone(value));else next[i]=structuredClone(value);}if(!validComponents(next))throw Error('녹화 컴포넌트 조합을 확인하세요.');object.components=next;}
+export function applyComponentStates(object,changes){const next=[...(object.components||[])];for(const {track,value} of changes){if(!validRecordedState('componentState',track,value))throw Error('녹화 컴포넌트 형식 오류');if(value===null){const i=next.findIndex(c=>c.id===track.component);if(i>=0)next.splice(i,1);}}for(const {track,value,index} of changes){if(value===null)continue;const i=next.findIndex(c=>c.id===track.component);if(i<0)next.splice(index===undefined?next.length:Math.min(index,next.length),0,structuredClone(value));else next[i]=structuredClone(value);}if(!validComponents(next))throw Error('녹화 컴포넌트 조합을 확인하세요.');object.components=next;touchComponents(object);}
 export function applyComponentState(object,track,value){applyComponentStates(object,[{track,value}]);}
 
 const samePoseLayout=(a,b)=>a.length===b.length&&a.every((bone,i)=>bone.bone===b[i].bone);

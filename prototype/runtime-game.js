@@ -1,3 +1,4 @@
+import {touchTransform} from './object-revision.js';
 import {createBlueprintResolver} from './blueprint-inheritance.js';
 import {derivesFrom} from './class-types.js';
 import {sceneWorldPosition,sceneWorldMatrix,setSceneWorldPosition} from './scene-runtime.js';
@@ -45,5 +46,5 @@ export function applyTravelSpawn(objects,gameplay,args){
   setSceneWorldPosition(pawn,sceneWorldPosition(start,objects),objects);
   const orientation=new Quaternion();sceneWorldMatrix(start,objects).decompose(new Vector3(),orientation,new Vector3());
   const parent=objects.find(o=>o.id===(pawn.parentId||pawn.parent));if(parent){const rotation=new Quaternion();sceneWorldMatrix(parent,objects).decompose(new Vector3(),rotation,new Vector3());orientation.premultiply(rotation.invert());}
-  pawn.rotation=new Euler().setFromQuaternion(orientation).toArray().slice(0,3).map(MathUtils.radToDeg);
+  pawn.rotation=new Euler().setFromQuaternion(orientation).toArray().slice(0,3).map(MathUtils.radToDeg);touchTransform(pawn);
 }

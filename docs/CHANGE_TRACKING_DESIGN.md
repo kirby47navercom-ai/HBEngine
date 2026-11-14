@@ -110,3 +110,24 @@
   - 알리지 않은 컴포넌트 쓰기와 이동은 보고하고, 알린 쓰기는 보고하지 않아요.
 - 검증 모드 실행(`check-native-backend-fps` 2D·3D, check-native-game, check-native-chain, check-native-lifecycle-263, check-collision-dispatch, check-2d-extensions, check-input-authoring, check-blueprint-2d-1219, check-engine-175/176/179)에서 정적 충돌체 불일치는 0건이었어요.
   - 이 검사들은 템플릿·UI·애니메이션 쓰기 경로를 정적 충돌체에 거의 쓰지 않아요. 그래서 2단계에서 25개 모듈을 바꾼 뒤 신뢰 표시를 켜기 전에, 게임플레이 템플릿이 들어간 장면으로 검증 모드를 다시 돌려야 해요.
+
+### 2단계 (2026-11-14, 물리 정적 확인 적용)
+
+- 신뢰 범위를 소비자 기준으로 좁혔어요.
+  - `revisionTrust.physics`: 충돌체·물리 몸체 컴포넌트, `tileColliders`, 루트 변환을 쓰는 런타임 경로가 모두 알려요.
+  - 조명·UI·위젯 속성 쓰기는 물리 정적 스냅샷(충돌체·물리 몸체 컴포넌트만 비교)에 영향이 없어서 이 범위에서 빠져요.
+- 알림을 넣은 경로
+  - **변환:** `scene-runtime`의 `setSceneWorldPosition`·이동 도우미, 실행기 `update`(엔진 연산 32곳이 `hooks.update`로 거침), `engine-services` 부모 붙이기, `physics-world` 이동, `animation-graph-runtime` 루트 모션, `runtime-game` 폰 회전
+  - **컴포넌트:** 실행기 `update`, `engine-services` 관절 연산(실패 되돌리기 포함), `level-streaming`·`actor-references` 참조 정리, `blueprint-overrides`, `sequence-component-channels`, `sequence-state`
+  - **타일 충돌체:** `scene-rendering`, `tilemap-runtime`, `world-collision-lod` 2곳, `world-rendering` 2곳, 실행기 타일맵
+  - 스폰·템플릿처럼 장면에 들어가기 전 오브젝트를 만드는 쓰기와 애니메이션·행동 트리·위젯 노드 쓰기는 대상이 아니에요.
+- `physics-world` 정적 확인
+  - 충돌·재질 수와 부모가 같고 컴포넌트·변환 리비전이 스냅샷과 같으면 깊은 비교(`matchStatic`, 자세 비교, 충돌체 목록 필터) 없이 재사용해요.
+  - 검증 모드는 항상 전체 비교해요.
+  - 검증 모드가 아니면 건너뛴 오브젝트 64개 중 1개를 돌아가며 전체 비교해요. 불일치가 나오면 보고하고 `revisionTrust.physics`를 꺼서 이후 전부 비교해요. 알리지 않은 쓰기가 남아 있어도 최대 약 64번의 건너뛰기 동안만 늦게 반영되고, 그 뒤에는 원래 방식으로 돌아가요.
+- 검사
+  - `check-object-revision`: 검증 모드 보고, 신뢰 상태에서 알린 쓰기 반영과 알리지 않은 쓰기 건너뜀, 표본 검사 발견 → 신뢰 해제 → 충돌체 재생성 → 이후 직접 쓰기 반영
+  - `check-revision-verify-games`: shooter2d·gameplay2d·garden·2d·3d 템플릿 게임을 검증 모드로 600프레임 돌려 불일치 0건. 다만 템플릿들이 정적 충돌체를 실행 중에 거의 바꾸지 않아 강한 증명은 아니에요.
+  - 물리·스폰·시퀀스·타일맵·충돌·관절·천·루트 모션·2D·게임 실행 검사 25개 통과
+  - `check-runtime-sync`(기능 부분 `--baseline`), `check-native-gameplay-read-cost`, `check-native-spawn-aot`는 변경 전에도 같은 방식으로 실패해요.
+- 성능: ABBA 4회. 2D 2000개 70.5→76.4 FPS(중앙 프레임 13.65→12.46ms, 4회 중 3회 개선). 3D 258.0→272.1 FPS(잡음 범위).

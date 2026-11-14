@@ -1,3 +1,4 @@
+import {touchComponents} from './object-revision.js';
 import {CameraViewRendering} from './camera-view-rendering.js';
 import {beginSpriteTextureClone,registerSpriteTextureClone} from './sprite-texture-source.js';
 import {particleRenderGroup,registerParticleVisual,particleVisualStates,publishParticleDebug} from './particle-component-state.js';
@@ -238,7 +239,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     state.updates++;state.totalRebuilt+=rebuilt;let geometryBytes=0;for(const row of state.meshes.values()){const g=row.mesh.geometry;for(const a of Object.values(g.attributes))geometryBytes+=a.array.byteLength;geometryBytes+=g.index?.array.byteLength||0;}group.userData.tilemapDebug={chunks:state.meshes.size,tiles:map.layers.reduce((sum,l)=>sum+l.tiles.length,0),rebuiltChunks:rebuilt,totalRebuilt:state.totalRebuilt,updates:state.updates,geometryBytes,frustumCulling:true};
   }
   async function tilemapFrame(object,map,changes){const group=current(object.id);if(!group)return;const token=group.userData.tilemapRequest=(group.userData.tilemapRequest||0)+1;await tilemap(group,object.runtimeTilemapPath,enabledComponent(object,'TilemapRenderer')||{},map,token,changes);if(current(object.id)!==group||group.userData.disposed||group.userData.tilemapRequest!==token)return;object.gameplayDebug={...object.gameplayDebug,tilemap:{...object.gameplayDebug?.tilemap,...group.userData.tilemapDebug}};}
-  async function preparePhysics(objects){await prepareWorldColliders(objects,read);for(const object of objects){const path=enabledComponent(object,'TilemapRenderer')?.tilemap||object.tilemapAsset;if(!path)continue;object.tileColliders=[...(object.tileColliders||[]).filter(c=>c.id.startsWith('worldCollider_')),...tilemapColliders(await read(path))];}}
+  async function preparePhysics(objects){await prepareWorldColliders(objects,read);for(const object of objects){const path=enabledComponent(object,'TilemapRenderer')?.tilemap||object.tilemapAsset;if(!path)continue;touchComponents(object);object.tileColliders=[...(object.tileColliders||[]).filter(c=>c.id.startsWith('worldCollider_')),...tilemapColliders(await read(path))];}}
   async function decal(group,p){
     const data=p.material?await resolveMaterialAsset(await read(p.material),read):null;
     if(group.userData.disposed)return;

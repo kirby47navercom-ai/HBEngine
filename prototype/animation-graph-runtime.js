@@ -1,3 +1,4 @@
+import {touchTransform} from './object-revision.js';
 import {canonicalImportedTransformPath} from './sequence-indexed-transforms.js';
 import {FullBodyIK} from './animation-full-body.js';
 import {animationCurveSampler} from './animation-curve-sampler.js';
@@ -139,7 +140,7 @@ export class AnimationGraphPlayer {
     };return evaluate(this.data.output);
   }
   rootLocked(key){return this.rootSlots.has(key)&&(this.rootMotionMode!=='none'||[...this.rootTracks.values()].some(t=>t.actorRoot&&t.p.forceLock)||this.externalRootLock);}
-  async applyPose({pose,sprites},{visual=true}={}){const epoch=this.generation;let actorChanged=false;for(let i=0;i<this.slots.length;i++){const slot=this.slots[i],value=pose[i];if(!value.every(Number.isFinite))throw Error('애니메이션 포즈 계산 오류');const rootLocked=this.rootLocked(slot.key);if(rootLocked)continue;if(slot.binding&&visual)slot.binding.setValue(value,0);if(slot.key.startsWith('root|')){actorChanged=true;const key=slot.key.slice(5);if(key==='quaternion'){const e=new THREE.Euler().setFromQuaternion(new THREE.Quaternion().fromArray(value),'XYZ');this.object.rotation=[e.x,e.y,e.z].map(THREE.MathUtils.radToDeg);}else if(['position','scale'].includes(key))this.object[key]=Array.from(value);}}
+  async applyPose({pose,sprites},{visual=true}={}){const epoch=this.generation;let actorChanged=false;for(let i=0;i<this.slots.length;i++){const slot=this.slots[i],value=pose[i];if(!value.every(Number.isFinite))throw Error('애니메이션 포즈 계산 오류');const rootLocked=this.rootLocked(slot.key);if(rootLocked)continue;if(slot.binding&&visual)slot.binding.setValue(value,0);if(slot.key.startsWith('root|')){actorChanged=true;const key=slot.key.slice(5);if(key==='quaternion'){const e=new THREE.Euler().setFromQuaternion(new THREE.Quaternion().fromArray(value),'XYZ');this.object.rotation=[e.x,e.y,e.z].map(THREE.MathUtils.radToDeg);touchTransform(this.object);}else if(['position','scale'].includes(key))touchTransform(this.object),this.object[key]=Array.from(value);}}
     for(const [name,index] of this.curveSlots){const value=pose[index][0];this.curveValues[name]=value;const row=this.curveTargets.get(name);if(row?.target==='material'&&this.curve&&this.lastMaterialCurves.get(name)!==value){await this.curve(row.parameter||name,value);this.lastMaterialCurves.set(name,value);if(this.disposed||this.generation!==epoch)return;}}
     if(visual||actorChanged)this.update?.(this.object);const sprite=[...sprites].sort((a,b)=>b[1]-a[1])[0]?.[0];if(visual&&sprite&&sprite!==this.sprite){await this.spriteFrame(this.object,sprite);if(this.disposed||this.generation!==epoch)return;this.sprite=sprite;}
   }
