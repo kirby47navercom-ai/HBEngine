@@ -44,7 +44,7 @@ export class TwoDRendering{
     // Groups held by host static sets (node.hbHost) are static plain meshes without 2D nodes; when the renderer does not
     // read display colour counts (renderer.hbDisplayCounts===false) they are skipped without any per-group check.
     const records=new Array(groups.length),special=[],countDisplay=renderer.hbDisplayCounts!==false;let any2D=false,lit=false;
-    for(let i=0;i<groups.length;i++){const g=groups[i];if(!countDisplay&&g.hbHost!==undefined){records[i]=HOST_HELD;continue;}const r=staticGroupRecord(g);records[i]=r;let fl=r&&staticFlags.get(g);if(fl&&(fl.transform!==r.updatedTransform||fl.components!==r.updatedComponents||fl.parent!==g.parent))fl=null;
+    for(let i=0;i<groups.length;i++){const g=groups[i];if(!countDisplay&&g.hbHost!==undefined&&!g.hbHost.twoD){records[i]=HOST_HELD;continue;}const r=staticGroupRecord(g);records[i]=r;let fl=r&&staticFlags.get(g);if(fl&&(fl.transform!==r.updatedTransform||fl.components!==r.updatedComponents||fl.parent!==g.parent))fl=null;
       if(!fl){const u=g.userData;fl={transform:r?.updatedTransform,components:r?.updatedComponents,parent:g.parent,has2D:!!(u.sortingGroup||u.maskMesh||u.spriteMesh||u.tilemapResources||g.children.some(n=>n.userData.draw2d)),light:!!u.light2d,special:!!(u.sortingGroup||u.light2d||u.renderer2d||u.maskMesh||u.shadowCaster2d)};if(r)staticFlags.set(g,fl);}
       if(fl.has2D)any2D=true;if(fl.light)lit=true;if(!r||fl.special)special.push(g);}
     if(!any2D){this.dispose();return {renderers:0,maskPasses:0,maskTargets:0};}

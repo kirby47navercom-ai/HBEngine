@@ -2,7 +2,8 @@
 // match (per channel difference <= 1 for float rounding of the moved colour multiply) and use fewer draw calls when on.
 // Scene: 360 sprites (checker texture or none, colours, flips, two sizes, interleaved sorting orders, unlit and lit2d,
 // additive blend), 2D point + global lights, no player (static camera), no particles.
-// node tools/check-native-sprite-batch-gpu.mjs
+// node tools/check-native-sprite-batch-gpu.mjs [host]   (host: host 2D sets off/on, captured at frame 150 after the move)
+const hostMode=process.argv[2]==='host',captureFrame=hostMode?150:50;
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import zlib from 'node:zlib';
@@ -39,18 +40,18 @@ const built=await buildGame(record,{...defaultBuildProfile(record.manifest),conf
 await fs.mkdir(path.join(work,'Temp'),{recursive:true});
 async function run(batch){
  const name='batch-'+batch,report=path.join(work,name+'.json'),capture=path.join(work,name+'.rgba');
- const env={SystemRoot:process.env.SystemRoot||'C:/Windows',WINDIR:process.env.WINDIR||'C:/Windows',PATH:(process.env.SystemRoot||'C:/Windows')+'/System32',TEMP:path.join(work,'Temp'),TMP:path.join(work,'Temp'),LOCALAPPDATA:path.join(work,'User-'+name),APPDATA:path.join(work,'User-'+name,'Roaming'),HB_NATIVE_TEST_STATE:path.join(work,'State-'+name),HB_SPRITE_BATCH:batch?'1':'0',HB_CAPTURE_FRAME:'50',HB_CAPTURE_OUT:capture};
- const child=spawn(built.executable,['--hidden','--silent','--uncapped','--frames','60','--report',report,'--graphics-api','d3d12'],{windowsHide:true,env});let stderr='';child.stderr.on('data',b=>stderr+=b);
+ const env={SystemRoot:process.env.SystemRoot||'C:/Windows',WINDIR:process.env.WINDIR||'C:/Windows',PATH:(process.env.SystemRoot||'C:/Windows')+'/System32',TEMP:path.join(work,'Temp'),TMP:path.join(work,'Temp'),LOCALAPPDATA:path.join(work,'User-'+name),APPDATA:path.join(work,'User-'+name,'Roaming'),HB_NATIVE_TEST_STATE:path.join(work,'State-'+name),...(hostMode?{HB_HOST_STATIC:batch?'1':'0'}:{HB_SPRITE_BATCH:batch?'1':'0'}),HB_CAPTURE_FRAME:String(captureFrame),HB_CAPTURE_OUT:capture};
+ const child=spawn(built.executable,['--hidden','--silent','--uncapped','--frames',String(captureFrame+10),'--report',report,'--graphics-api','d3d12'],{windowsHide:true,env});let stderr='';child.stderr.on('data',b=>stderr+=b);
  const code=await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{child.kill();reject(Error(name+' timeout'));},300000);child.once('error',reject);child.once('close',c=>{clearTimeout(timer);resolve(c);});});
  assert.equal(code,0,stderr+await fs.readFile(path.join(work,'State-'+name,'native-runtime.log'),'utf8').catch(()=>''));
  const result=JSON.parse(await fs.readFile(report,'utf8')),size=JSON.parse(await fs.readFile(capture+'.json','utf8'));
- return {calls:result.renderer?.info?.calls,size,rgba:await fs.readFile(capture)};
+ return {calls:result.renderer?.info?.calls,cullSets:result.renderer?.cullSets||0,cullVisible:result.renderer?.cullVisible||0,size,rgba:await fs.readFile(capture)};
 }
 const off=await run(false),on=await run(true);
 assert.deepEqual(on.size,off.size);assert.equal(on.rgba.length,off.rgba.length);
 let maxDiff=0,differing=0,lit=0;for(let i=0;i<off.rgba.length;i+=4){let d=0;for(let k=0;k<4;k++)d=Math.max(d,Math.abs(off.rgba[i+k]-on.rgba[i+k]));if(d)differing++;maxDiff=Math.max(maxDiff,d);if(off.rgba[i]+off.rgba[i+1]+off.rgba[i+2]>30)lit++;}
 assert(lit>off.rgba.length/4*.1,'sprites cover the frame');
 assert(maxDiff<=1,'pixel difference '+maxDiff);
-assert(on.calls<off.calls,'batching reduces draw calls '+off.calls+' -> '+on.calls);
-const report={passed:true,width:off.size.width,height:off.size.height,callsOff:off.calls,callsOn:on.calls,maxChannelDifference:maxDiff,differingPixels:differing,coveredPixels:lit,scope:'Packaged D3D12 frame 50 of one static 2D scene, sprite batching off vs on.'};
+if(hostMode){assert.equal(off.cullSets,0);assert(on.cullSets>0&&on.cullVisible>0,'host 2D sets drawn: '+on.cullSets+' sets, '+on.cullVisible+' rows');}else assert(on.calls<off.calls,'batching reduces draw calls '+off.calls+' -> '+on.calls);
+const report={passed:true,width:off.size.width,height:off.size.height,callsOff:off.calls,callsOn:on.calls,...(hostMode?{hostSets:on.cullSets,hostVisibleRows:on.cullVisible}:{}),maxChannelDifference:maxDiff,differingPixels:differing,coveredPixels:lit,scope:'Packaged D3D12 frame '+captureFrame+' of one static 2D scene, '+(hostMode?'host 2D sets':'sprite batching')+' off vs on.'};
 await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));

@@ -25,6 +25,8 @@ float polygon2d(float2 p,int count,int row,float falloff){
   if((a.y>p.y)!=(b.y>p.y)&&p.x<(b.x-a.x)*(p.y-a.y)/(b.y-a.y)+a.x)inside=!inside;
  }return inside||distance<.00001?1:falloff<=0?0:1-smoothstep(0,falloff,distance);
 }
+// Object origin (world translation of the draw, per instance when instanced) for the fast normal mode.
+static float2 hbOrigin2d=0;
 float3 shade2d(float2 worldPoint,float2 uv,float3 normal,float3 albedo){
  float3 accum[4];[unroll]for(int j=0;j<4;j++)accum[j]=0;
  int layer=(int)screen2d.z,part=layer/8;float4 maskValue=pass2d.w>0?lightMask2d.Sample(maskSampler2d,float2(dot(maskX2d.xyz,float3(uv,1)),dot(maskY2d.xyz,float3(uv,1)))):1;
@@ -45,7 +47,7 @@ float3 shade2d(float2 worldPoint,float2 uv,float3 normal,float3 albedo){
    if(origin2d.z>=0){attenuation*=extra.z;settings.w=extra.w;}
    if(at.z>1.5&&at.z<2.5&&distance>.00001)attenuation*=fade2d(range.z,range.w,local.y/distance);
    if(attenuation<=0)continue;coverage=attenuation;
-   if(normalMode){float2 normalDelta=at.xy-(normalMode==1?origin2d.xy:worldPoint);response=max(0,dot(normal,safeNormal(float3(normalDelta,max(.00001,settings.y)))));attenuation*=response;coverage*=response;}
+   if(normalMode){float2 normalDelta=at.xy-(normalMode==1?hbOrigin2d:worldPoint);response=max(0,dot(normal,safeNormal(float3(normalDelta,max(.00001,settings.y)))));attenuation*=response;coverage*=response;}
    if(settings.w>0){float4 rect=shadowRects2d.Load(int3(row,layer,0));if(rect.z>0){float4 bounds=shadowBounds2d.Load(int3(row,0,0));float2 shadowUV=(worldPoint-bounds.xy)/bounds.zw+.5;
     if(all(shadowUV>=0)&&all(shadowUV<=1)){float2 sampleUV=rect.xy+shadowUV*rect.zw;sampleUV.y=1-sampleUV.y;float3 shadow=shadowAtlas2d.Sample(linear2d,sampleUV).rgb;attenuation*=1-settings.w*saturate(max(shadow.r,shadow.g*(1-saturate(shadow.b))));}
    }}

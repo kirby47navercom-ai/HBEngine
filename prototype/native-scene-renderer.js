@@ -291,19 +291,25 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   // its instance rows and bounding spheres go to the host once, the host culls them per frame and draws one instanced
   // draw per set, and the traversal skips the group with one property read. Any announced change, visibility, parent or
   // matrix flag change, leaving the scene, probes, verify mode or static skipping off moves the group back.
-  const HOST_AGE=30,hostOwner={},hostSets=new Map(),hostGroups=new Map(),hostObjects=new WeakMap(),hostChanges=subscribeObjectChanges(),hostPending=new Map(),hostReleased=[];let hostActive=false,lastHostProbeKey='',hostSerial=0,hostEpoch=-1,hostFrame=0,hostBuildNode=null,hostForceLeft=0;const hostForce=new Set(),HOST_FORCE_BUDGET=512;
-  function hostDemote(group){const h=hostGroups.get(group);if(!h)return;hostGroups.delete(group);group.hbHost=undefined;for(const m of h.members){m.set.members.delete(m);m.set.dirty=true;}}
+  const HOST_AGE=30,hostOwner={},hostSets=new Map(),hostGroups=new Map(),hostObjects=new WeakMap(),hostChanges=subscribeObjectChanges(),hostPending=new Map(),hostReleased=[],hostSets2D=new Map();let hostSeq2D=[],hostRuns2D=[],hostSeqDirty=false;let hostActive=false,lastHostProbeKey='',hostSerial=0,hostEpoch=-1,hostFrame=0,hostBuildNode=null,hostForceLeft=0;const hostForce=new Set(),HOST_FORCE_BUDGET=512;
+  function hostDemote(group){const h=hostGroups.get(group);if(!h)return;hostGroups.delete(group);group.hbHost=undefined;for(const m of h.members){m.set.members.delete(m);m.set.dirty=true;if(m.set.twoD)hostSeqDirty=true;}}
   function hostKeep(child,h){
    if(child.visible===false||child.matrixWorldNeedsUpdate||child.parent!==h.parent){hostDemote(child);return false;}
    const p=child.parent;if(p.hbIdentityFrame!==cellFrame){p.hbIdentityFrame=cellFrame;p.hbIdentity=identityWorld(p);}if(!p.hbIdentity){hostDemote(child);return false;}
    h.seen=hostFrame;return true;
   }
-  function hostReset(){for(const group of hostGroups.keys())group.hbHost=undefined;hostGroups.clear();hostSets.clear();hostPending.clear();hostReleased.length=0;}
+  function hostReset(){for(const group of hostGroups.keys())group.hbHost=undefined;hostGroups.clear();hostSets.clear();hostSets2D.clear();hostSeq2D=[];hostRuns2D=[];hostSeqDirty=false;hostPending.clear();hostReleased.length=0;}
   // A visited clean group (its capture holds every draw id) waits HOST_AGE encodes with the same revisions.
   function hostConsider(group,capture){const r=capture.record,rev=objectRevision(r.object),t=rev?rev.transform:0,c=rev?rev.components:0;if(r.hostT!==t||r.hostC!==c){r.hostT=t;r.hostC=c;r.hostSince=hostFrame;hostPending.delete(group);return;}if(hostFrame-r.hostSince<HOST_AGE||!capture.ids.length)return;const p=hostPending.get(group);if(p){p.ids=capture.ids;p.seen=hostFrame;}else hostPending.set(group,{group,record:r,ids:capture.ids,since:hostFrame,seen:hostFrame});}
   function hostPromote({group,record,ids},promoted){
-   const members=[];for(const id of ids){const c=spriteCandidates.get(id);if(!c||c.transparent||c.entry.twoD||c.node.userData.draw2d||!c.node.parent)return;/* 2D sorting rewrites renderOrder every frame */members.push(c);}
-   const h={owner:hostOwner,parent:group.parent,members:[],seen:hostFrame};
+   const members=[];for(const id of ids){const c=spriteCandidates.get(id);if(!c||!c.node.parent)return;members.push(c);}
+   // 2D: transparent sprites (no 3D shadow casting) go into ordered 2D sets; other groups must be opaque 3D meshes.
+   const twoD=members.every(c=>c.node.userData.draw2d&&c.transparent&&!c.node.castShadow);if(!twoD&&members.some(c=>c.transparent||c.entry.twoD||c.node.userData.draw2d))return;
+   const h={owner:hostOwner,parent:group.parent,members:[],seen:hostFrame,twoD};
+   if(twoD){for(const c of members){const node=c.node,key=spriteStateKey(c);let set=hostSets2D.get(key);if(!set)hostSets2D.set(key,set={id:'host2d:'+(++hostSerial),twoD:true,members:new Set(),order:[],dirty:true,version:0,template:null,stamp:'',receives:false});
+     const d=c.entry.draw,m=d.material,row=new Float32Array(44),sphere=nodeWorldSphere(node);row.set(d.world,0);row.set(d.normal,16);row.set(m.color,32);row.set(m.uvX[0].slice(0,3),36);row.set(m.uvY[0].slice(0,3),40);
+     const member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],box:null,draw:d,node,group,receives:c.receives,twoD:true,index:-1};set.members.add(member);set.dirty=true;h.members.push(member);}
+    hostSeqDirty=true;hostGroups.set(group,h);group.hbHost=h;hostObjects.set(record.object,group);record.drawCache=null;for(const id of ids)promoted.add(id);return;}
    for(const c of members){const node=c.node,key=spriteStateKey(c)+'|'+node.renderOrder+'|'+(node.castShadow?1:0);let set=hostSets.get(key);if(!set)hostSets.set(key,set={id:'host:'+(++hostSerial),members:new Set(),dirty:true,version:0,order:node.renderOrder,casts:!!node.castShadow,receives:false,template:null,stamp:''});
     const d=c.entry.draw,m=d.material,row=new Float32Array(44),sphere=nodeWorldSphere(node);row.set(d.world,0);row.set(d.normal,16);row.set(m.color,32);row.set(m.uvX[0].slice(0,3),36);row.set(m.uvY[0].slice(0,3),40);
     const box=reflectionProbeMeshBounds(node,new THREE.Box3()),member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],box:box?box.clone():null,draw:d,receives:c.receives};set.members.add(member);set.dirty=true;h.members.push(member);}
@@ -324,6 +330,45 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     if(probeDraws)probeEntries.push({id:set.id,set,sky:false,deformed:false,node:null});
    }
    if(probeEntries.length)probeDraws.unshift(...probeEntries);return globalProbes;
+  }
+  // 2D sets keep their rows in render order. While the hosted sprites' renderOrder values (assigned by 2D sorting every
+  // frame) stay increasing along the global hosted sequence, runs of consecutive members of one set are drawn as row
+  // ranges; a non-hosted transparent item whose order falls inside a run splits it there, so the main pass keeps the
+  // exact 2D order. A changed relative order rebuilds the sequence (and re-sends the affected sets).
+  function hostEmit2D(items,updates,seen,resources,used){
+   for(const [key,set] of hostSets2D)if(!set.members.size){hostSets2D.delete(key);hostSeqDirty=true;if(set.sent)hostReleased.push(set.id);}
+   if(!hostSets2D.size){hostSeq2D=[];hostRuns2D=[];return;}
+   if(!hostSeqDirty){let last=-Infinity;for(const m of hostSeq2D){const o=m.node.renderOrder;if(!(o>last)){hostSeqDirty=true;break;}last=o;}}
+   if(hostSeqDirty){
+    hostSeq2D=[];for(const set of hostSets2D.values())for(const m of set.members)hostSeq2D.push(m);hostSeq2D.sort((a,b)=>a.node.renderOrder-b.node.renderOrder);
+    const orders=new Map();for(const m of hostSeq2D){let list=orders.get(m.set);if(!list)orders.set(m.set,list=[]);list.push(m);}
+    for(const [set,list] of orders){if(list.length!==set.order.length||list.some((m,i)=>set.order[i]!==m))set.dirty=true;set.order=list;list.forEach((m,i)=>{m.index=i;});}
+    hostRuns2D=[];for(const m of hostSeq2D){const run=hostRuns2D.at(-1);if(run&&run.set===m.set&&run.members.at(-1).index===m.index-1)run.members.push(m);else hostRuns2D.push({set:m.set,members:[m]});}
+    hostSeqDirty=false;
+   }
+   const size=[canvas.width,canvas.height];
+   for(const set of hostSets2D.values()){
+    if(set.dirty){const list=set.order,rows=new Float32Array(list.length*44),spheres=new Float32Array(list.length*4);let receives=false;for(let i=0;i<list.length;i++){rows.set(list[i].row,i*44);spheres.set(list[i].sphere,i*4);receives||=list[i].receives;}
+     resources.push({kind:'cullSet',id:set.id,rows:uploadBytes(new Uint8Array(rows.buffer)),spheres:uploadBytes(new Uint8Array(spheres.buffer))});
+     const draw=copyData(list[0].draw);draw.world=identity16.slice();draw.normal=identity16.slice();draw.material.color=[1,1,1,1];draw.material.uvX=draw.material.uvX.map(()=>[1,0,0,0]);draw.material.uvY=draw.material.uvY.map(()=>[0,1,0,0]);delete draw.instances;draw.cullSet=set.id;
+     set.template=draw;set.receives=receives;set.version++;set.dirty=false;set.sent=true;set.stamp='';}
+    // Frame-wide 2D values (light count, light textures, masks) are read again from a member material, as a visit would.
+    const material=set.order[0].node.material,t=set.template.twoD;if(t){const settings=native2DSettings(material,size),maps=native2DTextures(material).map(x=>textureResource(x,resources)),mask=material.hbLight2DMaskTexture,maskSampling=mask?(mask.magFilter===THREE.NearestFilter?1:0)+wrap(mask.wrapS)*2+wrap(mask.wrapT)*6:16;
+     if(JSON.stringify([settings,maps,maskSampling])!==JSON.stringify([t.settings,t.maps,t.maskSampling])){set.template={...set.template,twoD:{settings,maps,maskSampling}};set.stamp='';}for(const id of maps)if(id)used.textures.add(id);}
+    if(!set.stamp)set.stamp=drawHistory.stamp(set.id,set.template)+':'+set.version;
+    const draw=set.template;used.meshes.add(draw.mesh);for(const id of draw.maps)if(id)used.textures.add(id);
+   }
+   // An equal order (a non-2D transparent item with a sprite's renderOrder) is sorted by depth/id in the main pass;
+   // that sprite's group leaves its set (from the next frame it is drawn as before).
+   const ties=new Set();
+   const dynamic=[];for(const item of items)if(item.transparent&&!item.transmissive)dynamic.push(item.order);dynamic.sort((a,b)=>a-b);
+   const firstAbove=(list,value,get)=>{let lo=0,hi=list.length;while(lo<hi){const mid=(lo+hi)>>1;if(get(list[mid])>value)hi=mid;else lo=mid+1;}return lo;};
+   const emit=(set,from,to)=>{const start=from.index,end=to.index+1,id=set.id+'@'+start+'-'+end,stamp=set.stamp+'#'+start+'-'+end;
+    if(previous.get(id)!==stamp){updates.push({...set.template,id,cullRange:[start,end]});previous.set(id,stamp);}seen.add(id);items.push({id,order:from.node.renderOrder,transparent:true,transmissive:false,depth:0});};
+   for(const run of hostRuns2D){const list=run.members,lo=list[0].node.renderOrder,hi=list.at(-1).node.renderOrder;let k=firstAbove(dynamic,lo,v=>v),from=0;
+    for(;k<dynamic.length&&dynamic[k]<hi;k++){const at=firstAbove(list,dynamic[k],m=>m.node.renderOrder);if(list[at-1]?.node.renderOrder===dynamic[k])ties.add(list[at-1].group);if(at>from){emit(run.set,list[from],list[at-1]);from=at;}}
+    emit(run.set,list[from],list.at(-1));}
+   for(const group of ties)hostDemote(group);
   }
   // Static cells: clean static groups that were skipped once join a world grid cell (cell size from their radius). Each
   // frame a cell is tested once; when it misses the camera and every shadow frustum, its members that still match their
@@ -388,7 +433,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     const hostProbeKey=probes.length?JSON.stringify(probes.map(({group,p,...rest})=>{const q={...p};for(const k of probeCaptureProperties)delete q[k];return [rest,q];})):'';if(hostProbeKey!==lastHostProbeKey){lastHostProbeKey=hostProbeKey;if(reuseStatic&&hostGroups.size){for(const g of [...hostGroups.keys()])hostDemote(g);hostPending.clear();}}
     const hostAllowed=staticCellsOn&&renderer.hbSpriteBatching!==false&&renderer.hbHostStatic!==false;hostActive=hostAllowed&&reuseStatic;if(!hostAllowed&&reuseStatic&&hostGroups.size){for(const g of [...hostGroups.keys()])hostDemote(g);hostPending.clear();}
     traverseVisibleSkipping(scene,node=>{if(!visible(node)||node.userData.editorHelper)return;if(node.isLight)shadowLights.push(node);else if((node.isMesh||node.isSprite)&&node.receiveShadow&&node.layers.test(camera.layers)&&(probes.length||isDeformed(node)||!node.frustumCulled||node.isSprite||frustum.intersectsObject(node))&&(Array.isArray(node.material)?node.material:[node.material]).some(m=>m?.isMeshStandardMaterial&&m.visible))receivers=true;},skipOffscreenOnly);
-    if(hostActive&&!receivers)for(const set of hostSets.values())if(set.receives&&set.members.size){receivers=true;break;}
+    if(hostActive&&!receivers)for(const set of [...hostSets.values(),...hostSets2D.values()])if(set.receives&&set.members.size){receivers=true;break;}
     if(receivers)for(const node of shadowLights){const records=nativeShadows(node);if(records.length){shadowIndexes.set(node.uuid,shadowRecords.length+1);shadowRecords.push(...records);}}
     if(staticCellsOn)markStaticCells(!!probes.length,'main',cell=>{const box=probes.length?cell.box:null,sphere=cell.sphere;if(box?frustum.intersectsBox(box):frustum.intersectsSphere(sphere))return false;for(const record of shadowRecords)if(box?(!record.sphere||box.distanceToPoint(record.sphere.center)<=record.sphere.radius)&&record.frustum.intersectsBox(box):(!record.sphere||record.sphere.center.distanceTo(sphere.center)<=record.sphere.radius+sphere.radius)&&record.frustum.intersectsSphere(sphere))return false;return true;});
     // Off-screen host candidates: up to HOST_FORCE_BUDGET marked cell members whose revisions are new to the host check or
@@ -460,8 +505,8 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
      // Draws of groups promoted now leave this frame's lists: their set already holds them.
      const promoted=new Set();if(hostPending.size>=256||hostFrame-oldest>=60)for(const [g,p] of hostPending){if(p.seen===hostFrame){hostPending.delete(g);if(!g.hbHost&&g.parent)hostPromote(p,promoted);}else if(hostFrame-p.seen>120)hostPending.delete(g);}
      if(promoted.size){let n=0;for(const item of items)if(!promoted.has(item.id))items[n++]=item;items.length=n;for(const record of shadowRecords){let k=0;for(const id of record.casters)if(!promoted.has(id))record.casters[k++]=id;record.casters.length=k;}{let k=0;for(const e of probeDraws)if(!promoted.has(e.id))probeDraws[k++]=e;probeDraws.length=k;}for(const id of promoted)seen.delete(id);}
-     if(hostEmit(items,updates,seen,resources,used,shadowRecords,probes.length?probeDraws:null))needsGlobalProbes=true;}
-    renderer.hbHostStats={groups:hostGroups.size,sets:hostSets.size,pending:hostPending.size};
+     if(hostEmit(items,updates,seen,resources,used,shadowRecords,probes.length?probeDraws:null))needsGlobalProbes=true;hostEmit2D(items,updates,seen,resources,used);}
+    renderer.hbHostStats={groups:hostGroups.size,sets:hostSets.size,sets2D:hostSets2D.size,runs2D:hostRuns2D.length,pending:hostPending.size};
     const phase=item=>item.transmissive?1:item.transparent?2:0;items.sort((a,b)=>phase(a)-phase(b)||a.order-b.order||(a.transmissive||a.transparent?b.depth-a.depth:a.depth-b.depth)||a.id.localeCompare(b.id));
     linePool.end();
     if(spriteCandidates.size)emitSpriteDraws(items,updates,seen,resources,used);releaseSpriteInstances();

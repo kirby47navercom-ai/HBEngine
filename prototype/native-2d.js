@@ -3,7 +3,9 @@ import * as THREE from 'three';
 const identity=new THREE.Matrix3();
 export function native2DSettings(material,size){
   const mask=material.userData.hbSpriteMask,light=material.userData.hbLight2D,transform=light?.hbLight2DMaskTransform.value.elements||identity.elements;
-  return {pass:[0,mask?.hbSpriteMaskMode.value||0,light?1:0,light?.hbLight2DHasMask.value||0],screen:[...size,light?.hbLight2DLayer.value||0,light?.hbLight2DCount.value||0],origin:[...(light?.hbLight2DOrigin.value.toArray()||[0,0]),light?.hbLight2DVolume.value??-1,light?.hbLight2DCookieSize.value||1],modes:light?.hbLight2DModes.value.toArray()||[0,0,0,0],channels:light?.hbLight2DChannels.value.toArray()||[-1,-1,-1,-1],maskX:[transform[0],transform[3],transform[6],0],maskY:[transform[1],transform[4],transform[7],0],project:[0,0,0,0]};
+  return {pass:[0,mask?.hbSpriteMaskMode.value||0,light?1:0,light?.hbLight2DHasMask.value||0],screen:[...size,light?.hbLight2DLayer.value||0,light?.hbLight2DCount.value||0],// origin.xy is not sent: the native shader takes the object origin from the draw's (or instance's) world matrix, so
+  // lit sprites share settings and batch.
+  origin:[0,0,light?.hbLight2DVolume.value??-1,light?.hbLight2DCookieSize.value||1],modes:light?.hbLight2DModes.value.toArray()||[0,0,0,0],channels:light?.hbLight2DChannels.value.toArray()||[-1,-1,-1,-1],maskX:[transform[0],transform[3],transform[6],0],maskY:[transform[1],transform[4],transform[7],0],project:[0,0,0,0]};
 }
 export function native2DTextures(material){
   const m=material.userData.hbSpriteMask,l=material.userData.hbLight2D;
