@@ -187,23 +187,34 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   // identity world/normal, white colour and identity UV rows. renderer.hbSpriteBatching=false turns it off.
   const spriteCandidates=new Map(),batchedSprites=new Set(),spriteInstances=new Map(),spriteStateKeys=new Map(),identity16=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],SPRITE_STRIDE=44;
   function batchableSpriteUV(d){const x=d.material.uvX,y=d.material.uvY;for(let k=1;k<6;k++)if(d.maps[k]){const a=x[k],b=x[0],c=y[k],e=y[0];if(a[0]!==b[0]||a[1]!==b[1]||a[2]!==b[2]||c[0]!==e[0]||c[1]!==e[1]||c[2]!==e[2])return false;}return true;}
-  function spriteStateKey(c){const entry=c.entry;if(entry.stateKey!=null)return entry.stateKey;const {id:_id,world:_w,normal:_n,mesh:_m,material,...rest}=entry.draw,{color:_c,uvX:_x,uvY:_y,...mat}=material,text=JSON.stringify([rest,mat,c.geometry.parameters]);let key=spriteStateKeys.get(text);if(key===undefined){if(spriteStateKeys.size>4096)spriteStateKeys.clear();spriteStateKeys.set(text,key=spriteStateKeys.size+1);}return entry.stateKey=key;}
-  function emitSpriteDraw(item,c,updates,seen,items){const d=c.entry.draw,stamp=c.entry.stamp;if(previous.get(item.id)!==stamp){updates.push(d);previous.set(item.id,stamp);}seen.add(item.id);items.push(item);}
-  function emitSpriteBatch(run,updates,seen,resources,used,items){
+  // Geometry part of the batch key: an unmodified built-in parametric geometry is identified by type and parameters (the
+  // batch draws the first member's identical mesh); anything else must be the same geometry object.
+  function batchGeometryKey(g){if(g.type!=='BufferGeometry'&&g.parameters&&!g.index?.version&&!Object.keys(g.morphAttributes).length){let fresh=true;for(const name in g.attributes){const a=g.attributes[name];if((a.isInterleavedBufferAttribute?a.data.version:a.version)!==0){fresh=false;break;}}if(fresh)return [g.type,g.parameters];}return g.uuid;}
+  function spriteStateKey(c){const entry=c.entry;if(entry.stateKey!=null)return entry.stateKey;const {id:_id,world:_w,normal:_n,mesh:_m,material,...rest}=entry.draw,{color:_c,uvX:_x,uvY:_y,...mat}=material,text=JSON.stringify([rest,mat,batchGeometryKey(c.geometry)]);let key=spriteStateKeys.get(text);if(key===undefined){if(spriteStateKeys.size>4096)spriteStateKeys.clear();spriteStateKeys.set(text,key=spriteStateKeys.size+1);}return entry.stateKey=key;}
+  function emitSpriteBatch(run,resources,used,items){
     const first=run[0],batchId='sprites:'+first.item.id,instId=batchId+':instances',n=run.length;let cache=spriteInstances.get(instId);
     if(!cache||cache.values.length<n*SPRITE_STRIDE){cache={values:new Float64Array(2**Math.ceil(Math.log2(n))*SPRITE_STRIDE),count:-1};spriteInstances.set(instId,cache);}
     const v=cache.values;let changed=cache.count!==n;const set=(i,value)=>{if(v[i]!==value){v[i]=value;changed=true;}};
-    for(let i=0;i<n;i++){const d=run[i].c.entry.draw,m=d.material,o=i*SPRITE_STRIDE;for(let k=0;k<16;k++){set(o+k,d.world[k]);set(o+16+k,d.normal[k]);}for(let k=0;k<4;k++)set(o+32+k,m.color[k]);for(let k=0;k<3;k++){set(o+36+k,m.uvX[0][k]);set(o+40+k,m.uvY[0][k]);}set(o+39,0);set(o+43,0);batchedSprites.add(run[i].item.id);}
+    for(let i=0;i<n;i++){const d=run[i].c.entry.draw,m=d.material,o=i*SPRITE_STRIDE;for(let k=0;k<16;k++){set(o+k,d.world[k]);set(o+16+k,d.normal[k]);}for(let k=0;k<4;k++)set(o+32+k,m.color[k]);for(let k=0;k<3;k++){set(o+36+k,m.uvX[0][k]);set(o+40+k,m.uvY[0][k]);}set(o+39,0);set(o+43,0);}
     if(changed){cache.count=n;resources.push({kind:'instances',id:instId,capacity:cache.values.length/SPRITE_STRIDE,uv:true,values:Array.from(v.subarray(0,n*SPRITE_STRIDE))});}
     cache.used=true;used.instances.add(instId);
     const draw=copyData(first.c.entry.draw);draw.id=batchId;draw.world=identity16.slice();draw.normal=identity16.slice();draw.material.color=[1,1,1,1];draw.material.uvX=draw.material.uvX.map(()=>[1,0,0,0]);draw.material.uvY=draw.material.uvY.map(()=>[0,1,0,0]);draw.instances=instId;
-    const stamp=drawHistory.stamp(batchId,draw);if(previous.get(batchId)!==stamp){updates.push(draw);previous.set(batchId,stamp);}seen.add(batchId);items.push({...first.item,id:batchId});
+    const stamp=drawHistory.stamp(batchId,draw);if(previous.get(batchId)!==stamp){batchUpdates.push(draw);previous.set(batchId,stamp);}batchSeen.add(batchId);items.push({...first.item,id:batchId});
   }
+  // Main-pass order after sorting: opaque items group same-key candidates within one (phase, renderOrder) block at the
+  // first member's place; transparent and transmissive items only merge sorted neighbours (their order is visible).
+  let batchUpdates=null,batchSeen=null;
   function emitSpriteDraws(items,updates,seen,resources,used){
-    const list=items.splice(0);let run=[];
-    const flush=()=>{if(run.length>1)emitSpriteBatch(run,updates,seen,resources,used,items);else for(const r of run)emitSpriteDraw(r.item,r.c,updates,seen,items);run=[];};
-    for(const item of list){const c=spriteCandidates.get(item.id);if(!c){flush();items.push(item);continue;}const key=spriteStateKey(c);if(run.length&&run[0].key!==key)flush();run.push({item,c,key});}
-    flush();spriteCandidates.clear();
+    batchUpdates=updates;batchSeen=seen;const list=items.splice(0),phase=item=>item.transmissive?1:item.transparent?2:0;
+    const emit=run=>{if(run.length>1)emitSpriteBatch(run,resources,used,items);else items.push(run[0].item);};
+    for(let start=0;start<list.length;){
+      let end=start+1;while(end<list.length&&phase(list[end])===phase(list[start])&&(phase(list[start])!==0||list[end].order===list[start].order))end++;
+      if(phase(list[start])===0){const groups=new Map(),rows=[];for(let i=start;i<end;i++){const item=list[i],c=spriteCandidates.get(item.id);if(!c){rows.push({item});continue;}const key=spriteStateKey(c);let group=groups.get(key);if(!group){groups.set(key,group=[]);rows.push({group});}group.push({item,c,key});}
+       for(const row of rows)if(row.item)items.push(row.item);else emit(row.group);}
+      else{let run=[];for(let i=start;i<end;i++){const item=list[i],c=spriteCandidates.get(item.id);if(!c){if(run.length){emit(run);run=[];}items.push(item);continue;}const key=spriteStateKey(c);if(run.length&&run[0].key!==key){emit(run);run=[];}run.push({item,c,key});}if(run.length)emit(run);}
+      start=end;
+    }
+    spriteCandidates.clear();
   }
   function releaseSpriteInstances(){for(const [id,cache] of spriteInstances){if(cache.used){cache.used=false;continue;}spriteInstances.delete(id);released.instances.add(id);}}let retainSerial=0,probeEpoch=0,lastProbeKey=null;
   const linePool=new NativeLinePool(),geometries=new Map(),textures=new Map(),programs=new Map(),instances=new Map(),deformations=new Map(),previous=new Map(),spriteGeometry=new THREE.PlaneGeometry(1,1),normalMatrix=new THREE.Matrix4(),at=new THREE.Vector3(),cameraAt=new THREE.Vector3(),cameraBack=new THREE.Vector3(),lightAt=new THREE.Vector3(),targetAt=new THREE.Vector3(),frustum=new THREE.Frustum(),projectionView=new THREE.Matrix4();
@@ -323,8 +334,9 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
          draw={...(objectMotion?{previousWorld:objectMotion.world.toArray(),motionFlag:objectMotion.flag}:{}),...(twoD?{twoD}:{}),id,transmissive:!!transmissive,mesh:geometryResource(geometry,resources),world:world.toArray(),normal:normalMatrix.toArray(),lightmap:material.lightMap?textureResource(material.lightMap,resources,true):'',maps:maps.map(t=>textureResource(t,resources)),sampling:maps.map(t=>nativeSamplerState(THREE,t)),first:start,count,material:properties,...(properties.unlit||properties.sky?{probes:[],globalProbes:false}:reflectionProbeDrawBindings(probes,at.setFromMatrixPosition(node.matrixWorld).toArray(),bounds,probeCandidateIndex)),shadowAlphaCutoff:node.customDepthMaterial?.alphaTest??properties.alphaCutoff};needsGlobalProbes||=draw.globalProbes;
          if(deformation)draw.deformation=deformation;if(instanced){draw.instances=instanceResource(node,resources,objectMotion);used.instances.add(draw.instances);}if(program){draw.program=program.id;draw.programMaps=program.maps.map(t=>textureResource(t,resources));draw.programSampling=program.maps.map(t=>nativeSamplerState(THREE,t));}
         }
-        // Sprite batching candidates: emitted after sorting, merged with sorted neighbours that share every non-instance value.
-        if(retainedEntry&&renderer.hbSpriteBatching!==false&&inView&&!transmissive&&node.isMesh&&node.userData.sprite&&geometry.type==='PlaneGeometry'&&!casts.length&&!probes.length&&!skyNodes.has(node)&&batchableSpriteUV(draw)){used.meshes.add(draw.mesh);draw.maps.forEach(id=>used.textures.add(id));spriteCandidates.set(id,{entry:retainedEntry,geometry});at.setFromMatrixPosition(node.matrixWorld);items.push({id,order:node.renderOrder,transparent:material.transparent,transmissive:false,depth:at.distanceToSquared(cameraAt)});continue;}
+        // Batching candidates (sprites and meshes): the member draw stays on the host as usual (shadows and probe captures
+        // keep using it); after sorting, the main-pass order replaces members sharing every non-instance value with one batch.
+        if(retainedEntry&&renderer.hbSpriteBatching!==false&&inView&&!transmissive&&node.isMesh&&!node.isSkinnedMesh&&!skyNodes.has(node)&&batchableSpriteUV(draw))spriteCandidates.set(id,{entry:retainedEntry,geometry});
         used.meshes.add(draw.mesh);draw.maps.forEach(id=>used.textures.add(id));if(draw.program)used.programs.add(draw.program);draw.programMaps?.forEach(id=>used.textures.add(id));stamp??=drawHistory.stamp(id,draw);if(casts.length)shadowCache.draw(id,draw,stamp,!!program?.animated);if(previous.get(id)!==stamp){updates.push(draw);previous.set(id,stamp);}seen.add(id);if(skyNodes.has(node))skyDraws.push(id);if(probes.length&&!node.userData.draw2d&&!transmissive)probeDraws.push({id,node,deformed,sky:!!properties.sky});for(const record of casts)record.casters.push(id);if((casts.length||probes.length&&!node.userData.draw2d)&&program?.animated)animatedCaster=true;if(inView){at.setFromMatrixPosition(node.matrixWorld);items.push({id,order:node.renderOrder,transparent:material.transparent,transmissive:!!transmissive,depth:at.distanceToSquared(cameraAt)});}
       }
     });
