@@ -39,7 +39,7 @@ export function createRigidPhysics(objects,options={}){
   if(!vector(gravity)||!Number.isFinite(dt)||dt<=0||dt>1||!Number.isInteger(maxSubsteps)||maxSubsteps<1||maxSubsteps>128)throw Error('물리 설정을 확인하세요.');
   const rootMotions=new Map(),rootDriven=new Set();const spaces=new Map(),materials=new Map(options.materials||[]),inputs=new Map(),keys=new Map(),jumps=new Set();
   // forceObjects: ConstantForce owners found by the latest sync (the force loop runs right after it).
-  const forceObjects=new Set();let revisionSamples=0,prepared=false,disposed=false,accumulator=0,elapsed=0,lastContacts=[],nonce=0,writingBatch=false;const pendingSpaces=new Map(),timing={syncCalls:0,staticReused:0,staticRefreshed:0,syncMs:0,stepMs:0,solverMs:0};
+  const forceObjects=new Set(),movementObjects=new Set();let revisionSamples=0,prepared=false,disposed=false,accumulator=0,elapsed=0,lastContacts=[],nonce=0,writingBatch=false;const pendingSpaces=new Map(),timing={syncCalls:0,staticReused:0,staticRefreshed:0,syncMs:0,stepMs:0,solverMs:0};
   const alive=()=>{if(disposed)throw Error('종료된 물리 월드예요.');};
   const properties=(o,dim)=>{
     const type=dim===2?'Rigidbody2D':'Rigidbody',movement=enabledComponent(o,dim===2?'CharacterMovement2D':'CharacterMovement');
@@ -71,12 +71,12 @@ export function createRigidPhysics(objects,options={}){
     else{r.body.setTranslation(position,true);r.body.setRotation(rotation,true);}
   }
   function sync(){
-    alive();if(!spaces.size)return;forceObjects.clear();const at=options.profile?performance.now():0;if(options.profile)timing.syncCalls++;
+    alive();if(!spaces.size)return;forceObjects.clear();movementObjects.clear();const at=options.profile?performance.now():0;if(options.profile)timing.syncCalls++;
     try{
     for(const [dim,space] of spaces){
       const {R,world}=space,active=new Set(),deformableObjects=[],jointObjects=[],deformableType=dim===2?'Rope2D':'Cloth',jointType=dim===2?'PhysicsConstraint2D':'PhysicsConstraint';
       for(const o of objects){
-        if(o.poolActive===false)continue;const authoredComponents=objectComponents(o);if(hasComponentType(authoredComponents,jointType))jointObjects.push(o);if(hasComponentType(authoredComponents,'ConstantForce')||hasComponentType(authoredComponents,'ConstantForce2D'))forceObjects.add(o);if(!options.queryOnly&&hasComponentType(authoredComponents,deformableType))deformableObjects.push(o);if(o.kind==='component'||o.kind==='widget')continue;
+        if(o.poolActive===false)continue;const authoredComponents=objectComponents(o);if(hasComponentType(authoredComponents,jointType))jointObjects.push(o);if(hasComponentType(authoredComponents,'ConstantForce')||hasComponentType(authoredComponents,'ConstantForce2D'))forceObjects.add(o);if(hasComponentType(authoredComponents,'TopDownMovement2D')||hasComponentType(authoredComponents,'CharacterMovement2D')||hasComponentType(authoredComponents,'CharacterMovement')||hasComponentType(authoredComponents,'PawnMovement'))movementObjects.add(o);if(!options.queryOnly&&hasComponentType(authoredComponents,deformableType))deformableObjects.push(o);if(o.kind==='component'||o.kind==='widget')continue;
         const previous=space.bodies.get(o.id),fixed=previous?.staticState;let source;const sourceOf=()=>source??=(options.staticCache?physicsSourceComponents(authoredComponents):null);
         // Revisions (docs/CHANGE_TRACKING_DESIGN.md): an announced-unchanged static collider is reused without the deep
         // check while physics is trusted; verify mode always checks, and one in (sampleMask+1) skips is sampled.
@@ -253,7 +253,8 @@ export function createRigidPhysics(objects,options={}){
   }
   function movement(step){
     let changedPose=rootMotionStep(step);
-    for(const o of objects){if(o.poolActive===false||rootDriven.has(o))continue;const move=enabledComponent(o,'TopDownMovement2D')||enabledComponent(o,'CharacterMovement2D')||enabledComponent(o,'CharacterMovement')||enabledComponent(o,'PawnMovement');if(!move)continue;
+    // Movement owners come from the sync that runs right before movement (objects without these components never move here).
+    for(const o of movementObjects){if(o.poolActive===false||rootDriven.has(o))continue;const move=enabledComponent(o,'TopDownMovement2D')||enabledComponent(o,'CharacterMovement2D')||enabledComponent(o,'CharacterMovement')||enabledComponent(o,'PawnMovement');if(!move)continue;
       const r=record(o,2)?.p?record(o,2):record(o,3),top=!!enabledComponent(o,'TopDownMovement2D'),controller=objects.find(v=>v.id===state.gameplay?.controller),control=controller&&enabledComponent(controller,'PlayerController'),allow=!control||control.inputEnabled,controlled=state.gameplay?.pawn===o.id||move.autoPossess;
       const keyboard=controlled&&allow?[(keys.get('d')||keys.get('arrowright')||0)-(keys.get('a')||keys.get('arrowleft')||0),top?(keys.get('w')||keys.get('arrowup')||0)-(keys.get('s')||keys.get('arrowdown')||0):0,top?0:(keys.get('s')||keys.get('arrowdown')||0)-(keys.get('w')||keys.get('arrowup')||0)]:[0,0,0],direction=o.navigationControl?.direction||new Vector3(...(inputs.get(o.id)||[0,0,0])).add(new Vector3(...keyboard)).toArray(),length=Math.hypot(...direction),target=direction.map(v=>v/Math.max(1,length)*(o.navigationControl?.speed??move.speed)),velocity=r?.p?array(r.body.linvel()):o.velocity??[0,0,0],blend=o.navigationControl?.instant?1:Math.min(1,move.acceleration*step);
       for(const i of top||o.navigationControl&&r?.dim===2?[0,1]:r?.dim===2?[0]:[0,2])velocity[i]+=(target[i]-velocity[i])*blend;
