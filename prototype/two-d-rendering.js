@@ -61,7 +61,7 @@ export class TwoDRendering{
     for(let index=0;index<groups.length;index++){const group=groups[index],record=records[index];if(record===HOST_HELD||group.userData.disposed)continue;
       let cached=record&&staticEntries.get(group);
       if(cached&&(cached.transform!==record.updatedTransform||cached.components!==record.updatedComponents||cached.parent!==group.parent||cached.layers!==layers))cached=null;
-      if(cached){twoDStaticStats.reusedGroups++;for(const info of cached.nodes){if(info.node.material&&visible(info.node))countMaterials(info.node);const entry=info.entry;if(!entry)continue;
+      if(cached){twoDStaticStats.reusedGroups++;for(const info of cached.nodes){if(countDisplay&&info.node.material&&visible(info.node))countMaterials(info.node);const entry=info.entry;if(!entry)continue;
         if(info.position)entry.depth=camera.isOrthographicCamera?-worldAt.copy(info.position).sub(cameraPosition).dot(direction):-info.position.distanceToSquared(cameraPosition);
         entries.push(entry);(scopes.get(entry.scope)?.children||roots).push(entry);}continue;}
       // Recorded only for clean static groups without masks, 2D lights or particles.
@@ -69,13 +69,16 @@ export class TwoDRendering{
       const mask=group.userData.maskMesh;if(mask&&visible(group)){mask.updateWorldMatrix(true,false);masks.push({group,mesh:mask,scope:nearestGroup(group),properties:mask.userData.maskProperties});}
       const owned=[group];while(owned.length){const node=owned.pop();if(node.userData.objectId!==group.userData.objectId)continue;owned.push(...node.children);if(node.userData.spriteMask||node.userData.editorHelper)continue;const info=recording?{node,entry:null,position:null}:null;if(info)recording.nodes.push(info);
         const volume=node.userData.light2dVolume===true,p=group.userData.light2d;if(volume){const layer=layers.filter(l=>p.targetSortingLayers.includes(l.id)).at(-1);node.visible=!!layer&&lights&&p.enabled!==false&&p.volumeIntensity>0;Object.assign(node.userData.draw2d,{sortingLayer:layer?.id||'default',sortingOrder:2097153+(p.lightOrder||0)});}
-        if(node.material&&visible(node))countMaterials(node);
+        if(countDisplay&&node.material&&visible(node))countMaterials(node);
         const scope=volume?null:nearestGroup(node);if(!node.userData.draw2d&&!(scope&&(node.isMesh||node.isPoints)))continue;
         const entry=item(node,node.userData.draw2d||{},(group.userData.objectId||group.uuid)+':'+(node.userData.draw2dId||node.uuid));entry.scope=scope;entry.properties=node.userData.draw2d||{};entries.push(entry);if(info){if(node.userData.particleRenderer||volume)recording.nodes=null;else{info.entry=entry;if((entry.properties.sortMode||layers?.find(l=>l.id===entry.properties.sortingLayer)?.sortMode)!=='y')info.position=new THREE.Vector3().setFromMatrixPosition(node.matrixWorld);}}if(node.userData.particleRenderer&&!camera.isOrthographicCamera&&!scope&&entry.layer===sortingLayerIndex(layers,'default')&&entry.order===0&&(!entry.properties.maskInteraction||entry.properties.maskInteraction==='none'))node.renderOrder=0;else (scopes.get(scope)?.children||roots).push(entry);
       }
       if(recording?.nodes)staticEntries.set(group,recording);else if(record)staticEntries.delete(group);
     }
-    let order=0;const assign=list=>{list.sort(compare);for(const entry of list)if(entry.children)assign(entry.children);else entry.node.renderOrder=++order;};assign(roots);
+    // Root entries start in last frame's sorted order (cached entries keep their identity), new ones after them, so the
+    // stable sort mostly walks one sorted run; compare is a total order, so the result does not depend on the start order.
+    const serial=this.sortSerial=(this.sortSerial||0)+1;for(const e of roots)e.sortSeen=serial;const start=[];for(const e of this.lastRoots||[])if(e.sortSeen===serial){e.sortSeen=-serial;start.push(e);}for(const e of roots)if(e.sortSeen===serial)start.push(e);
+    let order=0;const assign=list=>{list.sort(compare);for(const entry of list)if(entry.children)assign(entry.children);else entry.node.renderOrder=++order;};assign(start);this.lastRoots=start;
     const lighting=this.lighting.prepare(renderer,lights?special:[],entries,layers);renderer.getDrawingBufferSize(this.size);const used=new Set(),buckets=new Map();
     for(const entry of entries){const mode=entry.properties.maskInteraction;if(mode!=='inside'&&mode!=='outside'){for(const material of Array.isArray(entry.node.material)?entry.node.material:[entry.node.material])if(material.userData.hbSpriteMask){material.userData.hbSpriteMask.hbSpriteMaskMode.value=0;material.userData.hbSpriteMask.hbSpriteMask.value=material.userData.hbMaskFallback||null;}continue;}
       const selected=visible(entry.node)?masks.filter(mask=>{if(mask.scope!==entry.scope)return false;const p=mask.properties;if(!p.customRange)return true;const low=sortingLayerIndex(layers,p.backSortingLayer),high=sortingLayerIndex(layers,p.frontSortingLayer);return (entry.layer>low||entry.layer===low&&entry.order>=p.backSortingOrder)&&(entry.layer<high||entry.layer===high&&entry.order<=p.frontSortingOrder);}):[];
@@ -97,5 +100,5 @@ export class TwoDRendering{
     return {renderers:entries.length,maskPasses:used.size,maskTargets:this.targets.size,...lighting};
   }
   disposeMasks(){for(const target of this.targets.values())target.dispose();this.targets.clear();this.emptyMask?.dispose();this.emptyMask=null;this.maskScene.clear();}
-  dispose(){this.disposeMasks();this.lighting.dispose();}
+  dispose(){this.disposeMasks();this.lighting.dispose();this.lastRoots=null;}
 }
