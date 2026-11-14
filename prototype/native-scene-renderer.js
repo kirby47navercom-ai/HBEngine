@@ -29,7 +29,7 @@ import {createNativeMaterial} from './native-materials.js';
 import {bloomSettings} from './bloom-rendering.js';
 
 const clipDepth=new THREE.Matrix4().set(1,0,0,0,0,1,0,0,0,0,.5,.5,0,0,0,1);
-const isDeformed=node=>!!node.isSkinnedMesh||Object.values(node.geometry?.morphAttributes||{}).some(a=>a.length);
+const isDeformed=node=>{if(node.isSkinnedMesh)return true;const morph=node.geometry?.morphAttributes;if(morph)for(const key in morph)if(Object.hasOwn(morph,key)&&morph[key].length)return true;return false;};
 const visible=node=>{for(let p=node;p;p=p.parent)if(!p.visible)return false;return true;};
 export function rgbaBase64(bytes){if(typeof Buffer!=='undefined'&&ArrayBuffer.isView(bytes)&&bytes.BYTES_PER_ELEMENT===1)return Buffer.from(bytes.buffer,bytes.byteOffset,bytes.byteLength).toString('base64');let text='';for(let i=0;i<bytes.length;i+=32768)text+=String.fromCharCode(...bytes.subarray(i,i+32768));return btoa(text);}
 export function packedRaySceneUpdates(texture,encode=rgbaBase64){
@@ -193,10 +193,13 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   const info={autoReset:false,memory:{geometries:0,textures:0},render:{calls:0,triangles:0,points:0,lines:0},reset(){this.render.calls=this.render.triangles=0;}};
   // Unchanged geometry (same index/attribute objects and versions) skips the JSON stamp entirely.
   const geometryVersions=new WeakMap();
+  // Same comparison as geometryVersionKey(...).every(===) without building the key array on every draw.
+  function sameGeometryVersion(known,geometry){let i=0;if(known[i++]!==geometry.index||known[i++]!==geometry.index?.version)return false;for(const name in geometry.attributes){const a=geometry.attributes[name];if(known[i++]!==name||known[i++]!==a||known[i++]!==(a.isInterleavedBufferAttribute?a.data.version:a.version)||known[i++]!==a.usage)return false;}return i===known.length;}
   function geometryVersionKey(geometry){const out=[geometry.index,geometry.index?.version];for(const name in geometry.attributes){const a=geometry.attributes[name];out.push(name,a,a.isInterleavedBufferAttribute?a.data.version:a.version,a.usage);}return out;}
   function geometryResource(geometry,resources){
-    const versions=geometryVersionKey(geometry),known=geometryVersions.get(geometry);
-    if(known&&known.length===versions.length&&known.every((v,i)=>v===versions[i])&&geometries.has(geometry.uuid))return geometry.uuid;
+    const known=geometryVersions.get(geometry);
+    if(known&&sameGeometryVersion(known,geometry)&&geometries.has(geometry.uuid))return geometry.uuid;
+    const versions=geometryVersionKey(geometry);
     track(geometry,'meshes',geometry.uuid,geometries);
     const stamp=geometryStreamStamp(geometry,attributeId,capabilities?.dynamicMesh),previous=geometries.get(geometry.uuid);
     if(previous?.signature!==stamp.signature){if(stamp.dynamic&&previous?.layout===stamp.layout){const vertices=packedDynamicVertices(geometry,previous.vertices);resources.push({kind:'meshVertices',id:geometry.uuid,vertices});geometries.set(geometry.uuid,{...stamp,vertices});}else{resources.push({kind:'mesh',id:geometry.uuid,...packedGeometry(geometry),...(stamp.dynamic?{dynamic:true}:{})});geometries.set(geometry.uuid,stamp);}}geometryVersions.set(geometry,versions);return geometry.uuid;
