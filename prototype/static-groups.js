@@ -7,7 +7,8 @@
 // sprites) under a parent whose world matrix is the identity.
 // Safety net: one in SAMPLE_EVERY clean updates runs the real update and compares every subtree world matrix; a
 // difference is reported and switches static skipping off (every group updates and is visited again).
-import {Object3D,Sphere} from 'three';
+import {Object3D,Sphere,Box3} from 'three';
+import {reflectionProbeMeshBounds} from './reflection-probe-bounds.js';
 import {objectRevision,reportRevisionMismatch,revisionConfig} from './object-revision.js';
 
 export const staticConfig={enabled:true,sampleEvery:64,skippedUpdates:0};
@@ -15,7 +16,8 @@ const records=new WeakMap(),baseUpdate=Object3D.prototype.updateMatrixWorld,base
 const allowedComponents=new Set(['Transform','SpriteRenderer','MeshRenderer','BoxCollider','SphereCollider','CapsuleCollider','MeshCollider','BoxCollider2D','CircleCollider2D','CapsuleCollider2D','PolygonCollider2D','EdgeCollider2D','Rigidbody','Rigidbody2D']);
 let samples=0;
 
-function eligibleNode(node){
+function eligibleNode(node,root=node){
+ if(node!==root&&records.has(node))return false;// another object's group inside: its own revisions move it
  if(node.isLight||node.isCamera||node.isLine||node.isPoints||node.isSprite||node.isLOD||node.isSkinnedMesh||node.isInstancedMesh||node.isBone)return false;
  if(node.userData.hbNativeParticle||node.userData.spriteSkin||node.userData.gameCamera)return false;
  if(node.isMesh){
@@ -23,7 +25,7 @@ function eligibleNode(node){
   for(const m of Array.isArray(node.material)?node.material:[node.material])if(!m||m.userData?.hbNativeProgram||m.isShaderMaterial)return false;
   if(node.onBeforeRender!==baseBeforeRender&&!(node.userData.sprite&&!node.userData.draw2d?.billboard))return false;
  }
- for(const child of node.children)if(!eligibleNode(child))return false;
+ for(const child of node.children)if(!eligibleNode(child,root))return false;
  return true;
 }
 function eligible(group,object){
@@ -50,18 +52,27 @@ function staticUpdateMatrixWorld(force){
   return;
  }
  baseUpdate.call(this,force);
- if(r){[r.updatedTransform,r.updatedComponents]=revisions(r.object);r.sphereValid=false;}
+ if(r){[r.updatedTransform,r.updatedComponents]=revisions(r.object);r.sphereValid=r.boxValid=false;}
 }
 // Called by the runtime for each object's visual root.
 export function watchStaticGroup(group,object){
  if(!group||records.has(group))return;
- records.set(group,{object,eligible:false,eligibleComponents:-1,updatedTransform:-1,updatedComponents:-1,sphere:new Sphere(),sphereValid:false});
+ records.set(group,{object,eligible:false,eligibleComponents:-1,updatedTransform:-1,updatedComponents:-1,sphere:new Sphere(),sphereValid:false,box:new Box3(),boxValid:false});
  Object.defineProperty(group,'updateMatrixWorld',{value:staticUpdateMatrixWorld,writable:true,configurable:true,enumerable:false});
 }
 const part=new Sphere();
 // Bounding sphere of a clean group (world space, every mesh), or null when the group is not clean/eligible.
-export function staticGroupSphere(group){
- const r=records.get(group);if(!r||!clean(r,group))return null;
+// Clean record of a watched group (eligible and unchanged since its last real update), or null.
+export function staticGroupRecord(group){const r=records.get(group);return r&&clean(r,group)?r:null;}
+export function staticGroupSphere(group,r=staticGroupRecord(group)){
+ if(!r)return null;
  if(!r.sphereValid){r.sphere.makeEmpty();group.traverse(n=>{if(!n.isMesh)return;const g=n.geometry;if(g.boundingSphere===null)g.computeBoundingSphere();part.copy(g.boundingSphere).applyMatrix4(n.matrixWorld);if(r.sphere.isEmpty())r.sphere.copy(part);else r.sphere.union(part);});r.sphereValid=true;}
  return r.sphere.isEmpty()?null:r.sphere;
+}
+const meshBox=new Box3();
+// Union of the meshes' reflection-probe bounds (what the renderer culls with when probes exist), or null if any is unknown.
+export function staticGroupBox(group,r=staticGroupRecord(group)){
+ if(!r)return null;
+ if(!r.boxValid){r.box.makeEmpty();let valid=true;group.traverse(n=>{if(!valid||!n.isMesh)return;const b=reflectionProbeMeshBounds(n,meshBox);if(!b){valid=false;return;}r.box.union(b);});r.boxValid=true;r.boxOk=valid&&!r.box.isEmpty();}
+ return r.boxOk?r.box:null;
 }
