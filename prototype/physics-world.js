@@ -38,7 +38,8 @@ export function createRigidPhysics(objects,options={}){
   const dt=options.fixedStep??options.fixedDeltaTime??1/60,maxSubsteps=options.maxSubsteps??8,gravity=options.gravity??[0,-9.81,0];
   if(!vector(gravity)||!Number.isFinite(dt)||dt<=0||dt>1||!Number.isInteger(maxSubsteps)||maxSubsteps<1||maxSubsteps>128)throw Error('물리 설정을 확인하세요.');
   const rootMotions=new Map(),rootDriven=new Set();const spaces=new Map(),materials=new Map(options.materials||[]),inputs=new Map(),keys=new Map(),jumps=new Set();
-  let revisionSamples=0,prepared=false,disposed=false,accumulator=0,elapsed=0,lastContacts=[],nonce=0,writingBatch=false;const pendingSpaces=new Map(),timing={syncCalls:0,staticReused:0,staticRefreshed:0,syncMs:0,stepMs:0,solverMs:0};
+  // forceObjects: ConstantForce owners found by the latest sync (the force loop runs right after it).
+  const forceObjects=new Set();let revisionSamples=0,prepared=false,disposed=false,accumulator=0,elapsed=0,lastContacts=[],nonce=0,writingBatch=false;const pendingSpaces=new Map(),timing={syncCalls:0,staticReused:0,staticRefreshed:0,syncMs:0,stepMs:0,solverMs:0};
   const alive=()=>{if(disposed)throw Error('종료된 물리 월드예요.');};
   const properties=(o,dim)=>{
     const type=dim===2?'Rigidbody2D':'Rigidbody',movement=enabledComponent(o,dim===2?'CharacterMovement2D':'CharacterMovement');
@@ -52,7 +53,7 @@ export function createRigidPhysics(objects,options={}){
   const constrained=(r,v,angular=false)=>v.map((value,i)=>(angular?(r.p?.movement?[1,1,1]:r.p?.freezeRotation)?.[i]||r.dim===2&&i!==2:r.p?.freezePosition?.[i]||r.dim===2&&i===2)?0:value);
   const dynamic=o=>{alive();if(!writingBatch)sync();const r=record(o,2)?.p?record(o,2):record(o,3);if(!r?.p||!r.body.isDynamic())throw Error('활성화된 동적 Rigidbody가 필요해요.');return r;};
   const mirror=r=>{
-    if(options.queryOnly)return;
+    if(options.queryOnly||!r.p)return;
     const velocity=array(r.body.linvel()),angular=r.dim===2?[0,0,r.body.angvel()]:array(r.body.angvel());
     if(r.p){r.object.velocity=velocity;r.object.angularVelocity=angular;r.lastVelocity=JSON.stringify(velocity);r.lastAngular=JSON.stringify(angular);r.object.gameplayDebug={...r.object.gameplayDebug,physics:{dimension:r.dim,bodyType:typeOf(r.p),mass:r.body.mass(),sleeping:r.body.isSleeping(),velocity,angularVelocity:angular,ccd:r.body.isCcdEnabled(),colliders:r.colliders.size}};}
   };
@@ -70,12 +71,12 @@ export function createRigidPhysics(objects,options={}){
     else{r.body.setTranslation(position,true);r.body.setRotation(rotation,true);}
   }
   function sync(){
-    alive();if(!spaces.size)return;const at=options.profile?performance.now():0;if(options.profile)timing.syncCalls++;
+    alive();if(!spaces.size)return;forceObjects.clear();const at=options.profile?performance.now():0;if(options.profile)timing.syncCalls++;
     try{
     for(const [dim,space] of spaces){
-      const {R,world}=space,active=new Set(),deformableObjects=[],deformableType=dim===2?'Rope2D':'Cloth';
+      const {R,world}=space,active=new Set(),deformableObjects=[],jointObjects=[],deformableType=dim===2?'Rope2D':'Cloth',jointType=dim===2?'PhysicsConstraint2D':'PhysicsConstraint';
       for(const o of objects){
-        if(o.poolActive===false)continue;const authoredComponents=objectComponents(o);if(!options.queryOnly&&hasComponentType(authoredComponents,deformableType))deformableObjects.push(o);if(o.kind==='component'||o.kind==='widget')continue;
+        if(o.poolActive===false)continue;const authoredComponents=objectComponents(o);if(hasComponentType(authoredComponents,jointType))jointObjects.push(o);if(hasComponentType(authoredComponents,'ConstantForce')||hasComponentType(authoredComponents,'ConstantForce2D'))forceObjects.add(o);if(!options.queryOnly&&hasComponentType(authoredComponents,deformableType))deformableObjects.push(o);if(o.kind==='component'||o.kind==='widget')continue;
         const previous=space.bodies.get(o.id),fixed=previous?.staticState;let source;const sourceOf=()=>source??=(options.staticCache?physicsSourceComponents(authoredComponents):null);
         // Revisions (docs/CHANGE_TRACKING_DESIGN.md): an announced-unchanged static collider is reused without the deep
         // check while physics is trusted; verify mode always checks, and one in (sampleMask+1) skips is sampled.
@@ -87,14 +88,14 @@ export function createRigidPhysics(objects,options={}){
         const p=properties(o,dim),components=[...authoredComponents,...(o.tileColliders||[])].filter(c=>colliderTypes.has(c.type)&&c.type.endsWith('2D')===(dim===2)&&c.properties?.enabled!==false&&c.properties?.collisionMode!=='none'&&o.collisionEnabled!==false);
         if(!p&&!components.length)continue;active.add(o.id);
         let r=space.bodies.get(o.id);const root=!o.parentId&&!o.parent,cached=root&&samePoseInput(r?.poseInput,o),transform=cached?r.pose:pose(o,objects),transformKey=cached?r.poseKey:JSON.stringify([transform.position.toArray(),transform.rotation.toArray()]);
-        if(!r){const desc=R.RigidBodyDesc.fixed();r={object:o,p,body:world.createRigidBody(desc),colliders:new Map(),dim,nonce:++nonce};space.bodies.set(o.id,r);setPose(r,transform);r.lastPose=transformKey;}
+        if(!r){const desc=R.RigidBodyDesc.fixed();r={object:o,p,body:world.createRigidBody(desc),colliders:new Map(),dim,nonce:++nonce};space.structure=(space.structure||0)+1;space.bodies.set(o.id,r);setPose(r,transform);r.lastPose=transformKey;}
         // Root scalar comparison also catches in-place C++/script edits. Parented
         // actors still resolve the hierarchy on every sync, including parent motion.
         if(!cached){r.pose=transform;r.poseKey=transformKey;r.poseInput=root?[...o.position,...o.rotation,...o.scale]:null;}
         r.object=o;r.p=p;
         const kind=typeOf(p),bodyType={static:R.RigidBodyType.Fixed,dynamic:R.RigidBodyType.Dynamic,kinematic:R.RigidBodyType.KinematicPositionBased}[kind];
-        if(r.body.bodyType()!==bodyType)r.body.setBodyType(bodyType,true);
-        if(transformKey!==r.lastPose){setPose(r,transform,kind==='kinematic'&&!options.queryOnly);r.lastPose=transformKey;}
+        if(r.body.bodyType()!==bodyType){r.body.setBodyType(bodyType,true);space.structure=(space.structure||0)+1;}
+        if(transformKey!==r.lastPose){setPose(r,transform,kind==='kinematic'&&!options.queryOnly);r.lastPose=transformKey;space.structure=(space.structure||0)+1;}
         const configuration=JSON.stringify(p);
         if(configuration!==r.configuration){
           r.body.setLinearDamping(p?.drag??0);r.body.setAngularDamping(p?.angularDrag??.05);
@@ -109,15 +110,15 @@ export function createRigidPhysics(objects,options={}){
           if(p&&!p.isKinematic&&(p.bodyType||'dynamic')==='dynamic'&&(component.type==='EdgeCollider2D'||component.type==='MeshCollider'&&cp.mode==='mesh'))throw Error(o.name+': 동적 강체에는 볼록 메시 또는 다각형 충돌을 사용하세요.');
           let c=r.colliders.get(component.id);
           if(c?.signature===signature){c.object=o;c.component=component;continue;}
-          if(c){space.colliders.delete(c.collider.handle);world.removeCollider(c.collider,true);}
+          if(c){space.colliders.delete(c.collider.handle);world.removeCollider(c.collider,true);space.structure=(space.structure||0)+1;}
           const material=coefficients(cp,R),desc=shape(component,transform.scale,R,dim),center=cp.center.map((v,i)=>v*transform.scale.getComponent(i));
           desc.setTranslation(...center.slice(0,dim)).setSensor(cp.trigger||cp.collisionMode==='query').setFriction(material.friction).setRestitution(material.restitution);
           desc.setFrictionCombineRule(material.frictionCombine).setRestitutionCombineRule(R.CoefficientCombineRule[{average:'Average',min:'Min',max:'Max',multiply:'Multiply'}[material.restitutionCombine]||'Average']);
           desc.setDensity(p?.autoMass?(material.density??1):1);
           desc.setActiveHooks(R.ActiveHooks.FILTER_CONTACT_PAIRS|R.ActiveHooks.FILTER_INTERSECTION_PAIRS).setActiveCollisionTypes(R.ActiveCollisionTypes.ALL);
-          c={object:o,component,p:cp,signature,collider:world.createCollider(desc,r.body),is2D:dim===2,radius:geometryColliderTypes.has(component.type)?colliderGeometryRadius(component.type,cp,transform.scale.toArray().map(Math.abs)):null};r.colliders.set(component.id,c);space.colliders.set(c.collider.handle,c);r.massDirty=true;
+          space.structure=(space.structure||0)+1;c={object:o,component,p:cp,signature,collider:world.createCollider(desc,r.body),is2D:dim===2,radius:geometryColliderTypes.has(component.type)?colliderGeometryRadius(component.type,cp,transform.scale.toArray().map(Math.abs)):null};r.colliders.set(component.id,c);space.colliders.set(c.collider.handle,c);r.massDirty=true;
         }
-        for(const [id,c] of r.colliders)if(!activeColliders.has(id)){space.colliders.delete(c.collider.handle);world.removeCollider(c.collider,true);r.colliders.delete(id);r.massDirty=true;}
+        for(const [id,c] of r.colliders)if(!activeColliders.has(id)){space.structure=(space.structure||0)+1;space.colliders.delete(c.collider.handle);world.removeCollider(c.collider,true);r.colliders.delete(id);r.massDirty=true;}
         if(r.massDirty&&p){
           for(const c of r.colliders.values())c.collider.setDensity(p.autoMass?(coefficients(c.p,R).density??1):1);
           r.body.setAdditionalMass(0,true);r.body.recomputeMassPropertiesFromColliders();
@@ -132,14 +133,15 @@ export function createRigidPhysics(objects,options={}){
         }
         if(options.staticCache&&!p&&root&&r.body.isFixed()&&!sourceOf().some(c=>physicsBodyTypes.has(c.type))){const components=JSON.parse(JSON.stringify(sourceOf())),tiles=o.tileColliders?JSON.parse(JSON.stringify(o.tileColliders)):null;r.staticState={components,tiles,revision:revisionSnapshot(o),componentMatch:runtimeDataMatcher(components,staticMatchers),tileMatch:tiles?runtimeDataMatcher(tiles,staticMatchers):null,collisionEnabled:o.collisionEnabled,materialCount:materials.size};if(options.profile)timing.staticRefreshed++;}else delete r.staticState;
       }
-      for(const [id,r] of space.bodies)if(!active.has(id)){for(const c of r.colliders.values())space.colliders.delete(c.collider.handle);space.vehicles?.remove(id);space.deformables?.detachBody(r.body.handle);world.removeRigidBody(r.body);space.bodies.delete(id);}
-      world.propagateModifiedBodyPositionsToColliders();if(!options.queryOnly)syncJoints(space,dim);space.vehicles?.sync();space.deformables?.sync(deformableObjects);for(const r of space.bodies.values())mirror(r);
+      for(const [id,r] of space.bodies)if(!active.has(id)){space.structure=(space.structure||0)+1;for(const c of r.colliders.values())space.colliders.delete(c.collider.handle);space.vehicles?.remove(id);space.deformables?.detachBody(r.body.handle);world.removeRigidBody(r.body);space.bodies.delete(id);}
+      world.propagateModifiedBodyPositionsToColliders();if(!options.queryOnly)syncJoints(space,dim,jointObjects);space.vehicles?.sync();space.deformables?.sync(deformableObjects);for(const r of space.bodies.values())mirror(r);
     }
     }finally{if(options.profile)timing.syncMs+=performance.now()-at;}
   }
-  function syncJoints(space,dim){
+  // owners: objects with joint components (sync collects them); inactive pooled objects have no body, so they add nothing.
+  function syncJoints(space,dim,owners=objects){
     const {R,world}=space,active=new Set();
-    for(const o of objects)for(const component of objectComponents(o).filter(c=>c.type===(dim===2?'PhysicsConstraint2D':'PhysicsConstraint')&&c.properties?.enabled!==false)){
+    for(const o of owners)for(const component of objectComponents(o).filter(c=>c.type===(dim===2?'PhysicsConstraint2D':'PhysicsConstraint')&&c.properties?.enabled!==false)){
       const p={...componentDefaultValues(component.type),...component.properties},a=space.bodies.get(o.id),b=p.connectedBody?space.bodies.get(p.connectedBody):null,key=JSON.stringify([o.id,component.id]);
       if(!a||p.connectedBody&&!b)continue;
       if(a===b)throw Error('관절을 자기 자신에게 연결할 수 없어요.');
@@ -181,6 +183,8 @@ export function createRigidPhysics(objects,options={}){
   function fixedContacts(space,dim){
     // Rapier skips fixed/fixed event pairs. Preserve editor-authored static
     // trigger/hit events with cached exact tests, using a conservative sweep.
+    // Fixed colliders only change when sync changes a body or collider (space.structure); otherwise reuse the contacts.
+    if(space.fixedContacts&&space.fixedStructure===space.structure)return space.fixedContacts;space.fixedStructure=space.structure;
     // Flat value list compared element-wise: no per-frame JSON of every static collider.
     const fixed=[...space.colliders.values()].filter(c=>!c.softBody&&c.collider.parent()?.isFixed()),signature=[];
     for(const c of fixed){const t=c.collider.translation(),r=c.collider.rotation();signature.push(c.collider.handle,c.signature,t.x,t.y,t.z??0);if(typeof r==='number')signature.push(r);else signature.push(r.x,r.y,r.z,r.w);}
@@ -197,7 +201,9 @@ export function createRigidPhysics(objects,options={}){
     for(const [dim,space] of spaces){
     // Rapier reports no fixed/fixed pairs (even with ActiveCollisionTypes.ALL), so only colliders on non-fixed bodies and
     // their partners can have pairs. The loop below keeps the original collider order and skips only pair-less colliders.
-    const involved=new Set();for(const c of space.colliders.values()){if(c.collider.parent()?.isFixed())continue;involved.add(c.collider.handle);space.world.contactPairsWith(c.collider,other=>involved.add(other.handle));space.world.intersectionPairsWith(c.collider,other=>involved.add(other.handle));}
+    // Colliders on non-fixed bodies, rebuilt only when sync changed a body or collider (space.structure).
+    if(!space.nonFixed||space.nonFixedStructure!==space.structure){space.nonFixed=[...space.colliders.values()].filter(c=>!c.collider.parent()?.isFixed());space.nonFixedStructure=space.structure;}
+    const involved=new Set();for(const c of space.nonFixed){involved.add(c.collider.handle);space.world.contactPairsWith(c.collider,other=>involved.add(other.handle));space.world.intersectionPairsWith(c.collider,other=>involved.add(other.handle));}
     for(const c of space.colliders.values()){
       if(!involved.has(c.collider.handle))continue;
       const add=(other,trigger)=>{const d=space.colliders.get(other.handle);if(!d||!pairAllowed(space,c.collider.handle,d.collider.handle))return;const x=JSON.stringify([c.object.id,c.component.id]),y=JSON.stringify([d.object.id,d.component.id]),key=dim+':'+(x<y?x+y:y+x);if(result.has(key))return;
@@ -329,7 +335,7 @@ export function createRigidPhysics(objects,options={}){
     inspect(){alive();sync();return {backend:'rapier',fixedStep:dt,elapsed,dimensions:[...spaces].map(([dimension,s])=>({dimension,breakCandidates:s.joints.breakableCount,bodies:[...s.bodies.values()].map(r=>({id:r.object.id,bodyType:typeOf(r.p),position:array(r.body.translation()),velocity:array(r.body.linvel()),angularVelocity:dimension===2?[0,0,r.body.angvel()]:array(r.body.angvel()),mass:r.body.mass(),sleeping:r.body.isSleeping(),colliders:r.colliders.size})),joints:[...s.joints.values()].map(j=>({owner:j.object.id,component:j.component.id,type:j.component.properties.jointType,connectedBody:j.component.properties.connectedBody||null}))}))};},
     timings(){return {...timing};},
     step(delta,limit=maxSubsteps){alive();if(!prepared)throw Error('물리 월드를 먼저 준비하세요.');if(!Number.isFinite(delta)||delta<0)throw Error('물리 시간을 확인하세요.');const at=options.profile?performance.now():0;accumulator=Math.min(accumulator+delta,dt*maxSubsteps);let count=0;
-      while(accumulator+1e-9>=dt&&count<limit){sync();if(movement(dt))sync();for(const o of objects)for(const c of objectComponents(o).filter(c=>['ConstantForce','ConstantForce2D'].includes(c.type)&&c.properties?.enabled!==false)){const p={...componentDefaultValues(c.type),...c.properties},r=record(o,c.type.endsWith('2D')?2:3);if(!r?.body.isDynamic())continue;r.body.addForce(xyz(p.force),p.force.some(v=>v!==0));r.body.addTorque(r.dim===2?p.torque[2]:xyz(p.torque),p.torque.some(v=>v!==0));}
+      while(accumulator+1e-9>=dt&&count<limit){sync();if(movement(dt))sync();for(const o of forceObjects)for(const c of objectComponents(o).filter(c=>['ConstantForce','ConstantForce2D'].includes(c.type)&&c.properties?.enabled!==false)){const p={...componentDefaultValues(c.type),...c.properties},r=record(o,c.type.endsWith('2D')?2:3);if(!r?.body.isDynamic())continue;r.body.addForce(xyz(p.force),p.force.some(v=>v!==0));r.body.addTorque(r.dim===2?p.torque[2]:xyz(p.torque),p.torque.some(v=>v!==0));}
         for(const[dimension,s]of spaces){checkJointBreaks(s,dimension);s.vehicles?.step(dt);s.deformables?.step(dt);const solverAt=options.profile?performance.now():0;s.world.step(s.eventQueue,s.hooks);if(options.profile)timing.solverMs+=performance.now()-solverAt;s.deformables?.postStep(dt);checkJointBreaks(s,dimension,elapsed+dt);}updateObjects();for(const s of spaces.values()){s.vehicles?.publish();s.deformables?.publish();}collectContacts();elapsed+=dt;accumulator=Math.max(0,accumulator-dt);count++;jumps.clear();
         inputs.clear();for(const s of spaces.values())for(const r of s.bodies.values())if(r.p){r.body.resetForces(false);r.body.resetTorques(false);}
       }
