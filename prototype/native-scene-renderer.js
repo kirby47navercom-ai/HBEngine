@@ -1,3 +1,4 @@
+import {staticGroupSphere} from './static-groups.js';
 import {materialRevision,revisionTrust,revisionConfig,reportRevisionMismatch} from './object-revision.js';
 import {NativeUploadBytes} from './native-upload-bytes.js';
 import {NativeDrawHistory} from './native-draw-history.js';
@@ -272,6 +273,8 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   // World bounding sphere exactly as Frustum.intersectsObject builds it (object.boundingSphere, else the geometry's).
   const worldSphere=new THREE.Sphere();
   function nodeWorldSphere(node){if(node.boundingSphere!==undefined){if(node.boundingSphere===null)node.computeBoundingSphere();worldSphere.copy(node.boundingSphere).applyMatrix4(node.matrixWorld);}else{const geometry=node.geometry;if(geometry.boundingSphere===null)geometry.computeBoundingSphere();worldSphere.copy(geometry.boundingSphere).applyMatrix4(node.matrixWorld);}return worldSphere;}
+  // traverseVisible with a subtree skip: same visit order; skip(node) is asked before visiting a visible node.
+  function traverseVisibleSkipping(node,callback,skip){if(node.visible===false||skip(node))return;callback(node);const children=node.children;for(let i=0;i<children.length;i++)traverseVisibleSkipping(children[i],callback,skip);}
   const wrap=value=>value===THREE.RepeatWrapping?0:value===THREE.MirroredRepeatWrapping?1:2;
   function encode(scene,camera){
     scene.updateMatrixWorld();camera.updateWorldMatrix(true,false);cameraAt.setFromMatrixPosition(camera.matrixWorld);cameraBack.setFromMatrixColumn(camera.matrixWorld,2).normalize();projectionView.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);frustum.setFromProjectionMatrix(projectionView);
@@ -280,9 +283,13 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     // Probe epoch: changes only when the probe list (its JSON wire values) changes; retained draws reuse bindings within one epoch.
     const probeKey=probes.length?JSON.stringify(probes.map(({group,...probe})=>probe)):'';if(probeKey!==lastProbeKey){lastProbeKey=probeKey;probeEpoch++;}const probeBounds=new THREE.Box3(),probeDraws=[],skyCapture=scene.userData.skyNative,skyNodes=new Set(),skyDraws=[];if(skyCapture)for(const group of [skyCapture.skyDome,skyCapture.cloudGroup])group?.traverseVisible(node=>{if(node.isMesh)skyNodes.add(node);});
     const resources=offscreenResources.splice(0),updates=[],items=[],seen=new Set(),lights=[],ambient=[0,0,0,1],parameters=[],poses=[],shadowRecords=[],shadowIndexes=new Map(),used={meshes:new Set(),textures:new Set(),programs:new Set(),instances:new Set(),deformations:new Set()};let animatedCaster=false;for(const kind of ['meshes','textures']){for(const id of offscreenUsed[kind])used[kind].add(id);offscreenUsed[kind].clear();}
-    linePool.begin();const shadowLights=[];let receivers=false;scene.traverseVisible(node=>{if(!visible(node)||node.userData.editorHelper)return;if(node.isLight)shadowLights.push(node);else if((node.isMesh||node.isSprite)&&node.receiveShadow&&node.layers.test(camera.layers)&&(probes.length||isDeformed(node)||!node.frustumCulled||node.isSprite||frustum.intersectsObject(node))&&(Array.isArray(node.material)?node.material:[node.material]).some(m=>m?.isMeshStandardMaterial&&m.visible))receivers=true;});
+    linePool.begin();const shadowLights=[];let receivers=false;
+    // Static groups whose bounding sphere misses the camera and every shadow frustum are not visited (no reflection probes:
+    // probe captures include off-screen objects). Same visit order as traverseVisible otherwise.
+    const skipStaticGroup=node=>{if(probes.length||!node.parent)return false;const sphere=staticGroupSphere(node);if(!sphere||frustum.intersectsSphere(sphere))return false;for(const record of shadowRecords)if((!record.sphere||record.sphere.center.distanceTo(sphere.center)<=record.sphere.radius+sphere.radius)&&record.frustum.intersectsSphere(sphere))return false;staticSkips++;return true;},skipOffscreenOnly=node=>{if(probes.length||!node.parent)return false;const sphere=staticGroupSphere(node);return !!sphere&&!frustum.intersectsSphere(sphere);};let staticSkips=0;
+    traverseVisibleSkipping(scene,node=>{if(!visible(node)||node.userData.editorHelper)return;if(node.isLight)shadowLights.push(node);else if((node.isMesh||node.isSprite)&&node.receiveShadow&&node.layers.test(camera.layers)&&(probes.length||isDeformed(node)||!node.frustumCulled||node.isSprite||frustum.intersectsObject(node))&&(Array.isArray(node.material)?node.material:[node.material]).some(m=>m?.isMeshStandardMaterial&&m.visible))receivers=true;},skipOffscreenOnly);
     if(receivers)for(const node of shadowLights){const records=nativeShadows(node);if(records.length){shadowIndexes.set(node.uuid,shadowRecords.length+1);shadowRecords.push(...records);}}
-    scene.traverseVisible(node=>{
+    traverseVisibleSkipping(scene,node=>{
       if(!visible(node)||node.userData.editorHelper)return;
       if(node.isLight){
         if(node.isAmbientLight){const c=node.color.toArray();for(let i=0;i<3;i++)ambient[i]+=c[i]*node.intensity;return;}
@@ -339,7 +346,8 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
         if(retainedEntry&&renderer.hbSpriteBatching!==false&&inView&&!transmissive&&node.isMesh&&!node.isSkinnedMesh&&!skyNodes.has(node)&&batchableSpriteUV(draw))spriteCandidates.set(id,{entry:retainedEntry,geometry});
         used.meshes.add(draw.mesh);draw.maps.forEach(id=>used.textures.add(id));if(draw.program)used.programs.add(draw.program);draw.programMaps?.forEach(id=>used.textures.add(id));stamp??=drawHistory.stamp(id,draw);if(casts.length)shadowCache.draw(id,draw,stamp,!!program?.animated);if(previous.get(id)!==stamp){updates.push(draw);previous.set(id,stamp);}seen.add(id);if(skyNodes.has(node))skyDraws.push(id);if(probes.length&&!node.userData.draw2d&&!transmissive)probeDraws.push({id,node,deformed,sky:!!properties.sky});for(const record of casts)record.casters.push(id);if((casts.length||probes.length&&!node.userData.draw2d)&&program?.animated)animatedCaster=true;if(inView){at.setFromMatrixPosition(node.matrixWorld);items.push({id,order:node.renderOrder,transparent:material.transparent,transmissive:!!transmissive,depth:at.distanceToSquared(cameraAt)});}
       }
-    });
+    },skipStaticGroup);
+    renderer.hbStaticSkips=staticSkips;
     const phase=item=>item.transmissive?1:item.transparent?2:0;items.sort((a,b)=>phase(a)-phase(b)||a.order-b.order||(a.transmissive||a.transparent?b.depth-a.depth:a.depth-b.depth)||a.id.localeCompare(b.id));
     linePool.end();
     if(spriteCandidates.size)emitSpriteDraws(items,updates,seen,resources,used);releaseSpriteInstances();

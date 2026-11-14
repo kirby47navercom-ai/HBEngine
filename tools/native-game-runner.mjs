@@ -92,8 +92,8 @@ export async function nativeGameMain(options){
  try{
   if(!editor)stats.legacySaveMigration=await migrateLegacyGameSaves(stateDirectory,pack.manifest.id);
   renderer=await createNativeSceneRenderer(canvas,error=>{throw error;},{bridge,graphicsAPI:options['graphics-api']||pack.manifest.nativeGraphicsAPI||'auto'});
-  // Test switches: HB_SPRITE_BATCH=0 turns sprite batching off; HB_CAPTURE_FRAME/HB_CAPTURE_OUT save that frame's RGBA.
-  if(process.env.HB_SPRITE_BATCH==='0')renderer.hbSpriteBatching=false;
+  // Test switches: HB_SPRITE_BATCH=0 turns sprite batching off; HB_STATIC_GROUPS=0 turns static group skipping off; HB_CAPTURE_FRAME/HB_CAPTURE_OUT save that frame's RGBA.
+  if(process.env.HB_SPRITE_BATCH==='0')renderer.hbSpriteBatching=false;if(process.env.HB_STATIC_GROUPS==='0')(await import('../prototype/static-groups.js')).staticConfig.enabled=false;
   await write({op:'ready',timingReport:!!options.report,compactFrameResponses:!options.report,rate:pack.manifest.targetFrameRate||120,displaySync,uncapped});
   const result=await runProject(editor||path.join(pack.root,'game.hbpack.json'),{interactive:true,lazyPhysics:true,captureState:!!options.report,profile:!!options.report,storage:nativeGameStorage(stateDirectory),nativeHost:pack.host,openProject:async()=>pack,saveDirectory:path.join(stateDirectory,'Saves'),
    debugBreakpoint:editor?((vm,node,scope)=>{
