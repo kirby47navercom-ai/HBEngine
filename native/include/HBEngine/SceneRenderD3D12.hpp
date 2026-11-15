@@ -18,6 +18,8 @@
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 #include <d3d11shader.h>
 #include <map>
+#include <future>
+#include <chrono>
 
 namespace hb::gpu::d3d12 {
 // Root signature and null-filled descriptor tables built from shader reflection:
@@ -210,6 +212,23 @@ float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pi
     Com<ID3D12RootSignature> probeRoot;std::array<Com<ID3D12PipelineState>,4> probeKernels;d3d12::Texture brdf;D3D12_CPU_DESCRIPTOR_HANDLE brdfView{};
     std::array<std::shared_ptr<detail::ShaderPreparationQueue::Job>,4> probePreparation;
     bool asynchronousShaders=false,probeRequested=false;
+    // Asynchronous preparation: the driver may take over a second to build the first pipeline of a large pixel shader.
+    // Base (non-program) pipelines are then created on a worker; until one is ready its draws are skipped and the raster
+    // preparation reports pending (the bridge and the JS side refresh shadows/probes once it is ready).
+    std::map<Com<ID3D12PipelineState>*,std::future<Com<ID3D12PipelineState>>> pipelineJobs;
+    ID3D12PipelineState* created(Com<ID3D12PipelineState>& p,D3D12_GRAPHICS_PIPELINE_STATE_DESC d,const Program* program){
+        if(program||!asynchronousShaders){p=gpu.pipeline(d);return p.p;}
+        auto job=pipelineJobs.find(&p);
+        if(job==pipelineJobs.end()){
+            const auto bytes=[](const D3D12_SHADER_BYTECODE& b){const auto* c=static_cast<const unsigned char*>(b.pShaderBytecode);return std::vector<unsigned char>(c,c+(c?b.BytecodeLength:0));};
+            Com<ID3D12RootSignature> rootRef;rootRef.p=d.pRootSignature;if(rootRef.p)rootRef.p->AddRef();Com<ID3D12Device> device;device.p=gpu.device.p;device.p->AddRef();
+            job=pipelineJobs.emplace(&p,std::async(std::launch::async,[d,vs=bytes(d.VS),ps=bytes(d.PS),rootRef=std::move(rootRef),device=std::move(device)]()mutable{
+                d.VS={vs.empty()?nullptr:vs.data(),vs.size()};d.PS={ps.empty()?nullptr:ps.data(),ps.size()};d.pRootSignature=rootRef.p;
+                Com<ID3D12PipelineState> out;check(device->CreateGraphicsPipelineState(&d,__uuidof(ID3D12PipelineState),reinterpret_cast<void**>(&out.p)),"Direct3D12 graphics pipeline");return out;})).first;
+        }
+        if(job->second.wait_for(std::chrono::seconds(0))!=std::future_status::ready)return nullptr;
+        p=job->second.get();pipelineJobs.erase(job);return p.p;
+    }
     Probe* activeProbe=nullptr;bool probeIndirect=false;UINT probeFace=0;SceneFrame savedProbe;
     Probe skyProbe;const Texture* skySource=nullptr;std::uint32_t skySize=0;ProbeSettings skySettings{};std::uint64_t probeIdentities=0;
     // HDR scene + BloomPass port (same shaderCode, constants and level chain).
@@ -314,7 +333,7 @@ float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pi
         auto& t=d.BlendState.RenderTarget[0];t.BlendEnable=TRUE;t.SrcBlend=t.DestBlend=t.SrcBlendAlpha=t.DestBlendAlpha=D3D12_BLEND_ONE;t.BlendOp=t.BlendOpAlpha=blend2==1?D3D12_BLEND_OP_ADD:D3D12_BLEND_OP_MAX;t.RenderTargetWriteMask=blend2==2?0:D3D12_COLOR_WRITE_ENABLE_ALL;t.LogicOp=D3D12_LOGIC_OP_NOOP;
         auto& ds=d.DepthStencilState;ds.DepthEnable=FALSE;ds.DepthWriteMask=D3D12_DEPTH_WRITE_MASK_ZERO;ds.DepthFunc=D3D12_COMPARISON_FUNC_ALWAYS;ds.StencilEnable=stencil!=0;ds.StencilReadMask=ds.StencilWriteMask=255;
         ds.FrontFace.StencilFunc=stencil==2?D3D12_COMPARISON_FUNC_NOT_EQUAL:stencil==3?D3D12_COMPARISON_FUNC_EQUAL:D3D12_COMPARISON_FUNC_ALWAYS;ds.FrontFace.StencilFailOp=ds.FrontFace.StencilDepthFailOp=D3D12_STENCIL_OP_KEEP;ds.FrontFace.StencilPassOp=D3D12_STENCIL_OP_REPLACE;ds.BackFace=ds.FrontFace;
-        p=gpu.pipeline(d);return p.p;
+        return created(p,d,program);
     }
     // targets: bit i set when surface target i+1 exists; absent targets are UNKNOWN slots bound to null RTVs.
     ID3D12PipelineState* surfacePipeline(std::size_t raster,std::size_t blend,std::size_t depthMode,UINT targets,const Program* program=nullptr){
@@ -325,7 +344,7 @@ float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pi
         // IndependentBlendEnable stays FALSE: RT0's blend applies to every target, as with the D3D11 blend state.
         auto& t=d.BlendState.RenderTarget[0];t.BlendEnable=blend!=2;t.SrcBlend=D3D12_BLEND_SRC_ALPHA;t.DestBlend=blend==1?D3D12_BLEND_ONE:D3D12_BLEND_INV_SRC_ALPHA;t.BlendOp=D3D12_BLEND_OP_ADD;t.SrcBlendAlpha=D3D12_BLEND_ONE;t.DestBlendAlpha=D3D12_BLEND_INV_SRC_ALPHA;t.BlendOpAlpha=D3D12_BLEND_OP_ADD;t.LogicOp=D3D12_LOGIC_OP_NOOP;
         d.DepthStencilState.DepthEnable=TRUE;d.DepthStencilState.DepthFunc=(depthMode&1)?D3D12_COMPARISON_FUNC_LESS_EQUAL:D3D12_COMPARISON_FUNC_ALWAYS;d.DepthStencilState.DepthWriteMask=(depthMode&2)?D3D12_DEPTH_WRITE_MASK_ALL:D3D12_DEPTH_WRITE_MASK_ZERO;
-        p=gpu.pipeline(d);return p.p;
+        return created(p,d,program);
     }
     ID3D12PipelineState* pipeline(std::size_t raster,std::size_t blend,std::size_t depthMode,bool hdr=false,const Program* program=nullptr){
         auto& p=(program?program->pipelines:pipelines)[raster+6*(blend+3*depthMode)+(hdr?72:0)];if(p.p)return p.p;
@@ -334,7 +353,7 @@ float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pi
         d.RasterizerState.CullMode=raster%3==0?D3D12_CULL_MODE_BACK:raster%3==1?D3D12_CULL_MODE_FRONT:D3D12_CULL_MODE_NONE;d.RasterizerState.FrontCounterClockwise=raster<3;
         auto& t=d.BlendState.RenderTarget[0];t.BlendEnable=blend!=2;t.SrcBlend=D3D12_BLEND_SRC_ALPHA;t.DestBlend=blend==1?D3D12_BLEND_ONE:D3D12_BLEND_INV_SRC_ALPHA;t.BlendOp=D3D12_BLEND_OP_ADD;t.SrcBlendAlpha=D3D12_BLEND_ONE;t.DestBlendAlpha=D3D12_BLEND_INV_SRC_ALPHA;t.BlendOpAlpha=D3D12_BLEND_OP_ADD;t.LogicOp=D3D12_LOGIC_OP_NOOP;
         d.DepthStencilState.DepthEnable=TRUE;d.DepthStencilState.DepthFunc=(depthMode&1)?D3D12_COMPARISON_FUNC_LESS_EQUAL:D3D12_COMPARISON_FUNC_ALWAYS;d.DepthStencilState.DepthWriteMask=(depthMode&2)?D3D12_DEPTH_WRITE_MASK_ALL:D3D12_DEPTH_WRITE_MASK_ZERO;
-        p=gpu.pipeline(d);return p.p;
+        return created(p,d,program);
     }
     // Starts a frame when needed, so callers may use the renderer like the D3D11 one (begin/draw/present) or
     // drive Device::begin/end themselves. Reads the GPU time of the frame slot being reused.
@@ -353,7 +372,7 @@ float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pi
         auto d=Device::defaults(root.p,vs,program?program->shadow:shadowPs,DXGI_FORMAT_UNKNOWN,DXGI_FORMAT_D32_FLOAT);d.NumRenderTargets=0;
         static const D3D12_INPUT_ELEMENT_DESC elements[]={{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,32,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},{"TEXCOORD",1,DXGI_FORMAT_R32G32_FLOAT,1,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0}};d.InputLayout={elements,5};
         auto& rs=d.RasterizerState;rs.CullMode=raster%3==0?D3D12_CULL_MODE_BACK:raster%3==1?D3D12_CULL_MODE_FRONT:D3D12_CULL_MODE_NONE;rs.FrontCounterClockwise=raster<3;rs.SlopeScaledDepthBias=1;rs.DepthBiasClamp=.01f;
-        p=gpu.pipeline(d);return p.p;
+        return created(p,d,program);
     }
     void structured(const DescriptorTable& t,UINT slot,const Buffer& b,UINT stride,UINT count){
         D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.ViewDimension=D3D12_SRV_DIMENSION_BUFFER;v.Buffer.NumElements=count;v.Buffer.StructureByteStride=stride;gpu.device->CreateShaderResourceView(b.get(),&v,t.cpuAt(slot));
@@ -1069,7 +1088,7 @@ public:
         auto u=gpu.upload(std::max<std::size_t>(sizeof(data),cbuffers.at(0)),256);std::memset(u.cpu,0,std::max<std::size_t>(sizeof(data),cbuffers.at(0)));std::memcpy(u.cpu,&data,sizeof(data));
         const std::size_t raster=(SceneRenderer::orientation(world)<0?3:0)+(material.doubleSided||(instances&&instances->mirrored)?2:material.backSide?1:0);
         auto* list=gpu.list.p;list->SetGraphicsRootSignature(root.p);const bool mrt=!active2D&&toHDR&&screen&&(surfaceNormal.texture.value.p||surfaceMotion.texture.value.p);UINT surfaceTargets=0;{UINT bit=1;for(auto* i:{&surfaceNormal,&surfaceAlbedo,&surfaceMotion,&surfaceAmbient}){if(i->texture.value.p)surfaceTargets|=bit;bit<<=1;}}
-        auto* state=active2D?pipeline2D(raster,blend2D,stencil2D,active2D->stencilView.ptr!=0,program):activeShadow>=0?shadowPipeline(raster,program):mrt?surfacePipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),surfaceTargets,program):pipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),activeProbe!=nullptr||toHDR,program);list->SetPipelineState(state);
+        auto* state=active2D?pipeline2D(raster,blend2D,stencil2D,active2D->stencilView.ptr!=0,program):activeShadow>=0?shadowPipeline(raster,program):mrt?surfacePipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),surfaceTargets,program):pipeline(raster,blend,(material.depthTest?1:0)|(material.depthWrite?2:0),activeProbe!=nullptr||toHDR,program);if(!state)return;list->SetPipelineState(state);
         if(program)gpu.keep(state);// program PSOs belong to the caller's Program;
         const auto probeAddress=gpu.constants(probeData.data(),sizeof(probeData)),settingsAddress=gpu.constants(&settings,sizeof(settings));
         UINT index=0;for(const auto& c:cbuffers)list->SetGraphicsRootConstantBufferView(index++,c.first==0?u.gpu:c.first==1?settingsAddress:c.first==2?probeAddress:frameBuffers.at(c.first));
@@ -1196,10 +1215,13 @@ public:
     // Shaders compile synchronously on this backend, so every preparation query reports ready.
     ParticlePreparationInfo particlePreparationInfo()const{ParticlePreparationInfo info;const bool sort=particleSortStep.p!=nullptr;info.stages={particleCompact.p?3u:0u,particleCompact.p?3u:0u,particleCompact.p?3u:0u,sort?3u:0u,sort?3u:0u};return info;}
     bool pollParticlePreparation(bool request=false,bool=false){record();if(request)prepareParticles();return true;}
-    bool pollRasterPreparation(){return true;}
-    SceneRasterPreparation::Info rasterPreparationInfo()const{return SceneRasterPreparation::Info{{3,3,3},false,true,{}};}
+    // Moves finished pipeline jobs into their slots (a failed job rethrows here). Drawing never waits for them.
+    bool pollRasterPreparation(){for(auto it=pipelineJobs.begin();it!=pipelineJobs.end();){if(it->second.wait_for(std::chrono::seconds(0))==std::future_status::ready){*it->first=it->second.get();it=pipelineJobs.erase(it);}else ++it;}return true;}
+    SceneRasterPreparation::Info rasterPreparationInfo()const{const bool pending=!pipelineJobs.empty();return SceneRasterPreparation::Info{{3u,pending?2u:3u,3u},pending,!pending,{}};}
     void pollShaderPreparation(){}
-    void setAsyncShaderPreparation(bool value){asynchronousShaders=value;}
+    // Starts the first pipeline of each base pixel shader at once (the driver builds a shader once; later pipelines
+    // with the same shader are quick), so it overlaps scene loading instead of the first frame.
+    void setAsyncShaderPreparation(bool value){asynchronousShaders=value;if(value){pipeline(0,2,3,true);surfacePipeline(0,2,3,0);shadowPipeline(0);}}
     ScreenEffectsPass::PreparationInfo shaderPreparationInfo()const{ScreenEffectsPass::PreparationInfo info;info.enabled=screen.has_value();info.ready=info.enabled;if(info.ready)info.stages={3,3,3,3,3,3};return info;}
     std::array<std::uint64_t,9> shaderCompilationInfo()const{auto& c=ScreenEffectsPass::compiler();std::lock_guard<std::mutex> lock(c.mutex);return {c.compilations,c.cache.hits(),c.cache.misses(),c.cache.evictions(),c.cache.bytes(),c.cache.budget(),c.lastMS,c.totalMS,std::uint64_t(screenKernels.size())};}
     static auto shaderDiskCacheInfo(){return detail::ShaderBytecodeCompiler::info();}
