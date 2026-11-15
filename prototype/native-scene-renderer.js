@@ -215,7 +215,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
      if(same)for(let k=0;k<3;k++)if(v[o+36+k]!==x[k]||v[o+40+k]!==y[k]){same=false;break;}
      if(same&&v[o+39]===0&&v[o+43]===0)continue;changed=true;
      for(let k=0;k<16;k++){v[o+k]=w[k];v[o+16+k]=nm[k];}for(let k=0;k<4;k++)v[o+32+k]=c[k];for(let k=0;k<3;k++){v[o+36+k]=x[k];v[o+40+k]=y[k];}v[o+39]=0;v[o+43]=0;}
-    if(changed){cache.count=n;resources.push({kind:'instances',id:instId,capacity:cache.values.length/SPRITE_STRIDE,uv:true,values:Array.from(v.subarray(0,n*SPRITE_STRIDE))});}
+    if(changed){cache.count=n;resources.push({kind:'instances',id:instId,capacity:cache.values.length/SPRITE_STRIDE,uv:true,bytes:uploadBytes(new Uint8Array(v.buffer,0,n*SPRITE_STRIDE*8).slice())});}
     cache.used=true;used.instances.add(instId);
     const draw=copyData(first.c.entry.draw);draw.id=batchId;draw.world=identity16.slice();draw.normal=identity16.slice();draw.material.color=[1,1,1,1];draw.material.uvX=draw.material.uvX.map(()=>[1,0,0,0]);draw.material.uvY=draw.material.uvY.map(()=>[0,1,0,0]);draw.instances=instId;
     const stamp=drawHistory.stamp(batchId,draw);if(previous.get(batchId)!==stamp){batchUpdates.push(draw);previous.set(batchId,stamp);}batchSeen.add(batchId);items.push({...first.item,id:batchId});

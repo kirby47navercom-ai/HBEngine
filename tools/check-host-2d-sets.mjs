@@ -10,7 +10,7 @@ import {createNativeSceneRenderer} from '../prototype/native-scene-renderer.js';
 import {TwoDRendering} from '../prototype/two-d-rendering.js';
 import {watchStaticGroup} from '../prototype/static-groups.js';
 import {touchTransform,touchComponents,revisionConfig} from '../prototype/object-revision.js';
-import {applyDrawTransforms} from './native-mock-draw-transforms.mjs';
+import {applyDrawTransforms,instanceValues} from './native-mock-draw-transforms.mjs';
 
 revisionConfig.verify=false;
 function world(){
@@ -29,7 +29,7 @@ function planes(m){const p=[[m[3]-m[0],m[7]-m[4],m[11]-m[8],m[15]-m[12]],[m[3]+m
 const inside=(ps,s)=>ps.every(p=>p[0]*s[0]+p[1]*s[1]+p[2]*s[2]+p[3]>=-s[3]);
 function host(){
  const state={draws:new Map(),sets:new Map(),instances:new Map(),order:[],vp:null};
- const resourceOf=r=>{if(r.kind==='cullSet')state.sets.set(r.id,{rows:decode(r.rows),spheres:decode(r.spheres)});if(r.kind==='instances')state.instances.set(r.id,r);};
+ const resourceOf=r=>{if(r.kind==='cullSet')state.sets.set(r.id,{rows:decode(r.rows),spheres:decode(r.spheres)});if(r.kind==='instances')state.instances.set(r.id,instanceValues(r));};
  return {state,apply(op,data){const resource=r=>r.kind==='drawTransforms'?applyDrawTransforms(state.draws,r):resourceOf(r);if(op==='upload')for(const r of data)resource(r);if(op!=='frame')return;for(const r of data.resources||[])resource(r);for(const id of data.remove||[])state.draws.delete(id);for(const d of data.updates||[])state.draws.set(d.id,d);if(data.order)state.order=data.order;state.vp=data.viewProjection;for(const id of data.release?.cullSets||[])state.sets.delete(id);}};
 }
 const round=v=>Array.from(v,x=>Math.fround(x));
