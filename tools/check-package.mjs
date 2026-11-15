@@ -1,3 +1,4 @@
+import {openGameResources} from './game-resource-archive.mjs';
 import {contentChunks} from './build-content.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -41,16 +42,18 @@ const canceled=new AbortController();canceled.abort(Error('검사 취소'));awai
 assert.equal(resolveBuildPath('Assets/Old/Sub/file.png',{'Assets/Old':'Assets/New'}),'Assets/New/Sub/file.png');assert.throws(()=>resolveBuildPath('Assets/A',{'Assets/A':'Assets/B','Assets/B':'Assets/A'}),/순환/);
 const jobs=new BuildJobs(),job=await jobs.start(record,{profileId:profile.id,expectedRevision:saved.revision});await assert.rejects(jobs.start(record,{profileId:profile.id,expectedRevision:saved.revision}),/빌드 중/);assert.throws(()=>jobs.get({...record,root:dir},job.id),/기록/);jobs.cancel(record,job.id);while(jobs.get(record,job.id).status==='running')await new Promise(r=>setTimeout(r,20));assert.equal(jobs.get(record,job.id).status,'canceled');await assert.rejects(jobs.open(record,job.id,'run'),/완료/);jobs.close();
 const input=makeNode('input'),travel=makeNode('openScene'),end=makeNode('endPlay'),save=makeNode('saveGame');input.options={key:'F3'};travel.inputValues={scene:next};save.inputValues={slot:'Packaged'};graph.nodes.push(input,travel,end,save);assert.ok(connect(graph,{node:input.id,pin:'then'},{node:travel.id,pin:'exec'}).ok);assert.ok(connect(graph,{node:end.id,pin:'then'},{node:save.id,pin:'exec'}).ok);await record.project.write('Assets/BP_Packaged.hbblueprint.json',JSON.stringify(graph));
+// Packaged content lives in game.hbdata, not loose Content files.
+const packedText=async(output,name)=>{const archive=await openGameResources(path.join(output,'game.hbdata'));try{return Buffer.from(await archive.read(name)).toString('utf8');}finally{await archive.close();}};
 const outputs=[];
 for(const dimension of ['2d','3d']){
   const p=structuredClone(profile);if(dimension==='3d'){p.configuration='release';p.scenes=[{path:next,enabled:true}];}if(dimension==='2d')p.scenes[1].enabled=true;p.productName='배포 \"검증\"';p.name=dimension;p.id=dimension==='2d'?'two_d':'three_d';
   const result=await buildGame(record,p,{onProgress:stage=>console.log(dimension,stage)});outputs.push(result);
   const manifest=JSON.parse(await fs.readFile(path.join(result.output,'game.hbpack.json'),'utf8'));assert.ok(!manifest.files.some(f=>/app\.js$|serve\.mjs$|Saved\/|\.hbproject$/.test(f.path)));assert.ok(!manifest.entries.some(f=>f.path==='Assets/Broken.hbscene.json'));assert.equal(manifest.entries.find(f=>f.path===result.startupScene).kind,'scene');
-  const packagedSecond=JSON.parse(await fs.readFile(path.join(result.output,'Content',next),'utf8'));assert.equal(packagedSecond.environment.mode,'actors');checkEnvironmentActors(packagedSecond.objects,{components:true});
+  const packagedSecond=JSON.parse(await packedText(result.output,next));assert.equal(packagedSecond.environment.mode,'actors');checkEnvironmentActors(packagedSecond.objects,{components:true});
   const userData=path.join(dir,'user-'+dimension),server=await startPlayerServer({root:result.output,userData});
   try{const base='http://127.0.0.1:'+server.port,request=(route,data)=>fetch(base+route,data===undefined?{}:{method:'POST',headers:{'X-HB-Editor':'1'},body:JSON.stringify(data)});
     assert.equal((await request('/api/asset/create',{})).status,404);assert.equal((await request('/tools/native-host.mjs')).status,404);assert.equal((await request('/prototype/app.js')).status,404);assert.equal((await request('/api/native/build',{header:'malicious',source:''})).status,400);assert.equal((await request('/api/file?path='+encodeURIComponent('../package.json'))).status,400);
-    assert.equal((await fetch(base+'/api/session',{headers:{Origin:'https://example.com'}})).status,403);const build=await(await request('/api/native/build',{header,source})).json();assert.ok(build.token);assert.equal(build.compiler,undefined);
+    assert.equal((await fetch(base+'/api/session',{headers:{Origin:'https://example.com'}})).status,403);const build=await(await request('/api/native/build',{header,source,headerPath:manifest.nativeModules[0].headerPath,sourcePath:manifest.nativeModules[0].sourcePath})).json();assert.ok(build.token);assert.equal(build.compiler,undefined);
     const r=await(await request('/api/native/call',{token:build.token,request:{self:'native',key:'nativeCall',nativeId:'PackagedActor.Move',args:{target:'native'},objects:[{...native,nativeClass:'PackagedActor',nativeProperties:{}}]}})).json();assert.deepEqual(r.objects.find(o=>o.id==='native').position,[4,5,6]);
     const contentResponse=await request('/api/file?path=Assets/Silence.wav');assert.equal(contentResponse.status,200);assert.equal((await request('/api/file?path=Source/Test.h')).status,200);assert.equal((await request('/api/file?path='+encodeURIComponent(startup))).status,dimension==='2d'?200:404);assert.match(contentResponse.headers.get('Content-Security-Policy'),/sandbox/);
     assert.equal((await request('/api/file?path=Textures/HUD.png')).status,200);assert.equal((await request('/api/file?path=External/Nested.json')).status,200);

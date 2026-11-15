@@ -252,7 +252,7 @@ export class ProjectService {
       try{const sidecar=await this.resolve(source+'.import.json');moves.push([sidecar,await this.resolve(to+'.import.json',true,false),source+'.import.json',to+'.import.json']);}catch(error){if(error.code!=='ENOENT')throw error;}
     }
     for(const [,target] of moves){try{await fs.access(target);throw Error('같은 이름이 이미 있어요.');}catch(error){if(error.code!=='ENOENT')throw error;}}
-    if(moves.every(([, ,fromPath,toPath])=>/^(Assets|Source|Settings)\//.test(fromPath)&&/^(Assets|Source|Settings)\//.test(toPath))&&(await Promise.all(moves.map(([fromFile])=>fs.lstat(fromFile)))).every(stat=>stat.isFile()&&!stat.isSymbolicLink())){const result=await commitAssetRename(this,moves.map(([,,fromPath,toPath])=>({from:fromPath,to:toPath})));this.modelImportCache?.clear();return result;}
+    if(moves.every(([, ,fromPath,toPath])=>/^(Assets|Source|Settings)\//.test(fromPath)&&/^(Assets|Source|Settings)\//.test(toPath))&&(await Promise.all(moves.map(([fromFile])=>fs.lstat(fromFile)))).every(stat=>stat.isFile()&&!stat.isSymbolicLink())){if(this.savedDiscovery<this.discovered)await this.saveIndex();const result=await commitAssetRename(this,moves.map(([,,fromPath,toPath])=>({from:fromPath,to:toPath})));this.modelImportCache?.clear();return result;}
     const previousRedirects=this.redirects,previousIndex=structuredClone(this.index),redirects={...this.redirects};
     for(const [,,fromPath,toPath] of moves){delete redirects[toPath];redirects[fromPath]=toPath;}
     const completed=[],redirectFile=path.join(this.root,'.hbredirects.json'),temp=redirectFile+'.'+randomUUID()+'.tmp';let redirectsWritten=false;

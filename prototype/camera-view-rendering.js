@@ -4,7 +4,7 @@ import {cameraScreenRect,pixelPerfectViewport} from './game-camera.js';
 export class CameraViewRendering {
   constructor(factory){this.factory=factory;this.views=new Map();}
   render(renderer,scene,camera,objects,drawDefault,prepare,beforeView){
-    const views=camera.userData.gameViews;
+    const views=camera?.userData.gameViews;
     if(!views){this.releaseRenderer(renderer);return drawDefault();}
     let states=this.views.get(renderer);if(!states)this.views.set(renderer,states=new Map());
     const ids=new Set(views.map(v=>v.id));for(const [id,view] of states)if(!ids.has(id)){view.dispose();states.delete(id);}
@@ -19,6 +19,6 @@ export class CameraViewRendering {
     try{return renderer.hbCaptureViews?renderer.hbCaptureViews(views.map(v=>v.id),render):render();}
     finally{renderer.setViewport(viewport);renderer.setScissor(scissor);renderer.setScissorTest(test);renderer.setClearColor(color,alpha);}
   }
-  releaseRenderer(renderer){const states=this.views.get(renderer);if(states){for(const view of states.values())view.dispose();this.views.delete(renderer);}renderer.hbPruneCameraViews?.([]);}
+  releaseRenderer(renderer){const states=this.views.get(renderer);if(states){for(const view of states.values())view.dispose();this.views.delete(renderer);}renderer?.hbPruneCameraViews?.([]);}
   dispose(){for(const renderer of [...this.views.keys()])this.releaseRenderer(renderer);}
 }

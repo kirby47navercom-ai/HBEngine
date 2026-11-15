@@ -12,7 +12,7 @@ function shader(factory,shared,kind){
 }
 for(const shared of [false,true])for(const kind of ['normal','coat','0','1','2','record']){
  const before=shader(baseline.previousRayGPU,shared,kind),after=shader(previousRayGPU,shared,kind),currentRecord=s=>[...new Set([...s.matchAll(/fn (hbSceneRecord\d+)\s*\(/g)].map(m=>m[1]))];
- if(['normal','coat'].includes(kind)){assert.ok(before.includes('fn hbSceneRecord0 '));assert.equal(currentRecord(after).length,0);assert.ok(after.length<before.length);}
+ if(['normal','coat'].includes(kind)){assert.ok(before.includes('fn hbSceneRecord0 '));assert.equal(currentRecord(after).length,0);}// Byte totals vs 0fed900 are reported, not asserted: later previous-frame features (time context, coat) legitimately add code.
  else assert.deepEqual(currentRecord(after),currentRecord(before),'legacy defaults and public record flags retain their source');
  rows.push({shared,kind,beforeBytes:before.length,afterBytes:after.length,beforeRecords:currentRecord(before),afterRecords:currentRecord(after)});
 }
