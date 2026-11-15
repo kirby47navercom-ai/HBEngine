@@ -19,6 +19,6 @@ export async function openNativeContent(directory){
   name=checkedName(name);
   return archive?archive.stream(name,start,end):createReadStream(await confined(name,contentRoot),{start,end,highWaterMark:65536});
  };
- const project={resolve,read:async name=>{if(archive){name=checkedName(name);return {size:archive.entries.get(name).bytes,readBytes:options=>archive.read(name,options)};}const file=await resolve(name),stat=await fs.stat(file);if(!stat.isFile())throw Error('게임 에셋은 일반 파일이어야 해요.');return {file,size:stat.size};},files:async()=>[...entries.values()]};
+ const project={resolve,redirect:name=>resolveBuildPath(name,manifest.redirects),read:async name=>{if(archive){name=checkedName(name);return {size:archive.entries.get(name).bytes,readBytes:options=>archive.read(name,options)};}const file=await resolve(name),stat=await fs.stat(file);if(!stat.isFile())throw Error('게임 에셋은 일반 파일이어야 해요.');return {file,size:stat.size};},files:async()=>[...entries.values()]};
  return {root,project,manifest,url:name=>'hbasset:'+encodeURIComponent(name),resolve,readBytes,stream,modulePath:confined,close:async()=>{await archive?.close();}};
 }

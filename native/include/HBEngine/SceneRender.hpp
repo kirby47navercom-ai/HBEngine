@@ -289,7 +289,7 @@ float4 PS(Output i,bool front:SV_IsFrontFace):SV_TARGET{
    if(skin>0||foliage>0)outColor+=light.color.rgb*light.color.a*attenuation*base.rgb*(1-metal)*hbScatterDiffuse(dot(n,l),v,l,scatterTint,skin,foliage,scatterThickness);if(hair>0)outColor+=light.color.rgb*light.color.a*attenuation*hair*hbHairSpecular(n,v,l,hairAxis,base.rgb,rough,hairShift);
    if(coat>0)coatLight+=coatBRDF(cn,v,l,coatRough)*light.color.rgb*light.color.a*attenuation;
   }
-  float3 probeLight=indirectProbes(i.at,n,v,base.rgb,rough,metal,ao,dielectric,1-transmission);if(sheen>0)probeLight+=indirectProbes(i.at,n,v,sheenTint,sheenRough,1,ao)*sheen*.157;if(filmWeight>0)probeLight+=indirectProbes(i.at,n,v,float3(1,1,1),rough,1,ao)*(filmF-f0)*filmWeight;ambientColor+=probeLight;outColor+=probeLight;
+  ProbeLobes lobes;lobes.sheenTint=sheenTint;lobes.sheenRough=sheenRough;lobes.sheenScale=sheen>0?sheen*.157:0;lobes.filmScale=filmWeight>0?(filmF-f0)*filmWeight:0;float3 probeLight=indirectProbes(i.at,n,v,base.rgb,rough,metal,ao,dielectric,1-transmission,lobes);ambientColor+=probeLight;outColor+=probeLight;
   // Back-to-front HDR layers include earlier glass; depth rejects foreground and probes fill offscreen rays.
   if(transmission>0){float2 original=(i.position.xy-transmissionArea.xy)/transmissionArea.zw;float spread=(ior-1)*.025*dispersion;const float3 indices=dispersion>0?float3(max(1,ior-spread),ior,ior+spread):ior;const uint channels=dispersion>0?3:1;float3 background=0;
    // One refractedBackground copy in a loop: unrolling inlined it four times and WARP JIT time exploded.
