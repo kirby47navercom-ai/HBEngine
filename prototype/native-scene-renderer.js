@@ -192,7 +192,18 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   // Geometry part of the batch key: an unmodified built-in parametric geometry is identified by type and parameters (the
   // batch draws the first member's identical mesh); anything else must be the same geometry object.
   function batchGeometryKey(g){if(g.type!=='BufferGeometry'&&g.parameters&&!g.index?.version&&!Object.keys(g.morphAttributes).length){let fresh=true;for(const name in g.attributes){const a=g.attributes[name];if((a.isInterleavedBufferAttribute?a.data.version:a.version)!==0){fresh=false;break;}}if(fresh)return [g.type,g.parameters];}return g.uuid;}
-  function spriteStateKey(c){const entry=c.entry;if(entry.stateKey!=null)return entry.stateKey;const {id:_id,world:_w,normal:_n,mesh:_m,material,...rest}=entry.draw,{color:_c,uvX:_x,uvY:_y,...mat}=material,text=JSON.stringify([rest,mat,batchGeometryKey(c.geometry)]);let key=spriteStateKeys.get(text);if(key===undefined){if(spriteStateKeys.size>4096)spriteStateKeys.clear();spriteStateKeys.set(text,key=spriteStateKeys.size+1);}return entry.stateKey=key;}
+  // Batch state key: draws equal in every value except id, world, normal, mesh and material colour/UV rows (and of the
+  // same batch geometry) share a key. A new state is compared value by value (no string building) with the known states
+  // of its bucket (part range and first map), the last match first; a state matching none gets a new key.
+  const sameStateValue=(a,b)=>{if(a===b)return true;if(typeof a!=='object'||typeof b!=='object'||a===null||b===null)return false;if(Array.isArray(a)){if(!Array.isArray(b)||a.length!==b.length)return false;for(let i=0;i<a.length;i++)if(!sameStateValue(a[i],b[i]))return false;return true;}if(Array.isArray(b))return false;for(const k in a)if(!sameStateValue(a[k],b[k]))return false;for(const k in b)if(!(k in a)&&b[k]!==undefined)return false;return true;};
+  const skipDraw={id:1,world:1,normal:1,mesh:1,material:1},skipMaterial={color:1,uvX:1,uvY:1};
+  const sameStateExcept=(a,b,skip)=>{for(const k in a)if(skip[k]!==1&&!sameStateValue(a[k],b[k]))return false;for(const k in b)if(skip[k]!==1&&!(k in a)&&b[k]!==undefined)return false;return true;};
+  let stateKeySerial=0;
+  function spriteStateKey(c){const entry=c.entry;if(entry.stateKey!=null)return entry.stateKey;const d=entry.draw,geometry=batchGeometryKey(c.geometry),bucketKey=d.first+'|'+d.count+'|'+(d.maps[0]||'');let bucket=spriteStateKeys.get(bucketKey);if(!bucket){if(spriteStateKeys.size>4096)spriteStateKeys.clear();spriteStateKeys.set(bucketKey,bucket={last:null,states:[]});}
+   const same=t=>sameStateValue(t.geometry,geometry)&&sameStateExcept(d,t.draw,skipDraw)&&sameStateExcept(d.material,t.draw.material,skipMaterial);
+   let state=bucket.last&&same(bucket.last)?bucket.last:null;if(!state)for(const t of bucket.states)if(t!==bucket.last&&same(t)){state=t;break;}
+   if(!state){if(bucket.states.length>=256)bucket.states.shift();bucket.states.push(state={draw:copyData(d),geometry:copyData(geometry),key:++stateKeySerial});}
+   bucket.last=state;return entry.stateKey=state.key;}
   function emitSpriteBatch(run,resources,used,items){
     const first=run[0],batchId='sprites:'+first.item.id,instId=batchId+':instances',n=run.length;let cache=spriteInstances.get(instId);
     if(!cache||cache.values.length<n*SPRITE_STRIDE){cache={values:new Float64Array(2**Math.ceil(Math.log2(n))*SPRITE_STRIDE),count:-1};spriteInstances.set(instId,cache);}
@@ -329,7 +340,9 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   const HOST_AGE_MS=500;let hostBorn=-1;const hostBornClean=(t,c)=>hostBorn>=0&&t<=hostBorn&&c<=hostBorn,hostAged=(r,t,c)=>hostBornClean(t,c)||hostFrame-r.hostSince>=HOST_AGE||performance.now()-r.hostSinceAt>=HOST_AGE_MS;
   // A visited clean group (its capture holds every draw id) waits HOST_AGE encodes with the same revisions.
   function hostConsider(group,capture){const r=capture.record,rev=objectRevision(r.object),t=rev?rev.transform:0,c=rev?rev.components:0;if(r.hostT!==t||r.hostC!==c){r.hostT=t;r.hostC=c;r.hostSince=hostFrame;r.hostSinceAt=performance.now();if(!hostBornClean(t,c)){hostPending.delete(group);return;}}if(!hostAged(r,t,c)||!capture.ids.length)return;const p=hostPending.get(group);if(p){p.ids=capture.ids;p.seen=hostFrame;}else hostPending.set(group,{group,record:r,ids:capture.ids,since:hostFrame,seen:hostFrame});}
-  function hostPromote({group,record,ids},promoted){
+  // withBoxes: probe AABBs are needed only with reflection probes (a probe change moves every group back, and a set without
+  // a box is drawn whole in probe faces).
+  function hostPromote({group,record,ids},promoted,withBoxes=true){
    const members=[];for(const id of ids){const c=spriteCandidates.get(id);if(!c||!c.node.parent)return;members.push(c);}
    // 2D: transparent sprites (no 3D shadow casting) go into ordered 2D sets; other groups must be opaque 3D meshes.
    const twoD=members.every(c=>c.node.userData.draw2d&&c.transparent&&!c.node.castShadow);if(!twoD&&members.some(c=>c.transparent||c.entry.twoD||c.node.userData.draw2d))return;
@@ -340,7 +353,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     hostSeqDirty=true;hostGroups.set(group,h);hostLoose.add(group);group.hbHost=h;hostObjects.set(record.object,group);record.drawCache=null;for(const id of ids)promoted.add(id);return;}
    for(const c of members){const node=c.node,key=spriteStateKey(c)+'|'+node.renderOrder+'|'+(node.castShadow?1:0);let set=hostSets.get(key);if(!set)hostSets.set(key,set={id:'host:'+(++hostSerial),members:new Set(),dirty:true,version:0,order:node.renderOrder,casts:!!node.castShadow,receives:false,template:null,stamp:'',source:null});
     const d=c.entry.draw,m=d.material,row=new Float32Array(44),sphere=nodeWorldSphere(node);row.set(d.world,0);row.set(d.normal,16);row.set(m.color,32);row.set(m.uvX[0].slice(0,3),36);row.set(m.uvY[0].slice(0,3),40);
-    const box=reflectionProbeMeshBounds(node,new THREE.Box3()),member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],box:box?box.clone():null,receives:c.receives};set.source??=copyData(d);set.members.add(member);set.dirty=true;h.members.push(member);}
+    const box=withBoxes?reflectionProbeMeshBounds(node,new THREE.Box3()):null,member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],box:box?box.clone():null,receives:c.receives};set.source??=copyData(d);set.members.add(member);set.dirty=true;h.members.push(member);}
    hostGroups.set(group,h);group.hbHost=h;hostObjects.set(record.object,group);record.drawCache=null;for(const id of ids)promoted.add(id);
    if(group.parent===h.parent&&h.parent)hostToContain.push(group);else hostLoose.add(group);
   }
@@ -416,8 +429,9 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
    const rev=objectRevision(r.object);e={cell,r,transform:rev?rev.transform:0,components:rev?rev.components:0,cache,probes,epoch:staticDrawEpoch,pre:0,main:0};Object.defineProperty(node,STATIC_ENTRY,{value:e,writable:true,configurable:true,enumerable:false});
    cell.members.add(node);if(cell.dirty)return;if(cell.sphere.isEmpty())cell.sphere.copy(sphere);else cell.sphere.union(sphere);if(box)cell.box.union(box);else cell.boxPartial=true;
   }
+  // A never-visited group has no drawCache (undefined); its entry holds null.
   function staticEntryValid(node,e,probes){
-   if(node.visible===false||!node.parent||node.matrixWorldNeedsUpdate||e.probes!==probes||e.epoch!==staticDrawEpoch||e.r.drawCache!==e.cache)return false;
+   if(node.visible===false||!node.parent||node.matrixWorldNeedsUpdate||e.probes!==probes||e.epoch!==staticDrawEpoch||(e.r.drawCache??null)!==e.cache)return false;
    const p=node.parent;if(p.hbIdentityFrame!==cellFrame){p.hbIdentityFrame=cellFrame;p.hbIdentity=identityWorld(p);}if(!p.hbIdentity)return false;
    const rev=objectRevision(e.r.object);return (rev?rev.transform:0)===e.transform&&(rev?rev.components:0)===e.components;
   }
@@ -476,7 +490,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     if(staticCellsOn)markStaticCells(!!probes.length,'main',cell=>{const box=probes.length?cell.box:null,sphere=cell.sphere;if(box?frustum.intersectsBox(box):frustum.intersectsSphere(sphere))return false;for(const record of shadowRecords)if(box?(!record.sphere||box.distanceToPoint(record.sphere.center)<=record.sphere.radius)&&record.frustum.intersectsBox(box):(!record.sphere||record.sphere.center.distanceTo(sphere.center)<=record.sphere.radius+sphere.radius)&&record.frustum.intersectsSphere(sphere))return false;return true;});
     // Off-screen host candidates: up to HOST_FORCE_BUDGET marked cell members whose revisions are new to the host check or
     // old enough are visited this encode (draws built, not drawn), so they can move into host sets like visible groups.
-    hostForce.clear();hostForceLeft=0;if(hostActive){let waiting=0;for(const cell of staticCells.values())waiting+=cell.members.size;let budget=Math.max(HOST_FORCE_BUDGET,Math.ceil(waiting/8));for(const cell of staticCells.values()){if(!budget)break;for(const node of cell.members){const e=node[STATIC_ENTRY];if(!e||e.main!==cellFrame||node.hbHost!==undefined)continue;const r=e.r,rev=objectRevision(r.object),t=rev?rev.transform:0,c=rev?rev.components:0;if(r.hostT===t&&r.hostC===c&&!hostAged(r,t,c))continue;e.main=0;node.hbCellMark=0;hostForce.add(node);if(!--budget)break;}}hostForceLeft=budget;}
+    hostForce.clear();hostForceLeft=0;if(hostActive){let waiting=0;for(const cell of staticCells.values())waiting+=cell.members.size;let budget=Math.max(HOST_FORCE_BUDGET,Math.ceil(waiting/4));for(const cell of staticCells.values()){if(!budget)break;for(const node of cell.members){const e=node[STATIC_ENTRY];if(!e||e.main!==cellFrame||node.hbHost!==undefined)continue;const r=e.r,rev=objectRevision(r.object),t=rev?rev.transform:0,c=rev?rev.components:0;if(r.hostT===t&&r.hostC===c&&!hostAged(r,t,c))continue;e.main=0;node.hbCellMark=0;hostForce.add(node);if(!--budget)break;}}hostForceLeft=budget;}
     traverseVisibleSkipping(scene,node=>{
       if(!visible(node)||node.userData.editorHelper)return;
       if(node.isLight){
@@ -541,7 +555,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
      // every frame while the camera reveals new groups; only groups visited this encode (current draw ids) move.
      let oldest=Infinity;for(const p of hostPending.values())oldest=Math.min(oldest,p.since);
      // Draws of groups promoted now leave this frame's lists: their set already holds them.
-     const promoted=new Set();if(hostPending.size>=256||hostFrame-oldest>=60)for(const [g,p] of hostPending){if(p.seen===hostFrame){hostPending.delete(g);if(!g.hbHost&&g.parent)hostPromote(p,promoted);}else if(hostFrame-p.seen>120)hostPending.delete(g);}
+     const promoted=new Set();if(hostPending.size>=256||hostFrame-oldest>=60)for(const [g,p] of hostPending){if(p.seen===hostFrame){hostPending.delete(g);if(!g.hbHost&&g.parent)hostPromote(p,promoted,probes.length>0);}else if(hostFrame-p.seen>120)hostPending.delete(g);}
      hostContainPending();
      // Their member draw updates are not sent either (the host would build each record only to remove it again).
      if(promoted.size){let n=0;for(const item of items)if(!promoted.has(item.id))items[n++]=item;items.length=n;n=0;for(const draw of updates)if(!promoted.has(draw.id))updates[n++]=draw;updates.length=n;for(const record of shadowRecords){let k=0;for(const id of record.casters)if(!promoted.has(id))record.casters[k++]=id;record.casters.length=k;}{let k=0;for(const e of probeDraws)if(!promoted.has(e.id))probeDraws[k++]=e;probeDraws.length=k;}for(const id of promoted)seen.delete(id);}
