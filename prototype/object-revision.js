@@ -19,6 +19,8 @@ export function unsubscribeObjectChanges(changes){subscribers.delete(changes);}
 function notify(o){for(const changes of subscribers)changes.add(o);}
 // componentSerial counts every announced component change (a cheap "did any object's components change" test).
 let componentSerial=0;export const componentRevisionSerial=()=>componentSerial;
+// Last COMPONENT_LOG announced component changes (object per serial): filtered lists re-test only those objects.
+const COMPONENT_LOG=65536,componentLog=new Array(COMPONENT_LOG);
 // Every announced change (transform or components) advances serial.
 export const revisionSerialNow=()=>serial;
 // Filtered object lists (and an id map) per list, reused while the list (watched mutators and length) and every
@@ -26,12 +28,15 @@ export const revisionSerialNow=()=>serial;
 // component index's rolling verification, which advances listCacheConfig.epoch (and, once untrusted, every call rebuilds).
 export const listCacheConfig={epoch:0,trusted:true};
 const filteredLists=new WeakMap();
-function cachedList(objects,key,build,components=true){if(!Array.isArray(objects))return build(objects);watchObjectList(objects);let byKey=filteredLists.get(objects);if(!byKey)filteredLists.set(objects,byKey=new Map());let c=byKey.get(key);const version=listVersion(objects);
- if(!c||c.version!==version||c.length!==objects.length||(components&&c.serial!==componentSerial)||c.epoch!==listCacheConfig.epoch||!listCacheConfig.trusted){c={version,length:objects.length,serial:componentSerial,epoch:listCacheConfig.epoch,value:build(objects)};byKey.set(key,c);}return c.value;}
-export const objectsWhere=(objects,key,test)=>cachedList(objects,key,list=>[...list].filter(test));
+// test (objectsWhere): when only component announcements happened since the build (and all are still in the log), the
+// announced objects are re-tested; the list is rebuilt only if one of them enters or leaves it.
+function cachedList(objects,key,build,components=true,test=null){if(!Array.isArray(objects))return build(objects);watchObjectList(objects);let byKey=filteredLists.get(objects);if(!byKey)filteredLists.set(objects,byKey=new Map());let c=byKey.get(key);const version=listVersion(objects);
+ if(c&&test&&c.members&&components&&c.serial!==componentSerial&&componentSerial-c.serial<=COMPONENT_LOG&&c.version===version&&c.length===objects.length&&c.epoch===listCacheConfig.epoch&&listCacheConfig.trusted){let same=true;for(let k=c.serial+1;k<=componentSerial;k++){const o=componentLog[k%COMPONENT_LOG];if(c.members.has(o)!==!!test(o)){same=false;break;}}if(same)c.serial=componentSerial;}
+ if(!c||c.version!==version||c.length!==objects.length||(components&&c.serial!==componentSerial)||c.epoch!==listCacheConfig.epoch||!listCacheConfig.trusted){c={version,length:objects.length,serial:componentSerial,epoch:listCacheConfig.epoch,value:build(objects)};if(test)c.members=new Set(c.value);byKey.set(key,c);}return c.value;}
+export const objectsWhere=(objects,key,test)=>cachedList(objects,key,list=>[...list].filter(test),true,test);
 // First object per id (the same object list.find(o=>o.id===id) returns); ids do not depend on components.
 export const objectMapOf=objects=>cachedList(objects,'#byId',list=>{const map=new Map();for(const o of list)if(!map.has(o.id))map.set(o.id,o);return map;},false);
-export function touchComponents(o){if(o&&typeof o==='object'){state(o).components=++serial;componentSerial++;notify(o);}}
+export function touchComponents(o){if(o&&typeof o==='object'){state(o).components=++serial;componentLog[++componentSerial%COMPONENT_LOG]=o;notify(o);}}
 export function touchTransform(o){if(o&&typeof o==='object'){state(o).transform=++serial;notify(o);}}
 // Object list versions: membership changes (push/splice/... wrappers, index replacement) bump the list's version.
 const LIST=Symbol('hbListVersion');

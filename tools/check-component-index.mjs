@@ -4,13 +4,14 @@
 // node tools/check-component-index.mjs
 import assert from 'node:assert/strict';
 import {createComponentIndex,componentIndexConfig} from '../prototype/component-index.js';
-import {touchComponents,revisionConfig,revisionMismatches,listCacheConfig} from '../prototype/object-revision.js';
+import {touchComponents,revisionConfig,revisionMismatches,listCacheConfig,objectsWhere} from '../prototype/object-revision.js';
 
 revisionConfig.verify=false;
 const types=['A','B','C','D'],objects=[],index=createComponentIndex();
 for(let i=0;i<300;i++)objects.push({id:'o'+i,components:types.filter((_,k)=>(i>>k)%3===0).map(type=>({id:type,type}))});
 const brute=type=>objects.filter(o=>o.components.some(c=>c.type===type));
-const check=step=>{index.sync(objects);for(const type of types)assert.deepEqual(index.of(type).map(o=>o.id),brute(type).map(o=>o.id),type+' at step '+step);};
+// objectsWhere (re-tests only announced objects while the list is unchanged) must equal the same brute-force scan.
+const check=step=>{index.sync(objects);for(const type of types){assert.deepEqual(index.of(type).map(o=>o.id),brute(type).map(o=>o.id),type+' at step '+step);assert.deepEqual(objectsWhere(objects,'has'+type,o=>o.components.some(c=>c.type===type)).map(o=>o.id),brute(type).map(o=>o.id),'objectsWhere '+type+' at step '+step);}};
 let seed=7;const random=n=>(seed=(seed*1103515245+12345)%2147483648)%n;
 for(let step=0;step<400;step++){
  const kind=random(6),o=objects[random(objects.length)];

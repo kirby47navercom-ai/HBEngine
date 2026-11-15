@@ -543,7 +543,8 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
      // Draws of groups promoted now leave this frame's lists: their set already holds them.
      const promoted=new Set();if(hostPending.size>=256||hostFrame-oldest>=60)for(const [g,p] of hostPending){if(p.seen===hostFrame){hostPending.delete(g);if(!g.hbHost&&g.parent)hostPromote(p,promoted);}else if(hostFrame-p.seen>120)hostPending.delete(g);}
      hostContainPending();
-     if(promoted.size){let n=0;for(const item of items)if(!promoted.has(item.id))items[n++]=item;items.length=n;for(const record of shadowRecords){let k=0;for(const id of record.casters)if(!promoted.has(id))record.casters[k++]=id;record.casters.length=k;}{let k=0;for(const e of probeDraws)if(!promoted.has(e.id))probeDraws[k++]=e;probeDraws.length=k;}for(const id of promoted)seen.delete(id);}
+     // Their member draw updates are not sent either (the host would build each record only to remove it again).
+     if(promoted.size){let n=0;for(const item of items)if(!promoted.has(item.id))items[n++]=item;items.length=n;n=0;for(const draw of updates)if(!promoted.has(draw.id))updates[n++]=draw;updates.length=n;for(const record of shadowRecords){let k=0;for(const id of record.casters)if(!promoted.has(id))record.casters[k++]=id;record.casters.length=k;}{let k=0;for(const e of probeDraws)if(!promoted.has(e.id))probeDraws[k++]=e;probeDraws.length=k;}for(const id of promoted)seen.delete(id);}
      if(hostEmit(items,updates,seen,resources,used,shadowRecords,probes.length?probeDraws:null))needsGlobalProbes=true;hostEmit2D(items,updates,seen,resources,used);}
     renderer.hbHostStats={groups:hostGroups.size,sets:hostSets.size,sets2D:hostSets2D.size,runs2D:hostRuns2D.length,pending:hostPending.size};
     const phase=item=>item.transmissive?1:item.transparent?2:0;items.sort((a,b)=>phase(a)-phase(b)||a.order-b.order||(a.transmissive||a.transparent?b.depth-a.depth:a.depth-b.depth)||a.id.localeCompare(b.id));
