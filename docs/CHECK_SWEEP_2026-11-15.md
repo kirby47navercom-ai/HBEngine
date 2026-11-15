@@ -32,7 +32,32 @@
 같은 검사가 `0a9efe97`에서도 실패해요. 원인별로 나눴어요.
 
 - **Android·iOS 기기·SDK 필요** (12): `check-android-mobile`, `check-android-runtime`, `check-deformables-mobile-242`, `check-engine-185-mobile`, `check-ios-mobile`, `check-mobile-player`, `check-runtime-sdk-mobile-248`, `check-runtime-sdk-mobile-258`, `check-runtime-sdk-mobile-267`, `check-runtime-sdk-mobile-273`, `check-runtime-sdk-mobile-280`, `check-streamed-build-200`
-- **코드·검사 불일치(성능 작업 이전부터)** (58): `check-assets`, `check-authoring`, `check-camera-surface-1136-native`, `check-context-focus-1373`, `check-context-install-1071`, `check-cubemap-lod-281`, `check-curve-density-1323`, `check-curve-range-bake-1336`, `check-curve-subdivision-1378`, `check-differential-plan-446`, `check-engine-188`, `check-game-resources`, `check-gpu-shared-shader`, `check-headless-hierarchy-2395`, `check-installed-retained-native-602`, `check-launcher`, `check-layered-import-2816`, `check-library`, `check-material-texture-families`, `check-mesh-renderer-1621`, `check-mixer-blends`, `check-montage-timeline-1557`, `check-native-cancel`, `check-native-draw-history`, `check-native-gameplay-read-cost`, `check-native-material-packing`, `check-native-reconcile-freeze`, `check-native-scene-render`, `check-native-spawn-aot`, `check-native-ui-dispatch`, `check-native-uncapped`, `check-native-widget-delta-worker`, `check-native-widget-frame-cost`, `check-native-widget-paint-work`, `check-native-widget-snapshot-cost`, `check-native-world-matrix-reuse`, `check-package`, `check-photon-shader`, `check-play-world-native`, `check-player-lifecycle`, `check-previous-records-367`, `check-probe-atlas-1116`, `check-probe-priority-1356`, `check-probe-selection-1010`, `check-rendering-106`, `check-rendering-127`, `check-rendering-145`, `check-rendering-189`, `check-rendering-274`, `check-scene-program-preparation-553`, `check-sequence-indexed-fixture-2139`, `check-signed-scale-1203`, `check-skeleton-1859`, `check-startup-state`, `check-take-filter-215`, `check-texture-raster-527-native`, `check-ui-audio`, `check-window-workflow`
-- **인자 필요(비교 도구)** (14): `check-authored-mip-references-699`, `check-authored-mips-695-native`, `check-camera-views-native`, `check-native-binary-upload`, `check-native-sdk-read-cost`, `check-native-ui-replay`, `check-native-ui-transport-cost`, `check-performance-comparison`, `check-rendering-253-native`, `check-resident-mip-758-native`, `check-runtime-sync`, `check-texture-composite-545-native`, `check-texture-mips-461-native`, `check-texture-regions-729-native`
+- **코드·검사 불일치(성능 작업 이전부터)** (58): 수정 결과는 아래 "불일치 수정 결과"에 있어요.
+- **인자 필요(비교 도구)** (24): 불일치에서 옮긴 10개 `check-installed-retained-native-602`, `check-native-draw-history`, `check-native-gameplay-read-cost`, `check-native-material-packing`, `check-native-reconcile-freeze`, `check-native-ui-dispatch`, `check-native-widget-delta-worker`, `check-native-widget-paint-work`, `check-native-widget-snapshot-cost`, `check-native-world-matrix-reuse`, 그리고 `check-authored-mip-references-699`, `check-authored-mips-695-native`, `check-camera-views-native`, `check-native-binary-upload`, `check-native-sdk-read-cost`, `check-native-ui-replay`, `check-native-ui-transport-cost`, `check-performance-comparison`, `check-rendering-253-native`, `check-resident-mip-758-native`, `check-runtime-sync`, `check-texture-composite-545-native`, `check-texture-mips-461-native`, `check-texture-regions-729-native`
 - **실행 중인 편집기·개발 서버 필요** (6): `check-authoring-editor`, `check-collision-editor`, `check-editor-api`, `check-physics-editor`, `check-ui-audio-editor`, `check-viewport-workflow`
-- **저장소 루트 실행 파일 필요** (2): `check-native-package-paths`, `check-native-portable-imports`
+- **저장소 루트 실행 파일 필요** (3): `check-native-package-paths`, `check-native-portable-imports`, `check-native-uncapped`(`runtime/node.exe`)
+
+## 불일치 수정 결과
+
+커밋 `033e4171`, `f640f4e0`, `4713346f`에서 고쳤어요. 58개를 이렇게 나눴어요.
+
+| 구분 | 수 |
+|---|---|
+| 지금 통과 | 42 |
+| 인자 필요로 재분류 | 10 |
+| 저장소 루트 실행 파일 필요로 재분류 | 1 |
+| 실제 실행 파일이 멈춤 (미해결) | 5 |
+
+코드 수정:
+- 이름 변경 전에 메모리에만 있던 발견 에셋 ID를 저장해요. 쓰기 직후 이름을 바꾸면 409가 나던 문제예요.
+- 숫자패드 단축키를 허용해요.
+- glTF 깊이 128 제한 회귀를 되돌렸어요.
+- 빌드 중 프로젝트를 전환하면 409로 알려요.
+- 그 밖에 Bridge 초기화 경고, 타입 라이브러리 EEXIST, 카메라 보기 null 보호를 고쳤어요.
+
+나머지는 현재 설계에 맞춘 검사 기대값이에요. 예: 패키지 `game.hbdata` 묶음, C++ 진입 경로, 반구광 /π, `SceneInstance` 176바이트, 컴파일러 식별 캐시 키.
+
+멈춤 (미해결):
+- 기준 커밋에서도 멈춰요: `check-camera-surface-1136-native`, `check-scene-program-preparation-553`, `check-texture-raster-527-native`
+- 기대값 2개를 고친 뒤 다음 단계에서 멈춰요: `check-native-scene-render`의 `hardware.exe --core-only` (400초 넘게)
+- 데이터 묶음·이름 변경·C++ 경로를 고친 뒤 다음 단계에서 멈춰요: `check-package`의 2D 게임 EXE `--smoke-test` (아무 기록 없이 240초 넘게)
