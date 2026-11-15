@@ -227,6 +227,9 @@ export function createRigidPhysics(objects,options={}){
     }
     for(const [key,j] of space.joints)if(!active.has(key)||!j.broken&&!j.joint.isValid()){if(j.joint.isValid())world.removeImpulseJoint(j.joint,true);clearJointBreak(j);space.joints.delete(key);}
   }
+  // An enabled joint motor keeps its dynamic bodies awake: otherwise they can fall asleep short of the motor target
+  // (low velocity under strong damping) and the motor stops driving them.
+  function wakeMotorJoints(space){for(const j of space.joints.values()){if(j.broken||!j.component.properties?.useMotor)continue;if(j.a?.isDynamic())j.a.wakeUp();if(j.b?.isDynamic())j.b.wakeUp();}}
   function clearJointBreak(j){if(j.object.gameplayDebug?.jointBreaks?.[j.component.id]){const rows={...j.object.gameplayDebug.jointBreaks};delete rows[j.component.id];j.object.gameplayDebug={...j.object.gameplayDebug,jointBreaks:rows};}}
   function publishJointBreak(j,broken,reason,measurement={}){j.broken=broken;j.breakState={broken,reason,time:elapsed,...measurement};j.object.gameplayDebug={...j.object.gameplayDebug,jointBreaks:{...j.object.gameplayDebug?.jointBreaks,[j.component.id]:{...j.breakState}}};}
   function breakJoint(space,j,reason,measurement){if(j.broken)return;space.world.removeImpulseJoint(j.joint,true);space.joints.markBroken(j);publishJointBreak(j,true,reason,measurement);}
@@ -417,7 +420,7 @@ export function createRigidPhysics(objects,options={}){
     timings(){return {...timing};},
     step(delta,limit=maxSubsteps){alive();if(!prepared)throw Error('물리 월드를 먼저 준비하세요.');if(!Number.isFinite(delta)||delta<0)throw Error('물리 시간을 확인하세요.');const at=options.profile?performance.now():0;accumulator=Math.min(accumulator+delta,dt*maxSubsteps);let count=0;
       while(accumulator+1e-9>=dt&&count<limit){sync();if(movement(dt))sync();for(const o of forceObjects)for(const c of objectComponents(o).filter(c=>['ConstantForce','ConstantForce2D'].includes(c.type)&&c.properties?.enabled!==false)){const p={...componentDefaultValues(c.type),...c.properties},r=record(o,c.type.endsWith('2D')?2:3);if(!r?.body.isDynamic())continue;r.body.addForce(xyz(p.force),p.force.some(v=>v!==0));r.body.addTorque(r.dim===2?p.torque[2]:xyz(p.torque),p.torque.some(v=>v!==0));}
-        for(const[dimension,s]of spaces){checkJointBreaks(s,dimension);s.vehicles?.step(dt);s.deformables?.step(dt);const solverAt=options.profile?performance.now():0;stepWorld(s.world,s.eventQueue,s.hooks);if(options.profile)timing.solverMs+=performance.now()-solverAt;s.deformables?.postStep(dt);checkJointBreaks(s,dimension,elapsed+dt);}updateObjects();for(const s of spaces.values()){s.vehicles?.publish();s.deformables?.publish();}collectContacts();elapsed+=dt;accumulator=Math.max(0,accumulator-dt);count++;jumps.clear();
+        for(const[dimension,s]of spaces){wakeMotorJoints(s);checkJointBreaks(s,dimension);s.vehicles?.step(dt);s.deformables?.step(dt);const solverAt=options.profile?performance.now():0;stepWorld(s.world,s.eventQueue,s.hooks);if(options.profile)timing.solverMs+=performance.now()-solverAt;s.deformables?.postStep(dt);checkJointBreaks(s,dimension,elapsed+dt);}updateObjects();for(const s of spaces.values()){s.vehicles?.publish();s.deformables?.publish();}collectContacts();elapsed+=dt;accumulator=Math.max(0,accumulator-dt);count++;jumps.clear();
         inputs.clear();for(const s of spaces.values())for(const r of s.pRecords??[])if(r.p){r.body.resetForces(false);r.body.resetTorques(false);}
       }
       if(count){inputs.clear();for(const s of spaces.values())for(const r of s.pRecords??[])if(r.p){r.body.resetForces(false);r.body.resetTorques(false);}}
