@@ -80,10 +80,11 @@ export function createRigidPhysics(objects,options={}){
   const record=(o,dim)=>spaces.get(dim)?.bodies.get(o.id);
   const constrained=(r,v,angular=false)=>v.map((value,i)=>(angular?(r.p?.movement?[1,1,1]:r.p?.freezeRotation)?.[i]||r.dim===2&&i!==2:r.p?.freezePosition?.[i]||r.dim===2&&i===2)?0:value);
   const dynamic=o=>{alive();if(!writingBatch)sync();const r=record(o,2)?.p?record(o,2):record(o,3);if(!r?.p||!r.body.isDynamic())throw Error('활성화된 동적 Rigidbody가 필요해요.');return r;};
-  const mirror=r=>{
+  // Mass and CCD are read again only after the body's colliders/configuration changed (massValue/ccdValue reset).
+  const mirror=(r,sleeping)=>{
     if(options.queryOnly||!r.p)return;
     const velocity=array(r.body.linvel()),angular=r.dim===2?[0,0,r.body.angvel()]:array(r.body.angvel());
-    if(r.p){r.object.velocity=velocity;r.object.angularVelocity=angular;r.lastVelocity=velocity.slice();r.lastAngular=angular.slice();r.object.gameplayDebug={...r.object.gameplayDebug,physics:{dimension:r.dim,bodyType:typeOf(r.p),mass:r.body.mass(),sleeping:r.body.isSleeping(),velocity,angularVelocity:angular,ccd:r.body.isCcdEnabled(),colliders:r.colliders.size}};}
+    if(r.p){r.object.velocity=velocity;r.object.angularVelocity=angular;r.lastVelocity=velocity.slice();r.lastAngular=angular.slice();r.object.gameplayDebug={...r.object.gameplayDebug,physics:{dimension:r.dim,bodyType:typeOf(r.p),mass:r.massValue??=r.body.mass(),sleeping:sleeping??r.body.isSleeping(),velocity,angularVelocity:angular,ccd:r.ccdValue??=r.body.isCcdEnabled(),colliders:r.colliders.size}};}
   };
   const coefficients=(p,R)=>{const merged={...p,...materials.get(p.physicalMaterial)};return {...merged,frictionCombine:R.CoefficientCombineRule[{average:'Average',min:'Min',max:'Max',multiply:'Multiply'}[merged.frictionCombine]||'Average']};};
   function shape(component,scale,R,dim){
@@ -123,7 +124,7 @@ export function createRigidPhysics(objects,options={}){
         // Root scalar comparison also catches in-place C++/script edits. Parented
         // actors still resolve the hierarchy on every sync, including parent motion.
         if(!cached){r.pose=transform;r.poseKey=transformKey;r.poseInput=root?[...o.position,...o.rotation,...o.scale]:null;}
-        r.object=o;r.p=p;if(p)(space.pRecords??=new Set()).add(r);else space.pRecords?.delete(r);if(root)space.childRecords?.delete(r);else(space.childRecords??=new Set()).add(r);
+        r.object=o;r.p=p;if(p){const set=space.pRecords??=new Set();if(!set.has(r)){set.add(r);space.pRecordsVersion=(space.pRecordsVersion||0)+1;}}else if(space.pRecords?.delete(r))space.pRecordsVersion=(space.pRecordsVersion||0)+1;if(root)space.childRecords?.delete(r);else(space.childRecords??=new Set()).add(r);
         const kind=typeOf(p),bodyType={static:R.RigidBodyType.Fixed,dynamic:R.RigidBodyType.Dynamic,kinematic:R.RigidBodyType.KinematicPositionBased}[kind];
         if(r.body.bodyType()!==bodyType){r.body.setBodyType(bodyType,true);space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;}
         if(!sameValues(transformKey,r.lastPose)){setPose(r,transform,kind==='kinematic'&&!options.queryOnly);r.lastPose=transformKey;space.structure=(space.structure||0)+1;if(r.body.isFixed())space.fixedVersion=(space.fixedVersion||0)+1;}
@@ -140,7 +141,7 @@ export function createRigidPhysics(objects,options={}){
           r.body.setGravityScale(p?.movement?.movementMode==='flying'?0:p?.useGravity?(p.gravityScale??1)*(p.movement&&gravity[1]?p.movement.gravity/Math.abs(gravity[1]):1):0,true);r.body.enableCcd(p?.collisionDetection==='continuous');
           const freeze=p?.freezePosition??[0,0,0];if(dim===2)r.body.setEnabledTranslations(!freeze[0],!freeze[1],true);else r.body.setEnabledTranslations(...freeze.map(v=>!v),true);
           const rotations=p?.movement?[1,1,1]:p?.freezeRotation??[0,0,0];if(dim===2)r.body.lockRotations(!!rotations[2],true);else r.body.setEnabledRotations(...rotations.map(v=>!v),true);
-          r.configuration=configuration;r.massDirty=true;
+          r.configuration=configuration;r.massDirty=true;r.ccdValue=undefined;
         }
         const activeColliders=new Set();
         for(const component of components){
@@ -167,7 +168,7 @@ export function createRigidPhysics(objects,options={}){
           for(const c of r.colliders.values())c.collider.setDensity(p.autoMass?(coefficients(c.p,R).density??1):1);
           r.body.setAdditionalMass(0,true);r.body.recomputeMassPropertiesFromColliders();
           if(!p.autoMass||!r.colliders.size){const mass=r.body.mass();if(mass>0)for(const c of r.colliders.values())c.collider.setDensity(p.mass/mass);else r.body.setAdditionalMass(p.mass,true);r.body.recomputeMassPropertiesFromColliders();}
-          r.massDirty=false;
+          r.massDirty=false;r.massValue=undefined;
         }
         if(p&&!options.queryOnly){
           o.velocity??=copy(p.velocity);o.angularVelocity??=copy(p.angularVelocity??[0,0,0]);
@@ -178,7 +179,7 @@ export function createRigidPhysics(objects,options={}){
         if(componentRev!==undefined&&p){r.synced=componentRev;r.syncedCollision=o.collisionEnabled;r.syncedMaterials=materials.size;}else r.synced=undefined;
         if(options.staticCache&&!p&&root&&r.body.isFixed()&&!sourceOf().some(c=>physicsBodyTypes.has(c.type))){const components=JSON.parse(JSON.stringify(sourceOf())),tiles=o.tileColliders?JSON.parse(JSON.stringify(o.tileColliders)):null;r.staticState={components,tiles,revision:revisionSnapshot(o),componentMatch:undefined,tileMatch:undefined,collisionEnabled:o.collisionEnabled,materialCount:materials.size};if(options.profile)timing.staticRefreshed++;}else delete r.staticState;
       }
-      const removeBody=(id,r)=>{space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;for(const c of r.colliders.values())space.colliders.delete(c.collider.handle);space.vehicles?.remove(id);space.deformables?.detachBody(r.body.handle);world.removeRigidBody(r.body);space.bodies.delete(id);space.pRecords?.delete(r);space.childRecords?.delete(r);};
+      const removeBody=(id,r)=>{space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;for(const c of r.colliders.values())space.colliders.delete(c.collider.handle);space.vehicles?.remove(id);space.deformables?.detachBody(r.body.handle);world.removeRigidBody(r.body);space.bodies.delete(id);if(space.pRecords?.delete(r))space.pRecordsVersion=(space.pRecordsVersion||0)+1;space.childRecords?.delete(r);};
       if(partial){for(const o of list){const r=space.bodies.get(o.id);if(r&&r.object===o&&!active.has(o.id))removeBody(o.id,r);}}else for(const [id,r] of space.bodies)if(!active.has(id))removeBody(id,r);
       world.propagateModifiedBodyPositionsToColliders();if(!options.queryOnly)syncJoints(space,dim,[...jointOwners]);space.vehicles?.sync();space.deformables?.sync(deformableObjects);for(const r of space.pRecords??[])if(r.mirrored!==space.syncSerial)mirror(r);
     }
@@ -274,16 +275,21 @@ export function createRigidPhysics(objects,options={}){
     const fixed=[...spaces].map(([dim,space])=>fixedContacts(space,dim));let list=[...result.values()];for(const f of fixed)list=list.concat(f);lastContacts=list;
     for(const o of objects)o.grounded=false;for(const c of result.values())if(!c.trigger){const a=c.colliderA.object,b=c.colliderB.object;if(c.normal[1]>.5)a.grounded=true;if(c.normal[1]<-.5)b.grounded=true;}for(const f of fixed)for(const r of f.grounds)r.object.grounded=true;
   }
+  let updateOrder={token:null,records:null};
   function updateObjects(){
-    const records=[...spaces.values()].flatMap(s=>[...(s.pRecords??[])]).filter(r=>r.p);
-    const depth=o=>{let n=0,at=o;while(at.parent||at.parentId){at=objectMapOf(objects).get(at.parentId||at.parent);if(!at)break;if(++n>64)throw Error('부모 계층 깊이 제한 초과');}return n;};records.sort((a,b)=>depth(a.object)-depth(b.object));
-    for(const r of records){const parent=(r.object.parentId||r.object.parent)?objectMapOf(objects).get(r.object.parentId||r.object.parent):null,parentKey=parent?sceneWorldMatrix(parent,objects).elements.join():null,sleeping=r.body.isFixed()||r.body.isSleeping();if(sleeping&&parentKey===r.lastParentKey){if(!r.lastSleeping)mirror(r);r.lastSleeping=true;continue;}r.lastSleeping=sleeping;r.lastParentKey=parentKey;const position=array(r.body.translation());if(r.dim===2)position[2]=sceneWorldPosition(r.object,objects)[2];setSceneWorldPosition(r.object,position,objects);touchTransform(r.object);
+    // Record order (parents first) is rebuilt only when a space's body records change or parented bodies exist; awake
+    // dynamic bodies come from one island query per space instead of two body calls each (kinematic bodies count as awake).
+    const token=[...spaces.values()].map(s=>s.pRecordsVersion||0).join();let records=updateOrder.token===token?updateOrder.records:null;
+    if(!records||[...spaces.values()].some(s=>s.childRecords?.size)){records=[...spaces.values()].flatMap(s=>[...(s.pRecords??[])]);
+     const depth=o=>{let n=0,at=o;while(at.parent||at.parentId){at=objectMapOf(objects).get(at.parentId||at.parent);if(!at)break;if(++n>64)throw Error('부모 계층 깊이 제한 초과');}return n;};records.sort((a,b)=>depth(a.object)-depth(b.object));updateOrder={token,records};}
+    const awake=new Map();for(const [dim,s] of spaces){const set=new Set();s.world.islands.forEachActiveRigidBodyHandle(h=>set.add(h));awake.set(dim,set);}
+    for(const r of records){if(!r.p)continue;const parent=(r.object.parentId||r.object.parent)?objectMapOf(objects).get(r.object.parentId||r.object.parent):null,parentKey=parent?sceneWorldMatrix(parent,objects).elements.join():null,sleeping=!awake.get(r.dim)?.has(r.body.handle)&&!r.body.isKinematic();if(sleeping&&parentKey===r.lastParentKey){if(!r.lastSleeping)mirror(r);r.lastSleeping=true;continue;}r.lastSleeping=sleeping;r.lastParentKey=parentKey;const position=array(r.body.translation());if(r.dim===2)position[2]=sceneWorldPosition(r.object,objects)[2];setSceneWorldPosition(r.object,position,objects);touchTransform(r.object);
       const rotation=r.dim===2?new Quaternion().setFromAxisAngle(new Vector3(0,0,1),r.body.rotation()):new Quaternion().copy(r.body.rotation());
       if(parent)rotation.premultiply(pose(parent,objects).rotation.invert());r.object.rotation=new Euler().setFromQuaternion(rotation).toArray().slice(0,3).map(v=>v/rad);
       const p=pose(r.object,objects);r.lastPose=poseValues(p);
       // Same pose and key sync() computes from these inputs: a root body's next sync takes its cached path.
       if(!parent&&!r.object.parentId&&!r.object.parent){const o=r.object;r.pose=p;r.poseKey=r.lastPose;r.poseInput=[...o.position,...o.rotation,...o.scale];}
-      mirror(r);(options.moved||options.update)?.(r.object);
+      mirror(r,sleeping&&!r.body.isFixed()?undefined:false);(options.moved||options.update)?.(r.object);
     }
   }
   function rootMotionStep(step){
