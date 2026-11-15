@@ -27,11 +27,13 @@ const oldStorage=globalThis.localStorage,oldFetch=globalThis.fetch;
 const values=new Map();globalThis.localStorage={getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,String(value)),removeItem:key=>values.delete(key),get length(){return values.size;},key:index=>[...values.keys()][index]??null};
 const requests=[],fixtures={Assets:[{name:'Root.hbscene.json',path:'Assets/Root.hbscene.json',kind:'scene'}],'Assets/Meshes':[{name:'Cube.glb',path:'Assets/Meshes/Cube.glb',kind:'model'}],'Assets/Animation':[{name:'Walk.hbanimation.json',path:'Assets/Animation/Walk.hbanimation.json',kind:'animation'}],'Assets/Materials':[{name:'Stone.hbmaterial.json',path:'Assets/Materials/Stone.hbmaterial.json',kind:'material'}]};
 globalThis.fetch=async url=>{const query=new URL(url,'http://localhost').searchParams;requests.push(Object.fromEntries(query));return {ok:true,json:async()=>({root:'C:/Project',folders:Object.keys(fixtures).map(path=>({path,name:path.split('/').at(-1)})),entries:fixtures[query.get('folder')]||[]})};};
+// Project browser virtual grids listen for scroll and resize.
+globalThis.ResizeObserver??=class{observe(){}unobserve(){}disconnect(){}};
 function browserElement(){
-  const controls=new Map(['search','type','contents','recursive','back','forward','up','folders','results','grid'].map(name=>['[data-project-'+name+']',{value:name==='type'?'all':'',checked:name==='recursive',dataset:{},disabled:false,focus(){this.focused=true;}}]));
+  const controls=new Map(['search','type','contents','recursive','back','forward','up','folders','results','grid'].map(name=>['[data-project-'+name+']',{value:name==='type'?'all':'',checked:name==='recursive',dataset:{},disabled:false,focus(){this.focused=true;},addEventListener(){},removeEventListener(){},contains:()=>false,clientHeight:400,scrollTop:0,innerHTML:'',querySelector:()=>null,querySelectorAll:()=>[]}]));
   controls.set('[data-contents]',controls.get('[data-project-contents]'));controls.set('[data-recursive]',controls.get('[data-project-recursive]'));
   const heading={},buttons=['list','tiles'].map(view=>({dataset:{projectView:view},setAttribute(key,value){this[key]=value;}})),handlers=new Map(),labels=[];
-  return {dataset:{},controls,handlers,labels,buttons,querySelector:selector=>controls.get(selector)||(selector==='.project-list-heading'?heading:null),querySelectorAll:selector=>selector==='[data-project-view]'?buttons:selector==='[data-project-entry] .asset-name'?labels:[],addEventListener:(name,handler)=>handlers.set(name,handler)};
+  return {dataset:{},ownerDocument:{activeElement:null},controls,handlers,labels,buttons,querySelector:selector=>controls.get(selector)||(selector==='.project-list-heading'?heading:null),querySelectorAll:selector=>selector==='[data-project-view]'?buttons:selector==='[data-project-entry] .asset-name'?labels:[],addEventListener:(name,handler)=>handlers.set(name,handler)};
 }
 try{
   values.set(storageKey('hbengine.project.folder'),'Assets');values.set(storageKey('hbengine.project.view'),'tiles');

@@ -18,7 +18,8 @@ async function startServer(projectFile,desktop=true){
 }
 const headers={'X-HB-Editor':'1','Content-Type':'application/json'};
 async function post(server,url,data){return fetch(server.url+url,{method:'POST',headers,body:JSON.stringify(data)});}
-async function selected(server){return (await fetch(server.url+'/api/session')).json();}
+// /api/session always carries the native channel descriptor (and acceptance flag); the project session is the rest.
+async function selected(server){const {nativeChannel,acceptance,...session}=await (await fetch(server.url+'/api/session')).json();assert.ok(nativeChannel?.path);return Object.keys(session).length?session:null;}
 const key=(base,record)=>base+'.project.'+encodeURIComponent(record.manifest.id);
 const readStorage=(server,record)=>fetch(server.url+'/api/storage?project='+encodeURIComponent(record.manifest.id));
 const putStorage=(server,record,items)=>fetch(server.url+'/api/storage',{method:'PUT',headers,body:JSON.stringify({id:record.manifest.id,items})});
@@ -26,7 +27,7 @@ try{
   const directory=path.join(work,'공백 한글 부모'),a=await createProject('첫 번째 게임',directory),b=await createProject('두 번째 게임',directory),aBytes=await fs.readFile(a.file,'utf8');
   assert.equal(a.manifest.engine,'HBEngine');assert.equal(a.manifest.id,(await readProjectManifest(a.file)).manifest.id);assert.equal((await ensureProjectManifest(a.root,a.manifest.name)).manifest.id,a.manifest.id);assert.equal(await fs.readFile(a.file,'utf8'),aBytes);
   assert.equal(JSON.parse(await fs.readFile(path.join(a.root,a.manifest.startupScene),'utf8')).sceneName,'Garden');assert.equal(JSON.parse(await fs.readFile(path.join(a.root,a.manifest.startupBlueprint),'utf8')).name,'BP_Garden');await fs.access(path.join(a.root,'Source/DoorController.cpp'));
-  await fs.writeFile(path.join(a.root,'Source/보존.cpp'),'original source');await assert.rejects(createProject(a.manifest.name,directory),/EEXIST/);assert.equal(await fs.readFile(path.join(a.root,'Source/보존.cpp'),'utf8'),'original source');assert.equal(await fs.readFile(a.file,'utf8'),aBytes);
+  await fs.writeFile(path.join(a.root,'Source/보존.cpp'),'// original source');await assert.rejects(createProject(a.manifest.name,directory),/EEXIST/);assert.equal(await fs.readFile(path.join(a.root,'Source/보존.cpp'),'utf8'),'// original source');assert.equal(await fs.readFile(a.file,'utf8'),aBytes);
   await assert.rejects(createProject('../덮어쓰기',directory),/이름/);await assert.rejects(createProject('Relative','relative-path'),/절대/);await assert.rejects(readProjectManifest('relative.hbproject'),/절대/);
   assert.throws(()=>validateManifest({...a.manifest,version:2}),/프로젝트/);assert.throws(()=>validateManifest({...a.manifest,engineVersion:'99.0.0'}),/프로젝트/);assert.throws(()=>validateManifest({...a.manifest,startupScene:'../outside.hbscene.json'}),/경로/);
   const invalid=path.join(a.root,'Bad.hbproject');await fs.writeFile(invalid,JSON.stringify({...a.manifest,id:'invalid'}));await assert.rejects(readProjectManifest(invalid),/프로젝트/);
@@ -68,7 +69,7 @@ try{
   const name='LauncherNative_'+randomUUID().replaceAll('-',''),header='#include <HBEngine/Game.hpp>\nHB_CLASS(Blueprintable)\nclass '+name+' : public hb::Actor { public: HB_FUNCTION(BlueprintCallable) void Start(); };',source='void '+name+'::Start() {}';
   response=await post(server,'/api/native/build',{header,source});assert.equal(response.status,200);const built=await response.json();assert.equal((await post(server,'/api/launcher/open',{file:b.file})).status,200);assert.equal((await post(server,'/api/native/call',{token:built.token,request:{command:'reset',objects:[]}})).status,400);
   assert.equal((await post(server,'/api/launcher/open',{file:a.file})).status,200);const unique=name+'_Pending',pending=post(server,'/api/native/build',{header:header.replaceAll(name,unique),source:source.replaceAll(name,unique)});await new Promise(resolve=>setTimeout(resolve,100));assert.equal((await post(server,'/api/launcher/open',{file:b.file})).status,200);assert.equal((await pending).status,409);assert.equal((await selected(server)).id,b.manifest.id);
-  const reopened=await startServer(b.file);assert.equal(reopened.ready.projectFile,b.file);assert.equal((await selected(reopened)).id,b.manifest.id);assert.equal((await fetch(reopened.url+'/')).status,200);assert.equal(await fs.readFile(a.file,'utf8'),aBytes);assert.equal(await fs.readFile(path.join(a.root,'Source/보존.cpp'),'utf8'),'original source');
+  const reopened=await startServer(b.file);assert.equal(reopened.ready.projectFile,b.file);assert.equal((await selected(reopened)).id,b.manifest.id);assert.equal((await fetch(reopened.url+'/')).status,200);assert.equal(await fs.readFile(a.file,'utf8'),aBytes);assert.equal(await fs.readFile(path.join(a.root,'Source/보존.cpp'),'utf8'),'// original source');
   const quietBefore=await fs.readFile(path.join(repository,'Projects/QuietGarden/Assets/Scenes/Garden.hbscene.json'),'utf8'),dev=await startServer(undefined,false),devSession=await selected(dev);assert.equal(devSession.legacyStorage,true);assert.equal(devSession.projectFile,quietFile);assert.equal((await fetch(dev.url+'/api/project')).status,200);assert.equal(await fs.readFile(path.join(repository,'Projects/QuietGarden/Assets/Scenes/Garden.hbscene.json'),'utf8'),quietBefore);
   console.log('프로젝트 JSON·UUID·공백/한글·원본 보호·허브/API·두 프로젝트 전환·동적 포트·파일 복구/격리/검증·세션별 C++·재실행 검사 통과');
 }finally{

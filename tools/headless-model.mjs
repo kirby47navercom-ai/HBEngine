@@ -28,7 +28,7 @@ function checkHierarchy(nodes){
   const parents=new Uint8Array(nodes.length),roots=[];
   for(const node of nodes){if(!node||typeof node!=='object'||Array.isArray(node))throw Error('glTF 자식 노드 오류');const children=node.children||[];if(!Array.isArray(children)||children.length>10000)throw Error('glTF 자식 노드 오류');for(const child of children){if(!integer(child)||child>=nodes.length)throw Error('glTF 노드 참조 오류');if(parents[child])throw Error('glTF 노드 부모 중복');parents[child]=1;}}
   for(let i=0;i<nodes.length;i++)if(!parents[i])roots.push(i);
-  const depth=new Uint16Array(nodes.length);for(const root of roots)depth[root]=1;let visited=0;for(let i=0;i<roots.length;i++){visited++;for(const child of nodes[roots[i]].children||[]){depth[child]=depth[roots[i]]+1;if(depth[child]>128)throw Error('모델 노드 깊이는 128까지 지원해요.');roots.push(child);}}if(visited!==nodes.length)throw Error('glTF 노드 순환');
+  const depth=new Uint16Array(nodes.length);for(const root of roots)depth[root]=1;let visited=0;for(let i=0;i<roots.length;i++){visited++;for(const child of nodes[roots[i]].children||[]){depth[child]=depth[roots[i]]+1;roots.push(child);}}if(visited!==nodes.length)throw Error('glTF 노드 순환');
 }
 
 // Reuse the game's loader for hierarchy, skins, names and interpolation. Meshes are
