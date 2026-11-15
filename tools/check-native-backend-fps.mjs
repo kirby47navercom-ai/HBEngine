@@ -11,6 +11,7 @@ import {createProject} from './project-manifest.mjs';
 import {buildGame} from './build-game.mjs';
 import {defaultBuildProfile} from '../prototype/build-profile.js';
 import {createPlacedObject} from '../prototype/placement-catalog.js';
+import {componentDefaultValues} from '../prototype/scene-components.js';
 import {retainTestEvidence} from './test-artifacts.mjs';
 import {activeInstalledVersions} from './install-editor.mjs';
 
@@ -27,6 +28,9 @@ const shapes=['cube','sphere','torus','cylinder','cone','capsule'];
 if(twoD){const spriteCount=Number(process.env.HB_FPS_SPRITES||2000),rows=Math.ceil(spriteCount/50);for(let i=0;i<spriteCount;i++){const sprite=createPlacedObject('sprite',{id:'sprite'+i,position:[(i%50-24.5)*.4,(Math.floor(i/50)-(rows-1)/2)*.4,0]});sprite.scale=[.35,.35,1];scene.objects.push(sprite);}for(let i=0;i<4;i++)scene.objects.push(createPlacedObject('pointLight2d',{id:'light'+i,position:[Math.cos(i*1.6)*6,Math.sin(i*1.6)*4,0]}));scene.objects.push(createPlacedObject('globalLight2d',{id:'global',position:[0,0,0]}));for(let i=0;i<20;i++)scene.objects.push(createPlacedObject('shadowCaster2d',{id:'caster'+i,position:[(i%5-2)*3,(Math.floor(i/5)-1.5)*3,0]}));for(let i=0;i<2;i++)scene.objects.push(createPlacedObject('particles2d',{id:'fx'+i,position:[i?4:-4,0,0]}));}
 // HB_FPS_MESHES (default 400): square grid, 1.6 apart, centred (400 keeps the original 20x20 layout).
 else{const meshCount=Number(process.env.HB_FPS_MESHES||400),columns=Math.ceil(Math.sqrt(meshCount)),half=(columns-1)/2;for(let i=0;i<meshCount;i++)scene.objects.push(createPlacedObject(shapes[i%shapes.length],{id:'mesh'+i,position:[(i%columns-half)*1.6,.6+(i%3)*.4,(Math.floor(i/columns)-half)*1.6]}));
+// HB_FPS_MOVERS (default 0): that many meshes, spread evenly, get a dynamic Rigidbody without gravity and a start
+// velocity, so they keep moving (and collide) for the whole run.
+const movers=Math.min(meshCount,Number(process.env.HB_FPS_MOVERS||0));if(movers){const step=meshCount/movers;for(let k=0;k<movers;k++){const object=scene.objects[scene.objects.length-meshCount+Math.floor(k*step)],angle=k*2.399;object.components.push({id:'mover',name:'Rigidbody',type:'Rigidbody',properties:{...componentDefaultValues('Rigidbody'),useGravity:false,velocity:[Math.cos(angle)*.6,0,Math.sin(angle)*.6]}});}}
 for(let i=0;i<8;i++)scene.objects.push(createPlacedObject('pointLight',{id:'point'+i,position:[Math.cos(i)*10,3,Math.sin(i)*10]}));
 for(let i=0;i<2;i++)scene.objects.push(createPlacedObject('spotLight',{id:'spot'+i,position:[i?8:-8,6,0]}));
 // HB_FPS_NO_PROBE=1 leaves the reflection probe out (host static sets are used only without probes).

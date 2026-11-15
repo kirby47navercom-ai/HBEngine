@@ -1,4 +1,4 @@
-import {objectMapOf,objectsWhere,touchTransform,revisionTrust,revisionConfig,revisionSnapshot,sameRevision,reportRevisionMismatch,subscribeObjectChanges,unsubscribeObjectChanges,listVersion,watchObjectList} from './object-revision.js';
+import {objectRevision,objectMapOf,objectsWhere,touchTransform,revisionTrust,revisionConfig,revisionSnapshot,sameRevision,reportRevisionMismatch,subscribeObjectChanges,unsubscribeObjectChanges,listVersion,watchObjectList} from './object-revision.js';
 import {JointRuntimeRecords} from './joint-runtime-records.js';
 import {validActorScale} from './transform-scale.js';
 import {DeformableWorld} from './deformable-physics.js';
@@ -26,6 +26,8 @@ const samePoseInput=(input,o)=>{if(!input)return false;for(let i=0;i<input.lengt
 const copy=structuredClone,rad=Math.PI/180,vector=v=>Array.isArray(v)&&v.length===3&&v.every(Number.isFinite);
 const xyz=v=>({x:v[0],y:v[1],z:v[2]}),array=v=>[v.x,v.y,v.z??0],emptyHit=()=>({hit:false,position:[0,0,0],normal:[0,0,0],actor:null});
 const qValue=q=>({x:q.x,y:q.y,z:q.z,w:q.w});
+const poseValues=p=>[p.position.x,p.position.y,p.position.z,p.rotation.x,p.rotation.y,p.rotation.z,p.rotation.w];
+const sameValues=(a,b)=>{if(!a||!b||a.length!==b.length)return false;for(let i=0;i<a.length;i++)if(a[i]!==b[i])return false;return true;};
 const pose=(object,objects)=>{const position=new Vector3(),rotation=new Quaternion(),scale=new Vector3();sceneWorldMatrix(object,objects).decompose(position,rotation,scale);return {position,rotation,scale};};
 // world.step() re-maps every body, collider and joint through per-handle WASM callbacks after each step (O(n) with
 // ~4n boundary crossings). The JS sets already stay in sync for everything created/removed through the API; only soft
@@ -81,7 +83,7 @@ export function createRigidPhysics(objects,options={}){
   const mirror=r=>{
     if(options.queryOnly||!r.p)return;
     const velocity=array(r.body.linvel()),angular=r.dim===2?[0,0,r.body.angvel()]:array(r.body.angvel());
-    if(r.p){r.object.velocity=velocity;r.object.angularVelocity=angular;r.lastVelocity=JSON.stringify(velocity);r.lastAngular=JSON.stringify(angular);r.object.gameplayDebug={...r.object.gameplayDebug,physics:{dimension:r.dim,bodyType:typeOf(r.p),mass:r.body.mass(),sleeping:r.body.isSleeping(),velocity,angularVelocity:angular,ccd:r.body.isCcdEnabled(),colliders:r.colliders.size}};}
+    if(r.p){r.object.velocity=velocity;r.object.angularVelocity=angular;r.lastVelocity=velocity.slice();r.lastAngular=angular.slice();r.object.gameplayDebug={...r.object.gameplayDebug,physics:{dimension:r.dim,bodyType:typeOf(r.p),mass:r.body.mass(),sleeping:r.body.isSleeping(),velocity,angularVelocity:angular,ccd:r.body.isCcdEnabled(),colliders:r.colliders.size}};}
   };
   const coefficients=(p,R)=>{const merged={...p,...materials.get(p.physicalMaterial)};return {...merged,frictionCombine:R.CoefficientCombineRule[{average:'Average',min:'Min',max:'Max',multiply:'Multiply'}[merged.frictionCombine]||'Average']};};
   function shape(component,scale,R,dim){
@@ -111,9 +113,12 @@ export function createRigidPhysics(objects,options={}){
         const reuse=!check||fixed&&previous.object===o&&!o.parentId&&!o.parent&&samePoseInput(previous.poseInput,o)&&fixed.collisionEnabled===o.collisionEnabled&&fixed.materialCount===materials.size&&matchStatic(fixed.componentMatch??=runtimeDataMatcher(fixed.components,staticMatchers),fixed.components,sourceOf())&&(fixed.tiles===null?!o.tileColliders:matchStatic(fixed.tileMatch??=(fixed.tiles?runtimeDataMatcher(fixed.tiles,staticMatchers):null),fixed.tiles,o.tileColliders||null));
         if(announced&&check&&!reuse){reportRevisionMismatch('physicsStatic',o,{pose:!samePoseInput(previous.poseInput,o),components:!matchStatic(fixed.componentMatch??=runtimeDataMatcher(fixed.components,staticMatchers),fixed.components,sourceOf()),tiles:!(fixed.tiles===null?!o.tileColliders:matchStatic(fixed.tileMatch??=(fixed.tiles?runtimeDataMatcher(fixed.tiles,staticMatchers):null),fixed.tiles,o.tileColliders||null))});if(!revisionConfig.verify)revisionTrust.physics=false;}
         if(reuse){active.add(o.id);if(options.profile)timing.staticReused++;continue;}
+        // Unchanged body (game runtime): same announced components, collision flag, material count, root pose inputs and
+        // velocities as at its last full pass (or as physics itself wrote them) needs nothing applied. Sampled like above.
+        if(previous?.synced!==undefined&&previous.object===o&&previous.p&&!o.parentId&&!o.parent&&revisionTrust.physics&&!revisionConfig.verify&&!forcedChecks.has(o)&&previous.synced===objectRevision(o)?.components&&previous.syncedCollision===o.collisionEnabled&&previous.syncedMaterials===materials.size&&samePoseInput(previous.poseInput,o)&&sameValues(o.velocity,previous.lastVelocity)&&sameValues(o.angularVelocity,previous.lastAngular)&&((++revisionSamples)&revisionConfig.sampleMask)!==0){active.add(o.id);continue;}
         const p=properties(o,dim),components=[...authoredComponents,...(o.tileColliders||[])].filter(c=>colliderTypes.has(c.type)&&c.type.endsWith('2D')===(dim===2)&&c.properties?.enabled!==false&&c.properties?.collisionMode!=='none'&&o.collisionEnabled!==false);
         if(!p&&!components.length)continue;active.add(o.id);
-        let r=space.bodies.get(o.id);const root=!o.parentId&&!o.parent,cached=root&&samePoseInput(r?.poseInput,o),transform=cached?r.pose:pose(o,objects),transformKey=cached?r.poseKey:JSON.stringify([transform.position.toArray(),transform.rotation.toArray()]);
+        let r=space.bodies.get(o.id);const root=!o.parentId&&!o.parent,cached=root&&samePoseInput(r?.poseInput,o),transform=cached?r.pose:pose(o,objects),transformKey=cached?r.poseKey:poseValues(transform);
         if(!r){const desc=R.RigidBodyDesc.fixed();r={object:o,p,body:world.createRigidBody(desc),colliders:new Map(),dim,nonce:++nonce};space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;space.bodies.set(o.id,r);setPose(r,transform);r.lastPose=transformKey;}
         // Root scalar comparison also catches in-place C++/script edits. Parented
         // actors still resolve the hierarchy on every sync, including parent motion.
@@ -121,8 +126,15 @@ export function createRigidPhysics(objects,options={}){
         r.object=o;r.p=p;if(p)(space.pRecords??=new Set()).add(r);else space.pRecords?.delete(r);if(root)space.childRecords?.delete(r);else(space.childRecords??=new Set()).add(r);
         const kind=typeOf(p),bodyType={static:R.RigidBodyType.Fixed,dynamic:R.RigidBodyType.Dynamic,kinematic:R.RigidBodyType.KinematicPositionBased}[kind];
         if(r.body.bodyType()!==bodyType){r.body.setBodyType(bodyType,true);space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;}
-        if(transformKey!==r.lastPose){setPose(r,transform,kind==='kinematic'&&!options.queryOnly);r.lastPose=transformKey;space.structure=(space.structure||0)+1;if(r.body.isFixed())space.fixedVersion=(space.fixedVersion||0)+1;}
-        const configuration=JSON.stringify(p);
+        if(!sameValues(transformKey,r.lastPose)){setPose(r,transform,kind==='kinematic'&&!options.queryOnly);r.lastPose=transformKey;space.structure=(space.structure||0)+1;if(r.body.isFixed())space.fixedVersion=(space.fixedVersion||0)+1;}
+        // Announced-unchanged components keep the body configuration and colliders without building their JSON (game
+        // runtime only: options.staticCache, whose writers announce; trusted, not verify mode). One in (sampleMask+1)
+        // syncs checks fully; a difference without an announcement is reported and switches physics trust off.
+        const componentRev=options.staticCache?objectRevision(o)?.components:undefined,trusted=componentRev!==undefined&&revisionTrust.physics&&!revisionConfig.verify,sampled=trusted&&((++revisionSamples)&revisionConfig.sampleMask)===0,quick=trusted&&!sampled;
+        const unchangedConfig=r.configRev===componentRev&&r.configMovement===p?.movement&&r.configuration!==undefined;
+        const configuration=quick&&unchangedConfig?r.configuration:JSON.stringify(p);
+        if(sampled&&unchangedConfig&&configuration!==r.configuration){reportRevisionMismatch('physicsBody',o,{configuration:true});revisionTrust.physics=false;}
+        r.configRev=componentRev;r.configMovement=p?.movement;
         if(configuration!==r.configuration){
           r.body.setLinearDamping(p?.drag??0);r.body.setAngularDamping(p?.angularDrag??.05);
           r.body.setGravityScale(p?.movement?.movementMode==='flying'?0:p?.useGravity?(p.gravityScale??1)*(p.movement&&gravity[1]?p.movement.gravity/Math.abs(gravity[1]):1):0,true);r.body.enableCcd(p?.collisionDetection==='continuous');
@@ -132,17 +144,23 @@ export function createRigidPhysics(objects,options={}){
         }
         const activeColliders=new Set();
         for(const component of components){
-          const cp={...componentDefaultValues(component.type),...component.properties},signature=JSON.stringify([cp,transform.scale.toArray(),materials.get(cp.physicalMaterial)]);activeColliders.add(component.id);
+          // Root bodies use their authored scale: the decomposed scale of a rotating body drifts in the last digits and
+          // would rebuild its collider (and drop its contacts) on every sync.
+          const scaleKey=root?o.scale:transform.scale.toArray();activeColliders.add(component.id);
+          const known=r.colliders.get(component.id),unchangedCollider=!!known&&known.component===component&&known.rev===componentRev&&known.materialCount===materials.size&&sameValues(known.scaleKey,scaleKey);
+          if(quick&&unchangedCollider){known.object=o;continue;}
+          const cp={...componentDefaultValues(component.type),...component.properties},signature=JSON.stringify([cp,scaleKey,materials.get(cp.physicalMaterial)]);
+          if(sampled&&unchangedCollider&&signature!==known.signature){reportRevisionMismatch('physicsCollider',o,{component:component.id});revisionTrust.physics=false;}
           if(p&&!p.isKinematic&&(p.bodyType||'dynamic')==='dynamic'&&(component.type==='EdgeCollider2D'||component.type==='MeshCollider'&&cp.mode==='mesh'))throw Error(o.name+': 동적 강체에는 볼록 메시 또는 다각형 충돌을 사용하세요.');
           let c=r.colliders.get(component.id);
-          if(c?.signature===signature){c.object=o;c.component=component;continue;}
+          if(c?.signature===signature){c.object=o;c.component=component;c.rev=componentRev;c.materialCount=materials.size;c.scaleKey=[...scaleKey];continue;}
           if(c){space.colliders.delete(c.collider.handle);world.removeCollider(c.collider,true);space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;}
           const material=coefficients(cp,R),desc=shape(component,transform.scale,R,dim),center=cp.center.map((v,i)=>v*transform.scale.getComponent(i));
           desc.setTranslation(...center.slice(0,dim)).setSensor(cp.trigger||cp.collisionMode==='query').setFriction(material.friction).setRestitution(material.restitution);
           desc.setFrictionCombineRule(material.frictionCombine).setRestitutionCombineRule(R.CoefficientCombineRule[{average:'Average',min:'Min',max:'Max',multiply:'Multiply'}[material.restitutionCombine]||'Average']);
           desc.setDensity(p?.autoMass?(material.density??1):1);
           desc.setActiveHooks(R.ActiveHooks.FILTER_CONTACT_PAIRS|R.ActiveHooks.FILTER_INTERSECTION_PAIRS).setActiveCollisionTypes(R.ActiveCollisionTypes.ALL);
-          space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;c={object:o,component,p:cp,signature,collider:world.createCollider(desc,r.body),is2D:dim===2,radius:geometryColliderTypes.has(component.type)?colliderGeometryRadius(component.type,cp,transform.scale.toArray().map(Math.abs)):null};r.colliders.set(component.id,c);space.colliders.set(c.collider.handle,c);r.massDirty=true;
+          space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;c={object:o,component,p:cp,signature,collider:world.createCollider(desc,r.body),is2D:dim===2,radius:geometryColliderTypes.has(component.type)?colliderGeometryRadius(component.type,cp,transform.scale.toArray().map(Math.abs)):null,rev:componentRev,materialCount:materials.size,scaleKey:[...scaleKey]};r.colliders.set(component.id,c);space.colliders.set(c.collider.handle,c);r.massDirty=true;
         }
         for(const [id,c] of r.colliders)if(!activeColliders.has(id)){space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;space.colliders.delete(c.collider.handle);world.removeCollider(c.collider,true);r.colliders.delete(id);r.massDirty=true;}
         if(r.massDirty&&p){
@@ -154,9 +172,10 @@ export function createRigidPhysics(objects,options={}){
         if(p&&!options.queryOnly){
           o.velocity??=copy(p.velocity);o.angularVelocity??=copy(p.angularVelocity??[0,0,0]);
           const velocity=constrained(r,o.velocity),angular=constrained(r,o.angularVelocity,true);
-          if(JSON.stringify(velocity)!==r.lastVelocity){r.body.setLinvel(xyz(velocity),true);r.lastVelocity=JSON.stringify(velocity);}
-          if(JSON.stringify(angular)!==r.lastAngular){r.body.setAngvel(dim===2?angular[2]:xyz(angular),true);r.lastAngular=JSON.stringify(angular);}
+          if(!sameValues(velocity,r.lastVelocity)){r.body.setLinvel(xyz(velocity),true);r.lastVelocity=velocity.slice();}
+          if(!sameValues(angular,r.lastAngular)){r.body.setAngvel(dim===2?angular[2]:xyz(angular),true);r.lastAngular=angular.slice();}
         }
+        if(componentRev!==undefined&&p){r.synced=componentRev;r.syncedCollision=o.collisionEnabled;r.syncedMaterials=materials.size;}else r.synced=undefined;
         if(options.staticCache&&!p&&root&&r.body.isFixed()&&!sourceOf().some(c=>physicsBodyTypes.has(c.type))){const components=JSON.parse(JSON.stringify(sourceOf())),tiles=o.tileColliders?JSON.parse(JSON.stringify(o.tileColliders)):null;r.staticState={components,tiles,revision:revisionSnapshot(o),componentMatch:undefined,tileMatch:undefined,collisionEnabled:o.collisionEnabled,materialCount:materials.size};if(options.profile)timing.staticRefreshed++;}else delete r.staticState;
       }
       const removeBody=(id,r)=>{space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;for(const c of r.colliders.values())space.colliders.delete(c.collider.handle);space.vehicles?.remove(id);space.deformables?.detachBody(r.body.handle);world.removeRigidBody(r.body);space.bodies.delete(id);space.pRecords?.delete(r);space.childRecords?.delete(r);};
@@ -237,7 +256,7 @@ export function createRigidPhysics(objects,options={}){
     const order=space.colliderOrder,ordered=[...involved].filter(h=>order.has(h)).sort((x,y)=>order.get(x)-order.get(y));
     for(const h of ordered){
       const c=space.colliders.get(h);
-      const add=(other,trigger)=>{const d=space.colliders.get(other.handle);if(!d||!pairAllowed(space,c.collider.handle,d.collider.handle))return;const x=JSON.stringify([c.object.id,c.component.id]),y=JSON.stringify([d.object.id,d.component.id]),key=dim+':'+(x<y?x+y:y+x);if(result.has(key))return;
+      const add=(other,trigger)=>{const d=space.colliders.get(other.handle);if(!d||!pairAllowed(space,c.collider.handle,d.collider.handle))return;const x=c.object.id+'\u0000'+c.component.id,y=d.object.id+'\u0000'+d.component.id,key=dim+':'+(x<y?x+'\u0001'+y:y+'\u0001'+x);if(result.has(key))return;
         const otherPosition=array(d.collider.translation());let normal=[0,0,0],position=array(c.collider.translation()).map((v,i)=>(v+otherPosition[i])/2),penetration=0,contact=false;
         if(trigger)contact=space.world.intersectionPair(c.collider,d.collider);
         else space.world.contactPair(c.collider,d.collider,(manifold,flipped)=>{if(!manifold.numContacts())return;contact=true;normal=array(manifold.normal()).map(v=>v*(flipped?1:-1));penetration=Math.max(penetration,...Array.from({length:manifold.numContacts()},(_,i)=>-manifold.contactDist(i)));if(manifold.numSolverContacts())position=array(manifold.solverContactPoint(0));});
@@ -255,7 +274,10 @@ export function createRigidPhysics(objects,options={}){
     for(const r of records){const parent=(r.object.parentId||r.object.parent)?objectMapOf(objects).get(r.object.parentId||r.object.parent):null,parentKey=parent?sceneWorldMatrix(parent,objects).elements.join():null,sleeping=r.body.isFixed()||r.body.isSleeping();if(sleeping&&parentKey===r.lastParentKey){if(!r.lastSleeping)mirror(r);r.lastSleeping=true;continue;}r.lastSleeping=sleeping;r.lastParentKey=parentKey;const position=array(r.body.translation());if(r.dim===2)position[2]=sceneWorldPosition(r.object,objects)[2];setSceneWorldPosition(r.object,position,objects);touchTransform(r.object);
       const rotation=r.dim===2?new Quaternion().setFromAxisAngle(new Vector3(0,0,1),r.body.rotation()):new Quaternion().copy(r.body.rotation());
       if(parent)rotation.premultiply(pose(parent,objects).rotation.invert());r.object.rotation=new Euler().setFromQuaternion(rotation).toArray().slice(0,3).map(v=>v/rad);
-      const p=pose(r.object,objects);r.lastPose=JSON.stringify([p.position.toArray(),p.rotation.toArray()]);mirror(r);options.update?.(r.object);
+      const p=pose(r.object,objects);r.lastPose=poseValues(p);
+      // Same pose and key sync() computes from these inputs: a root body's next sync takes its cached path.
+      if(!parent&&!r.object.parentId&&!r.object.parent){const o=r.object;r.pose=p;r.poseKey=r.lastPose;r.poseInput=[...o.position,...o.rotation,...o.scale];}
+      mirror(r);(options.moved||options.update)?.(r.object);
     }
   }
   function rootMotionStep(step){
