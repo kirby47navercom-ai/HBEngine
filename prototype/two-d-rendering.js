@@ -10,7 +10,7 @@ const nearestGroup=node=>{for(let p=node;p;p=p.parent)if(p.userData.sortingGroup
 // Sorting entries of clean static groups (static-groups.js), rebuilt when the group's revisions, parent or the sorting
 // layer list change. A cached frame reads only node visibility, materials and (for camera sorting) the cached position.
 const HOST_HELD={},BLOCK_HELD={},staticEntries=new WeakMap(),staticFlags=new WeakMap(),worldAt=new THREE.Vector3();
-export const twoDStaticStats={reusedGroups:0,blockFrames:0,blockBuilds:0};let blockTokens=0;
+export const twoDStaticStats={reusedGroups:0,blockFrames:0,blockBuilds:0};let blockTokens=0;const BLOCK_AGE=30;
 const compare=(a,b)=>a.layer-b.layer||a.order-b.order||a.depth-b.depth||(a.owner===b.owner?a.tileOrder-b.tileOrder:0)||(a.id<b.id?-1:a.id>b.id?1:0);
 export function spriteEffectsUniforms(material){
   if(material.userData.hbSpriteEffectsOwner===material.uuid)return material.userData.hbSpriteEffects;
@@ -54,7 +54,10 @@ export class TwoDRendering{
     // full re-sort: at 100k sprites it was a ~200ms frame.
     camera.updateWorldMatrix(true,false);camera.getWorldDirection(direction);
     let block=this.block;
-    if(block){for(const o of this.changes)if(block.objects.has(o)){block=null;break;}}this.changes.clear();
+    // Objects announced within the last BLOCK_AGE frames do not join a new block (a moving sprite seen clean between two
+    // physics steps would otherwise drop the block, and with it a full re-sort, every time it moves).
+    const frame=this.blockFrame=(this.blockFrame||0)+1,recent=this.recentChanges??=new WeakMap();
+    for(const o of this.changes){recent.set(o,frame);if(block?.objects.has(o))block=null;}this.changes.clear();
     if(block&&(!camera.isOrthographicCamera||!direction.equals(block.direction)||layers!==block.layers||countDisplay||!staticConfig.enabled||revisionConfig.verify||block.epoch!==listCacheConfig.epoch||!listCacheConfig.trusted))block=null;
     let blockSeen=0;
     for(let i=0;i<groups.length;i++){const g=groups[i];if(block&&g.hbBlock2D===block.token){blockSeen++;records[i]=BLOCK_HELD;any2D=true;continue;}if(!countDisplay&&g.hbHost!==undefined&&!g.hbHost.twoD){records[i]=HOST_HELD;continue;}const r=staticGroupRecord(g);records[i]=r;let fl=r&&staticFlags.get(g);if(fl&&(fl.transform!==r.updatedTransform||fl.components!==r.updatedComponents||fl.parent!==g.parent))fl=null;
@@ -104,7 +107,7 @@ export class TwoDRendering{
      let order=0;const assign=list=>{list.sort(compare);for(const entry of list)if(entry.children)assign(entry.children);else entry.node.renderOrder=++order;};assign(start);this.lastRoots=start;
      // Build the block from the root entries of cached (or just recorded) static groups without masks or particles.
      this.block=null;if(camera.isOrthographicCamera&&!scopes.size&&!countDisplay&&staticConfig.enabled&&!revisionConfig.verify){
-      const held=new Map();for(let index=0;index<groups.length;index++){const group=groups[index],record=records[index];if(!record||record===HOST_HELD||record===BLOCK_HELD)continue;const cached=staticEntries.get(group);if(!cached?.nodes||cached.transform!==record.updatedTransform||cached.components!==record.updatedComponents)continue;
+      const held=new Map();for(let index=0;index<groups.length;index++){const group=groups[index],record=records[index];if(!record||record===HOST_HELD||record===BLOCK_HELD)continue;const cached=staticEntries.get(group);if(!cached?.nodes||cached.transform!==record.updatedTransform||cached.components!==record.updatedComponents)continue;const changedAt=recent.get(record.object);if(changedAt!==undefined&&frame-changedAt<BLOCK_AGE)continue;
        let ok=true;for(const info of cached.nodes){const e=info.entry;if(!e)continue;const mode=e.properties.maskInteraction;if(e.scope||e.node.userData.particleRenderer||mode==='inside'||mode==='outside'){ok=false;break;}}if(ok)held.set(group,record);}
       if(held.size){const token=++blockTokens,entriesOf=new Set(),objects=new WeakSet();for(const [group,record] of held){group.hbBlock2D=token;objects.add(record.object);for(const info of staticEntries.get(group).nodes)if(info.entry)entriesOf.add(info.entry);}
        const list=start.filter(e=>entriesOf.has(e));for(const e of list)e.cameraDepth=!!e.position||(e.properties.sortMode||layers?.find(l=>l.id===e.properties.sortingLayer)?.sortMode)!=='y';

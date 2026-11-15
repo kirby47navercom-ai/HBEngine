@@ -245,10 +245,11 @@ export function createRigidPhysics(objects,options={}){
       contacts.push({a:c.object.id,b:d.object.id,componentA:c.component.id,componentB:d.component.id,colliderA:c,colliderB:d,trigger:c.collider.isSensor()||d.collider.isSensor(),normal:array(hit.normal1).map(v=>-v),position:array(hit.point1),penetration:-hit.distance});
     }contacts.grounds=[];for(const c of contacts)if(!c.trigger){if(c.normal[1]>.5)contacts.grounds.push(c.colliderA);if(c.normal[1]<-.5)contacts.grounds.push(c.colliderB);}space.fixedContacts=contacts;return contacts;
   }
+  const groundedList={version:-1,length:-1,objects:[]};
   function collectContacts(){
-    // checked: pairs already queried this collection (a pair reached from both colliders is queried once; without a
-    // contact the second query gives the same answer).
-    const result=new Map(),checked=new Set();
+    // Each collider pair is handled once per collection (reached from both colliders; without a contact the second query
+    // gives the same answer), tracked by collider handles per dimension instead of string keys.
+    const result=[];
     for(const [dim,space] of spaces){
     // Rapier reports no fixed/fixed pairs (even with ActiveCollisionTypes.ALL), so only colliders on non-fixed bodies and
     // their partners can have pairs. The loop below keeps the original collider order and skips only pair-less colliders.
@@ -257,23 +258,25 @@ export function createRigidPhysics(objects,options={}){
     // Partners of non-fixed colliders are kept from this pass (same queries, same state, same order) and reused below.
     const involved=new Set(),partners=new Map();for(const c of space.nonFixed){const contactsOf=[],intersectionsOf=[];involved.add(c.collider.handle);space.world.contactPairsWith(c.collider,other=>{contactsOf.push(other);involved.add(other.handle);});space.world.intersectionPairsWith(c.collider,other=>{intersectionsOf.push(other);involved.add(other.handle);});partners.set(c.collider.handle,[contactsOf,intersectionsOf]);}
     // Only involved colliders, in the original collider order.
-    const order=space.colliderOrder,ordered=[...involved].filter(h=>order.has(h)).sort((x,y)=>order.get(x)-order.get(y));
+    const order=space.colliderOrder,ordered=[...involved].filter(h=>order.has(h)).sort((x,y)=>order.get(x)-order.get(y)),seen=new Map();
     for(const h of ordered){
       const c=space.colliders.get(h);
-      const add=(other,trigger)=>{const d=space.colliders.get(other.handle);if(!d||!pairAllowed(space,c.collider.handle,d.collider.handle))return;const x=c.object.id+'\u0000'+c.component.id,y=d.object.id+'\u0000'+d.component.id,key=dim+':'+(x<y?x+'\u0001'+y:y+'\u0001'+x);if(result.has(key))return;const queried=trigger?key+'\u0002':key;if(checked.has(queried))return;checked.add(queried);
+      const add=(other,trigger)=>{const o=other.handle,low=h<o?h:o,high=h<o?o:h;let pairs=seen.get(low);if(!pairs)seen.set(low,pairs=new Set());else if(pairs.has(high))return;pairs.add(high);const d=space.colliders.get(o);if(!d||!pairAllowed(space,h,o))return;
         // Positions are read only for an actual contact (midpoint unless a solver contact point was found).
         let normal=[0,0,0],position=null,penetration=0,contact=false;
         if(trigger)contact=space.world.intersectionPair(c.collider,d.collider);
         else space.world.contactPair(c.collider,d.collider,(manifold,flipped)=>{if(!manifold.numContacts())return;contact=true;normal=array(manifold.normal()).map(v=>v*(flipped?1:-1));penetration=Math.max(penetration,...Array.from({length:manifold.numContacts()},(_,i)=>-manifold.contactDist(i)));if(manifold.numSolverContacts())position=array(manifold.solverContactPoint(0));});
         if(contact&&!position){const otherPosition=array(d.collider.translation());position=array(c.collider.translation()).map((v,i)=>(v+otherPosition[i])/2);}
-        if(contact)result.set(key,{a:c.object.id,b:d.object.id,componentA:c.component.id,componentB:d.component.id,colliderA:c,colliderB:d,trigger,normal,position,penetration:Math.max(0,penetration)});
+        if(contact)result.push({a:c.object.id,b:d.object.id,componentA:c.component.id,componentB:d.component.id,colliderA:c,colliderB:d,trigger,normal,position,penetration:Math.max(0,penetration)});
       };
       const known=partners.get(h);if(known){for(const other of known[0])add(other,false);for(const other of known[1])add(other,true);}
       else{space.world.contactPairsWith(c.collider,other=>add(other,false));space.world.intersectionPairsWith(c.collider,other=>add(other,true));}
     }}
     // Cached static contacts carry their grounding colliders (computed once per rebuild); concat avoids re-spreading them.
-    const fixed=[...spaces].map(([dim,space])=>fixedContacts(space,dim));let list=[...result.values()];for(const f of fixed)list=list.concat(f);lastContacts=list;
-    for(const o of objects)o.grounded=false;for(const c of result.values())if(!c.trigger){const a=c.colliderA.object,b=c.colliderB.object;if(c.normal[1]>.5)a.grounded=true;if(c.normal[1]<-.5)b.grounded=true;}for(const f of fixed)for(const r of f.grounds)r.object.grounded=true;
+    const fixed=[...spaces].map(([dim,space])=>fixedContacts(space,dim));let list=result;for(const f of fixed)list=list.concat(f);lastContacts=list;
+    // grounded: every object is reset when the object list changed, otherwise only those grounded last time.
+    watchObjectList(objects);if(groundedList.version!==listVersion(objects)||groundedList.length!==objects.length){for(const o of objects)o.grounded=false;groundedList.version=listVersion(objects);groundedList.length=objects.length;}else for(const o of groundedList.objects)o.grounded=false;
+    for(const c of result)if(!c.trigger){const a=c.colliderA.object,b=c.colliderB.object;if(c.normal[1]>.5)a.grounded=true;if(c.normal[1]<-.5)b.grounded=true;}for(const f of fixed)for(const r of f.grounds)r.object.grounded=true;groundedList.objects.length=0;for(const c of result)if(!c.trigger){groundedList.objects.push(c.colliderA.object,c.colliderB.object);}for(const f of fixed)for(const r of f.grounds)groundedList.objects.push(r.object);
   }
   let updateOrder={token:null,records:null};
   function updateObjects(){
