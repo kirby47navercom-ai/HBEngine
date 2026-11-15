@@ -11,6 +11,7 @@ import * as THREE from 'three';
 import {createNativeSceneRenderer} from '../prototype/native-scene-renderer.js';
 import {watchStaticGroup} from '../prototype/static-groups.js';
 import {touchTransform,touchComponents,revisionConfig} from '../prototype/object-revision.js';
+import {applyDrawTransforms} from './native-mock-draw-transforms.mjs';
 
 revisionConfig.verify=false;
 let appends=0;
@@ -31,8 +32,8 @@ const inside=(ps,s)=>ps.every(p=>p[0]*s[0]+p[1]*s[1]+p[2]*s[2]+p[3]>=-s[3]);
 function host(){
  const state={draws:new Map(),sets:new Map(),instances:new Map(),meshes:new Map(),order:[],casters:null,shadows:null,vp:null,probes:null};
  const append=(a,b)=>{const out=new Float32Array(a.length+b.length);out.set(a);out.set(b,a.length);return out;};
- const resource=r=>{if(r.kind==='cullSet')state.sets.set(r.id,{rows:decode(r.rows),spheres:decode(r.spheres)});if(r.kind==='cullSetAppend'){const s=state.sets.get(r.id);assert(s,'append to known set');s.rows=append(s.rows,decode(r.rows));s.spheres=append(s.spheres,decode(r.spheres));appends++;}if(r.kind==='instances')state.instances.set(r.id,r);if(r.kind==='mesh')state.meshes.set(r.id,JSON.stringify([r.vertices,r.indices]));};
- return {state,apply(op,data){if(op==='upload')for(const r of data)resource(r);if(op!=='frame')return;for(const r of data.resources||[])resource(r);for(const id of data.remove||[])state.draws.delete(id);for(const d of data.updates||[])state.draws.set(d.id,d);if(data.order)state.order=data.order;if(data.shadowCasters)state.casters=data.shadowCasters;if(data.shadows)state.shadows=data.shadows;state.vp=data.viewProjection;state.probes=data.probes??null;for(const id of data.release?.cullSets||[])state.sets.delete(id);}};
+ const resourceOf=r=>{if(r.kind==='cullSet')state.sets.set(r.id,{rows:decode(r.rows),spheres:decode(r.spheres)});if(r.kind==='cullSetAppend'){const s=state.sets.get(r.id);assert(s,'append to known set');s.rows=append(s.rows,decode(r.rows));s.spheres=append(s.spheres,decode(r.spheres));appends++;}if(r.kind==='instances')state.instances.set(r.id,r);if(r.kind==='mesh')state.meshes.set(r.id,JSON.stringify([r.vertices,r.indices]));};
+ return {state,apply(op,data){const resource=r=>r.kind==='drawTransforms'?applyDrawTransforms(state.draws,r):resourceOf(r);if(op==='upload')for(const r of data)resource(r);if(op!=='frame')return;for(const r of data.resources||[])resource(r);for(const id of data.remove||[])state.draws.delete(id);for(const d of data.updates||[])state.draws.set(d.id,d);if(data.order)state.order=data.order;if(data.shadowCasters)state.casters=data.shadowCasters;if(data.shadows)state.shadows=data.shadows;state.vp=data.viewProjection;state.probes=data.probes??null;for(const id of data.release?.cullSets||[])state.sets.delete(id);}};
 }
 const round=v=>Array.from(v,x=>Math.fround(x)),shapeSpheres=new Map();
 // World bounding sphere of a row descriptor (three's computeBoundingSphere + applyMatrix4), the culling the C++ host does.

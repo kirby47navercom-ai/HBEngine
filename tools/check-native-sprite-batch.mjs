@@ -5,6 +5,7 @@
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import {createNativeSceneRenderer} from '../prototype/native-scene-renderer.js';
+import {applyDrawTransforms} from './native-mock-draw-transforms.mjs';
 
 const texture=new THREE.DataTexture(new Uint8Array(16).fill(255),2,2),other=new THREE.DataTexture(new Uint8Array(16).fill(128),2,2);texture.needsUpdate=other.needsUpdate=true;
 const scene=new THREE.Scene(),camera=new THREE.OrthographicCamera(-10,10,10,-10,.1,100);camera.position.z=20;
@@ -14,7 +15,7 @@ for(let i=0;i<40;i++){const material=new THREE.MeshBasicMaterial({map:i%13===5?o
 function host(){
  const state={draws:new Map(),instances:new Map(),order:[]};
  return {state,apply(op,data){
-  if(op==='upload')for(const r of data)if(r.kind==='instances')state.instances.set(r.id,r);
+  if(op==='upload')for(const r of data){if(r.kind==='instances')state.instances.set(r.id,r);if(r.kind==='drawTransforms')applyDrawTransforms(state.draws,r);}
   if(op!=='frame')return;for(const r of data.resources||[])if(r.kind==='instances')state.instances.set(r.id,r);
   for(const id of data.remove||[])state.draws.delete(id);for(const d of data.updates||[])state.draws.set(d.id,d);if(data.order)state.order=data.order;for(const id of data.release?.instances||[])state.instances.delete(id);
  }};

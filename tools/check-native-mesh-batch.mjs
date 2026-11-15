@@ -6,6 +6,7 @@
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import {createNativeSceneRenderer} from '../prototype/native-scene-renderer.js';
+import {applyDrawTransforms} from './native-mock-draw-transforms.mjs';
 
 const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(60,1,.1,200);camera.position.set(0,14,22);camera.lookAt(0,0,0);
 const meshes=[];
@@ -19,8 +20,8 @@ const probe=new THREE.Group();probe.userData={objectId:'Probe',reflectionProbes:
 
 function host(){
  const state={draws:new Map(),instances:new Map(),meshes:new Map(),order:[],casters:null};
- const resource=r=>{if(r.kind==='instances')state.instances.set(r.id,r);if(r.kind==='mesh')state.meshes.set(r.id,JSON.stringify([r.vertices,r.indices]));};
- return {state,apply(op,data){if(op==='upload')for(const r of data)resource(r);if(op!=='frame')return;for(const r of data.resources||[])resource(r);for(const id of data.remove||[])state.draws.delete(id);for(const d of data.updates||[])state.draws.set(d.id,d);if(data.order)state.order=data.order;if(data.shadowCasters)state.casters=data.shadowCasters;for(const id of data.release?.instances||[])state.instances.delete(id);}};
+ const resourceOf=r=>{if(r.kind==='instances')state.instances.set(r.id,r);if(r.kind==='mesh')state.meshes.set(r.id,JSON.stringify([r.vertices,r.indices]));};
+ return {state,apply(op,data){const resource=r=>r.kind==='drawTransforms'?applyDrawTransforms(state.draws,r):resourceOf(r);if(op==='upload')for(const r of data)resource(r);if(op!=='frame')return;for(const r of data.resources||[])resource(r);for(const id of data.remove||[])state.draws.delete(id);for(const d of data.updates||[])state.draws.set(d.id,d);if(data.order)state.order=data.order;if(data.shadowCasters)state.casters=data.shadowCasters;for(const id of data.release?.instances||[])state.instances.delete(id);}};
 }
 function expand(state){
  const opaque=[],transparent=[];

@@ -135,6 +135,18 @@ public:
                 else if(kind=="raySceneUpdate"||kind=="raySceneUpdates"){const auto number=[](const Json& source,const char* name){const auto& v=source.at(name);if(!v.is_number_integer()||v.get<std::int64_t>()<0||v.get<std::uint64_t>()>UINT_MAX)throw std::runtime_error("Ray scene update integer invalid");return v.get<std::uint32_t>();};std::vector<typename Renderer::RayScenePatch> patches;if(kind=="raySceneUpdate")patches.push_back({number(resource,"row"),number(resource,"rows"),pixels(resource.at("rgbaBase64"))});else{const auto& list=resource.at("patches");if(!list.is_array()||list.size()>number(resource,"height"))throw std::runtime_error("Ray scene update patches invalid");for(const auto& p:list)patches.push_back({number(p,"row"),number(p,"rows"),pixels(p.at("rgbaBase64"))});}renderer->updateRayScenes(textures.at(key),number(resource,"width"),number(resource,"height"),patches);}
                 else if(kind=="target2d")textures.insert_or_assign(key,renderer->createRenderTarget(resource.at("width").get<std::uint32_t>(),resource.at("height").get<std::uint32_t>(),resource.value("stencil",false)));
                 else if(kind=="program"){const auto declarations=resource.at("declarations").get<std::string>(),evaluation=resource.at("evaluation").get<std::string>();const auto values=resource.at("uniforms").get<std::vector<float>>();programs.insert_or_assign(key,asynchronousMaterials?renderer->createProgramAsync(declarations,evaluation,values):renderer->createProgram(declarations,evaluation,values));if(asynchronousMaterials)preparingPrograms.insert(key);else preparingPrograms.erase(key);++preparationRevision;}
+                else if(kind=="drawTransforms"){
+                    // Matrix-only changes of retained draws the host already holds: world then normal (16 float64 each) per id.
+                    const auto& list=resource.at("ids");const auto bytes=pixels(resource.at("matrices"));
+                    if(!list.is_array()||list.empty()||bytes.size()!=list.size()*256)throw std::runtime_error("Render draw transforms invalid");
+                    for(std::size_t i=0;i<list.size();i++){
+                        auto found=draws.find(id(list[i]));if(found==draws.end()||!found->second.particles.empty())throw std::runtime_error("Render draw transform target missing");
+                        std::array<double,32> values;std::memcpy(values.data(),bytes.data()+i*256,256);hb::gpu::Matrix world,normal;for(std::size_t k=0;k<16;k++){world[k]=static_cast<float>(values[k]);normal[k]=static_cast<float>(values[16+k]);}
+                        const auto finite=[](const hb::gpu::Matrix& m){return std::all_of(m.begin(),m.end(),[](float v){return std::isfinite(v);});};
+                        if(!finite(world)||!finite(normal))throw std::runtime_error("Render draw transform invalid");
+                        auto& draw=found->second;draw.world=world;draw.normal=normal;draw.previousWorld=world;
+                    }
+                }
                 else if(kind=="cullSetAppend"){
                     // Rows (and spheres) added at the end of an existing set: the full-row buffer is rebuilt, views refresh.
                     auto found=cullSets.find(key);if(found==cullSets.end())throw std::runtime_error("Render cull set missing");auto& set=found->second;
