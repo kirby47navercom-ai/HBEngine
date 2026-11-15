@@ -102,7 +102,7 @@ export function createRigidPhysics(objects,options={}){
     alive();if(!spaces.size)return;const list=syncList(),partial=list!==objects;if(partial){for(const o of list){forceObjects.delete(o);movementObjects.delete(o);}}else{forceObjects.clear();movementObjects.clear();}const at=options.profile?performance.now():0;if(options.profile){timing.syncCalls++;if(partial)timing.partialSyncs=(timing.partialSyncs||0)+1;}
     try{
     for(const [dim,space] of spaces){
-      const {R,world}=space,active=new Set(),deformableObjects=[],jointOwners=space.jointOwners??=new Set(),deformableType=dim===2?'Rope2D':'Cloth',jointType=dim===2?'PhysicsConstraint2D':'PhysicsConstraint';if(!partial)jointOwners.clear();
+      space.syncSerial=(space.syncSerial||0)+1;const {R,world}=space,active=new Set(),deformableObjects=[],jointOwners=space.jointOwners??=new Set(),deformableType=dim===2?'Rope2D':'Cloth',jointType=dim===2?'PhysicsConstraint2D':'PhysicsConstraint';if(!partial)jointOwners.clear();
       for(const o of list){
         if(partial)jointOwners.delete(o);if(o.poolActive===false)continue;const authoredComponents=objectComponents(o);if(hasComponentType(authoredComponents,jointType))jointOwners.add(o);if(hasComponentType(authoredComponents,'ConstantForce')||hasComponentType(authoredComponents,'ConstantForce2D'))forceObjects.add(o);if(hasComponentType(authoredComponents,'TopDownMovement2D')||hasComponentType(authoredComponents,'CharacterMovement2D')||hasComponentType(authoredComponents,'CharacterMovement')||hasComponentType(authoredComponents,'PawnMovement'))movementObjects.add(o);if(!options.queryOnly&&hasComponentType(authoredComponents,deformableType))deformableObjects.push(o);if(o.kind==='component'||o.kind==='widget')continue;
         const previous=space.bodies.get(o.id),fixed=previous?.staticState;let source;const sourceOf=()=>source??=(options.staticCache?physicsSourceComponents(authoredComponents):null);
@@ -115,7 +115,7 @@ export function createRigidPhysics(objects,options={}){
         if(reuse){active.add(o.id);if(options.profile)timing.staticReused++;continue;}
         // Unchanged body (game runtime): same announced components, collision flag, material count, root pose inputs and
         // velocities as at its last full pass (or as physics itself wrote them) needs nothing applied. Sampled like above.
-        if(previous?.synced!==undefined&&previous.object===o&&previous.p&&!o.parentId&&!o.parent&&revisionTrust.physics&&!revisionConfig.verify&&!forcedChecks.has(o)&&previous.synced===objectRevision(o)?.components&&previous.syncedCollision===o.collisionEnabled&&previous.syncedMaterials===materials.size&&samePoseInput(previous.poseInput,o)&&sameValues(o.velocity,previous.lastVelocity)&&sameValues(o.angularVelocity,previous.lastAngular)&&((++revisionSamples)&revisionConfig.sampleMask)!==0){active.add(o.id);continue;}
+        if(previous?.synced!==undefined&&previous.object===o&&previous.p&&!o.parentId&&!o.parent&&revisionTrust.physics&&!revisionConfig.verify&&!forcedChecks.has(o)&&previous.synced===objectRevision(o)?.components&&previous.syncedCollision===o.collisionEnabled&&previous.syncedMaterials===materials.size&&samePoseInput(previous.poseInput,o)&&sameValues(o.velocity,previous.lastVelocity)&&sameValues(o.angularVelocity,previous.lastAngular)&&((++revisionSamples)&revisionConfig.sampleMask)!==0){active.add(o.id);previous.mirrored=space.syncSerial;continue;}
         const p=properties(o,dim),components=[...authoredComponents,...(o.tileColliders||[])].filter(c=>colliderTypes.has(c.type)&&c.type.endsWith('2D')===(dim===2)&&c.properties?.enabled!==false&&c.properties?.collisionMode!=='none'&&o.collisionEnabled!==false);
         if(!p&&!components.length)continue;active.add(o.id);
         let r=space.bodies.get(o.id);const root=!o.parentId&&!o.parent,cached=root&&samePoseInput(r?.poseInput,o),transform=cached?r.pose:pose(o,objects),transformKey=cached?r.poseKey:poseValues(transform);
@@ -180,7 +180,7 @@ export function createRigidPhysics(objects,options={}){
       }
       const removeBody=(id,r)=>{space.structure=(space.structure||0)+1;space.fixedVersion=(space.fixedVersion||0)+1;for(const c of r.colliders.values())space.colliders.delete(c.collider.handle);space.vehicles?.remove(id);space.deformables?.detachBody(r.body.handle);world.removeRigidBody(r.body);space.bodies.delete(id);space.pRecords?.delete(r);space.childRecords?.delete(r);};
       if(partial){for(const o of list){const r=space.bodies.get(o.id);if(r&&r.object===o&&!active.has(o.id))removeBody(o.id,r);}}else for(const [id,r] of space.bodies)if(!active.has(id))removeBody(id,r);
-      world.propagateModifiedBodyPositionsToColliders();if(!options.queryOnly)syncJoints(space,dim,[...jointOwners]);space.vehicles?.sync();space.deformables?.sync(deformableObjects);for(const r of space.pRecords??[])mirror(r);
+      world.propagateModifiedBodyPositionsToColliders();if(!options.queryOnly)syncJoints(space,dim,[...jointOwners]);space.vehicles?.sync();space.deformables?.sync(deformableObjects);for(const r of space.pRecords??[])if(r.mirrored!==space.syncSerial)mirror(r);
     }
     }finally{if(options.profile)timing.syncMs+=performance.now()-at;}
   }
@@ -245,24 +245,30 @@ export function createRigidPhysics(objects,options={}){
     }contacts.grounds=[];for(const c of contacts)if(!c.trigger){if(c.normal[1]>.5)contacts.grounds.push(c.colliderA);if(c.normal[1]<-.5)contacts.grounds.push(c.colliderB);}space.fixedContacts=contacts;return contacts;
   }
   function collectContacts(){
-    const result=new Map();
+    // checked: pairs already queried this collection (a pair reached from both colliders is queried once; without a
+    // contact the second query gives the same answer).
+    const result=new Map(),checked=new Set();
     for(const [dim,space] of spaces){
     // Rapier reports no fixed/fixed pairs (even with ActiveCollisionTypes.ALL), so only colliders on non-fixed bodies and
     // their partners can have pairs. The loop below keeps the original collider order and skips only pair-less colliders.
     // Colliders on non-fixed bodies, rebuilt only when sync changed a body or collider (space.structure).
     if(!space.nonFixed||space.nonFixedStructure!==space.structure){space.nonFixed=[...space.colliders.values()].filter(c=>!c.collider.parent()?.isFixed());space.colliderOrder=new Map();let n=0;for(const h of space.colliders.keys())space.colliderOrder.set(h,n++);space.nonFixedStructure=space.structure;}
-    const involved=new Set();for(const c of space.nonFixed){involved.add(c.collider.handle);space.world.contactPairsWith(c.collider,other=>involved.add(other.handle));space.world.intersectionPairsWith(c.collider,other=>involved.add(other.handle));}
+    // Partners of non-fixed colliders are kept from this pass (same queries, same state, same order) and reused below.
+    const involved=new Set(),partners=new Map();for(const c of space.nonFixed){const contactsOf=[],intersectionsOf=[];involved.add(c.collider.handle);space.world.contactPairsWith(c.collider,other=>{contactsOf.push(other);involved.add(other.handle);});space.world.intersectionPairsWith(c.collider,other=>{intersectionsOf.push(other);involved.add(other.handle);});partners.set(c.collider.handle,[contactsOf,intersectionsOf]);}
     // Only involved colliders, in the original collider order.
     const order=space.colliderOrder,ordered=[...involved].filter(h=>order.has(h)).sort((x,y)=>order.get(x)-order.get(y));
     for(const h of ordered){
       const c=space.colliders.get(h);
-      const add=(other,trigger)=>{const d=space.colliders.get(other.handle);if(!d||!pairAllowed(space,c.collider.handle,d.collider.handle))return;const x=c.object.id+'\u0000'+c.component.id,y=d.object.id+'\u0000'+d.component.id,key=dim+':'+(x<y?x+'\u0001'+y:y+'\u0001'+x);if(result.has(key))return;
-        const otherPosition=array(d.collider.translation());let normal=[0,0,0],position=array(c.collider.translation()).map((v,i)=>(v+otherPosition[i])/2),penetration=0,contact=false;
+      const add=(other,trigger)=>{const d=space.colliders.get(other.handle);if(!d||!pairAllowed(space,c.collider.handle,d.collider.handle))return;const x=c.object.id+'\u0000'+c.component.id,y=d.object.id+'\u0000'+d.component.id,key=dim+':'+(x<y?x+'\u0001'+y:y+'\u0001'+x);if(result.has(key))return;const queried=trigger?key+'\u0002':key;if(checked.has(queried))return;checked.add(queried);
+        // Positions are read only for an actual contact (midpoint unless a solver contact point was found).
+        let normal=[0,0,0],position=null,penetration=0,contact=false;
         if(trigger)contact=space.world.intersectionPair(c.collider,d.collider);
         else space.world.contactPair(c.collider,d.collider,(manifold,flipped)=>{if(!manifold.numContacts())return;contact=true;normal=array(manifold.normal()).map(v=>v*(flipped?1:-1));penetration=Math.max(penetration,...Array.from({length:manifold.numContacts()},(_,i)=>-manifold.contactDist(i)));if(manifold.numSolverContacts())position=array(manifold.solverContactPoint(0));});
+        if(contact&&!position){const otherPosition=array(d.collider.translation());position=array(c.collider.translation()).map((v,i)=>(v+otherPosition[i])/2);}
         if(contact)result.set(key,{a:c.object.id,b:d.object.id,componentA:c.component.id,componentB:d.component.id,colliderA:c,colliderB:d,trigger,normal,position,penetration:Math.max(0,penetration)});
       };
-      space.world.contactPairsWith(c.collider,other=>add(other,false));space.world.intersectionPairsWith(c.collider,other=>add(other,true));
+      const known=partners.get(h);if(known){for(const other of known[0])add(other,false);for(const other of known[1])add(other,true);}
+      else{space.world.contactPairsWith(c.collider,other=>add(other,false));space.world.intersectionPairsWith(c.collider,other=>add(other,true));}
     }}
     // Cached static contacts carry their grounding colliders (computed once per rebuild); concat avoids re-spreading them.
     const fixed=[...spaces].map(([dim,space])=>fixedContacts(space,dim));let list=[...result.values()];for(const f of fixed)list=list.concat(f);lastContacts=list;
