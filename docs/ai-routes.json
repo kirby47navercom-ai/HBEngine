@@ -1448,6 +1448,7 @@
       "paths": [
         "native/include/HBEngine/ConstantBufferCache.hpp",
         "native/include/HBEngine/SceneRender.hpp",
+        "native/include/HBEngine/SceneRenderD3D12.hpp",
         "native/desktop/SceneRenderBridge.hpp",
         "docs/NATIVE_CONSTANT_BUFFERS.md"
       ]
@@ -5675,6 +5676,18 @@
         "prototype/app.js",
         "docs/PROJECT_BROWSE_SCALE.md",
         "tools/check-project-browse-scale.mjs"
+      ]
+    },
+    {
+      "keywords": [
+        "validWidgetClass",
+        "widgetClass",
+        "위젯 클래스",
+        "WidgetClass"
+      ],
+      "paths": [
+        "prototype/widget-class.js",
+        "prototype/widget-class-editor.js"
       ]
     }
   ]

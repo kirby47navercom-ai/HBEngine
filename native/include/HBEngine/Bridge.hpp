@@ -180,7 +180,7 @@ inline Json engineQuery(const char* key,const Json& args){
     Json packet=compactQuery?Json{{"key",key},{"args",args}}:Json{{"key",key},{"args",args},{"scope",Timers::GetContext().second},{"clock",{{"scale",Clock::TimeScale()},{"paused",Clock::IsPaused()}}}};if(!compactQuery&&std::any_of(bridgeOperations.begin(),bridgeOperations.end(),[](const Json& o){return o.at("key")=="sceneSpawn";}))packet["operations"]=bridgeOperations;if(queryKey=="nativeModule"&&bridgeInput.contains("keys"))packet["input"]=bridgeInput;
     if(queryKey=="nativeModule")packet["gameState"]=std::move(gameState);
     // Lend the canonical world to the packet instead of deep-copying it every query; patched rows are restored afterwards.
-    struct LentWorld{Json& packet;std::vector<std::pair<std::size_t,Json>> rows;bool lent=false;~LentWorld(){if(lent)bridgeWorldData=std::move(packet["objects"]);for(auto r=rows.rbegin();r!=rows.rend();++r)bridgeWorldData.at(r->first)=std::move(r->second);}} lend{packet};
+    struct LentWorld{Json& packet;std::vector<std::pair<std::size_t,Json>> rows;bool lent=false;~LentWorld(){if(lent)bridgeWorldData=std::move(packet["objects"]);for(auto r=rows.rbegin();r!=rows.rend();++r)bridgeWorldData.at(r->first)=std::move(r->second);}} lend{packet,{},false};
     if(!compactQuery){
         auto& world=bridgeWorldData;
         for(const auto& updated:bridgeSnapshot()){

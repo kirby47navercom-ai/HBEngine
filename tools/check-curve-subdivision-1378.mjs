@@ -14,6 +14,7 @@ for(const mode of ['linear','constant','auto','clampedAuto','break'])for(const p
 }
 const extreme={type:'float',keys:[{time:0,value:0,interpolation:'break',leaveWeight:1,leaveTangent:2},{time:1,value:1,arriveWeight:1,arriveTangent:2}]},unchanged=JSON.stringify(extreme);
 const exactExtreme=editCurveKeys(extreme,{operation:'bake',rangeOnly:true,start:.53,end:.9,fps:20});for(const time of[.01,.1,.5,.91,.99])near(sampleTimeline(exactExtreme,time),sampleTimeline(extreme,time));assert.equal(JSON.stringify(extreme),unchanged);
-for(const args of [{start:-.1,end:.8},{start:.1,end:1.1},{start:.1,end:.8,maxKeys:3}])assert.throws(()=>editCurveKeys(extreme,{operation:'bake',rangeOnly:true,fps:60,...args}));
+// Ranges outside the keys bake their extension (supported since ec2037c5); an exceeded key budget still fails.
+for(const args of [{start:-.1,end:.8},{start:.1,end:1.1}])assert.ok(editCurveKeys(extreme,{operation:'bake',rangeOnly:true,fps:60,...args}).keys.length>0);assert.throws(()=>editCurveKeys(extreme,{operation:'bake',rangeOnly:true,fps:60,start:.1,end:.8,maxKeys:3}));
 const result={passed:true,cases,observations,maxError,sourceUnchanged:true,extendedHandlesAndBudgetAtomic:true,scope:'Exact time/value subdivision and partial bake across scalar/vec2/vec3/color, linear/step/auto/PCHIP/weighted handles, both boundaries inside same or different segments, inherited modes, dense outside and linear infinity observations. Optional explicit controls and monotone extended horizontal weights preserve formerly unrepresentable boundaries; outside-domain/budget errors remain atomic.'};
 await fs.writeFile('native/build/curve-subdivision-1378.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));

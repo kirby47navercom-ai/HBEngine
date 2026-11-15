@@ -22,5 +22,5 @@ int main(){try{
   Matrix world=identity,normal=identity;world[0]=normal[0]=float(ownerSign);material.doubleSided=side==2;material.backSide=side==1;r.begin(frame);r.draw(mesh,world,normal,material,{},{},0,0,&program,{},{},&instances);const auto p=r.readPixels();
   for(int i=0;i<4;i++){const int x=((i&1)?48:16)*ownerSign+(ownerSign<0?64:0),y=(i&2)?16:48;const auto at=(y*64+x)*4;const bool visible=side==2||(side==0?!(i&2):bool(i&2));check(visible?p[at]>180&&p[at+1]>180&&p[at+2]>250:p[at+2]<2,"mixed instance winding/normal/side");samples++;}
  }
- check(instances.bytes()==4*144*3,"instance stride grew");std::cout<<nlohmann::json({{"passed",true},{"samples",samples},{"instanceStride",144},{"worldAndInstanceMirror",true},{"frontBackDoubleSide",true},{"cppScaleAtomic",true}}).dump();
+ static_assert(sizeof(SceneInstance)==176,"world, normal, colour and two UV rows");check(instances.bytes()==4*sizeof(SceneInstance)*3,"instance stride grew");std::cout<<nlohmann::json({{"passed",true},{"samples",samples},{"instanceStride",sizeof(SceneInstance)},{"worldAndInstanceMirror",true},{"frontBackDoubleSide",true},{"cppScaleAtomic",true}}).dump();
 }catch(const std::exception& e){std::cerr<<e.what();return 1;}}

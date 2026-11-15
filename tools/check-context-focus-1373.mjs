@@ -6,10 +6,12 @@ const expanded=await engineContext({task:'constantBufferCache',symbol:'constantB
 assert.equal(focused.symbolSearch.mode,'focused-routes');
 assert.equal(expanded.symbolSearch.mode,'all');
 assert(focused.symbolSearch.matches.length>0);
-assert(focused.symbolSearch.filesRead<=3);
+// D3D11 (SceneRender.hpp) and D3D12 (SceneRenderD3D12.hpp) both define the symbol, plus the cache and bridge files.
+assert(focused.symbolSearch.filesRead<=4);
 assert(focused.symbolSearch.bytesRead<expanded.symbolSearch.bytesRead/10);
 assert.deepEqual(focused.symbolSearch.matches,expanded.symbolSearch.matches);
-const fallback=await engineContext({task:'constantBufferCache',symbol:'parseNativeHeader',limit:2});
+// A real symbol outside the task's routes (and not a route keyword itself) is not searched without --all.
+const fallback=await engineContext({task:'constantBufferCache',symbol:'batchableSpriteUV',limit:2});
 assert.equal(fallback.symbolSearch.mode,'focused-miss');assert.equal(fallback.symbolSearch.matches.length,0);
 const missing=await engineContext({task:'constantBufferCache',symbol:'Missing1373_59871',limit:1});
 assert.equal(missing.symbolSearch.mode,'focused-miss');assert.equal(missing.symbolSearch.matches.length,0);

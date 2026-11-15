@@ -57,7 +57,7 @@ export async function appendNativeTypeRows(project,rows,drafts,{restore}={}){
 
 export async function publishNativeTypeAsset(project,relative,text,guard=()=>{},{create=false}={}){
  const file=await project.canonicalFile(relative),name=path.relative(project.root,file).split(path.sep).join('/'),before=await read(project,name);
- if(create&&before!==null)throw conflict('같은 이름의 에셋이 있어요.');
+ if(create&&before!==null)throw Object.assign(Error('같은 이름의 에셋이 있어요.'),{status:409,code:'EEXIST'});
  const rows=[{path:name,before,after:text}],drafts=new Map([[name.toLowerCase(),text]]),guards=await appendNativeTypeRows(project,rows,drafts);
  const migration=await planNativeTypeMigration(project,rows,drafts);guards.push(...migration?.guards||[]);
  if(!migration)for(const f of (await project.files()).filter(f=>f.kind==='blueprint'))await project.validateBlueprint(f.path,JSON.parse(drafts.get(f.path.toLowerCase())??await read(project,f.path)),drafts);

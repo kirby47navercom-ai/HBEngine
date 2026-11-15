@@ -51,7 +51,7 @@ preview.update(worldObjects,new Set());assert.equal(preview.items.size,0,'선택
 preview.update(worldObjects,new Set(),{all:true});assert.equal(preview.items.size,1);
 child.collisionEnabled=false;preview.update(worldObjects,new Set(),{all:true});assert.equal(preview.items.size,0,'비활성 충돌은 미리보기에서 제외');
 preview.dispose();assert.equal(world.children.length,0);
-for(const key of Object.keys(materialPresets)){const data={version:1,name:key,...makeMaterialPreset(key)};assert.ok(validAsset('material',data),key);assert.ok(compileMaterial(data).lines.length);assert.ok(evaluateMaterial(data));}
+for(const key of Object.keys(materialPresets)){const data={version:1,name:key,...makeMaterialPreset(key)};assert.ok(validAsset('material',data),key);assert.ok(compileMaterial(data).lines.length||!data.nodes?.length,key+': node graphs compile to shader lines (surface-only presets have none)');assert.ok(evaluateMaterial(data));}
 const node=makeMaterialNode('fresnel'),output=makeMaterialNode('surface'),mat={surface:materialDefaults,graph:{nodes:[node,output],edges:[]}};
 connectMaterial(mat.graph,pin(node,'value'),pin(output,'roughness'));
 assert.equal(evaluateMaterial(mat,{worldNormal:[0,0,1],viewDirection:[0,0,1]}).roughness,.04);
