@@ -302,7 +302,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   // its instance rows and bounding spheres go to the host once, the host culls them per frame and draws one instanced
   // draw per set, and the traversal skips the group with one property read. Any announced change, visibility, parent or
   // matrix flag change, leaving the scene, probes, verify mode or static skipping off moves the group back.
-  const HOST_AGE=30,hostOwner={},hostSets=new Map(),hostGroups=new Map(),hostObjects=new WeakMap(),hostChanges=subscribeObjectChanges(),hostPending=new Map(),hostReleased=[],hostSets2D=new Map();let hostSeq2D=[],hostRuns2D=[],hostSeqDirty=false;const hostToContain=[],hostContainers=new Map(),hostLoose=new Set(),HOST_CONTAINER_CHECK=4096;let hostMoving=false,hostContained=0;
+  const HOST_AGE=30,hostOwner={},hostSets=new Map(),hostGroups=new Map(),hostObjects=new WeakMap(),hostChanges=subscribeObjectChanges(),hostPending=new Map(),hostReleased=[],hostSets2D=new Map();let hostSeq2D=[],hostRuns2D=[],hostSeqDirty=false,hostSeqBlock=0;const hostToContain=[],hostContainers=new Map(),hostLoose=new Set(),HOST_CONTAINER_CHECK=4096;let hostMoving=false,hostContained=0;
   let hostActive=false,lastHostProbeKey='',hostSerial=0,hostEpoch=-1,hostFrame=0,hostBuildNode=null,hostForceLeft=0;const hostForce=new Set(),HOST_FORCE_BUDGET=4096;
   function hostDemote(group){const h=hostGroups.get(group);if(!h)return;hostGroups.delete(group);hostLoose.delete(group);group.hbHost=undefined;if(h.contained){hostContained++;renderer.hbHostContained=hostContained;}if(h.contained&&group.parent?.hbHostContainer===hostOwner&&h.parent){hostMoving=true;try{h.parent.add(group);}finally{hostMoving=false;}}for(const m of h.members){m.set.members.delete(m);m.set.dirty=true;m.set.removed=true;if(m.set.twoD)hostSeqDirty=true;}}
   // Host container (one per parent): 3D groups held by host sets move under it, so frame traversals see one child instead
@@ -315,7 +315,10 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
    c.remove=function(...objects){if(!hostMoving)for(const o of objects){const h=o.hbHost;if(h?.owner===hostOwner){h.contained=false;hostDemote(o);}}return THREE.Object3D.prototype.remove.apply(this,objects);};
    c.updateMatrixWorld=function(force){
     const p=this.parent?.matrixWorld.elements;if(p){this.matrixWorld.copy(this.parent.matrixWorld);}
-    const identity=!p||identityElements.every((v,i)=>p[i]===v),children=this.children,n=children.length,count=Math.min(n,HOST_CONTAINER_CHECK),back=[];
+    // One window per encode: further updates in the same frame (2D preparation, lighting, encode) skip it while the
+    // parent stays the identity.
+    const identity=!p||identityElements.every((v,i)=>p[i]===v);if(identity&&this.hbCheckedFrame===hostFrame)return;this.hbCheckedFrame=hostFrame;
+    const children=this.children,n=children.length,count=Math.min(n,HOST_CONTAINER_CHECK),back=[];
     for(let k=0;k<count;k++){const child=children[(cursor+k)%n];if(!identity||child.visible===false||child.matrixWorldNeedsUpdate||child.hbHost?.owner!==hostOwner)back.push(child);else child.updateMatrixWorld(force);}
     cursor=n?(cursor+count)%n:0;for(const child of back){if(child.hbHost?.owner===hostOwner)hostDemote(child);else{hostMoving=true;try{(this.parent||parent).add(child);}finally{hostMoving=false;}}}
    };
@@ -350,7 +353,8 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
    if(twoD){for(const c of members){const node=c.node,key=spriteStateKey(c);let set=hostSets2D.get(key);if(!set)hostSets2D.set(key,set={id:'host2d:'+(++hostSerial),twoD:true,members:new Set(),order:[],dirty:true,version:0,template:null,stamp:'',receives:false,source:null});
      const d=c.entry.draw,m=d.material,row=new Float32Array(44),sphere=nodeWorldSphere(node);row.set(d.world,0);row.set(d.normal,16);row.set(m.color,32);row.set(m.uvX[0].slice(0,3),36);row.set(m.uvY[0].slice(0,3),40);
      const member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],box:null,node,group,receives:c.receives,twoD:true,index:-1};set.source??=copyData(d);set.members.add(member);set.dirty=true;h.members.push(member);}
-    hostSeqDirty=true;hostGroups.set(group,h);hostLoose.add(group);group.hbHost=h;hostObjects.set(record.object,group);record.drawCache=null;for(const id of ids)promoted.add(id);return;}
+    // 2D groups also move into the container: 2D preparation sorts the group list (not scene children), so order is kept.
+    hostSeqDirty=true;hostGroups.set(group,h);group.hbHost=h;hostObjects.set(record.object,group);record.drawCache=null;for(const id of ids)promoted.add(id);if(group.parent===h.parent&&h.parent)hostToContain.push(group);else hostLoose.add(group);return;}
    for(const c of members){const node=c.node,key=spriteStateKey(c)+'|'+node.renderOrder+'|'+(node.castShadow?1:0);let set=hostSets.get(key);if(!set)hostSets.set(key,set={id:'host:'+(++hostSerial),members:new Set(),dirty:true,version:0,order:node.renderOrder,casts:!!node.castShadow,receives:false,template:null,stamp:'',source:null});
     const d=c.entry.draw,m=d.material,row=new Float32Array(44),sphere=nodeWorldSphere(node);row.set(d.world,0);row.set(d.normal,16);row.set(m.color,32);row.set(m.uvX[0].slice(0,3),36);row.set(m.uvY[0].slice(0,3),40);
     const box=withBoxes?reflectionProbeMeshBounds(node,new THREE.Box3()):null,member={set,row,sphere:[sphere.center.x,sphere.center.y,sphere.center.z,sphere.radius],box:box?box.clone():null,receives:c.receives};set.source??=copyData(d);set.members.add(member);set.dirty=true;h.members.push(member);}
@@ -384,9 +388,12 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
   function hostEmit2D(items,updates,seen,resources,used){
    for(const [key,set] of hostSets2D)if(!set.members.size){hostSets2D.delete(key);hostSeqDirty=true;if(set.sent)hostReleased.push(set.id);}
    if(!hostSets2D.size){hostSeq2D=[];hostRuns2D=[];return;}
-   if(!hostSeqDirty){let last=-Infinity;for(const m of hostSeq2D){const o=m.node.renderOrder;if(!(o>last)){hostSeqDirty=true;break;}last=o;}}
+   // Members all held by the current 2D sort block keep their renderOrder while it lives (two-d-rendering.js): once the
+   // sequence was found increasing for that block, the check is skipped until the block or the sequence changes.
+   const blockToken=renderer.hbTwoDBlock||0;
+   if(!hostSeqDirty&&!(blockToken&&blockToken===hostSeqBlock)){let last=-Infinity,inBlock=blockToken!==0;for(const m of hostSeq2D){const o=m.node.renderOrder;if(!(o>last)){hostSeqDirty=true;break;}last=o;if(inBlock&&m.group.hbBlock2D!==blockToken)inBlock=false;}hostSeqBlock=!hostSeqDirty&&inBlock?blockToken:0;}
    if(hostSeqDirty){
-    hostSeq2D=[];for(const set of hostSets2D.values())for(const m of set.members)hostSeq2D.push(m);hostSeq2D.sort((a,b)=>a.node.renderOrder-b.node.renderOrder);
+    hostSeqBlock=0;hostSeq2D=[];for(const set of hostSets2D.values())for(const m of set.members)hostSeq2D.push(m);hostSeq2D.sort((a,b)=>a.node.renderOrder-b.node.renderOrder);
     const orders=new Map();for(const m of hostSeq2D){let list=orders.get(m.set);if(!list)orders.set(m.set,list=[]);list.push(m);}
     for(const [set,list] of orders){if(list.length!==set.order.length||list.some((m,i)=>set.order[i]!==m))set.dirty=true;set.order=list;list.forEach((m,i)=>{m.index=i;});}
     hostRuns2D=[];for(const m of hostSeq2D){const run=hostRuns2D.at(-1);if(run&&run.set===m.set&&run.members.at(-1).index===m.index-1)run.members.push(m);else hostRuns2D.push({set:m.set,members:[m]});}
@@ -550,7 +557,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
       }
     },skipStaticGroup,leaveStaticGroup,staticCellsOn?cellFrame:undefined);
     renderer.hbStaticSkips=staticSkips;renderer.hbStaticCellSkips=cellSkips;
-    if(hostActive){for(const g of [...hostLoose]){const h=hostGroups.get(g);if(h&&h.seen!==hostFrame)hostDemote(g);}
+    if(hostActive){let unseen=null;for(const g of hostLoose){const h=hostGroups.get(g);if(h&&h.seen!==hostFrame)(unseen??=[]).push(g);}if(unseen)for(const g of unseen)hostDemote(g);
      // Promotions are applied in groups (at least 256 waiting, or the oldest waiting 60 encodes) so sets are not re-sent
      // every frame while the camera reveals new groups; only groups visited this encode (current draw ids) move.
      let oldest=Infinity;for(const p of hostPending.values())oldest=Math.min(oldest,p.since);
@@ -617,7 +624,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     hbDiagnostics:()=>({cameraViews:cameraContexts.size,compositionBytes:stats.cameraViewBytes||0,uploadBatching:{...uploadTotals},lineMeshes:linePool.entries.size,resourceSubscriptions:subscriptions.size,backend:capabilities.backend||'D3D11',requestedBackend:capabilities.requestedBackend||'d3d11',backendFallback:capabilities.fallback||null,nativeCommandLists:capabilities.nativeCommandLists??false,device:capabilities.device||null,adapterVendor:capabilities.adapterVendor??null,adapterDevice:capabilities.adapterDevice??null,adapterDedicatedBytes:capabilities.adapterDedicatedBytes??null,software:capabilities.software??null,probeCandidates:probeCandidateIndex.info(),distanceFields:renderer.hbDistanceFields?.state()||null,pathSamples:renderer.hbPathState?.samples||0,pathNormalFootprint:renderer.hbScreenSettings?.pathNormalMode||0,pipelinePreparation:nativePathPreparationInfo(renderer.hbPathPreparation),rayGeometry:sharedRayInfo(renderer.hbGeometryWorld?.packed),bvh:renderer.hbGeometryWorld?{refits:renderer.hbGeometryWorld.bvhRefits,rebuilds:renderer.hbGeometryWorld.bvhRebuilds}:null,info:{calls:stats.calls},memory:{geometries:stats.meshes,textures:stats.textures},...stats,shaderCompilation:stats.shaderCompilation?Object.fromEntries(['compilations','cacheHits','cacheMisses','cacheEvictions','cacheBytes','cacheBudgetBytes','lastCompileMS','totalCompileMS','sourceBuilds'].map((key,i)=>[key,stats.shaderCompilation[i]])):null,shaderDiskCache:stats.shaderDiskCache?Object.fromEntries(['hits','misses','writes','evictions','lastScannedBytes','budgetBytes','invalid','errors','busy','configured'].map((key,i)=>[key,key==='configured'?Boolean(stats.shaderDiskCache[i]):stats.shaderDiskCache[i]])):null,drawUpdates:lastUpdateCount,constantBuffers:3,maskCachedTargets:maskPassCache.size,probeCachedCaptures:probeCache.size,shadowTrackedDraws:shadowCache.draws.size,shadowTrackedResources:shadowCache.resources.size,automaticReadbacks:0}),
     async hbCaptureRGBA(){await this.hbFinishFrame();const result=await send('capture',{});return {width:result.width,height:result.height,rgba:Uint8Array.from(result.rgba)};},
     async hbCapture(){await this.hbFinishFrame();const result=await send('capture',{}),off=createPixelCanvas();off.width=result.width;off.height=result.height;off.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(result.rgba),result.width,result.height),0,0);return off.toDataURL('image/png');},
-    dispose(){if(disposeJob)return disposeJob;if(disposed)return Promise.resolve();disposeJob=(async()=>{const errors=[];try{try{await this.hbReleaseScene();}catch(error){errors.push(error);}try{await send('dispose',{});}catch(error){errors.push(error);}}finally{disposed=true;clearDisposalSubscriptions();bridge.removeEventListener('message',receive);globalThis.document?.documentElement?.classList.remove('native-scene');spriteGeometry.dispose();for(const r of pending.values()){clearTimeout(r.timer);r.reject(Error('DirectX 렌더러 종료'));}pending.clear();}if(errors.length)throw new AggregateError(errors,'DirectX 렌더러 종료 실패');})();return disposeJob;}
+    dispose(){if(disposeJob)return disposeJob;if(disposed)return Promise.resolve();disposeJob=(async()=>{const errors=[];try{try{await this.hbReleaseScene();}catch(error){errors.push(error);}try{await send('dispose',{});}catch(error){errors.push(error);}}finally{disposed=true;clearDisposalSubscriptions();bridge.removeEventListener('message',receive);globalThis.document?.documentElement?.classList.remove('native-scene');spriteGeometry.dispose();for(const r of pending.values()){clearTimeout(r.timer);r.reject(Error('DirectX 렌더러 종료'));}pending.clear();}if(errors.length)throw new AggregateError(errors,'DirectX 렌더러 종료 실패: '+errors.map(error=>error?.stack||String(error)).join(' | '));})();return disposeJob;}
   };
   renderer.setSize(width,height,false);return renderer;
 }

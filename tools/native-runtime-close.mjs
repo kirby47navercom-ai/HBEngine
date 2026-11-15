@@ -3,5 +3,5 @@
 export async function closeNativeRuntime(steps,primaryError){
  const errors=[];
  for(const dispose of steps){try{await dispose();}catch(error){errors.push(error);}}
- if(errors.length)throw new AggregateError(primaryError?[primaryError,...errors]:errors,'네이티브 게임 자원 해제 실패');
+ if(errors.length)throw new AggregateError(primaryError?[primaryError,...errors]:errors,'네이티브 게임 자원 해제 실패: '+errors.map(error=>error?.stack||String(error)).join(' | '));
 }

@@ -1,11 +1,10 @@
 import {OrthographicCamera,PerspectiveCamera,Vector3,Vector4,Color} from 'three';
 import {enabledComponent} from './scene-components.js';
-import {listVersion,watchObjectList,componentRevisionSerial,listCacheConfig} from './object-revision.js';
-// Camera candidates per object list (objects without a component list, or with a Camera component), rebuilt when the
-// list or any announced component changes (or the component index finds an unannounced edit); the loop reads only these.
-const cameraCandidates=new WeakMap();
-function candidatesOf(objects){if(!Array.isArray(objects))return objects;watchObjectList(objects);let c=cameraCandidates.get(objects);const version=listVersion(objects)+':'+objects.length,serial=componentRevisionSerial();
- if(!c||c.version!==version||c.serial!==serial||c.epoch!==listCacheConfig.epoch||!listCacheConfig.trusted){const list=[];for(const o of objects)if(!o.components||o.components.some(x=>x.type==='Camera'))list.push(o);c={version,serial,epoch:listCacheConfig.epoch,list};cameraCandidates.set(objects,c);}return c.list;}
+import {objectsWhere} from './object-revision.js';
+// Camera candidates per object list (objects without a component list, or with a Camera component): a filtered list
+// (object-revision.js) that re-tests only announced objects; the loop reads only these.
+const cameraCandidate=o=>!o.components||o.components.some(x=>x.type==='Camera');
+function candidatesOf(objects){return Array.isArray(objects)?objectsWhere(objects,'cameraCandidates',cameraCandidate):objects;}
 
 export function cameraFieldOfView(p){return p.physicalLens?2*Math.atan((p.sensorHeight??24)/(2*(p.focalLength??50)))*180/Math.PI:p.fieldOfView;}
 export function createGameCamera(p){const camera=p.projection==='orthographic'?new OrthographicCamera(-p.orthographicSize,p.orthographicSize,p.orthographicSize,-p.orthographicSize,p.near,p.far):new PerspectiveCamera(cameraFieldOfView(p),1,p.near,p.far);camera.userData.cameraProperties=p;return camera;}

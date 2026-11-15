@@ -8,6 +8,8 @@ import {objectComponents} from './scene-components.js';
 export const componentIndexConfig={trusted:true,sampleEvery:64};
 const VERIFY_WINDOW=256;
 const typeSet=o=>{const out=new Set();for(const c of objectComponents(o))out.add(c.type);return out;};
+// Same component types as the set, without allocating (rolling verification runs every sync).
+const sameTypes=(o,types)=>{const list=objectComponents(o);for(const c of list)if(!types.has(c.type))return false;for(const type of types){let found=false;for(const c of list)if(c.type===type){found=true;break;}if(!found)return false;}return true;};
 const components=o=>{const r=objectRevision(o);return r?r.components:0;};
 
 export function createComponentIndex(){
@@ -29,9 +31,10 @@ export function createComponentIndex(){
    for(const type of entry.types)members.get(type)?.delete(o);entries.delete(o);add(o);}
   changes.clear();
   // Rolling verification: each sync re-reads the component types of a window of objects (VERIFY_WINDOW) and compares
-  // them with the index, so every object is checked once per list/VERIFY_WINDOW syncs without a whole-list pause.
+  // them with the index, so every object is checked once per 4*list/VERIFY_WINDOW syncs without a whole-list pause.
   // A difference is reported and switches the index off (rebuilt every sync).
-  syncs++;const n=objects.length,count=Math.min(n,VERIFY_WINDOW);for(let k=0;k<count;k++){const o=objects[(cursor+k)%n],entry=entries.get(o);if(entry&&same(typeSet(o),entry.types))continue;reportRevisionMismatch('componentIndex',o,{types:[...typeSet(o)]});componentIndexConfig.trusted=false;listCacheConfig.epoch++;listCacheConfig.trusted=false;rebuild(objects);return;}cursor=n?(cursor+count)%n:0;
+  // Services sync several times a frame: the window advances on every fourth sync.
+  if(++syncs%4!==0)return;const n=objects.length,count=Math.min(n,VERIFY_WINDOW);for(let k=0;k<count;k++){const o=objects[(cursor+k)%n],entry=entries.get(o);if(entry&&sameTypes(o,entry.types))continue;reportRevisionMismatch('componentIndex',o,{types:[...typeSet(o)]});componentIndexConfig.trusted=false;listCacheConfig.epoch++;listCacheConfig.trusted=false;rebuild(objects);return;}cursor=n?(cursor+count)%n:0;
  }
  // Objects having a component of type, in list order (cached until membership of that type changes).
  function of(type){let array=arrays.get(type);if(array)return array;const set=members.get(type);array=set?[...set].sort((a,b)=>positions.get(a)-positions.get(b)):[];arrays.set(type,array);return array;}

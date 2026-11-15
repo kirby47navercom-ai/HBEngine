@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {sortingLayerIndex,defaultSortingLayers} from './sorting-layers.js';
 import {TwoDLighting} from './two-d-lighting.js';
 import {staticGroupRecord,staticConfig} from './static-groups.js';
-import {subscribeObjectChanges,unsubscribeObjectChanges,revisionConfig} from './object-revision.js';
+import {subscribeObjectChanges,unsubscribeObjectChanges,revisionConfig,listCacheConfig} from './object-revision.js';
 
 const position=new THREE.Vector3(),cameraPosition=new THREE.Vector3(),direction=new THREE.Vector3();
 const visible=node=>{for(let p=node;p;p=p.parent)if(!p.visible)return false;return true;};
@@ -49,24 +49,26 @@ export class TwoDRendering{
     // (a camera move shifts every camera depth by the same amount), so their entries and renderOrder values are kept and
     // only the other entries are built, sorted and placed between them (fractional renderOrder). The block is dropped on
     // any announced change of one of its objects, a different group set, camera direction or layers, sorting groups,
-    // display counts, verify mode or static skipping off, and every 64th frame.
+    // display counts, verify mode or static skipping off, and when the component index finds an unannounced edit
+    // (listCacheConfig.epoch). Unannounced moves switch static skipping off (static-groups.js sampling). No periodic
+    // full re-sort: at 100k sprites it was a ~200ms frame.
     camera.updateWorldMatrix(true,false);camera.getWorldDirection(direction);
-    let block=this.block;const frame=this.blockFrame=(this.blockFrame||0)+1;
+    let block=this.block;
     if(block){for(const o of this.changes)if(block.objects.has(o)){block=null;break;}}this.changes.clear();
-    if(block&&(!camera.isOrthographicCamera||!direction.equals(block.direction)||layers!==block.layers||countDisplay||!staticConfig.enabled||revisionConfig.verify||frame%64===0))block=null;
+    if(block&&(!camera.isOrthographicCamera||!direction.equals(block.direction)||layers!==block.layers||countDisplay||!staticConfig.enabled||revisionConfig.verify||block.epoch!==listCacheConfig.epoch||!listCacheConfig.trusted))block=null;
     let blockSeen=0;
     for(let i=0;i<groups.length;i++){const g=groups[i];if(block&&g.hbBlock2D===block.token){blockSeen++;records[i]=BLOCK_HELD;any2D=true;continue;}if(!countDisplay&&g.hbHost!==undefined&&!g.hbHost.twoD){records[i]=HOST_HELD;continue;}const r=staticGroupRecord(g);records[i]=r;let fl=r&&staticFlags.get(g);if(fl&&(fl.transform!==r.updatedTransform||fl.components!==r.updatedComponents||fl.parent!==g.parent))fl=null;
       if(!fl){const u=g.userData;fl={transform:r?.updatedTransform,components:r?.updatedComponents,parent:g.parent,has2D:!!(u.sortingGroup||u.maskMesh||u.spriteMesh||u.tilemapResources||g.children.some(n=>n.userData.draw2d)),light:!!u.light2d,special:!!(u.sortingGroup||u.light2d||u.renderer2d||u.maskMesh||u.shadowCaster2d)};if(r)staticFlags.set(g,fl);}
       if(fl.has2D)any2D=true;if(fl.light)lit=true;if(!r||fl.special)special.push(g);}
     if(block&&blockSeen!==block.groups){this.block=null;return this.prepare(renderer,scene,camera,groups,layers,{lights,matricesCurrent});}
     this.block=block;
-    if(!any2D){this.dispose();return {renderers:0,maskPasses:0,maskTargets:0};}
+    if(!any2D){renderer.hbTwoDBlock=0;this.dispose();return {renderers:0,maskPasses:0,maskTargets:0};}
     // 2D lights and shadow casters read arbitrary group matrices: keep the whole-scene pass for them. Otherwise sorting reads
     // only its own nodes, so refresh those (and their parents) once each: same matrices, without walking the 3D scene.
     const fresh=new Set(),refresh=node=>{if(lit||fresh.has(node))return;if(node.parent)refresh(node.parent);node.updateWorldMatrix(false,false);fresh.add(node);};if(lit&&!matricesCurrent)scene.updateMatrixWorld();
     camera.getWorldPosition(cameraPosition);
     const roots=[],scopes=new Map(),entries=[],masks=[];
-    const depth=(node,mode)=>{refresh(node);if(mode==='y'&&node.userData.sortPoint)position.fromArray(node.userData.sortPoint).applyMatrix4(node.matrixWorld);else position.setFromMatrixPosition(node.matrixWorld);return mode==='y'?-position.y:camera.isOrthographicCamera?-position.sub(cameraPosition).dot(direction):-position.distanceToSquared(cameraPosition);};
+    const depth=(node,mode)=>{if(!lit)refresh(node);if(mode==='y'&&node.userData.sortPoint)position.fromArray(node.userData.sortPoint).applyMatrix4(node.matrixWorld);else position.setFromMatrixPosition(node.matrixWorld);return mode==='y'?-position.y:camera.isOrthographicCamera?-position.sub(cameraPosition).dot(direction):-position.distanceToSquared(cameraPosition);};
     const item=(node,p,id)=>({node,layer:sortingLayerIndex(layers,p.sortingLayer),order:p.sortingOrder||0,depth:depth(node,p.sortMode||layers?.find(l=>l.id===p.sortingLayer)?.sortMode),id,owner:node.userData.objectId||id,tileOrder:node.userData.tileSortOrder||0});
     for(const group of special){if(group.userData.disposed)continue;const p=group.userData.sortingGroup;if(p)scopes.set(group,{...item(group,p,group.userData.objectId||group.uuid),children:[]});}
     if(block&&scopes.size){this.block=null;return this.prepare(renderer,scene,camera,groups,layers,{lights,matricesCurrent});}
@@ -107,9 +109,11 @@ export class TwoDRendering{
       if(held.size){const token=++blockTokens,entriesOf=new Set(),objects=new WeakSet();for(const [group,record] of held){group.hbBlock2D=token;objects.add(record.object);for(const info of staticEntries.get(group).nodes)if(info.entry)entriesOf.add(info.entry);}
        const list=start.filter(e=>entriesOf.has(e));for(const e of list)e.cameraDepth=!!e.position||(e.properties.sortMode||layers?.find(l=>l.id===e.properties.sortingLayer)?.sortMode)!=='y';
        const receivers=list.filter(e=>{const shading=e.properties.shading,m=e.node.material;return (shading==='lit2d'||shading==='volume2d')&&(Array.isArray(m)?m.some(x=>x.isMeshStandardMaterial):m.isMeshStandardMaterial);});
-       this.block={token,groups:held.size,objects,entries:list,direction:direction.clone(),offset:cameraOffset,layers,receivers,receiverLayers:new Set(receivers.map(e=>sortingLayerIndex(layers,e.properties.sortingLayer)))};twoDStaticStats.blockBuilds++;}
+       this.block={token,epoch:listCacheConfig.epoch,groups:held.size,objects,entries:list,direction:direction.clone(),offset:cameraOffset,layers,receivers,receiverLayers:new Set(receivers.map(e=>sortingLayerIndex(layers,e.properties.sortingLayer)))};twoDStaticStats.blockBuilds++;}
      }
     }
+    // Groups of this block keep their renderOrder until the block is dropped (renderers may skip order checks meanwhile).
+    renderer.hbTwoDBlock=this.block?this.block.token:0;
     const lighting=this.lighting.prepare(renderer,lights?special:[],entries,layers,this.block&&block?{receivers:this.block.receivers,layers:this.block.receiverLayers}:null);renderer.getDrawingBufferSize(this.size);const used=new Set(),buckets=new Map();
     for(const entry of entries){const mode=entry.properties.maskInteraction;if(mode!=='inside'&&mode!=='outside'){for(const material of Array.isArray(entry.node.material)?entry.node.material:[entry.node.material])if(material.userData.hbSpriteMask){material.userData.hbSpriteMask.hbSpriteMaskMode.value=0;material.userData.hbSpriteMask.hbSpriteMask.value=material.userData.hbMaskFallback||null;}continue;}
       const selected=visible(entry.node)?masks.filter(mask=>{if(mask.scope!==entry.scope)return false;const p=mask.properties;if(!p.customRange)return true;const low=sortingLayerIndex(layers,p.backSortingLayer),high=sortingLayerIndex(layers,p.frontSortingLayer);return (entry.layer>low||entry.layer===low&&entry.order>=p.backSortingOrder)&&(entry.layer<high||entry.layer===high&&entry.order<=p.frontSortingOrder);}):[];
