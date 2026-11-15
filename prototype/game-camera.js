@@ -38,6 +38,8 @@ export function selectGameCamera(objects,size,override,current,{single=false}={}
   const entries=[];let selected;
   for(const object of candidatesOf(objects)){
     if(object.visible===false)continue;const authored=object.components?enabledComponent(object,'Camera'):null;if(object.components&&!authored)continue;
+    // With an override, an authored camera that is neither the override nor a screen output takes no part: no group lookup.
+    if(override&&object.id!==override&&authored&&!authored.screenOutput)continue;
     const camera=current(object.id)?.userData.gameCamera,properties=authored||camera?.userData.cameraProperties;if(!camera||!properties)continue;
     const entry={object,camera,properties};entries.push(entry);if(override?object.id===override:properties.main&&(!selected||properties.priority>selected.properties.priority))selected=entry;
   }
