@@ -16,7 +16,7 @@ class NativeEditorShell {
     HWND folderBack=nullptr,folderForward=nullptr,folderPath=nullptr,folderTree=nullptr,assetType=nullptr,assetRecursive=nullptr,assetTiles=nullptr;
     HWND contentWindow=nullptr,helpWindow=nullptr,dockTabs=nullptr;
     // Old .workspace-bar tool buttons, .scene-toolbar transform tools and panel headings.
-    std::vector<HWND> toolbarButtons;HWND toolMove=nullptr,toolRotate=nullptr,toolScale=nullptr,toolSnap=nullptr,toolFocus=nullptr,outlinerTitle=nullptr,propertiesTitle=nullptr;
+    std::vector<HWND> toolbarButtons;HWND toolMove=nullptr,toolRotate=nullptr,toolScale=nullptr,toolSnap=nullptr,toolFocus=nullptr,outlinerTitle=nullptr,propertiesTitle=nullptr,quickTitle=nullptr;std::vector<HWND> quickButtons;
     // Old web editor palette for Win32 controls (see style.css :root).
     static constexpr COLORREF bgColor=RGB(0x20,0x22,0x26),panelColor=RGB(0x29,0x2c,0x31),fieldColor=RGB(0x20,0x23,0x28),lineColor=RGB(0x44,0x4a,0x54),textColor=RGB(0xe4,0xe7,0xed),mutedColor=RGB(0xb1,0xb8,0xc4),faintColor=RGB(0x93,0x9e,0xae),accentColor=RGB(0x50,0x89,0xc9);
     static inline HBRUSH bgBrush=CreateSolidBrush(bgColor),fieldBrush=CreateSolidBrush(fieldColor),panelBrush=CreateSolidBrush(panelColor),lineBrush=CreateSolidBrush(lineColor),accentBrush=CreateSolidBrush(accentColor);
@@ -174,7 +174,7 @@ class NativeEditorShell {
     static constexpr Command MeshUVView=static_cast<Command>(151),MeshUVFit=static_cast<Command>(150);
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
-        DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
+        DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -291,6 +291,8 @@ class NativeEditorShell {
         toolMove=control(L"BUTTON",L"이동 W",BS_CHECKBOX|BS_PUSHLIKE,ToolMove);toolRotate=control(L"BUTTON",L"회전 E",BS_CHECKBOX|BS_PUSHLIKE,ToolRotate);toolScale=control(L"BUTTON",L"크기 R",BS_CHECKBOX|BS_PUSHLIKE,ToolScale);
         toolSnap=control(L"BUTTON",L"스냅 G",BS_CHECKBOX|BS_PUSHLIKE,SnapToggle);toolFocus=control(L"BUTTON",L"초점 F",BS_PUSHBUTTON,FocusActor);
         outlinerTitle=control(L"STATIC",L"아웃라이너",SS_LEFT|SS_CENTERIMAGE,Status);propertiesTitle=control(L"STATIC",L"속성",SS_LEFT|SS_CENTERIMAGE,Status);
+        quickTitle=control(L"STATIC",L"빠른 추가",SS_LEFT|SS_CENTERIMAGE,Status);
+        for(const auto& [label,id]:std::initializer_list<std::pair<const wchar_t*,Command>>{{L"큐브",QuickCube},{L"구",QuickSphere},{L"광원",QuickLight}}){quickButtons.push_back(control(L"BUTTON",label,BS_PUSHBUTTON,id));SetWindowTheme(quickButtons.back(),L"DarkMode_Explorer",nullptr);}
         for(HWND h:toolbarButtons)SetWindowTheme(h,L"DarkMode_Explorer",nullptr);
         for(HWND h:{toolMove,toolRotate,toolScale,toolSnap,toolFocus})SetWindowTheme(h,L"DarkMode_Explorer",nullptr);
         // Dark controls: list/tree colours, dark scrollbars and buttons, push-like toggles instead of light check boxes.
@@ -777,7 +779,10 @@ class NativeEditorShell {
         if(sceneLayout){
             MoveWindow(outlinerTitle,S(12),topBar+S(2),std::max(1,left-S(16)),S(28),TRUE);
             MoveWindow(hierarchySearch,S(6),topBar+S(32),std::max(1,left-S(10)),S(26),TRUE);ShowWindow(hierarchySearch,SW_SHOW);
-            hierarchy.update({{"rect",{S(4),topBar+S(62),std::max(1,left-S(6)),std::max(1,height-statusHeight-topBar-S(66))}},{"visible",true}});
+            const int quickTop=height-statusHeight-S(70);
+            MoveWindow(quickTitle,S(12),quickTop,std::max(1,left-S(16)),S(26),TRUE);
+            {const int bw=std::max(1,(left-S(20))/3);int bx=S(6);for(HWND h:quickButtons){MoveWindow(h,bx,quickTop+S(28),bw,S(30),TRUE);bx+=bw+S(4);}}
+            hierarchy.update({{"rect",{S(4),topBar+S(62),std::max(1,left-S(6)),std::max(1,quickTop-topBar-S(66))}},{"visible",true}});
         }else{
             MoveWindow(hierarchySearch,x+w-side+3,top,std::max(1,side-3),S(26),TRUE);ShowWindow(hierarchySearch,sceneShown&&side>0?SW_SHOW:SW_HIDE);
             hierarchy.update({{"rect",{x+w-side+3,top+S(28),std::max(1,side-3),std::max(1,split-S(28))}},{"visible",sceneShown&&side>0}});
@@ -787,7 +792,7 @@ class NativeEditorShell {
         const int assetSide=canvasShown?std::min(std::clamp(int(w*inspectorPercent/100),S(190),S(420)),std::max(0,w-S(160))):0;
         const int adjustableSide=sceneShown?side:assetSide;
         inspectorSpan=w;inspectorDivider=adjustableSide?RECT{x+w-adjustableSide-3,top,x+w-adjustableSide+3,top+h}:RECT{};
-        ShowWindow(outlinerTitle,sceneLayout?SW_SHOW:SW_HIDE);ShowWindow(propertiesTitle,sceneLayout&&side>0?SW_SHOW:SW_HIDE);
+        ShowWindow(outlinerTitle,sceneLayout?SW_SHOW:SW_HIDE);ShowWindow(quickTitle,sceneLayout?SW_SHOW:SW_HIDE);for(HWND h:quickButtons)ShowWindow(h,sceneLayout?SW_SHOW:SW_HIDE);ShowWindow(propertiesTitle,sceneLayout&&side>0?SW_SHOW:SW_HIDE);
         if(sceneLayout)MoveWindow(propertiesTitle,x+w-side+S(10),y,std::max(1,side-S(14)),S(28),TRUE);
         // Viewport tool row beside the camera picker (old .scene-toolbar).
         {int tx=x+std::min(S(230),w/2)+S(10);for(HWND h:{toolMove,toolRotate,toolScale,toolSnap,toolFocus}){MoveWindow(h,tx,y+S(1),S(60),S(28),TRUE);ShowWindow(h,sceneShown?SW_SHOW:SW_HIDE);tx+=S(62)+(h==toolScale?S(10):0);}if(sceneShown)updateToolButtons();}
@@ -2837,6 +2842,7 @@ class NativeEditorShell {
         if(command==DeleteAsset){deleteSelectedAsset();return;}
         if(command==CopyActor){copyActors();return;}
         if(command==CreateItem){perform(sceneOpen()?AddActor:NewAsset);return;}
+        if(command>=QuickCube&&command<=QuickLight){if(sceneOpen()&&!sourceMode)editScene({{"action","add"},{"key",command==QuickCube?"cube":command==QuickSphere?"sphere":"directionalLight"}});return;}
         if(command==FindAsset){if(!consoleVisible||contentWindow){SetFocus(search);SendMessageW(search,EM_SETSEL,0,-1);}else{perform(ShowConsole);SetFocus(search);}return;}
         if(command>=ToolMove&&command<=ToolScale){if(sceneOpen()&&!sourceMode){viewport.selectTransformTool(command==ToolMove?"translate":command==ToolRotate?"rotate":"scale");updateToolButtons();}return;}
         if(command==PasteActor){pasteActors();return;}
