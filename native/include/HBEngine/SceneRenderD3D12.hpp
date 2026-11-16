@@ -627,7 +627,9 @@ public:
     std::uint64_t overlayUploadBytes()const{return overlayUploadBytes_;}
     // hwnd is optional and borrowed; present() copies the final image into its flip swapchain.
     SceneMeshRenderer(Device& device,UINT targetWidth,UINT targetHeight,void* hwnd=nullptr):gpu(device),surfaceWidth(targetWidth),surfaceHeight(targetHeight){
-        const auto source=SceneRenderer::shaderSource();vs=Device::shader(source,"HBSceneRender","VS","vs_5_0");ps=Device::shader(source,"HBSceneRender","PS","ps_5_0");shadowPs=Device::shader(source,"HBSceneRender","ShadowPS","ps_5_0");surfacePs=Device::shader(SceneRenderer::surfaceShader(source),"HBSceneRender","PS","ps_5_0");
+        // fxc takes ~10 s per uncached scene pixel shader; compile the independent stages on parallel threads.
+        const auto source=SceneRenderer::shaderSource(),surface=SceneRenderer::surfaceShader(source);auto basePs=std::async(std::launch::async,[&]{return Device::shader(source,"HBSceneRender","PS","ps_5_0");}),surfaceCode=std::async(std::launch::async,[&]{return Device::shader(surface,"HBSceneRender","PS","ps_5_0");});
+        vs=Device::shader(source,"HBSceneRender","VS","vs_5_0");shadowPs=Device::shader(source,"HBSceneRender","ShadowPS","ps_5_0");ps=basePs.get();surfacePs=surfaceCode.get();
         reflect(vs);reflect(ps);reflect(surfacePs);if(slots.empty()||samplerCount>16||!cbuffers.count(0))throw std::runtime_error("Direct3D12 scene shader layout unexpected");
         // Node programs may bind t7..t23 and any of s0..s15 (D3D11 binds 16 samplers and 53 views).
         samplerCount=16;if(slots.size()<53)slots.resize(53);
@@ -885,7 +887,7 @@ public:
     Program createProgram(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){
         if(!SceneRenderer::finite(parameters))throw std::runtime_error("Material parameters invalid");
         const auto base=SceneRenderer::materialProgramBase(declarations,evaluation),surface=SceneRenderer::surfaceShader(base);Program out;
-        out.ps=Device::shader(base,"HBNodeMaterial","PS","ps_5_0");out.shadow=Device::shader(base,"HBNodeMaterial","ShadowPS","ps_5_0");out.surface=Device::shader(surface,"HBNodeMaterial","PS","ps_5_0");
+        auto ps=std::async(std::launch::async,[&]{return Device::shader(base,"HBNodeMaterial","PS","ps_5_0");}),surfaceCode=std::async(std::launch::async,[&]{return Device::shader(surface,"HBNodeMaterial","PS","ps_5_0");});out.shadow=Device::shader(base,"HBNodeMaterial","ShadowPS","ps_5_0");out.ps=ps.get();out.surface=surfaceCode.get();
         validateProgram(out);
         setProgramParameters(out,parameters);return out;
     }

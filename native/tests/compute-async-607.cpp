@@ -12,7 +12,7 @@ using namespace std::chrono_literals;
 template<class F>void until(F fn){const auto end=std::chrono::steady_clock::now()+20s;while(!fn()){if(std::chrono::steady_clock::now()>end)throw std::runtime_error("compute607 timeout");std::this_thread::sleep_for(1ms);}}
 struct Hold{std::promise<void> entered,release;std::shared_ptr<detail::ShaderPreparationQueue::Job> job;bool open=false;Hold(){auto gate=release.get_future().share();auto e=entered.get_future();job=detail::sharedShaderPreparationQueue().submit("Compute607Hold",128,[this,gate]{entered.set_value();gate.wait();return std::vector<unsigned char>{};});e.get();}void resume(){if(!open){open=true;release.set_value();}}~Hold(){resume();}};
 const std::string source="RWStructuredBuffer<float> values:register(u0);cbuffer Params:register(b0){float scale,bias;float2 pad;}[numthreads(4,1,1)]void Main(uint3 id:SV_DispatchThreadID){values[id.x]=values[id.x]*scale+bias;}";
-int main(int argc,char** argv){try{
+int main(int argc,char** argv){try{hb::gpu::detail::sharedShaderPreparationQueue().workerLimit(1);/* held jobs must block the next one */
  if(argc!=3)throw std::runtime_error("private cache/mode required");
  const std::string mode=argv[2];Device gpu,other;
  if(mode=="exit-active"){

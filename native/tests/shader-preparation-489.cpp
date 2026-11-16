@@ -43,6 +43,11 @@ int main(int argc,char** argv){try{
  until([&]{return !queue.info().worker;});const auto before=queue.info();assert(before.bytes==0&&!before.active&&before.queued==0&&before.workersStarted==1);
  auto restart=queue.submit("restart",100,[]{return std::vector<unsigned char>{3};});until([&]{return restart->status.load()==Queue::Status::ready;});until([&]{return !queue.info().worker;});
  const auto info=queue.info();assert(info.workersStarted==2&&info.completed==3&&info.failed==1&&info.cancelled==1&&info.deduplicated==1&&info.bytes==0);
+ {Queue parallel(1024,50ms,2);std::promise<void> aIn,bIn,go;auto gate=go.get_future().share();auto aAt=aIn.get_future(),bAt=bIn.get_future();
+  auto a=parallel.submit("parallel-a",100,[&]{aIn.set_value();gate.wait();return std::vector<unsigned char>{1};}),b=parallel.submit("parallel-b",100,[&]{bIn.set_value();gate.wait();return std::vector<unsigned char>{2};}),c=parallel.submit("parallel-c",100,[]{return std::vector<unsigned char>{3};});
+  // Both held jobs run at once on two workers; the third waits for a free worker.
+  assert(aAt.wait_for(10s)==std::future_status::ready&&bAt.wait_for(10s)==std::future_status::ready);assert(parallel.info().workersStarted==2&&parallel.info().queued==1&&c->status.load()==Queue::Status::queued);
+  go.set_value();until([&]{return c->status.load()==Queue::Status::ready;});until([&]{return !parallel.info().worker;});assert(parallel.info().completed==3&&parallel.info().bytes==0);}
  std::cout<<Json({{"passed",true},{"inspectionReadyWhileCreateBlocked",inspectionReady},{"configureReadyWhileCreateBlocked",configureReady},{"oldGenerationNotWrittenToNewRoot",true},{"actualFXCWorker",true},{"deduplicated",info.deduplicated},{"cancelled",info.cancelled},{"completed",info.completed},{"failed",info.failed},{"workerRestartCount",info.workersStarted},{"idleWorkers",0},{"retainedQueueBytes",info.bytes},{"budget",info.budget}});
 #endif
 }catch(const std::exception& e){std::cerr<<e.what();return 1;}}

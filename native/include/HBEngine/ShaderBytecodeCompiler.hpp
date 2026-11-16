@@ -73,7 +73,7 @@ public:
 // the screen compiler cache must outlive a queue first requested by Compute.
 struct ScreenShaderCompilerState {std::mutex mutex;ShaderBytecodeCache cache;std::uint64_t compilations=0,totalMS=0,lastMS=0;};
 inline ScreenShaderCompilerState& screenShaderCompilerState(){static ScreenShaderCompilerState value;return value;}
-inline ShaderPreparationQueue& sharedShaderPreparationQueue(){libraries();ShaderBytecodeCompiler::info();screenShaderCompilerState();static ShaderPreparationQueue queue;return queue;}
+inline ShaderPreparationQueue& sharedShaderPreparationQueue(){libraries();ShaderBytecodeCompiler::info();screenShaderCompilerState();static ShaderPreparationQueue queue(8*1024*1024,std::chrono::milliseconds(1000),std::clamp<std::size_t>(std::thread::hardware_concurrency()/2,1,4));return queue;}
 }
 #endif
 // Preserve consumers that included this helper for the Compute SDK. Definitions

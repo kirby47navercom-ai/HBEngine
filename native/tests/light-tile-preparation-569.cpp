@@ -10,7 +10,7 @@ struct Blocker{
  explicit Blocker(const std::string& key){auto gate=release.get_future().share();auto started=entered.get_future();job=ScreenEffectsPass::sharedPreparationQueue().submit(key,key.size()+128,[this,gate]{entered.set_value();gate.wait();return std::vector<unsigned char>{};});started.get();}
  void resume(){if(!open){open=true;release.set_value();}}~Blocker(){resume();}
 };
-int main(){try{
+int main(){try{hb::gpu::detail::sharedShaderPreparationQueue().workerLimit(1);/* held jobs must block the next one */
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
  Device gpu;SceneRenderer renderer(gpu,96,80),reference(gpu,96,80);renderer.setAsyncShaderPreparation(true);
  const std::vector<SceneVertex> vertices={{{-1,-1,.4f}},{{1,-1,.4f}},{{1,1,.4f}},{{-1,1,.4f}}};auto mesh=renderer.createMesh(vertices,{0,1,2,0,2,3}),referenceMesh=reference.createMesh(vertices,{0,1,2,0,2,3});SceneMaterial material;material.doubleSided=true;material.color={.7f,.7f,.7f,1};

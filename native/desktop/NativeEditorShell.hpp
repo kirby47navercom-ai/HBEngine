@@ -2164,7 +2164,7 @@ class NativeEditorShell {
             {{"name",L"프로필 이름",80},{"productName",L"게임 이름",80},{"width",L"화면 너비",5,true},{"height",L"화면 높이",5,true}},
             {{"target",L"대상 플랫폼",0,false,{L"Windows x64",L"웹",L"Android",L"iOS"},{"windows-x64","web","android","ios"}},
              {"configuration",L"빌드 구성",0,false,{L"개발",L"배포"},{"development","release"}},
-             {"nativeGraphicsAPI",L"Windows 그래픽 API",0,false,{L"DirectX 12",L"DirectX 12 · 11On12",L"자동",L"DirectX 11"},{"d3d12","d3d12-11on12","auto","d3d11"}}},
+             {"nativeGraphicsAPI",L"Windows 그래픽 API",0,false,{L"자동 · DirectX 12 우선",L"DirectX 12",L"DirectX 12 · 11On12",L"DirectX 11"},{"auto","d3d12","d3d12-11on12","d3d11"}}},
             {{"targetFrameRate",L"목표 FPS (15–240)",3,true},{"framePacing",L"프레임 표시 방식",0,false,{L"고정 목표 FPS",L"화면 주사율 동기화",L"제한 없음 · Windows 네이티브"},{"fixed","display","uncapped"}}},
             {{"enabled",L"키오스크 모드",0,false,toggle,toggleValues},{"fullscreen",L"전체 화면",0,false,toggle,toggleValues},
              {"hideCursor",L"커서 숨기기",0,false,toggle,toggleValues},{"preventMinimize",L"최소화 막기",0,false,toggle,toggleValues},

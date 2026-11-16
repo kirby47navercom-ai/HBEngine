@@ -7,7 +7,7 @@ using namespace hb::gpu;using namespace std::chrono_literals;using Json=nlohmann
 template<class F>void until(F fn){const auto end=std::chrono::steady_clock::now()+30s;while(!fn()){if(std::chrono::steady_clock::now()>end)throw std::runtime_error("probe605 timeout");std::this_thread::sleep_for(1ms);}}
 struct Hold{std::promise<void> entered,release;std::shared_ptr<detail::ShaderPreparationQueue::Job> job;bool open=false;explicit Hold(const std::string& key){auto gate=release.get_future().share();auto e=entered.get_future();job=ScreenEffectsPass::sharedPreparationQueue().submit(key,128,[this,gate]{entered.set_value();gate.wait();return std::vector<unsigned char>{};});e.get();}void resume(){if(!open){open=true;release.set_value();}}~Hold(){resume();}};
 struct Hidden{HWND value=CreateWindowExW(0,L"STATIC",L"HBEngine private probe605",WS_POPUP,0,0,16,16,nullptr,nullptr,GetModuleHandleW(nullptr),nullptr);Hidden(){if(!value)throw std::runtime_error("hidden window failed");}~Hidden(){DestroyWindow(value);}};
-int main(int argc,char** argv){try{
+int main(int argc,char** argv){try{hb::gpu::detail::sharedShaderPreparationQueue().workerLimit(1);/* held jobs must block the next one */
  if(argc!=2)throw std::runtime_error("private shader input required");std::ifstream file(argv[1]);Json input;file>>input;const std::string source=input.at("source");SceneRenderer::configureShaderCache("ShaderCache");Device gpu;SceneRenderer renderer(gpu,16,16);renderer.setAsyncShaderPreparation(true);
  // Valid vertex bytecode under each compute-stage key forces real driver
  // rejection on owner-thread adoption, followed by one fresh compiler retry.
