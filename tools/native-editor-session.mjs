@@ -1,5 +1,8 @@
 import fs from 'node:fs/promises';
 import {createReadStream} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {execFile} from 'node:child_process';
+import {promisify} from 'node:util';
 import {Worker} from 'node:worker_threads';
 import path from 'node:path';
 import readline from 'node:readline';
@@ -20,7 +23,7 @@ import {createPlacedObject,placementCatalog} from '../prototype/placement-catalo
 import {addSceneComponent,componentDefinitions,componentPropertyVisible,defaultsForObject,installBlueprintComponents,objectComponents} from '../prototype/scene-components.js';
 import {addMobileControls,addWidget,duplicateWidget,removeWidget,reparentWidget,setWidgetAnchorPreset,transformWidgetSlot,widgetContainers,widgetTypes} from '../prototype/ui-assets.js';
 import {projectBytes,projectText} from './project-bytes.mjs';
-import {createPrefabInstance} from '../prototype/prefab-instances.js';
+import {applyPrefabProperty,createPrefabInstance,prefabInstanceChanges,prefabRootFor,refreshPrefabInstance,revertAllPrefabProperties,unpackPrefabInstance} from '../prototype/prefab-instances.js';
 import {resolvePrefab} from '../prototype/prefab-variants.js';
 import {validateSpriteRigProgram} from '../prototype/sprite-rig-assets.js';
 import {editFoliage,editMesh,eraseFoliage,scatterFoliage,simplifyMesh,terrainBrush,terrainStroke,worldAssetTypes} from '../prototype/world-assets.js';
@@ -138,6 +141,41 @@ export function nativeEditorSession(bridge) {
     if(doc.kind==='text'&&doc.path.startsWith('Source/'))nativeMetadata=new WeakMap();
     doc.dirty = JSON.stringify(next) !== doc.saved;
   }
+  // Deleted assets go to the Windows Recycle Bin so the user can restore them; tests redirect to a folder.
+  async function recycle(file){
+    const trash=process.env.HB_EDITOR_TRASH_DIR;
+    if(trash){await fs.mkdir(trash,{recursive:true});await fs.rename(file,path.join(trash,Date.now()+'-'+path.basename(file)));return;}
+    const script='Add-Type -AssemblyName Microsoft.VisualBasic;$p=$env:HB_RECYCLE_PATH;$io=[Microsoft.VisualBasic.FileIO.FileSystem];if((Get-Item -LiteralPath $p).PSIsContainer){$io::DeleteDirectory($p,"OnlyErrorDialogs","SendToRecycleBin")}else{$io::DeleteFile($p,"OnlyErrorDialogs","SendToRecycleBin")}';
+    await promisify(execFile)('powershell.exe',['-NoProfile','-NonInteractive','-Command',script],{env:{...process.env,HB_RECYCLE_PATH:file},windowsHide:true,timeout:60000});
+    if(await fs.access(file).then(()=>true,()=>false))throw Error('휴지통으로 옮기지 못했어요.');
+  }
+  // Unsaved documents are copied to the user profile so a crash or forced close can be recovered on the next open.
+  const hash=(text,size)=>createHash('sha256').update(text).digest('hex').slice(0,size);
+  const autosaveFolder=()=>process.env.HB_USER_DATA_DIR?path.join(process.env.HB_USER_DATA_DIR,'Autosave',hash(project().root,16)):null;
+  const autosaveFile=file=>path.join(autosaveFolder(),hash(file,24)+'.json');
+  async function dropAutosave(file){const folder=autosaveFolder();if(folder)await fs.rm(autosaveFile(file),{force:true});}
+  async function autosaves(){
+    const folder=autosaveFolder();if(!folder)return [];
+    const rows=[];
+    for(const name of await fs.readdir(folder).catch(()=>[])){
+      if(!name.endsWith('.json'))continue;
+      const file=path.join(folder,name);
+      try{
+        const row=JSON.parse(await fs.readFile(file,'utf8'));
+        const disk=await projectText(project(),row.path).catch(()=>null);
+        const data=disk===null?null:assetSuffix[assetKind(row.path)]?JSON.stringify(JSON.parse(disk.replace(/^\uFEFF/,''))):JSON.stringify(disk);
+        // Only offer copies taken from the file as it is on disk now.
+        if(row.version===1&&typeof row.path==='string'&&data!==null&&hash(data,32)===row.base&&autosaveFile(row.path)===file)rows.push(row);else await fs.rm(file,{force:true});
+      }catch{await fs.rm(file,{force:true});}
+    }
+    return rows.sort((a,b)=>a.time-b.time);
+  }
+  async function linkedPrefab(asset,override){
+    const dependencies=new Set(),read=async name=>name===asset&&override?structuredClone(override):documents.items.get(name)?.data??JSON.parse((await projectText(project(),name)).replace(/^\uFEFF/,''));
+    const data=await read(asset);
+    const resolved=await resolvePrefab(asset,name=>{dependencies.add(name);return read(name);},{validate:row=>validAsset('prefab',row)});
+    return {...resolved,dependencies:[...dependencies],sourceRevision:await documentRevision(data)};
+  }
   async function loadDocument(file) {
     if(typeof file!=='string')throw Error('프로젝트 문서를 선택하세요.');
     const kind = assetKind(file);
@@ -209,9 +247,7 @@ export function nativeEditorSession(bridge) {
       return actor.id;
     }
     if(kind==='prefab'){
-      const dependencies=new Set();
-      const prefab=await resolvePrefab(asset,name=>{dependencies.add(name);return read(name);},{validate:row=>validAsset('prefab',row)});
-      const rows=createPrefabInstance(asset,{...prefab,dependencies:[...dependencies],sourceRevision:await documentRevision(data)});
+      const rows=createPrefabInstance(asset,await linkedPrefab(asset));
       const root=rows.find(row=>row.prefabLink);
       root.position=root.position.map((value,index)=>value+position[index]);
       next.objects.push(...rows);return root.id;
@@ -954,6 +990,22 @@ export function nativeEditorSession(bridge) {
       if(!stat.isFile())throw Error('가져올 파일을 선택하세요.');
       return project().importStream(folder,path.basename(file),createReadStream(file),()=>{},{expectedBytes:stat.size});
     },
+    'content.delete': async ({path:file,force=false})=>{
+      if(typeof file!=='string'||!/^(?:Assets|Source|Settings)\/./.test(file)||file.split('/').some(part=>part==='..'||part==='.'))throw Error('삭제할 프로젝트 에셋을 확인하세요.');
+      if(tabs().some(doc=>doc.path===file||doc.path.startsWith(file+'/')||doc.path===file+'.import.json'))throw Error('삭제할 에셋의 문서를 먼저 닫으세요.');
+      const owner=project(),target=await owner.resolve(file),stat=await fs.lstat(target);
+      if(stat.isSymbolicLink())throw Error('링크는 삭제하지 않아요.');
+      if(stat.isDirectory()){if((await fs.readdir(target)).length)throw Error('비어 있는 폴더만 삭제할 수 있어요.');}
+      else if(!force){
+        const info=await owner.assetInfo(file).catch(()=>null),referencers=(info?.referencers||[]).map(row=>row.path);
+        if(referencers.length)return {path:file,deleted:false,referencers};
+      }
+      const sidecar=target+'.import.json';
+      await recycle(target);
+      if(stat.isFile()&&await fs.access(sidecar).then(()=>true,()=>false))await recycle(sidecar);
+      await owner.registry();nativeMetadata=new WeakMap();
+      return {path:file,deleted:true,referencers:[]};
+    },
     'content.rename': async ({path:file,name})=>{
       name=typeof name==='string'?name.trim():'';
       if(typeof file!=='string'||!/^(?:Assets|Source|Settings)\//.test(file)||!name||name==='.'||name==='..'||/[/\\:<>?"|*\x00-\x1f]/.test(name))throw Error('이름을 바꿀 프로젝트 에셋을 확인하세요.');
@@ -1097,12 +1149,35 @@ export function nativeEditorSession(bridge) {
       const doc = targetDocument(path);
       await check(doc,expectedRevision);
       await documents.save(doc,(file,text,expected) => project().checkedWrite(file,text,expected));
+      await dropAutosave(doc.path);
       return response(doc);
     },
     'document.close': ({path,discard=false}) => {
       if (!documents.close(path,discard)) throw Error('저장하지 않은 변경 사항이 있어요.');
+      if(discard&&record&&typeof path==='string')void dropAutosave(path).catch(()=>{});
       return documents.current ? response(documents.current) : {tabs:tabs()};
     },
+    'editor.autosave': async()=>{
+      const folder=autosaveFolder();if(!folder||!record)return {written:0};
+      let written=0;
+      for(const doc of documents.items.values()){
+        if(!doc.dirty){await dropAutosave(doc.path);continue;}
+        await fs.mkdir(folder,{recursive:true});
+        const file=autosaveFile(doc.path),temp=file+'.'+process.pid+'.tmp';
+        await fs.writeFile(temp,JSON.stringify({version:1,path:doc.path,base:hash(doc.saved,32),time:Date.now(),data:doc.data}));
+        await fs.rename(temp,file);written++;
+      }
+      return {written};
+    },
+    'editor.autosaves': async()=>record?(await autosaves()).map(({path:file,time})=>({path:file,time})):[],
+    'editor.restoreAutosave': async({path:file})=>{
+      const row=(await autosaves()).find(item=>item.path===file);if(!row)throw Error('복구할 자동 저장본이 없어요.');
+      const doc=await loadDocument(file);
+      if(hash(doc.saved,32)!==row.base)throw Error('저장된 파일이 바뀌어 자동 저장본을 복구할 수 없어요.');
+      change(doc,row.data);await dropAutosave(file);
+      return response(documents.select(file));
+    },
+    'editor.discardAutosave': async({path:file})=>{await dropAutosave(file);return {path:file};},
     'editor.undo': ({path,expectedRevision}) => restore('history','future',path,expectedRevision),
     'editor.redo': ({path,expectedRevision}) => restore('future','history',path,expectedRevision),
     'scene.catalog': () => ({placements:placementCatalog.map(({key,label,category})=>({id:key,label,group:category})),components:Object.keys(componentDefinitions)}),
@@ -1133,6 +1208,26 @@ export function nativeEditorSession(bridge) {
         } else if(action==='duplicate'){
           const copied=copySceneObjects(next.objects,[id]);
           selection=pasteSceneObjects(next.objects,copied,{offset:[.5,0,.5]})[0].id;
+        } else if(['prefabApply','prefabRevert','prefabRefresh','prefabUnpack'].includes(action)){
+          const root=prefabRootFor(next.objects,actor);
+          if(!root)throw Error('프리팹 인스턴스를 선택하세요.');
+          if(action==='prefabRevert')next.objects=revertAllPrefabProperties(next.objects,root);
+          else if(action==='prefabUnpack')next.objects=unpackPrefabInstance(next.objects,root);
+          else if(action==='prefabRefresh')next.objects=refreshPrefabInstance(next.objects,root,await linkedPrefab(root.prefabAsset)).objects;
+          else{
+            // Apply every override to the outer prefab asset (opened as a dirty document), then re-sync this instance.
+            const changes=prefabInstanceChanges(next.objects,root);
+            if(!changes.length)throw Error('적용할 프리팹 변경이 없어요.');
+            const structural=new Set(changes.filter(c=>!c.path?.length).map(c=>c.object)),parents=new Map(root.prefabLink.baseline.map(o=>[o.id,o.parent||o.parentId])),reverse=new Map(Object.entries(root.prefabLink.ids).map(([a,b])=>[b,a]));
+            for(const o of next.objects)if(o.prefabRoot===root.id)parents.set(o.prefabLocalId,reverse.get(o.parent||o.parentId));
+            const nested=c=>{let parent=parents.get(c.object);const seen=new Set();while(parent&&!seen.has(parent)){if(structural.has(parent))return true;seen.add(parent);parent=parents.get(parent);}return false;};
+            const prefabDoc=await loadDocument(root.prefabAsset);let data=structuredClone(prefabDoc.data);
+            for(const c of changes.filter(c=>!nested(c)))data=applyPrefabProperty(data,await linkedPrefab(root.prefabAsset,data),next.objects,root,c.object,c.path);
+            change(prefabDoc,data);
+            next.objects=refreshPrefabInstance(next.objects,root,await linkedPrefab(root.prefabAsset)).objects;
+            const applied=next.objects.find(o=>o.id===root.id);if(applied?.prefabLink){applied.prefabLink.overrides=[];applied.prefabLink.conflicts=[];}
+          }
+          selection=next.objects.some(o=>o.id===id)?id:root.id;
         } else if (action==='delete') {
           if (next.objects.some(item=>item.parent===id)) throw Error('하위 오브젝트를 이동한 뒤 삭제하세요.');
           next.objects=next.objects.filter(item=>item.id!==id);selection='';

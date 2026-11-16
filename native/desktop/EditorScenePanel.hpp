@@ -135,6 +135,7 @@ class EditorScenePanel {
                 return 0;
             }
             if(message==WM_KEYDOWN&&w=='F'){post({{"command","focus"}});return 0;}
+            if(message==WM_KEYDOWN&&!button&&(w==VK_DELETE||(w=='D'&&(GetKeyState(VK_CONTROL)&0x8000)))){post({{"command","shortcut"},{"key",w==VK_DELETE?"delete":"duplicate"}});return 0;}
             if(message==WM_KEYDOWN&&!button&&(w=='W'||w=='E'||w=='R')){
                 selectTransformTool(w=='W'?"translate":w=='E'?"rotate":"scale");return 0;
             }

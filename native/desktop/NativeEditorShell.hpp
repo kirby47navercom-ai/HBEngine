@@ -161,7 +161,8 @@ class NativeEditorShell {
     static constexpr Command MeshSelection=static_cast<Command>(153),MeshAdvanced=static_cast<Command>(152);
     static constexpr Command MeshUVView=static_cast<Command>(151),MeshUVFit=static_cast<Command>(150);
     // Help sits outside the 100–199 command block and the recent-project range.
-    static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901);
+    static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
+        DeleteAsset=static_cast<Command>(902),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -446,7 +447,8 @@ class NativeEditorShell {
         AppendMenuW(file,MF_STRING,ExternalCpp,L"소스를 외부 편집기에서 열기");
         AppendMenuW(file,MF_STRING,NewFolder,L"새 폴더");
         AppendMenuW(file,MF_STRING,ImportAsset,L"에셋 가져오기");
-        AppendMenuW(file,MF_STRING,RenameAsset,L"선택한 에셋 이름 바꾸기");
+        AppendMenuW(file,MF_STRING,RenameAsset,L"선택한 에셋 이름 바꾸기\tF2");
+        AppendMenuW(file,MF_STRING,DeleteAsset,L"선택한 에셋 삭제 (휴지통)\tDelete");
         AppendMenuW(file,MF_STRING,Save,L"문서 저장\tCtrl+S");
         AppendMenuW(file,MF_STRING,CloseDocument,L"문서 닫기\tCtrl+W");
         AppendMenuW(file,MF_STRING,Recovery,L"저장 충돌 복구");
@@ -502,8 +504,14 @@ class NativeEditorShell {
         AppendMenuW(viewMenu,MF_STRING,MeshUVFit,L"메시 UV 전체 보기");
         AppendMenuW(sceneMenu,MF_STRING,AddActor,L"오브젝트 추가");
         AppendMenuW(sceneMenu,MF_STRING,AddComponent,L"컴포넌트 추가");
-        AppendMenuW(sceneMenu,MF_STRING,DeleteActor,L"선택 오브젝트 삭제");
-        AppendMenuW(sceneMenu,MF_STRING,DuplicateActor,L"선택 오브젝트 복제");
+        AppendMenuW(sceneMenu,MF_STRING,DeleteActor,L"선택 오브젝트 삭제\tDelete");
+        AppendMenuW(sceneMenu,MF_STRING,DuplicateActor,L"선택 오브젝트 복제\tCtrl+D");
+        const HMENU prefabMenu=CreatePopupMenu();
+        AppendMenuW(prefabMenu,MF_STRING,PrefabApply,L"변경 사항을 프리팹에 모두 적용");
+        AppendMenuW(prefabMenu,MF_STRING,PrefabRevert,L"변경 사항 모두 되돌리기");
+        AppendMenuW(prefabMenu,MF_STRING,PrefabRefresh,L"프리팹 원본과 다시 동기화");
+        AppendMenuW(prefabMenu,MF_STRING,PrefabUnpack,L"프리팹 연결 풀기");
+        AppendMenuW(sceneMenu,MF_POPUP,UINT_PTR(prefabMenu),L"선택한 프리팹 인스턴스");
         AppendMenuW(sceneMenu,MF_STRING,FocusActor,L"선택 오브젝트에 초점\tF");
         AppendMenuW(sceneMenu,MF_STRING,TranslateActor,L"이동 도구\tW");
         AppendMenuW(sceneMenu,MF_STRING,RotateActor,L"회전 도구\tE");
@@ -529,8 +537,8 @@ class NativeEditorShell {
     }
     static const wchar_t* helpText(bool start){
         return start?
-            L"HBEngine 시작하기\r\n" L"\r\n" L"1. 프로젝트 만들기\r\n" L"   파일 > 새 프로젝트에서 2D·3D 템플릿을 골라요. 파일 > 프로젝트 열기(Ctrl+O)나 최근 프로젝트로 다시 열어요.\r\n" L"2. 에셋 넣기\r\n" L"   이미지·모델·소리 파일을 콘텐츠 브라우저로 끌어다 놓거나 파일 > 에셋 가져오기를 써요.\r\n" L"   폴더는 왼쪽 트리와 경로 줄로 이동하고, 검색 칸과 종류 목록으로 찾아요.\r\n" L"3. 장면 꾸미기\r\n" L"   장면 > 오브젝트 추가로 물체를 놓고, 오른쪽 속성 패널에서 위치·컴포넌트를 바꿔요.\r\n" L"   에셋을 장면 화면으로 끌어다 놓아도 배치돼요. 이동·회전·크기는 W·E·R이에요.\r\n" L"4. 로직 만들기\r\n" L"   블루프린트 에셋을 열고 빈 곳을 우클릭하거나 Space로 노드를 찾아 추가해요. 핀을 끌어 연결해요.\r\n" L"   C++가 필요하면 파일 > 새 C++ 클래스, 빌드 > C++ 클래스 컴파일을 써요.\r\n" L"5. 실행하기\r\n" L"   F5로 플레이하고 Shift+F5로 멈춰요. 블루프린트 노드에 F9로 중단점을 걸 수 있어요.\r\n" L"6. 저장·되돌리기\r\n" L"   Ctrl+S로 저장하고 Ctrl+Z·Ctrl+Y로 되돌리거나 다시 적용해요. 저장이 충돌하면 파일 > 저장 충돌 복구를 써요.\r\n" L"7. 게임 만들기\r\n" L"   빌드 > 빌드 프로필 설정에서 이름·화면 크기·그래픽 API를 고르고, 빌드 > 패키징으로 Windows 게임을 만들어요.\r\n" L"\r\n" L"창 배치가 흐트러지면 보기 > 기본 배치 복원을 써요. 문제가 생기면 보기 > 출력 로그에서 메시지를 확인해요.\r\n":
-            L"단축키 목록\r\n" L"\r\n" L"[전체]\r\n" L"  Ctrl+O        프로젝트 열기\r\n" L"  Ctrl+S        문서 저장\r\n" L"  Ctrl+W        문서 닫기\r\n" L"  Ctrl+Z        되돌리기\r\n" L"  Ctrl+Y        다시 적용\r\n" L"  Alt+↑         콘텐츠 브라우저 상위 폴더\r\n" L"  F5            플레이\r\n" L"  Shift+F5      플레이 중지\r\n" L"  F1            이 단축키 목록\r\n" L"\r\n" L"[장면 화면]\r\n" L"  W / E / R     이동 / 회전 / 크기 도구\r\n" L"  F             선택 오브젝트에 초점\r\n" L"  왼쪽 클릭     선택 (핸들을 끌면 변환)\r\n" L"  Shift+왼쪽 끌기  선택 오브젝트 변환\r\n" L"  우클릭 끌기   시점 회전\r\n" L"  우클릭+W·A·S·D·Q·E  비행 이동\r\n" L"  휠 버튼 끌기  시점 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Esc           변환 끌기 취소\r\n" L"\r\n" L"[블루프린트·노드 그래프]\r\n" L"  우클릭        노드 추가 목록\r\n" L"  우클릭 끌기 / 휠 버튼 끌기  화면 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Space         노드 추가 목록\r\n" L"  C             주석 추가\r\n" L"  Ctrl+F        노드 찾기\r\n" L"  Delete        선택 노드 삭제\r\n" L"  F9            중단점 전환\r\n" L"  Esc           연결 중인 선 취소\r\n" L"  핀 우클릭     연결 끊기 / 출력 값 관찰\r\n" L"\r\n" L"[출력 로그]\r\n" L"  Ctrl+A        모두 선택\r\n" L"  Ctrl+C        복사\r\n";
+            L"HBEngine 시작하기\r\n" L"\r\n" L"1. 프로젝트 만들기\r\n" L"   파일 > 새 프로젝트에서 2D·3D 템플릿을 골라요. 파일 > 프로젝트 열기(Ctrl+O)나 최근 프로젝트로 다시 열어요.\r\n" L"2. 에셋 넣기\r\n" L"   이미지·모델·소리 파일을 콘텐츠 브라우저로 끌어다 놓거나 파일 > 에셋 가져오기를 써요.\r\n" L"   폴더는 왼쪽 트리와 경로 줄로 이동하고, 검색 칸과 종류 목록으로 찾아요.\r\n" L"3. 장면 꾸미기\r\n" L"   장면 > 오브젝트 추가로 물체를 놓고, 오른쪽 속성 패널에서 위치·컴포넌트를 바꿔요.\r\n" L"   에셋을 장면 화면으로 끌어다 놓아도 배치돼요. 이동·회전·크기는 W·E·R이에요.\r\n" L"   프리팹 인스턴스를 고친 뒤 장면 > 선택한 프리팹 인스턴스에서 프리팹에 적용하거나 되돌려요.\r\n" L"4. 로직 만들기\r\n" L"   블루프린트 에셋을 열고 빈 곳을 우클릭하거나 Space로 노드를 찾아 추가해요. 핀을 끌어 연결해요.\r\n" L"   C++가 필요하면 파일 > 새 C++ 클래스, 빌드 > C++ 클래스 컴파일을 써요.\r\n" L"5. 실행하기\r\n" L"   F5로 플레이하고 Shift+F5로 멈춰요. 블루프린트 노드에 F9로 중단점을 걸 수 있어요.\r\n" L"6. 저장·되돌리기\r\n" L"   Ctrl+S로 저장하고 Ctrl+Z·Ctrl+Y로 되돌리거나 다시 적용해요. 저장이 충돌하면 파일 > 저장 충돌 복구를 써요.\r\n" L"   저장하지 않은 문서는 30초마다 따로 보관돼요. 편집기가 갑자기 꺼지면 다음에 프로젝트를 열 때 복구할지 물어봐요.\r\n" L"   에셋을 지우면 Windows 휴지통으로 가서 되살릴 수 있어요. 다른 에셋이 쓰고 있으면 먼저 알려 줘요.\r\n" L"7. 게임 만들기\r\n" L"   빌드 > 빌드 프로필 설정에서 이름·화면 크기·그래픽 API를 고르고, 빌드 > 패키징으로 Windows 게임을 만들어요.\r\n" L"\r\n" L"창 배치가 흐트러지면 보기 > 기본 배치 복원을 써요. 문제가 생기면 보기 > 출력 로그에서 메시지를 확인해요.\r\n":
+            L"단축키 목록\r\n" L"\r\n" L"[전체]\r\n" L"  Ctrl+O        프로젝트 열기\r\n" L"  Ctrl+S        문서 저장\r\n" L"  Ctrl+W        문서 닫기\r\n" L"  Ctrl+Z        되돌리기\r\n" L"  Ctrl+Y        다시 적용\r\n" L"  Alt+↑         콘텐츠 브라우저 상위 폴더\r\n" L"  F5            플레이\r\n" L"  Shift+F5      플레이 중지\r\n" L"  F1            이 단축키 목록\r\n" L"\r\n" L"[장면 화면]\r\n" L"  W / E / R     이동 / 회전 / 크기 도구\r\n" L"  F             선택 오브젝트에 초점\r\n" L"  왼쪽 클릭     선택 (핸들을 끌면 변환)\r\n" L"  Shift+왼쪽 끌기  선택 오브젝트 변환\r\n" L"  우클릭 끌기   시점 회전\r\n" L"  우클릭+W·A·S·D·Q·E  비행 이동\r\n" L"  휠 버튼 끌기  시점 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Esc           변환 끌기 취소\r\n" L"  Delete        선택 오브젝트 삭제\r\n" L"  Ctrl+D        선택 오브젝트 복제\r\n" L"\r\n" L"[콘텐츠 브라우저]\r\n" L"  Delete        선택한 에셋을 휴지통으로\r\n" L"  F2            이름 바꾸기\r\n" L"  끌어다 놓기   장면에 배치\r\n" L"\r\n" L"[블루프린트·노드 그래프]\r\n" L"  우클릭        노드 추가 목록\r\n" L"  우클릭 끌기 / 휠 버튼 끌기  화면 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Space         노드 추가 목록\r\n" L"  C             주석 추가\r\n" L"  Ctrl+F        노드 찾기\r\n" L"  Delete        선택 노드 삭제\r\n" L"  F9            중단점 전환\r\n" L"  Esc           연결 중인 선 취소\r\n" L"  핀 우클릭     연결 끊기 / 출력 값 관찰\r\n" L"\r\n" L"[출력 로그]\r\n" L"  Ctrl+A        모두 선택\r\n" L"  Ctrl+C        복사\r\n";
     }
     // A plain dialog-class frame holding one read-only, selectable EDIT; X or Esc closes it.
     void showHelp(bool start){
@@ -550,6 +558,35 @@ class NativeEditorShell {
         const HWND text=GetWindow(helpWindow,GW_CHILD);SetWindowTextW(text,helpText(start));SendMessageW(text,EM_SETSEL,0,0);
         SetWindowTextW(helpWindow,start?L"HBEngine 도움말 - 시작하기":L"HBEngine 도움말 - 단축키 목록");
         ShowWindow(helpWindow,acceptance?SW_HIDE:SW_SHOWNORMAL);if(!acceptance){SetForegroundWindow(helpWindow);SetFocus(text);}
+    }
+    void deleteSelectedAsset(){
+        const int i=ListView_GetNextItem(files,-1,LVNI_SELECTED);
+        if(i<0||i>=int(entries.size()))return;
+        const auto path=entries.at(i).at("path").get<std::string>();
+        const auto question=L"'"+wide(entries.at(i).at("name"))+L"'을(를) 휴지통으로 옮길까요?";
+        if(!acceptance&&MessageBoxW(window,question.c_str(),L"에셋 삭제",MB_OKCANCEL|MB_ICONQUESTION)!=IDOK)return;
+        auto result=request("content.delete",{{"path",path}});
+        if(!result.at("deleted").get<bool>()){
+            std::wstring users;for(const auto& row:result.at("referencers")){if(users.size()>600){users+=L"\n…";break;}users+=L"\n· "+wide(row);}
+            const auto warning=L"이 에셋을 쓰는 곳이 있어요. 지우면 아래 에셋에서 참조가 끊겨요."+users+L"\n\n그래도 휴지통으로 옮길까요?";
+            if(!acceptance&&MessageBoxW(window,warning.c_str(),L"에셋 삭제",MB_OKCANCEL|MB_ICONWARNING)!=IDOK)return;
+            result=request("content.delete",{{"path",path},{"force",true}});
+        }
+        refreshFiles();statusText(L"에셋을 휴지통으로 옮겼어요.");
+    }
+    // Unsaved documents are copied every 30 s; after a crash the next open offers them back.
+    void autosaveNow(){try{request("editor.autosave");}catch(const std::exception& error){statusText((L"자동 저장 실패: "+wide(error.what())).c_str());}}
+    void offerAutosaves(){
+        const auto rows=request("editor.autosaves");if(rows.empty())return;
+        std::wstring names;for(const auto& row:rows){if(names.size()>600){names+=L"\n…";break;}names+=L"\n· "+wide(row.at("path"));}
+        const auto question=L"지난번에 저장하지 못한 작업이 있어요."+names+L"\n\n복구할까요? (아니요를 누르면 버려요)";
+        const int choice=acceptance?IDYES:MessageBoxW(window,question.c_str(),L"작업 복구",MB_YESNO|MB_ICONQUESTION);
+        Json last;
+        for(const auto& row:rows){
+            if(choice==IDYES){try{last=request("editor.restoreAutosave",{{"path",row.at("path")}});}catch(const std::exception& error){report(error);}}
+            else request("editor.discardAutosave",{{"path",row.at("path")}});
+        }
+        if(!last.is_null()){showDocument(last);statusText(L"자동 저장본을 복구했어요. 저장해야 파일에 반영돼요.");}
     }
     void refreshRecent(){
         recent=request("project.recent");
@@ -1072,6 +1109,11 @@ class NativeEditorShell {
     }
     void queueViewport(Json input=Json::object()){
         if(!sceneOpen()||sourceMode)return;
+        if(input.value("command",std::string())=="shortcut"){
+            const auto key=input.value("key",std::string());
+            try{if(key=="delete")perform(DeleteActor);else if(key=="duplicate")perform(DuplicateActor);}catch(const std::exception& error){report(error);}
+            return;
+        }
         if(!input.empty()){
             if(input.value("command",std::string())=="focus")input["id"]=sceneSelection;
             mergeCameraInput(cameraInput,std::move(input));
@@ -1276,6 +1318,7 @@ class NativeEditorShell {
             return 0;
         }
         if(message==WM_CAPTURECHANGED||message==WM_CANCELMODE||message==WM_NCDESTROY)self.draggedAsset.clear();
+        if(message==WM_KEYDOWN&&(w==VK_DELETE||w==VK_F2)){try{self.perform(w==VK_DELETE?DeleteAsset:RenameAsset);}catch(const std::exception& error){self.report(error);}return 0;}
         return DefSubclassProc(list,message,w,l);
     }
     static LRESULT CALLBACK tabProcedure(HWND owner,UINT message,WPARAM w,LPARAM l,UINT_PTR,DWORD_PTR ref){
@@ -1927,6 +1970,7 @@ class NativeEditorShell {
         folderHistory.clear();folderPosition=0;navigateFolder("Assets");
         showDocument(request("document.open",{{"path",project.at("startupScene")}}));
         refreshRecent();
+        PostMessageW(window,WM_APP+46,0,0);
     }
     void saveCurrent(){
         if(!document.contains("path"))return;
@@ -2615,6 +2659,12 @@ class NativeEditorShell {
     }
     void perform(Command command){
         if(command==ShowHelp||command==ShowShortcuts){showHelp(command==ShowHelp);return;}
+        if(command==DeleteAsset){deleteSelectedAsset();return;}
+        if(command>=PrefabApply&&command<=PrefabUnpack){
+            if(sceneSelection.empty())throw std::runtime_error("프리팹 인스턴스를 선택하세요.");
+            editScene({{"action",command==PrefabApply?"prefabApply":command==PrefabRevert?"prefabRevert":command==PrefabRefresh?"prefabRefresh":"prefabUnpack"},{"id",sceneSelection}});
+            statusText(command==PrefabApply?L"프리팹에 적용했어요. 프리팹 문서도 저장하세요.":command==PrefabRevert?L"프리팹 변경을 되돌렸어요.":command==PrefabRefresh?L"프리팹과 다시 동기화했어요.":L"프리팹 연결을 풀었어요.");return;
+        }
         if(playProcess&&(command==OpenProject||command==NewProject||command>=RecentBase))
             throw std::runtime_error("플레이를 중지한 뒤 프로젝트를 바꾸세요.");
         if(command>=RecentBase&&std::size_t(command-RecentBase)<recent.size()){
@@ -3162,6 +3212,8 @@ class NativeEditorShell {
         }
         if(message==WM_SIZE){layout();return 0;}
         if(message==WM_TIMER&&w==1){KillTimer(window,1);refreshFiles();return 0;}
+        if(message==WM_TIMER&&w==13&&owner==window){autosaveNow();return 0;}
+        if(message==WM_APP+46&&owner==window){if(!acceptance)try{offerAutosaves();}catch(const std::exception& error){report(error);}return 0;}
         if(message==WM_APP+44&&owner==window){if(queuedFolder)navigateFolder(std::move(*queuedFolder));return 0;}
         if(message==WM_TIMER&&w==10){
             try{if(pollContentList())KillTimer(window,10);}
@@ -3324,7 +3376,7 @@ public:
         RegisterClassW(&type);
         window=CreateWindowExW(0,type.lpszClassName,L"HBEngine · 네이티브 편집기",WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,CW_USEDEFAULT,CW_USEDEFAULT,1280,850,nullptr,nullptr,instance,this);
         if(!window)throw std::runtime_error("Native editor window");
-        makeControls();layout();refreshRecent();
+        makeControls();layout();refreshRecent();SetTimer(window,13,30000,nullptr);
         if(!project.empty())openProject(request("project.open",{{"file",utf8(project)}}));
         if(acceptance)return smokeTest(smoke);
         restoreLayout();
