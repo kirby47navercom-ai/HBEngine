@@ -4,7 +4,8 @@ import {componentDefaults,makeSceneComponent,validComponentProperties} from '../
 import {postVolumeWeight,resolvePostVolumes} from '../prototype/post-volume.js';
 import {postProcessSettings,packedPostProcess,lookupSize} from '../prototype/post-processing.js';
 import {renameAssetReferences} from '../prototype/asset-documents.js';
-const volume=(id,p,position=[0,0,0])=>({id,position,components:[makeSceneComponent('PostProcessVolume',{bloomEnabled:false,...p})]});
+const volume=(id,p,position=[0,0,0])=>({id,position,components:[makeSceneComponent('PostProcessVolume',{bloomEnabled:false,antiAliasing:'none',...p})]});
+assert.equal(resolvePostVolumes([]).antiAliasing,'fxaa','scenes without a volume get FXAA');
 const global=volume('global',{colorGradingEnabled:true,postExposure:1}),local=volume('local',{unbound:false,volumeSize:[2,2,2],blendDistance:2,priority:1,colorGradingEnabled:true,postExposure:3});
 assert.equal(resolvePostVolumes([global,local],[0,0,0]).postExposure,3);assert.equal(resolvePostVolumes([global,local],[2,0,0]).postExposure,2);assert.equal(resolvePostVolumes([global,local],[4,0,0]).postExposure,1);assert.equal(resolvePostVolumes([global,local],null).postExposure,1);
 const p=componentDefaults('PostProcessVolume');Object.assign(p,{unbound:false,volumeShape:'sphere',volumeRadius:2,weight:.5,blendDistance:2});assert.equal(postVolumeWeight({},p,[3,0,0]),.25);assert.equal(postVolumeWeight({},p,[3,0,0],new Matrix4().makeScale(2,1,1)),.5);assert.equal(postVolumeWeight({},p,[0,0,0],new Matrix4().makeScale(0,1,1)),0);

@@ -5,6 +5,10 @@ import {makeSceneComponent,validComponentProperties,componentPropertyVisible} fr
 import {tilemapColliders,RuntimeTilemaps} from '../prototype/tilemap-runtime.js';
 import {TwoDEditor} from '../prototype/two-d-editor.js';
 import {validRuntimeSettings,defaultRuntimeSettings} from '../prototype/model.js';
+// Screen percentage and dynamic resolution settings.
+assert.ok(validRuntimeSettings({...defaultRuntimeSettings,renderScale:50,dynamicResolution:true,minRenderScale:40}));
+for(const bad of [{renderScale:10},{renderScale:150},{minRenderScale:12.5},{dynamicResolution:'yes'}])assert.equal(validRuntimeSettings({...defaultRuntimeSettings,...bad}),false);
+assert.ok(validRuntimeSettings({...defaultRuntimeSettings,renderScale:undefined,dynamicResolution:undefined,minRenderScale:undefined}),'older scenes without the keys stay valid');
 import {engineOperations} from '../prototype/engine-services.js';
 import {NativeHost} from './native-host.mjs';
 import {nativeWorld} from '../prototype/native-model.js';
