@@ -147,6 +147,6 @@ export function applySceneEnvironment({scene,environment,surface,runtimeSettings
   mainRenderer?.hbFog?.(scene,fog,uniforms);scene.userData.resolvedEnvironment=resolved;updateSkyCapture(scene,mainRenderer,{skyDome,cloudGroup},resolved);return resolved;
 }
 export function syncSkyToCamera({skyDome,cloudGroup},camera,delta=0){
-  if(!camera)return;const position=camera.getWorldPosition(new THREE.Vector3());if(skyDome){skyDome.position.copy(position);skyDome.scale.setScalar(Math.max(.01,(camera.far||1000)*.85));}
+  if(!camera)return;const position=camera.getWorldPosition(new THREE.Vector3());if(skyDome){skyDome.position.copy(position);skyDome.scale.setScalar(Math.max(.01,Math.min((camera.far||1000)*.85,2000)));}/* the dome is drawn first without depth writes, so its size only has to keep it inside the far plane: near far=100000 depth precision clipped dome facets (grey holes) */
   if(cloudGroup){const cloud=cloudGroup.userData.configuration,u=cloudGroup.userData.heightFogUniforms;if(u){u.hbHeightFogCameraY.value=position.y;u.hbHeightFogCameraPosition.value.copy(position);}if(cloud){cloudGroup.userData.windPhase=(cloudGroup.userData.windPhase+(Number.isFinite(delta)?delta:0)*cloud.windSpeed*.02)%(Math.PI*2);cloudGroup.position.set(position.x+cloud.position[0],cloud.position[1],position.z+cloud.position[2]);cloudGroup.rotation.set(...cloud.rotation);cloudGroup.rotation.y+=cloudGroup.userData.windPhase;}}
 }
