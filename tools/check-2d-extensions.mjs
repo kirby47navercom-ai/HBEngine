@@ -7,7 +7,7 @@ import {TwoDEditor} from '../prototype/two-d-editor.js';
 import {validRuntimeSettings,defaultRuntimeSettings} from '../prototype/model.js';
 // Screen percentage and dynamic resolution settings.
 assert.ok(validRuntimeSettings({...defaultRuntimeSettings,renderScale:50,dynamicResolution:true,minRenderScale:40}));
-for(const bad of [{renderScale:10},{renderScale:150},{minRenderScale:12.5},{dynamicResolution:'yes'}])assert.equal(validRuntimeSettings({...defaultRuntimeSettings,...bad}),false);
+for(const bad of [{renderScale:10},{renderScale:250},{quality:"ultra"},{displayGamma:3},{hdrOutput:1},{minRenderScale:12.5},{dynamicResolution:'yes'}])assert.equal(validRuntimeSettings({...defaultRuntimeSettings,...bad}),false);
 assert.ok(validRuntimeSettings({...defaultRuntimeSettings,renderScale:undefined,dynamicResolution:undefined,minRenderScale:undefined}),'older scenes without the keys stay valid');
 import {engineOperations} from '../prototype/engine-services.js';
 import {NativeHost} from './native-host.mjs';

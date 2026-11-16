@@ -158,6 +158,8 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="cameraFollow", KoreanName="카메라 따라가기", Category="카메라") static void Follow(Actor* target,Actor* subject);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="cameraShake", KoreanName="카메라 흔들기", Category="카메라") static void Shake(Actor* target,float intensity,float duration);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="screenFlash", KoreanName="화면 번쩍임", Category="카메라") static void Flash(const Color& color,float duration);
+    // Player graphics options: quality preset (low/medium/high/epic), screen percentage 25-200, gamma 0.5-2.5, brightness 0.5-2, HDR output. Saved for the next run.
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="displaySetSettings", KoreanName="화면 설정 적용", Category="화면 설정") static void SetDisplaySettings(const std::string& quality="epic",int screenPercentage=100,float gamma=1,float brightness=1,bool hdr=false);
 };
 HB_CLASS()
 class UI : public Library {
@@ -243,6 +245,9 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="actionElapsed", KoreanName="입력 액션 유지 시간", Category="입력 액션") static float GetActionElapsed(Actor* target,const std::string& action);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="inputAddContext", KoreanName="입력 컨텍스트 추가", Category="입력 액션") static void AddMappingContext(Actor* target,const std::string& context,int priority=0);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="inputRemoveContext", KoreanName="입력 컨텍스트 제거", Category="입력 액션") static void RemoveMappingContext(Actor* target,const std::string& context);
+    // Player key rebinding (options menu): every mapping of the action on oldKey reads newKey instead; saved for the next run.
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="inputRebindKey", KoreanName="입력 키 다시 지정", Category="입력 액션") static void RebindKey(const std::string& action,const std::string& oldKey,const std::string& newKey);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="inputResetBindings", KoreanName="입력 키 기본값 복원", Category="입력 액션") static void ResetKeyBindings();
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mousePosition", KoreanName="마우스 위치 가져오기", Category="입력") static bool GetMousePosition(Vec2& position);
     // Coordinates for a fit-scaled, top-left design canvas; raw input stays unchanged.
     static bool GetMousePositionForCanvas(const Vec2& referenceSize,Vec2& position);

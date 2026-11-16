@@ -143,6 +143,10 @@ animGraphSetEnum/GetEnum 공용 서비스와 C++ SetEnum/GetEnum/GetEnumValue<E>
 
 **실행됨**은 공용 BlueprintRuntime/게임 서비스에 연결됐다는 뜻이고 **공통 C++**은 실제 C++ 함수도 존재한다는 뜻이다. 편집기 Play, 화면 없는 로직 검사, 독립 Windows Player의 검사 범위를 각각 구분한다. Game.exe는 기본 웹 장면 경로와 선택 가능한 Windows DirectX 11 장면 경로를 구분한다. D3D11 정적/인스턴스/뼈대·모프·그림자·HDR/HLSL·GPU ParticleSystem의 실제 범위와 증거는 086–091 기록을 따른다.
 
+## 2026-11-17 플레이어 키 다시 지정·화면 설정
+
+블루프린트 노드 `입력 키 다시 지정`(inputRebindKey)·`입력 키 기본값 복원`(inputResetBindings)과 C++ `hb::Input::RebindKey`/`ResetKeyBindings`는 입력 액션의 원래 키를 플레이어가 고른 키로 바꿔요. `화면 설정 적용`(displaySetSettings)과 `hb::Camera::SetDisplaySettings`는 그래픽 품질(low~epic)·화면 해상도 비율 25~200%·감마·밝기·HDR 출력을 바꿔요. 두 설정은 저장 데이터 공간에 남아 다음 실행에 다시 적용돼요. 실제 게임 창에서 키 입력·화면 변화를 손으로 확인하지는 않았어요.
+
 ## 2026-11-13 Windows 마우스 잠금
 
 블루프린트의 마우스 잠금 설정·확인 노드와 C++ `hb::Input::SetMouseCapture`, `hb::Input::IsMouseCaptured`를 연결해요. 잠금 중에는 `GetMouseDelta`에 상대 이동량을 누적하고 화면 중앙의 조준 방향을 유지해요. Win32 게임은 창이 전면일 때만 잠그며 Esc·포커스 상실·장면 전환에서 해제해요. 브라우저 캔버스의 잠금은 브라우저가 허용하는 사용자 입력에서 시작해요.

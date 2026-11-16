@@ -48,7 +48,7 @@ import {editSequenceSection,loadSequenceTree} from '../prototype/sequence-sectio
 import {configureSequenceCurve,sequenceCurveModes,sequenceCurveType,sequenceRangeModes} from '../prototype/sequence-curves.js';
 import {editSequenceCurves} from '../prototype/sequence-curve-edit.js';
 import {curveControlValue,curveKeyWeight} from '../prototype/curve-sampling.js';
-import {defaultEnvironment,defaultSurface} from '../prototype/model.js';
+import {defaultEnvironment,defaultSurface,defaultRuntimeSettings,validRuntimeSettings} from '../prototype/model.js';
 import {createBlueprintResolver} from '../prototype/blueprint-inheritance.js';
 import {resolveTakePresetTree,takePresetGroups,takePresetRevisionGuard} from '../prototype/take-preset-inheritance.js';
 import {applyTakePreset,takePresetFromSequence} from '../prototype/take-preset-assets.js';
@@ -82,7 +82,7 @@ const names = data => [
 ];
 const packPin = pin => ({id:pin.id, label:pin.label, color:typeColors[pin.type] || typeColors.any});
 const pointerPart = key => key.replaceAll('~','~0').replaceAll('/','~1');
-const fieldLabels = {renderScale:'화면 해상도 비율(%)',dynamicResolution:'동적 해상도',minRenderScale:'최소 해상도 비율(%)',pivot:'기준점',settings:'설정',convertUnits:'파일 단위 변환',sourceUnit:'원본 단위',sourceUp:'원본 위 축',flipForward:'앞 방향 뒤집기',translation:'이동',name:'이름',sceneName:'레벨 이름',objects:'오브젝트',environment:'환경',position:'위치',rotation:'회전',scale:'크기',parent:'부모 에셋',clip:'오디오 클립',volume:'볼륨',pitch:'피치',loop:'반복',friction:'마찰',restitution:'반발력',density:'밀도',parameters:'매개변수',surfaceOverrides:'표면 오버라이드'};
+const fieldLabels = {quality:'그래픽 품질',displayGamma:'화면 감마',displayBrightness:'화면 밝기',hdrOutput:'HDR 출력',renderScale:'화면 해상도 비율(%)',dynamicResolution:'동적 해상도',minRenderScale:'최소 해상도 비율(%)',pivot:'기준점',settings:'설정',convertUnits:'파일 단위 변환',sourceUnit:'원본 단위',sourceUp:'원본 위 축',flipForward:'앞 방향 뒤집기',translation:'이동',name:'이름',sceneName:'레벨 이름',objects:'오브젝트',environment:'환경',position:'위치',rotation:'회전',scale:'크기',parent:'부모 에셋',clip:'오디오 클립',volume:'볼륨',pitch:'피치',loop:'반복',friction:'마찰',restitution:'반발력',density:'밀도',parameters:'매개변수',surfaceOverrides:'표면 오버라이드'};
 
 export function nativeEditorSession(bridge) {
   let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBuild;
@@ -1745,6 +1745,14 @@ export function nativeEditorSession(bridge) {
       const pointer = '/'+[...parts,key].map(pointerPart).join('/');
       change(doc,patchAsset(doc.kind,doc.data,[{op:'replace',path:pointer,value}]),merge?'drag:'+pointer:'edit:'+pointer+':'+Date.now()+Math.random());
       return response(doc);
+    },
+    // Console r.* commands: set one scene runtime setting, adding keys older scenes do not have yet.
+    'scene.runtimeSet': async ({path,key,value,expectedRevision}) => {
+      const doc=targetDocument(path);await check(doc,expectedRevision);
+      if(doc.kind!=='scene'||!Object.hasOwn(defaultRuntimeSettings,key))throw Error('바꿀 수 있는 장면 실행 설정이 아니에요.');
+      const runtime={...defaultRuntimeSettings,...doc.data.runtime,[key]:value};
+      if(!validRuntimeSettings(runtime))throw Error('설정 값의 범위를 확인하세요.');
+      change(doc,{...structuredClone(doc.data),runtime},'edit:runtime:'+key+':'+Date.now());return response(doc);
     },
     'graph.read': async ({path,view='event'})=>{
       const doc=targetDocument(path);await loadGraphNative(doc);return graphModel(doc,view);

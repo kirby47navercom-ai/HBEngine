@@ -14,6 +14,8 @@ export function modifyActionValue(vector,action){
   return action.valueType==='bool'?v.some(Boolean):v.length===1?v[0]:v;
 }
 // Input assets are shared by the editor and game; keyboard repeat never drives held actions.
+// Player key rebinding shared by every InputActions: 'actionPath\nkey' -> replacement key.
+export const playerKeyBindings=new Map();
 export class InputActions {
   constructor(contexts=[],actions=new Map()){this.contexts=contexts.map((c,i)=>({...c,path:c.path||'initial:'+i})).sort((a,b)=>b.priority-a.priority);this.actions=actions;this.keys=new Map();this.previous=new Map();this.states=new Map();this.time=0;this.events=new Map();}
   set(key,value){this.keys.set(inputKey(key),value);}
@@ -30,7 +32,7 @@ export class InputActions {
     for(const context of this.contexts){
       const grouped=new Map();for(const mapping of context.mappings){if(!grouped.has(mapping.action))grouped.set(mapping.action,[]);grouped.get(mapping.action).push(mapping);}
       for(const [path,mappings] of grouped){const action=this.actions.get(path);if(!action||claimed.has(path))continue;claimed.add(path);const vector=[0,0,0],used=[];
-        for(const m of mappings){const key=inputKey(m.key);if(consumed.has(key)){if(this.keys.get(key))blocked.add(path);continue;}const v=this.keys.get(key)||0;vector[m.axis]+=v*m.scale;if(v)used.push(key);}
+        for(const m of mappings){const key=inputKey(playerKeyBindings.get(m.action+'\n'+inputKey(m.key))??m.key);if(consumed.has(key)){if(this.keys.get(key))blocked.add(path);continue;}const v=this.keys.get(key)||0;vector[m.axis]+=v*m.scale;if(v)used.push(key);}
         const value=modifyActionValue(vector,action);values.set(path,value);if(on(value)&&action.consumeInput)used.forEach(k=>consumed.add(k));
       }
     }

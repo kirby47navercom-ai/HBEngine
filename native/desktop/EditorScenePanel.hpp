@@ -129,7 +129,8 @@ class EditorScenePanel {
                 return 0;
             }
             break;
-        case WM_MOUSEWHEEL:post({{"command","zoom"},{"dy",GET_WHEEL_DELTA_WPARAM(w)/120.0}});return 0;
+        // Wheel while flying (right button held) changes camera speed like Unreal; otherwise it zooms.
+        case WM_MOUSEWHEEL:post({{"command",button==2&&flightTime?"speedStep":"zoom"},{"dy",GET_WHEEL_DELTA_WPARAM(w)/120.0}});return 0;
         case WM_KEYDOWN:case WM_KEYUP:{
             const auto index=flightKey(w);
             if(button==2&&index>=0){

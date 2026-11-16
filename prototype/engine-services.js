@@ -1,3 +1,5 @@
+import {inputKey} from './runtime-input.js';
+import {playerKeyBindings} from './input-actions.js';
 import {touchComponents,touchTransform} from './object-revision.js';
 import {parseComponentJson} from './component-json.js';
 import {runEnvironmentQueryBatch} from './environment-query-batch.js';
@@ -109,6 +111,10 @@ export function engineOperations(hooks){
   const audio=audioSession.audio,mixers=new Map(),animations=new Map(),graphs=new Map(),graphRequests=new Map(),widgets=new Map();
   const ui=new WidgetSystem({camera:hooks.camera,readAsset:path=>readAsset(path),overlay:hooks.overlay,createView:hooks.widgetView,fileUrl,runtime:()=>hooks.game?.inputRuntime||currentVM,inputSignal:hooks.game?.inputLifetime.signal});
   const soundRouting=audioSession.routing??=hooks.audioRouting?.({readAsset:path=>readAsset(path)})??new AudioRouting({readAsset:path=>readAsset(path)});
+  // Player options (key rebinding, graphics) persist with the save data and come back on the next run.
+  const playerSettingsKey=()=>(hooks.storageKey||storageKey)('hbengine.playersettings');let playerDisplay=null;
+  const savePlayerSettings=()=>(hooks.storage||storage)?.setItem(playerSettingsKey(),JSON.stringify({version:1,keys:[...playerKeyBindings],display:playerDisplay}));
+  try{const saved=JSON.parse((hooks.storage||storage)?.getItem(playerSettingsKey())||'null');if(saved?.version===1){playerKeyBindings.clear();for(const [k,v] of Array.isArray(saved.keys)?saved.keys:[])if(typeof k==='string'&&typeof v==='string')playerKeyBindings.set(k,v);if(saved.display&&typeof saved.display==='object'){playerDisplay=saved.display;hooks.display?.(playerDisplay);}}}catch{/* unreadable player settings: keep the defaults */}
   const voiceObservers=new Set();let listenerBudget='';const releasingActors=new Set();let physics,graphSerial=0;
   const readAsset=cacheAssetReader(hooks.readAsset||(async(path)=>(await editorRequest(fileUrl(path))).json()));if(hooks.asset)hooks.asset=cacheAssetReader(hooks.asset);
   const validateNetworkSpawn=row=>{const template=hooks.spawnCatalog?.templates.get(row.spawn.asset);if(!template||!template.objects.find(o=>o.id===template.root)?.components?.some(c=>c.type==='NetworkReplica'&&c.properties?.enabled!==false)||template.objects.some(o=>o.components?.some(c=>c.type==='NetworkSession'&&c.properties?.enabled!==false)))throw Error('허용된 로컬 네트워크 프리팹이 필요해요: '+row.spawn.asset);if(row.spawn.local!==template.root)throw Error('네트워크 루트의 로컬 ID가 프리팹과 달라요.');};
@@ -368,6 +374,16 @@ export function engineOperations(hooks){
       return {};
     }
     if(['mouseIsCaptured','inputLastDevice','inputAnyPressed','inputJustPressed','inputJustReleased','inputKeyDown','inputAxisValue','mousePosition','mouseDelta','mouseRay','mouseWorldPlane'].includes(key)){vm.inputSnapshot();return vm.inputState.query(key,a);}
+    if(key==='inputRebindKey'||key==='inputResetBindings'){
+      if(key==='inputResetBindings')playerKeyBindings.clear();
+      else{for(const v of [a.action,a.oldKey,a.newKey])if(typeof v!=='string'||!v||v.length>500)throw Error('다시 지정할 입력 액션과 키를 확인하세요.');playerKeyBindings.set(a.action+'\n'+inputKey(a.oldKey),a.newKey);}
+      savePlayerSettings();return {};
+    }
+    if(key==='displaySetSettings'){
+      const s={quality:a.quality,screenPercentage:a.screenPercentage,gamma:a.gamma,brightness:a.brightness,hdr:a.hdr};
+      if(!['low','medium','high','epic'].includes(s.quality)||!Number.isInteger(s.screenPercentage)||s.screenPercentage<25||s.screenPercentage>200||!(s.gamma>=.5&&s.gamma<=2.5)||!(s.brightness>=.5&&s.brightness<=2)||typeof s.hdr!=='boolean')throw Error('화면 설정 값을 확인하세요.');
+      playerDisplay=s;hooks.display?.(s);savePlayerSettings();return {};
+    }
     if(['inputAddContext','inputRemoveContext','actionValue','actionState','actionEvent','actionElapsed'].includes(key)){
       const o=target(a,b,vm),bindings=vm.bindings.filter(binding=>binding.self===o.id);if(!bindings.length)throw Error('입력 액션을 받을 블루프린트가 필요해요.');
       if(key==='inputRemoveContext'){const path=await hooks.asset(a.context,'inputmapping');if(!path)throw Error('입력 컨텍스트가 없어요.');for(const binding of bindings)binding.input.removeContext(path);return {};}

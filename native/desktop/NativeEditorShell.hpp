@@ -9,6 +9,8 @@
 #include <commctrl.h>
 #include <shobjidl.h>
 #include <set>
+#include <deque>
+#include <sstream>
 #include <unordered_map>
 
 class NativeEditorShell {
@@ -32,6 +34,9 @@ class NativeEditorShell {
     // Scene selection: sceneSelection is the primary (gizmo, inspector); sceneExtra holds the other selected objects.
     std::vector<std::string> sceneExtra,hierarchyOrder;Json sceneClipboard=Json::array();
     Json viewTarget;
+    // Viewport FPS readout (stat fps / Ctrl+Shift+H), Unreal camera speed 1-8, console command line under Output Log.
+    bool showFps=false;int cameraSpeed=4;std::deque<ULONGLONG> fpsTimes;double fpsGpuMs=-1;ULONGLONG fpsShown=0;HWND consoleInput=nullptr;
+    static double speedScale(int speed){static const double scales[8]={.1,.25,.5,1,2,4,8,16};return scales[std::clamp(speed,1,8)-1];}
     bool snapOn=false;double snapGrid=.5,snapAngle=15;HMENU snapMenu=nullptr;HWND hierarchySearch=nullptr;std::string hierarchyQuery;
     Json selectedIds()const{Json out=Json::array();if(!sceneSelection.empty())out.push_back(sceneSelection);for(const auto& id:sceneExtra)out.push_back(id);return out;}
     int S(int value)const{return MulDiv(value,int(uiDpi),96);}
@@ -183,6 +188,7 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -258,6 +264,7 @@ class NativeEditorShell {
         INITCOMMONCONTROLSEX controls{sizeof(controls),ICC_TAB_CLASSES|ICC_LISTVIEW_CLASSES|ICC_TREEVIEW_CLASSES};InitCommonControlsEx(&controls);
         font=CreateFontW(-13,0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,0,0,CLEARTYPE_QUALITY,0,L"Segoe UI");
         search=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,Search);
+        consoleInput=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,ConsoleInput);SendMessageW(consoleInput,EM_SETCUEBANNER,TRUE,LPARAM(L"명령 입력 (help)"));
         hierarchySearch=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,HierarchySearch);SendMessageW(hierarchySearch,EM_SETCUEBANNER,TRUE,LPARAM(L"오브젝트 검색"));SendMessageW(search,EM_SETCUEBANNER,TRUE,LPARAM(L"에셋 검색"));
         folderBack=control(L"BUTTON",L"←",BS_PUSHBUTTON,FolderBack);
         folderForward=control(L"BUTTON",L"→",BS_PUSHBUTTON,FolderForward);
@@ -545,6 +552,7 @@ class NativeEditorShell {
         AppendMenuW(viewMenu,MF_STRING,ToggleSource,L"편집 화면 / 소스 전환");
         AppendMenuW(viewMenu,MF_STRING,Up,L"상위 폴더\tAlt+↑");
                 AppendMenuW(viewMenu,MF_STRING,WideInspector,L"속성 패널 너비 변경");
+        AppendMenuW(viewMenu,MF_STRING,ToggleFps,L"FPS 표시\tCtrl+Shift+H");
         AppendMenuW(viewMenu,MF_STRING,ResetLayout,L"기본 배치 복원");
         scaleMenu=CreatePopupMenu();
         AppendMenuW(scaleMenu,MF_STRING,ScaleAuto,L"Windows 설정 따르기");
@@ -750,7 +758,8 @@ class NativeEditorShell {
         const auto& tool=viewport.transformTool();
         const int camera=int(SendMessageW(views,CB_GETCURSEL,0,0));std::wstring cameraName(256,L' ');cameraName.resize(camera>=0?std::max<LRESULT>(0,SendMessageW(views,CB_GETLBTEXT,camera,LPARAM(cameraName.data()))):0);
         const auto number=[](double v){auto t=std::to_string(v);t.erase(t.find_last_not_of('0')+1);if(!t.empty()&&t.back()=='.')t.pop_back();return t;};
-        viewStrip.update({{"items",Json::array({chip("camera",u8"\uE722",utf8(cameraName.empty()?L"편집기 카메라":cameraName),"dropdown"),
+        std::string fpsLabel;if(showFps){char text[64];std::snprintf(text,sizeof text,fpsGpuMs>=0?"%d FPS · GPU %.1f ms":"%d FPS",int(fpsTimes.size()),fpsGpuMs);fpsLabel=text;}
+        viewStrip.update({{"items",Json::array({chip("camera",u8"\uE722",utf8(cameraName.empty()?L"편집기 카메라":cameraName),"dropdown"),chip("fps",u8"",fpsLabel,"text"),chip("speed",u8"\uE7C1","속도 "+std::to_string(cameraSpeed),"dropdown",false,true),
             chip("move",u8"\uE7C2","","toggle",tool=="translate",true),chip("rotate",u8"\uE7AD","","toggle",tool=="rotate",true),chip("scale",u8"\uE740","","toggle",tool=="scale",true),{{"kind","sep"},{"right",true}},
             chip("snap",u8"\uE80A",number(snapGrid),"toggle",snapOn,true),chip("snapsize",u8"","∠ "+number(snapAngle)+"°","dropdown",false,true),{{"kind","sep"},{"right",true}},chip("focus",u8"\uE8A3","","button",false,true)})},{"theme",{{"background",{.118f,.118f,.118f}}}}});
         static const std::map<std::string,std::string> titles{{"outliner","아웃라이너"},{"details","디테일"},{"content","콘텐츠 브라우저"},{"log","출력 로그"}};
@@ -787,6 +796,7 @@ class NativeEditorShell {
         else if(id=="move")perform(ToolMove);else if(id=="rotate")perform(ToolRotate);else if(id=="scale")perform(ToolScale);
         else if(id=="snap")perform(SnapToggle);else if(id=="focus")perform(FocusActor);
         else if(id=="snapsize"){if(const int choice=popup(snapMenu,at))perform(Command(choice));}
+        else if(id=="speed"){HMENU menu=CreatePopupMenu();for(int i=1;i<=8;i++)AppendMenuW(menu,MF_STRING|(i==cameraSpeed?MF_CHECKED:0),CameraSpeedFirst+i-1,(L"카메라 속도 "+std::to_wstring(i)).c_str());if(const int choice=popup(menu,at))perform(Command(choice));DestroyMenu(menu);}
         else if(id=="camera"){
             const HMENU menu=CreatePopupMenu();const int count=int(SendMessageW(views,CB_GETCOUNT,0,0)),current=int(SendMessageW(views,CB_GETCURSEL,0,0));
             for(int i=0;i<count;++i){std::wstring name(256,L' ');name.resize(std::max<LRESULT>(0,SendMessageW(views,CB_GETLBTEXT,i,LPARAM(name.data()))));AppendMenuW(menu,MF_STRING|(i==current?MF_CHECKED:0),UINT_PTR(i+1),name.c_str());}
@@ -990,7 +1000,8 @@ class NativeEditorShell {
             outlinerFoot.update({{"rect",{bx,by+bh-S(24),bw,S(24)}},{"visible",show}});
         }else if(panel=="details"){if(show)form.update({{"rect",{bx,by,bw,bh}},{"visible",true}});}
         else if(panel=="content"){if(!contentWindow)placeBrowser(bx,by+S(2),bw,bh-S(2),show);}
-        else if(panel=="log"){if(show&&!logItems.empty())console.update({{"items",logItems},{"revision",++logRevision}});console.update({{"rect",{bx,by,bw,bh}},{"visible",show}});}
+        else if(panel=="log"){if(show&&!logItems.empty())console.update({{"items",logItems},{"revision",++logRevision}});console.update({{"rect",{bx,by,bw,std::max(1,bh-S(28))}},{"visible",show}});
+            if(GetParent(consoleInput)!=GetParent(hierarchySearch))SetParent(consoleInput,GetParent(hierarchySearch));MoveWindow(consoleInput,bx,by+bh-S(26),bw,S(26),TRUE);ShowWindow(consoleInput,show?SW_SHOW:SW_HIDE);}
     }
     // Drop a dragged panel tab: onto a dock area, or near the documents' left/right/bottom edge for an empty area.
     void moveDockPanel(const std::string& panel,const std::string& target){
@@ -1480,6 +1491,7 @@ class NativeEditorShell {
             try{const auto keptPrimary=sceneSelection;const auto keptExtra=sceneExtra;drawViewport({{"command","pick"},{"x",input.value("x",0)},{"y",input.value("y",0)},{"add",false}});if(sceneSelection.empty()&&!keptPrimary.empty()){selectActor(keptPrimary);sceneExtra=keptExtra;refreshHierarchy();}else if(std::find(keptExtra.begin(),keptExtra.end(),sceneSelection)!=keptExtra.end()||sceneSelection==keptPrimary){sceneSelection=keptPrimary;sceneExtra=keptExtra;refreshHierarchy();}sceneContextMenu(POINT{input.value("sx",0),input.value("sy",0)});}catch(const std::exception& error){report(error);}
             return;
         }
+        if(input.value("command",std::string())=="speedStep"){cameraSpeed=std::clamp(cameraSpeed+(input.value("dy",0.0)>0?1:-1),1,8);statusText((L"카메라 속도 "+std::to_wstring(cameraSpeed)).c_str());refreshChrome();return;}
         if(input.value("command",std::string())=="shortcut"){
             const auto key=input.value("key",std::string());
             try{if(key=="delete")perform(DeleteActor);else if(key=="duplicate")perform(DuplicateActor);else if(key=="copy")perform(CopyActor);else if(key=="paste")perform(PasteActor);else if(key=="snap")perform(SnapToggle);}catch(const std::exception& error){report(error);}
@@ -1512,8 +1524,10 @@ class NativeEditorShell {
         input["width"]=size.cx;input["height"]=size.cy;input["selected"]=sceneSelection;input["cameraId"]=cameraId;input["cameraOutputs"]=cameraOutputs;input["direction"]=cameraDirection;
         if(!input.contains("tool"))input["tool"]=viewport.transformTool();
         if(snapOn)input["snap"]={{"grid",snapGrid},{"angle",snapAngle}};
+        if(input.contains("flight")&&input.at("flight").is_object())input["flight"]["speedScale"]=speedScale(cameraSpeed);
         auto state=request("scene.viewport",input);
         if(state.contains("target"))viewTarget=state.at("target");
+        if(showFps){const auto now=GetTickCount64();fpsTimes.push_back(now);while(!fpsTimes.empty()&&now-fpsTimes.front()>1000)fpsTimes.pop_front();fpsGpuMs=state.value("gpuMs",Json()).is_number()?state.at("gpuMs").get<double>():-1;if(now-fpsShown>250){fpsShown=now;refreshChrome();}}
         viewport.setHandles(state.at("segments"));
         // Gizmo drag: Details follows the object live instead of waiting for the mouse release.
         if(state.contains("preview")&&state.at("preview").value("id",std::string())==sceneSelection){
@@ -1659,6 +1673,24 @@ class NativeEditorShell {
     static std::string shortNumber(double v){
         v=std::round(v*10000)/10000;if(v==0)v=0;
         auto t=std::to_string(v);t.erase(t.find_last_not_of('0')+1);if(!t.empty()&&t.back()=='.')t.pop_back();return t;
+    }
+    // Editor console (Unreal-style): stat fps, camera.speed, and r.* settings that edit the open scene's runtime settings (undoable, used by the game too).
+    void runConsole(){
+        const auto line=utf8(controlText(consoleInput));SetWindowTextW(consoleInput,L"");if(line.empty())return;
+        std::istringstream in(line);std::string name,arg;in>>name>>arg;std::string lower=name;for(auto& c:lower)c=char(std::tolower(static_cast<unsigned char>(c)));
+        statusText(wide("> "+line).c_str());
+        static const std::map<std::string,std::pair<std::string,std::string>> settings{{"r.screenpercentage",{"renderScale","int"}},{"r.dynamicresolution",{"dynamicResolution","bool"}},{"r.dynamicresolution.min",{"minRenderScale","int"}},{"r.quality",{"quality","text"}},{"r.gamma",{"displayGamma","number"}},{"r.brightness",{"displayBrightness","number"}},{"r.hdr",{"hdrOutput","bool"}}};
+        if(lower=="help"||lower=="?"){statusText(L"명령: stat fps · camera.speed 1-8 · r.ScreenPercentage 25-200(100 초과=슈퍼샘플링) · r.DynamicResolution 0/1 · r.DynamicResolution.Min 25-100 · r.Quality low/medium/high/epic · r.Gamma 0.5-2.5 · r.Brightness 0.5-2 · r.HDR 0/1");return;}
+        if(lower=="stat"&&arg=="fps"){perform(ToggleFps);return;}
+        if(lower=="camera.speed"){if(arg.empty()){statusText((L"카메라 속도 "+std::to_wstring(cameraSpeed)).c_str());return;}perform(Command(CameraSpeedFirst+std::clamp(std::atoi(arg.c_str()),1,8)-1));return;}
+        const auto found=settings.find(lower);
+        if(found==settings.end()){statusText(wide("알 수 없는 명령: "+name+" (help)").c_str());return;}
+        if(!sceneOpen())throw std::runtime_error("장면을 연 뒤 실행하세요.");
+        const auto& [key,type]=found->second;
+        if(arg.empty()){const auto runtime=Json::parse(document.at("text").get<std::string>()).value("runtime",Json::object());statusText(wide(name+" = "+(runtime.contains(key)?runtime.at(key).dump():"기본값")).c_str());return;}
+        Json value=type=="bool"?Json(arg=="1"||arg=="true"||arg=="on"):type=="int"?Json(std::atoi(arg.c_str())):type=="number"?Json(std::atof(arg.c_str())):Json(arg);
+        showDocument(request("scene.runtimeSet",{{"path",document.at("path")},{"key",key},{"value",value},{"expectedRevision",document.at("revision")}}));
+        statusText(wide(name+" = "+value.dump()).c_str());
     }
     static void displayText(HWND editor,const std::string& original){
         std::string displayed;displayed.reserve(original.size());
@@ -3147,6 +3179,8 @@ class NativeEditorShell {
             if(OpenClipboard(window)){EmptyClipboard();const auto bytes=(full.size()+1)*sizeof(wchar_t);if(const HGLOBAL memory=GlobalAlloc(GMEM_MOVEABLE,bytes)){std::memcpy(GlobalLock(memory),full.c_str(),bytes);GlobalUnlock(memory);if(!SetClipboardData(CF_UNICODETEXT,memory))GlobalFree(memory);}CloseClipboard();statusText(L"경로를 복사했어요.");}return;
         }
         if(command==CreateItem){perform(sceneOpen()?AddActor:NewAsset);return;}
+        if(command==ToggleFps){showFps=!showFps;fpsTimes.clear();fpsGpuMs=-1;refreshChrome();if(showFps)queueViewport();return;}
+        if(command>=CameraSpeedFirst&&command<=CameraSpeedLast){cameraSpeed=int(command-CameraSpeedFirst)+1;refreshChrome();return;}
         if(command>=QuickCube&&command<=QuickLight){if(sceneOpen()&&!sourceMode)editScene({{"action","add"},{"key",command==QuickCube?"cube":command==QuickSphere?"sphere":"directionalLight"}});return;}
         if(command==FindAsset){if(!consoleVisible||contentWindow){SetFocus(search);SendMessageW(search,EM_SETSEL,0,-1);}else{perform(ShowConsole);SetFocus(search);}return;}
         if(command>=ToolMove&&command<=ToolScale){if(sceneOpen()&&!sourceMode){viewport.selectTransformTool(command==ToolMove?"translate":command==ToolRotate?"rotate":"scale");updateToolButtons();}return;}
@@ -3918,6 +3952,9 @@ public:
         const auto accelerator=CreateAcceleratorTableW(keys,int(std::size(keys)));
         MSG message;
         while(GetMessageW(&message,nullptr,0,0)>0){
+            if(message.message==WM_KEYDOWN&&message.hwnd==consoleInput&&message.wParam==VK_RETURN){try{runConsole();}catch(const std::exception& error){report(error);}continue;}
+            if(message.message==WM_KEYDOWN&&message.wParam=='H'&&(GetKeyState(VK_CONTROL)&0x8000)&&(GetKeyState(VK_SHIFT)&0x8000)){perform(ToggleFps);continue;}
+            if(message.message==WM_KEYDOWN&&message.wParam==VK_OEM_3&&GetAncestor(message.hwnd,GA_ROOT)==window){wchar_t cls[32]{};if(const HWND f=GetFocus())GetClassNameW(f,cls,32);if(lstrcmpiW(cls,L"Edit")){if(!consoleVisible)perform(ShowConsole);SetFocus(consoleInput);continue;}}
             // Unreal viewport keys work anywhere in the editor except while typing into an input box.
             if(message.message==WM_KEYDOWN&&sceneOpen()&&!sourceMode&&!(GetKeyState(VK_CONTROL)&0x8000)&&!(GetKeyState(VK_MENU)&0x8000)){
                 wchar_t kind[32]{};if(const HWND focus=GetFocus())GetClassNameW(focus,kind,32);
@@ -4516,8 +4553,12 @@ private:
         // Real mouse order: press, release, double-click, release.
         hierarchy.probe({{"action","click"},{"row",0},{"part","item"}});hierarchy.probe({{"action","dblclick"},{"row",0},{"part","item"}});auto focusInput=std::move(cameraInput);cameraInput=nullptr;
         const auto focusState=drawViewport(focusInput.is_object()?std::move(focusInput):Json::object());const bool focusMoved=focusState.value("cameraPosition",Json())!=viewBefore&&focusState.value("animating",false);const bool gizmoShown=!focusState.value("segments",Json::array()).empty();
-        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown}};
-        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        // Console r.* edits the scene runtime settings; stat fps and camera speed change the viewport.
+        SetWindowTextW(consoleInput,L"r.ScreenPercentage 80");runConsole();const bool consoleSet=Json::parse(document.at("text").get<std::string>()).at("runtime").value("renderScale",0)==80;perform(Undo);
+        SetWindowTextW(consoleInput,L"stat fps");runConsole();drawViewport();const bool fpsShown=showFps&&!fpsTimes.empty();perform(ToggleFps);
+        SetWindowTextW(consoleInput,L"camera.speed 7");runConsole();const bool speedSet=cameraSpeed==7;perform(Command(CameraSpeedFirst+3));
+        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet}};
+        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());

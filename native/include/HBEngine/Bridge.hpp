@@ -169,6 +169,9 @@ inline bool Input::HasActionEvent(Actor* target,const std::string& action,const 
 inline float Input::GetActionElapsed(Actor* target,const std::string& action){return bridgeAction(target,action).at("elapsed").get<float>();}
 inline void Input::SetMouseCapture(bool enabled){engineCommand("mouseSetCapture",{{"enabled",enabled}});}
 inline void Input::AddMappingContext(Actor* target,const std::string& context,int priority){engineCommand("inputAddContext",{{"target",bridgeId(target)},{"context",context},{"priority",priority}});}
+inline void Input::RebindKey(const std::string& action,const std::string& oldKey,const std::string& newKey){engineCommand("inputRebindKey",{{"action",action},{"oldKey",oldKey},{"newKey",newKey}});}
+inline void Input::ResetKeyBindings(){engineCommand("inputResetBindings",nlohmann::json::object());}
+inline void Camera::SetDisplaySettings(const std::string& quality,int screenPercentage,float gamma,float brightness,bool hdr){engineCommand("displaySetSettings",{{"quality",quality},{"screenPercentage",screenPercentage},{"gamma",gamma},{"brightness",brightness},{"hdr",hdr}});}
 inline void Input::RemoveMappingContext(Actor* target,const std::string& context){engineCommand("inputRemoveContext",{{"target",bridgeId(target)},{"context",context}});}
 inline std::function<Json(const Json&)> bridgeQuery;
 inline Json engineQuery(const char* key,const Json& args){

@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **867개**, 실제 공통 C++ API **777개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **900개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -44,27 +44,29 @@
 | 2D 이동 | 1 | 1 |
 | 투사체 | 4 | 4 |
 | 카메라 | 4 | 4 |
+| 화면 설정 | 1 | 1 |
 | UI|위젯 | 1 | 1 |
 | UI|목록 | 6 | 6 |
 | UI|지역화 | 3 | 3 |
 | 게임플레이 | 9 | 9 |
 | 오브젝트 풀 | 3 | 3 |
-| 입력 | 10 | 10 |
-| 입력 액션 | 6 | 6 |
+| 입력 | 12 | 12 |
+| 입력 액션 | 8 | 8 |
 | 2D 스프라이트 | 25 | 25 |
 | 2D 조명 | 38 | 38 |
 | 2D 그림자 | 13 | 13 |
 | 2D 타일맵 | 13 | 13 |
-| 물리 천 | 6 | 6 |
-| 물리 2D 로프 | 6 | 6 |
-| 물리 관절 | 5 | 5 |
-| 물리 차량 | 5 | 5 |
+| 물리 천 | 7 | 7 |
+| 물리 2D 로프 | 7 | 7 |
+| 물리 관절 | 6 | 6 |
+| 물리 차량 | 8 | 8 |
 | 물리 질의 | 7 | 7 |
-| AI | 17 | 17 |
+| AI | 23 | 23 |
 | 상태 머신 | 11 | 11 |
 | 메시 모프 | 3 | 3 |
 | 3D 골격 조회 | 6 | 6 |
-| 애니메이션 그래프 | 40 | 40 |
+| 3D 소켓 조회 | 7 | 7 |
+| 애니메이션 그래프 | 41 | 41 |
 | 애니메이션 상태 | 8 | 8 |
 | 애니메이션 동기화 | 3 | 3 |
 | 2D 뼈 변형 | 7 | 7 |
@@ -74,12 +76,12 @@
 | 시퀀스 | 26 | 26 |
 | AI 내비게이션 | 7 | 7 |
 | AI 감지 | 3 | 3 |
-| 파티클 | 5 | 5 |
+| 파티클 | 10 | 10 |
 | 능력|속성 | 3 | 3 |
 | 능력|세트 | 1 | 1 |
 | 능력 | 6 | 6 |
 | 능력|효과 | 9 | 9 |
-| AI|EQS | 2 | 2 |
+| AI|EQS | 5 | 5 |
 | 게임플레이 태그 | 7 | 7 |
 | 월드 스트리밍 | 6 | 6 |
 | 오브젝트|Tick | 4 | 4 |
@@ -767,6 +769,12 @@
 | cameraShake | Shake / 카메라 흔들기 | exec: exec, target: object, intensity: float, duration: float | then: exec | hb::Camera::Shake | 공통 C++ + VM |
 | screenFlash | Flash / 화면 번쩍임 | exec: exec, color: color, duration: float | then: exec | hb::Camera::Flash | 공통 C++ + VM |
 
+## 화면 설정
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| displaySetSettings | Set Display Settings / 화면 설정 적용 | exec: exec, quality: string, screenPercentage: int, gamma: float, brightness: float, hdr: bool | then: exec | hb::Camera::SetDisplaySettings | 공통 C++ + VM |
+
 ## UI|위젯
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
@@ -825,6 +833,8 @@
 | inputKeyDown | Is Key Down / 키·마우스 버튼 눌림 | key: string | return: bool | hb::Input::IsKeyDown | 공통 C++ + VM |
 | inputAxisValue | Get Axis / 입력 축 값 가져오기 | key: string | return: float | hb::Input::GetAxis | 공통 C++ + VM |
 | mousePosition | Get Mouse Position / 마우스 위치 가져오기 | — | return: bool, position: vec2 | hb::Input::GetMousePosition | 공통 C++ + VM |
+| mouseSetCapture | Set Mouse Capture / 마우스 잠금 설정 | exec: exec, enabled: bool | then: exec | hb::Input::SetMouseCapture | 공통 C++ + VM |
+| mouseIsCaptured | Is Mouse Captured / 마우스 잠금 확인 | — | return: bool | hb::Input::IsMouseCaptured | 공통 C++ + VM |
 | mouseDelta | Get Mouse Delta / 마우스 이동량 가져오기 | — | return: vec2 | hb::Input::GetMouseDelta | 공통 C++ + VM |
 | mouseRay | Deproject Mouse Position To World / 마우스 월드 방향 가져오기 | — | return: bool, origin: vec3, direction: vec3 | hb::Input::DeprojectMousePositionToWorld | 공통 C++ + VM |
 | mouseWorldPlane | Get Mouse World Position / 마우스 조준 평면 위치 | normal: vec3, point: vec3 | return: bool, position: vec3 | hb::Input::GetMouseWorldPosition | 공통 C++ + VM |
@@ -839,6 +849,8 @@
 | actionElapsed | Get Action Elapsed / 입력 액션 유지 시간 | target: object, action: string | return: float | hb::Input::GetActionElapsed | 공통 C++ + VM |
 | inputAddContext | Add Mapping Context / 입력 컨텍스트 추가 | exec: exec, target: object, context: string, priority: int | then: exec | hb::Input::AddMappingContext | 공통 C++ + VM |
 | inputRemoveContext | Remove Mapping Context / 입력 컨텍스트 제거 | exec: exec, target: object, context: string | then: exec | hb::Input::RemoveMappingContext | 공통 C++ + VM |
+| inputRebindKey | Rebind Key / 입력 키 다시 지정 | exec: exec, action: string, oldKey: string, newKey: string | then: exec | hb::Input::RebindKey | 공통 C++ + VM |
+| inputResetBindings | Reset Key Bindings / 입력 키 기본값 복원 | exec: exec | then: exec | hb::Input::ResetKeyBindings | 공통 C++ + VM |
 
 ## 2D 스프라이트
 
@@ -958,6 +970,7 @@
 | physicsClothImpulse | Add Cloth Impulse / 천 충격량 | exec: exec, target: object, impulse: vec3, index: int | then: exec | hb::Physics::AddClothImpulse | 공통 C++ + VM |
 | physicsClothAttach | Attach Cloth Particle / 천 입자 강체 연결 | exec: exec, target: object, index: int, body: object | then: exec | hb::Physics::AttachClothParticle | 공통 C++ + VM |
 | physicsClothReset | Reset Cloth / 천 초기화 | exec: exec, target: object | then: exec | hb::Physics::ResetCloth | 공통 C++ + VM |
+| physicsClothResetPlasticity | Reset Cloth Plasticity / 천 영구 변형 복원 | exec: exec, target: object | then: exec | hb::Physics::ResetClothPlasticity | 공통 C++ + VM |
 | physicsClothCount | Get Cloth Particle Count / 천 입자 수 | target: object | return: int | hb::Physics::GetClothParticleCount | 공통 C++ + VM |
 
 ## 물리 2D 로프
@@ -969,6 +982,7 @@
 | physicsRopeImpulse | Add Rope Impulse / 2D 로프 충격량 | exec: exec, target: object, impulse: vec2, index: int | then: exec | hb::Physics::AddRopeImpulse | 공통 C++ + VM |
 | physicsRopeAttach | Attach Rope Particle / 2D 로프 강체 연결 | exec: exec, target: object, index: int, body: object | then: exec | hb::Physics::AttachRopeParticle | 공통 C++ + VM |
 | physicsRopeReset | Reset Rope / 2D 로프 초기화 | exec: exec, target: object | then: exec | hb::Physics::ResetRope | 공통 C++ + VM |
+| physicsRopeResetPlasticity | Reset Rope Plasticity / 2D 로프 영구 변형 복원 | exec: exec, target: object | then: exec | hb::Physics::ResetRopePlasticity | 공통 C++ + VM |
 | physicsRopeCount | Get Rope Particle Count / 2D 로프 입자 수 | target: object | return: int | hb::Physics::GetRopeParticleCount | 공통 C++ + VM |
 
 ## 물리 관절
@@ -980,6 +994,7 @@
 | physicsJointFrames | Set Joint Frames / 관절 양쪽 프레임 설정 | exec: exec, target: object, component: string, ownerRotation: vec3, connectedRotation: vec3, autoConnected: bool, referenceAngle: float | then: exec | hb::Physics::SetJointFrames | 공통 C++ + VM |
 | physicsJointMotor | Set Joint Motor / 관절 모터 설정 | exec: exec, target: object, component: string, enabled: bool, position: float, velocity: float, stiffness: float, damping: float, maxForce: float | then: exec | hb::Physics::SetJointMotor | 공통 C++ + VM |
 | physicsJointLimits | Set Joint Limits / 관절 한계 설정 | exec: exec, target: object, component: string, enabled: bool, lower: float, upper: float | then: exec | hb::Physics::SetJointLimits | 공통 C++ + VM |
+| physicsJointBreak | Set Joint Broken / 관절 해제·재연결 | exec: exec, target: object, component: string, broken: bool | then: exec | hb::Physics::SetJointBroken | 공통 C++ + VM |
 
 ## 물리 차량
 
@@ -989,6 +1004,9 @@
 | physicsVehicleGear | Set Vehicle Gear / 차량 기어 지정 | exec: exec, target: object, gear: int | then: exec | hb::Physics::SetVehicleGear | 공통 C++ + VM |
 | physicsVehicleRPM | Get Vehicle RPM / 차량 엔진 RPM | target: object | return: float | hb::Physics::GetVehicleRPM | 공통 C++ + VM |
 | physicsVehicleCurrentGear | Get Vehicle Gear / 차량 현재 기어 | target: object | return: int | hb::Physics::GetVehicleGear | 공통 C++ + VM |
+| physicsVehicleWheelRPM | Get Vehicle Wheel RPM / 차량 휠 RPM | target: object, index: int | return: float | hb::Physics::GetVehicleWheelRPM | 공통 C++ + VM |
+| physicsVehicleWheelSlip | Get Vehicle Wheel Slip / 차량 휠 슬립 | target: object, index: int | return: float | hb::Physics::GetVehicleWheelSlip | 공통 C++ + VM |
+| physicsVehicleWheelABS | Is Vehicle Wheel ABSActive / 차량 휠 ABS 상태 | target: object, index: int | return: bool | hb::Physics::IsVehicleWheelABSActive | 공통 C++ + VM |
 | physicsVehicleSpeed | Get Vehicle Speed / 차량 속도 가져오기 | target: object | return: float | hb::Physics::GetVehicleSpeed | 공통 C++ + VM |
 
 ## 물리 질의
@@ -1010,7 +1028,13 @@
 | runBehaviorTree | Run Behavior Tree / 행동트리 실행 | exec: exec, target: object, asset: string | then: exec | hb::AI::RunBehaviorTree | 공통 C++ + VM |
 | stopBehaviorTree | Stop Behavior Tree / 행동트리 정지 | exec: exec, target: object | then: exec | hb::AI::StopBehaviorTree | 공통 C++ + VM |
 | behaviorTaskHandle | Get Task Handle / 실행 중 태스크 핸들 | target: object, node: string | return: string | hb::AI::GetTaskHandle | 공통 C++ + VM |
+| behaviorTaskMemoryGet | Get Task Memory / 태스크 메모리 읽기 | target: object, task: string | return: string | hb::AI::GetTaskMemory | 공통 C++ + VM |
+| behaviorTaskMemorySet | Set Task Memory / 태스크 메모리 지정 | exec: exec, target: object, task: string, json: string | then: exec | hb::AI::SetTaskMemory | 공통 C++ + VM |
+| behaviorTaskMemoryClear | Clear Task Memory / 태스크 메모리 지우기 | exec: exec, target: object, task: string | then: exec | hb::AI::ClearTaskMemory | 공통 C++ + VM |
 | behaviorTaskFinish | Finish Task / 태스크 완료 | exec: exec, target: object, task: string, success: bool | then: exec | hb::AI::FinishTask | 공통 C++ + VM |
+| behaviorTaskAbortFinish | Finish Abort / 태스크 중단 완료 | exec: exec, target: object, task: string | then: exec | hb::AI::FinishAbort | 공통 C++ + VM |
+| behaviorTaskIsAborting | Is Task Aborting / 태스크 중단 중 | target: object, task: string | return: bool | hb::AI::IsTaskAborting | 공통 C++ + VM |
+| behaviorTaskIsExecuting | Is Task Executing / 태스크 실행 중 | target: object, task: string | return: bool | hb::AI::IsTaskExecuting | 공통 C++ + VM |
 | blackboardSetBool | Set Bool / 블랙보드 불리언 지정 | exec: exec, target: object, key: string, value: bool | then: exec | hb::Blackboard::SetBool | 공통 C++ + VM |
 | blackboardGetBool | Get Bool / 블랙보드 불리언 가져오기 | target: object, key: string | return: bool | hb::Blackboard::GetBool | 공통 C++ + VM |
 | blackboardSetFloat | Set Float / 블랙보드 실수 지정 | exec: exec, target: object, key: string, value: float | then: exec | hb::Blackboard::SetFloat | 공통 C++ + VM |
@@ -1060,6 +1084,18 @@
 | skeletonRotation | Get Bone Rotation / 골격 뼈 회전 조회 | target: object, bone: string, world: bool | return: vec3 | hb::Skeleton::GetBoneRotation | 공통 C++ + VM |
 | skeletonScale | Get Bone Scale / 골격 뼈 크기 조회 | target: object, bone: string, world: bool | return: vec3 | hb::Skeleton::GetBoneScale | 공통 C++ + VM |
 
+## 3D 소켓 조회
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| socketCount | Get Socket Count / 골격 소켓 개수 | target: object | return: int | hb::Skeleton::GetSocketCount | 공통 C++ + VM |
+| socketNames | Get Socket Names / 골격 소켓 이름 페이지 | target: object, offset: int, limit: int | return: string[] | hb::Skeleton::GetSocketNames | 공통 C++ + VM |
+| socketHas | Has Socket / 골격 소켓 존재 확인 | target: object, socket: string | return: bool | hb::Skeleton::HasSocket | 공통 C++ + VM |
+| socketPosition | Get Socket Position / 골격 소켓 위치 조회 | target: object, socket: string, world: bool | return: vec3 | hb::Skeleton::GetSocketPosition | 공통 C++ + VM |
+| socketRotation | Get Socket Rotation / 골격 소켓 회전 조회 | target: object, socket: string, world: bool | return: vec3 | hb::Skeleton::GetSocketRotation | 공통 C++ + VM |
+| socketScale | Get Socket Scale / 골격 소켓 크기 조회 | target: object, socket: string, world: bool | return: vec3 | hb::Skeleton::GetSocketScale | 공통 C++ + VM |
+| socketTransform | Get Socket Transform / 골격 소켓 변환 조회 | target: object, socket: string, world: bool | return: transform | hb::Skeleton::GetSocketTransform | 공통 C++ + VM |
+
 ## 애니메이션 그래프
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
@@ -1085,6 +1121,7 @@
 | animGraphIKEffectorRotation | Set IKEffector Rotation / 다중 IK 목표 회전 지정 | exec: exec, target: object, node: string, goal: string, value: vec3 | then: exec | hb::AnimationGraph::SetIKEffectorRotation | 공통 C++ + VM |
 | animGraphIKEffectorRotationWeight | Set IKEffector Rotation Weight / 다중 IK 회전 가중치 지정 | exec: exec, target: object, node: string, goal: string, value: float | then: exec | hb::AnimationGraph::SetIKEffectorRotationWeight | 공통 C++ + VM |
 | animGraphIKRootSettings | Set IKRoot Settings / 다중 IK 루트 설정 | exec: exec, target: object, node: string, mode: string, pull: float, maxDistance: float | then: exec | hb::AnimationGraph::SetIKRootSettings | 공통 C++ + VM |
+| animGraphIKStretchSettings | Set IKStretch Settings / 다중 IK 늘이기 설정 | exec: exec, target: object, node: string, enabled: bool, maximum: float | then: exec | hb::AnimationGraph::SetIKStretchSettings | 공통 C++ + VM |
 | animGraphIKEffectorError | Get IKEffector Error / 다중 IK 목표 오차 | target: object, node: string, goal: string | return: float | hb::AnimationGraph::GetIKEffectorError | 공통 C++ + VM |
 | animGraphIKTip | Get IKTip Position / IK 끝 뼈 위치 | target: object, node: string | return: vec3 | hb::AnimationGraph::GetIKTipPosition | 공통 C++ + VM |
 | animGraphIKError | Get IKError / IK 목표 거리 | target: object, node: string | return: float | hb::AnimationGraph::GetIKError | 공통 C++ + VM |
@@ -1244,6 +1281,11 @@
 | particlePause | Pause / 파티클 일시정지 | exec: exec, target: object, paused: bool | then: exec | hb::Particles::Pause | 공통 C++ + VM |
 | particleEmit | Emit / 파티클 방출 | exec: exec, target: object, count: int | then: exec | hb::Particles::Emit | 공통 C++ + VM |
 | particleCount | Get Count / 파티클 개수 | target: object | return: int | hb::Particles::GetCount | 공통 C++ + VM |
+| particleComponentPlay | Play Component / 컴포넌트 파티클 재생 | exec: exec, target: object, component: string | then: exec | hb::Particles::PlayComponent | 공통 C++ + VM |
+| particleComponentStop | Stop Component / 컴포넌트 파티클 정지 | exec: exec, target: object, component: string, clear: bool | then: exec | hb::Particles::StopComponent | 공통 C++ + VM |
+| particleComponentPause | Pause Component / 컴포넌트 파티클 일시정지 | exec: exec, target: object, component: string, paused: bool | then: exec | hb::Particles::PauseComponent | 공통 C++ + VM |
+| particleComponentEmit | Emit Component / 컴포넌트 파티클 방출 | exec: exec, target: object, component: string, count: int | then: exec | hb::Particles::EmitComponent | 공통 C++ + VM |
+| particleComponentCount | Get Component Count / 컴포넌트 파티클 개수 | target: object, component: string | return: int | hb::Particles::GetComponentCount | 공통 C++ + VM |
 
 ## 능력|속성
 
@@ -1290,6 +1332,9 @@
 | --- | --- | --- | --- | --- | --- |
 | eqsRun | Run / 환경 질의 실행 | exec: exec, target: object, asset: string, context: object | then: exec | hb::EnvironmentQuery::Run | 공통 C++ + VM |
 | eqsResults | Results / 환경 질의 결과 | target: object | return: string | hb::EnvironmentQuery::Results | 공통 C++ + VM |
+| eqsRunBatch | Run Batch / 환경 질의 묶음 실행 | exec: exec, target: object, assets: string[], context: object, debug: bool | then: exec | hb::EnvironmentQuery::RunBatch | 공통 C++ + VM |
+| eqsBatchResults | Batch Results / 환경 질의 묶음 결과 | target: object | return: string | hb::EnvironmentQuery::BatchResults | 공통 C++ + VM |
+| eqsCancelBatch | Cancel Batch / 환경 질의 묶음 취소 | exec: exec, target: object | then: exec | hb::EnvironmentQuery::CancelBatch | 공통 C++ + VM |
 
 ## 게임플레이 태그
 

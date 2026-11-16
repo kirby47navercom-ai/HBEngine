@@ -200,7 +200,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     if(flight&&!cameraId&&!cameraOutputs&&!orthographic){
       const {forward=0,right=0,up=0,seconds=0,fast=false}=flight;
       if(![forward,right,up,seconds].every(Number.isFinite))throw Error('뷰포트 이동 값을 확인하세요.');
-      const speed=defaultViewportSettings.speed*(fast?defaultViewportSettings.fastMultiplier:1);
+      const scale=Number.isFinite(flight.speedScale)?Math.min(100,Math.max(.01,flight.speedScale)):1;
+      const speed=defaultViewportSettings.speed*scale*(fast?defaultViewportSettings.fastMultiplier:1);
       const delta=new THREE.Vector3(right,0,-forward).applyQuaternion(editorCamera.quaternion).add(new THREE.Vector3(0,up,0));
       if(delta.lengthSq()>1)delta.normalize();
       target.addScaledVector(delta,speed*THREE.MathUtils.clamp(seconds,0,.1));
@@ -444,7 +445,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     }
     const {backend,shaderPreparation,calls,cameraViews,upscales,ldrAntiAliasingPasses}=renderer.hbDiagnostics();
     const ms=(a,b)=>Math.round((timing[b]-timing[a])*100)/100;
-    return {animating,target:target.toArray(),resolution:{...renderer.hbResolution,upscales,ldrAntiAliasingPasses},timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),warnings:content.warnings.slice(0,8)};
+    return {animating,target:target.toArray(),gpuMs:renderer.hbDiagnostics().gpuTimeMs??null,resolution:{...renderer.hbResolution,upscales,ldrAntiAliasingPasses},timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),warnings:content.warnings.slice(0,8)};
   }
   return {draw,close};
 }

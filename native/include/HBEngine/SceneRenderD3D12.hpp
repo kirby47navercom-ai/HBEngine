@@ -15,6 +15,7 @@
 #include "SceneRender.hpp"
 #include "D3D12Direct.hpp"
 #include "D3D12Particles.hpp"
+#include "TextureCompression.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 #include <d3d11shader.h>
 #include <map>
@@ -148,49 +149,70 @@ private:
     Com<ID3D12RootSignature> overlayRoot;
     Com<ID3D12PipelineState> overlayPipeline;
     std::uint64_t overlayDraws_=0,overlayUploadBytes_=0;
-    // Render scale: the scene renders at surfaceWidth x surfaceHeight; a larger window output gets an upscale pass
-    // (Catmull-Rom with anti-ringing clamp + contrast-adaptive sharpen) into the back buffer, then the UI overlay at full size.
-    UINT outputWidth=0,outputHeight=0;float upscaleSharpness=.4f;std::uint64_t upscales_=0;
-    Com<ID3D12RootSignature> upscaleRoot;Com<ID3D12PipelineState> upscalePipeline;
+    // Display pass: render scale (upscale or supersampling), display gamma/brightness and HDR output. Without any of them
+    // the frame is a plain copy. The UI overlay is drawn after scaling at window size.
+    UINT outputWidth=0,outputHeight=0;float upscaleSharpness=.4f,displayGamma=1,displayBrightness=1,hdrPaper=2.5f,hdrPeak=1;bool hdrRequested=false,hdrActive=false;std::uint64_t upscales_=0;
+    Com<ID3D12RootSignature> displayRoot;std::map<DXGI_FORMAT,Com<ID3D12PipelineState>> displayPipelines;d3d12::Texture displayImage;
     bool scaledOutput()const{return swapchain&&outputWidth&&(outputWidth!=surfaceWidth||outputHeight!=surfaceHeight);}
-    void upscale(d3d12::Texture& back){
-        if(!upscalePipeline.p){
-            static constexpr auto source=R"hlsl(
+    void displayPass(d3d12::Texture& source,UINT sourceWidth,UINT sourceHeight,d3d12::Texture& target,UINT targetWidth,UINT targetHeight,std::array<float,4> options){
+        auto& pipeline=displayPipelines[target.format];
+        if(!pipeline.p){
+            static constexpr auto code=R"hlsl(
 Texture2D<float4> src : register(t0);
-cbuffer Size : register(b0) { float4 size; float4 options; };
+cbuffer Display : register(b0) { float4 size; float4 options; float4 hdr; };
 float4 VS(uint id : SV_VertexID) : SV_Position {
     float2 p = float2((id << 1) & 2, id & 2);
     return float4(p * float2(2,-2) + float2(-1,1), 0, 1);
 }
 float3 L(int2 p) { return src.Load(int3(clamp(p, int2(0,0), int2(size.xy) - 1), 0)).rgb; }
 float W(float x) { x = abs(x); return x < 1 ? (1.5 * x - 2.5) * x * x + 1 : x < 2 ? ((-.5 * x + 2.5) * x - 4) * x + 2 : 0; }
+float3 toLinear(float3 c) { return c <= .04045 ? c / 12.92 : pow((c + .055) / 1.055, 2.4); }
 float4 PS(float4 pixel : SV_Position) : SV_Target {
-    float2 s = pixel.xy * size.xy / size.zw - .5, f = s - floor(s);
-    int2 b = int2(floor(s));
-    float3 sum = 0; float total = 0;
-    [unroll] for (int j = -1; j <= 2; j++) { float wy = W(j - f.y); [unroll] for (int i = -1; i <= 2; i++) { float w = W(i - f.x) * wy; sum += L(b + int2(i, j)) * w; total += w; } }
-    float3 a = L(b), c = L(b + int2(1,0)), d = L(b + int2(0,1)), e = L(b + int2(1,1));
-    float3 lo = min(min(a, c), min(d, e)), hi = max(max(a, c), max(d, e));
-    float3 color = clamp(sum / total, lo, hi);
-    float3 amount = options.x * saturate(min(lo, 1 - hi) / max(hi, 1e-4));
-    return float4(saturate(color + (color - (a + c + d + e) * .25) * amount), 1);
+    float3 color;
+    float2 ratio = size.xy / size.zw;
+    if (ratio.x > 1.001 || ratio.y > 1.001) {
+        // Supersampling: average every source texel under this output pixel.
+        float2 start = (pixel.xy - .5) * ratio; int2 n = int2(ceil(ratio - .001)), at = int2(start);
+        float3 sum = 0;
+        [unroll] for (int j = 0; j < 4; j++) [unroll] for (int i = 0; i < 4; i++) if (i < n.x && j < n.y) sum += L(at + int2(i, j));
+        color = sum / (n.x * n.y);
+    } else {
+        float2 s = pixel.xy * ratio - .5, f = s - floor(s);
+        int2 b = int2(floor(s));
+        float3 sum = 0; float total = 0;
+        [unroll] for (int j = -1; j <= 2; j++) { float wy = W(j - f.y); [unroll] for (int i = -1; i <= 2; i++) { float w = W(i - f.x) * wy; sum += L(b + int2(i, j)) * w; total += w; } }
+        float3 a = L(b), c = L(b + int2(1,0)), d = L(b + int2(0,1)), e = L(b + int2(1,1));
+        float3 lo = min(min(a, c), min(d, e)), hi = max(max(a, c), max(d, e));
+        color = clamp(sum / total, lo, hi);
+        float3 amount = options.x * saturate(min(lo, 1 - hi) / max(hi, 1e-4));
+        color += (color - (a + c + d + e) * .25) * amount;
+    }
+    color = pow(saturate(color), 1 / options.y) * options.z;
+    if (options.w > .5) {
+        // scRGB (1.0 = 80 nits): SDR white at paper white, near-white expanded toward the display peak.
+        float3 lin = toLinear(saturate(color)); float l = dot(lin, float3(.2126, .7152, .0722));
+        return float4(lin * hdr.x * (1 + (hdr.y - 1) * pow(saturate((l - .8) / .2), 2)), 1);
+    }
+    return float4(saturate(color), 1);
 }
 )hlsl";
-            D3D12_DESCRIPTOR_RANGE range{D3D12_DESCRIPTOR_RANGE_TYPE_SRV,1,0,0,0};
-            D3D12_ROOT_PARAMETER params[2]{};params[0].ParameterType=D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;params[0].DescriptorTable={1,&range};params[0].ShaderVisibility=D3D12_SHADER_VISIBILITY_PIXEL;
-            params[1].ParameterType=D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;params[1].Constants={0,0,8};params[1].ShaderVisibility=D3D12_SHADER_VISIBILITY_PIXEL;
-            D3D12_ROOT_SIGNATURE_DESC rootDesc{};rootDesc.NumParameters=2;rootDesc.pParameters=params;upscaleRoot=gpu.rootSignature(rootDesc);
-            const auto vs=Device::shader(source,"HBUpscale","VS","vs_5_0"),ps=Device::shader(source,"HBUpscale","PS","ps_5_0");
-            auto desc=Device::defaults(upscaleRoot.p,vs,ps,DXGI_FORMAT_R8G8B8A8_UNORM);desc.RasterizerState.CullMode=D3D12_CULL_MODE_NONE;desc.DepthStencilState.DepthEnable=FALSE;desc.DSVFormat=DXGI_FORMAT_UNKNOWN;
-            upscalePipeline=gpu.pipeline(desc);
+            if(!displayRoot.p){
+                D3D12_DESCRIPTOR_RANGE range{D3D12_DESCRIPTOR_RANGE_TYPE_SRV,1,0,0,0};
+                D3D12_ROOT_PARAMETER params[2]{};params[0].ParameterType=D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;params[0].DescriptorTable={1,&range};params[0].ShaderVisibility=D3D12_SHADER_VISIBILITY_PIXEL;
+                params[1].ParameterType=D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;params[1].Constants={0,0,12};params[1].ShaderVisibility=D3D12_SHADER_VISIBILITY_PIXEL;
+                D3D12_ROOT_SIGNATURE_DESC rootDesc{};rootDesc.NumParameters=2;rootDesc.pParameters=params;displayRoot=gpu.rootSignature(rootDesc);
+            }
+            const auto vs=Device::shader(code,"HBDisplay","VS","vs_5_0"),ps=Device::shader(code,"HBDisplay","PS","ps_5_0");
+            auto desc=Device::defaults(displayRoot.p,vs,ps,target.format);desc.RasterizerState.CullMode=D3D12_CULL_MODE_NONE;desc.DepthStencilState.DepthEnable=FALSE;desc.DSVFormat=DXGI_FORMAT_UNKNOWN;
+            pipeline=gpu.pipeline(desc);
         }
-        auto table=gpu.table(1);gpu.device->CreateShaderResourceView(color.get(),nullptr,table.cpuAt(0));gpu.transition(color,readable);
-        const float constants[8]={float(surfaceWidth),float(surfaceHeight),float(outputWidth),float(outputHeight),upscaleSharpness,0,0,0};
-        auto* list=gpu.list.p;const D3D12_VIEWPORT viewport{0,0,float(outputWidth),float(outputHeight),0,1};const D3D12_RECT scissor{0,0,LONG(outputWidth),LONG(outputHeight)};
-        list->RSSetViewports(1,&viewport);list->RSSetScissorRects(1,&scissor);list->OMSetRenderTargets(1,&back.rtv,FALSE,nullptr);
-        list->SetGraphicsRootSignature(upscaleRoot.p);list->SetGraphicsRootDescriptorTable(0,table.gpu);list->SetGraphicsRoot32BitConstants(1,8,constants,0);
-        list->SetPipelineState(upscalePipeline.p);list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);list->DrawInstanced(3,1,0,0);++upscales_;
-        gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);
+        auto table=gpu.table(1);gpu.device->CreateShaderResourceView(source.get(),nullptr,table.cpuAt(0));gpu.transition(source,readable);gpu.transition(target,D3D12_RESOURCE_STATE_RENDER_TARGET);
+        const float constants[12]={float(sourceWidth),float(sourceHeight),float(targetWidth),float(targetHeight),options[0],options[1],options[2],options[3],hdrPaper,hdrPeak,0,0};
+        auto* list=gpu.list.p;const D3D12_VIEWPORT viewport{0,0,float(targetWidth),float(targetHeight),0,1};const D3D12_RECT scissor{0,0,LONG(targetWidth),LONG(targetHeight)};
+        list->RSSetViewports(1,&viewport);list->RSSetScissorRects(1,&scissor);list->OMSetRenderTargets(1,&target.rtv,FALSE,nullptr);
+        list->SetGraphicsRootSignature(displayRoot.p);list->SetGraphicsRootDescriptorTable(0,table.gpu);list->SetGraphicsRoot32BitConstants(1,12,constants,0);
+        list->SetPipelineState(pipeline.p);list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);list->DrawInstanced(3,1,0,0);
+        if(sourceWidth!=targetWidth||sourceHeight!=targetHeight)++upscales_;
     }
     void drawOverlay(d3d12::Texture& target,UINT targetWidth,UINT targetHeight){
         if(!overlay.value.p||overlay.width!=targetWidth||overlay.height!=targetHeight)return;
@@ -239,7 +261,7 @@ float4 PS(float4 pixel : SV_Position) : SV_Target { return hud.Load(int3(int2(pi
     d3d12::Texture color,depth;SceneFrame frame;bool begun=false;Mesh background;
     // Window output and GPU frame timing (timestamp pair per frame in flight).
     std::unique_ptr<Swapchain> swapchain;Com<ID3D12QueryHeap> timestamps;Buffer timestampReadback;std::array<bool,FrameCount> timingPending{};bool timingOpen=false;std::optional<double> gpuMilliseconds;
-    std::uint64_t draws_=0,presents_=0,uploads_=0,meshUpdates_=0,meshUpdateBytes_=0,textureRegionUpdates_=0,textureRegionUpdateBytes_=0,raySceneUpdates_=0,raySceneUpdateBytes_=0;
+    std::uint64_t compressedTextures_=0,compressedBytes_=0,draws_=0,presents_=0,uploads_=0,meshUpdates_=0,meshUpdateBytes_=0,textureRegionUpdates_=0,textureRegionUpdateBytes_=0,raySceneUpdates_=0,raySceneUpdateBytes_=0;
     std::uint64_t draws2D_=0,passes2D_=0,shadowDraws_=0,shadowPasses_=0,transmissionAllocations_=0,transmissionCopies_=0,bloomAllocations_=0,bloomDispatches_=0,bloomComposites_=0,lightTileDispatches_=0;
     std::uint64_t probeCaptures_=0,probeDispatches_=0,atlasCopies_=0,atlasUploads_=0,atlasPaddingDispatches_=0,atlasMetadataBytes_=0,particleSortPasses_=0,particleIndexAllocations_=0,particleCountReadbacks_=0,captures_=0,timedFrames_=0,constantUploads_=0;std::size_t atlasMaps_=0;Texture* active2D=nullptr;SceneFrame saved2D;std::map<UINT,Com<ID3D12PipelineState>> pipelines2D;
     // Particles: ParticleRenderer::shader VS/PS/Compact/SortInitial/SortStep, Particles::source Main/Clear.
@@ -711,6 +733,15 @@ public:
     Texture createTexture(UINT w,UINT h,const std::vector<std::uint8_t>& rgba,bool srgb=true,bool mipmaps=true){record();
         if(!w||!h||rgba.size()!=std::size_t(w)*h*4)throw std::runtime_error("Scene texture dimensions or bytes invalid");
         UINT mips=1;if(mipmaps)for(UINT extent=std::max(w,h);extent>1;extent/=2)++mips;
+        // Mipmapped colour textures upload block-compressed (BC1 opaque, BC3 with alpha): 4-8x less video memory.
+        if(textureCompression&&srgb&&mips>1&&w%4==0&&h%4==0){
+            const bool alpha=TextureCompression::hasAlpha(rgba);const auto levels=TextureCompression::compress(w,h,rgba,mips,alpha);const auto format=alpha?DXGI_FORMAT_BC3_UNORM_SRGB:DXGI_FORMAT_BC1_UNORM_SRGB;
+            D3D12_RESOURCE_DESC d{};d.Dimension=D3D12_RESOURCE_DIMENSION_TEXTURE2D;d.Width=w;d.Height=h;d.DepthOrArraySize=1;d.MipLevels=UINT16(mips);d.Format=format;d.SampleDesc.Count=1;
+            std::vector<const void*> data;for(const auto& level:levels){data.push_back(level.bytes.data());compressedBytes_+=level.bytes.size();}
+            ++uploads_;++compressedTextures_;Texture t;static_cast<d3d12::Texture&>(t)=gpu.texture(d,data);t.mips=mips;t.generatedMips=true;
+            D3D12_SHADER_RESOURCE_VIEW_DESC v{};v.Shader4ComponentMapping=D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;v.Format=format;v.ViewDimension=D3D12_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=mips;
+            t.srv=views.take();gpu.device->CreateShaderResourceView(t.get(),&v,t.srv);return t;
+        }
         const auto format=srgb?DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:DXGI_FORMAT_R8G8B8A8_UNORM;
         ++uploads_;Texture t;static_cast<d3d12::Texture&>(t)=gpu.texture(w,h,format,rgba.data(),w*4,mips,mips>1?D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS:D3D12_RESOURCE_FLAG_NONE,mips>1?DXGI_FORMAT_R8G8B8A8_TYPELESS:DXGI_FORMAT_UNKNOWN);t.mips=mips;
         if(mips>1){generateMips(t,mips,format,DXGI_FORMAT_R8G8B8A8_UNORM,srgb);t.generatedMips=true;}
@@ -1196,10 +1227,18 @@ public:
             cameraSequence.clear();cameraIndex=0;
         }
         if(ldrAA>0)ldrFxaa();
-        const bool scaled=scaledOutput();if(!scaled)drawOverlay(color,surfaceWidth,surfaceHeight);
+        const bool scaled=scaledOutput(),display=swapchain&&(scaled||displayGamma!=1||displayBrightness!=1||hdrActive);
+        if(!display)drawOverlay(color,surfaceWidth,surfaceHeight);
         if(swapchain){auto& back=swapchain->acquire();
-            if(scaled){upscale(back);drawOverlay(back,outputWidth,outputHeight);}
-            else{gpu.transition(color,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(back,D3D12_RESOURCE_STATE_COPY_DEST);gpu.list->CopyResource(back.get(),color.get());gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);}
+            const UINT ow=outputWidth?outputWidth:surfaceWidth,oh=outputHeight?outputHeight:surfaceHeight;const std::array<float,4> tone{scaled?upscaleSharpness:0.f,displayGamma,displayBrightness,0};
+            if(!display){gpu.transition(color,D3D12_RESOURCE_STATE_COPY_SOURCE);gpu.transition(back,D3D12_RESOURCE_STATE_COPY_DEST);gpu.list->CopyResource(back.get(),color.get());}
+            else if(!hdrActive){displayPass(color,surfaceWidth,surfaceHeight,back,ow,oh,tone);drawOverlay(back,ow,oh);}
+            else{
+                // HDR: scale and tone into an SDR image, add the UI there, then encode that image for the HDR swap chain.
+                if(displayImage.width!=ow||displayImage.height!=oh){if(displayImage.value.p)gpu.release(displayImage);displayImage=gpu.renderTarget(ow,oh,DXGI_FORMAT_R8G8B8A8_UNORM);}
+                displayPass(color,surfaceWidth,surfaceHeight,displayImage,ow,oh,tone);drawOverlay(displayImage,ow,oh);displayPass(displayImage,ow,oh,back,ow,oh,{0,1,1,1});
+            }
+            gpu.transition(color,D3D12_RESOURCE_STATE_RENDER_TARGET);
             swapchain->finish(back);}
         closeTiming();gpu.end();begun=false;if(swapchain)swapchain->present(interval,allowTearing);++presents_;return true;
     }
@@ -1222,6 +1261,16 @@ public:
         if(swapchain&&(current[0]!=next[0]||current[1]!=next[1])){if(gpu.isRecording()){closeTiming();gpu.end();}gpu.waitIdle();begun=false;swapchain->resize(next[0],next[1]);}
     }
     std::uint64_t upscales()const{return upscales_;}
+    bool textureCompression=true;std::uint64_t compressedTextures()const{return compressedTextures_;}std::uint64_t compressedTextureBytes()const{return compressedBytes_;}
+    bool hdrOutput()const{return hdrActive;}
+    // Display gamma/brightness and HDR output (scRGB swap chain on an HDR monitor; otherwise stays SDR).
+    void setDisplay(float gamma,float brightness,bool hdr){
+        displayGamma=std::clamp(gamma,.5f,2.5f);displayBrightness=std::clamp(brightness,.5f,2.f);
+        if(!swapchain||hdr==hdrRequested)return;hdrRequested=hdr;
+        float peak=0;const bool next=hdr&&swapchain->hdrDisplay(peak);if(next==hdrActive)return;
+        if(gpu.isRecording()){closeTiming();gpu.end();}gpu.waitIdle();begun=false;
+        swapchain->setFormat(next?DXGI_FORMAT_R16G16B16A16_FLOAT:DXGI_FORMAT_R8G8B8A8_UNORM);hdrActive=next;hdrPeak=next?std::max(1.f,(peak>0?peak:400.f)/200.f):1.f;
+    }
     // FXAA on the final display image when anti-aliasing is the only screen effect (no HDR pass, so colours stay as drawn).
     float ldrAA=0;Image ldrAAImage;std::uint64_t ldrAAPasses_=0;
     void setLdrAntiAliasing(float strength){ldrAA=std::clamp(strength,0.f,1.f);if(ldrAA==0)release(ldrAAImage);}

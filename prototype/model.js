@@ -24,10 +24,12 @@ export const defaultObjects = [
 ];
 export const clone = value => JSON.parse(JSON.stringify(value));
 const kinds = new Set(['skyAtmosphere','skyLight','volumetricCloud','heightFog','cone','capsule','torus','particles','navigation','decal','arch', 'crystal', 'ground', 'path', 'grass', 'rocks', 'water', 'light', 'camera', 'cube', 'sphere', 'cylinder', 'plane', 'model','empty','group','playerStart','character','character2d','sprite','tilemap','audio','directionalLight','pointLight','spotLight','light2d','controller','gameMode','gameState','playerState']);
-export const defaultRuntimeSettings={dimension:'3d',gameConfig:'',gravity:[0,-9.81,0],fixedDeltaTime:1/60,maxSubsteps:8,renderScale:100,dynamicResolution:false,minRenderScale:50};
+export const defaultRuntimeSettings={dimension:'3d',gameConfig:'',gravity:[0,-9.81,0],fixedDeltaTime:1/60,maxSubsteps:8,renderScale:100,dynamicResolution:false,minRenderScale:50,quality:'epic',displayGamma:1,displayBrightness:1,hdrOutput:false};
 export function validRuntimeSettings(value){return value&&(value.renderBackend===undefined||['webgl2','webgpu'].includes(value.renderBackend))&&(value.sortingLayers===undefined||validSortingLayers(value.sortingLayers))&&validFrameSettings(value)&&['2d','3d'].includes(value.dimension)&&typeof value.gameConfig==='string'&&value.gameConfig.length<=1000&&!value.gameConfig.includes('..')&&!/^(?:[a-z]+:|[/\\])/i.test(value.gameConfig)&&Array.isArray(value.gravity)&&value.gravity.length===3&&value.gravity.every(v=>Number.isFinite(v)&&Math.abs(v)<=1000)&&Number.isFinite(value.fixedDeltaTime)&&value.fixedDeltaTime>=1/240&&value.fixedDeltaTime<=.1&&Number.isInteger(value.maxSubsteps)&&value.maxSubsteps>=1&&value.maxSubsteps<=32
-  // Screen percentage 25-100 and dynamic resolution (optional for older scenes).
-  &&['renderScale','minRenderScale'].every(key=>value[key]===undefined||Number.isInteger(value[key])&&value[key]>=25&&value[key]<=100)&&(value.dynamicResolution===undefined||typeof value.dynamicResolution==='boolean');}
+  // Screen percentage 25-200 (over 100 = supersampling), dynamic resolution, quality preset, display gamma/brightness, HDR output (all optional for older scenes).
+  &&(value.renderScale===undefined||Number.isInteger(value.renderScale)&&value.renderScale>=25&&value.renderScale<=200)&&(value.minRenderScale===undefined||Number.isInteger(value.minRenderScale)&&value.minRenderScale>=25&&value.minRenderScale<=100)
+  &&['dynamicResolution','hdrOutput'].every(key=>value[key]===undefined||typeof value[key]==='boolean')&&(value.quality===undefined||['low','medium','high','epic'].includes(value.quality))
+  &&(value.displayGamma===undefined||Number.isFinite(value.displayGamma)&&value.displayGamma>=.5&&value.displayGamma<=2.5)&&(value.displayBrightness===undefined||Number.isFinite(value.displayBrightness)&&value.displayBrightness>=.5&&value.displayBrightness<=2);}
 export const validSurface = value => !!value && /^#[0-9a-f]{6}$/i.test(value.color)
   && ['roughness','metalness'].every(k=>Number.isFinite(value[k])&&value[k]>=0&&value[k]<=1)
   && Number.isFinite(value.light)&&value.light>=0&&value.light<=10;

@@ -6,7 +6,7 @@
 #include "ShaderBytecodeCompiler.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 #include <d3d12sdklayers.h>
-#include <dxgi1_5.h>
+#include <dxgi1_6.h>
 #include <memory>
 #include <unordered_map>
 
@@ -414,6 +414,14 @@ public:
     void present(UINT sync,bool allowTearing=false){
         lastFlags=sync==0&&allowTearing&&tearingSupported()?DXGI_PRESENT_ALLOW_TEARING:0;
         check(swap->Present(sync,lastFlags),"Direct3D12 present");
+    }
+    // True when the window's monitor runs in HDR (PQ / BT.2020); peak gets its maximum luminance in nits.
+    bool hdrDisplay(float& peak){Com<IDXGIOutput> output;if(FAILED(swap->GetContainingOutput(&output.p)))return false;Com<IDXGIOutput6> desc6;if(FAILED(output->QueryInterface(__uuidof(IDXGIOutput6),reinterpret_cast<void**>(&desc6.p))))return false;DXGI_OUTPUT_DESC1 d{};if(FAILED(desc6->GetDesc1(&d)))return false;peak=d.MaxLuminance;return d.ColorSpace==DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020;}
+    // RGBA16F + scRGB colour space for HDR, RGBA8 + sRGB otherwise.
+    void setFormat(DXGI_FORMAT format){
+        if(buffers[0].format==format)return;gpu.waitIdle();for(auto& b:buffers)b.value={};
+        check(swap->ResizeBuffers(FrameCount,buffers[0].width,buffers[0].height,format,flags),"Direct3D12 swapchain format");for(auto& b:buffers)b.format=format;wrap();
+        swap->SetColorSpace1(format==DXGI_FORMAT_R16G16B16A16_FLOAT?DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709:DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709);
     }
     void resize(UINT width,UINT height){
         gpu.waitIdle();for(auto& b:buffers)b.value={};

@@ -137,6 +137,8 @@ export function disposeSceneEnvironment(scene){if(!scene)return;for(const render
 
 export function applySceneEnvironment({scene,environment,surface,runtimeSettings,ambientLight,mainRenderer,groundFloor,skyDome,cloudGroup,sun,objects=[]}){
   // Screen percentage and dynamic resolution (native D3D12 renderer; other renderers ignore it).
+  mainRenderer?.hbSetQuality?.(runtimeSettings?.quality??'epic');
+  mainRenderer?.hbSetDisplay?.({gamma:runtimeSettings?.displayGamma??1,brightness:runtimeSettings?.displayBrightness??1,hdr:runtimeSettings?.hdrOutput===true});
   mainRenderer?.hbSetResolution?.({scale:(runtimeSettings?.renderScale??100)/100,dynamic:runtimeSettings?.dynamicResolution===true,min:(runtimeSettings?.minRenderScale??50)/100,targetMs:1000/(runtimeSettings?.targetFrameRate||60)});
   const resolved=resolveSceneEnvironment(environment,surface,objects);if(!scene)return resolved;const p=resolved.preset,sky=resolved.sky,uniforms=heightFogState(scene);
   scene.background??=new THREE.Color();if(scene.background.isColor)scene.background.copy(sky?color(sky.groundColor):new THREE.Color(0x272f34));
