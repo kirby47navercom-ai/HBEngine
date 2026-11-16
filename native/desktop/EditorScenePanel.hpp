@@ -20,7 +20,7 @@ class EditorScenePanel {
     ULONGLONG flightTime=0;
     void stopFlight(){KillTimer(window,1);flightTime=0;flightKeys.fill(false);}
     std::optional<Handle> hitHandle(POINT at)const{
-        double nearest=49;
+        double nearest=196;// 14 px grab radius (Unreal handles are easy to catch)
         std::optional<Handle> hit;
         for(const auto& handle:handles){
             const auto length=handle.dx*handle.dx+handle.dy*handle.dy;

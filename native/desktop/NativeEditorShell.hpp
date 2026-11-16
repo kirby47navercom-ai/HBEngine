@@ -358,7 +358,7 @@ class NativeEditorShell {
                 Json parts=inspectedBase;
                 for(const auto& part:fieldPath)parts.push_back(part);
                 if(fields.at(i).contains("via"))parts.push_back(fields.at(i).at("via"));
-                showDocument(request("asset.fieldEdit",{{"parts",parts},{"key",key},{"value",event.contains("checked")?event.at("checked"):event.at("value")},{"expectedRevision",document.at("revision")}}));
+                showDocument(request("asset.fieldEdit",{{"parts",parts},{"key",key},{"value",event.contains("checked")?event.at("checked"):event.at("value")},{"merge",event.value("merge",false)},{"expectedRevision",document.at("revision")}}));
             }catch(const std::exception& error){report(error);}
         },"asset");
         graphics=std::make_shared<EditorD3D12Surface::Graphics>();
@@ -1584,7 +1584,7 @@ class NativeEditorShell {
             rows=Json::array({{{"kind","heading"},{"text","트랜스폼"}}});
             for(const auto& [key,label]:std::initializer_list<std::pair<const char*,const char*>>{{"position","위치"},{"rotation","회전"},{"scale","스케일"}}){
                 if(field(key)<0)continue;auto parts=base;parts.push_back(key);
-                Json controls=Json::array();for(auto axis:request("asset.fields",{{"parts",parts}})){axis["via"]=key;auto control=axis.at("control");control["i"]=fields.size();controls.push_back(std::move(control));fields.push_back(std::move(axis));}
+                Json controls=Json::array();for(auto axis:request("asset.fields",{{"parts",parts}})){axis["via"]=key;auto control=axis.at("control");control["i"]=fields.size();control["step"]=std::string(key)=="rotation"?.5:std::string(key)=="scale"?.01:.05;controls.push_back(std::move(control));fields.push_back(std::move(axis));}
                 rows.push_back({{"label",label},{"controls",std::move(controls)}});
             }
             rows.push_back({{"kind","heading"},{"text","일반"}});
@@ -3854,6 +3854,14 @@ public:
         const auto accelerator=CreateAcceleratorTableW(keys,int(std::size(keys)));
         MSG message;
         while(GetMessageW(&message,nullptr,0,0)>0){
+            // Unreal viewport keys work anywhere in the editor except while typing into an input box.
+            if(message.message==WM_KEYDOWN&&sceneOpen()&&!sourceMode&&!(GetKeyState(VK_CONTROL)&0x8000)&&!(GetKeyState(VK_MENU)&0x8000)){
+                wchar_t kind[32]{};if(const HWND focus=GetFocus())GetClassNameW(focus,kind,32);
+                const bool typing=!lstrcmpiW(kind,L"Edit")||!lstrcmpiW(kind,L"ComboBox")||!lstrcmpiW(kind,L"SysListView32")||!lstrcmpiW(kind,L"SysTreeView32");
+                const auto key=message.wParam;const Command shortcut=typing?Command(0):key=='W'?ToolMove:key=='E'?ToolRotate:key=='R'?ToolScale:key=='F'?FocusActor:key=='G'?SnapToggle:key==VK_SPACE?Command(1):Command(0);
+                if(shortcut==Command(1)){const auto& tool=viewport.transformTool();perform(tool=="translate"?ToolRotate:tool=="rotate"?ToolScale:ToolMove);continue;}
+                if(shortcut!=Command(0)&&GetAncestor(message.hwnd,GA_ROOT)==window){try{perform(shortcut);}catch(const std::exception& error){report(error);}continue;}
+            }
             HWND owner=message.hwnd;
             while(owner&&owner!=window&&!documentWindows.count(owner)&&(GetWindowLongPtrW(owner,GWL_STYLE)&WS_CHILD))owner=GetParent(owner);
             const bool independent=documentWindows.count(owner)!=0;
@@ -4430,8 +4438,13 @@ private:
         command(Undo);const bool undone=objectCount()==countBefore;
         SetWindowTextW(hierarchySearch,L"no-such-object-name");const bool filtered=hierarchyOrder.empty();
         SetWindowTextW(hierarchySearch,L"");const bool unfiltered=hierarchyOrder.size()==countBefore;
-        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered}};
-        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        // Outliner double-click frames the object; a selected object shows gizmo handles.
+        selectActor(hierarchyOrder.at(0));const auto viewBefore=drawViewport().value("cameraPosition",Json());
+        // Real mouse order: press, release, double-click, release.
+        hierarchy.probe({{"action","click"},{"row",0},{"part","item"}});hierarchy.probe({{"action","dblclick"},{"row",0},{"part","item"}});auto focusInput=std::move(cameraInput);cameraInput=nullptr;
+        const auto focusState=drawViewport(focusInput.is_object()?std::move(focusInput):Json::object());const bool focusMoved=focusState.value("cameraPosition",Json())!=viewBefore;const bool gizmoShown=!focusState.value("segments",Json::array()).empty();
+        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown}};
+        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());

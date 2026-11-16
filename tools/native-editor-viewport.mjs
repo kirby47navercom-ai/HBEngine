@@ -14,10 +14,32 @@ import {projectBytes,projectText} from './project-bytes.mjs';
 import {defaultViewportSettings} from '../prototype/viewport-controls.js';
 import {applyViewportDirection,fitViewportSelection,viewportDirections} from '../prototype/viewport-presentation.js';
 
+// Solid transform gizmo meshes (shared unit geometry; posed every frame, drawn on top without depth).
+function createSolidGizmo(){
+  const group=new THREE.Group();group.userData.editorHelper=true;group.renderOrder=1001;
+  const mat=c=>new THREE.MeshBasicMaterial({color:c,depthTest:false,depthWrite:false,toneMapped:false});
+  group.userData.materials=[0xff4d4d,0x4dd96b,0x4d8dff].map(mat);group.userData.active=mat(0xffd84d);
+  const shaft=new THREE.CylinderGeometry(1,1,1,10),cone=new THREE.ConeGeometry(1,1,16),cube=new THREE.BoxGeometry(1,1,1),ring=new THREE.TorusGeometry(1,.018,6,64);
+  for(let axis=0;axis<3;axis++)for(const [kind,geometry] of [['shaft',shaft],['cone',cone],['cube',cube],['ring',ring]]){const mesh=new THREE.Mesh(geometry,group.userData.materials[axis]);mesh.userData={editorHelper:true,axis,kind};mesh.renderOrder=1001;mesh.frustumCulled=false;group.add(mesh);}
+  return group;
+}
+function poseSolidGizmo(group,{tool,origin,length,basis,active}){
+  const up=new THREE.Vector3(0,1,0),z=new THREE.Vector3(0,0,1);group.visible=true;
+  for(const mesh of group.children){
+    const {axis,kind}=mesh.userData,u=basis(axis).normalize();mesh.material=axis===active?group.userData.active:group.userData.materials[axis];
+    const show=tool==='rotate'?kind==='ring':kind==='shaft'||(tool==='translate'?kind==='cone':kind==='cube');mesh.visible=show;if(!show)continue;
+    if(kind==='ring'){mesh.position.copy(origin);mesh.quaternion.setFromUnitVectors(z,u);mesh.scale.setScalar(length);}
+    else if(kind==='shaft'){mesh.quaternion.setFromUnitVectors(up,u);mesh.position.copy(origin).addScaledVector(u,length*.42);mesh.scale.set(length*.018,length*.84,length*.018);}
+    else if(kind==='cone'){mesh.quaternion.setFromUnitVectors(up,u);mesh.position.copy(origin).addScaledVector(u,length*.92);mesh.scale.set(length*.065,length*.2,length*.065);}
+    else{mesh.quaternion.setFromUnitVectors(up,u);mesh.position.copy(origin).addScaledVector(u,length*.9);mesh.scale.setScalar(length*.11);}
+  }
+  group.updateMatrixWorld(true);
+}
 export function nativeEditorViewport(bridge,surface='native-editor') {
   const canvas={width:1,height:1,clientWidth:1,clientHeight:1,pixelRatio:1};
   let renderer, content, world, source, project, dimension, camera, orthoCamera, sky, visual, primitives, updateEnvironment;
   let selection='', gizmo, handles, models=new Set(), groups=new Map(), owners=new Map();
+  let solidGizmo=null;
   let previewTransform,worldOutline,outlineKey;
   const target=new THREE.Vector3(0,.45,0), orbit=new THREE.Spherical();
   const ray=new THREE.Raycaster();
@@ -325,6 +347,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     const segments=[];
     const actor=content.objects.find(row=>row.id===selection);
     if(handles)handles.visible=false;
+    if(solidGizmo)solidGizmo.visible=false;
     if(authoring&&group?.visible&&!actor.locked){
       const origin=group.getWorldPosition(new THREE.Vector3()),center=origin.clone().project(active);
       if(Math.abs(center.x)<=1&&Math.abs(center.y)<=1&&Math.abs(center.z)<=1){
@@ -362,8 +385,11 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
           if(handles.geometry.drawRange.count!==positions.length/3||positions.some((value,index)=>Math.fround(value)!==position.array[index])){
             position.array.set(positions);color.array.set(colors);position.needsUpdate=true;color.needsUpdate=true;
           }
-          handles.geometry.setDrawRange(0,positions.length/3);handles.visible=true;
+          handles.geometry.setDrawRange(0,positions.length/3);handles.visible=false;
         }
+        // Unreal-style gizmo: arrows (move), rings (rotate), cube tips (scale); the dragged axis turns yellow.
+        solidGizmo??=createSolidGizmo();if(!solidGizmo.parent)world.add(solidGizmo);
+        poseSolidGizmo(solidGizmo,{tool,origin,length,basis:a=>tool==='translate'?new THREE.Vector3().setComponent(a,1):localBasis(a),active:command.startsWith('transform')||command.startsWith('translate')?axis:-1});
       }
     }
     renderer.setSize(width,height,false);timing.scene=performance.now();

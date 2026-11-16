@@ -9,6 +9,8 @@
 class EditorFormPanel : public EditorPanelBase {
 public:
     struct Control {std::string kind,value,text,icon,hint;int i=-1;bool checked=false,disabled=false,pressed=false;double min=0,max=1,step=0;std::vector<std::pair<std::string,std::string>> options;std::optional<std::array<int,4>> box;};
+    int scrub=-1;double scrubStart=0;long scrubTotal=0;bool scrubMoved=false,scrubSent=false;POINT scrubLast{};
+    static bool isNumber(const std::string& s){if(s.empty())return false;char* end=nullptr;std::strtod(s.c_str(),&end);return end&&*end==0;}
     struct Row {std::string kind,text,label;int toggle=-1;bool open=true;std::vector<Control> controls;};
     void attach(HWND owner,HINSTANCE instance,Post post,const std::string& panelName="inspector"){EditorPanelBase::attach(owner,instance,std::move(post),L"HBEngine.EditorFormPanel",panelName);}
     ~EditorFormPanel()override{closeEdit(false);if(IsWindow(tooltip))DestroyWindow(tooltip);if(font)DeleteObject(font);}
@@ -166,12 +168,23 @@ private:
     LRESULT handle(UINT message,WPARAM w,LPARAM l)override{
         const int x=xOf(l),y=yOf(l);
         switch(message){
-        case WM_MOUSEMOVE:{if(sliding>=0&&(w&MK_LBUTTON)){const auto* c=find(sliding);if(c){const auto v=rangeValue(*c,x,rectOf(sliding));if(v!=slideValue){slideValue=v;emit({{"event","input"},{"i",sliding},{"value",v},{"revision",revision}});InvalidateRect(window,nullptr,FALSE);}}return 0;}
+        case WM_MOUSEMOVE:{
+            if(scrub>=0&&(w&MK_LBUTTON)){
+                POINT at{};GetCursorPos(&at);scrubTotal+=at.x-scrubLast.x;scrubLast=at;
+                // Wrap the cursor to the other side of the monitor so a drag never runs out of room.
+                MONITORINFO monitor{sizeof(monitor)};GetMonitorInfoW(MonitorFromPoint(at,MONITOR_DEFAULTTONEAREST),&monitor);
+                if(at.x<=monitor.rcMonitor.left+1){scrubLast={monitor.rcMonitor.right-3,at.y};SetCursorPos(scrubLast.x,scrubLast.y);}else if(at.x>=monitor.rcMonitor.right-2){scrubLast={monitor.rcMonitor.left+3,at.y};SetCursorPos(scrubLast.x,scrubLast.y);}
+                if(!scrubMoved&&std::abs(scrubTotal)>3)scrubMoved=true;
+                if(scrubMoved){SetCursor(LoadCursorW(nullptr,IDC_SIZEWE));const auto* c=find(scrub);double step=c&&c->step>0?c->step:.05;if(GetKeyState(VK_SHIFT)&0x8000)step*=10;if(GetKeyState(VK_CONTROL)&0x8000)step*=.1;
+                    const double value=std::round((scrubStart+scrubTotal*step)*10000)/10000;emit({{"event","input"},{"i",scrub},{"value",value},{"merge",scrubSent},{"revision",revision}});scrubSent=true;}
+                return 0;
+            }if(sliding>=0&&(w&MK_LBUTTON)){const auto* c=find(sliding);if(c){const auto v=rangeValue(*c,x,rectOf(sliding));if(v!=slideValue){slideValue=v;emit({{"event","input"},{"i",sliding},{"value",v},{"revision",revision}});InvalidateRect(window,nullptr,FALSE);}}return 0;}
             const int hit=controlAt(x,y);if(hit!=hover){hideHint();hover=hit;InvalidateRect(window,nullptr,FALSE);TRACKMOUSEEVENT t{sizeof(t),TME_LEAVE|TME_HOVER,window,HOVER_DEFAULT};TrackMouseEvent(&t);}return 0;}
         case WM_MOUSEHOVER:hintAt(x,y);return 0;
         case WM_MOUSELEAVE:hideHint();hover=-1;InvalidateRect(window,nullptr,FALSE);return 0;
         case WM_LBUTTONDOWN:{hideHint();SetFocus(window);emit({{"event","focus-panel"}});const int heading=headingAt(x,y);if(heading>=0){emit({{"event","toggle"},{"i",rows[heading].toggle},{"revision",revision}});return 0;}
             const int i=controlAt(x,y);const auto* c=i>=0?find(i):nullptr;if(!c||c->disabled)return 0;const RECT r=rectOf(i);
+            if((c->kind=="number"||c->kind=="text")&&isNumber(c->value)){scrub=i;scrubStart=parse(c->value,0);scrubTotal=0;scrubMoved=false;GetCursorPos(&scrubLast);SetCapture(window);return 0;}
             if(c->kind=="text"||c->kind=="number"||c->kind=="textarea")beginEdit(*c,r);
             else if(c->kind=="checkbox")emit({{"event","change"},{"i",i},{"checked",!c->checked},{"revision",revision}});
             else if(c->kind=="select")chooseOption(*c,r);
@@ -179,7 +192,7 @@ private:
             else if(c->kind=="button")emit({{"event","click"},{"i",i},{"revision",revision}});
             else if(c->kind=="range"){sliding=i;slideValue=rangeValue(*c,x,r);SetCapture(window);emit({{"event","input"},{"i",i},{"value",slideValue},{"revision",revision}});InvalidateRect(window,nullptr,FALSE);}
             return 0;}
-        case WM_LBUTTONUP:{if(sliding>=0){if(GetCapture()==window)ReleaseCapture();emit({{"event","change"},{"i",sliding},{"value",slideValue},{"revision",revision}});sliding=-1;InvalidateRect(window,nullptr,FALSE);}return 0;}
+        case WM_LBUTTONUP:{if(scrub>=0){const int i=scrub;const bool moved=scrubMoved;scrub=-1;scrubSent=false;if(GetCapture()==window)ReleaseCapture();if(!moved){if(const auto* c=find(i))beginEdit(*c,rectOf(i));}return 0;}if(sliding>=0){if(GetCapture()==window)ReleaseCapture();emit({{"event","change"},{"i",sliding},{"value",slideValue},{"revision",revision}});sliding=-1;InvalidateRect(window,nullptr,FALSE);}return 0;}
         case WM_MOUSEWHEEL:{scroll-=int(GET_WHEEL_DELTA_WPARAM(w))*px(30)*3/WHEEL_DELTA;layout();InvalidateRect(window,nullptr,FALSE);return 0;}
         case WM_KEYDOWN:case WM_SYSKEYDOWN:{if(keyName(w).empty())break;forwardKey(message,w);return 0;}
         case WM_CTLCOLOREDIT:{SetTextColor(HDC(w),RGB(int(theme.text.r*255),int(theme.text.g*255),int(theme.text.b*255)));SetBkColor(HDC(w),RGB(int(theme.field.r*255),int(theme.field.g*255),int(theme.field.b*255)));static HBRUSH fieldBrush=nullptr;if(fieldBrush)DeleteObject(fieldBrush);fieldBrush=CreateSolidBrush(RGB(int(theme.field.r*255),int(theme.field.g*255),int(theme.field.b*255)));return LRESULT(fieldBrush);}

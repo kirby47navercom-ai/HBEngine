@@ -131,10 +131,12 @@ export function nativeEditorSession(bridge) {
   const check = async (doc, expected) => {
     if (await revision(doc) !== expected) throw Object.assign(Error('문서가 변경됐어요. 다시 읽으세요.'), {code:'REVISION_CONFLICT'});
   };
-  function change(doc, next) {
+  // mergeKey: consecutive edits with the same key (one value drag) share a single undo step.
+  function change(doc, next, mergeKey) {
     if (!validAsset(doc.kind, next)) throw Error('에셋 형식이나 값 범위를 확인하세요.');
     if (JSON.stringify(next) === JSON.stringify(doc.data)) return;
-    doc.history.push(doc.data);
+    if(!(mergeKey&&doc.mergeKey===mergeKey&&doc.history.length))doc.history.push(doc.data);
+    doc.mergeKey=mergeKey||null;
     if (doc.history.length > 80) doc.history.shift();
     doc.future.length = 0;
     doc.data = next;
@@ -1724,7 +1726,7 @@ export function nativeEditorSession(bridge) {
       if (!bp) inputs.push(...materialNodeProperties(node,doc.data));
       return inputs;
     },
-    'asset.fieldEdit': async ({path,parts=[],key,value,expectedRevision}) => {
+    'asset.fieldEdit': async ({path,parts=[],key,value,expectedRevision,merge=false}) => {
       const doc = targetDocument(path);
       await check(doc,expectedRevision);
       if(doc.kind==='scene'&&parts[0]==='objects'&&doc.data.objects[Number(parts[1])]?.locked)throw Error('오브젝트 잠금을 해제하세요.');
@@ -1738,7 +1740,7 @@ export function nativeEditorSession(bridge) {
         change(doc,next);return response(doc);
       }
       const pointer = '/'+[...parts,key].map(pointerPart).join('/');
-      change(doc,patchAsset(doc.kind,doc.data,[{op:'replace',path:pointer,value}]));
+      change(doc,patchAsset(doc.kind,doc.data,[{op:'replace',path:pointer,value}]),merge?'drag:'+pointer:'edit:'+pointer+':'+Date.now()+Math.random());
       return response(doc);
     },
     'graph.read': async ({path,view='event'})=>{
