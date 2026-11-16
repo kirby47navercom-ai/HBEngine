@@ -55,7 +55,7 @@ private:
             const float x=float(indent(r.depth));const auto dim=r.visible?theme.text:theme.muted;
             if(r.children)label(r.collapsed?L"":L"",icons,x,y,float(px(16)),float(h),theme.muted);
             label(glyph(r.icon),icons,x+px(16),y,float(px(18)),float(h),r.selected?theme.text:theme.accent);
-            const float nameX=x+px(38),typeW=r.type.empty()||w<px(170)?0.f:std::min(w*.3f,float(px(84)));label(wide(r.name),text,nameX,y,std::max(0.f,w-px(56)-typeW-nameX),float(h),dim);
+            const float nameX=x+px(38),typeW=r.type.empty()||w<px(300)?0.f:std::min(w*.3f,float(px(96)));label(wide(r.name),text,nameX,y,std::max(0.f,w-px(56)-typeW-nameX),float(h),dim);
             if(typeW>0)label(wide(r.type),text,w-px(52)-typeW,y,typeW,float(h),theme.muted);
             label(r.locked?L"":L"",icons,w-px(48),y,float(px(24)),float(h),r.locked?theme.accent:theme.line);
             label(r.visible?L"":L"",icons,w-px(24),y,float(px(24)),float(h),r.visible?theme.muted:theme.line);
