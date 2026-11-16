@@ -107,6 +107,12 @@ try{
   assert.equal(objects().length,before+2,'delete removes every selected object');
   doc=await session('editor.undo',{path:scene,expectedRevision:doc.revision});
   assert.equal(objects().length,before+4,'multi delete is undoable');
+  // Outliner/viewport context menu actions: rename (F2) and detach from parent.
+  doc=await session('scene.edit',{action:'rename',id:a,value:'  Renamed Box  ',expectedRevision:doc.revision});
+  assert.equal(find(a).name,'Renamed Box');
+  await assert.rejects(session('scene.edit',{action:'rename',id:a,value:'   ',expectedRevision:doc.revision}),/이름을 확인/);
+  doc=await session('scene.edit',{action:'reparent',id:b,target:a,expectedRevision:doc.revision});assert.equal(find(b).parent,a);
+  doc=await session('scene.edit',{action:'reparent',id:b,target:'',expectedRevision:doc.revision});assert.equal(find(b).parent,undefined,'detach from parent');
   const named=find(a).name,rows=await session('scene.hierarchy',{query:'"'+named+'"'});
   assert.ok(rows.find(r=>r.id===a).match);
   assert.ok((await session('scene.hierarchy',{query:'no-such-object-name'})).every(r=>r.match===false),'search hides non-matching rows');

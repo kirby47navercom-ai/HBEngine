@@ -178,7 +178,7 @@ class NativeEditorShell {
     static constexpr Command MeshUVView=static_cast<Command>(151),MeshUVFit=static_cast<Command>(150);
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
-        DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
+        DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -370,11 +370,18 @@ class NativeEditorShell {
                 if(action=="select"||action=="clear"){
                     selectActor(event.value("id",std::string()),action=="select"?(event.value("ctrl",false)?1:event.value("shift",false)?2:0):0);queueViewport();return;
                 }
+                if(action=="contextmenu"){
+                    const auto id=event.value("id",Json()).is_string()?event.at("id").get<std::string>():std::string();
+                    if(!id.empty()&&id!=sceneSelection&&std::find(sceneExtra.begin(),sceneExtra.end(),id)==sceneExtra.end())selectActor(id);else if(id.empty())selectActor("");
+                    POINT at{};GetCursorPos(&at);sceneContextMenu(at);return;
+                }
+                if(action=="activate"){selectActor(event.value("id",std::string()));perform(FocusActor);return;}
                 if(action=="visible"||action=="lock"||action=="reparent"){editScene(event);return;}
                 if(action=="key"){
                     const auto key=event.value("key",std::string());
                     if(key=="Delete")perform(DeleteActor);
                     if(key=="f")perform(FocusActor);
+                    if(key=="F2")perform(RenameActor);
                     if(event.value("ctrl",false)){if(key=="c")perform(CopyActor);else if(key=="v")perform(PasteActor);else if(key=="d")perform(DuplicateActor);}
                 }
             }catch(const std::exception& error){report(error);}
@@ -586,7 +593,7 @@ class NativeEditorShell {
     static const wchar_t* helpText(bool start){
         return start?
             L"HBEngine 시작하기\r\n" L"\r\n" L"1. 프로젝트 만들기\r\n" L"   파일 > 새 프로젝트에서 2D·3D 템플릿을 골라요. 파일 > 프로젝트 열기(Ctrl+O)나 최근 프로젝트로 다시 열어요.\r\n" L"2. 에셋 넣기\r\n" L"   이미지·모델·소리 파일을 콘텐츠 브라우저로 끌어다 놓거나 파일 > 에셋 가져오기를 써요.\r\n" L"   폴더는 왼쪽 트리와 경로 줄로 이동하고, 검색 칸과 종류 목록으로 찾아요.\r\n" L"3. 장면 꾸미기\r\n" L"   장면 > 오브젝트 추가로 물체를 놓고, 오른쪽 속성 패널에서 위치·컴포넌트를 바꿔요.\r\n" L"   에셋을 장면 화면으로 끌어다 놓아도 배치돼요. 이동·회전·크기는 W·E·R이에요.\r\n" L"   프리팹 인스턴스를 고친 뒤 장면 > 선택한 프리팹 인스턴스에서 프리팹에 적용하거나 되돌려요.\r\n" L"4. 로직 만들기\r\n" L"   블루프린트 에셋을 열고 빈 곳을 우클릭하거나 Space로 노드를 찾아 추가해요. 핀을 끌어 연결해요.\r\n" L"   C++가 필요하면 파일 > 새 C++ 클래스, 빌드 > C++ 클래스 컴파일을 써요.\r\n" L"5. 실행하기\r\n" L"   F5로 플레이하고 Shift+F5로 멈춰요. 블루프린트 노드에 F9로 중단점을 걸 수 있어요.\r\n" L"6. 저장·되돌리기\r\n" L"   Ctrl+S로 저장하고 Ctrl+Z·Ctrl+Y로 되돌리거나 다시 적용해요. 저장이 충돌하면 파일 > 저장 충돌 복구를 써요.\r\n" L"   저장하지 않은 문서는 30초마다 따로 보관돼요. 편집기가 갑자기 꺼지면 다음에 프로젝트를 열 때 복구할지 물어봐요.\r\n" L"   에셋을 지우면 Windows 휴지통으로 가서 되살릴 수 있어요. 다른 에셋이 쓰고 있으면 먼저 알려 줘요.\r\n" L"7. 게임 만들기\r\n" L"   빌드 > 빌드 프로필 설정에서 이름·화면 크기·그래픽 API를 고르고, 빌드 > 패키징으로 Windows 게임을 만들어요.\r\n" L"\r\n" L"창 배치가 흐트러지면 보기 > 기본 배치 복원을 써요. 문제가 생기면 보기 > 출력 로그에서 메시지를 확인해요.\r\n":
-            L"단축키 목록\r\n" L"\r\n" L"[전체]\r\n" L"  Ctrl+O        프로젝트 열기\r\n" L"  Ctrl+S        문서 저장\r\n" L"  Ctrl+W        문서 닫기\r\n" L"  Ctrl+Z        되돌리기\r\n" L"  Ctrl+Y        다시 적용\r\n" L"  Alt+↑         콘텐츠 브라우저 상위 폴더\r\n" L"  F5            플레이\r\n" L"  Shift+F5      플레이 중지\r\n" L"  F1            이 단축키 목록\r\n" L"\r\n" L"[장면 화면]\r\n" L"  W / E / R     이동 / 회전 / 크기 도구\r\n" L"  F             선택 오브젝트에 초점\r\n" L"  왼쪽 클릭     선택 (핸들을 끌면 변환)\r\n" L"  Shift+왼쪽 끌기  선택 오브젝트 변환\r\n" L"  우클릭 끌기   시점 회전\r\n" L"  우클릭+W·A·S·D·Q·E  비행 이동\r\n" L"  휠 버튼 끌기  시점 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Esc           변환 끌기 취소\r\n" L"  Delete        선택 오브젝트 삭제\r\n" L"  Ctrl+D        선택 오브젝트 복제\r\n" L"  Ctrl+C / Ctrl+V  복사 / 붙여넣기 (다른 장면에도)\r\n" L"  Ctrl+클릭     여러 개 선택 / 선택 해제\r\n" L"  G             격자·각도 스냅 켜기 / 끄기 (간격은 장면 > 스냅)\r\n" L"\r\n" L"[콘텐츠 브라우저]\r\n" L"  Delete        선택한 에셋을 휴지통으로\r\n" L"  F2            이름 바꾸기\r\n" L"  끌어다 놓기   장면에 배치\r\n" L"  폴더 트리로 끌기  다른 폴더로 이동\r\n" L"\r\n" L"[블루프린트·노드 그래프]\r\n" L"  우클릭        노드 추가 목록\r\n" L"  우클릭 끌기 / 휠 버튼 끌기  화면 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Space         노드 추가 목록\r\n" L"  C             주석 추가\r\n" L"  Ctrl+F        노드 찾기\r\n" L"  Delete        선택 노드 삭제\r\n" L"  F9            중단점 전환\r\n" L"  Esc           연결 중인 선 취소\r\n" L"\r\n" L"[계층]\r\n" L"  Ctrl+클릭 / Shift+클릭  여러 개 / 범위 선택\r\n" L"  검색 칸       이름이나 type:, tag: 로 걸러 보기\r\n" L"  핀 우클릭     연결 끊기 / 출력 값 관찰\r\n" L"\r\n" L"[출력 로그]\r\n" L"  Ctrl+A        모두 선택\r\n" L"  Ctrl+C        복사\r\n";
+            L"단축키 목록\r\n" L"\r\n" L"[전체]\r\n" L"  Ctrl+O        프로젝트 열기\r\n" L"  Ctrl+S        문서 저장\r\n" L"  Ctrl+W        문서 닫기\r\n" L"  Ctrl+Z        되돌리기\r\n" L"  Ctrl+Y        다시 적용\r\n" L"  Alt+↑         콘텐츠 브라우저 상위 폴더\r\n" L"  F5            플레이\r\n" L"  Shift+F5      플레이 중지\r\n" L"  F1            이 단축키 목록\r\n" L"\r\n" L"[장면 화면]\r\n" L"  W / E / R     이동 / 회전 / 크기 도구\r\n" L"  F             선택 오브젝트에 초점\r\n" L"  왼쪽 클릭     선택 (핸들을 끌면 변환)\r\n" L"  Shift+왼쪽 끌기  선택 오브젝트 변환\r\n" L"  우클릭 끌기 / Alt+왼쪽 끌기  시점 회전\r\n" L"  우클릭 (끌지 않음)  오브젝트 메뉴 (이름·복사·삭제·초점·분리·프리팹)\r\n" L"  F2            오브젝트 이름 바꾸기\r\n" L"  우클릭+W·A·S·D·Q·E  비행 이동\r\n" L"  휠 버튼 끌기  시점 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Esc           변환 끌기 취소\r\n" L"  Delete        선택 오브젝트 삭제\r\n" L"  Ctrl+D        선택 오브젝트 복제\r\n" L"  Ctrl+C / Ctrl+V  복사 / 붙여넣기 (다른 장면에도)\r\n" L"  Ctrl+클릭     여러 개 선택 / 선택 해제\r\n" L"  G             격자·각도 스냅 켜기 / 끄기 (간격은 장면 > 스냅)\r\n" L"\r\n" L"[콘텐츠 브라우저]\r\n" L"  Delete        선택한 에셋을 휴지통으로\r\n" L"  F2            이름 바꾸기\r\n" L"  우클릭        열기·이름·이동·삭제·탐색기에서 보기·경로 복사 / 빈 곳: 새 폴더·새 에셋\r\n" L"  끌어다 놓기   장면에 배치\r\n" L"  폴더 트리로 끌기  다른 폴더로 이동\r\n" L"\r\n" L"[블루프린트·노드 그래프]\r\n" L"  우클릭        노드 추가 목록\r\n" L"  우클릭 끌기 / 휠 버튼 끌기  화면 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Space         노드 추가 목록\r\n" L"  C             주석 추가\r\n" L"  Ctrl+F        노드 찾기\r\n" L"  Delete        선택 노드 삭제\r\n" L"  F9            중단점 전환\r\n" L"  Esc           연결 중인 선 취소\r\n" L"\r\n" L"[계층]\r\n" L"  Ctrl+클릭 / Shift+클릭  여러 개 / 범위 선택\r\n" L"  검색 칸       이름이나 type:, tag: 로 걸러 보기\r\n" L"  더블클릭      그 오브젝트에 초점\r\n" L"  우클릭        오브젝트 메뉴\r\n" L"  핀 우클릭     연결 끊기 / 출력 값 관찰\r\n" L"\r\n" L"[출력 로그]\r\n" L"  Ctrl+A        모두 선택\r\n" L"  Ctrl+C        복사\r\n";
     }
     // A plain dialog-class frame holding one read-only, selectable EDIT; X or Esc closes it.
     void showHelp(bool start){
@@ -742,7 +749,20 @@ class NativeEditorShell {
         }
         statusStrip.update({{"items",Json::array({chip("drawer",u8"\uE8B7","콘텐츠 브라우저","button",!consoleVisible),chip("log",u8"\uE8A5","출력 로그","button",consoleVisible)})},{"theme",{{"background",{.082f,.082f,.082f}}}}});
     }
-    int popup(HMENU menu,POINT at){return menu?int(TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY|TPM_LEFTALIGN|TPM_TOPALIGN,at.x,at.y,0,window,nullptr)):0;}
+    // Right-click menus (Unreal-style): scene objects, assets and folders. Items reuse the normal commands.
+    void contextMenu(const std::vector<std::pair<Command,const wchar_t*>>& items,POINT at){
+        const HMENU menu=CreatePopupMenu();for(const auto& [id,text]:items){if(!text)AppendMenuW(menu,MF_SEPARATOR,0,nullptr);else AppendMenuW(menu,MF_STRING,id,text);}
+        const int choice=popup(menu,at);DestroyMenu(menu);if(choice>0)perform(Command(choice));
+    }
+    void sceneContextMenu(POINT at){
+        if(sceneSelection.empty()){contextMenu({{AddActor,L"오브젝트 추가…"},{PasteActor,L"붙여넣기\tCtrl+V"}},at);return;}
+        contextMenu({{RenameActor,L"이름 바꾸기\tF2"},{CopyActor,L"복사\tCtrl+C"},{PasteActor,L"붙여넣기\tCtrl+V"},{DuplicateActor,L"복제\tCtrl+D"},{DeleteActor,L"삭제\tDelete"},{Command(0),nullptr},
+            {FocusActor,L"선택 항목에 초점\tF"},{DetachActor,L"부모에서 분리"},{AddComponent,L"컴포넌트 추가…"},{Command(0),nullptr},
+            {PrefabApply,L"프리팹에 변경 적용"},{PrefabRevert,L"프리팹 변경 되돌리기"},{PrefabUnpack,L"프리팹 연결 풀기"}},at);
+    }
+    // Acceptance runs hidden: a popup would wait forever, so it only records that a menu was offered.
+    int popupsOffered=0;
+    int popup(HMENU menu,POINT at){if(acceptance){++popupsOffered;return 0;}return menu?int(TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY|TPM_LEFTALIGN|TPM_TOPALIGN,at.x,at.y,0,window,nullptr)):0;}
     void chromeCommand(const std::string& id,POINT at){
         if(id=="save")perform(Save);else if(id=="add")perform(CreateItem);else if(id=="import")perform(ImportAsset);
         else if(id=="play")perform(PlayScene);else if(id=="stop")perform(StopPlay);else if(id=="help")perform(ShowShortcuts);
@@ -1397,6 +1417,11 @@ class NativeEditorShell {
     void queueViewport(Json input=Json::object()){
         if(!sceneOpen()||sourceMode)return;
         if(input.value("command",std::string())=="transformTool")updateToolButtons();
+        if(input.value("command",std::string())=="contextmenu"){
+            // Right-click on an object selects it first; on empty space the current selection stays.
+            try{const auto keptPrimary=sceneSelection;const auto keptExtra=sceneExtra;drawViewport({{"command","pick"},{"x",input.value("x",0)},{"y",input.value("y",0)},{"add",false}});if(sceneSelection.empty()&&!keptPrimary.empty()){selectActor(keptPrimary);sceneExtra=keptExtra;refreshHierarchy();}else if(std::find(keptExtra.begin(),keptExtra.end(),sceneSelection)!=keptExtra.end()||sceneSelection==keptPrimary){sceneSelection=keptPrimary;sceneExtra=keptExtra;refreshHierarchy();}sceneContextMenu(POINT{input.value("sx",0),input.value("sy",0)});}catch(const std::exception& error){report(error);}
+            return;
+        }
         if(input.value("command",std::string())=="shortcut"){
             const auto key=input.value("key",std::string());
             try{if(key=="delete")perform(DeleteActor);else if(key=="duplicate")perform(DuplicateActor);else if(key=="copy")perform(CopyActor);else if(key=="paste")perform(PasteActor);else if(key=="snap")perform(SnapToggle);}catch(const std::exception& error){report(error);}
@@ -2990,6 +3015,18 @@ class NativeEditorShell {
         if(command==ShowHelp||command==ShowShortcuts){showHelp(command==ShowHelp);return;}
         if(command==DeleteAsset){deleteSelectedAsset();return;}
         if(command==CopyActor){copyActors();return;}
+        if(command==RenameActor){
+            if(!sceneOpen()||sceneSelection.empty())return;std::string current;for(const auto& row:sceneRows)if(row.at("id")==sceneSelection)current=row.value("name",std::string());
+            const auto name=inputName(L"오브젝트 이름 바꾸기",wide(current),200);if(!name.empty())editScene({{"action","rename"},{"id",sceneSelection},{"value",utf8(name)}});return;
+        }
+        if(command==DetachActor){if(sceneOpen()&&!sceneSelection.empty())editScene({{"action","reparent"},{"id",sceneSelection},{"target",""}});return;}
+        if(command==OpenAsset){const int i=ListView_GetNextItem(files,-1,LVNI_SELECTED);if(i>=0){NMHDR open{files,UINT_PTR(GetDlgCtrlID(files)),UINT(NM_DBLCLK)};SendMessageW(GetParent(files),WM_NOTIFY,open.idFrom,LPARAM(&open));}return;}
+        if(command==RevealAsset||command==CopyAssetPath){
+            const int i=ListView_GetNextItem(files,-1,LVNI_SELECTED);const auto relative=i>=0&&i<int(entries.size())?entries.at(i).value("path",std::string()):folder;
+            const auto full=(projectRoot/fs::path(wide(relative))).lexically_normal().wstring();
+            if(command==RevealAsset){const auto args=L"/select,\""+full+L"\"";ShellExecuteW(window,L"open",L"explorer.exe",args.c_str(),nullptr,SW_SHOWNORMAL);return;}
+            if(OpenClipboard(window)){EmptyClipboard();const auto bytes=(full.size()+1)*sizeof(wchar_t);if(const HGLOBAL memory=GlobalAlloc(GMEM_MOVEABLE,bytes)){std::memcpy(GlobalLock(memory),full.c_str(),bytes);GlobalUnlock(memory);if(!SetClipboardData(CF_UNICODETEXT,memory))GlobalFree(memory);}CloseClipboard();statusText(L"경로를 복사했어요.");}return;
+        }
         if(command==CreateItem){perform(sceneOpen()?AddActor:NewAsset);return;}
         if(command>=QuickCube&&command<=QuickLight){if(sceneOpen()&&!sourceMode)editScene({{"action","add"},{"key",command==QuickCube?"cube":command==QuickSphere?"sphere":"directionalLight"}});return;}
         if(command==FindAsset){if(!consoleVisible||contentWindow){SetFocus(search);SendMessageW(search,EM_SETSEL,0,-1);}else{perform(ShowConsole);SetFocus(search);}return;}
@@ -3675,6 +3712,13 @@ class NativeEditorShell {
                 }
                 return 0;
             }
+            if(header->hwndFrom==files&&header->code==NM_RCLICK){
+                POINT at{};GetCursorPos(&at);
+                if(ListView_GetNextItem(files,-1,LVNI_SELECTED)>=0)contextMenu({{OpenAsset,L"열기\tEnter"},{RenameAsset,L"이름 바꾸기\tF2"},{MoveAsset,L"다른 폴더로 이동…"},{DeleteAsset,L"삭제 (휴지통)\tDelete"},{Command(0),nullptr},{RevealAsset,L"탐색기에서 보기"},{CopyAssetPath,L"경로 복사"}},at);
+                else contextMenu({{NewFolder,L"새 폴더"},{NewAsset,L"새 에셋…"},{NewCppClass,L"새 C++ 클래스…"},{Command(0),nullptr},{ImportAsset,L"가져오기…"},{RevealAsset,L"탐색기에서 보기"}},at);
+                return 0;
+            }
+            if(header->hwndFrom==folderTree&&header->code==NM_RCLICK){POINT at{};GetCursorPos(&at);contextMenu({{NewFolder,L"새 폴더"},{NewAsset,L"새 에셋…"},{ImportAsset,L"가져오기…"},{Command(0),nullptr},{RevealAsset,L"탐색기에서 보기"}},at);return 0;}
             if(header->hwndFrom==files&&header->code==NM_CUSTOMDRAW){auto& draw=*reinterpret_cast<NMLVCUSTOMDRAW*>(l);if(draw.nmcd.dwDrawStage==CDDS_PREPAINT)return CDRF_NOTIFYITEMDRAW;if(draw.nmcd.dwDrawStage==CDDS_ITEMPREPAINT)return drawAssetItem(draw);return CDRF_DODEFAULT;}
             if(header->hwndFrom==files&&header->code==LVN_GETDISPINFOW){
                 auto& item=reinterpret_cast<NMLVDISPINFOW*>(l)->item;

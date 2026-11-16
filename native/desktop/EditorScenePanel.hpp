@@ -10,7 +10,7 @@ class EditorScenePanel {
     std::function<void(Json)> post;
     POINT start{},previous{};
     int button=0;
-    bool moved=false,painted=false,transformDrag=false,brushEnabled=false;
+    bool moved=false,painted=false,transformDrag=false,brushEnabled=false,altOrbit=false;
     std::vector<POINT> brushPoints;
     struct Handle {int axis;double x,y,dx,dy;};
     std::vector<Handle> handles;
@@ -70,6 +70,8 @@ class EditorScenePanel {
             if(!button){
                 SetFocus(window);SetCapture(window);start=previous=point(l);moved=false;
                 button=message==WM_LBUTTONDOWN?1:message==WM_RBUTTONDOWN?2:3;
+                // Alt+left drag orbits like the right button (Unreal); it never picks or transforms.
+                altOrbit=button==1&&(GetKeyState(VK_MENU)&0x8000)!=0;if(altOrbit){button=2;return 0;}
                 if(button==1&&brushEnabled){brushPoints.assign(1,start);return 0;}
                 grabbed=button==1&&!(w&MK_SHIFT)?hitHandle(start):std::nullopt;
                 transformDrag=button==1&&((w&MK_SHIFT)!=0||grabbed.has_value());
@@ -95,7 +97,7 @@ class EditorScenePanel {
             previous=at;return 0;
         }
         case WM_LBUTTONUP:case WM_RBUTTONUP:case WM_MBUTTONUP:{
-            const int up=message==WM_LBUTTONUP?1:message==WM_RBUTTONUP?2:3;
+            int up=message==WM_LBUTTONUP?1:message==WM_RBUTTONUP?2:3;const bool wasAlt=altOrbit;if(altOrbit&&up==1){up=2;altOrbit=false;}
             if(button!=up)return 0;
             const bool translate=up==1&&transformDrag;
             auto stroke=std::exchange(brushPoints,std::vector<POINT>{});
@@ -109,6 +111,8 @@ class EditorScenePanel {
             }
             if(translate&&(moved||std::abs(at.x-start.x)+std::abs(at.y-start.y)>=3))drag(at,false);
             else if(up==1&&!grabbed&&std::abs(at.x-start.x)<4&&std::abs(at.y-start.y)<4)post({{"command","pick"},{"x",at.x},{"y",at.y},{"add",(w&MK_CONTROL)!=0}});
+            // A right click without dragging opens the context menu (a right drag stays the camera look).
+            else if(up==2&&!wasAlt&&std::abs(at.x-start.x)<4&&std::abs(at.y-start.y)<4){POINT screen=at;ClientToScreen(window,&screen);post({{"command","contextmenu"},{"x",at.x},{"y",at.y},{"sx",screen.x},{"sy",screen.y}});}
             grabbed.reset();return 0;
         }
         case WM_CAPTURECHANGED:

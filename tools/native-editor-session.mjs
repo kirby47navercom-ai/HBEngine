@@ -1236,7 +1236,8 @@ export function nativeEditorSession(bridge) {
       else {
         if (!actor) throw Error('오브젝트를 선택하세요.');
         if (actor.locked&&action!=='lock'&&action!=='visible') throw Error('오브젝트 잠금을 해제하세요.');
-        if (action==='lock') actor.locked=!actor.locked;
+        if (action==='rename'){if(typeof value!=='string'||!value.trim()||value.length>200)throw Error('오브젝트 이름을 확인하세요.');actor.name=value.trim();}
+        else if (action==='lock') actor.locked=!actor.locked;
         else if (action==='visible') actor.visible=!actor.visible;
         else if (action==='component') addSceneComponent(actor,key);
         else if(action==='translate'||action==='rotate'||action==='scale'){editSceneTransform(actor,next.objects,{mode:action,axis,value:action==='translate'?delta:value});snapped(actor,action);}
