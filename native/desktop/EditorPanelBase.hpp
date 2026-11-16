@@ -74,6 +74,10 @@ protected:
     HWND window=nullptr;Post poster;std::string name;ID2D1Factory* factory=nullptr;IDWriteFactory* write=nullptr;ID2D1HwndRenderTarget* target=nullptr;ID2D1RenderTarget* canvas=nullptr;ID2D1SolidColorBrush* brush=nullptr;
     IDWriteTextFormat* text=nullptr;IDWriteTextFormat* bold=nullptr;IDWriteTextFormat* icons=nullptr;IDWriteInlineObject* ellipsis=nullptr;
     Json lastMenu=Json::array();std::optional<POINT> menuAt;UINT automaticMenu=0;std::string automaticCommand;
+public:
+    // Shared editor UI scale (DPI × user 편집기 배율); every panel adopts it on its next paint.
+    static inline float uiScale=1.f;
+protected:
     Theme theme;float scale=1;std::array<int,4> bounds{};bool shown=false;std::uint64_t paints=0,updates=0;double lastPaintMS=0;
     std::unique_ptr<EditorD3D12Surface> presenter;
     std::string graphicsError;
@@ -105,6 +109,7 @@ protected:
         prepareText();
     }
     void prepareText(){
+        if(scale!=uiScale){scale=uiScale;dropText();fontChanged();}
         if(!text){const auto format=[&](DWRITE_FONT_WEIGHT weight,IDWriteTextFormat** out){write->CreateTextFormat(L"Segoe UI",nullptr,weight,DWRITE_FONT_STYLE_NORMAL,DWRITE_FONT_STRETCH_NORMAL,12.5f*scale,L"ko-kr",out);(*out)->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);(*out)->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);};
             format(DWRITE_FONT_WEIGHT_NORMAL,&text);format(DWRITE_FONT_WEIGHT_SEMI_BOLD,&bold);
             write->CreateEllipsisTrimmingSign(text,&ellipsis);DWRITE_TRIMMING trim{DWRITE_TRIMMING_GRANULARITY_CHARACTER,0,0};text->SetTrimming(&trim,ellipsis);bold->SetTrimming(&trim,ellipsis);

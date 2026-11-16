@@ -15,6 +15,9 @@ class NativeEditorShell {
     HWND window=nullptr,detached=nullptr,files=nullptr,tabs=nullptr,source=nullptr,search=nullptr,palette=nullptr,views=nullptr,status=nullptr;
     HWND folderBack=nullptr,folderForward=nullptr,folderPath=nullptr,folderTree=nullptr,assetType=nullptr,assetRecursive=nullptr,assetTiles=nullptr;
     HWND contentWindow=nullptr,helpWindow=nullptr;
+    // Editor UI scale in DPI units: system DPI, or the user's 편집기 배율 (0 = follow Windows).
+    unsigned uiDpi=96;double userScale=0;HMENU scaleMenu=nullptr;std::string startupScenePath;
+    int S(int value)const{return MulDiv(value,int(uiDpi),96);}
     HIMAGELIST assetIcons=nullptr;
     std::optional<std::string> queuedFolder;
     int64_t contentScanId=0;
@@ -162,7 +165,7 @@ class NativeEditorShell {
     static constexpr Command MeshUVView=static_cast<Command>(151),MeshUVFit=static_cast<Command>(150);
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
-        DeleteAsset=static_cast<Command>(902),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
+        DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -488,6 +491,10 @@ class NativeEditorShell {
         AppendMenuW(viewMenu,MF_STRING,WideBrowser,L"콘텐츠 브라우저 너비 변경");
         AppendMenuW(viewMenu,MF_STRING,WideInspector,L"속성 패널 너비 변경");
         AppendMenuW(viewMenu,MF_STRING,ResetLayout,L"기본 배치 복원");
+        scaleMenu=CreatePopupMenu();
+        AppendMenuW(scaleMenu,MF_STRING,ScaleAuto,L"Windows 설정 따르기");
+        for(const auto& [id,text]:std::initializer_list<std::pair<Command,const wchar_t*>>{{Scale100,L"100%"},{Scale125,L"125%"},{Scale150,L"150%"},{Scale175,L"175%"},{Scale200,L"200%"}})AppendMenuW(scaleMenu,MF_STRING,id,text);
+        AppendMenuW(viewMenu,MF_POPUP,UINT_PTR(scaleMenu),L"편집기 배율");
         AppendMenuW(viewMenu,MF_STRING,PreviewAsset,L"에셋 3D 미리보기");
         AppendMenuW(viewMenu,MF_STRING,PickImageView,L"텍스처 밉 / 면 / 슬라이스 선택");
         AppendMenuW(viewMenu,MF_STRING,ModelFocus,L"3D 에셋 미리보기 초점");
@@ -544,7 +551,7 @@ class NativeEditorShell {
     void showHelp(bool start){
         if(!helpWindow||!IsWindow(helpWindow)){
             RECT owner{};GetWindowRect(window,&owner);
-            helpWindow=CreateWindowExW(0,WC_DIALOG,L"",WS_OVERLAPPEDWINDOW,owner.left+80,owner.top+80,640,660,window,nullptr,GetModuleHandleW(nullptr),nullptr);
+            helpWindow=CreateWindowExW(0,WC_DIALOG,L"",WS_OVERLAPPEDWINDOW,owner.left+S(80),owner.top+S(80),S(640),S(660),window,nullptr,GetModuleHandleW(nullptr),nullptr);
             const HWND text=helpWindow?CreateWindowExW(0,L"EDIT",L"",WS_CHILD|WS_VISIBLE|WS_VSCROLL|ES_MULTILINE|ES_READONLY|ES_AUTOVSCROLL,0,0,1,1,helpWindow,nullptr,GetModuleHandleW(nullptr),nullptr):nullptr;
             if(!text){if(helpWindow)DestroyWindow(helpWindow);helpWindow=nullptr;throw std::runtime_error("도움말 창을 만들 수 없어요.");}
             SendMessageW(text,WM_SETFONT,WPARAM(font),TRUE);SendMessageW(text,EM_SETMARGINS,EC_LEFTMARGIN|EC_RIGHTMARGIN,MAKELPARAM(12,12));
@@ -558,6 +565,29 @@ class NativeEditorShell {
         const HWND text=GetWindow(helpWindow,GW_CHILD);SetWindowTextW(text,helpText(start));SendMessageW(text,EM_SETSEL,0,0);
         SetWindowTextW(helpWindow,start?L"HBEngine 도움말 - 시작하기":L"HBEngine 도움말 - 단축키 목록");
         ShowWindow(helpWindow,acceptance?SW_HIDE:SW_SHOWNORMAL);if(!acceptance){SetForegroundWindow(helpWindow);SetFocus(text);}
+    }
+    // Recompute the UI scale and re-lay everything out; called at start, on DPI change and from 보기 > 편집기 배율.
+    void applyScale(){
+        double factor=userScale>0?userScale:GetDpiForWindow(window)/96.0;
+        if(const char* forced=std::getenv("HB_EDITOR_UI_SCALE"))if(const double value=std::atof(forced);value>=1&&value<=3)factor=value;
+        uiDpi=unsigned(std::lround(96*std::clamp(factor,1.0,3.0)));EditorPanelBase::uiScale=float(uiDpi/96.0);
+        const HFONT previous=font;font=CreateFontW(-S(16),0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,0,0,CLEARTYPE_QUALITY,0,L"Segoe UI");
+        struct Swap{HFONT from,to;};Swap swap{previous,font};
+        EnumThreadWindows(GetCurrentThreadId(),[](HWND top,LPARAM p)->BOOL{const auto& s=*reinterpret_cast<Swap*>(p);if(HFONT(SendMessageW(top,WM_GETFONT,0,0))==s.from)SendMessageW(top,WM_SETFONT,WPARAM(s.to),TRUE);EnumChildWindows(top,[](HWND h,LPARAM q)->BOOL{const auto& t=*reinterpret_cast<Swap*>(q);if(HFONT(SendMessageW(h,WM_GETFONT,0,0))==t.from)SendMessageW(h,WM_SETFONT,WPARAM(t.to),TRUE);return TRUE;},p);return TRUE;},LPARAM(&swap));
+        if(previous)DeleteObject(previous);
+        if(scaleMenu)CheckMenuRadioItem(scaleMenu,ScaleAuto,Scale200,userScale<=0?ScaleAuto:userScale<1.2?Scale100:userScale<1.4?Scale125:userScale<1.6?Scale150:userScale<1.8?Scale175:Scale200,MF_BYCOMMAND);
+        layout();for(auto& [owner,item]:documentWindows)layoutDocumentWindow(owner,item);
+        EnumThreadWindows(GetCurrentThreadId(),[](HWND top,LPARAM)->BOOL{RedrawWindow(top,nullptr,nullptr,RDW_INVALIDATE|RDW_ALLCHILDREN|RDW_FRAME);return TRUE;},0);
+    }
+    // Acceptance evidence: the whole editor window (GDI + D2D panels) as a 32-bit BMP.
+    void captureWindow(const fs::path& file){
+        RECT r{};GetWindowRect(window,&r);const int w=r.right-r.left,h=r.bottom-r.top;
+        HDC screen=GetDC(nullptr),memory=CreateCompatibleDC(screen);BITMAPINFO info{};info.bmiHeader={sizeof(BITMAPINFOHEADER),w,-h,1,32,BI_RGB};void* bits=nullptr;
+        HBITMAP bitmap=CreateDIBSection(screen,&info,DIB_RGB_COLORS,&bits,nullptr,0);const auto old=SelectObject(memory,bitmap);
+        PrintWindow(window,memory,PW_RENDERFULLCONTENT);
+        BITMAPFILEHEADER head{0x4D42,DWORD(sizeof(BITMAPFILEHEADER)+sizeof(BITMAPINFOHEADER)+w*h*4),0,0,DWORD(sizeof(BITMAPFILEHEADER)+sizeof(BITMAPINFOHEADER))};
+        std::ofstream out(file,std::ios::binary);out.write(reinterpret_cast<const char*>(&head),sizeof(head));out.write(reinterpret_cast<const char*>(&info.bmiHeader),sizeof(BITMAPINFOHEADER));out.write(static_cast<const char*>(bits),std::streamsize(w)*h*4);
+        SelectObject(memory,old);DeleteObject(bitmap);DeleteDC(memory);ReleaseDC(nullptr,screen);
     }
     void deleteSelectedAsset(){
         const int i=ListView_GetNextItem(files,-1,LVNI_SELECTED);
@@ -612,35 +642,35 @@ class NativeEditorShell {
     void layout(){
         if(!source)return;
         RECT rect{};GetClientRect(window,&rect);
-        const int width=rect.right,height=rect.bottom,left=contentWindow?0:std::clamp(int(width*browsePercent/100),150,460);
+        const int width=rect.right,height=rect.bottom,left=contentWindow?0:std::clamp(int(width*browsePercent/100),S(150),S(460));
         RECT browser{};GetClientRect(contentWindow?contentWindow:window,&browser);
         const int browserWidth=contentWindow?int(browser.right):left;
-        MoveWindow(folderBack,5,5,28,27,TRUE);MoveWindow(folderForward,36,5,28,27,TRUE);
-        MoveWindow(folderPath,68,5,std::max(1,browserWidth-73),27,TRUE);
-        MoveWindow(search,5,36,std::max(1,browserWidth-10),27,TRUE);
-        const int treeHeight=std::clamp(int(browser.bottom)/4,65,200);
-        MoveWindow(assetType,5,66,std::max(1,browserWidth-113),290,TRUE);
-        MoveWindow(assetRecursive,browserWidth-104,66,48,24,TRUE);
-        MoveWindow(assetTiles,browserWidth-54,66,48,24,TRUE);
-        MoveWindow(folderTree,5,94,std::max(1,browserWidth-10),treeHeight,TRUE);
-        MoveWindow(files,5,99+treeHeight,std::max(1,browserWidth-10),std::max(1,int(browser.bottom)-treeHeight-(contentWindow?105:124)),TRUE);
-        ListView_SetColumnWidth(files,0,std::max(1,browserWidth-31));
-        MoveWindow(tabs,left,3,std::max(1,width-left-5),29,TRUE);
-        MoveWindow(status,8,height-22,std::max(1,width-16),20,TRUE);
-        const int logHeight=consoleVisible?std::min(185,std::max(0,height/3)):0;
-        console.update({{"rect",{left+5,height-logHeight-24,std::max(1,width-left-11),logHeight}},{"visible",logHeight>0}});
+        MoveWindow(folderBack,S(5),S(5),S(28),S(27),TRUE);MoveWindow(folderForward,S(36),S(5),S(28),S(27),TRUE);
+        MoveWindow(folderPath,S(68),S(5),std::max(1,browserWidth-S(73)),S(27),TRUE);
+        MoveWindow(search,S(5),S(36),std::max(1,browserWidth-S(10)),S(27),TRUE);
+        const int treeHeight=std::clamp(int(browser.bottom)/4,S(65),S(200));
+        MoveWindow(assetType,S(5),S(66),std::max(1,browserWidth-S(113)),S(290),TRUE);
+        MoveWindow(assetRecursive,browserWidth-S(104),S(66),S(48),S(24),TRUE);
+        MoveWindow(assetTiles,browserWidth-S(54),S(66),S(48),S(24),TRUE);
+        MoveWindow(folderTree,S(5),S(94),std::max(1,browserWidth-S(10)),treeHeight,TRUE);
+        MoveWindow(files,S(5),S(99)+treeHeight,std::max(1,browserWidth-S(10)),std::max(1,int(browser.bottom)-treeHeight-(contentWindow?S(105):S(124))),TRUE);
+        ListView_SetColumnWidth(files,0,std::max(1,browserWidth-S(31)));
+        MoveWindow(tabs,left,S(3),std::max(1,width-left-S(5)),S(29),TRUE);
+        MoveWindow(status,S(8),height-S(22),std::max(1,width-S(16)),S(20),TRUE);
+        const int logHeight=consoleVisible?std::min(S(185),std::max(0,height/3)):0;
+        console.update({{"rect",{left+S(5),height-logHeight-S(24),std::max(1,width-left-S(11)),logHeight}},{"visible",logHeight>0}});
         const HWND owner=detached?detached:window;
-        RECT work{};GetClientRect(owner,&work);const int x=detached?5:left+5,y=detached?4:36;
-        const int fullWidth=std::max(1,int(work.right)-x-6);
-        const int fullHeight=std::max(1,int(work.bottom)-y-(detached?6:25+logHeight));
-        const bool splitShown=splitDocument&&!detached&&(splitBelow?fullHeight>=380:fullWidth>=560);
-        const int splitWidth=splitShown&&!splitBelow?std::clamp(fullWidth*int(splitPercent)/100,250,fullWidth-250):0;
-        const bool lowerShown=lowerSplitDocument&&!detached&&fullHeight>=380;
+        RECT work{};GetClientRect(owner,&work);const int x=detached?S(5):left+S(5),y=detached?S(4):S(36);
+        const int fullWidth=std::max(1,int(work.right)-x-S(6));
+        const int fullHeight=std::max(1,int(work.bottom)-y-(detached?S(6):S(25)+logHeight));
+        const bool splitShown=splitDocument&&!detached&&(splitBelow?fullHeight>=S(380):fullWidth>=S(560));
+        const int splitWidth=splitShown&&!splitBelow?std::clamp(fullWidth*int(splitPercent)/100,S(250),fullWidth-S(250)):0;
+        const bool lowerShown=lowerSplitDocument&&!detached&&fullHeight>=S(380);
         const auto lowerSize=lowerSplitDocument?lowerSplitPercent:splitPercent;
-        const int splitHeight=lowerShown||splitShown&&splitBelow?std::clamp(fullHeight*int(lowerSize)/100,165,fullHeight-165):0;
+        const int splitHeight=lowerShown||splitShown&&splitBelow?std::clamp(fullHeight*int(lowerSize)/100,S(165),fullHeight-S(165)):0;
         const int w=fullWidth-(splitWidth?splitWidth+5:0),bodyHeight=fullHeight-(splitHeight?splitHeight+5:0);
-        splitTarget={width-std::max(120,fullWidth/5),60,width,height-logHeight-24};
-        belowTarget={x,height-logHeight-25-std::max(85,fullHeight/5),splitTarget.left,height-logHeight-24};
+        splitTarget={width-std::max(S(120),fullWidth/5),S(60),width,height-logHeight-S(24)};
+        belowTarget={x,height-logHeight-S(25)-std::max(S(85),fullHeight/5),splitTarget.left,height-logHeight-S(24)};
         splitDivider={};lowerSplitDivider={};splitSpan=splitBelow?fullHeight:fullWidth;lowerSplitSpan=fullHeight;
         if(splitDocument){
             if(splitShown){
@@ -657,23 +687,23 @@ class NativeEditorShell {
         const bool sceneShown=document.value("kind",std::string())=="scene"&&!sourceMode;
         const bool canvasShown=(timelineOpen()||widgetOpen()||imageOpen()||tilemapOpen()||audioAssetOpen()||meshUVOpen)&&!sourceMode;
         const bool formShown=document.value("form",false)&&!sourceMode&&!sceneShown&&!canvasShown;
-        const int top=graphShown||sceneShown?y+32:y,h=std::max(1,y+bodyHeight-top);
-        MoveWindow(views,x,y,std::min(230,w/2),220,TRUE);MoveWindow(palette,x+std::min(235,w/2),y,std::max(1,w-std::min(235,w/2)),300,TRUE);
+        const int top=graphShown||sceneShown?y+S(32):y,h=std::max(1,y+bodyHeight-top);
+        MoveWindow(views,x,y,std::min(S(230),w/2),S(220),TRUE);MoveWindow(palette,x+std::min(S(235),w/2),y,std::max(1,w-std::min(S(235),w/2)),S(300),TRUE);
         ShowWindow(views,(graphShown&&!model.value("views",Json::array()).empty())||sceneShown?SW_SHOW:SW_HIDE);
         ShowWindow(palette,graphShown?SW_SHOW:SW_HIDE);
         MoveWindow(source,x,top,w,h,TRUE);
         ShowWindow(source,document.contains("path")&&!graphShown&&!formShown&&!sceneShown&&!canvasShown?SW_SHOW:SW_HIDE);
-        const int inspectorWidth=graphShown&&w>=365?std::min(240,w*42/100):0;
+        const int inspectorWidth=graphShown&&w>=S(365)?std::min(S(240),w*42/100):0;
         const bool previewShown=previewOpen&&canPreview()&&!sourceMode&&!meshUVOpen;
         const int previewHeight=previewShown&&graphShown?std::max(1,h/3):0;
         graph.layout(x,top,w-inspectorWidth,h-previewHeight,graphShown);
-        const int side=sceneShown?std::min(std::clamp(int(w*inspectorPercent/100),190,420),std::max(0,w-160)):0;
+        const int side=sceneShown?std::min(std::clamp(int(w*inspectorPercent/100),S(190),S(420)),std::max(0,w-S(160))):0;
         const int split=std::max(1,h*40/100);
         hierarchy.reparent(owner);
         hierarchy.update({{"rect",{x+w-side+3,top,std::max(1,side-3),split}},{"visible",sceneShown&&side>0}});
         viewport.layout(owner,x,top,std::max(1,w-side-3),h,sceneShown);
         if(sceneShown)queueViewport();
-        const int assetSide=canvasShown?std::min(std::clamp(int(w*inspectorPercent/100),190,420),std::max(0,w-160)):0;
+        const int assetSide=canvasShown?std::min(std::clamp(int(w*inspectorPercent/100),S(190),S(420)),std::max(0,w-S(160))):0;
         const int adjustableSide=sceneShown?side:assetSide;
         inspectorSpan=w;inspectorDivider=adjustableSide?RECT{x+w-adjustableSide-3,top,x+w-adjustableSide+3,top+h}:RECT{};
         if(sceneShown)form.update({{"rect",{x+w-side+3,top+split,std::max(1,side-3),h-split}},{"visible",side>0}});
@@ -692,8 +722,8 @@ class NativeEditorShell {
         RECT rect{};GetClientRect(owner,&rect);
         if(owner==window&&PtInRect(&lowerSplitDivider,{x,y}))return Divider::LowerDocuments;
         if(owner==window&&PtInRect(&splitDivider,{x,y}))return Divider::Documents;
-        if(owner==window&&!contentWindow&&y>=32){
-            const int edge=std::clamp(int(rect.right*browsePercent/100),150,460);
+        if(owner==window&&!contentWindow&&y>=S(32)){
+            const int edge=std::clamp(int(rect.right*browsePercent/100),S(150),S(460));
             if(std::abs(edge-x)<=4)return Divider::Browser;
         }
         return owner==(detached?detached:window)&&PtInRect(&inspectorDivider,{x,y})?Divider::Inspector:Divider::None;
@@ -1406,24 +1436,24 @@ class NativeEditorShell {
         const bool graphShown=item.graph&&!item.source;
         const bool sceneShown=item.sceneView&&!item.source;
         const bool assetShown=item.assetForm&&!item.source;
-        MoveWindow(item.editor,5,70,std::max(1,width-10),std::max(1,height-98),TRUE);
-        MoveWindow(item.status,5,height-23,std::max(1,width-10),20,TRUE);
-        MoveWindow(GetDlgItem(owner,DocDock),std::min(295,std::max(5,width-113)),5,108,26,TRUE);
-        MoveWindow(item.viewPicker,5,37,std::min(160,width/3),220,TRUE);
-        MoveWindow(item.palette,10+std::min(160,width/3),37,std::max(1,width-125-std::min(160,width/3)),300,TRUE);
-        MoveWindow(GetDlgItem(owner,DocAdd),std::max(5,width-107),37,100,26,TRUE);
-        ShowWindow(GetDlgItem(owner,DocReload),width>=410?SW_SHOWNOACTIVATE:SW_HIDE);
+        MoveWindow(item.editor,S(5),S(70),std::max(1,width-S(10)),std::max(1,height-S(98)),TRUE);
+        MoveWindow(item.status,S(5),height-S(23),std::max(1,width-S(10)),S(20),TRUE);
+        MoveWindow(GetDlgItem(owner,DocDock),std::min(S(295),std::max(S(5),width-S(113))),S(5),S(108),S(26),TRUE);
+        MoveWindow(item.viewPicker,S(5),S(37),std::min(S(160),width/3),S(220),TRUE);
+        MoveWindow(item.palette,S(10)+std::min(S(160),width/3),S(37),std::max(1,width-S(125)-std::min(S(160),width/3)),S(300),TRUE);
+        MoveWindow(GetDlgItem(owner,DocAdd),std::max(S(5),width-S(107)),S(37),S(100),S(26),TRUE);
+        ShowWindow(GetDlgItem(owner,DocReload),width>=S(410)?SW_SHOWNOACTIVATE:SW_HIDE);
         ShowWindow(item.editor,graphShown||sceneShown||assetShown?SW_HIDE:SW_SHOWNOACTIVATE);
         ShowWindow(item.viewPicker,(sceneShown&&!item.assetPreview)||(graphShown&&!item.model.value("views",Json::array()).empty())?SW_SHOWNOACTIVATE:SW_HIDE);
         ShowWindow(item.palette,graphShown?SW_SHOWNOACTIVATE:SW_HIDE);
         ShowWindow(GetDlgItem(owner,DocAdd),graphShown?SW_SHOWNOACTIVATE:SW_HIDE);
-        const int side=graphShown&&item.graphForm&&width>=365?std::min(240,width*42/100):0;
-        if(item.graph)item.graph->layout(5,70,std::max(1,width-side-10),std::max(1,height-98),graphShown);
-        if(item.graphForm)item.graphForm->update({{"rect",{width-side-5,70,side,std::max(1,height-98)}},{"visible",side>0}});
-        const int assetSide=assetShown&&sceneShown&&item.assetPreview?std::clamp(width/3,130,280):0;
-        if(item.assetForm)item.assetForm->update({{"rect",{assetSide?width-assetSide:5,38,assetSide?assetSide-5:std::max(1,width-10),std::max(1,height-62)}},{"visible",assetShown}});
+        const int side=graphShown&&item.graphForm&&width>=S(365)?std::min(S(240),width*42/100):0;
+        if(item.graph)item.graph->layout(S(5),S(70),std::max(1,width-side-S(10)),std::max(1,height-S(98)),graphShown);
+        if(item.graphForm)item.graphForm->update({{"rect",{width-side-S(5),S(70),side,std::max(1,height-S(98))}},{"visible",side>0}});
+        const int assetSide=assetShown&&sceneShown&&item.assetPreview?std::clamp(width/3,S(130),S(280)):0;
+        if(item.assetForm)item.assetForm->update({{"rect",{assetSide?width-assetSide:S(5),S(38),assetSide?assetSide-S(5):std::max(1,width-S(10)),std::max(1,height-S(62))}},{"visible",assetShown}});
         if(item.sceneView){
-            item.sceneView->layout(owner,5,item.assetPreview?38:70,std::max(1,width-10-assetSide),std::max(1,height-(item.assetPreview?66:98)),sceneShown);
+            item.sceneView->layout(owner,S(5),item.assetPreview?S(38):S(70),std::max(1,width-S(10)-assetSide),std::max(1,height-(item.assetPreview?S(66):S(98))),sceneShown);
             if(sceneShown)scheduleWindowScene(owner,item);
             else{KillTimer(owner,1);item.sceneQueued=false;}
         }
@@ -1968,6 +1998,7 @@ class NativeEditorShell {
         projectFile=fs::path(wide(project.at("file")));
         projectRoot=projectFile.parent_path();
         folderHistory.clear();folderPosition=0;navigateFolder("Assets");
+        startupScenePath=project.at("startupScene").get<std::string>();
         showDocument(request("document.open",{{"path",project.at("startupScene")}}));
         refreshRecent();
         PostMessageW(window,WM_APP+46,0,0);
@@ -2144,7 +2175,7 @@ class NativeEditorShell {
         WINDOWPLACEMENT placement{sizeof(placement)};
         if(!GetWindowPlacement(window,&placement))return;
         const auto& r=placement.rcNormalPosition;
-        const Json saved={{"browse",browsePercent},{"inspector",inspectorPercent},{"splitPercent",splitPercent},{"lowerSplitPercent",lowerSplitPercent},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}},{"maximized",placement.showCmd==SW_SHOWMAXIMIZED},{"console",consoleVisible},{"browserTiles",browserTiles},{"contentDetached",contentWindow!=nullptr},{"project",utf8(projectFile.wstring())},{"documents",std::move(panes)}};
+        const Json saved={{"browse",browsePercent},{"inspector",inspectorPercent},{"splitPercent",splitPercent},{"lowerSplitPercent",lowerSplitPercent},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}},{"maximized",placement.showCmd==SW_SHOWMAXIMIZED},{"uiScale",userScale},{"console",consoleVisible},{"browserTiles",browserTiles},{"contentDetached",contentWindow!=nullptr},{"project",utf8(projectFile.wstring())},{"documents",std::move(panes)}};
         auto temp=layoutFile;temp+=L"."+std::to_wstring(GetCurrentProcessId())+L".tmp";
         write(temp,saved.dump());
         if(!MoveFileExW(temp.c_str(),layoutFile.c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH))DeleteFileW(temp.c_str());
@@ -2159,12 +2190,13 @@ class NativeEditorShell {
             splitPercent=std::clamp(data.value("splitPercent",43u),25u,75u);
             lowerSplitPercent=std::clamp(data.value("lowerSplitPercent",43u),25u,75u);
             layoutMaximized=data.value("maximized",false);
+            userScale=std::clamp(data.value("uiScale",0.0),0.0,3.0);if(userScale>0&&userScale<1)userScale=0;
             consoleVisible=data.value("console",false);
             setBrowserTiles(data.value("browserTiles",false));
             contentDetachedOnStart=data.value("contentDetached",false);
             if(data.contains("window"))placeSavedWindow(window,data.at("window"),720,480);
         }catch(const Json::exception&){browsePercent=24;inspectorPercent=25;splitPercent=lowerSplitPercent=43;}
-        layout();
+        applyScale();
     }
     void restoreDocumentWindows(){
         if(projectFile.empty()||!fs::is_regular_file(layoutFile))return;
@@ -2660,6 +2692,7 @@ class NativeEditorShell {
     void perform(Command command){
         if(command==ShowHelp||command==ShowShortcuts){showHelp(command==ShowHelp);return;}
         if(command==DeleteAsset){deleteSelectedAsset();return;}
+        if(command>=ScaleAuto&&command<=Scale200){static const double scales[]={0,1,1.25,1.5,1.75,2};userScale=scales[command-ScaleAuto];applyScale();saveLayout();return;}
         if(command>=PrefabApply&&command<=PrefabUnpack){
             if(sceneSelection.empty())throw std::runtime_error("프리팹 인스턴스를 선택하세요.");
             editScene({{"action",command==PrefabApply?"prefabApply":command==PrefabRevert?"prefabRevert":command==PrefabRefresh?"prefabRefresh":"prefabUnpack"},{"id",sceneSelection}});
@@ -2955,7 +2988,7 @@ class NativeEditorShell {
         case Detach:
             if(detached){SendMessageW(detached,WM_CLOSE,0,0);return;}
             if(!document.contains("path"))return;
-            detached=CreateWindowExW(WS_EX_TOOLWINDOW,L"HBEngine.NativeAuthoring",L"HBEngine 문서",WS_OVERLAPPEDWINDOW,CW_USEDEFAULT,CW_USEDEFAULT,900,650,window,nullptr,instance,this);
+            detached=CreateWindowExW(WS_EX_TOOLWINDOW,L"HBEngine.NativeAuthoring",L"HBEngine 문서",WS_OVERLAPPEDWINDOW,CW_USEDEFAULT,CW_USEDEFAULT,S(900),S(650),window,nullptr,instance,this);
             if(!detached)throw std::runtime_error("문서 창을 분리하지 못했어요.");
             attachDocument(detached);
             if(acceptance)SetWindowPos(detached,nullptr,-20000,-20000,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_NOACTIVATE|SWP_SHOWWINDOW);
@@ -2963,7 +2996,7 @@ class NativeEditorShell {
             return;
         case DetachContent:
             if(contentWindow){SendMessageW(contentWindow,WM_CLOSE,0,0);return;}
-            contentWindow=CreateWindowExW(WS_EX_TOOLWINDOW,L"HBEngine.NativeAuthoring",L"콘텐츠 브라우저",WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,CW_USEDEFAULT,CW_USEDEFAULT,490,670,window,nullptr,instance,this);
+            contentWindow=CreateWindowExW(WS_EX_TOOLWINDOW,L"HBEngine.NativeAuthoring",L"콘텐츠 브라우저",WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,CW_USEDEFAULT,CW_USEDEFAULT,S(490),S(670),window,nullptr,instance,this);
             if(!contentWindow)throw std::runtime_error("콘텐츠 브라우저 창을 열지 못했어요.");
             attachBrowser(contentWindow);
             if(acceptance)SetWindowPos(contentWindow,nullptr,-20000,-20000,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_NOACTIVATE|SWP_SHOWWINDOW);
@@ -3208,6 +3241,7 @@ class NativeEditorShell {
         if(message==WM_DPICHANGED){
             const auto& rect=*reinterpret_cast<const RECT*>(l);
             SetWindowPos(owner,nullptr,rect.left,rect.top,rect.right-rect.left,rect.bottom-rect.top,SWP_NOZORDER|SWP_NOACTIVATE);
+            if(owner==window)applyScale();
             return 0;
         }
         if(message==WM_SIZE){layout();return 0;}
@@ -3376,7 +3410,7 @@ public:
         RegisterClassW(&type);
         window=CreateWindowExW(0,type.lpszClassName,L"HBEngine · 네이티브 편집기",WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,CW_USEDEFAULT,CW_USEDEFAULT,1280,850,nullptr,nullptr,instance,this);
         if(!window)throw std::runtime_error("Native editor window");
-        makeControls();layout();refreshRecent();SetTimer(window,13,30000,nullptr);
+        makeControls();applyScale();refreshRecent();SetTimer(window,13,30000,nullptr);
         if(!project.empty())openProject(request("project.open",{{"file",utf8(project)}}));
         if(acceptance)return smokeTest(smoke);
         restoreLayout();
@@ -3950,6 +3984,8 @@ private:
         const auto startPage=helpPage(ShowHelp),keysPage=helpPage(ShowShortcuts);const HWND helpOwner=helpWindow;
         const bool help=startPage.first.find(L"시작하기")!=std::wstring::npos&&startPage.second.find(L"새 프로젝트")!=std::wstring::npos&&keysPage.first.find(L"단축키")!=std::wstring::npos&&keysPage.second.find(L"Shift+F5")!=std::wstring::npos&&keysPage.second.find(L"Ctrl+Z")!=std::wstring::npos&&helpWindow==helpOwner;
         SendMessageW(helpWindow,WM_CLOSE,0,0);if(!help||IsWindow(helpOwner))throw std::runtime_error("Native help window failed");
+        // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
+        if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
