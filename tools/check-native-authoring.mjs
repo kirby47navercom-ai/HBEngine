@@ -551,7 +551,7 @@ if(process.argv[3]){
   assert.equal(take.recordingSources[0].type,'world');
 }
 const cube=(await read(project.manifest.startupScene)).objects.find(actor=>actor.id===evidence.newCube);
-assert.equal(cube?.position[0],2.5);
+assert.equal(cube?.position[2],-2.5,'Details X is Unreal forward (scene -z)');
 assert.ok(cube.components.some(component=>component.type==='AudioSource'));
 assert.equal((await read(animation)).timeline.tracks[0].keys.length,4);
 assert.equal((await read(sequence)).tracks[0].keys.length,2);

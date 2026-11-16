@@ -14,11 +14,13 @@ import {projectBytes,projectText} from './project-bytes.mjs';
 import {defaultViewportSettings} from '../prototype/viewport-controls.js';
 import {applyViewportDirection,fitViewportSelection,viewportDirections} from '../prototype/viewport-presentation.js';
 
+// Unreal axes on screen: X forward (red, three -z), Y right (green, three +x), Z up (blue, three +y).
+const axisSign=axis=>axis===2?-1:1;
 // Solid transform gizmo meshes (shared unit geometry; posed every frame, drawn on top without depth).
 function createSolidGizmo(){
   const group=new THREE.Group();group.userData.editorHelper=true;group.renderOrder=1001;
   const mat=c=>new THREE.MeshBasicMaterial({color:c,depthTest:false,depthWrite:false,toneMapped:false});
-  group.userData.materials=[0xff4d4d,0x4dd96b,0x4d8dff].map(mat);group.userData.active=mat(0xffd84d);
+  group.userData.materials=[0x4dd96b,0x4d8dff,0xff4d4d].map(mat);group.userData.active=mat(0xffd84d);
   const shaft=new THREE.CylinderGeometry(1,1,1,10),cone=new THREE.ConeGeometry(1,1,16),cube=new THREE.BoxGeometry(1,1,1),ring=new THREE.TorusGeometry(1,.018,6,64);
   for(let axis=0;axis<3;axis++)for(const [kind,geometry] of [['shaft',shaft],['cone',cone],['cube',cube],['ring',ring]]){const mesh=new THREE.Mesh(geometry,group.userData.materials[axis]);mesh.userData={editorHelper:true,axis,kind};mesh.renderOrder=1001;mesh.frustumCulled=false;group.add(mesh);}
   return group;
@@ -41,6 +43,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   let selection='', gizmo, handles, models=new Set(), groups=new Map(), owners=new Map();
   let solidGizmo=null;
   let previewTransform,worldOutline,outlineKey;
+  // The last gizmo drag draft stays on screen across redraws until the drag commits or cancels (no snap-back frames).
+  let dragDraft=null;
   const target=new THREE.Vector3(0,.45,0), orbit=new THREE.Spherical();
   // Focus (F / outliner double-click) flies the camera over a short ease-out instead of jumping, like Unreal.
   let flyTo=null;const FLY_MS=350;
@@ -67,7 +71,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     for (const group of groups.values()) visual.dispose(group);
     visual.dispose2D();primitives.dispose();
     for (const node of [sky.skyDome,sky.cloudGroup]) node.traverse(child=>{child.geometry?.dispose();child.material?.dispose();});
-    world=null;groups.clear();models.clear();owners.clear();source=null;previewTransform=null;
+    world=null;groups.clear();models.clear();owners.clear();source=null;previewTransform=null;dragDraft=null;
   };
   const close=async()=>{
     try { if (renderer) await renderer.dispose(); }
@@ -135,12 +139,12 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     updateEnvironment();
     source=data;content={objects,warnings};
   }
-  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false,flight,smooth=false,direction='',tool='translate',axis=-1,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges}) {
+  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false,flight,smooth=false,snap,direction='',tool='translate',axis=-1,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges}) {
     const assets=installNativeAssets({url:name=>'hbasset:'+encodeURIComponent(name),manifest:{width,height},readBytes:(name,opts)=>projectBytes(nextProject,name,opts)});
-    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,smooth,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets);}
+    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,smooth,snap,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets);}
     finally{assets.restore();}
   }
-  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,smooth,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets) {
+  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,smooth,snap,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets) {
     const timing={start:performance.now()};
     canvas.clientWidth=width;canvas.clientHeight=height;
     if(previewTransform){transform(previewTransform.actor,previewTransform.group);previewTransform=null;}
@@ -215,7 +219,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       const depth=-origin.clone().applyMatrix4(active.matrixWorldInverse).z;
       return 120*(active.isOrthographicCamera?1:depth)/(height*active.projectionMatrix.elements[5]);
     };
-    let translation,sceneTransform;
+    let translation,sceneTransform,preview;
     if(authoring&&['translatePreview','translate','transformPreview','transform'].includes(command)){
       const actor=content.objects.find(row=>row.id===selection),group=groups.get(selection);
       if(group?.visible&&!actor.locked&&[x,y,dx,dy].every(Number.isFinite)){
@@ -229,21 +233,31 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
             const distance=dx*tangent[0]+dy*tangent[1];
             if(tool==='translate'){
               const length=handleSize(origin);
-              const from=screen(origin),to=screen(origin.clone().addScaledVector(new THREE.Vector3().setComponent(axis,1),length));
+              const from=screen(origin),to=screen(origin.clone().addScaledVector(new THREE.Vector3().setComponent(axis,axisSign(axis)),length));
               const pixels=Math.hypot(to[0]-from[0],to[1]-from[1]);
-              if(pixels>=6&&Math.abs(distance)>1e-6)translation=new THREE.Vector3().setComponent(axis,distance*length/pixels).toArray();
+              if(pixels>=6&&Math.abs(distance)>1e-6)translation=new THREE.Vector3().setComponent(axis,axisSign(axis)*distance*length/pixels).toArray();
             }else if(Math.abs(distance)>1e-6&&(tool==='rotate'||tool==='scale')){
               sceneTransform={axis,value:tool==='rotate'?distance/60:Math.exp(THREE.MathUtils.clamp(distance/60,-12,12))};
             }
           }
-          if(command.endsWith('Preview')&&(translation||sceneTransform)){
-            const draft={...actor};
+          // Preview and commit frames both draw the result (live, like Unreal), with grid/angle snap as the session will commit it.
+          if(translation||sceneTransform){
+            const draft={...actor},round=(v,step)=>Number((Math.round(v/step)*step).toFixed(6));
             editSceneTransform(draft,content.objects,translation?{mode:'translate',value:translation}:{mode:tool,...sceneTransform});
+            if(translation&&snap?.grid>0)draft.position=draft.position.map(v=>round(v,snap.grid));
+            if(!translation&&tool==='rotate'&&snap?.angle>0)draft.rotation=draft.rotation.map((v,i)=>i===sceneTransform.axis?round(v,snap.angle):v);
             previewTransform={group,actor};
             transform(draft,group);group.updateWorldMatrix(false,true);
+            preview={id:actor.id,position:draft.position,rotation:draft.rotation,scale:draft.scale};
+            dragDraft=command.endsWith('Preview')?{id:actor.id,draft}:null;
           }
         }
       }
+    }
+    if(['translate','transform','translateCancel'].includes(command))dragDraft=null;
+    else if(!preview&&dragDraft){
+      const actor=content.objects.find(row=>row.id===dragDraft.id),group=groups.get(dragDraft.id);
+      if(actor&&group){previewTransform={group,actor};transform(dragDraft.draft,group);group.updateWorldMatrix(false,true);}else dragDraft=null;
     }
     let placement;
     if(command==='place'&&authoring&&x>=0&&y>=0&&x<width&&y<height){
@@ -360,12 +374,12 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
         if (selection) break;
       }
     }
-    if (gizmo) {world.remove(gizmo);gizmo.geometry.dispose();gizmo.material.dispose();gizmo=null;}
+    // One selection box reused every frame (a new helper per frame re-uploaded its mesh each draw).
     const group=groups.get(selection);
-    if (group) {
-      const bounds=new THREE.Box3().setFromObject(group);
-      if (!bounds.isEmpty()) {gizmo=new THREE.Box3Helper(bounds,0x68abff);gizmo.userData.editorHelper=true;world.add(gizmo);}
-    }
+    if(!gizmo){gizmo=new THREE.Box3Helper(new THREE.Box3(),0x68abff);gizmo.userData.editorHelper=true;gizmo.material.depthTest=false;gizmo.renderOrder=999;gizmo.frustumCulled=false;}
+    if(gizmo.parent!==world)world.add(gizmo);
+    if(group)gizmo.box.setFromObject(group);
+    gizmo.visible=Boolean(group)&&!gizmo.box.isEmpty();
     const segments=[];
     const actor=content.objects.find(row=>row.id===selection);
     if(handles)handles.visible=false;
@@ -376,9 +390,9 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
         const length=handleSize(origin),positions=[],colors=[];
         const localBasis=axis=>new THREE.Vector3().setComponent(axis,1).applyQuaternion(group.quaternion).transformDirection(group.parent.matrixWorld);
         for(let axis=0;axis<3;axis++){
-          const color=new THREE.Color([0xff6669,0x62df91,0x70adff][axis]).toArray();
+          const color=new THREE.Color([0x62df91,0x70adff,0xff6669][axis]).toArray();
           const count=tool==='rotate'?24:1;
-          const u=tool==='rotate'?localBasis((axis+1)%3):tool==='scale'?localBasis(axis):new THREE.Vector3().setComponent(axis,1);
+          const u=tool==='rotate'?localBasis((axis+1)%3):tool==='scale'?localBasis(axis).multiplyScalar(axisSign(axis)):new THREE.Vector3().setComponent(axis,axisSign(axis));
           const v=tool==='rotate'?localBasis((axis+2)%3):null;
           const endpoint=index=>{
             if(!v)return origin.clone().addScaledVector(u,length*(index||.18));
@@ -411,7 +425,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
         }
         // Unreal-style gizmo: arrows (move), rings (rotate), cube tips (scale); the dragged axis turns yellow.
         solidGizmo??=createSolidGizmo();if(!solidGizmo.parent)world.add(solidGizmo);
-        poseSolidGizmo(solidGizmo,{tool,origin,length,basis:a=>tool==='translate'?new THREE.Vector3().setComponent(a,1):localBasis(a),active:command.startsWith('transform')||command.startsWith('translate')?axis:-1});
+        poseSolidGizmo(solidGizmo,{tool,origin,length,basis:a=>tool==='translate'?new THREE.Vector3().setComponent(a,axisSign(a)):tool==='scale'?localBasis(a).multiplyScalar(axisSign(a)):localBasis(a),active:command.startsWith('transform')||command.startsWith('translate')?axis:-1});
       }
     }
     renderer.setSize(width,height,false);timing.scene=performance.now();
@@ -430,7 +444,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     }
     const {backend,shaderPreparation,calls,cameraViews}=renderer.hbDiagnostics();
     const ms=(a,b)=>Math.round((timing[b]-timing[a])*100)/100;
-    return {animating,timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),warnings:content.warnings.slice(0,8)};
+    return {animating,timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),warnings:content.warnings.slice(0,8)};
   }
   return {draw,close};
 }

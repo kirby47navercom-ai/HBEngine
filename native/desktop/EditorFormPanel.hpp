@@ -31,6 +31,8 @@ public:
         }
         applyCommon(model);layout();place();
     }
+    // Live value refresh (gizmo drag) without rebuilding the rows; an open text edit keeps its own text.
+    void setValue(int i,const std::string& value){for(auto& row:rows)for(auto& c:row.controls)if(c.i==i&&c.value!=value&&editing!=i&&scrub!=i){c.value=value;InvalidateRect(window,nullptr,FALSE);}}
     Json inspect()const{
         Json list=Json::array();for(const auto& row:rows){Json controls=Json::array();for(const auto& c:row.controls)controls.push_back({{"kind",c.kind},{"i",c.i},{"value",c.value},{"checked",c.checked},{"text",c.text},{"icon",c.icon},{"hint",c.hint}});list.push_back({{"kind",row.kind},{"text",row.text},{"label",row.label},{"toggle",row.toggle},{"controls",controls}});}
         auto out=common();out["rows"]=list;out["scroll"]=scroll;out["contentHeight"]=contentHeight;out["editing"]=editing;out["revision"]=revision;out["paintedRows"]=paintedRows;out["lastMenu"]=lastMenu;out["backend"]=graphicsBackend();out["graphicsError"]=graphicsError;return out;
