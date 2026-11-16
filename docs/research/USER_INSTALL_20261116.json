@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "date": "2026-11-16",
+  "sourceCommit": "7e5d49ace4354482f6e918eb9cbaacffcb59700c",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\22608ab58fbdeb09",
+  "bundleHash": "22608ab58fbdeb09bdc6bcb809d95eddcfe423481a429d8aabcaeaa6a2c230aa",
+  "files": 5485,
+  "versions": [
+    "22608ab58fbdeb09"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "editorEvidence": "설치본 HBEngineNative.exe로 check-native-authoring 격리 실행 통과(임시 프로젝트·HB_USER_DATA_DIR, 모든 편집 표면 D3D12)",
+  "sourceChecks": [
+    "shader-preparation-489",
+    "native-installed-cache-513",
+    "native-game",
+    "package",
+    "native-scene-render"
+  ],
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5418,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9790ee757264eac2",
+        "bytes": 265365019,
+        "manifestSHA256": "2c5baa868f757c5b6076719b605da0e19edfaeea46e12dff16e3d3f77a1f4651"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-16T04:01:44.5412990Z",
+    "bytes": 265365019,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "22608ab58fbdeb09"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "userProjectsChanged": false,
+  "userProfilesChanged": false
+}
