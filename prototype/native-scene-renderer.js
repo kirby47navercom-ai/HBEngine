@@ -506,8 +506,9 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     // Off-screen host candidates: up to HOST_FORCE_BUDGET marked cell members whose revisions are new to the host check or
     // old enough are visited this encode (draws built, not drawn), so they can move into host sets like visible groups.
     hostForce.clear();hostForceLeft=0;if(hostActive){let waiting=0;for(const cell of staticCells.values())waiting+=cell.members.size;let budget=Math.max(HOST_FORCE_BUDGET,Math.ceil(waiting/4));for(const cell of staticCells.values()){if(!budget)break;for(const node of cell.members){const e=node[STATIC_ENTRY];if(!e||e.main!==cellFrame||node.hbHost!==undefined)continue;const r=e.r,rev=objectRevision(r.object),t=rev?rev.transform:0,c=rev?rev.components:0;if(r.hostT===t&&r.hostC===c&&!hostAged(r,t,c))continue;e.main=0;node.hbCellMark=0;hostForce.add(node);if(!--budget)break;}}hostForceLeft=budget;}
+    // Editor helpers (gizmo, selection box, guides) are drawn only when the host asks for them; games and captures skip them.
     traverseVisibleSkipping(scene,node=>{
-      if(!visible(node)||node.userData.editorHelper)return;
+      if(!visible(node)||node.userData.editorHelper&&!platform.drawEditorHelpers)return;
       if(node.isLight){
         if(node.isAmbientLight){const c=node.color.toArray();for(let i=0;i<3;i++)ambient[i]+=c[i]*node.intensity;return;}
         if(node.isHemisphereLight){node.getWorldPosition(lightAt);lights.push([0,0,0,3,...lightAt.normalize().toArray(),0,...node.color.toArray(),node.intensity,...node.groundColor.toArray(),0]);return;}

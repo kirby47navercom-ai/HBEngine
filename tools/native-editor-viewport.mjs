@@ -42,6 +42,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   let solidGizmo=null;
   let previewTransform,worldOutline,outlineKey;
   const target=new THREE.Vector3(0,.45,0), orbit=new THREE.Spherical();
+  // Focus (F / outliner double-click) flies the camera over a short ease-out instead of jumping, like Unreal.
+  let flyTo=null;const FLY_MS=350;
   const ray=new THREE.Raycaster();
   const visualKey=object=>{
     const {position,rotation,scale,visible,locked,name,parent,...appearance}=object;
@@ -101,7 +103,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     releaseVisual();
     project=nextProject;
     const url=name=>'hbasset:'+encodeURIComponent(name);
-    renderer??=await createNativeSceneRenderer(canvas,()=>{},{bridge,surface,graphicsAPI:'d3d12'});
+    renderer??=await createNativeSceneRenderer(canvas,()=>{},{bridge,surface,graphicsAPI:'d3d12',drawEditorHelpers:true});
     world=new THREE.Scene();
     primitives=scenePrimitives(data.surface||defaultSurface);
     const ambientLight=new THREE.HemisphereLight(0xffffff,0x444444,1);
@@ -125,7 +127,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     const nextDimension=data.runtime?.dimension||'3d';
     if (!camera||dimension!==nextDimension) {
       dimension=nextDimension;camera=fallbackGameCamera('3d');
-      orthoCamera=null;
+      orthoCamera=null;flyTo=null;
       target.set(0,dimension==='2d'?0:.45,0);
       orbit.setFromVector3(camera.position.clone().sub(target));
     }
@@ -133,12 +135,12 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     updateEnvironment();
     source=data;content={objects,warnings};
   }
-  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false,flight,direction='',tool='translate',axis=-1,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges}) {
+  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false,flight,smooth=false,direction='',tool='translate',axis=-1,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges}) {
     const assets=installNativeAssets({url:name=>'hbasset:'+encodeURIComponent(name),manifest:{width,height},readBytes:(name,opts)=>projectBytes(nextProject,name,opts)});
-    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets);}
+    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,smooth,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets);}
     finally{assets.restore();}
   }
-  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets) {
+  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,smooth,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets) {
     const timing={start:performance.now()};
     canvas.clientWidth=width;canvas.clientHeight=height;
     if(previewTransform){transform(previewTransform.actor,previewTransform.group);previewTransform=null;}
@@ -159,9 +161,21 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       editorCamera.updateProjectionMatrix();editorCamera.updateMatrixWorld();
     };
     prepareCamera();
+    if(command&&command!=='focus'&&command!=='pick')flyTo=null;
     if (command==='focus') {
       const group=groups.get(id);
-      if(group&&fitViewportSelection(editorCamera,{target,update(){}},new THREE.Box3().setFromObject(group))&&!orthographic)orbit.setFromVector3(editorCamera.position.clone().sub(target));
+      if(group){
+        group.updateWorldMatrix(true,true);
+        const bounds=new THREE.Box3().setFromObject(group);
+        // UI widgets and sprites may have no mesh bounds: frame their position at a 1-unit size instead.
+        if(bounds.isEmpty()||!bounds.min.toArray().concat(bounds.max.toArray()).every(Number.isFinite))bounds.setFromCenterAndSize(group.getWorldPosition(new THREE.Vector3()),new THREE.Vector3(1,1,1));
+        const probe=editorCamera.clone(),goal={target:target.clone(),update(){}};
+        if(fitViewportSelection(probe,goal,bounds)){
+          const end={target:goal.target,radius:probe.position.distanceTo(goal.target),zoom:probe.zoom};
+          // Start one frame in so the first draw already moves.
+          flyTo={from:{target:target.clone(),radius:orbit.radius,zoom:editorCamera.zoom},to:end,start:performance.now()-(smooth?16:FLY_MS),orthographic};
+        }
+      }
     } else if (command==='orbit' && !orthographic) {
       orbit.theta-=dx*.008;orbit.phi-=dy*.008;orbit.makeSafe();
     } else if (command==='pan'||command==='orbit') {
@@ -170,6 +184,14 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     } else if (command==='zoom') {
       if (orthographic) editorCamera.zoom=THREE.MathUtils.clamp(editorCamera.zoom*1.15**dy,.01,500);
       else orbit.radius=THREE.MathUtils.clamp(orbit.radius*1.15**-dy,.025,100000);
+    }
+    let animating=false;
+    if(flyTo){
+      const t=Math.min(1,(performance.now()-flyTo.start)/FLY_MS),k=1-(1-t)**3;
+      target.lerpVectors(flyTo.from.target,flyTo.to.target,k);
+      if(flyTo.orthographic)editorCamera.zoom=THREE.MathUtils.lerp(flyTo.from.zoom,flyTo.to.zoom,k);
+      else orbit.radius=THREE.MathUtils.lerp(flyTo.from.radius,flyTo.to.radius,k);
+      animating=t<1;if(!animating)flyTo=null;
     }
     if(flight&&!cameraId&&!cameraOutputs&&!orthographic){
       const {forward=0,right=0,up=0,seconds=0,fast=false}=flight;
@@ -408,7 +430,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     }
     const {backend,shaderPreparation,calls,cameraViews}=renderer.hbDiagnostics();
     const ms=(a,b)=>Math.round((timing[b]-timing[a])*100)/100;
-    return {timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),warnings:content.warnings.slice(0,8)};
+    return {animating,timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),warnings:content.warnings.slice(0,8)};
   }
   return {draw,close};
 }

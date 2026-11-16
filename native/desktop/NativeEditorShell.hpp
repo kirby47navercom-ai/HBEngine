@@ -335,7 +335,8 @@ class NativeEditorShell {
                     if(key=="s")perform(Save);else if(key=="z")perform(Undo);else if(key=="y")perform(Redo);
                     return;
                 }
-                if(action!="click"&&action!="change")return;
+                // Value drags (Details number scrub) send live input events; other input events stay preview-only.
+                if(action!="click"&&action!="change"&&!(action=="input"&&event.contains("merge")))return;
                 if(event.at("revision")!=formRevision)return;
                 const int i=event.at("i");
                 if(!selectedTransition.empty()){
@@ -1475,7 +1476,7 @@ class NativeEditorShell {
             return;
         }
         if(!input.empty()){
-            if(input.value("command",std::string())=="focus")input["id"]=sceneSelection;
+            if(input.value("command",std::string())=="focus"){input["id"]=sceneSelection;input["smooth"]=true;}
             mergeCameraInput(cameraInput,std::move(input));
         }
         // Draw on the next message turn instead of a 16 ms timer: Windows timers tick at ~15.6 ms, so camera moves ran at an uneven 30-60 fps.
@@ -1502,6 +1503,8 @@ class NativeEditorShell {
         if(!input.contains("tool"))input["tool"]=viewport.transformTool();
         auto state=request("scene.viewport",input);
         viewport.setHandles(state.at("segments"));
+        // Focus fly-to: keep drawing frames until the camera arrives.
+        if(state.value("animating",false)&&!viewportQueued)viewportQueued=PostMessageW(window,WM_APP+47,0,0)!=0;
         const auto action=input.value("command",std::string());
         if(action=="pick")selectActor(state.value("selection",std::string()),(GetKeyState(VK_CONTROL)&0x8000)?1:0);
         else if((action=="translate"||action=="transform")&&state.contains("translation"))editScene({{"action","translate"},{"id",sceneSelection},{"ids",selectedIds()},{"delta",state.at("translation")}});
@@ -3875,7 +3878,7 @@ private:
         if(!document.contains("path"))throw std::runtime_error("검사 프로젝트를 지정하세요.");
         SetWindowPos(window,nullptr,-20000,-20000,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_NOACTIVATE|SWP_SHOWWINDOW);
         // Capture-only review mode (HB_EDITOR_CAPTURE_ONLY): open the startup scene, optionally orbit, save the window and stop.
-        if(const char* only=std::getenv("HB_EDITOR_CAPTURE_ONLY")){layout();drawViewport();if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}if(const char* zoom=std::getenv("HB_EDITOR_CAPTURE_ZOOM"))drawViewport({{"command","zoom"},{"dy",std::atof(zoom)}});const char* frames=std::getenv("HB_EDITOR_CAPTURE_FRAMES");for(int frame=0,count=frames?std::atoi(frames):6;frame<count;++frame)drawViewport();Json frameTimes=Json::array();if(const char* probe=std::getenv("HB_EDITOR_FRAME_PROBE"))for(int i=0,n=std::atoi(probe);i<n;++i){const auto start=std::chrono::steady_clock::now();auto state=drawViewport({{"command","orbit"},{"dx",3.0},{"dy",0.0}});frameTimes.push_back({{"ms",std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count()},{"timing",state.value("timing",Json())}});}captureWindow(fs::path(wide(only)));write(fs::path(wide(only)).replace_extension(L".frames.json"),Json{{"frames",frameTimes}}.dump());write(smoke,Json{{"ok",true},{"captureOnly",true}});return 0;}
+        if(const char* only=std::getenv("HB_EDITOR_CAPTURE_ONLY")){layout();drawViewport();if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}if(std::getenv("HB_EDITOR_CAPTURE_SELECT")&&!hierarchyOrder.empty())selectActor(hierarchyOrder.front());if(const char* zoom=std::getenv("HB_EDITOR_CAPTURE_ZOOM"))drawViewport({{"command","zoom"},{"dy",std::atof(zoom)}});const char* frames=std::getenv("HB_EDITOR_CAPTURE_FRAMES");for(int frame=0,count=frames?std::atoi(frames):6;frame<count;++frame)drawViewport();Json frameTimes=Json::array();if(const char* probe=std::getenv("HB_EDITOR_FRAME_PROBE"))for(int i=0,n=std::atoi(probe);i<n;++i){const auto start=std::chrono::steady_clock::now();auto state=drawViewport({{"command","orbit"},{"dx",3.0},{"dy",0.0}});frameTimes.push_back({{"ms",std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count()},{"timing",state.value("timing",Json())}});}captureWindow(fs::path(wide(only)));write(fs::path(wide(only)).replace_extension(L".frames.json"),Json{{"frames",frameTimes}}.dump());write(smoke,Json{{"ok",true},{"captureOnly",true}});return 0;}
         const auto command=[this](Command id){SendMessageW(window,WM_COMMAND,id,0);};
         const auto assets=entries.size();
         command(DetachContent);
@@ -4442,7 +4445,7 @@ private:
         selectActor(hierarchyOrder.at(0));const auto viewBefore=drawViewport().value("cameraPosition",Json());
         // Real mouse order: press, release, double-click, release.
         hierarchy.probe({{"action","click"},{"row",0},{"part","item"}});hierarchy.probe({{"action","dblclick"},{"row",0},{"part","item"}});auto focusInput=std::move(cameraInput);cameraInput=nullptr;
-        const auto focusState=drawViewport(focusInput.is_object()?std::move(focusInput):Json::object());const bool focusMoved=focusState.value("cameraPosition",Json())!=viewBefore;const bool gizmoShown=!focusState.value("segments",Json::array()).empty();
+        const auto focusState=drawViewport(focusInput.is_object()?std::move(focusInput):Json::object());const bool focusMoved=focusState.value("cameraPosition",Json())!=viewBefore&&focusState.value("animating",false);const bool gizmoShown=!focusState.value("segments",Json::array()).empty();
         const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown}};
         if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
