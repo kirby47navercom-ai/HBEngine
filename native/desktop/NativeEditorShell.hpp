@@ -18,7 +18,10 @@ class NativeEditorShell {
     HWND contentWindow=nullptr,helpWindow=nullptr,dockTabs=nullptr;
     // Old .workspace-bar tool buttons, .scene-toolbar transform tools and panel headings.
     HIMAGELIST tileImages=nullptr;
-    EditorChromePanel topStrip,viewStrip,outlinerTitle,outlinerHead,outlinerFoot,detailsTitle,statusStrip,contentStrip;
+    EditorChromePanel topStrip,viewStrip,outlinerTitle,outlinerHead,outlinerFoot,detailsTitle,statusStrip,contentStrip,bottomTabs;
+    // Dock arrangement (saved in the layout file): panel order per area, active tab per area, area sizes in pixels (0 = default).
+    std::map<std::string,std::vector<std::string>> dockSlots{{"left",{"outliner"}},{"right",{"details"}},{"bottom",{"content","log"}}},dockVisible;
+    std::map<std::string,std::string> dockActive{{"left","outliner"},{"right","details"},{"bottom","content"}};std::map<std::string,RECT> dockRects;int dockLeft=0,dockRight=0,dockBottom=0;
     std::map<std::string,HBITMAP> thumbnails;HMENU buildMenuHandle=nullptr;
     // Old web editor palette for Win32 controls (see style.css :root).
     static constexpr COLORREF bgColor=RGB(0x15,0x15,0x15),panelColor=RGB(0x1a,0x1a,0x1a),fieldColor=RGB(0x0f,0x0f,0x0f),lineColor=RGB(0x3a,0x3a,0x3a),textColor=RGB(0xc8,0xc8,0xc8),mutedColor=RGB(0x8a,0x8a,0x8a),faintColor=RGB(0x8a,0x8a,0x8a),accentColor=RGB(0x00,0x70,0xe0);
@@ -110,7 +113,7 @@ class NativeEditorShell {
     Json logItems=Json::array();
     std::uint64_t logRevision=0;
     unsigned browsePercent=24,inspectorPercent=25,splitPercent=43,lowerSplitPercent=43;
-    enum class Divider {None,Browser,Inspector,Documents,LowerDocuments};
+    enum class Divider {None,Browser,Inspector,Documents,LowerDocuments,DockLeft,DockRight,DockBottom};
     Divider divider=Divider::None;
     HWND dividerOwner=nullptr;
     int dividerStart=0,dividerSpan=1,inspectorSpan=1,splitSpan=1,lowerSplitSpan=1;
@@ -292,8 +295,10 @@ class NativeEditorShell {
         views=control(L"COMBOBOX",L"",CBS_DROPDOWNLIST|WS_VSCROLL,Views);
         status=control(L"STATIC",L"프로젝트를 열거나 새 프로젝트를 만드세요.",SS_LEFT|SS_CENTERIMAGE,Status);
         // Direct2D chrome: toolbar, scene tool row, outliner/details headings and footer, status strip.
-        const auto chromeEvent=[this](const Json& e){try{if(e.value("event",std::string())=="command")chromeCommand(e.at("id").get<std::string>(),POINT{e.value("x",0),e.value("y",0)});}catch(const std::exception& error){report(error);}};
-        for(auto* strip:{&topStrip,&viewStrip,&outlinerTitle,&outlinerHead,&outlinerFoot,&detailsTitle,&statusStrip,&contentStrip})strip->attach(window,instance,chromeEvent,"chrome");
+        const auto chromeEvent=[this](const Json& e){try{const auto kind=e.value("event",std::string());const auto id=e.value("id",std::string());
+            if(kind=="command")chromeCommand(id,POINT{e.value("x",0),e.value("y",0)});
+            else if(kind=="drop"&&id.rfind("dock:",0)==0)dockDrop(id.substr(5),POINT{e.value("x",0),e.value("y",0)});}catch(const std::exception& error){report(error);}};
+        for(auto* strip:{&topStrip,&viewStrip,&outlinerTitle,&outlinerHead,&outlinerFoot,&detailsTitle,&statusStrip,&contentStrip,&bottomTabs})strip->attach(window,instance,chromeEvent,"chrome");
         TabCtrl_SetPadding(tabs,S(20),S(4));TabCtrl_SetPadding(dockTabs,S(14),S(4));
         // Dark controls: list/tree colours, dark scrollbars and buttons, push-like toggles instead of light check boxes.
         TreeView_SetBkColor(folderTree,fieldColor);TreeView_SetTextColor(folderTree,textColor);TreeView_SetLineColor(folderTree,lineColor);
@@ -737,8 +742,8 @@ class NativeEditorShell {
         viewStrip.update({{"items",Json::array({chip("camera",u8"\uE722",utf8(cameraName.empty()?L"편집기 카메라":cameraName),"dropdown"),
             chip("move",u8"\uE7C2","","toggle",tool=="translate",true),chip("rotate",u8"\uE7AD","","toggle",tool=="rotate",true),chip("scale",u8"\uE740","","toggle",tool=="scale",true),{{"kind","sep"},{"right",true}},
             chip("snap",u8"\uE80A",number(snapGrid),"toggle",snapOn,true),chip("snapsize",u8"","∠ "+number(snapAngle)+"°","dropdown",false,true),{{"kind","sep"},{"right",true}},chip("focus",u8"\uE8A3","","button",false,true)})},{"theme",{{"background",{.118f,.118f,.118f}}}}});
-        outlinerTitle.update({{"items",Json::array({chip("","","아웃라이너","tab")})},{"theme",{{"background",{.102f,.102f,.102f}}}}});
-        detailsTitle.update({{"items",Json::array({chip("","","디테일","tab")})},{"theme",{{"background",{.102f,.102f,.102f}}}}});
+        static const std::map<std::string,std::string> titles{{"outliner","아웃라이너"},{"details","디테일"},{"content","콘텐츠 브라우저"},{"log","출력 로그"}};
+        for(const char* slot:{"left","right","bottom"}){Json items=Json::array();for(const auto& panel:dockVisible[slot])items.push_back({{"id","dock:"+panel},{"label",titles.at(panel)},{"kind","tab"},{"active",dockActive[slot]==panel}});dockStrip(slot).update({{"items",items},{"theme",{{"background",{.102f,.102f,.102f}}}}});}
         outlinerHead.update({{"items",Json::array({chip("","","항목 레이블","text"),chip("","","유형","text",false,true)})},{"theme",{{"background",{.165f,.165f,.165f}}}}});
         outlinerFoot.update({{"items",Json::array({chip("","",std::to_string(sceneRows.size())+"개 오브젝트 ("+std::to_string(selectedIds().size())+"개 선택됨)","text")})},{"theme",{{"background",{.141f,.141f,.141f}}}}});
         {
@@ -785,6 +790,7 @@ class NativeEditorShell {
             for(int i=0;i<count;++i){std::wstring name(128,L' ');name.resize(std::max<LRESULT>(0,SendMessageW(assetType,CB_GETLBTEXT,i,LPARAM(name.data()))));AppendMenuW(menu,MF_STRING|(i==current?MF_CHECKED:0),UINT_PTR(i+1),name.c_str());}
             const int choice=popup(menu,at);DestroyMenu(menu);if(choice>0){SendMessageW(assetType,CB_SETCURSEL,choice-1,0);refreshFiles();}
         }
+        else if(id.rfind("dock:",0)==0){const auto panel=id.substr(5);dockActive[dockSlotOf(panel)]=panel;layout();saveLayout();return;}
         else if(id=="drawer"){if(consoleVisible)perform(ShowConsole);}else if(id=="log"){if(!consoleVisible)perform(ShowConsole);}
         refreshChrome();
     }
@@ -868,18 +874,26 @@ class NativeEditorShell {
         const int width=rect.right,height=rect.bottom,statusHeight=S(26),topBar=S(40);
         topStrip.update({{"rect",{0,0,width,topBar-S(1)}},{"visible",true}});
         statusStrip.update({{"rect",{0,height-statusHeight,S(250),statusHeight}},{"visible",true}});
-        // Old editor arrangement: outliner left, documents centre, content browser / output log docked below, properties right.
-        const bool sceneLayout=!detached&&document.value("kind",std::string())=="scene"&&!sourceMode;
-        const int left=sceneLayout?std::min(S(214),width/4):0;
-        const int dockHeight=contentWindow&&!consoleVisible?0:std::clamp(height/4,S(180),S(245));
-        if(contentWindow){RECT browser{};GetClientRect(contentWindow,&browser);placeBrowser(S(4),S(4),int(browser.right)-S(8),int(browser.bottom)-S(8),true);}
-        MoveWindow(tabs,left+S(5),topBar+S(3),std::max(1,width-left-S(10)-(sceneLayout?std::min(std::clamp(int(width*inspectorPercent/100),S(240),S(420)),width/3):0)),S(29),TRUE);
         MoveWindow(status,S(260),height-statusHeight,std::max(1,width-S(270)),statusHeight,TRUE);
+        const bool sceneLayout=!detached&&document.value("kind",std::string())=="scene"&&!sourceMode;
+        if(contentWindow){RECT browser{};GetClientRect(contentWindow,&browser);placeBrowser(S(4),S(4),int(browser.right)-S(8),int(browser.bottom)-S(8),true);}
+        // Unreal-style dock areas (left / right / bottom). Each shows its panels as tabs; a tab dragged onto another area moves the panel.
+        const auto shown=[&](const std::string& panel){if(panel=="outliner"||panel=="details")return sceneLayout;if(panel=="content")return !contentWindow&&!detached;return !detached;};
+        dockVisible.clear();for(const auto& [slot,list]:dockSlots)for(const auto& panel:list)if(shown(panel))dockVisible[slot].push_back(panel);
+        for(auto& [slot,list]:dockVisible)if(!list.empty()&&std::find(list.begin(),list.end(),dockActive[slot])==list.end())dockActive[slot]=list.front();
+        consoleVisible=dockActive[dockSlotOf("log")]=="log"&&shown("log");
+        const int areaTop=topBar,areaBottom=height-statusHeight;
+        const int leftW=dockVisible["left"].empty()?0:std::clamp(dockLeft?dockLeft:S(240),S(160),std::max(S(160),width/3));
+        const int rightW=dockVisible["right"].empty()?0:std::clamp(dockRight?dockRight:S(320),S(200),std::max(S(200),width/3));
+        const int bottomH=dockVisible["bottom"].empty()?0:std::clamp(dockBottom?dockBottom:S(230),S(120),std::max(S(120),(areaBottom-areaTop)/2));
+        dockRects["left"]={0,areaTop,leftW,areaBottom};dockRects["right"]={width-rightW,areaTop,width,areaBottom};dockRects["bottom"]={leftW,areaBottom-bottomH,width-rightW,areaBottom};
+        const int left=leftW;
+        MoveWindow(tabs,left+S(5),topBar+S(3),std::max(1,width-left-rightW-S(10)),S(29),TRUE);
         const int logHeight=0;
         const HWND owner=detached?detached:window;
         RECT work{};GetClientRect(owner,&work);const int x=detached?S(5):left+S(5),y=detached?S(4):topBar+S(36);
-        const int fullWidth=std::max(1,int(work.right)-x-S(6));
-        const int fullHeight=std::max(1,int(work.bottom)-y-(detached?S(6):statusHeight+dockHeight+S(4)));
+        const int fullWidth=std::max(1,(detached?int(work.right):width-rightW)-x-S(6));
+        const int fullHeight=std::max(1,int(work.bottom)-y-(detached?S(6):statusHeight+bottomH+S(4)));
         const bool splitShown=splitDocument&&!detached&&(splitBelow?fullHeight>=S(380):fullWidth>=S(560));
         const int splitWidth=splitShown&&!splitBelow?std::clamp(fullWidth*int(splitPercent)/100,S(250),fullWidth-S(250)):0;
         const bool lowerShown=lowerSplitDocument&&!detached&&fullHeight>=S(380);
@@ -904,7 +918,7 @@ class NativeEditorShell {
         const bool sceneShown=document.value("kind",std::string())=="scene"&&!sourceMode;
         const bool canvasShown=(timelineOpen()||widgetOpen()||imageOpen()||tilemapOpen()||audioAssetOpen()||meshUVOpen)&&!sourceMode;
         const bool formShown=document.value("form",false)&&!sourceMode&&!sceneShown&&!canvasShown;
-        const int top=graphShown?y+S(32):y,h=std::max(1,y+bodyHeight-top);
+        const int top=graphShown||sceneShown?y+S(34):y,h=std::max(1,y+bodyHeight-top);
         MoveWindow(views,x,y,std::min(S(230),w/2),S(220),TRUE);MoveWindow(palette,x+std::min(S(235),w/2),y,std::max(1,w-std::min(S(235),w/2)),S(300),TRUE);
         ShowWindow(views,graphShown&&!model.value("views",Json::array()).empty()?SW_SHOW:SW_HIDE);
         ShowWindow(palette,graphShown?SW_SHOW:SW_HIDE);
@@ -914,32 +928,25 @@ class NativeEditorShell {
         const bool previewShown=previewOpen&&canPreview()&&!sourceMode&&!meshUVOpen;
         const int previewHeight=previewShown&&graphShown?std::max(1,h/3):0;
         graph.layout(x,top,w-inspectorWidth,h-previewHeight,graphShown);
-        const int side=sceneShown?std::min(std::clamp(int(w*inspectorPercent/100),S(190),S(420)),std::max(0,w-S(160))):0;
+        const int side=sceneShown&&!sceneLayout?std::min(std::clamp(int(w*inspectorPercent/100),S(190),S(420)),std::max(0,w-S(160))):0;
         const int split=std::max(1,h*40/100);
         hierarchy.reparent(owner);
         if(GetParent(hierarchySearch)!=owner)SetParent(hierarchySearch,owner);
-        if(sceneLayout){
-            const int footTop=height-statusHeight-S(26);
-            outlinerTitle.update({{"rect",{S(2),topBar+S(2),std::max(1,left-S(2)),S(30)}},{"visible",true}});
-            MoveWindow(hierarchySearch,S(8),topBar+S(38),std::max(1,left-S(14)),S(26),TRUE);ShowWindow(hierarchySearch,SW_SHOW);
-            outlinerHead.update({{"rect",{S(2),topBar+S(70),std::max(1,left-S(2)),S(24)}},{"visible",true}});
-            hierarchy.update({{"rect",{S(2),topBar+S(94),std::max(1,left-S(2)),std::max(1,footTop-topBar-S(94))}},{"visible",true}});
-            outlinerFoot.update({{"rect",{S(2),footTop,std::max(1,left-S(2)),S(24)}},{"visible",true}});
-        }else{
+        if(!sceneLayout){
             MoveWindow(hierarchySearch,x+w-side+3,top,std::max(1,side-3),S(26),TRUE);ShowWindow(hierarchySearch,sceneShown&&side>0?SW_SHOW:SW_HIDE);
             hierarchy.update({{"rect",{x+w-side+3,top+S(28),std::max(1,side-3),std::max(1,split-S(28))}},{"visible",sceneShown&&side>0}});
+            for(auto* panel:{&outlinerHead,&outlinerFoot})panel->update({{"visible",false}});
         }
         viewport.layout(owner,x,top,std::max(1,w-side-3),h,sceneShown);
         if(sceneShown)queueViewport();
         const int assetSide=canvasShown?std::min(std::clamp(int(w*inspectorPercent/100),S(190),S(420)),std::max(0,w-S(160))):0;
         const int adjustableSide=sceneShown?side:assetSide;
         inspectorSpan=w;inspectorDivider=adjustableSide?RECT{x+w-adjustableSide-3,top,x+w-adjustableSide+3,top+h}:RECT{};
-        if(!sceneLayout){for(auto* panel:{&outlinerTitle,&outlinerHead,&outlinerFoot,&detailsTitle})panel->update({{"visible",false}});}
-        else detailsTitle.update({{"rect",{x+w-side+3,y-S(32),std::max(1,side-3),S(30)}},{"visible",side>0}});
         // Scene tool row (camera, transform tools, snap) above the viewport.
-        viewStrip.update({{"rect",{x+S(8),y+S(8),std::max(1,w-side-3-S(16)),S(26)}},{"visible",sceneShown},{"floating",true}});
-        refreshChrome();
-        if(sceneShown)form.update({{"rect",{x+w-side+3,sceneLayout?y:top+split,std::max(1,side-3),sceneLayout?std::max(1,height-statusHeight-y-S(2)):h-split}},{"visible",side>0}});
+        // Scene tools sit in a row above the scene: a window over the DirectX swap chain flickered while the camera moved.
+        viewStrip.update({{"rect",{x,y,std::max(1,w-side-3),S(32)}},{"visible",sceneShown},{"floating",false}});
+        if(sceneLayout){}
+        else if(sceneShown)form.update({{"rect",{x+w-side+3,top+split,std::max(1,side-3),h-split}},{"visible",side>0}});
         else if(canvasShown)form.update({{"rect",{x+w-assetSide+3,top,std::max(1,assetSide-3),h}},{"visible",assetSide>0}});
         else if(graphShown)form.update({{"rect",{x+w-inspectorWidth,top,inspectorWidth,h}},{"visible",inspectorWidth>0}});
         else if(previewShown)form.update({{"rect",{x+std::max(1,w/2),top,w-w/2,h}},{"visible",true}});
@@ -950,13 +957,42 @@ class NativeEditorShell {
         previewViewport.layout(owner,x,top+(graphShown?h-previewHeight:0),graphShown?std::max(1,w-inspectorWidth):std::max(1,w/2),graphShown?previewHeight:h,previewShown);
         if(previewShown)queuePreview();
         if(meshUVOpen&&!sourceMode)SetTimer(window,11,60,nullptr);
-        // Content browser / output log dock under the documents (the scene properties column keeps the full height).
-        if(!detached){
-            const int dockX=left+S(5),dockY=height-statusHeight-dockHeight,dockWidth=std::max(1,x+w-(sceneLayout?side:0)-dockX);
-            ShowWindow(dockTabs,dockHeight>0?SW_SHOW:SW_HIDE);MoveWindow(dockTabs,dockX,dockY,dockWidth,S(28),TRUE);TabCtrl_SetCurSel(dockTabs,consoleVisible?1:0);
-            console.update({{"rect",{dockX,dockY+S(30),dockWidth,std::max(1,dockHeight-S(30))}},{"visible",consoleVisible&&dockHeight>0}});
-            if(!contentWindow)placeBrowser(dockX,dockY+S(30),dockWidth,std::max(1,dockHeight-S(30)),!consoleVisible);
-        }else{ShowWindow(dockTabs,SW_HIDE);console.update({{"visible",false}});if(!contentWindow)placeBrowser(S(5),S(5),std::max(1,width-S(10)),std::max(1,height-statusHeight-S(10)),true);}
+        // Dock areas: tab strip on top, the active panel fills the rest; inactive panels hide.
+        for(const char* slot:{"left","right","bottom"}){
+            const RECT area=dockRects[slot];const bool any=!dockVisible[slot].empty();
+            dockStrip(slot).update({{"rect",{int(area.left)+S(2),int(area.top)+S(2),std::max(1,int(area.right-area.left)-S(4)),S(30)}},{"visible",any}});
+            const RECT body{area.left+S(2),area.top+S(34),area.right-S(2),area.bottom-S(2)};
+            for(const auto& panel:dockSlots[slot])if(shown(panel)||panel=="log"||(panel=="outliner"&&!sceneShown))placeDockPanel(panel,body,shown(panel)&&dockActive[slot]==panel);
+        }
+        if(detached&&!contentWindow)placeBrowser(S(5),S(5),std::max(1,width-S(10)),std::max(1,height-statusHeight-S(10)),true);
+        ShowWindow(dockTabs,SW_HIDE);
+        refreshChrome();
+    }
+    std::string dockSlotOf(const std::string& panel)const{for(const auto& [slot,list]:dockSlots)if(std::find(list.begin(),list.end(),panel)!=list.end())return slot;return "bottom";}
+    EditorChromePanel& dockStrip(const std::string& slot){return slot=="left"?outlinerTitle:slot=="right"?detailsTitle:bottomTabs;}
+    void placeDockPanel(const std::string& panel,RECT r,bool show){
+        const int bx=r.left,by=r.top,bw=std::max(1,int(r.right-r.left)),bh=std::max(1,int(r.bottom-r.top));
+        if(panel=="outliner"){
+            MoveWindow(hierarchySearch,bx+S(6),by+S(4),std::max(1,bw-S(12)),S(26),TRUE);ShowWindow(hierarchySearch,show?SW_SHOW:SW_HIDE);
+            outlinerHead.update({{"rect",{bx,by+S(34),bw,S(24)}},{"visible",show}});
+            hierarchy.update({{"rect",{bx,by+S(58),bw,std::max(1,bh-S(58)-S(26))}},{"visible",show}});
+            outlinerFoot.update({{"rect",{bx,by+bh-S(24),bw,S(24)}},{"visible",show}});
+        }else if(panel=="details"){if(show)form.update({{"rect",{bx,by,bw,bh}},{"visible",true}});}
+        else if(panel=="content"){if(!contentWindow)placeBrowser(bx,by+S(2),bw,bh-S(2),show);}
+        else if(panel=="log"){if(show&&!logItems.empty())console.update({{"items",logItems},{"revision",++logRevision}});console.update({{"rect",{bx,by,bw,bh}},{"visible",show}});}
+    }
+    // Drop a dragged panel tab: onto a dock area, or near the documents' left/right/bottom edge for an empty area.
+    void moveDockPanel(const std::string& panel,const std::string& target){
+        if(target!="left"&&target!="right"&&target!="bottom")return;
+        for(auto& [slot,list]:dockSlots)list.erase(std::remove(list.begin(),list.end(),panel),list.end());
+        dockSlots[target].push_back(panel);dockActive[target]=panel;if(panel=="log")consoleVisible=true;
+        layout();saveLayout();
+    }
+    void dockDrop(const std::string& panel,POINT screen){
+        POINT at=screen;ScreenToClient(window,&at);RECT client{};GetClientRect(window,&client);
+        for(const char* slot:{"left","right","bottom"}){const RECT r=dockRects[slot];if(r.right>r.left&&r.bottom>r.top&&PtInRect(&r,at)){moveDockPanel(panel,slot);return;}}
+        const RECT l=dockRects["left"],rr=dockRects["right"],b=dockRects["bottom"];const int cl=l.right,cr=rr.right>rr.left?rr.left:client.right,cb=b.bottom>b.top?b.top:client.bottom-S(26);
+        if(at.x<cl+(cr-cl)/5)moveDockPanel(panel,"left");else if(at.x>cr-(cr-cl)/5)moveDockPanel(panel,"right");else if(at.y>cb-(cb-S(40))/4)moveDockPanel(panel,"bottom");
     }
     void placeBrowser(int bx,int by,int bw,int bh,bool show){
         // The Win32 navigation controls stay as hidden state holders; the Direct2D bar drives them.
@@ -974,6 +1010,12 @@ class NativeEditorShell {
     }
     Divider dividerAt(HWND owner,int x,int y)const{
         RECT rect{};GetClientRect(owner,&rect);
+        if(owner==window&&!detached){
+            const RECT l=dockRects.count("left")?dockRects.at("left"):RECT{},r=dockRects.count("right")?dockRects.at("right"):RECT{},b=dockRects.count("bottom")?dockRects.at("bottom"):RECT{};
+            if(l.right>0&&std::abs(x-int(l.right))<=S(4)&&y>l.top&&y<l.bottom)return Divider::DockLeft;
+            if(r.right>r.left&&std::abs(x-int(r.left))<=S(4)&&y>r.top&&y<r.bottom)return Divider::DockRight;
+            if(b.bottom>b.top&&std::abs(y-int(b.top))<=S(4)&&x>b.left&&x<b.right)return Divider::DockBottom;
+        }
         if(owner==window&&PtInRect(&lowerSplitDivider,{x,y}))return Divider::LowerDocuments;
         if(owner==window&&PtInRect(&splitDivider,{x,y}))return Divider::Documents;
         return owner==(detached?detached:window)&&PtInRect(&inspectorDivider,{x,y})?Divider::Inspector:Divider::None;
@@ -984,8 +1026,9 @@ class NativeEditorShell {
             divider=dividerAt(owner,x,y);
             if(divider==Divider::None)return false;
             RECT rect{};GetClientRect(owner,&rect);
-            const bool vertical=divider==Divider::LowerDocuments||divider==Divider::Documents&&splitBelow;
+            const bool vertical=divider==Divider::LowerDocuments||divider==Divider::DockBottom||divider==Divider::Documents&&splitBelow;
             dividerOwner=owner;dividerStart=vertical?y:x;
+            if(divider==Divider::DockLeft||divider==Divider::DockRight||divider==Divider::DockBottom){const RECT d=dockRects[divider==Divider::DockLeft?"left":divider==Divider::DockRight?"right":"bottom"];dividerInitial=unsigned(divider==Divider::DockBottom?d.bottom-d.top:d.right-d.left);SetCapture(owner);SetCursor(LoadCursorW(nullptr,vertical?IDC_SIZENS:IDC_SIZEWE));return true;}
             dividerInitial=divider==Divider::Browser?browsePercent:divider==Divider::Documents?splitPercent:divider==Divider::LowerDocuments?lowerSplitPercent:inspectorPercent;
             dividerSpan=std::max(1,divider==Divider::Browser?int(rect.right):divider==Divider::Documents?splitSpan:divider==Divider::LowerDocuments?lowerSplitSpan:inspectorSpan);
             SetCapture(owner);SetCursor(LoadCursorW(nullptr,vertical?IDC_SIZENS:IDC_SIZEWE));return true;
@@ -994,6 +1037,10 @@ class NativeEditorShell {
         if(message==WM_CAPTURECHANGED){dividerOwner=nullptr;divider=Divider::None;return true;}
         if(message==WM_LBUTTONUP){ReleaseCapture();return true;}
         if(message!=WM_MOUSEMOVE)return false;
+        if(divider==Divider::DockLeft||divider==Divider::DockRight||divider==Divider::DockBottom){
+            const int delta=(divider==Divider::DockBottom?y:x)-dividerStart,next=int(dividerInitial)+(divider==Divider::DockLeft?delta:-delta);
+            int& size=divider==Divider::DockLeft?dockLeft:divider==Divider::DockRight?dockRight:dockBottom;if(size!=next){size=next;layout();}return true;
+        }
         const int direction=divider==Divider::Browser?1:-1;
         const bool documents=divider==Divider::Documents||divider==Divider::LowerDocuments;
         const int position=divider==Divider::LowerDocuments||divider==Divider::Documents&&splitBelow?y:x;
@@ -2496,7 +2543,7 @@ class NativeEditorShell {
         WINDOWPLACEMENT placement{sizeof(placement)};
         if(!GetWindowPlacement(window,&placement))return;
         const auto& r=placement.rcNormalPosition;
-        const Json saved={{"browse",browsePercent},{"inspector",inspectorPercent},{"splitPercent",splitPercent},{"lowerSplitPercent",lowerSplitPercent},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}},{"maximized",placement.showCmd==SW_SHOWMAXIMIZED},{"uiScale",userScale},{"snap",{{"on",snapOn},{"grid",snapGrid},{"angle",snapAngle}}},{"console",consoleVisible},{"browserTiles",browserTiles},{"contentDetached",contentWindow!=nullptr},{"project",utf8(projectFile.wstring())},{"documents",std::move(panes)}};
+        const Json saved={{"browse",browsePercent},{"inspector",inspectorPercent},{"splitPercent",splitPercent},{"lowerSplitPercent",lowerSplitPercent},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}},{"maximized",placement.showCmd==SW_SHOWMAXIMIZED},{"uiScale",userScale},{"dock",{{"slots",dockSlots},{"active",dockActive},{"left",dockLeft},{"right",dockRight},{"bottom",dockBottom}}},{"snap",{{"on",snapOn},{"grid",snapGrid},{"angle",snapAngle}}},{"console",consoleVisible},{"browserTiles",browserTiles},{"contentDetached",contentWindow!=nullptr},{"project",utf8(projectFile.wstring())},{"documents",std::move(panes)}};
         auto temp=layoutFile;temp+=L"."+std::to_wstring(GetCurrentProcessId())+L".tmp";
         write(temp,saved.dump());
         if(!MoveFileExW(temp.c_str(),layoutFile.c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH))DeleteFileW(temp.c_str());
@@ -2512,6 +2559,13 @@ class NativeEditorShell {
             lowerSplitPercent=std::clamp(data.value("lowerSplitPercent",43u),25u,75u);
             layoutMaximized=data.value("maximized",false);
             userScale=std::clamp(data.value("uiScale",0.0),0.0,3.0);if(userScale>0&&userScale<1)userScale=0;
+            if(data.contains("dock")){
+                // Accept only an arrangement that holds each of the four panels exactly once.
+                const auto& d=data.at("dock");std::map<std::string,std::vector<std::string>> slots;std::multiset<std::string> seen;
+                for(const char* slot:{"left","right","bottom"})for(const auto& p:d.at("slots").value(slot,Json::array()))if(p.is_string()){slots[slot].push_back(p.get<std::string>());seen.insert(p.get<std::string>());}
+                if(seen==std::multiset<std::string>{"content","details","log","outliner"}){dockSlots=slots;for(const char* slot:{"left","right","bottom"})if(d.at("active").contains(slot))dockActive[slot]=d.at("active").at(slot).get<std::string>();}
+                dockLeft=std::max(0,d.value("left",0));dockRight=std::max(0,d.value("right",0));dockBottom=std::max(0,d.value("bottom",0));
+            }
             if(data.contains("snap")){const auto& s=data.at("snap");snapOn=s.value("on",false);snapGrid=std::clamp(s.value("grid",.5),.01,100.0);snapAngle=std::clamp(s.value("angle",15.0),1.0,180.0);}updateSnapMenu();
             consoleVisible=data.value("console",false);
             setBrowserTiles(data.value("browserTiles",true));
@@ -3349,8 +3403,8 @@ class NativeEditorShell {
             else ShowWindow(contentWindow,SW_SHOW);
             return;
         case ShowConsole:
-            consoleVisible=!consoleVisible;
-            if(consoleVisible)console.update({{"items",logItems},{"revision",++logRevision}});
+            {const auto slot=dockSlotOf("log");if(dockActive[slot]=="log"){const auto& list=dockSlots[slot];for(const auto& panel:list)if(panel!="log"){dockActive[slot]=panel;break;}}else dockActive[slot]="log";}
+            if(dockActive[dockSlotOf("log")]=="log")console.update({{"items",logItems},{"revision",++logRevision}});
             layout();return;
         case ToggleSource:captureSource();stopSpritePreview();sourceMode=!sourceMode;layout();if(imageOpen()&&!sourceMode)refreshImage();return;
         case PickImageView:{
@@ -3604,7 +3658,7 @@ class NativeEditorShell {
         if(message==WM_SETCURSOR&&LOWORD(l)==HTCLIENT){
             POINT point{};GetCursorPos(&point);ScreenToClient(owner,&point);
             const auto part=dividerAt(owner,point.x,point.y);
-            if(part!=Divider::None){SetCursor(LoadCursorW(nullptr,part==Divider::LowerDocuments||part==Divider::Documents&&splitBelow?IDC_SIZENS:IDC_SIZEWE));return TRUE;}
+            if(part!=Divider::None){SetCursor(LoadCursorW(nullptr,part==Divider::LowerDocuments||part==Divider::DockBottom||part==Divider::Documents&&splitBelow?IDC_SIZENS:IDC_SIZEWE));return TRUE;}
         }
         if(message==WM_DPICHANGED){
             const auto& rect=*reinterpret_cast<const RECT*>(l);
@@ -3854,7 +3908,7 @@ private:
         SendMessageW(assetTiles,BM_CLICK,0,0);if(browserTiles!=tilesBefore)throw std::runtime_error("Native asset view restore failed");
         SendMessageW(assetTiles,BM_CLICK,0,0);
         // The content browser is docked under the documents now; its tab strip switches to the output log and back.
-        if(!IsWindowVisible(dockTabs)&&!contentWindow)throw std::runtime_error("Native content dock missing");
+        if(!contentWindow&&!detached&&!dockStrip(dockSlotOf("content")).inspect().value("shown",false))throw std::runtime_error("Native content dock missing");
         command(ResetLayout);
         const auto sceneSurface=drawViewport({{"capture",true}});
         if(sceneSurface.at("backend")!="D3D12"||sceneSurface.at("calls")<1)
@@ -4360,6 +4414,10 @@ private:
         const auto startPage=helpPage(ShowHelp),keysPage=helpPage(ShowShortcuts);const HWND helpOwner=helpWindow;
         const bool help=startPage.first.find(L"시작하기")!=std::wstring::npos&&startPage.second.find(L"새 프로젝트")!=std::wstring::npos&&keysPage.first.find(L"단축키")!=std::wstring::npos&&keysPage.second.find(L"Shift+F5")!=std::wstring::npos&&keysPage.second.find(L"Ctrl+Z")!=std::wstring::npos&&helpWindow==helpOwner;
         SendMessageW(helpWindow,WM_CLOSE,0,0);if(!help||IsWindow(helpOwner))throw std::runtime_error("Native help window failed");
+        // Docking: the output log tab moves to the right area, shows there, and moves back.
+        moveDockPanel("log","right");const bool logRight=dockSlotOf("log")=="right"&&dockActive["right"]=="log"&&console.inspect().value("shown",false);
+        moveDockPanel("log","bottom");dockActive["bottom"]="content";layout();const bool logBack=dockSlotOf("log")=="bottom"&&dockSlots["right"]==std::vector<std::string>{"details"};
+        if(!logRight||!logBack)throw std::runtime_error("Native docking failed");
         // Editing basics through the real menu commands: Ctrl-select two rows, copy, paste, undo, search filter.
         showDocument(request("document.open",{{"path",startupScenePath}}));refreshScene();
         const auto objectCount=[&]{return request("scene.hierarchy").size();};const auto countBefore=objectCount();
@@ -4373,7 +4431,7 @@ private:
         if(!multiSelect||!pasted||!undone||!filtered||!unfiltered)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());layout();UpdateWindow(window);captureWindow(fs::path(capture));}
-        write(smoke,Json{{"ok",true},{"help",help},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
+        write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
 };
