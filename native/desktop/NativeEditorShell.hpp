@@ -14,7 +14,7 @@ class NativeEditorShell {
     using Json=nlohmann::json;
     HWND window=nullptr,detached=nullptr,files=nullptr,tabs=nullptr,source=nullptr,search=nullptr,palette=nullptr,views=nullptr,status=nullptr;
     HWND folderBack=nullptr,folderForward=nullptr,folderPath=nullptr,folderTree=nullptr,assetType=nullptr,assetRecursive=nullptr,assetTiles=nullptr;
-    HWND contentWindow=nullptr;
+    HWND contentWindow=nullptr,helpWindow=nullptr;
     HIMAGELIST assetIcons=nullptr;
     std::optional<std::string> queuedFolder;
     int64_t contentScanId=0;
@@ -160,6 +160,8 @@ class NativeEditorShell {
     static constexpr Command ConfigureWorld=static_cast<Command>(155),EditWorld=static_cast<Command>(154);
     static constexpr Command MeshSelection=static_cast<Command>(153),MeshAdvanced=static_cast<Command>(152);
     static constexpr Command MeshUVView=static_cast<Command>(151),MeshUVFit=static_cast<Command>(150);
+    // Help sits outside the 100–199 command block and the recent-project range.
+    static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -430,7 +432,9 @@ class NativeEditorShell {
             }catch(const std::exception& error){report(error);}
         });
         assetCanvas.useD3D12(graphics);
-        const HMENU main=CreateMenu(),file=CreatePopupMenu(),edit=CreatePopupMenu(),viewMenu=CreatePopupMenu(),sceneMenu=CreatePopupMenu(),buildMenu=CreatePopupMenu();
+        const HMENU main=CreateMenu(),file=CreatePopupMenu(),edit=CreatePopupMenu(),viewMenu=CreatePopupMenu(),sceneMenu=CreatePopupMenu(),buildMenu=CreatePopupMenu(),helpMenu=CreatePopupMenu();
+        AppendMenuW(helpMenu,MF_STRING,ShowHelp,L"시작하기");
+        AppendMenuW(helpMenu,MF_STRING,ShowShortcuts,L"단축키 목록\tF1");
         AppendMenuW(file,MF_STRING,OpenProject,L"프로젝트 열기\tCtrl+O");
         AppendMenuW(file,MF_STRING,NewProject,L"새 프로젝트");
         recentMenu=CreatePopupMenu();
@@ -521,7 +525,31 @@ class NativeEditorShell {
         AppendMenuW(buildMenu,MF_STRING,BuildGame,L"패키징");
         AppendMenuW(buildMenu,MF_STRING,RunBuild,L"마지막 Windows 빌드 실행");
         AppendMenuW(buildMenu,MF_STRING,CancelBuild,L"현재 빌드 취소");
-        AppendMenuW(main,MF_POPUP,UINT_PTR(file),L"파일");AppendMenuW(main,MF_POPUP,UINT_PTR(edit),L"편집");AppendMenuW(main,MF_POPUP,UINT_PTR(sceneMenu),L"장면");AppendMenuW(main,MF_POPUP,UINT_PTR(viewMenu),L"보기");AppendMenuW(main,MF_POPUP,UINT_PTR(buildMenu),L"빌드");SetMenu(window,main);
+        AppendMenuW(main,MF_POPUP,UINT_PTR(file),L"파일");AppendMenuW(main,MF_POPUP,UINT_PTR(edit),L"편집");AppendMenuW(main,MF_POPUP,UINT_PTR(sceneMenu),L"장면");AppendMenuW(main,MF_POPUP,UINT_PTR(viewMenu),L"보기");AppendMenuW(main,MF_POPUP,UINT_PTR(buildMenu),L"빌드");AppendMenuW(main,MF_POPUP,UINT_PTR(helpMenu),L"도움말");SetMenu(window,main);
+    }
+    static const wchar_t* helpText(bool start){
+        return start?
+            L"HBEngine 시작하기\r\n" L"\r\n" L"1. 프로젝트 만들기\r\n" L"   파일 > 새 프로젝트에서 2D·3D 템플릿을 골라요. 파일 > 프로젝트 열기(Ctrl+O)나 최근 프로젝트로 다시 열어요.\r\n" L"2. 에셋 넣기\r\n" L"   이미지·모델·소리 파일을 콘텐츠 브라우저로 끌어다 놓거나 파일 > 에셋 가져오기를 써요.\r\n" L"   폴더는 왼쪽 트리와 경로 줄로 이동하고, 검색 칸과 종류 목록으로 찾아요.\r\n" L"3. 장면 꾸미기\r\n" L"   장면 > 오브젝트 추가로 물체를 놓고, 오른쪽 속성 패널에서 위치·컴포넌트를 바꿔요.\r\n" L"   에셋을 장면 화면으로 끌어다 놓아도 배치돼요. 이동·회전·크기는 W·E·R이에요.\r\n" L"4. 로직 만들기\r\n" L"   블루프린트 에셋을 열고 빈 곳을 우클릭하거나 Space로 노드를 찾아 추가해요. 핀을 끌어 연결해요.\r\n" L"   C++가 필요하면 파일 > 새 C++ 클래스, 빌드 > C++ 클래스 컴파일을 써요.\r\n" L"5. 실행하기\r\n" L"   F5로 플레이하고 Shift+F5로 멈춰요. 블루프린트 노드에 F9로 중단점을 걸 수 있어요.\r\n" L"6. 저장·되돌리기\r\n" L"   Ctrl+S로 저장하고 Ctrl+Z·Ctrl+Y로 되돌리거나 다시 적용해요. 저장이 충돌하면 파일 > 저장 충돌 복구를 써요.\r\n" L"7. 게임 만들기\r\n" L"   빌드 > 빌드 프로필 설정에서 이름·화면 크기·그래픽 API를 고르고, 빌드 > 패키징으로 Windows 게임을 만들어요.\r\n" L"\r\n" L"창 배치가 흐트러지면 보기 > 기본 배치 복원을 써요. 문제가 생기면 보기 > 출력 로그에서 메시지를 확인해요.\r\n":
+            L"단축키 목록\r\n" L"\r\n" L"[전체]\r\n" L"  Ctrl+O        프로젝트 열기\r\n" L"  Ctrl+S        문서 저장\r\n" L"  Ctrl+W        문서 닫기\r\n" L"  Ctrl+Z        되돌리기\r\n" L"  Ctrl+Y        다시 적용\r\n" L"  Alt+↑         콘텐츠 브라우저 상위 폴더\r\n" L"  F5            플레이\r\n" L"  Shift+F5      플레이 중지\r\n" L"  F1            이 단축키 목록\r\n" L"\r\n" L"[장면 화면]\r\n" L"  W / E / R     이동 / 회전 / 크기 도구\r\n" L"  F             선택 오브젝트에 초점\r\n" L"  왼쪽 클릭     선택 (핸들을 끌면 변환)\r\n" L"  Shift+왼쪽 끌기  선택 오브젝트 변환\r\n" L"  우클릭 끌기   시점 회전\r\n" L"  우클릭+W·A·S·D·Q·E  비행 이동\r\n" L"  휠 버튼 끌기  시점 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Esc           변환 끌기 취소\r\n" L"\r\n" L"[블루프린트·노드 그래프]\r\n" L"  우클릭        노드 추가 목록\r\n" L"  우클릭 끌기 / 휠 버튼 끌기  화면 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Space         노드 추가 목록\r\n" L"  C             주석 추가\r\n" L"  Ctrl+F        노드 찾기\r\n" L"  Delete        선택 노드 삭제\r\n" L"  F9            중단점 전환\r\n" L"  Esc           연결 중인 선 취소\r\n" L"  핀 우클릭     연결 끊기 / 출력 값 관찰\r\n" L"\r\n" L"[출력 로그]\r\n" L"  Ctrl+A        모두 선택\r\n" L"  Ctrl+C        복사\r\n";
+    }
+    // A plain dialog-class frame holding one read-only, selectable EDIT; X or Esc closes it.
+    void showHelp(bool start){
+        if(!helpWindow||!IsWindow(helpWindow)){
+            RECT owner{};GetWindowRect(window,&owner);
+            helpWindow=CreateWindowExW(0,WC_DIALOG,L"",WS_OVERLAPPEDWINDOW,owner.left+80,owner.top+80,640,660,window,nullptr,GetModuleHandleW(nullptr),nullptr);
+            const HWND text=helpWindow?CreateWindowExW(0,L"EDIT",L"",WS_CHILD|WS_VISIBLE|WS_VSCROLL|ES_MULTILINE|ES_READONLY|ES_AUTOVSCROLL,0,0,1,1,helpWindow,nullptr,GetModuleHandleW(nullptr),nullptr):nullptr;
+            if(!text){if(helpWindow)DestroyWindow(helpWindow);helpWindow=nullptr;throw std::runtime_error("도움말 창을 만들 수 없어요.");}
+            SendMessageW(text,WM_SETFONT,WPARAM(font),TRUE);SendMessageW(text,EM_SETMARGINS,EC_LEFTMARGIN|EC_RIGHTMARGIN,MAKELPARAM(12,12));
+            SetWindowSubclass(helpWindow,[](HWND h,UINT m,WPARAM w,LPARAM l,UINT_PTR,DWORD_PTR)->LRESULT{
+                if(m==WM_SIZE){MoveWindow(GetWindow(h,GW_CHILD),0,0,LOWORD(l),HIWORD(l),TRUE);return 0;}
+                if(m==WM_CLOSE||(m==WM_COMMAND&&LOWORD(w)==IDCANCEL)){DestroyWindow(h);return 0;}
+                return DefSubclassProc(h,m,w,l);},1,0);
+            SetWindowSubclass(text,[](HWND h,UINT m,WPARAM w,LPARAM l,UINT_PTR,DWORD_PTR)->LRESULT{if(m==WM_KEYDOWN&&w==VK_ESCAPE){PostMessageW(GetParent(h),WM_CLOSE,0,0);return 0;}return DefSubclassProc(h,m,w,l);},1,0);
+            RECT client{};GetClientRect(helpWindow,&client);MoveWindow(text,0,0,client.right,client.bottom,FALSE);
+        }
+        const HWND text=GetWindow(helpWindow,GW_CHILD);SetWindowTextW(text,helpText(start));SendMessageW(text,EM_SETSEL,0,0);
+        SetWindowTextW(helpWindow,start?L"HBEngine 도움말 - 시작하기":L"HBEngine 도움말 - 단축키 목록");
+        ShowWindow(helpWindow,acceptance?SW_HIDE:SW_SHOWNORMAL);if(!acceptance){SetForegroundWindow(helpWindow);SetFocus(text);}
     }
     void refreshRecent(){
         recent=request("project.recent");
@@ -2586,6 +2614,7 @@ class NativeEditorShell {
         }
     }
     void perform(Command command){
+        if(command==ShowHelp||command==ShowShortcuts){showHelp(command==ShowHelp);return;}
         if(playProcess&&(command==OpenProject||command==NewProject||command>=RecentBase))
             throw std::runtime_error("플레이를 중지한 뒤 프로젝트를 바꾸세요.");
         if(command>=RecentBase&&std::size_t(command-RecentBase)<recent.size()){
@@ -3302,7 +3331,7 @@ public:
         ShowWindow(window,layoutMaximized?SW_SHOWMAXIMIZED:show);
         if(contentDetachedOnStart)perform(DetachContent);
         restoreDocumentWindows();
-        ACCEL keys[]={{FVIRTKEY|FCONTROL,'O',OpenProject},{FVIRTKEY|FCONTROL,'S',Save},{FVIRTKEY|FCONTROL,'W',CloseDocument},{FVIRTKEY|FCONTROL,'Z',Undo},{FVIRTKEY|FCONTROL,'Y',Redo},{FVIRTKEY|FALT,VK_UP,Up},{FVIRTKEY,VK_F5,PlayScene},{FVIRTKEY|FSHIFT,VK_F5,StopPlay}};
+        ACCEL keys[]={{FVIRTKEY|FCONTROL,'O',OpenProject},{FVIRTKEY|FCONTROL,'S',Save},{FVIRTKEY|FCONTROL,'W',CloseDocument},{FVIRTKEY|FCONTROL,'Z',Undo},{FVIRTKEY|FCONTROL,'Y',Redo},{FVIRTKEY|FALT,VK_UP,Up},{FVIRTKEY,VK_F1,ShowShortcuts},{FVIRTKEY,VK_F5,PlayScene},{FVIRTKEY|FSHIFT,VK_F5,StopPlay}};
         const auto accelerator=CreateAcceleratorTableW(keys,int(std::size(keys)));
         MSG message;
         while(GetMessageW(&message,nullptr,0,0)>0){
@@ -3864,7 +3893,12 @@ private:
         showDocument(request("document.open",{{"path","Assets/A_Native.hbaudioasset.json"}}));
         command(ShowAudioWaveform);assetCanvas.probePaint();
         if(assetCanvas.inspect().at("backend")!="D3D12")throw std::runtime_error("Native waveform present failed");
-        write(smoke,Json{{"ok",true},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
+        // Help menu: both pages open in the one help window and the shortcut page lists the real accelerators.
+        const auto helpPage=[&](Command page){command(page);wchar_t title[128]{};GetWindowTextW(helpWindow,title,128);const HWND text=GetWindow(helpWindow,GW_CHILD);std::wstring body(size_t(GetWindowTextLengthW(text))+1,L' ');body.resize(GetWindowTextW(text,body.data(),int(body.size())));return std::pair<std::wstring,std::wstring>{title,body};};
+        const auto startPage=helpPage(ShowHelp),keysPage=helpPage(ShowShortcuts);const HWND helpOwner=helpWindow;
+        const bool help=startPage.first.find(L"시작하기")!=std::wstring::npos&&startPage.second.find(L"새 프로젝트")!=std::wstring::npos&&keysPage.first.find(L"단축키")!=std::wstring::npos&&keysPage.second.find(L"Shift+F5")!=std::wstring::npos&&keysPage.second.find(L"Ctrl+Z")!=std::wstring::npos&&helpWindow==helpOwner;
+        SendMessageW(helpWindow,WM_CLOSE,0,0);if(!help||IsWindow(helpOwner))throw std::runtime_error("Native help window failed");
+        write(smoke,Json{{"ok",true},{"help",help},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
 };
