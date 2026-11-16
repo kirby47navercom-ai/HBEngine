@@ -1,5 +1,6 @@
 import {defaultsForObject,addSceneComponent} from './scene-components.js';
 import {makeEnvironmentActor,environmentActorKinds} from './scene-environment.js';
+import {primitiveBaseHeight} from './scene-primitives.js';
 
 // The editor and automation schema expose the same serializable recipes.
 export const placementCatalog=[
@@ -54,7 +55,10 @@ export function createPlacedObject(key,{position=[0,0,0],id=crypto.randomUUID()}
   for(const [type,properties] of Object.entries(recipe.components)){
     const component=object.components.find(c=>c.type===type)||addSceneComponent(object,type);Object.assign(component.properties,structuredClone(properties));
   }
-  if(key==='vehicle'){object.scale=[1.8,.6,3.6];object.position[1]+=.9;}return object;
+  if(key==='vehicle'){object.scale=[1.8,.6,3.6];object.position[1]+=.9;}
+  // New basic blocks pivot on their centre (Unreal); colliders move with the mesh.
+  if(Object.hasOwn(primitiveBaseHeight,object.kind)){object.pivot='center';const h=primitiveBaseHeight[object.kind];for(const c of object.components)if(Array.isArray(c.properties?.center)&&c.properties.center.length===3)c.properties.center=[c.properties.center[0],c.properties.center[1]-h,c.properties.center[2]];}
+  return object;
 }
 
 export function appendPlacedObject(data,key,{position=[0,0,0],id,name,parent}={}){

@@ -31,6 +31,7 @@ class NativeEditorShell {
     unsigned uiDpi=96;double userScale=0;HMENU scaleMenu=nullptr;std::string startupScenePath;
     // Scene selection: sceneSelection is the primary (gizmo, inspector); sceneExtra holds the other selected objects.
     std::vector<std::string> sceneExtra,hierarchyOrder;Json sceneClipboard=Json::array();
+    Json viewTarget;
     bool snapOn=false;double snapGrid=.5,snapAngle=15;HMENU snapMenu=nullptr;HWND hierarchySearch=nullptr;std::string hierarchyQuery;
     Json selectedIds()const{Json out=Json::array();if(!sceneSelection.empty())out.push_back(sceneSelection);for(const auto& id:sceneExtra)out.push_back(id);return out;}
     int S(int value)const{return MulDiv(value,int(uiDpi),96);}
@@ -355,10 +356,17 @@ class NativeEditorShell {
                 }
                 if(i==int(fields.size())){if(!fieldPath.empty())fieldPath.erase(fieldPath.end()-1);refreshForm();layout();return;}
                 const auto key=fields.at(i).at("key");
-                if(action=="click"){fieldPath.push_back(key);refreshForm();layout();return;}
+                if(fields.at(i).contains("action")){
+                    if(action!="click")return;
+                    if(fields.at(i).at("action")=="addComponent")perform(AddComponent);
+                    else editScene({{"action","removeComponent"},{"id",sceneSelection},{"key",fields.at(i).at("component")}});
+                    return;
+                }
+                if(action=="click"){for(const auto& p:fields.at(i).value("viaParts",Json::array()))fieldPath.push_back(p);fieldPath.push_back(key);refreshForm();layout();return;}
                 Json parts=inspectedBase;
                 for(const auto& part:fieldPath)parts.push_back(part);
                 if(fields.at(i).contains("via"))parts.push_back(fields.at(i).at("via"));
+                for(const auto& p:fields.at(i).value("viaParts",Json::array()))parts.push_back(p);
                 Json value=event.contains("checked")?event.at("checked"):event.at("value");
                 if(fields.at(i).value("sign",1)<0)value=-(value.is_number()?value.get<double>():std::atof(value.get<std::string>().c_str()));
                 showDocument(request("asset.fieldEdit",{{"parts",parts},{"key",key},{"value",value},{"merge",event.value("merge",false)},{"expectedRevision",document.at("revision")}}));
@@ -1505,6 +1513,7 @@ class NativeEditorShell {
         if(!input.contains("tool"))input["tool"]=viewport.transformTool();
         if(snapOn)input["snap"]={{"grid",snapGrid},{"angle",snapAngle}};
         auto state=request("scene.viewport",input);
+        if(state.contains("target"))viewTarget=state.at("target");
         viewport.setHandles(state.at("segments"));
         // Gizmo drag: Details follows the object live instead of waiting for the mouse release.
         if(state.contains("preview")&&state.at("preview").value("id",std::string())==sceneSelection){
@@ -1536,6 +1545,7 @@ class NativeEditorShell {
         if(!sceneOpen())return;
         input["expectedRevision"]=document.at("revision");
         const auto action=input.value("action",std::string());
+        if(action=="add"&&!input.contains("position")&&viewTarget.is_array())input["position"]=viewTarget;
         if(snapOn&&(action=="translate"||action=="rotate"))input["snap"]={{"grid",snapGrid},{"angle",snapAngle}};
         auto changed=request("scene.edit",input);
         const auto selection=changed.value("selection",std::string());
@@ -1593,6 +1603,7 @@ class NativeEditorShell {
                 static const std::map<std::string,std::string> names{{"visible","보임"},{"locked","잠금"},{"components","컴포넌트"},{"kind","종류"},{"group","그룹"},{"id","ID"},{"parent","부모"}};
                 const auto key=fields[i].at("key").get<std::string>();const auto named=names.find(key);
                 return Json{{"label",named!=names.end()?Json(named->second):fields[i].at("label")},{"controls",Json::array({std::move(control)})}};};
+            const std::size_t objectFields=fields.size();
             rows=Json::array({{{"kind","heading"},{"text","트랜스폼"}}});
             for(const auto& [key,label]:std::initializer_list<std::pair<const char*,const char*>>{{"position","위치"},{"rotation","회전"},{"scale","스케일"}}){
                 if(field(key)<0)continue;auto parts=base;parts.push_back(key);
@@ -1602,18 +1613,48 @@ class NativeEditorShell {
             }
             rows.push_back({{"kind","heading"},{"text","일반"}});
             for(const char* key:{"name","visible","locked"})if(const int i=field(key);i>=0)rows.push_back(single(i));
-            if(const int i=field("components");i>=0){rows.push_back({{"kind","heading"},{"text","컴포넌트"}});rows.push_back(single(i));}
+            // Every other object property (material, colour, light, text, ...) stays editable like the original inspector.
+            static const std::set<std::string> laidOut{"position","rotation","scale","name","visible","locked","components","kind","group","id","parent"};
+            bool other=false;
+            for(std::size_t i=0;i<objectFields;++i)if(!laidOut.count(fields[i].at("key").get<std::string>())){if(!other){rows.push_back({{"kind","heading"},{"text","속성"}});other=true;}rows.push_back(single(int(i)));}
+            // Components (Unity inspector + Unreal "+ 추가"): each component inline with its properties and a remove button.
+            rows.push_back({{"kind","heading"},{"text","컴포넌트"}});
+            const auto action=[&](Json field,const char* text){field["control"]={{"kind","button"},{"text",text}};auto control=field.at("control");control["i"]=fields.size();fields.push_back(std::move(field));return control;};
+            rows.push_back({{"label",""},{"controls",Json::array({action({{"key","__addComponent"},{"label",""},{"action","addComponent"}},"+ 컴포넌트 추가")})}});
+            const auto object=Json::parse(document.at("text").get<std::string>()).at("objects").at(std::stoul(base.at(1).get<std::string>()));
+            const auto components=object.value("components",Json::array());
+            for(std::size_t j=0;j<components.size();++j){
+                const auto& component=components.at(j);const auto type=component.value("type",std::string());if(type=="Transform")continue;
+                rows.push_back({{"kind","heading"},{"text",type}});
+                rows.push_back({{"label",""},{"controls",Json::array({action({{"key","__removeComponent"},{"label",""},{"action","removeComponent"},{"component",component.value("id",std::string())}},"컴포넌트 제거")})}});
+                const Json via=Json::array({"components",std::to_string(j),"properties"});
+                auto parts=base;for(const auto& p:via)parts.push_back(p);
+                Json properties;try{properties=request("asset.fields",{{"parts",parts}});}catch(const std::exception&){continue;}
+                for(auto property:properties){
+                    if(property.value("type",std::string())=="object"){
+                        // Vectors and colours show their numbers inline; other objects open as before.
+                        auto inner=parts;inner.push_back(property.at("key"));Json axes;try{axes=request("asset.fields",{{"parts",inner}});}catch(const std::exception&){axes=Json::array();}
+                        if(!axes.empty()&&axes.size()<=4&&std::all_of(axes.begin(),axes.end(),[](const Json& a){return a.at("control").value("kind",std::string())=="text";})){
+                            Json controls=Json::array();auto innerVia=via;innerVia.push_back(property.at("key"));
+                            for(auto axis:axes){axis["viaParts"]=innerVia;auto control=axis.at("control");control["i"]=fields.size();control["step"]=.05;controls.push_back(std::move(control));fields.push_back(std::move(axis));}
+                            rows.push_back({{"label",property.at("label")},{"controls",std::move(controls)}});continue;
+                        }
+                    }
+                    property["viaParts"]=via;auto control=property.at("control");control["i"]=fields.size();
+                    rows.push_back({{"label",property.at("label")},{"controls",Json::array({std::move(control)})}});fields.push_back(std::move(property));
+                }
+            }
             rows.push_back({{"kind","heading"},{"text","고급"}});
             for(const char* key:{"kind","group","id","parent"})if(const int i=field(key);i>=0)rows.push_back(single(i,std::string(key)=="id"||std::string(key)=="parent"));
         }
         inspectedBase=std::move(base);
         form.update({{"rows",rows},{"revision",++formRevision}});
     }
-    // Details shows Unreal axes (X forward, Y right, Z up); the scene stores three.js axes (x right, y up, -z forward).
+    // Details shows Unreal axes (X forward = +z map front, Y right = -x, Z up = +y); the scene keeps three.js axes.
     static std::array<std::pair<int,int>,3> unrealAxes(const std::string& key){
         if(key=="scale")return {{{2,1},{0,1},{1,1}}};
-        if(key=="rotation")return {{{2,-1},{0,1},{1,-1}}};
-        return {{{2,-1},{0,1},{1,1}}};
+        if(key=="rotation")return {{{2,1},{0,-1},{1,-1}}};
+        return {{{2,1},{0,-1},{1,1}}};
     }
     static std::string shortNumber(double v){
         v=std::round(v*10000)/10000;if(v==0)v=0;
@@ -3898,7 +3939,7 @@ private:
         if(!document.contains("path"))throw std::runtime_error("검사 프로젝트를 지정하세요.");
         SetWindowPos(window,nullptr,-20000,-20000,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_NOACTIVATE|SWP_SHOWWINDOW);
         // Capture-only review mode (HB_EDITOR_CAPTURE_ONLY): open the startup scene, optionally orbit, save the window and stop.
-        if(const char* only=std::getenv("HB_EDITOR_CAPTURE_ONLY")){layout();drawViewport();if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}if(std::getenv("HB_EDITOR_CAPTURE_SELECT")&&!hierarchyOrder.empty())selectActor(hierarchyOrder.front());if(const char* zoom=std::getenv("HB_EDITOR_CAPTURE_ZOOM"))drawViewport({{"command","zoom"},{"dy",std::atof(zoom)}});const char* frames=std::getenv("HB_EDITOR_CAPTURE_FRAMES");for(int frame=0,count=frames?std::atoi(frames):6;frame<count;++frame)drawViewport();Json frameTimes=Json::array();if(const char* probe=std::getenv("HB_EDITOR_FRAME_PROBE"))for(int i=0,n=std::atoi(probe);i<n;++i){const auto start=std::chrono::steady_clock::now();auto state=drawViewport({{"command","orbit"},{"dx",3.0},{"dy",0.0}});frameTimes.push_back({{"ms",std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count()},{"timing",state.value("timing",Json())}});}if(const char* sequence=std::getenv("HB_EDITOR_CAPTURE_SEQUENCE")){/* "orbit:N" or "drag:N": capture every frame to find flicker */const std::string kind(sequence);const int n=std::atoi(kind.substr(kind.find(':')+1).c_str());const auto size=viewport.size();for(int i=0;i<n;++i){auto state=kind.rfind("drag",0)==0?drawViewport({{"command","translatePreview"},{"x",size.cx/2},{"y",size.cy/2},{"dx",i*4},{"dy",0}}):drawViewport({{"command","orbit"},{"dx",4.0},{"dy",0.0}});state.erase("segments");frameTimes.push_back(std::move(state));auto file=fs::path(wide(only));file.replace_filename(file.stem().wstring()+L"-"+std::to_wstring(i)+L".bmp");captureWindow(file);}}captureWindow(fs::path(wide(only)));write(fs::path(wide(only)).replace_extension(L".frames.json"),Json{{"frames",frameTimes}}.dump());write(smoke,Json{{"ok",true},{"captureOnly",true}});return 0;}
+        if(const char* only=std::getenv("HB_EDITOR_CAPTURE_ONLY")){layout();drawViewport();if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}if(std::getenv("HB_EDITOR_CAPTURE_SELECT")&&!hierarchyOrder.empty())selectActor(hierarchyOrder.front());Json frameTimes=Json::array();if(const char* add=std::getenv("HB_EDITOR_CAPTURE_ADD")){editScene({{"action","add"},{"key",add}});const auto st=drawViewport();frameTimes.push_back({{"added",Json::parse(document.at("text").get<std::string>()).at("objects").back()},{"segments",st.value("segments",Json::array()).size()}});}if(const char* zoom=std::getenv("HB_EDITOR_CAPTURE_ZOOM"))drawViewport({{"command","zoom"},{"dy",std::atof(zoom)}});const char* frames=std::getenv("HB_EDITOR_CAPTURE_FRAMES");for(int frame=0,count=frames?std::atoi(frames):6;frame<count;++frame)drawViewport();if(const char* probe=std::getenv("HB_EDITOR_FRAME_PROBE"))for(int i=0,n=std::atoi(probe);i<n;++i){const auto start=std::chrono::steady_clock::now();auto state=drawViewport({{"command","orbit"},{"dx",3.0},{"dy",0.0}});frameTimes.push_back({{"ms",std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count()},{"timing",state.value("timing",Json())}});}if(const char* sequence=std::getenv("HB_EDITOR_CAPTURE_SEQUENCE")){/* "orbit:N" or "drag:N": capture every frame to find flicker */const std::string kind(sequence);const int n=std::atoi(kind.substr(kind.find(':')+1).c_str());const auto size=viewport.size();for(int i=0;i<n;++i){auto state=kind.rfind("drag",0)==0?drawViewport({{"command","translatePreview"},{"x",size.cx/2},{"y",size.cy/2},{"dx",i*4},{"dy",0}}):drawViewport({{"command","orbit"},{"dx",4.0},{"dy",0.0}});state.erase("segments");frameTimes.push_back(std::move(state));auto file=fs::path(wide(only));file.replace_filename(file.stem().wstring()+L"-"+std::to_wstring(i)+L".bmp");captureWindow(file);}}captureWindow(fs::path(wide(only)));write(fs::path(wide(only)).replace_extension(L".frames.json"),Json{{"frames",frameTimes}}.dump());write(smoke,Json{{"ok",true},{"captureOnly",true}});return 0;}
         const auto command=[this](Command id){SendMessageW(window,WM_COMMAND,id,0);};
         const auto assets=entries.size();
         command(DetachContent);
@@ -3967,8 +4008,8 @@ private:
         int positionX=0;
         while(fields.at(positionX).value("via",std::string())!="position")++positionX;
         form.probe({{"action","edit"},{"i",positionX},{"text","2.5"}});
-        // Details X is Unreal forward: it writes the scene z axis negated.
-        if(Json::parse(document.at("text").get<std::string>()).at("objects").back().at("position").at(2)!=-2.5)
+        // Details X is Unreal forward: it writes the scene z axis.
+        if(Json::parse(document.at("text").get<std::string>()).at("objects").back().at("position").at(2)!=2.5)
             throw std::runtime_error("Native scene transform failed");
         command(FocusActor);
         viewport.probe(WM_MOUSEWHEEL,MAKEWPARAM(0,WHEEL_DELTA),0);
@@ -3996,7 +4037,7 @@ private:
         {// Details follows the drag live; a plain redraw keeps the dragged pose.
             std::string shown;int p=0;while(p<int(fields.size())&&fields.at(p).value("via",std::string())!="position")++p;
             const auto inspected=form.inspect();for(const auto& row:inspected.at("rows"))for(const auto& c:row.value("controls",Json::array()))if(c.value("i",-1)==p)shown=c.value("value",std::string());
-            const auto expected=shortNumber(-previewState.at("preview").at("position").at(2).get<double>());
+            const auto expected=shortNumber(previewState.at("preview").at("position").at(2).get<double>());
             if(shown!=expected)throw std::runtime_error("Native live Details failed: "+shown+" vs "+expected);
             if(drawViewport().at("cameraPosition").is_null())throw std::runtime_error("Native drag redraw failed");
         }

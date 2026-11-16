@@ -14,8 +14,8 @@ import {projectBytes,projectText} from './project-bytes.mjs';
 import {defaultViewportSettings} from '../prototype/viewport-controls.js';
 import {applyViewportDirection,fitViewportSelection,viewportDirections} from '../prototype/viewport-presentation.js';
 
-// Unreal axes on screen: X forward (red, three -z), Y right (green, three +x), Z up (blue, three +y).
-const axisSign=axis=>axis===2?-1:1;
+// Unreal axes on screen: X forward (red, three +z = the map front), Y right (green, three -x), Z up (blue, three +y).
+const axisSign=axis=>axis===0?-1:1;
 // Solid transform gizmo meshes (shared unit geometry; posed every frame, drawn on top without depth).
 function createSolidGizmo(){
   const group=new THREE.Group();group.userData.editorHelper=true;group.renderOrder=1001;
@@ -444,7 +444,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     }
     const {backend,shaderPreparation,calls,cameraViews}=renderer.hbDiagnostics();
     const ms=(a,b)=>Math.round((timing[b]-timing[a])*100)/100;
-    return {animating,timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),warnings:content.warnings.slice(0,8)};
+    return {animating,target:target.toArray(),timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),warnings:content.warnings.slice(0,8)};
   }
   return {draw,close};
 }

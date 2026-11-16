@@ -82,7 +82,7 @@ const names = data => [
 ];
 const packPin = pin => ({id:pin.id, label:pin.label, color:typeColors[pin.type] || typeColors.any});
 const pointerPart = key => key.replaceAll('~','~0').replaceAll('/','~1');
-const fieldLabels = {settings:'설정',convertUnits:'파일 단위 변환',sourceUnit:'원본 단위',sourceUp:'원본 위 축',flipForward:'앞 방향 뒤집기',translation:'이동',name:'이름',sceneName:'레벨 이름',objects:'오브젝트',environment:'환경',position:'위치',rotation:'회전',scale:'크기',parent:'부모 에셋',clip:'오디오 클립',volume:'볼륨',pitch:'피치',loop:'반복',friction:'마찰',restitution:'반발력',density:'밀도',parameters:'매개변수',surfaceOverrides:'표면 오버라이드'};
+const fieldLabels = {pivot:'기준점',settings:'설정',convertUnits:'파일 단위 변환',sourceUnit:'원본 단위',sourceUp:'원본 위 축',flipForward:'앞 방향 뒤집기',translation:'이동',name:'이름',sceneName:'레벨 이름',objects:'오브젝트',environment:'환경',position:'위치',rotation:'회전',scale:'크기',parent:'부모 에셋',clip:'오디오 클립',volume:'볼륨',pitch:'피치',loop:'반복',friction:'마찰',restitution:'반발력',density:'밀도',parameters:'매개변수',surfaceOverrides:'표면 오버라이드'};
 
 export function nativeEditorSession(bridge) {
   let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBuild;
@@ -1233,7 +1233,9 @@ export function nativeEditorSession(bridge) {
           selections=targets;
         }
       } else if (action==='add') {
-        const created=createPlacedObject(key);next.objects.push(created);selection=created.id;
+        // New actors appear where the camera looks (Unreal) instead of buried at the world origin.
+        const at=Array.isArray(position)&&position.length===3&&position.every(Number.isFinite)?position:[0,0,0];
+        const created=createPlacedObject(key,{position:at});next.objects.push(created);selection=created.id;
       } else if(action==='placeAsset')selection=await placeSceneAsset(next,doc,asset,actor,position);
       else {
         if (!actor) throw Error('오브젝트를 선택하세요.');
@@ -1242,6 +1244,7 @@ export function nativeEditorSession(bridge) {
         else if (action==='lock') actor.locked=!actor.locked;
         else if (action==='visible') actor.visible=!actor.visible;
         else if (action==='component') addSceneComponent(actor,key);
+        else if (action==='removeComponent'){if(!Array.isArray(actor.components)||!actor.components.some(c=>c.id===key))throw Error('제거할 컴포넌트를 선택하세요.');actor.components=actor.components.filter(c=>c.id!==key);}
         else if(action==='translate'||action==='rotate'||action==='scale'){editSceneTransform(actor,next.objects,{mode:action,axis,value:action==='translate'?delta:value});snapped(actor,action);}
         else if (action==='reparent') {
           if (!validParent(next.objects,id,target)) throw Error('오브젝트의 부모를 확인하세요.');

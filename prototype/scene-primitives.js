@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import {validSurface} from './model.js';
 import {enabledComponent} from './scene-components.js';
+// Basic blocks sit on their base by default; pivot:'center' (new blocks) centres them on the object origin.
+export const primitiveBaseHeight={cube:.5,cone:.6,capsule:.75,sphere:.6,cylinder:.6};
 export function scenePrimitives(surface,surfaceMaterial){
 const ownSurface=surfaceMaterial===undefined;
 if(ownSurface)surfaceMaterial=new THREE.MeshStandardMaterial({color:surface.color,roughness:surface.roughness,metalness:surface.metalness});
@@ -26,6 +28,7 @@ function plant(group, x, z, scale = 1, seed = 0) {
     leaf.rotation.z = (i - 2) * .27; leaf.rotation.y = seed + i * 1.7;
   }
 }
+const lift=object=>object.pivot==='center'?0:primitiveBaseHeight[object.kind];
 function buildObject(object) {
   const g = new THREE.Group();g.name = object.name;g.userData.objectId = object.id;
   if(!(object.asset||object.components?.some(c=>c.type==='MeshRenderer'&&c.properties?.mesh)))switch (object.kind) {
@@ -64,12 +67,12 @@ function buildObject(object) {
       const geometry=new THREE.EdgesGeometry(new THREE.OctahedronGeometry(.4)),material=new THREE.LineBasicMaterial({color:object.kind==='heightFog'?0x95afc0:object.kind==='volumetricCloud'?0xc4d5df:0xe5ca84,depthTest:false}),helper=new THREE.LineSegments(geometry,material);helper.userData.editorHelper=true;helper.userData.environmentHelper=true;helper.renderOrder=900;g.userData.resources=new Set([geometry,material]);g.add(helper);break;
     }
     case 'camera': break;
-    case 'cube': box(g, [1,1,1], surfaceMaterial, [0,.5,0]); break;
-    case 'cone': mesh(g,new THREE.ConeGeometry(.6,1.2,32),surfaceMaterial,[0,.6,0]);break;
-    case 'capsule': mesh(g,new THREE.CapsuleGeometry(.35,.8,8,24),surfaceMaterial,[0,.75,0]);break;
+    case 'cube': box(g, [1,1,1], surfaceMaterial, [0,lift(object),0]); break;
+    case 'cone': mesh(g,new THREE.ConeGeometry(.6,1.2,32),surfaceMaterial,[0,lift(object),0]);break;
+    case 'capsule': mesh(g,new THREE.CapsuleGeometry(.35,.8,8,24),surfaceMaterial,[0,lift(object),0]);break;
     case 'torus': mesh(g,new THREE.TorusGeometry(.6,.2,12,32),surfaceMaterial,[0,.8,0]);break;
-    case 'sphere': mesh(g, new THREE.SphereGeometry(.6,32,24), surfaceMaterial, [0,.6,0]); break;
-    case 'cylinder': mesh(g, new THREE.CylinderGeometry(.45,.45,1.2,24), surfaceMaterial, [0,.6,0]); break;
+    case 'sphere': mesh(g, new THREE.SphereGeometry(.6,32,24), surfaceMaterial, [0,lift(object),0]); break;
+    case 'cylinder': mesh(g, new THREE.CylinderGeometry(.45,.45,1.2,24), surfaceMaterial, [0,lift(object),0]); break;
     case 'plane': box(g,[1.5,.08,1.5],surfaceMaterial,[0,.04,0]); break;
     case 'character': mesh(g,new THREE.CapsuleGeometry(.35,1.1,8,16),surfaceMaterial,[0,.9,0]);break;
   }

@@ -32,7 +32,9 @@ public:
         applyCommon(model);layout();place();
     }
     // Live value refresh (gizmo drag) without rebuilding the rows; an open text edit keeps its own text.
-    void setValue(int i,const std::string& value){for(auto& row:rows)for(auto& c:row.controls)if(c.i==i&&c.value!=value&&editing!=i&&scrub!=i){c.value=value;InvalidateRect(window,nullptr,FALSE);}}
+    void setValue(int i,const std::string& value){for(auto& row:rows)for(auto& c:row.controls)if(c.i==i&&c.value!=value&&editing!=i&&scrub!=i){c.value=value;InvalidateRect(window,nullptr,FALSE);}
+        // WM_PAINT waits until the queue is empty, which never happens mid-drag: paint now.
+        UpdateWindow(window);}
     Json inspect()const{
         Json list=Json::array();for(const auto& row:rows){Json controls=Json::array();for(const auto& c:row.controls)controls.push_back({{"kind",c.kind},{"i",c.i},{"value",c.value},{"checked",c.checked},{"text",c.text},{"icon",c.icon},{"hint",c.hint}});list.push_back({{"kind",row.kind},{"text",row.text},{"label",row.label},{"toggle",row.toggle},{"controls",controls}});}
         auto out=common();out["rows"]=list;out["scroll"]=scroll;out["contentHeight"]=contentHeight;out["editing"]=editing;out["revision"]=revision;out["paintedRows"]=paintedRows;out["lastMenu"]=lastMenu;out["backend"]=graphicsBackend();out["graphicsError"]=graphicsError;return out;
@@ -179,7 +181,7 @@ private:
                 if(!scrubMoved&&std::abs(scrubTotal)>3)scrubMoved=true;
                 if(scrubMoved){SetCursor(LoadCursorW(nullptr,IDC_SIZEWE));const auto* c=find(scrub);double step=c&&c->step>0?c->step:.05;if(GetKeyState(VK_SHIFT)&0x8000)step*=10;if(GetKeyState(VK_CONTROL)&0x8000)step*=.1;
                     // Unreal-style acceleration: the farther the drag has travelled, the bigger each pixel step.
-                    if(scrubMoved)scrubValue+=moved*step*(1+std::abs(double(scrubTotal))/120.0);const double value=std::round(scrubValue*10000)/10000;emit({{"event","input"},{"i",scrub},{"value",value},{"merge",scrubSent},{"revision",revision}});scrubSent=true;}
+                    if(scrubMoved)scrubValue+=moved*step*(1+std::abs(double(scrubTotal))/120.0);const double value=std::round(scrubValue*10000)/10000;emit({{"event","input"},{"i",scrub},{"value",value},{"merge",scrubSent},{"revision",revision}});UpdateWindow(window);scrubSent=true;}
                 return 0;
             }if(sliding>=0&&(w&MK_LBUTTON)){const auto* c=find(sliding);if(c){const auto v=rangeValue(*c,x,rectOf(sliding));if(v!=slideValue){slideValue=v;emit({{"event","input"},{"i",sliding},{"value",v},{"revision",revision}});InvalidateRect(window,nullptr,FALSE);}}return 0;}
             const int hit=controlAt(x,y);if(hit!=hover){hideHint();hover=hit;InvalidateRect(window,nullptr,FALSE);TRACKMOUSEEVENT t{sizeof(t),TME_LEAVE|TME_HOVER,window,HOVER_DEFAULT};TrackMouseEvent(&t);}return 0;}

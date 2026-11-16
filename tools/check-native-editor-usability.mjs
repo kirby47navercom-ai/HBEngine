@@ -113,6 +113,14 @@ try{
   await assert.rejects(session('scene.edit',{action:'rename',id:a,value:'   ',expectedRevision:doc.revision}),/이름을 확인/);
   doc=await session('scene.edit',{action:'reparent',id:b,target:a,expectedRevision:doc.revision});assert.equal(find(b).parent,a);
   doc=await session('scene.edit',{action:'reparent',id:b,target:'',expectedRevision:doc.revision});assert.equal(find(b).parent,undefined,'detach from parent');
+  // Details component list: add then remove; new basic blocks pivot on their centre at the requested spot.
+  doc=await session('scene.edit',{action:'component',id:a,key:'AudioSource',expectedRevision:doc.revision});
+  const audio=find(a).components.find(c=>c.type==='AudioSource');assert.ok(audio);
+  doc=await session('scene.edit',{action:'removeComponent',id:a,key:audio.id,expectedRevision:doc.revision});
+  assert.ok(!find(a).components.some(c=>c.type==='AudioSource'),'component removed');
+  await assert.rejects(session('scene.edit',{action:'removeComponent',id:a,key:'missing',expectedRevision:doc.revision}),/제거할 컴포넌트/);
+  doc=await session('scene.edit',{action:'add',key:'cube',position:[2,1,3],expectedRevision:doc.revision});
+  assert.deepEqual(find(doc.selection).position,[2,1,3]);assert.equal(find(doc.selection).pivot,'center');
   const named=find(a).name,rows=await session('scene.hierarchy',{query:'"'+named+'"'});
   assert.ok(rows.find(r=>r.id===a).match);
   assert.ok((await session('scene.hierarchy',{query:'no-such-object-name'})).every(r=>r.match===false),'search hides non-matching rows');
