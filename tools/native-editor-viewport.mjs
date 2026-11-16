@@ -117,9 +117,10 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     finally{assets.restore();}
   }
   async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets) {
+    const timing={start:performance.now()};
     canvas.clientWidth=width;canvas.clientHeight=height;
     if(previewTransform){transform(previewTransform.actor,previewTransform.group);previewTransform=null;}
-    await open(data,nextProject,assets);
+    await open(data,nextProject,assets);timing.open=performance.now();
     selection=selected;
     const aspect=width/height;
     if(direction&&!Object.hasOwn(viewportDirections,direction))throw Error('뷰포트 방향을 확인하세요.');
@@ -365,12 +366,12 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
         }
       }
     }
-    renderer.setSize(width,height,false);
+    renderer.setSize(width,height,false);timing.scene=performance.now();
     const render=async()=>{
       syncSkyToCamera(sky,active,0);
       visual.prepare2D(renderer,world,active);
-      visual.renderBloom(renderer,world,active,content.objects,c=>syncSkyToCamera(sky,c,0));
-      await renderer.hbFinishFrame();
+      visual.renderBloom(renderer,world,active,content.objects,c=>syncSkyToCamera(sky,c,0));timing.submit=performance.now();
+      await renderer.hbFinishFrame();timing.finish=performance.now();
     };
     await render();
     if (capture) {
@@ -380,7 +381,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       }
     }
     const {backend,shaderPreparation,calls,cameraViews}=renderer.hbDiagnostics();
-    return {backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),warnings:content.warnings.slice(0,8)};
+    const ms=(a,b)=>Math.round((timing[b]-timing[a])*100)/100;
+    return {timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),warnings:content.warnings.slice(0,8)};
   }
   return {draw,close};
 }

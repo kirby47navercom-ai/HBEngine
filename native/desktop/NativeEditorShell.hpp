@@ -1478,7 +1478,8 @@ class NativeEditorShell {
             if(input.value("command",std::string())=="focus")input["id"]=sceneSelection;
             mergeCameraInput(cameraInput,std::move(input));
         }
-        if(!viewportQueued)viewportQueued=SetTimer(window,2,16,nullptr)!=0;
+        // Draw on the next message turn instead of a 16 ms timer: Windows timers tick at ~15.6 ms, so camera moves ran at an uneven 30-60 fps.
+        if(!viewportQueued)viewportQueued=PostMessageW(window,WM_APP+47,0,0)!=0;
     }
     static void mergeCameraInput(Json& queued,Json input){
         if(queued.is_object()){
@@ -3676,7 +3677,7 @@ class NativeEditorShell {
             catch(...){KillTimer(window,10);throw;}
             return 0;
         }
-        if(message==WM_TIMER&&w==2){
+        if((message==WM_TIMER&&w==2)||(message==WM_APP+47&&owner==window)){
             KillTimer(window,2);viewportQueued=false;
             if(sceneOpen()&&!sourceMode){auto input=std::move(cameraInput);cameraInput=nullptr;drawViewport(input.is_object()?std::move(input):Json::object());}
             return 0;
@@ -3866,7 +3867,7 @@ private:
         if(!document.contains("path"))throw std::runtime_error("검사 프로젝트를 지정하세요.");
         SetWindowPos(window,nullptr,-20000,-20000,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_NOACTIVATE|SWP_SHOWWINDOW);
         // Capture-only review mode (HB_EDITOR_CAPTURE_ONLY): open the startup scene, optionally orbit, save the window and stop.
-        if(const char* only=std::getenv("HB_EDITOR_CAPTURE_ONLY")){layout();drawViewport();if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}if(const char* zoom=std::getenv("HB_EDITOR_CAPTURE_ZOOM"))drawViewport({{"command","zoom"},{"dy",std::atof(zoom)}});const char* frames=std::getenv("HB_EDITOR_CAPTURE_FRAMES");for(int frame=0,count=frames?std::atoi(frames):6;frame<count;++frame)drawViewport();captureWindow(fs::path(wide(only)));write(smoke,Json{{"ok",true},{"captureOnly",true}});return 0;}
+        if(const char* only=std::getenv("HB_EDITOR_CAPTURE_ONLY")){layout();drawViewport();if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}if(const char* zoom=std::getenv("HB_EDITOR_CAPTURE_ZOOM"))drawViewport({{"command","zoom"},{"dy",std::atof(zoom)}});const char* frames=std::getenv("HB_EDITOR_CAPTURE_FRAMES");for(int frame=0,count=frames?std::atoi(frames):6;frame<count;++frame)drawViewport();Json frameTimes=Json::array();if(const char* probe=std::getenv("HB_EDITOR_FRAME_PROBE"))for(int i=0,n=std::atoi(probe);i<n;++i){const auto start=std::chrono::steady_clock::now();auto state=drawViewport({{"command","orbit"},{"dx",3.0},{"dy",0.0}});frameTimes.push_back({{"ms",std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count()},{"timing",state.value("timing",Json())}});}captureWindow(fs::path(wide(only)));write(fs::path(wide(only)).replace_extension(L".frames.json"),Json{{"frames",frameTimes}}.dump());write(smoke,Json{{"ok",true},{"captureOnly",true}});return 0;}
         const auto command=[this](Command id){SendMessageW(window,WM_COMMAND,id,0);};
         const auto assets=entries.size();
         command(DetachContent);
