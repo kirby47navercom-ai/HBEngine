@@ -71,7 +71,8 @@ public:
     }
 protected:
     // Old web editor palette (--panel #292c31, --text #e4e7ed, --muted #b1b8c4, --accent #5089c9, --accent-dark #354b65, --line #444a54, --field #202328, --raised #30343a).
-    struct Theme {D2D1_COLOR_F background{.161f,.173f,.192f,1},text{.894f,.906f,.929f,1},muted{.694f,.722f,.769f,1},accent{.314f,.537f,.788f,1},selection{.208f,.294f,.396f,1},line{.267f,.29f,.329f,1},field{.125f,.137f,.157f,1},raised{.188f,.204f,.227f,1};};
+    // Unreal-style editor palette: panel #242424, text #c8c8c8, muted #8a8a8a, accent #0070e0, selection #1f4a7a, edge #3a3a3a, field #0f0f0f, hover #383838.
+    struct Theme {D2D1_COLOR_F background{.141f,.141f,.141f,1},text{.784f,.784f,.784f,1},muted{.541f,.541f,.541f,1},accent{0,.439f,.878f,1},selection{.122f,.29f,.478f,1},line{.227f,.227f,.227f,1},field{.059f,.059f,.059f,1},raised{.22f,.22f,.22f,1};};
     HWND window=nullptr;Post poster;std::string name;ID2D1Factory* factory=nullptr;IDWriteFactory* write=nullptr;ID2D1HwndRenderTarget* target=nullptr;ID2D1RenderTarget* canvas=nullptr;ID2D1SolidColorBrush* brush=nullptr;
     IDWriteTextFormat* text=nullptr;IDWriteTextFormat* bold=nullptr;IDWriteTextFormat* icons=nullptr;IDWriteInlineObject* ellipsis=nullptr;
     Json lastMenu=Json::array();std::optional<POINT> menuAt;UINT automaticMenu=0;std::string automaticCommand;

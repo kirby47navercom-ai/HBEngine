@@ -5,6 +5,7 @@
 #include "EditorListPanel.hpp"
 #include "EditorScenePanel.hpp"
 #include "EditorAssetCanvas.hpp"
+#include "EditorChromePanel.hpp"
 #include <commctrl.h>
 #include <shobjidl.h>
 #include <set>
@@ -16,9 +17,10 @@ class NativeEditorShell {
     HWND folderBack=nullptr,folderForward=nullptr,folderPath=nullptr,folderTree=nullptr,assetType=nullptr,assetRecursive=nullptr,assetTiles=nullptr;
     HWND contentWindow=nullptr,helpWindow=nullptr,dockTabs=nullptr;
     // Old .workspace-bar tool buttons, .scene-toolbar transform tools and panel headings.
-    std::vector<HWND> toolbarButtons;HWND toolMove=nullptr,toolRotate=nullptr,toolScale=nullptr,toolSnap=nullptr,toolFocus=nullptr,outlinerTitle=nullptr,propertiesTitle=nullptr,quickTitle=nullptr;std::vector<HWND> quickButtons;
+    EditorChromePanel topStrip,viewStrip,outlinerTitle,outlinerHead,outlinerFoot,detailsTitle,statusStrip;HMENU buildMenuHandle=nullptr;
     // Old web editor palette for Win32 controls (see style.css :root).
-    static constexpr COLORREF bgColor=RGB(0x20,0x22,0x26),panelColor=RGB(0x29,0x2c,0x31),fieldColor=RGB(0x20,0x23,0x28),lineColor=RGB(0x44,0x4a,0x54),textColor=RGB(0xe4,0xe7,0xed),mutedColor=RGB(0xb1,0xb8,0xc4),faintColor=RGB(0x93,0x9e,0xae),accentColor=RGB(0x50,0x89,0xc9);
+    static constexpr COLORREF bgColor=RGB(0x15,0x15,0x15),panelColor=RGB(0x1a,0x1a,0x1a),fieldColor=RGB(0x0f,0x0f,0x0f),lineColor=RGB(0x3a,0x3a,0x3a),textColor=RGB(0xc8,0xc8,0xc8),mutedColor=RGB(0x8a,0x8a,0x8a),faintColor=RGB(0x8a,0x8a,0x8a),accentColor=RGB(0x00,0x70,0xe0);
+    static inline HBRUSH tabBrush=CreateSolidBrush(RGB(0x24,0x24,0x24));
     static inline HBRUSH bgBrush=CreateSolidBrush(bgColor),fieldBrush=CreateSolidBrush(fieldColor),panelBrush=CreateSolidBrush(panelColor),lineBrush=CreateSolidBrush(lineColor),accentBrush=CreateSolidBrush(accentColor);
     // Editor UI scale in DPI units: system DPI, or the user's 편집기 배율 (0 = follow Windows).
     unsigned uiDpi=96;double userScale=0;HMENU scaleMenu=nullptr;std::string startupScenePath;
@@ -286,15 +288,9 @@ class NativeEditorShell {
         palette=control(L"COMBOBOX",L"",CBS_DROPDOWNLIST|WS_VSCROLL,Palette);
         views=control(L"COMBOBOX",L"",CBS_DROPDOWNLIST|WS_VSCROLL,Views);
         status=control(L"STATIC",L"프로젝트를 열거나 새 프로젝트를 만드세요.",SS_LEFT|SS_CENTERIMAGE,Status);
-        for(const auto& [label,id]:std::initializer_list<std::pair<const wchar_t*,Command>>{{L"+ 만들기",CreateItem},{L"저장",Save},{L"찾기",FindAsset},{L"\u25B6 실행",PlayScene},{L"\u25A0 정지",StopPlay},{L"도움말",ShowShortcuts}})
-            toolbarButtons.push_back(control(L"BUTTON",label,BS_PUSHBUTTON,id));
-        toolMove=control(L"BUTTON",L"이동 W",BS_CHECKBOX|BS_PUSHLIKE,ToolMove);toolRotate=control(L"BUTTON",L"회전 E",BS_CHECKBOX|BS_PUSHLIKE,ToolRotate);toolScale=control(L"BUTTON",L"크기 R",BS_CHECKBOX|BS_PUSHLIKE,ToolScale);
-        toolSnap=control(L"BUTTON",L"스냅 G",BS_CHECKBOX|BS_PUSHLIKE,SnapToggle);toolFocus=control(L"BUTTON",L"초점 F",BS_PUSHBUTTON,FocusActor);
-        outlinerTitle=control(L"STATIC",L"아웃라이너",SS_LEFT|SS_CENTERIMAGE,Status);propertiesTitle=control(L"STATIC",L"속성",SS_LEFT|SS_CENTERIMAGE,Status);
-        quickTitle=control(L"STATIC",L"빠른 추가",SS_LEFT|SS_CENTERIMAGE,Status);
-        for(const auto& [label,id]:std::initializer_list<std::pair<const wchar_t*,Command>>{{L"큐브",QuickCube},{L"구",QuickSphere},{L"광원",QuickLight}}){quickButtons.push_back(control(L"BUTTON",label,BS_PUSHBUTTON,id));SetWindowTheme(quickButtons.back(),L"DarkMode_Explorer",nullptr);}
-        for(HWND h:toolbarButtons)SetWindowTheme(h,L"DarkMode_Explorer",nullptr);
-        for(HWND h:{toolMove,toolRotate,toolScale,toolSnap,toolFocus})SetWindowTheme(h,L"DarkMode_Explorer",nullptr);
+        // Direct2D chrome: toolbar, scene tool row, outliner/details headings and footer, status strip.
+        const auto chromeEvent=[this](const Json& e){try{if(e.value("event",std::string())=="command")chromeCommand(e.at("id").get<std::string>(),POINT{e.value("x",0),e.value("y",0)});}catch(const std::exception& error){report(error);}};
+        for(auto* strip:{&topStrip,&viewStrip,&outlinerTitle,&outlinerHead,&outlinerFoot,&detailsTitle,&statusStrip})strip->attach(window,instance,chromeEvent,"chrome");
         // Dark controls: list/tree colours, dark scrollbars and buttons, push-like toggles instead of light check boxes.
         TreeView_SetBkColor(folderTree,fieldColor);TreeView_SetTextColor(folderTree,textColor);TreeView_SetLineColor(folderTree,lineColor);
         ListView_SetBkColor(files,fieldColor);ListView_SetTextBkColor(files,fieldColor);ListView_SetTextColor(files,textColor);
@@ -571,6 +567,7 @@ class NativeEditorShell {
         AppendMenuW(sceneMenu,MF_STRING,ContinuePlay,L"블루프린트 계속 실행");
         AppendMenuW(sceneMenu,MF_STRING,StepPlay,L"블루프린트 한 단계 실행");
         AppendMenuW(sceneMenu,MF_STRING,RecordTake,L"선택 오브젝트 녹화");
+        buildMenuHandle=buildMenu;
         AppendMenuW(buildMenu,MF_STRING,CheckBuild,L"빌드 검사");
         AppendMenuW(buildMenu,MF_STRING,EditBuildProfile,L"빌드 프로필 설정");
         AppendMenuW(buildMenu,MF_STRING,CopyBuildProfile,L"빌드 프로필 복제");
@@ -633,22 +630,65 @@ class NativeEditorShell {
     // Flat dark tab strip (old .workspace-tab look): active tab gets the page colour and an accent top line.
     void paintTabs(HWND h){
         PAINTSTRUCT paint{};HDC dc=BeginPaint(h,&paint);RECT r{};GetClientRect(h,&r);FillRect(dc,&r,panelBrush);
-        RECT base{r.left,r.bottom-1,r.right,r.bottom};FillRect(dc,&base,lineBrush);
         const int current=TabCtrl_GetCurSel(h);const auto old=SelectObject(dc,font);SetBkMode(dc,TRANSPARENT);
         for(int i=0;i<TabCtrl_GetItemCount(h);++i){
             RECT item{};TabCtrl_GetItemRect(h,i,&item);wchar_t label[260]{};TCITEMW row{};row.mask=TCIF_TEXT;row.pszText=label;row.cchTextMax=260;TabCtrl_GetItem(h,i,&row);
-            if(i==current){FillRect(dc,&item,bgBrush);RECT top{item.left,item.top,item.right,item.top+S(2)};FillRect(dc,&top,accentBrush);}
+            if(i==current){const HRGN shape=CreateRoundRectRgn(item.left,item.top+S(2),item.right,item.bottom+S(8),S(8),S(8));FillRgn(dc,shape,tabBrush);DeleteObject(shape);RECT top{item.left+S(3),item.top+S(2),item.right-S(3),item.top+S(4)};FillRect(dc,&top,accentBrush);}
             SetTextColor(dc,i==current?textColor:mutedColor);RECT text=item;text.left+=S(8);text.right-=S(4);DrawTextW(dc,label,-1,&text,DT_SINGLELINE|DT_VCENTER|DT_LEFT|DT_END_ELLIPSIS|DT_NOPREFIX);
         }
         SelectObject(dc,old);EndPaint(h,&paint);
     }
-    void updateToolButtons(){
+    void updateToolButtons(){refreshChrome();}
+    // Outliner type column (Unreal-style); object kinds come from the placement catalog.
+    static std::string kindLabel(std::string kind,bool camera){
+        if(camera)return "카메라";std::transform(kind.begin(),kind.end(),kind.begin(),[](unsigned char c){return char(std::tolower(c));});
+        const auto has=[&](const char* part){return kind.find(part)!=std::string::npos;};
+        if(has("light")||has("sun"))return "라이트";if(has("character")||has("player")||has("pawn"))return "캐릭터";if(has("camera"))return "카메라";if(has("widget")||has("ui"))return "위젯";if(has("audio")||has("sound"))return "사운드";
+        if(has("particle")||has("vfx"))return "파티클";if(has("probe"))return "반사 프로브";if(has("empty")||has("group"))return "빈 오브젝트";if(has("sprite"))return "스프라이트";
+        if(has("cube")||has("sphere")||has("plane")||has("cylinder")||has("capsule")||has("mesh")||has("model"))return "스태틱 메시";
+        return kind;
+    }
+    static Json chip(const char* id,const char* glyph,std::string label,const char* kind="button",bool active=false,bool right=false,bool enabled=true){Json item={{"id",id},{"glyph",glyph},{"label",std::move(label)},{"kind",kind},{"active",active},{"right",right},{"enabled",enabled}};return item;}
+    static Json strip(const char* key,float r,float g,float b){return {{"theme",{{"background",{r,g,b}}}}};}
+    // Item lists for every chrome strip; called after layout and whenever tool, snap, play or selection state changes.
+    void refreshChrome(){
+        if(!window)return;
+        const bool playing=playProcess!=nullptr;
+        Json top=Json::array({chip("save",u8"\uE74E",""),{{"kind","sep"}},chip("add",u8"\uE710","추가","dropdown"),chip("import",u8"\uE8E5","가져오기"),{{"kind","sep"}},chip("play",u8"\uE768","",  "button",false,false,!playing),chip("stop",u8"\uE71A","","button",false,false,playing),{{"kind","sep"}},chip("build",u8"\uE90F","빌드","dropdown"),chip("settings",u8"\uE713","설정","dropdown",false,true),chip("help",u8"\uE897","도움말","button",false,true)});
+        top[5]["tint"]={.25f,.68f,.25f};
+        topStrip.update({{"items",top},{"theme",{{"background",{.082f,.082f,.082f}}}}});
         const auto& tool=viewport.transformTool();
-        SendMessageW(toolMove,BM_SETCHECK,tool=="translate"?BST_CHECKED:BST_UNCHECKED,0);SendMessageW(toolRotate,BM_SETCHECK,tool=="rotate"?BST_CHECKED:BST_UNCHECKED,0);SendMessageW(toolScale,BM_SETCHECK,tool=="scale"?BST_CHECKED:BST_UNCHECKED,0);
-        SendMessageW(toolSnap,BM_SETCHECK,snapOn?BST_CHECKED:BST_UNCHECKED,0);
+        const int camera=int(SendMessageW(views,CB_GETCURSEL,0,0));std::wstring cameraName(256,L' ');cameraName.resize(camera>=0?std::max<LRESULT>(0,SendMessageW(views,CB_GETLBTEXT,camera,LPARAM(cameraName.data()))):0);
+        const auto number=[](double v){auto t=std::to_string(v);t.erase(t.find_last_not_of('0')+1);if(!t.empty()&&t.back()=='.')t.pop_back();return t;};
+        viewStrip.update({{"items",Json::array({chip("camera",u8"\uE722",utf8(cameraName.empty()?L"편집기 카메라":cameraName),"dropdown"),
+            chip("move",u8"\uE7C2","","toggle",tool=="translate",true),chip("rotate",u8"\uE7AD","","toggle",tool=="rotate",true),chip("scale",u8"\uE740","","toggle",tool=="scale",true),{{"kind","sep"},{"right",true}},
+            chip("snap",u8"\uE80A",number(snapGrid),"toggle",snapOn,true),chip("snapsize",u8"","∠ "+number(snapAngle)+"°","dropdown",false,true),{{"kind","sep"},{"right",true}},chip("focus",u8"\uE8A3","","button",false,true)})},{"theme",{{"background",{.118f,.118f,.118f}}}}});
+        outlinerTitle.update({{"items",Json::array({chip("","","아웃라이너","title")})},{"theme",{{"background",{.102f,.102f,.102f}}}}});
+        detailsTitle.update({{"items",Json::array({chip("","","디테일","title")})},{"theme",{{"background",{.102f,.102f,.102f}}}}});
+        outlinerHead.update({{"items",Json::array({chip("","","항목 레이블","text"),chip("","","유형","text",false,true)})},{"theme",{{"background",{.165f,.165f,.165f}}}}});
+        outlinerFoot.update({{"items",Json::array({chip("","",std::to_string(sceneRows.size())+"개 오브젝트 ("+std::to_string(selectedIds().size())+"개 선택됨)","text")})},{"theme",{{"background",{.141f,.141f,.141f}}}}});
+        statusStrip.update({{"items",Json::array({chip("drawer",u8"\uE8B7","콘텐츠 브라우저","button",!consoleVisible),chip("log",u8"\uE8A5","출력 로그","button",consoleVisible)})},{"theme",{{"background",{.082f,.082f,.082f}}}}});
+    }
+    int popup(HMENU menu,POINT at){return menu?int(TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY|TPM_LEFTALIGN|TPM_TOPALIGN,at.x,at.y,0,window,nullptr)):0;}
+    void chromeCommand(const std::string& id,POINT at){
+        if(id=="save")perform(Save);else if(id=="add")perform(CreateItem);else if(id=="import")perform(ImportAsset);
+        else if(id=="play")perform(PlayScene);else if(id=="stop")perform(StopPlay);else if(id=="help")perform(ShowShortcuts);
+        else if(id=="build"){if(const int choice=popup(buildMenuHandle,at))perform(Command(choice));}
+        else if(id=="settings"){if(const int choice=popup(scaleMenu,at))perform(Command(choice));}
+        else if(id=="move")perform(ToolMove);else if(id=="rotate")perform(ToolRotate);else if(id=="scale")perform(ToolScale);
+        else if(id=="snap")perform(SnapToggle);else if(id=="focus")perform(FocusActor);
+        else if(id=="snapsize"){if(const int choice=popup(snapMenu,at))perform(Command(choice));}
+        else if(id=="camera"){
+            const HMENU menu=CreatePopupMenu();const int count=int(SendMessageW(views,CB_GETCOUNT,0,0)),current=int(SendMessageW(views,CB_GETCURSEL,0,0));
+            for(int i=0;i<count;++i){std::wstring name(256,L' ');name.resize(std::max<LRESULT>(0,SendMessageW(views,CB_GETLBTEXT,i,LPARAM(name.data()))));AppendMenuW(menu,MF_STRING|(i==current?MF_CHECKED:0),UINT_PTR(i+1),name.c_str());}
+            const int choice=popup(menu,at);DestroyMenu(menu);
+            if(choice>0&&sceneOpen()){SendMessageW(views,CB_SETCURSEL,choice-1,0);selectCameraView(cameraRows.at(choice-1),cameraId,cameraDirection,cameraOutputs);queueViewport();}
+        }
+        else if(id=="drawer"){if(consoleVisible)perform(ShowConsole);}else if(id=="log"){if(!consoleVisible)perform(ShowConsole);}
+        refreshChrome();
     }
     void updateSnapMenu(){
-        if(toolSnap)SendMessageW(toolSnap,BM_SETCHECK,snapOn?BST_CHECKED:BST_UNCHECKED,0);
+        refreshChrome();
         if(!snapMenu)return;CheckMenuItem(snapMenu,SnapToggle,MF_BYCOMMAND|(snapOn?MF_CHECKED:MF_UNCHECKED));
         static const double grids[]={.1,.25,.5,1,2},angles[]={5,15,45,90};
         for(int i=0;i<5;i++)if(std::abs(grids[i]-snapGrid)<1e-9)CheckMenuRadioItem(snapMenu,SnapGridFirst,SnapGridLast,SnapGridFirst+i,MF_BYCOMMAND);
@@ -724,15 +764,16 @@ class NativeEditorShell {
     void layout(){
         if(!source)return;
         RECT rect{};GetClientRect(window,&rect);
-        const int width=rect.right,height=rect.bottom,statusHeight=S(26),topBar=S(42);
-        {int bx=S(8);for(std::size_t i=0;i<toolbarButtons.size();++i){const int bw=i==3||i==4?S(72):S(64);if(i==toolbarButtons.size()-1)bx=width-bw-S(8);MoveWindow(toolbarButtons[i],bx,S(6),bw,S(30),TRUE);bx+=bw+(i==2?S(18):S(4));}}
+        const int width=rect.right,height=rect.bottom,statusHeight=S(26),topBar=S(40);
+        topStrip.update({{"rect",{0,0,width,topBar-S(1)}},{"visible",true}});
+        statusStrip.update({{"rect",{0,height-statusHeight,S(250),statusHeight}},{"visible",true}});
         // Old editor arrangement: outliner left, documents centre, content browser / output log docked below, properties right.
         const bool sceneLayout=!detached&&document.value("kind",std::string())=="scene"&&!sourceMode;
         const int left=sceneLayout?std::min(S(214),width/4):0;
         const int dockHeight=contentWindow&&!consoleVisible?0:std::clamp(height/4,S(180),S(245));
         if(contentWindow){RECT browser{};GetClientRect(contentWindow,&browser);placeBrowser(S(4),S(4),int(browser.right)-S(8),int(browser.bottom)-S(8),true);}
-        MoveWindow(tabs,left+S(5),topBar+S(3),std::max(1,width-left-S(10)),S(29),TRUE);
-        MoveWindow(status,S(10),height-statusHeight,std::max(1,width-S(20)),statusHeight,TRUE);
+        MoveWindow(tabs,left+S(5),topBar+S(3),std::max(1,width-left-S(10)-(sceneLayout?std::min(std::clamp(int(width*inspectorPercent/100),S(240),S(420)),width/3):0)),S(29),TRUE);
+        MoveWindow(status,S(260),height-statusHeight,std::max(1,width-S(270)),statusHeight,TRUE);
         const int logHeight=0;
         const HWND owner=detached?detached:window;
         RECT work{};GetClientRect(owner,&work);const int x=detached?S(5):left+S(5),y=detached?S(4):topBar+S(36);
@@ -764,7 +805,7 @@ class NativeEditorShell {
         const bool formShown=document.value("form",false)&&!sourceMode&&!sceneShown&&!canvasShown;
         const int top=graphShown||sceneShown?y+S(32):y,h=std::max(1,y+bodyHeight-top);
         MoveWindow(views,x,y,std::min(S(230),w/2),S(220),TRUE);MoveWindow(palette,x+std::min(S(235),w/2),y,std::max(1,w-std::min(S(235),w/2)),S(300),TRUE);
-        ShowWindow(views,(graphShown&&!model.value("views",Json::array()).empty())||sceneShown?SW_SHOW:SW_HIDE);
+        ShowWindow(views,graphShown&&!model.value("views",Json::array()).empty()?SW_SHOW:SW_HIDE);
         ShowWindow(palette,graphShown?SW_SHOW:SW_HIDE);
         MoveWindow(source,x,top,w,h,TRUE);
         ShowWindow(source,document.contains("path")&&!graphShown&&!formShown&&!sceneShown&&!canvasShown?SW_SHOW:SW_HIDE);
@@ -777,12 +818,12 @@ class NativeEditorShell {
         hierarchy.reparent(owner);
         if(GetParent(hierarchySearch)!=owner)SetParent(hierarchySearch,owner);
         if(sceneLayout){
-            MoveWindow(outlinerTitle,S(12),topBar+S(2),std::max(1,left-S(16)),S(28),TRUE);
-            MoveWindow(hierarchySearch,S(6),topBar+S(32),std::max(1,left-S(10)),S(26),TRUE);ShowWindow(hierarchySearch,SW_SHOW);
-            const int quickTop=height-statusHeight-S(70);
-            MoveWindow(quickTitle,S(12),quickTop,std::max(1,left-S(16)),S(26),TRUE);
-            {const int bw=std::max(1,(left-S(20))/3);int bx=S(6);for(HWND h:quickButtons){MoveWindow(h,bx,quickTop+S(28),bw,S(30),TRUE);bx+=bw+S(4);}}
-            hierarchy.update({{"rect",{S(4),topBar+S(62),std::max(1,left-S(6)),std::max(1,quickTop-topBar-S(66))}},{"visible",true}});
+            const int footTop=height-statusHeight-S(26);
+            outlinerTitle.update({{"rect",{S(2),topBar+S(2),std::max(1,left-S(2)),S(30)}},{"visible",true}});
+            MoveWindow(hierarchySearch,S(8),topBar+S(38),std::max(1,left-S(14)),S(26),TRUE);ShowWindow(hierarchySearch,SW_SHOW);
+            outlinerHead.update({{"rect",{S(2),topBar+S(70),std::max(1,left-S(2)),S(24)}},{"visible",true}});
+            hierarchy.update({{"rect",{S(2),topBar+S(94),std::max(1,left-S(2)),std::max(1,footTop-topBar-S(94))}},{"visible",true}});
+            outlinerFoot.update({{"rect",{S(2),footTop,std::max(1,left-S(2)),S(24)}},{"visible",true}});
         }else{
             MoveWindow(hierarchySearch,x+w-side+3,top,std::max(1,side-3),S(26),TRUE);ShowWindow(hierarchySearch,sceneShown&&side>0?SW_SHOW:SW_HIDE);
             hierarchy.update({{"rect",{x+w-side+3,top+S(28),std::max(1,side-3),std::max(1,split-S(28))}},{"visible",sceneShown&&side>0}});
@@ -792,11 +833,12 @@ class NativeEditorShell {
         const int assetSide=canvasShown?std::min(std::clamp(int(w*inspectorPercent/100),S(190),S(420)),std::max(0,w-S(160))):0;
         const int adjustableSide=sceneShown?side:assetSide;
         inspectorSpan=w;inspectorDivider=adjustableSide?RECT{x+w-adjustableSide-3,top,x+w-adjustableSide+3,top+h}:RECT{};
-        ShowWindow(outlinerTitle,sceneLayout?SW_SHOW:SW_HIDE);ShowWindow(quickTitle,sceneLayout?SW_SHOW:SW_HIDE);for(HWND h:quickButtons)ShowWindow(h,sceneLayout?SW_SHOW:SW_HIDE);ShowWindow(propertiesTitle,sceneLayout&&side>0?SW_SHOW:SW_HIDE);
-        if(sceneLayout)MoveWindow(propertiesTitle,x+w-side+S(10),y,std::max(1,side-S(14)),S(28),TRUE);
-        // Viewport tool row beside the camera picker (old .scene-toolbar).
-        {int tx=x+std::min(S(230),w/2)+S(10);for(HWND h:{toolMove,toolRotate,toolScale,toolSnap,toolFocus}){MoveWindow(h,tx,y+S(1),S(60),S(28),TRUE);ShowWindow(h,sceneShown?SW_SHOW:SW_HIDE);tx+=S(62)+(h==toolScale?S(10):0);}if(sceneShown)updateToolButtons();}
-        if(sceneShown)form.update({{"rect",{x+w-side+3,sceneLayout?top:top+split,std::max(1,side-3),sceneLayout?std::max(1,height-statusHeight-top-S(2)):h-split}},{"visible",side>0}});
+        if(!sceneLayout){for(auto* panel:{&outlinerTitle,&outlinerHead,&outlinerFoot,&detailsTitle})panel->update({{"visible",false}});}
+        else detailsTitle.update({{"rect",{x+w-side+3,y-S(32),std::max(1,side-3),S(30)}},{"visible",side>0}});
+        // Scene tool row (camera, transform tools, snap) above the viewport.
+        viewStrip.update({{"rect",{x,y,std::max(1,w-side-3),S(30)}},{"visible",sceneShown}});
+        refreshChrome();
+        if(sceneShown)form.update({{"rect",{x+w-side+3,sceneLayout?y:top+split,std::max(1,side-3),sceneLayout?std::max(1,height-statusHeight-y-S(2)):h-split}},{"visible",side>0}});
         else if(canvasShown)form.update({{"rect",{x+w-assetSide+3,top,std::max(1,assetSide-3),h}},{"visible",assetSide>0}});
         else if(graphShown)form.update({{"rect",{x+w-inspectorWidth,top,inspectorWidth,h}},{"visible",inspectorWidth>0}});
         else if(previewShown)form.update({{"rect",{x+std::max(1,w/2),top,w-w/2,h}},{"visible",true}});
@@ -1208,7 +1250,7 @@ class NativeEditorShell {
             const auto& actor=sceneRows.at(i);const auto id=actor.at("id").get<std::string>();
             const auto branch=children.find(id);const bool hasChildren=branch!=children.end(),closed=!filtering&&folded.count(id)>0;
             if(filtering&&!keep.count(id))continue;
-            rows.push_back({{"id",id},{"name",actor.at("name")},{"icon",actor.at("kind")},{"depth",depth},{"children",hasChildren},{"collapsed",closed},
+            rows.push_back({{"id",id},{"name",actor.at("name")},{"icon",actor.at("kind")},{"type",kindLabel(actor.value("kind",std::string()),actor.value("camera",false))},{"depth",depth},{"children",hasChildren},{"collapsed",closed},
                 {"selected",id==sceneSelection||std::find(sceneExtra.begin(),sceneExtra.end(),id)!=sceneExtra.end()},{"visible",actor.value("visible",true)},{"locked",actor.value("locked",false)}});
             if(hasChildren&&!closed)push(branch->second,depth+1);
         }
@@ -3391,7 +3433,7 @@ class NativeEditorShell {
         if(message==0x0091){const auto& m=*reinterpret_cast<const UahMenu*>(l);MENUBARINFO bar{sizeof(bar)};if(!GetMenuBarInfo(owner,OBJID_MENU,0,&bar))return false;RECT frame{};GetWindowRect(owner,&frame);OffsetRect(&bar.rcBar,-frame.left,-frame.top);bar.rcBar.top-=1;FillRect(m.dc,&bar.rcBar,bgBrush);result=TRUE;return true;}
         if(message==0x0092){
             auto& d=*reinterpret_cast<UahItem*>(l);wchar_t label[128]{};MENUITEMINFOW info{sizeof(info)};info.fMask=MIIM_STRING;info.dwTypeData=label;info.cch=127;GetMenuItemInfoW(d.menu.menu,d.item.position,TRUE,&info);
-            const bool hot=(d.draw.itemState&(ODS_HOTLIGHT|ODS_SELECTED))!=0;static const HBRUSH hotBrush=CreateSolidBrush(RGB(0x35,0x4b,0x65));
+            const bool hot=(d.draw.itemState&(ODS_HOTLIGHT|ODS_SELECTED))!=0;static const HBRUSH hotBrush=CreateSolidBrush(RGB(0x38,0x38,0x38));
             FillRect(d.menu.dc,&d.draw.rcItem,hot?hotBrush:bgBrush);SetBkMode(d.menu.dc,TRANSPARENT);SetTextColor(d.menu.dc,(d.draw.itemState&ODS_INACTIVE)?mutedColor:textColor);
             DrawTextW(d.menu.dc,label,-1,&d.draw.rcItem,DT_CENTER|DT_SINGLELINE|DT_VCENTER|((d.draw.itemState&ODS_NOACCEL)?DT_HIDEPREFIX:0));result=TRUE;return true;
         }

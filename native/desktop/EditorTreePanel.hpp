@@ -5,14 +5,14 @@
 
 class EditorTreePanel : public EditorPanelBase {
 public:
-    struct Row {std::string id,name,icon;int depth=0;bool children=false,collapsed=false,selected=false,locked=false,visible=true;};
+    struct Row {std::string id,name,icon,type;int depth=0;bool children=false,collapsed=false,selected=false,locked=false,visible=true;};
     enum Part {None,Fold,Item,Lock,Eye};
     void attach(HWND owner,HINSTANCE instance,Post post){EditorPanelBase::attach(owner,instance,std::move(post),L"HBEngine.EditorTreePanel","hierarchy");}
 
     // op "hierarchy": {visible, rect:[x,y,w,h] physical pixels, scale, rows:[...], theme, reveal}
     void update(const Json& model){
         if(!window)return;
-        if(model.contains("rows")){rows.clear();for(const auto& r:model.at("rows")){Row row;row.id=r.at("id").get<std::string>();row.name=r.value("name",std::string());row.icon=r.value("icon",std::string());row.depth=std::clamp(r.value("depth",0),0,64);row.children=r.value("children",false);row.collapsed=r.value("collapsed",false);row.selected=r.value("selected",false);row.locked=r.value("locked",false);row.visible=r.value("visible",true);rows.push_back(std::move(row));}}
+        if(model.contains("rows")){rows.clear();for(const auto& r:model.at("rows")){Row row;row.id=r.at("id").get<std::string>();row.name=r.value("name",std::string());row.icon=r.value("icon",std::string());row.type=r.value("type",std::string());row.depth=std::clamp(r.value("depth",0),0,64);row.children=r.value("children",false);row.collapsed=r.value("collapsed",false);row.selected=r.value("selected",false);row.locked=r.value("locked",false);row.visible=r.value("visible",true);rows.push_back(std::move(row));}}
         applyCommon(model);
         if(model.contains("reveal")&&model.at("reveal").is_string()){const auto id=model.at("reveal").get<std::string>();for(std::size_t i=0;i<rows.size();i++)if(rows[i].id==id){const int top=int(i)*rowHeight(),bottom=top+rowHeight();if(top<scroll)scroll=top;else if(bottom>scroll+std::max(1,bounds[3]))scroll=bottom-bounds[3];}}
         clampScroll();place();
@@ -55,7 +55,8 @@ private:
             const float x=float(indent(r.depth));const auto dim=r.visible?theme.text:theme.muted;
             if(r.children)label(r.collapsed?L"":L"",icons,x,y,float(px(16)),float(h),theme.muted);
             label(glyph(r.icon),icons,x+px(16),y,float(px(18)),float(h),r.selected?theme.text:theme.accent);
-            const float nameX=x+px(38);label(wide(r.name),text,nameX,y,std::max(0.f,w-px(52)-nameX),float(h),dim);
+            const float nameX=x+px(38),typeW=r.type.empty()||w<px(170)?0.f:std::min(w*.3f,float(px(84)));label(wide(r.name),text,nameX,y,std::max(0.f,w-px(56)-typeW-nameX),float(h),dim);
+            if(typeW>0)label(wide(r.type),text,w-px(52)-typeW,y,typeW,float(h),theme.muted);
             label(r.locked?L"":L"",icons,w-px(48),y,float(px(24)),float(h),r.locked?theme.accent:theme.line);
             label(r.visible?L"":L"",icons,w-px(24),y,float(px(24)),float(h),r.visible?theme.muted:theme.line);
             ++paintedRows;}
