@@ -18,14 +18,6 @@ class ShaderBytecodeCompiler {
         explicit State(const std::filesystem::path& root={}):disk(root){}
     };
     static State& state(){static State value;return value;}
-    static std::string fingerprint(){
-        wchar_t file[32768]{};
-        const auto count=GetModuleFileNameW(libraries().compiler,file,32768);
-        WIN32_FILE_ATTRIBUTE_DATA info{};
-        if(!count||count>=32768||!GetFileAttributesExW(file,GetFileExInfoStandard,&info))return {};
-        return std::to_string(info.nFileSizeHigh)+":"+std::to_string(info.nFileSizeLow)+":"+
-            std::to_string(info.ftLastWriteTime.dwHighDateTime)+":"+std::to_string(info.ftLastWriteTime.dwLowDateTime);
-    }
 public:
     struct Result {std::vector<unsigned char> code;bool compiled=false;std::uint64_t compileMS=0;};
     static constexpr UINT flags=D3DCOMPILE_ENABLE_STRICTNESS|D3DCOMPILE_OPTIMIZATION_LEVEL3;
@@ -37,8 +29,9 @@ public:
         return {i.hits,i.misses,i.writes,i.evictions,i.lastScannedBytes,i.budget,i.invalid,i.errors,i.busy,i.configured?1ULL:0ULL};
     }
     static std::string key(const std::string& source,const char* name,const char* entry,const char* target){
-        const auto stamp=fingerprint();if(stamp.empty())return {};
-        std::string out="HBShaderBytecode:1:"+stamp+":"+std::to_string(flags)+":";
+        // No compiler fingerprint: System32 d3dcompiler_47 differs per Windows build, which made bundled
+        // shaders miss on players' PCs. DXBC from any fxc is valid; a driver-rejected entry recompiles.
+        std::string out="HBShaderBytecode:2:"+std::to_string(flags)+":";
         for(const auto* value:{name,entry,target}){const auto size=std::strlen(value);out+=std::to_string(size)+":";out.append(value,size);}
         out+=source;return out;
     }
