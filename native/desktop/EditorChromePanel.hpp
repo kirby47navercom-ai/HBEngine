@@ -21,28 +21,36 @@ public:
             }
             hover=-1;
         }
-        applyCommon(model);place();InvalidateRect(window,nullptr,FALSE);
+        if(model.contains("floating"))floating=model.at("floating").get<bool>();
+        applyCommon(model);place();
+        // Floating chips: the window is cut to the chip shapes so the scene shows between and around them.
+        if(floating&&bounds[2]>0&&bounds[3]>0){arrange();HRGN region=CreateRectRgn(0,0,0,0);for(const auto& item:items){if(item.kind=="sep")continue;const auto& r=item.rect;HRGN chip=CreateRoundRectRgn(int(r.left),int(r.top),int(r.right)+1,int(r.bottom)+1,px(6),px(6));CombineRgn(region,region,chip,RGN_OR);DeleteObject(chip);}SetWindowRgn(window,region,TRUE);}
+        else if(!floating)SetWindowRgn(window,nullptr,TRUE);
+        InvalidateRect(window,nullptr,FALSE);
     }
     Json inspect()const{Json list=Json::array();for(const auto& item:items)list.push_back({{"id",item.id},{"active",item.active}});auto out=common();out["items"]=list;return out;}
     // Acceptance: click an item by id as the mouse would.
     bool click(const std::string& id){for(int i=0;i<int(items.size());++i)if(items[i].id==id){const auto& r=items[i].rect;const LPARAM at=MAKELPARAM(int((r.left+r.right)/2),int((r.top+r.bottom)/2));SendMessageW(window,WM_LBUTTONDOWN,MK_LBUTTON,at);SendMessageW(window,WM_LBUTTONUP,0,at);return true;}return false;}
 private:
-    std::vector<Item> items;int hover=-1,pressed=-1;
+    std::vector<Item> items;int hover=-1,pressed=-1;bool floating=false;
     float measure(const std::wstring& s){if(s.empty())return 0;IDWriteTextLayout* layout=nullptr;if(FAILED(write->CreateTextLayout(s.c_str(),UINT32(s.size()),text,4096.f,100.f,&layout))||!layout)return float(s.size()*px(8));DWRITE_TEXT_METRICS m{};layout->GetMetrics(&m);layout->Release();return m.widthIncludingTrailingWhitespace;}
     void arrange(){
-        prepareText();const float h=float(bounds[3]),itemH=std::min(h-px(6),float(px(26))),top=(h-itemH)/2;float left=float(px(6)),right=float(bounds[2]-px(6));
+        prepareText();const float h=float(bounds[3]),itemH=floating?h:std::min(h-px(6),float(px(26))),top=floating?0.f:(h-itemH)/2;float left=float(floating?0:px(6)),right=float(bounds[2]-px(6));
         const auto width=[&](Item& item){
             if(item.kind=="sep")return float(px(13));
-            float w=(item.glyph.empty()?0.f:float(px(16)))+measure(wide(item.label))+(item.kind=="text"||item.kind=="title"?float(px(8)):float(px(16)));
+            float w=(item.glyph.empty()?0.f:float(px(16)))+measure(wide(item.label))+(item.kind=="text"||item.kind=="title"?float(px(8)):item.kind=="tab"?float(px(30)):float(px(16)));
             if(!item.glyph.empty()&&!item.label.empty())w+=float(px(6));if(item.kind=="dropdown")w+=float(px(12));return w;};
         for(auto& item:items)if(!item.right){const float w=width(item);item.rect={left,top,left+w,top+itemH};left+=w+px(2);}
         for(auto it=items.rbegin();it!=items.rend();++it)if(it->right){const float w=width(*it);it->rect={right-w,top,right,top+itemH};right-=w+px(2);}
+        // Left items never run under the right group: the last fitting one is shortened (ellipsis), later ones are hidden.
+        for(auto& item:items)if(!item.right&&item.rect.right>right-px(4)){item.rect.right=std::max(item.rect.left,right-px(4));if(item.rect.right-item.rect.left<px(28))item.rect.right=item.rect.left;}
     }
     void draw()override{
-        canvas->Clear(theme.background);arrange();
+        canvas->Clear(floating?D2D1::ColorF(.118f,.118f,.118f):theme.background);arrange();
         for(int i=0;i<int(items.size());++i){
-            const auto& item=items[i];const auto& r=item.rect;
+            const auto& item=items[i];const auto& r=item.rect;if(r.right<=r.left)continue;
             if(item.kind=="sep"){fill((r.left+r.right)/2,r.top+px(4),1.f,r.bottom-r.top-px(8),theme.line);continue;}
+            if(item.kind=="tab"){const float tw=r.right-r.left;brush->SetColor(D2D1::ColorF(.141f,.141f,.141f));canvas->FillRoundedRectangle(D2D1::RoundedRect(D2D1::RectF(r.left,r.top,r.right,r.bottom+px(8)),float(px(5)),float(px(5))),brush);fill(r.left+px(3),r.top,tw-px(6),float(px(2)),theme.accent);label(wide(item.label),bold,r.left+px(12),r.top,tw-px(16),r.bottom-r.top,theme.text);continue;}
             const bool interactive=item.kind!="text"&&item.kind!="title"&&item.enabled;
             if(item.active)box(r.left,r.top,r.right-r.left,r.bottom-r.top,theme.accent,theme.accent);
             else if(interactive&&i==hover)box(r.left,r.top,r.right-r.left,r.bottom-r.top,theme.raised,theme.raised);

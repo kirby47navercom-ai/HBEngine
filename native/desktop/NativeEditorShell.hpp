@@ -18,7 +18,8 @@ class NativeEditorShell {
     HWND contentWindow=nullptr,helpWindow=nullptr,dockTabs=nullptr;
     // Old .workspace-bar tool buttons, .scene-toolbar transform tools and panel headings.
     HIMAGELIST tileImages=nullptr;
-    EditorChromePanel topStrip,viewStrip,outlinerTitle,outlinerHead,outlinerFoot,detailsTitle,statusStrip;HMENU buildMenuHandle=nullptr;
+    EditorChromePanel topStrip,viewStrip,outlinerTitle,outlinerHead,outlinerFoot,detailsTitle,statusStrip,contentStrip;
+    std::map<std::string,HBITMAP> thumbnails;HMENU buildMenuHandle=nullptr;
     // Old web editor palette for Win32 controls (see style.css :root).
     static constexpr COLORREF bgColor=RGB(0x15,0x15,0x15),panelColor=RGB(0x1a,0x1a,0x1a),fieldColor=RGB(0x0f,0x0f,0x0f),lineColor=RGB(0x3a,0x3a,0x3a),textColor=RGB(0xc8,0xc8,0xc8),mutedColor=RGB(0x8a,0x8a,0x8a),faintColor=RGB(0x8a,0x8a,0x8a),accentColor=RGB(0x00,0x70,0xe0);
     static inline HBRUSH tabBrush=CreateSolidBrush(RGB(0x24,0x24,0x24));
@@ -292,7 +293,8 @@ class NativeEditorShell {
         status=control(L"STATIC",L"프로젝트를 열거나 새 프로젝트를 만드세요.",SS_LEFT|SS_CENTERIMAGE,Status);
         // Direct2D chrome: toolbar, scene tool row, outliner/details headings and footer, status strip.
         const auto chromeEvent=[this](const Json& e){try{if(e.value("event",std::string())=="command")chromeCommand(e.at("id").get<std::string>(),POINT{e.value("x",0),e.value("y",0)});}catch(const std::exception& error){report(error);}};
-        for(auto* strip:{&topStrip,&viewStrip,&outlinerTitle,&outlinerHead,&outlinerFoot,&detailsTitle,&statusStrip})strip->attach(window,instance,chromeEvent,"chrome");
+        for(auto* strip:{&topStrip,&viewStrip,&outlinerTitle,&outlinerHead,&outlinerFoot,&detailsTitle,&statusStrip,&contentStrip})strip->attach(window,instance,chromeEvent,"chrome");
+        TabCtrl_SetPadding(tabs,S(20),S(4));TabCtrl_SetPadding(dockTabs,S(14),S(4));
         // Dark controls: list/tree colours, dark scrollbars and buttons, push-like toggles instead of light check boxes.
         TreeView_SetBkColor(folderTree,fieldColor);TreeView_SetTextColor(folderTree,textColor);TreeView_SetLineColor(folderTree,lineColor);
         ListView_SetBkColor(files,fieldColor);ListView_SetTextBkColor(files,fieldColor);ListView_SetTextColor(files,textColor);
@@ -641,7 +643,8 @@ class NativeEditorShell {
         for(int i=0;i<TabCtrl_GetItemCount(h);++i){
             RECT item{};TabCtrl_GetItemRect(h,i,&item);wchar_t label[260]{};TCITEMW row{};row.mask=TCIF_TEXT;row.pszText=label;row.cchTextMax=260;TabCtrl_GetItem(h,i,&row);
             if(i==current){const HRGN shape=CreateRoundRectRgn(item.left,item.top+S(2),item.right,item.bottom+S(8),S(8),S(8));FillRgn(dc,shape,tabBrush);DeleteObject(shape);RECT top{item.left+S(3),item.top+S(2),item.right-S(3),item.top+S(4)};FillRect(dc,&top,accentBrush);}
-            SetTextColor(dc,i==current?textColor:mutedColor);RECT text=item;text.left+=S(8);text.right-=S(4);DrawTextW(dc,label,-1,&text,DT_SINGLELINE|DT_VCENTER|DT_LEFT|DT_END_ELLIPSIS|DT_NOPREFIX);
+            const bool closable=h==tabs;SetTextColor(dc,i==current?textColor:mutedColor);RECT text=item;text.left+=S(10);text.right-=closable?S(22):S(4);DrawTextW(dc,label,-1,&text,DT_SINGLELINE|DT_VCENTER|DT_LEFT|DT_END_ELLIPSIS|DT_NOPREFIX);
+            if(closable){const int cx=item.right-S(13),cy=(item.top+item.bottom)/2+S(1),k=S(4);const HPEN pen=CreatePen(PS_SOLID,std::max(1,S(1)),i==current?textColor:mutedColor);const auto previous=SelectObject(dc,pen);MoveToEx(dc,cx-k,cy-k,nullptr);LineTo(dc,cx+k+1,cy+k+1);MoveToEx(dc,cx+k,cy-k,nullptr);LineTo(dc,cx-k-1,cy+k+1);SelectObject(dc,previous);DeleteObject(pen);}
         }
         SelectObject(dc,old);EndPaint(h,&paint);
     }
@@ -660,6 +663,16 @@ class NativeEditorShell {
         if(has("blueprint"))return L"블루프린트";if(has("scene"))return L"레벨";if(has("model")||has("mesh"))return L"메시";if(has("audio")||has("media"))return L"사운드";if(has("prefab"))return L"프리팹";
         if(has("anim"))return L"애니메이션";if(has("sequence"))return L"시퀀스";if(has("widget")||has("ui"))return L"위젯";if(has("code"))return L"소스";return wide(kind);
     }
+    // Windows thumbnail (images, video, anything with a shell thumbnail handler); cached per path, nullptr when none.
+    HBITMAP thumbnail(const std::string& path){
+        if(path.empty()||projectRoot.empty())return nullptr;
+        if(const auto found=thumbnails.find(path);found!=thumbnails.end())return found->second;
+        if(thumbnails.size()>512){for(auto& [key,bitmap]:thumbnails)if(bitmap)DeleteObject(bitmap);thumbnails.clear();}
+        HBITMAP bitmap=nullptr;IShellItemImageFactory* factory=nullptr;
+        const auto file=(projectRoot/fs::path(wide(path))).lexically_normal();
+        if(SUCCEEDED(SHCreateItemFromParsingName(file.c_str(),nullptr,IID_PPV_ARGS(&factory)))){factory->GetImage(SIZE{S(96),S(96)},SIIGBF_THUMBNAILONLY|SIIGBF_BIGGERSIZEOK,&bitmap);factory->Release();}
+        thumbnails[path]=bitmap;return bitmap;
+    }
     LRESULT drawAssetItem(NMLVCUSTOMDRAW& draw){
         const int i=int(draw.nmcd.dwItemSpec);if(i<0||i>=int(entries.size()))return CDRF_DODEFAULT;
         const HDC dc=draw.nmcd.hdc;RECT r{};ListView_GetItemRect(files,i,&r,LVIR_BOUNDS);
@@ -672,7 +685,15 @@ class NativeEditorShell {
             fillRect(card,selected?RGB(0x1f,0x4a,0x7a):hot?RGB(0x33,0x33,0x33):RGB(0x2a,0x2a,0x2a));
             RECT thumb{card.left,card.top,card.right,card.top+S(62)};fillRect(thumb,RGB(0x1b,0x1b,0x1b));
             const int size=S(38),cx=(thumb.left+thumb.right)/2,cy=(thumb.top+thumb.bottom)/2;
-            if(kind=="folder"){RECT body{cx-size/2,cy-size/3,cx+size/2,cy+size/3};fillRect(body,tint);RECT tab{cx-size/2,cy-size/3-S(5),cx-size/8,cy-size/3};fillRect(tab,tint);}
+            const HBITMAP picture=kind=="folder"?nullptr:thumbnail(row.value("path",std::string()));
+            if(picture){BITMAP info{};GetObjectW(picture,sizeof(info),&info);const int box=S(56);const double fit=std::min(double(box)/std::max<LONG>(1,info.bmWidth),double(box)/std::max<LONG>(1,std::abs(info.bmHeight)));const int pw=std::max(1,int(info.bmWidth*fit)),ph=std::max(1,int(std::abs(info.bmHeight)*fit));
+                const HDC memory=CreateCompatibleDC(dc);const auto kept=SelectObject(memory,picture);BLENDFUNCTION blend{AC_SRC_OVER,0,255,AC_SRC_ALPHA};SetStretchBltMode(dc,HALFTONE);AlphaBlend(dc,cx-pw/2,cy-ph/2,pw,ph,memory,0,0,info.bmWidth,std::abs(info.bmHeight),blend);SelectObject(memory,kept);DeleteDC(memory);}
+            else if(kind.find("material")!=std::string::npos){
+                // Material ball: concentric discs from the tint toward a highlight, offset up-left.
+                for(int k=0;k<14;++k){const double t=k/13.0;const int rad=int(size/2*(1-t*.7)),ox=int(-size*.16*t),oy=int(-size*.18*t);const auto shade=[&](BYTE v){return BYTE(std::min(255.0,v*(.35+.65*t)+255*.35*t*t));};const COLORREF c=RGB(shade(GetRValue(tint)),shade(GetGValue(tint)),shade(GetBValue(tint)));
+                    const HBRUSH b=CreateSolidBrush(c);const HPEN p=CreatePen(PS_NULL,0,0);const auto ob=SelectObject(dc,b);const auto op=SelectObject(dc,p);Ellipse(dc,cx+ox-rad,cy+oy-rad,cx+ox+rad,cy+oy+rad);SelectObject(dc,ob);SelectObject(dc,op);DeleteObject(b);DeleteObject(p);}
+            }
+            else if(kind=="folder"){RECT body{cx-size/2,cy-size/3,cx+size/2,cy+size/3};fillRect(body,tint);RECT tab{cx-size/2,cy-size/3-S(5),cx-size/8,cy-size/3};fillRect(tab,tint);}
             else{const HBRUSH b=CreateSolidBrush(tint);const HRGN shape=CreateRoundRectRgn(cx-size/2,cy-size/2,cx+size/2,cy+size/2,S(6),S(6));FillRgn(dc,shape,b);DeleteObject(shape);DeleteObject(b);}
             RECT label{card.left+S(5),thumb.bottom+S(3),card.right-S(4),thumb.bottom+S(20)};SetTextColor(dc,RGB(0xe8,0xe8,0xe8));DrawTextW(dc,name.c_str(),-1,&label,DT_SINGLELINE|DT_END_ELLIPSIS|DT_NOPREFIX);
             RECT typeRect{card.left+S(5),label.bottom,card.right-S(4),card.bottom-S(4)};SetTextColor(dc,mutedColor);DrawTextW(dc,type.c_str(),-1,&typeRect,DT_SINGLELINE|DT_END_ELLIPSIS|DT_NOPREFIX);
@@ -709,10 +730,16 @@ class NativeEditorShell {
         viewStrip.update({{"items",Json::array({chip("camera",u8"\uE722",utf8(cameraName.empty()?L"편집기 카메라":cameraName),"dropdown"),
             chip("move",u8"\uE7C2","","toggle",tool=="translate",true),chip("rotate",u8"\uE7AD","","toggle",tool=="rotate",true),chip("scale",u8"\uE740","","toggle",tool=="scale",true),{{"kind","sep"},{"right",true}},
             chip("snap",u8"\uE80A",number(snapGrid),"toggle",snapOn,true),chip("snapsize",u8"","∠ "+number(snapAngle)+"°","dropdown",false,true),{{"kind","sep"},{"right",true}},chip("focus",u8"\uE8A3","","button",false,true)})},{"theme",{{"background",{.118f,.118f,.118f}}}}});
-        outlinerTitle.update({{"items",Json::array({chip("","","아웃라이너","title")})},{"theme",{{"background",{.102f,.102f,.102f}}}}});
-        detailsTitle.update({{"items",Json::array({chip("","","디테일","title")})},{"theme",{{"background",{.102f,.102f,.102f}}}}});
+        outlinerTitle.update({{"items",Json::array({chip("","","아웃라이너","tab")})},{"theme",{{"background",{.102f,.102f,.102f}}}}});
+        detailsTitle.update({{"items",Json::array({chip("","","디테일","tab")})},{"theme",{{"background",{.102f,.102f,.102f}}}}});
         outlinerHead.update({{"items",Json::array({chip("","","항목 레이블","text"),chip("","","유형","text",false,true)})},{"theme",{{"background",{.165f,.165f,.165f}}}}});
         outlinerFoot.update({{"items",Json::array({chip("","",std::to_string(sceneRows.size())+"개 오브젝트 ("+std::to_string(selectedIds().size())+"개 선택됨)","text")})},{"theme",{{"background",{.141f,.141f,.141f}}}}});
+        {
+            std::string crumb="콘텐츠";for(std::size_t start=0;!folder.empty()&&start<=folder.size();){const auto slash=folder.find('/',start);crumb+=" \u203A "+folder.substr(start,slash==std::string::npos?std::string::npos:slash-start);if(slash==std::string::npos)break;start=slash+1;}
+            const int typeIndex=int(SendMessageW(assetType,CB_GETCURSEL,0,0));std::wstring typeName(128,L' ');typeName.resize(typeIndex>=0?std::max<LRESULT>(0,SendMessageW(assetType,CB_GETLBTEXT,typeIndex,LPARAM(typeName.data()))):0);
+            contentStrip.update({{"items",Json::array({chip("c-add",u8"\uE710","추가","dropdown"),chip("c-import",u8"\uE8E5","가져오기"),{{"kind","sep"}},chip("c-back",u8"\uE72B","","button",false,false,folderPosition>0),chip("c-forward",u8"\uE72A","","button",false,false,folderPosition+1<folderHistory.size()),chip("c-path",u8"\uE8B7",crumb),
+                chip("c-type",u8"\uE71C",utf8(typeName.empty()?L"모든 유형":typeName),"dropdown",false,true),chip("c-recursive",u8"\uE8B9","하위 폴더","toggle",SendMessageW(assetRecursive,BM_GETCHECK,0,0)==BST_CHECKED,true),chip("c-tiles",browserTiles?u8"\uE80A":u8"\uE8FD","","toggle",false,true)})},{"theme",{{"background",{.165f,.165f,.165f}}}}});
+        }
         statusStrip.update({{"items",Json::array({chip("drawer",u8"\uE8B7","콘텐츠 브라우저","button",!consoleVisible),chip("log",u8"\uE8A5","출력 로그","button",consoleVisible)})},{"theme",{{"background",{.082f,.082f,.082f}}}}});
     }
     int popup(HMENU menu,POINT at){return menu?int(TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY|TPM_LEFTALIGN|TPM_TOPALIGN,at.x,at.y,0,window,nullptr)):0;}
@@ -729,6 +756,14 @@ class NativeEditorShell {
             for(int i=0;i<count;++i){std::wstring name(256,L' ');name.resize(std::max<LRESULT>(0,SendMessageW(views,CB_GETLBTEXT,i,LPARAM(name.data()))));AppendMenuW(menu,MF_STRING|(i==current?MF_CHECKED:0),UINT_PTR(i+1),name.c_str());}
             const int choice=popup(menu,at);DestroyMenu(menu);
             if(choice>0&&sceneOpen()){SendMessageW(views,CB_SETCURSEL,choice-1,0);selectCameraView(cameraRows.at(choice-1),cameraId,cameraDirection,cameraOutputs);queueViewport();}
+        }
+        else if(id=="c-add")perform(NewAsset);else if(id=="c-import")perform(ImportAsset);else if(id=="c-back")perform(FolderBack);else if(id=="c-forward")perform(FolderForward);else if(id=="c-path")perform(FolderPath);
+        else if(id=="c-tiles"){setBrowserTiles(!browserTiles);layout();}
+        else if(id=="c-recursive"){SendMessageW(assetRecursive,BM_SETCHECK,SendMessageW(assetRecursive,BM_GETCHECK,0,0)==BST_CHECKED?BST_UNCHECKED:BST_CHECKED,0);refreshFiles();}
+        else if(id=="c-type"){
+            const HMENU menu=CreatePopupMenu();const int count=int(SendMessageW(assetType,CB_GETCOUNT,0,0)),current=int(SendMessageW(assetType,CB_GETCURSEL,0,0));
+            for(int i=0;i<count;++i){std::wstring name(128,L' ');name.resize(std::max<LRESULT>(0,SendMessageW(assetType,CB_GETLBTEXT,i,LPARAM(name.data()))));AppendMenuW(menu,MF_STRING|(i==current?MF_CHECKED:0),UINT_PTR(i+1),name.c_str());}
+            const int choice=popup(menu,at);DestroyMenu(menu);if(choice>0){SendMessageW(assetType,CB_SETCURSEL,choice-1,0);refreshFiles();}
         }
         else if(id=="drawer"){if(consoleVisible)perform(ShowConsole);}else if(id=="log"){if(!consoleVisible)perform(ShowConsole);}
         refreshChrome();
@@ -849,7 +884,7 @@ class NativeEditorShell {
         const bool sceneShown=document.value("kind",std::string())=="scene"&&!sourceMode;
         const bool canvasShown=(timelineOpen()||widgetOpen()||imageOpen()||tilemapOpen()||audioAssetOpen()||meshUVOpen)&&!sourceMode;
         const bool formShown=document.value("form",false)&&!sourceMode&&!sceneShown&&!canvasShown;
-        const int top=graphShown||sceneShown?y+S(32):y,h=std::max(1,y+bodyHeight-top);
+        const int top=graphShown?y+S(32):y,h=std::max(1,y+bodyHeight-top);
         MoveWindow(views,x,y,std::min(S(230),w/2),S(220),TRUE);MoveWindow(palette,x+std::min(S(235),w/2),y,std::max(1,w-std::min(S(235),w/2)),S(300),TRUE);
         ShowWindow(views,graphShown&&!model.value("views",Json::array()).empty()?SW_SHOW:SW_HIDE);
         ShowWindow(palette,graphShown?SW_SHOW:SW_HIDE);
@@ -882,7 +917,7 @@ class NativeEditorShell {
         if(!sceneLayout){for(auto* panel:{&outlinerTitle,&outlinerHead,&outlinerFoot,&detailsTitle})panel->update({{"visible",false}});}
         else detailsTitle.update({{"rect",{x+w-side+3,y-S(32),std::max(1,side-3),S(30)}},{"visible",side>0}});
         // Scene tool row (camera, transform tools, snap) above the viewport.
-        viewStrip.update({{"rect",{x,y,std::max(1,w-side-3),S(30)}},{"visible",sceneShown}});
+        viewStrip.update({{"rect",{x+S(8),y+S(8),std::max(1,w-side-3-S(16)),S(26)}},{"visible",sceneShown},{"floating",true}});
         refreshChrome();
         if(sceneShown)form.update({{"rect",{x+w-side+3,sceneLayout?y:top+split,std::max(1,side-3),sceneLayout?std::max(1,height-statusHeight-y-S(2)):h-split}},{"visible",side>0}});
         else if(canvasShown)form.update({{"rect",{x+w-assetSide+3,top,std::max(1,assetSide-3),h}},{"visible",assetSide>0}});
@@ -904,15 +939,14 @@ class NativeEditorShell {
         }else{ShowWindow(dockTabs,SW_HIDE);console.update({{"visible",false}});if(!contentWindow)placeBrowser(S(5),S(5),std::max(1,width-S(10)),std::max(1,height-statusHeight-S(10)),true);}
     }
     void placeBrowser(int bx,int by,int bw,int bh,bool show){
-        for(HWND h:{folderBack,folderForward,folderPath,search,assetType,assetRecursive,assetTiles,folderTree,files})ShowWindow(h,show?SW_SHOW:SW_HIDE);
-        if(!show)return;
-        const int row=S(28),gap=S(4),tools=S(140)+S(56)*2+gap*3;int cx=bx;
-        MoveWindow(folderBack,cx,by,S(28),row,TRUE);cx+=S(30);MoveWindow(folderForward,cx,by,S(28),row,TRUE);cx+=S(30)+gap;
-        const int room=std::max(S(120),bx+bw-tools-cx),pathWidth=std::clamp(room/2,S(80),S(260));
-        MoveWindow(folderPath,cx,by,pathWidth,row,TRUE);cx+=pathWidth+gap;
-        MoveWindow(search,cx,by,std::max(S(60),room-pathWidth-gap),row,TRUE);cx+=std::max(S(60),room-pathWidth-gap)+gap;
-        MoveWindow(assetType,cx,by,S(140),S(290),TRUE);cx+=S(140)+gap;
-        MoveWindow(assetRecursive,cx,by,S(56),row,TRUE);cx+=S(56)+gap;MoveWindow(assetTiles,cx,by,S(56),row,TRUE);
+        // The Win32 navigation controls stay as hidden state holders; the Direct2D bar drives them.
+        for(HWND h:{folderBack,folderForward,folderPath,assetType,assetRecursive,assetTiles})ShowWindow(h,SW_HIDE);
+        for(HWND h:{search,folderTree,files})ShowWindow(h,show?SW_SHOW:SW_HIDE);
+        contentStrip.reparent(GetParent(files));
+        if(!show){contentStrip.update({{"visible",false}});return;}
+        const int row=S(30),gap=S(4),searchWidth=std::clamp(bw/4,S(140),S(260));
+        contentStrip.update({{"rect",{bx,by,std::max(1,bw-searchWidth-gap),row}},{"visible",true}});
+        MoveWindow(search,bx+bw-searchWidth,by+S(2),searchWidth,row-S(4),TRUE);
         const int bodyY=by+row+gap,bodyHeight=std::max(1,by+bh-bodyY),treeWidth=std::clamp(bw/4,S(140),S(220));
         MoveWindow(folderTree,bx,bodyY,treeWidth,bodyHeight,TRUE);
         MoveWindow(files,bx+treeWidth+gap,bodyY,std::max(1,bw-treeWidth-gap),bodyHeight,TRUE);
@@ -1027,7 +1061,7 @@ class NativeEditorShell {
     void showFolder(){
         const auto caption=folder.empty()?std::wstring(L"프로젝트"):wide(folder);
         SetWindowTextW(folderPath,caption.c_str());
-        EnableWindow(folderBack,folderPosition>0);
+        EnableWindow(folderBack,folderPosition>0);refreshChrome();
         EnableWindow(folderForward,folderPosition+1<folderHistory.size());
         updating=true;SetWindowTextW(search,L"");updating=false;
         KillTimer(window,1);
@@ -1610,6 +1644,11 @@ class NativeEditorShell {
         if(message==WM_ERASEBKGND)return 1;
         if(message==WM_PAINT){self.paintTabs(owner);return 0;}
         if(message==WM_LBUTTONDOWN){
+            // × on a document tab: switch to it (normal selection path) and close it with the usual save prompt.
+            {TCHITTESTINFO probe{{short(LOWORD(l)),short(HIWORD(l))},0};const int at=TabCtrl_HitTest(owner,&probe);RECT item{};
+             if(at>=0&&TabCtrl_GetItemRect(owner,at,&item)&&probe.pt.x>=item.right-self.S(22)){
+                 try{if(at!=TabCtrl_GetCurSel(owner)){TabCtrl_SetCurSel(owner,at);NMHDR change{owner,UINT_PTR(GetDlgCtrlID(owner)),UINT(TCN_SELCHANGE)};SendMessageW(GetParent(owner),WM_NOTIFY,change.idFrom,LPARAM(&change));}self.perform(CloseDocument);}catch(const std::exception& error){self.report(error);}
+                 return 0;}}
             TCHITTESTINFO hit{{short(LOWORD(l)),short(HIWORD(l))},0};
             const int index=TabCtrl_HitTest(owner,&hit);
             self.draggedTab.clear();self.tabDragging=false;self.tabDragStart=hit.pt;
@@ -2253,6 +2292,7 @@ class NativeEditorShell {
         projectTitle=wide(project.at("name"));SetWindowTextW(window,(projectTitle+L" — HBEngine").c_str());
         projectFile=fs::path(wide(project.at("file")));
         projectRoot=projectFile.parent_path();
+        for(auto& [key,bitmap]:thumbnails)if(bitmap)DeleteObject(bitmap);thumbnails.clear();
         folderHistory.clear();folderPosition=0;navigateFolder("Assets");
         startupScenePath=project.at("startupScene").get<std::string>();
         showDocument(request("document.open",{{"path",project.at("startupScene")}}));
@@ -4288,7 +4328,7 @@ private:
         const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered}};
         if(!multiSelect||!pasted||!undone||!filtered||!unfiltered)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
-        if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());layout();UpdateWindow(window);captureWindow(fs::path(capture));}
+        if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
