@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "date": "2026-11-16",
+  "sourceCommit": "fc879337e54f2872397fc4f04c778f739520731e",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\29ccaac1bdb35258",
+  "bundleHash": "29ccaac1bdb3525828d420bb41801d26cf0289224f414aabae563cc52c7e1bc9",
+  "files": 5489,
+  "versions": [
+    "29ccaac1bdb35258"
+  ],
+  "verified": true,
+  "installationVerified": true,
+  "runtimeVerified": true,
+  "editorEvidence": "설치본 HBEngineNative.exe로 check-native-authoring 격리 실행 통과(help, editingBasics, 편집 표면 모두 D3D12)",
+  "cleanup": {
+    "removed": [
+      {
+        "files": 5488,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\33d98a09c5378ed1",
+        "bytes": 266869997,
+        "manifestSHA256": "72cf8d381e17d8e082d580d99fac9681e0f0f4d6027a2e60eff50ab5519c6a13"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-11-16T07:43:03.8674076Z",
+    "bytes": 266869997,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "29ccaac1bdb35258"
+    ]
+  },
+  "nativeCache": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "entries": [],
+    "running": []
+  },
+  "userProjectsChanged": false,
+  "userProfilesChanged": false
+}
