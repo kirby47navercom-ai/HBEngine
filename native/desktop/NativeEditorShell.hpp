@@ -17,6 +17,7 @@ class NativeEditorShell {
     HWND folderBack=nullptr,folderForward=nullptr,folderPath=nullptr,folderTree=nullptr,assetType=nullptr,assetRecursive=nullptr,assetTiles=nullptr;
     HWND contentWindow=nullptr,helpWindow=nullptr,dockTabs=nullptr;
     // Old .workspace-bar tool buttons, .scene-toolbar transform tools and panel headings.
+    HIMAGELIST tileImages=nullptr;
     EditorChromePanel topStrip,viewStrip,outlinerTitle,outlinerHead,outlinerFoot,detailsTitle,statusStrip;HMENU buildMenuHandle=nullptr;
     // Old web editor palette for Win32 controls (see style.css :root).
     static constexpr COLORREF bgColor=RGB(0x15,0x15,0x15),panelColor=RGB(0x1a,0x1a,0x1a),fieldColor=RGB(0x0f,0x0f,0x0f),lineColor=RGB(0x3a,0x3a,0x3a),textColor=RGB(0xc8,0xc8,0xc8),mutedColor=RGB(0x8a,0x8a,0x8a),faintColor=RGB(0x8a,0x8a,0x8a),accentColor=RGB(0x00,0x70,0xe0);
@@ -278,6 +279,7 @@ class NativeEditorShell {
         ListView_SetImageList(files,assetIcons,LVSIL_SMALL);
         if(!SetWindowSubclass(files,fileProcedure,1,reinterpret_cast<DWORD_PTR>(this)))throw std::runtime_error("콘텐츠 드래그를 초기화하지 못했어요.");
         LVCOLUMNW column{};column.mask=LVCF_WIDTH;column.cx=240;ListView_InsertColumn(files,0,&column);
+        ListView_SetExtendedListViewStyle(files,LVS_EX_DOUBLEBUFFER);setBrowserTiles(true);
         tabs=control(WC_TABCONTROLW,L"",WS_CLIPSIBLINGS,Tabs);
         if(!SetWindowSubclass(tabs,tabProcedure,1,reinterpret_cast<DWORD_PTR>(this)))throw std::runtime_error("문서 탭 입력을 초기화하지 못했어요.");
         dockTabs=control(WC_TABCONTROLW,L"",WS_CLIPSIBLINGS,DockTabs);
@@ -348,6 +350,7 @@ class NativeEditorShell {
                 if(action=="click"){fieldPath.push_back(key);refreshForm();layout();return;}
                 Json parts=inspectedBase;
                 for(const auto& part:fieldPath)parts.push_back(part);
+                if(fields.at(i).contains("via"))parts.push_back(fields.at(i).at("via"));
                 showDocument(request("asset.fieldEdit",{{"parts",parts},{"key",key},{"value",event.contains("checked")?event.at("checked"):event.at("value")},{"expectedRevision",document.at("revision")}}));
             }catch(const std::exception& error){report(error);}
         },"asset");
@@ -614,11 +617,15 @@ class NativeEditorShell {
         EnumThreadWindows(GetCurrentThreadId(),[](HWND top,LPARAM p)->BOOL{const auto& s=*reinterpret_cast<Swap*>(p);if(HFONT(SendMessageW(top,WM_GETFONT,0,0))==s.from)SendMessageW(top,WM_SETFONT,WPARAM(s.to),TRUE);EnumChildWindows(top,[](HWND h,LPARAM q)->BOOL{const auto& t=*reinterpret_cast<Swap*>(q);if(HFONT(SendMessageW(h,WM_GETFONT,0,0))==t.from)SendMessageW(h,WM_SETFONT,WPARAM(t.to),TRUE);return TRUE;},p);return TRUE;},LPARAM(&swap));
         if(previous)DeleteObject(previous);
         if(scaleMenu)CheckMenuRadioItem(scaleMenu,ScaleAuto,Scale200,userScale<=0?ScaleAuto:userScale<1.2?Scale100:userScale<1.4?Scale125:userScale<1.6?Scale150:userScale<1.8?Scale175:Scale200,MF_BYCOMMAND);
+        if(files)setBrowserTiles(browserTiles);
         layout();for(auto& [owner,item]:documentWindows)layoutDocumentWindow(owner,item);
         EnumThreadWindows(GetCurrentThreadId(),[](HWND top,LPARAM)->BOOL{RedrawWindow(top,nullptr,nullptr,RDW_INVALIDATE|RDW_ALLCHILDREN|RDW_FRAME);return TRUE;},0);
     }
     // Acceptance evidence: the whole editor window (GDI + D2D panels) as a 32-bit BMP.
     void captureWindow(const fs::path& file){
+        // Let pending layout/paint messages run first; PrintWindow on an unpainted window returns a blank frame.
+        RedrawWindow(window,nullptr,nullptr,RDW_INVALIDATE|RDW_ALLCHILDREN|RDW_UPDATENOW|RDW_FRAME);
+        for(int pass=0;pass<20;++pass){MSG pending;while(PeekMessageW(&pending,nullptr,0,0,PM_REMOVE)){TranslateMessage(&pending);DispatchMessageW(&pending);}Sleep(10);}
         RECT r{};GetWindowRect(window,&r);const int w=r.right-r.left,h=r.bottom-r.top;
         HDC screen=GetDC(nullptr),memory=CreateCompatibleDC(screen);BITMAPINFO info{};info.bmiHeader={sizeof(BITMAPINFOHEADER),w,-h,1,32,BI_RGB};void* bits=nullptr;
         HBITMAP bitmap=CreateDIBSection(screen,&info,DIB_RGB_COLORS,&bits,nullptr,0);const auto old=SelectObject(memory,bitmap);
@@ -639,6 +646,45 @@ class NativeEditorShell {
         SelectObject(dc,old);EndPaint(h,&paint);
     }
     void updateToolButtons(){refreshChrome();}
+    // Asset type colour (card underline / row swatch) and label, Unreal content browser style.
+    static COLORREF assetColor(const std::string& kind){
+        const auto has=[&](const char* part){return kind.find(part)!=std::string::npos;};
+        if(kind=="folder")return RGB(0xc9,0xa2,0x4a);if(has("material"))return RGB(0x3f,0xae,0x3f);if(has("texture")||has("image")||has("sprite"))return RGB(0xc8,0x3a,0x3a);
+        if(has("blueprint")||has("graph"))return RGB(0x00,0x70,0xe0);if(has("scene")||has("level")||has("world"))return RGB(0xe0,0x7a,0x1f);if(has("model")||has("mesh")||has("lod"))return RGB(0x00,0xa8,0xe8);
+        if(has("audio")||has("media")||has("sound"))return RGB(0x8a,0x4a,0xc8);if(has("anim")||has("sequence")||has("timeline")||has("montage"))return RGB(0x3a,0xb5,0xb5);if(has("prefab"))return RGB(0x6a,0x9a,0xd6);
+        if(has("widget")||has("ui"))return RGB(0xa0,0xa0,0xf0);if(has("code")||has("source"))return RGB(0x9a,0x9a,0x9a);return RGB(0x6a,0x6a,0x6a);
+    }
+    static std::wstring assetLabel(const std::string& kind){
+        const auto has=[&](const char* part){return kind.find(part)!=std::string::npos;};
+        if(kind=="folder")return L"폴더";if(has("materialinstance"))return L"머티리얼 인스턴스";if(has("material"))return L"머티리얼";if(has("texture")||has("image"))return L"텍스처";if(has("sprite"))return L"스프라이트";
+        if(has("blueprint"))return L"블루프린트";if(has("scene"))return L"레벨";if(has("model")||has("mesh"))return L"메시";if(has("audio")||has("media"))return L"사운드";if(has("prefab"))return L"프리팹";
+        if(has("anim"))return L"애니메이션";if(has("sequence"))return L"시퀀스";if(has("widget")||has("ui"))return L"위젯";if(has("code"))return L"소스";return wide(kind);
+    }
+    LRESULT drawAssetItem(NMLVCUSTOMDRAW& draw){
+        const int i=int(draw.nmcd.dwItemSpec);if(i<0||i>=int(entries.size()))return CDRF_DODEFAULT;
+        const HDC dc=draw.nmcd.hdc;RECT r{};ListView_GetItemRect(files,i,&r,LVIR_BOUNDS);
+        const auto& row=entries.at(i);const auto kind=row.value("kind",std::string());const bool selected=ListView_GetItemState(files,i,LVIS_SELECTED)!=0,hot=(draw.nmcd.uItemState&CDIS_HOT)!=0;
+        const COLORREF tint=assetColor(kind);const auto name=wide(row.value("name",std::string()));const auto type=assetLabel(kind);
+        const auto fillRect=[&](RECT box,COLORREF c){const HBRUSH b=CreateSolidBrush(c);FillRect(dc,&box,b);DeleteObject(b);};
+        const auto old=SelectObject(dc,font);SetBkMode(dc,TRANSPARENT);
+        if(browserTiles){
+            RECT card{};ListView_GetItemRect(files,i,&card,LVIR_ICON);InflateRect(&card,-S(3),0);
+            fillRect(card,selected?RGB(0x1f,0x4a,0x7a):hot?RGB(0x33,0x33,0x33):RGB(0x2a,0x2a,0x2a));
+            RECT thumb{card.left,card.top,card.right,card.top+S(62)};fillRect(thumb,RGB(0x1b,0x1b,0x1b));
+            const int size=S(38),cx=(thumb.left+thumb.right)/2,cy=(thumb.top+thumb.bottom)/2;
+            if(kind=="folder"){RECT body{cx-size/2,cy-size/3,cx+size/2,cy+size/3};fillRect(body,tint);RECT tab{cx-size/2,cy-size/3-S(5),cx-size/8,cy-size/3};fillRect(tab,tint);}
+            else{const HBRUSH b=CreateSolidBrush(tint);const HRGN shape=CreateRoundRectRgn(cx-size/2,cy-size/2,cx+size/2,cy+size/2,S(6),S(6));FillRgn(dc,shape,b);DeleteObject(shape);DeleteObject(b);}
+            RECT label{card.left+S(5),thumb.bottom+S(3),card.right-S(4),thumb.bottom+S(20)};SetTextColor(dc,RGB(0xe8,0xe8,0xe8));DrawTextW(dc,name.c_str(),-1,&label,DT_SINGLELINE|DT_END_ELLIPSIS|DT_NOPREFIX);
+            RECT typeRect{card.left+S(5),label.bottom,card.right-S(4),card.bottom-S(4)};SetTextColor(dc,mutedColor);DrawTextW(dc,type.c_str(),-1,&typeRect,DT_SINGLELINE|DT_END_ELLIPSIS|DT_NOPREFIX);
+            RECT line{card.left,card.bottom-S(3),card.right,card.bottom};fillRect(line,tint);
+        }else{
+            RECT client{};GetClientRect(files,&client);RECT full{0,r.top,client.right,r.bottom};fillRect(full,selected?RGB(0x1f,0x4a,0x7a):hot?RGB(0x33,0x33,0x33):fieldColor);
+            RECT swatch{S(8),r.top+(r.bottom-r.top-S(10))/2,S(18),r.top+(r.bottom-r.top-S(10))/2+S(10)};fillRect(swatch,tint);
+            RECT text{S(26),r.top,full.right-S(110),r.bottom};SetTextColor(dc,textColor);DrawTextW(dc,name.c_str(),-1,&text,DT_SINGLELINE|DT_VCENTER|DT_END_ELLIPSIS|DT_NOPREFIX);
+            RECT typeRect{full.right-S(104),r.top,full.right-S(6),r.bottom};SetTextColor(dc,mutedColor);DrawTextW(dc,type.c_str(),-1,&typeRect,DT_SINGLELINE|DT_VCENTER|DT_RIGHT|DT_END_ELLIPSIS|DT_NOPREFIX);
+        }
+        SelectObject(dc,old);return CDRF_SKIPDEFAULT;
+    }
     // Outliner type column (Unreal-style); object kinds come from the placement catalog.
     static std::string kindLabel(std::string kind,bool camera){
         if(camera)return "카메라";std::transform(kind.begin(),kind.end(),kind.begin(),[](unsigned char c){return char(std::tolower(c));});
@@ -904,7 +950,9 @@ class NativeEditorShell {
         return true;
     }
     void setBrowserTiles(bool enabled){
-        const auto mode=enabled?LV_VIEW_SMALLICON:LV_VIEW_DETAILS;
+        const auto mode=enabled?LV_VIEW_ICON:LV_VIEW_DETAILS;
+        // Tile cells come from a blank large image list plus icon spacing; the cards themselves are custom drawn.
+        if(enabled){if(tileImages)ImageList_Destroy(tileImages);tileImages=ImageList_Create(S(88),S(104),ILC_COLOR32,1,0);ListView_SetImageList(files,tileImages,LVSIL_NORMAL);ListView_SetIconSpacing(files,S(98),S(128));}
         if(SendMessageW(files,LVM_SETVIEW,mode,0)!=1)throw std::runtime_error("콘텐츠 보기 방식을 바꾸지 못했어요.");
         browserTiles=enabled;
         SendMessageW(assetTiles,BM_SETCHECK,enabled?BST_CHECKED:BST_UNCHECKED,0);
@@ -1418,6 +1466,25 @@ class NativeEditorShell {
             const auto& field=fields[i];auto control=field.at("control");control["i"]=i;
             if(field.at("key")=="id"||field.at("key")=="parent")control["disabled"]=true;
             rows.push_back({{"label",field.at("label")},{"controls",Json::array({std::move(control)})}});
+        }
+        // Scene object Details (Unreal-style): Transform rows show X/Y/Z inline, then general, components and read-only fields.
+        if(sceneOpen()&&fieldPath.empty()&&base.size()==2&&base.at(0)=="objects"){
+            const auto field=[&](const char* key){for(std::size_t i=0;i<fields.size();++i)if(fields[i].at("key")==key)return int(i);return -1;};
+            const auto single=[&](int i,bool disabled=false){auto control=fields[i].at("control");control["i"]=i;if(disabled)control["disabled"]=true;
+                static const std::map<std::string,std::string> names{{"visible","보임"},{"locked","잠금"},{"components","컴포넌트"},{"kind","종류"},{"group","그룹"},{"id","ID"},{"parent","부모"}};
+                const auto key=fields[i].at("key").get<std::string>();const auto named=names.find(key);
+                return Json{{"label",named!=names.end()?Json(named->second):fields[i].at("label")},{"controls",Json::array({std::move(control)})}};};
+            rows=Json::array({{{"kind","heading"},{"text","트랜스폼"}}});
+            for(const auto& [key,label]:std::initializer_list<std::pair<const char*,const char*>>{{"position","위치"},{"rotation","회전"},{"scale","스케일"}}){
+                if(field(key)<0)continue;auto parts=base;parts.push_back(key);
+                Json controls=Json::array();for(auto axis:request("asset.fields",{{"parts",parts}})){axis["via"]=key;auto control=axis.at("control");control["i"]=fields.size();controls.push_back(std::move(control));fields.push_back(std::move(axis));}
+                rows.push_back({{"label",label},{"controls",std::move(controls)}});
+            }
+            rows.push_back({{"kind","heading"},{"text","일반"}});
+            for(const char* key:{"name","visible","locked"})if(const int i=field(key);i>=0)rows.push_back(single(i));
+            if(const int i=field("components");i>=0){rows.push_back({{"kind","heading"},{"text","컴포넌트"}});rows.push_back(single(i));}
+            rows.push_back({{"kind","heading"},{"text","고급"}});
+            for(const char* key:{"kind","group","id","parent"})if(const int i=field(key);i>=0)rows.push_back(single(i,std::string(key)=="id"||std::string(key)=="parent"));
         }
         inspectedBase=std::move(base);
         form.update({{"rows",rows},{"revision",++formRevision}});
@@ -2382,7 +2449,7 @@ class NativeEditorShell {
             userScale=std::clamp(data.value("uiScale",0.0),0.0,3.0);if(userScale>0&&userScale<1)userScale=0;
             if(data.contains("snap")){const auto& s=data.at("snap");snapOn=s.value("on",false);snapGrid=std::clamp(s.value("grid",.5),.01,100.0);snapAngle=std::clamp(s.value("angle",15.0),1.0,180.0);}updateSnapMenu();
             consoleVisible=data.value("console",false);
-            setBrowserTiles(data.value("browserTiles",false));
+            setBrowserTiles(data.value("browserTiles",true));
             contentDetachedOnStart=data.value("contentDetached",false);
             if(data.contains("window"))placeSavedWindow(window,data.at("window"),720,480);
         }catch(const Json::exception&){browsePercent=24;inspectorPercent=25;splitPercent=lowerSplitPercent=43;}
@@ -3568,6 +3635,7 @@ class NativeEditorShell {
                 }
                 return 0;
             }
+            if(header->hwndFrom==files&&header->code==NM_CUSTOMDRAW){auto& draw=*reinterpret_cast<NMLVCUSTOMDRAW*>(l);if(draw.nmcd.dwDrawStage==CDDS_PREPAINT)return CDRF_NOTIFYITEMDRAW;if(draw.nmcd.dwDrawStage==CDDS_ITEMPREPAINT)return drawAssetItem(draw);return CDRF_DODEFAULT;}
             if(header->hwndFrom==files&&header->code==LVN_GETDISPINFOW){
                 auto& item=reinterpret_cast<NMLVDISPINFOW*>(l)->item;
                 if(item.iItem>=0&&item.iItem<int(entries.size())){
@@ -3696,8 +3764,10 @@ private:
             std::any_of(entries.begin(),entries.end(),[](const Json& row){return row.at("kind")!="folder"&&row.at("kind")!="sprite";}))
             throw std::runtime_error("Native asset type filter failed");
         SendMessageW(assetType,CB_SETCURSEL,0,0);refreshFiles();
-        SendMessageW(assetTiles,BM_CLICK,0,0);
-        if(!browserTiles||SendMessageW(files,LVM_GETVIEW,0,0)!=LV_VIEW_SMALLICON)throw std::runtime_error("Native asset icon view failed");
+        // Tiles (thumbnail cards) are the default; the toggle switches to the list and back.
+        const bool tilesBefore=browserTiles;SendMessageW(assetTiles,BM_CLICK,0,0);
+        if(browserTiles==tilesBefore||SendMessageW(files,LVM_GETVIEW,0,0)!=(browserTiles?LV_VIEW_ICON:LV_VIEW_DETAILS))throw std::runtime_error("Native asset icon view failed");
+        SendMessageW(assetTiles,BM_CLICK,0,0);if(browserTiles!=tilesBefore)throw std::runtime_error("Native asset view restore failed");
         SendMessageW(assetTiles,BM_CLICK,0,0);
         // The content browser is docked under the documents now; its tab strip switches to the output log and back.
         if(!IsWindowVisible(dockTabs)&&!contentWindow)throw std::runtime_error("Native content dock missing");
@@ -3721,10 +3791,10 @@ private:
         if(item==tree.end())throw std::runtime_error("New object missing from hierarchy");
         hierarchy.probe({{"action","click"},{"row",item-tree.begin()},{"part","item"}});
         if(sceneSelection!=newCube)throw std::runtime_error("Native hierarchy selection failed");
-        int position=0;
-        while(fields.at(position).at("key")!="position")++position;
-        form.probe({{"action","click"},{"i",position}});
-        form.probe({{"action","edit"},{"i",0},{"text","2.5"}});
+        // Details shows Transform inline: edit the X field of 위치 directly.
+        int positionX=0;
+        while(fields.at(positionX).value("via",std::string())!="position")++positionX;
+        form.probe({{"action","edit"},{"i",positionX},{"text","2.5"}});
         if(Json::parse(document.at("text").get<std::string>()).at("objects").back().at("position").at(0)!=2.5)
             throw std::runtime_error("Native scene transform failed");
         command(FocusActor);
@@ -4218,7 +4288,7 @@ private:
         const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered}};
         if(!multiSelect||!pasted||!undone||!filtered||!unfiltered)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
-        if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);captureWindow(fs::path(capture));}
+        if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }

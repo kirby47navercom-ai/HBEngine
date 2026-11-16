@@ -140,7 +140,7 @@ private:
     void draw()override{
         canvas->Clear(theme.background);paintedRows=0;const float w=float(bounds[2]);const float pad=float(px(8));
         for(std::size_t k=0;k<rows.size();k++){const auto& row=rows[k];const RECT r=rowRects[k];const float y=float(r.top-scroll),h=float(r.bottom-r.top);if(y+h<0||y>bounds[3])continue;++paintedRows;
-            if(row.kind=="heading"){fill(0,y+h-1,w,1,theme.line);float x=pad;if(row.toggle>=0){label(row.open?L"":L"",icons,x,y,float(px(14)),h,theme.muted);x+=px(16);}label(wide(row.text),bold,x,y,w-x-pad,h,theme.text);continue;}
+            if(row.kind=="heading"){fill(0,y,w,h,{.184f,.184f,.184f,1});fill(0,y,w,1,{0,0,0,1});float x=pad;if(row.toggle>=0){label(row.open?L"":L"",icons,x,y,float(px(14)),h,theme.muted);x+=px(16);}label(wide(row.text),bold,x,y,w-x-pad,h,theme.text);continue;}
             if(row.kind=="message"){label(wide(row.text),text,pad,y,w-2*pad,h,theme.muted);continue;}
             if(!row.label.empty()){
                 const float width=row.kind=="toolbar"?float(hits.empty()?bounds[2]:hits.front().second.left):float(std::max(px(70),int(w*.38f)));
@@ -156,8 +156,11 @@ private:
                 }
                 else if(c.kind=="range"){const double t=std::clamp((parse(sliding==c.i?slideValue:c.value,c.min)-c.min)/std::max(1e-9,c.max-c.min),0.0,1.0);const float my=cy+ch/2,tx=x+float(t)*cw;fill(x,my-1,cw,2,theme.line);fill(x,my-1,tx-x,2,theme.accent);brush->SetColor(hot||sliding==c.i?theme.text:theme.accent);canvas->FillEllipse(D2D1::Ellipse(D2D1::Point2F(tx,my),float(px(6)),float(px(6))),brush);}
                 else if(c.kind=="color"){box(x,cy,cw,ch,theme.field,hot?theme.accent:theme.line);fill(x+px(3),cy+px(3),float(px(20)),ch-px(6),parseColor(c.value));label(wide(c.value),text,x+px(28),cy,cw-px(30),ch,ink);}
-                else{box(x,cy,cw,ch,theme.field,hot||editing==c.i?theme.accent:theme.line);std::string shown=c.value;if(c.kind=="select")for(const auto& o:c.options)if(o.first==c.value)shown=o.second;
-                    if(editing!=c.i)label(wide(shown.empty()?c.text:shown),text,x+px(6),cy,cw-px(c.kind=="select"?26:10),c.kind=="textarea"?float(px(22)):ch,shown.empty()?theme.muted:ink);if(c.kind=="select")label(L"",icons,x+cw-px(20),cy,float(px(16)),ch,theme.muted);}}}
+                else{box(x,cy,cw,ch,theme.field,hot||editing==c.i?theme.accent:theme.line);
+                    // Unreal-style X/Y/Z colour strip on three-number rows (location, rotation, scale).
+                    float inset=0;if((c.kind=="number"||c.kind=="text")&&row.controls.size()==3){std::size_t axis=0;while(axis<3&&row.controls[axis].i!=c.i)++axis;static const D2D1_COLOR_F axes[3]={{.784f,.227f,.227f,1},{.29f,.604f,.188f,1},{.173f,.435f,.839f,1}};if(axis<3){fill(x+1,cy+1,float(px(3)),ch-2,axes[axis]);inset=float(px(3));}}
+                    std::string shown=c.value;if(c.kind=="select")for(const auto& o:c.options)if(o.first==c.value)shown=o.second;
+                    if(editing!=c.i)label(wide(shown.empty()?c.text:shown),text,x+px(6)+inset,cy,cw-px(c.kind=="select"?26:10),c.kind=="textarea"?float(px(22)):ch,shown.empty()?theme.muted:ink);if(c.kind=="select")label(L"",icons,x+cw-px(20),cy,float(px(16)),ch,theme.muted);}}}
         if(contentHeight>bounds[3]){const float track=float(bounds[3]),thumb=std::max(float(px(24)),track*track/contentHeight),top=(track-thumb)*scroll/std::max(1,contentHeight-bounds[3]);fill(w-px(4),top,float(px(3)),thumb,theme.line);}
     }
     LRESULT handle(UINT message,WPARAM w,LPARAM l)override{
