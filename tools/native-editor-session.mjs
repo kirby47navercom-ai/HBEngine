@@ -31,7 +31,7 @@ import {withWorldDraft} from '../prototype/world-draft.js';
 import {selectMeshBoundaryLoops} from '../prototype/mesh-boundary-selection.js';
 import {inspectMeshUV} from '../prototype/mesh-uv-inspection.js';
 import {meshUVSelection} from '../prototype/mesh-uv.js';
-import {copySceneObjects,editSceneTransform,pasteSceneObjects,setObjectMatrix,validParent} from '../prototype/scene-editor.js';
+import {copySceneObjects,editSceneTransform,pasteSceneObjects,removeSceneObjects,sceneMatches,setObjectMatrix,validParent} from '../prototype/scene-editor.js';
 import {sceneWorldMatrix} from '../prototype/scene-runtime.js';
 import {addState,behaviorNodes,makeBehaviorNode,makeSequenceTrack,removeState} from '../prototype/gameplay-assets.js';
 import {timelineRows} from '../prototype/timeline-rows.js';
@@ -1006,6 +1006,18 @@ export function nativeEditorSession(bridge) {
       await owner.registry();nativeMetadata=new WeakMap();
       return {path:file,deleted:true,referencers:[]};
     },
+    'content.move': async ({path:file,folder})=>{
+      if(typeof file!=='string'||!/^(?:Assets|Source|Settings)\/./.test(file)||typeof folder!=='string'||!/^(?:Assets|Source|Settings)(?:\/|$)/.test(folder)||[file,folder].some(p=>p.split('/').some(part=>part==='..'||part==='.'||part==='')))throw Error('옮길 에셋과 대상 폴더를 확인하세요.');
+      const next=folder+'/'+path.posix.basename(file);
+      if(next===file)return {path:file};
+      if(folder===file||folder.startsWith(file+'/'))throw Error('폴더를 자기 안으로 옮길 수 없어요.');
+      if(tabs().some(doc=>doc.path===file||doc.path.startsWith(file+'/')||doc.path===file+'.import.json'))throw Error('옮길 에셋의 문서를 먼저 닫으세요.');
+      if(!(await fs.stat(await project().resolve(folder,true)).catch(()=>null))?.isDirectory())throw Error('대상 폴더가 없어요.');
+      if(await fs.access(await project().resolve(next,true,false)).then(()=>true,()=>false))throw Error('대상 폴더에 같은 이름이 있어요.');
+      await project().rename(file,next);
+      nativeMetadata=new WeakMap();
+      return {path:next};
+    },
     'content.rename': async ({path:file,name})=>{
       name=typeof name==='string'?name.trim():'';
       if(typeof file!=='string'||!/^(?:Assets|Source|Settings)\//.test(file)||!name||name==='.'||name==='..'||/[/\\:<>?"|*\x00-\x1f]/.test(name))throw Error('이름을 바꿀 프로젝트 에셋을 확인하세요.');
@@ -1181,15 +1193,44 @@ export function nativeEditorSession(bridge) {
     'editor.undo': ({path,expectedRevision}) => restore('history','future',path,expectedRevision),
     'editor.redo': ({path,expectedRevision}) => restore('future','history',path,expectedRevision),
     'scene.catalog': () => ({placements:placementCatalog.map(({key,label,category})=>({id:key,label,group:category})),components:Object.keys(componentDefinitions)}),
-    'scene.hierarchy': () => scene().data.objects.map(({id,name,kind,parent,visible,locked,components})=>({id,name,kind,parent,visible,locked,camera:components?.some(c=>c.type==='Camera'&&c.properties?.enabled!==false)??kind==='camera'})),
-    'scene.edit': async ({path,action,id,target,key,delta,axis,value,asset,position,expectedRevision}) => {
+    'scene.hierarchy': ({query}={}) => scene().data.objects.map(object=>{const {id,name,kind,parent,visible,locked,components}=object;return {id,name,kind,parent,visible,locked,camera:components?.some(c=>c.type==='Camera'&&c.properties?.enabled!==false)??kind==='camera',...(typeof query==='string'&&query.trim()?{match:sceneMatches(object,query.trim())}:{})};}),
+    'scene.copy': ({path,ids}) => {
+      const doc=targetDocument(path);if(doc.kind!=='scene')throw Error('장면 문서를 선택하세요.');
+      const list=(Array.isArray(ids)?ids:[]).filter(id=>doc.data.objects.some(o=>o.id===id));
+      if(!list.length)throw Error('복사할 오브젝트를 선택하세요.');
+      return {objects:copySceneObjects(doc.data.objects,list)};
+    },
+    'scene.edit': async ({path,action,id,ids,target,key,delta,axis,value,asset,position,clipboard,snap,expectedRevision}) => {
       const doc=targetDocument(path);
       if(doc.kind!=='scene')throw Error('장면 문서를 선택하세요.');
       await check(doc,expectedRevision);
       const next=structuredClone(doc.data), byId=new Map(next.objects.map(actor=>[actor.id,actor]));
       const actor=byId.get(id);
-      let selection=id;
-      if (action==='add') {
+      let selection=id,selections;
+      const targets=Array.isArray(ids)&&ids.length?[...new Set(ids.filter(item=>typeof item==='string'&&byId.has(item)))]:id?[id]:[];
+      // Grid/angle snap applies to the committed gizmo result (the gizmo commits one total delta per drag).
+      const snapped=(object,mode)=>{
+        if(!snap||typeof snap!=='object')return;
+        const round=(v,step)=>Number((Math.round(v/step)*step).toFixed(6));
+        if(mode==='translate'&&Number.isFinite(snap.grid)&&snap.grid>0)object.position=object.position.map(v=>round(v,snap.grid));
+        if(mode==='rotate'&&Number.isFinite(snap.angle)&&snap.angle>0&&Number.isInteger(axis))object.rotation=object.rotation.map((v,i)=>i===axis?round(v,snap.angle):v);
+      };
+      const roots=pasted=>{const top=pasted.filter(o=>!o.parent);selections=top.map(o=>o.id);return selections[0]||'';};
+      if (action==='paste') {
+        if(!Array.isArray(clipboard)||!clipboard.length||!clipboard.every(o=>o&&typeof o.id==='string'&&Array.isArray(o.position)))throw Error('붙여넣을 오브젝트가 없어요.');
+        selection=roots(pasteSceneObjects(next.objects,structuredClone(clipboard),{offset:[.5,0,.5]}));
+      } else if (targets.length>1&&['delete','duplicate','translate','rotate','scale'].includes(action)) {
+        const unlocked=targets.filter(item=>!byId.get(item).locked);
+        if(!unlocked.length)throw Error('오브젝트 잠금을 해제하세요.');
+        if(action==='delete'){removeSceneObjects(next.objects,unlocked);selection='';selections=[];}
+        else if(action==='duplicate')selection=roots(pasteSceneObjects(next.objects,copySceneObjects(next.objects,unlocked),{offset:[.5,0,.5]}));
+        else{
+          // Children of another selected object move with their parent, so only the outermost ones are edited.
+          const chosen=new Set(unlocked);
+          for(const item of unlocked){const object=byId.get(item);let parent=byId.get(object.parent),inner=false;while(parent){if(chosen.has(parent.id)){inner=true;break;}parent=byId.get(parent.parent);}if(inner)continue;editSceneTransform(object,next.objects,{mode:action,axis,value:action==='translate'?delta:value});snapped(object,action);}
+          selections=targets;
+        }
+      } else if (action==='add') {
         const created=createPlacedObject(key);next.objects.push(created);selection=created.id;
       } else if(action==='placeAsset')selection=await placeSceneAsset(next,doc,asset,actor,position);
       else {
@@ -1198,7 +1239,7 @@ export function nativeEditorSession(bridge) {
         if (action==='lock') actor.locked=!actor.locked;
         else if (action==='visible') actor.visible=!actor.visible;
         else if (action==='component') addSceneComponent(actor,key);
-        else if(action==='translate'||action==='rotate'||action==='scale')editSceneTransform(actor,next.objects,{mode:action,axis,value:action==='translate'?delta:value});
+        else if(action==='translate'||action==='rotate'||action==='scale'){editSceneTransform(actor,next.objects,{mode:action,axis,value:action==='translate'?delta:value});snapped(actor,action);}
         else if (action==='reparent') {
           if (!validParent(next.objects,id,target)) throw Error('오브젝트의 부모를 확인하세요.');
           const world=sceneWorldMatrix(actor,next.objects),parent=byId.get(target);
@@ -1234,7 +1275,7 @@ export function nativeEditorSession(bridge) {
         } else throw Error('장면 편집 명령을 확인하세요.');
       }
       change(doc,next);
-      return {...await response(doc),selection};
+      return {...await response(doc),selection,...(selections?{selections}:{})};
     },
     'scene.viewport': async params=>{
       const {width,height}=params;

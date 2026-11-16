@@ -17,6 +17,10 @@ class NativeEditorShell {
     HWND contentWindow=nullptr,helpWindow=nullptr;
     // Editor UI scale in DPI units: system DPI, or the user's 편집기 배율 (0 = follow Windows).
     unsigned uiDpi=96;double userScale=0;HMENU scaleMenu=nullptr;std::string startupScenePath;
+    // Scene selection: sceneSelection is the primary (gizmo, inspector); sceneExtra holds the other selected objects.
+    std::vector<std::string> sceneExtra,hierarchyOrder;Json sceneClipboard=Json::array();
+    bool snapOn=false;double snapGrid=.5,snapAngle=15;HMENU snapMenu=nullptr;HWND hierarchySearch=nullptr;std::string hierarchyQuery;
+    Json selectedIds()const{Json out=Json::array();if(!sceneSelection.empty())out.push_back(sceneSelection);for(const auto& id:sceneExtra)out.push_back(id);return out;}
     int S(int value)const{return MulDiv(value,int(uiDpi),96);}
     HIMAGELIST assetIcons=nullptr;
     std::optional<std::string> queuedFolder;
@@ -165,7 +169,7 @@ class NativeEditorShell {
     static constexpr Command MeshUVView=static_cast<Command>(151),MeshUVFit=static_cast<Command>(150);
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
-        DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
+        DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -240,7 +244,8 @@ class NativeEditorShell {
     void makeControls(){
         INITCOMMONCONTROLSEX controls{sizeof(controls),ICC_TAB_CLASSES|ICC_LISTVIEW_CLASSES|ICC_TREEVIEW_CLASSES};InitCommonControlsEx(&controls);
         font=CreateFontW(-16,0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,0,0,CLEARTYPE_QUALITY,0,L"Segoe UI");
-        search=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,Search);SendMessageW(search,EM_SETCUEBANNER,TRUE,LPARAM(L"에셋 검색"));
+        search=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,Search);
+        hierarchySearch=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,HierarchySearch);SendMessageW(hierarchySearch,EM_SETCUEBANNER,TRUE,LPARAM(L"오브젝트 검색"));SendMessageW(search,EM_SETCUEBANNER,TRUE,LPARAM(L"에셋 검색"));
         folderBack=control(L"BUTTON",L"←",BS_PUSHBUTTON,FolderBack);
         folderForward=control(L"BUTTON",L"→",BS_PUSHBUTTON,FolderForward);
         folderPath=control(L"BUTTON",L"프로젝트",BS_LEFT,FolderPath);
@@ -339,13 +344,14 @@ class NativeEditorShell {
                     refreshHierarchy();return;
                 }
                 if(action=="select"||action=="clear"){
-                    selectActor(event.value("id",std::string()));queueViewport();return;
+                    selectActor(event.value("id",std::string()),action=="select"?(event.value("ctrl",false)?1:event.value("shift",false)?2:0):0);queueViewport();return;
                 }
                 if(action=="visible"||action=="lock"||action=="reparent"){editScene(event);return;}
                 if(action=="key"){
                     const auto key=event.value("key",std::string());
                     if(key=="Delete")perform(DeleteActor);
                     if(key=="f")perform(FocusActor);
+                    if(event.value("ctrl",false)){if(key=="c")perform(CopyActor);else if(key=="v")perform(PasteActor);else if(key=="d")perform(DuplicateActor);}
                 }
             }catch(const std::exception& error){report(error);}
         });
@@ -452,6 +458,7 @@ class NativeEditorShell {
         AppendMenuW(file,MF_STRING,ImportAsset,L"에셋 가져오기");
         AppendMenuW(file,MF_STRING,RenameAsset,L"선택한 에셋 이름 바꾸기\tF2");
         AppendMenuW(file,MF_STRING,DeleteAsset,L"선택한 에셋 삭제 (휴지통)\tDelete");
+        AppendMenuW(file,MF_STRING,MoveAsset,L"선택한 에셋을 다른 폴더로 이동");
         AppendMenuW(file,MF_STRING,Save,L"문서 저장\tCtrl+S");
         AppendMenuW(file,MF_STRING,CloseDocument,L"문서 닫기\tCtrl+W");
         AppendMenuW(file,MF_STRING,Recovery,L"저장 충돌 복구");
@@ -513,6 +520,14 @@ class NativeEditorShell {
         AppendMenuW(sceneMenu,MF_STRING,AddComponent,L"컴포넌트 추가");
         AppendMenuW(sceneMenu,MF_STRING,DeleteActor,L"선택 오브젝트 삭제\tDelete");
         AppendMenuW(sceneMenu,MF_STRING,DuplicateActor,L"선택 오브젝트 복제\tCtrl+D");
+        AppendMenuW(sceneMenu,MF_STRING,CopyActor,L"선택 오브젝트 복사\tCtrl+C");
+        AppendMenuW(sceneMenu,MF_STRING,PasteActor,L"오브젝트 붙여넣기\tCtrl+V");
+        snapMenu=CreatePopupMenu();
+        AppendMenuW(snapMenu,MF_STRING,SnapToggle,L"스냅 켜기\tG");AppendMenuW(snapMenu,MF_SEPARATOR,0,nullptr);
+        for(const auto& [id,text]:std::initializer_list<std::pair<Command,const wchar_t*>>{{SnapGridFirst,L"이동 격자 0.1"},{Command(SnapGridFirst+1),L"이동 격자 0.25"},{Command(SnapGridFirst+2),L"이동 격자 0.5"},{Command(SnapGridFirst+3),L"이동 격자 1"},{SnapGridLast,L"이동 격자 2"}})AppendMenuW(snapMenu,MF_STRING,id,text);
+        AppendMenuW(snapMenu,MF_SEPARATOR,0,nullptr);
+        for(const auto& [id,text]:std::initializer_list<std::pair<Command,const wchar_t*>>{{SnapAngleFirst,L"회전 5°"},{Command(SnapAngleFirst+1),L"회전 15°"},{Command(SnapAngleFirst+2),L"회전 45°"},{SnapAngleLast,L"회전 90°"}})AppendMenuW(snapMenu,MF_STRING,id,text);
+        AppendMenuW(sceneMenu,MF_POPUP,UINT_PTR(snapMenu),L"스냅");
         const HMENU prefabMenu=CreatePopupMenu();
         AppendMenuW(prefabMenu,MF_STRING,PrefabApply,L"변경 사항을 프리팹에 모두 적용");
         AppendMenuW(prefabMenu,MF_STRING,PrefabRevert,L"변경 사항 모두 되돌리기");
@@ -545,7 +560,7 @@ class NativeEditorShell {
     static const wchar_t* helpText(bool start){
         return start?
             L"HBEngine 시작하기\r\n" L"\r\n" L"1. 프로젝트 만들기\r\n" L"   파일 > 새 프로젝트에서 2D·3D 템플릿을 골라요. 파일 > 프로젝트 열기(Ctrl+O)나 최근 프로젝트로 다시 열어요.\r\n" L"2. 에셋 넣기\r\n" L"   이미지·모델·소리 파일을 콘텐츠 브라우저로 끌어다 놓거나 파일 > 에셋 가져오기를 써요.\r\n" L"   폴더는 왼쪽 트리와 경로 줄로 이동하고, 검색 칸과 종류 목록으로 찾아요.\r\n" L"3. 장면 꾸미기\r\n" L"   장면 > 오브젝트 추가로 물체를 놓고, 오른쪽 속성 패널에서 위치·컴포넌트를 바꿔요.\r\n" L"   에셋을 장면 화면으로 끌어다 놓아도 배치돼요. 이동·회전·크기는 W·E·R이에요.\r\n" L"   프리팹 인스턴스를 고친 뒤 장면 > 선택한 프리팹 인스턴스에서 프리팹에 적용하거나 되돌려요.\r\n" L"4. 로직 만들기\r\n" L"   블루프린트 에셋을 열고 빈 곳을 우클릭하거나 Space로 노드를 찾아 추가해요. 핀을 끌어 연결해요.\r\n" L"   C++가 필요하면 파일 > 새 C++ 클래스, 빌드 > C++ 클래스 컴파일을 써요.\r\n" L"5. 실행하기\r\n" L"   F5로 플레이하고 Shift+F5로 멈춰요. 블루프린트 노드에 F9로 중단점을 걸 수 있어요.\r\n" L"6. 저장·되돌리기\r\n" L"   Ctrl+S로 저장하고 Ctrl+Z·Ctrl+Y로 되돌리거나 다시 적용해요. 저장이 충돌하면 파일 > 저장 충돌 복구를 써요.\r\n" L"   저장하지 않은 문서는 30초마다 따로 보관돼요. 편집기가 갑자기 꺼지면 다음에 프로젝트를 열 때 복구할지 물어봐요.\r\n" L"   에셋을 지우면 Windows 휴지통으로 가서 되살릴 수 있어요. 다른 에셋이 쓰고 있으면 먼저 알려 줘요.\r\n" L"7. 게임 만들기\r\n" L"   빌드 > 빌드 프로필 설정에서 이름·화면 크기·그래픽 API를 고르고, 빌드 > 패키징으로 Windows 게임을 만들어요.\r\n" L"\r\n" L"창 배치가 흐트러지면 보기 > 기본 배치 복원을 써요. 문제가 생기면 보기 > 출력 로그에서 메시지를 확인해요.\r\n":
-            L"단축키 목록\r\n" L"\r\n" L"[전체]\r\n" L"  Ctrl+O        프로젝트 열기\r\n" L"  Ctrl+S        문서 저장\r\n" L"  Ctrl+W        문서 닫기\r\n" L"  Ctrl+Z        되돌리기\r\n" L"  Ctrl+Y        다시 적용\r\n" L"  Alt+↑         콘텐츠 브라우저 상위 폴더\r\n" L"  F5            플레이\r\n" L"  Shift+F5      플레이 중지\r\n" L"  F1            이 단축키 목록\r\n" L"\r\n" L"[장면 화면]\r\n" L"  W / E / R     이동 / 회전 / 크기 도구\r\n" L"  F             선택 오브젝트에 초점\r\n" L"  왼쪽 클릭     선택 (핸들을 끌면 변환)\r\n" L"  Shift+왼쪽 끌기  선택 오브젝트 변환\r\n" L"  우클릭 끌기   시점 회전\r\n" L"  우클릭+W·A·S·D·Q·E  비행 이동\r\n" L"  휠 버튼 끌기  시점 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Esc           변환 끌기 취소\r\n" L"  Delete        선택 오브젝트 삭제\r\n" L"  Ctrl+D        선택 오브젝트 복제\r\n" L"\r\n" L"[콘텐츠 브라우저]\r\n" L"  Delete        선택한 에셋을 휴지통으로\r\n" L"  F2            이름 바꾸기\r\n" L"  끌어다 놓기   장면에 배치\r\n" L"\r\n" L"[블루프린트·노드 그래프]\r\n" L"  우클릭        노드 추가 목록\r\n" L"  우클릭 끌기 / 휠 버튼 끌기  화면 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Space         노드 추가 목록\r\n" L"  C             주석 추가\r\n" L"  Ctrl+F        노드 찾기\r\n" L"  Delete        선택 노드 삭제\r\n" L"  F9            중단점 전환\r\n" L"  Esc           연결 중인 선 취소\r\n" L"  핀 우클릭     연결 끊기 / 출력 값 관찰\r\n" L"\r\n" L"[출력 로그]\r\n" L"  Ctrl+A        모두 선택\r\n" L"  Ctrl+C        복사\r\n";
+            L"단축키 목록\r\n" L"\r\n" L"[전체]\r\n" L"  Ctrl+O        프로젝트 열기\r\n" L"  Ctrl+S        문서 저장\r\n" L"  Ctrl+W        문서 닫기\r\n" L"  Ctrl+Z        되돌리기\r\n" L"  Ctrl+Y        다시 적용\r\n" L"  Alt+↑         콘텐츠 브라우저 상위 폴더\r\n" L"  F5            플레이\r\n" L"  Shift+F5      플레이 중지\r\n" L"  F1            이 단축키 목록\r\n" L"\r\n" L"[장면 화면]\r\n" L"  W / E / R     이동 / 회전 / 크기 도구\r\n" L"  F             선택 오브젝트에 초점\r\n" L"  왼쪽 클릭     선택 (핸들을 끌면 변환)\r\n" L"  Shift+왼쪽 끌기  선택 오브젝트 변환\r\n" L"  우클릭 끌기   시점 회전\r\n" L"  우클릭+W·A·S·D·Q·E  비행 이동\r\n" L"  휠 버튼 끌기  시점 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Esc           변환 끌기 취소\r\n" L"  Delete        선택 오브젝트 삭제\r\n" L"  Ctrl+D        선택 오브젝트 복제\r\n" L"  Ctrl+C / Ctrl+V  복사 / 붙여넣기 (다른 장면에도)\r\n" L"  Ctrl+클릭     여러 개 선택 / 선택 해제\r\n" L"  G             격자·각도 스냅 켜기 / 끄기 (간격은 장면 > 스냅)\r\n" L"\r\n" L"[콘텐츠 브라우저]\r\n" L"  Delete        선택한 에셋을 휴지통으로\r\n" L"  F2            이름 바꾸기\r\n" L"  끌어다 놓기   장면에 배치\r\n" L"  폴더 트리로 끌기  다른 폴더로 이동\r\n" L"\r\n" L"[블루프린트·노드 그래프]\r\n" L"  우클릭        노드 추가 목록\r\n" L"  우클릭 끌기 / 휠 버튼 끌기  화면 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Space         노드 추가 목록\r\n" L"  C             주석 추가\r\n" L"  Ctrl+F        노드 찾기\r\n" L"  Delete        선택 노드 삭제\r\n" L"  F9            중단점 전환\r\n" L"  Esc           연결 중인 선 취소\r\n" L"\r\n" L"[계층]\r\n" L"  Ctrl+클릭 / Shift+클릭  여러 개 / 범위 선택\r\n" L"  검색 칸       이름이나 type:, tag: 로 걸러 보기\r\n" L"  핀 우클릭     연결 끊기 / 출력 값 관찰\r\n" L"\r\n" L"[출력 로그]\r\n" L"  Ctrl+A        모두 선택\r\n" L"  Ctrl+C        복사\r\n";
     }
     // A plain dialog-class frame holding one read-only, selectable EDIT; X or Esc closes it.
     void showHelp(bool start){
@@ -588,6 +603,29 @@ class NativeEditorShell {
         BITMAPFILEHEADER head{0x4D42,DWORD(sizeof(BITMAPFILEHEADER)+sizeof(BITMAPINFOHEADER)+w*h*4),0,0,DWORD(sizeof(BITMAPFILEHEADER)+sizeof(BITMAPINFOHEADER))};
         std::ofstream out(file,std::ios::binary);out.write(reinterpret_cast<const char*>(&head),sizeof(head));out.write(reinterpret_cast<const char*>(&info.bmiHeader),sizeof(BITMAPINFOHEADER));out.write(static_cast<const char*>(bits),std::streamsize(w)*h*4);
         SelectObject(memory,old);DeleteObject(bitmap);DeleteDC(memory);ReleaseDC(nullptr,screen);
+    }
+    void updateSnapMenu(){
+        if(!snapMenu)return;CheckMenuItem(snapMenu,SnapToggle,MF_BYCOMMAND|(snapOn?MF_CHECKED:MF_UNCHECKED));
+        static const double grids[]={.1,.25,.5,1,2},angles[]={5,15,45,90};
+        for(int i=0;i<5;i++)if(std::abs(grids[i]-snapGrid)<1e-9)CheckMenuRadioItem(snapMenu,SnapGridFirst,SnapGridLast,SnapGridFirst+i,MF_BYCOMMAND);
+        for(int i=0;i<4;i++)if(std::abs(angles[i]-snapAngle)<1e-9)CheckMenuRadioItem(snapMenu,SnapAngleFirst,SnapAngleLast,SnapAngleFirst+i,MF_BYCOMMAND);
+    }
+    void copyActors(){
+        if(!sceneOpen()||sceneSelection.empty())return;
+        sceneClipboard=request("scene.copy",{{"ids",selectedIds()}}).at("objects");
+        statusText((L"오브젝트 "+std::to_wstring(selectedIds().size())+L"개를 복사했어요.").c_str());
+    }
+    void pasteActors(){if(sceneOpen()&&!sceneClipboard.empty())editScene({{"action","paste"},{"clipboard",sceneClipboard}});}
+    void moveAsset(const std::string& path,const std::string& target){
+        if(target.empty())throw std::runtime_error("Assets·Source·Settings 아래 폴더로 옮겨 주세요.");
+        const auto moved=request("content.move",{{"path",path},{"folder",target}});
+        refreshFiles();statusText((L"에셋을 옮겼어요: "+wide(moved.at("path"))).c_str());
+    }
+    void moveSelectedAsset(){
+        const int i=ListView_GetNextItem(files,-1,LVNI_SELECTED);
+        if(i<0||i>=int(entries.size()))return;
+        const auto target=inputName(L"옮길 폴더 (예: Assets/Props)",wide(folder),240);
+        if(!target.empty())moveAsset(entries.at(i).at("path").get<std::string>(),utf8(target));
     }
     void deleteSelectedAsset(){
         const int i=ListView_GetNextItem(files,-1,LVNI_SELECTED);
@@ -700,7 +738,9 @@ class NativeEditorShell {
         const int side=sceneShown?std::min(std::clamp(int(w*inspectorPercent/100),S(190),S(420)),std::max(0,w-S(160))):0;
         const int split=std::max(1,h*40/100);
         hierarchy.reparent(owner);
-        hierarchy.update({{"rect",{x+w-side+3,top,std::max(1,side-3),split}},{"visible",sceneShown&&side>0}});
+        if(GetParent(hierarchySearch)!=owner)SetParent(hierarchySearch,owner);
+        MoveWindow(hierarchySearch,x+w-side+3,top,std::max(1,side-3),S(26),TRUE);ShowWindow(hierarchySearch,sceneShown&&side>0?SW_SHOW:SW_HIDE);
+        hierarchy.update({{"rect",{x+w-side+3,top+S(28),std::max(1,side-3),std::max(1,split-S(28))}},{"visible",sceneShown&&side>0}});
         viewport.layout(owner,x,top,std::max(1,w-side-3),h,sceneShown);
         if(sceneShown)queueViewport();
         const int assetSide=canvasShown?std::min(std::clamp(int(w*inspectorPercent/100),S(190),S(420)),std::max(0,w-S(160))):0;
@@ -1091,19 +1131,25 @@ class NativeEditorShell {
         std::vector<std::pair<std::size_t,int>> stack;
         const auto push=[&](const std::vector<std::size_t>& siblings,int depth){for(auto it=siblings.rbegin();it!=siblings.rend();++it)stack.emplace_back(*it,depth);};
         push(children[""],0);
+        // A search keeps matching objects and their ancestors, with every branch open.
+        std::unordered_set<std::string> keep;const bool filtering=!hierarchyQuery.empty();
+        if(filtering){std::unordered_map<std::string,std::string> parents;for(const auto& row:sceneRows)parents[row.at("id").get<std::string>()]=row.value("parent",std::string());
+            for(const auto& row:sceneRows)if(row.value("match",false))for(std::string id=row.at("id").get<std::string>();!id.empty()&&keep.insert(id).second;id=parents[id]){}}
         while(!stack.empty()){
             const auto [i,depth]=stack.back();stack.pop_back();
             const auto& actor=sceneRows.at(i);const auto id=actor.at("id").get<std::string>();
-            const auto branch=children.find(id);const bool hasChildren=branch!=children.end(),closed=folded.count(id)>0;
+            const auto branch=children.find(id);const bool hasChildren=branch!=children.end(),closed=!filtering&&folded.count(id)>0;
+            if(filtering&&!keep.count(id))continue;
             rows.push_back({{"id",id},{"name",actor.at("name")},{"icon",actor.at("kind")},{"depth",depth},{"children",hasChildren},{"collapsed",closed},
-                {"selected",id==sceneSelection},{"visible",actor.value("visible",true)},{"locked",actor.value("locked",false)}});
+                {"selected",id==sceneSelection||std::find(sceneExtra.begin(),sceneExtra.end(),id)!=sceneExtra.end()},{"visible",actor.value("visible",true)},{"locked",actor.value("locked",false)}});
             if(hasChildren&&!closed)push(branch->second,depth+1);
         }
+        hierarchyOrder.clear();for(const auto& row:rows)hierarchyOrder.push_back(row.at("id").get<std::string>());
         hierarchy.update({{"rows",rows},{"reveal",sceneSelection}});
     }
     void refreshScene(){
         if(!sceneOpen())return;
-        sceneRows=request("scene.hierarchy");
+        sceneRows=request("scene.hierarchy",{{"query",hierarchyQuery}});
         cameraRows=Json::array();
         const int active=populateCameraViews(views,cameraRows,cameraId,cameraDirection,cameraOutputs);
         int selected=active;bool found=false;
@@ -1116,6 +1162,8 @@ class NativeEditorShell {
         }
         if(selected==active)cameraId.clear();
         if(!found&&!sceneSelection.empty()){sceneSelection.clear();fieldPath=Json::array();}
+        sceneExtra.erase(std::remove_if(sceneExtra.begin(),sceneExtra.end(),[&](const std::string& id){return std::none_of(sceneRows.begin(),sceneRows.end(),[&](const Json& row){return row.at("id")==id;});}),sceneExtra.end());
+        if(sceneSelection.empty()&&!sceneExtra.empty()){sceneSelection=sceneExtra.front();sceneExtra.erase(sceneExtra.begin());}
         SendMessageW(views,CB_SETCURSEL,selected,0);refreshHierarchy();
     }
     static int populateCameraViews(HWND combo,Json& rows,const std::string& camera,const std::string& direction,bool outputs){
@@ -1132,8 +1180,25 @@ class NativeEditorShell {
     static void selectCameraView(const Json& choice,std::string& camera,std::string& direction,bool& outputs){
         camera=choice.value("camera",std::string());direction=choice.value("direction",std::string());outputs=choice.value("outputs",false);
     }
-    void selectActor(const std::string& id){
+    // mode 0 replaces the selection, 1 toggles (Ctrl+click), 2 extends over the visible hierarchy rows (Shift+click).
+    void selectActor(const std::string& id,int mode=0){
         if(!sceneOpen())return;
+        if(mode&&id.empty())return;
+        if(mode==1&&!sceneSelection.empty()){
+            if(id==sceneSelection){if(sceneExtra.empty())sceneSelection.clear();else{sceneSelection=sceneExtra.front();sceneExtra.erase(sceneExtra.begin());}}
+            else if(const auto at=std::find(sceneExtra.begin(),sceneExtra.end(),id);at!=sceneExtra.end())sceneExtra.erase(at);
+            else{sceneExtra.push_back(sceneSelection);sceneSelection=id;}
+            fieldPath=Json::array();viewport.setHandles(Json::array());refreshHierarchy();refreshForm();return;
+        }
+        if(mode==2&&!sceneSelection.empty()){
+            const auto from=std::find(hierarchyOrder.begin(),hierarchyOrder.end(),sceneSelection),to=std::find(hierarchyOrder.begin(),hierarchyOrder.end(),id);
+            if(from!=hierarchyOrder.end()&&to!=hierarchyOrder.end()){
+                const auto [first,last]=std::minmax(from,to);sceneExtra.clear();
+                for(auto it=first;it<=last;++it)if(*it!=id)sceneExtra.push_back(*it);
+                sceneSelection=id;fieldPath=Json::array();viewport.setHandles(Json::array());refreshHierarchy();refreshForm();return;
+            }
+        }
+        sceneExtra.clear();
         if(sceneSelection!=id){fieldPath=Json::array();viewport.setHandles(Json::array());}
         sceneSelection=id;refreshHierarchy();refreshForm();
     }
@@ -1141,7 +1206,7 @@ class NativeEditorShell {
         if(!sceneOpen()||sourceMode)return;
         if(input.value("command",std::string())=="shortcut"){
             const auto key=input.value("key",std::string());
-            try{if(key=="delete")perform(DeleteActor);else if(key=="duplicate")perform(DuplicateActor);}catch(const std::exception& error){report(error);}
+            try{if(key=="delete")perform(DeleteActor);else if(key=="duplicate")perform(DuplicateActor);else if(key=="copy")perform(CopyActor);else if(key=="paste")perform(PasteActor);else if(key=="snap")perform(SnapToggle);}catch(const std::exception& error){report(error);}
             return;
         }
         if(!input.empty()){
@@ -1172,10 +1237,10 @@ class NativeEditorShell {
         auto state=request("scene.viewport",input);
         viewport.setHandles(state.at("segments"));
         const auto action=input.value("command",std::string());
-        if(action=="pick")selectActor(state.value("selection",std::string()));
-        else if((action=="translate"||action=="transform")&&state.contains("translation"))editScene({{"action","translate"},{"id",sceneSelection},{"delta",state.at("translation")}});
+        if(action=="pick")selectActor(state.value("selection",std::string()),(GetKeyState(VK_CONTROL)&0x8000)?1:0);
+        else if((action=="translate"||action=="transform")&&state.contains("translation"))editScene({{"action","translate"},{"id",sceneSelection},{"ids",selectedIds()},{"delta",state.at("translation")}});
         else if(action=="transform"&&state.contains("sceneTransform")){
-            auto edit=state.at("sceneTransform");edit["action"]=input.at("tool");edit["id"]=sceneSelection;editScene(std::move(edit));
+            auto edit=state.at("sceneTransform");edit["action"]=input.at("tool");edit["id"]=sceneSelection;edit["ids"]=selectedIds();editScene(std::move(edit));
         }
         const auto prep=state.value("shaderPreparation",Json::object());
         const auto issue=prep.value("error",std::string());
@@ -1192,9 +1257,13 @@ class NativeEditorShell {
     void editScene(Json input){
         if(!sceneOpen())return;
         input["expectedRevision"]=document.at("revision");
+        const auto action=input.value("action",std::string());
+        if(snapOn&&(action=="translate"||action=="rotate"))input["snap"]={{"grid",snapGrid},{"angle",snapAngle}};
         auto changed=request("scene.edit",input);
         const auto selection=changed.value("selection",std::string());
         if(sceneSelection!=selection)fieldPath=Json::array();
+        if(changed.contains("selections")){sceneExtra.clear();for(std::size_t i=1;i<changed.at("selections").size();++i)sceneExtra.push_back(changed.at("selections").at(i).get<std::string>());}
+        else if(sceneSelection!=selection)sceneExtra.clear();
         sceneSelection=selection;
         showDocument(std::move(changed));
     }
@@ -1344,7 +1413,14 @@ class NativeEditorShell {
             auto asset=std::move(self.draggedAsset);self.draggedAsset.clear();
             POINT screen{short(LOWORD(l)),short(HIWORD(l))};ClientToScreen(list,&screen);
             if(GetCapture()==list)ReleaseCapture();
-            try{self.dropAsset(asset,screen);}catch(const std::exception& error){self.report(error);}
+            try{
+                // Dropped on a folder in the tree: move the asset there instead of placing it.
+                if(WindowFromPoint(screen)==self.folderTree){
+                    TVHITTESTINFO hit{};hit.pt=screen;ScreenToClient(self.folderTree,&hit.pt);
+                    if(const auto item=TreeView_HitTest(self.folderTree,&hit)){TVITEMW row{};row.mask=TVIF_PARAM;row.hItem=item;TreeView_GetItem(self.folderTree,&row);
+                        self.moveAsset(asset,row.lParam>0&&std::size_t(row.lParam)<=self.browserFolders.size()?self.browserFolders.at(row.lParam-1).at("path").get<std::string>():std::string());}
+                }else self.dropAsset(asset,screen);
+            }catch(const std::exception& error){self.report(error);}
             return 0;
         }
         if(message==WM_CAPTURECHANGED||message==WM_CANCELMODE||message==WM_NCDESTROY)self.draggedAsset.clear();
@@ -2175,7 +2251,7 @@ class NativeEditorShell {
         WINDOWPLACEMENT placement{sizeof(placement)};
         if(!GetWindowPlacement(window,&placement))return;
         const auto& r=placement.rcNormalPosition;
-        const Json saved={{"browse",browsePercent},{"inspector",inspectorPercent},{"splitPercent",splitPercent},{"lowerSplitPercent",lowerSplitPercent},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}},{"maximized",placement.showCmd==SW_SHOWMAXIMIZED},{"uiScale",userScale},{"console",consoleVisible},{"browserTiles",browserTiles},{"contentDetached",contentWindow!=nullptr},{"project",utf8(projectFile.wstring())},{"documents",std::move(panes)}};
+        const Json saved={{"browse",browsePercent},{"inspector",inspectorPercent},{"splitPercent",splitPercent},{"lowerSplitPercent",lowerSplitPercent},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}},{"maximized",placement.showCmd==SW_SHOWMAXIMIZED},{"uiScale",userScale},{"snap",{{"on",snapOn},{"grid",snapGrid},{"angle",snapAngle}}},{"console",consoleVisible},{"browserTiles",browserTiles},{"contentDetached",contentWindow!=nullptr},{"project",utf8(projectFile.wstring())},{"documents",std::move(panes)}};
         auto temp=layoutFile;temp+=L"."+std::to_wstring(GetCurrentProcessId())+L".tmp";
         write(temp,saved.dump());
         if(!MoveFileExW(temp.c_str(),layoutFile.c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH))DeleteFileW(temp.c_str());
@@ -2191,6 +2267,7 @@ class NativeEditorShell {
             lowerSplitPercent=std::clamp(data.value("lowerSplitPercent",43u),25u,75u);
             layoutMaximized=data.value("maximized",false);
             userScale=std::clamp(data.value("uiScale",0.0),0.0,3.0);if(userScale>0&&userScale<1)userScale=0;
+            if(data.contains("snap")){const auto& s=data.at("snap");snapOn=s.value("on",false);snapGrid=std::clamp(s.value("grid",.5),.01,100.0);snapAngle=std::clamp(s.value("angle",15.0),1.0,180.0);}updateSnapMenu();
             consoleVisible=data.value("console",false);
             setBrowserTiles(data.value("browserTiles",false));
             contentDetachedOnStart=data.value("contentDetached",false);
@@ -2692,6 +2769,14 @@ class NativeEditorShell {
     void perform(Command command){
         if(command==ShowHelp||command==ShowShortcuts){showHelp(command==ShowHelp);return;}
         if(command==DeleteAsset){deleteSelectedAsset();return;}
+        if(command==CopyActor){copyActors();return;}
+        if(command==PasteActor){pasteActors();return;}
+        if(command==MoveAsset){moveSelectedAsset();return;}
+        if(command>=SnapToggle&&command<=SnapAngleLast){
+            static const double grids[]={.1,.25,.5,1,2},angles[]={5,15,45,90};
+            if(command==SnapToggle)snapOn=!snapOn;else if(command<=SnapGridLast){snapGrid=grids[command-SnapGridFirst];snapOn=true;}else{snapAngle=angles[command-SnapAngleFirst];snapOn=true;}
+            updateSnapMenu();saveLayout();statusText(snapOn?L"스냅을 켰어요.":L"스냅을 껐어요.");return;
+        }
         if(command>=ScaleAuto&&command<=Scale200){static const double scales[]={0,1,1.25,1.5,1.75,2};userScale=scales[command-ScaleAuto];applyScale();saveLayout();return;}
         if(command>=PrefabApply&&command<=PrefabUnpack){
             if(sceneSelection.empty())throw std::runtime_error("프리팹 인스턴스를 선택하세요.");
@@ -3048,10 +3133,10 @@ class NativeEditorShell {
             return;
         }
         case DeleteActor:
-            if(!sceneSelection.empty())editScene({{"action","delete"},{"id",sceneSelection}});
+            if(!sceneSelection.empty())editScene({{"action","delete"},{"id",sceneSelection},{"ids",selectedIds()}});
             return;
         case DuplicateActor:
-            if(!sceneSelection.empty())editScene({{"action","duplicate"},{"id",sceneSelection}});
+            if(!sceneSelection.empty())editScene({{"action","duplicate"},{"id",sceneSelection},{"ids",selectedIds()}});
             return;
         case FocusActor:queueViewport({{"command","focus"}});return;
         case TranslateActor:case RotateActor:case ScaleActor:
@@ -3315,6 +3400,7 @@ class NativeEditorShell {
         if(message==WM_COMMAND){
             const auto id=Command(LOWORD(w));
             if(id==Search&&HIWORD(w)==EN_CHANGE&&!updating)SetTimer(window,1,180,nullptr);
+            else if(id==HierarchySearch&&HIWORD(w)==EN_CHANGE){const auto length=GetWindowTextLengthW(hierarchySearch);std::wstring text(size_t(length)+1,L' ');text.resize(GetWindowTextW(hierarchySearch,text.data(),length+1));hierarchyQuery=utf8(text);try{refreshScene();}catch(const std::exception& error){report(error);}}
             else if(id==ContentType&&HIWORD(w)==CBN_SELCHANGE&&!updating)refreshFiles();
             else if(id==ContentRecursive&&HIWORD(w)==BN_CLICKED)refreshFiles();
             else if(id==ContentTiles&&HIWORD(w)==BN_CLICKED){setBrowserTiles(SendMessageW(assetTiles,BM_GETCHECK,0,0)==BST_CHECKED);layout();}
@@ -3984,9 +4070,20 @@ private:
         const auto startPage=helpPage(ShowHelp),keysPage=helpPage(ShowShortcuts);const HWND helpOwner=helpWindow;
         const bool help=startPage.first.find(L"시작하기")!=std::wstring::npos&&startPage.second.find(L"새 프로젝트")!=std::wstring::npos&&keysPage.first.find(L"단축키")!=std::wstring::npos&&keysPage.second.find(L"Shift+F5")!=std::wstring::npos&&keysPage.second.find(L"Ctrl+Z")!=std::wstring::npos&&helpWindow==helpOwner;
         SendMessageW(helpWindow,WM_CLOSE,0,0);if(!help||IsWindow(helpOwner))throw std::runtime_error("Native help window failed");
+        // Editing basics through the real menu commands: Ctrl-select two rows, copy, paste, undo, search filter.
+        showDocument(request("document.open",{{"path",startupScenePath}}));refreshScene();
+        const auto objectCount=[&]{return request("scene.hierarchy").size();};const auto countBefore=objectCount();
+        if(hierarchyOrder.size()<2)throw std::runtime_error("Native editing basics need two scene objects");
+        selectActor(hierarchyOrder.at(0));selectActor(hierarchyOrder.at(1),1);const bool multiSelect=selectedIds().size()==2;
+        command(CopyActor);command(PasteActor);const bool pasted=objectCount()==countBefore+2&&selectedIds().size()==2;
+        command(Undo);const bool undone=objectCount()==countBefore;
+        SetWindowTextW(hierarchySearch,L"no-such-object-name");const bool filtered=hierarchyOrder.empty();
+        SetWindowTextW(hierarchySearch,L"");const bool unfiltered=hierarchyOrder.size()==countBefore;
+        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered}};
+        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);captureWindow(fs::path(capture));}
-        write(smoke,Json{{"ok",true},{"help",help},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
+        write(smoke,Json{{"ok",true},{"help",help},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
 };

@@ -529,7 +529,7 @@ assert.equal(evidence.browserTreeAndFilter,true);
 assert.equal(evidence.modelImportPreview,true);
 assert.equal(evidence.independentAssetPreview,true);
 assert.deepEqual(evidence.worldAssets,{backend:'D3D12',terrain:true,foliage:true,mesh:true,meshTools:true,uvView:true,lod:true});
-assert.equal(evidence.curveBox,true);assert.equal(evidence.help,true);
+assert.equal(evidence.curveBox,true);assert.equal(evidence.help,true);assert.deepEqual(evidence.editingBasics,{multiSelect:true,copyPaste:true,undo:true,searchFilter:true});
 assert.equal(evidence.independentAssetForm,true);
 assert.equal(evidence.debugBreaks,process.argv[3]?2:0);
 if(process.argv[3])assert.equal(evidence.debugSnapshot.variables[0].value,'27');

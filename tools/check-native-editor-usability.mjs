@@ -82,5 +82,44 @@ try{
   await session('editor.autosave');
   await record.project.write(scene,JSON.stringify({...JSON.parse((await session('document.read',{path:scene})).text),objects:[]}));
   assert.deepEqual(await session('editor.autosaves'),[],'stale autosave is dropped');
-  console.log(JSON.stringify({passed:true,prefab:['apply','revert','refresh','unpack'],delete:{referenceWarning:true,trash:true},autosave:{restored:true,stale:'dropped'}}));
+  // Editing basics: multi-selection, copy/paste, snap, hierarchy search, asset move.
+  // The stale-autosave step edited the project outside this session; reopen it like the editor would.
+  await session('document.close',{path:scene,discard:true});
+  session=nativeEditorSession(null);await session('project.open',{file:manifestFile});
+  await session('editor.discardAutosave',{path:scene});
+  doc=await session('document.open',{path:scene});
+  const key=(await session('scene.catalog')).placements[0].id;
+  doc=await session('scene.edit',{action:'add',key,expectedRevision:doc.revision});const a=doc.selection;
+  doc=await session('scene.edit',{action:'add',key,expectedRevision:doc.revision});const b=doc.selection;
+  const objects=()=>JSON.parse(doc.text).objects,find=id=>objects().find(o=>o.id===id);
+  const before=objects().length;
+  doc=await session('scene.edit',{action:'duplicate',id:a,ids:[a,b],expectedRevision:doc.revision});
+  assert.equal(objects().length,before+2,'duplicate copies every selected object');assert.equal(doc.selections.length,2);
+  const copies=doc.selections;
+  doc=await session('scene.edit',{action:'translate',id:a,ids:[a,b],delta:[0.37,0,0],snap:{grid:0.5,angle:15},expectedRevision:doc.revision});
+  for(const id of [a,b])assert.equal(find(id).position[0]%0.5,0,'translate snaps to the grid');
+  doc=await session('scene.edit',{action:'rotate',id:a,axis:1,value:0.2,snap:{grid:0.5,angle:15},expectedRevision:doc.revision});
+  assert.equal(Math.round(find(a).rotation[1]*1e6)%15e6,0,'rotate snaps to the angle step');
+  const clipboard=(await session('scene.copy',{path:scene,ids:[a,b]})).objects;
+  doc=await session('scene.edit',{action:'paste',clipboard,expectedRevision:doc.revision});
+  assert.equal(objects().length,before+4,'paste adds the copied objects');assert.equal(doc.selections.length,2);
+  doc=await session('scene.edit',{action:'delete',id:copies[0],ids:copies,expectedRevision:doc.revision});
+  assert.equal(objects().length,before+2,'delete removes every selected object');
+  doc=await session('editor.undo',{path:scene,expectedRevision:doc.revision});
+  assert.equal(objects().length,before+4,'multi delete is undoable');
+  const named=find(a).name,rows=await session('scene.hierarchy',{query:'"'+named+'"'});
+  assert.ok(rows.find(r=>r.id===a).match);
+  assert.ok((await session('scene.hierarchy',{query:'no-such-object-name'})).every(r=>r.match===false),'search hides non-matching rows');
+  assert.ok((await session('scene.hierarchy')).every(r=>r.match===undefined),'no query means no filter');
+  await session('content.mkdir',{folder:'Assets',name:'Moved'});
+  // The referenced prefab moves; the scene keeps resolving it through the rename redirect.
+  const moved=await session('content.move',{path:prefabFile,folder:'Assets/Moved'});
+  assert.equal(moved.path,'Assets/Moved/PF_Box.hbprefab.json');
+  await fs.access(path.join(record.project.root,moved.path));
+  await assert.rejects(fs.access(path.join(record.project.root,prefabFile)));
+  doc=await session('scene.edit',{action:'placeAsset',asset:prefabFile,position:[0,0,3],expectedRevision:doc.revision});
+  assert.ok(find(doc.selection).prefabLink,'old prefab path still places through the redirect');
+  await assert.rejects(session('content.move',{path:'Assets/Moved',folder:'Assets/Moved'}),/자기 안으로|같은/);
+  await assert.rejects(session('content.move',{path:moved.path,folder:'Assets/Missing'}),/대상 폴더가 없어요/);
+  console.log(JSON.stringify({passed:true,prefab:['apply','revert','refresh','unpack'],delete:{referenceWarning:true,trash:true},autosave:{restored:true,stale:'dropped'},basics:{multiSelect:true,copyPaste:true,snap:true,search:true,move:true}}));
 }finally{await pruneTestArtifacts(work);}
