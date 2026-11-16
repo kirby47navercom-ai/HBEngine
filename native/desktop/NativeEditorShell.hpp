@@ -14,7 +14,10 @@ class NativeEditorShell {
     using Json=nlohmann::json;
     HWND window=nullptr,detached=nullptr,files=nullptr,tabs=nullptr,source=nullptr,search=nullptr,palette=nullptr,views=nullptr,status=nullptr;
     HWND folderBack=nullptr,folderForward=nullptr,folderPath=nullptr,folderTree=nullptr,assetType=nullptr,assetRecursive=nullptr,assetTiles=nullptr;
-    HWND contentWindow=nullptr,helpWindow=nullptr;
+    HWND contentWindow=nullptr,helpWindow=nullptr,dockTabs=nullptr;
+    // Old web editor palette for Win32 controls (see style.css :root).
+    static constexpr COLORREF bgColor=RGB(0x20,0x22,0x26),panelColor=RGB(0x29,0x2c,0x31),fieldColor=RGB(0x20,0x23,0x28),lineColor=RGB(0x44,0x4a,0x54),textColor=RGB(0xe4,0xe7,0xed),mutedColor=RGB(0xb1,0xb8,0xc4),faintColor=RGB(0x93,0x9e,0xae),accentColor=RGB(0x50,0x89,0xc9);
+    static inline HBRUSH bgBrush=CreateSolidBrush(bgColor),fieldBrush=CreateSolidBrush(fieldColor),panelBrush=CreateSolidBrush(panelColor),lineBrush=CreateSolidBrush(lineColor),accentBrush=CreateSolidBrush(accentColor);
     // Editor UI scale in DPI units: system DPI, or the user's 편집기 배율 (0 = follow Windows).
     unsigned uiDpi=96;double userScale=0;HMENU scaleMenu=nullptr;std::string startupScenePath;
     // Scene selection: sceneSelection is the primary (gizmo, inspector); sceneExtra holds the other selected objects.
@@ -169,7 +172,7 @@ class NativeEditorShell {
     static constexpr Command MeshUVView=static_cast<Command>(151),MeshUVFit=static_cast<Command>(150);
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
-        DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
+        DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -243,7 +246,7 @@ class NativeEditorShell {
     }
     void makeControls(){
         INITCOMMONCONTROLSEX controls{sizeof(controls),ICC_TAB_CLASSES|ICC_LISTVIEW_CLASSES|ICC_TREEVIEW_CLASSES};InitCommonControlsEx(&controls);
-        font=CreateFontW(-16,0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,0,0,CLEARTYPE_QUALITY,0,L"Segoe UI");
+        font=CreateFontW(-13,0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,0,0,CLEARTYPE_QUALITY,0,L"Segoe UI");
         search=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,Search);
         hierarchySearch=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,HierarchySearch);SendMessageW(hierarchySearch,EM_SETCUEBANNER,TRUE,LPARAM(L"오브젝트 검색"));SendMessageW(search,EM_SETCUEBANNER,TRUE,LPARAM(L"에셋 검색"));
         folderBack=control(L"BUTTON",L"←",BS_PUSHBUTTON,FolderBack);
@@ -273,11 +276,20 @@ class NativeEditorShell {
         LVCOLUMNW column{};column.mask=LVCF_WIDTH;column.cx=240;ListView_InsertColumn(files,0,&column);
         tabs=control(WC_TABCONTROLW,L"",WS_CLIPSIBLINGS,Tabs);
         if(!SetWindowSubclass(tabs,tabProcedure,1,reinterpret_cast<DWORD_PTR>(this)))throw std::runtime_error("문서 탭 입력을 초기화하지 못했어요.");
+        dockTabs=control(WC_TABCONTROLW,L"",WS_CLIPSIBLINGS,DockTabs);
+        for(const wchar_t* label:{L"콘텐츠 브라우저",L"출력 로그"}){TCITEMW item{};item.mask=TCIF_TEXT;item.pszText=const_cast<wchar_t*>(label);TabCtrl_InsertItem(dockTabs,TabCtrl_GetItemCount(dockTabs),&item);}
+        SetWindowSubclass(dockTabs,[](HWND h,UINT m,WPARAM w,LPARAM l,UINT_PTR,DWORD_PTR ref)->LRESULT{if(m==WM_ERASEBKGND)return 1;if(m==WM_PAINT){reinterpret_cast<NativeEditorShell*>(ref)->paintTabs(h);return 0;}return DefSubclassProc(h,m,w,l);},1,reinterpret_cast<DWORD_PTR>(this));
         source=control(L"EDIT",L"",WS_BORDER|WS_VSCROLL|WS_HSCROLL|ES_MULTILINE|ES_WANTRETURN|ES_AUTOVSCROLL|ES_AUTOHSCROLL,Source);
         SendMessageW(source,EM_SETLIMITTEXT,0,0);
         palette=control(L"COMBOBOX",L"",CBS_DROPDOWNLIST|WS_VSCROLL,Palette);
         views=control(L"COMBOBOX",L"",CBS_DROPDOWNLIST|WS_VSCROLL,Views);
-        status=control(L"STATIC",L"프로젝트를 열거나 새 프로젝트를 만드세요.",SS_LEFT,Status);
+        status=control(L"STATIC",L"프로젝트를 열거나 새 프로젝트를 만드세요.",SS_LEFT|SS_CENTERIMAGE,Status);
+        // Dark controls: list/tree colours, dark scrollbars and buttons, push-like toggles instead of light check boxes.
+        TreeView_SetBkColor(folderTree,fieldColor);TreeView_SetTextColor(folderTree,textColor);TreeView_SetLineColor(folderTree,lineColor);
+        ListView_SetBkColor(files,fieldColor);ListView_SetTextBkColor(files,fieldColor);ListView_SetTextColor(files,textColor);
+        for(HWND h:{assetRecursive,assetTiles})SetWindowLongPtrW(h,GWL_STYLE,GetWindowLongPtrW(h,GWL_STYLE)|BS_PUSHLIKE);
+        for(HWND h:{folderTree,files,source,folderBack,folderForward,folderPath,assetRecursive,assetTiles,search,hierarchySearch})SetWindowTheme(h,L"DarkMode_Explorer",nullptr);
+        for(HWND h:{assetType,palette,views})SetWindowTheme(h,L"DarkMode_CFD",nullptr);
         graph.attach(window,instance,[this](const Json& event){
             try{
                 if(event.at("event")=="edit")editGraph(event);
@@ -495,8 +507,7 @@ class NativeEditorShell {
         AppendMenuW(viewMenu,MF_STRING,ShowConsole,L"출력 로그 표시 / 숨기기");
         AppendMenuW(viewMenu,MF_STRING,ToggleSource,L"편집 화면 / 소스 전환");
         AppendMenuW(viewMenu,MF_STRING,Up,L"상위 폴더\tAlt+↑");
-        AppendMenuW(viewMenu,MF_STRING,WideBrowser,L"콘텐츠 브라우저 너비 변경");
-        AppendMenuW(viewMenu,MF_STRING,WideInspector,L"속성 패널 너비 변경");
+                AppendMenuW(viewMenu,MF_STRING,WideInspector,L"속성 패널 너비 변경");
         AppendMenuW(viewMenu,MF_STRING,ResetLayout,L"기본 배치 복원");
         scaleMenu=CreatePopupMenu();
         AppendMenuW(scaleMenu,MF_STRING,ScaleAuto,L"Windows 설정 따르기");
@@ -573,9 +584,11 @@ class NativeEditorShell {
             SetWindowSubclass(helpWindow,[](HWND h,UINT m,WPARAM w,LPARAM l,UINT_PTR,DWORD_PTR)->LRESULT{
                 if(m==WM_SIZE){MoveWindow(GetWindow(h,GW_CHILD),0,0,LOWORD(l),HIWORD(l),TRUE);return 0;}
                 if(m==WM_CLOSE||(m==WM_COMMAND&&LOWORD(w)==IDCANCEL)){DestroyWindow(h);return 0;}
+                if(m==WM_CTLCOLORSTATIC||m==WM_CTLCOLOREDIT){SetTextColor(HDC(w),textColor);SetBkColor(HDC(w),fieldColor);return LRESULT(fieldBrush);}
                 return DefSubclassProc(h,m,w,l);},1,0);
             SetWindowSubclass(text,[](HWND h,UINT m,WPARAM w,LPARAM l,UINT_PTR,DWORD_PTR)->LRESULT{if(m==WM_KEYDOWN&&w==VK_ESCAPE){PostMessageW(GetParent(h),WM_CLOSE,0,0);return 0;}return DefSubclassProc(h,m,w,l);},1,0);
             RECT client{};GetClientRect(helpWindow,&client);MoveWindow(text,0,0,client.right,client.bottom,FALSE);
+            const BOOL dark=TRUE;DwmSetWindowAttribute(helpWindow,20,&dark,sizeof(dark));SetWindowTheme(text,L"DarkMode_Explorer",nullptr);
         }
         const HWND text=GetWindow(helpWindow,GW_CHILD);SetWindowTextW(text,helpText(start));SendMessageW(text,EM_SETSEL,0,0);
         SetWindowTextW(helpWindow,start?L"HBEngine 도움말 - 시작하기":L"HBEngine 도움말 - 단축키 목록");
@@ -586,7 +599,7 @@ class NativeEditorShell {
         double factor=userScale>0?userScale:GetDpiForWindow(window)/96.0;
         if(const char* forced=std::getenv("HB_EDITOR_UI_SCALE"))if(const double value=std::atof(forced);value>=1&&value<=3)factor=value;
         uiDpi=unsigned(std::lround(96*std::clamp(factor,1.0,3.0)));EditorPanelBase::uiScale=float(uiDpi/96.0);
-        const HFONT previous=font;font=CreateFontW(-S(16),0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,0,0,CLEARTYPE_QUALITY,0,L"Segoe UI");
+        const HFONT previous=font;font=CreateFontW(-S(13),0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,0,0,CLEARTYPE_QUALITY,0,L"Segoe UI");
         struct Swap{HFONT from,to;};Swap swap{previous,font};
         EnumThreadWindows(GetCurrentThreadId(),[](HWND top,LPARAM p)->BOOL{const auto& s=*reinterpret_cast<Swap*>(p);if(HFONT(SendMessageW(top,WM_GETFONT,0,0))==s.from)SendMessageW(top,WM_SETFONT,WPARAM(s.to),TRUE);EnumChildWindows(top,[](HWND h,LPARAM q)->BOOL{const auto& t=*reinterpret_cast<Swap*>(q);if(HFONT(SendMessageW(h,WM_GETFONT,0,0))==t.from)SendMessageW(h,WM_SETFONT,WPARAM(t.to),TRUE);return TRUE;},p);return TRUE;},LPARAM(&swap));
         if(previous)DeleteObject(previous);
@@ -603,6 +616,18 @@ class NativeEditorShell {
         BITMAPFILEHEADER head{0x4D42,DWORD(sizeof(BITMAPFILEHEADER)+sizeof(BITMAPINFOHEADER)+w*h*4),0,0,DWORD(sizeof(BITMAPFILEHEADER)+sizeof(BITMAPINFOHEADER))};
         std::ofstream out(file,std::ios::binary);out.write(reinterpret_cast<const char*>(&head),sizeof(head));out.write(reinterpret_cast<const char*>(&info.bmiHeader),sizeof(BITMAPINFOHEADER));out.write(static_cast<const char*>(bits),std::streamsize(w)*h*4);
         SelectObject(memory,old);DeleteObject(bitmap);DeleteDC(memory);ReleaseDC(nullptr,screen);
+    }
+    // Flat dark tab strip (old .workspace-tab look): active tab gets the page colour and an accent top line.
+    void paintTabs(HWND h){
+        PAINTSTRUCT paint{};HDC dc=BeginPaint(h,&paint);RECT r{};GetClientRect(h,&r);FillRect(dc,&r,panelBrush);
+        RECT base{r.left,r.bottom-1,r.right,r.bottom};FillRect(dc,&base,lineBrush);
+        const int current=TabCtrl_GetCurSel(h);const auto old=SelectObject(dc,font);SetBkMode(dc,TRANSPARENT);
+        for(int i=0;i<TabCtrl_GetItemCount(h);++i){
+            RECT item{};TabCtrl_GetItemRect(h,i,&item);wchar_t label[260]{};TCITEMW row{};row.mask=TCIF_TEXT;row.pszText=label;row.cchTextMax=260;TabCtrl_GetItem(h,i,&row);
+            if(i==current){FillRect(dc,&item,bgBrush);RECT top{item.left,item.top,item.right,item.top+S(2)};FillRect(dc,&top,accentBrush);}
+            SetTextColor(dc,i==current?textColor:mutedColor);RECT text=item;text.left+=S(8);text.right-=S(4);DrawTextW(dc,label,-1,&text,DT_SINGLELINE|DT_VCENTER|DT_LEFT|DT_END_ELLIPSIS|DT_NOPREFIX);
+        }
+        SelectObject(dc,old);EndPaint(h,&paint);
     }
     void updateSnapMenu(){
         if(!snapMenu)return;CheckMenuItem(snapMenu,SnapToggle,MF_BYCOMMAND|(snapOn?MF_CHECKED:MF_UNCHECKED));
@@ -680,27 +705,19 @@ class NativeEditorShell {
     void layout(){
         if(!source)return;
         RECT rect{};GetClientRect(window,&rect);
-        const int width=rect.right,height=rect.bottom,left=contentWindow?0:std::clamp(int(width*browsePercent/100),S(150),S(460));
-        RECT browser{};GetClientRect(contentWindow?contentWindow:window,&browser);
-        const int browserWidth=contentWindow?int(browser.right):left;
-        MoveWindow(folderBack,S(5),S(5),S(28),S(27),TRUE);MoveWindow(folderForward,S(36),S(5),S(28),S(27),TRUE);
-        MoveWindow(folderPath,S(68),S(5),std::max(1,browserWidth-S(73)),S(27),TRUE);
-        MoveWindow(search,S(5),S(36),std::max(1,browserWidth-S(10)),S(27),TRUE);
-        const int treeHeight=std::clamp(int(browser.bottom)/4,S(65),S(200));
-        MoveWindow(assetType,S(5),S(66),std::max(1,browserWidth-S(113)),S(290),TRUE);
-        MoveWindow(assetRecursive,browserWidth-S(104),S(66),S(48),S(24),TRUE);
-        MoveWindow(assetTiles,browserWidth-S(54),S(66),S(48),S(24),TRUE);
-        MoveWindow(folderTree,S(5),S(94),std::max(1,browserWidth-S(10)),treeHeight,TRUE);
-        MoveWindow(files,S(5),S(99)+treeHeight,std::max(1,browserWidth-S(10)),std::max(1,int(browser.bottom)-treeHeight-(contentWindow?S(105):S(124))),TRUE);
-        ListView_SetColumnWidth(files,0,std::max(1,browserWidth-S(31)));
-        MoveWindow(tabs,left,S(3),std::max(1,width-left-S(5)),S(29),TRUE);
-        MoveWindow(status,S(8),height-S(22),std::max(1,width-S(16)),S(20),TRUE);
-        const int logHeight=consoleVisible?std::min(S(185),std::max(0,height/3)):0;
-        console.update({{"rect",{left+S(5),height-logHeight-S(24),std::max(1,width-left-S(11)),logHeight}},{"visible",logHeight>0}});
+        const int width=rect.right,height=rect.bottom,statusHeight=S(26);
+        // Old editor arrangement: outliner left, documents centre, content browser / output log docked below, properties right.
+        const bool sceneLayout=!detached&&document.value("kind",std::string())=="scene"&&!sourceMode;
+        const int left=sceneLayout?std::min(S(214),width/4):0;
+        const int dockHeight=contentWindow&&!consoleVisible?0:std::clamp(height/4,S(180),S(245));
+        if(contentWindow){RECT browser{};GetClientRect(contentWindow,&browser);placeBrowser(S(4),S(4),int(browser.right)-S(8),int(browser.bottom)-S(8),true);}
+        MoveWindow(tabs,left+S(5),S(3),std::max(1,width-left-S(10)),S(29),TRUE);
+        MoveWindow(status,S(10),height-statusHeight,std::max(1,width-S(20)),statusHeight,TRUE);
+        const int logHeight=0;
         const HWND owner=detached?detached:window;
         RECT work{};GetClientRect(owner,&work);const int x=detached?S(5):left+S(5),y=detached?S(4):S(36);
         const int fullWidth=std::max(1,int(work.right)-x-S(6));
-        const int fullHeight=std::max(1,int(work.bottom)-y-(detached?S(6):S(25)+logHeight));
+        const int fullHeight=std::max(1,int(work.bottom)-y-(detached?S(6):statusHeight+dockHeight+S(4)));
         const bool splitShown=splitDocument&&!detached&&(splitBelow?fullHeight>=S(380):fullWidth>=S(560));
         const int splitWidth=splitShown&&!splitBelow?std::clamp(fullWidth*int(splitPercent)/100,S(250),fullWidth-S(250)):0;
         const bool lowerShown=lowerSplitDocument&&!detached&&fullHeight>=S(380);
@@ -739,14 +756,19 @@ class NativeEditorShell {
         const int split=std::max(1,h*40/100);
         hierarchy.reparent(owner);
         if(GetParent(hierarchySearch)!=owner)SetParent(hierarchySearch,owner);
-        MoveWindow(hierarchySearch,x+w-side+3,top,std::max(1,side-3),S(26),TRUE);ShowWindow(hierarchySearch,sceneShown&&side>0?SW_SHOW:SW_HIDE);
-        hierarchy.update({{"rect",{x+w-side+3,top+S(28),std::max(1,side-3),std::max(1,split-S(28))}},{"visible",sceneShown&&side>0}});
+        if(sceneLayout){
+            MoveWindow(hierarchySearch,S(6),S(6),std::max(1,left-S(10)),S(26),TRUE);ShowWindow(hierarchySearch,SW_SHOW);
+            hierarchy.update({{"rect",{S(4),S(36),std::max(1,left-S(6)),std::max(1,height-statusHeight-S(40))}},{"visible",true}});
+        }else{
+            MoveWindow(hierarchySearch,x+w-side+3,top,std::max(1,side-3),S(26),TRUE);ShowWindow(hierarchySearch,sceneShown&&side>0?SW_SHOW:SW_HIDE);
+            hierarchy.update({{"rect",{x+w-side+3,top+S(28),std::max(1,side-3),std::max(1,split-S(28))}},{"visible",sceneShown&&side>0}});
+        }
         viewport.layout(owner,x,top,std::max(1,w-side-3),h,sceneShown);
         if(sceneShown)queueViewport();
         const int assetSide=canvasShown?std::min(std::clamp(int(w*inspectorPercent/100),S(190),S(420)),std::max(0,w-S(160))):0;
         const int adjustableSide=sceneShown?side:assetSide;
         inspectorSpan=w;inspectorDivider=adjustableSide?RECT{x+w-adjustableSide-3,top,x+w-adjustableSide+3,top+h}:RECT{};
-        if(sceneShown)form.update({{"rect",{x+w-side+3,top+split,std::max(1,side-3),h-split}},{"visible",side>0}});
+        if(sceneShown)form.update({{"rect",{x+w-side+3,sceneLayout?top:top+split,std::max(1,side-3),sceneLayout?std::max(1,height-statusHeight-top-S(2)):h-split}},{"visible",side>0}});
         else if(canvasShown)form.update({{"rect",{x+w-assetSide+3,top,std::max(1,assetSide-3),h}},{"visible",assetSide>0}});
         else if(graphShown)form.update({{"rect",{x+w-inspectorWidth,top,inspectorWidth,h}},{"visible",inspectorWidth>0}});
         else if(previewShown)form.update({{"rect",{x+std::max(1,w/2),top,w-w/2,h}},{"visible",true}});
@@ -757,15 +779,33 @@ class NativeEditorShell {
         previewViewport.layout(owner,x,top+(graphShown?h-previewHeight:0),graphShown?std::max(1,w-inspectorWidth):std::max(1,w/2),graphShown?previewHeight:h,previewShown);
         if(previewShown)queuePreview();
         if(meshUVOpen&&!sourceMode)SetTimer(window,11,60,nullptr);
+        // Content browser / output log dock under the documents (the scene properties column keeps the full height).
+        if(!detached){
+            const int dockX=left+S(5),dockY=height-statusHeight-dockHeight,dockWidth=std::max(1,x+w-(sceneLayout?side:0)-dockX);
+            ShowWindow(dockTabs,dockHeight>0?SW_SHOW:SW_HIDE);MoveWindow(dockTabs,dockX,dockY,dockWidth,S(28),TRUE);TabCtrl_SetCurSel(dockTabs,consoleVisible?1:0);
+            console.update({{"rect",{dockX,dockY+S(30),dockWidth,std::max(1,dockHeight-S(30))}},{"visible",consoleVisible&&dockHeight>0}});
+            if(!contentWindow)placeBrowser(dockX,dockY+S(30),dockWidth,std::max(1,dockHeight-S(30)),!consoleVisible);
+        }else{ShowWindow(dockTabs,SW_HIDE);console.update({{"visible",false}});if(!contentWindow)placeBrowser(S(5),S(5),std::max(1,width-S(10)),std::max(1,height-statusHeight-S(10)),true);}
+    }
+    void placeBrowser(int bx,int by,int bw,int bh,bool show){
+        for(HWND h:{folderBack,folderForward,folderPath,search,assetType,assetRecursive,assetTiles,folderTree,files})ShowWindow(h,show?SW_SHOW:SW_HIDE);
+        if(!show)return;
+        const int row=S(28),gap=S(4),tools=S(140)+S(56)*2+gap*3;int cx=bx;
+        MoveWindow(folderBack,cx,by,S(28),row,TRUE);cx+=S(30);MoveWindow(folderForward,cx,by,S(28),row,TRUE);cx+=S(30)+gap;
+        const int room=std::max(S(120),bx+bw-tools-cx),pathWidth=std::clamp(room/2,S(80),S(260));
+        MoveWindow(folderPath,cx,by,pathWidth,row,TRUE);cx+=pathWidth+gap;
+        MoveWindow(search,cx,by,std::max(S(60),room-pathWidth-gap),row,TRUE);cx+=std::max(S(60),room-pathWidth-gap)+gap;
+        MoveWindow(assetType,cx,by,S(140),S(290),TRUE);cx+=S(140)+gap;
+        MoveWindow(assetRecursive,cx,by,S(56),row,TRUE);cx+=S(56)+gap;MoveWindow(assetTiles,cx,by,S(56),row,TRUE);
+        const int bodyY=by+row+gap,bodyHeight=std::max(1,by+bh-bodyY),treeWidth=std::clamp(bw/4,S(140),S(220));
+        MoveWindow(folderTree,bx,bodyY,treeWidth,bodyHeight,TRUE);
+        MoveWindow(files,bx+treeWidth+gap,bodyY,std::max(1,bw-treeWidth-gap),bodyHeight,TRUE);
+        ListView_SetColumnWidth(files,0,std::max(1,bw-treeWidth-gap-S(26)));
     }
     Divider dividerAt(HWND owner,int x,int y)const{
         RECT rect{};GetClientRect(owner,&rect);
         if(owner==window&&PtInRect(&lowerSplitDivider,{x,y}))return Divider::LowerDocuments;
         if(owner==window&&PtInRect(&splitDivider,{x,y}))return Divider::Documents;
-        if(owner==window&&!contentWindow&&y>=S(32)){
-            const int edge=std::clamp(int(rect.right*browsePercent/100),S(150),S(460));
-            if(std::abs(edge-x)<=4)return Divider::Browser;
-        }
         return owner==(detached?detached:window)&&PtInRect(&inspectorDivider,{x,y})?Divider::Inspector:Divider::None;
     }
     bool moveDivider(HWND owner,UINT message,LPARAM l){
@@ -1429,6 +1469,8 @@ class NativeEditorShell {
     }
     static LRESULT CALLBACK tabProcedure(HWND owner,UINT message,WPARAM w,LPARAM l,UINT_PTR,DWORD_PTR ref){
         auto& self=*reinterpret_cast<NativeEditorShell*>(ref);
+        if(message==WM_ERASEBKGND)return 1;
+        if(message==WM_PAINT){self.paintTabs(owner);return 0;}
         if(message==WM_LBUTTONDOWN){
             TCHITTESTINFO hit{{short(LOWORD(l)),short(HIWORD(l))},0};
             const int index=TabCtrl_HitTest(owner,&hit);
@@ -3311,6 +3353,9 @@ class NativeEditorShell {
         }
     }
     LRESULT event(HWND owner,UINT message,WPARAM w,LPARAM l){
+        if(message==WM_CREATE){const BOOL dark=TRUE;DwmSetWindowAttribute(owner,20/*DWMWA_USE_IMMERSIVE_DARK_MODE*/,&dark,sizeof(dark));}
+        if(message==WM_CTLCOLOREDIT||message==WM_CTLCOLORLISTBOX){SetTextColor(HDC(w),textColor);SetBkColor(HDC(w),fieldColor);return LRESULT(fieldBrush);}
+        if(message==WM_CTLCOLORSTATIC||message==WM_CTLCOLORBTN){SetTextColor(HDC(w),HWND(l)==status?faintColor:textColor);SetBkColor(HDC(w),bgColor);return LRESULT(bgBrush);}
         if(owner==window&&message==redockMessage){redockDocument(reinterpret_cast<HWND>(w));return 0;}
         if(const auto it=documentWindows.find(owner);it!=documentWindows.end()){
             try{return documentWindowEvent(owner,it->second,message,w,l);}
@@ -3416,6 +3461,7 @@ class NativeEditorShell {
         }
         if(message==WM_NOTIFY){
             const auto* header=reinterpret_cast<const NMHDR*>(l);
+            if(header->hwndFrom==dockTabs&&header->code==TCN_SELCHANGE){if((TabCtrl_GetCurSel(dockTabs)==1)!=consoleVisible)perform(ShowConsole);return 0;}
             if(header->hwndFrom==tabs&&header->code==TCN_SELCHANGE&&!updating){
                 const int i=TabCtrl_GetCurSel(tabs);
                 if(i>=0){const auto file=document.at("tabs").at(i).at("path");captureSource();showDocument(request("document.open",{{"path",file}}));}
@@ -3492,7 +3538,7 @@ public:
             if(!testRuntime.empty())playRuntimeRoot=testRuntime;
         }
         startWorker(node,script,profile);
-        WNDCLASSW type{};type.hInstance=instance;type.lpszClassName=L"HBEngine.NativeAuthoring";type.lpfnWndProc=procedure;type.hCursor=LoadCursorW(nullptr,IDC_ARROW);type.hbrBackground=GetSysColorBrush(COLOR_BTNFACE);type.hIcon=LoadIconW(instance,MAKEINTRESOURCEW(101));
+        WNDCLASSW type{};type.hInstance=instance;type.lpszClassName=L"HBEngine.NativeAuthoring";type.lpfnWndProc=procedure;type.hCursor=LoadCursorW(nullptr,IDC_ARROW);type.hbrBackground=bgBrush;type.hIcon=LoadIconW(instance,MAKEINTRESOURCEW(101));
         RegisterClassW(&type);
         window=CreateWindowExW(0,type.lpszClassName,L"HBEngine · 네이티브 편집기",WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,CW_USEDEFAULT,CW_USEDEFAULT,1280,850,nullptr,nullptr,instance,this);
         if(!window)throw std::runtime_error("Native editor window");
@@ -3559,12 +3605,8 @@ private:
         SendMessageW(assetTiles,BM_CLICK,0,0);
         if(!browserTiles||SendMessageW(files,LVM_GETVIEW,0,0)!=LV_VIEW_SMALLICON)throw std::runtime_error("Native asset icon view failed");
         SendMessageW(assetTiles,BM_CLICK,0,0);
-        RECT layoutRect{};GetClientRect(window,&layoutRect);
-        const int dividerX=std::clamp(int(layoutRect.right*browsePercent/100),150,460);
-        SendMessageW(window,WM_LBUTTONDOWN,MK_LBUTTON,MAKELPARAM(dividerX,95));
-        SendMessageW(window,WM_MOUSEMOVE,MK_LBUTTON,MAKELPARAM(dividerX+90,95));
-        SendMessageW(window,WM_LBUTTONUP,0,MAKELPARAM(dividerX+90,95));
-        if(browsePercent<=24)throw std::runtime_error("Native dock divider drag failed");
+        // The content browser is docked under the documents now; its tab strip switches to the output log and back.
+        if(!IsWindowVisible(dockTabs)&&!contentWindow)throw std::runtime_error("Native content dock missing");
         command(ResetLayout);
         const auto sceneSurface=drawViewport({{"capture",true}});
         if(sceneSurface.at("backend")!="D3D12"||sceneSurface.at("calls")<1)

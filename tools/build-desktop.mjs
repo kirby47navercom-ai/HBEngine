@@ -42,7 +42,7 @@ await fs.writeFile(path.join(build,'HBEngine.ico'),icon());
 const resource=path.join(build,'HBEngineNative-resource.o'),windres=path.join(path.dirname(compiler),'windres.exe');
 await exec(windres,['--use-temp-file','-I',relative(build),'-I','native/desktop','native/desktop/HBEngine.rc',relative(resource)],{cwd:root,windowsHide:true,env:compilerEnv});
 const executable=path.join(output,'HBEngineNative.exe');
-await exec(compiler,['-std=c++17','-O2','-s','-static','-municode','-mwindows','-I','native/include','-I',relative(jsonInclude),'native/desktop/HBEngine.cpp',relative(resource),'-o',relative(executable),'-lole32','-lshell32','-ldwmapi','-ladvapi32','-luuid','-ld2d1','-ldwrite','-lwindowscodecs','-lcomdlg32','-lcomctl32','-lgdi32'],{cwd:root,windowsHide:true,env:compilerEnv,maxBuffer:4194304});
+await exec(compiler,['-std=c++17','-O2','-s','-static','-municode','-mwindows','-I','native/include','-I',relative(jsonInclude),'native/desktop/HBEngine.cpp',relative(resource),'-o',relative(executable),'-lole32','-lshell32','-ldwmapi','-ladvapi32','-luuid','-ld2d1','-ldwrite','-lwindowscodecs','-lcomdlg32','-lcomctl32','-luxtheme','-lgdi32'],{cwd:root,windowsHide:true,env:compilerEnv,maxBuffer:4194304});
 async function writeLicenses(){
   await fs.mkdir(path.join(output,'licenses'),{recursive:true});
   const nodeLicense=path.join(build,'Node-'+process.version+'-LICENSE.txt');await download('https://raw.githubusercontent.com/nodejs/node/'+process.version+'/LICENSE',nodeLicense);await fs.copyFile(nodeLicense,path.join(output,'licenses/Node.txt'));
