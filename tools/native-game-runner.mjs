@@ -61,7 +61,9 @@ function nativeBreakpointSnapshot(vm,node,frame){
   stack:stack.slice(-16).map(row=>row.slice(0,100)),watched,
   variables:root.variables.slice(0,32).map(row=>({title:row.name.slice(0,100),value:display(b.variables.get(row.id))}))};
 }
+import {installCrashReports} from './crash-report.mjs';
 export async function nativeGameMain(options){
+ installCrashReports(options['editor-project']?'play':'game');
  const directUIPipe=Number(options['ui-pipe-protocol'])===2?options['ui-pipe']:null,uiPipe=directUIPipe?null:await openNativeUIPipe(options['ui-pipe']),presentationQueue=new NativePresentationQueue({profile:!!options.report});let onUIQueued;
  const editor=options['editor-project'];
  if(editor&&!options['editor-state'])throw Error('편집기 플레이 저장 경로가 없어요.');

@@ -2082,6 +2082,7 @@ export function nativeEditorSession(bridge) {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  (await import('./crash-report.mjs')).installCrashReports('editor');
   const listeners=new Set();
   const write=packet=>process.stdout.write(JSON.stringify(packet)+'\n');
   const dispatch = nativeEditorSession({
