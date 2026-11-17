@@ -3703,8 +3703,9 @@ class NativeEditorShell {
             // F11: borderless window over the monitor; again restores the frame and placement.
             const auto style=GetWindowLongPtrW(window,GWL_STYLE);
             if(style&WS_OVERLAPPEDWINDOW){fullscreenPlacement.length=sizeof(fullscreenPlacement);GetWindowPlacement(window,&fullscreenPlacement);MONITORINFO info{sizeof(info)};GetMonitorInfoW(MonitorFromWindow(window,MONITOR_DEFAULTTONEAREST),&info);
-                SetWindowLongPtrW(window,GWL_STYLE,style&~WS_OVERLAPPEDWINDOW);SetWindowPos(window,HWND_TOP,info.rcMonitor.left,info.rcMonitor.top,info.rcMonitor.right-info.rcMonitor.left,info.rcMonitor.bottom-info.rcMonitor.top,SWP_NOOWNERZORDER|SWP_FRAMECHANGED);editorFullscreen=true;}
-            else{SetWindowLongPtrW(window,GWL_STYLE,style|WS_OVERLAPPEDWINDOW);SetWindowPlacement(window,&fullscreenPlacement);SetWindowPos(window,nullptr,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOZORDER|SWP_NOOWNERZORDER|SWP_FRAMECHANGED);editorFullscreen=false;}
+                SetWindowLongPtrW(window,GWL_STYLE,style&~WS_OVERLAPPEDWINDOW);SetWindowPos(window,HWND_TOP,info.rcMonitor.left,info.rcMonitor.top,info.rcMonitor.right-info.rcMonitor.left,info.rcMonitor.bottom-info.rcMonitor.top,SWP_NOOWNERZORDER|SWP_FRAMECHANGED|SWP_SHOWWINDOW);editorFullscreen=true;}
+            else{SetWindowLongPtrW(window,GWL_STYLE,style|WS_OVERLAPPEDWINDOW);SetWindowPlacement(window,&fullscreenPlacement);SetWindowPos(window,nullptr,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOZORDER|SWP_NOOWNERZORDER|SWP_FRAMECHANGED|SWP_SHOWWINDOW);editorFullscreen=false;}
+            layout();RedrawWindow(window,nullptr,nullptr,RDW_INVALIDATE|RDW_ALLCHILDREN|RDW_UPDATENOW|RDW_FRAME);queueViewport();
             return;}
         if(command==FocusSearch){
             // Ctrl+F: the search box of the dock area under the keyboard focus (outliner, details, content).
@@ -4540,7 +4541,7 @@ class NativeEditorShell {
                     if(sceneOpen()){selectCameraView(cameraRows.at(i),cameraId,cameraDirection,cameraOutputs);queueViewport();}
                     else{view=model.at("views").at(i).at(0);graph.resetView();graphSelection.clear();selectedTransition.clear();refreshGraph();layout();}
                 }
-            }else if(HIWORD(w)<=1)perform(id); // 0 = menu / button, 1 = accelerator key
+            }else if(HIWORD(w)==0||(HIWORD(w)==1&&l==0))perform(id); // 0 = menu / button, 1 with no control = accelerator key
             return 0;
         }
         if(message==WM_NOTIFY){
@@ -5415,7 +5416,7 @@ private:
             // Ctrl+Shift+Z redo
             if(sceneOpen()){if(sceneSelection.empty()&&!hierarchyOrder.empty())selectActor(hierarchyOrder.front());const auto keep=snapOn;snapOn=false;nudgeSelection("right",false);snapOn=keep;perform(Undo);const auto before=document.value("revision",Json());realInput["redo"]=accel({VK_CONTROL,VK_SHIFT},'Z')&&document.value("revision",Json())!=before;perform(Undo);}
             // F11 fullscreen and back
-            {const bool on=accel({},VK_F11)&&!(GetWindowLongPtrW(window,GWL_STYLE)&WS_OVERLAPPEDWINDOW);const bool off=accel({},VK_F11)&&(GetWindowLongPtrW(window,GWL_STYLE)&WS_OVERLAPPEDWINDOW);realInput["fullscreen"]=on&&off;SetWindowPos(window,nullptr,-20000,-20000,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_NOACTIVATE);}
+            {const bool on=accel({},VK_F11)&&!(GetWindowLongPtrW(window,GWL_STYLE)&WS_OVERLAPPEDWINDOW);const bool off=accel({},VK_F11)&&(GetWindowLongPtrW(window,GWL_STYLE)&WS_OVERLAPPEDWINDOW);realInput["fullscreen"]=on&&off&&IsWindowVisible(window);SetWindowPos(window,nullptr,-20000,-20000,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_NOACTIVATE);}
             // Ctrl+B / Ctrl+E on an object that uses an asset
             {std::string actor,asset;for(const auto& row:sceneRows){const auto a=request("scene.objectAsset",{{"id",row.at("id")}}).value("asset",std::string());if(!a.empty()){actor=row.at("id").get<std::string>();asset=a;break;}}
                 if(!asset.empty()){const auto scenePath=document.value("path",std::string());selectActor(actor);const auto slash=asset.rfind('/');const bool browsed=accel({VK_CONTROL},'B')&&folder==(slash==std::string::npos?std::string():asset.substr(0,slash));
@@ -5446,7 +5447,7 @@ private:
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         // Theme review: HB_EDITOR_SMOKE_CAPTURE=<file.bmp> saves the window as the smoke test leaves it.
-        if(const char* shot=std::getenv("HB_EDITOR_SMOKE_CAPTURE")){command(ResetLayout);drawViewport();captureWindow(fs::u8path(shot));}
+        if(const char* shot=std::getenv("HB_EDITOR_SMOKE_CAPTURE")){command(ResetLayout);drawViewport();captureWindow(fs::u8path(shot));const auto scenePath=document.value("path",std::string());const auto listed=request("content.list",{{"query",""},{"recursive",true}});for(const auto& [suffix,name]:std::initializer_list<std::pair<std::string,const wchar_t*>>{{".hbblueprint.json",L"-graph"},{".hbmaterial.json",L"-material"}})for(const auto& e:listed.value("entries",Json::array())){const auto p=e.value("path",std::string());if(p.size()>suffix.size()&&p.compare(p.size()-suffix.size(),suffix.size(),suffix)==0){try{showDocument(request("document.open",{{"path",p}}));layout();auto file=fs::u8path(shot);file.replace_filename(file.stem().wstring()+name+L".png.b64");write(file,graph.snapshot());}catch(...){}break;}}if(!scenePath.empty())showDocument(request("document.open",{{"path",scenePath}}));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
         return 0;
     }
