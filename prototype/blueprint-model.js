@@ -76,6 +76,7 @@ catalog.push(
   spec('self','Self','자기 자신','오브젝트',[],[pin('return','Self','object')]),
   flow('spawn','Spawn Actor','액터 생성','오브젝트',[pin('class','Class','string'),pin('transform','Transform','transform')],[pin('actor','Actor','object')]),
   flow('destroy','Destroy Actor','액터 제거','오브젝트',[pin('target','Target','object')]),
+  flow('setLifeSpan','Set Life Span','수명 설정','오브젝트',[pin('target','Target','object'),pin('lifeSpan','Life Span','float')],),
   flow('visibility','Set Visibility','표시 설정','오브젝트',[pin('target','Target','object'),pin('visible','Visible','bool')]),
   flow('attach','Attach To','부모에 연결','오브젝트',[pin('target','Target','object'),pin('parent','Parent','object')]),
   spec('getComponent','Get Component','컴포넌트 찾기','컴포넌트',[pin('target','Target','object'),pin('class','Component class','string')],[pin('return','Component','object')]),

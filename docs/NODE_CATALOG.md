@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **919개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **920개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -21,7 +21,7 @@
 | 수학 | 54 | 50 |
 | 배열 | 95 | 88 |
 | 물리 | 16 | 14 |
-| 오브젝트 | 16 | 8 |
+| 오브젝트 | 17 | 8 |
 | C++ 공개 함수 | 1 | 0 |
 | 오디오 | 22 | 19 |
 | 사용자 정의 | 2 | 0 |
@@ -449,6 +449,7 @@
 | self | Self / 자기 자신 | — | return: object | — | VM / 브라우저 서비스 |
 | spawn | Spawn Actor / 액터 생성 | exec: exec, class: string, transform: transform | then: exec, actor: object | — | VM / 브라우저 서비스 |
 | destroy | Destroy Actor / 액터 제거 | exec: exec, target: object | then: exec | — | VM / 브라우저 서비스 |
+| setLifeSpan | Set Life Span / 수명 설정 | exec: exec, target: object, lifeSpan: float | then: exec | — | VM / 브라우저 서비스 |
 | visibility | Set Visibility / 표시 설정 | exec: exec, target: object, visible: bool | then: exec | — | VM / 브라우저 서비스 |
 | attach | Attach To / 부모에 연결 | exec: exec, target: object, parent: object | then: exec | — | VM / 브라우저 서비스 |
 | sceneSpawn | Spawn / 에셋/클래스 생성 | exec: exec, blueprintOrPrefab: string, transform: transform, actorId: string | then: exec, return: object | hb::Scene::Spawn | 공통 C++ + VM |
