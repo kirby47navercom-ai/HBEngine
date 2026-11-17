@@ -119,6 +119,8 @@ class NativeEditorShell {
     bool layoutMaximized=false;
     bool consoleVisible=false,contentDetachedOnStart=false;
     Json logItems=Json::array();
+    // Output log (Unity console / Unreal output log): severity 0 info, 1 warning, 2 error.
+    struct LogEntry{std::string text,time;int severity=0,count=1;};std::vector<LogEntry> logEntries;bool logShow[3]{true,true,true},logCollapse=false;
     std::uint64_t logRevision=0;
     unsigned browsePercent=24,inspectorPercent=25,splitPercent=43,lowerSplitPercent=43;
     enum class Divider {None,Browser,Inspector,Documents,LowerDocuments,DockLeft,DockRight,DockBottom};
@@ -412,7 +414,7 @@ class NativeEditorShell {
             }catch(const std::exception& error){report(error);}
         });
         hierarchy.useD3D12(graphics);
-        console.attach(window,instance,[](const Json&){},"console");
+        console.attach(window,instance,[this](const Json& event){const auto action=event.value("event",std::string());if(action=="open")openLogSource(event.value("index",-1));else if(action=="contextmenu"){POINT at{event.value("x",0),event.value("y",0)};ClientToScreen(window,&at);logMenu(at);}},"console");
         // Undo history: clicking a row steps the document back or forward to that edit.
         historyList.attach(window,instance,[this](const Json& event){try{const auto action=event.value("event",std::string());if(action!="select"&&action!="open")return;const int i=event.value("index",-1);if(i<0||i>=int(historyRows.size())||!document.contains("path"))return;const int steps=historyRows.at(i).value("step",0);if(steps)showDocument(request("editor.historyJump",{{"path",document.at("path")},{"steps",steps},{"expectedRevision",document.at("revision")}}));}catch(const std::exception& error){report(error);}},"history");
         console.useD3D12(graphics);
@@ -890,16 +892,54 @@ class NativeEditorShell {
         }
     }
     void report(const std::exception& error){
-        statusText(wide(error.what()).c_str());
+        statusText(wide(error.what()).c_str(),2);
         if(!acceptance)MessageBoxW(window,wide(error.what()).c_str(),L"HBEngine",MB_OK|MB_ICONWARNING);
     }
-    void statusText(const wchar_t* text){
+    void statusText(const wchar_t* text,int severity=-1){
         SetWindowTextW(status,text);UpdateWindow(status);
         const auto message=utf8(text);
-        if(message.empty()||(!logItems.empty()&&logItems.back().at("name")==message))return;
-        if(logItems.size()>=300)logItems.erase(logItems.begin());
-        logItems.push_back({{"name",message}});
+        if(message.empty())return;
+        if(severity<0)severity=message.find("실패")!=std::string::npos||message.find("오류")!=std::string::npos?2:message.find("경고")!=std::string::npos||message.find("주의")!=std::string::npos?1:0;
+        SYSTEMTIME t{};GetLocalTime(&t);char clock[16];std::snprintf(clock,sizeof(clock),"%02u:%02u:%02u",t.wHour,t.wMinute,t.wSecond);
+        if(!logEntries.empty()&&logEntries.back().text==message&&logEntries.back().severity==severity){logEntries.back().count++;logEntries.back().time=clock;}
+        else{if(logEntries.size()>=1000)logEntries.erase(logEntries.begin());logEntries.push_back({message,clock,severity,1});}
+        refreshLog();
+    }
+    // Rebuilds the visible rows from the filters and the collapse switch.
+    void refreshLog(){
+        std::vector<LogEntry> rows;std::map<std::pair<std::string,int>,std::size_t> seen;
+        for(const auto& entry:logEntries){
+            if(!logShow[entry.severity])continue;
+            if(logCollapse){const auto key=std::make_pair(entry.text,entry.severity);const auto at=seen.find(key);if(at!=seen.end()){rows[at->second].count+=entry.count;rows[at->second].time=entry.time;continue;}seen[key]=rows.size();}
+            rows.push_back(entry);
+        }
+        static const char* names[3]={"정보","경고","오류"};static const char* icons[3]={"","WARN","ERROR"};
+        logItems=Json::array();
+        for(const auto& row:rows)logItems.push_back({{"name",row.count>1?row.text+"  (×"+std::to_string(row.count)+")":row.text},{"detail",row.time+" "+names[row.severity]},{"icon",icons[row.severity]},{"text",row.text}});
         if(consoleVisible)console.update({{"items",logItems},{"revision",++logRevision}});
+    }
+    // Double-clicking a log row opens the first project asset path it mentions.
+    void openLogSource(int index){
+        if(index<0||index>=int(logItems.size()))return;
+        const auto text=logItems.at(index).value("text",std::string());
+        static const std::regex pattern(R"((?:Assets|Source)/[^\s'"<>|·,)]+\.(?:json|h|hpp|cpp))");
+        std::smatch match;if(!std::regex_search(text,match,pattern))return;
+        try{captureSource();showDocument(request("document.open",{{"path",match.str()}}));}catch(const std::exception& error){report(error);}
+    }
+    void logMenu(POINT at){
+        HMENU menu=CreatePopupMenu();
+        AppendMenuW(menu,MF_STRING,1,L"지우기");AppendMenuW(menu,MF_STRING,2,L"모두 복사");AppendMenuW(menu,MF_SEPARATOR,0,nullptr);
+        AppendMenuW(menu,MF_STRING|(logShow[0]?MF_CHECKED:0),3,L"정보 표시");AppendMenuW(menu,MF_STRING|(logShow[1]?MF_CHECKED:0),4,L"경고 표시");AppendMenuW(menu,MF_STRING|(logShow[2]?MF_CHECKED:0),5,L"오류 표시");
+        AppendMenuW(menu,MF_SEPARATOR,0,nullptr);AppendMenuW(menu,MF_STRING|(logCollapse?MF_CHECKED:0),6,L"같은 메시지 묶기");
+        const int choice=popup(menu,at);DestroyMenu(menu);
+        if(choice==1)logEntries.clear();else if(choice==2)copyLog();else if(choice>=3&&choice<=5)logShow[choice-3]=!logShow[choice-3];else if(choice==6)logCollapse=!logCollapse;
+        if(choice)refreshLog();
+    }
+    void copyLog(){
+        std::wstring all;for(const auto& row:logItems)all+=wide(row.value("detail",std::string()))+L"  "+wide(row.value("name",std::string()))+L"\r\n";
+        if(!OpenClipboard(window))return;EmptyClipboard();
+        if(HGLOBAL memory=GlobalAlloc(GMEM_MOVEABLE,(all.size()+1)*sizeof(wchar_t))){std::memcpy(GlobalLock(memory),all.c_str(),(all.size()+1)*sizeof(wchar_t));GlobalUnlock(memory);if(!SetClipboardData(CF_UNICODETEXT,memory))GlobalFree(memory);}
+        CloseClipboard();
     }
     void layout(){
         if(!source)return;
@@ -4619,12 +4659,15 @@ private:
         gameView=true;const bool gameViewHidden=drawViewport().value("segments",Json::array()).empty();gameView=false;
         quadView=true;const bool quad=drawViewport({{"command","orbit"},{"dx",4.0},{"dy",0.0},{"x",int(area.cx)*3/4},{"y",4}}).contains("cameraPosition");quadView=false;drawViewport();
         refreshHistory();const bool history=historyRows.size()>1;
+        // Output log: repeats merge with a count, severity filters hide rows.
+        const auto logBefore=logEntries.size();statusText(L"콘솔 검사 경고",1);statusText(L"콘솔 검사 경고",1);const bool logMerged=logEntries.size()==logBefore+1&&logEntries.back().count==2;
+        logShow[1]=false;refreshLog();const bool logFiltered=std::none_of(logItems.begin(),logItems.end(),[](const Json& row){return row.value("icon",std::string())=="WARN";});logShow[1]=true;refreshLog();const bool consoleLog=logMerged&&logFiltered&&!logItems.empty();
         // Console r.* edits the scene runtime settings; stat fps and camera speed change the viewport.
         SetWindowTextW(consoleInput,L"r.ScreenPercentage 80");runConsole();const bool consoleSet=Json::parse(document.at("text").get<std::string>()).at("runtime").value("renderScale",0)==80;perform(Undo);
         SetWindowTextW(consoleInput,L"stat fps");runConsole();drawViewport();const bool fpsShown=showFps&&!fpsTimes.empty();perform(ToggleFps);
         SetWindowTextW(consoleInput,L"camera.speed 7");runConsole();const bool speedSet=cameraSpeed==7;perform(Command(CameraSpeedFirst+3));
-        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history}};
-        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog}};
+        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
