@@ -33,8 +33,9 @@ public:
 class NativeGamepadInput {
 public:
     using Read=DWORD (WINAPI *)(DWORD,XINPUT_STATE*);
+    using Write=DWORD (WINAPI *)(DWORD,XINPUT_VIBRATION*);
 private:
-    HMODULE module=nullptr;Read read=nullptr;bool attempted=false;
+    HMODULE module=nullptr;Read read=nullptr;Write vibrate=nullptr;bool attempted=false;std::array<std::uint64_t,4> rumbleUntil{};
     struct Slot {bool connected=false,valid=false;DWORD packet=0;std::uint64_t retry=0;std::array<double,22> values{};};
     std::array<Slot,4> slots{};
     static constexpr std::array<const char*,22> names={"gamepad_dpad_up","gamepad_dpad_down","gamepad_dpad_left","gamepad_dpad_right","gamepad_special_right","gamepad_special_left","gamepad_leftthumbstick","gamepad_rightthumbstick","gamepad_leftshoulder","gamepad_rightshoulder","gamepad_facebutton_bottom","gamepad_facebutton_right","gamepad_facebutton_left","gamepad_facebutton_top","gamepad_leftx","gamepad_lefty","gamepad_rightx","gamepad_righty","gamepad_lefttriggeraxis","gamepad_righttriggeraxis","gamepad_lefttrigger","gamepad_righttrigger"};
@@ -43,9 +44,16 @@ public:
     explicit NativeGamepadInput(Read provider=nullptr):read(provider),attempted(provider!=nullptr){}
     NativeGamepadInput(const NativeGamepadInput&)=delete;
     ~NativeGamepadInput(){if(module)FreeLibrary(module);}
+    // Rumble (Unity Gamepad.SetMotorSpeeds / Unreal Play Force Feedback): low/high motor 0..1 for a time, stopped by poll().
+    bool rumble(DWORD index,double low,double high,double seconds,std::uint64_t now){
+        if(index>=slots.size()||!vibrate)return false;XINPUT_VIBRATION v{WORD(std::clamp(low,0.0,1.0)*65535),WORD(std::clamp(high,0.0,1.0)*65535)};
+        rumbleUntil[index]=v.wLeftMotorSpeed||v.wRightMotorSpeed?now+std::uint64_t(std::clamp(seconds,0.0,10.0)*1000):0;return vibrate(index,&v)==ERROR_SUCCESS;
+    }
+    void stopRumble(){if(!vibrate)return;for(DWORD i=0;i<rumbleUntil.size();i++)if(rumbleUntil[i]){XINPUT_VIBRATION off{};vibrate(i,&off);rumbleUntil[i]=0;}}
     template<class Emit> void poll(std::uint64_t now,bool focused,Emit emit){
+        if(vibrate)for(DWORD i=0;i<rumbleUntil.size();i++)if(rumbleUntil[i]&&(now>=rumbleUntil[i]||!focused)){XINPUT_VIBRATION off{};vibrate(i,&off);rumbleUntil[i]=0;}
         // Stamp/build/headless operations must never initialize controller drivers.
-        if(focused&&!attempted){attempted=true;for(const auto name:{L"xinput1_4.dll",L"xinput9_1_0.dll"}){module=LoadLibraryExW(name,nullptr,LOAD_LIBRARY_SEARCH_SYSTEM32);if(!module)continue;read=reinterpret_cast<Read>(GetProcAddress(module,"XInputGetState"));if(read)break;FreeLibrary(module);module=nullptr;}}
+        if(focused&&!attempted){attempted=true;for(const auto name:{L"xinput1_4.dll",L"xinput9_1_0.dll"}){module=LoadLibraryExW(name,nullptr,LOAD_LIBRARY_SEARCH_SYSTEM32);if(!module)continue;read=reinterpret_cast<Read>(GetProcAddress(module,"XInputGetState"));vibrate=reinterpret_cast<Write>(GetProcAddress(module,"XInputSetState"));if(read)break;FreeLibrary(module);module=nullptr;}}
         constexpr WORD masks[]={XINPUT_GAMEPAD_DPAD_UP,XINPUT_GAMEPAD_DPAD_DOWN,XINPUT_GAMEPAD_DPAD_LEFT,XINPUT_GAMEPAD_DPAD_RIGHT,XINPUT_GAMEPAD_START,XINPUT_GAMEPAD_BACK,XINPUT_GAMEPAD_LEFT_THUMB,XINPUT_GAMEPAD_RIGHT_THUMB,XINPUT_GAMEPAD_LEFT_SHOULDER,XINPUT_GAMEPAD_RIGHT_SHOULDER,XINPUT_GAMEPAD_A,XINPUT_GAMEPAD_B,XINPUT_GAMEPAD_X,XINPUT_GAMEPAD_Y};
         for(DWORD index=0;index<slots.size();index++){
             auto& slot=slots[index];auto publish=[&](const std::array<double,22>& next){for(std::size_t k=0;k<next.size();k++)if(next[k]!=slot.values[k])emit(names[k],next[k],"native:gamepad:"+std::to_string(index));slot.values=next;};
