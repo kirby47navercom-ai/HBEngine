@@ -14,7 +14,7 @@ public:
         if(model.contains("items")){
             items.clear();
             for(const auto& r:model.at("items")){
-                Item item;item.id=r.value("id",std::string());item.label=r.value("label",std::string());item.kind=r.value("kind",std::string("button"));
+                Item item;item.id=r.value("id",std::string());item.label=hb::editor_english::translate(r.value("label",std::string()));item.kind=r.value("kind",std::string("button"));
                 item.glyph=wide(r.value("glyph",std::string()));item.active=r.value("active",false);item.enabled=r.value("enabled",true);item.right=r.value("right",false);
                 if(r.contains("tint")){const auto& t=r.at("tint");item.tint={t.at(0).get<float>(),t.at(1).get<float>(),t.at(2).get<float>(),1};}
                 items.push_back(std::move(item));

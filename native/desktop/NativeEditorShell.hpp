@@ -61,6 +61,7 @@ class NativeEditorShell {
     static float tone(float v){return lightTheme?1.f-v*.4f:v;}
     static const wchar_t* controlTheme(){return lightTheme?L"Explorer":L"DarkMode_Explorer";}
     int S(int value)const{return MulDiv(value,int(uiDpi),96);}
+    std::string languageSaved="ko"; // 보기 > 언어: "ko" or "en", applied at the next start
     bool lightThemeSaved=false; // saved choice; the running editor keeps the theme it started with
     std::string lastScreenshot; // last F9 screenshot path
     bool viewportMaximized=false; // Shift+Space: hide the dock panels so the scene fills the window (Unity maximize / Unreal immersive).
@@ -216,7 +217,7 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
-    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),ShowSource=static_cast<Command>(983),RebindShortcut=static_cast<Command>(984),ResetShortcuts=static_cast<Command>(985),CollisionToggle=static_cast<Command>(986),SelectAllActors=static_cast<Command>(991),SaveAllDocuments=static_cast<Command>(994),ResetPosition=static_cast<Command>(996),DetailsSearch=static_cast<Command>(1001),DuplicateAsset=static_cast<Command>(1002),HideSelected=static_cast<Command>(1003),ShowAllHidden=static_cast<Command>(1004),IsolateSelected=static_cast<Command>(1005),BusyCancel=static_cast<Command>(1006),CollisionLayers=static_cast<Command>(1007),PlayFromHere=static_cast<Command>(1008),FrameAll=static_cast<Command>(1009),CopyTransform=static_cast<Command>(1011),PasteTransform=static_cast<Command>(1012),ShowReferences=static_cast<Command>(1013),OpenLastToggle=static_cast<Command>(1014),CloseOtherTabs=static_cast<Command>(1015),CloseTabsRight=static_cast<Command>(1016),CloseAllTabs=static_cast<Command>(1017),ReopenClosedTab=static_cast<Command>(1018),MaximizeViewport=static_cast<Command>(1027),ViewportScreenshot=static_cast<Command>(1028),ShowAbout=static_cast<Command>(1029),LightThemeToggle=static_cast<Command>(1030),SortByName=static_cast<Command>(1019),SortByKind=static_cast<Command>(1020),SortByModified=static_cast<Command>(1021),SortBySize=static_cast<Command>(1022),TileSmall=static_cast<Command>(1023),TileMedium=static_cast<Command>(1024),TileLarge=static_cast<Command>(1025),TileHuge=static_cast<Command>(1026),GroupSelection=static_cast<Command>(1010),ResetRotation=static_cast<Command>(997),ResetScale=static_cast<Command>(998),SaveDocumentAs=static_cast<Command>(995),DeselectActors=static_cast<Command>(992),InvertSelection=static_cast<Command>(993),GenerateLods=static_cast<Command>(987),StreamingToggle=static_cast<Command>(988),ParticlePlayToggle=static_cast<Command>(989),ParticleRestart=static_cast<Command>(990),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),ShowSource=static_cast<Command>(983),RebindShortcut=static_cast<Command>(984),ResetShortcuts=static_cast<Command>(985),CollisionToggle=static_cast<Command>(986),SelectAllActors=static_cast<Command>(991),SaveAllDocuments=static_cast<Command>(994),ResetPosition=static_cast<Command>(996),DetailsSearch=static_cast<Command>(1001),DuplicateAsset=static_cast<Command>(1002),HideSelected=static_cast<Command>(1003),ShowAllHidden=static_cast<Command>(1004),IsolateSelected=static_cast<Command>(1005),BusyCancel=static_cast<Command>(1006),CollisionLayers=static_cast<Command>(1007),PlayFromHere=static_cast<Command>(1008),FrameAll=static_cast<Command>(1009),CopyTransform=static_cast<Command>(1011),PasteTransform=static_cast<Command>(1012),ShowReferences=static_cast<Command>(1013),OpenLastToggle=static_cast<Command>(1014),CloseOtherTabs=static_cast<Command>(1015),CloseTabsRight=static_cast<Command>(1016),CloseAllTabs=static_cast<Command>(1017),ReopenClosedTab=static_cast<Command>(1018),MaximizeViewport=static_cast<Command>(1027),ViewportScreenshot=static_cast<Command>(1028),ShowAbout=static_cast<Command>(1029),LightThemeToggle=static_cast<Command>(1030),LanguageKorean=static_cast<Command>(1031),LanguageEnglish=static_cast<Command>(1032),SortByName=static_cast<Command>(1019),SortByKind=static_cast<Command>(1020),SortByModified=static_cast<Command>(1021),SortBySize=static_cast<Command>(1022),TileSmall=static_cast<Command>(1023),TileMedium=static_cast<Command>(1024),TileLarge=static_cast<Command>(1025),TileHuge=static_cast<Command>(1026),GroupSelection=static_cast<Command>(1010),ResetRotation=static_cast<Command>(997),ResetScale=static_cast<Command>(998),SaveDocumentAs=static_cast<Command>(995),DeselectActors=static_cast<Command>(992),InvertSelection=static_cast<Command>(993),GenerateLods=static_cast<Command>(987),StreamingToggle=static_cast<Command>(988),ParticlePlayToggle=static_cast<Command>(989),ParticleRestart=static_cast<Command>(990),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
     HWND busyBar=nullptr,busyCancel=nullptr;Command busyCommand=Command(0);int busyJobs=0;
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
@@ -293,10 +294,10 @@ class NativeEditorShell {
         INITCOMMONCONTROLSEX controls{sizeof(controls),ICC_TAB_CLASSES|ICC_LISTVIEW_CLASSES|ICC_TREEVIEW_CLASSES|ICC_HOTKEY_CLASS};InitCommonControlsEx(&controls);
         font=CreateFontW(-13,0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,0,0,CLEARTYPE_QUALITY,0,L"Segoe UI");
         search=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,Search);
-        consoleInput=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,ConsoleInput);SendMessageW(consoleInput,EM_SETCUEBANNER,TRUE,LPARAM(L"명령 입력 (help)"));
+        consoleInput=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,ConsoleInput);SendMessageW(consoleInput,EM_SETCUEBANNER,TRUE,LPARAM(hb::editor_english::translate(std::wstring(L"명령 입력 (help)")).c_str()));
         busyBar=CreateWindowExW(0,PROGRESS_CLASSW,L"",WS_CHILD|PBS_MARQUEE,0,0,10,10,window,nullptr,instance,nullptr);busyCancel=control(L"BUTTON",L"취소",BS_PUSHBUTTON,BusyCancel);ShowWindow(busyCancel,SW_HIDE);
-        detailsSearch=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,DetailsSearch);SendMessageW(detailsSearch,EM_SETCUEBANNER,TRUE,LPARAM(L"속성 검색"));
-        hierarchySearch=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,HierarchySearch);SendMessageW(hierarchySearch,EM_SETCUEBANNER,TRUE,LPARAM(L"오브젝트 검색"));SendMessageW(search,EM_SETCUEBANNER,TRUE,LPARAM(L"에셋 검색"));
+        detailsSearch=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,DetailsSearch);SendMessageW(detailsSearch,EM_SETCUEBANNER,TRUE,LPARAM(hb::editor_english::translate(std::wstring(L"속성 검색")).c_str()));
+        hierarchySearch=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,HierarchySearch);SendMessageW(hierarchySearch,EM_SETCUEBANNER,TRUE,LPARAM(hb::editor_english::translate(std::wstring(L"오브젝트 검색")).c_str()));SendMessageW(search,EM_SETCUEBANNER,TRUE,LPARAM(hb::editor_english::translate(std::wstring(L"에셋 검색")).c_str()));
         folderBack=control(L"BUTTON",L"←",BS_PUSHBUTTON,FolderBack);
         folderForward=control(L"BUTTON",L"→",BS_PUSHBUTTON,FolderForward);
         folderPath=control(L"BUTTON",L"프로젝트",BS_LEFT,FolderPath);
@@ -603,7 +604,7 @@ class NativeEditorShell {
         scaleMenu=CreatePopupMenu();
         AppendMenuW(scaleMenu,MF_STRING,ScaleAuto,L"Windows 설정 따르기");
         for(const auto& [id,text]:std::initializer_list<std::pair<Command,const wchar_t*>>{{Scale100,L"100%"},{Scale125,L"125%"},{Scale150,L"150%"},{Scale175,L"175%"},{Scale200,L"200%"}})AppendMenuW(scaleMenu,MF_STRING,id,text);
-        AppendMenuW(viewMenu,MF_POPUP,UINT_PTR(scaleMenu),L"편집기 배율");AppendMenuW(viewMenu,MF_STRING|(lightTheme?MF_CHECKED:0),LightThemeToggle,L"밝은 테마");
+        AppendMenuW(viewMenu,MF_POPUP,UINT_PTR(scaleMenu),L"편집기 배율");AppendMenuW(viewMenu,MF_STRING|(lightTheme?MF_CHECKED:0),LightThemeToggle,L"밝은 테마");{HMENU languageMenu=CreatePopupMenu();AppendMenuW(languageMenu,MF_STRING,LanguageKorean,L"한국어");AppendMenuW(languageMenu,MF_STRING,LanguageEnglish,L"English");CheckMenuRadioItem(languageMenu,LanguageKorean,LanguageEnglish,languageSaved=="en"?LanguageEnglish:LanguageKorean,MF_BYCOMMAND);AppendMenuW(viewMenu,MF_POPUP,UINT_PTR(languageMenu),L"언어");}
         browserViewMenu=CreatePopupMenu();
         for(const auto& [id,text]:std::initializer_list<std::pair<Command,const wchar_t*>>{{SortByName,L"이름순"},{SortByKind,L"종류순"},{SortByModified,L"최근 수정순"},{SortBySize,L"큰 파일순"}})AppendMenuW(browserViewMenu,MF_STRING,id,text);
         AppendMenuW(browserViewMenu,MF_SEPARATOR,0,nullptr);
@@ -673,7 +674,7 @@ class NativeEditorShell {
         AppendMenuW(buildMenu,MF_STRING,BuildGame,L"패키징");
         AppendMenuW(buildMenu,MF_STRING,RunBuild,L"마지막 Windows 빌드 실행");
         AppendMenuW(buildMenu,MF_STRING,CancelBuild,L"현재 빌드 취소");
-        AppendMenuW(main,MF_POPUP,UINT_PTR(file),L"파일");AppendMenuW(main,MF_POPUP,UINT_PTR(edit),L"편집");AppendMenuW(main,MF_POPUP,UINT_PTR(sceneMenu),L"장면");AppendMenuW(main,MF_POPUP,UINT_PTR(viewMenu),L"보기");AppendMenuW(main,MF_POPUP,UINT_PTR(buildMenu),L"빌드");AppendMenuW(main,MF_POPUP,UINT_PTR(helpMenu),L"도움말");SetMenu(window,main);
+        AppendMenuW(main,MF_POPUP,UINT_PTR(file),L"파일");AppendMenuW(main,MF_POPUP,UINT_PTR(edit),L"편집");AppendMenuW(main,MF_POPUP,UINT_PTR(sceneMenu),L"장면");AppendMenuW(main,MF_POPUP,UINT_PTR(viewMenu),L"보기");AppendMenuW(main,MF_POPUP,UINT_PTR(buildMenu),L"빌드");AppendMenuW(main,MF_POPUP,UINT_PTR(helpMenu),L"도움말");hb::editor_english::translateMenu(main);SetMenu(window,main);
     }
     static const wchar_t* helpText(bool start){
         return start?
@@ -829,7 +830,7 @@ class NativeEditorShell {
         static const std::map<std::string,std::string> titles{{"outliner","아웃라이너"},{"details","디테일"},{"content","콘텐츠 브라우저"},{"log","출력 로그"},{"history","실행 취소 기록"},{"profiler","프로파일러"},{"source","소스 관리"}};
         for(const char* slot:{"left","right","bottom"}){Json items=Json::array();for(const auto& panel:dockVisible[slot])items.push_back({{"id","dock:"+panel},{"label",titles.at(panel)},{"kind","tab"},{"active",dockActive[slot]==panel}});dockStrip(slot).update({{"items",items},{"theme",{{"background",{tone(.102f),tone(.102f),tone(.102f)}}}}});}
         outlinerHead.update({{"items",Json::array({chip("","","항목 레이블","text"),chip("","","유형","text",false,true)})},{"theme",{{"background",{tone(.165f),tone(.165f),tone(.165f)}}}}});
-        outlinerFoot.update({{"items",Json::array({chip("","",std::to_string(sceneRows.size())+"개 오브젝트 ("+std::to_string(selectedIds().size())+"개 선택됨)","text")})},{"theme",{{"background",{tone(.141f),tone(.141f),tone(.141f)}}}}});
+        outlinerFoot.update({{"items",Json::array({chip("","",(hb::editor_english::enabled()?std::to_string(sceneRows.size())+" objects ("+std::to_string(selectedIds().size())+" selected)":std::to_string(sceneRows.size())+"개 오브젝트 ("+std::to_string(selectedIds().size())+"개 선택됨)"),"text")})},{"theme",{{"background",{tone(.141f),tone(.141f),tone(.141f)}}}}});
         {
             std::string crumb="콘텐츠";for(std::size_t start=0;!folder.empty()&&start<=folder.size();){const auto slash=folder.find('/',start);crumb+=" \u203A "+folder.substr(start,slash==std::string::npos?std::string::npos:slash-start);if(slash==std::string::npos)break;start=slash+1;}
             const int typeIndex=int(SendMessageW(assetType,CB_GETCURSEL,0,0));std::wstring typeName(128,L' ');typeName.resize(typeIndex>=0?std::max<LRESULT>(0,SendMessageW(assetType,CB_GETLBTEXT,typeIndex,LPARAM(typeName.data()))):0);
@@ -851,7 +852,7 @@ class NativeEditorShell {
     }
     // Acceptance runs hidden: a popup would wait forever, so it only records that a menu was offered.
     int popupsOffered=0;
-    int popup(HMENU menu,POINT at){if(acceptance){++popupsOffered;return 0;}return menu?int(TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY|TPM_LEFTALIGN|TPM_TOPALIGN,at.x,at.y,0,window,nullptr)):0;}
+    int popup(HMENU menu,POINT at){if(acceptance){++popupsOffered;return 0;}return menu?int(TrackPopupMenu(hb::editor_english::translateMenu(menu),TPM_RETURNCMD|TPM_NONOTIFY|TPM_LEFTALIGN|TPM_TOPALIGN,at.x,at.y,0,window,nullptr)):0;}
     void chromeCommand(const std::string& id,POINT at){
         if(id=="save")perform(Save);else if(id=="add")perform(CreateItem);else if(id=="import")perform(ImportAsset);
         else if(id=="play")perform(PlayScene);else if(id=="stop")perform(StopPlay);else if(id=="pause")perform(PauseGame);else if(id=="frame")perform(StepGameFrame);else if(id=="help")perform(ShowShortcuts);
@@ -1266,7 +1267,7 @@ class NativeEditorShell {
             TVINSERTSTRUCTW row{};row.hParent=parent;row.hInsertAfter=TVI_LAST;row.item.mask=TVIF_TEXT|TVIF_PARAM;row.item.pszText=const_cast<wchar_t*>(label.c_str());row.item.lParam=index;
             return reinterpret_cast<HTREEITEM>(SendMessageW(folderTree,TVM_INSERTITEMW,0,LPARAM(&row)));
         };
-        items[""]=add(L"프로젝트",TVI_ROOT,0);
+        items[""]=add(hb::editor_english::translate(std::wstring(L"프로젝트")).c_str(),TVI_ROOT,0);
         for(std::size_t i=0;i<rows.size();++i){
             const auto& row=rows.at(i);const auto path=row.at("path").get<std::string>();const auto slash=path.rfind('/');
             const auto parent=items.find(slash==std::string::npos?"":path.substr(0,slash));
@@ -1281,7 +1282,7 @@ class NativeEditorShell {
         SendMessageW(folderTree,WM_SETREDRAW,TRUE,0);InvalidateRect(folderTree,nullptr,TRUE);refreshingFolders=false;
     }
     void showFolder(){
-        const auto caption=folder.empty()?std::wstring(L"프로젝트"):wide(folder);
+        const auto caption=folder.empty()?hb::editor_english::translate(std::wstring(L"프로젝트")):wide(folder);
         SetWindowTextW(folderPath,caption.c_str());
         EnableWindow(folderBack,folderPosition>0);refreshChrome();
         EnableWindow(folderForward,folderPosition+1<folderHistory.size());
@@ -2798,7 +2799,7 @@ class NativeEditorShell {
                 SendMessageW(child,WM_SETFONT,WPARAM(GetStockObject(DEFAULT_GUI_FONT)),TRUE);return child;
             };
             state->query=add(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,12,10,rect.right-24,25,10);
-            SendMessageW(state->query,EM_SETCUEBANNER,TRUE,LPARAM(L"이름 또는 키로 검색"));
+            SendMessageW(state->query,EM_SETCUEBANNER,TRUE,LPARAM(hb::editor_english::translate(std::wstring(L"이름 또는 키로 검색")).c_str()));
             state->list=add(L"LISTBOX",L"",LBS_NOTIFY|WS_BORDER|WS_VSCROLL,12,41,rect.right-24,rect.bottom-85,11);
             add(L"BUTTON",L"선택",BS_DEFPUSHBUTTON,rect.right-174,rect.bottom-37,74,26,IDOK);
             add(L"BUTTON",L"취소",BS_PUSHBUTTON,rect.right-90,rect.bottom-37,74,26,IDCANCEL);
@@ -2854,7 +2855,7 @@ class NativeEditorShell {
         const auto menu=CreatePopupMenu();
         for(std::size_t i=0;i<labels.size();++i)AppendMenuW(menu,MF_STRING,i+1,labels[i].c_str());
         POINT at{};GetCursorPos(&at);
-        const auto selected=TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
+        const auto selected=TrackPopupMenu(hb::editor_english::translateMenu(menu),TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
         DestroyMenu(menu);
         return selected?std::optional<std::size_t>(selected-1):std::nullopt;
     }
@@ -3096,7 +3097,7 @@ class NativeEditorShell {
         WINDOWPLACEMENT placement{sizeof(placement)};
         if(!GetWindowPlacement(window,&placement))return;
         const auto& r=placement.rcNormalPosition;
-        const Json saved={{"browse",browsePercent},{"inspector",inspectorPercent},{"splitPercent",splitPercent},{"lowerSplitPercent",lowerSplitPercent},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}},{"maximized",placement.showCmd==SW_SHOWMAXIMIZED},{"uiScale",userScale},{"dock",{{"slots",dockSlots},{"active",dockActive},{"left",dockLeft},{"right",dockRight},{"bottom",dockBottom}}},{"snap",{{"on",snapOn},{"grid",snapGrid},{"angle",snapAngle}}},{"console",consoleVisible},{"openLast",openLast},{"lightTheme",lightThemeSaved},{"cameraFov",cameraFov},{"cameraNear",cameraNear},{"cameraFar",cameraFar},{"browserSort",browserSort},{"tileScale",tileScale},{"browserTiles",browserTiles},{"contentDetached",contentWindow!=nullptr},{"project",utf8(projectFile.wstring())},{"documents",std::move(panes)}};
+        const Json saved={{"browse",browsePercent},{"inspector",inspectorPercent},{"splitPercent",splitPercent},{"lowerSplitPercent",lowerSplitPercent},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}},{"maximized",placement.showCmd==SW_SHOWMAXIMIZED},{"uiScale",userScale},{"dock",{{"slots",dockSlots},{"active",dockActive},{"left",dockLeft},{"right",dockRight},{"bottom",dockBottom}}},{"snap",{{"on",snapOn},{"grid",snapGrid},{"angle",snapAngle}}},{"console",consoleVisible},{"openLast",openLast},{"lightTheme",lightThemeSaved},{"language",languageSaved},{"cameraFov",cameraFov},{"cameraNear",cameraNear},{"cameraFar",cameraFar},{"browserSort",browserSort},{"tileScale",tileScale},{"browserTiles",browserTiles},{"contentDetached",contentWindow!=nullptr},{"project",utf8(projectFile.wstring())},{"documents",std::move(panes)}};
         auto temp=layoutFile;temp+=L"."+std::to_wstring(GetCurrentProcessId())+L".tmp";
         write(temp,saved.dump());
         if(!MoveFileExW(temp.c_str(),layoutFile.c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH))DeleteFileW(temp.c_str());
@@ -3167,7 +3168,7 @@ class NativeEditorShell {
         HMENU menu=CreatePopupMenu();
         for(std::size_t i=0;i<pending.size();++i)AppendMenuW(menu,MF_STRING,i+1,wide(pending.at(i).at("label")).c_str());
         POINT at{};GetCursorPos(&at);
-        const auto selected=TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
+        const auto selected=TrackPopupMenu(hb::editor_english::translateMenu(menu),TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
         DestroyMenu(menu);
         if(!selected)return;
         const auto transaction=pending.at(selected-1).at("id");
@@ -3787,6 +3788,7 @@ class NativeEditorShell {
         if(command>=TileSmall&&command<=TileHuge){static const double scales[]={.75,1,1.5,2};setTileScale(scales[command-TileSmall]);saveLayout();return;}
         if(command==ViewportScreenshot){if(!sceneOpen()){statusText(L"장면을 열면 스크린샷을 찍을 수 있어요");return;}drawViewport({{"capture",true}});const auto shot=request("scene.screenshot",Json::object());lastScreenshot=shot.at("file").get<std::string>();statusText(wide("스크린샷 저장: "+fs::u8path(lastScreenshot).filename().u8string()).c_str());return;}
         if(command==ShowAbout){showAbout();return;}
+        if(command==LanguageKorean||command==LanguageEnglish){languageSaved=command==LanguageEnglish?"en":"ko";CheckMenuRadioItem(GetMenu(window),LanguageKorean,LanguageEnglish,command,MF_BYCOMMAND);saveLayout();statusText((languageSaved=="en")==hb::editor_english::enabled()?L"지금 언어 유지":L"편집기를 다시 시작하면 언어가 바뀌어요 / Restart the editor to change the language");return;}
         if(command==LightThemeToggle){lightThemeSaved=!lightThemeSaved;CheckMenuItem(GetMenu(window),LightThemeToggle,MF_BYCOMMAND|(lightThemeSaved?MF_CHECKED:MF_UNCHECKED));saveLayout();statusText(lightThemeSaved==lightTheme?L"지금 테마 유지":L"편집기를 다시 시작하면 테마가 바뀌어요");return;}
         if(command==MaximizeViewport){viewportMaximized=!viewportMaximized;CheckMenuItem(GetMenu(window),MaximizeViewport,MF_BYCOMMAND|(viewportMaximized?MF_CHECKED:MF_UNCHECKED));layout();queueViewport();return;}
         if(command==OpenLastToggle){openLast=!openLast;refreshRecent();saveLayout();statusText(openLast?L"시작할 때 마지막 프로젝트를 열어요.":L"시작할 때 프로젝트를 열지 않아요.");return;}
@@ -4041,7 +4043,7 @@ class NativeEditorShell {
             HMENU menu=CreatePopupMenu();
             for(std::size_t i=0;i<kinds.size();++i)AppendMenuW(menu,MF_STRING,i+1,wide(kinds.at(i).at("label")).c_str());
             POINT at{12,68};ClientToScreen(window,&at);
-            const auto choice=TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
+            const auto choice=TrackPopupMenu(hb::editor_english::translateMenu(menu),TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
             DestroyMenu(menu);
             if(!choice)return;
             const auto& kind=kinds.at(choice-1);const auto suffix=wide(kind.at("suffix"));
@@ -4141,7 +4143,7 @@ class NativeEditorShell {
                 AppendMenuW(parent,MF_STRING,i+1,wide(command==AddActor?choice.at("label"):choice).c_str());
             }
             POINT at{};GetCursorPos(&at);
-            const auto chosen=TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
+            const auto chosen=TrackPopupMenu(hb::editor_english::translateMenu(menu),TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
             DestroyMenu(menu);
             if(chosen){
                 const auto& choice=choices.at(chosen-1);
@@ -4235,7 +4237,7 @@ class NativeEditorShell {
             const auto menu=CreatePopupMenu();
             for(std::size_t i=0;i<kinds.size();++i)AppendMenuW(menu,MF_STRING,i+1,wide(kinds.at(i).at("label")).c_str());
             POINT at{};GetCursorPos(&at);
-            const auto choice=TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
+            const auto choice=TrackPopupMenu(hb::editor_english::translateMenu(menu),TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
             DestroyMenu(menu);
             if(choice)editWidget({{"action","add"},{"id",widgetSelection},{"key",kinds.at(choice-1).at("id")}});
             return;
@@ -4313,7 +4315,7 @@ class NativeEditorShell {
                 const auto& types=members.at("types");const auto menu=CreatePopupMenu();
                 for(std::size_t i=0;i<types.size();++i)AppendMenuW(menu,MF_STRING,i+1,wide(types.at(i).at("label")).c_str());
                 POINT at{};GetCursorPos(&at);
-                const auto choice=TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
+                const auto choice=TrackPopupMenu(hb::editor_english::translateMenu(menu),TPM_RETURNCMD|TPM_NONOTIFY,at.x,at.y,0,window,nullptr);
                 DestroyMenu(menu);
                 if(!choice)return;
                 type=types.at(choice-1).at("id");
@@ -4544,8 +4546,10 @@ public:
     int run(const fs::path& node,const fs::path& script,const fs::path& profile,const std::wstring& project,int show,const fs::path& smoke){
         acceptance=!smoke.empty();
         layoutFile=profile/L"native-editor-layout.json";
-        lightThemeSaved=false;try{std::ifstream saved(layoutFile);if(saved&&Json::parse(saved).value("lightTheme",false)){lightThemeSaved=true;useLightTheme();}}catch(...){}
+        lightThemeSaved=false;try{std::ifstream saved(layoutFile);if(saved){const auto prefs=Json::parse(saved);if(prefs.value("lightTheme",false)){lightThemeSaved=true;useLightTheme();}languageSaved=prefs.value("language",std::string("ko"))=="en"?"en":"ko";}}catch(...){}
         if(const char* forced=std::getenv("HB_EDITOR_LIGHT_THEME");forced&&*forced=='1'&&!lightTheme)useLightTheme();
+        if(const char* language=std::getenv("HB_EDITOR_LANGUAGE"))languageSaved=std::string(language)=="en"?"en":"ko";
+        hb::editor_english::enabled()=languageSaved=="en";
         if(lightTheme)for(EditorPanelBase* p:std::initializer_list<EditorPanelBase*>{&topStrip,&viewStrip,&outlinerTitle,&outlinerHead,&outlinerFoot,&detailsTitle,&statusStrip,&contentStrip,&bottomTabs,&graph,&form,&hierarchy,&console,&historyList,&profilerList,&sourceList,&assetCanvas})p->setTheme(EditorPanelBase::Theme::active());
         editorProfile=profile;
         playLauncher=node.parent_path().parent_path()/L"HBNativePlayer.exe";
@@ -5254,7 +5258,7 @@ private:
         bool browserMultiSelect=false;{ListView_SetItemState(files,-1,0,LVIS_SELECTED);const int count=int(entries.size());if(count>=2){ListView_SetItemState(files,0,LVIS_SELECTED,LVIS_SELECTED);ListView_SetItemState(files,1,LVIS_SELECTED,LVIS_SELECTED);browserMultiSelect=selectedEntries().size()==2;ListView_SetItemState(files,-1,0,LVIS_SELECTED);}}
         // Command palette: every menu command is listed and words filter it.
         std::vector<std::pair<std::wstring,int>> paletteCommands;collectMenu(GetMenu(window),L"",paletteCommands);
-        const bool palette=paletteCommands.size()>40&&std::any_of(paletteCommands.begin(),paletteCommands.end(),[](const auto& c){return c.second==PlayScene&&paletteMatch(c.first,L"장면 플레이");})&&!paletteMatch(L"장면 › 플레이",L"플레이 저장");
+        const bool palette=paletteCommands.size()>40&&std::any_of(paletteCommands.begin(),paletteCommands.end(),[](const auto& c){return c.second==PlayScene&&paletteMatch(c.first,hb::editor_english::enabled()?L"Play":L"장면 플레이");})&&!paletteMatch(L"장면 › 플레이",L"플레이 저장");
         // Console r.* edits the scene runtime settings; stat fps and camera speed change the viewport.
         SetWindowTextW(consoleInput,L"r.ScreenPercentage 80");runConsole();const bool consoleSet=Json::parse(document.at("text").get<std::string>()).at("runtime").value("renderScale",0)==80;perform(Undo);
         SetWindowTextW(consoleInput,L"stat fps");runConsole();drawViewport();const bool fpsShown=showFps&&!fpsTimes.empty();perform(ToggleFps);
@@ -5293,8 +5297,9 @@ private:
         bool screenshot=false,about=false;{perform(ViewportScreenshot);std::ifstream png(fs::u8path(lastScreenshot),std::ios::binary);unsigned char head[24]{};png.read(reinterpret_cast<char*>(head),24);const auto size=viewport.size();
             const unsigned w=head[16]<<24|head[17]<<16|head[18]<<8|head[19],h=head[20]<<24|head[21]<<16|head[22]<<8|head[23];screenshot=png.gcount()==24&&head[1]=='P'&&head[2]=='N'&&head[3]=='G'&&lastScreenshot.find("Screenshots")!=std::string::npos&&w>16&&h>16&&size.cx>0;png.close();std::error_code ignored;fs::remove(fs::u8path(lastScreenshot),ignored);
             const auto text=aboutText();about=text.find(L"HBEngine ")==0&&text.find(L"HBEngine ?")==std::wstring::npos;}
-        const Json editingBasics={{"screenshot",screenshot},{"about",about},{"maximize",maximize},{"dirtyTitle",dirtyTitle},{"browserView",browserView},{"altDuplicate",altDuplicate},{"nudge",nudge},{"outlinerKeys",outlinerKeys},{"tabMenu",tabMenu},{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"cameraLens",cameraLens},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"browserMultiSelect",browserMultiSelect},{"dropImport",dropImport},{"selectAll",selectAll},{"detailsFilter",detailsFilter},{"editorHide",editorHide},{"busyIndicator",busyIndicator},{"aiBridge",aiBridge},{"frameAll",frameAll},{"transformCopy",transformCopy},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"particlePreview",particlePreview},{"lightBuild",lightBuilt}};
-        if(!screenshot||!about||!maximize||!dirtyTitle||!cameraLens||!browserView||!altDuplicate||!nudge||!outlinerKeys||!tabMenu||!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!browserMultiSelect||!dropImport||!selectAll||!detailsFilter||!editorHide||!busyIndicator||!aiBridge||!frameAll||!transformCopy||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!particlePreview||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        bool english=false;{auto& on=hb::editor_english::enabled();const bool keep=on;on=true;english=hb::editor_english::translate(std::wstring(L"되돌리기\tCtrl+Z"))==L"Undo\tCtrl+Z"&&hb::editor_english::translate(std::wstring(L"카메라 속도 3"))==L"Camera Speed 3"&&hb::editor_english::translate(std::string("Ground"))=="Ground";on=keep;}
+        const Json editingBasics={{"english",english},{"screenshot",screenshot},{"about",about},{"maximize",maximize},{"dirtyTitle",dirtyTitle},{"browserView",browserView},{"altDuplicate",altDuplicate},{"nudge",nudge},{"outlinerKeys",outlinerKeys},{"tabMenu",tabMenu},{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"cameraLens",cameraLens},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"browserMultiSelect",browserMultiSelect},{"dropImport",dropImport},{"selectAll",selectAll},{"detailsFilter",detailsFilter},{"editorHide",editorHide},{"busyIndicator",busyIndicator},{"aiBridge",aiBridge},{"frameAll",frameAll},{"transformCopy",transformCopy},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"particlePreview",particlePreview},{"lightBuild",lightBuilt}};
+        if(!english||!screenshot||!about||!maximize||!dirtyTitle||!cameraLens||!browserView||!altDuplicate||!nudge||!outlinerKeys||!tabMenu||!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!browserMultiSelect||!dropImport||!selectAll||!detailsFilter||!editorHide||!busyIndicator||!aiBridge||!frameAll||!transformCopy||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!particlePreview||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         // Theme review: HB_EDITOR_SMOKE_CAPTURE=<file.bmp> saves the window as the smoke test leaves it.

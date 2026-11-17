@@ -20,8 +20,8 @@ public:
         if(!window)return;
         if(model.contains("rows")){
             const auto revisionChanged=model.value("revision",0ull)!=revision;revision=model.value("revision",0ull);allRows.clear();
-            for(const auto& r:model.at("rows")){Row row;row.kind=r.value("kind",std::string("row"));row.text=r.value("text",std::string());row.label=r.value("label",std::string());row.toggle=r.value("toggle",-1);row.open=r.value("open",true);
-                for(const auto& c:r.value("controls",Json::array())){Control control;control.kind=c.at("kind").get<std::string>();control.i=c.at("i").get<int>();control.value=c.value("value",std::string());control.text=c.value("text",std::string());control.checked=c.value("checked",false);control.disabled=c.value("disabled",false);control.min=c.value("min",0.0);control.max=c.value("max",1.0);control.step=c.value("step",0.0);
+            for(const auto& r:model.at("rows")){Row row;row.kind=r.value("kind",std::string("row"));row.text=r.value("text",std::string());if(row.kind=="heading")row.text=hb::editor_english::translate(row.text);row.label=hb::editor_english::translate(r.value("label",std::string()));row.toggle=r.value("toggle",-1);row.open=r.value("open",true);
+                for(const auto& c:r.value("controls",Json::array())){Control control;control.kind=c.at("kind").get<std::string>();control.i=c.at("i").get<int>();control.value=c.value("value",std::string());control.text=hb::editor_english::translate(c.value("text",std::string()));control.checked=c.value("checked",false);control.disabled=c.value("disabled",false);control.min=c.value("min",0.0);control.max=c.value("max",1.0);control.step=c.value("step",0.0);
                     control.icon=c.value("icon",std::string());control.hint=c.value("hint",std::string());control.pressed=c.value("pressed",false);
                     if(c.contains("box"))control.box=c.at("box").get<std::array<int,4>>();
                     for(const auto& o:c.value("options",Json::array()))control.options.emplace_back(o.at(0).get<std::string>(),o.at(1).get<std::string>());row.controls.push_back(std::move(control));}

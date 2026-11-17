@@ -13,6 +13,7 @@
 #include <vector>
 #include <chrono>
 #include "EditorD3D12Surface.hpp"
+#include "EditorEnglish.hpp"
 
 class EditorPanelBase {
 public:
