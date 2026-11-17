@@ -106,7 +106,7 @@ export async function nativeGameMain(options){
   if(process.env.HB_OCCLUSION==='0')renderer.hbOcclusionCulling=false;if(process.env.HB_SPRITE_BATCH==='0')renderer.hbSpriteBatching=false;if(process.env.HB_HOST_STATIC==='0')renderer.hbHostStatic=false;if(process.env.HB_MATRIX_ONLY==='0')renderer.hbMatrixOnlyUpdates=false;if(process.env.HB_STATIC_GROUPS==='0')(await import('../prototype/static-groups.js')).staticConfig.enabled=false;
   if(editor)console.error('플레이 시작 · '+(pack.manifest.startupScene||''));
   await write({op:'ready',timingReport:!!options.report,compactFrameResponses:!options.report,rate:pack.manifest.targetFrameRate||120,displaySync,uncapped});
-  const result=await runProject(editor||path.join(pack.root,'game.hbpack.json'),{interactive:true,lazyPhysics:true,onLog:editor?message=>console.error('[print] '+String(message).slice(0,2000)):undefined,captureState:!!options.report,profile:!!options.report,storage:nativeGameStorage(stateDirectory),nativeHost:pack.host,openProject:async()=>pack,saveDirectory:path.join(stateDirectory,'Saves'),
+  const result=await runProject(editor||path.join(pack.root,'game.hbpack.json'),{interactive:true,lazyPhysics:true,onWindow:settings=>send('window',settings),onLog:editor?message=>console.error('[print] '+String(message).slice(0,2000)):undefined,captureState:!!options.report,profile:!!options.report,storage:nativeGameStorage(stateDirectory),nativeHost:pack.host,openProject:async()=>pack,saveDirectory:path.join(stateDirectory,'Saves'),
    debugBreakpoint:editor?((vm,node,scope)=>{
     pausedVM=vm;
     if(closed){pausedVM=null;vm.hooks.ignoreBreakpoints=true;queueMicrotask(()=>vm.continue());return;}
