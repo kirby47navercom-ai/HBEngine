@@ -71,7 +71,10 @@ class EditorScenePanel {
                 SetFocus(window);SetCapture(window);start=previous=point(l);moved=false;
                 button=message==WM_LBUTTONDOWN?1:message==WM_RBUTTONDOWN?2:3;
                 // Alt+left drag orbits like the right button (Unreal); it never picks or transforms.
-                altOrbit=button==1&&(GetKeyState(VK_MENU)&0x8000)!=0;if(altOrbit){button=2;return 0;}
+                // Alt+drag on a gizmo handle duplicates the selection in place and drags the copies (Unreal); elsewhere Alt orbits.
+                const bool alt=button==1&&(GetKeyState(VK_MENU)&0x8000)!=0;
+                if(alt&&!brushEnabled){if(const auto handle=hitHandle(start)){post({{"command","shortcut"},{"key","duplicateInPlace"}});grabbed=handle;transformDrag=true;return 0;}}
+                altOrbit=alt;if(altOrbit){button=2;return 0;}
                 if(button==1&&brushEnabled){brushPoints.assign(1,start);return 0;}
                 grabbed=button==1&&!(w&MK_SHIFT)?hitHandle(start):std::nullopt;
                 transformDrag=button==1&&((w&MK_SHIFT)!=0||grabbed.has_value());
@@ -148,6 +151,9 @@ class EditorScenePanel {
                 const bool ctrl=(GetKeyState(VK_CONTROL)&0x8000)!=0;
                 const char* shortcut=w==VK_DELETE?"delete":ctrl&&w=='D'?"duplicate":ctrl&&w=='C'?"copy":ctrl&&w=='V'?"paste":nullptr;
                 if(shortcut){post({{"command","shortcut"},{"key",shortcut}});return 0;}
+                // Arrow / Page keys nudge the selection (the shell picks the axis from the view and the step from snap).
+                const char* nudge=w==VK_LEFT?"left":w==VK_RIGHT?"right":w==VK_UP?"up":w==VK_DOWN?"down":w==VK_PRIOR?"raise":w==VK_NEXT?"lower":nullptr;
+                if(nudge&&!ctrl){post({{"command","shortcut"},{"key","nudge"},{"direction",nudge},{"shift",(GetKeyState(VK_SHIFT)&0x8000)!=0}});return 0;}
             }
             if(message==WM_KEYDOWN&&!button&&(w=='W'||w=='E'||w=='R')){
                 selectTransformTool(w=='W'?"translate":w=='E'?"rotate":"scale");return 0;

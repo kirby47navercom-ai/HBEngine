@@ -1400,6 +1400,7 @@ export function nativeEditorSession(bridge) {
         if(mode==='translate'&&Number.isFinite(snap.grid)&&snap.grid>0)object.position=object.position.map(v=>round(v,snap.grid));
         if(mode==='rotate'&&Number.isFinite(snap.angle)&&snap.angle>0&&Number.isInteger(axis))object.rotation=object.rotation.map((v,i)=>i===axis?round(v,snap.angle):v);
       };
+      const duplicateOffset=Array.isArray(value)&&value.length===3&&value.every(Number.isFinite)?value:[.5,0,.5]; // duplicate value: offset ([0,0,0] for Alt+drag copies)
       const roots=pasted=>{const top=pasted.filter(o=>!o.parent);selections=top.map(o=>o.id);return selections[0]||'';};
       if (action==='paste') {
         if(!Array.isArray(clipboard)||!clipboard.length||!clipboard.every(o=>o&&typeof o.id==='string'&&Array.isArray(o.position)))throw Error('붙여넣을 오브젝트가 없어요.');
@@ -1408,7 +1409,7 @@ export function nativeEditorSession(bridge) {
         const unlocked=targets.filter(item=>!byId.get(item).locked);
         if(!unlocked.length)throw Error('오브젝트 잠금을 해제하세요.');
         if(action==='delete'){removeSceneObjects(next.objects,unlocked);selection='';selections=[];}
-        else if(action==='duplicate')selection=roots(pasteSceneObjects(next.objects,copySceneObjects(next.objects,unlocked),{offset:[.5,0,.5]}));
+        else if(action==='duplicate')selection=roots(pasteSceneObjects(next.objects,copySceneObjects(next.objects,unlocked),{offset:duplicateOffset}));
         else{
           // Children of another selected object move with their parent, so only the outermost ones are edited.
           const chosen=new Set(unlocked);
@@ -1450,7 +1451,7 @@ export function nativeEditorSession(bridge) {
           setObjectMatrix(actor,world);
         } else if(action==='duplicate'){
           const copied=copySceneObjects(next.objects,[id]);
-          selection=pasteSceneObjects(next.objects,copied,{offset:[.5,0,.5]})[0].id;
+          selection=pasteSceneObjects(next.objects,copied,{offset:duplicateOffset})[0].id;
         } else if(['prefabApply','prefabRevert','prefabRefresh','prefabUnpack'].includes(action)){
           const root=prefabRootFor(next.objects,actor);
           if(!root)throw Error('프리팹 인스턴스를 선택하세요.');

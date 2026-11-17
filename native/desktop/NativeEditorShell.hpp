@@ -423,6 +423,7 @@ class NativeEditorShell {
                     if(key=="Delete")perform(DeleteActor);
                     if(key=="f")perform(FocusActor);
                     if(key=="F2")perform(RenameActor);
+                    if(key=="ArrowUp"||key=="ArrowDown"||key=="Home"||key=="End"||key=="ArrowLeft"||key=="ArrowRight"){outlinerKey(key,event.value("shift",false));return;}
                     if(event.value("ctrl",false)){if(key=="c")perform(CopyActor);else if(key=="v")perform(PasteActor);else if(key=="d")perform(DuplicateActor);}
                 }
             }catch(const std::exception& error){report(error);}
@@ -1499,6 +1500,33 @@ class NativeEditorShell {
         if(widgetSelection!=selection)fieldPath=Json::array();
         widgetSelection=selection;showDocument(std::move(changed));
     }
+    // Outliner keyboard: Up/Down/Home/End move the selection (Shift extends the range); Left folds or goes to the parent,
+    // Right unfolds or goes to the first child.
+    // Viewport nudge: arrows move the selection one snap step (0.1 without snap, x10 with Shift). 2D / front / back views
+    // move up and down on Y; other views on Z, with Page Up / Page Down for Y.
+    void nudgeSelection(const std::string& direction,bool shift){
+        if(!sceneOpen()||sceneSelection.empty())return;
+        const double step=(snapOn?snapGrid:.1)*(shift?10:1);const bool flat=cameraDirection=="2d"||cameraDirection=="front"||cameraDirection=="back";
+        std::array<double,3> delta{0,0,0};
+        if(direction=="left")delta[0]=-step;else if(direction=="right")delta[0]=step;
+        else if(direction=="up"){if(flat)delta[1]=step;else delta[2]=-step;}else if(direction=="down"){if(flat)delta[1]=-step;else delta[2]=step;}
+        else if(direction=="raise")delta[1]=step;else if(direction=="lower")delta[1]=-step;else return;
+        editScene({{"action","translate"},{"id",sceneSelection},{"ids",selectedIds()},{"delta",delta}});
+    }
+    void outlinerKey(const std::string& key,bool shift){
+        if(hierarchyOrder.empty())return;
+        const auto at=std::find(hierarchyOrder.begin(),hierarchyOrder.end(),sceneSelection);const int index=at==hierarchyOrder.end()?-1:int(at-hierarchyOrder.begin()),last=int(hierarchyOrder.size())-1;
+        std::string parent,firstChild;for(const auto& row:sceneRows){const auto id=row.value("id",std::string());if(id==sceneSelection)parent=row.value("parent",std::string());if(firstChild.empty()&&!sceneSelection.empty()&&row.value("parent",std::string())==sceneSelection)firstChild=id;}
+        std::string target;
+        if(key=="ArrowUp")target=hierarchyOrder.at(std::size_t(index<0?last:std::max(0,index-1)));
+        else if(key=="ArrowDown")target=hierarchyOrder.at(std::size_t(index<0?0:std::min(last,index+1)));
+        else if(key=="Home")target=hierarchyOrder.front();else if(key=="End")target=hierarchyOrder.back();
+        else if(index<0)return;
+        else if(key=="ArrowLeft"){if(!firstChild.empty()&&!folded.count(sceneSelection)&&hierarchyQuery.empty()){folded.insert(sceneSelection);refreshHierarchy();return;}target=parent;}
+        else{if(firstChild.empty())return;if(folded.erase(sceneSelection)){refreshHierarchy();return;}target=firstChild;}
+        if(target.empty()||target==sceneSelection)return;
+        selectActor(target,shift&&key!="ArrowLeft"&&key!="ArrowRight"?2:0);queueViewport();
+    }
     void refreshHierarchy(){
         Json rows=Json::array();
         std::unordered_map<std::string,std::vector<std::size_t>> children;
@@ -1588,7 +1616,7 @@ class NativeEditorShell {
         if(input.value("command",std::string())=="speedStep"){cameraSpeed=std::clamp(cameraSpeed+(input.value("dy",0.0)>0?1:-1),1,8);statusText((L"카메라 속도 "+std::to_wstring(cameraSpeed)).c_str());refreshChrome();return;}
         if(input.value("command",std::string())=="shortcut"){
             const auto key=input.value("key",std::string());
-            try{if(key=="delete")perform(DeleteActor);else if(key=="duplicate")perform(DuplicateActor);else if(key=="copy")perform(CopyActor);else if(key=="paste")perform(PasteActor);else if(key=="snap")perform(SnapToggle);}catch(const std::exception& error){report(error);}
+            try{if(key=="delete")perform(DeleteActor);else if(key=="duplicate")perform(DuplicateActor);else if(key=="copy")perform(CopyActor);else if(key=="paste")perform(PasteActor);else if(key=="snap")perform(SnapToggle);else if(key=="duplicateInPlace"){if(!sceneSelection.empty())editScene({{"action","duplicate"},{"id",sceneSelection},{"ids",selectedIds()},{"value",{0,0,0}}});}else if(key=="nudge")nudgeSelection(input.value("direction",std::string()),input.value("shift",false));}catch(const std::exception& error){report(error);}
             return;
         }
         if(!input.empty()){
@@ -5182,8 +5210,20 @@ private:
                 const bool closed=document.value("tabs",Json::array()).size()+1==open.size()&&!closedTabs.empty()&&closedTabs.back()==other;perform(ReopenClosedTab);const bool back=document.value("path",std::string())==other;
                 perform(CloseDocument);if(!keep.empty())try{showDocument(request("document.open",{{"path",keep}}));}catch(const std::exception&){}tabMenu=closed&&back;}}
             catch(const std::exception& error){throw std::runtime_error(std::string("tab menu check: ")+error.what()+" other="+other+" keep="+keep);}}
-        const Json editingBasics={{"tabMenu",tabMenu},{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"browserMultiSelect",browserMultiSelect},{"dropImport",dropImport},{"selectAll",selectAll},{"detailsFilter",detailsFilter},{"editorHide",editorHide},{"busyIndicator",busyIndicator},{"aiBridge",aiBridge},{"frameAll",frameAll},{"transformCopy",transformCopy},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"particlePreview",particlePreview},{"lightBuild",lightBuilt}};
-        if(!tabMenu||!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!browserMultiSelect||!dropImport||!selectAll||!detailsFilter||!editorHide||!busyIndicator||!aiBridge||!frameAll||!transformCopy||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!particlePreview||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        // Outliner arrows: Down moves to the next row, Up back, End to the last row.
+        bool outlinerKeys=false;{const auto keepPrimary=sceneSelection;const auto keepExtra=sceneExtra;refreshHierarchy();if(hierarchyOrder.size()>=2){selectActor(hierarchyOrder.at(0));outlinerKey("ArrowDown",false);const bool down=sceneSelection==hierarchyOrder.at(1);outlinerKey("ArrowUp",false);const bool up=sceneSelection==hierarchyOrder.at(0);outlinerKey("End",false);outlinerKeys=down&&up&&sceneSelection==hierarchyOrder.back();}sceneSelection=keepPrimary;sceneExtra=keepExtra;refreshHierarchy();refreshForm();}
+        // Viewport nudge: Right moves the selection one step on X; undo restores it.
+        bool nudge=false;{const auto keepSnap=snapOn;snapOn=false;if(sceneSelection.empty()&&!hierarchyOrder.empty())selectActor(hierarchyOrder.front());
+            const auto positionOf=[&]{const auto scene=Json::parse(document.at("text").get<std::string>());for(const auto& o:scene.at("objects"))if(o.value("id",std::string())==sceneSelection)return o.value("position",Json::array({0,0,0}));return Json();};
+            const auto before=positionOf();nudgeSelection("right",false);const auto after=positionOf();
+            nudge=before.is_array()&&after.is_array()&&std::abs(after.at(0).get<double>()-before.at(0).get<double>()-.1)<1e-6&&std::abs(after.at(1).get<double>()-before.at(1).get<double>())<1e-9;if(nudge)perform(Undo);snapOn=keepSnap;}
+        // Alt+drag copy: the in-place duplicate adds an object at the same position and selects it; undo removes it.
+        bool altDuplicate=false;{if(sceneSelection.empty()&&!hierarchyOrder.empty())selectActor(hierarchyOrder.front());const auto original=sceneSelection;
+            const auto objects=[&]{return Json::parse(document.at("text").get<std::string>()).at("objects");};const auto positionOf=[&](const std::string& id){for(const auto& o:objects())if(o.value("id",std::string())==id)return o.value("position",Json::array({0,0,0}));return Json();};
+            const auto count=objects().size();const auto from=positionOf(original);queueViewport({{"command","shortcut"},{"key","duplicateInPlace"}});
+            altDuplicate=!original.empty()&&objects().size()>count&&sceneSelection!=original&&positionOf(sceneSelection)==from;if(objects().size()>count)perform(Undo);selectActor(original);}
+        const Json editingBasics={{"altDuplicate",altDuplicate},{"nudge",nudge},{"outlinerKeys",outlinerKeys},{"tabMenu",tabMenu},{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"browserMultiSelect",browserMultiSelect},{"dropImport",dropImport},{"selectAll",selectAll},{"detailsFilter",detailsFilter},{"editorHide",editorHide},{"busyIndicator",busyIndicator},{"aiBridge",aiBridge},{"frameAll",frameAll},{"transformCopy",transformCopy},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"particlePreview",particlePreview},{"lightBuild",lightBuilt}};
+        if(!altDuplicate||!nudge||!outlinerKeys||!tabMenu||!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!browserMultiSelect||!dropImport||!selectAll||!detailsFilter||!editorHide||!busyIndicator||!aiBridge||!frameAll||!transformCopy||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!particlePreview||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
