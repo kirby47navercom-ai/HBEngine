@@ -1540,6 +1540,11 @@ export function nativeEditorSession(bridge) {
       const objects=scene().data.objects,world=id=>{const o=objects.find(x=>x.id===id);if(!o)throw Error('오브젝트를 선택하세요.');const m=sceneWorldMatrix(o,objects);return [m.elements[12],m.elements[13],m.elements[14]];};
       const p=world(a),q=world(b),delta=q.map((v,i)=>v-p[i]);return {distance:Math.hypot(...delta),delta};
     },
+    'scene.objectAsset': ({id})=>{
+      const o=scene().data.objects.find(x=>x.id===id);if(!o)throw Error('오브젝트를 선택하세요.');
+      const asset=o.blueprintAsset||o.asset||o.prefabLink?.asset||(o.components||[]).find(c=>c.type==='MeshRenderer')?.properties?.mesh||(o.components||[]).find(c=>c.type==='SpriteRenderer')?.properties?.texture||'';
+      return {asset:typeof asset==='string'?asset:''};
+    },
     'scene.similar': ({id})=>{
       const objects=scene().data.objects,source=objects.find(o=>o.id===id);if(!source)throw Error('오브젝트를 선택하세요.');
       const signature=o=>[o.kind,o.asset||'',o.blueprintAsset||'',(o.components||[]).find(c=>c.type==='MeshRenderer')?.properties?.mesh||''].join('|');
