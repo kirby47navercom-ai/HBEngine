@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import fs from 'node:fs/promises';
+import zlib from 'node:zlib';
 import {createReadStream,rmSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {execFile} from 'node:child_process';
@@ -91,7 +92,16 @@ const pointerPart = key => key.replaceAll('~','~0').replaceAll('/','~1');
 const fieldLabels = {quality:'그래픽 품질',displayGamma:'화면 감마',displayBrightness:'화면 밝기',hdrOutput:'HDR 출력',renderScale:'화면 해상도 비율(%)',dynamicResolution:'동적 해상도',minRenderScale:'최소 해상도 비율(%)',pivot:'기준점',settings:'설정',convertUnits:'파일 단위 변환',sourceUnit:'원본 단위',sourceUp:'원본 위 축',flipForward:'앞 방향 뒤집기',translation:'이동',name:'이름',sceneName:'레벨 이름',objects:'오브젝트',environment:'환경',position:'위치',rotation:'회전',scale:'크기',parent:'부모 에셋',clip:'오디오 클립',volume:'볼륨',pitch:'피치',loop:'반복',friction:'마찰',restitution:'반발력',density:'밀도',parameters:'매개변수',surfaceOverrides:'표면 오버라이드'};
 
 export function nativeEditorSession(bridge) {
-  let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBuild, layerNames=null;
+  // Minimal RGBA PNG writer (zlib from Node) for viewport screenshots.
+function encodePng(width,height,rgba){
+  const table=new Int32Array(256).map((_,n)=>{let c=n;for(let k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1;return c;});
+  const crc=bytes=>{let c=-1;for(const b of bytes)c=table[(c^b)&255]^(c>>>8);return (c^-1)>>>0;};
+  const chunk=(type,data)=>{const head=Buffer.alloc(8);head.writeUInt32BE(data.length,0);head.write(type,4,'latin1');const tail=Buffer.alloc(4);tail.writeUInt32BE(crc(Buffer.concat([head.subarray(4),data])),0);return Buffer.concat([head,data,tail]);};
+  const header=Buffer.alloc(13);header.writeUInt32BE(width,0);header.writeUInt32BE(height,4);header[8]=8;header[9]=6;
+  const rows=Buffer.alloc((width*4+1)*height);for(let y=0;y<height;y++)Buffer.from(rgba.buffer,rgba.byteOffset+y*width*4,width*4).copy(rows,y*(width*4+1)+1);
+  return Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),chunk('IHDR',header),chunk('IDAT',zlib.deflateSync(rows)),chunk('IEND',Buffer.alloc(0))]);
+}
+let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBuild, layerNames=null;
   const previews=new Map();
   const sequenceSamplers=new WeakMap();
   const sceneViews=new Map();
@@ -1494,6 +1504,15 @@ export function nativeEditorSession(bridge) {
       }
       viewport??=nativeEditorViewport(bridge);
       return viewport.draw(scene().data,project(),params);
+    },
+    'scene.screenshot': async ()=>{
+      if(!viewport)throw Error('먼저 장면 뷰포트를 그려야 해요.');
+      const {width,height,rgba}=await viewport.screenshot();
+      if(!width||!height||rgba.length!==width*height*4)throw Error('뷰포트 화면을 읽지 못했어요.');
+      const folder=path.join(project().root,'Saved','Screenshots');await fs.mkdir(folder,{recursive:true});
+      const stamp=new Date(),two=n=>String(n).padStart(2,'0'),name='Screenshot_'+stamp.getFullYear()+two(stamp.getMonth()+1)+two(stamp.getDate())+'_'+two(stamp.getHours())+two(stamp.getMinutes())+two(stamp.getSeconds());
+      let file=path.join(folder,name+'.png');for(let i=2;await fs.access(file).then(()=>true,()=>false);i++)file=path.join(folder,name+'_'+i+'.png');
+      await fs.writeFile(file,encodePng(width,height,rgba));return {file,width,height};
     },
     'scene.viewportClose': async ({surface})=>{
       const view=sceneViews.get(surface);

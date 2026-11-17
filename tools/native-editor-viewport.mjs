@@ -559,5 +559,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   }
   // Lightmap bake input: one row per drawn object, world matrices current.
   const bakeRows=objects=>objects.flatMap(object=>{const root=groups.get(object.id);if(!root)return[];root.updateMatrixWorld(true);const renderer=(object.components||[]).find(c=>c.type==='MeshRenderer');return[{object,root,contribute:!!renderer&&renderer.properties?.enabled!==false&&renderer.properties?.contributeGI!==false}];});
-  return {draw,close,bakeRows};
+  // Screenshot: read back the last presented scene frame (RGBA) from the DirectX renderer.
+  async function screenshot(){if(!renderer)throw Error('먼저 장면 뷰포트를 그려야 해요.');return renderer.hbCaptureRGBA();}
+  return {draw,close,bakeRows,screenshot};
 }
