@@ -119,6 +119,9 @@ catalog.push(
   flow('addViewport','Add To Viewport','뷰포트에 위젯 추가','UI',[pin('widget','Widget','object')]),
   flow('setText','Set Text','텍스트 설정','UI',[pin('widget','Widget','object'),pin('text','Text','string')]),
   flow('saveGame','Save Game','게임 저장','저장',[pin('slot','Slot','string')],[pin('success','Success','bool')]),
+  spec('doesSaveGameExist','Does Save Game Exist','저장 데이터 있는지 확인','저장',[pin('slot','Slot','string')],[pin('return','Exists','bool')],'save slot exists check 세이브 슬롯 존재'),
+  spec('getSaveSlotNames','Get Save Slot Names','저장 슬롯 목록','저장',[],[pin('return','Slots','string',true)],'save slot list names 세이브 슬롯 목록'),
+  flow('deleteSaveGame','Delete Save Game','저장 데이터 삭제','저장',[pin('slot','Slot','string')],[pin('success','Success','bool')]),
   flow('loadGame','Load Game','게임 불러오기','저장',[pin('slot','Slot','string')],[pin('data','Data','object')])
 );
 catalog.push(

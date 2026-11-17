@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **913개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **916개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -35,7 +35,7 @@
 | 렌더링 | 15 | 14 |
 | 장면 | 4 | 2 |
 | UI | 23 | 20 |
-| 저장 | 5 | 3 |
+| 저장 | 8 | 3 |
 | 정수 | 14 | 14 |
 | 벡터2 | 20 | 20 |
 | 회전 | 9 | 9 |
@@ -674,6 +674,9 @@
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
 | saveGame | Save Game / 게임 저장 | exec: exec, slot: string | then: exec, success: bool | — | VM / 브라우저 서비스 |
+| doesSaveGameExist | Does Save Game Exist / 저장 데이터 있는지 확인 | slot: string | return: bool | — | VM / 브라우저 서비스 |
+| getSaveSlotNames | Get Save Slot Names / 저장 슬롯 목록 | — | return: string[] | — | VM / 브라우저 서비스 |
+| deleteSaveGame | Delete Save Game / 저장 데이터 삭제 | exec: exec, slot: string | then: exec, success: bool | — | VM / 브라우저 서비스 |
 | loadGame | Load Game / 게임 불러오기 | exec: exec, slot: string | then: exec, data: object | — | VM / 브라우저 서비스 |
 | saveJsonWrite | Write Text / JSON 저장 | exec: exec, slot: string, json: string | then: exec | hb::Save::WriteText | 공통 C++ + VM |
 | saveJsonRead | Read Text / JSON 저장 읽기 | slot: string | return: string | hb::Save::ReadText | 공통 C++ + VM |
