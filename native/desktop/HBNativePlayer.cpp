@@ -37,7 +37,7 @@ struct Host {
  unsigned presentCount=0;
  std::chrono::steady_clock::time_point frameSent;
  bool kiosk=false,kioskFullscreen=false,kioskHideCursor=false,kioskPreventMinimize=false,operatorUnlocked=false;
- unsigned kioskIdleSeconds=0;ULONGLONG lastActivity=GetTickCount64();fs::path root,logFile,debugSnapshot;std::wstring failureMessage;
+ unsigned kioskIdleSeconds=0;ULONGLONG lastActivity=GetTickCount64();fs::path root,logFile,debugSnapshot,profileSnapshot;std::wstring failureMessage;
  void write(Json packet){const auto s=packet.dump()+"\n";std::size_t at=0;while(at<s.size()){DWORD sent=0;if(!WriteFile(input,s.data()+at,DWORD(std::min<std::size_t>(s.size()-at,1048576)),&sent,nullptr)||!sent)throw std::runtime_error("Native game pipe closed");at+=sent;}}
  void log(const std::string& text){std::ofstream(logFile,std::ios::app)<<text<<'\n';}
  void schedule(){if(!ready||inFrame)return;if(uncapped){if(!tickPosted){if(!PostMessageW(window,tickMessage,0,0))throw std::runtime_error("Native uncapped tick queue");tickPosted=true;}return;}const double remaining=std::chrono::duration<double>(nextFrame-std::chrono::steady_clock::now()).count();LARGE_INTEGER due{};due.QuadPart=-std::max<LONGLONG>(1,LONGLONG(remaining*10000000));SetWaitableTimer(timer,&due,0,nullptr,nullptr,FALSE);}
@@ -64,6 +64,7 @@ struct Host {
    }else if(op=="timingFlush")value={{"frames",frames}};
    else if(op=="capture")value=renderer.command({{"op","capture"},{"data",Json::object()}},window,true);else throw std::runtime_error("Unknown native platform operation");write({{"channel","hb.platform"},{"id",id},{"ok",true},{"value",value}});}
    else if(op=="ready"){ready=true;timingReport=message.value("timingReport",false);compactFrameResponses=message.value("compactFrameResponses",false);activity();uncapped=uncapped||message.value("uncapped",false);displaySync=!uncapped&&message.value("displaySync",false);rate=message.value("rate",120u);if(rate<15||rate>240)throw std::runtime_error("Frame rate invalid");nextFrame=std::chrono::steady_clock::now();touchAvailable=(GetSystemMetrics(SM_DIGITIZER)&(NID_INTEGRATED_TOUCH|NID_EXTERNAL_TOUCH))!=0&&GetSystemMetrics(SM_MAXIMUMTOUCHES)>0;write({{"event","touchDevice"},{"enabled",touchAvailable}});schedule();write({{"event","resize"},{"width",width},{"height",height},{"pixelRatio",GetDpiForWindow(window)/96.0}});}
+   else if(op=="profile"){if(editorOwner){const auto pending=profileSnapshot.wstring()+L".tmp";{std::ofstream file(fs::path(pending),std::ios::binary|std::ios::trunc);file<<message.dump();}MoveFileExW(pending.c_str(),profileSnapshot.c_str(),MOVEFILE_REPLACE_EXISTING);}}
    else if(op=="debugBreak"){
        if(editorOwner){
            const auto snapshot=message.dump();
@@ -190,7 +191,7 @@ int playEditorProject(Host& host,HINSTANCE instance,const fs::path& project,cons
     host.logFile=profile/L"Sessions"/(L"play-"+std::to_wstring(GetCurrentProcessId())+L".log");
     fs::create_directories(host.logFile.parent_path());
     host.debugSnapshot=host.logFile.parent_path()/(L"debug-"+std::to_wstring(GetCurrentProcessId())+L".json");
-    cleanup.debug=host.debugSnapshot;
+    cleanup.debug=host.debugSnapshot;host.profileSnapshot=host.logFile.parent_path()/(L"profile-"+std::to_wstring(GetCurrentProcessId())+L".json");
     const auto cache=profile/L"Cache"/L"ShaderBytecode";
     auto bundled=host.root/L"Shaders";
     if(!fs::is_directory(bundled))bundled=host.root/L"dist/HBEngine/Shaders";

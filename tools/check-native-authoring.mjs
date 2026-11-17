@@ -483,7 +483,7 @@ const report=path.join(work,'report.json');
 const executable=path.resolve(process.argv[2] || path.join(root,'dist/HBEngineNative/HBEngineNative.exe'));
 if(process.argv[3]){
   process.env.HB_EDITOR_TEST_PLAYER=path.resolve(process.argv[3]);
-  process.env.HB_EDITOR_TEST_RUNTIME=path.resolve(process.env.HB_EDITOR_TEST_RUNTIME||root);
+  process.env.HB_EDITOR_TEST_RUNTIME=path.resolve(process.env.HB_EDITOR_TEST_RUNTIME||path.dirname(path.resolve(process.argv[3])));
 }
 try {
   const mode=process.env.HB_TEST_NATIVE_ONLY==='1'?[]:['--native-editor'];
@@ -496,7 +496,7 @@ const evidence=JSON.parse(await fs.readFile(report,'utf8'));
 assert.equal(evidence.webview,false);
 assert.equal(evidence.saved,true);
 if(process.argv[3]){
-  assert.deepEqual(evidence.play,{backend:'D3D12',frames:16,scene:project.manifest.startupScene,take:'Assets/NativeTake.hbsequence.json',webview:false});
+  assert.deepEqual(evidence.play,{backend:'D3D12',frames:16,scene:project.manifest.startupScene,take:'Assets/NativeTake.hbsequence.json',webview:false,profile:true});
   const mix=await fs.readFile(path.join(project.root,'Assets/Recordings/NativeMix.wav'));
   assert.equal(mix.toString('ascii',0,4),'RIFF');
   assert.equal(mix.readUInt16LE(22),2);
