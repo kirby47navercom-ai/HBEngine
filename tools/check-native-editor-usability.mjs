@@ -137,6 +137,11 @@ try{
   // Particle presets: a fire preset sets an additive cone emitter; unknown presets are refused.
   doc=await session('scene.edit',{action:'component',id:a,key:'ParticleSystem',expectedRevision:doc.revision});
   {const ps=find(a).components.find(c=>c.type==='ParticleSystem');doc=await session('scene.edit',{action:'particlePreset',id:a,key:ps.id,value:'smoke',expectedRevision:doc.revision});const p=find(a).components.find(c=>c.id===ps.id).properties;assert.equal(p.blend,'alpha');assert.ok(p.endSize>p.size,'smoke grows');
+   // Colour picker: a #rrggbb pick replaces rgb of an [r,g,b,a] property and keeps alpha.
+   {const index=JSON.parse((await session('document.read',{path:scene})).text).objects.findIndex(o=>o.id===a),c=find(a).components.findIndex(x=>x.id===ps.id),parts=['objects',String(index),'components',String(c),'properties'];
+    const fields=await session('asset.fields',{parts});assert.equal(fields.find(x=>x.key==='color')?.color,true,'colour fields are marked');
+    const alpha=find(a).components[c].properties.color[3];doc=await session('asset.fieldEdit',{path:scene,parts,key:'color',value:'#ff8000',expectedRevision:doc.revision});
+    assert.deepEqual(find(a).components[c].properties.color.map(v=>Math.round(v*1000)/1000),[1,.502,0,alpha]);}
    for(const name of ['fire','sparks','rain','burst'])doc=await session('scene.edit',{action:'particlePreset',id:a,key:ps.id,value:name,expectedRevision:doc.revision});
    await assert.rejects(session('scene.edit',{action:'particlePreset',id:a,key:ps.id,value:'nope',expectedRevision:doc.revision}),/프리셋/);doc=await session('scene.edit',{action:'removeComponent',id:a,key:ps.id,expectedRevision:doc.revision});}
   doc=await session('scene.edit',{action:'add',key:'cube',position:[2,1,3],expectedRevision:doc.revision});

@@ -1752,6 +1752,9 @@ class NativeEditorShell {
                         if(!axes.empty()&&axes.size()<=4&&std::all_of(axes.begin(),axes.end(),[](const Json& a){return a.at("control").value("kind",std::string())=="text";})){
                             Json controls=Json::array();auto innerVia=via;innerVia.push_back(property.at("key"));
                             for(auto axis:axes){axis["viaParts"]=innerVia;auto control=axis.at("control");control["i"]=fields.size();control["step"]=.05;controls.push_back(std::move(control));fields.push_back(std::move(axis));}
+                            // Colour properties also get a swatch that opens the Windows colour picker.
+                            if(property.value("color",false)&&axes.size()>=3){int rgb[3]{};for(int k=0;k<3;k++){double v=0;try{v=std::stod(axes.at(k).at("control").value("value",std::string("0")));}catch(const std::exception&){}rgb[k]=int(std::lround(std::clamp(v,0.0,1.0)*255));}
+                                char hex[8];std::snprintf(hex,sizeof(hex),"#%02x%02x%02x",rgb[0],rgb[1],rgb[2]);auto swatch=property;swatch["viaParts"]=via;controls.push_back({{"kind","color"},{"value",hex},{"i",fields.size()}});fields.push_back(std::move(swatch));}
                             rows.push_back({{"label",property.at("label")},{"controls",std::move(controls)}});continue;
                         }
                     }

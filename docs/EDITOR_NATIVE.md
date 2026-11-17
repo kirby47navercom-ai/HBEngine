@@ -27,6 +27,7 @@
 - 프로젝트 설정: 편집 > 프로젝트 설정… 또는 도구 막대 설정 버튼에서 열어요. 처음 열면 `Assets/Settings/GS_Project.hbgameconfig.json` 게임 설정 에셋을 만들고 프로젝트 파일의 `gameConfig`에 연결해요. 중력·고정 시간 간격·서브스텝·게임 모드·기본 폰·입력 매핑·창 크기 등은 자체 게임 설정이 없는 모든 장면의 플레이와 패키지에 적용돼요(`project.settings`, 검사 `node tools/check-project-settings.mjs`).
 - 출력 로그: 줄마다 시각과 정보/경고/오류를 표시하고 오류는 빨강, 경고는 주황이에요. 같은 메시지가 이어지면 (×N)으로 합쳐요. 오른쪽 클릭 메뉴에서 지우기, 모두 복사, 정보/경고/오류 표시, 같은 메시지 묶기를 바꿔요. 메시지에 `Assets/…`·`Source/…` 경로가 있으면 두 번 눌러 그 문서를 열어요. 플레이 중 블루프린트 Print·C++ 로그·스크립트 오류는 `플레이:` 줄로 0.15초마다 이어 붙어요(오류는 빨강).
 - 디테일 컴포넌트 도구: 컴포넌트마다 ▲/▼(순서, Transform은 맨 위 고정), 초기화(기본값), 복사, 값 붙여넣기(같은 종류), 제거 버튼이 있어요. 복사한 컴포넌트는 맨 위 "컴포넌트 붙여넣기"로 다른 오브젝트에 새로 붙여요(`scene.edit` moveComponent·resetComponent·pasteComponentValues·pasteComponent).
+- 색 속성: 색(r,g,b,a) 속성은 숫자 칸 옆 색 견본을 누르면 Windows 색 선택 창이 열리고, 고른 색이 r,g,b에 들어가며 알파는 그대로예요.
 - 피벗/중심과 프리팹 표시: 뷰포트 오른쪽 위 "피벗/중심" 버튼은 기즈모를 오브젝트 피벗 또는 경계 중심에 놓아요(표시 위치만 바꾸며 회전·크기 기준은 피벗 그대로예요). 아웃라이너에서 프리팹 인스턴스 이름은 파란색이에요.
 - 명령·에셋 검색: Ctrl+K(편집 > 명령·에셋 검색…)로 모든 메뉴 명령과 프로젝트 에셋을 띄어쓰기 단어로 걸러 찾고 Enter나 두 번 클릭으로 실행하거나 열어요. ↑/↓/PageUp/PageDown으로 고르고 Esc로 닫아요.
 - 프로파일러: 보기 > 프로파일러(아래 도킹 탭)는 플레이 중 게임의 FPS, 평균·최대 프레임 시간, 로직(입력·물리·블루프린트·C++) 시간, GPU 시간, 그리기 호출, 오브젝트 수, JS 힙·스크립트 프로세스 메모리를 0.5초마다 보여 줘요. 실행기가 `Sessions/profile-<pid>.json`에 쓰고 플레이가 끝나면 지워요. 플레이 포함 검사: `node tools/check-native-authoring.mjs dist/HBEngineNative/HBEngineNative.exe dist/HBEngineNative/HBNativePlayer.exe`.

@@ -556,7 +556,7 @@ export function nativeEditorSession(bridge) {
         : type === 'object' ? {kind:'button',text:Array.isArray(value) ? `열기 (${value.length})` : '열기'}
         : type === 'boolean' ? {kind:'checkbox',checked:value}
         : {kind:'text',value:String(value),disabled:key==='version' || type==='null'};
-      return {key, label, type, control};
+      return {key, label, type, control, ...(definition?.type==='color'?{color:true}:{})};
     });
   }
   const scene=()=>{
@@ -1841,6 +1841,13 @@ export function nativeEditorSession(bridge) {
       await check(doc,expectedRevision);
       if(doc.kind==='scene'&&parts[0]==='objects'&&doc.data.objects[Number(parts[1])]?.locked)throw Error('오브젝트 잠금을 해제하세요.');
       const field = fieldsFor(doc,parts).find(row=>row.key===key);
+      // Colour picker: a #rrggbb pick replaces r,g,b of an [r,g,b,a] colour property (alpha and HDR range above 1 are kept only for alpha).
+      if(field?.color&&typeof value==='string'&&/^#[0-9a-f]{6}$/i.test(value)){
+        let current=doc.data;for(const part of [...parts,key])current=current?.[part];
+        if(!Array.isArray(current)||current.length<3)throw Error('색 속성을 확인하세요.');
+        const next=[...[1,3,5].map(i=>parseInt(value.slice(i,i+2),16)/255),...current.slice(3)],pointer='/'+[...parts,key].map(pointerPart).join('/');
+        change(doc,patchAsset(doc.kind,doc.data,[{op:'replace',path:pointer,value:next}]),'edit:'+pointer+':'+Date.now()+Math.random());return response(doc);
+      }
       if (!field || field.control.disabled || field.type==='object') throw Error('편집 가능한 속성을 선택하세요.');
       if (field.type==='number' && typeof value==='string' && value.trim()) value=Number(value);
       if (typeof value!==field.type || typeof value==='number' && !Number.isFinite(value)) throw Error('속성 값의 형식을 확인하세요.');
