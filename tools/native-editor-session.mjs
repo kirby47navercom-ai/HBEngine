@@ -12,7 +12,7 @@ import {lightmapSceneSnapshot} from '../prototype/lightmap-scene.js';
 import {bakeSceneLightmaps} from '../prototype/lightmap-bake.js';
 import {mergeLightmapAssets} from '../prototype/lightmap-assets.js';
 import {resolveSceneEnvironment} from '../prototype/scene-environment.js';
-import {AssetDocuments, assetSuffix, assetTitle, assetTypes, createAsset, validAsset} from '../prototype/asset-documents.js';
+import {AssetDocuments, assetDocumentSource, assetValidationError, assetSuffix, assetTitle, assetTypes, createAsset, validAsset} from '../prototype/asset-documents.js';
 import {documentRevision, patchAsset} from '../prototype/automation.js';
 import {blueprintClipboard, catalog, defaultInputValue, defaultsFor, effectivePins, graphContext, makeComment, makeDefinition, makeNode, nodeTitle, pasteNodes, sampleTimeline, timelineLength, typeColors, variableTypes} from '../prototype/blueprint-model.js';
 import {connectAutomatic} from '../prototype/blueprint-connections.js';
@@ -1186,6 +1186,23 @@ export function nativeEditorSession(bridge) {
       await documents.save(doc,(file,text,expected) => project().checkedWrite(file,text,expected));
       await dropAutosave(doc.path);
       return response(doc);
+    },
+    // Save All (Unreal Ctrl+Shift+S): every changed open document.
+    'document.saveAll': async () => {
+      let saved=0;
+      for(const tab of tabs().filter(d=>d.dirty)){const doc=targetDocument(tab.path);await documents.save(doc,(file,text,expected)=>project().checkedWrite(file,text,expected));await dropAutosave(doc.path);saved++;}
+      const open=(()=>{try{return current();}catch{return null;}})();return {...(open?await response(open):{}),saved};
+    },
+    // Save As: the open document (unsaved edits included) as a new file next to it, which then opens; the original stays as it was.
+    'document.saveAs': async ({name}) => {
+      const doc=current();
+      if(typeof name!=='string'||!name.trim()||name.length>80||/[\\/:*?"<>|\x00-\x1f]/.test(name)||/[. ]$/.test(name))throw Error('새 파일 이름을 확인하세요.');
+      const suffix=Object.values(assetSuffix).filter(s=>doc.path.endsWith(s)).sort((a,b)=>b.length-a.length)[0]||path.posix.extname(doc.path);
+      const target=path.posix.join(path.posix.dirname(doc.path),name.trim()+suffix);
+      if(await project().read(target).then(()=>true,()=>false))throw Error('같은 이름의 파일이 있어요: '+target);
+      const data=assetDocumentSource(doc);if(!validAsset(doc.kind,data))throw Error(assetValidationError(doc.kind,data)+': '+doc.path);
+      await project().write(target,doc.kind==='text'?data:JSON.stringify(doc.kind==='text'?data:{...data,...(typeof data?.name==='string'?{name:name.trim().slice(0,80)}:{})},null,2));
+      return openDocument(target);
     },
     'document.close': ({path,discard=false}) => {
       if (!documents.close(path,discard)) throw Error('저장하지 않은 변경 사항이 있어요.');

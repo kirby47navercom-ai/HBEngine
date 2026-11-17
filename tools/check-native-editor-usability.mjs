@@ -198,6 +198,11 @@ try{
    assert.equal(lod.generated.length,2);assert.ok(lod.generated[0].triangles<lod.sourceTriangles&&lod.generated[1].triangles<lod.generated[0].triangles,'each level is simpler');
    const levels=JSON.parse((await session('document.read',{path:lodFile})).text).levels;assert.equal(levels.length,3);assert.equal(levels[0].asset,gridFile);assert.ok(levels[1].threshold<levels[2].threshold);
    await session('document.open',{path:scene});}
+  // Save All writes every changed document; Save As copies the open one (unsaved edits included) under a new name and opens it.
+  {let opened=await session('document.open',{path:scene});opened=await session('scene.edit',{action:'add',key:'cube',position:[0,3,0],expectedRevision:opened.revision});assert.ok(opened.dirty,'scene changed');
+   const before=JSON.parse(opened.text).objects.length;const copy=await session('document.saveAs',{name:'SaveAsCopy'});assert.ok(copy.path.endsWith('/SaveAsCopy.hbscene.json'));assert.equal(JSON.parse(copy.text).objects.length,before,'copy has the unsaved edit');
+   await assert.rejects(session('document.saveAs',{name:'SaveAsCopy'}),/같은 이름/);await assert.rejects(session('document.saveAs',{name:'bad/name'}),/이름/);
+   await session('document.open',{path:scene});const all=await session('document.saveAll',{});assert.ok(all.saved>=1);assert.equal(all.dirty,false,'saved');}
   // Source control panel backend: a project-root repository, stage everything, commit, clean status.
   {let status=await session('sourceControl.status',{});if(!status.projectRoot)status=await session('sourceControl.init',{});assert.equal(status.projectRoot,true);assert.ok(status.entries.length>0,'new project files are listed');
    status=await session('sourceControl.stage',{paths:status.entries.map(e=>e.path),expectedIndexRevision:status.indexRevision});status=await session('sourceControl.status',{});assert.ok(status.entries.every(e=>e.index!==' '&&e.index!=='?'),'all staged');
