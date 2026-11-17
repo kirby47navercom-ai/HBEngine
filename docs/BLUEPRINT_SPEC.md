@@ -796,3 +796,5 @@ ParticleSystem Collision/Events 속성→CPU/WebGPU/DirectX 공용 설정. Custo
 
 ### 믹서 음성 선별 (3341–3360)
 AudioListener.voiceSelection mixer/legacy·Components SetString 공용 편집. 기존 보호/우선순위/거리 순서 + 실제 믹서 부모/Send/압축 감쇠로 가상화 음성 입장 추정. 새 PCM/AudioNode/타이머0. [MIXER_VOICE_AUDIBILITY](MIXER_VOICE_AUDIBILITY.md).
+
+2026-11-17: 디버그 그리기 노드 Draw Debug Line / Sphere / Box(디버그 그룹). 색(vec3, 0이면 빨강)과 지속 시간(게임 시간 초, 0이면 한 프레임)을 받아 게임 월드에 선으로 그려요(`prototype/debug-draw.js`, run-project가 매 프레임 갱신, 네이티브는 선 풀로 그림). 검사 `node tools/check-debug-draw.mjs`. 웹 플레이어에는 아직 그리지 않아요.
