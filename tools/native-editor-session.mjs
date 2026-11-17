@@ -1289,6 +1289,12 @@ export function nativeEditorSession(bridge) {
       if(!Number.isInteger(index)||index<0||index>=32||typeof name!=='string'||name.length>40)throw Error('레이어 이름을 확인하세요.');
       return updateProjectConfig(data=>{const names=Array.from({length:32},(_,i)=>data.collisionLayers?.[i]||'');names[index]=name.trim();while(names.length&&!names.at(-1))names.pop();data.collisionLayers=names;});
     },
+    // Reference viewer: assets that use this one and assets this one uses (missing targets flagged).
+    'content.references': async ({path:name}) => {
+      if(typeof name!=='string'||!name)throw Error('에셋을 선택하세요.');
+      const info=await project().assetInfo(name);
+      return {path:info.path,referencers:info.referencers.map(r=>r.path).sort(),dependencies:info.dependencies.map(d=>({path:d.path,missing:!!d.missing})).sort((a,b)=>a.path.localeCompare(b.path))};
+    },
     'content.assetsOfKind': async ({kind}) => {
       if(typeof kind!=='string'||!kind)throw Error('에셋 종류를 확인하세요.');
       const listed=await project().list({folder:'',query:'',browse:true,recursive:true,contents:false,type:'all'});
