@@ -30,7 +30,7 @@ class NativeEditorShell {
     static inline HBRUSH tabBrush=CreateSolidBrush(RGB(0x24,0x24,0x24));
     static inline HBRUSH bgBrush=CreateSolidBrush(bgColor),fieldBrush=CreateSolidBrush(fieldColor),panelBrush=CreateSolidBrush(panelColor),lineBrush=CreateSolidBrush(lineColor),accentBrush=CreateSolidBrush(accentColor);
     // Editor UI scale in DPI units: system DPI, or the user's 편집기 배율 (0 = follow Windows).
-    unsigned uiDpi=96;double userScale=0;HMENU scaleMenu=nullptr;std::string startupScenePath;
+    unsigned uiDpi=96;double userScale=0;HMENU scaleMenu=nullptr,settingsMenu=nullptr;std::string startupScenePath;
     // Scene selection: sceneSelection is the primary (gizmo, inspector); sceneExtra holds the other selected objects.
     std::vector<std::string> sceneExtra,hierarchyOrder;Json sceneClipboard=Json::array();
     Json viewTarget;
@@ -190,7 +190,7 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
-    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ProjectSettings=static_cast<Command>(974),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -564,9 +564,12 @@ class NativeEditorShell {
         AppendMenuW(scaleMenu,MF_STRING,ScaleAuto,L"Windows 설정 따르기");
         for(const auto& [id,text]:std::initializer_list<std::pair<Command,const wchar_t*>>{{Scale100,L"100%"},{Scale125,L"125%"},{Scale150,L"150%"},{Scale175,L"175%"},{Scale200,L"200%"}})AppendMenuW(scaleMenu,MF_STRING,id,text);
         AppendMenuW(viewMenu,MF_POPUP,UINT_PTR(scaleMenu),L"편집기 배율");
+        settingsMenu=CreatePopupMenu();AppendMenuW(settingsMenu,MF_STRING,ProjectSettings,L"프로젝트 설정…");AppendMenuW(settingsMenu,MF_SEPARATOR,0,nullptr);AppendMenuW(settingsMenu,MF_STRING,ScaleAuto,L"편집기 배율: Windows 설정 따르기");
+        for(const auto& [id,text]:std::initializer_list<std::pair<Command,const wchar_t*>>{{Scale100,L"편집기 배율: 100%"},{Scale125,L"편집기 배율: 125%"},{Scale150,L"편집기 배율: 150%"},{Scale175,L"편집기 배율: 175%"},{Scale200,L"편집기 배율: 200%"}})AppendMenuW(settingsMenu,MF_STRING,id,text);
         AppendMenuW(viewMenu,MF_STRING,PreviewAsset,L"에셋 3D 미리보기");
         AppendMenuW(viewMenu,MF_STRING,PickImageView,L"텍스처 밉 / 면 / 슬라이스 선택");
         AppendMenuW(viewMenu,MF_STRING,ModelFocus,L"3D 에셋 미리보기 초점");
+        AppendMenuW(edit,MF_STRING,ProjectSettings,L"프로젝트 설정…");
         AppendMenuW(edit,MF_STRING,ModelSettings,L"모델 단위·방향·변환");
         AppendMenuW(edit,MF_STRING,ModelSubassets,L"모델 하위 에셋 편집");
         AppendMenuW(edit,MF_STRING,ModelReimport,L"원본 모델 다시 가져오기");
@@ -799,7 +802,7 @@ class NativeEditorShell {
         if(id=="save")perform(Save);else if(id=="add")perform(CreateItem);else if(id=="import")perform(ImportAsset);
         else if(id=="play")perform(PlayScene);else if(id=="stop")perform(StopPlay);else if(id=="pause")perform(PauseGame);else if(id=="frame")perform(StepGameFrame);else if(id=="help")perform(ShowShortcuts);
         else if(id=="build"){if(const int choice=popup(buildMenuHandle,at))perform(Command(choice));}
-        else if(id=="settings"){if(const int choice=popup(scaleMenu,at))perform(Command(choice));}
+        else if(id=="settings"){if(const int choice=popup(settingsMenu,at))perform(Command(choice));}
         else if(id=="move")perform(ToolMove);else if(id=="rotate")perform(ToolRotate);else if(id=="scale")perform(ToolScale);
         else if(id=="snap")perform(SnapToggle);else if(id=="focus")perform(FocusActor);
         else if(id=="snapsize"){if(const int choice=popup(snapMenu,at))perform(Command(choice));}
@@ -3217,6 +3220,7 @@ class NativeEditorShell {
         if(command==SpaceToggle){localSpace=!localSpace;statusText(localSpace?L"기즈모: 로컬 좌표":L"기즈모: 월드 좌표");refreshChrome();queueViewport();return;}
         if(command==SurfaceSnapToggle){surfaceSnap=!surfaceSnap;refreshChrome();return;}
         if(command>=ViewLit&&command<=ViewWireframe){viewMode=command==ViewLit?"lit":command==ViewUnlit?"unlit":"wireframe";refreshChrome();queueViewport();return;}
+        if(command==ProjectSettings){if(projectFile.empty())return;captureSource();showDocument(request("document.open",{{"path",request("project.settings",{}).at("path")}}));statusText(L"프로젝트 설정: 장면에 게임 설정이 없으면 이 값을 써요.");return;}
         if(command==PauseGame){if(!playProcess)return;playPaused=!playPaused;postToGame(WM_APP+44,playPaused);statusText(playPaused?L"플레이 일시정지":L"플레이 계속");refreshChrome();return;}
         if(command==StepGameFrame){if(!playProcess)return;playPaused=true;postToGame(WM_APP+45,0);statusText(L"한 프레임 진행");refreshChrome();return;}
         if(command==ShowHistory){const auto slot=dockSlotOf("history");dockActive[slot]="history";layout();return;}

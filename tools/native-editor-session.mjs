@@ -577,6 +577,18 @@ export function nativeEditorSession(bridge) {
     'project.recent': () => recentProjects(),
     'project.recovery': params=>project().assetRecovery(params),
     'project.recover': params=>project().resolveRecovery(params),
+    // Project settings: one game config asset for the whole project (scenes with their own game config override it).
+    'project.settings': async ()=>{
+      project();
+      let file=record.manifest.gameConfig;
+      if(!file){
+        file='Assets/Settings/GS_Project.hbgameconfig.json';
+        if(!await record.project.read(file).then(()=>true,()=>false)){await record.project.mkdir('Assets/Settings');const config=createAsset('gameconfig','GS_Project');config.startupScene=record.manifest.startupScene;await record.project.write(file,JSON.stringify(config,null,2));}
+        const manifest={...JSON.parse((await fs.readFile(record.file,'utf8')).replace(/^\uFEFF/,'')),gameConfig:file};
+        await fs.writeFile(record.file,JSON.stringify(manifest,null,2)+'\n');record.manifest.gameConfig=file;
+      }
+      return {path:file};
+    },
     'project.buildProfiles': async ()=>{
       project();
       const {readBuildProfiles}=await import('./build-game.mjs');

@@ -21,6 +21,7 @@ export function validateManifest(data){
   for(const [key,suffix] of [['startupScene','.hbscene.json'],['startupBlueprint','.hbblueprint.json']]){const value=data[key];if(!validProjectPath(value)||!value.endsWith(suffix))throw Error('프로젝트 시작 에셋 경로 오류');}
   if(data.gameInstance){const value=data.gameInstance,asset=typeof value==='string'&&value.startsWith('Assets/')&&value.endsWith('.hbblueprint.json'),cpp=typeof value==='string'&&/^Source\/.+\.(?:h|hpp)(?:#[A-Za-z_]\w{0,79})?$/.test(value);if((!asset&&!cpp)||value.length>1000||/[\\:\x00-\x1f<>"|?*]/.test(value)||value.split('/').some(p=>!p||p==='.'||p==='..'))throw Error('GameInstance 에셋·C++ 경로 오류');}
 
+  if(data.gameConfig!==undefined&&(!validProjectPath(data.gameConfig)||!data.gameConfig.startsWith('Assets/')||!data.gameConfig.endsWith('.hbgameconfig.json')))throw Error('프로젝트 게임 설정 경로 오류');
   return data;
 }
 const descriptor=name=>({version:1,engine:'HBEngine',engineVersion,id:randomUUID(),name,startupScene:'Assets/Scenes/Garden.hbscene.json',startupBlueprint:'Assets/Blueprints/BP_Garden.hbblueprint.json'});
