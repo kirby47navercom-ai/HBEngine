@@ -192,7 +192,7 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
-    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -565,7 +565,7 @@ class NativeEditorShell {
                 AppendMenuW(viewMenu,MF_STRING,WideInspector,L"속성 패널 너비 변경");
         AppendMenuW(viewMenu,MF_STRING,ToggleFps,L"FPS 표시\tCtrl+Shift+H");
         AppendMenuW(viewMenu,MF_STRING,GameViewToggle,L"게임 보기 (편집 표시 숨기기)\tG");AppendMenuW(viewMenu,MF_STRING,GridToggle,L"바닥 격자 표시");AppendMenuW(viewMenu,MF_STRING,NavigationToggle,L"내비게이션 표시\tP");AppendMenuW(viewMenu,MF_STRING,QuadToggle,L"4분할 뷰포트");
-        AppendMenuW(viewMenu,MF_STRING,ViewLit,L"보기 모드: 조명");AppendMenuW(viewMenu,MF_STRING,ViewUnlit,L"보기 모드: 조명 없음");AppendMenuW(viewMenu,MF_STRING,ViewWireframe,L"보기 모드: 와이어프레임");AppendMenuW(viewMenu,MF_STRING,ShowHistory,L"실행 취소 기록");AppendMenuW(viewMenu,MF_STRING,ShowProfiler,L"프로파일러");
+        AppendMenuW(viewMenu,MF_STRING,ViewLit,L"보기 모드: 조명");AppendMenuW(viewMenu,MF_STRING,ViewUnlit,L"보기 모드: 조명 없음");AppendMenuW(viewMenu,MF_STRING,ViewWireframe,L"보기 모드: 와이어프레임");AppendMenuW(viewMenu,MF_STRING,SaveNamedLayout,L"레이아웃 저장…");AppendMenuW(viewMenu,MF_STRING,LoadNamedLayout,L"레이아웃 불러오기…");AppendMenuW(viewMenu,MF_STRING,ShowHistory,L"실행 취소 기록");AppendMenuW(viewMenu,MF_STRING,ShowProfiler,L"프로파일러");
         AppendMenuW(viewMenu,MF_STRING,ResetLayout,L"기본 배치 복원");
         scaleMenu=CreatePopupMenu();
         AppendMenuW(scaleMenu,MF_STRING,ScaleAuto,L"Windows 설정 따르기");
@@ -2801,6 +2801,23 @@ class NativeEditorShell {
         write(temp,saved.dump());
         if(!MoveFileExW(temp.c_str(),layoutFile.c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH))DeleteFileW(temp.c_str());
     }
+    // Named layouts (Unreal "Save Layout As" / Unity layouts): copies of the layout file under UserData/Layouts.
+    fs::path layoutsFolder()const{return layoutFile.parent_path()/L"Layouts";}
+    void saveNamedLayout(const std::wstring& name){
+        if(name.empty()||name.size()>40||name.find_first_of(L"\\/:*?\"<>|")!=std::wstring::npos||name.find_first_not_of(L" .")==std::wstring::npos)throw std::runtime_error("레이아웃 이름을 확인하세요.");
+        saveLayout();fs::create_directories(layoutsFolder());fs::copy_file(layoutFile,layoutsFolder()/(name+L".json"),fs::copy_options::overwrite_existing);
+    }
+    void loadNamedLayout(const fs::path& file){
+        if(!fs::is_regular_file(file))throw std::runtime_error("레이아웃 파일이 없어요.");
+        fs::copy_file(file,layoutFile,fs::copy_options::overwrite_existing);restoreLayout();applyScale();
+        if(!acceptance)ShowWindow(window,layoutMaximized?SW_SHOWMAXIMIZED:SW_SHOWNORMAL);
+        layout();refreshChrome();
+    }
+    std::vector<fs::path> namedLayouts()const{
+        std::vector<fs::path> files;std::error_code error;
+        for(const auto& entry:fs::directory_iterator(layoutsFolder(),error))if(entry.path().extension()==L".json")files.push_back(entry.path());
+        std::sort(files.begin(),files.end());return files;
+    }
     void restoreLayout(){
         if(!fs::is_regular_file(layoutFile))return;
         const auto data=Json::parse(read(layoutFile),nullptr,false);
@@ -3344,6 +3361,13 @@ class NativeEditorShell {
         if(command==SpaceToggle){localSpace=!localSpace;statusText(localSpace?L"기즈모: 로컬 좌표":L"기즈모: 월드 좌표");refreshChrome();queueViewport();return;}
         if(command==SurfaceSnapToggle){surfaceSnap=!surfaceSnap;refreshChrome();return;}
         if(command>=ViewLit&&command<=ViewWireframe){viewMode=command==ViewLit?"lit":command==ViewUnlit?"unlit":"wireframe";refreshChrome();queueViewport();return;}
+        if(command==SaveNamedLayout){const auto name=inputName(L"레이아웃 이름",L"",40);if(name.empty())return;saveNamedLayout(name);statusText((L"레이아웃 저장 · "+name).c_str());return;}
+        if(command==LoadNamedLayout){
+            const auto files=namedLayouts();if(files.empty()){statusText(L"저장한 레이아웃이 없어요. 보기 > 레이아웃 저장…으로 만드세요.",1);return;}
+            HMENU menu=CreatePopupMenu();for(std::size_t i=0;i<files.size()&&i<40;++i)AppendMenuW(menu,MF_STRING,UINT(i+1),files[i].stem().c_str());
+            POINT at{};GetCursorPos(&at);const int choice=popup(menu,at);DestroyMenu(menu);if(!choice)return;
+            loadNamedLayout(files.at(choice-1));statusText((L"레이아웃 불러오기 · "+files.at(choice-1).stem().wstring()).c_str());return;
+        }
         if(command==NavigationToggle){showNavigation=!showNavigation;statusText(showNavigation?L"내비게이션 표시 켬 (NavigationMesh 컴포넌트)":L"내비게이션 표시 끔");queueViewport();return;}
         if(command==BakeNavMesh){
             if(document.value("kind",std::string())!="navmesh"){statusText(L"내비 메시 문서를 열고 굽기를 실행하세요.",1);return;}
@@ -4769,6 +4793,9 @@ private:
         logShow[1]=false;refreshLog();const bool logFiltered=std::none_of(logItems.begin(),logItems.end(),[](const Json& row){return row.value("icon",std::string())=="WARN";});logShow[1]=true;refreshLog();const bool consoleLog=logMerged&&logFiltered&&!logItems.empty();
         // Build lighting: a tiny bake writes the scene lightmap and points the meshes at it; undo restores the scene.
         bool lightBuilt=false;{const auto keep=sceneSelection;auto baked=request("scene.bakeLightmaps",{{"path",document.at("path")},{"objects",Json::array()},{"settings",{{"resolution",16},{"samples",4},{"bounces",1}}},{"expectedRevision",document.at("revision")}});const auto info=baked.value("lightmap",Json::object());showDocument(std::move(baked));lightBuilt=!info.value("updated",Json::array()).empty()&&info.value("path",std::string()).rfind("Assets/Lighting/LM_",0)==0&&document.at("text").get<std::string>().find(info.value("path",std::string()))!=std::string::npos;command(Undo);sceneSelection=keep;}
+        // Named layouts: a saved arrangement comes back after the dock changes.
+        bool namedLayout=false;{const auto keepSlots=dockSlots;saveNamedLayout(L"검사 레이아웃");auto moved=dockSlots;std::swap(moved["left"],moved["right"]);dockSlots=moved;layout();
+            const auto files=namedLayouts();if(!files.empty()&&files.front().stem()==L"검사 레이아웃"){loadNamedLayout(files.front());namedLayout=dockSlots==keepSlots;}dockSlots=keepSlots;layout();}
         // Command palette: every menu command is listed and words filter it.
         std::vector<std::pair<std::wstring,int>> paletteCommands;collectMenu(GetMenu(window),L"",paletteCommands);
         const bool palette=paletteCommands.size()>40&&std::any_of(paletteCommands.begin(),paletteCommands.end(),[](const auto& c){return c.second==PlayScene&&paletteMatch(c.first,L"장면 플레이");})&&!paletteMatch(L"장면 › 플레이",L"플레이 저장");
@@ -4776,8 +4803,8 @@ private:
         SetWindowTextW(consoleInput,L"r.ScreenPercentage 80");runConsole();const bool consoleSet=Json::parse(document.at("text").get<std::string>()).at("runtime").value("renderScale",0)==80;perform(Undo);
         SetWindowTextW(consoleInput,L"stat fps");runConsole();drawViewport();const bool fpsShown=showFps&&!fpsTimes.empty();perform(ToggleFps);
         SetWindowTextW(consoleInput,L"camera.speed 7");runConsole();const bool speedSet=cameraSpeed==7;perform(Command(CameraSpeedFirst+3));
-        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"lightBuild",lightBuilt}};
-        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"namedLayout",namedLayout},{"lightBuild",lightBuilt}};
+        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!namedLayout||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
