@@ -7,7 +7,8 @@ Windows 편집기와 게임은 네이티브 빌드만 있어요. WebView2 호환
 - 일반 실행은 프레임별 긴 진단을 생략하고 보고서 요청에서는 타이머 기상·호스트 왕복·렌더 명령 시간으로 지연을 나눠요. 증거는 native/build/native-game-jyLQFB/acceptance.json이에요.
 
 - 2026-11-17 편집기·엔진 기본 기능 묶음(커밋 03d1ce2c~35165f11, 항목마다 커밋): 플레이 일시정지·한 프레임 진행(F6/F7), 프로젝트 설정(프로젝트 게임 설정), 출력 로그 심각도·필터·묶기, 컴포넌트 순서·초기화·복사, 피벗/중심·프리팹 파란색, 명령·에셋 검색(Ctrl+K), 프로파일러 탭, 조명 빌드(UV1 메시), 내비 메시 굽기·표시(P), 방향광 캐스케이드 그림자, 게임 UI 한글 IME 조합, 스크립트 크래시 보고서, 이름 붙인 레이아웃. 설명은 [편집기 안내](docs/EDITOR_NATIVE.md). 플레이 포함 검사는 `node tools/check-native-authoring.mjs dist/HBEngineNative/HBEngineNative.exe dist/HBEngineNative/HBNativePlayer.exe`.
-- 남은 부족 기능: 파티클(VFX) 편집기, 프리팹 단독 편집, 엔진 에셋 썸네일, 소스 관리 패널, 단축키 재지정 편집기·편집기 환경설정, 텍스처·오디오 가져오기 설정, 자유 분리/중첩 도킹, 사각형·통합 기즈모, 추가 보기 모드·프레임 디버거, 레벨 스트리밍 UI, 오디오 믹서·입력·현지화·충돌 전용 편집기; 엔진은 가림 컬링, MP3/Ogg 스트리밍·영상, 네이티브 ShaderMaterial/Points, 네트워크 예측, 잡 시스템, HLOD·자동 LOD, 기본 도형 UV1 자동 생성. check-native-scene-render는 그림자 맵 최소 256 기대값 불일치로 이전부터 실패해요.
+- 2026-11-17 이어서(11f4d81f~f0b5b3ee): 소스 관리 패널, 프리팹 모드(11f4d81f의 컴파일 오류는 1a9660ce에서 수정), 단축키 지정, 메시·머티리얼 썸네일, 충돌 표시(Alt+C), LOD 자동 생성, MP3/Ogg/FLAC 스트리밍 표시 클립 전체 디코드 재생, 기본 도형 UV1 자동 생성, 네이티브 Points 렌더. 빌드 실패를 놓치지 않도록 빌드 뒤 dist 실행 파일 시각을 확인해요.
+- 남은 부족 기능: 파티클(VFX) 편집기, 텍스처·오디오 가져오기 설정, 자유 분리/중첩 도킹, 사각형·통합 기즈모, 추가 보기 모드·프레임 디버거, 레벨 스트리밍 UI, 오디오 믹서·입력·현지화 전용 편집기, 블렌드 스페이스·IK 편집기; 엔진은 가림 컬링, 압축 오디오 범위 스트리밍·영상, 네이티브 ShaderMaterial, 네트워크 예측, 잡 시스템, HLOD·고품질 단순화. check-native-scene-render는 그림자 맵 최소 256 기대값 불일치로 이전부터 실패해요.
 
 
 다음 작업과 완료 근거는 [누적 원장](docs/research/ENGINE_STATUS.json), 네이티브 조작은 [편집기 안내](docs/EDITOR_NATIVE.md)를 참고해요. 11월 13일 Windows 제작·렌더링과 WORK3443까지의 이전 기록은 [인계 보관본](docs/archive/CODEX_HANDOFF_THROUGH_3443_AND_NATIVE_WINDOWS.md)에 있어요. 작업별 소유자는 node tools/hb.mjs context "작업명" --compact로 찾아요.
