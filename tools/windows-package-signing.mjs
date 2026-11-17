@@ -25,9 +25,9 @@ export async function signWindowsPackage(files,settings,{signal}={}){
  const script='$cert=Get-Item -LiteralPath '+literal('Cert:/CurrentUser/My/'+settings.thumbprint)+';if(!$cert.HasPrivateKey -or $cert.NotAfter -le (Get-Date) -or $cert.NotBefore -gt (Get-Date) -or !($cert.EnhancedKeyUsageList.ObjectId -contains "1.3.6.1.5.5.7.3.3")){throw "유효한 개인 키·코드 서명 용도의 인증서가 필요해요."};$results=@();foreach($file in @('+files.map(literal).join(',')+')){$signed=Set-AuthenticodeSignature -LiteralPath $file -Certificate $cert -HashAlgorithm SHA256 -TimestampServer '+literal(settings.timestampServer)+';if($signed.Status -ne "Valid"){throw ("코드 서명 검증 실패: "+$file+" / "+$signed.Status)};$checked=Get-AuthenticodeSignature -LiteralPath $file;if($checked.Status -ne "Valid" -or $checked.SignerCertificate.Thumbprint -ne $cert.Thumbprint){throw "서명 후 검증 실패"};if(!$checked.TimeStamperCertificate){throw "타임스탬프 서명이 확인되지 않았어요."};$results+=[pscustomobject]@{file=[IO.Path]::GetFileName($file);status=$checked.Status.ToString();timestamped=[bool]$checked.TimeStamperCertificate}};ConvertTo-Json -InputObject $results -Compress';
  const {stdout}=await windowsPowerShell(script,{signal,timeout:120000});return {state:'signed',distributionReady:true,files:JSON.parse(stdout),antivirusVerdict:'not-tested-on-recipient-PC'};
 }
-export async function finalizeWindowsPackage({player,out,productName,executables,artifacts,settings,signal}){
+export async function finalizeWindowsPackage({player,out,productName,version='0.1.0',icon='',executables,artifacts,settings,signal}){
  const files=executables.map(name=>path.join(out,name));
- for(const file of files)await exec(player,['--stamp-game',file,productName],{windowsHide:true,signal,timeout:30000});
+ for(const [i,file] of files.entries())await exec(player,['--stamp-game',file,productName,version,i===0?icon:''],{windowsHide:true,signal,timeout:30000});
  const signing=await signWindowsPackage(files,settings,{signal});
  for(const name of executables){const bytes=await fs.readFile(path.join(out,name));Object.assign(artifacts.find(row=>row.path===name),{bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')});}
  return signing;

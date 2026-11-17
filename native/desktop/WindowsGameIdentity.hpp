@@ -1,4 +1,7 @@
 #pragma once
+#include <cwctype>
+#include <fstream>
+#include <iterator>
 #include <vector>
 #include <winver.h>
 #include <limits>
@@ -15,20 +18,32 @@ inline GUID gameIdentity(const std::wstring& id){
     if(!std::regex_match(id,std::wregex(L"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")))throw std::runtime_error("game identity");GUID value{};if(FAILED(CLSIDFromString((L"{"+id+L"}").c_str(),&value))||value==GUID_NULL)throw std::runtime_error("game identity");return value;
 }
 inline fs::path gameExtendedPath(const fs::path& requested){if(requested.wstring().rfind(LR"(\\?\)",0)==0)return requested;auto absolute=fs::absolute(requested).lexically_normal();auto native=absolute.make_preferred().wstring();if(native.rfind(LR"(\\?\)",0)!=0)native=native.rfind(LR"(\\)",0)==0?LR"(\\?\UNC\)"+native.substr(2):LR"(\\?\)"+native;return fs::path(native);}
-inline void stampGameExecutableImpl(const fs::path& requested,const std::wstring& name,const fs::path& identity){
+// Game icon: every image of a .ico becomes RT_ICON 1..n and RT_GROUP_ICON 101 (the id the player exe ships with).
+inline void writeGameIcon(HANDLE handle,const fs::path& icon){
+    if(icon.empty())return;std::ifstream in(icon,std::ios::binary);std::vector<BYTE> file((std::istreambuf_iterator<char>(in)),{});
+    const auto u16=[&](std::size_t at){return WORD(file.at(at)|file.at(at+1)<<8);};const auto u32=[&](std::size_t at){return DWORD(file.at(at)|file.at(at+1)<<8|file.at(at+2)<<16|DWORD(file.at(at+3))<<24);};
+    if(file.size()<6||u16(0)!=0||u16(2)!=1||!u16(4)||u16(4)>64)throw std::runtime_error("game icon file");
+    const WORD count=u16(4);std::vector<BYTE> group{0,0,1,0,BYTE(count),BYTE(count>>8)};
+    for(WORD i=0;i<count;i++){const std::size_t e=6+std::size_t(i)*16;const DWORD bytes=u32(e+8),offset=u32(e+12);if(std::size_t(offset)+bytes>file.size())throw std::runtime_error("game icon image");
+        if(!UpdateResourceW(handle,RT_ICON,MAKEINTRESOURCEW(i+1),MAKELANGID(LANG_NEUTRAL,SUBLANG_NEUTRAL),file.data()+offset,bytes))throw std::runtime_error("game icon write");
+        group.insert(group.end(),file.begin()+e,file.begin()+e+12);const WORD id=WORD(i+1);group.push_back(BYTE(id));group.push_back(BYTE(id>>8));}
+    if(!UpdateResourceW(handle,RT_GROUP_ICON,MAKEINTRESOURCEW(101),MAKELANGID(LANG_NEUTRAL,SUBLANG_NEUTRAL),group.data(),DWORD(group.size())))throw std::runtime_error("game icon group");
+}
+inline void stampGameExecutableImpl(const fs::path& requested,const std::wstring& name,const fs::path& identity,const std::wstring& version=L"0.1.0",const fs::path& icon={}){
+    WORD parts[4]{0,1,0,0};{int n=0;std::wstring item;for(wchar_t c:version+L"."){if(c==L'.'){if(n<4&&!item.empty())parts[n++]=WORD(std::min(65535,std::stoi(item)));item.clear();}else if(iswdigit(c))item+=c;else throw std::runtime_error("game version");}if(!n)throw std::runtime_error("game version");if(n<4)for(int k=n;k<4;k++)parts[k]=0;}
     const auto executable=gameExtendedPath(requested);
     if(name.empty()||name.size()>160||std::any_of(name.begin(),name.end(),[](wchar_t c){return c<32;})||!fs::is_regular_file(executable)||_wcsicmp(executable.extension().c_str(),L".exe"))throw std::runtime_error("game executable metadata");
     using Bytes=std::vector<BYTE>;auto word=[](Bytes& b,WORD value){b.push_back(BYTE(value));b.push_back(BYTE(value>>8));};auto align=[](Bytes& b){while(b.size()%4)b.push_back(0);};auto string=[&](const std::wstring& text){Bytes bytes;for(wchar_t c:text)word(bytes,c);word(bytes,0);return bytes;};
     auto block=[&](const std::wstring& key,WORD type,const Bytes& value,WORD length,const Bytes& children){Bytes b;word(b,0);word(b,length);word(b,type);const auto text=string(key);b.insert(b.end(),text.begin(),text.end());align(b);b.insert(b.end(),value.begin(),value.end());if(!children.empty()){align(b);b.insert(b.end(),children.begin(),children.end());}b[0]=BYTE(b.size());b[1]=BYTE(b.size()>>8);return b;};
-    Bytes strings;for(const auto& pair:std::vector<std::pair<std::wstring,std::wstring>>{{L"FileDescription",name},{L"ProductName",name},{L"OriginalFilename",identity.filename().wstring()},{L"InternalName",identity.stem().wstring()},{L"ProductVersion",L"0.1.0"},{L"FileVersion",L"0.1.0"}}){align(strings);const auto value=block(pair.first,1,string(pair.second),WORD(pair.second.size()+1),{});strings.insert(strings.end(),value.begin(),value.end());}
-    const auto table=block(L"040904b0",1,{},0,strings),info=block(L"StringFileInfo",1,{},0,table);Bytes translation;word(translation,0x409);word(translation,1200);const auto vars=block(L"VarFileInfo",1,{},0,block(L"Translation",0,translation,4,{}));Bytes children=info;align(children);children.insert(children.end(),vars.begin(),vars.end());VS_FIXEDFILEINFO fixed{};fixed.dwSignature=0xfeef04bd;fixed.dwStrucVersion=0x10000;fixed.dwFileVersionMS=fixed.dwProductVersionMS=1;fixed.dwFileType=VFT_APP;fixed.dwFileOS=VOS_NT_WINDOWS32;Bytes value(reinterpret_cast<BYTE*>(&fixed),reinterpret_cast<BYTE*>(&fixed)+sizeof(fixed));const auto resource=block(L"VS_VERSION_INFO",0,value,sizeof(fixed),children);
+    Bytes strings;for(const auto& pair:std::vector<std::pair<std::wstring,std::wstring>>{{L"FileDescription",name},{L"ProductName",name},{L"OriginalFilename",identity.filename().wstring()},{L"InternalName",identity.stem().wstring()},{L"ProductVersion",version},{L"FileVersion",version}}){align(strings);const auto value=block(pair.first,1,string(pair.second),WORD(pair.second.size()+1),{});strings.insert(strings.end(),value.begin(),value.end());}
+    const auto table=block(L"040904b0",1,{},0,strings),info=block(L"StringFileInfo",1,{},0,table);Bytes translation;word(translation,0x409);word(translation,1200);const auto vars=block(L"VarFileInfo",1,{},0,block(L"Translation",0,translation,4,{}));Bytes children=info;align(children);children.insert(children.end(),vars.begin(),vars.end());VS_FIXEDFILEINFO fixed{};fixed.dwSignature=0xfeef04bd;fixed.dwStrucVersion=0x10000;fixed.dwFileVersionMS=fixed.dwProductVersionMS=(DWORD(parts[0])<<16)|parts[1];fixed.dwFileVersionLS=fixed.dwProductVersionLS=(DWORD(parts[2])<<16)|parts[3];if(false)fixed.dwFileVersionMS=1;fixed.dwFileType=VFT_APP;fixed.dwFileOS=VOS_NT_WINDOWS32;Bytes value(reinterpret_cast<BYTE*>(&fixed),reinterpret_cast<BYTE*>(&fixed)+sizeof(fixed));const auto resource=block(L"VS_VERSION_INFO",0,value,sizeof(fixed),children);
     const char manifest[]=R"(<?xml version="1.0" encoding="UTF-8" standalone="yes"?><assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0"><assemblyIdentity type="win32" name="HBEngine.Game" version="0.1.0.0" processorArchitecture="amd64"/><trustInfo xmlns="urn:schemas-microsoft-com:asm.v3"><security><requestedPrivileges><requestedExecutionLevel level="asInvoker" uiAccess="false"/></requestedPrivileges></security></trustInfo><compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1"><application><supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}"/></application></compatibility></assembly>)";
-    const GameCoffSymbols symbols(executable);HANDLE handle=BeginUpdateResourceW(executable.c_str(),FALSE);if(!handle)throw std::runtime_error("game metadata open");if(!UpdateResourceW(handle,RT_VERSION,MAKEINTRESOURCEW(1),MAKELANGID(LANG_ENGLISH,SUBLANG_ENGLISH_US),const_cast<BYTE*>(resource.data()),DWORD(resource.size()))||!UpdateResourceW(handle,RT_MANIFEST,MAKEINTRESOURCEW(1),MAKELANGID(LANG_NEUTRAL,SUBLANG_NEUTRAL),const_cast<char*>(manifest),sizeof(manifest)-1)){EndUpdateResourceW(handle,TRUE);throw std::runtime_error("game metadata update");}if(!EndUpdateResourceW(handle,FALSE))throw std::runtime_error("game metadata write");symbols.restore(executable);
+    const GameCoffSymbols symbols(executable);HANDLE handle=BeginUpdateResourceW(executable.c_str(),FALSE);if(!handle)throw std::runtime_error("game metadata open");writeGameIcon(handle,icon);if(!UpdateResourceW(handle,RT_VERSION,MAKEINTRESOURCEW(1),MAKELANGID(LANG_ENGLISH,SUBLANG_ENGLISH_US),const_cast<BYTE*>(resource.data()),DWORD(resource.size()))||!UpdateResourceW(handle,RT_MANIFEST,MAKEINTRESOURCEW(1),MAKELANGID(LANG_NEUTRAL,SUBLANG_NEUTRAL),const_cast<char*>(manifest),sizeof(manifest)-1)){EndUpdateResourceW(handle,TRUE);throw std::runtime_error("game metadata update");}if(!EndUpdateResourceW(handle,FALSE))throw std::runtime_error("game metadata write");symbols.restore(executable);
 }
 
-inline void stampGameExecutable(const fs::path& requested,const std::wstring& name){
+inline void stampGameExecutable(const fs::path& requested,const std::wstring& name,const std::wstring& version=L"0.1.0",const fs::path& icon={}){
     const auto absolute=fs::absolute(requested).lexically_normal(),original=gameExtendedPath(absolute);
-    if(absolute.wstring().size()<240){stampGameExecutableImpl(absolute,name,absolute);return;}
+    if(absolute.wstring().size()<240){stampGameExecutableImpl(absolute,name,absolute,version,icon);return;}
     // EndUpdateResource still fails on long paths on Windows. Rewrite one owned
     // PE in TEMP, then replace a sibling atomically; retain the real app name.
     wchar_t temp[32768];const auto length=GetTempPathW(32768,temp);if(!length||length>=32768)throw std::runtime_error("game metadata temporary path");
@@ -37,6 +52,6 @@ inline void stampGameExecutable(const fs::path& requested,const std::wstring& na
     if(!fs::create_directory(directory))throw std::runtime_error("game metadata temporary directory");
     struct Cleanup{fs::path directory,sibling;~Cleanup(){std::error_code error;fs::remove(sibling,error);fs::remove_all(directory,error);}} cleanup{directory,sibling};
     if(!CopyFileW(original.c_str(),copy.c_str(),TRUE))throw std::runtime_error("game metadata temporary copy");
-    stampGameExecutableImpl(copy,name,absolute);
+    stampGameExecutableImpl(copy,name,absolute,version,icon);
     if(!CopyFileW(copy.c_str(),sibling.c_str(),TRUE)||!MoveFileExW(sibling.c_str(),original.c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH))throw std::runtime_error("game metadata atomic replace");
 }

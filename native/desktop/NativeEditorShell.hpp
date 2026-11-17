@@ -3116,7 +3116,7 @@ class NativeEditorShell {
         const std::vector<std::wstring> toggle={L"사용",L"사용 안 함"};
         const std::vector<Json> toggleValues={true,false};
         const std::vector<std::vector<Field>> fields={
-            {{"name",L"프로필 이름",80},{"productName",L"게임 이름",80},{"width",L"화면 너비",5,true},{"height",L"화면 높이",5,true}},
+            {{"name",L"프로필 이름",80},{"productName",L"게임 이름",80},{"windowsVersion",L"게임 버전 (예: 1.2.0)",20},{"windowsIcon",L"Windows 아이콘 (Assets/….ico, 비우면 기본)",240},{"splash",L"스플래시 이미지 (Assets/….png, 비우면 없음)",240},{"width",L"화면 너비",5,true},{"height",L"화면 높이",5,true}},
             {{"target",L"대상 플랫폼",0,false,{L"Windows x64",L"웹",L"Android",L"iOS"},{"windows-x64","web","android","ios"}},
              {"configuration",L"빌드 구성",0,false,{L"개발",L"배포"},{"development","release"}},
              {"nativeGraphicsAPI",L"Windows 그래픽 API",0,false,{L"자동 · DirectX 12 우선",L"DirectX 12",L"DirectX 12 · 11On12",L"DirectX 11"},{"auto","d3d12","d3d12-11on12","d3d11"}}},
