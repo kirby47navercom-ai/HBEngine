@@ -1241,6 +1241,25 @@ export function nativeEditorSession(bridge) {
     'sourceControl.init': async ()=>(await import('./source-control.mjs')).sourceControlInit(project().root),
     'sourceControl.stage': async ({paths,unstage=false,expectedIndexRevision})=>(await import('./source-control.mjs')).sourceControlStage(project().root,{paths,unstage,expectedIndexRevision}),
     'sourceControl.commit': async ({message,expectedIndexRevision})=>(await import('./source-control.mjs')).sourceControlCommit(project().root,{message,expectedIndexRevision}),
+    // Auto LOD (Unreal "LOD Settings > Number of LODs"): simplified copies of a mesh asset with distance thresholds.
+    'lod.generate': async ({path:name,source,count=2,expectedRevision}) => {
+      const doc=targetDocument(name);
+      if(doc.kind!=='lod')throw Error('LOD 문서를 여세요.');
+      await check(doc,expectedRevision);
+      if(typeof source!=='string'||!/^Assets\/.+\.hbmesh\.json$/.test(source))throw Error('원본 메시를 선택하세요.');
+      if(!Number.isInteger(count)||count<1||count>4)throw Error('LOD 개수는 1~4로 정하세요.');
+      const mesh=JSON.parse(await projectText(project(),source));let min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];
+      for(const v of mesh.vertices||[])for(let k=0;k<3;k++){min[k]=Math.min(min[k],v[k]);max[k]=Math.max(max[k],v[k]);}
+      const diagonal=Math.hypot(...max.map((x,k)=>x-min[k]))||1,base=source.slice(0,-'.hbmesh.json'.length).replace(/_LOD\d+$/,''),next=structuredClone(doc.data),made=[];
+      if(!next.levels.length)next.levels.push({asset:source,threshold:Math.round(diagonal*100)/100||1});
+      for(let i=1;i<=count;i++){
+        const simplified=simplifyMesh(mesh,diagonal*.025*2**i),file=base+'_LOD'+i+'.hbmesh.json';
+        await project().write(file,JSON.stringify({...simplified,name:(mesh.name||'Mesh').slice(0,70)+' LOD'+i}));
+        if(next.levels.length>=16)break;const last=next.levels.at(-1).threshold;next.levels.push({asset:file,threshold:Math.round(Math.max(last*2,diagonal*4*i)*100)/100});made.push({path:file,triangles:simplified.indices.length/3});
+      }
+      change(doc,next);
+      return {...await response(doc),generated:made,sourceTriangles:(mesh.indices||[]).length/3};
+    },
     'navmesh.bake': async ({path,source,expectedRevision}) => {
       const doc=targetDocument(path);
       if(doc.kind!=='navmesh')throw Error('내비 메시 문서를 여세요.');
@@ -2089,7 +2108,7 @@ export function nativeEditorSession(bridge) {
   const actionLabels={add:'오브젝트 추가',placeAsset:'에셋 배치',delete:'삭제',translate:'이동',rotate:'회전',scale:'크기',rename:'이름 바꾸기',duplicate:'복제',paste:'붙여넣기',component:'컴포넌트 추가',removeComponent:'컴포넌트 제거',moveComponent:'컴포넌트 순서',resetComponent:'컴포넌트 초기화',pasteComponentValues:'컴포넌트 값 붙여넣기',pasteComponent:'컴포넌트 붙여넣기',reparent:'부모 변경',lock:'잠금',visible:'보이기',setWorldTransform:'조종 위치 적용',prefabApply:'프리팹 적용',prefabRevert:'프리팹 되돌리기',prefabRefresh:'프리팹 새로 고침',prefabUnpack:'프리팹 풀기'};
   return async (method,params={}) => {
     if (!Object.hasOwn(methods,method)) throw Error('지원하지 않는 편집기 명령이에요.');
-    requestLabel=method==='scene.edit'?actionLabels[params.action]||params.action:method==='asset.fieldEdit'?'속성: '+params.key:method==='scene.runtimeSet'?'실행 설정: '+params.key:method==='scene.bakeLightmaps'?'라이트맵 베이크':method==='navmesh.bake'?'내비 메시 굽기':method;
+    requestLabel=method==='scene.edit'?actionLabels[params.action]||params.action:method==='asset.fieldEdit'?'속성: '+params.key:method==='scene.runtimeSet'?'실행 설정: '+params.key:method==='scene.bakeLightmaps'?'라이트맵 베이크':method==='navmesh.bake'?'내비 메시 굽기':method==='lod.generate'?'LOD 자동 생성':method;
     return methods[method](params);
   };
 }

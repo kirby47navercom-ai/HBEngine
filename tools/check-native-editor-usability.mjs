@@ -173,6 +173,17 @@ try{
    assert.equal(JSON.parse((await session('document.read',{path:prefabFile})).text).objects.length,before+1,'object added to the prefab');
    pf=await session('scene.edit',{action:'translate',id:'root',delta:[1,0,0],expectedRevision:pf.revision});assert.equal(JSON.parse(pf.text??(await session('document.read',{path:prefabFile})).text).objects.find(o=>o.id==='root').position[0],1,'prefab root moved');
    await session('document.open',{path:scene});}
+  // Auto LOD: two simplified copies with growing distance thresholds; the source stays level 0.
+  {const lodFile='Assets/LOD_Grid.hblod.json',gridFile='Assets/SM_Grid.hbmesh.json',vertices=[],uvs=[],indices=[];
+   for(let z=0;z<=16;z++)for(let x=0;x<=16;x++){vertices.push([x/4,Math.sin(x/3)*.2,z/4]);uvs.push([x/64,z/64]);}
+   for(let z=0;z<16;z++)for(let x=0;x<16;x++){const a=z*17+x;indices.push(a,a+17,a+1,a+1,a+17,a+18);}
+   await record.project.write(gridFile,JSON.stringify({...createAsset('mesh','Grid'),vertices,uvs,indices}));
+   await record.project.write(lodFile,JSON.stringify(createAsset('lod','LOD_Grid')));
+   let lod=await session('document.open',{path:lodFile});
+   lod=await session('lod.generate',{path:lodFile,source:gridFile,count:2,expectedRevision:lod.revision});
+   assert.equal(lod.generated.length,2);assert.ok(lod.generated[0].triangles<lod.sourceTriangles&&lod.generated[1].triangles<lod.generated[0].triangles,'each level is simpler');
+   const levels=JSON.parse((await session('document.read',{path:lodFile})).text).levels;assert.equal(levels.length,3);assert.equal(levels[0].asset,gridFile);assert.ok(levels[1].threshold<levels[2].threshold);
+   await session('document.open',{path:scene});}
   // Source control panel backend: a project-root repository, stage everything, commit, clean status.
   {let status=await session('sourceControl.status',{});if(!status.projectRoot)status=await session('sourceControl.init',{});assert.equal(status.projectRoot,true);assert.ok(status.entries.length>0,'new project files are listed');
    status=await session('sourceControl.stage',{paths:status.entries.map(e=>e.path),expectedIndexRevision:status.indexRevision});status=await session('sourceControl.status',{});assert.ok(status.entries.every(e=>e.index!==' '&&e.index!=='?'),'all staged');
