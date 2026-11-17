@@ -46,15 +46,15 @@ private:
         for(auto& item:items)if(!item.right&&item.rect.right>right-px(4)){item.rect.right=std::max(item.rect.left,right-px(4));if(item.rect.right-item.rect.left<px(28))item.rect.right=item.rect.left;}
     }
     void draw()override{
-        canvas->Clear(floating?D2D1::ColorF(.118f,.118f,.118f):theme.background);arrange();
+        canvas->Clear(floating?theme.floating:theme.background);arrange();
         for(int i=0;i<int(items.size());++i){
             const auto& item=items[i];const auto& r=item.rect;if(r.right<=r.left)continue;
             if(item.kind=="sep"){fill((r.left+r.right)/2,r.top+px(4),1.f,r.bottom-r.top-px(8),theme.line);continue;}
-            if(item.kind=="tab"){const float tw=r.right-r.left;if(item.active){brush->SetColor(D2D1::ColorF(.141f,.141f,.141f));canvas->FillRoundedRectangle(D2D1::RoundedRect(D2D1::RectF(r.left,r.top,r.right,r.bottom+px(8)),float(px(5)),float(px(5))),brush);fill(r.left+px(3),r.top,tw-px(6),float(px(2)),theme.accent);}else if(i==hover)box(r.left,r.top,tw,r.bottom-r.top,theme.raised,theme.raised);label(wide(item.label),item.active?bold:text,r.left+px(12),r.top,tw-px(16),r.bottom-r.top,item.active?theme.text:theme.muted);continue;}
+            if(item.kind=="tab"){const float tw=r.right-r.left;if(item.active){brush->SetColor(theme.background);canvas->FillRoundedRectangle(D2D1::RoundedRect(D2D1::RectF(r.left,r.top,r.right,r.bottom+px(8)),float(px(5)),float(px(5))),brush);fill(r.left+px(3),r.top,tw-px(6),float(px(2)),theme.accent);}else if(i==hover)box(r.left,r.top,tw,r.bottom-r.top,theme.raised,theme.raised);label(wide(item.label),item.active?bold:text,r.left+px(12),r.top,tw-px(16),r.bottom-r.top,item.active?theme.text:theme.muted);continue;}
             const bool interactive=item.kind!="text"&&item.kind!="title"&&item.enabled;
             if(item.active)box(r.left,r.top,r.right-r.left,r.bottom-r.top,theme.accent,theme.accent);
             else if(interactive&&i==hover)box(r.left,r.top,r.right-r.left,r.bottom-r.top,theme.raised,theme.raised);
-            const auto ink=!item.enabled?theme.line:item.active?D2D1::ColorF(1,1,1):item.kind=="text"?theme.muted:theme.text;
+            const auto ink=!item.enabled?theme.line:item.active?theme.strong:item.kind=="text"?theme.muted:theme.text;
             float x=r.left+(item.kind=="text"||item.kind=="title"?px(4):px(8));
             if(!item.glyph.empty()){label(item.glyph,icons,x,r.top,float(px(16)),r.bottom-r.top,item.tint.a>0&&item.enabled&&!item.active?item.tint:ink);x+=px(16)+(item.label.empty()?0:px(6));}
             if(!item.label.empty())label(wide(item.label),item.kind=="title"?bold:text,x,r.top,r.right-x-(item.kind=="dropdown"?px(14):0),r.bottom-r.top,item.kind=="title"?theme.text:ink);

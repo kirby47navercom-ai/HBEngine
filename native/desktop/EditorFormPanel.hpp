@@ -157,7 +157,7 @@ private:
     void draw()override{
         canvas->Clear(theme.background);paintedRows=0;const float w=float(bounds[2]);const float pad=float(px(8));
         for(std::size_t k=0;k<rows.size();k++){const auto& row=rows[k];const RECT r=rowRects[k];const float y=float(r.top-scroll),h=float(r.bottom-r.top);if(y+h<0||y>bounds[3])continue;++paintedRows;
-            if(row.kind=="heading"){fill(0,y,w,h,{.184f,.184f,.184f,1});fill(0,y,w,1,{0,0,0,1});float x=pad;if(row.toggle>=0){label(row.open?L"":L"",icons,x,y,float(px(14)),h,theme.muted);x+=px(16);}label(wide(row.text),bold,x,y,w-x-pad,h,theme.text);continue;}
+            if(row.kind=="heading"){fill(0,y,w,h,theme.heading);fill(0,y,w,1,theme.edge);float x=pad;if(row.toggle>=0){label(row.open?L"":L"",icons,x,y,float(px(14)),h,theme.muted);x+=px(16);}label(wide(row.text),bold,x,y,w-x-pad,h,theme.text);continue;}
             if(row.kind=="message"){label(wide(row.text),text,pad,y,w-2*pad,h,theme.muted);continue;}
             if(!row.label.empty()){
                 const float width=row.kind=="toolbar"?float(hits.empty()?bounds[2]:hits.front().second.left):float(std::max(px(70),int(w*.38f)));

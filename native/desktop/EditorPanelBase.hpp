@@ -72,15 +72,21 @@ public:
 protected:
     // Old web editor palette (--panel #292c31, --text #e4e7ed, --muted #b1b8c4, --accent #5089c9, --accent-dark #354b65, --line #444a54, --field #202328, --raised #30343a).
     // Unreal-style editor palette: panel #242424, text #c8c8c8, muted #8a8a8a, accent #0070e0, selection #1f4a7a, edge #3a3a3a, field #0f0f0f, hover #383838.
-    struct Theme {D2D1_COLOR_F background{.141f,.141f,.141f,1},text{.784f,.784f,.784f,1},muted{.541f,.541f,.541f,1},accent{0,.439f,.878f,1},selection{.122f,.29f,.478f,1},line{.227f,.227f,.227f,1},field{.059f,.059f,.059f,1},raised{.22f,.22f,.22f,1};};
+public:
+    struct Theme {D2D1_COLOR_F background{.141f,.141f,.141f,1},text{.784f,.784f,.784f,1},muted{.541f,.541f,.541f,1},accent{0,.439f,.878f,1},selection{.122f,.29f,.478f,1},line{.227f,.227f,.227f,1},field{.059f,.059f,.059f,1},raised{.22f,.22f,.22f,1},strong{1,1,1,1},floating{.118f,.118f,.118f,1},heading{.184f,.184f,.184f,1},edge{0,0,0,1};
+    static Theme& active(){static Theme current;return current;}
+    static Theme light(){Theme t;t.background={.925f,.925f,.925f,1};t.text={.125f,.125f,.125f,1};t.muted={.42f,.42f,.42f,1};t.accent={0,.4f,.82f,1};t.selection={.76f,.86f,.97f,1};t.line={.76f,.76f,.76f,1};t.field={1,1,1,1};t.raised={.86f,.86f,.86f,1};t.strong={0,0,0,1};t.floating={.96f,.96f,.96f,1};t.heading={.88f,.88f,.88f,1};t.edge={.78f,.78f,.78f,1};return t;}
+};
+protected:
     HWND window=nullptr;Post poster;std::string name;ID2D1Factory* factory=nullptr;IDWriteFactory* write=nullptr;ID2D1HwndRenderTarget* target=nullptr;ID2D1RenderTarget* canvas=nullptr;ID2D1SolidColorBrush* brush=nullptr;
     IDWriteTextFormat* text=nullptr;IDWriteTextFormat* bold=nullptr;IDWriteTextFormat* icons=nullptr;IDWriteInlineObject* ellipsis=nullptr;
     Json lastMenu=Json::array();std::optional<POINT> menuAt;UINT automaticMenu=0;std::string automaticCommand;
 public:
     // Shared editor UI scale (DPI × user 편집기 배율); every panel adopts it on its next paint.
     static inline float uiScale=1.f;
+    void setTheme(const Theme& value){theme=value;}
 protected:
-    Theme theme;float scale=1;std::array<int,4> bounds{};bool shown=false;std::uint64_t paints=0,updates=0;double lastPaintMS=0;
+    Theme theme=Theme::active();float scale=1;std::array<int,4> bounds{};bool shown=false;std::uint64_t paints=0,updates=0;double lastPaintMS=0;
     std::unique_ptr<EditorD3D12Surface> presenter;
     std::string graphicsError;
     static int xOf(LPARAM l){return short(LOWORD(l));}static int yOf(LPARAM l){return short(HIWORD(l));}
