@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **920개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **928개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -14,7 +14,7 @@
 | 클래스 | 2 | 0 |
 | 흐름 제어 | 17 | 0 |
 | 디버그 | 4 | 0 |
-| 게임 창 | 6 | 0 |
+| 게임 창 | 11 | 0 |
 | 입력 | 13 | 12 |
 | 변환 | 28 | 27 |
 | 벡터 | 34 | 34 |
@@ -25,11 +25,11 @@
 | C++ 공개 함수 | 1 | 0 |
 | 오디오 | 22 | 19 |
 | 사용자 정의 | 2 | 0 |
-| 시간 | 16 | 15 |
+| 시간 | 18 | 15 |
 | 비교 | 8 | 4 |
 | 논리 | 8 | 3 |
 | 컴포넌트 | 15 | 12 |
-| 문자열 | 23 | 19 |
+| 문자열 | 24 | 19 |
 | 애니메이션 | 2 | 0 |
 | 머테리얼 | 8 | 8 |
 | 렌더링 | 15 | 14 |
@@ -166,6 +166,11 @@
 | setFullscreen | Set Fullscreen / 전체 화면 설정 | exec: exec, fullscreen: bool | then: exec | — | VM / 브라우저 서비스 |
 | setResolution | Set Window Resolution / 창 해상도 설정 | exec: exec, width: int, height: int | then: exec | — | VM / 브라우저 서비스 |
 | setVSync | Set VSync / 수직 동기화 설정 | exec: exec, enabled: bool | then: exec | — | VM / 브라우저 서비스 |
+| getViewportSize | Get Viewport Size / 게임 화면 크기 | — | width: int, height: int | — | VM / 브라우저 서비스 |
+| launchURL | Launch URL / 웹 주소 열기 | exec: exec, url: string | then: exec | — | VM / 브라우저 서비스 |
+| copyToClipboard | Copy to Clipboard / 클립보드에 복사 | exec: exec, text: string | then: exec | — | VM / 브라우저 서비스 |
+| takeScreenshot | Take Screenshot / 게임 화면 저장 | exec: exec | then: exec | — | VM / 브라우저 서비스 |
+| getPlatformName | Get Platform Name / 플랫폼 이름 | — | return: string | — | VM / 브라우저 서비스 |
 | setMaxFps | Set Max FPS / 최대 FPS 설정 | exec: exec, fps: int | then: exec | — | VM / 브라우저 서비스 |
 | setMouseCursorVisible | Set Show Mouse Cursor / 마우스 커서 표시 설정 | exec: exec, visible: bool | then: exec | — | VM / 브라우저 서비스 |
 
@@ -509,6 +514,8 @@
 | timer | Set Timer / 타이머 설정 | exec: exec, duration: float, loop: bool, event: string | then: exec, handle: string | hb::Timers::SetTimer | 공통 C++ + VM |
 | clearTimer | Clear Timer / 타이머 해제 | exec: exec, handle: string | then: exec | hb::Timers::ClearTimer | 공통 C++ + VM |
 | time | Get Game Time / 게임 시간 초 시간측정 | — | return: float | hb::Clock::GetGameTime | 공통 C++ + VM |
+| isGamePaused | Is Game Paused / 게임 일시정지 여부 | — | return: bool | — | VM / 브라우저 서비스 |
+| now | Now / 현재 날짜와 시각 | — | year: int, month: int, day: int, hour: int, minute: int, second: int, text: string | — | VM / 브라우저 서비스 |
 | deltaSeconds | Get World Delta Seconds / 프레임 델타 시간 | — | return: float | hb::Clock::GetWorldDeltaSeconds | 공통 C++ + VM |
 | realTime | Get Real Time / 실제 경과 시간 초 | — | return: float | hb::Clock::GetRealTime | 공통 C++ + VM |
 | timeScale | Set Time Scale / 게임 시간 배율 | exec: exec, scale: float | then: exec | hb::Clock::SetTimeScale | 공통 C++ + VM |
@@ -576,6 +583,7 @@
 | stringLength | String Length / 문자열 길이 | value: string | return: int | — | VM / 브라우저 서비스 |
 | contains | Contains / 문자열 포함 | value: string, search: string | return: bool | — | VM / 브라우저 서비스 |
 | toString | Float To String / 실수를 문자열로 | value: float | return: string | — | function toString() { [native code] } |
+| formatText | Format Text / 문장 만들기 | format: string, arg0: string, arg1: string, arg2: string, arg3: string | return: string | — | VM / 브라우저 서비스 |
 | stringEqual | String Equal / 문자열 같다 | a: string, b: string | return: bool | hb::Extended::StringEqual | 공통 C++ + VM |
 | stringNotEqual | String Not Equal / 문자열 다르다 | a: string, b: string | return: bool | hb::Extended::StringNotEqual | 공통 C++ + VM |
 | startsWith | Starts With / 문자열로 시작하는지 | value: string, search: string | return: bool | hb::Extended::StartsWith | 공통 C++ + VM |
