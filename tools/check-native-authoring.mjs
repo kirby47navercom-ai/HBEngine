@@ -501,7 +501,7 @@ const evidence=JSON.parse(await fs.readFile(report,'utf8'));
 assert.equal(evidence.webview,false);
 assert.equal(evidence.saved,true);
 if(process.argv[3]){
-  assert.deepEqual(evidence.play,{backend:'D3D12',frames:16,scene:project.manifest.startupScene,take:'Assets/NativeTake.hbsequence.json',webview:false,profile:true});
+  assert.deepEqual(evidence.play,{backend:'D3D12',frames:16,scene:project.manifest.startupScene,take:'Assets/NativeTake.hbsequence.json',webview:false,profile:true,log:true});
   const mix=await fs.readFile(path.join(project.root,'Assets/Recordings/NativeMix.wav'));
   assert.equal(mix.toString('ascii',0,4),'RIFF');
   assert.equal(mix.readUInt16LE(22),2);

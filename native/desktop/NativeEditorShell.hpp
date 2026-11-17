@@ -102,7 +102,7 @@ class NativeEditorShell {
     fs::path playLauncher,playRuntimeRoot,editorProfile,projectFile;
     fs::path takeOutput,audioOutput,audioProject;
     std::wstring takeName,audioName;
-    HANDLE playProcess=nullptr;bool playPaused=false;
+    HANDLE playProcess=nullptr;bool playPaused=false;std::uintmax_t playLogOffset=0;
     unsigned playBreaks=0;
     Json playDebug;
     bool atBreakpoint=false;
@@ -908,8 +908,18 @@ class NativeEditorShell {
         if(!acceptance)MessageBoxW(window,wide(error.what()).c_str(),L"HBEngine",MB_OK|MB_ICONWARNING);
     }
     void statusText(const wchar_t* text,int severity=-1){
-        SetWindowTextW(status,text);UpdateWindow(status);
-        const auto message=utf8(text);
+        SetWindowTextW(status,text);UpdateWindow(status);appendLog(utf8(text),severity);
+    }
+    // Play log (game script stderr: print nodes, errors) -> Output Log lines "플레이: …".
+    void readPlayLog(){
+        if(!playPid)return;const auto file=editorProfile/L"Sessions"/(L"play-"+std::to_wstring(playPid)+L".log");std::error_code error;const auto size=fs::file_size(file,error);
+        if(error||size<=playLogOffset)return;std::ifstream in(file,std::ios::binary);in.seekg(std::streamoff(playLogOffset));
+        std::string chunk(std::size_t(std::min<std::uintmax_t>(size-playLogOffset,256*1024)),'\0');in.read(chunk.data(),std::streamsize(chunk.size()));chunk.resize(std::size_t(in.gcount()));
+        const auto end=chunk.rfind('\n');if(end==std::string::npos)return;playLogOffset+=end+1;chunk.resize(end);
+        std::size_t start=0;int shown=0;while(start<=chunk.size()&&shown<200){auto stop=chunk.find('\n',start);if(stop==std::string::npos)stop=chunk.size();auto line=chunk.substr(start,stop-start);start=stop+1;if(!line.empty()&&line.back()=='\r')line.pop_back();if(line.empty())continue;
+            const bool print=line.rfind("[print] ",0)==0;if(print)line=line.substr(8);const int severity=!print&&(line.find("Error")!=std::string::npos||line.find("오류")!=std::string::npos||line.find("    at ")==0)?2:0;appendLog("플레이: "+line,severity);++shown;}
+    }
+    void appendLog(const std::string& message,int severity=-1){
         if(message.empty())return;
         if(severity<0)severity=message.find("실패")!=std::string::npos||message.find("오류")!=std::string::npos?2:message.find("경고")!=std::string::npos||message.find("주의")!=std::string::npos?1:0;
         SYSTEMTIME t{};GetLocalTime(&t);char clock[16];std::snprintf(clock,sizeof(clock),"%02u:%02u:%02u",t.wHour,t.wMinute,t.wSecond);
@@ -2816,7 +2826,7 @@ class NativeEditorShell {
             TerminateProcess(child.hProcess,1);CloseHandle(child.hThread);CloseHandle(child.hProcess);CloseHandle(ownership);
             throw std::runtime_error("편집기 플레이 프로세스를 관리할 수 없어요.");
         }
-        CloseHandle(child.hThread);playJob=ownership;playProcess=child.hProcess;playPid=child.dwProcessId;stopPlayRequested=false;playPaused=false;playBreaks=0;playDebug=nullptr;atBreakpoint=false;
+        CloseHandle(child.hThread);playJob=ownership;playProcess=child.hProcess;playPid=child.dwProcessId;stopPlayRequested=false;playPaused=false;playLogOffset=0;playBreaks=0;playDebug=nullptr;atBreakpoint=false;
         takeOutput=std::move(recordingFile);takeName=recording;
         if(!audio.empty()){audioOutput=std::move(capturedAudio);audioProject=projectFile;audioName=audio;}
         SetTimer(window,6,150,nullptr);statusText(L"플레이를 시작했어요.");
@@ -2914,7 +2924,7 @@ class NativeEditorShell {
         DWORD code=STILL_ACTIVE;
         GetExitCodeProcess(playProcess,&code);
         if(code==STILL_ACTIVE){stopPlay();throw std::runtime_error("Native editor play timeout");}
-        {const auto stale=editorProfile/L"Sessions"/(L"profile-"+std::to_wstring(playPid)+L".json");DeleteFileW(stale.c_str());}CloseHandle(playProcess);playProcess=nullptr;playPaused=false;playPid=0;CloseHandle(playJob);playJob=nullptr;KillTimer(window,6);
+        readPlayLog();{const auto stale=editorProfile/L"Sessions"/(L"profile-"+std::to_wstring(playPid)+L".json");DeleteFileW(stale.c_str());}CloseHandle(playProcess);playProcess=nullptr;playPaused=false;playPid=0;CloseHandle(playJob);playJob=nullptr;KillTimer(window,6);
         if(code)throw std::runtime_error("Native editor play failed");
     }
     static void placeSavedWindow(HWND owner,const Json& value,int minWidth,int minHeight){
@@ -4179,10 +4189,10 @@ class NativeEditorShell {
             return 0;
         }
         if(message==WM_TIMER&&w==6){
-            if(playProcess&&WaitForSingleObject(playProcess,0)==WAIT_TIMEOUT){if(stopPlayRequested)stopPlay();if(profilerShown)readProfile();return 0;}
+            if(playProcess&&WaitForSingleObject(playProcess,0)==WAIT_TIMEOUT){if(stopPlayRequested)stopPlay();if(profilerShown)readProfile();readPlayLog();return 0;}
             KillTimer(window,6);
             if(playProcess){
-                DWORD result=0;GetExitCodeProcess(playProcess,&result);{const auto stale=editorProfile/L"Sessions"/(L"profile-"+std::to_wstring(playPid)+L".json");DeleteFileW(stale.c_str());}CloseHandle(playProcess);playProcess=nullptr;playPaused=false;playPid=0;
+                DWORD result=0;GetExitCodeProcess(playProcess,&result);readPlayLog();{const auto stale=editorProfile/L"Sessions"/(L"profile-"+std::to_wstring(playPid)+L".json");DeleteFileW(stale.c_str());}CloseHandle(playProcess);playProcess=nullptr;playPaused=false;playPid=0;
                 CloseHandle(playJob);playJob=nullptr;
                 statusText(result?L"플레이 실행 오류. 세션 로그를 확인하세요.":L"플레이를 종료했어요.");
                 if(!result)try{finishTake();finishAudioCapture();}catch(const std::exception& error){report(error);}
@@ -4516,8 +4526,8 @@ private:
             auto playReport=smoke;playReport+=L".play.json";
             startPlay(playReport,L"NativeTake","Assets/TakeNative.hbtakepreset.json",true,L"NativeMix");waitForPlaySmoke();
             const auto result=Json::parse(read(playReport));
-            playEvidence={{"frames",result.at("frames")},{"webview",result.at("webview")},{"backend",result.at("renderer").at("backend")},{"scene",result.at("logic").at("scene")},{"profile",profileSeen}};
-            if(!profileSeen||playEvidence.at("frames")!=16||playEvidence.at("webview")!=false||playEvidence.at("backend")!="D3D12"||playEvidence.at("scene")!=document.at("path"))
+            playEvidence={{"frames",result.at("frames")},{"webview",result.at("webview")},{"backend",result.at("renderer").at("backend")},{"scene",result.at("logic").at("scene")},{"profile",profileSeen},{"log",std::any_of(logEntries.begin(),logEntries.end(),[](const LogEntry& e){return e.text.rfind("플레이: 플레이 시작",0)==0;})}};
+            if(!profileSeen||!playEvidence.at("log").get<bool>()||playEvidence.at("frames")!=16||playEvidence.at("webview")!=false||playEvidence.at("backend")!="D3D12"||playEvidence.at("scene")!=document.at("path"))
                 throw std::runtime_error("Native editor play evidence mismatch");
             finishAudioCapture();
             finishTake();
