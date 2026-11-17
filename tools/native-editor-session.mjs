@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import fs from 'node:fs/promises';
-import {createReadStream} from 'node:fs';
+import {createReadStream,rmSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
@@ -588,6 +588,8 @@ export function nativeEditorSession(bridge) {
     return resolveTakePresetTree(file,read,root?{root:{data:root.data,revision:await revision(root)}}:{});
   };
   const methods = {
+    // AI bridge discovery: every editor command name.
+    'editor.methods': () => Object.keys(methods).sort(),
     'project.open': ({file}) => openProject(() => readProjectManifest(file)),
     'project.create': ({name,directory,template}) => openProject(() => createProject(name,directory,template)),
     'project.recent': () => recentProjects(),
@@ -2221,7 +2223,12 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     addEventListener:(_type,listener)=>listeners.add(listener),
     removeEventListener:(_type,listener)=>listeners.delete(listener)
   });
-  let queue=Promise.resolve();
+  let queue=Promise.resolve(),externalRevision=0;
+  // AI bridge (external AI apps through tools/hb-mcp.mjs): same queue as the editor; HB_AI_BRIDGE=0 turns it off.
+  const queued=(method,params)=>{const run=queue.then(()=>dispatch(method,params));queue=run.catch(()=>{});return run;};
+  let bridge=null;
+  if(process.env.HB_AI_BRIDGE!=='0'&&process.env.HB_USER_DATA_DIR){try{bridge=await (await import('./ai-bridge.mjs')).startAiBridge({dispatch:queued,file:path.join(process.env.HB_USER_DATA_DIR,'ai-bridge.json'),onChange:()=>{externalRevision++;}});}catch{}}
+  const closeBridge=()=>{if(bridge){const b=bridge;bridge=null;void b.close();}};process.once('exit',()=>{if(bridge)try{rmSync(bridge.file,{force:true});}catch{}});
   for await (const line of readline.createInterface({input:process.stdin,crlfDelay:Infinity})) {
     try {
       const packet=JSON.parse(line);
@@ -2229,6 +2236,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
         for (const listener of listeners) listener({data:packet});
         continue;
       }
+      if (packet.method==='editor.externalRevision') {queue=queue.then(()=>write({ok:true,value:{revision:externalRevision,bridge:bridge?{port:bridge.port}:null}}));continue;}
       queue=queue.then(async()=>{
         try {write({ok:true,value:await dispatch(packet.method,packet.params)});}
         catch(error) {write({ok:false,error:error.message,code:error.code || (error.status===409?'REVISION_CONFLICT':'COMMAND_FAILED')});}
@@ -2238,4 +2246,5 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     }
   }
   await queue;
+  closeBridge();
 }

@@ -118,7 +118,7 @@ class NativeEditorShell {
     bool browserTiles=false,refreshingFolders=false;
     bool layoutMaximized=false;
     bool consoleVisible=false,contentDetachedOnStart=false;
-    Json logItems=Json::array();Json componentClipboard,transformClipboard;int particleRestartSerial=0;
+    Json logItems=Json::array();Json componentClipboard,transformClipboard;int aiRevision=0;int particleRestartSerial=0;
     // Output log (Unity console / Unreal output log): severity 0 info, 1 warning, 2 error.
     struct LogEntry{std::string text,time;int severity=0,count=1;};std::vector<LogEntry> logEntries;bool logShow[3]{true,true,true},logCollapse=false;
     std::uint64_t logRevision=0;
@@ -4242,6 +4242,14 @@ class NativeEditorShell {
         if(message==WM_TIMER&&w==13&&owner==window){autosaveNow();return 0;}
         if(message==WM_APP+46&&owner==window){if(!acceptance)try{offerAutosaves();}catch(const std::exception& error){report(error);}return 0;}
         if(message==WM_APP+44&&owner==window){if(queuedFolder)navigateFolder(std::move(*queuedFolder));return 0;}
+        // AI bridge: changes made by an external AI app (tools/hb-mcp.mjs) refresh the open document and the content browser.
+        if(message==WM_TIMER&&w==14){
+            if(projectFile.empty())return 0;
+            try{const auto state=request("editor.externalRevision",Json::object());const int revision=state.value("revision",0);
+                if(revision!=aiRevision){aiRevision=revision;if(document.contains("path"))showDocument(request("document.open",{{"path",document.at("path")}}));refreshFiles();statusText(L"AI 앱이 프로젝트를 바꿨어요. Ctrl+Z로 되돌릴 수 있어요.");}}
+            catch(const std::exception&){}
+            return 0;
+        }
         if(message==WM_TIMER&&w==10){
             try{if(pollContentList())KillTimer(window,10);}
             catch(...){KillTimer(window,10);throw;}
@@ -4417,7 +4425,7 @@ public:
         RegisterClassW(&type);
         window=CreateWindowExW(0,type.lpszClassName,L"HBEngine · 네이티브 편집기",WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,CW_USEDEFAULT,CW_USEDEFAULT,1280,850,nullptr,nullptr,instance,this);
         if(!window)throw std::runtime_error("Native editor window");
-        makeControls();applyScale();refreshRecent();SetTimer(window,13,30000,nullptr);DragAcceptFiles(window,TRUE);
+        makeControls();applyScale();refreshRecent();SetTimer(window,13,30000,nullptr);SetTimer(window,14,500,nullptr);DragAcceptFiles(window,TRUE);
         if(!project.empty())openProject(request("project.open",{{"file",utf8(project)}}));
         if(acceptance)return smokeTest(smoke);
         restoreLayout();
@@ -5089,6 +5097,8 @@ private:
         bool transformCopy=false;{const auto keep=transformClipboard;const auto keepSelection=sceneSelection;{const auto objects=Json::parse(document.at("text").get<std::string>()).at("objects");if(!objects.empty())sceneSelection=objects.at(0).value("id",std::string());}if(!sceneSelection.empty()){perform(CopyTransform);transformCopy=transformClipboard.is_object()&&transformClipboard.at("scale").size()==3;if(transformCopy){try{perform(PasteTransform);}catch(const std::exception&){transformCopy=false;}}}transformClipboard=keep;sceneSelection=keepSelection;}
         // Frame all (Home): the editor camera starts flying to fit every object.
         bool frameAll=false;{const auto before=drawViewport().value("target",Json());const auto moved=drawViewport({{"command","frameAll"}});frameAll=moved.value("animating",false)||moved.value("target",Json())!=before;for(int i=0;i<40&&drawViewport().value("animating",false);i++)Sleep(10);}
+        // AI bridge: the session serves external AI apps on a local port.
+        bool aiBridge=false;{const auto state=request("editor.externalRevision",Json::object());aiBridge=state.contains("bridge")&&state.at("bridge").is_object()&&state.at("bridge").value("port",0)>0;}
         // Busy bar: visible with a cancel button during a job, hidden after.
         bool busyIndicator=false;{beginBusy(CancelBuild);const bool shown=IsWindowVisible(busyBar)&&IsWindowVisible(busyCancel);endBusy();busyIndicator=shown&&!IsWindowVisible(busyBar)&&!IsWindowVisible(busyCancel)&&busyJobs==0;}
         // Editor-only hide / show all / isolate.
@@ -5108,8 +5118,8 @@ private:
         SetWindowTextW(consoleInput,L"r.ScreenPercentage 80");runConsole();const bool consoleSet=Json::parse(document.at("text").get<std::string>()).at("runtime").value("renderScale",0)==80;perform(Undo);
         SetWindowTextW(consoleInput,L"stat fps");runConsole();drawViewport();const bool fpsShown=showFps&&!fpsTimes.empty();perform(ToggleFps);
         SetWindowTextW(consoleInput,L"camera.speed 7");runConsole();const bool speedSet=cameraSpeed==7;perform(Command(CameraSpeedFirst+3));
-        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"browserMultiSelect",browserMultiSelect},{"dropImport",dropImport},{"selectAll",selectAll},{"detailsFilter",detailsFilter},{"editorHide",editorHide},{"busyIndicator",busyIndicator},{"frameAll",frameAll},{"transformCopy",transformCopy},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"particlePreview",particlePreview},{"lightBuild",lightBuilt}};
-        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!browserMultiSelect||!dropImport||!selectAll||!detailsFilter||!editorHide||!busyIndicator||!frameAll||!transformCopy||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!particlePreview||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"browserMultiSelect",browserMultiSelect},{"dropImport",dropImport},{"selectAll",selectAll},{"detailsFilter",detailsFilter},{"editorHide",editorHide},{"busyIndicator",busyIndicator},{"aiBridge",aiBridge},{"frameAll",frameAll},{"transformCopy",transformCopy},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"particlePreview",particlePreview},{"lightBuild",lightBuilt}};
+        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!browserMultiSelect||!dropImport||!selectAll||!detailsFilter||!editorHide||!busyIndicator||!aiBridge||!frameAll||!transformCopy||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!particlePreview||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
