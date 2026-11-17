@@ -67,9 +67,34 @@ export function packedTexture(texture,allowUV1=false,encode=rgbaBase64){
 // misses it cannot be inside the frustum, so the plane tests are skipped.
 const frustumCorner=new THREE.Vector3(),frustumInverse=new THREE.Matrix4();
 function frustumSphere(vp){frustumInverse.copy(vp).invert();const corners=[];for(const x of [-1,1])for(const y of [-1,1])for(const z of [-1,1])corners.push(frustumCorner.set(x,y,z).applyMatrix4(frustumInverse).clone());const center=corners.reduce((a,c)=>a.add(c),new THREE.Vector3()).multiplyScalar(1/8);let radius=0;for(const c of corners)radius=Math.max(radius,c.distanceTo(center));return Number.isFinite(radius)?new THREE.Sphere(center,radius):null;}
-export function nativeShadows(light){
+// Cascaded directional shadows (Unreal/Unity CSM): the camera frustum up to the shadow distance is split (practical split,
+// lambda .75) and each split gets its own texel-snapped orthographic map; the shader walks the cascades near to far.
+// userData.hbShadowCascades (1-4, default 3) and userData.hbShadowDistance (default max(60, 4x the shadow extent)) tune it.
+const cascadeLook=new THREE.Matrix4(),cascadeInverse=new THREE.Matrix4(),cascadeView=new THREE.Matrix4(),cascadeProjection=new THREE.Matrix4();
+function cascadeShadows(light,camera,count){
+  const shadow=light.shadow,map=shadow.mapSize.toArray().map(v=>Math.max(256,Math.round(v*qualityShadowScale))),records=[];
+  const from=light.getWorldPosition(new THREE.Vector3()),dir=light.target.getWorldPosition(new THREE.Vector3()).sub(from);if(dir.lengthSq()<1e-12)dir.set(0,-1,0);dir.normalize();
+  cascadeLook.lookAt(new THREE.Vector3(),dir,Math.abs(dir.y)>.99?new THREE.Vector3(1,0,0):new THREE.Vector3(0,1,0));cascadeInverse.copy(cascadeLook).invert();
+  camera.updateMatrixWorld();const near=Math.max(camera.near,.01),far=Math.max(near+1,Math.min(camera.far,light.userData.hbShadowDistance??Math.max(60,(shadow.camera.right-shadow.camera.left)*2)));
+  const nearC=[],farC=[];for(const x of [-1,1])for(const y of [-1,1]){nearC.push(new THREE.Vector3(x,y,-1).applyMatrix4(camera.projectionMatrixInverse));farC.push(new THREE.Vector3(x,y,1).applyMatrix4(camera.projectionMatrixInverse));}
+  const at=(i,depth)=>{const a=nearC[i],b=farC[i],t=(depth+a.z)/(a.z-b.z);return a.clone().lerp(b,t).applyMatrix4(camera.matrixWorld);};
+  const baseTexel=Math.max(1e-6,(shadow.camera.right-shadow.camera.left)/map[0]);let previous=near;
+  for(let i=1;i<=count;i++){
+    const split=.75*near*Math.pow(far/near,i/count)+.25*(near+(far-near)*i/count),points=[];for(let c=0;c<4;c++)points.push(at(c,previous),at(c,split));previous=split;
+    const center=points.reduce((sum,p)=>sum.add(p),new THREE.Vector3()).multiplyScalar(1/8);let radius=0;for(const p of points)radius=Math.max(radius,p.distanceTo(center));radius=Math.ceil(radius*16)/16;
+    const texel=2*radius/map[0],local=center.clone().applyMatrix4(cascadeInverse);local.x=Math.round(local.x/texel)*texel;local.y=Math.round(local.y/texel)*texel;center.copy(local.applyMatrix4(cascadeLook));
+    const back=Math.max(100,radius*2),eye=center.clone().addScaledVector(dir,-(radius+back));
+    cascadeView.copy(cascadeLook).setPosition(eye).invert();cascadeProjection.makeOrthographic(-radius,radius,radius,-radius,0,2*radius+back);
+    const vp=new THREE.Matrix4().multiplyMatrices(cascadeProjection,cascadeView);
+    records.push({frustum:new THREE.Frustum().setFromProjectionMatrix(vp),sphere:frustumSphere(vp),packed:[...clipDepth.clone().multiply(vp).toArray(),shadow.bias,shadow.normalBias*Math.max(1,texel/baseTexel),shadow.radius,shadow.intensity,...map,count,0],casters:[]});
+  }
+  return records;
+}
+export function nativeShadows(light,camera=null){
   if(!light.castShadow||!light.shadow||!['DirectionalLight','PointLight','SpotLight'].includes(light.type))return [];
   light.target?.updateWorldMatrix(true,false);const shadow=light.shadow,records=[];
+  const cascades=light.isDirectionalLight&&light.target&&camera?.isPerspectiveCamera?Math.max(1,Math.min(4,Math.round(light.userData.hbShadowCascades??3))):1;
+  if(cascades>1)return cascadeShadows(light,camera,cascades);
   for(let face=0;face<shadow.getViewportCount();face++){shadow.updateMatrices(light,face);const vp=new THREE.Matrix4().multiplyMatrices(shadow.camera.projectionMatrix,shadow.camera.matrixWorldInverse);records.push({frustum:new THREE.Frustum().setFromProjectionMatrix(vp),sphere:frustumSphere(vp),packed:[...clipDepth.clone().multiply(vp).toArray(),shadow.bias,shadow.normalBias,shadow.radius,shadow.intensity,...shadow.mapSize.toArray().map(v=>Math.max(256,Math.round(v*qualityShadowScale))),0,0],casters:[]});}return records;
 }
 export function packedGeometry(geometry){
@@ -510,7 +535,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{},platform={
     const hostAllowed=staticCellsOn&&renderer.hbSpriteBatching!==false&&renderer.hbHostStatic!==false;hostActive=hostAllowed&&reuseStatic;if(!hostAllowed&&reuseStatic&&hostGroups.size){for(const g of [...hostGroups.keys()])hostDemote(g);hostPending.clear();}
     traverseVisibleSkipping(scene,node=>{if(!visible(node)||node.userData.editorHelper)return;if(node.isLight)shadowLights.push(node);else if((node.isMesh||node.isSprite)&&node.receiveShadow&&node.layers.test(camera.layers)&&(probes.length||isDeformed(node)||!node.frustumCulled||node.isSprite||frustum.intersectsObject(node))&&(Array.isArray(node.material)?node.material:[node.material]).some(m=>m?.isMeshStandardMaterial&&m.visible))receivers=true;},skipOffscreenOnly);
     if(hostActive&&!receivers)for(const set of [...hostSets.values(),...hostSets2D.values()])if(set.receives&&set.members.size){receivers=true;break;}
-    if(receivers)for(const node of shadowLights){const records=nativeShadows(node);if(records.length){shadowIndexes.set(node.uuid,shadowRecords.length+1);shadowRecords.push(...records);}}
+    if(receivers)for(const node of shadowLights){const records=nativeShadows(node,camera);if(records.length){shadowIndexes.set(node.uuid,shadowRecords.length+1);shadowRecords.push(...records);}}
     if(staticCellsOn)markStaticCells(!!probes.length,'main',cell=>{const box=probes.length?cell.box:null,sphere=cell.sphere;if(box?frustum.intersectsBox(box):frustum.intersectsSphere(sphere))return false;for(const record of shadowRecords)if(box?(!record.sphere||box.distanceToPoint(record.sphere.center)<=record.sphere.radius)&&record.frustum.intersectsBox(box):(!record.sphere||record.sphere.center.distanceTo(sphere.center)<=record.sphere.radius+sphere.radius)&&record.frustum.intersectsSphere(sphere))return false;return true;});
     // Off-screen host candidates: up to HOST_FORCE_BUDGET marked cell members whose revisions are new to the host check or
     // old enough are visited this encode (draws built, not drawn), so they can move into host sets like visible groups.

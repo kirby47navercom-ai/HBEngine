@@ -248,6 +248,8 @@ float3 hbRasterView(float3 at){return safeNormal(viewDirection.w>.5?viewDirectio
 float shadowFactor(Light light,float3 position,float3 normal){
  if(light.cone.w<=0)return 1;uint index=(uint)light.cone.w-1;
  if(light.position.w>.5&&light.position.w<1.5){float3 d=position-light.position.xyz,a=abs(d);index+=a.x>=a.y&&a.x>=a.z?(d.x>0?0:1):a.z>=a.y?(d.z>0?2:3):(d.y>0?4:5);}
+ // Directional cascades (size.z = cascade count): the first cascade whose map holds the point wins.
+ if(light.position.w<.5&&shadows[index].size.z>1.5){uint count=(uint)shadows[index].size.z;[loop]for(uint c=0;c<count;c++){Shadow t=shadows[index+c];float4 p=mul(t.vp,float4(position+normal*t.parameters.y,1));if(p.w<=0)continue;float3 q=p.xyz/p.w;float2 u=q.xy*float2(.5,-.5)+.5;if(all(u>=.01)&&all(u<=.99)&&q.z>=0&&q.z<=1){index+=c;break;}}}
  Shadow s=shadows[index];if(s.parameters.w<=0)return 1;float4 at=mul(s.vp,float4(position+normal*s.parameters.y,1));if(at.w<=0)return 1;float3 clipPosition=at.xyz/at.w;float2 uv=clipPosition.xy*float2(.5,-.5)+.5;if(any(uv<0)||any(uv>1)||clipPosition.z<0||clipPosition.z>1)return 1;
  float z=clipPosition.z+s.parameters.x,result=0;int2 size=(int2)s.size.xy,center=(int2)(uv*size);int radius=(int)ceil(s.parameters.z);
  if(radius==0)result=z<=shadowMap.Load(int4(clamp(center,0,size-1),index,0));else{[unroll]for(int y=-1;y<=1;y++){[unroll]for(int x=-1;x<=1;x++){int2 pixel=clamp(center+(int2)round(float2(x,y)*s.parameters.z),0,size-1);result+=(z<=shadowMap.Load(int4(pixel,index,0)))?1:0;}}result/=9;}
