@@ -19,17 +19,28 @@ public:
     void update(const Json& model){
         if(!window)return;
         if(model.contains("rows")){
-            const auto revisionChanged=model.value("revision",0ull)!=revision;revision=model.value("revision",0ull);rows.clear();
+            const auto revisionChanged=model.value("revision",0ull)!=revision;revision=model.value("revision",0ull);allRows.clear();
             for(const auto& r:model.at("rows")){Row row;row.kind=r.value("kind",std::string("row"));row.text=r.value("text",std::string());row.label=r.value("label",std::string());row.toggle=r.value("toggle",-1);row.open=r.value("open",true);
                 for(const auto& c:r.value("controls",Json::array())){Control control;control.kind=c.at("kind").get<std::string>();control.i=c.at("i").get<int>();control.value=c.value("value",std::string());control.text=c.value("text",std::string());control.checked=c.value("checked",false);control.disabled=c.value("disabled",false);control.min=c.value("min",0.0);control.max=c.value("max",1.0);control.step=c.value("step",0.0);
                     control.icon=c.value("icon",std::string());control.hint=c.value("hint",std::string());control.pressed=c.value("pressed",false);
                     if(c.contains("box"))control.box=c.at("box").get<std::array<int,4>>();
                     for(const auto& o:c.value("options",Json::array()))control.options.emplace_back(o.at(0).get<std::string>(),o.at(1).get<std::string>());row.controls.push_back(std::move(control));}
-                rows.push_back(std::move(row));}
+                allRows.push_back(std::move(row));}
+            applyFilter();
             // A re-rendered form invalidates an open text edit only if its control disappeared.
             if(revisionChanged&&editing>=0&&!find(editing))cancelEdit();
         }
+        if(model.contains("filter")){filter=model.value("filter",std::string());applyFilter();}
         applyCommon(model);layout();place();
+    }
+    // Details search: rows whose label holds the text (ASCII case-insensitive), with the heading they sit under.
+    std::vector<Row> allRows;std::string filter;
+    void applyFilter(){
+        if(filter.empty()){rows=allRows;return;}
+        const auto lower=[](std::string s){for(auto& c:s)if(c>='A'&&c<='Z')c=char(c-'A'+'a');return s;};const auto needle=lower(filter);
+        rows.clear();const Row* heading=nullptr;const Row* shown=nullptr;
+        for(const auto& r:allRows){if(r.kind=="heading"){heading=&r;continue;}if(r.kind!="row"||lower(r.label).find(needle)==std::string::npos)continue;if(heading&&shown!=heading){rows.push_back(*heading);shown=heading;}rows.push_back(r);}
+        if(rows.empty()){Row none;none.kind="message";none.text="일치하는 속성이 없어요.";rows.push_back(none);}
     }
     // Live value refresh (gizmo drag) without rebuilding the rows; an open text edit keeps its own text.
     void setValue(int i,const std::string& value){for(auto& row:rows)for(auto& c:row.controls)if(c.i==i&&c.value!=value&&editing!=i&&scrub!=i){c.value=value;InvalidateRect(window,nullptr,FALSE);}
