@@ -142,6 +142,10 @@ try{
     const fields=await session('asset.fields',{parts});assert.equal(fields.find(x=>x.key==='color')?.color,true,'colour fields are marked');
     const alpha=find(a).components[c].properties.color[3];doc=await session('asset.fieldEdit',{path:scene,parts,key:'color',value:'#ff8000',expectedRevision:doc.revision});
     assert.deepEqual(find(a).components[c].properties.color.map(v=>Math.round(v*1000)/1000),[1,.502,0,alpha]);}
+   // Asset field picker: fields name their asset kind and the project lists matching assets.
+   {const index=JSON.parse((await session('document.read',{path:scene})).text).objects.findIndex(o=>o.id===a),c=find(a).components.findIndex(x=>x.id===ps.id);
+    const fields=await session('asset.fields',{parts:['objects',String(index),'components',String(c),'properties']});assert.equal(fields.find(x=>x.key==='subEmitter')?.asset,'prefab','asset fields name their kind');
+    const {paths}=await session('content.assetsOfKind',{kind:'prefab'});assert.ok(paths.includes(prefabFile),'prefabs are listed');assert.ok(paths.every(p=>p.endsWith('.hbprefab.json')),'only that kind');}
    for(const name of ['fire','sparks','rain','burst'])doc=await session('scene.edit',{action:'particlePreset',id:a,key:ps.id,value:name,expectedRevision:doc.revision});
    await assert.rejects(session('scene.edit',{action:'particlePreset',id:a,key:ps.id,value:'nope',expectedRevision:doc.revision}),/프리셋/);doc=await session('scene.edit',{action:'removeComponent',id:a,key:ps.id,expectedRevision:doc.revision});}
   doc=await session('scene.edit',{action:'add',key:'cube',position:[2,1,3],expectedRevision:doc.revision});

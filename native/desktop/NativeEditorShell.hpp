@@ -375,6 +375,7 @@ class NativeEditorShell {
                     else if(act=="pasteComponent"){if(componentClipboard.is_object())editScene({{"action","pasteComponent"},{"id",sceneSelection},{"value",componentClipboard}});}
                     else if(act=="pasteComponentValues"){if(componentClipboard.is_object())editScene({{"action","pasteComponentValues"},{"id",sceneSelection},{"key",component},{"value",componentClipboard}});}
                     else if(act.rfind("preset",0)==0){std::string name=act.substr(6);name[0]=char(std::tolower(static_cast<unsigned char>(name[0])));editScene({{"action","particlePreset"},{"id",sceneSelection},{"key",component},{"value",name}});}
+                    else if(act=="pickAsset")pickAssetFor(fields.at(i));
                     else if(act=="particlePlay")perform(ParticlePlayToggle);else if(act=="particleRestart")perform(ParticleRestart);
                     else if(act=="moveUp"||act=="moveDown")editScene({{"action","moveComponent"},{"id",sceneSelection},{"key",component},{"value",act=="moveUp"?-1:1}});
                     else editScene({{"action",act},{"id",sceneSelection},{"key",component}});
@@ -1759,6 +1760,9 @@ class NativeEditorShell {
                         }
                     }
                     property["viaParts"]=via;auto control=property.at("control");control["i"]=fields.size();
+                    // Asset path fields: a … button opens a picker (assets of the right kind, clear, show in the content browser).
+                    if(property.contains("asset")){Json pick={{"key","__pickAsset"},{"label",""},{"action","pickAsset"},{"target",property.at("key")},{"assetKind",property.at("asset")},{"current",property.at("control").value("value",std::string())},{"viaParts",via}};
+                        Json controls=Json::array({std::move(control)});fields.push_back(std::move(property));auto button=action(pick,"…");controls.push_back(button);rows.push_back({{"label",fields.at(fields.size()-2).at("label")},{"controls",std::move(controls)}});continue;}
                     rows.push_back({{"label",property.at("label")},{"controls",Json::array({std::move(control)})}});fields.push_back(std::move(property));
                 }
             }
@@ -1797,6 +1801,24 @@ class NativeEditorShell {
         return {10,"기타"};
     }
     static const char* gitLabel(char code){switch(code){case 'M':return "수정";case 'A':return "추가";case 'D':return "삭제";case 'R':return "이름 변경";case 'C':return "복사";case 'U':return "충돌";default:return "";}}
+    // Picker for an asset path property: (비우기), show the current asset in the content browser, or one asset of the field's kind.
+    void pickAssetFor(const Json& field){
+        const auto current=field.value("current",std::string());std::vector<std::string> paths;
+        for(const auto& p:request("content.assetsOfKind",{{"kind",field.value("assetKind",std::string())}}).at("paths"))paths.push_back(p.get<std::string>());
+        HMENU menu=CreatePopupMenu();AppendMenuW(menu,MF_STRING,1,L"(비우기)");if(!current.empty())AppendMenuW(menu,MF_STRING,2,L"콘텐츠 브라우저에서 보기");AppendMenuW(menu,MF_SEPARATOR,0,nullptr);
+        if(paths.empty())AppendMenuW(menu,MF_STRING|MF_GRAYED,0,L"이 종류의 에셋이 없어요");
+        for(std::size_t i=0;i<paths.size()&&i<80;++i)AppendMenuW(menu,MF_STRING|(paths[i]==current?MF_CHECKED:0),UINT(100+i),wide(paths[i]).c_str());
+        POINT at{};GetCursorPos(&at);const int choice=popup(menu,at);DestroyMenu(menu);if(!choice)return;
+        if(choice==2){revealInBrowser(current);return;}
+        Json parts=inspectedBase;for(const auto& p:fieldPath)parts.push_back(p);for(const auto& p:field.value("viaParts",Json::array()))parts.push_back(p);
+        const std::string value=choice==1?std::string():paths.at(std::size_t(choice-100));
+        showDocument(request("asset.fieldEdit",{{"parts",parts},{"key",field.at("target")},{"value",value},{"expectedRevision",document.at("revision")}}));
+    }
+    // Content browser: open the asset's folder and select it.
+    void revealInBrowser(const std::string& path){
+        const auto slash=path.rfind('/');navigateFolder(slash==std::string::npos?std::string():path.substr(0,slash));const auto slot=dockSlotOf("content");dockActive[slot]="content";layout();
+        for(std::size_t i=0;i<entries.size();++i)if(entries.at(i).value("path",std::string())==path){ListView_SetItemState(files,-1,0,LVIS_SELECTED|LVIS_FOCUSED);ListView_SetItemState(files,int(i),LVIS_SELECTED|LVIS_FOCUSED,LVIS_SELECTED|LVIS_FOCUSED);ListView_EnsureVisible(files,int(i),FALSE);break;}
+    }
     void refreshSource(){
         Json items=Json::array();
         if(projectFile.empty())items.push_back({{"detail","소스 관리"},{"name","프로젝트를 여세요."}});

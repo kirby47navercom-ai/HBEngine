@@ -556,7 +556,7 @@ export function nativeEditorSession(bridge) {
         : type === 'object' ? {kind:'button',text:Array.isArray(value) ? `열기 (${value.length})` : '열기'}
         : type === 'boolean' ? {kind:'checkbox',checked:value}
         : {kind:'text',value:String(value),disabled:key==='version' || type==='null'};
-      return {key, label, type, control, ...(definition?.type==='color'?{color:true}:{})};
+      return {key, label, type, control, ...(definition?.type==='color'?{color:true}:{}),...(definition?.type==='asset'?{asset:definition.assetKind||''}:{})};
     });
   }
   const scene=()=>{
@@ -1236,6 +1236,13 @@ export function nativeEditorSession(bridge) {
       const folder=path.join(process.env.HB_USER_DATA_DIR||path.join(process.env.LOCALAPPDATA||process.cwd(),'HBEngine','User'),'Cache','Thumbnails');
       const read=async asset=>JSON.parse(await projectText(project(),asset));
       return {file:await assetThumbnail(project(),name,folder,{readMaterial:async data=>evaluateMaterial(await resolveMaterialAsset(data,read))})};
+    },
+    // Asset field picker: project assets of one kind (textures also accept texture assets), sorted, at most 500.
+    'content.assetsOfKind': async ({kind}) => {
+      if(typeof kind!=='string'||!kind)throw Error('에셋 종류를 확인하세요.');
+      const listed=await project().list({folder:'',query:'',browse:true,recursive:true,contents:false,type:'all'});
+      const paths=listed.entries.map(row=>row.path).filter(p=>{const k=assetKind(p);return k===kind||kind==='texture'&&k==='texture2d';}).sort((a,b)=>a.localeCompare(b)).slice(0,500);
+      return {paths};
     },
     'sourceControl.status': async ()=>(await import('./source-control.mjs')).sourceControlStatus(project().root),
     'sourceControl.init': async ()=>(await import('./source-control.mjs')).sourceControlInit(project().root),
