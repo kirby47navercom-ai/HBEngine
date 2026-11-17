@@ -16,4 +16,9 @@ assert.deepEqual([c.getX(0),c.getY(0),c.getZ(0)],[1,0,0]);assert.deepEqual([c.ge
 assert.equal(pool.mesh(points,camera,800,600),mesh,'unchanged view reuses the quads');pool.end();
 assert.throws(()=>pool.mesh(new THREE.Points(geometry,new THREE.MeshBasicMaterial()),camera,800,600),/PointsMaterial/);
 pool.begin();pool.end();assert.equal(pool.entries.size,0,'unused clouds are released');
+// CPU particle Points (particle ShaderMaterial): per-point size and RGBA tint, alpha folded into colour, zero size hidden.
+{const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute([0,0,0, 1,0,0],3));g.setAttribute('particleColor',new THREE.Float32BufferAttribute([1,.5,0,.5, 1,1,1,1],4));g.setAttribute('particleSize',new THREE.Float32BufferAttribute([.2,0],1));
+ const m=new THREE.ShaderMaterial({uniforms:{pixelScale:{value:1},sizeLimits:{value:new THREE.Vector2(0,1)}},transparent:true,depthWrite:false,blending:THREE.AdditiveBlending});const cloud=new THREE.Points(g,m);cloud.updateMatrixWorld();
+ const pool2=new NativePointPool();pool2.begin();const quad=pool2.mesh(cloud,camera,800,600);assert.equal(quad.geometry.drawRange.count,6,'zero-size particle hidden');
+ const col=quad.geometry.attributes.color;assert.deepEqual([col.getX(0),col.getY(0),col.getZ(0)].map(v=>Math.round(v*100)/100),[.5,.25,0],'alpha folded into colour');assert.equal(quad.material.blending,THREE.AdditiveBlending);pool2.end();}
 console.log(JSON.stringify({passed:true,width}));

@@ -42,7 +42,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   const canvas={width:1,height:1,clientWidth:1,clientHeight:1,pixelRatio:1};
   let renderer, content, world, source, project, dimension, camera, orthoCamera, sky, visual, primitives, updateEnvironment;
   let selection='', gizmo, handles, models=new Set(), groups=new Map(), owners=new Map();
-  let solidGizmo=null,collisionView=null;const streamingRings=new Map();
+  let solidGizmo=null,collisionView=null,particleClock=0,particleRestartSeen=0;const streamingRings=new Map();
   const ringMaterials=[new THREE.LineBasicMaterial({color:0x7bdc8a,depthTest:false,transparent:true,opacity:.9}),new THREE.LineBasicMaterial({color:0xf0a35a,depthTest:false,transparent:true,opacity:.9})];
   const unitRing=new THREE.BufferGeometry().setFromPoints(Array.from({length:64},(_,i)=>new THREE.Vector3(Math.cos(i/64*Math.PI*2),0,Math.sin(i/64*Math.PI*2))));
   let previewTransform,worldOutline,outlineKey;
@@ -156,7 +156,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   }
   async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,smooth,snap,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets,extra={}) {
     const timing={start:performance.now()};
-    const {quad=false,viewMode='lit',gameView=false,showGrid=false,gridSize=1,space='world',surfaceSnap=false,vertexSnap=false,pilot='',pivotMode='pivot',showNavigation=false,showCollision=false,showStreaming=false}=extra;
+    const {quad=false,viewMode='lit',gameView=false,showGrid=false,gridSize=1,space='world',surfaceSnap=false,vertexSnap=false,pilot='',pivotMode='pivot',showNavigation=false,showCollision=false,showStreaming=false,particlePlaying=true,particleRestart=0,particleSpeed=1}=extra;
     visual?.navigationDebug?.(showNavigation);
     // Pivot / center (Unity): the gizmo sits on the object's pivot or on its bounds centre.
     const gizmoOrigin=g=>{if(pivotMode==='center'){const box=new THREE.Box3().setFromObject(g);if(!box.isEmpty())return box.getCenter(new THREE.Vector3());}return g.getWorldPosition(new THREE.Vector3());};
@@ -223,6 +223,12 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       else orbit.radius=THREE.MathUtils.clamp(orbit.radius*1.15**-dy,.025,100000);
     }
     let animating=false;
+    // Particle preview: emitters (GPU simulation through the native renderer, CPU points otherwise) advanced by wall time (capped 0.1 s) while playing; restart resets every emitter.
+    const particleStates=()=>[...groups.values()].flatMap(g=>[...(g.userData.particleStates?.values?.()||[]),g.userData.particleState].filter(Boolean));
+    if(particleRestart!==particleRestartSeen){particleRestartSeen=particleRestart;for(const s of particleStates())s.simulation?.reset?.();}
+    const particleNow=performance.now(),particleDelta=particleClock?Math.min(.1,(particleNow-particleClock)/1000):0;particleClock=particleNow;
+    const emitters=data.objects.some(o=>(o.components||[]).some(c=>c.type==='ParticleSystem'&&c.properties?.enabled!==false));
+    if(emitters&&visual?.tickParticles){visual.tickParticles(data.objects,particlePlaying?particleDelta*particleSpeed:0,!particlePlaying);if(particlePlaying)animating=true;}
     if(flyTo){
       const t=Math.min(1,(performance.now()-flyTo.start)/FLY_MS),k=1-(1-t)**3;
       target.lerpVectors(flyTo.from.target,flyTo.to.target,k);
@@ -544,7 +550,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     }finally{for(const n of hiddenForFrame)n.visible=true;if(pane)delete active.userData.gameViews;}
     const {backend,shaderPreparation,calls,cameraViews,upscales,ldrAntiAliasingPasses}=renderer.hbDiagnostics();
     const ms=(a,b)=>Math.round((timing[b]-timing[a])*100)/100;
-    return {animating,streamingRings:streamingRings.size,collisionShapes:collisionView?.group.visible?collisionView.group.children.filter(c=>c.visible).length:0,target:target.toArray(),gpuMs:renderer.hbDiagnostics().gpuTimeMs??null,resolution:{...renderer.hbResolution,upscales,ldrAntiAliasingPasses},timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),...(drops?{drops}:{}),...(boxSelection?{boxSelection}:{}),...(pilotPose?{pilotPose}:{}),...(bookmarkResult?{bookmark:bookmarkResult}:{}),warnings:content.warnings.slice(0,8)};
+    return {animating,particles:[...groups.values()].reduce((n,g)=>n+[...(g.userData.particleStates?.values?.()||[]),g.userData.particleState].filter(Boolean).reduce((m,s)=>m+(s.simulation?.particles?.length||0)+(s.simulation?.birthUploads||0),0),0),streamingRings:streamingRings.size,collisionShapes:collisionView?.group.visible?collisionView.group.children.filter(c=>c.visible).length:0,target:target.toArray(),gpuMs:renderer.hbDiagnostics().gpuTimeMs??null,resolution:{...renderer.hbResolution,upscales,ldrAntiAliasingPasses},timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),...(drops?{drops}:{}),...(boxSelection?{boxSelection}:{}),...(pilotPose?{pilotPose}:{}),...(bookmarkResult?{bookmark:bookmarkResult}:{}),warnings:content.warnings.slice(0,8)};
   }
   // Lightmap bake input: one row per drawn object, world matrices current.
   const bakeRows=objects=>objects.flatMap(object=>{const root=groups.get(object.id);if(!root)return[];root.updateMatrixWorld(true);const renderer=(object.components||[]).find(c=>c.type==='MeshRenderer');return[{object,root,contribute:!!renderer&&renderer.properties?.enabled!==false&&renderer.properties?.contributeGI!==false}];});

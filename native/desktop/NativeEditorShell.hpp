@@ -36,7 +36,7 @@ class NativeEditorShell {
     Json viewTarget;
     // Viewport FPS readout (stat fps / Ctrl+Shift+H), Unreal camera speed 1-8, console command line under Output Log.
     // Viewport show flags and modes (Unreal): game view (G), floor grid, lit/unlit/wireframe, quad panes, world/local gizmo, surface snapping, pilot.
-    bool pivotCenter=false,showNavigation=false,showCollision=false,showStreaming=false,gameView=false,showGrid=true,quadView=false,localSpace=false,surfaceSnap=false,historyShown=false;std::string viewMode="lit",pilotId;Json historyRows=Json::array();
+    bool pivotCenter=false,showNavigation=false,showCollision=false,showStreaming=false,particlePlaying=true,gameView=false,showGrid=true,quadView=false,localSpace=false,surfaceSnap=false,historyShown=false;std::string viewMode="lit",pilotId;Json historyRows=Json::array();
     bool showFps=false;int cameraSpeed=4;std::deque<ULONGLONG> fpsTimes;double fpsGpuMs=-1;ULONGLONG fpsShown=0;HWND consoleInput=nullptr;
     static double speedScale(int speed){static const double scales[8]={.1,.25,.5,1,2,4,8,16};return scales[std::clamp(speed,1,8)-1];}
     bool snapOn=false;double snapGrid=.5,snapAngle=15;HMENU snapMenu=nullptr;HWND hierarchySearch=nullptr;std::string hierarchyQuery;
@@ -118,7 +118,7 @@ class NativeEditorShell {
     bool browserTiles=false,refreshingFolders=false;
     bool layoutMaximized=false;
     bool consoleVisible=false,contentDetachedOnStart=false;
-    Json logItems=Json::array();Json componentClipboard;
+    Json logItems=Json::array();Json componentClipboard;int particleRestartSerial=0;
     // Output log (Unity console / Unreal output log): severity 0 info, 1 warning, 2 error.
     struct LogEntry{std::string text,time;int severity=0,count=1;};std::vector<LogEntry> logEntries;bool logShow[3]{true,true,true},logCollapse=false;
     std::uint64_t logRevision=0;
@@ -192,7 +192,7 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
-    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),ShowSource=static_cast<Command>(983),RebindShortcut=static_cast<Command>(984),ResetShortcuts=static_cast<Command>(985),CollisionToggle=static_cast<Command>(986),GenerateLods=static_cast<Command>(987),StreamingToggle=static_cast<Command>(988),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),ShowSource=static_cast<Command>(983),RebindShortcut=static_cast<Command>(984),ResetShortcuts=static_cast<Command>(985),CollisionToggle=static_cast<Command>(986),GenerateLods=static_cast<Command>(987),StreamingToggle=static_cast<Command>(988),ParticlePlayToggle=static_cast<Command>(989),ParticleRestart=static_cast<Command>(990),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -374,6 +374,8 @@ class NativeEditorShell {
                     else if(act=="copyComponent"){componentClipboard=fields.at(i).at("data");statusText(L"컴포넌트를 복사했어요.");refreshForm();layout();}
                     else if(act=="pasteComponent"){if(componentClipboard.is_object())editScene({{"action","pasteComponent"},{"id",sceneSelection},{"value",componentClipboard}});}
                     else if(act=="pasteComponentValues"){if(componentClipboard.is_object())editScene({{"action","pasteComponentValues"},{"id",sceneSelection},{"key",component},{"value",componentClipboard}});}
+                    else if(act.rfind("preset",0)==0){std::string name=act.substr(6);name[0]=char(std::tolower(static_cast<unsigned char>(name[0])));editScene({{"action","particlePreset"},{"id",sceneSelection},{"key",component},{"value",name}});}
+                    else if(act=="particlePlay")perform(ParticlePlayToggle);else if(act=="particleRestart")perform(ParticleRestart);
                     else if(act=="moveUp"||act=="moveDown")editScene({{"action","moveComponent"},{"id",sceneSelection},{"key",component},{"value",act=="moveUp"?-1:1}});
                     else editScene({{"action",act},{"id",sceneSelection},{"key",component}});
                     return;
@@ -591,7 +593,7 @@ class NativeEditorShell {
         AppendMenuW(viewMenu,MF_STRING,MeshUVView,L"메시 UV0·UV1 보기 / 3D 보기");
         AppendMenuW(viewMenu,MF_STRING,MeshUVFit,L"메시 UV 전체 보기");
         AppendMenuW(sceneMenu,MF_STRING,AddActor,L"오브젝트 추가");
-        AppendMenuW(sceneMenu,MF_STRING,AddComponent,L"컴포넌트 추가");AppendMenuW(sceneMenu,MF_STRING,BakeLighting,L"조명 빌드 (간접광 베이크)");AppendMenuW(sceneMenu,MF_STRING,BakeNavMesh,L"내비 메시 굽기… (내비 메시 문서)");AppendMenuW(sceneMenu,MF_STRING,GenerateLods,L"LOD 자동 생성… (LOD 문서)");
+        AppendMenuW(sceneMenu,MF_STRING,AddComponent,L"컴포넌트 추가");AppendMenuW(sceneMenu,MF_STRING,ParticlePlayToggle,L"파티클 미리보기 재생 / 멈춤\tCtrl+Shift+Space");AppendMenuW(sceneMenu,MF_STRING,ParticleRestart,L"파티클 미리보기 다시 시작\tCtrl+Shift+R");AppendMenuW(sceneMenu,MF_STRING,BakeLighting,L"조명 빌드 (간접광 베이크)");AppendMenuW(sceneMenu,MF_STRING,BakeNavMesh,L"내비 메시 굽기… (내비 메시 문서)");AppendMenuW(sceneMenu,MF_STRING,GenerateLods,L"LOD 자동 생성… (LOD 문서)");
         AppendMenuW(sceneMenu,MF_STRING,DeleteActor,L"선택 오브젝트 삭제\tDelete");
         AppendMenuW(sceneMenu,MF_STRING,DuplicateActor,L"선택 오브젝트 복제\tCtrl+D");
         AppendMenuW(sceneMenu,MF_STRING,CopyActor,L"선택 오브젝트 복사\tCtrl+C");
@@ -1593,7 +1595,7 @@ class NativeEditorShell {
         if(!input.contains("tool"))input["tool"]=viewport.transformTool();
         if(snapOn)input["snap"]={{"grid",snapGrid},{"angle",snapAngle}};
         if(input.contains("flight")&&input.at("flight").is_object())input["flight"]["speedScale"]=speedScale(cameraSpeed);
-        input["quad"]=quadView;input["viewMode"]=viewMode;input["gameView"]=gameView;input["showGrid"]=showGrid;input["gridSize"]=snapGrid;input["space"]=localSpace?"local":"world";input["pivotMode"]=pivotCenter?"center":"pivot";input["showNavigation"]=showNavigation;input["showCollision"]=showCollision;input["showStreaming"]=showStreaming;input["surfaceSnap"]=surfaceSnap;input["vertexSnap"]=(GetKeyState('V')&0x8000)!=0;if(!pilotId.empty())input["pilot"]=pilotId;
+        input["quad"]=quadView;input["viewMode"]=viewMode;input["gameView"]=gameView;input["showGrid"]=showGrid;input["gridSize"]=snapGrid;input["space"]=localSpace?"local":"world";input["pivotMode"]=pivotCenter?"center":"pivot";input["showNavigation"]=showNavigation;input["showCollision"]=showCollision;input["showStreaming"]=showStreaming;input["particlePlaying"]=particlePlaying;input["particleRestart"]=particleRestartSerial;input["surfaceSnap"]=surfaceSnap;input["vertexSnap"]=(GetKeyState('V')&0x8000)!=0;if(!pilotId.empty())input["pilot"]=pilotId;
         auto state=request("scene.viewport",input);
         if(state.contains("target"))viewTarget=state.at("target");
         if(state.contains("drops"))for(const auto& drop:state.at("drops"))editScene({{"action","translate"},{"id",drop.at("id")},{"delta",drop.at("delta")}});
@@ -1724,7 +1726,16 @@ class NativeEditorShell {
                 const Json via=Json::array({"components",std::to_string(j),"properties"});
                 auto parts=base;for(const auto& p:via)parts.push_back(p);
                 Json properties;try{properties=request("asset.fields",{{"parts",parts}});}catch(const std::exception&){continue;}
+                // Particle System: properties grouped into Unity-style modules under headings, plus starter presets.
+                std::string lastModule;
+                const auto particleButton=[&](const char* act,const char* text){Json field={{"key",std::string("__")+act},{"label",""},{"action",act},{"component",component.value("id",std::string())}};return action(field,text);};
+                if(type=="ParticleSystem"){
+                    std::stable_sort(properties.begin(),properties.end(),[](const Json& a,const Json& b){return particleModule(a.value("key",std::string())).first<particleModule(b.value("key",std::string())).first;});
+                    rows.push_back({{"label","프리셋"},{"controls",Json::array({particleButton("presetFire","불꽃"),particleButton("presetSmoke","연기"),particleButton("presetSparks","불티"),particleButton("presetRain","비"),particleButton("presetBurst","폭발")})}});
+                    rows.push_back({{"label","미리보기"},{"controls",Json::array({particleButton("particlePlay",particlePlaying?"멈춤":"재생"),particleButton("particleRestart","다시 시작")})}});
+                }
                 for(auto property:properties){
+                    if(type=="ParticleSystem"){const auto moduleName=particleModule(property.value("key",std::string())).second;if(moduleName!=lastModule){rows.push_back({{"kind","heading"},{"text",std::string("· ")+moduleName}});lastModule=moduleName;}}
                     if(property.value("type",std::string())=="object"){
                         // Vectors and colours show their numbers inline; other objects open as before.
                         auto inner=parts;inner.push_back(property.at("key"));Json axes;try{axes=request("asset.fields",{{"parts",inner}});}catch(const std::exception&){axes=Json::array();}
@@ -1756,6 +1767,22 @@ class NativeEditorShell {
     }
     // Profiler panel: the running game's latest profile (written by the player twice a second).
     // Source control rows: status label (staged ● / changed ○) and project path; double-click stages or unstages.
+    // Particle System module of a property key: sort order and heading (Unity modules / Niagara stages).
+    static std::pair<int,std::string> particleModule(const std::string& k){
+        const auto in=[&](std::initializer_list<const char*> keys){for(const char* x:keys)if(k==x)return true;return false;};
+        const auto starts=[&](const char* p){return k.rfind(p,0)==0;};
+        if(in({"enabled","playOnStart","duration","loop","startDelay","seed","simulationSpace","maxParticles"}))return {0,"기본"};
+        if(in({"rate","rateOverDistance"})||starts("burst"))return {1,"방출"};
+        if(in({"shape","radius","angle","extent"}))return {2,"모양"};
+        if(in({"lifetime","lifetimeMax","speed","size","endSize","color","endColor","minParticleSize","maxParticleSize"}))return {3,"수명 · 크기 · 색"};
+        if(in({"gravity","force","drag"}))return {4,"힘"};
+        if(starts("collision"))return {5,"충돌"};
+        if(in({"texture","blend","sortingLayer","sortingOrder","maskInteraction","sortMode"})||starts("sheet"))return {6,"렌더"};
+        if(starts("trail"))return {7,"트레일"};
+        if(starts("subEmitter"))return {8,"하위 이미터"};
+        if(in({"deathEvents","eventName","eventCapacity"}))return {9,"이벤트"};
+        return {10,"기타"};
+    }
     static const char* gitLabel(char code){switch(code){case 'M':return "수정";case 'A':return "추가";case 'D':return "삭제";case 'R':return "이름 변경";case 'C':return "복사";case 'U':return "충돌";default:return "";}}
     void refreshSource(){
         Json items=Json::array();
@@ -3483,6 +3510,8 @@ class NativeEditorShell {
             POINT at{};GetCursorPos(&at);const int choice=popup(menu,at);DestroyMenu(menu);if(!choice)return;
             loadNamedLayout(files.at(choice-1));statusText((L"레이아웃 불러오기 · "+files.at(choice-1).stem().wstring()).c_str());return;
         }
+        if(command==ParticlePlayToggle){particlePlaying=!particlePlaying;statusText(particlePlaying?L"파티클 미리보기 재생":L"파티클 미리보기 멈춤");queueViewport();return;}
+        if(command==ParticleRestart){++particleRestartSerial;particlePlaying=true;statusText(L"파티클 미리보기 다시 시작");queueViewport();return;}
         if(command==StreamingToggle){showStreaming=!showStreaming;statusText(showStreaming?L"레벨 스트리밍 범위 표시 켬 (초록 불러오기 · 주황 내리기)":L"레벨 스트리밍 범위 표시 끔");queueViewport();return;}
         if(command==CollisionToggle){showCollision=!showCollision;statusText(showCollision?L"충돌 표시 켬":L"충돌 표시 끔");queueViewport();return;}
         if(command==NavigationToggle){showNavigation=!showNavigation;statusText(showNavigation?L"내비게이션 표시 켬 (NavigationMesh 컴포넌트)":L"내비게이션 표시 끔");queueViewport();return;}
@@ -4292,7 +4321,7 @@ public:
         ShowWindow(window,layoutMaximized?SW_SHOWMAXIMIZED:show);
         if(contentDetachedOnStart)perform(DetachContent);
         restoreDocumentWindows();
-        ACCEL keys[]={{FVIRTKEY|FCONTROL,'O',OpenProject},{FVIRTKEY|FCONTROL,'S',Save},{FVIRTKEY|FCONTROL,'W',CloseDocument},{FVIRTKEY|FCONTROL,'Z',Undo},{FVIRTKEY|FCONTROL,'Y',Redo},{FVIRTKEY|FALT,VK_UP,Up},{FVIRTKEY,VK_F1,ShowShortcuts},{FVIRTKEY,VK_F5,PlayScene},{FVIRTKEY|FSHIFT,VK_F5,StopPlay},{FVIRTKEY,VK_F6,PauseGame},{FVIRTKEY|FCONTROL,'K',CommandPalette},{FVIRTKEY|FALT,'C',CollisionToggle},{FVIRTKEY,VK_F7,StepGameFrame}};
+        ACCEL keys[]={{FVIRTKEY|FCONTROL,'O',OpenProject},{FVIRTKEY|FCONTROL,'S',Save},{FVIRTKEY|FCONTROL,'W',CloseDocument},{FVIRTKEY|FCONTROL,'Z',Undo},{FVIRTKEY|FCONTROL,'Y',Redo},{FVIRTKEY|FALT,VK_UP,Up},{FVIRTKEY,VK_F1,ShowShortcuts},{FVIRTKEY,VK_F5,PlayScene},{FVIRTKEY|FSHIFT,VK_F5,StopPlay},{FVIRTKEY,VK_F6,PauseGame},{FVIRTKEY|FCONTROL,'K',CommandPalette},{FVIRTKEY|FALT,'C',CollisionToggle},{FVIRTKEY|FCONTROL|FSHIFT,VK_SPACE,ParticlePlayToggle},{FVIRTKEY|FCONTROL|FSHIFT,'R',ParticleRestart},{FVIRTKEY,VK_F7,StepGameFrame}};
         defaultKeys.assign(std::begin(keys),std::end(keys));loadKeyBindings();rebuildAccelerators();
         MSG message;
         while(GetMessageW(&message,nullptr,0,0)>0){
@@ -4922,6 +4951,8 @@ private:
         logShow[1]=false;refreshLog();const bool logFiltered=std::none_of(logItems.begin(),logItems.end(),[](const Json& row){return row.value("icon",std::string())=="WARN";});logShow[1]=true;refreshLog();const bool consoleLog=logMerged&&logFiltered&&!logItems.empty();
         // Build lighting: a tiny bake writes the scene lightmap and points the meshes at it; undo restores the scene.
         bool lightBuilt=false;{const auto keep=sceneSelection;auto baked=request("scene.bakeLightmaps",{{"path",document.at("path")},{"objects",Json::array()},{"settings",{{"resolution",16},{"samples",4},{"bounces",1}}},{"expectedRevision",document.at("revision")}});const auto info=baked.value("lightmap",Json::object());showDocument(std::move(baked));lightBuilt=!info.value("updated",Json::array()).empty()&&info.value("path",std::string()).rfind("Assets/Lighting/LM_",0)==0&&document.at("text").get<std::string>().find(info.value("path",std::string()))!=std::string::npos;command(Undo);sceneSelection=keep;}
+        // Particle preview: a ParticleSystem on the selection emits in the editor viewport over a few frames.
+        bool particlePreview=false;{const auto host=sceneSelection;if(!host.empty()){editScene({{"action","component"},{"id",host},{"key","ParticleSystem"}});particlePlaying=true;std::size_t most=0;for(int i=0;i<6;i++){Sleep(60);most=std::max<std::size_t>(most,drawViewport().value("particles",0));}particlePreview=most>0;command(Undo);drawViewport();}}
         // Level streaming ranges: each LevelStreaming component draws its load and unload rings.
         const auto streamingHost=sceneSelection.empty()?std::string():sceneSelection;if(!streamingHost.empty())editScene({{"action","component"},{"id",streamingHost},{"key","LevelStreaming"}});showStreaming=true;const auto streamingOn=drawViewport().value("streamingRings",0);if(!streamingHost.empty())command(Undo);showStreaming=false;const auto streamingOff=drawViewport().value("streamingRings",0);const bool streamingView=streamingOn>=2&&streamingOff==0;
         // Show collision: the scene's colliders add wire segments to the viewport.
@@ -4948,8 +4979,8 @@ private:
         SetWindowTextW(consoleInput,L"r.ScreenPercentage 80");runConsole();const bool consoleSet=Json::parse(document.at("text").get<std::string>()).at("runtime").value("renderScale",0)==80;perform(Undo);
         SetWindowTextW(consoleInput,L"stat fps");runConsole();drawViewport();const bool fpsShown=showFps&&!fpsTimes.empty();perform(ToggleFps);
         SetWindowTextW(consoleInput,L"camera.speed 7");runConsole();const bool speedSet=cameraSpeed==7;perform(Command(CameraSpeedFirst+3));
-        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"lightBuild",lightBuilt}};
-        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"particlePreview",particlePreview},{"lightBuild",lightBuilt}};
+        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!particlePreview||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());

@@ -134,6 +134,11 @@ try{
   const copiedLight={type:'PointLight',properties:{...find(a).components.find(c=>c.type==='PointLight').properties}};
   doc=await session('scene.edit',{action:'pasteComponent',id:a,value:copiedLight,expectedRevision:doc.revision});assert.equal(find(a).components.filter(c=>c.type==='PointLight').length,2,'component pasted');
   for(const c of find(a).components.filter(c=>c.type==='AudioSource'||c.type==='PointLight'))doc=await session('scene.edit',{action:'removeComponent',id:a,key:c.id,expectedRevision:doc.revision});
+  // Particle presets: a fire preset sets an additive cone emitter; unknown presets are refused.
+  doc=await session('scene.edit',{action:'component',id:a,key:'ParticleSystem',expectedRevision:doc.revision});
+  {const ps=find(a).components.find(c=>c.type==='ParticleSystem');doc=await session('scene.edit',{action:'particlePreset',id:a,key:ps.id,value:'smoke',expectedRevision:doc.revision});const p=find(a).components.find(c=>c.id===ps.id).properties;assert.equal(p.blend,'alpha');assert.ok(p.endSize>p.size,'smoke grows');
+   for(const name of ['fire','sparks','rain','burst'])doc=await session('scene.edit',{action:'particlePreset',id:a,key:ps.id,value:name,expectedRevision:doc.revision});
+   await assert.rejects(session('scene.edit',{action:'particlePreset',id:a,key:ps.id,value:'nope',expectedRevision:doc.revision}),/프리셋/);doc=await session('scene.edit',{action:'removeComponent',id:a,key:ps.id,expectedRevision:doc.revision});}
   doc=await session('scene.edit',{action:'add',key:'cube',position:[2,1,3],expectedRevision:doc.revision});
   assert.deepEqual(find(doc.selection).position,[2,1,3]);assert.equal(find(doc.selection).pivot,'center');
   // Undo history panel rows and jumping; world-space rotation; pilot pose applied as a world transform.
