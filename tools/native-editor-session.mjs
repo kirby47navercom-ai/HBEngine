@@ -25,7 +25,7 @@ import {modelSource} from './model-import-state.mjs';
 import {modelImportDefaults,modelUnitChoices,modelUpChoices,remapModelOverrides} from '../prototype/model-import.js';
 import {createProject, readProjectManifest, recentProjects, rememberProject} from './project-manifest.mjs';
 import {createPlacedObject,placementCatalog} from '../prototype/placement-catalog.js';
-import {addSceneComponent,makeSceneComponent,componentDefinitions,componentPropertyVisible,defaultsForObject,installBlueprintComponents,objectComponents} from '../prototype/scene-components.js';
+import {addSceneComponent,makeSceneComponent,componentDefaults,componentDefinitions,componentPropertyVisible,defaultsForObject,installBlueprintComponents,objectComponents} from '../prototype/scene-components.js';
 import {addMobileControls,addWidget,duplicateWidget,removeWidget,reparentWidget,setWidgetAnchorPreset,transformWidgetSlot,widgetContainers,widgetTypes} from '../prototype/ui-assets.js';
 import {projectBytes,projectText} from './project-bytes.mjs';
 import {applyPrefabProperty,createPrefabInstance,prefabInstanceChanges,prefabRootFor,refreshPrefabInstance,revertAllPrefabProperties,unpackPrefabInstance} from '../prototype/prefab-instances.js';
@@ -545,6 +545,7 @@ export function nativeEditorSession(bridge) {
     const lodMode=doc.kind==='lod'&&!parts.length;
     const component=doc.kind==='scene'&&parts.length===5&&parts[0]==='objects'&&parts[2]==='components'&&parts[4]==='properties'
       ? doc.data.objects[parts[1]]?.components[parts[3]] : null;
+    const defaults=component?componentDefaults(component.type):null;
     return Object.entries(data).filter(([key])=>!component||componentPropertyVisible(component.type,key,data)).map(([key,value]) => {
       const type = value === null ? 'null' : typeof value;
       const definition=component&&componentDefinitions[component.type]?.properties[key];
@@ -556,7 +557,7 @@ export function nativeEditorSession(bridge) {
         : type === 'object' ? {kind:'button',text:Array.isArray(value) ? `열기 (${value.length})` : '열기'}
         : type === 'boolean' ? {kind:'checkbox',checked:value}
         : {kind:'text',value:String(value),disabled:key==='version' || type==='null'};
-      return {key, label, type, control, ...(definition?.type==='color'?{color:true}:{}),...(definition?.type==='asset'?{asset:definition.assetKind||''}:{})};
+      return {key, label, type, control, ...(definition?.type==='color'?{color:true}:{}),...(definition?.type==='asset'?{asset:definition.assetKind||''}:{}),...(defaults&&Object.hasOwn(defaults,key)&&JSON.stringify(value)!==JSON.stringify(defaults[key])?{changed:true}:{})};
     });
   }
   const scene=()=>{
@@ -1325,6 +1326,10 @@ export function nativeEditorSession(bridge) {
       if(!['scene','prefab'].includes(doc.kind))throw Error('장면 문서를 선택하세요.');
       await check(doc,expectedRevision);
       const next=structuredClone(doc.data), byId=new Map(next.objects.map(actor=>[actor.id,actor]));
+      // Reset transform (Unity Reset / Unreal reset arrows): local position, rotation or scale of every selected object.
+      if(action==='resetTransform'){const list=Array.isArray(ids)&&ids.length?ids:[id];if(!['position','rotation','scale'].includes(value))throw Error('초기화할 트랜스폼을 고르세요.');
+        for(const x of list){const o=byId.get(x);if(!o)throw Error('오브젝트를 선택하세요.');if(o.locked)continue;o[value]=value==='scale'?[1,1,1]:[0,0,0];}
+        change(doc,next);return {...await response(doc),selection:id||list[0]};}
       const actor=byId.get(id);
       let selection=id,selections;
       const targets=Array.isArray(ids)&&ids.length?[...new Set(ids.filter(item=>typeof item==='string'&&byId.has(item)))]:id?[id]:[];
@@ -1860,6 +1865,14 @@ export function nativeEditorSession(bridge) {
       if (!bp) inputs.push(...materialNodeProperties(node,doc.data));
       return inputs;
     },
+    // Reset to default (Unreal yellow arrow): a component property back to its definition default.
+    'asset.fieldReset': async ({path,parts=[],key,expectedRevision}) => {
+      const doc=targetDocument(path);await check(doc,expectedRevision);
+      const component=doc.kind==='scene'&&parts.length===5&&parts[0]==='objects'&&parts[2]==='components'&&parts[4]==='properties'?doc.data.objects[parts[1]]?.components[parts[3]]:null;
+      const defaults=component?componentDefaults(component.type):null;if(!defaults||!Object.hasOwn(defaults,key))throw Error('기본값이 있는 컴포넌트 속성을 선택하세요.');
+      if(doc.data.objects[Number(parts[1])]?.locked)throw Error('오브젝트 잠금을 해제하세요.');
+      const pointer='/'+[...parts,key].map(pointerPart).join('/');change(doc,patchAsset(doc.kind,doc.data,[{op:'replace',path:pointer,value:structuredClone(defaults[key])}]),'edit:'+pointer+':'+Date.now()+Math.random());return response(doc);
+    },
     'asset.fieldEdit': async ({path,parts=[],key,value,expectedRevision,merge=false}) => {
       const doc = targetDocument(path);
       await check(doc,expectedRevision);
@@ -2138,7 +2151,7 @@ export function nativeEditorSession(bridge) {
     }
     return response(doc);
   }
-  const actionLabels={add:'오브젝트 추가',placeAsset:'에셋 배치',delete:'삭제',translate:'이동',rotate:'회전',scale:'크기',rename:'이름 바꾸기',duplicate:'복제',paste:'붙여넣기',component:'컴포넌트 추가',removeComponent:'컴포넌트 제거',moveComponent:'컴포넌트 순서',resetComponent:'컴포넌트 초기화',particlePreset:'파티클 프리셋',pasteComponentValues:'컴포넌트 값 붙여넣기',pasteComponent:'컴포넌트 붙여넣기',reparent:'부모 변경',lock:'잠금',visible:'보이기',setWorldTransform:'조종 위치 적용',prefabApply:'프리팹 적용',prefabRevert:'프리팹 되돌리기',prefabRefresh:'프리팹 새로 고침',prefabUnpack:'프리팹 풀기'};
+  const actionLabels={add:'오브젝트 추가',placeAsset:'에셋 배치',delete:'삭제',translate:'이동',rotate:'회전',scale:'크기',rename:'이름 바꾸기',duplicate:'복제',paste:'붙여넣기',component:'컴포넌트 추가',removeComponent:'컴포넌트 제거',resetTransform:'트랜스폼 초기화',moveComponent:'컴포넌트 순서',resetComponent:'컴포넌트 초기화',particlePreset:'파티클 프리셋',pasteComponentValues:'컴포넌트 값 붙여넣기',pasteComponent:'컴포넌트 붙여넣기',reparent:'부모 변경',lock:'잠금',visible:'보이기',setWorldTransform:'조종 위치 적용',prefabApply:'프리팹 적용',prefabRevert:'프리팹 되돌리기',prefabRefresh:'프리팹 새로 고침',prefabUnpack:'프리팹 풀기'};
   return async (method,params={}) => {
     if (!Object.hasOwn(methods,method)) throw Error('지원하지 않는 편집기 명령이에요.');
     requestLabel=method==='scene.edit'?actionLabels[params.action]||params.action:method==='asset.fieldEdit'?'속성: '+params.key:method==='scene.runtimeSet'?'실행 설정: '+params.key:method==='scene.bakeLightmaps'?'라이트맵 베이크':method==='navmesh.bake'?'내비 메시 굽기':method==='lod.generate'?'LOD 자동 생성':method;

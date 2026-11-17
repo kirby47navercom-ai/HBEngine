@@ -146,8 +146,16 @@ try{
    {const index=JSON.parse((await session('document.read',{path:scene})).text).objects.findIndex(o=>o.id===a),c=find(a).components.findIndex(x=>x.id===ps.id);
     const fields=await session('asset.fields',{parts:['objects',String(index),'components',String(c),'properties']});assert.equal(fields.find(x=>x.key==='subEmitter')?.asset,'prefab','asset fields name their kind');
     const {paths}=await session('content.assetsOfKind',{kind:'prefab'});assert.ok(paths.includes(prefabFile),'prefabs are listed');assert.ok(paths.every(p=>p.endsWith('.hbprefab.json')),'only that kind');}
+   // Changed component values are marked and reset to their defaults.
+   {const index=JSON.parse((await session('document.read',{path:scene})).text).objects.findIndex(o=>o.id===a),c=find(a).components.findIndex(x=>x.id===ps.id),parts=['objects',String(index),'components',String(c),'properties'];
+    doc=await session('asset.fieldEdit',{path:scene,parts,key:'rate',value:'77',expectedRevision:doc.revision});assert.equal((await session('asset.fields',{parts})).find(x=>x.key==='rate').changed,true,'changed values are marked');
+    doc=await session('asset.fieldReset',{path:scene,parts,key:'rate',expectedRevision:doc.revision});assert.equal(find(a).components[c].properties.rate,30,'reset to the default');assert.ok(!(await session('asset.fields',{parts})).find(x=>x.key==='rate').changed);}
    for(const name of ['fire','sparks','rain','burst'])doc=await session('scene.edit',{action:'particlePreset',id:a,key:ps.id,value:name,expectedRevision:doc.revision});
    await assert.rejects(session('scene.edit',{action:'particlePreset',id:a,key:ps.id,value:'nope',expectedRevision:doc.revision}),/프리셋/);doc=await session('scene.edit',{action:'removeComponent',id:a,key:ps.id,expectedRevision:doc.revision});}
+  // Reset transform: position / rotation / scale back to identity for the listed objects.
+  doc=await session('scene.edit',{action:'resetTransform',id:a,ids:[a],value:'rotation',expectedRevision:doc.revision});assert.deepEqual(find(a).rotation,[0,0,0]);
+  doc=await session('scene.edit',{action:'resetTransform',id:a,ids:[a],value:'scale',expectedRevision:doc.revision});assert.deepEqual(find(a).scale,[1,1,1]);
+  await assert.rejects(session('scene.edit',{action:'resetTransform',id:a,ids:[a],value:'colour',expectedRevision:doc.revision}),/트랜스폼/);
   doc=await session('scene.edit',{action:'add',key:'cube',position:[2,1,3],expectedRevision:doc.revision});
   assert.deepEqual(find(doc.selection).position,[2,1,3]);assert.equal(find(doc.selection).pivot,'center');
   // Undo history panel rows and jumping; world-space rotation; pilot pose applied as a world transform.
