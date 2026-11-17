@@ -192,7 +192,7 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
-    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),ShowSource=static_cast<Command>(983),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),ShowSource=static_cast<Command>(983),RebindShortcut=static_cast<Command>(984),ResetShortcuts=static_cast<Command>(985),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -265,7 +265,7 @@ class NativeEditorShell {
         SendMessageW(result,WM_SETFONT,WPARAM(font),TRUE);return result;
     }
     void makeControls(){
-        INITCOMMONCONTROLSEX controls{sizeof(controls),ICC_TAB_CLASSES|ICC_LISTVIEW_CLASSES|ICC_TREEVIEW_CLASSES};InitCommonControlsEx(&controls);
+        INITCOMMONCONTROLSEX controls{sizeof(controls),ICC_TAB_CLASSES|ICC_LISTVIEW_CLASSES|ICC_TREEVIEW_CLASSES|ICC_HOTKEY_CLASS};InitCommonControlsEx(&controls);
         font=CreateFontW(-13,0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,0,0,CLEARTYPE_QUALITY,0,L"Segoe UI");
         search=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,Search);
         consoleInput=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,ConsoleInput);SendMessageW(consoleInput,EM_SETCUEBANNER,TRUE,LPARAM(L"명령 입력 (help)"));
@@ -512,7 +512,7 @@ class NativeEditorShell {
         if(const HMODULE ux=LoadLibraryExW(L"uxtheme.dll",nullptr,LOAD_LIBRARY_SEARCH_SYSTEM32)){using Mode=int(WINAPI*)(int);using Flush=void(WINAPI*)();if(const auto set=reinterpret_cast<Mode>(reinterpret_cast<void*>(GetProcAddress(ux,MAKEINTRESOURCEA(135)))))set(1);if(const auto flush=reinterpret_cast<Flush>(reinterpret_cast<void*>(GetProcAddress(ux,MAKEINTRESOURCEA(136)))))flush();}
         const HMENU main=CreateMenu(),file=CreatePopupMenu(),edit=CreatePopupMenu(),viewMenu=CreatePopupMenu(),sceneMenu=CreatePopupMenu(),buildMenu=CreatePopupMenu(),helpMenu=CreatePopupMenu();
         AppendMenuW(helpMenu,MF_STRING,ShowHelp,L"시작하기");
-        AppendMenuW(helpMenu,MF_STRING,ShowShortcuts,L"단축키 목록\tF1");
+        AppendMenuW(helpMenu,MF_STRING,ShowShortcuts,L"단축키 목록\tF1");AppendMenuW(helpMenu,MF_STRING,RebindShortcut,L"단축키 지정…");AppendMenuW(helpMenu,MF_STRING,ResetShortcuts,L"지정한 단축키 모두 지우기");
         AppendMenuW(file,MF_STRING,OpenProject,L"프로젝트 열기\tCtrl+O");
         AppendMenuW(file,MF_STRING,NewProject,L"새 프로젝트");
         recentMenu=CreatePopupMenu();
@@ -2496,14 +2496,81 @@ class NativeEditorShell {
             out.push_back({prefix+label+(keys.empty()?L"":L"  ("+keys+L")"),int(info.wID)});
         }
     }
-    void openPalette(){
+    int openPalette(bool pick=false){
         PaletteDialog palette{instance};collectMenu(GetMenu(window),L"",palette.commands);
-        if(!projectFile.empty())try{for(const auto& row:request("content.list",{{"query",""},{"recursive",true}}).at("entries"))if(row.value("kind",std::string())!="folder"&&palette.assets.size()<20000)palette.assets.push_back(wide(row.at("path")));}catch(const std::exception&){}
+        if(!pick&&!projectFile.empty())try{for(const auto& row:request("content.list",{{"query",""},{"recursive",true}}).at("entries"))if(row.value("kind",std::string())!="folder"&&palette.assets.size()<20000)palette.assets.push_back(wide(row.at("path")));}catch(const std::exception&){}
         struct alignas(DWORD) Dialog {DLGTEMPLATE value;WORD menu=0,windowClass=0,title=0;} layout{};
         layout.value.style=WS_POPUP|WS_CAPTION|WS_SYSMENU|DS_MODALFRAME|DS_CENTER;layout.value.cx=320;layout.value.cy=220;
-        if(DialogBoxIndirectParamW(instance,&layout.value,window,paletteProcedure,reinterpret_cast<LPARAM>(&palette))!=IDOK)return;
+        if(DialogBoxIndirectParamW(instance,&layout.value,window,paletteProcedure,reinterpret_cast<LPARAM>(&palette))!=IDOK)return 0;
+        if(pick)return palette.result>=0?palette.commands.at(palette.result).second:0;
         if(palette.result>=0)PostMessageW(window,WM_COMMAND,WPARAM(palette.commands.at(palette.result).second),0);
         else{captureSource();showDocument(request("document.open",{{"path",utf8(palette.assets.at(-palette.result-1))}}));}
+        return 0;
+    }
+    // Custom shortcuts: any menu command can get a key (Help > 단축키 지정…); saved in UserData/native-editor-keys.json,
+    // they win over the built-in accelerator for the same key and replace the command's old key in the menu label.
+    HACCEL accelerator=nullptr;std::vector<ACCEL> defaultKeys,customKeys;
+    fs::path keysFile()const{return layoutFile.parent_path()/L"native-editor-keys.json";}
+    static std::wstring keyText(const ACCEL& a){
+        std::wstring text;if(a.fVirt&FCONTROL)text+=L"Ctrl+";if(a.fVirt&FSHIFT)text+=L"Shift+";if(a.fVirt&FALT)text+=L"Alt+";
+        wchar_t name[64]{};const UINT scan=MapVirtualKeyW(a.key,MAPVK_VK_TO_VSC);const bool extended=a.key==VK_UP||a.key==VK_DOWN||a.key==VK_LEFT||a.key==VK_RIGHT||a.key==VK_HOME||a.key==VK_END||a.key==VK_PRIOR||a.key==VK_NEXT||a.key==VK_INSERT||a.key==VK_DELETE;
+        if(GetKeyNameTextW(LONG(scan<<16)|(extended?1L<<24:0),name,64)>0)text+=name;else text+=L"Key"+std::to_wstring(a.key);return text;
+    }
+    static bool setMenuShortcut(HMENU menu,UINT id,const std::wstring& keys){
+        for(int i=0,count=GetMenuItemCount(menu);i<count;++i){
+            wchar_t text[256]{};MENUITEMINFOW info{sizeof(info)};info.fMask=MIIM_STRING|MIIM_ID|MIIM_SUBMENU;info.dwTypeData=text;info.cch=255;
+            if(!GetMenuItemInfoW(menu,UINT(i),TRUE,&info))continue;
+            if(info.hSubMenu){if(setMenuShortcut(info.hSubMenu,id,keys))return true;continue;}
+            if(info.wID!=id)continue;
+            std::wstring label=text;if(const auto tab=label.find(L'\t');tab!=std::wstring::npos)label.resize(tab);if(!keys.empty())label+=L"\t"+keys;
+            MENUITEMINFOW change{sizeof(change)};change.fMask=MIIM_STRING;change.dwTypeData=label.data();SetMenuItemInfoW(menu,UINT(i),TRUE,&change);return true;
+        }
+        return false;
+    }
+    void loadKeyBindings(){
+        customKeys.clear();if(!fs::is_regular_file(keysFile()))return;
+        const auto data=Json::parse(read(keysFile()),nullptr,false);if(!data.is_object()||!data.contains("bindings")||!data.at("bindings").is_array())return;
+        for(const auto& b:data.at("bindings")){const int command=b.value("command",0),key=b.value("key",0);if(command<=0||command>0xffff||key<=0||key>0xff)continue;customKeys.push_back({BYTE(FVIRTKEY|(b.value("ctrl",false)?FCONTROL:0)|(b.value("shift",false)?FSHIFT:0)|(b.value("alt",false)?FALT:0)),WORD(key),WORD(command)});}
+    }
+    void saveKeyBindings(){
+        Json rows=Json::array();for(const auto& a:customKeys)rows.push_back({{"command",a.cmd},{"key",a.key},{"ctrl",(a.fVirt&FCONTROL)!=0},{"shift",(a.fVirt&FSHIFT)!=0},{"alt",(a.fVirt&FALT)!=0}});
+        write(keysFile(),Json{{"version",1},{"bindings",rows}}.dump(2));
+    }
+    void rebuildAccelerators(){
+        const auto same=[](const ACCEL& a,const ACCEL& b){return (a.fVirt&~FNOINVERT)==(b.fVirt&~FNOINVERT)&&a.key==b.key;};
+        std::vector<ACCEL> table=customKeys;
+        for(const auto& d:defaultKeys)if(std::none_of(customKeys.begin(),customKeys.end(),[&](const ACCEL& c){return same(c,d)||c.cmd==d.cmd;}))table.push_back(d);
+        if(accelerator)DestroyAcceleratorTable(accelerator);
+        accelerator=table.empty()?nullptr:CreateAcceleratorTableW(table.data(),int(table.size()));
+        for(const auto& c:customKeys)setMenuShortcut(GetMenu(window),c.cmd,keyText(c));
+    }
+    void bindShortcut(WORD command,ACCEL key){
+        key.cmd=command;key.fVirt|=FVIRTKEY;
+        customKeys.erase(std::remove_if(customKeys.begin(),customKeys.end(),[&](const ACCEL& c){return c.cmd==command||((c.fVirt&~FNOINVERT)==(key.fVirt&~FNOINVERT)&&c.key==key.key);}),customKeys.end());
+        customKeys.push_back(key);saveKeyBindings();rebuildAccelerators();
+    }
+    struct HotkeyDialog{HINSTANCE instance;std::wstring title;HWND control=nullptr;WORD value=0;};
+    static INT_PTR CALLBACK hotkeyProcedure(HWND dialog,UINT message,WPARAM w,LPARAM l){
+        auto* p=reinterpret_cast<HotkeyDialog*>(GetWindowLongPtrW(dialog,DWLP_USER));
+        if(message==WM_INITDIALOG){
+            p=reinterpret_cast<HotkeyDialog*>(l);SetWindowLongPtrW(dialog,DWLP_USER,reinterpret_cast<LONG_PTR>(p));SetWindowTextW(dialog,p->title.c_str());
+            RECT rect{};GetClientRect(dialog,&rect);const auto font=WPARAM(GetStockObject(DEFAULT_GUI_FONT));
+            p->control=CreateWindowExW(0,HOTKEY_CLASSW,L"",WS_CHILD|WS_VISIBLE|WS_TABSTOP|WS_BORDER,12,12,rect.right-24,26,dialog,HMENU(INT_PTR(10)),p->instance,nullptr);SendMessageW(p->control,WM_SETFONT,font,TRUE);
+            for(const auto& [text,id,x]:std::initializer_list<std::tuple<const wchar_t*,int,int>>{{L"확인",IDOK,174},{L"취소",IDCANCEL,90}}){const HWND b=CreateWindowExW(0,L"BUTTON",text,WS_CHILD|WS_VISIBLE|WS_TABSTOP|(id==IDOK?BS_DEFPUSHBUTTON:BS_PUSHBUTTON),rect.right-x,52,74,26,dialog,HMENU(INT_PTR(id)),p->instance,nullptr);SendMessageW(b,WM_SETFONT,font,TRUE);}
+            SetFocus(p->control);return FALSE;
+        }
+        if(message==WM_COMMAND&&p){if(LOWORD(w)==IDOK){p->value=WORD(SendMessageW(p->control,HKM_GETHOTKEY,0,0));EndDialog(dialog,IDOK);return TRUE;}if(LOWORD(w)==IDCANCEL){EndDialog(dialog,IDCANCEL);return TRUE;}}
+        if(message==WM_CLOSE){EndDialog(dialog,IDCANCEL);return TRUE;}
+        return FALSE;
+    }
+    void rebindShortcut(){
+        const int command=openPalette(true);if(!command)return;
+        HotkeyDialog input{instance,L"새 단축키를 누르세요"};
+        struct alignas(DWORD) Dialog {DLGTEMPLATE value;WORD menu=0,windowClass=0,title=0;} layout{};
+        layout.value.style=WS_POPUP|WS_CAPTION|WS_SYSMENU|DS_MODALFRAME|DS_CENTER;layout.value.cx=230;layout.value.cy=62;
+        if(DialogBoxIndirectParamW(instance,&layout.value,window,hotkeyProcedure,reinterpret_cast<LPARAM>(&input))!=IDOK||!LOBYTE(input.value))return;
+        const BYTE mods=HIBYTE(input.value);const ACCEL key{BYTE(FVIRTKEY|((mods&HOTKEYF_CONTROL)?FCONTROL:0)|((mods&HOTKEYF_SHIFT)?FSHIFT:0)|((mods&HOTKEYF_ALT)?FALT:0)),WORD(LOBYTE(input.value)),WORD(command)};
+        bindShortcut(WORD(command),key);statusText((L"단축키 지정 · "+keyText(key)).c_str());
     }
     std::wstring inputName(const wchar_t* title,std::wstring initial={},int limit=80){
         struct alignas(DWORD) Dialog {DLGTEMPLATE value;WORD menu=0,windowClass=0,title=0;} layout{};
@@ -3430,6 +3497,8 @@ class NativeEditorShell {
             statusText(wide("조명 빌드 완료 · "+info.value("path",std::string())+" · 오브젝트 "+std::to_string(info.value("updated",Json::array()).size())).c_str());return;
         }
         if(command==CommandPalette){openPalette();return;}
+        if(command==RebindShortcut){rebindShortcut();return;}
+        if(command==ResetShortcuts){customKeys.clear();std::error_code error;fs::remove(keysFile(),error);rebuildAccelerators();statusText(L"지정한 단축키를 지웠어요. 메뉴의 기본 표시는 다시 시작하면 돌아와요.");return;}
         if(command==PivotToggle){pivotCenter=!pivotCenter;statusText(pivotCenter?L"기즈모: 경계 중심":L"기즈모: 피벗");refreshChrome();queueViewport();return;}
         if(command==ProjectSettings){if(projectFile.empty())return;captureSource();showDocument(request("document.open",{{"path",request("project.settings",{}).at("path")}}));statusText(L"프로젝트 설정: 장면에 게임 설정이 없으면 이 값을 써요.");return;}
         if(command==PauseGame){if(!playProcess)return;playPaused=!playPaused;postToGame(WM_APP+44,playPaused);statusText(playPaused?L"플레이 일시정지":L"플레이 계속");refreshChrome();return;}
@@ -4209,7 +4278,7 @@ public:
         if(contentDetachedOnStart)perform(DetachContent);
         restoreDocumentWindows();
         ACCEL keys[]={{FVIRTKEY|FCONTROL,'O',OpenProject},{FVIRTKEY|FCONTROL,'S',Save},{FVIRTKEY|FCONTROL,'W',CloseDocument},{FVIRTKEY|FCONTROL,'Z',Undo},{FVIRTKEY|FCONTROL,'Y',Redo},{FVIRTKEY|FALT,VK_UP,Up},{FVIRTKEY,VK_F1,ShowShortcuts},{FVIRTKEY,VK_F5,PlayScene},{FVIRTKEY|FSHIFT,VK_F5,StopPlay},{FVIRTKEY,VK_F6,PauseGame},{FVIRTKEY|FCONTROL,'K',CommandPalette},{FVIRTKEY,VK_F7,StepGameFrame}};
-        const auto accelerator=CreateAcceleratorTableW(keys,int(std::size(keys)));
+        defaultKeys.assign(std::begin(keys),std::end(keys));loadKeyBindings();rebuildAccelerators();
         MSG message;
         while(GetMessageW(&message,nullptr,0,0)>0){
             if(message.message==WM_KEYDOWN&&message.hwnd==consoleInput&&message.wParam==VK_RETURN){try{runConsole();}catch(const std::exception& error){report(error);}continue;}
@@ -4241,7 +4310,7 @@ public:
             const bool documentShortcut=message.wParam=='S'||message.wParam=='W'||message.wParam=='Z'||message.wParam=='Y';
             if((independent&&!documentShortcut)||!TranslateAcceleratorW(independent?owner:window,accelerator,&message)){TranslateMessage(&message);DispatchMessageW(&message);}
         }
-        DestroyAcceleratorTable(accelerator);return 0;
+        if(accelerator)DestroyAcceleratorTable(accelerator);accelerator=nullptr;return 0;
     }
 private:
     int smokeTest(const fs::path& smoke){
@@ -4838,6 +4907,14 @@ private:
         logShow[1]=false;refreshLog();const bool logFiltered=std::none_of(logItems.begin(),logItems.end(),[](const Json& row){return row.value("icon",std::string())=="WARN";});logShow[1]=true;refreshLog();const bool consoleLog=logMerged&&logFiltered&&!logItems.empty();
         // Build lighting: a tiny bake writes the scene lightmap and points the meshes at it; undo restores the scene.
         bool lightBuilt=false;{const auto keep=sceneSelection;auto baked=request("scene.bakeLightmaps",{{"path",document.at("path")},{"objects",Json::array()},{"settings",{{"resolution",16},{"samples",4},{"bounces",1}}},{"expectedRevision",document.at("revision")}});const auto info=baked.value("lightmap",Json::object());showDocument(std::move(baked));lightBuilt=!info.value("updated",Json::array()).empty()&&info.value("path",std::string()).rfind("Assets/Lighting/LM_",0)==0&&document.at("text").get<std::string>().find(info.value("path",std::string()))!=std::string::npos;command(Undo);sceneSelection=keep;}
+        // Custom shortcut: binding the palette to Ctrl+Shift+K reaches the accelerator table and the menu label.
+        bool shortcutBinding=false;{const auto keep=customKeys;if(defaultKeys.empty()){defaultKeys={{FVIRTKEY|FCONTROL,'K',WORD(CommandPalette)}};}
+            bindShortcut(WORD(CommandPalette),{BYTE(FVIRTKEY|FCONTROL|FSHIFT),WORD('K'),0});
+            std::vector<ACCEL> table(std::size_t(accelerator?CopyAcceleratorTableW(accelerator,nullptr,0):0));if(!table.empty())CopyAcceleratorTableW(accelerator,table.data(),int(table.size()));
+            std::vector<std::pair<std::wstring,int>> rows;collectMenu(GetMenu(window),L"",rows);
+            shortcutBinding=std::any_of(table.begin(),table.end(),[](const ACCEL& a){return a.cmd==CommandPalette&&a.key=='K'&&(a.fVirt&FSHIFT);})&&std::none_of(table.begin(),table.end(),[](const ACCEL& a){return a.cmd==CommandPalette&&!(a.fVirt&FSHIFT);})
+                &&std::any_of(rows.begin(),rows.end(),[](const auto& r){return r.second==CommandPalette&&r.first.find(L"Shift+K")!=std::wstring::npos;});
+            customKeys=keep;saveKeyBindings();rebuildAccelerators();}
         // Prefab mode: a prefab opens in the scene editor and draws in the viewport.
         bool prefabEditor=false;{const auto scenePath=document.at("path");captureSource();showDocument(request("document.open",{{"path","Assets/PF_Mode.hbprefab.json"}}));layout();const auto drawn=drawViewport();prefabEditor=prefabMode()&&sceneOpen()&&drawn.contains("cameraPosition");captureSource();showDocument(request("document.open",{{"path",scenePath}}));layout();}
         // Named layouts: a saved arrangement comes back after the dock changes.
@@ -4850,8 +4927,8 @@ private:
         SetWindowTextW(consoleInput,L"r.ScreenPercentage 80");runConsole();const bool consoleSet=Json::parse(document.at("text").get<std::string>()).at("runtime").value("renderScale",0)==80;perform(Undo);
         SetWindowTextW(consoleInput,L"stat fps");runConsole();drawViewport();const bool fpsShown=showFps&&!fpsTimes.empty();perform(ToggleFps);
         SetWindowTextW(consoleInput,L"camera.speed 7");runConsole();const bool speedSet=cameraSpeed==7;perform(Command(CameraSpeedFirst+3));
-        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"lightBuild",lightBuilt}};
-        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!namedLayout||!prefabEditor||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"lightBuild",lightBuilt}};
+        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!namedLayout||!prefabEditor||!shortcutBinding||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
