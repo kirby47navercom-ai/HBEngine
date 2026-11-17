@@ -1431,6 +1431,14 @@ let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBu
         const name=typeof value==='string'?value.trim():'';if(name.length>200||/[\\/]/.test(name))throw Error('폴더 이름을 확인하세요.');
         for(const target of (Array.isArray(ids)&&ids.length?ids:[id])){const o=byId.get(target);if(!o)continue;if(name)o.folder=name;else delete o.folder;}
         selection=id||ids?.[0]||'';
+      } else if (action==='replaceWithAsset') {
+        // Each unlocked object becomes the asset placed at its transform (parent, folder, rotation, scale kept); children move to it.
+        const list=(Array.isArray(ids)&&ids.length?ids:[id]).map(i=>byId.get(i)).filter(o=>o&&!o.locked);if(!list.length)throw Error('바꿀 오브젝트를 선택하세요.');
+        const created=[];
+        for(const old of list){const newId=await placeSceneAsset(next,doc,asset,null,old.position);const made=next.objects.find(o=>o.id===newId);if(!made||made===old)throw Error('이 에셋으로는 오브젝트를 바꿀 수 없어요.');
+          made.rotation=[...old.rotation];made.scale=[...old.scale];if(old.parent)made.parent=old.parent;else delete made.parent;if(old.folder)made.folder=old.folder;
+          for(const child of next.objects)if(child.parent===old.id)child.parent=made.id;next.objects=next.objects.filter(o=>o!==old);created.push(made.id);}
+        selection=created[0];
       } else if (action==='renameMany') {
         const pattern=typeof value==='string'?value.trim():'';const list=(Array.isArray(ids)&&ids.length?ids:[id]).map(i=>byId.get(i)).filter(o=>o&&!o.locked);
         if(!pattern||pattern.length>190||!list.length)throw Error('일괄 이름을 확인하세요.');
@@ -1528,6 +1536,20 @@ let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBu
       const stamp=new Date(),two=n=>String(n).padStart(2,'0'),name='Screenshot_'+stamp.getFullYear()+two(stamp.getMonth()+1)+two(stamp.getDate())+'_'+two(stamp.getHours())+two(stamp.getMinutes())+two(stamp.getSeconds());
       let file=path.join(folder,name+'.png');for(let i=2;await fs.access(file).then(()=>true,()=>false);i++)file=path.join(folder,name+'_'+i+'.png');
       await fs.writeFile(file,encodePng(width,height,rgba));return {file,width,height};
+    },
+    'content.findInBlueprints': async ({query})=>{
+      const q=typeof query==='string'?query.trim().toLowerCase():'';if(!q||q.length>200)throw Error('찾을 글자를 입력하세요.');
+      const listed=await project().list({folder:'',query:'',browse:true,recursive:true,contents:false,type:'all'}),results=[];
+      for(const row of listed.entries){if(!['blueprint','widget','animgraph'].includes(assetKind(row.path)))continue;let data;try{data=documents.items.get(row.path)?.data??JSON.parse((await projectText(project(),row.path)).replace(/^\uFEFF/,''));}catch{continue;}
+        const graphs=[data,...Object.values(data.functions||{}),...Object.values(data.macros||{}),...(Array.isArray(data.graphs)?data.graphs:[])].filter(g=>g&&Array.isArray(g.nodes));
+        for(const g of graphs)for(const n of g.nodes){const text=[n.key,n.title,n.text,n.comment,n.variable,n.function,n.event].filter(v=>typeof v==='string').join(' ');if(text.toLowerCase().includes(q))results.push({path:row.path,node:n.id,text:(n.title||n.text||n.key||'').slice(0,80)});if(results.length>=200)break;}
+        for(const v of Array.isArray(data.variables)?data.variables:[])if(String(v?.name||'').toLowerCase().includes(q))results.push({path:row.path,node:'',text:'변수 '+v.name});
+        if(results.length>=200)break;}
+      return {results};
+    },
+    'scene.measure': ({a,b})=>{
+      const objects=scene().data.objects,world=id=>{const o=objects.find(x=>x.id===id);if(!o)throw Error('오브젝트를 선택하세요.');const m=sceneWorldMatrix(o,objects);return [m.elements[12],m.elements[13],m.elements[14]];};
+      const p=world(a),q=world(b),delta=q.map((v,i)=>v-p[i]);return {distance:Math.hypot(...delta),delta};
     },
     'scene.similar': ({id})=>{
       const objects=scene().data.objects,source=objects.find(o=>o.id===id);if(!source)throw Error('오브젝트를 선택하세요.');
