@@ -121,7 +121,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     sky=createSky(world,renderer);world.add(ambientLight);
     const read=async name=>data.assetDraft?.path===name?data.assetDraft.data:JSON.parse((await projectText(project,name)).replace(/^\uFEFF/,''));
     const warnings=[];
-    visual=sceneRendering({read,fileUrl:url,loadTexture:assets.texture,loadModel:async name=>{
+    visual=sceneRendering({navigationOverlay:true,read,fileUrl:url,loadTexture:assets.texture,loadModel:async name=>{
       const metadata=data.assetDraft?.data?.source===name?data.assetDraft.data:undefined;
       const model=/\.(?:gltf|glb)$/i.test(name)?await loadHeadlessModel(project,name,{geometry:true,loadTexture:assets.modelTexture,metadata}):await loadModel(name,{metadata});
       models.add(model.object);return model;
@@ -153,7 +153,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   }
   async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,smooth,snap,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets,extra={}) {
     const timing={start:performance.now()};
-    const {quad=false,viewMode='lit',gameView=false,showGrid=false,gridSize=1,space='world',surfaceSnap=false,vertexSnap=false,pilot='',pivotMode='pivot'}=extra;
+    const {quad=false,viewMode='lit',gameView=false,showGrid=false,gridSize=1,space='world',surfaceSnap=false,vertexSnap=false,pilot='',pivotMode='pivot',showNavigation=false}=extra;
+    visual?.navigationDebug?.(showNavigation);
     // Pivot / center (Unity): the gizmo sits on the object's pivot or on its bounds centre.
     const gizmoOrigin=g=>{if(pivotMode==='center'){const box=new THREE.Box3().setFromObject(g);if(!box.isEmpty())return box.getCenter(new THREE.Vector3());}return g.getWorldPosition(new THREE.Vector3());};
     let box=Array.isArray(extra.box)&&extra.box.length===4&&extra.box.every(Number.isFinite)?extra.box.slice():null;

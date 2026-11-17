@@ -36,7 +36,7 @@ class NativeEditorShell {
     Json viewTarget;
     // Viewport FPS readout (stat fps / Ctrl+Shift+H), Unreal camera speed 1-8, console command line under Output Log.
     // Viewport show flags and modes (Unreal): game view (G), floor grid, lit/unlit/wireframe, quad panes, world/local gizmo, surface snapping, pilot.
-    bool pivotCenter=false,gameView=false,showGrid=true,quadView=false,localSpace=false,surfaceSnap=false,historyShown=false;std::string viewMode="lit",pilotId;Json historyRows=Json::array();
+    bool pivotCenter=false,showNavigation=false,gameView=false,showGrid=true,quadView=false,localSpace=false,surfaceSnap=false,historyShown=false;std::string viewMode="lit",pilotId;Json historyRows=Json::array();
     bool showFps=false;int cameraSpeed=4;std::deque<ULONGLONG> fpsTimes;double fpsGpuMs=-1;ULONGLONG fpsShown=0;HWND consoleInput=nullptr;
     static double speedScale(int speed){static const double scales[8]={.1,.25,.5,1,2,4,8,16};return scales[std::clamp(speed,1,8)-1];}
     bool snapOn=false;double snapGrid=.5,snapAngle=15;HMENU snapMenu=nullptr;HWND hierarchySearch=nullptr;std::string hierarchyQuery;
@@ -192,7 +192,7 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
-    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -564,7 +564,7 @@ class NativeEditorShell {
         AppendMenuW(viewMenu,MF_STRING,Up,L"상위 폴더\tAlt+↑");
                 AppendMenuW(viewMenu,MF_STRING,WideInspector,L"속성 패널 너비 변경");
         AppendMenuW(viewMenu,MF_STRING,ToggleFps,L"FPS 표시\tCtrl+Shift+H");
-        AppendMenuW(viewMenu,MF_STRING,GameViewToggle,L"게임 보기 (편집 표시 숨기기)\tG");AppendMenuW(viewMenu,MF_STRING,GridToggle,L"바닥 격자 표시");AppendMenuW(viewMenu,MF_STRING,QuadToggle,L"4분할 뷰포트");
+        AppendMenuW(viewMenu,MF_STRING,GameViewToggle,L"게임 보기 (편집 표시 숨기기)\tG");AppendMenuW(viewMenu,MF_STRING,GridToggle,L"바닥 격자 표시");AppendMenuW(viewMenu,MF_STRING,NavigationToggle,L"내비게이션 표시\tP");AppendMenuW(viewMenu,MF_STRING,QuadToggle,L"4분할 뷰포트");
         AppendMenuW(viewMenu,MF_STRING,ViewLit,L"보기 모드: 조명");AppendMenuW(viewMenu,MF_STRING,ViewUnlit,L"보기 모드: 조명 없음");AppendMenuW(viewMenu,MF_STRING,ViewWireframe,L"보기 모드: 와이어프레임");AppendMenuW(viewMenu,MF_STRING,ShowHistory,L"실행 취소 기록");AppendMenuW(viewMenu,MF_STRING,ShowProfiler,L"프로파일러");
         AppendMenuW(viewMenu,MF_STRING,ResetLayout,L"기본 배치 복원");
         scaleMenu=CreatePopupMenu();
@@ -590,7 +590,7 @@ class NativeEditorShell {
         AppendMenuW(viewMenu,MF_STRING,MeshUVView,L"메시 UV0·UV1 보기 / 3D 보기");
         AppendMenuW(viewMenu,MF_STRING,MeshUVFit,L"메시 UV 전체 보기");
         AppendMenuW(sceneMenu,MF_STRING,AddActor,L"오브젝트 추가");
-        AppendMenuW(sceneMenu,MF_STRING,AddComponent,L"컴포넌트 추가");AppendMenuW(sceneMenu,MF_STRING,BakeLighting,L"조명 빌드 (간접광 베이크)");
+        AppendMenuW(sceneMenu,MF_STRING,AddComponent,L"컴포넌트 추가");AppendMenuW(sceneMenu,MF_STRING,BakeLighting,L"조명 빌드 (간접광 베이크)");AppendMenuW(sceneMenu,MF_STRING,BakeNavMesh,L"내비 메시 굽기… (내비 메시 문서)");
         AppendMenuW(sceneMenu,MF_STRING,DeleteActor,L"선택 오브젝트 삭제\tDelete");
         AppendMenuW(sceneMenu,MF_STRING,DuplicateActor,L"선택 오브젝트 복제\tCtrl+D");
         AppendMenuW(sceneMenu,MF_STRING,CopyActor,L"선택 오브젝트 복사\tCtrl+C");
@@ -1585,7 +1585,7 @@ class NativeEditorShell {
         if(!input.contains("tool"))input["tool"]=viewport.transformTool();
         if(snapOn)input["snap"]={{"grid",snapGrid},{"angle",snapAngle}};
         if(input.contains("flight")&&input.at("flight").is_object())input["flight"]["speedScale"]=speedScale(cameraSpeed);
-        input["quad"]=quadView;input["viewMode"]=viewMode;input["gameView"]=gameView;input["showGrid"]=showGrid;input["gridSize"]=snapGrid;input["space"]=localSpace?"local":"world";input["pivotMode"]=pivotCenter?"center":"pivot";input["surfaceSnap"]=surfaceSnap;input["vertexSnap"]=(GetKeyState('V')&0x8000)!=0;if(!pilotId.empty())input["pilot"]=pilotId;
+        input["quad"]=quadView;input["viewMode"]=viewMode;input["gameView"]=gameView;input["showGrid"]=showGrid;input["gridSize"]=snapGrid;input["space"]=localSpace?"local":"world";input["pivotMode"]=pivotCenter?"center":"pivot";input["showNavigation"]=showNavigation;input["surfaceSnap"]=surfaceSnap;input["vertexSnap"]=(GetKeyState('V')&0x8000)!=0;if(!pilotId.empty())input["pilot"]=pilotId;
         auto state=request("scene.viewport",input);
         if(state.contains("target"))viewTarget=state.at("target");
         if(state.contains("drops"))for(const auto& drop:state.at("drops"))editScene({{"action","translate"},{"id",drop.at("id")},{"delta",drop.at("delta")}});
@@ -3344,6 +3344,16 @@ class NativeEditorShell {
         if(command==SpaceToggle){localSpace=!localSpace;statusText(localSpace?L"기즈모: 로컬 좌표":L"기즈모: 월드 좌표");refreshChrome();queueViewport();return;}
         if(command==SurfaceSnapToggle){surfaceSnap=!surfaceSnap;refreshChrome();return;}
         if(command>=ViewLit&&command<=ViewWireframe){viewMode=command==ViewLit?"lit":command==ViewUnlit?"unlit":"wireframe";refreshChrome();queueViewport();return;}
+        if(command==NavigationToggle){showNavigation=!showNavigation;statusText(showNavigation?L"내비게이션 표시 켬 (NavigationMesh 컴포넌트)":L"내비게이션 표시 끔");queueViewport();return;}
+        if(command==BakeNavMesh){
+            if(document.value("kind",std::string())!="navmesh"){statusText(L"내비 메시 문서를 열고 굽기를 실행하세요.",1);return;}
+            std::vector<std::string> sources;for(const auto& row:request("content.list",{{"query",""},{"recursive",true}}).at("entries")){const auto p=row.value("path",std::string());if((p.size()>12&&p.compare(p.size()-12,12,".hbmesh.json")==0)||(p.size()>15&&p.compare(p.size()-15,15,".hbterrain.json")==0))sources.push_back(p);}
+            if(sources.empty()){statusText(L"굽기 원본 메시·지형 에셋이 없어요.",1);return;}
+            HMENU menu=CreatePopupMenu();for(std::size_t i=0;i<sources.size()&&i<60;++i)AppendMenuW(menu,MF_STRING,UINT(i+1),wide(sources[i]).c_str());
+            POINT at{};GetCursorPos(&at);const int choice=popup(menu,at);DestroyMenu(menu);if(!choice)return;
+            captureSource();auto result=request("navmesh.bake",{{"path",document.at("path")},{"source",sources.at(choice-1)},{"expectedRevision",document.at("revision")}});
+            const int triangles=result.value("triangles",0);showDocument(std::move(result));statusText((L"내비 메시 굽기 완료 · 삼각형 "+std::to_wstring(triangles)).c_str());return;
+        }
         if(command==BakeLighting){
             if(!sceneOpen())return;captureSource();
             const auto targets=selectedIds();statusText(L"조명 빌드 중…");
@@ -4142,6 +4152,7 @@ public:
                     if(ctrl&&shift&&key=='P'){perform(PilotToggle);continue;}
                     if(ctrl&&key==VK_OEM_3){perform(SpaceToggle);continue;}
                     if(!ctrl&&key==VK_END){perform(DropToFloor);continue;}
+                    if(!ctrl&&!shift&&key=='P'){perform(NavigationToggle);continue;}
                     if(!pilotId.empty()&&key==VK_ESCAPE){perform(PilotToggle);continue;}
                     if(key>='1'&&key<='9'&&!(GetKeyState(VK_MENU)&0x8000)&&!shift){queueViewport({{"command",ctrl?"bookmarkSet":"bookmarkGo"},{"bookmark",int(key-'0')},{"smooth",true}});continue;}
                 }

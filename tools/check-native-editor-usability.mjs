@@ -157,5 +157,14 @@ try{
   assert.ok(find(doc.selection).prefabLink,'old prefab path still places through the redirect');
   await assert.rejects(session('content.move',{path:'Assets/Moved',folder:'Assets/Moved'}),/자기 안으로|같은/);
   await assert.rejects(session('content.move',{path:moved.path,folder:'Assets/Missing'}),/대상 폴더가 없어요/);
+  // Navigation mesh: bake from a mesh asset keeps authored links and is one undo step.
+  {const navFile='Assets/NM_Ground.hbnavmesh.json',groundFile='Assets/SM_NavGround.hbmesh.json';
+   await record.project.write(groundFile,JSON.stringify({...createAsset('mesh','NavGround'),vertices:[[0,0,0],[0,0,4],[4,0,0],[4,0,4]],indices:[0,1,2,2,1,3],uvs:[[0,0],[0,1],[1,0],[1,1]]}));
+   await record.project.write(navFile,JSON.stringify({...createAsset('navmesh','NM_Ground'),links:[{start:[0,0,0],end:[1,0,1],bidirectional:true,cost:1,enabled:true}]}));
+   let nav=await session('document.open',{path:navFile});
+   await assert.rejects(session('navmesh.bake',{path:navFile,source:'Assets/Missing.txt',expectedRevision:nav.revision}),/원본 메시/);
+   nav=await session('navmesh.bake',{path:navFile,source:groundFile,expectedRevision:nav.revision});assert.equal(nav.triangles,2);
+   const baked=JSON.parse((await session('document.read',{path:navFile})).text);assert.equal(baked.indices.length,6);assert.equal(baked.links.length,1,'links kept');
+   await session('document.open',{path:scene});}
   console.log(JSON.stringify({passed:true,prefab:['apply','revert','refresh','unpack'],delete:{referenceWarning:true,trash:true},autosave:{restored:true,stale:'dropped'},basics:{multiSelect:true,copyPaste:true,snap:true,search:true,move:true}}));
 }finally{await pruneTestArtifacts(work);}

@@ -31,7 +31,8 @@ import {projectBytes,projectText} from './project-bytes.mjs';
 import {applyPrefabProperty,createPrefabInstance,prefabInstanceChanges,prefabRootFor,refreshPrefabInstance,revertAllPrefabProperties,unpackPrefabInstance} from '../prototype/prefab-instances.js';
 import {resolvePrefab} from '../prototype/prefab-variants.js';
 import {validateSpriteRigProgram} from '../prototype/sprite-rig-assets.js';
-import {editFoliage,editMesh,eraseFoliage,scatterFoliage,simplifyMesh,terrainBrush,terrainStroke,worldAssetTypes} from '../prototype/world-assets.js';
+import {editFoliage,editMesh,eraseFoliage,scatterFoliage,simplifyMesh,terrainBrush,terrainMesh,terrainStroke,worldAssetTypes} from '../prototype/world-assets.js';
+import {bakeNavigationMesh} from '../prototype/navigation-mesh.js';
 import {withWorldDraft} from '../prototype/world-draft.js';
 import {selectMeshBoundaryLoops} from '../prototype/mesh-boundary-selection.js';
 import {inspectMeshUV} from '../prototype/mesh-uv-inspection.js';
@@ -1227,6 +1228,16 @@ export function nativeEditorSession(bridge) {
     },
     // Indirect lighting bake (Unreal Build Lighting): bakes the drawn scene into Assets/Lighting/LM_<scene>.hblightmap.json
     // and points each target's MeshRenderer at it (one undo step). ponytail: runs on the session thread; move to worker_threads if large bakes stall the editor.
+    'navmesh.bake': async ({path,source,expectedRevision}) => {
+      const doc=targetDocument(path);
+      if(doc.kind!=='navmesh')throw Error('내비 메시 문서를 여세요.');
+      await check(doc,expectedRevision);
+      if(typeof source!=='string'||!/^Assets\/.+\.(hbmesh|hbterrain)\.json$/.test(source))throw Error('원본 메시·지형을 선택하세요.');
+      const input=JSON.parse(await projectText(project(),source));
+      const baked=bakeNavigationMesh(source.endsWith('.hbterrain.json')?terrainMesh(input):input,{name:doc.data.name,maxSlope:doc.data.maxSlope,plane:doc.data.plane||'XZ'});
+      change(doc,{...structuredClone(doc.data),...baked,links:structuredClone(doc.data.links||[])});
+      return {...await response(doc),triangles:baked.indices.length/3};
+    },
     'scene.bakeLightmaps': async ({path,objects:ids,settings={},expectedRevision}) => {
       const doc=targetDocument(path);
       if(doc.kind!=='scene')throw Error('장면 문서를 선택하세요.');
@@ -2065,7 +2076,7 @@ export function nativeEditorSession(bridge) {
   const actionLabels={add:'오브젝트 추가',placeAsset:'에셋 배치',delete:'삭제',translate:'이동',rotate:'회전',scale:'크기',rename:'이름 바꾸기',duplicate:'복제',paste:'붙여넣기',component:'컴포넌트 추가',removeComponent:'컴포넌트 제거',moveComponent:'컴포넌트 순서',resetComponent:'컴포넌트 초기화',pasteComponentValues:'컴포넌트 값 붙여넣기',pasteComponent:'컴포넌트 붙여넣기',reparent:'부모 변경',lock:'잠금',visible:'보이기',setWorldTransform:'조종 위치 적용',prefabApply:'프리팹 적용',prefabRevert:'프리팹 되돌리기',prefabRefresh:'프리팹 새로 고침',prefabUnpack:'프리팹 풀기'};
   return async (method,params={}) => {
     if (!Object.hasOwn(methods,method)) throw Error('지원하지 않는 편집기 명령이에요.');
-    requestLabel=method==='scene.edit'?actionLabels[params.action]||params.action:method==='asset.fieldEdit'?'속성: '+params.key:method==='scene.runtimeSet'?'실행 설정: '+params.key:method==='scene.bakeLightmaps'?'라이트맵 베이크':method;
+    requestLabel=method==='scene.edit'?actionLabels[params.action]||params.action:method==='asset.fieldEdit'?'속성: '+params.key:method==='scene.runtimeSet'?'실행 설정: '+params.key:method==='scene.bakeLightmaps'?'라이트맵 베이크':method==='navmesh.bake'?'내비 메시 굽기':method;
     return methods[method](params);
   };
 }
