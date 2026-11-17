@@ -955,7 +955,7 @@ class NativeEditorShell {
         topStrip.update({{"rect",{0,0,width,topBar-S(1)}},{"visible",true}});
         statusStrip.update({{"rect",{0,height-statusHeight,S(250),statusHeight}},{"visible",true}});
         MoveWindow(status,S(260),height-statusHeight,std::max(1,width-S(270)),statusHeight,TRUE);
-        const bool sceneLayout=!detached&&document.value("kind",std::string())=="scene"&&!sourceMode;
+        const bool sceneLayout=!detached&&sceneOpen()&&!sourceMode;
         if(contentWindow){RECT browser{};GetClientRect(contentWindow,&browser);placeBrowser(S(4),S(4),int(browser.right)-S(8),int(browser.bottom)-S(8),true);}
         // Unreal-style dock areas (left / right / bottom). Each shows its panels as tabs; a tab dragged onto another area moves the panel.
         const auto shown=[&](const std::string& panel){if(panel=="outliner"||panel=="details")return sceneLayout;if(panel=="content")return !contentWindow&&!detached;return !detached;};
@@ -995,7 +995,7 @@ class NativeEditorShell {
             ShowWindow(lowerSplitDocument,lowerShown?SW_SHOWNOACTIVATE:SW_HIDE);
         }
         const bool graphShown=document.value("graph",false)&&!sourceMode;
-        const bool sceneShown=document.value("kind",std::string())=="scene"&&!sourceMode;
+        const bool sceneShown=sceneOpen()&&!sourceMode;
         const bool canvasShown=(timelineOpen()||widgetOpen()||imageOpen()||tilemapOpen()||audioAssetOpen()||meshUVOpen)&&!sourceMode;
         const bool formShown=document.value("form",false)&&!sourceMode&&!sceneShown&&!canvasShown;
         const int top=graphShown||sceneShown?y+S(34):y,h=std::max(1,y+bodyHeight-top);
@@ -1059,7 +1059,7 @@ class NativeEditorShell {
             outlinerFoot.update({{"rect",{bx,by+bh-S(24),bw,S(24)}},{"visible",show}});
         }else if(panel=="details"){if(show)form.update({{"rect",{bx,by,bw,bh}},{"visible",true}});}
         else if(panel=="content"){if(!contentWindow)placeBrowser(bx,by+S(2),bw,bh-S(2),show);}
-        else if(panel=="source"){const was=sourceShown;sourceShown=show;if(show&&!was)refreshSource();sourceList.update({{"rect",{bx,by,bw,bh}},{"visible",show}});}
+        else if(panel=="source"){const bool was=sourceShown;sourceShown=show;if(show&&!was)refreshSource();sourceList.update({{"rect",{bx,by,bw,bh}},{"visible",show}});}
         else if(panel=="profiler"){profilerShown=show;if(show)readProfile();profilerList.update({{"rect",{bx,by,bw,bh}},{"visible",show}});}
         else if(panel=="history"){historyShown=show;if(show)refreshHistory();historyList.update({{"rect",{bx,by,bw,bh}},{"visible",show}});}
         else if(panel=="log"){if(show&&!logItems.empty())console.update({{"items",logItems},{"revision",++logRevision}});console.update({{"rect",{bx,by,bw,std::max(1,bh-S(28))}},{"visible",show}});
@@ -1289,7 +1289,9 @@ class NativeEditorShell {
         }
         return {{"action",input.value("property",false)?"property":"input"},{"id",selection},{"pin",pin},{"value",std::move(value)}};
     }
-    bool sceneOpen()const{return document.value("kind",std::string())=="scene";}
+    // Prefab assets open in the scene editor too (Unity prefab mode): same viewport, outliner and details.
+    bool sceneOpen()const{const auto kind=document.value("kind",std::string());return kind=="scene"||kind=="prefab";}
+    bool prefabMode()const{return document.value("kind",std::string())=="prefab";}
     bool gameplayGraphOpen()const{
         const auto kind=document.value("kind",std::string());return kind=="behaviortree"||kind=="statemachine"||kind=="animgraph";
     }
@@ -2689,7 +2691,7 @@ class NativeEditorShell {
         const auto root=playRuntimeRoot.empty()?playLauncher.parent_path():playRuntimeRoot;
         auto args=quote(playLauncher.wstring())+L" --package "+quote(root.wstring())+L" --editor-project "+quote(projectFile.wstring())+L" --editor-profile "+quote(editorProfile.wstring())+
             L" --editor-owner "+std::to_wstring(reinterpret_cast<std::uintptr_t>(window));
-        if(sceneOpen())args+=L" --editor-scene "+quote(wide(document.at("path")));
+        if(sceneOpen()&&!prefabMode())args+=L" --editor-scene "+quote(wide(document.at("path")));
         fs::path recordingFile;
         if(!recording.empty()){
             if(!sceneOpen()||(!allActors&&sceneSelection.empty()))throw std::runtime_error("장면에서 녹화할 오브젝트를 선택하세요.");
@@ -4836,6 +4838,8 @@ private:
         logShow[1]=false;refreshLog();const bool logFiltered=std::none_of(logItems.begin(),logItems.end(),[](const Json& row){return row.value("icon",std::string())=="WARN";});logShow[1]=true;refreshLog();const bool consoleLog=logMerged&&logFiltered&&!logItems.empty();
         // Build lighting: a tiny bake writes the scene lightmap and points the meshes at it; undo restores the scene.
         bool lightBuilt=false;{const auto keep=sceneSelection;auto baked=request("scene.bakeLightmaps",{{"path",document.at("path")},{"objects",Json::array()},{"settings",{{"resolution",16},{"samples",4},{"bounces",1}}},{"expectedRevision",document.at("revision")}});const auto info=baked.value("lightmap",Json::object());showDocument(std::move(baked));lightBuilt=!info.value("updated",Json::array()).empty()&&info.value("path",std::string()).rfind("Assets/Lighting/LM_",0)==0&&document.at("text").get<std::string>().find(info.value("path",std::string()))!=std::string::npos;command(Undo);sceneSelection=keep;}
+        // Prefab mode: a prefab opens in the scene editor and draws in the viewport.
+        bool prefabEditor=false;{const auto scenePath=document.at("path");captureSource();showDocument(request("document.open",{{"path","Assets/PF_Mode.hbprefab.json"}}));layout();const auto drawn=drawViewport();prefabEditor=prefabMode()&&sceneOpen()&&drawn.contains("cameraPosition");captureSource();showDocument(request("document.open",{{"path",scenePath}}));layout();}
         // Named layouts: a saved arrangement comes back after the dock changes.
         bool namedLayout=false;{const auto keepSlots=dockSlots;saveNamedLayout(L"검사 레이아웃");auto moved=dockSlots;std::swap(moved["left"],moved["right"]);dockSlots=moved;layout();
             const auto files=namedLayouts();if(!files.empty()&&files.front().stem()==L"검사 레이아웃"){loadNamedLayout(files.front());namedLayout=dockSlots==keepSlots;}dockSlots=keepSlots;layout();}
@@ -4846,8 +4850,8 @@ private:
         SetWindowTextW(consoleInput,L"r.ScreenPercentage 80");runConsole();const bool consoleSet=Json::parse(document.at("text").get<std::string>()).at("runtime").value("renderScale",0)==80;perform(Undo);
         SetWindowTextW(consoleInput,L"stat fps");runConsole();drawViewport();const bool fpsShown=showFps&&!fpsTimes.empty();perform(ToggleFps);
         SetWindowTextW(consoleInput,L"camera.speed 7");runConsole();const bool speedSet=cameraSpeed==7;perform(Command(CameraSpeedFirst+3));
-        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"namedLayout",namedLayout},{"lightBuild",lightBuilt}};
-        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!namedLayout||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"lightBuild",lightBuilt}};
+        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!namedLayout||!prefabEditor||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());

@@ -166,6 +166,13 @@ try{
    nav=await session('navmesh.bake',{path:navFile,source:groundFile,expectedRevision:nav.revision});assert.equal(nav.triangles,2);
    const baked=JSON.parse((await session('document.read',{path:navFile})).text);assert.equal(baked.indices.length,6);assert.equal(baked.links.length,1,'links kept');
    await session('document.open',{path:scene});}
+  // Prefab mode: a prefab asset is edited with the scene tools (outliner rows, add, transform, undo).
+  {let pf=await session('document.open',{path:prefabFile});const before=JSON.parse(pf.text).objects.length;
+   assert.ok((await session('scene.hierarchy',{})).some(r=>r.id==='root'),'prefab outliner lists its root');
+   pf=await session('scene.edit',{action:'add',key:'cube',position:[0,1,0],expectedRevision:pf.revision});
+   assert.equal(JSON.parse((await session('document.read',{path:prefabFile})).text).objects.length,before+1,'object added to the prefab');
+   pf=await session('scene.edit',{action:'translate',id:'root',delta:[1,0,0],expectedRevision:pf.revision});assert.equal(JSON.parse(pf.text??(await session('document.read',{path:prefabFile})).text).objects.find(o=>o.id==='root').position[0],1,'prefab root moved');
+   await session('document.open',{path:scene});}
   // Source control panel backend: a project-root repository, stage everything, commit, clean status.
   {let status=await session('sourceControl.status',{});if(!status.projectRoot)status=await session('sourceControl.init',{});assert.equal(status.projectRoot,true);assert.ok(status.entries.length>0,'new project files are listed');
    status=await session('sourceControl.stage',{paths:status.entries.map(e=>e.path),expectedIndexRevision:status.indexRevision});status=await session('sourceControl.status',{});assert.ok(status.entries.every(e=>e.index!==' '&&e.index!=='?'),'all staged');

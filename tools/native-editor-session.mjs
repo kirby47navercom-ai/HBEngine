@@ -561,7 +561,7 @@ export function nativeEditorSession(bridge) {
   }
   const scene=()=>{
     const doc=current();
-    if (doc.kind!=='scene') throw Error('장면 문서를 선택하세요.');
+    if (!['scene','prefab'].includes(doc.kind)) throw Error('장면 문서를 선택하세요.');
     return doc;
   };
   const assetOfKind=(kind,doc=current())=>{
@@ -1221,7 +1221,7 @@ export function nativeEditorSession(bridge) {
     'scene.catalog': () => ({placements:placementCatalog.map(({key,label,category})=>({id:key,label,group:category})),components:Object.keys(componentDefinitions)}),
     'scene.hierarchy': ({query}={}) => scene().data.objects.map(object=>{const {id,name,kind,parent,visible,locked,components}=object;return {id,name,kind,parent,visible,locked,prefab:Boolean(object.prefabLink),camera:components?.some(c=>c.type==='Camera'&&c.properties?.enabled!==false)??kind==='camera',...(typeof query==='string'&&query.trim()?{match:sceneMatches(object,query.trim())}:{})};}),
     'scene.copy': ({path,ids}) => {
-      const doc=targetDocument(path);if(doc.kind!=='scene')throw Error('장면 문서를 선택하세요.');
+      const doc=targetDocument(path);if(!['scene','prefab'].includes(doc.kind))throw Error('장면 문서를 선택하세요.');
       const list=(Array.isArray(ids)?ids:[]).filter(id=>doc.data.objects.some(o=>o.id===id));
       if(!list.length)throw Error('복사할 오브젝트를 선택하세요.');
       return {objects:copySceneObjects(doc.data.objects,list)};
@@ -1271,7 +1271,7 @@ export function nativeEditorSession(bridge) {
     },
     'scene.edit': async ({path,action,id,ids,target,key,delta,axis,value,asset,position,rotation,clipboard,snap,space,expectedRevision}) => {
       const doc=targetDocument(path);
-      if(doc.kind!=='scene')throw Error('장면 문서를 선택하세요.');
+      if(!['scene','prefab'].includes(doc.kind))throw Error('장면 문서를 선택하세요.');
       await check(doc,expectedRevision);
       const next=structuredClone(doc.data), byId=new Map(next.objects.map(actor=>[actor.id,actor]));
       const actor=byId.get(id);
@@ -1368,7 +1368,7 @@ export function nativeEditorSession(bridge) {
       if(params.surface!==undefined){
         if(typeof params.surface!=='string'||!/^native-scene-\d+$/.test(params.surface))throw Error('독립 장면 표면을 확인하세요.');
         const doc=targetDocument(params.path);
-        if(doc.kind!=='scene')throw Error('장면 문서를 선택하세요.');
+        if(!['scene','prefab'].includes(doc.kind))throw Error('장면 문서를 선택하세요.');
         let view=sceneViews.get(params.surface);
         if(!view){view=nativeEditorViewport(bridge,params.surface);sceneViews.set(params.surface,view);}
         return view.draw(doc.data,project(),params);
