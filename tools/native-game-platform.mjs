@@ -68,7 +68,10 @@ export function nativeAudioRouting({readAsset,stream},createContext){
  routing.player=async(url,settings={})=>{
   if(settings.streaming!==true||settings.sequencePCM)return player(url,{...settings,sequencePCM:true});
   const name=url.startsWith('hbasset:')?decodeURIComponent(url.slice('hbasset:'.length)):'';
-  if(!stream||!/\.wav$/i.test(name))throw Error('네이티브 스트리밍은 WAV 클립을 사용해요.');
+  // MP3/Ogg/FLAC: decoded whole (no range streaming yet) instead of failing; WAV keeps range streaming.
+  // ponytail: full PCM in memory for compressed music; chunked compressed decode if long tracks need it.
+  if(stream&&/\.(mp3|ogg|flac)$/i.test(name))return player(url,{...settings,streaming:false,sequencePCM:true});
+  if(!stream||!/\.wav$/i.test(name))throw Error('네이티브 스트리밍은 WAV·MP3·Ogg·FLAC 클립을 사용해요.');
   const voice=await openNativeWavStream(await routing.ensure(),(start,end)=>stream(name,start,end),settings.signal);
   if(routing.disposed||settings.signal?.aborted){voice.dispose();settings.signal?.throwIfAborted();throw Error('오디오 실행이 종료됐어요.');}
   return voice;
