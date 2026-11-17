@@ -805,3 +805,4 @@ AudioListener.voiceSelection mixer/legacy·Components SetString 공용 편집. �
 
 2026-11-17: 게임 창 노드 Quit Game. 실행 중인 프레임 뒤에 게임 실행을 끝내요(패키지 게임은 창이 닫히고 편집기 플레이는 멈춰요). 검사 `node tools/check-quit-game.mjs`.
 2026-11-17: 장면 노드 Reload Scene(현재 장면을 Open Scene처럼 다시 열어요)과 Get Current Scene(지금 열린 장면 경로, 순수 노드). 검사 `node tools/check-reload-scene.mjs`.
+2026-11-17: 수학 노드 Random Integer in Range(양 끝 포함, 순서가 바뀌어도 됨)와 Random Bool, 게임 창 노드 Set Show Mouse Cursor(잠그지 않고 게임 창 위의 커서만 숨기거나 보여요). 무작위 노드는 C++ 틱 묶음에서 빠져요. 검사 `node tools/check-random-nodes.mjs`, `node tools/check-window-settings.mjs`.

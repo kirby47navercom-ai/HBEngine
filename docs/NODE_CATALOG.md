@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **910개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **913개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -14,11 +14,11 @@
 | 클래스 | 2 | 0 |
 | 흐름 제어 | 17 | 0 |
 | 디버그 | 4 | 0 |
-| 게임 창 | 4 | 0 |
+| 게임 창 | 5 | 0 |
 | 입력 | 13 | 12 |
 | 변환 | 28 | 27 |
 | 벡터 | 34 | 34 |
-| 수학 | 52 | 50 |
+| 수학 | 54 | 50 |
 | 배열 | 95 | 88 |
 | 물리 | 16 | 14 |
 | 오브젝트 | 16 | 8 |
@@ -164,6 +164,7 @@
 | setFullscreen | Set Fullscreen / 전체 화면 설정 | exec: exec, fullscreen: bool | then: exec | — | VM / 브라우저 서비스 |
 | setResolution | Set Window Resolution / 창 해상도 설정 | exec: exec, width: int, height: int | then: exec | — | VM / 브라우저 서비스 |
 | setVSync | Set VSync / 수직 동기화 설정 | exec: exec, enabled: bool | then: exec | — | VM / 브라우저 서비스 |
+| setMouseCursorVisible | Set Show Mouse Cursor / 마우스 커서 표시 설정 | exec: exec, visible: bool | then: exec | — | VM / 브라우저 서비스 |
 
 ## 입력
 
@@ -276,6 +277,8 @@
 | clamp | Clamp / 범위 제한 | value: float, min: float, max: float | return: float | hb::Math::Clamp | 공통 C++ + VM |
 | lerp | Lerp / 선형 보간 | a: float, b: float, alpha: float | return: float | hb::Math::Lerp | 공통 C++ + VM |
 | random | Random Float in Range / 범위 안 무작위 | min: float, max: float | return: float | — | VM / 브라우저 서비스 |
+| randomInt | Random Integer in Range / 범위 안 무작위 정수 | min: int, max: int | return: int | — | VM / 브라우저 서비스 |
+| randomBool | Random Bool / 무작위 참거짓 | — | return: bool | — | VM / 브라우저 서비스 |
 | makeColor | Make Color / 색상 만들기 | r: float, g: float, b: float, a: float | return: color | — | VM / 브라우저 서비스 |
 | nearlyEqual | Nearly Equal / 거의 같은 실수 | a: float, b: float, tolerance: float | return: bool | hb::Math::NearlyEqual | 공통 C++ + VM |
 | mapRange | Map Range / 범위 변환 | value: float, inMin: float, inMax: float, outMin: float, outMax: float | return: float | hb::Math::MapRange | 공통 C++ + VM |

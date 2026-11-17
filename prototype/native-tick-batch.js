@@ -7,7 +7,7 @@ import {nativeMember,nativeTargetPin} from './native-model.js';
 import {cloneNativeValue} from './native-transport.js';
 
 const plans=new WeakMap(),clone=cloneNativeValue;
-const pureKeys=new Set([...Object.keys(blueprintPure).filter(key=>key!=='random'),...catalog.filter(s=>s.pure&&!s.service&&(/^hb::(?:Math|VectorMath)::/.test(s.cppName||'')||libraryByKey.has(s.key))).map(s=>s.key)]);
+const pureKeys=new Set([...Object.keys(blueprintPure).filter(key=>!/^random/.test(key)),...catalog.filter(s=>s.pure&&!s.service&&(/^hb::(?:Math|VectorMath)::/.test(s.cppName||'')||libraryByKey.has(s.key))).map(s=>s.key)]);
 // ponytail: terminal native events can batch without graph continuations. Branches,
 // world reads and used return pins keep their existing ordered execution boundary.
 export function nativeTickPlan(root,key='tick'){
