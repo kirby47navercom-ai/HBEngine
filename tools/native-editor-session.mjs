@@ -1259,7 +1259,7 @@ let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBu
     'editor.historyJump': async ({path,steps,expectedRevision}) => {const doc=targetDocument(path);await check(doc,expectedRevision);if(!Number.isInteger(steps)||steps<-doc.history.length||steps>doc.future.length)throw Error('기록 위치를 확인하세요.');let result=await response(doc);for(let i=0;i<Math.abs(steps);i++)result=await restore(steps<0?'history':'future',steps<0?'future':'history',path,await revision(doc));return result;},
     'editor.redo': ({path,expectedRevision}) => restore('future','history',path,expectedRevision),
     'scene.catalog': () => ({placements:placementCatalog.map(({key,label,category})=>({id:key,label,group:category})),components:Object.keys(componentDefinitions)}),
-    'scene.hierarchy': ({query}={}) => scene().data.objects.map(object=>{const {id,name,kind,parent,visible,locked,components}=object;return {id,name,kind,parent,visible,locked,prefab:Boolean(object.prefabLink),camera:components?.some(c=>c.type==='Camera'&&c.properties?.enabled!==false)??kind==='camera',...(typeof query==='string'&&query.trim()?{match:sceneMatches(object,query.trim())}:{})};}),
+    'scene.hierarchy': ({query}={}) => scene().data.objects.map(object=>{const {id,name,kind,parent,visible,locked,components}=object;return {id,name,kind,parent,visible,locked,folder:object.folder||'',prefab:Boolean(object.prefabLink),camera:components?.some(c=>c.type==='Camera'&&c.properties?.enabled!==false)??kind==='camera',...(typeof query==='string'&&query.trim()?{match:sceneMatches(object,query.trim())}:{})};}),
     'scene.copy': ({path,ids}) => {
       const doc=targetDocument(path);if(!['scene','prefab'].includes(doc.kind))throw Error('장면 문서를 선택하세요.');
       const list=(Array.isArray(ids)?ids:[]).filter(id=>doc.data.objects.some(o=>o.id===id));
@@ -1426,6 +1426,21 @@ let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBu
           for(const item of unlocked){const object=byId.get(item);let parent=byId.get(object.parent),inner=false;while(parent){if(chosen.has(parent.id)){inner=true;break;}parent=byId.get(parent.parent);}if(inner)continue;editSceneTransform(object,next.objects,{mode:action,axis,space,value:action==='translate'?delta:value});snapped(object,action);}
           selections=targets;
         }
+      } else if (action==='folder') {
+        // Outliner folder (Unreal): editor-only grouping of root objects; an empty name takes them out of their folder.
+        const name=typeof value==='string'?value.trim():'';if(name.length>200||/[\\/]/.test(name))throw Error('폴더 이름을 확인하세요.');
+        for(const target of (Array.isArray(ids)&&ids.length?ids:[id])){const o=byId.get(target);if(!o)continue;if(name)o.folder=name;else delete o.folder;}
+        selection=id||ids?.[0]||'';
+      } else if (action==='renameMany') {
+        const pattern=typeof value==='string'?value.trim():'';const list=(Array.isArray(ids)&&ids.length?ids:[id]).map(i=>byId.get(i)).filter(o=>o&&!o.locked);
+        if(!pattern||pattern.length>190||!list.length)throw Error('일괄 이름을 확인하세요.');
+        list.forEach((o,index)=>{const n=index+1;o.name=/#+/.test(pattern)?pattern.replace(/#+/,run=>String(n).padStart(run.length,'0')):list.length>1?pattern+'_'+n:pattern;});
+        selection=id||ids?.[0]||'';
+      } else if (action==='snapToGrid') {
+        // Snap selection to grid: each unlocked object's own position rounds to the grid step.
+        const step=Number(value);if(!(step>0&&step<=10000))throw Error('격자 크기를 확인하세요.');
+        for(const target of (Array.isArray(ids)&&ids.length?ids:[id])){const o=byId.get(target);if(!o||o.locked)continue;o.position=o.position.map(v=>Math.round(v/step)*step);}
+        selection=id||ids?.[0]||'';
       } else if (action==='add') {
         // New actors appear where the camera looks (Unreal) instead of buried at the world origin.
         const at=Array.isArray(position)&&position.length===3&&position.every(Number.isFinite)?position:[0,0,0];
@@ -1513,6 +1528,11 @@ let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBu
       const stamp=new Date(),two=n=>String(n).padStart(2,'0'),name='Screenshot_'+stamp.getFullYear()+two(stamp.getMonth()+1)+two(stamp.getDate())+'_'+two(stamp.getHours())+two(stamp.getMinutes())+two(stamp.getSeconds());
       let file=path.join(folder,name+'.png');for(let i=2;await fs.access(file).then(()=>true,()=>false);i++)file=path.join(folder,name+'_'+i+'.png');
       await fs.writeFile(file,encodePng(width,height,rgba));return {file,width,height};
+    },
+    'scene.similar': ({id})=>{
+      const objects=scene().data.objects,source=objects.find(o=>o.id===id);if(!source)throw Error('오브젝트를 선택하세요.');
+      const signature=o=>[o.kind,o.asset||'',o.blueprintAsset||'',(o.components||[]).find(c=>c.type==='MeshRenderer')?.properties?.mesh||''].join('|');
+      const wanted=signature(source);return objects.filter(o=>signature(o)===wanted).map(o=>o.id);
     },
     'scene.viewportClose': async ({surface})=>{
       const view=sceneViews.get(surface);
