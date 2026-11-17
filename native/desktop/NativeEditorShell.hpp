@@ -192,7 +192,7 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
-    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -576,6 +576,7 @@ class NativeEditorShell {
         AppendMenuW(viewMenu,MF_STRING,PreviewAsset,L"에셋 3D 미리보기");
         AppendMenuW(viewMenu,MF_STRING,PickImageView,L"텍스처 밉 / 면 / 슬라이스 선택");
         AppendMenuW(viewMenu,MF_STRING,ModelFocus,L"3D 에셋 미리보기 초점");
+        AppendMenuW(edit,MF_STRING,CommandPalette,L"명령·에셋 검색…\tCtrl+K");
         AppendMenuW(edit,MF_STRING,ProjectSettings,L"프로젝트 설정…");
         AppendMenuW(edit,MF_STRING,ModelSettings,L"모델 단위·방향·변환");
         AppendMenuW(edit,MF_STRING,ModelSubassets,L"모델 하위 에셋 편집");
@@ -634,7 +635,7 @@ class NativeEditorShell {
     static const wchar_t* helpText(bool start){
         return start?
             L"HBEngine 시작하기\r\n" L"\r\n" L"1. 프로젝트 만들기\r\n" L"   파일 > 새 프로젝트에서 2D·3D 템플릿을 골라요. 파일 > 프로젝트 열기(Ctrl+O)나 최근 프로젝트로 다시 열어요.\r\n" L"2. 에셋 넣기\r\n" L"   이미지·모델·소리 파일을 콘텐츠 브라우저로 끌어다 놓거나 파일 > 에셋 가져오기를 써요.\r\n" L"   폴더는 왼쪽 트리와 경로 줄로 이동하고, 검색 칸과 종류 목록으로 찾아요.\r\n" L"3. 장면 꾸미기\r\n" L"   장면 > 오브젝트 추가로 물체를 놓고, 오른쪽 속성 패널에서 위치·컴포넌트를 바꿔요.\r\n" L"   에셋을 장면 화면으로 끌어다 놓아도 배치돼요. 이동·회전·크기는 W·E·R이에요.\r\n" L"   프리팹 인스턴스를 고친 뒤 장면 > 선택한 프리팹 인스턴스에서 프리팹에 적용하거나 되돌려요.\r\n" L"4. 로직 만들기\r\n" L"   블루프린트 에셋을 열고 빈 곳을 우클릭하거나 Space로 노드를 찾아 추가해요. 핀을 끌어 연결해요.\r\n" L"   C++가 필요하면 파일 > 새 C++ 클래스, 빌드 > C++ 클래스 컴파일을 써요.\r\n" L"5. 실행하기\r\n" L"   F5로 플레이하고 Shift+F5로 멈춰요. 블루프린트 노드에 F9로 중단점을 걸 수 있어요.\r\n" L"6. 저장·되돌리기\r\n" L"   Ctrl+S로 저장하고 Ctrl+Z·Ctrl+Y로 되돌리거나 다시 적용해요. 저장이 충돌하면 파일 > 저장 충돌 복구를 써요.\r\n" L"   저장하지 않은 문서는 30초마다 따로 보관돼요. 편집기가 갑자기 꺼지면 다음에 프로젝트를 열 때 복구할지 물어봐요.\r\n" L"   에셋을 지우면 Windows 휴지통으로 가서 되살릴 수 있어요. 다른 에셋이 쓰고 있으면 먼저 알려 줘요.\r\n" L"7. 게임 만들기\r\n" L"   빌드 > 빌드 프로필 설정에서 이름·화면 크기·그래픽 API를 고르고, 빌드 > 패키징으로 Windows 게임을 만들어요.\r\n" L"\r\n" L"창 배치가 흐트러지면 보기 > 기본 배치 복원을 써요. 문제가 생기면 보기 > 출력 로그에서 메시지를 확인해요.\r\n":
-            L"단축키 목록\r\n" L"\r\n" L"[전체]\r\n" L"  Ctrl+O        프로젝트 열기\r\n" L"  Ctrl+S        문서 저장\r\n" L"  Ctrl+W        문서 닫기\r\n" L"  Ctrl+Z        되돌리기\r\n" L"  Ctrl+Y        다시 적용\r\n" L"  Alt+↑         콘텐츠 브라우저 상위 폴더\r\n" L"  F5            플레이\r\n" L"  Shift+F5      플레이 중지\r\n" L"  F6            플레이 일시정지 / 계속\r\n" L"  F7            한 프레임 진행\r\n" L"  F1            이 단축키 목록\r\n" L"\r\n" L"[장면 화면]\r\n" L"  W / E / R     이동 / 회전 / 크기 도구\r\n" L"  F             선택 오브젝트에 초점\r\n" L"  빈 곳 왼쪽 끌기  박스 선택 (Ctrl: 추가)\r\n" L"  G             게임 보기 (편집 표시 숨기기)\r\n" L"  End           바닥에 붙이기\r\n" L"  Ctrl+`        월드 / 로컬 좌표 전환\r\n" L"  V (끄는 중)    꼭짓점에 맞춤\r\n" L"  Ctrl+1~9 / 1~9  카메라 북마크 저장 / 이동\r\n" L"  Ctrl+Shift+P  오브젝트 조종 (Esc로 끝내기)\r\n" L"  Ctrl+Shift+H  FPS 표시\r\n" L"  우클릭 비행 중 휠  카메라 속도\r\n" L"  `             명령 줄 (help)\r\n" L"  왼쪽 클릭     선택 (핸들을 끌면 변환)\r\n" L"  Shift+왼쪽 끌기  선택 오브젝트 변환\r\n" L"  우클릭 끌기 / Alt+왼쪽 끌기  시점 회전\r\n" L"  우클릭 (끌지 않음)  오브젝트 메뉴 (이름·복사·삭제·초점·분리·프리팹)\r\n" L"  F2            오브젝트 이름 바꾸기\r\n" L"  우클릭+W·A·S·D·Q·E  비행 이동\r\n" L"  휠 버튼 끌기  시점 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Esc           변환 끌기 취소\r\n" L"  Delete        선택 오브젝트 삭제\r\n" L"  Ctrl+D        선택 오브젝트 복제\r\n" L"  Ctrl+C / Ctrl+V  복사 / 붙여넣기 (다른 장면에도)\r\n" L"  Ctrl+클릭     여러 개 선택 / 선택 해제\r\n" L"  G             격자·각도 스냅 켜기 / 끄기 (간격은 장면 > 스냅)\r\n" L"\r\n" L"[콘텐츠 브라우저]\r\n" L"  Delete        선택한 에셋을 휴지통으로\r\n" L"  F2            이름 바꾸기\r\n" L"  우클릭        열기·이름·이동·삭제·탐색기에서 보기·경로 복사 / 빈 곳: 새 폴더·새 에셋\r\n" L"  끌어다 놓기   장면에 배치\r\n" L"  폴더 트리로 끌기  다른 폴더로 이동\r\n" L"\r\n" L"[블루프린트·노드 그래프]\r\n" L"  우클릭        노드 추가 목록\r\n" L"  우클릭 끌기 / 휠 버튼 끌기  화면 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Space         노드 추가 목록\r\n" L"  C             주석 추가\r\n" L"  Ctrl+F        노드 찾기\r\n" L"  Delete        선택 노드 삭제\r\n" L"  F9            중단점 전환\r\n" L"  Esc           연결 중인 선 취소\r\n" L"\r\n" L"[계층]\r\n" L"  Ctrl+클릭 / Shift+클릭  여러 개 / 범위 선택\r\n" L"  검색 칸       이름이나 type:, tag: 로 걸러 보기\r\n" L"  더블클릭      그 오브젝트에 초점\r\n" L"  우클릭        오브젝트 메뉴\r\n" L"  핀 우클릭     연결 끊기 / 출력 값 관찰\r\n" L"\r\n" L"[출력 로그]\r\n" L"  Ctrl+A        모두 선택\r\n" L"  Ctrl+C        복사\r\n";
+            L"단축키 목록\r\n" L"\r\n" L"[전체]\r\n" L"  Ctrl+O        프로젝트 열기\r\n" L"  Ctrl+S        문서 저장\r\n" L"  Ctrl+W        문서 닫기\r\n" L"  Ctrl+Z        되돌리기\r\n" L"  Ctrl+Y        다시 적용\r\n" L"  Alt+↑         콘텐츠 브라우저 상위 폴더\r\n" L"  F5            플레이\r\n" L"  Shift+F5      플레이 중지\r\n" L"  F6            플레이 일시정지 / 계속\r\n" L"  F7            한 프레임 진행\r\n" L"  Ctrl+K        명령·에셋 검색\r\n" L"  F1            이 단축키 목록\r\n" L"\r\n" L"[장면 화면]\r\n" L"  W / E / R     이동 / 회전 / 크기 도구\r\n" L"  F             선택 오브젝트에 초점\r\n" L"  빈 곳 왼쪽 끌기  박스 선택 (Ctrl: 추가)\r\n" L"  G             게임 보기 (편집 표시 숨기기)\r\n" L"  End           바닥에 붙이기\r\n" L"  Ctrl+`        월드 / 로컬 좌표 전환\r\n" L"  V (끄는 중)    꼭짓점에 맞춤\r\n" L"  Ctrl+1~9 / 1~9  카메라 북마크 저장 / 이동\r\n" L"  Ctrl+Shift+P  오브젝트 조종 (Esc로 끝내기)\r\n" L"  Ctrl+Shift+H  FPS 표시\r\n" L"  우클릭 비행 중 휠  카메라 속도\r\n" L"  `             명령 줄 (help)\r\n" L"  왼쪽 클릭     선택 (핸들을 끌면 변환)\r\n" L"  Shift+왼쪽 끌기  선택 오브젝트 변환\r\n" L"  우클릭 끌기 / Alt+왼쪽 끌기  시점 회전\r\n" L"  우클릭 (끌지 않음)  오브젝트 메뉴 (이름·복사·삭제·초점·분리·프리팹)\r\n" L"  F2            오브젝트 이름 바꾸기\r\n" L"  우클릭+W·A·S·D·Q·E  비행 이동\r\n" L"  휠 버튼 끌기  시점 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Esc           변환 끌기 취소\r\n" L"  Delete        선택 오브젝트 삭제\r\n" L"  Ctrl+D        선택 오브젝트 복제\r\n" L"  Ctrl+C / Ctrl+V  복사 / 붙여넣기 (다른 장면에도)\r\n" L"  Ctrl+클릭     여러 개 선택 / 선택 해제\r\n" L"  G             격자·각도 스냅 켜기 / 끄기 (간격은 장면 > 스냅)\r\n" L"\r\n" L"[콘텐츠 브라우저]\r\n" L"  Delete        선택한 에셋을 휴지통으로\r\n" L"  F2            이름 바꾸기\r\n" L"  우클릭        열기·이름·이동·삭제·탐색기에서 보기·경로 복사 / 빈 곳: 새 폴더·새 에셋\r\n" L"  끌어다 놓기   장면에 배치\r\n" L"  폴더 트리로 끌기  다른 폴더로 이동\r\n" L"\r\n" L"[블루프린트·노드 그래프]\r\n" L"  우클릭        노드 추가 목록\r\n" L"  우클릭 끌기 / 휠 버튼 끌기  화면 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Space         노드 추가 목록\r\n" L"  C             주석 추가\r\n" L"  Ctrl+F        노드 찾기\r\n" L"  Delete        선택 노드 삭제\r\n" L"  F9            중단점 전환\r\n" L"  Esc           연결 중인 선 취소\r\n" L"\r\n" L"[계층]\r\n" L"  Ctrl+클릭 / Shift+클릭  여러 개 / 범위 선택\r\n" L"  검색 칸       이름이나 type:, tag: 로 걸러 보기\r\n" L"  더블클릭      그 오브젝트에 초점\r\n" L"  우클릭        오브젝트 메뉴\r\n" L"  핀 우클릭     연결 끊기 / 출력 값 관찰\r\n" L"\r\n" L"[출력 로그]\r\n" L"  Ctrl+A        모두 선택\r\n" L"  Ctrl+C        복사\r\n";
     }
     // A plain dialog-class frame holding one read-only, selectable EDIT; X or Esc closes it.
     void showHelp(bool start){
@@ -2389,6 +2390,63 @@ class NativeEditorShell {
         if(message==WM_CLOSE){EndDialog(dialog,IDCANCEL);return TRUE;}
         return FALSE;
     }
+    struct PaletteDialog{HINSTANCE instance;std::vector<std::pair<std::wstring,int>> commands;std::vector<std::wstring> assets;HWND edit=nullptr,list=nullptr;std::vector<int> shown;int result=0;};
+    static bool paletteMatch(const std::wstring& text,const std::wstring& query){
+        std::wstring hay=text;for(auto& c:hay)c=wchar_t(towlower(c));
+        std::wstring word;for(std::size_t i=0;i<=query.size();++i){const wchar_t c=i<query.size()?wchar_t(towlower(query[i])):L' ';if(c==L' '){if(!word.empty()&&hay.find(word)==std::wstring::npos)return false;word.clear();}else word+=c;}
+        return true;
+    }
+    static void paletteFill(PaletteDialog& p){
+        const auto query=controlText(p.edit);SendMessageW(p.list,WM_SETREDRAW,FALSE,0);SendMessageW(p.list,LB_RESETCONTENT,0,0);p.shown.clear();
+        for(std::size_t i=0;i<p.commands.size()&&p.shown.size()<400;++i)if(paletteMatch(p.commands[i].first,query)){p.shown.push_back(int(i));SendMessageW(p.list,LB_ADDSTRING,0,LPARAM((L"명령   "+p.commands[i].first).c_str()));}
+        if(!query.empty())for(std::size_t i=0;i<p.assets.size()&&p.shown.size()<400;++i)if(paletteMatch(p.assets[i],query)){p.shown.push_back(-int(i)-1);SendMessageW(p.list,LB_ADDSTRING,0,LPARAM((L"에셋   "+p.assets[i]).c_str()));}
+        SendMessageW(p.list,LB_SETCURSEL,0,0);SendMessageW(p.list,WM_SETREDRAW,TRUE,0);InvalidateRect(p.list,nullptr,TRUE);
+    }
+    static LRESULT CALLBACK paletteEditProcedure(HWND edit,UINT message,WPARAM w,LPARAM l,UINT_PTR,DWORD_PTR data){
+        auto& p=*reinterpret_cast<PaletteDialog*>(data);
+        if(message==WM_KEYDOWN&&(w==VK_UP||w==VK_DOWN||w==VK_PRIOR||w==VK_NEXT)){const int count=int(SendMessageW(p.list,LB_GETCOUNT,0,0));if(count){int at=int(SendMessageW(p.list,LB_GETCURSEL,0,0));at+=w==VK_UP?-1:w==VK_DOWN?1:w==VK_PRIOR?-10:10;SendMessageW(p.list,LB_SETCURSEL,std::clamp(at,0,count-1),0);}return 0;}
+        return DefSubclassProc(edit,message,w,l);
+    }
+    static INT_PTR CALLBACK paletteProcedure(HWND dialog,UINT message,WPARAM w,LPARAM l){
+        auto* p=reinterpret_cast<PaletteDialog*>(GetWindowLongPtrW(dialog,DWLP_USER));
+        if(message==WM_INITDIALOG){
+            p=reinterpret_cast<PaletteDialog*>(l);SetWindowLongPtrW(dialog,DWLP_USER,reinterpret_cast<LONG_PTR>(p));SetWindowTextW(dialog,L"명령·에셋 검색");
+            RECT rect{};GetClientRect(dialog,&rect);const auto font=WPARAM(GetStockObject(DEFAULT_GUI_FONT));
+            p->edit=CreateWindowExW(0,L"EDIT",L"",WS_CHILD|WS_VISIBLE|WS_TABSTOP|WS_BORDER|ES_AUTOHSCROLL,10,10,rect.right-20,26,dialog,HMENU(INT_PTR(10)),p->instance,nullptr);
+            p->list=CreateWindowExW(0,L"LISTBOX",L"",WS_CHILD|WS_VISIBLE|WS_TABSTOP|WS_BORDER|WS_VSCROLL|LBS_NOTIFY|LBS_NOINTEGRALHEIGHT,10,42,rect.right-20,rect.bottom-52,dialog,HMENU(INT_PTR(11)),p->instance,nullptr);
+            SendMessageW(p->edit,WM_SETFONT,font,TRUE);SendMessageW(p->list,WM_SETFONT,font,TRUE);
+            SetWindowSubclass(p->edit,paletteEditProcedure,1,reinterpret_cast<DWORD_PTR>(p));paletteFill(*p);SetFocus(p->edit);return FALSE;
+        }
+        if(message==WM_COMMAND&&p){
+            if(LOWORD(w)==10&&HIWORD(w)==EN_CHANGE){paletteFill(*p);return TRUE;}
+            if(LOWORD(w)==IDOK||(LOWORD(w)==11&&HIWORD(w)==LBN_DBLCLK)){const int at=int(SendMessageW(p->list,LB_GETCURSEL,0,0));if(at>=0&&at<int(p->shown.size())){p->result=p->shown[at];EndDialog(dialog,IDOK);}return TRUE;}
+            if(LOWORD(w)==IDCANCEL){EndDialog(dialog,IDCANCEL);return TRUE;}
+        }
+        if(message==WM_CLOSE){EndDialog(dialog,IDCANCEL);return TRUE;}
+        if(message==WM_DESTROY&&p)RemoveWindowSubclass(p->edit,paletteEditProcedure,1);
+        return FALSE;
+    }
+    // Menu items with their menu path ("장면 › 플레이 (F5)"), skipping separators, grayed items and submenu headers.
+    static void collectMenu(HMENU menu,const std::wstring& prefix,std::vector<std::pair<std::wstring,int>>& out){
+        for(int i=0,count=GetMenuItemCount(menu);i<count;++i){
+            wchar_t text[256]{};MENUITEMINFOW info{sizeof(info)};info.fMask=MIIM_STRING|MIIM_ID|MIIM_SUBMENU|MIIM_STATE|MIIM_FTYPE;info.dwTypeData=text;info.cch=255;
+            if(!GetMenuItemInfoW(menu,UINT(i),TRUE,&info)||(info.fType&MFT_SEPARATOR))continue;
+            std::wstring label=text,keys;if(const auto tab=label.find(L'\t');tab!=std::wstring::npos){keys=label.substr(tab+1);label.resize(tab);}
+            label.erase(std::remove(label.begin(),label.end(),L'&'),label.end());
+            if(info.hSubMenu){collectMenu(info.hSubMenu,prefix+label+L" › ",out);continue;}
+            if(info.fState&MFS_DISABLED||!info.wID)continue;
+            out.push_back({prefix+label+(keys.empty()?L"":L"  ("+keys+L")"),int(info.wID)});
+        }
+    }
+    void openPalette(){
+        PaletteDialog palette{instance};collectMenu(GetMenu(window),L"",palette.commands);
+        if(!projectFile.empty())try{for(const auto& row:request("content.list",{{"query",""},{"recursive",true}}).at("entries"))if(row.value("kind",std::string())!="folder"&&palette.assets.size()<20000)palette.assets.push_back(wide(row.at("path")));}catch(const std::exception&){}
+        struct alignas(DWORD) Dialog {DLGTEMPLATE value;WORD menu=0,windowClass=0,title=0;} layout{};
+        layout.value.style=WS_POPUP|WS_CAPTION|WS_SYSMENU|DS_MODALFRAME|DS_CENTER;layout.value.cx=320;layout.value.cy=220;
+        if(DialogBoxIndirectParamW(instance,&layout.value,window,paletteProcedure,reinterpret_cast<LPARAM>(&palette))!=IDOK)return;
+        if(palette.result>=0)PostMessageW(window,WM_COMMAND,WPARAM(palette.commands.at(palette.result).second),0);
+        else{captureSource();showDocument(request("document.open",{{"path",utf8(palette.assets.at(-palette.result-1))}}));}
+    }
     std::wstring inputName(const wchar_t* title,std::wstring initial={},int limit=80){
         struct alignas(DWORD) Dialog {DLGTEMPLATE value;WORD menu=0,windowClass=0,title=0;} layout{};
         layout.value.style=WS_POPUP|WS_CAPTION|WS_SYSMENU|DS_MODALFRAME|DS_CENTER;
@@ -3268,6 +3326,7 @@ class NativeEditorShell {
         if(command==SpaceToggle){localSpace=!localSpace;statusText(localSpace?L"기즈모: 로컬 좌표":L"기즈모: 월드 좌표");refreshChrome();queueViewport();return;}
         if(command==SurfaceSnapToggle){surfaceSnap=!surfaceSnap;refreshChrome();return;}
         if(command>=ViewLit&&command<=ViewWireframe){viewMode=command==ViewLit?"lit":command==ViewUnlit?"unlit":"wireframe";refreshChrome();queueViewport();return;}
+        if(command==CommandPalette){openPalette();return;}
         if(command==PivotToggle){pivotCenter=!pivotCenter;statusText(pivotCenter?L"기즈모: 경계 중심":L"기즈모: 피벗");refreshChrome();queueViewport();return;}
         if(command==ProjectSettings){if(projectFile.empty())return;captureSource();showDocument(request("document.open",{{"path",request("project.settings",{}).at("path")}}));statusText(L"프로젝트 설정: 장면에 게임 설정이 없으면 이 값을 써요.");return;}
         if(command==PauseGame){if(!playProcess)return;playPaused=!playPaused;postToGame(WM_APP+44,playPaused);statusText(playPaused?L"플레이 일시정지":L"플레이 계속");refreshChrome();return;}
@@ -4044,7 +4103,7 @@ public:
         ShowWindow(window,layoutMaximized?SW_SHOWMAXIMIZED:show);
         if(contentDetachedOnStart)perform(DetachContent);
         restoreDocumentWindows();
-        ACCEL keys[]={{FVIRTKEY|FCONTROL,'O',OpenProject},{FVIRTKEY|FCONTROL,'S',Save},{FVIRTKEY|FCONTROL,'W',CloseDocument},{FVIRTKEY|FCONTROL,'Z',Undo},{FVIRTKEY|FCONTROL,'Y',Redo},{FVIRTKEY|FALT,VK_UP,Up},{FVIRTKEY,VK_F1,ShowShortcuts},{FVIRTKEY,VK_F5,PlayScene},{FVIRTKEY|FSHIFT,VK_F5,StopPlay},{FVIRTKEY,VK_F6,PauseGame},{FVIRTKEY,VK_F7,StepGameFrame}};
+        ACCEL keys[]={{FVIRTKEY|FCONTROL,'O',OpenProject},{FVIRTKEY|FCONTROL,'S',Save},{FVIRTKEY|FCONTROL,'W',CloseDocument},{FVIRTKEY|FCONTROL,'Z',Undo},{FVIRTKEY|FCONTROL,'Y',Redo},{FVIRTKEY|FALT,VK_UP,Up},{FVIRTKEY,VK_F1,ShowShortcuts},{FVIRTKEY,VK_F5,PlayScene},{FVIRTKEY|FSHIFT,VK_F5,StopPlay},{FVIRTKEY,VK_F6,PauseGame},{FVIRTKEY|FCONTROL,'K',CommandPalette},{FVIRTKEY,VK_F7,StepGameFrame}};
         const auto accelerator=CreateAcceleratorTableW(keys,int(std::size(keys)));
         MSG message;
         while(GetMessageW(&message,nullptr,0,0)>0){
@@ -4671,12 +4730,15 @@ private:
         // Output log: repeats merge with a count, severity filters hide rows.
         const auto logBefore=logEntries.size();statusText(L"콘솔 검사 경고",1);statusText(L"콘솔 검사 경고",1);const bool logMerged=logEntries.size()==logBefore+1&&logEntries.back().count==2;
         logShow[1]=false;refreshLog();const bool logFiltered=std::none_of(logItems.begin(),logItems.end(),[](const Json& row){return row.value("icon",std::string())=="WARN";});logShow[1]=true;refreshLog();const bool consoleLog=logMerged&&logFiltered&&!logItems.empty();
+        // Command palette: every menu command is listed and words filter it.
+        std::vector<std::pair<std::wstring,int>> paletteCommands;collectMenu(GetMenu(window),L"",paletteCommands);
+        const bool palette=paletteCommands.size()>40&&std::any_of(paletteCommands.begin(),paletteCommands.end(),[](const auto& c){return c.second==PlayScene&&paletteMatch(c.first,L"장면 플레이");})&&!paletteMatch(L"장면 › 플레이",L"플레이 저장");
         // Console r.* edits the scene runtime settings; stat fps and camera speed change the viewport.
         SetWindowTextW(consoleInput,L"r.ScreenPercentage 80");runConsole();const bool consoleSet=Json::parse(document.at("text").get<std::string>()).at("runtime").value("renderScale",0)==80;perform(Undo);
         SetWindowTextW(consoleInput,L"stat fps");runConsole();drawViewport();const bool fpsShown=showFps&&!fpsTimes.empty();perform(ToggleFps);
         SetWindowTextW(consoleInput,L"camera.speed 7");runConsole();const bool speedSet=cameraSpeed==7;perform(Command(CameraSpeedFirst+3));
-        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog}};
-        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette}};
+        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
