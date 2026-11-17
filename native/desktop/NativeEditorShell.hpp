@@ -39,6 +39,7 @@ class NativeEditorShell {
     bool pivotCenter=false,showNavigation=false,showCollision=false,showStreaming=false,particlePlaying=true,gameView=false,showGrid=true,quadView=false,localSpace=false,surfaceSnap=false,historyShown=false;std::string viewMode="lit",pilotId;Json historyRows=Json::array();
     bool showFps=false;int cameraSpeed=4;std::deque<ULONGLONG> fpsTimes;double fpsGpuMs=-1;ULONGLONG fpsShown=0;HWND consoleInput=nullptr;
     static double speedScale(int speed){static const double scales[8]={.1,.25,.5,1,2,4,8,16};return scales[std::clamp(speed,1,8)-1];}
+    bool openLast=true; // Open the most recent project when the editor starts without one.
     bool snapOn=false;double snapGrid=.5,snapAngle=15;HMENU snapMenu=nullptr;HWND hierarchySearch=nullptr,detailsSearch=nullptr;std::string hierarchyQuery;
     Json selectedIds()const{Json out=Json::array();if(!sceneSelection.empty())out.push_back(sceneSelection);for(const auto& id:sceneExtra)out.push_back(id);return out;}
     int S(int value)const{return MulDiv(value,int(uiDpi),96);}
@@ -192,7 +193,7 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
-    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),ShowSource=static_cast<Command>(983),RebindShortcut=static_cast<Command>(984),ResetShortcuts=static_cast<Command>(985),CollisionToggle=static_cast<Command>(986),SelectAllActors=static_cast<Command>(991),SaveAllDocuments=static_cast<Command>(994),ResetPosition=static_cast<Command>(996),DetailsSearch=static_cast<Command>(1001),DuplicateAsset=static_cast<Command>(1002),HideSelected=static_cast<Command>(1003),ShowAllHidden=static_cast<Command>(1004),IsolateSelected=static_cast<Command>(1005),BusyCancel=static_cast<Command>(1006),CollisionLayers=static_cast<Command>(1007),PlayFromHere=static_cast<Command>(1008),FrameAll=static_cast<Command>(1009),CopyTransform=static_cast<Command>(1011),PasteTransform=static_cast<Command>(1012),ShowReferences=static_cast<Command>(1013),GroupSelection=static_cast<Command>(1010),ResetRotation=static_cast<Command>(997),ResetScale=static_cast<Command>(998),SaveDocumentAs=static_cast<Command>(995),DeselectActors=static_cast<Command>(992),InvertSelection=static_cast<Command>(993),GenerateLods=static_cast<Command>(987),StreamingToggle=static_cast<Command>(988),ParticlePlayToggle=static_cast<Command>(989),ParticleRestart=static_cast<Command>(990),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),ShowSource=static_cast<Command>(983),RebindShortcut=static_cast<Command>(984),ResetShortcuts=static_cast<Command>(985),CollisionToggle=static_cast<Command>(986),SelectAllActors=static_cast<Command>(991),SaveAllDocuments=static_cast<Command>(994),ResetPosition=static_cast<Command>(996),DetailsSearch=static_cast<Command>(1001),DuplicateAsset=static_cast<Command>(1002),HideSelected=static_cast<Command>(1003),ShowAllHidden=static_cast<Command>(1004),IsolateSelected=static_cast<Command>(1005),BusyCancel=static_cast<Command>(1006),CollisionLayers=static_cast<Command>(1007),PlayFromHere=static_cast<Command>(1008),FrameAll=static_cast<Command>(1009),CopyTransform=static_cast<Command>(1011),PasteTransform=static_cast<Command>(1012),ShowReferences=static_cast<Command>(1013),OpenLastToggle=static_cast<Command>(1014),GroupSelection=static_cast<Command>(1010),ResetRotation=static_cast<Command>(997),ResetScale=static_cast<Command>(998),SaveDocumentAs=static_cast<Command>(995),DeselectActors=static_cast<Command>(992),InvertSelection=static_cast<Command>(993),GenerateLods=static_cast<Command>(987),StreamingToggle=static_cast<Command>(988),ParticlePlayToggle=static_cast<Command>(989),ParticleRestart=static_cast<Command>(990),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
     HWND busyBar=nullptr,busyCancel=nullptr;Command busyCommand=Command(0);int busyJobs=0;
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
@@ -913,6 +914,7 @@ class NativeEditorShell {
             const auto name=wide(recent.at(i).at("name"));
             AppendMenuW(recentMenu,MF_STRING,RecentBase+i,name.c_str());
         }
+        AppendMenuW(recentMenu,MF_SEPARATOR,0,nullptr);AppendMenuW(recentMenu,MF_STRING|(openLast?MF_CHECKED:0),OpenLastToggle,L"시작할 때 마지막 프로젝트 열기");
     }
     void report(const std::exception& error){
         statusText(wide(error.what()).c_str(),2);
@@ -2997,7 +2999,7 @@ class NativeEditorShell {
         WINDOWPLACEMENT placement{sizeof(placement)};
         if(!GetWindowPlacement(window,&placement))return;
         const auto& r=placement.rcNormalPosition;
-        const Json saved={{"browse",browsePercent},{"inspector",inspectorPercent},{"splitPercent",splitPercent},{"lowerSplitPercent",lowerSplitPercent},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}},{"maximized",placement.showCmd==SW_SHOWMAXIMIZED},{"uiScale",userScale},{"dock",{{"slots",dockSlots},{"active",dockActive},{"left",dockLeft},{"right",dockRight},{"bottom",dockBottom}}},{"snap",{{"on",snapOn},{"grid",snapGrid},{"angle",snapAngle}}},{"console",consoleVisible},{"browserTiles",browserTiles},{"contentDetached",contentWindow!=nullptr},{"project",utf8(projectFile.wstring())},{"documents",std::move(panes)}};
+        const Json saved={{"browse",browsePercent},{"inspector",inspectorPercent},{"splitPercent",splitPercent},{"lowerSplitPercent",lowerSplitPercent},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}},{"maximized",placement.showCmd==SW_SHOWMAXIMIZED},{"uiScale",userScale},{"dock",{{"slots",dockSlots},{"active",dockActive},{"left",dockLeft},{"right",dockRight},{"bottom",dockBottom}}},{"snap",{{"on",snapOn},{"grid",snapGrid},{"angle",snapAngle}}},{"console",consoleVisible},{"openLast",openLast},{"browserTiles",browserTiles},{"contentDetached",contentWindow!=nullptr},{"project",utf8(projectFile.wstring())},{"documents",std::move(panes)}};
         auto temp=layoutFile;temp+=L"."+std::to_wstring(GetCurrentProcessId())+L".tmp";
         write(temp,saved.dump());
         if(!MoveFileExW(temp.c_str(),layoutFile.c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH))DeleteFileW(temp.c_str());
@@ -3042,7 +3044,7 @@ class NativeEditorShell {
                 dockLeft=std::max(0,d.value("left",0));dockRight=std::max(0,d.value("right",0));dockBottom=std::max(0,d.value("bottom",0));
             }
             if(data.contains("snap")){const auto& s=data.at("snap");snapOn=s.value("on",false);snapGrid=std::clamp(s.value("grid",.5),.01,100.0);snapAngle=std::clamp(s.value("angle",15.0),1.0,180.0);}updateSnapMenu();
-            consoleVisible=data.value("console",false);
+            consoleVisible=data.value("console",false);openLast=data.value("openLast",true);
             setBrowserTiles(data.value("browserTiles",true));
             contentDetachedOnStart=data.value("contentDetached",false);
             if(data.contains("window"))placeSavedWindow(window,data.at("window"),720,480);
@@ -3682,8 +3684,9 @@ class NativeEditorShell {
             editScene({{"action",command==PrefabApply?"prefabApply":command==PrefabRevert?"prefabRevert":command==PrefabRefresh?"prefabRefresh":"prefabUnpack"},{"id",sceneSelection}});
             statusText(command==PrefabApply?L"프리팹에 적용했어요. 프리팹 문서도 저장하세요.":command==PrefabRevert?L"프리팹 변경을 되돌렸어요.":command==PrefabRefresh?L"프리팹과 다시 동기화했어요.":L"프리팹 연결을 풀었어요.");return;
         }
-        if(playProcess&&(command==OpenProject||command==NewProject||command>=RecentBase))
+        if(playProcess&&(command==OpenProject||command==NewProject||(command>=RecentBase&&std::size_t(command-RecentBase)<recent.size())))
             throw std::runtime_error("플레이를 중지한 뒤 프로젝트를 바꾸세요.");
+        if(command==OpenLastToggle){openLast=!openLast;refreshRecent();saveLayout();statusText(openLast?L"시작할 때 마지막 프로젝트를 열어요.":L"시작할 때 프로젝트를 열지 않아요.");return;}
         if(command>=RecentBase&&std::size_t(command-RecentBase)<recent.size()){
             if(!closeDocumentWindows())return;
             captureSource();openProject(request("project.open",{{"file",recent.at(command-RecentBase).at("file")}}));return;
@@ -4440,6 +4443,12 @@ public:
         if(!window)throw std::runtime_error("Native editor window");
         makeControls();applyScale();refreshRecent();SetTimer(window,13,30000,nullptr);SetTimer(window,14,500,nullptr);DragAcceptFiles(window,TRUE);
         if(!project.empty())openProject(request("project.open",{{"file",utf8(project)}}));
+        else if(!acceptance&&!recent.empty()){
+            // Start where the user left off (File > Recent > toggle); a missing or broken project just leaves the start screen.
+            const auto saved=fs::is_regular_file(layoutFile)?Json::parse(read(layoutFile),nullptr,false):Json();openLast=!saved.is_object()||saved.value("openLast",true);refreshRecent();
+            const auto last=recent.at(0).value("file",std::string());
+            if(openLast&&!last.empty()&&fs::is_regular_file(fs::path(wide(last))))try{openProject(request("project.open",{{"file",last}}));}catch(const std::exception& error){statusText((L"마지막 프로젝트를 열지 못했어요: "+wide(error.what())).c_str(),2);}
+        }
         if(acceptance)return smokeTest(smoke);
         restoreLayout();
         ShowWindow(window,layoutMaximized?SW_SHOWMAXIMIZED:show);
