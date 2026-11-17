@@ -119,6 +119,20 @@ try{
   doc=await session('scene.edit',{action:'removeComponent',id:a,key:audio.id,expectedRevision:doc.revision});
   assert.ok(!find(a).components.some(c=>c.type==='AudioSource'),'component removed');
   await assert.rejects(session('scene.edit',{action:'removeComponent',id:a,key:'missing',expectedRevision:doc.revision}),/제거할 컴포넌트/);
+  // Component order, reset, paste values and paste as a new component.
+  doc=await session('scene.edit',{action:'component',id:a,key:'AudioSource',expectedRevision:doc.revision});
+  doc=await session('scene.edit',{action:'component',id:a,key:'PointLight',expectedRevision:doc.revision});
+  const order=()=>find(a).components.map(c=>c.type).filter(t=>t==='AudioSource'||t==='PointLight');
+  const sound=find(a).components.find(c=>c.type==='AudioSource');
+  doc=await session('scene.edit',{action:'moveComponent',id:a,key:sound.id,value:1,expectedRevision:doc.revision});assert.deepEqual(order(),['PointLight','AudioSource'],'component moved down');
+  const tuned=find(a).components.find(c=>c.type==='AudioSource'),defaults=structuredClone(tuned.properties),volumeKey=Object.keys(defaults).find(k=>typeof defaults[k]==='number');assert.ok(volumeKey);
+  const copied={type:'AudioSource',properties:{...defaults,[volumeKey]:defaults[volumeKey]?defaults[volumeKey]/2:0.5}};
+  doc=await session('scene.edit',{action:'pasteComponentValues',id:a,key:tuned.id,value:copied,expectedRevision:doc.revision});assert.equal(find(a).components.find(c=>c.id===tuned.id).properties[volumeKey],copied.properties[volumeKey]);
+  doc=await session('scene.edit',{action:'resetComponent',id:a,key:tuned.id,expectedRevision:doc.revision});assert.deepEqual(find(a).components.find(c=>c.id===tuned.id).properties,defaults,'reset to defaults');
+  await assert.rejects(session('scene.edit',{action:'pasteComponentValues',id:a,key:tuned.id,value:{type:'PointLight',properties:{}},expectedRevision:doc.revision}),/같은 종류/);
+  const copiedLight={type:'PointLight',properties:{...find(a).components.find(c=>c.type==='PointLight').properties}};
+  doc=await session('scene.edit',{action:'pasteComponent',id:a,value:copiedLight,expectedRevision:doc.revision});assert.equal(find(a).components.filter(c=>c.type==='PointLight').length,2,'component pasted');
+  for(const c of find(a).components.filter(c=>c.type==='AudioSource'||c.type==='PointLight'))doc=await session('scene.edit',{action:'removeComponent',id:a,key:c.id,expectedRevision:doc.revision});
   doc=await session('scene.edit',{action:'add',key:'cube',position:[2,1,3],expectedRevision:doc.revision});
   assert.deepEqual(find(doc.selection).position,[2,1,3]);assert.equal(find(doc.selection).pivot,'center');
   // Undo history panel rows and jumping; world-space rotation; pilot pose applied as a world transform.

@@ -21,7 +21,7 @@ import {modelSource} from './model-import-state.mjs';
 import {modelImportDefaults,modelUnitChoices,modelUpChoices,remapModelOverrides} from '../prototype/model-import.js';
 import {createProject, readProjectManifest, recentProjects, rememberProject} from './project-manifest.mjs';
 import {createPlacedObject,placementCatalog} from '../prototype/placement-catalog.js';
-import {addSceneComponent,componentDefinitions,componentPropertyVisible,defaultsForObject,installBlueprintComponents,objectComponents} from '../prototype/scene-components.js';
+import {addSceneComponent,makeSceneComponent,componentDefinitions,componentPropertyVisible,defaultsForObject,installBlueprintComponents,objectComponents} from '../prototype/scene-components.js';
 import {addMobileControls,addWidget,duplicateWidget,removeWidget,reparentWidget,setWidgetAnchorPreset,transformWidgetSlot,widgetContainers,widgetTypes} from '../prototype/ui-assets.js';
 import {projectBytes,projectText} from './project-bytes.mjs';
 import {applyPrefabProperty,createPrefabInstance,prefabInstanceChanges,prefabRootFor,refreshPrefabInstance,revertAllPrefabProperties,unpackPrefabInstance} from '../prototype/prefab-instances.js';
@@ -1264,6 +1264,11 @@ export function nativeEditorSession(bridge) {
         else if (action==='visible') actor.visible=!actor.visible;
         else if (action==='component') addSceneComponent(actor,key);
         else if (action==='removeComponent'){if(!Array.isArray(actor.components)||!actor.components.some(c=>c.id===key))throw Error('제거할 컴포넌트를 선택하세요.');actor.components=actor.components.filter(c=>c.id!==key);}
+        // Inspector component menu: order (Transform stays first), reset to defaults, paste copied values or a copied component.
+        else if (action==='moveComponent'){const list=actor.components||[],at=list.findIndex(c=>c.id===key),to=at+(value>0?1:-1);if(at<0||![1,-1].includes(value))throw Error('옮길 컴포넌트를 선택하세요.');if(to>=0&&to<list.length&&list[to].type!=='Transform'&&list[at].type!=='Transform')[list[at],list[to]]=[list[to],list[at]];}
+        else if (action==='resetComponent'){const c=(actor.components||[]).find(c=>c.id===key);if(!c)throw Error('초기화할 컴포넌트를 선택하세요.');c.properties=makeSceneComponent(c.type).properties;}
+        else if (action==='pasteComponentValues'){const c=(actor.components||[]).find(c=>c.id===key);if(!c||!value||value.type!==c.type||!value.properties||typeof value.properties!=='object')throw Error('같은 종류의 컴포넌트 값을 복사하세요.');c.properties=makeSceneComponent(c.type,value.properties).properties;}
+        else if (action==='pasteComponent'){if(!value||typeof value.type!=='string'||!value.properties||typeof value.properties!=='object')throw Error('붙여 넣을 컴포넌트가 없어요.');const added=addSceneComponent(actor,value.type);added.properties=makeSceneComponent(value.type,value.properties).properties;}
         else if(action==='translate'||action==='rotate'||action==='scale'){editSceneTransform(actor,next.objects,{mode:action,axis,space,value:action==='translate'?delta:value});snapped(actor,action);}
         // Pilot: the camera's world pose becomes the object's (scale kept).
         else if(action==='setWorldTransform'){
@@ -2025,7 +2030,7 @@ export function nativeEditorSession(bridge) {
     }
     return response(doc);
   }
-  const actionLabels={add:'오브젝트 추가',placeAsset:'에셋 배치',delete:'삭제',translate:'이동',rotate:'회전',scale:'크기',rename:'이름 바꾸기',duplicate:'복제',paste:'붙여넣기',component:'컴포넌트 추가',removeComponent:'컴포넌트 제거',reparent:'부모 변경',lock:'잠금',visible:'보이기',setWorldTransform:'조종 위치 적용',prefabApply:'프리팹 적용',prefabRevert:'프리팹 되돌리기',prefabRefresh:'프리팹 새로 고침',prefabUnpack:'프리팹 풀기'};
+  const actionLabels={add:'오브젝트 추가',placeAsset:'에셋 배치',delete:'삭제',translate:'이동',rotate:'회전',scale:'크기',rename:'이름 바꾸기',duplicate:'복제',paste:'붙여넣기',component:'컴포넌트 추가',removeComponent:'컴포넌트 제거',moveComponent:'컴포넌트 순서',resetComponent:'컴포넌트 초기화',pasteComponentValues:'컴포넌트 값 붙여넣기',pasteComponent:'컴포넌트 붙여넣기',reparent:'부모 변경',lock:'잠금',visible:'보이기',setWorldTransform:'조종 위치 적용',prefabApply:'프리팹 적용',prefabRevert:'프리팹 되돌리기',prefabRefresh:'프리팹 새로 고침',prefabUnpack:'프리팹 풀기'};
   return async (method,params={}) => {
     if (!Object.hasOwn(methods,method)) throw Error('지원하지 않는 편집기 명령이에요.');
     requestLabel=method==='scene.edit'?actionLabels[params.action]||params.action:method==='asset.fieldEdit'?'속성: '+params.key:method==='scene.runtimeSet'?'실행 설정: '+params.key:method;

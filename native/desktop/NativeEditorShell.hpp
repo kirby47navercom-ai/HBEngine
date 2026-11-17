@@ -118,7 +118,7 @@ class NativeEditorShell {
     bool browserTiles=false,refreshingFolders=false;
     bool layoutMaximized=false;
     bool consoleVisible=false,contentDetachedOnStart=false;
-    Json logItems=Json::array();
+    Json logItems=Json::array();Json componentClipboard;
     // Output log (Unity console / Unreal output log): severity 0 info, 1 warning, 2 error.
     struct LogEntry{std::string text,time;int severity=0,count=1;};std::vector<LogEntry> logEntries;bool logShow[3]{true,true,true},logCollapse=false;
     std::uint64_t logRevision=0;
@@ -369,8 +369,13 @@ class NativeEditorShell {
                 const auto key=fields.at(i).at("key");
                 if(fields.at(i).contains("action")){
                     if(action!="click")return;
-                    if(fields.at(i).at("action")=="addComponent")perform(AddComponent);
-                    else editScene({{"action","removeComponent"},{"id",sceneSelection},{"key",fields.at(i).at("component")}});
+                    const auto act=fields.at(i).at("action").get<std::string>();const auto component=fields.at(i).value("component",std::string());
+                    if(act=="addComponent")perform(AddComponent);
+                    else if(act=="copyComponent"){componentClipboard=fields.at(i).at("data");statusText(L"컴포넌트를 복사했어요.");refreshForm();layout();}
+                    else if(act=="pasteComponent"){if(componentClipboard.is_object())editScene({{"action","pasteComponent"},{"id",sceneSelection},{"value",componentClipboard}});}
+                    else if(act=="pasteComponentValues"){if(componentClipboard.is_object())editScene({{"action","pasteComponentValues"},{"id",sceneSelection},{"key",component},{"value",componentClipboard}});}
+                    else if(act=="moveUp"||act=="moveDown")editScene({{"action","moveComponent"},{"id",sceneSelection},{"key",component},{"value",act=="moveUp"?-1:1}});
+                    else editScene({{"action",act},{"id",sceneSelection},{"key",component}});
                     return;
                 }
                 if(action=="click"){for(const auto& p:fields.at(i).value("viaParts",Json::array()))fieldPath.push_back(p);fieldPath.push_back(key);refreshForm();layout();return;}
@@ -1696,13 +1701,16 @@ class NativeEditorShell {
             // Components (Unity inspector + Unreal "+ 추가"): each component inline with its properties and a remove button.
             rows.push_back({{"kind","heading"},{"text","컴포넌트"}});
             const auto action=[&](Json field,const char* text){field["control"]={{"kind","button"},{"text",text}};auto control=field.at("control");control["i"]=fields.size();fields.push_back(std::move(field));return control;};
-            rows.push_back({{"label",""},{"controls",Json::array({action({{"key","__addComponent"},{"label",""},{"action","addComponent"}},"+ 컴포넌트 추가")})}});
+            {Json top=Json::array({action({{"key","__addComponent"},{"label",""},{"action","addComponent"}},"+ 컴포넌트 추가")});if(componentClipboard.is_object())top.push_back(action({{"key","__pasteComponent"},{"label",""},{"action","pasteComponent"}},"컴포넌트 붙여넣기"));rows.push_back({{"label",""},{"controls",top}});}
             const auto object=Json::parse(document.at("text").get<std::string>()).at("objects").at(std::stoul(base.at(1).get<std::string>()));
             const auto components=object.value("components",Json::array());
             for(std::size_t j=0;j<components.size();++j){
                 const auto& component=components.at(j);const auto type=component.value("type",std::string());if(type=="Transform")continue;
                 rows.push_back({{"kind","heading"},{"text",type}});
-                rows.push_back({{"label",""},{"controls",Json::array({action({{"key","__removeComponent"},{"label",""},{"action","removeComponent"},{"component",component.value("id",std::string())}},"컴포넌트 제거")})}});
+                {const auto id=component.value("id",std::string());const auto button=[&](const char* act,const char* text,Json extra=Json::object()){Json field={{"key",std::string("__")+act},{"label",""},{"action",act},{"component",id}};field.update(extra);return action(field,text);};
+                Json tools=Json::array({button("moveUp","▲"),button("moveDown","▼"),button("resetComponent","초기화"),button("copyComponent","복사",{{"data",{{"type",type},{"properties",component.value("properties",Json::object())}}}})});
+                if(componentClipboard.is_object()&&componentClipboard.value("type",std::string())==type)tools.push_back(button("pasteComponentValues","값 붙여넣기"));
+                tools.push_back(button("removeComponent","제거"));rows.push_back({{"label",""},{"controls",tools}});}
                 const Json via=Json::array({"components",std::to_string(j),"properties"});
                 auto parts=base;for(const auto& p:via)parts.push_back(p);
                 Json properties;try{properties=request("asset.fields",{{"parts",parts}});}catch(const std::exception&){continue;}
