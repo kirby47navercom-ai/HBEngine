@@ -13,3 +13,4 @@ Windows 편집기와 게임은 네이티브 빌드만 있어요. WebView2 호환
 
 
 다음 작업과 완료 근거는 [누적 원장](docs/research/ENGINE_STATUS.json), 네이티브 조작은 [편집기 안내](docs/EDITOR_NATIVE.md)를 참고해요. 11월 13일 Windows 제작·렌더링과 WORK3443까지의 이전 기록은 [인계 보관본](docs/archive/CODEX_HANDOFF_THROUGH_3443_AND_NATIVE_WINDOWS.md)에 있어요. 작업별 소유자는 node tools/hb.mjs context "작업명" --compact로 찾아요.
+- 2026-11-17 AI 앱 연결(MCP, ebe86fa1): tools/hb-mcp.mjs + 편집기 AI 창구. 다음 기본 기능 후보(우선순위): 게임 종료 노드, 에셋 참조 찾기, 마지막 프로젝트 자동 열기, 탭 닫기 메뉴(다른 탭·모두·닫은 탭 다시 열기), 아웃라이너 화살표 이동, 뷰포트 화살표 미세 이동, Alt+끌기 복제, 현재 장면 다시 불러오기 노드, 커서 보이기/숨기기 노드, 정수·불 랜덤 노드, 콘텐츠 정렬·썸네일 크기, 편집기 카메라 FOV/근·원거리, 뷰포트 최대화(Shift+Space), 창 제목 변경 표시, 저장 슬롯 존재/목록 노드, 최대 FPS 노드, 게임패드 연결·창 초점 이벤트, 수명 설정 노드, 정보 창·문서 링크·뷰포트 스크린샷.
