@@ -236,6 +236,11 @@ public:
         edges=model.at("edges");comments=model.at("comments");for(auto it=extra.begin();it!=extra.end();)it=find(*it)?std::next(it):extra.erase(it);InvalidateRect(window,nullptr,FALSE);
     }
     std::vector<std::string> extraIds()const{return {extra.begin(),extra.end()};}
+    // Acceptance hooks: messages go through the real window procedure; view and pin positions in client pixels.
+    void probe(UINT message,WPARAM w,LPARAM l){SendMessageW(window,message,w,l);}
+    std::array<float,3> view()const{return {pan.x,pan.y,zoom};}
+    std::optional<POINT> pinAt(const std::string& id,const std::string& pin,bool output){const auto* node=find(id);if(!node)return std::nullopt;const auto& list=output?node->outputs:node->inputs;for(std::size_t i=0;i<list.size();++i)if(list[i].id==pin){const auto p=pinPoint(*node,output,i);return POINT{LONG(p.x),LONG(p.y)};}return std::nullopt;}
+    std::optional<POINT> headerAt(const std::string& id){const auto* node=find(id);if(!node)return std::nullopt;const auto p=point(node->x,node->y);return POINT{LONG(p.x+width*zoom*.5f),LONG(p.y+header*zoom*.5f)};}
     // Fit the given nodes (all when empty) in the panel, zoom 0.25-1.
     void frame(const std::vector<std::string>& ids){
         float l=1e9f,t=1e9f,r=-1e9f,b=-1e9f;for(const auto& n:nodes)if(ids.empty()||std::find(ids.begin(),ids.end(),n.id)!=ids.end()){l=std::min(l,n.x);t=std::min(t,n.y);r=std::max(r,n.x+width);b=std::max(b,n.y+height(n));}
