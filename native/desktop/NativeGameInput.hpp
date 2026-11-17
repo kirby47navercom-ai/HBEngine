@@ -41,6 +41,7 @@ private:
     static constexpr std::array<const char*,22> names={"gamepad_dpad_up","gamepad_dpad_down","gamepad_dpad_left","gamepad_dpad_right","gamepad_special_right","gamepad_special_left","gamepad_leftthumbstick","gamepad_rightthumbstick","gamepad_leftshoulder","gamepad_rightshoulder","gamepad_facebutton_bottom","gamepad_facebutton_right","gamepad_facebutton_left","gamepad_facebutton_top","gamepad_leftx","gamepad_lefty","gamepad_rightx","gamepad_righty","gamepad_lefttriggeraxis","gamepad_righttriggeraxis","gamepad_lefttrigger","gamepad_righttrigger"};
     static void stick(SHORT x,SHORT y,double dead,double& a,double& b){const double length=std::hypot(double(x),double(y));if(length<=dead){a=b=0;return;}const double scaled=std::min(1.0,(length-dead)/(32767.0-dead));a=x/length*scaled;b=y/length*scaled;}
 public:
+    unsigned connectedMask()const{unsigned mask=0;for(std::size_t i=0;i<slots.size();i++)if(slots[i].connected)mask|=1u<<i;return mask;}
     explicit NativeGamepadInput(Read provider=nullptr):read(provider),attempted(provider!=nullptr){}
     NativeGamepadInput(const NativeGamepadInput&)=delete;
     ~NativeGamepadInput(){if(module)FreeLibrary(module);}

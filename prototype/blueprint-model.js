@@ -137,6 +137,8 @@ catalog.find(s=>s.key==='forEachBreak').arrayType=true;
 catalog.find(s=>s.key==='doN').defaults={count:1};
 catalog.filter(s=>s.group==='배열'&&s.key!=='arrayLength'||s.key==='forEach').forEach(s=>s.arrayType=true);
 catalog.push(
+  {key:'windowFocusChanged',title:'On Window Focus Changed',ko:'게임 창 포커스 변경',group:'이벤트',keywords:'window focus lost gained alt tab pause 포커스 창 활성 비활성',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('focused','Focused','bool')]},
+  {key:'gamepadConnectionChanged',title:'On Gamepad Connection Changed',ko:'게임패드 연결 변경',group:'이벤트',keywords:'gamepad controller connected disconnected 게임패드 컨트롤러 연결 해제',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('connected','Connected','bool'),pin('index','Gamepad index','int')]},
   {key:'endPlay',title:'End Play',ko:'게임 종료',group:'이벤트',keywords:'end play 종료 끝',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('reason','Reason','string')]},
   {key:'hitEvent',title:'Event Hit',ko:'충돌 이벤트',group:'이벤트',keywords:'hit collision 충돌 히트',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object'),pin('hit','Hit result','hit')]},
   {key:'hitStay',title:'Collision Stay',ko:'충돌 유지',group:'이벤트',keywords:'hit collision stay 접촉 충돌 유지 물리',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object'),pin('hit','Hit result','hit'),pin('delta','Fixed delta seconds','float')]},
