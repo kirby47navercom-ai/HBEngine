@@ -192,7 +192,8 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
-    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),ShowSource=static_cast<Command>(983),RebindShortcut=static_cast<Command>(984),ResetShortcuts=static_cast<Command>(985),CollisionToggle=static_cast<Command>(986),SelectAllActors=static_cast<Command>(991),SaveAllDocuments=static_cast<Command>(994),ResetPosition=static_cast<Command>(996),DetailsSearch=static_cast<Command>(1001),DuplicateAsset=static_cast<Command>(1002),HideSelected=static_cast<Command>(1003),ShowAllHidden=static_cast<Command>(1004),IsolateSelected=static_cast<Command>(1005),ResetRotation=static_cast<Command>(997),ResetScale=static_cast<Command>(998),SaveDocumentAs=static_cast<Command>(995),DeselectActors=static_cast<Command>(992),InvertSelection=static_cast<Command>(993),GenerateLods=static_cast<Command>(987),StreamingToggle=static_cast<Command>(988),ParticlePlayToggle=static_cast<Command>(989),ParticleRestart=static_cast<Command>(990),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),ShowSource=static_cast<Command>(983),RebindShortcut=static_cast<Command>(984),ResetShortcuts=static_cast<Command>(985),CollisionToggle=static_cast<Command>(986),SelectAllActors=static_cast<Command>(991),SaveAllDocuments=static_cast<Command>(994),ResetPosition=static_cast<Command>(996),DetailsSearch=static_cast<Command>(1001),DuplicateAsset=static_cast<Command>(1002),HideSelected=static_cast<Command>(1003),ShowAllHidden=static_cast<Command>(1004),IsolateSelected=static_cast<Command>(1005),BusyCancel=static_cast<Command>(1006),ResetRotation=static_cast<Command>(997),ResetScale=static_cast<Command>(998),SaveDocumentAs=static_cast<Command>(995),DeselectActors=static_cast<Command>(992),InvertSelection=static_cast<Command>(993),GenerateLods=static_cast<Command>(987),StreamingToggle=static_cast<Command>(988),ParticlePlayToggle=static_cast<Command>(989),ParticleRestart=static_cast<Command>(990),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
+    HWND busyBar=nullptr,busyCancel=nullptr;Command busyCommand=Command(0);int busyJobs=0;
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -269,6 +270,7 @@ class NativeEditorShell {
         font=CreateFontW(-13,0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,0,0,CLEARTYPE_QUALITY,0,L"Segoe UI");
         search=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,Search);
         consoleInput=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,ConsoleInput);SendMessageW(consoleInput,EM_SETCUEBANNER,TRUE,LPARAM(L"명령 입력 (help)"));
+        busyBar=CreateWindowExW(0,PROGRESS_CLASSW,L"",WS_CHILD|PBS_MARQUEE,0,0,10,10,window,nullptr,instance,nullptr);busyCancel=control(L"BUTTON",L"취소",BS_PUSHBUTTON,BusyCancel);ShowWindow(busyCancel,SW_HIDE);
         detailsSearch=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,DetailsSearch);SendMessageW(detailsSearch,EM_SETCUEBANNER,TRUE,LPARAM(L"속성 검색"));
         hierarchySearch=control(L"EDIT",L"",WS_BORDER|ES_AUTOHSCROLL,HierarchySearch);SendMessageW(hierarchySearch,EM_SETCUEBANNER,TRUE,LPARAM(L"오브젝트 검색"));SendMessageW(search,EM_SETCUEBANNER,TRUE,LPARAM(L"에셋 검색"));
         folderBack=control(L"BUTTON",L"←",BS_PUSHBUTTON,FolderBack);
@@ -976,7 +978,7 @@ class NativeEditorShell {
         const int width=rect.right,height=rect.bottom,statusHeight=S(26),topBar=S(40);
         topStrip.update({{"rect",{0,0,width,topBar-S(1)}},{"visible",true}});
         statusStrip.update({{"rect",{0,height-statusHeight,S(250),statusHeight}},{"visible",true}});
-        MoveWindow(status,S(260),height-statusHeight,std::max(1,width-S(270)),statusHeight,TRUE);
+        {const int busyWidth=busyJobs>0?S(230):0;MoveWindow(status,S(260),height-statusHeight,std::max(1,width-S(270)-busyWidth),statusHeight,TRUE);if(busyBar){MoveWindow(busyBar,width-S(10)-busyWidth+S(4),height-statusHeight+S(4),S(150),std::max(4,statusHeight-S(8)),TRUE);MoveWindow(busyCancel,width-S(10)-S(70),height-statusHeight+S(1),S(66),std::max(4,statusHeight-S(2)),TRUE);}}
         const bool sceneLayout=!detached&&sceneOpen()&&!sourceMode;
         if(contentWindow){RECT browser{};GetClientRect(contentWindow,&browser);placeBrowser(S(4),S(4),int(browser.right)-S(8),int(browser.bottom)-S(8),true);}
         // Unreal-style dock areas (left / right / bottom). Each shows its panels as tabs; a tab dragged onto another area moves the panel.
@@ -1834,6 +1836,11 @@ class NativeEditorShell {
         for(const auto& path:paths){std::error_code error;if(!fs::is_regular_file(path,error))continue;try{request("content.import",{{"folder",destination},{"file",utf8(path.wstring())}});++imported;}catch(const std::exception& e){if(failed.size()<400)failed+=L"\n· "+path.filename().wstring()+L": "+wide(e.what());}}
         refreshFiles();statusText((std::to_wstring(imported)+L"개 파일을 "+wide(destination)+L"로 가져왔어요."+failed).c_str(),failed.empty()?0:1);return imported;
     }
+    // Long jobs (packaging, C++ compile, UV atlas): a moving bar and a cancel button in the status bar while they run,
+    // and a taskbar flash when one finishes while the editor is in the background.
+    void beginBusy(Command cancel){busyJobs++;busyCommand=cancel;ShowWindow(busyBar,SW_SHOW);SendMessageW(busyBar,PBM_SETMARQUEE,TRUE,30);ShowWindow(busyCancel,cancel?SW_SHOW:SW_HIDE);layout();}
+    void endBusy(){if(busyJobs<=0)return;if(--busyJobs==0){SendMessageW(busyBar,PBM_SETMARQUEE,FALSE,0);ShowWindow(busyBar,SW_HIDE);ShowWindow(busyCancel,SW_HIDE);busyCommand=Command(0);layout();}
+        if(GetForegroundWindow()!=window){FLASHWINFO flash{sizeof(flash),window,FLASHW_TRAY|FLASHW_TIMERNOFG,3,0};FlashWindowEx(&flash);}}
     void refreshSource(){
         Json items=Json::array();
         if(projectFile.empty())items.push_back({{"detail","소스 관리"},{"name","프로젝트를 여세요."}});
@@ -3306,7 +3313,7 @@ class NativeEditorShell {
             *padding>*resolution/8||std::floor(*padding)!=*padding)throw std::runtime_error("아틀라스 해상도와 여백을 확인하세요.");
         request("world.meshAtlasStart",{{"settings",{{"channel",*channel},{"resolution",int(*resolution)},{"padding",int(*padding)}}},
             {"expectedRevision",document.at("revision")}});
-        meshAtlasRunning=true;SetTimer(window,12,150,nullptr);statusText(L"UV 아틀라스를 만들고 있어요.");
+        meshAtlasRunning=true;SetTimer(window,12,150,nullptr);statusText(L"UV 아틀라스를 만들고 있어요.");beginBusy(MeshAtlasCancel);
     }
     bool pollMeshAtlas(){
         if(!meshAtlasRunning)return true;
@@ -3562,6 +3569,7 @@ class NativeEditorShell {
         }
         // Scene selection: all objects, none, or the objects not selected now (outliner order).
         if(command==ResetPosition||command==ResetRotation||command==ResetScale){if(!sceneOpen()||sceneSelection.empty())return;editScene({{"action","resetTransform"},{"id",sceneSelection},{"ids",selectedIds()},{"value",command==ResetPosition?"position":command==ResetRotation?"rotation":"scale"}});return;}
+        if(command==BusyCancel){if(busyCommand)perform(busyCommand);return;}
         if(command==DuplicateAsset){const auto rows=selectedEntries();std::vector<std::string> paths;for(const int i:rows)if(entries.at(i).value("kind",std::string())!="folder")paths.push_back(entries.at(i).at("path").get<std::string>());std::string last;for(const auto& p:paths)last=request("content.duplicate",{{"path",p}}).value("path",std::string());refreshFiles();if(!last.empty())statusText((std::to_wstring(paths.size())+L"개 복제 · "+wide(last)).c_str());return;}
         if(command==SaveAllDocuments){if(projectFile.empty())return;captureSource();auto result=request("document.saveAll",Json::object());const int saved=result.value("saved",0);if(result.contains("path"))showDocument(std::move(result));statusText((std::to_wstring(saved)+L"개 문서를 저장했어요.").c_str());return;}
         if(command==SaveDocumentAs){if(!document.contains("path"))return;captureSource();const auto name=inputName(L"새 파일 이름 (확장자 없이)",L"",80);if(name.empty())return;showDocument(request("document.saveAs",{{"name",utf8(name)}}));refreshFiles();statusText((L"다른 이름으로 저장 · "+wide(document.at("path"))).c_str());return;}
@@ -3695,7 +3703,7 @@ class NativeEditorShell {
         case CompileCpp:
             if(document.contains("path")){
                 captureSource();request("cpp.build",{{"expectedRevision",document.at("revision")}});
-                statusText(L"C++ 클래스를 컴파일하고 있어요.");SetTimer(window,9,150,nullptr);
+                statusText(L"C++ 클래스를 컴파일하고 있어요.");SetTimer(window,9,150,nullptr);beginBusy(Command(0));
             }
             return;
         case ShowAudioWaveform:case PlayAudioPreview:
@@ -4062,7 +4070,7 @@ class NativeEditorShell {
                 throw std::runtime_error("빌드하기 전에 독립 창에서 편집한 문서를 저장하세요.");
             statusText(command==CheckBuild?L"빌드 검사 중":L"패키징 중");
             request("project.build",{{"id",profile.at("id")},{"expectedRevision",settings.at("revision")},{"dryRun",command==CheckBuild}});
-            building=true;checkingBuild=command==CheckBuild;SetTimer(window,4,350,nullptr);
+            building=true;checkingBuild=command==CheckBuild;SetTimer(window,4,350,nullptr);beginBusy(CancelBuild);
             return;
         }
         case RunBuild:if(!projectRoot.empty())request("project.buildRun");return;
@@ -4225,7 +4233,7 @@ class NativeEditorShell {
         if(message==WM_TIMER&&w==4){
             const auto state=request("project.buildStatus");
             if(state.value("status",std::string())=="running"){SetWindowTextW(status,wide(state.at("stage")).c_str());return 0;}
-            KillTimer(window,4);building=false;
+            KillTimer(window,4);building=false;endBusy();
             if(state.value("status",std::string())=="canceled"){SetWindowTextW(status,L"빌드를 취소했어요.");return 0;}
             if(state.contains("error"))throw std::runtime_error(state.at("error").get<std::string>());
             if(!state.contains("result"))return 0;
@@ -4259,8 +4267,8 @@ class NativeEditorShell {
             return 0;
         }
         if(message==WM_TIMER&&w==12){
-            try{if(pollMeshAtlas())KillTimer(window,12);}
-            catch(...){meshAtlasRunning=false;KillTimer(window,12);throw;}
+            try{if(pollMeshAtlas()){KillTimer(window,12);endBusy();}}
+            catch(...){meshAtlasRunning=false;KillTimer(window,12);endBusy();throw;}
             return 0;
         }
         if(message==WM_TIMER&&w==11){KillTimer(window,11);if(meshUVOpen&&!sourceMode)refreshMeshUV();return 0;}
@@ -4269,7 +4277,7 @@ class NativeEditorShell {
         if(message==WM_TIMER&&w==9){
             const auto result=request("cpp.buildStatus");
             if(result.at("status")=="running")return 0;
-            KillTimer(window,9);
+            KillTimer(window,9);endBusy();
             if(result.at("status")=="done")statusText((L"C++ 빌드 성공 · "+wide(result.at("compiler"))).c_str());
             else if(result.contains("error"))statusText(wide(result.at("error")).c_str());
             return 0;
@@ -5050,6 +5058,8 @@ private:
             const auto files=namedLayouts();if(!files.empty()&&files.front().stem()==L"검사 레이아웃"){loadNamedLayout(files.front());namedLayout=dockSlots==keepSlots;}dockSlots=keepSlots;layout();}
         // Details search: typing a property name leaves only matching rows.
         bool detailsFilter=false;{const auto before=form.inspect().value("rows",Json::array()).size();form.update({{"filter","zzz-no-such-property"}});const auto none=form.inspect().value("rows",Json::array()).size();form.update({{"filter",""}});const auto after=form.inspect().value("rows",Json::array()).size();detailsFilter=before>1&&none==1&&after==before;}
+        // Busy bar: visible with a cancel button during a job, hidden after.
+        bool busyIndicator=false;{beginBusy(CancelBuild);const bool shown=IsWindowVisible(busyBar)&&IsWindowVisible(busyCancel);endBusy();busyIndicator=shown&&!IsWindowVisible(busyBar)&&!IsWindowVisible(busyCancel)&&busyJobs==0;}
         // Editor-only hide / show all / isolate.
         bool editorHide=false;{const auto keep=editorHidden;const auto keepSelection=sceneSelection;if(sceneSelection.empty()){const auto rows=request("scene.hierarchy",Json::object());if(!rows.empty())sceneSelection=rows.at(0).value("id",std::string());}editorHidden.clear();perform(IsolateSelected);const auto isolated=drawViewport().value("editorHidden",0);perform(ShowAllHidden);const auto shown=drawViewport().value("editorHidden",0);editorHide=!sceneSelection.empty()&&isolated>0&&shown==0;editorHidden=keep;sceneSelection=keepSelection;}
         // Scene select all / invert / deselect.
@@ -5067,8 +5077,8 @@ private:
         SetWindowTextW(consoleInput,L"r.ScreenPercentage 80");runConsole();const bool consoleSet=Json::parse(document.at("text").get<std::string>()).at("runtime").value("renderScale",0)==80;perform(Undo);
         SetWindowTextW(consoleInput,L"stat fps");runConsole();drawViewport();const bool fpsShown=showFps&&!fpsTimes.empty();perform(ToggleFps);
         SetWindowTextW(consoleInput,L"camera.speed 7");runConsole();const bool speedSet=cameraSpeed==7;perform(Command(CameraSpeedFirst+3));
-        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"browserMultiSelect",browserMultiSelect},{"dropImport",dropImport},{"selectAll",selectAll},{"detailsFilter",detailsFilter},{"editorHide",editorHide},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"particlePreview",particlePreview},{"lightBuild",lightBuilt}};
-        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!browserMultiSelect||!dropImport||!selectAll||!detailsFilter||!editorHide||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!particlePreview||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"browserMultiSelect",browserMultiSelect},{"dropImport",dropImport},{"selectAll",selectAll},{"detailsFilter",detailsFilter},{"editorHide",editorHide},{"busyIndicator",busyIndicator},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"particlePreview",particlePreview},{"lightBuild",lightBuilt}};
+        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!browserMultiSelect||!dropImport||!selectAll||!detailsFilter||!editorHide||!busyIndicator||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!particlePreview||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
