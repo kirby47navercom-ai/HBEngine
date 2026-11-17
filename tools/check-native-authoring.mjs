@@ -25,7 +25,10 @@ const terrainFile='Assets/T_Native.hbterrain.json',foliageFile='Assets/F_Native.
 const meshFile='Assets/SM_Native.hbmesh.json',lodFile='Assets/LOD_Native.hblod.json';
 const terrain=createAsset('terrain','NativeTerrain'),foliage=createAsset('foliage','NativeFoliage');
 foliage.terrain=terrainFile;
-for(const [file,data] of [[terrainFile,terrain],[foliageFile,foliage],[meshFile,createAsset('mesh','NativeMesh')],[lodFile,createAsset('lod','NativeLOD')]])
+// Build Lighting input: a quad mesh with its own UV1 (lightmap) channel placed in the start scene.
+const litQuadFile='Assets/SM_LitQuad.hbmesh.json',litQuad={...createAsset('mesh','LitQuad'),vertices:[[-2,0,-2],[2,0,-2],[2,0,2],[-2,0,2]],indices:[0,2,1,0,3,2],uvs:[[0,0],[1,0],[1,1],[0,1]],uvs1:[[0,0],[1,0],[1,1],[0,1]]};
+{const startFile=path.join(path.dirname(project.file),project.manifest.startupScene),start=JSON.parse(await fs.readFile(startFile,'utf8')),quad=createPlacedObject('cube',{id:'lit-quad',position:[0,0.05,0]});quad.components.find(c=>c.type==='MeshRenderer').properties.mesh=litQuadFile;start.objects.push(quad);await fs.writeFile(startFile,JSON.stringify(start));}
+for(const [file,data] of [[terrainFile,terrain],[foliageFile,foliage],[meshFile,createAsset('mesh','NativeMesh')],[lodFile,createAsset('lod','NativeLOD')],[litQuadFile,litQuad]])
   await project.project.write(file,JSON.stringify(data));
 const baseTake='Assets/TakeBase.hbtakepreset.json',nativeTake='Assets/TakeNative.hbtakepreset.json';
 await project.project.write(baseTake,JSON.stringify(createTakePreset('TakeBase',{fps:60,clock:{source:'game',startFrame:24},sources:[{id:'world',type:'world',enabled:true}]})));
@@ -529,7 +532,7 @@ assert.equal(evidence.browserTreeAndFilter,true);
 assert.equal(evidence.modelImportPreview,true);
 assert.equal(evidence.independentAssetPreview,true);
 assert.deepEqual(evidence.worldAssets,{backend:'D3D12',terrain:true,foliage:true,mesh:true,meshTools:true,uvView:true,lod:true});
-assert.equal(evidence.curveBox,true);assert.equal(evidence.help,true);assert.deepEqual(evidence.editingBasics,{multiSelect:true,copyPaste:true,undo:true,searchFilter:true,focusOnDoubleClick:true,gizmo:true,console:true,fps:true,cameraSpeed:true,boxSelect:true,viewModes:true,gameView:true,quad:true,history:true,consoleLog:true,palette:true});
+assert.equal(evidence.curveBox,true);assert.equal(evidence.help,true);assert.deepEqual(evidence.editingBasics,{multiSelect:true,copyPaste:true,undo:true,searchFilter:true,focusOnDoubleClick:true,gizmo:true,console:true,fps:true,cameraSpeed:true,boxSelect:true,viewModes:true,gameView:true,quad:true,history:true,consoleLog:true,palette:true,lightBuild:true});
 assert.equal(evidence.independentAssetForm,true);
 assert.equal(evidence.debugBreaks,process.argv[3]?2:0);
 if(process.argv[3])assert.equal(evidence.debugSnapshot.variables[0].value,'27');

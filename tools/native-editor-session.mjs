@@ -8,6 +8,10 @@ import {Worker} from 'node:worker_threads';
 import path from 'node:path';
 import readline from 'node:readline';
 import {pathToFileURL} from 'node:url';
+import {lightmapSceneSnapshot} from '../prototype/lightmap-scene.js';
+import {bakeSceneLightmaps} from '../prototype/lightmap-bake.js';
+import {mergeLightmapAssets} from '../prototype/lightmap-assets.js';
+import {resolveSceneEnvironment} from '../prototype/scene-environment.js';
 import {AssetDocuments, assetSuffix, assetTitle, assetTypes, createAsset, validAsset} from '../prototype/asset-documents.js';
 import {documentRevision, patchAsset} from '../prototype/automation.js';
 import {blueprintClipboard, catalog, defaultInputValue, defaultsFor, effectivePins, graphContext, makeComment, makeDefinition, makeNode, nodeTitle, pasteNodes, sampleTimeline, timelineLength, typeColors, variableTypes} from '../prototype/blueprint-model.js';
@@ -1221,6 +1225,34 @@ export function nativeEditorSession(bridge) {
       if(!list.length)throw Error('복사할 오브젝트를 선택하세요.');
       return {objects:copySceneObjects(doc.data.objects,list)};
     },
+    // Indirect lighting bake (Unreal Build Lighting): bakes the drawn scene into Assets/Lighting/LM_<scene>.hblightmap.json
+    // and points each target's MeshRenderer at it (one undo step). ponytail: runs on the session thread; move to worker_threads if large bakes stall the editor.
+    'scene.bakeLightmaps': async ({path,objects:ids,settings={},expectedRevision}) => {
+      const doc=targetDocument(path);
+      if(doc.kind!=='scene')throw Error('장면 문서를 선택하세요.');
+      await check(doc,expectedRevision);
+      if(!viewport)throw Error('장면 화면을 연 뒤 베이크하세요.');
+      if(!settings||typeof settings!=='object'||Array.isArray(settings))throw Error('베이크 설정을 확인하세요.');
+      const data=doc.data,meshObject=o=>(o.components||[]).some(c=>c.type==='MeshRenderer');
+      // With no selection, receivers are the meshes that already have a UV1 (lightmap) channel; the rest still cast and bounce light.
+      const rows=viewport.bakeRows(data.objects),roots=new Set(rows.map(r=>r.root));
+      const hasUV1=id=>{const root=rows.find(r=>r.object.id===id)?.root;let found=false;const visit=node=>{if(found||(node!==root&&roots.has(node)))return;if(node.isMesh&&node.geometry?.getAttribute('uv1'))found=true;else node.children.forEach(visit);};if(root)visit(root);return found;};
+      const explicit=Array.isArray(ids)&&ids.length;
+      const targets=explicit?ids:data.objects.filter(o=>(o.components||[]).some(c=>c.type==='MeshRenderer'&&c.properties?.enabled!==false)&&hasUV1(o.id)).map(o=>o.id);
+      if(!explicit&&!targets.length)throw Error('UV 1(라이트맵 UV)이 있는 메시가 없어요. 메시 편집기에서 UV 1을 만드세요.');
+      if(!targets.length||new Set(targets).size!==targets.length||targets.some(id=>!data.objects.some(o=>o.id===id&&meshObject(o))))throw Error('베이크할 메시 오브젝트를 확인하세요.');
+      const targetPath='Assets/Lighting/LM_'+assetTitle(doc.path).replace(/[^A-Za-z0-9_-]/g,'_').slice(0,60)+'.hblightmap.json';
+      const snapshot=await lightmapSceneSnapshot(rows,targets,resolveSceneEnvironment(data.environment,data.surface,data.objects));
+      const quality={resolution:64,samples:32,bounces:1,...settings};
+      const generated=await bakeSceneLightmaps(snapshot,quality,{name:assetTitle(targetPath).slice(0,80)});
+      let existing=null;try{existing=JSON.parse(await projectText(project(),targetPath));}catch{}
+      const asset=mergeLightmapAssets(existing,generated.asset,targets);
+      await project().mkdir('Assets/Lighting');await project().write(targetPath,JSON.stringify(asset));
+      const next=structuredClone(data);
+      for(const object of next.objects)if(targets.includes(object.id)){const renderer=object.components.find(c=>c.type==='MeshRenderer');renderer.properties={...renderer.properties,lightmap:targetPath};}
+      change(doc,next);
+      return {...await response(doc),lightmap:{path:targetPath,pages:asset.maps.length,updated:targets,stats:generated.stats}};
+    },
     'scene.edit': async ({path,action,id,ids,target,key,delta,axis,value,asset,position,rotation,clipboard,snap,space,expectedRevision}) => {
       const doc=targetDocument(path);
       if(doc.kind!=='scene')throw Error('장면 문서를 선택하세요.');
@@ -2033,7 +2065,7 @@ export function nativeEditorSession(bridge) {
   const actionLabels={add:'오브젝트 추가',placeAsset:'에셋 배치',delete:'삭제',translate:'이동',rotate:'회전',scale:'크기',rename:'이름 바꾸기',duplicate:'복제',paste:'붙여넣기',component:'컴포넌트 추가',removeComponent:'컴포넌트 제거',moveComponent:'컴포넌트 순서',resetComponent:'컴포넌트 초기화',pasteComponentValues:'컴포넌트 값 붙여넣기',pasteComponent:'컴포넌트 붙여넣기',reparent:'부모 변경',lock:'잠금',visible:'보이기',setWorldTransform:'조종 위치 적용',prefabApply:'프리팹 적용',prefabRevert:'프리팹 되돌리기',prefabRefresh:'프리팹 새로 고침',prefabUnpack:'프리팹 풀기'};
   return async (method,params={}) => {
     if (!Object.hasOwn(methods,method)) throw Error('지원하지 않는 편집기 명령이에요.');
-    requestLabel=method==='scene.edit'?actionLabels[params.action]||params.action:method==='asset.fieldEdit'?'속성: '+params.key:method==='scene.runtimeSet'?'실행 설정: '+params.key:method;
+    requestLabel=method==='scene.edit'?actionLabels[params.action]||params.action:method==='asset.fieldEdit'?'속성: '+params.key:method==='scene.runtimeSet'?'실행 설정: '+params.key:method==='scene.bakeLightmaps'?'라이트맵 베이크':method;
     return methods[method](params);
   };
 }

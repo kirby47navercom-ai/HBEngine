@@ -535,5 +535,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     const ms=(a,b)=>Math.round((timing[b]-timing[a])*100)/100;
     return {animating,target:target.toArray(),gpuMs:renderer.hbDiagnostics().gpuTimeMs??null,resolution:{...renderer.hbResolution,upscales,ldrAntiAliasingPasses},timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),...(drops?{drops}:{}),...(boxSelection?{boxSelection}:{}),...(pilotPose?{pilotPose}:{}),...(bookmarkResult?{bookmark:bookmarkResult}:{}),warnings:content.warnings.slice(0,8)};
   }
-  return {draw,close};
+  // Lightmap bake input: one row per drawn object, world matrices current.
+  const bakeRows=objects=>objects.flatMap(object=>{const root=groups.get(object.id);if(!root)return[];root.updateMatrixWorld(true);const renderer=(object.components||[]).find(c=>c.type==='MeshRenderer');return[{object,root,contribute:!!renderer&&renderer.properties?.enabled!==false&&renderer.properties?.contributeGI!==false}];});
+  return {draw,close,bakeRows};
 }
