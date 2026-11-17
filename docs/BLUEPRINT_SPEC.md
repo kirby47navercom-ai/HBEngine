@@ -802,3 +802,5 @@ AudioListener.voiceSelection mixer/legacy·Components SetString 공용 편집. �
 2026-11-17: 게임 창 노드 Set Fullscreen / Set Window Resolution(320x240~16384) / Set VSync. 네이티브 게임 창에 window 요청으로 전달해 전체 화면(현재 모니터 테두리 없는 창)·창 클라이언트 크기·표시 동기화를 바꿔요(run-project onWindow). 검사 `node tools/check-window-settings.mjs`. 웹 플레이어에는 아직 연결하지 않았어요.
 
 2026-11-17: 입력 노드 Play Gamepad Rumble(플레이어 0~3, 저·고주파 모터 0~1, 지속 0~10초). 네이티브 게임 창이 XInputSetState로 진동하고 시간이 지나거나 창이 초점을 잃으면 멈춰요. 검사 `node tools/check-gamepad-rumble.mjs`.
+
+2026-11-17: 게임 창 노드 Quit Game. 실행 중인 프레임 뒤에 게임 실행을 끝내요(패키지 게임은 창이 닫히고 편집기 플레이는 멈춰요). 검사 `node tools/check-quit-game.mjs`.
