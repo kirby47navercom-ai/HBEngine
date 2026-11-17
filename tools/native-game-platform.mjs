@@ -26,11 +26,11 @@ export async function openNativePackage(directory){
  let closeJob;return {root,project,manifest,host,url,resolve,readBytes,stream,close:()=>closeJob??=closeNativeRuntime([()=>host.close(),()=>content.close()])};
 }
 
-export async function openNativeEditorProject(file,{scene,width,height,rate}){
+export async function openNativeEditorProject(file,{scene,width,height,rate,spawn}){
  const record=await readProjectManifest(file),{project}=record;
  if(scene&&(!scene.startsWith('Assets/')||!scene.endsWith('.hbscene.json')))throw Error('실행할 장면을 선택하세요.');
  if(scene)await project.read(scene);
- return {...record,manifest:{...record.manifest,width,height,targetFrameRate:rate,nativeGraphicsAPI:'d3d12',startupScene:scene||record.manifest.startupScene},
+ return {...record,manifest:{...record.manifest,width,height,targetFrameRate:rate,nativeGraphicsAPI:'d3d12',startupScene:scene||record.manifest.startupScene,...(Array.isArray(spawn)&&spawn.length===3&&spawn.every(Number.isFinite)?{spawnOverride:spawn}:{})},
   url:name=>'hbasset:'+encodeURIComponent(name),readBytes:(name,options)=>projectBytes(project,name,options),resolve:name=>project.resolve(name),stream:async(name,start,end)=>createReadStream((await project.read(name)).file,{start,end,highWaterMark:65536})};
 }
 
