@@ -1820,6 +1820,13 @@ class NativeEditorShell {
         const auto slash=path.rfind('/');navigateFolder(slash==std::string::npos?std::string():path.substr(0,slash));const auto slot=dockSlotOf("content");dockActive[slot]="content";layout();
         for(std::size_t i=0;i<entries.size();++i)if(entries.at(i).value("path",std::string())==path){ListView_SetItemState(files,-1,0,LVIS_SELECTED|LVIS_FOCUSED);ListView_SetItemState(files,int(i),LVIS_SELECTED|LVIS_FOCUSED,LVIS_SELECTED|LVIS_FOCUSED);ListView_EnsureVisible(files,int(i),FALSE);break;}
     }
+    // Explorer drag & drop import: every dropped file goes into the open content folder (or Assets); folders are skipped.
+    std::size_t importPaths(const std::vector<fs::path>& paths){
+        if(projectRoot.empty())throw std::runtime_error("프로젝트를 먼저 여세요.");
+        const auto destination=folder=="Assets"||folder.rfind("Assets/",0)==0?folder:"Assets";std::size_t imported=0;std::wstring failed;
+        for(const auto& path:paths){std::error_code error;if(!fs::is_regular_file(path,error))continue;try{request("content.import",{{"folder",destination},{"file",utf8(path.wstring())}});++imported;}catch(const std::exception& e){if(failed.size()<400)failed+=L"\n· "+path.filename().wstring()+L": "+wide(e.what());}}
+        refreshFiles();statusText((std::to_wstring(imported)+L"개 파일을 "+wide(destination)+L"로 가져왔어요."+failed).c_str(),failed.empty()?0:1);return imported;
+    }
     void refreshSource(){
         Json items=Json::array();
         if(projectFile.empty())items.push_back({{"detail","소스 관리"},{"name","프로젝트를 여세요."}});
@@ -4242,6 +4249,9 @@ class NativeEditorShell {
             else if(result.contains("error"))statusText(wide(result.at("error")).c_str());
             return 0;
         }
+        if(message==WM_DROPFILES){const HDROP drop=HDROP(w);std::vector<fs::path> paths;const UINT count=DragQueryFileW(drop,0xFFFFFFFF,nullptr,0);
+            for(UINT k=0;k<count&&k<500;++k){const UINT length=DragQueryFileW(drop,k,nullptr,0);std::wstring name(length+1,L'\0');DragQueryFileW(drop,k,name.data(),length+1);name.resize(length);paths.emplace_back(name);}
+            DragFinish(drop);try{importPaths(paths);}catch(const std::exception& error){report(error);}return 0;}
         if(message==WM_COMMAND){
             const auto id=Command(LOWORD(w));
             if(id==Search&&HIWORD(w)==EN_CHANGE&&!updating)SetTimer(window,1,180,nullptr);
@@ -4350,7 +4360,7 @@ public:
         RegisterClassW(&type);
         window=CreateWindowExW(0,type.lpszClassName,L"HBEngine · 네이티브 편집기",WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,CW_USEDEFAULT,CW_USEDEFAULT,1280,850,nullptr,nullptr,instance,this);
         if(!window)throw std::runtime_error("Native editor window");
-        makeControls();applyScale();refreshRecent();SetTimer(window,13,30000,nullptr);
+        makeControls();applyScale();refreshRecent();SetTimer(window,13,30000,nullptr);DragAcceptFiles(window,TRUE);
         if(!project.empty())openProject(request("project.open",{{"file",utf8(project)}}));
         if(acceptance)return smokeTest(smoke);
         restoreLayout();
@@ -5008,6 +5018,8 @@ private:
         // Named layouts: a saved arrangement comes back after the dock changes.
         bool namedLayout=false;{const auto keepSlots=dockSlots;saveNamedLayout(L"검사 레이아웃");auto moved=dockSlots;std::swap(moved["left"],moved["right"]);dockSlots=moved;layout();
             const auto files=namedLayouts();if(!files.empty()&&files.front().stem()==L"검사 레이아웃"){loadNamedLayout(files.front());namedLayout=dockSlots==keepSlots;}dockSlots=keepSlots;layout();}
+        // Explorer drop: a dropped file is imported into the content folder.
+        bool dropImport=false;{const auto file=editorProfile/L"drop-import.txt";write(file,"drop");dropImport=importPaths({file,editorProfile})==1;std::error_code error;fs::remove(file,error);}
         // Content browser multi-select: two rows selected at once are both reported.
         bool browserMultiSelect=false;{ListView_SetItemState(files,-1,0,LVIS_SELECTED);const int count=int(entries.size());if(count>=2){ListView_SetItemState(files,0,LVIS_SELECTED,LVIS_SELECTED);ListView_SetItemState(files,1,LVIS_SELECTED,LVIS_SELECTED);browserMultiSelect=selectedEntries().size()==2;ListView_SetItemState(files,-1,0,LVIS_SELECTED);}}
         // Command palette: every menu command is listed and words filter it.
@@ -5017,8 +5029,8 @@ private:
         SetWindowTextW(consoleInput,L"r.ScreenPercentage 80");runConsole();const bool consoleSet=Json::parse(document.at("text").get<std::string>()).at("runtime").value("renderScale",0)==80;perform(Undo);
         SetWindowTextW(consoleInput,L"stat fps");runConsole();drawViewport();const bool fpsShown=showFps&&!fpsTimes.empty();perform(ToggleFps);
         SetWindowTextW(consoleInput,L"camera.speed 7");runConsole();const bool speedSet=cameraSpeed==7;perform(Command(CameraSpeedFirst+3));
-        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"browserMultiSelect",browserMultiSelect},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"particlePreview",particlePreview},{"lightBuild",lightBuilt}};
-        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!browserMultiSelect||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!particlePreview||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"browserMultiSelect",browserMultiSelect},{"dropImport",dropImport},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"particlePreview",particlePreview},{"lightBuild",lightBuilt}};
+        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!browserMultiSelect||!dropImport||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!particlePreview||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());
