@@ -714,6 +714,7 @@ class NativeEditorShell {
         if(has("anim"))return L"애니메이션";if(has("sequence"))return L"시퀀스";if(has("widget")||has("ui"))return L"위젯";if(has("code"))return L"소스";return wide(kind);
     }
     // Windows thumbnail (images, video, anything with a shell thumbnail handler); cached per path, nullptr when none.
+    static bool engineThumbnail(const std::string& path){const auto ends=[&](const char* s){const std::string x=s;return path.size()>x.size()&&path.compare(path.size()-x.size(),x.size(),x)==0;};return ends(".hbmesh.json")||ends(".hbmaterial.json");}
     HBITMAP thumbnail(const std::string& path){
         if(path.empty()||projectRoot.empty())return nullptr;
         if(const auto found=thumbnails.find(path);found!=thumbnails.end())return found->second;
@@ -721,6 +722,8 @@ class NativeEditorShell {
         HBITMAP bitmap=nullptr;IShellItemImageFactory* factory=nullptr;
         const auto file=(projectRoot/fs::path(wide(path))).lexically_normal();
         if(SUCCEEDED(SHCreateItemFromParsingName(file.c_str(),nullptr,IID_PPV_ARGS(&factory)))){factory->GetImage(SIZE{S(96),S(96)},SIIGBF_THUMBNAILONLY|SIIGBF_BIGGERSIZEOK,&bitmap);factory->Release();}
+        // Meshes and materials: the session renders a PNG, which the shell then loads like any image.
+        if(!bitmap&&engineThumbnail(path))try{const auto png=request("asset.thumbnail",{{"path",path}}).value("file",Json());if(png.is_string()&&SUCCEEDED(SHCreateItemFromParsingName(wide(png.get<std::string>()).c_str(),nullptr,IID_PPV_ARGS(&factory)))){factory->GetImage(SIZE{S(96),S(96)},SIIGBF_BIGGERSIZEOK,&bitmap);factory->Release();}}catch(const std::exception&){}
         thumbnails[path]=bitmap;return bitmap;
     }
     LRESULT drawAssetItem(NMLVCUSTOMDRAW& draw){
@@ -1143,6 +1146,7 @@ class NativeEditorShell {
         SendMessageW(assetTiles,BM_SETCHECK,enabled?BST_CHECKED:BST_UNCHECKED,0);
     }
     void refreshFiles(){
+        for(auto it=thumbnails.begin();it!=thumbnails.end();){if(engineThumbnail(it->first)){if(it->second)DeleteObject(it->second);it=thumbnails.erase(it);}else ++it;}
         if(projectTitle.empty())return;
         if(assetTypes.empty()){
             assetTypes=request("content.types");
@@ -4907,6 +4911,8 @@ private:
         logShow[1]=false;refreshLog();const bool logFiltered=std::none_of(logItems.begin(),logItems.end(),[](const Json& row){return row.value("icon",std::string())=="WARN";});logShow[1]=true;refreshLog();const bool consoleLog=logMerged&&logFiltered&&!logItems.empty();
         // Build lighting: a tiny bake writes the scene lightmap and points the meshes at it; undo restores the scene.
         bool lightBuilt=false;{const auto keep=sceneSelection;auto baked=request("scene.bakeLightmaps",{{"path",document.at("path")},{"objects",Json::array()},{"settings",{{"resolution",16},{"samples",4},{"bounces",1}}},{"expectedRevision",document.at("revision")}});const auto info=baked.value("lightmap",Json::object());showDocument(std::move(baked));lightBuilt=!info.value("updated",Json::array()).empty()&&info.value("path",std::string()).rfind("Assets/Lighting/LM_",0)==0&&document.at("text").get<std::string>().find(info.value("path",std::string()))!=std::string::npos;command(Undo);sceneSelection=keep;}
+        // Engine thumbnails: a mesh asset gets a rendered picture in the content browser.
+        thumbnails.erase("Assets/SM_Native.hbmesh.json");const bool engineThumb=thumbnail("Assets/SM_Native.hbmesh.json")!=nullptr;
         // Custom shortcut: binding the palette to Ctrl+Shift+K reaches the accelerator table and the menu label.
         bool shortcutBinding=false;{const auto keep=customKeys;if(defaultKeys.empty()){defaultKeys={{FVIRTKEY|FCONTROL,'K',WORD(CommandPalette)}};}
             bindShortcut(WORD(CommandPalette),{BYTE(FVIRTKEY|FCONTROL|FSHIFT),WORD('K'),0});
@@ -4927,8 +4933,8 @@ private:
         SetWindowTextW(consoleInput,L"r.ScreenPercentage 80");runConsole();const bool consoleSet=Json::parse(document.at("text").get<std::string>()).at("runtime").value("renderScale",0)==80;perform(Undo);
         SetWindowTextW(consoleInput,L"stat fps");runConsole();drawViewport();const bool fpsShown=showFps&&!fpsTimes.empty();perform(ToggleFps);
         SetWindowTextW(consoleInput,L"camera.speed 7");runConsole();const bool speedSet=cameraSpeed==7;perform(Command(CameraSpeedFirst+3));
-        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"lightBuild",lightBuilt}};
-        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!namedLayout||!prefabEditor||!shortcutBinding||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        const Json editingBasics={{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"lightBuild",lightBuilt}};
+        if(!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         write(smoke,Json{{"ok",true},{"help",help},{"docking",true},{"editingBasics",editingBasics},{"webview",GetModuleHandleW(L"WebView2Loader.dll")!=nullptr},{"assets",assets},{"contentDock",savedLayout.at("contentDetached")},{"outputLog",savedLayout.at("console")},{"sceneSurface",sceneSurface},{"sceneColors",colors.size()},{"sceneTransforms",transformEvidence},{"sceneAssetDrop",true},{"graphSearchAndWire",true},{"newCube",newCube},{"play",playEvidence},{"timelineSurface",timelineSurface},{"widgetSurface",widgetSurface},{"widget",widget},{"blueprintNodes",count+2},{"materialNodes",materialCount+1},{"blueprintSurface",blueprintSurface},{"materialSurface",materialSurface},{"materialPreview",{{"backend",materialPreview.at("backend")},{"calls",materialPreview.at("calls")}}},{"componentPreview",{{"backend",componentPreview.at("backend")},{"calls",componentPreview.at("calls")}}},{"assetSurface",{{"backend",assetSurface.at("backend")},{"paints",assetSurface.at("paints")}}},{"imageSurface",imageSurface},{"stateSurface",stateSurface},{"independentDocuments",independentDocuments},{"simultaneousDocking",true},{"browserTreeAndFilter",true},{"modelImportPreview",true},{"independentAssetPreview",true},{"worldAssets",{{"backend","D3D12"},{"terrain",true},{"foliage",true},{"mesh",true},{"meshTools",true},{"uvView",true},{"lod",true}}},{"curveBox",true},{"debugSnapshot",playDebug},{"independentAssetForm",true},{"debugBreaks",playBreaks},{"saved",!document.at("dirty").get<bool>()}}.dump());

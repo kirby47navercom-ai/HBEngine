@@ -1229,6 +1229,14 @@ export function nativeEditorSession(bridge) {
     // Indirect lighting bake (Unreal Build Lighting): bakes the drawn scene into Assets/Lighting/LM_<scene>.hblightmap.json
     // and points each target's MeshRenderer at it (one undo step). ponytail: runs on the session thread; move to worker_threads if large bakes stall the editor.
     // Source control panel (Unity Version Control / Unreal Source Control): git status, stage, commit for the project folder.
+    // Content browser thumbnails for meshes and materials (cached PNG under the user data folder).
+    'asset.thumbnail': async ({path:name})=>{
+      if(typeof name!=='string'||!name.startsWith('Assets/'))throw Error('썸네일 에셋 경로를 확인하세요.');
+      const {assetThumbnail}=await import('./asset-thumbnails.mjs');
+      const folder=path.join(process.env.HB_USER_DATA_DIR||path.join(process.env.LOCALAPPDATA||process.cwd(),'HBEngine','User'),'Cache','Thumbnails');
+      const read=async asset=>JSON.parse(await projectText(project(),asset));
+      return {file:await assetThumbnail(project(),name,folder,{readMaterial:async data=>evaluateMaterial(await resolveMaterialAsset(data,read))})};
+    },
     'sourceControl.status': async ()=>(await import('./source-control.mjs')).sourceControlStatus(project().root),
     'sourceControl.init': async ()=>(await import('./source-control.mjs')).sourceControlInit(project().root),
     'sourceControl.stage': async ({paths,unstage=false,expectedIndexRevision})=>(await import('./source-control.mjs')).sourceControlStage(project().root,{paths,unstage,expectedIndexRevision}),
