@@ -111,6 +111,8 @@ catalog.push(
   flow('materialFloat','Set Material Float','머테리얼 실수 설정','렌더링',[pin('target','Target','object'),pin('parameter','Parameter','string'),pin('value','Value','float')]),
   flow('lightIntensity','Set Light Intensity','광원 밝기 설정','렌더링',[pin('target','Light','object'),pin('value','Intensity','float')]),
   flow('openScene','Open Scene','장면 열기','장면',[pin('scene','Scene','string')]),
+  flow('reloadScene','Reload Scene','장면 다시 불러오기','장면'),
+  spec('getCurrentScene','Get Current Scene','현재 장면 가져오기','장면',[],[pin('return','Scene','string')],'level map 레벨 맵 current'),
   flow('createWidget','Create Widget','위젯 생성','UI',[pin('class','Widget class','string')],[pin('widget','Widget','object')]),
   flow('addViewport','Add To Viewport','뷰포트에 위젯 추가','UI',[pin('widget','Widget','object')]),
   flow('setText','Set Text','텍스트 설정','UI',[pin('widget','Widget','object'),pin('text','Text','string')]),
