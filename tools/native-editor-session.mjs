@@ -1228,6 +1228,11 @@ export function nativeEditorSession(bridge) {
     },
     // Indirect lighting bake (Unreal Build Lighting): bakes the drawn scene into Assets/Lighting/LM_<scene>.hblightmap.json
     // and points each target's MeshRenderer at it (one undo step). ponytail: runs on the session thread; move to worker_threads if large bakes stall the editor.
+    // Source control panel (Unity Version Control / Unreal Source Control): git status, stage, commit for the project folder.
+    'sourceControl.status': async ()=>(await import('./source-control.mjs')).sourceControlStatus(project().root),
+    'sourceControl.init': async ()=>(await import('./source-control.mjs')).sourceControlInit(project().root),
+    'sourceControl.stage': async ({paths,unstage=false,expectedIndexRevision})=>(await import('./source-control.mjs')).sourceControlStage(project().root,{paths,unstage,expectedIndexRevision}),
+    'sourceControl.commit': async ({message,expectedIndexRevision})=>(await import('./source-control.mjs')).sourceControlCommit(project().root,{message,expectedIndexRevision}),
     'navmesh.bake': async ({path,source,expectedRevision}) => {
       const doc=targetDocument(path);
       if(doc.kind!=='navmesh')throw Error('내비 메시 문서를 여세요.');

@@ -166,5 +166,9 @@ try{
    nav=await session('navmesh.bake',{path:navFile,source:groundFile,expectedRevision:nav.revision});assert.equal(nav.triangles,2);
    const baked=JSON.parse((await session('document.read',{path:navFile})).text);assert.equal(baked.indices.length,6);assert.equal(baked.links.length,1,'links kept');
    await session('document.open',{path:scene});}
+  // Source control panel backend: a project-root repository, stage everything, commit, clean status.
+  {let status=await session('sourceControl.status',{});if(!status.projectRoot)status=await session('sourceControl.init',{});assert.equal(status.projectRoot,true);assert.ok(status.entries.length>0,'new project files are listed');
+   status=await session('sourceControl.stage',{paths:status.entries.map(e=>e.path),expectedIndexRevision:status.indexRevision});status=await session('sourceControl.status',{});assert.ok(status.entries.every(e=>e.index!==' '&&e.index!=='?'),'all staged');
+   await session('sourceControl.commit',{message:'검사 커밋',expectedIndexRevision:status.indexRevision});assert.equal((await session('sourceControl.status',{})).entries.length,0,'clean after commit');}
   console.log(JSON.stringify({passed:true,prefab:['apply','revert','refresh','unpack'],delete:{referenceWarning:true,trash:true},autosave:{restored:true,stale:'dropped'},basics:{multiSelect:true,copyPaste:true,snap:true,search:true,move:true}}));
 }finally{await pruneTestArtifacts(work);}

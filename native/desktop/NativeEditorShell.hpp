@@ -22,7 +22,7 @@ class NativeEditorShell {
     HIMAGELIST tileImages=nullptr;
     EditorChromePanel topStrip,viewStrip,outlinerTitle,outlinerHead,outlinerFoot,detailsTitle,statusStrip,contentStrip,bottomTabs;
     // Dock arrangement (saved in the layout file): panel order per area, active tab per area, area sizes in pixels (0 = default).
-    std::map<std::string,std::vector<std::string>> dockSlots{{"left",{"outliner"}},{"right",{"details"}},{"bottom",{"content","log","history","profiler"}}},dockVisible;
+    std::map<std::string,std::vector<std::string>> dockSlots{{"left",{"outliner"}},{"right",{"details"}},{"bottom",{"content","log","history","profiler","source"}}},dockVisible;
     std::map<std::string,std::string> dockActive{{"left","outliner"},{"right","details"},{"bottom","content"}};std::map<std::string,RECT> dockRects;int dockLeft=0,dockRight=0,dockBottom=0;
     std::map<std::string,HBITMAP> thumbnails;HMENU buildMenuHandle=nullptr;
     // Old web editor palette for Win32 controls (see style.css :root).
@@ -57,7 +57,7 @@ class NativeEditorShell {
     EditorGraphPanel graph;
     EditorFormPanel form;
     EditorTreePanel hierarchy;
-    EditorListPanel console,historyList,profilerList;bool profilerShown=false,profileSeen=false;
+    EditorListPanel console,historyList,profilerList,sourceList;bool sourceShown=false;Json sourceStatus;bool profilerShown=false,profileSeen=false;
     EditorScenePanel viewport,previewViewport;
     EditorAssetCanvas assetCanvas;
     Json sceneRows=Json::array(),cameraRows=Json::array(),cameraInput;
@@ -192,7 +192,7 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
-    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),ShowSource=static_cast<Command>(983),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -424,6 +424,7 @@ class NativeEditorShell {
         historyList.attach(window,instance,[this](const Json& event){try{const auto action=event.value("event",std::string());if(action!="select"&&action!="open")return;const int i=event.value("index",-1);if(i<0||i>=int(historyRows.size())||!document.contains("path"))return;const int steps=historyRows.at(i).value("step",0);if(steps)showDocument(request("editor.historyJump",{{"path",document.at("path")},{"steps",steps},{"expectedRevision",document.at("revision")}}));}catch(const std::exception& error){report(error);}},"history");
         console.useD3D12(graphics);
         console.update({{"view","log"}});historyList.update({{"view","log"}});profilerList.attach(window,instance,[](const Json&){},"profiler");profilerList.update({{"view","log"}});
+        sourceList.attach(window,instance,[this](const Json& event){try{const auto action=event.value("event",std::string());const int i=event.value("index",-1);if(action=="open")toggleStage(i);else if(action=="contextmenu"){POINT at{event.value("x",0),event.value("y",0)};ClientToScreen(window,&at);sourceMenu(i,at);}}catch(const std::exception& error){report(error);}},"source");sourceList.update({{"view","log"}});
         viewport.attach(window,instance,[this](Json value){queueViewport(std::move(value));});
         previewViewport.attach(window,instance,[this](Json value){mergeCameraInput(previewInput,std::move(value));queuePreview();});
         assetCanvas.attach(window,instance,[this](const Json& event){
@@ -565,7 +566,7 @@ class NativeEditorShell {
                 AppendMenuW(viewMenu,MF_STRING,WideInspector,L"속성 패널 너비 변경");
         AppendMenuW(viewMenu,MF_STRING,ToggleFps,L"FPS 표시\tCtrl+Shift+H");
         AppendMenuW(viewMenu,MF_STRING,GameViewToggle,L"게임 보기 (편집 표시 숨기기)\tG");AppendMenuW(viewMenu,MF_STRING,GridToggle,L"바닥 격자 표시");AppendMenuW(viewMenu,MF_STRING,NavigationToggle,L"내비게이션 표시\tP");AppendMenuW(viewMenu,MF_STRING,QuadToggle,L"4분할 뷰포트");
-        AppendMenuW(viewMenu,MF_STRING,ViewLit,L"보기 모드: 조명");AppendMenuW(viewMenu,MF_STRING,ViewUnlit,L"보기 모드: 조명 없음");AppendMenuW(viewMenu,MF_STRING,ViewWireframe,L"보기 모드: 와이어프레임");AppendMenuW(viewMenu,MF_STRING,SaveNamedLayout,L"레이아웃 저장…");AppendMenuW(viewMenu,MF_STRING,LoadNamedLayout,L"레이아웃 불러오기…");AppendMenuW(viewMenu,MF_STRING,ShowHistory,L"실행 취소 기록");AppendMenuW(viewMenu,MF_STRING,ShowProfiler,L"프로파일러");
+        AppendMenuW(viewMenu,MF_STRING,ViewLit,L"보기 모드: 조명");AppendMenuW(viewMenu,MF_STRING,ViewUnlit,L"보기 모드: 조명 없음");AppendMenuW(viewMenu,MF_STRING,ViewWireframe,L"보기 모드: 와이어프레임");AppendMenuW(viewMenu,MF_STRING,SaveNamedLayout,L"레이아웃 저장…");AppendMenuW(viewMenu,MF_STRING,LoadNamedLayout,L"레이아웃 불러오기…");AppendMenuW(viewMenu,MF_STRING,ShowHistory,L"실행 취소 기록");AppendMenuW(viewMenu,MF_STRING,ShowProfiler,L"프로파일러");AppendMenuW(viewMenu,MF_STRING,ShowSource,L"소스 관리");
         AppendMenuW(viewMenu,MF_STRING,ResetLayout,L"기본 배치 복원");
         scaleMenu=CreatePopupMenu();
         AppendMenuW(scaleMenu,MF_STRING,ScaleAuto,L"Windows 설정 따르기");
@@ -780,7 +781,7 @@ class NativeEditorShell {
         viewStrip.update({{"items",Json::array({chip("camera",u8"\uE722",utf8(cameraName.empty()?L"편집기 카메라":cameraName),"dropdown"),chip("viewmode",u8"\uE706",viewMode=="unlit"?"조명 없음":viewMode=="wireframe"?"와이어프레임":"조명","dropdown"),chip("pilot",u8"\uE7B7",pilotId.empty()?"":"조종 끝내기",pilotId.empty()?"text":"button"),chip("fps",u8"",fpsLabel,"text"),chip("speed",u8"\uE7C1",std::to_string(cameraSpeed),"dropdown",false,true),chip("pivot",u8"\uE7C9",pivotCenter?"중심":"피벗","button",false,true),chip("space",localSpace?u8"\uE7B8":u8"\uE909",localSpace?"로컬":"월드","button",false,true),chip("surface",u8"\uE81D","","toggle",surfaceSnap,true),chip("grid",u8"\uE80A","","toggle",showGrid,true),chip("quad",u8"\uF0E2","","toggle",quadView,true),
             chip("move",u8"\uE7C2","","toggle",tool=="translate",true),chip("rotate",u8"\uE7AD","","toggle",tool=="rotate",true),chip("scale",u8"\uE740","","toggle",tool=="scale",true),{{"kind","sep"},{"right",true}},
             chip("snap",u8"\uE80A",number(snapGrid),"toggle",snapOn,true),chip("snapsize",u8"","∠ "+number(snapAngle)+"°","dropdown",false,true),{{"kind","sep"},{"right",true}},chip("focus",u8"\uE8A3","","button",false,true)})},{"theme",{{"background",{.118f,.118f,.118f}}}}});
-        static const std::map<std::string,std::string> titles{{"outliner","아웃라이너"},{"details","디테일"},{"content","콘텐츠 브라우저"},{"log","출력 로그"},{"history","실행 취소 기록"},{"profiler","프로파일러"}};
+        static const std::map<std::string,std::string> titles{{"outliner","아웃라이너"},{"details","디테일"},{"content","콘텐츠 브라우저"},{"log","출력 로그"},{"history","실행 취소 기록"},{"profiler","프로파일러"},{"source","소스 관리"}};
         for(const char* slot:{"left","right","bottom"}){Json items=Json::array();for(const auto& panel:dockVisible[slot])items.push_back({{"id","dock:"+panel},{"label",titles.at(panel)},{"kind","tab"},{"active",dockActive[slot]==panel}});dockStrip(slot).update({{"items",items},{"theme",{{"background",{.102f,.102f,.102f}}}}});}
         outlinerHead.update({{"items",Json::array({chip("","","항목 레이블","text"),chip("","","유형","text",false,true)})},{"theme",{{"background",{.165f,.165f,.165f}}}}});
         outlinerFoot.update({{"items",Json::array({chip("","",std::to_string(sceneRows.size())+"개 오브젝트 ("+std::to_string(selectedIds().size())+"개 선택됨)","text")})},{"theme",{{"background",{.141f,.141f,.141f}}}}});
@@ -1041,7 +1042,7 @@ class NativeEditorShell {
             const RECT area=dockRects[slot];const bool any=!dockVisible[slot].empty();
             dockStrip(slot).update({{"rect",{int(area.left)+S(2),int(area.top)+S(2),std::max(1,int(area.right-area.left)-S(4)),S(30)}},{"visible",any}});
             const RECT body{area.left+S(2),area.top+S(34),area.right-S(2),area.bottom-S(2)};
-            for(const auto& panel:dockSlots[slot])if(shown(panel)||panel=="log"||panel=="history"||panel=="profiler"||(panel=="outliner"&&!sceneShown))placeDockPanel(panel,body,shown(panel)&&dockActive[slot]==panel);
+            for(const auto& panel:dockSlots[slot])if(shown(panel)||panel=="log"||panel=="history"||panel=="profiler"||panel=="source"||(panel=="outliner"&&!sceneShown))placeDockPanel(panel,body,shown(panel)&&dockActive[slot]==panel);
         }
         if(detached&&!contentWindow)placeBrowser(S(5),S(5),std::max(1,width-S(10)),std::max(1,height-statusHeight-S(10)),true);
         ShowWindow(dockTabs,SW_HIDE);
@@ -1058,6 +1059,7 @@ class NativeEditorShell {
             outlinerFoot.update({{"rect",{bx,by+bh-S(24),bw,S(24)}},{"visible",show}});
         }else if(panel=="details"){if(show)form.update({{"rect",{bx,by,bw,bh}},{"visible",true}});}
         else if(panel=="content"){if(!contentWindow)placeBrowser(bx,by+S(2),bw,bh-S(2),show);}
+        else if(panel=="source"){const was=sourceShown;sourceShown=show;if(show&&!was)refreshSource();sourceList.update({{"rect",{bx,by,bw,bh}},{"visible",show}});}
         else if(panel=="profiler"){profilerShown=show;if(show)readProfile();profilerList.update({{"rect",{bx,by,bw,bh}},{"visible",show}});}
         else if(panel=="history"){historyShown=show;if(show)refreshHistory();historyList.update({{"rect",{bx,by,bw,bh}},{"visible",show}});}
         else if(panel=="log"){if(show&&!logItems.empty())console.update({{"items",logItems},{"revision",++logRevision}});console.update({{"rect",{bx,by,bw,std::max(1,bh-S(28))}},{"visible",show}});
@@ -1747,6 +1749,45 @@ class NativeEditorShell {
         auto t=std::to_string(v);t.erase(t.find_last_not_of('0')+1);if(!t.empty()&&t.back()=='.')t.pop_back();return t;
     }
     // Profiler panel: the running game's latest profile (written by the player twice a second).
+    // Source control rows: status label (staged ● / changed ○) and project path; double-click stages or unstages.
+    static const char* gitLabel(char code){switch(code){case 'M':return "수정";case 'A':return "추가";case 'D':return "삭제";case 'R':return "이름 변경";case 'C':return "복사";case 'U':return "충돌";default:return "";}}
+    void refreshSource(){
+        Json items=Json::array();
+        if(projectFile.empty())items.push_back({{"detail","소스 관리"},{"name","프로젝트를 여세요."}});
+        else{
+            try{sourceStatus=request("sourceControl.status",{});}catch(const std::exception& error){sourceStatus=nullptr;items.push_back({{"detail","오류"},{"name",error.what()}});}
+            if(sourceStatus.is_object()&&!sourceStatus.value("available",false))items.push_back({{"detail","소스 관리"},{"name","Git 저장소가 없어요. 오른쪽 클릭 > Git 저장소 만들기."}});
+            else if(sourceStatus.is_object()){
+                const auto& entries=sourceStatus.at("entries");
+                items.push_back({{"detail","브랜치"},{"name",sourceStatus.value("branch",std::string())+"  · 변경 "+std::to_string(entries.size())+"개"}});
+                for(const auto& e:entries){
+                    const auto index=e.value("index",std::string(" ")),working=e.value("working",std::string(" "));
+                    const bool staged=index!=" "&&index!="?";std::string label=e.value("conflict",false)?"충돌":e.value("untracked",false)?"새 파일":gitLabel((staged?index:working)[0]);
+                    items.push_back({{"detail",std::string(staged?"● ":"○ ")+label},{"name",e.value("path",std::string())},{"icon",e.value("conflict",false)?"ERROR":""}});
+                }
+            }
+        }
+        static std::uint64_t revision=0;sourceList.update({{"items",items},{"revision",++revision}});
+    }
+    const Json* sourceEntry(int row)const{if(!sourceStatus.is_object()||!sourceStatus.contains("entries"))return nullptr;const auto& e=sourceStatus.at("entries");return row>=1&&row<=int(e.size())?&e.at(std::size_t(row-1)):nullptr;}
+    void toggleStage(int row){
+        const auto* e=sourceEntry(row);if(!e)return;const auto index=e->value("index",std::string(" "));const bool staged=index!=" "&&index!="?";
+        request("sourceControl.stage",{{"paths",Json::array({e->at("path")})},{"unstage",staged},{"expectedIndexRevision",sourceStatus.at("indexRevision")}});refreshSource();
+    }
+    void sourceMenu(int row,POINT at){
+        const auto* e=sourceEntry(row);const bool repo=sourceStatus.is_object()&&sourceStatus.value("available",false);
+        HMENU menu=CreatePopupMenu();
+        if(!repo)AppendMenuW(menu,MF_STRING,5,L"Git 저장소 만들기");
+        else{if(e){AppendMenuW(menu,MF_STRING,1,L"스테이징 / 취소");AppendMenuW(menu,MF_STRING,6,L"열기");AppendMenuW(menu,MF_SEPARATOR,0,nullptr);}AppendMenuW(menu,MF_STRING,2,L"모두 스테이징");AppendMenuW(menu,MF_STRING,3,L"커밋…");}
+        AppendMenuW(menu,MF_STRING,4,L"새로 고침");
+        const int choice=popup(menu,at);DestroyMenu(menu);
+        if(choice==1)toggleStage(row);
+        else if(choice==2){Json paths=Json::array();for(const auto& x:sourceStatus.at("entries"))if(!x.value("conflict",false))paths.push_back(x.at("path"));if(!paths.empty())request("sourceControl.stage",{{"paths",paths},{"expectedIndexRevision",sourceStatus.at("indexRevision")}});refreshSource();}
+        else if(choice==3){const auto message=inputName(L"커밋 설명",L"",200);if(message.empty())return;request("sourceControl.commit",{{"message",utf8(message)},{"expectedIndexRevision",sourceStatus.at("indexRevision")}});refreshSource();statusText((L"커밋했어요 · "+message).c_str());}
+        else if(choice==4)refreshSource();
+        else if(choice==5){request("sourceControl.init",{});refreshSource();}
+        else if(choice==6&&e){captureSource();showDocument(request("document.open",{{"path",e->at("path")}}));}
+    }
     void readProfile(){
         Json items=Json::array();const auto row=[&](const char* label,std::string value){items.push_back({{"detail",label},{"name",std::move(value)}});};
         Json p;if(playProcess){const auto file=editorProfile/L"Sessions"/(L"profile-"+std::to_wstring(playPid)+L".json");std::error_code error;if(fs::file_size(file,error)<=64*1024&&!error)try{p=Json::parse(read(file));}catch(const std::exception&){}}
@@ -2836,7 +2877,8 @@ class NativeEditorShell {
                 // Layouts saved before the history panel existed get it in the bottom area.
                 if(seen==std::multiset<std::string>{"content","details","log","outliner"}){slots["bottom"].push_back("history");seen.insert("history");}
                 if(seen==std::multiset<std::string>{"content","details","history","log","outliner"}){slots["bottom"].push_back("profiler");seen.insert("profiler");}
-                if(seen==std::multiset<std::string>{"content","details","history","log","outliner","profiler"}){dockSlots=slots;for(const char* slot:{"left","right","bottom"})if(d.at("active").contains(slot))dockActive[slot]=d.at("active").at(slot).get<std::string>();}
+                if(seen==std::multiset<std::string>{"content","details","history","log","outliner","profiler"}){slots["bottom"].push_back("source");seen.insert("source");}
+                if(seen==std::multiset<std::string>{"content","details","history","log","outliner","profiler","source"}){dockSlots=slots;for(const char* slot:{"left","right","bottom"})if(d.at("active").contains(slot))dockActive[slot]=d.at("active").at(slot).get<std::string>();}
                 dockLeft=std::max(0,d.value("left",0));dockRight=std::max(0,d.value("right",0));dockBottom=std::max(0,d.value("bottom",0));
             }
             if(data.contains("snap")){const auto& s=data.at("snap");snapOn=s.value("on",false);snapGrid=std::clamp(s.value("grid",.5),.01,100.0);snapAngle=std::clamp(s.value("angle",15.0),1.0,180.0);}updateSnapMenu();
@@ -3390,6 +3432,7 @@ class NativeEditorShell {
         if(command==ProjectSettings){if(projectFile.empty())return;captureSource();showDocument(request("document.open",{{"path",request("project.settings",{}).at("path")}}));statusText(L"프로젝트 설정: 장면에 게임 설정이 없으면 이 값을 써요.");return;}
         if(command==PauseGame){if(!playProcess)return;playPaused=!playPaused;postToGame(WM_APP+44,playPaused);statusText(playPaused?L"플레이 일시정지":L"플레이 계속");refreshChrome();return;}
         if(command==StepGameFrame){if(!playProcess)return;playPaused=true;postToGame(WM_APP+45,0);statusText(L"한 프레임 진행");refreshChrome();return;}
+        if(command==ShowSource){const auto slot=dockSlotOf("source");dockActive[slot]="source";layout();return;}
         if(command==ShowProfiler){const auto slot=dockSlotOf("profiler");dockActive[slot]="profiler";layout();return;}
         if(command==ShowHistory){const auto slot=dockSlotOf("history");dockActive[slot]="history";layout();return;}
         if(command==DropToFloor){if(sceneOpen()&&!sceneSelection.empty())queueViewport({{"command","dropToFloor"},{"ids",selectedIds()}});return;}
