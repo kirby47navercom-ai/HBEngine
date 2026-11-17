@@ -153,7 +153,9 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   }
   async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,smooth,snap,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets,extra={}) {
     const timing={start:performance.now()};
-    const {quad=false,viewMode='lit',gameView=false,showGrid=false,gridSize=1,space='world',surfaceSnap=false,vertexSnap=false,pilot=''}=extra;
+    const {quad=false,viewMode='lit',gameView=false,showGrid=false,gridSize=1,space='world',surfaceSnap=false,vertexSnap=false,pilot='',pivotMode='pivot'}=extra;
+    // Pivot / center (Unity): the gizmo sits on the object's pivot or on its bounds centre.
+    const gizmoOrigin=g=>{if(pivotMode==='center'){const box=new THREE.Box3().setFromObject(g);if(!box.isEmpty())return box.getCenter(new THREE.Vector3());}return g.getWorldPosition(new THREE.Vector3());};
     let box=Array.isArray(extra.box)&&extra.box.length===4&&extra.box.every(Number.isFinite)?extra.box.slice():null;
     canvas.clientWidth=width;canvas.clientHeight=height;
     if(previewTransform){transform(previewTransform.actor,previewTransform.group);previewTransform=null;}
@@ -254,7 +256,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     if(authoring&&['translatePreview','translate','transformPreview','transform'].includes(command)){
       const actor=content.objects.find(row=>row.id===selection),group=groups.get(selection);
       if(group?.visible&&!actor.locked&&[x,y,dx,dy].every(Number.isFinite)){
-        const origin=group.getWorldPosition(new THREE.Vector3()),center=origin.clone().project(active);
+        const origin=gizmoOrigin(group),center=origin.clone().project(active);
         if(center.z>=-1&&center.z<=1){
           if(command.startsWith('translate')){
             const before=new THREE.Vector3(2*x/width-1,1-2*y/height,center.z).unproject(active);
@@ -426,7 +428,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     if(handles)handles.visible=false;
     if(solidGizmo)solidGizmo.visible=false;
     if(authoring&&group?.visible&&!actor.locked){
-      const origin=group.getWorldPosition(new THREE.Vector3()),center=origin.clone().project(active);
+      const origin=gizmoOrigin(group),center=origin.clone().project(active);
       if(Math.abs(center.x)<=1&&Math.abs(center.y)<=1&&Math.abs(center.z)<=1){
         const length=handleSize(origin),positions=[],colors=[];
         const localBasis=axis=>new THREE.Vector3().setComponent(axis,1).applyQuaternion(group.quaternion).transformDirection(group.parent.matrixWorld);

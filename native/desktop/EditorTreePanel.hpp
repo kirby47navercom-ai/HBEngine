@@ -5,14 +5,14 @@
 
 class EditorTreePanel : public EditorPanelBase {
 public:
-    struct Row {std::string id,name,icon,type;int depth=0;bool children=false,collapsed=false,selected=false,locked=false,visible=true;};
+    struct Row {std::string id,name,icon,type;int depth=0;bool children=false,collapsed=false,selected=false,locked=false,visible=true,prefab=false;};
     enum Part {None,Fold,Item,Lock,Eye};
     void attach(HWND owner,HINSTANCE instance,Post post){EditorPanelBase::attach(owner,instance,std::move(post),L"HBEngine.EditorTreePanel","hierarchy");}
 
     // op "hierarchy": {visible, rect:[x,y,w,h] physical pixels, scale, rows:[...], theme, reveal}
     void update(const Json& model){
         if(!window)return;
-        if(model.contains("rows")){rows.clear();for(const auto& r:model.at("rows")){Row row;row.id=r.at("id").get<std::string>();row.name=r.value("name",std::string());row.icon=r.value("icon",std::string());row.type=r.value("type",std::string());row.depth=std::clamp(r.value("depth",0),0,64);row.children=r.value("children",false);row.collapsed=r.value("collapsed",false);row.selected=r.value("selected",false);row.locked=r.value("locked",false);row.visible=r.value("visible",true);rows.push_back(std::move(row));}}
+        if(model.contains("rows")){rows.clear();for(const auto& r:model.at("rows")){Row row;row.id=r.at("id").get<std::string>();row.name=r.value("name",std::string());row.icon=r.value("icon",std::string());row.type=r.value("type",std::string());row.depth=std::clamp(r.value("depth",0),0,64);row.children=r.value("children",false);row.collapsed=r.value("collapsed",false);row.selected=r.value("selected",false);row.locked=r.value("locked",false);row.visible=r.value("visible",true);row.prefab=r.value("prefab",false);rows.push_back(std::move(row));}}
         applyCommon(model);
         if(model.contains("reveal")&&model.at("reveal").is_string()){const auto id=model.at("reveal").get<std::string>();for(std::size_t i=0;i<rows.size();i++)if(rows[i].id==id){const int top=int(i)*rowHeight(),bottom=top+rowHeight();if(top<scroll)scroll=top;else if(bottom>scroll+std::max(1,bounds[3]))scroll=bottom-bounds[3];}}
         clampScroll();place();
@@ -52,7 +52,7 @@ private:
         for(int i=first;i<last;i++){const auto& r=rows[i];const float y=float(i*h-scroll),w=float(bounds[2]);
             if(r.selected)fill(0,y,w,float(h),theme.selection);else if(i==hover)fill(0,y,w,float(h),{theme.selection.r,theme.selection.g,theme.selection.b,.45f});
             if(dragging&&i==dropRow){brush->SetColor(theme.accent);canvas->DrawRectangle(D2D1::RectF(1,y+1,w-1,y+h-1),brush,float(std::max(1,px(1))));}
-            const float x=float(indent(r.depth));const auto dim=r.visible?theme.text:theme.muted;
+            const float x=float(indent(r.depth));const D2D1_COLOR_F dim=!r.visible?D2D1_COLOR_F(theme.muted):r.prefab?D2D1_COLOR_F(D2D1::ColorF(.47f,.7f,1.f)):D2D1_COLOR_F(theme.text);
             if(r.children)label(r.collapsed?L"":L"",icons,x,y,float(px(16)),float(h),theme.muted);
             label(glyph(r.icon),icons,x+px(16),y,float(px(18)),float(h),r.selected?theme.text:theme.accent);
             const float nameX=x+px(38),typeW=r.type.empty()||w<px(300)?0.f:std::min(w*.3f,float(px(96)));label(wide(r.name),text,nameX,y,std::max(0.f,w-px(56)-typeW-nameX),float(h),dim);

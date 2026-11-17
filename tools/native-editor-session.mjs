@@ -1214,7 +1214,7 @@ export function nativeEditorSession(bridge) {
     'editor.historyJump': async ({path,steps,expectedRevision}) => {const doc=targetDocument(path);await check(doc,expectedRevision);if(!Number.isInteger(steps)||steps<-doc.history.length||steps>doc.future.length)throw Error('기록 위치를 확인하세요.');let result=await response(doc);for(let i=0;i<Math.abs(steps);i++)result=await restore(steps<0?'history':'future',steps<0?'future':'history',path,await revision(doc));return result;},
     'editor.redo': ({path,expectedRevision}) => restore('future','history',path,expectedRevision),
     'scene.catalog': () => ({placements:placementCatalog.map(({key,label,category})=>({id:key,label,group:category})),components:Object.keys(componentDefinitions)}),
-    'scene.hierarchy': ({query}={}) => scene().data.objects.map(object=>{const {id,name,kind,parent,visible,locked,components}=object;return {id,name,kind,parent,visible,locked,camera:components?.some(c=>c.type==='Camera'&&c.properties?.enabled!==false)??kind==='camera',...(typeof query==='string'&&query.trim()?{match:sceneMatches(object,query.trim())}:{})};}),
+    'scene.hierarchy': ({query}={}) => scene().data.objects.map(object=>{const {id,name,kind,parent,visible,locked,components}=object;return {id,name,kind,parent,visible,locked,prefab:Boolean(object.prefabLink),camera:components?.some(c=>c.type==='Camera'&&c.properties?.enabled!==false)??kind==='camera',...(typeof query==='string'&&query.trim()?{match:sceneMatches(object,query.trim())}:{})};}),
     'scene.copy': ({path,ids}) => {
       const doc=targetDocument(path);if(doc.kind!=='scene')throw Error('장면 문서를 선택하세요.');
       const list=(Array.isArray(ids)?ids:[]).filter(id=>doc.data.objects.some(o=>o.id===id));

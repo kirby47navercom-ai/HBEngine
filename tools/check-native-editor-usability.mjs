@@ -27,6 +27,7 @@ try{
   // Prefab: place, override scale, revert, override again, apply, refresh, unpack.
   doc=await session('scene.edit',{action:'placeAsset',asset:prefabFile,position:[1,0,0],expectedRevision:doc.revision});
   const instance=doc.selection;
+  assert.equal((await session('scene.hierarchy',{})).find(r=>r.id===instance)?.prefab,true,'outliner marks prefab instances');
   const rootOf=async()=>JSON.parse((await session('document.read',{path:scene})).text).objects.find(o=>o.id===instance);
   doc=await session('scene.edit',{action:'scale',id:instance,axis:0,value:2,expectedRevision:doc.revision});
   assert.equal((await rootOf()).scale[0],2);

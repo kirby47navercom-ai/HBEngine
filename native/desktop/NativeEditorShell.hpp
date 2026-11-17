@@ -36,7 +36,7 @@ class NativeEditorShell {
     Json viewTarget;
     // Viewport FPS readout (stat fps / Ctrl+Shift+H), Unreal camera speed 1-8, console command line under Output Log.
     // Viewport show flags and modes (Unreal): game view (G), floor grid, lit/unlit/wireframe, quad panes, world/local gizmo, surface snapping, pilot.
-    bool gameView=false,showGrid=true,quadView=false,localSpace=false,surfaceSnap=false,historyShown=false;std::string viewMode="lit",pilotId;Json historyRows=Json::array();
+    bool pivotCenter=false,gameView=false,showGrid=true,quadView=false,localSpace=false,surfaceSnap=false,historyShown=false;std::string viewMode="lit",pilotId;Json historyRows=Json::array();
     bool showFps=false;int cameraSpeed=4;std::deque<ULONGLONG> fpsTimes;double fpsGpuMs=-1;ULONGLONG fpsShown=0;HWND consoleInput=nullptr;
     static double speedScale(int speed){static const double scales[8]={.1,.25,.5,1,2,4,8,16};return scales[std::clamp(speed,1,8)-1];}
     bool snapOn=false;double snapGrid=.5,snapAngle=15;HMENU snapMenu=nullptr;HWND hierarchySearch=nullptr;std::string hierarchyQuery;
@@ -192,7 +192,7 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
-    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ProjectSettings=static_cast<Command>(974),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -776,7 +776,7 @@ class NativeEditorShell {
         const int camera=int(SendMessageW(views,CB_GETCURSEL,0,0));std::wstring cameraName(256,L' ');cameraName.resize(camera>=0?std::max<LRESULT>(0,SendMessageW(views,CB_GETLBTEXT,camera,LPARAM(cameraName.data()))):0);
         const auto number=[](double v){auto t=std::to_string(v);t.erase(t.find_last_not_of('0')+1);if(!t.empty()&&t.back()=='.')t.pop_back();return t;};
         std::string fpsLabel;if(showFps){char text[64];std::snprintf(text,sizeof text,fpsGpuMs>=0?"%d FPS · GPU %.1f ms":"%d FPS",int(fpsTimes.size()),fpsGpuMs);fpsLabel=text;}
-        viewStrip.update({{"items",Json::array({chip("camera",u8"\uE722",utf8(cameraName.empty()?L"편집기 카메라":cameraName),"dropdown"),chip("viewmode",u8"\uE706",viewMode=="unlit"?"조명 없음":viewMode=="wireframe"?"와이어프레임":"조명","dropdown"),chip("pilot",u8"\uE7B7",pilotId.empty()?"":"조종 끝내기",pilotId.empty()?"text":"button"),chip("fps",u8"",fpsLabel,"text"),chip("speed",u8"\uE7C1",std::to_string(cameraSpeed),"dropdown",false,true),chip("space",localSpace?u8"\uE7B8":u8"\uE909",localSpace?"로컬":"월드","button",false,true),chip("surface",u8"\uE81D","","toggle",surfaceSnap,true),chip("grid",u8"\uE80A","","toggle",showGrid,true),chip("quad",u8"\uF0E2","","toggle",quadView,true),
+        viewStrip.update({{"items",Json::array({chip("camera",u8"\uE722",utf8(cameraName.empty()?L"편집기 카메라":cameraName),"dropdown"),chip("viewmode",u8"\uE706",viewMode=="unlit"?"조명 없음":viewMode=="wireframe"?"와이어프레임":"조명","dropdown"),chip("pilot",u8"\uE7B7",pilotId.empty()?"":"조종 끝내기",pilotId.empty()?"text":"button"),chip("fps",u8"",fpsLabel,"text"),chip("speed",u8"\uE7C1",std::to_string(cameraSpeed),"dropdown",false,true),chip("pivot",u8"\uE7C9",pivotCenter?"중심":"피벗","button",false,true),chip("space",localSpace?u8"\uE7B8":u8"\uE909",localSpace?"로컬":"월드","button",false,true),chip("surface",u8"\uE81D","","toggle",surfaceSnap,true),chip("grid",u8"\uE80A","","toggle",showGrid,true),chip("quad",u8"\uF0E2","","toggle",quadView,true),
             chip("move",u8"\uE7C2","","toggle",tool=="translate",true),chip("rotate",u8"\uE7AD","","toggle",tool=="rotate",true),chip("scale",u8"\uE740","","toggle",tool=="scale",true),{{"kind","sep"},{"right",true}},
             chip("snap",u8"\uE80A",number(snapGrid),"toggle",snapOn,true),chip("snapsize",u8"","∠ "+number(snapAngle)+"°","dropdown",false,true),{{"kind","sep"},{"right",true}},chip("focus",u8"\uE8A3","","button",false,true)})},{"theme",{{"background",{.118f,.118f,.118f}}}}});
         static const std::map<std::string,std::string> titles{{"outliner","아웃라이너"},{"details","디테일"},{"content","콘텐츠 브라우저"},{"log","출력 로그"},{"history","실행 취소 기록"}};
@@ -814,7 +814,7 @@ class NativeEditorShell {
         else if(id=="snap")perform(SnapToggle);else if(id=="focus")perform(FocusActor);
         else if(id=="snapsize"){if(const int choice=popup(snapMenu,at))perform(Command(choice));}
         else if(id=="viewmode"){HMENU menu=CreatePopupMenu();AppendMenuW(menu,MF_STRING|(viewMode=="lit"?MF_CHECKED:0),ViewLit,L"조명");AppendMenuW(menu,MF_STRING|(viewMode=="unlit"?MF_CHECKED:0),ViewUnlit,L"조명 없음");AppendMenuW(menu,MF_STRING|(viewMode=="wireframe"?MF_CHECKED:0),ViewWireframe,L"와이어프레임");AppendMenuW(menu,MF_SEPARATOR,0,nullptr);AppendMenuW(menu,MF_STRING|(gameView?MF_CHECKED:0),GameViewToggle,L"게임 보기\tG");if(const int choice=popup(menu,at))perform(Command(choice));DestroyMenu(menu);}
-        else if(id=="space")perform(SpaceToggle);else if(id=="surface")perform(SurfaceSnapToggle);else if(id=="grid")perform(GridToggle);else if(id=="quad")perform(QuadToggle);else if(id=="pilot"){if(!pilotId.empty())perform(PilotToggle);}
+        else if(id=="pivot")perform(PivotToggle);else if(id=="space")perform(SpaceToggle);else if(id=="surface")perform(SurfaceSnapToggle);else if(id=="grid")perform(GridToggle);else if(id=="quad")perform(QuadToggle);else if(id=="pilot"){if(!pilotId.empty())perform(PilotToggle);}
         else if(id=="speed"){HMENU menu=CreatePopupMenu();for(int i=1;i<=8;i++)AppendMenuW(menu,MF_STRING|(i==cameraSpeed?MF_CHECKED:0),CameraSpeedFirst+i-1,(L"카메라 속도 "+std::to_wstring(i)).c_str());if(const int choice=popup(menu,at))perform(Command(choice));DestroyMenu(menu);}
         else if(id=="camera"){
             const HMENU menu=CreatePopupMenu();const int count=int(SendMessageW(views,CB_GETCOUNT,0,0)),current=int(SendMessageW(views,CB_GETCURSEL,0,0));
@@ -1479,7 +1479,7 @@ class NativeEditorShell {
             const auto& actor=sceneRows.at(i);const auto id=actor.at("id").get<std::string>();
             const auto branch=children.find(id);const bool hasChildren=branch!=children.end(),closed=!filtering&&folded.count(id)>0;
             if(filtering&&!keep.count(id))continue;
-            rows.push_back({{"id",id},{"name",actor.at("name")},{"icon",actor.at("kind")},{"type",kindLabel(actor.value("kind",std::string()),actor.value("camera",false))},{"depth",depth},{"children",hasChildren},{"collapsed",closed},
+            rows.push_back({{"id",id},{"name",actor.at("name")},{"icon",actor.at("kind")},{"prefab",actor.value("prefab",false)},{"type",kindLabel(actor.value("kind",std::string()),actor.value("camera",false))},{"depth",depth},{"children",hasChildren},{"collapsed",closed},
                 {"selected",id==sceneSelection||std::find(sceneExtra.begin(),sceneExtra.end(),id)!=sceneExtra.end()},{"visible",actor.value("visible",true)},{"locked",actor.value("locked",false)}});
             if(hasChildren&&!closed)push(branch->second,depth+1);
         }
@@ -1583,7 +1583,7 @@ class NativeEditorShell {
         if(!input.contains("tool"))input["tool"]=viewport.transformTool();
         if(snapOn)input["snap"]={{"grid",snapGrid},{"angle",snapAngle}};
         if(input.contains("flight")&&input.at("flight").is_object())input["flight"]["speedScale"]=speedScale(cameraSpeed);
-        input["quad"]=quadView;input["viewMode"]=viewMode;input["gameView"]=gameView;input["showGrid"]=showGrid;input["gridSize"]=snapGrid;input["space"]=localSpace?"local":"world";input["surfaceSnap"]=surfaceSnap;input["vertexSnap"]=(GetKeyState('V')&0x8000)!=0;if(!pilotId.empty())input["pilot"]=pilotId;
+        input["quad"]=quadView;input["viewMode"]=viewMode;input["gameView"]=gameView;input["showGrid"]=showGrid;input["gridSize"]=snapGrid;input["space"]=localSpace?"local":"world";input["pivotMode"]=pivotCenter?"center":"pivot";input["surfaceSnap"]=surfaceSnap;input["vertexSnap"]=(GetKeyState('V')&0x8000)!=0;if(!pilotId.empty())input["pilot"]=pilotId;
         auto state=request("scene.viewport",input);
         if(state.contains("target"))viewTarget=state.at("target");
         if(state.contains("drops"))for(const auto& drop:state.at("drops"))editScene({{"action","translate"},{"id",drop.at("id")},{"delta",drop.at("delta")}});
@@ -3268,6 +3268,7 @@ class NativeEditorShell {
         if(command==SpaceToggle){localSpace=!localSpace;statusText(localSpace?L"기즈모: 로컬 좌표":L"기즈모: 월드 좌표");refreshChrome();queueViewport();return;}
         if(command==SurfaceSnapToggle){surfaceSnap=!surfaceSnap;refreshChrome();return;}
         if(command>=ViewLit&&command<=ViewWireframe){viewMode=command==ViewLit?"lit":command==ViewUnlit?"unlit":"wireframe";refreshChrome();queueViewport();return;}
+        if(command==PivotToggle){pivotCenter=!pivotCenter;statusText(pivotCenter?L"기즈모: 경계 중심":L"기즈모: 피벗");refreshChrome();queueViewport();return;}
         if(command==ProjectSettings){if(projectFile.empty())return;captureSource();showDocument(request("document.open",{{"path",request("project.settings",{}).at("path")}}));statusText(L"프로젝트 설정: 장면에 게임 설정이 없으면 이 값을 써요.");return;}
         if(command==PauseGame){if(!playProcess)return;playPaused=!playPaused;postToGame(WM_APP+44,playPaused);statusText(playPaused?L"플레이 일시정지":L"플레이 계속");refreshChrome();return;}
         if(command==StepGameFrame){if(!playProcess)return;playPaused=true;postToGame(WM_APP+45,0);statusText(L"한 프레임 진행");refreshChrome();return;}
