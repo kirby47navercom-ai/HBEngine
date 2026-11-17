@@ -215,6 +215,14 @@ try{
   {const first=await session('content.duplicate',{path:prefabFile}),second=await session('content.duplicate',{path:prefabFile});
    assert.ok(first.path.endsWith('_Copy.hbprefab.json')&&second.path.endsWith('_Copy2.hbprefab.json'),'unique copy names');
    assert.equal(JSON.parse((await session('document.open',{path:first.path})).text).name,'PF_Box_Copy');await session('document.open',{path:scene});await assert.rejects(session('content.duplicate',{path:'Assets/Missing.hbprefab.json'}));}
+  // Collision layers: names and a symmetric matrix in the project game config; collider layer fields become a named dropdown.
+  {await session('project.settings',{});await session('project.collisionLayerName',{index:3,name:'Enemy'});
+   let layers=await session('project.collisionToggle',{a:0,b:3});assert.equal((layers.matrix[0]>>>3)&1,0);assert.equal((layers.matrix[3]>>>0)&1,0,'symmetric');
+   layers=await session('project.collisionLayers',{});assert.equal(layers.names[3],'Enemy');assert.equal((layers.matrix[0]>>>3)&1,0);
+   await assert.rejects(session('project.collisionToggle',{a:0,b:40}),/레이어/);
+   const opened=await session('document.open',{path:scene}),objects=JSON.parse(opened.text).objects,index=objects.findIndex(o=>(o.components||[]).some(c=>c.type==='BoxCollider'));
+   if(index>=0){const c=objects[index].components.findIndex(x=>x.type==='BoxCollider');const field=(await session('asset.fields',{parts:['objects',String(index),'components',String(c),'properties']})).find(f=>f.key==='layer');assert.equal(field.control.kind,'select');assert.ok(field.control.options.some(o=>o[1]==='3: Enemy'),'named layer in the dropdown');}
+   const {createRigidPhysics}=await import('../prototype/physics-world.js');assert.equal(typeof createRigidPhysics,'function');}
   // Source control panel backend: a project-root repository, stage everything, commit, clean status.
   {let status=await session('sourceControl.status',{});if(!status.projectRoot)status=await session('sourceControl.init',{});assert.equal(status.projectRoot,true);assert.ok(status.entries.length>0,'new project files are listed');
    status=await session('sourceControl.stage',{paths:status.entries.map(e=>e.path),expectedIndexRevision:status.indexRevision});status=await session('sourceControl.status',{});assert.ok(status.entries.every(e=>e.index!==' '&&e.index!=='?'),'all staged');

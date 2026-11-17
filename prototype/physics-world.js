@@ -240,7 +240,8 @@ export function createRigidPhysics(objects,options={}){
   }}
   // Fixed contacts depend only on fixed bodies/colliders: a pose change of a moving body does not rebuild them.
   const fixedKey=space=>space.fixedVersion||0;
-  const pairAllowed=(space,a,b)=>{const x=space.colliders.get(a),y=space.colliders.get(b);return !!x&&!!y&&x.object!==y.object&&((x.p.mask>>>0)&(1<<y.p.layer))!==0&&((y.p.mask>>>0)&(1<<x.p.layer))!==0&&!(x.p.collisionMode==='query'&&y.p.collisionMode==='physics'||y.p.collisionMode==='query'&&x.p.collisionMode==='physics');};
+  const matrix=Array.isArray(options.collisionMatrix)&&options.collisionMatrix.length===32?options.collisionMatrix:null,layerMask=p=>matrix?((p.mask>>>0)&(matrix[p.layer]>>>0))>>>0:p.mask>>>0;
+  const pairAllowed=(space,a,b)=>{const x=space.colliders.get(a),y=space.colliders.get(b);return !!x&&!!y&&x.object!==y.object&&(layerMask(x.p)&(1<<y.p.layer))!==0&&(layerMask(y.p)&(1<<x.p.layer))!==0&&!(x.p.collisionMode==='query'&&y.p.collisionMode==='physics'||y.p.collisionMode==='query'&&x.p.collisionMode==='physics');};
   function fixedContacts(space,dim){
     // Rapier skips fixed/fixed event pairs. Preserve editor-authored static
     // trigger/hit events with cached exact tests, using a conservative sweep.

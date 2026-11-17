@@ -91,7 +91,7 @@ const pointerPart = key => key.replaceAll('~','~0').replaceAll('/','~1');
 const fieldLabels = {quality:'그래픽 품질',displayGamma:'화면 감마',displayBrightness:'화면 밝기',hdrOutput:'HDR 출력',renderScale:'화면 해상도 비율(%)',dynamicResolution:'동적 해상도',minRenderScale:'최소 해상도 비율(%)',pivot:'기준점',settings:'설정',convertUnits:'파일 단위 변환',sourceUnit:'원본 단위',sourceUp:'원본 위 축',flipForward:'앞 방향 뒤집기',translation:'이동',name:'이름',sceneName:'레벨 이름',objects:'오브젝트',environment:'환경',position:'위치',rotation:'회전',scale:'크기',parent:'부모 에셋',clip:'오디오 클립',volume:'볼륨',pitch:'피치',loop:'반복',friction:'마찰',restitution:'반발력',density:'밀도',parameters:'매개변수',surfaceOverrides:'표면 오버라이드'};
 
 export function nativeEditorSession(bridge) {
-  let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBuild;
+  let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBuild, layerNames=null;
   const previews=new Map();
   const sequenceSamplers=new WeakMap();
   const sceneViews=new Map();
@@ -212,6 +212,14 @@ export function nativeEditorSession(bridge) {
     }else throw Error('C++ 소스 또는 C++ 클래스 블루프린트를 열어 주세요.');
     return {headerPath,sourcePath};
   }
+  // Project game config (Project Settings): the open document if any, else the file.
+  async function projectConfig(){const file=record?.manifest.gameConfig;if(!file)return null;const open=documents.items.get(file);if(open)return {file,data:open.data,doc:open};try{return {file,data:JSON.parse(await projectText(project(),file))};}catch{return null;}}
+  async function updateProjectConfig(edit){
+    const config=await projectConfig();if(!config)throw Error('편집 > 프로젝트 설정…을 먼저 한 번 여세요.');
+    const next=structuredClone(config.data);edit(next);if(!validAsset('gameconfig',next))throw Error('프로젝트 설정 값을 확인하세요.');
+    if(config.doc){change(config.doc,next);await documents.save(config.doc,(file,text,expected)=>project().checkedWrite(file,text,expected));}else await project().write(config.file,JSON.stringify(next,null,2));
+    layerNames=Array.from({length:32},(_,i)=>next.collisionLayers?.[i]||'');return {names:layerNames,matrix:next.collisionMatrix||Array(32).fill(4294967295)};
+  }
   async function openProject(next) {
     if (tabs().some(doc => doc.dirty)) throw Error('변경한 문서를 먼저 저장하거나 닫으세요.');
     if(cppJob?.status==='running'||build&&buildJobs.get(record,build).status==='running')throw Error('빌드가 끝나면 프로젝트를 바꾸세요.');
@@ -225,7 +233,7 @@ export function nativeEditorSession(bridge) {
     contentScan?.controller.abort();contentScan=undefined;
     if(meshAtlas?.worker)await meshAtlas.worker.terminate();
     meshAtlas=undefined;
-    record = candidate;
+    record = candidate;layerNames=null;
     documents = new AssetDocuments();
     buildJobs?.close();buildJobs=undefined;build=undefined;lastBuild=undefined;
     cppJob=undefined;
@@ -546,6 +554,7 @@ export function nativeEditorSession(bridge) {
     const component=doc.kind==='scene'&&parts.length===5&&parts[0]==='objects'&&parts[2]==='components'&&parts[4]==='properties'
       ? doc.data.objects[parts[1]]?.components[parts[3]] : null;
     const defaults=component?componentDefaults(component.type):null;
+    const layerChoices=component&&layerNames&&componentDefinitions[component.type]?.properties?.layer?Array.from({length:32},(_,i)=>[String(i),i+': '+(layerNames[i]||'레이어 '+i)]):null;
     return Object.entries(data).filter(([key])=>!component||componentPropertyVisible(component.type,key,data)).map(([key,value]) => {
       const type = value === null ? 'null' : typeof value;
       const definition=component&&componentDefinitions[component.type]?.properties[key];
@@ -553,6 +562,7 @@ export function nativeEditorSession(bridge) {
       const modelChoices=modelSettings?(key==='sourceUnit'?modelUnitChoices:key==='sourceUp'?modelUpChoices:null)
         :lodMode&&key==='mode'?[['distance','거리'],['screen','화면 높이']]:null;
       const control = modelChoices ? {kind:'select',value,options:modelChoices}
+        : layerChoices&&key==='layer'&&typeof value==='number' ? {kind:'select',value:String(value),options:layerChoices}
         : definition?.type==='select' ? {kind:'select',value,options:definition.choices.map(choice=>Array.isArray(choice)?choice:[choice,choice])}
         : type === 'object' ? {kind:'button',text:Array.isArray(value) ? `열기 (${value.length})` : '열기'}
         : type === 'boolean' ? {kind:'checkbox',checked:value}
@@ -1267,6 +1277,16 @@ export function nativeEditorSession(bridge) {
       else await fs.copyFile(file,await p.resolve(target,true),fs.constants?.COPYFILE_EXCL??0);
       return {path:target};
     },
+    // Named collision layers and the layer collision matrix (project game config; Unity Physics layer matrix).
+    'project.collisionLayers': async () => {const config=await projectConfig();return {names:Array.from({length:32},(_,i)=>config?.data.collisionLayers?.[i]||''),matrix:config?.data.collisionMatrix||Array(32).fill(4294967295),configured:!!config};},
+    'project.collisionToggle': async ({a,b}) => {
+      if(![a,b].every(v=>Number.isInteger(v)&&v>=0&&v<32))throw Error('레이어 번호를 확인하세요.');
+      return updateProjectConfig(data=>{const m=(data.collisionMatrix||Array(32).fill(4294967295)).map(v=>v>>>0);const on=(m[a]&(1<<b))!==0;const flip=(i,j)=>{m[i]=on?(m[i]&~(1<<j))>>>0:(m[i]|(1<<j))>>>0;};flip(a,b);flip(b,a);data.collisionMatrix=m;});
+    },
+    'project.collisionLayerName': async ({index,name}) => {
+      if(!Number.isInteger(index)||index<0||index>=32||typeof name!=='string'||name.length>40)throw Error('레이어 이름을 확인하세요.');
+      return updateProjectConfig(data=>{const names=Array.from({length:32},(_,i)=>data.collisionLayers?.[i]||'');names[index]=name.trim();while(names.length&&!names.at(-1))names.pop();data.collisionLayers=names;});
+    },
     'content.assetsOfKind': async ({kind}) => {
       if(typeof kind!=='string'||!kind)throw Error('에셋 종류를 확인하세요.');
       const listed=await project().list({folder:'',query:'',browse:true,recursive:true,contents:false,type:'all'});
@@ -1861,7 +1881,7 @@ export function nativeEditorSession(bridge) {
       change(doc,next);
       return {...await response(doc),selection};
     },
-    'asset.fields': ({path,parts=[]}) => fieldsFor(targetDocument(path),parts),
+    'asset.fields': async ({path,parts=[]}) => {if(layerNames===null){const config=await projectConfig();layerNames=Array.from({length:32},(_,i)=>(config?.data.collisionLayers||['Default'])[i]||'');}return fieldsFor(targetDocument(path),parts);},
     'graph.inputs': async ({path,view='event',id}) => {
       const doc=targetDocument(path);await loadGraphNative(doc);
       const graph=graphFor(doc,structuredClone(doc.data),view), node=graph.nodes.find(row=>row.id===id);
