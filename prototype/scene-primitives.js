@@ -14,7 +14,16 @@ const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x607851, roughne
 const crystalMaterial = new THREE.MeshPhysicalMaterial({ color: 0xc3e3b9, roughness: 0.13, metalness: 0.18, clearcoat: 1, emissive: 0x669853, emissiveIntensity: 0.13, flatShading: true });
 // Built-in parametric geometries are shared by type and parameters (never edited in place; lightmaps swap geometry).
 const sharedGeometries=new Map(),shareable=new Set(['BoxGeometry','CapsuleGeometry','ConeGeometry','CylinderGeometry','DodecahedronGeometry','IcosahedronGeometry','OctahedronGeometry','SphereGeometry','TorusGeometry','PlaneGeometry']);
-function sharedGeometry(geometry){if(!shareable.has(geometry.type))return geometry;const key=geometry.type+JSON.stringify(geometry.parameters);const found=sharedGeometries.get(key);if(found){geometry.dispose();return found;}sharedGeometries.set(key,geometry);pooled.add(geometry);return geometry;}
+// Lightmap UV (UV1) for built-in shapes: each geometry group (box face, cylinder side/cap) gets its own padded tile
+// of a grid atlas, so baked lighting never overlaps. Editor and game build primitives here, so UV1 matches in both.
+function addLightmapUV(geometry){
+  const uv=geometry.getAttribute('uv');if(!uv||geometry.getAttribute('uv1'))return geometry;
+  const groups=geometry.groups.length?geometry.groups:[{start:0,count:geometry.index?geometry.index.count:uv.count}],cols=Math.ceil(Math.sqrt(groups.length)),rows=Math.ceil(groups.length/cols),pad=.04;
+  const clamp=x=>Math.min(1,Math.max(0,x)),out=new Float32Array(uv.count*2);for(let i=0;i<uv.count;i++){out[i*2]=(pad+clamp(uv.getX(i))*(1-2*pad))/cols;out[i*2+1]=(pad+clamp(uv.getY(i))*(1-2*pad))/rows;}
+  groups.forEach((g,k)=>{const col=k%cols,row=Math.floor(k/cols),seen=new Set();for(let j=g.start;j<g.start+g.count;j++){const v=geometry.index?geometry.index.getX(j):j;if(seen.has(v))continue;seen.add(v);out[v*2]=(col+pad+Math.min(1,Math.max(0,uv.getX(v)))*(1-2*pad))/cols;out[v*2+1]=(row+pad+Math.min(1,Math.max(0,uv.getY(v)))*(1-2*pad))/rows;}});
+  geometry.setAttribute('uv1',new THREE.BufferAttribute(out,2));return geometry;
+}
+function sharedGeometry(geometry){if(!shareable.has(geometry.type))return geometry;addLightmapUV(geometry);const key=geometry.type+JSON.stringify(geometry.parameters);const found=sharedGeometries.get(key);if(found){geometry.dispose();return found;}sharedGeometries.set(key,geometry);pooled.add(geometry);return geometry;}
 const pooled=new Set([surfaceMaterial,stoneMaterial,darkStone,grassMaterial,paleGrass,groundMaterial,crystalMaterial]);let disposed=false;
 
 function mesh(group, geometry, material, position = [0, 0, 0], rotation = [0, 0, 0], scale = [1, 1, 1]) {
