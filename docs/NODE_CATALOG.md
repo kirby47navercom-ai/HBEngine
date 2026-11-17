@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **916개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **917개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -14,7 +14,7 @@
 | 클래스 | 2 | 0 |
 | 흐름 제어 | 17 | 0 |
 | 디버그 | 4 | 0 |
-| 게임 창 | 5 | 0 |
+| 게임 창 | 6 | 0 |
 | 입력 | 13 | 12 |
 | 변환 | 28 | 27 |
 | 벡터 | 34 | 34 |
@@ -164,6 +164,7 @@
 | setFullscreen | Set Fullscreen / 전체 화면 설정 | exec: exec, fullscreen: bool | then: exec | — | VM / 브라우저 서비스 |
 | setResolution | Set Window Resolution / 창 해상도 설정 | exec: exec, width: int, height: int | then: exec | — | VM / 브라우저 서비스 |
 | setVSync | Set VSync / 수직 동기화 설정 | exec: exec, enabled: bool | then: exec | — | VM / 브라우저 서비스 |
+| setMaxFps | Set Max FPS / 최대 FPS 설정 | exec: exec, fps: int | then: exec | — | VM / 브라우저 서비스 |
 | setMouseCursorVisible | Set Show Mouse Cursor / 마우스 커서 표시 설정 | exec: exec, visible: bool | then: exec | — | VM / 브라우저 서비스 |
 
 ## 입력
