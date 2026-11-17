@@ -26,3 +26,37 @@ export class NativeLinePool {
   end(){for(const [id,entry] of this.entries)if(!this.seen.has(id)){this.release(entry);this.entries.delete(id);}}
   dispose(){for(const entry of this.entries.values())this.release(entry);this.entries.clear();this.seen.clear();}
 }
+
+// Points (THREE.Points + PointsMaterial) become camera-facing quads on the same triangle path as lines.
+// size is in pixels; with sizeAttenuation it shrinks with view depth like three.js (size * height/2 / depth).
+// ponytail: CPU quads rebuilt when the view changes; a GPU point-sprite pipeline if large point clouds need it.
+export class NativePointPool {
+  constructor(){this.entries=new Map();this.seen=new Set();this.p=new THREE.Vector3();this.view=new THREE.Matrix4();this.inverse=new THREE.Matrix4();}
+  begin(){this.seen.clear();}
+  mesh(points,camera,width,height){
+    const material=points.material;if(Array.isArray(material)||!material?.isPointsMaterial)throw Error('DirectX 점에는 단일 PointsMaterial이 필요해요.');
+    if(!material.visible||!points.layers.test(camera.layers))return null;this.seen.add(points.uuid);
+    const position=points.geometry.getAttribute('position'),start=points.geometry.drawRange.start,end=Math.min(position?.count??0,start+points.geometry.drawRange.count),count=Math.max(0,end-start);if(!count)return null;
+    let entry=this.entries.get(points.uuid);
+    if(!entry||entry.capacity!==count){if(entry)this.release(entry);const geometry=new THREE.BufferGeometry(),vertices=count*4,indices=new Uint32Array(count*6),normals=new Float32Array(vertices*3);for(let i=0;i<vertices;i++)normals[i*3+2]=1;for(let i=0;i<count;i++)indices.set([i*4,i*4+1,i*4+2,i*4,i*4+2,i*4+3],i*6);
+      geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(vertices*3),3));geometry.setAttribute('color',new THREE.BufferAttribute(new Float32Array(vertices*3),3));geometry.setAttribute('normal',new THREE.BufferAttribute(normals,3));geometry.setAttribute('uv',new THREE.BufferAttribute(new Float32Array(vertices*2),2));geometry.setIndex(new THREE.BufferAttribute(indices,1));
+      const mesh=new THREE.Mesh(geometry,new THREE.MeshBasicMaterial({side:THREE.DoubleSide,vertexColors:true}));mesh.matrixAutoUpdate=false;mesh.frustumCulled=false;entry={mesh,capacity:count};this.entries.set(points.uuid,entry);}
+    const color=material.vertexColors?points.geometry.getAttribute('color'):undefined,signature=JSON.stringify([position.version,color?.version,start,end,...points.matrixWorld.elements,...camera.matrixWorld.elements,...camera.projectionMatrix.elements,width,height,material.size,material.sizeAttenuation]);
+    entry.mesh.userData=points.userData;entry.mesh.layers.mask=points.layers.mask;entry.mesh.renderOrder=points.renderOrder;entry.mesh.matrix.copy(points.matrixWorld);entry.mesh.matrixWorld.copy(points.matrixWorld);entry.mesh.material.color.copy(material.color);for(const key of ['transparent','opacity','depthTest','depthWrite','blending'])entry.mesh.material[key]=material[key];
+    if(entry.signature===signature)return entry.mesh;entry.signature=signature;
+    this.view.copy(camera.matrixWorldInverse).multiply(points.matrixWorld);this.inverse.copy(points.matrixWorld).invert();
+    const geometry=entry.mesh.geometry,output=geometry.attributes.position.array,tint=geometry.attributes.color.array,uv=geometry.attributes.uv.array;let visible=0;
+    for(let i=start;i<end;i++){
+      this.p.fromBufferAttribute(position,i).applyMatrix4(this.view);const depth=-this.p.z;if(depth<camera.near||depth>camera.far)continue;
+      const pixels=Math.max(.5,material.sizeAttenuation&&camera.isPerspectiveCamera?material.size*height/2/depth:material.size);
+      this.p.applyMatrix4(camera.projectionMatrix);const ox=pixels/width,oy=pixels/height,cx=this.p.x,cy=this.p.y,cz=this.p.z;
+      for(let k=0;k<4;k++){const sx=k===0||k===3?-1:1,sy=k<2?-1:1;this.p.set(cx+ox*sx,cy+oy*sy,cz).applyMatrix4(camera.projectionMatrixInverse).applyMatrix4(camera.matrixWorld).applyMatrix4(this.inverse);const base=(visible*4+k)*3;this.p.toArray(output,base);
+        for(let axis=0;axis<3;axis++)tint[base+axis]=color?(axis===0?color.getX(i):axis===1?color.getY(i):color.getZ(i)):1;uv[(visible*4+k)*2]=sx>0?1:0;uv[(visible*4+k)*2+1]=sy>0?1:0;}
+      visible++;
+    }
+    geometry.setDrawRange(0,visible*6);geometry.attributes.position.needsUpdate=true;geometry.attributes.color.needsUpdate=true;geometry.attributes.uv.needsUpdate=true;return visible?entry.mesh:null;
+  }
+  release(entry){entry.mesh.geometry.dispose();entry.mesh.material.dispose();}
+  end(){for(const [id,entry] of this.entries)if(!this.seen.has(id)){this.release(entry);this.entries.delete(id);}}
+  dispose(){for(const entry of this.entries.values())this.release(entry);this.entries.clear();this.seen.clear();}
+}
