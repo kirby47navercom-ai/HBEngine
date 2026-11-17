@@ -17,7 +17,11 @@ class EditorGraphPanel final : public EditorPanelBase {
     std::string selected;
     D2D1_POINT_2F pan{36,36},start{},nodeStart{};
     float zoom=1;
-    bool panning=false,dragging=false,movedContext=false;
+    bool panning=false,dragging=false,movedContext=false,boxing=false;
+    std::set<std::string> extra; // Ctrl+click / box selection besides selected
+    D2D1_POINT_2F boxEnd{};std::map<std::string,D2D1_POINT_2F> groupStart;
+    bool chosen(const std::string& id)const{return id==selected||extra.count(id)>0;}
+    void announce(){Json ids=Json::array();for(const auto& id:extra)ids.push_back(id);emit({{"event","selectMany"},{"id",selected},{"ids",ids}});}
 
     static D2D1_COLOR_F color(const std::string& value){
         return D2D1::ColorF(value.size()==7?std::strtoul(value.c_str()+1,nullptr,16):0xaab9be);
@@ -93,7 +97,7 @@ class EditorGraphPanel final : public EditorPanelBase {
         for(const auto& node:nodes){
             const auto at=point(node.x,node.y);const float w=width*zoom,h=height(node)*zoom;
             if(at.x+w<0||at.y+h<0||at.x>bounds[2]||at.y>bounds[3])continue;
-            box(at.x,at.y,w,h,theme.field,node.id==selected?theme.accent:theme.line);
+            box(at.x,at.y,w,h,theme.field,chosen(node.id)?theme.accent:theme.line);
             fill(at.x+1,at.y+1,w-2,header*zoom,theme.raised);
             if(node.breakpoint){brush->SetColor(D2D1::ColorF(0xef6368));canvas->FillEllipse(D2D1::Ellipse({at.x+w-13*zoom,at.y+header*zoom*.5f},5*zoom,5*zoom),brush);}
             label(node.title,bold,at.x+8,at.y,w-16,header*zoom,theme.text);
@@ -109,20 +113,31 @@ class EditorGraphPanel final : public EditorPanelBase {
                 }
             }
         }
+        if(boxing){ // marquee
+            const float l=std::min(start.x,boxEnd.x),tp=std::min(start.y,boxEnd.y);brush->SetColor(theme.accent);canvas->DrawRectangle(D2D1::RectF(l,tp,l+std::abs(boxEnd.x-start.x),tp+std::abs(boxEnd.y-start.y)),brush,1.f);}
     }
     LRESULT handle(UINT message,WPARAM w,LPARAM l)override{
         const float x=float(xOf(l)),y=float(yOf(l));
         switch(message){
+        case WM_LBUTTONDBLCLK:{if(const auto* node=hit(x,y);node&&!pinHit(*node,x,y)){emit({{"event","activate"},{"id",node->id}});return 0;}return 0;}
         case WM_LBUTTONDOWN:{
             SetFocus(window);auto* node=hit(x,y);
-            if(!node){pending.reset();selected.clear();emit({{"event","select"},{"id",""}});InvalidateRect(window,nullptr,FALSE);return 0;}
+            const bool ctrl=(GetKeyState(VK_CONTROL)&0x8000)!=0;
+            // Empty space: drag a selection box (Ctrl keeps the current selection).
+            if(!node){pending.reset();if(!ctrl){selected.clear();extra.clear();emit({{"event","select"},{"id",""}});announce();}boxing=true;start=boxEnd={x,y};SetCapture(window);InvalidateRect(window,nullptr,FALSE);return 0;}
+            // Ctrl+click toggles a node in the selection.
+            if(ctrl&&!pinHit(*node,x,y)){
+                if(node->id==selected){selected=extra.empty()?std::string():*extra.begin();extra.erase(selected);}else if(extra.erase(node->id)==0){if(selected.empty())selected=node->id;else extra.insert(node->id);}
+                emit({{"event","select"},{"id",selected}});announce();InvalidateRect(window,nullptr,FALSE);return 0;}
+            if(!chosen(node->id))extra.clear();else if(node->id!=selected){extra.erase(node->id);if(!selected.empty())extra.insert(selected);}
             selected=node->id;
-            emit({{"event","select"},{"id",selected}});
+            emit({{"event","select"},{"id",selected}});announce();
+            if(const auto end=pinHit(*node,x,y);end&&(GetKeyState(VK_MENU)&0x8000)){emit({{"event","edit"},{"action","disconnect"},{"id",node->id},{"pin",end->pin},{"output",end->output}});return 0;}
             if(const auto end=pinHit(*node,x,y)){
                 wireStart=end;start=wireCursor={x,y};wireMoved=false;SetCapture(window);
                 InvalidateRect(window,nullptr,FALSE);return 0;
             }
-            if(y<point(node->x,node->y).y+header*zoom){start={x,y};nodeStart={node->x,node->y};dragging=true;SetCapture(window);}
+            if(y<point(node->x,node->y).y+header*zoom){start={x,y};nodeStart={node->x,node->y};dragging=true;groupStart.clear();for(const auto& id:extra)if(const auto* n=find(id))groupStart[id]={n->x,n->y};SetCapture(window);}
             InvalidateRect(window,nullptr,FALSE);return 0;
         }
         case WM_RBUTTONDOWN:{
@@ -152,7 +167,8 @@ class EditorGraphPanel final : public EditorPanelBase {
                 if((w&MK_RBUTTON)&&std::hypot(x-wireCursor.x,y-wireCursor.y)<=4&&!movedContext)return 0;
                 movedContext=true;pan={x-start.x,y-start.y};
             }
-            if(dragging)if(auto* node=find(selected)){node->x=nodeStart.x+(x-start.x)/zoom;node->y=nodeStart.y+(y-start.y)/zoom;}
+            if(boxing){boxEnd={x,y};InvalidateRect(window,nullptr,FALSE);return 0;}
+            if(dragging)if(auto* node=find(selected)){node->x=nodeStart.x+(x-start.x)/zoom;node->y=nodeStart.y+(y-start.y)/zoom;for(const auto& [id,from]:groupStart)if(auto* n=find(id)){n->x=from.x+(x-start.x)/zoom;n->y=from.y+(y-start.y)/zoom;}}
             if(panning||dragging)InvalidateRect(window,nullptr,FALSE);
             return 0;
         case WM_MBUTTONUP:case WM_RBUTTONUP:{
@@ -172,8 +188,14 @@ class EditorGraphPanel final : public EditorPanelBase {
                 else pending=first;
                 InvalidateRect(window,nullptr,FALSE);return 0;
             }
+            if(boxing){boxing=false;if(GetCapture()==window)ReleaseCapture();
+                const float l=std::min(start.x,boxEnd.x),r=std::max(start.x,boxEnd.x),tp=std::min(start.y,boxEnd.y),b=std::max(start.y,boxEnd.y);
+                if(r-l>3||b-tp>3)for(auto& n:nodes){const auto at=point(n.x,n.y);if(at.x<r&&at.x+width*zoom>l&&at.y<b&&at.y+height(n)*zoom>tp){if(selected.empty())selected=n.id;else if(n.id!=selected)extra.insert(n.id);}}
+                emit({{"event","select"},{"id",selected}});announce();InvalidateRect(window,nullptr,FALSE);return 0;}
             const bool moved=dragging;dragging=false;if(GetCapture()==window)ReleaseCapture();
-            if(moved)if(auto* node=find(selected))if(node->x!=nodeStart.x||node->y!=nodeStart.y)emit({{"event","edit"},{"action","move"},{"id",selected},{"x",node->x},{"y",node->y}});
+            if(moved)if(auto* node=find(selected))if(node->x!=nodeStart.x||node->y!=nodeStart.y){
+                if(groupStart.empty())emit({{"event","edit"},{"action","move"},{"id",selected},{"x",node->x},{"y",node->y}});
+                else{Json rows=Json::array({{{"id",selected},{"x",node->x},{"y",node->y}}});for(const auto& [id,from]:groupStart)if(const auto* n=find(id))rows.push_back({{"id",id},{"x",n->x},{"y",n->y}});emit({{"event","edit"},{"action","moveMany"},{"id",selected},{"value",rows}});}}
             return 0;
         }
         case WM_CAPTURECHANGED:
@@ -189,7 +211,11 @@ class EditorGraphPanel final : public EditorPanelBase {
                 auto event=spawnPosition();event["event"]="comment";event["id"]=selected;emit(event);return 0;
             }
             if(w==VK_F9&&!selected.empty()){emit({{"event","edit"},{"action","breakpoint"},{"id",selected}});return 0;}
-            if(w==VK_DELETE&&!selected.empty()){emit({{"event","edit"},{"action","delete"},{"id",selected}});return 0;}
+            if(w==VK_DELETE&&!selected.empty()){if(extra.empty())emit({{"event","edit"},{"action","delete"},{"id",selected}});else{Json ids=Json::array({selected});for(const auto& id:extra)ids.push_back(id);emit({{"event","edit"},{"action","deleteMany"},{"id",selected},{"ids",ids}});}return 0;}
+            if(w=='A'&&(GetKeyState(VK_CONTROL)&0x8000)){selectAll();return 0;}
+            if(w=='F'&&!(GetKeyState(VK_CONTROL)&0x8000)){std::vector<std::string> ids;if(!selected.empty())ids.push_back(selected);ids.insert(ids.end(),extra.begin(),extra.end());frame(ids);return 0;}
+            if(w==VK_HOME){frame({});return 0;}
+            if(w=='Q'&&!selected.empty()){straighten();return 0;}
             if(w==VK_ESCAPE){pending.reset();if(GetCapture()==window)ReleaseCapture();InvalidateRect(window,nullptr,FALSE);return 0;}
             if(w==VK_SPACE){auto event=spawnPosition();event["event"]="palette";emit(event);return 0;}
             if(w=='F'&&(GetKeyState(VK_CONTROL)&0x8000)){emit({{"event","find"}});return 0;}
@@ -207,9 +233,26 @@ public:
             auto id=n.at("id").get<std::string>();nodeIndex.emplace(id,nodes.size());
             nodes.push_back({std::move(id),wide(n.at("title")),n.at("x"),n.at("y"),pins(n.at("inputs")),pins(n.at("outputs")),n.value("breakpoint",false)});
         }
-        edges=model.at("edges");comments=model.at("comments");InvalidateRect(window,nullptr,FALSE);
+        edges=model.at("edges");comments=model.at("comments");for(auto it=extra.begin();it!=extra.end();)it=find(*it)?std::next(it):extra.erase(it);InvalidateRect(window,nullptr,FALSE);
     }
-    void resetView(){selected.clear();pending.reset();wireStart.reset();pan={36,36};zoom=1;}
+    std::vector<std::string> extraIds()const{return {extra.begin(),extra.end()};}
+    // Fit the given nodes (all when empty) in the panel, zoom 0.25-1.
+    void frame(const std::vector<std::string>& ids){
+        float l=1e9f,t=1e9f,r=-1e9f,b=-1e9f;for(const auto& n:nodes)if(ids.empty()||std::find(ids.begin(),ids.end(),n.id)!=ids.end()){l=std::min(l,n.x);t=std::min(t,n.y);r=std::max(r,n.x+width);b=std::max(b,n.y+height(n));}
+        if(l>r||bounds[2]<=0||bounds[3]<=0)return;const float margin=40;zoom=std::clamp(std::min((bounds[2]-2*margin)/(r-l),(bounds[3]-2*margin)/(b-t)),.25f,1.f);
+        pan={bounds[2]*.5f-(l+r)*.5f*zoom,bounds[3]*.5f-(t+b)*.5f*zoom};InvalidateRect(window,nullptr,FALSE);
+    }
+    // Straighten (Q): each selected node moves vertically so its first linked input pin lines up with the source pin.
+    void straighten(){
+        std::vector<std::string> ids{selected};ids.insert(ids.end(),extra.begin(),extra.end());Json rows=Json::array();
+        const auto index=[](const std::vector<Pin>& pins,const std::string& id){for(std::size_t i=0;i<pins.size();++i)if(pins[i].id==id)return int(i);return -1;};
+        for(const auto& id:ids){auto* node=find(id);if(!node)continue;for(const auto& e:edges){if(e.at("to").at("node")!=id)continue;const auto* from=find(e.at("from").at("node").get<std::string>());if(!from)continue;
+            const int out=index(from->outputs,e.at("from").at("pin").get<std::string>()),in=index(node->inputs,e.at("to").at("pin").get<std::string>());if(out<0||in<0)continue;
+            node->y=from->y+row*float(out-in);rows.push_back({{"id",id},{"x",node->x},{"y",node->y}});break;}}
+        if(!rows.empty()){emit({{"event","edit"},{"action","moveMany"},{"id",selected},{"value",rows}});InvalidateRect(window,nullptr,FALSE);}
+    }
+    void selectAll(){if(nodes.empty())return;selected=nodes.front().id;extra.clear();for(const auto& n:nodes)if(n.id!=selected)extra.insert(n.id);emit({{"event","select"},{"id",selected}});announce();InvalidateRect(window,nullptr,FALSE);}
+    void resetView(){selected.clear();extra.clear();pending.reset();wireStart.reset();pan={36,36};zoom=1;}
     void focusNode(const std::string& id){
         if(const auto* node=find(id)){
             pan={bounds[2]*.5f-(node->x+width*.5f)*zoom,bounds[3]*.5f-(node->y+height(*node)*.5f)*zoom};

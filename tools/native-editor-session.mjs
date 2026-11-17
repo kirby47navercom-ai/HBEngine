@@ -2140,7 +2140,7 @@ export function nativeEditorSession(bridge) {
       change(doc,next);
       return {...await response(doc),view};
     },
-    'graph.edit': async ({path,view='event',action,id,x,y,key,from,to,pin,output,value,asset,clipboard,expectedRevision}) => {
+    'graph.edit': async ({path,view='event',action,id,ids,x,y,key,from,to,pin,output,value,asset,clipboard,expectedRevision}) => {
       const doc = targetDocument(path);
       await check(doc,expectedRevision);
       await loadGraphNative(doc);
@@ -2159,7 +2159,12 @@ export function nativeEditorSession(bridge) {
         const open=documents.items.get(name);
         return open?.data??JSON.parse((await projectBytes(project(),name)).toString('utf8').replace(/^\uFEFF/,''));
       };
-      if (action === 'move' || action === 'add') {
+      if (action === 'moveMany' || action === 'deleteMany') {
+        // Box / Ctrl selection: move or delete several nodes as one edit.
+        const list=action==='moveMany'?(Array.isArray(value)?value:[]):(Array.isArray(ids)?ids.filter(i=>typeof i==='string'):[]);if(!list.length||list.length>2000)throw Error('노드를 선택하세요.');
+        if(action==='moveMany')for(const row of list){const node=graph.nodes.find(n=>n.id===row?.id);if(!node||![row.x,row.y].every(Number.isFinite))continue;const nx=Math.max(-10000,Math.min(10000,row.x)),ny=Math.max(-10000,Math.min(10000,row.y));if(bp)node.position={x:nx,y:ny};else Object.assign(node,{px:nx,y:ny});}
+        else{const gone=new Set(list);if(bp){graph.nodes=graph.nodes.filter(n=>!gone.has(n.id));graph.edges=graph.edges.filter(e=>!gone.has(e.from.node)&&!gone.has(e.to.node));if(graph.comments?.length)graph.comments=graph.comments.map(c=>({...c,nodeIds:c.nodeIds.filter(n=>!gone.has(n))}));if(next.watches)next.watches=next.watches.filter(w=>w.view!==view||!gone.has(w.node));}else removeMaterialNodes(graph,gone);}
+      } else if (action === 'move' || action === 'add') {
         if (![x,y].every(Number.isFinite)) throw Error('노드 위치를 확인하세요.');
         x = Math.max(-10000,Math.min(10000,x));
         y = Math.max(-10000,Math.min(10000,y));
