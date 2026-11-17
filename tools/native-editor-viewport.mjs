@@ -201,11 +201,12 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
         flyTo={from:{target:target.clone(),radius:orbit.radius,zoom:editorCamera.zoom,theta:orbit.theta,phi:orbit.phi},to:{target:mark.target.clone(),radius:mark.orbit.radius,zoom:mark.zoom,theta,phi:mark.orbit.phi},start:performance.now()-16,orthographic};}}
     // Pilot: the editor camera takes the object's place and view direction (-Z forward).
     if(command==='pilot'&&!orthographic){const g=groups.get(id||pilot);if(g){g.updateWorldMatrix(true,false);const at=g.getWorldPosition(new THREE.Vector3()),forward=new THREE.Vector3(0,0,-1).applyQuaternion(g.getWorldQuaternion(new THREE.Quaternion()));target.copy(at).add(forward);orbit.setFromVector3(at.clone().sub(target));}}
-    if (command==='focus') {
-      const group=groups.get(id);
+    // Focus frames the selection; frameAll (Home) frames every visible object.
+    if (command==='focus'||command==='frameAll') {
+      const group=command==='frameAll'?(groups.size?world:null):groups.get(id);
       if(group){
         group.updateWorldMatrix(true,true);
-        const bounds=new THREE.Box3().setFromObject(group);
+        const bounds=new THREE.Box3();if(command==='frameAll'){for(const g of groups.values())if(g.visible)bounds.expandByObject(g);}else bounds.setFromObject(group);
         // UI widgets and sprites may have no mesh bounds: frame their position at a 1-unit size instead.
         if(bounds.isEmpty()||!bounds.min.toArray().concat(bounds.max.toArray()).every(Number.isFinite))bounds.setFromCenterAndSize(group.getWorldPosition(new THREE.Vector3()),new THREE.Vector3(1,1,1));
         const probe=editorCamera.clone(),goal={target:target.clone(),update(){}};

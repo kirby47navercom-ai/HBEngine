@@ -1357,6 +1357,20 @@ export function nativeEditorSession(bridge) {
       if(!['scene','prefab'].includes(doc.kind))throw Error('장면 문서를 선택하세요.');
       await check(doc,expectedRevision);
       const next=structuredClone(doc.data), byId=new Map(next.objects.map(actor=>[actor.id,actor]));
+      // Create empty parent (Unreal Ctrl+G group / Unity "Create Empty Parent"): an empty at the selection centre takes the
+      // selected objects as children, keeping their world transforms; it sits under their common parent if they share one.
+      if(action==='groupParent'){
+        const chosen=new Set((Array.isArray(ids)&&ids.length?ids:[id]).filter(x=>byId.has(x)));
+        const inside=x=>{let p=byId.get(byId.get(x).parent);while(p){if(chosen.has(p.id))return true;p=byId.get(p.parent);}return false;};
+        const list=[...chosen].filter(x=>!inside(x));if(!list.length)throw Error('묶을 오브젝트를 선택하세요.');
+        const worlds=new Map(list.map(x=>[x,sceneWorldMatrix(byId.get(x),next.objects)])),center=new THREE.Vector3();for(const m of worlds.values())center.add(new THREE.Vector3().setFromMatrixPosition(m));center.multiplyScalar(1/list.length);
+        const shared=byId.get(list[0]).parent;const common=shared&&list.every(x=>byId.get(x).parent===shared)?shared:undefined;
+        const group=createPlacedObject('empty',{position:center.toArray()});group.name='Group';
+        if(common){group.parent=common;setObjectMatrix(group,sceneWorldMatrix(byId.get(common),next.objects).invert().multiply(new THREE.Matrix4().makeTranslation(center.x,center.y,center.z)));}
+        next.objects.push(group);byId.set(group.id,group);
+        for(const x of list){const o=byId.get(x);o.parent=group.id;setObjectMatrix(o,sceneWorldMatrix(group,next.objects).invert().multiply(worlds.get(x)));}
+        change(doc,next);return {...await response(doc),selection:group.id};
+      }
       // Reset transform (Unity Reset / Unreal reset arrows): local position, rotation or scale of every selected object.
       if(action==='resetTransform'){const list=Array.isArray(ids)&&ids.length?ids:[id];if(!['position','rotation','scale'].includes(value))throw Error('초기화할 트랜스폼을 고르세요.');
         for(const x of list){const o=byId.get(x);if(!o)throw Error('오브젝트를 선택하세요.');if(o.locked)continue;o[value]=value==='scale'?[1,1,1]:[0,0,0];}
@@ -2182,7 +2196,7 @@ export function nativeEditorSession(bridge) {
     }
     return response(doc);
   }
-  const actionLabels={add:'오브젝트 추가',placeAsset:'에셋 배치',delete:'삭제',translate:'이동',rotate:'회전',scale:'크기',rename:'이름 바꾸기',duplicate:'복제',paste:'붙여넣기',component:'컴포넌트 추가',removeComponent:'컴포넌트 제거',resetTransform:'트랜스폼 초기화',moveComponent:'컴포넌트 순서',resetComponent:'컴포넌트 초기화',particlePreset:'파티클 프리셋',pasteComponentValues:'컴포넌트 값 붙여넣기',pasteComponent:'컴포넌트 붙여넣기',reparent:'부모 변경',lock:'잠금',visible:'보이기',setWorldTransform:'조종 위치 적용',prefabApply:'프리팹 적용',prefabRevert:'프리팹 되돌리기',prefabRefresh:'프리팹 새로 고침',prefabUnpack:'프리팹 풀기'};
+  const actionLabels={add:'오브젝트 추가',placeAsset:'에셋 배치',delete:'삭제',translate:'이동',rotate:'회전',scale:'크기',rename:'이름 바꾸기',duplicate:'복제',paste:'붙여넣기',component:'컴포넌트 추가',removeComponent:'컴포넌트 제거',resetTransform:'트랜스폼 초기화',groupParent:'빈 부모로 묶기',moveComponent:'컴포넌트 순서',resetComponent:'컴포넌트 초기화',particlePreset:'파티클 프리셋',pasteComponentValues:'컴포넌트 값 붙여넣기',pasteComponent:'컴포넌트 붙여넣기',reparent:'부모 변경',lock:'잠금',visible:'보이기',setWorldTransform:'조종 위치 적용',prefabApply:'프리팹 적용',prefabRevert:'프리팹 되돌리기',prefabRefresh:'프리팹 새로 고침',prefabUnpack:'프리팹 풀기'};
   return async (method,params={}) => {
     if (!Object.hasOwn(methods,method)) throw Error('지원하지 않는 편집기 명령이에요.');
     requestLabel=method==='scene.edit'?actionLabels[params.action]||params.action:method==='asset.fieldEdit'?'속성: '+params.key:method==='scene.runtimeSet'?'실행 설정: '+params.key:method==='scene.bakeLightmaps'?'라이트맵 베이크':method==='navmesh.bake'?'내비 메시 굽기':method==='lod.generate'?'LOD 자동 생성':method;

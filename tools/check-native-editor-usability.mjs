@@ -158,6 +158,12 @@ try{
   await assert.rejects(session('scene.edit',{action:'resetTransform',id:a,ids:[a],value:'colour',expectedRevision:doc.revision}),/트랜스폼/);
   doc=await session('scene.edit',{action:'add',key:'cube',position:[2,1,3],expectedRevision:doc.revision});
   assert.deepEqual(find(doc.selection).position,[2,1,3]);assert.equal(find(doc.selection).pivot,'center');
+  // Create empty parent: the new Group sits at the centre and both children keep their world positions.
+  {const first=doc.selection;doc=await session('scene.edit',{action:'add',key:'cube',position:[6,1,3],expectedRevision:doc.revision});const second=doc.selection;
+   doc=await session('scene.edit',{action:'groupParent',id:first,ids:[first,second],expectedRevision:doc.revision});const group=find(doc.selection);
+   assert.equal(group.name,'Group');assert.deepEqual(group.position.map(v=>Math.round(v*1e6)/1e6),[4,1,3]);assert.equal(find(first).parent,group.id);assert.equal(find(second).parent,group.id);
+   assert.deepEqual(find(first).position.map(v=>Math.round(v*1e6)/1e6),[-2,0,0],'local offset keeps the world position');
+   await assert.rejects(session('scene.edit',{action:'groupParent',id:'missing',ids:['missing'],expectedRevision:doc.revision}),/묶을/);}
   // Undo history panel rows and jumping; world-space rotation; pilot pose applied as a world transform.
   const history=await session('editor.history',{path:scene});assert.ok(history.rows.length>3&&history.rows.at(-1).current,'history lists edits with the live state last');
   const back=await session('editor.historyJump',{path:scene,steps:-2,expectedRevision:doc.revision});assert.equal((await session('editor.history',{path:scene})).redo,2);
