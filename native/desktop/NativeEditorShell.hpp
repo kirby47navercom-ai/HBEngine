@@ -102,7 +102,7 @@ class NativeEditorShell {
     fs::path playLauncher,playRuntimeRoot,editorProfile,projectFile;
     fs::path takeOutput,audioOutput,audioProject;
     std::wstring takeName,audioName;
-    HANDLE playProcess=nullptr;
+    HANDLE playProcess=nullptr;bool playPaused=false;
     unsigned playBreaks=0;
     Json playDebug;
     bool atBreakpoint=false;
@@ -190,7 +190,7 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
-    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
     HMENU recentMenu=nullptr;
@@ -606,7 +606,7 @@ class NativeEditorShell {
         AppendMenuW(sceneMenu,MF_STRING,InspectPlay,L"중단점 위치·변수·관찰값");
         AppendMenuW(sceneMenu,MF_STRING,RecordAudio,L"플레이하고 게임 믹스 WAV 녹음");
         AppendMenuW(sceneMenu,MF_STRING,SaveCapturedMix,L"녹음한 WAV 다시 저장");
-        AppendMenuW(sceneMenu,MF_STRING,StopPlay,L"플레이 중지\tShift+F5");
+        AppendMenuW(sceneMenu,MF_STRING,StopPlay,L"플레이 중지\tShift+F5");AppendMenuW(sceneMenu,MF_STRING,PauseGame,L"플레이 일시정지 / 계속\tF6");AppendMenuW(sceneMenu,MF_STRING,StepGameFrame,L"한 프레임 진행\tF7");
         AppendMenuW(sceneMenu,MF_STRING,ContinuePlay,L"블루프린트 계속 실행");
         AppendMenuW(sceneMenu,MF_STRING,StepPlay,L"블루프린트 한 단계 실행");
         AppendMenuW(sceneMenu,MF_STRING,RecordTake,L"선택 오브젝트 녹화");
@@ -624,7 +624,7 @@ class NativeEditorShell {
     static const wchar_t* helpText(bool start){
         return start?
             L"HBEngine 시작하기\r\n" L"\r\n" L"1. 프로젝트 만들기\r\n" L"   파일 > 새 프로젝트에서 2D·3D 템플릿을 골라요. 파일 > 프로젝트 열기(Ctrl+O)나 최근 프로젝트로 다시 열어요.\r\n" L"2. 에셋 넣기\r\n" L"   이미지·모델·소리 파일을 콘텐츠 브라우저로 끌어다 놓거나 파일 > 에셋 가져오기를 써요.\r\n" L"   폴더는 왼쪽 트리와 경로 줄로 이동하고, 검색 칸과 종류 목록으로 찾아요.\r\n" L"3. 장면 꾸미기\r\n" L"   장면 > 오브젝트 추가로 물체를 놓고, 오른쪽 속성 패널에서 위치·컴포넌트를 바꿔요.\r\n" L"   에셋을 장면 화면으로 끌어다 놓아도 배치돼요. 이동·회전·크기는 W·E·R이에요.\r\n" L"   프리팹 인스턴스를 고친 뒤 장면 > 선택한 프리팹 인스턴스에서 프리팹에 적용하거나 되돌려요.\r\n" L"4. 로직 만들기\r\n" L"   블루프린트 에셋을 열고 빈 곳을 우클릭하거나 Space로 노드를 찾아 추가해요. 핀을 끌어 연결해요.\r\n" L"   C++가 필요하면 파일 > 새 C++ 클래스, 빌드 > C++ 클래스 컴파일을 써요.\r\n" L"5. 실행하기\r\n" L"   F5로 플레이하고 Shift+F5로 멈춰요. 블루프린트 노드에 F9로 중단점을 걸 수 있어요.\r\n" L"6. 저장·되돌리기\r\n" L"   Ctrl+S로 저장하고 Ctrl+Z·Ctrl+Y로 되돌리거나 다시 적용해요. 저장이 충돌하면 파일 > 저장 충돌 복구를 써요.\r\n" L"   저장하지 않은 문서는 30초마다 따로 보관돼요. 편집기가 갑자기 꺼지면 다음에 프로젝트를 열 때 복구할지 물어봐요.\r\n" L"   에셋을 지우면 Windows 휴지통으로 가서 되살릴 수 있어요. 다른 에셋이 쓰고 있으면 먼저 알려 줘요.\r\n" L"7. 게임 만들기\r\n" L"   빌드 > 빌드 프로필 설정에서 이름·화면 크기·그래픽 API를 고르고, 빌드 > 패키징으로 Windows 게임을 만들어요.\r\n" L"\r\n" L"창 배치가 흐트러지면 보기 > 기본 배치 복원을 써요. 문제가 생기면 보기 > 출력 로그에서 메시지를 확인해요.\r\n":
-            L"단축키 목록\r\n" L"\r\n" L"[전체]\r\n" L"  Ctrl+O        프로젝트 열기\r\n" L"  Ctrl+S        문서 저장\r\n" L"  Ctrl+W        문서 닫기\r\n" L"  Ctrl+Z        되돌리기\r\n" L"  Ctrl+Y        다시 적용\r\n" L"  Alt+↑         콘텐츠 브라우저 상위 폴더\r\n" L"  F5            플레이\r\n" L"  Shift+F5      플레이 중지\r\n" L"  F1            이 단축키 목록\r\n" L"\r\n" L"[장면 화면]\r\n" L"  W / E / R     이동 / 회전 / 크기 도구\r\n" L"  F             선택 오브젝트에 초점\r\n" L"  빈 곳 왼쪽 끌기  박스 선택 (Ctrl: 추가)\r\n" L"  G             게임 보기 (편집 표시 숨기기)\r\n" L"  End           바닥에 붙이기\r\n" L"  Ctrl+`        월드 / 로컬 좌표 전환\r\n" L"  V (끄는 중)    꼭짓점에 맞춤\r\n" L"  Ctrl+1~9 / 1~9  카메라 북마크 저장 / 이동\r\n" L"  Ctrl+Shift+P  오브젝트 조종 (Esc로 끝내기)\r\n" L"  Ctrl+Shift+H  FPS 표시\r\n" L"  우클릭 비행 중 휠  카메라 속도\r\n" L"  `             명령 줄 (help)\r\n" L"  왼쪽 클릭     선택 (핸들을 끌면 변환)\r\n" L"  Shift+왼쪽 끌기  선택 오브젝트 변환\r\n" L"  우클릭 끌기 / Alt+왼쪽 끌기  시점 회전\r\n" L"  우클릭 (끌지 않음)  오브젝트 메뉴 (이름·복사·삭제·초점·분리·프리팹)\r\n" L"  F2            오브젝트 이름 바꾸기\r\n" L"  우클릭+W·A·S·D·Q·E  비행 이동\r\n" L"  휠 버튼 끌기  시점 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Esc           변환 끌기 취소\r\n" L"  Delete        선택 오브젝트 삭제\r\n" L"  Ctrl+D        선택 오브젝트 복제\r\n" L"  Ctrl+C / Ctrl+V  복사 / 붙여넣기 (다른 장면에도)\r\n" L"  Ctrl+클릭     여러 개 선택 / 선택 해제\r\n" L"  G             격자·각도 스냅 켜기 / 끄기 (간격은 장면 > 스냅)\r\n" L"\r\n" L"[콘텐츠 브라우저]\r\n" L"  Delete        선택한 에셋을 휴지통으로\r\n" L"  F2            이름 바꾸기\r\n" L"  우클릭        열기·이름·이동·삭제·탐색기에서 보기·경로 복사 / 빈 곳: 새 폴더·새 에셋\r\n" L"  끌어다 놓기   장면에 배치\r\n" L"  폴더 트리로 끌기  다른 폴더로 이동\r\n" L"\r\n" L"[블루프린트·노드 그래프]\r\n" L"  우클릭        노드 추가 목록\r\n" L"  우클릭 끌기 / 휠 버튼 끌기  화면 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Space         노드 추가 목록\r\n" L"  C             주석 추가\r\n" L"  Ctrl+F        노드 찾기\r\n" L"  Delete        선택 노드 삭제\r\n" L"  F9            중단점 전환\r\n" L"  Esc           연결 중인 선 취소\r\n" L"\r\n" L"[계층]\r\n" L"  Ctrl+클릭 / Shift+클릭  여러 개 / 범위 선택\r\n" L"  검색 칸       이름이나 type:, tag: 로 걸러 보기\r\n" L"  더블클릭      그 오브젝트에 초점\r\n" L"  우클릭        오브젝트 메뉴\r\n" L"  핀 우클릭     연결 끊기 / 출력 값 관찰\r\n" L"\r\n" L"[출력 로그]\r\n" L"  Ctrl+A        모두 선택\r\n" L"  Ctrl+C        복사\r\n";
+            L"단축키 목록\r\n" L"\r\n" L"[전체]\r\n" L"  Ctrl+O        프로젝트 열기\r\n" L"  Ctrl+S        문서 저장\r\n" L"  Ctrl+W        문서 닫기\r\n" L"  Ctrl+Z        되돌리기\r\n" L"  Ctrl+Y        다시 적용\r\n" L"  Alt+↑         콘텐츠 브라우저 상위 폴더\r\n" L"  F5            플레이\r\n" L"  Shift+F5      플레이 중지\r\n" L"  F6            플레이 일시정지 / 계속\r\n" L"  F7            한 프레임 진행\r\n" L"  F1            이 단축키 목록\r\n" L"\r\n" L"[장면 화면]\r\n" L"  W / E / R     이동 / 회전 / 크기 도구\r\n" L"  F             선택 오브젝트에 초점\r\n" L"  빈 곳 왼쪽 끌기  박스 선택 (Ctrl: 추가)\r\n" L"  G             게임 보기 (편집 표시 숨기기)\r\n" L"  End           바닥에 붙이기\r\n" L"  Ctrl+`        월드 / 로컬 좌표 전환\r\n" L"  V (끄는 중)    꼭짓점에 맞춤\r\n" L"  Ctrl+1~9 / 1~9  카메라 북마크 저장 / 이동\r\n" L"  Ctrl+Shift+P  오브젝트 조종 (Esc로 끝내기)\r\n" L"  Ctrl+Shift+H  FPS 표시\r\n" L"  우클릭 비행 중 휠  카메라 속도\r\n" L"  `             명령 줄 (help)\r\n" L"  왼쪽 클릭     선택 (핸들을 끌면 변환)\r\n" L"  Shift+왼쪽 끌기  선택 오브젝트 변환\r\n" L"  우클릭 끌기 / Alt+왼쪽 끌기  시점 회전\r\n" L"  우클릭 (끌지 않음)  오브젝트 메뉴 (이름·복사·삭제·초점·분리·프리팹)\r\n" L"  F2            오브젝트 이름 바꾸기\r\n" L"  우클릭+W·A·S·D·Q·E  비행 이동\r\n" L"  휠 버튼 끌기  시점 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Esc           변환 끌기 취소\r\n" L"  Delete        선택 오브젝트 삭제\r\n" L"  Ctrl+D        선택 오브젝트 복제\r\n" L"  Ctrl+C / Ctrl+V  복사 / 붙여넣기 (다른 장면에도)\r\n" L"  Ctrl+클릭     여러 개 선택 / 선택 해제\r\n" L"  G             격자·각도 스냅 켜기 / 끄기 (간격은 장면 > 스냅)\r\n" L"\r\n" L"[콘텐츠 브라우저]\r\n" L"  Delete        선택한 에셋을 휴지통으로\r\n" L"  F2            이름 바꾸기\r\n" L"  우클릭        열기·이름·이동·삭제·탐색기에서 보기·경로 복사 / 빈 곳: 새 폴더·새 에셋\r\n" L"  끌어다 놓기   장면에 배치\r\n" L"  폴더 트리로 끌기  다른 폴더로 이동\r\n" L"\r\n" L"[블루프린트·노드 그래프]\r\n" L"  우클릭        노드 추가 목록\r\n" L"  우클릭 끌기 / 휠 버튼 끌기  화면 이동\r\n" L"  휠           확대 / 축소\r\n" L"  Space         노드 추가 목록\r\n" L"  C             주석 추가\r\n" L"  Ctrl+F        노드 찾기\r\n" L"  Delete        선택 노드 삭제\r\n" L"  F9            중단점 전환\r\n" L"  Esc           연결 중인 선 취소\r\n" L"\r\n" L"[계층]\r\n" L"  Ctrl+클릭 / Shift+클릭  여러 개 / 범위 선택\r\n" L"  검색 칸       이름이나 type:, tag: 로 걸러 보기\r\n" L"  더블클릭      그 오브젝트에 초점\r\n" L"  우클릭        오브젝트 메뉴\r\n" L"  핀 우클릭     연결 끊기 / 출력 값 관찰\r\n" L"\r\n" L"[출력 로그]\r\n" L"  Ctrl+A        모두 선택\r\n" L"  Ctrl+C        복사\r\n";
     }
     // A plain dialog-class frame holding one read-only, selectable EDIT; X or Esc closes it.
     void showHelp(bool start){
@@ -759,7 +759,7 @@ class NativeEditorShell {
     void refreshChrome(){
         if(!window)return;
         const bool playing=playProcess!=nullptr;
-        Json top=Json::array({chip("save",u8"\uE74E",""),{{"kind","sep"}},chip("add",u8"\uE710","추가","dropdown"),chip("import",u8"\uE8E5","가져오기"),{{"kind","sep"}},chip("play",u8"\uE768","",  "button",false,false,!playing),chip("stop",u8"\uE71A","","button",false,false,playing),{{"kind","sep"}},chip("build",u8"\uE90F","빌드","dropdown"),chip("settings",u8"\uE713","설정","dropdown",false,true),chip("help",u8"\uE897","도움말","button",false,true)});
+        Json top=Json::array({chip("save",u8"\uE74E",""),{{"kind","sep"}},chip("add",u8"\uE710","추가","dropdown"),chip("import",u8"\uE8E5","가져오기"),{{"kind","sep"}},chip("play",u8"\uE768","",  "button",false,false,!playing),chip("pause",playPaused?u8"\uE768":u8"\uE769","","button",playPaused,false,playing),chip("frame",u8"\uE893","","button",false,false,playing),chip("stop",u8"\uE71A","","button",false,false,playing),{{"kind","sep"}},chip("build",u8"\uE90F","빌드","dropdown"),chip("settings",u8"\uE713","설정","dropdown",false,true),chip("help",u8"\uE897","도움말","button",false,true)});
         top[5]["tint"]={.25f,.68f,.25f};
         topStrip.update({{"items",top},{"theme",{{"background",{.082f,.082f,.082f}}}}});
         const auto& tool=viewport.transformTool();
@@ -797,7 +797,7 @@ class NativeEditorShell {
     int popup(HMENU menu,POINT at){if(acceptance){++popupsOffered;return 0;}return menu?int(TrackPopupMenu(menu,TPM_RETURNCMD|TPM_NONOTIFY|TPM_LEFTALIGN|TPM_TOPALIGN,at.x,at.y,0,window,nullptr)):0;}
     void chromeCommand(const std::string& id,POINT at){
         if(id=="save")perform(Save);else if(id=="add")perform(CreateItem);else if(id=="import")perform(ImportAsset);
-        else if(id=="play")perform(PlayScene);else if(id=="stop")perform(StopPlay);else if(id=="help")perform(ShowShortcuts);
+        else if(id=="play")perform(PlayScene);else if(id=="stop")perform(StopPlay);else if(id=="pause")perform(PauseGame);else if(id=="frame")perform(StepGameFrame);else if(id=="help")perform(ShowShortcuts);
         else if(id=="build"){if(const int choice=popup(buildMenuHandle,at))perform(Command(choice));}
         else if(id=="settings"){if(const int choice=popup(scaleMenu,at))perform(Command(choice));}
         else if(id=="move")perform(ToolMove);else if(id=="rotate")perform(ToolRotate);else if(id=="scale")perform(ToolScale);
@@ -2551,7 +2551,7 @@ class NativeEditorShell {
             TerminateProcess(child.hProcess,1);CloseHandle(child.hThread);CloseHandle(child.hProcess);CloseHandle(ownership);
             throw std::runtime_error("편집기 플레이 프로세스를 관리할 수 없어요.");
         }
-        CloseHandle(child.hThread);playJob=ownership;playProcess=child.hProcess;playPid=child.dwProcessId;stopPlayRequested=false;playBreaks=0;playDebug=nullptr;atBreakpoint=false;
+        CloseHandle(child.hThread);playJob=ownership;playProcess=child.hProcess;playPid=child.dwProcessId;stopPlayRequested=false;playPaused=false;playBreaks=0;playDebug=nullptr;atBreakpoint=false;
         takeOutput=std::move(recordingFile);takeName=recording;
         if(!audio.empty()){audioOutput=std::move(capturedAudio);audioProject=projectFile;audioName=audio;}
         SetTimer(window,6,150,nullptr);statusText(L"플레이를 시작했어요.");
@@ -2620,6 +2620,11 @@ class NativeEditorShell {
             DeleteFileW(snapshot.c_str());
         }
     }
+    // Pause / frame step: the game keeps presenting the last frame while its simulation is held.
+    void postToGame(UINT message,WPARAM value){
+        struct Target{DWORD pid;UINT message;WPARAM value;} target{playPid,message,value};
+        EnumWindows([](HWND candidate,LPARAM data)->BOOL{const auto& t=*reinterpret_cast<Target*>(data);DWORD pid=0;GetWindowThreadProcessId(candidate,&pid);wchar_t name[64]{};GetClassNameW(candidate,name,64);if(pid!=t.pid||std::wstring_view(name)!=L"HBEngine.NativeGame")return TRUE;PostMessageW(candidate,t.message,t.value,0);return FALSE;},reinterpret_cast<LPARAM>(&target));
+    }
     void stopPlay(){
         if(!playProcess||WaitForSingleObject(playProcess,0)!=WAIT_TIMEOUT)return;
         stopPlayRequested=true;
@@ -2642,7 +2647,7 @@ class NativeEditorShell {
         DWORD code=STILL_ACTIVE;
         GetExitCodeProcess(playProcess,&code);
         if(code==STILL_ACTIVE){stopPlay();throw std::runtime_error("Native editor play timeout");}
-        CloseHandle(playProcess);playProcess=nullptr;playPid=0;CloseHandle(playJob);playJob=nullptr;KillTimer(window,6);
+        CloseHandle(playProcess);playProcess=nullptr;playPaused=false;playPid=0;CloseHandle(playJob);playJob=nullptr;KillTimer(window,6);
         if(code)throw std::runtime_error("Native editor play failed");
     }
     static void placeSavedWindow(HWND owner,const Json& value,int minWidth,int minHeight){
@@ -3212,6 +3217,8 @@ class NativeEditorShell {
         if(command==SpaceToggle){localSpace=!localSpace;statusText(localSpace?L"기즈모: 로컬 좌표":L"기즈모: 월드 좌표");refreshChrome();queueViewport();return;}
         if(command==SurfaceSnapToggle){surfaceSnap=!surfaceSnap;refreshChrome();return;}
         if(command>=ViewLit&&command<=ViewWireframe){viewMode=command==ViewLit?"lit":command==ViewUnlit?"unlit":"wireframe";refreshChrome();queueViewport();return;}
+        if(command==PauseGame){if(!playProcess)return;playPaused=!playPaused;postToGame(WM_APP+44,playPaused);statusText(playPaused?L"플레이 일시정지":L"플레이 계속");refreshChrome();return;}
+        if(command==StepGameFrame){if(!playProcess)return;playPaused=true;postToGame(WM_APP+45,0);statusText(L"한 프레임 진행");refreshChrome();return;}
         if(command==ShowHistory){const auto slot=dockSlotOf("history");dockActive[slot]="history";layout();return;}
         if(command==DropToFloor){if(sceneOpen()&&!sceneSelection.empty())queueViewport({{"command","dropToFloor"},{"ids",selectedIds()}});return;}
         if(command==PilotToggle){if(!sceneOpen())return;if(pilotId.empty()){if(sceneSelection.empty())return;pilotId=sceneSelection;queueViewport({{"command","pilot"},{"id",pilotId}});statusText(L"조종 중: 카메라를 움직인 뒤 Esc 또는 '조종 끝내기'로 위치를 적용해요.");}else queueViewport({{"command","pilotEnd"}});refreshChrome();return;}
@@ -3845,7 +3852,7 @@ class NativeEditorShell {
             if(playProcess&&WaitForSingleObject(playProcess,0)==WAIT_TIMEOUT){if(stopPlayRequested)stopPlay();return 0;}
             KillTimer(window,6);
             if(playProcess){
-                DWORD result=0;GetExitCodeProcess(playProcess,&result);CloseHandle(playProcess);playProcess=nullptr;playPid=0;
+                DWORD result=0;GetExitCodeProcess(playProcess,&result);CloseHandle(playProcess);playProcess=nullptr;playPaused=false;playPid=0;
                 CloseHandle(playJob);playJob=nullptr;
                 statusText(result?L"플레이 실행 오류. 세션 로그를 확인하세요.":L"플레이를 종료했어요.");
                 if(!result)try{finishTake();finishAudioCapture();}catch(const std::exception& error){report(error);}
@@ -3984,7 +3991,7 @@ public:
         ShowWindow(window,layoutMaximized?SW_SHOWMAXIMIZED:show);
         if(contentDetachedOnStart)perform(DetachContent);
         restoreDocumentWindows();
-        ACCEL keys[]={{FVIRTKEY|FCONTROL,'O',OpenProject},{FVIRTKEY|FCONTROL,'S',Save},{FVIRTKEY|FCONTROL,'W',CloseDocument},{FVIRTKEY|FCONTROL,'Z',Undo},{FVIRTKEY|FCONTROL,'Y',Redo},{FVIRTKEY|FALT,VK_UP,Up},{FVIRTKEY,VK_F1,ShowShortcuts},{FVIRTKEY,VK_F5,PlayScene},{FVIRTKEY|FSHIFT,VK_F5,StopPlay}};
+        ACCEL keys[]={{FVIRTKEY|FCONTROL,'O',OpenProject},{FVIRTKEY|FCONTROL,'S',Save},{FVIRTKEY|FCONTROL,'W',CloseDocument},{FVIRTKEY|FCONTROL,'Z',Undo},{FVIRTKEY|FCONTROL,'Y',Redo},{FVIRTKEY|FALT,VK_UP,Up},{FVIRTKEY,VK_F1,ShowShortcuts},{FVIRTKEY,VK_F5,PlayScene},{FVIRTKEY|FSHIFT,VK_F5,StopPlay},{FVIRTKEY,VK_F6,PauseGame},{FVIRTKEY,VK_F7,StepGameFrame}};
         const auto accelerator=CreateAcceleratorTableW(keys,int(std::size(keys)));
         MSG message;
         while(GetMessageW(&message,nullptr,0,0)>0){

@@ -23,7 +23,7 @@ namespace fs=std::filesystem;
 #include "NativeGameAudioIdentity.hpp"
 using Json=nlohmann::json;
 namespace {
-constexpr UINT debugContinueMessage=WM_APP+42,debugBreakMessage=WM_APP+43;
+constexpr UINT debugContinueMessage=WM_APP+42,debugBreakMessage=WM_APP+43,pauseMessage=WM_APP+44,frameStepMessage=WM_APP+45;
 constexpr UINT tickMessage=WM_APP+39;constexpr UINT uiPipeMessage=WM_APP+38;constexpr UINT packetMessage=WM_APP+37;constexpr std::size_t packetLimit=128*1024*1024;
 std::wstring wide(const std::string& s){const int n=MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,s.data(),int(s.size()),nullptr,0);if(n<1&&!s.empty())throw std::runtime_error("UTF8");std::wstring out(n,0);if(n)MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,s.data(),int(s.size()),out.data(),n);return out;}
 std::string utf8(const std::wstring& s){const int n=WideCharToMultiByte(CP_UTF8,WC_ERR_INVALID_CHARS,s.data(),int(s.size()),nullptr,0,nullptr,nullptr);if(n<1&&!s.empty())throw std::runtime_error("UTF16");std::string out(n,0);if(n)WideCharToMultiByte(CP_UTF8,WC_ERR_INVALID_CHARS,s.data(),int(s.size()),out.data(),n,nullptr,nullptr);return out;}
@@ -230,7 +230,7 @@ int playEditorProject(Host& host,HINSTANCE instance,const fs::path& project,cons
     if(host.failed&&!host.hidden)MessageBoxW(owner,(L"편집기 플레이 중 오류가 발생했어요.\n"+host.failureMessage+L"\n"+host.logFile.wstring()).c_str(),L"HBEngine",MB_OK|MB_ICONERROR);
     return host.failed?1:0;
 }
-LRESULT CALLBACK procedure(HWND window,UINT message,WPARAM w,LPARAM l){auto* h=reinterpret_cast<Host*>(GetWindowLongPtrW(window,GWLP_USERDATA));if(message==WM_NCCREATE){h=static_cast<Host*>(reinterpret_cast<CREATESTRUCTW*>(l)->lpCreateParams);h->window=window;SetWindowLongPtrW(window,GWLP_USERDATA,reinterpret_cast<LONG_PTR>(h));}if(!h)return DefWindowProcW(window,message,w,l);try{switch(message){case debugContinueMessage:if(h->editorOwner&&h->ready)h->write({{"event","debugContinue"},{"step",w!=0}});return 0;case tickMessage:h->tick();return 0;case uiPipeMessage:h->drainUI();return 0;case packetMessage:h->drain();return 0;case WM_MOVE:case WM_SHOWWINDOW:h->ui.place(window);if(h->mouseLocked&&!h->clipMouse())h->releaseMouseCapture(true);break;
+LRESULT CALLBACK procedure(HWND window,UINT message,WPARAM w,LPARAM l){auto* h=reinterpret_cast<Host*>(GetWindowLongPtrW(window,GWLP_USERDATA));if(message==WM_NCCREATE){h=static_cast<Host*>(reinterpret_cast<CREATESTRUCTW*>(l)->lpCreateParams);h->window=window;SetWindowLongPtrW(window,GWLP_USERDATA,reinterpret_cast<LONG_PTR>(h));}if(!h)return DefWindowProcW(window,message,w,l);try{switch(message){case debugContinueMessage:if(h->editorOwner&&h->ready)h->write({{"event","debugContinue"},{"step",w!=0}});return 0;case pauseMessage:if(h->editorOwner&&h->ready)h->write({{"event","playPause"},{"paused",w!=0}});return 0;case frameStepMessage:if(h->editorOwner&&h->ready)h->write({{"event","playStep"}});return 0;case tickMessage:h->tick();return 0;case uiPipeMessage:h->drainUI();return 0;case packetMessage:h->drain();return 0;case WM_MOVE:case WM_SHOWWINDOW:h->ui.place(window);if(h->mouseLocked&&!h->clipMouse())h->releaseMouseCapture(true);break;
  case WM_INPUT:if(h->mouseLocked)h->rawMouse(l);return DefWindowProcW(window,message,w,l);
  case WM_SETFOCUS:if(h->ready)h->syncMouseCapture();break;
  case WM_SETCURSOR:
