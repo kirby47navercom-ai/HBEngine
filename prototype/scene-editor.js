@@ -22,7 +22,7 @@ export function setObjectMatrix(object,matrix){const position=new Vector3(),rota
 export function copySceneObjects(objects,ids){const result=copy(sceneDescendants(objects,ids)),included=new Set(result.map(o=>o.id));for(const object of result)if(object.parent&&!included.has(object.parent)){setObjectMatrix(object,sceneWorldMatrix(object,objects));delete object.parent;}return result;}
 export function selectionMatrices(objects,ids){const selected=new Set(ids);return objects.filter(object=>selected.has(object.id)&&!object.locked).filter(object=>{let parent=objects.find(o=>o.id===object.parent);while(parent){if(selected.has(parent.id)&&!parent.locked)return false;parent=objects.find(o=>o.id===parent.parent);}return true;}).map(object=>({id:object.id,matrix:sceneWorldMatrix(object,objects)}));}
 export function transformSceneSelection(objects,selection,delta){for(const item of selection){const object=objects.find(o=>o.id===item.id);if(!object)continue;const world=item.matrix.clone().premultiply(delta),parent=objects.find(o=>o.id===object.parent);if(parent)world.premultiply(sceneWorldMatrix(parent,objects).invert());setObjectMatrix(object,world);}}
-export function editSceneTransform(actor,objects,{mode,axis,value}){
+export function editSceneTransform(actor,objects,{mode,axis,value,space}){
   if(mode==='translate'){
     if(!Array.isArray(value)||value.length!==3||!value.every(Number.isFinite))throw Error('오브젝트 이동 거리를 확인하세요.');
     const position=new Vector3().fromArray(value);
@@ -39,7 +39,10 @@ export function editSceneTransform(actor,objects,{mode,axis,value}){
   if(mode==='rotate'){
     const basis=new Vector3().setComponent(axis,1);
     const rotation=new Quaternion().setFromEuler(new Euler(...actor.rotation.map(angle=>angle*Math.PI/180)));
-    const angles=new Euler().setFromQuaternion(rotation.multiply(new Quaternion().setFromAxisAngle(basis,value)));
+    // World space (Unreal world gizmo): rotate about the world axis, expressed in the parent's frame.
+    let turn=new Quaternion().setFromAxisAngle(basis,value);
+    if(space==='world'){const parent=objects.find(object=>object.id===actor.parent);if(parent){const p=new Quaternion();sceneWorldMatrix(parent,objects).decompose(new Vector3(),p,new Vector3());turn=p.clone().invert().multiply(turn).multiply(p);}}
+    const angles=new Euler().setFromQuaternion(space==='world'?turn.multiply(rotation):rotation.multiply(turn));
     actor.rotation=[angles.x,angles.y,angles.z].map(angle=>angle*180/Math.PI);
   }else if(mode==='scale'&&value>0){
     actor.scale=actor.scale.map((size,index)=>index===axis?clampScaleAxis(size*value):size);

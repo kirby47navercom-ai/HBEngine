@@ -48,6 +48,12 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   const target=new THREE.Vector3(0,.45,0), orbit=new THREE.Spherical();
   // Focus (F / outliner double-click) flies the camera over a short ease-out instead of jumping, like Unreal.
   let flyTo=null;const FLY_MS=350;
+  // Editor viewport extras: floor grid, view modes (unlit / wireframe), marquee, camera bookmarks, quad panes.
+  let grid=null,gridStep=0,marqueeLine=null,lastPane=0,viewModeShown='lit';const wire=new Map(),unlitMaterials=new WeakMap(),bookmarks=new Map();
+  const wireMaterial=new THREE.LineBasicMaterial({color:0x9fc4ff,toneMapped:false});
+  const panes=[null,{direction:'top',target:new THREE.Vector3()},{direction:'front',target:new THREE.Vector3()},{direction:'right',target:new THREE.Vector3()}];
+  const unlitFor=m=>{if(Array.isArray(m))return m.map(unlitFor);let u=unlitMaterials.get(m);if(!u){u=new THREE.MeshBasicMaterial({color:m.color?.clone()??new THREE.Color(1,1,1),map:m.map??null,transparent:m.transparent,opacity:m.opacity,side:m.side,alphaTest:m.alphaTest,vertexColors:m.vertexColors});unlitMaterials.set(m,u);}return u;};
+  const shownInChain=node=>{for(let n=node;n;n=n.parent)if(!n.visible)return false;return true;};
   const ray=new THREE.Raycaster();
   const visualKey=object=>{
     const {position,rotation,scale,visible,locked,name,parent,...appearance}=object;
@@ -71,6 +77,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     for (const group of groups.values()) visual.dispose(group);
     visual.dispose2D();primitives.dispose();
     for (const node of [sky.skyDome,sky.cloudGroup]) node.traverse(child=>{child.geometry?.dispose();child.material?.dispose();});
+    for(const line of wire.values())line.geometry.dispose();wire.clear();if(grid){grid.geometry.dispose();grid.material.dispose();grid=null;}if(marqueeLine){marqueeLine.geometry.dispose();marqueeLine.material.dispose();marqueeLine=null;}viewModeShown='lit';
     world=null;groups.clear();models.clear();owners.clear();source=null;previewTransform=null;dragDraft=null;
   };
   const close=async()=>{
@@ -139,20 +146,32 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     updateEnvironment();
     source=data;content={objects,warnings};
   }
-  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false,flight,smooth=false,snap,direction='',tool='translate',axis=-1,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges}) {
+  async function draw(data,nextProject,{width,height,command='',dx=0,dy=0,x=0,y=0,id='',selected='',cameraId='',cameraOutputs=false,capture=false,flight,smooth=false,snap,direction='',tool='translate',axis=-1,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges,...extra}) {
     const assets=installNativeAssets({url:name=>'hbasset:'+encodeURIComponent(name),manifest:{width,height},readBytes:(name,opts)=>projectBytes(nextProject,name,opts)});
-    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,smooth,snap,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets);}
+    try{return await drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,smooth,snap,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets,extra);}
     finally{assets.restore();}
   }
-  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,smooth,snap,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets) {
+  async function drawFrame(data,nextProject,{width,height,command,dx,dy,x,y,id,selected,cameraId,cameraOutputs,capture,flight,smooth,snap,direction,tool,axis,tangent,points,brushSpacing,faces,instances,meshVertices,meshEdges},assets,extra={}) {
     const timing={start:performance.now()};
+    const {quad=false,viewMode='lit',gameView=false,showGrid=false,gridSize=1,space='world',surfaceSnap=false,vertexSnap=false,pilot=''}=extra;
+    let box=Array.isArray(extra.box)&&extra.box.length===4&&extra.box.every(Number.isFinite)?extra.box.slice():null;
     canvas.clientWidth=width;canvas.clientHeight=height;
     if(previewTransform){transform(previewTransform.actor,previewTransform.group);previewTransform=null;}
     await open(data,nextProject,assets);timing.open=performance.now();
     selection=selected;
+    // Quad view: commands act in the pane under the cursor (or the last used pane); each ortho pane keeps its own target and zoom.
+    const fullWidth=width,fullHeight=height,savedTarget=target.clone(),savedOrtho=orthoCamera;let pane=null;
+    if(quad){
+      const hw=Math.max(1,Math.floor(width/2)),hh=Math.max(1,Math.floor(height/2)),rects=[[0,0,hw,hh],[hw,0,Math.max(1,width-hw),hh],[0,hh,hw,Math.max(1,height-hh)],[hw,hh,Math.max(1,width-hw),Math.max(1,height-hh)]];
+      const at=box?[box[0],box[1]]:[x,y],positioned=['orbit','pan','zoom','pick','place','translate','translatePreview','transform','transformPreview','marquee','boxSelect'].includes(command);
+      const hit=positioned?rects.findIndex(([rx,ry,rw,rh])=>at[0]>=rx&&at[0]<rx+rw&&at[1]>=ry&&at[1]<ry+rh):-1;if(hit>=0)lastPane=hit;
+      pane={index:lastPane,rect:rects[lastPane],rects};
+      x-=pane.rect[0];y-=pane.rect[1];width=pane.rect[2];height=pane.rect[3];if(box)box=box.map((v,i)=>v-pane.rect[i%2]);
+      if(pane.index>0){const p=panes[pane.index];p.camera??=fallbackGameCamera('2d');orthoCamera=p.camera;target.copy(p.target);direction=p.direction;}else direction='3d';
+    }
     const aspect=width/height;
     if(direction&&!Object.hasOwn(viewportDirections,direction))throw Error('뷰포트 방향을 확인하세요.');
-    const orthographic=direction&&direction!=='3d'||dimension==='2d'&&direction!=='3d';
+    const orthographic=direction&&direction!=='3d'||dimension==='2d'&&direction!=='3d'&&!(pane&&pane.index===0);
     const editorCamera=orthographic?(orthoCamera??=fallbackGameCamera('2d')):camera;
     const prepareCamera=()=>{
       if(orthographic){
@@ -165,7 +184,15 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       editorCamera.updateProjectionMatrix();editorCamera.updateMatrixWorld();
     };
     prepareCamera();
-    if(command&&command!=='focus'&&command!=='pick')flyTo=null;
+    if(command&&!['focus','pick','bookmarkGo'].includes(command))flyTo=null;
+    // Camera bookmarks (Ctrl+1..9 save, 1..9 fly back).
+    let bookmarkResult;
+    if(command==='bookmarkSet'&&Number.isInteger(extra.bookmark)){bookmarks.set(extra.bookmark,{target:target.clone(),orbit:orbit.clone(),zoom:editorCamera.zoom,orthographic,pane:lastPane});bookmarkResult={index:extra.bookmark,saved:true};}
+    if(command==='bookmarkGo'&&Number.isInteger(extra.bookmark)){const mark=bookmarks.get(extra.bookmark);bookmarkResult={index:extra.bookmark,found:!!mark};
+      if(mark&&mark.orthographic===!!orthographic){let theta=mark.orbit.theta;while(theta-orbit.theta>Math.PI)theta-=2*Math.PI;while(theta-orbit.theta<-Math.PI)theta+=2*Math.PI;
+        flyTo={from:{target:target.clone(),radius:orbit.radius,zoom:editorCamera.zoom,theta:orbit.theta,phi:orbit.phi},to:{target:mark.target.clone(),radius:mark.orbit.radius,zoom:mark.zoom,theta,phi:mark.orbit.phi},start:performance.now()-16,orthographic};}}
+    // Pilot: the editor camera takes the object's place and view direction (-Z forward).
+    if(command==='pilot'&&!orthographic){const g=groups.get(id||pilot);if(g){g.updateWorldMatrix(true,false);const at=g.getWorldPosition(new THREE.Vector3()),forward=new THREE.Vector3(0,0,-1).applyQuaternion(g.getWorldQuaternion(new THREE.Quaternion()));target.copy(at).add(forward);orbit.setFromVector3(at.clone().sub(target));}}
     if (command==='focus') {
       const group=groups.get(id);
       if(group){
@@ -195,6 +222,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       target.lerpVectors(flyTo.from.target,flyTo.to.target,k);
       if(flyTo.orthographic)editorCamera.zoom=THREE.MathUtils.lerp(flyTo.from.zoom,flyTo.to.zoom,k);
       else orbit.radius=THREE.MathUtils.lerp(flyTo.from.radius,flyTo.to.radius,k);
+      if(flyTo.to.theta!==undefined&&!flyTo.orthographic){orbit.theta=THREE.MathUtils.lerp(flyTo.from.theta,flyTo.to.theta,k);orbit.phi=THREE.MathUtils.lerp(flyTo.from.phi,flyTo.to.phi,k);orbit.makeSafe();}
       animating=t<1;if(!animating)flyTo=null;
     }
     if(flight&&!cameraId&&!cameraOutputs&&!orthographic){
@@ -208,7 +236,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     }
     prepareCamera();
     const size={width,height},current=id=>groups.get(id);
-    const active=(cameraOutputs?selectGameCamera(content.objects,size,cameraId,current):cameraId&&previewGameCamera(content.objects,size,cameraId,current))||editorCamera;
+    let active=(cameraOutputs?selectGameCamera(content.objects,size,cameraId,current):cameraId&&previewGameCamera(content.objects,size,cameraId,current))||editorCamera;
     const views=active.userData.gameViews;
     world.updateMatrixWorld(true);
     const authoring=!cameraId&&!cameraOutputs;
@@ -221,6 +249,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       return 120*(active.isOrthographicCamera?1:depth)/(height*active.projectionMatrix.elements[5]);
     };
     let translation,sceneTransform,preview;
+    // Gizmo axes in world or local space (Unreal Ctrl+`); scale is always local.
+    const axisOf=(group,a,local=space==='local')=>local?new THREE.Vector3().setComponent(a,1).applyQuaternion(group.quaternion).transformDirection(group.parent.matrixWorld):new THREE.Vector3().setComponent(a,1);
     if(authoring&&['translatePreview','translate','transformPreview','transform'].includes(command)){
       const actor=content.objects.find(row=>row.id===selection),group=groups.get(selection);
       if(group?.visible&&!actor.locked&&[x,y,dx,dy].every(Number.isFinite)){
@@ -230,15 +260,25 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
             const before=new THREE.Vector3(2*x/width-1,1-2*y/height,center.z).unproject(active);
             const after=new THREE.Vector3(2*(x+dx)/width-1,1-2*(y+dy)/height,center.z).unproject(active);
             translation=after.sub(before).toArray();
+            // Surface snapping puts the object's base on the surface under the cursor; holding V snaps its pivot to the nearest vertex.
+            if(surfaceSnap||vertexSnap){
+              const own=new Set();group.traverse(n=>own.add(n));ray.setFromCamera({x:2*(x+dx)/width-1,y:1-2*(y+dy)/height},active);
+              const hit=ray.intersectObjects(world.children,true).find(h=>h.object.isMesh&&!own.has(h.object)&&!h.object.userData.editorHelper&&shownInChain(h.object));
+              if(hit){
+                if(vertexSnap&&hit.face&&!hit.object.isInstancedMesh){const p=hit.object.geometry.attributes.position;const best=[hit.face.a,hit.face.b,hit.face.c].map(i=>new THREE.Vector3().fromBufferAttribute(p,i).applyMatrix4(hit.object.matrixWorld)).sort((a,b)=>a.distanceToSquared(hit.point)-b.distanceToSquared(hit.point))[0];translation=best.sub(origin).toArray();}
+                else{const bounds=new THREE.Box3().setFromObject(group);translation=hit.point.clone().add(new THREE.Vector3(0,bounds.isEmpty()?0:origin.y-bounds.min.y,0)).sub(origin).toArray();}
+              }
+            }
           }else if(Number.isInteger(axis)&&axis>=0&&axis<3&&Array.isArray(tangent)&&tangent.length===2&&tangent.every(Number.isFinite)){
             const distance=dx*tangent[0]+dy*tangent[1];
             if(tool==='translate'){
               const length=handleSize(origin);
-              const from=screen(origin),to=screen(origin.clone().addScaledVector(new THREE.Vector3().setComponent(axis,axisSign(axis)),length));
+              const along=axisOf(group,axis).multiplyScalar(axisSign(axis));
+              const from=screen(origin),to=screen(origin.clone().addScaledVector(along,length));
               const pixels=Math.hypot(to[0]-from[0],to[1]-from[1]);
-              if(pixels>=6&&Math.abs(distance)>1e-6)translation=new THREE.Vector3().setComponent(axis,axisSign(axis)*distance*length/pixels).toArray();
+              if(pixels>=6&&Math.abs(distance)>1e-6)translation=along.multiplyScalar(distance*length/pixels).toArray();
             }else if(Math.abs(distance)>1e-6&&(tool==='rotate'||tool==='scale')){
-              sceneTransform={axis,value:tool==='rotate'?distance/60:Math.exp(THREE.MathUtils.clamp(distance/60,-12,12))};
+              sceneTransform={axis,value:tool==='rotate'?distance/60:Math.exp(THREE.MathUtils.clamp(distance/60,-12,12)),...(tool==='rotate'?{space}:{})};
             }
           }
           // Preview and commit frames both draw the result (live, like Unreal), with grid/angle snap as the session will commit it.
@@ -393,8 +433,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
         for(let axis=0;axis<3;axis++){
           const color=new THREE.Color([0x62df91,0x70adff,0xff6669][axis]).toArray();
           const count=tool==='rotate'?24:1;
-          const u=tool==='rotate'?localBasis((axis+1)%3):tool==='scale'?localBasis(axis).multiplyScalar(axisSign(axis)):new THREE.Vector3().setComponent(axis,axisSign(axis));
-          const v=tool==='rotate'?localBasis((axis+2)%3):null;
+          const u=tool==='rotate'?axisOf(group,(axis+1)%3):tool==='scale'?localBasis(axis).multiplyScalar(axisSign(axis)):axisOf(group,axis).multiplyScalar(axisSign(axis));
+          const v=tool==='rotate'?axisOf(group,(axis+2)%3):null;
           const endpoint=index=>{
             if(!v)return origin.clone().addScaledVector(u,length*(index||.18));
             const angle=index*2*Math.PI/count;
@@ -426,9 +466,53 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
         }
         // Unreal-style gizmo: arrows (move), rings (rotate), cube tips (scale); the dragged axis turns yellow.
         solidGizmo??=createSolidGizmo();if(!solidGizmo.parent)world.add(solidGizmo);
-        poseSolidGizmo(solidGizmo,{tool,origin,length,basis:a=>tool==='translate'?new THREE.Vector3().setComponent(a,axisSign(a)):tool==='scale'?localBasis(a).multiplyScalar(axisSign(a)):localBasis(a),active:command.startsWith('transform')||command.startsWith('translate')?axis:-1});
+        poseSolidGizmo(solidGizmo,{tool,origin,length,basis:a=>tool==='translate'?axisOf(group,a).multiplyScalar(axisSign(a)):tool==='scale'?localBasis(a).multiplyScalar(axisSign(a)):axisOf(group,a),active:command.startsWith('transform')||command.startsWith('translate')?axis:-1});
       }
     }
+    // Drop to floor (End): each object's lowest point moves onto the first surface below it.
+    let drops;
+    if(command==='dropToFloor'&&authoring){drops=[];
+      for(const dropId of Array.isArray(extra.ids)&&extra.ids.length?extra.ids:[selection]){const g=groups.get(dropId),actor=content.objects.find(row=>row.id===dropId);if(!g||actor?.locked)continue;g.updateWorldMatrix(true,true);const bounds=new THREE.Box3().setFromObject(g);if(bounds.isEmpty())continue;
+        const own=new Set();g.traverse(n=>own.add(n));const middle=bounds.getCenter(new THREE.Vector3());ray.set(new THREE.Vector3(middle.x,bounds.min.y+1e-3,middle.z),new THREE.Vector3(0,-1,0));
+        const hit=ray.intersectObjects(world.children,true).find(h=>h.object.isMesh&&!own.has(h.object)&&!h.object.userData.editorHelper&&shownInChain(h.object));
+        if(hit&&Math.abs(hit.point.y-bounds.min.y)>1e-5)drops.push({id:dropId,delta:[0,hit.point.y-bounds.min.y,0]});}}
+    // Marquee rectangle while dragging; box select returns every object whose bounds centre falls inside.
+    let boxSelection;
+    if(marqueeLine)marqueeLine.visible=false;
+    if(box&&authoring){
+      const [x0,y0,x1,y1]=[Math.min(box[0],box[2]),Math.min(box[1],box[3]),Math.max(box[0],box[2]),Math.max(box[1],box[3])];
+      if(command==='marquee'){
+        if(!marqueeLine){const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(24),3));marqueeLine=new THREE.LineSegments(geometry,new THREE.LineBasicMaterial({color:0xffffff,depthTest:false,depthWrite:false,toneMapped:false}));marqueeLine.userData.editorHelper=true;marqueeLine.frustumCulled=false;marqueeLine.renderOrder=1003;}
+        if(marqueeLine.parent!==world)world.add(marqueeLine);
+        const corner=(px,py)=>new THREE.Vector3(2*px/width-1,1-2*py/height,-.98).unproject(active),c=[corner(x0,y0),corner(x1,y0),corner(x1,y1),corner(x0,y1)];
+        const p=marqueeLine.geometry.attributes.position;[0,1,1,2,2,3,3,0].forEach((k,i)=>p.setXYZ(i,c[k].x,c[k].y,c[k].z));p.needsUpdate=true;marqueeLine.visible=true;
+      }else if(command==='boxSelect'){boxSelection=[];
+        for(const actor of content.objects){const g=groups.get(actor.id);if(!g||!shownInChain(g))continue;const bounds=new THREE.Box3().setFromObject(g);const point=(bounds.isEmpty()?g.getWorldPosition(new THREE.Vector3()):bounds.getCenter(new THREE.Vector3())).project(active);
+          const sx=(point.x+1)*width/2,sy=(1-point.y)*height/2;if(point.z>=-1&&point.z<=1&&sx>=x0&&sx<=x1&&sy>=y0&&sy<=y1)boxSelection.push(actor.id);}}
+    }
+    let pilotPose;
+    if(command==='pilotEnd'&&!orthographic){const e=new THREE.Euler().setFromQuaternion(editorCamera.quaternion);pilotPose={position:editorCamera.position.toArray(),rotation:[e.x,e.y,e.z].map(THREE.MathUtils.radToDeg)};}
+    // Quad view: restore the shared camera state and render all four panes into one frame.
+    if(pane){
+      if(pane.index>0){panes[pane.index].target.copy(target);target.copy(savedTarget);orthoCamera=savedOrtho;}
+      for(const s of segments){s[1]+=pane.rect[0];s[2]+=pane.rect[1];s[3]+=pane.rect[0];s[4]+=pane.rect[1];}
+      width=fullWidth;height=fullHeight;
+      const cameras=pane.rects.map(([,,rw,rh],i)=>{const a=rw/rh;
+        if(i===0){if(pane.index!==0){camera.aspect=a;camera.position.copy(target).add(new THREE.Vector3().setFromSpherical(orbit));camera.lookAt(target);camera.updateProjectionMatrix();camera.updateMatrixWorld();}return camera;}
+        const p=panes[i];p.camera??=fallbackGameCamera('2d');const c=p.camera;if(i!==pane.index){c.left=-7*a;c.right=7*a;c.position.copy(p.target).add(new THREE.Vector3(0,0,20));applyViewportDirection(c,p.direction,p.target);c.updateProjectionMatrix();c.updateMatrixWorld();}return c;});
+      active=cameras[0];Object.defineProperty(active.userData,'gameViews',{value:cameras.map((c,i)=>({id:'pane'+i,camera:c,region:[pane.rects[i][0]/width,pane.rects[i][1]/height,pane.rects[i][2]/width,pane.rects[i][3]/height]})),configurable:true,writable:true});
+    }
+    // Floor grid (Unreal show flag), game view (G hides every editor helper) and view modes.
+    if(showGrid&&dimension!=='2d'){const step=Math.max(.01,gridSize);if(!grid||gridStep!==step){if(grid){grid.removeFromParent();grid.geometry.dispose();grid.material.dispose();}const cells=Math.max(20,Math.min(200,Math.round(30/step)));grid=new THREE.GridHelper(step*cells,cells,0x5c5c5c,0x3a3a3a);grid.userData.editorHelper=true;grid.frustumCulled=false;gridStep=step;}if(grid.parent!==world)world.add(grid);grid.visible=true;}else if(grid)grid.visible=false;
+    const hiddenForFrame=[];
+    if(gameView){segments.length=0;world.traverse(n=>{if(n.userData.editorHelper&&n.visible)hiddenForFrame.push(n);});}
+    if(viewMode!==viewModeShown){world.traverse(n=>{if(n.isMesh&&n.userData.hbLit){n.material=n.userData.hbLit;delete n.userData.hbLit;}});for(const line of wire.values())line.visible=false;viewModeShown=viewMode;}
+    if(viewMode!=='lit'){const meshes=[];world.traverse(n=>{if(n.isMesh&&!n.isInstancedMesh&&!n.userData.editorHelper&&n.visible&&n.geometry)meshes.push(n);});
+      for(const n of meshes){if(viewMode==='unlit'){if(!n.userData.hbLit){n.userData.hbLit=n.material;n.material=unlitFor(n.material);}continue;}
+        let line=wire.get(n);if(!line){line=new THREE.LineSegments(new THREE.WireframeGeometry(n.geometry),wireMaterial);line.userData.editorHelper=true;line.matrixAutoUpdate=false;line.frustumCulled=false;wire.set(n,line);}
+        if(line.parent!==world)world.add(line);line.matrix.copy(n.matrixWorld);line.matrixWorld.copy(n.matrixWorld);line.visible=!gameView;hiddenForFrame.push(n);}}
+    if(pilot){const g=groups.get(pilot);if(g?.visible)hiddenForFrame.push(g);}
+    for(const n of hiddenForFrame)n.visible=false;
     renderer.setSize(width,height,false);timing.scene=performance.now();
     const render=async()=>{
       syncSkyToCamera(sky,active,0);
@@ -436,16 +520,18 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       visual.renderBloom(renderer,world,active,content.objects,c=>syncSkyToCamera(sky,c,0));timing.submit=performance.now();
       await renderer.hbFinishFrame();timing.finish=performance.now();
     };
-    await render();
-    if (capture) {
-      const end=Date.now()+70000;
-      while (renderer.hbDiagnostics().shaderPreparation?.pending&&Date.now()<end) {
-        await new Promise(resolve=>setTimeout(resolve,120));await render();
+    try{
+      await render();
+      if (capture) {
+        const end=Date.now()+70000;
+        while (renderer.hbDiagnostics().shaderPreparation?.pending&&Date.now()<end) {
+          await new Promise(resolve=>setTimeout(resolve,120));await render();
+        }
       }
-    }
+    }finally{for(const n of hiddenForFrame)n.visible=true;if(pane)delete active.userData.gameViews;}
     const {backend,shaderPreparation,calls,cameraViews,upscales,ldrAntiAliasingPasses}=renderer.hbDiagnostics();
     const ms=(a,b)=>Math.round((timing[b]-timing[a])*100)/100;
-    return {animating,target:target.toArray(),gpuMs:renderer.hbDiagnostics().gpuTimeMs??null,resolution:{...renderer.hbResolution,upscales,ldrAntiAliasingPasses},timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),warnings:content.warnings.slice(0,8)};
+    return {animating,target:target.toArray(),gpuMs:renderer.hbDiagnostics().gpuTimeMs??null,resolution:{...renderer.hbResolution,upscales,ldrAntiAliasingPasses},timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),...(drops?{drops}:{}),...(boxSelection?{boxSelection}:{}),...(pilotPose?{pilotPose}:{}),...(bookmarkResult?{bookmark:bookmarkResult}:{}),warnings:content.warnings.slice(0,8)};
   }
   return {draw,close};
 }

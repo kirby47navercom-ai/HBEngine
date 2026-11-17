@@ -10,7 +10,7 @@ class EditorScenePanel {
     std::function<void(Json)> post;
     POINT start{},previous{};
     int button=0;
-    bool moved=false,painted=false,transformDrag=false,brushEnabled=false,altOrbit=false;
+    bool moved=false,painted=false,transformDrag=false,brushEnabled=false,altOrbit=false,marquee=false;
     std::vector<POINT> brushPoints;
     struct Handle {int axis;double x,y,dx,dy;};
     std::vector<Handle> handles;
@@ -83,6 +83,8 @@ class EditorScenePanel {
                 if(std::hypot(double(at.x-last.x),double(at.y-last.y))>=6)brushPoints.push_back(at);
                 return 0;
             }
+            // Left drag on empty space: marquee box selection (Ctrl adds).
+            if(button==1&&!transformDrag&&!grabbed){const auto at=point(l);if(marquee||std::abs(at.x-start.x)>=5||std::abs(at.y-start.y)>=5){marquee=true;post({{"command","marquee"},{"box",{start.x,start.y,at.x,at.y}}});}return 0;}
             if(button==1&&transformDrag){
                 const auto at=point(l);
                 moved=moved||std::abs(at.x-start.x)>=3||std::abs(at.y-start.y)>=3;
@@ -93,7 +95,7 @@ class EditorScenePanel {
             const auto at=point(l);
             if(!moved&&std::abs(at.x-start.x)<3&&std::abs(at.y-start.y)<3)return 0;
             moved=true;
-            post({{"command",button==2?"orbit":"pan"},{"dx",at.x-previous.x},{"dy",at.y-previous.y}});
+            post({{"command",button==2?"orbit":"pan"},{"dx",at.x-previous.x},{"dy",at.y-previous.y},{"x",start.x},{"y",start.y}});
             previous=at;return 0;
         }
         case WM_LBUTTONUP:case WM_RBUTTONUP:case WM_MBUTTONUP:{
@@ -109,6 +111,7 @@ class EditorScenePanel {
                 for(const auto& p:stroke)points.push_back({p.x,p.y});
                 post({{"command","worldBrush"},{"points",std::move(points)},{"erase",(w&MK_SHIFT)!=0}});return 0;
             }
+            if(up==1&&std::exchange(marquee,false)){post({{"command","boxSelect"},{"box",{start.x,start.y,at.x,at.y}},{"add",(GetKeyState(VK_CONTROL)&0x8000)!=0}});grabbed.reset();return 0;}
             if(translate&&(moved||std::abs(at.x-start.x)+std::abs(at.y-start.y)>=3))drag(at,false);
             else if(up==1&&!grabbed&&std::abs(at.x-start.x)<4&&std::abs(at.y-start.y)<4)post({{"command","pick"},{"x",at.x},{"y",at.y},{"add",(w&MK_CONTROL)!=0}});
             // A right click without dragging opens the context menu (a right drag stays the camera look).
@@ -116,6 +119,7 @@ class EditorScenePanel {
             grabbed.reset();return 0;
         }
         case WM_CAPTURECHANGED:
+            marquee=false;
             if(transformDrag&&moved)post({{"command","translateCancel"}});
             transformDrag=false;button=0;brushPoints.clear();stopFlight();return 0;
         case WM_KILLFOCUS:
@@ -130,7 +134,7 @@ class EditorScenePanel {
             }
             break;
         // Wheel while flying (right button held) changes camera speed like Unreal; otherwise it zooms.
-        case WM_MOUSEWHEEL:post({{"command",button==2&&flightTime?"speedStep":"zoom"},{"dy",GET_WHEEL_DELTA_WPARAM(w)/120.0}});return 0;
+        case WM_MOUSEWHEEL:{POINT at=point(l);ScreenToClient(window,&at);post({{"command",button==2&&flightTime?"speedStep":"zoom"},{"dy",GET_WHEEL_DELTA_WPARAM(w)/120.0},{"x",at.x},{"y",at.y}});return 0;}
         case WM_KEYDOWN:case WM_KEYUP:{
             const auto index=flightKey(w);
             if(button==2&&index>=0){
@@ -142,7 +146,7 @@ class EditorScenePanel {
             if(message==WM_KEYDOWN&&w=='F'){post({{"command","focus"}});return 0;}
             if(message==WM_KEYDOWN&&!button){
                 const bool ctrl=(GetKeyState(VK_CONTROL)&0x8000)!=0;
-                const char* shortcut=w==VK_DELETE?"delete":ctrl&&w=='D'?"duplicate":ctrl&&w=='C'?"copy":ctrl&&w=='V'?"paste":!ctrl&&w=='G'?"snap":nullptr;
+                const char* shortcut=w==VK_DELETE?"delete":ctrl&&w=='D'?"duplicate":ctrl&&w=='C'?"copy":ctrl&&w=='V'?"paste":nullptr;
                 if(shortcut){post({{"command","shortcut"},{"key",shortcut}});return 0;}
             }
             if(message==WM_KEYDOWN&&!button&&(w=='W'||w=='E'||w=='R')){

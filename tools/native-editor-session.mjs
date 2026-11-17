@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import fs from 'node:fs/promises';
 import {createReadStream} from 'node:fs';
 import {createHash} from 'node:crypto';
@@ -132,13 +133,16 @@ export function nativeEditorSession(bridge) {
     if (await revision(doc) !== expected) throw Object.assign(Error('문서가 변경됐어요. 다시 읽으세요.'), {code:'REVISION_CONFLICT'});
   };
   // mergeKey: consecutive edits with the same key (one value drag) share a single undo step.
+  // Undo history panel: every history entry keeps the name of the edit that left it (requestLabel of the running request).
+  let requestLabel='편집';
   function change(doc, next, mergeKey) {
     if (!validAsset(doc.kind, next)) throw Error('에셋 형식이나 값 범위를 확인하세요.');
     if (JSON.stringify(next) === JSON.stringify(doc.data)) return;
-    if(!(mergeKey&&doc.mergeKey===mergeKey&&doc.history.length))doc.history.push(doc.data);
+    doc.historyLabels??=[];doc.futureLabels??=[];
+    if(!(mergeKey&&doc.mergeKey===mergeKey&&doc.history.length)){doc.history.push(doc.data);doc.historyLabels.push(requestLabel);}
     doc.mergeKey=mergeKey||null;
-    if (doc.history.length > 80) doc.history.shift();
-    doc.future.length = 0;
+    if (doc.history.length > 80){doc.history.shift();doc.historyLabels.shift();}
+    doc.future.length = 0;doc.futureLabels.length=0;
     doc.data = next;
     if(doc.kind==='text'&&doc.path.startsWith('Source/'))nativeMetadata=new WeakMap();
     doc.dirty = JSON.stringify(next) !== doc.saved;
@@ -1193,6 +1197,9 @@ export function nativeEditorSession(bridge) {
     },
     'editor.discardAutosave': async({path:file})=>{await dropAutosave(file);return {path:file};},
     'editor.undo': ({path,expectedRevision}) => restore('history','future',path,expectedRevision),
+    // History panel rows: oldest first; current marks the live state; undoTo/redoTo steps there.
+    'editor.history': ({path}) => {const doc=targetDocument(path);const past=(doc.historyLabels||[]).map((label,i)=>({label,step:i+1-doc.history.length}));const ahead=[...(doc.futureLabels||[])].reverse().map((label,i)=>({label,step:i+1}));return {rows:[{label:'열었을 때',step:-doc.history.length,start:true},...past,...ahead].map(row=>({...row,current:row.step===0})),undo:doc.history.length,redo:doc.future.length};},
+    'editor.historyJump': async ({path,steps,expectedRevision}) => {const doc=targetDocument(path);await check(doc,expectedRevision);if(!Number.isInteger(steps)||steps<-doc.history.length||steps>doc.future.length)throw Error('기록 위치를 확인하세요.');let result=await response(doc);for(let i=0;i<Math.abs(steps);i++)result=await restore(steps<0?'history':'future',steps<0?'future':'history',path,await revision(doc));return result;},
     'editor.redo': ({path,expectedRevision}) => restore('future','history',path,expectedRevision),
     'scene.catalog': () => ({placements:placementCatalog.map(({key,label,category})=>({id:key,label,group:category})),components:Object.keys(componentDefinitions)}),
     'scene.hierarchy': ({query}={}) => scene().data.objects.map(object=>{const {id,name,kind,parent,visible,locked,components}=object;return {id,name,kind,parent,visible,locked,camera:components?.some(c=>c.type==='Camera'&&c.properties?.enabled!==false)??kind==='camera',...(typeof query==='string'&&query.trim()?{match:sceneMatches(object,query.trim())}:{})};}),
@@ -1202,7 +1209,7 @@ export function nativeEditorSession(bridge) {
       if(!list.length)throw Error('복사할 오브젝트를 선택하세요.');
       return {objects:copySceneObjects(doc.data.objects,list)};
     },
-    'scene.edit': async ({path,action,id,ids,target,key,delta,axis,value,asset,position,clipboard,snap,expectedRevision}) => {
+    'scene.edit': async ({path,action,id,ids,target,key,delta,axis,value,asset,position,rotation,clipboard,snap,space,expectedRevision}) => {
       const doc=targetDocument(path);
       if(doc.kind!=='scene')throw Error('장면 문서를 선택하세요.');
       await check(doc,expectedRevision);
@@ -1229,7 +1236,7 @@ export function nativeEditorSession(bridge) {
         else{
           // Children of another selected object move with their parent, so only the outermost ones are edited.
           const chosen=new Set(unlocked);
-          for(const item of unlocked){const object=byId.get(item);let parent=byId.get(object.parent),inner=false;while(parent){if(chosen.has(parent.id)){inner=true;break;}parent=byId.get(parent.parent);}if(inner)continue;editSceneTransform(object,next.objects,{mode:action,axis,value:action==='translate'?delta:value});snapped(object,action);}
+          for(const item of unlocked){const object=byId.get(item);let parent=byId.get(object.parent),inner=false;while(parent){if(chosen.has(parent.id)){inner=true;break;}parent=byId.get(parent.parent);}if(inner)continue;editSceneTransform(object,next.objects,{mode:action,axis,space,value:action==='translate'?delta:value});snapped(object,action);}
           selections=targets;
         }
       } else if (action==='add') {
@@ -1245,7 +1252,13 @@ export function nativeEditorSession(bridge) {
         else if (action==='visible') actor.visible=!actor.visible;
         else if (action==='component') addSceneComponent(actor,key);
         else if (action==='removeComponent'){if(!Array.isArray(actor.components)||!actor.components.some(c=>c.id===key))throw Error('제거할 컴포넌트를 선택하세요.');actor.components=actor.components.filter(c=>c.id!==key);}
-        else if(action==='translate'||action==='rotate'||action==='scale'){editSceneTransform(actor,next.objects,{mode:action,axis,value:action==='translate'?delta:value});snapped(actor,action);}
+        else if(action==='translate'||action==='rotate'||action==='scale'){editSceneTransform(actor,next.objects,{mode:action,axis,space,value:action==='translate'?delta:value});snapped(actor,action);}
+        // Pilot: the camera's world pose becomes the object's (scale kept).
+        else if(action==='setWorldTransform'){
+          if(!Array.isArray(position)||position.length!==3||!position.every(Number.isFinite)||!Array.isArray(rotation)||rotation.length!==3||!rotation.every(Number.isFinite))throw Error('조종 위치를 확인하세요.');
+          const scale=new THREE.Vector3();sceneWorldMatrix(actor,next.objects).decompose(new THREE.Vector3(),new THREE.Quaternion(),scale);
+          setObjectMatrix(actor,new THREE.Matrix4().compose(new THREE.Vector3(...position),new THREE.Quaternion().setFromEuler(new THREE.Euler(...rotation.map(THREE.MathUtils.degToRad))),scale));
+        }
         else if (action==='reparent') {
           if (!validParent(next.objects,id,target)) throw Error('오브젝트의 부모를 확인하세요.');
           const world=sceneWorldMatrix(actor,next.objects),parent=byId.get(target);
@@ -1992,6 +2005,7 @@ export function nativeEditorSession(bridge) {
     const doc = targetDocument(file);
     if(file!==undefined||expected!==undefined)await check(doc,expected);
     if (doc[from].length) {
+      doc.historyLabels??=[];doc.futureLabels??=[];const labels=from==='history'?[doc.historyLabels,doc.futureLabels]:[doc.futureLabels,doc.historyLabels];labels[1].push(labels[0].pop()??'편집');
       doc[to].push(doc.data);
       doc.data = doc[from].pop();
       doc.dirty = JSON.stringify(doc.data) !== doc.saved;
@@ -1999,8 +2013,10 @@ export function nativeEditorSession(bridge) {
     }
     return response(doc);
   }
+  const actionLabels={add:'오브젝트 추가',placeAsset:'에셋 배치',delete:'삭제',translate:'이동',rotate:'회전',scale:'크기',rename:'이름 바꾸기',duplicate:'복제',paste:'붙여넣기',component:'컴포넌트 추가',removeComponent:'컴포넌트 제거',reparent:'부모 변경',lock:'잠금',visible:'보이기',setWorldTransform:'조종 위치 적용',prefabApply:'프리팹 적용',prefabRevert:'프리팹 되돌리기',prefabRefresh:'프리팹 새로 고침',prefabUnpack:'프리팹 풀기'};
   return async (method,params={}) => {
     if (!Object.hasOwn(methods,method)) throw Error('지원하지 않는 편집기 명령이에요.');
+    requestLabel=method==='scene.edit'?actionLabels[params.action]||params.action:method==='asset.fieldEdit'?'속성: '+params.key:method==='scene.runtimeSet'?'실행 설정: '+params.key:method;
     return methods[method](params);
   };
 }

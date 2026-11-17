@@ -121,6 +121,13 @@ try{
   await assert.rejects(session('scene.edit',{action:'removeComponent',id:a,key:'missing',expectedRevision:doc.revision}),/제거할 컴포넌트/);
   doc=await session('scene.edit',{action:'add',key:'cube',position:[2,1,3],expectedRevision:doc.revision});
   assert.deepEqual(find(doc.selection).position,[2,1,3]);assert.equal(find(doc.selection).pivot,'center');
+  // Undo history panel rows and jumping; world-space rotation; pilot pose applied as a world transform.
+  const history=await session('editor.history',{path:scene});assert.ok(history.rows.length>3&&history.rows.at(-1).current,'history lists edits with the live state last');
+  const back=await session('editor.historyJump',{path:scene,steps:-2,expectedRevision:doc.revision});assert.equal((await session('editor.history',{path:scene})).redo,2);
+  doc=await session('editor.historyJump',{path:scene,steps:2,expectedRevision:back.revision});
+  doc=await session('scene.edit',{action:'rotate',id:a,axis:1,value:Math.PI/2,space:'world',expectedRevision:doc.revision});assert.ok(Math.abs(Math.abs(find(a).rotation[1])-90)<1e-6||Math.abs(find(a).rotation[0])>1e-6,'world rotation applied');
+  doc=await session('scene.edit',{action:'setWorldTransform',id:a,position:[3,2,1],rotation:[0,45,0],expectedRevision:doc.revision});
+  assert.deepEqual(find(a).position.map(v=>Math.round(v*1e6)/1e6),[3,2,1]);assert.ok(Math.abs(find(a).rotation[1]-45)<1e-6);
   const named=find(a).name,rows=await session('scene.hierarchy',{query:'"'+named+'"'});
   assert.ok(rows.find(r=>r.id===a).match);
   assert.ok((await session('scene.hierarchy',{query:'no-such-object-name'})).every(r=>r.match===false),'search hides non-matching rows');

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <nlohmann/json.hpp>
 #include "SceneRenderBridge.hpp"
+#include "CrashDump.hpp"
 #ifndef UNICODE
 #define UNICODE
 #endif
@@ -57,6 +58,7 @@ void associateProject(const fs::path& executable){
     SHChangeNotify(SHCNE_ASSOCCHANGED,SHCNF_IDLIST,nullptr,nullptr);
 }
 int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
+    hb::crash::install(L"HBEngine");
     const auto initialized=CoInitializeEx(nullptr,COINIT_APARTMENTTHREADED);if(FAILED(initialized))return 1;
     try{
         wchar_t buffer[32768];GetModuleFileNameW(nullptr,buffer,32768);const fs::path executable=buffer;const auto folder=executable.parent_path();
