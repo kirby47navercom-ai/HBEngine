@@ -1256,6 +1256,17 @@ export function nativeEditorSession(bridge) {
       return {file:await assetThumbnail(project(),name,folder,{readMaterial:async data=>evaluateMaterial(await resolveMaterialAsset(data,read))})};
     },
     // Asset field picker: project assets of one kind (textures also accept texture assets), sorted, at most 500.
+    // Duplicate asset: <name>_Copy(N) next to the original; engine assets get the new name inside, other files are copied byte for byte.
+    'content.duplicate': async ({path:name}) => {
+      const p=project();if(typeof name!=='string'||!name.startsWith('Assets/'))throw Error('복제할 에셋을 선택하세요.');
+      const {file}=await p.read(name);
+      const suffix=Object.values(assetSuffix).filter(s=>name.endsWith(s)).sort((a,b)=>b.length-a.length)[0]||path.posix.extname(name),base=name.slice(0,name.length-suffix.length);
+      let target='';for(let i=1;i<1000&&!target;i++){const candidate=base+(i===1?'_Copy':'_Copy'+i)+suffix;if(!await p.read(candidate).then(()=>true,()=>false))target=candidate;}
+      if(!target)throw Error('복제 이름을 만들 수 없어요.');
+      if(/\.json$/i.test(name)){const data=JSON.parse((await fs.readFile(file,'utf8')).replace(/^\uFEFF/,''));if(data&&typeof data==='object'&&typeof data.name==='string')data.name=path.posix.basename(target).slice(0,-suffix.length).slice(0,80);await p.write(target,JSON.stringify(data,null,2));}
+      else await fs.copyFile(file,await p.resolve(target,true),fs.constants?.COPYFILE_EXCL??0);
+      return {path:target};
+    },
     'content.assetsOfKind': async ({kind}) => {
       if(typeof kind!=='string'||!kind)throw Error('에셋 종류를 확인하세요.');
       const listed=await project().list({folder:'',query:'',browse:true,recursive:true,contents:false,type:'all'});

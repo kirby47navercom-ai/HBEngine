@@ -211,6 +211,10 @@ try{
    const before=JSON.parse(opened.text).objects.length;const copy=await session('document.saveAs',{name:'SaveAsCopy'});assert.ok(copy.path.endsWith('/SaveAsCopy.hbscene.json'));assert.equal(JSON.parse(copy.text).objects.length,before,'copy has the unsaved edit');
    await assert.rejects(session('document.saveAs',{name:'SaveAsCopy'}),/같은 이름/);await assert.rejects(session('document.saveAs',{name:'bad/name'}),/이름/);
    await session('document.open',{path:scene});const all=await session('document.saveAll',{});assert.ok(all.saved>=1);assert.equal(all.dirty,false,'saved');}
+  // Duplicate asset: _Copy then _Copy2, with the new name inside engine assets.
+  {const first=await session('content.duplicate',{path:prefabFile}),second=await session('content.duplicate',{path:prefabFile});
+   assert.ok(first.path.endsWith('_Copy.hbprefab.json')&&second.path.endsWith('_Copy2.hbprefab.json'),'unique copy names');
+   assert.equal(JSON.parse((await session('document.open',{path:first.path})).text).name,'PF_Box_Copy');await session('document.open',{path:scene});await assert.rejects(session('content.duplicate',{path:'Assets/Missing.hbprefab.json'}));}
   // Source control panel backend: a project-root repository, stage everything, commit, clean status.
   {let status=await session('sourceControl.status',{});if(!status.projectRoot)status=await session('sourceControl.init',{});assert.equal(status.projectRoot,true);assert.ok(status.entries.length>0,'new project files are listed');
    status=await session('sourceControl.stage',{paths:status.entries.map(e=>e.path),expectedIndexRevision:status.indexRevision});status=await session('sourceControl.status',{});assert.ok(status.entries.every(e=>e.index!==' '&&e.index!=='?'),'all staged');
