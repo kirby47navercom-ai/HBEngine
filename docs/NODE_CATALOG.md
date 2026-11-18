@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **937개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **970개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -10,18 +10,18 @@
 
 | 분야 | 노드 | 공통 C++ |
 | --- | ---: | ---: |
-| 이벤트 | 18 | 0 |
+| 이벤트 | 21 | 0 |
 | 클래스 | 2 | 0 |
 | 흐름 제어 | 17 | 0 |
 | 디버그 | 5 | 0 |
 | 게임 창 | 11 | 0 |
-| 입력 | 13 | 12 |
+| 입력 | 14 | 12 |
 | 변환 | 28 | 27 |
-| 벡터 | 36 | 34 |
-| 수학 | 54 | 50 |
-| 배열 | 96 | 88 |
+| 벡터 | 38 | 34 |
+| 수학 | 56 | 50 |
+| 배열 | 104 | 88 |
 | 물리 | 16 | 14 |
-| 오브젝트 | 17 | 8 |
+| 오브젝트 | 20 | 8 |
 | C++ 공개 함수 | 1 | 0 |
 | 오디오 | 24 | 19 |
 | 사용자 정의 | 2 | 0 |
@@ -29,11 +29,15 @@
 | 비교 | 8 | 4 |
 | 논리 | 8 | 3 |
 | 컴포넌트 | 15 | 12 |
-| 문자열 | 24 | 19 |
+| 문자열 | 26 | 19 |
 | 애니메이션 | 2 | 0 |
 | 머테리얼 | 8 | 8 |
 | 렌더링 | 15 | 14 |
 | 장면 | 4 | 2 |
+| 피해 | 2 | 0 |
+| 흐름 | 1 | 0 |
+| 맵 | 7 | 0 |
+| 충돌 | 2 | 0 |
 | 카메라 | 7 | 4 |
 | UI | 23 | 20 |
 | 저장 | 8 | 3 |
@@ -112,6 +116,9 @@
 | customEvent | Custom Event / 사용자 이벤트 | — | then: exec | — | VM 이벤트 진입점 |
 | windowFocusChanged | On Window Focus Changed / 게임 창 포커스 변경 | — | then: exec, focused: bool | — | VM 이벤트 진입점 |
 | gamepadConnectionChanged | On Gamepad Connection Changed / 게임패드 연결 변경 | — | then: exec, connected: bool, index: int | — | VM 이벤트 진입점 |
+| onClicked | On Clicked / 클릭했을 때 | — | then: exec, button: string | — | VM 이벤트 진입점 |
+| beginCursorOver | Begin Cursor Over / 커서가 올라갔을 때 | — | then: exec | — | VM 이벤트 진입점 |
+| endCursorOver | End Cursor Over / 커서가 벗어났을 때 | — | then: exec | — | VM 이벤트 진입점 |
 | endPlay | End Play / 게임 종료 | — | then: exec, reason: string | — | VM 이벤트 진입점 |
 | hitEvent | Event Hit / 충돌 이벤트 | — | then: exec, other: object, hit: hit | — | AABB 접촉; 강체 solver 없음 |
 | hitStay | Collision Stay / 충돌 유지 | — | then: exec, other: object, hit: hit, delta: float | — | VM 이벤트 진입점 |
@@ -180,6 +187,7 @@
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
 | gamepadRumble | Play Gamepad Rumble / 게임패드 진동 | exec: exec, player: int, low: float, high: float, duration: float | then: exec | — | VM / 브라우저 서비스 |
+| setInputMode | Set Input Mode / 입력 모드 설정 | exec: exec, mode: string | then: exec | — | VM / 브라우저 서비스 |
 | inputLastDevice | Get Last Device / 최근 입력 장치 | — | return: string | hb::Input::GetLastDevice | 공통 C++ + VM |
 | inputAnyPressed | Any Key Pressed / 아무 입력 눌림 | — | return: bool | hb::Input::AnyKeyPressed | 공통 C++ + VM |
 | inputJustPressed | Was Pressed This Frame / 이번 프레임 눌림 | key: string | return: bool | hb::Input::WasPressedThisFrame | 공통 C++ + VM |
@@ -241,6 +249,8 @@
 | dot | Dot Product / 벡터 내적 | a: vec3, b: vec3 | return: float | hb::VectorMath::DotProduct | 공통 C++ + VM |
 | cross | Cross Product / 벡터 외적 | a: vec3, b: vec3 | return: vec3 | hb::VectorMath::CrossProduct | 공통 C++ + VM |
 | vectorLerp | Lerp Vector / 벡터 보간 | a: vec3, b: vec3, alpha: float | return: vec3 | hb::VectorMath::LerpVector | 공통 C++ + VM |
+| rinterpTo | RInterp To / 회전 보간 | current: vec3, target: vec3, deltaTime: float, speed: float | return: vec3 | — | VM / 브라우저 서비스 |
+| rinterpToConstant | RInterp To Constant / 회전 등속 보간 | current: vec3, target: vec3, deltaTime: float, speed: float | return: vec3 | — | VM / 브라우저 서비스 |
 | randomUnitVector | Random Unit Vector / 무작위 방향 | — | return: vec3 | — | VM / 브라우저 서비스 |
 | randomPointInRadius | Random Point in Radius / 반경 안 무작위 위치 | center: vec3, radius: float | return: vec3 | — | VM / 브라우저 서비스 |
 | vectorLengthSquared | Vector Length Squared / 벡터 길이 제곱 | value: vec3 | return: float | hb::VectorMath::VectorLengthSquared | 공통 C++ + VM |
@@ -290,6 +300,8 @@
 | random | Random Float in Range / 범위 안 무작위 | min: float, max: float | return: float | — | VM / 브라우저 서비스 |
 | randomInt | Random Integer in Range / 범위 안 무작위 정수 | min: int, max: int | return: int | — | VM / 브라우저 서비스 |
 | randomBool | Random Bool / 무작위 참거짓 | — | return: bool | — | VM / 브라우저 서비스 |
+| seededRandom | Random Float From Seed / 시드 난수 | seed: int, index: int | return: float | — | VM / 브라우저 서비스 |
+| seededRandomInRange | Random Integer In Range From Seed / 시드 정수 난수 | seed: int, index: int, min: int, max: int | return: int | — | VM / 브라우저 서비스 |
 | makeColor | Make Color / 색상 만들기 | r: float, g: float, b: float, a: float | return: color | — | VM / 브라우저 서비스 |
 | nearlyEqual | Nearly Equal / 거의 같은 실수 | a: float, b: float, tolerance: float | return: bool | hb::Math::NearlyEqual | 공통 C++ + VM |
 | mapRange | Map Range / 범위 변환 | value: float, inMin: float, inMax: float, outMin: float, outMax: float | return: float | hb::Math::MapRange | 공통 C++ + VM |
@@ -337,6 +349,14 @@
 | arrayRemove | Array Remove Index / 배열 원소 삭제 | exec: exec, array: float[], index: int | then: exec | — | VM / 브라우저 서비스 |
 | arrayFind | Array Find / 배열 원소 찾기 | array: float[], item: float | return: int | — | VM / 브라우저 서비스 |
 | arrayContains | Array Contains / 배열 원소 포함 | array: float[], item: float | return: bool | — | VM / 브라우저 서비스 |
+| arrayUnion | Set Union / 합집합 | a: any[], b: any[] | return: any[] | — | VM / 브라우저 서비스 |
+| arrayIntersection | Set Intersection / 교집합 | a: any[], b: any[] | return: any[] | — | VM / 브라우저 서비스 |
+| arrayDifference | Set Difference / 차집합 | a: any[], b: any[] | return: any[] | — | VM / 브라우저 서비스 |
+| arraySort | Array Sort / 정렬한 사본 | array: any[], descending: bool | return: any[] | — | VM / 브라우저 서비스 |
+| arrayMax | Max Of Array / 배열 최댓값 | array: any[] | return: float, index: int | — | VM / 브라우저 서비스 |
+| arrayMin | Min Of Array / 배열 최솟값 | array: any[] | return: float, index: int | — | VM / 브라우저 서비스 |
+| arrayInsert | Array Insert / 배열에 끼워 넣기 | exec: exec, array: any[], item: any, index: int | then: exec | — | VM / 브라우저 서비스 |
+| arrayClear | Array Clear / 배열 비우기 | exec: exec, array: any[] | then: exec | — | VM / 브라우저 서비스 |
 | arrayShuffle | Array Shuffle / 배열 섞은 사본 | array: any[] | return: any[] | — | VM / 브라우저 서비스 |
 | arrayBoolLength | Array Bool Length / 배열 길이 · Bool | array: bool[] | return: int | hb::Extended::ArrayBoolLength | 공통 C++ + VM |
 | arrayBoolLastIndex | Array Bool Last Index / 마지막 배열 인덱스 · Bool | array: bool[] | return: int | hb::Extended::ArrayBoolLastIndex | 공통 C++ + VM |
@@ -461,6 +481,9 @@
 | setLifeSpan | Set Life Span / 수명 설정 | exec: exec, target: object, lifeSpan: float | then: exec | — | VM / 브라우저 서비스 |
 | visibility | Set Visibility / 표시 설정 | exec: exec, target: object, visible: bool | then: exec | — | VM / 브라우저 서비스 |
 | attach | Attach To / 부모에 연결 | exec: exec, target: object, parent: object | then: exec | — | VM / 브라우저 서비스 |
+| getDisplayName | Get Display Name / 오브젝트 이름 | target: object | return: string | — | VM / 브라우저 서비스 |
+| getActorBounds | Get Actor Bounds / 오브젝트 경계 | target: object | origin: vec3, extent: vec3 | — | VM / 브라우저 서비스 |
+| getDistanceTo | Get Distance To / 오브젝트 사이 거리 | target: object, other: object | return: float | — | VM / 브라우저 서비스 |
 | sceneSpawn | Spawn / 에셋/클래스 생성 | exec: exec, blueprintOrPrefab: string, transform: transform, actorId: string | then: exec, return: object | hb::Scene::Spawn | 공통 C++ + VM |
 | sceneDestroy | Destroy / 생성 액터 제거/풀 반환 | exec: exec, target: object | then: exec | hb::Scene::Destroy | 공통 C++ + VM |
 | sceneFindClass | Get All Actors Of Class / 클래스로 액터 찾기 | className: string, includeInactive: bool | return: object[] | hb::Scene::GetAllActorsOfClass | 공통 C++ + VM |
@@ -589,6 +612,8 @@
 | stringLength | String Length / 문자열 길이 | value: string | return: int | — | VM / 브라우저 서비스 |
 | contains | Contains / 문자열 포함 | value: string, search: string | return: bool | — | VM / 브라우저 서비스 |
 | toString | Float To String / 실수를 문자열로 | value: float | return: string | — | function toString() { [native code] } |
+| stringToFloat | String To Float / 문자열을 실수로 | value: string | return: float, valid: bool | — | VM / 브라우저 서비스 |
+| stringToInt | String To Int / 문자열을 정수로 | value: string | return: int, valid: bool | — | VM / 브라우저 서비스 |
 | formatText | Format Text / 문장 만들기 | format: string, arg0: string, arg1: string, arg2: string, arg3: string | return: string | — | VM / 브라우저 서비스 |
 | stringEqual | String Equal / 문자열 같다 | a: string, b: string | return: bool | hb::Extended::StringEqual | 공통 C++ + VM |
 | stringNotEqual | String Not Equal / 문자열 다르다 | a: string, b: string | return: bool | hb::Extended::StringNotEqual | 공통 C++ + VM |
@@ -658,6 +683,38 @@
 | reloadScene | Reload Scene / 장면 다시 불러오기 | exec: exec | then: exec | — | VM / 브라우저 서비스 |
 | getCurrentScene | Get Current Scene / 현재 장면 가져오기 | — | return: string | — | VM / 브라우저 서비스 |
 | openSceneArgs | Open With Arguments / 장면 열기와 인자 | exec: exec, scene: string, json: string | then: exec | hb::Scene::OpenWithArguments | 공통 C++ + VM |
+
+## 피해
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| applyDamage | Apply Damage / 피해 주기 | exec: exec, target: object, damage: float | then: exec | — | VM / 브라우저 서비스 |
+| applyRadialDamage | Apply Radial Damage / 범위 피해 주기 | exec: exec, origin: vec3, radius: float, damage: float, falloff: bool | then: exec, count: int | — | VM / 브라우저 서비스 |
+
+## 흐름
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| delayNextTick | Delay Until Next Tick / 다음 프레임까지 지연 | exec: exec | then: exec | — | VM / 브라우저 서비스 |
+
+## 맵
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| mapAdd | Map Add / 맵에 추가한 사본 | map: record, key: string, value: any | return: record | — | VM / 브라우저 서비스 |
+| mapRemove | Map Remove / 맵에서 뺀 사본 | map: record, key: string | return: record | — | VM / 브라우저 서비스 |
+| mapFind | Map Find / 맵에서 찾기 | map: record, key: string | return: any, found: bool | — | VM / 브라우저 서비스 |
+| mapContains | Map Contains / 맵에 키가 있는지 | map: record, key: string | return: bool | — | VM / 브라우저 서비스 |
+| mapKeys | Map Keys / 맵 키 목록 | map: record | return: string[] | — | VM / 브라우저 서비스 |
+| mapValues | Map Values / 맵 값 목록 | map: record | return: any[] | — | VM / 브라우저 서비스 |
+| mapLength | Map Length / 맵 크기 | map: record | return: int | — | VM / 브라우저 서비스 |
+
+## 충돌
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| getOverlappingActors | Get Overlapping Actors / 겹친 오브젝트 목록 | target: object | return: object[] | — | VM / 브라우저 서비스 |
+| isOverlappingActor | Is Overlapping Actor / 겹쳐 있는지 | target: object, other: object | return: bool | — | VM / 브라우저 서비스 |
 
 ## 카메라
 
