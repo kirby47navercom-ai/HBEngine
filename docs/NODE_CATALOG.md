@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **971개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **998개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -10,10 +10,10 @@
 
 | 분야 | 노드 | 공통 C++ |
 | --- | ---: | ---: |
-| 이벤트 | 21 | 0 |
+| 이벤트 | 23 | 0 |
 | 클래스 | 2 | 0 |
 | 흐름 제어 | 17 | 0 |
-| 디버그 | 5 | 0 |
+| 디버그 | 7 | 0 |
 | 게임 창 | 11 | 0 |
 | 입력 | 14 | 12 |
 | 변환 | 28 | 27 |
@@ -23,7 +23,7 @@
 | 물리 | 16 | 14 |
 | 오브젝트 | 20 | 8 |
 | C++ 공개 함수 | 1 | 0 |
-| 오디오 | 24 | 19 |
+| 오디오 | 25 | 19 |
 | 사용자 정의 | 2 | 0 |
 | 시간 | 18 | 15 |
 | 비교 | 8 | 4 |
@@ -34,12 +34,17 @@
 | 머테리얼 | 8 | 8 |
 | 렌더링 | 16 | 14 |
 | 장면 | 4 | 2 |
+| 카메라 | 9 | 4 |
+| UI | 25 | 20 |
+| 설정 | 3 | 0 |
+| 업적 | 7 | 0 |
+| 레벨 | 2 | 0 |
+| 체력 | 4 | 0 |
+| 게임플레이 | 11 | 9 |
 | 피해 | 2 | 0 |
 | 흐름 | 1 | 0 |
 | 맵 | 7 | 0 |
 | 충돌 | 2 | 0 |
-| 카메라 | 7 | 4 |
-| UI | 23 | 20 |
 | 저장 | 8 | 3 |
 | 정수 | 14 | 14 |
 | 벡터2 | 20 | 20 |
@@ -54,7 +59,6 @@
 | UI|위젯 | 1 | 1 |
 | UI|목록 | 6 | 6 |
 | UI|지역화 | 3 | 3 |
-| 게임플레이 | 9 | 9 |
 | 오브젝트 풀 | 3 | 3 |
 | 입력 액션 | 8 | 8 |
 | 2D 스프라이트 | 25 | 25 |
@@ -119,6 +123,8 @@
 | onClicked | On Clicked / 클릭했을 때 | — | then: exec, button: string | — | VM 이벤트 진입점 |
 | beginCursorOver | Begin Cursor Over / 커서가 올라갔을 때 | — | then: exec | — | VM 이벤트 진입점 |
 | endCursorOver | End Cursor Over / 커서가 벗어났을 때 | — | then: exec | — | VM 이벤트 진입점 |
+| onDeath | On Death / 체력이 0이 됐을 때 | — | then: exec, instigator: object | — | VM 이벤트 진입점 |
+| onAchievementUnlocked | On Achievement Unlocked / 업적 달성했을 때 | — | then: exec, id: string | — | VM 이벤트 진입점 |
 | endPlay | End Play / 게임 종료 | — | then: exec, reason: string | — | VM 이벤트 진입점 |
 | hitEvent | Event Hit / 충돌 이벤트 | — | then: exec, other: object, hit: hit | — | AABB 접촉; 강체 solver 없음 |
 | hitStay | Collision Stay / 충돌 유지 | — | then: exec, other: object, hit: hit, delta: float | — | VM 이벤트 진입점 |
@@ -164,6 +170,8 @@
 | drawDebugLine | Draw Debug Line / 디버그 선 그리기 | exec: exec, start: vec3, end: vec3, color: vec3, duration: float | then: exec | — | VM / 브라우저 서비스 |
 | drawDebugSphere | Draw Debug Sphere / 디버그 구 그리기 | exec: exec, center: vec3, radius: float, color: vec3, duration: float | then: exec | — | VM / 브라우저 서비스 |
 | drawDebugBox | Draw Debug Box / 디버그 상자 그리기 | exec: exec, center: vec3, extent: vec3, color: vec3, duration: float | then: exec | — | VM / 브라우저 서비스 |
+| drawDebugString | Draw Debug String / 디버그 글자 그리기 | exec: exec, position: vec3, text: string, color: color, duration: float | then: exec | — | VM / 브라우저 서비스 |
+| setStatsVisible | Show Frame Stats / FPS 표시 | exec: exec, visible: bool | then: exec | — | VM / 브라우저 서비스 |
 | drawDebugArrow | Draw Debug Arrow / 디버그 화살표 그리기 | exec: exec, start: vec3, end: vec3, color: vec3, duration: float | then: exec | — | VM / 브라우저 서비스 |
 
 ## 게임 창
@@ -506,6 +514,7 @@
 | sound | Play Sound / 효과음 재생 | exec: exec, name: string | then: exec | — | VM / 브라우저 서비스 |
 | playSoundAt | Play Sound At Location / 위치에서 소리 재생 | exec: exec, sound: string, position: vec3, volume: float | then: exec | — | 오디오 재생; 위치 음향 없음 |
 | stopSound | Stop Sound / 소리 정지 | exec: exec, sound: string | then: exec | — | VM / 브라우저 서비스 |
+| playSoundRandom | Play Random Sound / 무작위 소리 재생 | exec: exec, sounds: string[], position: vec3, volume: float, pitchMin: float, pitchMax: float | then: exec | — | VM / 브라우저 서비스 |
 | getMasterVolume | Get Master Volume / 전체 볼륨 | — | return: float | — | VM / 브라우저 서비스 |
 | setMasterVolume | Set Master Volume / 전체 볼륨 설정 | exec: exec, volume: float | then: exec | — | VM / 브라우저 서비스 |
 | audioVoiceBudget | Set Voice Budget / 음성 예산 설정 | exec: exec, target: object, real: int, tracked: int | then: exec | hb::Audio::SetVoiceBudget | 공통 C++ + VM |
@@ -685,6 +694,102 @@
 | getCurrentScene | Get Current Scene / 현재 장면 가져오기 | — | return: string | — | VM / 브라우저 서비스 |
 | openSceneArgs | Open With Arguments / 장면 열기와 인자 | exec: exec, scene: string, json: string | then: exec | hb::Scene::OpenWithArguments | 공통 C++ + VM |
 
+## 카메라
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| startCameraFade | Start Camera Fade / 화면 페이드 | exec: exec, fromAlpha: float, toAlpha: float, duration: float, color: color, holdWhenFinished: bool | then: exec | — | VM / 브라우저 서비스 |
+| stopCameraFade | Stop Camera Fade / 화면 페이드 끄기 | exec: exec | then: exec | — | VM / 브라우저 서비스 |
+| setViewTarget | Set View Target with Blend / 카메라 전환 | exec: exec, target: object, blendTime: float | then: exec | — | VM / 브라우저 서비스 |
+| setFieldOfView | Set Field of View / 시야각 설정 | exec: exec, target: object, fov: float | then: exec | — | VM / 브라우저 서비스 |
+| projectWorldToScreen | Project World to Screen / 월드 위치를 화면 좌표로 | world: vec3 | return: bool, screen: vec2 | — | VM / 브라우저 서비스 |
+| cameraOrthoSize | Set Ortho Size / 카메라 직교 크기 | exec: exec, target: object, size: float | then: exec | hb::Camera::SetOrthoSize | 공통 C++ + VM |
+| cameraFollow | Follow / 카메라 따라가기 | exec: exec, target: object, subject: object | then: exec | hb::Camera::Follow | 공통 C++ + VM |
+| cameraShake | Shake / 카메라 흔들기 | exec: exec, target: object, intensity: float, duration: float | then: exec | hb::Camera::Shake | 공통 C++ + VM |
+| screenFlash | Flash / 화면 번쩍임 | exec: exec, color: color, duration: float | then: exec | hb::Camera::Flash | 공통 C++ + VM |
+
+## UI
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| showSubtitle | Show Subtitle / 자막 표시 | exec: exec, text: string, duration: float | then: exec | — | VM / 브라우저 서비스 |
+| clearSubtitle | Clear Subtitle / 자막 지우기 | exec: exec | then: exec | — | VM / 브라우저 서비스 |
+| createWidget | Create Widget / 위젯 생성 | exec: exec, class: string | then: exec, widget: object | — | VM / 브라우저 서비스 |
+| addViewport | Add To Viewport / 뷰포트에 위젯 추가 | exec: exec, widget: object | then: exec | — | VM / 브라우저 서비스 |
+| setText | Set Text / 텍스트 설정 | exec: exec, widget: object, text: string | then: exec | — | VM / 브라우저 서비스 |
+| uiShow | Show / 위젯 UI 표시 | exec: exec, target: object, asset: string, instance: string | then: exec | hb::UI::Show | 공통 C++ + VM |
+| uiRemove | Remove / 위젯 UI 제거 | exec: exec, target: object, instance: string | then: exec | hb::UI::Remove | 공통 C++ + VM |
+| uiSetText | Set Text / 위젯 텍스트 지정 | exec: exec, target: object, instance: string, element: string, text: string | then: exec | hb::UI::SetText | 공통 C++ + VM |
+| uiGetText | Get Text / 위젯 텍스트 가져오기 | target: object, instance: string, element: string | return: string | hb::UI::GetText | 공통 C++ + VM |
+| uiSetValue | Set Value / 위젯 값 지정 | exec: exec, target: object, instance: string, element: string, value: float | then: exec | hb::UI::SetValue | 공통 C++ + VM |
+| uiGetValue | Get Value / 위젯 값 가져오기 | target: object, instance: string, element: string | return: float | hb::UI::GetValue | 공통 C++ + VM |
+| uiSetVisible | Set Visible / 위젯 표시 상태 | exec: exec, target: object, instance: string, element: string, visible: bool | then: exec | hb::UI::SetVisible | 공통 C++ + VM |
+| uiSetEnabled | Set Enabled / 위젯 활성 상태 | exec: exec, target: object, instance: string, element: string, enabled: bool | then: exec | hb::UI::SetEnabled | 공통 C++ + VM |
+| uiFocus | Focus / 위젯 입력 포커스 | exec: exec, target: object, instance: string, element: string | then: exec | hb::UI::Focus | 공통 C++ + VM |
+| uiSetTexture | Set Texture / 위젯 그림 지정 | exec: exec, target: object, instance: string, element: string, texture: string | then: exec | hb::UI::SetTexture | 공통 C++ + VM |
+| uiSetPosition | Set Position / 위젯 위치 지정 | exec: exec, target: object, instance: string, element: string, position: vec2 | then: exec | hb::UI::SetPosition | 공통 C++ + VM |
+| uiSetSize | Set Size / 위젯 크기 지정 | exec: exec, target: object, instance: string, element: string, size: vec2 | then: exec | hb::UI::SetSize | 공통 C++ + VM |
+| uiSetRotation | Set Rotation / 위젯 회전 지정 | exec: exec, target: object, instance: string, element: string, rotation: float | then: exec | hb::UI::SetRotation | 공통 C++ + VM |
+| uiSetScale | Set Scale / 위젯 배율 지정 | exec: exec, target: object, instance: string, element: string, scale: vec2 | then: exec | hb::UI::SetScale | 공통 C++ + VM |
+| uiSetColor | Set Color / 위젯 색상 지정 | exec: exec, target: object, instance: string, element: string, color: color | then: exec | hb::UI::SetColor | 공통 C++ + VM |
+| uiSetOpacity | Set Opacity / 위젯 불투명도 지정 | exec: exec, target: object, instance: string, element: string, opacity: float | then: exec | hb::UI::SetOpacity | 공통 C++ + VM |
+| uiSetFont | Set Font / 위젯 글꼴 지정 | exec: exec, target: object, instance: string, element: string, font: string | then: exec | hb::UI::SetFont | 공통 C++ + VM |
+| uiSetFontSize | Set Font Size / 위젯 글자 크기 | exec: exec, target: object, instance: string, element: string, fontSize: float | then: exec | hb::UI::SetFontSize | 공통 C++ + VM |
+| uiSetFillDirection | Set Fill Direction / 위젯 채우기 방향 | exec: exec, target: object, instance: string, element: string, direction: string | then: exec | hb::UI::SetFillDirection | 공통 C++ + VM |
+| uiAnimate | Animate / 위젯 간단 애니메이션 | exec: exec, target: object, instance: string, element: string, property: string, to: float, duration: float | then: exec | hb::UI::Animate | 공통 C++ + VM |
+
+## 설정
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| setUiTextScale | Set UI Text Scale / UI 글자 크기 배율 | exec: exec, scale: float | then: exec | — | VM / 브라우저 서비스 |
+| setColorblindMode | Set Colorblind Mode / 색맹 보정 | exec: exec, mode: int | then: exec | — | VM / 브라우저 서비스 |
+| resetPlayerSettings | Reset Player Settings / 플레이어 설정 초기화 | exec: exec | then: exec | — | VM / 브라우저 서비스 |
+
+## 업적
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| statAdd | Add To Stat / 통계 더하기 | exec: exec, name: string, amount: float | then: exec | — | VM / 브라우저 서비스 |
+| statSet | Set Stat / 통계 설정 | exec: exec, name: string, value: float | then: exec | — | VM / 브라우저 서비스 |
+| statGet | Get Stat / 통계 값 | name: string | return: float | — | VM / 브라우저 서비스 |
+| achievementUnlock | Unlock Achievement / 업적 달성 | exec: exec, id: string | then: exec, return: bool | — | VM / 브라우저 서비스 |
+| achievementUnlocked | Is Achievement Unlocked / 업적 달성 여부 | id: string | return: bool | — | VM / 브라우저 서비스 |
+| achievementList | Get Unlocked Achievements / 달성한 업적 목록 | — | return: string[] | — | VM / 브라우저 서비스 |
+| achievementReset | Reset Achievements And Stats / 업적·통계 초기화 | exec: exec | then: exec | — | VM / 브라우저 서비스 |
+
+## 레벨
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| preloadAssets | Preload Assets / 에셋 미리 불러오기 | exec: exec, assets: string[] | then: exec | — | VM / 브라우저 서비스 |
+| preloadProgress | Get Preload Progress / 미리 불러오기 진행률 | — | return: float | — | VM / 브라우저 서비스 |
+
+## 체력
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| getHealth | Get Health / 체력 | target: object | return: float, max: float | — | VM / 브라우저 서비스 |
+| isDead | Is Dead / 죽었는지 | target: object | return: bool | — | VM / 브라우저 서비스 |
+| setHealth | Set Health / 체력 설정 | exec: exec, target: object, health: float | then: exec | — | VM / 브라우저 서비스 |
+| heal | Heal / 체력 회복 | exec: exec, target: object, amount: float | then: exec | — | VM / 브라우저 서비스 |
+
+## 게임플레이
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| setCheckpoint | Set Checkpoint / 체크포인트 설정 | exec: exec, location: vec3 | then: exec | — | VM / 브라우저 서비스 |
+| respawnActor | Respawn / 다시 생성 | exec: exec, target: object | then: exec | — | VM / 브라우저 서비스 |
+| getGameMode | Get Game Mode / 게임 모드 가져오기 | — | return: object | hb::Gameplay::GetGameMode | 공통 C++ + VM |
+| getGameState | Get Game State / 게임 상태 가져오기 | — | return: object | hb::Gameplay::GetGameState | 공통 C++ + VM |
+| getPlayerController | Get Player Controller / 플레이어 컨트롤러 가져오기 | — | return: object | hb::Gameplay::GetPlayerController | 공통 C++ + VM |
+| getPlayerState | Get Player State / 플레이어 상태 가져오기 | — | return: object | hb::Gameplay::GetPlayerState | 공통 C++ + VM |
+| getPlayerPawn | Get Player Pawn / 플레이어 폰 가져오기 | — | return: object | hb::Gameplay::GetPlayerPawn | 공통 C++ + VM |
+| possess | Possess / 폰 제어권 연결 | exec: exec, controller: object, pawn: object | then: exec | hb::Gameplay::Possess | 공통 C++ + VM |
+| unPossess | Un Possess / 폰 제어권 해제 | exec: exec, controller: object | then: exec | hb::Gameplay::UnPossess | 공통 C++ + VM |
+| addMovementInput | Add Movement Input / 이동 입력 더하기 | exec: exec, target: object, direction: vec3, scale: float | then: exec | hb::Gameplay::AddMovementInput | 공통 C++ + VM |
+| jump | Jump / 캐릭터 점프 | exec: exec, target: object | then: exec | hb::Gameplay::Jump | 공통 C++ + VM |
+
 ## 피해
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
@@ -716,46 +821,6 @@
 | --- | --- | --- | --- | --- | --- |
 | getOverlappingActors | Get Overlapping Actors / 겹친 오브젝트 목록 | target: object | return: object[] | — | VM / 브라우저 서비스 |
 | isOverlappingActor | Is Overlapping Actor / 겹쳐 있는지 | target: object, other: object | return: bool | — | VM / 브라우저 서비스 |
-
-## 카메라
-
-| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
-| --- | --- | --- | --- | --- | --- |
-| setViewTarget | Set View Target with Blend / 카메라 전환 | exec: exec, target: object, blendTime: float | then: exec | — | VM / 브라우저 서비스 |
-| setFieldOfView | Set Field of View / 시야각 설정 | exec: exec, target: object, fov: float | then: exec | — | VM / 브라우저 서비스 |
-| projectWorldToScreen | Project World to Screen / 월드 위치를 화면 좌표로 | world: vec3 | return: bool, screen: vec2 | — | VM / 브라우저 서비스 |
-| cameraOrthoSize | Set Ortho Size / 카메라 직교 크기 | exec: exec, target: object, size: float | then: exec | hb::Camera::SetOrthoSize | 공통 C++ + VM |
-| cameraFollow | Follow / 카메라 따라가기 | exec: exec, target: object, subject: object | then: exec | hb::Camera::Follow | 공통 C++ + VM |
-| cameraShake | Shake / 카메라 흔들기 | exec: exec, target: object, intensity: float, duration: float | then: exec | hb::Camera::Shake | 공통 C++ + VM |
-| screenFlash | Flash / 화면 번쩍임 | exec: exec, color: color, duration: float | then: exec | hb::Camera::Flash | 공통 C++ + VM |
-
-## UI
-
-| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
-| --- | --- | --- | --- | --- | --- |
-| createWidget | Create Widget / 위젯 생성 | exec: exec, class: string | then: exec, widget: object | — | VM / 브라우저 서비스 |
-| addViewport | Add To Viewport / 뷰포트에 위젯 추가 | exec: exec, widget: object | then: exec | — | VM / 브라우저 서비스 |
-| setText | Set Text / 텍스트 설정 | exec: exec, widget: object, text: string | then: exec | — | VM / 브라우저 서비스 |
-| uiShow | Show / 위젯 UI 표시 | exec: exec, target: object, asset: string, instance: string | then: exec | hb::UI::Show | 공통 C++ + VM |
-| uiRemove | Remove / 위젯 UI 제거 | exec: exec, target: object, instance: string | then: exec | hb::UI::Remove | 공통 C++ + VM |
-| uiSetText | Set Text / 위젯 텍스트 지정 | exec: exec, target: object, instance: string, element: string, text: string | then: exec | hb::UI::SetText | 공통 C++ + VM |
-| uiGetText | Get Text / 위젯 텍스트 가져오기 | target: object, instance: string, element: string | return: string | hb::UI::GetText | 공통 C++ + VM |
-| uiSetValue | Set Value / 위젯 값 지정 | exec: exec, target: object, instance: string, element: string, value: float | then: exec | hb::UI::SetValue | 공통 C++ + VM |
-| uiGetValue | Get Value / 위젯 값 가져오기 | target: object, instance: string, element: string | return: float | hb::UI::GetValue | 공통 C++ + VM |
-| uiSetVisible | Set Visible / 위젯 표시 상태 | exec: exec, target: object, instance: string, element: string, visible: bool | then: exec | hb::UI::SetVisible | 공통 C++ + VM |
-| uiSetEnabled | Set Enabled / 위젯 활성 상태 | exec: exec, target: object, instance: string, element: string, enabled: bool | then: exec | hb::UI::SetEnabled | 공통 C++ + VM |
-| uiFocus | Focus / 위젯 입력 포커스 | exec: exec, target: object, instance: string, element: string | then: exec | hb::UI::Focus | 공통 C++ + VM |
-| uiSetTexture | Set Texture / 위젯 그림 지정 | exec: exec, target: object, instance: string, element: string, texture: string | then: exec | hb::UI::SetTexture | 공통 C++ + VM |
-| uiSetPosition | Set Position / 위젯 위치 지정 | exec: exec, target: object, instance: string, element: string, position: vec2 | then: exec | hb::UI::SetPosition | 공통 C++ + VM |
-| uiSetSize | Set Size / 위젯 크기 지정 | exec: exec, target: object, instance: string, element: string, size: vec2 | then: exec | hb::UI::SetSize | 공통 C++ + VM |
-| uiSetRotation | Set Rotation / 위젯 회전 지정 | exec: exec, target: object, instance: string, element: string, rotation: float | then: exec | hb::UI::SetRotation | 공통 C++ + VM |
-| uiSetScale | Set Scale / 위젯 배율 지정 | exec: exec, target: object, instance: string, element: string, scale: vec2 | then: exec | hb::UI::SetScale | 공통 C++ + VM |
-| uiSetColor | Set Color / 위젯 색상 지정 | exec: exec, target: object, instance: string, element: string, color: color | then: exec | hb::UI::SetColor | 공통 C++ + VM |
-| uiSetOpacity | Set Opacity / 위젯 불투명도 지정 | exec: exec, target: object, instance: string, element: string, opacity: float | then: exec | hb::UI::SetOpacity | 공통 C++ + VM |
-| uiSetFont | Set Font / 위젯 글꼴 지정 | exec: exec, target: object, instance: string, element: string, font: string | then: exec | hb::UI::SetFont | 공통 C++ + VM |
-| uiSetFontSize | Set Font Size / 위젯 글자 크기 | exec: exec, target: object, instance: string, element: string, fontSize: float | then: exec | hb::UI::SetFontSize | 공통 C++ + VM |
-| uiSetFillDirection | Set Fill Direction / 위젯 채우기 방향 | exec: exec, target: object, instance: string, element: string, direction: string | then: exec | hb::UI::SetFillDirection | 공통 C++ + VM |
-| uiAnimate | Animate / 위젯 간단 애니메이션 | exec: exec, target: object, instance: string, element: string, property: string, to: float, duration: float | then: exec | hb::UI::Animate | 공통 C++ + VM |
 
 ## 저장
 
@@ -917,20 +982,6 @@
 | uiSetLocalizedText | Set Localized Text / 지역화 텍스트 지정 | exec: exec, target: object, instance: string, element: string, table: string, key: string, json: string | then: exec | hb::UI::SetLocalizedText | 공통 C++ + VM |
 | localeSet | Set Culture / 문화권 변경 | exec: exec, culture: string | then: exec | hb::Localization::SetCulture | 공통 C++ + VM |
 | localeGet | Culture / 현재 문화권 | — | return: string | hb::Localization::Culture | 공통 C++ + VM |
-
-## 게임플레이
-
-| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
-| --- | --- | --- | --- | --- | --- |
-| getGameMode | Get Game Mode / 게임 모드 가져오기 | — | return: object | hb::Gameplay::GetGameMode | 공통 C++ + VM |
-| getGameState | Get Game State / 게임 상태 가져오기 | — | return: object | hb::Gameplay::GetGameState | 공통 C++ + VM |
-| getPlayerController | Get Player Controller / 플레이어 컨트롤러 가져오기 | — | return: object | hb::Gameplay::GetPlayerController | 공통 C++ + VM |
-| getPlayerState | Get Player State / 플레이어 상태 가져오기 | — | return: object | hb::Gameplay::GetPlayerState | 공통 C++ + VM |
-| getPlayerPawn | Get Player Pawn / 플레이어 폰 가져오기 | — | return: object | hb::Gameplay::GetPlayerPawn | 공통 C++ + VM |
-| possess | Possess / 폰 제어권 연결 | exec: exec, controller: object, pawn: object | then: exec | hb::Gameplay::Possess | 공통 C++ + VM |
-| unPossess | Un Possess / 폰 제어권 해제 | exec: exec, controller: object | then: exec | hb::Gameplay::UnPossess | 공통 C++ + VM |
-| addMovementInput | Add Movement Input / 이동 입력 더하기 | exec: exec, target: object, direction: vec3, scale: float | then: exec | hb::Gameplay::AddMovementInput | 공통 C++ + VM |
-| jump | Jump / 캐릭터 점프 | exec: exec, target: object | then: exec | hb::Gameplay::Jump | 공통 C++ + VM |
 
 ## 오브젝트 풀
 

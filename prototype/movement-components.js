@@ -3,6 +3,7 @@
 import {Vector3} from 'three';
 import {sceneWorldMatrix,sceneWorldPosition,setSceneWorldPosition} from './scene-runtime.js';
 import {componentDefaults} from './scene-components.js';
+import {regenerate} from './health-component.js';
 
 const props=(o,type)=>{const c=o.components?.find(c=>c.type===type&&c.properties?.enabled!==false);return c&&{...componentDefaults(type),...c.properties};};
 const wrap=v=>((v+180)%360+360)%360-180;
@@ -10,12 +11,13 @@ const direction=(o,objects,local)=>new Vector3(...local).transformDirection(scen
 
 export class MovementComponents {
   constructor(){this.projectiles=new Map();this.arms=new Map();}
-  async step(objects,dt,{trace,update}){
+  async step(objects,dt,{trace,update,time=0}){
     for(const o of objects){if(o.poolActive===false)continue;
       const rotating=props(o,'RotatingMovement');
       if(rotating){o.rotation=o.rotation.map((v,i)=>wrap(v+(Number(rotating.rotationRate[i])||0)*dt));update?.(o);}
       const projectile=props(o,'ProjectileMovement');
       if(projectile)await this.projectile(o,objects,projectile,dt,trace,update);
+      const health=props(o,'Health');if(health)regenerate(o,health,dt,time);
       const arm=props(o,'SpringArm');
       if(arm)await this.arm(o,objects,arm,dt,trace,update);
     }

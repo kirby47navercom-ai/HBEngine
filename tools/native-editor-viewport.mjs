@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import {createCanvas} from '@napi-rs/canvas';
+import {componentDefaults} from '../prototype/scene-components.js';
 import {createNativeSceneRenderer} from '../prototype/native-scene-renderer.js';
 import {scenePrimitives} from '../prototype/scene-primitives.js';
 import {sceneRendering} from '../prototype/scene-rendering.js';
@@ -18,6 +20,24 @@ import {applyViewportDirection,fitViewportSelection,viewportDirections} from '..
 // Unreal axes on screen: X forward (red, three +z = the map front), Y right (green, three -x), Z up (blue, three +y).
 const axisSign=axis=>axis===0?-1:1;
 // Solid transform gizmo meshes (shared unit geometry; posed every frame, drawn on top without depth).
+// Text Render in the editor: the text rasterized once per property change into a camera-facing sprite at the
+// component's local offset, sized drawWidth x drawHeight times units per pixel.
+function textRenderSprite(p){
+  const w=Math.max(8,Math.min(2048,Math.round(p.drawWidth))),h=Math.max(8,Math.min(1024,Math.round(p.drawHeight))),canvas=createCanvas(w,h),ctx=canvas.getContext('2d'),color=Array.isArray(p.color)?p.color:[1,1,1,1];
+  ctx.font=Math.round(p.fontSize)+'px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='rgba('+color.slice(0,3).map(v=>Math.round(Math.min(1,Math.max(0,v))*255)).join(',')+','+(color[3]??1)+')';ctx.fillText(String(p.text??''),w/2,h/2);
+  const image=ctx.getImageData(0,0,w,h).data,bytes=new Uint8Array(w*h*4);for(let y=0;y<h;y++)bytes.set(image.subarray((h-1-y)*w*4,(h-y)*w*4),y*w*4);
+  const texture=new THREE.DataTexture(bytes,w,h,THREE.RGBAFormat);texture.needsUpdate=true;
+  const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:texture,transparent:true,depthWrite:false})),unit=p.unitsPerPixel||.01;
+  sprite.scale.set(w*unit,h*unit,1);sprite.position.fromArray(Array.isArray(p.worldOffset)?p.worldOffset:[0,1,0]);sprite.userData.hbTextRender=true;return sprite;
+}
+function syncTextRenders(objects,groups){
+  for(const actor of objects){const group=groups.get(actor.id);if(!group)continue;
+    const c=(actor.components||[]).find(c=>c.type==='TextRender'&&c.properties?.enabled!==false),old=group.userData.hbTextRender,key=c?JSON.stringify(c.properties):'';
+    if(old?.key===key)continue;
+    if(old){group.remove(old.sprite);old.sprite.material.map.dispose();old.sprite.material.dispose();delete group.userData.hbTextRender;}
+    if(c){const sprite=textRenderSprite({...componentDefaults('TextRender'),...c.properties});group.add(sprite);group.userData.hbTextRender={key,sprite};}
+  }
+}
 function createSolidGizmo(){
   const group=new THREE.Group();group.userData.editorHelper=true;group.renderOrder=1001;
   const mat=c=>new THREE.MeshBasicMaterial({color:c,depthTest:false,depthWrite:false,toneMapped:false});
@@ -227,6 +247,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       if (orthographic) editorCamera.zoom=THREE.MathUtils.clamp(editorCamera.zoom*1.15**dy,.01,500);
       else orbit.radius=THREE.MathUtils.clamp(orbit.radius*1.15**-dy,.025,100000);
     }
+    syncTextRenders(data.objects,groups);
     let animating=false;
     // Particle preview: emitters (GPU simulation through the native renderer, CPU points otherwise) advanced by wall time (capped 0.1 s) while playing; restart resets every emitter.
     const particleStates=()=>[...groups.values()].flatMap(g=>[...(g.userData.particleStates?.values?.()||[]),g.userData.particleState].filter(Boolean));

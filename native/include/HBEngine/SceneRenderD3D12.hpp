@@ -151,7 +151,7 @@ private:
     std::uint64_t overlayDraws_=0,overlayUploadBytes_=0;
     // Display pass: render scale (upscale or supersampling), display gamma/brightness and HDR output. Without any of them
     // the frame is a plain copy. The UI overlay is drawn after scaling at window size.
-    UINT outputWidth=0,outputHeight=0;float upscaleSharpness=.4f,displayGamma=1,displayBrightness=1,hdrPaper=2.5f,hdrPeak=1;bool hdrRequested=false,hdrActive=false;std::uint64_t upscales_=0;
+    UINT outputWidth=0,outputHeight=0;float upscaleSharpness=.4f,displayGamma=1,displayBrightness=1,displayColorblind=0,hdrPaper=2.5f,hdrPeak=1;bool hdrRequested=false,hdrActive=false;std::uint64_t upscales_=0;
     Com<ID3D12RootSignature> displayRoot;std::map<DXGI_FORMAT,Com<ID3D12PipelineState>> displayPipelines;d3d12::Texture displayImage;
     bool scaledOutput()const{return swapchain&&outputWidth&&(outputWidth!=surfaceWidth||outputHeight!=surfaceHeight);}
     void displayPass(d3d12::Texture& source,UINT sourceWidth,UINT sourceHeight,d3d12::Texture& target,UINT targetWidth,UINT targetHeight,std::array<float,4> options){
@@ -167,6 +167,12 @@ float4 VS(uint id : SV_VertexID) : SV_Position {
 float3 L(int2 p) { return src.Load(int3(clamp(p, int2(0,0), int2(size.xy) - 1), 0)).rgb; }
 float W(float x) { x = abs(x); return x < 1 ? (1.5 * x - 2.5) * x * x + 1 : x < 2 ? ((-.5 * x + 2.5) * x - 4) * x + 2 : 0; }
 float3 toLinear(float3 c) { return c <= .04045 ? c / 12.92 : pow((c + .055) / 1.055, 2.4); }
+// Colorblind correction (daltonize): simulate the deficiency, then move the lost difference into channels still seen.
+float3 daltonize(float3 c, float mode) {
+    float3x3 sim = mode < 1.5 ? float3x3(.567,.433,0, .558,.442,0, 0,.242,.758) : mode < 2.5 ? float3x3(.625,.375,0, .7,.3,0, 0,.3,.7) : float3x3(.95,.05,0, 0,.433,.567, 0,.475,.525);
+    float3 e = c - mul(sim, c);
+    return saturate(c + float3(0, e.r * .7 + e.g, e.r * .7 + e.b));
+}
 float4 PS(float4 pixel : SV_Position) : SV_Target {
     float3 color;
     float2 ratio = size.xy / size.zw;
@@ -188,6 +194,7 @@ float4 PS(float4 pixel : SV_Position) : SV_Target {
         color += (color - (a + c + d + e) * .25) * amount;
     }
     color = pow(saturate(color), 1 / options.y) * options.z;
+    if (hdr.z > .5) color = daltonize(saturate(color), hdr.z);
     if (options.w > .5) {
         // scRGB (1.0 = 80 nits): SDR white at paper white, near-white expanded toward the display peak.
         float3 lin = toLinear(saturate(color)); float l = dot(lin, float3(.2126, .7152, .0722));
@@ -207,7 +214,7 @@ float4 PS(float4 pixel : SV_Position) : SV_Target {
             pipeline=gpu.pipeline(desc);
         }
         auto table=gpu.table(1);gpu.device->CreateShaderResourceView(source.get(),nullptr,table.cpuAt(0));gpu.transition(source,readable);gpu.transition(target,D3D12_RESOURCE_STATE_RENDER_TARGET);
-        const float constants[12]={float(sourceWidth),float(sourceHeight),float(targetWidth),float(targetHeight),options[0],options[1],options[2],options[3],hdrPaper,hdrPeak,0,0};
+        const float constants[12]={float(sourceWidth),float(sourceHeight),float(targetWidth),float(targetHeight),options[0],options[1],options[2],options[3],hdrPaper,hdrPeak,displayColorblind,0};
         auto* list=gpu.list.p;const D3D12_VIEWPORT viewport{0,0,float(targetWidth),float(targetHeight),0,1};const D3D12_RECT scissor{0,0,LONG(targetWidth),LONG(targetHeight)};
         list->RSSetViewports(1,&viewport);list->RSSetScissorRects(1,&scissor);list->OMSetRenderTargets(1,&target.rtv,FALSE,nullptr);
         list->SetGraphicsRootSignature(displayRoot.p);list->SetGraphicsRootDescriptorTable(0,table.gpu);list->SetGraphicsRoot32BitConstants(1,12,constants,0);
@@ -1227,7 +1234,7 @@ public:
             cameraSequence.clear();cameraIndex=0;
         }
         if(ldrAA>0)ldrFxaa();
-        const bool scaled=scaledOutput(),display=swapchain&&(scaled||displayGamma!=1||displayBrightness!=1||hdrActive);
+        const bool scaled=scaledOutput(),display=swapchain&&(scaled||displayGamma!=1||displayBrightness!=1||displayColorblind>0||hdrActive);
         if(!display)drawOverlay(color,surfaceWidth,surfaceHeight);
         if(swapchain){auto& back=swapchain->acquire();
             const UINT ow=outputWidth?outputWidth:surfaceWidth,oh=outputHeight?outputHeight:surfaceHeight;const std::array<float,4> tone{scaled?upscaleSharpness:0.f,displayGamma,displayBrightness,0};
@@ -1264,8 +1271,8 @@ public:
     bool textureCompression=true;std::uint64_t compressedTextures()const{return compressedTextures_;}std::uint64_t compressedTextureBytes()const{return compressedBytes_;}
     bool hdrOutput()const{return hdrActive;}
     // Display gamma/brightness and HDR output (scRGB swap chain on an HDR monitor; otherwise stays SDR).
-    void setDisplay(float gamma,float brightness,bool hdr){
-        displayGamma=std::clamp(gamma,.5f,2.5f);displayBrightness=std::clamp(brightness,.5f,2.f);
+    void setDisplay(float gamma,float brightness,bool hdr,int colorblind=0){
+        displayGamma=std::clamp(gamma,.5f,2.5f);displayBrightness=std::clamp(brightness,.5f,2.f);displayColorblind=float(std::clamp(colorblind,0,3));
         if(!swapchain||hdr==hdrRequested)return;hdrRequested=hdr;
         float peak=0;const bool next=hdr&&swapchain->hdrDisplay(peak);if(next==hdrActive)return;
         if(gpu.isRecording()){closeTiming();gpu.end();}gpu.waitIdle();begun=false;
