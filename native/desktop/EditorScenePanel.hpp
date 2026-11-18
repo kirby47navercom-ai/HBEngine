@@ -2,6 +2,7 @@
 #include "SceneRenderBridge.hpp"
 #include <functional>
 #include <optional>
+#include <commctrl.h>
 
 // Scene viewport input (Unreal Editor level viewport controls):
 //   RMB drag look in place, RMB + W/A/S/D/Q/E fly (Shift fast, wheel speed, Z/C field of view), Alt+LMB orbit,
@@ -32,6 +33,9 @@ class EditorScenePanel {
     // Cursor lock (Unreal): during a camera drag the cursor is hidden, kept inside the viewport and put back at the press
     // point after every move, so the drag never stops at a screen edge; release shows it again where it was pressed.
     bool lockCursor=true,cursorLocked=false;POINT lockScreen{},lockClient{};
+    int hoverAxis=-1;bool tracking=false; // gizmo handle under the cursor (highlighted, size cursor)
+    HWND valueTip=nullptr;TOOLINFOW tipInfo{};std::wstring valueText; // drag value next to the cursor
+    bool cameraDrag()const{return mode==Drag::look||mode==Drag::orbit||mode==Drag::dolly||mode==Drag::pan||mode==Drag::walk;}
     void lockCursorNow(){if(cursorLocked||!lockCursor)return;cursorLocked=true;lockClient=start;lockScreen=start;ClientToScreen(window,&lockScreen);RECT r{};GetClientRect(window,&r);MapWindowPoints(window,nullptr,reinterpret_cast<POINT*>(&r),2);ClipCursor(&r);while(ShowCursor(FALSE)>=0){}SetCursorPos(lockScreen.x,lockScreen.y);}
     void unlockCursor(){if(!cursorLocked)return;cursorLocked=false;ClipCursor(nullptr);SetCursorPos(lockScreen.x,lockScreen.y);while(ShowCursor(TRUE)<0){}}
     std::optional<Handle> hitHandle(POINT at)const{
@@ -85,7 +89,7 @@ class EditorScenePanel {
         catch(const std::exception& error){OutputDebugStringA(error.what());}
         return DefWindowProcW(window,message,w,l);
     }
-    void finishMouse(){unlockCursor();button=0;mode=Drag::none;transformDrag=false;follow=false;ctrlAxis=false;if(GetCapture()==window)ReleaseCapture();}
+    void finishMouse(){unlockCursor();if(cameraDrag()&&moved)post({{"command","dragEnd"}});showValue(L"");button=0;mode=Drag::none;transformDrag=false;follow=false;ctrlAxis=false;if(GetCapture()==window)ReleaseCapture();}
     LRESULT handle(UINT message,WPARAM w,LPARAM l){
         switch(message){
         case WM_PAINT:{
@@ -122,7 +126,14 @@ class EditorScenePanel {
             return 0;
         }
         case WM_MOUSEMOVE:{
-            if(!button)return 0;
+            if(!button){
+                // Hover: the gizmo handle under the cursor lights up; otherwise the object under it gets a hover outline.
+                const POINT at=point(l);const auto h=hitHandle(at);const int axis=h?h->axis:-1;
+                if(!tracking){TRACKMOUSEEVENT t{sizeof(t),TME_LEAVE,window,0};TrackMouseEvent(&t);tracking=true;}
+                if(axis!=hoverAxis){hoverAxis=axis;post({{"command","hoverHandle"}});}
+                if(axis<0)post({{"command","hover"},{"x",at.x},{"y",at.y}});
+                return 0;
+            }
             const auto at=point(l);
             if(button==1&&!brushPoints.empty()){
                 const auto last=brushPoints.back();
@@ -131,15 +142,15 @@ class EditorScenePanel {
             }
             if(transformDrag){moved=moved||std::abs(at.x-start.x)>=3||std::abs(at.y-start.y)>=3;if(moved)drag(at,true);return 0;}
             if(!moved&&std::abs(at.x-start.x)<3&&std::abs(at.y-start.y)<3)return 0;
-            moved=true;
+            const bool first=!moved;moved=true;
             // LMB drag on empty space: marquee in orthographic views (and with Ctrl+Alt), walk in perspective.
             if(button==1&&(marquee||mode==Drag::none)){marquee=true;post({{"command","marquee"},{"box",{start.x,start.y,at.x,at.y}}});return 0;}
             if(mode==Drag::measure){post({{"command","measure"},{"x",start.x},{"y",start.y},{"x2",at.x},{"y2",at.y}});previous=at;return 0;}
             const char* command=mode==Drag::look?"look":mode==Drag::orbit?"orbit":mode==Drag::dolly?"dolly":mode==Drag::walk?"walk":"pan";
-            if(lockCursor){if(!cursorLocked){lockCursorNow();post({{"command",command},{"dx",at.x-start.x},{"dy",at.y-start.y},{"x",start.x},{"y",start.y}});return 0;}
+            if(lockCursor){if(!cursorLocked){lockCursorNow();post({{"command",command},{"dx",at.x-start.x},{"dy",at.y-start.y},{"x",start.x},{"y",start.y},{"begin",true}});return 0;}
                 const int dx=at.x-lockClient.x,dy=at.y-lockClient.y;if(!dx&&!dy)return 0; // the recentring move itself
                 post({{"command",command},{"dx",dx},{"dy",dy},{"x",start.x},{"y",start.y}});SetCursorPos(lockScreen.x,lockScreen.y);return 0;}
-            post({{"command",command},{"dx",at.x-previous.x},{"dy",at.y-previous.y},{"x",start.x},{"y",start.y}});
+            post({{"command",command},{"dx",at.x-previous.x},{"dy",at.y-previous.y},{"x",start.x},{"y",start.y},{"begin",first}});
             previous=at;return 0;
         }
         case WM_LBUTTONUP:case WM_RBUTTONUP:case WM_MBUTTONUP:{
@@ -171,6 +182,10 @@ class EditorScenePanel {
             if(transformDrag&&moved)post({{"command","translateCancel"}});
             if(mode==Drag::measure)post({{"command","measureEnd"}});
             unlockCursor();button=0;mode=Drag::none;transformDrag=false;follow=false;ctrlAxis=false;brushPoints.clear();stopFlight();return 0;
+        case WM_MOUSELEAVE:tracking=false;hoverAxis=-1;post({{"command","hover"},{"x",-1},{"y",-1}});return 0;
+        case WM_SETCURSOR:if(LOWORD(l)==HTCLIENT&&!button&&hoverAxis>=0){SetCursor(LoadCursorW(nullptr,IDC_SIZEALL));return TRUE;}break;
+        // Double-click an object: focus it (the first click already selected it).
+        case WM_LBUTTONDBLCLK:post({{"command","focus"}});return 0;
         case WM_KILLFOCUS:
             stopFlight();finishMouse();return 0;
         case WM_TIMER:
@@ -202,6 +217,8 @@ class EditorScenePanel {
                 if(!ctrl&&(w=='W'||w=='E'||w=='R')){selectTransformTool(w=='W'?"translate":w=='E'?"rotate":"scale");return 0;}
             }
             if(w==VK_ESCAPE&&transformDrag){ReleaseCapture();return 0;}
+            // Esc during a camera drag puts the camera back where the drag began.
+            if(w==VK_ESCAPE&&button&&cameraDrag()){const bool was=moved;moved=false;stopFlight();finishMouse();if(was)post({{"command","dragCancel"}});return 0;}
             break;
         }
         case WM_NCDESTROY:{
@@ -214,7 +231,7 @@ class EditorScenePanel {
 public:
     void attach(HWND parent,HINSTANCE instance,std::function<void(Json)> onInput){
         post=std::move(onInput);
-        WNDCLASSW type{};type.hInstance=instance;type.lpszClassName=L"HBEngine.NativeSceneView";type.lpfnWndProc=procedure;type.hCursor=LoadCursorW(nullptr,IDC_ARROW);
+        WNDCLASSW type{};type.hInstance=instance;type.lpszClassName=L"HBEngine.NativeSceneView";type.lpfnWndProc=procedure;type.hCursor=LoadCursorW(nullptr,IDC_ARROW);type.style=CS_DBLCLKS;
         RegisterClassW(&type);
         window=CreateWindowExW(0,type.lpszClassName,L"",WS_CHILD|WS_CLIPSIBLINGS,0,0,1,1,parent,nullptr,instance,this);
         if(!window)throw std::runtime_error("Native editor viewport window");
@@ -228,6 +245,14 @@ public:
     void useBrush(bool enabled){brushEnabled=enabled;}
     // Hidden acceptance runs drive the panel with synthetic messages and must not move the real cursor.
     void setCursorLock(bool enabled){lockCursor=enabled;if(!enabled)unlockCursor();}
+    int hoveredHandle()const{return hoverAxis;}
+    // Value next to the cursor while a gizmo drag runs (interactive sessions only; hidden checks never show popups).
+    void showValue(const std::wstring& text){
+        if(!window||!lockCursor)return;
+        if(!valueTip){if(text.empty())return;valueTip=CreateWindowExW(WS_EX_TOPMOST,TOOLTIPS_CLASSW,nullptr,WS_POPUP|TTS_NOPREFIX|TTS_ALWAYSTIP,CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,window,nullptr,nullptr,nullptr);if(!valueTip)return;tipInfo={sizeof(tipInfo)};tipInfo.uFlags=TTF_TRACK|TTF_ABSOLUTE;tipInfo.hwnd=window;tipInfo.uId=2;tipInfo.lpszText=const_cast<wchar_t*>(L"");SendMessageW(valueTip,TTM_ADDTOOLW,0,LPARAM(&tipInfo));}
+        if(text.empty()){if(!valueText.empty()){valueText.clear();SendMessageW(valueTip,TTM_TRACKACTIVATE,FALSE,LPARAM(&tipInfo));}return;}
+        valueText=text;tipInfo.lpszText=valueText.data();SendMessageW(valueTip,TTM_UPDATETIPTEXTW,0,LPARAM(&tipInfo));POINT p{};GetCursorPos(&p);SendMessageW(valueTip,TTM_TRACKPOSITION,0,MAKELPARAM(p.x+18,p.y+22));SendMessageW(valueTip,TTM_TRACKACTIVATE,TRUE,LPARAM(&tipInfo));
+    }
     void selectTransformTool(std::string mode){
         if(button)return;
         tool=std::move(mode);handles.clear();post({{"command","transformTool"}});

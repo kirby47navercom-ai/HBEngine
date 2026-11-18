@@ -73,6 +73,14 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   let flyTo=null;const FLY_MS=350;
   // Z/C field-of-view zoom while flying (reset when the right button is released), Shift-follow drag base, ortho measuring line, bounds lines.
   let flightFov=1,followStart=null,measureLine=null,boundsLines=null,boundsMaterial=null;
+  // Hover / selection outlines (Unreal): the mesh edges of the selection (orange) and of the object under the cursor (light blue), drawn on top.
+  let hoveredId='',dragPose=null;const outlines=new Map(),edgeCache=new WeakMap();
+  const outlineMaterials={selected:new THREE.LineBasicMaterial({color:0xffa31a,depthTest:false,depthWrite:false,toneMapped:false,transparent:true}),hover:new THREE.LineBasicMaterial({color:0x9fd3ff,depthTest:false,depthWrite:false,toneMapped:false,transparent:true,opacity:.85})};
+  const edgesOf=g=>{let e=edgeCache.get(g);if(!e){e=new THREE.EdgesGeometry(g,30);edgeCache.set(g,e);}return e;};
+  function syncOutlines(ids,hoverId){const used=new Set(),add=(id,kind)=>{const g=groups.get(id);if(!g||!g.visible)return;g.updateWorldMatrix(true,true);g.traverse(n=>{if(!n.isMesh||n.isInstancedMesh||n.isSkinnedMesh||n.userData.editorHelper||!n.visible||!n.geometry?.attributes?.position)return;let line=outlines.get(n);if(!line){line=new THREE.LineSegments(edgesOf(n.geometry),outlineMaterials[kind]);line.userData.editorHelper=true;line.matrixAutoUpdate=false;line.frustumCulled=false;line.renderOrder=998;outlines.set(n,line);}
+      if(used.has(n))return;used.add(n);line.material=outlineMaterials[kind];line.matrix.copy(n.matrixWorld);line.matrixWorld.copy(n.matrixWorld);if(line.parent!==world)world.add(line);line.visible=true;});};
+    for(const id of ids)add(id,'selected');if(hoverId&&!ids.includes(hoverId))add(hoverId,'hover');
+    for(const [mesh,line] of outlines)if(!used.has(mesh)){line.removeFromParent();if(!mesh.parent)outlines.delete(mesh);}}
   // Viewport stats (Unreal stat scene-like): visible objects and triangles.
   const sceneStats=()=>{let triangles=0,meshes=0;world?.traverseVisible(n=>{if(!n.isMesh||n.userData.editorHelper)return;const g=n.geometry,count=g?.index?g.index.count:g?.attributes?.position?.count||0;triangles+=Math.floor(count/3)*(n.isInstancedMesh?n.count:1);meshes++;});return {objects:groups.size,meshes,triangles};};
   // Editor viewport extras: floor grid, view modes (unlit / wireframe), marquee, camera bookmarks, quad panes.
@@ -227,6 +235,9 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     // Dolly (Unreal wheel / Alt+RMB): move toward the view target; close to it the target moves along, so the camera never stops.
     const dolly=amount=>{if(amount<=0){orbit.radius=Math.min(100000,orbit.radius-amount);return;}const room=orbit.radius-.5;if(amount<=room){orbit.radius-=amount;return;}const forward=target.clone().sub(editorCamera.position).normalize();if(room>0){orbit.radius=.5;amount-=room;}target.addScaledVector(forward,amount);};
     if(command==='flightEnd'){flightFov=1;prepareCamera();}
+    if(['look','walk','orbit','dolly','pan'].includes(command)&&(extra.begin||!dragPose))dragPose={target:target.clone(),orbit:orbit.clone(),zoom:editorCamera.zoom};
+    if(command==='dragEnd')dragPose=null;
+    if(command==='dragCancel'&&dragPose){target.copy(dragPose.target);orbit.copy(dragPose.orbit);if(orthographic)editorCamera.zoom=dragPose.zoom;dragPose=null;flightFov=1;prepareCamera();}
     if(command==='cameraSet'&&!orthographic&&Array.isArray(extra.position)&&extra.position.length===3&&extra.position.every(Number.isFinite)){target.add(new THREE.Vector3(...extra.position).sub(editorCamera.position));prepareCamera();}
     let measure;
     if(command==='measureEnd'&&measureLine){world.remove(measureLine);measureLine.geometry.dispose();measureLine.material.dispose();measureLine=null;}
@@ -470,8 +481,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
         world.add(worldOutline);
       }
     }
-    if (command==='pick') {
-      selection='';
+    const pickAt=(x,y)=>{
+      let selection='';
       const hitY=height-y-.5;
       const hitView=views?.findLast(view=>{
         const rect=cameraScreenRect(view.region,width,height);
@@ -493,7 +504,10 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
         }
         if (selection) break;
       }
-    }
+      return selection;
+    };
+    if(command==='pick')selection=pickAt(x,y);
+    if(command==='hover'){const next=x<0||y<0?'':pickAt(x,y);if(next===hoveredId&&!quad&&!(extra.hoverAxis>=0))return {hoverUnchanged:true};hoveredId=next;}
     // One selection box reused every frame (a new helper per frame re-uploaded its mesh each draw).
     const group=groups.get(selection);
     if(!gizmo){gizmo=new THREE.Box3Helper(new THREE.Box3(),0x68abff);gizmo.userData.editorHelper=true;gizmo.material.depthTest=false;gizmo.renderOrder=999;gizmo.frustumCulled=false;}
@@ -506,7 +520,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       for(const [k,radius] of [[0,c.properties.loadRadius??50],[1,c.properties.unloadRadius??65]]){const key=c.id+':'+k;let ring=streamingRings.get(key);if(!ring){ring=new THREE.LineLoop(unitRing,ringMaterials[k]);ring.userData.editorHelper=true;ring.renderOrder=999;ring.frustumCulled=false;streamingRings.set(key,ring);}if(ring.parent!==world)world.add(ring);ring.position.copy(center);ring.scale.setScalar(Math.max(.01,radius));ring.updateMatrixWorld(true);ring.visible=true;ringsUsed.add(key);}}}
     for(const [key,ring] of streamingRings)if(!ringsUsed.has(key)){ring.removeFromParent();streamingRings.delete(key);}
     if(group)gizmo.box.setFromObject(group);
-    gizmo.visible=Boolean(group)&&!gizmo.box.isEmpty();
+    gizmo.visible=false; // the orange outline marks the selection now
+    {const ids=Array.isArray(extra.selectedIds)?extra.selectedIds.filter(id=>typeof id==='string'):selection?[selection]:[];syncOutlines(gameView?[]:ids,gameView?'':hoveredId);}
     const segments=[];
     const actor=content.objects.find(row=>row.id===selection);
     if(handles)handles.visible=false;
@@ -559,7 +574,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
         }
         // Unreal-style gizmo: arrows (move), rings (rotate), cube tips (scale); the dragged axis turns yellow.
         solidGizmo??=createSolidGizmo();if(!solidGizmo.parent)world.add(solidGizmo);
-        poseSolidGizmo(solidGizmo,{tool,origin,length,basis:a=>tool==='translate'?axisOf(group,a).multiplyScalar(axisSign(a)):tool==='scale'?localBasis(a).multiplyScalar(axisSign(a)):axisOf(group,a),active:command.startsWith('transform')||command.startsWith('translate')?axis:-1});
+        poseSolidGizmo(solidGizmo,{tool,origin,length,basis:a=>tool==='translate'?axisOf(group,a).multiplyScalar(axisSign(a)):tool==='scale'?localBasis(a).multiplyScalar(axisSign(a)):axisOf(group,a),active:command.startsWith('transform')||command.startsWith('translate')?axis:Number.isInteger(extra.hoverAxis)&&extra.hoverAxis<3?extra.hoverAxis:-1});
       }
     }
     // Drop to floor (End): each object's lowest point moves onto the first surface below it.
@@ -631,7 +646,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     }finally{for(const n of hiddenForFrame)n.visible=true;if(pane)delete active.userData.gameViews;}
     const {backend,shaderPreparation,calls,cameraViews,upscales,ldrAntiAliasingPasses}=renderer.hbDiagnostics();
     const ms=(a,b)=>Math.round((timing[b]-timing[a])*100)/100;
-    return {animating,editorHidden:[...editorHiddenApplied].filter(id=>groups.has(id)).length,particles:[...groups.values()].reduce((n,g)=>n+[...(g.userData.particleStates?.values?.()||[]),g.userData.particleState].filter(Boolean).reduce((m,s)=>m+(s.simulation?.particles?.length||0)+(s.simulation?.birthUploads||0),0),0),streamingRings:streamingRings.size,collisionShapes:collisionView?.group.visible?collisionView.group.children.filter(c=>c.visible).length:0,target:target.toArray(),gpuMs:renderer.hbDiagnostics().gpuTimeMs??null,resolution:{...renderer.hbResolution,upscales,ldrAntiAliasingPasses},timing:{drawCalls:Number(calls)||0,prepareMs:ms("scene","prepared"),bloomMs:ms("prepared","submit"),openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,...(extra.stats?{stats:sceneStats()}:{}),...(measure?{measure}:{}),cameraViews,selection,cameraPosition:active.position.toArray(),fov:active.isPerspectiveCamera?active.fov:null,projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),...(drops?{drops}:{}),...(boxSelection?{boxSelection}:{}),...(pilotPose?{pilotPose}:{}),...(bookmarkResult?{bookmark:bookmarkResult}:{}),warnings:content.warnings.slice(0,8)};
+    return {animating,editorHidden:[...editorHiddenApplied].filter(id=>groups.has(id)).length,particles:[...groups.values()].reduce((n,g)=>n+[...(g.userData.particleStates?.values?.()||[]),g.userData.particleState].filter(Boolean).reduce((m,s)=>m+(s.simulation?.particles?.length||0)+(s.simulation?.birthUploads||0),0),0),streamingRings:streamingRings.size,collisionShapes:collisionView?.group.visible?collisionView.group.children.filter(c=>c.visible).length:0,target:target.toArray(),gpuMs:renderer.hbDiagnostics().gpuTimeMs??null,resolution:{...renderer.hbResolution,upscales,ldrAntiAliasingPasses},timing:{drawCalls:Number(calls)||0,prepareMs:ms("scene","prepared"),bloomMs:ms("prepared","submit"),openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,...(extra.stats?{stats:sceneStats()}:{}),hovered:hoveredId,outlines:[...outlines.values()].filter(line=>line.parent).length,...(measure?{measure}:{}),cameraViews,selection,cameraPosition:active.position.toArray(),fov:active.isPerspectiveCamera?active.fov:null,projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),...(drops?{drops}:{}),...(boxSelection?{boxSelection}:{}),...(pilotPose?{pilotPose}:{}),...(bookmarkResult?{bookmark:bookmarkResult}:{}),warnings:content.warnings.slice(0,8)};
   }
   // Lightmap bake input: one row per drawn object, world matrices current.
   const bakeRows=objects=>objects.flatMap(object=>{const root=groups.get(object.id);if(!root)return[];root.updateMatrixWorld(true);const renderer=(object.components||[]).find(c=>c.type==='MeshRenderer');return[{object,root,contribute:!!renderer&&renderer.properties?.enabled!==false&&renderer.properties?.contributeGI!==false}];});

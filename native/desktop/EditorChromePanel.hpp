@@ -2,10 +2,11 @@
 // Flat Direct2D tool strip used for the main toolbar, the scene tool row, panel headers/footers and the status bar.
 // The shell sends items; clicks come back as {"event":"command","id",x,y} with the item's bottom-left in screen pixels.
 #include "EditorPanelBase.hpp"
+#include <commctrl.h>
 
 class EditorChromePanel final : public EditorPanelBase {
 public:
-    struct Item {std::string id,label,kind;std::wstring glyph;bool active=false,enabled=true,right=false;D2D1_COLOR_F tint{0,0,0,0};D2D1_RECT_F rect{};};
+    struct Item {std::string id,label,kind,tip;std::wstring glyph;bool active=false,enabled=true,right=false;D2D1_COLOR_F tint{0,0,0,0};D2D1_RECT_F rect{};};
     void attach(HWND owner,HINSTANCE instance,Post post,const std::string& panelName){EditorPanelBase::attach(owner,instance,std::move(post),L"HBEngine.EditorChromePanel",panelName);}
 
     // {visible, rect, theme, items:[{id,label,glyph(UTF-8 MDL2 char),kind:"button"|"dropdown"|"toggle"|"text"|"sep",active,enabled,right,tint:[r,g,b]}]}
@@ -15,7 +16,7 @@ public:
             items.clear();
             for(const auto& r:model.at("items")){
                 Item item;item.id=r.value("id",std::string());item.label=hb::editor_english::translate(r.value("label",std::string()));item.kind=r.value("kind",std::string("button"));
-                item.glyph=wide(r.value("glyph",std::string()));item.active=r.value("active",false);item.enabled=r.value("enabled",true);item.right=r.value("right",false);
+                item.glyph=wide(r.value("glyph",std::string()));item.tip=hb::editor_english::translate(r.value("tip",std::string()));item.active=r.value("active",false);item.enabled=r.value("enabled",true);item.right=r.value("right",false);
                 if(r.contains("tint")){const auto& t=r.at("tint");item.tint={t.at(0).get<float>(),t.at(1).get<float>(),t.at(2).get<float>(),1};}
                 items.push_back(std::move(item));
             }
@@ -61,13 +62,19 @@ private:
             if(item.kind=="dropdown")label(L"\xE70D",icons,r.right-px(16),r.top+px(1),float(px(12)),r.bottom-r.top,theme.muted);
         }
     }
+    // Hover tooltip with the chip's description and shortcut.
+    HWND tipWindow=nullptr;std::wstring tipText;
+    void showTip(const std::wstring& text){
+        if(!tipWindow){if(text.empty())return;tipWindow=CreateWindowExW(WS_EX_TOPMOST,TOOLTIPS_CLASSW,nullptr,WS_POPUP|TTS_ALWAYSTIP|TTS_NOPREFIX,CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,window,nullptr,nullptr,nullptr);if(!tipWindow)return;TOOLINFOW info{sizeof(info)};info.uFlags=TTF_SUBCLASS;info.hwnd=window;info.uId=1;info.rect={0,0,32767,32767};info.lpszText=const_cast<wchar_t*>(L"");SendMessageW(tipWindow,TTM_ADDTOOLW,0,LPARAM(&info));SendMessageW(tipWindow,TTM_SETMAXTIPWIDTH,0,360);}
+        if(text==tipText)return;tipText=text;TOOLINFOW info{sizeof(info)};info.hwnd=window;info.uId=1;info.lpszText=const_cast<wchar_t*>(tipText.c_str());SendMessageW(tipWindow,TTM_UPDATETIPTEXTW,0,LPARAM(&info));SendMessageW(tipWindow,TTM_ACTIVATE,!tipText.empty(),0);
+    }
     int itemAt(int x,int y)const{for(int i=0;i<int(items.size());++i){const auto& r=items[i].rect;if(items[i].kind!="sep"&&items[i].kind!="text"&&items[i].kind!="title"&&items[i].enabled&&x>=r.left&&x<r.right&&y>=r.top&&y<r.bottom)return i;}return -1;}
     LRESULT handle(UINT message,WPARAM w,LPARAM l)override{
         switch(message){
         case WM_MOUSEMOVE:{
             // Dragging a panel tab (Unreal docking): past a small threshold the drop target is chosen on release.
             if(pressed>=0&&(w&MK_LBUTTON)&&items[pressed].kind=="tab"){if(!dragging&&std::abs(xOf(l)-downAt.x)+std::abs(yOf(l)-downAt.y)>px(8))dragging=true;if(dragging){SetCursor(LoadCursorW(nullptr,IDC_SIZEALL));return 0;}}
-            const int hit=itemAt(xOf(l),yOf(l));if(hit!=hover){hover=hit;InvalidateRect(window,nullptr,FALSE);TRACKMOUSEEVENT t{sizeof(t),TME_LEAVE,window,0};TrackMouseEvent(&t);}return 0;}
+            const int hit=itemAt(xOf(l),yOf(l));if(hit!=hover){hover=hit;showTip(hit>=0?wide(items[hit].tip):std::wstring());InvalidateRect(window,nullptr,FALSE);TRACKMOUSEEVENT t{sizeof(t),TME_LEAVE,window,0};TrackMouseEvent(&t);}return 0;}
         case WM_MOUSELEAVE:hover=-1;InvalidateRect(window,nullptr,FALSE);return 0;
         case WM_LBUTTONDOWN:pressed=itemAt(xOf(l),yOf(l));downAt={xOf(l),yOf(l)};dragging=false;if(pressed>=0)SetCapture(window);return 0;
         case WM_CAPTURECHANGED:if(dragging){dragging=false;SetCursor(LoadCursorW(nullptr,IDC_ARROW));}return 0;
