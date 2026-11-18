@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **928개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **937개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -13,17 +13,17 @@
 | 이벤트 | 18 | 0 |
 | 클래스 | 2 | 0 |
 | 흐름 제어 | 17 | 0 |
-| 디버그 | 4 | 0 |
+| 디버그 | 5 | 0 |
 | 게임 창 | 11 | 0 |
 | 입력 | 13 | 12 |
 | 변환 | 28 | 27 |
-| 벡터 | 34 | 34 |
+| 벡터 | 36 | 34 |
 | 수학 | 54 | 50 |
-| 배열 | 95 | 88 |
+| 배열 | 96 | 88 |
 | 물리 | 16 | 14 |
 | 오브젝트 | 17 | 8 |
 | C++ 공개 함수 | 1 | 0 |
-| 오디오 | 22 | 19 |
+| 오디오 | 24 | 19 |
 | 사용자 정의 | 2 | 0 |
 | 시간 | 18 | 15 |
 | 비교 | 8 | 4 |
@@ -34,6 +34,7 @@
 | 머테리얼 | 8 | 8 |
 | 렌더링 | 15 | 14 |
 | 장면 | 4 | 2 |
+| 카메라 | 7 | 4 |
 | UI | 23 | 20 |
 | 저장 | 8 | 3 |
 | 정수 | 14 | 14 |
@@ -45,7 +46,6 @@
 | 네트워크 | 6 | 6 |
 | 2D 이동 | 1 | 1 |
 | 투사체 | 4 | 4 |
-| 카메라 | 4 | 4 |
 | 화면 설정 | 1 | 1 |
 | UI|위젯 | 1 | 1 |
 | UI|목록 | 6 | 6 |
@@ -157,6 +157,7 @@
 | drawDebugLine | Draw Debug Line / 디버그 선 그리기 | exec: exec, start: vec3, end: vec3, color: vec3, duration: float | then: exec | — | VM / 브라우저 서비스 |
 | drawDebugSphere | Draw Debug Sphere / 디버그 구 그리기 | exec: exec, center: vec3, radius: float, color: vec3, duration: float | then: exec | — | VM / 브라우저 서비스 |
 | drawDebugBox | Draw Debug Box / 디버그 상자 그리기 | exec: exec, center: vec3, extent: vec3, color: vec3, duration: float | then: exec | — | VM / 브라우저 서비스 |
+| drawDebugArrow | Draw Debug Arrow / 디버그 화살표 그리기 | exec: exec, start: vec3, end: vec3, color: vec3, duration: float | then: exec | — | VM / 브라우저 서비스 |
 
 ## 게임 창
 
@@ -240,6 +241,8 @@
 | dot | Dot Product / 벡터 내적 | a: vec3, b: vec3 | return: float | hb::VectorMath::DotProduct | 공통 C++ + VM |
 | cross | Cross Product / 벡터 외적 | a: vec3, b: vec3 | return: vec3 | hb::VectorMath::CrossProduct | 공통 C++ + VM |
 | vectorLerp | Lerp Vector / 벡터 보간 | a: vec3, b: vec3, alpha: float | return: vec3 | hb::VectorMath::LerpVector | 공통 C++ + VM |
+| randomUnitVector | Random Unit Vector / 무작위 방향 | — | return: vec3 | — | VM / 브라우저 서비스 |
+| randomPointInRadius | Random Point in Radius / 반경 안 무작위 위치 | center: vec3, radius: float | return: vec3 | — | VM / 브라우저 서비스 |
 | vectorLengthSquared | Vector Length Squared / 벡터 길이 제곱 | value: vec3 | return: float | hb::VectorMath::VectorLengthSquared | 공통 C++ + VM |
 | distanceSquared | Distance Squared / 벡터 거리 제곱 | a: vec3, b: vec3 | return: float | hb::VectorMath::DistanceSquared | 공통 C++ + VM |
 | vectorInterp | VInterp To / 벡터 따라가기 보간 이동 | current: vec3, target: vec3, delta: float, speed: float | return: vec3 | hb::VectorMath::VInterpTo | 공통 C++ + VM |
@@ -334,6 +337,7 @@
 | arrayRemove | Array Remove Index / 배열 원소 삭제 | exec: exec, array: float[], index: int | then: exec | — | VM / 브라우저 서비스 |
 | arrayFind | Array Find / 배열 원소 찾기 | array: float[], item: float | return: int | — | VM / 브라우저 서비스 |
 | arrayContains | Array Contains / 배열 원소 포함 | array: float[], item: float | return: bool | — | VM / 브라우저 서비스 |
+| arrayShuffle | Array Shuffle / 배열 섞은 사본 | array: any[] | return: any[] | — | VM / 브라우저 서비스 |
 | arrayBoolLength | Array Bool Length / 배열 길이 · Bool | array: bool[] | return: int | hb::Extended::ArrayBoolLength | 공통 C++ + VM |
 | arrayBoolLastIndex | Array Bool Last Index / 마지막 배열 인덱스 · Bool | array: bool[] | return: int | hb::Extended::ArrayBoolLastIndex | 공통 C++ + VM |
 | arrayBoolIsEmpty | Array Bool Is Empty / 빈 배열 · Bool | array: bool[] | return: bool | hb::Extended::ArrayBoolIsEmpty | 공통 C++ + VM |
@@ -479,6 +483,8 @@
 | sound | Play Sound / 효과음 재생 | exec: exec, name: string | then: exec | — | VM / 브라우저 서비스 |
 | playSoundAt | Play Sound At Location / 위치에서 소리 재생 | exec: exec, sound: string, position: vec3, volume: float | then: exec | — | 오디오 재생; 위치 음향 없음 |
 | stopSound | Stop Sound / 소리 정지 | exec: exec, sound: string | then: exec | — | VM / 브라우저 서비스 |
+| getMasterVolume | Get Master Volume / 전체 볼륨 | — | return: float | — | VM / 브라우저 서비스 |
+| setMasterVolume | Set Master Volume / 전체 볼륨 설정 | exec: exec, volume: float | then: exec | — | VM / 브라우저 서비스 |
 | audioVoiceBudget | Set Voice Budget / 음성 예산 설정 | exec: exec, target: object, real: int, tracked: int | then: exec | hb::Audio::SetVoiceBudget | 공통 C++ + VM |
 | audioVoicePriority | Set Priority / 음성 우선순위 지정 | exec: exec, handle: string, priority: int | then: exec | hb::Audio::SetPriority | 공통 C++ + VM |
 | audioRealVoices | Get Real Voice Count / 실제 재생 음성 수 | target: object | return: int | hb::Audio::GetRealVoiceCount | 공통 C++ + VM |
@@ -653,6 +659,18 @@
 | getCurrentScene | Get Current Scene / 현재 장면 가져오기 | — | return: string | — | VM / 브라우저 서비스 |
 | openSceneArgs | Open With Arguments / 장면 열기와 인자 | exec: exec, scene: string, json: string | then: exec | hb::Scene::OpenWithArguments | 공통 C++ + VM |
 
+## 카메라
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| setViewTarget | Set View Target with Blend / 카메라 전환 | exec: exec, target: object, blendTime: float | then: exec | — | VM / 브라우저 서비스 |
+| setFieldOfView | Set Field of View / 시야각 설정 | exec: exec, target: object, fov: float | then: exec | — | VM / 브라우저 서비스 |
+| projectWorldToScreen | Project World to Screen / 월드 위치를 화면 좌표로 | world: vec3 | return: bool, screen: vec2 | — | VM / 브라우저 서비스 |
+| cameraOrthoSize | Set Ortho Size / 카메라 직교 크기 | exec: exec, target: object, size: float | then: exec | hb::Camera::SetOrthoSize | 공통 C++ + VM |
+| cameraFollow | Follow / 카메라 따라가기 | exec: exec, target: object, subject: object | then: exec | hb::Camera::Follow | 공통 C++ + VM |
+| cameraShake | Shake / 카메라 흔들기 | exec: exec, target: object, intensity: float, duration: float | then: exec | hb::Camera::Shake | 공통 C++ + VM |
+| screenFlash | Flash / 화면 번쩍임 | exec: exec, color: color, duration: float | then: exec | hb::Camera::Flash | 공통 C++ + VM |
+
 ## UI
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
@@ -810,15 +828,6 @@
 | projectileHits | Take Hits Text / 투사체 충돌 묶음 | exec: exec | then: exec, return: string | hb::Projectiles::TakeHitsText | 공통 C++ + VM |
 | projectileClear | Clear / 소유 투사체 정리 | exec: exec | then: exec | hb::Projectiles::Clear | 공통 C++ + VM |
 | projectileOnHit | On Hit / 투사체 충돌 이벤트 등록 | exec: exec, eventName: string | then: exec | hb::Projectiles::OnHit | 공통 C++ + VM |
-
-## 카메라
-
-| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
-| --- | --- | --- | --- | --- | --- |
-| cameraOrthoSize | Set Ortho Size / 카메라 직교 크기 | exec: exec, target: object, size: float | then: exec | hb::Camera::SetOrthoSize | 공통 C++ + VM |
-| cameraFollow | Follow / 카메라 따라가기 | exec: exec, target: object, subject: object | then: exec | hb::Camera::Follow | 공통 C++ + VM |
-| cameraShake | Shake / 카메라 흔들기 | exec: exec, target: object, intensity: float, duration: float | then: exec | hb::Camera::Shake | 공통 C++ + VM |
-| screenFlash | Flash / 화면 번쩍임 | exec: exec, color: color, duration: float | then: exec | hb::Camera::Flash | 공통 C++ + VM |
 
 ## 화면 설정
 
