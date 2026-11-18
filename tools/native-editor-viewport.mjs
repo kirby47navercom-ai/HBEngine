@@ -71,6 +71,10 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   const target=new THREE.Vector3(0,.45,0), orbit=new THREE.Spherical();
   // Focus (F / outliner double-click) flies the camera over a short ease-out instead of jumping, like Unreal.
   let flyTo=null;const FLY_MS=350;
+  // Z/C field-of-view zoom while flying (reset when the right button is released), Shift-follow drag base, ortho measuring line, bounds lines.
+  let flightFov=1,followStart=null,measureLine=null,boundsLines=null,boundsMaterial=null;
+  // Viewport stats (Unreal stat scene-like): visible objects and triangles.
+  const sceneStats=()=>{let triangles=0,meshes=0;world?.traverseVisible(n=>{if(!n.isMesh||n.userData.editorHelper)return;const g=n.geometry,count=g?.index?g.index.count:g?.attributes?.position?.count||0;triangles+=Math.floor(count/3)*(n.isInstancedMesh?n.count:1);meshes++;});return {objects:groups.size,meshes,triangles};};
   // Editor viewport extras: floor grid, view modes (unlit / wireframe), marquee, camera bookmarks, quad panes.
   let grid=null,gridStep=0,marqueeLine=null,lastPane=0,viewModeShown='lit',axisWidget=null;const wire=new Map(),unlitMaterials=new WeakMap(),bookmarks=new Map();
   const wireMaterial=new THREE.LineBasicMaterial({color:0x9fc4ff,toneMapped:false});
@@ -191,7 +195,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     const fullWidth=width,fullHeight=height,savedTarget=target.clone(),savedOrtho=orthoCamera;let pane=null;
     if(quad){
       const hw=Math.max(1,Math.floor(width/2)),hh=Math.max(1,Math.floor(height/2)),rects=[[0,0,hw,hh],[hw,0,Math.max(1,width-hw),hh],[0,hh,hw,Math.max(1,height-hh)],[hw,hh,Math.max(1,width-hw),Math.max(1,height-hh)]];
-      const at=box?[box[0],box[1]]:[x,y],positioned=['orbit','pan','zoom','pick','place','translate','translatePreview','transform','transformPreview','marquee','boxSelect'].includes(command);
+      const at=box?[box[0],box[1]]:[x,y],positioned=['orbit','look','walk','dolly','measure','pan','zoom','pick','place','translate','translatePreview','transform','transformPreview','marquee','boxSelect'].includes(command);
       const hit=positioned?rects.findIndex(([rx,ry,rw,rh])=>at[0]>=rx&&at[0]<rx+rw&&at[1]>=ry&&at[1]<ry+rh):-1;if(hit>=0)lastPane=hit;
       pane={index:lastPane,rect:rects[lastPane],rects};
       x-=pane.rect[0];y-=pane.rect[1];width=pane.rect[2];height=pane.rect[3];if(box)box=box.map((v,i)=>v-pane.rect[i%2]);
@@ -208,13 +212,26 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
         applyViewportDirection(editorCamera,direction||'2d',target);
       }else{
         // Editor camera lens (Unreal viewport FOV / near clip): only the editor's own perspective camera, never game cameras.
-        if(editorCamera===camera){camera.fov=Math.min(170,Math.max(5,Number(cameraFov)||60));camera.near=Math.min(100,Math.max(.001,Number(cameraNear)||.05));camera.far=Math.max(camera.near*2,Math.min(1e7,Number(cameraFar)||100000));}
+        if(editorCamera===camera){camera.fov=Math.min(170,Math.max(5,(Number(cameraFov)||60)*flightFov));camera.near=Math.min(100,Math.max(.001,Number(cameraNear)||.05));camera.far=Math.max(camera.near*2,Math.min(1e7,Number(cameraFar)||100000));}
         editorCamera.aspect=aspect;editorCamera.position.copy(target).add(new THREE.Vector3().setFromSpherical(orbit));editorCamera.lookAt(target);
       }
       editorCamera.updateProjectionMatrix();editorCamera.updateMatrixWorld();
     };
+    if(extra.follow&&['translatePreview','transformPreview','translate','transform'].includes(command)){followStart??=target.clone();target.copy(followStart);}else if(followStart&&!['translatePreview','transformPreview'].includes(command))followStart=null;
     prepareCamera();
     if(command&&!['focus','pick','bookmarkGo'].includes(command))flyTo=null;
+    // Dolly (Unreal wheel / Alt+RMB): move toward the view target; close to it the target moves along, so the camera never stops.
+    const dolly=amount=>{if(amount<=0){orbit.radius=Math.min(100000,orbit.radius-amount);return;}const room=orbit.radius-.5;if(amount<=room){orbit.radius-=amount;return;}const forward=target.clone().sub(editorCamera.position).normalize();if(room>0){orbit.radius=.5;amount-=room;}target.addScaledVector(forward,amount);};
+    if(command==='flightEnd'){flightFov=1;prepareCamera();}
+    if(command==='cameraSet'&&!orthographic&&Array.isArray(extra.position)&&extra.position.length===3&&extra.position.every(Number.isFinite)){target.add(new THREE.Vector3(...extra.position).sub(editorCamera.position));prepareCamera();}
+    let measure;
+    if(command==='measureEnd'&&measureLine){world.remove(measureLine);measureLine.geometry.dispose();measureLine.material.dispose();measureLine=null;}
+    if(command==='measure'&&orthographic&&[extra.x2,extra.y2].every(Number.isFinite)){
+      const off=pane?pane.rect:[0,0],at=(px,py)=>new THREE.Vector3(2*px/width-1,1-2*py/height,0).unproject(editorCamera),a=at(x,y),b=at(extra.x2-off[0],extra.y2-off[1]);
+      measure={distance:a.distanceTo(b),delta:b.clone().sub(a).toArray()};
+      if(!measureLine){measureLine=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xffd84d,depthTest:false,depthWrite:false,toneMapped:false}));measureLine.userData.editorHelper=true;measureLine.renderOrder=1002;measureLine.frustumCulled=false;world.add(measureLine);}
+      measureLine.geometry.setFromPoints([a,b]);
+    }
     // Camera bookmarks (Ctrl+1..9 save, 1..9 fly back).
     let bookmarkResult;
     if(command==='bookmarkSet'&&Number.isInteger(extra.bookmark)){bookmarks.set(extra.bookmark,{target:target.clone(),orbit:orbit.clone(),zoom:editorCamera.zoom,orthographic,pane:lastPane});bookmarkResult={index:extra.bookmark,saved:true};}
@@ -240,14 +257,24 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       }
     } else if (command==='orbit' && !orthographic) {
       orbit.theta-=dx*.008;orbit.phi-=dy*.008;orbit.makeSafe();
-    } else if (command==='pan'||command==='orbit') {
+    } else if ((command==='look'||command==='walk') && !orthographic) {
+      // Look in place (Unreal RMB): the camera stays and the target swings around it. Walk (Unreal LMB): turn and move along the ground.
+      const eye=editorCamera.position.clone();orbit.theta-=dx*.004;if(command==='look')orbit.phi-=dy*.004;orbit.makeSafe();target.copy(eye).sub(new THREE.Vector3().setFromSpherical(orbit));
+      if(command==='walk'){const ahead=target.clone().sub(eye).setY(0);if(ahead.lengthSq()>1e-9){ahead.normalize();target.addScaledVector(ahead,-dy*.02*defaultViewportSettings.speed);}}
+    } else if (command==='dolly') {
+      if(orthographic)editorCamera.zoom=THREE.MathUtils.clamp(editorCamera.zoom*1.01**-dy,.01,500);else dolly(-dy*.01*Math.max(1,orbit.radius));
+    } else if (command==='pan'||command==='orbit'||command==='look'||command==='walk') {
       const scale=(orthographic?14/editorCamera.zoom:orbit.radius)/height;
       target.add(new THREE.Vector3(-dx*scale,dy*scale,0).applyQuaternion(editorCamera.quaternion));
     } else if (command==='zoom') {
       if (orthographic) editorCamera.zoom=THREE.MathUtils.clamp(editorCamera.zoom*1.15**dy,.01,500);
-      else orbit.radius=THREE.MathUtils.clamp(orbit.radius*1.15**-dy,.025,100000);
+      else{const amount=orbit.radius-orbit.radius*1.15**-dy;dolly(dy>0?Math.max(amount,.25*dy):amount);}
     }
     syncTextRenders(data.objects,groups);
+    // Show > Bounds: every visible object's world box as lines.
+    if(boundsLines){world.remove(boundsLines);boundsLines.geometry.dispose();boundsLines=null;}
+    if(extra.showBounds){const points=[];for(const g of groups.values()){if(!g.visible)continue;const b=new THREE.Box3().setFromObject(g);if(b.isEmpty())continue;const c=[0,1,2,3,4,5,6,7].map(i=>new THREE.Vector3(i&1?b.max.x:b.min.x,i&2?b.max.y:b.min.y,i&4?b.max.z:b.min.z));for(const [p,q] of [[0,1],[2,3],[4,5],[6,7],[0,2],[1,3],[4,6],[5,7],[0,4],[1,5],[2,6],[3,7]])points.push(c[p],c[q]);}
+      if(points.length){boundsLines=new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(points),boundsMaterial??=new THREE.LineBasicMaterial({color:0xff9f43,toneMapped:false}));boundsLines.userData.editorHelper=true;boundsLines.frustumCulled=false;world.add(boundsLines);}}
     let animating=false;
     // Particle preview: emitters (GPU simulation through the native renderer, CPU points otherwise) advanced by wall time (capped 0.1 s) while playing; restart resets every emitter.
     const particleStates=()=>[...groups.values()].flatMap(g=>[...(g.userData.particleStates?.values?.()||[]),g.userData.particleState].filter(Boolean));
@@ -264,7 +291,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
       animating=t<1;if(!animating)flyTo=null;
     }
     if(flight&&!cameraId&&!cameraOutputs&&!orthographic){
-      const {forward=0,right=0,up=0,seconds=0,fast=false}=flight;
+      const {forward=0,right=0,up=0,zoom=0,seconds=0,fast=false}=flight;
+      if(Number.isFinite(zoom)&&zoom)flightFov=THREE.MathUtils.clamp(flightFov*Math.exp(-zoom*THREE.MathUtils.clamp(seconds,0,.1)*1.5),.1,1.8);
       if(![forward,right,up,seconds].every(Number.isFinite))throw Error('뷰포트 이동 값을 확인하세요.');
       const scale=Number.isFinite(flight.speedScale)?Math.min(100,Math.max(.01,flight.speedScale)):1;
       const speed=defaultViewportSettings.speed*scale*(fast?defaultViewportSettings.fastMultiplier:1);
@@ -307,9 +335,16 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
                 else{const bounds=new THREE.Box3().setFromObject(group);translation=hit.point.clone().add(new THREE.Vector3(0,bounds.isEmpty()?0:origin.y-bounds.min.y,0)).sub(origin).toArray();}
               }
             }
-          }else if(Number.isInteger(axis)&&axis>=0&&axis<3&&Array.isArray(tangent)&&tangent.length===2&&tangent.every(Number.isFinite)){
+          }else if(Number.isInteger(axis)&&axis>=0&&axis<7&&Array.isArray(tangent)&&tangent.length===2&&tangent.every(Number.isFinite)){
             const distance=dx*tangent[0]+dy*tangent[1];
-            if(tool==='translate'){
+            if(axis>=3&&axis<=5&&tool==='translate'){
+              // Plane handle: the selection follows the cursor on the plane of the two axes.
+              const plane=new THREE.Plane().setFromNormalAndCoplanarPoint(axisOf(group,axis===3?2:axis===4?0:1),origin),hitAt=(px,py)=>{ray.setFromCamera({x:2*px/width-1,y:1-2*py/height},active);return ray.ray.intersectPlane(plane,new THREE.Vector3());};
+              const p0=hitAt(x,y),p1=hitAt(x+dx,y+dy);if(p0&&p1)translation=p1.sub(p0).toArray();
+            }else if(axis===6&&tool==='scale'){
+              if(Math.abs(distance)>1e-6)sceneTransform={axis:3,value:Math.exp(THREE.MathUtils.clamp(distance/60,-12,12))};
+            }else if(axis>=3){
+            }else if(tool==='translate'){
               const length=handleSize(origin);
               const along=axisOf(group,axis).multiplyScalar(axisSign(axis));
               const from=screen(origin),to=screen(origin.clone().addScaledVector(along,length));
@@ -320,6 +355,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
             }
           }
           // Preview and commit frames both draw the result (live, like Unreal), with grid/angle snap as the session will commit it.
+          if(followStart&&translation){target.copy(followStart).add(new THREE.Vector3(...translation));prepareCamera();if(!command.endsWith('Preview'))followStart=null;}
           if(translation||sceneTransform){
             const draft={...actor},round=(v,step)=>Number((Math.round(v/step)*step).toFixed(6));
             editSceneTransform(draft,content.objects,translation?{mode:'translate',value:translation}:{mode:tool,...sceneTransform});
@@ -496,6 +532,13 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
             from=to;
           }
         }
+        // Plane handles (XY/YZ/XZ squares, axis 3-5) for translate and a centre handle (axis 6) for uniform scale.
+        const addLine=(axisId,from,to,color,hit)=>{const a=screen(from),b=screen(to);positions.push(...from.toArray(),...to.toArray());colors.push(...color,...color);if(hit&&Math.hypot(b[0]-a[0],b[1]-a[1])>=1)segments.push([axisId,...a,...b]);};
+        if(tool==='translate')for(const [axisId,i,j] of [[3,0,1],[4,1,2],[5,0,2]]){
+          const a=axisOf(group,i).multiplyScalar(axisSign(i)*length),b=axisOf(group,j).multiplyScalar(axisSign(j)*length),color=new THREE.Color(0xffd84d).toArray(),p=(u,v)=>origin.clone().addScaledVector(a,u).addScaledVector(b,v);
+          addLine(axisId,p(.2,.2),p(.35,.2),color,false);addLine(axisId,p(.35,.2),p(.35,.35),color,false);addLine(axisId,p(.35,.35),p(.2,.35),color,false);addLine(axisId,p(.2,.35),p(.2,.2),color,false);addLine(axisId,p(.2,.2),p(.35,.35),color,true);
+        }
+        if(tool==='scale'){const color=new THREE.Color(0xffffff).toArray(),s=length*.08;for(let i=0;i<3;i++){const u=localBasis(i).multiplyScalar(s);addLine(6,origin.clone().sub(u),origin.clone().add(u),color,i===0);}}
         if(positions.length){
           if(!handles){
             const geometry=new THREE.BufferGeometry();
@@ -584,7 +627,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     }finally{for(const n of hiddenForFrame)n.visible=true;if(pane)delete active.userData.gameViews;}
     const {backend,shaderPreparation,calls,cameraViews,upscales,ldrAntiAliasingPasses}=renderer.hbDiagnostics();
     const ms=(a,b)=>Math.round((timing[b]-timing[a])*100)/100;
-    return {animating,editorHidden:[...editorHiddenApplied].filter(id=>groups.has(id)).length,particles:[...groups.values()].reduce((n,g)=>n+[...(g.userData.particleStates?.values?.()||[]),g.userData.particleState].filter(Boolean).reduce((m,s)=>m+(s.simulation?.particles?.length||0)+(s.simulation?.birthUploads||0),0),0),streamingRings:streamingRings.size,collisionShapes:collisionView?.group.visible?collisionView.group.children.filter(c=>c.visible).length:0,target:target.toArray(),gpuMs:renderer.hbDiagnostics().gpuTimeMs??null,resolution:{...renderer.hbResolution,upscales,ldrAntiAliasingPasses},timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,cameraViews,selection,cameraPosition:active.position.toArray(),fov:active.isPerspectiveCamera?active.fov:null,projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),...(drops?{drops}:{}),...(boxSelection?{boxSelection}:{}),...(pilotPose?{pilotPose}:{}),...(bookmarkResult?{bookmark:bookmarkResult}:{}),warnings:content.warnings.slice(0,8)};
+    return {animating,editorHidden:[...editorHiddenApplied].filter(id=>groups.has(id)).length,particles:[...groups.values()].reduce((n,g)=>n+[...(g.userData.particleStates?.values?.()||[]),g.userData.particleState].filter(Boolean).reduce((m,s)=>m+(s.simulation?.particles?.length||0)+(s.simulation?.birthUploads||0),0),0),streamingRings:streamingRings.size,collisionShapes:collisionView?.group.visible?collisionView.group.children.filter(c=>c.visible).length:0,target:target.toArray(),gpuMs:renderer.hbDiagnostics().gpuTimeMs??null,resolution:{...renderer.hbResolution,upscales,ldrAntiAliasingPasses},timing:{openMs:ms("start","open"),sceneMs:ms("open","scene"),submitMs:ms("scene","submit"),finishMs:ms("submit","finish")},backend,shaderPreparation,calls,stats:sceneStats(),...(measure?{measure}:{}),cameraViews,selection,cameraPosition:active.position.toArray(),fov:active.isPerspectiveCamera?active.fov:null,projection:active.isOrthographicCamera?'orthographic':'perspective',segments,...(worldBrush?{worldBrush}:{}),...(worldSelection?{worldSelection}:{}),...(placement?{placement}:{}),...(translation?{translation}:{}),...(sceneTransform?{sceneTransform}:{}),...(preview?{preview}:{}),...(drops?{drops}:{}),...(boxSelection?{boxSelection}:{}),...(pilotPose?{pilotPose}:{}),...(bookmarkResult?{bookmark:bookmarkResult}:{}),warnings:content.warnings.slice(0,8)};
   }
   // Lightmap bake input: one row per drawn object, world matrices current.
   const bakeRows=objects=>objects.flatMap(object=>{const root=groups.get(object.id);if(!root)return[];root.updateMatrixWorld(true);const renderer=(object.components||[]).find(c=>c.type==='MeshRenderer');return[{object,root,contribute:!!renderer&&renderer.properties?.enabled!==false&&renderer.properties?.contributeGI!==false}];});

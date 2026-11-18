@@ -35,6 +35,8 @@ export function editSceneTransform(actor,objects,{mode,axis,value,space}){
     actor.position=position.add(new Vector3().fromArray(actor.position)).toArray();
     return;
   }
+  // Uniform scale (centre handle): axis 3 scales every axis.
+  if(mode==='scale'&&axis===3&&Number.isFinite(value)&&value>0){actor.scale=actor.scale.map(size=>clampScaleAxis(size*value));return;}
   if(!Number.isInteger(axis)||axis<0||axis>2||!Number.isFinite(value))throw Error('변형 축과 값을 확인하세요.');
   if(mode==='rotate'){
     const basis=new Vector3().setComponent(axis,1);
