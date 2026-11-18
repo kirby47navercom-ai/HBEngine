@@ -33,6 +33,12 @@ class EditorGraphPanel final : public EditorPanelBase {
             TOOLINFOW info{sizeof(info)};info.uFlags=TTF_SUBCLASS;info.hwnd=window;info.uId=1;info.rect={0,0,32767,32767};info.lpszText=const_cast<wchar_t*>(L"");SendMessageW(tip,TTM_ADDTOOLW,0,LPARAM(&info));SendMessageW(tip,TTM_SETMAXTIPWIDTH,0,420);}
         if(text==tipText)return;tipText=text;TOOLINFOW info{sizeof(info)};info.hwnd=window;info.uId=1;info.lpszText=const_cast<wchar_t*>(tipText.c_str());SendMessageW(tip,TTM_UPDATETIPTEXTW,0,LPARAM(&info));SendMessageW(tip,TTM_ACTIVATE,!tipText.empty(),0);
     }
+    // Comment whose title strip (top 24 px) is under (x, y).
+    std::optional<std::string> commentAt(float x,float y)const{
+        for(auto it=comments.rbegin();it!=comments.rend();++it){const auto& c=*it;if(!c.contains("position")||!c.contains("size"))continue;const auto at=point(c.at("position").value("x",0.f),c.at("position").value("y",0.f));const float w=c.at("size").value("width",0.f)*zoom;
+            if(x>=at.x&&x<=at.x+w&&y>=at.y&&y<=at.y+24*zoom)return c.value("id",std::string());}
+        return std::nullopt;
+    }
     int hoverEdge=-1; // wire under the mouse (drawn thicker; right-click deletes it)
     // Index of the wire whose curve passes within 6 px of (x, y), sampling the same Bezier the wire is drawn with.
     int edgeAt(float x,float y){
@@ -180,6 +186,8 @@ class EditorGraphPanel final : public EditorPanelBase {
                     return 0;
                 }
             }
+            if(const auto* node=hit(x,y)){if(!chosen(node->id)){selected=node->id;extra.clear();emit({{"event","select"},{"id",selected}});announce();}POINT screen{LONG(x),LONG(y)};ClientToScreen(window,&screen);emit({{"event","nodeMenu"},{"x",screen.x},{"y",screen.y}});InvalidateRect(window,nullptr,FALSE);return 0;}
+            if(const auto comment=commentAt(x,y)){POINT screen{LONG(x),LONG(y)};ClientToScreen(window,&screen);emit({{"event","commentMenu"},{"id",*comment},{"x",screen.x},{"y",screen.y}});return 0;}
             if(!hit(x,y))if(const int e=edgeAt(x,y);e>=0){HMENU menu=CreatePopupMenu();AppendMenuW(menu,MF_STRING,1,L"연결 끊기");POINT screen{LONG(x),LONG(y)};ClientToScreen(window,&screen);
                 const auto choice=TrackPopupMenu(hb::editor_english::translateMenu(menu),TPM_RETURNCMD|TPM_NONOTIFY|TPM_RIGHTBUTTON,screen.x,screen.y,0,window,nullptr);DestroyMenu(menu);
                 if(choice==1)emit({{"event","edit"},{"action","disconnectEdge"},{"from",edges.at(e).at("from")},{"to",edges.at(e).at("to")}});hoverEdge=-1;return 0;}
@@ -243,6 +251,7 @@ class EditorGraphPanel final : public EditorPanelBase {
             if(w=='F'&&!(GetKeyState(VK_CONTROL)&0x8000)){std::vector<std::string> ids;if(!selected.empty())ids.push_back(selected);ids.insert(ids.end(),extra.begin(),extra.end());frame(ids);return 0;}
             if(w==VK_HOME){frame({});return 0;}
             if(w=='Q'&&!selected.empty()){straighten();return 0;}
+            if((w=='W'||w=='A'||w=='S'||w=='D')&&(GetKeyState(VK_SHIFT)&0x8000)&&!(GetKeyState(VK_CONTROL)&0x8000)&&!extra.empty()){emit({{"event","align"},{"mode",w=='W'?"top":w=='A'?"left":w=='S'?"bottom":"right"}});return 0;}
             if(w==VK_ESCAPE){pending.reset();if(GetCapture()==window)ReleaseCapture();InvalidateRect(window,nullptr,FALSE);return 0;}
             if(w==VK_SPACE){auto event=spawnPosition();event["event"]="palette";emit(event);return 0;}
             if(w=='F'&&(GetKeyState(VK_CONTROL)&0x8000)){emit({{"event","find"}});return 0;}
@@ -265,6 +274,9 @@ public:
         edges=model.at("edges");comments=model.at("comments");for(auto it=extra.begin();it!=extra.end();)it=find(*it)?std::next(it):extra.erase(it);InvalidateRect(window,nullptr,FALSE);
     }
     std::vector<std::string> extraIds()const{return {extra.begin(),extra.end()};}
+    std::optional<std::string> commentAtPoint(int x,int y)const{return commentAt(float(x),float(y));}
+    float nodeWidth(const std::string& id){const auto* n=find(id);return n?n->w:224.f;}
+    float nodeHeight(const std::string& id){const auto* n=find(id);return n?height(*n):60.f;}
     int wireAt(int x,int y){return edgeAt(float(x),float(y));}
     std::wstring hoverAt(int x,int y){return hoverText(float(x),float(y));}
     std::optional<POINT> wireMiddle(std::size_t i){if(i>=edges.size())return std::nullopt;const auto a=endpoint(edges.at(i).at("from"),true),b=endpoint(edges.at(i).at("to"),false);if(!a||!b)return std::nullopt;return POINT{LONG((a->x+b->x)/2),LONG((a->y+b->y)/2)};}
@@ -288,6 +300,7 @@ public:
             node->y=from->y+row*float(out-in);rows.push_back({{"id",id},{"x",node->x},{"y",node->y}});break;}}
         if(!rows.empty()){emit({{"event","edit"},{"action","moveMany"},{"id",selected},{"value",rows}});InvalidateRect(window,nullptr,FALSE);}
     }
+    void selectPair(const std::string& a,const std::string& b){selected=a;extra={b};announce();InvalidateRect(window,nullptr,FALSE);}
     void selectAll(){if(nodes.empty())return;selected=nodes.front().id;extra.clear();for(const auto& n:nodes)if(n.id!=selected)extra.insert(n.id);emit({{"event","select"},{"id",selected}});announce();InvalidateRect(window,nullptr,FALSE);}
     void resetView(){selected.clear();extra.clear();pending.reset();wireStart.reset();pan={36,36};zoom=1;}
     void focusNode(const std::string& id){

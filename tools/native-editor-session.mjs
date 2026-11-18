@@ -15,7 +15,7 @@ import {mergeLightmapAssets} from '../prototype/lightmap-assets.js';
 import {resolveSceneEnvironment} from '../prototype/scene-environment.js';
 import {AssetDocuments, assetDocumentSource, assetValidationError, assetSuffix, assetTitle, assetTypes, createAsset, validAsset} from '../prototype/asset-documents.js';
 import {documentRevision, patchAsset} from '../prototype/automation.js';
-import {blueprintClipboard, catalog, defaultInputValue, defaultsFor, effectivePins, graphContext, makeComment, makeDefinition, makeNode, nodeTitle, pasteNodes, sampleTimeline, timelineLength, typeColors, variableTypes} from '../prototype/blueprint-model.js';
+import {blueprintClipboard, catalog, collapseNodes, defaultInputValue, defaultsFor, effectivePins, graphContext, makeComment, makeDefinition, makeNode, nodeTitle, pasteNodes, sampleTimeline, timelineLength, typeColors, variableTypes} from '../prototype/blueprint-model.js';
 import {connectAutomatic} from '../prototype/blueprint-connections.js';
 import {connectMaterial, copyMaterialNodes, disconnectMaterial, evaluateMaterial, resolveMaterialAsset, makeMaterialFunctionCall, makeMaterialNode, materialCatalog, materialFunctionDependencies, materialFunctionTypes, materialGraph, materialLiteralDefault, materialPins, materialPortName, newMaterialLayer, normalizedMaterialEdges, pasteMaterialNodes, refreshMaterialFunctionCall, removeMaterialNodes, resolveMaterialPreview, validMaterialLayer} from '../prototype/material-runtime.js';
 import {blueprintClasses} from '../prototype/class-types.js';
@@ -2164,7 +2164,15 @@ export function nativeEditorSession(bridge) {
         const open=documents.items.get(name);
         return open?.data??JSON.parse((await projectBytes(project(),name)).toString('utf8').replace(/^\uFEFF/,''));
       };
-      if (action === 'moveMany' || action === 'deleteMany') {
+      if (action === 'collapse') {
+        // Collapse to Function / Macro (Unreal): the selected nodes move into a new graph and a call node replaces them.
+        if(!bp)throw Error('블루프린트 그래프에서 노드를 선택하세요.');
+        const result=collapseNodes(next,graph,Array.isArray(ids)?ids:[],key==='macro'?'macro':'function',typeof value==='string'?value.trim():'',view);
+        if(!result.ok)throw Error(result.reason);
+      } else if (action === 'commentColor') {
+        const comment=(graph.comments||[]).find(row=>row.id===id);if(!comment)throw Error('주석을 선택하세요.');
+        if(typeof value!=='string'||!/^#[0-9a-fA-F]{6}$/.test(value))throw Error('주석 색을 확인하세요.');comment.color=value;
+      } else if (action === 'moveMany' || action === 'deleteMany') {
         // Box / Ctrl selection: move or delete several nodes as one edit.
         const list=action==='moveMany'?(Array.isArray(value)?value:[]):(Array.isArray(ids)?ids.filter(i=>typeof i==='string'):[]);if(!list.length||list.length>2000)throw Error('노드를 선택하세요.');
         if(action==='moveMany')for(const row of list){const node=graph.nodes.find(n=>n.id===row?.id);if(!node||![row.x,row.y].every(Number.isFinite))continue;const nx=Math.max(-10000,Math.min(10000,row.x)),ny=Math.max(-10000,Math.min(10000,row.y));if(bp)node.position={x:nx,y:ny};else Object.assign(node,{px:nx,y:ny});}
