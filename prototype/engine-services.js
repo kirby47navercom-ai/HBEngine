@@ -72,6 +72,8 @@ import {componentDefaults,defaultsFor,validValue,sampleTimeline,timelineLength} 
 import {validSurface} from './model.js';
 import {componentDefinitions,objectComponents,addSceneComponent,enabledComponent,validComponentProperties,editComponentProperty} from './scene-components.js';
 import {createScenePhysics,sceneWorldMatrix,sceneWorldPosition,setSceneWorldPosition} from './scene-runtime.js';
+import {createWidgetNode} from './ui-assets.js';
+import {MovementComponents} from './movement-components.js';
 import {createRigidPhysics,physicsQueryKeys} from './physics-world.js';
 import {resolveMaterialAsset,validMaterialSurface} from './material-runtime.js';
 import {spriteAnimationFrame,valid2DAsset} from './two-d-assets.js';
@@ -103,11 +105,16 @@ export async function loadModel(asset,{metadata:explicit}={}){
     if(explicit===null)result.sourceHash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),v=>v.toString(16).padStart(2,'0')).join('');rememberAnimationBindPose(result.object);return result;
   }catch(error){const resources=new Set();result.object.traverse(o=>{if(o.geometry)resources.add(o.geometry);for(const m of o.material?(Array.isArray(o.material)?o.material:[o.material]):[]){resources.add(m);for(const t of Object.values(m))if(t?.isTexture)resources.add(t);}if(o.skeleton)resources.add(o.skeleton);});for(const r of resources)r.dispose();throw error;}
 }
+// Text Render: a one-text widget tracked at the object's world position (the same path as tracked UI Widgets).
+export const textRenderInstance=c=>'TextRender:'+c.id;
+const hexColor=c=>'#'+(Array.isArray(c)?c:[1,1,1,1]).slice(0,4).map(v=>Math.round(Math.min(1,Math.max(0,Number(v)||0))*255).toString(16).padStart(2,'0')).join('');
+export function textRenderWidget(p){const root=createWidgetNode('Canvas','root','');root.name='Root';root.slot.anchors=[0,0,1,1];root.slot.offset=[0,0,0,0];const text=createWidgetNode('Text','text','root');text.slot.anchors=[0,0,1,1];text.slot.offset=[0,0,0,0];Object.assign(text.properties,{text:String(p.text??''),fontSize:p.fontSize,color:hexColor(p.color),align:'center'});return {version:1,name:'TextRender',referenceSize:[Math.max(64,Math.round(p.drawWidth)),Math.max(64,Math.round(p.drawHeight))],scaleMode:'constant',nodes:[root,text]};}
 export function engineOperations(hooks){
   hooks={mesh:()=>null,...hooks};
   const sessionId=hooks.game?.id;
   const audioSession=hooks.game?.audioRuntime&&hooks.game.audioRuntime.sessionId===sessionId?hooks.game.audioRuntime:{sessionId,audio:new Map(),pending:new Map(),errors:[],routing:null,epoch:0,unlocked:globalThis.hbNativeAudio===true||hooks.audioPlayback===true,paused:false};
   audioSession.history??=[];if(hooks.game)hooks.game.audioRuntime=audioSession;
+  const movement=new MovementComponents();
   const audio=audioSession.audio,mixers=new Map(),animations=new Map(),graphs=new Map(),graphRequests=new Map(),widgets=new Map();
   const ui=new WidgetSystem({camera:hooks.camera,readAsset:path=>readAsset(path),overlay:hooks.overlay,createView:hooks.widgetView,fileUrl,runtime:()=>hooks.game?.inputRuntime||currentVM,inputSignal:hooks.game?.inputLifetime.signal});
   const soundRouting=audioSession.routing??=hooks.audioRouting?.({readAsset:path=>readAsset(path)})??new AudioRouting({readAsset:path=>readAsset(path)});
@@ -228,7 +235,7 @@ export function engineOperations(hooks){
   async function prepareActorWidgets(o,vm){
     if(o.poolActive===false||preparedWidgets.has(o.id))return;
     const b=vm.bindings.find(b=>b.self===o.id)||{self:o.id,root:{components:objectComponents(o)}};
-    for(const c of objectComponents(o)){const p={...componentDefaults(c.type),...c.properties};if(c.type==='UIWidget'&&p.enabled!==false&&p.showOnStart&&p.asset)await operation('uiShow',{target:o.id,asset:p.asset,instance:p.instance},b,vm);}
+    for(const c of objectComponents(o)){const p={...componentDefaults(c.type),...c.properties};if(c.type==='UIWidget'&&p.enabled!==false&&p.showOnStart&&p.asset)await operation('uiShow',{target:o.id,asset:p.asset,instance:p.instance},b,vm);if(c.type==='TextRender'&&p.enabled!==false)await operation('uiShow',{target:o.id,instance:textRenderInstance(c),data:textRenderWidget(p)},b,vm);}
     preparedWidgets.add(o.id);
   }
   async function releaseActor(o,vm){
@@ -553,6 +560,7 @@ export function engineOperations(hooks){
     // Current scene path (the one the world was opened from) and restarting it like Open Scene.
     // Master volume: one gain in front of the game's audio output (0-2).
     // Object info: name, bounds of its meshes (world box center/half size), distance, overlaps tracked by blueprint objects.
+    if(key==='textRenderSetText'){const o=target(a,b,vm),c=o.components?.find(c=>c.type==='TextRender');if(!c)throw Error('Text Render 컴포넌트가 필요해요.');c.properties={...c.properties,text:String(a.text??'').slice(0,10000)};return await operation('uiSetText',{target:o.id,instance:textRenderInstance(c),element:'Text',text:c.properties.text},b,vm)||{};}
     if(key==='getDisplayName'){const o=target(a,b,vm);return {return:String(o.name??o.id)};}
     if(key==='getDistanceTo'){const o=target(a,b,vm),p=vm.object(a.other);if(!p)return {return:0};const x=sceneWorldPosition(o,vm.objects),y=sceneWorldPosition(p,vm.objects);return {return:Math.hypot(x[0]-y[0],x[1]-y[1],x[2]-y[2])};}
     if(key==='getActorBounds'){const o=target(a,b,vm),box=new THREE.Box3();hooks.scene?.()?.updateMatrixWorld();for(const mesh of hooks.meshes?.()||[])if(mesh.userData.objectId===o.id)box.expandByObject(mesh);if(box.isEmpty())return {origin:sceneWorldPosition(o,vm.objects),extent:[0,0,0]};return {origin:box.getCenter(new THREE.Vector3()).toArray(),extent:box.getSize(new THREE.Vector3()).multiplyScalar(.5).toArray()};}
@@ -578,6 +586,7 @@ export function engineOperations(hooks){
     lodState:()=>({animationBudget:{owner:animationBudgetOwner?.id||null,...animationBudget.snapshot()},collisionCache:collisionLODs.stats(),actors:(currentVM?.objects||[]).flatMap(o=>{const state=lodStates.get(o);return state?[{actor:o.id,...state}]:[];})}),
     valuesState:(id,{offset=0,limit=64}={})=>{const object=currentVM?.object(id);if(!object||!Number.isInteger(offset)||offset<0||!Number.isInteger(limit)||limit<1||limit>256)throw Error('변수 대상과 페이지를 확인하세요.');const rows=recordableRuntimeValues(object,currentVM.bindings);return {actor:id,total:rows.length,offset,values:structuredClone(rows.slice(offset,offset+limit)),nextOffset:offset+limit<rows.length?offset+limit:null};},
     animationPlaybackState:options=>{const result=inspectAnimationPlayback(animations,mixers,playbackRestoration,options,{graphs,leases:playbackLeases,montages:systems.montagePlayers});for(const row of result.rows){const object=currentVM?.object(row.actor),group=hooks.mesh(row.actor);if(object&&group)row.transformChannels=systems.importedTransformState(object,group,mixers.get(row.actor),options?.limit??64);}return result;},
+    movementStep:(vm,dt)=>movement.step(vm.objects,dt,{trace:async(start,end)=>(await operation('lineTrace',{start,end},{self:null},vm))?.hit,update:o=>hooks.update?.(o)}),
     animationState:()=>[...graphs.values()].map(player=>player.snapshot()),
     sequenceOwnership:()=>systems.sequenceOwnership(),
     sequenceTreeState:(target,options)=>systems.sequenceTreeState(target,options),

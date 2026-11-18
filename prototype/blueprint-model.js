@@ -115,6 +115,7 @@ catalog.push(
   flow('lightIntensity','Set Light Intensity','광원 밝기 설정','렌더링',[pin('target','Light','object'),pin('value','Intensity','float')]),
   flow('openScene','Open Scene','장면 열기','장면',[pin('scene','Scene','string')]),
   flow('reloadScene','Reload Scene','장면 다시 불러오기','장면'),
+  flow('textRenderSetText','Set Text Render Text','월드 글자 바꾸기','렌더링',[pin('target','Target','object'),pin('text','Text','string')]),
   flow('applyDamage','Apply Damage','피해 주기','피해',[pin('target','Damaged Actor','object'),pin('damage','Damage','float')]),
   flow('applyRadialDamage','Apply Radial Damage','범위 피해 주기','피해',[pin('origin','Origin','vec3'),pin('radius','Radius','float'),pin('damage','Damage','float'),pin('falloff','Falloff','bool')],[pin('count','Hit Count','int')]),
   flow('delayNextTick','Delay Until Next Tick','다음 프레임까지 지연','흐름'),
