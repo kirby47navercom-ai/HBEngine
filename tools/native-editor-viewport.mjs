@@ -150,6 +150,8 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     project=nextProject;
     const url=name=>'hbasset:'+encodeURIComponent(name);
     renderer??=await createNativeSceneRenderer(canvas,()=>{},{bridge,surface,graphicsAPI:'d3d12',drawEditorHelpers:true});
+    // The CPU occlusion culler is a runtime saving (see occlusion-culling.js); in the editor it cost ~6 ms of every viewport frame in a 138-draw scene.
+    renderer.hbOcclusionCulling=false;
     world=new THREE.Scene();
     primitives=scenePrimitives(data.surface||defaultSurface);
     const ambientLight=new THREE.HemisphereLight(0xffffff,0x444444,1);

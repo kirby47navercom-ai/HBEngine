@@ -33,7 +33,7 @@ class EditorScenePanel {
     // Cursor lock (Unreal): during a camera drag the cursor is hidden, kept inside the viewport and put back at the press
     // point after every move, so the drag never stops at a screen edge; release shows it again where it was pressed.
     bool lockCursor=true,cursorLocked=false;POINT lockScreen{},lockClient{};
-    int hoverAxis=-1;bool tracking=false; // gizmo handle under the cursor (highlighted, size cursor)
+    int hoverAxis=-1;bool tracking=false;ULONGLONG pressedAt=0;bool flew=false;POINT hoverAt{-1,-1}; // gizmo handle under the cursor (highlighted, size cursor)
     HWND valueTip=nullptr;TOOLINFOW tipInfo{};std::wstring valueText; // drag value next to the cursor
     bool cameraDrag()const{return mode==Drag::look||mode==Drag::orbit||mode==Drag::dolly||mode==Drag::pan||mode==Drag::walk;}
     void lockCursorNow(){if(cursorLocked||!lockCursor)return;cursorLocked=true;lockClient=start;lockScreen=start;ClientToScreen(window,&lockScreen);RECT r{};GetClientRect(window,&r);MapWindowPoints(window,nullptr,reinterpret_cast<POINT*>(&r),2);ClipCursor(&r);while(ShowCursor(FALSE)>=0){}SetCursorPos(lockScreen.x,lockScreen.y);}
@@ -104,7 +104,7 @@ class EditorScenePanel {
             // Ctrl+LMB then RMB (or the reverse) while dragging along an axis: both buttons move along the up axis (Unreal Z).
             if(button&&ctrlAxis&&((button==1&&pressed==2)||(button==2&&pressed==1))){if(auto h=axisHandle(1)){grabbed=h;start=previous=point(l);moved=false;}return 0;}
             if(button)return 0;
-            SetFocus(window);SetCapture(window);start=previous=point(l);moved=false;button=pressed;mode=Drag::none;follow=false;ctrlAxis=false;
+            SetFocus(window);SetCapture(window);start=previous=point(l);moved=false;button=pressed;mode=Drag::none;follow=false;ctrlAxis=false;pressedAt=GetTickCount64();flew=false;KillTimer(window,2);
             if(pressed==1){
                 if(alt&&ctrl){marquee=true;return 0;}
                 // Alt+drag on a gizmo handle duplicates the selection in place and drags the copies; elsewhere Alt orbits.
@@ -131,7 +131,7 @@ class EditorScenePanel {
                 const POINT at=point(l);const auto h=hitHandle(at);const int axis=h?h->axis:-1;
                 if(!tracking){TRACKMOUSEEVENT t{sizeof(t),TME_LEAVE,window,0};TrackMouseEvent(&t);tracking=true;}
                 if(axis!=hoverAxis){hoverAxis=axis;post({{"command","hoverHandle"}});}
-                if(axis<0)post({{"command","hover"},{"x",at.x},{"y",at.y}});
+                if(axis<0){hoverAt=at;SetTimer(window,2,70,nullptr);}
                 return 0;
             }
             const auto at=point(l);
@@ -172,7 +172,7 @@ class EditorScenePanel {
             if(translate&&(moved||!clicked))drag(at,false);
             else if(up==1&&clicked&&(!grabbed||wasCtrlAxis))post({{"command","pick"},{"x",at.x},{"y",at.y},{"add",add}});
             // A right click without dragging opens the context menu (a right drag stays the camera look).
-            else if(up==2&&clicked&&wasMode){POINT screen=at;ClientToScreen(window,&screen);post({{"command","contextmenu"},{"x",at.x},{"y",at.y},{"sx",screen.x},{"sy",screen.y}});}
+            else if(up==2&&clicked&&wasMode&&!flew&&GetTickCount64()-pressedAt<350){POINT screen=at;ClientToScreen(window,&screen);post({{"command","contextmenu"},{"x",at.x},{"y",at.y},{"sx",screen.x},{"sy",screen.y}});}
             if(wasMeasure)post({{"command","measureEnd"}});
             finishMouse();grabbed.reset();return 0;
         }
@@ -182,7 +182,7 @@ class EditorScenePanel {
             if(transformDrag&&moved)post({{"command","translateCancel"}});
             if(mode==Drag::measure)post({{"command","measureEnd"}});
             unlockCursor();button=0;mode=Drag::none;transformDrag=false;follow=false;ctrlAxis=false;brushPoints.clear();stopFlight();return 0;
-        case WM_MOUSELEAVE:tracking=false;hoverAxis=-1;post({{"command","hover"},{"x",-1},{"y",-1}});return 0;
+        case WM_MOUSELEAVE:KillTimer(window,2);hoverAt={-1,-1};tracking=false;hoverAxis=-1;post({{"command","hover"},{"x",-1},{"y",-1}});return 0;
         case WM_SETCURSOR:if(LOWORD(l)==HTCLIENT&&!button&&hoverAxis>=0){SetCursor(LoadCursorW(nullptr,IDC_SIZEALL));return TRUE;}break;
         // Double-click an object: focus it (the first click already selected it).
         case WM_LBUTTONDBLCLK:post({{"command","focus"}});return 0;
@@ -192,13 +192,14 @@ class EditorScenePanel {
             // The timer only asks for a frame; the move itself is measured at draw time (takeFlight), so a timer starved by
             // mouse input (WM_TIMER has the lowest priority) never makes the camera stutter.
             if(w==1){if(flightTime)post({{"command","flyTick"}});return 0;}
+            if(w==2){KillTimer(window,2);if(!button&&hoverAt.x>=0)post({{"command","hover"},{"x",hoverAt.x},{"y",hoverAt.y}});return 0;}
             break;
         // Wheel while flying (right button held) changes camera speed like Unreal; otherwise it dollies.
         case WM_MOUSEWHEEL:{POINT at=point(l);ScreenToClient(window,&at);post({{"command",button==2&&mode==Drag::look?"speedStep":"zoom"},{"dy",GET_WHEEL_DELTA_WPARAM(w)/120.0},{"x",at.x},{"y",at.y}});return 0;}
         case WM_KEYDOWN:case WM_KEYUP:{
             const auto index=flightKey(w);
             if(button==2&&mode==Drag::look&&index>=0){
-                flightKeys.at(index)=message==WM_KEYDOWN;
+                flightKeys.at(index)=message==WM_KEYDOWN;if(message==WM_KEYDOWN)flew=true;
                 if(std::none_of(flightKeys.begin(),flightKeys.end(),[](bool pressed){return pressed;})){KillTimer(window,1);flightTime=0;}
                 else startFlight();
                 return 0;
