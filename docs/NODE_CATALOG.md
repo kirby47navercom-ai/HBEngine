@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **998개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **1002개**, 실제 공통 C++ API **810개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -15,7 +15,7 @@
 | 흐름 제어 | 17 | 0 |
 | 디버그 | 7 | 0 |
 | 게임 창 | 11 | 0 |
-| 입력 | 14 | 12 |
+| 입력 | 16 | 12 |
 | 변환 | 28 | 27 |
 | 벡터 | 38 | 34 |
 | 수학 | 56 | 50 |
@@ -32,11 +32,11 @@
 | 문자열 | 26 | 19 |
 | 애니메이션 | 2 | 0 |
 | 머테리얼 | 8 | 8 |
-| 렌더링 | 16 | 14 |
+| 렌더링 | 17 | 14 |
 | 장면 | 4 | 2 |
+| 설정 | 4 | 0 |
 | 카메라 | 9 | 4 |
 | UI | 25 | 20 |
-| 설정 | 3 | 0 |
 | 업적 | 7 | 0 |
 | 레벨 | 2 | 0 |
 | 체력 | 4 | 0 |
@@ -195,6 +195,8 @@
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
 | gamepadRumble | Play Gamepad Rumble / 게임패드 진동 | exec: exec, player: int, low: float, high: float, duration: float | then: exec | — | VM / 브라우저 서비스 |
+| getActionKeys | Get Action Keys / 액션에 지정된 키 | action: string | return: string[] | — | VM / 브라우저 서비스 |
+| setMouseCursorImage | Set Mouse Cursor Image / 마우스 커서 이미지 | exec: exec, texture: string, hotspotX: float, hotspotY: float | then: exec | — | VM / 브라우저 서비스 |
 | setInputMode | Set Input Mode / 입력 모드 설정 | exec: exec, mode: string | then: exec | — | VM / 브라우저 서비스 |
 | inputLastDevice | Get Last Device / 최근 입력 장치 | — | return: string | hb::Input::GetLastDevice | 공통 C++ + VM |
 | inputAnyPressed | Any Key Pressed / 아무 입력 눌림 | — | return: bool | hb::Input::AnyKeyPressed | 공통 C++ + VM |
@@ -460,7 +462,7 @@
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
 | trace | Raycast / 레이캐스트 | exec: exec, start: vec3, end: vec3 | then: exec, return: hit | — | VM / 브라우저 서비스 |
-| lineTrace | Line Trace / 선 충돌 검사 | exec: exec, start: vec3, end: vec3, channel: string | then: exec, hit: hit | — | VM / 브라우저 서비스 |
+| lineTrace | Line Trace / 선 충돌 검사 | exec: exec, start: vec3, end: vec3, channel: string, ignoreSelf: bool, ignore: object[] | then: exec, hit: hit | — | VM / 브라우저 서비스 |
 | impulse | Add Impulse / 충격량 더하기 | exec: exec, target: object, impulse: vec3 | then: exec | hb::Physics::AddImpulse | 공통 C++ + VM |
 | collisionEnabled | Set Collision Enabled / 충돌 활성화 | exec: exec, target: object, enabled: bool | then: exec | hb::Physics::SetCollisionEnabled | 공통 C++ + VM |
 | getVelocity | Get Velocity / 속도 가져오기 | target: object | return: vec3 | hb::Physics::GetVelocity | 공통 C++ + VM |
@@ -669,6 +671,7 @@
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
 | lightIntensity | Set Light Intensity / 광원 밝기 설정 | exec: exec, target: object, value: float | then: exec | — | VM / 브라우저 서비스 |
+| wasRecentlyRendered | Was Recently Rendered / 화면에 보이는지 | target: object | return: bool | — | VM / 브라우저 서비스 |
 | textRenderSetText | Set Text Render Text / 월드 글자 바꾸기 | exec: exec, target: object, text: string | then: exec | — | VM / 브라우저 서비스 |
 | reflectionProbeAdvancedBlend | Set Advanced Blend / 반사 고급 경계 혼합 | exec: exec, target: object, value: bool, component: string | then: exec | hb::ReflectionProbes::SetAdvancedBlend | 공통 C++ + VM |
 | reflectionProbeBlendFaces | Set Blend Faces / 반사 면별 혼합 거리 | exec: exec, target: object, positive: vec3, negative: vec3, component: string | then: exec | hb::ReflectionProbes::SetBlendFaces | 공통 C++ + VM |
@@ -693,6 +696,15 @@
 | reloadScene | Reload Scene / 장면 다시 불러오기 | exec: exec | then: exec | — | VM / 브라우저 서비스 |
 | getCurrentScene | Get Current Scene / 현재 장면 가져오기 | — | return: string | — | VM / 브라우저 서비스 |
 | openSceneArgs | Open With Arguments / 장면 열기와 인자 | exec: exec, scene: string, json: string | then: exec | hb::Scene::OpenWithArguments | 공통 C++ + VM |
+
+## 설정
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| getSupportedResolutions | Get Supported Resolutions / 지원 해상도 목록 | — | return: vec2[] | — | VM / 브라우저 서비스 |
+| setUiTextScale | Set UI Text Scale / UI 글자 크기 배율 | exec: exec, scale: float | then: exec | — | VM / 브라우저 서비스 |
+| setColorblindMode | Set Colorblind Mode / 색맹 보정 | exec: exec, mode: int | then: exec | — | VM / 브라우저 서비스 |
+| resetPlayerSettings | Reset Player Settings / 플레이어 설정 초기화 | exec: exec | then: exec | — | VM / 브라우저 서비스 |
 
 ## 카메라
 
@@ -737,14 +749,6 @@
 | uiSetFontSize | Set Font Size / 위젯 글자 크기 | exec: exec, target: object, instance: string, element: string, fontSize: float | then: exec | hb::UI::SetFontSize | 공통 C++ + VM |
 | uiSetFillDirection | Set Fill Direction / 위젯 채우기 방향 | exec: exec, target: object, instance: string, element: string, direction: string | then: exec | hb::UI::SetFillDirection | 공통 C++ + VM |
 | uiAnimate | Animate / 위젯 간단 애니메이션 | exec: exec, target: object, instance: string, element: string, property: string, to: float, duration: float | then: exec | hb::UI::Animate | 공통 C++ + VM |
-
-## 설정
-
-| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
-| --- | --- | --- | --- | --- | --- |
-| setUiTextScale | Set UI Text Scale / UI 글자 크기 배율 | exec: exec, scale: float | then: exec | — | VM / 브라우저 서비스 |
-| setColorblindMode | Set Colorblind Mode / 색맹 보정 | exec: exec, mode: int | then: exec | — | VM / 브라우저 서비스 |
-| resetPlayerSettings | Reset Player Settings / 플레이어 설정 초기화 | exec: exec | then: exec | — | VM / 브라우저 서비스 |
 
 ## 업적
 

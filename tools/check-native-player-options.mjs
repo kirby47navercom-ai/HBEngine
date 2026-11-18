@@ -1,4 +1,4 @@
-// Packaged game player options: the run writes Logs/game.log (prints included), Show Frame Stats and the colorblind
+// Packaged game player options: Set Mouse Cursor Image and Get Supported Resolutions (monitor modes) run in the player; the run writes Logs/game.log (prints included), Show Frame Stats and the colorblind
 // correction run in the real player, the colorblind choice is saved with the player settings, and a screenshot taken
 // after enabling it differs from the one before.
 import assert from 'node:assert/strict';
@@ -18,16 +18,18 @@ const average=async file=>{const image=await loadImage(await fs.readFile(file)),
 try{
   const record=await createProject('Options',work,'3d'),dir=path.dirname(record.file),file=path.join(dir,record.manifest.startupBlueprint),graph=JSON.parse(await fs.readFile(file,'utf8'));
   const node=(key,values={})=>{const n=makeNode(key);n.inputValues={...n.inputValues,...values};graph.nodes.push(n);return n;};
-  const steps=[graph.nodes.find(n=>n.key==='beginPlay'),node('print',{message:'player log line'}),node('setStatsVisible',{visible:true}),node('delay',{duration:.3}),node('takeScreenshot'),node('delay',{duration:.3}),node('setColorblindMode',{mode:3}),node('delay',{duration:.3}),node('takeScreenshot')];
+  const image=createCanvas(16,16);image.getContext('2d').fillRect(0,0,16,16);await fs.mkdir(path.join(dir,'Assets/UI'),{recursive:true});await fs.writeFile(path.join(dir,'Assets/UI/Cursor.png'),image.toBuffer('image/png'));
+  const modes=node('getSupportedResolutions'),count=node('arrayLength'),countText=node('intToString'),modesPrint=node('print');assert.ok(connect(graph,{node:modes.id,pin:'return'},{node:count.id,pin:'array'}).ok&&connect(graph,{node:count.id,pin:'return'},{node:countText.id,pin:'value'}).ok&&connect(graph,{node:countText.id,pin:'return'},{node:modesPrint.id,pin:'message'}).ok);
+  const steps=[graph.nodes.find(n=>n.key==='beginPlay'),node('print',{message:'player log line'}),node('setMouseCursorImage',{texture:'Assets/UI/Cursor.png',hotspotX:2,hotspotY:2}),modesPrint,node('setStatsVisible',{visible:true}),node('delay',{duration:.3}),node('takeScreenshot'),node('delay',{duration:.3}),node('setColorblindMode',{mode:3}),node('delay',{duration:.3}),node('takeScreenshot')];
   for(let i=1;i<steps.length;i++)assert.ok(connect(graph,{node:steps[i-1].id,pin:'then'},{node:steps[i].id,pin:'exec'}).ok);
   await fs.writeFile(file,JSON.stringify(graph));
   const sceneFile=path.join(dir,record.manifest.startupScene),scene=JSON.parse(await fs.readFile(sceneFile,'utf8'));scene.objects[0].blueprintAsset=record.manifest.startupBlueprint;await fs.writeFile(sceneFile,JSON.stringify(scene));
   const built=await buildGame(record,{...defaultBuildProfile(record.manifest),configuration:'release',width:640,height:360,framePacing:'fixed'});
   const state=path.join(work,'State'),report=path.join(work,'report.json');
   await exec(built.executable,['--hidden','--silent','--frames','90','--report',report],{windowsHide:true,env:{...process.env,HB_NATIVE_TEST_STATE:state},timeout:90000});
-  const log=await fs.readFile(path.join(state,'Logs','game.log'),'utf8');assert.match(log,/player log line/,'print written to game.log');
+  const log=await fs.readFile(path.join(state,'Logs','game.log'),'utf8');assert.match(log,/player log line/,'print written to game.log');const modeCount=Number(log.split('\n').map(line=>line.match(/Z (\d+)$/)?.[1]).find(Boolean));assert.ok(modeCount>=1,'display modes from the monitor: '+log);
   const result=JSON.parse(await fs.readFile(report,'utf8')),shots=result.screenshots??result.stats?.screenshots??[];assert.equal(shots.length,2,'two screenshots');
   const [before,after]=await Promise.all(shots.map(average)),difference=Math.max(...before.map((v,i)=>Math.abs(v-after[i])));
   assert.ok(difference>2,'colorblind correction changes the presented image: '+difference);
-  console.log(JSON.stringify({passed:true,log:log.split('\n').length,before:before.map(Math.round),after:after.map(Math.round),difference:Math.round(difference*10)/10}));
+  console.log(JSON.stringify({passed:true,modes:modeCount,log:log.split('\n').length,before:before.map(Math.round),after:after.map(Math.round),difference:Math.round(difference*10)/10}));
 }finally{await fs.rm(work,{recursive:true,force:true});}

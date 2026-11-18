@@ -28,7 +28,7 @@ export class MovementComponents {
     if(state.stopped)return;const v=state.velocity;v[1]-=9.81*p.gravityScale*dt;
     const speed=Math.hypot(...v);if(p.maxSpeed>0&&speed>p.maxSpeed)for(let i=0;i<3;i++)v[i]*=p.maxSpeed/speed;
     const from=sceneWorldPosition(o,objects);let to=from.map((x,i)=>x+v[i]*dt);
-    const hit=trace&&Math.hypot(...v)*dt>1e-9?await trace(from,to):null;
+    const hit=trace&&Math.hypot(...v)*dt>1e-9?await trace(from,to,[o.id]):null;
     if(hit?.hit&&hit.actor!==o.id){
       const n=hit.normal,dot=v[0]*n[0]+v[1]*n[1]+v[2]*n[2];to=hit.position.map((x,i)=>x+n[i]*.01);
       if(p.shouldBounce&&Math.hypot(...v)*p.bounciness>.5)for(let i=0;i<3;i++)v[i]=(v[i]-2*dot*n[i])*p.bounciness;else{state.stopped=true;v.fill(0);}
@@ -43,7 +43,7 @@ export class MovementComponents {
     const parentId=o.parentId||o.parent,parent=parentId&&objects.find(x=>x.id===parentId);if(!parent)return;
     const pivot=sceneWorldPosition(parent,objects).map((v,i)=>v+(Number(p.targetOffset[i])||0)),view=direction(o,objects,[0,0,-1]);
     let length=Math.max(0,p.armLength);const desired=pivot.map((v,i)=>v-view[i]*length);
-    if(p.collision&&trace&&length>0){const hit=await trace(pivot,desired);if(hit?.hit&&hit.actor!==parent.id&&hit.actor!==o.id)length=Math.max(0,Math.hypot(...hit.position.map((v,i)=>v-pivot[i]))-.2);}
+    if(p.collision&&trace&&length>0){const hit=await trace(pivot,desired,[o.id,parent.id]);if(hit?.hit&&hit.actor!==parent.id&&hit.actor!==o.id)length=Math.max(0,Math.hypot(...hit.position.map((v,i)=>v-pivot[i]))-.2);}
     let target=pivot.map((v,i)=>v-view[i]*length);const last=this.arms.get(o.id);
     if(last&&p.lagSpeed>0){const k=1-Math.exp(-p.lagSpeed*dt);target=last.map((v,i)=>v+(target[i]-v)*k);}
     this.arms.set(o.id,target);setSceneWorldPosition(o,target,objects);update?.(o);

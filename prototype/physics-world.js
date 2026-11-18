@@ -361,7 +361,7 @@ export function createRigidPhysics(objects,options={}){
     const hit=(h,c,start,direction)=>({hit:true,position:start.map((v,i)=>v+direction[i]*h.timeOfImpact),normal:array(h.normal),actor:c.object.id});
     if(key==='physicsRaycast'||key==='physicsRaycastAll'){
       const start=checked(args.start,'시작'),end=checked(args.end,'끝'),direction=[end.x-start.x,end.y-start.y,dim===2?0:end.z-start.z];if(!Math.hypot(...direction))return output(key==='physicsRaycastAll'?[]:emptyHit());
-      const ray=new R.Ray(start,xyz(direction)),hits=[];for(const c of candidates){const h=c.collider.castRayAndGetNormal(ray,1,true);if(h)hits.push({...hit(h,c,args.start,direction),toi:h.timeOfImpact});}hits.sort((a,b)=>a.toi-b.toi||a.actor.localeCompare(b.actor));if(key==='physicsRaycast'){if(!hits.length)return output(emptyHit());const {toi,...value}=hits[0];return output(value,toi);}return output(hits.map(({toi,...h})=>h));
+      const ray=new R.Ray(start,xyz(direction)),hits=[];const skip=new Set(Array.isArray(args.ignore)?args.ignore:[]);for(const c of candidates){if(skip.has(c.object.id))continue;const h=c.collider.castRayAndGetNormal(ray,1,true);if(h)hits.push({...hit(h,c,args.start,direction),toi:h.timeOfImpact});}hits.sort((a,b)=>a.toi-b.toi||a.actor.localeCompare(b.actor));if(key==='physicsRaycast'){if(!hits.length)return output(emptyHit());const {toi,...value}=hits[0];return output(value,toi);}return output(hits.map(({toi,...h})=>h));
     }
     if(args.rotation&&!vector(args.rotation))throw Error('질의 회전을 확인하세요.');
     const position=checked(args.center||args.point||args.start,'질의'),rotation=dim===2?(args.rotation?.[2]??0)*rad:qValue(new Quaternion().setFromEuler(new Euler(...(args.rotation||[0,0,0]).map(v=>v*rad))));

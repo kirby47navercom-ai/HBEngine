@@ -1558,7 +1558,7 @@ export function nativeEditorSession(bridge) {
       return {closed:!!view};
     },
     'asset.preview': async params=>{
-      const {width,height,node,surface='native-preview',path:file}=params;
+      const {width,height,node,surface='native-preview',path:file}=params,shape=['sphere','cube','plane','cylinder','capsule'].includes(params.shape)?params.shape:'sphere';
       if(!bridge||![width,height].every(value=>Number.isInteger(value)&&value>0&&value<=4096))throw Error('3D 미리보기 연결이나 크기를 확인하세요.');
       const doc=targetDocument(file);
       if(!previewKind(doc))throw Error('미리 볼 에셋을 선택하세요.');
@@ -1568,10 +1568,10 @@ export function nativeEditorSession(bridge) {
         preview={view:(await import('./native-editor-viewport.mjs')).nativeEditorViewport(bridge,surface)};
         previews.set(surface,preview);
       }
-      if(preview.data!==doc.data||preview.node!==node){
+      if(preview.data!==doc.data||preview.node!==node||preview.shape!==shape){
         const asset=async name=>name===doc.path?doc.data:JSON.parse((await projectBytes(project(),name)).toString('utf8').replace(/^\uFEFF/,''));
         const worldAsset=Object.hasOwn(worldAssetTypes,doc.kind);
-        const actor=createPlacedObject(doc.kind==='blueprint'?'cube':doc.kind==='modelimport'||worldAsset?'empty':'sphere',{id:'asset-preview'});
+        const actor=createPlacedObject(doc.kind==='blueprint'?'cube':doc.kind==='modelimport'||worldAsset?'empty':shape,{id:'asset-preview'});
         let data=doc.data;
         if(doc.kind==='blueprint'){
           const root=await createBlueprintResolver(asset,async name=>(await projectBytes(project(),name)).toString('utf8'))(doc.path);
@@ -1594,7 +1594,7 @@ export function nativeEditorSession(bridge) {
           objects.push(ground);
         }
         preview.scene={objects,surface:defaultSurface,environment:defaultEnvironment,assetDraft:{path:doc.path,data,kind:worldAsset?doc.kind:undefined}};
-        preview.data=doc.data;preview.node=node;
+        preview.data=doc.data;preview.node=node;preview.shape=shape;
       }
       return preview.view.draw(preview.scene,project(),params.command==='focus'?{...params,id:'asset-preview'}:params);
     },
@@ -1991,7 +1991,7 @@ export function nativeEditorSession(bridge) {
       if(doc.data.objects[Number(parts[1])]?.locked)throw Error('오브젝트 잠금을 해제하세요.');
       const pointer='/'+[...parts,key].map(pointerPart).join('/');change(doc,patchAsset(doc.kind,doc.data,[{op:'replace',path:pointer,value:structuredClone(defaults[key])}]),'edit:'+pointer+':'+Date.now()+Math.random());return response(doc);
     },
-    'asset.fieldEdit': async ({path,parts=[],key,value,expectedRevision,merge=false}) => {
+    'asset.fieldEdit': async ({path,parts=[],key,value,expectedRevision,merge=false,others=[]}) => {
       const doc = targetDocument(path);
       await check(doc,expectedRevision);
       if(doc.kind==='scene'&&parts[0]==='objects'&&doc.data.objects[Number(parts[1])]?.locked)throw Error('오브젝트 잠금을 해제하세요.');
@@ -2011,8 +2011,14 @@ export function nativeEditorSession(bridge) {
         next.levels.forEach((level,index)=>level.threshold=value==='distance'?.001+index*20:1/(index+1));
         change(doc,next);return response(doc);
       }
-      const pointer = '/'+[...parts,key].map(pointerPart).join('/');
-      change(doc,patchAsset(doc.kind,doc.data,[{op:'replace',path:pointer,value}]),merge?'drag:'+pointer:'edit:'+pointer+':'+Date.now()+Math.random());
+      const pointer = '/'+[...parts,key].map(pointerPart).join('/'),ops=[{op:'replace',path:pointer,value}];
+      // Multi-select: the same field on the other selected objects (components matched by type), one undo step.
+      if(doc.kind==='scene'&&parts[0]==='objects'&&Array.isArray(others)&&others.length){const objects=doc.data.objects,source=objects[Number(parts[1])],component=parts[2]==='components'?source?.components?.[Number(parts[3])]:null;
+        for(const id of others.slice(0,1000)){const index=objects.findIndex(o=>o.id===id);if(index<0||index===Number(parts[1])||objects[index].locked)continue;const next=[...parts];next[1]=String(index);
+          if(component){const at=(objects[index].components||[]).findIndex(c=>c.type===component.type);if(at<0)continue;next[3]=String(at);}
+          let owner=doc.data;for(const part of next)owner=owner?.[part];if(!owner||typeof owner!=='object'||!Object.hasOwn(owner,key)&&!fieldsFor(doc,next).some(row=>row.key===key))continue;
+          ops.push({op:Object.hasOwn(owner,key)?'replace':'add',path:'/'+[...next,key].map(pointerPart).join('/'),value});}}
+      change(doc,patchAsset(doc.kind,doc.data,ops),merge?'drag:'+pointer:'edit:'+pointer+':'+Date.now()+Math.random());
       return response(doc);
     },
     // Console r.* commands: set one scene runtime setting, adding keys older scenes do not have yet.
@@ -2022,6 +2028,14 @@ export function nativeEditorSession(bridge) {
       const runtime={...defaultRuntimeSettings,...doc.data.runtime,[key]:value};
       if(!validRuntimeSettings(runtime))throw Error('설정 값의 범위를 확인하세요.');
       change(doc,{...structuredClone(doc.data),runtime},'edit:runtime:'+key+':'+Date.now());return response(doc);
+    },
+    // Find References: nodes in every graph of this blueprint that use the same variable, function, macro or custom event.
+    'graph.references': async ({path,view='event',id})=>{
+      const doc=targetDocument(path);if(doc.kind!=='blueprint')throw Error('블루프린트를 여세요.');const data=structuredClone(doc.data),node=graphFor(doc,data,view).nodes.find(n=>n.id===id);if(!node)throw Error('노드를 선택하세요.');
+      const symbol=n=>n.variableId?'v:'+n.variableId:n.definitionId?'d:'+n.definitionId:n.symbolId?'s:'+n.symbolId:['customEvent','callCustomEvent'].includes(n.key)?'e:'+(n.options?.eventName||n.title||''):n.key&&!['print','branch','sequence','reroute'].includes(n.key)?'k:'+n.key:null;
+      const want=symbol(node);if(!want)return {results:[]};const results=[];
+      for(const [graphId,label] of names(data)){let graph;try{graph=graphFor(doc,structuredClone(doc.data),graphId);}catch{continue;}for(const n of graph.nodes)if(symbol(n)===want&&!(graphId===view&&n.id===id)&&results.length<200)results.push({view:graphId,graph:String(label??graphId),id:n.id,title:nodeTitle(n,graph)});}
+      return {results};
     },
     'graph.read': async ({path,view='event'})=>{
       const doc=targetDocument(path);await loadGraphNative(doc);return graphModel(doc,view);
