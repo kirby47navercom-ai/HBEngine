@@ -149,7 +149,7 @@ class EditorScenePanel {
             if(message==WM_KEYDOWN&&w=='F'){post({{"command","focus"}});return 0;}
             if(message==WM_KEYDOWN&&!button){
                 const bool ctrl=(GetKeyState(VK_CONTROL)&0x8000)!=0;
-                const char* shortcut=w==VK_DELETE?"delete":ctrl&&w=='D'?"duplicate":ctrl&&w=='C'?"copy":ctrl&&w=='V'?"paste":nullptr;
+                const char* shortcut=w==VK_DELETE?"delete":ctrl&&w=='D'?"duplicate":ctrl&&w=='C'?"copy":ctrl&&w=='X'?"cut":ctrl&&w=='V'?"paste":nullptr;
                 if(shortcut){post({{"command","shortcut"},{"key",shortcut}});return 0;}
                 // Arrow / Page keys nudge the selection (the shell picks the axis from the view and the step from snap).
                 const char* nudge=w==VK_LEFT?"left":w==VK_RIGHT?"right":w==VK_UP?"up":w==VK_DOWN?"down":w==VK_PRIOR?"raise":w==VK_NEXT?"lower":nullptr;

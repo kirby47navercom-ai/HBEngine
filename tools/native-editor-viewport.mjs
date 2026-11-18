@@ -304,6 +304,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
             editSceneTransform(draft,content.objects,translation?{mode:'translate',value:translation}:{mode:tool,...sceneTransform});
             if(translation&&snap?.grid>0)draft.position=draft.position.map(v=>round(v,snap.grid));
             if(!translation&&tool==='rotate'&&snap?.angle>0)draft.rotation=draft.rotation.map((v,i)=>i===sceneTransform.axis?round(v,snap.angle):v);
+            if(!translation&&tool==='scale'&&snap?.scale>0)draft.scale=draft.scale.map(v=>Math.max(snap.scale,round(v,snap.scale)));
             previewTransform={group,actor};
             transform(draft,group);group.updateWorldMatrix(false,true);
             preview={id:actor.id,position:draft.position,rotation:draft.rotation,scale:draft.scale};

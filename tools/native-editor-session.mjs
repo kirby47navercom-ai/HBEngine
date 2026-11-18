@@ -24,7 +24,7 @@ import {nativeEntries, nativeSourceReference, readNativeHeader} from '../prototy
 import {assetKind} from './project-service.mjs';
 import {modelSource} from './model-import-state.mjs';
 import {modelImportDefaults,modelUnitChoices,modelUpChoices,remapModelOverrides} from '../prototype/model-import.js';
-import {createProject, readProjectManifest, recentProjects, rememberProject} from './project-manifest.mjs';
+import {createProject, readProjectManifest, recentProjects, rememberProject, clearRecentProjects} from './project-manifest.mjs';
 import {createPlacedObject,placementCatalog} from '../prototype/placement-catalog.js';
 import {addSceneComponent,makeSceneComponent,componentDefaults,componentDefinitions,componentPropertyVisible,defaultsForObject,installBlueprintComponents,objectComponents} from '../prototype/scene-components.js';
 import {addMobileControls,addWidget,duplicateWidget,removeWidget,reparentWidget,setWidgetAnchorPreset,transformWidgetSlot,widgetContainers,widgetTypes} from '../prototype/ui-assets.js';
@@ -594,6 +594,7 @@ export function nativeEditorSession(bridge) {
     'project.open': ({file}) => openProject(() => readProjectManifest(file)),
     'project.create': ({name,directory,template}) => openProject(() => createProject(name,directory,template)),
     'project.recent': () => recentProjects(),
+  'project.recentClear': async () => {await clearRecentProjects();return {cleared:true};},
     'project.recovery': params=>project().assetRecovery(params),
     'project.recover': params=>project().resolveRecovery(params),
     // Project settings: one game config asset for the whole project (scenes with their own game config override it).
@@ -1400,6 +1401,7 @@ export function nativeEditorSession(bridge) {
         const round=(v,step)=>Number((Math.round(v/step)*step).toFixed(6));
         if(mode==='translate'&&Number.isFinite(snap.grid)&&snap.grid>0)object.position=object.position.map(v=>round(v,snap.grid));
         if(mode==='rotate'&&Number.isFinite(snap.angle)&&snap.angle>0&&Number.isInteger(axis))object.rotation=object.rotation.map((v,i)=>i===axis?round(v,snap.angle):v);
+        if(mode==='scale'&&Number.isFinite(snap.scale)&&snap.scale>0)object.scale=object.scale.map(v=>Math.max(snap.scale,round(v,snap.scale)));
       };
       const duplicateOffset=Array.isArray(value)&&value.length===3&&value.every(Number.isFinite)?value:[.5,0,.5]; // duplicate value: offset ([0,0,0] for Alt+drag copies)
       const roots=pasted=>{const top=pasted.filter(o=>!o.parent);selections=top.map(o=>o.id);return selections[0]||'';};

@@ -49,6 +49,7 @@ async function writeRecent(projects){
   try{await fs.writeFile(temp,JSON.stringify({version:1,projects:projects.slice(0,20)},null,2)+'\n',{flag:'wx'});await fs.rename(temp,file);}finally{await fs.unlink(temp).catch(()=>{});}
 }
 let recentQueue=Promise.resolve();
+export async function clearRecentProjects(){const task=recentQueue.then(()=>writeRecent([]));recentQueue=task.catch(()=>{});return task;}
 export async function rememberProject(record){const task=recentQueue.then(async()=>{const projects=await readRecent(),next={name:record.manifest.name,file:record.file};await writeRecent([next,...projects.filter(p=>path.resolve(p.file)!==record.file)]);});recentQueue=task.catch(()=>{});return task;}
 export async function recentProjects(defaultProject=null){
   await recentQueue;const records=await readRecent(),projects=[];for(const item of records){try{const record=await readProjectManifest(item.file);if(!projects.some(p=>p.file===record.file))projects.push({name:record.manifest.name,file:record.file});}catch{/* Missing projects remain untouched; they no longer appear in the hub. */}}

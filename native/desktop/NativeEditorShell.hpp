@@ -57,7 +57,7 @@ class NativeEditorShell {
     static double speedScale(int speed){static const double scales[8]={.1,.25,.5,1,2,4,8,16};return scales[std::clamp(speed,1,8)-1];}
     std::vector<std::string> closedTabs;int tabMenuIndex=-1; // Recently closed document paths (newest last); tab the tab menu was opened on.
     bool openLast=true; // Open the most recent project when the editor starts without one.
-    bool snapOn=false;double snapGrid=.5,snapAngle=15;HMENU snapMenu=nullptr;HWND hierarchySearch=nullptr,detailsSearch=nullptr;std::string hierarchyQuery;
+    bool snapOn=false;double snapGrid=.5,snapAngle=15,snapScale=.25;HMENU snapMenu=nullptr;HWND hierarchySearch=nullptr,detailsSearch=nullptr;std::string hierarchyQuery;
     Json selectedIds()const{Json out=Json::array();if(!sceneSelection.empty())out.push_back(sceneSelection);for(const auto& id:sceneExtra)out.push_back(id);return out;}
     static void useLightTheme(){
         lightTheme=true;EditorPanelBase::Theme::active()=EditorPanelBase::Theme::light();
@@ -233,7 +233,7 @@ class NativeEditorShell {
     // Help sits outside the 100–199 command block and the recent-project range.
     static constexpr Command ShowHelp=static_cast<Command>(900),ShowShortcuts=static_cast<Command>(901),
         DeleteAsset=static_cast<Command>(902),ScaleAuto=static_cast<Command>(910),Scale100=static_cast<Command>(911),Scale125=static_cast<Command>(912),Scale150=static_cast<Command>(913),Scale175=static_cast<Command>(914),Scale200=static_cast<Command>(915),CopyActor=static_cast<Command>(907),PasteActor=static_cast<Command>(908),MoveAsset=static_cast<Command>(909),SnapToggle=static_cast<Command>(916),SnapGridFirst=static_cast<Command>(917),SnapGridLast=static_cast<Command>(921),SnapAngleFirst=static_cast<Command>(922),SnapAngleLast=static_cast<Command>(925),HierarchySearch=static_cast<Command>(930),DockTabs=static_cast<Command>(931),CreateItem=static_cast<Command>(932),FindAsset=static_cast<Command>(933),ToolMove=static_cast<Command>(934),ToolRotate=static_cast<Command>(935),ToolScale=static_cast<Command>(936),QuickCube=static_cast<Command>(937),QuickSphere=static_cast<Command>(938),QuickLight=static_cast<Command>(939),RenameActor=static_cast<Command>(940),DetachActor=static_cast<Command>(941),OpenAsset=static_cast<Command>(942),RevealAsset=static_cast<Command>(943),CopyAssetPath=static_cast<Command>(944),PrefabApply=static_cast<Command>(903),PrefabRevert=static_cast<Command>(904),PrefabRefresh=static_cast<Command>(905),PrefabUnpack=static_cast<Command>(906);
-    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),ShowSource=static_cast<Command>(983),RebindShortcut=static_cast<Command>(984),ResetShortcuts=static_cast<Command>(985),CollisionToggle=static_cast<Command>(986),SelectAllActors=static_cast<Command>(991),SaveAllDocuments=static_cast<Command>(994),ResetPosition=static_cast<Command>(996),DetailsSearch=static_cast<Command>(1001),DuplicateAsset=static_cast<Command>(1002),HideSelected=static_cast<Command>(1003),ShowAllHidden=static_cast<Command>(1004),IsolateSelected=static_cast<Command>(1005),BusyCancel=static_cast<Command>(1006),CollisionLayers=static_cast<Command>(1007),PlayFromHere=static_cast<Command>(1008),FrameAll=static_cast<Command>(1009),CopyTransform=static_cast<Command>(1011),PasteTransform=static_cast<Command>(1012),ShowReferences=static_cast<Command>(1013),OpenLastToggle=static_cast<Command>(1014),CloseOtherTabs=static_cast<Command>(1015),CloseTabsRight=static_cast<Command>(1016),CloseAllTabs=static_cast<Command>(1017),ReopenClosedTab=static_cast<Command>(1018),MaximizeViewport=static_cast<Command>(1027),ViewportScreenshot=static_cast<Command>(1028),ShowAbout=static_cast<Command>(1029),LightThemeToggle=static_cast<Command>(1030),LanguageKorean=static_cast<Command>(1031),LanguageEnglish=static_cast<Command>(1032),ShowTabList=static_cast<Command>(1061),CollapseToFunction=static_cast<Command>(1062),SimulateScene=static_cast<Command>(1068),Autosave30=static_cast<Command>(1069),Autosave60=static_cast<Command>(1070),Autosave300=static_cast<Command>(1071),AutosaveOff=static_cast<Command>(1072),CollapseToMacro=static_cast<Command>(1063),AlignNodesLeft=static_cast<Command>(1064),AlignNodesTop=static_cast<Command>(1065),DistributeNodesH=static_cast<Command>(1066),DistributeNodesV=static_cast<Command>(1067),MoveToFolder=static_cast<Command>(1033),RemoveFromFolder=static_cast<Command>(1034),ExpandAllOutliner=static_cast<Command>(1035),CollapseAllOutliner=static_cast<Command>(1036),SelectSimilar=static_cast<Command>(1037),SnapSelectionToGrid=static_cast<Command>(1038),BatchRename=static_cast<Command>(1039),FavoriteToggle=static_cast<Command>(1040),ReplaceWithAsset=static_cast<Command>(1041),FindInBlueprints=static_cast<Command>(1042),PlaySize720=static_cast<Command>(1043),PlaySize1080=static_cast<Command>(1044),PlaySize540=static_cast<Command>(1045),PlaySize360=static_cast<Command>(1046),MeasureSelection=static_cast<Command>(1047),NextTab=static_cast<Command>(1048),PreviousTab=static_cast<Command>(1049),BrowseToAsset=static_cast<Command>(1050),EditActorAsset=static_cast<Command>(1051),EditorFullscreen=static_cast<Command>(1052),FocusSearch=static_cast<Command>(1053),RefreshContent=static_cast<Command>(1054),GridSmaller=static_cast<Command>(1055),GridLarger=static_cast<Command>(1056),ViewPerspective=static_cast<Command>(1057),ViewFront=static_cast<Command>(1058),ViewTop=static_cast<Command>(1059),ViewSide=static_cast<Command>(1060),SortByName=static_cast<Command>(1019),SortByKind=static_cast<Command>(1020),SortByModified=static_cast<Command>(1021),SortBySize=static_cast<Command>(1022),TileSmall=static_cast<Command>(1023),TileMedium=static_cast<Command>(1024),TileLarge=static_cast<Command>(1025),TileHuge=static_cast<Command>(1026),GroupSelection=static_cast<Command>(1010),ResetRotation=static_cast<Command>(997),ResetScale=static_cast<Command>(998),SaveDocumentAs=static_cast<Command>(995),DeselectActors=static_cast<Command>(992),InvertSelection=static_cast<Command>(993),GenerateLods=static_cast<Command>(987),StreamingToggle=static_cast<Command>(988),ParticlePlayToggle=static_cast<Command>(989),ParticleRestart=static_cast<Command>(990),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
+    static constexpr Command ToggleFps=static_cast<Command>(950),CameraSpeedFirst=static_cast<Command>(951),CameraSpeedLast=static_cast<Command>(958),ConsoleInput=static_cast<Command>(960),GameViewToggle=static_cast<Command>(961),GridToggle=static_cast<Command>(962),ViewLit=static_cast<Command>(963),ViewUnlit=static_cast<Command>(964),ViewWireframe=static_cast<Command>(965),QuadToggle=static_cast<Command>(966),SpaceToggle=static_cast<Command>(967),SurfaceSnapToggle=static_cast<Command>(968),DropToFloor=static_cast<Command>(969),PilotToggle=static_cast<Command>(970),ShowHistory=static_cast<Command>(971),ShowProfiler=static_cast<Command>(977),ProjectSettings=static_cast<Command>(974),PivotToggle=static_cast<Command>(975),CommandPalette=static_cast<Command>(976),BakeLighting=static_cast<Command>(978),NavigationToggle=static_cast<Command>(979),BakeNavMesh=static_cast<Command>(980),SaveNamedLayout=static_cast<Command>(981),ShowSource=static_cast<Command>(983),RebindShortcut=static_cast<Command>(984),ResetShortcuts=static_cast<Command>(985),CollisionToggle=static_cast<Command>(986),SelectAllActors=static_cast<Command>(991),SaveAllDocuments=static_cast<Command>(994),ResetPosition=static_cast<Command>(996),DetailsSearch=static_cast<Command>(1001),DuplicateAsset=static_cast<Command>(1002),HideSelected=static_cast<Command>(1003),ShowAllHidden=static_cast<Command>(1004),IsolateSelected=static_cast<Command>(1005),BusyCancel=static_cast<Command>(1006),CollisionLayers=static_cast<Command>(1007),PlayFromHere=static_cast<Command>(1008),FrameAll=static_cast<Command>(1009),CopyTransform=static_cast<Command>(1011),PasteTransform=static_cast<Command>(1012),ShowReferences=static_cast<Command>(1013),OpenLastToggle=static_cast<Command>(1014),CloseOtherTabs=static_cast<Command>(1015),CloseTabsRight=static_cast<Command>(1016),CloseAllTabs=static_cast<Command>(1017),ReopenClosedTab=static_cast<Command>(1018),MaximizeViewport=static_cast<Command>(1027),ViewportScreenshot=static_cast<Command>(1028),ShowAbout=static_cast<Command>(1029),LightThemeToggle=static_cast<Command>(1030),LanguageKorean=static_cast<Command>(1031),LanguageEnglish=static_cast<Command>(1032),ShowTabList=static_cast<Command>(1061),CollapseToFunction=static_cast<Command>(1062),SimulateScene=static_cast<Command>(1068),Autosave30=static_cast<Command>(1069),Autosave60=static_cast<Command>(1070),Autosave300=static_cast<Command>(1071),AutosaveOff=static_cast<Command>(1072),SnapScaleFirst=static_cast<Command>(1073),SnapScaleLast=static_cast<Command>(1076),ShowPanelFirst=static_cast<Command>(1077),ShowPanelLast=static_cast<Command>(1083),CutActor=static_cast<Command>(1085),ClearRecent=static_cast<Command>(1086),OpenDocsFirst=static_cast<Command>(1087),OpenDocsLast=static_cast<Command>(1089),ExitEditor=static_cast<Command>(1090),CollapseToMacro=static_cast<Command>(1063),AlignNodesLeft=static_cast<Command>(1064),AlignNodesTop=static_cast<Command>(1065),DistributeNodesH=static_cast<Command>(1066),DistributeNodesV=static_cast<Command>(1067),MoveToFolder=static_cast<Command>(1033),RemoveFromFolder=static_cast<Command>(1034),ExpandAllOutliner=static_cast<Command>(1035),CollapseAllOutliner=static_cast<Command>(1036),SelectSimilar=static_cast<Command>(1037),SnapSelectionToGrid=static_cast<Command>(1038),BatchRename=static_cast<Command>(1039),FavoriteToggle=static_cast<Command>(1040),ReplaceWithAsset=static_cast<Command>(1041),FindInBlueprints=static_cast<Command>(1042),PlaySize720=static_cast<Command>(1043),PlaySize1080=static_cast<Command>(1044),PlaySize540=static_cast<Command>(1045),PlaySize360=static_cast<Command>(1046),MeasureSelection=static_cast<Command>(1047),NextTab=static_cast<Command>(1048),PreviousTab=static_cast<Command>(1049),BrowseToAsset=static_cast<Command>(1050),EditActorAsset=static_cast<Command>(1051),EditorFullscreen=static_cast<Command>(1052),FocusSearch=static_cast<Command>(1053),RefreshContent=static_cast<Command>(1054),GridSmaller=static_cast<Command>(1055),GridLarger=static_cast<Command>(1056),ViewPerspective=static_cast<Command>(1057),ViewFront=static_cast<Command>(1058),ViewTop=static_cast<Command>(1059),ViewSide=static_cast<Command>(1060),SortByName=static_cast<Command>(1019),SortByKind=static_cast<Command>(1020),SortByModified=static_cast<Command>(1021),SortBySize=static_cast<Command>(1022),TileSmall=static_cast<Command>(1023),TileMedium=static_cast<Command>(1024),TileLarge=static_cast<Command>(1025),TileHuge=static_cast<Command>(1026),GroupSelection=static_cast<Command>(1010),ResetRotation=static_cast<Command>(997),ResetScale=static_cast<Command>(998),SaveDocumentAs=static_cast<Command>(995),DeselectActors=static_cast<Command>(992),InvertSelection=static_cast<Command>(993),GenerateLods=static_cast<Command>(987),StreamingToggle=static_cast<Command>(988),ParticlePlayToggle=static_cast<Command>(989),ParticleRestart=static_cast<Command>(990),LoadNamedLayout=static_cast<Command>(982),PauseGame=static_cast<Command>(972),StepGameFrame=static_cast<Command>(973);
     HWND busyBar=nullptr,busyCancel=nullptr;Command busyCommand=Command(0);int busyJobs=0;
     static constexpr Command MeshAtlasStart=static_cast<Command>(149),MeshAtlasCancel=static_cast<Command>(148);
     static constexpr UINT redockMessage=WM_APP+41;
@@ -385,7 +385,7 @@ class NativeEditorShell {
                 if(event.at("event")=="key"&&event.value("ctrl",false)){
                     const auto key=event.value("key",std::string());
                     if(key=="s")perform(Save);else if(key=="z")perform(Undo);else if(key=="y")perform(Redo);
-                    else if(key=="c"||key=="v"||key=="d")graphClipboardAction(key,graph,view,graphSelection,document,nullptr);
+                    else if(key=="c"||key=="v"||key=="d"||key=="x")graphClipboardAction(key,graph,view,graphSelection,document,nullptr);
                 }
             }catch(const std::exception& error){report(error);refreshGraph();}
         });
@@ -480,7 +480,7 @@ class NativeEditorShell {
                     if(key=="f")perform(FocusActor);
                     if(key=="F2")perform(RenameActor);
                     if(key=="ArrowUp"||key=="ArrowDown"||key=="Home"||key=="End"||key=="ArrowLeft"||key=="ArrowRight"){outlinerKey(key,event.value("shift",false));return;}
-                    if(event.value("ctrl",false)){if(key=="c")perform(CopyActor);else if(key=="v")perform(PasteActor);else if(key=="d")perform(DuplicateActor);}
+                    if(event.value("ctrl",false)){if(key=="x")perform(CutActor);else if(key=="c")perform(CopyActor);else if(key=="v")perform(PasteActor);else if(key=="d")perform(DuplicateActor);}
                 }
             }catch(const std::exception& error){report(error);}
         });
@@ -577,7 +577,7 @@ class NativeEditorShell {
         // Dark popup menus (uxtheme ordinals 135 SetPreferredAppMode / 136 FlushMenuThemes; skipped where unavailable).
         if(const HMODULE ux=LoadLibraryExW(L"uxtheme.dll",nullptr,LOAD_LIBRARY_SEARCH_SYSTEM32)){using Mode=int(WINAPI*)(int);using Flush=void(WINAPI*)();if(const auto set=reinterpret_cast<Mode>(reinterpret_cast<void*>(GetProcAddress(ux,MAKEINTRESOURCEA(135)))))set(1);if(const auto flush=reinterpret_cast<Flush>(reinterpret_cast<void*>(GetProcAddress(ux,MAKEINTRESOURCEA(136)))))flush();}
         const HMENU main=CreateMenu(),file=CreatePopupMenu(),edit=CreatePopupMenu(),viewMenu=CreatePopupMenu(),sceneMenu=CreatePopupMenu(),buildMenu=CreatePopupMenu(),helpMenu=CreatePopupMenu();
-        AppendMenuW(helpMenu,MF_STRING,ShowHelp,L"시작하기");
+        AppendMenuW(helpMenu,MF_STRING,ShowHelp,L"시작하기");AppendMenuW(helpMenu,MF_STRING,OpenDocsFirst,L"편집기 문서");AppendMenuW(helpMenu,MF_STRING,OpenDocsFirst+1,L"노드 목록 문서");AppendMenuW(helpMenu,MF_STRING,OpenDocsLast,L"블루프린트 사양 문서");
         AppendMenuW(helpMenu,MF_STRING,ShowShortcuts,L"단축키 목록\tF1");AppendMenuW(helpMenu,MF_STRING,RebindShortcut,L"단축키 지정…");AppendMenuW(helpMenu,MF_STRING,ResetShortcuts,L"지정한 단축키 모두 지우기");AppendMenuW(helpMenu,MF_SEPARATOR,0,nullptr);AppendMenuW(helpMenu,MF_STRING,ShowAbout,L"HBEngine 정보");
         AppendMenuW(file,MF_STRING,OpenProject,L"프로젝트 열기\tCtrl+O");
         AppendMenuW(file,MF_STRING,NewProject,L"새 프로젝트");
@@ -593,7 +593,7 @@ class NativeEditorShell {
         AppendMenuW(file,MF_STRING,RenameAsset,L"선택한 에셋 이름 바꾸기\tF2");
         AppendMenuW(file,MF_STRING,DeleteAsset,L"선택한 에셋 삭제 (휴지통)\tDelete");
         AppendMenuW(file,MF_STRING,MoveAsset,L"선택한 에셋을 다른 폴더로 이동");
-        AppendMenuW(file,MF_STRING,Save,L"문서 저장\tCtrl+S");AppendMenuW(file,MF_STRING,SaveDocumentAs,L"다른 이름으로 저장…");AppendMenuW(file,MF_STRING,SaveAllDocuments,L"모두 저장\tCtrl+Shift+S");
+        AppendMenuW(file,MF_STRING,Save,L"문서 저장\tCtrl+S");AppendMenuW(file,MF_STRING,SaveDocumentAs,L"다른 이름으로 저장…");AppendMenuW(file,MF_STRING,SaveAllDocuments,L"모두 저장\tCtrl+Shift+S");AppendMenuW(file,MF_SEPARATOR,0,nullptr);AppendMenuW(file,MF_STRING,ExitEditor,L"끝내기\tAlt+F4");
         AppendMenuW(file,MF_STRING,CloseDocument,L"문서 닫기\tCtrl+W");AppendMenuW(file,MF_STRING,ReopenClosedTab,L"닫은 탭 다시 열기\tCtrl+Shift+T");
         AppendMenuW(file,MF_STRING,Recovery,L"저장 충돌 복구");
         AppendMenuW(edit,MF_STRING,Undo,L"되돌리기\tCtrl+Z");
@@ -673,13 +673,15 @@ class NativeEditorShell {
         AppendMenuW(sceneMenu,MF_STRING,AddComponent,L"컴포넌트 추가");AppendMenuW(sceneMenu,MF_STRING,ParticlePlayToggle,L"파티클 미리보기 재생 / 멈춤\tCtrl+Shift+Space");AppendMenuW(sceneMenu,MF_STRING,ParticleRestart,L"파티클 미리보기 다시 시작\tCtrl+Shift+R");AppendMenuW(sceneMenu,MF_STRING,BakeLighting,L"조명 빌드 (간접광 베이크)");AppendMenuW(sceneMenu,MF_STRING,BakeNavMesh,L"내비 메시 굽기… (내비 메시 문서)");AppendMenuW(sceneMenu,MF_STRING,GenerateLods,L"LOD 자동 생성… (LOD 문서)");
         AppendMenuW(sceneMenu,MF_STRING,DeleteActor,L"선택 오브젝트 삭제\tDelete");
         AppendMenuW(sceneMenu,MF_STRING,DuplicateActor,L"선택 오브젝트 복제\tCtrl+D");
-        AppendMenuW(sceneMenu,MF_STRING,CopyActor,L"선택 오브젝트 복사\tCtrl+C");
+        AppendMenuW(sceneMenu,MF_STRING,CutActor,L"선택 오브젝트 잘라내기\tCtrl+X");AppendMenuW(sceneMenu,MF_STRING,CopyActor,L"선택 오브젝트 복사\tCtrl+C");
         AppendMenuW(sceneMenu,MF_STRING,PasteActor,L"오브젝트 붙여넣기\tCtrl+V");
         snapMenu=CreatePopupMenu();
         AppendMenuW(snapMenu,MF_STRING,SnapToggle,L"스냅 켜기");AppendMenuW(snapMenu,MF_SEPARATOR,0,nullptr);
         for(const auto& [id,text]:std::initializer_list<std::pair<Command,const wchar_t*>>{{SnapGridFirst,L"이동 격자 0.1"},{Command(SnapGridFirst+1),L"이동 격자 0.25"},{Command(SnapGridFirst+2),L"이동 격자 0.5"},{Command(SnapGridFirst+3),L"이동 격자 1"},{SnapGridLast,L"이동 격자 2"}})AppendMenuW(snapMenu,MF_STRING,id,text);
         AppendMenuW(snapMenu,MF_SEPARATOR,0,nullptr);
         for(const auto& [id,text]:std::initializer_list<std::pair<Command,const wchar_t*>>{{SnapAngleFirst,L"회전 5°"},{Command(SnapAngleFirst+1),L"회전 15°"},{Command(SnapAngleFirst+2),L"회전 45°"},{SnapAngleLast,L"회전 90°"}})AppendMenuW(snapMenu,MF_STRING,id,text);
+        AppendMenuW(snapMenu,MF_SEPARATOR,0,nullptr);
+        for(const auto& [id,text]:std::initializer_list<std::pair<Command,const wchar_t*>>{{SnapScaleFirst,L"크기 0.1"},{Command(SnapScaleFirst+1),L"크기 0.25"},{Command(SnapScaleFirst+2),L"크기 0.5"},{SnapScaleLast,L"크기 1"}})AppendMenuW(snapMenu,MF_STRING,id,text);
         AppendMenuW(sceneMenu,MF_POPUP,UINT_PTR(snapMenu),L"스냅");
         const HMENU prefabMenu=CreatePopupMenu();
         AppendMenuW(prefabMenu,MF_STRING,PrefabApply,L"변경 사항을 프리팹에 모두 적용");
@@ -710,7 +712,7 @@ class NativeEditorShell {
         AppendMenuW(buildMenu,MF_STRING,BuildGame,L"패키징");
         AppendMenuW(buildMenu,MF_STRING,RunBuild,L"마지막 Windows 빌드 실행");
         AppendMenuW(buildMenu,MF_STRING,CancelBuild,L"현재 빌드 취소");
-        AppendMenuW(main,MF_POPUP,UINT_PTR(file),L"파일");AppendMenuW(main,MF_POPUP,UINT_PTR(edit),L"편집");AppendMenuW(main,MF_POPUP,UINT_PTR(sceneMenu),L"장면");AppendMenuW(main,MF_POPUP,UINT_PTR(viewMenu),L"보기");AppendMenuW(main,MF_POPUP,UINT_PTR(buildMenu),L"빌드");AppendMenuW(main,MF_POPUP,UINT_PTR(helpMenu),L"도움말");hb::editor_english::translateMenu(main);SetMenu(window,main);
+        AppendMenuW(main,MF_POPUP,UINT_PTR(file),L"파일");AppendMenuW(main,MF_POPUP,UINT_PTR(edit),L"편집");AppendMenuW(main,MF_POPUP,UINT_PTR(sceneMenu),L"장면");AppendMenuW(main,MF_POPUP,UINT_PTR(viewMenu),L"보기");{HMENU windows=CreatePopupMenu();static const wchar_t* names[]={L"아웃라이너",L"디테일",L"콘텐츠 브라우저",L"출력 로그",L"실행 취소 기록",L"프로파일러",L"소스 제어"};for(int i=0;i<7;i++)AppendMenuW(windows,MF_STRING,ShowPanelFirst+i,names[i]);AppendMenuW(windows,MF_SEPARATOR,0,nullptr);AppendMenuW(windows,MF_STRING,ResetLayout,L"기본 배치로 되돌리기");AppendMenuW(main,MF_POPUP,UINT_PTR(windows),L"창");}AppendMenuW(main,MF_POPUP,UINT_PTR(buildMenu),L"빌드");AppendMenuW(main,MF_POPUP,UINT_PTR(helpMenu),L"도움말");hb::editor_english::translateMenu(main);SetMenu(window,main);
     }
     static const wchar_t* helpText(bool start){
         return start?
@@ -882,7 +884,7 @@ class NativeEditorShell {
     }
     void sceneContextMenu(POINT at){
         if(sceneSelection.empty()){contextMenu({{AddActor,L"오브젝트 추가…"},{PasteActor,L"붙여넣기\tCtrl+V"},{Command(0),nullptr},{ExpandAllOutliner,L"모두 펼치기"},{CollapseAllOutliner,L"모두 접기"}},at);return;}
-        contextMenu({{RenameActor,L"이름 바꾸기\tF2"},{CopyActor,L"복사\tCtrl+C"},{PasteActor,L"붙여넣기\tCtrl+V"},{DuplicateActor,L"복제\tCtrl+D"},{DeleteActor,L"삭제\tDelete"},{Command(0),nullptr},
+        contextMenu({{RenameActor,L"이름 바꾸기\tF2"},{CutActor,L"잘라내기\tCtrl+X"},{CopyActor,L"복사\tCtrl+C"},{PasteActor,L"붙여넣기\tCtrl+V"},{DuplicateActor,L"복제\tCtrl+D"},{DeleteActor,L"삭제\tDelete"},{Command(0),nullptr},
             {FocusActor,L"선택 항목에 초점\tF"},{DropToFloor,L"바닥에 붙이기\tEnd"},{PilotToggle,L"이 오브젝트 조종\tCtrl+Shift+P"},{DetachActor,L"부모에서 분리"},{AddComponent,L"컴포넌트 추가…"},{Command(0),nullptr},
             {ReplaceWithAsset,L"선택한 에셋으로 교체"},{MeasureSelection,L"선택 거리 재기"},{BatchRename,L"이름 일괄 바꾸기…"},{MoveToFolder,L"폴더로 옮기기…"},{RemoveFromFolder,L"폴더에서 빼기"},{SelectSimilar,L"같은 종류·에셋 모두 선택"},{SnapSelectionToGrid,L"격자에 맞추기"},{ExpandAllOutliner,L"모두 펼치기"},{CollapseAllOutliner,L"모두 접기"},{Command(0),nullptr},
             {PrefabApply,L"프리팹에 변경 적용"},{PrefabRevert,L"프리팹 변경 되돌리기"},{PrefabUnpack,L"프리팹 연결 풀기"}},at);
@@ -925,6 +927,7 @@ class NativeEditorShell {
         static const double grids[]={.1,.25,.5,1,2},angles[]={5,15,45,90};
         for(int i=0;i<5;i++)if(std::abs(grids[i]-snapGrid)<1e-9)CheckMenuRadioItem(snapMenu,SnapGridFirst,SnapGridLast,SnapGridFirst+i,MF_BYCOMMAND);
         for(int i=0;i<4;i++)if(std::abs(angles[i]-snapAngle)<1e-9)CheckMenuRadioItem(snapMenu,SnapAngleFirst,SnapAngleLast,SnapAngleFirst+i,MF_BYCOMMAND);
+        {static const double scales[]={.1,.25,.5,1};for(int i=0;i<4;i++)if(std::abs(scales[i]-snapScale)<1e-9)CheckMenuRadioItem(snapMenu,SnapScaleFirst,SnapScaleLast,SnapScaleFirst+i,MF_BYCOMMAND);}
     }
     void copyActors(){
         if(!sceneOpen()||sceneSelection.empty())return;
@@ -981,7 +984,7 @@ class NativeEditorShell {
             const auto name=wide(recent.at(i).at("name"));
             AppendMenuW(recentMenu,MF_STRING,RecentBase+i,name.c_str());
         }
-        AppendMenuW(recentMenu,MF_SEPARATOR,0,nullptr);AppendMenuW(recentMenu,MF_STRING|(openLast?MF_CHECKED:0),OpenLastToggle,L"시작할 때 마지막 프로젝트 열기");
+        AppendMenuW(recentMenu,MF_SEPARATOR,0,nullptr);AppendMenuW(recentMenu,MF_STRING|(recent.empty()?MF_GRAYED:0),ClearRecent,L"최근 목록 지우기");AppendMenuW(recentMenu,MF_STRING|(openLast?MF_CHECKED:0),OpenLastToggle,L"시작할 때 마지막 프로젝트 열기");
     }
     void report(const std::exception& error){
         statusText(wide(error.what()).c_str(),2);
@@ -1705,7 +1708,7 @@ class NativeEditorShell {
         if(input.value("command",std::string())=="speedStep"){cameraSpeed=std::clamp(cameraSpeed+(input.value("dy",0.0)>0?1:-1),1,8);statusText((L"카메라 속도 "+std::to_wstring(cameraSpeed)).c_str());refreshChrome();return;}
         if(input.value("command",std::string())=="shortcut"){
             const auto key=input.value("key",std::string());
-            try{if(key=="delete")perform(DeleteActor);else if(key=="duplicate")perform(DuplicateActor);else if(key=="copy")perform(CopyActor);else if(key=="paste")perform(PasteActor);else if(key=="snap")perform(SnapToggle);else if(key=="duplicateInPlace"){if(!sceneSelection.empty())editScene({{"action","duplicate"},{"id",sceneSelection},{"ids",selectedIds()},{"value",{0,0,0}}});}else if(key=="nudge")nudgeSelection(input.value("direction",std::string()),input.value("shift",false));}catch(const std::exception& error){report(error);}
+            try{if(key=="delete")perform(DeleteActor);else if(key=="duplicate")perform(DuplicateActor);else if(key=="copy")perform(CopyActor);else if(key=="cut")perform(CutActor);else if(key=="paste")perform(PasteActor);else if(key=="snap")perform(SnapToggle);else if(key=="duplicateInPlace"){if(!sceneSelection.empty())editScene({{"action","duplicate"},{"id",sceneSelection},{"ids",selectedIds()},{"value",{0,0,0}}});}else if(key=="nudge")nudgeSelection(input.value("direction",std::string()),input.value("shift",false));}catch(const std::exception& error){report(error);}
             return;
         }
         if(!input.empty()){
@@ -1734,7 +1737,7 @@ class NativeEditorShell {
         if(size.cx<=0||size.cy<=0)return Json::object();
         input["width"]=size.cx;input["height"]=size.cy;input["selected"]=sceneSelection;input["cameraId"]=cameraId;input["cameraOutputs"]=cameraOutputs;input["direction"]=cameraDirection;
         if(!input.contains("tool"))input["tool"]=viewport.transformTool();
-        if(snapOn)input["snap"]={{"grid",snapGrid},{"angle",snapAngle}};
+        if(snapOn)input["snap"]={{"grid",snapGrid},{"angle",snapAngle},{"scale",snapScale}};
         if(input.contains("flight")&&input.at("flight").is_object())input["flight"]["speedScale"]=speedScale(cameraSpeed);
         input["quad"]=quadView;input["viewMode"]=viewMode;input["gameView"]=gameView;input["showGrid"]=showGrid;input["gridSize"]=snapGrid;input["space"]=localSpace?"local":"world";input["pivotMode"]=pivotCenter?"center":"pivot";input["showNavigation"]=showNavigation;input["showCollision"]=showCollision;input["showStreaming"]=showStreaming;{Json hidden=Json::array();for(const auto& id:editorHidden)hidden.push_back(id);input["editorHidden"]=std::move(hidden);}input["cameraFov"]=cameraFov;input["cameraNear"]=cameraNear;input["cameraFar"]=cameraFar;input["particlePlaying"]=particlePlaying;input["particleRestart"]=particleRestartSerial;input["surfaceSnap"]=surfaceSnap;input["vertexSnap"]=(GetKeyState('V')&0x8000)!=0;if(!pilotId.empty())input["pilot"]=pilotId;
         auto state=request("scene.viewport",input);
@@ -1780,7 +1783,7 @@ class NativeEditorShell {
         input["expectedRevision"]=document.at("revision");
         const auto action=input.value("action",std::string());
         if(action=="add"&&!input.contains("position")&&viewTarget.is_array())input["position"]=viewTarget;
-        if(snapOn&&(action=="translate"||action=="rotate"))input["snap"]={{"grid",snapGrid},{"angle",snapAngle}};
+        if(snapOn&&(action=="translate"||action=="rotate"||action=="scale"))input["snap"]={{"grid",snapGrid},{"angle",snapAngle},{"scale",snapScale}};
         auto changed=request("scene.edit",input);
         const auto selection=changed.value("selection",std::string());
         if(sceneSelection!=selection)fieldPath=Json::array();
@@ -2110,12 +2113,14 @@ class NativeEditorShell {
         const auto kind=doc.value("kind",std::string());
         if(kind=="animgraph"||kind=="statemachine"||kind=="behaviortree")return;
         Json payload=graphClipboard;
-        if(key=="c"||key=="d"){
+        if(key=="c"||key=="d"||key=="x"){
             if(selection.empty())return;
             Json ids=Json::array({selection});for(const auto& id:panel.extraIds())if(id!=selection)ids.push_back(id);
             payload=request("graph.copy",{{"path",doc.at("path")},{"view",graphView},{"ids",ids}});
             if(payload.at("nodes").empty())return;
             if(key=="c"){graphClipboard=std::move(payload);return;}
+            // Cut = copy, then delete the copied nodes in one edit.
+            if(key=="x"){graphClipboard=std::move(payload);Json edit{{"action","deleteMany"},{"id",selection},{"ids",ids}};if(owner)editWindowGraph(owner,documentWindows.at(owner),std::move(edit));else editGraph(std::move(edit));return;}
         }
         if(payload.is_null())return;
         auto edit=panel.spawnPosition();edit["action"]="paste";edit["clipboard"]=std::move(payload);
@@ -2506,7 +2511,7 @@ class NativeEditorShell {
                             const auto key=event.at("key");
                             if(key=="s")saveDocumentWindow(owner,pane);
                             else if(key=="z"||key=="y")commitDocumentWindowChange(owner,pane,request(key=="z"?"editor.undo":"editor.redo",documentWindowTarget(pane)));
-                            else if(key=="c"||key=="v"||key=="d")graphClipboardAction(key,*pane.graph,pane.view,pane.selection,pane.doc,owner);
+                            else if(key=="c"||key=="v"||key=="d"||key=="x")graphClipboardAction(key,*pane.graph,pane.view,pane.selection,pane.doc,owner);
                         }
                     }catch(const std::exception& error){SetWindowTextW(pane.status,wide(std::string(error.what())).c_str());}
                 });
@@ -3177,7 +3182,7 @@ class NativeEditorShell {
         WINDOWPLACEMENT placement{sizeof(placement)};
         if(!GetWindowPlacement(window,&placement))return;
         const auto& r=placement.rcNormalPosition;
-        const Json saved={{"browse",browsePercent},{"inspector",inspectorPercent},{"splitPercent",splitPercent},{"lowerSplitPercent",lowerSplitPercent},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}},{"maximized",placement.showCmd==SW_SHOWMAXIMIZED},{"uiScale",userScale},{"dock",{{"slots",dockSlots},{"active",dockActive},{"left",dockLeft},{"right",dockRight},{"bottom",dockBottom}}},{"snap",{{"on",snapOn},{"grid",snapGrid},{"angle",snapAngle}}},{"console",consoleVisible},{"openLast",openLast},{"autosaveSeconds",autosaveSeconds},{"playSize",playSize},{"favoriteFolders",favoriteFolders},{"lightTheme",lightThemeSaved},{"language",languageSaved},{"cameraFov",cameraFov},{"cameraNear",cameraNear},{"cameraFar",cameraFar},{"browserSort",browserSort},{"tileScale",tileScale},{"browserTiles",browserTiles},{"contentDetached",contentWindow!=nullptr},{"project",utf8(projectFile.wstring())},{"documents",std::move(panes)}};
+        const Json saved={{"browse",browsePercent},{"inspector",inspectorPercent},{"splitPercent",splitPercent},{"lowerSplitPercent",lowerSplitPercent},{"window",{r.left,r.top,r.right-r.left,r.bottom-r.top}},{"maximized",placement.showCmd==SW_SHOWMAXIMIZED},{"uiScale",userScale},{"dock",{{"slots",dockSlots},{"active",dockActive},{"left",dockLeft},{"right",dockRight},{"bottom",dockBottom}}},{"snap",{{"on",snapOn},{"grid",snapGrid},{"angle",snapAngle},{"scale",snapScale}}},{"console",consoleVisible},{"openLast",openLast},{"autosaveSeconds",autosaveSeconds},{"playSize",playSize},{"favoriteFolders",favoriteFolders},{"lightTheme",lightThemeSaved},{"language",languageSaved},{"cameraFov",cameraFov},{"cameraNear",cameraNear},{"cameraFar",cameraFar},{"browserSort",browserSort},{"tileScale",tileScale},{"browserTiles",browserTiles},{"contentDetached",contentWindow!=nullptr},{"project",utf8(projectFile.wstring())},{"documents",std::move(panes)}};
         auto temp=layoutFile;temp+=L"."+std::to_wstring(GetCurrentProcessId())+L".tmp";
         write(temp,saved.dump());
         if(!MoveFileExW(temp.c_str(),layoutFile.c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH))DeleteFileW(temp.c_str());
@@ -3221,7 +3226,7 @@ class NativeEditorShell {
                 if(seen==std::multiset<std::string>{"content","details","history","log","outliner","profiler","source"}){dockSlots=slots;for(const char* slot:{"left","right","bottom"})if(d.at("active").contains(slot))dockActive[slot]=d.at("active").at(slot).get<std::string>();}
                 dockLeft=std::max(0,d.value("left",0));dockRight=std::max(0,d.value("right",0));dockBottom=std::max(0,d.value("bottom",0));
             }
-            if(data.contains("snap")){const auto& s=data.at("snap");snapOn=s.value("on",false);snapGrid=std::clamp(s.value("grid",.5),.01,100.0);snapAngle=std::clamp(s.value("angle",15.0),1.0,180.0);}updateSnapMenu();
+            if(data.contains("snap")){const auto& s=data.at("snap");snapOn=s.value("on",false);snapGrid=std::clamp(s.value("grid",.5),.01,100.0);snapAngle=std::clamp(s.value("angle",15.0),1.0,180.0);snapScale=std::clamp(s.value("scale",.25),.01,10.0);}updateSnapMenu();
             consoleVisible=data.value("console",false);openLast=data.value("openLast",true);
             {const int s=data.value("autosaveSeconds",30);autosaveSeconds=s==60||s==300||s==0?s:30;applyAutosave();}{const auto size=data.value("playSize",std::string("1280x720"));playSize=size=="1920x1080"||size=="960x540"||size=="640x360"?size:"1280x720";}try{favoriteFolders=data.value("favoriteFolders",std::map<std::string,std::vector<std::string>>());}catch(...){favoriteFolders.clear();}cameraFov=std::clamp(data.value("cameraFov",60.0),5.0,170.0);cameraNear=std::clamp(data.value("cameraNear",.05),.001,100.0);cameraFar=std::clamp(data.value("cameraFar",100000.0),cameraNear*2,1e7);browserSort=std::clamp(data.value("browserSort",0),0,3);tileScale=std::clamp(data.value("tileScale",1.0),.75,2.0);updateBrowserViewMenu();setBrowserTiles(data.value("browserTiles",true));
             contentDetachedOnStart=data.value("contentDetached",false);
@@ -3724,6 +3729,7 @@ class NativeEditorShell {
         if(command==ShowHelp||command==ShowShortcuts){showHelp(command==ShowHelp);return;}
         if(command==DeleteAsset){deleteSelectedAsset();return;}
         if(command==CopyActor){copyActors();return;}
+        if(command==CutActor){if(!sceneOpen()||sceneSelection.empty())return;copyActors();editScene({{"action","delete"},{"id",sceneSelection},{"ids",selectedIds()}});statusText(L"잘라냈어요. Ctrl+V로 붙여넣어요.");return;}
         if(command==RenameActor){
             if(!sceneOpen()||sceneSelection.empty())return;std::string current;for(const auto& row:sceneRows)if(row.at("id")==sceneSelection)current=row.value("name",std::string());
             const auto name=inputName(L"오브젝트 이름 바꾸기",wide(current),200);if(!name.empty())editScene({{"action","rename"},{"id",sceneSelection},{"value",utf8(name)}});return;
@@ -3886,6 +3892,10 @@ class NativeEditorShell {
         if(command==ProjectSettings){if(projectFile.empty())return;captureSource();showDocument(request("document.open",{{"path",request("project.settings",{}).at("path")}}));statusText(L"프로젝트 설정: 장면에 게임 설정이 없으면 이 값을 써요.");return;}
         if(command==PauseGame){if(!playProcess)return;playPaused=!playPaused;postToGame(WM_APP+44,playPaused);statusText(playPaused?L"플레이 일시정지":L"플레이 계속");refreshChrome();return;}
         if(command==StepGameFrame){if(!playProcess)return;playPaused=true;postToGame(WM_APP+45,0);statusText(L"한 프레임 진행");refreshChrome();return;}
+        if(command>=ShowPanelFirst&&command<=ShowPanelLast){static const char* panels[]={"outliner","details","content","log","history","profiler","source"};const std::string panel=panels[command-ShowPanelFirst];if(panel=="content"&&contentWindow){ShowWindow(contentWindow,SW_SHOW);SetForegroundWindow(contentWindow);return;}dockActive[dockSlotOf(panel)]=panel;layout();return;}
+        if(command==ClearRecent){request("project.recentClear");refreshRecent();statusText(L"최근 프로젝트 목록을 지웠어요.");return;}
+        if(command==ExitEditor){PostMessageW(window,WM_CLOSE,0,0);return;}
+        if(command>=OpenDocsFirst&&command<=OpenDocsLast){static const wchar_t* files[]={L"EDITOR_NATIVE.md",L"NODE_CATALOG.md",L"BLUEPRINT_SPEC.md"};const auto file=engineFolder()/L"docs"/files[command-OpenDocsFirst];if(!fs::exists(file)){statusText(L"문서를 찾지 못했어요.",2);return;}if(!acceptance)ShellExecuteW(window,L"open",file.c_str(),nullptr,nullptr,SW_SHOWNORMAL);return;}
         if(command==ShowSource){const auto slot=dockSlotOf("source");dockActive[slot]="source";layout();return;}
         if(command==ShowProfiler){const auto slot=dockSlotOf("profiler");dockActive[slot]="profiler";layout();return;}
         if(command==ShowHistory){const auto slot=dockSlotOf("history");dockActive[slot]="history";layout();return;}
@@ -3898,6 +3908,7 @@ class NativeEditorShell {
         if(command>=ToolMove&&command<=ToolScale){if(sceneOpen()&&!sourceMode){viewport.selectTransformTool(command==ToolMove?"translate":command==ToolRotate?"rotate":"scale");updateToolButtons();}return;}
         if(command==PasteActor){pasteActors();return;}
         if(command==MoveAsset){moveSelectedAsset();return;}
+        if(command>=SnapScaleFirst&&command<=SnapScaleLast){static const double scales[]={.1,.25,.5,1};snapScale=scales[command-SnapScaleFirst];snapOn=true;updateSnapMenu();saveLayout();statusText(L"크기 스냅을 바꿨어요.");return;}
         if(command>=SnapToggle&&command<=SnapAngleLast){
             static const double grids[]={.1,.25,.5,1,2},angles[]={5,15,45,90};
             if(command==SnapToggle)snapOn=!snapOn;else if(command<=SnapGridLast){snapGrid=grids[command-SnapGridFirst];snapOn=true;}else{snapAngle=angles[command-SnapAngleFirst];snapOn=true;}
@@ -4301,6 +4312,7 @@ class NativeEditorShell {
         case WideInspector:inspectorPercent=inspectorPercent==25?38:25;layout();return;
         case ResetLayout:
             browsePercent=24;inspectorPercent=25;splitPercent=lowerSplitPercent=43;consoleVisible=false;
+            dockSlots={{"left",{"outliner"}},{"right",{"details"}},{"bottom",{"content","log","history","profiler","source"}}};dockActive={{"left","outliner"},{"right","details"},{"bottom","content"}};dockLeft=dockRight=dockBottom=0;
             if(detached)SendMessageW(detached,WM_CLOSE,0,0);
             if(contentWindow)SendMessageW(contentWindow,WM_CLOSE,0,0);
             layout();return;
@@ -5436,6 +5448,10 @@ private:
             selectActor(first);const auto keepSnap=snapOn;snapOn=false;nudgeSelection("right",false);snapOn=keepSnap;const auto grid=snapGrid;snapGrid=.5;perform(SnapSelectionToGrid);snapGrid=grid;
             const auto snapped=Json::parse(document.at("text").get<std::string>());for(const auto& o:snapped.at("objects"))if(o.value("id",std::string())==first){const double x=o.at("position").at(0).get<double>();gridSnap=std::abs(x/.5-std::round(x/.5))<1e-9;}
             perform(Undo);perform(Undo);selectActor(first);}
+        // Cut removes the selection and keeps it on the clipboard; window menu activates a dock tab and resets the layout; scale snap value; graph cut.
+        bool cutPaste=false,windowMenu=false,scaleSnap=false;{if(sceneSelection.empty()&&!hierarchyOrder.empty())selectActor(hierarchyOrder.front());const auto first=sceneSelection;const auto before=Json::parse(document.at("text").get<std::string>()).at("objects").size();perform(CutActor);const auto after=Json::parse(document.at("text").get<std::string>()).at("objects").size();cutPaste=!first.empty()&&after<before&&!sceneClipboard.empty();perform(Undo);selectActor(first);
+            perform(Command(ShowPanelFirst+4));const bool shown=dockActive[dockSlotOf("history")]=="history";perform(ResetLayout);windowMenu=shown&&dockActive["bottom"]=="content"&&GetMenuItemCount(GetMenu(window))>=7;
+            const double keepScale=snapScale;const bool keepOn=snapOn;perform(Command(SnapScaleFirst+2));scaleSnap=snapScale==.5&&snapOn;snapScale=keepScale;snapOn=keepOn;updateSnapMenu();}
         // Batch rename numbers two objects with a padded counter; a favourite folder adds a pinned tree row.
         bool batchRename=false,favorite=false;{const auto first=sceneSelection.empty()&&!hierarchyOrder.empty()?hierarchyOrder.front():sceneSelection;selectActor(first);perform(DuplicateActor);
             editScene({{"action","renameMany"},{"id",sceneSelection},{"ids",Json::array({first,sceneSelection})},{"value","Tree_##"}});std::set<std::string> names;for(const auto& row:sceneRows)names.insert(row.value("name",std::string()));batchRename=names.count("Tree_01")&&names.count("Tree_02");perform(Undo);perform(Undo);selectActor(first);
@@ -5524,11 +5540,12 @@ private:
                 if(!a.empty()&&!b.empty()){selectGraphPair(a,b);alignGraphNodes("left");double xa=0,xb=1;const auto aligned_=read();for(const auto& n:aligned_.at("nodes")){if(n.value("id",std::string())==a)xa=n.value("x",0.0);if(n.value("id",std::string())==b)xb=n.value("x",0.0);}const bool aligned=std::abs(xa-xb)<1e-6;perform(Undo);
                     editGraph({{"event","edit"},{"action","comment"},{"x",20},{"y",20}});std::string comment;for(const auto& c:read().value("comments",Json::array()))comment=c.value("id",std::string());editGraph({{"event","edit"},{"action","commentColor"},{"id",comment},{"value","#4a6a9a"}});bool colored=false;for(const auto& c:read().value("comments",Json::array()))if(c.value("id",std::string())==comment)colored=c.value("color",std::string())=="#4a6a9a";perform(Undo);perform(Undo);
                     selectGraphPair(a,b);const auto functions=Json::parse(document.at("text").get<std::string>()).value("macros",Json::array()).size();editGraph({{"event","edit"},{"action","collapse"},{"key","macro"},{"ids",Json::array({a,b})},{"value","SmokeFolded"}});const bool collapsed=Json::parse(document.at("text").get<std::string>()).value("macros",Json::array()).size()==functions+1;perform(Undo);
-                    graphTools=aligned&&colored&&collapsed;}
+                    selectGraphPair(a,b);graphClipboardAction(Json("x"),graph,view,graphSelection,document,nullptr);bool cut=true;for(const auto& n:read().value("nodes",Json::array()))if(n.value("id",std::string())==a||n.value("id",std::string())==b)cut=false;cut=cut&&!graphClipboard.is_null();perform(Undo);
+                    graphTools=aligned&&colored&&collapsed&&cut;}
                 if(!keepPath.empty())showDocument(request("document.open",{{"path",keepPath}}));}}
         bool autosaveSetting=false;{const int keep=autosaveSeconds;perform(Autosave300);autosaveSetting=autosaveSeconds==300;perform(AutosaveOff);autosaveSetting=autosaveSetting&&autosaveSeconds==0;autosaveSeconds=keep;applyAutosave();}
-        const Json editingBasics={{"autosaveSetting",autosaveSetting},{"graphTools",graphTools},{"graphTips",graphTips},{"wireEdit",wireEdit},{"wireDrop",wireDrop},{"realKeys",realKeys},{"tabCycle",tabCycle},{"gridKeys",gridKeys},{"orthoKeys",orthoKeys},{"graphMulti",graphMulti},{"measure",measure},{"findBlueprints",findBlueprints},{"replaceAsset",replaceAsset},{"batchRename",batchRename},{"favorite",favorite},{"outlinerFolder",outlinerFolder},{"collapseAll",collapseAll},{"selectSimilar",selectSimilar},{"gridSnap",gridSnap},{"english",english},{"screenshot",screenshot},{"about",about},{"maximize",maximize},{"dirtyTitle",dirtyTitle},{"browserView",browserView},{"altDuplicate",altDuplicate},{"nudge",nudge},{"outlinerKeys",outlinerKeys},{"tabMenu",tabMenu},{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"cameraLens",cameraLens},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"browserMultiSelect",browserMultiSelect},{"dropImport",dropImport},{"selectAll",selectAll},{"detailsFilter",detailsFilter},{"editorHide",editorHide},{"busyIndicator",busyIndicator},{"aiBridge",aiBridge},{"frameAll",frameAll},{"transformCopy",transformCopy},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"particlePreview",particlePreview},{"lightBuild",lightBuilt}};
-        if(!autosaveSetting||!graphTools||!graphTips||!wireEdit||!wireDrop||!realKeys||!tabCycle||!gridKeys||!orthoKeys||!graphMulti||!measure||!findBlueprints||!replaceAsset||!batchRename||!favorite||!outlinerFolder||!collapseAll||!selectSimilar||!gridSnap||!english||!screenshot||!about||!maximize||!dirtyTitle||!cameraLens||!browserView||!altDuplicate||!nudge||!outlinerKeys||!tabMenu||!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!browserMultiSelect||!dropImport||!selectAll||!detailsFilter||!editorHide||!busyIndicator||!aiBridge||!frameAll||!transformCopy||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!particlePreview||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
+        const Json editingBasics={{"cutPaste",cutPaste},{"windowMenu",windowMenu},{"scaleSnap",scaleSnap},{"autosaveSetting",autosaveSetting},{"graphTools",graphTools},{"graphTips",graphTips},{"wireEdit",wireEdit},{"wireDrop",wireDrop},{"realKeys",realKeys},{"tabCycle",tabCycle},{"gridKeys",gridKeys},{"orthoKeys",orthoKeys},{"graphMulti",graphMulti},{"measure",measure},{"findBlueprints",findBlueprints},{"replaceAsset",replaceAsset},{"batchRename",batchRename},{"favorite",favorite},{"outlinerFolder",outlinerFolder},{"collapseAll",collapseAll},{"selectSimilar",selectSimilar},{"gridSnap",gridSnap},{"english",english},{"screenshot",screenshot},{"about",about},{"maximize",maximize},{"dirtyTitle",dirtyTitle},{"browserView",browserView},{"altDuplicate",altDuplicate},{"nudge",nudge},{"outlinerKeys",outlinerKeys},{"tabMenu",tabMenu},{"multiSelect",multiSelect},{"copyPaste",pasted},{"undo",undone},{"searchFilter",filtered&&unfiltered},{"focusOnDoubleClick",focusMoved},{"gizmo",gizmoShown},{"console",consoleSet},{"fps",fpsShown},{"cameraSpeed",speedSet},{"cameraLens",cameraLens},{"boxSelect",boxSelected},{"viewModes",wireframe&&unlit},{"gameView",gameViewHidden},{"quad",quad},{"history",history},{"consoleLog",consoleLog},{"palette",palette},{"browserMultiSelect",browserMultiSelect},{"dropImport",dropImport},{"selectAll",selectAll},{"detailsFilter",detailsFilter},{"editorHide",editorHide},{"busyIndicator",busyIndicator},{"aiBridge",aiBridge},{"frameAll",frameAll},{"transformCopy",transformCopy},{"namedLayout",namedLayout},{"prefabMode",prefabEditor},{"shortcutBinding",shortcutBinding},{"engineThumbnail",engineThumb},{"collisionView",collisionView},{"streamingView",streamingView},{"particlePreview",particlePreview},{"lightBuild",lightBuilt}};
+        if(!cutPaste||!windowMenu||!scaleSnap||!autosaveSetting||!graphTools||!graphTips||!wireEdit||!wireDrop||!realKeys||!tabCycle||!gridKeys||!orthoKeys||!graphMulti||!measure||!findBlueprints||!replaceAsset||!batchRename||!favorite||!outlinerFolder||!collapseAll||!selectSimilar||!gridSnap||!english||!screenshot||!about||!maximize||!dirtyTitle||!cameraLens||!browserView||!altDuplicate||!nudge||!outlinerKeys||!tabMenu||!multiSelect||!pasted||!undone||!filtered||!unfiltered||!focusMoved||!gizmoShown||!consoleSet||!fpsShown||!speedSet||!boxSelected||!wireframe||!unlit||!gameViewHidden||!quad||!history||!consoleLog||!palette||!browserMultiSelect||!dropImport||!selectAll||!detailsFilter||!editorHide||!busyIndicator||!aiBridge||!frameAll||!transformCopy||!namedLayout||!prefabEditor||!shortcutBinding||!engineThumb||!collisionView||!streamingView||!particlePreview||!lightBuilt)throw std::runtime_error("Native editing basics failed: "+editingBasics.dump());
         // Optional evidence for UI-scale review: open the startup scene and save the whole window as a BMP.
         if(const char* capture=std::getenv("HB_EDITOR_CAPTURE")){showDocument(request("document.open",{{"path",startupScenePath}}));layout();UpdateWindow(window);if(!browserTiles)setBrowserTiles(true);navigateFolder("Assets");refreshFiles();if(!hierarchyOrder.empty())selectActor(hierarchyOrder.back());if(const char* orbit=std::getenv("HB_EDITOR_CAPTURE_ORBIT")){double dx=0,dy=0;std::sscanf(orbit,"%lf,%lf",&dx,&dy);drawViewport({{"command","orbit"},{"dx",dx},{"dy",dy}});}layout();UpdateWindow(window);captureWindow(fs::path(capture));}
         // Theme review: HB_EDITOR_SMOKE_CAPTURE=<file.bmp> saves the window as the smoke test leaves it.
