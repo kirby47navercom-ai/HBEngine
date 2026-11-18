@@ -1,0 +1,8 @@
+// Viewport frame benchmark: opens a temp 3D project (BENCH_COUNT extra cubes/spheres) in the real editor and draws 120
+// camera look/zoom frames (HB_EDITOR_VIEWPORT_BENCH). Prints the average round trip and per-stage times (ms).
+// Usage: BENCH_COUNT=1500 node tools/bench-native-viewport.mjs
+import fs from 'node:fs/promises';import path from 'node:path';import {execFile} from 'node:child_process';import {promisify} from 'node:util';import {createProject} from './project-manifest.mjs';
+const root=path.resolve(import.meta.dirname,'..'),work=await fs.mkdtemp(path.join(root,'native/build/tmp-bench-'));
+try{const record=await createProject('Bench',work,'3d'),out=path.join(work,'bench.json');const {createPlacedObject}=await import('../prototype/placement-catalog.js');const sf=path.join(path.dirname(record.file),record.manifest.startupScene),scene=JSON.parse(await fs.readFile(sf,'utf8'));const count=Number(process.env.BENCH_COUNT||0);for(let i=0;i<count;i++)scene.objects.push({...createPlacedObject(i%2?'cube':'sphere',{id:'b'+i,position:[(i%40)-20,0,Math.floor(i/40)-20]}),name:'B'+i});await fs.writeFile(sf,JSON.stringify(scene));
+await promisify(execFile)(path.join(root,'dist/HBEngineNative/HBEngineNative.exe'),['--native-editor','--smoke-test',path.join(work,'report.json'),record.file],{env:{...process.env,HB_EDITOR_VIEWPORT_BENCH:out,HB_USER_DATA_DIR:path.join(work,'U')},timeout:180000,windowsHide:true});
+console.log(await fs.readFile(out,'utf8'));}catch(e){console.log('FAIL',e.code,await fs.readFile(path.join(work,'report.json.error.txt'),'utf8').catch(()=>''));process.exitCode=1;}finally{await fs.rm(work,{recursive:true,force:true});}
