@@ -29,6 +29,11 @@ class EditorScenePanel {
     void stopFlight(){KillTimer(window,1);const bool was=flightTime!=0;flightTime=0;flightKeys.fill(false);if(was&&post)post({{"command","flightEnd"}});}
     void startFlight(){if(flightTime)return;flightTime=1;QueryPerformanceCounter(&flightLast);SetTimer(window,1,15,nullptr);post({{"command","flyTick"}});}
     static bool down(int key){return (GetKeyState(key)&0x8000)!=0;}
+    // Cursor lock (Unreal): during a camera drag the cursor is hidden, kept inside the viewport and put back at the press
+    // point after every move, so the drag never stops at a screen edge; release shows it again where it was pressed.
+    bool lockCursor=true,cursorLocked=false;POINT lockScreen{},lockClient{};
+    void lockCursorNow(){if(cursorLocked||!lockCursor)return;cursorLocked=true;lockClient=start;lockScreen=start;ClientToScreen(window,&lockScreen);RECT r{};GetClientRect(window,&r);MapWindowPoints(window,nullptr,reinterpret_cast<POINT*>(&r),2);ClipCursor(&r);while(ShowCursor(FALSE)>=0){}SetCursorPos(lockScreen.x,lockScreen.y);}
+    void unlockCursor(){if(!cursorLocked)return;cursorLocked=false;ClipCursor(nullptr);SetCursorPos(lockScreen.x,lockScreen.y);while(ShowCursor(TRUE)<0){}}
     std::optional<Handle> hitHandle(POINT at)const{
         double nearest=196;// 14 px grab radius (Unreal handles are easy to catch)
         std::optional<Handle> hit;
@@ -80,7 +85,7 @@ class EditorScenePanel {
         catch(const std::exception& error){OutputDebugStringA(error.what());}
         return DefWindowProcW(window,message,w,l);
     }
-    void finishMouse(){button=0;mode=Drag::none;transformDrag=false;follow=false;ctrlAxis=false;if(GetCapture()==window)ReleaseCapture();}
+    void finishMouse(){unlockCursor();button=0;mode=Drag::none;transformDrag=false;follow=false;ctrlAxis=false;if(GetCapture()==window)ReleaseCapture();}
     LRESULT handle(UINT message,WPARAM w,LPARAM l){
         switch(message){
         case WM_PAINT:{
@@ -131,6 +136,9 @@ class EditorScenePanel {
             if(button==1&&(marquee||mode==Drag::none)){marquee=true;post({{"command","marquee"},{"box",{start.x,start.y,at.x,at.y}}});return 0;}
             if(mode==Drag::measure){post({{"command","measure"},{"x",start.x},{"y",start.y},{"x2",at.x},{"y2",at.y}});previous=at;return 0;}
             const char* command=mode==Drag::look?"look":mode==Drag::orbit?"orbit":mode==Drag::dolly?"dolly":mode==Drag::walk?"walk":"pan";
+            if(lockCursor){if(!cursorLocked){lockCursorNow();post({{"command",command},{"dx",at.x-start.x},{"dy",at.y-start.y},{"x",start.x},{"y",start.y}});return 0;}
+                const int dx=at.x-lockClient.x,dy=at.y-lockClient.y;if(!dx&&!dy)return 0; // the recentring move itself
+                post({{"command",command},{"dx",dx},{"dy",dy},{"x",start.x},{"y",start.y}});SetCursorPos(lockScreen.x,lockScreen.y);return 0;}
             post({{"command",command},{"dx",at.x-previous.x},{"dy",at.y-previous.y},{"x",start.x},{"y",start.y}});
             previous=at;return 0;
         }
@@ -162,7 +170,7 @@ class EditorScenePanel {
             marquee=false;
             if(transformDrag&&moved)post({{"command","translateCancel"}});
             if(mode==Drag::measure)post({{"command","measureEnd"}});
-            button=0;mode=Drag::none;transformDrag=false;follow=false;ctrlAxis=false;brushPoints.clear();stopFlight();return 0;
+            unlockCursor();button=0;mode=Drag::none;transformDrag=false;follow=false;ctrlAxis=false;brushPoints.clear();stopFlight();return 0;
         case WM_KILLFOCUS:
             stopFlight();finishMouse();return 0;
         case WM_TIMER:
@@ -218,6 +226,8 @@ public:
         else{stopFlight();handles.clear();ShowWindow(window,SW_HIDE);}
     }
     void useBrush(bool enabled){brushEnabled=enabled;}
+    // Hidden acceptance runs drive the panel with synthetic messages and must not move the real cursor.
+    void setCursorLock(bool enabled){lockCursor=enabled;if(!enabled)unlockCursor();}
     void selectTransformTool(std::string mode){
         if(button)return;
         tool=std::move(mode);handles.clear();post({{"command","transformTool"}});

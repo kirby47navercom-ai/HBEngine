@@ -2565,7 +2565,7 @@ class NativeEditorShell {
                 item.source=settings.is_object()&&settings.value("source",false);
                 if(settings.is_object()){item.cameraId=settings.value("cameraId",std::string());item.cameraOutputs=settings.value("cameraOutputs",false);item.cameraDirection=settings.value("direction",std::string());}
                 SetWindowTextW(item.toggle,L"장면 / 소스");
-                item.sceneView=std::make_unique<EditorScenePanel>();
+                item.sceneView=std::make_unique<EditorScenePanel>();if(acceptance)item.sceneView->setCursorLock(false);
                 item.sceneView->attach(owner,instance,[this,owner](Json input){
                     auto& pane=documentWindows.at(owner);
                     mergeCameraInput(pane.sceneInput,std::move(input));scheduleWindowScene(owner,pane);
@@ -2587,7 +2587,7 @@ class NativeEditorShell {
                 item.assetPreview=kind=="modelimport"||kind=="materialinstance"||kind=="mesh"||kind=="terrain"||kind=="foliage"||kind=="lod";
                 if(item.assetPreview){
                     item.surface="native-asset-"+std::to_string(nextSceneSurface++);
-                    item.sceneView=std::make_unique<EditorScenePanel>();
+                    item.sceneView=std::make_unique<EditorScenePanel>();if(acceptance)item.sceneView->setCursorLock(false);
                     item.sceneView->attach(owner,instance,[this,owner](Json input){
                         auto& pane=documentWindows.at(owner);
                         mergeCameraInput(pane.sceneInput,std::move(input));scheduleWindowScene(owner,pane);
@@ -4750,7 +4750,7 @@ public:
         }
         ACCEL keys[]={{FVIRTKEY|FALT,'4',ViewLit},{FVIRTKEY|FALT,'3',ViewUnlit},{FVIRTKEY|FALT,'2',ViewWireframe},{FVIRTKEY|FCONTROL,'N',NewScene},{FVIRTKEY|FALT|FSHIFT,'F',FindReferences},{FVIRTKEY|FCONTROL|FSHIFT,'A',SelectChildren},{FVIRTKEY|FCONTROL,'O',OpenProject},{FVIRTKEY|FCONTROL,'S',Save},{FVIRTKEY|FCONTROL,'W',CloseDocument},{FVIRTKEY|FCONTROL|FSHIFT,'T',ReopenClosedTab},{FVIRTKEY|FCONTROL,'Z',Undo},{FVIRTKEY|FCONTROL,'Y',Redo},{FVIRTKEY|FALT,VK_UP,Up},{FVIRTKEY,VK_F1,ShowShortcuts},{FVIRTKEY,VK_F5,PlayScene},{FVIRTKEY|FSHIFT,VK_F5,StopPlay},{FVIRTKEY,VK_F6,PauseGame},{FVIRTKEY|FCONTROL,'K',CommandPalette},{FVIRTKEY|FCONTROL|FSHIFT,'S',SaveAllDocuments},{FVIRTKEY|FALT,'C',CollisionToggle},{FVIRTKEY|FALT,'P',PlayFromHere},{FVIRTKEY|FCONTROL|FSHIFT,VK_SPACE,ParticlePlayToggle},{FVIRTKEY|FCONTROL|FSHIFT,'R',ParticleRestart},{FVIRTKEY,VK_F7,StepGameFrame},{FVIRTKEY,VK_F9,ViewportScreenshot},{FVIRTKEY|FCONTROL|FSHIFT,'F',FindInBlueprints},{FVIRTKEY|FCONTROL|FALT,'T',ShowTabList},{FVIRTKEY|FALT,'S',SimulateScene},{FVIRTKEY|FCONTROL,VK_TAB,NextTab},{FVIRTKEY|FCONTROL|FSHIFT,VK_TAB,PreviousTab},{FVIRTKEY|FCONTROL,VK_NEXT,NextTab},{FVIRTKEY|FCONTROL,VK_PRIOR,PreviousTab},{FVIRTKEY|FCONTROL|FSHIFT,'Z',Redo},{FVIRTKEY|FCONTROL,'B',BrowseToAsset},{FVIRTKEY|FCONTROL,'E',EditActorAsset},{FVIRTKEY,VK_F11,EditorFullscreen},{FVIRTKEY|FCONTROL,'R',RefreshContent},{FVIRTKEY|FALT,'G',ViewPerspective},{FVIRTKEY|FALT,'H',ViewFront},{FVIRTKEY|FALT,'J',ViewTop},{FVIRTKEY|FALT,'K',ViewSide}};
         defaultKeys.assign(std::begin(keys),std::end(keys));if(!acceptance)loadKeyBindings();rebuildAccelerators(); // before the smoke test so acceptance sends keys through the real table
-        if(acceptance)return smokeTest(smoke);
+        if(acceptance){viewport.setCursorLock(false);return smokeTest(smoke);}
         restoreLayout();
         ShowWindow(window,layoutMaximized?SW_SHOWMAXIMIZED:show);
         if(contentDetachedOnStart)perform(DetachContent);
