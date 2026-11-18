@@ -52,7 +52,7 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
   // Focus (F / outliner double-click) flies the camera over a short ease-out instead of jumping, like Unreal.
   let flyTo=null;const FLY_MS=350;
   // Editor viewport extras: floor grid, view modes (unlit / wireframe), marquee, camera bookmarks, quad panes.
-  let grid=null,gridStep=0,marqueeLine=null,lastPane=0,viewModeShown='lit';const wire=new Map(),unlitMaterials=new WeakMap(),bookmarks=new Map();
+  let grid=null,gridStep=0,marqueeLine=null,lastPane=0,viewModeShown='lit',axisWidget=null;const wire=new Map(),unlitMaterials=new WeakMap(),bookmarks=new Map();
   const wireMaterial=new THREE.LineBasicMaterial({color:0x9fc4ff,toneMapped:false});
   const panes=[null,{direction:'top',target:new THREE.Vector3()},{direction:'front',target:new THREE.Vector3()},{direction:'right',target:new THREE.Vector3()}];
   const unlitFor=m=>{if(Array.isArray(m))return m.map(unlitFor);let u=unlitMaterials.get(m);if(!u){u=new THREE.MeshBasicMaterial({color:m.color?.clone()??new THREE.Color(1,1,1),map:m.map??null,transparent:m.transparent,opacity:m.opacity,side:m.side,alphaTest:m.alphaTest,vertexColors:m.vertexColors});unlitMaterials.set(m,u);}return u;};
@@ -503,6 +503,13 @@ export function nativeEditorViewport(bridge,surface='native-editor') {
     // Marquee rectangle while dragging; box select returns every object whose bounds centre falls inside.
     let boxSelection;
     if(marqueeLine)marqueeLine.visible=false;
+    if(authoring&&!gameView&&!quad){
+      if(!axisWidget){const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(18),3));geometry.setAttribute('color',new THREE.BufferAttribute(new Float32Array([1,.3,.3,1,.3,.3,.4,.9,.35,.4,.9,.35,.35,.55,1,.35,.55,1]),3));axisWidget=new THREE.LineSegments(geometry,new THREE.LineBasicMaterial({vertexColors:true,depthTest:false,depthWrite:false,toneMapped:false}));axisWidget.userData.editorHelper=true;axisWidget.frustumCulled=false;axisWidget.renderOrder=1004;}
+      if(axisWidget.parent!==world)world.add(axisWidget);
+      const inverse=active.quaternion.clone().invert(),cx=44,cy=height-44,at=(px,py)=>new THREE.Vector3(2*px/width-1,1-2*py/height,-.98).unproject(active),origin=at(cx,cy),p=axisWidget.geometry.attributes.position;
+      [[1,0,0],[0,1,0],[0,0,1]].forEach((axis,i)=>{const v=new THREE.Vector3(...axis).applyQuaternion(inverse),end=at(cx+v.x*30,cy-v.y*30);p.setXYZ(i*2,origin.x,origin.y,origin.z);p.setXYZ(i*2+1,end.x,end.y,end.z);});
+      p.needsUpdate=true;axisWidget.visible=true;
+    }else if(axisWidget)axisWidget.visible=false;
     if(box&&authoring){
       const [x0,y0,x1,y1]=[Math.min(box[0],box[2]),Math.min(box[1],box[3]),Math.max(box[0],box[2]),Math.max(box[1],box[3])];
       if(command==='marquee'){

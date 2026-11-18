@@ -2,11 +2,12 @@
 #include "EditorPanelBase.hpp"
 #include <cmath>
 #include <unordered_map>
+#include <commctrl.h>
 
 class EditorGraphPanel final : public EditorPanelBase {
     bool blueprint=false;
-    struct Pin {std::string id;std::wstring label;D2D1_COLOR_F color;};
-    struct Node {std::string id;std::wstring title;float x,y;std::vector<Pin> inputs,outputs;bool breakpoint;};
+    struct Pin {std::string id;std::wstring label;D2D1_COLOR_F color;std::wstring type;};
+    struct Node {std::string id;std::wstring title;float x,y;std::vector<Pin> inputs,outputs;bool breakpoint;std::wstring tip;float w=224;};
     struct Endpoint {std::string node,pin;bool output;};
     std::vector<Node> nodes;
     std::unordered_map<std::string,std::size_t> nodeIndex;
@@ -20,6 +21,26 @@ class EditorGraphPanel final : public EditorPanelBase {
     bool panning=false,dragging=false,movedContext=false,boxing=false;
     std::set<std::string> extra; // Ctrl+click / box selection besides selected
     D2D1_POINT_2F boxEnd{};std::map<std::string,D2D1_POINT_2F> groupStart;
+    HWND tip=nullptr;std::wstring tipText; // hover tooltip: pin "label: type", node header "title — description"
+    std::wstring hoverText(float x,float y){
+        const auto* node=hit(x,y);if(!node)return {};
+        for(bool output:{false,true}){const auto& list=output?node->outputs:node->inputs;for(std::size_t i=0;i<list.size();++i){const auto at=pinPoint(*node,output,i);if(std::hypot(x-at.x,y-at.y)<=9*zoom)return list[i].label+(list[i].type.empty()?L"":L": "+list[i].type);}}
+        if(y<point(node->x,node->y).y+header*zoom)return node->title+(node->tip.empty()?L"":L" — "+node->tip);
+        return {};
+    }
+    void showTip(const std::wstring& text){
+        if(!tip){tip=CreateWindowExW(WS_EX_TOPMOST,TOOLTIPS_CLASSW,nullptr,WS_POPUP|TTS_ALWAYSTIP|TTS_NOPREFIX,CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,window,nullptr,nullptr,nullptr);if(!tip)return;
+            TOOLINFOW info{sizeof(info)};info.uFlags=TTF_SUBCLASS;info.hwnd=window;info.uId=1;info.rect={0,0,32767,32767};info.lpszText=const_cast<wchar_t*>(L"");SendMessageW(tip,TTM_ADDTOOLW,0,LPARAM(&info));SendMessageW(tip,TTM_SETMAXTIPWIDTH,0,420);}
+        if(text==tipText)return;tipText=text;TOOLINFOW info{sizeof(info)};info.hwnd=window;info.uId=1;info.lpszText=const_cast<wchar_t*>(tipText.c_str());SendMessageW(tip,TTM_UPDATETIPTEXTW,0,LPARAM(&info));SendMessageW(tip,TTM_ACTIVATE,!tipText.empty(),0);
+    }
+    int hoverEdge=-1; // wire under the mouse (drawn thicker; right-click deletes it)
+    // Index of the wire whose curve passes within 6 px of (x, y), sampling the same Bezier the wire is drawn with.
+    int edgeAt(float x,float y){
+        for(std::size_t i=0;i<edges.size();++i){const auto a=endpoint(edges.at(i).at("from"),true),b=endpoint(edges.at(i).at("to"),false);if(!a||!b)continue;
+            const float bend=std::max(26.f,std::abs(b->x-a->x)*.42f);const D2D1_POINT_2F p[4]={*a,{a->x+bend,a->y},{b->x-bend,b->y},*b};
+            for(int k=0;k<=32;k++){const float t=k/32.f,u=1-t;const float px_=u*u*u*p[0].x+3*u*u*t*p[1].x+3*u*t*t*p[2].x+t*t*t*p[3].x,py_=u*u*u*p[0].y+3*u*u*t*p[1].y+3*u*t*t*p[2].y+t*t*t*p[3].y;if(std::hypot(px_-x,py_-y)<=6)return int(i);}}
+        return -1;
+    }
     bool chosen(const std::string& id)const{return id==selected||extra.count(id)>0;}
     void announce(){Json ids=Json::array();for(const auto& id:extra)ids.push_back(id);emit({{"event","selectMany"},{"id",selected},{"ids",ids}});}
 
@@ -28,13 +49,14 @@ class EditorGraphPanel final : public EditorPanelBase {
     }
     static std::vector<Pin> pins(const Json& values){
         std::vector<Pin> result;
-        for(const auto& pin:values)result.push_back({pin.at("id"),wide(pin.at("label")),color(pin.at("color"))});
+        for(const auto& pin:values)result.push_back({pin.at("id"),wide(pin.at("label")),color(pin.at("color")),wide(pin.value("type",std::string()))});
         return result;
     }
     static constexpr float width=224,header=30,row=22;
+    static std::wstring shownLabel(const Pin& p){return p.type==L"exec"&&(p.label==L"실행"||p.label==L"다음"||p.label==L"Exec"||p.label==L"Then")?std::wstring():p.label;}
     static float height(const Node& node){return header+row*std::max<std::size_t>(1,std::max(node.inputs.size(),node.outputs.size()))+6;}
     D2D1_POINT_2F point(float x,float y)const{return {pan.x+x*zoom,pan.y+y*zoom};}
-    D2D1_POINT_2F pinPoint(const Node& node,bool output,std::size_t i)const{return point(node.x+(output?width-10:10),node.y+header+row*(float(i)+.5f));}
+    D2D1_POINT_2F pinPoint(const Node& node,bool output,std::size_t i)const{return point(node.x+(output?node.w-10:10),node.y+header+row*(float(i)+.5f));}
     Node* find(const std::string& id){const auto it=nodeIndex.find(id);return it==nodeIndex.end()?nullptr:&nodes[it->second];}
     std::optional<D2D1_POINT_2F> endpoint(const Json& end,bool output){
         const auto* node=find(end.value("node",std::string()));
@@ -46,7 +68,7 @@ class EditorGraphPanel final : public EditorPanelBase {
     Node* hit(float x,float y){
         for(auto it=nodes.rbegin();it!=nodes.rend();++it){
             const auto at=point(it->x,it->y);
-            if(x>=at.x&&x<=at.x+width*zoom&&y>=at.y&&y<=at.y+height(*it)*zoom)return &*it;
+            if(x>=at.x&&x<=at.x+it->w*zoom&&y>=at.y&&y<=at.y+height(*it)*zoom)return &*it;
         }
         return nullptr;
     }
@@ -78,7 +100,7 @@ class EditorGraphPanel final : public EditorPanelBase {
             label(wide(comment.value("text",std::string())),bold,at.x+7,at.y,w-14,24,theme.text);
         }
         brush->SetColor(theme.accent);
-        for(const auto& edge:edges){
+        for(std::size_t edgeIndex=0;edgeIndex<edges.size();++edgeIndex){const auto& edge=edges.at(edgeIndex);
             const auto a=endpoint(edge.at("from"),true),b=endpoint(edge.at("to"),false);
             if(!a||!b)continue;
             const float bend=std::max(26.f,std::abs(b->x-a->x)*.42f);
@@ -87,7 +109,7 @@ class EditorGraphPanel final : public EditorPanelBase {
                 if(SUCCEEDED(path->Open(&sink))){
                     sink->BeginFigure(*a,D2D1_FIGURE_BEGIN_HOLLOW);
                     sink->AddBezier(D2D1::BezierSegment({a->x+bend,a->y},{b->x-bend,b->y},*b));
-                    sink->EndFigure(D2D1_FIGURE_END_OPEN);sink->Close();sink->Release();canvas->DrawGeometry(path,brush,2.f);
+                    sink->EndFigure(D2D1_FIGURE_END_OPEN);sink->Close();sink->Release();canvas->DrawGeometry(path,brush,int(edgeIndex)==hoverEdge?4.f:2.f);
                 }
                 path->Release();
             }
@@ -95,7 +117,7 @@ class EditorGraphPanel final : public EditorPanelBase {
         if(wireStart&&wireMoved)if(const auto at=endpoint(encode(*wireStart),wireStart->output))
             canvas->DrawLine(*at,wireCursor,brush,2.f);
         for(const auto& node:nodes){
-            const auto at=point(node.x,node.y);const float w=width*zoom,h=height(node)*zoom;
+            const auto at=point(node.x,node.y);const float w=node.w*zoom,h=height(node)*zoom;
             if(at.x+w<0||at.y+h<0||at.x>bounds[2]||at.y>bounds[3])continue;
             box(at.x,at.y,w,h,theme.field,chosen(node.id)?theme.accent:theme.line);
             fill(at.x+1,at.y+1,w-2,header*zoom,theme.raised);
@@ -108,7 +130,7 @@ class EditorGraphPanel final : public EditorPanelBase {
                     const bool active=pending&&pending->node==node.id&&pending->pin==pin.id&&pending->output==output;
                     brush->SetColor(active?theme.text:pin.color);canvas->FillEllipse(D2D1::Ellipse(p,4*zoom,4*zoom),brush);
                     text->SetTextAlignment(output?DWRITE_TEXT_ALIGNMENT_TRAILING:DWRITE_TEXT_ALIGNMENT_LEADING);
-                    label(pin.label,text,output?at.x+w*.5f:at.x+19*zoom,p.y-row*zoom/2,w*.5f-19*zoom,row*zoom,theme.text);
+                    {const bool alone=(output?node.inputs:node.outputs).empty();const float lw=alone?w-38*zoom:w*.5f-19*zoom;label(shownLabel(pin),text,output?at.x+w-19*zoom-lw:at.x+19*zoom,p.y-row*zoom/2,lw,row*zoom,theme.text);}
                     text->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
                 }
             }
@@ -158,6 +180,9 @@ class EditorGraphPanel final : public EditorPanelBase {
                     return 0;
                 }
             }
+            if(!hit(x,y))if(const int e=edgeAt(x,y);e>=0){HMENU menu=CreatePopupMenu();AppendMenuW(menu,MF_STRING,1,L"연결 끊기");POINT screen{LONG(x),LONG(y)};ClientToScreen(window,&screen);
+                const auto choice=TrackPopupMenu(hb::editor_english::translateMenu(menu),TPM_RETURNCMD|TPM_NONOTIFY|TPM_RIGHTBUTTON,screen.x,screen.y,0,window,nullptr);DestroyMenu(menu);
+                if(choice==1)emit({{"event","edit"},{"action","disconnectEdge"},{"from",edges.at(e).at("from")},{"to",edges.at(e).at("to")}});hoverEdge=-1;return 0;}
             start={x-pan.x,y-pan.y};wireCursor={x,y};movedContext=false;panning=true;SetCapture(window);return 0;
         }
         case WM_MBUTTONDOWN:start={x-pan.x,y-pan.y};panning=true;SetCapture(window);return 0;
@@ -168,6 +193,7 @@ class EditorGraphPanel final : public EditorPanelBase {
                 movedContext=true;pan={x-start.x,y-start.y};
             }
             if(boxing){boxEnd={x,y};InvalidateRect(window,nullptr,FALSE);return 0;}
+            if(!panning&&!dragging){showTip(hoverText(x,y));const int over=hit(x,y)?-1:edgeAt(x,y);if(over!=hoverEdge){hoverEdge=over;InvalidateRect(window,nullptr,FALSE);}}
             if(dragging)if(auto* node=find(selected)){node->x=nodeStart.x+(x-start.x)/zoom;node->y=nodeStart.y+(y-start.y)/zoom;for(const auto& [id,from]:groupStart)if(auto* n=find(id)){n->x=from.x+(x-start.x)/zoom;n->y=from.y+(y-start.y)/zoom;}}
             if(panning||dragging)InvalidateRect(window,nullptr,FALSE);
             return 0;
@@ -183,14 +209,15 @@ class EditorGraphPanel final : public EditorPanelBase {
                 if(GetCapture()==window)ReleaseCapture();
                 if(wireMoved){
                     pending.reset();
-                    if(const auto* node=hit(x,y))if(const auto last=pinHit(*node,x,y);last&&last->output!=first.output)connect(first,*last);
+                    if(const auto* node=hit(x,y)){if(const auto last=pinHit(*node,x,y);last&&last->output!=first.output)connect(first,*last);}
+                    else emit({{"event","palette"},{"x",(x-pan.x)/zoom},{"y",(y-pan.y)/zoom},{"wire",encode(first)},{"wireOutput",first.output}});
                 }else if(pending&&pending->output!=first.output)connect(*pending,first);
                 else pending=first;
                 InvalidateRect(window,nullptr,FALSE);return 0;
             }
             if(boxing){boxing=false;if(GetCapture()==window)ReleaseCapture();
                 const float l=std::min(start.x,boxEnd.x),r=std::max(start.x,boxEnd.x),tp=std::min(start.y,boxEnd.y),b=std::max(start.y,boxEnd.y);
-                if(r-l>3||b-tp>3)for(auto& n:nodes){const auto at=point(n.x,n.y);if(at.x<r&&at.x+width*zoom>l&&at.y<b&&at.y+height(n)*zoom>tp){if(selected.empty())selected=n.id;else if(n.id!=selected)extra.insert(n.id);}}
+                if(r-l>3||b-tp>3)for(auto& n:nodes){const auto at=point(n.x,n.y);if(at.x<r&&at.x+n.w*zoom>l&&at.y<b&&at.y+height(n)*zoom>tp){if(selected.empty())selected=n.id;else if(n.id!=selected)extra.insert(n.id);}}
                 emit({{"event","select"},{"id",selected}});announce();InvalidateRect(window,nullptr,FALSE);return 0;}
             const bool moved=dragging;dragging=false;if(GetCapture()==window)ReleaseCapture();
             if(moved)if(auto* node=find(selected))if(node->x!=nodeStart.x||node->y!=nodeStart.y){
@@ -231,19 +258,24 @@ public:
         nodes.reserve(model.at("nodes").size());nodeIndex.reserve(model.at("nodes").size());
         for(const auto& n:model.at("nodes")){
             auto id=n.at("id").get<std::string>();nodeIndex.emplace(id,nodes.size());
-            nodes.push_back({std::move(id),wide(n.at("title")),n.at("x"),n.at("y"),pins(n.at("inputs")),pins(n.at("outputs")),n.value("breakpoint",false)});
+            nodes.push_back({std::move(id),wide(n.at("title")),n.at("x"),n.at("y"),pins(n.at("inputs")),pins(n.at("outputs")),n.value("breakpoint",false),wide(n.value("tip",std::string()))});
+            {auto& made=nodes.back();const auto span=[](const std::wstring& s){float w=0;for(const wchar_t c:s)w+=c>=0x1100?13.f:7.5f;return w;};float in=0,out=0;for(const auto& p:made.inputs)in=std::max(in,span(shownLabel(p)));for(const auto& p:made.outputs)out=std::max(out,span(shownLabel(p)));
+                const float pins=made.inputs.empty()||made.outputs.empty()?std::max(in,out)+40:in+out+60;made.w=std::clamp(std::max(pins,span(made.title)+24),224.f,480.f);}
         }
         edges=model.at("edges");comments=model.at("comments");for(auto it=extra.begin();it!=extra.end();)it=find(*it)?std::next(it):extra.erase(it);InvalidateRect(window,nullptr,FALSE);
     }
     std::vector<std::string> extraIds()const{return {extra.begin(),extra.end()};}
+    int wireAt(int x,int y){return edgeAt(float(x),float(y));}
+    std::wstring hoverAt(int x,int y){return hoverText(float(x),float(y));}
+    std::optional<POINT> wireMiddle(std::size_t i){if(i>=edges.size())return std::nullopt;const auto a=endpoint(edges.at(i).at("from"),true),b=endpoint(edges.at(i).at("to"),false);if(!a||!b)return std::nullopt;return POINT{LONG((a->x+b->x)/2),LONG((a->y+b->y)/2)};}
     // Acceptance hooks: messages go through the real window procedure; view and pin positions in client pixels.
     void probe(UINT message,WPARAM w,LPARAM l){SendMessageW(window,message,w,l);}
     std::array<float,3> view()const{return {pan.x,pan.y,zoom};}
     std::optional<POINT> pinAt(const std::string& id,const std::string& pin,bool output){const auto* node=find(id);if(!node)return std::nullopt;const auto& list=output?node->outputs:node->inputs;for(std::size_t i=0;i<list.size();++i)if(list[i].id==pin){const auto p=pinPoint(*node,output,i);return POINT{LONG(p.x),LONG(p.y)};}return std::nullopt;}
-    std::optional<POINT> headerAt(const std::string& id){const auto* node=find(id);if(!node)return std::nullopt;const auto p=point(node->x,node->y);return POINT{LONG(p.x+width*zoom*.5f),LONG(p.y+header*zoom*.5f)};}
+    std::optional<POINT> headerAt(const std::string& id){const auto* node=find(id);if(!node)return std::nullopt;const auto p=point(node->x,node->y);return POINT{LONG(p.x+node->w*zoom*.5f),LONG(p.y+header*zoom*.5f)};}
     // Fit the given nodes (all when empty) in the panel, zoom 0.25-1.
     void frame(const std::vector<std::string>& ids){
-        float l=1e9f,t=1e9f,r=-1e9f,b=-1e9f;for(const auto& n:nodes)if(ids.empty()||std::find(ids.begin(),ids.end(),n.id)!=ids.end()){l=std::min(l,n.x);t=std::min(t,n.y);r=std::max(r,n.x+width);b=std::max(b,n.y+height(n));}
+        float l=1e9f,t=1e9f,r=-1e9f,b=-1e9f;for(const auto& n:nodes)if(ids.empty()||std::find(ids.begin(),ids.end(),n.id)!=ids.end()){l=std::min(l,n.x);t=std::min(t,n.y);r=std::max(r,n.x+n.w);b=std::max(b,n.y+height(n));}
         if(l>r||bounds[2]<=0||bounds[3]<=0)return;const float margin=40;zoom=std::clamp(std::min((bounds[2]-2*margin)/(r-l),(bounds[3]-2*margin)/(b-t)),.25f,1.f);
         pan={bounds[2]*.5f-(l+r)*.5f*zoom,bounds[3]*.5f-(t+b)*.5f*zoom};InvalidateRect(window,nullptr,FALSE);
     }
@@ -260,7 +292,7 @@ public:
     void resetView(){selected.clear();extra.clear();pending.reset();wireStart.reset();pan={36,36};zoom=1;}
     void focusNode(const std::string& id){
         if(const auto* node=find(id)){
-            pan={bounds[2]*.5f-(node->x+width*.5f)*zoom,bounds[3]*.5f-(node->y+height(*node)*.5f)*zoom};
+            pan={bounds[2]*.5f-(node->x+node->w*.5f)*zoom,bounds[3]*.5f-(node->y+height(*node)*.5f)*zoom};
             selected=id;InvalidateRect(window,nullptr,FALSE);emit({{"event","select"},{"id",id}});
         }
     }

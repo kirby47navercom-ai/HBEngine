@@ -55,7 +55,7 @@ private:
             const float x=float(indent(r.depth));const D2D1_COLOR_F dim=!r.visible?D2D1_COLOR_F(theme.muted):r.prefab?D2D1_COLOR_F(D2D1::ColorF(.47f,.7f,1.f)):D2D1_COLOR_F(theme.text);
             if(r.children)label(r.collapsed?L"":L"",icons,x,y,float(px(16)),float(h),theme.muted);
             label(glyph(r.icon),icons,x+px(16),y,float(px(18)),float(h),r.selected?theme.text:theme.accent);
-            const float nameX=x+px(38),typeW=r.type.empty()||w<px(300)?0.f:std::min(w*.3f,float(px(96)));label(wide(r.name),text,nameX,y,std::max(0.f,w-px(56)-typeW-nameX),float(h),dim);
+            const float nameX=x+px(38),typeW=r.type.empty()||w<px(200)?0.f:std::min(w*.3f,float(px(96)));label(wide(r.name),text,nameX,y,std::max(0.f,w-px(56)-typeW-nameX),float(h),dim);
             if(typeW>0)label(wide(r.type),text,w-px(52)-typeW,y,typeW,float(h),theme.muted);
             label(r.locked?L"":L"",icons,w-px(48),y,float(px(24)),float(h),r.locked?theme.accent:theme.line);
             label(r.visible?L"":L"",icons,w-px(24),y,float(px(24)),float(h),r.visible?theme.muted:theme.line);
@@ -70,7 +70,7 @@ private:
         case WM_MOUSELEAVE:hover=-1;InvalidateRect(window,nullptr,FALSE);return 0;
         case WM_LBUTTONDOWN:{SetFocus(window);SetCapture(window);const int row=rowAt(y);downRow=row;downPart=partAt(row,x);downAt={x,y};dragging=false;dropRow=-2;emit({{"event","focus-panel"}});
             if(row<0){emit({{"event","clear"}});return 0;}const auto& id=rows[row].id;
-            if(downPart==Fold)emit({{"event","fold"},{"id",id}});else if(downPart==Lock)emit({{"event","lock"},{"id",id}});else if(downPart==Eye)emit({{"event","visible"},{"id",id}});
+            if(downPart==Fold)emit({{"event","fold"},{"id",id}});else if(downPart==Lock)emit({{"event","lock"},{"id",id}});else if(downPart==Eye)emit({{"event","visible"},{"id",id},{"ctrl",(GetKeyState(VK_CONTROL)&0x8000)!=0},{"shift",(GetKeyState(VK_SHIFT)&0x8000)!=0}});
             else emit({{"event","select"},{"id",id},{"ctrl",ctrl},{"shift",shift}});return 0;}
         case WM_LBUTTONUP:{if(GetCapture()==window)ReleaseCapture();if(dragging&&downRow>=0){const std::string to=dropRow>=0?rows[dropRow].id:"";if(to!=rows[downRow].id)emit({{"event","reparent"},{"id",rows[downRow].id},{"target",to}});}
             dragging=false;dropRow=-2;downRow=-1;downPart=None;InvalidateRect(window,nullptr,FALSE);return 0;}

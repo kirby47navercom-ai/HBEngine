@@ -87,9 +87,9 @@ const names = data => [
   ...(data.construction ? [['construction', 'Construction Script']] : []),
   ...[...(data.functions || []), ...(data.macros || [])].map(row => [row.id, row.name])
 ];
-const packPin = pin => ({id:pin.id, label:pin.label, color:typeColors[pin.type] || typeColors.any});
+const packPin = pin => ({id:pin.id, label:pin.label, color:typeColors[pin.type] || typeColors.any, type:(pin.type||'')+(pin.array?'[]':'')});
 const pointerPart = key => key.replaceAll('~','~0').replaceAll('/','~1');
-const fieldLabels = {quality:'그래픽 품질',displayGamma:'화면 감마',displayBrightness:'화면 밝기',hdrOutput:'HDR 출력',renderScale:'화면 해상도 비율(%)',dynamicResolution:'동적 해상도',minRenderScale:'최소 해상도 비율(%)',pivot:'기준점',settings:'설정',convertUnits:'파일 단위 변환',sourceUnit:'원본 단위',sourceUp:'원본 위 축',flipForward:'앞 방향 뒤집기',translation:'이동',name:'이름',sceneName:'레벨 이름',objects:'오브젝트',environment:'환경',position:'위치',rotation:'회전',scale:'크기',parent:'부모 에셋',clip:'오디오 클립',volume:'볼륨',pitch:'피치',loop:'반복',friction:'마찰',restitution:'반발력',density:'밀도',parameters:'매개변수',surfaceOverrides:'표면 오버라이드'};
+const fieldLabels = {surface:'표면 머테리얼',runtime:'실행 설정',quality:'그래픽 품질',displayGamma:'화면 감마',displayBrightness:'화면 밝기',hdrOutput:'HDR 출력',renderScale:'화면 해상도 비율(%)',dynamicResolution:'동적 해상도',minRenderScale:'최소 해상도 비율(%)',pivot:'기준점',settings:'설정',convertUnits:'파일 단위 변환',sourceUnit:'원본 단위',sourceUp:'원본 위 축',flipForward:'앞 방향 뒤집기',translation:'이동',name:'이름',sceneName:'레벨 이름',objects:'오브젝트',environment:'환경',position:'위치',rotation:'회전',scale:'크기',parent:'부모 에셋',clip:'오디오 클립',volume:'볼륨',pitch:'피치',loop:'반복',friction:'마찰',restitution:'반발력',density:'밀도',parameters:'매개변수',surfaceOverrides:'표면 오버라이드'};
 
 export function nativeEditorSession(bridge) {
   let record, documents = new AssetDocuments(), viewport, build, buildJobs, lastBuild, layerNames=null;
@@ -338,7 +338,7 @@ export function nativeEditorSession(bridge) {
       const pins = bp ? {inputs:effectivePins(node,'in',graph),outputs:effectivePins(node,'out',graph)} : materialPins(node,graph);
       const x = bp ? node.position.x : node.px ?? (Math.abs(node.x) < 2 ? node.x * 580 : node.x);
       return {id:node.id,breakpoint:bp&&node.breakpoint===true, title:bp ? nodeTitle(node,graph) : node.portName || node.title || node.key || node.id, x, y:bp ? node.position.y : node.y,
-        inputs:pins.inputs.map(packPin), outputs:pins.outputs.map(packPin)};
+        inputs:pins.inputs.map(packPin), outputs:pins.outputs.map(packPin), tip:bp?(spec=>spec?spec.ko+' · '+spec.group:'')(catalog.find(row=>row.key===node.key)):''};
     });
     const palette = (bp ? catalog.filter(row => row.kind !== 'variable' && (row.kind!=='event'||view==='event'&&!graph.nodes.some(node=>node.key===row.key))) : materialCatalog.filter(row => graph.mode==='function'
       ? !['surface','layerStack','legacyColor','legacyRough'].includes(row.key)&&(!data.domain||!['functionInput','functionOutput'].includes(row.key))
@@ -556,7 +556,7 @@ export function nativeEditorSession(bridge) {
       ? doc.data.objects[parts[1]]?.components[parts[3]] : null;
     const defaults=component?componentDefaults(component.type):null;
     const layerChoices=component&&layerNames&&componentDefinitions[component.type]?.properties?.layer?Array.from({length:32},(_,i)=>[String(i),i+': '+(layerNames[i]||'레이어 '+i)]):null;
-    return Object.entries(data).filter(([key])=>!component||componentPropertyVisible(component.type,key,data)).map(([key,value]) => {
+    return Object.entries(data).filter(([key])=>!(key==='version'&&!parts.length)&&(!component||componentPropertyVisible(component.type,key,data))).map(([key,value]) => {
       const type = value === null ? 'null' : typeof value;
       const definition=component&&componentDefinitions[component.type]?.properties[key];
       const label = definition?.label || fieldLabels[key] || value?.name || key;
@@ -2233,6 +2233,10 @@ export function nativeEditorSession(bridge) {
       } else if (action === 'connect') {
         const result = bp ? connectAutomatic(graph,from,to) : connectMaterial(graph,from,to);
         if (!result.ok) throw Error(result.reason);
+      } else if (action === 'disconnectEdge') {
+        if(!from?.node||!to?.node)throw Error('끊을 연결을 선택하세요.');
+        if (bp) graph.edges = graph.edges.filter(edge => !(edge.from.node===from.node&&edge.from.pin===from.pin&&edge.to.node===to.node&&edge.to.pin===to.pin));
+        else disconnectMaterial(graph,to.node,to.pin,'to');
       } else if (action === 'disconnect') {
         const side = output ? 'from' : 'to';
         if (bp) graph.edges = graph.edges.filter(edge => edge[side].node!==id || edge[side].pin!==pin);
