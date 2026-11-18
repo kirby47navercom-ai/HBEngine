@@ -24,8 +24,10 @@ class EditorScenePanel {
     std::optional<Handle> grabbed;
     std::string tool="translate";
     std::array<bool,8> flightKeys{};
-    ULONGLONG flightTime=0;
+    ULONGLONG flightTime=0; // non-zero while a flight key is held
+    LARGE_INTEGER flightLast{};
     void stopFlight(){KillTimer(window,1);const bool was=flightTime!=0;flightTime=0;flightKeys.fill(false);if(was&&post)post({{"command","flightEnd"}});}
+    void startFlight(){if(flightTime)return;flightTime=1;QueryPerformanceCounter(&flightLast);SetTimer(window,1,15,nullptr);post({{"command","flyTick"}});}
     static bool down(int key){return (GetKeyState(key)&0x8000)!=0;}
     std::optional<Handle> hitHandle(POINT at)const{
         double nearest=196;// 14 px grab radius (Unreal handles are easy to catch)
@@ -64,7 +66,7 @@ class EditorScenePanel {
     void startFlightFromHeldKeys(){
         static const int keys[]={'W','S','D','A','E','Q','Z','C'};
         for(int i=0;i<8;++i)flightKeys[i]=down(keys[i]);
-        if(std::any_of(flightKeys.begin(),flightKeys.end(),[](bool k){return k;})&&!flightTime){flightTime=GetTickCount64();SetTimer(window,1,16,nullptr);}
+        if(std::any_of(flightKeys.begin(),flightKeys.end(),[](bool k){return k;}))startFlight();
     }
     static POINT point(LPARAM l){return {short(LOWORD(l)),short(HIWORD(l))};}
     static LRESULT CALLBACK procedure(HWND window,UINT message,WPARAM w,LPARAM l){
@@ -164,13 +166,9 @@ class EditorScenePanel {
         case WM_KILLFOCUS:
             stopFlight();finishMouse();return 0;
         case WM_TIMER:
-            if(w==1){
-                const auto now=GetTickCount64();
-                const double seconds=double(now-flightTime)/1000.;flightTime=now;
-                const int forward=int(flightKeys[0])-int(flightKeys[1]),right=int(flightKeys[2])-int(flightKeys[3]),up=int(flightKeys[4])-int(flightKeys[5]),zoom=int(flightKeys[6])-int(flightKeys[7]);
-                if(forward||right||up||zoom)post({{"command","fly"},{"flight",{{"forward",forward},{"right",right},{"up",up},{"zoom",zoom},{"seconds",seconds},{"fast",down(VK_SHIFT)}}}});
-                return 0;
-            }
+            // The timer only asks for a frame; the move itself is measured at draw time (takeFlight), so a timer starved by
+            // mouse input (WM_TIMER has the lowest priority) never makes the camera stutter.
+            if(w==1){if(flightTime)post({{"command","flyTick"}});return 0;}
             break;
         // Wheel while flying (right button held) changes camera speed like Unreal; otherwise it dollies.
         case WM_MOUSEWHEEL:{POINT at=point(l);ScreenToClient(window,&at);post({{"command",button==2&&mode==Drag::look?"speedStep":"zoom"},{"dy",GET_WHEEL_DELTA_WPARAM(w)/120.0},{"x",at.x},{"y",at.y}});return 0;}
@@ -179,7 +177,7 @@ class EditorScenePanel {
             if(button==2&&mode==Drag::look&&index>=0){
                 flightKeys.at(index)=message==WM_KEYDOWN;
                 if(std::none_of(flightKeys.begin(),flightKeys.end(),[](bool pressed){return pressed;})){KillTimer(window,1);flightTime=0;}
-                else if(!flightTime){flightTime=GetTickCount64();SetTimer(window,1,16,nullptr);}
+                else startFlight();
                 return 0;
             }
             if(message!=WM_KEYDOWN)break;
@@ -229,6 +227,10 @@ public:
     void setProjection(const std::string& projection){orthographic=projection=="orthographic";}
     // True while the right button looks/flies in this viewport: editor-wide letter shortcuts must not take W/E/Q/... then.
     bool flying()const{return button==2&&mode==Drag::look;}
+    // Flight since the last drawn frame (high-resolution clock), or null when no flight key is held.
+    Json takeFlight(){if(!flightTime)return nullptr;LARGE_INTEGER now{},freq{};QueryPerformanceCounter(&now);QueryPerformanceFrequency(&freq);const double seconds=std::min(.1,double(now.QuadPart-flightLast.QuadPart)/double(freq.QuadPart));flightLast=now;
+        const int forward=int(flightKeys[0])-int(flightKeys[1]),right=int(flightKeys[2])-int(flightKeys[3]),up=int(flightKeys[4])-int(flightKeys[5]),zoom=int(flightKeys[6])-int(flightKeys[7]);
+        if(!forward&&!right&&!up&&!zoom)return nullptr;return {{"forward",forward},{"right",right},{"up",up},{"zoom",zoom},{"seconds",seconds},{"fast",down(VK_SHIFT)}};}
     HWND handle()const{return window;}
     void setHandles(const Json& rows){
         handles.clear();

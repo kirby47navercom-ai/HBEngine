@@ -1742,6 +1742,7 @@ class NativeEditorShell {
     static void mergeCameraInput(Json& queued,Json input){
         if(queued.is_object()){
             const auto action=input.value("command",std::string()),previous=queued.value("command",std::string());
+            if(action=="flyTick")return; // a frame is already queued; the flight move is measured when it is drawn
             if(action=="fly"&&previous!="fly"){
                 const double before=queued.contains("flight")?queued.at("flight").value("seconds",0.0):0.0;queued["flight"]=std::move(input.at("flight"));queued["flight"]["seconds"]=queued["flight"].value("seconds",0.0)+before;return;
             }
@@ -1760,6 +1761,7 @@ class NativeEditorShell {
         input["width"]=size.cx;input["height"]=size.cy;input["selected"]=sceneSelection;input["cameraId"]=cameraId;input["cameraOutputs"]=cameraOutputs;input["direction"]=cameraDirection;
         if(!input.contains("tool"))input["tool"]=viewport.transformTool();
         if(snapOn)input["snap"]={{"grid",snapGrid},{"angle",snapAngle},{"scale",snapScale}};
+        if(auto flight=viewport.takeFlight();flight.is_object())input["flight"]=std::move(flight);
         if(input.contains("flight")&&input.at("flight").is_object())input["flight"]["speedScale"]=speedScale(cameraSpeed);
         input["quad"]=quadView;input["viewMode"]=viewMode;input["gameView"]=gameView;input["showGrid"]=showGrid;input["gridSize"]=snapGrid;input["space"]=localSpace?"local":"world";input["pivotMode"]=pivotCenter?"center":"pivot";input["showNavigation"]=showNavigation;input["showBounds"]=showBounds;input["stats"]=showFps;input["showCollision"]=showCollision;input["showStreaming"]=showStreaming;{Json hidden=Json::array();for(const auto& id:editorHidden)hidden.push_back(id);input["editorHidden"]=std::move(hidden);}input["cameraFov"]=cameraFov;input["cameraNear"]=cameraNear;input["cameraFar"]=cameraFar;input["particlePlaying"]=particlePlaying;input["particleRestart"]=particleRestartSerial;input["surfaceSnap"]=surfaceSnap;input["vertexSnap"]=(GetKeyState('V')&0x8000)!=0;if(!pilotId.empty())input["pilot"]=pilotId;
         auto state=request("scene.viewport",input);
@@ -2327,7 +2329,7 @@ class NativeEditorShell {
     Json drawWindowScene(HWND owner,DocumentWindow& item,Json input=Json::object()){
         const auto size=item.sceneView->size();
         input["width"]=size.cx;input["height"]=size.cy;
-        input["path"]=item.doc.at("path");input["surface"]=item.surface;
+        input["path"]=item.doc.at("path");input["surface"]=item.surface;if(auto flight=item.sceneView->takeFlight();flight.is_object()){flight["speedScale"]=speedScale(cameraSpeed);input["flight"]=std::move(flight);}
         input["cameraId"]=item.cameraId;input["cameraOutputs"]=item.cameraOutputs;input["direction"]=item.cameraDirection;input["selected"]=item.selection;
         if(input.value("command",std::string())=="focus")input["id"]=item.selection;
         if(!input.contains("tool"))input["tool"]=item.sceneView->transformTool();
@@ -4878,8 +4880,9 @@ private:
         viewport.probe(WM_RBUTTONDOWN,MK_RBUTTON,MAKELPARAM(20,20));
         viewport.probe(WM_KEYDOWN,'W',0);Sleep(24);viewport.probe(WM_TIMER,1,0);
         auto flight=std::move(cameraInput);cameraInput=nullptr;
-        viewport.probe(WM_KEYUP,'W',0);viewport.probe(WM_RBUTTONUP,0,MAKELPARAM(20,20));
-        if(!flight.is_object()||drawViewport(std::move(flight)).at("cameraPosition")==afterZoom.at("cameraPosition"))throw std::runtime_error("Native viewport flight failed");
+        const auto flown=flight.is_object()?drawViewport(std::move(flight)):Json::object();
+        viewport.probe(WM_KEYUP,'W',0);viewport.probe(WM_RBUTTONUP,0,MAKELPARAM(20,20));cameraInput=nullptr;
+        if(!flown.contains("cameraPosition")||flown.at("cameraPosition")==afterZoom.at("cameraPosition"))throw std::runtime_error("Native viewport flight failed");
         SendMessageW(views,CB_SETCURSEL,4,0);
         SendMessageW(window,WM_COMMAND,MAKEWPARAM(Views,CBN_SELCHANGE),LPARAM(views));
         if(cameraDirection!="top"||drawViewport().at("projection")!="orthographic")throw std::runtime_error("Native top viewport failed");
@@ -4942,11 +4945,11 @@ private:
                 const auto after=inspectActor().at("scale"),before=transformBefore.at("scale");uniformScale=after.at(0)!=before.at(0)&&std::abs(after.at(0).get<double>()/before.at(0).get<double>()-after.at(1).get<double>()/before.at(1).get<double>())<1e-6;command(Undo);}}
         {// Flying: W/E reach the viewport while the right button is held (the editor-wide tool keys stand aside), and RMB drag looks in place.
             viewport.probe(WM_RBUTTONDOWN,MK_RBUTTON,MAKELPARAM(30,30));MSG m{};m.hwnd=viewport.handle();m.message=WM_KEYDOWN;m.wParam='E';const bool taken=letterShortcut(m);const auto toolKept=viewport.transformTool();
-            viewport.probe(WM_KEYDOWN,'E',0);Sleep(20);viewport.probe(WM_TIMER,1,0);auto fly=std::move(cameraInput);cameraInput=nullptr;viewport.probe(WM_KEYUP,'E',0);
+            const auto ground=drawViewport().at("cameraPosition");viewport.probe(WM_KEYDOWN,'E',0);Sleep(20);viewport.probe(WM_TIMER,1,0);auto fly=std::move(cameraInput);cameraInput=nullptr;const auto raised=drawViewport(fly).at("cameraPosition");viewport.probe(WM_KEYUP,'E',0);
             const auto eye=drawViewport().at("cameraPosition");viewport.probe(WM_MOUSEMOVE,MK_RBUTTON,MAKELPARAM(60,40));auto look=std::move(cameraInput);cameraInput=nullptr;const auto looked=drawViewport(look);
             viewport.probe(WM_RBUTTONUP,0,MAKELPARAM(60,40));cameraInput=nullptr;
             double drift=0;for(int k=0;k<3;k++)drift=std::max(drift,std::abs(looked.at("cameraPosition").at(k).get<double>()-eye.at(k).get<double>()));
-            flightKeys=!taken&&toolKept==viewport.transformTool()&&fly.is_object()&&fly.at("flight").value("up",0)==1&&look.value("command",std::string())=="look"&&drift<1e-3&&!viewportFlying();}
+            flightKeys=!taken&&toolKept==viewport.transformTool()&&fly.value("command",std::string())=="flyTick"&&raised.at(1).get<double>()>ground.at(1).get<double>()&&look.value("command",std::string())=="look"&&drift<1e-3&&!viewportFlying();}
         if(!uniformScale||!flightKeys)throw std::runtime_error(std::string("Native viewport controls failed: uniform=")+(uniformScale?"1":"0")+" flight="+(flightKeys?"1":"0"));
         viewport.probe(WM_KEYDOWN,'W',0);
         const auto beforeAssetDrop=Json::parse(document.at("text").get<std::string>()).at("objects").size();
