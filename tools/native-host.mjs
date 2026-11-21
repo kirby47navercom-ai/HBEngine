@@ -1,5 +1,6 @@
 import {closeNativeSession} from './native-session-close.mjs';
-import {compileNativeUnits,nativeBuildTimeoutMs} from './native-compile-units.mjs';
+import {compileNativeUnits,nativeStepTimeoutMs} from './native-compile-units.mjs';
+import {NativeObjectCache,compilerIdentity,projectHeaderDigest} from './native-object-cache.mjs';
 import {nativeWorkerResource} from './native-worker-resources.mjs';
 import {packagedModuleError} from './packaged-module-error.mjs';
 import {nativeComponentDefaultJson} from '../prototype/native-component-defaults.js';
@@ -71,9 +72,9 @@ export class NativeHost extends NativeProtocol {
     if(!['editor','development','release'].includes(configuration))throw Error('C++ 빌드 구성 오류');
     const generated=nativeSources(header,source,{files,headerPath,sourcePath}),{metadata,header:compiledHeader,source:compiledSource,worker}=generated;await prepareNative();
     const snapshot=await nativeSDKFingerprint(path.join(root,'native/include'),{dependencies:[{name:'nlohmann/json.hpp',file:path.join(jsonInclude,'nlohmann/json.hpp')}],signal,inventory:true}),{entries,...sdk}=snapshot;
-    const sourceKey=createHash('sha256').update('project-source-v5-pe-resources-used-sdk-worker-o2'+configuration+compiledHeader+compiledSource+worker+JSON.stringify([generated.files,generated.sourceFiles,generated.includeDirectories,nativeSourceOptimization(configuration)])).digest('hex'),deadline=performance.now()+nativeBuildTimeoutMs(generated.sourceFiles.length),compile=(args,options={})=>compileNativeStep(args,{signal,deadline,...options});
+    const sourceKey=createHash('sha256').update('project-source-v5-pe-resources-used-sdk-worker-o2'+configuration+compiledHeader+compiledSource+worker+JSON.stringify([generated.files,generated.sourceFiles,generated.includeDirectories,nativeSourceOptimization(configuration)])).digest('hex'),compile=(args,options={})=>compileNativeStep(args,{signal,deadline:performance.now()+nativeStepTimeoutMs,...options}),objectCache=new NativeObjectCache(path.join(mutablePaths.cache,'NativeObjects'));
     let sdkUsed,hash,binary,cacheHit,cacheScope='version';
-    const retained=this.managedModuleCache&&await buildRetainedNative({root,directory:path.join(mutablePaths.cache,'NativeSDKPlans'),snapshot,sourceKey,generated,compiler,env,configuration,compile,signal,cache:this.managedModuleCache});
+    const retained=this.managedModuleCache&&await buildRetainedNative({root,directory:path.join(mutablePaths.cache,'NativeSDKPlans'),snapshot,sourceKey,generated,compiler,env,configuration,compile,signal,cache:this.managedModuleCache,objectCache});
     if(retained){({sdkUsed,hash,binary,cacheHit,cacheScope,releaseCache}=retained);}else{
       sdkUsed=await nativeSDKPlan({root,directory:path.join(mutablePaths.cache,'NativeSDKPlans'),snapshot,sourceKey,generated,compiler,env,configuration,compile,signal});const conservative=!!this.managedModuleCache||sdkUsed.mode==='full';hash=createHash('sha256').update(sourceKey+sdkUsed.identity+sdkUsed.fingerprint+(conservative?randomUUID():'')).digest('hex').slice(0,20);const dir=path.join(this.versionModuleCache?.directory||mutablePaths.modules,hash);binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');if(this.versionModuleCache)releaseCache=await this.versionModuleCache.retain(hash);else await fs.mkdir(dir,{recursive:true});signal.throwIfAborted();
     cacheHit=existsSync(binary);if(!cacheHit){
@@ -84,10 +85,13 @@ export class NativeHost extends NativeProtocol {
         // GCC's assembler cannot reopen an intermediate file in a Unicode TEMP
         // on Windows. Pipe translation units directly; keep the game's TEMP intact.
         const common=['-std=c++17','-pipe','-I','native/include','-I',path.relative(root,jsonInclude),...layout.includeDirectories.flatMap(dir=>['-I',path.relative(root,path.join(compileDir,dir))])],file=name=>path.relative(root,path.join(compileDir,name));
-        // Optimize the JSON/engine translation unit while preserving user-code
-        // debugging. All stages share the existing 60-second build deadline.
-        await compile([...common,'-O2','-c',file('worker.cpp'),'-o',file('worker.o')]);
-        for(const [i] of layout.sources.entries())objects.push(path.join(compileDir,'source-'+i+'.o'));await compileNativeUnits(layout.sources,(source,i,unitSignal)=>compile([...common,...nativeSourceOptimization(configuration),'-c',file(source),'-o',path.relative(root,objects[i])],{signal:unitSignal}),{signal});
+        // Optimize the JSON/engine translation unit while preserving user-code debugging. Units come from the
+        // object cache when nothing that shapes them changed (incremental build); each step has its own time limit.
+        const identity=[compilerIdentity(compiler),snapshot.fingerprint,configuration,await projectHeaderDigest(compileDir)],relativeDir=path.relative(root,compileDir),stable=args=>args.map(arg=>arg.split(relativeDir).join('<project>'));
+        const workerArgs=[...common,'-O2','-c',file('worker.cpp'),'-o',file('worker.o')];
+        await objectCache.compile(['hb-object-1','worker',...identity,stable(workerArgs),await fs.readFile(path.join(compileDir,'worker.cpp'),'utf8')],path.join(compileDir,'worker.o'),()=>compile(workerArgs));
+        for(const [i] of layout.sources.entries())objects.push(path.join(compileDir,'source-'+i+'.o'));await compileNativeUnits(layout.sources,async(source,i,unitSignal)=>{const args=[...common,...nativeSourceOptimization(configuration),'-c',file(source),'-o',path.relative(root,objects[i])],sourceFile=path.join(compileDir,source);
+          await objectCache.compile(['hb-object-1','unit',...identity,stable(args).map(arg=>arg.replace(/source-\d+\.o$/,'unit.o')),source,await fs.readFile(sourceFile,'utf8')],objects[i],()=>compile(args,{signal:unitSignal}),{debugSource:configuration==='release'?null:sourceFile});},{signal});
         await compile([file('worker.o'),...(resource?[path.relative(root,resource)]:[]),...objects.map(file=>path.relative(root,file)),...(configuration==='editor'?[]:['-static']),...(configuration==='release'?['-s']:[]),'-o',path.relative(root,temporary)]);
         signal?.throwIfAborted();
         // Only a complete executable enters the shared cache. Other attempts may
@@ -100,7 +104,8 @@ export class NativeHost extends NativeProtocol {
     const token=randomUUID();session={token,binary,metadata,queue:Promise.resolve(),lastUsed:Date.now(),releaseCache};this.sessions.set(token,session);releaseCache=null;for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000&&!value.busy){this.sessions.delete(key);await closeNativeSession(value);}
     const now=new Date();await fs.utimes(binary,now,now);await (this.moduleCache?this.moduleCache.prune():pruneTestArtifacts(null,{nativeCacheOnly:true,protectedBinaries:[...this.sessions.values()].map(s=>s.binary)})).catch(error=>console.error('C++ 캐시 정리 실패:',error.message));
     signal.throwIfAborted();
-    return {token,metadata,cacheKey:hash,cacheHit,cacheScope,sdk,sdkUsed,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
+    await objectCache.prune().catch(()=>{});
+    return {token,metadata,cacheKey:hash,cacheHit,cacheScope,sdk,sdkUsed,compiler:path.basename(compiler),objectCache:{reused:objectCache.hits,compiled:objectCache.misses},diagnostics:'빌드 성공'};
     }catch(error){if(session){this.sessions.delete(session.token);try{await closeNativeSession(session);}catch(cleanup){throw new AggregateError([error,cleanup],'C++ 빌드 실패 후 실행 자원 해제도 실패했어요.');}}throw error;}finally{this.buildControllers.delete(controller);await releaseCache?.();}
   }
   async call(token,request,from,rendererQuery){

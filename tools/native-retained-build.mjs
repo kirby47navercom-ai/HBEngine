@@ -7,7 +7,8 @@ import {nativeAtomicJSON} from './native-cache-lock.mjs';
 
 // Semantic identity names code; a random physical entry owns the immutable
 // compiler cwd, SDK inputs and debugger sources across installation updates.
-export async function buildRetainedNative({root,directory,snapshot,sourceKey,generated,compiler,env,configuration,compile,signal,cache}){
+import {compilerIdentity,projectHeaderDigest} from './native-object-cache.mjs';
+export async function buildRetainedNative({root,directory,snapshot,sourceKey,generated,compiler,env,configuration,compile,signal,cache,objectCache}){
  const toolchain=await nativeToolchainIdentity(compiler,{configuration,env,signal});if(!toolchain.supported)return null;
  let candidate,selected;
  const abandon=async()=>{if(!candidate)return;const old=candidate;candidate=null;await old.release();await cache.discardUnpublished(old.key);};
@@ -32,8 +33,12 @@ export async function buildRetainedNative({root,directory,snapshot,sourceKey,gen
   const cwd=retained.directory,objects=['worker.o',...retained.layout.sources.map((_,i)=>'source-'+i+'.o')],common=['-std=c++17','-pipe','-I','SDK/include','-I','SDK/dependency',...retained.layout.includeDirectories.flatMap(dir=>['-I',dir])],binary=path.join(candidate.entry,process.platform==='win32'?'worker.exe':'worker'),temporary=path.join(candidate.entry,'worker-'+randomUUID()+'.tmp.exe');
   let resource;try{
    resource=await nativeWorkerResource(cwd,compiler,{signal});
-   await compile([...common,'-O2','-c','worker.cpp','-o',objects[0]],{cwd});
-   await compileNativeUnits(retained.layout.sources,(source,i,unitSignal)=>compile([...common,...nativeSourceOptimization(configuration),'-c',source,'-o',objects[i+1]],{cwd,signal:unitSignal}),{signal});
+   // Incremental: unchanged units come from the shared object cache (see native-object-cache.mjs).
+   const identity=[compilerIdentity(compiler),snapshot.fingerprint,toolchain.fingerprint,configuration,await projectHeaderDigest(cwd)],through=async(parts,object,run,debugSource)=>objectCache?objectCache.compile(parts,path.join(cwd,object),run,{debugSource}):run();
+   const workerArgs=[...common,'-O2','-c','worker.cpp','-o',objects[0]];
+   await through(['hb-object-1','retained-worker',...identity,workerArgs,await fs.readFile(path.join(cwd,'worker.cpp'),'utf8')],objects[0],()=>compile(workerArgs,{cwd}),null);
+   await compileNativeUnits(retained.layout.sources,async(source,i,unitSignal)=>{const args=[...common,...nativeSourceOptimization(configuration),'-c',source,'-o',objects[i+1]];
+     await through(['hb-object-1','retained-unit',...identity,args.map(arg=>arg.replace(/source-\d+\.o$/,'unit.o')),source,await fs.readFile(path.join(cwd,source),'utf8')],objects[i+1],()=>compile(args,{cwd,signal:unitSignal}),configuration==='release'?null:path.join(cwd,source));},{signal});
    await compile([...objects,...(resource?[path.relative(cwd,resource)]:[]),...(configuration==='editor'?[]:['-static']),...(configuration==='release'?['-s']:[]),'-o',path.relative(cwd,temporary)],{cwd});signal.throwIfAborted();
    await fs.rename(temporary,binary);await nativeAtomicJSON(path.join(candidate.entry,'.artifact.json'),{format:'hb-native-artifact-1',semantic,workspace:path.basename(cwd),sdk:snapshot.fingerprint,toolchain:toolchain.fingerprint});
   }finally{for(const file of [temporary,...(resource?[resource]:[]),...objects.map(file=>path.join(cwd,file))])await fs.unlink(file).catch(error=>{if(error.code!=='ENOENT')throw error;});}
